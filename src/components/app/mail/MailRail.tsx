@@ -106,7 +106,7 @@ export function MailRail({
                 <span
                   aria-hidden="true"
                   className="size-2 shrink-0 rounded-full"
-                  style={{ background: l.colour ?? "hsl(var(--steel))" }}
+                  style={{ background: l.colour ?? "currentColor" }}
                 />
                 <span className="truncate">{l.name}</span>
                 {typeof l.thread_count === "number" && (
