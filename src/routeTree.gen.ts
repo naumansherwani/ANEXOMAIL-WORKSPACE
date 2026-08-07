@@ -31,6 +31,7 @@ import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addres
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
+import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
@@ -145,6 +146,11 @@ const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
   path: '/members',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
+  id: '/teams',
+  path: '/teams',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -183,6 +189,7 @@ export interface FileRoutesByFullPath {
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -208,6 +215,7 @@ export interface FileRoutesByTo {
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/admin': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
@@ -235,6 +243,7 @@ export interface FileRoutesById {
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
     | '/app/admin/audit'
     | '/app/admin/export'
     | '/app/admin/members'
+    | '/app/admin/teams'
     | '/app/mail/$folder'
     | '/app/admin/'
     | '/app/mail/$folder/$threadId'
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/app/admin/audit'
     | '/app/admin/export'
     | '/app/admin/members'
+    | '/app/admin/teams'
     | '/app/admin'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder'
@@ -315,6 +326,7 @@ export interface FileRouteTypes {
     | '/app/admin/audit'
     | '/app/admin/export'
     | '/app/admin/members'
+    | '/app/admin/teams'
     | '/app/mail/$folder'
     | '/app/admin/'
     | '/app/mail/$folder/$threadId'
@@ -490,6 +502,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminMembersRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/teams': {
+      id: '/app/admin/teams'
+      path: '/teams'
+      fullPath: '/app/admin/teams'
+      preLoaderRoute: typeof AppAdminTeamsRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -519,6 +538,7 @@ interface AppAdminRouteChildren {
   AppAdminAuditRoute: typeof AppAdminAuditRoute
   AppAdminExportRoute: typeof AppAdminExportRoute
   AppAdminMembersRoute: typeof AppAdminMembersRoute
+  AppAdminTeamsRoute: typeof AppAdminTeamsRoute
   AppAdminIndexRoute: typeof AppAdminIndexRoute
 }
 
@@ -527,6 +547,7 @@ const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminAuditRoute: AppAdminAuditRoute,
   AppAdminExportRoute: AppAdminExportRoute,
   AppAdminMembersRoute: AppAdminMembersRoute,
+  AppAdminTeamsRoute: AppAdminTeamsRoute,
   AppAdminIndexRoute: AppAdminIndexRoute,
 }
 
