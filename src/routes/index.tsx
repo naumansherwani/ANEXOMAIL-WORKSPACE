@@ -46,20 +46,20 @@ const leoSkills = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ANEXOMAIL Workspace — Sealed Business Mail on Your Own Domain" },
+      { title: "ANEXOMAIL — The AI Workspace Built Around Email" },
       {
         name: "description",
         content:
-          "ANEXOMAIL Workspace gives your team sealed mailboxes on your own domain, on infrastructure we run ourselves — with shared addresses, contacts, calendar and tasks. From £20 per user.",
+          "Private business email, intelligent AI, shared workspaces, calendars and collaboration — all under your own domain. From £20 per user.",
       },
       {
         property: "og:title",
-        content: "ANEXOMAIL Workspace — Sealed Business Mail on Your Own Domain",
+        content: "ANEXOMAIL — The AI Workspace Built Around Email",
       },
       {
         property: "og:description",
         content:
-          "Every message leaves with your name on it. Sealed mailboxes on your own domain, on infrastructure we run ourselves.",
+          "Private business email, intelligent AI, shared workspaces, calendars and collaboration — all under your own domain.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
