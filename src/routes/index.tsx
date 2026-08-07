@@ -471,25 +471,57 @@ function Index() {
           </div>
         </Stage>
 
-        {/* ── 7 · AI KA DARWAZA — small door, nothing more ─────────── */}
-        <Stage volume="quiet">
-          <Reveal>
-            <Link
-              to="/ai"
-              className="ax-plane group flex flex-col gap-6 rounded-xl p-8 sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div>
-                <Eyebrow>Separate product</Eyebrow>
-                <p className="mt-4 max-w-lg text-lg font-bold tracking-[-0.02em] text-foreground">
-                  ANEXOMAIL AI lives behind its own door, on its own domain.
-                </p>
-              </div>
-              <span className="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap text-steel transition-colors duration-500 group-hover:text-foreground">
-                Open the door
-                <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+        {/* ── 7 · MEET LEO — the AI teammate, its own product ───────── */}
+        <Stage volume="loud">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-x-0 top-0 h-[26rem] opacity-40 blur-3xl"
+            style={{
+              background:
+                "radial-gradient(38% 46% at 50% 0%, var(--navy) 0%, transparent 72%)",
+            }}
+          />
+          <div className="relative grid gap-12 lg:grid-cols-[46fr_54fr] lg:items-center">
+            <Reveal>
+              <span className="inline-flex items-center gap-2 rounded-full border border-steel/30 bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel uppercase">
+                <Sparkles className="size-3.5" />
+                Separate product
               </span>
-            </Link>
-          </Reveal>
+
+              <h2 className="mt-7 text-3xl md:text-[2.9rem] md:leading-[1.05]">
+                <span className="ax-platinum-text">Meet Leo.</span>
+              </h2>
+
+              <p className="mt-6 max-w-md text-[17px] leading-relaxed text-muted-foreground">
+                Your AI teammate for email, writing, meetings, tasks and everything in
+                between — with your workspace as context, never someone else's.
+              </p>
+
+              <Link
+                to="/ai"
+                className="group mt-9 inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/60"
+              >
+                Meet Leo
+                <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+              </Link>
+            </Reveal>
+
+            <div className="grid gap-px overflow-hidden rounded-2xl border border-border sm:grid-cols-2">
+              {leoSkills.map((s, i) => (
+                <Reveal key={s.label} delay={0.08 + i * 0.07} className="h-full">
+                  <div className="ax-plane h-full rounded-none border-0 p-7">
+                    <span className="flex size-10 items-center justify-center rounded-xl bg-secondary text-steel">
+                      <s.icon className="size-5" />
+                    </span>
+                    <p className="mt-5 text-[15px] font-bold text-foreground">{s.label}</p>
+                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                      {s.body}
+                    </p>
+                  </div>
+                </Reveal>
+              ))}
+            </div>
+          </div>
         </Stage>
 
         {/* ── 8 · CLOSING — one line, one button, empty frame ──────── */}
