@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MoveInRouteImport } from './routes/move-in'
 import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PlansRouteImport } from './routes/plans'
@@ -22,6 +23,7 @@ import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
@@ -44,6 +46,11 @@ const AiRoute = AiRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoveInRoute = MoveInRouteImport.update({
@@ -96,6 +103,11 @@ const AppWorkRoute = AppWorkRouteImport.update({
   path: '/work',
   getParentRoute: () => AppRoute,
 } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/callback',
+  path: '/callback',
+  getParentRoute: () => AuthRoute,
+} as any)
 const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -141,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
   '/move-in': typeof MoveInRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
@@ -150,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -163,6 +177,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/auth': typeof AuthRouteWithChildren
   '/move-in': typeof MoveInRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
@@ -171,6 +186,7 @@ export interface FileRoutesByTo {
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/app': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -185,6 +201,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRouteWithChildren
   '/move-in': typeof MoveInRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
@@ -194,6 +211,7 @@ export interface FileRoutesById {
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -210,6 +228,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/auth'
     | '/move-in'
     | '/ownership'
     | '/plans'
@@ -219,6 +238,7 @@ export interface FileRouteTypes {
     | '/app/people'
     | '/app/search'
     | '/app/work'
+    | '/auth/callback'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -232,6 +252,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ai'
+    | '/auth'
     | '/move-in'
     | '/ownership'
     | '/plans'
@@ -240,6 +261,7 @@ export interface FileRouteTypes {
     | '/app/people'
     | '/app/search'
     | '/app/work'
+    | '/auth/callback'
     | '/app'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -253,6 +275,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/auth'
     | '/move-in'
     | '/ownership'
     | '/plans'
@@ -262,6 +285,7 @@ export interface FileRouteTypes {
     | '/app/people'
     | '/app/search'
     | '/app/work'
+    | '/auth/callback'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -277,6 +301,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiRoute: typeof AiRoute
   AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRouteWithChildren
   MoveInRoute: typeof MoveInRoute
   OwnershipRoute: typeof OwnershipRoute
   PlansRoute: typeof PlansRoute
@@ -304,6 +329,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/move-in': {
@@ -375,6 +407,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/work'
       preLoaderRoute: typeof AppWorkRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof AuthRoute
     }
     '/app/admin/': {
       id: '/app/admin/'
@@ -491,10 +530,21 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface AuthRouteChildren {
+  AuthCallbackRoute: typeof AuthCallbackRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthCallbackRoute: AuthCallbackRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiRoute: AiRoute,
   AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRouteWithChildren,
   MoveInRoute: MoveInRoute,
   OwnershipRoute: OwnershipRoute,
   PlansRoute: PlansRoute,
@@ -503,13 +553,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
