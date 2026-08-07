@@ -11,7 +11,10 @@ import {
   KeyRound,
   ListChecks,
   Lock,
+  PenLine,
+  Sparkles,
   ShieldCheck,
+  Video,
   Users,
 } from "lucide-react";
 
@@ -30,6 +33,14 @@ const compliance = [
   { k: "DKIM · SPF · DMARC", v: "Generated per domain, checked continuously" },
   { k: "Owned infrastructure", v: "No third-party mail relay in the path" },
   { k: "One-click export", v: "Mail, contacts and calendar in open formats" },
+];
+
+/* Section 7 — Leo, the AI teammate. Own product, own domain. */
+const leoSkills = [
+  { icon: Inbox, label: "Email", body: "Reads the thread, drafts the reply in your voice." },
+  { icon: PenLine, label: "Writing", body: "Proposals, follow-ups and notes without a blank page." },
+  { icon: Video, label: "Meetings", body: "Turns a call into decisions, owners and dates." },
+  { icon: ListChecks, label: "Tasks", body: "Pulls the work out of the inbox and tracks it." },
 ];
 
 export const Route = createFileRoute("/")({
