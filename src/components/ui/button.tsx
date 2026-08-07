@@ -5,23 +5,31 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "ax-focus inline-flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-semibold transition-[background-color,border-color,color,box-shadow,transform] duration-500 ease-[var(--ease-cine)] disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground shadow hover:bg-primary/90",
-        destructive: "bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
+        // Primary action — navy plane, platinum text, key light on hover.
+        default:
+          "bg-primary text-primary-foreground shadow-elev-1 hover:bg-primary/90 hover:shadow-elev-2",
+        // Signature call to action — used once per surface, never twice.
+        seal: "bg-primary text-primary-foreground shadow-stage hover:bg-primary/90 hover:-translate-y-px",
+        destructive:
+          "bg-destructive text-destructive-foreground shadow-elev-1 hover:bg-destructive/90",
         outline:
-          "border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-        secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
-        ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline",
+          "border border-border bg-transparent text-foreground hover:border-ring/45 hover:bg-secondary",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-accent",
+        // Quiet action — lives inside a plane, only shows itself on hover.
+        quiet: "text-steel hover:bg-secondary hover:text-foreground",
+        ghost: "text-foreground hover:bg-secondary",
+        link: "text-foreground underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-8",
-        icon: "h-9 w-9",
+        default: "h-10 px-4",
+        sm: "h-8 rounded-lg px-3 text-xs",
+        lg: "h-11 px-6",
+        xl: "h-12 px-7 text-[0.9375rem]",
+        icon: "size-9 rounded-lg",
       },
     },
     defaultVariants: {

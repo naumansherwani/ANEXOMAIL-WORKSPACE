@@ -67,6 +67,15 @@
   --shadow-elev-2: var(--shadow-elev-2);
   --shadow-stage: var(--shadow-stage);
   --ease-cine: var(--ease-cine);
+  /* Spacing rhythm — 8px base scale, locked. */
+  --spacing-ax-1: var(--ax-1);
+  --spacing-ax-2: var(--ax-2);
+  --spacing-ax-3: var(--ax-3);
+  --spacing-ax-4: var(--ax-4);
+  --spacing-ax-5: var(--ax-5);
+  --spacing-ax-6: var(--ax-6);
+  --spacing-ax-7: var(--ax-7);
+  --spacing-ax-8: var(--ax-8);
 }
 
 :root {
@@ -74,6 +83,16 @@
   --font-inter:
     "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Spacing rhythm — every gap on this scale, nothing off-grid. */
+  --ax-1: 0.25rem; /* 4  — icon to label */
+  --ax-2: 0.5rem; /* 8  — inside a control */
+  --ax-3: 0.75rem; /* 12 — list row padding */
+  --ax-4: 1rem; /* 16 — card padding */
+  --ax-5: 1.5rem; /* 24 — card gap */
+  --ax-6: 2rem; /* 32 — block gap */
+  --ax-7: 3rem; /* 48 — sub-section gap */
+  --ax-8: 5rem; /* 80 — section gap (120 on md via ax-section) */
 
   /* Stage — near-black, cool. Light comes from one place only. */
   --background: oklch(0.135 0.005 265);
@@ -351,6 +370,94 @@
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--steel);
+}
+
+/*
+ * Type scale — locked. Six steps only. Never invent a seventh.
+ * display → page opener · title → section opener · heading → card opener
+ * body → prose · label → UI control · caption → quiet metadata
+ */
+@utility ax-display {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.042em;
+  line-height: 1;
+}
+
+@utility ax-title {
+  font-size: clamp(1.875rem, 3.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.032em;
+  line-height: 1.06;
+}
+
+@utility ax-heading {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.014em;
+  line-height: 1.35;
+}
+
+@utility ax-body {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--muted-foreground);
+}
+
+@utility ax-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.006em;
+  line-height: 1.25;
+}
+
+@utility ax-caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+/* One focus treatment across the whole product — keyboard users see the key light. */
+@utility ax-focus {
+  outline: none;
+
+  &:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px oklch(0.60 0.085 255 / 70%);
+  }
+}
+
+/* Status pill — the only way status is shown. Colour never carries meaning alone. */
+@utility ax-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-2);
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--steel);
+}
+
+/* Vertical rail used to mark the active row in the three-panel surface. */
+@utility ax-rail {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-block: 0.375rem;
+    left: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: var(--cyan-accent);
+  }
 }
 
 @utility ax-platinum-text {
