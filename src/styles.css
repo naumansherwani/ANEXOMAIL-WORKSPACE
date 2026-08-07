@@ -5,22 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * ANEXOMAIL Workspace — Founder Lock design tokens.
- * Brand: minimal, premium, enterprise-grade (Linear / Notion feel).
- */
-
-/*
- * Design system definition.
- *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * ANEXOMAIL Workspace — cinematic design system.
+ * Rules: one light source · three depth layers · reveal not slide ·
+ * pacing · type as cinematography · light angle on hover · grain + vignette · silence.
+ * Palette derives from the brand mark: deep navy planes, platinum edges, near-black stage.
  */
 
 @theme inline {
@@ -64,10 +52,10 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
-  --color-indigo: var(--indigo);
-  --color-cyan: var(--cyan);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-platinum: var(--platinum);
+  --color-steel: var(--steel);
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-surface-2: var(--surface-2);
@@ -75,103 +63,79 @@
   --font-display: var(--font-inter);
   --shadow-elev-1: var(--shadow-elev-1);
   --shadow-elev-2: var(--shadow-elev-2);
-  --shadow-glow: var(--shadow-glow);
+  --shadow-stage: var(--shadow-stage);
+  --ease-cine: var(--ease-cine);
 }
 
 :root {
-  --radius: 0.875rem; /* 14px — blueprint 12-16px */
+  --radius: 0.75rem;
   --font-inter:
     "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
 
-  /* Light theme — #FFFFFF / #F8FAFC / #E5E7EB / #111827 / #6B7280 */
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.21 0.034 264.4);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.034 264.4);
-  --surface-2: oklch(0.984 0.003 247.858);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.034 264.4);
-  --primary: oklch(0.546 0.219 263.9);
-  --primary-foreground: oklch(1 0 0);
-  --brand: oklch(0.546 0.219 263.9);
-  --brand-foreground: oklch(1 0 0);
-  --indigo: oklch(0.511 0.227 276.9);
-  --cyan: oklch(0.715 0.13 215.6);
-  --success: oklch(0.697 0.149 162.5);
-  --warning: oklch(0.769 0.163 70.1);
-  --secondary: oklch(0.984 0.003 247.858);
-  --secondary-foreground: oklch(0.21 0.034 264.4);
-  --muted: oklch(0.984 0.003 247.858);
-  --muted-foreground: oklch(0.551 0.021 264.4);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.21 0.034 264.4);
-  --destructive: oklch(0.637 0.208 25.3);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.912 0.006 264.5);
-  --input: oklch(0.912 0.006 264.5);
-  --ring: oklch(0.546 0.219 263.9);
-  --shadow-elev-1: 0 1px 2px 0 oklch(0.21 0.034 264.4 / 8%);
-  --shadow-elev-2: 0 18px 40px -18px oklch(0.21 0.034 264.4 / 22%);
-  --shadow-glow: 0 0 0 1px oklch(0.546 0.219 263.9 / 25%);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  /* Stage — near-black, cool. Light comes from one place only. */
+  --background: oklch(0.135 0.005 265);
+  --foreground: oklch(0.955 0.004 250);
+  --card: oklch(0.185 0.008 264);
+  --card-foreground: oklch(0.955 0.004 250);
+  --surface-2: oklch(0.225 0.010 264);
+  --popover: oklch(0.185 0.008 264);
+  --popover-foreground: oklch(0.955 0.004 250);
+
+  /* Brand mark colours */
+  --navy: oklch(0.455 0.093 258);
+  --navy-deep: oklch(0.325 0.070 258);
+  --platinum: oklch(0.885 0.008 250);
+  --steel: oklch(0.735 0.017 252);
+
+  --primary: oklch(0.455 0.093 258);
+  --primary-foreground: oklch(0.975 0.004 250);
+  --secondary: oklch(0.225 0.010 264);
+  --secondary-foreground: oklch(0.955 0.004 250);
+  --muted: oklch(0.225 0.010 264);
+  --muted-foreground: oklch(0.665 0.014 253);
+  --accent: oklch(0.245 0.012 264);
+  --accent-foreground: oklch(0.955 0.004 250);
+  --destructive: oklch(0.61 0.19 25);
+  --destructive-foreground: oklch(0.975 0.004 250);
+  --success: oklch(0.70 0.115 165);
+  --warning: oklch(0.775 0.135 75);
+  --border: oklch(0.285 0.011 264);
+  --input: oklch(0.285 0.011 264);
+  --ring: oklch(0.60 0.085 255);
+
+  --shadow-elev-1: 0 1px 2px 0 oklch(0 0 0 / 55%);
+  --shadow-elev-2: 0 30px 70px -34px oklch(0 0 0 / 85%);
+  --shadow-stage: 0 60px 140px -70px oklch(0.455 0.093 258 / 55%);
+
+  --chart-1: oklch(0.455 0.093 258);
+  --chart-2: oklch(0.735 0.017 252);
+  --chart-3: oklch(0.70 0.115 165);
+  --chart-4: oklch(0.775 0.135 75);
+  --chart-5: oklch(0.325 0.070 258);
+  --sidebar: oklch(0.165 0.007 264);
+  --sidebar-foreground: oklch(0.955 0.004 250);
+  --sidebar-primary: oklch(0.455 0.093 258);
+  --sidebar-primary-foreground: oklch(0.975 0.004 250);
+  --sidebar-accent: oklch(0.225 0.010 264);
+  --sidebar-accent-foreground: oklch(0.955 0.004 250);
+  --sidebar-border: oklch(0.285 0.011 264);
+  --sidebar-ring: oklch(0.60 0.085 255);
 }
 
+/* Single dark stage — the .dark class mirrors :root so tokens never drift. */
 .dark {
-  /* Dark theme — #0B1220 / #111827 / #1F2937 / #374151 / #F9FAFB / #9CA3AF */
-  --background: oklch(0.167 0.029 259.7);
-  --foreground: oklch(0.985 0.002 247.9);
-  --card: oklch(0.209 0.032 264.2);
-  --card-foreground: oklch(0.985 0.002 247.9);
-  --surface-2: oklch(0.279 0.036 260.0);
-  --popover: oklch(0.209 0.032 264.2);
-  --popover-foreground: oklch(0.985 0.002 247.9);
-  --primary: oklch(0.546 0.219 263.9);
-  --primary-foreground: oklch(1 0 0);
-  --brand: oklch(0.585 0.213 263.9);
-  --brand-foreground: oklch(1 0 0);
-  --indigo: oklch(0.551 0.227 276.9);
-  --cyan: oklch(0.745 0.126 215.6);
-  --success: oklch(0.72 0.149 162.5);
-  --warning: oklch(0.79 0.163 70.1);
-  --secondary: oklch(0.279 0.036 260.0);
-  --secondary-foreground: oklch(0.985 0.002 247.9);
-  --muted: oklch(0.279 0.036 260.0);
-  --muted-foreground: oklch(0.712 0.022 261.3);
-  --accent: oklch(0.279 0.036 260.0);
-  --accent-foreground: oklch(0.985 0.002 247.9);
-  --destructive: oklch(0.637 0.208 25.3);
-  --destructive-foreground: oklch(1 0 0);
-  --border: oklch(0.372 0.033 257.8);
-  --input: oklch(0.372 0.033 257.8);
-  --ring: oklch(0.585 0.213 263.9);
-  --shadow-elev-1: 0 1px 2px 0 oklch(0 0 0 / 40%);
-  --shadow-elev-2: 0 24px 60px -24px oklch(0 0 0 / 70%);
-  --shadow-glow: 0 0 0 1px oklch(0.585 0.213 263.9 / 40%);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --background: oklch(0.135 0.005 265);
+  --foreground: oklch(0.955 0.004 250);
+  --card: oklch(0.185 0.008 264);
+  --card-foreground: oklch(0.955 0.004 250);
+  --surface-2: oklch(0.225 0.010 264);
+  --popover: oklch(0.185 0.008 264);
+  --popover-foreground: oklch(0.955 0.004 250);
+  --primary: oklch(0.455 0.093 258);
+  --primary-foreground: oklch(0.975 0.004 250);
+  --border: oklch(0.285 0.011 264);
+  --input: oklch(0.285 0.011 264);
 }
 
 @layer base {
@@ -186,22 +150,194 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  h1,
-  h2,
+  /* Rule 5 — type as cinematography. */
+  h1 {
+    font-weight: 800;
+    letter-spacing: -0.042em;
+    line-height: 1.0;
+  }
+
+  h2 {
+    font-weight: 800;
+    letter-spacing: -0.032em;
+    line-height: 1.06;
+  }
+
   h3,
   h4 {
     font-weight: 700;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.018em;
   }
-}
 
-@utility ax-gradient-ai {
-  background-image: linear-gradient(135deg, var(--indigo), var(--brand));
+  ::selection {
+    background: oklch(0.455 0.093 258 / 45%);
+  }
 }
 
 @utility ax-container {
   margin-inline: auto;
   width: 100%;
-  max-width: 76rem;
+  max-width: 78rem;
   padding-inline: 1.5rem;
+}
+
+/* Rule 1 — one light source. Drop this once, high on the page. */
+@utility ax-keylight {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  top: -28rem;
+  height: 60rem;
+  background:
+    radial-gradient(
+      38% 42% at 50% 50%,
+      oklch(0.60 0.098 256 / 42%) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      70% 55% at 50% 40%,
+      oklch(0.40 0.060 258 / 22%) 0%,
+      transparent 75%
+    );
+  filter: blur(24px);
+}
+
+/* Rule 7 — grain. Layer above the stage, below content. */
+@utility ax-grain {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Rule 7 — vignette. Corners fall away. */
+@utility ax-vignette {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 85% at 50% 12%,
+      transparent 42%,
+      oklch(0.09 0.004 265 / 72%) 100%
+    );
+  }
+}
+
+/*
+ * Rules 2 + 6 — three layers of depth and a light angle that shifts on hover.
+ * The top edge carries a 1px platinum line lit from the same key light.
+ */
+@utility ax-plane {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--surface-2) 0%,
+    var(--card) 58%,
+    var(--card) 100%
+  );
+  border: 1px solid var(--border);
+  transition:
+    border-color 0.6s var(--ease-cine),
+    transform 0.6s var(--ease-cine);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.885 0.008 250 / 34%) 22%,
+      oklch(0.885 0.008 250 / 12%) 60%,
+      transparent 100%
+    );
+    z-index: 2;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    z-index: -1;
+    opacity: 0;
+    background: radial-gradient(
+      42% 42% at 22% 8%,
+      oklch(0.60 0.098 256 / 30%) 0%,
+      transparent 70%
+    );
+    transition:
+      opacity 0.65s var(--ease-cine),
+      transform 0.65s var(--ease-cine);
+  }
+
+  &:hover {
+    border-color: oklch(0.60 0.085 255 / 42%);
+  }
+
+  &:hover::after {
+    opacity: 1;
+    transform: translate(28%, 14%);
+  }
+}
+
+/* Rule 3 — reveal, not slide. Curtain opens from the baseline. */
+@utility ax-reveal {
+  animation: ax-curtain 0.75s var(--ease-cine) both;
+}
+
+@keyframes ax-curtain {
+  from {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+/* Platinum hairline used for stamps, rails and dividers. */
+@utility ax-hairline {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.885 0.008 250 / 26%),
+    transparent
+  );
+}
+
+@utility ax-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+@utility ax-platinum-text {
+  background-image: linear-gradient(
+    170deg,
+    oklch(0.985 0.003 250) 0%,
+    oklch(0.855 0.010 252) 52%,
+    oklch(0.665 0.014 253) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-reveal {
+    animation: none;
+  }
 }

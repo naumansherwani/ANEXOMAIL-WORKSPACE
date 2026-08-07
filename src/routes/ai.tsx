@@ -69,7 +69,7 @@ function AiPage() {
             className="pointer-events-none absolute inset-x-0 -top-56 h-[34rem] opacity-45 blur-3xl"
             style={{
               background:
-                "radial-gradient(40% 50% at 50% 50%, var(--indigo) 0%, transparent 70%)",
+                "radial-gradient(40% 50% at 50% 50%, var(--navy) 0%, transparent 70%)",
             }}
           />
           <div className="ax-container relative pt-20 pb-16 text-center md:pt-24 md:pb-20">
@@ -78,8 +78,8 @@ function AiPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-indigo/40 bg-indigo/10 px-3 py-1.5 text-xs font-medium text-foreground">
-                <Sparkles className="size-3.5 text-indigo" />
+              <span className="inline-flex items-center gap-2 rounded-full border border-steel/35 bg-secondary px-3 py-1.5 text-xs font-medium text-foreground">
+                <Sparkles className="size-3.5 text-steel" />
                 ai.anexomail.com
               </span>
 
@@ -125,7 +125,7 @@ function AiPage() {
                   transition={{ ...fadeUp.transition, delay: i * 0.05 }}
                   className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-elev-1"
                 >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo/15 text-indigo">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-steel">
                     <p.icon className="size-5" />
                   </span>
                   <div>

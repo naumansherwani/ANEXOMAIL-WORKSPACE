@@ -2,39 +2,41 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import {
   ArrowRight,
-  AtSign,
+  BadgeCheck,
   CalendarDays,
   Check,
+  Contact,
+  History,
   Inbox,
   KeyRound,
   ListChecks,
   Lock,
-  Search,
-  Server,
   ShieldCheck,
-  Sparkles,
-  Star,
-  Tag,
   Users,
 } from "lucide-react";
 
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
+import { Reveal, EASE } from "@/components/site/Reveal";
+import { Stage } from "@/components/site/Stage";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ANEXOMAIL — Business Email on Your Own Domain" },
+      { title: "ANEXOMAIL Workspace — Sealed Business Mail on Your Own Domain" },
       {
         name: "description",
         content:
-          "Private business email on your own domain, with shared team inboxes, contacts, calendar and tasks in one calm workspace. Plans from £20 per user.",
+          "ANEXOMAIL Workspace gives your team sealed mailboxes on your own domain, on infrastructure we run ourselves — with shared addresses, contacts, calendar and tasks. From £20 per user.",
       },
-      { property: "og:title", content: "ANEXOMAIL — Business Email on Your Own Domain" },
+      {
+        property: "og:title",
+        content: "ANEXOMAIL Workspace — Sealed Business Mail on Your Own Domain",
+      },
       {
         property: "og:description",
         content:
-          "Professional email on your own domain, with shared inboxes, contacts, calendar and tasks. Plans from £20 per user / month.",
+          "Every message leaves with your name on it. Sealed mailboxes on your own domain, on infrastructure we run ourselves.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -43,133 +45,133 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const fadeUp = {
-  initial: { opacity: 0, y: 18 },
-  whileInView: { opacity: 1, y: 0 },
-  viewport: { once: true, margin: "-80px" },
-  transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1] as const },
-};
-
-const heroChecks = [
-  "Works with any domain",
-  "Import your existing mail",
-  "Two-factor authentication built in",
-];
-
-const capabilities = [
+/* Section 2 — The Seal. Deliverability proof as stamps, not screenshots. */
+const stamps = [
   {
-    icon: AtSign,
-    title: "Your domain, your brand",
-    body: "Connect a domain in minutes. MX, SPF, DKIM and DMARC are generated and verified for you.",
+    code: "DKIM",
+    title: "Signed",
+    detail: "Every outbound message carries a cryptographic signature bound to your domain.",
   },
   {
+    code: "SPF",
+    title: "Authorised",
+    detail: "Only our servers can speak for your domain. Everyone else is refused.",
+  },
+  {
+    code: "DMARC",
+    title: "Enforced",
+    detail: "Policy applied on every receipt, with reports flowing back to your admins.",
+  },
+  {
+    code: "TLS 1.3",
+    title: "Sealed",
+    detail: "Encrypted in transit and at rest, with strict transport on every hop.",
+  },
+];
+
+/* Section 3 — Your wing. */
+const wing = [
+  {
     icon: Inbox,
-    title: "Fast, focused inbox",
-    body: "A three-panel web client with keyboard shortcuts, smart filters and zero bloat.",
+    title: "Focused inbox",
+    body: "A three-panel client with keyboard shortcuts, server-side filters and no clutter.",
   },
   {
     icon: Users,
-    title: "Shared team inboxes",
-    body: "Route support@, sales@ and billing@ to the whole team with assignments and internal notes.",
+    title: "Shared addresses",
+    body: "support@, sales@ and billing@ answered together, with assignment and internal notes.",
   },
   {
-    icon: Tag,
-    title: "Unlimited aliases",
-    body: "Create as many addresses as you need — per project, per client, per campaign.",
+    icon: Contact,
+    title: "Contacts",
+    body: "One record per person, carrying the full conversation timeline with your company.",
   },
   {
     icon: CalendarDays,
-    title: "Calendar & contacts",
-    body: "Shared calendars, availability and one contact record with the full conversation timeline.",
+    title: "Calendar",
+    body: "Shared calendars, availability and meetings that live beside the thread that created them.",
   },
   {
     icon: ListChecks,
     title: "Tasks & notes",
-    body: "Turn any thread into a task and keep team notes right next to the conversation.",
+    body: "Turn a message into work your team can track, without leaving the workspace.",
   },
 ];
 
-const setupSteps = [
-  "Add your domain and we generate every DNS record for you",
-  "Create mailboxes, aliases and shared inboxes for the team",
-  "Import existing mail with folders and read state preserved",
-  "Keep your old provider running in parallel until you cut over",
-];
-
-const security = [
-  {
-    icon: Server,
-    title: "Dedicated infrastructure",
-    body: "Mail runs on our own European servers over HTTP/3 — never resold on a shared consumer platform.",
-  },
-  {
-    icon: Lock,
-    title: "Encrypted in transit and at rest",
-    body: "TLS 1.3 everywhere, encrypted storage, and strict transport policy on every domain we host.",
-  },
+/* Section 4 — The keys. */
+const keys = [
   {
     icon: KeyRound,
-    title: "Modern sign-in",
-    body: "Passkeys, MFA and magic links, with device and session history you can revoke any time.",
+    title: "Every key is yours",
+    body: "Mailboxes belong to the organisation, not the person holding the password.",
   },
   {
     icon: ShieldCheck,
-    title: "Admin control",
-    body: "Roles, departments, policies and audit logs so the organisation owns every mailbox.",
+    title: "Roles and policy",
+    body: "Departments, permissions and sending policy defined once, applied everywhere.",
+  },
+  {
+    icon: History,
+    title: "Audit trail",
+    body: "Who read, sent, forwarded, exported — recorded, searchable, exportable.",
+  },
+  {
+    icon: Lock,
+    title: "Revoke in one move",
+    body: "Someone leaves? Sessions, devices and access end the moment you say so.",
   },
 ];
 
+/* Section 5 — Move in. */
+const moveIn = [
+  { n: "01", t: "Claim the domain", b: "Add your domain and we generate every record it needs." },
+  { n: "02", t: "Open the mailboxes", b: "Create people, aliases and shared addresses for the team." },
+  { n: "03", t: "Bring the history", b: "Import existing mail with folders and read state intact." },
+  { n: "04", t: "Cut over", b: "Run both providers in parallel until you decide to switch." },
+];
+
+/* Section 6 — Plans. */
 const plans = [
   {
     name: "Basic",
     price: "£20",
-    tagline: "Core business email for small teams.",
+    line: "Sealed mail for a small team.",
     features: [
-      "Email on your own domain",
-      "Three-panel mail workspace",
+      "Mailboxes on your own domain",
+      "Three-panel workspace",
       "Contacts and calendar",
-      "Labels, filters and search",
-      "Web, mobile and desktop",
+      "Filters, labels and search",
     ],
-    cta: "Get started",
     featured: false,
   },
   {
     name: "Pro",
     price: "£40",
-    tagline: "Everything in Basic, plus advanced workspace tools.",
+    line: "The full workspace, day in and day out.",
     features: [
-      "Multiple accounts, unified inbox",
-      "Snooze and schedule send",
-      "Templates, variables, signatures",
+      "Everything in Basic",
+      "Unified inbox and multiple accounts",
+      "Snooze, schedule send, templates",
       "Tasks, notes and boards",
-      "Advanced filters and rules",
     ],
-    cta: "Get started",
     featured: true,
   },
   {
     name: "Business",
     price: "£85",
-    tagline: "Everything in Pro, plus team collaboration.",
+    line: "For teams that answer together.",
     features: [
+      "Everything in Pro",
       "Shared inboxes and shared drafts",
-      "Mentions, comments and approvals",
-      "Roles, departments and policies",
-      "Audit logs and admin center",
-      "Workspace analytics",
+      "Roles, departments and policy",
+      "Audit logs and admin centre",
     ],
-    cta: "Talk to us",
     featured: false,
   },
 ];
 
-function SectionLabel({ children }: { children: string }) {
-  return (
-    <span className="inline-flex items-center rounded-full border border-border bg-surface-2 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-      {children}
-    </span>
-  );
+function Eyebrow({ children }: { children: string }) {
+  return <p className="ax-eyebrow">{children}</p>;
 }
 
 function Index() {
@@ -178,468 +180,293 @@ function Index() {
       <SiteNav />
 
       <main>
-        {/* Hero */}
-        <section className="relative overflow-hidden">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 -top-56 h-[34rem] opacity-45 blur-3xl"
-            style={{
-              background:
-                "radial-gradient(40% 50% at 50% 50%, var(--brand) 0%, transparent 70%)",
-            }}
-          />
-          <div className="ax-container relative grid items-center gap-14 pt-20 pb-16 md:pt-24 lg:grid-cols-[1.05fr_1fr] lg:pb-24">
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+        {/* ── 1 · HERO — giant type, one light source ───────────────── */}
+        <section className="ax-grain ax-vignette relative overflow-hidden">
+          <div aria-hidden className="ax-keylight" />
+
+          <div className="ax-container relative pt-24 pb-28 md:pt-36 md:pb-44">
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.9, ease: EASE }}
+              className="ax-eyebrow"
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground">
-                <span className="size-1.5 rounded-full bg-success" />
-                Business email workspace
-              </span>
+              ANEXOMAIL Workspace
+            </motion.p>
 
-              <h1 className="mt-6 text-4xl leading-[1.04] font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-[3.4rem]">
-                Professional email on
-                <span className="block text-primary">your own domain.</span>
-              </h1>
+            <motion.h1
+              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+              animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+              transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
+              className="mt-8 max-w-5xl pb-[0.08em] text-[2.6rem] sm:text-6xl md:text-7xl lg:text-[5.4rem]"
+            >
+              <span className="ax-platinum-text">Every message leaves</span>
+              <br />
+              <span className="ax-platinum-text">with your name</span>{" "}
+              <span className="text-steel">on it.</span>
+            </motion.h1>
 
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Give your team you@yourcompany.com with a modern inbox, shared team
-                addresses and rock-solid deliverability. We never read, sell or mine your
-                mail.
-              </p>
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
+              className="mt-10 max-w-xl text-[15px] leading-relaxed text-muted-foreground"
+            >
+              ANEXOMAIL gives your team sealed mailboxes on your own domain, on
+              infrastructure we run ourselves — with the workspace tools your day actually
+              needs.
+            </motion.p>
 
-              <form
-                className="mt-8 flex flex-col gap-2.5 sm:flex-row"
-                onSubmit={(e) => e.preventDefault()}
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
+              className="mt-12 flex flex-wrap items-center gap-5"
+            >
+              <a
+                href="#plans"
+                className="group inline-flex items-center gap-2.5 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-stage transition-colors duration-500 hover:bg-primary/85"
               >
-                <label className="sr-only" htmlFor="hero-address">
-                  Email address you want
-                </label>
-                <input
-                  id="hero-address"
-                  type="text"
-                  placeholder="you@yourcompany.com"
-                  className="h-12 flex-1 rounded-xl border border-border bg-card px-4 font-mono text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-ring/30"
-                />
-                <button
-                  type="submit"
-                  className="inline-flex h-12 items-center justify-center gap-2 rounded-xl bg-primary px-5 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-2 transition-transform hover:-translate-y-0.5"
-                >
-                  Get my address <ArrowRight className="size-4" />
-                </button>
-              </form>
-              <p className="mt-3 text-xs text-muted-foreground">
-                Type the address you want — we check the domain and set you up fast.
-              </p>
-
-              <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2.5">
-                {heroChecks.map((c) => (
-                  <li
-                    key={c}
-                    className="flex items-center gap-2 text-sm text-muted-foreground"
-                  >
-                    <Check className="size-4 text-primary" strokeWidth={3} />
-                    {c}
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            {/* Product frame */}
-            <motion.div
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="overflow-hidden rounded-2xl border border-border bg-card shadow-elev-2"
-            >
-              <div className="flex items-center gap-2 border-b border-border px-4 py-3">
-                <span className="size-2.5 rounded-full bg-destructive/60" />
-                <span className="size-2.5 rounded-full bg-warning/60" />
-                <span className="size-2.5 rounded-full bg-success/60" />
-                <div className="ml-3 flex flex-1 items-center gap-2 rounded-lg bg-surface-2 px-3 py-1.5 font-mono text-[11px] text-muted-foreground">
-                  <Search className="size-3" />
-                  mail.yourcompany.com
-                </div>
-              </div>
-
-              <div className="grid grid-cols-[8.5rem_1fr] sm:grid-cols-[10rem_1fr]">
-                <aside className="border-r border-border p-3">
-                  {[
-                    { label: "Inbox", count: "24", active: true },
-                    { label: "Starred", count: "3" },
-                    { label: "Sent" },
-                    { label: "Drafts", count: "2" },
-                    { label: "Archive" },
-                  ].map((item) => (
-                    <div
-                      key={item.label}
-                      className={`mb-1 flex items-center justify-between rounded-lg px-2.5 py-2 text-[13px] ${
-                        item.active
-                          ? "bg-primary/12 font-semibold text-primary"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      <span>{item.label}</span>
-                      {item.count && <span className="text-[11px]">{item.count}</span>}
-                    </div>
-                  ))}
-                  <div className="mt-4 border-t border-border pt-3">
-                    <p className="px-2.5 text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">
-                      Shared
-                    </p>
-                    {["support@", "sales@", "billing@"].map((s) => (
-                      <div
-                        key={s}
-                        className="mt-1 rounded-lg px-2.5 py-1.5 text-[13px] text-muted-foreground"
-                      >
-                        {s}
-                      </div>
-                    ))}
-                  </div>
-                </aside>
-
-                <div>
-                  {[
-                    {
-                      from: "Aisha Khan",
-                      subject: "Q3 invoice approval",
-                      preview: "Attaching the signed copy for records…",
-                      time: "09:14",
-                      unread: true,
-                    },
-                    {
-                      from: "support@",
-                      subject: "Domain verification complete",
-                      preview: "MX, SPF, DKIM and DMARC are all green.",
-                      time: "08:52",
-                      unread: true,
-                    },
-                    {
-                      from: "Daniel Reyes",
-                      subject: "Re: onboarding call Thursday",
-                      preview: "11:30 works for the whole team.",
-                      time: "Yst",
-                    },
-                    {
-                      from: "Procurement",
-                      subject: "Contract renewal — 12 months",
-                      preview: "Please confirm seat count before Friday.",
-                      time: "Yst",
-                    },
-                    {
-                      from: "Hina Malik",
-                      subject: "New shared mailbox request",
-                      preview: "Can we add careers@ for hiring?",
-                      time: "Mon",
-                    },
-                  ].map((m) => (
-                    <div
-                      key={m.subject}
-                      className="flex gap-3 border-b border-border px-4 py-3 last:border-b-0"
-                    >
-                      <span className="mt-0.5 flex size-7 shrink-0 items-center justify-center rounded-full bg-surface-2 text-[10px] font-semibold text-muted-foreground">
-                        {m.from.slice(0, 2).toUpperCase()}
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center justify-between gap-3">
-                          <span
-                            className={`truncate text-[13px] ${m.unread ? "font-semibold text-foreground" : "text-muted-foreground"}`}
-                          >
-                            {m.from}
-                          </span>
-                          <span className="text-[10px] whitespace-nowrap text-muted-foreground">
-                            {m.time}
-                          </span>
-                        </div>
-                        <p
-                          className={`truncate text-[13px] ${m.unread ? "text-foreground" : "text-muted-foreground"}`}
-                        >
-                          {m.subject}
-                        </p>
-                        <p className="truncate text-[11px] text-muted-foreground">
-                          {m.preview}
-                        </p>
-                      </div>
-                      {m.unread && (
-                        <Star className="mt-1 size-3.5 shrink-0 text-muted-foreground/50" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
+                Claim your domain
+                <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+              </a>
+              <a
+                href="#seal"
+                className="text-sm font-medium text-steel underline-offset-8 transition-colors duration-500 hover:text-foreground hover:underline"
+              >
+                See how a message is sealed
+              </a>
             </motion.div>
           </div>
         </section>
 
-        {/* Capabilities */}
-        <section
-          id="features"
-          className="border-t border-border bg-card/40 py-20 md:py-24"
-        >
-          <div className="ax-container">
-            <motion.div {...fadeUp} className="max-w-2xl">
-              <SectionLabel>Everything you need</SectionLabel>
-              <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                Built for how teams actually work.
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                One workspace for mail, people, time and follow-ups — no clutter, no
-                surprises.
-              </p>
-            </motion.div>
+        {/* ── 2 · THE SEAL — quiet, stamps not screenshots ──────────── */}
+        <Stage id="seal" volume="hush">
+          <Reveal className="max-w-2xl">
+            <Eyebrow>The seal</Eyebrow>
+            <h2 className="mt-6 text-3xl md:text-[2.75rem]">
+              Four proofs travel with every message.
+            </h2>
+          </Reveal>
 
-            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {capabilities.map((c, i) => (
-                <motion.article
-                  key={c.title}
-                  {...fadeUp}
-                  transition={{ ...fadeUp.transition, delay: i * 0.05 }}
-                  className="rounded-2xl border border-border bg-card p-6 shadow-elev-1 transition-colors hover:border-primary/40"
-                >
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-primary/12 text-primary">
-                    <c.icon className="size-5" />
-                  </span>
-                  <h3 className="mt-5 text-base font-bold text-foreground">{c.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                    {c.body}
+          <div className="mt-16 grid gap-px overflow-hidden rounded-xl border border-border sm:grid-cols-2 lg:grid-cols-4">
+            {stamps.map((s, i) => (
+              <Reveal key={s.code} delay={i * 0.08} className="h-full">
+                <div className="ax-plane h-full rounded-none border-0 p-7">
+                  <div className="flex size-14 items-center justify-center rounded-full border border-steel/35 text-[10px] font-bold tracking-[0.08em] text-platinum">
+                    {s.code}
+                  </div>
+                  <h3 className="mt-7 text-base">{s.title}</h3>
+                  <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">
+                    {s.detail}
                   </p>
-                </motion.article>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal delay={0.2} className="mt-10">
+            <p className="text-[13px] text-muted-foreground">
+              Records are generated per domain and checked continuously. Deliverability is
+              measured, not promised.
+            </p>
+          </Reveal>
+        </Stage>
+
+        {/* ── 3 · YOUR WING — loud, asymmetric ─────────────────────── */}
+        <Stage id="wing" volume="loud">
+          <div className="grid gap-16 lg:grid-cols-[0.85fr_1.15fr]">
+            <Reveal>
+              <Eyebrow>Your wing</Eyebrow>
+              <h2 className="mt-6 text-3xl md:text-[2.75rem]">
+                Your company&apos;s mail. Your company&apos;s wing.
+              </h2>
+              <p className="mt-7 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
+                One quiet room for everything the day throws at you — messages, people,
+                time and follow-ups. Nothing borrowed, nothing bolted on.
+              </p>
+            </Reveal>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {wing.map((w, i) => (
+                <Reveal
+                  key={w.title}
+                  delay={i * 0.07}
+                  className={i === 0 ? "h-full sm:col-span-2" : "h-full"}
+                >
+                  <article className="ax-plane h-full rounded-xl p-7">
+                    <w.icon className="size-5 text-steel" strokeWidth={1.6} />
+                    <h3 className="mt-7 text-base">{w.title}</h3>
+                    <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">
+                      {w.body}
+                    </p>
+                  </article>
+                </Reveal>
               ))}
             </div>
           </div>
-        </section>
+        </Stage>
 
-        {/* Setup */}
-        <section id="setup" className="py-20 md:py-24">
-          <div className="ax-container grid items-center gap-12 lg:grid-cols-2">
-            <motion.div {...fadeUp}>
-              <SectionLabel>Setup</SectionLabel>
-              <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                Live on your domain the same day.
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                We handle the records, the import and the cut-over window, so nothing
-                bounces and nobody loses history.
-              </p>
-              <ul className="mt-8 space-y-3.5">
-                {setupSteps.map((m) => (
-                  <li key={m} className="flex gap-3">
-                    <span className="mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
-                      <Check className="size-3.5" strokeWidth={3} />
-                    </span>
-                    <span className="text-sm leading-relaxed text-muted-foreground">
-                      {m}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
+        {/* ── 4 · THE KEYS — quiet list, no cards ──────────────────── */}
+        <Stage id="keys" volume="hush">
+          <Reveal className="max-w-2xl">
+            <Eyebrow>The keys</Eyebrow>
+            <h2 className="mt-6 text-3xl md:text-[2.75rem]">
+              Mail that belongs to your company — not to a platform.
+            </h2>
+          </Reveal>
 
-            <motion.div
-              {...fadeUp}
-              className="rounded-2xl border border-border bg-card p-6 shadow-elev-2"
-            >
-              <p className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                Domain records
-              </p>
-              <div className="mt-4 space-y-3 font-mono text-xs">
-                {[
-                  ["MX", "mx.anexomail.com", "verified"],
-                  ["SPF", "v=spf1 include:anexomail.com -all", "verified"],
-                  ["DKIM", "default._domainkey", "verified"],
-                  ["DMARC", "p=quarantine; rua=…", "verified"],
-                ].map(([type, value, status]) => (
-                  <div
-                    key={type}
-                    className="flex items-center gap-3 rounded-xl border border-border bg-surface-2 px-3 py-2.5"
-                  >
-                    <span className="w-12 shrink-0 font-semibold text-foreground">
-                      {type}
-                    </span>
-                    <span className="flex-1 truncate text-muted-foreground">{value}</span>
-                    <span className="flex shrink-0 items-center gap-1 text-success">
-                      <Check className="size-3.5" strokeWidth={3} />
-                      {status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-5 text-xs leading-relaxed text-muted-foreground">
-                Records are generated per domain and monitored continuously —
-                deliverability is measured, not assumed.
-              </p>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Security */}
-        <section id="security" className="border-t border-border bg-card/40 py-20 md:py-24">
-          <div className="ax-container">
-            <motion.div {...fadeUp} className="max-w-2xl">
-              <SectionLabel>Security</SectionLabel>
-              <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                Private by default.
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                Your mailboxes sit on infrastructure we run ourselves, with the controls an
-                IT team expects.
-              </p>
-            </motion.div>
-
-            <div className="mt-12 grid gap-5 sm:grid-cols-2">
-              {security.map((s, i) => (
-                <motion.article
-                  key={s.title}
-                  {...fadeUp}
-                  transition={{ ...fadeUp.transition, delay: i * 0.05 }}
-                  className="flex gap-4 rounded-2xl border border-border bg-card p-6 shadow-elev-1"
-                >
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-indigo/15 text-indigo">
-                    <s.icon className="size-5" />
-                  </span>
+          <div className="mt-16 max-w-3xl divide-y divide-border">
+            {keys.map((k, i) => (
+              <Reveal key={k.title} delay={i * 0.07}>
+                <div className="flex gap-7 py-8">
+                  <k.icon
+                    className="mt-0.5 size-5 shrink-0 text-steel"
+                    strokeWidth={1.6}
+                  />
                   <div>
-                    <h3 className="text-base font-bold text-foreground">{s.title}</h3>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {s.body}
+                    <h3 className="text-base">{k.title}</h3>
+                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+                      {k.body}
                     </p>
                   </div>
-                </motion.article>
-              ))}
-            </div>
+                </div>
+              </Reveal>
+            ))}
           </div>
-        </section>
+        </Stage>
 
-        {/* Pricing */}
-        <section id="pricing" className="py-20 md:py-24">
-          <div className="ax-container">
-            <motion.div {...fadeUp} className="max-w-2xl">
-              <SectionLabel>Pricing</SectionLabel>
-              <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                Simple plans. No surprises.
-              </h2>
-              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                Billed monthly per user in GBP. Cancel any time.
-              </p>
-            </motion.div>
+        {/* ── 5 · MOVE IN — calm four steps ────────────────────────── */}
+        <Stage id="move-in" volume="quiet">
+          <Reveal className="max-w-xl">
+            <Eyebrow>Move in</Eyebrow>
+            <h2 className="mt-6 text-3xl md:text-4xl">Live on your domain today.</h2>
+          </Reveal>
 
-            <div className="mt-12 grid gap-5 lg:grid-cols-3">
-              {plans.map((p, i) => (
-                <motion.article
-                  key={p.name}
-                  {...fadeUp}
-                  transition={{ ...fadeUp.transition, delay: i * 0.06 }}
-                  className={`relative flex flex-col rounded-2xl border p-7 ${
-                    p.featured
-                      ? "border-primary bg-card shadow-elev-2"
-                      : "border-border bg-card shadow-elev-1"
+          <ol className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {moveIn.map((s, i) => (
+              <Reveal key={s.n} delay={i * 0.08}>
+                <li className="relative">
+                  <div aria-hidden className="ax-hairline mb-7 h-px" />
+                  <span className="font-mono text-xs text-steel">{s.n}</span>
+                  <h3 className="mt-4 text-base">{s.t}</h3>
+                  <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">
+                    {s.b}
+                  </p>
+                </li>
+              </Reveal>
+            ))}
+          </ol>
+        </Stage>
+
+        {/* ── 6 · PLANS — loud ─────────────────────────────────────── */}
+        <Stage id="plans" volume="loud">
+          <Reveal className="max-w-xl">
+            <Eyebrow>Plans</Eyebrow>
+            <h2 className="mt-6 text-3xl md:text-[2.75rem]">
+              Three plans. Billed per user, monthly.
+            </h2>
+          </Reveal>
+
+          <div className="mt-16 grid gap-5 lg:grid-cols-3">
+            {plans.map((p, i) => (
+              <Reveal key={p.name} delay={i * 0.08} className="h-full">
+                <article
+                  className={`ax-plane flex h-full flex-col rounded-xl p-8 ${
+                    p.featured ? "border-primary/55 shadow-stage" : ""
                   }`}
                 >
-                  {p.featured && (
-                    <span className="absolute -top-3 left-7 rounded-full bg-primary px-3 py-1 text-[11px] font-semibold text-primary-foreground">
-                      Most popular
-                    </span>
-                  )}
-                  <h3 className="text-[11px] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-                    {p.name}
-                  </h3>
-                  <p className="mt-4 flex items-end gap-1.5">
-                    <span className="text-4xl font-extrabold tracking-tight text-foreground">
+                  <div className="flex items-center justify-between">
+                    <span className="ax-eyebrow">{p.name}</span>
+                    {p.featured && (
+                      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.14em] text-platinum uppercase">
+                        <BadgeCheck className="size-3.5" />
+                        Most chosen
+                      </span>
+                    )}
+                  </div>
+
+                  <p className="mt-8 flex items-end gap-2">
+                    <span className="text-5xl font-extrabold tracking-[-0.05em] text-foreground">
                       {p.price}
                     </span>
-                    <span className="pb-1 text-sm text-muted-foreground">
+                    <span className="pb-1.5 text-xs text-muted-foreground">
                       / user / month
                     </span>
                   </p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {p.tagline}
-                  </p>
-                  <ul className="mt-7 flex-1 space-y-3">
+                  <p className="mt-4 text-[13px] text-muted-foreground">{p.line}</p>
+
+                  <div aria-hidden className="ax-hairline my-8 h-px" />
+
+                  <ul className="flex-1 space-y-3.5">
                     {p.features.map((f) => (
-                      <li key={f} className="flex gap-2.5">
+                      <li key={f} className="flex gap-3">
                         <Check
-                          className="mt-0.5 size-4 shrink-0 text-primary"
-                          strokeWidth={3}
+                          className="mt-0.5 size-3.5 shrink-0 text-steel"
+                          strokeWidth={2.6}
                         />
-                        <span className="text-sm leading-relaxed text-muted-foreground">
+                        <span className="text-[13px] leading-relaxed text-muted-foreground">
                           {f}
                         </span>
                       </li>
                     ))}
                   </ul>
+
                   <a
                     href="#top"
-                    className={`mt-8 inline-flex items-center justify-center rounded-xl px-4 py-2.5 text-sm font-semibold transition-colors ${
+                    className={`mt-10 inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition-colors duration-500 ${
                       p.featured
-                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                        : "border border-border text-foreground hover:bg-surface-2"
+                        ? "bg-primary text-primary-foreground hover:bg-primary/85"
+                        : "border border-border text-foreground hover:border-steel/45"
                     }`}
                   >
-                    {p.cta}
+                    Get started
                   </a>
-                </motion.article>
-              ))}
-            </div>
+                </article>
+              </Reveal>
+            ))}
           </div>
-        </section>
+        </Stage>
 
-        {/* AI teaser */}
-        <section className="border-t border-border bg-card/40 py-20 md:py-24">
-          <div className="ax-container">
-            <motion.div
-              {...fadeUp}
-              className="relative overflow-hidden rounded-2xl border border-indigo/30 bg-card p-8 shadow-elev-2 md:p-12"
+        {/* ── 7 · AI KA DARWAZA — small door, nothing more ─────────── */}
+        <Stage volume="quiet">
+          <Reveal>
+            <Link
+              to="/ai"
+              className="ax-plane group flex flex-col gap-6 rounded-xl p-8 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-24 -right-24 size-72 rounded-full opacity-40 blur-3xl"
-                style={{
-                  background:
-                    "radial-gradient(50% 50% at 50% 50%, var(--indigo) 0%, transparent 70%)",
-                }}
-              />
-              <div className="relative max-w-2xl">
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo/40 bg-indigo/10 px-3 py-1 text-[11px] font-semibold tracking-[0.14em] text-foreground uppercase">
-                  <Sparkles className="size-3.5 text-indigo" />
-                  Separate product
-                </span>
-                <h2 className="mt-5 text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                  Looking for ANEXOMAIL AI?
-                </h2>
-                <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                  The AI workspace lives on its own subdomain with its own plan and credit
-                  model. Your email workspace stays exactly as it is — clean and private.
+              <div>
+                <Eyebrow>Separate product</Eyebrow>
+                <p className="mt-4 max-w-lg text-lg font-bold tracking-[-0.02em] text-foreground">
+                  ANEXOMAIL AI lives behind its own door, on its own domain.
                 </p>
-                <Link
-                  to="/ai"
-                  className="mt-8 inline-flex items-center gap-2 rounded-xl bg-foreground px-5 py-3 text-sm font-semibold text-background transition-transform hover:-translate-y-0.5"
-                >
-                  Explore ANEXOMAIL AI <ArrowRight className="size-4" />
-                </Link>
               </div>
-            </motion.div>
-          </div>
-        </section>
+              <span className="inline-flex items-center gap-2 text-sm font-semibold whitespace-nowrap text-steel transition-colors duration-500 group-hover:text-foreground">
+                Open the door
+                <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+              </span>
+            </Link>
+          </Reveal>
+        </Stage>
 
-        {/* Final CTA */}
-        <section className="py-20 md:py-24">
-          <div className="ax-container text-center">
-            <motion.div {...fadeUp}>
-              <h2 className="text-3xl font-extrabold tracking-tight text-foreground md:text-4xl">
-                Your domain. Your inbox. Your data.
+        {/* ── 8 · CLOSING — one line, one button, empty frame ──────── */}
+        <section className="ax-grain relative overflow-hidden">
+          <div aria-hidden className="ax-hairline absolute inset-x-0 top-0 h-px" />
+          <div className="ax-container relative flex min-h-[70vh] flex-col items-center justify-center py-32 text-center">
+            <Reveal>
+              <h2 className="max-w-3xl text-3xl md:text-5xl">
+                <span className="ax-platinum-text">Put your name on the envelope.</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Set up business email on a domain you own, in the time it takes to make
-                coffee.
-              </p>
+            </Reveal>
+            <Reveal delay={0.15}>
               <a
                 href="#top"
-                className="mt-8 inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-elev-2 transition-transform hover:-translate-y-0.5"
+                className="mt-14 inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-7 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/60"
               >
-                Get started <ArrowRight className="size-4" />
+                Claim your domain
+                <ArrowRight className="size-4" />
               </a>
-            </motion.div>
+            </Reveal>
           </div>
         </section>
       </main>

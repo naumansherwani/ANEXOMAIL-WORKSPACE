@@ -6,26 +6,26 @@ const groups: { title: string; items: { label: string; href: string }[] }[] = [
   {
     title: "Product",
     items: [
-      { label: "Features", href: "/#features" },
-      { label: "Pricing", href: "/#pricing" },
-      { label: "Security", href: "/#security" },
-      { label: "Setup guide", href: "/#setup" },
+      { label: "Workspace", href: "/#wing" },
+      { label: "Pricing", href: "/#plans" },
+      { label: "Ownership", href: "/#keys" },
+      { label: "Migration", href: "/#move-in" },
     ],
   },
   {
     title: "Workspace",
     items: [
-      { label: "Basic", href: "/#pricing" },
-      { label: "Pro", href: "/#pricing" },
-      { label: "Business", href: "/#pricing" },
+      { label: "Basic", href: "/#plans" },
+      { label: "Pro", href: "/#plans" },
+      { label: "Business", href: "/#plans" },
     ],
   },
   {
     title: "Company",
     items: [
       { label: "ANEXOMAIL AI", href: "/ai" },
-      { label: "Support", href: "/#setup" },
-      { label: "Status", href: "/#security" },
+      { label: "Support", href: "/#move-in" },
+      { label: "Status", href: "/#keys" },
     ],
   },
 ];

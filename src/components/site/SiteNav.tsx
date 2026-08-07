@@ -5,10 +5,10 @@ import { useState } from "react";
 import { BrandMark } from "./BrandMark";
 
 const links = [
-  { label: "Features", href: "/#features" },
-  { label: "Pricing", href: "/#pricing" },
-  { label: "Security", href: "/#security" },
-  { label: "Setup", href: "/#setup" },
+  { label: "Workspace", href: "/#wing" },
+  { label: "Pricing", href: "/#plans" },
+  { label: "Ownership", href: "/#keys" },
+  { label: "Move in", href: "/#move-in" },
 ];
 
 export function SiteNav() {
@@ -33,22 +33,22 @@ export function SiteNav() {
           ))}
           <Link
             to="/ai"
-            className="inline-flex items-center gap-1.5 rounded-full border border-indigo/40 bg-indigo/10 px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-foreground transition-colors hover:bg-indigo/20"
+            className="inline-flex items-center gap-1.5 rounded-full border border-steel/35 bg-secondary px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-foreground transition-colors hover:border-steel/60"
           >
-            <Sparkles className="size-3.5 text-indigo" />
+            <Sparkles className="size-3.5 text-steel" />
             ANEXOMAIL AI
           </Link>
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
           <a
-            href="/#pricing"
+            href="/#plans"
             className="rounded-xl px-3 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
             Sign in
           </a>
           <a
-            href="/#pricing"
+            href="/#plans"
             className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors hover:bg-primary/90"
           >
             Get started
@@ -86,7 +86,7 @@ export function SiteNav() {
               ANEXOMAIL AI
             </Link>
             <a
-              href="/#pricing"
+              href="/#plans"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-xl bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
