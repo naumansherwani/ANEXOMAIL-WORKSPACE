@@ -40,12 +40,7 @@ export function CommandPalette({
   };
 
   return (
-    <CommandDialog
-      open={open}
-      onOpenChange={onOpenChange}
-      title="Command palette"
-      description="Jump to mail, people, calendar, work or admin"
-    >
+    <CommandDialog open={open} onOpenChange={onOpenChange}>
       <CommandInput placeholder="Go to a folder, person, calendar, task or setting…" />
       <CommandList>
         <CommandEmpty>Nothing matches that yet.</CommandEmpty>
