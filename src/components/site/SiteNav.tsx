@@ -5,10 +5,11 @@ import { useState } from "react";
 import { BrandMark } from "./BrandMark";
 
 const links = [
-  { label: "Workspace", href: "/#wing" },
-  { label: "Pricing", href: "/#plans" },
-  { label: "Ownership", href: "/#keys" },
-  { label: "Move in", href: "/#move-in" },
+  { label: "Workspace", to: "/app" as const },
+  { label: "Delivery", to: "/security" as const },
+  { label: "Ownership", to: "/ownership" as const },
+  { label: "Plans", to: "/plans" as const },
+  { label: "Move in", to: "/move-in" as const },
 ];
 
 export function SiteNav() {
@@ -23,13 +24,14 @@ export function SiteNav() {
 
         <div className="ml-auto hidden items-center gap-7 md:flex">
           {links.map((l) => (
-            <a
-              key={l.href}
-              href={l.href}
+            <Link
+              key={l.to}
+              to={l.to}
+              activeProps={{ className: "text-foreground" }}
               className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
-            </a>
+            </Link>
           ))}
           <Link
             to="/ai"
@@ -41,18 +43,18 @@ export function SiteNav() {
         </div>
 
         <div className="hidden items-center gap-2 md:flex">
-          <a
-            href="/#plans"
+          <Link
+            to="/app"
             className="rounded-xl px-3 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
             Sign in
-          </a>
-          <a
-            href="/#plans"
+          </Link>
+          <Link
+            to="/move-in"
             className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors hover:bg-primary/90"
           >
             Get started
-          </a>
+          </Link>
         </div>
 
         <button
@@ -69,14 +71,14 @@ export function SiteNav() {
         <div className="border-t border-border bg-card md:hidden">
           <div className="ax-container flex flex-col gap-1 py-4">
             {links.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
+              <Link
+                key={l.to}
+                to={l.to}
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
               >
                 {l.label}
-              </a>
+              </Link>
             ))}
             <Link
               to="/ai"
@@ -85,13 +87,13 @@ export function SiteNav() {
             >
               ANEXOMAIL AI
             </Link>
-            <a
-              href="/#plans"
+            <Link
+              to="/move-in"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-xl bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
               Get started
-            </a>
+            </Link>
           </div>
         </div>
       )}
