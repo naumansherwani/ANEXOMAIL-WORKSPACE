@@ -196,7 +196,7 @@ function Index() {
         <section className="ax-grain ax-vignette relative overflow-hidden">
           <div aria-hidden className="ax-keylight" />
 
-          <div className="ax-container relative grid items-center gap-16 pt-24 pb-28 md:pt-36 md:pb-44 lg:grid-cols-[55fr_45fr]">
+          <div className="ax-container relative grid items-center gap-12 pt-16 pb-20 md:pt-24 md:pb-28 lg:grid-cols-[55fr_45fr]">
             <div>
             <motion.p
               initial={{ opacity: 0 }}
