@@ -23,7 +23,7 @@ import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
-import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
@@ -104,9 +104,9 @@ const AppWorkRoute = AppWorkRouteImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
-  id: '/callback',
-  path: '/callback',
-  getParentRoute: () => AuthRoute,
+  id: '/auth_/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
   id: '/',
@@ -153,7 +153,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
-  '/auth': typeof AuthRouteWithChildren
+  '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
@@ -177,7 +177,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
-  '/auth': typeof AuthRouteWithChildren
+  '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
@@ -201,7 +201,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
-  '/auth': typeof AuthRouteWithChildren
+  '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
@@ -211,7 +211,7 @@ export interface FileRoutesById {
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
-  '/auth/callback': typeof AuthCallbackRoute
+  '/auth_/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -285,7 +285,7 @@ export interface FileRouteTypes {
     | '/app/people'
     | '/app/search'
     | '/app/work'
-    | '/auth/callback'
+    | '/auth_/callback'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -301,11 +301,12 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiRoute: typeof AiRoute
   AppRoute: typeof AppRouteWithChildren
-  AuthRoute: typeof AuthRouteWithChildren
+  AuthRoute: typeof AuthRoute
   MoveInRoute: typeof MoveInRoute
   OwnershipRoute: typeof OwnershipRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -408,12 +409,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWorkRouteImport
       parentRoute: typeof AppRoute
     }
-    '/auth/callback': {
-      id: '/auth/callback'
-      path: '/callback'
+    '/auth_/callback': {
+      id: '/auth_/callback'
+      path: '/auth/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
-      parentRoute: typeof AuthRoute
+      parentRoute: typeof rootRouteImport
     }
     '/app/admin/': {
       id: '/app/admin/'
@@ -530,25 +531,16 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
-interface AuthRouteChildren {
-  AuthCallbackRoute: typeof AuthCallbackRoute
-}
-
-const AuthRouteChildren: AuthRouteChildren = {
-  AuthCallbackRoute: AuthCallbackRoute,
-}
-
-const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiRoute: AiRoute,
   AppRoute: AppRouteWithChildren,
-  AuthRoute: AuthRouteWithChildren,
+  AuthRoute: AuthRoute,
   MoveInRoute: MoveInRoute,
   OwnershipRoute: OwnershipRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

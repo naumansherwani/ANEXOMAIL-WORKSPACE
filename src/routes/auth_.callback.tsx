@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 
-export const Route = createFileRoute("/auth/callback")({
+export const Route = createFileRoute("/auth_/callback")({
   ssr: false,
   head: () => ({
     meta: [
