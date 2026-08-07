@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
-import { ArrowLeft, ArrowUpRight, Brain, Coins, Sparkles, Zap } from "lucide-react";
+import { ArrowLeft, Brain, Clock, Sparkles, Zap } from "lucide-react";
 
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -8,17 +8,17 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 export const Route = createFileRoute("/ai")({
   head: () => ({
     meta: [
-      { title: "ANEXOMAIL AI — LEO Workspace on ai.anexomail.com" },
+      { title: "ANEXOMAIL AI — Coming Soon" },
       {
         name: "description",
         content:
-          "ANEXOMAIL AI is a separate product: the LEO assistant, an AI studio and a credit-based plan, hosted on ai.anexomail.com.",
+          "ANEXOMAIL AI is a separate product built around the LEO assistant. It is not open to the public yet — coming soon.",
       },
-      { property: "og:title", content: "ANEXOMAIL AI — LEO Workspace" },
+      { property: "og:title", content: "ANEXOMAIL AI — Coming Soon" },
       {
         property: "og:description",
         content:
-          "LEO assistant, AI studio and credit-based plans on ai.anexomail.com — separate from the ANEXOMAIL email workspace.",
+          "A separate AI product built around the LEO assistant. Not open to the public yet — coming soon.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -50,11 +50,6 @@ const pillars = [
     title: "AI studio & automation",
     body: "Reusable prompts, workflows and triggers that run the repetitive work for your team.",
   },
-  {
-    icon: Coins,
-    title: "Credit-based plans",
-    body: "A dedicated AI plan with monthly credits and one-time top-ups — billed apart from your mailboxes.",
-  },
 ];
 
 function AiPage() {
@@ -79,30 +74,24 @@ function AiPage() {
               transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
             >
               <span className="inline-flex items-center gap-2 rounded-full border border-steel/35 bg-secondary px-3 py-1.5 text-xs font-medium text-foreground">
-                <Sparkles className="size-3.5 text-steel" />
-                ai.anexomail.com
+                <Clock className="size-3.5 text-steel" />
+                Coming soon
               </span>
 
               <h1 className="mx-auto mt-6 max-w-3xl text-4xl leading-[1.05] font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-[3.4rem]">
                 ANEXOMAIL AI is its own
                 <span className="block ax-gradient-ai bg-clip-text text-transparent">
-                  product, on its own domain.
+                  product — not open yet.
                 </span>
               </h1>
 
               <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
                 The email workspace stays clean and private. Everything AI — the LEO
-                assistant, the studio and credits — runs separately on ai.anexomail.com
-                with its own plan.
+                assistant and the studio — is a separate product we are still building.
+                It is not available to the public yet.
               </p>
 
               <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <a
-                  href="https://ai.anexomail.com"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground shadow-elev-2 transition-transform hover:-translate-y-0.5"
-                >
-                  Open ai.anexomail.com <ArrowUpRight className="size-4" />
-                </a>
                 <Link
                   to="/"
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-2"
