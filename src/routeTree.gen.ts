@@ -14,6 +14,7 @@ import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MoveInRouteImport } from './routes/move-in'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
@@ -56,6 +57,11 @@ const AuthRoute = AuthRouteImport.update({
 const MoveInRoute = MoveInRouteImport.update({
   id: '/move-in',
   path: '/move-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OwnershipRoute = OwnershipRouteImport.update({
@@ -155,6 +161,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
+  '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
+  '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
+  '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
@@ -230,6 +239,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/move-in'
+    | '/onboarding'
     | '/ownership'
     | '/plans'
     | '/security'
@@ -254,6 +264,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/auth'
     | '/move-in'
+    | '/onboarding'
     | '/ownership'
     | '/plans'
     | '/security'
@@ -277,6 +288,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/move-in'
+    | '/onboarding'
     | '/ownership'
     | '/plans'
     | '/security'
@@ -303,6 +315,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   MoveInRoute: typeof MoveInRoute
+  OnboardingRoute: typeof OnboardingRoute
   OwnershipRoute: typeof OwnershipRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
@@ -344,6 +357,13 @@ declare module '@tanstack/react-router' {
       path: '/move-in'
       fullPath: '/move-in'
       preLoaderRoute: typeof MoveInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ownership': {
@@ -537,6 +557,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   MoveInRoute: MoveInRoute,
+  OnboardingRoute: OnboardingRoute,
   OwnershipRoute: OwnershipRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
