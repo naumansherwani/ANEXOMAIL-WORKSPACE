@@ -124,7 +124,7 @@ function MembersPage() {
       <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
         <StateBlock
           title="No organisation yet"
-          description="Create your organisation first — members and roles live inside it."
+          body="Create your organisation first — members and roles live inside it."
         />
       </div>
     );
@@ -198,7 +198,7 @@ function MembersPage() {
             <ListSkeleton rows={4} />
           ) : members.error ? (
             <ErrorState
-              description={
+              body={
                 members.error.isNotImplemented
                   ? "Members aren't live on the server yet."
                   : members.error.message
@@ -208,7 +208,7 @@ function MembersPage() {
           ) : !members.data?.members.length ? (
             <StateBlock
               title="Only you so far"
-              description="Invite your first people above — they land in the same surface you're in."
+              body="Invite your first people above — they land in the same surface you're in."
             />
           ) : (
             <ul className="space-y-2">
@@ -270,7 +270,7 @@ function MembersPage() {
               <ListSkeleton rows={2} />
             ) : invitations.error ? (
               <ErrorState
-                description={
+                body={
                   invitations.error.isNotImplemented
                     ? "Invitations aren't live on the server yet."
                     : invitations.error.message
