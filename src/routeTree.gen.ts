@@ -19,6 +19,7 @@ import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
+import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
@@ -73,6 +74,11 @@ const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -99,6 +105,7 @@ export interface FileRoutesByFullPath {
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app/': typeof AppIndexRoute
+  '/app/admin/members': typeof AppAdminMembersRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -112,6 +119,7 @@ export interface FileRoutesByTo {
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app': typeof AppIndexRoute
+  '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
@@ -127,6 +135,7 @@ export interface FileRoutesById {
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app/': typeof AppIndexRoute
+  '/app/admin/members': typeof AppAdminMembersRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -144,6 +153,7 @@ export interface FileRouteTypes {
     | '/app/search'
     | '/app/work'
     | '/app/'
+    | '/app/admin/members'
     | '/app/mail/$folder'
     | '/app/admin/'
     | '/app/mail/$folder/$threadId'
@@ -157,6 +167,7 @@ export interface FileRouteTypes {
     | '/app/search'
     | '/app/work'
     | '/app'
+    | '/app/admin/members'
     | '/app/admin'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/app/search'
     | '/app/work'
     | '/app/'
+    | '/app/admin/members'
     | '/app/mail/$folder'
     | '/app/admin/'
     | '/app/mail/$folder/$threadId'
@@ -255,6 +267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminIndexRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/members': {
+      id: '/app/admin/members'
+      path: '/members'
+      fullPath: '/app/admin/members'
+      preLoaderRoute: typeof AppAdminMembersRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -280,10 +299,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppAdminRouteChildren {
+  AppAdminMembersRoute: typeof AppAdminMembersRoute
   AppAdminIndexRoute: typeof AppAdminIndexRoute
 }
 
 const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminMembersRoute: AppAdminMembersRoute,
   AppAdminIndexRoute: AppAdminIndexRoute,
 }
 
