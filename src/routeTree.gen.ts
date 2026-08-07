@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
@@ -39,6 +40,11 @@ const AppRoute = AppRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AppRoute,
 } as any)
 const AppCalendarRoute = AppCalendarRouteImport.update({
@@ -81,6 +87,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/app/admin': typeof AppAdminRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/app/admin': typeof AppAdminRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -106,6 +114,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/app/admin': typeof AppAdminRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -121,6 +130,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/app/admin'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ai'
+    | '/app/admin'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/app/admin'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
@@ -189,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/calendar': {
@@ -258,6 +277,7 @@ const AppMailFolderRouteWithChildren = AppMailFolderRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRoute
   AppCalendarRoute: typeof AppCalendarRoute
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
@@ -267,6 +287,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRoute,
   AppCalendarRoute: AppCalendarRoute,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
