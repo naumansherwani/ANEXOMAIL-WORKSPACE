@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 
+import { StateBlock } from "@/components/state/StateBlock";
+
 /** Middle column — the list rail. Fixed width on desktop, full width on mobile. */
 export function ListPanel({
   title,
@@ -31,30 +33,13 @@ export function DetailPanel({ children }: { children: ReactNode }) {
 /**
  * Honest empty state. No fake rows, no placeholder threads —
  * a real state that says what is missing and where to fix it.
+ * Shares one surface with success and error states (Phase 4).
  */
-export function EmptyState({
-  icon,
-  title,
-  body,
-  action,
-}: {
+export function EmptyState(props: {
   icon?: ReactNode;
   title: string;
   body: string;
   action?: ReactNode;
 }) {
-  return (
-    <div className="flex h-full min-h-[16rem] flex-col items-center justify-center px-8 py-16 text-center">
-      {icon && (
-        <span className="mb-4 flex size-11 items-center justify-center rounded-2xl border border-border bg-secondary text-steel">
-          {icon}
-        </span>
-      )}
-      <h3 className="text-sm font-bold text-foreground">{title}</h3>
-      <p className="mt-2 max-w-sm text-sm leading-relaxed text-muted-foreground">
-        {body}
-      </p>
-      {action && <div className="mt-5">{action}</div>}
-    </div>
-  );
+  return <StateBlock {...props} />;
 }
