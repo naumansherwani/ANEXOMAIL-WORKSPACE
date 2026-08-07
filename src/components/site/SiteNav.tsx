@@ -1,49 +1,55 @@
-import { Mail, Menu, X } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { Menu, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 
+import { BrandMark } from "./BrandMark";
+
 const links = [
-  { label: "Product", href: "#product" },
-  { label: "Why ANEXOMAIL", href: "#why" },
-  { label: "Migration", href: "#migration" },
-  { label: "Security", href: "#security" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "Features", href: "/#features" },
+  { label: "Pricing", href: "/#pricing" },
+  { label: "Security", href: "/#security" },
+  { label: "Setup", href: "/#setup" },
 ];
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/70 bg-background/80 backdrop-blur-xl">
-      <nav className="ax-container flex h-16 items-center justify-between">
-        <a href="#top" className="flex items-center gap-2.5">
-          <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-elev-1">
-            <Mail className="size-4.5" strokeWidth={2.4} />
-          </span>
-          <span className="text-base font-extrabold tracking-tight">ANEXOMAIL</span>
-        </a>
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <nav className="ax-container flex h-16 items-center gap-6">
+        <Link to="/" className="shrink-0">
+          <BrandMark />
+        </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="ml-auto hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <a
               key={l.href}
               href={l.href}
-              className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+              className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
             >
               {l.label}
             </a>
           ))}
+          <Link
+            to="/ai"
+            className="inline-flex items-center gap-1.5 rounded-full border border-indigo/40 bg-indigo/10 px-3 py-1.5 text-xs font-semibold whitespace-nowrap text-foreground transition-colors hover:bg-indigo/20"
+          >
+            <Sparkles className="size-3.5 text-indigo" />
+            ANEXOMAIL AI
+          </Link>
         </div>
 
-        <div className="hidden items-center gap-3 md:flex">
+        <div className="hidden items-center gap-2 md:flex">
           <a
-            href="#pricing"
-            className="rounded-xl px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
+            href="/#pricing"
+            className="rounded-xl px-3 py-2 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
             Sign in
           </a>
           <a
-            href="#pricing"
-            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-elev-1 transition-colors hover:bg-primary/90"
+            href="/#pricing"
+            className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors hover:bg-primary/90"
           >
             Get started
           </a>
@@ -53,7 +59,7 @@ export function SiteNav() {
           type="button"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="flex size-9 items-center justify-center rounded-xl border border-border text-foreground md:hidden"
+          className="ml-auto flex size-9 items-center justify-center rounded-xl border border-border text-foreground md:hidden"
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
@@ -72,8 +78,15 @@ export function SiteNav() {
                 {l.label}
               </a>
             ))}
+            <Link
+              to="/ai"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-2 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
+            >
+              ANEXOMAIL AI
+            </Link>
             <a
-              href="#pricing"
+              href="/#pricing"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-xl bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >

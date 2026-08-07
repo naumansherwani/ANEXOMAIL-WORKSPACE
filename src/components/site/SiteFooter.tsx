@@ -1,46 +1,74 @@
-import { Mail } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 
-const groups = [
+import { BrandMark } from "./BrandMark";
+
+const groups: { title: string; items: { label: string; href: string }[] }[] = [
   {
     title: "Product",
-    items: ["Business email", "Contacts", "Calendar", "Tasks & notes", "Teams"],
+    items: [
+      { label: "Features", href: "/#features" },
+      { label: "Pricing", href: "/#pricing" },
+      { label: "Security", href: "/#security" },
+      { label: "Setup guide", href: "/#setup" },
+    ],
   },
   {
-    title: "Plans",
-    items: ["Basic", "Pro", "Business", "Compare plans"],
+    title: "Workspace",
+    items: [
+      { label: "Basic", href: "/#pricing" },
+      { label: "Pro", href: "/#pricing" },
+      { label: "Business", href: "/#pricing" },
+    ],
   },
   {
     title: "Company",
-    items: ["About", "Status", "Documentation", "Support"],
+    items: [
+      { label: "ANEXOMAIL AI", href: "/ai" },
+      { label: "Support", href: "/#setup" },
+      { label: "Status", href: "/#security" },
+    ],
   },
 ];
 
 export function SiteFooter() {
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="ax-container grid gap-10 py-14 md:grid-cols-[1.4fr_repeat(3,1fr)]">
+    <footer className="border-t border-border bg-card/50">
+      <div className="ax-container grid gap-10 py-14 md:grid-cols-[1.5fr_repeat(3,1fr)]">
         <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-              <Mail className="size-4.5" strokeWidth={2.4} />
-            </span>
-            <span className="text-base font-extrabold tracking-tight">ANEXOMAIL</span>
-          </div>
+          <BrandMark />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            Business email workspace for teams that outgrew consumer mail. Your domain,
-            your data, your rules.
+            Private business email on your own domain — with the workspace tools your team
+            actually uses every day.
           </p>
         </div>
 
         {groups.map((g) => (
           <div key={g.title}>
-            <h3 className="text-sm font-semibold text-foreground">{g.title}</h3>
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              {g.title}
+            </h3>
             <ul className="mt-4 space-y-2.5">
-              {g.items.map((item) => (
-                <li key={item}>
-                  <span className="text-sm text-muted-foreground">{item}</span>
-                </li>
-              ))}
+              {g.items.map((item) =>
+                item.href.startsWith("/#") ? (
+                  <li key={item.label}>
+                    <a
+                      href={item.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {item.label}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={item.label}>
+                    <Link
+                      to={item.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ),
+              )}
             </ul>
           </div>
         ))}
