@@ -1,0 +1,14 @@
+---
+name: Public copy rules
+description: What must never appear in public ANEXOMAIL marketing copy, and how AI is presented on the site
+type: constraint
+---
+Public website copy pe ye baatein NEVER likhni:
+- "replaces Zoho Mail / Google Workspace" ya kisi competitor ka naam target ke tor pe. Ye internal strategy hai, founder aur builder ke beech ki baat.
+- Internal infra details (server IP, port map, PM2, stack names).
+
+**Why:** Founder ka rule — strategy secret hai, website pe sirf product value.
+
+AI ka rule: anexomail.com ke landing pe AI product ka full pitch nahi. Sirf ek teaser card + "ANEXOMAIL AI" nav link jo /ai page pe le jaye; wahan se ai.anexomail.com pe out-link.
+
+UI bar high hai: clean, saaf, premium (AXO Email jaisa clarity level). Nav labels whitespace-nowrap, logo ANEXO+MAIL two-tone, hero + email-address input CTA, cards clean.
