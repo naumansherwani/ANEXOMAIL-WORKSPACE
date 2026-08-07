@@ -14,14 +14,22 @@ import type { ReactNode } from "react";
 import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 
-const primary = [
+type RailItem = {
+  to: string;
+  label: string;
+  icon: typeof Inbox;
+  exact?: boolean;
+  match?: string;
+};
+
+const primary: RailItem[] = [
   { to: "/app", label: "Today", icon: Inbox, exact: true },
   { to: "/app/mail/inbox", label: "Mail", icon: Mail, match: "/app/mail" },
   { to: "/app/people", label: "People", icon: Users },
   { to: "/app/calendar", label: "Calendar", icon: CalendarDays },
   { to: "/app/work", label: "Work", icon: CheckSquare },
   { to: "/app/admin", label: "Admin", icon: Shield, match: "/app/admin" },
-] as const;
+];
 
 /**
  * One surface, three panels, zero page reload.
@@ -31,10 +39,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { open, setOpen } = useCommandPalette();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  const isActive = (item: (typeof primary)[number]) =>
-    "exact" in item && item.exact
+  const isActive = (item: RailItem) =>
+    item.exact
       ? pathname === "/app" || pathname === "/app/"
-      : pathname.startsWith("match" in item ? (item.match ?? item.to) : item.to);
+      : pathname.startsWith(item.match ?? item.to);
 
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-background">
