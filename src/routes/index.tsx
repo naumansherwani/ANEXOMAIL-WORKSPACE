@@ -19,6 +19,18 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { Reveal, EASE } from "@/components/site/Reveal";
 import { Stage } from "@/components/site/Stage";
+import { HeroComposition } from "@/components/site/HeroComposition";
+
+/* Hero trust badges — every claim verifiable, nothing invented. */
+const badges = ["DKIM verified", "DMARC protected", "TLS 1.3", "Your own domain"];
+
+/* Section 8 — compliance strip. Verifiable facts instead of placeholder logos. */
+const compliance = [
+  { k: "TLS 1.3", v: "Strict transport on every hop" },
+  { k: "DKIM · SPF · DMARC", v: "Generated per domain, checked continuously" },
+  { k: "Owned infrastructure", v: "No third-party mail relay in the path" },
+  { k: "One-click export", v: "Mail, contacts and calendar in open formats" },
+];
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -184,7 +196,8 @@ function Index() {
         <section className="ax-grain ax-vignette relative overflow-hidden">
           <div aria-hidden className="ax-keylight" />
 
-          <div className="ax-container relative pt-24 pb-28 md:pt-36 md:pb-44">
+          <div className="ax-container relative grid items-center gap-16 pt-24 pb-28 md:pt-36 md:pb-44 lg:grid-cols-[55fr_45fr]">
+            <div>
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -198,7 +211,7 @@ function Index() {
               initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
               animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
               transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-              className="mt-8 max-w-5xl pb-[0.08em] text-[2.6rem] sm:text-6xl md:text-7xl lg:text-[5.4rem]"
+              className="mt-8 max-w-3xl pb-[0.08em] text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.2rem]"
             >
               <span className="ax-platinum-text">Every message leaves</span>
               <br />
@@ -210,7 +223,7 @@ function Index() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
-              className="mt-10 max-w-xl text-[15px] leading-relaxed text-muted-foreground"
+              className="mt-8 max-w-lg text-[17px] leading-relaxed text-muted-foreground"
             >
               ANEXOMAIL gives your team sealed mailboxes on your own domain, on
               infrastructure we run ourselves — with the workspace tools your day actually
@@ -221,7 +234,7 @@ function Index() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
-              className="mt-12 flex flex-wrap items-center gap-5"
+              className="mt-10 flex flex-wrap items-center gap-4"
             >
               <a
                 href="#plans"
@@ -230,13 +243,33 @@ function Index() {
                 Claim your domain
                 <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
               </a>
-              <a
-                href="#seal"
-                className="text-sm font-medium text-steel underline-offset-8 transition-colors duration-500 hover:text-foreground hover:underline"
+              <Link
+                to="/app"
+                className="inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-steel/60"
               >
-                See how a message is sealed
-              </a>
+                Explore workspace
+              </Link>
             </motion.div>
+
+            <motion.ul
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
+              className="mt-10 flex flex-wrap gap-x-7 gap-y-3"
+            >
+              {badges.map((b) => (
+                <li
+                  key={b}
+                  className="inline-flex items-center gap-2 text-[13px] text-muted-foreground"
+                >
+                  <Check className="size-3.5 shrink-0 text-success" strokeWidth={2.8} />
+                  {b}
+                </li>
+              ))}
+            </motion.ul>
+            </div>
+
+            <HeroComposition />
           </div>
         </section>
 
