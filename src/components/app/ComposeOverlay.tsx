@@ -1,13 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { Loader2, Minus, Send, X } from "lucide-react";
+import { Clock, Loader2, Minus, Send, X } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { api, ApiError } from "@/lib/api";
 import { notify } from "@/lib/notify";
+import { useSendMail } from "@/lib/mail";
 
 /**
  * Compose overlay — locked behaviour: a new email never takes over the
@@ -20,29 +19,42 @@ import { notify } from "@/lib/notify";
 export function ComposeOverlay({ onClose }: { onClose: () => void }) {
   const [minimised, setMinimised] = useState(false);
   const [to, setTo] = useState("");
+  const [cc, setCc] = useState("");
+  const [showCc, setShowCc] = useState(false);
   const [subject, setSubject] = useState("");
   const [body, setBody] = useState("");
+  const [sendAt, setSendAt] = useState("");
+  const [scheduling, setScheduling] = useState(false);
 
-  const send = useMutation({
-    mutationFn: () =>
-      api("/api/mail/send", {
-        method: "POST",
-        body: JSON.stringify({ to, subject, body }),
-      }),
-    onSuccess: () => {
-      notify.done("Sent", "The message left your workspace.");
-      onClose();
-    },
-    onError: (error: ApiError) =>
-      notify.failed(
-        error.isNotImplemented ? "Sending is not wired yet" : "Not sent",
-        {
-          description: error.isNotImplemented
-            ? "Your draft is still here. POST /api/mail/send is pending on the server."
-            : error.message,
+  const send = useSendMail();
+
+  const submit = () =>
+    send.mutate(
+      {
+        to,
+        ...(cc.trim() ? { cc } : {}),
+        subject,
+        body,
+        ...(scheduling && sendAt ? { send_at: new Date(sendAt).toISOString() } : {}),
+      },
+      {
+        onSuccess: () => {
+          notify.done(
+            scheduling && sendAt ? "Scheduled" : "Sent",
+            scheduling && sendAt
+              ? `Leaves at ${new Date(sendAt).toLocaleString()}.`
+              : "The message left your workspace.",
+          );
+          onClose();
         },
-      ),
-  });
+        onError: (error) =>
+          notify.failed(error.isNotImplemented ? "Sending is not wired yet" : "Not sent", {
+            description: error.isNotImplemented
+              ? "Your draft is still here. POST /api/mail/send is pending on the server."
+              : error.message,
+          }),
+      },
+    );
 
   return (
     <aside
@@ -76,7 +88,7 @@ export function ComposeOverlay({ onClose }: { onClose: () => void }) {
           className="flex flex-col gap-ax-3 p-ax-4"
           onSubmit={(event) => {
             event.preventDefault();
-            send.mutate();
+            submit();
           }}
         >
           <div className="flex flex-col gap-1.5">
@@ -91,6 +103,26 @@ export function ComposeOverlay({ onClose }: { onClose: () => void }) {
               placeholder="name@company.com"
             />
           </div>
+          {showCc ? (
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="compose-cc">Cc</Label>
+              <Input
+                id="compose-cc"
+                autoComplete="off"
+                value={cc}
+                onChange={(e) => setCc(e.target.value)}
+                placeholder="Comma separated"
+              />
+            </div>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowCc(true)}
+              className="ax-press self-start text-[11px] font-semibold text-steel underline-offset-4 hover:underline"
+            >
+              Add Cc
+            </button>
+          )}
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="compose-subject">Subject</Label>
             <Input
@@ -110,14 +142,37 @@ export function ComposeOverlay({ onClose }: { onClose: () => void }) {
               onChange={(e) => setBody(e.target.value)}
             />
           </div>
-          <Button type="submit" className="ax-press ax-tap self-end" disabled={send.isPending}>
-            {send.isPending ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <Send className="size-4" />
-            )}
-            <span>Send</span>
-          </Button>
+          {scheduling && (
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="compose-schedule">Send at</Label>
+              <Input
+                id="compose-schedule"
+                type="datetime-local"
+                required
+                value={sendAt}
+                onChange={(e) => setSendAt(e.target.value)}
+              />
+            </div>
+          )}
+          <div className="flex items-center gap-ax-2">
+            <Button type="submit" className="ax-press ax-tap" disabled={send.isPending}>
+              {send.isPending ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <Send className="size-4" />
+              )}
+              <span>{scheduling ? "Schedule" : "Send"}</span>
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="ax-press"
+              onClick={() => setScheduling((v) => !v)}
+            >
+              <Clock className="size-4" />
+              {scheduling ? "Send now instead" : "Schedule send"}
+            </Button>
+          </div>
         </form>
       )}
     </aside>
