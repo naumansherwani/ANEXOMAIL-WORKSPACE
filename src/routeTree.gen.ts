@@ -12,16 +12,20 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MoveInRouteImport } from './routes/move-in'
+import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAccountRouteImport } from './routes/app.account'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
+import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
@@ -46,9 +50,19 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MoveInRoute = MoveInRouteImport.update({
   id: '/move-in',
   path: '/move-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OnboardingRoute = OnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OwnershipRoute = OwnershipRouteImport.update({
@@ -69,6 +83,11 @@ const SecurityRoute = SecurityRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAccountRoute = AppAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAdminRoute = AppAdminRouteImport.update({
@@ -95,6 +114,11 @@ const AppWorkRoute = AppWorkRouteImport.update({
   id: '/work',
   path: '/work',
   getParentRoute: () => AppRoute,
+} as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth_/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
   id: '/',
@@ -141,15 +165,19 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
+  '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -163,14 +191,18 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
+  '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/app/account': typeof AppAccountRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/app': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -185,15 +217,19 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/auth': typeof AuthRoute
   '/move-in': typeof MoveInRoute
+  '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
+  '/auth_/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -210,15 +246,19 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/auth'
     | '/move-in'
+    | '/onboarding'
     | '/ownership'
     | '/plans'
     | '/security'
+    | '/app/account'
     | '/app/admin'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
     | '/app/work'
+    | '/auth/callback'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -232,14 +272,18 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ai'
+    | '/auth'
     | '/move-in'
+    | '/onboarding'
     | '/ownership'
     | '/plans'
     | '/security'
+    | '/app/account'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
     | '/app/work'
+    | '/auth/callback'
     | '/app'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -253,15 +297,19 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/auth'
     | '/move-in'
+    | '/onboarding'
     | '/ownership'
     | '/plans'
     | '/security'
+    | '/app/account'
     | '/app/admin'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
     | '/app/work'
+    | '/auth_/callback'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -277,10 +325,13 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiRoute: typeof AiRoute
   AppRoute: typeof AppRouteWithChildren
+  AuthRoute: typeof AuthRoute
   MoveInRoute: typeof MoveInRoute
+  OnboardingRoute: typeof OnboardingRoute
   OwnershipRoute: typeof OwnershipRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -306,11 +357,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/move-in': {
       id: '/move-in'
       path: '/move-in'
       fullPath: '/move-in'
       preLoaderRoute: typeof MoveInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/onboarding': {
+      id: '/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof OnboardingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ownership': {
@@ -339,6 +404,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/account': {
+      id: '/app/account'
+      path: '/account'
+      fullPath: '/app/account'
+      preLoaderRoute: typeof AppAccountRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/admin': {
@@ -375,6 +447,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/work'
       preLoaderRoute: typeof AppWorkRouteImport
       parentRoute: typeof AppRoute
+    }
+    '/auth_/callback': {
+      id: '/auth_/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/app/admin/': {
       id: '/app/admin/'
@@ -470,6 +549,7 @@ const AppMailFolderRouteWithChildren = AppMailFolderRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAccountRoute: typeof AppAccountRoute
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppCalendarRoute: typeof AppCalendarRoute
   AppPeopleRoute: typeof AppPeopleRoute
@@ -480,6 +560,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAccountRoute: AppAccountRoute,
   AppAdminRoute: AppAdminRouteWithChildren,
   AppCalendarRoute: AppCalendarRoute,
   AppPeopleRoute: AppPeopleRoute,
@@ -495,10 +576,13 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiRoute: AiRoute,
   AppRoute: AppRouteWithChildren,
+  AuthRoute: AuthRoute,
   MoveInRoute: MoveInRoute,
+  OnboardingRoute: OnboardingRoute,
   OwnershipRoute: OwnershipRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
