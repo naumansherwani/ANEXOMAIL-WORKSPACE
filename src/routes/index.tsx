@@ -483,6 +483,28 @@ function Index() {
         </Stage>
 
         {/* ── 8 · CLOSING — one line, one button, empty frame ──────── */}
+        <Stage volume="hush">
+          <Reveal className="max-w-xl">
+            <Eyebrow>Verifiable, not decorative</Eyebrow>
+            <h2 className="mt-6 text-2xl md:text-3xl">
+              What we claim, you can check.
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border sm:grid-cols-2 lg:grid-cols-4">
+            {compliance.map((c, i) => (
+              <Reveal key={c.k} delay={i * 0.07} className="h-full">
+                <div className="ax-plane h-full rounded-none border-0 p-6">
+                  <p className="text-[13px] font-bold text-foreground">{c.k}</p>
+                  <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+                    {c.v}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </Stage>
+
+        {/* ── 9 · CLOSING — one line, one button, empty frame ──────── */}
         <section className="ax-grain relative overflow-hidden">
           <div aria-hidden className="ax-hairline absolute inset-x-0 top-0 h-px" />
           <div className="ax-container relative flex min-h-[70vh] flex-col items-center justify-center py-32 text-center">
