@@ -283,6 +283,20 @@ function Index() {
           </div>
         </section>
 
+        {/* ── 1.5 · POSITIONING — the promise in one breath ─────────── */}
+        <Stage volume="hush">
+          <Reveal className="text-center">
+            <h2 className="text-2xl sm:text-3xl md:text-[2.4rem] md:leading-[1.15]">
+              <span className="ax-platinum-text">Private Email.</span>{" "}
+              <span className="ax-platinum-text">Intelligent Workspace.</span>{" "}
+              <span className="text-steel">One Platform.</span>
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+              Where Business Email Meets Intelligence.
+            </p>
+          </Reveal>
+        </Stage>
+
         {/* ── 2 · THE SEAL — quiet, stamps not screenshots ──────────── */}
         <Stage id="seal" volume="hush">
           <Reveal className="max-w-2xl">
