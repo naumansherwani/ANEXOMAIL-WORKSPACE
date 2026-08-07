@@ -79,6 +79,7 @@ export const ADMIN_SECTIONS: {
 }[] = [
   { to: "/app/admin", label: "Domains", summary: "DNS, DKIM, SPF, DMARC, TLS" },
   { to: "/app/admin/members", label: "Members", summary: "People and roles" },
+  { to: "/app/admin/teams", label: "Teams", summary: "Groups that own shared work" },
   {
     to: "/app/admin/addresses",
     label: "Addresses",
