@@ -63,12 +63,19 @@ export function BrandMark({ compact = false, className }: Props) {
       </svg>
 
       {!compact && (
-        <span className="flex flex-col leading-none">
-          <span className="text-[15px] font-extrabold tracking-[-0.03em] whitespace-nowrap text-foreground">
+        <span className="inline-flex flex-col leading-none">
+          {/* Wordmark — platinum key-lit gradient, sets the lockup width */}
+          <span className="ax-platinum-text block text-[15px] font-extrabold tracking-[-0.02em] whitespace-nowrap">
             ANEXOMAIL
           </span>
-          <span className="mt-1 text-[9px] font-semibold tracking-[0.24em] whitespace-nowrap text-steel">
-            WORKSPACE
+          {/* Sub-word stretches edge to edge: W sits under A, E finishes under L */}
+          <span
+            aria-hidden
+            className="mt-[5px] flex w-full justify-between text-[8px] font-semibold text-steel"
+          >
+            {"WORKSPACE".split("").map((c, i) => (
+              <span key={`${c}-${i}`}>{c}</span>
+            ))}
           </span>
         </span>
       )}
