@@ -18,6 +18,7 @@ import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
+import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
@@ -67,6 +68,11 @@ const AppWorkRoute = AppWorkRouteImport.update({
   path: '/work',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -87,25 +93,26 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
-  '/app/admin': typeof AppAdminRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app/': typeof AppIndexRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/admin/': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
-  '/app/admin': typeof AppAdminRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app': typeof AppIndexRoute
+  '/app/admin': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
 }
@@ -114,13 +121,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
-  '/app/admin': typeof AppAdminRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app/': typeof AppIndexRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/admin/': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
@@ -137,18 +145,19 @@ export interface FileRouteTypes {
     | '/app/work'
     | '/app/'
     | '/app/mail/$folder'
+    | '/app/admin/'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/ai'
-    | '/app/admin'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
     | '/app/work'
     | '/app'
+    | '/app/admin'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder'
   id:
@@ -163,6 +172,7 @@ export interface FileRouteTypes {
     | '/app/work'
     | '/app/'
     | '/app/mail/$folder'
+    | '/app/admin/'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder/'
   fileRoutesById: FileRoutesById
@@ -238,6 +248,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppWorkRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/admin/': {
+      id: '/app/admin/'
+      path: '/'
+      fullPath: '/app/admin/'
+      preLoaderRoute: typeof AppAdminIndexRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -262,6 +279,18 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AppAdminRouteChildren {
+  AppAdminIndexRoute: typeof AppAdminIndexRoute
+}
+
+const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminIndexRoute: AppAdminIndexRoute,
+}
+
+const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
+  AppAdminRouteChildren,
+)
+
 interface AppMailFolderRouteChildren {
   AppMailFolderThreadIdRoute: typeof AppMailFolderThreadIdRoute
   AppMailFolderIndexRoute: typeof AppMailFolderIndexRoute
@@ -277,7 +306,7 @@ const AppMailFolderRouteWithChildren = AppMailFolderRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
-  AppAdminRoute: typeof AppAdminRoute
+  AppAdminRoute: typeof AppAdminRouteWithChildren
   AppCalendarRoute: typeof AppCalendarRoute
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
@@ -287,7 +316,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppAdminRoute: AppAdminRoute,
+  AppAdminRoute: AppAdminRouteWithChildren,
   AppCalendarRoute: AppCalendarRoute,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
