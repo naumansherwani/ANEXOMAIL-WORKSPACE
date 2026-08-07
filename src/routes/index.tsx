@@ -286,14 +286,13 @@ function Index() {
         {/* ── 1.5 · POSITIONING — the promise in one breath ─────────── */}
         <Stage volume="hush">
           <Reveal className="text-center">
-            <h2 className="text-2xl sm:text-3xl md:text-[2.4rem] md:leading-[1.15]">
+            <h2 className="text-[1.8rem] leading-[1.1] tracking-[-0.02em] sm:text-4xl md:text-5xl lg:text-[3.6rem]">
               <span className="ax-platinum-text">Private Email.</span>{" "}
               <span className="ax-platinum-text">Intelligent Workspace.</span>{" "}
-              <span className="text-steel">One Platform.</span>
+              <span className="text-cyan-accent drop-shadow-[0_0_28px_rgba(6,182,212,0.35)]">
+                One Platform.
+              </span>
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-              Where Business Email Meets Intelligence.
-            </p>
           </Reveal>
         </Stage>
 
