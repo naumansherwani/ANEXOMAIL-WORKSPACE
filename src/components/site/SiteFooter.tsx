@@ -7,23 +7,26 @@ const groups = [
     title: "Product",
     items: [
       { label: "Workspace", to: "/app" as const },
-      { label: "Delivery", to: "/security" as const },
-      { label: "Ownership", to: "/ownership" as const },
-      { label: "Move in", to: "/move-in" as const },
+      { label: "Pricing", to: "/plans" as const },
+      { label: "Migration", to: "/move-in" as const },
     ],
   },
   {
-    title: "Plans",
+    title: "AI",
     items: [
-      { label: "Basic", to: "/plans" as const },
-      { label: "Pro", to: "/plans" as const },
-      { label: "Business", to: "/plans" as const },
+      { label: "Leo", to: "/ai" as const },
     ],
   },
   {
     title: "Company",
     items: [
-      { label: "ANEXOMAIL AI", to: "/ai" as const },
+      { label: "Security", to: "/security" as const },
+      { label: "Ownership", to: "/ownership" as const },
+    ],
+  },
+  {
+    title: "Resources",
+    items: [
       { label: "Admin centre", to: "/app/admin" as const },
       { label: "Search", to: "/app/search" as const },
     ],
@@ -33,7 +36,7 @@ const groups = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card/50">
-      <div className="ax-container grid gap-10 py-14 md:grid-cols-[1.5fr_repeat(3,1fr)]">
+      <div className="ax-container grid gap-10 py-14 md:grid-cols-[1.4fr_repeat(4,1fr)]">
         <div>
           <BrandMark />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
@@ -65,7 +68,7 @@ export function SiteFooter() {
 
       <div className="border-t border-border">
         <div className="ax-container flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
-          <span>© {new Date().getFullYear()} ANEXOMAIL. All rights reserved.</span>
+          <span>© {new Date().getFullYear()} ANEXOMAIL™. All rights reserved.</span>
           <span>anexomail.com</span>
         </div>
       </div>
