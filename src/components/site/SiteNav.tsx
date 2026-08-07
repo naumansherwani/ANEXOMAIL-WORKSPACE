@@ -37,6 +37,12 @@ export function SiteNav() {
 
         <div className="hidden shrink-0 items-center gap-2 md:flex">
           <Link
+            to="/auth"
+            className="ax-focus rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
+          >
+            Sign in
+          </Link>
+          <Link
             to="/ai"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors duration-200 hover:bg-primary/85"
           >
@@ -67,6 +73,13 @@ export function SiteNav() {
                 {l.label}
               </Link>
             ))}
+            <Link
+              to="/auth"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-2 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
+            >
+              Sign in
+            </Link>
             <Link
               to="/ai"
               onClick={() => setOpen(false)}
