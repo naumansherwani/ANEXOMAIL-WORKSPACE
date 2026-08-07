@@ -76,6 +76,9 @@
   --spacing-ax-6: var(--ax-6);
   --spacing-ax-7: var(--ax-7);
   --spacing-ax-8: var(--ax-8);
+  --ease-ax-out: var(--ax-ease-out);
+  --ease-ax-inout: var(--ax-ease-inout);
+  --ease-ax-exit: var(--ax-ease-exit);
 }
 
 :root {
@@ -83,6 +86,19 @@
   --font-inter:
     "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
   --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /*
+   * Motion language — Phase 4. Four durations, three curves. Nothing else.
+   * instant → state flip · quick → hover / press · calm → panel + reveal ·
+   * cinematic → stage entrance. Motion explains a change, it never decorates.
+   */
+  --ax-dur-instant: 90ms;
+  --ax-dur-quick: 180ms;
+  --ax-dur-calm: 380ms;
+  --ax-dur-cinematic: 700ms;
+  --ax-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ax-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ax-ease-exit: cubic-bezier(0.4, 0, 1, 1);
 
   /* Spacing rhythm — every gap on this scale, nothing off-grid. */
   --ax-1: 0.25rem; /* 4  — icon to label */
