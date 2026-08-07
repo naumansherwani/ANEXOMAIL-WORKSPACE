@@ -5,9 +5,9 @@ import type { ReactNode } from "react";
  * repeating one padding and one grid down the page.
  */
 const tone = {
-  loud: "py-28 md:py-40",
-  quiet: "py-20 md:py-24",
-  hush: "py-24 md:py-32",
+  loud: "py-20 md:py-32",
+  quiet: "py-16 md:py-24",
+  hush: "py-16 md:py-28",
 } as const;
 
 export function Stage({

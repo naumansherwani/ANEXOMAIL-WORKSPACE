@@ -13,9 +13,9 @@ export function Reveal({
 }: HTMLMotionProps<"div"> & { delay?: number; duration?: number }) {
   return (
     <motion.div
-      initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-      whileInView={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
-      viewport={{ once: true, margin: "-12% 0px" }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -8% 0px" }}
       transition={{ duration, delay, ease: EASE }}
       {...rest}
     />
