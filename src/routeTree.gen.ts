@@ -15,6 +15,7 @@ import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
+import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
@@ -50,6 +51,11 @@ const AppPeopleRoute = AppPeopleRouteImport.update({
   path: '/people',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppWorkRoute = AppWorkRouteImport.update({
   id: '/work',
   path: '/work',
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
+  '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app/': typeof AppIndexRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
+  '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app': typeof AppIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
+  '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/app/': typeof AppIndexRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/calendar'
     | '/app/people'
+    | '/app/search'
     | '/app/work'
     | '/app/'
     | '/app/mail/$folder'
@@ -125,6 +135,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/app/calendar'
     | '/app/people'
+    | '/app/search'
     | '/app/work'
     | '/app'
     | '/app/mail/$folder/$threadId'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/calendar'
     | '/app/people'
+    | '/app/search'
     | '/app/work'
     | '/app/'
     | '/app/mail/$folder'
@@ -193,6 +205,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPeopleRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/search': {
+      id: '/app/search'
+      path: '/search'
+      fullPath: '/app/search'
+      preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/work': {
       id: '/app/work'
       path: '/work'
@@ -241,6 +260,7 @@ const AppMailFolderRouteWithChildren = AppMailFolderRoute._addFileChildren(
 interface AppRouteChildren {
   AppCalendarRoute: typeof AppCalendarRoute
   AppPeopleRoute: typeof AppPeopleRoute
+  AppSearchRoute: typeof AppSearchRoute
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -249,6 +269,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppCalendarRoute: AppCalendarRoute,
   AppPeopleRoute: AppPeopleRoute,
+  AppSearchRoute: AppSearchRoute,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
