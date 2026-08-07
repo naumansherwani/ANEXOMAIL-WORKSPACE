@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as PlansRouteImport } from './routes/plans'
+import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
@@ -46,6 +47,11 @@ const AppRoute = AppRouteImport.update({
 const PlansRoute = PlansRouteImport.update({
   id: '/plans',
   path: '/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -124,6 +130,7 @@ export interface FileRoutesByFullPath {
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
   '/plans': typeof PlansRoute
+  '/security': typeof SecurityRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/plans': typeof PlansRoute
+  '/security': typeof SecurityRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -162,6 +170,7 @@ export interface FileRoutesById {
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
   '/plans': typeof PlansRoute
+  '/security': typeof SecurityRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
@@ -184,6 +193,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/app'
     | '/plans'
+    | '/security'
     | '/app/admin'
     | '/app/calendar'
     | '/app/people'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/plans'
+    | '/security'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/app'
     | '/plans'
+    | '/security'
     | '/app/admin'
     | '/app/calendar'
     | '/app/people'
@@ -242,6 +254,7 @@ export interface RootRouteChildren {
   AiRoute: typeof AiRoute
   AppRoute: typeof AppRouteWithChildren
   PlansRoute: typeof PlansRoute
+  SecurityRoute: typeof SecurityRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -272,6 +285,13 @@ declare module '@tanstack/react-router' {
       path: '/plans'
       fullPath: '/plans'
       preLoaderRoute: typeof PlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -436,6 +456,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiRoute: AiRoute,
   AppRoute: AppRouteWithChildren,
   PlansRoute: PlansRoute,
+  SecurityRoute: SecurityRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
