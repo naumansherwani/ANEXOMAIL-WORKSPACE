@@ -11,6 +11,25 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
+import { Route as AppRouteImport } from './routes/app'
+import { Route as MoveInRouteImport } from './routes/move-in'
+import { Route as OwnershipRouteImport } from './routes/ownership'
+import { Route as PlansRouteImport } from './routes/plans'
+import { Route as SecurityRouteImport } from './routes/security'
+import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAdminRouteImport } from './routes/app.admin'
+import { Route as AppCalendarRouteImport } from './routes/app.calendar'
+import { Route as AppPeopleRouteImport } from './routes/app.people'
+import { Route as AppSearchRouteImport } from './routes/app.search'
+import { Route as AppWorkRouteImport } from './routes/app.work'
+import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
+import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
+import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
+import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
+import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
+import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
+import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
+import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -22,31 +41,246 @@ const AiRoute = AiRouteImport.update({
   path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppRoute = AppRouteImport.update({
+  id: '/app',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MoveInRoute = MoveInRouteImport.update({
+  id: '/move-in',
+  path: '/move-in',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OwnershipRoute = OwnershipRouteImport.update({
+  id: '/ownership',
+  path: '/ownership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlansRoute = PlansRouteImport.update({
+  id: '/plans',
+  path: '/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SecurityRoute = SecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AppIndexRoute = AppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminRoute = AppAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCalendarRoute = AppCalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPeopleRoute = AppPeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSearchRoute = AppSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppWorkRoute = AppWorkRouteImport.update({
+  id: '/work',
+  path: '/work',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminAddressesRoute = AppAdminAddressesRouteImport.update({
+  id: '/addresses',
+  path: '/addresses',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminAuditRoute = AppAdminAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminExportRoute = AppAdminExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppMailFolderRoute = AppMailFolderRouteImport.update({
+  id: '/mail/$folder',
+  path: '/mail/$folder',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppMailFolderRoute,
+} as any)
+const AppMailFolderThreadIdRoute = AppMailFolderThreadIdRouteImport.update({
+  id: '/$threadId',
+  path: '/$threadId',
+  getParentRoute: () => AppMailFolderRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/app': typeof AppRouteWithChildren
+  '/move-in': typeof MoveInRoute
+  '/ownership': typeof OwnershipRoute
+  '/plans': typeof PlansRoute
+  '/security': typeof SecurityRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
+  '/app/calendar': typeof AppCalendarRoute
+  '/app/people': typeof AppPeopleRoute
+  '/app/search': typeof AppSearchRoute
+  '/app/work': typeof AppWorkRoute
+  '/app/': typeof AppIndexRoute
+  '/app/admin/addresses': typeof AppAdminAddressesRoute
+  '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/admin/': typeof AppAdminIndexRoute
+  '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
+  '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/move-in': typeof MoveInRoute
+  '/ownership': typeof OwnershipRoute
+  '/plans': typeof PlansRoute
+  '/security': typeof SecurityRoute
+  '/app/calendar': typeof AppCalendarRoute
+  '/app/people': typeof AppPeopleRoute
+  '/app/search': typeof AppSearchRoute
+  '/app/work': typeof AppWorkRoute
+  '/app': typeof AppIndexRoute
+  '/app/admin/addresses': typeof AppAdminAddressesRoute
+  '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin': typeof AppAdminIndexRoute
+  '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
+  '/app/mail/$folder': typeof AppMailFolderIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/app': typeof AppRouteWithChildren
+  '/move-in': typeof MoveInRoute
+  '/ownership': typeof OwnershipRoute
+  '/plans': typeof PlansRoute
+  '/security': typeof SecurityRoute
+  '/app/admin': typeof AppAdminRouteWithChildren
+  '/app/calendar': typeof AppCalendarRoute
+  '/app/people': typeof AppPeopleRoute
+  '/app/search': typeof AppSearchRoute
+  '/app/work': typeof AppWorkRoute
+  '/app/': typeof AppIndexRoute
+  '/app/admin/addresses': typeof AppAdminAddressesRoute
+  '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/admin/': typeof AppAdminIndexRoute
+  '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
+  '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ai'
+  fullPaths:
+    | '/'
+    | '/ai'
+    | '/app'
+    | '/move-in'
+    | '/ownership'
+    | '/plans'
+    | '/security'
+    | '/app/admin'
+    | '/app/calendar'
+    | '/app/people'
+    | '/app/search'
+    | '/app/work'
+    | '/app/'
+    | '/app/admin/addresses'
+    | '/app/admin/audit'
+    | '/app/admin/export'
+    | '/app/admin/members'
+    | '/app/mail/$folder'
+    | '/app/admin/'
+    | '/app/mail/$folder/$threadId'
+    | '/app/mail/$folder/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ai'
-  id: '__root__' | '/' | '/ai'
+  to:
+    | '/'
+    | '/ai'
+    | '/move-in'
+    | '/ownership'
+    | '/plans'
+    | '/security'
+    | '/app/calendar'
+    | '/app/people'
+    | '/app/search'
+    | '/app/work'
+    | '/app'
+    | '/app/admin/addresses'
+    | '/app/admin/audit'
+    | '/app/admin/export'
+    | '/app/admin/members'
+    | '/app/admin'
+    | '/app/mail/$folder/$threadId'
+    | '/app/mail/$folder'
+  id:
+    | '__root__'
+    | '/'
+    | '/ai'
+    | '/app'
+    | '/move-in'
+    | '/ownership'
+    | '/plans'
+    | '/security'
+    | '/app/admin'
+    | '/app/calendar'
+    | '/app/people'
+    | '/app/search'
+    | '/app/work'
+    | '/app/'
+    | '/app/admin/addresses'
+    | '/app/admin/audit'
+    | '/app/admin/export'
+    | '/app/admin/members'
+    | '/app/mail/$folder'
+    | '/app/admin/'
+    | '/app/mail/$folder/$threadId'
+    | '/app/mail/$folder/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiRoute: typeof AiRoute
+  AppRoute: typeof AppRouteWithChildren
+  MoveInRoute: typeof MoveInRoute
+  OwnershipRoute: typeof OwnershipRoute
+  PlansRoute: typeof PlansRoute
+  SecurityRoute: typeof SecurityRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -65,12 +299,206 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app': {
+      id: '/app'
+      path: '/app'
+      fullPath: '/app'
+      preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/move-in': {
+      id: '/move-in'
+      path: '/move-in'
+      fullPath: '/move-in'
+      preLoaderRoute: typeof MoveInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ownership': {
+      id: '/ownership'
+      path: '/ownership'
+      fullPath: '/ownership'
+      preLoaderRoute: typeof OwnershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plans': {
+      id: '/plans'
+      path: '/plans'
+      fullPath: '/plans'
+      preLoaderRoute: typeof PlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/security': {
+      id: '/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/admin': {
+      id: '/app/admin'
+      path: '/admin'
+      fullPath: '/app/admin'
+      preLoaderRoute: typeof AppAdminRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/calendar': {
+      id: '/app/calendar'
+      path: '/calendar'
+      fullPath: '/app/calendar'
+      preLoaderRoute: typeof AppCalendarRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/people': {
+      id: '/app/people'
+      path: '/people'
+      fullPath: '/app/people'
+      preLoaderRoute: typeof AppPeopleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/search': {
+      id: '/app/search'
+      path: '/search'
+      fullPath: '/app/search'
+      preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/work': {
+      id: '/app/work'
+      path: '/work'
+      fullPath: '/app/work'
+      preLoaderRoute: typeof AppWorkRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/admin/': {
+      id: '/app/admin/'
+      path: '/'
+      fullPath: '/app/admin/'
+      preLoaderRoute: typeof AppAdminIndexRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/addresses': {
+      id: '/app/admin/addresses'
+      path: '/addresses'
+      fullPath: '/app/admin/addresses'
+      preLoaderRoute: typeof AppAdminAddressesRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/audit': {
+      id: '/app/admin/audit'
+      path: '/audit'
+      fullPath: '/app/admin/audit'
+      preLoaderRoute: typeof AppAdminAuditRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/export': {
+      id: '/app/admin/export'
+      path: '/export'
+      fullPath: '/app/admin/export'
+      preLoaderRoute: typeof AppAdminExportRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/members': {
+      id: '/app/admin/members'
+      path: '/members'
+      fullPath: '/app/admin/members'
+      preLoaderRoute: typeof AppAdminMembersRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/mail/$folder': {
+      id: '/app/mail/$folder'
+      path: '/mail/$folder'
+      fullPath: '/app/mail/$folder'
+      preLoaderRoute: typeof AppMailFolderRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/mail/$folder/': {
+      id: '/app/mail/$folder/'
+      path: '/'
+      fullPath: '/app/mail/$folder/'
+      preLoaderRoute: typeof AppMailFolderIndexRouteImport
+      parentRoute: typeof AppMailFolderRoute
+    }
+    '/app/mail/$folder/$threadId': {
+      id: '/app/mail/$folder/$threadId'
+      path: '/$threadId'
+      fullPath: '/app/mail/$folder/$threadId'
+      preLoaderRoute: typeof AppMailFolderThreadIdRouteImport
+      parentRoute: typeof AppMailFolderRoute
+    }
   }
 }
+
+interface AppAdminRouteChildren {
+  AppAdminAddressesRoute: typeof AppAdminAddressesRoute
+  AppAdminAuditRoute: typeof AppAdminAuditRoute
+  AppAdminExportRoute: typeof AppAdminExportRoute
+  AppAdminMembersRoute: typeof AppAdminMembersRoute
+  AppAdminIndexRoute: typeof AppAdminIndexRoute
+}
+
+const AppAdminRouteChildren: AppAdminRouteChildren = {
+  AppAdminAddressesRoute: AppAdminAddressesRoute,
+  AppAdminAuditRoute: AppAdminAuditRoute,
+  AppAdminExportRoute: AppAdminExportRoute,
+  AppAdminMembersRoute: AppAdminMembersRoute,
+  AppAdminIndexRoute: AppAdminIndexRoute,
+}
+
+const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
+  AppAdminRouteChildren,
+)
+
+interface AppMailFolderRouteChildren {
+  AppMailFolderThreadIdRoute: typeof AppMailFolderThreadIdRoute
+  AppMailFolderIndexRoute: typeof AppMailFolderIndexRoute
+}
+
+const AppMailFolderRouteChildren: AppMailFolderRouteChildren = {
+  AppMailFolderThreadIdRoute: AppMailFolderThreadIdRoute,
+  AppMailFolderIndexRoute: AppMailFolderIndexRoute,
+}
+
+const AppMailFolderRouteWithChildren = AppMailFolderRoute._addFileChildren(
+  AppMailFolderRouteChildren,
+)
+
+interface AppRouteChildren {
+  AppAdminRoute: typeof AppAdminRouteWithChildren
+  AppCalendarRoute: typeof AppCalendarRoute
+  AppPeopleRoute: typeof AppPeopleRoute
+  AppSearchRoute: typeof AppSearchRoute
+  AppWorkRoute: typeof AppWorkRoute
+  AppIndexRoute: typeof AppIndexRoute
+  AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
+}
+
+const AppRouteChildren: AppRouteChildren = {
+  AppAdminRoute: AppAdminRouteWithChildren,
+  AppCalendarRoute: AppCalendarRoute,
+  AppPeopleRoute: AppPeopleRoute,
+  AppSearchRoute: AppSearchRoute,
+  AppWorkRoute: AppWorkRoute,
+  AppIndexRoute: AppIndexRoute,
+  AppMailFolderRoute: AppMailFolderRouteWithChildren,
+}
+
+const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiRoute: AiRoute,
+  AppRoute: AppRouteWithChildren,
+  MoveInRoute: MoveInRoute,
+  OwnershipRoute: OwnershipRoute,
+  PlansRoute: PlansRoute,
+  SecurityRoute: SecurityRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
