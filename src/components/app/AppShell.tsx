@@ -1,18 +1,31 @@
-import { Link, useRouterState } from "@tanstack/react-router";
+import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   CalendarDays,
   CheckSquare,
   ChevronDown,
   Inbox,
+  LogOut,
   Mail,
   Search,
   Shield,
+  UserCircle2,
   Users,
 } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
+import { notify } from "@/lib/notify";
 
 type RailItem = {
   to: string;
@@ -38,6 +51,27 @@ const primary: RailItem[] = [
 export function AppShell({ children }: { children: ReactNode }) {
   const { open, setOpen } = useCommandPalette();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const navigate = useNavigate();
+  const { session, organisation, refresh, signOut } = useAuth();
+
+  const switchOrg = async (id: string) => {
+    try {
+      await api("/api/workspace/active-organisation", {
+        method: "PATCH",
+        body: JSON.stringify({ organisation_id: id }),
+      });
+      await refresh();
+    } catch (error) {
+      notify.failed("Could not switch workspace", {
+        description: error instanceof Error ? error.message : "Please try again.",
+      });
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    void navigate({ to: "/auth", replace: true });
+  };
 
   const isActive = (item: RailItem) =>
     item.exact
@@ -57,13 +91,29 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
         </Link>
 
-        <button
-          type="button"
-          className="ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex"
-        >
-          No organisation yet
-          <ChevronDown className="size-3.5 text-steel" />
-        </button>
+        <DropdownMenu>
+          <DropdownMenuTrigger className="ax-focus ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
+            {organisation?.name ?? "No organisation yet"}
+            <ChevronDown className="size-3.5 text-steel" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="w-60">
+            <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
+            {session?.organisations.length ? (
+              session.organisations.map((org) => (
+                <DropdownMenuItem key={org.id} onSelect={() => void switchOrg(org.id)}>
+                  <span className="truncate">{org.name}</span>
+                  <span className="ml-auto text-[10px] uppercase text-muted-foreground">
+                    {org.role}
+                  </span>
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <DropdownMenuItem onSelect={() => void navigate({ to: "/onboarding" })}>
+                Create your organisation
+              </DropdownMenuItem>
+            )}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <button
           type="button"
@@ -76,6 +126,29 @@ export function AppShell({ children }: { children: ReactNode }) {
             ⌘K
           </kbd>
         </button>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label="Account"
+            className="ax-focus ax-tap ml-1 flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
+          >
+            <UserCircle2 className="size-5" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-60">
+            <DropdownMenuLabel className="truncate">
+              {session?.user.email ?? "Signed in"}
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onSelect={() => void navigate({ to: "/app/account" })}>
+              <UserCircle2 className="size-4" />
+              Account &amp; sessions
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => void handleSignOut()}>
+              <LogOut className="size-4" />
+              Sign out
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </header>
 
       <div className="flex min-h-0 flex-1">

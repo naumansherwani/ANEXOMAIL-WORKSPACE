@@ -7,6 +7,7 @@ import {
   Mail,
   Search,
   Shield,
+  UserCircle2,
   Users,
 } from "lucide-react";
 
@@ -65,6 +66,13 @@ export function CommandPalette({
           <CommandItem value="search everything" onSelect={() => go("/app/search")}>
             <Search className="size-4" />
             Search everything
+          </CommandItem>
+          <CommandItem
+            value="account sessions devices sign out"
+            onSelect={() => go("/app/account")}
+          >
+            <UserCircle2 className="size-4" />
+            Account &amp; sessions
           </CommandItem>
         </CommandGroup>
 
