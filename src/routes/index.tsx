@@ -198,7 +198,7 @@ function Index() {
               initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
               animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
               transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-              className="mt-8 max-w-5xl text-[2.6rem] sm:text-6xl md:text-7xl lg:text-[5.4rem]"
+              className="mt-8 max-w-5xl pb-[0.08em] text-[2.6rem] sm:text-6xl md:text-7xl lg:text-[5.4rem]"
             >
               <span className="ax-platinum-text">Every message leaves</span>
               <br />
@@ -251,7 +251,7 @@ function Index() {
 
           <div className="mt-16 grid gap-px overflow-hidden rounded-xl border border-border sm:grid-cols-2 lg:grid-cols-4">
             {stamps.map((s, i) => (
-              <Reveal key={s.code} delay={i * 0.08}>
+              <Reveal key={s.code} delay={i * 0.08} className="h-full">
                 <div className="ax-plane h-full rounded-none border-0 p-7">
                   <div className="flex size-14 items-center justify-center rounded-full border border-steel/35 text-[10px] font-bold tracking-[0.08em] text-platinum">
                     {s.code}
@@ -292,7 +292,7 @@ function Index() {
                 <Reveal
                   key={w.title}
                   delay={i * 0.07}
-                  className={i === 0 ? "sm:col-span-2" : undefined}
+                  className={i === 0 ? "h-full sm:col-span-2" : "h-full"}
                 >
                   <article className="ax-plane h-full rounded-xl p-7">
                     <w.icon className="size-5 text-steel" strokeWidth={1.6} />
@@ -370,7 +370,7 @@ function Index() {
 
           <div className="mt-16 grid gap-5 lg:grid-cols-3">
             {plans.map((p, i) => (
-              <Reveal key={p.name} delay={i * 0.08}>
+              <Reveal key={p.name} delay={i * 0.08} className="h-full">
                 <article
                   className={`ax-plane flex h-full flex-col rounded-xl p-8 ${
                     p.featured ? "border-primary/55 shadow-stage" : ""
