@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
+import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AppIndexRouteImport } from './routes/app.index'
@@ -42,6 +43,11 @@ const AiRoute = AiRouteImport.update({
 const AppRoute = AppRouteImport.update({
   id: '/app',
   path: '/app',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const OwnershipRoute = OwnershipRouteImport.update({
+  id: '/ownership',
+  path: '/ownership',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansRoute = PlansRouteImport.update({
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/app/admin': typeof AppAdminRouteWithChildren
@@ -149,6 +156,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
+  '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/app/calendar': typeof AppCalendarRoute
@@ -169,6 +177,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
+  '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/app/admin': typeof AppAdminRouteWithChildren
@@ -192,6 +201,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/ownership'
     | '/plans'
     | '/security'
     | '/app/admin'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ai'
+    | '/ownership'
     | '/plans'
     | '/security'
     | '/app/calendar'
@@ -231,6 +242,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/app'
+    | '/ownership'
     | '/plans'
     | '/security'
     | '/app/admin'
@@ -253,6 +265,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiRoute: typeof AiRoute
   AppRoute: typeof AppRouteWithChildren
+  OwnershipRoute: typeof OwnershipRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
 }
@@ -278,6 +291,13 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ownership': {
+      id: '/ownership'
+      path: '/ownership'
+      fullPath: '/ownership'
+      preLoaderRoute: typeof OwnershipRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plans': {
@@ -455,6 +475,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiRoute: AiRoute,
   AppRoute: AppRouteWithChildren,
+  OwnershipRoute: OwnershipRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
 }
