@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { AppShell } from "@/components/app/AppShell";
 import { ErrorState } from "@/components/state/StateBlock";
-import { LoadingRegion } from "@/components/state/Skeletons";
+import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/app")({
@@ -34,7 +34,9 @@ function AppLayout() {
   if (status === "loading" || status === "signed-out") {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">
-        <LoadingRegion label="Opening your workspace" />
+        <LoadingRegion label="Opening your workspace">
+          <WorkingDot />
+        </LoadingRegion>
       </div>
     );
   }
