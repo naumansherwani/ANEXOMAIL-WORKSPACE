@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,17 +35,24 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMailFolderRoute = AppMailFolderRouteImport.update({
+  id: '/mail/$folder',
+  path: '/mail/$folder',
+  getParentRoute: () => AppRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/mail/$folder': typeof AppMailFolderRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/app': typeof AppIndexRoute
+  '/app/mail/$folder': typeof AppMailFolderRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -52,13 +60,14 @@ export interface FileRoutesById {
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/mail/$folder': typeof AppMailFolderRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/ai' | '/app' | '/app/'
+  fullPaths: '/' | '/ai' | '/app' | '/app/' | '/app/mail/$folder'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/ai' | '/app'
-  id: '__root__' | '/' | '/ai' | '/app' | '/app/'
+  to: '/' | '/ai' | '/app' | '/app/mail/$folder'
+  id: '__root__' | '/' | '/ai' | '/app' | '/app/' | '/app/mail/$folder'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -97,15 +106,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/mail/$folder': {
+      id: '/app/mail/$folder'
+      path: '/mail/$folder'
+      fullPath: '/app/mail/$folder'
+      preLoaderRoute: typeof AppMailFolderRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppMailFolderRoute: typeof AppMailFolderRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppMailFolderRoute: AppMailFolderRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
