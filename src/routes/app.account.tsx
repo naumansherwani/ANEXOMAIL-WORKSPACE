@@ -2,9 +2,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { KeyRound, Laptop, ShieldCheck, Loader2 } from "lucide-react";
 
-import { Panel } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
-import { StateBlock } from "@/components/state/StateBlock";
+import { ErrorState, StateBlock } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -58,12 +57,14 @@ function AccountPage() {
       notify.done("Session revoked", "That device has been signed out.");
       void queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] });
     },
-    onError: (error: ApiError) => notify.failed("Could not revoke that session", { description: error.message }),
+    onError: (error: ApiError) =>
+      notify.failed("Could not revoke that session", { description: error.message }),
   });
 
   return (
-    <Panel className="flex-1" title="Account & sessions">
-      <div className="space-y-ax-5 p-ax-4">
+    <div className="min-h-0 flex-1 overflow-y-auto">
+      <div className="mx-auto max-w-2xl space-y-ax-5 p-ax-4">
+        <h1 className="ax-heading text-foreground">Account &amp; sessions</h1>
         <section className="rounded-xl border border-border bg-card p-ax-4">
           <h2 className="ax-label text-foreground">Signed in as</h2>
           <p className="ax-body mt-1">{session?.user.email ?? "—"}</p>
@@ -72,11 +73,12 @@ function AccountPage() {
               variant="outline"
               className="ax-press"
               onClick={() =>
-                void enrollPasskey().catch((error: unknown) =>
+                void enrollPasskey().catch((error: unknown) => {
                   notify.failed("Passkey not added", {
-                    description: error instanceof Error ? error.message : undefined,
-                  }),
-                )
+                    description:
+                      error instanceof Error ? error.message : "Please try again.",
+                  });
+                })
               }
             >
               <KeyRound className="size-4" />
@@ -88,11 +90,12 @@ function AccountPage() {
               onClick={() =>
                 void api<{ otpauth_url: string }>("/api/auth/mfa/enroll", { method: "POST" })
                   .then((res) => window.open(res.otpauth_url, "_blank", "noopener"))
-                  .catch((error: unknown) =>
+                  .catch((error: unknown) => {
                     notify.failed("Two-step setup unavailable", {
-                      description: error instanceof Error ? error.message : undefined,
-                    }),
-                  )
+                      description:
+                        error instanceof Error ? error.message : "Please try again.",
+                    });
+                  })
               }
             >
               <ShieldCheck className="size-4" />
@@ -111,18 +114,15 @@ function AccountPage() {
             {sessions.isLoading ? (
               <ListSkeleton rows={3} />
             ) : sessions.error ? (
-              <StateBlock
-                kind="error"
+              <ErrorState
                 title="Sessions didn't load"
-                description={sessions.error.message}
-                actionLabel="Try again"
-                onAction={() => void sessions.refetch()}
+                body={sessions.error.message}
+                onRetry={() => void sessions.refetch()}
               />
             ) : !sessions.data?.length ? (
               <StateBlock
-                kind="empty"
                 title="No other devices"
-                description="You're only signed in here."
+                body="You're only signed in here."
               />
             ) : (
               <ul className="ax-stagger divide-y divide-border rounded-xl border border-border bg-card">
@@ -164,7 +164,7 @@ function AccountPage() {
           </div>
         </section>
       </div>
-    </Panel>
+    </div>
   );
 }
 
