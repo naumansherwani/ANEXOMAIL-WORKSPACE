@@ -19,6 +19,7 @@ import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AppIndexRouteImport } from './routes/app.index'
+import { Route as AppAccountRouteImport } from './routes/app.account'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
@@ -82,6 +83,11 @@ const SecurityRoute = SecurityRouteImport.update({
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppAccountRoute = AppAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAdminRoute = AppAdminRouteImport.update({
@@ -165,6 +171,7 @@ export interface FileRoutesByFullPath {
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
@@ -190,6 +197,7 @@ export interface FileRoutesByTo {
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/app/account': typeof AppAccountRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -215,6 +223,7 @@ export interface FileRoutesById {
   '/ownership': typeof OwnershipRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/people': typeof AppPeopleRoute
@@ -243,6 +252,7 @@ export interface FileRouteTypes {
     | '/ownership'
     | '/plans'
     | '/security'
+    | '/app/account'
     | '/app/admin'
     | '/app/calendar'
     | '/app/people'
@@ -268,6 +278,7 @@ export interface FileRouteTypes {
     | '/ownership'
     | '/plans'
     | '/security'
+    | '/app/account'
     | '/app/calendar'
     | '/app/people'
     | '/app/search'
@@ -292,6 +303,7 @@ export interface FileRouteTypes {
     | '/ownership'
     | '/plans'
     | '/security'
+    | '/app/account'
     | '/app/admin'
     | '/app/calendar'
     | '/app/people'
@@ -392,6 +404,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/account': {
+      id: '/app/account'
+      path: '/account'
+      fullPath: '/app/account'
+      preLoaderRoute: typeof AppAccountRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/admin': {
@@ -530,6 +549,7 @@ const AppMailFolderRouteWithChildren = AppMailFolderRoute._addFileChildren(
 )
 
 interface AppRouteChildren {
+  AppAccountRoute: typeof AppAccountRoute
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppCalendarRoute: typeof AppCalendarRoute
   AppPeopleRoute: typeof AppPeopleRoute
@@ -540,6 +560,7 @@ interface AppRouteChildren {
 }
 
 const AppRouteChildren: AppRouteChildren = {
+  AppAccountRoute: AppAccountRoute,
   AppAdminRoute: AppAdminRouteWithChildren,
   AppCalendarRoute: AppCalendarRoute,
   AppPeopleRoute: AppPeopleRoute,
