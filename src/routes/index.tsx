@@ -224,10 +224,10 @@ function Index() {
               transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
               className="mt-8 max-w-3xl pb-[0.08em] text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.2rem]"
             >
-              <span className="ax-platinum-text">Every message leaves</span>
+              <span className="ax-platinum-text">The AI Workspace</span>
               <br />
-              <span className="ax-platinum-text">with your name</span>{" "}
-              <span className="text-steel">on it.</span>
+              <span className="ax-platinum-text">Built Around</span>{" "}
+              <span className="text-steel">Email.</span>
             </motion.h1>
 
             <motion.p
@@ -236,9 +236,8 @@ function Index() {
               transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
               className="mt-8 max-w-lg text-[17px] leading-relaxed text-muted-foreground"
             >
-              ANEXOMAIL gives your team sealed mailboxes on your own domain, on
-              infrastructure we run ourselves — with the workspace tools your day actually
-              needs.
+              Private business email, intelligent AI, shared workspaces, calendars and
+              collaboration — all under your own domain.
             </motion.p>
 
             <motion.div
