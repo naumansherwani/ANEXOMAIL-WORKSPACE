@@ -495,3 +495,198 @@
     animation: none;
   }
 }
+
+/*
+ * ============================================================
+ * Phase 4 — Emotion UI. Motion, micro-interactions, states.
+ * Every interactive surface answers in under 200ms.
+ * ============================================================
+ */
+
+/* Micro-interaction — press. Physical confirmation, no bounce. */
+@utility ax-press {
+  transition:
+    transform var(--ax-dur-instant) var(--ax-ease-out),
+    background-color var(--ax-dur-quick) var(--ax-ease-out),
+    border-color var(--ax-dur-quick) var(--ax-ease-out),
+    color var(--ax-dur-quick) var(--ax-ease-out),
+    opacity var(--ax-dur-quick) var(--ax-ease-out);
+
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+/* Micro-interaction — lift. The key light catches the top edge on hover. */
+@utility ax-lift {
+  transition:
+    transform var(--ax-dur-calm) var(--ax-ease-out),
+    box-shadow var(--ax-dur-calm) var(--ax-ease-out),
+    border-color var(--ax-dur-calm) var(--ax-ease-out);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elev-2);
+    border-color: oklch(0.6 0.085 255 / 42%);
+  }
+}
+
+/* Row hover inside the three-panel surface — quiet, never jumpy. */
+@utility ax-row {
+  transition:
+    background-color var(--ax-dur-quick) var(--ax-ease-out),
+    color var(--ax-dur-quick) var(--ax-ease-out);
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+/* Entrance — content arrives, it does not slide in from off-stage. */
+@keyframes ax-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility ax-in {
+  animation: ax-in var(--ax-dur-calm) var(--ax-ease-out) both;
+}
+
+/* Stagger delays — list children enter in sequence, max six steps. */
+@utility ax-stagger {
+  & > * {
+    animation: ax-in var(--ax-dur-calm) var(--ax-ease-out) both;
+  }
+  & > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  & > *:nth-child(2) {
+    animation-delay: 45ms;
+  }
+  & > *:nth-child(3) {
+    animation-delay: 90ms;
+  }
+  & > *:nth-child(4) {
+    animation-delay: 135ms;
+  }
+  & > *:nth-child(5) {
+    animation-delay: 180ms;
+  }
+  & > *:nth-child(n + 6) {
+    animation-delay: 225ms;
+  }
+}
+
+/* Loading — a light sweep across the plane. Replaces opacity pulsing. */
+@keyframes ax-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@utility ax-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.885 0.008 250 / 9%) 50%,
+      transparent 100%
+    );
+    animation: ax-shimmer 1.4s var(--ax-ease-inout) infinite;
+  }
+}
+
+/* Live signal dot — used for sending, syncing, connected. */
+@keyframes ax-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@utility ax-breathe {
+  animation: ax-breathe 1.8s var(--ax-ease-inout) infinite;
+}
+
+/* Success — one confirming pulse of the signal colour, then silence. */
+@keyframes ax-confirm {
+  0% {
+    box-shadow: 0 0 0 0 oklch(0.7 0.115 165 / 45%);
+  }
+  100% {
+    box-shadow: 0 0 0 12px oklch(0.7 0.115 165 / 0%);
+  }
+}
+
+@utility ax-confirm {
+  animation: ax-confirm var(--ax-dur-cinematic) var(--ax-ease-out) 1;
+}
+
+/* Error — a short, tight shake. Never more than one cycle. */
+@keyframes ax-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@utility ax-shake {
+  animation: ax-shake var(--ax-dur-calm) var(--ax-ease-inout) 1;
+}
+
+/* Responsive rule — 44px minimum tap target for primary controls on touch. */
+@utility ax-tap {
+  @media (pointer: coarse) {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+/*
+ * Accessibility — motion is an enhancement, never the message.
+ * Reduced motion keeps every state readable with zero movement.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .ax-in,
+  .ax-stagger > *,
+  .ax-confirm,
+  .ax-shake,
+  .ax-breathe,
+  .ax-shimmer::after {
+    animation: none !important;
+  }
+  .ax-press:active,
+  .ax-lift:hover {
+    transform: none;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
