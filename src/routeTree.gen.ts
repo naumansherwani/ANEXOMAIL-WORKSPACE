@@ -21,6 +21,7 @@ import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
+import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
@@ -86,6 +87,11 @@ const AppAdminAuditRoute = AppAdminAuditRouteImport.update({
   path: '/audit',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAdminExportRoute = AppAdminExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
   id: '/members',
   path: '/members',
@@ -119,6 +125,7 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
@@ -135,6 +142,7 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin': typeof AppAdminIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
+    | '/app/admin/export'
     | '/app/admin/members'
     | '/app/mail/$folder'
     | '/app/admin/'
@@ -189,6 +199,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/admin/addresses'
     | '/app/admin/audit'
+    | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin'
     | '/app/mail/$folder/$threadId'
@@ -206,6 +217,7 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
+    | '/app/admin/export'
     | '/app/admin/members'
     | '/app/mail/$folder'
     | '/app/admin/'
@@ -305,6 +317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminAuditRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/export': {
+      id: '/app/admin/export'
+      path: '/export'
+      fullPath: '/app/admin/export'
+      preLoaderRoute: typeof AppAdminExportRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/admin/members': {
       id: '/app/admin/members'
       path: '/members'
@@ -339,6 +358,7 @@ declare module '@tanstack/react-router' {
 interface AppAdminRouteChildren {
   AppAdminAddressesRoute: typeof AppAdminAddressesRoute
   AppAdminAuditRoute: typeof AppAdminAuditRoute
+  AppAdminExportRoute: typeof AppAdminExportRoute
   AppAdminMembersRoute: typeof AppAdminMembersRoute
   AppAdminIndexRoute: typeof AppAdminIndexRoute
 }
@@ -346,6 +366,7 @@ interface AppAdminRouteChildren {
 const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminAddressesRoute: AppAdminAddressesRoute,
   AppAdminAuditRoute: AppAdminAuditRoute,
+  AppAdminExportRoute: AppAdminExportRoute,
   AppAdminMembersRoute: AppAdminMembersRoute,
   AppAdminIndexRoute: AppAdminIndexRoute,
 }
