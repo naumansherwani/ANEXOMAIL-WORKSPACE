@@ -2,30 +2,30 @@ import { Link } from "@tanstack/react-router";
 
 import { BrandMark } from "./BrandMark";
 
-const groups: { title: string; items: { label: string; href: string }[] }[] = [
+const groups = [
   {
     title: "Product",
     items: [
-      { label: "Workspace", href: "/#wing" },
-      { label: "Pricing", href: "/#plans" },
-      { label: "Ownership", href: "/#keys" },
-      { label: "Migration", href: "/#move-in" },
+      { label: "Workspace", to: "/app" as const },
+      { label: "Delivery", to: "/security" as const },
+      { label: "Ownership", to: "/ownership" as const },
+      { label: "Move in", to: "/move-in" as const },
     ],
   },
   {
-    title: "Workspace",
+    title: "Plans",
     items: [
-      { label: "Basic", href: "/#plans" },
-      { label: "Pro", href: "/#plans" },
-      { label: "Business", href: "/#plans" },
+      { label: "Basic", to: "/plans" as const },
+      { label: "Pro", to: "/plans" as const },
+      { label: "Business", to: "/plans" as const },
     ],
   },
   {
     title: "Company",
     items: [
-      { label: "ANEXOMAIL AI", href: "/ai" },
-      { label: "Support", href: "/#move-in" },
-      { label: "Status", href: "/#keys" },
+      { label: "ANEXOMAIL AI", to: "/ai" as const },
+      { label: "Admin centre", to: "/app/admin" as const },
+      { label: "Search", to: "/app/search" as const },
     ],
   },
 ];
@@ -48,27 +48,16 @@ export function SiteFooter() {
               {g.title}
             </h3>
             <ul className="mt-4 space-y-2.5">
-              {g.items.map((item) =>
-                item.href.startsWith("/#") ? (
-                  <li key={item.label}>
-                    <a
-                      href={item.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ) : (
-                  <li key={item.label}>
-                    <Link
-                      to={item.href}
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {item.label}
-                    </Link>
-                  </li>
-                ),
-              )}
+              {g.items.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    to={item.to}
+                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
         ))}
