@@ -58,6 +58,8 @@
   --color-steel: var(--steel);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-cyan-accent: var(--cyan-accent);
+  --color-danger: var(--danger);
   --color-surface-2: var(--surface-2);
   --font-sans: var(--font-inter);
   --font-display: var(--font-inter);
@@ -100,6 +102,9 @@
   --destructive-foreground: oklch(0.975 0.004 250);
   --success: oklch(0.70 0.115 165);
   --warning: oklch(0.775 0.135 75);
+  /* Accent set — cyan signal, success, warning, danger. Stage colours untouched. */
+  --cyan-accent: oklch(0.735 0.121 213);
+  --danger: oklch(0.635 0.204 25);
   --border: oklch(0.285 0.011 264);
   --input: oklch(0.285 0.011 264);
   --ring: oklch(0.60 0.085 255);
@@ -179,6 +184,29 @@
   width: 100%;
   max-width: 78rem;
   padding-inline: 1.5rem;
+}
+
+/* Section rhythm — 120px top and bottom, 8px scale. */
+@utility ax-section {
+  padding-block: 5rem;
+  @media (min-width: 768px) {
+    padding-block: 7.5rem;
+  }
+}
+
+/* Floating hero composition cards — quiet drift, no gimmicks. */
+@keyframes ax-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@utility ax-drift {
+  animation: ax-drift 7s var(--ease-cine) infinite;
 }
 
 /* Rule 1 — one light source. Drop this once, high on the page. */
@@ -338,6 +366,9 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ax-reveal {
+    animation: none;
+  }
+  .ax-drift {
     animation: none;
   }
 }
