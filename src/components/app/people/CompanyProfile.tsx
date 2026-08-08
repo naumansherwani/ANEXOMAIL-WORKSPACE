@@ -4,7 +4,7 @@ import { Avatar, RelationshipChip, Stat } from "@/components/app/people/Bits";
 import { Timeline } from "@/components/app/people/Timeline";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
-import { DetailSkeleton } from "@/components/state/Skeletons";
+import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { useCompany, useCompanyTimeline } from "@/lib/contacts";
 import { relativeTime } from "@/lib/mail";
@@ -30,7 +30,7 @@ export function CompanyProfile({
     }
     return <ErrorState body={detail.error.message} onRetry={() => void detail.refetch()} />;
   }
-  if (detail.isPending) return <DetailSkeleton />;
+  if (detail.isPending) return <ThreadSkeleton />;
   if (!detail.data) return <EmptyState title="Not found" body="This organisation has no history yet." />;
 
   const { company, people } = detail.data;

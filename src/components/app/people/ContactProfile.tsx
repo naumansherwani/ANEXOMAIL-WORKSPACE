@@ -6,7 +6,7 @@ import { Avatar, RelationshipChip, Stat, TagChip } from "@/components/app/people
 import { Timeline } from "@/components/app/people/Timeline";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
-import { DetailSkeleton } from "@/components/state/Skeletons";
+import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -41,7 +41,7 @@ export function ContactProfile({ id }: { id: string }) {
     }
     return <ErrorState body={detail.error.message} onRetry={() => void detail.refetch()} />;
   }
-  if (detail.isPending) return <DetailSkeleton />;
+  if (detail.isPending) return <ThreadSkeleton />;
   if (!detail.data) return <EmptyState title="Not found" body="This person is no longer in the workspace." />;
 
   const c = detail.data.contact;
