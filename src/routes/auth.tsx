@@ -237,13 +237,6 @@ function AuthPage() {
       />
 
       <div className="ax-in relative w-full max-w-[27rem]">
-        <Link
-          to="/"
-          className="ax-focus ax-caption mb-ax-3 inline-flex items-center gap-1.5 rounded-md text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-3.5" aria-hidden="true" />
-          Back to home
-        </Link>
         <div className="flex justify-center">
           <Link to="/" className="ax-focus rounded-md">
             <BrandMark />
