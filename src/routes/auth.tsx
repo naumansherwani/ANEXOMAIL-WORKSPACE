@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
+import { KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
