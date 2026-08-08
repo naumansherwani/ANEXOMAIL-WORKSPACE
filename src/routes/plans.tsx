@@ -11,13 +11,13 @@ export const Route = createFileRoute("/plans")({
       {
         name: "description",
         content:
-          "Business email on your own domain from £20 a month. Basic, Pro and Business — mailboxes, shared addresses, calendar and work included.",
+          "Business email on your own domain from £15 a month. Basic, Pro and Business — mailboxes, shared addresses, calendar and work included.",
       },
       { property: "og:title", content: "Plans & Pricing — ANEXOMAIL Workspace" },
       {
         property: "og:description",
         content:
-          "Basic £20, Pro £40, Business £85 — sealed mailboxes on your own domain with the workspace tools your team uses daily.",
+          "Basic £15, Pro £40, Business £85 — sealed mailboxes on your own domain with the workspace tools your team uses daily.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -29,7 +29,7 @@ export const Route = createFileRoute("/plans")({
 const plans = [
   {
     name: "Basic",
-    price: "£20",
+    price: "£15",
     body: "For a small team getting its own domain in order.",
     features: [
       "Mailboxes on your domain",
