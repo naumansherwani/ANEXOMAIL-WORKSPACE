@@ -51,7 +51,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Private business email, intelligent AI, shared workspaces, calendars and collaboration — all under your own domain. From £15 per user.",
+          "Private business email, intelligent AI, shared workspaces, calendars and collaboration — all under your own domain. From £20 per user.",
       },
       {
         property: "og:title",
@@ -158,7 +158,7 @@ const moveIn = [
 const plans = [
   {
     name: "Basic",
-    price: "£15",
+    price: "£20",
     line: "Sealed mail for a small team.",
     features: [
       "Mailboxes on your own domain",
