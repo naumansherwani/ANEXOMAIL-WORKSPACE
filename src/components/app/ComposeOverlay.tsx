@@ -1,12 +1,7 @@
-import { Clock, Loader2, Minus, Send, X } from "lucide-react";
+import { Minus, X } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { notify } from "@/lib/notify";
-import { useSendMail } from "@/lib/mail";
+import { ComposeStudio } from "@/components/app/compose/ComposeStudio";
 
 /**
  * Compose overlay — locked behaviour: a new email never takes over the
@@ -18,48 +13,11 @@ import { useSendMail } from "@/lib/mail";
  */
 export function ComposeOverlay({ onClose }: { onClose: () => void }) {
   const [minimised, setMinimised] = useState(false);
-  const [to, setTo] = useState("");
-  const [cc, setCc] = useState("");
-  const [showCc, setShowCc] = useState(false);
-  const [subject, setSubject] = useState("");
-  const [body, setBody] = useState("");
-  const [sendAt, setSendAt] = useState("");
-  const [scheduling, setScheduling] = useState(false);
-
-  const send = useSendMail();
-
-  const submit = () =>
-    send.mutate(
-      {
-        to,
-        ...(cc.trim() ? { cc } : {}),
-        subject,
-        body,
-        ...(scheduling && sendAt ? { send_at: new Date(sendAt).toISOString() } : {}),
-      },
-      {
-        onSuccess: () => {
-          notify.done(
-            scheduling && sendAt ? "Scheduled" : "Sent",
-            scheduling && sendAt
-              ? `Leaves at ${new Date(sendAt).toLocaleString()}.`
-              : "The message left your workspace.",
-          );
-          onClose();
-        },
-        onError: (error) =>
-          notify.failed(error.isNotImplemented ? "Sending is not wired yet" : "Not sent", {
-            description: error.isNotImplemented
-              ? "Your draft is still here. POST /api/mail/send is pending on the server."
-              : error.message,
-          }),
-      },
-    );
 
   return (
     <aside
       aria-label="New email"
-      className="ax-in fixed bottom-4 right-4 z-50 w-[min(30rem,calc(100vw-2rem))] overflow-hidden rounded-2xl border border-border bg-card shadow-2xl"
+      className="ax-in fixed bottom-4 right-4 z-50 max-h-[85vh] w-[min(34rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl"
     >
       <header className="flex items-center gap-ax-2 border-b border-border px-ax-4 py-ax-3">
         <h2 className="ax-label text-foreground">New email</h2>
@@ -83,98 +41,7 @@ export function ComposeOverlay({ onClose }: { onClose: () => void }) {
         </div>
       </header>
 
-      {!minimised && (
-        <form
-          className="flex flex-col gap-ax-3 p-ax-4"
-          onSubmit={(event) => {
-            event.preventDefault();
-            submit();
-          }}
-        >
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="compose-to">To</Label>
-            <Input
-              id="compose-to"
-              type="email"
-              required
-              autoComplete="off"
-              value={to}
-              onChange={(e) => setTo(e.target.value)}
-              placeholder="name@company.com"
-            />
-          </div>
-          {showCc ? (
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="compose-cc">Cc</Label>
-              <Input
-                id="compose-cc"
-                autoComplete="off"
-                value={cc}
-                onChange={(e) => setCc(e.target.value)}
-                placeholder="Comma separated"
-              />
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setShowCc(true)}
-              className="ax-press self-start text-[11px] font-semibold text-steel underline-offset-4 hover:underline"
-            >
-              Add Cc
-            </button>
-          )}
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="compose-subject">Subject</Label>
-            <Input
-              id="compose-subject"
-              required
-              value={subject}
-              onChange={(e) => setSubject(e.target.value)}
-            />
-          </div>
-          <div className="flex flex-col gap-1.5">
-            <Label htmlFor="compose-body">Message</Label>
-            <Textarea
-              id="compose-body"
-              required
-              rows={7}
-              value={body}
-              onChange={(e) => setBody(e.target.value)}
-            />
-          </div>
-          {scheduling && (
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="compose-schedule">Send at</Label>
-              <Input
-                id="compose-schedule"
-                type="datetime-local"
-                required
-                value={sendAt}
-                onChange={(e) => setSendAt(e.target.value)}
-              />
-            </div>
-          )}
-          <div className="flex items-center gap-ax-2">
-            <Button type="submit" className="ax-press ax-tap" disabled={send.isPending}>
-              {send.isPending ? (
-                <Loader2 className="size-4 animate-spin" />
-              ) : (
-                <Send className="size-4" />
-              )}
-              <span>{scheduling ? "Schedule" : "Send"}</span>
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              className="ax-press"
-              onClick={() => setScheduling((v) => !v)}
-            >
-              <Clock className="size-4" />
-              {scheduling ? "Send now instead" : "Schedule send"}
-            </Button>
-          </div>
-        </form>
-      )}
+      {!minimised && <ComposeStudio variant="overlay" onSent={onClose} />}
     </aside>
   );
 }
