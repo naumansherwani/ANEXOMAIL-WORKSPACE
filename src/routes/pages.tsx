@@ -57,6 +57,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     items: [
       { label: "Dashboard", path: "/app", note: "Command center widgets", auth: true },
       { label: "Inbox", path: "/app/mail/inbox", note: "3-panel mail + Compose Studio", auth: true },
+      {
+        label: "Thread reader",
+        path: "/app/mail/inbox",
+        note: "Open any thread from the inbox list — inline reply, insights, meeting",
+        auth: true,
+      },
       { label: "Assigned to me", path: "/app/mail/assigned", note: "Threads you own", auth: true },
       { label: "Waiting", path: "/app/mail/waiting", note: "Waiting on someone else", auth: true },
       { label: "Sent", path: "/app/mail/sent", note: "Includes held / scheduled mail", auth: true },
