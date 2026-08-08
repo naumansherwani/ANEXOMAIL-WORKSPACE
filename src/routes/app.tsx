@@ -5,7 +5,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
-import { founderPreviewEnabled, setFounderPreview } from "@/lib/founder-preview";
+import { founderPreviewFromUrl, setFounderPreview } from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/app")({
   // Session lives in the browser, so the gate runs client-side only.
@@ -29,7 +29,7 @@ function AppLayout() {
   const { status, unavailableReason, refresh } = useAuth();
   // Founder review access. This route is ssr:false, so reading the key in the
   // initial state is safe and beats the redirect effect to the first commit.
-  const [preview, setPreview] = useState(() => founderPreviewEnabled());
+  const [preview, setPreview] = useState(() => founderPreviewFromUrl());
 
   useEffect(() => {
     if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
