@@ -35,6 +35,15 @@ export const Route = createFileRoute("/auth")({
 
 type Mode = "login" | "signup" | "link";
 
+type Provider = "google" | "apple" | "github";
+
+const PROVIDERS: { id: Provider; label: string; icon: (p: { className?: string }) => JSX.Element }[] =
+  [
+    { id: "google", label: "Continue with Google", icon: GoogleIcon },
+    { id: "apple", label: "Continue with Apple", icon: AppleIcon },
+    { id: "github", label: "Continue with GitHub", icon: GitHubIcon },
+  ];
+
 type LoginResult =
   | { token: string; mfa_required?: false }
   | { mfa_required: true; challenge_id: string };
@@ -52,12 +61,21 @@ function AuthPage() {
   const [linkSent, setLinkSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [providerBusy, setProviderBusy] = useState<Provider | null>(null);
 
   const finish = async (token: string) => {
     sessionToken.set(token);
     await refresh();
-    const session = await api<{ user: { onboarded: boolean } }>("/api/auth/session");
-    void navigate({ to: session.user.onboarded ? "/app" : "/onboarding" });
+    const session = await api<{
+      user: { onboarded: boolean; anexomail_address?: string | null };
+    }>("/api/auth/session");
+    void navigate({
+      to: !session.user.anexomail_address
+        ? "/claim"
+        : session.user.onboarded
+          ? "/app"
+          : "/onboarding",
+    });
   };
 
   const fail = (e: unknown) => {
@@ -149,6 +167,31 @@ function AuthPage() {
       fail(e);
     } finally {
       setBusy(false);
+    }
+  };
+
+  /**
+   * Social sign-in. The backend owns the OAuth handshake — the frontend only
+   * asks for the provider URL and hands the browser over. After the provider
+   * returns, the user must claim an @anexomail.com identity before the
+   * workspace opens.
+   */
+  const social = async (provider: Provider) => {
+    setError(null);
+    setProviderBusy(provider);
+    try {
+      const res = await api<{ url: string }>(
+        `/api/auth/oauth/${provider}/start`,
+        {
+          method: "POST",
+          body: JSON.stringify({ redirect_to: `${window.location.origin}/auth/callback` }),
+          auth: false,
+        },
+      );
+      window.location.href = res.url;
+    } catch (e) {
+      fail(e);
+      setProviderBusy(null);
     }
   };
 
@@ -271,6 +314,23 @@ function AuthPage() {
               </div>
 
               <div className="space-y-ax-2">
+                {PROVIDERS.map(({ id, label, icon: Icon }) => (
+                  <Button
+                    key={id}
+                    type="button"
+                    variant="outline"
+                    className="ax-press w-full"
+                    onClick={() => void social(id)}
+                    disabled={busy || providerBusy !== null}
+                  >
+                    {providerBusy === id ? (
+                      <Loader2 className="size-4 animate-spin" />
+                    ) : (
+                      <Icon className="size-4" />
+                    )}
+                    {label}
+                  </Button>
+                ))}
                 <Button
                   type="button"
                   variant="outline"
@@ -296,6 +356,11 @@ function AuthPage() {
                   </Button>
                 )}
               </div>
+
+              <p className="ax-caption mt-ax-3 text-center">
+                No domain yet? Sign in with Google, Apple or GitHub — then you pick your own{" "}
+                <span className="font-semibold text-foreground">@anexomail.com</span> address.
+              </p>
 
               <p className="ax-caption mt-ax-4 text-center">
                 {mode === "signup" ? "Already have a workspace?" : "New here?"}{" "}
