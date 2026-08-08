@@ -60,6 +60,7 @@ import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.
 import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
 import { Route as AppFounderAiMemoryRouteImport } from './routes/app.founder_.ai.memory'
 import { Route as AppFounderAiPromptsRouteImport } from './routes/app.founder_.ai.prompts'
+import { Route as AppFounderAiReceiptsRouteImport } from './routes/app.founder_.ai.receipts'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -318,6 +319,11 @@ const AppFounderAiPromptsRoute = AppFounderAiPromptsRouteImport.update({
   path: '/prompts',
   getParentRoute: () => AppFounderAiRoute,
 } as any)
+const AppFounderAiReceiptsRoute = AppFounderAiReceiptsRouteImport.update({
+  id: '/receipts',
+  path: '/receipts',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -380,6 +386,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
+  '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -429,6 +436,7 @@ export interface FileRoutesByTo {
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
+  '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai': typeof AppFounderAiIndexRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
@@ -485,6 +493,7 @@ export interface FileRoutesById {
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder_/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder_/ai/prompts': typeof AppFounderAiPromptsRoute
+  '/app/founder_/ai/receipts': typeof AppFounderAiReceiptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder_/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -542,6 +551,7 @@ export interface FileRouteTypes {
     | '/app/founder/ai/arena'
     | '/app/founder/ai/memory'
     | '/app/founder/ai/prompts'
+    | '/app/founder/ai/receipts'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai/'
     | '/app/mail/$folder/'
@@ -591,6 +601,7 @@ export interface FileRouteTypes {
     | '/app/founder/ai/arena'
     | '/app/founder/ai/memory'
     | '/app/founder/ai/prompts'
+    | '/app/founder/ai/receipts'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai'
     | '/app/mail/$folder'
@@ -646,6 +657,7 @@ export interface FileRouteTypes {
     | '/app/founder_/ai/arena'
     | '/app/founder_/ai/memory'
     | '/app/founder_/ai/prompts'
+    | '/app/founder_/ai/receipts'
     | '/app/mail/$folder/$threadId'
     | '/app/founder_/ai/'
     | '/app/mail/$folder/'
@@ -1025,6 +1037,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderAiPromptsRouteImport
       parentRoute: typeof AppFounderAiRoute
     }
+    '/app/founder_/ai/receipts': {
+      id: '/app/founder_/ai/receipts'
+      path: '/receipts'
+      fullPath: '/app/founder/ai/receipts'
+      preLoaderRoute: typeof AppFounderAiReceiptsRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
     '/app/mail/$folder/': {
       id: '/app/mail/$folder/'
       path: '/'
@@ -1114,6 +1133,7 @@ interface AppFounderAiRouteChildren {
   AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
   AppFounderAiMemoryRoute: typeof AppFounderAiMemoryRoute
   AppFounderAiPromptsRoute: typeof AppFounderAiPromptsRoute
+  AppFounderAiReceiptsRoute: typeof AppFounderAiReceiptsRoute
   AppFounderAiIndexRoute: typeof AppFounderAiIndexRoute
 }
 
@@ -1121,6 +1141,7 @@ const AppFounderAiRouteChildren: AppFounderAiRouteChildren = {
   AppFounderAiArenaRoute: AppFounderAiArenaRoute,
   AppFounderAiMemoryRoute: AppFounderAiMemoryRoute,
   AppFounderAiPromptsRoute: AppFounderAiPromptsRoute,
+  AppFounderAiReceiptsRoute: AppFounderAiReceiptsRoute,
   AppFounderAiIndexRoute: AppFounderAiIndexRoute,
 }
 
