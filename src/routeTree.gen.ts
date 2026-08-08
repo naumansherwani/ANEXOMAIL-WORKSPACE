@@ -58,6 +58,7 @@ import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.index'
 import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
+import { Route as AppFounderAiPromptsRouteImport } from './routes/app.founder_.ai.prompts'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -306,6 +307,11 @@ const AppFounderAiArenaRoute = AppFounderAiArenaRouteImport.update({
   path: '/arena',
   getParentRoute: () => AppFounderAiRoute,
 } as any)
+const AppFounderAiPromptsRoute = AppFounderAiPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -366,6 +372,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -413,6 +420,7 @@ export interface FileRoutesByTo {
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai': typeof AppFounderAiIndexRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
@@ -467,6 +475,7 @@ export interface FileRoutesById {
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder_/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder_/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -522,6 +531,7 @@ export interface FileRouteTypes {
     | '/app/crm/'
     | '/app/org/'
     | '/app/founder/ai/arena'
+    | '/app/founder/ai/prompts'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai/'
     | '/app/mail/$folder/'
@@ -569,6 +579,7 @@ export interface FileRouteTypes {
     | '/app/crm'
     | '/app/org'
     | '/app/founder/ai/arena'
+    | '/app/founder/ai/prompts'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai'
     | '/app/mail/$folder'
@@ -622,6 +633,7 @@ export interface FileRouteTypes {
     | '/app/crm/'
     | '/app/org/'
     | '/app/founder_/ai/arena'
+    | '/app/founder_/ai/prompts'
     | '/app/mail/$folder/$threadId'
     | '/app/founder_/ai/'
     | '/app/mail/$folder/'
@@ -987,6 +999,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderAiArenaRouteImport
       parentRoute: typeof AppFounderAiRoute
     }
+    '/app/founder_/ai/prompts': {
+      id: '/app/founder_/ai/prompts'
+      path: '/prompts'
+      fullPath: '/app/founder/ai/prompts'
+      preLoaderRoute: typeof AppFounderAiPromptsRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
     '/app/mail/$folder/': {
       id: '/app/mail/$folder/'
       path: '/'
@@ -1074,11 +1093,13 @@ const AppOrgRouteWithChildren =
 
 interface AppFounderAiRouteChildren {
   AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
+  AppFounderAiPromptsRoute: typeof AppFounderAiPromptsRoute
   AppFounderAiIndexRoute: typeof AppFounderAiIndexRoute
 }
 
 const AppFounderAiRouteChildren: AppFounderAiRouteChildren = {
   AppFounderAiArenaRoute: AppFounderAiArenaRoute,
+  AppFounderAiPromptsRoute: AppFounderAiPromptsRoute,
   AppFounderAiIndexRoute: AppFounderAiIndexRoute,
 }
 
