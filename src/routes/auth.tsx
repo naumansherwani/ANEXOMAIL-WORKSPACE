@@ -37,12 +37,46 @@ type Mode = "login" | "signup" | "link";
 
 type Provider = "google" | "apple" | "github";
 
-const PROVIDERS: { id: Provider; label: string; icon: (p: { className?: string }) => JSX.Element }[] =
-  [
-    { id: "google", label: "Continue with Google", icon: GoogleIcon },
-    { id: "apple", label: "Continue with Apple", icon: AppleIcon },
-    { id: "github", label: "Continue with GitHub", icon: GitHubIcon },
-  ];
+type IconProps = { className?: string };
+
+function GoogleIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden focusable="false">
+      <path
+        fill="currentColor"
+        d="M12 11v2.6h6.1c-.25 1.6-1.86 4.7-6.1 4.7A6.3 6.3 0 0 1 12 5.7c1.6 0 2.9.6 3.8 1.4l1.9-1.85A9 9 0 0 0 12 3a9 9 0 0 0 0 18c5.2 0 8.7-3.65 8.7-8.8 0-.6-.07-1.05-.16-1.5H12Z"
+      />
+    </svg>
+  );
+}
+
+function AppleIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden focusable="false">
+      <path
+        fill="currentColor"
+        d="M16.4 12.7c0-2.2 1.8-3.3 1.9-3.35-1-1.5-2.6-1.7-3.15-1.72-1.35-.13-2.6.78-3.3.78-.7 0-1.75-.76-2.9-.74-1.5.02-2.85.87-3.62 2.2-1.55 2.7-.4 6.7 1.1 8.9.74 1.07 1.63 2.27 2.8 2.23 1.12-.05 1.55-.72 2.9-.72 1.35 0 1.73.72 2.9.7 1.2-.02 1.97-1.1 2.7-2.17.85-1.24 1.2-2.44 1.22-2.5-.03-.02-2.34-.9-2.35-3.6ZM14.5 5.9c.6-.72 1-1.72.9-2.72-.87.04-1.93.58-2.55 1.3-.56.63-1.03 1.66-.9 2.64.97.07 1.95-.5 2.55-1.22Z"
+      />
+    </svg>
+  );
+}
+
+function GitHubIcon({ className }: IconProps) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden focusable="false">
+      <path
+        fill="currentColor"
+        d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.45-1.16-1.1-1.47-1.1-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.88 1.52 2.3 1.08 2.87.83.09-.64.35-1.08.63-1.33-2.22-.25-4.55-1.11-4.55-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .83-.27 2.75 1.02a9.5 9.5 0 0 1 5 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.94.36.31.68.92.68 1.86v2.75c0 .27.18.58.69.48A10 10 0 0 0 12 2Z"
+      />
+    </svg>
+  );
+}
+
+const PROVIDERS: { id: Provider; label: string; icon: (p: IconProps) => React.ReactElement }[] = [
+  { id: "google", label: "Continue with Google", icon: GoogleIcon },
+  { id: "apple", label: "Continue with Apple", icon: AppleIcon },
+  { id: "github", label: "Continue with GitHub", icon: GitHubIcon },
+];
 
 type LoginResult =
   | { token: string; mfa_required?: false }
