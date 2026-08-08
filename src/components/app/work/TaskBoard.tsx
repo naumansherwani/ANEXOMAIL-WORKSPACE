@@ -3,16 +3,11 @@ import { CheckCircle2, Circle, CircleDot, Flame } from "lucide-react";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
-import { useTaskAction, useTasks, type WorkTask, type TaskStatus } from "@/lib/calendar";
+import { TASK_COLUMNS, useTaskAction, useTasks, type WorkTask } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
 
-const COLUMNS: { status: TaskStatus; label: string }[] = [
-  { status: "todo", label: "To do" },
-  { status: "doing", label: "Doing" },
-  { status: "waiting", label: "Waiting" },
-  { status: "done", label: "Done" },
-];
+type TaskStatus = WorkTask["status"];
 
 const NEXT: Record<TaskStatus, TaskStatus> = {
   todo: "doing",
@@ -41,10 +36,10 @@ export function TaskBoard() {
 
   return (
     <div className="grid grid-cols-1 gap-ax-3 md:grid-cols-4">
-      {COLUMNS.map((col) => {
-        const items = rows.filter((t) => t.status === col.status);
+      {TASK_COLUMNS.map((col) => {
+        const items = rows.filter((t) => t.status === col.id);
         return (
-          <div key={col.status} className="rounded-xl border border-border p-ax-3">
+          <div key={col.id} className="rounded-xl border border-border p-ax-3">
             <p className="ax-eyebrow flex items-center gap-1.5">
               {col.label}
               <span className="text-steel">{items.length}</span>
@@ -57,7 +52,7 @@ export function TaskBoard() {
                   task={task}
                   onAdvance={() =>
                     act.mutate(
-                      { id: task.id, action: "status", status: NEXT[task.status] },
+                      { id: task.id, status: NEXT[task.status] },
                       {
                         onError: (error) =>
                           notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not update", {
@@ -104,10 +99,14 @@ function TaskCard({ task, onAdvance }: { task: WorkTask; onAdvance: () => void }
             <span className="ax-caption block text-muted-foreground">
               {task.owner ?? "unassigned"}
               {task.due_at ? ` · ${new Date(task.due_at).toLocaleDateString()}` : ""}
-              {task.source === "promise" ? " · promise" : task.source === "meeting" ? " · meeting" : ""}
+              {task.source === "promise"
+                ? " · promise"
+                : task.source === "meeting_outcome"
+                  ? " · meeting"
+                  : ""}
             </span>
           </span>
-          {task.overdue && <Flame className="size-3.5 shrink-0 text-danger" />}
+          {task.late && <Flame className="size-3.5 shrink-0 text-danger" />}
         </span>
       </button>
     </li>
