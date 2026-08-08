@@ -20,6 +20,7 @@ import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as AiStudioRouteImport } from './routes/ai_.studio'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAccountRouteImport } from './routes/app.account'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
@@ -43,6 +44,7 @@ import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
+import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -55,6 +57,11 @@ import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
 import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
+import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.index'
+import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
+import { Route as AppFounderAiMemoryRouteImport } from './routes/app.founder_.ai.memory'
+import { Route as AppFounderAiPromptsRouteImport } from './routes/app.founder_.ai.prompts'
+import { Route as AppFounderAiReceiptsRouteImport } from './routes/app.founder_.ai.receipts'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -111,6 +118,11 @@ const PlansRoute = PlansRouteImport.update({
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiStudioRoute = AiStudioRouteImport.update({
+  id: '/ai_/studio',
+  path: '/ai/studio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppIndexRoute = AppIndexRouteImport.update({
@@ -228,6 +240,11 @@ const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
   path: '/pipeline',
   getParentRoute: () => AppCrmRoute,
 } as any)
+const AppFounderAiRoute = AppFounderAiRouteImport.update({
+  id: '/founder_/ai',
+  path: '/founder/ai',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
   id: '/founder_/crm',
   path: '/founder/crm',
@@ -288,6 +305,31 @@ const AppOrgSecurityRoute = AppOrgSecurityRouteImport.update({
   path: '/security',
   getParentRoute: () => AppOrgRoute,
 } as any)
+const AppFounderAiIndexRoute = AppFounderAiIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
+const AppFounderAiArenaRoute = AppFounderAiArenaRouteImport.update({
+  id: '/arena',
+  path: '/arena',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
+const AppFounderAiMemoryRoute = AppFounderAiMemoryRouteImport.update({
+  id: '/memory',
+  path: '/memory',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
+const AppFounderAiPromptsRoute = AppFounderAiPromptsRouteImport.update({
+  id: '/prompts',
+  path: '/prompts',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
+const AppFounderAiReceiptsRoute = AppFounderAiReceiptsRouteImport.update({
+  id: '/receipts',
+  path: '/receipts',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -311,6 +353,7 @@ export interface FileRoutesByFullPath {
   '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
@@ -332,6 +375,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -346,7 +390,12 @@ export interface FileRoutesByFullPath {
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
+  '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
+  '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
+  '/app/founder/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
 export interface FileRoutesByTo {
@@ -360,6 +409,7 @@ export interface FileRoutesByTo {
   '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/calendar': typeof AppCalendarRoute
@@ -391,7 +441,12 @@ export interface FileRoutesByTo {
   '/app/admin': typeof AppAdminIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
+  '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
+  '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
+  '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
+  '/app/founder/ai': typeof AppFounderAiIndexRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
 }
 export interface FileRoutesById {
@@ -407,6 +462,7 @@ export interface FileRoutesById {
   '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/ai_/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
@@ -428,6 +484,7 @@ export interface FileRoutesById {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -442,7 +499,12 @@ export interface FileRoutesById {
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder_/ai/memory': typeof AppFounderAiMemoryRoute
+  '/app/founder_/ai/prompts': typeof AppFounderAiPromptsRoute
+  '/app/founder_/ai/receipts': typeof AppFounderAiReceiptsRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
+  '/app/founder_/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
 export interface FileRouteTypes {
@@ -459,6 +521,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/plans'
     | '/security'
+    | '/ai/studio'
     | '/app/account'
     | '/app/admin'
     | '/app/ai-center'
@@ -480,6 +543,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/ai'
     | '/app/founder/crm'
     | '/app/founder/org'
     | '/app/mail/$folder'
@@ -494,7 +558,12 @@ export interface FileRouteTypes {
     | '/app/admin/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/founder/ai/arena'
+    | '/app/founder/ai/memory'
+    | '/app/founder/ai/prompts'
+    | '/app/founder/ai/receipts'
     | '/app/mail/$folder/$threadId'
+    | '/app/founder/ai/'
     | '/app/mail/$folder/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -508,6 +577,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/plans'
     | '/security'
+    | '/ai/studio'
     | '/app/account'
     | '/app/ai-center'
     | '/app/calendar'
@@ -539,7 +609,12 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/crm'
     | '/app/org'
+    | '/app/founder/ai/arena'
+    | '/app/founder/ai/memory'
+    | '/app/founder/ai/prompts'
+    | '/app/founder/ai/receipts'
     | '/app/mail/$folder/$threadId'
+    | '/app/founder/ai'
     | '/app/mail/$folder'
   id:
     | '__root__'
@@ -554,6 +629,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/plans'
     | '/security'
+    | '/ai_/studio'
     | '/app/account'
     | '/app/admin'
     | '/app/ai-center'
@@ -575,6 +651,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder_/ai'
     | '/app/founder_/crm'
     | '/app/founder_/org'
     | '/app/mail/$folder'
@@ -589,7 +666,12 @@ export interface FileRouteTypes {
     | '/app/admin/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/founder_/ai/arena'
+    | '/app/founder_/ai/memory'
+    | '/app/founder_/ai/prompts'
+    | '/app/founder_/ai/receipts'
     | '/app/mail/$folder/$threadId'
+    | '/app/founder_/ai/'
     | '/app/mail/$folder/'
   fileRoutesById: FileRoutesById
 }
@@ -605,6 +687,7 @@ export interface RootRouteChildren {
   PagesRoute: typeof PagesRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
+  AiStudioRoute: typeof AiStudioRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
 
@@ -685,6 +768,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai_/studio': {
+      id: '/ai_/studio'
+      path: '/ai/studio'
+      fullPath: '/ai/studio'
+      preLoaderRoute: typeof AiStudioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -848,6 +938,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCrmPipelineRouteImport
       parentRoute: typeof AppCrmRoute
     }
+    '/app/founder_/ai': {
+      id: '/app/founder_/ai'
+      path: '/founder/ai'
+      fullPath: '/app/founder/ai'
+      preLoaderRoute: typeof AppFounderAiRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder_/crm': {
       id: '/app/founder_/crm'
       path: '/founder/crm'
@@ -931,6 +1028,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/org/security'
       preLoaderRoute: typeof AppOrgSecurityRouteImport
       parentRoute: typeof AppOrgRoute
+    }
+    '/app/founder_/ai/': {
+      id: '/app/founder_/ai/'
+      path: '/'
+      fullPath: '/app/founder/ai/'
+      preLoaderRoute: typeof AppFounderAiIndexRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
+    '/app/founder_/ai/arena': {
+      id: '/app/founder_/ai/arena'
+      path: '/arena'
+      fullPath: '/app/founder/ai/arena'
+      preLoaderRoute: typeof AppFounderAiArenaRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
+    '/app/founder_/ai/memory': {
+      id: '/app/founder_/ai/memory'
+      path: '/memory'
+      fullPath: '/app/founder/ai/memory'
+      preLoaderRoute: typeof AppFounderAiMemoryRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
+    '/app/founder_/ai/prompts': {
+      id: '/app/founder_/ai/prompts'
+      path: '/prompts'
+      fullPath: '/app/founder/ai/prompts'
+      preLoaderRoute: typeof AppFounderAiPromptsRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
+    '/app/founder_/ai/receipts': {
+      id: '/app/founder_/ai/receipts'
+      path: '/receipts'
+      fullPath: '/app/founder/ai/receipts'
+      preLoaderRoute: typeof AppFounderAiReceiptsRouteImport
+      parentRoute: typeof AppFounderAiRoute
     }
     '/app/mail/$folder/': {
       id: '/app/mail/$folder/'
@@ -1017,6 +1149,26 @@ const AppOrgRouteChildren: AppOrgRouteChildren = {
 const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
 
+interface AppFounderAiRouteChildren {
+  AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
+  AppFounderAiMemoryRoute: typeof AppFounderAiMemoryRoute
+  AppFounderAiPromptsRoute: typeof AppFounderAiPromptsRoute
+  AppFounderAiReceiptsRoute: typeof AppFounderAiReceiptsRoute
+  AppFounderAiIndexRoute: typeof AppFounderAiIndexRoute
+}
+
+const AppFounderAiRouteChildren: AppFounderAiRouteChildren = {
+  AppFounderAiArenaRoute: AppFounderAiArenaRoute,
+  AppFounderAiMemoryRoute: AppFounderAiMemoryRoute,
+  AppFounderAiPromptsRoute: AppFounderAiPromptsRoute,
+  AppFounderAiReceiptsRoute: AppFounderAiReceiptsRoute,
+  AppFounderAiIndexRoute: AppFounderAiIndexRoute,
+}
+
+const AppFounderAiRouteWithChildren = AppFounderAiRoute._addFileChildren(
+  AppFounderAiRouteChildren,
+)
+
 interface AppMailFolderRouteChildren {
   AppMailFolderThreadIdRoute: typeof AppMailFolderThreadIdRoute
   AppMailFolderIndexRoute: typeof AppMailFolderIndexRoute
@@ -1043,6 +1195,7 @@ interface AppRouteChildren {
   AppSearchRoute: typeof AppSearchRoute
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -1060,6 +1213,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSearchRoute: AppSearchRoute,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
+  AppFounderAiRoute: AppFounderAiRouteWithChildren,
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
@@ -1079,6 +1233,7 @@ const rootRouteChildren: RootRouteChildren = {
   PagesRoute: PagesRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
+  AiStudioRoute: AiStudioRoute,
   AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
