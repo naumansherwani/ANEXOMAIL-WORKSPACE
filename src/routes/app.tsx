@@ -27,9 +27,9 @@ export const Route = createFileRoute("/app")({
 function AppLayout() {
   const navigate = useNavigate();
   const { status, unavailableReason, refresh } = useAuth();
-  // Founder review access: read once after hydration so SSR stays identical.
-  const [preview, setPreview] = useState(false);
-  useEffect(() => setPreview(founderPreviewEnabled()), []);
+  // Founder review access. This route is ssr:false, so reading the key in the
+  // initial state is safe and beats the redirect effect to the first commit.
+  const [preview, setPreview] = useState(() => founderPreviewEnabled());
 
   useEffect(() => {
     if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
