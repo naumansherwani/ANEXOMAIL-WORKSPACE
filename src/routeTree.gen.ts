@@ -44,6 +44,7 @@ import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
+import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
 import { Route as AppOrgAuditRouteImport } from './routes/app.org.audit'
@@ -232,6 +233,11 @@ const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
   path: '/founder/crm',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderOrgRoute = AppFounderOrgRouteImport.update({
+  id: '/founder_/org',
+  path: '/founder/org',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -327,6 +333,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
+  '/app/founder/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -372,6 +379,7 @@ export interface FileRoutesByTo {
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
+  '/app/founder/org': typeof AppFounderOrgRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
@@ -421,6 +429,7 @@ export interface FileRoutesById {
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
+  '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -472,6 +481,7 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder/crm'
+    | '/app/founder/org'
     | '/app/mail/$folder'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -517,6 +527,7 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder/crm'
+    | '/app/founder/org'
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
@@ -565,6 +576,7 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder_/crm'
+    | '/app/founder_/org'
     | '/app/mail/$folder'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -843,6 +855,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderCrmRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/founder_/org': {
+      id: '/app/founder_/org'
+      path: '/founder/org'
+      fullPath: '/app/founder/org'
+      preLoaderRoute: typeof AppFounderOrgRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -1025,6 +1044,7 @@ interface AppRouteChildren {
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
+  AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
 }
 
@@ -1041,6 +1061,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
+  AppFounderOrgRoute: AppFounderOrgRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
 }
 
