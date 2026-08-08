@@ -16,6 +16,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as MoveInRouteImport } from './routes/move-in'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OwnershipRouteImport } from './routes/ownership'
+import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AppIndexRouteImport } from './routes/app.index'
@@ -69,6 +70,11 @@ const OnboardingRoute = OnboardingRouteImport.update({
 const OwnershipRoute = OwnershipRouteImport.update({
   id: '/ownership',
   path: '/ownership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PagesRoute = PagesRouteImport.update({
+  id: '/pages',
+  path: '/pages',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansRoute = PlansRouteImport.update({
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
+  '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/app/account': typeof AppAccountRoute
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
+  '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/app/account': typeof AppAccountRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
+  '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/app/account': typeof AppAccountRoute
@@ -259,6 +268,7 @@ export interface FileRouteTypes {
     | '/move-in'
     | '/onboarding'
     | '/ownership'
+    | '/pages'
     | '/plans'
     | '/security'
     | '/app/account'
@@ -286,6 +296,7 @@ export interface FileRouteTypes {
     | '/move-in'
     | '/onboarding'
     | '/ownership'
+    | '/pages'
     | '/plans'
     | '/security'
     | '/app/account'
@@ -312,6 +323,7 @@ export interface FileRouteTypes {
     | '/move-in'
     | '/onboarding'
     | '/ownership'
+    | '/pages'
     | '/plans'
     | '/security'
     | '/app/account'
@@ -341,6 +353,7 @@ export interface RootRouteChildren {
   MoveInRoute: typeof MoveInRoute
   OnboardingRoute: typeof OnboardingRoute
   OwnershipRoute: typeof OwnershipRoute
+  PagesRoute: typeof PagesRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
@@ -395,6 +408,13 @@ declare module '@tanstack/react-router' {
       path: '/ownership'
       fullPath: '/ownership'
       preLoaderRoute: typeof OwnershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pages': {
+      id: '/pages'
+      path: '/pages'
+      fullPath: '/pages'
+      preLoaderRoute: typeof PagesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plans': {
@@ -601,6 +621,7 @@ const rootRouteChildren: RootRouteChildren = {
   MoveInRoute: MoveInRoute,
   OnboardingRoute: OnboardingRoute,
   OwnershipRoute: OwnershipRoute,
+  PagesRoute: PagesRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
   AuthCallbackRoute: AuthCallbackRoute,

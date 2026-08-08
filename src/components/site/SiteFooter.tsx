@@ -29,6 +29,7 @@ const groups = [
     items: [
       { label: "Admin centre", to: "/app/admin" as const },
       { label: "Search", to: "/app/search" as const },
+      { label: "All pages", to: "/pages" as const },
     ],
   },
 ];
