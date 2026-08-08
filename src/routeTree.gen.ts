@@ -38,6 +38,8 @@ import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
 import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
+import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
+import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -189,6 +191,16 @@ const AppCrmIndexRoute = AppCrmIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppCrmRoute,
 } as any)
+const AppCrmActivityRoute = AppCrmActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => AppCrmRoute,
+} as any)
+const AppCrmCollabRoute = AppCrmCollabRouteImport.update({
+  id: '/collab',
+  path: '/collab',
+  getParentRoute: () => AppCrmRoute,
+} as any)
 const AppCrmLeadsRoute = AppCrmLeadsRouteImport.update({
   id: '/leads',
   path: '/leads',
@@ -243,6 +255,8 @@ export interface FileRoutesByFullPath {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/crm/activity': typeof AppCrmActivityRoute
+  '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -276,6 +290,8 @@ export interface FileRoutesByTo {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/crm/activity': typeof AppCrmActivityRoute
+  '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/admin': typeof AppAdminIndexRoute
@@ -312,6 +328,8 @@ export interface FileRoutesById {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/crm/activity': typeof AppCrmActivityRoute
+  '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -350,6 +368,8 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/crm/activity'
+    | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/mail/$folder'
@@ -383,6 +403,8 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/crm/activity'
+    | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/admin'
@@ -418,6 +440,8 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/crm/activity'
+    | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/mail/$folder'
@@ -647,6 +671,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCrmIndexRouteImport
       parentRoute: typeof AppCrmRoute
     }
+    '/app/crm/activity': {
+      id: '/app/crm/activity'
+      path: '/activity'
+      fullPath: '/app/crm/activity'
+      preLoaderRoute: typeof AppCrmActivityRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
+    '/app/crm/collab': {
+      id: '/app/crm/collab'
+      path: '/collab'
+      fullPath: '/app/crm/collab'
+      preLoaderRoute: typeof AppCrmCollabRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
     '/app/crm/leads': {
       id: '/app/crm/leads'
       path: '/leads'
@@ -708,12 +746,16 @@ const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
 )
 
 interface AppCrmRouteChildren {
+  AppCrmActivityRoute: typeof AppCrmActivityRoute
+  AppCrmCollabRoute: typeof AppCrmCollabRoute
   AppCrmLeadsRoute: typeof AppCrmLeadsRoute
   AppCrmPipelineRoute: typeof AppCrmPipelineRoute
   AppCrmIndexRoute: typeof AppCrmIndexRoute
 }
 
 const AppCrmRouteChildren: AppCrmRouteChildren = {
+  AppCrmActivityRoute: AppCrmActivityRoute,
+  AppCrmCollabRoute: AppCrmCollabRoute,
   AppCrmLeadsRoute: AppCrmLeadsRoute,
   AppCrmPipelineRoute: AppCrmPipelineRoute,
   AppCrmIndexRoute: AppCrmIndexRoute,
