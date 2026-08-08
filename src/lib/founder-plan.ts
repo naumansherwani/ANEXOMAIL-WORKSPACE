@@ -86,7 +86,7 @@ export const AI_MAILBOXES: PlannedMailbox[] = [
     note: "Validation layer. Checks a draft three times before it leaves.",
     agent: "Sherlock",
   },
-  { address: "aria.ttl@nexatect.com", display_name: "Aria — Travel & hospitality", kind: "industry", note: "Industry desk.", agent: "Aria" },
+  { address: "aria.tth@nexatect.com", display_name: "Aria — Travel & hospitality", kind: "industry", note: "Industry desk.", agent: "Aria" },
   { address: "orion.airlines@nexatect.com", display_name: "Captain Orion — Airlines", kind: "industry", note: "Industry desk.", agent: "Captain Orion" },
   { address: "rex@nexatect.com", display_name: "Rex — Car rental", kind: "industry", note: "Industry desk.", agent: "Rex" },
   { address: "lyra@nexatect.com", display_name: "Dr. Lyra — Healthcare", kind: "industry", note: "Industry desk.", agent: "Dr. Lyra" },
