@@ -3,11 +3,13 @@ import {
   CalendarDays,
   CheckSquare,
   ChevronDown,
+  Crown,
   Inbox,
   LogOut,
   Mail,
   Search,
   Shield,
+  Sparkles,
   UserCircle2,
   Users,
 } from "lucide-react";
@@ -41,6 +43,8 @@ const primary: RailItem[] = [
   { to: "/app/people", label: "People", icon: Users },
   { to: "/app/calendar", label: "Calendar", icon: CalendarDays },
   { to: "/app/work", label: "Work", icon: CheckSquare },
+  { to: "/app/ai-center", label: "AI", icon: Sparkles },
+  { to: "/app/founder", label: "Founder", icon: Crown },
   { to: "/app/admin", label: "Admin", icon: Shield, match: "/app/admin" },
 ];
 
