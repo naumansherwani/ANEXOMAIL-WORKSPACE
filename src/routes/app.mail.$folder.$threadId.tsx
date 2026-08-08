@@ -69,7 +69,15 @@ function ThreadPage() {
           )}
         </div>
         <div className="ml-auto shrink-0">
-          <ThreadHeaderActions threadId={thread.id} status={thread.status} />
+          <ThreadHeaderActions
+            threadId={thread.id}
+            status={thread.status}
+            subject={thread.subject || undefined}
+            participants={thread.messages
+              .map((m) => m.from_address)
+              .filter((a): a is string => Boolean(a))
+              .filter((a, i, arr) => arr.indexOf(a) === i)}
+          />
         </div>
       </div>
 
