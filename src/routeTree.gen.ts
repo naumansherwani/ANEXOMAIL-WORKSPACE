@@ -43,6 +43,7 @@ import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
+import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -228,6 +229,11 @@ const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
   path: '/pipeline',
   getParentRoute: () => AppCrmRoute,
 } as any)
+const AppFounderAiRoute = AppFounderAiRouteImport.update({
+  id: '/founder_/ai',
+  path: '/founder/ai',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
   id: '/founder_/crm',
   path: '/founder/crm',
@@ -332,6 +338,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/ai': typeof AppFounderAiRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -378,6 +385,7 @@ export interface FileRoutesByTo {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/ai': typeof AppFounderAiRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -428,6 +436,7 @@ export interface FileRoutesById {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder_/ai': typeof AppFounderAiRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -480,6 +489,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/ai'
     | '/app/founder/crm'
     | '/app/founder/org'
     | '/app/mail/$folder'
@@ -526,6 +536,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/ai'
     | '/app/founder/crm'
     | '/app/founder/org'
     | '/app/org/audit'
@@ -575,6 +586,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder_/ai'
     | '/app/founder_/crm'
     | '/app/founder_/org'
     | '/app/mail/$folder'
@@ -848,6 +860,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCrmPipelineRouteImport
       parentRoute: typeof AppCrmRoute
     }
+    '/app/founder_/ai': {
+      id: '/app/founder_/ai'
+      path: '/founder/ai'
+      fullPath: '/app/founder/ai'
+      preLoaderRoute: typeof AppFounderAiRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder_/crm': {
       id: '/app/founder_/crm'
       path: '/founder/crm'
@@ -1043,6 +1062,7 @@ interface AppRouteChildren {
   AppSearchRoute: typeof AppSearchRoute
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppFounderAiRoute: typeof AppFounderAiRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -1060,6 +1080,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSearchRoute: AppSearchRoute,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
+  AppFounderAiRoute: AppFounderAiRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,

@@ -29,13 +29,13 @@ export const Route = createFileRoute("/app/founder_/ai")({
   component: FounderAiLayout,
 });
 
-const TABS = [
+const TABS: { to: string; label: string; exact?: boolean }[] = [
   { to: "/app/founder/ai", label: "Workbench", exact: true },
   { to: "/app/founder/ai/arena", label: "Arena" },
   { to: "/app/founder/ai/prompts", label: "Prompts" },
   { to: "/app/founder/ai/memory", label: "Memory" },
   { to: "/app/founder/ai/receipts", label: "Receipts" },
-] as const;
+];
 
 function FounderAiLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
