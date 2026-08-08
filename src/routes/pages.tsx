@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
+import { founderPreviewEnabled, setFounderPreview } from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/pages")({
   head: () => ({
@@ -110,6 +111,7 @@ function PageMap() {
   const total = GROUPS.reduce((sum, g) => sum + g.items.length, 0);
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [ready, setReady] = useState(false);
+  const [preview, setPreview] = useState(false);
 
   // Founder review state is a local, private checklist — no server, no account.
   useEffect(() => {
@@ -120,6 +122,7 @@ function PageMap() {
       /* ignore corrupt state */
     }
     setReady(true);
+    setPreview(founderPreviewEnabled());
   }, []);
 
   const toggle = (key: string) => {
@@ -176,6 +179,30 @@ function PageMap() {
               className="ax-press rounded-xl border border-border px-3 py-2 text-[11px] font-semibold text-muted-foreground"
             >
               Reset ticks
+            </button>
+          </div>
+
+          <div className="ax-plane mt-ax-3 flex flex-wrap items-center gap-ax-4 rounded-2xl p-ax-4">
+            <div className="min-w-0 flex-1">
+              <p className="text-[13px] font-semibold text-foreground">
+                Founder access {preview ? "— ON" : "— OFF"}
+              </p>
+              <p className="ax-caption text-muted-foreground">
+                Turn this on to open every workspace page without signing in. Data stays real —
+                unwired endpoints show an honest state, never dummy content.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                const next = !preview;
+                setFounderPreview(next);
+                setPreview(next);
+              }}
+              data-on={preview ? "true" : "false"}
+              className="ax-press rounded-xl border border-border px-3 py-2 text-[11px] font-semibold text-foreground data-[on=true]:border-primary data-[on=true]:bg-primary data-[on=true]:text-primary-foreground"
+            >
+              {preview ? "Founder access ON" : "Enable founder access"}
             </button>
           </div>
 
