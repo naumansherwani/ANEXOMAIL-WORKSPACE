@@ -25,6 +25,7 @@ import { Route as AppAccountRouteImport } from './routes/app.account'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppAiCenterRouteImport } from './routes/app.ai-center'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
+import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
@@ -36,6 +37,7 @@ import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
+import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
@@ -120,6 +122,11 @@ const AppCalendarRoute = AppCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => AppRoute,
 } as any)
+const AppCrmRoute = AppCrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderRoute = AppFounderRouteImport.update({
   id: '/founder',
   path: '/founder',
@@ -175,6 +182,11 @@ const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
   path: '/teams',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppCrmIndexRoute = AppCrmIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppCrmRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -207,6 +219,7 @@ export interface FileRoutesByFullPath {
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/calendar': typeof AppCalendarRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -220,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/crm/': typeof AppCrmIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
@@ -249,6 +263,7 @@ export interface FileRoutesByTo {
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/admin': typeof AppAdminIndexRoute
+  '/app/crm': typeof AppCrmIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
 }
@@ -269,6 +284,7 @@ export interface FileRoutesById {
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/calendar': typeof AppCalendarRoute
+  '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -282,6 +298,7 @@ export interface FileRoutesById {
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/crm/': typeof AppCrmIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
@@ -303,6 +320,7 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/ai-center'
     | '/app/calendar'
+    | '/app/crm'
     | '/app/founder'
     | '/app/people'
     | '/app/search'
@@ -316,6 +334,7 @@ export interface FileRouteTypes {
     | '/app/admin/teams'
     | '/app/mail/$folder'
     | '/app/admin/'
+    | '/app/crm/'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder/'
   fileRoutesByTo: FileRoutesByTo
@@ -345,6 +364,7 @@ export interface FileRouteTypes {
     | '/app/admin/members'
     | '/app/admin/teams'
     | '/app/admin'
+    | '/app/crm'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder'
   id:
@@ -364,6 +384,7 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/ai-center'
     | '/app/calendar'
+    | '/app/crm'
     | '/app/founder'
     | '/app/people'
     | '/app/search'
@@ -377,6 +398,7 @@ export interface FileRouteTypes {
     | '/app/admin/teams'
     | '/app/mail/$folder'
     | '/app/admin/'
+    | '/app/crm/'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder/'
   fileRoutesById: FileRoutesById
@@ -510,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCalendarRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/crm': {
+      id: '/app/crm'
+      path: '/crm'
+      fullPath: '/app/crm'
+      preLoaderRoute: typeof AppCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder': {
       id: '/app/founder'
       path: '/founder'
@@ -587,6 +616,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminTeamsRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/crm/': {
+      id: '/app/crm/'
+      path: '/'
+      fullPath: '/app/crm/'
+      preLoaderRoute: typeof AppCrmIndexRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -633,6 +669,17 @@ const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
   AppAdminRouteChildren,
 )
 
+interface AppCrmRouteChildren {
+  AppCrmIndexRoute: typeof AppCrmIndexRoute
+}
+
+const AppCrmRouteChildren: AppCrmRouteChildren = {
+  AppCrmIndexRoute: AppCrmIndexRoute,
+}
+
+const AppCrmRouteWithChildren =
+  AppCrmRoute._addFileChildren(AppCrmRouteChildren)
+
 interface AppMailFolderRouteChildren {
   AppMailFolderThreadIdRoute: typeof AppMailFolderThreadIdRoute
   AppMailFolderIndexRoute: typeof AppMailFolderIndexRoute
@@ -652,6 +699,7 @@ interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppAiCenterRoute: typeof AppAiCenterRoute
   AppCalendarRoute: typeof AppCalendarRoute
+  AppCrmRoute: typeof AppCrmRouteWithChildren
   AppFounderRoute: typeof AppFounderRoute
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
@@ -665,6 +713,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRouteWithChildren,
   AppAiCenterRoute: AppAiCenterRoute,
   AppCalendarRoute: AppCalendarRoute,
+  AppCrmRoute: AppCrmRouteWithChildren,
   AppFounderRoute: AppFounderRoute,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
