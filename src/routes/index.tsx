@@ -297,8 +297,10 @@ function Index() {
           </Reveal>
         </Stage>
 
-        {/* ── 2 · THE SEAL — quiet, stamps not screenshots ──────────── */}
         {/* ── 1.6 · SLA PROOF — measured, never invented ─────────────── */}
+        <SlaProof />
+
+        {/* ── 2 · THE SEAL — quiet, stamps not screenshots ──────────── */}
         <Stage id="seal" volume="hush">
           <Reveal className="max-w-2xl">
             <Eyebrow>The seal</Eyebrow>
