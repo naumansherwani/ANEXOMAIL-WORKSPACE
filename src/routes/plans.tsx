@@ -11,7 +11,7 @@ export const Route = createFileRoute("/plans")({
       {
         name: "description",
         content:
-          "Business email on your own domain from £20 a month. Basic, Pro and Business — mailboxes, shared addresses, calendar and work included.",
+          "Business email on your own domain from £20 a month. Basic, Pro and Business — mailboxes, aliases, calendar and work included.",
       },
       { property: "og:title", content: "Plans & Pricing — ANEXOMAIL Workspace" },
       {
@@ -32,10 +32,10 @@ const plans = [
     price: "£20",
     body: "For a small team getting its own domain in order.",
     features: [
-      "Mailboxes on your domain",
-      "Contacts and calendar",
-      "Threads with owner and status",
-      "Cmd+K across the workspace",
+      "1 domain · 3 mailboxes · 5GB per mailbox",
+      "5 free aliases · undo send 30s",
+      "Contacts, calendar and threads with owner",
+      "Cmd+K across the workspace · human support under 4h",
     ],
   },
   {
@@ -44,9 +44,9 @@ const plans = [
     body: "For teams answering customers every day.",
     features: [
       "Everything in Basic",
-      "Shared addresses with collision guard",
-      "Tasks and notes linked to threads",
-      "Priority delivery monitoring",
+      "3 domains · 5 mailboxes · 10GB per mailbox",
+      "Shared inbox with collision guard",
+      "Tasks, notes and thread analytics · support under 1h",
     ],
     featured: true,
   },
@@ -56,9 +56,10 @@ const plans = [
     body: "For companies that have to prove control.",
     features: [
       "Everything in Pro",
-      "Full audit log and one-click revoke",
-      "Advanced roles and address managers",
-      "One-click export of everything",
+      "Unlimited domains and mailboxes · 25GB per mailbox",
+      "Audit ledger, roles and one-click revoke",
+      "Native integrations, LEO Actions and one-click export",
+      "Dedicated SLA under 4h",
     ],
   },
 ];
