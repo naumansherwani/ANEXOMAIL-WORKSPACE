@@ -23,6 +23,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { Reveal, EASE } from "@/components/site/Reveal";
 import { Stage } from "@/components/site/Stage";
 import { HeroComposition } from "@/components/site/HeroComposition";
+import { SlaProof } from "@/components/site/SlaProof";
 
 /* Hero trust badges — every claim verifiable, nothing invented. */
 const badges = ["DKIM verified", "DMARC protected", "TLS 1.3", "Your own domain"];
@@ -295,6 +296,9 @@ function Index() {
             </h2>
           </Reveal>
         </Stage>
+
+        {/* ── 1.6 · SLA PROOF — measured, never invented ─────────────── */}
+        <SlaProof />
 
         {/* ── 2 · THE SEAL — quiet, stamps not screenshots ──────────── */}
         <Stage id="seal" volume="hush">
