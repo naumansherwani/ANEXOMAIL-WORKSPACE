@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as MoveInRouteImport } from './routes/move-in'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OwnershipRouteImport } from './routes/ownership'
@@ -55,6 +56,11 @@ const AppRoute = AppRouteImport.update({
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClaimRoute = ClaimRouteImport.update({
+  id: '/claim',
+  path: '/claim',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MoveInRoute = MoveInRouteImport.update({
@@ -178,6 +184,7 @@ export interface FileRoutesByFullPath {
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/claim': typeof ClaimRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
@@ -206,6 +213,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
+  '/claim': typeof ClaimRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
@@ -234,6 +242,7 @@ export interface FileRoutesById {
   '/ai': typeof AiRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/claim': typeof ClaimRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
@@ -265,6 +274,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/app'
     | '/auth'
+    | '/claim'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
@@ -293,6 +303,7 @@ export interface FileRouteTypes {
     | '/'
     | '/ai'
     | '/auth'
+    | '/claim'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
@@ -320,6 +331,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/app'
     | '/auth'
+    | '/claim'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
@@ -350,6 +362,7 @@ export interface RootRouteChildren {
   AiRoute: typeof AiRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
+  ClaimRoute: typeof ClaimRoute
   MoveInRoute: typeof MoveInRoute
   OnboardingRoute: typeof OnboardingRoute
   OwnershipRoute: typeof OwnershipRoute
@@ -387,6 +400,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/auth'
       preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/claim': {
+      id: '/claim'
+      path: '/claim'
+      fullPath: '/claim'
+      preLoaderRoute: typeof ClaimRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/move-in': {
@@ -618,6 +638,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiRoute: AiRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
+  ClaimRoute: ClaimRoute,
   MoveInRoute: MoveInRoute,
   OnboardingRoute: OnboardingRoute,
   OwnershipRoute: OwnershipRoute,

@@ -46,7 +46,10 @@ function OnboardingPage() {
 
   useEffect(() => {
     if (status === "signed-out") void navigate({ to: "/auth", replace: true });
-  }, [status, navigate]);
+    // Identity comes first: no workspace setup without an @anexomail.com address.
+    if (status === "signed-in" && session && !session.user.anexomail_address)
+      void navigate({ to: "/claim", replace: true });
+  }, [status, session, navigate]);
 
   const fail = (e: unknown) =>
     setError(

@@ -49,6 +49,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     items: [
       { label: "Sign in / sign up", path: "/auth", note: "Password, magic link, passkey" },
       { label: "Auth callback", path: "/auth/callback", note: "Magic link + OAuth return" },
+      {
+        label: "Claim address",
+        path: "/claim",
+        note: "Mandatory @anexomail.com identity after Google / Apple / GitHub sign-in",
+      },
       { label: "Onboarding", path: "/onboarding", note: "Create organisation, add domain" },
     ],
   },

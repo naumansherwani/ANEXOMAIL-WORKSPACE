@@ -24,6 +24,12 @@ export type SessionUser = {
   name: string | null;
   mfa_enabled: boolean;
   onboarded: boolean;
+  /**
+   * The user's ANEXOMAIL identity, e.g. "nauman@anexomail.com". Every account
+   * must own one before the workspace opens — social sign-in only proves who
+   * you are, it does not give you a mailbox. `null` = not claimed yet.
+   */
+  anexomail_address?: string | null;
 };
 
 export type Session = {
