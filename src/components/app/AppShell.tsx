@@ -1,6 +1,7 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
   CalendarDays,
+  Building2,
   CheckSquare,
   ChevronDown,
   Crown,
