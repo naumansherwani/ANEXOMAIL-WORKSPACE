@@ -27,6 +27,7 @@ import { Route as AppAiCenterRouteImport } from './routes/app.ai-center'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
+import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppWorkRouteImport } from './routes/app.work'
@@ -44,6 +45,15 @@ import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
+import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
+import { Route as AppOrgAuditRouteImport } from './routes/app.org.audit'
+import { Route as AppOrgComplianceRouteImport } from './routes/app.org.compliance'
+import { Route as AppOrgDepartmentsRouteImport } from './routes/app.org.departments'
+import { Route as AppOrgGraphRouteImport } from './routes/app.org.graph'
+import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
+import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
+import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
+import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -137,6 +147,11 @@ const AppFounderRoute = AppFounderRouteImport.update({
   path: '/founder',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOrgRoute = AppOrgRouteImport.update({
+  id: '/org',
+  path: '/org',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppPeopleRoute = AppPeopleRouteImport.update({
   id: '/people',
   path: '/people',
@@ -222,6 +237,51 @@ const AppMailFolderRoute = AppMailFolderRouteImport.update({
   path: '/mail/$folder',
   getParentRoute: () => AppRoute,
 } as any)
+const AppOrgIndexRoute = AppOrgIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgAuditRoute = AppOrgAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgComplianceRoute = AppOrgComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgDepartmentsRoute = AppOrgDepartmentsRouteImport.update({
+  id: '/departments',
+  path: '/departments',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgGraphRoute = AppOrgGraphRouteImport.update({
+  id: '/graph',
+  path: '/graph',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgMembersRoute = AppOrgMembersRouteImport.update({
+  id: '/members',
+  path: '/members',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgPoliciesRoute = AppOrgPoliciesRouteImport.update({
+  id: '/policies',
+  path: '/policies',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgRolesRoute = AppOrgRolesRouteImport.update({
+  id: '/roles',
+  path: '/roles',
+  getParentRoute: () => AppOrgRoute,
+} as any)
+const AppOrgSecurityRoute = AppOrgSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => AppOrgRoute,
+} as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -251,6 +311,7 @@ export interface FileRoutesByFullPath {
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
+  '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
@@ -267,8 +328,17 @@ export interface FileRoutesByFullPath {
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/org/audit': typeof AppOrgAuditRoute
+  '/app/org/compliance': typeof AppOrgComplianceRoute
+  '/app/org/departments': typeof AppOrgDepartmentsRoute
+  '/app/org/graph': typeof AppOrgGraphRoute
+  '/app/org/members': typeof AppOrgMembersRoute
+  '/app/org/policies': typeof AppOrgPoliciesRoute
+  '/app/org/roles': typeof AppOrgRolesRoute
+  '/app/org/security': typeof AppOrgSecurityRoute
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
+  '/app/org/': typeof AppOrgIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
@@ -302,8 +372,17 @@ export interface FileRoutesByTo {
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
+  '/app/org/audit': typeof AppOrgAuditRoute
+  '/app/org/compliance': typeof AppOrgComplianceRoute
+  '/app/org/departments': typeof AppOrgDepartmentsRoute
+  '/app/org/graph': typeof AppOrgGraphRoute
+  '/app/org/members': typeof AppOrgMembersRoute
+  '/app/org/policies': typeof AppOrgPoliciesRoute
+  '/app/org/roles': typeof AppOrgRolesRoute
+  '/app/org/security': typeof AppOrgSecurityRoute
   '/app/admin': typeof AppAdminIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
+  '/app/org': typeof AppOrgIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
 }
@@ -326,6 +405,7 @@ export interface FileRoutesById {
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
+  '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
@@ -342,8 +422,17 @@ export interface FileRoutesById {
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/org/audit': typeof AppOrgAuditRoute
+  '/app/org/compliance': typeof AppOrgComplianceRoute
+  '/app/org/departments': typeof AppOrgDepartmentsRoute
+  '/app/org/graph': typeof AppOrgGraphRoute
+  '/app/org/members': typeof AppOrgMembersRoute
+  '/app/org/policies': typeof AppOrgPoliciesRoute
+  '/app/org/roles': typeof AppOrgRolesRoute
+  '/app/org/security': typeof AppOrgSecurityRoute
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
+  '/app/org/': typeof AppOrgIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
 }
@@ -367,6 +456,7 @@ export interface FileRouteTypes {
     | '/app/calendar'
     | '/app/crm'
     | '/app/founder'
+    | '/app/org'
     | '/app/people'
     | '/app/search'
     | '/app/work'
@@ -383,8 +473,17 @@ export interface FileRouteTypes {
     | '/app/crm/pipeline'
     | '/app/founder/crm'
     | '/app/mail/$folder'
+    | '/app/org/audit'
+    | '/app/org/compliance'
+    | '/app/org/departments'
+    | '/app/org/graph'
+    | '/app/org/members'
+    | '/app/org/policies'
+    | '/app/org/roles'
+    | '/app/org/security'
     | '/app/admin/'
     | '/app/crm/'
+    | '/app/org/'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder/'
   fileRoutesByTo: FileRoutesByTo
@@ -418,8 +517,17 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder/crm'
+    | '/app/org/audit'
+    | '/app/org/compliance'
+    | '/app/org/departments'
+    | '/app/org/graph'
+    | '/app/org/members'
+    | '/app/org/policies'
+    | '/app/org/roles'
+    | '/app/org/security'
     | '/app/admin'
     | '/app/crm'
+    | '/app/org'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder'
   id:
@@ -441,6 +549,7 @@ export interface FileRouteTypes {
     | '/app/calendar'
     | '/app/crm'
     | '/app/founder'
+    | '/app/org'
     | '/app/people'
     | '/app/search'
     | '/app/work'
@@ -457,8 +566,17 @@ export interface FileRouteTypes {
     | '/app/crm/pipeline'
     | '/app/founder_/crm'
     | '/app/mail/$folder'
+    | '/app/org/audit'
+    | '/app/org/compliance'
+    | '/app/org/departments'
+    | '/app/org/graph'
+    | '/app/org/members'
+    | '/app/org/policies'
+    | '/app/org/roles'
+    | '/app/org/security'
     | '/app/admin/'
     | '/app/crm/'
+    | '/app/org/'
     | '/app/mail/$folder/$threadId'
     | '/app/mail/$folder/'
   fileRoutesById: FileRoutesById
@@ -606,6 +724,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/org': {
+      id: '/app/org'
+      path: '/org'
+      fullPath: '/app/org'
+      preLoaderRoute: typeof AppOrgRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/people': {
       id: '/app/people'
       path: '/people'
@@ -725,6 +850,69 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMailFolderRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/org/': {
+      id: '/app/org/'
+      path: '/'
+      fullPath: '/app/org/'
+      preLoaderRoute: typeof AppOrgIndexRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/audit': {
+      id: '/app/org/audit'
+      path: '/audit'
+      fullPath: '/app/org/audit'
+      preLoaderRoute: typeof AppOrgAuditRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/compliance': {
+      id: '/app/org/compliance'
+      path: '/compliance'
+      fullPath: '/app/org/compliance'
+      preLoaderRoute: typeof AppOrgComplianceRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/departments': {
+      id: '/app/org/departments'
+      path: '/departments'
+      fullPath: '/app/org/departments'
+      preLoaderRoute: typeof AppOrgDepartmentsRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/graph': {
+      id: '/app/org/graph'
+      path: '/graph'
+      fullPath: '/app/org/graph'
+      preLoaderRoute: typeof AppOrgGraphRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/members': {
+      id: '/app/org/members'
+      path: '/members'
+      fullPath: '/app/org/members'
+      preLoaderRoute: typeof AppOrgMembersRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/policies': {
+      id: '/app/org/policies'
+      path: '/policies'
+      fullPath: '/app/org/policies'
+      preLoaderRoute: typeof AppOrgPoliciesRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/roles': {
+      id: '/app/org/roles'
+      path: '/roles'
+      fullPath: '/app/org/roles'
+      preLoaderRoute: typeof AppOrgRolesRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
+    '/app/org/security': {
+      id: '/app/org/security'
+      path: '/security'
+      fullPath: '/app/org/security'
+      preLoaderRoute: typeof AppOrgSecurityRouteImport
+      parentRoute: typeof AppOrgRoute
+    }
     '/app/mail/$folder/': {
       id: '/app/mail/$folder/'
       path: '/'
@@ -783,6 +971,33 @@ const AppCrmRouteChildren: AppCrmRouteChildren = {
 const AppCrmRouteWithChildren =
   AppCrmRoute._addFileChildren(AppCrmRouteChildren)
 
+interface AppOrgRouteChildren {
+  AppOrgAuditRoute: typeof AppOrgAuditRoute
+  AppOrgComplianceRoute: typeof AppOrgComplianceRoute
+  AppOrgDepartmentsRoute: typeof AppOrgDepartmentsRoute
+  AppOrgGraphRoute: typeof AppOrgGraphRoute
+  AppOrgMembersRoute: typeof AppOrgMembersRoute
+  AppOrgPoliciesRoute: typeof AppOrgPoliciesRoute
+  AppOrgRolesRoute: typeof AppOrgRolesRoute
+  AppOrgSecurityRoute: typeof AppOrgSecurityRoute
+  AppOrgIndexRoute: typeof AppOrgIndexRoute
+}
+
+const AppOrgRouteChildren: AppOrgRouteChildren = {
+  AppOrgAuditRoute: AppOrgAuditRoute,
+  AppOrgComplianceRoute: AppOrgComplianceRoute,
+  AppOrgDepartmentsRoute: AppOrgDepartmentsRoute,
+  AppOrgGraphRoute: AppOrgGraphRoute,
+  AppOrgMembersRoute: AppOrgMembersRoute,
+  AppOrgPoliciesRoute: AppOrgPoliciesRoute,
+  AppOrgRolesRoute: AppOrgRolesRoute,
+  AppOrgSecurityRoute: AppOrgSecurityRoute,
+  AppOrgIndexRoute: AppOrgIndexRoute,
+}
+
+const AppOrgRouteWithChildren =
+  AppOrgRoute._addFileChildren(AppOrgRouteChildren)
+
 interface AppMailFolderRouteChildren {
   AppMailFolderThreadIdRoute: typeof AppMailFolderThreadIdRoute
   AppMailFolderIndexRoute: typeof AppMailFolderIndexRoute
@@ -804,6 +1019,7 @@ interface AppRouteChildren {
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
   AppFounderRoute: typeof AppFounderRoute
+  AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
   AppWorkRoute: typeof AppWorkRoute
@@ -819,6 +1035,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
   AppFounderRoute: AppFounderRoute,
+  AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
   AppWorkRoute: AppWorkRoute,
