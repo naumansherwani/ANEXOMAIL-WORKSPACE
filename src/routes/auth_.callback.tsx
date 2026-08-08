@@ -34,27 +34,61 @@ function CallbackPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
-    if (!token) {
+    const code = params.get("code");
+    const provider = params.get("provider");
+    const providerError = params.get("error_description") ?? params.get("error");
+
+    if (providerError) {
+      setError(providerError);
+      return;
+    }
+    if (!token && !code) {
       setError("This link is missing its verification token.");
       return;
     }
 
     void (async () => {
+      type Result = {
+        token: string;
+        user: { onboarded: boolean; anexomail_address?: string | null };
+      };
       try {
-        const res = await api<{ token: string; user: { onboarded: boolean } }>(
-          "/api/auth/magic-link/verify",
-          { method: "POST", body: JSON.stringify({ token }), auth: false },
-        );
+        // Social sign-in returns a provider code; magic links return a token.
+        const res = code
+          ? await api<Result>("/api/auth/oauth/callback", {
+              method: "POST",
+              body: JSON.stringify({
+                provider,
+                code,
+                state: params.get("state"),
+                redirect_to: `${window.location.origin}/auth/callback`,
+              }),
+              auth: false,
+            })
+          : await api<Result>("/api/auth/magic-link/verify", {
+              method: "POST",
+              body: JSON.stringify({ token }),
+              auth: false,
+            });
         sessionToken.set(res.token);
         await refresh();
-        void navigate({ to: res.user.onboarded ? "/app" : "/onboarding", replace: true });
+        void navigate({
+          to: !res.user.anexomail_address
+            ? "/claim"
+            : res.user.onboarded
+              ? "/app"
+              : "/onboarding",
+          replace: true,
+        });
       } catch (e) {
         setError(
           e instanceof ApiError
             ? e.isNotImplemented
-              ? "Sign-in links aren't live on the server yet."
+              ? code
+                ? "Social sign-in isn't live on the server yet."
+                : "Sign-in links aren't live on the server yet."
               : e.message
-            : "This link could not be verified.",
+            : "This sign-in could not be verified.",
         );
       }
     })();
