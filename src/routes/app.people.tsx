@@ -44,8 +44,10 @@ function PeoplePage() {
   const navigate = useNavigate({ from: "/app/people" });
   const [composeTo, setComposeTo] = useState<string | null>(null);
 
-  const set = (patch: Partial<{ view: View; id: string; q: string; filter: SmartFilter; tag: string }>) =>
-    void navigate({ search: (prev) => ({ ...prev, ...patch }) });
+  type PeopleSearch = { view: View; id: string; q: string; filter: SmartFilter; tag: string };
+  const current: PeopleSearch = { view, id, q, filter, tag };
+  const set = (patch: Partial<PeopleSearch>) =>
+    void navigate({ search: { ...current, ...patch } });
 
   const contacts = useContacts({ q, filter, tag: tag || null });
   const companies = useCompanies({ q });
