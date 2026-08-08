@@ -158,10 +158,10 @@ function CalendarPage() {
                   <li className="ax-caption text-muted-foreground">Nobody has meetings this week.</li>
                 )}
                 {load.data?.load.map((person) => (
-                  <li key={person.subject}>
+                  <li key={person.member}>
                     <span className="flex items-baseline gap-2">
                       <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground">
-                        {person.display_name || person.subject}
+                        {person.display_name || person.member}
                       </span>
                       <span
                         className={cn(
@@ -169,13 +169,16 @@ function CalendarPage() {
                           person.overloaded ? "font-bold text-danger" : "text-muted-foreground",
                         )}
                       >
-                        {minutesLabel(person.meeting_minutes)} · {person.meetings} mtgs
+                        {minutesLabel(person.meeting_minutes)} · {person.open_tasks} open tasks
                       </span>
                     </span>
                     <span className="mt-1 block">
                       <LoadBar
                         minutes={person.meeting_minutes}
-                        max={person.capacity_minutes}
+                        max={Math.max(
+                          ...(load.data?.load ?? []).map((p) => p.meeting_minutes),
+                          1,
+                        )}
                         overloaded={person.overloaded}
                       />
                     </span>
@@ -218,7 +221,7 @@ function CalendarPage() {
                           currency: rows.find((e) => e.cost)?.cost?.currency ?? "GBP",
                           attendees: rows.length,
                           minutes: totalMinutes,
-                          hourly_rate: rows.find((e) => e.cost)?.cost?.hourly_rate ?? 0,
+                          hourly_total: rows.find((e) => e.cost)?.cost?.hourly_total ?? null,
                         }}
                       />
                     </span>
