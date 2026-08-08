@@ -95,6 +95,24 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     ],
   },
   {
+    title: "Founder only",
+    blurb: "Chairman surfaces. Public users never see these.",
+    items: [
+      {
+        label: "Founder deck",
+        path: "/app/founder",
+        note: "Founder mailboxes, AI addresses, provisioning state, DNS verdicts, founderworkspace host",
+        auth: true,
+      },
+      {
+        label: "AI email center",
+        path: "/app/ai-center",
+        note: "Leo · Jimmy John · Sherlock · 8 industry desks — drafts awaiting founder approval",
+        auth: true,
+      },
+    ],
+  },
+  {
     title: "Admin centre",
     blurb: "Owner and admin only.",
     items: [
