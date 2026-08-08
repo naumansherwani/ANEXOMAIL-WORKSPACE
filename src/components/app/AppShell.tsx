@@ -43,6 +43,7 @@ const primary: RailItem[] = [
   { to: "/app/mail/inbox", label: "Mail", icon: Mail, match: "/app/mail" },
   { to: "/app/people", label: "People", icon: Users },
   { to: "/app/crm", label: "CRM", icon: KanbanSquare, match: "/app/crm" },
+  { to: "/app/org", label: "Org", icon: Building2, match: "/app/org" },
   { to: "/app/calendar", label: "Calendar", icon: CalendarDays },
   { to: "/app/work", label: "Work", icon: CheckSquare },
   { to: "/app/ai-center", label: "AI", icon: Sparkles },
