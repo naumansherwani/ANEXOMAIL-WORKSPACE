@@ -72,7 +72,7 @@ function ThreadPage() {
           <ThreadHeaderActions
             threadId={thread.id}
             status={thread.status}
-            subject={thread.subject || undefined}
+            {...(thread.subject ? { subject: thread.subject } : {})}
             participants={thread.messages
               .map((m) => m.from_address)
               .filter((a): a is string => Boolean(a))
