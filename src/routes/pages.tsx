@@ -108,6 +108,33 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
  */
 function PageMap() {
   const total = GROUPS.reduce((sum, g) => sum + g.items.length, 0);
+  const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const [ready, setReady] = useState(false);
+
+  // Founder review state is a local, private checklist — no server, no account.
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem("ax.pagemap.reviewed");
+      if (raw) setChecked(JSON.parse(raw) as Record<string, boolean>);
+    } catch {
+      /* ignore corrupt state */
+    }
+    setReady(true);
+  }, []);
+
+  const toggle = (key: string) => {
+    setChecked((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      try {
+        window.localStorage.setItem("ax.pagemap.reviewed", JSON.stringify(next));
+      } catch {
+        /* ignore quota */
+      }
+      return next;
+    });
+  };
+
+  const reviewed = ready ? Object.values(checked).filter(Boolean).length : 0;
 
   return (
     <div className="flex min-h-svh flex-col">
@@ -121,35 +148,93 @@ function PageMap() {
             and check it with your own eyes. Workspace pages need a signed-in session.
           </p>
 
+          <div className="ax-plane mt-ax-5 flex flex-wrap items-center gap-ax-4 rounded-2xl p-ax-4">
+            <div>
+              <p className="text-[13px] font-semibold text-foreground">
+                Reviewed {reviewed} of {total}
+              </p>
+              <p className="ax-caption text-muted-foreground">
+                Tick a page once you have seen it. Saved on this device only.
+              </p>
+            </div>
+            <div className="h-1.5 min-w-[160px] flex-1 overflow-hidden rounded-full bg-secondary">
+              <div
+                className="h-full rounded-full bg-primary transition-[width] duration-300"
+                style={{ width: `${total ? (reviewed / total) * 100 : 0}%` }}
+              />
+            </div>
+            <button
+              type="button"
+              onClick={() => {
+                setChecked({});
+                try {
+                  window.localStorage.removeItem("ax.pagemap.reviewed");
+                } catch {
+                  /* ignore */
+                }
+              }}
+              className="ax-press rounded-xl border border-border px-3 py-2 text-[11px] font-semibold text-muted-foreground"
+            >
+              Reset ticks
+            </button>
+          </div>
+
           <div className="mt-ax-7 flex flex-col gap-ax-6">
             {GROUPS.map((group) => (
               <section key={group.title}>
                 <h2 className="ax-heading text-foreground">{group.title}</h2>
                 <p className="ax-caption mt-1 text-muted-foreground">{group.blurb}</p>
                 <ul className="mt-ax-4 grid gap-ax-2 sm:grid-cols-2 lg:grid-cols-3">
-                  {group.items.map((item) => (
-                    <li key={item.path}>
-                      <Link
-                        to={item.path}
-                        className="ax-plane ax-lift flex h-full flex-col rounded-2xl p-ax-4"
-                      >
-                        <span className="flex items-baseline gap-2">
-                          <span className="text-[13px] font-semibold text-foreground">
-                            {item.label}
-                          </span>
-                          {item.auth && (
-                            <span className="rounded-md bg-secondary px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground uppercase">
-                              sign-in
+                  {group.items.map((item) => {
+                    const key = `${item.label}:${item.path}`;
+                    const done = Boolean(checked[key]);
+                    return (
+                      <li key={key}>
+                        <div
+                          data-reviewed={done ? "true" : "false"}
+                          className="ax-plane ax-lift flex h-full flex-col rounded-2xl p-ax-4 data-[reviewed=true]:border-primary/40"
+                        >
+                          <div className="flex items-baseline gap-2">
+                            <span className="text-[13px] font-semibold text-foreground">
+                              {item.label}
                             </span>
-                          )}
-                        </span>
-                        <span className="mt-1 text-[11px] text-muted-foreground">{item.note}</span>
-                        <span className="mt-ax-3 font-mono text-[10px] text-steel">
-                          {item.path}
-                        </span>
-                      </Link>
-                    </li>
-                  ))}
+                            {item.auth && (
+                              <span className="rounded-md bg-secondary px-1.5 py-0.5 text-[9px] font-semibold tracking-wide text-muted-foreground uppercase">
+                                sign-in
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-1 text-[11px] text-muted-foreground">{item.note}</p>
+                          <p className="mt-ax-3 font-mono text-[10px] text-steel">{item.path}</p>
+                          <div className="mt-ax-3 flex items-center gap-2">
+                            <Link
+                              to={item.path}
+                              className="ax-press rounded-xl bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground"
+                            >
+                              Open
+                            </Link>
+                            <a
+                              href={item.path}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="ax-press rounded-xl border border-border px-3 py-1.5 text-[11px] font-semibold text-muted-foreground"
+                            >
+                              New tab
+                            </a>
+                            <button
+                              type="button"
+                              onClick={() => toggle(key)}
+                              aria-pressed={done}
+                              className="ax-press ml-auto rounded-xl border border-border px-3 py-1.5 text-[11px] font-semibold text-foreground data-[on=true]:border-primary data-[on=true]:text-primary"
+                              data-on={done ? "true" : "false"}
+                            >
+                              {done ? "Reviewed" : "Mark seen"}
+                            </button>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </section>
             ))}
