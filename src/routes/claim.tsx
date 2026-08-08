@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { AtSign, Check, Loader2, ShieldCheck, X } from "lucide-react";
+import { ArrowLeft, AtSign, Check, Loader2, ShieldCheck, X } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
@@ -132,6 +132,13 @@ function ClaimPage() {
       />
 
       <div className="ax-in relative w-full max-w-[29rem]">
+        <Link
+          to="/"
+          className="ax-focus ax-caption mb-ax-3 inline-flex items-center gap-1.5 rounded-md text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          Back to home
+        </Link>
         <div className="flex justify-center">
           <BrandMark />
         </div>
