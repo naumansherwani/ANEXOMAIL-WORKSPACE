@@ -135,6 +135,7 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
         </button>
         <Link
           to="/app/search"
+          search={{ q: "" }}
           className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
         >
           <Search aria-hidden="true" className="size-4 text-steel" />

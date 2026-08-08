@@ -1,5 +1,7 @@
-import { Archive, Check, Clock, Tag } from "lucide-react";
+import { Archive, CalendarPlus, Check, Clock, Tag } from "lucide-react";
+import { useState } from "react";
 
+import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,6 +9,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { notify } from "@/lib/notify";
 import { snoozePresets, useLabels, useThreadAction } from "@/lib/mail";
 import type { ThreadStatus } from "@/lib/ia";
@@ -15,12 +23,17 @@ import type { ThreadStatus } from "@/lib/ia";
 export function ThreadHeaderActions({
   threadId,
   status,
+  subject,
+  participants,
 }: {
   threadId: string;
   status: ThreadStatus;
+  subject?: string;
+  participants?: string[];
 }) {
   const action = useThreadAction();
   const labels = useLabels();
+  const [meeting, setMeeting] = useState(false);
 
   const run = (
     payload: Parameters<typeof action.mutate>[0]["action"],
@@ -65,6 +78,31 @@ export function ThreadHeaderActions({
         <Archive className="mr-1 inline size-3" />
         Archive
       </button>
+
+      {/* Thread -> meeting in one press: the conversation stays the context. */}
+      <button
+        type="button"
+        className="ax-press ax-tap rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground"
+        onClick={() => setMeeting(true)}
+      >
+        <CalendarPlus className="mr-1 inline size-3" />
+        Meeting
+      </button>
+
+      <Dialog open={meeting} onOpenChange={setMeeting}>
+        <DialogContent className="max-w-md p-0">
+          <DialogHeader className="px-ax-4 pt-ax-4">
+            <DialogTitle className="text-sm">Meeting from this thread</DialogTitle>
+          </DialogHeader>
+          <NewMeeting
+            threadId={threadId}
+            {...(subject ? { defaultTitle: subject } : {})}
+            {...(participants?.length ? { defaultAttendees: participants.join(", ") } : {})}
+            onCreated={() => setMeeting(false)}
+            onCancel={() => setMeeting(false)}
+          />
+        </DialogContent>
+      </Dialog>
 
       <DropdownMenu>
         <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">
