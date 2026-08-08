@@ -24,13 +24,15 @@ export const Route = createFileRoute("/app/crm")({
   component: CrmLayout,
 });
 
-const TABS = [
+type Tab = { to: "/app/crm" | "/app/crm/leads" | "/app/crm/pipeline" | "/app/crm/collab" | "/app/crm/activity"; label: string; exact?: boolean };
+
+const TABS: Tab[] = [
   { to: "/app/crm", label: "Dashboard", exact: true },
   { to: "/app/crm/leads", label: "Leads" },
   { to: "/app/crm/pipeline", label: "Pipeline" },
   { to: "/app/crm/collab", label: "Shared work" },
   { to: "/app/crm/activity", label: "Activity" },
-] as const;
+];
 
 function CrmLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });

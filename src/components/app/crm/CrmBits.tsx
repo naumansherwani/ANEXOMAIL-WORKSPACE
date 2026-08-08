@@ -10,7 +10,7 @@ export function CrmStat({
 }: {
   label: string;
   value: string;
-  hint?: string;
+  hint?: string | undefined;
 }) {
   return (
     <div className="ax-plane rounded-2xl p-ax-4">
