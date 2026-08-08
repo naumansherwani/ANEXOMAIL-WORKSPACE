@@ -5,6 +5,7 @@ import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
 import { InlineReply } from "@/components/app/mail/InlineReply";
 import { ThreadHeaderActions } from "@/components/app/mail/ThreadHeaderActions";
+import { ThreadInsights } from "@/components/app/mail/ThreadInsights";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { formatBytes, useThread } from "@/lib/mail";
@@ -73,6 +74,7 @@ function ThreadPage() {
       </div>
 
       <div className="flex flex-col gap-ax-4 p-ax-5">
+        <ThreadInsights threadId={thread.id} />
         {thread.messages.map((message) => (
           <article key={message.id} className="ax-plane rounded-2xl p-ax-5">
             <header className="flex flex-wrap items-baseline gap-ax-2">
