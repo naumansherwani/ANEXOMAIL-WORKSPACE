@@ -84,7 +84,7 @@ export type Deal = {
   next_step: string | null;
   next_step_due: string | null;
   thread_id: string | null;
-  stale_days: number | null
+  stale_days: number | null;
   updated_at: string;
 };
 
