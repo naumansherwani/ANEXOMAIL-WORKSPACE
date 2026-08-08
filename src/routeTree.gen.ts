@@ -42,6 +42,7 @@ import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
+import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
@@ -211,6 +212,11 @@ const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
   path: '/pipeline',
   getParentRoute: () => AppCrmRoute,
 } as any)
+const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
+  id: '/founder_/crm',
+  path: '/founder/crm',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -259,6 +265,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
@@ -294,6 +301,7 @@ export interface FileRoutesByTo {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/admin': typeof AppAdminIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
@@ -332,6 +340,7 @@ export interface FileRoutesById {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
@@ -372,6 +381,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/crm'
     | '/app/mail/$folder'
     | '/app/admin/'
     | '/app/crm/'
@@ -407,6 +417,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/crm'
     | '/app/admin'
     | '/app/crm'
     | '/app/mail/$folder/$threadId'
@@ -444,6 +455,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder_/crm'
     | '/app/mail/$folder'
     | '/app/admin/'
     | '/app/crm/'
@@ -699,6 +711,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCrmPipelineRouteImport
       parentRoute: typeof AppCrmRoute
     }
+    '/app/founder_/crm': {
+      id: '/app/founder_/crm'
+      path: '/founder/crm'
+      fullPath: '/app/founder/crm'
+      preLoaderRoute: typeof AppFounderCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -789,6 +808,7 @@ interface AppRouteChildren {
   AppSearchRoute: typeof AppSearchRoute
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
 }
 
@@ -803,6 +823,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSearchRoute: AppSearchRoute,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
+  AppFounderCrmRoute: AppFounderCrmRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
 }
 
