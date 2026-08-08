@@ -57,6 +57,7 @@ import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.index'
+import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -300,6 +301,11 @@ const AppFounderAiIndexRoute = AppFounderAiIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppFounderAiRoute,
 } as any)
+const AppFounderAiArenaRoute = AppFounderAiArenaRouteImport.update({
+  id: '/arena',
+  path: '/arena',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -359,6 +365,7 @@ export interface FileRoutesByFullPath {
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -405,6 +412,7 @@ export interface FileRoutesByTo {
   '/app/admin': typeof AppAdminIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
+  '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai': typeof AppFounderAiIndexRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
@@ -458,6 +466,7 @@ export interface FileRoutesById {
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder_/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -512,6 +521,7 @@ export interface FileRouteTypes {
     | '/app/admin/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/founder/ai/arena'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai/'
     | '/app/mail/$folder/'
@@ -558,6 +568,7 @@ export interface FileRouteTypes {
     | '/app/admin'
     | '/app/crm'
     | '/app/org'
+    | '/app/founder/ai/arena'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai'
     | '/app/mail/$folder'
@@ -610,6 +621,7 @@ export interface FileRouteTypes {
     | '/app/admin/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/founder_/ai/arena'
     | '/app/mail/$folder/$threadId'
     | '/app/founder_/ai/'
     | '/app/mail/$folder/'
@@ -968,6 +980,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderAiIndexRouteImport
       parentRoute: typeof AppFounderAiRoute
     }
+    '/app/founder_/ai/arena': {
+      id: '/app/founder_/ai/arena'
+      path: '/arena'
+      fullPath: '/app/founder/ai/arena'
+      preLoaderRoute: typeof AppFounderAiArenaRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
     '/app/mail/$folder/': {
       id: '/app/mail/$folder/'
       path: '/'
@@ -1054,10 +1073,12 @@ const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
 
 interface AppFounderAiRouteChildren {
+  AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
   AppFounderAiIndexRoute: typeof AppFounderAiIndexRoute
 }
 
 const AppFounderAiRouteChildren: AppFounderAiRouteChildren = {
+  AppFounderAiArenaRoute: AppFounderAiArenaRoute,
   AppFounderAiIndexRoute: AppFounderAiIndexRoute,
 }
 
