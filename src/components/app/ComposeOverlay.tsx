@@ -11,7 +11,13 @@ import { ComposeStudio } from "@/components/app/compose/ComposeStudio";
  * Sending is the backend's job: POST /api/mail/send. Until that route exists
  * the failure is shown honestly — the draft is never silently dropped.
  */
-export function ComposeOverlay({ onClose }: { onClose: () => void }) {
+export function ComposeOverlay({
+  onClose,
+  initialTo = "",
+}: {
+  onClose: () => void;
+  initialTo?: string;
+}) {
   const [minimised, setMinimised] = useState(false);
 
   return (
@@ -41,7 +47,7 @@ export function ComposeOverlay({ onClose }: { onClose: () => void }) {
         </div>
       </header>
 
-      {!minimised && <ComposeStudio variant="overlay" onSent={onClose} />}
+      {!minimised && <ComposeStudio variant="overlay" initialTo={initialTo} onSent={onClose} />}
     </aside>
   );
 }

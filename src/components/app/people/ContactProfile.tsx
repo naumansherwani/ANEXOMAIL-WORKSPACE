@@ -24,7 +24,13 @@ import { notify } from "@/lib/notify";
  * Column 3 — the person. One view: who they are, how the relationship is
  * trending, and every interaction ever, without leaving the shell.
  */
-export function ContactProfile({ id }: { id: string }) {
+export function ContactProfile({
+  id,
+  onCompose,
+}: {
+  id: string;
+  onCompose: (address: string) => void;
+}) {
   const detail = useContact(id);
   const timeline = useContactTimeline(id);
   const tagAction = useContactTagAction();
@@ -53,8 +59,8 @@ export function ContactProfile({ id }: { id: string }) {
     tagAction.mutate(
       { id, add: [name] },
       {
-        onSuccess: () => notify.success("Tag added", `${name} is now on this person.`),
-        onError: (error) => notify.error("Could not tag", error.message),
+        onSuccess: () => notify.done("Tag added", `${name} is now on this person.`),
+        onError: (error) => notify.failed("Could not tag", { description: error.message }),
       },
     );
   };
@@ -91,18 +97,16 @@ export function ContactProfile({ id }: { id: string }) {
             onClick={() =>
               update.mutate(
                 { id, vip: !c.vip },
-                { onError: (error) => notify.error("Could not update", error.message) },
+                { onError: (error) => notify.failed("Could not update", { description: error.message }) },
               )
             }
           >
             <Star className={c.vip ? "size-4 fill-current" : "size-4"} />
             {c.vip ? "VIP" : "Mark VIP"}
           </Button>
-          <Button asChild size="sm">
-            <Link to="/app/mail/$folder" params={{ folder: "inbox" }} search={{ compose: c.primary_address }}>
-              <Mail className="size-4" />
-              Email
-            </Link>
+          <Button size="sm" onClick={() => onCompose(c.primary_address)}>
+            <Mail className="size-4" />
+            Email
           </Button>
         </div>
       </header>
@@ -124,7 +128,7 @@ export function ContactProfile({ id }: { id: string }) {
               onRemove={() =>
                 tagAction.mutate(
                   { id, remove: [tag] },
-                  { onError: (error) => notify.error("Could not remove tag", error.message) },
+                  { onError: (error) => notify.failed("Could not remove tag", { description: error.message }) },
                 )
               }
             />
