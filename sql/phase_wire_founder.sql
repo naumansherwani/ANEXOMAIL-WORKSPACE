@@ -38,6 +38,19 @@ alter table public.mailboxes add column if not exists aliases text[] not null de
 alter table public.mailboxes add column if not exists note text;
 alter table public.mailboxes add column if not exists provision_requested_at timestamptz;
 
+-- purane duplicate address hatao, phir unique constraint pakka karo (ON CONFLICT ke liye lazmi)
+delete from public.mailboxes a using public.mailboxes b
+  where a.address = b.address and a.ctid > b.ctid;
+do $$
+begin
+  if not exists (
+    select 1 from pg_indexes
+    where schemaname='public' and tablename='mailboxes' and indexname='mailboxes_address_key'
+  ) then
+    execute 'create unique index mailboxes_address_key on public.mailboxes(address)';
+  end if;
+end $$;
+
 grant select on public.mailboxes to authenticated;
 grant all on public.mailboxes to service_role;
 alter table public.mailboxes enable row level security;
@@ -72,6 +85,23 @@ create table if not exists public.ai_agents (
   status text not null default 'provisioning',
   created_at timestamptz not null default now()
 );
+
+alter table public.ai_agents add column if not exists reports_to text;
+alter table public.ai_agents add column if not exists model text;
+alter table public.ai_agents add column if not exists status text not null default 'provisioning';
+
+delete from public.ai_agents a using public.ai_agents b
+  where a.address = b.address and a.ctid > b.ctid;
+do $$
+begin
+  if not exists (
+    select 1 from pg_indexes
+    where schemaname='public' and tablename='ai_agents' and indexname='ai_agents_address_key'
+  ) then
+    execute 'create unique index ai_agents_address_key on public.ai_agents(address)';
+  end if;
+end $$;
+
 grant select on public.ai_agents to authenticated;
 grant all on public.ai_agents to service_role;
 alter table public.ai_agents enable row level security;
