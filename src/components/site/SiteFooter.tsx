@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Mail } from "lucide-react";
 
 import { BrandMark } from "./BrandMark";
 
@@ -9,12 +10,16 @@ const groups = [
       { label: "Workspace", to: "/app" as const },
       { label: "Pricing", to: "/plans" as const },
       { label: "Migration", to: "/move-in" as const },
+      { label: "Sign in", to: "/auth" as const },
     ],
   },
   {
-    title: "AI",
+    title: "ANEXOMAIL AI",
     items: [
-      { label: "Leo", to: "/ai" as const },
+      { label: "Overview", to: "/ai" as const },
+      { label: "Meet LEO", to: "/ai" as const },
+      { label: "AI Studio", to: "/ai/studio" as const },
+      { label: "AI Automation", to: "/ai/automation" as const },
     ],
   },
   {
@@ -22,13 +27,7 @@ const groups = [
     items: [
       { label: "Security", to: "/security" as const },
       { label: "Ownership", to: "/ownership" as const },
-    ],
-  },
-  {
-    title: "Resources",
-    items: [
       { label: "Admin centre", to: "/app/admin" as const },
-      { label: "Search", to: "/app/search" as const },
       { label: "All pages", to: "/pages" as const },
     ],
   },
@@ -37,13 +36,19 @@ const groups = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-border bg-card/50">
-      <div className="ax-container grid gap-10 py-14 md:grid-cols-[1.4fr_repeat(4,1fr)]">
-        <div>
+      <div className="ax-container grid gap-x-8 gap-y-12 py-16 md:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1fr]">
+        <div className="max-w-sm">
           <BrandMark />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted-foreground">
-            Private business email on your own domain — with the workspace tools your team
-            actually uses every day.
+          <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
+            Private business email on your own domain — mail, contacts, calendar and shared
+            work on one fast surface. Your domain, your data, your keys.
           </p>
+          <a
+            href="mailto:hello@anexomail.com"
+            className="mt-5 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Mail className="size-4 shrink-0" aria-hidden="true" /> hello@anexomail.com
+          </a>
         </div>
 
         {groups.map((g) => (
@@ -51,7 +56,7 @@ export function SiteFooter() {
             <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
               {g.title}
             </h3>
-            <ul className="mt-4 space-y-2.5">
+            <ul className="mt-5 space-y-3">
               {g.items.map((item) => (
                 <li key={item.label}>
                   <Link
