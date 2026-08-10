@@ -43,10 +43,10 @@ export function SiteNav() {
             Sign in
           </Link>
           <Link
-            to="/ai"
+            to="/auth"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors duration-200 hover:bg-primary/85"
           >
-            ANEXOMAIL AI
+            Get started
           </Link>
         </div>
 
@@ -81,11 +81,11 @@ export function SiteNav() {
               Sign in
             </Link>
             <Link
-              to="/ai"
+              to="/auth"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
-              ANEXOMAIL AI
+              Get started
             </Link>
           </div>
         </div>

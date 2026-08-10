@@ -488,9 +488,50 @@ function Index() {
               </Reveal>
             ))}
           </div>
+
+          {/* AI lives OUTSIDE these plans — its own product, right under the cards. */}
+          <Reveal delay={0.1}>
+            <div className="ax-plane mt-12 rounded-2xl border-primary/35 p-8 md:p-10">
+              <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
+                <div>
+                  <span className="inline-flex items-center gap-2 rounded-full border border-steel/30 bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel uppercase">
+                    <Sparkles className="size-3.5" />
+                    Separate product · not inside these plans
+                  </span>
+                  <h3 className="mt-6 text-2xl font-extrabold tracking-[-0.03em] text-foreground md:text-[2rem]">
+                    ANEXOMAIL AI — powered by LEO
+                  </h3>
+                  <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+                    Your email stays quiet and private. When you want an extra pair of hands,
+                    ANEXOMAIL AI is the separate product — and LEO is the teammate inside it:
+                    it reads the thread, writes the reply in your voice, pulls out the tasks
+                    and shows you the cost of every single answer before you spend a penny.
+                  </p>
+                  <p className="mt-3 text-[13px] text-muted-foreground">
+                    Pay only for what you use. No AI in your mailbox unless you ask for it.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    to="/ai"
+                    className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-500 hover:bg-primary/85"
+                  >
+                    Explore ANEXOMAIL AI
+                    <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+                  </Link>
+                  <Link
+                    to="/ai"
+                    className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/45"
+                  >
+                    Meet LEO
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </Reveal>
         </Stage>
 
-        {/* ── 7 · MEET LEO — the AI teammate, its own product ───────── */}
+        {/* ── 7 · MEET LEO — the teammate inside ANEXOMAIL AI ───────── */}
         <Stage volume="loud">
           <div
             aria-hidden
@@ -504,23 +545,23 @@ function Index() {
             <Reveal>
               <span className="inline-flex items-center gap-2 rounded-full border border-steel/30 bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel uppercase">
                 <Sparkles className="size-3.5" />
-                Separate product
+                Inside ANEXOMAIL AI
               </span>
 
               <h2 className="mt-7 text-3xl md:text-[2.9rem] md:leading-[1.05]">
-                <span className="ax-platinum-text">Meet Leo.</span>
+                <span className="ax-platinum-text">LEO, up close.</span>
               </h2>
 
               <p className="mt-6 max-w-md text-[17px] leading-relaxed text-muted-foreground">
-                Your AI teammate for email, writing, meetings, tasks and everything in
-                between — with your workspace as context, never someone else's.
+                LEO is the AI teammate inside ANEXOMAIL AI — email, writing, meetings and
+                tasks, with your workspace as context and never someone else's.
               </p>
 
               <Link
                 to="/ai"
                 className="group mt-9 inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/60"
               >
-                Meet Leo
+                Meet LEO
                 <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
               </Link>
             </Reveal>
