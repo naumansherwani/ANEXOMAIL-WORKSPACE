@@ -1,6 +1,7 @@
 -- ANEXOMAIL — WIRING PAGE 1: Founder Command Deck + AI Email Center
--- Supabase #4. Idempotent + self-healing. Grants pehle, phir RLS.
+-- Supabase #4. Idempotent + self-healing from the first line.
 -- Ye registry REAL hai: har address woh hai jo Postfix/Dovecot par banega.
+-- Legacy UUID id columns without defaults are repaired before any seed runs.
 
 /* ---------------------------------------------------------------- mailboxes */
 do $$
@@ -37,6 +38,20 @@ alter table public.mailboxes add column if not exists agent text;
 alter table public.mailboxes add column if not exists aliases text[] not null default '{}';
 alter table public.mailboxes add column if not exists note text;
 alter table public.mailboxes add column if not exists provision_requested_at timestamptz;
+alter table public.mailboxes add column if not exists created_at timestamptz not null default now();
+
+-- Purani compatible table mein UUID default missing ho sakta hai.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema='public' and table_name='mailboxes'
+      and column_name='id' and data_type='uuid'
+  ) then
+    alter table public.mailboxes alter column id set default gen_random_uuid();
+  end if;
+end $$;
+alter table public.mailboxes alter column created_at set default now();
 
 -- purane duplicate address hatao, phir unique constraint pakka karo (ON CONFLICT ke liye lazmi)
 delete from public.mailboxes a using public.mailboxes b
@@ -89,6 +104,23 @@ create table if not exists public.ai_agents (
 alter table public.ai_agents add column if not exists reports_to text;
 alter table public.ai_agents add column if not exists model text;
 alter table public.ai_agents add column if not exists status text not null default 'provisioning';
+alter table public.ai_agents add column if not exists created_at timestamptz not null default now();
+
+-- Critical self-heal: old ai_agents.id UUID NOT NULL tha magar default nahi tha.
+-- Is repair ke baad every inserted agent gets a real UUID automatically.
+do $$
+begin
+  if exists (
+    select 1 from information_schema.columns
+    where table_schema='public' and table_name='ai_agents'
+      and column_name='id' and data_type='uuid'
+  ) then
+    alter table public.ai_agents alter column id set default gen_random_uuid();
+  else
+    raise exception 'public.ai_agents.id must be uuid; incompatible legacy schema detected';
+  end if;
+end $$;
+alter table public.ai_agents alter column created_at set default now();
 
 delete from public.ai_agents a using public.ai_agents b
   where a.address = b.address and a.ctid > b.ctid;
