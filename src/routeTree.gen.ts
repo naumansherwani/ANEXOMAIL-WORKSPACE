@@ -20,6 +20,7 @@ import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
 import { Route as AiStudioRouteImport } from './routes/ai_.studio'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAccountRouteImport } from './routes/app.account'
@@ -59,9 +60,11 @@ import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.index'
 import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
+import { Route as AppFounderAiAutomationRouteImport } from './routes/app.founder_.ai.automation'
 import { Route as AppFounderAiMemoryRouteImport } from './routes/app.founder_.ai.memory'
 import { Route as AppFounderAiPromptsRouteImport } from './routes/app.founder_.ai.prompts'
 import { Route as AppFounderAiReceiptsRouteImport } from './routes/app.founder_.ai.receipts'
+import { Route as AppFounderAiStudioRouteImport } from './routes/app.founder_.ai.studio'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -118,6 +121,11 @@ const PlansRoute = PlansRouteImport.update({
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiAutomationRoute = AiAutomationRouteImport.update({
+  id: '/ai_/automation',
+  path: '/ai/automation',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiStudioRoute = AiStudioRouteImport.update({
@@ -315,6 +323,11 @@ const AppFounderAiArenaRoute = AppFounderAiArenaRouteImport.update({
   path: '/arena',
   getParentRoute: () => AppFounderAiRoute,
 } as any)
+const AppFounderAiAutomationRoute = AppFounderAiAutomationRouteImport.update({
+  id: '/automation',
+  path: '/automation',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
 const AppFounderAiMemoryRoute = AppFounderAiMemoryRouteImport.update({
   id: '/memory',
   path: '/memory',
@@ -328,6 +341,11 @@ const AppFounderAiPromptsRoute = AppFounderAiPromptsRouteImport.update({
 const AppFounderAiReceiptsRoute = AppFounderAiReceiptsRouteImport.update({
   id: '/receipts',
   path: '/receipts',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
+const AppFounderAiStudioRoute = AppFounderAiStudioRouteImport.update({
+  id: '/studio',
+  path: '/studio',
   getParentRoute: () => AppFounderAiRoute,
 } as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
@@ -353,6 +371,7 @@ export interface FileRoutesByFullPath {
   '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/ai/automation': typeof AiAutomationRoute
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
@@ -391,9 +410,11 @@ export interface FileRoutesByFullPath {
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
+  '/app/founder/ai/studio': typeof AppFounderAiStudioRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -409,6 +430,7 @@ export interface FileRoutesByTo {
   '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/ai/automation': typeof AiAutomationRoute
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/ai-center': typeof AppAiCenterRoute
@@ -442,9 +464,11 @@ export interface FileRoutesByTo {
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
+  '/app/founder/ai/studio': typeof AppFounderAiStudioRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai': typeof AppFounderAiIndexRoute
   '/app/mail/$folder': typeof AppMailFolderIndexRoute
@@ -462,6 +486,7 @@ export interface FileRoutesById {
   '/pages': typeof PagesRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/ai_/automation': typeof AiAutomationRoute
   '/ai_/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
@@ -500,9 +525,11 @@ export interface FileRoutesById {
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
+  '/app/founder_/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder_/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder_/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/founder_/ai/receipts': typeof AppFounderAiReceiptsRoute
+  '/app/founder_/ai/studio': typeof AppFounderAiStudioRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder_/ai/': typeof AppFounderAiIndexRoute
   '/app/mail/$folder/': typeof AppMailFolderIndexRoute
@@ -521,6 +548,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/plans'
     | '/security'
+    | '/ai/automation'
     | '/ai/studio'
     | '/app/account'
     | '/app/admin'
@@ -559,9 +587,11 @@ export interface FileRouteTypes {
     | '/app/crm/'
     | '/app/org/'
     | '/app/founder/ai/arena'
+    | '/app/founder/ai/automation'
     | '/app/founder/ai/memory'
     | '/app/founder/ai/prompts'
     | '/app/founder/ai/receipts'
+    | '/app/founder/ai/studio'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai/'
     | '/app/mail/$folder/'
@@ -577,6 +607,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/plans'
     | '/security'
+    | '/ai/automation'
     | '/ai/studio'
     | '/app/account'
     | '/app/ai-center'
@@ -610,9 +641,11 @@ export interface FileRouteTypes {
     | '/app/crm'
     | '/app/org'
     | '/app/founder/ai/arena'
+    | '/app/founder/ai/automation'
     | '/app/founder/ai/memory'
     | '/app/founder/ai/prompts'
     | '/app/founder/ai/receipts'
+    | '/app/founder/ai/studio'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai'
     | '/app/mail/$folder'
@@ -629,6 +662,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/plans'
     | '/security'
+    | '/ai_/automation'
     | '/ai_/studio'
     | '/app/account'
     | '/app/admin'
@@ -667,9 +701,11 @@ export interface FileRouteTypes {
     | '/app/crm/'
     | '/app/org/'
     | '/app/founder_/ai/arena'
+    | '/app/founder_/ai/automation'
     | '/app/founder_/ai/memory'
     | '/app/founder_/ai/prompts'
     | '/app/founder_/ai/receipts'
+    | '/app/founder_/ai/studio'
     | '/app/mail/$folder/$threadId'
     | '/app/founder_/ai/'
     | '/app/mail/$folder/'
@@ -687,6 +723,7 @@ export interface RootRouteChildren {
   PagesRoute: typeof PagesRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
+  AiAutomationRoute: typeof AiAutomationRoute
   AiStudioRoute: typeof AiStudioRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
@@ -768,6 +805,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai_/automation': {
+      id: '/ai_/automation'
+      path: '/ai/automation'
+      fullPath: '/ai/automation'
+      preLoaderRoute: typeof AiAutomationRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai_/studio': {
@@ -1043,6 +1087,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderAiArenaRouteImport
       parentRoute: typeof AppFounderAiRoute
     }
+    '/app/founder_/ai/automation': {
+      id: '/app/founder_/ai/automation'
+      path: '/automation'
+      fullPath: '/app/founder/ai/automation'
+      preLoaderRoute: typeof AppFounderAiAutomationRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
     '/app/founder_/ai/memory': {
       id: '/app/founder_/ai/memory'
       path: '/memory'
@@ -1062,6 +1113,13 @@ declare module '@tanstack/react-router' {
       path: '/receipts'
       fullPath: '/app/founder/ai/receipts'
       preLoaderRoute: typeof AppFounderAiReceiptsRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
+    '/app/founder_/ai/studio': {
+      id: '/app/founder_/ai/studio'
+      path: '/studio'
+      fullPath: '/app/founder/ai/studio'
+      preLoaderRoute: typeof AppFounderAiStudioRouteImport
       parentRoute: typeof AppFounderAiRoute
     }
     '/app/mail/$folder/': {
@@ -1151,17 +1209,21 @@ const AppOrgRouteWithChildren =
 
 interface AppFounderAiRouteChildren {
   AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
+  AppFounderAiAutomationRoute: typeof AppFounderAiAutomationRoute
   AppFounderAiMemoryRoute: typeof AppFounderAiMemoryRoute
   AppFounderAiPromptsRoute: typeof AppFounderAiPromptsRoute
   AppFounderAiReceiptsRoute: typeof AppFounderAiReceiptsRoute
+  AppFounderAiStudioRoute: typeof AppFounderAiStudioRoute
   AppFounderAiIndexRoute: typeof AppFounderAiIndexRoute
 }
 
 const AppFounderAiRouteChildren: AppFounderAiRouteChildren = {
   AppFounderAiArenaRoute: AppFounderAiArenaRoute,
+  AppFounderAiAutomationRoute: AppFounderAiAutomationRoute,
   AppFounderAiMemoryRoute: AppFounderAiMemoryRoute,
   AppFounderAiPromptsRoute: AppFounderAiPromptsRoute,
   AppFounderAiReceiptsRoute: AppFounderAiReceiptsRoute,
+  AppFounderAiStudioRoute: AppFounderAiStudioRoute,
   AppFounderAiIndexRoute: AppFounderAiIndexRoute,
 }
 
@@ -1233,19 +1295,10 @@ const rootRouteChildren: RootRouteChildren = {
   PagesRoute: PagesRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
+  AiAutomationRoute: AiAutomationRoute,
   AiStudioRoute: AiStudioRoute,
   AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

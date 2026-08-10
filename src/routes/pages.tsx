@@ -159,6 +159,18 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "Founder AI studio",
+        path: "/app/founder/ai/studio",
+        note: "Phase 17 — 9 tools, before/after diff, batch mode, recipes, real writes into calendar + tasks",
+        auth: true,
+      },
+      {
+        label: "Founder AI automation",
+        path: "/app/founder/ai/automation",
+        note: "Phase 18 — workflows, email automation, rules, variables, LEO suggestions, dry run + approval gate",
+        auth: true,
+      },
+      {
         label: "Founder AI prompts",
         path: "/app/founder/ai/prompts",
         note: "Prompt library — versions, fork, diff, variables",
