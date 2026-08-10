@@ -11,6 +11,7 @@ import {
   WidgetGrid,
 } from "@/components/app/dashboard/Panels";
 import { useAuth } from "@/lib/auth";
+import { founderPreviewEnabled } from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/app/")({
   head: () => ({
@@ -43,7 +44,9 @@ export const Route = createFileRoute("/app/")({
 function DashboardPage() {
   const { session, organisation } = useAuth();
   const [composing, setComposing] = useState(false);
-  const enabled = Boolean(session && organisation);
+  // Founder review walks every page without a session, so panels must still
+  // call the real API and show honest state instead of staying blank.
+  const enabled = Boolean(session && organisation) || founderPreviewEnabled();
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
