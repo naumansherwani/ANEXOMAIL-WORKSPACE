@@ -90,6 +90,24 @@ insert into public.mail_domains (domain) values ('anexomail.com'), ('nexatect.co
 on conflict (domain) do nothing;
 
 /* ------------------------------------------------------------- agent roster */
+-- ai_agents sirf registry hai. Agar purana id UUID nahi hai to us incompatible
+-- registry ko delete karke fresh authoritative schema banao; seed neeche dobara
+-- tamam real agents insert karta hai.
+do $$
+declare
+  current_id_type text;
+begin
+  if to_regclass('public.ai_agents') is not null then
+    select data_type into current_id_type
+    from information_schema.columns
+    where table_schema='public' and table_name='ai_agents' and column_name='id';
+
+    if current_id_type is distinct from 'uuid' then
+      drop table public.ai_agents cascade;
+    end if;
+  end if;
+end $$;
+
 create table if not exists public.ai_agents (
   id uuid primary key default gen_random_uuid(),
   name text not null,
@@ -108,18 +126,7 @@ alter table public.ai_agents add column if not exists created_at timestamptz not
 
 -- Critical self-heal: old ai_agents.id UUID NOT NULL tha magar default nahi tha.
 -- Is repair ke baad every inserted agent gets a real UUID automatically.
-do $$
-begin
-  if exists (
-    select 1 from information_schema.columns
-    where table_schema='public' and table_name='ai_agents'
-      and column_name='id' and data_type='uuid'
-  ) then
-    alter table public.ai_agents alter column id set default gen_random_uuid();
-  else
-    raise exception 'public.ai_agents.id must be uuid; incompatible legacy schema detected';
-  end if;
-end $$;
+alter table public.ai_agents alter column id set default gen_random_uuid();
 alter table public.ai_agents alter column created_at set default now();
 
 delete from public.ai_agents a using public.ai_agents b
