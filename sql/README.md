@@ -15,5 +15,6 @@ Har file locked rules follow karti hai:
 | --- | --- | --- |
 | `phase17_ai_studio.sql` | 17 | AI Studio runs, recipes, recipe steps, batches |
 | `phase18_ai_automation.sql` | 18 | Workflows, steps, runs, rules, variables, suggestions, email automations |
+| `phase_wire_founder.sql` | wiring · page 1 | Founder Command Deck + AI Email Center: mailboxes registry (17 real addresses), mail_domains, ai_agents roster, leo_email_drafts, mail_outbox, founder_accounts |
 
-Chalane ki tarteeb: file number ke hisaab se (17 phir 18).
+Chalane ki tarteeb: file number ke hisaab se (17 phir 18), phir `phase_wire_*` files.
