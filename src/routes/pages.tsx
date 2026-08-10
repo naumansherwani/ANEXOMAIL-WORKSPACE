@@ -42,6 +42,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         path: "/ai/studio",
         note: "Coming soon gate — studio belongs to ai.anexomail.com, not the email plans",
       },
+      {
+        label: "AI Automation (AI)",
+        path: "/ai/automation",
+        note: "Coming soon gate — workflows, rules and suggestions live on ai.anexomail.com",
+      },
       { label: "Security", path: "/security", note: "TLS, DKIM/SPF/DMARC, data handling" },
       { label: "Ownership", path: "/ownership", note: "Export, delete, domain ownership proof" },
       { label: "Move in", path: "/move-in", note: "Migration from another provider" },
@@ -151,6 +156,18 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Founder AI arena",
         path: "/app/founder/ai/arena",
         note: "One question, 3 agent slots (Leo+Jimmy+Sherlock default), Sherlock scores each answer",
+        auth: true,
+      },
+      {
+        label: "Founder AI studio",
+        path: "/app/founder/ai/studio",
+        note: "Phase 17 — 9 tools, before/after diff, batch mode, recipes, real writes into calendar + tasks",
+        auth: true,
+      },
+      {
+        label: "Founder AI automation",
+        path: "/app/founder/ai/automation",
+        note: "Phase 18 — workflows, email automation, rules, variables, LEO suggestions, dry run + approval gate",
         auth: true,
       },
       {
