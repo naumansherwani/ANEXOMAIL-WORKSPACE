@@ -39,11 +39,18 @@ function usePublicRoutes(): string[] {
     const ids = Object.keys(router.routesById ?? {});
     return ids
       .filter((id) => id.startsWith("/"))
-      .map((id) => id.replace(/\/$/, "") || "/")
+      // `ai_.studio` jaise non-nesting segments ka URL `/ai/studio` hota hai.
+      .map((id) =>
+        id
+          .split("/")
+          .filter((seg) => !seg.startsWith("_"))
+          .map((seg) => (seg.endsWith("_") ? seg.slice(0, -1) : seg))
+          .join("/"),
+      )
+      .map((path) => path.replace(/\/$/, "") || "/")
       .filter((path) => !path.startsWith("/app"))
       .filter((path) => !path.startsWith("/founder"))
       .filter((path) => !path.includes("$"))
-      .filter((path) => !path.includes("_"))
       .filter((path) => path !== "/pages")
       .filter((path, i, arr) => arr.indexOf(path) === i)
       .sort((a, b) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b)));
