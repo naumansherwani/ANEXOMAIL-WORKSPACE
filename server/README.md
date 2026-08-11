@@ -10,6 +10,7 @@ Kabhi line-patch, sed ya python patch nahi.
 | `index.ts` | `/opt/anexomail/src/index.ts` | main entry (mount order) |
 | `routes/integrations.ts` | `/opt/anexomail/src/routes/integrations.ts` | 22 |
 | `routes/settings.ts` | `/opt/anexomail/src/routes/settings.ts` | 23 |
+| `routes/release.ts` | `/opt/anexomail/src/routes/release.ts` | 30 |
 
 ## Env naam (Server 2 par asli naam)
 
@@ -74,5 +75,27 @@ curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/founder/admi
 ```
 
 SQL: `sql/phase25_admin.sql` (Supabase #4 mein chalao).
+
+### 5) Phase 30 — Production & Founder Lock
+
+```bash
+cd /opt/anexomail
+cp src/routes/release.ts src/routes/release.ts.bak.$(date +%s) 2>/dev/null
+nano /opt/anexomail/src/routes/release.ts   # select all -> paste repo/server/routes/release.ts -> Ctrl+O, Ctrl+X
+# phir src/index.ts bhi repo/server/index.ts se overwrite karo (release mount uske andar hai)
+pm2 restart anexomail-leo && sleep 3
+printf "/api/public/status -> "
+curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/public/status"
+for p in overview checks checklist deployments lock roadmap; do
+  printf "/api/founder/release/%s -> " "$p"
+  curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/founder/release/$p"
+done
+printf "/api/founder/revenue/pipeline -> "
+curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/founder/revenue/pipeline"
+printf "/api/mail/outbox/send -> "
+curl -s -o /dev/null -w "%{http_code}\n" -X POST "http://localhost:3100/api/mail/outbox/send"
+```
+
+SQL: `sql/phase30_release.sql` (Supabase #4 mein chalao).
 
 `401` = green (guarded). `200` = public/health ok. `000` = server down. `404` = mount missing.
