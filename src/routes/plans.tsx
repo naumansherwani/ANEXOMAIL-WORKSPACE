@@ -119,7 +119,7 @@ const faqs = [
   },
 ];
 
-const PUBLIC_EMAIL = "hello@anexomail.com";
+const PUBLIC_EMAIL = "moveyourbusiness@anexomail.com";
 
 /** Services — one-off cash and the monthly retainer, both capacity-capped on purpose. */
 const services = [
