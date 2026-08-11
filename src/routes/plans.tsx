@@ -265,8 +265,59 @@ function PlansPage() {
         </section>
 
         <section className="ax-container pb-20">
+          <h2 className="text-2xl text-foreground md:text-3xl">Done-for-you services</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Two things you can buy on top of a plan: getting moved in without doing the work
+            yourself, and a named person on the other end afterwards. Both are capped on purpose —
+            we would rather say "next month" than do it badly.
+          </p>
+
+          <div className="mt-7 grid gap-5 md:grid-cols-2">
+            {services.map((s) => (
+              <article key={s.name} className="ax-plane rounded-3xl p-7">
+                <h3 className="text-sm font-bold tracking-tight text-foreground">{s.name}</h3>
+                <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                  {s.price}
+                  <span className="text-sm font-medium text-muted-foreground">{s.unit}</span>
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+
+                <ul className="mt-5 flex flex-wrap gap-2">
+                  {s.tiers.map((t) => (
+                    <li
+                      key={t}
+                      className="rounded-lg border border-border bg-secondary/40 px-2.5 py-1 text-xs font-semibold text-foreground"
+                    >
+                      {t}
+                    </li>
+                  ))}
+                </ul>
+
+                <ul className="mt-5 space-y-2.5">
+                  {s.features.map((f) => (
+                    <li key={f} className="flex gap-2 text-sm text-muted-foreground">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+
+                <p className="mt-5 text-xs leading-relaxed text-muted-foreground">{s.terms}</p>
+                <p className="mt-2 text-xs font-semibold text-foreground">{s.capacity}</p>
+
+                <Link
+                  to={s.to}
+                  className="mt-6 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors hover:bg-surface-2"
+                >
+                  {s.cta}
+                </Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Feature by feature</h2>
-</section>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Exactly what is in each plan, and what is not. A dash means it is not included on that
             plan.
