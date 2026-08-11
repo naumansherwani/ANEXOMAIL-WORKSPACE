@@ -140,9 +140,15 @@ app.use("/api/founder", founderRevenueRouter);
 
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);
+// Phase 30 — offline outbox send (idempotency-key based)
+app.use("/api/mail", outboxRouter);
 // Phase 28 — Cross-Platform: device handoff (drafts + cursor across devices)
 app.use("/api/mail", handoffRouter);
 app.use("/api/mail", mailRouter);
+
+// Phase 30 — Production & Founder Lock (public status + founder release gate)
+app.use("/api/public", releasePublicRouter);
+app.use("/api/founder", founderReleaseRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));
