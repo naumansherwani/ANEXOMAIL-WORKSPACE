@@ -9,7 +9,8 @@ const groups = [
     items: [
       { label: "Workspace", to: "/app" as const },
       { label: "Pricing", to: "/plans" as const },
-      { label: "Migration", to: "/move-in" as const },
+      { label: "Managed migration", to: "/migration" as const },
+      { label: "Move in", to: "/move-in" as const },
       { label: "Sign in", to: "/auth" as const },
     ],
   },
@@ -25,9 +26,10 @@ const groups = [
   {
     title: "Company",
     items: [
+      { label: "Partner programme", to: "/partners" as const },
+      { label: "Enterprise support", to: "/enterprise" as const },
       { label: "Security", to: "/security" as const },
       { label: "Ownership", to: "/ownership" as const },
-      { label: "Admin centre", to: "/app/admin" as const },
       { label: "All pages", to: "/pages" as const },
     ],
   },

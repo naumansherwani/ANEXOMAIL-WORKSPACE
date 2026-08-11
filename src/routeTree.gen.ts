@@ -77,6 +77,7 @@ import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppFounderPerfRouteImport } from './routes/app.founder_.perf'
+import { Route as AppFounderRevenueRouteImport } from './routes/app.founder_.revenue'
 import { Route as AppFounderSecurityRouteImport } from './routes/app.founder_.security'
 import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -461,6 +462,11 @@ const AppFounderPerfRoute = AppFounderPerfRouteImport.update({
   path: '/founder/perf',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderRevenueRoute = AppFounderRevenueRouteImport.update({
+  id: '/founder_/revenue',
+  path: '/founder/revenue',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderSecurityRoute = AppFounderSecurityRouteImport.update({
   id: '/founder_/security',
   path: '/founder/security',
@@ -744,6 +750,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
+  '/app/founder/revenue': typeof AppFounderRevenueRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -848,6 +855,7 @@ export interface FileRoutesByTo {
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
+  '/app/founder/revenue': typeof AppFounderRevenueRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -961,6 +969,7 @@ export interface FileRoutesById {
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/founder_/perf': typeof AppFounderPerfRoute
+  '/app/founder_/revenue': typeof AppFounderRevenueRoute
   '/app/founder_/security': typeof AppFounderSecurityRoute
   '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -1076,6 +1085,7 @@ export interface FileRouteTypes {
     | '/app/founder/integrations'
     | '/app/founder/org'
     | '/app/founder/perf'
+    | '/app/founder/revenue'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/mail/$folder'
@@ -1180,6 +1190,7 @@ export interface FileRouteTypes {
     | '/app/founder/integrations'
     | '/app/founder/org'
     | '/app/founder/perf'
+    | '/app/founder/revenue'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/org/audit'
@@ -1292,6 +1303,7 @@ export interface FileRouteTypes {
     | '/app/founder_/integrations'
     | '/app/founder_/org'
     | '/app/founder_/perf'
+    | '/app/founder_/revenue'
     | '/app/founder_/security'
     | '/app/founder_/settings'
     | '/app/mail/$folder'
@@ -1840,6 +1852,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderPerfRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/founder_/revenue': {
+      id: '/app/founder_/revenue'
+      path: '/founder/revenue'
+      fullPath: '/app/founder/revenue'
+      preLoaderRoute: typeof AppFounderRevenueRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder_/security': {
       id: '/app/founder_/security'
       path: '/founder/security'
@@ -2385,6 +2404,7 @@ interface AppRouteChildren {
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppFounderPerfRoute: typeof AppFounderPerfRoute
+  AppFounderRevenueRoute: typeof AppFounderRevenueRoute
   AppFounderSecurityRoute: typeof AppFounderSecurityRoute
   AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -2416,6 +2436,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppFounderPerfRoute: AppFounderPerfRoute,
+  AppFounderRevenueRoute: AppFounderRevenueRoute,
   AppFounderSecurityRoute: AppFounderSecurityRoute,
   AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
