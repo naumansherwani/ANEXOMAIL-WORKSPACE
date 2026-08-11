@@ -44,7 +44,7 @@ const steps = [
   {
     n: "04",
     title: "Switch when you say so",
-    body: "Both providers run in parallel until you give the word. No downtime, no lost mail, no rush.",
+    body: "Both providers run in parallel until you give the word. The switch is scheduled for a quiet window, nothing is lost, nothing is rushed.",
   },
 ];
 

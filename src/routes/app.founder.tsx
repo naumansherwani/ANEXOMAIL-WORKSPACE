@@ -76,7 +76,7 @@ function FounderDeck() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Crown className="size-3.5" aria-hidden="true" /> Founder · chairman
         </p>
-        <h1 className="mt-3 text-3xl text-foreground">Command deck</h1>
+        <h2 className="mt-3 text-3xl text-foreground">Command deck</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Your identity, your mailboxes and every AI address in one surface. The plan below is
           locked; the state next to each row is server truth, so nothing reads as live until the

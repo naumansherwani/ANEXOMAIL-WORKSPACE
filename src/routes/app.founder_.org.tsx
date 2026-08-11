@@ -57,7 +57,7 @@ function FounderOrg() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Crown className="size-3.5" aria-hidden="true" /> Founder only · IP locked
         </p>
-        <h1 className="ax-h2 mt-1">Organisation control</h1>
+        <h2 className="ax-h2 mt-1">Organisation control</h2>
         <p className="ax-caption mt-1 text-muted-foreground">
           Everything on this page is server truth. Nothing here is estimated.
         </p>

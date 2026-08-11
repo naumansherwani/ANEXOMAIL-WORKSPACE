@@ -56,7 +56,7 @@ function AiCenter() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Bot className="size-3.5" aria-hidden="true" /> AI email center
         </p>
-        <h1 className="mt-3 text-3xl text-foreground">Every AI mailbox, one room</h1>
+        <h2 className="mt-3 text-3xl text-foreground">Every AI mailbox, one room</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Leo answers first, always. Anything out of depth escalates to Jimmy John, Sherlock
           validates, and money, legal or cancellation topics never leave without your approval.

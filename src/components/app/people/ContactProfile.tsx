@@ -70,9 +70,9 @@ export function ContactProfile({
       <header className="flex items-start gap-ax-4">
         <Avatar contact={c} size="lg" />
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-xl font-bold text-foreground">
+          <h2 className="truncate text-xl font-bold text-foreground">
             {c.display_name || c.primary_address}
-          </h1>
+          </h2>
           <p className="ax-caption mt-0.5 truncate text-muted-foreground">
             {c.title ? `${c.title} · ` : ""}
             {c.primary_address}

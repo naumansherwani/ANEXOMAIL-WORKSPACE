@@ -14,7 +14,7 @@ function AuditPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
       <p className="ax-eyebrow">Proof</p>
-      <h1 className="mt-3 text-3xl text-foreground">Audit log</h1>
+      <h2 className="mt-3 text-3xl text-foreground">Audit log</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Sign-ins, role changes, address changes, exports and revokes — recorded with who,
         what, when and from where. Readable by owners and admins, deletable by nobody.

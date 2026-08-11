@@ -133,7 +133,7 @@ function MembersPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
       <p className="ax-eyebrow">People</p>
-      <h1 className="mt-3 text-3xl text-foreground">Members &amp; roles</h1>
+      <h2 className="mt-3 text-3xl text-foreground">Members &amp; roles</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Three roles, deliberately. Extra power is granted per address instead of adding another
         tier nobody can explain.

@@ -69,7 +69,7 @@ function Integrations() {
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-ax-5 pt-ax-4">
         <p className="ax-eyebrow">Integrations</p>
-        <h1 className="ax-h3 mt-1 text-foreground">Bring everything in. Take everything out.</h1>
+        <h2 className="ax-h3 mt-1 text-foreground">Bring everything in. Take everything out.</h2>
         <p className="ax-caption mt-1 text-muted-foreground">
           No API keys, no webhooks. Real connections, one migration run, and an export button that
           actually works.

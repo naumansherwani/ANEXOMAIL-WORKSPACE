@@ -91,7 +91,7 @@ function TeamsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
       <p className="ax-eyebrow">People</p>
-      <h1 className="mt-3 text-3xl text-foreground">Teams</h1>
+      <h2 className="mt-3 text-3xl text-foreground">Teams</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         A team is who work belongs to. Shared addresses, assignments and permissions follow the
         team, so nothing breaks when one person leaves.

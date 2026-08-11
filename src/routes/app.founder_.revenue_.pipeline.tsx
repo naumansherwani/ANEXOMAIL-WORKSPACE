@@ -68,7 +68,11 @@ function PipelinePage() {
                 </ul>
               )}
 
-              <h3 className="ax-heading mt-ax-6 text-foreground">Leads becoming subscriptions</h3>
+              <h3 className="ax-heading mt-ax-6 text-foreground">Open leads by offer</h3>
+              <p className="mt-1 text-xs text-steel">
+                Managed Move-In is one-off cash · Priority Support is a £500/mo retainer · Workspace
+                subscription is the recurring plan. Three different offers, never mixed.
+              </p>
               {d.pipeline.length === 0 ? (
                 <Note>
                   No open leads. New requests arrive from{" "}
@@ -93,7 +97,8 @@ function PipelinePage() {
                       <span className="min-w-0 flex-1">
                         <span className="block font-semibold text-foreground">{p.company}</span>
                         <span className="block truncate text-steel">
-                          {p.stage} · {Math.round(p.weight * 100)}% · {p.plan_seats} seats
+                          {p.offer ?? "Workspace subscription"} · {p.stage} ·{" "}
+                          {Math.round(p.weight * 100)}% · {p.plan_seats} seats
                           {p.one_off_gbp ? ` · ${gbp(p.one_off_gbp)} one-off` : ""}
                         </span>
                       </span>

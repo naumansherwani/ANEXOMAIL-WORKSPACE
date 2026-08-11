@@ -84,7 +84,7 @@ function AutomationPage() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Bot className="size-3.5" aria-hidden="true" /> Phase 18 · Automation · dry run pehle, approval phir
         </p>
-        <h1 className="mt-2 text-2xl text-foreground">Workflows that never send behind your back</h1>
+        <h2 className="mt-2 text-2xl text-foreground">Workflows that never send behind your back</h2>
         <p className="mt-ax-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Har workflow default pe approval gate ke saath aata hai. Auto-send tab tak nahi jab tak
           tum khud switch nahi karte — aur dry run pehle bata deta hai kya hota.

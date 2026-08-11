@@ -36,7 +36,7 @@ function OrgOverviewPage() {
       <p className="ax-eyebrow flex items-center gap-2">
         <Building2 className="size-3.5" aria-hidden="true" /> Overview
       </p>
-      <h1 className="mt-3 text-3xl text-foreground">{o?.name ?? "Your organisation"}</h1>
+      <h2 className="mt-3 text-3xl text-foreground">{o?.name ?? "Your organisation"}</h2>
       <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
         Everything about who works here, what they can do, and the proof that this domain is
         yours. Every number below is read from the server — nothing is estimated here.

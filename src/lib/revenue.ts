@@ -5,7 +5,7 @@
  *   1. Core subscriptions — Basic £20 · Pro £40 · Business £85 (recurring)
  *   2. Migration service  — £500–£2,000 one-time per company (Gmail/Outlook → ANEXOMAIL)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
- *   4. Premium SLA        — dedicated manager + 1h response, £500/mo add-on
+ *   4. Premium SLA        — named contact + 4 working-hour reply, £500/mo add-on
  *
  * NO MOCK: quote maths client-side hai (deterministic, real rate card), lekin
  * har lead/application asli backend row banata hai. Endpoint missing = honest state.
@@ -60,7 +60,7 @@ export function quoteMigration(input: MigrationInput): MigrationQuote {
   const pf = providerFee[input.provider];
   if (pf > 0) lines.push({ label: "Source complexity", amount: pf, detail: `${input.provider.toUpperCase()} export + label/folder rebuild` });
 
-  if (input.urgency === "weekend") lines.push({ label: "Weekend cut-over", amount: 200, detail: "Zero working-hour downtime" });
+  if (input.urgency === "weekend") lines.push({ label: "Weekend cut-over", amount: 200, detail: "Cut-over outside working hours, engineer watching the switch" });
   if (input.urgency === "overnight") lines.push({ label: "Overnight cut-over", amount: 400, detail: "Same-night switch, engineer on call" });
   if (input.dns) lines.push({ label: "DNS + deliverability", amount: 150, detail: "MX, SPF, DKIM, DMARC set to green and proven" });
   if (input.training) lines.push({ label: "Team onboarding", amount: 200, detail: "Live session + written runbook for the team" });

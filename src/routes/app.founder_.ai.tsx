@@ -51,7 +51,7 @@ function FounderAiLayout() {
           <Crown className="size-3.5" aria-hidden="true" /> Founder only · IP locked · ai.anexomail.com product
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-ax-4">
-          <h1 className="ax-h2 text-foreground">AI workspace</h1>
+          <h2 className="ax-h2 text-foreground">AI workspace</h2>
           <EscalationStrip active={null} />
         </div>
         <nav className="mt-ax-4 flex flex-wrap gap-1.5">
