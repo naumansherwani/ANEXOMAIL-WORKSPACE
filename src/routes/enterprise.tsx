@@ -9,16 +9,16 @@ import { SLA_PRICE_MONTHLY } from "@/lib/revenue";
 export const Route = createFileRoute("/enterprise")({
   head: () => ({
     meta: [
-      { title: "Enterprise support — one hour response, a named human" },
+      { title: "Enterprise support — a four working-hour reply, a named human" },
       {
         name: "description",
         content:
-          "Dedicated account manager, one hour response and a quarterly ownership review on top of any plan — £500 a month, cancel any month.",
+          "Priority Support: a named contact, a four working-hour reply and a quarterly ownership review on top of any plan — £500 a month, cancel any month.",
       },
-      { property: "og:title", content: "Enterprise support — one hour response" },
+      { property: "og:title", content: "Enterprise support — a four working-hour reply" },
       {
         property: "og:description",
-        content: "A named account manager, 1h response, quarterly ownership review. £500 a month on top of any plan.",
+        content: "A named contact, 4 working-hour reply, quarterly ownership review. £500 a month on top of any plan.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/enterprise")({
 });
 
 const items = [
-  "A named account manager who knows your domain, not a queue.",
+  "A named contact who knows your domain, not a queue.",
   "One hour response, any working hour — measured and reported, not promised.",
   "Direct escalation line for delivery incidents, with a written timeline after.",
   "Quarterly ownership review: DKIM/SPF/DMARC, retention, exports, access.",
@@ -39,7 +39,7 @@ const items = [
 const detail = [
   {
     title: "Onboarding",
-    body: "A kickoff call where we map your domains, mailboxes, shared addresses and who is allowed to do what. You leave that call with a written plan: what is being built, in what order, and who signs it off. Your account manager is named on that document.",
+    body: "A kickoff call where we map your domains, mailboxes, shared addresses and who is allowed to do what. You leave that call with a written plan: what is being built, in what order, and who signs it off. Your named contact is on that document.",
   },
   {
     title: "Migration",
@@ -51,7 +51,7 @@ const detail = [
   },
   {
     title: "Support model",
-    body: "A named account manager and a direct escalation line — no ticket portal, no queue, no bot. Delivery incidents get a written timeline afterwards explaining what happened and what changed so it does not repeat.",
+    body: "A named contact and a direct escalation line — no ticket portal, no queue, no bot. Delivery incidents get a written timeline afterwards explaining what happened and what changed so it does not repeat.",
   },
   {
     title: "Response and availability",
@@ -79,7 +79,7 @@ const detail = [
   },
   {
     title: "SLA",
-    body: `The commercial SLA — response clock, availability target, maintenance windows and any credits — is agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the one hour response in working hours.`,
+    body: `The commercial SLA — response clock, availability target, maintenance windows and any credits — is agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the a four working-hour reply in working hours.`,
   },
   {
     title: "Reviews and reporting",

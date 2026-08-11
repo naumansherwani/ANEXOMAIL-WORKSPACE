@@ -88,7 +88,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Enterprise support",
         path: "/enterprise",
-        note: "Phase 28 — £500/mo add-on: named manager, 1h response, quarterly review",
+        note: "Phase 28 — £500/mo add-on: named contact, 4 working-hour reply, quarterly review",
       },
       { label: "Page map", path: "/pages", note: "This page — every route, always current" },
     ],

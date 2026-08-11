@@ -5,7 +5,7 @@
  *   1. Core subscriptions — Basic £20 · Pro £40 · Business £85 (recurring)
  *   2. Migration service  — £500–£2,000 one-time per company (Gmail/Outlook → ANEXOMAIL)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
- *   4. Premium SLA        — dedicated manager + 1h response, £500/mo add-on
+ *   4. Premium SLA        — named contact + 4 working-hour reply, £500/mo add-on
  *
  * NO MOCK: quote maths client-side hai (deterministic, real rate card), lekin
  * har lead/application asli backend row banata hai. Endpoint missing = honest state.
