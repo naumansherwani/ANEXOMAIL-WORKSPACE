@@ -32,7 +32,7 @@ function DeepWorkPage() {
                   <Stat
                     label="Longest focus"
                     value={`${d.longest_focus_minutes}m`}
-                    hint={d.best_window ? `best window ${d.best_window}` : undefined}
+                    {...(d.best_window ? { hint: `best window ${d.best_window}` } : {})}
                   />
                 </div>
                 <p className="ax-caption mt-ax-3 text-muted-foreground">
