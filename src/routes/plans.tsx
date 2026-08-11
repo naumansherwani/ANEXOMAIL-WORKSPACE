@@ -105,6 +105,66 @@ const faqs = [
     q: "Is there AI in these plans?",
     a: "No. Basic, Pro and Business are email and workspace only. Nothing in your mail is used to train anything.",
   },
+  {
+    q: "How does the Managed Move-In deposit work?",
+    a: "Half of the agreed fee is invoiced when you accept the written plan, and the other half on the working day after cut-over, once your mail is arriving in ANEXOMAIL and your domain records read green. If we cannot complete the move, the deposit is returned — you do not pay for a move that did not happen.",
+  },
+  {
+    q: "Why only two move-ins a month?",
+    a: "A move-in is done by hand, start to finish, by the person who built the product. Two a month is what can be done properly without pushing your migration into a queue. When a month is full we tell you the next free window instead of taking the money and stalling.",
+  },
+  {
+    q: "Can I cancel Priority Support?",
+    a: "Yes — it is monthly, invoiced in advance, and you can stop it at the end of any month from billing. Your workspace plan is untouched; only the support tier changes.",
+  },
+];
+
+/** Services — one-off cash and the monthly retainer, both capacity-capped on purpose. */
+const services = [
+  {
+    name: "Managed Move-In",
+    price: "From £500",
+    unit: " one-off",
+    body: "We move your company off Gmail, Outlook, Zoho or plain IMAP. You keep working while it happens.",
+    tiers: [
+      "1–10 mailboxes — £500",
+      "11–30 mailboxes — £1,200",
+      "31+ mailboxes — £2,000",
+    ],
+    features: [
+      "Mail, folders, read state and full history moved and verified message-for-message",
+      "Contacts, calendars, aliases, shared addresses and signatures rebuilt",
+      "MX, SPF, DKIM and DMARC generated and proven green on your domain",
+      "Cut-over is scheduled overnight and designed to avoid service interruption",
+      "A written item-by-item move log is handed to you at the end",
+    ],
+    terms: "50% on accepting the plan, 50% the day after cut-over. Old mailboxes are copied, never deleted.",
+    capacity: "Two move-ins a month — done by hand, not queued",
+    cta: "Book a move-in call",
+    to: "/migration" as const,
+  },
+  {
+    name: "Priority Support",
+    price: "£500",
+    unit: " / month",
+    body: "For companies that need a named person answering, not a queue. Sits on top of any plan.",
+    tiers: [
+      "Any plan · added or dropped monthly",
+      "Invoiced monthly in advance",
+      "Three companies at a time",
+    ],
+    features: [
+      "Reply within 4 working hours, every working day",
+      "A named contact you email directly — no portal, no ticket number",
+      "Monthly delivery and security health report for your domain",
+      "A 45-minute review call each quarter",
+      "Restore and recovery requests looked at first",
+    ],
+    terms: "Working hours are 09:00–18:00 UK, Monday to Friday. We do not promise 24/7 cover we cannot staff.",
+    capacity: "Three companies at a time — so 4 hours stays true",
+    cta: "Ask about Priority Support",
+    to: "/enterprise" as const,
+  },
 ];
 
 const plans = [
