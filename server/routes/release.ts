@@ -756,6 +756,13 @@ const STAGE_WEIGHT: Record<string, number> = {
   lost: 0,
 };
 
+const OFFER_LABEL: Record<string, string> = {
+  migration: "Managed Move-In",
+  sla: "Priority Support",
+  partner: "Partner commission",
+  subscription: "Workspace subscription",
+};
+
 founderRouter.get("/revenue/pipeline", async (req, res) => {
   const user = await requireUser(req, res);
   if (!user) return;
@@ -798,6 +805,9 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
         weight,
         plan_seats: seats,
         expected_mrr_gbp: Math.round(expected * weight),
+        // Offers ko alag rakha jata hai: Managed Move-In (one-off cash) vs
+        // Priority Support (retainer) vs normal workspace subscription.
+        offer: OFFER_LABEL[String(l.kind || "")] ?? "Workspace subscription",
         one_off_gbp: l.kind === "migration" && l.quote_gbp != null ? Number(l.quote_gbp) : null,
       };
     });
@@ -816,7 +826,7 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
       gap_gbp: Math.max(0, Math.round(target - committed)),
       committed: [
         { stream: "Subscriptions (Basic/Pro/Business)", mrr_gbp: Math.round(subsMrr), accounts: live.length },
-        { stream: "Enterprise SLA retainer", mrr_gbp: slaMrr, accounts: live.filter((a) => a.sla_addon).length },
+        { stream: "Priority Support retainer", mrr_gbp: slaMrr, accounts: live.filter((a) => a.sla_addon).length },
         { stream: "Partner commission", mrr_gbp: Math.round(partnerMrr), accounts: partners.length },
       ].filter((s) => s.accounts > 0 || s.mrr_gbp > 0),
       pipeline,
