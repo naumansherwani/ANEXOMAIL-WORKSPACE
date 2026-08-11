@@ -37,6 +37,7 @@ import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
+import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
@@ -240,6 +241,11 @@ const AppPeopleRoute = AppPeopleRouteImport.update({
 const AppSearchRoute = AppSearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSecurityRoute = AppSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
   getParentRoute: () => AppRoute,
 } as any)
 const AppSettingsRoute = AppSettingsRouteImport.update({
@@ -592,6 +598,7 @@ export interface FileRoutesByFullPath {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/security': typeof AppSecurityRoute
   '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -681,6 +688,7 @@ export interface FileRoutesByTo {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/security': typeof AppSecurityRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app': typeof AppIndexRoute
@@ -773,6 +781,7 @@ export interface FileRoutesById {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/security': typeof AppSecurityRoute
   '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth_/callback': typeof AuthCallbackRoute
@@ -869,6 +878,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/search'
+    | '/app/security'
     | '/app/settings'
     | '/app/work'
     | '/auth/callback'
@@ -958,6 +968,7 @@ export interface FileRouteTypes {
     | '/app/integrations'
     | '/app/people'
     | '/app/search'
+    | '/app/security'
     | '/app/work'
     | '/auth/callback'
     | '/app'
@@ -1049,6 +1060,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/search'
+    | '/app/security'
     | '/app/settings'
     | '/app/work'
     | '/auth_/callback'
@@ -1331,6 +1343,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/app/search'
       preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/security': {
+      id: '/app/security'
+      path: '/security'
+      fullPath: '/app/security'
+      preLoaderRoute: typeof AppSecurityRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/settings': {
@@ -1969,6 +1988,7 @@ interface AppRouteChildren {
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
+  AppSecurityRoute: typeof AppSecurityRoute
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
@@ -1996,6 +2016,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
+  AppSecurityRoute: AppSecurityRoute,
   AppSettingsRoute: AppSettingsRouteWithChildren,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
@@ -2033,13 +2054,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

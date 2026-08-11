@@ -95,3 +95,23 @@ export const ADMIN_SECTIONS: {
   { to: "/app/admin/reports", label: "Reports", summary: "Board-ready, real numbers" },
   { to: "/app/admin/diagnostics", label: "Diagnostics", summary: "Whole-stack signed proof pack" },
 ];
+
+/** Phase 26 — Security Platform. NO API KEYS: Device Trust unki jagah. */
+export const SECURITY_SECTIONS: {
+  to:
+    | "/app/security"
+    | "/app/security/devices"
+    | "/app/security/sessions"
+    | "/app/security/history"
+    | "/app/security/encryption"
+    | "/app/security/proof";
+  label: string;
+  summary: string;
+}[] = [
+  { to: "/app/security", label: "Overview", summary: "Score, ledger, what to fix next" },
+  { to: "/app/security/devices", label: "Device trust", summary: "Fingerprint, score, one-click kill" },
+  { to: "/app/security/sessions", label: "Sessions", summary: "Live sessions and blast-radius kill" },
+  { to: "/app/security/history", label: "Login replay", summary: "Every login with its risk story" },
+  { to: "/app/security/encryption", label: "Encryption", summary: "At rest, in transit, with proof" },
+  { to: "/app/security/proof", label: "Ownership proof", summary: "DKIM, SPF, DMARC, TLS — signed" },
+];
