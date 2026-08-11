@@ -20,8 +20,21 @@ Aur `createClient` boot par throw na kare — warna poora Brain crash hota hai
 
 ## Copy + restart tareeqa
 
+### 1) Main entry overwrite (mount order critical)
+
 ```bash
-nano /opt/anexomail/src/routes/integrations.ts   # select all -> paste -> Ctrl+O, Ctrl+X
+cd /opt/anexomail
+cp src/index.ts src/index.ts.bak.$(date +%s)
+nano /opt/anexomail/src/index.ts   # select all -> paste repo/server/index.ts -> Ctrl+O, Ctrl+X
+pm2 restart anexomail-leo && sleep 3
+```
+
+### 2) Phase 22 — Integrations Platform
+
+```bash
+cd /opt/anexomail
+cp src/routes/integrations.ts src/routes/integrations.ts.bak.$(date +%s)
+nano /opt/anexail/src/routes/integrations.ts   # select all -> paste repo/server/routes/integrations.ts -> Ctrl+O, Ctrl+X
 pm2 restart anexomail-leo && sleep 3
 for p in providers connections migrations delivery/health exports leo-actions; do
   printf "/api/integrations/%s -> " "$p"
@@ -29,4 +42,19 @@ for p in providers connections migrations delivery/health exports leo-actions; d
 done
 ```
 
-`401` = green (guarded). `000` = server down. `404` = mount missing.
+### 3) Phase 23 — Settings Center
+
+```bash
+cd /opt/anexomail
+cp src/routes/settings.ts src/routes/settings.ts.bak.$(date +%s)
+nano /opt/anexomail/src/routes/settings.ts   # select all -> paste repo/server/routes/settings.ts -> Ctrl+O, Ctrl+X
+pm2 restart anexomail-leo && sleep 3
+for p in list save history blast-radius drift scheduled simulate explain revert; do
+  printf "/api/settings/%s -> " "$p"
+  curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/settings/$p"
+done
+printf "/api/founder/settings/overview -> "
+curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/founder/settings/overview"
+```
+
+`401` = green (guarded). `200` = public/health ok. `000` = server down. `404` = mount missing.
