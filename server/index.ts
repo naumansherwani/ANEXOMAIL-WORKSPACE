@@ -32,6 +32,7 @@ import settingsRouter, { founderSettingsRouter } from "./routes/settings";
 import adminRouter, { founderAdminRouter } from "./routes/admin";
 import securityRouter, { founderSecurityRouter } from "./routes/security";
 import perfRouter, { founderPerfRouter } from "./routes/perf";
+import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -127,6 +128,10 @@ app.use("/api/founder", founderSecurityRouter);
 // Phase 27 Performance Platform (/api/perf/*, /api/founder/perf/*)
 app.use("/api/perf", perfRouter);
 app.use("/api/founder", founderPerfRouter);
+
+// Phase 28 — Revenue Engine (public lead intake + founder god-view)
+app.use("/api/public", revenuePublicRouter);
+app.use("/api/founder", founderRevenueRouter);
 
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);

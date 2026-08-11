@@ -14,10 +14,13 @@ import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClaimRouteImport } from './routes/claim'
+import { Route as EnterpriseRouteImport } from './routes/enterprise'
+import { Route as MigrationRouteImport } from './routes/migration'
 import { Route as MoveInRouteImport } from './routes/move-in'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PagesRouteImport } from './routes/pages'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
@@ -74,6 +77,7 @@ import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppFounderPerfRouteImport } from './routes/app.founder_.perf'
+import { Route as AppFounderRevenueRouteImport } from './routes/app.founder_.revenue'
 import { Route as AppFounderSecurityRouteImport } from './routes/app.founder_.security'
 import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -143,6 +147,16 @@ const ClaimRoute = ClaimRouteImport.update({
   path: '/claim',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EnterpriseRoute = EnterpriseRouteImport.update({
+  id: '/enterprise',
+  path: '/enterprise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MigrationRoute = MigrationRouteImport.update({
+  id: '/migration',
+  path: '/migration',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MoveInRoute = MoveInRouteImport.update({
   id: '/move-in',
   path: '/move-in',
@@ -161,6 +175,11 @@ const OwnershipRoute = OwnershipRouteImport.update({
 const PagesRoute = PagesRouteImport.update({
   id: '/pages',
   path: '/pages',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlansRoute = PlansRouteImport.update({
@@ -443,6 +462,11 @@ const AppFounderPerfRoute = AppFounderPerfRouteImport.update({
   path: '/founder/perf',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderRevenueRoute = AppFounderRevenueRouteImport.update({
+  id: '/founder_/revenue',
+  path: '/founder/revenue',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderSecurityRoute = AppFounderSecurityRouteImport.update({
   id: '/founder_/security',
   path: '/founder/security',
@@ -666,10 +690,13 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
+  '/enterprise': typeof EnterpriseRoute
+  '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/pages': typeof PagesRoute
+  '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/ai/automation': typeof AiAutomationRoute
@@ -723,6 +750,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
+  '/app/founder/revenue': typeof AppFounderRevenueRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -775,10 +803,13 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
+  '/enterprise': typeof EnterpriseRoute
+  '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/pages': typeof PagesRoute
+  '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/ai/automation': typeof AiAutomationRoute
@@ -824,6 +855,7 @@ export interface FileRoutesByTo {
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
+  '/app/founder/revenue': typeof AppFounderRevenueRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -877,10 +909,13 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
+  '/enterprise': typeof EnterpriseRoute
+  '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/pages': typeof PagesRoute
+  '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/ai_/automation': typeof AiAutomationRoute
@@ -934,6 +969,7 @@ export interface FileRoutesById {
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/founder_/perf': typeof AppFounderPerfRoute
+  '/app/founder_/revenue': typeof AppFounderRevenueRoute
   '/app/founder_/security': typeof AppFounderSecurityRoute
   '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -989,10 +1025,13 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/claim'
+    | '/enterprise'
+    | '/migration'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
     | '/pages'
+    | '/partners'
     | '/plans'
     | '/security'
     | '/ai/automation'
@@ -1046,6 +1085,7 @@ export interface FileRouteTypes {
     | '/app/founder/integrations'
     | '/app/founder/org'
     | '/app/founder/perf'
+    | '/app/founder/revenue'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/mail/$folder'
@@ -1098,10 +1138,13 @@ export interface FileRouteTypes {
     | '/ai'
     | '/auth'
     | '/claim'
+    | '/enterprise'
+    | '/migration'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
     | '/pages'
+    | '/partners'
     | '/plans'
     | '/security'
     | '/ai/automation'
@@ -1147,6 +1190,7 @@ export interface FileRouteTypes {
     | '/app/founder/integrations'
     | '/app/founder/org'
     | '/app/founder/perf'
+    | '/app/founder/revenue'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/org/audit'
@@ -1199,10 +1243,13 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/claim'
+    | '/enterprise'
+    | '/migration'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
     | '/pages'
+    | '/partners'
     | '/plans'
     | '/security'
     | '/ai_/automation'
@@ -1256,6 +1303,7 @@ export interface FileRouteTypes {
     | '/app/founder_/integrations'
     | '/app/founder_/org'
     | '/app/founder_/perf'
+    | '/app/founder_/revenue'
     | '/app/founder_/security'
     | '/app/founder_/settings'
     | '/app/mail/$folder'
@@ -1310,10 +1358,13 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   ClaimRoute: typeof ClaimRoute
+  EnterpriseRoute: typeof EnterpriseRoute
+  MigrationRoute: typeof MigrationRoute
   MoveInRoute: typeof MoveInRoute
   OnboardingRoute: typeof OnboardingRoute
   OwnershipRoute: typeof OwnershipRoute
   PagesRoute: typeof PagesRoute
+  PartnersRoute: typeof PartnersRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
   AiAutomationRoute: typeof AiAutomationRoute
@@ -1360,6 +1411,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClaimRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/enterprise': {
+      id: '/enterprise'
+      path: '/enterprise'
+      fullPath: '/enterprise'
+      preLoaderRoute: typeof EnterpriseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/migration': {
+      id: '/migration'
+      path: '/migration'
+      fullPath: '/migration'
+      preLoaderRoute: typeof MigrationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/move-in': {
       id: '/move-in'
       path: '/move-in'
@@ -1386,6 +1451,13 @@ declare module '@tanstack/react-router' {
       path: '/pages'
       fullPath: '/pages'
       preLoaderRoute: typeof PagesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/plans': {
@@ -1778,6 +1850,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/perf'
       fullPath: '/app/founder/perf'
       preLoaderRoute: typeof AppFounderPerfRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/revenue': {
+      id: '/app/founder_/revenue'
+      path: '/founder/revenue'
+      fullPath: '/app/founder/revenue'
+      preLoaderRoute: typeof AppFounderRevenueRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder_/security': {
@@ -2325,6 +2404,7 @@ interface AppRouteChildren {
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppFounderPerfRoute: typeof AppFounderPerfRoute
+  AppFounderRevenueRoute: typeof AppFounderRevenueRoute
   AppFounderSecurityRoute: typeof AppFounderSecurityRoute
   AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -2356,6 +2436,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppFounderPerfRoute: AppFounderPerfRoute,
+  AppFounderRevenueRoute: AppFounderRevenueRoute,
   AppFounderSecurityRoute: AppFounderSecurityRoute,
   AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
@@ -2369,10 +2450,13 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   ClaimRoute: ClaimRoute,
+  EnterpriseRoute: EnterpriseRoute,
+  MigrationRoute: MigrationRoute,
   MoveInRoute: MoveInRoute,
   OnboardingRoute: OnboardingRoute,
   OwnershipRoute: OwnershipRoute,
   PagesRoute: PagesRoute,
+  PartnersRoute: PartnersRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
   AiAutomationRoute: AiAutomationRoute,
@@ -2384,13 +2468,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

@@ -60,6 +60,21 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       { label: "Security", path: "/security", note: "TLS, DKIM/SPF/DMARC, data handling" },
       { label: "Ownership", path: "/ownership", note: "Export, delete, domain ownership proof" },
       { label: "Move in", path: "/move-in", note: "Migration from another provider" },
+      {
+        label: "Managed migration",
+        path: "/migration",
+        note: "Phase 28 — fixed-price migration quote calculator (£500–£2,000) + real booking",
+      },
+      {
+        label: "Partner programme",
+        path: "/partners",
+        note: "Phase 28 — white-label reseller, 20/25/30% recurring commission calculator + apply",
+      },
+      {
+        label: "Enterprise support",
+        path: "/enterprise",
+        note: "Phase 28 — £500/mo add-on: named manager, 1h response, quarterly review",
+      },
       { label: "Page map", path: "/pages", note: "This page — every route, always current" },
     ],
   },
@@ -369,6 +384,18 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Founder speed god-view",
         path: "/app/founder/perf",
         note: "Phase 27 god-view — p95 per tenant, failing budgets, regressions",
+        auth: true,
+      },
+    ],
+  },
+  {
+    title: "Revenue engine",
+    blurb: "Phase 28 — four money roads without AI. Founder only.",
+    items: [
+      {
+        label: "Founder revenue god-view",
+        path: "/app/founder/revenue",
+        note: "Phase 28 — MRR vs target, streams, live leads, partner commission, gap maths",
         auth: true,
       },
     ],
