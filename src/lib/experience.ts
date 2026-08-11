@@ -358,7 +358,6 @@ export function auditFocus(): { issues: FocusIssue[]; checked: number } {
         fix: "Use a real <button>, or add tabindex=0 plus key handlers.",
       });
     }
-    if (el.tagName === "INPUT" && !accessibleName(el) === false) continue;
   }
 
   return { issues, checked: nodes.length };
