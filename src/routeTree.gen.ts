@@ -44,7 +44,10 @@ import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
+import { Route as AppAdminHealthRouteImport } from './routes/app.admin.health'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
+import { Route as AppAdminMonitoringRouteImport } from './routes/app.admin.monitoring'
+import { Route as AppAdminStorageRouteImport } from './routes/app.admin.storage'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
 import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
 import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
@@ -270,9 +273,24 @@ const AppAdminExportRoute = AppAdminExportRouteImport.update({
   path: '/export',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAdminHealthRoute = AppAdminHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
   id: '/members',
   path: '/members',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminMonitoringRoute = AppAdminMonitoringRouteImport.update({
+  id: '/monitoring',
+  path: '/monitoring',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminStorageRoute = AppAdminStorageRouteImport.update({
+  id: '/storage',
+  path: '/storage',
   getParentRoute: () => AppAdminRoute,
 } as any)
 const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
@@ -557,7 +575,10 @@ export interface FileRoutesByFullPath {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/monitoring': typeof AppAdminMonitoringRoute
+  '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
@@ -638,7 +659,10 @@ export interface FileRoutesByTo {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/monitoring': typeof AppAdminMonitoringRoute
+  '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
@@ -724,7 +748,10 @@ export interface FileRoutesById {
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
   '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/monitoring': typeof AppAdminMonitoringRoute
+  '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
@@ -813,7 +840,10 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/export'
+    | '/app/admin/health'
     | '/app/admin/members'
+    | '/app/admin/monitoring'
+    | '/app/admin/storage'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
@@ -894,7 +924,10 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/export'
+    | '/app/admin/health'
     | '/app/admin/members'
+    | '/app/admin/monitoring'
+    | '/app/admin/storage'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
@@ -979,7 +1012,10 @@ export interface FileRouteTypes {
     | '/app/admin/addresses'
     | '/app/admin/audit'
     | '/app/admin/export'
+    | '/app/admin/health'
     | '/app/admin/members'
+    | '/app/admin/monitoring'
+    | '/app/admin/storage'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
@@ -1298,11 +1334,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminExportRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/health': {
+      id: '/app/admin/health'
+      path: '/health'
+      fullPath: '/app/admin/health'
+      preLoaderRoute: typeof AppAdminHealthRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/admin/members': {
       id: '/app/admin/members'
       path: '/members'
       fullPath: '/app/admin/members'
       preLoaderRoute: typeof AppAdminMembersRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/monitoring': {
+      id: '/app/admin/monitoring'
+      path: '/monitoring'
+      fullPath: '/app/admin/monitoring'
+      preLoaderRoute: typeof AppAdminMonitoringRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/storage': {
+      id: '/app/admin/storage'
+      path: '/storage'
+      fullPath: '/app/admin/storage'
+      preLoaderRoute: typeof AppAdminStorageRouteImport
       parentRoute: typeof AppAdminRoute
     }
     '/app/admin/teams': {
@@ -1655,7 +1712,10 @@ interface AppAdminRouteChildren {
   AppAdminAddressesRoute: typeof AppAdminAddressesRoute
   AppAdminAuditRoute: typeof AppAdminAuditRoute
   AppAdminExportRoute: typeof AppAdminExportRoute
+  AppAdminHealthRoute: typeof AppAdminHealthRoute
   AppAdminMembersRoute: typeof AppAdminMembersRoute
+  AppAdminMonitoringRoute: typeof AppAdminMonitoringRoute
+  AppAdminStorageRoute: typeof AppAdminStorageRoute
   AppAdminTeamsRoute: typeof AppAdminTeamsRoute
   AppAdminIndexRoute: typeof AppAdminIndexRoute
 }
@@ -1664,7 +1724,10 @@ const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminAddressesRoute: AppAdminAddressesRoute,
   AppAdminAuditRoute: AppAdminAuditRoute,
   AppAdminExportRoute: AppAdminExportRoute,
+  AppAdminHealthRoute: AppAdminHealthRoute,
   AppAdminMembersRoute: AppAdminMembersRoute,
+  AppAdminMonitoringRoute: AppAdminMonitoringRoute,
+  AppAdminStorageRoute: AppAdminStorageRoute,
   AppAdminTeamsRoute: AppAdminTeamsRoute,
   AppAdminIndexRoute: AppAdminIndexRoute,
 }
