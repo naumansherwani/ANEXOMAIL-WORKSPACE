@@ -275,6 +275,54 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         note: "Phase 25 god-view — failing checks, self-heals, incidents, held mail, storage across every tenant",
         auth: true,
       },
+      {
+        label: "Founder security god-view",
+        path: "/app/founder/security",
+        note: "Phase 26 god-view — anomalies, frozen accounts, blocked devices, kill switches per tenant",
+        auth: true,
+      },
+    ],
+  },
+  {
+    title: "Security platform",
+    blurb: "Phase 26 — device trust replaces API keys. Owner and admin only.",
+    items: [
+      {
+        label: "Security overview",
+        path: "/app/security",
+        note: "Phase 26 — score, hash-chained ledger, what to fix next",
+        auth: true,
+      },
+      {
+        label: "Device trust",
+        path: "/app/security/devices",
+        note: "Phase 26 — fingerprint + live trust score + one-click device kill (no API keys)",
+        auth: true,
+      },
+      {
+        label: "Sessions & kill switch",
+        path: "/app/security/sessions",
+        note: "Phase 26 — live sessions with risk, plus blast-radius kill switch",
+        auth: true,
+      },
+      {
+        label: "Login replay",
+        path: "/app/security/history",
+        note: "Phase 26 — every sign-in as a risk story, impossible-travel freeze, “wasn’t me”",
+        auth: true,
+      },
+      {
+        label: "Encryption ledger",
+        path: "/app/security/encryption",
+        note: "Phase 26 — at rest + in transit per surface, hashed key rotations",
+        auth: true,
+      },
+      {
+        label: "Ownership proof",
+        path: "/app/security/proof",
+        note: "Phase 26 — live DKIM/SPF/DMARC/TLS probe, hashed exportable pack",
+        auth: true,
+      },
     ],
   },
   {
