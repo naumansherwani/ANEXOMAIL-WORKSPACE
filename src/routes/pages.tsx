@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
-import { founderPreviewEnabled, setFounderPreview } from "@/lib/founder-preview";
+import {
+  founderPreviewEnabled,
+  founderPreviewFromUrl,
+  setFounderPreview,
+} from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/pages")({
   head: () => ({
@@ -529,6 +533,7 @@ function PageMap() {
   const [checked, setChecked] = useState<Record<string, boolean>>({});
   const [ready, setReady] = useState(false);
   const [preview, setPreview] = useState(false);
+  const [allowed, setAllowed] = useState(false);
 
   // Founder review state is a local, private checklist — no server, no account.
   useEffect(() => {
@@ -539,7 +544,9 @@ function PageMap() {
       /* ignore corrupt state */
     }
     setReady(true);
-    setPreview(founderPreviewEnabled());
+    const founder = founderPreviewFromUrl() || founderPreviewEnabled();
+    setPreview(founder);
+    setAllowed(founder);
   }, []);
 
   const toggle = (key: string) => {
@@ -555,6 +562,32 @@ function PageMap() {
   };
 
   const reviewed = ready ? Object.values(checked).filter(Boolean).length : 0;
+
+  // Founder-only surface. The public never sees the internal route inventory.
+  if (ready && !allowed) {
+    return (
+      <div className="flex min-h-svh flex-col">
+        <SiteNav />
+        <main className="flex-1">
+          <div className="ax-container py-24">
+            <p className="ax-eyebrow">Private</p>
+            <h1 className="ax-display mt-3 text-foreground">This page is internal</h1>
+            <p className="ax-body mt-ax-3 max-w-xl">
+              The page map is an internal review tool. Everything built for you lives in the
+              main navigation.
+            </p>
+            <Link
+              to="/"
+              className="mt-ax-5 inline-flex rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/85"
+            >
+              Back to home
+            </Link>
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-svh flex-col">
