@@ -39,6 +39,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     blurb: "Anyone can open these — this is what the world sees.",
     items: [
       { label: "Landing", path: "/", note: "Hero, positioning, proof, plans teaser" },
+      { label: "About", path: "/about", note: "Why it exists, the four promises, why it is different, who runs it" },
       { label: "Plans", path: "/plans", note: "Basic £20 · Pro £40 · Business £85" },
       { label: "Leo (AI)", path: "/ai", note: "Coming soon page — AI not public yet" },
       {
