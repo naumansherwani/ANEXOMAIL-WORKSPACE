@@ -11,6 +11,7 @@ import {
   useSettingHistory,
   useSettings,
   useSimulate,
+  useRevertSetting as useRevert,
 } from "@/lib/settings";
 import { cn } from "@/lib/utils";
 
@@ -185,9 +186,6 @@ function RevertButton({ versionId, reverted }: { versionId: string; reverted: bo
     </button>
   );
 }
-
-// eslint-disable-next-line react-refresh/only-export-components
-import { useRevertSetting as useRevert } from "@/lib/settings";
 
 function Chip({
   icon: Icon,
