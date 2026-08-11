@@ -36,6 +36,7 @@ import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
@@ -64,6 +65,12 @@ import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
 import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
+import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
+import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
+import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
+import { Route as AppSettingsNotificationsRouteImport } from './routes/app.settings.notifications'
+import { Route as AppSettingsPrivacyRouteImport } from './routes/app.settings.privacy'
+import { Route as AppSettingsWorkspaceRouteImport } from './routes/app.settings.workspace'
 import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.index'
 import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
 import { Route as AppFounderAiAutomationRouteImport } from './routes/app.founder_.ai.automation'
@@ -211,6 +218,11 @@ const AppSearchRoute = AppSearchRouteImport.update({
   path: '/search',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppWorkRoute = AppWorkRouteImport.update({
   id: '/work',
   path: '/work',
@@ -351,6 +363,37 @@ const AppOrgSecurityRoute = AppOrgSecurityRouteImport.update({
   path: '/security',
   getParentRoute: () => AppOrgRoute,
 } as any)
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAiRoute = AppSettingsAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAppearanceRoute = AppSettingsAppearanceRouteImport.update({
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsNotificationsRoute =
+  AppSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AppSettingsRoute,
+  } as any)
+const AppSettingsPrivacyRoute = AppSettingsPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsWorkspaceRoute = AppSettingsWorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
 const AppFounderAiIndexRoute = AppFounderAiIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -434,6 +477,7 @@ export interface FileRoutesByFullPath {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
@@ -460,9 +504,15 @@ export interface FileRoutesByFullPath {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/settings/ai': typeof AppSettingsAiRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/billing': typeof AppFounderAiBillingRoute
@@ -522,9 +572,15 @@ export interface FileRoutesByTo {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/settings/ai': typeof AppSettingsAiRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin': typeof AppAdminIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
+  '/app/settings': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/billing': typeof AppFounderAiBillingRoute
@@ -565,6 +621,7 @@ export interface FileRoutesById {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth_/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
@@ -591,9 +648,15 @@ export interface FileRoutesById {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/settings/ai': typeof AppSettingsAiRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder_/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder_/ai/billing': typeof AppFounderAiBillingRoute
@@ -635,6 +698,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/search'
+    | '/app/settings'
     | '/app/work'
     | '/auth/callback'
     | '/app/'
@@ -661,9 +725,15 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/settings/ai'
+    | '/app/settings/appearance'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy'
+    | '/app/settings/workspace'
     | '/app/admin/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/settings/'
     | '/app/founder/ai/arena'
     | '/app/founder/ai/automation'
     | '/app/founder/ai/billing'
@@ -723,9 +793,15 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/settings/ai'
+    | '/app/settings/appearance'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy'
+    | '/app/settings/workspace'
     | '/app/admin'
     | '/app/crm'
     | '/app/org'
+    | '/app/settings'
     | '/app/founder/ai/arena'
     | '/app/founder/ai/automation'
     | '/app/founder/ai/billing'
@@ -765,6 +841,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/search'
+    | '/app/settings'
     | '/app/work'
     | '/auth_/callback'
     | '/app/'
@@ -791,9 +868,15 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/settings/ai'
+    | '/app/settings/appearance'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy'
+    | '/app/settings/workspace'
     | '/app/admin/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/settings/'
     | '/app/founder_/ai/arena'
     | '/app/founder_/ai/automation'
     | '/app/founder_/ai/billing'
@@ -1017,6 +1100,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSearchRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/work': {
       id: '/app/work'
       path: '/work'
@@ -1213,6 +1303,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrgSecurityRouteImport
       parentRoute: typeof AppOrgRoute
     }
+    '/app/settings/': {
+      id: '/app/settings/'
+      path: '/'
+      fullPath: '/app/settings/'
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/ai': {
+      id: '/app/settings/ai'
+      path: '/ai'
+      fullPath: '/app/settings/ai'
+      preLoaderRoute: typeof AppSettingsAiRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/appearance': {
+      id: '/app/settings/appearance'
+      path: '/appearance'
+      fullPath: '/app/settings/appearance'
+      preLoaderRoute: typeof AppSettingsAppearanceRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/notifications': {
+      id: '/app/settings/notifications'
+      path: '/notifications'
+      fullPath: '/app/settings/notifications'
+      preLoaderRoute: typeof AppSettingsNotificationsRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/privacy': {
+      id: '/app/settings/privacy'
+      path: '/privacy'
+      fullPath: '/app/settings/privacy'
+      preLoaderRoute: typeof AppSettingsPrivacyRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/workspace': {
+      id: '/app/settings/workspace'
+      path: '/workspace'
+      fullPath: '/app/settings/workspace'
+      preLoaderRoute: typeof AppSettingsWorkspaceRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
     '/app/founder_/ai/': {
       id: '/app/founder_/ai/'
       path: '/'
@@ -1361,6 +1493,28 @@ const AppOrgRouteChildren: AppOrgRouteChildren = {
 const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
 
+interface AppSettingsRouteChildren {
+  AppSettingsAiRoute: typeof AppSettingsAiRoute
+  AppSettingsAppearanceRoute: typeof AppSettingsAppearanceRoute
+  AppSettingsNotificationsRoute: typeof AppSettingsNotificationsRoute
+  AppSettingsPrivacyRoute: typeof AppSettingsPrivacyRoute
+  AppSettingsWorkspaceRoute: typeof AppSettingsWorkspaceRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+}
+
+const AppSettingsRouteChildren: AppSettingsRouteChildren = {
+  AppSettingsAiRoute: AppSettingsAiRoute,
+  AppSettingsAppearanceRoute: AppSettingsAppearanceRoute,
+  AppSettingsNotificationsRoute: AppSettingsNotificationsRoute,
+  AppSettingsPrivacyRoute: AppSettingsPrivacyRoute,
+  AppSettingsWorkspaceRoute: AppSettingsWorkspaceRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+}
+
+const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
+  AppSettingsRouteChildren,
+)
+
 interface AppFounderAiRouteChildren {
   AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
   AppFounderAiAutomationRoute: typeof AppFounderAiAutomationRoute
@@ -1415,6 +1569,7 @@ interface AppRouteChildren {
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
+  AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
@@ -1437,6 +1592,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
+  AppSettingsRoute: AppSettingsRouteWithChildren,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
