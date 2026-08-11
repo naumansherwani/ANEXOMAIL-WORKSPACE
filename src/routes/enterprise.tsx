@@ -79,7 +79,7 @@ const detail = [
   },
   {
     title: "SLA",
-    body: `The commercial SLA — response clock, availability target, maintenance windows and any credits — is agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the a four working-hour reply in working hours.`,
+    body: `The commercial SLA — response clock, availability target, maintenance windows and any credits — is agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the four working-hour reply on working days.`,
   },
   {
     title: "Reviews and reporting",
