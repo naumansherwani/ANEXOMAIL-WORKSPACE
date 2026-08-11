@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
+import { SiteLock } from "@/components/site/SiteLock";
 import { registerServiceWorker } from "@/lib/pwa";
 
 function NotFoundComponent() {
@@ -149,10 +150,13 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-        <CrossPlatformBar />
-        <Toaster />
+        {/* PRE-LAUNCH LOCK: awam ko kuch nahi, founder key wale device pe sab kuch. */}
+        <SiteLock>
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+          <CrossPlatformBar />
+          <Toaster />
+        </SiteLock>
       </AuthProvider>
     </QueryClientProvider>
   );
