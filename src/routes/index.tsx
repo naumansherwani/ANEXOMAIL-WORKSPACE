@@ -522,8 +522,8 @@ function Index() {
                   </Link>
                   <p className="text-center text-[13px] text-muted-foreground">
                     Or write directly to{" "}
-                    <a href="mailto:hello@anexomail.com" className="font-semibold text-foreground underline-offset-2 hover:underline">
-                      hello@anexomail.com
+                    <a href="mailto:moveyourbusiness@anexomail.com" className="font-semibold text-foreground underline-offset-2 hover:underline">
+                      moveyourbusiness@anexomail.com
                     </a>
                   </p>
                 </div>

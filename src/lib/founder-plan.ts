@@ -43,10 +43,17 @@ export const SUPPORT_MAILBOXES: PlannedMailbox[] = [
     agent: "Leo",
   },
   {
+    address: "moveyourbusiness@anexomail.com",
+    display_name: "ANEXOMAIL Move-Ins",
+    kind: "support",
+    note: "Public website lead mailbox — migration and Priority Support inquiries.",
+    agent: "Leo",
+  },
+  {
     address: "hello@anexomail.com",
     display_name: "ANEXOMAIL",
     kind: "support",
-    note: "First contact and sales questions.",
+    note: "General first contact and sales questions.",
     agent: "Leo",
   },
   {

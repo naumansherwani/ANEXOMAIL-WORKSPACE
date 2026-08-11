@@ -176,7 +176,7 @@ function MigrationPage() {
               quoteGbp={quote.total}
               seats={input.mailboxes}
               detail={{ ...input, window: quote.window }}
-              note="No card now. We confirm scope in writing first, then invoice the deposit. Or email hello@anexomail.com directly."
+              note="No card now. We confirm scope in writing first, then invoice the deposit. Or email moveyourbusiness@anexomail.com directly."
             />
           </div>
         </section>
