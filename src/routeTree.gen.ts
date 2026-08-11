@@ -64,6 +64,7 @@ import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.
 import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
 import { Route as AppFounderAiAutomationRouteImport } from './routes/app.founder_.ai.automation'
 import { Route as AppFounderAiBillingRouteImport } from './routes/app.founder_.ai.billing'
+import { Route as AppFounderAiKnowledgeRouteImport } from './routes/app.founder_.ai.knowledge'
 import { Route as AppFounderAiMemoryRouteImport } from './routes/app.founder_.ai.memory'
 import { Route as AppFounderAiPromptsRouteImport } from './routes/app.founder_.ai.prompts'
 import { Route as AppFounderAiReceiptsRouteImport } from './routes/app.founder_.ai.receipts'
@@ -346,6 +347,11 @@ const AppFounderAiBillingRoute = AppFounderAiBillingRouteImport.update({
   path: '/billing',
   getParentRoute: () => AppFounderAiRoute,
 } as any)
+const AppFounderAiKnowledgeRoute = AppFounderAiKnowledgeRouteImport.update({
+  id: '/knowledge',
+  path: '/knowledge',
+  getParentRoute: () => AppFounderAiRoute,
+} as any)
 const AppFounderAiMemoryRoute = AppFounderAiMemoryRouteImport.update({
   id: '/memory',
   path: '/memory',
@@ -432,6 +438,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/billing': typeof AppFounderAiBillingRoute
+  '/app/founder/ai/knowledge': typeof AppFounderAiKnowledgeRoute
   '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
@@ -489,6 +496,7 @@ export interface FileRoutesByTo {
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/billing': typeof AppFounderAiBillingRoute
+  '/app/founder/ai/knowledge': typeof AppFounderAiKnowledgeRoute
   '/app/founder/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/founder/ai/receipts': typeof AppFounderAiReceiptsRoute
@@ -553,6 +561,7 @@ export interface FileRoutesById {
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder_/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder_/ai/billing': typeof AppFounderAiBillingRoute
+  '/app/founder_/ai/knowledge': typeof AppFounderAiKnowledgeRoute
   '/app/founder_/ai/memory': typeof AppFounderAiMemoryRoute
   '/app/founder_/ai/prompts': typeof AppFounderAiPromptsRoute
   '/app/founder_/ai/receipts': typeof AppFounderAiReceiptsRoute
@@ -618,6 +627,7 @@ export interface FileRouteTypes {
     | '/app/founder/ai/arena'
     | '/app/founder/ai/automation'
     | '/app/founder/ai/billing'
+    | '/app/founder/ai/knowledge'
     | '/app/founder/ai/memory'
     | '/app/founder/ai/prompts'
     | '/app/founder/ai/receipts'
@@ -675,6 +685,7 @@ export interface FileRouteTypes {
     | '/app/founder/ai/arena'
     | '/app/founder/ai/automation'
     | '/app/founder/ai/billing'
+    | '/app/founder/ai/knowledge'
     | '/app/founder/ai/memory'
     | '/app/founder/ai/prompts'
     | '/app/founder/ai/receipts'
@@ -738,6 +749,7 @@ export interface FileRouteTypes {
     | '/app/founder_/ai/arena'
     | '/app/founder_/ai/automation'
     | '/app/founder_/ai/billing'
+    | '/app/founder_/ai/knowledge'
     | '/app/founder_/ai/memory'
     | '/app/founder_/ai/prompts'
     | '/app/founder_/ai/receipts'
@@ -1153,6 +1165,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderAiBillingRouteImport
       parentRoute: typeof AppFounderAiRoute
     }
+    '/app/founder_/ai/knowledge': {
+      id: '/app/founder_/ai/knowledge'
+      path: '/knowledge'
+      fullPath: '/app/founder/ai/knowledge'
+      preLoaderRoute: typeof AppFounderAiKnowledgeRouteImport
+      parentRoute: typeof AppFounderAiRoute
+    }
     '/app/founder_/ai/memory': {
       id: '/app/founder_/ai/memory'
       path: '/memory'
@@ -1270,6 +1289,7 @@ interface AppFounderAiRouteChildren {
   AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
   AppFounderAiAutomationRoute: typeof AppFounderAiAutomationRoute
   AppFounderAiBillingRoute: typeof AppFounderAiBillingRoute
+  AppFounderAiKnowledgeRoute: typeof AppFounderAiKnowledgeRoute
   AppFounderAiMemoryRoute: typeof AppFounderAiMemoryRoute
   AppFounderAiPromptsRoute: typeof AppFounderAiPromptsRoute
   AppFounderAiReceiptsRoute: typeof AppFounderAiReceiptsRoute
@@ -1281,6 +1301,7 @@ const AppFounderAiRouteChildren: AppFounderAiRouteChildren = {
   AppFounderAiArenaRoute: AppFounderAiArenaRoute,
   AppFounderAiAutomationRoute: AppFounderAiAutomationRoute,
   AppFounderAiBillingRoute: AppFounderAiBillingRoute,
+  AppFounderAiKnowledgeRoute: AppFounderAiKnowledgeRoute,
   AppFounderAiMemoryRoute: AppFounderAiMemoryRoute,
   AppFounderAiPromptsRoute: AppFounderAiPromptsRoute,
   AppFounderAiReceiptsRoute: AppFounderAiReceiptsRoute,
