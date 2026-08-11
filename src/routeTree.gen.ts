@@ -87,6 +87,7 @@ import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppPerfIndexRouteImport } from './routes/app.perf.index'
 import { Route as AppPerfBudgetsRouteImport } from './routes/app.perf.budgets'
+import { Route as AppPerfPrefetchRouteImport } from './routes/app.perf.prefetch'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
 import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security.encryption'
@@ -503,6 +504,11 @@ const AppPerfBudgetsRoute = AppPerfBudgetsRouteImport.update({
   path: '/budgets',
   getParentRoute: () => AppPerfRoute,
 } as any)
+const AppPerfPrefetchRoute = AppPerfPrefetchRouteImport.update({
+  id: '/prefetch',
+  path: '/prefetch',
+  getParentRoute: () => AppPerfRoute,
+} as any)
 const AppSecurityIndexRoute = AppSecurityIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -704,6 +710,7 @@ export interface FileRoutesByFullPath {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/prefetch': typeof AppPerfPrefetchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
@@ -799,6 +806,7 @@ export interface FileRoutesByTo {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/prefetch': typeof AppPerfPrefetchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
@@ -905,6 +913,7 @@ export interface FileRoutesById {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/prefetch': typeof AppPerfPrefetchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
@@ -1012,6 +1021,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/perf/budgets'
+    | '/app/perf/prefetch'
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
@@ -1107,6 +1117,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/perf/budgets'
+    | '/app/perf/prefetch'
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
@@ -1212,6 +1223,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/perf/budgets'
+    | '/app/perf/prefetch'
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
@@ -1811,6 +1823,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPerfBudgetsRouteImport
       parentRoute: typeof AppPerfRoute
     }
+    '/app/perf/prefetch': {
+      id: '/app/perf/prefetch'
+      path: '/prefetch'
+      fullPath: '/app/perf/prefetch'
+      preLoaderRoute: typeof AppPerfPrefetchRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
     '/app/security/': {
       id: '/app/security/'
       path: '/'
@@ -2095,11 +2114,13 @@ const AppOrgRouteWithChildren =
 
 interface AppPerfRouteChildren {
   AppPerfBudgetsRoute: typeof AppPerfBudgetsRoute
+  AppPerfPrefetchRoute: typeof AppPerfPrefetchRoute
   AppPerfIndexRoute: typeof AppPerfIndexRoute
 }
 
 const AppPerfRouteChildren: AppPerfRouteChildren = {
   AppPerfBudgetsRoute: AppPerfBudgetsRoute,
+  AppPerfPrefetchRoute: AppPerfPrefetchRoute,
   AppPerfIndexRoute: AppPerfIndexRoute,
 }
 
