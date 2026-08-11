@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { MailOpen, Paperclip } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { ArrowLeft, MailOpen, Paperclip } from "lucide-react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/app/mail/$folder/$threadId")({
 });
 
 function ThreadPage() {
-  const { threadId } = Route.useParams();
+  const { folder, threadId } = Route.useParams();
   const query = useThread(threadId);
 
   if (query.error) {
@@ -57,6 +57,15 @@ function ThreadPage() {
   return (
     <div className="flex min-h-full flex-col">
       <div className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-ax-3 border-b border-border bg-background/95 px-5 backdrop-blur">
+        {/* Phase 28 — 1-panel morph: back to the list on a phone. */}
+        <Link
+          to="/app/mail/$folder"
+          params={{ folder }}
+          aria-label="Back to list"
+          className="ax-press -ml-2 shrink-0 rounded-lg p-2 text-muted-foreground md:hidden"
+        >
+          <ArrowLeft className="size-4" aria-hidden="true" />
+        </Link>
         <div className="min-w-0">
           <h1 className="truncate text-sm font-bold tracking-tight text-foreground">
             {thread.subject || "(no subject)"}
