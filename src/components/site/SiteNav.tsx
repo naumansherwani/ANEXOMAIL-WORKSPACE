@@ -6,6 +6,7 @@ import { BrandMark } from "./BrandMark";
 
 const links = [
   { label: "Workspace", to: "/app" as const },
+  { label: "About", to: "/about" as const },
   { label: "Security", to: "/security" as const },
   { label: "Ownership", to: "/ownership" as const },
   { label: "Pricing", to: "/plans" as const },

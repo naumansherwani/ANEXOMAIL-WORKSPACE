@@ -26,11 +26,11 @@ const groups = [
   {
     title: "Company",
     items: [
+      { label: "About", to: "/about" as const },
       { label: "Partner programme", to: "/partners" as const },
       { label: "Enterprise support", to: "/enterprise" as const },
       { label: "Security", to: "/security" as const },
       { label: "Ownership", to: "/ownership" as const },
-      { label: "All pages", to: "/pages" as const },
     ],
   },
 ];
