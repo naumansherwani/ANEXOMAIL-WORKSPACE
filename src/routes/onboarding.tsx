@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Building2, Globe, Loader2, Users } from "lucide-react";
+import { ArrowLeft, Building2, Globe, Loader2, LogIn, Rocket, Users } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
@@ -45,7 +45,6 @@ function OnboardingPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (status === "signed-out") void navigate({ to: "/auth", replace: true });
     // Identity comes first: no workspace setup without an @anexomail.com address.
     if (status === "signed-in" && session && !session.user.anexomail_address)
       void navigate({ to: "/claim", replace: true });
@@ -105,6 +104,9 @@ function OnboardingPage() {
   };
 
   return (
+    status !== "signed-in" ? (
+      <OnboardingIntro loading={status === "loading"} />
+    ) : (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div
         aria-hidden
@@ -223,6 +225,96 @@ function OnboardingPage() {
               </Button>
             </form>
           )}
+        </div>
+      </div>
+    </main>
+    )
+  );
+}
+
+const explains = [
+  {
+    title: "What onboarding is",
+    body: "The short setup that turns a signed-in account into a working company workspace: your organisation, your domain, and the people who need a mailbox.",
+  },
+  {
+    title: "Who it is for",
+    body: "The person who owns the company's email — usually a founder, an office manager or whoever holds the domain. Everyone else is invited later and skips this entirely.",
+  },
+  {
+    title: "What happens during it",
+    body: "Two steps. First you name the organisation and, if you are ready, add your domain. Then you paste in the email addresses of the people you want, and they get an invitation.",
+  },
+  {
+    title: "What you will need",
+    body: "Your company name, the domain you already own (optional at this point), and the email addresses of the people you want in. Nothing else — no card details are asked for here.",
+  },
+  {
+    title: "After you sign in",
+    body: "You land on step one immediately. It takes a couple of minutes, and the workspace opens at the end of it. You can add domains, people and shared addresses at any time after.",
+  },
+  {
+    title: "What about DNS",
+    body: "We generate the exact MX, SPF, DKIM and DMARC records your domain needs and verify them for you in the Ownership Center. The domain stays registered in your name.",
+  },
+];
+
+/** Public face of /onboarding: explains setup instead of showing a bare sign-in. */
+function OnboardingIntro({ loading }: { loading: boolean }) {
+  return (
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[-14rem] h-[30rem] w-[54rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[130px]"
+      />
+      <div className="ax-in relative w-full max-w-2xl">
+        <Link
+          to="/"
+          className="ax-focus ax-caption mb-ax-3 inline-flex items-center gap-1.5 rounded-md text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          Back to home
+        </Link>
+        <div className="flex justify-center">
+          <BrandMark />
+        </div>
+
+        <div className="mt-ax-5 text-center">
+          <Rocket className="mx-auto size-5 text-cyan-accent" aria-hidden="true" />
+          <h1 className="mt-3 text-3xl text-foreground md:text-4xl">Set up your workspace</h1>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            Two steps: name your organisation, then bring your people in. Sign in and you start at
+            step one.
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {explains.map((e) => (
+            <article key={e.title} className="rounded-2xl border border-border bg-card p-5">
+              <h2 className="text-sm font-bold text-foreground">{e.title}</h2>
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{e.body}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            to="/auth"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            {loading ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <LogIn className="size-4" aria-hidden="true" />
+            )}
+            Sign in to start setup
+          </Link>
+          <Link
+            to="/move-in"
+            className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-2"
+          >
+            Rather we did it for you?
+          </Link>
         </div>
       </div>
     </main>
