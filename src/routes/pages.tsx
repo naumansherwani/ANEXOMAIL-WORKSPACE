@@ -393,6 +393,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     blurb: "Phase 28 — four money roads without AI. Founder only.",
     items: [
       {
+        label: "Devices & offline",
+        path: "/app/devices",
+        note: "Phase 28 — install status, offline cache, low-data mode, device handoff drafts",
+        auth: true,
+      },
+      {
         label: "Founder revenue god-view",
         path: "/app/founder/revenue",
         note: "Phase 28 — MRR vs target, streams, live leads, partner commission, gap maths",

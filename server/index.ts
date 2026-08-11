@@ -33,6 +33,7 @@ import adminRouter, { founderAdminRouter } from "./routes/admin";
 import securityRouter, { founderSecurityRouter } from "./routes/security";
 import perfRouter, { founderPerfRouter } from "./routes/perf";
 import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
+import handoffRouter from "./routes/handoff";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -135,6 +136,8 @@ app.use("/api/founder", founderRevenueRouter);
 
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);
+// Phase 28 — Cross-Platform: device handoff (drafts + cursor across devices)
+app.use("/api/mail", handoffRouter);
 app.use("/api/mail", mailRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
