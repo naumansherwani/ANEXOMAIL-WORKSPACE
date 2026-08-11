@@ -282,6 +282,42 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       { label: "Addresses", path: "/app/admin/addresses", note: "Personal + shared", auth: true },
       { label: "Audit", path: "/app/admin/audit", note: "Every action, who and when", auth: true },
       { label: "Export", path: "/app/admin/export", note: "Take your data out", auth: true },
+      {
+        label: "Health",
+        path: "/app/admin/health",
+        note: "Phase 25 — self-healing checks with one-click heal + proof log",
+        auth: true,
+      },
+      {
+        label: "Monitoring",
+        path: "/app/admin/monitoring",
+        note: "Phase 25 — delivery watchtower: queue/defer/bounce in plain English",
+        auth: true,
+      },
+      {
+        label: "Storage",
+        path: "/app/admin/storage",
+        note: "Phase 25 — days-until-full forecast + reclaimable bytes per mailbox",
+        auth: true,
+      },
+      {
+        label: "Logs & incidents",
+        path: "/app/admin/logs",
+        note: "Phase 25 — log lens with trace ids + blame-free incident timeline",
+        auth: true,
+      },
+      {
+        label: "Organisation reports",
+        path: "/app/admin/reports",
+        note: "Phase 25 — board-ready report built only from real numbers",
+        auth: true,
+      },
+      {
+        label: "Diagnostics",
+        path: "/app/admin/diagnostics",
+        note: "Phase 25 — whole-stack probe pack, hashed and exportable",
+        auth: true,
+      },
     ],
   },
 ];
