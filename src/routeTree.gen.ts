@@ -28,6 +28,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAccountRouteImport } from './routes/app.account'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppAiCenterRouteImport } from './routes/app.ai-center'
+import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
 import { Route as AppBillingRouteImport } from './routes/app.billing'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppCrmRouteImport } from './routes/app.crm'
@@ -36,6 +37,7 @@ import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
+import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
@@ -44,16 +46,25 @@ import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
+import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
+import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
+import { Route as AppAnalyticsForecastRouteImport } from './routes/app.analytics.forecast'
+import { Route as AppAnalyticsLeaksRouteImport } from './routes/app.analytics.leaks'
+import { Route as AppAnalyticsPromisesRouteImport } from './routes/app.analytics.promises'
+import { Route as AppAnalyticsTeamRouteImport } from './routes/app.analytics.team'
+import { Route as AppAnalyticsThreadsRouteImport } from './routes/app.analytics.threads'
 import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
 import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
+import { Route as AppFounderAnalyticsRouteImport } from './routes/app.founder_.analytics'
 import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.billing'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
+import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
 import { Route as AppOrgAuditRouteImport } from './routes/app.org.audit'
@@ -64,6 +75,14 @@ import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
 import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
+import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
+import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
+import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
+import { Route as AppSettingsHealthRouteImport } from './routes/app.settings.health'
+import { Route as AppSettingsHistoryRouteImport } from './routes/app.settings.history'
+import { Route as AppSettingsNotificationsRouteImport } from './routes/app.settings.notifications'
+import { Route as AppSettingsPrivacyRouteImport } from './routes/app.settings.privacy'
+import { Route as AppSettingsWorkspaceRouteImport } from './routes/app.settings.workspace'
 import { Route as AppFounderAiIndexRouteImport } from './routes/app.founder_.ai.index'
 import { Route as AppFounderAiArenaRouteImport } from './routes/app.founder_.ai.arena'
 import { Route as AppFounderAiAutomationRouteImport } from './routes/app.founder_.ai.automation'
@@ -171,6 +190,11 @@ const AppAiCenterRoute = AppAiCenterRouteImport.update({
   path: '/ai-center',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAnalyticsRoute = AppAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppBillingRoute = AppBillingRouteImport.update({
   id: '/billing',
   path: '/billing',
@@ -209,6 +233,11 @@ const AppPeopleRoute = AppPeopleRouteImport.update({
 const AppSearchRoute = AppSearchRouteImport.update({
   id: '/search',
   path: '/search',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSettingsRoute = AppSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => AppRoute,
 } as any)
 const AppWorkRoute = AppWorkRouteImport.update({
@@ -251,6 +280,41 @@ const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
   path: '/teams',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAnalyticsIndexRoute = AppAnalyticsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsDeepWorkRoute = AppAnalyticsDeepWorkRouteImport.update({
+  id: '/deep-work',
+  path: '/deep-work',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsForecastRoute = AppAnalyticsForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsLeaksRoute = AppAnalyticsLeaksRouteImport.update({
+  id: '/leaks',
+  path: '/leaks',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsPromisesRoute = AppAnalyticsPromisesRouteImport.update({
+  id: '/promises',
+  path: '/promises',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsTeamRoute = AppAnalyticsTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsThreadsRoute = AppAnalyticsThreadsRouteImport.update({
+  id: '/threads',
+  path: '/threads',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
 const AppCrmIndexRoute = AppCrmIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -281,6 +345,11 @@ const AppFounderAiRoute = AppFounderAiRouteImport.update({
   path: '/founder/ai',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderAnalyticsRoute = AppFounderAnalyticsRouteImport.update({
+  id: '/founder_/analytics',
+  path: '/founder/analytics',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderBillingRoute = AppFounderBillingRouteImport.update({
   id: '/founder_/billing',
   path: '/founder/billing',
@@ -299,6 +368,11 @@ const AppFounderIntegrationsRoute = AppFounderIntegrationsRouteImport.update({
 const AppFounderOrgRoute = AppFounderOrgRouteImport.update({
   id: '/founder_/org',
   path: '/founder/org',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFounderSettingsRoute = AppFounderSettingsRouteImport.update({
+  id: '/founder_/settings',
+  path: '/founder/settings',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
@@ -350,6 +424,47 @@ const AppOrgSecurityRoute = AppOrgSecurityRouteImport.update({
   id: '/security',
   path: '/security',
   getParentRoute: () => AppOrgRoute,
+} as any)
+const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAiRoute = AppSettingsAiRouteImport.update({
+  id: '/ai',
+  path: '/ai',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsAppearanceRoute = AppSettingsAppearanceRouteImport.update({
+  id: '/appearance',
+  path: '/appearance',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsHealthRoute = AppSettingsHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsHistoryRoute = AppSettingsHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsNotificationsRoute =
+  AppSettingsNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => AppSettingsRoute,
+  } as any)
+const AppSettingsPrivacyRoute = AppSettingsPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsWorkspaceRoute = AppSettingsWorkspaceRouteImport.update({
+  id: '/workspace',
+  path: '/workspace',
+  getParentRoute: () => AppSettingsRoute,
 } as any)
 const AppFounderAiIndexRoute = AppFounderAiIndexRouteImport.update({
   id: '/',
@@ -426,6 +541,7 @@ export interface FileRoutesByFullPath {
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
+  '/app/analytics': typeof AppAnalyticsRouteWithChildren
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
@@ -434,6 +550,7 @@ export interface FileRoutesByFullPath {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
@@ -442,15 +559,23 @@ export interface FileRoutesByFullPath {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
+  '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
+  '/app/analytics/team': typeof AppAnalyticsTeamRoute
+  '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
+  '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
+  '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -460,9 +585,18 @@ export interface FileRoutesByFullPath {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/settings/ai': typeof AppSettingsAiRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/health': typeof AppSettingsHealthRoute
+  '/app/settings/history': typeof AppSettingsHistoryRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/billing': typeof AppFounderAiBillingRoute
@@ -506,14 +640,22 @@ export interface FileRoutesByTo {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
+  '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
+  '/app/analytics/team': typeof AppAnalyticsTeamRoute
+  '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
+  '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
@@ -522,9 +664,18 @@ export interface FileRoutesByTo {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/settings/ai': typeof AppSettingsAiRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/health': typeof AppSettingsHealthRoute
+  '/app/settings/history': typeof AppSettingsHistoryRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin': typeof AppAdminIndexRoute
+  '/app/analytics': typeof AppAnalyticsIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
+  '/app/settings': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder/ai/billing': typeof AppFounderAiBillingRoute
@@ -557,6 +708,7 @@ export interface FileRoutesById {
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
+  '/app/analytics': typeof AppAnalyticsRouteWithChildren
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
@@ -565,6 +717,7 @@ export interface FileRoutesById {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth_/callback': typeof AuthCallbackRoute
   '/app/': typeof AppIndexRoute
@@ -573,15 +726,23 @@ export interface FileRoutesById {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
+  '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
+  '/app/analytics/team': typeof AppAnalyticsTeamRoute
+  '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
+  '/app/founder_/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder_/billing': typeof AppFounderBillingRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
+  '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -591,9 +752,18 @@ export interface FileRoutesById {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/settings/ai': typeof AppSettingsAiRoute
+  '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/health': typeof AppSettingsHealthRoute
+  '/app/settings/history': typeof AppSettingsHistoryRoute
+  '/app/settings/notifications': typeof AppSettingsNotificationsRoute
+  '/app/settings/privacy': typeof AppSettingsPrivacyRoute
+  '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
   '/app/founder_/ai/automation': typeof AppFounderAiAutomationRoute
   '/app/founder_/ai/billing': typeof AppFounderAiBillingRoute
@@ -627,6 +797,7 @@ export interface FileRouteTypes {
     | '/app/account'
     | '/app/admin'
     | '/app/ai-center'
+    | '/app/analytics'
     | '/app/billing'
     | '/app/calendar'
     | '/app/crm'
@@ -635,6 +806,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/search'
+    | '/app/settings'
     | '/app/work'
     | '/auth/callback'
     | '/app/'
@@ -643,15 +815,23 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/analytics/deep-work'
+    | '/app/analytics/forecast'
+    | '/app/analytics/leaks'
+    | '/app/analytics/promises'
+    | '/app/analytics/team'
+    | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder/ai'
+    | '/app/founder/analytics'
     | '/app/founder/billing'
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/org'
+    | '/app/founder/settings'
     | '/app/mail/$folder'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -661,9 +841,18 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/settings/ai'
+    | '/app/settings/appearance'
+    | '/app/settings/health'
+    | '/app/settings/history'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy'
+    | '/app/settings/workspace'
     | '/app/admin/'
+    | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/settings/'
     | '/app/founder/ai/arena'
     | '/app/founder/ai/automation'
     | '/app/founder/ai/billing'
@@ -707,14 +896,22 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/analytics/deep-work'
+    | '/app/analytics/forecast'
+    | '/app/analytics/leaks'
+    | '/app/analytics/promises'
+    | '/app/analytics/team'
+    | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/analytics'
     | '/app/founder/billing'
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/org'
+    | '/app/founder/settings'
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
@@ -723,9 +920,18 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/settings/ai'
+    | '/app/settings/appearance'
+    | '/app/settings/health'
+    | '/app/settings/history'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy'
+    | '/app/settings/workspace'
     | '/app/admin'
+    | '/app/analytics'
     | '/app/crm'
     | '/app/org'
+    | '/app/settings'
     | '/app/founder/ai/arena'
     | '/app/founder/ai/automation'
     | '/app/founder/ai/billing'
@@ -757,6 +963,7 @@ export interface FileRouteTypes {
     | '/app/account'
     | '/app/admin'
     | '/app/ai-center'
+    | '/app/analytics'
     | '/app/billing'
     | '/app/calendar'
     | '/app/crm'
@@ -765,6 +972,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/search'
+    | '/app/settings'
     | '/app/work'
     | '/auth_/callback'
     | '/app/'
@@ -773,15 +981,23 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/analytics/deep-work'
+    | '/app/analytics/forecast'
+    | '/app/analytics/leaks'
+    | '/app/analytics/promises'
+    | '/app/analytics/team'
+    | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder_/ai'
+    | '/app/founder_/analytics'
     | '/app/founder_/billing'
     | '/app/founder_/crm'
     | '/app/founder_/integrations'
     | '/app/founder_/org'
+    | '/app/founder_/settings'
     | '/app/mail/$folder'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -791,9 +1007,18 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/settings/ai'
+    | '/app/settings/appearance'
+    | '/app/settings/health'
+    | '/app/settings/history'
+    | '/app/settings/notifications'
+    | '/app/settings/privacy'
+    | '/app/settings/workspace'
     | '/app/admin/'
+    | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/settings/'
     | '/app/founder_/ai/arena'
     | '/app/founder_/ai/automation'
     | '/app/founder_/ai/billing'
@@ -961,6 +1186,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiCenterRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/analytics': {
+      id: '/app/analytics'
+      path: '/analytics'
+      fullPath: '/app/analytics'
+      preLoaderRoute: typeof AppAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/billing': {
       id: '/app/billing'
       path: '/billing'
@@ -1015,6 +1247,13 @@ declare module '@tanstack/react-router' {
       path: '/search'
       fullPath: '/app/search'
       preLoaderRoute: typeof AppSearchRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/settings': {
+      id: '/app/settings'
+      path: '/settings'
+      fullPath: '/app/settings'
+      preLoaderRoute: typeof AppSettingsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/work': {
@@ -1073,6 +1312,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminTeamsRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/analytics/': {
+      id: '/app/analytics/'
+      path: '/'
+      fullPath: '/app/analytics/'
+      preLoaderRoute: typeof AppAnalyticsIndexRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/deep-work': {
+      id: '/app/analytics/deep-work'
+      path: '/deep-work'
+      fullPath: '/app/analytics/deep-work'
+      preLoaderRoute: typeof AppAnalyticsDeepWorkRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/forecast': {
+      id: '/app/analytics/forecast'
+      path: '/forecast'
+      fullPath: '/app/analytics/forecast'
+      preLoaderRoute: typeof AppAnalyticsForecastRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/leaks': {
+      id: '/app/analytics/leaks'
+      path: '/leaks'
+      fullPath: '/app/analytics/leaks'
+      preLoaderRoute: typeof AppAnalyticsLeaksRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/promises': {
+      id: '/app/analytics/promises'
+      path: '/promises'
+      fullPath: '/app/analytics/promises'
+      preLoaderRoute: typeof AppAnalyticsPromisesRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/team': {
+      id: '/app/analytics/team'
+      path: '/team'
+      fullPath: '/app/analytics/team'
+      preLoaderRoute: typeof AppAnalyticsTeamRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/threads': {
+      id: '/app/analytics/threads'
+      path: '/threads'
+      fullPath: '/app/analytics/threads'
+      preLoaderRoute: typeof AppAnalyticsThreadsRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
     '/app/crm/': {
       id: '/app/crm/'
       path: '/'
@@ -1115,6 +1403,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderAiRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/founder_/analytics': {
+      id: '/app/founder_/analytics'
+      path: '/founder/analytics'
+      fullPath: '/app/founder/analytics'
+      preLoaderRoute: typeof AppFounderAnalyticsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder_/billing': {
       id: '/app/founder_/billing'
       path: '/founder/billing'
@@ -1141,6 +1436,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/org'
       fullPath: '/app/founder/org'
       preLoaderRoute: typeof AppFounderOrgRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/settings': {
+      id: '/app/founder_/settings'
+      path: '/founder/settings'
+      fullPath: '/app/founder/settings'
+      preLoaderRoute: typeof AppFounderSettingsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/mail/$folder': {
@@ -1212,6 +1514,62 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/org/security'
       preLoaderRoute: typeof AppOrgSecurityRouteImport
       parentRoute: typeof AppOrgRoute
+    }
+    '/app/settings/': {
+      id: '/app/settings/'
+      path: '/'
+      fullPath: '/app/settings/'
+      preLoaderRoute: typeof AppSettingsIndexRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/ai': {
+      id: '/app/settings/ai'
+      path: '/ai'
+      fullPath: '/app/settings/ai'
+      preLoaderRoute: typeof AppSettingsAiRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/appearance': {
+      id: '/app/settings/appearance'
+      path: '/appearance'
+      fullPath: '/app/settings/appearance'
+      preLoaderRoute: typeof AppSettingsAppearanceRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/health': {
+      id: '/app/settings/health'
+      path: '/health'
+      fullPath: '/app/settings/health'
+      preLoaderRoute: typeof AppSettingsHealthRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/history': {
+      id: '/app/settings/history'
+      path: '/history'
+      fullPath: '/app/settings/history'
+      preLoaderRoute: typeof AppSettingsHistoryRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/notifications': {
+      id: '/app/settings/notifications'
+      path: '/notifications'
+      fullPath: '/app/settings/notifications'
+      preLoaderRoute: typeof AppSettingsNotificationsRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/privacy': {
+      id: '/app/settings/privacy'
+      path: '/privacy'
+      fullPath: '/app/settings/privacy'
+      preLoaderRoute: typeof AppSettingsPrivacyRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/workspace': {
+      id: '/app/settings/workspace'
+      path: '/workspace'
+      fullPath: '/app/settings/workspace'
+      preLoaderRoute: typeof AppSettingsWorkspaceRouteImport
+      parentRoute: typeof AppSettingsRoute
     }
     '/app/founder_/ai/': {
       id: '/app/founder_/ai/'
@@ -1315,6 +1673,30 @@ const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
   AppAdminRouteChildren,
 )
 
+interface AppAnalyticsRouteChildren {
+  AppAnalyticsDeepWorkRoute: typeof AppAnalyticsDeepWorkRoute
+  AppAnalyticsForecastRoute: typeof AppAnalyticsForecastRoute
+  AppAnalyticsLeaksRoute: typeof AppAnalyticsLeaksRoute
+  AppAnalyticsPromisesRoute: typeof AppAnalyticsPromisesRoute
+  AppAnalyticsTeamRoute: typeof AppAnalyticsTeamRoute
+  AppAnalyticsThreadsRoute: typeof AppAnalyticsThreadsRoute
+  AppAnalyticsIndexRoute: typeof AppAnalyticsIndexRoute
+}
+
+const AppAnalyticsRouteChildren: AppAnalyticsRouteChildren = {
+  AppAnalyticsDeepWorkRoute: AppAnalyticsDeepWorkRoute,
+  AppAnalyticsForecastRoute: AppAnalyticsForecastRoute,
+  AppAnalyticsLeaksRoute: AppAnalyticsLeaksRoute,
+  AppAnalyticsPromisesRoute: AppAnalyticsPromisesRoute,
+  AppAnalyticsTeamRoute: AppAnalyticsTeamRoute,
+  AppAnalyticsThreadsRoute: AppAnalyticsThreadsRoute,
+  AppAnalyticsIndexRoute: AppAnalyticsIndexRoute,
+}
+
+const AppAnalyticsRouteWithChildren = AppAnalyticsRoute._addFileChildren(
+  AppAnalyticsRouteChildren,
+)
+
 interface AppCrmRouteChildren {
   AppCrmActivityRoute: typeof AppCrmActivityRoute
   AppCrmCollabRoute: typeof AppCrmCollabRoute
@@ -1360,6 +1742,32 @@ const AppOrgRouteChildren: AppOrgRouteChildren = {
 
 const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
+
+interface AppSettingsRouteChildren {
+  AppSettingsAiRoute: typeof AppSettingsAiRoute
+  AppSettingsAppearanceRoute: typeof AppSettingsAppearanceRoute
+  AppSettingsHealthRoute: typeof AppSettingsHealthRoute
+  AppSettingsHistoryRoute: typeof AppSettingsHistoryRoute
+  AppSettingsNotificationsRoute: typeof AppSettingsNotificationsRoute
+  AppSettingsPrivacyRoute: typeof AppSettingsPrivacyRoute
+  AppSettingsWorkspaceRoute: typeof AppSettingsWorkspaceRoute
+  AppSettingsIndexRoute: typeof AppSettingsIndexRoute
+}
+
+const AppSettingsRouteChildren: AppSettingsRouteChildren = {
+  AppSettingsAiRoute: AppSettingsAiRoute,
+  AppSettingsAppearanceRoute: AppSettingsAppearanceRoute,
+  AppSettingsHealthRoute: AppSettingsHealthRoute,
+  AppSettingsHistoryRoute: AppSettingsHistoryRoute,
+  AppSettingsNotificationsRoute: AppSettingsNotificationsRoute,
+  AppSettingsPrivacyRoute: AppSettingsPrivacyRoute,
+  AppSettingsWorkspaceRoute: AppSettingsWorkspaceRoute,
+  AppSettingsIndexRoute: AppSettingsIndexRoute,
+}
+
+const AppSettingsRouteWithChildren = AppSettingsRoute._addFileChildren(
+  AppSettingsRouteChildren,
+)
 
 interface AppFounderAiRouteChildren {
   AppFounderAiArenaRoute: typeof AppFounderAiArenaRoute
@@ -1407,6 +1815,7 @@ interface AppRouteChildren {
   AppAccountRoute: typeof AppAccountRoute
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppAiCenterRoute: typeof AppAiCenterRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRouteWithChildren
   AppBillingRoute: typeof AppBillingRoute
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
@@ -1415,13 +1824,16 @@ interface AppRouteChildren {
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
+  AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
+  AppFounderAnalyticsRoute: typeof AppFounderAnalyticsRoute
   AppFounderBillingRoute: typeof AppFounderBillingRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
+  AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
 }
 
@@ -1429,6 +1841,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAccountRoute: AppAccountRoute,
   AppAdminRoute: AppAdminRouteWithChildren,
   AppAiCenterRoute: AppAiCenterRoute,
+  AppAnalyticsRoute: AppAnalyticsRouteWithChildren,
   AppBillingRoute: AppBillingRoute,
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
@@ -1437,13 +1850,16 @@ const AppRouteChildren: AppRouteChildren = {
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
+  AppSettingsRoute: AppSettingsRouteWithChildren,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
+  AppFounderAnalyticsRoute: AppFounderAnalyticsRoute,
   AppFounderBillingRoute: AppFounderBillingRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
+  AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
 }
 
