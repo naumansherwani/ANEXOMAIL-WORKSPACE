@@ -46,10 +46,10 @@ export function SiteFooter() {
             work on one fast surface. Your domain, your data, your keys.
           </p>
           <a
-            href="mailto:hello@anexomail.com"
+            href="mailto:moveyourbusiness@anexomail.com"
             className="mt-5 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
-            <Mail className="size-4 shrink-0" aria-hidden="true" /> hello@anexomail.com
+            <Mail className="size-4 shrink-0" aria-hidden="true" /> moveyourbusiness@anexomail.com
           </a>
         </div>
 

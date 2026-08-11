@@ -42,7 +42,7 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
       <div className="ax-plane rounded-2xl p-6">
         <p className="ax-heading text-foreground">Got it — reference {submit.data.reference}</p>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          A human replies from hello@anexomail.com within 4 hours with the plan, the fixed price and the cut-over
+          A human replies from moveyourbusiness@anexomail.com within 4 hours with the plan, the fixed price and the cut-over
           window. No sales sequence, no bot.
         </p>
       </div>
@@ -80,7 +80,7 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
       {submit.isError && (
         <p className="mt-4 text-sm text-destructive">
           {submit.error.isNotImplemented
-            ? "This request line is not wired on the server yet — email hello@anexomail.com and it gets handled the same hour."
+            ? "This request line is not wired on the server yet — email moveyourbusiness@anexomail.com and it gets handled the same hour."
             : submit.error.message}
         </p>
       )}
