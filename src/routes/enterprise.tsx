@@ -55,7 +55,7 @@ const detail = [
   },
   {
     title: "Response and availability",
-    body: "One hour response in any working hour, measured and reported back to you. Availability targets outside working hours, and anything stricter than one hour, are agreed during onboarding and written into your terms — we do not advertise numbers we have not agreed with you.",
+    body: "A reply within four working hours, every working day, measured and reported back to you. Availability targets outside working hours, and anything stricter than four hours, are agreed during onboarding and written into your terms — we do not advertise numbers we have not agreed with you.",
   },
   {
     title: "Security controls",
@@ -98,7 +98,7 @@ function EnterprisePage() {
             When email stops, you call a person — not a portal.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every plan already gets human support. This adds a named owner, a one hour clock and a review you can
+            Every plan already gets human support. This adds a named owner, a four working-hour clock and a review you can
             put in front of an auditor.
           </p>
         </section>
