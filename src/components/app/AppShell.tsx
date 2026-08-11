@@ -58,6 +58,22 @@ const primary: RailItem[] = [
  * One surface, three panels, zero page reload.
  * Rail (this file) + list panel + detail panel come from the route below it.
  */
+/**
+ * Every workspace page needs exactly one <h1> for screen readers and document
+ * outline. Panels use <h2>/<h3> for their own sections, so the shell owns the
+ * page-level heading and derives it from the route path — one place, all pages.
+ */
+function pageHeading(pathname: string): string {
+  const parts = pathname.replace(/\/+$/, "").split("/").filter(Boolean);
+  if (parts.length <= 1) return "Workspace dashboard";
+  const words = parts
+    .slice(1)
+    .filter((p) => p !== "founder_" && p !== "revenue_")
+    .map((p) => p.replace(/-/g, " "))
+    .map((p) => p.charAt(0).toUpperCase() + p.slice(1));
+  return words.join(" · ") || "Workspace";
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const { open, setOpen } = useCommandPalette();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -189,7 +205,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
 
         {/* Panels */}
-        <main className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">{children}</main>
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
+          <h1 className="sr-only">{pageHeading(pathname)}</h1>
+          {children}
+        </main>
       </div>
 
       {/* Mobile bar */}
