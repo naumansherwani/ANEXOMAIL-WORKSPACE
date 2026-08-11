@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import type { MailFolder } from "@/lib/ia";
+import { celebrate, measureMotion } from "@/lib/experience";
 import { relativeTime, type ThreadListItem } from "@/lib/mail";
 import type { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
