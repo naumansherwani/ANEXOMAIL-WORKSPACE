@@ -126,6 +126,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       { label: "Org graph", path: "/app/org/graph", note: "Live communication graph, centrality, bottlenecks", auth: true },
       { label: "Org compliance", path: "/app/org/compliance", note: "Retention, export, delete, data region, evidence pack", auth: true },
       { label: "Account", path: "/app/account", note: "Profile, sessions, security", auth: true },
+      {
+        label: "Billing",
+        path: "/app/billing",
+        note: "Phase 21 — workspace plan, seats, invoices, tax details, cards (no AI billing here)",
+        auth: true,
+      },
     ],
   },
   {
