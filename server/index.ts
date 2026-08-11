@@ -29,6 +29,7 @@ import { aiStudio } from "./routes/ai-studio";
 import { aiAutomation } from "./routes/ai-automation";
 import integrationsRouter, { founderIntegrationsRouter } from "./routes/integrations";
 import settingsRouter, { founderSettingsRouter } from "./routes/settings";
+import adminRouter, { founderAdminRouter } from "./routes/admin";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -113,6 +114,10 @@ app.use("/api/founder", founderIntegrationsRouter);
 app.use("/api/settings", settingsRouter);
 app.use("/api/founder", founderSettingsRouter);
 
+// Phase 25 Admin Center (/api/admin/*, /api/founder/admin/*)
+app.use("/api/admin", adminRouter);
+app.use("/api/founder", founderAdminRouter);
+
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);
 app.use("/api/mail", mailRouter);
@@ -122,6 +127,6 @@ app.use((_req, res) => res.status(404).json({ error: "not_found" }));
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(
-    `ANEXOMAIL Brain LIVE on port ${PORT} (Leo + auth + workspace + compose + contacts + calendar + crm + org + ai + founder + integrations + settings)`,
+    `ANEXOMAIL Brain LIVE on port ${PORT} (Leo + auth + workspace + compose + contacts + calendar + crm + org + ai + founder + integrations + settings + admin)`,
   );
 });
