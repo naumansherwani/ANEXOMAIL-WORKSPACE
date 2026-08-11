@@ -15,8 +15,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { founderPreviewEnabled } from "@/lib/founder-preview";
-
 /* ----------------------------- preferences ------------------------------ */
 
 export type Animations = "full" | "reduced" | "none";
