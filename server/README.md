@@ -8,6 +8,7 @@ Kabhi line-patch, sed ya python patch nahi.
 | Repo file | Server path | Phase |
 | --- | --- | --- |
 | `routes/integrations.ts` | `/opt/anexomail/src/routes/integrations.ts` | 22 |
+| `routes/settings.ts` | `/opt/anexomail/src/routes/settings.ts` | 23 |
 
 ## Env naam (Server 2 par asli naam)
 

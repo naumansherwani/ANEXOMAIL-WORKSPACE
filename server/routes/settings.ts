@@ -86,7 +86,7 @@ async function valuesOf(uid: string) {
 }
 
 // ---- 1. list settings per scope ----
-router.get("/scoped/:scope", async (req, res) => {
+const listScope = async (req: any, res: any) => {
   const uid = await requireUser(req, res);
   if (!uid) return;
   const scope = String(req.params.scope);
@@ -115,7 +115,11 @@ router.get("/scoped/:scope", async (req, res) => {
     };
   });
   res.json({ settings });
-});
+};
+
+// frontend `/api/settings/:scope` maangta hai; specific routes neeche register hone
+// se pehle define nahi kar sakte, is liye `/:scope` sab ke BAAD file ke aakhir mein hai.
+router.get("/scoped/:scope", listScope);
 
 // ---- 2. blast radius (save se PEHLE sach) ----
 router.get("/blast-radius", async (req, res) => {
@@ -513,6 +517,8 @@ founderRouter.get("/settings/overview", async (req, res) => {
     pending_scheduled: pending ?? 0,
   });
 });
+
+router.get("/:scope", listScope);
 
 export default router;
 export { founderRouter as founderSettingsRouter };
