@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
@@ -43,6 +44,24 @@ const HEADLINE: Record<string, string> = {
  */
 function StatusPage() {
   const q = useStatusPage();
+  // Never leave the page spinning: after 8s with no verdict we say so honestly
+  // rather than claiming everything is fine.
+  const [timedOut, setTimedOut] = useState(false);
+  useEffect(() => {
+    if (q.data || q.error) {
+      setTimedOut(false);
+      return;
+    }
+    const t = window.setTimeout(() => setTimedOut(true), 8_000);
+    return () => window.clearTimeout(t);
+  }, [q.data, q.error]);
+
+  const unreachable = Boolean(q.error) || (timedOut && !q.data);
+  const headline = q.data
+    ? HEADLINE[q.data.state]
+    : unreachable
+      ? "Live status is currently unavailable"
+      : "Checking the platform…";
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,17 +69,18 @@ function StatusPage() {
       <main className="ax-container pt-20 pb-24 md:pt-24">
         <p className="ax-eyebrow">Service status</p>
         <h1 className="mt-4 max-w-3xl text-4xl text-foreground md:text-5xl">
-          {q.data ? HEADLINE[q.data.state] : "Checking the platform…"}
+          {headline}
         </h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           This page is generated from the same live probes our release gate runs — mail delivery, workspace,
           sign-in and domain authentication. If something is broken, it says so here first.
         </p>
 
-        {q.error && (
+        {unreachable && (
           <p className="mt-8 rounded-2xl border border-dashed border-border px-5 py-4 text-sm text-muted-foreground">
-            Status feed unreachable right now. That is itself a signal — if mail is affected, write to
-            support@anexomail.com and a human replies.
+            We could not reach the status feed, so this page will not guess. It does not mean mail is
+            down and it does not mean mail is fine — please try again shortly. If your mail is
+            affected right now, write to support@anexomail.com and a human replies.
           </p>
         )}
 
