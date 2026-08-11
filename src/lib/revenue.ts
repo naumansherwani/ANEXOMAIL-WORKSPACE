@@ -60,7 +60,7 @@ export function quoteMigration(input: MigrationInput): MigrationQuote {
   const pf = providerFee[input.provider];
   if (pf > 0) lines.push({ label: "Source complexity", amount: pf, detail: `${input.provider.toUpperCase()} export + label/folder rebuild` });
 
-  if (input.urgency === "weekend") lines.push({ label: "Weekend cut-over", amount: 200, detail: "Zero working-hour downtime" });
+  if (input.urgency === "weekend") lines.push({ label: "Weekend cut-over", amount: 200, detail: "Cut-over outside working hours, engineer watching the switch" });
   if (input.urgency === "overnight") lines.push({ label: "Overnight cut-over", amount: 400, detail: "Same-night switch, engineer on call" });
   if (input.dns) lines.push({ label: "DNS + deliverability", amount: 150, detail: "MX, SPF, DKIM, DMARC set to green and proven" });
   if (input.training) lines.push({ label: "Team onboarding", amount: 200, detail: "Live session + written runbook for the team" });

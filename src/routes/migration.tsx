@@ -35,7 +35,7 @@ const promises = [
   "Every message, folder, alias and sent item moved — counted in, counted out.",
   "Dry run first on a copy, so you see the result before the switch.",
   "MX, SPF, DKIM and DMARC set and proven green with an exportable proof pack.",
-  "Cut-over in a window you choose — weekend or overnight, zero working-hour downtime.",
+  "Cut-over in a window you choose — weekend or overnight, scheduled to avoid working-hour interruption.",
   "Old mailbox stays readable until you say delete. No hostage data.",
   "A named engineer on the job, reachable by email the whole way.",
 ];
