@@ -21,7 +21,7 @@ function ExportPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
       <p className="ax-eyebrow">Freedom</p>
-      <h1 className="mt-3 text-3xl text-foreground">Export & revoke</h1>
+      <h2 className="mt-3 text-3xl text-foreground">Export & revoke</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Your data leaves as easily as it arrived. One click, no ticket, no waiting period.
         Delete means deleted.

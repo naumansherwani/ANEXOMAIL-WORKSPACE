@@ -52,7 +52,7 @@ function DashboardPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
         <p className="ax-eyebrow">Command center</p>
-        <h1 className="ax-display mt-3 text-foreground">Dashboard</h1>
+        <h2 className="ax-display mt-3 text-foreground">Dashboard</h2>
         <p className="ax-body mt-ax-3 max-w-xl">
           {session?.user.name ? `${session.user.name}, ` : ""}everything that needs you —
           mail, activity, schedule and the numbers behind them. One surface, no reload.

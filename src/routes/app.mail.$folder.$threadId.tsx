@@ -76,9 +76,9 @@ function ThreadPage() {
           <ArrowLeft className="size-4" aria-hidden="true" />
         </Link>
         <div className="min-w-0">
-          <h1 className="truncate text-sm font-bold tracking-tight text-foreground">
+          <h2 className="truncate text-sm font-bold tracking-tight text-foreground">
             {thread.subject || "(no subject)"}
-          </h1>
+          </h2>
           {thread.account_address && (
             <p className="truncate text-[11px] text-muted-foreground">
               {thread.account_address}

@@ -29,7 +29,7 @@ function AddressesPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
       <p className="ax-eyebrow">Routing</p>
-      <h1 className="mt-3 text-3xl text-foreground">Addresses</h1>
+      <h2 className="mt-3 text-3xl text-foreground">Addresses</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Shared addresses are part of the workspace, not an add-on product.
       </p>

@@ -64,7 +64,7 @@ function AccountPage() {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto max-w-2xl space-y-ax-5 p-ax-4">
-        <h1 className="ax-heading text-foreground">Account &amp; sessions</h1>
+        <h2 className="ax-heading text-foreground">Account &amp; sessions</h2>
         <section className="rounded-xl border border-border bg-card p-ax-4">
           <h2 className="ax-label text-foreground">Signed in as</h2>
           <p className="ax-body mt-1">{session?.user.email ?? "—"}</p>

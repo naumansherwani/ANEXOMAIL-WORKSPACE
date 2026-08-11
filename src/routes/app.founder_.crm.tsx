@@ -60,7 +60,7 @@ function FounderCrm() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Crown className="size-3.5" aria-hidden="true" /> Founder · CRM control
         </p>
-        <h1 className="mt-3 text-3xl text-foreground">CRM god-view</h1>
+        <h2 className="mt-3 text-3xl text-foreground">CRM god-view</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           The public CRM lives at <code className="rounded-md bg-secondary px-1.5 py-0.5 text-foreground">aicrm.anexomail.com</code>.
           This page only exists on the founder host, so the public never sees the switches.

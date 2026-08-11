@@ -41,7 +41,7 @@ export function EventDetail({ id }: { id: string }) {
           <CalendarDays className="size-5 text-foreground" />
         </span>
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-xl font-bold text-foreground">{event.title}</h1>
+          <h2 className="truncate text-xl font-bold text-foreground">{event.title}</h2>
           <p className="ax-caption mt-0.5 text-muted-foreground">
             {new Date(event.starts_at).toLocaleDateString(undefined, {
               weekday: "long",

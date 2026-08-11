@@ -31,7 +31,7 @@ function SearchPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-3xl px-6 py-12 md:px-10">
         <p className="ax-eyebrow">Everything</p>
-        <h1 className="mt-3 text-3xl text-foreground md:text-4xl">Search</h1>
+        <h2 className="mt-3 text-3xl text-foreground md:text-4xl">Search</h2>
 
         <label className="mt-8 flex items-center gap-2 rounded-xl border border-border px-3 py-2.5">
           <Search className="size-4 shrink-0 text-steel" />

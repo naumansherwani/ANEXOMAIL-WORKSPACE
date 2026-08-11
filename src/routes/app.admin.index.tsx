@@ -17,7 +17,7 @@ function DomainsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
       <p className="ax-eyebrow">Ownership</p>
-      <h1 className="mt-3 text-3xl text-foreground">Domains</h1>
+      <h2 className="mt-3 text-3xl text-foreground">Domains</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
         Every record that decides whether your mail is trusted, checked live and shown
         here. No hidden state, no support ticket to find out.

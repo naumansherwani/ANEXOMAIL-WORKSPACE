@@ -42,9 +42,9 @@ export function CompanyProfile({
           <Building2 className="size-5 text-foreground" />
         </span>
         <div className="min-w-0 flex-1">
-          <h1 className="truncate text-xl font-bold text-foreground">
+          <h2 className="truncate text-xl font-bold text-foreground">
             {company.name || company.domain}
-          </h1>
+          </h2>
           <p className="ax-caption mt-0.5 text-muted-foreground">{company.domain}</p>
           <div className="mt-ax-2">
             <RelationshipChip relationship={company.relationship} score={company.health_score} />

@@ -40,7 +40,7 @@ function DevicesPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
         <p className="ax-eyebrow">Cross-platform</p>
-        <h1 className="ax-heading mt-2 text-foreground">This device, and the ones you left mid-sentence</h1>
+        <h2 className="ax-heading mt-2 text-foreground">This device, and the ones you left mid-sentence</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Install it like an app, read your mail with no signal, and pick a draft back up exactly where the
           cursor was.

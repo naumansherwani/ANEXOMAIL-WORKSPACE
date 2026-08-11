@@ -140,7 +140,7 @@ function StudioPage() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Wand2 className="size-3.5" aria-hidden="true" /> Phase 17 · Studio · every run has a receipt
         </p>
-        <h1 className="mt-2 text-2xl text-foreground">Nine tools, each finishes one job</h1>
+        <h2 className="mt-2 text-2xl text-foreground">Nine tools, each finishes one job</h2>
 
         {/* Tool picker */}
         <div className="mt-ax-5 grid gap-2 sm:grid-cols-3">
