@@ -29,7 +29,7 @@ const steps = [
   {
     n: "01",
     title: "We plan the move",
-    body: "One call. We map every mailbox, alias and rule you run today, then hand you a plan to approve.",
+    body: "One email. We map every mailbox, alias and rule you run today, then hand you a plan to approve.",
   },
   {
     n: "02",

@@ -512,7 +512,7 @@ function Index() {
                     to="/migration"
                     className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/45"
                   >
-                    Book a move-in call
+                    Email us to start your move-in
                   </Link>
                   <Link
                     to="/plans"
@@ -520,6 +520,12 @@ function Index() {
                   >
                     See what each one includes
                   </Link>
+                  <p className="text-center text-[13px] text-muted-foreground">
+                    Or write directly to{" "}
+                    <a href="mailto:hello@anexomail.com" className="font-semibold text-foreground underline-offset-2 hover:underline">
+                      hello@anexomail.com
+                    </a>
+                  </p>
                 </div>
               </div>
             </div>
