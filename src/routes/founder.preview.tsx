@@ -69,7 +69,8 @@ async function scanRoute(path: string): Promise<ScanResult> {
     if (!res.ok) notes.push(`HTTP ${res.status}`);
     if (!title) notes.push("missing <title>");
     if (!description) notes.push("missing meta description");
-    if (body.length < 400) notes.push("page looks blank / thin");
+    if (body.length < 400)
+      notes.push("thin server HTML — client-rendered, verify in the frame");
     if (/lorem ipsum|placeholder|coming soon soon|TODO/i.test(body))
       notes.push("placeholder copy found");
 
