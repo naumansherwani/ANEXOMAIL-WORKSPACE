@@ -49,9 +49,7 @@ function withCalm(e: Omit<Experience, "calm">): Experience {
 
 export function defaultExperience(): Experience {
   // Delight is ON by default for everyone — inbox zero is rare and worth marking.
-  // Founder surfaces additionally start with the focus audit available.
-  const founder = typeof window !== "undefined" && founderPreviewEnabled();
-  return withCalm({ animations: "full", speed: "normal", delight: true, focusAudit: false && founder });
+  return withCalm({ animations: "full", speed: "normal", delight: true, focusAudit: false });
 }
 
 export function readExperience(): Experience {
