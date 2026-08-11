@@ -6,7 +6,9 @@ import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { MailRail } from "@/components/app/mail/MailRail";
 import { ThreadList } from "@/components/app/mail/ThreadList";
+import { HandoffBanner } from "@/components/app/CrossPlatformBar";
 import { MAIL_FOLDERS, isMailFolder } from "@/lib/ia";
+import { useNetwork } from "@/lib/network";
 import { notify } from "@/lib/notify";
 import {
   THREAD_CATEGORIES,
@@ -51,6 +53,9 @@ function MailFolderPage() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const activeId = pathname.split("/")[4];
+  // Phase 28: on a phone the panels morph — list OR thread, never both.
+  const threadOpen = Boolean(activeId);
+  const net = useNetwork();
 
   const [label, setLabel] = useState<string | null>(null);
   const [account, setAccount] = useState<string | null>(null);
@@ -158,6 +163,7 @@ function MailFolderPage() {
       />
 
       <ListPanel
+        mobileHidden={threadOpen}
         title={account ? folderLabel : `${folderLabel} · Unified`}
         action={
           <button
@@ -170,6 +176,7 @@ function MailFolderPage() {
           </button>
         }
       >
+        <HandoffBanner />
         <div className="sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
           <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-1.5">
             <Search className="size-3.5 shrink-0 text-steel" aria-hidden="true" />
@@ -230,10 +237,26 @@ function MailFolderPage() {
           activeId={activeId}
           cursor={cursor}
           onCursor={setCursor}
+          lowData={net.lowData}
+          onSwipeArchive={(id) =>
+            act(id, { kind: "move", folder: "archive" }, "Archived", "POST /api/mail/thread/:id/move")
+          }
+          onSwipeSnooze={(id) =>
+            act(
+              id,
+              { kind: "snooze", until: new Date(Date.now() + 86_400_000).toISOString() },
+              "Snoozed until tomorrow",
+              "POST /api/mail/thread/:id/snooze",
+            )
+          }
+          onLongPress={(id) => {
+            const index = (threads ?? []).findIndex((t) => t.id === id);
+            if (index >= 0) setCursor(index);
+          }}
         />
       </ListPanel>
 
-      <DetailPanel>
+      <DetailPanel mobileVisible={threadOpen}>
         <Outlet />
       </DetailPanel>
 
