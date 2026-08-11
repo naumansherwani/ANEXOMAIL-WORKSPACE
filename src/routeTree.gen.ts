@@ -85,6 +85,7 @@ import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
+import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security.encryption'
 import { Route as AppSecurityHistoryRouteImport } from './routes/app.security.history'
 import { Route as AppSecuritySessionsRouteImport } from './routes/app.security.sessions'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
@@ -487,6 +488,11 @@ const AppSecurityDevicesRoute = AppSecurityDevicesRouteImport.update({
   path: '/devices',
   getParentRoute: () => AppSecurityRoute,
 } as any)
+const AppSecurityEncryptionRoute = AppSecurityEncryptionRouteImport.update({
+  id: '/encryption',
+  path: '/encryption',
+  getParentRoute: () => AppSecurityRoute,
+} as any)
 const AppSecurityHistoryRoute = AppSecurityHistoryRouteImport.update({
   id: '/history',
   path: '/history',
@@ -666,6 +672,7 @@ export interface FileRoutesByFullPath {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
+  '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
@@ -756,6 +763,7 @@ export interface FileRoutesByTo {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
+  '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
@@ -856,6 +864,7 @@ export interface FileRoutesById {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
+  '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
@@ -957,6 +966,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/security/devices'
+    | '/app/security/encryption'
     | '/app/security/history'
     | '/app/security/sessions'
     | '/app/settings/ai'
@@ -1047,6 +1057,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/security/devices'
+    | '/app/security/encryption'
     | '/app/security/history'
     | '/app/security/sessions'
     | '/app/settings/ai'
@@ -1146,6 +1157,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/security/devices'
+    | '/app/security/encryption'
     | '/app/security/history'
     | '/app/security/sessions'
     | '/app/settings/ai'
@@ -1727,6 +1739,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSecurityDevicesRouteImport
       parentRoute: typeof AppSecurityRoute
     }
+    '/app/security/encryption': {
+      id: '/app/security/encryption'
+      path: '/encryption'
+      fullPath: '/app/security/encryption'
+      preLoaderRoute: typeof AppSecurityEncryptionRouteImport
+      parentRoute: typeof AppSecurityRoute
+    }
     '/app/security/history': {
       id: '/app/security/history'
       path: '/history'
@@ -1983,6 +2002,7 @@ const AppOrgRouteWithChildren =
 
 interface AppSecurityRouteChildren {
   AppSecurityDevicesRoute: typeof AppSecurityDevicesRoute
+  AppSecurityEncryptionRoute: typeof AppSecurityEncryptionRoute
   AppSecurityHistoryRoute: typeof AppSecurityHistoryRoute
   AppSecuritySessionsRoute: typeof AppSecuritySessionsRoute
   AppSecurityIndexRoute: typeof AppSecurityIndexRoute
@@ -1990,6 +2010,7 @@ interface AppSecurityRouteChildren {
 
 const AppSecurityRouteChildren: AppSecurityRouteChildren = {
   AppSecurityDevicesRoute: AppSecurityDevicesRoute,
+  AppSecurityEncryptionRoute: AppSecurityEncryptionRoute,
   AppSecurityHistoryRoute: AppSecurityHistoryRoute,
   AppSecuritySessionsRoute: AppSecuritySessionsRoute,
   AppSecurityIndexRoute: AppSecurityIndexRoute,
