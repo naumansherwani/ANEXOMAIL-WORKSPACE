@@ -32,6 +32,7 @@ import { Route as AppBillingRouteImport } from './routes/app.billing'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
+import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppSearchRouteImport } from './routes/app.search'
@@ -51,6 +52,7 @@ import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
 import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.billing'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
+import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
@@ -189,6 +191,11 @@ const AppFounderRoute = AppFounderRouteImport.update({
   path: '/founder',
   getParentRoute: () => AppRoute,
 } as any)
+const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppOrgRoute = AppOrgRouteImport.update({
   id: '/org',
   path: '/org',
@@ -282,6 +289,11 @@ const AppFounderBillingRoute = AppFounderBillingRouteImport.update({
 const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
   id: '/founder_/crm',
   path: '/founder/crm',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFounderIntegrationsRoute = AppFounderIntegrationsRouteImport.update({
+  id: '/founder_/integrations',
+  path: '/founder/integrations',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFounderOrgRoute = AppFounderOrgRouteImport.update({
@@ -418,6 +430,7 @@ export interface FileRoutesByFullPath {
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -436,6 +449,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
+  '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -481,6 +495,7 @@ export interface FileRoutesByTo {
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/founder': typeof AppFounderRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
@@ -497,6 +512,7 @@ export interface FileRoutesByTo {
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
+  '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -545,6 +561,7 @@ export interface FileRoutesById {
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
@@ -563,6 +580,7 @@ export interface FileRoutesById {
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder_/billing': typeof AppFounderBillingRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
+  '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -613,6 +631,7 @@ export interface FileRouteTypes {
     | '/app/calendar'
     | '/app/crm'
     | '/app/founder'
+    | '/app/integrations'
     | '/app/org'
     | '/app/people'
     | '/app/search'
@@ -631,6 +650,7 @@ export interface FileRouteTypes {
     | '/app/founder/ai'
     | '/app/founder/billing'
     | '/app/founder/crm'
+    | '/app/founder/integrations'
     | '/app/founder/org'
     | '/app/mail/$folder'
     | '/app/org/audit'
@@ -676,6 +696,7 @@ export interface FileRouteTypes {
     | '/app/billing'
     | '/app/calendar'
     | '/app/founder'
+    | '/app/integrations'
     | '/app/people'
     | '/app/search'
     | '/app/work'
@@ -692,6 +713,7 @@ export interface FileRouteTypes {
     | '/app/crm/pipeline'
     | '/app/founder/billing'
     | '/app/founder/crm'
+    | '/app/founder/integrations'
     | '/app/founder/org'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -739,6 +761,7 @@ export interface FileRouteTypes {
     | '/app/calendar'
     | '/app/crm'
     | '/app/founder'
+    | '/app/integrations'
     | '/app/org'
     | '/app/people'
     | '/app/search'
@@ -757,6 +780,7 @@ export interface FileRouteTypes {
     | '/app/founder_/ai'
     | '/app/founder_/billing'
     | '/app/founder_/crm'
+    | '/app/founder_/integrations'
     | '/app/founder_/org'
     | '/app/mail/$folder'
     | '/app/org/audit'
@@ -965,6 +989,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/integrations': {
+      id: '/app/integrations'
+      path: '/integrations'
+      fullPath: '/app/integrations'
+      preLoaderRoute: typeof AppIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/org': {
       id: '/app/org'
       path: '/org'
@@ -1096,6 +1127,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/crm'
       fullPath: '/app/founder/crm'
       preLoaderRoute: typeof AppFounderCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/integrations': {
+      id: '/app/founder_/integrations'
+      path: '/founder/integrations'
+      fullPath: '/app/founder/integrations'
+      preLoaderRoute: typeof AppFounderIntegrationsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder_/org': {
@@ -1373,6 +1411,7 @@ interface AppRouteChildren {
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
   AppFounderRoute: typeof AppFounderRoute
+  AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppSearchRoute: typeof AppSearchRoute
@@ -1381,6 +1420,7 @@ interface AppRouteChildren {
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
   AppFounderBillingRoute: typeof AppFounderBillingRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
+  AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
 }
@@ -1393,6 +1433,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
   AppFounderRoute: AppFounderRoute,
+  AppIntegrationsRoute: AppIntegrationsRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppSearchRoute: AppSearchRoute,
@@ -1401,6 +1442,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
   AppFounderBillingRoute: AppFounderBillingRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
+  AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
 }
