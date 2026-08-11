@@ -47,6 +47,16 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         path: "/ai/automation",
         note: "Coming soon gate — workflows, rules and suggestions live on ai.anexomail.com",
       },
+      {
+        label: "AI Credits (AI)",
+        path: "/ai/credits",
+        note: "Coming soon gate — wallet, burn and top-ups belong to ai.anexomail.com",
+      },
+      {
+        label: "AI Knowledge (AI)",
+        path: "/ai/knowledge",
+        note: "Coming soon gate — documents, memory and cited answers on ai.anexomail.com",
+      },
       { label: "Security", path: "/security", note: "TLS, DKIM/SPF/DMARC, data handling" },
       { label: "Ownership", path: "/ownership", note: "Export, delete, domain ownership proof" },
       { label: "Move in", path: "/move-in", note: "Migration from another provider" },
