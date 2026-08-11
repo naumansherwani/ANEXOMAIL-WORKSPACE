@@ -30,6 +30,7 @@ import { aiAutomation } from "./routes/ai-automation";
 import integrationsRouter, { founderIntegrationsRouter } from "./routes/integrations";
 import settingsRouter, { founderSettingsRouter } from "./routes/settings";
 import adminRouter, { founderAdminRouter } from "./routes/admin";
+import securityRouter, { founderSecurityRouter } from "./routes/security";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -117,6 +118,10 @@ app.use("/api/founder", founderSettingsRouter);
 // Phase 25 Admin Center (/api/admin/*, /api/founder/admin/*)
 app.use("/api/admin", adminRouter);
 app.use("/api/founder", founderAdminRouter);
+
+// Phase 26 Security Platform (/api/security/*, /api/founder/security/*)
+app.use("/api/security", securityRouter);
+app.use("/api/founder", founderSecurityRouter);
 
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);
