@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Clock, Mail, Paperclip, Star } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { Archive, Clock, Mail, Paperclip, RefreshCw, Star } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
@@ -24,6 +24,10 @@ export function ThreadList({
   activeId,
   cursor,
   onCursor,
+  onSwipeArchive,
+  onSwipeSnooze,
+  onLongPress,
+  lowData = false,
 }: {
   folder: MailFolder;
   threads: ThreadListItem[] | undefined;
@@ -33,8 +37,18 @@ export function ThreadList({
   activeId: string | undefined;
   cursor: number;
   onCursor: (index: number) => void;
+  /** Mobile: swipe left → archive. */
+  onSwipeArchive?: (threadId: string) => void;
+  /** Mobile: swipe right → snooze. */
+  onSwipeSnooze?: (threadId: string) => void;
+  /** Mobile: long press → select. */
+  onLongPress?: (threadId: string) => void;
+  lowData?: boolean;
 }) {
   const listRef = useRef<HTMLDivElement>(null);
+  // Pull-to-refresh (mobile): only arms at the very top of the rail.
+  const [pull, setPull] = useState(0);
+  const pullStart = useRef<number | null>(null);
 
   useEffect(() => {
     const node = listRef.current?.querySelector<HTMLElement>(`[data-cursor="${cursor}"]`);
