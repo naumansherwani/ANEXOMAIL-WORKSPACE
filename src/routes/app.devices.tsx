@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Download, Laptop, Smartphone, Trash2, WifiOff } from "lucide-react";
 
-import { AppShell } from "@/components/app/AppShell";
 import { CardBody } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { clearOffline, offlineSize } from "@/lib/offline";
@@ -39,8 +38,7 @@ function DevicesPage() {
   }, []);
 
   return (
-    <AppShell>
-      <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
+    <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
         <p className="ax-eyebrow">Cross-platform</p>
         <h1 className="ax-heading mt-2 text-foreground">This device, and the ones you left mid-sentence</h1>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -108,7 +106,7 @@ function DevicesPage() {
           </p>
         </section>
 
-        <section className="ax-plane mt-ax-4 rounded-2xl p-5">
+      <section className="ax-plane mt-ax-4 rounded-2xl p-5">
           <p className="ax-eyebrow">Handoff — drafts open elsewhere</p>
           <div className="mt-3">
             <CardBody
@@ -161,9 +159,8 @@ function DevicesPage() {
               }
             </CardBody>
           </div>
-        </section>
-      </div>
-    </AppShell>
+      </section>
+    </div>
   );
 }
 
