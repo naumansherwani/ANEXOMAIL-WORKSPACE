@@ -119,6 +119,8 @@ const faqs = [
   },
 ];
 
+const PUBLIC_EMAIL = "hello@anexomail.com";
+
 /** Services — one-off cash and the monthly retainer, both capacity-capped on purpose. */
 const services = [
   {
@@ -140,7 +142,7 @@ const services = [
     ],
     terms: "50% on accepting the plan, 50% the day after cut-over. Old mailboxes are copied, never deleted.",
     capacity: "Two move-ins a month — done by hand, not queued",
-    cta: "Book a move-in call",
+    cta: "Email us to start your move-in",
     to: "/migration" as const,
   },
   {
@@ -162,7 +164,7 @@ const services = [
     ],
     terms: "Working hours are 09:00–18:00 UK, Monday to Friday. We do not promise 24/7 cover we cannot staff.",
     capacity: "Three companies at a time — so 4 hours stays true",
-    cta: "Ask about Priority Support",
+    cta: "Email us about Priority Support",
     to: "/enterprise" as const,
   },
 ];
