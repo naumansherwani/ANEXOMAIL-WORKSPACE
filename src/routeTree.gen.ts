@@ -84,6 +84,7 @@ import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
+import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
 import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
 import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
@@ -479,6 +480,11 @@ const AppSecurityIndexRoute = AppSecurityIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppSecurityRoute,
 } as any)
+const AppSecurityDevicesRoute = AppSecurityDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => AppSecurityRoute,
+} as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -647,6 +653,7 @@ export interface FileRoutesByFullPath {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -734,6 +741,7 @@ export interface FileRoutesByTo {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -831,6 +839,7 @@ export interface FileRoutesById {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -929,6 +938,7 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/security/devices'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1016,6 +1026,7 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/security/devices'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1112,6 +1123,7 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/security/devices'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1684,6 +1696,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSecurityIndexRouteImport
       parentRoute: typeof AppSecurityRoute
     }
+    '/app/security/devices': {
+      id: '/app/security/devices'
+      path: '/devices'
+      fullPath: '/app/security/devices'
+      preLoaderRoute: typeof AppSecurityDevicesRouteImport
+      parentRoute: typeof AppSecurityRoute
+    }
     '/app/settings/': {
       id: '/app/settings/'
       path: '/'
@@ -1925,10 +1944,12 @@ const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
 
 interface AppSecurityRouteChildren {
+  AppSecurityDevicesRoute: typeof AppSecurityDevicesRoute
   AppSecurityIndexRoute: typeof AppSecurityIndexRoute
 }
 
 const AppSecurityRouteChildren: AppSecurityRouteChildren = {
+  AppSecurityDevicesRoute: AppSecurityDevicesRoute,
   AppSecurityIndexRoute: AppSecurityIndexRoute,
 }
 
