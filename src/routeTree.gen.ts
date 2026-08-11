@@ -43,8 +43,14 @@ import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
+import { Route as AppAdminDiagnosticsRouteImport } from './routes/app.admin.diagnostics'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
+import { Route as AppAdminHealthRouteImport } from './routes/app.admin.health'
+import { Route as AppAdminLogsRouteImport } from './routes/app.admin.logs'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
+import { Route as AppAdminMonitoringRouteImport } from './routes/app.admin.monitoring'
+import { Route as AppAdminReportsRouteImport } from './routes/app.admin.reports'
+import { Route as AppAdminStorageRouteImport } from './routes/app.admin.storage'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
 import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
 import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
@@ -58,6 +64,7 @@ import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
+import { Route as AppFounderAdminRouteImport } from './routes/app.founder_.admin'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
 import { Route as AppFounderAnalyticsRouteImport } from './routes/app.founder_.analytics'
 import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.billing'
@@ -265,14 +272,44 @@ const AppAdminAuditRoute = AppAdminAuditRouteImport.update({
   path: '/audit',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAdminDiagnosticsRoute = AppAdminDiagnosticsRouteImport.update({
+  id: '/diagnostics',
+  path: '/diagnostics',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppAdminExportRoute = AppAdminExportRouteImport.update({
   id: '/export',
   path: '/export',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAdminHealthRoute = AppAdminHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminLogsRoute = AppAdminLogsRouteImport.update({
+  id: '/logs',
+  path: '/logs',
+  getParentRoute: () => AppAdminRoute,
+} as any)
 const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
   id: '/members',
   path: '/members',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminMonitoringRoute = AppAdminMonitoringRouteImport.update({
+  id: '/monitoring',
+  path: '/monitoring',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminReportsRoute = AppAdminReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminStorageRoute = AppAdminStorageRouteImport.update({
+  id: '/storage',
+  path: '/storage',
   getParentRoute: () => AppAdminRoute,
 } as any)
 const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
@@ -339,6 +376,11 @@ const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
   id: '/pipeline',
   path: '/pipeline',
   getParentRoute: () => AppCrmRoute,
+} as any)
+const AppFounderAdminRoute = AppFounderAdminRouteImport.update({
+  id: '/founder_/admin',
+  path: '/founder/admin',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppFounderAiRoute = AppFounderAiRouteImport.update({
   id: '/founder_/ai',
@@ -556,8 +598,14 @@ export interface FileRoutesByFullPath {
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
   '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/health': typeof AppAdminHealthRoute
+  '/app/admin/logs': typeof AppAdminLogsRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/monitoring': typeof AppAdminMonitoringRoute
+  '/app/admin/reports': typeof AppAdminReportsRoute
+  '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
@@ -569,6 +617,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
@@ -637,8 +686,14 @@ export interface FileRoutesByTo {
   '/app': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
   '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/health': typeof AppAdminHealthRoute
+  '/app/admin/logs': typeof AppAdminLogsRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/monitoring': typeof AppAdminMonitoringRoute
+  '/app/admin/reports': typeof AppAdminReportsRoute
+  '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
@@ -650,6 +705,7 @@ export interface FileRoutesByTo {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
@@ -723,8 +779,14 @@ export interface FileRoutesById {
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
+  '/app/admin/diagnostics': typeof AppAdminDiagnosticsRoute
   '/app/admin/export': typeof AppAdminExportRoute
+  '/app/admin/health': typeof AppAdminHealthRoute
+  '/app/admin/logs': typeof AppAdminLogsRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/monitoring': typeof AppAdminMonitoringRoute
+  '/app/admin/reports': typeof AppAdminReportsRoute
+  '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
@@ -736,6 +798,7 @@ export interface FileRoutesById {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder_/admin': typeof AppFounderAdminRoute
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder_/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder_/billing': typeof AppFounderBillingRoute
@@ -812,8 +875,14 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
+    | '/app/admin/diagnostics'
     | '/app/admin/export'
+    | '/app/admin/health'
+    | '/app/admin/logs'
     | '/app/admin/members'
+    | '/app/admin/monitoring'
+    | '/app/admin/reports'
+    | '/app/admin/storage'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
@@ -825,6 +894,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/admin'
     | '/app/founder/ai'
     | '/app/founder/analytics'
     | '/app/founder/billing'
@@ -893,8 +963,14 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/admin/addresses'
     | '/app/admin/audit'
+    | '/app/admin/diagnostics'
     | '/app/admin/export'
+    | '/app/admin/health'
+    | '/app/admin/logs'
     | '/app/admin/members'
+    | '/app/admin/monitoring'
+    | '/app/admin/reports'
+    | '/app/admin/storage'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
@@ -906,6 +982,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/admin'
     | '/app/founder/analytics'
     | '/app/founder/billing'
     | '/app/founder/crm'
@@ -978,8 +1055,14 @@ export interface FileRouteTypes {
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
+    | '/app/admin/diagnostics'
     | '/app/admin/export'
+    | '/app/admin/health'
+    | '/app/admin/logs'
     | '/app/admin/members'
+    | '/app/admin/monitoring'
+    | '/app/admin/reports'
+    | '/app/admin/storage'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
@@ -991,6 +1074,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder_/admin'
     | '/app/founder_/ai'
     | '/app/founder_/analytics'
     | '/app/founder_/billing'
@@ -1291,6 +1375,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminAuditRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/diagnostics': {
+      id: '/app/admin/diagnostics'
+      path: '/diagnostics'
+      fullPath: '/app/admin/diagnostics'
+      preLoaderRoute: typeof AppAdminDiagnosticsRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/admin/export': {
       id: '/app/admin/export'
       path: '/export'
@@ -1298,11 +1389,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminExportRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/health': {
+      id: '/app/admin/health'
+      path: '/health'
+      fullPath: '/app/admin/health'
+      preLoaderRoute: typeof AppAdminHealthRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/logs': {
+      id: '/app/admin/logs'
+      path: '/logs'
+      fullPath: '/app/admin/logs'
+      preLoaderRoute: typeof AppAdminLogsRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/admin/members': {
       id: '/app/admin/members'
       path: '/members'
       fullPath: '/app/admin/members'
       preLoaderRoute: typeof AppAdminMembersRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/monitoring': {
+      id: '/app/admin/monitoring'
+      path: '/monitoring'
+      fullPath: '/app/admin/monitoring'
+      preLoaderRoute: typeof AppAdminMonitoringRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/reports': {
+      id: '/app/admin/reports'
+      path: '/reports'
+      fullPath: '/app/admin/reports'
+      preLoaderRoute: typeof AppAdminReportsRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
+    '/app/admin/storage': {
+      id: '/app/admin/storage'
+      path: '/storage'
+      fullPath: '/app/admin/storage'
+      preLoaderRoute: typeof AppAdminStorageRouteImport
       parentRoute: typeof AppAdminRoute
     }
     '/app/admin/teams': {
@@ -1395,6 +1521,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/crm/pipeline'
       preLoaderRoute: typeof AppCrmPipelineRouteImport
       parentRoute: typeof AppCrmRoute
+    }
+    '/app/founder_/admin': {
+      id: '/app/founder_/admin'
+      path: '/founder/admin'
+      fullPath: '/app/founder/admin'
+      preLoaderRoute: typeof AppFounderAdminRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/founder_/ai': {
       id: '/app/founder_/ai'
@@ -1654,8 +1787,14 @@ declare module '@tanstack/react-router' {
 interface AppAdminRouteChildren {
   AppAdminAddressesRoute: typeof AppAdminAddressesRoute
   AppAdminAuditRoute: typeof AppAdminAuditRoute
+  AppAdminDiagnosticsRoute: typeof AppAdminDiagnosticsRoute
   AppAdminExportRoute: typeof AppAdminExportRoute
+  AppAdminHealthRoute: typeof AppAdminHealthRoute
+  AppAdminLogsRoute: typeof AppAdminLogsRoute
   AppAdminMembersRoute: typeof AppAdminMembersRoute
+  AppAdminMonitoringRoute: typeof AppAdminMonitoringRoute
+  AppAdminReportsRoute: typeof AppAdminReportsRoute
+  AppAdminStorageRoute: typeof AppAdminStorageRoute
   AppAdminTeamsRoute: typeof AppAdminTeamsRoute
   AppAdminIndexRoute: typeof AppAdminIndexRoute
 }
@@ -1663,8 +1802,14 @@ interface AppAdminRouteChildren {
 const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminAddressesRoute: AppAdminAddressesRoute,
   AppAdminAuditRoute: AppAdminAuditRoute,
+  AppAdminDiagnosticsRoute: AppAdminDiagnosticsRoute,
   AppAdminExportRoute: AppAdminExportRoute,
+  AppAdminHealthRoute: AppAdminHealthRoute,
+  AppAdminLogsRoute: AppAdminLogsRoute,
   AppAdminMembersRoute: AppAdminMembersRoute,
+  AppAdminMonitoringRoute: AppAdminMonitoringRoute,
+  AppAdminReportsRoute: AppAdminReportsRoute,
+  AppAdminStorageRoute: AppAdminStorageRoute,
   AppAdminTeamsRoute: AppAdminTeamsRoute,
   AppAdminIndexRoute: AppAdminIndexRoute,
 }
@@ -1827,6 +1972,7 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppFounderAdminRoute: typeof AppFounderAdminRoute
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
   AppFounderAnalyticsRoute: typeof AppFounderAnalyticsRoute
   AppFounderBillingRoute: typeof AppFounderBillingRoute
@@ -1853,6 +1999,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRouteWithChildren,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
+  AppFounderAdminRoute: AppFounderAdminRoute,
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
   AppFounderAnalyticsRoute: AppFounderAnalyticsRoute,
   AppFounderBillingRoute: AppFounderBillingRoute,
