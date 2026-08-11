@@ -33,10 +33,12 @@ const TABS: { to: string; label: string; exact?: boolean }[] = [
   { to: "/app/founder/ai", label: "Workbench", exact: true },
   { to: "/app/founder/ai/studio", label: "Studio" },
   { to: "/app/founder/ai/automation", label: "Automation" },
+  { to: "/app/founder/ai/knowledge", label: "Knowledge" },
   { to: "/app/founder/ai/arena", label: "Arena" },
   { to: "/app/founder/ai/prompts", label: "Prompts" },
   { to: "/app/founder/ai/memory", label: "Memory" },
   { to: "/app/founder/ai/receipts", label: "Receipts" },
+  { to: "/app/founder/ai/billing", label: "Billing" },
 ];
 
 function FounderAiLayout() {
