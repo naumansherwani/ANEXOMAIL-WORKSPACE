@@ -15,7 +15,10 @@ Har file locked rules follow karti hai:
 | --- | --- | --- |
 | `phase17_ai_studio.sql` | 17 | AI Studio runs, recipes, recipe steps, batches |
 | `phase18_ai_automation.sql` | 18 | Workflows, steps, runs, rules, variables, suggestions, email automations |
+| `phase19_ai_billing.sql` | 19 | AI wallet, credit events ledger, top-up packs (£135/£300/£1000/£2000), sandbox checkouts |
+| `phase20_ai_knowledge.sql` | 20 | Knowledge spaces, documents, chunks (pg_trgm), answers with citations, `knowledge_recall()` RPC |
+| `phase21_billing_platform.sql` | 21 | Workspace plans (£20/£40/£85), subscriptions, invoices, tax profiles, payment methods |
 | `phase_wire_founder.sql` | wiring · page 1 | Founder Command Deck + AI Email Center: mailboxes registry (17 real addresses), mail_domains, ai_agents roster, leo_email_drafts, mail_outbox, founder_accounts |
 | `phase_leo_memory.sql` | leo brain | LEO 3M-message memory: `leo_memory_vectors` (working/episodic/semantic + pgvector), `agent_memory_config` tiers (Jimmy 3M · Leo 3M · Sherlock 1M · Industry 100K), `leo_recall()` RPC, `leo_memory_prune()` cap |
 
-Chalane ki tarteeb: file number ke hisaab se (17 phir 18), phir `phase_wire_*` files.
+Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21), phir `phase_wire_*` files.
