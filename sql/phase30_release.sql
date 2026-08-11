@@ -10,7 +10,7 @@ declare
   t text;
   names text[] := array[
     'release_runs','release_checks','release_checklist','deployments',
-    'release_locks','roadmap_items','mail_outbox','subscription_pipeline'
+    'release_locks','roadmap_items','subscription_pipeline'
   ];
 begin
   foreach t in array names loop
@@ -114,20 +114,26 @@ create table if not exists public.roadmap_items (
 );
 
 -- ----------------------------------------------------- offline outbox ----
+-- mail_outbox pehle se phase_wire_founder.sql mein bana hai (from_address wala).
+-- Usay RENAME nahi karte — sirf Phase 30 ke columns additive add karte hain.
 create table if not exists public.mail_outbox (
   id uuid primary key default gen_random_uuid(),
-  user_id uuid not null references auth.users(id) on delete cascade,
-  idempotency_key text not null unique,
-  thread_id uuid,
+  from_address text,
   to_address text not null,
-  subject text,
-  body text,
-  state text not null default 'queued' check (state in ('queued','sending','sent','failed','cancelled')),
-  attempts int not null default 0,
-  last_error text,
-  queued_at timestamptz not null default now(),
+  subject text not null default '',
+  body text not null default '',
+  state text not null default 'queued',
+  created_at timestamptz not null default now(),
   sent_at timestamptz
 );
+alter table public.mail_outbox add column if not exists user_id uuid references auth.users(id) on delete cascade;
+alter table public.mail_outbox add column if not exists idempotency_key text;
+alter table public.mail_outbox add column if not exists thread_id uuid;
+alter table public.mail_outbox add column if not exists attempts int not null default 0;
+alter table public.mail_outbox add column if not exists last_error text;
+alter table public.mail_outbox alter column from_address drop not null;
+create unique index if not exists mail_outbox_idem_idx
+  on public.mail_outbox(idempotency_key) where idempotency_key is not null;
 create index if not exists mail_outbox_user_state_idx on public.mail_outbox(user_id, state);
 
 -- --------------------------------- migration lead -> subscription MRR ----
