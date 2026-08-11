@@ -12,7 +12,7 @@ export const Route = createFileRoute("/founder/preview")({
       { name: "robots", content: "noindex" },
     ],
   }),
-  component: FounderPublicPreview;
+  component: FounderPublicPreview,
 });
 
 type Device = { id: "mobile" | "tablet" | "desktop"; label: string; width: number };

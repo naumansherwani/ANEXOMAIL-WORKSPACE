@@ -15,6 +15,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
 import { SiteLock } from "@/components/site/SiteLock";
+import { VisitorBadge } from "@/components/site/VisitorBadge";
 import { registerServiceWorker } from "@/lib/pwa";
 
 function NotFoundComponent() {
@@ -155,6 +156,7 @@ function RootComponent() {
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
           <CrossPlatformBar />
+          <VisitorBadge />
           <Toaster />
         </SiteLock>
       </AuthProvider>

@@ -205,6 +205,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     blurb: "Chairman surfaces. Public users never see these.",
     items: [
       {
+        label: "Public preview",
+        path: "/founder/preview",
+        note: "Every public route as an unknown visitor sees it — live thumbnails, device switcher, Scan all report",
+      },
+      {
         label: "Founder deck",
         path: "/app/founder",
         note: "Founder mailboxes, AI addresses, provisioning state, DNS verdicts, founderworkspace host",
