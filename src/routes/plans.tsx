@@ -26,6 +26,87 @@ export const Route = createFileRoute("/plans")({
   component: PlansPage,
 });
 
+type Row = { label: string; basic: string; pro: string; business: string };
+
+const compare: { group: string; rows: Row[] }[] = [
+  {
+    group: "Mailboxes and storage",
+    rows: [
+      { label: "Price per person, per month", basic: "£20", pro: "£40", business: "£85" },
+      { label: "Mailboxes included", basic: "3", pro: "5", business: "Unlimited" },
+      { label: "Storage per mailbox", basic: "5GB", pro: "10GB", business: "25GB" },
+      { label: "Domains you can host", basic: "1", pro: "3", business: "Unlimited" },
+      { label: "Free aliases", basic: "5", pro: "5", business: "Unlimited" },
+      { label: "Undo send window", basic: "30 seconds", pro: "30 seconds", business: "30 seconds" },
+    ],
+  },
+  {
+    group: "Workspace",
+    rows: [
+      { label: "Contacts, calendar and threads", basic: "Included", pro: "Included", business: "Included" },
+      { label: "Cmd+K across the workspace", basic: "Included", pro: "Included", business: "Included" },
+      { label: "Shared inbox with collision guard", basic: "—", pro: "Included", business: "Included" },
+      { label: "Tasks and notes on a thread", basic: "—", pro: "Included", business: "Included" },
+      { label: "Thread analytics", basic: "—", pro: "Included", business: "Included" },
+      { label: "Native integrations and LEO Actions", basic: "—", pro: "—", business: "Included" },
+    ],
+  },
+  {
+    group: "Ownership and control",
+    rows: [
+      { label: "DKIM / SPF / DMARC checks", basic: "Included", pro: "Included", business: "Included" },
+      { label: "One-click export of everything", basic: "Included", pro: "Included", business: "Included" },
+      { label: "Roles and permissions", basic: "Owner and member", pro: "Owner, admin, member", business: "Owner, admin, member" },
+      { label: "Audit ledger", basic: "—", pro: "—", business: "Included" },
+      { label: "One-click revoke of a device or person", basic: "—", pro: "—", business: "Included" },
+    ],
+  },
+  {
+    group: "Support",
+    rows: [
+      { label: "Human support (no ticket portal)", basic: "Reply under 4h", pro: "Reply under 1h", business: "Reply under 1h" },
+      { label: "Dedicated SLA", basic: "—", pro: "—", business: "Under 4h, included" },
+      { label: "Named account manager", basic: "Add-on £500/mo", pro: "Add-on £500/mo", business: "Add-on £500/mo" },
+      { label: "Managed move-in from your old provider", basic: "From £500 one-off", pro: "From £500 one-off", business: "From £500 one-off" },
+    ],
+  },
+];
+
+const faqs = [
+  {
+    q: "Is VAT included in these prices?",
+    a: "No. £20, £40 and £85 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
+  },
+  {
+    q: "How does billing work?",
+    a: "Monthly, per person, by card. You are billed for the seats you have on the day the invoice is raised — add someone mid-month and the next invoice reflects it. There is no setup fee and no minimum term.",
+  },
+  {
+    q: "What counts as a seat?",
+    a: "One person with their own sign-in. Aliases and shared addresses are not seats, so a support@ or accounts@ address that several people answer does not cost you an extra person.",
+  },
+  {
+    q: "What happens if I go over my storage?",
+    a: "Storage is per mailbox — 5GB on Basic, 10GB on Pro, 25GB on Business. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
+  },
+  {
+    q: "Can I cancel any time?",
+    a: "Yes. Cancel from billing in the workspace, with no phone call and no retention conversation. You keep access until the end of the period you already paid for; nothing is charged after that.",
+  },
+  {
+    q: "What happens to my mail after I cancel?",
+    a: "Before the period ends you can take everything out yourself in one click — mail as standard mbox files, contacts and calendars in standard formats. After the period ends the mailboxes stop accepting new mail and the data is deleted for real, not archived quietly. Your domain always stays yours; you point its records wherever you like next.",
+  },
+  {
+    q: "Do I need to buy a domain from you?",
+    a: "No, and we do not sell them. You bring the domain you already own, we generate every record it needs, and you keep the registrar you are with.",
+  },
+  {
+    q: "Is there AI in these plans?",
+    a: "No. Basic, Pro and Business are email and workspace only. Nothing in your mail is used to train anything.",
+  },
+];
+
 const plans = [
   {
     name: "Basic",
@@ -121,6 +202,86 @@ function PlansPage() {
               </Link>
             </article>
           ))}
+        </section>
+
+        <section className="ax-container pb-20">
+          <h2 className="text-2xl text-foreground md:text-3xl">Feature by feature</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Exactly what is in each plan, and what is not. A dash means it is not included on that
+            plan.
+          </p>
+
+          <div className="mt-7 overflow-x-auto rounded-3xl border border-border">
+            <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
+              <thead>
+                <tr className="bg-secondary/50">
+                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                    Feature
+                  </th>
+                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                    Basic · £20
+                  </th>
+                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                    Pro · £40
+                  </th>
+                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                    Business · £85
+                  </th>
+                </tr>
+              </thead>
+              {compare.map((g) => (
+                <tbody key={g.group}>
+                  <tr>
+                    <th
+                      scope="colgroup"
+                      colSpan={4}
+                      className="ax-eyebrow border-t border-border px-5 py-3 text-left"
+                    >
+                      {g.group}
+                    </th>
+                  </tr>
+                  {g.rows.map((r) => (
+                    <tr key={r.label} className="border-t border-border/60">
+                      <th scope="row" className="px-5 py-3 font-normal text-muted-foreground">
+                        {r.label}
+                      </th>
+                      {[r.basic, r.pro, r.business].map((v, i) => (
+                        <td
+                          key={i}
+                          className={
+                            v === "—"
+                              ? "px-5 py-3 text-muted-foreground/60"
+                              : "px-5 py-3 text-foreground"
+                          }
+                        >
+                          {v}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              ))}
+            </table>
+          </div>
+        </section>
+
+        <section className="ax-container pb-24">
+          <h2 className="text-2xl text-foreground md:text-3xl">Questions people actually ask</h2>
+          <div className="mt-7 grid gap-4 md:grid-cols-2">
+            {faqs.map((f) => (
+              <article key={f.q} className="ax-plane rounded-3xl p-6">
+                <h3 className="text-base font-bold text-foreground">{f.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              </article>
+            ))}
+          </div>
+          <p className="mt-7 text-sm text-muted-foreground">
+            Something not answered here?{" "}
+            <Link to="/migration" className="text-foreground underline underline-offset-4">
+              Ask us on the move-in form
+            </Link>{" "}
+            — a person replies, not a portal.
+          </p>
         </section>
       </main>
       <SiteFooter />

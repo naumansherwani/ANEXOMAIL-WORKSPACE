@@ -48,6 +48,67 @@ const steps = [
   },
 ];
 
+const moves = [
+  {
+    title: "Mail and its full history",
+    body: "Every message in every folder, with read/unread state, folder structure and attachments carried across. Nothing is summarised or trimmed — the mailbox you had is the mailbox you get, message for message.",
+  },
+  {
+    title: "Contacts",
+    body: "Personal and shared address books, including company names, phone numbers and notes, mapped onto ANEXOMAIL contacts so search finds them from day one.",
+  },
+  {
+    title: "Calendars",
+    body: "Existing events, recurring meetings and invitees, so nothing disappears from next week's diary. Room and resource calendars are handled case by case — we tell you before the move, not after.",
+  },
+  {
+    title: "Addresses, aliases and rules",
+    body: "Shared addresses like support@ or accounts@, every alias, forwarding and the filters your team relies on are rebuilt on our side and shown to you for approval.",
+  },
+  {
+    title: "Domain and DNS",
+    body: "We generate the exact MX, SPF, DKIM and DMARC records your domain needs and either walk you through pasting them at your registrar or do it with you on a call. The domain stays registered in your name — we never take it over.",
+  },
+  {
+    title: "Signatures and branding",
+    body: "Company signatures rebuilt so outgoing mail looks the same the morning after the switch as it did the morning before.",
+  },
+];
+
+const youProvide = [
+  "Admin access, or an app password, for the mailboxes being moved — you can revoke it the moment the move ends.",
+  "Access to your DNS/registrar, or somebody who can paste the records we give you.",
+  "A list of people, shared addresses and aliases you want kept — and the ones you want dropped.",
+  "One person on your side who can say yes to the plan and pick the switch date.",
+];
+
+const facts = [
+  {
+    q: "How long does it take?",
+    a: "It depends on how much mail there is and how fast your old provider gives it to us — a handful of mailboxes is usually a matter of days, a company with years of archive takes longer. We give you a date range in writing after the planning call, and we do not publish a one-size-fits-all number because it would be a guess.",
+  },
+  {
+    q: "Is there downtime?",
+    a: "The aim is none, and the way we get there is running both providers in parallel: your old mail keeps arriving where it always did while we copy everything across. The switch is one DNS change, made when you say so — usually outside your busy hours.",
+  },
+  {
+    q: "What happens on cutover day?",
+    a: "We change the mail records for your domain, watch the first messages land in ANEXOMAIL, verify signing and authentication for your domain, then run one more catch-up copy so anything that arrived at the old provider during the change is pulled across too.",
+  },
+  {
+    q: "What if something goes wrong?",
+    a: "Your old mailboxes are untouched throughout — we copy, we never delete at the source — so the fallback is simply pointing the records back. Every item we move is logged, so a failure is a named message we can retry, not a mystery. You get that log.",
+  },
+  {
+    q: "What does it cost?",
+    a: "A managed move is a one-off fee from £500, quoted after the planning call based on mailbox count and how much history there is. It is separate from your monthly plan, and you see the number before anything starts.",
+  },
+  {
+    q: "Can I do it myself instead?",
+    a: "Yes. Self-serve import is part of the workspace on every plan, and you can also bring mail across by connecting your old provider. The managed move exists because most companies would rather it was somebody else's afternoon.",
+  },
+];
+
 function MoveInPage() {
   return (
     <div className="min-h-screen bg-background">
@@ -92,6 +153,50 @@ function MoveInPage() {
             >
               How delivery is proven
             </Link>
+          </div>
+        </section>
+
+        <section className="ax-container pb-16">
+          <h2 className="text-2xl text-foreground md:text-3xl">What actually moves</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Written plainly, because "we migrate your email" hides the parts that matter.
+          </p>
+          <div className="mt-7 grid gap-5 sm:grid-cols-2">
+            {moves.map((m) => (
+              <article key={m.title} className="ax-plane rounded-3xl p-6">
+                <h3 className="text-base font-bold text-foreground">{m.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{m.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className="ax-container pb-16">
+          <div className="ax-plane rounded-3xl p-8 md:p-10">
+            <h2 className="text-2xl text-foreground md:text-3xl">What we need from you</h2>
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+              Four things. That is the whole ask.
+            </p>
+            <ul className="mt-6 space-y-3">
+              {youProvide.map((y) => (
+                <li key={y} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
+                  <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground/50" />
+                  {y}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+
+        <section className="ax-container pb-24">
+          <h2 className="text-2xl text-foreground md:text-3xl">Timeline, cutover and the honest bits</h2>
+          <div className="mt-7 grid gap-4 md:grid-cols-2">
+            {facts.map((f) => (
+              <article key={f.q} className="ax-plane rounded-3xl p-6">
+                <h3 className="text-base font-bold text-foreground">{f.q}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
+              </article>
+            ))}
           </div>
         </section>
       </main>
