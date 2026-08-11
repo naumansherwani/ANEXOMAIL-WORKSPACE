@@ -48,7 +48,10 @@ import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
 import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
 import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
+import { Route as AppAnalyticsForecastRouteImport } from './routes/app.analytics.forecast'
 import { Route as AppAnalyticsLeaksRouteImport } from './routes/app.analytics.leaks'
+import { Route as AppAnalyticsPromisesRouteImport } from './routes/app.analytics.promises'
+import { Route as AppAnalyticsTeamRouteImport } from './routes/app.analytics.team'
 import { Route as AppAnalyticsThreadsRouteImport } from './routes/app.analytics.threads'
 import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
 import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
@@ -56,6 +59,7 @@ import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
+import { Route as AppFounderAnalyticsRouteImport } from './routes/app.founder_.analytics'
 import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.billing'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
@@ -286,9 +290,24 @@ const AppAnalyticsDeepWorkRoute = AppAnalyticsDeepWorkRouteImport.update({
   path: '/deep-work',
   getParentRoute: () => AppAnalyticsRoute,
 } as any)
+const AppAnalyticsForecastRoute = AppAnalyticsForecastRouteImport.update({
+  id: '/forecast',
+  path: '/forecast',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
 const AppAnalyticsLeaksRoute = AppAnalyticsLeaksRouteImport.update({
   id: '/leaks',
   path: '/leaks',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsPromisesRoute = AppAnalyticsPromisesRouteImport.update({
+  id: '/promises',
+  path: '/promises',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsTeamRoute = AppAnalyticsTeamRouteImport.update({
+  id: '/team',
+  path: '/team',
   getParentRoute: () => AppAnalyticsRoute,
 } as any)
 const AppAnalyticsThreadsRoute = AppAnalyticsThreadsRouteImport.update({
@@ -324,6 +343,11 @@ const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
 const AppFounderAiRoute = AppFounderAiRouteImport.update({
   id: '/founder_/ai',
   path: '/founder/ai',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFounderAnalyticsRoute = AppFounderAnalyticsRouteImport.update({
+  id: '/founder_/analytics',
+  path: '/founder/analytics',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFounderBillingRoute = AppFounderBillingRouteImport.update({
@@ -536,13 +560,17 @@ export interface FileRoutesByFullPath {
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
   '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
+  '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
+  '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
@@ -613,12 +641,16 @@ export interface FileRoutesByTo {
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
   '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
+  '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
@@ -695,13 +727,17 @@ export interface FileRoutesById {
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
   '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
+  '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
+  '/app/founder_/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder_/billing': typeof AppFounderBillingRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
@@ -780,13 +816,17 @@ export interface FileRouteTypes {
     | '/app/admin/members'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
+    | '/app/analytics/forecast'
     | '/app/analytics/leaks'
+    | '/app/analytics/promises'
+    | '/app/analytics/team'
     | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder/ai'
+    | '/app/founder/analytics'
     | '/app/founder/billing'
     | '/app/founder/crm'
     | '/app/founder/integrations'
@@ -857,12 +897,16 @@ export interface FileRouteTypes {
     | '/app/admin/members'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
+    | '/app/analytics/forecast'
     | '/app/analytics/leaks'
+    | '/app/analytics/promises'
+    | '/app/analytics/team'
     | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/analytics'
     | '/app/founder/billing'
     | '/app/founder/crm'
     | '/app/founder/integrations'
@@ -938,13 +982,17 @@ export interface FileRouteTypes {
     | '/app/admin/members'
     | '/app/admin/teams'
     | '/app/analytics/deep-work'
+    | '/app/analytics/forecast'
     | '/app/analytics/leaks'
+    | '/app/analytics/promises'
+    | '/app/analytics/team'
     | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder_/ai'
+    | '/app/founder_/analytics'
     | '/app/founder_/billing'
     | '/app/founder_/crm'
     | '/app/founder_/integrations'
@@ -1278,11 +1326,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsDeepWorkRouteImport
       parentRoute: typeof AppAnalyticsRoute
     }
+    '/app/analytics/forecast': {
+      id: '/app/analytics/forecast'
+      path: '/forecast'
+      fullPath: '/app/analytics/forecast'
+      preLoaderRoute: typeof AppAnalyticsForecastRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
     '/app/analytics/leaks': {
       id: '/app/analytics/leaks'
       path: '/leaks'
       fullPath: '/app/analytics/leaks'
       preLoaderRoute: typeof AppAnalyticsLeaksRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/promises': {
+      id: '/app/analytics/promises'
+      path: '/promises'
+      fullPath: '/app/analytics/promises'
+      preLoaderRoute: typeof AppAnalyticsPromisesRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/team': {
+      id: '/app/analytics/team'
+      path: '/team'
+      fullPath: '/app/analytics/team'
+      preLoaderRoute: typeof AppAnalyticsTeamRouteImport
       parentRoute: typeof AppAnalyticsRoute
     }
     '/app/analytics/threads': {
@@ -1332,6 +1401,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/ai'
       fullPath: '/app/founder/ai'
       preLoaderRoute: typeof AppFounderAiRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/analytics': {
+      id: '/app/founder_/analytics'
+      path: '/founder/analytics'
+      fullPath: '/app/founder/analytics'
+      preLoaderRoute: typeof AppFounderAnalyticsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder_/billing': {
@@ -1599,14 +1675,20 @@ const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
 
 interface AppAnalyticsRouteChildren {
   AppAnalyticsDeepWorkRoute: typeof AppAnalyticsDeepWorkRoute
+  AppAnalyticsForecastRoute: typeof AppAnalyticsForecastRoute
   AppAnalyticsLeaksRoute: typeof AppAnalyticsLeaksRoute
+  AppAnalyticsPromisesRoute: typeof AppAnalyticsPromisesRoute
+  AppAnalyticsTeamRoute: typeof AppAnalyticsTeamRoute
   AppAnalyticsThreadsRoute: typeof AppAnalyticsThreadsRoute
   AppAnalyticsIndexRoute: typeof AppAnalyticsIndexRoute
 }
 
 const AppAnalyticsRouteChildren: AppAnalyticsRouteChildren = {
   AppAnalyticsDeepWorkRoute: AppAnalyticsDeepWorkRoute,
+  AppAnalyticsForecastRoute: AppAnalyticsForecastRoute,
   AppAnalyticsLeaksRoute: AppAnalyticsLeaksRoute,
+  AppAnalyticsPromisesRoute: AppAnalyticsPromisesRoute,
+  AppAnalyticsTeamRoute: AppAnalyticsTeamRoute,
   AppAnalyticsThreadsRoute: AppAnalyticsThreadsRoute,
   AppAnalyticsIndexRoute: AppAnalyticsIndexRoute,
 }
@@ -1746,6 +1828,7 @@ interface AppRouteChildren {
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
+  AppFounderAnalyticsRoute: typeof AppFounderAnalyticsRoute
   AppFounderBillingRoute: typeof AppFounderBillingRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
@@ -1771,6 +1854,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
+  AppFounderAnalyticsRoute: AppFounderAnalyticsRoute,
   AppFounderBillingRoute: AppFounderBillingRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,

@@ -19,7 +19,9 @@ Har file locked rules follow karti hai:
 | `phase20_ai_knowledge.sql` | 20 | Knowledge spaces, documents, chunks (pg_trgm), answers with citations, `knowledge_recall()` RPC |
 | `phase21_billing_platform.sql` | 21 | Workspace plans (£20/£40/£85), subscriptions, invoices, tax profiles, payment methods |
 | `phase22_integrations.sql` | 22 | Provider catalog (Gmail/Workspace/Outlook/M365/Zoho/Proton/IMAP/SMTP), connections, migration jobs + per-item log, delivery proof checks + blocklists, export jobs, Leo Actions, `founder_integrations_overview()` |
+| `phase23_settings.sql` | 23 | Setting catalog + values, Time Machine versions (blast snapshot), scheduled change + auto-rollback, Leo explanations, 14 real seeded settings |
+| `phase24_analytics.sql` | 24 | Cost rates (£/hour), response-debt daily snapshots, thread cost ledger, deep-work map, attention leaks, promise SLA, `founder_analytics_overview()` |
 | `phase_wire_founder.sql` | wiring · page 1 | Founder Command Deck + AI Email Center: mailboxes registry (17 real addresses), mail_domains, ai_agents roster, leo_email_drafts, mail_outbox, founder_accounts |
 | `phase_leo_memory.sql` | leo brain | LEO 3M-message memory: `leo_memory_vectors` (working/episodic/semantic + pgvector), `agent_memory_config` tiers (Jimmy 3M · Leo 3M · Sherlock 1M · Industry 100K), `leo_recall()` RPC, `leo_memory_prune()` cap |
 
-Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 → 22), phir `phase_wire_*` files.
+Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 → 22 → 23 → 24), phir `phase_wire_*` files.
