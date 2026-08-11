@@ -24,7 +24,16 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: LeadPayload = { kind, company, email, domain, message, quote_gbp: quoteGbp, seats, detail };
+    const payload: LeadPayload = {
+      kind,
+      company,
+      email,
+      domain,
+      message,
+      ...(quoteGbp == null ? {} : { quote_gbp: quoteGbp }),
+      ...(seats == null ? {} : { seats }),
+      ...(detail == null ? {} : { detail }),
+    };
     submit.mutate(payload);
   };
 
