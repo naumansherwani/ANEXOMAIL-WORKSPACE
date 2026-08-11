@@ -7,6 +7,7 @@ import { EmptyState } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import type { MailFolder } from "@/lib/ia";
+import { celebrate, measureMotion } from "@/lib/experience";
 import { relativeTime, type ThreadListItem } from "@/lib/mail";
 import type { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -55,6 +56,20 @@ export function ThreadList({
     node?.scrollIntoView({ block: "nearest" });
   }, [cursor]);
 
+  // Phase 29 — Motion contract: the rail's own render cost is measured, not felt.
+  useEffect(() => {
+    if (isPending) return;
+    const end = measureMotion(`mail.rail:${folder}`, "calm");
+    end();
+  }, [folder, isPending, threads]);
+
+  // Earned delight: inbox zero is a proven finish, so it may celebrate. Any
+  // other empty folder is just an empty folder — no celebration.
+  useEffect(() => {
+    if (isPending || error) return;
+    if (folder === "inbox" && threads && threads.length === 0) celebrate("inbox-zero");
+  }, [folder, isPending, error, threads]);
+
   if (error) {
     if (error.isNotImplemented || error.code === "no_api_url") {
       return (
@@ -69,6 +84,15 @@ export function ThreadList({
   if (isPending) return <ListSkeleton rows={8} label="Loading threads" />;
 
   if (!threads || threads.length === 0) {
+    if (folder === "inbox") {
+      return (
+        <EmptyState
+          icon={<Mail className="size-5" />}
+          title="Inbox zero"
+          body="Nothing owes you a reply. New mail lands here the moment it is delivered."
+        />
+      );
+    }
     return (
       <EmptyState
         icon={<Mail className="size-5" />}

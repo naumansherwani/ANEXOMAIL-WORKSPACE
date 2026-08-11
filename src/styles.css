@@ -690,3 +690,59 @@
     scroll-behavior: auto !important;
   }
 }
+
+/*
+ * ============================================================
+ * Phase 29 — Premium Experience.
+ * Calm Mode is a real kill switch: one attribute on <html> stops every
+ * animation in the product. Delight is opt-in and never decorative.
+ * ============================================================
+ */
+
+/* Calm mode — the user asked for stillness, so nothing moves. */
+[data-ax-calm] *,
+[data-ax-calm] *::before,
+[data-ax-calm] *::after {
+  animation: none !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
+}
+
+/* Celebration — one rise, one settle, then it leaves on its own. */
+@keyframes ax-celebrate {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility ax-celebrate {
+  animation: ax-celebrate var(--ax-dur-cinematic) var(--ax-ease-out) both;
+}
+
+/* Focus audit overlay — high-contrast proof of where the keyboard is. */
+[data-ax-focus-audit] :focus-visible {
+  outline: 3px solid var(--cyan-accent) !important;
+  outline-offset: 2px !important;
+  border-radius: 6px;
+}
+
+/* Keyboard sovereignty — a visible ring on every focusable surface, always. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-celebrate {
+    animation: none !important;
+  }
+}

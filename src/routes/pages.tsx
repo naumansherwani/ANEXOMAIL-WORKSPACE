@@ -399,6 +399,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "Motion contract & focus ledger",
+        path: "/app/founder/motion",
+        note: "Phase 29 — measured animation budgets, long-frame watcher, focus audit, delight switches",
+        auth: true,
+      },
+      {
         label: "Founder revenue god-view",
         path: "/app/founder/revenue",
         note: "Phase 28 — MRR vs target, streams, live leads, partner commission, gap maths",

@@ -2,9 +2,11 @@ import { Outlet, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/app/AppShell";
+import { EarnedDelight } from "@/components/app/premium/Delight";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
+import { useExperience } from "@/lib/experience";
 import { founderPreviewFromUrl, setFounderPreview } from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/app")({
@@ -27,6 +29,8 @@ export const Route = createFileRoute("/app")({
 function AppLayout() {
   const navigate = useNavigate();
   const { status, unavailableReason, refresh } = useAuth();
+  // Phase 29 — paints calm / delight / focus-audit preferences onto <html>.
+  useExperience();
   // Founder review access. This route is ssr:false, so reading the key in the
   // initial state is safe and beats the redirect effect to the first commit.
   const [preview, setPreview] = useState(() => founderPreviewFromUrl());
@@ -59,6 +63,7 @@ function AppLayout() {
 
   return (
     <AppShell>
+      <EarnedDelight />
       {preview && status !== "signed-in" && (
         <div className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-center gap-3 border-t border-border bg-secondary/95 px-3 py-1.5 backdrop-blur">
           <span className="ax-caption font-semibold text-foreground">

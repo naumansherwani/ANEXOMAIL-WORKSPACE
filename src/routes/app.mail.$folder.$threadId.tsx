@@ -1,4 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { ArrowLeft, MailOpen, Paperclip } from "lucide-react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
@@ -8,6 +9,7 @@ import { ThreadHeaderActions } from "@/components/app/mail/ThreadHeaderActions";
 import { ThreadInsights } from "@/components/app/mail/ThreadInsights";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
+import { measureMotion } from "@/lib/experience";
 import { formatBytes, useThread } from "@/lib/mail";
 
 export const Route = createFileRoute("/app/mail/$folder/$threadId")({
@@ -23,6 +25,13 @@ export const Route = createFileRoute("/app/mail/$folder/$threadId")({
 function ThreadPage() {
   const { folder, threadId } = Route.useParams();
   const query = useThread(threadId);
+
+  // Phase 29 — Motion contract: opening a thread must land inside the calm budget.
+  useEffect(() => {
+    if (query.isPending) return;
+    const end = measureMotion("mail.thread:open", "calm");
+    end();
+  }, [threadId, query.isPending]);
 
   if (query.error) {
     if (query.error.isNotImplemented || query.error.code === "no_api_url") {
