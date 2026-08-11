@@ -326,6 +326,54 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     ],
   },
   {
+    title: "Performance platform",
+    blurb: "Phase 27 — speed as a feature, with receipts. Owner and admin only.",
+    items: [
+      {
+        label: "Speed overview",
+        path: "/app/perf",
+        note: "Phase 27 — speed score from real samples, slowest actions, advice",
+        auth: true,
+      },
+      {
+        label: "Speed receipts",
+        path: "/app/perf/budgets",
+        note: "Phase 27 — per-action millisecond budget vs real p50/p95/p99",
+        auth: true,
+      },
+      {
+        label: "Prefetch brain",
+        path: "/app/perf/prefetch",
+        note: "Phase 27 — predicted opens, hit rate, ms saved, cold-start map",
+        auth: true,
+      },
+      {
+        label: "Query lab",
+        path: "/app/perf/search",
+        note: "Phase 27 — run a real query, get the stage-by-stage waterfall",
+        auth: true,
+      },
+      {
+        label: "Device twins",
+        path: "/app/perf/devices",
+        note: "Phase 27 — per-device network class, rtt and the surfaces that lag",
+        auth: true,
+      },
+      {
+        label: "Regression sentinel",
+        path: "/app/perf/regressions",
+        note: "Phase 27 — release-over-release latency diff + rollback advice",
+        auth: true,
+      },
+      {
+        label: "Founder speed god-view",
+        path: "/app/founder/perf",
+        note: "Phase 27 god-view — p95 per tenant, failing budgets, regressions",
+        auth: true,
+      },
+    ],
+  },
+  {
     title: "Admin centre",
     blurb: "Owner and admin only.",
     items: [
