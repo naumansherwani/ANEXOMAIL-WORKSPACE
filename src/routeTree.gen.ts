@@ -85,6 +85,7 @@ import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
+import { Route as AppSecuritySessionsRouteImport } from './routes/app.security.sessions'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
 import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
 import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
@@ -485,6 +486,11 @@ const AppSecurityDevicesRoute = AppSecurityDevicesRouteImport.update({
   path: '/devices',
   getParentRoute: () => AppSecurityRoute,
 } as any)
+const AppSecuritySessionsRoute = AppSecuritySessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => AppSecurityRoute,
+} as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -654,6 +660,7 @@ export interface FileRoutesByFullPath {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
+  '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -742,6 +749,7 @@ export interface FileRoutesByTo {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
+  '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -840,6 +848,7 @@ export interface FileRoutesById {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
+  '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -939,6 +948,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/security/devices'
+    | '/app/security/sessions'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1027,6 +1037,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/security/devices'
+    | '/app/security/sessions'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1124,6 +1135,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/security/devices'
+    | '/app/security/sessions'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1703,6 +1715,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSecurityDevicesRouteImport
       parentRoute: typeof AppSecurityRoute
     }
+    '/app/security/sessions': {
+      id: '/app/security/sessions'
+      path: '/sessions'
+      fullPath: '/app/security/sessions'
+      preLoaderRoute: typeof AppSecuritySessionsRouteImport
+      parentRoute: typeof AppSecurityRoute
+    }
     '/app/settings/': {
       id: '/app/settings/'
       path: '/'
@@ -1945,11 +1964,13 @@ const AppOrgRouteWithChildren =
 
 interface AppSecurityRouteChildren {
   AppSecurityDevicesRoute: typeof AppSecurityDevicesRoute
+  AppSecuritySessionsRoute: typeof AppSecuritySessionsRoute
   AppSecurityIndexRoute: typeof AppSecurityIndexRoute
 }
 
 const AppSecurityRouteChildren: AppSecurityRouteChildren = {
   AppSecurityDevicesRoute: AppSecurityDevicesRoute,
+  AppSecuritySessionsRoute: AppSecuritySessionsRoute,
   AppSecurityIndexRoute: AppSecurityIndexRoute,
 }
 
