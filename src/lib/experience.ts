@@ -8,31 +8,46 @@
  * - Calm Mode: one switch kills motion, celebration and pulsing. OS
  *   prefers-reduced-motion is always respected on top of it.
  * - Earned Delight: celebration only fires on a proven finish (inbox zero,
- *   promise kept, DNS green). Awam ke liye default OFF, founder ke liye ON.
+ *   promise kept, DNS green). Default ON for everyone (founder + awam), with a
+ *   one-tap OFF in Settings → Appearance for people who want silence.
  * - Focus Ledger: accessibility shipped with proof — we audit the live DOM.
  */
 
 import { useCallback, useEffect, useState } from "react";
 
-import { founderPreviewEnabled } from "@/lib/founder-preview";
-
 /* ----------------------------- preferences ------------------------------ */
 
+export type Animations = "full" | "reduced" | "none";
+export type Speed = "fast" | "normal" | "slow";
+
 export type Experience = {
-  /** Kills motion, celebration, breathing dots and sound. */
-  calm: boolean;
+  /** Full = whole motion language · reduced = essential only · none = still. */
+  animations: Animations;
+  /** Transition tempo multiplier applied to every duration token. */
+  speed: Speed;
   /** Earned celebration on proven completion. */
   delight: boolean;
   /** Focus ring + focus ledger overlay for keyboard auditing. */
   focusAudit: boolean;
+  /** Derived: animations === "none". Kept for the calm-mode kill switch. */
+  calm: boolean;
 };
 
 const KEY = "ax.experience.v1";
 
+const ANIMATIONS: Animations[] = ["full", "reduced", "none"];
+const SPEEDS: Speed[] = ["fast", "normal", "slow"];
+
+/** Speed multiplier — a real number applied to the four duration tokens. */
+export const SPEED_FACTOR: Record<Speed, number> = { fast: 0.6, normal: 1, slow: 1.5 };
+
+function withCalm(e: Omit<Experience, "calm">): Experience {
+  return { ...e, calm: e.animations === "none" };
+}
+
 export function defaultExperience(): Experience {
-  // Founder surfaces get delight ON; every other visitor starts enterprise-quiet.
-  const founder = typeof window !== "undefined" && founderPreviewEnabled();
-  return { calm: false, delight: founder, focusAudit: false };
+  // Delight is ON by default for everyone — inbox zero is rare and worth marking.
+  return withCalm({ animations: "full", speed: "normal", delight: true, focusAudit: false });
 }
 
 export function readExperience(): Experience {
@@ -42,11 +57,18 @@ export function readExperience(): Experience {
     const raw = window.localStorage.getItem(KEY);
     if (!raw) return base;
     const parsed = JSON.parse(raw) as Partial<Experience>;
-    return {
-      calm: typeof parsed.calm === "boolean" ? parsed.calm : base.calm,
+    // Legacy: a stored calm=true means the user had already asked for stillness.
+    const animations = ANIMATIONS.includes(parsed.animations as Animations)
+      ? (parsed.animations as Animations)
+      : parsed.calm === true
+        ? "none"
+        : base.animations;
+    return withCalm({
+      animations,
+      speed: SPEEDS.includes(parsed.speed as Speed) ? (parsed.speed as Speed) : base.speed,
       delight: typeof parsed.delight === "boolean" ? parsed.delight : base.delight,
       focusAudit: typeof parsed.focusAudit === "boolean" ? parsed.focusAudit : base.focusAudit,
-    };
+    });
   } catch {
     return base;
   }
@@ -73,11 +95,15 @@ function paint(exp: Experience) {
   el.toggleAttribute("data-ax-calm", exp.calm);
   el.toggleAttribute("data-ax-delight", exp.delight && !exp.calm);
   el.toggleAttribute("data-ax-focus-audit", exp.focusAudit);
+  el.setAttribute("data-ax-motion", exp.animations);
+  el.setAttribute("data-ax-speed", exp.speed);
 }
 
 export function useExperience() {
   const [exp, setExp] = useState<Experience>(() =>
-    typeof window === "undefined" ? { calm: false, delight: false, focusAudit: false } : readExperience(),
+    typeof window === "undefined"
+      ? withCalm({ animations: "full", speed: "normal", delight: false, focusAudit: false })
+      : readExperience(),
   );
 
   useEffect(() => {
@@ -96,7 +122,17 @@ export function useExperience() {
   }, [exp]);
 
   const set = useCallback((patch: Partial<Experience>) => {
-    const next = { ...readExperience(), ...patch };
+    const current = readExperience();
+    // Calm is a shortcut for "animations: none" — keep the two from drifting.
+    const animations: Animations =
+      patch.animations ??
+      (patch.calm === true ? "none" : patch.calm === false && current.animations === "none" ? "full" : current.animations);
+    const next = withCalm({
+      animations,
+      speed: patch.speed ?? current.speed,
+      delight: patch.delight ?? current.delight,
+      focusAudit: patch.focusAudit ?? current.focusAudit,
+    });
     writeExperience(next);
     setExp(next);
   }, []);

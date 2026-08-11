@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Sparkles } from "lucide-react";
 
 import { SettingsScope } from "@/components/app/settings/SettingsBits";
-import { Toggle } from "@/components/app/premium/PremiumBits";
-import { celebrate, useExperience } from "@/lib/experience";
+import { Segmented, Toggle } from "@/components/app/premium/PremiumBits";
+import { celebrate, useExperience, type Animations, type Speed } from "@/lib/experience";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/settings/appearance")({
@@ -30,25 +30,47 @@ function AppearancePage() {
         </p>
 
         <div className="mt-ax-4 grid gap-ax-2">
-          <Toggle
-            label="Calm mode"
-            hint="One switch: no animation, no celebration, no pulsing dots anywhere in the workspace."
-            checked={exp.calm}
+          <Segmented<Animations>
+            label="Animations"
+            hint="Full keeps the whole motion language · Reduced fades only, nothing travels · None is complete stillness (calm mode)."
+            value={exp.animations}
+            options={[
+              { value: "full", label: "Full" },
+              { value: "reduced", label: "Reduced" },
+              { value: "none", label: "None" },
+            ]}
             onChange={(v) => {
-              exp.set({ calm: v });
-              notify.done(v ? "Calm mode on — the workspace is still" : "Calm mode off");
+              exp.set({ animations: v });
+              notify.done(
+                v === "none"
+                  ? "Calm mode on — the workspace is still"
+                  : v === "reduced"
+                    ? "Reduced animations — fades only"
+                    : "Full motion restored",
+              );
             }}
           />
+          <Segmented<Speed>
+            label="Transitions"
+            hint="The tempo of every panel, hover and reveal. Fast is 0.6× the standard clock, slow is 1.5×."
+            value={exp.speed}
+            options={[
+              { value: "fast", label: "Fast" },
+              { value: "normal", label: "Normal" },
+              { value: "slow", label: "Slow" },
+            ]}
+            onChange={(v) => exp.set({ speed: v })}
+          />
           <Toggle
-            label="Earned delight"
-            hint="A short celebration when work is genuinely finished — inbox zero, a promise kept, DNS proven green."
+            label="Celebration (earned delight)"
+            hint="On by default. Fires only when work is genuinely finished — inbox zero, a promise kept, your domain proven green."
             checked={exp.delight}
             onChange={(v) => {
               exp.set({ delight: v });
               if (v && !exp.calm) celebrate("inbox-zero");
             }}
             disabled={exp.calm}
-            disabledNote="Calm mode is on — delight stays silent until you switch it off."
+            disabledNote="Animations are set to None — celebration stays silent until you allow motion again."
           />
           <Toggle
             label="High-contrast focus ring"

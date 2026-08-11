@@ -708,6 +708,35 @@
   scroll-behavior: auto !important;
 }
 
+/*
+ * Transition tempo — one multiplier, four tokens. The motion language never
+ * changes shape, only its clock.
+ */
+html[data-ax-speed="fast"] {
+  --ax-dur-instant: 54ms;
+  --ax-dur-quick: 108ms;
+  --ax-dur-calm: 228ms;
+  --ax-dur-cinematic: 420ms;
+}
+
+html[data-ax-speed="slow"] {
+  --ax-dur-instant: 135ms;
+  --ax-dur-quick: 270ms;
+  --ax-dur-calm: 570ms;
+  --ax-dur-cinematic: 1050ms;
+}
+
+/*
+ * Reduced animations — essential state changes still cross-fade, but nothing
+ * travels, breathes or loops. Position is announced, never performed.
+ */
+html[data-ax-motion="reduced"] *,
+html[data-ax-motion="reduced"] *::before,
+html[data-ax-motion="reduced"] *::after {
+  animation: none !important;
+  transition-property: opacity, background-color, border-color, color !important;
+}
+
 /* Celebration — one rise, one settle, then it leaves on its own. */
 @keyframes ax-celebrate {
   0% {
