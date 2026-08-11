@@ -66,7 +66,7 @@ const compare: { group: string; rows: Row[] }[] = [
     rows: [
       { label: "Human support (no ticket portal)", basic: "Reply under 4h", pro: "Reply under 1h", business: "Reply under 1h" },
       { label: "Dedicated SLA", basic: "—", pro: "—", business: "Under 4h, included" },
-      { label: "Named account manager", basic: "Add-on £500/mo", pro: "Add-on £500/mo", business: "Add-on £500/mo" },
+      { label: "Priority Support (named contact)", basic: "Add-on £500/mo", pro: "Add-on £500/mo", business: "Add-on £500/mo" },
       { label: "Managed move-in from your old provider", basic: "From £500 one-off", pro: "From £500 one-off", business: "From £500 one-off" },
     ],
   },
