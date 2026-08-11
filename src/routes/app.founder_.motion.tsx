@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Activity, Gauge, KeyboardIcon, Sparkles, Trash2 } from "lucide-react";
 
-import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
+import { Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { Toggle, Verdict } from "@/components/app/premium/PremiumBits";
 import { StateBlock } from "@/components/state/StateBlock";
 import {
@@ -139,8 +139,10 @@ function MotionLedgerPage() {
 
         {focus && (
           <div className="mt-ax-3">
-            <Row label="Elements checked" value={String(focus.checked)} />
-            <Row label="Issues" value={String(focus.issues.length)} />
+            <p className="text-sm text-muted-foreground">
+              <span className="font-semibold text-foreground">{focus.checked}</span> interactive elements checked ·{" "}
+              <span className="font-semibold text-foreground">{focus.issues.length}</span> issues
+            </p>
             {focus.issues.length > 0 && (
               <ul className="mt-ax-3 space-y-1.5">
                 {focus.issues.slice(0, 20).map((issue, i) => (
