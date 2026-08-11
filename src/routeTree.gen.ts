@@ -14,6 +14,7 @@ import { Route as AiRouteImport } from './routes/ai'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClaimRouteImport } from './routes/claim'
+import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as MigrationRouteImport } from './routes/migration'
 import { Route as MoveInRouteImport } from './routes/move-in'
@@ -23,6 +24,7 @@ import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as StatusRouteImport } from './routes/status'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
 import { Route as AiCreditsRouteImport } from './routes/ai_.credits'
 import { Route as AiKnowledgeRouteImport } from './routes/ai_.knowledge'
@@ -158,6 +160,11 @@ const ClaimRoute = ClaimRouteImport.update({
   path: '/claim',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocsRoute = DocsRouteImport.update({
+  id: '/docs',
+  path: '/docs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EnterpriseRoute = EnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
@@ -201,6 +208,11 @@ const PlansRoute = PlansRouteImport.update({
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StatusRoute = StatusRouteImport.update({
+  id: '/status',
+  path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiAutomationRoute = AiAutomationRouteImport.update({
@@ -759,6 +771,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
+  '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -768,6 +781,7 @@ export interface FileRoutesByFullPath {
   '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/status': typeof StatusRoute
   '/ai/automation': typeof AiAutomationRoute
   '/ai/credits': typeof AiCreditsRoute
   '/ai/knowledge': typeof AiKnowledgeRoute
@@ -883,6 +897,7 @@ export interface FileRoutesByTo {
   '/ai': typeof AiRoute
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
+  '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -892,6 +907,7 @@ export interface FileRoutesByTo {
   '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/status': typeof StatusRoute
   '/ai/automation': typeof AiAutomationRoute
   '/ai/credits': typeof AiCreditsRoute
   '/ai/knowledge': typeof AiKnowledgeRoute
@@ -999,6 +1015,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
+  '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1008,6 +1025,7 @@ export interface FileRoutesById {
   '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
+  '/status': typeof StatusRoute
   '/ai_/automation': typeof AiAutomationRoute
   '/ai_/credits': typeof AiCreditsRoute
   '/ai_/knowledge': typeof AiKnowledgeRoute
@@ -1126,6 +1144,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/claim'
+    | '/docs'
     | '/enterprise'
     | '/migration'
     | '/move-in'
@@ -1135,6 +1154,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/plans'
     | '/security'
+    | '/status'
     | '/ai/automation'
     | '/ai/credits'
     | '/ai/knowledge'
@@ -1250,6 +1270,7 @@ export interface FileRouteTypes {
     | '/ai'
     | '/auth'
     | '/claim'
+    | '/docs'
     | '/enterprise'
     | '/migration'
     | '/move-in'
@@ -1259,6 +1280,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/plans'
     | '/security'
+    | '/status'
     | '/ai/automation'
     | '/ai/credits'
     | '/ai/knowledge'
@@ -1365,6 +1387,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/claim'
+    | '/docs'
     | '/enterprise'
     | '/migration'
     | '/move-in'
@@ -1374,6 +1397,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/plans'
     | '/security'
+    | '/status'
     | '/ai_/automation'
     | '/ai_/credits'
     | '/ai_/knowledge'
@@ -1491,6 +1515,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   ClaimRoute: typeof ClaimRoute
+  DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
   MigrationRoute: typeof MigrationRoute
   MoveInRoute: typeof MoveInRoute
@@ -1500,6 +1525,7 @@ export interface RootRouteChildren {
   PartnersRoute: typeof PartnersRoute
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
+  StatusRoute: typeof StatusRoute
   AiAutomationRoute: typeof AiAutomationRoute
   AiCreditsRoute: typeof AiCreditsRoute
   AiKnowledgeRoute: typeof AiKnowledgeRoute
@@ -1542,6 +1568,13 @@ declare module '@tanstack/react-router' {
       path: '/claim'
       fullPath: '/claim'
       preLoaderRoute: typeof ClaimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/docs': {
+      id: '/docs'
+      path: '/docs'
+      fullPath: '/docs'
+      preLoaderRoute: typeof DocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/enterprise': {
@@ -1605,6 +1638,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/status': {
+      id: '/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof StatusRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai_/automation': {
@@ -2691,6 +2731,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   ClaimRoute: ClaimRoute,
+  DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
   MigrationRoute: MigrationRoute,
   MoveInRoute: MoveInRoute,
@@ -2700,6 +2741,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnersRoute: PartnersRoute,
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
+  StatusRoute: StatusRoute,
   AiAutomationRoute: AiAutomationRoute,
   AiCreditsRoute: AiCreditsRoute,
   AiKnowledgeRoute: AiKnowledgeRoute,

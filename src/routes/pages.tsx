@@ -58,6 +58,16 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         note: "Coming soon gate — documents, memory and cited answers on ai.anexomail.com",
       },
       { label: "Security", path: "/security", note: "TLS, DKIM/SPF/DMARC, data handling" },
+      {
+        label: "Service status",
+        path: "/status",
+        note: "Phase 30 — public status page generated from the same live probes as the release gate",
+      },
+      {
+        label: "Handbook",
+        path: "/docs",
+        note: "Phase 30 — setup, DNS records, migration, export, ownership and every keyboard shortcut",
+      },
       { label: "Ownership", path: "/ownership", note: "Export, delete, domain ownership proof" },
       { label: "Move in", path: "/move-in", note: "Migration from another provider" },
       {
@@ -177,6 +187,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         note: "Phase 24 — response debt in £, thread economics, deep work, attention leaks, promise SLA, forecast, team load",
         auth: true,
       },
+      {
+        label: "Outbox (offline)",
+        path: "/app/mail/outbox",
+        note: "Phase 30 — offline queue on this device, exponential retry, never says “sent” before the server confirms",
+        auth: true,
+      },
     ],
   },
   {
@@ -294,6 +310,48 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Founder security god-view",
         path: "/app/founder/security",
         note: "Phase 26 god-view — anomalies, frozen accounts, blocked devices, kill switches per tenant",
+        auth: true,
+      },
+      {
+        label: "Release command",
+        path: "/app/founder/launch",
+        note: "Phase 30 — release gate verdict, blockers, last deployment, run full QA",
+        auth: true,
+      },
+      {
+        label: "QA suite",
+        path: "/app/founder/launch/qa",
+        note: "Phase 30 — 60+ live checks suite-wise with HTTP code, latency and reason",
+        auth: true,
+      },
+      {
+        label: "Production checklist",
+        path: "/app/founder/launch/checklist",
+        note: "Phase 30 — open / done / blocker per item; a blocker keeps the gate shut",
+        auth: true,
+      },
+      {
+        label: "Deploy receipts",
+        path: "/app/founder/launch/deployments",
+        note: "Phase 30 — commit sha, actor, duration, rollback trail, what changed since last green",
+        auth: true,
+      },
+      {
+        label: "v1.0 lock",
+        path: "/app/founder/launch/lock",
+        note: "Phase 30 — append-only signature ledger; disabled while any check is red",
+        auth: true,
+      },
+      {
+        label: "v2.0 roadmap",
+        path: "/app/founder/launch/roadmap",
+        note: "Phase 30 — impact × effort board with the revenue road each item feeds",
+        auth: true,
+      },
+      {
+        label: "Revenue pipeline truth",
+        path: "/app/founder/revenue/pipeline",
+        note: "Phase 30 — Committed MRR vs Pipeline MRR vs gap to £500; one-off cash never counted as MRR",
         auth: true,
       },
     ],
