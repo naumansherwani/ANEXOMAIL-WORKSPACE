@@ -34,6 +34,10 @@ import securityRouter, { founderSecurityRouter } from "./routes/security";
 import perfRouter, { founderPerfRouter } from "./routes/perf";
 import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
 import handoffRouter from "./routes/handoff";
+import releasePublicRouter, {
+  founderReleaseRouter,
+  outboxRouter,
+} from "./routes/release";
 
 const PORT = Number(process.env.PORT) || 3100;
 
