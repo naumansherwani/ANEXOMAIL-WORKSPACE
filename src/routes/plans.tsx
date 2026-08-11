@@ -225,9 +225,7 @@ function PlansPage() {
           {plans.map((p) => (
             <article
               key={p.name}
-              className={`ax-plane rounded-3xl p-7 ${
-                p.featured ? "ring-1 ring-ring/40" : ""
-              }`}
+              className="ax-plane group rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
             >
               <h2 className="text-sm font-bold tracking-tight text-foreground">
                 {p.name}
@@ -252,11 +250,7 @@ function PlansPage() {
               </ul>
               <Link
                 to="/move-in"
-                className={`mt-7 block rounded-xl px-4 py-3 text-center text-sm font-semibold transition-colors ${
-                  p.featured
-                    ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                    : "border border-border bg-card text-foreground hover:bg-surface-2"
-                }`}
+                className="mt-7 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
               >
                 Move in
               </Link>

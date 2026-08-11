@@ -440,9 +440,7 @@ function Index() {
             {plans.map((p, i) => (
               <Reveal key={p.name} delay={i * 0.08} className="h-full">
                 <article
-                  className={`ax-plane flex h-full flex-col rounded-xl p-8 ${
-                    p.featured ? "border-primary/55 shadow-stage" : ""
-                  }`}
+                  className="ax-plane flex h-full flex-col rounded-xl p-8 transition-colors duration-300 hover:border-primary/55"
                 >
                   <div className="flex items-center justify-between">
                     <span className="ax-eyebrow">{p.name}</span>
@@ -482,11 +480,7 @@ function Index() {
 
                   <a
                     href="#top"
-                    className={`mt-10 inline-flex items-center justify-center rounded-lg px-5 py-3 text-sm font-semibold transition-colors duration-500 ${
-                      p.featured
-                        ? "bg-primary text-primary-foreground hover:bg-primary/85"
-                        : "border border-border text-foreground hover:border-steel/45"
-                    }`}
+                    className="mt-10 inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
                   >
                     Get started
                   </a>
