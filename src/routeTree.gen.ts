@@ -21,6 +21,8 @@ import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
+import { Route as AiCreditsRouteImport } from './routes/ai_.credits'
+import { Route as AiKnowledgeRouteImport } from './routes/ai_.knowledge'
 import { Route as AiStudioRouteImport } from './routes/ai_.studio'
 import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAccountRouteImport } from './routes/app.account'
@@ -126,6 +128,16 @@ const SecurityRoute = SecurityRouteImport.update({
 const AiAutomationRoute = AiAutomationRouteImport.update({
   id: '/ai_/automation',
   path: '/ai/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiCreditsRoute = AiCreditsRouteImport.update({
+  id: '/ai_/credits',
+  path: '/ai/credits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AiKnowledgeRoute = AiKnowledgeRouteImport.update({
+  id: '/ai_/knowledge',
+  path: '/ai/knowledge',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiStudioRoute = AiStudioRouteImport.update({
@@ -372,6 +384,8 @@ export interface FileRoutesByFullPath {
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/ai/automation': typeof AiAutomationRoute
+  '/ai/credits': typeof AiCreditsRoute
+  '/ai/knowledge': typeof AiKnowledgeRoute
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
@@ -431,6 +445,8 @@ export interface FileRoutesByTo {
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/ai/automation': typeof AiAutomationRoute
+  '/ai/credits': typeof AiCreditsRoute
+  '/ai/knowledge': typeof AiKnowledgeRoute
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/ai-center': typeof AppAiCenterRoute
@@ -487,6 +503,8 @@ export interface FileRoutesById {
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/ai_/automation': typeof AiAutomationRoute
+  '/ai_/credits': typeof AiCreditsRoute
+  '/ai_/knowledge': typeof AiKnowledgeRoute
   '/ai_/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
@@ -549,6 +567,8 @@ export interface FileRouteTypes {
     | '/plans'
     | '/security'
     | '/ai/automation'
+    | '/ai/credits'
+    | '/ai/knowledge'
     | '/ai/studio'
     | '/app/account'
     | '/app/admin'
@@ -608,6 +628,8 @@ export interface FileRouteTypes {
     | '/plans'
     | '/security'
     | '/ai/automation'
+    | '/ai/credits'
+    | '/ai/knowledge'
     | '/ai/studio'
     | '/app/account'
     | '/app/ai-center'
@@ -663,6 +685,8 @@ export interface FileRouteTypes {
     | '/plans'
     | '/security'
     | '/ai_/automation'
+    | '/ai_/credits'
+    | '/ai_/knowledge'
     | '/ai_/studio'
     | '/app/account'
     | '/app/admin'
@@ -724,6 +748,8 @@ export interface RootRouteChildren {
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
   AiAutomationRoute: typeof AiAutomationRoute
+  AiCreditsRoute: typeof AiCreditsRoute
+  AiKnowledgeRoute: typeof AiKnowledgeRoute
   AiStudioRoute: typeof AiStudioRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
 }
@@ -812,6 +838,20 @@ declare module '@tanstack/react-router' {
       path: '/ai/automation'
       fullPath: '/ai/automation'
       preLoaderRoute: typeof AiAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai_/credits': {
+      id: '/ai_/credits'
+      path: '/ai/credits'
+      fullPath: '/ai/credits'
+      preLoaderRoute: typeof AiCreditsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ai_/knowledge': {
+      id: '/ai_/knowledge'
+      path: '/ai/knowledge'
+      fullPath: '/ai/knowledge'
+      preLoaderRoute: typeof AiKnowledgeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai_/studio': {
@@ -1296,19 +1336,11 @@ const rootRouteChildren: RootRouteChildren = {
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
   AiAutomationRoute: AiAutomationRoute,
+  AiCreditsRoute: AiCreditsRoute,
+  AiKnowledgeRoute: AiKnowledgeRoute,
   AiStudioRoute: AiStudioRoute,
   AuthCallbackRoute: AuthCallbackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
