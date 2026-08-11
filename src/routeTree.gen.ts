@@ -46,6 +46,10 @@ import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
 import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
+import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
+import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
+import { Route as AppAnalyticsLeaksRouteImport } from './routes/app.analytics.leaks'
+import { Route as AppAnalyticsThreadsRouteImport } from './routes/app.analytics.threads'
 import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
 import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
@@ -272,6 +276,26 @@ const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
   path: '/teams',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAnalyticsIndexRoute = AppAnalyticsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsDeepWorkRoute = AppAnalyticsDeepWorkRouteImport.update({
+  id: '/deep-work',
+  path: '/deep-work',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsLeaksRoute = AppAnalyticsLeaksRouteImport.update({
+  id: '/leaks',
+  path: '/leaks',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
+const AppAnalyticsThreadsRoute = AppAnalyticsThreadsRouteImport.update({
+  id: '/threads',
+  path: '/threads',
+  getParentRoute: () => AppAnalyticsRoute,
+} as any)
 const AppCrmIndexRoute = AppCrmIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -493,7 +517,7 @@ export interface FileRoutesByFullPath {
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
-  '/app/analytics': typeof AppAnalyticsRoute
+  '/app/analytics': typeof AppAnalyticsRouteWithChildren
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
@@ -511,6 +535,9 @@ export interface FileRoutesByFullPath {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
@@ -538,6 +565,7 @@ export interface FileRoutesByFullPath {
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/settings/': typeof AppSettingsIndexRoute
@@ -570,7 +598,6 @@ export interface FileRoutesByTo {
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/ai-center': typeof AppAiCenterRoute
-  '/app/analytics': typeof AppAnalyticsRoute
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/founder': typeof AppFounderRoute
@@ -585,6 +612,9 @@ export interface FileRoutesByTo {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
@@ -610,6 +640,7 @@ export interface FileRoutesByTo {
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin': typeof AppAdminIndexRoute
+  '/app/analytics': typeof AppAnalyticsIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
   '/app/settings': typeof AppSettingsIndexRoute
@@ -645,7 +676,7 @@ export interface FileRoutesById {
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
-  '/app/analytics': typeof AppAnalyticsRoute
+  '/app/analytics': typeof AppAnalyticsRouteWithChildren
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
@@ -663,6 +694,9 @@ export interface FileRoutesById {
   '/app/admin/export': typeof AppAdminExportRoute
   '/app/admin/members': typeof AppAdminMembersRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
+  '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
+  '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
@@ -690,6 +724,7 @@ export interface FileRoutesById {
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/settings/': typeof AppSettingsIndexRoute
@@ -744,6 +779,9 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/analytics/deep-work'
+    | '/app/analytics/leaks'
+    | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
@@ -771,6 +809,7 @@ export interface FileRouteTypes {
     | '/app/settings/privacy'
     | '/app/settings/workspace'
     | '/app/admin/'
+    | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
     | '/app/settings/'
@@ -803,7 +842,6 @@ export interface FileRouteTypes {
     | '/ai/studio'
     | '/app/account'
     | '/app/ai-center'
-    | '/app/analytics'
     | '/app/billing'
     | '/app/calendar'
     | '/app/founder'
@@ -818,6 +856,9 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/analytics/deep-work'
+    | '/app/analytics/leaks'
+    | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
@@ -843,6 +884,7 @@ export interface FileRouteTypes {
     | '/app/settings/privacy'
     | '/app/settings/workspace'
     | '/app/admin'
+    | '/app/analytics'
     | '/app/crm'
     | '/app/org'
     | '/app/settings'
@@ -895,6 +937,9 @@ export interface FileRouteTypes {
     | '/app/admin/export'
     | '/app/admin/members'
     | '/app/admin/teams'
+    | '/app/analytics/deep-work'
+    | '/app/analytics/leaks'
+    | '/app/analytics/threads'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
@@ -922,6 +967,7 @@ export interface FileRouteTypes {
     | '/app/settings/privacy'
     | '/app/settings/workspace'
     | '/app/admin/'
+    | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
     | '/app/settings/'
@@ -1217,6 +1263,34 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/admin/teams'
       preLoaderRoute: typeof AppAdminTeamsRouteImport
       parentRoute: typeof AppAdminRoute
+    }
+    '/app/analytics/': {
+      id: '/app/analytics/'
+      path: '/'
+      fullPath: '/app/analytics/'
+      preLoaderRoute: typeof AppAnalyticsIndexRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/deep-work': {
+      id: '/app/analytics/deep-work'
+      path: '/deep-work'
+      fullPath: '/app/analytics/deep-work'
+      preLoaderRoute: typeof AppAnalyticsDeepWorkRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/leaks': {
+      id: '/app/analytics/leaks'
+      path: '/leaks'
+      fullPath: '/app/analytics/leaks'
+      preLoaderRoute: typeof AppAnalyticsLeaksRouteImport
+      parentRoute: typeof AppAnalyticsRoute
+    }
+    '/app/analytics/threads': {
+      id: '/app/analytics/threads'
+      path: '/threads'
+      fullPath: '/app/analytics/threads'
+      preLoaderRoute: typeof AppAnalyticsThreadsRouteImport
+      parentRoute: typeof AppAnalyticsRoute
     }
     '/app/crm/': {
       id: '/app/crm/'
@@ -1523,6 +1597,24 @@ const AppAdminRouteWithChildren = AppAdminRoute._addFileChildren(
   AppAdminRouteChildren,
 )
 
+interface AppAnalyticsRouteChildren {
+  AppAnalyticsDeepWorkRoute: typeof AppAnalyticsDeepWorkRoute
+  AppAnalyticsLeaksRoute: typeof AppAnalyticsLeaksRoute
+  AppAnalyticsThreadsRoute: typeof AppAnalyticsThreadsRoute
+  AppAnalyticsIndexRoute: typeof AppAnalyticsIndexRoute
+}
+
+const AppAnalyticsRouteChildren: AppAnalyticsRouteChildren = {
+  AppAnalyticsDeepWorkRoute: AppAnalyticsDeepWorkRoute,
+  AppAnalyticsLeaksRoute: AppAnalyticsLeaksRoute,
+  AppAnalyticsThreadsRoute: AppAnalyticsThreadsRoute,
+  AppAnalyticsIndexRoute: AppAnalyticsIndexRoute,
+}
+
+const AppAnalyticsRouteWithChildren = AppAnalyticsRoute._addFileChildren(
+  AppAnalyticsRouteChildren,
+)
+
 interface AppCrmRouteChildren {
   AppCrmActivityRoute: typeof AppCrmActivityRoute
   AppCrmCollabRoute: typeof AppCrmCollabRoute
@@ -1641,7 +1733,7 @@ interface AppRouteChildren {
   AppAccountRoute: typeof AppAccountRoute
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppAiCenterRoute: typeof AppAiCenterRoute
-  AppAnalyticsRoute: typeof AppAnalyticsRoute
+  AppAnalyticsRoute: typeof AppAnalyticsRouteWithChildren
   AppBillingRoute: typeof AppBillingRoute
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
@@ -1666,7 +1758,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAccountRoute: AppAccountRoute,
   AppAdminRoute: AppAdminRouteWithChildren,
   AppAiCenterRoute: AppAiCenterRoute,
-  AppAnalyticsRoute: AppAnalyticsRoute,
+  AppAnalyticsRoute: AppAnalyticsRouteWithChildren,
   AppBillingRoute: AppBillingRoute,
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
