@@ -35,6 +35,7 @@ import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
 import { Route as AppBillingRouteImport } from './routes/app.billing'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppCrmRouteImport } from './routes/app.crm'
+import { Route as AppDevicesRouteImport } from './routes/app.devices'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
 import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppOrgRouteImport } from './routes/app.org'
@@ -250,6 +251,11 @@ const AppCalendarRoute = AppCalendarRouteImport.update({
 const AppCrmRoute = AppCrmRouteImport.update({
   id: '/crm',
   path: '/crm',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppDevicesRoute = AppDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFounderRoute = AppFounderRouteImport.update({
@@ -710,6 +716,7 @@ export interface FileRoutesByFullPath {
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
+  '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
@@ -820,6 +827,7 @@ export interface FileRoutesByTo {
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
+  '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/people': typeof AppPeopleRoute
@@ -929,6 +937,7 @@ export interface FileRoutesById {
   '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
+  '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
@@ -1045,6 +1054,7 @@ export interface FileRouteTypes {
     | '/app/billing'
     | '/app/calendar'
     | '/app/crm'
+    | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
     | '/app/org'
@@ -1155,6 +1165,7 @@ export interface FileRouteTypes {
     | '/app/ai-center'
     | '/app/billing'
     | '/app/calendar'
+    | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
     | '/app/people'
@@ -1263,6 +1274,7 @@ export interface FileRouteTypes {
     | '/app/billing'
     | '/app/calendar'
     | '/app/crm'
+    | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
     | '/app/org'
@@ -1556,6 +1568,13 @@ declare module '@tanstack/react-router' {
       path: '/crm'
       fullPath: '/app/crm'
       preLoaderRoute: typeof AppCrmRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/devices': {
+      id: '/app/devices'
+      path: '/devices'
+      fullPath: '/app/devices'
+      preLoaderRoute: typeof AppDevicesRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder': {
@@ -2386,6 +2405,7 @@ interface AppRouteChildren {
   AppBillingRoute: typeof AppBillingRoute
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
+  AppDevicesRoute: typeof AppDevicesRoute
   AppFounderRoute: typeof AppFounderRoute
   AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
@@ -2418,6 +2438,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppBillingRoute: AppBillingRoute,
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
+  AppDevicesRoute: AppDevicesRoute,
   AppFounderRoute: AppFounderRoute,
   AppIntegrationsRoute: AppIntegrationsRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
