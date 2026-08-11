@@ -204,6 +204,24 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         note: "Answer receipts, credits ledger (unlimited, cost visible) and guardrail pauses",
         auth: true,
       },
+      {
+        label: "Founder AI knowledge",
+        path: "/app/founder/ai/knowledge",
+        note: "Phase 20 — spaces, documents, real recall search, ask with citations or refusal",
+        auth: true,
+      },
+      {
+        label: "Founder AI billing",
+        path: "/app/founder/ai/billing",
+        note: "Phase 19 — wallet, burn, runway, usage analytics, spend cap, sandbox checkout",
+        auth: true,
+      },
+      {
+        label: "Founder revenue truth",
+        path: "/app/founder/billing",
+        note: "Phase 21 god-view — MRR, ARR, unpaid, churn, by-plan split across every tenant",
+        auth: true,
+      },
     ],
   },
   {
