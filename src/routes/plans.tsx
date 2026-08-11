@@ -266,6 +266,7 @@ function PlansPage() {
 
         <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Feature by feature</h2>
+</section>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
             Exactly what is in each plan, and what is not. A dash means it is not included on that
             plan.
