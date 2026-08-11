@@ -84,6 +84,7 @@ import { Route as AppFounderRevenueRouteImport } from './routes/app.founder_.rev
 import { Route as AppFounderSecurityRouteImport } from './routes/app.founder_.security'
 import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
+import { Route as AppMailOutboxRouteImport } from './routes/app.mail.outbox'
 import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
 import { Route as AppOrgAuditRouteImport } from './routes/app.org.audit'
 import { Route as AppOrgComplianceRouteImport } from './routes/app.org.compliance'
@@ -128,6 +129,7 @@ import { Route as AppFounderLaunchDeploymentsRouteImport } from './routes/app.fo
 import { Route as AppFounderLaunchLockRouteImport } from './routes/app.founder_.launch.lock'
 import { Route as AppFounderLaunchQaRouteImport } from './routes/app.founder_.launch.qa'
 import { Route as AppFounderLaunchRoadmapRouteImport } from './routes/app.founder_.launch.roadmap'
+import { Route as AppFounderRevenuePipelineRouteImport } from './routes/app.founder_.revenue_.pipeline'
 import { Route as AppMailFolderIndexRouteImport } from './routes/app.mail.$folder.index'
 import { Route as AppMailFolderThreadIdRouteImport } from './routes/app.mail.$folder.$threadId'
 
@@ -506,6 +508,11 @@ const AppMailFolderRoute = AppMailFolderRouteImport.update({
   path: '/mail/$folder',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMailOutboxRoute = AppMailOutboxRouteImport.update({
+  id: '/mail/outbox',
+  path: '/mail/outbox',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppOrgIndexRoute = AppOrgIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -729,6 +736,12 @@ const AppFounderLaunchRoadmapRoute = AppFounderLaunchRoadmapRouteImport.update({
   path: '/roadmap',
   getParentRoute: () => AppFounderLaunchRoute,
 } as any)
+const AppFounderRevenuePipelineRoute =
+  AppFounderRevenuePipelineRouteImport.update({
+    id: '/founder_/revenue_/pipeline',
+    path: '/founder/revenue/pipeline',
+    getParentRoute: () => AppRoute,
+  } as any)
 const AppMailFolderIndexRoute = AppMailFolderIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -813,6 +826,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/mail/outbox': typeof AppMailOutboxRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
@@ -858,6 +872,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/launch/lock': typeof AppFounderLaunchLockRoute
   '/app/founder/launch/qa': typeof AppFounderLaunchQaRoute
   '/app/founder/launch/roadmap': typeof AppFounderLaunchRoadmapRoute
+  '/app/founder/revenue/pipeline': typeof AppFounderRevenuePipelineRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai/': typeof AppFounderAiIndexRoute
   '/app/founder/launch/': typeof AppFounderLaunchIndexRoute
@@ -925,6 +940,7 @@ export interface FileRoutesByTo {
   '/app/founder/revenue': typeof AppFounderRevenueRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
+  '/app/mail/outbox': typeof AppMailOutboxRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
@@ -970,6 +986,7 @@ export interface FileRoutesByTo {
   '/app/founder/launch/lock': typeof AppFounderLaunchLockRoute
   '/app/founder/launch/qa': typeof AppFounderLaunchQaRoute
   '/app/founder/launch/roadmap': typeof AppFounderLaunchRoadmapRoute
+  '/app/founder/revenue/pipeline': typeof AppFounderRevenuePipelineRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder/ai': typeof AppFounderAiIndexRoute
   '/app/founder/launch': typeof AppFounderLaunchIndexRoute
@@ -1049,6 +1066,7 @@ export interface FileRoutesById {
   '/app/founder_/security': typeof AppFounderSecurityRoute
   '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
+  '/app/mail/outbox': typeof AppMailOutboxRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
@@ -1094,6 +1112,7 @@ export interface FileRoutesById {
   '/app/founder_/launch/lock': typeof AppFounderLaunchLockRoute
   '/app/founder_/launch/qa': typeof AppFounderLaunchQaRoute
   '/app/founder_/launch/roadmap': typeof AppFounderLaunchRoadmapRoute
+  '/app/founder_/revenue_/pipeline': typeof AppFounderRevenuePipelineRoute
   '/app/mail/$folder/$threadId': typeof AppMailFolderThreadIdRoute
   '/app/founder_/ai/': typeof AppFounderAiIndexRoute
   '/app/founder_/launch/': typeof AppFounderLaunchIndexRoute
@@ -1174,6 +1193,7 @@ export interface FileRouteTypes {
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/mail/$folder'
+    | '/app/mail/outbox'
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
@@ -1219,6 +1239,7 @@ export interface FileRouteTypes {
     | '/app/founder/launch/lock'
     | '/app/founder/launch/qa'
     | '/app/founder/launch/roadmap'
+    | '/app/founder/revenue/pipeline'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai/'
     | '/app/founder/launch/'
@@ -1286,6 +1307,7 @@ export interface FileRouteTypes {
     | '/app/founder/revenue'
     | '/app/founder/security'
     | '/app/founder/settings'
+    | '/app/mail/outbox'
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
@@ -1331,6 +1353,7 @@ export interface FileRouteTypes {
     | '/app/founder/launch/lock'
     | '/app/founder/launch/qa'
     | '/app/founder/launch/roadmap'
+    | '/app/founder/revenue/pipeline'
     | '/app/mail/$folder/$threadId'
     | '/app/founder/ai'
     | '/app/founder/launch'
@@ -1409,6 +1432,7 @@ export interface FileRouteTypes {
     | '/app/founder_/security'
     | '/app/founder_/settings'
     | '/app/mail/$folder'
+    | '/app/mail/outbox'
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
@@ -1454,6 +1478,7 @@ export interface FileRouteTypes {
     | '/app/founder_/launch/lock'
     | '/app/founder_/launch/qa'
     | '/app/founder_/launch/roadmap'
+    | '/app/founder_/revenue_/pipeline'
     | '/app/mail/$folder/$threadId'
     | '/app/founder_/ai/'
     | '/app/founder_/launch/'
@@ -2009,6 +2034,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppMailFolderRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/mail/outbox': {
+      id: '/app/mail/outbox'
+      path: '/mail/outbox'
+      fullPath: '/app/mail/outbox'
+      preLoaderRoute: typeof AppMailOutboxRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/org/': {
       id: '/app/org/'
       path: '/'
@@ -2317,6 +2349,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderLaunchRoadmapRouteImport
       parentRoute: typeof AppFounderLaunchRoute
     }
+    '/app/founder_/revenue_/pipeline': {
+      id: '/app/founder_/revenue_/pipeline'
+      path: '/founder/revenue/pipeline'
+      fullPath: '/app/founder/revenue/pipeline'
+      preLoaderRoute: typeof AppFounderRevenuePipelineRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/mail/$folder/': {
       id: '/app/mail/$folder/'
       path: '/'
@@ -2603,6 +2642,8 @@ interface AppRouteChildren {
   AppFounderSecurityRoute: typeof AppFounderSecurityRoute
   AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
+  AppMailOutboxRoute: typeof AppMailOutboxRoute
+  AppFounderRevenuePipelineRoute: typeof AppFounderRevenuePipelineRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
@@ -2638,6 +2679,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderSecurityRoute: AppFounderSecurityRoute,
   AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
+  AppMailOutboxRoute: AppMailOutboxRoute,
+  AppFounderRevenuePipelineRoute: AppFounderRevenuePipelineRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
