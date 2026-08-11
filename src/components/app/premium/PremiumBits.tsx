@@ -63,3 +63,47 @@ export function Verdict({ verdict, children }: { verdict: "green" | "watch" | "f
     </span>
   );
 }
+
+/**
+ * Segmented choice — three states, one row, no dropdown. Applies on tap so the
+ * user feels the change while their finger is still on the control.
+ */
+export function Segmented<T extends string>({
+  label,
+  hint,
+  value,
+  options,
+  onChange,
+}: {
+  label: string;
+  hint: string;
+  value: T;
+  options: { value: T; label: string }[];
+  onChange: (next: T) => void;
+}) {
+  return (
+    <div className="rounded-xl border border-border bg-card px-3 py-3">
+      <span className="block text-sm font-semibold text-foreground">{label}</span>
+      <span className="mt-0.5 block text-[12px] leading-relaxed text-muted-foreground">{hint}</span>
+      <div role="group" aria-label={label} className="mt-2 inline-flex rounded-lg border border-border p-0.5">
+        {options.map((o) => {
+          const active = o.value === value;
+          return (
+            <button
+              key={o.value}
+              type="button"
+              aria-pressed={active}
+              onClick={() => onChange(o.value)}
+              className={
+                "ax-press ax-tap rounded-md px-3 py-1 text-[12px] font-semibold transition-colors " +
+                (active ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground")
+              }
+            >
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
