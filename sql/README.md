@@ -27,4 +27,4 @@ Har file locked rules follow karti hai:
 | `phase_wire_founder.sql` | wiring · page 1 | Founder Command Deck + AI Email Center: mailboxes registry (17 real addresses), mail_domains, ai_agents roster, leo_email_drafts, mail_outbox, founder_accounts |
 | `phase_leo_memory.sql` | leo brain | LEO 3M-message memory: `leo_memory_vectors` (working/episodic/semantic + pgvector), `agent_memory_config` tiers (Jimmy 3M · Leo 3M · Sherlock 1M · Industry 100K), `leo_recall()` RPC, `leo_memory_prune()` cap |
 
-Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 → 22 → 23 → 24 → 25 → 26 → 27), phir `phase_wire_*` files.
+Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 → 22 → 23 → 24 → 25 → 26 → 27), phir `phase_wire_*` files.| `phase28_revenue.sql` | 28 | Revenue Engine (no AI): `revenue_leads` (public migration/partner/SLA requests with reference + quote), `revenue_accounts` (plan, seats, MRR, SLA add-on), `revenue_jobs` (migration one-off £500–£2,000 pipeline), `revenue_partners` (20/25/30% commission ladder, live seats), `revenue_targets` (monthly £ target, seeded £500) |
