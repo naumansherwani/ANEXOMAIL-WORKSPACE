@@ -151,7 +151,7 @@ const moveIn = [
   { n: "01", t: "We plan the move", b: "One call. We map every mailbox, alias and rule you have today — you approve the plan." },
   { n: "02", t: "We do the work", b: "Our engineers build the workspace, the people, the shared addresses. You keep working." },
   { n: "03", t: "Every message comes with", b: "Years of mail, folders and read state carried over and counted message-for-message." },
-  { n: "04", t: "Switch when you say so", b: "Both providers run side by side until you give the word. Zero downtime, no lost mail." },
+  { n: "04", t: "Switch when you say so", b: "Both providers run side by side until you give the word. The switch is scheduled for a quiet window and designed to avoid interruption." },
 ];
 
 /* Section 6 — Plans. */
@@ -494,6 +494,42 @@ function Index() {
               </Reveal>
             ))}
           </div>
+
+          {/* Done-for-you services — small visibility band only. Full story on /plans. */}
+          <Reveal delay={0.08}>
+            <div className="ax-plane mt-12 rounded-2xl p-7 md:p-8">
+              <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
+                <div>
+                  <span className="ax-eyebrow">Need help moving in, or a named person afterwards?</span>
+                  <p className="mt-4 text-[15px] leading-relaxed text-foreground">
+                    <strong className="font-extrabold">Managed Move-In — from £500 one-off.</strong>{" "}
+                    We move the whole company off your old provider and prove your domain is green.
+                  </p>
+                  <p className="mt-2 text-[15px] leading-relaxed text-foreground">
+                    <strong className="font-extrabold">Priority Support — £500 / month.</strong>{" "}
+                    A named contact, a reply within 4 working hours, and a monthly health report.
+                  </p>
+                  <p className="mt-3 text-[13px] text-muted-foreground">
+                    Two move-ins a month, three Priority Support companies at a time — capped so both stay real.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-3">
+                  <Link
+                    to="/migration"
+                    className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/45"
+                  >
+                    Book a move-in call
+                  </Link>
+                  <Link
+                    to="/plans"
+                    className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-muted-foreground transition-colors duration-500 hover:text-foreground"
+                  >
+                    See what each one includes
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </Reveal>
 
           {/* AI lives OUTSIDE these plans — its own product, right under the cards. */}
           <Reveal delay={0.1}>
