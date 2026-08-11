@@ -28,6 +28,7 @@ import { Route as AppIndexRouteImport } from './routes/app.index'
 import { Route as AppAccountRouteImport } from './routes/app.account'
 import { Route as AppAdminRouteImport } from './routes/app.admin'
 import { Route as AppAiCenterRouteImport } from './routes/app.ai-center'
+import { Route as AppBillingRouteImport } from './routes/app.billing'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
 import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
@@ -48,6 +49,7 @@ import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
+import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.billing'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -167,6 +169,11 @@ const AppAiCenterRoute = AppAiCenterRouteImport.update({
   path: '/ai-center',
   getParentRoute: () => AppRoute,
 } as any)
+const AppBillingRoute = AppBillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppCalendarRoute = AppCalendarRouteImport.update({
   id: '/calendar',
   path: '/calendar',
@@ -265,6 +272,11 @@ const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
 const AppFounderAiRoute = AppFounderAiRouteImport.update({
   id: '/founder_/ai',
   path: '/founder/ai',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFounderBillingRoute = AppFounderBillingRouteImport.update({
+  id: '/founder_/billing',
+  path: '/founder/billing',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
@@ -402,6 +414,7 @@ export interface FileRoutesByFullPath {
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
+  '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
@@ -421,6 +434,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
+  '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -464,6 +478,7 @@ export interface FileRoutesByTo {
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/ai-center': typeof AppAiCenterRoute
+  '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/founder': typeof AppFounderRoute
   '/app/people': typeof AppPeopleRoute
@@ -480,6 +495,7 @@ export interface FileRoutesByTo {
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/founder/billing': typeof AppFounderBillingRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -525,6 +541,7 @@ export interface FileRoutesById {
   '/app/account': typeof AppAccountRoute
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
+  '/app/billing': typeof AppBillingRoute
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/founder': typeof AppFounderRoute
@@ -544,6 +561,7 @@ export interface FileRoutesById {
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
+  '/app/founder_/billing': typeof AppFounderBillingRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -591,6 +609,7 @@ export interface FileRouteTypes {
     | '/app/account'
     | '/app/admin'
     | '/app/ai-center'
+    | '/app/billing'
     | '/app/calendar'
     | '/app/crm'
     | '/app/founder'
@@ -610,6 +629,7 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder/ai'
+    | '/app/founder/billing'
     | '/app/founder/crm'
     | '/app/founder/org'
     | '/app/mail/$folder'
@@ -653,6 +673,7 @@ export interface FileRouteTypes {
     | '/ai/studio'
     | '/app/account'
     | '/app/ai-center'
+    | '/app/billing'
     | '/app/calendar'
     | '/app/founder'
     | '/app/people'
@@ -669,6 +690,7 @@ export interface FileRouteTypes {
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/founder/billing'
     | '/app/founder/crm'
     | '/app/founder/org'
     | '/app/org/audit'
@@ -713,6 +735,7 @@ export interface FileRouteTypes {
     | '/app/account'
     | '/app/admin'
     | '/app/ai-center'
+    | '/app/billing'
     | '/app/calendar'
     | '/app/crm'
     | '/app/founder'
@@ -732,6 +755,7 @@ export interface FileRouteTypes {
     | '/app/crm/leads'
     | '/app/crm/pipeline'
     | '/app/founder_/ai'
+    | '/app/founder_/billing'
     | '/app/founder_/crm'
     | '/app/founder_/org'
     | '/app/mail/$folder'
@@ -913,6 +937,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAiCenterRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/billing': {
+      id: '/app/billing'
+      path: '/billing'
+      fullPath: '/app/billing'
+      preLoaderRoute: typeof AppBillingRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/calendar': {
       id: '/app/calendar'
       path: '/calendar'
@@ -1051,6 +1082,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/ai'
       fullPath: '/app/founder/ai'
       preLoaderRoute: typeof AppFounderAiRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/billing': {
+      id: '/app/founder_/billing'
+      path: '/founder/billing'
+      fullPath: '/app/founder/billing'
+      preLoaderRoute: typeof AppFounderBillingRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder_/crm': {
@@ -1331,6 +1369,7 @@ interface AppRouteChildren {
   AppAccountRoute: typeof AppAccountRoute
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppAiCenterRoute: typeof AppAiCenterRoute
+  AppBillingRoute: typeof AppBillingRoute
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
   AppFounderRoute: typeof AppFounderRoute
@@ -1340,6 +1379,7 @@ interface AppRouteChildren {
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
+  AppFounderBillingRoute: typeof AppFounderBillingRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -1349,6 +1389,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAccountRoute: AppAccountRoute,
   AppAdminRoute: AppAdminRouteWithChildren,
   AppAiCenterRoute: AppAiCenterRoute,
+  AppBillingRoute: AppBillingRoute,
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
   AppFounderRoute: AppFounderRoute,
@@ -1358,6 +1399,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
+  AppFounderBillingRoute: AppFounderBillingRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
