@@ -310,6 +310,13 @@ function PlansPage() {
               </article>
             ))}
           </div>
+
+          <p className="mt-8 text-center text-[13px] text-muted-foreground">
+            Prefer email? Write directly to{" "}
+            <a href={`mailto:${PUBLIC_EMAIL}`} className="font-semibold text-foreground underline-offset-2 hover:underline">
+              {PUBLIC_EMAIL}
+            </a>
+          </p>
         </section>
 
         <section className="ax-container pb-20">
