@@ -389,6 +389,18 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     ],
   },
   {
+    title: "Revenue engine",
+    blurb: "Phase 28 — four money roads without AI. Founder only.",
+    items: [
+      {
+        label: "Founder revenue god-view",
+        path: "/app/founder/revenue",
+        note: "Phase 28 — MRR vs target, streams, live leads, partner commission, gap maths",
+        auth: true,
+      },
+    ],
+  },
+  {
     title: "Admin centre",
     blurb: "Owner and admin only.",
     items: [
