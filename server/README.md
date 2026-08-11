@@ -67,12 +67,10 @@ nano /opt/anexomail/src/routes/admin.ts   # select all -> paste repo/server/rout
 pm2 restart anexomail-leo && sleep 3
 for p in health storage incidents monitoring logs reports diagnostics; do
   printf "/api/admin/%s -> " "$p"
-  curl -s -o /dev/null -w "%{http_code}
-" "http://localhost:3100/api/admin/$p"
+  curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/admin/$p"
 done
 printf "/api/founder/admin/overview -> "
-curl -s -o /dev/null -w "%{http_code}
-" "http://localhost:3100/api/founder/admin/overview"
+curl -s -o /dev/null -w "%{http_code}\n" "http://localhost:3100/api/founder/admin/overview"
 ```
 
 SQL: `sql/phase25_admin.sql` (Supabase #4 mein chalao).
