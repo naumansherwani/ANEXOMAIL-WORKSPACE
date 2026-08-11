@@ -14,6 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api, ApiError } from "@/lib/api";
 import type { MailFolder, ThreadStatus } from "@/lib/ia";
+import { get as offlineGet, put as offlinePut } from "@/lib/offline";
 
 export type MailLabel = {
   id: string;
@@ -111,12 +112,25 @@ function toSearch(query: ThreadQuery) {
 
 export function useThreads(query: ThreadQuery, enabled = true) {
   const searching = Boolean(query.q?.trim());
+  const cacheKey = `list:${toSearch(query)}`;
   return useQuery<{ threads: ThreadListItem[] }, ApiError>({
     queryKey: ["mail", "threads", query],
-    queryFn: () =>
-      api<{ threads: ThreadListItem[] }>(
-        `${searching ? "/api/mail/search" : "/api/mail/threads"}?${toSearch(query)}`,
-      ),
+    queryFn: async () => {
+      try {
+        const data = await api<{ threads: ThreadListItem[] }>(
+          `${searching ? "/api/mail/search" : "/api/mail/threads"}?${toSearch(query)}`,
+        );
+        // Phase 28: cache real rows for offline reading. Never faked.
+        if (!searching) void offlinePut("threads", cacheKey, data.threads);
+        return data;
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 0 && !searching) {
+          const cached = await offlineGet<ThreadListItem[]>("threads", cacheKey);
+          if (cached) return { threads: cached.value };
+        }
+        throw error;
+      }
+    },
     enabled,
     retry: false,
     staleTime: 15_000,
@@ -126,7 +140,19 @@ export function useThreads(query: ThreadQuery, enabled = true) {
 export function useThread(threadId: string | undefined) {
   return useQuery<MailThread, ApiError>({
     queryKey: ["mail", "thread", threadId],
-    queryFn: () => api<MailThread>(`/api/mail/thread/${threadId}`),
+    queryFn: async () => {
+      try {
+        const data = await api<MailThread>(`/api/mail/thread/${threadId}`);
+        void offlinePut("thread", String(threadId), data);
+        return data;
+      } catch (error) {
+        if (error instanceof ApiError && error.status === 0) {
+          const cached = await offlineGet<MailThread>("thread", String(threadId));
+          if (cached) return cached.value;
+        }
+        throw error;
+      }
+    },
     enabled: Boolean(threadId),
     retry: false,
   });
