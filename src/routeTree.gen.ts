@@ -89,6 +89,7 @@ import { Route as AppPerfIndexRouteImport } from './routes/app.perf.index'
 import { Route as AppPerfBudgetsRouteImport } from './routes/app.perf.budgets'
 import { Route as AppPerfDevicesRouteImport } from './routes/app.perf.devices'
 import { Route as AppPerfPrefetchRouteImport } from './routes/app.perf.prefetch'
+import { Route as AppPerfRegressionsRouteImport } from './routes/app.perf.regressions'
 import { Route as AppPerfSearchRouteImport } from './routes/app.perf.search'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
@@ -516,6 +517,11 @@ const AppPerfPrefetchRoute = AppPerfPrefetchRouteImport.update({
   path: '/prefetch',
   getParentRoute: () => AppPerfRoute,
 } as any)
+const AppPerfRegressionsRoute = AppPerfRegressionsRouteImport.update({
+  id: '/regressions',
+  path: '/regressions',
+  getParentRoute: () => AppPerfRoute,
+} as any)
 const AppPerfSearchRoute = AppPerfSearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -724,6 +730,7 @@ export interface FileRoutesByFullPath {
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
   '/app/perf/devices': typeof AppPerfDevicesRoute
   '/app/perf/prefetch': typeof AppPerfPrefetchRoute
+  '/app/perf/regressions': typeof AppPerfRegressionsRoute
   '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
@@ -822,6 +829,7 @@ export interface FileRoutesByTo {
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
   '/app/perf/devices': typeof AppPerfDevicesRoute
   '/app/perf/prefetch': typeof AppPerfPrefetchRoute
+  '/app/perf/regressions': typeof AppPerfRegressionsRoute
   '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
@@ -931,6 +939,7 @@ export interface FileRoutesById {
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
   '/app/perf/devices': typeof AppPerfDevicesRoute
   '/app/perf/prefetch': typeof AppPerfPrefetchRoute
+  '/app/perf/regressions': typeof AppPerfRegressionsRoute
   '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
@@ -1041,6 +1050,7 @@ export interface FileRouteTypes {
     | '/app/perf/budgets'
     | '/app/perf/devices'
     | '/app/perf/prefetch'
+    | '/app/perf/regressions'
     | '/app/perf/search'
     | '/app/security/devices'
     | '/app/security/encryption'
@@ -1139,6 +1149,7 @@ export interface FileRouteTypes {
     | '/app/perf/budgets'
     | '/app/perf/devices'
     | '/app/perf/prefetch'
+    | '/app/perf/regressions'
     | '/app/perf/search'
     | '/app/security/devices'
     | '/app/security/encryption'
@@ -1247,6 +1258,7 @@ export interface FileRouteTypes {
     | '/app/perf/budgets'
     | '/app/perf/devices'
     | '/app/perf/prefetch'
+    | '/app/perf/regressions'
     | '/app/perf/search'
     | '/app/security/devices'
     | '/app/security/encryption'
@@ -1861,6 +1873,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPerfPrefetchRouteImport
       parentRoute: typeof AppPerfRoute
     }
+    '/app/perf/regressions': {
+      id: '/app/perf/regressions'
+      path: '/regressions'
+      fullPath: '/app/perf/regressions'
+      preLoaderRoute: typeof AppPerfRegressionsRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
     '/app/perf/search': {
       id: '/app/perf/search'
       path: '/search'
@@ -2154,6 +2173,7 @@ interface AppPerfRouteChildren {
   AppPerfBudgetsRoute: typeof AppPerfBudgetsRoute
   AppPerfDevicesRoute: typeof AppPerfDevicesRoute
   AppPerfPrefetchRoute: typeof AppPerfPrefetchRoute
+  AppPerfRegressionsRoute: typeof AppPerfRegressionsRoute
   AppPerfSearchRoute: typeof AppPerfSearchRoute
   AppPerfIndexRoute: typeof AppPerfIndexRoute
 }
@@ -2162,6 +2182,7 @@ const AppPerfRouteChildren: AppPerfRouteChildren = {
   AppPerfBudgetsRoute: AppPerfBudgetsRoute,
   AppPerfDevicesRoute: AppPerfDevicesRoute,
   AppPerfPrefetchRoute: AppPerfPrefetchRoute,
+  AppPerfRegressionsRoute: AppPerfRegressionsRoute,
   AppPerfSearchRoute: AppPerfSearchRoute,
   AppPerfIndexRoute: AppPerfIndexRoute,
 }
