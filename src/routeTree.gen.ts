@@ -87,6 +87,7 @@ import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppPerfIndexRouteImport } from './routes/app.perf.index'
 import { Route as AppPerfBudgetsRouteImport } from './routes/app.perf.budgets'
+import { Route as AppPerfDevicesRouteImport } from './routes/app.perf.devices'
 import { Route as AppPerfPrefetchRouteImport } from './routes/app.perf.prefetch'
 import { Route as AppPerfSearchRouteImport } from './routes/app.perf.search'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
@@ -505,6 +506,11 @@ const AppPerfBudgetsRoute = AppPerfBudgetsRouteImport.update({
   path: '/budgets',
   getParentRoute: () => AppPerfRoute,
 } as any)
+const AppPerfDevicesRoute = AppPerfDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => AppPerfRoute,
+} as any)
 const AppPerfPrefetchRoute = AppPerfPrefetchRouteImport.update({
   id: '/prefetch',
   path: '/prefetch',
@@ -716,6 +722,7 @@ export interface FileRoutesByFullPath {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/devices': typeof AppPerfDevicesRoute
   '/app/perf/prefetch': typeof AppPerfPrefetchRoute
   '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
@@ -813,6 +820,7 @@ export interface FileRoutesByTo {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/devices': typeof AppPerfDevicesRoute
   '/app/perf/prefetch': typeof AppPerfPrefetchRoute
   '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
@@ -921,6 +929,7 @@ export interface FileRoutesById {
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/devices': typeof AppPerfDevicesRoute
   '/app/perf/prefetch': typeof AppPerfPrefetchRoute
   '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
@@ -1030,6 +1039,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/perf/budgets'
+    | '/app/perf/devices'
     | '/app/perf/prefetch'
     | '/app/perf/search'
     | '/app/security/devices'
@@ -1127,6 +1137,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/perf/budgets'
+    | '/app/perf/devices'
     | '/app/perf/prefetch'
     | '/app/perf/search'
     | '/app/security/devices'
@@ -1234,6 +1245,7 @@ export interface FileRouteTypes {
     | '/app/org/roles'
     | '/app/org/security'
     | '/app/perf/budgets'
+    | '/app/perf/devices'
     | '/app/perf/prefetch'
     | '/app/perf/search'
     | '/app/security/devices'
@@ -1835,6 +1847,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPerfBudgetsRouteImport
       parentRoute: typeof AppPerfRoute
     }
+    '/app/perf/devices': {
+      id: '/app/perf/devices'
+      path: '/devices'
+      fullPath: '/app/perf/devices'
+      preLoaderRoute: typeof AppPerfDevicesRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
     '/app/perf/prefetch': {
       id: '/app/perf/prefetch'
       path: '/prefetch'
@@ -2133,6 +2152,7 @@ const AppOrgRouteWithChildren =
 
 interface AppPerfRouteChildren {
   AppPerfBudgetsRoute: typeof AppPerfBudgetsRoute
+  AppPerfDevicesRoute: typeof AppPerfDevicesRoute
   AppPerfPrefetchRoute: typeof AppPerfPrefetchRoute
   AppPerfSearchRoute: typeof AppPerfSearchRoute
   AppPerfIndexRoute: typeof AppPerfIndexRoute
@@ -2140,6 +2160,7 @@ interface AppPerfRouteChildren {
 
 const AppPerfRouteChildren: AppPerfRouteChildren = {
   AppPerfBudgetsRoute: AppPerfBudgetsRoute,
+  AppPerfDevicesRoute: AppPerfDevicesRoute,
   AppPerfPrefetchRoute: AppPerfPrefetchRoute,
   AppPerfSearchRoute: AppPerfSearchRoute,
   AppPerfIndexRoute: AppPerfIndexRoute,
