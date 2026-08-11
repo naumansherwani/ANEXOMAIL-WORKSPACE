@@ -1,7 +1,16 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { createContext, useCallback, useContext, useMemo, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 
 import { api, ApiError, sessionToken } from "@/lib/api";
+import { visitorPreviewFromUrl } from "@/lib/visitor-preview";
 
 /**
  * Session state — Phase 5A.
@@ -52,6 +61,11 @@ const AuthContext = createContext<AuthValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
+  // VISITOR PREVIEW: render layer par session ko ignore karte hain — logout nahi.
+  const [visitor, setVisitor] = useState(false);
+  useEffect(() => {
+    setVisitor(visitorPreviewFromUrl());
+  }, []);
 
   const query = useQuery<Session | null, ApiError>({
     queryKey: ["auth", "session"],
@@ -87,6 +101,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [queryClient]);
 
   const value = useMemo<AuthValue>(() => {
+    if (visitor) {
+      return {
+        session: null,
+        organisation: null,
+        status: "signed-out",
+        unavailableReason: null,
+        refresh,
+        signOut,
+      };
+    }
     const session = query.data ?? null;
     const status: AuthValue["status"] = query.isLoading
       ? "loading"
@@ -109,7 +133,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       refresh,
       signOut,
     };
-  }, [query.data, query.error, query.isLoading, refresh, signOut]);
+  }, [query.data, query.error, query.isLoading, refresh, signOut, visitor]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
