@@ -87,6 +87,7 @@ import { Route as AppSecurityIndexRouteImport } from './routes/app.security.inde
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
 import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security.encryption'
 import { Route as AppSecurityHistoryRouteImport } from './routes/app.security.history'
+import { Route as AppSecurityProofRouteImport } from './routes/app.security.proof'
 import { Route as AppSecuritySessionsRouteImport } from './routes/app.security.sessions'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
 import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
@@ -498,6 +499,11 @@ const AppSecurityHistoryRoute = AppSecurityHistoryRouteImport.update({
   path: '/history',
   getParentRoute: () => AppSecurityRoute,
 } as any)
+const AppSecurityProofRoute = AppSecurityProofRouteImport.update({
+  id: '/proof',
+  path: '/proof',
+  getParentRoute: () => AppSecurityRoute,
+} as any)
 const AppSecuritySessionsRoute = AppSecuritySessionsRouteImport.update({
   id: '/sessions',
   path: '/sessions',
@@ -674,6 +680,7 @@ export interface FileRoutesByFullPath {
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
+  '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
@@ -765,6 +772,7 @@ export interface FileRoutesByTo {
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
+  '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
@@ -866,6 +874,7 @@ export interface FileRoutesById {
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
+  '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
@@ -968,6 +977,7 @@ export interface FileRouteTypes {
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
+    | '/app/security/proof'
     | '/app/security/sessions'
     | '/app/settings/ai'
     | '/app/settings/appearance'
@@ -1059,6 +1069,7 @@ export interface FileRouteTypes {
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
+    | '/app/security/proof'
     | '/app/security/sessions'
     | '/app/settings/ai'
     | '/app/settings/appearance'
@@ -1159,6 +1170,7 @@ export interface FileRouteTypes {
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
+    | '/app/security/proof'
     | '/app/security/sessions'
     | '/app/settings/ai'
     | '/app/settings/appearance'
@@ -1753,6 +1765,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSecurityHistoryRouteImport
       parentRoute: typeof AppSecurityRoute
     }
+    '/app/security/proof': {
+      id: '/app/security/proof'
+      path: '/proof'
+      fullPath: '/app/security/proof'
+      preLoaderRoute: typeof AppSecurityProofRouteImport
+      parentRoute: typeof AppSecurityRoute
+    }
     '/app/security/sessions': {
       id: '/app/security/sessions'
       path: '/sessions'
@@ -2004,6 +2023,7 @@ interface AppSecurityRouteChildren {
   AppSecurityDevicesRoute: typeof AppSecurityDevicesRoute
   AppSecurityEncryptionRoute: typeof AppSecurityEncryptionRoute
   AppSecurityHistoryRoute: typeof AppSecurityHistoryRoute
+  AppSecurityProofRoute: typeof AppSecurityProofRoute
   AppSecuritySessionsRoute: typeof AppSecuritySessionsRoute
   AppSecurityIndexRoute: typeof AppSecurityIndexRoute
 }
@@ -2012,6 +2032,7 @@ const AppSecurityRouteChildren: AppSecurityRouteChildren = {
   AppSecurityDevicesRoute: AppSecurityDevicesRoute,
   AppSecurityEncryptionRoute: AppSecurityEncryptionRoute,
   AppSecurityHistoryRoute: AppSecurityHistoryRoute,
+  AppSecurityProofRoute: AppSecurityProofRoute,
   AppSecuritySessionsRoute: AppSecuritySessionsRoute,
   AppSecurityIndexRoute: AppSecurityIndexRoute,
 }
