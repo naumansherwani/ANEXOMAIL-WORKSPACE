@@ -119,6 +119,7 @@ export type RevenuePipeline = {
     weight: number;
     plan_seats: number;
     expected_mrr_gbp: number;
+    offer?: string;
     one_off_gbp: number | null;
   }[];
 };
