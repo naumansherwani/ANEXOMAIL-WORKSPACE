@@ -132,6 +132,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         note: "Phase 21 — workspace plan, seats, invoices, tax details, cards (no AI billing here)",
         auth: true,
       },
+      {
+        label: "Integrations",
+        path: "/app/integrations",
+        note: "Phase 22 — Gmail/M365/Zoho/Proton/IMAP connect, one-run migration, delivery proof, one-click export, Leo Actions (no API keys, no webhooks)",
+        auth: true,
+      },
     ],
   },
   {
@@ -220,6 +226,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Founder revenue truth",
         path: "/app/founder/billing",
         note: "Phase 21 god-view — MRR, ARR, unpaid, churn, by-plan split across every tenant",
+        auth: true,
+      },
+      {
+        label: "Founder integrations god-view",
+        path: "/app/founder/integrations",
+        note: "Phase 22 god-view — connections, re-auth queue, migration failures, worst delivery scores",
         auth: true,
       },
     ],
