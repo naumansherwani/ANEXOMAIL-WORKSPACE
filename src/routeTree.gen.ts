@@ -85,6 +85,7 @@ import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
 import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
+import { Route as AppPerfIndexRouteImport } from './routes/app.perf.index'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
 import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security.encryption'
@@ -491,6 +492,11 @@ const AppOrgSecurityRoute = AppOrgSecurityRouteImport.update({
   path: '/security',
   getParentRoute: () => AppOrgRoute,
 } as any)
+const AppPerfIndexRoute = AppPerfIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppPerfRoute,
+} as any)
 const AppSecurityIndexRoute = AppSecurityIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -645,7 +651,7 @@ export interface FileRoutesByFullPath {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
-  '/app/perf': typeof AppPerfRoute
+  '/app/perf': typeof AppPerfRouteWithChildren
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -707,6 +713,7 @@ export interface FileRoutesByFullPath {
   '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/perf/': typeof AppPerfIndexRoute
   '/app/security/': typeof AppSecurityIndexRoute
   '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
@@ -743,7 +750,6 @@ export interface FileRoutesByTo {
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/people': typeof AppPeopleRoute
-  '/app/perf': typeof AppPerfRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -801,6 +807,7 @@ export interface FileRoutesByTo {
   '/app/analytics': typeof AppAnalyticsIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
+  '/app/perf': typeof AppPerfIndexRoute
   '/app/security': typeof AppSecurityIndexRoute
   '/app/settings': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
@@ -843,7 +850,7 @@ export interface FileRoutesById {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
-  '/app/perf': typeof AppPerfRoute
+  '/app/perf': typeof AppPerfRouteWithChildren
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -905,6 +912,7 @@ export interface FileRoutesById {
   '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/perf/': typeof AppPerfIndexRoute
   '/app/security/': typeof AppSecurityIndexRoute
   '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
@@ -1010,6 +1018,7 @@ export interface FileRouteTypes {
     | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/perf/'
     | '/app/security/'
     | '/app/settings/'
     | '/app/founder/ai/arena'
@@ -1046,7 +1055,6 @@ export interface FileRouteTypes {
     | '/app/founder'
     | '/app/integrations'
     | '/app/people'
-    | '/app/perf'
     | '/app/search'
     | '/app/work'
     | '/auth/callback'
@@ -1104,6 +1112,7 @@ export interface FileRouteTypes {
     | '/app/analytics'
     | '/app/crm'
     | '/app/org'
+    | '/app/perf'
     | '/app/security'
     | '/app/settings'
     | '/app/founder/ai/arena'
@@ -1207,6 +1216,7 @@ export interface FileRouteTypes {
     | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/perf/'
     | '/app/security/'
     | '/app/settings/'
     | '/app/founder_/ai/arena'
@@ -1775,6 +1785,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppOrgSecurityRouteImport
       parentRoute: typeof AppOrgRoute
     }
+    '/app/perf/': {
+      id: '/app/perf/'
+      path: '/'
+      fullPath: '/app/perf/'
+      preLoaderRoute: typeof AppPerfIndexRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
     '/app/security/': {
       id: '/app/security/'
       path: '/'
@@ -2057,6 +2074,17 @@ const AppOrgRouteChildren: AppOrgRouteChildren = {
 const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
 
+interface AppPerfRouteChildren {
+  AppPerfIndexRoute: typeof AppPerfIndexRoute
+}
+
+const AppPerfRouteChildren: AppPerfRouteChildren = {
+  AppPerfIndexRoute: AppPerfIndexRoute,
+}
+
+const AppPerfRouteWithChildren =
+  AppPerfRoute._addFileChildren(AppPerfRouteChildren)
+
 interface AppSecurityRouteChildren {
   AppSecurityDevicesRoute: typeof AppSecurityDevicesRoute
   AppSecurityEncryptionRoute: typeof AppSecurityEncryptionRoute
@@ -2159,7 +2187,7 @@ interface AppRouteChildren {
   AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
-  AppPerfRoute: typeof AppPerfRoute
+  AppPerfRoute: typeof AppPerfRouteWithChildren
   AppSearchRoute: typeof AppSearchRoute
   AppSecurityRoute: typeof AppSecurityRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
@@ -2189,7 +2217,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppIntegrationsRoute: AppIntegrationsRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
-  AppPerfRoute: AppPerfRoute,
+  AppPerfRoute: AppPerfRouteWithChildren,
   AppSearchRoute: AppSearchRoute,
   AppSecurityRoute: AppSecurityRouteWithChildren,
   AppSettingsRoute: AppSettingsRouteWithChildren,
