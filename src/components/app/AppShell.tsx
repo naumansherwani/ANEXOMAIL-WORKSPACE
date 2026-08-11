@@ -5,6 +5,7 @@ import {
   CheckSquare,
   ChevronDown,
   Crown,
+  Gauge,
   Inbox,
   KanbanSquare,
   LogOut,
@@ -48,6 +49,7 @@ const primary: RailItem[] = [
   { to: "/app/calendar", label: "Calendar", icon: CalendarDays },
   { to: "/app/work", label: "Work", icon: CheckSquare },
   { to: "/app/ai-center", label: "AI", icon: Sparkles },
+  { to: "/app/perf", label: "Speed", icon: Gauge, match: "/app/perf" },
   { to: "/app/founder", label: "Founder", icon: Crown },
   { to: "/app/admin", label: "Admin", icon: Shield, match: "/app/admin" },
 ];

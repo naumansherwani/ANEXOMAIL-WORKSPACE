@@ -31,6 +31,7 @@ import integrationsRouter, { founderIntegrationsRouter } from "./routes/integrat
 import settingsRouter, { founderSettingsRouter } from "./routes/settings";
 import adminRouter, { founderAdminRouter } from "./routes/admin";
 import securityRouter, { founderSecurityRouter } from "./routes/security";
+import perfRouter, { founderPerfRouter } from "./routes/perf";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -122,6 +123,10 @@ app.use("/api/founder", founderAdminRouter);
 // Phase 26 Security Platform (/api/security/*, /api/founder/security/*)
 app.use("/api/security", securityRouter);
 app.use("/api/founder", founderSecurityRouter);
+
+// Phase 27 Performance Platform (/api/perf/*, /api/founder/perf/*)
+app.use("/api/perf", perfRouter);
+app.use("/api/founder", founderPerfRouter);
 
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);

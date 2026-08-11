@@ -115,3 +115,22 @@ export const SECURITY_SECTIONS: {
   { to: "/app/security/encryption", label: "Encryption", summary: "At rest, in transit, with proof" },
   { to: "/app/security/proof", label: "Ownership proof", summary: "DKIM, SPF, DMARC, TLS — signed" },
 ];
+
+export const PERF_SECTIONS: {
+  to:
+    | "/app/perf"
+    | "/app/perf/budgets"
+    | "/app/perf/prefetch"
+    | "/app/perf/search"
+    | "/app/perf/devices"
+    | "/app/perf/regressions";
+  label: string;
+  summary: string;
+}[] = [
+  { to: "/app/perf", label: "Overview", summary: "Speed score, slowest actions, advice" },
+  { to: "/app/perf/budgets", label: "Speed receipts", summary: "p50/p95/p99 vs budget, per action" },
+  { to: "/app/perf/prefetch", label: "Prefetch brain", summary: "Predicted opens, ms saved, cold map" },
+  { to: "/app/perf/search", label: "Query lab", summary: "Stage waterfall of a real query" },
+  { to: "/app/perf/devices", label: "Device twins", summary: "Which device is slow, and where" },
+  { to: "/app/perf/regressions", label: "Regression sentinel", summary: "Release-over-release latency diff" },
+];

@@ -36,6 +36,7 @@ import { Route as AppFounderRouteImport } from './routes/app.founder'
 import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
+import { Route as AppPerfRouteImport } from './routes/app.perf'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
@@ -72,6 +73,7 @@ import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.bil
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
+import { Route as AppFounderPerfRouteImport } from './routes/app.founder_.perf'
 import { Route as AppFounderSecurityRouteImport } from './routes/app.founder_.security'
 import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -84,6 +86,12 @@ import { Route as AppOrgMembersRouteImport } from './routes/app.org.members'
 import { Route as AppOrgPoliciesRouteImport } from './routes/app.org.policies'
 import { Route as AppOrgRolesRouteImport } from './routes/app.org.roles'
 import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
+import { Route as AppPerfIndexRouteImport } from './routes/app.perf.index'
+import { Route as AppPerfBudgetsRouteImport } from './routes/app.perf.budgets'
+import { Route as AppPerfDevicesRouteImport } from './routes/app.perf.devices'
+import { Route as AppPerfPrefetchRouteImport } from './routes/app.perf.prefetch'
+import { Route as AppPerfRegressionsRouteImport } from './routes/app.perf.regressions'
+import { Route as AppPerfSearchRouteImport } from './routes/app.perf.search'
 import { Route as AppSecurityIndexRouteImport } from './routes/app.security.index'
 import { Route as AppSecurityDevicesRouteImport } from './routes/app.security.devices'
 import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security.encryption'
@@ -243,6 +251,11 @@ const AppOrgRoute = AppOrgRouteImport.update({
 const AppPeopleRoute = AppPeopleRouteImport.update({
   id: '/people',
   path: '/people',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppPerfRoute = AppPerfRouteImport.update({
+  id: '/perf',
+  path: '/perf',
   getParentRoute: () => AppRoute,
 } as any)
 const AppSearchRoute = AppSearchRouteImport.update({
@@ -425,6 +438,11 @@ const AppFounderOrgRoute = AppFounderOrgRouteImport.update({
   path: '/founder/org',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderPerfRoute = AppFounderPerfRouteImport.update({
+  id: '/founder_/perf',
+  path: '/founder/perf',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderSecurityRoute = AppFounderSecurityRouteImport.update({
   id: '/founder_/security',
   path: '/founder/security',
@@ -484,6 +502,36 @@ const AppOrgSecurityRoute = AppOrgSecurityRouteImport.update({
   id: '/security',
   path: '/security',
   getParentRoute: () => AppOrgRoute,
+} as any)
+const AppPerfIndexRoute = AppPerfIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppPerfRoute,
+} as any)
+const AppPerfBudgetsRoute = AppPerfBudgetsRouteImport.update({
+  id: '/budgets',
+  path: '/budgets',
+  getParentRoute: () => AppPerfRoute,
+} as any)
+const AppPerfDevicesRoute = AppPerfDevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
+  getParentRoute: () => AppPerfRoute,
+} as any)
+const AppPerfPrefetchRoute = AppPerfPrefetchRouteImport.update({
+  id: '/prefetch',
+  path: '/prefetch',
+  getParentRoute: () => AppPerfRoute,
+} as any)
+const AppPerfRegressionsRoute = AppPerfRegressionsRouteImport.update({
+  id: '/regressions',
+  path: '/regressions',
+  getParentRoute: () => AppPerfRoute,
+} as any)
+const AppPerfSearchRoute = AppPerfSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => AppPerfRoute,
 } as any)
 const AppSecurityIndexRoute = AppSecurityIndexRouteImport.update({
   id: '/',
@@ -639,6 +687,7 @@ export interface FileRoutesByFullPath {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
+  '/app/perf': typeof AppPerfRouteWithChildren
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -673,6 +722,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
+  '/app/founder/perf': typeof AppFounderPerfRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -684,6 +734,11 @@ export interface FileRoutesByFullPath {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/devices': typeof AppPerfDevicesRoute
+  '/app/perf/prefetch': typeof AppPerfPrefetchRoute
+  '/app/perf/regressions': typeof AppPerfRegressionsRoute
+  '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
@@ -700,6 +755,7 @@ export interface FileRoutesByFullPath {
   '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/perf/': typeof AppPerfIndexRoute
   '/app/security/': typeof AppSecurityIndexRoute
   '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
@@ -767,6 +823,7 @@ export interface FileRoutesByTo {
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
+  '/app/founder/perf': typeof AppFounderPerfRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/org/audit': typeof AppOrgAuditRoute
@@ -777,6 +834,11 @@ export interface FileRoutesByTo {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/devices': typeof AppPerfDevicesRoute
+  '/app/perf/prefetch': typeof AppPerfPrefetchRoute
+  '/app/perf/regressions': typeof AppPerfRegressionsRoute
+  '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
@@ -793,6 +855,7 @@ export interface FileRoutesByTo {
   '/app/analytics': typeof AppAnalyticsIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
   '/app/org': typeof AppOrgIndexRoute
+  '/app/perf': typeof AppPerfIndexRoute
   '/app/security': typeof AppSecurityIndexRoute
   '/app/settings': typeof AppSettingsIndexRoute
   '/app/founder/ai/arena': typeof AppFounderAiArenaRoute
@@ -835,6 +898,7 @@ export interface FileRoutesById {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
+  '/app/perf': typeof AppPerfRouteWithChildren
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -869,6 +933,7 @@ export interface FileRoutesById {
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
+  '/app/founder_/perf': typeof AppFounderPerfRoute
   '/app/founder_/security': typeof AppFounderSecurityRoute
   '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -880,6 +945,11 @@ export interface FileRoutesById {
   '/app/org/policies': typeof AppOrgPoliciesRoute
   '/app/org/roles': typeof AppOrgRolesRoute
   '/app/org/security': typeof AppOrgSecurityRoute
+  '/app/perf/budgets': typeof AppPerfBudgetsRoute
+  '/app/perf/devices': typeof AppPerfDevicesRoute
+  '/app/perf/prefetch': typeof AppPerfPrefetchRoute
+  '/app/perf/regressions': typeof AppPerfRegressionsRoute
+  '/app/perf/search': typeof AppPerfSearchRoute
   '/app/security/devices': typeof AppSecurityDevicesRoute
   '/app/security/encryption': typeof AppSecurityEncryptionRoute
   '/app/security/history': typeof AppSecurityHistoryRoute
@@ -896,6 +966,7 @@ export interface FileRoutesById {
   '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
+  '/app/perf/': typeof AppPerfIndexRoute
   '/app/security/': typeof AppSecurityIndexRoute
   '/app/settings/': typeof AppSettingsIndexRoute
   '/app/founder_/ai/arena': typeof AppFounderAiArenaRoute
@@ -939,6 +1010,7 @@ export interface FileRouteTypes {
     | '/app/integrations'
     | '/app/org'
     | '/app/people'
+    | '/app/perf'
     | '/app/search'
     | '/app/security'
     | '/app/settings'
@@ -973,6 +1045,7 @@ export interface FileRouteTypes {
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/org'
+    | '/app/founder/perf'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/mail/$folder'
@@ -984,6 +1057,11 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/perf/budgets'
+    | '/app/perf/devices'
+    | '/app/perf/prefetch'
+    | '/app/perf/regressions'
+    | '/app/perf/search'
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
@@ -1000,6 +1078,7 @@ export interface FileRouteTypes {
     | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/perf/'
     | '/app/security/'
     | '/app/settings/'
     | '/app/founder/ai/arena'
@@ -1067,6 +1146,7 @@ export interface FileRouteTypes {
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/org'
+    | '/app/founder/perf'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/org/audit'
@@ -1077,6 +1157,11 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/perf/budgets'
+    | '/app/perf/devices'
+    | '/app/perf/prefetch'
+    | '/app/perf/regressions'
+    | '/app/perf/search'
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
@@ -1093,6 +1178,7 @@ export interface FileRouteTypes {
     | '/app/analytics'
     | '/app/crm'
     | '/app/org'
+    | '/app/perf'
     | '/app/security'
     | '/app/settings'
     | '/app/founder/ai/arena'
@@ -1134,6 +1220,7 @@ export interface FileRouteTypes {
     | '/app/integrations'
     | '/app/org'
     | '/app/people'
+    | '/app/perf'
     | '/app/search'
     | '/app/security'
     | '/app/settings'
@@ -1168,6 +1255,7 @@ export interface FileRouteTypes {
     | '/app/founder_/crm'
     | '/app/founder_/integrations'
     | '/app/founder_/org'
+    | '/app/founder_/perf'
     | '/app/founder_/security'
     | '/app/founder_/settings'
     | '/app/mail/$folder'
@@ -1179,6 +1267,11 @@ export interface FileRouteTypes {
     | '/app/org/policies'
     | '/app/org/roles'
     | '/app/org/security'
+    | '/app/perf/budgets'
+    | '/app/perf/devices'
+    | '/app/perf/prefetch'
+    | '/app/perf/regressions'
+    | '/app/perf/search'
     | '/app/security/devices'
     | '/app/security/encryption'
     | '/app/security/history'
@@ -1195,6 +1288,7 @@ export interface FileRouteTypes {
     | '/app/analytics/'
     | '/app/crm/'
     | '/app/org/'
+    | '/app/perf/'
     | '/app/security/'
     | '/app/settings/'
     | '/app/founder_/ai/arena'
@@ -1418,6 +1512,13 @@ declare module '@tanstack/react-router' {
       path: '/people'
       fullPath: '/app/people'
       preLoaderRoute: typeof AppPeopleRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/perf': {
+      id: '/app/perf'
+      path: '/perf'
+      fullPath: '/app/perf'
+      preLoaderRoute: typeof AppPerfRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/search': {
@@ -1672,6 +1773,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderOrgRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/founder_/perf': {
+      id: '/app/founder_/perf'
+      path: '/founder/perf'
+      fullPath: '/app/founder/perf'
+      preLoaderRoute: typeof AppFounderPerfRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder_/security': {
       id: '/app/founder_/security'
       path: '/founder/security'
@@ -1755,6 +1863,48 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/org/security'
       preLoaderRoute: typeof AppOrgSecurityRouteImport
       parentRoute: typeof AppOrgRoute
+    }
+    '/app/perf/': {
+      id: '/app/perf/'
+      path: '/'
+      fullPath: '/app/perf/'
+      preLoaderRoute: typeof AppPerfIndexRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
+    '/app/perf/budgets': {
+      id: '/app/perf/budgets'
+      path: '/budgets'
+      fullPath: '/app/perf/budgets'
+      preLoaderRoute: typeof AppPerfBudgetsRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
+    '/app/perf/devices': {
+      id: '/app/perf/devices'
+      path: '/devices'
+      fullPath: '/app/perf/devices'
+      preLoaderRoute: typeof AppPerfDevicesRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
+    '/app/perf/prefetch': {
+      id: '/app/perf/prefetch'
+      path: '/prefetch'
+      fullPath: '/app/perf/prefetch'
+      preLoaderRoute: typeof AppPerfPrefetchRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
+    '/app/perf/regressions': {
+      id: '/app/perf/regressions'
+      path: '/regressions'
+      fullPath: '/app/perf/regressions'
+      preLoaderRoute: typeof AppPerfRegressionsRouteImport
+      parentRoute: typeof AppPerfRoute
+    }
+    '/app/perf/search': {
+      id: '/app/perf/search'
+      path: '/search'
+      fullPath: '/app/perf/search'
+      preLoaderRoute: typeof AppPerfSearchRouteImport
+      parentRoute: typeof AppPerfRoute
     }
     '/app/security/': {
       id: '/app/security/'
@@ -2038,6 +2188,27 @@ const AppOrgRouteChildren: AppOrgRouteChildren = {
 const AppOrgRouteWithChildren =
   AppOrgRoute._addFileChildren(AppOrgRouteChildren)
 
+interface AppPerfRouteChildren {
+  AppPerfBudgetsRoute: typeof AppPerfBudgetsRoute
+  AppPerfDevicesRoute: typeof AppPerfDevicesRoute
+  AppPerfPrefetchRoute: typeof AppPerfPrefetchRoute
+  AppPerfRegressionsRoute: typeof AppPerfRegressionsRoute
+  AppPerfSearchRoute: typeof AppPerfSearchRoute
+  AppPerfIndexRoute: typeof AppPerfIndexRoute
+}
+
+const AppPerfRouteChildren: AppPerfRouteChildren = {
+  AppPerfBudgetsRoute: AppPerfBudgetsRoute,
+  AppPerfDevicesRoute: AppPerfDevicesRoute,
+  AppPerfPrefetchRoute: AppPerfPrefetchRoute,
+  AppPerfRegressionsRoute: AppPerfRegressionsRoute,
+  AppPerfSearchRoute: AppPerfSearchRoute,
+  AppPerfIndexRoute: AppPerfIndexRoute,
+}
+
+const AppPerfRouteWithChildren =
+  AppPerfRoute._addFileChildren(AppPerfRouteChildren)
+
 interface AppSecurityRouteChildren {
   AppSecurityDevicesRoute: typeof AppSecurityDevicesRoute
   AppSecurityEncryptionRoute: typeof AppSecurityEncryptionRoute
@@ -2140,6 +2311,7 @@ interface AppRouteChildren {
   AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
+  AppPerfRoute: typeof AppPerfRouteWithChildren
   AppSearchRoute: typeof AppSearchRoute
   AppSecurityRoute: typeof AppSecurityRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
@@ -2152,6 +2324,7 @@ interface AppRouteChildren {
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
+  AppFounderPerfRoute: typeof AppFounderPerfRoute
   AppFounderSecurityRoute: typeof AppFounderSecurityRoute
   AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -2169,6 +2342,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppIntegrationsRoute: AppIntegrationsRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
+  AppPerfRoute: AppPerfRouteWithChildren,
   AppSearchRoute: AppSearchRoute,
   AppSecurityRoute: AppSecurityRouteWithChildren,
   AppSettingsRoute: AppSettingsRouteWithChildren,
@@ -2181,6 +2355,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
+  AppFounderPerfRoute: AppFounderPerfRoute,
   AppFounderSecurityRoute: AppFounderSecurityRoute,
   AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
