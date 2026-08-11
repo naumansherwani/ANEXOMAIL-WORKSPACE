@@ -55,6 +55,7 @@ import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.bil
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
+import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
 import { Route as AppOrgAuditRouteImport } from './routes/app.org.audit'
@@ -68,6 +69,8 @@ import { Route as AppOrgSecurityRouteImport } from './routes/app.org.security'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
 import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
 import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
+import { Route as AppSettingsHealthRouteImport } from './routes/app.settings.health'
+import { Route as AppSettingsHistoryRouteImport } from './routes/app.settings.history'
 import { Route as AppSettingsNotificationsRouteImport } from './routes/app.settings.notifications'
 import { Route as AppSettingsPrivacyRouteImport } from './routes/app.settings.privacy'
 import { Route as AppSettingsWorkspaceRouteImport } from './routes/app.settings.workspace'
@@ -313,6 +316,11 @@ const AppFounderOrgRoute = AppFounderOrgRouteImport.update({
   path: '/founder/org',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderSettingsRoute = AppFounderSettingsRouteImport.update({
+  id: '/founder_/settings',
+  path: '/founder/settings',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
   id: '/mail/$folder',
   path: '/mail/$folder',
@@ -376,6 +384,16 @@ const AppSettingsAiRoute = AppSettingsAiRouteImport.update({
 const AppSettingsAppearanceRoute = AppSettingsAppearanceRouteImport.update({
   id: '/appearance',
   path: '/appearance',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsHealthRoute = AppSettingsHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AppSettingsRoute,
+} as any)
+const AppSettingsHistoryRoute = AppSettingsHistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
   getParentRoute: () => AppSettingsRoute,
 } as any)
 const AppSettingsNotificationsRoute =
@@ -495,6 +513,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
+  '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -506,6 +525,8 @@ export interface FileRoutesByFullPath {
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/health': typeof AppSettingsHealthRoute
+  '/app/settings/history': typeof AppSettingsHistoryRoute
   '/app/settings/notifications': typeof AppSettingsNotificationsRoute
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
@@ -564,6 +585,7 @@ export interface FileRoutesByTo {
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/org': typeof AppFounderOrgRoute
+  '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
   '/app/org/departments': typeof AppOrgDepartmentsRoute
@@ -574,6 +596,8 @@ export interface FileRoutesByTo {
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/health': typeof AppSettingsHealthRoute
+  '/app/settings/history': typeof AppSettingsHistoryRoute
   '/app/settings/notifications': typeof AppSettingsNotificationsRoute
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
@@ -639,6 +663,7 @@ export interface FileRoutesById {
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
+  '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
   '/app/org/audit': typeof AppOrgAuditRoute
   '/app/org/compliance': typeof AppOrgComplianceRoute
@@ -650,6 +675,8 @@ export interface FileRoutesById {
   '/app/org/security': typeof AppOrgSecurityRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
+  '/app/settings/health': typeof AppSettingsHealthRoute
+  '/app/settings/history': typeof AppSettingsHistoryRoute
   '/app/settings/notifications': typeof AppSettingsNotificationsRoute
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
@@ -716,6 +743,7 @@ export interface FileRouteTypes {
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/org'
+    | '/app/founder/settings'
     | '/app/mail/$folder'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -727,6 +755,8 @@ export interface FileRouteTypes {
     | '/app/org/security'
     | '/app/settings/ai'
     | '/app/settings/appearance'
+    | '/app/settings/health'
+    | '/app/settings/history'
     | '/app/settings/notifications'
     | '/app/settings/privacy'
     | '/app/settings/workspace'
@@ -785,6 +815,7 @@ export interface FileRouteTypes {
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/org'
+    | '/app/founder/settings'
     | '/app/org/audit'
     | '/app/org/compliance'
     | '/app/org/departments'
@@ -795,6 +826,8 @@ export interface FileRouteTypes {
     | '/app/org/security'
     | '/app/settings/ai'
     | '/app/settings/appearance'
+    | '/app/settings/health'
+    | '/app/settings/history'
     | '/app/settings/notifications'
     | '/app/settings/privacy'
     | '/app/settings/workspace'
@@ -859,6 +892,7 @@ export interface FileRouteTypes {
     | '/app/founder_/crm'
     | '/app/founder_/integrations'
     | '/app/founder_/org'
+    | '/app/founder_/settings'
     | '/app/mail/$folder'
     | '/app/org/audit'
     | '/app/org/compliance'
@@ -870,6 +904,8 @@ export interface FileRouteTypes {
     | '/app/org/security'
     | '/app/settings/ai'
     | '/app/settings/appearance'
+    | '/app/settings/health'
+    | '/app/settings/history'
     | '/app/settings/notifications'
     | '/app/settings/privacy'
     | '/app/settings/workspace'
@@ -1233,6 +1269,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderOrgRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/founder_/settings': {
+      id: '/app/founder_/settings'
+      path: '/founder/settings'
+      fullPath: '/app/founder/settings'
+      preLoaderRoute: typeof AppFounderSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/mail/$folder': {
       id: '/app/mail/$folder'
       path: '/mail/$folder'
@@ -1322,6 +1365,20 @@ declare module '@tanstack/react-router' {
       path: '/appearance'
       fullPath: '/app/settings/appearance'
       preLoaderRoute: typeof AppSettingsAppearanceRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/health': {
+      id: '/app/settings/health'
+      path: '/health'
+      fullPath: '/app/settings/health'
+      preLoaderRoute: typeof AppSettingsHealthRouteImport
+      parentRoute: typeof AppSettingsRoute
+    }
+    '/app/settings/history': {
+      id: '/app/settings/history'
+      path: '/history'
+      fullPath: '/app/settings/history'
+      preLoaderRoute: typeof AppSettingsHistoryRouteImport
       parentRoute: typeof AppSettingsRoute
     }
     '/app/settings/notifications': {
@@ -1496,6 +1553,8 @@ const AppOrgRouteWithChildren =
 interface AppSettingsRouteChildren {
   AppSettingsAiRoute: typeof AppSettingsAiRoute
   AppSettingsAppearanceRoute: typeof AppSettingsAppearanceRoute
+  AppSettingsHealthRoute: typeof AppSettingsHealthRoute
+  AppSettingsHistoryRoute: typeof AppSettingsHistoryRoute
   AppSettingsNotificationsRoute: typeof AppSettingsNotificationsRoute
   AppSettingsPrivacyRoute: typeof AppSettingsPrivacyRoute
   AppSettingsWorkspaceRoute: typeof AppSettingsWorkspaceRoute
@@ -1505,6 +1564,8 @@ interface AppSettingsRouteChildren {
 const AppSettingsRouteChildren: AppSettingsRouteChildren = {
   AppSettingsAiRoute: AppSettingsAiRoute,
   AppSettingsAppearanceRoute: AppSettingsAppearanceRoute,
+  AppSettingsHealthRoute: AppSettingsHealthRoute,
+  AppSettingsHistoryRoute: AppSettingsHistoryRoute,
   AppSettingsNotificationsRoute: AppSettingsNotificationsRoute,
   AppSettingsPrivacyRoute: AppSettingsPrivacyRoute,
   AppSettingsWorkspaceRoute: AppSettingsWorkspaceRoute,
@@ -1577,6 +1638,7 @@ interface AppRouteChildren {
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
+  AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
 }
 
@@ -1600,6 +1662,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
+  AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
 }
 
