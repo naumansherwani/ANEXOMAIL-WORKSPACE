@@ -157,7 +157,8 @@ export function ThreadList({
           >
             {thread.subject || "(no subject)"}
           </p>
-          {thread.snippet && (
+          {/* Low-data mode: snippet drops out so a list stays text-minimal on 2G. */}
+          {thread.snippet && !lowData && (
             <p className="ax-caption mt-0.5 truncate text-muted-foreground">{thread.snippet}</p>
           )}
 
