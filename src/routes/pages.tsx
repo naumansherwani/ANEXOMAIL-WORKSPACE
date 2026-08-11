@@ -268,6 +268,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Founder analytics god-view",
         path: "/app/founder/analytics",
         note: "Phase 24 god-view — platform response debt in £, keep rate, worst tenants",
+      },
+      {
+        label: "Founder admin god-view",
+        path: "/app/founder/admin",
+        note: "Phase 25 god-view — failing checks, self-heals, incidents, held mail, storage across every tenant",
         auth: true,
       },
     ],
