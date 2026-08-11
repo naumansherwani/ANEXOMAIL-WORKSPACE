@@ -47,20 +47,20 @@ const leoSkills = [
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "ANEXOMAIL — The AI Workspace Built Around Email" },
+      { title: "ANEXOMAIL — private business email on your own name" },
       {
         name: "description",
         content:
-          "Private business email, intelligent AI, shared workspaces, calendars and collaboration — all under your own domain. From £20 per user.",
+          "Private business email for your company: mail, people, calendar and shared work on one fast surface. We move your company across for you. From £20 per user.",
       },
       {
         property: "og:title",
-        content: "ANEXOMAIL — The AI Workspace Built Around Email",
+        content: "ANEXOMAIL — private business email on your own name",
       },
       {
         property: "og:description",
         content:
-          "Private business email, intelligent AI, shared workspaces, calendars and collaboration — all under your own domain.",
+          "Mail, people, calendar and shared work on one fast surface — signed with your own name, and moved across for you.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -227,7 +227,7 @@ function Index() {
               transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
               className="mt-8 max-w-3xl pb-[0.08em] text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.2rem]"
             >
-              <span className="ax-platinum-text">The AI Workspace</span>
+              <span className="ax-platinum-text">The Workspace</span>
               <br />
               <span className="ax-platinum-text">Built Around</span>{" "}
               <span className="text-steel">Email.</span>
@@ -239,8 +239,8 @@ function Index() {
               transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
               className="mt-8 max-w-lg text-[17px] leading-relaxed text-muted-foreground"
             >
-              Private business email, intelligent AI, shared workspaces, calendars and
-              collaboration — and our team moves your company across for you.
+              Private business email for your company — mail, people, calendar and shared
+              work on one fast surface. And our team moves the whole company across for you.
             </motion.p>
 
             <motion.div
