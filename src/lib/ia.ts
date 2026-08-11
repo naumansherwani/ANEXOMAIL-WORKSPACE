@@ -87,4 +87,11 @@ export const ADMIN_SECTIONS: {
   },
   { to: "/app/admin/audit", label: "Audit", summary: "Every action, who and when" },
   { to: "/app/admin/export", label: "Export", summary: "Take your data out, any time" },
+  // Phase 25 — Admin Center
+  { to: "/app/admin/health", label: "Health", summary: "Checks that fix themselves" },
+  { to: "/app/admin/monitoring", label: "Monitoring", summary: "Delivery watchtower, live" },
+  { to: "/app/admin/storage", label: "Storage", summary: "Days until full, not just used" },
+  { to: "/app/admin/logs", label: "Logs", summary: "Readable logs and incidents" },
+  { to: "/app/admin/reports", label: "Reports", summary: "Board-ready, real numbers" },
+  { to: "/app/admin/diagnostics", label: "Diagnostics", summary: "Whole-stack signed proof pack" },
 ];
