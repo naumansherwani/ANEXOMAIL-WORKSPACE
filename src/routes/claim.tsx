@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, AtSign, Check, Loader2, ShieldCheck, X } from "lucide-react";
+import { ArrowLeft, AtSign, Check, Loader2, LogIn, ShieldCheck, X } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
@@ -61,7 +61,6 @@ function ClaimPage() {
   const address = `${normalised || "you"}@${DOMAIN}`;
 
   useEffect(() => {
-    if (status === "signed-out") void navigate({ to: "/auth", replace: true });
     if (session?.user.anexomail_address) void navigate({ to: "/onboarding", replace: true });
   }, [status, session, navigate]);
 
@@ -125,6 +124,9 @@ function ClaimPage() {
   };
 
   return (
+    status !== "signed-in" ? (
+      <ClaimIntro loading={status === "loading"} />
+    ) : (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div
         aria-hidden
@@ -220,6 +222,95 @@ function ClaimPage() {
         <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5 text-center">
           <ShieldCheck className="size-3.5 text-cyan-accent" />
           This address is permanent and only ever belongs to you.
+        </p>
+      </div>
+    </main>
+    )
+  );
+}
+
+const explains = [
+  {
+    title: "What claiming means",
+    body: `Your workspace identity is one permanent address on ${DOMAIN}, for example nauman@${DOMAIN}. Claiming it reserves that name for you for good — it is never recycled and never given to anyone else.`,
+  },
+  {
+    title: "Who this page is for",
+    body: "Anyone who has just signed in for the first time. Signing in with Google, Apple or GitHub only proves who you are; it does not give you a mailbox. This step does.",
+  },
+  {
+    title: "Why you have to sign in first",
+    body: "An address can only be reserved against a verified person, otherwise names could be grabbed in bulk by anyone. So the check runs against your signed-in account, and the name is held the moment you claim it.",
+  },
+  {
+    title: "What happens after this",
+    body: "You pick a name, we check it live against the real directory, and the moment you claim it you go straight to workspace setup — your organisation, your own company domain, and your first people.",
+  },
+];
+
+/** Public face of /claim: explains the step instead of showing a bare sign-in. */
+function ClaimIntro({ loading }: { loading: boolean }) {
+  return (
+    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-1/2 top-[-13rem] h-[29rem] w-[53rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[125px]"
+      />
+      <div className="ax-in relative w-full max-w-2xl">
+        <Link
+          to="/"
+          className="ax-focus ax-caption mb-ax-3 inline-flex items-center gap-1.5 rounded-md text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          Back to home
+        </Link>
+        <div className="flex justify-center">
+          <BrandMark />
+        </div>
+
+        <div className="mt-ax-5 text-center">
+          <AtSign className="mx-auto size-5 text-cyan-accent" aria-hidden="true" />
+          <h1 className="mt-3 text-3xl text-foreground md:text-4xl">
+            Claim your @{DOMAIN} address
+          </h1>
+          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
+            One address becomes your workspace identity. It takes a few seconds, and it happens
+            before anything else — your own company domain is added right after.
+          </p>
+        </div>
+
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          {explains.map((e) => (
+            <article key={e.title} className="rounded-2xl border border-border bg-card p-5">
+              <h2 className="text-sm font-bold text-foreground">{e.title}</h2>
+              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{e.body}</p>
+            </article>
+          ))}
+        </div>
+
+        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            to="/auth"
+            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          >
+            {loading ? (
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            ) : (
+              <LogIn className="size-4" aria-hidden="true" />
+            )}
+            Sign in to claim your address
+          </Link>
+          <Link
+            to="/plans"
+            className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-2"
+          >
+            See plans first
+          </Link>
+        </div>
+
+        <p className="ax-caption mt-6 flex items-center justify-center gap-1.5 text-center">
+          <ShieldCheck className="size-3.5 text-cyan-accent" aria-hidden="true" />
+          Your address is permanent and only ever belongs to you.
         </p>
       </div>
     </main>
