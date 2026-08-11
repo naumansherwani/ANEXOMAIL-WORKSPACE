@@ -6,17 +6,17 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 export const Route = createFileRoute("/move-in")({
   head: () => ({
     meta: [
-      { title: "Move In — ANEXOMAIL Workspace" },
+      { title: "Managed Move-In — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:
-          "Four calm steps to move your company mail onto your own domain, without losing a single message.",
+          "A managed move handled by our engineers: planned, proven, signed off. Not one message lost.",
       },
-      { property: "og:title", content: "Move In — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "Managed Move-In — ANEXOMAIL Workspace" },
       {
         property: "og:description",
         content:
-          "Add your domain, publish the records, import your mail, then switch delivery. Nothing lost, nothing rushed.",
+          "We plan it, we build it, we carry every message across, then you decide when to switch.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,23 +28,23 @@ export const Route = createFileRoute("/move-in")({
 const steps = [
   {
     n: "01",
-    title: "Add your domain",
-    body: "Use the domain you already own. We generate the exact records you need — nothing to guess.",
+    title: "We plan the move",
+    body: "One call. We map every mailbox, alias and rule you run today, then hand you a plan to approve.",
   },
   {
     n: "02",
-    title: "Publish the records",
-    body: "Paste them at your registrar. Verification runs continuously and shows green the moment it lands.",
+    title: "We build the workspace",
+    body: "People, shared addresses, signatures, permissions — set up by our engineers, not by you.",
   },
   {
     n: "03",
-    title: "Import your mail",
-    body: "Existing mailboxes copy across in the background while your old provider keeps delivering.",
+    title: "Every message comes with",
+    body: "Years of history, folders and read state carried across and verified message-for-message.",
   },
   {
     n: "04",
-    title: "Switch delivery",
-    body: "Change MX when you are ready. Your team keeps working; new mail simply arrives here.",
+    title: "Switch when you say so",
+    body: "Both providers run in parallel until you give the word. No downtime, no lost mail, no rush.",
   },
 ];
 
@@ -56,10 +56,11 @@ function MoveInPage() {
         <section className="ax-container pt-20 pb-6 md:pt-24">
           <p className="ax-eyebrow">Move in</p>
           <h1 className="mt-4 max-w-2xl text-4xl text-foreground md:text-5xl">
-            Four steps. No lost message.
+            You do nothing. We move the whole company.
           </h1>
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Migration is the part everyone fears, so it is the part we made boring.
+            Moving is the part everyone fears, so we take it off your desk entirely — planned,
+            proven and signed off before a single mailbox switches.
           </p>
         </section>
 
@@ -80,10 +81,10 @@ function MoveInPage() {
 
           <div className="mt-10 flex flex-wrap gap-3">
             <Link
-              to="/plans"
+              to="/migration"
               className="rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
             >
-              See plans
+              Get a move-in quote
             </Link>
             <Link
               to="/security"

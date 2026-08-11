@@ -148,10 +148,10 @@ const keys = [
 
 /* Section 5 — Move in. */
 const moveIn = [
-  { n: "01", t: "Claim the domain", b: "Add your domain and we generate every record it needs." },
-  { n: "02", t: "Open the mailboxes", b: "Create people, aliases and shared addresses for the team." },
-  { n: "03", t: "Bring the history", b: "Import existing mail with folders and read state intact." },
-  { n: "04", t: "Cut over", b: "Run both providers in parallel until you decide to switch." },
+  { n: "01", t: "We plan the move", b: "One call. We map every mailbox, alias and rule you have today — you approve the plan." },
+  { n: "02", t: "We do the work", b: "Our engineers build the workspace, the people, the shared addresses. You keep working." },
+  { n: "03", t: "Every message comes with", b: "Years of mail, folders and read state carried over and counted message-for-message." },
+  { n: "04", t: "Switch when you say so", b: "Both providers run side by side until you give the word. Zero downtime, no lost mail." },
 ];
 
 /* Section 6 — Plans. */
@@ -240,7 +240,7 @@ function Index() {
               className="mt-8 max-w-lg text-[17px] leading-relaxed text-muted-foreground"
             >
               Private business email, intelligent AI, shared workspaces, calendars and
-              collaboration — all under your own domain.
+              collaboration — and our team moves your company across for you.
             </motion.p>
 
             <motion.div
@@ -249,13 +249,13 @@ function Index() {
               transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
               className="mt-10 flex flex-wrap items-center gap-4"
             >
-              <a
-                href="#plans"
+              <Link
+                to="/migration"
                 className="group inline-flex items-center gap-2.5 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-stage transition-colors duration-500 hover:bg-primary/85"
               >
-                Claim your domain
+                Get your company moved in
                 <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
-              </a>
+              </Link>
               <Link
                 to="/app"
                 className="inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-steel/60"
@@ -402,7 +402,13 @@ function Index() {
         <Stage id="move-in" volume="quiet">
           <Reveal className="max-w-xl">
             <Eyebrow>Move in</Eyebrow>
-            <h2 className="mt-6 text-3xl md:text-4xl">Live on your domain today.</h2>
+            <h2 className="mt-6 text-3xl md:text-4xl">
+              You do nothing. We move the whole company.
+            </h2>
+            <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">
+              A managed move handled end to end by our engineers — planned, proven and
+              signed off before a single mailbox switches.
+            </p>
           </Reveal>
 
           <ol className="mt-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -616,13 +622,13 @@ function Index() {
               </h2>
             </Reveal>
             <Reveal delay={0.15}>
-              <a
-                href="#top"
+              <Link
+                to="/migration"
                 className="mt-14 inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-7 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/60"
               >
-                Claim your domain
+                Book a managed move
                 <ArrowRight className="size-4" />
-              </a>
+              </Link>
             </Reveal>
           </div>
         </section>
