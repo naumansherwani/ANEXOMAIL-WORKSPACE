@@ -517,3 +517,374 @@ returns boolean language sql stable as $$
   select coalesce((select state = 'paid' from public.movein_payments
                     where deal_id = p_deal and leg = p_leg), false)
 $$;
+
+-- ---------------------------------------------------------------------------
+-- 11) DETERMINISTIC HEALTH SCORE (no AI — sirf known facts)
+-- ---------------------------------------------------------------------------
+create or replace function public.movein_health(p_deal uuid)
+returns jsonb language plpgsql stable as $$
+declare
+  v_mb_total int; v_mb_ok int; v_msg_src bigint; v_msg_ver bigint;
+  v_dns int; v_run_total int; v_run_ok int;
+  v_mailbox numeric := 0; v_data numeric := 0; v_dnsp numeric := 0;
+  v_pay numeric := 0; v_cut numeric := 0; v_overall numeric := 0;
+begin
+  select count(*), count(*) filter (where result = 'VERIFIED'),
+         coalesce(sum(messages_source),0), coalesce(sum(messages_verified),0)
+    into v_mb_total, v_mb_ok, v_msg_src, v_msg_ver
+    from public.movein_mailboxes where deal_id = p_deal;
+
+  select count(*) filter (where result = 'VERIFIED') into v_dns
+    from public.movein_dns_proof where deal_id = p_deal and phase = 'PRE'
+      and record in ('MX','SPF','DKIM','DMARC');
+
+  select count(*) filter (where required), count(*) filter (where required and result = 'VERIFIED')
+    into v_run_total, v_run_ok from public.movein_runbook where deal_id = p_deal;
+
+  v_mailbox := case when v_mb_total = 0 then 0 else round(100.0 * v_mb_ok / v_mb_total, 0) end;
+  v_data    := case when v_msg_src = 0 then 0 else round(100.0 * least(v_msg_ver, v_msg_src) / v_msg_src, 0) end;
+  v_dnsp    := round(100.0 * least(v_dns,4) / 4, 0);
+  v_pay     := (case when public.movein_leg_paid(p_deal,'deposit') then 50 else 0 end)
+             + (case when public.movein_leg_paid(p_deal,'final')   then 50 else 0 end);
+  v_cut     := case when v_run_total = 0 then 0 else round(100.0 * v_run_ok / v_run_total, 0) end;
+  v_overall := round((v_mailbox + v_data + v_dnsp + v_pay + v_cut) / 5.0, 0);
+
+  update public.movein_deals set health_score = v_overall::int, updated_at = now() where id = p_deal;
+
+  return jsonb_build_object(
+    'mailbox_verification', v_mailbox,
+    'data_verification', v_data,
+    'dns_readiness', v_dnsp,
+    'payment_readiness', v_pay,
+    'cutover_readiness', v_cut,
+    'overall', v_overall,
+    'mailboxes', v_mb_total,
+    'messages_source', v_msg_src,
+    'messages_verified', v_msg_ver
+  );
+end $$;
+
+-- ---------------------------------------------------------------------------
+-- 12) DEAL OPEN + LEGAL TRANSITION (payment gates DB enforce karti hai)
+-- ---------------------------------------------------------------------------
+create or replace function public.movein_open_deal(
+  p_company text,
+  p_email text,
+  p_mailboxes int default 1,
+  p_domain text default null,
+  p_provider text default 'other',
+  p_contact text default null,
+  p_user uuid default null,
+  p_month date default null
+) returns jsonb language plpgsql security definer set search_path = public as $$
+declare v_id uuid; v_band text; v_price numeric; v_book jsonb;
+begin
+  v_band  := public.movein_band_for(p_mailboxes);
+  v_price := public.movein_price_for(v_band);
+
+  insert into public.movein_deals
+    (reference, user_id, company, contact_name, contact_email, domain, source_provider,
+     mailbox_count, band, price_gbp, deposit_gbp, final_gbp)
+  values
+    (public.movein_next_reference(), p_user, p_company, p_contact, lower(p_email), lower(p_domain),
+     p_provider, greatest(coalesce(p_mailboxes,1),1), v_band, v_price,
+     round(v_price/2,2), v_price - round(v_price/2,2))
+  returning id into v_id;
+
+  perform public.movein_seed_runbook(v_id);
+  perform public.movein_sync_payments(v_id);
+  insert into public.movein_audit (deal_id, actor, action, to_state, reason, payload)
+    values (v_id, 'system', 'deal_opened', 'LEAD', 'move-in request received',
+            jsonb_build_object('band', v_band, 'price_gbp', v_price));
+
+  if p_month is not null then
+    v_book := public.movein_book_slot(v_id, p_month);
+  end if;
+
+  perform public.movein_health(v_id);
+  return jsonb_build_object('deal_id', v_id, 'band', v_band, 'price_gbp', v_price,
+                            'deposit_gbp', round(v_price/2,2), 'capacity', v_book,
+                            'reference', (select reference from public.movein_deals where id = v_id));
+end $$;
+
+create or replace function public.movein_transition(
+  p_deal uuid,
+  p_to public.movein_state,
+  p_actor text default 'founder',
+  p_reason text default null,
+  p_evidence text default null,
+  p_actor_id uuid default null
+) returns jsonb language plpgsql security definer set search_path = public as $$
+declare d record; v_gate text; v_ok boolean := true; v_why text;
+begin
+  select * into d from public.movein_deals where id = p_deal for update;
+  if d is null then return jsonb_build_object('ok', false, 'error', 'deal_not_found'); end if;
+  if d.state = p_to then
+    return jsonb_build_object('ok', true, 'state', p_to, 'idempotent', true);
+  end if;
+
+  select gate into v_gate from public.movein_transitions
+   where from_state = d.state and to_state = p_to;
+  if not found then
+    return jsonb_build_object('ok', false, 'error', 'illegal_transition',
+      'from', d.state, 'to', p_to,
+      'allowed', (select coalesce(jsonb_agg(to_state), '[]'::jsonb)
+                    from public.movein_transitions where from_state = d.state));
+  end if;
+
+  if v_gate = 'deposit_paid' and not public.movein_leg_paid(p_deal, 'deposit') then
+    v_ok := false; v_why := 'deposit_50_not_paid';
+  elsif v_gate = 'final_paid' and not public.movein_leg_paid(p_deal, 'final') then
+    v_ok := false; v_why := 'final_50_not_paid';
+  elsif v_gate = 'data_verified' and exists (
+        select 1 from public.movein_mailboxes where deal_id = p_deal and result <> 'VERIFIED') then
+    v_ok := false; v_why := 'mailbox_ledger_not_verified';
+  elsif v_gate = 'cutover_ready' and not public.movein_cutover_ready(p_deal) then
+    v_ok := false; v_why := 'runbook_or_dns_or_exception_open';
+  elsif v_gate = 'cutover_armed' and d.cutover_armed_at is null then
+    v_ok := false; v_why := 'cutover_not_armed';
+  elsif v_gate = 'dns_green' and not public.movein_dns_green(p_deal, 'POST') then
+    v_ok := false; v_why := 'post_cutover_dns_not_green';
+  end if;
+
+  if not v_ok then
+    insert into public.movein_audit (deal_id, actor, actor_id, action, from_state, to_state, reason, payload)
+      values (p_deal, p_actor, p_actor_id, 'transition_blocked', d.state, p_to, v_why,
+              jsonb_build_object('gate', v_gate));
+    return jsonb_build_object('ok', false, 'error', 'gate_blocked', 'gate', v_gate, 'reason', v_why);
+  end if;
+
+  update public.movein_deals set
+      state = p_to,
+      cutover_executed_at = case when p_to = 'CUTOVER_EXECUTED' then now() else cutover_executed_at end,
+      closed_at = case when p_to in ('CLOSED','CANCELLED') then now() else closed_at end,
+      updated_at = now()
+   where id = p_deal;
+
+  insert into public.movein_audit (deal_id, actor, actor_id, action, from_state, to_state, reason, evidence, payment_state, payload)
+    values (p_deal, p_actor, p_actor_id, 'state_changed', d.state, p_to, p_reason, p_evidence,
+            case when public.movein_leg_paid(p_deal,'final') then 'final_paid'
+                 when public.movein_leg_paid(p_deal,'deposit') then 'deposit_paid'
+                 else 'unpaid' end,
+            jsonb_build_object('gate', v_gate));
+
+  perform public.movein_health(p_deal);
+  return jsonb_build_object('ok', true, 'from', d.state, 'state', p_to, 'gate', v_gate);
+end $$;
+
+-- arm the cutover (do-aadmi gate: ready hona zaroori, warna arm nahi hota)
+create or replace function public.movein_arm_cutover(p_deal uuid, p_actor text default 'founder')
+returns jsonb language plpgsql security definer set search_path = public as $$
+begin
+  if not public.movein_cutover_ready(p_deal) then
+    insert into public.movein_audit (deal_id, actor, action, reason)
+      values (p_deal, p_actor, 'arm_blocked', 'runbook / dns / exceptions not clear');
+    return jsonb_build_object('ok', false, 'error', 'not_ready');
+  end if;
+  if not exists (select 1 from public.movein_rollback_points where deal_id = p_deal and available) then
+    return jsonb_build_object('ok', false, 'error', 'no_rollback_point');
+  end if;
+  update public.movein_deals set cutover_armed_at = now(), updated_at = now() where id = p_deal;
+  insert into public.movein_audit (deal_id, actor, action, reason)
+    values (p_deal, p_actor, 'cutover_armed', 'all required checks verified, rollback point recorded');
+  return jsonb_build_object('ok', true, 'armed_at', now());
+end $$;
+
+-- ---------------------------------------------------------------------------
+-- 13) EVIDENCE VAULT — structured handover bundle (customer + internal)
+-- ---------------------------------------------------------------------------
+create or replace function public.movein_evidence_bundle(p_deal uuid)
+returns jsonb language sql stable as $$
+  select jsonb_build_object(
+    'reference', d.reference,
+    'company', d.company,
+    'domain', d.domain,
+    'band', d.band,
+    'price_gbp', d.price_gbp,
+    'state', d.state,
+    'scope', jsonb_build_object('mailboxes', d.mailbox_count, 'source_provider', d.source_provider,
+                                'cutover_window_start', d.cutover_window_start,
+                                'cutover_window_end', d.cutover_window_end),
+    'payments', (select coalesce(jsonb_agg(jsonb_build_object('leg', leg, 'amount_gbp', amount_gbp,
+                        'state', state, 'paid_at', paid_at) order by leg), '[]'::jsonb)
+                   from public.movein_payments where deal_id = d.id),
+    'mailbox_ledger', (select coalesce(jsonb_agg(to_jsonb(m) order by m.address), '[]'::jsonb)
+                   from public.movein_mailboxes m where m.deal_id = d.id),
+    'dns_proof', (select coalesce(jsonb_agg(to_jsonb(p) order by p.phase, p.record), '[]'::jsonb)
+                   from public.movein_dns_proof p where p.deal_id = d.id),
+    'runbook', (select coalesce(jsonb_agg(jsonb_build_object('label', label, 'result', result,
+                        'evidence', evidence, 'completed_at', completed_at) order by position), '[]'::jsonb)
+                   from public.movein_runbook where deal_id = d.id),
+    'exceptions', (select coalesce(jsonb_agg(jsonb_build_object('scope', scope, 'ref', ref,
+                        'severity', severity, 'reason', reason, 'required_action', required_action,
+                        'resolved_at', resolved_at) order by created_at), '[]'::jsonb)
+                   from public.movein_exceptions where deal_id = d.id),
+    'rollback', (select coalesce(jsonb_agg(jsonb_build_object('label', label, 'available', available,
+                        'created_at', created_at) order by created_at desc), '[]'::jsonb)
+                   from public.movein_rollback_points where deal_id = d.id),
+    'audit', (select coalesce(jsonb_agg(jsonb_build_object('actor', actor, 'action', action,
+                        'from_state', from_state, 'to_state', to_state, 'reason', reason,
+                        'evidence', evidence, 'at', created_at) order by created_at), '[]'::jsonb)
+                   from public.movein_audit where deal_id = d.id),
+    'health', public.movein_health(d.id),
+    'cutover_note', 'Scheduled overnight cut-over designed to avoid interruption.',
+    'generated_at', now()
+  )
+  from public.movein_deals d where d.id = p_deal
+$$;
+
+-- customer portal progress (safe subset — no internal notes)
+create or replace function public.movein_customer_view(p_deal uuid)
+returns jsonb language sql stable as $$
+  select jsonb_build_object(
+    'reference', d.reference,
+    'company', d.company,
+    'state', d.state,
+    'progress', (select round(100.0 * count(*) filter (where t.reached) / greatest(count(*),1))
+                   from (select unnest(array['PLAN_ACCEPTED','DEPOSIT_PAID_50','MIGRATION_PREP',
+                                             'DATA_VERIFIED','CUTOVER_SCHEDULED','CUTOVER_EXECUTED',
+                                             'POST_CUTOVER_VERIFIED','FINAL_50_PAID','HANDOVER_COMPLETE']) as s) x,
+                        lateral (select exists (select 1 from public.movein_audit a
+                                  where a.deal_id = d.id and a.to_state::text = x.s) as reached) t),
+    'cutover_window', jsonb_build_object('start', d.cutover_window_start, 'end', d.cutover_window_end),
+    'cutover_note', 'Scheduled overnight cut-over designed to avoid interruption.',
+    'payments', (select coalesce(jsonb_agg(jsonb_build_object('leg', leg, 'amount_gbp', amount_gbp,
+                        'state', state) order by leg), '[]'::jsonb)
+                   from public.movein_payments where deal_id = d.id),
+    'dns_proof', (select coalesce(jsonb_agg(jsonb_build_object('phase', phase, 'record', record,
+                        'result', result, 'checked_at', checked_at) order by phase, record), '[]'::jsonb)
+                   from public.movein_dns_proof where deal_id = d.id),
+    'mailboxes_verified', (select count(*) from public.movein_mailboxes where deal_id = d.id and result='VERIFIED'),
+    'mailboxes_total', (select count(*) from public.movein_mailboxes where deal_id = d.id),
+    'customer_action', (select coalesce(jsonb_agg(jsonb_build_object('reason', reason,
+                        'required_action', required_action)), '[]'::jsonb)
+                   from public.movein_exceptions
+                  where deal_id = d.id and resolved_at is null
+                    and severity = 'CUSTOMER_ACTION_REQUIRED'),
+    'health', public.movein_health(d.id)
+  ) from public.movein_deals d where d.id = p_deal
+$$;
+
+-- ---------------------------------------------------------------------------
+-- 14) FOUNDER COCKPIT (single call, sab kuch SQL se)
+-- ---------------------------------------------------------------------------
+create or replace view public.movein_cash_clock as
+  select
+    (select coalesce(sum(price_gbp),0) from public.movein_deals
+      where state not in ('LEAD','QUALIFIED','CANCELLED'))                    as booked_gbp,
+    (select coalesce(sum(amount_gbp),0) from public.movein_payments where leg='deposit' and state<>'void')  as deposits_expected_gbp,
+    (select coalesce(sum(amount_gbp),0) from public.movein_payments where leg='deposit' and state='paid')   as deposits_paid_gbp,
+    (select coalesce(sum(amount_gbp),0) from public.movein_payments where leg='final' and state<>'void')    as final_expected_gbp,
+    (select coalesce(sum(amount_gbp),0) from public.movein_payments where leg='final' and state='paid')     as final_paid_gbp,
+    (select coalesce(sum(amount_gbp),0) from public.movein_payments where state in ('due','invoiced'))      as outstanding_gbp,
+    (select coalesce(sum(amount_gbp),0) from public.movein_payments
+      where state in ('due','invoiced') and due_at is not null and due_at < now())                          as overdue_gbp;
+
+create or replace view public.movein_attention as
+  select d.id as deal_id, d.reference, 'final_payment_overdue' as kind,
+         'Final 50% overdue' as message, d.state::text as state
+    from public.movein_deals d join public.movein_payments p on p.deal_id = d.id
+   where p.leg='final' and p.state in ('due','invoiced') and p.due_at is not null and p.due_at < now()
+  union all
+  select d.id, d.reference, 'deposit_overdue', 'Deposit 50% overdue', d.state::text
+    from public.movein_deals d join public.movein_payments p on p.deal_id = d.id
+   where p.leg='deposit' and p.state in ('due','invoiced') and p.due_at is not null and p.due_at < now()
+  union all
+  select d.id, d.reference, 'exception_' || lower(e.severity::text), e.reason, d.state::text
+    from public.movein_deals d join public.movein_exceptions e on e.deal_id = d.id
+   where e.resolved_at is null and e.severity in ('BLOCKED','FAILED','ROLLBACK_REQUIRED','CUSTOMER_ACTION_REQUIRED')
+  union all
+  select d.id, d.reference, 'cutover_not_ready', 'Cut-over scheduled but checks not clear', d.state::text
+    from public.movein_deals d
+   where d.state = 'CUTOVER_SCHEDULED' and not public.movein_cutover_ready(d.id);
+
+create or replace function public.movein_cockpit()
+returns jsonb language sql stable as $$
+  select jsonb_build_object(
+    'active_moves', (select count(*) from public.movein_deals
+       where state not in ('LEAD','QUALIFIED','CLOSED','CANCELLED')),
+    'capacity', (select coalesce(to_jsonb(c), '{}'::jsonb) from public.movein_capacity_state c
+       where c.month = date_trunc('month', now())::date),
+    'waitlisted', (select count(*) from public.movein_waitlist where released_at is null),
+    'cash', (select to_jsonb(x) from public.movein_cash_clock x),
+    'cutovers_tonight', (select count(*) from public.movein_deals
+       where cutover_window_start between now() and now() + interval '24 hours'),
+    'blocked', (select count(*) from public.movein_exceptions
+       where resolved_at is null and severity in ('BLOCKED','FAILED','ROLLBACK_REQUIRED')),
+    'exceptions_open', (select count(*) from public.movein_exceptions where resolved_at is null),
+    'dns_proof_pct', (select coalesce(round(100.0 * count(*) filter (where result='VERIFIED')
+       / greatest(count(*),1)), 0) from public.movein_dns_proof),
+    'mailbox_verification_pct', (select coalesce(round(100.0 * count(*) filter (where result='VERIFIED')
+       / greatest(count(*),1)), 0) from public.movein_mailboxes),
+    'attention', (select coalesce(jsonb_agg(to_jsonb(a)), '[]'::jsonb) from public.movein_attention a),
+    'board', (select coalesce(jsonb_agg(jsonb_build_object(
+         'id', d.id, 'reference', d.reference, 'company', d.company, 'state', d.state,
+         'band', d.band, 'price_gbp', d.price_gbp, 'health', d.health_score,
+         'waitlisted', d.waitlisted, 'mailboxes', d.mailbox_count,
+         'deposit_paid', public.movein_leg_paid(d.id,'deposit'),
+         'final_paid', public.movein_leg_paid(d.id,'final'),
+         'cutover_window_start', d.cutover_window_start,
+         'updated_at', d.updated_at) order by d.updated_at desc), '[]'::jsonb)
+       from public.movein_deals d where d.state <> 'CLOSED'),
+    'generated_at', now()
+  )
+$$;
+
+-- ---------------------------------------------------------------------------
+-- 15) GRANTS (pehle) -> RLS -> policies
+-- ---------------------------------------------------------------------------
+do $$
+declare t text;
+begin
+  foreach t in array array['movein_deals','movein_audit','movein_transitions','movein_mailboxes',
+    'movein_capacity','movein_waitlist','movein_dns_checks','movein_runbook','movein_exceptions',
+    'movein_rollback_points','movein_payments']
+  loop
+    execute format('grant select on public.%I to authenticated', t);
+    execute format('grant all on public.%I to service_role', t);
+    execute format('alter table public.%I enable row level security', t);
+  end loop;
+end $$;
+
+grant select on public.movein_capacity_state, public.movein_cash_clock,
+  public.movein_dns_proof, public.movein_attention, public.movein_mailbox_gaps to authenticated;
+grant select on public.movein_capacity_state, public.movein_cash_clock,
+  public.movein_dns_proof, public.movein_attention, public.movein_mailbox_gaps to service_role;
+
+-- customer apna deal dekh sakta hai (portal). Founder/operator server key se.
+drop policy if exists movein_deals_own on public.movein_deals;
+create policy movein_deals_own on public.movein_deals for select to authenticated
+  using (user_id = auth.uid() or owner_id = auth.uid());
+
+do $$
+declare t text;
+begin
+  foreach t in array array['movein_mailboxes','movein_dns_checks','movein_runbook',
+    'movein_exceptions','movein_payments','movein_audit','movein_rollback_points']
+  loop
+    execute format('drop policy if exists %I on public.%I', t || '_own', t);
+    execute format($f$create policy %I on public.%I for select to authenticated
+      using (exists (select 1 from public.movein_deals d
+                      where d.id = %I.deal_id and (d.user_id = auth.uid() or d.owner_id = auth.uid())))$f$,
+      t || '_own', t, t);
+  end loop;
+end $$;
+
+drop policy if exists movein_transitions_read on public.movein_transitions;
+create policy movein_transitions_read on public.movein_transitions for select to authenticated using (true);
+
+-- capacity + waitlist: read-only visibility (kitne slot bache hain — public promise)
+drop policy if exists movein_capacity_read on public.movein_capacity;
+create policy movein_capacity_read on public.movein_capacity for select to authenticated using (true);
+drop policy if exists movein_waitlist_own on public.movein_waitlist;
+create policy movein_waitlist_own on public.movein_waitlist for select to authenticated
+  using (exists (select 1 from public.movein_deals d where d.id = movein_waitlist.deal_id
+                  and (d.user_id = auth.uid() or d.owner_id = auth.uid())));
+
+-- current + next 3 months ke capacity rows (2 slots per month locked)
+insert into public.movein_capacity (month, slots_total)
+select (date_trunc('month', now()) + (i || ' month')::interval)::date, 2
+  from generate_series(0,3) i
+on conflict (month) do nothing;
+
+commit;
