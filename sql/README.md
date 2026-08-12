@@ -60,3 +60,26 @@ Poora £500–£3,000 Managed Move-In operation, sirf SQL ki authority pe (no ha
 - `movein_health_calc()` (stable) + `movein_health()` (persist) — deterministic score, no AI
 - `movein_open_deal()` / `movein_transition()` — band+price ladder (1-5 £500 · 6-15 £1,500 · 16-29 £2,000 · 30+ £3,000)
 - `movein_evidence_bundle()` / `movein_customer_view()` / `movein_cockpit()` + `movein_cash_clock` / `movein_attention`
+
+## phase38_movein_hardening.sql — Move-In Security & Integrity (Phase 38)
+
+Phase 37 ke saath complement karta hai (rewrite nahi, surgical fixes). Phase 37 pehle, Phase 38 baad mein chalao.
+
+P0
+- Har `movein_*` SECURITY DEFINER function ka EXECUTE `public`/`anon`/`authenticated` se revoke; sirf `service_role` (+ 2 customer RPC) ko grant
+- `movein_customer_view(deal)` ab `movein_is_deal_member()` se verify karta hai (`auth.uid()` = deal ka user/owner), warna `not_authorized_for_deal`
+- `movein_evidence_bundle()` + `movein_cockpit()` = founder/service-role only
+- Global views (`movein_cash_clock`, `movein_attention`, `movein_mailbox_gaps`, `movein_dns_proof`) authenticated se revoke; customer ke liye user-filtered `movein_my_mailbox_gaps` / `movein_my_dns_proof`
+- `movein_attach_intent()` binding: intent ka `user_id` = deal ka user · `kind='movein'` · `currency='GBP'` · amount exact leg amount · ek intent do jagah attach nahi (unique index) · leg sirf deposit/final
+- `movein_data_verified_ok()` gate: mailbox rows > 0 · rows = deal ka expected `mailbox_count` · sab VERIFIED · `messages_source > 0` · `messages_verified >= messages_source`. Zero-mailbox kabhi pass nahi
+
+P1
+- `movein_next_reference()` ab atomic `movein_reference_counter` (yearly) se — `count(*)+1` khatam, concurrent duplicate nahi
+- Waitlist integrity: ek deal ki ek hi active position; month+position unique
+- `movein_promote_waitlist(month)` — slot free hote hi pehla waitlisted deal promote (CANCELLED/CLOSED transition se auto-call)
+- Rollback: `movein_rollback_create()` / `movein_rollback_validate()` / `movein_rollback_use()` (arm reset + ROLLBACK_REQUIRED exception + ON_HOLD)
+- Mailbox counts constraint: `verified <= copied <= source`, sab non-negative
+
+Small hardening
+- `movein_dns_checks`: `phase in (PRE,POST)`, `record in (MX,SPF,DKIM,DMARC)`, `owner_id` column + auto-fill trigger + backfill
+- `blocks_cutover` ab `movein_cutover_ready()` ka hissa; high severity par trigger se auto-true
