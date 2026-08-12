@@ -90,8 +90,15 @@ app.use("/api/leo", async (req, res) => {
   }
 });
 
-// ---- JSON APIs ----
-app.use(express.json({ limit: "2mb" }));
+// ---- JSON APIs (raw body captured for Polar webhook HMAC) ----
+app.use(
+  express.json({
+    limit: "2mb",
+    verify: (req: any, _res, buf) => {
+      req.rawBody = buf;
+    },
+  }),
+);
 
 app.get(["/health", "/api/health"], (_req, res) =>
   res.json({ ok: true, service: "ANEXOMAIL Brain", ai: "Leo" }),
