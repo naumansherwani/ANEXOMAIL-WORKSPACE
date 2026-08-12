@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
+import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { Button } from "@/components/ui/button";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
@@ -30,6 +31,8 @@ function CallbackPage() {
   const navigate = useNavigate();
   const { refresh } = useAuth();
   const [error, setError] = useState<string | null>(null);
+  const [showSplash, setShowSplash] = useState(false);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -72,14 +75,13 @@ function CallbackPage() {
             });
         sessionToken.set(res.token);
         await refresh();
-        void navigate({
-          to: !res.user.anexomail_address
-            ? "/claim"
-            : res.user.onboarded
-              ? "/app"
-              : "/onboarding",
-          replace: true,
-        });
+        const target = !res.user.anexomail_address
+          ? "/claim"
+          : res.user.onboarded
+            ? "/app"
+            : "/onboarding";
+        setRedirectTo(target);
+        setShowSplash(true);
       } catch (e) {
         setError(
           e instanceof ApiError
@@ -95,26 +97,33 @@ function CallbackPage() {
   }, [navigate, refresh]);
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="ax-in w-full max-w-sm text-center">
-        <div className="flex justify-center">
-          <BrandMark />
-        </div>
-        {error ? (
-          <div role="alert" className="mt-ax-5">
-            <h1 className="ax-heading text-foreground">Link didn't work</h1>
-            <p className="ax-body mt-ax-2">{error}</p>
-            <Button className="ax-press mt-ax-4" onClick={() => navigate({ to: "/auth" })}>
-              Back to sign in
-            </Button>
+    <>
+      <main className="flex min-h-screen items-center justify-center bg-background px-4">
+        <div className="ax-in w-full max-w-sm text-center">
+          <div className="flex justify-center">
+            <BrandMark />
           </div>
-        ) : (
-          <p className="ax-body mt-ax-5 flex items-center justify-center gap-2">
-            <Loader2 className="size-4 animate-spin text-cyan-accent" />
-            Finishing your sign-in…
-          </p>
-        )}
-      </div>
-    </main>
+          {error ? (
+            <div role="alert" className="mt-ax-5">
+              <h1 className="ax-heading text-foreground">Link didn't work</h1>
+              <p className="ax-body mt-ax-2">{error}</p>
+              <Button className="ax-press mt-ax-4" onClick={() => navigate({ to: "/auth" })}>
+                Back to sign in
+              </Button>
+            </div>
+          ) : (
+            <p className="ax-body mt-ax-5 flex items-center justify-center gap-2">
+              <Loader2 className="size-4 animate-spin text-cyan-accent" />
+              Finishing your sign-in…
+            </p>
+          )}
+        </div>
+      </main>
+
+      <CinematicSplash
+        open={showSplash}
+        onDone={() => redirectTo && void navigate({ to: redirectTo, replace: true })}
+      />
+    </>
   );
 }

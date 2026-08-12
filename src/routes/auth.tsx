@@ -1,5 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
@@ -96,6 +98,8 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [providerBusy, setProviderBusy] = useState<Provider | null>(null);
+  const [showSplash, setShowSplash] = useState(false);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
   const finish = async (token: string) => {
     sessionToken.set(token);
@@ -103,13 +107,13 @@ function AuthPage() {
     const session = await api<{
       user: { onboarded: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
-    void navigate({
-      to: !session.user.anexomail_address
-        ? "/claim"
-        : session.user.onboarded
-          ? "/app"
-          : "/onboarding",
-    });
+    const target = !session.user.anexomail_address
+      ? "/claim"
+      : session.user.onboarded
+        ? "/app"
+        : "/onboarding";
+    setRedirectTo(target);
+    setShowSplash(true);
   };
 
   const fail = (e: unknown) => {
@@ -230,7 +234,8 @@ function AuthPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+    <>
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[-12rem] h-[28rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[120px]"
@@ -419,6 +424,12 @@ function AuthPage() {
         </p>
       </div>
     </main>
+
+    <CinematicSplash
+      open={showSplash}
+      onDone={() => redirectTo && void navigate({ to: redirectTo })}
+    />
+    </>
   );
 }
 
