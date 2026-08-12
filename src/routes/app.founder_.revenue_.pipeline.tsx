@@ -70,7 +70,7 @@ function PipelinePage() {
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Open leads by offer</h3>
               <p className="mt-1 text-xs text-steel">
-                Managed Move-In is one-off cash · Priority Support is a £500/mo retainer · Workspace
+                Managed Move-In is one-off cash · Priority Support is a £700/mo retainer · Workspace
                 subscription is the recurring plan. Three different offers, never mixed.
               </p>
               {d.pipeline.length === 0 ? (

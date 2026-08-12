@@ -36,14 +36,14 @@ Band line variants:
 
 | Product name | Price | Billing |
 | --- | --- | --- |
-| `Priority Support` | £500 | Recurring — monthly |
+| `Priority Support` | £700 | Recurring — monthly |
 
 **Description:**
 
 ```text
-Priority Support — £500 / month. A named founder contact instead of a queue.
+Priority Support — £700 / month. A named founder contact instead of a queue.
 
-- Response within 1 business day
+- Response within 2 business days
 - Named founder contact
 - Quarterly service & security review
 - Priority migration scheduling
@@ -134,7 +134,7 @@ POLAR_PRODUCT_PLAN_BUSINESS=prod_xxx
 | Managed Move-In · 6–15 Mailboxes (£1,500 one-time) | — | pending |
 | Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | — | pending |
 | Managed Move-In · 30+ Mailboxes (£3,000 one-time) | — | pending |
-| Priority Support (£500/mo) | — | pending |
+| Priority Support (£700/mo) | — | pending |
 | Basic (£20/mo) | — | pending |
 | Pro (£40/mo) | — | pending |
 | Business (£85/mo) | — | pending |

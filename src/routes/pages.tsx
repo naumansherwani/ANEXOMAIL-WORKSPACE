@@ -88,7 +88,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Enterprise support",
         path: "/enterprise",
-        note: "Phase 28 — £500/mo add-on: named founder contact, response within 1 business day, quarterly review",
+        note: "Phase 28 — £700/mo add-on: named founder contact, response within 2 business days, quarterly review",
       },
       {
         label: "Get started (2-day trial)",

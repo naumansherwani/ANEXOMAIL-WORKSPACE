@@ -66,7 +66,7 @@ const compare: { group: string; rows: Row[] }[] = [
     rows: [
       { label: "Human support (no ticket portal)", basic: "Reply within 72h", pro: "Reply within 48h", business: "Reply within 24h" },
       { label: "Answered by a person, not a portal", basic: "Included", pro: "Included", business: "Included" },
-      { label: "Priority Support (named founder contact)", basic: "Add-on £500/mo", pro: "Add-on £500/mo", business: "Add-on £500/mo" },
+      { label: "Priority Support (named founder contact)", basic: "Add-on £700/mo", pro: "Add-on £700/mo", business: "Add-on £700/mo" },
       { label: "Managed move-in from your old provider", basic: "From £500 one-off", pro: "From £500 one-off", business: "From £500 one-off" },
     ],
   },
@@ -152,7 +152,7 @@ const services = [
   },
   {
     name: "Priority Support",
-    price: "£500",
+    price: "£700",
     unit: " / month",
     body: "For companies that need a named person answering, not a queue. Sits on top of any plan.",
     tiers: [
@@ -161,14 +161,14 @@ const services = [
       "Three companies at a time",
     ],
     features: [
-      "Response within 1 business day, every business day",
+      "Response within 2 business days, every business day",
       "A named founder contact you email directly — no portal, no ticket number",
       "Quarterly service and security review for your domain",
       "Priority migration scheduling — your move-in goes to the front of the queue",
       "Up to 3 companies at a time, so the promise stays real",
     ],
     terms: "Business days are Monday to Friday, UK time. We do not promise 24/7 cover we cannot staff.",
-    capacity: "Three companies at a time — so 1 business day stays true",
+    capacity: "Three companies at a time — so 2 business days stays true",
     cta: "Email us about Priority Support",
     to: "/enterprise" as const,
   },

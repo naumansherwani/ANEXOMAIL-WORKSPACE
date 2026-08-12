@@ -9,16 +9,16 @@ import { SLA_PRICE_MONTHLY } from "@/lib/revenue";
 export const Route = createFileRoute("/enterprise")({
   head: () => ({
     meta: [
-      { title: "Priority Support — a response within 1 business day, a named human" },
+      { title: "Priority Support — a response within 2 business days, a named human" },
       {
         name: "description",
         content:
-          "Priority Support: a named founder contact, a response within 1 business day, quarterly service and security review and priority migration scheduling — £500 a month, cancel any month.",
+          "Priority Support: a named founder contact, a response within 2 business days, quarterly service and security review and priority migration scheduling — £700 a month, cancel any month.",
       },
-      { property: "og:title", content: "Priority Support — a response within 1 business day" },
+      { property: "og:title", content: "Priority Support — a response within 2 business days" },
       {
         property: "og:description",
-        content: "A named founder contact, response within 1 business day, quarterly review, priority migration scheduling. £500 a month.",
+        content: "A named founder contact, response within 2 business days, quarterly review, priority migration scheduling. £700 a month.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,7 +28,7 @@ export const Route = createFileRoute("/enterprise")({
 });
 
 const items = [
-  "Response within 1 business day, every business day.",
+  "Response within 2 business days, every business day.",
   "A named founder contact who knows your domain, not a queue.",
   "Quarterly service and security review: DKIM/SPF/DMARC, retention, exports, access.",
   "Priority migration scheduling — your move-in is slotted first.",
@@ -55,7 +55,7 @@ const detail = [
   },
   {
     title: "Response and availability",
-    body: "A response within 1 business day, every business day, measured and reported back to you. Availability outside business days, and anything faster than one business day, is agreed during onboarding and written into your terms — we do not advertise numbers we have not agreed with you.",
+    body: "A response within 2 business days, every business day, measured and reported back to you. Availability outside business days, and anything faster than two business days, is agreed during onboarding and written into your terms — we do not advertise numbers we have not agreed with you.",
   },
   {
     title: "Security controls",
@@ -79,7 +79,7 @@ const detail = [
   },
   {
     title: "SLA",
-    body: `The commercial terms — response clock, availability target, maintenance windows and any credits — are agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the response within 1 business day.`,
+    body: `The commercial terms — response clock, availability target, maintenance windows and any credits — are agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the response within 2 business days.`,
   },
   {
     title: "Reviews and reporting",
@@ -98,7 +98,7 @@ function EnterprisePage() {
             When email stops, you call a person — not a portal.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every plan already gets human support. This adds a named founder contact, a response within 1 business day,
+            Every plan already gets human support. This adds a named founder contact, a response within 2 business days,
             and a quarterly review you can put in front of an auditor.
           </p>
         </section>
