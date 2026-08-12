@@ -69,7 +69,7 @@ export type PlanChangePreview = {
   effective_at: string;
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useSubscription() {
@@ -185,10 +185,7 @@ export function useFounderReplyQueue() {
   return useQuery<{ replies: FounderReply[] }, ApiError>({
     queryKey: ["billing", "founder", "reply-queue"],
     queryFn: () =>
-      get<{ replies: FounderReply[] }>(
-        "billing.founderReplyQueue",
-        "/api/founder/support/replies",
-      ),
+      get<{ replies: FounderReply[] }>("billing.founderReplyQueue", "/api/founder/support/replies"),
     retry: false,
   });
 }
@@ -202,8 +199,7 @@ export function useMarkFounderReplySent() {
         { path: `/api/founder/support/replies/${id}/replied`, method: "POST" },
         { id },
       ),
-    onSuccess: () =>
-      void qc.invalidateQueries({ queryKey: ["billing", "founder", "reply-queue"] }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["billing", "founder", "reply-queue"] }),
   });
 }
 

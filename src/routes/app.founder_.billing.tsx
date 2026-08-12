@@ -122,9 +122,7 @@ function FounderRevenue() {
                           <span
                             className={`text-[12px] font-semibold ${reply.overdue ? "text-destructive" : "text-foreground"}`}
                           >
-                            {reply.overdue
-                              ? "Overdue"
-                              : formatRemaining(reply.remaining_minutes)}
+                            {reply.overdue ? "Overdue" : formatRemaining(reply.remaining_minutes)}
                           </span>
                           <button
                             type="button"
