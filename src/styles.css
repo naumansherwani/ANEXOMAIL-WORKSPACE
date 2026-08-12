@@ -775,3 +775,112 @@ html[data-ax-motion="reduced"] *::after {
     animation: none !important;
   }
 }
+
+/*
+ * ============================================================
+ * Cinematic sign-in splash — the "move-in" moment.
+ * Shown after successful auth before the workspace opens.
+ * ============================================================
+ */
+
+.ax-splash-stage {
+  transition:
+    opacity 0.6s var(--ease-cine),
+    transform 0.6s var(--ease-cine);
+}
+
+.ax-splash-enter {
+  animation: ax-splash-fade-in 0.55s var(--ease-cine) both;
+}
+
+.ax-splash-exit {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+@keyframes ax-splash-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ax-splash-logo {
+  animation: ax-splash-logo-rise 0.7s var(--ease-cine) 0.1s both;
+}
+
+@keyframes ax-splash-logo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ax-splash-keylight {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    oklch(0.455 0.093 258 / 35%) 0%,
+    oklch(0.455 0.093 258 / 12%) 45%,
+    transparent 70%
+  );
+  animation: ax-splash-glow 3s var(--ease-cine) infinite alternate;
+}
+
+@keyframes ax-splash-glow {
+  from {
+    opacity: 0.7;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.ax-splash-vignette {
+  background: radial-gradient(
+    120% 90% at 50% 45%,
+    transparent 40%,
+    oklch(0.09 0.004 265 / 70%) 100%
+  );
+}
+
+.ax-splash-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-splash-enter,
+  .ax-splash-exit,
+  .ax-splash-logo,
+  .ax-splash-keylight {
+    animation: none !important;
+  }
+  .ax-splash-stage {
+    transition: none;
+  }
+}
+
+html[data-ax-calm] .ax-splash-stage,
+html[data-ax-calm] .ax-splash-logo,
+html[data-ax-calm] .ax-splash-keylight,
+html[data-ax-motion="reduced"] .ax-splash-stage,
+html[data-ax-motion="reduced"] .ax-splash-logo,
+html[data-ax-motion="reduced"] .ax-splash-keylight {
+  animation: none !important;
+  transition: opacity 0.2s ease !important;
+}
+
