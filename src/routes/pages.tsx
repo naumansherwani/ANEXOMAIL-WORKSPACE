@@ -288,7 +288,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Founder AI receipts",
         path: "/app/founder/ai/receipts",
-        note: "Answer receipts, credits ledger (unlimited, cost visible) and guardrail pauses",
+        note: "Answer receipts, credits ledger (founder, cost visible) and guardrail pauses",
         auth: true,
       },
       {
