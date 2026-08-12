@@ -134,39 +134,13 @@ on conflict (year) do update
   set last_value = greatest(public.movein_reference_counter.last_value, excluded.last_value);
 
 -- ---------------------------------------------------------------------------
--- FIX 4 (P2) — NOT VALID constraints: data clean karo, phir VALIDATE
+-- FIX 4 (P2) — HATA DIYA GAYA, Phase 40 mein shift
 -- ---------------------------------------------------------------------------
--- mailbox counts: negatives 0, copied <= source, verified <= copied
-update public.movein_mailboxes set
-  messages_source    = greatest(coalesce(messages_source,0), 0),
-  messages_copied    = greatest(coalesce(messages_copied,0), 0),
-  messages_verified  = greatest(coalesce(messages_verified,0), 0),
-  folders_found      = greatest(coalesce(folders_found,0), 0),
-  contacts_count     = greatest(coalesce(contacts_count,0), 0),
-  calendar_events    = greatest(coalesce(calendar_events,0), 0),
-  aliases_count      = greatest(coalesce(aliases_count,0), 0),
-  signatures_count   = greatest(coalesce(signatures_count,0), 0),
-  exceptions         = greatest(coalesce(exceptions,0), 0);
+-- EVIDENCE IMMUTABILITY: historical movein_mailboxes / movein_dns_checks
+-- evidence ko kabhi clamp, normalise ya overwrite nahi karna. Purana FIX 4
+-- asli data mutate karta tha, is liye nikal diya gaya.
+-- Constraints Phase 38 se NOT VALID hain (future writes par enforce), aur
+-- VALIDATE sirf tab hota hai jab data genuinely valid ho.
+-- Dekho: sql/phase40_evidence_truth.sql
 
-update public.movein_mailboxes
-   set messages_copied = messages_source
- where messages_copied > messages_source;
-
-update public.movein_mailboxes
-   set messages_verified = messages_copied
- where messages_verified > messages_copied;
-
--- DNS rows: phase/record normalise, ajnabi values ko safe default
-update public.movein_dns_checks set phase = upper(trim(phase)) where phase is distinct from upper(trim(phase));
-update public.movein_dns_checks set phase = 'PRE'  where phase is null or phase not in ('PRE','POST');
-update public.movein_dns_checks set record = upper(trim(record)) where record is distinct from upper(trim(record));
-update public.movein_dns_checks set record = 'MX' where record is null or record not in ('MX','SPF','DKIM','DMARC');
-
-do $$
-begin
-  begin alter table public.movein_mailboxes  validate constraint movein_mailboxes_counts_chk; exception when undefined_object then null; end;
-  begin alter table public.movein_dns_checks validate constraint movein_dns_phase_chk;        exception when undefined_object then null; end;
-  begin alter table public.movein_dns_checks validate constraint movein_dns_record_chk;       exception when undefined_object then null; end;
-end $$;
-
--- Phase 39 done — sirf ye 4 fixes.
+-- Phase 39 done — 3 fixes (FIX 4 -> Phase 40).
