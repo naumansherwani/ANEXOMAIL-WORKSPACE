@@ -42,7 +42,7 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
       <div className="ax-plane rounded-2xl p-6">
         <p className="ax-heading text-foreground">Got it — reference {submit.data.reference}</p>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          A human replies from moveyourbusiness@anexomail.com within 4 hours with the plan, the fixed price and the cut-over
+          A human replies from moveyourbusiness@anexomail.com within 24–48 hours with the plan, the fixed price and the cut-over
           window. No sales sequence, no bot.
         </p>
       </div>
