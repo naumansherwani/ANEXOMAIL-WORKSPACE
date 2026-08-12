@@ -73,6 +73,7 @@ import { Route as AppAnalyticsLeaksRouteImport } from './routes/app.analytics.le
 import { Route as AppAnalyticsPromisesRouteImport } from './routes/app.analytics.promises'
 import { Route as AppAnalyticsTeamRouteImport } from './routes/app.analytics.team'
 import { Route as AppAnalyticsThreadsRouteImport } from './routes/app.analytics.threads'
+import { Route as AppBillingStateRouteImport } from './routes/app.billing.state'
 import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
 import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
@@ -461,6 +462,11 @@ const AppAnalyticsThreadsRoute = AppAnalyticsThreadsRouteImport.update({
   path: '/threads',
   getParentRoute: () => AppAnalyticsRoute,
 } as any)
+const AppBillingStateRoute = AppBillingStateRouteImport.update({
+  id: '/state',
+  path: '/state',
+  getParentRoute: () => AppBillingRoute,
+} as any)
 const AppCrmIndexRoute = AppCrmIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -829,7 +835,7 @@ export interface FileRoutesByFullPath {
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/analytics': typeof AppAnalyticsRouteWithChildren
-  '/app/billing': typeof AppBillingRoute
+  '/app/billing': typeof AppBillingRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/devices': typeof AppDevicesRoute
@@ -864,6 +870,7 @@ export interface FileRoutesByFullPath {
   '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
   '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
+  '/app/billing/state': typeof AppBillingStateRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
@@ -959,7 +966,7 @@ export interface FileRoutesByTo {
   '/ai/studio': typeof AiStudioRoute
   '/app/account': typeof AppAccountRoute
   '/app/ai-center': typeof AppAiCenterRoute
-  '/app/billing': typeof AppBillingRoute
+  '/app/billing': typeof AppBillingRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
@@ -989,6 +996,7 @@ export interface FileRoutesByTo {
   '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
   '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
+  '/app/billing/state': typeof AppBillingStateRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
@@ -1085,7 +1093,7 @@ export interface FileRoutesById {
   '/app/admin': typeof AppAdminRouteWithChildren
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/analytics': typeof AppAnalyticsRouteWithChildren
-  '/app/billing': typeof AppBillingRoute
+  '/app/billing': typeof AppBillingRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/devices': typeof AppDevicesRoute
@@ -1120,6 +1128,7 @@ export interface FileRoutesById {
   '/app/analytics/promises': typeof AppAnalyticsPromisesRoute
   '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
+  '/app/billing/state': typeof AppBillingStateRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
@@ -1255,6 +1264,7 @@ export interface FileRouteTypes {
     | '/app/analytics/promises'
     | '/app/analytics/team'
     | '/app/analytics/threads'
+    | '/app/billing/state'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
@@ -1380,6 +1390,7 @@ export interface FileRouteTypes {
     | '/app/analytics/promises'
     | '/app/analytics/team'
     | '/app/analytics/threads'
+    | '/app/billing/state'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
@@ -1510,6 +1521,7 @@ export interface FileRouteTypes {
     | '/app/analytics/promises'
     | '/app/analytics/team'
     | '/app/analytics/threads'
+    | '/app/billing/state'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
@@ -2060,6 +2072,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAnalyticsThreadsRouteImport
       parentRoute: typeof AppAnalyticsRoute
     }
+    '/app/billing/state': {
+      id: '/app/billing/state'
+      path: '/state'
+      fullPath: '/app/billing/state'
+      preLoaderRoute: typeof AppBillingStateRouteImport
+      parentRoute: typeof AppBillingRoute
+    }
     '/app/crm/': {
       id: '/app/crm/'
       path: '/'
@@ -2590,6 +2609,18 @@ const AppAnalyticsRouteWithChildren = AppAnalyticsRoute._addFileChildren(
   AppAnalyticsRouteChildren,
 )
 
+interface AppBillingRouteChildren {
+  AppBillingStateRoute: typeof AppBillingStateRoute
+}
+
+const AppBillingRouteChildren: AppBillingRouteChildren = {
+  AppBillingStateRoute: AppBillingStateRoute,
+}
+
+const AppBillingRouteWithChildren = AppBillingRoute._addFileChildren(
+  AppBillingRouteChildren,
+)
+
 interface AppCrmRouteChildren {
   AppCrmActivityRoute: typeof AppCrmActivityRoute
   AppCrmCollabRoute: typeof AppCrmCollabRoute
@@ -2773,7 +2804,7 @@ interface AppRouteChildren {
   AppAdminRoute: typeof AppAdminRouteWithChildren
   AppAiCenterRoute: typeof AppAiCenterRoute
   AppAnalyticsRoute: typeof AppAnalyticsRouteWithChildren
-  AppBillingRoute: typeof AppBillingRoute
+  AppBillingRoute: typeof AppBillingRouteWithChildren
   AppCalendarRoute: typeof AppCalendarRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
   AppDevicesRoute: typeof AppDevicesRoute
@@ -2811,7 +2842,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppAdminRoute: AppAdminRouteWithChildren,
   AppAiCenterRoute: AppAiCenterRoute,
   AppAnalyticsRoute: AppAnalyticsRouteWithChildren,
-  AppBillingRoute: AppBillingRoute,
+  AppBillingRoute: AppBillingRouteWithChildren,
   AppCalendarRoute: AppCalendarRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
   AppDevicesRoute: AppDevicesRoute,
