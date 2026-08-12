@@ -352,6 +352,24 @@ returns boolean language sql stable as $$
 $$;
 
 -- ---------------------------------------------------------------------------
+-- 8) EXCEPTION ENGINE
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_exceptions (
+  id          uuid primary key default gen_random_uuid(),
+  deal_id     uuid not null references public.movein_deals(id) on delete cascade,
+  scope       text not null default 'general',       -- mailbox | dns | payment | cutover | general
+  ref         text,                                   -- address / record / intent
+  severity    public.movein_result not null default 'WARNING',
+  reason      text not null,
+  required_action text,
+  blocks_cutover boolean not null default false,
+  resolved_at timestamptz,
+  resolved_by text,
+  created_at  timestamptz not null default now()
+);
+create index if not exists movein_exceptions_open_idx on public.movein_exceptions (deal_id, resolved_at);
+
+-- ---------------------------------------------------------------------------
 -- 7) CUTOVER RUNBOOK + GATES
 -- ---------------------------------------------------------------------------
 create table if not exists public.movein_runbook (
@@ -405,24 +423,6 @@ returns boolean language sql stable as $$
       where deal_id = p_deal and resolved_at is null
         and severity in ('BLOCKED','FAILED','ROLLBACK_REQUIRED','CUSTOMER_ACTION_REQUIRED')), true)
 $$;
-
--- ---------------------------------------------------------------------------
--- 8) EXCEPTION ENGINE
--- ---------------------------------------------------------------------------
-create table if not exists public.movein_exceptions (
-  id          uuid primary key default gen_random_uuid(),
-  deal_id     uuid not null references public.movein_deals(id) on delete cascade,
-  scope       text not null default 'general',       -- mailbox | dns | payment | cutover | general
-  ref         text,                                   -- address / record / intent
-  severity    public.movein_result not null default 'WARNING',
-  reason      text not null,
-  required_action text,
-  blocks_cutover boolean not null default false,
-  resolved_at timestamptz,
-  resolved_by text,
-  created_at  timestamptz not null default now()
-);
-create index if not exists movein_exceptions_open_idx on public.movein_exceptions (deal_id, resolved_at);
 
 -- ---------------------------------------------------------------------------
 -- 9) ROLLBACK CONTROL (first-class object)
