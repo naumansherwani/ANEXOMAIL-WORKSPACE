@@ -64,8 +64,8 @@ const compare: { group: string; rows: Row[] }[] = [
   {
     group: "Support",
     rows: [
-      { label: "Human support (no ticket portal)", basic: "Reply under 4h", pro: "Reply under 1h", business: "Reply under 1h" },
-      { label: "Dedicated SLA", basic: "—", pro: "—", business: "Under 4h, included" },
+      { label: "Human support (no ticket portal)", basic: "Reply within 72h", pro: "Reply within 48h", business: "Reply within 24h" },
+      { label: "Answered by a person, not a portal", basic: "Included", pro: "Included", business: "Included" },
       { label: "Priority Support (named contact)", basic: "Add-on £500/mo", pro: "Add-on £500/mo", business: "Add-on £500/mo" },
       { label: "Managed move-in from your old provider", basic: "From £500 one-off", pro: "From £500 one-off", business: "From £500 one-off" },
     ],
@@ -178,7 +178,7 @@ const plans = [
       "1 domain · 3 mailboxes · 5GB per mailbox",
       "5 free aliases · undo send 30s",
       "Contacts, calendar and threads with owner",
-      "Cmd+K across the workspace · human support under 4h",
+      "Cmd+K across the workspace · human reply within 72h",
     ],
   },
   {
@@ -189,7 +189,7 @@ const plans = [
       "Everything in Basic",
       "3 domains · 5 mailboxes · 10GB per mailbox",
       "Shared inbox with collision guard",
-      "Tasks, notes and thread analytics · support under 1h",
+      "Tasks, notes and thread analytics · reply within 48h",
     ],
     featured: true,
   },
@@ -202,7 +202,7 @@ const plans = [
       "Unlimited domains and mailboxes · 25GB per mailbox",
       "Audit ledger, roles and one-click revoke",
       "Native integrations, LEO Actions and one-click export",
-      "Dedicated SLA under 4h",
+      "Human reply within 24h",
     ],
   },
 ];
