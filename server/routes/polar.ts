@@ -347,8 +347,7 @@ async function processWebhookEvent(event: any, eventId: string) {
           user_id: userId,
           number: invoiceNumber,
           state: "paid",
-          subtotal:
-            Number(data.subtotal_amount ?? data.total_amount ?? data.amount ?? 0) / 100,
+          subtotal: Number(data.subtotal_amount ?? data.total_amount ?? data.amount ?? 0) / 100,
           tax: Number(data.tax_amount ?? 0) / 100,
           total: amount,
           currency: String(data.currency || "GBP").toUpperCase(),
