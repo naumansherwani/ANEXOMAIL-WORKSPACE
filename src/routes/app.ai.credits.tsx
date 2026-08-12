@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { Coins, Gift, History, Receipt, ShieldCheck, Wallet } from "lucide-react";
 
 import { AiTopUpDialog } from "@/components/site/AiTopUpDialog";
@@ -39,16 +40,23 @@ function CreditsPage() {
   const ledger = useCreditLedger(50);
   const actions = useCreditActions(50);
   const claim = useClaimComplimentary();
+  const [topUpOpen, setTopUpOpen] = useState(false);
 
   if (wallet.isLoading) {
-    return <StateBlock kind="loading" title="Reading your wallet…" />;
+    return (
+      <StateBlock
+        title="Reading your wallet…"
+        body="Balances are read live from the ledger, so this only takes a moment."
+        live
+      />
+    );
   }
 
   if (wallet.error) {
     return (
       <StateBlock
-        kind={wallet.error.status === 401 ? "empty" : "error"}
-        icon={Wallet}
+        tone={wallet.error.status === 401 ? "quiet" : "error"}
+        icon={<Wallet className="size-5" />}
         title={
           wallet.error.status === 401
             ? "Sign in to see your AI credit wallet."
@@ -107,7 +115,11 @@ function CreditsPage() {
         </div>
 
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <AiTopUpDialog />
+          <Button onClick={() => setTopUpOpen(true)}>
+            <Coins className="mr-2 size-4" aria-hidden="true" />
+            Top up credits
+          </Button>
+          {topUpOpen && <AiTopUpDialog onClose={() => setTopUpOpen(false)} />}
           {([1, 2] as const).map((day) => (
             <Button
               key={day}
@@ -142,11 +154,13 @@ function CreditsPage() {
           <Receipt className="size-4" aria-hidden="true" /> Action receipts
         </h2>
         {actions.error ? (
-          <StateBlock kind="empty" title="Receipts are not reachable yet." />
+          <StateBlock
+            title="Receipts are not reachable yet."
+            body="Action receipts live on the server. Reload once the connection is back."
+          />
         ) : (actions.data?.actions.length ?? 0) === 0 ? (
           <StateBlock
-            kind="empty"
-            icon={Receipt}
+            icon={<Receipt className="size-5" />}
             title="No AI actions yet."
             body="As soon as you run one, its estimate, the credits reserved and the final charge appear here."
           />
@@ -191,9 +205,16 @@ function CreditsPage() {
           always a new reversal entry.
         </p>
         {ledger.error ? (
-          <StateBlock kind="empty" title="Ledger is not reachable yet." />
+          <StateBlock
+            title="Ledger is not reachable yet."
+            body="The ledger is append-only on the server; nothing is shown here until it responds."
+          />
         ) : (ledger.data?.entries.length ?? 0) === 0 ? (
-          <StateBlock kind="empty" icon={History} title="Ledger is empty." body="Your first grant, reservation or charge will appear here." />
+          <StateBlock
+            icon={<History className="size-5" />}
+            title="Ledger is empty."
+            body="Your first grant, reservation or charge will appear here."
+          />
         ) : (
           <ul className="mt-3 divide-y divide-border rounded-xl border border-border">
             {ledger.data!.entries.map((e) => (
