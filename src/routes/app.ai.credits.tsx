@@ -130,8 +130,8 @@ function CreditsPage() {
                   { day },
                   {
                     onSuccess: (r) =>
-                      notify.success(`5 complimentary credits added · balance ${r.balance}`),
-                    onError: (e) => notify.error(e.message),
+                      notify.done(`5 complimentary credits added · balance ${r.balance}`),
+                    onError: (e) => notify.failed(e.message),
                   },
                 )
               }
