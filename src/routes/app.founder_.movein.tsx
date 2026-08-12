@@ -64,7 +64,11 @@ function MoveInCockpit() {
         <Stat label="Active move-ins" value={String(c?.active_moves ?? 0)} />
         <Stat label="Slots free this month" value={String(c?.capacity?.slots_free ?? "—")} />
         <Stat label="Cash collected" value={gbp((c?.cash?.deposits_paid_gbp ?? 0) + (c?.cash?.final_paid_gbp ?? 0))} />
-        <Stat label="Outstanding" value={gbp(c?.cash?.outstanding_gbp)} tone={(c?.cash?.overdue_gbp ?? 0) > 0 ? "warn" : undefined} />
+        {(c?.cash?.overdue_gbp ?? 0) > 0 ? (
+          <Stat label="Outstanding" value={gbp(c?.cash?.outstanding_gbp)} tone="warn" />
+        ) : (
+          <Stat label="Outstanding" value={gbp(c?.cash?.outstanding_gbp)} />
+        )}
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">

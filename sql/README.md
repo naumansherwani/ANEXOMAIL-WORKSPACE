@@ -92,3 +92,12 @@ Phase 37 + 38 ka complement (kuch touch nahi hua). Tarteeb: 37 → 38 → 39.
 - **Rollback transitions (P0)**: `CUTOVER_EXECUTED` / `POST_CUTOVER_VERIFIED` / `FINAL_50_INVOICED` → `ON_HOLD` legal; recovery raaste `ON_HOLD` → DATA_COPY / DATA_VERIFIED / CUTOVER_READY (gates ke saath).
 - **Reference counter (P1)**: `count(*)` khatam — asli `MOVE-IN-YYYY-NNN` ka highest NNN parse kar ke counter set.
 - **Constraints (P2)**: mailbox counts clamp (verified ≤ copied ≤ source, no negatives) + DNS phase/record normalise, phir `VALIDATE CONSTRAINT`.
+
+## phase40_evidence_truth.sql — EVIDENCE TRUTH (Phase 40)
+
+Phase 39 ka FIX 4 replace karta hai. Historical evidence kabhi mutate nahi:
+- `movein_mailboxes` counts aur `movein_dns_checks` phase/record par koi UPDATE nahi (no clamp, no PRE/MX default)
+- Constraints NOT VALID rehti hain -> future writes enforce, purani rows waisi hi
+- `movein_evidence_violations` view — har invalid row jaisi hai waisi (observed values ke saath)
+- `movein_evidence_validate()` — VALIDATE CONSTRAINT sirf tab jab us table ka data genuinely clean ho
+- File ke end par report: kitni invalid rows remaining hain (operator manually correct karta hai)
