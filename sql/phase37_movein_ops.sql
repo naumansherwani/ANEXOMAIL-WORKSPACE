@@ -205,3 +205,315 @@ insert into public.movein_transitions (from_state, to_state, gate) values
   ('DEPOSIT_INVOICED','CANCELLED',null),
   ('ON_HOLD','CANCELLED',null)
 on conflict (from_state, to_state) do update set gate = excluded.gate;
+
+-- ---------------------------------------------------------------------------
+-- 4) PER-MAILBOX MIGRATION LEDGER — customer handover evidence
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_mailboxes (
+  id                 uuid primary key default gen_random_uuid(),
+  deal_id            uuid not null references public.movein_deals(id) on delete cascade,
+  address            text not null,
+  destination        text,
+  source_provider    text,
+  size_mb            numeric(14,2),
+  messages_source    int  not null default 0,
+  messages_copied    int  not null default 0,
+  messages_verified  int  not null default 0,
+  folders_found      int  not null default 0,
+  contacts_count     int  not null default 0,
+  calendar_events    int  not null default 0,
+  aliases_count      int  not null default 0,
+  signatures_count   int  not null default 0,
+  source_credentials text not null default 'PENDING',   -- PENDING | OK | INVALID
+  destination_status text not null default 'PENDING',    -- PENDING | CREATED | READY
+  result             public.movein_result not null default 'PENDING',
+  exceptions         int not null default 0,
+  operator           text,
+  verified_at        timestamptz,
+  last_checked_at    timestamptz,
+  created_at         timestamptz not null default now(),
+  updated_at         timestamptz not null default now(),
+  unique (deal_id, address)
+);
+create index if not exists movein_mailboxes_deal_idx on public.movein_mailboxes (deal_id, address);
+
+create or replace view public.movein_mailbox_gaps as
+  select m.deal_id, d.reference, m.address,
+         m.messages_source, m.messages_copied, m.messages_verified,
+         greatest(m.messages_source - m.messages_verified, 0) as missing,
+         m.result
+    from public.movein_mailboxes m
+    join public.movein_deals d on d.id = m.deal_id
+   where m.messages_verified < m.messages_source or m.result <> 'VERIFIED';
+
+-- ---------------------------------------------------------------------------
+-- 5) CAPACITY GUARD + WAITLIST (2 move-ins / month, DB enforced)
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_capacity (
+  month       date primary key,                -- 1st of month
+  slots_total int not null default 2,
+  notes       text,
+  created_at  timestamptz not null default now()
+);
+
+create table if not exists public.movein_waitlist (
+  id         uuid primary key default gen_random_uuid(),
+  deal_id    uuid not null references public.movein_deals(id) on delete cascade,
+  month      date not null,
+  position   int  not null,
+  released_at timestamptz,
+  created_at timestamptz not null default now(),
+  unique (deal_id, month)
+);
+
+create or replace view public.movein_capacity_state as
+  select c.month,
+         c.slots_total,
+         (select count(*) from public.movein_deals d
+           where d.scheduled_month = c.month and d.waitlisted = false
+             and d.state not in ('CANCELLED')) as slots_booked,
+         greatest(c.slots_total - (select count(*) from public.movein_deals d
+           where d.scheduled_month = c.month and d.waitlisted = false
+             and d.state not in ('CANCELLED')), 0) as slots_free,
+         (select count(*) from public.movein_waitlist w
+           where w.month = c.month and w.released_at is null) as waitlisted
+    from public.movein_capacity c;
+
+-- transactional booking: 10 concurrent clicks -> maximum 2 booked
+create or replace function public.movein_book_slot(p_deal uuid, p_month date)
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare v_month date := date_trunc('month', p_month)::date;
+        v_total int; v_used int; v_pos int;
+begin
+  perform pg_advisory_xact_lock(hashtext('movein_capacity:' || v_month::text));
+  insert into public.movein_capacity (month) values (v_month) on conflict (month) do nothing;
+  select slots_total into v_total from public.movein_capacity where month = v_month;
+  select count(*) into v_used from public.movein_deals
+   where scheduled_month = v_month and waitlisted = false and state <> 'CANCELLED' and id <> p_deal;
+
+  if v_used < v_total then
+    update public.movein_deals
+       set scheduled_month = v_month, waitlisted = false, updated_at = now()
+     where id = p_deal;
+    delete from public.movein_waitlist where deal_id = p_deal and month = v_month;
+    insert into public.movein_audit (deal_id, actor, action, reason, payload)
+      values (p_deal, 'system', 'capacity_booked', 'slot reserved', jsonb_build_object('month', v_month));
+    return jsonb_build_object('booked', true, 'month', v_month, 'slots_used', v_used + 1, 'slots_total', v_total);
+  end if;
+
+  select coalesce(max(position), 0) + 1 into v_pos from public.movein_waitlist
+   where month = v_month and released_at is null;
+  insert into public.movein_waitlist (deal_id, month, position)
+    values (p_deal, v_month, v_pos)
+    on conflict (deal_id, month) do update set position = excluded.position;
+  update public.movein_deals set scheduled_month = v_month, waitlisted = true, updated_at = now()
+   where id = p_deal;
+  insert into public.movein_audit (deal_id, actor, action, reason, payload)
+    values (p_deal, 'system', 'waitlisted', 'month at capacity', jsonb_build_object('month', v_month, 'position', v_pos));
+  return jsonb_build_object('booked', false, 'waitlisted', true, 'position', v_pos, 'month', v_month, 'slots_total', v_total);
+end $$;
+
+-- ---------------------------------------------------------------------------
+-- 6) DNS GREEN PROOF ENGINE (pre + post cutover, evidence trail)
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_dns_checks (
+  id             uuid primary key default gen_random_uuid(),
+  deal_id        uuid not null references public.movein_deals(id) on delete cascade,
+  verification_id text not null default encode(gen_random_bytes(8), 'hex'),
+  phase          text not null default 'PRE',        -- PRE | POST
+  domain         text not null,
+  record         text not null,                       -- MX | SPF | DKIM | DMARC
+  hostname       text,
+  resolver       text,
+  expected       text,
+  observed       text,
+  result         public.movein_result not null default 'PENDING',
+  reason         text,
+  checked_at     timestamptz not null default now()
+);
+create index if not exists movein_dns_deal_idx on public.movein_dns_checks (deal_id, phase, checked_at desc);
+
+create or replace view public.movein_dns_proof as
+  select deal_id, phase, record,
+         (array_agg(result order by checked_at desc))[1]     as result,
+         (array_agg(observed order by checked_at desc))[1]   as observed,
+         (array_agg(resolver order by checked_at desc))[1]   as resolver,
+         (array_agg(verification_id order by checked_at desc))[1] as verification_id,
+         max(checked_at) as checked_at
+    from public.movein_dns_checks
+   group by deal_id, phase, record;
+
+create or replace function public.movein_dns_green(p_deal uuid, p_phase text default 'POST')
+returns boolean language sql stable as $$
+  select coalesce(count(*) filter (where result = 'VERIFIED') = 4, false)
+    from public.movein_dns_proof
+   where deal_id = p_deal and phase = p_phase
+     and record in ('MX','SPF','DKIM','DMARC')
+$$;
+
+-- ---------------------------------------------------------------------------
+-- 7) CUTOVER RUNBOOK + GATES
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_runbook (
+  id         uuid primary key default gen_random_uuid(),
+  deal_id    uuid not null references public.movein_deals(id) on delete cascade,
+  step_key   text not null,
+  label      text not null,
+  position   int  not null default 0,
+  required   boolean not null default true,
+  result     public.movein_result not null default 'PENDING',
+  evidence   text,
+  operator   text,
+  completed_at timestamptz,
+  created_at timestamptz not null default now(),
+  unique (deal_id, step_key)
+);
+
+create or replace function public.movein_seed_runbook(p_deal uuid)
+returns int language plpgsql security definer set search_path = public as $$
+declare v_n int := 0;
+begin
+  insert into public.movein_runbook (deal_id, step_key, label, position)
+  select p_deal, s.k, s.l, s.p from (values
+    ('mailboxes_created','All mailboxes created', 1),
+    ('data_copy_complete','Source data copy complete', 2),
+    ('counts_verified','Message counts verified', 3),
+    ('dns_prepared','DNS records prepared', 4),
+    ('mx_ttl','MX TTL checked and lowered', 5),
+    ('spf_verified','SPF verified', 6),
+    ('dkim_verified','DKIM verified', 7),
+    ('dmarc_verified','DMARC verified', 8),
+    ('test_mailbox','Test mailbox working', 9),
+    ('test_inbound','Test inbound delivery', 10),
+    ('test_outbound','Test outbound delivery', 11),
+    ('rollback_point','Rollback point recorded', 12),
+    ('customer_approval','Customer approval recorded', 13)
+  ) as s(k,l,p)
+  on conflict (deal_id, step_key) do nothing;
+  select count(*) into v_n from public.movein_runbook where deal_id = p_deal;
+  return v_n;
+end $$;
+
+create or replace function public.movein_cutover_ready(p_deal uuid)
+returns boolean language sql stable as $$
+  select coalesce(
+    (select count(*) = 0 from public.movein_runbook
+      where deal_id = p_deal and required and result <> 'VERIFIED'), false)
+   and coalesce((select count(*) > 0 from public.movein_runbook where deal_id = p_deal), false)
+   and public.movein_dns_green(p_deal, 'PRE')
+   and coalesce((select count(*) = 0 from public.movein_exceptions
+      where deal_id = p_deal and resolved_at is null
+        and severity in ('BLOCKED','FAILED','ROLLBACK_REQUIRED','CUSTOMER_ACTION_REQUIRED')), true)
+$$;
+
+-- ---------------------------------------------------------------------------
+-- 8) EXCEPTION ENGINE
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_exceptions (
+  id          uuid primary key default gen_random_uuid(),
+  deal_id     uuid not null references public.movein_deals(id) on delete cascade,
+  scope       text not null default 'general',       -- mailbox | dns | payment | cutover | general
+  ref         text,                                   -- address / record / intent
+  severity    public.movein_result not null default 'WARNING',
+  reason      text not null,
+  required_action text,
+  blocks_cutover boolean not null default false,
+  resolved_at timestamptz,
+  resolved_by text,
+  created_at  timestamptz not null default now()
+);
+create index if not exists movein_exceptions_open_idx on public.movein_exceptions (deal_id, resolved_at);
+
+-- ---------------------------------------------------------------------------
+-- 9) ROLLBACK CONTROL (first-class object)
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_rollback_points (
+  id                 uuid primary key default gen_random_uuid(),
+  deal_id            uuid not null references public.movein_deals(id) on delete cascade,
+  label              text not null default 'pre-cutover',
+  operator           text,
+  source_state       jsonb not null default '{}'::jsonb,
+  destination_state  jsonb not null default '{}'::jsonb,
+  dns_state          jsonb not null default '{}'::jsonb,
+  verification_state jsonb not null default '{}'::jsonb,
+  available          boolean not null default true,
+  used_at            timestamptz,
+  created_at         timestamptz not null default now()
+);
+create index if not exists movein_rollback_deal_idx on public.movein_rollback_points (deal_id, created_at desc);
+
+-- ---------------------------------------------------------------------------
+-- 10) CASH CLOCK — 50/50 payments, Phase 36 intents se linked
+-- ---------------------------------------------------------------------------
+create table if not exists public.movein_payments (
+  id          uuid primary key default gen_random_uuid(),
+  deal_id     uuid not null references public.movein_deals(id) on delete cascade,
+  leg         text not null check (leg in ('deposit','final')),
+  amount_gbp  numeric(12,2) not null,
+  intent_id   uuid,                                   -- billing_intents.id (Phase 36)
+  state       text not null default 'due' check (state in ('due','invoiced','paid','void')),
+  due_at      timestamptz,
+  invoiced_at timestamptz,
+  paid_at     timestamptz,
+  created_at  timestamptz not null default now(),
+  updated_at  timestamptz not null default now(),
+  unique (deal_id, leg)
+);
+create index if not exists movein_payments_state_idx on public.movein_payments (state, due_at);
+
+create or replace function public.movein_sync_payments(p_deal uuid)
+returns void language plpgsql security definer set search_path = public as $$
+declare d record; v_dep numeric; v_fin numeric;
+begin
+  select * into d from public.movein_deals where id = p_deal;
+  if d is null then return; end if;
+  v_dep := coalesce(d.deposit_gbp, round(d.price_gbp / 2, 2));
+  v_fin := coalesce(d.final_gbp, d.price_gbp - v_dep);
+
+  insert into public.movein_payments (deal_id, leg, amount_gbp)
+    values (p_deal, 'deposit', v_dep)
+    on conflict (deal_id, leg) do update set amount_gbp = excluded.amount_gbp, updated_at = now();
+  insert into public.movein_payments (deal_id, leg, amount_gbp)
+    values (p_deal, 'final', v_fin)
+    on conflict (deal_id, leg) do update set amount_gbp = excluded.amount_gbp, updated_at = now();
+
+  -- Phase 36 truth: intent paid ho to leg paid (idempotent)
+  update public.movein_payments p
+     set state = 'paid', paid_at = coalesce(p.paid_at, i.paid_at, now()), updated_at = now()
+    from public.billing_intents i
+   where p.deal_id = p_deal and p.intent_id = i.id
+     and i.state in ('paid','entitled') and p.state <> 'paid';
+
+  update public.movein_deals set
+      deposit_gbp = v_dep,
+      final_gbp   = v_fin,
+      deposit_paid_at = (select paid_at from public.movein_payments where deal_id = p_deal and leg='deposit' and state='paid'),
+      final_paid_at   = (select paid_at from public.movein_payments where deal_id = p_deal and leg='final'   and state='paid'),
+      updated_at = now()
+   where id = p_deal;
+end $$;
+
+-- link a Phase 36 intent to a payment leg (webhook/sweep dono se safe)
+create or replace function public.movein_attach_intent(p_deal uuid, p_leg text, p_intent uuid)
+returns void language plpgsql security definer set search_path = public as $$
+begin
+  update public.movein_payments
+     set intent_id = p_intent, state = case when state = 'due' then 'invoiced' else state end,
+         invoiced_at = coalesce(invoiced_at, now()), updated_at = now()
+   where deal_id = p_deal and leg = p_leg;
+  if p_leg = 'deposit' then
+    update public.movein_deals set deposit_intent_id = p_intent, updated_at = now() where id = p_deal;
+  else
+    update public.movein_deals set final_intent_id = p_intent, updated_at = now() where id = p_deal;
+  end if;
+  insert into public.movein_audit (deal_id, actor, action, reason, evidence, payload)
+    values (p_deal, 'system', 'payment_invoiced', p_leg || ' invoice issued', p_intent::text,
+            jsonb_build_object('leg', p_leg, 'intent_id', p_intent));
+  perform public.movein_sync_payments(p_deal);
+end $$;
+
+create or replace function public.movein_leg_paid(p_deal uuid, p_leg text)
+returns boolean language sql stable as $$
+  select coalesce((select state = 'paid' from public.movein_payments
+                    where deal_id = p_deal and leg = p_leg), false)
+$$;
