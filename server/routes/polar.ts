@@ -1,7 +1,7 @@
 // ANEXOMAIL — Polar Checkout + Webhook (Server 2 / Brain, port 3100)
 //
 // NANO COMMAND (server par):
-//   cp /opt/anexail/src/routes/polar.ts /opt/anexomail/src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
+//   cp /opt/anexomail/src/routes/polar.ts /opt/anexomail/src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
 //   nano /opt/anexomail/src/routes/polar.ts
 //   # select all -> paste -> Ctrl+O, Ctrl+X
 //

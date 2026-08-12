@@ -117,13 +117,13 @@ Product bante hi Polar ke IDs is ek block se `.env` mein daalo:
 cd /opt/anexomail && nano .env
 # neeche paste karo, asli IDs ke saath:
 POLAR_PRODUCT_MOVEIN_1_5=fdcdabc2-9e50-4e4b-91d4-45e4128ef829
-POLAR_PRODUCT_MOVEIN_6_15=prod_xxx
-POLAR_PRODUCT_MOVEIN_16_29=prod_xxx
-POLAR_PRODUCT_MOVEIN_30PLUS=prod_xxx
-POLAR_PRODUCT_PRIORITY_SUPPORT=prod_xxx
-POLAR_PRODUCT_PLAN_BASIC=prod_xxx
-POLAR_PRODUCT_PLAN_PRO=prod_xxx
-POLAR_PRODUCT_PLAN_BUSINESS=prod_xxx
+POLAR_PRODUCT_MOVEIN_6_15=a9d1bec3-0d5f-4b9b-ae1c-993efde66da2
+POLAR_PRODUCT_MOVEIN_16_29=c7b502c5-ff75-4138-b34d-25d94878fe79
+POLAR_PRODUCT_MOVEIN_30PLUS=f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8
+POLAR_PRODUCT_PRIORITY_SUPPORT=92a35351-743c-4ddf-b1f4-fae473a89e69
+POLAR_PRODUCT_PLAN_BASIC=9560496a-4449-4428-949d-95c923c8dad9
+POLAR_PRODUCT_PLAN_PRO=ef47325e-983c-4ea8-bdbe-be99cc00c584
+POLAR_PRODUCT_PLAN_BUSINESS=2eee930b-b530-43ce-a6d4-14b87315f49e
 ```
 
 ### Confirmed IDs (founder ne banaye)
@@ -131,16 +131,15 @@ POLAR_PRODUCT_PLAN_BUSINESS=prod_xxx
 | Product | Polar ID | Status |
 | --- | --- | --- |
 | Managed Move-In · 1–5 Mailboxes (£500 one-time) | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ created |
-| Managed Move-In · 6–15 Mailboxes (£1,500 one-time) | — | pending |
-| Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | — | pending |
-| Managed Move-In · 30+ Mailboxes (£3,000 one-time) | — | pending |
-| Priority Support (£700/mo) | — | pending |
-| Basic (£20/mo) | — | pending |
-| Pro (£40/mo) | — | pending |
-| Business (£85/mo) | — | pending |
+| Managed Move-In · 6–15 Mailboxes (£1,500 one-time) | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ created |
+| Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ created |
+| Managed Move-In · 30+ Mailboxes (£3,000 one-time) | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ created |
+| Priority Support (£700/mo) | `92a35351-743c-4ddf-b1f4-fae473a89e69` | ✅ created |
+| Basic (£20/mo) | `9560496a-4449-4428-949d-95c923c8dad9` | ✅ created |
+| Pro (£40/mo) | `ef47325e-983c-4ea8-bdbe-be99cc00c584` | ✅ created |
+| Business (£85/mo) | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
 
-IDs aa jayein to bolo — checkout + webhook route (`/api/public/polar/webhook`,
-`/api/billing/checkout`) likh ke repo mein `server/routes/polar.ts` de dunga.
+Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
 
 ## 8) Testing (Polar ka sandbox nahi hai)
 
