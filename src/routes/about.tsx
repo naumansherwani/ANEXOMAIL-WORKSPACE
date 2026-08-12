@@ -242,27 +242,118 @@ function AboutPage() {
         </section>
 
         <section className="ax-container pb-16">
-          <h2 className="text-2xl text-foreground md:text-3xl">Who is behind it</h2>
-          <div className="mt-6 grid gap-8 lg:grid-cols-[auto_1fr]">
-            <div className="flex size-20 items-center justify-center rounded-2xl bg-secondary text-xl font-bold text-foreground">
-              MNS
+          <p className="ax-eyebrow" id="why-anexomail">Why ANEXOMAIL</p>
+          <h2 className="mt-4 max-w-3xl text-2xl text-foreground md:text-3xl">
+            Why you should use ANEXOMAIL — and why it is not like the mail you have now.
+          </h2>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            The tools most companies use were designed to store messages. ANEXOMAIL is
+            designed to finish work. That single difference changes everything about how the
+            day feels.
+          </p>
+          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {whyUs.map((w) => (
+              <article key={w.title} className="ax-plane rounded-3xl p-7">
+                <span className="flex size-10 items-center justify-center rounded-xl bg-secondary text-steel">
+                  <w.icon className="size-5" aria-hidden="true" />
+                </span>
+                <h3 className="mt-5 text-lg font-bold text-foreground">{w.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{w.body}</p>
+              </article>
+            ))}
+          </div>
+
+          <div className="mt-10">
+            <h3 className="text-lg font-bold text-foreground">
+              Eight things you will not find in the mail you use today
+            </h3>
+            <dl className="mt-5 grid gap-px overflow-hidden rounded-2xl border border-border sm:grid-cols-2">
+              {differences.map(([term, detail]) => (
+                <div key={term} className="ax-plane rounded-none border-0 p-5">
+                  <dt className="text-sm font-semibold text-foreground">{term}</dt>
+                  <dd className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">
+                    {detail}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+        </section>
+
+        <section className="ax-container pb-16">
+          <div className="ax-plane rounded-3xl p-8 md:p-10">
+            <p className="ax-eyebrow">A note from the founder</p>
+            <div className="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-muted-foreground">
+              <p className="text-base leading-relaxed text-foreground">
+                I built ANEXOMAIL because I believe business communication should belong to
+                the business using it.
+              </p>
+              <p>
+                For too long, companies have had to choose between familiar email tools and
+                the control, ownership and simplicity they actually want. Your company name
+                may belong to you, but too often your communication, workflow and data
+                become dependent on a platform you do not control.
+              </p>
+              <p>ANEXOMAIL is our attempt to build something different.</p>
+              <p>
+                Your business email should carry your name. Your workspace should work
+                around your team. Your data should remain yours. And if you decide to leave,
+                taking your data with you should be straightforward.
+              </p>
+              <p>
+                We are building ANEXOMAIL independently, carefully and transparently. We are
+                not trying to become another platform that locks you in. We want to earn your
+                trust by making the product reliable, useful and honest about what it does.
+              </p>
+              <p>That also means we will not pretend everything is perfect.</p>
+              <p>
+                When something is unavailable, we want our status page to tell you. When an
+                operation fails, we want you to know. When AI uses credits, we want you to
+                see what it will cost before it happens. When you leave, we want you to be
+                able to export your data.
+              </p>
+              <p>
+                The product will keep evolving, but the principles will not.
+              </p>
+              <p className="text-base font-semibold text-foreground">
+                Your communication. Your data. Your choice.
+              </p>
+              <p>Thank you for giving ANEXOMAIL a chance.</p>
+
+              <p className="pt-2">And there is something else we are building.</p>
+              <p>We have not opened this door yet.</p>
+              <p className="text-base font-semibold text-foreground">
+                ANEXOMAIL AI is coming soon. We call him Leo.
+              </p>
+              <p>
+                Leo will not simply sit beside your inbox and answer questions. He is being
+                built to understand the work happening inside it — the conversations, the
+                context, the commitments, the meetings, the follow-ups and the things that
+                should never be forgotten.
+              </p>
+              <p>
+                You will be able to ask. You will be able to write. You will be able to
+                search. You will be able to turn conversations into action.
+              </p>
+              <p>
+                And eventually, you may find yourself wondering how you ever worked without
+                it.
+              </p>
+              <p>
+                We are keeping the door closed for now because we would rather release
+                something worth waiting for than release an unfinished promise. When the
+                door opens, you will understand why we kept it closed.
+              </p>
+              <p className="text-base font-semibold text-foreground">
+                Your communication. Your data. Your choice. You own it. This is your own
+                workspace.
+              </p>
             </div>
-            <div className="max-w-2xl">
+            <div className="mt-8 border-t border-border pt-6">
               <p className="text-base font-bold text-foreground">
                 Muhammad Nauman Sherwani
               </p>
-              <p className="ax-caption mt-1 text-muted-foreground">Founder</p>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                ANEXOMAIL is built and run by a small, self-funded team. There are no
-                investors to please and nothing to sell on the side, which means the only
-                way this product survives is if the people paying for it keep choosing to
-                pay for it. That is the incentive we wanted.
-              </p>
-              <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                It runs on our own servers in the UK and EU, under our own care — not
-                resold from somewhere else with our name on the invoice. If something
-                breaks, the person who wrote it answers you.
-              </p>
+              <p className="ax-caption mt-1 text-muted-foreground">Founder, ANEXOMAIL</p>
             </div>
           </div>
         </section>
