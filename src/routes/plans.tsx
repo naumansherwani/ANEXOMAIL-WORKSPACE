@@ -11,13 +11,13 @@ export const Route = createFileRoute("/plans")({
       {
         name: "description",
         content:
-          "Business email on your own domain from £20 a month. Basic, Pro and Business — mailboxes, aliases, calendar and work included.",
+          "Business email on your own company address from £20 a month. Basic, Pro and Business — mailboxes, aliases, calendar and work included.",
       },
       { property: "og:title", content: "Plans & Pricing — ANEXOMAIL Workspace" },
       {
         property: "og:description",
         content:
-          "Basic £20, Pro £40, Business £85 — sealed mailboxes on your own domain with the workspace tools your team uses daily.",
+          "Basic £20, Pro £40, Business £85 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -35,7 +35,7 @@ const compare: { group: string; rows: Row[] }[] = [
       { label: "Price per person, per month", basic: "£20", pro: "£40", business: "£85" },
       { label: "Mailboxes included", basic: "3", pro: "5", business: "Unlimited" },
       { label: "Storage per mailbox", basic: "5GB", pro: "10GB", business: "25GB" },
-      { label: "Domains you can host", basic: "1", pro: "3", business: "Unlimited" },
+      { label: "Company addresses you can host", basic: "1", pro: "3", business: "Unlimited" },
       { label: "Free aliases", basic: "5", pro: "5", business: "Unlimited" },
       { label: "Undo send window", basic: "30 seconds", pro: "30 seconds", business: "30 seconds" },
     ],
@@ -98,8 +98,8 @@ const faqs = [
     a: "Before the period ends you can take everything out yourself in one click — mail as standard mbox files, contacts and calendars in standard formats. After the period ends the mailboxes stop accepting new mail and the data is deleted for real, not archived quietly. Your domain always stays yours; you point its records wherever you like next.",
   },
   {
-    q: "Do I need to buy a domain from you?",
-    a: "No, and we do not sell them. You bring the domain you already own, we generate every record it needs, and you keep the registrar you are with.",
+    q: "Do I need to buy anything else from you?",
+    a: "No. You bring the company address you already own, we generate every record it needs, and nothing else is charged for.",
   },
   {
     q: "Is there AI in these plans?",
@@ -178,9 +178,9 @@ const plans = [
   {
     name: "Basic",
     price: "£20",
-    body: "For a small team getting its own domain in order.",
+    body: "For a small team putting its company email in order.",
     features: [
-      "1 domain · 3 mailboxes · 5GB per mailbox",
+      "1 company address · 3 mailboxes · 5GB per mailbox",
       "5 free aliases · undo send 30s",
       "Contacts, calendar and threads with owner",
       "Cmd+K across the workspace · human reply within 72h",
@@ -192,7 +192,7 @@ const plans = [
     body: "For teams answering customers every day.",
     features: [
       "Everything in Basic",
-      "3 domains · 5 mailboxes · 10GB per mailbox",
+      "3 company addresses · 5 mailboxes · 10GB per mailbox",
       "Shared inbox with collision guard",
       "Tasks, notes and thread analytics · reply within 48h",
     ],
@@ -204,7 +204,7 @@ const plans = [
     body: "For companies that have to prove control.",
     features: [
       "Everything in Pro",
-      "Unlimited domains and mailboxes · 25GB per mailbox",
+      "Unlimited company addresses and mailboxes · 25GB per mailbox",
       "Audit ledger, roles and one-click revoke",
       "Native integrations, LEO Actions and one-click export",
       "Human reply within 24h",
@@ -223,7 +223,7 @@ function PlansPage() {
             One price per person. No surprise tiers.
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Billed monthly per person. Every plan includes your own domain, sealed
+            Billed monthly per person. Every plan includes your own company address, sealed
             mailboxes and the full workspace — never a stripped-down inbox.
           </p>
         </section>
