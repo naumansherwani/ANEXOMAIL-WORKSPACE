@@ -270,7 +270,7 @@ founderRouter.get("/revenue/overview", async (req, res) => {
         note:
           remaining === 0
             ? "Target already covered — next £ goes to growth, not survival."
-            : `Or ${Math.ceil(remaining / PLAN_PRICE.business)} Business seats, or ${Math.ceil(remaining / SLA_PRICE)} enterprise SLA add-on${remaining > SLA_PRICE ? "s" : ""}. One £1,000 migration covers ${Math.floor(1000 / Math.max(1, target))} month${target <= 1000 ? "s" : ""} of the target while recurring builds. Partner gross tracked: £${partnerGross}.`,
+            : `Or ${Math.ceil(remaining / PLAN_PRICE.business)} Business seats, or ${Math.ceil(remaining / SLA_PRICE)} Priority Support retainer${remaining > SLA_PRICE ? "s" : ""}. One £1,000 migration covers ${Math.floor(1000 / Math.max(1, target))} month${target <= 1000 ? "s" : ""} of the target while recurring builds. Partner gross tracked: £${partnerGross}.`,
       },
     });
   } catch (e) {

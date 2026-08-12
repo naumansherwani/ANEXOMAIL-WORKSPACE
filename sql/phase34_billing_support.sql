@@ -184,6 +184,38 @@ create trigger mail_messages_support_reply_clock
 after insert on public.mail_messages
 for each row execute function public.queue_inbound_support_reply();
 
+-- Founder ka outbound reply isi thread par aate hi clock automatically close.
+create or replace function public.close_founder_reply_clock()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  j jsonb := to_jsonb(new);
+  v_thread_id uuid;
+  v_sent_at timestamptz;
+begin
+  if coalesce(j->>'direction', '') not in ('out','outbound') then return new; end if;
+  begin v_thread_id := nullif(j->>'thread_id','')::uuid; exception when others then v_thread_id := null; end;
+  if v_thread_id is null then return new; end if;
+  begin v_sent_at := coalesce(nullif(j->>'sent_at','')::timestamptz, now()); exception when others then v_sent_at := now(); end;
+
+  update public.founder_reply_queue
+  set state = 'replied', replied_at = v_sent_at
+  where thread_id = v_thread_id and state = 'awaiting_reply';
+  return new;
+exception when others then
+  raise warning 'close_founder_reply_clock skipped: %', sqlerrm;
+  return new;
+end;
+$$;
+
+drop trigger if exists mail_messages_close_reply_clock on public.mail_messages;
+create trigger mail_messages_close_reply_clock
+after insert on public.mail_messages
+for each row execute function public.close_founder_reply_clock();
+
 grant select on public.billing_event_receipts to authenticated;
 grant select, insert, update on public.founder_reply_queue to authenticated;
 grant all on public.billing_event_receipts, public.founder_reply_queue to service_role;
