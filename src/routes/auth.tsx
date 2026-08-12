@@ -423,6 +423,11 @@ function AuthPage() {
         </p>
       </div>
     </main>
+
+    <CinematicSplash
+      open={showSplash}
+      onDone={() => redirectTo && void navigate({ to: redirectTo })}
+    />
   );
 }
 
