@@ -179,6 +179,18 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "My move-in",
+        path: "/app/movein",
+        note: "Phase 37 — customer portal: stage, progress, mailboxes verified, delivery proof, 50/50 payments",
+        auth: true,
+      },
+      {
+        label: "Move-In cockpit (founder)",
+        path: "/app/founder/movein",
+        note: "Phase 37 — money machine: cash clock, capacity guard, mailbox ledger, DNS proof, runbook + arm/rollback, evidence vault",
+        auth: true,
+      },
+      {
         label: "Integrations",
         path: "/app/integrations",
         note: "Phase 22 — Gmail/M365/Zoho/Proton/IMAP connect, one-run migration, delivery proof, one-click export, Leo Actions (no API keys, no webhooks)",

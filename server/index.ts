@@ -38,6 +38,7 @@ import aiCreditsRouter, { founderAiCreditsRouter } from "./routes/ai-credits";
 import { trialRouter, trialCronRouter } from "./routes/trial";
 import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./routes/release";
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
+import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
 import billingSupportRouter from "./routes/billing-support";
 import {
   billingSyncAuthRouter,
@@ -184,6 +185,15 @@ app.use("/api/founder", billingSupportRouter);
 // /api/public/billing/sync (cron)
 app.use("/api/billing", billingSyncAuthRouter);
 app.use("/api/public", billingSyncPublicRouter);
+
+// Phase 37 — MOVE-IN OPERATIONS & REVENUE COCKPIT (money machine)
+// public: /api/public/movein/request · /capacity · /sweep (cron)
+// customer: /api/movein/deal · /deal/:id
+// founder: /api/founder/movein/cockpit · /deal/:id · /transition · /schedule ·
+//          /arm · /mailbox · /dns · /runbook · /exception · /rollback · /invoice
+app.use("/api/public", moveinPublicRouter);
+app.use("/api/movein", moveinRouter);
+app.use("/api/founder", founderMoveinRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));

@@ -177,3 +177,29 @@ Pull-truth sweep har minute (yeh hi "no payment failure" ka engine hai):
 ```bash
 ( crontab -l 2>/dev/null; echo "* * * * * curl -s -X POST -H \"x-anexomail-cron: $(grep '^CRON_SECRET=' /opt/anexomail/.env | cut -d= -f2)\" http://localhost:3100/api/public/billing/sync > /dev/null" ) | crontab -
 ```
+
+### 9) Phase 37 — MOVE-IN OPERATIONS & REVENUE COCKPIT (money machine)
+
+Pehle Supabase #4 mein `sql/phase37_movein_ops.sql` run karo. Phir:
+
+```bash
+cd /opt/anexomail
+nano /opt/anexomail/src/routes/movein.ts   # repo/server/routes/movein.ts poori paste
+cp src/index.ts src/index.ts.bak.$(date +%s) 2>/dev/null
+nano /opt/anexomail/src/index.ts           # repo/server/index.ts poori paste
+pm2 restart anexomail-leo --update-env && sleep 3
+pm2 logs anexomail-leo --lines 30 --nostream
+printf "/api/public/movein/capacity -> ";  curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/public/movein/capacity
+printf "/api/public/movein/request -> ";   curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:3100/api/public/movein/request
+printf "/api/movein/deal -> ";             curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/movein/deal
+printf "/api/founder/movein/cockpit -> ";  curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/founder/movein/cockpit
+printf "/api/public/movein/sweep -> ";     curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:3100/api/public/movein/sweep
+```
+
+Expected: capacity `200`, request `400` (body ke bina), deal + cockpit `401`, sweep `401`.
+
+Sweep har 10 minute (payment + health truth):
+
+```bash
+( crontab -l 2>/dev/null; echo "*/10 * * * * curl -s -X POST -H \"x-anexomail-cron: $(grep '^CRON_SECRET=' /opt/anexomail/.env | cut -d= -f2)\" http://localhost:3100/api/public/movein/sweep > /dev/null" ) | crontab -
+```

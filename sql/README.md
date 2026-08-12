@@ -45,3 +45,18 @@ Supabase #4 = source of truth, Polar sirf messenger.
 - `billing_intent_confirm()` — idempotent, webhook ya pull dono se
 - `billing_sync_claim/touch/fail/abandon_stale()` — backoff sweep; paid kabhi abandon nahi
 - `billing_truth_gaps` + `billing_state_health` — founder ke liye gap radar
+
+## phase37_movein_ops.sql — MOVE-IN OPERATIONS & REVENUE COCKPIT (money machine)
+Poora £500–£3,000 Managed Move-In operation, sirf SQL ki authority pe (no hard-coded logic):
+- `movein_deals` + `movein_transitions` — legal state machine (22 states), gates DB decide karti hai
+- `movein_audit` — append-only (update/delete trigger se blocked)
+- `movein_mailboxes` + `movein_mailbox_gaps` — per-mailbox handover evidence
+- `movein_capacity` / `movein_waitlist` / `movein_book_slot()` — 2 per month, advisory lock se race-proof
+- `movein_dns_checks` + `movein_dns_proof` + `movein_dns_green()` — MX/SPF/DKIM/DMARC pre+post proof
+- `movein_runbook` + `movein_seed_runbook()` + `movein_cutover_ready()` + `movein_arm_cutover()`
+- `movein_rollback_points` — rollback first-class, arm ke liye lazmi
+- `movein_payments` + `movein_sync_payments()` + `movein_attach_intent()` — 50/50 cash clock, Phase 36 `billing_intents` truth se linked
+- `movein_exceptions` — WARNING/BLOCKED/FAILED/CUSTOMER_ACTION_REQUIRED, cutover block
+- `movein_health_calc()` (stable) + `movein_health()` (persist) — deterministic score, no AI
+- `movein_open_deal()` / `movein_transition()` — band+price ladder (1-5 £500 · 6-15 £1,500 · 16-29 £2,000 · 30+ £3,000)
+- `movein_evidence_bundle()` / `movein_customer_view()` / `movein_cockpit()` + `movein_cash_clock` / `movein_attention`
