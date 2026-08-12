@@ -17,7 +17,7 @@ const groups = [
   {
     title: "ANEXOMAIL AI",
     items: [
-      { label: "Overview", to: "/ai" as const },
+      { label: "AI plans & credits", to: "/ai" as const },
       { label: "Meet LEO", to: "/ai" as const },
       { label: "AI Studio", to: "/ai/studio" as const },
       { label: "AI Automation", to: "/ai/automation" as const },
@@ -45,12 +45,24 @@ export function SiteFooter() {
             Private business email on your own domain — mail, contacts, calendar and shared
             work on one fast surface. Your domain, your data, your keys.
           </p>
-          <a
-            href="mailto:moveyourbusiness@anexomail.com"
-            className="mt-5 inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <Mail className="size-4 shrink-0" aria-hidden="true" /> moveyourbusiness@anexomail.com
-          </a>
+          <div className="mt-5 space-y-2">
+            <a
+              href="mailto:hello@anexomail.com"
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Mail className="size-4 shrink-0" aria-hidden="true" />
+              <span>
+                <span className="text-foreground">hello@anexomail.com</span> — support &amp; enquiries
+              </span>
+            </a>
+            <a
+              href="mailto:moveyourbusiness@anexomail.com"
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Mail className="size-4 shrink-0" aria-hidden="true" />
+              <span>moveyourbusiness@anexomail.com — managed move-in</span>
+            </a>
+          </div>
         </div>
 
         {groups.map((g) => (

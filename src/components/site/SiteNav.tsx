@@ -34,6 +34,14 @@ export function SiteNav() {
               {l.label}
             </Link>
           ))}
+          <a
+            href="/ai"
+            target="_blank"
+            rel="noopener"
+            className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
+          >
+            ANEXOMAIL AI
+          </a>
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 md:flex">
@@ -74,6 +82,15 @@ export function SiteNav() {
                 {l.label}
               </Link>
             ))}
+            <a
+              href="/ai"
+              target="_blank"
+              rel="noopener"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+            >
+              ANEXOMAIL AI
+            </a>
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
