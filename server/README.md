@@ -126,3 +126,28 @@ Expected: health `200`; dono protected routes without token `401`. `000` = Brain
 down, `404` = mount missing, `503` = Supabase #4 env missing.
 
 `401` = green (guarded). `200` = public/health ok. `000` = server down. `404` = mount missing.
+
+### 7) Phase 35 — Payment Safety Net (ek bhi payment zaya nahi)
+
+Pehle Supabase #4 mein `sql/phase35_payment_safety.sql` run karo. Phir:
+
+```bash
+cd /opt/anexomail
+cp src/routes/polar.ts src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
+nano /opt/anexomail/src/routes/polar.ts   # repo/server/routes/polar.ts poori paste
+grep -q '^CRON_SECRET=' .env || echo "CRON_SECRET=$(openssl rand -hex 24)" >> .env
+pm2 restart anexomail-leo --update-env && sleep 3
+pm2 logs anexomail-leo --lines 30 --nostream
+printf "/api/billing/invoices -> ";      curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/billing/invoices
+printf "/api/billing/subscription -> ";  curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/billing/subscription
+printf "/api/billing/payment-health -> ";curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/billing/payment-health
+printf "/api/public/polar/replay -> ";   curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:3100/api/public/polar/replay
+```
+
+Expected: teen billing routes `401` (token ke bina) aur replay `401` (cron secret ke bina).
+
+Retry sweep har 5 minute (cron):
+
+```bash
+( crontab -l 2>/dev/null; echo "*/5 * * * * curl -s -X POST -H \"x-anexomail-cron: $(grep '^CRON_SECRET=' /opt/anexomail/.env | cut -d= -f2)\" http://localhost:3100/api/public/polar/replay > /dev/null" ) | crontab -
+```

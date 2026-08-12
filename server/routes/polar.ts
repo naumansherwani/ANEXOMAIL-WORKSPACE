@@ -217,6 +217,7 @@ publicRouter.post("/polar/webhook", async (req, res) => {
   const signatureHeader = String(req.headers["webhook-signature"] || "");
   const body = req.rawBody ? Buffer.from(req.rawBody).toString("utf8") : JSON.stringify(req.body);
   if (!webhookId || !timestamp || !signatureHeader || !body) {
+    await captureRaw(req, webhookId, false, "missing_webhook_headers_or_payload");
     return res.status(400).json({ error: "missing_webhook_headers_or_payload" });
   }
 
@@ -248,17 +249,23 @@ publicRouter.post("/polar/webhook", async (req, res) => {
     }
   }
   if (!signatureValid) {
+    await captureRaw(req, webhookId, false, "invalid_signature");
     return res.status(401).json({ error: "invalid_signature" });
   }
 
   // replay tolerance: 5 minutes
   const tsNum = Number(timestamp);
   if (!Number.isNaN(tsNum) && Math.abs(Date.now() / 1000 - tsNum) > 300) {
+    await captureRaw(req, webhookId, false, "stale_webhook");
     return res.status(401).json({ error: "stale_webhook" });
   }
 
   const event = req.body as any;
   const eventId = webhookId;
+
+  // PAYMENT SAFETY: verified hit ka raw payload pehle Supabase mein — chahe
+  // aage kuch bhi fail ho, paisa/proof kabhi zaya nahi hota.
+  await captureRaw(req, eventId, true, null);
 
   // idempotency: already seen?
   const { data: existing } = await db
@@ -281,19 +288,144 @@ publicRouter.post("/polar/webhook", async (req, res) => {
     }
   }
 
-  // process business events
+  // process business events — event already durable, is liye Polar ko hamesha
+  // 200 milta hai. Fail hone par humara apna retry queue backoff se replay
+  // karta hai (3 fail ke baad founder alert).
   try {
     await processWebhookEvent(event, eventId);
-    await db
-      .from("polar_webhook_events")
-      .update({ processed_at: new Date().toISOString() })
-      .eq("polar_event_id", eventId);
+    await db.rpc("webhook_mark_processed", { p_event_id: eventId });
+    return res.json({ ok: true, processed: true });
   } catch (e: any) {
     console.error("[polar webhook process]", e);
-    return res.status(500).json({ error: "event_processing_failed" });
+    await db.rpc("webhook_mark_failed", {
+      p_event_id: eventId,
+      p_error: String(e?.message || e),
+    });
+    return res.json({ ok: true, queued_for_retry: true });
   }
+});
 
-  res.json({ ok: true });
+// Har hit ka raw record — signature fail ho to bhi. Yeh kabhi throw nahi karta.
+async function captureRaw(req: any, eventId: string, verified: boolean, reason: string | null) {
+  if (!db) return;
+  try {
+    await db.rpc("webhook_capture_raw", {
+      p_event_id: eventId || null,
+      p_type: req.body?.type || null,
+      p_body: req.body ?? null,
+      p_verified: verified,
+      p_reason: reason,
+      p_headers: {
+        "webhook-id": String(req.headers["webhook-id"] || ""),
+        "webhook-timestamp": String(req.headers["webhook-timestamp"] || ""),
+        "user-agent": String(req.headers["user-agent"] || ""),
+      },
+    });
+  } catch (e) {
+    console.error("[polar webhook raw-capture]", e);
+  }
+}
+
+// ---------- retry sweep: cron ya founder chala sakta hai ----------
+// POST /api/public/polar/replay  header: x-anexomail-cron: $CRON_SECRET
+publicRouter.post("/polar/replay", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const secret = process.env.CRON_SECRET || process.env.POLAR_REPLAY_SECRET || "";
+  if (!secret || String(req.headers["x-anexomail-cron"] || "") !== secret) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+  const { data, error } = await db.rpc("webhook_claim_retries", { p_limit: 20 });
+  if (error) return res.status(500).json({ error: "claim_failed", detail: error.message });
+
+  let processed = 0;
+  let failed = 0;
+  for (const row of (data as any[]) || []) {
+    try {
+      await processWebhookEvent(row.payload, row.polar_event_id);
+      await db.rpc("webhook_mark_processed", { p_event_id: row.polar_event_id });
+      processed += 1;
+    } catch (e: any) {
+      await db.rpc("webhook_mark_failed", {
+        p_event_id: row.polar_event_id,
+        p_error: String(e?.message || e),
+      });
+      failed += 1;
+    }
+  }
+  return res.json({ claimed: (data as any[])?.length || 0, processed, failed });
+});
+
+// ---------- billing truth for the signed-in workspace ----------
+authRouter.get("/subscription", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data, error } = await db
+    .from("workspace_subscriptions")
+    .select(
+      "plan,state,seats,seats_used,price_per_seat,currency,interval,renews_at,cancel_at,storage_per_mailbox_gb",
+    )
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  return res.json(
+    data || {
+      plan: null,
+      state: "none",
+      seats: 0,
+      seats_used: 0,
+      price_per_seat: 0,
+      currency: "GBP",
+      interval: "month",
+      renews_at: null,
+      cancel_at: null,
+      storage_per_mailbox_gb: null,
+    },
+  );
+});
+
+authRouter.get("/invoices", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data, error } = await db
+    .from("workspace_invoices")
+    .select(
+      "id,number,state,subtotal,tax,total,currency,period_start,period_end,issued_at,paid_at,pdf_url",
+    )
+    .eq("user_id", userId)
+    .order("issued_at", { ascending: false });
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  return res.json({ invoices: data || [] });
+});
+
+// Founder-facing payment safety board (auth required).
+authRouter.get("/payment-health", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data: founder } = await db
+    .from("founder_accounts")
+    .select("user_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (!founder) return res.status(403).json({ error: "founder_only" });
+
+  const [health, gaps, alerts] = await Promise.all([
+    db.from("payment_health").select("*").maybeSingle(),
+    db.from("payment_reconciliation_gaps").select("*").limit(50),
+    db
+      .from("payment_alerts")
+      .select("id,severity,kind,polar_event_id,message,created_at")
+      .is("resolved_at", null)
+      .order("created_at", { ascending: false })
+      .limit(50),
+  ]);
+  return res.json({
+    health: health.data || null,
+    gaps: gaps.data || [],
+    alerts: alerts.data || [],
+  });
 });
 
 async function processWebhookEvent(event: any, eventId: string) {
