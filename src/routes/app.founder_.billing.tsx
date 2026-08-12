@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Check, Clock3, TrendingUp } from "lucide-react";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
+import { Button } from "@/components/ui/button";
 import {
   gbp,
   useFounderReplyQueue,
@@ -124,16 +125,18 @@ function FounderRevenue() {
                           >
                             {reply.overdue ? "Overdue" : formatRemaining(reply.remaining_minutes)}
                           </span>
-                          <button
+                          <Button
                             type="button"
                             title="Mark reply sent"
                             aria-label={`Mark reply to ${reply.customer_email} as sent`}
                             disabled={markReplied.isPending}
                             onClick={() => markReplied.mutate(reply.id)}
-                            className="inline-flex size-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary disabled:opacity-50"
+                            variant="outline"
+                            size="icon"
+                            className="rounded-full"
                           >
                             <Check className="size-4" aria-hidden="true" />
-                          </button>
+                          </Button>
                         </div>
                       </li>
                     ))}
