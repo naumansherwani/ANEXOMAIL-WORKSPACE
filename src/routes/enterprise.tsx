@@ -9,16 +9,16 @@ import { SLA_PRICE_MONTHLY } from "@/lib/revenue";
 export const Route = createFileRoute("/enterprise")({
   head: () => ({
     meta: [
-      { title: "Enterprise support — a four working-hour reply, a named human" },
+      { title: "Priority Support — a response within 1 business day, a named human" },
       {
         name: "description",
         content:
-          "Priority Support: a named contact, a four working-hour reply and a quarterly ownership review on top of any plan — £500 a month, cancel any month.",
+          "Priority Support: a named founder contact, a response within 1 business day, quarterly service and security review and priority migration scheduling — £500 a month, cancel any month.",
       },
-      { property: "og:title", content: "Enterprise support — a four working-hour reply" },
+      { property: "og:title", content: "Priority Support — a response within 1 business day" },
       {
         property: "og:description",
-        content: "A named contact, 4 working-hour reply, quarterly ownership review. £500 a month on top of any plan.",
+        content: "A named founder contact, response within 1 business day, quarterly review, priority migration scheduling. £500 a month.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -28,12 +28,12 @@ export const Route = createFileRoute("/enterprise")({
 });
 
 const items = [
-  "A named contact who knows your domain, not a queue.",
-  "One hour response, any working hour — measured and reported, not promised.",
+  "Response within 1 business day, every business day.",
+  "A named founder contact who knows your domain, not a queue.",
+  "Quarterly service and security review: DKIM/SPF/DMARC, retention, exports, access.",
+  "Priority migration scheduling — your move-in is slotted first.",
   "Direct escalation line for delivery incidents, with a written timeline after.",
-  "Quarterly ownership review: DKIM/SPF/DMARC, retention, exports, access.",
-  "Change windows planned with you — no surprise maintenance on your busiest day.",
-  "Your export and delete requests actioned the same day, in writing.",
+  "Up to 3 companies at a time, so the promise stays real.",
 ];
 
 const detail = [
@@ -55,7 +55,7 @@ const detail = [
   },
   {
     title: "Response and availability",
-    body: "A reply within four working hours, every working day, measured and reported back to you. Availability targets outside working hours, and anything stricter than four hours, are agreed during onboarding and written into your terms — we do not advertise numbers we have not agreed with you.",
+    body: "A response within 1 business day, every business day, measured and reported back to you. Availability outside business days, and anything faster than one business day, is agreed during onboarding and written into your terms — we do not advertise numbers we have not agreed with you.",
   },
   {
     title: "Security controls",
@@ -79,7 +79,7 @@ const detail = [
   },
   {
     title: "SLA",
-    body: `The commercial SLA — response clock, availability target, maintenance windows and any credits — is agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the four working-hour reply on working days.`,
+    body: `The commercial terms — response clock, availability target, maintenance windows and any credits — are agreed with you during onboarding and issued in writing before the first £${SLA_PRICE_MONTHLY} is billed. The only number published here is the response within 1 business day.`,
   },
   {
     title: "Reviews and reporting",
@@ -98,8 +98,8 @@ function EnterprisePage() {
             When email stops, you call a person — not a portal.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every plan already gets human support. This adds a named owner, a four working-hour clock and a review you can
-            put in front of an auditor.
+            Every plan already gets human support. This adds a named founder contact, a response within 1 business day,
+            and a quarterly review you can put in front of an auditor.
           </p>
         </section>
 
