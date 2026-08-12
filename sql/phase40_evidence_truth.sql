@@ -60,7 +60,7 @@ create or replace view public.movein_evidence_violations as
            'messages_copied',   m.messages_copied,
            'messages_verified', m.messages_verified
          )                        as observed,
-         m.created_at
+         m.created_at as observed_at
     from public.movein_mailboxes m
    where coalesce(m.messages_source,0)   < 0
       or coalesce(m.messages_copied,0)   < 0
@@ -74,7 +74,7 @@ create or replace view public.movein_evidence_violations as
          case when d.phase is null or d.phase not in ('PRE','POST')
               then 'invalid_phase' else 'invalid_record' end,
          jsonb_build_object('phase', d.phase, 'record', d.record),
-         d.created_at
+         d.checked_at
     from public.movein_dns_checks d
    where d.phase  is null or d.phase  not in ('PRE','POST')
       or d.record is null or d.record not in ('MX','SPF','DKIM','DMARC');
