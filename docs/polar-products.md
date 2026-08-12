@@ -61,14 +61,34 @@ Business days are Monday to Friday, UK time.
 | `ANEXOMAIL Pro` | £40 | Recurring — monthly |
 | `ANEXOMAIL Business` | £85 | Recurring — monthly |
 
-## 4) Metadata (har product par set karo)
+## 4) Metadata (Polar UI: Key · Type · Value rows)
 
-```text
-brand = anexomail
-kind  = movein | support | plan
-band  = 1-5 | 6-15 | 16-29 | 30plus   (sirf movein par)
-plan  = basic | pro | business     (sirf plan par)
-```
+Polar mein har metadata line ek ROW hoti hai: **Key** + **Type** + **Value**.
+Type hamesha **String** rakho (Number/Boolean kabhi nahi). Har row ke baad
+**Add Metadata** dabao.
+
+**Move-In products (4) — 3 rows:**
+
+| Key | Type | Value |
+| --- | --- | --- |
+| `brand` | String | `anexomail` |
+| `kind` | String | `movein` |
+| `band` | String | `1-5` / `6-15` / `16-29` / `30plus` |
+
+**Priority Support — 2 rows:**
+
+| Key | Type | Value |
+| --- | --- | --- |
+| `brand` | String | `anexomail` |
+| `kind` | String | `support` |
+
+**Plans (Basic/Pro/Business) — 3 rows:**
+
+| Key | Type | Value |
+| --- | --- | --- |
+| `brand` | String | `anexomail` |
+| `kind` | String | `plan` |
+| `plan` | String | `basic` / `pro` / `business` |
 
 ## 5) Server 2 — env block (Polar tokens)
 
