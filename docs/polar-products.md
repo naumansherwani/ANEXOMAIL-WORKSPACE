@@ -84,9 +84,10 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 ## 6) Polar webhook (dashboard → Settings → Webhooks)
 
 - URL: `https://anexomail.com/api/public/polar/webhook`
-- Events: `checkout.created`, `checkout.updated`, `order.created`, `order.paid`, `order.refunded`,
+- Events: `checkout.created`, `checkout.updated`, `order.created`, `order.paid`,
   `subscription.created`, `subscription.active`, `subscription.canceled`, `subscription.revoked`, `subscription.past_due`
 - Secret → `POLAR_WEBHOOK_SECRET` (upar ke block mein).
+- **Refund policy:** ANEXOMAIL does not issue refunds. Polar `order.refunded` event is not consumed.
 
 ## 7) Product IDs ka jagah (Polar mein banane ke baad)
 

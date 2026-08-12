@@ -30,7 +30,7 @@ export type Subscription = {
 export type Invoice = {
   id: string;
   number: string;
-  state: "paid" | "open" | "void" | "refunded";
+  state: "paid" | "open" | "void";
   subtotal: number;
   tax: number;
   total: number;
