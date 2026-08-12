@@ -7,6 +7,7 @@ import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
 import { useExperience } from "@/lib/experience";
+import { useAccountState } from "@/lib/trial";
 import { founderPreviewFromUrl, setFounderPreview } from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/app")({
@@ -34,10 +35,21 @@ function AppLayout() {
   // Founder review access. This route is ssr:false, so reading the key in the
   // initial state is safe and beats the redirect effect to the first commit.
   const [preview, setPreview] = useState(() => founderPreviewFromUrl());
+  // Phase 32 — DB is the authority. Trial khatam / frozen ho to business data
+  // band, aur user ko /trial-ended pe le jaate hain (account+billing khula rehta hai).
+  const account = useAccountState();
 
   useEffect(() => {
     if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
   }, [status, preview, navigate]);
+
+  useEffect(() => {
+    if (preview) return;
+    const s = account.data?.state;
+    if (s === "expired" || s === "frozen" || s === "released") {
+      void navigate({ to: "/trial-ended", replace: true });
+    }
+  }, [account.data?.state, preview, navigate]);
 
   if (status === "loading" || (status === "signed-out" && !preview)) {
     return (
