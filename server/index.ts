@@ -40,6 +40,7 @@ import releasePublicRouter, {
   founderReleaseRouter,
   outboxRouter,
 } from "./routes/release";
+import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 
 const PORT = Number(process.env.PORT) || 3100;
 
