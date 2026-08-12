@@ -67,7 +67,7 @@ const pillars = [
   {
     icon: Wallet,
     title: "A wallet you can audit",
-    body: "Every credit movement is a permanent ledger entry — plan allocation, top-up, action, refund.",
+    body: "Every credit movement is a permanent ledger entry — plan allocation, top-up, action, expiry.",
   },
   {
     icon: Gauge,
@@ -340,7 +340,7 @@ function AiPage() {
                 </li>
                 <li>
                   <strong className="text-foreground">Every movement is logged</strong> in an
-                  immutable ledger — allocation, top-up, reservation, actual usage, refund.
+                  immutable ledger — allocation, top-up, reservation, actual usage, expiry.
                 </li>
               </ul>
             </div>

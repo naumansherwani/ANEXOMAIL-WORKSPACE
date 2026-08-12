@@ -30,7 +30,7 @@ export type AiWallet = {
 
 export type CreditEvent = {
   id: string;
-  kind: "grant" | "spend" | "topup" | "refund" | "expiry";
+  kind: "grant" | "spend" | "topup" | "expiry";
   credits: number;
   cost: number;
   currency: string;
