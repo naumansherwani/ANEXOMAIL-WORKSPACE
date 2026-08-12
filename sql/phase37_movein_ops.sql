@@ -521,7 +521,7 @@ $$;
 -- ---------------------------------------------------------------------------
 -- 11) DETERMINISTIC HEALTH SCORE (no AI — sirf known facts)
 -- ---------------------------------------------------------------------------
-create or replace function public.movein_health(p_deal uuid)
+create or replace function public.movein_health_calc(p_deal uuid)
 returns jsonb language plpgsql stable as $$
 declare
   v_mb_total int; v_mb_ok int; v_msg_src bigint; v_msg_ver bigint;
@@ -549,8 +549,6 @@ begin
   v_cut     := case when v_run_total = 0 then 0 else round(100.0 * v_run_ok / v_run_total, 0) end;
   v_overall := round((v_mailbox + v_data + v_dnsp + v_pay + v_cut) / 5.0, 0);
 
-  update public.movein_deals set health_score = v_overall::int, updated_at = now() where id = p_deal;
-
   return jsonb_build_object(
     'mailbox_verification', v_mailbox,
     'data_verification', v_data,
@@ -562,6 +560,18 @@ begin
     'messages_source', v_msg_src,
     'messages_verified', v_msg_ver
   );
+end $$;
+
+-- volatile wrapper: score persist karta hai (writes yahan hote hain)
+create or replace function public.movein_health(p_deal uuid)
+returns jsonb language plpgsql volatile as $$
+declare v jsonb;
+begin
+  v := public.movein_health_calc(p_deal);
+  update public.movein_deals
+     set health_score = coalesce((v->>'overall')::numeric, 0)::int, updated_at = now()
+   where id = p_deal;
+  return v;
 end $$;
 
 -- ---------------------------------------------------------------------------
@@ -726,7 +736,7 @@ returns jsonb language sql stable as $$
                         'from_state', from_state, 'to_state', to_state, 'reason', reason,
                         'evidence', evidence, 'at', created_at) order by created_at), '[]'::jsonb)
                    from public.movein_audit where deal_id = d.id),
-    'health', public.movein_health(d.id),
+    'health', public.movein_health_calc(d.id),
     'cutover_note', 'Scheduled overnight cut-over designed to avoid interruption.',
     'generated_at', now()
   )
@@ -740,12 +750,12 @@ returns jsonb language sql stable as $$
     'reference', d.reference,
     'company', d.company,
     'state', d.state,
-    'progress', (select round(100.0 * count(*) filter (where t.reached) / greatest(count(*),1))
-                   from (select unnest(array['PLAN_ACCEPTED','DEPOSIT_PAID_50','MIGRATION_PREP',
-                                             'DATA_VERIFIED','CUTOVER_SCHEDULED','CUTOVER_EXECUTED',
-                                             'POST_CUTOVER_VERIFIED','FINAL_50_PAID','HANDOVER_COMPLETE']) as s) x,
-                        lateral (select exists (select 1 from public.movein_audit a
-                                  where a.deal_id = d.id and a.to_state::text = x.s) as reached) t),
+    'progress', (select round(100.0 * count(*) / 9.0)
+                   from public.movein_audit a
+                  where a.deal_id = d.id
+                    and a.to_state::text = any (array['PLAN_ACCEPTED','DEPOSIT_PAID_50','MIGRATION_PREP',
+                        'DATA_VERIFIED','CUTOVER_SCHEDULED','CUTOVER_EXECUTED',
+                        'POST_CUTOVER_VERIFIED','FINAL_50_PAID','HANDOVER_COMPLETE'])),
     'cutover_window', jsonb_build_object('start', d.cutover_window_start, 'end', d.cutover_window_end),
     'cutover_note', 'Scheduled overnight cut-over designed to avoid interruption.',
     'payments', (select coalesce(jsonb_agg(jsonb_build_object('leg', leg, 'amount_gbp', amount_gbp,
@@ -761,7 +771,7 @@ returns jsonb language sql stable as $$
                    from public.movein_exceptions
                   where deal_id = d.id and resolved_at is null
                     and severity = 'CUSTOMER_ACTION_REQUIRED'),
-    'health', public.movein_health(d.id)
+    'health', public.movein_health_calc(d.id)
   ) from public.movein_deals d where d.id = p_deal
 $$;
 
