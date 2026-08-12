@@ -75,7 +75,7 @@ function FounderAiBilling() {
                   <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
                     <Stat
                       label="Balance"
-                      value={w.unlimited ? "Unlimited" : `${w.balance} cr`}
+                      value={w.unlimited ? "Founder" : `${w.balance} cr`}
                       hint={w.plan ? `plan ${w.plan}` : "founder"}
                     />
                     <Stat label="Spent today" value={money(w.spent_today, w.currency)} hint={`${w.burn_per_day.toFixed(2)}/day burn`} />
