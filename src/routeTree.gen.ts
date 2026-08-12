@@ -27,6 +27,7 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as StatusRouteImport } from './routes/status'
+import { Route as TrialEndedRouteImport } from './routes/trial-ended'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
 import { Route as AiCreditsRouteImport } from './routes/ai_.credits'
 import { Route as AiKnowledgeRouteImport } from './routes/ai_.knowledge'
@@ -227,6 +228,11 @@ const SecurityRoute = SecurityRouteImport.update({
 const StatusRoute = StatusRouteImport.update({
   id: '/status',
   path: '/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrialEndedRoute = TrialEndedRouteImport.update({
+  id: '/trial-ended',
+  path: '/trial-ended',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiAutomationRoute = AiAutomationRouteImport.update({
@@ -808,6 +814,7 @@ export interface FileRoutesByFullPath {
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/status': typeof StatusRoute
+  '/trial-ended': typeof TrialEndedRoute
   '/ai/automation': typeof AiAutomationRoute
   '/ai/credits': typeof AiCreditsRoute
   '/ai/knowledge': typeof AiKnowledgeRoute
@@ -938,6 +945,7 @@ export interface FileRoutesByTo {
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/status': typeof StatusRoute
+  '/trial-ended': typeof TrialEndedRoute
   '/ai/automation': typeof AiAutomationRoute
   '/ai/credits': typeof AiCreditsRoute
   '/ai/knowledge': typeof AiKnowledgeRoute
@@ -1060,6 +1068,7 @@ export interface FileRoutesById {
   '/plans': typeof PlansRoute
   '/security': typeof SecurityRoute
   '/status': typeof StatusRoute
+  '/trial-ended': typeof TrialEndedRoute
   '/ai_/automation': typeof AiAutomationRoute
   '/ai_/credits': typeof AiCreditsRoute
   '/ai_/knowledge': typeof AiKnowledgeRoute
@@ -1193,6 +1202,7 @@ export interface FileRouteTypes {
     | '/plans'
     | '/security'
     | '/status'
+    | '/trial-ended'
     | '/ai/automation'
     | '/ai/credits'
     | '/ai/knowledge'
@@ -1323,6 +1333,7 @@ export interface FileRouteTypes {
     | '/plans'
     | '/security'
     | '/status'
+    | '/trial-ended'
     | '/ai/automation'
     | '/ai/credits'
     | '/ai/knowledge'
@@ -1444,6 +1455,7 @@ export interface FileRouteTypes {
     | '/plans'
     | '/security'
     | '/status'
+    | '/trial-ended'
     | '/ai_/automation'
     | '/ai_/credits'
     | '/ai_/knowledge'
@@ -1576,6 +1588,7 @@ export interface RootRouteChildren {
   PlansRoute: typeof PlansRoute
   SecurityRoute: typeof SecurityRoute
   StatusRoute: typeof StatusRoute
+  TrialEndedRoute: typeof TrialEndedRoute
   AiAutomationRoute: typeof AiAutomationRoute
   AiCreditsRoute: typeof AiCreditsRoute
   AiKnowledgeRoute: typeof AiKnowledgeRoute
@@ -1710,6 +1723,13 @@ declare module '@tanstack/react-router' {
       path: '/status'
       fullPath: '/status'
       preLoaderRoute: typeof StatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trial-ended': {
+      id: '/trial-ended'
+      path: '/trial-ended'
+      fullPath: '/trial-ended'
+      preLoaderRoute: typeof TrialEndedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai_/automation': {
@@ -2825,6 +2845,7 @@ const rootRouteChildren: RootRouteChildren = {
   PlansRoute: PlansRoute,
   SecurityRoute: SecurityRoute,
   StatusRoute: StatusRoute,
+  TrialEndedRoute: TrialEndedRoute,
   AiAutomationRoute: AiAutomationRoute,
   AiCreditsRoute: AiCreditsRoute,
   AiKnowledgeRoute: AiKnowledgeRoute,

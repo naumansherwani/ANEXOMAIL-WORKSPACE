@@ -20,6 +20,7 @@ import type { ReactNode } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
+import { TrialStrip } from "@/components/app/trial/TrialStrip";
 import {
   DropdownMenu,
   DropdownMenuContent,
