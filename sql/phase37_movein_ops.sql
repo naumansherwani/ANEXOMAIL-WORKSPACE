@@ -203,6 +203,5 @@ insert into public.movein_transitions (from_state, to_state, gate) values
   ('WRITTEN_PLAN_SENT','CANCELLED',null),
   ('PLAN_ACCEPTED','CANCELLED',null),
   ('DEPOSIT_INVOICED','CANCELLED',null),
-  ('ON_HOLD','CANCELLED',null),
-  ('CUTOVER_EXECUTED','ROLLBACK_REQUIRED_PLACEHOLDER'::text::public.movein_state, null)
+  ('ON_HOLD','CANCELLED',null)
 on conflict (from_state, to_state) do update set gate = excluded.gate;
