@@ -17,12 +17,12 @@ export const Route = createFileRoute("/migration")({
       {
         name: "description",
         content:
-          "Fixed-price managed migration from Gmail, Outlook, Zoho or any IMAP host: every message, folder and alias moved, DNS proven green. £500, £1,500 or £3,000 by mailbox count.",
+          "Fixed-price managed migration from Gmail, Outlook, Zoho or any IMAP host: every message, folder and alias moved, DNS proven green. £500, £1,500, £2,000 or £3,000 by mailbox count.",
       },
       { property: "og:title", content: "Managed migration — move your email in one night" },
       {
         property: "og:description",
-        content: "Fixed-price move from Gmail, Outlook, Zoho or IMAP. Every message verified, DNS proven green. £500 / £1,500 / £3,000.",
+        content: "Fixed-price move from Gmail, Outlook, Zoho or IMAP. Every message verified, DNS proven green. £500 / £1,500 / £2,000 / £3,000.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

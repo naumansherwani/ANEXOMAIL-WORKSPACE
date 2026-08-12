@@ -78,7 +78,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Managed migration",
         path: "/migration",
-        note: "Phase 28 — fixed-price migration quote calculator (£500 / £1,500 / £3,000 bands) + real booking",
+        note: "Phase 28 — fixed-price migration quote calculator (£500 / £1,500 / £2,000 / £3,000 bands) + real booking",
       },
       {
         label: "Partner programme",

@@ -496,8 +496,8 @@ function Index() {
                 <div>
                   <span className="ax-eyebrow">Need help moving in, or a named person afterwards?</span>
                   <p className="mt-4 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">Managed Move-In — £500 / £1,500 / £3,000 one-off.</strong>{" "}
-                    Priced by mailbox count: 1–5, 6–15, or 30+. We move the whole company off your old provider and
+                    <strong className="font-extrabold">Managed Move-In — £500 / £1,500 / £2,000 / £3,000 one-off.</strong>{" "}
+                    Priced by mailbox count: 1–5, 6–15, 16–29, or 30+. We move the whole company off your old provider and
                     prove your domain is green.
                   </p>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground">
