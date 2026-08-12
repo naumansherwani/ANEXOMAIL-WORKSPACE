@@ -1,8 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { TrendingUp } from "lucide-react";
+import { Check, Clock3, TrendingUp } from "lucide-react";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
-import { gbp, useRevenueTruth } from "@/lib/billing-platform";
+import {
+  gbp,
+  useFounderReplyQueue,
+  useMarkFounderReplySent,
+  useRevenueTruth,
+} from "@/lib/billing-platform";
 
 export const Route = createFileRoute("/app/founder_/billing")({
   component: FounderRevenue,
@@ -11,6 +16,8 @@ export const Route = createFileRoute("/app/founder_/billing")({
 /** Phase 21 — founder god-view: revenue truth, no vanity numbers. */
 function FounderRevenue() {
   const revenue = useRevenueTruth();
+  const replyQueue = useFounderReplyQueue();
+  const markReplied = useMarkFounderReplySent();
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
@@ -61,9 +68,92 @@ function FounderRevenue() {
             )}
           </CardBody>
         </div>
+
+        <div className="mt-ax-6">
+          <p className="ax-eyebrow flex items-center gap-2">
+            <Clock3 className="size-3.5" aria-hidden="true" /> Human reply clock
+          </p>
+          <h3 className="ax-heading mt-1 text-foreground">Who needs your reply next</h3>
+          <p className="mt-1 text-[12px] text-muted-foreground">
+            Basic 72 hours · Pro 48 hours · Business 24 hours
+          </p>
+
+          <div className="mt-ax-3">
+            <CardBody
+              query={{
+                data: replyQueue.data,
+                isPending: replyQueue.isPending,
+                error: replyQueue.error ?? null,
+                refetch: () => void replyQueue.refetch(),
+              }}
+              endpoint="/api/founder/support/replies"
+              skeleton={<StatSkeleton rows={4} />}
+            >
+              {({ replies }) => {
+                const awaiting = replies.filter((reply) => reply.state === "awaiting_reply");
+                if (awaiting.length === 0) {
+                  return (
+                    <div className="ax-plane rounded-2xl p-ax-5 text-sm text-muted-foreground">
+                      No customer is waiting for a human reply.
+                    </div>
+                  );
+                }
+                return (
+                  <ul className="space-y-2">
+                    {awaiting.map((reply) => (
+                      <li
+                        key={reply.id}
+                        className="ax-plane flex flex-col gap-3 rounded-2xl p-ax-4 sm:flex-row sm:items-center"
+                      >
+                        <div className="min-w-0 flex-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="text-sm font-semibold text-foreground">
+                              {reply.customer_email}
+                            </span>
+                            <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold uppercase text-muted-foreground">
+                              {reply.plan}
+                            </span>
+                          </div>
+                          <p className="mt-1 truncate text-[12px] text-muted-foreground">
+                            {reply.subject || "No subject"}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-3">
+                          <span
+                            className={`text-[12px] font-semibold ${reply.overdue ? "text-destructive" : "text-foreground"}`}
+                          >
+                            {reply.overdue
+                              ? "Overdue"
+                              : formatRemaining(reply.remaining_minutes)}
+                          </span>
+                          <button
+                            type="button"
+                            title="Mark reply sent"
+                            aria-label={`Mark reply to ${reply.customer_email} as sent`}
+                            disabled={markReplied.isPending}
+                            onClick={() => markReplied.mutate(reply.id)}
+                            className="inline-flex size-9 items-center justify-center rounded-full border border-border text-foreground transition-colors hover:bg-secondary disabled:opacity-50"
+                          >
+                            <Check className="size-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                );
+              }}
+            </CardBody>
+          </div>
+        </div>
       </div>
     </div>
   );
+}
+
+function formatRemaining(minutes: number) {
+  const hours = Math.floor(minutes / 60);
+  const mins = minutes % 60;
+  return hours > 0 ? `${hours}h ${mins}m left` : `${mins}m left`;
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
