@@ -177,6 +177,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
+      <TrialStrip />
 
       <div className="flex min-h-0 flex-1">
         {/* Rail */}
