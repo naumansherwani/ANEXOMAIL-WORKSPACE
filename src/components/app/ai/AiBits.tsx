@@ -109,7 +109,7 @@ export function CreditsMeter({
     <div className="ax-plane rounded-2xl p-ax-4">
       <p className="ax-caption flex items-center gap-1.5 text-muted-foreground">
         <Coins className="size-3.5" aria-hidden="true" /> Burn
-        {credits.unlimited && <Chip tone="good">unlimited · not charged</Chip>}
+        {credits.unlimited && <Chip tone="good">founder · not charged</Chip>}
       </p>
       <p className="mt-1 text-2xl font-bold text-foreground">
         {sym}
