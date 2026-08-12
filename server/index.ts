@@ -41,6 +41,7 @@ import releasePublicRouter, {
   outboxRouter,
 } from "./routes/release";
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
+import billingSupportRouter from "./routes/billing-support";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -175,6 +176,7 @@ app.use("/api/public", trialCronRouter);
 // /api/billing/checkout (auth) + /api/public/polar/webhook (verified)
 app.use("/api/billing", polarAuthRouter);
 app.use("/api/public", polarPublicRouter);
+app.use("/api/founder", billingSupportRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));

@@ -141,6 +141,15 @@ POLAR_PRODUCT_PLAN_BUSINESS=2eee930b-b530-43ce-a6d4-14b87315f49e
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
 
-## 8) Testing (Polar ka sandbox nahi hai)
+## 8) Billing emails + founder reply clock
+
+- Polar paid checkout ke baad customer ko provider receipt/invoice automatically bhejta hai.
+- Verified webhook usi payment ka immutable proof `billing_event_receipts` mein rakhta hai.
+- Paid plan `workspace_subscriptions` mein save hota hai: Basic / Pro / Business.
+- Founder reply clock: Basic **72h**, Pro **48h**, Business **24h**.
+- Founder queue endpoint: `GET /api/founder/support/replies`.
+- SQL: `sql/phase34_billing_support.sql` Supabase #4 mein run karna hai.
+
+## 9) Testing (Polar ka sandbox nahi hai)
 
 100% off forever discount code banao, phir asli checkout us code se chalao.

@@ -282,11 +282,23 @@ function AboutPage() {
 
         <section className="ax-container pb-16">
           <div className="ax-plane rounded-3xl p-8 md:p-10">
-            <p className="ax-eyebrow">A note from the founder</p>
+            <p className="ax-eyebrow">Who is behind it</p>
+            <h2 className="mt-4 text-2xl text-foreground md:text-3xl">Who is behind it</h2>
             <div className="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-muted-foreground">
               <p className="text-base leading-relaxed text-foreground">
                 I built ANEXOMAIL because I believe business communication should belong to
                 the business using it.
+              </p>
+              <p>
+                ANEXOMAIL is built and run by a small, self-funded team. There are no
+                investors to please and nothing to sell on the side, which means the only
+                way this product survives is if the people paying for it keep choosing to
+                pay for it. That is the incentive we wanted.
+              </p>
+              <p>
+                It runs on our own servers in the UK and EU, under our own care — not resold
+                from somewhere else with our name on the invoice. If something breaks, the
+                person who wrote it answers you.
               </p>
               <p>
                 For too long, companies have had to choose between familiar email tools and

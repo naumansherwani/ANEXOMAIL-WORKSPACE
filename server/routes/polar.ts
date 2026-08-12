@@ -290,14 +290,54 @@ async function processWebhookEvent(event: any) {
     const { kind, plan, band } = kindFromMetadata(productMeta);
     const amount = (data.amount || 0) / 100; // Polar amounts are in pence/cents
     const isRecurring = data.subscription_id ? true : false;
+    const customerEmail =
+      data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
+    const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
+
+    // Polar sends the provider receipt/invoice. Supabase stores our immutable proof.
+    await db.from("billing_event_receipts").upsert(
+      {
+        polar_event_id: event?.id || `order_paid_${data.id}`,
+        polar_order_id: data.id || null,
+        user_id: userId || null,
+        customer_email: customerEmail,
+        event_type: type,
+        plan: plan || null,
+        amount_gbp: amount,
+        currency: String(data.currency || "GBP").toUpperCase(),
+        provider_email_state: "provider_managed",
+        payload: data,
+      },
+      { onConflict: "polar_event_id", ignoreDuplicates: true },
+    );
 
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
       const seats = Number(meta.seats || 1);
       const mrr = isRecurring ? amount : 0;
+      await db.from("workspace_subscriptions").upsert(
+        {
+          user_id: userId,
+          plan,
+          state: "active",
+          seats,
+          seats_used: 1,
+          price_per_seat: seats > 0 ? amount / seats : amount,
+          currency: String(data.currency || "GBP").toUpperCase(),
+          interval: "month",
+          renews_at: data.subscription?.current_period_end || data.current_period_end || null,
+          polar_customer_id: data.customer_id || data.customer?.id || null,
+          polar_subscription_id: data.subscription_id || data.subscription?.id || null,
+          customer_email: customerEmail,
+          response_due_hours: responseHours[plan] || 72,
+          provider_payload: data,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" },
+      );
       await db.from("revenue_accounts").upsert(
         {
-          company: data.customer_email || "unknown",
+          company: customerEmail || "unknown",
           plan,
           seats,
           mrr_gbp: mrr,
@@ -311,7 +351,7 @@ async function processWebhookEvent(event: any) {
     // log one-off job for move-in
     if (kind === "movein" && userId) {
       await db.from("revenue_jobs").insert({
-        company: data.customer_email || "unknown",
+        company: customerEmail || "unknown",
         kind: "migration",
         amount_gbp: amount,
         stage: "paid",
@@ -323,18 +363,30 @@ async function processWebhookEvent(event: any) {
       await db
         .from("revenue_accounts")
         .update({ sla_addon: true })
-        .eq("company", data.customer_email || "unknown");
+        .eq("company", customerEmail || "unknown");
     }
   }
 
   if (type === "subscription.canceled" || type === "subscription.revoked") {
-    const email = data.customer_email || "unknown";
+    const email = data.customer_email || data.customer?.email || "unknown";
     await db.from("revenue_accounts").update({ status: "churned" }).eq("company", email);
+    if (data.id) {
+      await db
+        .from("workspace_subscriptions")
+        .update({ state: "cancelled", updated_at: new Date().toISOString() })
+        .eq("polar_subscription_id", data.id);
+    }
   }
 
   if (type === "subscription.past_due") {
-    const email = data.customer_email || "unknown";
+    const email = data.customer_email || data.customer?.email || "unknown";
     await db.from("revenue_accounts").update({ status: "paused" }).eq("company", email);
+    if (data.id) {
+      await db
+        .from("workspace_subscriptions")
+        .update({ state: "past_due", updated_at: new Date().toISOString() })
+        .eq("polar_subscription_id", data.id);
+    }
   }
 }
 
