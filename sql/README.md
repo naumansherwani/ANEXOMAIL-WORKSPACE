@@ -36,3 +36,12 @@ Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 →
 | `phase34_billing_support.sql` | 34 | Polar billing truth + founder reply clock: subscription mein plan/customer/Polar IDs, immutable billing receipts, aur Basic 72h · Pro 48h · Business 24h `founder_reply_queue` |
 
 | `phase35_payment_safety.sql` | 35 | Payment Safety Net (ek bhi payment zaya nahi): `polar_webhook_raw` (har hit ka raw payload, signature fail ho to bhi), `payment_alerts` (3 fail par founder alert), retry state on `polar_webhook_events` (state/attempts/next_retry_at, exponential backoff 1m→6h, 8 ke baad dead-letter), RPCs `webhook_capture_raw` / `webhook_mark_processed` / `webhook_mark_failed` / `webhook_claim_retries`, views `payment_reconciliation_gaps` (paid order jiska invoice/subscription missing) + `payment_health` |
+
+## phase36_state_sync.sql — State Sync Engine (NO PAYMENT FAILURE)
+Supabase #4 = source of truth, Polar sirf messenger.
+- `billing_intents` — checkout se PEHLE banti hai, is liye koi payment orphan nahi
+- `entitlement_state` — authoritative entitlement (sirf `billing_apply_entitlement` likhta hai)
+- `billing_state_log` — har transition ka immutable log
+- `billing_intent_confirm()` — idempotent, webhook ya pull dono se
+- `billing_sync_claim/touch/fail/abandon_stale()` — backoff sweep; paid kabhi abandon nahi
+- `billing_truth_gaps` + `billing_state_health` — founder ke liye gap radar

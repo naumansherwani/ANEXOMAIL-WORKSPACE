@@ -151,3 +151,29 @@ Retry sweep har 5 minute (cron):
 ```bash
 ( crontab -l 2>/dev/null; echo "*/5 * * * * curl -s -X POST -H \"x-anexomail-cron: $(grep '^CRON_SECRET=' /opt/anexomail/.env | cut -d= -f2)\" http://localhost:3100/api/public/polar/replay > /dev/null" ) | crontab -
 ```
+
+### 8) Phase 36 — STATE SYNC ENGINE (Supabase = truth, Polar = messenger)
+
+Pehle Supabase #4 mein `sql/phase36_state_sync.sql` run karo. Phir:
+
+```bash
+cd /opt/anexomail
+cp src/index.ts src/index.ts.bak.$(date +%s) 2>/dev/null
+nano /opt/anexomail/src/routes/billing-sync.ts   # repo/server/routes/billing-sync.ts poori paste
+nano /opt/anexomail/src/index.ts                 # repo/server/index.ts poori paste
+grep -q '^CRON_SECRET=' .env || echo "CRON_SECRET=$(openssl rand -hex 24)" >> .env
+pm2 restart anexomail-leo --update-env && sleep 3
+pm2 logs anexomail-leo --lines 30 --nostream
+printf "/api/billing/intent (POST) -> ";  curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:3100/api/billing/intent
+printf "/api/billing/state -> ";          curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/billing/state
+printf "/api/billing/state-health -> ";   curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/billing/state-health
+printf "/api/public/billing/sync -> ";    curl -s -o /dev/null -w "%{http_code}\n" -X POST http://localhost:3100/api/public/billing/sync
+```
+
+Expected: teen billing routes `401` (token ke bina) aur sync `401` (cron secret ke bina).
+
+Pull-truth sweep har minute (yeh hi "no payment failure" ka engine hai):
+
+```bash
+( crontab -l 2>/dev/null; echo "* * * * * curl -s -X POST -H \"x-anexomail-cron: $(grep '^CRON_SECRET=' /opt/anexomail/.env | cut -d= -f2)\" http://localhost:3100/api/public/billing/sync > /dev/null" ) | crontab -
+```
