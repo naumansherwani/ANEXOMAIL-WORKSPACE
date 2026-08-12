@@ -30,6 +30,8 @@ function CallbackPage() {
   const navigate = useNavigate();
   const { refresh } = useAuth();
   const [error, setError] = useState<string | null>(null);
+  const [showSplash, setShowSplash] = useState(false);
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -72,14 +74,13 @@ function CallbackPage() {
             });
         sessionToken.set(res.token);
         await refresh();
-        void navigate({
-          to: !res.user.anexomail_address
-            ? "/claim"
-            : res.user.onboarded
-              ? "/app"
-              : "/onboarding",
-          replace: true,
-        });
+        const target = !res.user.anexomail_address
+          ? "/claim"
+          : res.user.onboarded
+            ? "/app"
+            : "/onboarding";
+        setRedirectTo(target);
+        setShowSplash(true);
       } catch (e) {
         setError(
           e instanceof ApiError
