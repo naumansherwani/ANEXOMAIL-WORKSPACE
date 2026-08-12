@@ -1,13 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import {
-  Download,
-  Gauge,
-  KeyRound,
-  Layers,
-  MailCheck,
-  Trash2,
-  Zap,
-} from "lucide-react";
+import { Download, Gauge, KeyRound, Layers, MailCheck, Trash2, Zap } from "lucide-react";
 
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
@@ -121,14 +113,38 @@ const whyUs = [
 ];
 
 const differences = [
-  ["A conversation that can be finished", "Threads carry commitments, owners and due dates, and close when the work is done."],
-  ["Follow-through you can see", "Unanswered promises surface on their own instead of waiting to be remembered."],
-  ["Speed you can audit", "Published budgets and recorded load times per screen, not a claim in a brochure."],
-  ["Deliverability as a verdict", "Live checks and signed probes tell you your mail is landing, in plain words."],
-  ["Offline that behaves", "Recent mail opens with no signal, and sends queue in a visible outbox with a retry clock."],
-  ["Move-in done for you", "Full history copied and verified message-for-message, with the switch scheduled in a quiet window."],
-  ["Access control with a ledger", "Roles, policies, device trust scores and one-click revocation, all written to an append-only record."],
-  ["A door out on day one", "Standard-format export on every plan, no permission needed, no retention games."],
+  [
+    "A conversation that can be finished",
+    "Threads carry commitments, owners and due dates, and close when the work is done.",
+  ],
+  [
+    "Follow-through you can see",
+    "Unanswered promises surface on their own instead of waiting to be remembered.",
+  ],
+  [
+    "Speed you can audit",
+    "Published budgets and recorded load times per screen, not a claim in a brochure.",
+  ],
+  [
+    "Deliverability as a verdict",
+    "Live checks and signed probes tell you your mail is landing, in plain words.",
+  ],
+  [
+    "Offline that behaves",
+    "Recent mail opens with no signal, and sends queue in a visible outbox with a retry clock.",
+  ],
+  [
+    "Move-in done for you",
+    "Full history copied and verified message-for-message, with the switch scheduled in a quiet window.",
+  ],
+  [
+    "Access control with a ledger",
+    "Roles, policies, device trust scores and one-click revocation, all written to an append-only record.",
+  ],
+  [
+    "A door out on day one",
+    "Standard-format export on every plan, no permission needed, no retention games.",
+  ],
 ];
 
 function AboutPage() {
@@ -142,9 +158,9 @@ function AboutPage() {
             Business email hasn't really changed in twenty years. So we rebuilt it.
           </h1>
           <p className="mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            ANEXOMAIL is private business email on your own name — mail, people, calendar
-            and the work attached to them on one fast surface. It exists because the mail
-            most companies use is slow, forgetful, and quietly owned by somebody else.
+            ANEXOMAIL is private business email on your own name — mail, people, calendar and the
+            work attached to them on one fast surface. It exists because the mail most companies use
+            is slow, forgetful, and quietly owned by somebody else.
           </p>
         </section>
 
@@ -152,20 +168,20 @@ function AboutPage() {
           <h2 className="text-2xl text-foreground md:text-3xl">Why it was built</h2>
           <div className="mt-6 grid gap-5 lg:grid-cols-3">
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Every growing company hits the same three walls. The inbox gets slower the
-              more it matters. Things that were promised in an email get forgotten because
-              an email is only a message, never a task. And the day you want to leave, you
-              find out how much of your own company lives inside somebody else's account.
+              Every growing company hits the same three walls. The inbox gets slower the more it
+              matters. Things that were promised in an email get forgotten because an email is only
+              a message, never a task. And the day you want to leave, you find out how much of your
+              own company lives inside somebody else's account.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              None of that is a technical accident. It is what happens when mail is a free
-              add-on to something else being sold, and your attention or your data is the
-              real product. We wanted the opposite: a paid tool whose only job is to make
-              your company's communication fast, honest and finished.
+              None of that is a technical accident. It is what happens when mail is a free add-on to
+              something else being sold, and your attention or your data is the real product. We
+              wanted the opposite: a paid tool whose only job is to make your company's
+              communication fast, honest and finished.
             </p>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              So ANEXOMAIL was written from scratch around one idea — a conversation is a
-              piece of work, and work should end. Not be archived, not be starred. Ended.
+              So ANEXOMAIL was written from scratch around one idea — a conversation is a piece of
+              work, and work should end. Not be archived, not be starred. Ended.
             </p>
           </div>
         </section>
@@ -173,8 +189,8 @@ function AboutPage() {
         <section className="ax-container pb-16">
           <h2 className="text-2xl text-foreground md:text-3xl">What we promise you</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Four promises, written plainly, because they are the reason to trust a mail
-            provider at all.
+            Four promises, written plainly, because they are the reason to trust a mail provider at
+            all.
           </p>
           <div className="mt-7 grid gap-5 sm:grid-cols-2">
             {promises.map((p) => (
@@ -218,17 +234,14 @@ function AboutPage() {
               Speed is measured here, not marketed.
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              We keep a budget for how long every screen is allowed to take, record what it
-              actually took, and treat anything over budget as a bug to fix. That record is
-              public.
+              We keep a budget for how long every screen is allowed to take, record what it actually
+              took, and treat anything over budget as a bug to fix. That record is public.
             </p>
             <div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {speed.map((s) => (
                 <div key={s.value} className="rounded-2xl bg-secondary/50 p-5">
                   <p className="text-base font-bold text-foreground">{s.value}</p>
-                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-                    {s.label}
-                  </p>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.label}</p>
                 </div>
               ))}
             </div>
@@ -242,14 +255,15 @@ function AboutPage() {
         </section>
 
         <section className="ax-container pb-16">
-          <p className="ax-eyebrow" id="why-anexomail">Why ANEXOMAIL</p>
+          <p className="ax-eyebrow" id="why-anexomail">
+            Why ANEXOMAIL
+          </p>
           <h2 className="mt-4 max-w-3xl text-2xl text-foreground md:text-3xl">
             Why you should use ANEXOMAIL — and why it is not like the mail you have now.
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            The tools most companies use were designed to store messages. ANEXOMAIL is
-            designed to finish work. That single difference changes everything about how the
-            day feels.
+            The tools most companies use were designed to store messages. ANEXOMAIL is designed to
+            finish work. That single difference changes everything about how the day feels.
           </p>
           <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {whyUs.map((w) => (
@@ -283,38 +297,48 @@ function AboutPage() {
         <section className="ax-container pb-16">
           <div className="ax-plane rounded-3xl p-8 md:p-10">
             <p className="ax-eyebrow">A note from the founder</p>
+            <h2 className="mt-4 text-2xl text-foreground md:text-3xl">Who is behind it</h2>
             <div className="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-muted-foreground">
               <p className="text-base leading-relaxed text-foreground">
-                I built ANEXOMAIL because I believe business communication should belong to
-                the business using it.
+                I built ANEXOMAIL because I believe business communication should belong to the
+                business using it.
               </p>
               <p>
-                For too long, companies have had to choose between familiar email tools and
-                the control, ownership and simplicity they actually want. Your company name
-                may belong to you, but too often your communication, workflow and data
-                become dependent on a platform you do not control.
+                ANEXOMAIL is built and run by a small, self-funded team. There are no investors to
+                please and nothing to sell on the side, which means the only way this product
+                survives is if the people paying for it keep choosing to pay for it. That is the
+                incentive we wanted.
+              </p>
+              <p>
+                It runs on our own servers in the UK and EU, under our own care — not resold from
+                somewhere else with our name on the invoice. If something breaks, the person who
+                wrote it answers you.
+              </p>
+              <p>
+                For too long, companies have had to choose between familiar email tools and the
+                control, ownership and simplicity they actually want. Your company name may belong
+                to you, but too often your communication, workflow and data become dependent on a
+                platform you do not control.
               </p>
               <p>ANEXOMAIL is our attempt to build something different.</p>
               <p>
-                Your business email should carry your name. Your workspace should work
-                around your team. Your data should remain yours. And if you decide to leave,
-                taking your data with you should be straightforward.
+                Your business email should carry your name. Your workspace should work around your
+                team. Your data should remain yours. And if you decide to leave, taking your data
+                with you should be straightforward.
               </p>
               <p>
-                We are building ANEXOMAIL independently, carefully and transparently. We are
-                not trying to become another platform that locks you in. We want to earn your
-                trust by making the product reliable, useful and honest about what it does.
+                We are building ANEXOMAIL independently, carefully and transparently. We are not
+                trying to become another platform that locks you in. We want to earn your trust by
+                making the product reliable, useful and honest about what it does.
               </p>
               <p>That also means we will not pretend everything is perfect.</p>
               <p>
                 When something is unavailable, we want our status page to tell you. When an
-                operation fails, we want you to know. When AI uses credits, we want you to
-                see what it will cost before it happens. When you leave, we want you to be
-                able to export your data.
+                operation fails, we want you to know. When AI uses credits, we want you to see what
+                it will cost before it happens. When you leave, we want you to be able to export
+                your data.
               </p>
-              <p>
-                The product will keep evolving, but the principles will not.
-              </p>
+              <p>The product will keep evolving, but the principles will not.</p>
               <p className="text-base font-semibold text-foreground">
                 Your communication. Your data. Your choice.
               </p>
@@ -326,33 +350,27 @@ function AboutPage() {
                 ANEXOMAIL AI is coming soon. We call him Leo.
               </p>
               <p>
-                Leo will not simply sit beside your inbox and answer questions. He is being
-                built to understand the work happening inside it — the conversations, the
-                context, the commitments, the meetings, the follow-ups and the things that
-                should never be forgotten.
+                Leo will not simply sit beside your inbox and answer questions. He is being built to
+                understand the work happening inside it — the conversations, the context, the
+                commitments, the meetings, the follow-ups and the things that should never be
+                forgotten.
               </p>
               <p>
-                You will be able to ask. You will be able to write. You will be able to
-                search. You will be able to turn conversations into action.
+                You will be able to ask. You will be able to write. You will be able to search. You
+                will be able to turn conversations into action.
               </p>
+              <p>And eventually, you may find yourself wondering how you ever worked without it.</p>
               <p>
-                And eventually, you may find yourself wondering how you ever worked without
-                it.
-              </p>
-              <p>
-                We are keeping the door closed for now because we would rather release
-                something worth waiting for than release an unfinished promise. When the
-                door opens, you will understand why we kept it closed.
+                We are keeping the door closed for now because we would rather release something
+                worth waiting for than release an unfinished promise. When the door opens, you will
+                understand why we kept it closed.
               </p>
               <p className="text-base font-semibold text-foreground">
-                Your communication. Your data. Your choice. You own it. This is your own
-                workspace.
+                Your communication. Your data. Your choice. You own it. This is your own workspace.
               </p>
             </div>
             <div className="mt-8 border-t border-border pt-6">
-              <p className="text-base font-bold text-foreground">
-                Muhammad Nauman Sherwani
-              </p>
+              <p className="text-base font-bold text-foreground">Muhammad Nauman Sherwani</p>
               <p className="ax-caption mt-1 text-muted-foreground">Founder, ANEXOMAIL</p>
             </div>
           </div>
@@ -363,8 +381,8 @@ function AboutPage() {
             <div className="max-w-xl">
               <h2 className="text-2xl text-foreground">Move your company across.</h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Bring your existing mail, contacts and calendars with their full history.
-                You keep working while it happens, and you decide the day you switch.
+                Bring your existing mail, contacts and calendars with their full history. You keep
+                working while it happens, and you decide the day you switch.
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap gap-3">

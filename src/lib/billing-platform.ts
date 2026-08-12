@@ -69,7 +69,7 @@ export type PlanChangePreview = {
   effective_at: string;
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useSubscription() {
@@ -162,6 +162,44 @@ export function useRevenueTruth() {
     queryKey: ["billing", "founder", "revenue"],
     queryFn: () => get<RevenueTruth>("billing.revenueTruth", "/api/founder/billing/revenue"),
     retry: false,
+  });
+}
+
+export type FounderReply = {
+  id: string;
+  user_id: string | null;
+  thread_id: string | null;
+  customer_email: string;
+  subject: string;
+  plan: WorkspacePlanId;
+  response_due_hours: 24 | 48 | 72;
+  received_at: string;
+  respond_by: string;
+  state: "awaiting_reply" | "replied" | "closed";
+  replied_at: string | null;
+  overdue: boolean;
+  remaining_minutes: number;
+};
+
+export function useFounderReplyQueue() {
+  return useQuery<{ replies: FounderReply[] }, ApiError>({
+    queryKey: ["billing", "founder", "reply-queue"],
+    queryFn: () =>
+      get<{ replies: FounderReply[] }>("billing.founderReplyQueue", "/api/founder/support/replies"),
+    retry: false,
+  });
+}
+
+export function useMarkFounderReplySent() {
+  const qc = useQueryClient();
+  return useMutation<{ id: string; state: "replied"; replied_at: string }, ApiError, string>({
+    mutationFn: (id) =>
+      rpcOrRest(
+        "billing.markFounderReplySent",
+        { path: `/api/founder/support/replies/${id}/replied`, method: "POST" },
+        { id },
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["billing", "founder", "reply-queue"] }),
   });
 }
 

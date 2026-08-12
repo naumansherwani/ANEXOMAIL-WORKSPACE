@@ -129,7 +129,7 @@ authRouter.post("/checkout", async (req, res) => {
   try {
     const successUrl = SUCCESS_URL.replace(/\{CHECKOUT_ID\}/g, "{CHECKOUT_ID}");
     const payload: any = {
-      product_price_id: resolvedProductId,
+      products: [resolvedProductId],
       success_url: successUrl,
       external_customer_id: userId,
       metadata: { anexomail_user_id: userId, seats: String(seats) },
@@ -195,43 +195,59 @@ authRouter.get("/checkout/:id", async (req, res) => {
 
 // ---------- webhook: public, verified ----------
 function getWebhookSecretBytes(): Buffer {
-  // Polar dashboard secret is base64. Try decode; fallback raw.
+  // Standard Webhooks secrets commonly use whsec_<base64>.
+  const raw = POLAR_WEBHOOK_SECRET.startsWith("whsec_")
+    ? POLAR_WEBHOOK_SECRET.slice(6)
+    : POLAR_WEBHOOK_SECRET;
   try {
-    const b = Buffer.from(POLAR_WEBHOOK_SECRET, "base64");
-    if (b.length > 16 && b.toString("base64") === POLAR_WEBHOOK_SECRET) return b;
+    const b = Buffer.from(raw, "base64");
+    if (b.length > 16) return b;
   } catch {
     // ignore
   }
-  return Buffer.from(POLAR_WEBHOOK_SECRET, "utf8");
+  return Buffer.from(raw, "utf8");
 }
 
 publicRouter.post("/polar/webhook", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
   if (!POLAR_WEBHOOK_SECRET) return res.status(401).json({ error: "webhook_not_configured" });
 
+  const webhookId = String(req.headers["webhook-id"] || "");
+  const timestamp = String(req.headers["webhook-timestamp"] || "");
   const signatureHeader = String(req.headers["webhook-signature"] || "");
-  const body = req.rawBody || JSON.stringify(req.body);
-  if (!signatureHeader || !body) return res.status(400).json({ error: "missing_payload" });
-
-  // Standard Webhooks signature: t=<ts>,v1=<base64sig>
-  const parts: Record<string, string> = {};
-  for (const piece of signatureHeader.split(",")) {
-    const [k, v] = piece.trim().split("=");
-    if (k && v) parts[k] = v;
+  const body = req.rawBody ? Buffer.from(req.rawBody).toString("utf8") : JSON.stringify(req.body);
+  if (!webhookId || !timestamp || !signatureHeader || !body) {
+    return res.status(400).json({ error: "missing_webhook_headers_or_payload" });
   }
-  const sigB64 = parts.v1;
-  const timestamp = parts.t;
-  if (!sigB64 || !timestamp) return res.status(401).json({ error: "invalid_signature_format" });
 
   const secret = getWebhookSecretBytes();
-  const signedPayload = `${timestamp}.${body}`;
+  const signedPayload = `${webhookId}.${timestamp}.${body}`;
   const expected = createHmac("sha256", secret).update(signedPayload).digest("base64");
+  const signatures = signatureHeader
+    .split(" ")
+    .map((piece) => piece.trim())
+    .filter(Boolean)
+    .map((piece) => {
+      const separator = piece.includes(",") ? "," : "=";
+      const [version, signature] = piece.split(separator, 2);
+      return version === "v1" ? signature : null;
+    })
+    .filter((signature): signature is string => Boolean(signature));
 
-  try {
-    if (!timingSafeEqual(Buffer.from(sigB64), Buffer.from(expected))) {
-      return res.status(401).json({ error: "invalid_signature" });
+  let signatureValid = false;
+  for (const signature of signatures) {
+    try {
+      const actual = Buffer.from(signature);
+      const wanted = Buffer.from(expected);
+      if (actual.length === wanted.length && timingSafeEqual(actual, wanted)) {
+        signatureValid = true;
+        break;
+      }
+    } catch {
+      // Try the next signature when the provider rotates signing keys.
     }
-  } catch {
+  }
+  if (!signatureValid) {
     return res.status(401).json({ error: "invalid_signature" });
   }
 
@@ -242,35 +258,45 @@ publicRouter.post("/polar/webhook", async (req, res) => {
   }
 
   const event = req.body as any;
-  const eventId = event?.id || `${event?.type}_${Date.now()}`;
+  const eventId = webhookId;
 
   // idempotency: already seen?
   const { data: existing } = await db
     .from("polar_webhook_events")
-    .select("id")
+    .select("id,processed_at")
     .eq("polar_event_id", eventId)
     .maybeSingle();
-  if (existing) return res.json({ ok: true, duplicate: true });
+  if (existing?.processed_at) return res.json({ ok: true, duplicate: true });
 
   // log event first
-  await db.from("polar_webhook_events").insert({
-    polar_event_id: eventId,
-    type: event?.type || "unknown",
-    payload: event,
-  });
+  if (!existing) {
+    const { error: logError } = await db.from("polar_webhook_events").insert({
+      polar_event_id: eventId,
+      type: event?.type || "unknown",
+      payload: event,
+    });
+    if (logError) {
+      console.error("[polar webhook log]", logError);
+      return res.status(500).json({ error: "event_log_failed" });
+    }
+  }
 
   // process business events
   try {
-    await processWebhookEvent(event);
+    await processWebhookEvent(event, eventId);
+    await db
+      .from("polar_webhook_events")
+      .update({ processed_at: new Date().toISOString() })
+      .eq("polar_event_id", eventId);
   } catch (e: any) {
     console.error("[polar webhook process]", e);
-    // still 200 — acknowledge receipt; processing failure is our problem
+    return res.status(500).json({ error: "event_processing_failed" });
   }
 
   res.json({ ok: true });
 });
 
-async function processWebhookEvent(event: any) {
+async function processWebhookEvent(event: any, eventId: string) {
   if (!db) return;
   const type = event?.type;
   const data = event?.data || {};
@@ -283,21 +309,89 @@ async function processWebhookEvent(event: any) {
   }
 
   if (type === "order.paid") {
-    const meta = data.metadata || {};
-    const userId = meta.anexomail_user_id;
-    const product = data.product || {};
+    const checkoutMeta = data.checkout?.metadata || {};
+    const meta = { ...checkoutMeta, ...(data.metadata || {}) };
+    const userId =
+      meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
+    const product = data.product || data.items?.[0]?.product || {};
     const productMeta = product.metadata || {};
     const { kind, plan, band } = kindFromMetadata(productMeta);
-    const amount = (data.amount || 0) / 100; // Polar amounts are in pence/cents
+    const amount = Number(data.total_amount ?? data.amount ?? 0) / 100;
     const isRecurring = data.subscription_id ? true : false;
+    const customerEmail =
+      data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
+    const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
+
+    // Polar sends the provider receipt/invoice. Supabase stores our immutable proof.
+    await db.from("billing_event_receipts").upsert(
+      {
+        polar_event_id: eventId,
+        polar_order_id: data.id || null,
+        user_id: userId || null,
+        customer_email: customerEmail,
+        event_type: type,
+        plan: plan || null,
+        amount_gbp: amount,
+        currency: String(data.currency || "GBP").toUpperCase(),
+        provider_email_state: "provider_managed",
+        payload: data,
+      },
+      { onConflict: "polar_event_id", ignoreDuplicates: true },
+    );
+
+    let invoiceWriteError: string | null = null;
+    if (userId) {
+      const invoiceNumber = String(
+        data.invoice_number || data.order_number || data.id || event?.id,
+      );
+      const { error: invoiceError } = await db.from("workspace_invoices").upsert(
+        {
+          user_id: userId,
+          number: invoiceNumber,
+          state: "paid",
+          subtotal: Number(data.subtotal_amount ?? data.total_amount ?? data.amount ?? 0) / 100,
+          tax: Number(data.tax_amount ?? 0) / 100,
+          total: amount,
+          currency: String(data.currency || "GBP").toUpperCase(),
+          period_start: data.subscription?.current_period_start || null,
+          period_end: data.subscription?.current_period_end || null,
+          issued_at: data.created_at || new Date().toISOString(),
+          paid_at: data.modified_at || data.created_at || new Date().toISOString(),
+          pdf_url: data.invoice?.url || data.invoice_url || null,
+        },
+        { onConflict: "user_id,number" },
+      );
+      invoiceWriteError = invoiceError?.message || null;
+    }
 
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
       const seats = Number(meta.seats || 1);
       const mrr = isRecurring ? amount : 0;
-      await db.from("revenue_accounts").upsert(
+      const { error: subscriptionError } = await db.from("workspace_subscriptions").upsert(
         {
-          company: data.customer_email || "unknown",
+          user_id: userId,
+          plan,
+          state: "active",
+          seats,
+          seats_used: 1,
+          price_per_seat: seats > 0 ? amount / seats : amount,
+          currency: String(data.currency || "GBP").toUpperCase(),
+          interval: "month",
+          renews_at: data.subscription?.current_period_end || data.current_period_end || null,
+          polar_customer_id: data.customer_id || data.customer?.id || null,
+          polar_subscription_id: data.subscription_id || data.subscription?.id || null,
+          customer_email: customerEmail,
+          response_due_hours: responseHours[plan] || 72,
+          provider_payload: data,
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" },
+      );
+      if (subscriptionError) throw subscriptionError;
+      const { error: revenueError } = await db.from("revenue_accounts").upsert(
+        {
+          company: customerEmail || "unknown",
           plan,
           seats,
           mrr_gbp: mrr,
@@ -306,12 +400,13 @@ async function processWebhookEvent(event: any) {
         },
         { onConflict: "company" },
       );
+      if (revenueError) throw revenueError;
     }
 
     // log one-off job for move-in
     if (kind === "movein" && userId) {
       await db.from("revenue_jobs").insert({
-        company: data.customer_email || "unknown",
+        company: customerEmail || "unknown",
         kind: "migration",
         amount_gbp: amount,
         stage: "paid",
@@ -323,18 +418,32 @@ async function processWebhookEvent(event: any) {
       await db
         .from("revenue_accounts")
         .update({ sla_addon: true })
-        .eq("company", data.customer_email || "unknown");
+        .eq("company", customerEmail || "unknown");
     }
+
+    if (invoiceWriteError) throw new Error(`workspace_invoice_sync_failed: ${invoiceWriteError}`);
   }
 
   if (type === "subscription.canceled" || type === "subscription.revoked") {
-    const email = data.customer_email || "unknown";
+    const email = data.customer_email || data.customer?.email || "unknown";
     await db.from("revenue_accounts").update({ status: "churned" }).eq("company", email);
+    if (data.id) {
+      await db
+        .from("workspace_subscriptions")
+        .update({ state: "cancelled", updated_at: new Date().toISOString() })
+        .eq("polar_subscription_id", data.id);
+    }
   }
 
   if (type === "subscription.past_due") {
-    const email = data.customer_email || "unknown";
+    const email = data.customer_email || data.customer?.email || "unknown";
     await db.from("revenue_accounts").update({ status: "paused" }).eq("company", email);
+    if (data.id) {
+      await db
+        .from("workspace_subscriptions")
+        .update({ state: "past_due", updated_at: new Date().toISOString() })
+        .eq("polar_subscription_id", data.id);
+    }
   }
 }
 

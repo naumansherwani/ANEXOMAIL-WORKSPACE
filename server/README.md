@@ -98,4 +98,31 @@ curl -s -o /dev/null -w "%{http_code}\n" -X POST "http://localhost:3100/api/mail
 
 SQL: `sql/phase30_release.sql` (Supabase #4 mein chalao).
 
+### 6) Phase 34 — Polar billing truth + founder reply clock
+
+Pehle Supabase #4 mein `sql/phase34_billing_support.sql` run karo. Phir server par
+in **poori files** ko repo version se nano select-all overwrite karo:
+
+```bash
+cd /opt/anexomail
+cp src/routes/integrations.ts src/routes/integrations.ts.bak.$(date +%s) 2>/dev/null
+cp src/routes/polar.ts src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
+cp src/routes/billing-support.ts src/routes/billing-support.ts.bak.$(date +%s) 2>/dev/null
+cp src/index.ts src/index.ts.bak.$(date +%s)
+nano /opt/anexomail/src/routes/integrations.ts  # repo/server/routes/integrations.ts poori paste
+nano /opt/anexomail/src/routes/polar.ts         # repo/server/routes/polar.ts poori paste
+nano /opt/anexomail/src/routes/billing-support.ts # repo/server/routes/billing-support.ts poori paste
+nano /opt/anexomail/src/index.ts                # repo/server/index.ts poori paste
+bun install
+pm2 restart anexomail-leo --update-env
+sleep 3
+pm2 logs anexomail-leo --lines 40 --nostream
+printf "/health -> "; curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/health
+printf "/api/integrations/providers -> "; curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/integrations/providers
+printf "/api/founder/support/replies -> "; curl -s -o /dev/null -w "%{http_code}\n" http://localhost:3100/api/founder/support/replies
+```
+
+Expected: health `200`; dono protected routes without token `401`. `000` = Brain
+down, `404` = mount missing, `503` = Supabase #4 env missing.
+
 `401` = green (guarded). `200` = public/health ok. `000` = server down. `404` = mount missing.
