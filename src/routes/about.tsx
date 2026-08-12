@@ -87,6 +87,50 @@ const speed = [
   { value: "Live status", label: "Uptime published, not promised" },
 ];
 
+const whyUs = [
+  {
+    icon: Layers,
+    title: "The thread carries the work",
+    body: "Elsewhere an email is a message you must copy into a task tool, a document and a calendar invite. Here the conversation itself holds the promises made, who owes what, and the day it is due — and it can be closed, not just archived.",
+  },
+  {
+    icon: Zap,
+    title: "One surface, zero reloads",
+    body: "Mail, the person, the company, the meeting and the work sit on the same screen, with a command bar that reaches every one of them. Reply stays inside the thread; a new message floats above it. Your context never breaks.",
+  },
+  {
+    icon: Gauge,
+    title: "Speed with a receipt",
+    body: "Every screen has a time budget, every load is recorded, and anything over budget is treated as a bug. You can read those numbers yourself. Nobody else hands you the evidence — they hand you a marketing adjective.",
+  },
+  {
+    icon: MailCheck,
+    title: "Proof, not reassurance",
+    body: "Signing, sender policy and reporting are checked live and shown as a verdict you can see, with a delivery probe you can run yourself. No support ticket to find out whether your mail is landing.",
+  },
+  {
+    icon: KeyRound,
+    title: "Ownership you can act on",
+    body: "Roles, departments and policies with an append-only audit ledger, plus one-click removal of a person's access across the whole workspace. Trusted devices with a live trust score — and a single click to kill any of them.",
+  },
+  {
+    icon: Download,
+    title: "The exit is built in",
+    body: "One-click export of mail, contacts, settings and audit on every plan, and deletion that actually deletes. A product confident in itself does not need to hold your data hostage.",
+  },
+];
+
+const differences = [
+  ["A conversation that can be finished", "Threads carry commitments, owners and due dates, and close when the work is done."],
+  ["Follow-through you can see", "Unanswered promises surface on their own instead of waiting to be remembered."],
+  ["Speed you can audit", "Published budgets and recorded load times per screen, not a claim in a brochure."],
+  ["Deliverability as a verdict", "Live checks and signed probes tell you your mail is landing, in plain words."],
+  ["Offline that behaves", "Recent mail opens with no signal, and sends queue in a visible outbox with a retry clock."],
+  ["Move-in done for you", "Full history copied and verified message-for-message, with the switch scheduled in a quiet window."],
+  ["Access control with a ledger", "Roles, policies, device trust scores and one-click revocation, all written to an append-only record."],
+  ["A door out on day one", "Standard-format export on every plan, no permission needed, no retention games."],
+];
+
 function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
