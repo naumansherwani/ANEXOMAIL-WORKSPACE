@@ -62,6 +62,7 @@ import { Route as AppAdminMonitoringRouteImport } from './routes/app.admin.monit
 import { Route as AppAdminReportsRouteImport } from './routes/app.admin.reports'
 import { Route as AppAdminStorageRouteImport } from './routes/app.admin.storage'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
+import { Route as AppAiCreditsRouteImport } from './routes/app.ai.credits'
 import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
 import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
 import { Route as AppAnalyticsForecastRouteImport } from './routes/app.analytics.forecast'
@@ -401,6 +402,11 @@ const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
   id: '/teams',
   path: '/teams',
   getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAiCreditsRoute = AppAiCreditsRouteImport.update({
+  id: '/ai/credits',
+  path: '/ai/credits',
+  getParentRoute: () => AppRoute,
 } as any)
 const AppAnalyticsIndexRoute = AppAnalyticsIndexRouteImport.update({
   id: '/',
@@ -830,6 +836,7 @@ export interface FileRoutesByFullPath {
   '/app/admin/reports': typeof AppAdminReportsRoute
   '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/ai/credits': typeof AppAiCreditsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
   '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
@@ -951,6 +958,7 @@ export interface FileRoutesByTo {
   '/app/admin/reports': typeof AppAdminReportsRoute
   '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/ai/credits': typeof AppAiCreditsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
   '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
@@ -1078,6 +1086,7 @@ export interface FileRoutesById {
   '/app/admin/reports': typeof AppAdminReportsRoute
   '/app/admin/storage': typeof AppAdminStorageRoute
   '/app/admin/teams': typeof AppAdminTeamsRoute
+  '/app/ai/credits': typeof AppAiCreditsRoute
   '/app/analytics/deep-work': typeof AppAnalyticsDeepWorkRoute
   '/app/analytics/forecast': typeof AppAnalyticsForecastRoute
   '/app/analytics/leaks': typeof AppAnalyticsLeaksRoute
@@ -1209,6 +1218,7 @@ export interface FileRouteTypes {
     | '/app/admin/reports'
     | '/app/admin/storage'
     | '/app/admin/teams'
+    | '/app/ai/credits'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
     | '/app/analytics/leaks'
@@ -1330,6 +1340,7 @@ export interface FileRouteTypes {
     | '/app/admin/reports'
     | '/app/admin/storage'
     | '/app/admin/teams'
+    | '/app/ai/credits'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
     | '/app/analytics/leaks'
@@ -1456,6 +1467,7 @@ export interface FileRouteTypes {
     | '/app/admin/reports'
     | '/app/admin/storage'
     | '/app/admin/teams'
+    | '/app/ai/credits'
     | '/app/analytics/deep-work'
     | '/app/analytics/forecast'
     | '/app/analytics/leaks'
@@ -1931,6 +1943,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/admin/teams'
       preLoaderRoute: typeof AppAdminTeamsRouteImport
       parentRoute: typeof AppAdminRoute
+    }
+    '/app/ai/credits': {
+      id: '/app/ai/credits'
+      path: '/ai/credits'
+      fullPath: '/app/ai/credits'
+      preLoaderRoute: typeof AppAiCreditsRouteImport
+      parentRoute: typeof AppRoute
     }
     '/app/analytics/': {
       id: '/app/analytics/'
@@ -2708,6 +2727,7 @@ interface AppRouteChildren {
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
+  AppAiCreditsRoute: typeof AppAiCreditsRoute
   AppFounderAdminRoute: typeof AppFounderAdminRoute
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
   AppFounderAnalyticsRoute: typeof AppFounderAnalyticsRoute
@@ -2745,6 +2765,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSettingsRoute: AppSettingsRouteWithChildren,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
+  AppAiCreditsRoute: AppAiCreditsRoute,
   AppFounderAdminRoute: AppFounderAdminRoute,
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
   AppFounderAnalyticsRoute: AppFounderAnalyticsRoute,
