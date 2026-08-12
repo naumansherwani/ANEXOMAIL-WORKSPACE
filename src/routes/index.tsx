@@ -496,12 +496,14 @@ function Index() {
                 <div>
                   <span className="ax-eyebrow">Need help moving in, or a named person afterwards?</span>
                   <p className="mt-4 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">Managed Move-In — from £500 one-off.</strong>{" "}
-                    We move the whole company off your old provider and prove your domain is green.
+                    <strong className="font-extrabold">Managed Move-In — £500 / £1,500 / £3,000 one-off.</strong>{" "}
+                    Priced by mailbox count: 1–5, 6–15, or 30+. We move the whole company off your old provider and
+                    prove your domain is green.
                   </p>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground">
                     <strong className="font-extrabold">Priority Support — £500 / month.</strong>{" "}
-                    A named contact, a reply within 4 working hours, and a monthly health report.
+                    A named founder contact, a response within 1 business day, and a quarterly service and security
+                    review.
                   </p>
                   <p className="mt-3 text-[13px] text-muted-foreground">
                     Two move-ins a month, three Priority Support companies at a time — capped so both stay real.
