@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
+import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { Button } from "@/components/ui/button";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
