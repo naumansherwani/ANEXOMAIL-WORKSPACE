@@ -15,6 +15,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
 import { SiteLock } from "@/components/site/SiteLock";
+import { FounderBar } from "@/components/site/FounderBar";
 import { VisitorBadge } from "@/components/site/VisitorBadge";
 import { registerServiceWorker } from "@/lib/pwa";
 
@@ -153,6 +154,8 @@ function RootComponent() {
       <AuthProvider>
         {/* PRE-LAUNCH LOCK: awam ko kuch nahi, founder key wale device pe sab kuch. */}
         <SiteLock>
+          {/* Founder-only preview strip — awam ko bilkul invisible. */}
+          <FounderBar />
           {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
           <Outlet />
           <CrossPlatformBar />
