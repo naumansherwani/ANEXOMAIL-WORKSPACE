@@ -263,30 +263,40 @@ publicRouter.post("/polar/webhook", async (req, res) => {
   // idempotency: already seen?
   const { data: existing } = await db
     .from("polar_webhook_events")
-    .select("id")
+    .select("id,processed_at")
     .eq("polar_event_id", eventId)
     .maybeSingle();
-  if (existing) return res.json({ ok: true, duplicate: true });
+  if (existing?.processed_at) return res.json({ ok: true, duplicate: true });
 
   // log event first
-  await db.from("polar_webhook_events").insert({
-    polar_event_id: eventId,
-    type: event?.type || "unknown",
-    payload: event,
-  });
+  if (!existing) {
+    const { error: logError } = await db.from("polar_webhook_events").insert({
+      polar_event_id: eventId,
+      type: event?.type || "unknown",
+      payload: event,
+    });
+    if (logError) {
+      console.error("[polar webhook log]", logError);
+      return res.status(500).json({ error: "event_log_failed" });
+    }
+  }
 
   // process business events
   try {
-    await processWebhookEvent(event);
+    await processWebhookEvent(event, eventId);
+    await db
+      .from("polar_webhook_events")
+      .update({ processed_at: new Date().toISOString() })
+      .eq("polar_event_id", eventId);
   } catch (e: any) {
     console.error("[polar webhook process]", e);
-    // still 200 — acknowledge receipt; processing failure is our problem
+    return res.status(500).json({ error: "event_processing_failed" });
   }
 
   res.json({ ok: true });
 });
 
-async function processWebhookEvent(event: any) {
+async function processWebhookEvent(event: any, eventId: string) {
   if (!db) return;
   const type = event?.type;
   const data = event?.data || {};
@@ -314,7 +324,7 @@ async function processWebhookEvent(event: any) {
     // Polar sends the provider receipt/invoice. Supabase stores our immutable proof.
     await db.from("billing_event_receipts").upsert(
       {
-        polar_event_id: event?.id || `order_paid_${data.id}`,
+        polar_event_id: eventId,
         polar_order_id: data.id || null,
         user_id: userId || null,
         customer_email: customerEmail,

@@ -296,7 +296,7 @@ function AboutPage() {
 
         <section className="ax-container pb-16">
           <div className="ax-plane rounded-3xl p-8 md:p-10">
-            <p className="ax-eyebrow">Who is behind it</p>
+            <p className="ax-eyebrow">A note from the founder</p>
             <h2 className="mt-4 text-2xl text-foreground md:text-3xl">Who is behind it</h2>
             <div className="mt-6 max-w-2xl space-y-4 text-sm leading-relaxed text-muted-foreground">
               <p className="text-base leading-relaxed text-foreground">
