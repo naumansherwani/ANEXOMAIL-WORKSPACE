@@ -171,6 +171,11 @@ app.use("/api/founder", founderReleaseRouter);
 app.use("/api/trial", trialRouter);
 app.use("/api/public", trialCronRouter);
 
+// Phase 33 — Polar Checkout + Webhook
+// /api/billing/checkout (auth) + /api/public/polar/webhook (verified)
+app.use("/api/billing", polarAuthRouter);
+app.use("/api/public", polarPublicRouter);
+
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));
 
