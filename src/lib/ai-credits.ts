@@ -67,7 +67,7 @@ export type Estimate = {
 
 const get = <T,>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
 const post = <T,>(procedure: string, path: string, input?: unknown) =>
-  rpcOrRest<T>(procedure, { path, method: "POST" }, input);
+  rpcOrRest<T>(procedure, { path, method: "POST", body: input ?? {} }, input);
 
 export function useCreditProducts() {
   return useQuery<CreditProducts, ApiError>({
