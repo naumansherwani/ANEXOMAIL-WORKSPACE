@@ -51,6 +51,7 @@ import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
+import { Route as CheckoutDoneRouteImport } from './routes/checkout.done'
 import { Route as FounderPreviewRouteImport } from './routes/founder.preview'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
@@ -348,6 +349,11 @@ const AppWorkRoute = AppWorkRouteImport.update({
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth_/callback',
   path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CheckoutDoneRoute = CheckoutDoneRouteImport.update({
+  id: '/checkout/done',
+  path: '/checkout/done',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FounderPreviewRoute = FounderPreviewRouteImport.update({
@@ -837,6 +843,7 @@ export interface FileRoutesByFullPath {
   '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
@@ -961,6 +968,7 @@ export interface FileRoutesByTo {
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/app': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
@@ -1091,6 +1099,7 @@ export interface FileRoutesById {
   '/app/settings': typeof AppSettingsRouteWithChildren
   '/app/work': typeof AppWorkRoute
   '/auth_/callback': typeof AuthCallbackRoute
+  '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
@@ -1225,6 +1234,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/work'
     | '/auth/callback'
+    | '/checkout/done'
     | '/founder/preview'
     | '/app/'
     | '/app/admin/addresses'
@@ -1349,6 +1359,7 @@ export interface FileRouteTypes {
     | '/app/search'
     | '/app/work'
     | '/auth/callback'
+    | '/checkout/done'
     | '/founder/preview'
     | '/app'
     | '/app/admin/addresses'
@@ -1478,6 +1489,7 @@ export interface FileRouteTypes {
     | '/app/settings'
     | '/app/work'
     | '/auth_/callback'
+    | '/checkout/done'
     | '/founder/preview'
     | '/app/'
     | '/app/admin/addresses'
@@ -1594,6 +1606,7 @@ export interface RootRouteChildren {
   AiKnowledgeRoute: typeof AiKnowledgeRoute
   AiStudioRoute: typeof AiStudioRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  CheckoutDoneRoute: typeof CheckoutDoneRoute
   FounderPreviewRoute: typeof FounderPreviewRoute
 }
 
@@ -1891,6 +1904,13 @@ declare module '@tanstack/react-router' {
       path: '/auth/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/checkout/done': {
+      id: '/checkout/done'
+      path: '/checkout/done'
+      fullPath: '/checkout/done'
+      preLoaderRoute: typeof CheckoutDoneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/founder/preview': {
@@ -2851,6 +2871,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiKnowledgeRoute: AiKnowledgeRoute,
   AiStudioRoute: AiStudioRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  CheckoutDoneRoute: CheckoutDoneRoute,
   FounderPreviewRoute: FounderPreviewRoute,
 }
 export const routeTree = rootRouteImport
