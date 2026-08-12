@@ -328,7 +328,9 @@ async function processWebhookEvent(event: any) {
     );
 
     if (userId) {
-      const invoiceNumber = String(data.invoice_number || data.order_number || data.id || event?.id);
+      const invoiceNumber = String(
+        data.invoice_number || data.order_number || data.id || event?.id,
+      );
       await db.from("workspace_invoices").upsert(
         {
           user_id: userId,

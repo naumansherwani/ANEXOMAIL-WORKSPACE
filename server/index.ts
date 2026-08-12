@@ -36,10 +36,7 @@ import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
 import handoffRouter from "./routes/handoff";
 import aiCreditsRouter, { founderAiCreditsRouter } from "./routes/ai-credits";
 import { trialRouter, trialCronRouter } from "./routes/trial";
-import releasePublicRouter, {
-  founderReleaseRouter,
-  outboxRouter,
-} from "./routes/release";
+import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./routes/release";
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 import billingSupportRouter from "./routes/billing-support";
 

@@ -14,7 +14,9 @@ if (SUPABASE_URL && SERVICE_KEY) {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 } else {
-  console.error("billing-support: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503");
+  console.error(
+    "billing-support: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503",
+  );
 }
 
 const router = Router();
@@ -52,7 +54,9 @@ router.get("/support/replies", async (req, res) => {
   if (!founderId || !db) return;
   const { data, error } = await db
     .from("founder_reply_queue")
-    .select("id,user_id,thread_id,customer_email,subject,plan,response_due_hours,received_at,respond_by,state,replied_at")
+    .select(
+      "id,user_id,thread_id,customer_email,subject,plan,response_due_hours,received_at,respond_by,state,replied_at",
+    )
     .order("respond_by", { ascending: true });
   if (error) return res.status(500).json({ error: "db_error", detail: error.message });
   const now = Date.now();
@@ -60,7 +64,10 @@ router.get("/support/replies", async (req, res) => {
     replies: (data || []).map((row: any) => ({
       ...row,
       overdue: row.state === "awaiting_reply" && new Date(row.respond_by).getTime() < now,
-      remaining_minutes: Math.max(0, Math.floor((new Date(row.respond_by).getTime() - now) / 60000)),
+      remaining_minutes: Math.max(
+        0,
+        Math.floor((new Date(row.respond_by).getTime() - now) / 60000),
+      ),
     })),
   });
 });

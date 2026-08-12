@@ -75,7 +75,8 @@ function throttled(ip: string): boolean {
 }
 
 function reference(kind: string): string {
-  const p = kind === "migration" ? "MIG" : kind === "partner" ? "PTR" : kind === "sla" ? "SLA" : "LED";
+  const p =
+    kind === "migration" ? "MIG" : kind === "partner" ? "PTR" : kind === "sla" ? "SLA" : "LED";
   const n = Math.random().toString(36).slice(2, 6).toUpperCase();
   const d = new Date();
   return `${p}-${d.getUTCFullYear()}${String(d.getUTCMonth() + 1).padStart(2, "0")}-${n}`;
@@ -84,7 +85,9 @@ function reference(kind: string): string {
 /** POST /api/public/revenue/lead — public, writes a real lead row. */
 publicRouter.post("/revenue/lead", async (req: any, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  const ip = String(req.headers["x-forwarded-for"] || req.ip || "").split(",")[0].trim();
+  const ip = String(req.headers["x-forwarded-for"] || req.ip || "")
+    .split(",")[0]
+    .trim();
   if (throttled(ip)) return res.status(429).json({ error: "too_many_requests" });
 
   const b = req.body || {};
@@ -92,8 +95,12 @@ publicRouter.post("/revenue/lead", async (req: any, res) => {
   if (!["migration", "partner", "sla", "plan"].includes(kind)) {
     return res.status(400).json({ error: "bad_kind" });
   }
-  const company = String(b.company || "").trim().slice(0, 200);
-  const email = String(b.email || "").trim().slice(0, 200);
+  const company = String(b.company || "")
+    .trim()
+    .slice(0, 200);
+  const email = String(b.email || "")
+    .trim()
+    .slice(0, 200);
   if (!company || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return res.status(400).json({ error: "company_and_valid_email_required" });
   }
@@ -135,8 +142,11 @@ publicRouter.post("/revenue/lead", async (req: any, res) => {
     await db.from("revenue_partners").insert({
       company,
       email,
-      tier: ["reseller", "gold", "platinum"].includes(String(b?.detail?.tier)) ? String(b.detail.tier) : "reseller",
-      commission_rate: Number(b?.detail?.rate) > 0 && Number(b?.detail?.rate) <= 0.3 ? Number(b.detail.rate) : 0.2,
+      tier: ["reseller", "gold", "platinum"].includes(String(b?.detail?.tier))
+        ? String(b.detail.tier)
+        : "reseller",
+      commission_rate:
+        Number(b?.detail?.rate) > 0 && Number(b?.detail?.rate) <= 0.3 ? Number(b.detail.rate) : 0.2,
       stage: "applied",
     });
   }
@@ -151,10 +161,16 @@ founderRouter.get("/revenue/overview", async (req, res) => {
   try {
     const month = new Date();
     month.setUTCDate(1);
-    const monthStart = new Date(Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), 1)).toISOString();
+    const monthStart = new Date(
+      Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), 1),
+    ).toISOString();
 
     const [targetQ, accQ, jobQ, leadQ, partnerQ] = await Promise.all([
-      db!.from("revenue_targets").select("target_gbp, month").order("month", { ascending: false }).limit(1),
+      db!
+        .from("revenue_targets")
+        .select("target_gbp, month")
+        .order("month", { ascending: false })
+        .limit(1),
       db!.from("revenue_accounts").select("plan, seats, mrr_gbp, sla_addon, status"),
       db!.from("revenue_jobs").select("amount_gbp, stage, created_at"),
       db!
@@ -174,7 +190,8 @@ founderRouter.get("/revenue/overview", async (req, res) => {
     let slaCount = 0;
     for (const a of accounts) {
       const price = PLAN_PRICE[String(a.plan)] ?? 0;
-      subMrr += Number(a.mrr_gbp) > 0 ? Number(a.mrr_gbp) : price * Math.max(1, Number(a.seats) || 1);
+      subMrr +=
+        Number(a.mrr_gbp) > 0 ? Number(a.mrr_gbp) : price * Math.max(1, Number(a.seats) || 1);
       if (a.sla_addon) {
         slaMrr += SLA_PRICE;
         slaCount += 1;
@@ -187,10 +204,14 @@ founderRouter.get("/revenue/overview", async (req, res) => {
       tier: p.tier,
       live_seats: Number(p.live_seats) || 0,
       // Partner ka apna billing minus commission = humara net share.
-      commission_gbp: Math.round((Number(p.live_seats) || 0) * PLAN_PRICE.pro * Number(p.commission_rate || 0.2)),
+      commission_gbp: Math.round(
+        (Number(p.live_seats) || 0) * PLAN_PRICE.pro * Number(p.commission_rate || 0.2),
+      ),
       stage: p.stage,
     }));
-    const partnerSeats = partners.filter((p) => p.stage === "live").reduce((s, p) => s + p.live_seats, 0);
+    const partnerSeats = partners
+      .filter((p) => p.stage === "live")
+      .reduce((s, p) => s + p.live_seats, 0);
     const partnerGross = partnerSeats * PLAN_PRICE.pro;
     const partnerNet = Math.round(
       partners
@@ -199,15 +220,32 @@ founderRouter.get("/revenue/overview", async (req, res) => {
     );
 
     const jobsThisMonth = (jobQ.data || []).filter(
-      (j: any) => j.created_at >= monthStart && ["booked", "running", "delivered", "invoiced", "paid"].includes(j.stage),
+      (j: any) =>
+        j.created_at >= monthStart &&
+        ["booked", "running", "delivered", "invoiced", "paid"].includes(j.stage),
     );
     const oneOff = jobsThisMonth.reduce((s: number, j: any) => s + Number(j.amount_gbp || 0), 0);
 
     const mrr = Math.round(subMrr + slaMrr + partnerNet);
     const streams = [
-      { stream: "Core subscriptions", mrr_gbp: Math.round(subMrr), one_off_gbp: 0, accounts: accounts.length },
-      { stream: "Migration service", mrr_gbp: 0, one_off_gbp: Math.round(oneOff), accounts: jobsThisMonth.length },
-      { stream: "White-label partners", mrr_gbp: partnerNet, one_off_gbp: 0, accounts: partners.filter((p) => p.stage === "live").length },
+      {
+        stream: "Core subscriptions",
+        mrr_gbp: Math.round(subMrr),
+        one_off_gbp: 0,
+        accounts: accounts.length,
+      },
+      {
+        stream: "Migration service",
+        mrr_gbp: 0,
+        one_off_gbp: Math.round(oneOff),
+        accounts: jobsThisMonth.length,
+      },
+      {
+        stream: "White-label partners",
+        mrr_gbp: partnerNet,
+        one_off_gbp: 0,
+        accounts: partners.filter((p) => p.stage === "live").length,
+      },
       { stream: "Enterprise SLA", mrr_gbp: slaMrr, one_off_gbp: 0, accounts: slaCount },
     ];
 
@@ -221,7 +259,10 @@ founderRouter.get("/revenue/overview", async (req, res) => {
       one_off_gbp: Math.round(oneOff),
       target_progress: target > 0 ? Math.min(1, mrr / target) : 0,
       streams,
-      leads: (leadQ.data || []).map((l: any) => ({ ...l, quote_gbp: l.quote_gbp == null ? null : Number(l.quote_gbp) })),
+      leads: (leadQ.data || []).map((l: any) => ({
+        ...l,
+        quote_gbp: l.quote_gbp == null ? null : Number(l.quote_gbp),
+      })),
       partners,
       gap: {
         seats_needed: seatsNeeded,
