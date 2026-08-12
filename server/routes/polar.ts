@@ -300,11 +300,12 @@ async function processWebhookEvent(event: any) {
 
   if (type === "order.paid") {
     const meta = data.metadata || {};
-    const userId = meta.anexomail_user_id;
+    const userId =
+      meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
     const product = data.product || {};
     const productMeta = product.metadata || {};
     const { kind, plan, band } = kindFromMetadata(productMeta);
-    const amount = (data.amount || 0) / 100; // Polar amounts are in pence/cents
+    const amount = Number(data.total_amount ?? data.amount ?? 0) / 100;
     const isRecurring = data.subscription_id ? true : false;
     const customerEmail =
       data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
@@ -336,7 +337,8 @@ async function processWebhookEvent(event: any) {
           user_id: userId,
           number: invoiceNumber,
           state: "paid",
-          subtotal: Number(data.subtotal_amount ?? data.amount ?? 0) / 100,
+          subtotal:
+            Number(data.subtotal_amount ?? data.total_amount ?? data.amount ?? 0) / 100,
           tax: Number(data.tax_amount ?? 0) / 100,
           total: amount,
           currency: String(data.currency || "GBP").toUpperCase(),
@@ -352,7 +354,7 @@ async function processWebhookEvent(event: any) {
 
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
-      const seats = Number(meta.seats || 1);
+      const seats = Number(meta.seats || data.checkout?.metadata?.seats || 1);
       const mrr = isRecurring ? amount : 0;
       await db.from("workspace_subscriptions").upsert(
         {

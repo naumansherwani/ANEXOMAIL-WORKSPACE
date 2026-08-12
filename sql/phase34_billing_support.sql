@@ -4,6 +4,19 @@
 
 begin;
 
+do $$
+declare ts text := to_char(now(), 'YYYYMMDDHH24MISS');
+begin
+  if exists (select 1 from information_schema.tables where table_schema='public' and table_name='billing_event_receipts')
+     and not exists (select 1 from information_schema.columns where table_schema='public' and table_name='billing_event_receipts' and column_name='polar_event_id') then
+    execute format('alter table public.billing_event_receipts rename to billing_event_receipts_legacy_%s', ts);
+  end if;
+  if exists (select 1 from information_schema.tables where table_schema='public' and table_name='founder_reply_queue')
+     and not exists (select 1 from information_schema.columns where table_schema='public' and table_name='founder_reply_queue' and column_name='respond_by') then
+    execute format('alter table public.founder_reply_queue rename to founder_reply_queue_legacy_%s', ts);
+  end if;
+end $$;
+
 -- Existing Phase 21 subscription becomes Polar-authoritative without replacing it.
 alter table public.workspace_subscriptions add column if not exists polar_customer_id text;
 alter table public.workspace_subscriptions add column if not exists polar_subscription_id text;
