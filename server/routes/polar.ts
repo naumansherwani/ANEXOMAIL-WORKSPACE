@@ -339,11 +339,12 @@ async function processWebhookEvent(event: any, eventId: string) {
       { onConflict: "polar_event_id", ignoreDuplicates: true },
     );
 
+    let invoiceWriteError: string | null = null;
     if (userId) {
       const invoiceNumber = String(
         data.invoice_number || data.order_number || data.id || event?.id,
       );
-      await db.from("workspace_invoices").upsert(
+      const { error: invoiceError } = await db.from("workspace_invoices").upsert(
         {
           user_id: userId,
           number: invoiceNumber,
@@ -360,13 +361,14 @@ async function processWebhookEvent(event: any, eventId: string) {
         },
         { onConflict: "user_id,number" },
       );
+      invoiceWriteError = invoiceError?.message || null;
     }
 
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
       const seats = Number(meta.seats || 1);
       const mrr = isRecurring ? amount : 0;
-      await db.from("workspace_subscriptions").upsert(
+      const { error: subscriptionError } = await db.from("workspace_subscriptions").upsert(
         {
           user_id: userId,
           plan,
@@ -386,7 +388,8 @@ async function processWebhookEvent(event: any, eventId: string) {
         },
         { onConflict: "user_id" },
       );
-      await db.from("revenue_accounts").upsert(
+      if (subscriptionError) throw subscriptionError;
+      const { error: revenueError } = await db.from("revenue_accounts").upsert(
         {
           company: customerEmail || "unknown",
           plan,
@@ -397,6 +400,7 @@ async function processWebhookEvent(event: any, eventId: string) {
         },
         { onConflict: "company" },
       );
+      if (revenueError) throw revenueError;
     }
 
     // log one-off job for move-in
@@ -416,6 +420,8 @@ async function processWebhookEvent(event: any, eventId: string) {
         .update({ sla_addon: true })
         .eq("company", customerEmail || "unknown");
     }
+
+    if (invoiceWriteError) throw new Error(`workspace_invoice_sync_failed: ${invoiceWriteError}`);
   }
 
   if (type === "subscription.canceled" || type === "subscription.revoked") {
