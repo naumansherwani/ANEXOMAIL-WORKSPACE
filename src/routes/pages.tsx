@@ -173,6 +173,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "Payment state sync",
+        path: "/app/billing/state",
+        note: "Phase 36 — Supabase = source of truth, Polar sirf messenger: intents, entitlement, sync health, truth gaps (no payment failure)",
+        auth: true,
+      },
+      {
         label: "Integrations",
         path: "/app/integrations",
         note: "Phase 22 — Gmail/M365/Zoho/Proton/IMAP connect, one-run migration, delivery proof, one-click export, Leo Actions (no API keys, no webhooks)",

@@ -39,6 +39,10 @@ import { trialRouter, trialCronRouter } from "./routes/trial";
 import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./routes/release";
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 import billingSupportRouter from "./routes/billing-support";
+import {
+  billingSyncAuthRouter,
+  billingSyncPublicRouter,
+} from "./routes/billing-sync";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -174,6 +178,12 @@ app.use("/api/public", trialCronRouter);
 app.use("/api/billing", polarAuthRouter);
 app.use("/api/public", polarPublicRouter);
 app.use("/api/founder", billingSupportRouter);
+
+// Phase 36 — STATE SYNC ENGINE (Supabase = truth, Polar = messenger)
+// /api/billing/intent · /state · /intent/:id · /state-health (auth)
+// /api/public/billing/sync (cron)
+app.use("/api/billing", billingSyncAuthRouter);
+app.use("/api/public", billingSyncPublicRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));
