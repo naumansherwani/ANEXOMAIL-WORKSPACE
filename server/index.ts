@@ -35,6 +35,7 @@ import perfRouter, { founderPerfRouter } from "./routes/perf";
 import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
 import handoffRouter from "./routes/handoff";
 import aiCreditsRouter, { founderAiCreditsRouter } from "./routes/ai-credits";
+import { trialRouter, trialCronRouter } from "./routes/trial";
 import releasePublicRouter, {
   founderReleaseRouter,
   outboxRouter,
@@ -156,6 +157,11 @@ app.use("/api/mail", mailRouter);
 // Phase 30 — Production & Founder Lock (public status + founder release gate)
 app.use("/api/public", releasePublicRouter);
 app.use("/api/founder", founderReleaseRouter);
+
+// Phase 32 — Trial lifecycle (48h · mandatory claim · passkey/recovery · freeze)
+// account_state() = only authority. Cron sweep: POST /api/public/trial/sweep
+app.use("/api/trial", trialRouter);
+app.use("/api/public", trialCronRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));
