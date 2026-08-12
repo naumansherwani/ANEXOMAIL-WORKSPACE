@@ -129,7 +129,7 @@ authRouter.post("/checkout", async (req, res) => {
   try {
     const successUrl = SUCCESS_URL.replace(/\{CHECKOUT_ID\}/g, "{CHECKOUT_ID}");
     const payload: any = {
-      product_price_id: resolvedProductId,
+      products: [resolvedProductId],
       success_url: successUrl,
       external_customer_id: userId,
       metadata: { anexomail_user_id: userId, seats: String(seats) },
@@ -195,43 +195,59 @@ authRouter.get("/checkout/:id", async (req, res) => {
 
 // ---------- webhook: public, verified ----------
 function getWebhookSecretBytes(): Buffer {
-  // Polar dashboard secret is base64. Try decode; fallback raw.
+  // Standard Webhooks secrets commonly use whsec_<base64>.
+  const raw = POLAR_WEBHOOK_SECRET.startsWith("whsec_")
+    ? POLAR_WEBHOOK_SECRET.slice(6)
+    : POLAR_WEBHOOK_SECRET;
   try {
-    const b = Buffer.from(POLAR_WEBHOOK_SECRET, "base64");
-    if (b.length > 16 && b.toString("base64") === POLAR_WEBHOOK_SECRET) return b;
+    const b = Buffer.from(raw, "base64");
+    if (b.length > 16) return b;
   } catch {
     // ignore
   }
-  return Buffer.from(POLAR_WEBHOOK_SECRET, "utf8");
+  return Buffer.from(raw, "utf8");
 }
 
 publicRouter.post("/polar/webhook", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
   if (!POLAR_WEBHOOK_SECRET) return res.status(401).json({ error: "webhook_not_configured" });
 
+  const webhookId = String(req.headers["webhook-id"] || "");
+  const timestamp = String(req.headers["webhook-timestamp"] || "");
   const signatureHeader = String(req.headers["webhook-signature"] || "");
-  const body = req.rawBody || JSON.stringify(req.body);
-  if (!signatureHeader || !body) return res.status(400).json({ error: "missing_payload" });
-
-  // Standard Webhooks signature: t=<ts>,v1=<base64sig>
-  const parts: Record<string, string> = {};
-  for (const piece of signatureHeader.split(",")) {
-    const [k, v] = piece.trim().split("=");
-    if (k && v) parts[k] = v;
+  const body = req.rawBody ? Buffer.from(req.rawBody).toString("utf8") : JSON.stringify(req.body);
+  if (!webhookId || !timestamp || !signatureHeader || !body) {
+    return res.status(400).json({ error: "missing_webhook_headers_or_payload" });
   }
-  const sigB64 = parts.v1;
-  const timestamp = parts.t;
-  if (!sigB64 || !timestamp) return res.status(401).json({ error: "invalid_signature_format" });
 
   const secret = getWebhookSecretBytes();
-  const signedPayload = `${timestamp}.${body}`;
+  const signedPayload = `${webhookId}.${timestamp}.${body}`;
   const expected = createHmac("sha256", secret).update(signedPayload).digest("base64");
+  const signatures = signatureHeader
+    .split(" ")
+    .map((piece) => piece.trim())
+    .filter(Boolean)
+    .map((piece) => {
+      const separator = piece.includes(",") ? "," : "=";
+      const [version, signature] = piece.split(separator, 2);
+      return version === "v1" ? signature : null;
+    })
+    .filter((signature): signature is string => Boolean(signature));
 
-  try {
-    if (!timingSafeEqual(Buffer.from(sigB64), Buffer.from(expected))) {
-      return res.status(401).json({ error: "invalid_signature" });
+  let signatureValid = false;
+  for (const signature of signatures) {
+    try {
+      const actual = Buffer.from(signature);
+      const wanted = Buffer.from(expected);
+      if (actual.length === wanted.length && timingSafeEqual(actual, wanted)) {
+        signatureValid = true;
+        break;
+      }
+    } catch {
+      // Try the next signature when the provider rotates signing keys.
     }
-  } catch {
+  }
+  if (!signatureValid) {
     return res.status(401).json({ error: "invalid_signature" });
   }
 
@@ -242,7 +258,7 @@ publicRouter.post("/polar/webhook", async (req, res) => {
   }
 
   const event = req.body as any;
-  const eventId = event?.id || `${event?.type}_${Date.now()}`;
+  const eventId = webhookId;
 
   // idempotency: already seen?
   const { data: existing } = await db
@@ -310,6 +326,27 @@ async function processWebhookEvent(event: any) {
       },
       { onConflict: "polar_event_id", ignoreDuplicates: true },
     );
+
+    if (userId) {
+      const invoiceNumber = String(data.invoice_number || data.order_number || data.id || event?.id);
+      await db.from("workspace_invoices").upsert(
+        {
+          user_id: userId,
+          number: invoiceNumber,
+          state: "paid",
+          subtotal: Number(data.subtotal_amount ?? data.amount ?? 0) / 100,
+          tax: Number(data.tax_amount ?? 0) / 100,
+          total: amount,
+          currency: String(data.currency || "GBP").toUpperCase(),
+          period_start: data.subscription?.current_period_start || null,
+          period_end: data.subscription?.current_period_end || null,
+          issued_at: data.created_at || new Date().toISOString(),
+          paid_at: data.modified_at || data.created_at || new Date().toISOString(),
+          pdf_url: data.invoice?.url || data.invoice_url || null,
+        },
+        { onConflict: "user_id,number" },
+      );
+    }
 
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {

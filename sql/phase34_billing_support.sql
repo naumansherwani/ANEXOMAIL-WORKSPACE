@@ -14,6 +14,11 @@ create unique index if not exists workspace_subscriptions_polar_subscription_idx
   on public.workspace_subscriptions (polar_subscription_id)
   where polar_subscription_id is not null;
 
+-- NO REFUNDS: purana Phase 21 constraint self-heal karke sirf paid/open/void rakho.
+alter table public.workspace_invoices drop constraint if exists workspace_invoices_state_check;
+alter table public.workspace_invoices
+  add constraint workspace_invoices_state_check check (state in ('paid','open','void'));
+
 -- Immutable billing event receipt: webhook truth, amount, plan and customer.
 create table if not exists public.billing_event_receipts (
   id uuid primary key default gen_random_uuid(),
@@ -51,6 +56,45 @@ create table if not exists public.founder_reply_queue (
 );
 create index if not exists founder_reply_queue_due_idx
   on public.founder_reply_queue (state, respond_by);
+
+-- Delivery hook/support ingestion is function ko call kare. Plan aur deadline DB khud nikalti hai.
+create or replace function public.enqueue_founder_reply(
+  p_user_id uuid,
+  p_customer_email text,
+  p_subject text,
+  p_thread_id uuid default null,
+  p_received_at timestamptz default now()
+)
+returns uuid
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_plan text;
+  v_hours integer;
+  v_id uuid;
+begin
+  select coalesce(plan, 'basic') into v_plan
+  from public.workspace_subscriptions
+  where user_id = p_user_id and state in ('active','trialing')
+  limit 1;
+
+  v_plan := coalesce(v_plan, 'basic');
+  v_hours := case v_plan when 'business' then 24 when 'pro' then 48 else 72 end;
+
+  insert into public.founder_reply_queue (
+    user_id, thread_id, customer_email, subject, plan,
+    response_due_hours, received_at, respond_by
+  ) values (
+    p_user_id, p_thread_id, p_customer_email, coalesce(p_subject, ''), v_plan,
+    v_hours, p_received_at, p_received_at + make_interval(hours => v_hours)
+  ) returning id into v_id;
+  return v_id;
+end;
+$$;
+revoke all on function public.enqueue_founder_reply(uuid,text,text,uuid,timestamptz) from public, anon, authenticated;
+grant execute on function public.enqueue_founder_reply(uuid,text,text,uuid,timestamptz) to service_role;
 
 grant select on public.billing_event_receipts to authenticated;
 grant select, insert, update on public.founder_reply_queue to authenticated;

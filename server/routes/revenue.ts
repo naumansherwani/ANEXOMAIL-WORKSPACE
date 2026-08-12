@@ -32,7 +32,7 @@ if (SUPABASE_URL && SERVICE_KEY) {
 }
 
 const PLAN_PRICE: Record<string, number> = { basic: 20, pro: 40, business: 85 };
-const SLA_PRICE = 500;
+const SLA_PRICE = 700;
 
 const publicRouter = Router();
 const founderRouter = Router();
