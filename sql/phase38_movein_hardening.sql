@@ -311,7 +311,8 @@ create unique index if not exists movein_waitlist_month_pos_uidx
 create or replace function public.movein_promote_waitlist(p_month date)
 returns jsonb language plpgsql security definer set search_path = public as $$
 declare v_month date := date_trunc('month', p_month)::date;
-        v_total int; v_used int; w record; v_promoted jsonb := '[]'::jsonb;
+        v_total int; v_used int; v_promoted jsonb := '[]'::jsonb;
+        v_deal uuid; v_pos int; v_wid uuid;
 begin
   perform pg_advisory_xact_lock(hashtext('movein_capacity:' || v_month::text));
   insert into public.movein_capacity (month) values (v_month) on conflict (month) do nothing;
@@ -322,23 +323,24 @@ begin
      where scheduled_month = v_month and waitlisted = false and state <> 'CANCELLED';
     exit when v_used >= coalesce(v_total, 2);
 
-    select w2.* into w from public.movein_waitlist w2
+    v_deal := null; v_pos := null; v_wid := null;
+    select w2.id, w2.deal_id, w2.position into v_wid, v_deal, v_pos
+      from public.movein_waitlist w2
       join public.movein_deals d on d.id = w2.deal_id
      where w2.month = v_month and w2.released_at is null and d.state <> 'CANCELLED'
      order by w2.position asc, w2.created_at asc
      limit 1;
-    exit when w is null;
+    exit when v_deal is null;
 
     update public.movein_deals
        set scheduled_month = v_month, waitlisted = false, updated_at = now()
-     where id = w.deal_id;
-    update public.movein_waitlist set released_at = now() where id = w.id;
+     where id = v_deal;
+    update public.movein_waitlist set released_at = now() where id = v_wid;
 
     insert into public.movein_audit (deal_id, actor, action, reason, payload)
-      values (w.deal_id, 'system', 'waitlist_promoted', 'slot released, promoted from waitlist',
-              jsonb_build_object('month', v_month, 'position', w.position));
-    v_promoted := v_promoted || jsonb_build_object('deal_id', w.deal_id, 'position', w.position);
-    w := null;
+      values (v_deal, 'system', 'waitlist_promoted', 'slot released, promoted from waitlist',
+              jsonb_build_object('month', v_month, 'position', v_pos));
+    v_promoted := v_promoted || jsonb_build_object('deal_id', v_deal, 'position', v_pos);
   end loop;
 
   return jsonb_build_object('ok', true, 'month', v_month, 'promoted', v_promoted);
@@ -419,8 +421,9 @@ begin
   insert into public.movein_audit (deal_id, actor, action, reason, evidence, payload)
     values (p_deal, p_operator, 'rollback_used', p_reason, r.id::text, r.dns_state);
 
-  perform public.movein_transition(p_deal, 'ROLLBACK'::public.movein_state, p_operator, p_reason, r.id::text);
-  return jsonb_build_object('ok', true, 'rollback_id', r.id, 'state', 'ROLLBACK');
+  -- enum mein ROLLBACK state nahi hai — deal ON_HOLD par jata hai (exception ledger mein ROLLBACK_REQUIRED)
+  perform public.movein_transition(p_deal, 'ON_HOLD'::public.movein_state, p_operator, p_reason, r.id::text);
+  return jsonb_build_object('ok', true, 'rollback_id', r.id, 'state', 'ON_HOLD');
 end $$;
 
 revoke all on function public.movein_rollback_create(uuid, text, text) from public, anon, authenticated;
