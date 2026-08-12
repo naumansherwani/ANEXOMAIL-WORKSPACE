@@ -3,9 +3,9 @@
  *
  * 4 locked money roads (AI ke bina):
  *   1. Core subscriptions — Basic £20 · Pro £40 · Business £85 (recurring)
- *   2. Migration service  — £500–£2,000 one-time per company (Gmail/Outlook → ANEXOMAIL)
+ *   2. Managed Move-In    — £500 / £1,500 / £3,000 one-time per company (banded by mailboxes)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
- *   4. Premium SLA        — named contact + 4 working-hour reply, £500/mo add-on
+ *   4. Priority Support   — named founder contact + reply within 1 business day, £500/mo add-on
  *
  * NO MOCK: quote maths client-side hai (deterministic, real rate card), lekin
  * har lead/application asli backend row banata hai. Endpoint missing = honest state.
@@ -21,7 +21,20 @@ import { rpcOrRest } from "@/lib/rpc";
 export const PLAN_PRICE = { basic: 20, pro: 40, business: 85 } as const;
 export const SLA_PRICE_MONTHLY = 500;
 export const MIGRATION_FLOOR = 500;
-export const MIGRATION_CEILING = 2000;
+export const MIGRATION_CEILING = 3000;
+
+/** Locked Managed Move-In bands (one-off cash, never MRR). */
+export const MIGRATION_BANDS = [
+  { label: "1–5 mailboxes", max: 5, price: 500 },
+  { label: "6–15 mailboxes", max: 15, price: 1500 },
+  { label: "16+ mailboxes (30+ included)", max: Infinity, price: 3000 },
+] as const;
+
+export function migrationBand(mailboxes: number): { label: string; max: number; price: number } {
+  const n = Math.max(1, Math.round(mailboxes || 1));
+  const found = MIGRATION_BANDS.find((b) => n <= b.max);
+  return found ?? MIGRATION_BANDS[2];
+}
 
 export type MigrationInput = {
   mailboxes: number;
@@ -46,9 +59,13 @@ export function quoteMigration(input: MigrationInput): MigrationQuote {
   const gb = Math.max(1, Math.round(input.gigabytes || 1));
 
   const lines: { label: string; amount: number; detail: string }[] = [];
-  lines.push({ label: "Migration base", amount: MIGRATION_FLOOR, detail: "Project setup, mapping, dry run, cut-over plan" });
-  lines.push({ label: `Mailboxes (${mailboxes})`, amount: mailboxes * 25, detail: "£25 per mailbox — mail, folders, aliases, sent history" });
-  lines.push({ label: `Data volume (${gb} GB)`, amount: gb * 4, detail: "£4 per GB — verified message-for-message" });
+  const band = migrationBand(mailboxes);
+  lines.push({
+    label: `Managed Move-In · ${band.label}`,
+    amount: band.price,
+    detail: `Fixed band price for ${mailboxes} mailbox${mailboxes === 1 ? "" : "es"} — mapping, dry run, full history, cut-over plan`,
+  });
+  if (gb > 200) lines.push({ label: `Large archive (${gb} GB)`, amount: 250, detail: "Over 200GB of history — extra verification passes" });
 
   const providerFee: Record<MigrationInput["provider"], number> = {
     gmail: 0,
