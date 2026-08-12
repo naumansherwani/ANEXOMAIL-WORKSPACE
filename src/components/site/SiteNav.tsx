@@ -11,6 +11,7 @@ const links = [
   { label: "Ownership", to: "/ownership" as const },
   { label: "Pricing", to: "/plans" as const },
   { label: "Migration", to: "/move-in" as const },
+  { label: "Get started", to: "/get-started" as const },
 ];
 
 export function SiteNav() {

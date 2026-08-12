@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
+import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as MigrationRouteImport } from './routes/migration'
 import { Route as MoveInRouteImport } from './routes/move-in'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -176,6 +177,11 @@ const DocsRoute = DocsRouteImport.update({
 const EnterpriseRoute = EnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GetStartedRoute = GetStartedRouteImport.update({
+  id: '/get-started',
+  path: '/get-started',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MigrationRoute = MigrationRouteImport.update({
@@ -792,6 +798,7 @@ export interface FileRoutesByFullPath {
   '/claim': typeof ClaimRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
+  '/get-started': typeof GetStartedRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
@@ -921,6 +928,7 @@ export interface FileRoutesByTo {
   '/claim': typeof ClaimRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
+  '/get-started': typeof GetStartedRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
@@ -1042,6 +1050,7 @@ export interface FileRoutesById {
   '/claim': typeof ClaimRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
+  '/get-started': typeof GetStartedRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
@@ -1174,6 +1183,7 @@ export interface FileRouteTypes {
     | '/claim'
     | '/docs'
     | '/enterprise'
+    | '/get-started'
     | '/migration'
     | '/move-in'
     | '/onboarding'
@@ -1303,6 +1313,7 @@ export interface FileRouteTypes {
     | '/claim'
     | '/docs'
     | '/enterprise'
+    | '/get-started'
     | '/migration'
     | '/move-in'
     | '/onboarding'
@@ -1423,6 +1434,7 @@ export interface FileRouteTypes {
     | '/claim'
     | '/docs'
     | '/enterprise'
+    | '/get-started'
     | '/migration'
     | '/move-in'
     | '/onboarding'
@@ -1554,6 +1566,7 @@ export interface RootRouteChildren {
   ClaimRoute: typeof ClaimRoute
   DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
+  GetStartedRoute: typeof GetStartedRoute
   MigrationRoute: typeof MigrationRoute
   MoveInRoute: typeof MoveInRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -1627,6 +1640,13 @@ declare module '@tanstack/react-router' {
       path: '/enterprise'
       fullPath: '/enterprise'
       preLoaderRoute: typeof EnterpriseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/get-started': {
+      id: '/get-started'
+      path: '/get-started'
+      fullPath: '/get-started'
+      preLoaderRoute: typeof GetStartedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/migration': {
@@ -2795,6 +2815,7 @@ const rootRouteChildren: RootRouteChildren = {
   ClaimRoute: ClaimRoute,
   DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
+  GetStartedRoute: GetStartedRoute,
   MigrationRoute: MigrationRoute,
   MoveInRoute: MoveInRoute,
   OnboardingRoute: OnboardingRoute,
@@ -2814,3 +2835,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
