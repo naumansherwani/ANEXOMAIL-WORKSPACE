@@ -159,9 +159,9 @@ const plans = [
   {
     name: "Basic",
     price: "£20",
-    line: "For a small team getting its own domain in order.",
+    line: "For a small team putting its company email in order.",
     features: [
-      "1 domain · 3 mailboxes · 5GB per mailbox",
+      "1 company address · 3 mailboxes · 5GB per mailbox",
       "5 free aliases · undo send 30s",
       "Contacts, calendar and threads with an owner",
       "Cmd+K across the workspace · human reply within 72h",
@@ -174,7 +174,7 @@ const plans = [
     line: "For teams answering customers every day.",
     features: [
       "Everything in Basic",
-      "3 domains · 5 mailboxes · 10GB per mailbox",
+      "3 company addresses · 5 mailboxes · 10GB per mailbox",
       "Shared inbox with collision guard",
       "Snooze, schedule send, templates and boards",
       "Tasks, notes and thread analytics · reply within 48h",
@@ -187,7 +187,7 @@ const plans = [
     line: "For companies that have to prove control.",
     features: [
       "Everything in Pro",
-      "Unlimited domains and mailboxes · 25GB per mailbox",
+      "Unlimited company addresses and mailboxes · 25GB per mailbox",
       "Roles, departments, policy and audit ledger",
       "One-click revoke, native integrations and one-click export",
       "Human reply within 24h",
