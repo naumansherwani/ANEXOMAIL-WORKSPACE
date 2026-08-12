@@ -309,10 +309,11 @@ async function processWebhookEvent(event: any, eventId: string) {
   }
 
   if (type === "order.paid") {
-    const meta = data.metadata || {};
+    const checkoutMeta = data.checkout?.metadata || {};
+    const meta = { ...checkoutMeta, ...(data.metadata || {}) };
     const userId =
       meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
-    const product = data.product || {};
+    const product = data.product || data.items?.[0]?.product || {};
     const productMeta = product.metadata || {};
     const { kind, plan, band } = kindFromMetadata(productMeta);
     const amount = Number(data.total_amount ?? data.amount ?? 0) / 100;
@@ -363,7 +364,7 @@ async function processWebhookEvent(event: any, eventId: string) {
 
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
-      const seats = Number(meta.seats || data.checkout?.metadata?.seats || 1);
+      const seats = Number(meta.seats || 1);
       const mrr = isRecurring ? amount : 0;
       await db.from("workspace_subscriptions").upsert(
         {
