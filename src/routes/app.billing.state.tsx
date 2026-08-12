@@ -115,7 +115,7 @@ function BillingStatePage() {
                       : "Priority Support"}
                 </span>
                 <span
-                  className={`rounded-full border px-2 py-0.5 text-xs ${STATE_TONE[i.state] ?? STATE_TONE.open}`}
+                  className={`rounded-full border px-2 py-0.5 text-xs ${STATE_TONE[i.state] ?? STATE_TONE['open']}`}
                 >
                   {i.state}
                 </span>
@@ -140,10 +140,10 @@ function BillingStatePage() {
         <section className="space-y-3">
           <h3 className="text-sm font-medium">Sync health</h3>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            <Stat label="Open intents" value={String(health.data.health.open_intents ?? 0)} />
-            <Stat label="Paid pending" value={String(health.data.health.paid_pending ?? 0)} />
-            <Stat label="Stuck" value={String(health.data.health.stuck_intents ?? 0)} />
-            <Stat label="Open gaps" value={String(health.data.health.open_gaps ?? 0)} />
+            <Stat label="Open intents" value={String(health.data.health['open_intents'] ?? 0)} />
+            <Stat label="Paid pending" value={String(health.data.health['paid_pending'] ?? 0)} />
+            <Stat label="Stuck" value={String(health.data.health['stuck_intents'] ?? 0)} />
+            <Stat label="Open gaps" value={String(health.data.health['open_gaps'] ?? 0)} />
           </div>
           {health.data.gaps.length === 0 ? (
             <p className="inline-flex items-center gap-2 text-sm text-green-600">
