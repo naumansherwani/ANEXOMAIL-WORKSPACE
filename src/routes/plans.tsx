@@ -117,6 +117,10 @@ const faqs = [
     q: "Can I cancel Priority Support?",
     a: "Yes — it is monthly, invoiced in advance, and you can stop it at the end of any month from billing. Your workspace plan is untouched; only the support tier changes.",
   },
+  {
+    q: "How is the Managed Move-In price decided?",
+    a: "By mailbox count, in fixed bands: 1–5 mailboxes £500, 6–15 mailboxes £1,500, and £3,000 for large moves of 30 or more. You are told which band you are in before anything starts, and the number does not move afterwards.",
+  },
 ];
 
 const PUBLIC_EMAIL = "moveyourbusiness@anexomail.com";
