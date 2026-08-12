@@ -750,7 +750,7 @@ returns jsonb language sql stable as $$
     'reference', d.reference,
     'company', d.company,
     'state', d.state,
-    'progress', (select round(100.0 * count(*) / 9.0)
+    'progress', (select round(100.0 * count(distinct a.to_state) / 9.0)
                    from public.movein_audit a
                   where a.deal_id = d.id
                     and a.to_state::text = any (array['PLAN_ACCEPTED','DEPOSIT_PAID_50','MIGRATION_PREP',
