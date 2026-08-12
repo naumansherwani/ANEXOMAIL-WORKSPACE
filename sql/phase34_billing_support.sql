@@ -23,6 +23,9 @@ alter table public.workspace_subscriptions add column if not exists polar_subscr
 alter table public.workspace_subscriptions add column if not exists customer_email text;
 alter table public.workspace_subscriptions add column if not exists response_due_hours integer;
 alter table public.workspace_subscriptions add column if not exists provider_payload jsonb not null default '{}'::jsonb;
+update public.workspace_subscriptions
+set response_due_hours = case plan when 'business' then 24 when 'pro' then 48 else 72 end
+where response_due_hours is null;
 create unique index if not exists workspace_subscriptions_polar_subscription_idx
   on public.workspace_subscriptions (polar_subscription_id)
   where polar_subscription_id is not null;
@@ -67,8 +70,12 @@ create table if not exists public.founder_reply_queue (
   replied_at timestamptz,
   created_at timestamptz not null default now()
 );
+alter table public.founder_reply_queue add column if not exists message_id uuid;
 create index if not exists founder_reply_queue_due_idx
   on public.founder_reply_queue (state, respond_by);
+create unique index if not exists founder_reply_queue_message_idx
+  on public.founder_reply_queue (message_id)
+  where message_id is not null;
 
 -- Delivery hook/support ingestion is function ko call kare. Plan aur deadline DB khud nikalti hai.
 create or replace function public.enqueue_founder_reply(
@@ -84,15 +91,19 @@ security definer
 set search_path = public
 as $$
 declare
+  v_user_id uuid;
   v_plan text;
   v_hours integer;
   v_id uuid;
 begin
-  select coalesce(plan, 'basic') into v_plan
+  select user_id, coalesce(plan, 'basic') into v_user_id, v_plan
   from public.workspace_subscriptions
-  where user_id = p_user_id and state in ('active','trialing')
+  where state in ('active','trialing')
+    and (lower(customer_email) = lower(p_customer_email) or user_id = p_user_id)
+  order by (lower(customer_email) = lower(p_customer_email)) desc
   limit 1;
 
+  v_user_id := coalesce(v_user_id, p_user_id);
   v_plan := coalesce(v_plan, 'basic');
   v_hours := case v_plan when 'business' then 24 when 'pro' then 48 else 72 end;
 
@@ -100,7 +111,7 @@ begin
     user_id, thread_id, customer_email, subject, plan,
     response_due_hours, received_at, respond_by
   ) values (
-    p_user_id, p_thread_id, p_customer_email, coalesce(p_subject, ''), v_plan,
+    v_user_id, p_thread_id, p_customer_email, coalesce(p_subject, ''), v_plan,
     v_hours, p_received_at, p_received_at + make_interval(hours => v_hours)
   ) returning id into v_id;
   return v_id;
@@ -108,6 +119,70 @@ end;
 $$;
 revoke all on function public.enqueue_founder_reply(uuid,text,text,uuid,timestamptz) from public, anon, authenticated;
 grant execute on function public.enqueue_founder_reply(uuid,text,text,uuid,timestamptz) to service_role;
+
+-- Postfix delivery hook mail_messages mein insert karta hai. Support inbox ka har
+-- inbound message automatically founder queue mein aata hai. to_jsonb schema
+-- variations ko tolerate karta hai; unknown shape par trigger mail delivery ko nahi rokta.
+create or replace function public.queue_inbound_support_reply()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  j jsonb := to_jsonb(new);
+  tj jsonb := '{}'::jsonb;
+  v_thread_id uuid;
+  v_message_id uuid;
+  v_customer_email text;
+  v_subject text;
+  v_received_at timestamptz;
+  v_recipient_text text;
+  v_queue_id uuid;
+begin
+  if coalesce(j->>'direction', 'in') not in ('in','inbound') then return new; end if;
+
+  begin v_thread_id := nullif(j->>'thread_id','')::uuid; exception when others then v_thread_id := null; end;
+  begin v_message_id := nullif(j->>'id','')::uuid; exception when others then v_message_id := null; end;
+  if v_thread_id is not null then
+    select to_jsonb(t) into tj from public.mail_threads t where t.id = v_thread_id;
+    tj := coalesce(tj, '{}'::jsonb);
+  end if;
+
+  v_recipient_text := lower(concat_ws(' ',
+    j->>'to', j->>'to_address', j->>'to_addresses', j->>'recipient', j->>'recipient_address',
+    tj->>'account_address', tj->>'to_address', tj->>'recipient_address'
+  ));
+  if position('hello@anexomail.com' in v_recipient_text) = 0 then return new; end if;
+
+  v_customer_email := coalesce(nullif(j->>'from_address',''), nullif(j->>'sender',''), nullif(tj->>'from_address',''));
+  if v_customer_email is null then return new; end if;
+  v_subject := coalesce(nullif(j->>'subject',''), nullif(tj->>'subject',''), 'Support conversation');
+  begin
+    v_received_at := coalesce(nullif(j->>'sent_at','')::timestamptz, nullif(j->>'received_at','')::timestamptz, now());
+  exception when others then
+    v_received_at := now();
+  end;
+
+  if v_message_id is not null and exists (select 1 from public.founder_reply_queue where message_id = v_message_id) then
+    return new;
+  end if;
+
+  v_queue_id := public.enqueue_founder_reply(null, v_customer_email, v_subject, v_thread_id, v_received_at);
+  if v_message_id is not null then
+    update public.founder_reply_queue set message_id = v_message_id where id = v_queue_id;
+  end if;
+  return new;
+exception when others then
+  raise warning 'queue_inbound_support_reply skipped: %', sqlerrm;
+  return new;
+end;
+$$;
+
+drop trigger if exists mail_messages_support_reply_clock on public.mail_messages;
+create trigger mail_messages_support_reply_clock
+after insert on public.mail_messages
+for each row execute function public.queue_inbound_support_reply();
 
 grant select on public.billing_event_receipts to authenticated;
 grant select, insert, update on public.founder_reply_queue to authenticated;
