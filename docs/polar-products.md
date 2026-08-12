@@ -96,7 +96,7 @@ Product bante hi Polar ke IDs is ek block se `.env` mein daalo:
 ```bash
 cd /opt/anexomail && nano .env
 # neeche paste karo, asli IDs ke saath:
-POLAR_PRODUCT_MOVEIN_1_5=prod_xxx
+POLAR_PRODUCT_MOVEIN_1_5=fdcdabc2-9e50-4e4b-91d4-45e4128ef829
 POLAR_PRODUCT_MOVEIN_6_15=prod_xxx
 POLAR_PRODUCT_MOVEIN_16_29=prod_xxx
 POLAR_PRODUCT_MOVEIN_30PLUS=prod_xxx
@@ -105,6 +105,19 @@ POLAR_PRODUCT_PLAN_BASIC=prod_xxx
 POLAR_PRODUCT_PLAN_PRO=prod_xxx
 POLAR_PRODUCT_PLAN_BUSINESS=prod_xxx
 ```
+
+### Confirmed IDs (founder ne banaye)
+
+| Product | Polar ID | Status |
+| --- | --- | --- |
+| Managed Move-In · 1–5 Mailboxes (£500 one-time) | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ created |
+| Managed Move-In · 6–15 Mailboxes (£1,500 one-time) | — | pending |
+| Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | — | pending |
+| Managed Move-In · 30+ Mailboxes (£3,000 one-time) | — | pending |
+| Priority Support (£500/mo) | — | pending |
+| Basic (£20/mo) | — | pending |
+| Pro (£40/mo) | — | pending |
+| Business (£85/mo) | — | pending |
 
 IDs aa jayein to bolo — checkout + webhook route (`/api/public/polar/webhook`,
 `/api/billing/checkout`) likh ke repo mein `server/routes/polar.ts` de dunga.
