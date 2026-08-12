@@ -34,6 +34,7 @@ import securityRouter, { founderSecurityRouter } from "./routes/security";
 import perfRouter, { founderPerfRouter } from "./routes/perf";
 import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
 import handoffRouter from "./routes/handoff";
+import aiCreditsRouter, { founderAiCreditsRouter } from "./routes/ai-credits";
 import releasePublicRouter, {
   founderReleaseRouter,
   outboxRouter,
@@ -137,6 +138,12 @@ app.use("/api/founder", founderPerfRouter);
 // Phase 28 — Revenue Engine (public lead intake + founder god-view)
 app.use("/api/public", revenuePublicRouter);
 app.use("/api/founder", founderRevenueRouter);
+
+// Phase 31 AI Credit Engine (/api/ai/credits/*, /api/founder/ai/credits/*)
+// NOTE: aiCreditsRouter ko `app.use("/api", ai)` ke BAAD mount karo — yeh
+// zyada specific path hai, is liye jeetta hai.
+app.use("/api/ai/credits", aiCreditsRouter);
+app.use("/api/founder", founderAiCreditsRouter);
 
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);

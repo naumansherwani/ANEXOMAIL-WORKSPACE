@@ -193,6 +193,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "AI credit wallet",
+        path: "/app/ai/credits",
+        note: "Phase 31 — 4 credit buckets, complimentary claim, action receipts, immutable ledger (top-up checkout pending)",
+        auth: true,
+      },
+      {
         label: "Outbox (offline)",
         path: "/app/mail/outbox",
         note: "Phase 30 — offline queue on this device, exponential retry, never says “sent” before the server confirms",
