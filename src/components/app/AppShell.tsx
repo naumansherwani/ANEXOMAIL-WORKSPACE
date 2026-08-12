@@ -20,6 +20,7 @@ import type { ReactNode } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
+import { TrialStrip } from "@/components/app/trial/TrialStrip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -176,6 +177,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
+      <TrialStrip />
 
       <div className="flex min-h-0 flex-1">
         {/* Rail */}

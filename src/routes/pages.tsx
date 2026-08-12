@@ -95,6 +95,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         path: "/get-started",
         note: "Awam onboarding — 2 free days, claim @anexomail.com, recovery account of their choice, passkey sign-in",
       },
+      {
+        label: "Trial ended",
+        path: "/trial-ended",
+        note: "Phase 32 — 2 days over: see plans, sign in with @anexomail.com, recovery path open, address reserved 30 days",
+      },
       { label: "Page map", path: "/pages", note: "This page — every route, always current" },
     ],
   },
