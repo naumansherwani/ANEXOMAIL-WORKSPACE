@@ -43,6 +43,7 @@ import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppDevicesRouteImport } from './routes/app.devices'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
 import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
+import { Route as AppMoveinRouteImport } from './routes/app.movein'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppPerfRouteImport } from './routes/app.perf'
@@ -87,6 +88,7 @@ import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderLaunchRouteImport } from './routes/app.founder_.launch'
 import { Route as AppFounderMotionRouteImport } from './routes/app.founder_.motion'
+import { Route as AppFounderMoveinRouteImport } from './routes/app.founder_.movein'
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppFounderPerfRouteImport } from './routes/app.founder_.perf'
 import { Route as AppFounderRevenueRouteImport } from './routes/app.founder_.revenue'
@@ -312,6 +314,11 @@ const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
   path: '/integrations',
   getParentRoute: () => AppRoute,
 } as any)
+const AppMoveinRoute = AppMoveinRouteImport.update({
+  id: '/movein',
+  path: '/movein',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppOrgRoute = AppOrgRouteImport.update({
   id: '/org',
   path: '/org',
@@ -530,6 +537,11 @@ const AppFounderLaunchRoute = AppFounderLaunchRouteImport.update({
 const AppFounderMotionRoute = AppFounderMotionRouteImport.update({
   id: '/founder_/motion',
   path: '/founder/motion',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppFounderMoveinRoute = AppFounderMoveinRouteImport.update({
+  id: '/founder_/movein',
+  path: '/founder/movein',
   getParentRoute: () => AppRoute,
 } as any)
 const AppFounderOrgRoute = AppFounderOrgRouteImport.update({
@@ -841,6 +853,7 @@ export interface FileRoutesByFullPath {
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
+  '/app/movein': typeof AppMoveinRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/perf': typeof AppPerfRouteWithChildren
@@ -883,6 +896,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/launch': typeof AppFounderLaunchRouteWithChildren
   '/app/founder/motion': typeof AppFounderMotionRoute
+  '/app/founder/movein': typeof AppFounderMoveinRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
   '/app/founder/revenue': typeof AppFounderRevenueRoute
@@ -971,6 +985,7 @@ export interface FileRoutesByTo {
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
+  '/app/movein': typeof AppMoveinRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
   '/app/work': typeof AppWorkRoute
@@ -1007,6 +1022,7 @@ export interface FileRoutesByTo {
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/motion': typeof AppFounderMotionRoute
+  '/app/founder/movein': typeof AppFounderMoveinRoute
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
   '/app/founder/revenue': typeof AppFounderRevenueRoute
@@ -1099,6 +1115,7 @@ export interface FileRoutesById {
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
+  '/app/movein': typeof AppMoveinRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/perf': typeof AppPerfRouteWithChildren
@@ -1141,6 +1158,7 @@ export interface FileRoutesById {
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/launch': typeof AppFounderLaunchRouteWithChildren
   '/app/founder_/motion': typeof AppFounderMotionRoute
+  '/app/founder_/movein': typeof AppFounderMoveinRoute
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/founder_/perf': typeof AppFounderPerfRoute
   '/app/founder_/revenue': typeof AppFounderRevenueRoute
@@ -1235,6 +1253,7 @@ export interface FileRouteTypes {
     | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
+    | '/app/movein'
     | '/app/org'
     | '/app/people'
     | '/app/perf'
@@ -1277,6 +1296,7 @@ export interface FileRouteTypes {
     | '/app/founder/integrations'
     | '/app/founder/launch'
     | '/app/founder/motion'
+    | '/app/founder/movein'
     | '/app/founder/org'
     | '/app/founder/perf'
     | '/app/founder/revenue'
@@ -1365,6 +1385,7 @@ export interface FileRouteTypes {
     | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
+    | '/app/movein'
     | '/app/people'
     | '/app/search'
     | '/app/work'
@@ -1401,6 +1422,7 @@ export interface FileRouteTypes {
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/motion'
+    | '/app/founder/movein'
     | '/app/founder/org'
     | '/app/founder/perf'
     | '/app/founder/revenue'
@@ -1492,6 +1514,7 @@ export interface FileRouteTypes {
     | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
+    | '/app/movein'
     | '/app/org'
     | '/app/people'
     | '/app/perf'
@@ -1534,6 +1557,7 @@ export interface FileRouteTypes {
     | '/app/founder_/integrations'
     | '/app/founder_/launch'
     | '/app/founder_/motion'
+    | '/app/founder_/movein'
     | '/app/founder_/org'
     | '/app/founder_/perf'
     | '/app/founder_/revenue'
@@ -1862,6 +1886,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIntegrationsRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/movein': {
+      id: '/app/movein'
+      path: '/movein'
+      fullPath: '/app/movein'
+      preLoaderRoute: typeof AppMoveinRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/org': {
       id: '/app/org'
       path: '/org'
@@ -2168,6 +2199,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/motion'
       fullPath: '/app/founder/motion'
       preLoaderRoute: typeof AppFounderMotionRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/movein': {
+      id: '/app/founder_/movein'
+      path: '/founder/movein'
+      fullPath: '/app/founder/movein'
+      preLoaderRoute: typeof AppFounderMoveinRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder_/org': {
@@ -2810,6 +2848,7 @@ interface AppRouteChildren {
   AppDevicesRoute: typeof AppDevicesRoute
   AppFounderRoute: typeof AppFounderRoute
   AppIntegrationsRoute: typeof AppIntegrationsRoute
+  AppMoveinRoute: typeof AppMoveinRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppPerfRoute: typeof AppPerfRouteWithChildren
@@ -2827,6 +2866,7 @@ interface AppRouteChildren {
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderLaunchRoute: typeof AppFounderLaunchRouteWithChildren
   AppFounderMotionRoute: typeof AppFounderMotionRoute
+  AppFounderMoveinRoute: typeof AppFounderMoveinRoute
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppFounderPerfRoute: typeof AppFounderPerfRoute
   AppFounderRevenueRoute: typeof AppFounderRevenueRoute
@@ -2848,6 +2888,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDevicesRoute: AppDevicesRoute,
   AppFounderRoute: AppFounderRoute,
   AppIntegrationsRoute: AppIntegrationsRoute,
+  AppMoveinRoute: AppMoveinRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppPerfRoute: AppPerfRouteWithChildren,
@@ -2865,6 +2906,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderLaunchRoute: AppFounderLaunchRouteWithChildren,
   AppFounderMotionRoute: AppFounderMotionRoute,
+  AppFounderMoveinRoute: AppFounderMoveinRoute,
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppFounderPerfRoute: AppFounderPerfRoute,
   AppFounderRevenueRoute: AppFounderRevenueRoute,
