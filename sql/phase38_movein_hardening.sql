@@ -92,15 +92,15 @@ grant select on public.movein_cash_clock, public.movein_attention,
 grant select on public.movein_capacity_state to authenticated, service_role;
 
 -- customer-safe, strictly user-filtered
-create or replace view public.movein_my_mailbox_gaps
-with (security_invoker = on) as
+-- NOTE: security_invoker OFF — filter explicit auth.uid() pe hai, base view par
+-- authenticated ka select revoke ho chuka hai.
+create or replace view public.movein_my_mailbox_gaps as
   select g.* from public.movein_mailbox_gaps g
    where exists (select 1 from public.movein_deals d
                   where d.id = g.deal_id
                     and (d.user_id = auth.uid() or d.owner_id = auth.uid()));
 
-create or replace view public.movein_my_dns_proof
-with (security_invoker = on) as
+create or replace view public.movein_my_dns_proof as
   select p.* from public.movein_dns_proof p
    where exists (select 1 from public.movein_deals d
                   where d.id = p.deal_id
