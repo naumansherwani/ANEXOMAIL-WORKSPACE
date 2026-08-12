@@ -55,7 +55,7 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
       ["Connect the source", "Gmail, Google Workspace, Outlook, Microsoft 365, Zoho, Proton bridge or plain IMAP."],
       ["Dry run", "A test pass reports item counts and anything that will not copy, before the real run."],
       ["Cut over", "Change MX when you are ready — weekend or overnight windows available."],
-      ["Managed option", "Prefer us to do it? Fixed bands £500 (1–5), £1,500 (6–15), £3,000 (30+) — quoted on the migration page."],
+      ["Managed option", "Prefer us to do it? Fixed bands £500 (1–5), £1,500 (6–15), £2,000 (16–29), £3,000 (30+) — quoted on the migration page."],
     ],
   },
   {

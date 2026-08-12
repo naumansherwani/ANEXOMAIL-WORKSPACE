@@ -20,6 +20,24 @@ const WIDTHS = [
   { id: "desktop", label: "1440", width: 1440 },
 ] as const;
 
+/**
+ * Founder hosts — sirf inhi par OFF hone ke waqt bhi ek chhota toggle dikhta hai,
+ * taake founder ko `?founder=1` yaad rakhne ki zaroorat na pade. anexomail.com
+ * (awam) par kuch nahi dikhta.
+ */
+function onFounderHost(): boolean {
+  if (typeof window === "undefined") return false;
+  const h = window.location.hostname;
+  return (
+    h.startsWith("founderworkspace.") ||
+    h.startsWith("aiemail.") ||
+    h === "localhost" ||
+    h === "127.0.0.1" ||
+    h.endsWith(".lovable.app") ||
+    h.endsWith(".lovableproject.com")
+  );
+}
+
 function useAllRoutes(): { public: string[]; app: string[] } {
   const router = useRouter();
   return useMemo(() => {
@@ -51,11 +69,13 @@ export function FounderBar() {
   const [on, setOn] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [visitor, setVisitor] = useState(false);
+  const [founderHost, setFounderHost] = useState(false);
   const [width, setWidth] = useState<(typeof WIDTHS)[number]["id"]>("off");
 
   useEffect(() => {
     setOn(founderPreviewFromUrl());
     setVisitor(visitorPreviewEnabled());
+    setFounderHost(onFounderHost());
   }, []);
 
   // Device switcher — asli page par width clamp, iframe ke bina.
@@ -81,7 +101,24 @@ export function FounderBar() {
     document.body.style.paddingTop = on && !collapsed ? "36px" : "";
   }, [on, collapsed]);
 
-  if (!on) return null;
+  // OFF state — founder host par ek discreet toggle, awam ko bilkul kuch nahi.
+  if (!on) {
+    if (!founderHost) return null;
+    return (
+      <button
+        type="button"
+        onClick={() => {
+          setFounderPreview(true);
+          const url = new URL(window.location.href);
+          url.searchParams.set("founder", "1");
+          window.location.assign(url.toString());
+        }}
+        className="ax-press ax-focus fixed left-3 top-3 z-[120] inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/95 px-2.5 py-1 text-[10px] font-bold tracking-wide text-foreground shadow-elev-1 backdrop-blur"
+      >
+        <Crown className="size-3" /> FOUNDER PREVIEW
+      </button>
+    );
+  }
 
   const all = [...routes.public, ...routes.app];
   const current =

@@ -27,13 +27,14 @@ export const MIGRATION_CEILING = 3000;
 export const MIGRATION_BANDS = [
   { label: "1–5 mailboxes", max: 5, price: 500 },
   { label: "6–15 mailboxes", max: 15, price: 1500 },
-  { label: "16+ mailboxes (30+ included)", max: Infinity, price: 3000 },
+  { label: "16–29 mailboxes", max: 29, price: 2000 },
+  { label: "30+ mailboxes", max: Infinity, price: 3000 },
 ] as const;
 
 export function migrationBand(mailboxes: number): { label: string; max: number; price: number } {
   const n = Math.max(1, Math.round(mailboxes || 1));
   const found = MIGRATION_BANDS.find((b) => n <= b.max);
-  return found ?? MIGRATION_BANDS[2];
+  return found ?? MIGRATION_BANDS[3];
 }
 
 export type MigrationInput = {

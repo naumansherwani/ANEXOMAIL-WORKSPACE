@@ -2,12 +2,13 @@
 
 Locked prices. Yahi exact naam Polar dashboard mein banao. Currency: **GBP (£)**.
 
-## 1) One-time products — Managed Move-In (3 products)
+## 1) One-time products — Managed Move-In (4 products)
 
 | Product name | Price | Billing |
 | --- | --- | --- |
 | `Managed Move-In · 1–5 Mailboxes` | £500 | One-time |
 | `Managed Move-In · 6–15 Mailboxes` | £1,500 | One-time |
+| `Managed Move-In · 16–29 Mailboxes` | £2,000 | One-time |
 | `Managed Move-In · 30+ Mailboxes` | £3,000 | One-time |
 
 **Description (teeno products ke liye, sirf band line badalti hai):**
@@ -28,6 +29,7 @@ Two move-ins a month — done by hand, never queued. Old mailboxes are copied, n
 Band line variants:
 - `Band: 1–5 mailboxes.`
 - `Band: 6–15 mailboxes.`
+- `Band: 16–29 mailboxes.`
 - `Band: 30 or more mailboxes.`
 
 ## 2) Recurring product — Priority Support
@@ -64,7 +66,7 @@ Business days are Monday to Friday, UK time.
 ```text
 brand = anexomail
 kind  = movein | support | plan
-band  = 1-5 | 6-15 | 30plus        (sirf movein par)
+band  = 1-5 | 6-15 | 16-29 | 30plus   (sirf movein par)
 plan  = basic | pro | business     (sirf plan par)
 ```
 
@@ -95,6 +97,7 @@ cd /opt/anexomail && nano .env
 # neeche paste karo, asli IDs ke saath:
 POLAR_PRODUCT_MOVEIN_1_5=prod_xxx
 POLAR_PRODUCT_MOVEIN_6_15=prod_xxx
+POLAR_PRODUCT_MOVEIN_16_29=prod_xxx
 POLAR_PRODUCT_MOVEIN_30PLUS=prod_xxx
 POLAR_PRODUCT_PRIORITY_SUPPORT=prod_xxx
 POLAR_PRODUCT_PLAN_BASIC=prod_xxx

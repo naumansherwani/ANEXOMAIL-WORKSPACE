@@ -78,7 +78,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Managed migration",
         path: "/migration",
-        note: "Phase 28 — fixed-price migration quote calculator (£500 / £1,500 / £3,000 bands) + real booking",
+        note: "Phase 28 — fixed-price migration quote calculator (£500 / £1,500 / £2,000 / £3,000 bands) + real booking",
       },
       {
         label: "Partner programme",
@@ -89,6 +89,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Enterprise support",
         path: "/enterprise",
         note: "Phase 28 — £500/mo add-on: named founder contact, response within 1 business day, quarterly review",
+      },
+      {
+        label: "Get started (2-day trial)",
+        path: "/get-started",
+        note: "Awam onboarding — 2 free days, claim @anexomail.com, recovery account of their choice, passkey sign-in",
       },
       { label: "Page map", path: "/pages", note: "This page — every route, always current" },
     ],

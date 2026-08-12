@@ -119,7 +119,7 @@ const faqs = [
   },
   {
     q: "How is the Managed Move-In price decided?",
-    a: "By mailbox count, in fixed bands: 1–5 mailboxes £500, 6–15 mailboxes £1,500, and £3,000 for large moves of 30 or more. You are told which band you are in before anything starts, and the number does not move afterwards.",
+    a: "By mailbox count, in fixed bands: 1–5 mailboxes £500, 6–15 mailboxes £1,500, 16–29 mailboxes £2,000, and £3,000 for large moves of 30 or more. You are told which band you are in before anything starts, and the number does not move afterwards.",
   },
 ];
 
@@ -135,6 +135,7 @@ const services = [
     tiers: [
       "1–5 mailboxes — £500",
       "6–15 mailboxes — £1,500",
+      "16–29 mailboxes — £2,000",
       "30+ mailboxes — £3,000",
     ],
     features: [
