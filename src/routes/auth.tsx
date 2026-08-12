@@ -429,6 +429,7 @@ function AuthPage() {
       open={showSplash}
       onDone={() => redirectTo && void navigate({ to: redirectTo })}
     />
+    </>
   );
 }
 
