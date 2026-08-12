@@ -234,7 +234,8 @@ function AuthPage() {
   };
 
   return (
-    <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
+    <>
+      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div
         aria-hidden
         className="pointer-events-none absolute left-1/2 top-[-12rem] h-[28rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[120px]"
