@@ -127,7 +127,7 @@ function EnterprisePage() {
             kind="sla"
             cta="Email us about Priority Support"
             quoteGbp={SLA_PRICE_MONTHLY}
-            note="We reply within 4 hours with the response terms in writing before anything is billed. Or email moveyourbusiness@anexomail.com directly."
+            note="We reply within 24–48 hours with the response terms in writing before anything is billed. Or email moveyourbusiness@anexomail.com directly."
           />
         </section>
 
