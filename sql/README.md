@@ -83,3 +83,12 @@ P1
 Small hardening
 - `movein_dns_checks`: `phase in (PRE,POST)`, `record in (MX,SPF,DKIM,DMARC)`, `owner_id` column + auto-fill trigger + backfill
 - `blocks_cutover` ab `movein_cutover_ready()` ka hissa; high severity par trigger se auto-true
+
+## phase39_movein_fixes.sql — Move-In surgical fixes (Phase 39)
+
+Phase 37 + 38 ka complement (kuch touch nahi hua). Tarteeb: 37 → 38 → 39.
+
+- **Intent binding (P0)**: `billing_intents.movein_deal_id` + `movein_leg` columns, unique bind index, backfill. `movein_attach_intent()` ab reject karta hai: doosre deal/leg ka bound intent · pehle se paid/entitled unbound intent · deal se purana intent.
+- **Rollback transitions (P0)**: `CUTOVER_EXECUTED` / `POST_CUTOVER_VERIFIED` / `FINAL_50_INVOICED` → `ON_HOLD` legal; recovery raaste `ON_HOLD` → DATA_COPY / DATA_VERIFIED / CUTOVER_READY (gates ke saath).
+- **Reference counter (P1)**: `count(*)` khatam — asli `MOVE-IN-YYYY-NNN` ka highest NNN parse kar ke counter set.
+- **Constraints (P2)**: mailbox counts clamp (verified ≤ copied ≤ source, no negatives) + DNS phase/record normalise, phir `VALIDATE CONSTRAINT`.
