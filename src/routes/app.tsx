@@ -46,7 +46,9 @@ function AppLayout() {
     const el = document.documentElement;
     if (stripVisible) el.style.setProperty("--ax-bottom-strip", "2.25rem");
     else el.style.removeProperty("--ax-bottom-strip");
-    return () => el.style.removeProperty("--ax-bottom-strip");
+    return () => {
+      el.style.removeProperty("--ax-bottom-strip");
+    };
   }, [stripVisible]);
 
   useEffect(() => {
