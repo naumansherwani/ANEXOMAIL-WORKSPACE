@@ -114,36 +114,36 @@ const whyUs = [
 
 const differences = [
   [
-    "A conversation that can be finished",
-    "Threads carry commitments, owners and due dates, and close when the work is done.",
+    "A conversation that becomes work",
+    "An email thread does more than hold messages. It carries commitments, owners and due dates so the conversation itself can become the work, and the work can be finished.",
   ],
   [
-    "Follow-through you can see",
-    "Unanswered promises surface on their own instead of waiting to be remembered.",
+    "Follow-through you can measure",
+    "Promises made in email should not disappear into an inbox. ANEXOMAIL surfaces what is still owed, who owes it and when it is due so follow-through becomes visible instead of something you have to remember.",
   ],
   [
-    "Speed you can audit",
-    "Published budgets and recorded load times per screen, not a claim in a brochure.",
+    "Know what your inbox is costing you",
+    "Every thread can show the time it consumes and the value of that time. ANEXOMAIL exposes Attention Leaks and Deep-Work patterns so you can see where communication is taking your team's attention in numbers, not feelings.",
   ],
   [
-    "Deliverability as a verdict",
-    "Live checks and signed probes tell you your mail is landing, in plain words.",
+    "Trust you can see. Access you control.",
+    "Security should not depend on a promise. ANEXOMAIL makes important actions, access and security signals visible, so you can see what is happening instead of simply being told to trust us. Know which devices can reach your workspace and how much you trust them. When a device should no longer have access, revoke it in one click without hunting through accounts, sessions or passwords.",
   ],
   [
-    "Offline that behaves",
-    "Recent mail opens with no signal, and sends queue in a visible outbox with a retry clock.",
+    "Your history stays provable",
+    "Important security and operational events belong to an append-only record. What happened, when it happened and who did it remains traceable so your audit trail reflects history, not whatever the dashboard happens to show today.",
   ],
   [
-    "Move-in done for you",
-    "Full history copied and verified message-for-message, with the switch scheduled in a quiet window.",
+    "Offline that tells the truth",
+    "When you're offline, ANEXOMAIL keeps your work in a visible outbox. Queued is not sent. A message is only marked sent after the server confirms it with retry state visible instead of a reassuring but meaningless success message.",
   ],
   [
-    "Access control with a ledger",
-    "Roles, policies, device trust scores and one-click revocation, all written to an append-only record.",
+    "Move-in with proof",
+    "Moving your company from another provider shouldn't mean hoping everything arrived. ANEXOMAIL's move-in process is designed around staged migration, verification, DNS proof, scheduled cut-over and rollback points with evidence along the way.",
   ],
   [
     "A door out on day one",
-    "Standard-format export on every plan, no permission needed, no retention games.",
+    "Your mail, contacts, calendars, settings and other supported data should remain yours. Export them in standard formats, without asking permission. And when you choose to leave, deletion means deletion.",
   ],
 ];
 

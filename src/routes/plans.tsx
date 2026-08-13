@@ -222,11 +222,11 @@ function PlansPage() {
         <section className="ax-container pt-20 pb-8 text-center md:pt-24">
           <p className="ax-eyebrow">Plans</p>
           <h1 className="mx-auto mt-4 max-w-2xl text-4xl text-foreground md:text-5xl">
-            One price per person. No surprise tiers.
+            Plans that grow with your team.
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Billed monthly per person. Every plan includes your own company address, sealed
-            mailboxes and the full workspace — never a stripped-down inbox.
+            Google gives you storage. ANEXOMAIL gives you control over the work happening inside
+            your email.
           </p>
         </section>
 
