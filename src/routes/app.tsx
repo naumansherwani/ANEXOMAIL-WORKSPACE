@@ -39,6 +39,18 @@ function AppLayout() {
   // band, aur user ko /trial-ended pe le jaate hain (account+billing khula rehta hai).
   const account = useAccountState();
 
+  // Founder preview strip is fixed at the bottom — reserve its height so the
+  // sidebar's bottom section is never covered.
+  const stripVisible = preview && status !== "signed-in";
+  useEffect(() => {
+    const el = document.documentElement;
+    if (stripVisible) el.style.setProperty("--ax-bottom-strip", "2.25rem");
+    else el.style.removeProperty("--ax-bottom-strip");
+    return () => {
+      el.style.removeProperty("--ax-bottom-strip");
+    };
+  }, [stripVisible]);
+
   useEffect(() => {
     if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
   }, [status, preview, navigate]);
@@ -76,7 +88,7 @@ function AppLayout() {
   return (
     <AppShell>
       <EarnedDelight />
-      {preview && status !== "signed-in" && (
+      {stripVisible && (
         <div className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-center gap-3 border-t border-border bg-secondary/95 px-3 py-1.5 backdrop-blur">
           <span className="ax-caption font-semibold text-foreground">
             Founder preview — no session. Panels show real API state, nothing faked.

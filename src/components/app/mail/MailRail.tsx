@@ -32,7 +32,7 @@ export function MailRail({
   const [dropTarget, setDropTarget] = useState<string | null>(null);
 
   return (
-    <div className="hidden w-[13rem] shrink-0 flex-col gap-ax-4 overflow-y-auto border-r border-border bg-sidebar/60 p-ax-3 lg:flex">
+    <div className="hidden w-[11.5rem] shrink-0 flex-col gap-ax-4 overflow-y-auto border-r border-border bg-sidebar/60 p-ax-3 lg:flex">
       <nav className="flex flex-col gap-0.5">
         {MAIL_FOLDERS.map((f) => (
           <Link
