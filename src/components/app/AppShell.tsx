@@ -122,7 +122,10 @@ export function AppShell({ children }: { children: ReactNode }) {
       : pathname.startsWith(item.match ?? item.to);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-background">
+    <div
+      className="flex h-screen flex-col overflow-hidden bg-background"
+      style={{ paddingBottom: "var(--ax-bottom-strip, 0px)" }}
+    >
       <CommandPalette open={open} onOpenChange={setOpen} />
 
       {/* Top bar — brand, org, one search entry for the entire product */}
