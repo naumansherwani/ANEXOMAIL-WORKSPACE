@@ -4,6 +4,8 @@ import {
   Building2,
   CheckSquare,
   ChevronDown,
+  ChevronsLeft,
+  ChevronsRight,
   Crown,
   Gauge,
   Inbox,
@@ -16,7 +18,7 @@ import {
   UserCircle2,
   Users,
 } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
@@ -80,6 +82,20 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const { session, organisation, refresh, signOut } = useAuth();
+  // Rail pin state — expanded by default on desktop, collapsed on tablet.
+  // Persisted so the founder's choice survives navigation and reloads.
+  const [collapsed, setCollapsed] = useState(false);
+  useEffect(() => {
+    const saved = window.localStorage.getItem("ax.rail.collapsed");
+    if (saved === "true" || saved === "false") setCollapsed(saved === "true");
+    else setCollapsed(window.innerWidth < 1100);
+  }, []);
+  const toggleRail = () => {
+    setCollapsed((c) => {
+      window.localStorage.setItem("ax.rail.collapsed", String(!c));
+      return !c;
+    });
+  };
 
   const switchOrg = async (id: string) => {
     try {
@@ -181,29 +197,63 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <div className="flex min-h-0 flex-1">
         {/* Rail */}
-        <nav className="hidden w-[13.5rem] shrink-0 flex-col gap-0.5 border-r border-border bg-sidebar p-3 md:flex">
-          {primary.map((item) => {
-            const active = isActive(item);
-            return (
-              <Link
-                key={item.to}
-                to={item.to}
-                className={`flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors ${
-                  active
-                    ? "bg-secondary text-foreground"
-                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
-                }`}
-              >
-                <item.icon className="size-4 shrink-0" />
-                {item.label}
-              </Link>
-            );
-          })}
+        <nav
+          aria-label="Workspace navigation"
+          data-collapsed={collapsed ? "true" : "false"}
+          style={{ width: collapsed ? "4.25rem" : "13.75rem" }}
+          className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-sidebar transition-[width] duration-200 md:flex"
+        >
+          <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-2.5">
+            {primary.map((item) => {
+              const active = isActive(item);
+              return (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  title={collapsed ? item.label : undefined}
+                  aria-label={item.label}
+                  className={`flex items-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-colors ${
+                    collapsed ? "justify-center px-0" : "px-3"
+                  } ${
+                    active
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                  }`}
+                >
+                  <item.icon className="size-4 shrink-0" />
+                  {!collapsed && <span className="truncate">{item.label}</span>}
+                </Link>
+              );
+            })}
+          </div>
 
-          <div aria-hidden className="ax-hairline my-3 h-px" />
-          <p className="px-3 text-[11px] leading-relaxed text-muted-foreground">
-            Threads carry an owner, a status and a due date — mail is work, not a list.
-          </p>
+          {/* Bottom: context line + pin control — always visible, never clipped */}
+          <div className="shrink-0 border-t border-border p-2.5">
+            {!collapsed && (
+              <p className="px-1 pb-2 text-[11px] leading-relaxed text-muted-foreground">
+                Threads carry an owner, a status and a due date — mail is work, not a list.
+              </p>
+            )}
+            <button
+              type="button"
+              onClick={toggleRail}
+              title={collapsed ? "Expand navigation" : "Collapse navigation"}
+              aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+              aria-pressed={collapsed}
+              className={`ax-focus flex w-full items-center gap-2 rounded-lg px-2 py-2 text-[11px] font-semibold text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground ${
+                collapsed ? "justify-center" : ""
+              }`}
+            >
+              {collapsed ? (
+                <ChevronsRight className="size-4 shrink-0" />
+              ) : (
+                <>
+                  <ChevronsLeft className="size-4 shrink-0" />
+                  <span>Collapse</span>
+                </>
+              )}
+            </button>
+          </div>
         </nav>
 
         {/* Panels */}
@@ -214,14 +264,17 @@ export function AppShell({ children }: { children: ReactNode }) {
       </div>
 
       {/* Mobile bar */}
-      <nav className="flex shrink-0 items-stretch border-t border-border bg-sidebar md:hidden">
+      <nav
+        aria-label="Workspace navigation"
+        className="flex shrink-0 items-stretch gap-0.5 overflow-x-auto border-t border-border bg-sidebar px-1 [scrollbar-width:none] md:hidden"
+      >
         {primary.map((item) => {
           const active = isActive(item);
           return (
             <Link
               key={item.to}
               to={item.to}
-              className={`flex flex-1 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold ${
+              className={`flex min-w-[3.75rem] shrink-0 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold ${
                 active ? "text-foreground" : "text-muted-foreground"
               }`}
             >
