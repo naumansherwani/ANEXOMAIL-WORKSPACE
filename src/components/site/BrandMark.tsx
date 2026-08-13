@@ -1,3 +1,5 @@
+import { useId } from "react";
+
 type Props = {
   /** Hide the wordmark and show the mark alone. */
   compact?: boolean;
@@ -9,6 +11,12 @@ type Props = {
  * crossed by a platinum route line with three delivery nodes.
  */
 export function BrandMark({ compact = false, className }: Props) {
+  // Unique gradient ids per instance — two BrandMarks on one page (one of them
+  // display:none) otherwise share ids and the visible mark loses its fills.
+  const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
+  const gA = `ax-plane-a-${uid}`;
+  const gB = `ax-plane-b-${uid}`;
+  const gE = `ax-edge-${uid}`;
   return (
     <span className={`flex items-center gap-2.5 ${className ?? ""}`}>
       <svg
@@ -18,15 +26,15 @@ export function BrandMark({ compact = false, className }: Props) {
         className="size-8 shrink-0"
       >
         <defs>
-          <linearGradient id="ax-plane-a" x1="12" y1="4" x2="54" y2="60">
+          <linearGradient id={gA} x1="12" y1="4" x2="54" y2="60">
             <stop offset="0%" stopColor="oklch(0.50 0.098 258)" />
             <stop offset="100%" stopColor="oklch(0.295 0.066 258)" />
           </linearGradient>
-          <linearGradient id="ax-plane-b" x1="20" y1="18" x2="46" y2="46">
+          <linearGradient id={gB} x1="20" y1="18" x2="46" y2="46">
             <stop offset="0%" stopColor="oklch(0.375 0.080 258)" />
             <stop offset="100%" stopColor="oklch(0.245 0.052 258)" />
           </linearGradient>
-          <linearGradient id="ax-edge" x1="4" y1="4" x2="60" y2="60">
+          <linearGradient id={gE} x1="4" y1="4" x2="60" y2="60">
             <stop offset="0%" stopColor="oklch(0.975 0.004 250)" />
             <stop offset="60%" stopColor="oklch(0.80 0.012 252)" />
             <stop offset="100%" stopColor="oklch(0.60 0.016 253)" />
@@ -36,23 +44,23 @@ export function BrandMark({ compact = false, className }: Props) {
         {/* Primary plane — the A */}
         <path
           d="M32 4 L61 59 L45.5 59 L32 32 L18.5 59 L3 59 Z"
-          fill="url(#ax-plane-a)"
-          stroke="url(#ax-edge)"
+          fill={`url(#${gA})`}
+          stroke={`url(#${gE})`}
           strokeWidth="1.6"
           strokeLinejoin="miter"
         />
         {/* Annexed plane — the inner wing */}
         <path
           d="M32 19 L43 41 L21 41 Z"
-          fill="url(#ax-plane-b)"
-          stroke="url(#ax-edge)"
+          fill={`url(#${gB})`}
+          stroke={`url(#${gE})`}
           strokeWidth="1.3"
           strokeLinejoin="miter"
         />
         {/* Route line with delivery nodes */}
         <path
           d="M9 52 L56 33"
-          stroke="url(#ax-edge)"
+          stroke={`url(#${gE})`}
           strokeWidth="1.1"
           strokeLinecap="round"
           opacity="0.9"
