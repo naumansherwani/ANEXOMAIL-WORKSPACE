@@ -632,6 +632,86 @@ async fn dispatch(
         .await
         .map(|signals| json!({ "signals": signals })),
 
+        // ── PHASE 10A: ANEXOVIDEOCHAT CALL ENGINE ───────────────────────────
+        // TURN creds coturn REST scheme se banti hain. Secret sirf server par.
+        "chat.turn.credentials" => {
+            match sb_rpc("chat_video_allowed", json!({ "_user_id": me.id })).await {
+                Err(e) => Err(e),
+                Ok(v) if v.as_bool() != Some(true) => {
+                    return err(
+                        StatusCode::FORBIDDEN,
+                        "video_not_entitled",
+                        "ANEXOVideoChat Business Pro par hai.",
+                    )
+                    .into_response()
+                }
+                Ok(_) => Ok(turn_credentials(&me.id)),
+            }
+        }
+
+        "chat.call.start" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_call_start",
+                    json!({
+                        "_conv": conv,
+                        "_user": me.id,
+                        "_peer": input.get("peer_user_id").cloned().unwrap_or(Value::Null),
+                        "_role": if s(&input, "role").is_empty() { "caller".to_string() } else { s(&input, "role") },
+                        "_signaling": s(&input, "signaling"),
+                    }),
+                )
+                .await
+                .map(|id| json!({ "session_id": id }))
+            }
+        }
+
+        "chat.call.stat" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_call_stat",
+                    json!({
+                        "_session": session,
+                        "_user": me.id,
+                        "_sample": input.get("sample").cloned().unwrap_or(json!({})),
+                    }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+
+        "chat.call.end" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_call_end",
+                    json!({ "_session": session, "_user": me.id, "_reason": s(&input, "reason") }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+
+        // Founder god-view: measured aggregates (DB hi founder check karta hai)
+        "chat.calls.health" => {
+            let days = input.get("days").and_then(|v| v.as_i64()).unwrap_or(7);
+            match sb_rpc("chat_call_health", json!({ "_user": me.id, "_days": days })).await {
+                Err(e) => Err(e),
+                Ok(health) => sb_rpc("chat_call_recent", json!({ "_user": me.id, "_limit": 40 }))
+                    .await
+                    .map(|calls| json!({ "health": health, "calls": calls })),
+            }
+        }
+
         other => {
             return err(
                 StatusCode::NOT_FOUND,
@@ -646,6 +726,48 @@ async fn dispatch(
         Ok(data) => ok(data).into_response(),
         Err(detail) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &detail).into_response(),
     }
+}
+
+// ── TURN (coturn) ephemeral credentials — REST scheme ───────────────────────
+// username = <unix-expiry>:<user-id>, password = base64(HMAC-SHA1(secret, username))
+// ENV: TURN_HOST, TURN_SECRET, TURN_TTL_SECONDS. Secret frontend pe kabhi nahi.
+fn turn_credentials(user_id: &str) -> Value {
+    use base64::Engine as _;
+    use hmac::{Hmac, Mac};
+    use sha1::Sha1;
+
+    let mut servers = vec![json!({
+        "urls": ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"]
+    })];
+    let host = env_var("TURN_HOST");
+    let secret = env_var("TURN_SECRET");
+    let ttl: u64 = env_var("TURN_TTL_SECONDS").parse().unwrap_or(3600);
+
+    if !host.is_empty() && !secret.is_empty() {
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_secs())
+            .unwrap_or(0);
+        let username = format!("{}:{}", now + ttl, user_id);
+        let mut mac = Hmac::<Sha1>::new_from_slice(secret.as_bytes()).expect("hmac key");
+        mac.update(username.as_bytes());
+        let credential = base64::engine::general_purpose::STANDARD.encode(mac.finalize().into_bytes());
+        servers.push(json!({
+            "urls": [
+                format!("turn:{host}:3478?transport=udp"),
+                format!("turn:{host}:3478?transport=tcp"),
+                format!("turns:{host}:5349?transport=tcp")
+            ],
+            "username": username,
+            "credential": credential
+        }));
+    }
+
+    json!({
+        "ice_servers": servers,
+        "ttl_seconds": ttl,
+        "turn": !host.is_empty() && !secret.is_empty()
+    })
 }
 
 // ── WebTransport / HTTP3 / QUIC realtime (PRIMARY push path) ────────────────
