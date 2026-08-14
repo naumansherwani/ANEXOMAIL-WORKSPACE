@@ -203,3 +203,33 @@ Sweep har 10 minute (payment + health truth):
 ```bash
 ( crontab -l 2>/dev/null; echo "*/10 * * * * curl -s -X POST -H \"x-anexomail-cron: $(grep '^CRON_SECRET=' /opt/anexomail/.env | cut -d= -f2)\" http://localhost:3100/api/public/movein/sweep > /dev/null" ) | crontab -
 ```
+
+### 10) Phase 43/44 — Annual billing + Polar IDs v2 (LOCKED)
+
+Pehle Supabase #4 SQL Editor mein `sql/phase43_annual_billing_lock.sql` (v3) poori run karo.
+`sql/phase44_polar_ids_v2.sql` retired hai — mat chalao.
+
+Server par yeh 4 files repo se nano select-all overwrite (naya folder `src/config/`):
+
+```bash
+cd /opt/anexomail
+mkdir -p src/config
+nano /opt/anexomail/src/config/billing-products.ts  # repo/server/config/billing-products.ts
+nano /opt/anexomail/src/routes/polar.ts             # repo/server/routes/polar.ts
+nano /opt/anexomail/src/routes/billing-sync.ts      # repo/server/routes/billing-sync.ts
+nano /opt/anexomail/src/index.ts                    # repo/server/index.ts
+```
+
+Phir `.env` mein 13 Polar IDs (`docs/polar-products.md` §7 ka block) daal kar:
+
+```bash
+pm2 restart anexomail-leo --update-env && sleep 3
+pm2 logs anexomail-leo --lines 40 --nostream
+printf "/api/billing/intent -> ";  curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:3100/api/billing/intent
+printf "/api/billing/state -> ";   curl -s -o /dev/null -w "%{http_code}\n" http://127.0.0.1:3100/api/billing/state
+printf "/api/billing/checkout -> ";curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:3100/api/billing/checkout
+```
+
+Expected: intent + state `401` (token ke bina), purana checkout `410` (retired).
+Polar dashboard ka "Checkout Link" hum use NAHI karte — checkout session API se banti hai
+taake `billing_intents` id metadata mein jaaye (link static hota hai, metadata carry nahi karta).
