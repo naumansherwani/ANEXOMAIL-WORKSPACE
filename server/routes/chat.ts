@@ -1,4 +1,4 @@
-// ANEXOMAIL — ANEXOChat PHASE 1 SLICE API (Server 2 / Brain, port 3100)
+// ANEXOMAIL — ANEXOChat PHASE 1 SLICE API (service `anexochat`, port 3300)
 //
 // NANO COMMAND (server par):
 //   cp /opt/anexomail/src/routes/chat.ts /opt/anexomail/src/routes/chat.ts.bak.$(date +%s) 2>/dev/null
@@ -12,7 +12,7 @@
 //   4. Koi fake state nahi: sent/delivered/read sirf DB rows se
 //   5. Bun path = fallback/secondary. Rust /wt/* baad mein SAME contract par.
 //
-// Routes (mount: app.use("/api/chat", chatRouter))
+// Routes (mount: src/anexochat.ts -> app.use("/api/chat", chatRouter))
 //   GET  /api/chat/bootstrap                auth — workspace + access + me
 //   GET  /api/chat/conversations            auth — list + truthful health
 //   POST /api/chat/conversations/direct     auth — {other_user_id}
