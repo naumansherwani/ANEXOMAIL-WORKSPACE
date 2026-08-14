@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
+import { useState } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -16,6 +17,7 @@ import {
   ShieldCheck,
   Video,
   Users,
+  X,
 } from "lucide-react";
 
 import { SiteNav } from "@/components/site/SiteNav";
@@ -24,6 +26,8 @@ import { Reveal, EASE } from "@/components/site/Reveal";
 import { Stage } from "@/components/site/Stage";
 import { HeroComposition } from "@/components/site/HeroComposition";
 import { SlaProof } from "@/components/site/SlaProof";
+import { BillingToggle } from "@/components/site/BillingToggle";
+import { WORKSPACE_PLANS, priceFor, ANNUAL_NOTE, type BillingCycle } from "@/lib/plans";
 
 /* Hero trust badges — every claim verifiable, nothing invented. */
 const badges = ["DKIM verified", "DMARC protected", "TLS 1.3", "Your own domain"];
