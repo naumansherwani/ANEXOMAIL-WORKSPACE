@@ -409,6 +409,9 @@ async function processWebhookEvent(event: any, eventId: string) {
     const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
 
     const intentId = meta.anexomail_intent_id || null;
+    if ((kind === "plan" || kind === "ai_plan") && (!registeredProduct || !intentId)) {
+      throw new Error("paid_plan_missing_registered_product_or_intent");
+    }
     if (intentId) {
       const { error: confirmError } = await db.rpc("billing_intent_confirm", {
         p_intent: intentId,

@@ -155,8 +155,14 @@ create or replace function public.billing_apply_entitlement(
   p_user uuid,p_kind text,p_plan text,p_band text,p_seats int,p_intent uuid,p_source text
 ) returns void
 language plpgsql security definer set search_path=public as $$
-declare v_credits int; v_before numeric;
+declare v_credits int; v_before numeric; v_cycle text; v_active_until timestamptz;
 begin
+  select billing_cycle into v_cycle from public.billing_intents where id=p_intent;
+  v_active_until := case
+    when v_cycle='yearly' then now()+interval '1 year'
+    when p_kind in ('plan','ai_plan','support') then now()+interval '1 month'
+    else null
+  end;
   insert into public.entitlement_state
     (user_id,plan,ai_plan,seats,movein_band,support_active,active_until,revision,source_intent,updated_at)
   values (
@@ -166,7 +172,7 @@ begin
     case when p_kind='plan' then greatest(1,coalesce(p_seats,1)) else 0 end,
     case when p_kind='movein' then p_band end,
     p_kind='support',
-    case when p_kind in ('plan','ai_plan','support') then now()+interval '31 days' end,
+    v_active_until,
     1,p_intent,now()
   ) on conflict (user_id) do update set
     plan=coalesce(case when p_kind='plan' then p_plan end,entitlement_state.plan),
@@ -174,7 +180,7 @@ begin
     seats=case when p_kind='plan' then greatest(1,coalesce(p_seats,1)) else entitlement_state.seats end,
     movein_band=coalesce(case when p_kind='movein' then p_band end,entitlement_state.movein_band),
     support_active=entitlement_state.support_active or p_kind='support',
-    active_until=case when p_kind in ('plan','ai_plan','support') then now()+interval '31 days' else entitlement_state.active_until end,
+    active_until=coalesce(v_active_until,entitlement_state.active_until),
     revision=entitlement_state.revision+1,source_intent=p_intent,updated_at=now();
 
   if p_kind='ai_plan' then
