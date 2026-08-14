@@ -85,6 +85,7 @@ import { Route as AppFounderAdminRouteImport } from './routes/app.founder_.admin
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
 import { Route as AppFounderAnalyticsRouteImport } from './routes/app.founder_.analytics'
 import { Route as AppFounderBillingRouteImport } from './routes/app.founder_.billing'
+import { Route as AppFounderCallsRouteImport } from './routes/app.founder_.calls'
 import { Route as AppFounderCrmRouteImport } from './routes/app.founder_.crm'
 import { Route as AppFounderIntegrationsRouteImport } from './routes/app.founder_.integrations'
 import { Route as AppFounderLaunchRouteImport } from './routes/app.founder_.launch'
@@ -525,6 +526,11 @@ const AppFounderBillingRoute = AppFounderBillingRouteImport.update({
   path: '/founder/billing',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderCallsRoute = AppFounderCallsRouteImport.update({
+  id: '/founder_/calls',
+  path: '/founder/calls',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderCrmRoute = AppFounderCrmRouteImport.update({
   id: '/founder_/crm',
   path: '/founder/crm',
@@ -899,6 +905,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
+  '/app/founder/calls': typeof AppFounderCallsRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/launch': typeof AppFounderLaunchRouteWithChildren
@@ -1027,6 +1034,7 @@ export interface FileRoutesByTo {
   '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
+  '/app/founder/calls': typeof AppFounderCallsRoute
   '/app/founder/crm': typeof AppFounderCrmRoute
   '/app/founder/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder/motion': typeof AppFounderMotionRoute
@@ -1163,6 +1171,7 @@ export interface FileRoutesById {
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder_/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder_/billing': typeof AppFounderBillingRoute
+  '/app/founder_/calls': typeof AppFounderCallsRoute
   '/app/founder_/crm': typeof AppFounderCrmRoute
   '/app/founder_/integrations': typeof AppFounderIntegrationsRoute
   '/app/founder_/launch': typeof AppFounderLaunchRouteWithChildren
@@ -1302,6 +1311,7 @@ export interface FileRouteTypes {
     | '/app/founder/ai'
     | '/app/founder/analytics'
     | '/app/founder/billing'
+    | '/app/founder/calls'
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/launch'
@@ -1430,6 +1440,7 @@ export interface FileRouteTypes {
     | '/app/founder/admin'
     | '/app/founder/analytics'
     | '/app/founder/billing'
+    | '/app/founder/calls'
     | '/app/founder/crm'
     | '/app/founder/integrations'
     | '/app/founder/motion'
@@ -1565,6 +1576,7 @@ export interface FileRouteTypes {
     | '/app/founder_/ai'
     | '/app/founder_/analytics'
     | '/app/founder_/billing'
+    | '/app/founder_/calls'
     | '/app/founder_/crm'
     | '/app/founder_/integrations'
     | '/app/founder_/launch'
@@ -2190,6 +2202,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/billing'
       fullPath: '/app/founder/billing'
       preLoaderRoute: typeof AppFounderBillingRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/founder_/calls': {
+      id: '/app/founder_/calls'
+      path: '/founder/calls'
+      fullPath: '/app/founder/calls'
+      preLoaderRoute: typeof AppFounderCallsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/founder_/crm': {
@@ -2882,6 +2901,7 @@ interface AppRouteChildren {
   AppFounderAiRoute: typeof AppFounderAiRouteWithChildren
   AppFounderAnalyticsRoute: typeof AppFounderAnalyticsRoute
   AppFounderBillingRoute: typeof AppFounderBillingRoute
+  AppFounderCallsRoute: typeof AppFounderCallsRoute
   AppFounderCrmRoute: typeof AppFounderCrmRoute
   AppFounderIntegrationsRoute: typeof AppFounderIntegrationsRoute
   AppFounderLaunchRoute: typeof AppFounderLaunchRouteWithChildren
@@ -2923,6 +2943,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderAiRoute: AppFounderAiRouteWithChildren,
   AppFounderAnalyticsRoute: AppFounderAnalyticsRoute,
   AppFounderBillingRoute: AppFounderBillingRoute,
+  AppFounderCallsRoute: AppFounderCallsRoute,
   AppFounderCrmRoute: AppFounderCrmRoute,
   AppFounderIntegrationsRoute: AppFounderIntegrationsRoute,
   AppFounderLaunchRoute: AppFounderLaunchRouteWithChildren,
