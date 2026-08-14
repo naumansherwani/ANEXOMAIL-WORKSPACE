@@ -1,5 +1,5 @@
 -- ============================================================================
--- ANEXOMAIL — Phase 43: ANNUAL BILLING LOCK  (v2 — FINAL, run this one)
+-- ANEXOMAIL — Phase 43: ANNUAL BILLING LOCK  (v3 — FINAL, run this one)
 --
 -- SUPABASE = PAYMENT TRUTH. Polar sirf messenger hai.
 -- Price ka faisla ab DB ki price book karti hai, code nahi.
@@ -13,9 +13,20 @@
 --   (AI = backend only, Polar par koi AI product nahi)
 --
 -- Run after phase36_state_sync.sql. Idempotent + self-healing + additive.
+-- Phase 44 Polar IDs are merged into this file. Do NOT run Phase 44 afterwards.
 -- ============================================================================
 
 begin;
+
+-- PostgreSQL CREATE OR REPLACE cannot change a function's OUT row type.
+-- Drop the exact old signatures first so a partially/previously applied Phase 36/43
+-- can always be upgraded safely. Server calls are momentarily protected by this
+-- transaction: either this whole migration commits, or the old state remains.
+drop function if exists public.billing_sync_claim(integer);
+drop function if exists public.billing_intent_open(uuid,text,text,text,text,text,integer,numeric,text);
+drop function if exists public.billing_intent_open(uuid,text,text,text,text,text,integer,numeric,text,text);
+drop function if exists public.billing_intent_confirm(uuid,text,text,numeric,text);
+drop function if exists public.billing_intent_confirm(uuid,text,text,numeric,text,text,text);
 
 alter table public.billing_intents
   add column if not exists billing_cycle text;
@@ -37,6 +48,28 @@ alter table public.billing_intents
   check (billing_cycle is null or billing_cycle in ('monthly','yearly')) not valid;
 
 -- ── 1) PRICE BOOK — ek hi authority (Supabase) ─────────────────────────────
+do $$
+begin
+  if to_regclass('public.billing_price_book') is not null and exists (
+    select 1
+    from (values
+      ('product_key'),('kind'),('plan'),('band'),('billing_cycle'),('amount_gbp'),
+      ('per_seat'),('annual_rule'),('polar_listed'),('active'),('updated_at')
+    ) required(column_name)
+    where not exists (
+      select 1 from information_schema.columns c
+      where c.table_schema='public'
+        and c.table_name='billing_price_book'
+        and c.column_name=required.column_name
+    )
+  ) then
+    execute format(
+      'alter table public.billing_price_book rename to %I',
+      'billing_price_book_legacy_' || extract(epoch from clock_timestamp())::bigint
+    );
+  end if;
+end $$;
+
 create table if not exists public.billing_price_book (
   product_key    text primary key,
   kind           text not null check (kind in ('plan','ai_plan','support','movein')),
@@ -48,8 +81,14 @@ create table if not exists public.billing_price_book (
   annual_rule    text check (annual_rule in ('one-month-free','two-months-free')),
   polar_listed   boolean not null default true,
   active         boolean not null default true,
+  polar_product_id text,
+  polar_id_updated_at timestamptz,
   updated_at     timestamptz not null default now()
 );
+
+alter table public.billing_price_book
+  add column if not exists polar_product_id text,
+  add column if not exists polar_id_updated_at timestamptz;
 
 grant select on public.billing_price_book to authenticated;
 grant all    on public.billing_price_book to service_role;
@@ -85,6 +124,37 @@ on conflict (product_key) do update set
   billing_cycle=excluded.billing_cycle, amount_gbp=excluded.amount_gbp,
   per_seat=excluded.per_seat, annual_rule=excluded.annual_rule,
   polar_listed=excluded.polar_listed, active=true, updated_at=now();
+
+-- ── 1B) POLAR PRODUCT IDs v2 — real IDs locked in payment truth ────────────
+update public.billing_price_book pb
+set polar_product_id=v.pid, polar_id_updated_at=now()
+from (values
+  ('POLAR_PRODUCT_MOVEIN_1_5','fdcdabc2-9e50-4e4b-91d4-45e4128ef829'),
+  ('POLAR_PRODUCT_MOVEIN_6_15','a9d1bec3-0d5f-4b9b-ae1c-993efde66da2'),
+  ('POLAR_PRODUCT_MOVEIN_16_29','c7b502c5-ff75-4138-b34d-25d94878fe79'),
+  ('POLAR_PRODUCT_MOVEIN_30PLUS','f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8'),
+  ('POLAR_PRODUCT_PLAN_BASIC_MONTHLY','5e1c7b50-fee5-4214-873c-ad9f350476d9'),
+  ('POLAR_PRODUCT_PLAN_BASIC_YEARLY','d3642ce7-a750-484c-940f-eb39039ed9c2'),
+  ('POLAR_PRODUCT_PLAN_PRO_MONTHLY','df1aa320-346f-451b-a16a-e737c0703e12'),
+  ('POLAR_PRODUCT_PLAN_PRO_YEARLY','7d87a72e-6be6-4aa2-86d6-5eca3d448956'),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY','b12be1b1-a02d-4701-9475-08e796d99b69'),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_YEARLY','7a1d5445-92c5-4472-81a3-4820b8579854'),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY','3a1e1699-59c0-4334-8be0-d4b08a1202d1'),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY','80bca014-b832-474e-bd3e-084a04453de0'),
+  ('POLAR_PRODUCT_PRIORITY_SUPPORT','8f6d7c8e-1722-421f-b28c-2a031f63731d')
+) as v(product_key,pid)
+where pb.product_key=v.product_key;
+
+update public.billing_price_book
+set polar_product_id=null, polar_id_updated_at=now()
+where kind='ai_plan';
+
+create or replace view public.billing_polar_id_gaps as
+select product_key,kind,plan,billing_cycle,amount_gbp
+from public.billing_price_book
+where active and polar_listed and coalesce(polar_product_id,'')='';
+
+grant select on public.billing_polar_id_gaps to service_role;
 
 -- ── 2) INTENT OPEN — amount DB se, client se nahi ──────────────────────────
 create or replace function public.billing_intent_open(
@@ -206,7 +276,8 @@ grant execute on function public.billing_intent_open(uuid,text,text,text,text,te
 grant execute on function public.billing_intent_confirm(uuid,text,text,numeric,text,text,text) to service_role;
 
 -- ── 4) SWEEP — cycle bhi return karo ──────────────────────────────────────
-create or replace function public.billing_sync_claim(p_limit int default 25)
+-- Exact old signature was dropped at migration start because OUT columns changed.
+create function public.billing_sync_claim(p_limit int default 25)
 returns table (id uuid,user_id uuid,kind text,plan text,band text,product_id text,
                amount_expected numeric,amount_paid numeric,currency text,billing_cycle text,
                polar_checkout_id text,state text,attempts int,created_at timestamptz)
@@ -300,3 +371,8 @@ order by i.created_at desc;
 grant select on public.billing_price_audit to service_role;
 
 commit;
+
+-- SUCCESS REPORT: both counts must be zero.
+select
+  (select count(*) from public.billing_polar_id_gaps) as missing_polar_ids,
+  (select count(*) from public.billing_price_audit where mismatch) as price_mismatches;

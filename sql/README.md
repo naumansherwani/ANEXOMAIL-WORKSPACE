@@ -116,11 +116,10 @@ Phase 39 ka FIX 4 replace karta hai. Historical evidence kabhi mutate nahi:
 - Client ka amount reject: expected amount server registry se aata hai
 - Paid webhook/pull par product ID, GBP currency aur exact amount validate hota hai
 - Mismatch par entitlement nahi milta; payment safety retry/alert path handle karta hai
+- v3 purani `billing_sync_claim(integer)` ko transaction ke andar drop/recreate karta hai, is liye OUT return-type upgrade fail nahi hota
+- Phase 44 ke tamam real Polar IDs isi file mein merged hain; ab **sirf Phase 43** Supabase #4 SQL Editor mein run hoti hai
 
-## phase44_polar_ids_v2.sql — Polar Product IDs v2 (LOCKED)
+## phase44_polar_ids_v2.sql — RETIRED compatibility guard
 
-- Purane plan/support Polar products retire; 4 Move-In one-time IDs unchanged
-- `billing_price_book.polar_product_id` + `polar_id_updated_at` columns
-- 13 Polar-listed keys ke asli IDs set; AI plans ki ID hamesha null (Polar par nahi)
-- `billing_polar_id_gaps` view — koi listed product bina ID ho to turant dikhta hai
-- Backend `.env` block `docs/polar-products.md` section 7 mein
+- Iska poora kaam Phase 43 v3 mein merge ho gaya hai
+- Ghalti se run ho to fail nahi hoti; sirf notice deti hai

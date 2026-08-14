@@ -246,7 +246,7 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 | Business Pro Yearly (£25,000)                       | `80bca014-b832-474e-bd3e-084a04453de0` | ✅ new       |
 | Priority Support (£700/mo)                          | `8f6d7c8e-1722-421f-b28c-2a031f63731d` | ✅ new       |
 
-Supabase side: `billing_price_book` sirf **product_key** rakhti hai (amount + cycle ke saath) — asli Polar ID sirf server `.env` mein hai. Yaad-daasht ke liye ID Supabase mein bhi rakhni ho to `sql/phase44_polar_ids_v2.sql` chalao.
+Supabase side: amount, cycle aur Polar ID ki payment truth `billing_price_book` mein hai. **Supabase #4 SQL Editor mein sirf `sql/phase43_annual_billing_lock.sql` v3 poori run karo**; Phase 44 ka kaam usi mein merge hai aur Phase 44 ab retired hai. Server `/opt/anexomail/.env` mein yahi IDs backend checkout ke liye bhi rehni chahiye.
 AI ke liye koi Polar env key nahi hai. Jab tak kisi workspace key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
