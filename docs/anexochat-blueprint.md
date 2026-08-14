@@ -604,3 +604,252 @@ Build the entire ANEXOChat project from Phase 1 through Phase 57.
 ANEXOChat = human communication.
 
 Mail when it matters. Chat when it's instant. Work when it's done.
+
+---
+
+# ADDITIONS v2 — locked 14 Aug 2026 (founder: Muhammad Nauman Sherwani)
+
+Yeh additions existing phases ke ANDAR add hote hain — naya phase nahi banta, tarteeb nahi badalti. Har item apne phase ka hissa hai. Build se pehle founder se discuss lazmi.
+
+## A. Per-phase addition index (sirf yahan add hoga)
+
+| Existing Phase | Sirf yahan add hoga |
+| --- | --- |
+| Phase 3 | Message identity + idempotency + duplicate-send protection + ordering |
+| Phase 4 | Identity, membership, roles and account lifecycle |
+| Phase 5 | Authorization boundary + RLS enforcement model |
+| Phase 9 | Durable event/state ledger for message lifecycle |
+| Phase 11 | Offline outbox reconciliation + retry correctness |
+| Phase 12 | Cross-device state reconciliation + session continuity |
+| Phase 13 | File versioning + storage/transfer distinction |
+| Phase 14 | Chunk integrity + checksum/hash verification |
+| Phase 15 | Resumable-transfer identity + corrupted/missing chunk recovery |
+| Phase 16 | File truth/evidence state machine |
+| Phase 19 | Device identity lifecycle + privacy/retention rules |
+| Phase 20 | Device/session revocation + trust lifecycle |
+| Phase 21 | Complete report/safety enforcement workflow |
+| Phase 22 | Deterministic task lifecycle + source/evidence relationship → **WORK EXECUTION CHAIN** |
+| Phase 23 | Follow-through engine + promise completion evidence → **PROMISE RECOVERY ENGINE** |
+| Phase 24 | Decision immutability + decision history → **DECISION IMPACT MAP** |
+| Phase 25 | Immutable conversation snapshots + business timeline → **CONVERSATION-TO-OUTCOME TIMELINE** |
+| Phase 26 | Commitment Collision detection + deadline collision map → **COMMITMENT COLLISION PREVENTION** |
+| Phase 27 | Message integrity / tamper evidence |
+| Phase 28 | Business Receipt Pack / proof evidence → **ZERO-LOSS HANDOVER PACK** |
+| Phase 29 | Email ↔ Chat object relationship / continuity |
+| Phase 30 | Chat → Email provenance preservation |
+| Phase 31 | Business object graph → **BUSINESS RELATIONSHIP GRAPH** |
+| Phase 32 | Universal business search → **⌘K UNIVERSAL BUSINESS COMMAND SURFACE** |
+| Phase 33 | Complete immutable export + no-lock-in evidence structure |
+| Phase 34 | Attention Budget + explainable cost ledger → **COMMUNICATION ROI LEDGER** |
+| Phase 35 | Attention leaks + deadline/commitment pressure map → **ATTENTION DEBT MAP** |
+| Phase 36 | Quiet Hours / Focus protection |
+| Phase 37 | Weather-atmosphere truth boundary + graceful fallback |
+| Phase 38 | Cinematic state fallback hierarchy |
+| Phase 39 | Send-animation identity tied to canonical message send |
+| Phase 40 | Adaptive performance degradation / effect kill-switch |
+| Phase 41 | Group membership lifecycle + group continuity |
+| Phase 42 | Deterministic group work-state summary |
+| Phase 43 | Retention policy + storage governance + deletion behavior → **BUSINESS MEMORY CONTINUITY** + large-conversation capacity |
+| Phase 44 | Admin boundaries + employee departure/handover → **EMPLOYEE HANDOVER CONTINUITY** |
+| Phase 45 | Founder operational recovery/backup visibility — without private-chat backdoor |
+| Phase 46 | Full event reconciliation + fallback transport duplicate prevention |
+| Phase 47 | Backup, restore, disaster recovery + security architecture |
+| Phase 48 | Data-integrity rule: no fabricated recovery/demo state |
+| Phase 49 | Dependency governance / external-service kill-switch policy |
+| Phase 50 | Observability for all critical reliability paths |
+| Phase 51 | Accessibility for new controls / evidence states |
+| Phase 52 | Responsive behavior for business command / evidence surfaces |
+| Phase 53 | Real release-gate probes: idempotency, ordering, recovery, restore, RLS, transfer integrity |
+| Phase 54 | Final architecture: Proof Mode / business continuity layer |
+| Phase 55 | Exact Business vs Business Pro commercial boundary |
+| Phase 56 | Final differentiation: **PROOF MODE** + Zero-Loss Handover + Commitment Collision |
+| Phase 57 | AI permission wall + citation enforcement + approval + credit receipt + failure truth |
+
+## B. PHASE 22 — ADD THIS: WORK EXECUTION CHAIN
+
+ANEXOChat must connect communication to actual business execution without turning normal chat into a task-management maze.
+
+When a message creates a business obligation:
+
+```text
+Message → Task / Promise / Decision → Owner → Dependency → Deadline → Completion → Evidence
+```
+
+The original message remains the source context. The resulting work object must retain: source message ID, conversation ID, creator, owner, created timestamp, deadline, current state, completion evidence.
+
+A task must never become detached from the conversation that created it. If the source message is later deleted from the user's normal view, the business object's provenance must follow the published retention and audit policy.
+
+## C. PHASE 23 — ADD THIS: PROMISE RECOVERY ENGINE
+
+The Promise Engine must not stop at detecting whether a promise is overdue. For every overdue promise, determine the available recovery state:
+
+```text
+Promise → Due → Overdue → Recovery
+```
+
+Example: 🔴 Promise overdue · Owner Sarah · Promise "Send revised proposal" · Due Friday · Downstream impact "ABC customer quote".
+
+Available actions: Remind owner · Reassign · Update deadline · Mark kept · Mark cancelled. No action is taken automatically unless explicitly authorized.
+
+The system must preserve: original promise, original deadline, subsequent changes, who changed the deadline, reason for change, completion evidence. This creates a follow-through history, not merely a reminder.
+
+## D. PHASE 24 — ADD THIS: DECISION IMPACT MAP
+
+Every important business decision may have downstream relationships.
+
+```text
+DECISION Migration Friday 02:00 UTC
+  ↓ affects Task: DNS verification
+  ↓ affects Promise: Customer confirmation
+  ↓ affects Cutover: Friday 02:00 UTC
+```
+
+Authorized users can see the objects affected by a decision. If a decision changes, show potentially affected tasks, promises, deadlines, conversations, files, related work. The system must never silently rewrite historical decisions — a changed decision creates a new decision state/history entry.
+
+## E. PHASE 25 — ADD THIS: CONVERSATION-TO-OUTCOME TIMELINE
+
+The timeline must show not only what was said, but what resulted.
+
+```text
+09:12 Customer requested migration
+09:17 Contract received
+10:03 Migration date decided
+10:20 Task created
+11:22 Promise made
+14:40 DNS completed
+16:12 Customer confirmation received
+18:00 Migration completed
+```
+
+The system distinguishes Communication from Business outcome, so a user can reconstruct the complete history of an important matter without searching hundreds of messages.
+
+## F. PHASE 26 — ADD THIS: COMMITMENT COLLISION PREVENTION
+
+Identify conflicting or dependent business commitments.
+
+Example: Sarah promise "Send proposal Friday"; John task "Send final customer quote Friday" with dependency on Sarah's proposal →
+
+```text
+⚠ Commitment Collision
+John's deadline depends on Sarah's overdue/pending commitment.
+Potential downstream delay: Customer quote
+```
+
+The system must show the relationship and evidence behind the warning. It must not invent dependencies. Actions: Resolve dependency · Change deadline · Reassign · Dismiss · View source. This is a business coordination layer, not a generic notification.
+
+## G. PHASE 28 — ADD THIS: ZERO-LOSS HANDOVER PACK
+
+Authorized Handover Pack for business continuity when a user leaves a project, department, workspace or company.
+
+Contents: active conversations · open tasks · pending promises · overdue commitments · important decisions · relevant files · outstanding dependencies · upcoming deadlines · known risks.
+
+Every item retains source/provenance. The handover must distinguish: Confirmed fact · Pending item · Overdue item · Historical decision · Open dependency. Never fabricate missing context. Supports review, recipient assignment, export, audit record, completion confirmation.
+
+## H. PHASE 31 — ADD THIS: BUSINESS RELATIONSHIP GRAPH
+
+```text
+ABC Ltd
+ ├── Sarah
+ ├── Conversation
+ │     ├── Contract.pdf
+ │     ├── Task
+ │     ├── Promise
+ │     └── Decision
+ ├── Email
+ └── Migration
+       ├── DNS
+       ├── Deadline
+       └── Payment
+```
+
+Objects linked through durable IDs, not copied text. Navigation: Message → Conversation → Customer → File → Task → Promise → Decision → Email. Permissions apply to every relationship — a user must never gain access to a protected object merely because it is linked from another object.
+
+## I. PHASE 32 — ADD THIS: ⌘K UNIVERSAL BUSINESS COMMAND SURFACE
+
+Single keyboard-first command surface (Cmd+K / Ctrl+K) that searches and navigates authorized people, conversations, messages, files, tasks, promises, decisions, emails, customers, work objects.
+
+Examples: "ABC migration" · "overdue promises" · "Sarah" · "contract.pdf".
+
+The command surface must not bypass permissions. It is a unified business navigation layer, not a second database.
+
+## J. PHASE 34 — ADD THIS: COMMUNICATION ROI LEDGER
+
+Communication cost optionally connected to measurable outcomes.
+
+```text
+ABC Renewal — 46 minutes · estimated attention cost £18.40
+Outcome: ✓ 2 decisions ✓ 3 tasks ✓ 1 customer issue resolved
+
+Internal discussion — 18 minutes · estimated cost £7.20
+Outcome: No recorded decision · No task · No completed work
+```
+
+Calculation must remain explainable. Never claim communication was "unproductive" merely because no task or decision was recorded — show measured cost and recorded outcomes; the business interprets.
+
+## K. PHASE 35 — ADD THIS: ATTENTION DEBT MAP
+
+```text
+ATTENTION DEBT
+12 unanswered important conversations
+7 overdue promises
+4 pending decisions
+3 customer replies waiting
+2 deadlines approaching
+```
+
+Groupable by person, customer, project, department, deadline, urgency. Purpose: reveal unresolved communication pressure — not secretly monitor employees.
+
+## L. PHASE 43 — ADD THIS: BUSINESS MEMORY CONTINUITY + LARGE CONVERSATION CAPACITY
+
+Historical business communication must remain usable across the workspace lifetime, subject to the published retention policy. A years-old conversation must remain reconstructable when retained: messages, files, decisions, promises, tasks, receipts, provenance, conversation relationships. No artificial "recent messages only" architecture.
+
+Large conversation capacity: a single conversation may contain up to 500,000 words of message content, subject to system resource limits and published technical limits. UI must use efficient pagination/virtualization; the system must not load the entire conversation into the browser.
+
+## M. PHASE 44 — ADD THIS: EMPLOYEE HANDOVER CONTINUITY
+
+```text
+Outgoing user → active business responsibilities → open conversations → tasks → promises → decisions → files → dependencies → Incoming owner
+```
+
+Transfer business continuity without transferring unnecessary private access. Access transfer must be explicit and auditable. Never hand over credentials or unrestricted private account access.
+
+## N. PHASE 56 — ADD THIS: PROOF MODE
+
+Optional Proof Mode turns a normal business event into a structured evidence view.
+
+```text
+PROOF MODE — Contract.pdf
+Source: ANEXOChat conversation
+Uploaded by: john@abc.com
+Uploaded: 14:32:11 UTC
+Delivery: Confirmed
+File integrity: Verified
+Related decision: Contract approved
+Related task: Legal review
+Related promise: Customer confirmation
+Evidence: ✓ Message ✓ Delivery ✓ File ✓ Integrity ✓ Decision
+```
+
+Proof Mode must never invent evidence. If a state was not actually recorded, show `Not recorded`.
+
+Principle: don't just trust what the conversation says happened — show what the system actually recorded.
+
+## O. WOW-FACTOR UI DIRECTIVE (locked)
+
+- Entry point: ANEXOMAIL sidebar mein Mail ke NEECHE `ANEXOChat` — click par NAYA TAB khulta hai (anexochat.anexomail.com) jahan wow factor hai.
+- Target: duniya ki sab se advance chat UI — latest technology par, 100% original. Founder ne jo screenshots diye woh sirf manzar samjhane ke liye reference hain: NO COPY, NO DUPLICATE, koi visual/code copy nahi.
+- Cinematic atmosphere states: ☀️ Sunny (bright sky) · 🌧 Rain (particles + dark clouds) · ⛈ Storm (lightning flash + heavy rain) · ❄️ Snow (falling snowflakes) · 🌙 Night (stars + dark) · 🌅 Dawn (orange/pink gradient).
+- Glass-morphism bubbles, message send = gradient light sweep (300ms, blue → purple → teal), atmosphere-matched send effect (e.g. raindrop sweep in rain state).
+- Calm Mode = koi effect nahi, chat fully functional.
+- Cinematic atmosphere = Business Pro exclusive experience layer.
+
+### OPEN CONFLICT — founder decision pending (do not build until resolved)
+
+Founder's wow-factor brief mentions a real weather source (OpenWeatherMap / "Real weather API check kare", location-based Lahore/Dubai/London). This conflicts with the locked API-FREE rule (Phase 37/38/49: no OpenWeatherMap, no Open-Meteo, no external weather API, and never falsely claim real weather).
+
+Two allowed resolutions — founder chooses one:
+
+1. **API-FREE (current lock):** atmosphere device clock + optional device location + optional ambient-light sensor se banta hai; badge honest rehta hai (e.g. "Dusk · Karachi" ya "Atmosphere: Rain (manual)"), asli weather ka dawa nahi. Sunny/Rain/Storm/Snow/Night/Dawn sab available, user/workspace theme ya self-hosted derivation se.
+2. **Self-hosted weather truth:** weather data self-hosted service (apna Rust worker + open dataset) se aata hai, phir badge "Clear · 32°C" jaisa asli claim kar sakta hai. Yeh Phase 49 exception hai aur founder ki likhi approval chahiye.
+
+Third-party weather API (OpenWeatherMap) core runtime mein tab hi jaayega jab founder explicit likh kar API-FREE lock ko is ek jagah exempt karay. Default = option 1.
