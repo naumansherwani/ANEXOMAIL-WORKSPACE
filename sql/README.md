@@ -123,3 +123,13 @@ Phase 39 ka FIX 4 replace karta hai. Historical evidence kabhi mutate nahi:
 
 - Iska poora kaam Phase 43 v3 mein merge ho gaya hai
 - Ghalti se run ho to fail nahi hoti; sirf notice deti hai
+
+## phase45_founder_identity.sql — Founder identity lock (Phase 45)
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor** (Hetzner par nahi).
+
+- Mojooda Auth user `naumansherwani.founder@anexomail.com` / `3e3a60ea-1580-4443-94f6-b758de732dce` ko founder map karti hai (naya user NAHI banati)
+- `founder_accounts` = founder role ki authority (role kabhi profile/users par nahi)
+- `trial_accounts` status `active` + 10 saal — founder trial/freeze mein kabhi nahi phansta
+- `entitlement_state` = `business_pro`, support on, charge zero
+- End par 4 VERIFY queries: auth uid ↔ founder role match, account state, entitlement, aur founder count = 1
