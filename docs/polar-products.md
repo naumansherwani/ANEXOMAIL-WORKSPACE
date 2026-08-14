@@ -144,13 +144,12 @@ The complete company communication stack — one price for the whole company, no
 Priced per company, not per seat. Yearly: £25,000 — two months free.
 ```
 
-### Basic ka exact Polar setup
+### Plan products ka status (14 Aug 2026)
 
-1. Mojooda `ANEXOMAIL Basic` product ko rename karke `ANEXOMAIL Basic Monthly` rakho. Price: **£20**, recurring interval: **Monthly**.
-2. Naya product `ANEXOMAIL Basic Yearly` banao. Price: **£220**, recurring interval: **Yearly**.
-3. Monthly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=monthly`.
-4. Yearly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=yearly`.
-5. Monthly ka mojooda product ID `POLAR_PRODUCT_PLAN_BASIC_MONTHLY` mein rehta hai. Naye Yearly product ka ID `POLAR_PRODUCT_PLAN_BASIC_YEARLY` mein paste hota hai.
+Saare 8 plan products + Priority Support **dobara banaye ja chuke hain** — purane IDs retired.
+Har product ka metadata: `brand=anexomail`, `kind=plan`, `plan=<basic|pro|business|business_pro>`,
+`billing_cycle=<monthly|yearly>`. Priority Support ka metadata: `brand=anexomail`, `kind=support`.
+Asli IDs section 7 (LOCKED v2) mein hain.
 
 ## 4) Metadata (Polar UI: Key · Type · Value rows)
 
