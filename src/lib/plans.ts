@@ -5,14 +5,14 @@
  * Frontend sirf display karta hai; charge Polar + Supabase se hota hai.
  *
  * Annual rules (locked):
- *  - Basic / Pro          → 1 month free + 10% off  → monthly * 11 * 0.90
+ *  - Basic / Pro          → 10% off                  → monthly * 12 * 0.90
  *  - Business / Business Pro → 2 months free (16.67%) → monthly * 10
  *  - All AI plans         → 2 months free (16.67%)   → monthly * 10
  */
 
 export type BillingCycle = "monthly" | "yearly";
 
-export type AnnualRule = "one-month-plus-10" | "two-months-free";
+export type AnnualRule = "ten-percent-off" | "two-months-free";
 
 export type PricedPlan = {
   id: string;
@@ -30,13 +30,13 @@ export type PricedPlan = {
 };
 
 export const ANNUAL_NOTE: Record<AnnualRule, string> = {
-  "one-month-plus-10": "1 month free + 10% off",
+  "ten-percent-off": "10% off",
   "two-months-free": "Get 2 months free",
 };
 
 /** Yearly total for a plan, rounded to the penny. */
 export function yearlyTotal(monthly: number, rule: AnnualRule): number {
-  const raw = rule === "two-months-free" ? monthly * 10 : monthly * 11 * 0.9;
+  const raw = rule === "two-months-free" ? monthly * 10 : monthly * 12 * 0.9;
   return Math.round(raw * 100) / 100;
 }
 
@@ -51,7 +51,7 @@ export function yearlySaving(monthly: number, rule: AnnualRule): number {
 }
 
 export function discountPercent(rule: AnnualRule): string {
-  return rule === "two-months-free" ? "16.67%" : "10% + 1 month free";
+  return rule === "two-months-free" ? "16.67%" : "10%";
 }
 
 export const money = (n: number) =>
@@ -61,11 +61,9 @@ export const money = (n: number) =>
 export function priceFor(plan: PricedPlan, cycle: BillingCycle) {
   if (cycle === "monthly") return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };
   return {
-    big: money(yearlyPerMonth(plan.monthly, plan.annual)),
+    big: money(plan.monthly),
     suffix: plan.unit,
-    note: `${money(yearlyTotal(plan.monthly, plan.annual))} billed yearly · you save ${money(
-      yearlySaving(plan.monthly, plan.annual),
-    )}`,
+    note: `${ANNUAL_NOTE[plan.annual]} · ${money(yearlyTotal(plan.monthly, plan.annual))} billed yearly`,
   };
 }
 
@@ -78,7 +76,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     monthly: 20,
     unit: "/ user / month",
     tagline: "Solo founder, freelancer, individual professional.",
-    annual: "one-month-plus-10",
+    annual: "ten-percent-off",
     features: [
       "1 company address",
       "3 mailboxes",
@@ -90,7 +88,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "Cmd+K workspace search",
       "Human support — 72h response",
     ],
-    excludes: ["No ANEXOChat", "No AI"],
+    excludes: ["No ANEXOChat"],
   },
   {
     id: "pro",
@@ -98,7 +96,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     monthly: 40,
     unit: "/ user / month",
     tagline: "Teams answering customers every day.",
-    annual: "one-month-plus-10",
+    annual: "ten-percent-off",
     features: [
       "Everything in Basic",
       "3 company addresses",
@@ -111,7 +109,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "Tasks & thread analytics",
       "Human support — 48h response",
     ],
-    excludes: ["No ANEXOChat", "No AI"],
+    excludes: ["No ANEXOChat"],
   },
   {
     id: "business",
@@ -136,7 +134,6 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "Team collaboration tools",
       "Human support — 24h response",
     ],
-    excludes: ["No AI (separate product)"],
   },
   {
     id: "business_pro",
@@ -164,7 +161,6 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "Export & no lock-in guarantee",
       "Priority human support — 12h response",
     ],
-    excludes: ["No AI (separate product)"],
   },
 ];
 
