@@ -24,7 +24,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     kind: "plan",
     plan: "basic",
     cycle: "yearly",
-    amountGbp: 216,
+    amountGbp: 220,
     perSeat: true,
   },
   POLAR_PRODUCT_PLAN_PRO_MONTHLY: {
@@ -40,7 +40,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     kind: "plan",
     plan: "pro",
     cycle: "yearly",
-    amountGbp: 432,
+    amountGbp: 440,
     perSeat: true,
   },
   POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY: {
