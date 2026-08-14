@@ -18,7 +18,7 @@ import {
   useStartDirect,
   useTypingPing,
 } from "@/lib/chat";
-import { api } from "@/lib/api";
+import { chatCall, useChatLive } from "@/lib/chat-transport";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -44,6 +44,7 @@ function ChatPage() {
   const typingPing = useTypingPing(openId);
   const [draft, setDraft] = useState("");
   const [online, setOnline] = useState(true);
+  const live = useChatLive(openId);
 
   useEffect(() => {
     const sync = () => setOnline(navigator.onLine);
@@ -60,10 +61,11 @@ function ChatPage() {
   useEffect(() => {
     if (!entitled) return;
     const ping = () =>
-      void api("/api/chat/presence", {
-        method: "POST",
-        body: JSON.stringify({ device: deviceLabel() }),
-      }).catch(() => {});
+      void chatCall<{ ok: boolean }>(
+        "chat.presence.ping",
+        { device: deviceLabel() },
+        { path: "/api/chat/presence", method: "POST", body: { device: deviceLabel() } },
+      ).catch(() => {});
     ping();
     const timer = window.setInterval(ping, 30_000);
     return () => window.clearInterval(timer);
@@ -123,8 +125,9 @@ function ChatPage() {
         title="ANEXOChat"
         mobileHidden={Boolean(openId)}
         action={
-          <span className="text-[11px] text-muted-foreground">
-            {list.length} {list.length === 1 ? "conversation" : "conversations"}
+          <span className="text-[11px] text-muted-foreground" title={live.detail}>
+            {list.length} {list.length === 1 ? "conversation" : "conversations"} ·{" "}
+            {live.transport === "webtransport" ? "WebTransport live" : "HTTP/3 polling"}
           </span>
         }
       >
@@ -147,7 +150,8 @@ function ChatPage() {
                         className="ax-press rounded-lg border border-border px-3 py-1.5 text-xs text-foreground"
                         onClick={() =>
                           startDirect.mutate(m.user_id, {
-                            onSuccess: (r) => setOpenId(r.conversation_id),
+                            onSuccess: (r: { conversation_id: string }) =>
+                              setOpenId(r.conversation_id),
                           })
                         }
                       >
