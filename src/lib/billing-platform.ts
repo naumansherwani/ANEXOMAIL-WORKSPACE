@@ -12,7 +12,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiError } from "@/lib/api";
 import { rpcOrRest } from "@/lib/rpc";
 
-export type WorkspacePlanId = "basic" | "pro" | "business";
+export type WorkspacePlanId = "basic" | "pro" | "business" | "business_pro";
 
 export type Subscription = {
   plan: WorkspacePlanId | null;
@@ -207,6 +207,7 @@ export const PLAN_LABEL: Record<WorkspacePlanId, string> = {
   basic: "Basic — £20",
   pro: "Pro — £40",
   business: "Business — £85",
+  business_pro: "Business Pro — £2,500",
 };
 
 export const gbp = (v: number) => `£${v.toFixed(2)}`;
