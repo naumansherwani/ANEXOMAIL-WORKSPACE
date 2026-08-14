@@ -54,7 +54,7 @@ Sits on top of any plan. Invoiced monthly in advance, cancel at the end of any m
 Business days are Monday to Friday, UK time.
 ```
 
-## 3) Workspace + AI plans (monthly aur yearly alag Polar products)
+## 3) Workspace plans (monthly aur yearly alag Polar products)
 
 | Product name             | Monthly |  Yearly | Yearly message    |
 | ------------------------ | ------: | ------: | ----------------- |
@@ -62,11 +62,16 @@ Business days are Monday to Friday, UK time.
 | `ANEXOMAIL Pro`          |     £40 |    £432 | Save 10% annually |
 | `ANEXOMAIL Business`     |     £85 |    £850 | Get 2 months free |
 | `ANEXOMAIL Business Pro` |  £2,500 | £25,000 | Get 2 months free |
-| `ANEXOMAIL AI Pro`       |    £400 |  £4,000 | Get 2 months free |
-| `ANEXOMAIL AI Business`  |  £1,500 | £15,000 | Get 2 months free |
-| `ANEXOMAIL AI Executive` |  £4,000 | £40,000 | Get 2 months free |
 
-Har row ke liye Polar mein **do recurring products/prices** banao: ek monthly aur ek yearly. Yearly amount monthly effective rate nahi; upar wala exact annual charge hai.
+Har row ke liye Polar mein **do alag recurring products** banao: `Monthly` aur `Yearly`. Yearly amount monthly effective rate nahi; upar wala exact annual charge hai. **ANEXOMAIL AI Polar par abhi nahi banana — AI backend-only aur public coming soon hai.**
+
+### Basic ka exact Polar setup
+
+1. Mojooda `ANEXOMAIL Basic` product ko rename karke `ANEXOMAIL Basic Monthly` rakho. Price: **£20**, recurring interval: **Monthly**.
+2. Naya product `ANEXOMAIL Basic Yearly` banao. Price: **£216**, recurring interval: **Yearly**.
+3. Monthly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=monthly`.
+4. Yearly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=yearly`.
+5. Monthly ka mojooda product ID `POLAR_PRODUCT_PLAN_BASIC_MONTHLY` mein rehta hai. Naye Yearly product ka ID `POLAR_PRODUCT_PLAN_BASIC_YEARLY` mein paste hota hai.
 
 ## 4) Metadata (Polar UI: Key · Type · Value rows)
 
@@ -95,7 +100,7 @@ Type hamesha **String** rakho (Number/Boolean kabhi nahi). Har row ke baad
 | --------------- | ------ | ----------------------------------------------------------------------------------------- |
 | `brand`         | String | `anexomail`                                                                               |
 | `kind`          | String | `plan`                                                                                    |
-| `plan`          | String | `basic` / `pro` / `business` / `business_pro` / `ai_pro` / `ai_business` / `ai_executive` |
+| `plan`          | String | `basic` / `pro` / `business` / `business_pro`                                              |
 | `billing_cycle` | String | `monthly` / `yearly`                                                                      |
 
 ## 5) Server 2 — env block (Polar tokens)
@@ -139,12 +144,6 @@ POLAR_PRODUCT_PLAN_PRO_YEARLY=REPLACE
 POLAR_PRODUCT_PLAN_BUSINESS_YEARLY=REPLACE
 POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY=REPLACE
 POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY=REPLACE
-POLAR_PRODUCT_AI_PRO_MONTHLY=REPLACE
-POLAR_PRODUCT_AI_PRO_YEARLY=REPLACE
-POLAR_PRODUCT_AI_BUSINESS_MONTHLY=REPLACE
-POLAR_PRODUCT_AI_BUSINESS_YEARLY=REPLACE
-POLAR_PRODUCT_AI_EXECUTIVE_MONTHLY=REPLACE
-POLAR_PRODUCT_AI_EXECUTIVE_YEARLY=REPLACE
 ```
 
 ### Confirmed monthly IDs (founder ne banaye)
@@ -160,7 +159,7 @@ POLAR_PRODUCT_AI_EXECUTIVE_YEARLY=REPLACE
 | Pro (£40/mo)                                        | `ef47325e-983c-4ea8-bdbe-be99cc00c584` | ✅ created |
 | Business (£85/mo)                                   | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
 
-Yearly + Business Pro + AI ke `REPLACE` IDs abhi Polar dashboard mein create karke bharne hain. Jab tak kisi key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
+Yearly + Business Pro ke `REPLACE` IDs Polar dashboard mein create karke bharne hain. AI ke liye koi Polar env key nahi hai. Jab tak kisi workspace key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
 
