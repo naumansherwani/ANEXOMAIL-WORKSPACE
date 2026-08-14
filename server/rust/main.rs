@@ -68,10 +68,9 @@ fn sb() -> Option<(String, String)> {
     let url = env_var("SUPABASE4_URL");
     let key = env_var("SUPABASE4_SERVICE_ROLE_KEY");
     if url.is_empty() || key.is_empty() {
-        None
-    } else {
-        (Some((url.trim_end_matches('/').to_string(), key)))?
+        return None;
     }
+    Some((url.trim_end_matches('/').to_string(), key))
 }
 
 async fn sb_rpc(func: &str, body: Value) -> Result<Value, String> {
@@ -446,9 +445,6 @@ async fn dispatch(
 //   {"type":"error","code":"..."}          — koi fake state nahi
 //
 // Yeh path durability ka faisla nahi karta: send hamesha DB write se guzarta hai.
-#[cfg(feature = "never")]
-fn _wt_docs() {}
-
 async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     let Ok(request) = incoming.await else { return };
     let Ok(connection) = request.accept().await else {
