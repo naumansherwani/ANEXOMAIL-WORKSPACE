@@ -101,3 +101,10 @@ Phase 39 ka FIX 4 replace karta hai. Historical evidence kabhi mutate nahi:
 - `movein_evidence_violations` view — har invalid row jaisi hai waisi (observed values ke saath)
 - `movein_evidence_validate()` — VALIDATE CONSTRAINT sirf tab jab us table ka data genuinely clean ho
 - File ke end par report: kitni invalid rows remaining hain (operator manually correct karta hai)
+
+## phase43_annual_billing_lock.sql — Annual Billing Lock
+
+- Exact monthly/yearly product selection ke liye `billing_cycle` intent par persist hota hai
+- Client ka amount reject: expected amount server registry se aata hai
+- Paid webhook/pull par product ID, GBP currency aur exact amount validate hota hai
+- Mismatch par entitlement nahi milta; payment safety retry/alert path handle karta hai

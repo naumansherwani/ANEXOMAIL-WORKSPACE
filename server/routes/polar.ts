@@ -16,7 +16,7 @@
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createHmac, timingSafeEqual } from "crypto";
-import { BILLING_PRODUCTS, configuredProduct } from "../config/billing-products";
+import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
@@ -117,14 +117,13 @@ authRouter.get("/checkout/:id", async (req, res) => {
   try {
     const checkout = await polarFetch(`/v1/checkouts/${id}`);
     // ownership check
-    const { data: row } = await db
-      .from("polar_checkout_sessions")
+    const { data: intent } = await db
+      .from("billing_intents")
       .select("user_id")
       .eq("polar_checkout_id", id)
-      .single();
-    if (row && row.user_id !== userId) {
-      return res.status(403).json({ error: "forbidden" });
-    }
+      .maybeSingle();
+    if (!intent) return res.status(404).json({ error: "checkout_not_found" });
+    if (intent.user_id !== userId) return res.status(403).json({ error: "forbidden" });
     res.json({
       id: checkout.id,
       status: checkout.status,
@@ -394,12 +393,32 @@ async function processWebhookEvent(event: any, eventId: string) {
       meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
     const product = data.product || data.items?.[0]?.product || {};
     const productMeta = product.metadata || {};
-    const { kind, plan, band } = kindFromMetadata(productMeta);
+    const paidProductId = String(product.id || data.product_id || data.items?.[0]?.product_id || "");
+    const registeredProduct = paidProductId ? productById(paidProductId) : null;
+    const legacyMeta = kindFromMetadata(productMeta);
+    const kind = registeredProduct?.kind || legacyMeta.kind;
+    const plan = registeredProduct?.plan || legacyMeta.plan;
+    const band = registeredProduct?.band || legacyMeta.band;
+    const billingCycle = registeredProduct?.cycle || meta.billing_cycle || "monthly";
     const amount = Number(data.total_amount ?? data.amount ?? 0) / 100;
     const isRecurring = data.subscription_id ? true : false;
     const customerEmail =
       data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
     const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
+
+    const intentId = meta.anexomail_intent_id || null;
+    if (intentId) {
+      const { error: confirmError } = await db.rpc("billing_intent_confirm", {
+        p_intent: intentId,
+        p_checkout_id: data.checkout_id || data.checkout?.id || null,
+        p_order_id: data.id || null,
+        p_amount: amount,
+        p_source: "webhook",
+        p_currency: String(data.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || null,
+      });
+      if (confirmError) throw confirmError;
+    }
 
     // Polar sends the provider receipt/invoice. Supabase stores our immutable proof.
     await db.from("billing_event_receipts").upsert(
@@ -446,7 +465,7 @@ async function processWebhookEvent(event: any, eventId: string) {
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
       const seats = Number(meta.seats || 1);
-      const mrr = isRecurring ? amount : 0;
+      const mrr = isRecurring ? (billingCycle === "yearly" ? amount / 12 : amount) : 0;
       const { error: subscriptionError } = await db.from("workspace_subscriptions").upsert(
         {
           user_id: userId,
@@ -456,7 +475,7 @@ async function processWebhookEvent(event: any, eventId: string) {
           seats_used: 1,
           price_per_seat: seats > 0 ? amount / seats : amount,
           currency: String(data.currency || "GBP").toUpperCase(),
-          interval: "month",
+          interval: billingCycle === "yearly" ? "year" : "month",
           renews_at: data.subscription?.current_period_end || data.current_period_end || null,
           polar_customer_id: data.customer_id || data.customer?.id || null,
           polar_subscription_id: data.subscription_id || data.subscription?.id || null,

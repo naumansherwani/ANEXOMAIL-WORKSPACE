@@ -287,12 +287,12 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
 
     // (b) messenger se seedha pucho — webhook kabhi na aaye to bhi payment milti hai
     if (!POLAR_TOKEN || !intent.polar_checkout_id) return false;
-      const checkout = await polarFetch(`/v1/checkouts/${intent.polar_checkout_id}`);
-      const paidProductId = String(checkout?.product_id || checkout?.product?.id || "");
-      const paidProduct = paidProductId ? productById(paidProductId) : null;
-      if (paidProductId && (!paidProduct || paidProduct.productId !== intent.product_id)) {
-        throw new Error("checkout_product_mismatch");
-      }
+    const checkout = await polarFetch(`/v1/checkouts/${intent.polar_checkout_id}`);
+    const paidProductId = String(checkout?.product_id || checkout?.product?.id || "");
+    const paidProduct = paidProductId ? productById(paidProductId) : null;
+    if (paidProductId && (!paidProduct || paidProduct.productId !== intent.product_id)) {
+      throw new Error("checkout_product_mismatch");
+    }
     const status = String(checkout?.status || "");
     if (status === "confirmed" || status === "succeeded") {
       await db.rpc("billing_intent_confirm", {
