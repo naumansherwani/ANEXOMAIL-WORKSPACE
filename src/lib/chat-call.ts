@@ -520,7 +520,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           }
         }
         if (r.type === "codec") {
-          const c = r as RTCRtpCodecStats;
+          const c = r as { mimeType?: string };
           if (c.mimeType?.startsWith("video/")) next.video_codec = c.mimeType.replace("video/", "");
           if (c.mimeType?.startsWith("audio/")) next.audio_codec = c.mimeType.replace("audio/", "");
         }
@@ -528,7 +528,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
 
       report.forEach((r) => {
         if (r.type === "remote-candidate" && r.id === pairId) {
-          const c = r as RTCIceCandidateStats & { candidateType?: string };
+          const c = r as { candidateType?: string };
           next.path = c.candidateType === "relay" ? "relay" : "p2p";
         }
       });
@@ -559,9 +559,10 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
         const params = sender?.getParameters();
         if (sender && params?.encodings?.length) {
+          const layers = params.encodings.length;
           params.encodings = params.encodings.map((e, idx) => ({
             ...e,
-            active: idx === params.encodings!.length - 1 ? true : idx === 0 ? false : e.active,
+            active: idx === layers - 1 ? true : idx === 0 ? false : e.active !== false,
             maxBitrate: Math.max(120_000, Math.floor((e.maxBitrate ?? 800_000) * 0.6)),
           }));
           await sender.setParameters(params).catch(() => {});

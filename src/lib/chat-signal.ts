@@ -90,7 +90,7 @@ export function openSignalLink(opts: {
     channel = sb.channel(`call:${conversationId}`, { config: { broadcast: { self: false } } });
     channel
       .on("broadcast", { event: "signal" }, (msg) => {
-        const f = msg.payload as SignalFrame & { to_user?: string };
+        const f = (msg as { payload?: unknown })["payload"] as SignalFrame & { to_user?: string };
         if (f?.to_user && f.to_user !== selfId) return;
         deliver(f);
       })
@@ -116,10 +116,8 @@ export function openSignalLink(opts: {
     }
   };
   void tick();
-  const timer = window.setInterval(
-    () => void tick(),
-    transport === "realtime" ? 5000 : 1200,
-  );
+  // Realtime live ho to ye sirf safety net hai; warna durable primary path.
+  const timer = window.setInterval(() => void tick(), sb ? 5000 : 1200);
 
   return {
     async send(to, kind, payload) {
