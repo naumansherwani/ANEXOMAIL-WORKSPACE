@@ -12,6 +12,7 @@ import {
   KanbanSquare,
   LogOut,
   Mail,
+  MessageSquare,
   Search,
   Shield,
   Sparkles,
