@@ -198,11 +198,11 @@ function PlansPage() {
             your email.
           </p>
           <div className="mt-8 flex justify-center">
-            <BillingToggle value={cycle} onChange={setCycle} />
+            <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Annual savings" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            Yearly billing: Basic and Pro get 1 month free plus 10% off. Business and Business Pro
-            get 2 months free (16.67% off). The total is calculated for you at checkout.
+            Yearly billing: Basic and Pro get 10% off. Business and Business Pro get 2 months free.
+            Your normal monthly price stays visible; the annual total appears on each card.
           </p>
         </section>
 
