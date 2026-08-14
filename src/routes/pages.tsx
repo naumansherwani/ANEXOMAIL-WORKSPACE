@@ -507,6 +507,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "ANEXOVideoChat call telemetry",
+        path: "/app/founder/calls",
+        note: "Phase 10A — measured setup p50/p95, TURN relay share, ICE restarts, per-call RTT/jitter/loss",
+        auth: true,
+      },
+      {
         label: "Motion contract & focus ledger",
         path: "/app/founder/motion",
         note: "Phase 29 — measured animation budgets, long-frame watcher, focus audit, delight switches",

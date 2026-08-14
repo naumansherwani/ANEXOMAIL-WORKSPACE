@@ -73,7 +73,7 @@ function FounderCallsPage() {
       >
         {q.isError ? (
           <StateBlock
-            kind={q.error?.status === 403 ? "empty" : "error"}
+            tone={q.error?.status === 403 ? "quiet" : "error"}
             title={q.error?.status === 403 ? "Founder-only surface" : "Telemetry unavailable"}
             body={
               q.error?.status === 403
