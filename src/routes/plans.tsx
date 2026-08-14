@@ -182,47 +182,8 @@ const services = [
   },
 ];
 
-const plans = [
-  {
-    name: "Basic",
-    price: "£20",
-    body: "For a small team putting its company email in order.",
-    features: [
-      "1 company address · 3 mailboxes · 5GB per mailbox",
-      "5 free aliases · undo send 30s",
-      "Contacts, calendar and threads with owner",
-      "Cmd+K across the workspace · human reply within 72h",
-    ],
-  },
-  {
-    name: "Pro",
-    price: "£40",
-    body: "For teams answering customers every day.",
-    features: [
-      "Everything in Basic",
-      "3 company addresses · 5 mailboxes · 10GB per mailbox",
-      "Shared inbox with collision guard",
-      "Tasks, notes and thread analytics · reply within 48h",
-    ],
-    featured: true,
-  },
-  {
-    name: "Business",
-    price: "£85",
-    body: "A controlled business workspace for companies that need clear ownership, governance and oversight.",
-    features: [
-      "Everything in Pro",
-      "25GB storage per mailbox",
-      "Roles, departments, policies and audit ledger",
-      "One-click access revocation",
-      "Native integrations",
-      "One-click data export",
-      "Human reply within 24 hours",
-    ],
-  },
-];
-
 function PlansPage() {
+  const [cycle, setCycle] = useState<BillingCycle>("monthly");
   return (
     <div className="min-h-screen bg-background">
       <SiteNav />
@@ -236,43 +197,62 @@ function PlansPage() {
             Google gives you storage. ANEXOMAIL gives you control over the work happening inside
             your email.
           </p>
+          <div className="mt-8 flex justify-center">
+            <BillingToggle value={cycle} onChange={setCycle} />
+          </div>
+          <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
+            Yearly billing: Basic and Pro get 1 month free plus 10% off. Business and Business Pro
+            get 2 months free (16.67% off). The total is calculated for you at checkout.
+          </p>
         </section>
 
-        <section className="ax-container grid gap-5 pb-24 md:grid-cols-3">
-          {plans.map((p) => (
-            <article
-              key={p.name}
-              className="ax-plane group rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
-            >
-              <h2 className="text-sm font-bold tracking-tight text-foreground">
-                {p.name}
-              </h2>
-              <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
-                {p.price}
-                <span className="text-sm font-medium text-muted-foreground">
-                  {" "}
-                  / person / month
-                </span>
-              </p>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                {p.body}
-              </p>
-              <ul className="mt-6 space-y-2.5">
-                {p.features.map((f) => (
-                  <li key={f} className="flex gap-2 text-sm text-muted-foreground">
-                    <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <Link
-                to="/move-in"
-                className="mt-7 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
+        <section className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
+          {WORKSPACE_PLANS.map((p) => {
+            const price = priceFor(p, cycle);
+            return (
+              <article
+                key={p.id}
+                className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
               >
-                Move in
-              </Link>
-            </article>
-          ))}
+                <div className="flex items-start justify-between gap-2">
+                  <h2 className="text-sm font-bold tracking-tight text-foreground">{p.name}</h2>
+                  {p.badge && (
+                    <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                      {p.badge}
+                    </span>
+                  )}
+                </div>
+                <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                  {price.big}
+                  <span className="text-sm font-medium text-muted-foreground"> {p.unit}</span>
+                </p>
+                <p className="mt-1 text-xs font-semibold text-primary">
+                  {cycle === "yearly" ? price.note : ANNUAL_NOTE[p.annual] + " on yearly billing"}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.tagline}</p>
+                <ul className="mt-6 flex-1 space-y-2.5">
+                  {p.features.map((f) => (
+                    <li key={f} className="flex gap-2 text-sm text-muted-foreground">
+                      <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                      {f}
+                    </li>
+                  ))}
+                  {p.excludes?.map((f) => (
+                    <li key={f} className="flex gap-2 text-sm text-muted-foreground/70">
+                      <X className="mt-0.5 size-4 shrink-0 text-muted-foreground/70" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <Link
+                  to="/move-in"
+                  className="mt-7 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                >
+                  Get started
+                </Link>
+              </article>
+            );
+          })}
         </section>
 
         <section className="ax-container pb-20">
