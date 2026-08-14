@@ -23,6 +23,7 @@ import { useEffect, useState, type ReactNode } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
+import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
 import {
   DropdownMenu,
@@ -211,6 +212,10 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-2.5">
             {primary.map((item) => {
               const active = isActive(item);
+              // PHASE 6: ANEXOChat naye tab mein khulta hai + real unread badge
+              if (item.to === "/app/chat") {
+                return <ChatRailLink key={item.to} collapsed={collapsed} active={active} />;
+              }
               return (
                 <Link
                   key={item.to}

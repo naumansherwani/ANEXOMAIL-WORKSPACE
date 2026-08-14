@@ -341,3 +341,140 @@ export function useStartDirect() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
   });
 }
+// ── PHASE 3: message engine (reactions / edit / delete) ──────────
+export type ChatReaction = { emoji: string; count: number; mine: boolean };
+
+export function useReact(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { message_id: string; emoji: string }) =>
+      chatCall<{ reactions: ChatReaction[] }>("chat.react", vars, {
+        path: "/api/chat/react",
+        method: "POST",
+        body: vars,
+      }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
+export function useEditMessage(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { message_id: string; body: string }) =>
+      chatCall<{ id: string; body: string; edited_at: string }>("chat.message.edit", vars, {
+        path: "/api/chat/messages/edit",
+        method: "POST",
+        body: vars,
+      }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
+export function useDeleteMessage(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (messageId: string) =>
+      chatCall<{ id: string; deleted_at: string }>(
+        "chat.message.delete",
+        { message_id: messageId },
+        {
+          path: "/api/chat/messages/delete",
+          method: "POST",
+          body: { message_id: messageId },
+        },
+      ),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
+// ── PHASE 3: work objects (task / promise / decision) ────────────
+export type ChatWorkItem = {
+  id: string;
+  kind: "task" | "promise" | "decision";
+  title: string;
+  state: "open" | "done" | "cancelled";
+  due_at: string | null;
+  owner_user_id: string | null;
+  message_id: string | null;
+  created_at: string;
+};
+
+export function useWorkItems(conversationId: string | null) {
+  return useQuery<{ items: ChatWorkItem[] }, ApiError>({
+    queryKey: ["chat", "work", conversationId],
+    queryFn: () =>
+      chatCall<{ items: ChatWorkItem[] }>(
+        "chat.work.list",
+        { conversation_id: conversationId },
+        { path: `/api/chat/work?c=${encodeURIComponent(conversationId!)}` },
+      ),
+    enabled: Boolean(conversationId),
+    retry: false,
+  });
+}
+
+export function useCreateWorkItem(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: {
+      kind: ChatWorkItem["kind"];
+      title: string;
+      message_id?: string | null;
+      due_at?: string | null;
+    }) => {
+      const payload = { conversation_id: conversationId, ...vars };
+      return chatCall<{ id: string }>("chat.work.create", payload, {
+        path: "/api/chat/work",
+        method: "POST",
+        body: payload,
+      });
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "work", conversationId] }),
+  });
+}
+
+export function useSetWorkState(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { item_id: string; state: ChatWorkItem["state"] }) =>
+      chatCall<{ ok: boolean }>("chat.work.state", vars, {
+        path: "/api/chat/work/state",
+        method: "POST",
+        body: vars,
+      }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "work", conversationId] }),
+  });
+}
+
+export type ConversationState = "active" | "waiting" | "blocked" | "closed";
+
+export function useSetConversationState(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { state: ConversationState; note?: string | null }) => {
+      const payload = { conversation_id: conversationId, ...vars };
+      return chatCall<{ state: ConversationState; note: string | null; updated_at: string }>(
+        "chat.conversation.state",
+        payload,
+        { path: "/api/chat/conversations/state", method: "POST", body: payload },
+      );
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
+  });
+}
+
+// ── PHASE 6: ANEXOMAIL sidebar unread truth ─────────────────────
+export function useChatUnread() {
+  return useQuery<{ unread: number; conversations: number }, ApiError>({
+    queryKey: ["chat", "unread"],
+    queryFn: () =>
+      chatCall<{ unread: number; conversations: number }>("chat.unread", undefined, {
+        path: "/api/chat/unread",
+      }),
+    retry: false,
+    refetchInterval: 20_000,
+  });
+}

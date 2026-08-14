@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from "react";
 import { AtmosphereControl, AtmosphereStage, useAtmosphere } from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
 import { MessageStream } from "@/components/app/chat/MessageStream";
+import { WorkStrip } from "@/components/app/chat/WorkStrip";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { StateBlock } from "@/components/state/StateBlock";
 import {
@@ -203,11 +204,15 @@ function ChatPage() {
                   effect={atmosphere.effect}
                   calm={atmosphere.calm}
                   caption={atmosphere.caption}
+                  mode={atmosphere.mode}
                   onEffect={atmosphere.setEffect}
+                  onMode={atmosphere.setMode}
                   onCalm={atmosphere.setCalm}
                 />
               </div>
             </header>
+
+            <WorkStrip conversationId={openId!} />
 
             <MessageStream messages={ordered} pending={pending} />
 

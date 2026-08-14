@@ -5,40 +5,96 @@ import {
   EFFECTS,
   TIME_BAND_LABEL,
   atmosphereCaption,
+  liveCaption,
   readCalm,
   readEffect,
+  readMode,
   timeBand,
   writeCalm,
   writeEffect,
+  writeMode,
   type AtmosphereEffect,
+  type AtmosphereMode,
   type TimeBand,
 } from "@/lib/chat-atmosphere";
+import { fetchLiveWeather, requestPosition } from "@/lib/chat-weather";
 
 /**
- * API-FREE atmosphere. Dawn/Day/Dusk/Night = device clock. Rain/Storm/Snow/
- * Sunny = manual choice only. Koi temperature, koi live weather claim nahi.
+ * Dawn/Day/Dusk/Night = device clock (100% sach).
+ * Weather: mode "manual" = user ka choice, mode "auto" = Open-Meteo live
+ * (zero key, zero cost, location sirf ijazat se). Reading na mile to UI sach
+ * bolta hai — koi guess nahi, koi doosra provider nahi.
  */
 export function useAtmosphere() {
   const [band, setBand] = useState<TimeBand>("day");
   const [effect, setEffect] = useState<AtmosphereEffect>("none");
   const [calm, setCalm] = useState(false);
+  const [mode, setMode] = useState<AtmosphereMode>("manual");
+  const [live, setLive] = useState<{ label: string; temperature_c: number; at: string } | null>(
+    null,
+  );
+  const [liveError, setLiveError] = useState<string | null>(null);
 
   useEffect(() => {
     setBand(timeBand());
     setEffect(readEffect());
     setCalm(readCalm());
+    setMode(readMode());
     const timer = window.setInterval(() => setBand(timeBand()), 60_000);
     return () => window.clearInterval(timer);
   }, []);
+
+  // Auto mode: Open-Meteo se asli reading, har 10 minute refresh.
+  useEffect(() => {
+    if (mode !== "auto") {
+      setLive(null);
+      setLiveError(null);
+      return;
+    }
+    let stopped = false;
+    const pull = async () => {
+      try {
+        const pos = await requestPosition();
+        const weather = await fetchLiveWeather(pos.lat, pos.lon);
+        if (stopped) return;
+        setLive({ label: weather.label, temperature_c: weather.temperature_c, at: weather.at });
+        setLiveError(null);
+        setEffect(weather.effect);
+      } catch (error) {
+        if (stopped) return;
+        setLive(null);
+        setLiveError((error as Error).message);
+      }
+    };
+    void pull();
+    const timer = window.setInterval(() => void pull(), 600_000);
+    return () => {
+      stopped = true;
+      window.clearInterval(timer);
+    };
+  }, [mode]);
+
+  const caption = live
+    ? liveCaption(band, live.label, live.temperature_c, live.at)
+    : mode === "auto"
+      ? `${TIME_BAND_LABEL[band]} · live weather unavailable${liveError ? ` (${liveError})` : ""}`
+      : atmosphereCaption(band, effect);
 
   return {
     band,
     effect,
     calm,
-    caption: atmosphereCaption(band, effect),
+    mode,
+    caption,
     setEffect: (next: AtmosphereEffect) => {
+      writeMode("manual");
+      setMode("manual");
       writeEffect(next);
       setEffect(next);
+    },
+    setMode: (next: AtmosphereMode) => {
+      writeMode(next);
+      setMode(next);
     },
     setCalm: (next: boolean) => {
       writeCalm(next);
@@ -101,14 +157,18 @@ export function AtmosphereControl({
   effect,
   calm,
   caption,
+  mode,
   onEffect,
+  onMode,
   onCalm,
 }: {
   band: TimeBand;
   effect: AtmosphereEffect;
   calm: boolean;
   caption: string;
+  mode: AtmosphereMode;
   onEffect: (next: AtmosphereEffect) => void;
+  onMode: (next: AtmosphereMode) => void;
   onCalm: (next: boolean) => void;
 }) {
   const BandIcon = BAND_ICON[band];
@@ -125,10 +185,15 @@ export function AtmosphereControl({
       </label>
       <select
         id="ax-atmosphere"
-        value={effect}
-        onChange={(e) => onEffect(e.target.value as AtmosphereEffect)}
+        value={mode === "auto" ? "auto" : effect}
+        onChange={(e) => {
+          const value = e.target.value;
+          if (value === "auto") onMode("auto");
+          else onEffect(value as AtmosphereEffect);
+        }}
         className="rounded-full border border-border bg-transparent px-2.5 py-1 text-xs text-foreground"
       >
+        <option value="auto">Live weather (Open-Meteo)</option>
         {EFFECTS.map((e) => (
           <option key={e.id} value={e.id}>
             {e.label}

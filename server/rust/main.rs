@@ -420,6 +420,123 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 3: message engine (reactions / edit / delete) ─────────────
+        "chat.react" => {
+            let msg = s(&input, "message_id");
+            let emoji = s(&input, "emoji");
+            if msg.is_empty() || emoji.is_empty() {
+                Err("message_id_emoji_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_react",
+                    json!({ "_msg": msg, "_user": me.id, "_emoji": emoji }),
+                )
+                .await
+                .map(|data| json!({ "reactions": data }))
+            }
+        }
+
+        "chat.message.edit" => {
+            let msg = s(&input, "message_id");
+            let body_text = s(&input, "body");
+            if msg.is_empty() || body_text.trim().is_empty() {
+                Err("message_id_body_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_edit_message",
+                    json!({ "_msg": msg, "_user": me.id, "_body": body_text }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        "chat.message.delete" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("chat_delete_message", json!({ "_msg": msg, "_user": me.id }))
+                    .await
+                    .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        // ── PHASE 3: work objects (task / promise / decision) ───────────────
+        "chat.work.create" => {
+            let conv = s(&input, "conversation_id");
+            let kind = s(&input, "kind");
+            let title = s(&input, "title");
+            if conv.is_empty() || kind.is_empty() || title.trim().is_empty() {
+                Err("conversation_id_kind_title_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_work_create",
+                    json!({
+                        "_conv": conv,
+                        "_user": me.id,
+                        "_msg": input.get("message_id").cloned().unwrap_or(Value::Null),
+                        "_kind": kind,
+                        "_title": title,
+                        "_due": input.get("due_at").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|id| json!({ "id": id }))
+            }
+        }
+
+        "chat.work.list" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_required".to_string())
+            } else {
+                sb_rpc("chat_work_list", json!({ "_conv": conv, "_user": me.id }))
+                    .await
+                    .map(|items| json!({ "items": items }))
+            }
+        }
+
+        "chat.work.state" => {
+            let item = s(&input, "item_id");
+            let state = s(&input, "state");
+            if item.is_empty() || state.is_empty() {
+                Err("item_id_state_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_work_set_state",
+                    json!({ "_item": item, "_user": me.id, "_state": state }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+
+        "chat.conversation.state" => {
+            let conv = s(&input, "conversation_id");
+            let state = s(&input, "state");
+            if conv.is_empty() || state.is_empty() {
+                Err("conversation_id_state_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_conversation_set_state",
+                    json!({
+                        "_conv": conv,
+                        "_user": me.id,
+                        "_state": state,
+                        "_note": input.get("note").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        // ── PHASE 6: ANEXOMAIL sidebar unread truth ─────────────────────────
+        "chat.unread" => sb_rpc("chat_unread_total", json!({ "_user": me.id }))
+            .await
+            .map(|data| data.get(0).cloned().unwrap_or(json!({ "unread": 0, "conversations": 0 }))),
+
         other => {
             return err(
                 StatusCode::NOT_FOUND,
