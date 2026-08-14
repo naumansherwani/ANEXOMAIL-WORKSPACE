@@ -76,7 +76,9 @@ async function polarFetch(path: string, init?: RequestInit) {
   const text = await res.text();
   const json = text ? JSON.parse(text) : null;
   if (!res.ok) {
-    throw new Error(String(json?.detail || json?.error || `polar_${res.status}`));
+    const detail =
+      typeof json?.detail === "string" ? json.detail : JSON.stringify(json?.detail ?? json ?? {});
+    throw new Error(`polar_${res.status}: ${detail}`);
   }
   return json;
 }
