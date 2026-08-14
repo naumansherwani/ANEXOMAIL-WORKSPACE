@@ -16,6 +16,7 @@
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createHmac, timingSafeEqual } from "crypto";
+import { BILLING_PRODUCTS, configuredProduct } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
@@ -42,22 +43,11 @@ if (!POLAR_WEBHOOK_SECRET) console.error("polar: POLAR_WEBHOOK_SECRET missing â€
 const publicRouter = Router();
 const authRouter = Router();
 
-const PRODUCT_KEYS = [
-  "POLAR_PRODUCT_MOVEIN_1_5",
-  "POLAR_PRODUCT_MOVEIN_6_15",
-  "POLAR_PRODUCT_MOVEIN_16_29",
-  "POLAR_PRODUCT_MOVEIN_30PLUS",
-  "POLAR_PRODUCT_PRIORITY_SUPPORT",
-  "POLAR_PRODUCT_PLAN_BASIC",
-  "POLAR_PRODUCT_PLAN_PRO",
-  "POLAR_PRODUCT_PLAN_BUSINESS",
-] as const;
-
 function productMap(): Record<string, string> {
   const map: Record<string, string> = {};
-  for (const key of PRODUCT_KEYS) {
-    const id = process.env[key];
-    if (id) map[key] = id;
+  for (const key of Object.keys(BILLING_PRODUCTS)) {
+    const product = configuredProduct(key);
+    if (product) map[key] = product.productId;
   }
   return map;
 }
@@ -113,50 +103,7 @@ async function polarFetch(path: string, init?: RequestInit) {
 
 // ---------- checkout: authenticated ----------
 authRouter.post("/checkout", async (req, res) => {
-  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  if (!POLAR_TOKEN) return res.status(503).json({ error: "polar_not_configured" });
-
-  const userId = await requireUser(req, res);
-  if (!userId) return;
-
-  const { product_id, product_key, email, seats = 1 } = req.body || {};
-  const map = productMap();
-  const resolvedProductId = product_id || (product_key ? map[product_key] : undefined);
-  if (!resolvedProductId) {
-    return res.status(400).json({ error: "product_required", configured: map });
-  }
-
-  try {
-    const successUrl = SUCCESS_URL.replace(/\{CHECKOUT_ID\}/g, "{CHECKOUT_ID}");
-    const payload: any = {
-      products: [resolvedProductId],
-      success_url: successUrl,
-      external_customer_id: userId,
-      metadata: { anexomail_user_id: userId, seats: String(seats) },
-    };
-    if (email) payload.customer_email = email;
-
-    const checkout = await polarFetch("/v1/checkouts/", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-
-    // persist session for verification + idempotency
-    await db.from("polar_checkout_sessions").insert({
-      polar_checkout_id: checkout.id,
-      user_id: userId,
-      product_id: resolvedProductId,
-      product_key: product_key || null,
-      url: checkout.url,
-      status: checkout.status || "open",
-      payload: checkout,
-    });
-
-    res.json({ checkout_id: checkout.id, url: checkout.url });
-  } catch (e: any) {
-    console.error("[polar checkout]", e);
-    res.status(502).json({ error: "checkout_failed", detail: e.message });
-  }
+  return res.status(410).json({ error: "checkout_route_retired", use: "/api/billing/intent" });
 });
 
 authRouter.get("/checkout/:id", async (req, res) => {
