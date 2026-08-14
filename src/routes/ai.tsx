@@ -92,69 +92,93 @@ function AiPage() {
       <SiteNav />
 
       <main className="flex-1">
-        {/* Hero */}
-        <section className="relative overflow-hidden">
+        {/* Hero — centered, product-launch style. AI awam ke liye coming soon. */}
+        <section className="relative overflow-hidden border-b border-border">
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-x-0 -top-56 h-[34rem] opacity-45 blur-3xl"
+            className="pointer-events-none absolute inset-x-0 -top-64 h-[42rem] opacity-50 blur-3xl"
             style={{
-              background: "radial-gradient(40% 50% at 50% 50%, var(--navy) 0%, transparent 70%)",
+              background: "radial-gradient(38% 48% at 50% 50%, var(--navy) 0%, transparent 72%)",
             }}
           />
-          <div className="ax-container relative grid items-center gap-12 pt-20 pb-16 md:pt-24 md:pb-20 lg:grid-cols-[1.15fr_1fr]">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute inset-0 opacity-[0.05]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, var(--border) 1px, transparent 1px), linear-gradient(to bottom, var(--border) 1px, transparent 1px)",
+              backgroundSize: "56px 56px",
+              maskImage: "radial-gradient(60% 60% at 50% 35%, black, transparent)",
+            }}
+          />
+          <div className="ax-container relative flex flex-col items-center pt-24 pb-20 text-center md:pt-28 md:pb-24">
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-flex items-center gap-2 rounded-full border border-steel/35 bg-secondary/70 px-3.5 py-1.5 text-[11px] font-semibold tracking-[0.16em] text-steel uppercase"
+            >
+              <Sparkles className="size-3.5" aria-hidden="true" />
+              Separate product · coming soon
+            </motion.span>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.05, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-7 max-w-3xl text-4xl leading-[1.03] font-extrabold tracking-[-0.035em] text-foreground sm:text-5xl lg:text-[3.75rem]"
+            >
+              ANEXOMAIL AI
+              <span className="ax-gradient-ai mt-1 block bg-clip-text text-transparent">
+                powered by LEO.
+              </span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-6 max-w-2xl text-[17px] leading-relaxed text-muted-foreground"
+            >
+              A dedicated AI workspace with credits you can actually see. LEO reads the thread,
+              writes the reply in your voice, pulls out the tasks — and shows you the cost of every
+              answer before you spend a penny.
+            </motion.p>
+
             <motion.div
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-10 flex flex-col items-center gap-3 sm:flex-row"
             >
-              <span className="inline-flex items-center gap-2 rounded-full border border-steel/35 bg-secondary px-3 py-1.5 text-xs font-medium text-foreground">
-                <Sparkles className="size-3.5 text-steel" aria-hidden="true" />
-                ANEXOMAIL AI — a separate product
-              </span>
-
-              <h1 className="mt-6 max-w-2xl text-4xl leading-[1.05] font-extrabold tracking-tight text-foreground sm:text-5xl lg:text-[3.4rem]">
-                A dedicated AI workspace
-                <span className="block ax-gradient-ai bg-clip-text text-transparent">
-                  with credits you can actually see.
-                </span>
-              </h1>
-
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
-                Your email workspace stays clean and private. ANEXOMAIL AI is the separate product
-                where LEO lives — chat, studio, knowledge and automation, priced in AI credits with
-                a pre-flight estimate before every action and a receipt after it.
-              </p>
-
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <a
-                  href="#plans"
-                  className="ax-press inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground"
-                >
-                  See AI plans <ArrowRight className="size-4" />
-                </a>
-                <button
-                  type="button"
-                  onClick={() => setTopUp(true)}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-2"
-                >
-                  <Wallet className="size-4" /> Buy AI credits
-                </button>
-              </div>
-
-              <p className="mt-5 text-xs text-muted-foreground">
-                From {gbp(400)}/month with 1,200 AI credits · 10 complimentary credits per cycle ·
-                workspace stays available even at zero credits.
-              </p>
+              <a
+                href="#plans"
+                className="ax-press inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground"
+              >
+                See AI plans <ArrowRight className="size-4" />
+              </a>
+              <button
+                type="button"
+                onClick={() => setTopUp(true)}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-card px-6 py-3.5 text-sm font-semibold text-foreground transition-colors hover:border-primary/60"
+              >
+                <Wallet className="size-4" /> Buy AI credits
+              </button>
             </motion.div>
 
+            <p className="mt-5 text-xs text-muted-foreground">
+              Not open to the public yet · from {gbp(400)}/month with 1,200 AI credits · 10
+              complimentary credits per cycle · your mailbox never pauses.
+            </p>
+
             <motion.div
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 26 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-              className="mx-auto w-full max-w-sm"
+              transition={{ duration: 0.65, delay: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="mt-14 w-full max-w-sm"
             >
               <AiCreditMeter plan="ANEXOMAIL AI · monthly" monthly={400} used={302} />
-              <p className="mt-3 text-center text-xs text-muted-foreground">
+              <p className="mt-3 text-xs text-muted-foreground">
                 Example of the wallet you get inside the AI workspace.
               </p>
             </motion.div>
@@ -258,7 +282,7 @@ function AiPage() {
                     )}`}
                     className="relative mt-6 inline-flex items-center justify-center rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground"
                   >
-                    Get {plan.name}
+                    Get {plan.name} — coming soon
                   </a>
                 </motion.article>
               ))}
