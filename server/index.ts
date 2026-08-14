@@ -40,7 +40,6 @@ import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./route
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
 import billingSupportRouter from "./routes/billing-support";
-import chatRouter from "./routes/chat";
 import {
   billingSyncAuthRouter,
   billingSyncPublicRouter,
