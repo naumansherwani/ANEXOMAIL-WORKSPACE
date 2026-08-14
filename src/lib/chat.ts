@@ -54,7 +54,20 @@ export type ChatMessage = {
   edited_at: string | null;
   delivered_at: string | null;
   read_at: string | null;
+  reply_to_id?: string | null;
+  reply_to_body?: string | null;
+  reply_to_sender?: string | null;
+  pinned_at?: string | null;
+  reactions?: ChatReaction[];
 };
+
+/** Founder lock: edit 5 minute, delete-for-everyone 1 ghanta — DB bhi yehi enforce karta hai. */
+export const EDIT_WINDOW_MS = 5 * 60 * 1000;
+export const DELETE_WINDOW_MS = 60 * 60 * 1000;
+
+export function withinWindow(createdAt: string, windowMs: number): boolean {
+  return Date.now() - new Date(createdAt).getTime() <= windowMs;
+}
 
 /** Truthful ladder. `waiting` = offline queue, never shown as Sent. */
 export type MessageState = "sending" | "waiting" | "sent" | "delivered" | "read" | "failed";
@@ -152,6 +165,7 @@ export type OutboxItem = {
   conversation_id: string;
   body: string;
   queued_at: string;
+  reply_to_id?: string | null;
   attempts: number;
   last_error: string | null;
 };
@@ -202,6 +216,7 @@ export function useChatSend(conversationId: string | null) {
           client_msg_id: item.client_msg_id,
           body: item.body,
           device: deviceLabel(),
+          reply_to_id: item.reply_to_id ?? null,
         },
         {
           path: "/api/chat/messages",
@@ -211,6 +226,7 @@ export function useChatSend(conversationId: string | null) {
             client_msg_id: item.client_msg_id,
             body: item.body,
             device: deviceLabel(),
+            reply_to_id: item.reply_to_id ?? null,
           },
         },
       ),
@@ -252,12 +268,15 @@ export function useChatSend(conversationId: string | null) {
   }, [flush]);
 
   const send = useMutation({
-    mutationFn: async (body: string) => {
+    mutationFn: async (vars: string | { body: string; reply_to_id?: string | null }) => {
       if (!conversationId) throw new Error("No conversation open.");
+      const body = typeof vars === "string" ? vars : vars.body;
+      const replyTo = typeof vars === "string" ? null : vars.reply_to_id ?? null;
       const item: OutboxItem = {
         client_msg_id: newClientMsgId(),
         conversation_id: conversationId,
         body,
+        reply_to_id: replyTo,
         queued_at: new Date().toISOString(),
         attempts: 0,
         last_error: null,
@@ -476,5 +495,74 @@ export function useChatUnread() {
       }),
     retry: false,
     refetchInterval: 20_000,
+  });
+}
+
+// ── PHASE 8-10: messenger parity (reply / hide / pin / prefs / search) ──
+export function useHideMessage(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (messageId: string) =>
+      chatCall<{ hidden: boolean }>(
+        "chat.message.hide",
+        { message_id: messageId },
+        { path: "/api/chat/messages/hide", method: "POST", body: { message_id: messageId } },
+      ),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
+export function usePinMessage(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { message_id: string; pin: boolean }) =>
+      chatCall<{ id: string; pinned_at: string | null }>("chat.message.pin", vars, {
+        path: "/api/chat/messages/pin",
+        method: "POST",
+        body: vars,
+      }),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
+export function useConversationPrefs(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (vars: { mute_minutes?: number | null; archived?: boolean | null }) => {
+      const payload = { conversation_id: conversationId, ...vars };
+      return chatCall<{ muted_until: string | null; archived: boolean }>(
+        "chat.conversation.prefs",
+        payload,
+        { path: "/api/chat/conversations/prefs", method: "POST", body: payload },
+      );
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
+  });
+}
+
+export type ChatSearchHit = {
+  id: string;
+  conversation_id: string;
+  seq: number;
+  body: string;
+  sender_name: string;
+  created_at: string;
+};
+
+export function useChatSearch(q: string) {
+  const term = q.trim();
+  return useQuery<{ results: ChatSearchHit[] }, ApiError>({
+    queryKey: ["chat", "search", term],
+    queryFn: () =>
+      chatCall<{ results: ChatSearchHit[] }>(
+        "chat.search",
+        { q: term },
+        { path: `/api/chat/search?q=${encodeURIComponent(term)}` },
+      ),
+    enabled: term.length >= 2,
+    retry: false,
+    staleTime: 15_000,
   });
 }

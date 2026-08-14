@@ -331,6 +331,7 @@ async fn dispatch(
                         "_client_msg_id": client_msg_id,
                         "_body": body_text,
                         "_device": input.get("device").cloned().unwrap_or(Value::Null),
+                        "_reply_to": input.get("reply_to_id").cloned().unwrap_or(Value::Null),
                     }),
                 )
                 .await
@@ -536,6 +537,100 @@ async fn dispatch(
         "chat.unread" => sb_rpc("chat_unread_total", json!({ "_user": me.id }))
             .await
             .map(|data| data.get(0).cloned().unwrap_or(json!({ "unread": 0, "conversations": 0 }))),
+
+        // ── PHASE 8-10: parity (hide / pin / prefs / search) ────────────────
+        "chat.message.hide" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("chat_message_hide", json!({ "_msg": msg, "_user": me.id }))
+                    .await
+                    .map(|_| json!({ "hidden": true }))
+            }
+        }
+
+        "chat.message.pin" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                let pin = input.get("pin").and_then(|v| v.as_bool()).unwrap_or(true);
+                sb_rpc(
+                    "chat_pin_message",
+                    json!({ "_msg": msg, "_user": me.id, "_pin": pin }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        "chat.conversation.prefs" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_conversation_prefs",
+                    json!({
+                        "_conv": conv,
+                        "_user": me.id,
+                        "_mute_minutes": input.get("mute_minutes").cloned().unwrap_or(Value::Null),
+                        "_archived": input.get("archived").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        "chat.search" => {
+            let q = s(&input, "q");
+            if q.trim().is_empty() {
+                Ok(json!({ "results": [] }))
+            } else {
+                sb_rpc("chat_search_messages", json!({ "_user": me.id, "_q": q, "_limit": 40 }))
+                    .await
+                    .map(|results| json!({ "results": results }))
+            }
+        }
+
+        // ── PHASE 7: ANEXOVideoChat signalling (Business Pro only) ──────────
+        "chat.video.gate" => sb_rpc("chat_video_allowed", json!({ "_user_id": me.id }))
+            .await
+            .map(|data| json!({ "allowed": data.as_bool().unwrap_or(false), "plan_required": "business_pro" })),
+
+        "chat.signal.send" => {
+            let conv = s(&input, "conversation_id");
+            let to = s(&input, "to_user");
+            let kind = s(&input, "kind");
+            if conv.is_empty() || to.is_empty() || kind.is_empty() {
+                Err("conversation_id_to_user_kind_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_signal_send",
+                    json!({
+                        "_conv": conv,
+                        "_from": me.id,
+                        "_to": to,
+                        "_kind": kind,
+                        "_payload": input.get("payload").cloned().unwrap_or(json!({})),
+                    }),
+                )
+                .await
+                .map(|id| json!({ "id": id }))
+            }
+        }
+
+        "chat.signal.poll" => sb_rpc(
+            "chat_signal_poll",
+            json!({
+                "_conv": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                "_user": me.id,
+            }),
+        )
+        .await
+        .map(|signals| json!({ "signals": signals })),
 
         other => {
             return err(

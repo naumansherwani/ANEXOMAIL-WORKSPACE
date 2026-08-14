@@ -171,6 +171,7 @@ chatRouter.post("/messages", async (req, res) => {
     _client_msg_id: clientId,
     _body: body,
     _device: req.body?.device ? String(req.body.device) : null,
+    _reply_to: req.body?.reply_to_id ? String(req.body.reply_to_id) : null,
   });
   if (error) return fail(res, error);
   const row = Array.isArray(data) ? data[0] : data;
@@ -363,6 +364,106 @@ chatRouter.get("/unread", async (req, res) => {
   if (error) return fail(res, error);
   const row = Array.isArray(data) ? data[0] : data;
   res.json(row ?? { unread: 0, conversations: 0 });
+});
+
+// ── PHASE 8-10: parity (hide / pin / prefs / search) ────────────
+chatRouter.post("/messages/hide", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { error } = await db!.rpc("chat_message_hide", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json({ hidden: true });
+});
+
+chatRouter.post("/messages/pin", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_pin_message", {
+    _msg: msg,
+    _user: me.id,
+    _pin: req.body?.pin !== false,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.post("/conversations/prefs", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_conversation_prefs", {
+    _conv: conv,
+    _user: me.id,
+    _mute_minutes:
+      req.body?.mute_minutes === undefined || req.body?.mute_minutes === null
+        ? null
+        : Number(req.body.mute_minutes),
+    _archived:
+      req.body?.archived === undefined || req.body?.archived === null
+        ? null
+        : Boolean(req.body.archived),
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.get("/search", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const q = String(req.query?.q || "");
+  if (!q.trim()) return res.json({ results: [] });
+  const { data, error } = await db!.rpc("chat_search_messages", {
+    _user: me.id,
+    _q: q,
+    _limit: 40,
+  });
+  if (error) return fail(res, error);
+  res.json({ results: data ?? [] });
+});
+
+// ── PHASE 7: ANEXOVideoChat signalling (Business Pro only) ──────
+chatRouter.get("/video/gate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_video_allowed", { _user_id: me.id });
+  if (error) return fail(res, error);
+  res.json({ allowed: data === true, plan_required: "business_pro" });
+});
+
+chatRouter.post("/video/signal", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const to = String(req.body?.to_user || "");
+  const kind = String(req.body?.kind || "");
+  if (!conv || !to || !kind) {
+    return res.status(400).json({ error: "conversation_id_to_user_kind_required" });
+  }
+  const { data, error } = await db!.rpc("chat_signal_send", {
+    _conv: conv,
+    _from: me.id,
+    _to: to,
+    _kind: kind,
+    _payload: req.body?.payload ?? {},
+  });
+  if (error) return fail(res, error);
+  res.json({ id: data });
+});
+
+chatRouter.get("/video/signals", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_signal_poll", {
+    _conv: req.query?.c ? String(req.query.c) : null,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json({ signals: data ?? [] });
 });
 
 export default chatRouter;
