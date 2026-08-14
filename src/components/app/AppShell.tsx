@@ -46,6 +46,7 @@ type RailItem = {
 const primary: RailItem[] = [
   { to: "/app", label: "Today", icon: Inbox, exact: true },
   { to: "/app/mail/inbox", label: "Mail", icon: Mail, match: "/app/mail" },
+  { to: "/app/chat", label: "ANEXOChat", icon: MessageSquare },
   { to: "/app/people", label: "People", icon: Users },
   { to: "/app/crm", label: "CRM", icon: KanbanSquare, match: "/app/crm" },
   { to: "/app/org", label: "Org", icon: Building2, match: "/app/org" },
