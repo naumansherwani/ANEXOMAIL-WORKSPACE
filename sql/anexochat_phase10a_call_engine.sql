@@ -174,11 +174,25 @@ revoke all on function public.chat_call_end(uuid,uuid,text) from public;
 grant execute on function public.chat_call_end(uuid,uuid,text) to authenticated, service_role;
 
 -- ---------- 6) FOUNDER god-view: measured aggregates ----------
+create or replace function public.chat_is_founder(_user uuid)
+returns boolean language plpgsql stable security definer set search_path = public as $$
+declare found boolean := false;
+begin
+  if _user is null then return false; end if;
+  if to_regclass('public.founder_accounts') is not null then
+    execute 'select exists(select 1 from public.founder_accounts where user_id = $1)'
+      into found using _user;
+  end if;
+  return coalesce(found, false);
+end $$;
+revoke all on function public.chat_is_founder(uuid) from public;
+grant execute on function public.chat_is_founder(uuid) to authenticated, service_role;
+
 create or replace function public.chat_call_health(_user uuid, _days int default 7)
 returns jsonb language plpgsql security definer set search_path = public as $$
 declare out jsonb;
 begin
-  if not public.is_founder(_user) then raise exception 'founder_only'; end if;
+  if not public.chat_is_founder(_user) then raise exception 'founder_only'; end if;
   select jsonb_build_object(
     'window_days', _days,
     'calls', count(*),
@@ -199,7 +213,7 @@ grant execute on function public.chat_call_health(uuid,int) to authenticated, se
 create or replace function public.chat_call_recent(_user uuid, _limit int default 40)
 returns setof jsonb language plpgsql security definer set search_path = public as $$
 begin
-  if not public.is_founder(_user) then raise exception 'founder_only'; end if;
+  if not public.chat_is_founder(_user) then raise exception 'founder_only'; end if;
   return query
   select jsonb_build_object(
     'id', s.id, 'started_at', s.started_at, 'setup_ms', s.setup_ms,
