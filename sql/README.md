@@ -165,3 +165,12 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor** (pehle `anexochat_phase01_founda
   `chat_work_create` · `chat_work_list` · `chat_work_set_state` ·
   `chat_conversation_set_state` · `chat_unread_total`
 - VERIFY: chat tables **16**, chat functions **19**
+
+## ANEXOChat Phase 7–10 — Cinema + ANEXOVideoChat
+- `sql/anexochat_phase07_cinema_video.sql` — reply_to + pinned_at on `chat_messages`,
+  mute/archive on `chat_participants`, `chat_message_hidden` (delete for me),
+  `chat_signals` (WebRTC signalling, 2-min TTL), `chat_video_allowed()`
+  (founder + business_pro only), 5-minute edit window, 1-hour delete-for-everyone
+  window, `chat_messages_page` with reactions + reply quote, `chat_search_messages`.
+- Verify: `select count(*) from information_schema.tables where table_schema='public' and table_name like 'chat\_%';` → 18
+- Verify: `select count(*) from information_schema.routines where routine_schema='public' and routine_name like 'chat\_%';` → 27

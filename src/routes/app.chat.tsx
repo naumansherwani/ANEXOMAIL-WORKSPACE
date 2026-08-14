@@ -1,15 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Send, WifiOff } from "lucide-react";
+import { PhoneCall, Search, Send, WifiOff, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { AtmosphereControl, AtmosphereStage, useAtmosphere } from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
+import { CinemaStage, useCinema } from "@/components/app/chat/CinemaStage";
 import { MessageStream } from "@/components/app/chat/MessageStream";
+import { VideoCallOverlay } from "@/components/app/chat/VideoCall";
 import { WorkStrip } from "@/components/app/chat/WorkStrip";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { StateBlock } from "@/components/state/StateBlock";
 import {
   deviceLabel,
+  useChatSearch,
+  useConversationPrefs,
+  useDeleteMessage,
+  useEditMessage,
+  useHideMessage,
+  usePinMessage,
+  useReact,
   useChatBootstrap,
   useChatSend,
   useConversations,
@@ -19,7 +28,9 @@ import {
   useStartDirect,
   useTypingPing,
 } from "@/lib/chat";
+import type { ChatMessage } from "@/lib/chat";
 import { chatCall, useChatLive } from "@/lib/chat-transport";
+import { useVideoCall, useVideoGate } from "@/lib/chat-video";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -44,6 +55,15 @@ function ChatPage() {
   const startDirect = useStartDirect();
   const typingPing = useTypingPing(openId);
   const [draft, setDraft] = useState("");
+  const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
+  const [query, setQuery] = useState("");
+  const react = useReact(openId);
+  const editMessage = useEditMessage(openId);
+  const deleteMessage = useDeleteMessage(openId);
+  const hideMessage = useHideMessage(openId);
+  const pinMessage = usePinMessage(openId);
+  const prefs = useConversationPrefs(openId);
+  const search = useChatSearch(query);
   const [online, setOnline] = useState(true);
   const live = useChatLive(openId);
 
@@ -74,6 +94,9 @@ function ChatPage() {
 
   const list = conversations.data?.conversations ?? [];
   const active = list.find((c) => c.conversation_id === openId) ?? null;
+  const cinema = useCinema(atmosphere.calm, atmosphere.effect);
+  const gate = useVideoGate(entitled);
+  const call = useVideoCall(openId, active?.other_user_id ?? null);
   const ordered = useMemo(
     () => [...(messages.data?.messages ?? [])].sort((a, b) => a.seq - b.seq),
     [messages.data],
@@ -121,6 +144,7 @@ function ChatPage() {
   return (
     <div className="relative flex min-h-0 flex-1 flex-col md:flex-row">
       <AtmosphereStage band={atmosphere.band} effect={atmosphere.effect} calm={atmosphere.calm} />
+      <CinemaStage band={atmosphere.band} effect={atmosphere.effect} quality={cinema.quality} />
 
       <ListPanel
         title="ANEXOChat"
@@ -132,6 +156,46 @@ function ChatPage() {
           </span>
         }
       >
+        <div className="border-b border-border px-3 py-2">
+          <label className="sr-only" htmlFor="ax-chat-search">
+            Search messages
+          </label>
+          <div className="flex items-center gap-2 rounded-lg border border-border px-2 py-1.5">
+            <Search className="size-3.5 text-muted-foreground" />
+            <input
+              id="ax-chat-search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search messages"
+              className="w-full bg-transparent text-xs text-foreground outline-none"
+            />
+          </div>
+          {query.trim().length >= 2 ? (
+            <div className="mt-2 flex flex-col gap-1">
+              {(search.data?.results ?? []).length === 0 ? (
+                <p className="text-[11px] text-muted-foreground">
+                  {search.isFetching ? "Searching" : "No message matches that text."}
+                </p>
+              ) : (
+                (search.data?.results ?? []).map((hit) => (
+                  <button
+                    key={hit.id}
+                    type="button"
+                    onClick={() => {
+                      setOpenId(hit.conversation_id);
+                      setQuery("");
+                    }}
+                    className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
+                  >
+                    <span className="font-semibold text-foreground">{hit.sender_name}</span>{" "}
+                    {hit.body.slice(0, 70)}
+                  </button>
+                ))
+              )}
+            </div>
+          ) : null}
+        </div>
+
         {list.length === 0 ? (
           <div className="p-4">
             <EmptyState
@@ -197,8 +261,35 @@ function ChatPage() {
                     <WifiOff className="size-3" /> Offline — messages will wait
                   </span>
                 ) : null}
+                {gate.data?.allowed ? (
+                  <button
+                    type="button"
+                    onClick={() => void call.start()}
+                    className="ax-press ml-auto inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-foreground"
+                  >
+                    <PhoneCall className="size-3" /> Video call
+                  </button>
+                ) : (
+                  <span className="ml-auto text-[11px] text-muted-foreground">
+                    ANEXOVideoChat is on Business Pro
+                  </span>
+                )}
+                <button
+                  type="button"
+                  onClick={() => prefs.mutate({ mute_minutes: 60 })}
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  Mute 1h
+                </button>
+                <button
+                  type="button"
+                  onClick={() => prefs.mutate({ archived: true })}
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  Archive
+                </button>
               </div>
-              <div className="mt-2">
+              <div className="mt-2 flex flex-wrap items-center gap-2">
                 <AtmosphereControl
                   band={atmosphere.band}
                   effect={atmosphere.effect}
@@ -209,12 +300,62 @@ function ChatPage() {
                   onMode={atmosphere.setMode}
                   onCalm={atmosphere.setCalm}
                 />
+                <select
+                  aria-label="Cinematic quality"
+                  value={cinema.pref}
+                  onChange={(e) =>
+                    cinema.setQuality(e.target.value as "auto" | "off" | "low" | "high")
+                  }
+                  className="rounded-full border border-border bg-transparent px-2.5 py-1 text-xs text-foreground"
+                >
+                  <option value="auto">Cinema: auto</option>
+                  <option value="high">Cinema: high</option>
+                  <option value="low">Cinema: low</option>
+                  <option value="off">Cinema: off</option>
+                </select>
+                {cinema.soundable ? (
+                  <button
+                    type="button"
+                    onClick={() => cinema.setSound(!cinema.sound)}
+                    className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground"
+                  >
+                    {cinema.sound ? "Sound on" : "Sound off"}
+                  </button>
+                ) : null}
               </div>
             </header>
 
             <WorkStrip conversationId={openId!} />
 
-            <MessageStream messages={ordered} pending={pending} />
+            <MessageStream
+              messages={ordered}
+              pending={pending}
+              actions={{
+                onReact: (message_id, emoji) => react.mutate({ message_id, emoji }),
+                onReply: (m) => setReplyTo(m),
+                onEdit: (m) => {
+                  const next = window.prompt("Edit message", m.body);
+                  if (next && next.trim() && next !== m.body) {
+                    editMessage.mutate({ message_id: m.id, body: next.trim() });
+                  }
+                },
+                onDeleteForEveryone: (id) => deleteMessage.mutate(id),
+                onHide: (id) => hideMessage.mutate(id),
+                onPin: (message_id, pin) => pinMessage.mutate({ message_id, pin }),
+              }}
+            />
+
+            <VideoCallOverlay
+              state={call.state}
+              detail={call.detail}
+              tier={call.tier}
+              kbps={call.kbps}
+              remote={call.remote}
+              local={call.localStream}
+              incoming={Boolean(call.incoming)}
+              onAnswer={() => call.incoming && void call.answer(call.incoming)}
+              onHangup={call.hangup}
+            />
 
             <div className="shrink-0 border-t border-border px-4 py-3">
               <p className="mb-1.5 h-4 text-[11px] text-muted-foreground">
@@ -222,6 +363,16 @@ function ChatPage() {
                   ? `${typingNames.join(", ")} ${typingNames.length === 1 ? "is" : "are"} typing`
                   : ""}
               </p>
+              {replyTo ? (
+                <div className="mb-2 flex items-start gap-2 rounded-lg border-l-2 border-primary/60 bg-muted/40 px-2 py-1 text-[11px] text-muted-foreground">
+                  <span className="min-w-0 flex-1">
+                    Replying to {replyTo.sender_name}: {replyTo.body.slice(0, 90)}
+                  </span>
+                  <button type="button" aria-label="Cancel reply" onClick={() => setReplyTo(null)}>
+                    <X className="size-3" />
+                  </button>
+                </div>
+              ) : null}
               <form
                 className="flex items-end gap-2"
                 onSubmit={(e) => {
@@ -230,7 +381,8 @@ function ChatPage() {
                   if (!body) return;
                   setDraft("");
                   typingPing(false);
-                  send.mutate(body);
+                  send.mutate({ body, reply_to_id: replyTo?.id ?? null });
+                  setReplyTo(null);
                 }}
               >
                 <textarea
