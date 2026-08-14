@@ -2,7 +2,7 @@ export type BillingCycle = "monthly" | "yearly";
 
 export type BillingProduct = {
   envKey: string;
-  kind: "plan" | "ai_plan" | "movein" | "support";
+  kind: "plan" | "movein" | "support";
   plan?: string;
   band?: string;
   cycle?: BillingCycle;
@@ -73,54 +73,6 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     plan: "business_pro",
     cycle: "yearly",
     amountGbp: 25000,
-    perSeat: false,
-  },
-  POLAR_PRODUCT_AI_PRO_MONTHLY: {
-    envKey: "POLAR_PRODUCT_AI_PRO_MONTHLY",
-    kind: "ai_plan",
-    plan: "ai_pro",
-    cycle: "monthly",
-    amountGbp: 400,
-    perSeat: false,
-  },
-  POLAR_PRODUCT_AI_PRO_YEARLY: {
-    envKey: "POLAR_PRODUCT_AI_PRO_YEARLY",
-    kind: "ai_plan",
-    plan: "ai_pro",
-    cycle: "yearly",
-    amountGbp: 4000,
-    perSeat: false,
-  },
-  POLAR_PRODUCT_AI_BUSINESS_MONTHLY: {
-    envKey: "POLAR_PRODUCT_AI_BUSINESS_MONTHLY",
-    kind: "ai_plan",
-    plan: "ai_business",
-    cycle: "monthly",
-    amountGbp: 1500,
-    perSeat: false,
-  },
-  POLAR_PRODUCT_AI_BUSINESS_YEARLY: {
-    envKey: "POLAR_PRODUCT_AI_BUSINESS_YEARLY",
-    kind: "ai_plan",
-    plan: "ai_business",
-    cycle: "yearly",
-    amountGbp: 15000,
-    perSeat: false,
-  },
-  POLAR_PRODUCT_AI_EXECUTIVE_MONTHLY: {
-    envKey: "POLAR_PRODUCT_AI_EXECUTIVE_MONTHLY",
-    kind: "ai_plan",
-    plan: "ai_executive",
-    cycle: "monthly",
-    amountGbp: 4000,
-    perSeat: false,
-  },
-  POLAR_PRODUCT_AI_EXECUTIVE_YEARLY: {
-    envKey: "POLAR_PRODUCT_AI_EXECUTIVE_YEARLY",
-    kind: "ai_plan",
-    plan: "ai_executive",
-    cycle: "yearly",
-    amountGbp: 40000,
     perSeat: false,
   },
   POLAR_PRODUCT_MOVEIN_1_5: {
