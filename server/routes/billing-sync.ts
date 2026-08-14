@@ -125,21 +125,33 @@ authRouter.post("/intent", async (req, res) => {
     return res.status(503).json({ error: "polar_not_configured", intent_id: intentId });
   }
   try {
+    // Polar metadata: koi bhi empty string bhejne par 422 aata hai —
+    // is liye khali values yahan hi nikal dete hain.
+    const rawMeta: Record<string, string> = {
+      anexomail_user_id: userId,
+      anexomail_intent_id: String(intentId),
+      seats: String(safeSeats),
+      product_key: String(product_key),
+      kind: selected.kind,
+      plan: selected.plan ?? "",
+      band: selected.band ?? "",
+      billing_cycle: selected.cycle ?? "one_time",
+      amount_expected_gbp: String(expectedAmount),
+    };
+    const metadata: Record<string, string> = {};
+    for (const [key, value] of Object.entries(rawMeta)) {
+      const v = String(value ?? "").trim();
+      if (v) metadata[key] = v;
+    }
+
     const payload: any = {
+      // Polar CheckoutProductCreate `product_id` maangta hai; `products`
+      // bhi bhejte hain taake naya aur purana schema dono chal jaye.
+      product_id: selected.productId,
       products: [selected.productId],
       success_url: SUCCESS_URL,
       external_customer_id: userId,
-      metadata: {
-        anexomail_user_id: userId,
-        anexomail_intent_id: String(intentId),
-        seats: String(safeSeats),
-        product_key: String(product_key),
-        kind: selected.kind,
-        plan: selected.plan ?? "",
-        band: selected.band ?? "",
-        billing_cycle: selected.cycle ?? "one_time",
-        amount_expected_gbp: String(expectedAmount),
-      },
+      metadata,
     };
     if (email) payload.customer_email = email;
 
