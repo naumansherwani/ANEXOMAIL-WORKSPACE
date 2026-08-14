@@ -121,8 +121,8 @@ function AiPage() {
 
               <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground">
                 Your email workspace stays clean and private. ANEXOMAIL AI is the separate product
-                where LEO lives — chat, studio, knowledge and automation, priced in AI credits with a
-                pre-flight estimate before every action and a receipt after it.
+                where LEO lives — chat, studio, knowledge and automation, priced in AI credits with
+                a pre-flight estimate before every action and a receipt after it.
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
@@ -330,9 +330,7 @@ function AiPage() {
           <div className="ax-container grid gap-10 lg:grid-cols-[1fr_1.1fr]">
             <div>
               <p className="ax-eyebrow">Credit model</p>
-              <h2 className="ax-h2 mt-2 text-foreground">
-                No hidden deductions. Ever.
-              </h2>
+              <h2 className="ax-h2 mt-2 text-foreground">No hidden deductions. Ever.</h2>
               <ul className="mt-6 space-y-4 text-sm leading-relaxed text-muted-foreground">
                 <li>
                   <strong className="text-foreground">Standard usage:</strong> two standard AI
@@ -369,7 +367,10 @@ function AiPage() {
               </p>
               <ul className="mt-5 divide-y divide-border">
                 {CREDIT_BANDS.map((b) => (
-                  <li key={b.action} className="flex items-center justify-between gap-4 py-2.5 text-sm">
+                  <li
+                    key={b.action}
+                    className="flex items-center justify-between gap-4 py-2.5 text-sm"
+                  >
                     <span className="text-muted-foreground">{b.action}</span>
                     <span className="font-semibold text-foreground">{b.charge}</span>
                   </li>
@@ -389,7 +390,8 @@ function AiPage() {
           <div className="ax-container text-center">
             <h2 className="ax-h2 text-foreground">Questions before you start?</h2>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground">
-              Email us and a real person answers — usually within a few minutes during working hours.
+              Email us and a real person answers — usually within a few minutes during working
+              hours.
             </p>
             <a
               href="mailto:hello@anexomail.com"

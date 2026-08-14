@@ -60,7 +60,8 @@ export const money = (n: number) =>
 
 /** Price + suffix for a card, for the selected cycle. */
 export function priceFor(plan: PricedPlan, cycle: BillingCycle) {
-  if (cycle === "monthly") return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };
+  if (cycle === "monthly")
+    return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };
   return {
     big: money(plan.monthly),
     suffix: plan.unit,
@@ -240,7 +241,7 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "AI personal work assistant",
       "AI file comparison",
       "AI email composer",
-      "AI inbox intelligence — \"What needs my attention today?\"",
+      'AI inbox intelligence — "What needs my attention today?"',
       "AI automation preparation",
       "AI attention brief",
       "AI risk detection",

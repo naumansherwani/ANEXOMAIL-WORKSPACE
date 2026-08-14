@@ -5,12 +5,7 @@ import { useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
-import {
-  ANNUAL_NOTE,
-  WORKSPACE_PLANS,
-  priceFor,
-  type BillingCycle,
-} from "@/lib/plans";
+import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
 
 export const Route = createFileRoute("/plans")({
   head: () => ({
@@ -40,9 +35,27 @@ const compare: { group: string; rows: Row[] }[] = [
   {
     group: "Mailboxes and storage",
     rows: [
-      { label: "Price per month", basic: "£20 / user", pro: "£40 / user", business: "£85 / user", business_pro: "£2,500 / company" },
-      { label: "Mailboxes included", basic: "3", pro: "5", business: "On request", business_pro: "Unlimited internal users" },
-      { label: "Storage", basic: "5GB per mailbox", pro: "10GB per mailbox", business: "25GB per mailbox", business_pro: "1TB pooled" },
+      {
+        label: "Price per month",
+        basic: "£20 / user",
+        pro: "£40 / user",
+        business: "£85 / user",
+        business_pro: "£2,500 / company",
+      },
+      {
+        label: "Mailboxes included",
+        basic: "3",
+        pro: "5",
+        business: "On request",
+        business_pro: "Unlimited internal users",
+      },
+      {
+        label: "Storage",
+        basic: "5GB per mailbox",
+        pro: "10GB per mailbox",
+        business: "25GB per mailbox",
+        business_pro: "1TB pooled",
+      },
       { label: "Company addresses you can host", basic: "1", pro: "3", business: "On request" },
       { label: "Free aliases", basic: "5", pro: "5", business: "On request" },
       { label: "Undo send window", basic: "30 seconds", pro: "30 seconds", business: "30 seconds" },
@@ -51,9 +64,24 @@ const compare: { group: string; rows: Row[] }[] = [
   {
     group: "Workspace",
     rows: [
-      { label: "Contacts, calendar and threads", basic: "Included", pro: "Included", business: "Included" },
-      { label: "Cmd+K across the workspace", basic: "Included", pro: "Included", business: "Included" },
-      { label: "Shared inbox with collision guard", basic: "—", pro: "Included", business: "Included" },
+      {
+        label: "Contacts, calendar and threads",
+        basic: "Included",
+        pro: "Included",
+        business: "Included",
+      },
+      {
+        label: "Cmd+K across the workspace",
+        basic: "Included",
+        pro: "Included",
+        business: "Included",
+      },
+      {
+        label: "Shared inbox with collision guard",
+        basic: "—",
+        pro: "Included",
+        business: "Included",
+      },
       { label: "Tasks and notes on a thread", basic: "—", pro: "Included", business: "Included" },
       { label: "Thread analytics", basic: "—", pro: "Included", business: "Included" },
       { label: "Native integrations and LEO Actions", basic: "—", pro: "—", business: "Included" },
@@ -62,20 +90,60 @@ const compare: { group: string; rows: Row[] }[] = [
   {
     group: "Ownership and control",
     rows: [
-      { label: "DKIM / SPF / DMARC checks", basic: "Included", pro: "Included", business: "Included" },
-      { label: "One-click export of everything", basic: "Included", pro: "Included", business: "Included" },
-      { label: "Roles and permissions", basic: "Owner and member", pro: "Owner, admin, member", business: "Owner, admin, member" },
+      {
+        label: "DKIM / SPF / DMARC checks",
+        basic: "Included",
+        pro: "Included",
+        business: "Included",
+      },
+      {
+        label: "One-click export of everything",
+        basic: "Included",
+        pro: "Included",
+        business: "Included",
+      },
+      {
+        label: "Roles and permissions",
+        basic: "Owner and member",
+        pro: "Owner, admin, member",
+        business: "Owner, admin, member",
+      },
       { label: "Audit ledger", basic: "—", pro: "—", business: "Included" },
-      { label: "One-click revoke of a device or person", basic: "—", pro: "—", business: "Included" },
+      {
+        label: "One-click revoke of a device or person",
+        basic: "—",
+        pro: "—",
+        business: "Included",
+      },
     ],
   },
   {
     group: "Support",
     rows: [
-      { label: "Human support (no ticket portal)", basic: "Reply within 72h", pro: "Reply within 48h", business: "Reply within 24h" },
-      { label: "Answered by a person, not a portal", basic: "Included", pro: "Included", business: "Included" },
-      { label: "Priority Support (named founder contact)", basic: "Add-on £700/mo", pro: "Add-on £700/mo", business: "Add-on £700/mo" },
-      { label: "Managed move-in from your old provider", basic: "From £500 one-off", pro: "From £500 one-off", business: "From £500 one-off" },
+      {
+        label: "Human support (no ticket portal)",
+        basic: "Reply within 72h",
+        pro: "Reply within 48h",
+        business: "Reply within 24h",
+      },
+      {
+        label: "Answered by a person, not a portal",
+        basic: "Included",
+        pro: "Included",
+        business: "Included",
+      },
+      {
+        label: "Priority Support (named founder contact)",
+        basic: "Add-on £700/mo",
+        pro: "Add-on £700/mo",
+        business: "Add-on £700/mo",
+      },
+      {
+        label: "Managed move-in from your old provider",
+        basic: "From £500 one-off",
+        pro: "From £500 one-off",
+        business: "From £500 one-off",
+      },
     ],
   },
 ];
@@ -153,7 +221,8 @@ const services = [
       "Cut-over is scheduled overnight and designed to avoid service interruption",
       "A written item-by-item move log is handed to you at the end",
     ],
-    terms: "50% on accepting the plan, 50% the day after cut-over. Old mailboxes are copied, never deleted.",
+    terms:
+      "50% on accepting the plan, 50% the day after cut-over. Old mailboxes are copied, never deleted.",
     capacity: "Two move-ins a month — done by hand, not queued",
     cta: "Email us to start your move-in",
     to: "/migration" as const,
@@ -175,7 +244,8 @@ const services = [
       "Priority migration scheduling — your move-in goes to the front of the queue",
       "Up to 3 companies at a time, so the promise stays real",
     ],
-    terms: "Business days are Monday to Friday, UK time. We do not promise 24/7 cover we cannot staff.",
+    terms:
+      "Business days are Monday to Friday, UK time. We do not promise 24/7 cover we cannot staff.",
     capacity: "Three companies at a time — so 2 business days stays true",
     cta: "Email us about Priority Support",
     to: "/enterprise" as const,
@@ -302,7 +372,10 @@ function PlansPage() {
 
           <p className="mt-8 text-center text-[13px] text-muted-foreground">
             Prefer email? Write directly to{" "}
-            <a href={`mailto:${PUBLIC_EMAIL}`} className="font-semibold text-foreground underline-offset-2 hover:underline">
+            <a
+              href={`mailto:${PUBLIC_EMAIL}`}
+              className="font-semibold text-foreground underline-offset-2 hover:underline"
+            >
               {PUBLIC_EMAIL}
             </a>
           </p>

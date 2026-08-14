@@ -92,9 +92,13 @@ authRouter.post("/intent", async (req, res) => {
   const { product_key, seats = 1, email } = req.body || {};
   const selected = product_key ? configuredProduct(String(product_key)) : null;
   if (!selected) {
-    return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+    return res
+      .status(400)
+      .json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
-  const safeSeats = selected.perSeat ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1))) : 1;
+  const safeSeats = selected.perSeat
+    ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1)))
+    : 1;
   const expectedAmount = selected.amountGbp * safeSeats;
 
   // STEP 1 — sach Supabase mein likho (checkout se pehle)
@@ -265,7 +269,8 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
     for (const row of (hit as any[]) || []) {
       const d = row?.payload?.data || {};
       const checkoutId = d.checkout_id || d.checkout?.id || null;
-      const metaIntent = d.metadata?.anexomail_intent_id || d.checkout?.metadata?.anexomail_intent_id;
+      const metaIntent =
+        d.metadata?.anexomail_intent_id || d.checkout?.metadata?.anexomail_intent_id;
       const paid =
         row.type === "order.paid" ||
         row.type === "subscription.active" ||
@@ -274,7 +279,9 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
         d.paid === true;
       if (!paid) continue;
       if (metaIntent === intent.id || (checkoutId && checkoutId === intent.polar_checkout_id)) {
-        const paidProductId = String(d.product_id || d.product?.id || d.items?.[0]?.product_id || "");
+        const paidProductId = String(
+          d.product_id || d.product?.id || d.items?.[0]?.product_id || "",
+        );
         await db.rpc("billing_intent_confirm", {
           p_intent: intent.id,
           p_checkout_id: intent.polar_checkout_id,

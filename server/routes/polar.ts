@@ -393,7 +393,9 @@ async function processWebhookEvent(event: any, eventId: string) {
       meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
     const product = data.product || data.items?.[0]?.product || {};
     const productMeta = product.metadata || {};
-    const paidProductId = String(product.id || data.product_id || data.items?.[0]?.product_id || "");
+    const paidProductId = String(
+      product.id || data.product_id || data.items?.[0]?.product_id || "",
+    );
     const registeredProduct = paidProductId ? productById(paidProductId) : null;
     const legacyMeta = kindFromMetadata(productMeta);
     const kind = registeredProduct?.kind || legacyMeta.kind;
