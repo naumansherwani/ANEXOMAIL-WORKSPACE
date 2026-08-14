@@ -195,15 +195,25 @@ export function useChatSend(conversationId: string | null) {
 
   const post = useCallback(
     (item: OutboxItem) =>
-      api<{ id: string; seq: number; duplicate: boolean }>("/api/chat/messages", {
-        method: "POST",
-        body: JSON.stringify({
+      chatCall<{ id: string; seq: number; duplicate: boolean }>(
+        "chat.send",
+        {
           conversation_id: item.conversation_id,
           client_msg_id: item.client_msg_id,
           body: item.body,
           device: deviceLabel(),
-        }),
-      }),
+        },
+        {
+          path: "/api/chat/messages",
+          method: "POST",
+          body: {
+            conversation_id: item.conversation_id,
+            client_msg_id: item.client_msg_id,
+            body: item.body,
+            device: deviceLabel(),
+          },
+        },
+      ),
     [],
   );
 
@@ -283,9 +293,15 @@ export function useMarkRead(conversationId: string | null) {
   return useMutation({
     mutationFn: async (uptoSeq: number) => {
       if (!conversationId) return null;
-      return api("/api/chat/receipts", {
+      const payload = {
+        conversation_id: conversationId,
+        state: "read" as const,
+        upto_seq: uptoSeq,
+      };
+      return chatCall<{ marked: number }>("chat.receipts", payload, {
+        path: "/api/chat/receipts",
         method: "POST",
-        body: JSON.stringify({ conversation_id: conversationId, state: "read", upto_seq: uptoSeq }),
+        body: payload,
       });
     },
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
@@ -296,9 +312,11 @@ export function useTypingPing(conversationId: string | null) {
   return useCallback(
     (typing: boolean) => {
       if (!conversationId) return;
-      void api("/api/chat/typing", {
+      const payload = { conversation_id: conversationId, typing };
+      void chatCall<{ ok: boolean }>("chat.typing", payload, {
+        path: "/api/chat/typing",
         method: "POST",
-        body: JSON.stringify({ conversation_id: conversationId, typing }),
+        body: payload,
       }).catch(() => {
         /* typing is best-effort; never surfaced as a claim */
       });
@@ -311,10 +329,15 @@ export function useStartDirect() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (otherUserId: string) =>
-      api<{ conversation_id: string }>("/api/chat/conversations/direct", {
-        method: "POST",
-        body: JSON.stringify({ other_user_id: otherUserId }),
-      }),
+      chatCall<{ conversation_id: string }>(
+        "chat.conversations.direct",
+        { other_user_id: otherUserId },
+        {
+          path: "/api/chat/conversations/direct",
+          method: "POST",
+          body: { other_user_id: otherUserId },
+        },
+      ),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] }),
   });
 }
