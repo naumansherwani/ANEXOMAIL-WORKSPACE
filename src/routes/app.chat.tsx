@@ -30,7 +30,8 @@ import {
 } from "@/lib/chat";
 import type { ChatMessage } from "@/lib/chat";
 import { chatCall, useChatLive } from "@/lib/chat-transport";
-import { useVideoCall, useVideoGate } from "@/lib/chat-video";
+import { useCall } from "@/lib/chat-call";
+import { useVideoGate } from "@/lib/chat-video";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -96,7 +97,7 @@ function ChatPage() {
   const active = list.find((c) => c.conversation_id === openId) ?? null;
   const cinema = useCinema(atmosphere.calm, atmosphere.effect);
   const gate = useVideoGate(entitled);
-  const call = useVideoCall(openId, active?.other_user_id ?? null);
+  const call = useCall(openId, bootstrap.data?.user_id ?? null, active?.other_user_id ?? null);
   const ordered = useMemo(
     () => [...(messages.data?.messages ?? [])].sort((a, b) => a.seq - b.seq),
     [messages.data],
@@ -346,14 +347,16 @@ function ChatPage() {
             />
 
             <VideoCallOverlay
-              state={call.state}
+              phase={call.phase}
               detail={call.detail}
-              tier={call.tier}
-              kbps={call.kbps}
+              stats={call.stats}
               remote={call.remote}
-              local={call.localStream}
-              incoming={Boolean(call.incoming)}
-              onAnswer={() => call.incoming && void call.answer(call.incoming)}
+              local={call.local}
+              incoming={call.incoming}
+              signaling={call.signaling}
+              turnAvailable={call.turnAvailable}
+              showTechnical={gate.data?.allowed === true}
+              onAnswer={() => void call.answer()}
               onHangup={call.hangup}
             />
 

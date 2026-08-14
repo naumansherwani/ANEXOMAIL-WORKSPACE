@@ -467,3 +467,103 @@ chatRouter.get("/video/signals", async (req, res) => {
 });
 
 export default chatRouter;
+// ── PHASE 10A: ANEXOVIDEOCHAT CALL ENGINE (fallback of Rust /rpc/chat.*) ─────
+//
+// ENV (/opt/anexomail/.env):
+//   TURN_HOST=anexovideocall.anexomail.com
+//   TURN_SECRET=<coturn static-auth-secret>   # frontend pe kabhi nahi
+//   TURN_TTL_SECONDS=3600
+//
+// Ephemeral TURN creds = coturn ka standard REST scheme:
+//   username = <unix-expiry>:<user-id>
+//   password = base64(HMAC-SHA1(secret, username))
+import { createHmac } from "node:crypto";
+
+const TURN_HOST = process.env.TURN_HOST || "";
+const TURN_SECRET = process.env.TURN_SECRET || "";
+const TURN_TTL = Number(process.env.TURN_TTL_SECONDS || 3600);
+
+const STUN_URLS = ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"];
+
+chatRouter.get("/video/turn", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const gate = await db!.rpc("chat_video_allowed", { _user_id: me.id });
+  if (gate.error) return fail(res, gate.error);
+  if (gate.data !== true) {
+    return res.status(403).json({ error: "video_not_entitled", plan_required: "business_pro" });
+  }
+
+  const iceServers: any[] = [{ urls: STUN_URLS }];
+  if (TURN_HOST && TURN_SECRET) {
+    const expiry = Math.floor(Date.now() / 1000) + TURN_TTL;
+    const username = `${expiry}:${me.id}`;
+    const credential = createHmac("sha1", TURN_SECRET).update(username).digest("base64");
+    iceServers.push({
+      urls: [
+        `turn:${TURN_HOST}:3478?transport=udp`,
+        `turn:${TURN_HOST}:3478?transport=tcp`,
+        `turns:${TURN_HOST}:5349?transport=tcp`,
+      ],
+      username,
+      credential,
+    });
+  }
+  // TURN configure na ho to jhoot nahi — sirf STUN bhejte hain.
+  res.json({ ice_servers: iceServers, ttl_seconds: TURN_TTL, turn: Boolean(TURN_HOST && TURN_SECRET) });
+});
+
+chatRouter.post("/video/call/start", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_call_start", {
+    _conv: conv,
+    _user: me.id,
+    _peer: req.body?.peer_user_id ? String(req.body.peer_user_id) : null,
+    _role: String(req.body?.role || "caller"),
+    _signaling: String(req.body?.signaling || ""),
+  });
+  if (error) return fail(res, error);
+  res.json({ session_id: data });
+});
+
+chatRouter.post("/video/call/stat", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const session = String(req.body?.session_id || "");
+  if (!session) return res.status(400).json({ error: "session_required" });
+  const { error } = await db!.rpc("chat_call_stat", {
+    _session: session,
+    _user: me.id,
+    _sample: req.body?.sample ?? {},
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.post("/video/call/end", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const session = String(req.body?.session_id || "");
+  if (!session) return res.status(400).json({ error: "session_required" });
+  const { error } = await db!.rpc("chat_call_end", {
+    _session: session,
+    _user: me.id,
+    _reason: String(req.body?.reason || ""),
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+// Founder god-view (measured, not marketed)
+chatRouter.get("/video/calls/health", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const days = Number(req.query?.days || 7);
+  const health = await db!.rpc("chat_call_health", { _user: me.id, _days: days });
+  if (health.error) return res.status(403).json({ error: "founder_only" });
+  const recent = await db!.rpc("chat_call_recent", { _user: me.id, _limit: 40 });
+  res.json({ health: health.data ?? {}, calls: recent.data ?? [] });
+});

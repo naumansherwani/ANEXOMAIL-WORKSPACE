@@ -1,32 +1,56 @@
 /**
- * ANEXOVideoChat overlay (Phase 7) — Business Pro only.
- * Sach: media peer-to-peer (DTLS-SRTP), server par koi recording nahi.
- * Quality label asli bandwidth reading se aata hai; reading na mile to
- * "measuring" likha jata hai — guess kabhi nahi.
+ * ANEXOVIDEOCHAT overlay — PHASE 10A (Business Pro only).
+ *
+ * TRUTH RULES:
+ *   - Badge (🟢/🟡/🔴 + resolution + Connected/Reconnecting) sab ko dikhta hai.
+ *   - Tap-to-expand technical panel: RTT / jitter / loss / path (P2P ya TURN
+ *     relay) / bitrate / FPS / resolution / codec / ICE restarts / setup time.
+ *   - Har value asli getStats reading hai. Reading na ho to "measuring" —
+ *     speed, latency ya quality ka jhoota claim kabhi nahi.
  */
-import { Mic, MicOff, PhoneOff, Video, VideoOff } from "lucide-react";
+import { ChevronDown, Mic, MicOff, PhoneOff, Video, VideoOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import type { CallState, VideoTier } from "@/lib/chat-video";
+import type { CallPhase, CallStats } from "@/lib/chat-call";
+import type { SignalTransport } from "@/lib/chat-signal";
+
+const DOT: Record<string, string> = {
+  good: "bg-emerald-500",
+  fair: "bg-amber-500",
+  poor: "bg-red-500",
+};
+
+function Row({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-4 border-b border-border/60 py-1 last:border-0">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="font-mono text-foreground">{value}</span>
+    </div>
+  );
+}
 
 export function VideoCallOverlay({
-  state,
+  phase,
   detail,
-  tier,
-  kbps,
+  stats,
   remote,
   local,
   incoming,
+  signaling,
+  turnAvailable,
+  showTechnical,
   onAnswer,
   onHangup,
 }: {
-  state: CallState;
+  phase: CallPhase;
   detail: string;
-  tier: VideoTier | null;
-  kbps: number | null;
+  stats: CallStats;
   remote: MediaStream | null;
   local: MediaStream | null;
   incoming: boolean;
+  signaling: SignalTransport;
+  turnAvailable: boolean | null;
+  showTechnical: boolean;
   onAnswer: () => void;
   onHangup: () => void;
 }) {
@@ -34,6 +58,7 @@ export function VideoCallOverlay({
   const localRef = useRef<HTMLVideoElement>(null);
   const [muted, setMuted] = useState(false);
   const [camOff, setCamOff] = useState(false);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (remoteRef.current && remote) remoteRef.current.srcObject = remote;
@@ -42,30 +67,68 @@ export function VideoCallOverlay({
     if (localRef.current && local) localRef.current.srcObject = local;
   }, [local]);
 
-  if (state === "idle" || state === "ended") return null;
+  if (phase === "idle" || phase === "ended") return null;
+
+  const res = stats.width && stats.height ? `${stats.width}×${stats.height}` : "measuring";
+  const label =
+    phase === "live" ? "Connected" : phase === "reconnecting" ? "Reconnecting" : phase;
+  const dot = stats.quality ? DOT[stats.quality]! : "bg-muted-foreground";
 
   return (
     <div className="absolute inset-0 z-30 flex flex-col bg-background/95 backdrop-blur">
       <div className="flex flex-wrap items-center gap-2 border-b border-border px-4 py-2 text-xs text-muted-foreground">
         <span className="font-semibold text-foreground">ANEXOVideoChat</span>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="ax-press inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-0.5"
+          aria-expanded={open}
+        >
+          <span className={`size-2 rounded-full ${dot}`} aria-hidden />
+          <span className="text-foreground">{label}</span>
+          <span>· {res}</span>
+          {showTechnical ? <ChevronDown className="size-3" /> : null}
+        </button>
         <span>· {detail}</span>
-        <span>
-          ·{" "}
-          {state === "live"
-            ? tier
-              ? `${tier} · ${kbps ?? 0} kbps measured`
-              : "measuring bandwidth"
-            : state}
-        </span>
       </div>
 
+      {open && showTechnical ? (
+        <div className="border-b border-border bg-card/70 px-4 py-2 text-[11px]">
+          <Row label="Round-trip time" value={stats.rtt_ms == null ? "measuring" : `${stats.rtt_ms} ms`} />
+          <Row label="Jitter" value={stats.jitter_ms == null ? "measuring" : `${stats.jitter_ms} ms`} />
+          <Row label="Packet loss" value={stats.loss_pct == null ? "measuring" : `${stats.loss_pct}%`} />
+          <Row
+            label="Media path"
+            value={
+              stats.path === "p2p"
+                ? "Direct peer-to-peer"
+                : stats.path === "relay"
+                  ? "TURN relay"
+                  : "measuring"
+            }
+          />
+          <Row label="Bitrate" value={stats.bitrate_kbps == null ? "measuring" : `${stats.bitrate_kbps} kbps`} />
+          <Row label="Frame rate" value={stats.fps == null ? "measuring" : `${stats.fps} fps`} />
+          <Row label="Resolution" value={res} />
+          <Row label="Video codec" value={stats.video_codec ?? "negotiating"} />
+          <Row label="Audio codec" value={stats.audio_codec ?? "opus"} />
+          <Row label="Setup time" value={stats.setup_ms == null ? "measuring" : `${stats.setup_ms} ms`} />
+          <Row label="Network recoveries" value={String(stats.ice_restarts)} />
+          <Row
+            label="Signaling"
+            value={signaling === "realtime" ? "Persistent realtime channel" : "Durable rows (realtime unavailable)"}
+          />
+          <Row
+            label="TURN fallback"
+            value={
+              turnAvailable == null ? "checking" : turnAvailable ? "Available" : "Not available (P2P only)"
+            }
+          />
+        </div>
+      ) : null}
+
       <div className="relative min-h-0 flex-1">
-        <video
-          ref={remoteRef}
-          autoPlay
-          playsInline
-          className="size-full bg-black object-cover"
-        />
+        <video ref={remoteRef} autoPlay playsInline className="size-full bg-black object-cover" />
         <video
           ref={localRef}
           autoPlay
@@ -97,6 +160,7 @@ export function VideoCallOverlay({
             setMuted((v) => !v);
           }}
           className="ax-press rounded-xl border border-border px-3 py-2 text-sm text-foreground"
+          aria-label={muted ? "Unmute microphone" : "Mute microphone"}
         >
           {muted ? <MicOff className="size-4" /> : <Mic className="size-4" />}
         </button>
@@ -107,6 +171,7 @@ export function VideoCallOverlay({
             setCamOff((v) => !v);
           }}
           className="ax-press rounded-xl border border-border px-3 py-2 text-sm text-foreground"
+          aria-label={camOff ? "Turn camera on" : "Turn camera off"}
         >
           {camOff ? <VideoOff className="size-4" /> : <Video className="size-4" />}
         </button>
