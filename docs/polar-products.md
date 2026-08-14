@@ -65,6 +65,85 @@ Business days are Monday to Friday, UK time.
 
 Har row ke liye Polar mein **do alag recurring products** banao: `Monthly` aur `Yearly`. Yearly amount monthly effective rate nahi; upar wala exact annual charge hai. **ANEXOMAIL AI Polar par abhi nahi banana — AI backend-only aur public coming soon hai.**
 
+### Plan descriptions (Polar product description mein paste karo)
+
+**ANEXOMAIL Basic — £20 / user / month · £220 / year (1 month free)**
+
+```text
+Professional company email for one person, with control built in.
+
+- 1 company address, 3 mailboxes, 5GB per mailbox
+- 5 free aliases and undo send (30 seconds)
+- Contacts and calendar in the same workspace
+- Thread ownership so nothing is answered twice
+- Cmd+K search across your whole workspace
+- One-click export — your data leaves whenever you want
+- Human support, response within 72 hours
+
+Yearly: £220 — one month free. Billed once a year, cancel at renewal.
+```
+
+**ANEXOMAIL Pro — £40 / user / month · £440 / year (1 month free)**
+
+```text
+For teams answering customers every day.
+
+- Everything in Basic
+- 3 company addresses, 5 mailboxes, 10GB per mailbox
+- Shared inbox with collision guard — two people never reply to the same mail
+- Snooze and schedule send
+- Email templates and snippets
+- Boards, notes and tasks attached to the thread
+- Thread analytics — who is carrying the load
+- Human support, response within 48 hours
+
+Yearly: £440 — one month free. Billed once a year, cancel at renewal.
+```
+
+**ANEXOMAIL Business — £85 / user / month · £850 / year (2 months free)**
+
+```text
+For growing companies that need governance over their email, not just storage.
+
+- Everything in Pro
+- Up to 30 users, 25GB per mailbox
+- Roles and departments
+- Policies and a full audit ledger
+- One-click access revocation for any person or device
+- One-click data export, no lock-in
+- Native integrations
+- ANEXOChat included
+- 15GB transfer per user per month, 2GB maximum file send
+- Business workspace identity with MX, SPF, DKIM and DMARC proven green
+- Human support, response within 24 hours
+
+Yearly: £850 — two months free. Billed once a year, cancel at renewal.
+```
+
+**ANEXOMAIL Business Pro — £2,500 / company / month · £25,000 / year (2 months free)**
+
+```text
+The complete company communication stack — one price for the whole company, not per user.
+
+- Everything in Business
+- Unlimited internal users on your domain
+- ANEXOChat Business Pro for the whole company
+- 1TB pooled workspace storage
+- 5GB maximum file and video sending, resumable transfer engine
+- Device Trust and cryptographic vault — every device scored, killed in one click
+- Audit ledger with message provenance you can hand to an auditor
+- Conversation to task engine — work leaves the inbox and becomes owned work
+- Promise tracking — every commitment made in email is followed to done
+- Decision ledger — the moment a decision was made, kept forever
+- Conversation health and full company timeline
+- Permanent business search across mail, chat, files and people
+- Email and chat bridge — one thread, two channels
+- Export and no lock-in guarantee, real delete means deleted
+- Priority human support, response within 12 hours
+
+Priced per company, not per seat. Yearly: £25,000 — two months free.
+```
+
 ### Basic ka exact Polar setup
 
 1. Mojooda `ANEXOMAIL Basic` product ko rename karke `ANEXOMAIL Basic Monthly` rakho. Price: **£20**, recurring interval: **Monthly**.
