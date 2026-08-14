@@ -12,10 +12,8 @@ import {
   KeyRound,
   ListChecks,
   Lock,
-  PenLine,
   Sparkles,
   ShieldCheck,
-  Video,
   Users,
 } from "lucide-react";
 
