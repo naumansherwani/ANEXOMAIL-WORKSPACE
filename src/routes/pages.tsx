@@ -143,6 +143,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "ANEXOChat",
+        path: "/app/chat",
+        note: "Business / Business Pro only — real 1-to-1 chat, truthful states",
+        auth: true,
+      },
+      {
         label: "Calendar",
         path: "/app/calendar",
         note: "Week grid, cost meter, availability, team load",
