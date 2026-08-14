@@ -40,6 +40,7 @@ import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./route
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
 import billingSupportRouter from "./routes/billing-support";
+import chatRouter from "./routes/chat";
 import {
   billingSyncAuthRouter,
   billingSyncPublicRouter,
@@ -194,6 +195,11 @@ app.use("/api/public", billingSyncPublicRouter);
 app.use("/api/public", moveinPublicRouter);
 app.use("/api/movein", moveinRouter);
 app.use("/api/founder", founderMoveinRouter);
+
+// ANEXOChat Phase 1 slice — /api/chat/* (gate = DB chat_access(): founder +
+// business/business_pro/AI. Basic/Pro = 403). Bun = fallback path; Rust /wt/*
+// baad mein SAME contract par.
+app.use("/api/chat", chatRouter);
 
 // ---- 404 handler: HAMESHA sab routers ke BAAD (last middleware) ----
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));
