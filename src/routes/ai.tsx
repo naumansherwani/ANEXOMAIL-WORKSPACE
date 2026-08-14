@@ -17,7 +17,7 @@ import { AiCreditMeter } from "@/components/site/AiCreditMeter";
 import { AiTopUpDialog } from "@/components/site/AiTopUpDialog";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
-import { AI_FEATURE_GROUPS, AI_PLANS, CREDIT_BANDS, gbp } from "@/lib/ai-packages";
+import { AI_FEATURE_GROUPS, CREDIT_BANDS, gbp } from "@/lib/ai-packages";
 import { BillingToggle } from "@/components/site/BillingToggle";
 import { AI_PRICED_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
 
@@ -142,7 +142,7 @@ function AiPage() {
               </div>
 
               <p className="mt-5 text-xs text-muted-foreground">
-                From {gbp(135)}/month with 400 AI credits · 10 complimentary credits per cycle ·
+                From {gbp(400)}/month with 1,200 AI credits · 10 complimentary credits per cycle ·
                 workspace stays available even at zero credits.
               </p>
             </motion.div>
