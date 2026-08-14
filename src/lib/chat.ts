@@ -2,6 +2,8 @@
  * ANEXOChat — transport layer (Phase 1 slice).
  *
  * FOUNDER LOCK:
+ *   - PRIMARY transport = Rust engine (`/rpc/chat.*`) + WebTransport/QUIC push.
+ *     Bun (`/api/chat/*`, port 3300) sirf fallback hai — kabhi primary nahi.
  *   - Sach DB mein. Yeh file kabhi state invent nahi karti.
  *   - Optimistic bubble sirf "Sending" hota hai; "Sent" tab jab server row de.
  *   - Offline pe "Waiting to send" — kabhi fake Sent nahi.
@@ -11,14 +13,16 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useEffect, useState } from "react";
 
-import { api, type ApiError } from "@/lib/api";
+import { type ApiError } from "@/lib/api";
+import { chatCall } from "@/lib/chat-transport";
 
 export type ChatBootstrap = {
   user_id: string;
   email: string;
   workspace_id: string;
   members: { user_id: string; display_name: string | null; role: string }[];
-  transport: "bun" | "wt";
+  /** Kis engine ne jawab diya — jhoot nahi. */
+  transport: "rust" | "bun";
 };
 
 export type ChatConversation = {
@@ -82,7 +86,8 @@ export function deviceLabel(): string {
 export function useChatBootstrap() {
   return useQuery<ChatBootstrap, ApiError>({
     queryKey: ["chat", "bootstrap"],
-    queryFn: () => api<ChatBootstrap>("/api/chat/bootstrap"),
+    queryFn: () =>
+      chatCall<ChatBootstrap>("chat.bootstrap", undefined, { path: "/api/chat/bootstrap" }),
     retry: false,
     staleTime: 60_000,
   });
@@ -91,7 +96,10 @@ export function useChatBootstrap() {
 export function useConversations(enabled: boolean) {
   return useQuery<{ conversations: ChatConversation[] }, ApiError>({
     queryKey: ["chat", "conversations"],
-    queryFn: () => api<{ conversations: ChatConversation[] }>("/api/chat/conversations"),
+    queryFn: () =>
+      chatCall<{ conversations: ChatConversation[] }>("chat.conversations", undefined, {
+        path: "/api/chat/conversations",
+      }),
     enabled,
     retry: false,
     refetchInterval: 5_000,
@@ -102,8 +110,10 @@ export function useMessages(conversationId: string | null) {
   return useQuery<{ messages: ChatMessage[] }, ApiError>({
     queryKey: ["chat", "messages", conversationId],
     queryFn: () =>
-      api<{ messages: ChatMessage[] }>(
-        `/api/chat/messages?c=${encodeURIComponent(conversationId!)}&limit=200`,
+      chatCall<{ messages: ChatMessage[] }>(
+        "chat.messages",
+        { conversation_id: conversationId, limit: 200 },
+        { path: `/api/chat/messages?c=${encodeURIComponent(conversationId!)}&limit=200` },
       ),
     enabled: Boolean(conversationId),
     retry: false,
@@ -121,7 +131,15 @@ export function usePresence(conversationId: string | null, enabled: boolean) {
   >({
     queryKey: ["chat", "presence", conversationId],
     queryFn: () =>
-      api(`/api/chat/presence${conversationId ? `?c=${encodeURIComponent(conversationId)}` : ""}`),
+      chatCall(
+        "chat.presence",
+        { conversation_id: conversationId ?? "" },
+        {
+          path: `/api/chat/presence${
+            conversationId ? `?c=${encodeURIComponent(conversationId)}` : ""
+          }`,
+        },
+      ),
     enabled,
     retry: false,
     refetchInterval: 4_000,
