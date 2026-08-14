@@ -34,15 +34,15 @@ export const Route = createFileRoute("/plans")({
   component: PlansPage,
 });
 
-type Row = { label: string; basic: string; pro: string; business: string };
+type Row = { label: string; basic: string; pro: string; business: string; business_pro?: string };
 
 const compare: { group: string; rows: Row[] }[] = [
   {
     group: "Mailboxes and storage",
     rows: [
-      { label: "Price per person, per month", basic: "£20", pro: "£40", business: "£85" },
-      { label: "Mailboxes included", basic: "3", pro: "5", business: "On request" },
-      { label: "Storage per mailbox", basic: "5GB", pro: "10GB", business: "25GB" },
+      { label: "Price per month", basic: "£20 / user", pro: "£40 / user", business: "£85 / user", business_pro: "£2,500 / company" },
+      { label: "Mailboxes included", basic: "3", pro: "5", business: "On request", business_pro: "Unlimited internal users" },
+      { label: "Storage", basic: "5GB per mailbox", pro: "10GB per mailbox", business: "25GB per mailbox", business_pro: "1TB pooled" },
       { label: "Company addresses you can host", basic: "1", pro: "3", business: "On request" },
       { label: "Free aliases", basic: "5", pro: "5", business: "On request" },
       { label: "Undo send window", basic: "30 seconds", pro: "30 seconds", business: "30 seconds" },
@@ -337,6 +337,9 @@ function PlansPage() {
                   <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
                     Business · £85
                   </th>
+                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                    Business Pro · £2,500
+                  </th>
                 </tr>
               </thead>
               {compare.map((g) => (
@@ -344,7 +347,7 @@ function PlansPage() {
                   <tr>
                     <th
                       scope="colgroup"
-                      colSpan={4}
+                      colSpan={5}
                       className="ax-eyebrow border-t border-border px-5 py-3 text-left"
                     >
                       {g.group}
@@ -355,7 +358,7 @@ function PlansPage() {
                       <th scope="row" className="px-5 py-3 font-normal text-muted-foreground">
                         {r.label}
                       </th>
-                      {[r.basic, r.pro, r.business].map((v, i) => (
+                      {[r.basic, r.pro, r.business, r.business_pro ?? r.business].map((v, i) => (
                         <td
                           key={i}
                           className={
