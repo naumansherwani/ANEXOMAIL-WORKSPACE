@@ -1,7 +1,18 @@
 -- ============================================================================
--- ANEXOMAIL — Phase 43: ANNUAL BILLING LOCK
--- Exact yearly truth + server-side amount/product/currency validation.
--- Run after phase36_state_sync.sql. Idempotent and additive.
+-- ANEXOMAIL — Phase 43: ANNUAL BILLING LOCK  (v2 — FINAL, run this one)
+--
+-- SUPABASE = PAYMENT TRUTH. Polar sirf messenger hai.
+-- Price ka faisla ab DB ki price book karti hai, code nahi.
+--
+-- Locked yearly truth:
+--   Basic        £20/user/mo   -> £220/yr    (1 month free)
+--   Pro          £40/user/mo   -> £440/yr    (1 month free)
+--   Business     £85/user/mo   -> £850/yr    (2 months free)
+--   Business Pro £2,500/co/mo  -> £25,000/yr (2 months free)
+--   AI Pro £400/1,200cr · AI Business £1,500/5,000cr · AI Executive £4,000/10,000cr
+--   (AI = backend only, Polar par koi AI product nahi)
+--
+-- Run after phase36_state_sync.sql. Idempotent + self-healing + additive.
 -- ============================================================================
 
 begin;
@@ -25,6 +36,57 @@ alter table public.billing_intents
   add constraint billing_intents_billing_cycle_check
   check (billing_cycle is null or billing_cycle in ('monthly','yearly')) not valid;
 
+-- ── 1) PRICE BOOK — ek hi authority (Supabase) ─────────────────────────────
+create table if not exists public.billing_price_book (
+  product_key    text primary key,
+  kind           text not null check (kind in ('plan','ai_plan','support','movein')),
+  plan           text,
+  band           text,
+  billing_cycle  text check (billing_cycle in ('monthly','yearly')),
+  amount_gbp     numeric(12,2) not null check (amount_gbp > 0),
+  per_seat       boolean not null default false,
+  annual_rule    text check (annual_rule in ('one-month-free','two-months-free')),
+  polar_listed   boolean not null default true,
+  active         boolean not null default true,
+  updated_at     timestamptz not null default now()
+);
+
+grant select on public.billing_price_book to authenticated;
+grant all    on public.billing_price_book to service_role;
+alter table public.billing_price_book enable row level security;
+drop policy if exists price_book_read on public.billing_price_book;
+create policy price_book_read on public.billing_price_book
+  for select to authenticated using (true);
+
+insert into public.billing_price_book
+  (product_key,kind,plan,band,billing_cycle,amount_gbp,per_seat,annual_rule,polar_listed) values
+  ('POLAR_PRODUCT_PLAN_BASIC_MONTHLY','plan','basic',null,'monthly',20,true,null,true),
+  ('POLAR_PRODUCT_PLAN_BASIC_YEARLY','plan','basic',null,'yearly',220,true,'one-month-free',true),
+  ('POLAR_PRODUCT_PLAN_PRO_MONTHLY','plan','pro',null,'monthly',40,true,null,true),
+  ('POLAR_PRODUCT_PLAN_PRO_YEARLY','plan','pro',null,'yearly',440,true,'one-month-free',true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY','plan','business',null,'monthly',85,true,null,true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_YEARLY','plan','business',null,'yearly',850,true,'two-months-free',true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY','plan','business_pro',null,'monthly',2500,false,null,true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY','plan','business_pro',null,'yearly',25000,false,'two-months-free',true),
+  ('POLAR_PRODUCT_PRIORITY_SUPPORT','support',null,null,'monthly',700,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_1_5','movein',null,'1-5',null,500,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_6_15','movein',null,'6-15',null,1500,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_16_29','movein',null,'16-29',null,2000,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_30PLUS','movein',null,'30plus',null,3000,false,null,true),
+  -- AI plans: backend only, Polar par nahi
+  ('AI_PLAN_PRO_MONTHLY','ai_plan','ai_pro',null,'monthly',400,false,null,false),
+  ('AI_PLAN_PRO_YEARLY','ai_plan','ai_pro',null,'yearly',4000,false,'two-months-free',false),
+  ('AI_PLAN_BUSINESS_MONTHLY','ai_plan','ai_business',null,'monthly',1500,false,null,false),
+  ('AI_PLAN_BUSINESS_YEARLY','ai_plan','ai_business',null,'yearly',15000,false,'two-months-free',false),
+  ('AI_PLAN_EXECUTIVE_MONTHLY','ai_plan','ai_executive',null,'monthly',4000,false,null,false),
+  ('AI_PLAN_EXECUTIVE_YEARLY','ai_plan','ai_executive',null,'yearly',40000,false,'two-months-free',false)
+on conflict (product_key) do update set
+  kind=excluded.kind, plan=excluded.plan, band=excluded.band,
+  billing_cycle=excluded.billing_cycle, amount_gbp=excluded.amount_gbp,
+  per_seat=excluded.per_seat, annual_rule=excluded.annual_rule,
+  polar_listed=excluded.polar_listed, active=true, updated_at=now();
+
+-- ── 2) INTENT OPEN — amount DB se, client se nahi ──────────────────────────
 create or replace function public.billing_intent_open(
   p_user uuid,
   p_kind text,
@@ -38,18 +100,32 @@ create or replace function public.billing_intent_open(
   p_billing_cycle text default null
 ) returns uuid
 language plpgsql security definer set search_path = public as $$
-declare v_id uuid;
+declare v_id uuid; pb public.billing_price_book; v_seats int; v_amount numeric; v_cycle text;
 begin
-  if p_currency <> 'GBP' then raise exception 'billing_currency_must_be_gbp'; end if;
-  if p_amount is null or p_amount <= 0 then raise exception 'billing_amount_required'; end if;
-  if p_billing_cycle is not null and p_billing_cycle not in ('monthly','yearly') then
-    raise exception 'invalid_billing_cycle';
+  if upper(coalesce(p_currency,'GBP')) <> 'GBP' then raise exception 'billing_currency_must_be_gbp'; end if;
+  v_seats := greatest(1, coalesce(p_seats,1));
+
+  select * into pb from public.billing_price_book
+   where product_key = p_product_key and active;
+
+  if pb.product_key is not null then
+    v_cycle  := pb.billing_cycle;
+    v_amount := pb.amount_gbp * (case when pb.per_seat then v_seats else 1 end);
+    if p_amount is not null and abs(p_amount - v_amount) > 0.01 then
+      raise exception 'price_book_mismatch expected % got %', v_amount, p_amount;
+    end if;
+  else
+    v_cycle  := p_billing_cycle;
+    v_amount := p_amount;
   end if;
+
+  if v_amount is null or v_amount <= 0 then raise exception 'billing_amount_required'; end if;
+  if v_cycle is not null and v_cycle not in ('monthly','yearly') then raise exception 'invalid_billing_cycle'; end if;
 
   select id into v_id from public.billing_intents
    where user_id = p_user and state = 'open'
      and coalesce(product_id,'') = coalesce(p_product_id,'')
-     and coalesce(billing_cycle,'') = coalesce(p_billing_cycle,'')
+     and coalesce(billing_cycle,'') = coalesce(v_cycle,'')
      and created_at > now() - interval '30 minutes'
    order by created_at desc limit 1;
   if v_id is not null then return v_id; end if;
@@ -57,18 +133,19 @@ begin
   insert into public.billing_intents
     (user_id,kind,plan,band,product_key,product_id,seats,amount_expected,currency,billing_cycle)
   values
-    (p_user,coalesce(p_kind,'plan'),p_plan,p_band,p_product_key,p_product_id,
-     greatest(1,coalesce(p_seats,1)),p_amount,'GBP',p_billing_cycle)
+    (p_user, coalesce(pb.kind,p_kind,'plan'), coalesce(pb.plan,p_plan), coalesce(pb.band,p_band),
+     p_product_key, p_product_id, v_seats, v_amount, 'GBP', v_cycle)
   returning id into v_id;
 
   insert into public.billing_state_log (user_id,intent_id,from_state,to_state,reason,source,payload)
-  values (p_user,v_id,null,'open','intent opened before checkout','app',
-          jsonb_build_object('product_key',p_product_key,'billing_cycle',p_billing_cycle,
-                             'amount_expected',p_amount,'currency','GBP'));
+  values (p_user,v_id,null,'open','intent opened before checkout (price from DB price book)','app',
+          jsonb_build_object('product_key',p_product_key,'billing_cycle',v_cycle,
+                             'seats',v_seats,'amount_expected',v_amount,'currency','GBP'));
   return v_id;
 end;
 $$;
 
+-- ── 3) CONFIRM — amount + currency + product must match, idempotent ────────
 create or replace function public.billing_intent_confirm(
   p_intent uuid default null,
   p_checkout_id text default null,
@@ -94,10 +171,10 @@ begin
   end if;
   if r.state = 'entitled' then return query select r.id,r.state,true; return; end if;
 
-  if upper(coalesce(p_currency,'')) <> upper(r.currency) then
+  if upper(coalesce(p_currency,'GBP')) <> upper(r.currency) then
     raise exception 'payment_currency_mismatch';
   end if;
-  if p_product_id is not null and p_product_id <> r.product_id then
+  if p_product_id is not null and r.product_id is not null and p_product_id <> r.product_id then
     raise exception 'payment_product_mismatch';
   end if;
   p_amount := coalesce(p_amount,r.amount_paid);
@@ -128,6 +205,7 @@ revoke execute on function public.billing_intent_confirm(uuid,text,text,numeric,
 grant execute on function public.billing_intent_open(uuid,text,text,text,text,text,int,numeric,text,text) to service_role;
 grant execute on function public.billing_intent_confirm(uuid,text,text,numeric,text,text,text) to service_role;
 
+-- ── 4) SWEEP — cycle bhi return karo ──────────────────────────────────────
 create or replace function public.billing_sync_claim(p_limit int default 25)
 returns table (id uuid,user_id uuid,kind text,plan text,band text,product_id text,
                amount_expected numeric,amount_paid numeric,currency text,billing_cycle text,
@@ -142,7 +220,7 @@ $$;
 revoke execute on function public.billing_sync_claim(int) from public,anon,authenticated;
 grant execute on function public.billing_sync_claim(int) to service_role;
 
--- Retire old AI catalog rows and make the locked v4 plans authoritative.
+-- ── 5) AI plan catalog (locked v4) ────────────────────────────────────────
 update public.ai_credit_plans set active=false;
 insert into public.ai_credit_plans (id,name,price,monthly_credits,currency,active,sort_order) values
   ('ai_pro','AI Pro',400,1200,'GBP',true,1),
@@ -151,6 +229,7 @@ insert into public.ai_credit_plans (id,name,price,monthly_credits,currency,activ
 on conflict (id) do update set name=excluded.name,price=excluded.price,
   monthly_credits=excluded.monthly_credits,currency='GBP',active=true,sort_order=excluded.sort_order;
 
+-- ── 6) ENTITLEMENT — yearly = 1 saal, monthly = 1 mahina ──────────────────
 create or replace function public.billing_apply_entitlement(
   p_user uuid,p_kind text,p_plan text,p_band text,p_seats int,p_intent uuid,p_source text
 ) returns void
@@ -205,5 +284,19 @@ end;
 $$;
 revoke execute on function public.billing_apply_entitlement(uuid,text,text,text,int,uuid,text) from public,anon,authenticated;
 grant execute on function public.billing_apply_entitlement(uuid,text,text,text,int,uuid,text) to service_role;
+
+-- ── 7) Founder radar: price book vs live intents ──────────────────────────
+create or replace view public.billing_price_audit as
+select i.id as intent_id, i.user_id, i.product_key, i.billing_cycle, i.seats,
+       i.amount_expected, i.amount_paid,
+       pb.amount_gbp * (case when pb.per_seat then greatest(1,i.seats) else 1 end) as book_amount,
+       (i.amount_expected is distinct from
+        pb.amount_gbp * (case when pb.per_seat then greatest(1,i.seats) else 1 end)) as mismatch,
+       i.state, i.created_at
+from public.billing_intents i
+left join public.billing_price_book pb on pb.product_key = i.product_key
+order by i.created_at desc;
+
+grant select on public.billing_price_audit to service_role;
 
 commit;
