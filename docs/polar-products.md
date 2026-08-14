@@ -4,12 +4,12 @@ Locked prices. Yahi exact naam Polar dashboard mein banao. Currency: **GBP (£)*
 
 ## 1) One-time products — Managed Move-In (4 products)
 
-| Product name | Price | Billing |
-| --- | --- | --- |
-| `Managed Move-In · 1–5 Mailboxes` | £500 | One-time |
-| `Managed Move-In · 6–15 Mailboxes` | £1,500 | One-time |
+| Product name                        | Price  | Billing  |
+| ----------------------------------- | ------ | -------- |
+| `Managed Move-In · 1–5 Mailboxes`   | £500   | One-time |
+| `Managed Move-In · 6–15 Mailboxes`  | £1,500 | One-time |
 | `Managed Move-In · 16–29 Mailboxes` | £2,000 | One-time |
-| `Managed Move-In · 30+ Mailboxes` | £3,000 | One-time |
+| `Managed Move-In · 30+ Mailboxes`   | £3,000 | One-time |
 
 **Description (teeno products ke liye, sirf band line badalti hai):**
 
@@ -27,6 +27,7 @@ Two move-ins a month — done by hand, never queued. Old mailboxes are copied, n
 ```
 
 Band line variants:
+
 - `Band: 1–5 mailboxes.`
 - `Band: 6–15 mailboxes.`
 - `Band: 16–29 mailboxes.`
@@ -34,9 +35,9 @@ Band line variants:
 
 ## 2) Recurring product — Priority Support
 
-| Product name | Price | Billing |
-| --- | --- | --- |
-| `Priority Support` | £700 | Recurring — monthly |
+| Product name       | Price | Billing             |
+| ------------------ | ----- | ------------------- |
+| `Priority Support` | £700  | Recurring — monthly |
 
 **Description:**
 
@@ -53,13 +54,19 @@ Sits on top of any plan. Invoiced monthly in advance, cancel at the end of any m
 Business days are Monday to Friday, UK time.
 ```
 
-## 3) Workspace plans (recurring, per person / month)
+## 3) Workspace + AI plans (monthly aur yearly alag Polar products)
 
-| Product name | Price | Billing |
-| --- | --- | --- |
-| `ANEXOMAIL Basic` | £20 | Recurring — monthly |
-| `ANEXOMAIL Pro` | £40 | Recurring — monthly |
-| `ANEXOMAIL Business` | £85 | Recurring — monthly |
+| Product name             | Monthly |  Yearly | Yearly message    |
+| ------------------------ | ------: | ------: | ----------------- |
+| `ANEXOMAIL Basic`        |     £20 |    £216 | Save 10% annually |
+| `ANEXOMAIL Pro`          |     £40 |    £432 | Save 10% annually |
+| `ANEXOMAIL Business`     |     £85 |    £850 | Get 2 months free |
+| `ANEXOMAIL Business Pro` |  £2,500 | £25,000 | Get 2 months free |
+| `ANEXOMAIL AI Pro`       |    £400 |  £4,000 | Get 2 months free |
+| `ANEXOMAIL AI Business`  |  £1,500 | £15,000 | Get 2 months free |
+| `ANEXOMAIL AI Executive` |  £4,000 | £40,000 | Get 2 months free |
+
+Har row ke liye Polar mein **do recurring products/prices** banao: ek monthly aur ek yearly. Yearly amount monthly effective rate nahi; upar wala exact annual charge hai.
 
 ## 4) Metadata (Polar UI: Key · Type · Value rows)
 
@@ -69,26 +76,27 @@ Type hamesha **String** rakho (Number/Boolean kabhi nahi). Har row ke baad
 
 **Move-In products (4) — 3 rows:**
 
-| Key | Type | Value |
-| --- | --- | --- |
-| `brand` | String | `anexomail` |
-| `kind` | String | `movein` |
-| `band` | String | `1-5` / `6-15` / `16-29` / `30plus` |
+| Key     | Type   | Value                               |
+| ------- | ------ | ----------------------------------- |
+| `brand` | String | `anexomail`                         |
+| `kind`  | String | `movein`                            |
+| `band`  | String | `1-5` / `6-15` / `16-29` / `30plus` |
 
 **Priority Support — 2 rows:**
 
-| Key | Type | Value |
-| --- | --- | --- |
+| Key     | Type   | Value       |
+| ------- | ------ | ----------- |
 | `brand` | String | `anexomail` |
-| `kind` | String | `support` |
+| `kind`  | String | `support`   |
 
-**Plans (Basic/Pro/Business) — 3 rows:**
+**Har plan product — 4 rows:**
 
-| Key | Type | Value |
-| --- | --- | --- |
-| `brand` | String | `anexomail` |
-| `kind` | String | `plan` |
-| `plan` | String | `basic` / `pro` / `business` |
+| Key             | Type   | Value                                                                                     |
+| --------------- | ------ | ----------------------------------------------------------------------------------------- |
+| `brand`         | String | `anexomail`                                                                               |
+| `kind`          | String | `plan`                                                                                    |
+| `plan`          | String | `basic` / `pro` / `business` / `business_pro` / `ai_pro` / `ai_business` / `ai_executive` |
+| `billing_cycle` | String | `monthly` / `yearly`                                                                      |
 
 ## 5) Server 2 — env block (Polar tokens)
 
@@ -121,25 +129,42 @@ POLAR_PRODUCT_MOVEIN_6_15=a9d1bec3-0d5f-4b9b-ae1c-993efde66da2
 POLAR_PRODUCT_MOVEIN_16_29=c7b502c5-ff75-4138-b34d-25d94878fe79
 POLAR_PRODUCT_MOVEIN_30PLUS=f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8
 POLAR_PRODUCT_PRIORITY_SUPPORT=92a35351-743c-4ddf-b1f4-fae473a89e69
-POLAR_PRODUCT_PLAN_BASIC=9560496a-4449-4428-949d-95c923c8dad9
-POLAR_PRODUCT_PLAN_PRO=ef47325e-983c-4ea8-bdbe-be99cc00c584
-POLAR_PRODUCT_PLAN_BUSINESS=2eee930b-b530-43ce-a6d4-14b87315f49e
+# Purane teen IDs ko pehle monthly naam par move karo:
+POLAR_PRODUCT_PLAN_BASIC_MONTHLY=9560496a-4449-4428-949d-95c923c8dad9
+POLAR_PRODUCT_PLAN_PRO_MONTHLY=ef47325e-983c-4ea8-bdbe-be99cc00c584
+POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY=2eee930b-b530-43ce-a6d4-14b87315f49e
+# Polar dashboard mein naye products bana kar IDs yahan paste karo:
+POLAR_PRODUCT_PLAN_BASIC_YEARLY=REPLACE
+POLAR_PRODUCT_PLAN_PRO_YEARLY=REPLACE
+POLAR_PRODUCT_PLAN_BUSINESS_YEARLY=REPLACE
+POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY=REPLACE
+POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY=REPLACE
+POLAR_PRODUCT_AI_PRO_MONTHLY=REPLACE
+POLAR_PRODUCT_AI_PRO_YEARLY=REPLACE
+POLAR_PRODUCT_AI_BUSINESS_MONTHLY=REPLACE
+POLAR_PRODUCT_AI_BUSINESS_YEARLY=REPLACE
+POLAR_PRODUCT_AI_EXECUTIVE_MONTHLY=REPLACE
+POLAR_PRODUCT_AI_EXECUTIVE_YEARLY=REPLACE
 ```
 
-### Confirmed IDs (founder ne banaye)
+### Confirmed monthly IDs (founder ne banaye)
 
-| Product | Polar ID | Status |
-| --- | --- | --- |
-| Managed Move-In · 1–5 Mailboxes (£500 one-time) | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ created |
-| Managed Move-In · 6–15 Mailboxes (£1,500 one-time) | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ created |
+| Product                                             | Polar ID                               | Status     |
+| --------------------------------------------------- | -------------------------------------- | ---------- |
+| Managed Move-In · 1–5 Mailboxes (£500 one-time)     | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ created |
+| Managed Move-In · 6–15 Mailboxes (£1,500 one-time)  | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ created |
 | Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ created |
-| Managed Move-In · 30+ Mailboxes (£3,000 one-time) | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ created |
-| Priority Support (£700/mo) | `92a35351-743c-4ddf-b1f4-fae473a89e69` | ✅ created |
-| Basic (£20/mo) | `9560496a-4449-4428-949d-95c923c8dad9` | ✅ created |
-| Pro (£40/mo) | `ef47325e-983c-4ea8-bdbe-be99cc00c584` | ✅ created |
-| Business (£85/mo) | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
+| Managed Move-In · 30+ Mailboxes (£3,000 one-time)   | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ created |
+| Priority Support (£700/mo)                          | `92a35351-743c-4ddf-b1f4-fae473a89e69` | ✅ created |
+| Basic (£20/mo)                                      | `9560496a-4449-4428-949d-95c923c8dad9` | ✅ created |
+| Pro (£40/mo)                                        | `ef47325e-983c-4ea8-bdbe-be99cc00c584` | ✅ created |
+| Business (£85/mo)                                   | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
+
+Yearly + Business Pro + AI ke `REPLACE` IDs abhi Polar dashboard mein create karke bharne hain. Jab tak kisi key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
+
+**Checkout contract:** frontend sirf `product_key`, `seats`, `email` bhejta hai `POST /api/billing/intent` par. Amount, plan, cycle aur Polar product ID backend registry decide karti hai. Purana `POST /api/billing/checkout` retired hai, is liye client arbitrary `product_id` bhej kar sasta checkout nahi bana sakta.
 
 ## 8) Billing emails + founder reply clock
 

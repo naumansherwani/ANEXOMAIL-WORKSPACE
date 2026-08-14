@@ -2,7 +2,7 @@
  * Phase 28 — Revenue Engine (transport + pure maths only).
  *
  * 4 locked money roads (AI ke bina):
- *   1. Core subscriptions — Basic £20 · Pro £40 · Business £85 (recurring)
+ *   1. Core subscriptions — Basic £20 · Pro £40 · Business £85 per seat · Business Pro £2,500 per company
  *   2. Managed Move-In    — £500 / £1,500 / £3,000 one-time per company (banded by mailboxes)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
  *   4. Priority Support   — named founder contact + reply within 2 business days, £700/mo add-on
@@ -18,7 +18,7 @@ import { rpcOrRest } from "@/lib/rpc";
 
 /* ------------------------------ rate card ------------------------------- */
 
-export const PLAN_PRICE = { basic: 20, pro: 40, business: 85 } as const;
+export const PLAN_PRICE = { basic: 20, pro: 40, business: 85, business_pro: 2500 } as const;
 export const SLA_PRICE_MONTHLY = 700;
 export const MIGRATION_FLOOR = 500;
 export const MIGRATION_CEILING = 3000;

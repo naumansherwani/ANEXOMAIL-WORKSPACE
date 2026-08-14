@@ -22,6 +22,7 @@
 //      POLAR_SUCCESS_URL, CRON_SECRET, POLAR_PRODUCT_* (8 IDs)
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
@@ -42,26 +43,6 @@ if (SUPABASE_URL && SERVICE_KEY) {
 
 const authRouter = Router();
 const publicRouter = Router();
-
-// product_key -> { kind, plan, band }
-const PRODUCT_META: Record<string, { kind: string; plan?: string; band?: string }> = {
-  POLAR_PRODUCT_PLAN_BASIC: { kind: "plan", plan: "basic" },
-  POLAR_PRODUCT_PLAN_PRO: { kind: "plan", plan: "pro" },
-  POLAR_PRODUCT_PLAN_BUSINESS: { kind: "plan", plan: "business" },
-  POLAR_PRODUCT_MOVEIN_1_5: { kind: "movein", band: "1-5" },
-  POLAR_PRODUCT_MOVEIN_6_15: { kind: "movein", band: "6-15" },
-  POLAR_PRODUCT_MOVEIN_16_29: { kind: "movein", band: "16-29" },
-  POLAR_PRODUCT_MOVEIN_30PLUS: { kind: "movein", band: "30plus" },
-  POLAR_PRODUCT_PRIORITY_SUPPORT: { kind: "support" },
-};
-
-function productIdFor(key: string): string | undefined {
-  return process.env[key] || undefined;
-}
-
-function keyForProductId(productId: string): string | undefined {
-  return Object.keys(PRODUCT_META).find((k) => process.env[k] === productId);
-}
 
 async function requireUser(req: any, res: any): Promise<string | null> {
   if (!db) {
@@ -108,24 +89,30 @@ authRouter.post("/intent", async (req, res) => {
   const userId = await requireUser(req, res);
   if (!userId) return;
 
-  const { product_key, seats = 1, amount, email } = req.body || {};
-  const meta = product_key ? PRODUCT_META[String(product_key)] : undefined;
-  const productId = product_key ? productIdFor(String(product_key)) : undefined;
-  if (!meta || !productId) {
-    return res.status(400).json({ error: "product_required", known: Object.keys(PRODUCT_META) });
+  const { product_key, seats = 1, email } = req.body || {};
+  const selected = product_key ? configuredProduct(String(product_key)) : null;
+  if (!selected) {
+    return res
+      .status(400)
+      .json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
+  const safeSeats = selected.perSeat
+    ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1)))
+    : 1;
+  const expectedAmount = selected.amountGbp * safeSeats;
 
   // STEP 1 — sach Supabase mein likho (checkout se pehle)
   const { data: intentId, error: intentError } = await db.rpc("billing_intent_open", {
     p_user: userId,
-    p_kind: meta.kind,
-    p_plan: meta.plan ?? null,
-    p_band: meta.band ?? null,
+    p_kind: selected.kind,
+    p_plan: selected.plan ?? null,
+    p_band: selected.band ?? null,
     p_product_key: String(product_key),
-    p_product_id: productId,
-    p_seats: Number(seats) || 1,
-    p_amount: amount ?? null,
+    p_product_id: selected.productId,
+    p_seats: safeSeats,
+    p_amount: expectedAmount,
     p_currency: "GBP",
+    p_billing_cycle: selected.cycle ?? null,
   });
   if (intentError) {
     return res.status(500).json({ error: "intent_open_failed", detail: intentError.message });
@@ -137,13 +124,19 @@ authRouter.post("/intent", async (req, res) => {
   }
   try {
     const payload: any = {
-      products: [productId],
+      products: [selected.productId],
       success_url: SUCCESS_URL,
       external_customer_id: userId,
       metadata: {
         anexomail_user_id: userId,
         anexomail_intent_id: String(intentId),
-        seats: String(seats),
+        seats: String(safeSeats),
+        product_key: String(product_key),
+        kind: selected.kind,
+        plan: selected.plan ?? "",
+        band: selected.band ?? "",
+        billing_cycle: selected.cycle ?? "one_time",
+        amount_expected_gbp: String(expectedAmount),
       },
     };
     if (email) payload.customer_email = email;
@@ -276,7 +269,8 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
     for (const row of (hit as any[]) || []) {
       const d = row?.payload?.data || {};
       const checkoutId = d.checkout_id || d.checkout?.id || null;
-      const metaIntent = d.metadata?.anexomail_intent_id || d.checkout?.metadata?.anexomail_intent_id;
+      const metaIntent =
+        d.metadata?.anexomail_intent_id || d.checkout?.metadata?.anexomail_intent_id;
       const paid =
         row.type === "order.paid" ||
         row.type === "subscription.active" ||
@@ -285,12 +279,17 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
         d.paid === true;
       if (!paid) continue;
       if (metaIntent === intent.id || (checkoutId && checkoutId === intent.polar_checkout_id)) {
+        const paidProductId = String(
+          d.product_id || d.product?.id || d.items?.[0]?.product_id || "",
+        );
         await db.rpc("billing_intent_confirm", {
           p_intent: intent.id,
           p_checkout_id: intent.polar_checkout_id,
           p_order_id: d.id || null,
           p_amount: d.total_amount ? Number(d.total_amount) / 100 : null,
           p_source: "webhook",
+          p_currency: String(d.currency || "GBP").toUpperCase(),
+          p_product_id: paidProductId || null,
         });
         return true;
       }
@@ -299,6 +298,11 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
     // (b) messenger se seedha pucho — webhook kabhi na aaye to bhi payment milti hai
     if (!POLAR_TOKEN || !intent.polar_checkout_id) return false;
     const checkout = await polarFetch(`/v1/checkouts/${intent.polar_checkout_id}`);
+    const paidProductId = String(checkout?.product_id || checkout?.product?.id || "");
+    const paidProduct = paidProductId ? productById(paidProductId) : null;
+    if (paidProductId && (!paidProduct || paidProduct.productId !== intent.product_id)) {
+      throw new Error("checkout_product_mismatch");
+    }
     const status = String(checkout?.status || "");
     if (status === "confirmed" || status === "succeeded") {
       await db.rpc("billing_intent_confirm", {
@@ -307,6 +311,8 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
         p_order_id: checkout?.order_id || null,
         p_amount: checkout?.total_amount ? Number(checkout.total_amount) / 100 : null,
         p_source: "pull",
+        p_currency: String(checkout?.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || null,
       });
       return true;
     }
@@ -344,6 +350,8 @@ publicRouter.post("/billing/sync", async (req, res) => {
         p_order_id: null,
         p_amount: null,
         p_source: "sweep",
+        p_currency: row.currency || "GBP",
+        p_product_id: row.product_id || null,
       });
       if (confirmError) {
         await db.rpc("billing_sync_fail", { p_intent: row.id, p_error: confirmError.message });

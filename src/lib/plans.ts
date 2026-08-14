@@ -23,6 +23,8 @@ export type PricedPlan = {
   unit: string;
   tagline: string;
   annual: AnnualRule;
+  /** Founder-locked yearly charge in £. */
+  yearly: number;
   features: string[];
   /** Explicit "not included" lines. */
   excludes?: string[];
@@ -30,24 +32,23 @@ export type PricedPlan = {
 };
 
 export const ANNUAL_NOTE: Record<AnnualRule, string> = {
-  "ten-percent-off": "10% off",
+  "ten-percent-off": "Save 10% annually",
   "two-months-free": "Get 2 months free",
 };
 
 /** Yearly total for a plan, rounded to the penny. */
-export function yearlyTotal(monthly: number, rule: AnnualRule): number {
-  const raw = rule === "two-months-free" ? monthly * 10 : monthly * 12 * 0.9;
-  return Math.round(raw * 100) / 100;
+export function yearlyTotal(plan: Pick<PricedPlan, "yearly">): number {
+  return plan.yearly;
 }
 
 /** Effective per-month price when paid yearly. */
-export function yearlyPerMonth(monthly: number, rule: AnnualRule): number {
-  return Math.round((yearlyTotal(monthly, rule) / 12) * 100) / 100;
+export function yearlyPerMonth(plan: Pick<PricedPlan, "yearly">): number {
+  return Math.round((plan.yearly / 12) * 100) / 100;
 }
 
 /** How much a year of yearly billing saves against 12 monthly payments. */
-export function yearlySaving(monthly: number, rule: AnnualRule): number {
-  return Math.round((monthly * 12 - yearlyTotal(monthly, rule)) * 100) / 100;
+export function yearlySaving(plan: Pick<PricedPlan, "monthly" | "yearly">): number {
+  return Math.round((plan.monthly * 12 - plan.yearly) * 100) / 100;
 }
 
 export function discountPercent(rule: AnnualRule): string {
@@ -59,11 +60,12 @@ export const money = (n: number) =>
 
 /** Price + suffix for a card, for the selected cycle. */
 export function priceFor(plan: PricedPlan, cycle: BillingCycle) {
-  if (cycle === "monthly") return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };
+  if (cycle === "monthly")
+    return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };
   return {
     big: money(plan.monthly),
     suffix: plan.unit,
-    note: `${ANNUAL_NOTE[plan.annual]} · ${money(yearlyTotal(plan.monthly, plan.annual))} billed yearly`,
+    note: `${ANNUAL_NOTE[plan.annual]} · ${money(plan.yearly)}/yr`,
   };
 }
 
@@ -74,6 +76,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     id: "basic",
     name: "Basic",
     monthly: 20,
+    yearly: 216,
     unit: "/ user / month",
     tagline: "Solo founder, freelancer, individual professional.",
     annual: "ten-percent-off",
@@ -88,12 +91,12 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "Cmd+K workspace search",
       "Human support — 72h response",
     ],
-    excludes: ["No ANEXOChat"],
   },
   {
     id: "pro",
     name: "Pro",
     monthly: 40,
+    yearly: 432,
     unit: "/ user / month",
     tagline: "Teams answering customers every day.",
     annual: "ten-percent-off",
@@ -109,12 +112,12 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "Tasks & thread analytics",
       "Human support — 48h response",
     ],
-    excludes: ["No ANEXOChat"],
   },
   {
     id: "business",
     name: "Business",
     monthly: 85,
+    yearly: 850,
     unit: "/ user / month",
     tagline: "Growing companies that need workspace governance.",
     annual: "two-months-free",
@@ -139,6 +142,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     id: "business_pro",
     name: "Business Pro",
     monthly: 2500,
+    yearly: 25000,
     unit: "/ company / month",
     tagline: "Established companies with the full communication stack.",
     annual: "two-months-free",
@@ -173,6 +177,7 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
     id: "ai_pro",
     name: "AI Pro",
     monthly: 400,
+    yearly: 4000,
     credits: 1200,
     unit: "/ month",
     tagline: "Individual professionals who need AI assistance.",
@@ -198,6 +203,7 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
     id: "ai_business",
     name: "AI Business",
     monthly: 1500,
+    yearly: 15000,
     credits: 5000,
     unit: "/ month",
     tagline: "Business teams that need AI-powered workflow.",
@@ -221,6 +227,7 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
     id: "ai_executive",
     name: "AI Executive",
     monthly: 4000,
+    yearly: 40000,
     credits: 10000,
     unit: "/ month",
     tagline: "Companies that want the full AI + platform bundle.",
@@ -234,7 +241,7 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "AI personal work assistant",
       "AI file comparison",
       "AI email composer",
-      "AI inbox intelligence — \"What needs my attention today?\"",
+      'AI inbox intelligence — "What needs my attention today?"',
       "AI automation preparation",
       "AI attention brief",
       "AI risk detection",

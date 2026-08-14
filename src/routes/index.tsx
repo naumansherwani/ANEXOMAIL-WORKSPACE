@@ -17,7 +17,6 @@ import {
   ShieldCheck,
   Video,
   Users,
-  X,
 } from "lucide-react";
 
 import { SiteNav } from "@/components/site/SiteNav";
@@ -43,7 +42,11 @@ const compliance = [
 /* Section 7 — Leo, the AI teammate. Own product, own domain. */
 const leoSkills = [
   { icon: Inbox, label: "Email", body: "Reads the thread, drafts the reply in your voice." },
-  { icon: PenLine, label: "Writing", body: "Proposals, follow-ups and notes without a blank page." },
+  {
+    icon: PenLine,
+    label: "Writing",
+    body: "Proposals, follow-ups and notes without a blank page.",
+  },
   { icon: Video, label: "Meetings", body: "Turns a call into decisions, owners and dates." },
   { icon: ListChecks, label: "Tasks", body: "Pulls the work out of the inbox and tracks it." },
 ];
@@ -152,10 +155,26 @@ const keys = [
 
 /* Section 5 — Move in. */
 const moveIn = [
-  { n: "01", t: "We plan the move", b: "One call. We map every mailbox, alias and rule you have today — you approve the plan." },
-  { n: "02", t: "We do the work", b: "Our engineers build the workspace, the people, the shared addresses. You keep working." },
-  { n: "03", t: "Every message comes with", b: "Years of mail, folders and read state carried over and counted message-for-message." },
-  { n: "04", t: "Switch when you say so", b: "Both providers run side by side until you give the word. The switch is scheduled for a quiet window and designed to avoid interruption." },
+  {
+    n: "01",
+    t: "We plan the move",
+    b: "One call. We map every mailbox, alias and rule you have today — you approve the plan.",
+  },
+  {
+    n: "02",
+    t: "We do the work",
+    b: "Our engineers build the workspace, the people, the shared addresses. You keep working.",
+  },
+  {
+    n: "03",
+    t: "Every message comes with",
+    b: "Years of mail, folders and read state carried over and counted message-for-message.",
+  },
+  {
+    n: "04",
+    t: "Switch when you say so",
+    b: "Both providers run side by side until you give the word. The switch is scheduled for a quiet window and designed to avoid interruption.",
+  },
 ];
 
 function Eyebrow({ children }: { children: string }) {
@@ -175,74 +194,74 @@ function Index() {
 
           <div className="ax-container relative grid items-center gap-12 pt-16 pb-20 md:pt-24 md:pb-28 lg:grid-cols-[55fr_45fr]">
             <div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.9, ease: EASE }}
-              className="ax-eyebrow"
-            >
-              ANEXOMAIL Workspace
-            </motion.p>
-
-            <motion.h1
-              initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
-              animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
-              transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
-              className="mt-8 max-w-3xl pb-[0.08em] text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.2rem]"
-            >
-              <span className="ax-platinum-text">The Workspace</span>
-              <br />
-              <span className="ax-platinum-text">Built Around</span>{" "}
-              <span className="text-steel">Email.</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
-              className="mt-8 max-w-lg text-[17px] leading-relaxed text-muted-foreground"
-            >
-              Private business email for your company — mail, people, calendar and shared
-              work on one fast surface. And our team moves the whole company across for you.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
-              className="mt-10 flex flex-wrap items-center gap-4"
-            >
-              <Link
-                to="/migration"
-                className="group inline-flex items-center gap-2.5 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-stage transition-colors duration-500 hover:bg-primary/85"
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.9, ease: EASE }}
+                className="ax-eyebrow"
               >
-                Get your company moved in
-                <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
-              </Link>
-              <Link
-                to="/app"
-                className="inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-steel/60"
-              >
-                Explore workspace
-              </Link>
-            </motion.div>
+                ANEXOMAIL Workspace
+              </motion.p>
 
-            <motion.ul
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
-              className="mt-10 flex flex-wrap gap-x-7 gap-y-3"
-            >
-              {badges.map((b) => (
-                <li
-                  key={b}
-                  className="inline-flex items-center gap-2 text-[13px] text-muted-foreground"
+              <motion.h1
+                initial={{ clipPath: "inset(0 0 100% 0)", opacity: 0 }}
+                animate={{ clipPath: "inset(0 0 0% 0)", opacity: 1 }}
+                transition={{ duration: 0.85, delay: 0.1, ease: EASE }}
+                className="mt-8 max-w-3xl pb-[0.08em] text-[2.6rem] sm:text-5xl md:text-6xl lg:text-[4.2rem]"
+              >
+                <span className="ax-platinum-text">The Workspace</span>
+                <br />
+                <span className="ax-platinum-text">Built Around</span>{" "}
+                <span className="text-steel">Email.</span>
+              </motion.h1>
+
+              <motion.p
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.35, ease: EASE }}
+                className="mt-8 max-w-lg text-[17px] leading-relaxed text-muted-foreground"
+              >
+                Private business email for your company — mail, people, calendar and shared work on
+                one fast surface. And our team moves the whole company across for you.
+              </motion.p>
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.45, ease: EASE }}
+                className="mt-10 flex flex-wrap items-center gap-4"
+              >
+                <Link
+                  to="/migration"
+                  className="group inline-flex items-center gap-2.5 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-stage transition-colors duration-500 hover:bg-primary/85"
                 >
-                  <Check className="size-3.5 shrink-0 text-success" strokeWidth={2.8} />
-                  {b}
-                </li>
-              ))}
-            </motion.ul>
+                  Get your company moved in
+                  <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
+                </Link>
+                <Link
+                  to="/app"
+                  className="inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-200 hover:border-steel/60"
+                >
+                  Explore workspace
+                </Link>
+              </motion.div>
+
+              <motion.ul
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.7, delay: 0.6, ease: EASE }}
+                className="mt-10 flex flex-wrap gap-x-7 gap-y-3"
+              >
+                {badges.map((b) => (
+                  <li
+                    key={b}
+                    className="inline-flex items-center gap-2 text-[13px] text-muted-foreground"
+                  >
+                    <Check className="size-3.5 shrink-0 text-success" strokeWidth={2.8} />
+                    {b}
+                  </li>
+                ))}
+              </motion.ul>
             </div>
 
             <HeroComposition />
@@ -292,8 +311,8 @@ function Index() {
 
           <Reveal delay={0.2} className="mt-10">
             <p className="text-[13px] text-muted-foreground">
-              Records are generated per domain and checked continuously. Deliverability is
-              measured, not promised.
+              Records are generated per domain and checked continuously. Deliverability is measured,
+              not promised.
             </p>
           </Reveal>
         </Stage>
@@ -307,8 +326,8 @@ function Index() {
                 Your company&apos;s mail. Your company&apos;s wing.
               </h2>
               <p className="mt-7 max-w-sm text-[15px] leading-relaxed text-muted-foreground">
-                One quiet room for everything the day throws at you — messages, people,
-                time and follow-ups. Nothing borrowed, nothing bolted on.
+                One quiet room for everything the day throws at you — messages, people, time and
+                follow-ups. Nothing borrowed, nothing bolted on.
               </p>
             </Reveal>
 
@@ -345,10 +364,7 @@ function Index() {
             {keys.map((k, i) => (
               <Reveal key={k.title} delay={i * 0.07}>
                 <div className="flex gap-7 py-8">
-                  <k.icon
-                    className="mt-0.5 size-5 shrink-0 text-steel"
-                    strokeWidth={1.6}
-                  />
+                  <k.icon className="mt-0.5 size-5 shrink-0 text-steel" strokeWidth={1.6} />
                   <div>
                     <h3 className="text-base">{k.title}</h3>
                     <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
@@ -369,8 +385,8 @@ function Index() {
               You do nothing. We move the whole company.
             </h2>
             <p className="mt-5 text-[15px] leading-relaxed text-muted-foreground">
-              A managed move handled end to end by our engineers — planned, proven and
-              signed off before a single mailbox switches.
+              A managed move handled end to end by our engineers — planned, proven and signed off
+              before a single mailbox switches.
             </p>
           </Reveal>
 
@@ -381,9 +397,7 @@ function Index() {
                   <div aria-hidden className="ax-hairline mb-7 h-px" />
                   <span className="font-mono text-xs text-steel">{s.n}</span>
                   <h3 className="mt-4 text-base">{s.t}</h3>
-                  <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">
-                    {s.b}
-                  </p>
+                  <p className="mt-2.5 text-[13px] leading-relaxed text-muted-foreground">{s.b}</p>
                 </li>
               </Reveal>
             ))}
@@ -429,7 +443,9 @@ function Index() {
                       <span className="pb-1.5 text-xs text-muted-foreground">{p.unit}</span>
                     </p>
                     <p className="mt-2 text-[12px] font-semibold text-primary">
-                      {cycle === "yearly" ? price.note : `${ANNUAL_NOTE[p.annual]} on yearly billing`}
+                      {cycle === "yearly"
+                        ? price.note
+                        : `${ANNUAL_NOTE[p.annual]} on yearly billing`}
                     </p>
                     <p className="mt-4 text-[13px] text-muted-foreground">{p.tagline}</p>
 
@@ -438,14 +454,13 @@ function Index() {
                     <ul className="flex-1 space-y-3.5">
                       {p.features.map((f) => (
                         <li key={f} className="flex gap-3">
-                          <Check className="mt-0.5 size-3.5 shrink-0 text-steel" strokeWidth={2.6} />
-                          <span className="text-[13px] leading-relaxed text-muted-foreground">{f}</span>
-                        </li>
-                      ))}
-                      {p.excludes?.map((f) => (
-                        <li key={f} className="flex gap-3">
-                          <X className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/60" strokeWidth={2.6} />
-                          <span className="text-[13px] leading-relaxed text-muted-foreground/70">{f}</span>
+                          <Check
+                            className="mt-0.5 size-3.5 shrink-0 text-steel"
+                            strokeWidth={2.6}
+                          />
+                          <span className="text-[13px] leading-relaxed text-muted-foreground">
+                            {f}
+                          </span>
                         </li>
                       ))}
                     </ul>
@@ -467,19 +482,24 @@ function Index() {
             <div className="ax-plane mt-12 rounded-2xl p-7 md:p-8">
               <div className="grid gap-6 lg:grid-cols-[1.5fr_1fr] lg:items-center">
                 <div>
-                  <span className="ax-eyebrow">Need help moving in, or a named person afterwards?</span>
+                  <span className="ax-eyebrow">
+                    Need help moving in, or a named person afterwards?
+                  </span>
                   <p className="mt-4 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">Managed Move-In — £500 / £1,500 / £2,000 / £3,000 one-off.</strong>{" "}
-                    Priced by mailbox count: 1–5, 6–15, 16–29, or 30+. We move the whole company off your old provider and
-                    prove your domain is green.
+                    <strong className="font-extrabold">
+                      Managed Move-In — £500 / £1,500 / £2,000 / £3,000 one-off.
+                    </strong>{" "}
+                    Priced by mailbox count: 1–5, 6–15, 16–29, or 30+. We move the whole company off
+                    your old provider and prove your domain is green.
                   </p>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">Priority Support — £700 / month.</strong>{" "}
-                    A named founder contact, a response within 2 business days, and a quarterly service and security
-                    review.
+                    <strong className="font-extrabold">Priority Support — £700 / month.</strong> A
+                    named founder contact, a response within 2 business days, and a quarterly
+                    service and security review.
                   </p>
                   <p className="mt-3 text-[13px] text-muted-foreground">
-                    Two move-ins a month, three Priority Support companies at a time — capped so both stay real.
+                    Two move-ins a month, three Priority Support companies at a time — capped so
+                    both stay real.
                   </p>
                 </div>
                 <div className="flex flex-col gap-3">
@@ -497,7 +517,10 @@ function Index() {
                   </Link>
                   <p className="text-center text-[13px] text-muted-foreground">
                     Or write directly to{" "}
-                    <a href="mailto:moveyourbusiness@anexomail.com" className="font-semibold text-foreground underline-offset-2 hover:underline">
+                    <a
+                      href="mailto:moveyourbusiness@anexomail.com"
+                      className="font-semibold text-foreground underline-offset-2 hover:underline"
+                    >
                       moveyourbusiness@anexomail.com
                     </a>
                   </p>
@@ -520,9 +543,9 @@ function Index() {
                   </h3>
                   <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
                     Your email stays quiet and private. When you want an extra pair of hands,
-                    ANEXOMAIL AI is the separate product — and LEO is the teammate inside it:
-                    it reads the thread, writes the reply in your voice, pulls out the tasks
-                    and shows you the cost of every single answer before you spend a penny.
+                    ANEXOMAIL AI is the separate product — and LEO is the teammate inside it: it
+                    reads the thread, writes the reply in your voice, pulls out the tasks and shows
+                    you the cost of every single answer before you spend a penny.
                   </p>
                   <p className="mt-3 text-[13px] text-muted-foreground">
                     Pay only for what you use. No AI in your mailbox unless you ask for it.
@@ -554,8 +577,7 @@ function Index() {
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-[26rem] opacity-40 blur-3xl"
             style={{
-              background:
-                "radial-gradient(38% 46% at 50% 0%, var(--navy) 0%, transparent 72%)",
+              background: "radial-gradient(38% 46% at 50% 0%, var(--navy) 0%, transparent 72%)",
             }}
           />
           <div className="relative grid gap-12 lg:grid-cols-[46fr_54fr] lg:items-center">
@@ -570,8 +592,8 @@ function Index() {
               </h2>
 
               <p className="mt-6 max-w-md text-[17px] leading-relaxed text-muted-foreground">
-                LEO is the AI teammate inside ANEXOMAIL AI — email, writing, meetings and
-                tasks, with your workspace as context and never someone else's.
+                LEO is the AI teammate inside ANEXOMAIL AI — email, writing, meetings and tasks,
+                with your workspace as context and never someone else's.
               </p>
 
               <Link
@@ -605,18 +627,14 @@ function Index() {
         <Stage volume="hush">
           <Reveal className="max-w-xl">
             <Eyebrow>Verifiable, not decorative</Eyebrow>
-            <h2 className="mt-6 text-2xl md:text-3xl">
-              What we claim, you can check.
-            </h2>
+            <h2 className="mt-6 text-2xl md:text-3xl">What we claim, you can check.</h2>
           </Reveal>
           <div className="mt-12 grid gap-px overflow-hidden rounded-xl border border-border sm:grid-cols-2 lg:grid-cols-4">
             {compliance.map((c, i) => (
               <Reveal key={c.k} delay={i * 0.07} className="h-full">
                 <div className="ax-plane h-full rounded-none border-0 p-6">
                   <p className="text-[13px] font-bold text-foreground">{c.k}</p>
-                  <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
-                    {c.v}
-                  </p>
+                  <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{c.v}</p>
                 </div>
               </Reveal>
             ))}

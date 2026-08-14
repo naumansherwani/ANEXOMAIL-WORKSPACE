@@ -16,6 +16,7 @@
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { createHmac, timingSafeEqual } from "crypto";
+import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
@@ -42,22 +43,11 @@ if (!POLAR_WEBHOOK_SECRET) console.error("polar: POLAR_WEBHOOK_SECRET missing â€
 const publicRouter = Router();
 const authRouter = Router();
 
-const PRODUCT_KEYS = [
-  "POLAR_PRODUCT_MOVEIN_1_5",
-  "POLAR_PRODUCT_MOVEIN_6_15",
-  "POLAR_PRODUCT_MOVEIN_16_29",
-  "POLAR_PRODUCT_MOVEIN_30PLUS",
-  "POLAR_PRODUCT_PRIORITY_SUPPORT",
-  "POLAR_PRODUCT_PLAN_BASIC",
-  "POLAR_PRODUCT_PLAN_PRO",
-  "POLAR_PRODUCT_PLAN_BUSINESS",
-] as const;
-
 function productMap(): Record<string, string> {
   const map: Record<string, string> = {};
-  for (const key of PRODUCT_KEYS) {
-    const id = process.env[key];
-    if (id) map[key] = id;
+  for (const key of Object.keys(BILLING_PRODUCTS)) {
+    const product = configuredProduct(key);
+    if (product) map[key] = product.productId;
   }
   return map;
 }
@@ -113,50 +103,7 @@ async function polarFetch(path: string, init?: RequestInit) {
 
 // ---------- checkout: authenticated ----------
 authRouter.post("/checkout", async (req, res) => {
-  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  if (!POLAR_TOKEN) return res.status(503).json({ error: "polar_not_configured" });
-
-  const userId = await requireUser(req, res);
-  if (!userId) return;
-
-  const { product_id, product_key, email, seats = 1 } = req.body || {};
-  const map = productMap();
-  const resolvedProductId = product_id || (product_key ? map[product_key] : undefined);
-  if (!resolvedProductId) {
-    return res.status(400).json({ error: "product_required", configured: map });
-  }
-
-  try {
-    const successUrl = SUCCESS_URL.replace(/\{CHECKOUT_ID\}/g, "{CHECKOUT_ID}");
-    const payload: any = {
-      products: [resolvedProductId],
-      success_url: successUrl,
-      external_customer_id: userId,
-      metadata: { anexomail_user_id: userId, seats: String(seats) },
-    };
-    if (email) payload.customer_email = email;
-
-    const checkout = await polarFetch("/v1/checkouts/", {
-      method: "POST",
-      body: JSON.stringify(payload),
-    });
-
-    // persist session for verification + idempotency
-    await db.from("polar_checkout_sessions").insert({
-      polar_checkout_id: checkout.id,
-      user_id: userId,
-      product_id: resolvedProductId,
-      product_key: product_key || null,
-      url: checkout.url,
-      status: checkout.status || "open",
-      payload: checkout,
-    });
-
-    res.json({ checkout_id: checkout.id, url: checkout.url });
-  } catch (e: any) {
-    console.error("[polar checkout]", e);
-    res.status(502).json({ error: "checkout_failed", detail: e.message });
-  }
+  return res.status(410).json({ error: "checkout_route_retired", use: "/api/billing/intent" });
 });
 
 authRouter.get("/checkout/:id", async (req, res) => {
@@ -170,14 +117,13 @@ authRouter.get("/checkout/:id", async (req, res) => {
   try {
     const checkout = await polarFetch(`/v1/checkouts/${id}`);
     // ownership check
-    const { data: row } = await db
-      .from("polar_checkout_sessions")
+    const { data: intent } = await db
+      .from("billing_intents")
       .select("user_id")
       .eq("polar_checkout_id", id)
-      .single();
-    if (row && row.user_id !== userId) {
-      return res.status(403).json({ error: "forbidden" });
-    }
+      .maybeSingle();
+    if (!intent) return res.status(404).json({ error: "checkout_not_found" });
+    if (intent.user_id !== userId) return res.status(403).json({ error: "forbidden" });
     res.json({
       id: checkout.id,
       status: checkout.status,
@@ -447,12 +393,37 @@ async function processWebhookEvent(event: any, eventId: string) {
       meta.anexomail_user_id || data.external_customer_id || data.customer?.external_id;
     const product = data.product || data.items?.[0]?.product || {};
     const productMeta = product.metadata || {};
-    const { kind, plan, band } = kindFromMetadata(productMeta);
+    const paidProductId = String(
+      product.id || data.product_id || data.items?.[0]?.product_id || "",
+    );
+    const registeredProduct = paidProductId ? productById(paidProductId) : null;
+    const legacyMeta = kindFromMetadata(productMeta);
+    const kind = registeredProduct?.kind || legacyMeta.kind;
+    const plan = registeredProduct?.plan || legacyMeta.plan;
+    const band = registeredProduct?.band || legacyMeta.band;
+    const billingCycle = registeredProduct?.cycle || meta.billing_cycle || "monthly";
     const amount = Number(data.total_amount ?? data.amount ?? 0) / 100;
     const isRecurring = data.subscription_id ? true : false;
     const customerEmail =
       data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
     const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
+
+    const intentId = meta.anexomail_intent_id || null;
+    if ((kind === "plan" || kind === "ai_plan") && (!registeredProduct || !intentId)) {
+      throw new Error("paid_plan_missing_registered_product_or_intent");
+    }
+    if (intentId) {
+      const { error: confirmError } = await db.rpc("billing_intent_confirm", {
+        p_intent: intentId,
+        p_checkout_id: data.checkout_id || data.checkout?.id || null,
+        p_order_id: data.id || null,
+        p_amount: amount,
+        p_source: "webhook",
+        p_currency: String(data.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || null,
+      });
+      if (confirmError) throw confirmError;
+    }
 
     // Polar sends the provider receipt/invoice. Supabase stores our immutable proof.
     await db.from("billing_event_receipts").upsert(
@@ -499,7 +470,7 @@ async function processWebhookEvent(event: any, eventId: string) {
     // upsert revenue account for subscriptions
     if (kind === "plan" && userId && plan) {
       const seats = Number(meta.seats || 1);
-      const mrr = isRecurring ? amount : 0;
+      const mrr = isRecurring ? (billingCycle === "yearly" ? amount / 12 : amount) : 0;
       const { error: subscriptionError } = await db.from("workspace_subscriptions").upsert(
         {
           user_id: userId,
@@ -509,7 +480,7 @@ async function processWebhookEvent(event: any, eventId: string) {
           seats_used: 1,
           price_per_seat: seats > 0 ? amount / seats : amount,
           currency: String(data.currency || "GBP").toUpperCase(),
-          interval: "month",
+          interval: billingCycle === "yearly" ? "year" : "month",
           renews_at: data.subscription?.current_period_end || data.current_period_end || null,
           polar_customer_id: data.customer_id || data.customer?.id || null,
           polar_subscription_id: data.subscription_id || data.subscription?.id || null,
