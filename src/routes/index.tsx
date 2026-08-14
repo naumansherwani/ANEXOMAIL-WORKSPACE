@@ -17,7 +17,6 @@ import {
   ShieldCheck,
   Video,
   Users,
-  X,
 } from "lucide-react";
 
 import { SiteNav } from "@/components/site/SiteNav";
@@ -440,12 +439,6 @@ function Index() {
                         <li key={f} className="flex gap-3">
                           <Check className="mt-0.5 size-3.5 shrink-0 text-steel" strokeWidth={2.6} />
                           <span className="text-[13px] leading-relaxed text-muted-foreground">{f}</span>
-                        </li>
-                      ))}
-                      {p.excludes?.map((f) => (
-                        <li key={f} className="flex gap-3">
-                          <X className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/60" strokeWidth={2.6} />
-                          <span className="text-[13px] leading-relaxed text-muted-foreground/70">{f}</span>
                         </li>
                       ))}
                     </ul>

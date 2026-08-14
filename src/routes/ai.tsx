@@ -252,7 +252,9 @@ function AiPage() {
 
                   <a
                     href={`mailto:hello@anexomail.com?subject=${encodeURIComponent(
-                      `${plan.name} — ${priceFor(plan, cycle).big} ${cycle === "yearly" ? "(yearly)" : "(monthly)"}`,
+                      cycle === "yearly"
+                        ? `${plan.name} — £${plan.yearly.toLocaleString("en-GB")}/year`
+                        : `${plan.name} — £${plan.monthly.toLocaleString("en-GB")}/month`,
                     )}`}
                     className="relative mt-6 inline-flex items-center justify-center rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground"
                   >

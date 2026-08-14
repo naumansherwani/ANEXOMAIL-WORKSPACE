@@ -1,5 +1,5 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
-import { Check, X } from "lucide-react";
+import { Check } from "lucide-react";
 import { useState } from "react";
 
 import { SiteNav } from "@/components/site/SiteNav";
@@ -234,12 +234,6 @@ function PlansPage() {
                   {p.features.map((f) => (
                     <li key={f} className="flex gap-2 text-sm text-muted-foreground">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                      {f}
-                    </li>
-                  ))}
-                  {p.excludes?.map((f) => (
-                    <li key={f} className="flex gap-2 text-sm text-muted-foreground/70">
-                      <X className="mt-0.5 size-4 shrink-0 text-muted-foreground/70" />
                       {f}
                     </li>
                   ))}
