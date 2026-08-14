@@ -24,13 +24,13 @@ import { AI_PRICED_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
 export const Route = createFileRoute("/ai")({
   head: () => ({
     meta: [
-      { title: "ANEXOMAIL AI — AI credits, wallet and plans from £135/mo" },
+      { title: "ANEXOMAIL AI — AI credits, wallet and plans from £400/mo" },
       {
         name: "description",
         content:
-          "ANEXOMAIL AI is a separate AI workspace with LEO: chat, studio, knowledge and automation. Plans from £135/month with 400 AI credits, pre-flight estimates and a receipt for every action.",
+          "ANEXOMAIL AI is a separate AI workspace with LEO: chat, studio, knowledge and automation. Plans from £400/month with 1,200 AI credits, pre-flight estimates and a receipt for every action.",
       },
-      { property: "og:title", content: "ANEXOMAIL AI — plans from £135/month" },
+      { property: "og:title", content: "ANEXOMAIL AI — plans from £400/month" },
       {
         property: "og:description",
         content:
