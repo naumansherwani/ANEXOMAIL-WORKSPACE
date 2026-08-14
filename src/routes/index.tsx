@@ -391,64 +391,74 @@ function Index() {
 
         {/* ── 6 · PLANS — loud ─────────────────────────────────────── */}
         <Stage id="plans" volume="loud">
-          <Reveal className="max-w-xl">
+          <Reveal className="max-w-2xl">
             <Eyebrow>Plans</Eyebrow>
             <h2 className="mt-6 text-3xl md:text-[2.75rem]">
-              Three plans. Billed per user, monthly.
+              Four plans. Monthly or yearly, your choice.
             </h2>
+            <p className="mt-5 text-[13px] leading-relaxed text-muted-foreground">
+              Yearly billing gives Basic and Pro 1 month free plus 10% off, and Business and
+              Business Pro 2 months free. The system calculates the total for you.
+            </p>
+            <div className="mt-7">
+              <BillingToggle value={cycle} onChange={setCycle} />
+            </div>
           </Reveal>
 
-          <div className="mt-16 grid gap-5 lg:grid-cols-3">
-            {plans.map((p, i) => (
-              <Reveal key={p.name} delay={i * 0.08} className="h-full">
-                <article
-                  className="ax-plane flex h-full flex-col rounded-xl p-8 transition-colors duration-300 hover:border-primary/55"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="ax-eyebrow">{p.name}</span>
-                    {p.featured && (
-                      <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.14em] text-platinum uppercase">
-                        <BadgeCheck className="size-3.5" />
-                        Most chosen
-                      </span>
-                    )}
-                  </div>
-
-                  <p className="mt-8 flex items-end gap-2">
-                    <span className="text-5xl font-extrabold tracking-[-0.05em] text-foreground">
-                      {p.price}
-                    </span>
-                    <span className="pb-1.5 text-xs text-muted-foreground">
-                      / user / month
-                    </span>
-                  </p>
-                  <p className="mt-4 text-[13px] text-muted-foreground">{p.line}</p>
-
-                  <div aria-hidden className="ax-hairline my-8 h-px" />
-
-                  <ul className="flex-1 space-y-3.5">
-                    {p.features.map((f) => (
-                      <li key={f} className="flex gap-3">
-                        <Check
-                          className="mt-0.5 size-3.5 shrink-0 text-steel"
-                          strokeWidth={2.6}
-                        />
-                        <span className="text-[13px] leading-relaxed text-muted-foreground">
-                          {f}
+          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+            {WORKSPACE_PLANS.map((p, i) => {
+              const price = priceFor(p, cycle);
+              return (
+                <Reveal key={p.id} delay={i * 0.08} className="h-full">
+                  <article className="ax-plane flex h-full flex-col rounded-xl p-8 transition-colors duration-300 hover:border-primary/55">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="ax-eyebrow">{p.name}</span>
+                      {p.badge && (
+                        <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold tracking-[0.14em] text-platinum uppercase">
+                          <BadgeCheck className="size-3.5" />
+                          {p.badge}
                         </span>
-                      </li>
-                    ))}
-                  </ul>
+                      )}
+                    </div>
 
-                  <a
-                    href="#top"
-                    className="mt-10 inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                  >
-                    Get started
-                  </a>
-                </article>
-              </Reveal>
-            ))}
+                    <p className="mt-8 flex items-end gap-2">
+                      <span className="text-4xl font-extrabold tracking-[-0.05em] text-foreground">
+                        {price.big}
+                      </span>
+                      <span className="pb-1.5 text-xs text-muted-foreground">{p.unit}</span>
+                    </p>
+                    <p className="mt-2 text-[12px] font-semibold text-primary">
+                      {cycle === "yearly" ? price.note : `${ANNUAL_NOTE[p.annual]} on yearly billing`}
+                    </p>
+                    <p className="mt-4 text-[13px] text-muted-foreground">{p.tagline}</p>
+
+                    <div aria-hidden className="ax-hairline my-8 h-px" />
+
+                    <ul className="flex-1 space-y-3.5">
+                      {p.features.map((f) => (
+                        <li key={f} className="flex gap-3">
+                          <Check className="mt-0.5 size-3.5 shrink-0 text-steel" strokeWidth={2.6} />
+                          <span className="text-[13px] leading-relaxed text-muted-foreground">{f}</span>
+                        </li>
+                      ))}
+                      {p.excludes?.map((f) => (
+                        <li key={f} className="flex gap-3">
+                          <X className="mt-0.5 size-3.5 shrink-0 text-muted-foreground/60" strokeWidth={2.6} />
+                          <span className="text-[13px] leading-relaxed text-muted-foreground/70">{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+
+                    <Link
+                      to="/move-in"
+                      className="mt-10 inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
+                    >
+                      Get started
+                    </Link>
+                  </article>
+                </Reveal>
+              );
+            })}
           </div>
 
           {/* Done-for-you services — small visibility band only. Full story on /plans. */}
