@@ -17,18 +17,20 @@ import { AiCreditMeter } from "@/components/site/AiCreditMeter";
 import { AiTopUpDialog } from "@/components/site/AiTopUpDialog";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
-import { AI_FEATURE_GROUPS, AI_PLANS, CREDIT_BANDS, gbp } from "@/lib/ai-packages";
+import { AI_FEATURE_GROUPS, CREDIT_BANDS, gbp } from "@/lib/ai-packages";
+import { BillingToggle } from "@/components/site/BillingToggle";
+import { AI_PRICED_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
 
 export const Route = createFileRoute("/ai")({
   head: () => ({
     meta: [
-      { title: "ANEXOMAIL AI — AI credits, wallet and plans from £135/mo" },
+      { title: "ANEXOMAIL AI — AI credits, wallet and plans from £400/mo" },
       {
         name: "description",
         content:
-          "ANEXOMAIL AI is a separate AI workspace with LEO: chat, studio, knowledge and automation. Plans from £135/month with 400 AI credits, pre-flight estimates and a receipt for every action.",
+          "ANEXOMAIL AI is a separate AI workspace with LEO: chat, studio, knowledge and automation. Plans from £400/month with 1,200 AI credits, pre-flight estimates and a receipt for every action.",
       },
-      { property: "og:title", content: "ANEXOMAIL AI — plans from £135/month" },
+      { property: "og:title", content: "ANEXOMAIL AI — plans from £400/month" },
       {
         property: "og:description",
         content:
@@ -83,6 +85,7 @@ const pillars = [
 
 function AiPage() {
   const [topUp, setTopUp] = useState(false);
+  const [cycle, setCycle] = useState<BillingCycle>("monthly");
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
@@ -139,7 +142,7 @@ function AiPage() {
               </div>
 
               <p className="mt-5 text-xs text-muted-foreground">
-                From {gbp(135)}/month with 400 AI credits · 10 complimentary credits per cycle ·
+                From {gbp(400)}/month with 1,200 AI credits · 10 complimentary credits per cycle ·
                 workspace stays available even at zero credits.
               </p>
             </motion.div>
@@ -190,15 +193,19 @@ function AiPage() {
           <div className="ax-container">
             <p className="ax-eyebrow">AI plans</p>
             <h2 className="ax-h2 mt-2 max-w-2xl text-foreground">
-              Everything in Business, plus the full AI workspace.
+              Platform plus the full AI workspace, in one plan.
             </h2>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-              Monthly plans always give the best value per credit. 10,000 credits is the maximum
-              monthly allocation.
+              Every AI plan includes the platform it needs. On yearly billing you get 2 months free
+              (16.67% off) — the total is calculated for you. 10,000 credits is the maximum monthly
+              allocation.
             </p>
+            <div className="mt-7">
+              <BillingToggle value={cycle} onChange={setCycle} />
+            </div>
 
-            <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-              {AI_PLANS.map((plan, i) => (
+            <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {AI_PRICED_PLANS.map((plan, i) => (
                 <motion.article
                   key={plan.id}
                   {...fadeUp}
@@ -210,26 +217,32 @@ function AiPage() {
                     className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full opacity-0 blur-3xl transition-opacity duration-500 group-hover:opacity-40"
                     style={{ background: "var(--primary)" }}
                   />
-                  <h3 className="relative text-base font-bold text-foreground">{plan.name}</h3>
+                  <div className="relative flex items-start justify-between gap-2">
+                    <h3 className="text-base font-bold text-foreground">{plan.name}</h3>
+                    {plan.badge && (
+                      <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                        {plan.badge}
+                      </span>
+                    )}
+                  </div>
                   <p className="relative mt-4 text-3xl font-extrabold tracking-tight text-foreground">
-                    {gbp(plan.price)}
-                    <span className="text-sm font-medium text-muted-foreground">/mo</span>
+                    {priceFor(plan, cycle).big}
+                    <span className="text-sm font-medium text-muted-foreground"> {plan.unit}</span>
+                  </p>
+                  <p className="relative mt-1 text-xs font-semibold text-primary">
+                    {cycle === "yearly"
+                      ? priceFor(plan, cycle).note
+                      : "Get 2 months free on yearly billing"}
                   </p>
                   <p className="relative mt-1 text-sm font-semibold text-primary">
                     {plan.credits.toLocaleString("en-GB")} AI credits / month
                   </p>
                   <p className="relative mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {plan.blurb}
+                    {plan.tagline}
                   </p>
 
-                  <ul className="relative mt-5 space-y-2 border-t border-border pt-5 text-sm">
-                    {[
-                      "Dedicated AI workspace",
-                      "AI Intelligence Suite",
-                      "Priority AI queue",
-                      "Credit wallet + analytics",
-                      "10 complimentary credits / cycle",
-                    ].map((f) => (
+                  <ul className="relative mt-5 flex-1 space-y-2 border-t border-border pt-5 text-sm">
+                    {plan.features.map((f) => (
                       <li key={f} className="flex gap-2 text-muted-foreground">
                         <Check className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
                         {f}
@@ -238,10 +251,12 @@ function AiPage() {
                   </ul>
 
                   <a
-                    href={`mailto:hello@anexomail.com?subject=${encodeURIComponent(`${plan.name} — ${gbp(plan.price)}/mo`)}`}
+                    href={`mailto:hello@anexomail.com?subject=${encodeURIComponent(
+                      `${plan.name} — ${priceFor(plan, cycle).big} ${cycle === "yearly" ? "(yearly)" : "(monthly)"}`,
+                    )}`}
                     className="relative mt-6 inline-flex items-center justify-center rounded-xl border border-border bg-card px-4 py-2.5 text-sm font-semibold text-foreground transition-colors group-hover:border-primary group-hover:bg-primary group-hover:text-primary-foreground"
                   >
-                    Get {plan.name.replace("ANEXOMAIL ", "")}
+                    Get {plan.name}
                   </a>
                 </motion.article>
               ))}

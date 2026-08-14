@@ -22,7 +22,7 @@ export const Route = createFileRoute("/app/billing")({
   component: WorkspaceBilling,
 });
 
-const PLANS: WorkspacePlanId[] = ["basic", "pro", "business"];
+const PLANS: WorkspacePlanId[] = ["basic", "pro", "business", "business_pro"];
 
 /**
  * Phase 21 — Billing platform, awam surface.

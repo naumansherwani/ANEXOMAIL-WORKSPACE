@@ -17,10 +17,9 @@ export type AiPlan = {
 
 /** Locked monthly plans — 10,000 credits maximum monthly plan. */
 export const AI_PLANS: AiPlan[] = [
-  { id: "ai", name: "ANEXOMAIL AI", price: 135, credits: 400, blurb: "Everything in Business, plus the full AI workspace." },
-  { id: "ai_pro", name: "ANEXOMAIL AI Pro", price: 300, credits: 1200, blurb: "For teams running AI on daily email work.", highlight: true },
-  { id: "ai_business", name: "ANEXOMAIL AI Business", price: 1000, credits: 5000, blurb: "High volume, priority queue, deeper automation." },
-  { id: "ai_executive", name: "ANEXOMAIL AI Executive", price: 2000, credits: 10000, blurb: "Maximum monthly allocation available." },
+  { id: "ai_pro", name: "AI Pro", price: 400, credits: 1200, blurb: "All Business platform features, plus the AI workspace." },
+  { id: "ai_business", name: "AI Business", price: 1500, credits: 5000, blurb: "Business teams that need AI-powered workflow.", highlight: true },
+  { id: "ai_executive", name: "AI Executive", price: 4000, credits: 10000, blurb: "Business Pro platform plus the full AI bundle." },
 ];
 
 export type TopUp = {
@@ -89,7 +88,7 @@ export const AI_FEATURE_GROUPS: { title: string; items: string[] }[] = [
   {
     title: "AI Benefits",
     items: [
-      "400 monthly AI credits on the £135 plan",
+      "1,200 monthly AI credits on the £400 plan",
       "10 complimentary credits per cycle (5/day for 2 days)",
       "Priority AI queue",
       "AI provider routing",
