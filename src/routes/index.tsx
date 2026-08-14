@@ -12,10 +12,8 @@ import {
   KeyRound,
   ListChecks,
   Lock,
-  PenLine,
   Sparkles,
   ShieldCheck,
-  Video,
   Users,
 } from "lucide-react";
 
@@ -37,18 +35,6 @@ const compliance = [
   { k: "DKIM · SPF · DMARC", v: "Generated per domain, checked continuously" },
   { k: "Owned infrastructure", v: "No third-party mail relay in the path" },
   { k: "One-click export", v: "Mail, contacts and calendar in open formats" },
-];
-
-/* Section 7 — Leo, the AI teammate. Own product, own domain. */
-const leoSkills = [
-  { icon: Inbox, label: "Email", body: "Reads the thread, drafts the reply in your voice." },
-  {
-    icon: PenLine,
-    label: "Writing",
-    body: "Proposals, follow-ups and notes without a blank page.",
-  },
-  { icon: Video, label: "Meetings", body: "Turns a call into decisions, owners and dates." },
-  { icon: ListChecks, label: "Tasks", body: "Pulls the work out of the inbox and tracks it." },
 ];
 
 export const Route = createFileRoute("/")({
@@ -529,99 +515,27 @@ function Index() {
             </div>
           </Reveal>
 
-          {/* AI lives OUTSIDE these plans — its own product, right under the cards. */}
+          {/* AI = separate product, not public yet. Landing par sirf ek line. */}
           <Reveal delay={0.1}>
-            <div className="ax-plane mt-12 rounded-2xl border-primary/35 p-8 md:p-10">
-              <div className="grid gap-8 lg:grid-cols-[1.4fr_1fr] lg:items-center">
-                <div>
-                  <span className="inline-flex items-center gap-2 rounded-full border border-steel/30 bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel uppercase">
-                    <Sparkles className="size-3.5" />
-                    Separate product · not inside these plans
-                  </span>
-                  <h3 className="mt-6 text-2xl font-extrabold tracking-[-0.03em] text-foreground md:text-[2rem]">
-                    ANEXOMAIL AI — powered by LEO
-                  </h3>
-                  <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
-                    Your email stays quiet and private. When you want an extra pair of hands,
-                    ANEXOMAIL AI is the separate product — and LEO is the teammate inside it: it
-                    reads the thread, writes the reply in your voice, pulls out the tasks and shows
-                    you the cost of every single answer before you spend a penny.
-                  </p>
-                  <p className="mt-3 text-[13px] text-muted-foreground">
-                    Pay only for what you use. No AI in your mailbox unless you ask for it.
-                  </p>
-                </div>
-                <div className="flex flex-col gap-3">
-                  <Link
-                    to="/ai"
-                    className="group inline-flex items-center justify-center gap-2.5 rounded-lg bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground transition-colors duration-500 hover:bg-primary/85"
-                  >
-                    Explore ANEXOMAIL AI
-                    <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
-                  </Link>
-                  <Link
-                    to="/ai"
-                    className="inline-flex items-center justify-center rounded-lg border border-border px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/45"
-                  >
-                    Meet LEO
-                  </Link>
-                </div>
+            <div className="ax-plane mt-12 flex flex-col items-start justify-between gap-5 rounded-2xl border-steel/25 p-6 md:flex-row md:items-center md:p-8">
+              <div>
+                <span className="inline-flex items-center gap-2 rounded-full border border-steel/30 bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel uppercase">
+                  <Sparkles className="size-3.5" />
+                  Coming soon
+                </span>
+                <p className="mt-4 text-[15px] leading-relaxed text-muted-foreground">
+                  <span className="font-bold text-foreground">ANEXOMAIL AI</span> is a separate
+                  product and is not part of these plans. Nothing changes in your mailbox until it
+                  opens.
+                </p>
               </div>
+              <span className="rounded-lg border border-border px-5 py-3 text-[13px] font-semibold text-muted-foreground">
+                Not open to the public yet
+              </span>
             </div>
           </Reveal>
         </Stage>
 
-        {/* ── 7 · MEET LEO — the teammate inside ANEXOMAIL AI ───────── */}
-        <Stage volume="loud">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-x-0 top-0 h-[26rem] opacity-40 blur-3xl"
-            style={{
-              background: "radial-gradient(38% 46% at 50% 0%, var(--navy) 0%, transparent 72%)",
-            }}
-          />
-          <div className="relative grid gap-12 lg:grid-cols-[46fr_54fr] lg:items-center">
-            <Reveal>
-              <span className="inline-flex items-center gap-2 rounded-full border border-steel/30 bg-secondary/60 px-3 py-1.5 text-[11px] font-semibold tracking-[0.14em] text-steel uppercase">
-                <Sparkles className="size-3.5" />
-                Inside ANEXOMAIL AI
-              </span>
-
-              <h2 className="mt-7 text-3xl md:text-[2.9rem] md:leading-[1.05]">
-                <span className="ax-platinum-text">LEO, up close.</span>
-              </h2>
-
-              <p className="mt-6 max-w-md text-[17px] leading-relaxed text-muted-foreground">
-                LEO is the AI teammate inside ANEXOMAIL AI — email, writing, meetings and tasks,
-                with your workspace as context and never someone else's.
-              </p>
-
-              <Link
-                to="/ai"
-                className="group mt-9 inline-flex items-center gap-2.5 rounded-lg border border-steel/30 px-6 py-3.5 text-sm font-semibold text-foreground transition-colors duration-500 hover:border-steel/60"
-              >
-                Meet LEO
-                <ArrowRight className="size-4 transition-transform duration-500 group-hover:translate-x-1" />
-              </Link>
-            </Reveal>
-
-            <div className="grid gap-px overflow-hidden rounded-2xl border border-border sm:grid-cols-2">
-              {leoSkills.map((s, i) => (
-                <Reveal key={s.label} delay={0.08 + i * 0.07} className="h-full">
-                  <div className="ax-plane h-full rounded-none border-0 p-7">
-                    <span className="flex size-10 items-center justify-center rounded-xl bg-secondary text-steel">
-                      <s.icon className="size-5" />
-                    </span>
-                    <p className="mt-5 text-[15px] font-bold text-foreground">{s.label}</p>
-                    <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-                      {s.body}
-                    </p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </Stage>
 
         {/* ── 8 · CLOSING — one line, one button, empty frame ──────── */}
         <Stage volume="hush">
