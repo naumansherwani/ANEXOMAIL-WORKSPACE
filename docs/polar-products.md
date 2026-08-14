@@ -128,9 +128,6 @@ POLAR_PRODUCT_MOVEIN_6_15=a9d1bec3-0d5f-4b9b-ae1c-993efde66da2
 POLAR_PRODUCT_MOVEIN_16_29=c7b502c5-ff75-4138-b34d-25d94878fe79
 POLAR_PRODUCT_MOVEIN_30PLUS=f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8
 POLAR_PRODUCT_PRIORITY_SUPPORT=92a35351-743c-4ddf-b1f4-fae473a89e69
-POLAR_PRODUCT_PLAN_BASIC=9560496a-4449-4428-949d-95c923c8dad9
-POLAR_PRODUCT_PLAN_PRO=ef47325e-983c-4ea8-bdbe-be99cc00c584
-POLAR_PRODUCT_PLAN_BUSINESS=2eee930b-b530-43ce-a6d4-14b87315f49e
 # Purane teen IDs ko pehle monthly naam par move karo:
 POLAR_PRODUCT_PLAN_BASIC_MONTHLY=9560496a-4449-4428-949d-95c923c8dad9
 POLAR_PRODUCT_PLAN_PRO_MONTHLY=ef47325e-983c-4ea8-bdbe-be99cc00c584
@@ -149,7 +146,7 @@ POLAR_PRODUCT_AI_EXECUTIVE_MONTHLY=REPLACE
 POLAR_PRODUCT_AI_EXECUTIVE_YEARLY=REPLACE
 ```
 
-### Confirmed IDs (founder ne banaye)
+### Confirmed monthly IDs (founder ne banaye)
 
 | Product | Polar ID | Status |
 | --- | --- | --- |
@@ -161,6 +158,8 @@ POLAR_PRODUCT_AI_EXECUTIVE_YEARLY=REPLACE
 | Basic (£20/mo) | `9560496a-4449-4428-949d-95c923c8dad9` | ✅ created |
 | Pro (£40/mo) | `ef47325e-983c-4ea8-bdbe-be99cc00c584` | ✅ created |
 | Business (£85/mo) | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
+
+Yearly + Business Pro + AI ke `REPLACE` IDs abhi Polar dashboard mein create karke bharne hain. Jab tak kisi key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
 

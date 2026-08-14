@@ -8,6 +8,8 @@ begin;
 
 alter table public.billing_intents
   add column if not exists billing_cycle text;
+alter table public.entitlement_state
+  add column if not exists ai_plan text;
 
 update public.billing_intents
    set billing_cycle = case
@@ -139,5 +141,63 @@ language sql security definer set search_path=public as $$
 $$;
 revoke execute on function public.billing_sync_claim(int) from public,anon,authenticated;
 grant execute on function public.billing_sync_claim(int) to service_role;
+
+-- Retire old AI catalog rows and make the locked v4 plans authoritative.
+update public.ai_credit_plans set active=false;
+insert into public.ai_credit_plans (id,name,price,monthly_credits,currency,active,sort_order) values
+  ('ai_pro','AI Pro',400,1200,'GBP',true,1),
+  ('ai_business','AI Business',1500,5000,'GBP',true,2),
+  ('ai_executive','AI Executive',4000,10000,'GBP',true,3)
+on conflict (id) do update set name=excluded.name,price=excluded.price,
+  monthly_credits=excluded.monthly_credits,currency='GBP',active=true,sort_order=excluded.sort_order;
+
+create or replace function public.billing_apply_entitlement(
+  p_user uuid,p_kind text,p_plan text,p_band text,p_seats int,p_intent uuid,p_source text
+) returns void
+language plpgsql security definer set search_path=public as $$
+declare v_credits int; v_before numeric;
+begin
+  insert into public.entitlement_state
+    (user_id,plan,ai_plan,seats,movein_band,support_active,active_until,revision,source_intent,updated_at)
+  values (
+    p_user,
+    case when p_kind='plan' then p_plan end,
+    case when p_kind='ai_plan' then p_plan end,
+    case when p_kind='plan' then greatest(1,coalesce(p_seats,1)) else 0 end,
+    case when p_kind='movein' then p_band end,
+    p_kind='support',
+    case when p_kind in ('plan','ai_plan','support') then now()+interval '31 days' end,
+    1,p_intent,now()
+  ) on conflict (user_id) do update set
+    plan=coalesce(case when p_kind='plan' then p_plan end,entitlement_state.plan),
+    ai_plan=coalesce(case when p_kind='ai_plan' then p_plan end,entitlement_state.ai_plan),
+    seats=case when p_kind='plan' then greatest(1,coalesce(p_seats,1)) else entitlement_state.seats end,
+    movein_band=coalesce(case when p_kind='movein' then p_band end,entitlement_state.movein_band),
+    support_active=entitlement_state.support_active or p_kind='support',
+    active_until=case when p_kind in ('plan','ai_plan','support') then now()+interval '31 days' else entitlement_state.active_until end,
+    revision=entitlement_state.revision+1,source_intent=p_intent,updated_at=now();
+
+  if p_kind='ai_plan' then
+    select monthly_credits into v_credits from public.ai_credit_plans where id=p_plan and active;
+    if v_credits is null then raise exception 'unknown_ai_plan'; end if;
+    select subscription_credits into v_before from public.ai_credit_wallets where owner_id=p_user for update;
+    update public.ai_credit_wallets set plan_id=p_plan,subscription_credits=v_credits,
+      cycle_started_at=now(),renews_at=now()+interval '1 month',updated_at=now()
+    where owner_id=p_user;
+    if not found then raise exception 'ai_wallet_missing_for_user'; end if;
+    insert into public.ai_credit_ledger
+      (workspace_id,user_id,credit_type,entry_type,amount,balance_before,balance_after,reason,idempotency_key)
+    select workspace_id,p_user,'subscription','plan_allocation',v_credits,coalesce(v_before,0),v_credits,
+           'verified '||p_plan||' subscription payment','billing-intent:'||p_intent
+    from public.ai_credit_wallets where owner_id=p_user
+    on conflict (idempotency_key) do nothing;
+  end if;
+
+  insert into public.billing_state_log (user_id,intent_id,from_state,to_state,reason,source)
+  values (p_user,p_intent,'paid','entitled','entitlement applied: '||coalesce(p_kind,'plan'),p_source);
+end;
+$$;
+revoke execute on function public.billing_apply_entitlement(uuid,text,text,text,int,uuid,text) from public,anon,authenticated;
+grant execute on function public.billing_apply_entitlement(uuid,text,text,text,int,uuid,text) to service_role;
 
 commit;
