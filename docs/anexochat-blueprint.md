@@ -65,7 +65,7 @@ Parent: ANEXOMAIL™
 Purpose: private human-to-human communication inside a verified business workspace.
 Core philosophy: Mail when it matters. Chat when it's instant. Work when it's done.
 
-Business Pro — £250/month per company. Includes:
+Business Pro — £2,500/month per company. Includes:
 
 - Unlimited legitimate internal users
 - Unlimited messages
@@ -439,7 +439,7 @@ Before production every item must have a real verification result: Authenticatio
 
 Business: £85/user/month — ANEXOMAIL Business. Defined ANEXOChat limits apply.
 
-Business Pro: £250/month per company. Not per user. Not per mailbox. Not per employee. Included: unlimited legitimate internal users · unlimited ANEXOChat messages · unlimited ANEXOChat transfer volume · 1TB pooled storage · 5GB maximum individual file · groups · read receipts · typing · presence · resumable transfers · business work layer · promise tracking · decision ledger · conversation health · message provenance · business receipts · permanent search · Email ↔ Chat bridge · Device Trust · Audit Ledger · access revocation · export · safety system · cinematic experience · Calm Mode · priority support.
+Business Pro: £2,500/month per company. Not per user. Not per mailbox. Not per employee. Included: unlimited legitimate internal users · unlimited ANEXOChat messages · unlimited ANEXOChat transfer volume · 1TB pooled storage · 5GB maximum individual file · groups · read receipts · typing · presence · resumable transfers · business work layer · promise tracking · decision ledger · conversation health · message provenance · business receipts · permanent search · Email ↔ Chat bridge · Device Trust · Audit Ledger · access revocation · export · safety system · cinematic experience · Calm Mode · priority support.
 
 ## PHASE 56 — FINAL ANEXOCHAT PHILOSOPHY
 
@@ -451,7 +451,7 @@ The user should feel: "WhatsApp jaisa simple." Then: "Lekin business ke liye ban
 
 Build ANEXOChat™ as a native human-to-human private communication system inside ANEXOMAIL. Architecture must be API-FREE from the beginning. Do not introduce third-party chat APIs, AI APIs, weather APIs, file-transfer APIs, moderation APIs or external communication SaaS dependencies. Use the existing Supabase/PostgreSQL/SB4 infrastructure, Supabase Realtime where appropriate, and the Rust/WebTransport/HTTP3/QUIC architecture for realtime and large-file transport.
 
-ANEXOChat is HUMAN-TO-HUMAN. Normal chat must not use AI. Business Pro is £250/month per company with unlimited legitimate internal users, unlimited messages, unlimited transfer volume, 1TB pooled storage and 5GB maximum individual file size. Do not implement unlimited storage. Do not implement a monthly transfer cap for Business Pro.
+ANEXOChat is HUMAN-TO-HUMAN. Normal chat must not use AI. Business Pro is £2,500/month per company with unlimited legitimate internal users, unlimited messages, unlimited transfer volume, 1TB pooled storage and 5GB maximum individual file size. Do not implement unlimited storage. Do not implement a monthly transfer cap for Business Pro.
 
 Implement the complete Messenger/WhatsApp familiarity layer first, then the business superpower layer, then safety/trust, then cinematic experience, then advanced realtime/transfer and observability.
 
@@ -592,7 +592,7 @@ Build the entire ANEXOChat project from Phase 1 through Phase 57.
 
 - Basic £20 and Pro £40 are completely excluded — do not display ANEXOChat access, features or navigation to Basic or Pro users.
 - Business receives Phases 1–56.
-- Business Pro receives Phases 1–56 with the full £250/company limits and features.
+- Business Pro receives Phases 1–56 with the full £2,500/company limits and features.
 - ANEXOMAIL AI (AI Pro, AI Business, AI Executive) receives from Phase 57 — the AI layer.
 - Do not duplicate or rebuild Phases 1–56 for AI plans. AI plans inherit the exact same foundation and add Phase 57.
 - ANEXOChat itself remains human-to-human. Phase 57 adds Leo as an explicit AI assistant.

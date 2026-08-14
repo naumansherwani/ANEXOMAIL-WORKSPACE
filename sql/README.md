@@ -134,7 +134,7 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor** (Hetzner par nahi).
 - `entitlement_state` = `business_pro`, support on, charge zero
 - End par 4 VERIFY queries: auth uid ↔ founder role match, account state, entitlement, aur founder count = 1
 
-## phase46_anexochat_foundation.sql — ANEXOChat Phase 1 slice (Phases 1-5)
+## anexochat_phase01_foundation.sql — ANEXOChat Phase 1 slice (Phases 1-5)
 
 Kahan chalti hai: **Supabase #4 -> SQL Editor**.
 
