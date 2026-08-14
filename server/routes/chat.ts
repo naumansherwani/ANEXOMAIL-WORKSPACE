@@ -10,7 +10,8 @@
 //   2. Gate DB ka chat_access(): founder + business/business_pro/AI. Basic/Pro = 403
 //   3. Idempotent send: client_msg_id — duplicate send kabhi doosra message nahi
 //   4. Koi fake state nahi: sent/delivered/read sirf DB rows se
-//   5. Bun path = fallback/secondary. Rust /wt/* baad mein SAME contract par.
+//   5. Bun path = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.* + WebTransport/QUIC
+//      (server/rust/main.rs). Frontend pehle Rust, phir yeh.
 //
 // Routes (mount: src/anexochat.ts -> app.use("/api/chat", chatRouter))
 //   GET  /api/chat/bootstrap                auth — workspace + access + me

@@ -1,0 +1,37 @@
+# ============================================================================
+# ANEXOMAIL / ANEXOChat — Rust PRIMARY engine (port 3200 HTTP/RPC + UDP 3443 WebTransport)
+#
+# NANO COMMAND (server par):
+#   cp /opt/anexomail-rust/Cargo.toml /opt/anexomail-rust/Cargo.toml.bak.$(date +%s)
+#   nano /opt/anexomail-rust/Cargo.toml     # select all -> paste -> Ctrl+O, Ctrl+X
+#
+# BUILD:
+#   cd /opt/anexomail-rust && cargo build --release
+#   pm2 restart anexomail-rust
+#
+# BLUEPRINT LOCK: Rust + tRPC-style RPC + WebTransport/QUIC = PRIMARY.
+# Bun (port 3300) sirf fallback hai — kabhi primary nahi.
+# ============================================================================
+[package]
+name = "anexomail-rust"
+version = "0.2.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+dotenvy = "0.15"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+wtransport = "0.1"
+anyhow = "1"
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+strip = true
