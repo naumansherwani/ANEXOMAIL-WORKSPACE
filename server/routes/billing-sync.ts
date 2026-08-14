@@ -76,7 +76,9 @@ async function polarFetch(path: string, init?: RequestInit) {
   const text = await res.text();
   const json = text ? JSON.parse(text) : null;
   if (!res.ok) {
-    throw new Error(String(json?.detail || json?.error || `polar_${res.status}`));
+    const detail =
+      typeof json?.detail === "string" ? json.detail : JSON.stringify(json?.detail ?? json ?? {});
+    throw new Error(`polar_${res.status}: ${detail}`);
   }
   return json;
 }
@@ -152,11 +154,16 @@ authRouter.post("/intent", async (req, res) => {
     return res.json({ intent_id: intentId, checkout_id: checkout.id, url: checkout.url });
   } catch (e: any) {
     // intent zinda rehta hai — sweep dobara koshish karega
+    console.error("[billing intent] polar checkout failed:", e?.message || e);
     await db.rpc("billing_sync_fail", {
       p_intent: intentId,
       p_error: `checkout_create_failed: ${e?.message || e}`,
     });
-    return res.status(502).json({ error: "checkout_failed", intent_id: intentId });
+    return res.status(502).json({
+      error: "checkout_failed",
+      intent_id: intentId,
+      detail: String(e?.message || e),
+    });
   }
 });
 
