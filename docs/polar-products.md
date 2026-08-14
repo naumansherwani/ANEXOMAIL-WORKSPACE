@@ -144,13 +144,12 @@ The complete company communication stack — one price for the whole company, no
 Priced per company, not per seat. Yearly: £25,000 — two months free.
 ```
 
-### Basic ka exact Polar setup
+### Plan products ka status (14 Aug 2026)
 
-1. Mojooda `ANEXOMAIL Basic` product ko rename karke `ANEXOMAIL Basic Monthly` rakho. Price: **£20**, recurring interval: **Monthly**.
-2. Naya product `ANEXOMAIL Basic Yearly` banao. Price: **£220**, recurring interval: **Yearly**.
-3. Monthly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=monthly`.
-4. Yearly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=yearly`.
-5. Monthly ka mojooda product ID `POLAR_PRODUCT_PLAN_BASIC_MONTHLY` mein rehta hai. Naye Yearly product ka ID `POLAR_PRODUCT_PLAN_BASIC_YEARLY` mein paste hota hai.
+Saare 8 plan products + Priority Support **dobara banaye ja chuke hain** — purane IDs retired.
+Har product ka metadata: `brand=anexomail`, `kind=plan`, `plan=<basic|pro|business|business_pro>`,
+`billing_cycle=<monthly|yearly>`. Priority Support ka metadata: `brand=anexomail`, `kind=support`.
+Asli IDs section 7 (LOCKED v2) mein hain.
 
 ## 4) Metadata (Polar UI: Key · Type · Value rows)
 
@@ -201,44 +200,54 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 - Secret → `POLAR_WEBHOOK_SECRET` (upar ke block mein).
 - **Refund policy:** ANEXOMAIL does not issue refunds. Polar `order.refunded` event is not consumed.
 
-## 7) Product IDs ka jagah (Polar mein banane ke baad)
+## 7) Product IDs — LOCKED v2 (14 Aug 2026)
 
-Product bante hi Polar ke IDs is ek block se `.env` mein daalo:
+Purane plan/support IDs **retired** hain. Sirf 4 Move-In (one-time) IDs wahi purane hain.
+Yeh poora block `.env` mein daalo (purani `POLAR_PRODUCT_*` lines hata kar):
 
 ```bash
-cd /opt/anexomail && nano .env
-# neeche paste karo, asli IDs ke saath:
+cd /opt/anexomail && cp .env .env.bak.$(date +%s)
+sed -i '/^POLAR_PRODUCT_/d' .env
+cat >> .env <<'EOF'
+# --- Move-In (one-time) — unchanged ---
 POLAR_PRODUCT_MOVEIN_1_5=fdcdabc2-9e50-4e4b-91d4-45e4128ef829
 POLAR_PRODUCT_MOVEIN_6_15=a9d1bec3-0d5f-4b9b-ae1c-993efde66da2
 POLAR_PRODUCT_MOVEIN_16_29=c7b502c5-ff75-4138-b34d-25d94878fe79
 POLAR_PRODUCT_MOVEIN_30PLUS=f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8
-POLAR_PRODUCT_PRIORITY_SUPPORT=92a35351-743c-4ddf-b1f4-fae473a89e69
-# Purane teen IDs ko pehle monthly naam par move karo:
-POLAR_PRODUCT_PLAN_BASIC_MONTHLY=9560496a-4449-4428-949d-95c923c8dad9
-POLAR_PRODUCT_PLAN_PRO_MONTHLY=ef47325e-983c-4ea8-bdbe-be99cc00c584
-POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY=2eee930b-b530-43ce-a6d4-14b87315f49e
-# Polar dashboard mein naye products bana kar IDs yahan paste karo:
-POLAR_PRODUCT_PLAN_BASIC_YEARLY=REPLACE
-POLAR_PRODUCT_PLAN_PRO_YEARLY=REPLACE
-POLAR_PRODUCT_PLAN_BUSINESS_YEARLY=REPLACE
-POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY=REPLACE
-POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY=REPLACE
+# --- Plans + Support — NEW (locked) ---
+POLAR_PRODUCT_PLAN_BASIC_MONTHLY=5e1c7b50-fee5-4214-873c-ad9f350476d9
+POLAR_PRODUCT_PLAN_BASIC_YEARLY=d3642ce7-a750-484c-940f-eb39039ed9c2
+POLAR_PRODUCT_PLAN_PRO_MONTHLY=df1aa320-346f-451b-a16a-e737c0703e12
+POLAR_PRODUCT_PLAN_PRO_YEARLY=7d87a72e-6be6-4aa2-86d6-5eca3d448956
+POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY=b12be1b1-a02d-4701-9475-08e796d99b69
+POLAR_PRODUCT_PLAN_BUSINESS_YEARLY=7a1d5445-92c5-4472-81a3-4820b8579854
+POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY=3a1e1699-59c0-4334-8be0-d4b08a1202d1
+POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY=80bca014-b832-474e-bd3e-084a04453de0
+POLAR_PRODUCT_PRIORITY_SUPPORT=8f6d7c8e-1722-421f-b28c-2a031f63731d
+EOF
+pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 ```
 
-### Confirmed monthly IDs (founder ne banaye)
+### Locked IDs table
 
-| Product                                             | Polar ID                               | Status     |
-| --------------------------------------------------- | -------------------------------------- | ---------- |
-| Managed Move-In · 1–5 Mailboxes (£500 one-time)     | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ created |
-| Managed Move-In · 6–15 Mailboxes (£1,500 one-time)  | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ created |
-| Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ created |
-| Managed Move-In · 30+ Mailboxes (£3,000 one-time)   | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ created |
-| Priority Support (£700/mo)                          | `92a35351-743c-4ddf-b1f4-fae473a89e69` | ✅ created |
-| Basic (£20/mo)                                      | `9560496a-4449-4428-949d-95c923c8dad9` | ✅ created |
-| Pro (£40/mo)                                        | `ef47325e-983c-4ea8-bdbe-be99cc00c584` | ✅ created |
-| Business (£85/mo)                                   | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
+| Product                                             | Polar ID                               | Status      |
+| --------------------------------------------------- | -------------------------------------- | ----------- |
+| Managed Move-In · 1–5 Mailboxes (£500 one-time)     | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ unchanged |
+| Managed Move-In · 6–15 Mailboxes (£1,500 one-time)  | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ unchanged |
+| Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ unchanged |
+| Managed Move-In · 30+ Mailboxes (£3,000 one-time)   | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ unchanged |
+| Basic Monthly (£20)                                 | `5e1c7b50-fee5-4214-873c-ad9f350476d9` | ✅ new       |
+| Basic Yearly (£220)                                 | `d3642ce7-a750-484c-940f-eb39039ed9c2` | ✅ new       |
+| Pro Monthly (£40)                                   | `df1aa320-346f-451b-a16a-e737c0703e12` | ✅ new       |
+| Pro Yearly (£440)                                   | `7d87a72e-6be6-4aa2-86d6-5eca3d448956` | ✅ new       |
+| Business Monthly (£85)                              | `b12be1b1-a02d-4701-9475-08e796d99b69` | ✅ new       |
+| Business Yearly (£850)                              | `7a1d5445-92c5-4472-81a3-4820b8579854` | ✅ new       |
+| Business Pro Monthly (£2,500)                       | `3a1e1699-59c0-4334-8be0-d4b08a1202d1` | ✅ new       |
+| Business Pro Yearly (£25,000)                       | `80bca014-b832-474e-bd3e-084a04453de0` | ✅ new       |
+| Priority Support (£700/mo)                          | `8f6d7c8e-1722-421f-b28c-2a031f63731d` | ✅ new       |
 
-Yearly + Business Pro ke `REPLACE` IDs Polar dashboard mein create karke bharne hain. AI ke liye koi Polar env key nahi hai. Jab tak kisi workspace key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
+Supabase side: `billing_price_book` sirf **product_key** rakhti hai (amount + cycle ke saath) — asli Polar ID sirf server `.env` mein hai. Yaad-daasht ke liye ID Supabase mein bhi rakhni ho to `sql/phase44_polar_ids_v2.sql` chalao.
+AI ke liye koi Polar env key nahi hai. Jab tak kisi workspace key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
 
