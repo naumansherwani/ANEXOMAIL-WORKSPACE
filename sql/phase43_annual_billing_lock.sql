@@ -98,6 +98,7 @@ begin
   if p_product_id is not null and p_product_id <> r.product_id then
     raise exception 'payment_product_mismatch';
   end if;
+  p_amount := coalesce(p_amount,r.amount_paid);
   if p_amount is null or abs(p_amount - r.amount_expected) > 0.01 then
     raise exception 'payment_amount_mismatch expected % received %', r.amount_expected, p_amount;
   end if;
@@ -124,5 +125,19 @@ revoke execute on function public.billing_intent_open(uuid,text,text,text,text,t
 revoke execute on function public.billing_intent_confirm(uuid,text,text,numeric,text,text,text) from public, anon, authenticated;
 grant execute on function public.billing_intent_open(uuid,text,text,text,text,text,int,numeric,text,text) to service_role;
 grant execute on function public.billing_intent_confirm(uuid,text,text,numeric,text,text,text) to service_role;
+
+create or replace function public.billing_sync_claim(p_limit int default 25)
+returns table (id uuid,user_id uuid,kind text,plan text,band text,product_id text,
+               amount_expected numeric,amount_paid numeric,currency text,billing_cycle text,
+               polar_checkout_id text,state text,attempts int,created_at timestamptz)
+language sql security definer set search_path=public as $$
+  select i.id,i.user_id,i.kind,i.plan,i.band,i.product_id,i.amount_expected,i.amount_paid,
+         i.currency,i.billing_cycle,i.polar_checkout_id,i.state,i.attempts,i.created_at
+  from public.billing_intents i
+  where i.state in ('open','paid','stuck') and i.next_sync_at<=now()
+  order by i.created_at asc limit greatest(1,least(p_limit,100));
+$$;
+revoke execute on function public.billing_sync_claim(int) from public,anon,authenticated;
+grant execute on function public.billing_sync_claim(int) to service_role;
 
 commit;

@@ -53,13 +53,19 @@ Sits on top of any plan. Invoiced monthly in advance, cancel at the end of any m
 Business days are Monday to Friday, UK time.
 ```
 
-## 3) Workspace plans (recurring, per person / month)
+## 3) Workspace + AI plans (monthly aur yearly alag Polar products)
 
-| Product name | Price | Billing |
-| --- | --- | --- |
-| `ANEXOMAIL Basic` | £20 | Recurring — monthly |
-| `ANEXOMAIL Pro` | £40 | Recurring — monthly |
-| `ANEXOMAIL Business` | £85 | Recurring — monthly |
+| Product name | Monthly | Yearly | Yearly message |
+| --- | ---: | ---: | --- |
+| `ANEXOMAIL Basic` | £20 | £216 | Save 10% annually |
+| `ANEXOMAIL Pro` | £40 | £432 | Save 10% annually |
+| `ANEXOMAIL Business` | £85 | £850 | Get 2 months free |
+| `ANEXOMAIL Business Pro` | £2,500 | £25,000 | Get 2 months free |
+| `ANEXOMAIL AI Pro` | £400 | £4,000 | Get 2 months free |
+| `ANEXOMAIL AI Business` | £1,500 | £15,000 | Get 2 months free |
+| `ANEXOMAIL AI Executive` | £4,000 | £40,000 | Get 2 months free |
+
+Har row ke liye Polar mein **do recurring products/prices** banao: ek monthly aur ek yearly. Yearly amount monthly effective rate nahi; upar wala exact annual charge hai.
 
 ## 4) Metadata (Polar UI: Key · Type · Value rows)
 
@@ -82,13 +88,14 @@ Type hamesha **String** rakho (Number/Boolean kabhi nahi). Har row ke baad
 | `brand` | String | `anexomail` |
 | `kind` | String | `support` |
 
-**Plans (Basic/Pro/Business) — 3 rows:**
+**Har plan product — 4 rows:**
 
 | Key | Type | Value |
 | --- | --- | --- |
 | `brand` | String | `anexomail` |
 | `kind` | String | `plan` |
-| `plan` | String | `basic` / `pro` / `business` |
+| `plan` | String | `basic` / `pro` / `business` / `business_pro` / `ai_pro` / `ai_business` / `ai_executive` |
+| `billing_cycle` | String | `monthly` / `yearly` |
 
 ## 5) Server 2 — env block (Polar tokens)
 
@@ -124,6 +131,22 @@ POLAR_PRODUCT_PRIORITY_SUPPORT=92a35351-743c-4ddf-b1f4-fae473a89e69
 POLAR_PRODUCT_PLAN_BASIC=9560496a-4449-4428-949d-95c923c8dad9
 POLAR_PRODUCT_PLAN_PRO=ef47325e-983c-4ea8-bdbe-be99cc00c584
 POLAR_PRODUCT_PLAN_BUSINESS=2eee930b-b530-43ce-a6d4-14b87315f49e
+# Purane teen IDs ko pehle monthly naam par move karo:
+POLAR_PRODUCT_PLAN_BASIC_MONTHLY=9560496a-4449-4428-949d-95c923c8dad9
+POLAR_PRODUCT_PLAN_PRO_MONTHLY=ef47325e-983c-4ea8-bdbe-be99cc00c584
+POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY=2eee930b-b530-43ce-a6d4-14b87315f49e
+# Polar dashboard mein naye products bana kar IDs yahan paste karo:
+POLAR_PRODUCT_PLAN_BASIC_YEARLY=REPLACE
+POLAR_PRODUCT_PLAN_PRO_YEARLY=REPLACE
+POLAR_PRODUCT_PLAN_BUSINESS_YEARLY=REPLACE
+POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY=REPLACE
+POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY=REPLACE
+POLAR_PRODUCT_AI_PRO_MONTHLY=REPLACE
+POLAR_PRODUCT_AI_PRO_YEARLY=REPLACE
+POLAR_PRODUCT_AI_BUSINESS_MONTHLY=REPLACE
+POLAR_PRODUCT_AI_BUSINESS_YEARLY=REPLACE
+POLAR_PRODUCT_AI_EXECUTIVE_MONTHLY=REPLACE
+POLAR_PRODUCT_AI_EXECUTIVE_YEARLY=REPLACE
 ```
 
 ### Confirmed IDs (founder ne banaye)
@@ -140,6 +163,8 @@ POLAR_PRODUCT_PLAN_BUSINESS=2eee930b-b530-43ce-a6d4-14b87315f49e
 | Business (£85/mo) | `2eee930b-b530-43ce-a6d4-14b87315f49e` | ✅ created |
 
 Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + webhook dono.
+
+**Checkout contract:** frontend sirf `product_key`, `seats`, `email` bhejta hai `POST /api/billing/intent` par. Amount, plan, cycle aur Polar product ID backend registry decide karti hai. Purana `POST /api/billing/checkout` retired hai, is liye client arbitrary `product_id` bhej kar sasta checkout nahi bana sakta.
 
 ## 8) Billing emails + founder reply clock
 

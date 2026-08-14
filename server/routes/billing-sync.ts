@@ -274,12 +274,15 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
         d.paid === true;
       if (!paid) continue;
       if (metaIntent === intent.id || (checkoutId && checkoutId === intent.polar_checkout_id)) {
+        const paidProductId = String(d.product_id || d.product?.id || d.items?.[0]?.product_id || "");
         await db.rpc("billing_intent_confirm", {
           p_intent: intent.id,
           p_checkout_id: intent.polar_checkout_id,
           p_order_id: d.id || null,
           p_amount: d.total_amount ? Number(d.total_amount) / 100 : null,
           p_source: "webhook",
+          p_currency: String(d.currency || "GBP").toUpperCase(),
+          p_product_id: paidProductId || null,
         });
         return true;
       }
@@ -301,6 +304,8 @@ async function pullTruthForIntent(intent: any): Promise<boolean> {
         p_order_id: checkout?.order_id || null,
         p_amount: checkout?.total_amount ? Number(checkout.total_amount) / 100 : null,
         p_source: "pull",
+        p_currency: String(checkout?.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || null,
       });
       return true;
     }
@@ -338,6 +343,8 @@ publicRouter.post("/billing/sync", async (req, res) => {
         p_order_id: null,
         p_amount: null,
         p_source: "sweep",
+        p_currency: row.currency || "GBP",
+        p_product_id: row.product_id || null,
       });
       if (confirmError) {
         await db.rpc("billing_sync_fail", { p_intent: row.id, p_error: confirmError.message });
