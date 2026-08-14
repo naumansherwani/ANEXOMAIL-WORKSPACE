@@ -251,4 +251,118 @@ chatRouter.get("/presence", async (req, res) => {
   }
 });
 
+// ── PHASE 3: message engine (reactions / edit / delete) ─────────
+chatRouter.post("/react", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  const emoji = String(req.body?.emoji || "");
+  if (!msg || !emoji) return res.status(400).json({ error: "message_id_emoji_required" });
+  const { data, error } = await db!.rpc("chat_react", {
+    _msg: msg,
+    _user: me.id,
+    _emoji: emoji,
+  });
+  if (error) return fail(res, error);
+  res.json({ reactions: data ?? [] });
+});
+
+chatRouter.post("/messages/edit", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  const body = String(req.body?.body || "");
+  if (!msg || !body.trim()) return res.status(400).json({ error: "message_id_body_required" });
+  const { data, error } = await db!.rpc("chat_edit_message", {
+    _msg: msg,
+    _user: me.id,
+    _body: body,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.post("/messages/delete", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_delete_message", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+// ── PHASE 3: work objects (task / promise / decision) ───────────
+chatRouter.post("/work", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const kind = String(req.body?.kind || "");
+  const title = String(req.body?.title || "");
+  if (!conv || !kind || !title.trim()) {
+    return res.status(400).json({ error: "conversation_id_kind_title_required" });
+  }
+  const { data, error } = await db!.rpc("chat_work_create", {
+    _conv: conv,
+    _user: me.id,
+    _msg: req.body?.message_id ? String(req.body.message_id) : null,
+    _kind: kind,
+    _title: title,
+    _due: req.body?.due_at ? String(req.body.due_at) : null,
+  });
+  if (error) return fail(res, error);
+  res.json({ id: data });
+});
+
+chatRouter.get("/work", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.query?.c || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_work_list", { _conv: conv, _user: me.id });
+  if (error) return fail(res, error);
+  res.json({ items: data ?? [] });
+});
+
+chatRouter.post("/work/state", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  const state = String(req.body?.state || "");
+  if (!item || !state) return res.status(400).json({ error: "item_id_state_required" });
+  const { error } = await db!.rpc("chat_work_set_state", {
+    _item: item,
+    _user: me.id,
+    _state: state,
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.post("/conversations/state", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const state = String(req.body?.state || "");
+  if (!conv || !state) return res.status(400).json({ error: "conversation_id_state_required" });
+  const { data, error } = await db!.rpc("chat_conversation_set_state", {
+    _conv: conv,
+    _user: me.id,
+    _state: state,
+    _note: req.body?.note ? String(req.body.note) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+// ── PHASE 6: unread truth for the ANEXOMAIL sidebar badge ───────
+chatRouter.get("/unread", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_unread_total", { _user: me.id });
+  if (error) return fail(res, error);
+  const row = Array.isArray(data) ? data[0] : data;
+  res.json(row ?? { unread: 0, conversations: 0 });
+});
+
 export default chatRouter;
