@@ -233,3 +233,15 @@ printf "/api/billing/checkout -> ";curl -s -o /dev/null -w "%{http_code}\n" -X P
 Expected: intent + state `401` (token ke bina), purana checkout `410` (retired).
 Polar dashboard ka "Checkout Link" hum use NAHI karte — checkout session API se banti hai
 taake `billing_intents` id metadata mein jaaye (link static hota hai, metadata carry nahi karta).
+
+## ANEXOChat — server/routes/chat.ts (mount: /api/chat)
+
+Nano: `nano /opt/anexomail/src/routes/chat.ts` (poori file repo se copy karo), phir
+`pm2 restart anexomail-leo`.
+
+- Gate DB ka `chat_access()` — Basic/Pro par 403 `chat_not_entitled`
+- `GET /api/chat/bootstrap` · `GET|POST /api/chat/conversations` ·
+  `GET|POST /api/chat/messages` · `POST /api/chat/receipts` ·
+  `POST /api/chat/typing` · `GET|POST /api/chat/presence`
+- Bun path = fallback/secondary. Rust `/wt/*` baad mein SAME contract par aayega.
+- Naye env ki zaroorat nahi (SUPABASE4_URL + SUPABASE4_SERVICE_ROLE_KEY pehle se hain)

@@ -133,3 +133,20 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor** (Hetzner par nahi).
 - `trial_accounts` status `active` + 10 saal — founder trial/freeze mein kabhi nahi phansta
 - `entitlement_state` = `business_pro`, support on, charge zero
 - End par 4 VERIFY queries: auth uid ↔ founder role match, account state, entitlement, aur founder count = 1
+
+## phase46_anexochat_foundation.sql — ANEXOChat Phase 1 slice (Phases 1-5)
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor**.
+
+- Tables: `chat_workspaces` · `chat_members` · `chat_conversations` · `chat_participants` ·
+  `chat_messages` (unique `client_msg_id` = idempotent send, per-conversation `seq` = ordering) ·
+  `chat_message_receipts` (append-only delivered/read) · `chat_presence` · `chat_typing` ·
+  `chat_files` + `chat_file_chunks` (sha256 + resume truth) · `chat_atmosphere_prefs`
+- GRANTs + RLS: har object workspace membership ke peeche; `chat_access()` gate =
+  founder_accounts YA entitlement `business | business_pro | ai_*`. Basic/Pro = zero access
+- Functions: `chat_ensure_workspace` · `chat_direct_conversation` · `chat_send` (idempotent) ·
+  `chat_mark` · `chat_conversation_list` (truthful health + reason) · `chat_messages_page` ·
+  `chat_presence_ping` · `chat_typing_ping`
+- ATMOSPHERE LOCK: Dawn/Day/Dusk/Night device clock se; Rain/Storm/Snow/Sunny sirf manual.
+  Koi weather API, koi temperature — kahin store bhi nahi hota
+- End par 2 VERIFY queries (chat tables + chat functions count)
