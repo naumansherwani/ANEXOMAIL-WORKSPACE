@@ -398,7 +398,7 @@ function Index() {
               Four plans. Monthly or yearly, your choice.
             </h2>
             <p className="mt-5 text-[13px] leading-relaxed text-muted-foreground">
-              Yearly billing gives Basic and Pro 10% off, and Business and Business Pro 2 months
+              Yearly billing gives Basic and Pro 1 month free, and Business and Business Pro 2 months
               free. Your normal monthly price stays visible on every card.
             </p>
             <div className="mt-7">

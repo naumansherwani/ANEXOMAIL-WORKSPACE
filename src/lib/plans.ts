@@ -5,14 +5,14 @@
  * Frontend sirf display karta hai; charge Polar + Supabase se hota hai.
  *
  * Annual rules (locked):
- *  - Basic / Pro          → 10% off                  → monthly * 12 * 0.90
+ *  - Basic / Pro          → 1 month free             → monthly * 11
  *  - Business / Business Pro → 2 months free (16.67%) → monthly * 10
  *  - All AI plans         → 2 months free (16.67%)   → monthly * 10
  */
 
 export type BillingCycle = "monthly" | "yearly";
 
-export type AnnualRule = "ten-percent-off" | "two-months-free";
+export type AnnualRule = "one-month-free" | "two-months-free";
 
 export type PricedPlan = {
   id: string;
@@ -32,7 +32,7 @@ export type PricedPlan = {
 };
 
 export const ANNUAL_NOTE: Record<AnnualRule, string> = {
-  "ten-percent-off": "Save 10% annually",
+  "one-month-free": "Get 1 month free",
   "two-months-free": "Get 2 months free",
 };
 
@@ -52,7 +52,7 @@ export function yearlySaving(plan: Pick<PricedPlan, "monthly" | "yearly">): numb
 }
 
 export function discountPercent(rule: AnnualRule): string {
-  return rule === "two-months-free" ? "16.67%" : "10%";
+  return rule === "two-months-free" ? "16.67%" : "8.33%";
 }
 
 export const money = (n: number) =>
@@ -76,10 +76,10 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     id: "basic",
     name: "Basic",
     monthly: 20,
-    yearly: 216,
+    yearly: 220,
     unit: "/ user / month",
     tagline: "Solo founder, freelancer, individual professional.",
-    annual: "ten-percent-off",
+    annual: "one-month-free",
     features: [
       "1 company address",
       "3 mailboxes",
@@ -96,10 +96,10 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     id: "pro",
     name: "Pro",
     monthly: 40,
-    yearly: 432,
+    yearly: 440,
     unit: "/ user / month",
     tagline: "Teams answering customers every day.",
-    annual: "ten-percent-off",
+    annual: "one-month-free",
     features: [
       "Everything in Basic",
       "3 company addresses",

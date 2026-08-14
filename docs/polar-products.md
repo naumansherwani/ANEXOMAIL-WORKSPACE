@@ -58,8 +58,8 @@ Business days are Monday to Friday, UK time.
 
 | Product name             | Monthly |  Yearly | Yearly message    |
 | ------------------------ | ------: | ------: | ----------------- |
-| `ANEXOMAIL Basic`        |     £20 |    £216 | Save 10% annually |
-| `ANEXOMAIL Pro`          |     £40 |    £432 | Save 10% annually |
+| `ANEXOMAIL Basic`        |     £20 |    £220 | Get 1 month free  |
+| `ANEXOMAIL Pro`          |     £40 |    £440 | Get 1 month free  |
 | `ANEXOMAIL Business`     |     £85 |    £850 | Get 2 months free |
 | `ANEXOMAIL Business Pro` |  £2,500 | £25,000 | Get 2 months free |
 
@@ -68,7 +68,7 @@ Har row ke liye Polar mein **do alag recurring products** banao: `Monthly` aur `
 ### Basic ka exact Polar setup
 
 1. Mojooda `ANEXOMAIL Basic` product ko rename karke `ANEXOMAIL Basic Monthly` rakho. Price: **£20**, recurring interval: **Monthly**.
-2. Naya product `ANEXOMAIL Basic Yearly` banao. Price: **£216**, recurring interval: **Yearly**.
+2. Naya product `ANEXOMAIL Basic Yearly` banao. Price: **£220**, recurring interval: **Yearly**.
 3. Monthly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=monthly`.
 4. Yearly metadata: `brand=anexomail`, `kind=plan`, `plan=basic`, `billing_cycle=yearly`.
 5. Monthly ka mojooda product ID `POLAR_PRODUCT_PLAN_BASIC_MONTHLY` mein rehta hai. Naye Yearly product ka ID `POLAR_PRODUCT_PLAN_BASIC_YEARLY` mein paste hota hai.

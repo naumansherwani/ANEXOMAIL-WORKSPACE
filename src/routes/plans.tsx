@@ -271,7 +271,7 @@ function PlansPage() {
             <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Annual savings" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            Yearly billing: Basic and Pro get 10% off. Business and Business Pro get 2 months free.
+            Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months free.
             Your normal monthly price stays visible; the annual total appears on each card.
           </p>
         </section>
