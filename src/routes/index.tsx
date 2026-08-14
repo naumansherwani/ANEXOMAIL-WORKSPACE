@@ -158,50 +158,6 @@ const moveIn = [
   { n: "04", t: "Switch when you say so", b: "Both providers run side by side until you give the word. The switch is scheduled for a quiet window and designed to avoid interruption." },
 ];
 
-/* Section 6 — Plans. */
-const plans = [
-  {
-    name: "Basic",
-    price: "£20",
-    line: "For a small team putting its company email in order.",
-    features: [
-      "1 company address · 3 mailboxes · 5GB per mailbox",
-      "5 free aliases · undo send 30s",
-      "Contacts, calendar and threads with an owner",
-      "Cmd+K across the workspace · human reply within 72h",
-    ],
-    featured: false,
-  },
-  {
-    name: "Pro",
-    price: "£40",
-    line: "For teams answering customers every day.",
-    features: [
-      "Everything in Basic",
-      "3 company addresses · 5 mailboxes · 10GB per mailbox",
-      "Shared inbox with collision guard",
-      "Snooze, schedule send, templates and boards",
-      "Tasks, notes and thread analytics · reply within 48h",
-    ],
-    featured: true,
-  },
-  {
-    name: "Business",
-    price: "£85",
-    line: "A controlled business workspace for companies that need clear ownership, governance and oversight.",
-    features: [
-      "Everything in Pro",
-      "25GB storage per mailbox",
-      "Roles, departments, policies and audit ledger",
-      "One-click access revocation",
-      "Native integrations",
-      "One-click data export",
-      "Human reply within 24 hours",
-    ],
-    featured: false,
-  },
-];
-
 function Eyebrow({ children }: { children: string }) {
   return <p className="ax-eyebrow">{children}</p>;
 }
