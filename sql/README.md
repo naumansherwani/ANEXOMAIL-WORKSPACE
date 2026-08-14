@@ -150,3 +150,18 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor**.
 - ATMOSPHERE LOCK: Dawn/Day/Dusk/Night device clock se; Rain/Storm/Snow/Sunny sirf manual.
   Koi weather API, koi temperature — kahin store bhi nahi hota
 - End par 2 VERIFY queries (chat tables + chat functions count)
+
+## anexochat_phase03_message_engine.sql — ANEXOChat Phases 3-6
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor** (pehle `anexochat_phase01_foundation.sql`).
+
+- **Phase 3 (message engine):** `chat_reactions` · `chat_message_edits` (append-only history,
+  purana body kabhi gum nahi) · soft delete tombstone · `chat_work_items` (task/promise/decision)
+  · `chat_conversation_state` (active/waiting/blocked/closed) · `chat_audit`
+- **Phase 4 (SB4):** har naye object par `workspace_id` — workspace isolation mandatory
+- **Phase 5 (RLS):** har table par RLS + participant/membership policy; security DB boundary par
+- **Phase 6 (ANEXOMAIL integration):** `chat_unread_total(_user)` = sidebar badge ka asli sach
+- Functions: `chat_log` · `chat_react` · `chat_edit_message` · `chat_delete_message` ·
+  `chat_work_create` · `chat_work_list` · `chat_work_set_state` ·
+  `chat_conversation_set_state` · `chat_unread_total`
+- VERIFY: chat tables **16**, chat functions **19**
