@@ -163,6 +163,7 @@ function Eyebrow({ children }: { children: string }) {
 }
 
 function Index() {
+  const [cycle, setCycle] = useState<BillingCycle>("monthly");
   return (
     <div id="top" className="min-h-screen bg-background">
       <SiteNav />
