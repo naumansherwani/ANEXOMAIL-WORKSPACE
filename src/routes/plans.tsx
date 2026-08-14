@@ -151,7 +151,7 @@ const compare: { group: string; rows: Row[] }[] = [
 const faqs = [
   {
     q: "Is VAT included in these prices?",
-    a: "No. £20, £40 and £85 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
+    a: "No. £20, £40, £85 and £2,500 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
   },
   {
     q: "How does billing work?",
