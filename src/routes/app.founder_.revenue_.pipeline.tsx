@@ -55,7 +55,7 @@ function PipelinePage() {
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Committed streams</h3>
               {d.committed.length === 0 ? (
-                <Note>No recurring revenue booked yet — the first £20 subscription starts this board.</Note>
+                <Note>No recurring revenue booked yet — the first £23 subscription starts this board.</Note>
               ) : (
                 <ul className="mt-ax-3 space-y-1.5">
                   {d.committed.map((s) => (
@@ -70,7 +70,7 @@ function PipelinePage() {
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Open leads by offer</h3>
               <p className="mt-1 text-xs text-steel">
-                Managed Move-In is one-off cash · Priority Support is a £700/mo retainer · Workspace
+                Managed Move-In is one-off cash · Priority Support is a £790/mo retainer · Workspace
                 subscription is the recurring plan. Three different offers, never mixed.
               </p>
               {d.pipeline.length === 0 ? (

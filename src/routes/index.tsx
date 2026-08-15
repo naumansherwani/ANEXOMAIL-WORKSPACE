@@ -44,7 +44,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Private business email for your company: mail, people, calendar and shared work on one fast surface. We move your company across for you. From £20 per user.",
+          "Private business email for your company: mail, people, calendar and shared work on one fast surface. We move your company across for you. From £23 per user.",
       },
       {
         property: "og:title",

@@ -26,7 +26,7 @@ const PLANS: WorkspacePlanId[] = ["basic", "pro", "business", "business_pro"];
 
 /**
  * Phase 21 — Billing platform, awam surface.
- * Sirf workspace plans (£20/£40/£85 per mailbox + £2,500 Business Pro per company).
+ * Sirf workspace plans (£23/£46/£97 per mailbox + £2,850 Business Pro per company).
  * AI credits ka is page se koi taalluq nahi.
  */
 function WorkspaceBilling() {
