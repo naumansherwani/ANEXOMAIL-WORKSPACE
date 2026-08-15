@@ -101,7 +101,7 @@ const facts = [
   },
   {
     q: "What does it cost?",
-    a: "A managed move is a one-off fee in fixed bands by mailbox count: 1–5 mailboxes £500, 6–15 mailboxes £1,500, 16–29 mailboxes £2,000, and £3,000 for large moves of 30 or more. It is separate from your monthly plan, and you see the number before anything starts.",
+    a: "A managed move is a one-off fee in fixed bands by mailbox count: 1–5 mailboxes £568, 6–15 mailboxes £1,670, 16–29 mailboxes £2,210, and £3,350 for large moves of 30 or more. It is separate from your monthly plan, and you see the number before anything starts.",
   },
   {
     q: "Can I do it myself instead?",

@@ -7,9 +7,9 @@
 //
 // 4 money roads (AI ke bina):
 //   1. Core subscriptions  — revenue_accounts se asli MRR
-//   2. Migration service   — revenue_jobs, £500–£2,000 one-off
+//   2. Migration service   — revenue_jobs, £568–£3,350 one-off
 //   3. White-label partner — revenue_partners, 20/25/30% recurring
-//   4. Enterprise SLA      — £700/mo add-on flag
+//   4. Enterprise SLA      — £790/mo add-on flag
 //
 // Public lead endpoint: POST /api/public/revenue/lead  (koi auth nahi, rate-limited by IP)
 // Founder god-view:     GET  /api/founder/revenue/overview  (Bearer required)
@@ -266,7 +266,7 @@ founderRouter.get("/revenue/overview", async (req, res) => {
       partners,
       gap: {
         seats_needed: seatsNeeded,
-        plan: "Pro (£40)",
+        plan: "Pro (£46)",
         note:
           remaining === 0
             ? "Target already covered — next £ goes to growth, not survival."

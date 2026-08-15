@@ -30,7 +30,7 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     title: "1 · Set up your workspace",
     body: "Ten minutes, once. You keep the domain — we only route mail for it.",
     rows: [
-      ["Create the organisation", "Sign in, name the company, pick the plan (Basic £20 · Pro £40 · Business £85)."],
+      ["Create the organisation", "Sign in, name the company, pick the plan (Basic £23 · Pro £46 · Business £97)."],
       ["Add your domain", "Admin → Domains → Add. We show the exact records to paste at your registrar."],
       ["Create addresses", "Personal mailboxes for people, shared addresses for sales@, support@, billing@."],
       ["Invite the team", "Members get a role: owner, admin or member. Shared addresses get their own manager."],
@@ -55,7 +55,7 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
       ["Connect the source", "Gmail, Google Workspace, Outlook, Microsoft 365, Zoho, Proton bridge or plain IMAP."],
       ["Dry run", "A test pass reports item counts and anything that will not copy, before the real run."],
       ["Cut over", "Change MX when you are ready — weekend or overnight windows available."],
-      ["Managed option", "Prefer us to do it? Fixed bands £500 (1–5), £1,500 (6–15), £2,000 (16–29), £3,000 (30+) — quoted on the migration page."],
+      ["Managed option", "Prefer us to do it? Fixed bands £568 (1–5), £1,670 (6–15), £2,210 (16–29), £3,350 (30+) — quoted on the migration page."],
     ],
   },
   {

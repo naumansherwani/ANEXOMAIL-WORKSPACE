@@ -2,10 +2,10 @@
  * Phase 28 — Revenue Engine (transport + pure maths only).
  *
  * 4 locked money roads (AI ke bina):
- *   1. Core subscriptions — Basic £20 · Pro £40 · Business £85 per seat · Business Pro £2,500 per company
- *   2. Managed Move-In    — £500 / £1,500 / £3,000 one-time per company (banded by mailboxes)
+ *   1. Core subscriptions — Basic £23 · Pro £46 · Business £97 per seat · Business Pro £2,850 per company
+ *   2. Managed Move-In    — £568 / £1,670 / £2,210 / £3,350 one-time per company (banded by mailboxes)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
- *   4. Priority Support   — named founder contact + reply within 2 business days, £700/mo add-on
+ *   4. Priority Support   — named founder contact + reply within 2 business days, £790/mo add-on
  *
  * NO MOCK: quote maths client-side hai (deterministic, real rate card), lekin
  * har lead/application asli backend row banata hai. Endpoint missing = honest state.
@@ -18,17 +18,17 @@ import { rpcOrRest } from "@/lib/rpc";
 
 /* ------------------------------ rate card ------------------------------- */
 
-export const PLAN_PRICE = { basic: 20, pro: 40, business: 85, business_pro: 2500 } as const;
-export const SLA_PRICE_MONTHLY = 700;
-export const MIGRATION_FLOOR = 500;
-export const MIGRATION_CEILING = 3000;
+export const PLAN_PRICE = { basic: 23, pro: 46, business: 97, business_pro: 2850 } as const;
+export const SLA_PRICE_MONTHLY = 790;
+export const MIGRATION_FLOOR = 568;
+export const MIGRATION_CEILING = 3350;
 
 /** Locked Managed Move-In bands (one-off cash, never MRR). */
 export const MIGRATION_BANDS = [
-  { label: "1–5 mailboxes", max: 5, price: 500 },
-  { label: "6–15 mailboxes", max: 15, price: 1500 },
-  { label: "16–29 mailboxes", max: 29, price: 2000 },
-  { label: "30+ mailboxes", max: Infinity, price: 3000 },
+  { label: "1–5 mailboxes", max: 5, price: 568 },
+  { label: "6–15 mailboxes", max: 15, price: 1670 },
+  { label: "16–29 mailboxes", max: 29, price: 2210 },
+  { label: "30+ mailboxes", max: Infinity, price: 3350 },
 ] as const;
 
 export function migrationBand(mailboxes: number): { label: string; max: number; price: number } {

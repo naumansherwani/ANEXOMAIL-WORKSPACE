@@ -1,7 +1,7 @@
 /**
  * Phase 21 — Billing Platform (transport only).
  *
- * Workspace plans (Basic £20 · Pro £40 · Business £85) sirf anexomail.com ke
+ * Workspace plans (Basic £23 · Pro £46 · Business £97) sirf anexomail.com ke
  * liye — AI plans yahan kabhi nahi (woh ai.anexomail.com par hai).
  * NO DUPLICATE: proration, tax, invoice numbering, VAT aur receipts sab server
  * par. UI sirf sach dikhati hai.
@@ -204,10 +204,10 @@ export function useMarkFounderReplySent() {
 }
 
 export const PLAN_LABEL: Record<WorkspacePlanId, string> = {
-  basic: "Basic — £20",
-  pro: "Pro — £40",
-  business: "Business — £85",
-  business_pro: "Business Pro — £2,500",
+  basic: "Basic — £23",
+  pro: "Pro — £46",
+  business: "Business — £97",
+  business_pro: "Business Pro — £2,850",
 };
 
 export const gbp = (v: number) => `£${v.toFixed(2)}`;

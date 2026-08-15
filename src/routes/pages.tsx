@@ -40,7 +40,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     items: [
       { label: "Landing", path: "/", note: "Hero, positioning, proof, plans teaser" },
       { label: "About", path: "/about", note: "Why it exists, the four promises, why it is different, who runs it" },
-      { label: "Plans", path: "/plans", note: "Basic £20 · Pro £40 · Business £85" },
+      { label: "Plans", path: "/plans", note: "Basic £23 · Pro £46 · Business £97" },
       { label: "Leo (AI)", path: "/ai", note: "Coming soon page — AI not public yet" },
       {
         label: "AI Studio (AI)",
@@ -78,7 +78,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Managed migration",
         path: "/migration",
-        note: "Phase 28 — fixed-price migration quote calculator (£500 / £1,500 / £2,000 / £3,000 bands) + real booking",
+        note: "Phase 28 — fixed-price migration quote calculator (£568 / £1,670 / £2,210 / £3,350 bands) + real booking",
       },
       {
         label: "Partner programme",
@@ -88,7 +88,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Enterprise support",
         path: "/enterprise",
-        note: "Phase 28 — £700/mo add-on: named founder contact, response within 2 business days, quarterly review",
+        note: "Phase 28 — £790/mo add-on: named founder contact, response within 2 business days, quarterly review",
       },
       {
         label: "Get started (2-day trial)",
