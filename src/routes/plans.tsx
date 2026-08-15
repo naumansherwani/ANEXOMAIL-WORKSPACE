@@ -134,15 +134,15 @@ const compare: { group: string; rows: Row[] }[] = [
       },
       {
         label: "Priority Support (named founder contact)",
-        basic: "Add-on £700/mo",
-        pro: "Add-on £700/mo",
-        business: "Add-on £700/mo",
+        basic: "Add-on £790/mo",
+        pro: "Add-on £790/mo",
+        business: "Add-on £790/mo",
       },
       {
         label: "Managed move-in from your old provider",
-        basic: "From £500 one-off",
-        pro: "From £500 one-off",
-        business: "From £500 one-off",
+        basic: "From £568 one-off",
+        pro: "From £568 one-off",
+        business: "From £568 one-off",
       },
     ],
   },
@@ -151,7 +151,7 @@ const compare: { group: string; rows: Row[] }[] = [
 const faqs = [
   {
     q: "Is VAT included in these prices?",
-    a: "No. £20, £40, £85 and £2,500 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
+    a: "No. £23, £46, £97 and £2,850 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
   },
   {
     q: "How does billing work?",
@@ -195,7 +195,7 @@ const faqs = [
   },
   {
     q: "How is the Managed Move-In price decided?",
-    a: "By mailbox count, in fixed bands: 1–5 mailboxes £500, 6–15 mailboxes £1,500, 16–29 mailboxes £2,000, and £3,000 for large moves of 30 or more. You are told which band you are in before anything starts, and the number does not move afterwards.",
+    a: "By mailbox count, in fixed bands: 1–5 mailboxes £568, 6–15 mailboxes £1,670, 16–29 mailboxes £2,210, and £3,350 for large moves of 30 or more. You are told which band you are in before anything starts, and the number does not move afterwards.",
   },
 ];
 
@@ -205,14 +205,14 @@ const PUBLIC_EMAIL = "moveyourbusiness@anexomail.com";
 const services = [
   {
     name: "Managed Move-In",
-    price: "From £500",
+    price: "From £568",
     unit: " one-off",
     body: "We move your company off Gmail, Outlook, Zoho or plain IMAP. You keep working while it happens.",
     tiers: [
-      "1–5 mailboxes — £500",
-      "6–15 mailboxes — £1,500",
-      "16–29 mailboxes — £2,000",
-      "30+ mailboxes — £3,000",
+      "1–5 mailboxes — £568",
+      "6–15 mailboxes — £1,670",
+      "16–29 mailboxes — £2,210",
+      "30+ mailboxes — £3,350",
     ],
     features: [
       "Mail, folders, read state and full history moved and verified message-for-message",
@@ -229,7 +229,7 @@ const services = [
   },
   {
     name: "Priority Support",
-    price: "£700",
+    price: "£790",
     unit: " / month",
     body: "For companies that need a named person answering, not a queue. Sits on top of any plan.",
     tiers: [
@@ -396,16 +396,16 @@ function PlansPage() {
                     Feature
                   </th>
                   <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Basic · £20
+                    Basic · £23
                   </th>
                   <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Pro · £40
+                    Pro · £46
                   </th>
                   <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Business · £85
+                    Business · £97
                   </th>
                   <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Business Pro · £2,500
+                    Business Pro · £2,850
                   </th>
                 </tr>
               </thead>
