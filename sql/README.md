@@ -174,3 +174,4 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor** (pehle `anexochat_phase01_founda
   window, `chat_messages_page` with reactions + reply quote, `chat_search_messages`.
 - Verify: `select count(*) from information_schema.tables where table_schema='public' and table_name like 'chat\_%';` → 18
 - Verify: `select count(*) from information_schema.routines where routine_schema='public' and routine_name like 'chat\_%';` → 27
+- `phase46_pricing_v5.sql` — PRICING v5: Basic £23/£253 · Pro £46/£506 · Business £97/£970 · Business Pro £2,850/£28,500 · Priority Support £790 · Move-In £568/£1,670/£2,210/£3,350
