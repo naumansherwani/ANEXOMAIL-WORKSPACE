@@ -6,10 +6,10 @@ Locked prices. Yahi exact naam Polar dashboard mein banao. Currency: **GBP (£)*
 
 | Product name                        | Price  | Billing  |
 | ----------------------------------- | ------ | -------- |
-| `Managed Move-In · 1–5 Mailboxes`   | £500   | One-time |
-| `Managed Move-In · 6–15 Mailboxes`  | £1,500 | One-time |
-| `Managed Move-In · 16–29 Mailboxes` | £2,000 | One-time |
-| `Managed Move-In · 30+ Mailboxes`   | £3,000 | One-time |
+| `Managed Move-In · 1–5 Mailboxes`   | £568   | One-time |
+| `Managed Move-In · 6–15 Mailboxes`  | £1,670 | One-time |
+| `Managed Move-In · 16–29 Mailboxes` | £2,210 | One-time |
+| `Managed Move-In · 30+ Mailboxes`   | £3,350 | One-time |
 
 **Description (teeno products ke liye, sirf band line badalti hai):**
 
@@ -37,12 +37,12 @@ Band line variants:
 
 | Product name       | Price | Billing             |
 | ------------------ | ----- | ------------------- |
-| `Priority Support` | £700  | Recurring — monthly |
+| `Priority Support` | £790  | Recurring — monthly |
 
 **Description:**
 
 ```text
-Priority Support — £700 / month. A named founder contact instead of a queue.
+Priority Support — £790 / month. A named founder contact instead of a queue.
 
 - Response within 2 business days
 - Named founder contact
@@ -58,16 +58,16 @@ Business days are Monday to Friday, UK time.
 
 | Product name             | Monthly |  Yearly | Yearly message    |
 | ------------------------ | ------: | ------: | ----------------- |
-| `ANEXOMAIL Basic`        |     £20 |    £220 | Get 1 month free  |
-| `ANEXOMAIL Pro`          |     £40 |    £440 | Get 1 month free  |
-| `ANEXOMAIL Business`     |     £85 |    £850 | Get 2 months free |
-| `ANEXOMAIL Business Pro` |  £2,500 | £25,000 | Get 2 months free |
+| `ANEXOMAIL Basic`        |     £23 |    £253 | Get 1 month free  |
+| `ANEXOMAIL Pro`          |     £46 |    £506 | Get 1 month free  |
+| `ANEXOMAIL Business`     |     £97 |    £970 | Get 2 months free |
+| `ANEXOMAIL Business Pro` |  £2,850 | £28,500 | Get 2 months free |
 
 Har row ke liye Polar mein **do alag recurring products** banao: `Monthly` aur `Yearly`. Yearly amount monthly effective rate nahi; upar wala exact annual charge hai. **ANEXOMAIL AI Polar par abhi nahi banana — AI backend-only aur public coming soon hai.**
 
 ### Plan descriptions (Polar product description mein paste karo)
 
-**ANEXOMAIL Basic — £20 / user / month · £220 / year (1 month free)**
+**ANEXOMAIL Basic — £23 / user / month · £253 / year (1 month free)**
 
 ```text
 Professional company email for one person, with control built in.
@@ -80,10 +80,10 @@ Professional company email for one person, with control built in.
 - One-click export — your data leaves whenever you want
 - Human support, response within 72 hours
 
-Yearly: £220 — one month free. Billed once a year, cancel at renewal.
+Yearly: £253 — one month free. Billed once a year, cancel at renewal.
 ```
 
-**ANEXOMAIL Pro — £40 / user / month · £440 / year (1 month free)**
+**ANEXOMAIL Pro — £46 / user / month · £506 / year (1 month free)**
 
 ```text
 For teams answering customers every day.
@@ -97,10 +97,10 @@ For teams answering customers every day.
 - Thread analytics — who is carrying the load
 - Human support, response within 48 hours
 
-Yearly: £440 — one month free. Billed once a year, cancel at renewal.
+Yearly: £506 — one month free. Billed once a year, cancel at renewal.
 ```
 
-**ANEXOMAIL Business — £85 / user / month · £850 / year (2 months free)**
+**ANEXOMAIL Business — £97 / user / month · £970 / year (2 months free)**
 
 ```text
 For growing companies that need governance over their email, not just storage.
@@ -117,10 +117,10 @@ For growing companies that need governance over their email, not just storage.
 - Business workspace identity with MX, SPF, DKIM and DMARC proven green
 - Human support, response within 24 hours
 
-Yearly: £850 — two months free. Billed once a year, cancel at renewal.
+Yearly: £970 — two months free. Billed once a year, cancel at renewal.
 ```
 
-**ANEXOMAIL Business Pro — £2,500 / company / month · £25,000 / year (2 months free)**
+**ANEXOMAIL Business Pro — £2,850 / company / month · £28,500 / year (2 months free)**
 
 ```text
 The complete company communication stack — one price for the whole company, not per user.
@@ -141,7 +141,7 @@ The complete company communication stack — one price for the whole company, no
 - Export and no lock-in guarantee, real delete means deleted
 - Priority human support, response within 12 hours
 
-Priced per company, not per seat. Yearly: £25,000 — two months free.
+Priced per company, not per seat. Yearly: £28,500 — two months free.
 ```
 
 ### Plan products ka status (14 Aug 2026)
@@ -232,19 +232,19 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 
 | Product                                             | Polar ID                               | Status      |
 | --------------------------------------------------- | -------------------------------------- | ----------- |
-| Managed Move-In · 1–5 Mailboxes (£500 one-time)     | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ unchanged |
-| Managed Move-In · 6–15 Mailboxes (£1,500 one-time)  | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ unchanged |
-| Managed Move-In · 16–29 Mailboxes (£2,000 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ unchanged |
-| Managed Move-In · 30+ Mailboxes (£3,000 one-time)   | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ unchanged |
-| Basic Monthly (£20)                                 | `5e1c7b50-fee5-4214-873c-ad9f350476d9` | ✅ new       |
-| Basic Yearly (£220)                                 | `d3642ce7-a750-484c-940f-eb39039ed9c2` | ✅ new       |
-| Pro Monthly (£40)                                   | `df1aa320-346f-451b-a16a-e737c0703e12` | ✅ new       |
-| Pro Yearly (£440)                                   | `7d87a72e-6be6-4aa2-86d6-5eca3d448956` | ✅ new       |
-| Business Monthly (£85)                              | `b12be1b1-a02d-4701-9475-08e796d99b69` | ✅ new       |
-| Business Yearly (£850)                              | `7a1d5445-92c5-4472-81a3-4820b8579854` | ✅ new       |
-| Business Pro Monthly (£2,500)                       | `3a1e1699-59c0-4334-8be0-d4b08a1202d1` | ✅ new       |
-| Business Pro Yearly (£25,000)                       | `80bca014-b832-474e-bd3e-084a04453de0` | ✅ new       |
-| Priority Support (£700/mo)                          | `8f6d7c8e-1722-421f-b28c-2a031f63731d` | ✅ new       |
+| Managed Move-In · 1–5 Mailboxes (£568 one-time)     | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ unchanged |
+| Managed Move-In · 6–15 Mailboxes (£1,670 one-time)  | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ unchanged |
+| Managed Move-In · 16–29 Mailboxes (£2,210 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ unchanged |
+| Managed Move-In · 30+ Mailboxes (£3,350 one-time)   | `f3ff5002-b55f-45b5-b0b9-d80c1f33d3c8` | ✅ unchanged |
+| Basic Monthly (£23)                                 | `5e1c7b50-fee5-4214-873c-ad9f350476d9` | ✅ new       |
+| Basic Yearly (£253)                                 | `d3642ce7-a750-484c-940f-eb39039ed9c2` | ✅ new       |
+| Pro Monthly (£46)                                   | `df1aa320-346f-451b-a16a-e737c0703e12` | ✅ new       |
+| Pro Yearly (£506)                                   | `7d87a72e-6be6-4aa2-86d6-5eca3d448956` | ✅ new       |
+| Business Monthly (£97)                              | `b12be1b1-a02d-4701-9475-08e796d99b69` | ✅ new       |
+| Business Yearly (£970)                              | `7a1d5445-92c5-4472-81a3-4820b8579854` | ✅ new       |
+| Business Pro Monthly (£2,850)                       | `3a1e1699-59c0-4334-8be0-d4b08a1202d1` | ✅ new       |
+| Business Pro Yearly (£28,500)                       | `80bca014-b832-474e-bd3e-084a04453de0` | ✅ new       |
+| Priority Support (£790/mo)                          | `8f6d7c8e-1722-421f-b28c-2a031f63731d` | ✅ new       |
 
 Supabase side: amount, cycle aur Polar ID ki payment truth `billing_price_book` mein hai. **Supabase #4 SQL Editor mein sirf `sql/phase43_annual_billing_lock.sql` v3 poori run karo**; Phase 44 ka kaam usi mein merge hai aur Phase 44 ab retired hai. Server `/opt/anexomail/.env` mein yahi IDs backend checkout ke liye bhi rehni chahiye.
 AI ke liye koi Polar env key nahi hai. Jab tak kisi workspace key ka asli ID env mein nahi hota, backend us checkout ko `product_required` se rokta hai — galat monthly fallback kabhi nahi karta.
