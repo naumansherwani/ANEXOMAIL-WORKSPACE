@@ -473,13 +473,13 @@ function Index() {
                   </span>
                   <p className="mt-4 text-[15px] leading-relaxed text-foreground">
                     <strong className="font-extrabold">
-                      Managed Move-In — £500 / £1,500 / £2,000 / £3,000 one-off.
+                      Managed Move-In — £568 / £1,670 / £2,210 / £3,350 one-off.
                     </strong>{" "}
                     Priced by mailbox count: 1–5, 6–15, 16–29, or 30+. We move the whole company off
                     your old provider and prove your domain is green.
                   </p>
                   <p className="mt-2 text-[15px] leading-relaxed text-foreground">
-                    <strong className="font-extrabold">Priority Support — £700 / month.</strong> A
+                    <strong className="font-extrabold">Priority Support — £790 / month.</strong> A
                     named founder contact, a response within 2 business days, and a quarterly
                     service and security review.
                   </p>

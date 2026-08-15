@@ -14,13 +14,13 @@ export const Route = createFileRoute("/plans")({
       {
         name: "description",
         content:
-          "Business email on your own company address from £20 a month. Basic, Pro and Business — mailboxes, aliases, calendar and work included.",
+          "Business email on your own company address from £23 a month. Basic, Pro and Business — mailboxes, aliases, calendar and work included.",
       },
       { property: "og:title", content: "Plans & Pricing — ANEXOMAIL Workspace" },
       {
         property: "og:description",
         content:
-          "Basic £20, Pro £40, Business £85 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
+          "Basic £23, Pro £46, Business £97 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -37,10 +37,10 @@ const compare: { group: string; rows: Row[] }[] = [
     rows: [
       {
         label: "Price per month",
-        basic: "£20 / user",
-        pro: "£40 / user",
-        business: "£85 / user",
-        business_pro: "£2,500 / company",
+        basic: "£23 / user",
+        pro: "£46 / user",
+        business: "£97 / user",
+        business_pro: "£2,850 / company",
       },
       {
         label: "Mailboxes included",

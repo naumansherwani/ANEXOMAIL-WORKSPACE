@@ -17,12 +17,12 @@ export const Route = createFileRoute("/migration")({
       {
         name: "description",
         content:
-          "Fixed-price managed migration from Gmail, Outlook, Zoho or any IMAP host: every message, folder and alias moved, DNS proven green. £500, £1,500, £2,000 or £3,000 by mailbox count.",
+          "Fixed-price managed migration from Gmail, Outlook, Zoho or any IMAP host: every message, folder and alias moved, DNS proven green. £568, £1,670, £2,210 or £3,350 by mailbox count.",
       },
       { property: "og:title", content: "Managed migration — move your email in one night" },
       {
         property: "og:description",
-        content: "Fixed-price move from Gmail, Outlook, Zoho or IMAP. Every message verified, DNS proven green. £500 / £1,500 / £2,000 / £3,000.",
+        content: "Fixed-price move from Gmail, Outlook, Zoho or IMAP. Every message verified, DNS proven green. £568 / £1,670 / £2,210 / £3,350.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -151,7 +151,7 @@ function MigrationPage() {
                   <p className="mt-1 text-4xl text-foreground">£{quote.total.toLocaleString("en-GB")}</p>
                   <p className="mt-2 text-xs text-muted-foreground">
                     50% deposit (£{quote.deposit.toLocaleString("en-GB")}), rest on proven cut-over · delivery {quote.window}
-                    {quote.capped ? " · capped at our £3,000 ceiling" : ""}
+                    {quote.capped ? " · capped at our £3,350 ceiling" : ""}
                   </p>
                 </div>
               </div>

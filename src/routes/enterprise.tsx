@@ -13,12 +13,12 @@ export const Route = createFileRoute("/enterprise")({
       {
         name: "description",
         content:
-          "Priority Support: a named founder contact, a response within 2 business days, quarterly service and security review and priority migration scheduling — £700 a month, cancel any month.",
+          "Priority Support: a named founder contact, a response within 2 business days, quarterly service and security review and priority migration scheduling — £790 a month, cancel any month.",
       },
       { property: "og:title", content: "Priority Support — a response within 2 business days" },
       {
         property: "og:description",
-        content: "A named founder contact, response within 2 business days, quarterly review, priority migration scheduling. £700 a month.",
+        content: "A named founder contact, response within 2 business days, quarterly review, priority migration scheduling. £790 a month.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

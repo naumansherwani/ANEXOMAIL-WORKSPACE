@@ -75,8 +75,8 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
   {
     id: "basic",
     name: "Basic",
-    monthly: 20,
-    yearly: 220,
+    monthly: 23,
+    yearly: 253,
     unit: "/ user / month",
     tagline: "Solo founder, freelancer, individual professional.",
     annual: "one-month-free",
@@ -95,8 +95,8 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
   {
     id: "pro",
     name: "Pro",
-    monthly: 40,
-    yearly: 440,
+    monthly: 46,
+    yearly: 506,
     unit: "/ user / month",
     tagline: "Teams answering customers every day.",
     annual: "one-month-free",
@@ -116,8 +116,8 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
   {
     id: "business",
     name: "Business",
-    monthly: 85,
-    yearly: 850,
+    monthly: 97,
+    yearly: 970,
     unit: "/ user / month",
     tagline: "Growing companies that need workspace governance.",
     annual: "two-months-free",
@@ -141,8 +141,8 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
   {
     id: "business_pro",
     name: "Business Pro",
-    monthly: 2500,
-    yearly: 25000,
+    monthly: 2850,
+    yearly: 28500,
     unit: "/ company / month",
     tagline: "Established companies with the full communication stack.",
     annual: "two-months-free",
