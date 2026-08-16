@@ -1,20 +1,19 @@
 -- ============================================================
--- ANEXOMAIL — PHASE 46: PRICING v5 (FOUNDER LOCKED)
--- Chota, idempotent update. Naya table nahi — sirf price truth.
+-- ANEXOMAIL — PHASE 46: PRICING v5 (FOUNDER LOCKED)  [v2 fix]
+-- Column naam `product_key` hai (env_key nahi). Idempotent + self-healing.
 --
 --   Basic        £23/user/mo   -> £253/yr    (1 month free)
 --   Pro          £46/user/mo   -> £506/yr    (1 month free)
 --   Business     £97/user/mo   -> £970/yr    (2 months free)
 --   Business Pro £2,850/co/mo  -> £28,500/yr (2 months free)
 --   Priority Support £790/mo
---   Managed Move-In: 1-5 £568 · 6-15 £1,670 · 16-29 £2,210 · 30+ £3,350
---
--- Polar product IDs same rehte hain (dashboard par price update ho chuki hai).
+--   Move-In: 1-5 £568 · 6-15 £1,670 · 16-29 £2,210 · 30+ £3,350
+-- Polar product IDs same rehte hain.
 -- ============================================================
 
 begin;
 
--- 1) Price book (Phase 43) — amounts refresh
+-- 1) Price book refresh (upsert — row missing ho to ban jaye)
 do $$
 begin
   if to_regclass('public.billing_price_book') is null then
@@ -22,23 +21,32 @@ begin
     return;
   end if;
 
-  update public.billing_price_book set amount_gbp = v.amt
-  from (values
-    ('POLAR_PRODUCT_PLAN_BASIC_MONTHLY',        23::numeric),
-    ('POLAR_PRODUCT_PLAN_BASIC_YEARLY',        253::numeric),
-    ('POLAR_PRODUCT_PLAN_PRO_MONTHLY',          46::numeric),
-    ('POLAR_PRODUCT_PLAN_PRO_YEARLY',          506::numeric),
-    ('POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY',     97::numeric),
-    ('POLAR_PRODUCT_PLAN_BUSINESS_YEARLY',     970::numeric),
-    ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY', 2850::numeric),
-    ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY', 28500::numeric),
-    ('POLAR_PRODUCT_PRIORITY_SUPPORT',         790::numeric),
-    ('POLAR_PRODUCT_MOVEIN_1_5',               568::numeric),
-    ('POLAR_PRODUCT_MOVEIN_6_15',             1670::numeric),
-    ('POLAR_PRODUCT_MOVEIN_16_29',            2210::numeric),
-    ('POLAR_PRODUCT_MOVEIN_30PLUS',           3350::numeric)
-  ) as v(env_key, amt)
-  where public.billing_price_book.env_key = v.env_key;
+  insert into public.billing_price_book
+    (product_key, kind, plan, band, billing_cycle, amount_gbp, per_seat, annual_rule, polar_listed)
+  values
+    ('POLAR_PRODUCT_PLAN_BASIC_MONTHLY','plan','basic',null,'monthly',23,true,null,true),
+    ('POLAR_PRODUCT_PLAN_BASIC_YEARLY','plan','basic',null,'yearly',253,true,'one-month-free',true),
+    ('POLAR_PRODUCT_PLAN_PRO_MONTHLY','plan','pro',null,'monthly',46,true,null,true),
+    ('POLAR_PRODUCT_PLAN_PRO_YEARLY','plan','pro',null,'yearly',506,true,'one-month-free',true),
+    ('POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY','plan','business',null,'monthly',97,true,null,true),
+    ('POLAR_PRODUCT_PLAN_BUSINESS_YEARLY','plan','business',null,'yearly',970,true,'two-months-free',true),
+    ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY','plan','business_pro',null,'monthly',2850,false,null,true),
+    ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY','plan','business_pro',null,'yearly',28500,false,'two-months-free',true),
+    ('POLAR_PRODUCT_PRIORITY_SUPPORT','support',null,null,'monthly',790,false,null,true),
+    ('POLAR_PRODUCT_MOVEIN_1_5','movein',null,'1-5',null,568,false,null,true),
+    ('POLAR_PRODUCT_MOVEIN_6_15','movein',null,'6-15',null,1670,false,null,true),
+    ('POLAR_PRODUCT_MOVEIN_16_29','movein',null,'16-29',null,2210,false,null,true),
+    ('POLAR_PRODUCT_MOVEIN_30PLUS','movein',null,'30plus',null,3350,false,null,true)
+  on conflict (product_key) do update
+    set amount_gbp  = excluded.amount_gbp,
+        kind        = excluded.kind,
+        plan        = excluded.plan,
+        band        = excluded.band,
+        billing_cycle = excluded.billing_cycle,
+        per_seat    = excluded.per_seat,
+        annual_rule = excluded.annual_rule,
+        active      = true,
+        updated_at  = now();
 end $$;
 
 -- 2) Move-In band ladder (Phase 37 authority)
@@ -53,10 +61,15 @@ returns numeric language sql immutable as $$
 $$;
 
 -- 3) Naye deals ka default price
-alter table public.movein_deals alter column price_gbp set default 568;
+do $$
+begin
+  if to_regclass('public.movein_deals') is not null then
+    alter table public.movein_deals alter column price_gbp set default 568;
+  end if;
+end $$;
 
 commit;
 
 -- verify
--- select env_key, amount_gbp from public.billing_price_book order by env_key;
+-- select product_key, amount_gbp from public.billing_price_book order by product_key;
 -- select public.movein_price_for('30plus');
