@@ -54,9 +54,9 @@ export function reportGlitch(
   message: string,
   extra?: {
     severity?: "info" | "warning" | "error" | "critical";
-    stack?: string;
-    fingerprint?: string;
-    meta?: Record<string, unknown>;
+    stack?: string | undefined;
+    fingerprint?: string | undefined;
+    meta?: Record<string, unknown> | undefined;
   },
 ) {
   if (typeof window === "undefined") return;
