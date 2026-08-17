@@ -406,7 +406,7 @@ function Index() {
             </div>
           </Reveal>
 
-          <div className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+          <div data-ax-pricing="landing" className="mt-14 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {WORKSPACE_PLANS.map((p, i) => {
               const price = priceFor(p, cycle);
               return (
