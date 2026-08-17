@@ -2,6 +2,7 @@ import { createFileRoute, useSearch } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/site/BrandMark";
+import { reportGlitch } from "@/lib/telemetry";
 
 export const Route = createFileRoute("/checkout/done")({
   component: CheckoutDonePage,
@@ -37,6 +38,12 @@ function CheckoutDonePage() {
       })
       .catch((e) => {
         console.error("checkout verify", e);
+        // Phase 47 — checkout ka koi bhi glitch founder ke WhatsApp tak jata hai.
+        reportGlitch("checkout_error", `checkout verify failed: ${String(e?.message ?? e)}`, {
+          severity: "critical",
+          fingerprint: "checkout_error|verify",
+          meta: { checkout_id: checkoutId },
+        });
         setStatus("failed");
       });
   }, [checkoutId]);
