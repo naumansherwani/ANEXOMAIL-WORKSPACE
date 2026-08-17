@@ -276,7 +276,7 @@ function PlansPage() {
           </p>
         </section>
 
-        <section className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
+        <section data-ax-pricing="plans" className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
           {WORKSPACE_PLANS.map((p) => {
             const price = priceFor(p, cycle);
             return (
