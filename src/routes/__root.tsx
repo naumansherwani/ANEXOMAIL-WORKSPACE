@@ -18,6 +18,7 @@ import { SiteLock } from "@/components/site/SiteLock";
 import { FounderBar } from "@/components/site/FounderBar";
 import { VisitorBadge } from "@/components/site/VisitorBadge";
 import { registerServiceWorker } from "@/lib/pwa";
+import { startTelemetry } from "@/lib/telemetry";
 
 function NotFoundComponent() {
   return (
@@ -147,6 +148,11 @@ function RootComponent() {
   // Phase 28 — Cross-Platform: guarded SW registration (prod, non-preview only).
   useEffect(() => {
     registerServiceWorker();
+  }, []);
+
+  // Phase 47 — PostHog session replay + glitch reporting (WhatsApp alerts backend se).
+  useEffect(() => {
+    void startTelemetry();
   }, []);
 
   return (

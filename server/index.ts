@@ -40,6 +40,7 @@ import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./route
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
 import billingSupportRouter from "./routes/billing-support";
+import { glitchPublicRouter, founderGlitchRouter } from "./routes/glitch";
 import {
   billingSyncAuthRouter,
   billingSyncPublicRouter,
@@ -194,6 +195,12 @@ app.use("/api/public", billingSyncPublicRouter);
 app.use("/api/public", moveinPublicRouter);
 app.use("/api/movein", moveinRouter);
 app.use("/api/founder", founderMoveinRouter);
+
+// Phase 47 — GLITCH TRUTH -> WHATSAPP
+// public: /api/public/glitch/report · /trigger · /sweep (cron)
+// founder: /api/founder/glitch/health
+app.use("/api/public", glitchPublicRouter);
+app.use("/api/founder", founderGlitchRouter);
 
 // ANEXOChat: /api/chat/* Brain se HATA diya gaya hai — apni service `anexochat`
 // (src/anexochat.ts, port 3300). Caddy: /api/chat/* -> 127.0.0.1:3300.

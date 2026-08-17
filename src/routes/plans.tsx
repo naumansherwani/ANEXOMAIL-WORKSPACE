@@ -276,7 +276,7 @@ function PlansPage() {
           </p>
         </section>
 
-        <section className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
+        <section data-ax-pricing="plans" className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
           {WORKSPACE_PLANS.map((p) => {
             const price = priceFor(p, cycle);
             return (
@@ -310,6 +310,7 @@ function PlansPage() {
                 </ul>
                 <Link
                   to="/move-in"
+                  data-ax-price-cta={`plans:${p.id}`}
                   className="mt-7 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
                 >
                   Get started
