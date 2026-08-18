@@ -21,7 +21,17 @@ WHATSAPP_TOKEN=EAAG...            # permanent system user token
 WHATSAPP_PHONE_ID=1234567890      # phone number ID (number nahi)
 WHATSAPP_TO=923001234567          # founder ka number, + ke baghair
 WHATSAPP_TEMPLATE=anexomail_glitch  # khali chhodo to plain text bhejta hai
+WHATSAPP_MIN_SEVERITY=critical      # sirf critical WhatsApp par (error sirf log). 'error' = zyada alert
 CRON_SECRET=<already set>
+```
+
+## 3b. Server par files update (repo git nahi hai /opt/anexomail mein)
+```
+cd /opt/anexomail-web && git pull
+cp /opt/anexomail-web/server/routes/glitch.ts       /opt/anexomail/src/routes/glitch.ts
+cp /opt/anexomail-web/server/routes/billing-sync.ts /opt/anexomail/src/routes/billing-sync.ts
+cp /opt/anexomail-web/server/index.ts               /opt/anexomail/src/index.ts
+pm2 restart anexomail-leo
 ```
 ```
 pm2 restart anexomail-leo && pm2 logs anexomail-leo --lines 30 --nostream
