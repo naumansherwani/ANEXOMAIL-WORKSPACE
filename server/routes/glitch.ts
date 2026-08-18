@@ -25,6 +25,13 @@ const WA_TOKEN = process.env.WHATSAPP_TOKEN || "";
 const WA_PHONE_ID = process.env.WHATSAPP_PHONE_ID || "";
 const WA_TO = process.env.WHATSAPP_TO || "";
 const WA_TEMPLATE = process.env.WHATSAPP_TEMPLATE || "";
+// WhatsApp par sirf yeh severity ya us se ooper — default 'critical' (pagal na ho jao).
+// Baki sab DB mein log rehta hai aur /api/founder/glitch/health par dikhta hai.
+const WA_MIN_SEVERITY = (process.env.WHATSAPP_MIN_SEVERITY || "critical").toLowerCase();
+const SEV_RANK: Record<string, number> = { info: 0, warning: 1, error: 2, critical: 3 };
+function waWorthy(sev: string): boolean {
+  return (SEV_RANK[String(sev).toLowerCase()] ?? 2) >= (SEV_RANK[WA_MIN_SEVERITY] ?? 3);
+}
 const WA_API = "https://graph.facebook.com/v21.0";
 
 let db: SupabaseClient | null = null;
@@ -184,7 +191,18 @@ publicRouter.post("/glitch/sweep", async (req, res) => {
 
   let sent = 0;
   let failed = 0;
+  let skipped = 0;
   for (const a of (due as any[]) || []) {
+    if (!waWorthy(a.severity)) {
+      skipped += 1;
+      await db.rpc("glitch_alert_mark", {
+        p_id: a.id,
+        p_status: "muted",
+        p_ref: null,
+        p_error: `below_whatsapp_min_severity:${WA_MIN_SEVERITY}`,
+      });
+      continue;
+    }
     const out = await sendWhatsApp(a);
     if (out.ok) sent += 1;
     else failed += 1;
@@ -195,7 +213,7 @@ publicRouter.post("/glitch/sweep", async (req, res) => {
       p_error: out.error || null,
     });
   }
-  return res.json({ due: (due as any[])?.length || 0, sent, failed });
+  return res.json({ due: (due as any[])?.length || 0, sent, failed, skipped, min_severity: WA_MIN_SEVERITY });
 });
 
 founderRouter.get("/glitch/health", async (req, res) => {
@@ -211,6 +229,7 @@ founderRouter.get("/glitch/health", async (req, res) => {
   return res.json({
     ...(data as object),
     whatsapp_configured: Boolean(WA_TOKEN && WA_PHONE_ID && WA_TO),
+    whatsapp_min_severity: WA_MIN_SEVERITY,
     template: WA_TEMPLATE || null,
   });
 });
