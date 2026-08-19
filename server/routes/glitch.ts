@@ -135,52 +135,126 @@ function alertText(a: any): string {
   return lines.join("\n");
 }
 
-async function sendWhatsApp(a: any): Promise<{ ok: boolean; ref?: string; error?: string }> {
-  if (!WA_TOKEN || !WA_PHONE_ID || !WA_TO) return { ok: false, error: "whatsapp_not_configured" };
-
-  const body = WA_TEMPLATE
-    ? {
-        messaging_product: "whatsapp",
-        to: WA_TO,
-        type: "template",
-        template: {
-          name: WA_TEMPLATE,
-          language: { code: "en" },
-          components: [
-            {
-              type: "body",
-              parameters: [
-                { type: "text", text: String(a.severity) },
-                { type: "text", text: String(a.summary).slice(0, 200) },
-                { type: "text", text: String(a.route || "unknown") },
-                { type: "text", text: String(a.occurrences) },
-              ],
-            },
-          ],
-        },
-      }
-    : {
-        messaging_product: "whatsapp",
-        to: WA_TO,
-        type: "text",
-        text: { preview_url: false, body: alertText(a) },
-      };
-
+// ---- LEO diagnose (AI feature nahi deta — sirf diagnosis line) ----
+async function leoDiagnose(a: any): Promise<string | null> {
+  if (!LEO_DIAGNOSE) return null;
   try {
-    const r = await fetch(`${WA_API}/${WA_PHONE_ID}/messages`, {
+    const ctrl = new AbortController();
+    const t = setTimeout(() => ctrl.abort(), 12_000);
+    const r = await fetch(LEO_URL, {
       method: "POST",
-      headers: { authorization: `Bearer ${WA_TOKEN}`, "content-type": "application/json" },
-      body: JSON.stringify(body),
+      headers: { "content-type": "application/json", "x-internal": "glitch" },
+      signal: ctrl.signal,
+      body: JSON.stringify({
+        mode: "diagnose",
+        stream: false,
+        messages: [
+          {
+            role: "user",
+            content:
+              "Diagnose this production glitch in 3 short lines: likely cause, blast radius, first fix step. No marketing, no guessing beyond the data.\n\n" +
+              JSON.stringify(
+                {
+                  severity: a.severity,
+                  summary: a.summary,
+                  route: a.route,
+                  occurrences: a.occurrences,
+                  kind: a.kind,
+                  stack: String(a.stack || "").slice(0, 1500),
+                },
+                null,
+                2,
+              ),
+          },
+        ],
+      }),
     });
+    clearTimeout(t);
+    if (!r.ok) return null;
     const text = await r.text();
-    if (!r.ok) return { ok: false, error: `whatsapp_${r.status}: ${text.slice(0, 300)}` };
-    let ref: string | undefined;
     try {
-      ref = JSON.parse(text)?.messages?.[0]?.id;
+      const j = JSON.parse(text);
+      const out = j?.text || j?.reply || j?.message || j?.choices?.[0]?.message?.content;
+      return out ? String(out).slice(0, 1200) : null;
     } catch {
-      /* ref optional */
+      return text.slice(0, 1200) || null;
     }
-    return { ok: true, ref };
+  } catch {
+    return null;
+  }
+}
+
+// ---- minimal SMTP client (local Postfix, no auth, no deps) ----
+function smtpSend(to: string, subject: string, body: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    const sock = net.createConnection({ host: SMTP_HOST, port: SMTP_PORT });
+    sock.setTimeout(15_000);
+    let buf = "";
+    const steps = [
+      `EHLO anexomail.com`,
+      `MAIL FROM:<${MAIL_FROM}>`,
+      `RCPT TO:<${to}>`,
+      `DATA`,
+    ];
+    let i = -1;
+    let dataSent = false;
+    const fail = (e: any) => {
+      try {
+        sock.destroy();
+      } catch {
+        /* ignore */
+      }
+      reject(new Error(String(e?.message || e).slice(0, 300)));
+    };
+    sock.on("error", fail);
+    sock.on("timeout", () => fail(new Error("smtp_timeout")));
+    sock.on("data", (chunk) => {
+      buf += chunk.toString("utf8");
+      if (!/\r?\n$/.test(buf)) return;
+      const line = buf.trim().split(/\r?\n/).pop() || "";
+      buf = "";
+      const code = Number(line.slice(0, 3));
+      if (code >= 400) return fail(new Error(`smtp_${line.slice(0, 120)}`));
+
+      if (dataSent) {
+        sock.write("QUIT\r\n");
+        sock.end();
+        return resolve();
+      }
+      i += 1;
+      if (i < steps.length) return sock.write(steps[i] + "\r\n");
+
+      // after DATA accepted (354) -> payload
+      const headers = [
+        `From: ANEXOMAIL Glitch Radar <${MAIL_FROM}>`,
+        `To: ${to}`,
+        `Subject: ${subject.replace(/[\r\n]/g, " ").slice(0, 180)}`,
+        `Date: ${new Date().toUTCString()}`,
+        `Auto-Submitted: auto-generated`,
+        `X-ANEXOMAIL-Alert: glitch`,
+        `MIME-Version: 1.0`,
+        `Content-Type: text/plain; charset=utf-8`,
+      ].join("\r\n");
+      const safeBody = body.replace(/\r?\n\./g, "\r\n..").replace(/\n/g, "\r\n");
+      dataSent = true;
+      sock.write(`${headers}\r\n\r\n${safeBody}\r\n.\r\n`);
+    });
+  });
+}
+
+async function sendAlertEmail(a: any): Promise<{ ok: boolean; ref?: string; error?: string }> {
+  if (!MAIL_TO) return { ok: false, error: "glitch_alert_to_not_configured" };
+  const diag = await leoDiagnose(a);
+  const subject = `[${String(a.severity).toUpperCase()}] ANEXOMAIL glitch — ${String(
+    a.summary,
+  ).slice(0, 90)}`;
+  const body =
+    alertText(a) +
+    (diag ? `\n\n— LEO diagnosis —\n${diag}` : "") +
+    `\n\nFounder radar: https://anexomail.com/app/founder/glitch`;
+  try {
+    await smtpSend(MAIL_TO, subject, body);
+    return { ok: true, ref: `mail:${a.id}` };
   } catch (e: any) {
     return { ok: false, error: String(e?.message || e).slice(0, 300) };
   }
@@ -203,17 +277,22 @@ publicRouter.post("/glitch/sweep", async (req, res) => {
   let failed = 0;
   let skipped = 0;
   for (const a of (due as any[]) || []) {
-    if (!waWorthy(a.severity)) {
+    if (!alertWorthy(a.severity)) {
       skipped += 1;
       await db.rpc("glitch_alert_mark", {
         p_id: a.id,
         p_status: "muted",
         p_ref: null,
-        p_error: `below_whatsapp_min_severity:${WA_MIN_SEVERITY}`,
+        p_error: `below_min_severity:${MIN_SEVERITY}`,
       });
       continue;
     }
-    const out = await sendWhatsApp(a);
+    // ek-baar ki hichki par email nahi — occurrences threshold tak pending rehta hai
+    if (Number(a.occurrences || 1) < MIN_OCCURRENCES) {
+      skipped += 1;
+      continue;
+    }
+    const out = await sendAlertEmail(a);
     if (out.ok) sent += 1;
     else failed += 1;
     await db.rpc("glitch_alert_mark", {
@@ -223,7 +302,16 @@ publicRouter.post("/glitch/sweep", async (req, res) => {
       p_error: out.error || null,
     });
   }
-  return res.json({ due: (due as any[])?.length || 0, sent, failed, skipped, min_severity: WA_MIN_SEVERITY });
+  return res.json({
+    due: (due as any[])?.length || 0,
+    sent,
+    failed,
+    skipped,
+    min_severity: MIN_SEVERITY,
+    min_occurrences: MIN_OCCURRENCES,
+    channel: MAIL_TO ? "email" : "unconfigured",
+    leo_diagnose: LEO_DIAGNOSE,
+  });
 });
 
 founderRouter.get("/glitch/health", async (req, res) => {
@@ -238,9 +326,13 @@ founderRouter.get("/glitch/health", async (req, res) => {
   if (error) return res.status(500).json({ error: "health_failed" });
   return res.json({
     ...(data as object),
-    whatsapp_configured: Boolean(WA_TOKEN && WA_PHONE_ID && WA_TO),
-    whatsapp_min_severity: WA_MIN_SEVERITY,
-    template: WA_TEMPLATE || null,
+    channel: "email",
+    email_configured: Boolean(MAIL_TO),
+    alert_to: MAIL_TO || null,
+    smtp: `${SMTP_HOST}:${SMTP_PORT}`,
+    min_severity: MIN_SEVERITY,
+    min_occurrences: MIN_OCCURRENCES,
+    leo_diagnose: LEO_DIAGNOSE,
   });
 });
 
