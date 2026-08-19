@@ -1,4 +1,4 @@
-// ANEXOMAIL — Phase 47: GLITCH TRUTH -> WHATSAPP (Server 2 / Brain, port 3100)
+// ANEXOMAIL — Phase 47: GLITCH TRUTH -> EMAIL + LEO DIAGNOSE (Brain, port 3100)
 //
 // NANO COMMAND (server par):
 //   cp /opt/anexomail/src/routes/glitch.ts /opt/anexomail/src/routes/glitch.ts.bak.$(date +%s) 2>/dev/null
@@ -8,31 +8,41 @@
 // Routes:
 //   POST /api/public/glitch/report    frontend  — ek glitch (noise filter DB mein)
 //   POST /api/public/glitch/trigger   frontend  — rage click / dead click
-//   POST /api/public/glitch/sweep     cron      — pending alerts -> WhatsApp (x-cron-secret)
+//   POST /api/public/glitch/sweep     cron      — pending alerts -> EMAIL (x-cron-secret)
 //   GET  /api/founder/glitch/health   auth      — counters + top glitches
 //
 // Env: SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY, CRON_SECRET,
-//      WHATSAPP_TOKEN, WHATSAPP_PHONE_ID, WHATSAPP_TO,
-//      WHATSAPP_TEMPLATE (optional; na ho to plain text message)
+//      GLITCH_ALERT_TO         (founder inbox, e.g. hello@anexomail.com)
+//      GLITCH_ALERT_FROM       (default noreply@anexomail.com)
+//      GLITCH_SMTP_HOST/PORT   (default 127.0.0.1:25 — local Postfix, no auth)
+//      GLITCH_MIN_SEVERITY     (default critical)
+//      GLITCH_MIN_OCCURRENCES  (default 1 — 2+ = pehli chhoti hichki chup)
+//      LEO_DIAGNOSE=true       (LEO se short diagnosis, email mein add)
+//      LEO_URL                 (default http://127.0.0.1:3100/api/leo)
 import { Router } from "express";
+import net from "node:net";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
   process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const CRON_SECRET = process.env.CRON_SECRET || "";
-const WA_TOKEN = process.env.WHATSAPP_TOKEN || "";
-const WA_PHONE_ID = process.env.WHATSAPP_PHONE_ID || "";
-const WA_TO = process.env.WHATSAPP_TO || "";
-const WA_TEMPLATE = process.env.WHATSAPP_TEMPLATE || "";
-// WhatsApp par sirf yeh severity ya us se ooper — default 'critical' (pagal na ho jao).
+// EMAIL channel (WhatsApp retired — founder decision 19 Aug 2026)
+const MAIL_TO = process.env.GLITCH_ALERT_TO || "";
+const MAIL_FROM = process.env.GLITCH_ALERT_FROM || "noreply@anexomail.com";
+const SMTP_HOST = process.env.GLITCH_SMTP_HOST || "127.0.0.1";
+const SMTP_PORT = Number(process.env.GLITCH_SMTP_PORT) || 25;
+// Sirf yeh severity ya us se ooper email hoti hai — default 'critical'.
 // Baki sab DB mein log rehta hai aur /api/founder/glitch/health par dikhta hai.
-const WA_MIN_SEVERITY = (process.env.WHATSAPP_MIN_SEVERITY || "critical").toLowerCase();
+const MIN_SEVERITY = (process.env.GLITCH_MIN_SEVERITY || "critical").toLowerCase();
+// Ek hi baar ki hichki par email nahi — jab tak occurrences is se kam hain, alert wait karta hai.
+const MIN_OCCURRENCES = Math.max(1, Number(process.env.GLITCH_MIN_OCCURRENCES) || 1);
+const LEO_DIAGNOSE = String(process.env.LEO_DIAGNOSE || "").toLowerCase() === "true";
+const LEO_URL = process.env.LEO_URL || "http://127.0.0.1:3100/api/leo";
 const SEV_RANK: Record<string, number> = { info: 0, warning: 1, error: 2, critical: 3 };
-function waWorthy(sev: string): boolean {
-  return (SEV_RANK[String(sev).toLowerCase()] ?? 2) >= (SEV_RANK[WA_MIN_SEVERITY] ?? 3);
+function alertWorthy(sev: string): boolean {
+  return (SEV_RANK[String(sev).toLowerCase()] ?? 2) >= (SEV_RANK[MIN_SEVERITY] ?? 3);
 }
-const WA_API = "https://graph.facebook.com/v21.0";
 
 let db: SupabaseClient | null = null;
 if (SUPABASE_URL && SERVICE_KEY) {
