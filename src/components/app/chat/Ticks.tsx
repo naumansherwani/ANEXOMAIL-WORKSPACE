@@ -88,7 +88,9 @@ function Checks({ double, read }: { double: boolean; read: boolean }) {
       { strokeDasharray: 24, strokeDashoffset: 24 },
       { strokeDashoffset: 0, duration: 0.32, stagger: 0.07, ease: "power2.out" },
     );
-    return () => tween.kill();
+    return () => {
+      tween.kill();
+    };
   }, [double, read]);
 
   return (
