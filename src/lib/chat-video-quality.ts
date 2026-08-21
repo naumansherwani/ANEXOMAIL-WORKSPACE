@@ -250,7 +250,7 @@ export async function applyRung(
   params.encodings = (params.encodings?.length ? params.encodings : wanted).map((e, i) => ({
     ...e,
     active: true,
-    maxBitrate: wanted[i]?.maxBitrate ?? wanted[0]!.maxBitrate,
+    maxBitrate: Number(wanted[i]?.maxBitrate ?? wanted[0]?.maxBitrate ?? target.maxBitrate),
     maxFramerate: target.maxFramerate,
     scaleResolutionDownBy: wanted[i]?.scaleResolutionDownBy ?? 1,
   }));
