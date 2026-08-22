@@ -567,3 +567,149 @@ chatRouter.get("/video/calls/health", async (req, res) => {
   const recent = await db!.rpc("chat_call_recent", { _user: me.id, _limit: 40 });
   res.json({ health: health.data ?? {}, calls: recent.data ?? [] });
 });
+
+/* ==========================================================================
+ * PHASE 11 — ATTACHMENTS + AVATARS
+ * Bucket `chat-media` private hai. Client ko sirf signed upload URL milta hai;
+ * padhne ke liye signed download URL. Row `ready` hone tak message par nahi
+ * lagta — is liye adhura attachment kabhi nazar nahi aata.
+ * ========================================================================== */
+const MEDIA_BUCKET = "chat-media";
+const MEDIA_MAX_BYTES = 25 * 1024 * 1024;
+const MEDIA_TYPES = ["image/png", "image/jpeg", "image/webp", "image/avif"];
+
+chatRouter.post("/attachments/ticket", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const filename = String(req.body?.filename || "image");
+  const contentType = String(req.body?.content_type || "");
+  const bytes = Number(req.body?.bytes || 0);
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  if (!MEDIA_TYPES.includes(contentType)) {
+    return res.status(400).json({ error: "unsupported_type", allowed: MEDIA_TYPES });
+  }
+  if (!bytes || bytes > MEDIA_MAX_BYTES) {
+    return res.status(400).json({ error: "too_large", max_bytes: MEDIA_MAX_BYTES });
+  }
+
+  const created = await db!.rpc("chat_attachment_new", {
+    _user: me.id,
+    _conv: conv,
+    _filename: filename,
+    _content_type: contentType,
+    _bytes: bytes,
+    _width: req.body?.width ? Number(req.body.width) : null,
+    _height: req.body?.height ? Number(req.body.height) : null,
+  });
+  if (created.error) return fail(res, created.error);
+  const row = Array.isArray(created.data) ? created.data[0] : created.data;
+  if (!row?.storage_path) return res.status(500).json({ error: "ticket_failed" });
+
+  const main = await db!.storage.from(MEDIA_BUCKET).createSignedUploadUrl(row.storage_path);
+  if (main.error) return res.status(500).json({ error: main.error.message });
+  const thumb = row.thumb_path
+    ? await db!.storage.from(MEDIA_BUCKET).createSignedUploadUrl(row.thumb_path)
+    : null;
+
+  res.json({
+    attachment_id: row.attachment_id,
+    upload_url: main.data.signedUrl,
+    thumb_upload_url: thumb?.data?.signedUrl ?? null,
+    path: row.storage_path,
+  });
+});
+
+chatRouter.post("/attachments/commit", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const id = String(req.body?.attachment_id || "");
+  if (!id) return res.status(400).json({ error: "attachment_required" });
+  const { data, error } = await db!.rpc("chat_attachment_commit", {
+    _user: me.id,
+    _attachment: id,
+    _width: req.body?.width ? Number(req.body.width) : null,
+    _height: req.body?.height ? Number(req.body.height) : null,
+  });
+  if (error) return fail(res, error);
+  if (data !== true) return res.status(404).json({ error: "attachment_not_found" });
+  res.json({ ok: true });
+});
+
+/** Send ke baad message se jodna. */
+chatRouter.post("/attachments/attach", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const ids: string[] = Array.isArray(req.body?.attachment_ids)
+    ? req.body.attachment_ids.map((v: unknown) => String(v))
+    : [];
+  if (!message || ids.length === 0) {
+    return res.status(400).json({ error: "message_and_attachments_required" });
+  }
+  const { data, error } = await db!.rpc("chat_attachment_attach", {
+    _user: me.id,
+    _message: message,
+    _ids: ids,
+  });
+  if (error) return fail(res, error);
+  res.json({ attached: Number(data ?? 0) });
+});
+
+/** Signed read URLs — private bucket, is liye har baar fresh. */
+chatRouter.get("/attachments/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!
+    .from("chat_attachments")
+    .select("id, filename, content_type, bytes, width, height, storage_path, thumb_path, state")
+    .eq("message_id", String(req.params.messageId))
+    .eq("state", "ready");
+  if (error) return fail(res, error);
+
+  const rows = data ?? [];
+  const out = [];
+  for (const r of rows) {
+    const url = await db!.storage.from(MEDIA_BUCKET).createSignedUrl(r.storage_path, 900);
+    const thumb = r.thumb_path
+      ? await db!.storage.from(MEDIA_BUCKET).createSignedUrl(r.thumb_path, 900)
+      : null;
+    out.push({
+      id: r.id,
+      filename: r.filename,
+      content_type: r.content_type,
+      bytes: r.bytes,
+      width: r.width,
+      height: r.height,
+      url: url.data?.signedUrl ?? null,
+      thumb_url: thumb?.data?.signedUrl ?? null,
+    });
+  }
+  res.json({ attachments: out, viewer: me.id });
+});
+
+chatRouter.post("/profile/avatar/ticket", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const contentType = String(req.body?.content_type || "image/webp");
+  if (!MEDIA_TYPES.includes(contentType)) {
+    return res.status(400).json({ error: "unsupported_type", allowed: MEDIA_TYPES });
+  }
+  const path = `avatars/${me.id}/${Date.now()}.webp`;
+  const signed = await db!.storage.from(MEDIA_BUCKET).createSignedUploadUrl(path);
+  if (signed.error) return res.status(500).json({ error: signed.error.message });
+  res.json({ upload_url: signed.data.signedUrl, path });
+});
+
+chatRouter.post("/profile/avatar/commit", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const path = String(req.body?.path || "");
+  if (!path.startsWith(`avatars/${me.id}/`)) {
+    return res.status(400).json({ error: "path_not_yours" });
+  }
+  const { error } = await db!.rpc("chat_avatar_set", { _user: me.id, _path: path });
+  if (error) return fail(res, error);
+  const signed = await db!.storage.from(MEDIA_BUCKET).createSignedUrl(path, 3600);
+  res.json({ ok: true, path, url: signed.data?.signedUrl ?? null });
+});
