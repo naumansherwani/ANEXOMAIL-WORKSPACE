@@ -187,3 +187,27 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor**.
 - Fazool alert band: noise rules · fingerprint dedupe · 12 alert/hour cap ·
   console.error = warning only · rage click sirf 3+ session par
 - Ops + WhatsApp setup: `docs/glitch-whatsapp.md`
+
+## anexochat_phase10b_8k_video.sql — ANEXOChat Phase 10B (adaptive 8K truth)
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor** (Phase 10A ke BAAD).
+
+- `chat_call_sessions` + columns: `capture_width/height` · `capture_native_8k` ·
+  `max_encoded_*` · `max_decoded_*` · `top_rung` · `hw_accelerated` · `downgrades` · `upgrades`
+- `chat_call_stats` + columns: capture/encoded/decoded size · `rung` ·
+  `quality_limitation` · `available_out_kbps` · `frames_dropped` · `power_efficient`
+- `chat_call_stat()` update: wahi ownership check (`not_your_call`) + naye fields
+- View `chat_call_resolution_truth` — 8K asal mein kitni baar chala (measured, not marketed)
+- Verify: `select * from public.chat_call_resolution_truth limit 5;`
+
+## anexochat_phase11_attachments.sql — ANEXOChat Phase 11 (attachments + avatars)
+
+Kahan chalti hai: **Supabase #4 -> SQL Editor**.
+
+- Bucket `chat-media` (private, 25MB cap, sirf png/jpeg/webp/avif)
+- Table `chat_attachments` (pending -> ready) + RLS: sirf conversation ke participants
+- `chat_members` + `avatar_path` / `avatar_updated_at`
+- Functions: `chat_attachment_new` · `chat_attachment_commit` · `chat_attachment_attach` · `chat_avatar_set`
+- Backend routes: `POST /api/chat/attachments/ticket|commit|attach` ·
+  `GET /api/chat/attachments/:messageId` · `POST /api/chat/profile/avatar/ticket|commit`
+- Verify: `select state, count(*) from public.chat_attachments group by 1;`
