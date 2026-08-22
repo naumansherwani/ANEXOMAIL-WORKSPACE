@@ -104,12 +104,7 @@ export function MessageStream({
 }
 
 function StateIcon({ state }: { state: MessageState }) {
-  if (state === "sending") return <Loader2 className="size-3 animate-spin" />;
-  if (state === "waiting") return <Clock className="size-3" />;
-  if (state === "failed") return <ShieldAlert className="size-3" />;
-  if (state === "read") return <CheckCheck className="size-3" />;
-  if (state === "delivered") return <CheckCheck className="size-3 opacity-60" />;
-  return <Check className="size-3 opacity-60" />;
+  return <Tick state={state} />;
 }
 
 function stamp(value: string) {
