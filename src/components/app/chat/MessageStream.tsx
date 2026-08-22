@@ -1,19 +1,7 @@
-import {
-  Check,
-  CheckCheck,
-  Clock,
-  Copy,
-  EyeOff,
-  Loader2,
-  Pencil,
-  Pin,
-  Reply,
-  ShieldAlert,
-  Smile,
-  Trash2,
-} from "lucide-react";
+import { Copy, EyeOff, Pencil, Pin, Reply, Smile, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { Tick } from "@/components/app/chat/Ticks";
 import {
   DELETE_WINDOW_MS,
   EDIT_WINDOW_MS,
@@ -116,12 +104,7 @@ export function MessageStream({
 }
 
 function StateIcon({ state }: { state: MessageState }) {
-  if (state === "sending") return <Loader2 className="size-3 animate-spin" />;
-  if (state === "waiting") return <Clock className="size-3" />;
-  if (state === "failed") return <ShieldAlert className="size-3" />;
-  if (state === "read") return <CheckCheck className="size-3" />;
-  if (state === "delivered") return <CheckCheck className="size-3 opacity-60" />;
-  return <Check className="size-3 opacity-60" />;
+  return <Tick state={state} />;
 }
 
 function stamp(value: string) {
