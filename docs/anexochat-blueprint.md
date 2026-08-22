@@ -164,6 +164,24 @@ Delete for me: removes from user's view.
 Delete for everyone: 1-hour initial window.
 Business/audit rules must remain consistent with the published retention policy.
 
+### PHASE 10 — NEW ADDED (shipped 15 Aug 2026) — ANEXOVIDEOCHAT 10A + 10B
+
+Yeh Phase 10 ke ANDAR ka hissa hai (naya phase nahi). Business Pro + founder only.
+
+**10A — ultra-low-latency call engine** (`src/lib/chat-call.ts`, `src/lib/chat-signal.ts`, `sql/anexochat_phase10a_call_engine.sql`)
+- Unified Plan · Trickle ICE · perfect negotiation · `restartIce()` watchdog (WiFi→4G par black screen nahi).
+- P2P preferred + coturn TURN fallback (host `anexovideocall.anexomail.com`, ephemeral HMAC creds; `TURN_SECRET` browser par kabhi nahi). TURN na ho to UI sach bolta hai: "P2P only".
+- Signaling: Supabase Realtime broadcast `call:<id>` (persistent) + durable rows catch-up. Polling primary kabhi nahi.
+- Telemetry 3 layers: sab ko badge (🟢/🟡/🔴 + resolution + Connected/Reconnecting) · Business Pro tap-to-expand (RTT/jitter/loss/P2P-TURN/bitrate/FPS/res) · founder god-view `/app/founder/calls` (p50/p95 setup, relay %, reconnect rate).
+
+**10B — adaptive 8K pipeline, "no fake 8K"** (`src/lib/chat-video-quality.ts`, `sql/anexochat_phase10b_8k_video.sql`)
+- Ladder: 8K (7680×4320, cap 60 Mbps) → 4K → 1440p → 1080p → 720p → 480p, default AUTO.
+- Codec order AV1 → VP9 → H.264 (VP8 last resort), `RTCRtpSender.getCapabilities('video')` se detect — assume kuch nahi.
+- Label sirf asli measured track/encode/decode reading se: 7680×4320 na mile to "8K" kabhi nahi likha jata; upscale se 8K banana mamnu.
+- CPU/bandwidth/encoder limit par khud neeche, halaat theek hone par khud upar; 8K na milne par call kabhi drop nahi hoti.
+- DB truth: `chat_call_sessions.capture_native_8k` / `max_encoded_*` / `max_decoded_*` / `top_rung` + view `chat_call_resolution_truth` (native_8k_capture · encoded_8k · decoded_8k · av1_calls). SQL self-healing hai — 10A tables missing ho to khud bana leti hai.
+- Multi-party simulcast/SVC SFU-ready shape mein bheja jata hai; TURN ko SFU kehna mamnu (asli group SFU = baad ka phase).
+
 ## PHASE 11 — OFFLINE-FIRST OUTBOX
 
 ```text
@@ -171,6 +189,20 @@ Message → Pending → Local outbox → Connection restored → Server reconcil
 ```
 
 Never show "Sent" while the message is only sitting locally. User sees: `Waiting to send`.
+
+### PHASE 11 — NEW ADDED (shipped 15 Aug 2026) — MESSAGE ENRICHMENT + MULTITASKING
+
+1. **Image / screenshot attachments** — `src/lib/chat-attachments.ts` + `sql/anexochat_phase11_attachments.sql` + `server/routes/chat.ts` (`/api/chat/attachments/ticket|commit|attach|:messageId`).
+   - Drag-drop + Ctrl/Cmd+V paste, max 25 MB, PNG/JPEG/WebP/AVIF (GIF → PNG).
+   - EXIF/GPS strip client par (canvas re-encode) + client-side thumbnail (320px WebP).
+   - Private bucket `chat-media`, signed URLs only; service key browser par kabhi nahi.
+   - Progress asli XHR reading se — fake 100% kabhi nahi; row commit ke baad hi attachment dikhta hai (`state: pending → ready`).
+2. **Per-conversation drafts** — `src/lib/chat-drafts.ts`: conversation switch par draft zinda, local-only, draft kabhi server par nahi jata aur kabhi "Sent" nahi dikhta.
+3. **Multitasking** — `src/lib/chat-multitask.ts`: split view (do asli conversations, dono live, apni apni draft, `ax.chat.split`) + pop-out window (`/app/chat?c=<id>&pane=1`, pane mode mein list/nav chhupti hai). Panel kabhi nahi chhutta.
+4. **Lottie + GSAP tick states** — `src/components/app/chat/Ticks.tsx`: waiting/sending = inline Lottie pulse, sent/delivered/read = GSAP stroke-draw check(s), failed = `!` badge. Label + `sr-only` text saath (a11y); state sirf `messageState()` se aati hai — invent kabhi nahi.
+5. **Avatars** — `chat_members.avatar_path` + `chat_avatar_set()` RPC + `/api/chat/profile/avatar/ticket|commit` (512px WebP, wahi honest pipeline).
+
+
 
 ## PHASE 12 — CROSS-DEVICE CONTINUITY
 
