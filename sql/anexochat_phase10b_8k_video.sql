@@ -5,6 +5,63 @@
 -- TRUTH RULE: "8K" tab hi likha jata hai jab asli 7680x4320 measure hua ho.
 -- ============================================================================
 
+-- 0) SELF-HEALING: agar Phase 10A nahi chali to base tables khud bana do -------
+do $$
+begin
+  if to_regclass('public.chat_call_sessions') is null then
+    create table public.chat_call_sessions (
+      id               uuid primary key default gen_random_uuid(),
+      conversation_id  uuid not null,
+      workspace_id     uuid,
+      caller_id        uuid not null,
+      peer_id          uuid,
+      role             text not null default 'caller' check (role in ('caller','callee')),
+      started_at       timestamptz not null default now(),
+      connected_at     timestamptz,
+      ended_at         timestamptz,
+      setup_ms         integer,
+      path             text check (path in ('p2p','relay','unknown')),
+      video_codec      text,
+      audio_codec      text default 'opus',
+      ice_restarts     integer not null default 0,
+      end_reason       text,
+      signaling        text check (signaling in ('webtransport','realtime','rows'))
+    );
+    create index chat_call_sessions_conv   on public.chat_call_sessions (conversation_id, started_at desc);
+    create index chat_call_sessions_recent on public.chat_call_sessions (started_at desc);
+    grant select, insert on public.chat_call_sessions to authenticated;
+    grant all on public.chat_call_sessions to service_role;
+    alter table public.chat_call_sessions enable row level security;
+    create policy chat_call_sessions_own on public.chat_call_sessions for select to authenticated
+      using (caller_id = auth.uid() or peer_id = auth.uid());
+  end if;
+
+  if to_regclass('public.chat_call_stats') is null then
+    create table public.chat_call_stats (
+      id            bigserial primary key,
+      session_id    uuid not null references public.chat_call_sessions(id) on delete cascade,
+      at            timestamptz not null default now(),
+      rtt_ms        integer,
+      jitter_ms     integer,
+      loss_pct      numeric(5,2),
+      bitrate_kbps  integer,
+      fps           integer,
+      width         integer,
+      height        integer,
+      path          text check (path in ('p2p','relay','unknown')),
+      video_codec   text,
+      quality       text check (quality in ('good','fair','poor'))
+    );
+    create index chat_call_stats_session on public.chat_call_stats (session_id, at);
+    grant select, insert on public.chat_call_stats to authenticated;
+    grant all on public.chat_call_stats to service_role;
+    alter table public.chat_call_stats enable row level security;
+    create policy chat_call_stats_own on public.chat_call_stats for select to authenticated
+      using (exists (select 1 from public.chat_call_sessions s
+                     where s.id = session_id and (s.caller_id = auth.uid() or s.peer_id = auth.uid())));
+  end if;
+end $$;
+
 -- 1) session par asli capture / encode / decode truth --------------------------
 do $$
 begin
