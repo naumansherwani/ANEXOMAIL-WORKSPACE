@@ -5,12 +5,13 @@
 -- ============================================================================
 
 -- 0) private bucket ----------------------------------------------------------
+-- PHASE 11 — NEW ADDED: per-file limit 25 MB -> 200 MB (209715200 bytes)
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
-values ('chat-media', 'chat-media', false, 26214400,
+values ('chat-media', 'chat-media', false, 209715200,
         array['image/png','image/jpeg','image/webp','image/avif'])
 on conflict (id) do update
   set public = false,
-      file_size_limit = 26214400,
+      file_size_limit = 209715200,
       allowed_mime_types = array['image/png','image/jpeg','image/webp','image/avif'];
 
 -- 1) attachments -------------------------------------------------------------

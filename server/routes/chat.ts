@@ -575,7 +575,7 @@ chatRouter.get("/video/calls/health", async (req, res) => {
  * lagta — is liye adhura attachment kabhi nazar nahi aata.
  * ========================================================================== */
 const MEDIA_BUCKET = "chat-media";
-const MEDIA_MAX_BYTES = 25 * 1024 * 1024;
+const MEDIA_MAX_BYTES = 200 * 1024 * 1024; // Phase 11 — NEW ADDED (25 MB -> 200 MB)
 const MEDIA_TYPES = ["image/png", "image/jpeg", "image/webp", "image/avif"];
 
 chatRouter.post("/attachments/ticket", async (req, res) => {
