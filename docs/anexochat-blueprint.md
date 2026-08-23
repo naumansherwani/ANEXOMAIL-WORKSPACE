@@ -650,8 +650,9 @@ Yeh additions existing phases ke ANDAR add hote hain — naya phase nahi banta, 
 | Phase 3 | Message identity + idempotency + duplicate-send protection + ordering |
 | Phase 4 | Identity, membership, roles and account lifecycle |
 | Phase 5 | Authorization boundary + RLS enforcement model |
-| Phase 9 | Durable event/state ledger for message lifecycle |
-| Phase 11 | Offline outbox reconciliation + retry correctness |
+| Phase 9 | Durable event/state ledger for message lifecycle → **SHIPPED: Lottie/GSAP tick states (Phase 11 NEW ADDED §4)** |
+| Phase 10 | Edit/delete windows + **SHIPPED: ANEXOVideoChat 10A call engine + 10B adaptive 8K "no fake 8K"** |
+| Phase 11 | Offline outbox reconciliation + retry correctness → **SHIPPED: attachments (EXIF-strip, signed URLs), per-conversation drafts, split view + pop-out, avatars** |
 | Phase 12 | Cross-device state reconciliation + session continuity |
 | Phase 13 | File versioning + storage/transfer distinction |
 | Phase 14 | Chunk integrity + checksum/hash verification |
