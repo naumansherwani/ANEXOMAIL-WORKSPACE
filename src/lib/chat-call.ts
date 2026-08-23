@@ -17,6 +17,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { chatCall } from "./chat-transport";
 import { openSignalLink, type SignalFrame, type SignalLink, type SignalTransport } from "./chat-signal";
+// PHASE 10B — NEW ADDED: adaptive 8K ladder (real capture only, no fake 8K)
+import {
+  applyCodecPreference,
+  applyRung,
+  captureConstraints,
+  codecSupport,
+  labelForSize,
+  LADDER,
+  QualityLadder,
+  readCapture,
+  rungIndex,
+  sendEncodings,
+  TOP_RUNG,
+  type CaptureReport,
+  type CodecSupport,
+  type QualityChoice,
+  type QualityRung,
+} from "./chat-video-quality";
 
 export type CallPhase =
   | "idle"
@@ -45,6 +63,16 @@ export type CallStats = {
   quality: CallQuality | null;
   setup_ms: number | null;
   ice_restarts: number;
+  // PHASE 10B — NEW ADDED: encode/decode truth, alag alag readings
+  encoded_width: number | null;
+  encoded_height: number | null;
+  decoded_width: number | null;
+  decoded_height: number | null;
+  limitation: string | null; // qualityLimitationReason (cpu | bandwidth | none)
+  available_out_kbps: number | null;
+  frames_dropped: number | null;
+  rung: QualityRung | null;
+  rung_label: string;
 };
 
 const EMPTY_STATS: CallStats = {
@@ -61,6 +89,15 @@ const EMPTY_STATS: CallStats = {
   quality: null,
   setup_ms: null,
   ice_restarts: 0,
+  encoded_width: null,
+  encoded_height: null,
+  decoded_width: null,
+  decoded_height: null,
+  limitation: null,
+  available_out_kbps: null,
+  frames_dropped: null,
+  rung: null,
+  rung_label: "measuring",
 };
 
 /** STUN free + TURN (coturn) ephemeral creds server se. Secret frontend pe nahi. */
@@ -107,11 +144,8 @@ function preferCodecs(transceiver: RTCRtpTransceiver) {
 }
 
 /** Simulcast: 3 layers (full / half / quarter) — receiver/SFU jo chahe le. */
-const SIMULCAST: RTCRtpEncodingParameters[] = [
-  { rid: "h", maxBitrate: 2_500_000, scaleResolutionDownBy: 1 },
-  { rid: "m", maxBitrate: 800_000, scaleResolutionDownBy: 2 },
-  { rid: "l", maxBitrate: 250_000, scaleResolutionDownBy: 4 },
-];
+// PHASE 10B — NEW ADDED: layers ab ladder ke rung se bante hain
+// (`sendEncodings(rung)` = h/m/l, SFU-ready shape; TURN ko SFU kehna mamnu).
 
 export type CallHandle = ReturnType<typeof useCall>;
 

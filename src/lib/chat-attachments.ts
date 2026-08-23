@@ -12,7 +12,7 @@
  */
 import { chatCall } from "@/lib/chat-transport";
 
-export const MAX_BYTES = 25 * 1024 * 1024; // 25 MB per image
+export const MAX_BYTES = 200 * 1024 * 1024; // 200 MB per image (Phase 11 — NEW ADDED)
 const THUMB_EDGE = 320;
 
 export type UploadState = "preparing" | "uploading" | "committing" | "done" | "failed";
@@ -106,7 +106,7 @@ export async function uploadImage(
     return null;
   }
   if (file.size > MAX_BYTES) {
-    onChange({ state: "failed", error: "Image is larger than 25 MB." });
+    onChange({ state: "failed", error: "Image is larger than 200 MB." });
     return null;
   }
 
