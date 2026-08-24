@@ -13,6 +13,16 @@ import { useEffect, useRef, useState } from "react";
 
 import type { CallPhase, CallStats } from "@/lib/chat-call";
 import type { SignalTransport } from "@/lib/chat-signal";
+// PHASE 10B — NEW ADDED: honest quality selector (AUTO default)
+import {
+  LADDER,
+  labelForSize,
+  rungIndex,
+  type CaptureReport,
+  type CodecSupport,
+  type QualityChoice,
+  type QualityRung,
+} from "@/lib/chat-video-quality";
 
 const DOT: Record<string, string> = {
   good: "bg-emerald-500",
