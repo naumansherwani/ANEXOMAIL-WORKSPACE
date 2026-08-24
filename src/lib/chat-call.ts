@@ -625,20 +625,30 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           ? Math.round(performance.now() - startedAt.current)
           : null;
 
-      // Congestion mein audio pehle: video ka bitrate cap girao
-      if (next.quality === "poor") {
-        const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
-        const params = sender?.getParameters();
-        if (sender && params?.encodings?.length) {
-          const layers = params.encodings.length;
-          params.encodings = params.encodings.map((e, idx) => ({
-            ...e,
-            active: idx === layers - 1 ? true : idx === 0 ? false : e.active !== false,
-            maxBitrate: Math.max(120_000, Math.floor((e.maxBitrate ?? 800_000) * 0.6)),
-          }));
-          await sender.setParameters(params).catch(() => {});
+      // PHASE 10B — NEW ADDED: adaptive ladder (8K -> 480p aur wapas upar).
+      // AUTO par har 2s sample pe max 1 qadam; call kabhi 8K na milne par
+      // disconnect nahi hoti. Manual choice par rung pinned rehta hai.
+      const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+      const vTrack = localRef.current?.getVideoTracks()[0];
+      if (choiceRef.current === "auto") {
+        const decision = ladder.current.step({
+          rtt_ms: next.rtt_ms,
+          loss_pct: next.loss_pct,
+          available_out_bps: next.available_out_kbps == null ? null : next.available_out_kbps * 1000,
+          quality_limitation: next.limitation,
+          fps: next.fps,
+        });
+        if (decision.changed) {
+          setDetail(decision.reason);
+          await applyRung(sender, vTrack, ladder.current.current(), captureCeiling.current);
         }
       }
+      const rung = ladder.current.current();
+      next.rung = rung.key;
+      next.rung_label = labelForSize(
+        next.encoded_width ?? capture?.width ?? null,
+        next.encoded_height ?? capture?.height ?? null,
+      );
 
       setStats(next);
       if (sessionId.current) {
@@ -655,9 +665,19 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     }, 2000);
 
     return () => window.clearInterval(timer);
-  }, [phase]);
+  }, [capture, phase]);
 
   useEffect(() => () => teardown("unmount"), [teardown]);
+
+  /** PHASE 10B — NEW ADDED: AUTO ya manual rung. 8K sirf tab jab camera de. */
+  const setQuality = useCallback(async (next: QualityChoice) => {
+    choiceRef.current = next;
+    setChoice(next);
+    if (next !== "auto") ladder.current.pin(rungIndex(next));
+    const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+    const track = localRef.current?.getVideoTracks()[0];
+    await applyRung(sender, track, ladder.current.current(), captureCeiling.current);
+  }, []);
 
   return {
     phase,
@@ -672,5 +692,11 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     answer,
     hangup,
     switchDevice,
+    // PHASE 10B — NEW ADDED
+    quality: choice,
+    setQuality,
+    capture,
+    codecs,
+    maxRung: captureCeiling.current.key,
   };
 }
