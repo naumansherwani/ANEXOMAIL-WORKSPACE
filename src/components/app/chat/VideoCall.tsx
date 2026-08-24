@@ -49,6 +49,11 @@ export function VideoCallOverlay({
   signaling,
   turnAvailable,
   showTechnical,
+  quality,
+  onQuality,
+  capture,
+  codecs,
+  maxRung,
   onAnswer,
   onHangup,
 }: {
@@ -61,6 +66,11 @@ export function VideoCallOverlay({
   signaling: SignalTransport;
   turnAvailable: boolean | null;
   showTechnical: boolean;
+  quality: QualityChoice;
+  onQuality: (next: QualityChoice) => void;
+  capture: CaptureReport | null;
+  codecs: CodecSupport;
+  maxRung: QualityRung;
   onAnswer: () => void;
   onHangup: () => void;
 }) {
@@ -69,9 +79,25 @@ export function VideoCallOverlay({
   const [muted, setMuted] = useState(false);
   const [camOff, setCamOff] = useState(false);
   const [open, setOpen] = useState(false);
+  // PHASE 10B — NEW ADDED: receiver-side truth seedha <video> element se
+  const [received, setReceived] = useState<{ w: number; h: number } | null>(null);
 
   useEffect(() => {
     if (remoteRef.current && remote) remoteRef.current.srcObject = remote;
+  }, [remote]);
+
+  useEffect(() => {
+    const el = remoteRef.current;
+    if (!el) return;
+    const read = () =>
+      setReceived(el.videoWidth ? { w: el.videoWidth, h: el.videoHeight } : null);
+    el.addEventListener("loadedmetadata", read);
+    el.addEventListener("resize", read);
+    read();
+    return () => {
+      el.removeEventListener("loadedmetadata", read);
+      el.removeEventListener("resize", read);
+    };
   }, [remote]);
   useEffect(() => {
     if (localRef.current && local) localRef.current.srcObject = local;
