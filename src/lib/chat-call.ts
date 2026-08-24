@@ -536,12 +536,28 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
 
       report.forEach((r) => {
         if (r.type === "outbound-rtp" && (r as RTCOutboundRtpStreamStats).kind === "video") {
-          const o = r as RTCOutboundRtpStreamStats & { framesPerSecond?: number; frameWidth?: number; frameHeight?: number };
+          const o = r as RTCOutboundRtpStreamStats & {
+            framesPerSecond?: number;
+            frameWidth?: number;
+            frameHeight?: number;
+            qualityLimitationReason?: string;
+          };
           bytes = Number(o.bytesSent ?? 0);
           at = Number(o.timestamp ?? 0);
           next.fps = o.framesPerSecond != null ? Math.round(o.framesPerSecond) : next.fps;
           next.width = o.frameWidth ?? next.width;
           next.height = o.frameHeight ?? next.height;
+          // PHASE 10B — NEW ADDED: encode truth alag
+          next.encoded_width = o.frameWidth ?? next.encoded_width;
+          next.encoded_height = o.frameHeight ?? next.encoded_height;
+          next.limitation = o.qualityLimitationReason ?? next.limitation;
+        }
+        // PHASE 10B — NEW ADDED: bandwidth estimate (ladder ka faisla isi se)
+        if (r.type === "candidate-pair") {
+          const p = r as RTCIceCandidatePairStats & { availableOutgoingBitrate?: number };
+          if (p.availableOutgoingBitrate != null) {
+            next.available_out_kbps = Math.round(p.availableOutgoingBitrate / 1000);
+          }
         }
         if (r.type === "inbound-rtp" && (r as RTCInboundRtpStreamStats).kind === "video") {
           const i = r as RTCInboundRtpStreamStats & { jitter?: number; packetsLost?: number; packetsReceived?: number; framesPerSecond?: number; frameWidth?: number; frameHeight?: number };
