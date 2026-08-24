@@ -169,6 +169,13 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
   const [incoming, setIncoming] = useState<SignalFrame | null>(null);
   const [signaling, setSignaling] = useState<SignalTransport>("rows");
   const [turnAvailable, setTurnAvailable] = useState<boolean | null>(null);
+  // PHASE 10B — NEW ADDED: quality choice + asli capture report + codec support
+  const [choice, setChoice] = useState<QualityChoice>("auto");
+  const [capture, setCapture] = useState<CaptureReport | null>(null);
+  const [codecs] = useState<CodecSupport>(() => codecSupport());
+  const ladder = useRef<QualityLadder>(new QualityLadder(rungIndex("720p"), TOP_RUNG));
+  const captureCeiling = useRef(LADDER[rungIndex("720p")]!);
+  const choiceRef = useRef<QualityChoice>("auto");
 
   const teardown = useCallback((reason: string) => {
     if (sessionId.current) {
@@ -206,14 +213,25 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         channelCount: 1,
         sampleRate: 48000,
       } as MediaTrackConstraints,
-      video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        frameRate: { ideal: 30, max: 60 },
-      },
+      // PHASE 10B — NEW ADDED: highest NATIVE resolution maango (ideal/max,
+      // force nahi). Camera jo de wahi sach — upscale se 8K nahi banta.
+      video: captureConstraints(LADDER[TOP_RUNG]!),
     });
     localRef.current = stream;
     setLocal(stream);
+
+    // Asli capture reading — badge/label sirf isi se banta hai.
+    const report = readCapture(stream.getVideoTracks()[0]);
+    setCapture(report);
+    const ceilingIdx = LADDER.reduce(
+      (acc, r, i) => ((report.height ?? 0) >= r.height && (report.width ?? 0) >= r.width ? i : acc),
+      0,
+    );
+    captureCeiling.current = LADDER[ceilingIdx]!;
+    ladder.current = new QualityLadder(
+      choiceRef.current === "auto" ? ceilingIdx : Math.min(ceilingIdx, rungIndex(choiceRef.current)),
+      ceilingIdx,
+    );
     return stream;
   }, []);
 
@@ -245,15 +263,12 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         const t = peer.addTransceiver(video, {
           direction: "sendrecv",
           streams: [stream],
-          sendEncodings: SIMULCAST,
+          // PHASE 10B — NEW ADDED: layers current rung se (SFU-ready shape)
+          sendEncodings: sendEncodings(ladder.current.current()),
         });
-        preferCodecs(t);
-        try {
-          // Congestion: resolution girao, frame-rate/audio bachao
-          await video.applyConstraints({ frameRate: { ideal: 30 } });
-        } catch {
-          /* device ne mana kiya */
-        }
+        // AV1 -> VP9 -> H.264 -> VP8 (capability se, assume kuch nahi)
+        applyCodecPreference(t) ?? preferCodecs(t);
+        await applyRung(t.sender, video, ladder.current.current(), captureCeiling.current);
       }
 
       // Trickle ICE — candidate bante hi bhej do, wait nahi
@@ -521,15 +536,37 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
 
       report.forEach((r) => {
         if (r.type === "outbound-rtp" && (r as RTCOutboundRtpStreamStats).kind === "video") {
-          const o = r as RTCOutboundRtpStreamStats & { framesPerSecond?: number; frameWidth?: number; frameHeight?: number };
+          const o = r as RTCOutboundRtpStreamStats & {
+            framesPerSecond?: number;
+            frameWidth?: number;
+            frameHeight?: number;
+            qualityLimitationReason?: string;
+          };
           bytes = Number(o.bytesSent ?? 0);
           at = Number(o.timestamp ?? 0);
           next.fps = o.framesPerSecond != null ? Math.round(o.framesPerSecond) : next.fps;
           next.width = o.frameWidth ?? next.width;
           next.height = o.frameHeight ?? next.height;
+          // PHASE 10B — NEW ADDED: encode truth alag
+          next.encoded_width = o.frameWidth ?? next.encoded_width;
+          next.encoded_height = o.frameHeight ?? next.encoded_height;
+          next.limitation = o.qualityLimitationReason ?? next.limitation;
+        }
+        // PHASE 10B — NEW ADDED: bandwidth estimate (ladder ka faisla isi se)
+        if (r.type === "candidate-pair") {
+          const p = r as RTCIceCandidatePairStats & { availableOutgoingBitrate?: number };
+          if (p.availableOutgoingBitrate != null) {
+            next.available_out_kbps = Math.round(p.availableOutgoingBitrate / 1000);
+          }
         }
         if (r.type === "inbound-rtp" && (r as RTCInboundRtpStreamStats).kind === "video") {
-          const i = r as RTCInboundRtpStreamStats & { jitter?: number; packetsLost?: number; packetsReceived?: number; framesPerSecond?: number; frameWidth?: number; frameHeight?: number };
+          const i = r as RTCInboundRtpStreamStats & { jitter?: number; packetsLost?: number; packetsReceived?: number; framesPerSecond?: number; frameWidth?: number; frameHeight?: number; framesDropped?: number };
+          // PHASE 10B — NEW ADDED: decode truth alag + dropped frames
+          if (i.frameWidth) {
+            next.decoded_width = i.frameWidth;
+            next.decoded_height = i.frameHeight ?? next.decoded_height;
+          }
+          if (i.framesDropped != null) next.frames_dropped = Number(i.framesDropped);
           if (i.jitter != null) next.jitter_ms = Math.round(i.jitter * 1000);
           const lost = Number(i.packetsLost ?? 0);
           const got = Number(i.packetsReceived ?? 0);
@@ -588,20 +625,30 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           ? Math.round(performance.now() - startedAt.current)
           : null;
 
-      // Congestion mein audio pehle: video ka bitrate cap girao
-      if (next.quality === "poor") {
-        const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
-        const params = sender?.getParameters();
-        if (sender && params?.encodings?.length) {
-          const layers = params.encodings.length;
-          params.encodings = params.encodings.map((e, idx) => ({
-            ...e,
-            active: idx === layers - 1 ? true : idx === 0 ? false : e.active !== false,
-            maxBitrate: Math.max(120_000, Math.floor((e.maxBitrate ?? 800_000) * 0.6)),
-          }));
-          await sender.setParameters(params).catch(() => {});
+      // PHASE 10B — NEW ADDED: adaptive ladder (8K -> 480p aur wapas upar).
+      // AUTO par har 2s sample pe max 1 qadam; call kabhi 8K na milne par
+      // disconnect nahi hoti. Manual choice par rung pinned rehta hai.
+      const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+      const vTrack = localRef.current?.getVideoTracks()[0];
+      if (choiceRef.current === "auto") {
+        const decision = ladder.current.step({
+          rtt_ms: next.rtt_ms,
+          loss_pct: next.loss_pct,
+          available_out_bps: next.available_out_kbps == null ? null : next.available_out_kbps * 1000,
+          quality_limitation: next.limitation,
+          fps: next.fps,
+        });
+        if (decision.changed) {
+          setDetail(decision.reason);
+          await applyRung(sender, vTrack, ladder.current.current(), captureCeiling.current);
         }
       }
+      const rung = ladder.current.current();
+      next.rung = rung.key;
+      next.rung_label = labelForSize(
+        next.encoded_width ?? capture?.width ?? null,
+        next.encoded_height ?? capture?.height ?? null,
+      );
 
       setStats(next);
       if (sessionId.current) {
@@ -618,9 +665,19 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     }, 2000);
 
     return () => window.clearInterval(timer);
-  }, [phase]);
+  }, [capture, phase]);
 
   useEffect(() => () => teardown("unmount"), [teardown]);
+
+  /** PHASE 10B — NEW ADDED: AUTO ya manual rung. 8K sirf tab jab camera de. */
+  const setQuality = useCallback(async (next: QualityChoice) => {
+    choiceRef.current = next;
+    setChoice(next);
+    if (next !== "auto") ladder.current.pin(rungIndex(next));
+    const sender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+    const track = localRef.current?.getVideoTracks()[0];
+    await applyRung(sender, track, ladder.current.current(), captureCeiling.current);
+  }, []);
 
   return {
     phase,
@@ -635,5 +692,11 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     answer,
     hangup,
     switchDevice,
+    // PHASE 10B — NEW ADDED
+    quality: choice,
+    setQuality,
+    capture,
+    codecs,
+    maxRung: captureCeiling.current.key,
   };
 }

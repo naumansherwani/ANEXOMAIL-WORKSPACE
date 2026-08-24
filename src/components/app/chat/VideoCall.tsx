@@ -13,6 +13,16 @@ import { useEffect, useRef, useState } from "react";
 
 import type { CallPhase, CallStats } from "@/lib/chat-call";
 import type { SignalTransport } from "@/lib/chat-signal";
+// PHASE 10B — NEW ADDED: honest quality selector (AUTO default)
+import {
+  LADDER,
+  labelForSize,
+  rungIndex,
+  type CaptureReport,
+  type CodecSupport,
+  type QualityChoice,
+  type QualityRung,
+} from "@/lib/chat-video-quality";
 
 const DOT: Record<string, string> = {
   good: "bg-emerald-500",
@@ -39,6 +49,11 @@ export function VideoCallOverlay({
   signaling,
   turnAvailable,
   showTechnical,
+  quality,
+  onQuality,
+  capture,
+  codecs,
+  maxRung,
   onAnswer,
   onHangup,
 }: {
@@ -51,6 +66,11 @@ export function VideoCallOverlay({
   signaling: SignalTransport;
   turnAvailable: boolean | null;
   showTechnical: boolean;
+  quality: QualityChoice;
+  onQuality: (next: QualityChoice) => void;
+  capture: CaptureReport | null;
+  codecs: CodecSupport;
+  maxRung: QualityRung;
   onAnswer: () => void;
   onHangup: () => void;
 }) {
@@ -59,9 +79,25 @@ export function VideoCallOverlay({
   const [muted, setMuted] = useState(false);
   const [camOff, setCamOff] = useState(false);
   const [open, setOpen] = useState(false);
+  // PHASE 10B — NEW ADDED: receiver-side truth seedha <video> element se
+  const [received, setReceived] = useState<{ w: number; h: number } | null>(null);
 
   useEffect(() => {
     if (remoteRef.current && remote) remoteRef.current.srcObject = remote;
+  }, [remote]);
+
+  useEffect(() => {
+    const el = remoteRef.current;
+    if (!el) return;
+    const read = () =>
+      setReceived(el.videoWidth ? { w: el.videoWidth, h: el.videoHeight } : null);
+    el.addEventListener("loadedmetadata", read);
+    el.addEventListener("resize", read);
+    read();
+    return () => {
+      el.removeEventListener("loadedmetadata", read);
+      el.removeEventListener("resize", read);
+    };
   }, [remote]);
   useEffect(() => {
     if (localRef.current && local) localRef.current.srcObject = local;
@@ -89,6 +125,30 @@ export function VideoCallOverlay({
           <span>· {res}</span>
           {showTechnical ? <ChevronDown className="size-3" /> : null}
         </button>
+        {/* PHASE 10B — NEW ADDED: honest quality indicator + AUTO/manual selector.
+            Rung sirf tab selectable jab camera ne woh resolution di ho. */}
+        <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground">
+          ● {stats.rung_label === "measuring" ? capture?.label ?? "measuring" : stats.rung_label}
+        </span>
+        <label className="inline-flex items-center gap-1">
+          <span className="sr-only">Video quality</span>
+          <select
+            value={quality}
+            onChange={(e) => onQuality(e.target.value as QualityChoice)}
+            className="rounded-lg border border-border bg-background px-1.5 py-0.5 text-foreground"
+            aria-label="Video quality"
+          >
+            <option value="auto">AUTO</option>
+            {[...LADDER]
+              .reverse()
+              .filter((r) => rungIndex(r.key) <= rungIndex(maxRung))
+              .map((r) => (
+                <option key={r.key} value={r.key}>
+                  {r.label}
+                </option>
+              ))}
+          </select>
+        </label>
         <span>· {detail}</span>
       </div>
 
@@ -110,6 +170,46 @@ export function VideoCallOverlay({
           <Row label="Bitrate" value={stats.bitrate_kbps == null ? "measuring" : `${stats.bitrate_kbps} kbps`} />
           <Row label="Frame rate" value={stats.fps == null ? "measuring" : `${stats.fps} fps`} />
           <Row label="Resolution" value={res} />
+          {/* PHASE 10B — NEW ADDED: capture / encode / decode alag alag sach */}
+          <Row
+            label="Camera capture"
+            value={
+              capture?.width && capture.height
+                ? `${capture.width}×${capture.height}${capture.native8k ? " (native 8K)" : ""}`
+                : "measuring"
+            }
+          />
+          <Row
+            label="Encoded"
+            value={
+              stats.encoded_width && stats.encoded_height
+                ? `${stats.encoded_width}×${stats.encoded_height} · ${labelForSize(stats.encoded_width, stats.encoded_height)}`
+                : "measuring"
+            }
+          />
+          <Row
+            label="Received (decoded)"
+            value={
+              received
+                ? `${received.w}×${received.h} · ${labelForSize(received.w, received.h)}`
+                : stats.decoded_width && stats.decoded_height
+                  ? `${stats.decoded_width}×${stats.decoded_height}`
+                  : "measuring"
+            }
+          />
+          <Row label="Quality ladder" value={quality === "auto" ? `AUTO · ${stats.rung ?? "measuring"}` : quality} />
+          <Row label="Encoder limitation" value={stats.limitation ?? "measuring"} />
+          <Row
+            label="Available uplink"
+            value={stats.available_out_kbps == null ? "measuring" : `${stats.available_out_kbps} kbps`}
+          />
+          <Row label="Frames dropped" value={stats.frames_dropped == null ? "measuring" : String(stats.frames_dropped)} />
+          <Row
+            label="Codec support"
+            value={[codecs.av1 && "AV1", codecs.vp9 && "VP9", codecs.h264 && "H.264", codecs.vp8 && "VP8"]
+              .filter(Boolean)
+              .join(" · ") || "unknown"}
+          />
           <Row label="Video codec" value={stats.video_codec ?? "negotiating"} />
           <Row label="Audio codec" value={stats.audio_codec ?? "opus"} />
           <Row label="Setup time" value={stats.setup_ms == null ? "measuring" : `${stats.setup_ms} ms`} />

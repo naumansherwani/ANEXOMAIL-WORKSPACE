@@ -356,6 +356,11 @@ function ChatPage() {
               signaling={call.signaling}
               turnAvailable={call.turnAvailable}
               showTechnical={gate.data?.allowed === true}
+              quality={call.quality}
+              onQuality={(next) => void call.setQuality(next)}
+              capture={call.capture}
+              codecs={call.codecs}
+              maxRung={call.maxRung}
               onAnswer={() => void call.answer()}
               onHangup={call.hangup}
             />
