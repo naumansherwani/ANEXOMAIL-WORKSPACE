@@ -560,7 +560,13 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           }
         }
         if (r.type === "inbound-rtp" && (r as RTCInboundRtpStreamStats).kind === "video") {
-          const i = r as RTCInboundRtpStreamStats & { jitter?: number; packetsLost?: number; packetsReceived?: number; framesPerSecond?: number; frameWidth?: number; frameHeight?: number };
+          const i = r as RTCInboundRtpStreamStats & { jitter?: number; packetsLost?: number; packetsReceived?: number; framesPerSecond?: number; frameWidth?: number; frameHeight?: number; framesDropped?: number };
+          // PHASE 10B — NEW ADDED: decode truth alag + dropped frames
+          if (i.frameWidth) {
+            next.decoded_width = i.frameWidth;
+            next.decoded_height = i.frameHeight ?? next.decoded_height;
+          }
+          if (i.framesDropped != null) next.frames_dropped = Number(i.framesDropped);
           if (i.jitter != null) next.jitter_ms = Math.round(i.jitter * 1000);
           const lost = Number(i.packetsLost ?? 0);
           const got = Number(i.packetsReceived ?? 0);
