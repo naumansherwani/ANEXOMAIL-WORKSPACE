@@ -169,6 +169,13 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
   const [incoming, setIncoming] = useState<SignalFrame | null>(null);
   const [signaling, setSignaling] = useState<SignalTransport>("rows");
   const [turnAvailable, setTurnAvailable] = useState<boolean | null>(null);
+  // PHASE 10B — NEW ADDED: quality choice + asli capture report + codec support
+  const [choice, setChoice] = useState<QualityChoice>("auto");
+  const [capture, setCapture] = useState<CaptureReport | null>(null);
+  const [codecs] = useState<CodecSupport>(() => codecSupport());
+  const ladder = useRef<QualityLadder>(new QualityLadder(rungIndex("720p"), TOP_RUNG));
+  const captureCeiling = useRef(LADDER[rungIndex("720p")]!);
+  const choiceRef = useRef<QualityChoice>("auto");
 
   const teardown = useCallback((reason: string) => {
     if (sessionId.current) {
@@ -206,14 +213,25 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         channelCount: 1,
         sampleRate: 48000,
       } as MediaTrackConstraints,
-      video: {
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-        frameRate: { ideal: 30, max: 60 },
-      },
+      // PHASE 10B — NEW ADDED: highest NATIVE resolution maango (ideal/max,
+      // force nahi). Camera jo de wahi sach — upscale se 8K nahi banta.
+      video: captureConstraints(LADDER[TOP_RUNG]!),
     });
     localRef.current = stream;
     setLocal(stream);
+
+    // Asli capture reading — badge/label sirf isi se banta hai.
+    const report = readCapture(stream.getVideoTracks()[0]);
+    setCapture(report);
+    const ceilingIdx = LADDER.reduce(
+      (acc, r, i) => ((report.height ?? 0) >= r.height && (report.width ?? 0) >= r.width ? i : acc),
+      0,
+    );
+    captureCeiling.current = LADDER[ceilingIdx]!;
+    ladder.current = new QualityLadder(
+      choiceRef.current === "auto" ? ceilingIdx : Math.min(ceilingIdx, rungIndex(choiceRef.current)),
+      ceilingIdx,
+    );
     return stream;
   }, []);
 
@@ -245,15 +263,12 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         const t = peer.addTransceiver(video, {
           direction: "sendrecv",
           streams: [stream],
-          sendEncodings: SIMULCAST,
+          // PHASE 10B — NEW ADDED: layers current rung se (SFU-ready shape)
+          sendEncodings: sendEncodings(ladder.current.current()),
         });
-        preferCodecs(t);
-        try {
-          // Congestion: resolution girao, frame-rate/audio bachao
-          await video.applyConstraints({ frameRate: { ideal: 30 } });
-        } catch {
-          /* device ne mana kiya */
-        }
+        // AV1 -> VP9 -> H.264 -> VP8 (capability se, assume kuch nahi)
+        applyCodecPreference(t) ?? preferCodecs(t);
+        await applyRung(t.sender, video, ladder.current.current(), captureCeiling.current);
       }
 
       // Trickle ICE — candidate bante hi bhej do, wait nahi
