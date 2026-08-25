@@ -426,7 +426,7 @@ function Index() {
                       <span className="text-4xl font-extrabold tracking-[-0.05em] text-foreground">
                         {price.big}
                       </span>
-                      <span className="pb-1.5 text-xs text-muted-foreground">{p.unit}</span>
+                      <span className="pb-1.5 text-xs text-muted-foreground">{price.suffix}</span>
                     </p>
                     <p className="mt-2 text-[12px] font-semibold text-primary">
                       {cycle === "yearly"

@@ -272,7 +272,7 @@ function PlansPage() {
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
             Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months free.
-            Your normal monthly price stays visible; the annual total appears on each card.
+            Switch to Yearly to see the full annual price on each card.
           </p>
         </section>
 
@@ -294,7 +294,7 @@ function PlansPage() {
                 </div>
                 <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
                   {price.big}
-                  <span className="text-sm font-medium text-muted-foreground"> {p.unit}</span>
+                  <span className="text-sm font-medium text-muted-foreground"> {price.suffix}</span>
                 </p>
                 <p className="mt-1 text-xs font-semibold text-primary">
                   {cycle === "yearly" ? price.note : ANNUAL_NOTE[p.annual] + " on yearly billing"}

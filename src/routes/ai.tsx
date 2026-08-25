@@ -251,7 +251,10 @@ function AiPage() {
                   </div>
                   <p className="relative mt-4 text-3xl font-extrabold tracking-tight text-foreground">
                     {priceFor(plan, cycle).big}
-                    <span className="text-sm font-medium text-muted-foreground"> {plan.unit}</span>
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {" "}
+                      {priceFor(plan, cycle).suffix}
+                    </span>
                   </p>
                   <p className="relative mt-1 text-xs font-semibold text-primary">
                     {cycle === "yearly"
