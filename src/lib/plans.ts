@@ -58,14 +58,15 @@ export function discountPercent(rule: AnnualRule): string {
 export const money = (n: number) =>
   `£${n.toLocaleString("en-GB", { maximumFractionDigits: n % 1 === 0 ? 0 : 2 })}`;
 
-/** Price + suffix for a card, for the selected cycle. */
+/** Price + suffix for a card, for the selected cycle. Yearly shows the REAL
+ *  yearly total big (Lovable style) — monthly number kabhi repeat nahi hota. */
 export function priceFor(plan: PricedPlan, cycle: BillingCycle) {
   if (cycle === "monthly")
     return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };
   return {
-    big: money(plan.monthly),
-    suffix: plan.unit,
-    note: `${ANNUAL_NOTE[plan.annual]} · ${money(plan.yearly)}/yr`,
+    big: money(plan.yearly),
+    suffix: plan.unit.replace(/month/i, "year"),
+    note: `${ANNUAL_NOTE[plan.annual]} · ${money(plan.monthly)}${plan.unit} billed monthly`,
   };
 }
 
