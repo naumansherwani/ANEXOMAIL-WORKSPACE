@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PhoneCall, Search, Send, WifiOff, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Paperclip, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { AtmosphereControl, AtmosphereStage, useAtmosphere } from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
@@ -32,6 +32,9 @@ import type { ChatMessage } from "@/lib/chat";
 import { chatCall, useChatLive } from "@/lib/chat-transport";
 import { useCall } from "@/lib/chat-call";
 import { useVideoGate } from "@/lib/chat-video";
+import { filesFromPaste, newUpload, uploadImage, type Upload } from "@/lib/chat-attachments";
+import { useDraft } from "@/lib/chat-drafts";
+import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -48,14 +51,31 @@ function ChatPage() {
   const bootstrap = useChatBootstrap();
   const entitled = bootstrap.isSuccess;
   const conversations = useConversations(entitled);
-  const [openId, setOpenId] = useState<string | null>(null);
+  // Phase 11 multitasking: pop-out window `?c=<id>` deep link se seedha khulti hai.
+  const [openId, setOpenId] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : deepLinkConversation(),
+  );
+  const pane = isPaneMode();
   const messages = useMessages(openId);
   const presence = usePresence(openId, entitled);
   const { send, pending } = useChatSend(openId);
   const markRead = useMarkRead(openId);
   const startDirect = useStartDirect();
   const typingPing = useTypingPing(openId);
-  const [draft, setDraft] = useState("");
+  // Phase 11 drafts: har conversation ka apna saved draft (localStorage, device pe).
+  const draftBox = useDraft(openId);
+  // Phase 11 attachments: drag-drop / paste / picker — progress + errors asli.
+  const [uploads, setUploads] = useState<Upload[]>([]);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  function addFiles(files: File[]) {
+    if (!openId || !files.length) return;
+    for (const file of files) {
+      const u = newUpload(file);
+      setUploads((prev) => [...prev, u]);
+      void uploadImage(openId, file, () => setUploads((prev) => [...prev]));
+    }
+  }
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
   const [query, setQuery] = useState("");
   const react = useReact(openId);
@@ -147,6 +167,8 @@ function ChatPage() {
       <AtmosphereStage band={atmosphere.band} effect={atmosphere.effect} calm={atmosphere.calm} />
       <CinemaStage band={atmosphere.band} effect={atmosphere.effect} quality={cinema.quality} />
 
+      {/* Phase 11 multitasking: pop-out pane (?pane=1) mein sirf detail dikhta hai. */}
+      {pane ? null : (
       <ListPanel
         title="ANEXOChat"
         mobileHidden={Boolean(openId)}
@@ -240,6 +262,7 @@ function ChatPage() {
           ))
         )}
       </ListPanel>
+      )}
 
       <DetailPanel mobileVisible={Boolean(openId)}>
         {!active ? (
@@ -281,6 +304,15 @@ function ChatPage() {
                   className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
                 >
                   Mute 1h
+                </button>
+                <button
+                  type="button"
+                  onClick={() => active && popOutConversation(active.conversation_id)}
+                  aria-label="Open this chat in a side window"
+                  title="Open in side window"
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  <PictureInPicture2 className="size-3.5" />
                 </button>
                 <button
                   type="button"
