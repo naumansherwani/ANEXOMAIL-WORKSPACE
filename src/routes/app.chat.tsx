@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PhoneCall, Search, Send, WifiOff, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Paperclip, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { AtmosphereControl, AtmosphereStage, useAtmosphere } from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
@@ -32,6 +32,9 @@ import type { ChatMessage } from "@/lib/chat";
 import { chatCall, useChatLive } from "@/lib/chat-transport";
 import { useCall } from "@/lib/chat-call";
 import { useVideoGate } from "@/lib/chat-video";
+import { filesFromPaste, newUpload, uploadImage, type Upload } from "@/lib/chat-attachments";
+import { useDraft } from "@/lib/chat-drafts";
+import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -48,14 +51,31 @@ function ChatPage() {
   const bootstrap = useChatBootstrap();
   const entitled = bootstrap.isSuccess;
   const conversations = useConversations(entitled);
-  const [openId, setOpenId] = useState<string | null>(null);
+  // Phase 11 multitasking: pop-out window `?c=<id>` deep link se seedha khulti hai.
+  const [openId, setOpenId] = useState<string | null>(() =>
+    typeof window === "undefined" ? null : deepLinkConversation(),
+  );
+  const pane = isPaneMode();
   const messages = useMessages(openId);
   const presence = usePresence(openId, entitled);
   const { send, pending } = useChatSend(openId);
   const markRead = useMarkRead(openId);
   const startDirect = useStartDirect();
   const typingPing = useTypingPing(openId);
-  const [draft, setDraft] = useState("");
+  // Phase 11 drafts: har conversation ka apna saved draft (localStorage, device pe).
+  const draftBox = useDraft(openId);
+  // Phase 11 attachments: drag-drop / paste / picker — progress + errors asli.
+  const [uploads, setUploads] = useState<Upload[]>([]);
+  const fileRef = useRef<HTMLInputElement>(null);
+
+  function addFiles(files: File[]) {
+    if (!openId || !files.length) return;
+    for (const file of files) {
+      const u = newUpload(file);
+      setUploads((prev) => [...prev, u]);
+      void uploadImage(openId, file, () => setUploads((prev) => [...prev]));
+    }
+  }
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
   const [query, setQuery] = useState("");
   const react = useReact(openId);
@@ -147,6 +167,8 @@ function ChatPage() {
       <AtmosphereStage band={atmosphere.band} effect={atmosphere.effect} calm={atmosphere.calm} />
       <CinemaStage band={atmosphere.band} effect={atmosphere.effect} quality={cinema.quality} />
 
+      {/* Phase 11 multitasking: pop-out pane (?pane=1) mein sirf detail dikhta hai. */}
+      {pane ? null : (
       <ListPanel
         title="ANEXOChat"
         mobileHidden={Boolean(openId)}
@@ -240,6 +262,7 @@ function ChatPage() {
           ))
         )}
       </ListPanel>
+      )}
 
       <DetailPanel mobileVisible={Boolean(openId)}>
         {!active ? (
@@ -281,6 +304,15 @@ function ChatPage() {
                   className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
                 >
                   Mute 1h
+                </button>
+                <button
+                  type="button"
+                  onClick={() => active && popOutConversation(active.conversation_id)}
+                  aria-label="Open this chat in a side window"
+                  title="Open in side window"
+                  className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  <PictureInPicture2 className="size-3.5" />
                 </button>
                 <button
                   type="button"
@@ -365,7 +397,14 @@ function ChatPage() {
               onHangup={call.hangup}
             />
 
-            <div className="shrink-0 border-t border-border px-4 py-3">
+            <div
+              className="shrink-0 border-t border-border px-4 py-3"
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                addFiles(Array.from(e.dataTransfer?.files ?? []));
+              }}
+            >
               <p className="mb-1.5 h-4 text-[11px] text-muted-foreground">
                 {typingNames.length
                   ? `${typingNames.join(", ")} ${typingNames.length === 1 ? "is" : "are"} typing`
@@ -381,24 +420,82 @@ function ChatPage() {
                   </button>
                 </div>
               ) : null}
+              {uploads.length ? (
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  {uploads.map((u) => (
+                    <span
+                      key={u.id}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground"
+                    >
+                      {u.state === "done"
+                        ? `${u.file.name} ready`
+                        : u.state === "error"
+                          ? `${u.file.name} failed`
+                          : `${u.file.name} ${u.percent}%`}
+                      <button
+                        type="button"
+                        aria-label={`Remove ${u.file.name}`}
+                        onClick={() => setUploads((prev) => prev.filter((x) => x.id !== u.id))}
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               <form
                 className="flex items-end gap-2"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  const body = draft.trim();
-                  if (!body) return;
-                  setDraft("");
+                  const body = draftBox.body.trim();
+                  const done = uploads.filter((u) => u.state === "done" && u.attachment_id);
+                  const attachmentIds = done.map((u) => u.attachment_id as string);
+                  if (!body && !attachmentIds.length) return;
+                  draftBox.clear();
                   typingPing(false);
-                  send.mutate({ body, reply_to_id: replyTo?.id ?? null });
+                  send.mutate({
+                    body: body || done.map((u) => u.file.name).join(", "),
+                    reply_to_id: replyTo?.id ?? null,
+                    attachment_ids: attachmentIds,
+                  });
                   setReplyTo(null);
+                  setUploads([]);
                 }}
               >
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  aria-label="Choose images to attach"
+                  onChange={(e) => {
+                    addFiles(Array.from(e.target.files ?? []));
+                    e.target.value = "";
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  aria-label="Attach an image"
+                  title="Attach an image"
+                  className="ax-press rounded-xl border border-border px-3 py-2 text-muted-foreground hover:text-foreground"
+                >
+                  <Paperclip className="size-4" />
+                </button>
                 <textarea
-                  value={draft}
+                  value={draftBox.body}
                   rows={2}
                   onChange={(e) => {
-                    setDraft(e.target.value);
+                    draftBox.save(e.target.value, replyTo?.id ?? null);
                     typingPing(e.target.value.trim().length > 0);
+                  }}
+                  onPaste={(e) => {
+                    const files = filesFromPaste(e.nativeEvent);
+                    if (files.length) {
+                      e.preventDefault();
+                      addFiles(files);
+                    }
                   }}
                   onBlur={() => typingPing(false)}
                   placeholder="Write a message"
@@ -406,7 +503,7 @@ function ChatPage() {
                 />
                 <button
                   type="submit"
-                  disabled={!draft.trim()}
+                  disabled={!draftBox.body.trim() && !uploads.some((u) => u.state === "done")}
                   className="ax-press inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
                 >
                   <Send className="size-4" />

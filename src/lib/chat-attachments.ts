@@ -10,6 +10,8 @@
  *     URL par seedha Supabase Storage — service key browser par kabhi nahi.
  *   - Row commit ke baad hi attachment message ke saath dikhata hai.
  */
+import { useQuery } from "@tanstack/react-query";
+
 import { chatCall } from "@/lib/chat-transport";
 
 export const MAX_BYTES = 200 * 1024 * 1024; // 200 MB per image (Phase 11 — NEW ADDED)
@@ -220,4 +222,23 @@ export function filesFromPaste(e: ClipboardEvent): File[] {
     .filter((i) => i.kind === "file")
     .map((i) => i.getAsFile())
     .filter((f): f is File => Boolean(f && isImage(f)));
+}
+
+/**
+ * Message ke ready attachments — sirf tab fetch hote hain jab message row ka
+ * `attachment_count` > 0 ho (Phase 11B flag). Signed URLs 15 min ke hote hain.
+ */
+export function useMessageAttachments(messageId: string, enabled: boolean) {
+  return useQuery<{ attachments: ChatAttachment[] }>({
+    queryKey: ["chat", "attachments", messageId],
+    queryFn: () =>
+      chatCall<{ attachments: ChatAttachment[] }>(
+        "chat.attachment.list",
+        { message_id: messageId },
+        { path: `/api/chat/attachments/${messageId}` },
+      ),
+    enabled,
+    staleTime: 5 * 60_000,
+    retry: false,
+  });
 }

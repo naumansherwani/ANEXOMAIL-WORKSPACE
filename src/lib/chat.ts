@@ -59,6 +59,8 @@ export type ChatMessage = {
   reply_to_sender?: string | null;
   pinned_at?: string | null;
   reactions?: ChatReaction[];
+  /** Phase 11B — ready attachments ki asli ginti (DB flag, guess nahi). */
+  attachment_count?: number;
 };
 
 /** Founder lock: edit 5 minute, delete-for-everyone 1 ghanta — DB bhi yehi enforce karta hai. */
@@ -268,10 +270,13 @@ export function useChatSend(conversationId: string | null) {
   }, [flush]);
 
   const send = useMutation({
-    mutationFn: async (vars: string | { body: string; reply_to_id?: string | null }) => {
+    mutationFn: async (
+      vars: string | { body: string; reply_to_id?: string | null; attachment_ids?: string[] },
+    ) => {
       if (!conversationId) throw new Error("No conversation open.");
       const body = typeof vars === "string" ? vars : vars.body;
       const replyTo = typeof vars === "string" ? null : vars.reply_to_id ?? null;
+      const attachmentIds = typeof vars === "string" ? [] : (vars.attachment_ids ?? []);
       const item: OutboxItem = {
         client_msg_id: newClientMsgId(),
         conversation_id: conversationId,
@@ -288,6 +293,15 @@ export function useChatSend(conversationId: string | null) {
       }
       try {
         const row = await post(item);
+        // Phase 11: committed attachments message se jod do (row commit ke baad hi).
+        if (attachmentIds.length && row.id) {
+          const attach = { message_id: row.id, attachment_ids: attachmentIds };
+          await chatCall<{ attached: number }>("chat.attachment.attach", attach, {
+            path: "/api/chat/attachments/attach",
+            method: "POST",
+            body: attach,
+          });
+        }
         return { queued: false as const, ...row };
       } catch (error) {
         persist([...readOutbox(), { ...item, attempts: 1, last_error: (error as Error).message }]);
