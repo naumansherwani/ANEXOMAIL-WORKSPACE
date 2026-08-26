@@ -397,7 +397,14 @@ function ChatPage() {
               onHangup={call.hangup}
             />
 
-            <div className="shrink-0 border-t border-border px-4 py-3">
+            <div
+              className="shrink-0 border-t border-border px-4 py-3"
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={(e) => {
+                e.preventDefault();
+                addFiles(Array.from(e.dataTransfer?.files ?? []));
+              }}
+            >
               <p className="mb-1.5 h-4 text-[11px] text-muted-foreground">
                 {typingNames.length
                   ? `${typingNames.join(", ")} ${typingNames.length === 1 ? "is" : "are"} typing`
@@ -413,24 +420,82 @@ function ChatPage() {
                   </button>
                 </div>
               ) : null}
+              {uploads.length ? (
+                <div className="mb-2 flex flex-wrap gap-1.5">
+                  {uploads.map((u) => (
+                    <span
+                      key={u.id}
+                      className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground"
+                    >
+                      {u.state === "done"
+                        ? `${u.file.name} ready`
+                        : u.state === "error"
+                          ? `${u.file.name} failed`
+                          : `${u.file.name} ${u.percent}%`}
+                      <button
+                        type="button"
+                        aria-label={`Remove ${u.file.name}`}
+                        onClick={() => setUploads((prev) => prev.filter((x) => x.id !== u.id))}
+                      >
+                        <X className="size-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              ) : null}
               <form
                 className="flex items-end gap-2"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  const body = draft.trim();
-                  if (!body) return;
-                  setDraft("");
+                  const body = draftBox.body.trim();
+                  const done = uploads.filter((u) => u.state === "done" && u.attachment_id);
+                  const attachmentIds = done.map((u) => u.attachment_id as string);
+                  if (!body && !attachmentIds.length) return;
+                  draftBox.clear();
                   typingPing(false);
-                  send.mutate({ body, reply_to_id: replyTo?.id ?? null });
+                  send.mutate({
+                    body: body || done.map((u) => u.file.name).join(", "),
+                    reply_to_id: replyTo?.id ?? null,
+                    attachment_ids: attachmentIds,
+                  });
                   setReplyTo(null);
+                  setUploads([]);
                 }}
               >
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  className="hidden"
+                  aria-label="Choose images to attach"
+                  onChange={(e) => {
+                    addFiles(Array.from(e.target.files ?? []));
+                    e.target.value = "";
+                  }}
+                />
+                <button
+                  type="button"
+                  onClick={() => fileRef.current?.click()}
+                  aria-label="Attach an image"
+                  title="Attach an image"
+                  className="ax-press rounded-xl border border-border px-3 py-2 text-muted-foreground hover:text-foreground"
+                >
+                  <Paperclip className="size-4" />
+                </button>
                 <textarea
-                  value={draft}
+                  value={draftBox.body}
                   rows={2}
                   onChange={(e) => {
-                    setDraft(e.target.value);
+                    draftBox.save(e.target.value, replyTo?.id ?? null);
                     typingPing(e.target.value.trim().length > 0);
+                  }}
+                  onPaste={(e) => {
+                    const files = filesFromPaste(e.nativeEvent);
+                    if (files.length) {
+                      e.preventDefault();
+                      addFiles(files);
+                    }
                   }}
                   onBlur={() => typingPing(false)}
                   placeholder="Write a message"
@@ -438,7 +503,7 @@ function ChatPage() {
                 />
                 <button
                   type="submit"
-                  disabled={!draft.trim()}
+                  disabled={!draftBox.body.trim() && !uploads.some((u) => u.state === "done")}
                   className="ax-press inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
                 >
                   <Send className="size-4" />
