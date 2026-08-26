@@ -2,6 +2,7 @@ import { Copy, EyeOff, Pencil, Pin, Reply, Smile, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Tick } from "@/components/app/chat/Ticks";
+import { useMessageAttachments } from "@/lib/chat-attachments";
 import {
   DELETE_WINDOW_MS,
   EDIT_WINDOW_MS,
@@ -138,6 +139,34 @@ function IconBtn({
   );
 }
 
+/** Phase 11: asli attachment gallery — EXIF-stripped originals, signed URLs. */
+function AttachmentGallery({ messageId }: { messageId: string }) {
+  const q = useMessageAttachments(messageId, true);
+  const items = q.data?.attachments ?? [];
+  if (!items.length) return null;
+  return (
+    <div className="mt-1.5 flex flex-wrap gap-1.5">
+      {items.map((a) => (
+        <a
+          key={a.id}
+          href={a.url ?? "#"}
+          target="_blank"
+          rel="noreferrer"
+          title={a.filename}
+          className="ax-press block overflow-hidden rounded-xl border border-border"
+        >
+          <img
+            src={a.thumb_url ?? a.url ?? undefined}
+            alt={a.filename}
+            loading="lazy"
+            className="max-h-44 max-w-56 object-cover"
+          />
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Bubble({ message, actions }: { message: ChatMessage; actions: MessageActions }) {
   const state = messageState(message);
   const [picker, setPicker] = useState(false);
@@ -166,6 +195,11 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
             <span className="ml-1.5 text-[11px] text-muted-foreground">(edited)</span>
           ) : null}
         </div>
+
+        {/* Phase 11: attachments sirf tab fetch hote hain jab DB flag > 0 ho. */}
+        {(message.attachment_count ?? 0) > 0 ? (
+          <AttachmentGallery messageId={message.id} />
+        ) : null}
 
         {reactions.length ? (
           <div className="mt-1 flex flex-wrap gap-1">

@@ -86,8 +86,31 @@ app.anexomail.com {
         reverse_proxy localhost:3000
 }
 
+# ==========================================================
+# ai.anexomail.com — LEO AI product (PARALLEL AI BUILD LOCK)
+# Same anexomail-web mirror: frontend :3000, wahi API/RPC/chat split.
+# Awam ko sirf `/` (coming soon); /app/* mirror unlock key ke peeche.
+# ==========================================================
 ai.anexomail.com {
-        reverse_proxy localhost:3100
+        encode gzip zstd
+        handle /rpc/* {
+                reverse_proxy localhost:3200
+        }
+        handle /wt/* {
+                reverse_proxy localhost:3200
+        }
+        handle /api/chat/* {
+                reverse_proxy localhost:3300
+        }
+        handle /api/* {
+                reverse_proxy localhost:3100
+        }
+        handle /health {
+                reverse_proxy localhost:3100
+        }
+        handle {
+                reverse_proxy localhost:3000
+        }
 }
 
 api.anexomail.com {

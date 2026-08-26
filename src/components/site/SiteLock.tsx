@@ -1,11 +1,16 @@
 import { useEffect, useState, type ReactNode } from "react";
 
+import { aiPublicPathAllowed, isAiHost } from "@/lib/host";
 import { resolveSiteAccess, siteLockEnabled } from "@/lib/site-lock";
 
 /**
  * PRE-LAUNCH LOCK gate. Awam ko sirf ek saaf "not open yet" screen milti hai —
  * koi route, koi page, koi founder surface nahi. Founder key wale device par
  * poori site normal chalti hai.
+ *
+ * PARALLEL AI BUILD LOCK: ai.anexomail.com par awam ko `/` (AI landing +
+ * coming soon + package list) milta hai; baqi sab paths lock ke peeche rehte
+ * hain (mirror /app/* sirf unlock key se).
  */
 export function SiteLock({ children }: { children: ReactNode }) {
   const locked = siteLockEnabled();
@@ -21,6 +26,15 @@ export function SiteLock({ children }: { children: ReactNode }) {
   }
 
   if (allowed) return <>{children}</>;
+
+  // AI host: awam ko sirf AI landing dikhao, baqi sab gated.
+  if (
+    typeof window !== "undefined" &&
+    isAiHost() &&
+    aiPublicPathAllowed(window.location.pathname)
+  ) {
+    return <>{children}</>;
+  }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background px-6">
