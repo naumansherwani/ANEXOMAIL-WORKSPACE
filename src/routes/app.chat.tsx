@@ -73,7 +73,9 @@ function ChatPage() {
     for (const file of files) {
       const u = newUpload(file);
       setUploads((prev) => [...prev, u]);
-      void uploadImage(openId, file, () => setUploads((prev) => [...prev]));
+      void uploadImage(openId, file, (patch) =>
+        setUploads((prev) => prev.map((x) => (x.id === u.id ? { ...x, ...patch } : x))),
+      );
     }
   }
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
@@ -428,13 +430,13 @@ function ChatPage() {
                       className="inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground"
                     >
                       {u.state === "done"
-                        ? `${u.file.name} ready`
-                        : u.state === "error"
-                          ? `${u.file.name} failed`
-                          : `${u.file.name} ${u.percent}%`}
+                        ? `${u.name} ready`
+                        : u.state === "failed"
+                          ? `${u.name} — ${u.error ?? "failed"}`
+                          : `${u.name} ${u.progress}%`}
                       <button
                         type="button"
-                        aria-label={`Remove ${u.file.name}`}
+                        aria-label={`Remove ${u.name}`}
                         onClick={() => setUploads((prev) => prev.filter((x) => x.id !== u.id))}
                       >
                         <X className="size-3" />
@@ -454,7 +456,7 @@ function ChatPage() {
                   draftBox.clear();
                   typingPing(false);
                   send.mutate({
-                    body: body || done.map((u) => u.file.name).join(", "),
+                    body: body || done.map((u) => u.name).join(", "),
                     reply_to_id: replyTo?.id ?? null,
                     attachment_ids: attachmentIds,
                   });
