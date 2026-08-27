@@ -67,3 +67,27 @@ Recording · transcript · captions sab credit-metered, aur consent banner lazmi
 Same `anexomail-web` PM2 process + Caddy mein naya host block
 `ai.anexomail.com` → `127.0.0.1:3000`. Alag process ki zaroorat nahi
 (RAM bachta hai, ek build, ek git pull). Host-aware surface code se aata hai.
+
+**SHIPPED (25 Aug 2026):**
+
+- Caddy block `ai.anexomail.com` update ho gaya (`docs/caddy-anexochat.md` §2):
+  `/rpc/*` + `/wt/*` → 3200 (Rust PRIMARY) · `/api/chat/*` → 3300 (fallback) ·
+  `/api/*` + `/health` → 3100 · baqi sab → 3000 (SSR mirror).
+  **Pehle yeh block seedha 3100 par tha — is liye AI host par koi page hi nahi
+  khulta tha. Yeh loophole band ho gaya.**
+- `src/lib/host.ts`: `isAiHost()` · `isFounderHost()` · `aiPublicPathAllowed()`.
+- `SiteLock` host-aware: AI host par awam ko sirf `/` milta hai; `/app/*`
+  (mail · chat · ANEXOVideoCall · CRM · founder deck — Phase 1-11 sab, "NEW
+  ADDED" samet) unlock key ke peeche mirror hota hai. Ek codebase, zero duplicate.
+
+Server par lagane ka tarteeb:
+
+```bash
+cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak.$(date +%s)
+nano /etc/caddy/Caddyfile     # docs/caddy-anexochat.md §2 se poori file paste
+caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
+cd /opt/anexomail-web && git pull && bun install && bun run build:node
+pm2 restart anexomail-web
+curl -s -o /dev/null -w "ai-root:%{http_code}\n" https://ai.anexomail.com/
+curl -s -o /dev/null -w "ai-app:%{http_code}\n"  https://ai.anexomail.com/app/chat
+```

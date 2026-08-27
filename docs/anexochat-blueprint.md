@@ -201,6 +201,13 @@ Never show "Sent" while the message is only sitting locally. User sees: `Waiting
 3. **Multitasking** — `src/lib/chat-multitask.ts`: split view (do asli conversations, dono live, apni apni draft, `ax.chat.split`) + pop-out window (`/app/chat?c=<id>&pane=1`, pane mode mein list/nav chhupti hai). Panel kabhi nahi chhutta.
 4. **Lottie + GSAP tick states** — `src/components/app/chat/Ticks.tsx`: waiting/sending = inline Lottie pulse, sent/delivered/read = GSAP stroke-draw check(s), failed = `!` badge. Label + `sr-only` text saath (a11y); state sirf `messageState()` se aati hai — invent kabhi nahi.
 5. **Avatars** — `chat_members.avatar_path` + `chat_avatar_set()` RPC + `/api/chat/profile/avatar/ticket|commit` (512px WebP, wahi honest pipeline).
+6. **GAP CLOSE (25 Aug 2026) — asli UI wiring, sirf library nahi:**
+   - `/app/chat` composer par **drag-drop + paste + paperclip picker** live; har upload ka asli progress % / `failed + wajah` chip mein, aur `attachment_ids` message send ke saath `chat.attachment.attach` par jaate hain.
+   - Composer ab **per-conversation draft** (`useDraft`) par chalta hai — conversation badlo, draft zinda.
+   - Header mein **pop-out** button (`?c=<id>&pane=1`); pane mode mein list panel chhup jata hai (asli multitasking).
+   - `sql/anexochat_phase11b_attachment_flag.sql`: `chat_messages_page` ab `attachment_count` deta hai; bubble usi flag par gallery kholta hai (bina wajah fetch nahi).
+   - **Rust PRIMARY parity**: `chat.attachment.commit` + `chat.attachment.attach` ab Rust engine (`/rpc/*`) par bhi hain — pehle sirf Bun fallback par thay. Signed upload ticket + signed read URLs Bun par rehte hain (S3 signing wahin hai), yeh sach doc mein likha hai.
+   - **ai.anexomail.com mirror**: wahi `/app/chat` + ANEXOVideoCall build AI host par bhi chalta hai (`src/lib/host.ts` + `SiteLock`), awam ko sirf `/` — koi duplicate code, koi doosra repo nahi.
 
 
 
