@@ -538,6 +538,48 @@ async fn dispatch(
             .await
             .map(|data| data.get(0).cloned().unwrap_or(json!({ "unread": 0, "conversations": 0 }))),
 
+        // ── PHASE 11 — NEW ADDED: attachments (Rust PRIMARY) ────────────────
+        // Storage ka signed upload ticket Bun deta hai (S3 signing wahin hai);
+        // commit / attach / list ke commands ab PRIMARY engine par chalte hain.
+        "chat.attachment.commit" => {
+            let att = s(&input, "attachment_id");
+            if att.is_empty() {
+                Err("attachment_required".to_string())
+            } else {
+                let w = input.get("width").and_then(|v| v.as_i64()).unwrap_or(0);
+                let h = input.get("height").and_then(|v| v.as_i64()).unwrap_or(0);
+                sb_rpc(
+                    "chat_attachment_commit",
+                    json!({ "_user": me.id, "_attachment": att, "_width": w, "_height": h }),
+                )
+                .await
+                .map(|_| json!({ "committed": true, "attachment_id": att }))
+            }
+        }
+
+        "chat.attachment.attach" => {
+            let msg = s(&input, "message_id");
+            let ids: Vec<String> = input
+                .get("attachment_ids")
+                .and_then(|v| v.as_array())
+                .map(|a| {
+                    a.iter()
+                        .filter_map(|x| x.as_str().map(|s| s.to_string()))
+                        .collect()
+                })
+                .unwrap_or_default();
+            if msg.is_empty() || ids.is_empty() {
+                Err("message_and_attachments_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_attachment_attach",
+                    json!({ "_user": me.id, "_message": msg, "_ids": ids }),
+                )
+                .await
+                .map(|data| json!({ "attached": data }))
+            }
+        }
+
         // ── PHASE 8-10: parity (hide / pin / prefs / search) ────────────────
         "chat.message.hide" => {
             let msg = s(&input, "message_id");
