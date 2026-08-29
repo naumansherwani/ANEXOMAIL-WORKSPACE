@@ -51,7 +51,7 @@ function MailboxCard({ m }: { m: MailboxStorage }) {
         aria-valuemax={100}
         aria-label={`${m.mailbox} storage used`}
       >
-        <div className={`h-full ${BAR[m.level] ?? BAR.ok}`} style={{ width: `${pct}%` }} />
+        <div className={`h-full ${BAR[m.level] ?? BAR["ok"]}`} style={{ width: `${pct}%` }} />
       </div>
       <p className="mt-2 text-sm text-muted-foreground">
         {gb(m.remaining_bytes)} remaining · {LEVEL_COPY[m.level]}
