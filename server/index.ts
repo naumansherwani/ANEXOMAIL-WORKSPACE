@@ -207,6 +207,14 @@ app.use("/api/founder", founderMoveinRouter);
 app.use("/api/public", glitchPublicRouter);
 app.use("/api/founder", founderGlitchRouter);
 
+// Phase 48 — INBOX STORAGE & QUOTA (logical quota, storage abstraction)
+// user:     /api/storage/state · /preflight · /reserve · /commit · /release
+// internal: /api/internal/storage/accept · /commit   (x-cron-secret, Postfix hook)
+// founder:  /api/founder/storage/volumes
+app.use("/api/storage", storageRouter);
+app.use("/api/internal", internalStorageRouter);
+app.use("/api/founder", founderStorageRouter);
+
 // ANEXOChat: /api/chat/* Brain se HATA diya gaya hai — apni service `anexochat`
 // (src/anexochat.ts, port 3300). Caddy: /api/chat/* -> 127.0.0.1:3300.
 // Yahan dobara mount kabhi nahi (NO DUPLICATE rule).
