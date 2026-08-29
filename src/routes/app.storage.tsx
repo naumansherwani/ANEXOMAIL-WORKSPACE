@@ -3,7 +3,7 @@ import { Database, HardDrive } from "lucide-react";
 
 import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
-import { gb, LEVEL_COPY, type MailboxStorage, useStorageState } from "@/lib/storage";
+import { gb, LEVEL_COPY, type MailboxStorage, useStorageState } from "@/lib/storage-client";
 
 export const Route = createFileRoute("/app/storage")({
   component: StoragePage,
