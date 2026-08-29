@@ -51,6 +51,7 @@ import { Route as AppPerfRouteImport } from './routes/app.perf'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
+import { Route as AppStorageRouteImport } from './routes/app.storage'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as CheckoutDoneRouteImport } from './routes/checkout.done'
@@ -354,6 +355,11 @@ const AppSecurityRoute = AppSecurityRouteImport.update({
 const AppSettingsRoute = AppSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppStorageRoute = AppStorageRouteImport.update({
+  id: '/storage',
+  path: '/storage',
   getParentRoute: () => AppRoute,
 } as any)
 const AppWorkRoute = AppWorkRouteImport.update({
@@ -873,6 +879,7 @@ export interface FileRoutesByFullPath {
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
+  '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/done': typeof CheckoutDoneRoute
@@ -1003,6 +1010,7 @@ export interface FileRoutesByTo {
   '/app/movein': typeof AppMoveinRoute
   '/app/people': typeof AppPeopleRoute
   '/app/search': typeof AppSearchRoute
+  '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/done': typeof CheckoutDoneRoute
@@ -1139,6 +1147,7 @@ export interface FileRoutesById {
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
+  '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
   '/auth_/callback': typeof AuthCallbackRoute
   '/checkout/done': typeof CheckoutDoneRoute
@@ -1279,6 +1288,7 @@ export interface FileRouteTypes {
     | '/app/search'
     | '/app/security'
     | '/app/settings'
+    | '/app/storage'
     | '/app/work'
     | '/auth/callback'
     | '/checkout/done'
@@ -1409,6 +1419,7 @@ export interface FileRouteTypes {
     | '/app/movein'
     | '/app/people'
     | '/app/search'
+    | '/app/storage'
     | '/app/work'
     | '/auth/callback'
     | '/checkout/done'
@@ -1544,6 +1555,7 @@ export interface FileRouteTypes {
     | '/app/search'
     | '/app/security'
     | '/app/settings'
+    | '/app/storage'
     | '/app/work'
     | '/auth_/callback'
     | '/checkout/done'
@@ -1964,6 +1976,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/app/settings'
       preLoaderRoute: typeof AppSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/storage': {
+      id: '/app/storage'
+      path: '/storage'
+      fullPath: '/app/storage'
+      preLoaderRoute: typeof AppStorageRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/work': {
@@ -2894,6 +2913,7 @@ interface AppRouteChildren {
   AppSearchRoute: typeof AppSearchRoute
   AppSecurityRoute: typeof AppSecurityRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
+  AppStorageRoute: typeof AppStorageRoute
   AppWorkRoute: typeof AppWorkRoute
   AppIndexRoute: typeof AppIndexRoute
   AppAiCreditsRoute: typeof AppAiCreditsRoute
@@ -2936,6 +2956,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppSearchRoute: AppSearchRoute,
   AppSecurityRoute: AppSecurityRouteWithChildren,
   AppSettingsRoute: AppSettingsRouteWithChildren,
+  AppStorageRoute: AppStorageRoute,
   AppWorkRoute: AppWorkRoute,
   AppIndexRoute: AppIndexRoute,
   AppAiCreditsRoute: AppAiCreditsRoute,
