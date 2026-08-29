@@ -134,7 +134,7 @@ end $$;
 create or replace function public.storage_plan_of(_workspace uuid)
 returns text language sql stable security definer set search_path = public as $$
   select coalesce(
-    (select e.plan_id from public.entitlement_state e
+    (select e.plan from public.entitlement_state e
       where e.workspace_id = _workspace limit 1),
     'trial')
 $$;
