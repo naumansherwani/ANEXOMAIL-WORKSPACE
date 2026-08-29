@@ -555,6 +555,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "Mailbox storage & quota",
+        path: "/app/storage",
+        note: "Phase 48 — logical quota per mailbox, pooled for Business Pro, 80/90/100% states",
+        auth: true,
+      },
+      {
         label: "Logs & incidents",
         path: "/app/admin/logs",
         note: "Phase 25 — log lens with trace ids + blame-free incident timeline",
