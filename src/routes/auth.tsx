@@ -344,23 +344,6 @@ function AuthPage() {
                 </div>
 
                 <div className="space-y-ax-2">
-                  {PROVIDERS.map(({ id, label, icon: Icon }) => (
-                    <Button
-                      key={id}
-                      type="button"
-                      variant="outline"
-                      className="ax-press w-full"
-                      onClick={() => void social(id)}
-                      disabled={busy || providerBusy !== null}
-                    >
-                      {providerBusy === id ? (
-                        <Loader2 className="size-4 animate-spin" />
-                      ) : (
-                        <Icon className="size-4" />
-                      )}
-                      {label}
-                    </Button>
-                  ))}
                   <Button
                     type="button"
                     variant="outline"
