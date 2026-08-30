@@ -30,6 +30,7 @@ export function PlanCheckoutButton({ planId, cycle, className, source }: Props) 
     setError(null);
 
     if (status !== "signed-in") {
+      window.sessionStorage.setItem("anexo.pending.checkout", key);
       await navigate({ to: "/auth", search: { checkout: key } as never });
       return;
     }

@@ -107,8 +107,11 @@ function AuthPage() {
     const session = await api<{
       user: { email: string; onboarded: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
-    const checkoutKey = new URLSearchParams(window.location.search).get("checkout");
+    const checkoutKey =
+      new URLSearchParams(window.location.search).get("checkout") ||
+      window.sessionStorage.getItem("anexo.pending.checkout");
     if (checkoutKey && /^POLAR_PRODUCT_PLAN_(BASIC|PRO|BUSINESS|BUSINESS_PRO)_(MONTHLY|YEARLY)$/.test(checkoutKey)) {
+      window.sessionStorage.removeItem("anexo.pending.checkout");
       const checkout = await api<{ url: string }>("/api/billing/intent", {
         method: "POST",
         body: JSON.stringify({ product_key: checkoutKey, seats: 1, email: session.user.email }),
