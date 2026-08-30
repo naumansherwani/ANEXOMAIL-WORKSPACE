@@ -119,14 +119,28 @@ authRouter.get("/checkout/:id", async (req, res) => {
     // ownership check
     const { data: intent } = await db
       .from("billing_intents")
-      .select("user_id")
+      .select("id,user_id,product_id")
       .eq("polar_checkout_id", id)
       .maybeSingle();
     if (!intent) return res.status(404).json({ error: "checkout_not_found" });
     if (intent.user_id !== userId) return res.status(403).json({ error: "forbidden" });
+    const status = String(checkout.status || "unknown");
+    if (status === "confirmed" || status === "succeeded") {
+      const paidProductId = String(checkout.product_id || checkout.product?.id || "");
+      const { error: confirmError } = await db.rpc("billing_intent_confirm", {
+        p_intent: intent.id,
+        p_checkout_id: id,
+        p_order_id: checkout.order_id || null,
+        p_amount: checkout.total_amount ? Number(checkout.total_amount) / 100 : null,
+        p_source: "checkout_return_pull",
+        p_currency: String(checkout.currency || "GBP").toUpperCase(),
+        p_product_id: paidProductId || intent.product_id || null,
+      });
+      if (confirmError) throw confirmError;
+    }
     res.json({
       id: checkout.id,
-      status: checkout.status,
+      status,
       customer_email: checkout.customer_email,
       product_id: checkout.product_id,
       product_price_id: checkout.product_price_id,
@@ -156,7 +170,10 @@ publicRouter.post("/polar/webhook", async (req, res) => {
   try {
     // Polar gives a plain signing secret. standardwebhooks expects base64,
     // therefore encode the plain secret once before verification.
-    const verifier = new Webhook(Buffer.from(POLAR_WEBHOOK_SECRET, "utf8").toString("base64"));
+    const verifierSecret = POLAR_WEBHOOK_SECRET.startsWith("whsec_")
+      ? POLAR_WEBHOOK_SECRET
+      : Buffer.from(POLAR_WEBHOOK_SECRET, "utf8").toString("base64");
+    const verifier = new Webhook(verifierSecret);
     verifier.verify(body, {
       "webhook-id": webhookId,
       "webhook-timestamp": timestamp,

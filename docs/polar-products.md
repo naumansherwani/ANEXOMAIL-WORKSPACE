@@ -198,6 +198,8 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 - Events: `checkout.created`, `checkout.updated`, `order.created`, `order.paid`,
   `subscription.created`, `subscription.active`, `subscription.canceled`, `subscription.revoked`, `subscription.past_due`
 - Secret → `POLAR_WEBHOOK_SECRET` (upar ke block mein).
+- Backend official `standardwebhooks` verifier use karta hai aur exact raw request body verify karta hai.
+- Webhook unavailable ho tab bhi checkout return + `/api/public/billing/sync` Polar se payment pull karke entitlement apply karte hain; webhook payment truth ka single point of failure nahi.
 - **Refund policy:** ANEXOMAIL does not issue refunds. Polar `order.refunded` event is not consumed.
 
 ## 7) Product IDs — LOCKED v2 (14 Aug 2026)
