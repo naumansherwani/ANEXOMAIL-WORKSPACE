@@ -7,7 +7,7 @@ import { money, useFounderAnalytics } from "@/lib/analytics";
 
 export const Route = createFileRoute("/app/founder_/analytics")({ component: FounderAnalytics });
 
-/** Phase 24 — founder founder view: platform-wide debt aur keep rate. */
+/** Phase 24 — founder view: platform-wide debt aur keep rate. */
 function FounderAnalytics() {
   const q = useFounderAnalytics();
   return (

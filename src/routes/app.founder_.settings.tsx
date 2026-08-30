@@ -9,7 +9,7 @@ export const Route = createFileRoute("/app/founder_/settings")({
   component: FounderSettings,
 });
 
-/** Phase 23 — founder founder view: har tenant ki setting sehat, drift aur reverts. */
+/** Phase 23 — founder view: har tenant ki setting sehat, drift aur reverts. */
 function FounderSettings() {
   const q = useFounderSettings();
 

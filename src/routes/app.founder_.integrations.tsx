@@ -8,7 +8,7 @@ export const Route = createFileRoute("/app/founder_/integrations")({
   component: FounderIntegrations,
 });
 
-/** Phase 22 — founder founder view: har tenant ka connection, migration aur delivery sach. */
+/** Phase 22 — founder view: har tenant ka connection, migration aur delivery sach. */
 function FounderIntegrations() {
   const overview = useFounderIntegrations();
 

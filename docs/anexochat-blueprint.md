@@ -172,7 +172,7 @@ Yeh Phase 10 ke ANDAR ka hissa hai (naya phase nahi). Business Pro + founder onl
 - Unified Plan · Trickle ICE · perfect negotiation · `restartIce()` watchdog (WiFi→4G par black screen nahi).
 - P2P preferred + coturn TURN fallback (host `anexovideocall.anexomail.com`, ephemeral HMAC creds; `TURN_SECRET` browser par kabhi nahi). TURN na ho to UI sach bolta hai: "P2P only".
 - Signaling: Supabase Realtime broadcast `call:<id>` (persistent) + durable rows catch-up. Polling primary kabhi nahi.
-- Telemetry 3 layers: sab ko badge (🟢/🟡/🔴 + resolution + Connected/Reconnecting) · Business Pro tap-to-expand (RTT/jitter/loss/P2P-TURN/bitrate/FPS/res) · founder founder view `/app/founder/calls` (p50/p95 setup, relay %, reconnect rate).
+- Telemetry 3 layers: sab ko badge (🟢/🟡/🔴 + resolution + Connected/Reconnecting) · Business Pro tap-to-expand (RTT/jitter/loss/P2P-TURN/bitrate/FPS/res) · founder view `/app/founder/calls` (p50/p95 setup, relay %, reconnect rate).
 
 **10B — adaptive 8K pipeline, "no fake 8K"** (`src/lib/chat-video-quality.ts`, `sql/anexochat_phase10b_8k_video.sql`)
 - Ladder: 8K (7680×4320, cap 60 Mbps) → 4K → 1440p → 1080p → 720p → 480p, default AUTO.

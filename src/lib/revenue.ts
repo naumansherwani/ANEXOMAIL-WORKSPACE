@@ -151,7 +151,7 @@ export function useSubmitLead() {
   });
 }
 
-/* --------------------------- founder founder view --------------------------- */
+/* --------------------------- founder view --------------------------- */
 
 export type RevenueOverview = {
   target_gbp: number;
