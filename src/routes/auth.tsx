@@ -48,7 +48,12 @@ function AuthPage() {
   const navigate = useNavigate();
   const { refresh } = useAuth();
 
-  const [mode, setMode] = useState<Mode>("login");
+  const [mode, setMode] = useState<Mode>(() =>
+    typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("mode") === "signup"
+      ? "signup"
+      : "login",
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
