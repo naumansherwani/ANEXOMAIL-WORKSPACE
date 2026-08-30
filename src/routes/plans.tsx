@@ -272,12 +272,15 @@ function PlansPage() {
             <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Annual savings" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months free.
-            Switch to Yearly to see the full annual price on each card.
+            Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months
+            free. Switch to Yearly to see the full annual price on each card.
           </p>
         </section>
 
-        <section data-ax-pricing="plans" className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
+        <section
+          data-ax-pricing="plans"
+          className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4"
+        >
           {WORKSPACE_PLANS.map((p) => {
             const price = priceFor(p, cycle);
             return (

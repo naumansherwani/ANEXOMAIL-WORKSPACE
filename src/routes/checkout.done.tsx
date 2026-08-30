@@ -95,7 +95,10 @@ function CheckoutDonePage() {
             <p className="text-lg font-medium text-destructive">Confirmation failed</p>
             <p className="text-sm text-muted-foreground">
               Agar payment kat gaya hai toh 2–3 min wait kar ke refresh karein. Problem rehti hai
-              toh <a href="mailto:hello@anexomail.com" className="underline">hello@anexomail.com</a>{" "}
+              toh{" "}
+              <a href="mailto:hello@anexomail.com" className="underline">
+                hello@anexomail.com
+              </a>{" "}
               par likhein.
             </p>
             <Button asChild variant="outline" className="w-full">
