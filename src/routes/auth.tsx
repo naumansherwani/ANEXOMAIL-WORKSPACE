@@ -60,6 +60,9 @@ function AuthPage() {
   const [code, setCode] = useState("");
   const [challengeId, setChallengeId] = useState<string | null>(null);
   const [linkSent, setLinkSent] = useState(false);
+  /** Passkey enrolment gate — signup ke baad lazmi step. */
+  const [enrol, setEnrol] = useState(false);
+  const [enrolBlocked, setEnrolBlocked] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
