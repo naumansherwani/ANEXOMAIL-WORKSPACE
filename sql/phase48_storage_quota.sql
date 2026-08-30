@@ -118,26 +118,61 @@ begin
                  and tablename='storage_plans' and policyname='plans_read') then
     create policy plans_read on public.storage_plans for select to authenticated using (true);
   end if;
-  if not exists (select 1 from pg_policies where schemaname='public'
-                 and tablename='mailbox_storage' and policyname='ms_read_own_ws') then
-    create policy ms_read_own_ws on public.mailbox_storage for select to authenticated
-      using (workspace_id in (
-        select w.workspace_id from public.workspace_members w where w.user_id = auth.uid()
-      ));
+  -- workspace boundary = chat_members (asli membership table). Agar woh na ho
+  -- to sirf service_role padhega (backend anyway RPC se aata hai).
+  if to_regclass('public.chat_members') is not null
+     and not exists (select 1 from pg_policies where schemaname='public'
+                     and tablename='mailbox_storage' and policyname='ms_read_own_ws') then
+    execute $p$
+      create policy ms_read_own_ws on public.mailbox_storage for select to authenticated
+        using (exists (
+          select 1 from public.chat_members m
+           where m.workspace_id = public.mailbox_storage.workspace_id
+             and m.user_id = auth.uid()
+        ))
+    $p$;
   end if;
-exception when undefined_table then
-  -- workspace_members abhi nahi hai to sirf service_role padhega (backend anyway).
-  null;
 end $$;
 
 -- ── 5) helpers ─────────────────────────────────────────────────────────────
+-- entitlement_state ka key `user_id` hai (workspace_id NAHI). Is liye plan
+-- workspace -> owner_user_id -> entitlement_state se resolve hota hai.
+-- Founder hamesha business_pro (FOUNDER 100% ACCESS RULE).
 create or replace function public.storage_plan_of(_workspace uuid)
-returns text language sql stable security definer set search_path = public as $$
-  select coalesce(
-    (select e.plan from public.entitlement_state e
-      where e.workspace_id = _workspace limit 1),
-    'trial')
-$$;
+returns text language plpgsql stable security definer set search_path = public as $$
+declare _owner uuid; _plan text; _is_founder boolean := false;
+begin
+  if _workspace is null then return 'trial'; end if;
+
+  if to_regclass('public.chat_workspaces') is not null then
+    execute 'select owner_user_id from public.chat_workspaces where id = $1'
+      into _owner using _workspace;
+  end if;
+  if _owner is null then return 'trial'; end if;
+
+  if to_regclass('public.founder_accounts') is not null then
+    execute 'select exists(select 1 from public.founder_accounts where user_id = $1)'
+      into _is_founder using _owner;
+    if _is_founder then return 'business_pro'; end if;
+  end if;
+
+  if to_regclass('public.entitlement_state') is not null then
+    execute 'select plan from public.entitlement_state
+              where user_id = $1
+                and (active_until is null or active_until > now())
+              limit 1'
+      into _plan using _owner;
+  end if;
+
+  -- AI plans ko pooled (business_pro) storage milti hai.
+  if coalesce(_plan,'') in ('ai_pro','ai_business','ai_executive') then
+    return 'business_pro';
+  end if;
+  if _plan is not null and exists (select 1 from public.storage_plans where plan_id = _plan) then
+    return _plan;
+  end if;
+  return 'trial';
+end $$;
 
 -- POOLED plan? (business_pro) → pool ka hisaab, warna per-mailbox.
 create or replace function public.storage_state(_workspace uuid)
