@@ -37,26 +37,28 @@ export function CheckoutButton({
 
   const startCheckout = async () => {
     setError(null);
-
-    if (status !== "signed-in") {
-      window.sessionStorage.setItem("anexo.pending.checkout", productKey);
-      await navigate({ to: "/auth", search: { checkout: productKey } as never });
-      return;
-    }
-
     setBusy(true);
     try {
-      const result = await api<{ url: string }>("/api/billing/intent", {
+      // ABSM: checkout kabhi sign-in par nahi rukta.
+      // Signed-in → /api/billing/intent · guest → /api/public/billing/guest-intent
+      const endpoint =
+        status === "signed-in" ? "/api/billing/intent" : "/api/public/billing/guest-intent";
+      const result = await api<{ url: string; guest_token?: string }>(endpoint, {
         method: "POST",
         body: JSON.stringify({ product_key: productKey, seats: 1 }),
       });
       if (!result.url.startsWith("https://polar.sh/")) throw new Error("invalid_checkout_url");
+      if (result.guest_token) {
+        window.sessionStorage.setItem("anexo.guest.checkout_token", result.guest_token);
+      }
+      window.sessionStorage.setItem("anexo.pending.checkout", productKey);
       window.location.assign(result.url);
     } catch (caught) {
       setError(caught instanceof ApiError ? caught.message : "Checkout could not be opened.");
       setBusy(false);
     }
   };
+
 
   return (
     <div className="mt-7">
