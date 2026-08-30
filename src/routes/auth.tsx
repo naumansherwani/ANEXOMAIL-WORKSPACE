@@ -355,7 +355,7 @@ function AuthPage() {
                 </div>
 
                 <p className="ax-caption mt-ax-3 text-center">
-                  No domain yet? Sign in with Google, Apple or GitHub — then you pick your own{" "}
+                  No domain yet? Create your account here — then you pick your own{" "}
                   <span className="font-semibold text-foreground">@anexomail.com</span> address.
                 </p>
 
