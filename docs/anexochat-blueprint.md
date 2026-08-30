@@ -396,7 +396,7 @@ Founder side contains the same ANEXOChat product surface/control environment: AN
 
 Critical privacy rule: admin visibility must follow the defined privacy model. Admin access does not automatically mean unrestricted reading of private employee conversations. If founder/admin messaging with internal users is enabled, it must be an explicit workspace policy rather than an accidental backdoor.
 
-## PHASE 45 — FOUNDER FOUNDER VIEW
+## PHASE 45 — FOUNDER VIEW
 
 Founder cockpit: Companies, Active users, Online users, Messages, Files, Storage, Transfer health, Safety alerts, Device alerts, Reports, System health.
 

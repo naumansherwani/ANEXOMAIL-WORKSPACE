@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
  * Phase 22 — Integrations Platform (awam surface).
  * NO API / NO WEBHOOK: koi public key, koi webhook URL nahi. Native providers,
  * ek-click migration, delivery proof, one-click export aur LEO Actions.
- * Founder founder view alag route hai: /app/founder/integrations.
+ * Founder view alag route hai: /app/founder/integrations.
  */
 export const Route = createFileRoute("/app/integrations")({
   head: () => ({

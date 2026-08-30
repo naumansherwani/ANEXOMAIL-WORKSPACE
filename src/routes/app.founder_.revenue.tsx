@@ -21,7 +21,7 @@ function FounderRevenuePage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Banknote className="size-3.5" aria-hidden="true" /> Founder founder view</>}
+        eyebrow={<><Banknote className="size-3.5" aria-hidden="true" /> Founder view</>}
         title="Money, in one screen"
         blurb="Four roads without AI: subscriptions, migrations, partner commission and enterprise support. Target progress, live leads, and exactly how many seats close the gap."
       >

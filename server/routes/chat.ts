@@ -557,7 +557,7 @@ chatRouter.post("/video/call/end", async (req, res) => {
   res.json({ ok: true });
 });
 
-// Founder founder view (measured, not marketed)
+// Founder view (measured, not marketed)
 chatRouter.get("/video/calls/health", async (req, res) => {
   const me = await requireChat(req, res);
   if (!me) return;

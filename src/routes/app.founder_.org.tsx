@@ -9,7 +9,7 @@ import { notify } from "@/lib/notify";
 import { useFounderOrgKillSwitch, useFounderOrgList, useFounderOrgState } from "@/lib/org";
 
 /**
- * Founder founder view over every organisation. Lives on
+ * Founder view over every organisation. Lives on
  * founderworkspace.anexomail.com (IP allowlisted in Caddy) — awam never sees it.
  * Awam surface is /app/org only.
  */

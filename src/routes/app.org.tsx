@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * Phase 15 — Organization Center (awam surface).
- * Founder founder view is a separate route: /app/founder/org (founder host only).
+ * Founder view is a separate route: /app/founder/org (founder host only).
  * No AI here — AI lives on ai.anexomail.com only.
  */
 export const Route = createFileRoute("/app/org")({

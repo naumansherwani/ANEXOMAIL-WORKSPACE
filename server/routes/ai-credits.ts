@@ -394,7 +394,7 @@ router.post("/topup", async (req, res) => {
   }
 });
 
-// ── FOUNDER FOUNDER VIEW ────────────────────────────────────────────
+// ── FOUNDER VIEW ────────────────────────────────────────────
 founderRouter.get("/ai/credits/overview", async (req, res) => {
   const userId = await requireUser(req, res);
   if (!userId) return;

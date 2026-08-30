@@ -510,7 +510,7 @@ router.get("/regressions", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// Founder founder view — /api/founder/perf/overview
+// Founder view — /api/founder/perf/overview
 // ---------------------------------------------------------------------------
 founderRouter.get("/perf/overview", async (req, res) => {
   const uid = await requireUser(req, res);
