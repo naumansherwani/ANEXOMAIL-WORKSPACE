@@ -125,6 +125,7 @@ function GetStarted() {
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
               to="/auth"
+              search={{ mode: "signup" }}
               className="ax-press ax-focus rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-elev-1 transition-colors hover:bg-primary/85"
             >
               Start my 2 free days
