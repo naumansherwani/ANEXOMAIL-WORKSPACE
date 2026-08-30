@@ -231,3 +231,6 @@ layer (`billing_observations`), versioned state + SHA-256 hash (`billing_state_v
 `billing_state_apply`), QUIC outbox/inbox durability, adaptive reconciliation queue
 (P0..P4 + poll_seconds), immutable `billing_receipts`, radar view `billing_mesh_health`.
 Detail: `docs/absm-billing-mesh.md`.
+
+- `phase49b_hotfix_random_token.sql` — HOTFIX: gen_random_bytes → gen_random_uuid token,
+  billing_state_hash ka search_path `public, extensions` (Supabase pgcrypto fix).
