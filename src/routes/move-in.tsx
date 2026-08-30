@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
+import { CheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 
@@ -154,6 +155,39 @@ function MoveInPage() {
               How delivery is proven
             </Link>
           </div>
+        </section>
+
+        <section className="ax-container pb-16">
+          <h2 className="text-2xl text-foreground md:text-3xl">Book your move</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Fixed one-off bands by mailbox count. Pay securely, and our engineers start the
+            planning call the same week. 50% books the move, 50% on sign-off.
+          </p>
+          <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              { key: "POLAR_PRODUCT_MOVEIN_1_5", band: "1–5 mailboxes", price: "£568" },
+              { key: "POLAR_PRODUCT_MOVEIN_6_15", band: "6–15 mailboxes", price: "£1,670" },
+              { key: "POLAR_PRODUCT_MOVEIN_16_29", band: "16–29 mailboxes", price: "£2,210" },
+              { key: "POLAR_PRODUCT_MOVEIN_30PLUS", band: "30+ mailboxes", price: "£3,350" },
+            ].map((m) => (
+              <article key={m.key} className="ax-plane rounded-3xl p-6">
+                <h3 className="text-base font-bold text-foreground">{m.band}</h3>
+                <p className="ax-platinum-text mt-2 text-3xl font-extrabold tracking-tight">
+                  {m.price}
+                </p>
+                <p className="mt-1 text-xs text-muted-foreground">one-off · managed move</p>
+                <CheckoutButton
+                  productKey={m.key}
+                  label="Book this move"
+                  source={`movein:${m.band}`}
+                />
+              </article>
+            ))}
+          </div>
+          <p className="mt-4 max-w-2xl text-xs leading-relaxed text-muted-foreground">
+            Not sure which band fits? <Link to="/migration" className="underline">Get a move-in quote</Link> and
+            we confirm the band in writing before anything starts.
+          </p>
         </section>
 
         <section className="ax-container pb-16">
