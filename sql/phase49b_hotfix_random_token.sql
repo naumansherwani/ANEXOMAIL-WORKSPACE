@@ -9,6 +9,12 @@ begin;
 
 create extension if not exists pgcrypto with schema extensions;
 
+create or replace function public.billing_state_hash(p_entity text, p_id uuid, p_state text, p_version int)
+returns text language sql immutable set search_path = public, extensions as $$
+  select encode(extensions.digest(coalesce(p_entity,'')||'|'||coalesce(p_id::text,'')||'|'||
+                       coalesce(p_state,'')||'|'||coalesce(p_version::text,''), 'sha256'), 'hex');
+$$;
+
 create or replace function public.billing_intent_open_guest(
   p_kind text,
   p_plan text default null,
