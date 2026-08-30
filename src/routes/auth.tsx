@@ -106,9 +106,24 @@ function AuthPage() {
     const session = await api<{
       user: { email: string; onboarded: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
+    // ABSM: guest checkout ka intent sign-in ke baad asli user se jodo (idempotent)
+    const guestToken = window.sessionStorage.getItem("anexo.guest.checkout_token");
+    if (guestToken) {
+      try {
+        await api("/api/billing/claim-guest", {
+          method: "POST",
+          body: JSON.stringify({ guest_token: guestToken }),
+        });
+        window.sessionStorage.removeItem("anexo.guest.checkout_token");
+        window.sessionStorage.removeItem("anexo.pending.checkout");
+      } catch {
+        // sweep/reconciliation baad mein khud jod dega — sign-in kabhi nahi rukta
+      }
+    }
     const checkoutKey =
       new URLSearchParams(window.location.search).get("checkout") ||
       window.sessionStorage.getItem("anexo.pending.checkout");
+
     if (
       checkoutKey &&
       /^POLAR_PRODUCT_PLAN_(BASIC|PRO|BUSINESS|BUSINESS_PRO)_(MONTHLY|YEARLY)$/.test(checkoutKey)
