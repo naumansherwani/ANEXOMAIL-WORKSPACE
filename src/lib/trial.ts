@@ -129,7 +129,7 @@ export function useSubscribe() {
   return useMutation<
     { ok: boolean; state: AccountState },
     ApiError,
-    { plan: "basic" | "pro" | "business"; payment_ref: string }
+    { plan: "basic" | "pro" | "business" | "business_pro"; payment_ref: string }
   >({
     mutationFn: (body) =>
       api("/api/trial/subscribe", { method: "POST", body: JSON.stringify(body) }),

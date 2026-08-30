@@ -53,6 +53,11 @@ begin
 end;
 $$;
 
+revoke execute on function public.billing_guest_intent_open(text,text,text,text,text,int,numeric,text,text)
+  from public, anon, authenticated;
+grant execute on function public.billing_guest_intent_open(text,text,text,text,text,int,numeric,text,text)
+  to service_role;
+
 -- Phase 37 ka same masla (movein verification_id default)
 do $$
 begin
