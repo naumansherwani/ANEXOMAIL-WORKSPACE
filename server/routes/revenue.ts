@@ -12,7 +12,7 @@
 //   4. Enterprise SLA      — £790/mo add-on flag
 //
 // Public lead endpoint: POST /api/public/revenue/lead  (koi auth nahi, rate-limited by IP)
-// Founder god-view:     GET  /api/founder/revenue/overview  (Bearer required)
+// Founder view:     GET  /api/founder/revenue/overview  (Bearer required)
 //
 // Env locked: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY (fallback SUPABASE_*).
 import { Router } from "express";

@@ -7,14 +7,14 @@ import { money, useFounderAnalytics } from "@/lib/analytics";
 
 export const Route = createFileRoute("/app/founder_/analytics")({ component: FounderAnalytics });
 
-/** Phase 24 — founder god-view: platform-wide debt aur keep rate. */
+/** Phase 24 — founder view: platform-wide debt aur keep rate. */
 function FounderAnalytics() {
   const q = useFounderAnalytics();
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-4xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><BarChart3 className="size-3.5" aria-hidden="true" /> Analytics god-view</>}
+          eyebrow={<><BarChart3 className="size-3.5" aria-hidden="true" /> Analytics founder view</>}
           title="Platform-wide truth"
         >
           <CardBody

@@ -21,7 +21,7 @@ export const Route = createFileRoute("/app/founder_/ai/billing")({
 
 /**
  * Phase 19 — AI Credits & Billing, founder surface.
- * Tab 1 God-View (wallet, burn, runway, usage analytics, ledger)
+ * Tab 1 Founder View (wallet, burn, runway, usage analytics, ledger)
  * Tab 2 Sandbox checkout (top-up packs; founder charge zero, cost visible).
  */
 function FounderAiBilling() {
@@ -53,7 +53,7 @@ function FounderAiBilling() {
               data-on={tab === t ? "true" : "false"}
               className="ax-press rounded-xl border border-border px-3 py-1.5 text-[12px] font-semibold text-muted-foreground data-[on=true]:border-primary data-[on=true]:bg-primary data-[on=true]:text-primary-foreground"
             >
-              {t === "god" ? "God-view" : "Sandbox checkout"}
+              {t === "god" ? "Founder view" : "Sandbox checkout"}
             </button>
           ))}
         </nav>

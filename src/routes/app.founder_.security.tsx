@@ -8,7 +8,7 @@ import { useFounderSecurity } from "@/lib/security-platform";
 export const Route = createFileRoute("/app/founder_/security")({
   head: () => ({
     meta: [
-      { title: "Founder security god-view — ANEXOMAIL" },
+      { title: "Founder security founder view — ANEXOMAIL" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -21,7 +21,7 @@ function FounderSecurityPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ShieldAlert className="size-3.5" aria-hidden="true" /> Founder god-view</>}
+        eyebrow={<><ShieldAlert className="size-3.5" aria-hidden="true" /> Founder view</>}
         title="Security across the whole platform"
         blurb="Every tenant, every frozen account, every blocked device — one screen, real rows only."
       >

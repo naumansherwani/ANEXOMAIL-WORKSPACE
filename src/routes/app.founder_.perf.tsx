@@ -8,7 +8,7 @@ import { ms, useFounderPerf } from "@/lib/perf";
 export const Route = createFileRoute("/app/founder_/perf")({
   head: () => ({
     meta: [
-      { title: "Founder speed god-view — ANEXOMAIL" },
+      { title: "Founder speed founder view — ANEXOMAIL" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -21,7 +21,7 @@ function FounderPerfPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Gauge className="size-3.5" aria-hidden="true" /> Founder god-view</>}
+        eyebrow={<><Gauge className="size-3.5" aria-hidden="true" /> Founder view</>}
         title="Speed across every tenant"
         blurb="One screen: who is slow, which release broke it, and how much time the prefetch brain gave back — real rows only."
       >

@@ -9,7 +9,7 @@ export const Route = createFileRoute("/app/founder_/settings")({
   component: FounderSettings,
 });
 
-/** Phase 23 — founder god-view: har tenant ki setting sehat, drift aur reverts. */
+/** Phase 23 — founder view: har tenant ki setting sehat, drift aur reverts. */
 function FounderSettings() {
   const q = useFounderSettings();
 
@@ -17,7 +17,7 @@ function FounderSettings() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-4xl px-6 py-8 md:px-8">
         <p className="ax-eyebrow flex items-center gap-2">
-          <SlidersHorizontal className="size-3.5" aria-hidden="true" /> Settings god-view
+          <SlidersHorizontal className="size-3.5" aria-hidden="true" /> Settings founder view
         </p>
         <h2 className="ax-h2 mt-1 text-foreground">Who changed what, everywhere</h2>
 

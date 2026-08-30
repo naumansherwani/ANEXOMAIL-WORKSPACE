@@ -725,7 +725,7 @@ router.post("/diagnostics/run", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// Founder god-view — /api/founder/admin/overview
+// Founder view — /api/founder/admin/overview
 // ---------------------------------------------------------------------------
 founderRouter.get("/admin/overview", async (req, res) => {
   const uid = await requireUser(req, res);

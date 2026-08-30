@@ -23,7 +23,7 @@
 //   POST /api/ai/credits/complimentary     auth  — { day: 1|2 }
 //   POST /api/ai/credits/topup             auth  — { product_id, idempotency_key, payment_ref }
 //                                          NOTE: paid grant sirf verified payment se (Polar webhook TODO)
-//   GET  /api/founder/ai/credits/overview  auth  — god-view: wallets, spend, provider cost, margin
+//   GET  /api/founder/ai/credits/overview  auth  — founder view: wallets, spend, provider cost, margin
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
@@ -394,7 +394,7 @@ router.post("/topup", async (req, res) => {
   }
 });
 
-// ── FOUNDER GOD-VIEW ────────────────────────────────────────────
+// ── FOUNDER VIEW ────────────────────────────────────────────
 founderRouter.get("/ai/credits/overview", async (req, res) => {
   const userId = await requireUser(req, res);
   if (!userId) return;

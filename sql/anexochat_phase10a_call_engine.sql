@@ -173,7 +173,7 @@ end $$;
 revoke all on function public.chat_call_end(uuid,uuid,text) from public;
 grant execute on function public.chat_call_end(uuid,uuid,text) to authenticated, service_role;
 
--- ---------- 6) FOUNDER god-view: measured aggregates ----------
+-- ---------- 6) FOUNDER VIEW: measured aggregates ----------
 create or replace function public.chat_is_founder(_user uuid)
 returns boolean language plpgsql stable security definer set search_path = public as $$
 declare found boolean := false;

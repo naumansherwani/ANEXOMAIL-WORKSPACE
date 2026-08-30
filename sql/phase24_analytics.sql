@@ -129,7 +129,7 @@ drop policy if exists analytics_promises_own on public.analytics_promises;
 create policy analytics_promises_own on public.analytics_promises for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 
--- 7) Founder god-view: platform-wide debt truth ---------------------------
+-- 7) Founder view: platform-wide debt truth ---------------------------
 create or replace function public.founder_analytics_overview()
 returns jsonb
 language sql

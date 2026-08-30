@@ -153,7 +153,7 @@ app.use("/api/founder", founderSecurityRouter);
 app.use("/api/perf", perfRouter);
 app.use("/api/founder", founderPerfRouter);
 
-// Phase 28 — Revenue Engine (public lead intake + founder god-view)
+// Phase 28 — Revenue Engine (public lead intake + founder view)
 app.use("/api/public", revenuePublicRouter);
 app.use("/api/founder", founderRevenueRouter);
 
