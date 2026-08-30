@@ -5,10 +5,10 @@
 -- Price ka faisla ab DB ki price book karti hai, code nahi.
 --
 -- Locked yearly truth:
---   Basic        £20/user/mo   -> £220/yr    (1 month free)
---   Pro          £40/user/mo   -> £440/yr    (1 month free)
---   Business     £85/user/mo   -> £850/yr    (2 months free)
---   Business Pro £2,500/co/mo  -> £25,000/yr (2 months free)
+--   Basic        £23/user/mo   -> £253/yr    (1 month free)
+--   Pro          £46/user/mo   -> £506/yr    (1 month free)
+--   Business     £97/user/mo   -> £970/yr    (2 months free)
+--   Business Pro £2,850/co/mo  -> £28,500/yr (2 months free)
 --   AI Pro £400/1,200cr · AI Business £1,500/5,000cr · AI Executive £4,000/10,000cr
 --   (AI = backend only, Polar par koi AI product nahi)
 --
@@ -99,19 +99,19 @@ create policy price_book_read on public.billing_price_book
 
 insert into public.billing_price_book
   (product_key,kind,plan,band,billing_cycle,amount_gbp,per_seat,annual_rule,polar_listed) values
-  ('POLAR_PRODUCT_PLAN_BASIC_MONTHLY','plan','basic',null,'monthly',20,true,null,true),
-  ('POLAR_PRODUCT_PLAN_BASIC_YEARLY','plan','basic',null,'yearly',220,true,'one-month-free',true),
-  ('POLAR_PRODUCT_PLAN_PRO_MONTHLY','plan','pro',null,'monthly',40,true,null,true),
-  ('POLAR_PRODUCT_PLAN_PRO_YEARLY','plan','pro',null,'yearly',440,true,'one-month-free',true),
-  ('POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY','plan','business',null,'monthly',85,true,null,true),
-  ('POLAR_PRODUCT_PLAN_BUSINESS_YEARLY','plan','business',null,'yearly',850,true,'two-months-free',true),
-  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY','plan','business_pro',null,'monthly',2500,false,null,true),
-  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY','plan','business_pro',null,'yearly',25000,false,'two-months-free',true),
-  ('POLAR_PRODUCT_PRIORITY_SUPPORT','support',null,null,'monthly',700,false,null,true),
-  ('POLAR_PRODUCT_MOVEIN_1_5','movein',null,'1-5',null,500,false,null,true),
-  ('POLAR_PRODUCT_MOVEIN_6_15','movein',null,'6-15',null,1500,false,null,true),
-  ('POLAR_PRODUCT_MOVEIN_16_29','movein',null,'16-29',null,2000,false,null,true),
-  ('POLAR_PRODUCT_MOVEIN_30PLUS','movein',null,'30plus',null,3000,false,null,true),
+  ('POLAR_PRODUCT_PLAN_BASIC_MONTHLY','plan','basic',null,'monthly',23,true,null,true),
+  ('POLAR_PRODUCT_PLAN_BASIC_YEARLY','plan','basic',null,'yearly',253,true,'one-month-free',true),
+  ('POLAR_PRODUCT_PLAN_PRO_MONTHLY','plan','pro',null,'monthly',46,true,null,true),
+  ('POLAR_PRODUCT_PLAN_PRO_YEARLY','plan','pro',null,'yearly',506,true,'one-month-free',true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY','plan','business',null,'monthly',97,true,null,true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_YEARLY','plan','business',null,'yearly',970,true,'two-months-free',true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY','plan','business_pro',null,'monthly',2850,false,null,true),
+  ('POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY','plan','business_pro',null,'yearly',28500,false,'two-months-free',true),
+  ('POLAR_PRODUCT_PRIORITY_SUPPORT','support',null,null,'monthly',790,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_1_5','movein',null,'1-5',null,568,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_6_15','movein',null,'6-15',null,1670,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_16_29','movein',null,'16-29',null,2210,false,null,true),
+  ('POLAR_PRODUCT_MOVEIN_30PLUS','movein',null,'30plus',null,3350,false,null,true),
   -- AI plans: backend only, Polar par nahi
   ('AI_PLAN_PRO_MONTHLY','ai_plan','ai_pro',null,'monthly',400,false,null,false),
   ('AI_PLAN_PRO_YEARLY','ai_plan','ai_pro',null,'yearly',4000,false,'two-months-free',false),

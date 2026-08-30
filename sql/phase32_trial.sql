@@ -2,7 +2,7 @@
 -- ANEXOMAIL — Phase 32: TRIAL LIFECYCLE (Supabase #4)
 --
 -- FOUNDER LOCK (locked refinements):
---   1. 48h trial · AI hard zero · mandatory @anexomail.com claim
+--   1. 48h LIMITED trial · AI hard zero · mandatory @anexomail.com claim
 --   2. Recovery path MANDATORY when social login ends (never lock a user out)
 --   3. Frozen mailbox NEVER silently loses incoming mail (hold or reject, logged)
 --   4. Expired/frozen users keep account + billing + recovery access, NOT business data
@@ -42,7 +42,7 @@ create table if not exists public.trial_accounts (
   trial_ends_at timestamptz not null default now() + interval '48 hours',
   status text not null default 'trial'
     check (status in ('trial','active','expired','frozen','released')),
-  plan text check (plan in ('basic','pro','business')),
+  plan text check (plan in ('basic','pro','business','business_pro')),
   passkey_set boolean not null default false,
   recovery_set boolean not null default false,
   recovery_kind text,                          -- gmail | apple | outlook | other_email | phone
@@ -57,6 +57,11 @@ create table if not exists public.trial_accounts (
 create unique index if not exists trial_accounts_handle_ci_idx
   on public.trial_accounts (lower(anexomail_handle)) where anexomail_handle is not null;
 create index if not exists trial_accounts_status_idx on public.trial_accounts (status, trial_ends_at);
+
+-- Existing installations ka old inline constraint Business Pro ko rokta tha.
+alter table public.trial_accounts drop constraint if exists trial_accounts_plan_check;
+alter table public.trial_accounts add constraint trial_accounts_plan_check
+  check (plan is null or plan in ('basic','pro','business','business_pro'));
 
 -- ─── 2. IMMUTABLE EVENT LEDGER (idempotent warnings) ──────────
 create table if not exists public.trial_events (
@@ -160,9 +165,10 @@ begin
   select * into a from public.trial_accounts where user_id = _user_id;
   if a.user_id is null then
     return jsonb_build_object(
-      'state','none','hours_left',0,'can_social_login',true,'ai_enabled',false,
+      'state','none','hours_left',0,'can_social_login',false,'ai_enabled',false,
       'address',null,'needs_claim',true,'needs_passkey',true,'needs_recovery',true,
-      'business_data',false,'billing_access',true,'recovery_access',true);
+      'business_data',false,'trial_limited',false,'trial_features','[]'::jsonb,
+      'billing_access',true,'recovery_access',true);
   end if;
 
   st := a.status;
@@ -180,12 +186,17 @@ begin
     'plan', a.plan,
     'hours_left', case when st = 'trial' then hrs else 0 end,
     'trial_ends_at', a.trial_ends_at,
-    -- REFINEMENT 1+2: social login trial ke andar hi chalta hai; band hone ke baad
-    -- recovery path hamesha khula rehta hai — koi account permanently locked nahi.
-    'can_social_login', st in ('trial','active'),
+    -- OAuth permanently band. Passkey primary; password/magic-link recovery khuli.
+    'can_social_login', false,
     'recovery_access', true,
     'billing_access', true,
+    -- Trial core workspace ka real, limited tour hai: account/address, mail,
+    -- people, calendar, search aur security. CRM/org/admin/AI/chat unlock nahi.
     'business_data', st = 'active' or st = 'trial',
+    'trial_limited', st = 'trial',
+    'trial_features', case when st = 'trial' then
+      jsonb_build_array('today','mail','people','calendar','search','account','security','billing')
+      else '[]'::jsonb end,
     'ai_enabled', st = 'active',                 -- trial/expired/frozen = HARD ZERO
     'address', a.anexomail_address,
     'address_reserved_days_left', res_left,
@@ -293,7 +304,7 @@ end $$;
 create or replace function public.trial_subscribe(_user_id uuid, _plan text, _payment_ref text)
 returns jsonb language plpgsql security definer set search_path = public as $$
 begin
-  if _plan not in ('basic','pro','business') then
+  if _plan not in ('basic','pro','business','business_pro') then
     return jsonb_build_object('ok', false, 'error', 'invalid_plan');
   end if;
   update public.trial_accounts

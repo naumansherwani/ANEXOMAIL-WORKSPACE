@@ -13,13 +13,15 @@ import { api, type ApiError } from "@/lib/api";
 
 export type AccountState = {
   state: "none" | "trial" | "active" | "expired" | "frozen" | "released";
-  plan: "basic" | "pro" | "business" | null;
+  plan: "basic" | "pro" | "business" | "business_pro" | null;
   hours_left: number;
   trial_ends_at: string | null;
   can_social_login: boolean;
   recovery_access: boolean;
   billing_access: boolean;
   business_data: boolean;
+  trial_limited: boolean;
+  trial_features: string[];
   /** Trial / expired / frozen = hard zero. Sirf active plan pe AI. */
   ai_enabled: boolean;
   address: string | null;
@@ -127,7 +129,7 @@ export function useSubscribe() {
   return useMutation<
     { ok: boolean; state: AccountState },
     ApiError,
-    { plan: "basic" | "pro" | "business"; payment_ref: string }
+    { plan: "basic" | "pro" | "business" | "business_pro"; payment_ref: string }
   >({
     mutationFn: (body) =>
       api("/api/trial/subscribe", { method: "POST", body: JSON.stringify(body) }),

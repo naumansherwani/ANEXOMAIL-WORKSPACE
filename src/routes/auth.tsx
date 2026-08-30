@@ -288,7 +288,7 @@ function AuthPage() {
             </Button>
           )}
           <p className="ax-caption mt-ax-3">
-            Two days of full trial access start the moment you continue.
+            Two days of real, limited workspace access start the moment you continue.
           </p>
         </div>
       </main>

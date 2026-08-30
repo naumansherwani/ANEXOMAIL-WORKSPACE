@@ -63,6 +63,23 @@ function AppLayout() {
     }
   }, [account.data?.state, preview, navigate]);
 
+  useEffect(() => {
+    if (preview || !account.data?.trial_limited) return;
+    const allowed = [
+      "/app",
+      "/app/mail",
+      "/app/people",
+      "/app/calendar",
+      "/app/search",
+      "/app/account",
+      "/app/security",
+      "/app/billing",
+    ];
+    const path = window.location.pathname.replace(/\/$/, "") || "/app";
+    const canOpen = allowed.some((prefix) => path === prefix || path.startsWith(`${prefix}/`));
+    if (!canOpen) void navigate({ to: "/app", replace: true });
+  }, [account.data?.trial_limited, preview, navigate]);
+
   if (status === "loading" || (status === "signed-out" && !preview)) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background">

@@ -30,9 +30,9 @@ const STEPS = [
     n: "1",
     title: "Create your account",
     body:
-      "Sign up with an email you already use, or continue with Google or Apple. No card is asked for, and nothing is charged during the two free days.",
+      "Create an account with an email you already use and secure it with a passkey. No card is asked for, and nothing is charged during the two free days.",
     points: [
-      "Two days free, full product — not a cut-down demo",
+      "Two days of real but limited workspace access",
       "No card, no auto-charge when the trial ends",
       "Takes about a minute",
     ],
@@ -97,8 +97,8 @@ const FAQ = [
     a: "No. The two free days need only an email address and a recovery route. You add billing details when you decide to stay.",
   },
   {
-    q: "Can I use Gmail or Apple to sign in and still get an ANEXOMAIL address?",
-    a: "Yes. Signing in with Google or Apple is only the door. You still claim your own @anexomail.com address, and that is the mailbox you work from.",
+    q: "Can I use my existing email to create an ANEXOMAIL account?",
+    a: "Yes. Use any email address you already control to create the account and recover access. You then claim your own @anexomail.com working address. Social sign-in is not used.",
   },
   {
     q: "What if I lose my phone?",

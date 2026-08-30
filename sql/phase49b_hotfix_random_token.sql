@@ -15,7 +15,12 @@ returns text language sql immutable set search_path = public, extensions as $$
                        coalesce(p_state,'')||'|'||coalesce(p_version::text,''), 'sha256'), 'hex');
 $$;
 
-create or replace function public.billing_intent_open_guest(
+-- Runtime endpoint exact naam `billing_guest_intent_open` call karta hai.
+-- Purane hotfix mein lafzon ki ترتیب ulat thi, is liye live function replace
+-- nahi hua aur purana gen_random_bytes() wala body chalta raha.
+drop function if exists public.billing_intent_open_guest(text,text,text,text,text,int,numeric,text,text);
+
+create or replace function public.billing_guest_intent_open(
   p_kind text,
   p_plan text default null,
   p_band text default null,
@@ -48,6 +53,11 @@ begin
 end;
 $$;
 
+revoke execute on function public.billing_guest_intent_open(text,text,text,text,text,int,numeric,text,text)
+  from public, anon, authenticated;
+grant execute on function public.billing_guest_intent_open(text,text,text,text,text,int,numeric,text,text)
+  to service_role;
+
 -- Phase 37 ka same masla (movein verification_id default)
 do $$
 begin
@@ -60,3 +70,6 @@ begin
 end $$;
 
 commit;
+
+-- Verify (result mein gen_random_bytes nahi aana chahiye):
+-- select pg_get_functiondef('public.billing_guest_intent_open(text,text,text,text,text,integer,numeric,text,text)'::regprocedure);
