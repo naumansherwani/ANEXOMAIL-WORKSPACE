@@ -374,7 +374,67 @@ grant execute on function public.storage_state(uuid),
   public.storage_purge(uuid, text, bigint, text),
   public.storage_plan_of(uuid) to service_role;
 
--- ── 7) verify ──────────────────────────────────────────────────────────────
+-- ── 7) CAPACITY RADAR (thin provisioning safety) ───────────────────────────
+-- Sold quota ≠ used bytes. Yeh view batata hai kab naya volume chahiye.
+create or replace view public.storage_capacity_health as
+select
+  v.id, v.name, v.kind, v.accepts_new,
+  v.capacity_bytes, v.used_bytes,
+  greatest(v.capacity_bytes - v.used_bytes, 0) as free_bytes,
+  round((v.used_bytes::numeric / nullif(v.capacity_bytes,0)) * 100, 1) as percent,
+  case
+    when v.used_bytes::numeric >= v.capacity_bytes * 0.85 then 'critical'
+    when v.used_bytes::numeric >= v.capacity_bytes * 0.70 then 'warning'
+    else 'ok' end as level
+from public.storage_volumes v;
+
+grant select on public.storage_capacity_health to service_role;
+
+-- naya volume add + purane ko drain mode (accepts_new=false). Zero migration.
+create or replace function public.storage_volume_register(
+  _name text, _kind text, _capacity_bytes bigint, _endpoint text default null,
+  _drain_others boolean default false)
+returns uuid language plpgsql security definer set search_path = public as $$
+declare _id uuid;
+begin
+  insert into public.storage_volumes (name, kind, capacity_bytes, endpoint, accepts_new)
+  values (_name, _kind, _capacity_bytes, _endpoint, true)
+  on conflict (name) do update
+    set kind = excluded.kind,
+        capacity_bytes = excluded.capacity_bytes,
+        endpoint = excluded.endpoint,
+        accepts_new = true
+  returning id into _id;
+
+  if _drain_others then
+    update public.storage_volumes set accepts_new = false where id <> _id;
+  end if;
+  return _id;
+end $$;
+
+-- 70%+ bhare volumes ko khud drain par daal do (cron: har ghanta).
+create or replace function public.storage_capacity_sweep()
+returns jsonb language plpgsql security definer set search_path = public as $$
+declare _drained int := 0;
+begin
+  update public.storage_volumes
+     set accepts_new = false
+   where accepts_new
+     and used_bytes::numeric >= capacity_bytes * 0.85;
+  _drained := coalesce((select count(*) from public.storage_volumes where not accepts_new), 0);
+  return jsonb_build_object(
+    'drained_volumes', _drained,
+    'writable', (select count(*) from public.storage_volumes where accepts_new),
+    'health', (select jsonb_agg(to_jsonb(h)) from public.storage_capacity_health h));
+end $$;
+
+grant execute on function public.storage_volume_register(text, text, bigint, text, boolean),
+  public.storage_capacity_sweep() to service_role;
+
+-- ── 8) verify ──────────────────────────────────────────────────────────────
 select plan_id, pg_size_pretty(per_mailbox_bytes) per_mailbox, mailbox_limit,
        pg_size_pretty(pooled_bytes) pool, pg_size_pretty(max_send_bytes) max_send
 from public.storage_plans order by coalesce(per_mailbox_bytes, pooled_bytes);
+
+select name, kind, level, percent, pg_size_pretty(free_bytes) free
+from public.storage_capacity_health order by percent desc;
