@@ -1,4 +1,3 @@
-import { useNavigate } from "@tanstack/react-router";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 
@@ -30,7 +29,6 @@ export function CheckoutButton({
   source: string;
   className?: string | undefined;
 }) {
-  const navigate = useNavigate();
   const { status } = useAuth();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
