@@ -223,3 +223,11 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor**.
   `/api/internal/storage/accept|commit|sweep` · `/api/founder/storage/volumes` · `POST /api/founder/storage/volume`
 - Physical ops (Hetzner Storage Box mount, Dovecot, Caddy `/files/*`): `docs/storage-hetzner.md`
 - Verify: `select name, kind, level, percent from public.storage_capacity_health order by percent desc;`
+
+## `phase49_absm_billing_mesh.sql` — Phase 49 · Autonomous Billing State Mesh (ABSM)
+
+Webhook-independent billing truth: guest checkout intents (`guest_token`), observation
+layer (`billing_observations`), versioned state + SHA-256 hash (`billing_state_versions`,
+`billing_state_apply`), QUIC outbox/inbox durability, adaptive reconciliation queue
+(P0..P4 + poll_seconds), immutable `billing_receipts`, radar view `billing_mesh_health`.
+Detail: `docs/absm-billing-mesh.md`.

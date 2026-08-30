@@ -1,24 +1,56 @@
-# Let's Chat, Friend
+# ANEXOMAIL — FRONTEND ONLY
 
-haan ji apse baat kerni hai.
+> **ONLY USE FOR FRONTEND.**
+> Yeh repo sirf ANEXOMAIL ka **frontend** (UI + routes + client transport) hai.
+> Backend (Bun brain :3100, Rust engine :3200, mail stack, Postfix/Dovecot, Supabase #4)
+> **alag** hai aur is repo ka hissa nahi. Yahan koi backend logic add nahi hoti.
 
-This project was built with [Lovable](https://lovable.dev).
+---
 
-## Build with Lovable
+## Kya is repo mein hai (frontend)
 
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/abedc5c1-b7b3-45e5-895f-b212cc0e7489).
+| Folder | Kaam |
+| --- | --- |
+| `src/routes/**` | Public site + `/app/*` workspace pages (TanStack Start) |
+| `src/components/**` | UI components, AppShell, ANEXOChat/VideoCall UI |
+| `src/lib/**` | **Transport only** — backend APIs ko call karti hui hooks (`rpcOrRest`) |
+| `src/styles.css` | Design tokens / theme |
 
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+## Kya is repo mein NAHI hai (backend — alag server par)
 
-## Development
+- Auth, sessions, permissions
+- Mail delivery, Postfix/Dovecot, IMAP/SMTP
+- AI (LEO), credits, billing authority, Polar reconciliation
+- Supabase #4 schema execution, service-role keys
+- Rust engine (`/rpc/*`), WebTransport/QUIC, coturn
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+Reference copies jo yahan rakhi jaati hain (deploy ke liye copy-paste source, **run nahi hoti**):
+
+- `server/**` → Bun backend files ki repo copy (`/opt/anexomail` par deploy hoti hain)
+- `sql/**` → Supabase #4 migrations (dashboard SQL editor mein chalti hain)
+- `docs/**` → ops runbooks (Caddy, TURN, storage, Polar)
+
+## Frontend env (sirf ye — koi secret nahi)
+
+```
+VITE_API_URL=
+VITE_APP_URL=
+VITE_BRAND=ANEXOMAIL
+VITE_SUPPORT_EMAIL=
+VITE_ENV=
+```
+
+Service role key, DB URL, OpenRouter key, mail passwords — **frontend mein kabhi nahi**.
+
+## Deploy (frontend)
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
+cd /opt/anexomail-web && git pull && bun install && bun run build:node && pm2 restart anexomail-web
+```
+
+## Local dev
+
+```sh
+bun install
+bun run dev
 ```

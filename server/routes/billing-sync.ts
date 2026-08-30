@@ -394,5 +394,113 @@ publicRouter.post("/billing/sync", async (req, res) => {
   });
 });
 
+// ---------------------------------------------------------------------------
+// ABSM (Phase 49) — POST /api/public/billing/guest-intent
+// Sign-in ke bina checkout: Supabase mein pehle guest intent, phir Polar.
+// Sign-in ke baad /api/billing/claim-guest intent ko asli user se jodta hai.
+// ---------------------------------------------------------------------------
+publicRouter.post("/billing/guest-intent", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const { product_key, seats = 1, email } = req.body || {};
+  const selected = product_key ? configuredProduct(String(product_key)) : null;
+  if (!selected) {
+    return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+  }
+  const safeSeats = selected.perSeat
+    ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1)))
+    : 1;
+  const expectedAmount = selected.amountGbp * safeSeats;
+
+  const { data: opened, error: openError } = await db.rpc("billing_guest_intent_open", {
+    p_kind: selected.kind,
+    p_plan: selected.plan ?? null,
+    p_band: selected.band ?? null,
+    p_product_key: String(product_key),
+    p_product_id: selected.productId,
+    p_seats: safeSeats,
+    p_amount: expectedAmount,
+    p_currency: "GBP",
+    p_email: email ? String(email) : null,
+  });
+  if (openError) {
+    return res.status(500).json({ error: "intent_open_failed", detail: openError.message });
+  }
+  const row = Array.isArray(opened) ? opened[0] : opened;
+  const intentId = row?.intent_id;
+  const guestToken = row?.guest_token;
+  if (!intentId || !guestToken) return res.status(500).json({ error: "intent_open_failed" });
+
+  if (!POLAR_TOKEN) {
+    return res.status(503).json({ error: "polar_not_configured", intent_id: intentId });
+  }
+  try {
+    const rawMeta: Record<string, string> = {
+      anexomail_intent_id: String(intentId),
+      anexomail_guest_token: String(guestToken),
+      seats: String(safeSeats),
+      product_key: String(product_key),
+      kind: selected.kind,
+      plan: selected.plan ?? "",
+      band: selected.band ?? "",
+      billing_cycle: selected.cycle ?? "one_time",
+      amount_expected_gbp: String(expectedAmount),
+    };
+    const metadata: Record<string, string> = {};
+    for (const [key, value] of Object.entries(rawMeta)) {
+      const v = String(value ?? "").trim();
+      if (v) metadata[key] = v;
+    }
+    const payload: any = {
+      product_id: selected.productId,
+      products: [selected.productId],
+      success_url: SUCCESS_URL,
+      metadata,
+    };
+    if (email) payload.customer_email = String(email);
+
+    const checkout = await polarFetch("/v1/checkouts/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+    await db.rpc("billing_intent_attach_checkout", {
+      p_intent: intentId,
+      p_checkout_id: checkout.id,
+    });
+    return res.json({
+      intent_id: intentId,
+      guest_token: guestToken,
+      checkout_id: checkout.id,
+      url: checkout.url,
+    });
+  } catch (e: any) {
+    console.error("[billing guest-intent] polar checkout failed:", e?.message || e);
+    await db.rpc("billing_sync_fail", {
+      p_intent: intentId,
+      p_error: `guest_checkout_create_failed: ${e?.message || e}`,
+    });
+    return res.status(502).json({
+      error: "checkout_failed",
+      intent_id: intentId,
+      detail: String(e?.message || e),
+    });
+  }
+});
+
+// POST /api/billing/claim-guest  { guest_token }  — sign-in ke baad linking
+authRouter.post("/claim-guest", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const token = String(req.body?.guest_token || "");
+  if (!token) return res.status(400).json({ error: "guest_token_required" });
+  const { data, error } = await db.rpc("billing_guest_intent_claim", {
+    p_token: token,
+    p_user: userId,
+  });
+  if (error) return res.status(500).json({ error: "claim_failed", detail: error.message });
+  return res.json({ intent_id: data ?? null, claimed: Boolean(data) });
+});
+
 export { authRouter as billingSyncAuthRouter, publicRouter as billingSyncPublicRouter };
 export default authRouter;
+
