@@ -5,6 +5,7 @@ import { useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
+import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
 
 export const Route = createFileRoute("/plans")({
@@ -308,13 +309,7 @@ function PlansPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to="/move-in"
-                  data-ax-price-cta={`plans:${p.id}`}
-                  className="mt-7 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                >
-                  Get started
-                </Link>
+                <PlanCheckoutButton planId={p.id} cycle={cycle} source="plans" />
               </article>
             );
           })}

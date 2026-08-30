@@ -15,7 +15,7 @@
 //   SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { createHmac, timingSafeEqual } from "crypto";
+import { Webhook } from "standardwebhooks";
 import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
@@ -140,20 +140,6 @@ authRouter.get("/checkout/:id", async (req, res) => {
 });
 
 // ---------- webhook: public, verified ----------
-function getWebhookSecretBytes(): Buffer {
-  // Standard Webhooks secrets commonly use whsec_<base64>.
-  const raw = POLAR_WEBHOOK_SECRET.startsWith("whsec_")
-    ? POLAR_WEBHOOK_SECRET.slice(6)
-    : POLAR_WEBHOOK_SECRET;
-  try {
-    const b = Buffer.from(raw, "base64");
-    if (b.length > 16) return b;
-  } catch {
-    // ignore
-  }
-  return Buffer.from(raw, "utf8");
-}
-
 publicRouter.post("/polar/webhook", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
   if (!POLAR_WEBHOOK_SECRET) return res.status(401).json({ error: "webhook_not_configured" });
@@ -161,49 +147,25 @@ publicRouter.post("/polar/webhook", async (req, res) => {
   const webhookId = String(req.headers["webhook-id"] || "");
   const timestamp = String(req.headers["webhook-timestamp"] || "");
   const signatureHeader = String(req.headers["webhook-signature"] || "");
-  const body = req.rawBody ? Buffer.from(req.rawBody).toString("utf8") : JSON.stringify(req.body);
+  const body = req.rawBody ? Buffer.from(req.rawBody) : Buffer.from(JSON.stringify(req.body));
   if (!webhookId || !timestamp || !signatureHeader || !body) {
     await captureRaw(req, webhookId, false, "missing_webhook_headers_or_payload");
     return res.status(400).json({ error: "missing_webhook_headers_or_payload" });
   }
 
-  const secret = getWebhookSecretBytes();
-  const signedPayload = `${webhookId}.${timestamp}.${body}`;
-  const expected = createHmac("sha256", secret).update(signedPayload).digest("base64");
-  const signatures = signatureHeader
-    .split(" ")
-    .map((piece) => piece.trim())
-    .filter(Boolean)
-    .map((piece) => {
-      const separator = piece.includes(",") ? "," : "=";
-      const [version, signature] = piece.split(separator, 2);
-      return version === "v1" ? signature : null;
-    })
-    .filter((signature): signature is string => Boolean(signature));
-
-  let signatureValid = false;
-  for (const signature of signatures) {
-    try {
-      const actual = Buffer.from(signature);
-      const wanted = Buffer.from(expected);
-      if (actual.length === wanted.length && timingSafeEqual(actual, wanted)) {
-        signatureValid = true;
-        break;
-      }
-    } catch {
-      // Try the next signature when the provider rotates signing keys.
-    }
-  }
-  if (!signatureValid) {
+  try {
+    // Polar gives a plain signing secret. standardwebhooks expects base64,
+    // therefore encode the plain secret once before verification.
+    const verifier = new Webhook(Buffer.from(POLAR_WEBHOOK_SECRET, "utf8").toString("base64"));
+    verifier.verify(body, {
+      "webhook-id": webhookId,
+      "webhook-timestamp": timestamp,
+      "webhook-signature": signatureHeader,
+    });
+  } catch (error) {
+    console.error("[polar webhook verify]", error instanceof Error ? error.message : error);
     await captureRaw(req, webhookId, false, "invalid_signature");
     return res.status(401).json({ error: "invalid_signature" });
-  }
-
-  // replay tolerance: 5 minutes
-  const tsNum = Number(timestamp);
-  if (!Number.isNaN(tsNum) && Math.abs(Date.now() / 1000 - tsNum) > 300) {
-    await captureRaw(req, webhookId, false, "stale_webhook");
-    return res.status(401).json({ error: "stale_webhook" });
   }
 
   const event = req.body as any;

@@ -107,6 +107,16 @@ function AuthPage() {
     const session = await api<{
       user: { onboarded: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
+    const checkoutKey = new URLSearchParams(window.location.search).get("checkout");
+    if (checkoutKey && /^POLAR_PRODUCT_PLAN_(BASIC|PRO|BUSINESS|BUSINESS_PRO)_(MONTHLY|YEARLY)$/.test(checkoutKey)) {
+      const checkout = await api<{ url: string }>("/api/billing/intent", {
+        method: "POST",
+        body: JSON.stringify({ product_key: checkoutKey, seats: 1, email: session.user.email }),
+      });
+      if (!checkout.url.startsWith("https://polar.sh/")) throw new Error("invalid_checkout_url");
+      window.location.assign(checkout.url);
+      return;
+    }
     const target = !session.user.anexomail_address
       ? "/claim"
       : session.user.onboarded

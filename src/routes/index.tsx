@@ -24,6 +24,7 @@ import { Stage } from "@/components/site/Stage";
 import { HeroComposition } from "@/components/site/HeroComposition";
 import { SlaProof } from "@/components/site/SlaProof";
 import { BillingToggle } from "@/components/site/BillingToggle";
+import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { WORKSPACE_PLANS, priceFor, ANNUAL_NOTE, type BillingCycle } from "@/lib/plans";
 
 /* Hero trust badges — every claim verifiable, nothing invented. */
@@ -451,12 +452,12 @@ function Index() {
                       ))}
                     </ul>
 
-                    <Link
-                      to="/move-in"
-                      className="mt-10 inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                    >
-                      Get started
-                    </Link>
+                    <PlanCheckoutButton
+                      planId={p.id}
+                      cycle={cycle}
+                      source="home"
+                      className="mt-3"
+                    />
                   </article>
                 </Reveal>
               );

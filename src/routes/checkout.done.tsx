@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/site/BrandMark";
 import { reportGlitch } from "@/lib/telemetry";
+import { api } from "@/lib/api";
 
 export const Route = createFileRoute("/checkout/done")({
   component: CheckoutDonePage,
@@ -29,14 +30,23 @@ function CheckoutDonePage() {
       setStatus("missing");
       return;
     }
-    fetch(`/api/billing/checkout/${checkoutId}`, { credentials: "include" })
-      .then(async (r) => {
-        if (!r.ok) throw new Error((await r.json()).error || "verify_failed");
-        const data = await r.json();
-        setStatus(data.status === "confirmed" ? "success" : "loading");
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let attempts = 0;
+    const verify = async () => {
+      try {
+        const data = await api<{ status: string }>(`/api/billing/checkout/${checkoutId}`);
+        if (cancelled) return;
         setDetail(data.status);
-      })
-      .catch((e) => {
+        if (data.status === "confirmed" || data.status === "succeeded") {
+          setStatus("success");
+          return;
+        }
+        attempts += 1;
+        if (attempts < 20) timer = setTimeout(() => void verify(), 3000);
+        else setStatus("failed");
+      } catch (e) {
+        if (cancelled) return;
         console.error("checkout verify", e);
         // Phase 47 — checkout ka koi bhi glitch founder ke WhatsApp tak jata hai.
         reportGlitch("checkout_error", `checkout verify failed: ${String(e?.message ?? e)}`, {
@@ -45,7 +55,13 @@ function CheckoutDonePage() {
           meta: { checkout_id: checkoutId },
         });
         setStatus("failed");
-      });
+      }
+    };
+    void verify();
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, [checkoutId]);
 
   return (
