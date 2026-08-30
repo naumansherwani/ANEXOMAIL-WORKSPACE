@@ -19,19 +19,28 @@ function productKey(planId: string, cycle: BillingCycle) {
   return `POLAR_PRODUCT_PLAN_${planId.toUpperCase()}_${cycle.toUpperCase()}`;
 }
 
-export function PlanCheckoutButton({ planId, cycle, className, source }: Props) {
+export function CheckoutButton({
+  productKey,
+  label = "Get started",
+  source,
+  className,
+}: {
+  productKey: string;
+  label?: string;
+  source: string;
+  className?: string;
+}) {
   const navigate = useNavigate();
   const { status } = useAuth();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const startCheckout = async () => {
-    const key = productKey(planId, cycle);
     setError(null);
 
     if (status !== "signed-in") {
-      window.sessionStorage.setItem("anexo.pending.checkout", key);
-      await navigate({ to: "/auth", search: { checkout: key } as never });
+      window.sessionStorage.setItem("anexo.pending.checkout", productKey);
+      await navigate({ to: "/auth", search: { checkout: productKey } as never });
       return;
     }
 
@@ -39,7 +48,7 @@ export function PlanCheckoutButton({ planId, cycle, className, source }: Props) 
     try {
       const result = await api<{ url: string }>("/api/billing/intent", {
         method: "POST",
-        body: JSON.stringify({ product_key: key, seats: 1 }),
+        body: JSON.stringify({ product_key: productKey, seats: 1 }),
       });
       if (!result.url.startsWith("https://polar.sh/")) throw new Error("invalid_checkout_url");
       window.location.assign(result.url);
@@ -58,14 +67,24 @@ export function PlanCheckoutButton({ planId, cycle, className, source }: Props) 
           "h-auto w-full rounded-xl py-3 transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground",
           className,
         )}
-        data-ax-price-cta={`${source}:${planId}`}
+        data-ax-price-cta={source}
         disabled={busy || status === "loading"}
         onClick={() => void startCheckout()}
       >
         {busy && <Loader2 className="size-4 animate-spin" />}
-        {busy ? "Opening secure checkout…" : "Get started"}
+        {busy ? "Opening secure checkout…" : label}
       </Button>
       {error && <p className="mt-2 text-center text-xs text-destructive">{error}</p>}
     </div>
+  );
+}
+
+export function PlanCheckoutButton({ planId, cycle, className, source }: Props) {
+  return (
+    <CheckoutButton
+      productKey={productKey(planId, cycle)}
+      source={`${source}:${planId}`}
+      className={className}
+    />
   );
 }
