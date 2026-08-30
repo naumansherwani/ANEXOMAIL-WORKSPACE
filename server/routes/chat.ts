@@ -713,3 +713,99 @@ chatRouter.post("/profile/avatar/commit", async (req, res) => {
   const signed = await db!.storage.from(MEDIA_BUCKET).createSignedUrl(path, 3600);
   res.json({ ok: true, path, url: signed.data?.signedUrl ?? null });
 });
+
+// ── PHASE 12: CROSS-DEVICE CONTINUITY (resume anywhere) ─────────
+// Server state authoritative. Device sirf sync + reconcile karta hai.
+//   POST /api/chat/device/seen   {device_id,device_label,kind,platform,installed}
+//   GET  /api/chat/continuity?device=   devices + drafts + positions
+//   POST /api/chat/draft         {conversation_id,body,reply_to_id,caret,attachment_ids,rev,device_id,device_label}
+//   POST /api/chat/position      {conversation_id,anchor_seq,at_bottom,rev,device_id,device_label}
+//   GET  /api/chat/search/deep?q=&c=&sender=&before=&limit=
+chatRouter.post("/device/seen", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const deviceId = String(req.body?.device_id || "");
+  if (!deviceId) return res.status(400).json({ error: "device_id_required" });
+  const { error } = await db!.rpc("chat_device_seen", {
+    _user: me.id,
+    _device_id: deviceId.slice(0, 100),
+    _label: String(req.body?.device_label || "").slice(0, 120) || null,
+    _kind: String(req.body?.kind || "unknown"),
+    _platform: String(req.body?.platform || "").slice(0, 120) || null,
+    _installed: Boolean(req.body?.installed),
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.get("/continuity", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_continuity", {
+    _user: me.id,
+    _device_id: String(req.query?.device || "") || null,
+  });
+  if (error) return fail(res, error);
+  res.json(data ?? { devices: [], drafts: [], positions: [] });
+});
+
+chatRouter.post("/draft", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const ids = Array.isArray(req.body?.attachment_ids)
+    ? req.body.attachment_ids.map((v: unknown) => String(v)).slice(0, 20)
+    : [];
+  const { data, error } = await db!.rpc("chat_draft_save", {
+    _user: me.id,
+    _conv: conv,
+    _body: String(req.body?.body ?? "").slice(0, 20_000),
+    _reply_to: req.body?.reply_to_id ? String(req.body.reply_to_id) : null,
+    _caret: Number.isFinite(Number(req.body?.caret)) ? Math.trunc(Number(req.body.caret)) : 0,
+    _attachment_ids: ids,
+    _rev: Number.isFinite(Number(req.body?.rev)) ? Math.trunc(Number(req.body.rev)) : 0,
+    _device_id: String(req.body?.device_id || "").slice(0, 100) || null,
+    _device_label: String(req.body?.device_label || "").slice(0, 120) || null,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.post("/position", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_position_save", {
+    _user: me.id,
+    _conv: conv,
+    _anchor_seq: Number.isFinite(Number(req.body?.anchor_seq))
+      ? Math.trunc(Number(req.body.anchor_seq))
+      : 0,
+    _at_bottom: req.body?.at_bottom !== false,
+    _rev: Number.isFinite(Number(req.body?.rev)) ? Math.trunc(Number(req.body.rev)) : 0,
+    _device_id: String(req.body?.device_id || "").slice(0, 100) || null,
+    _device_label: String(req.body?.device_label || "").slice(0, 120) || null,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.get("/search/deep", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const q = String(req.query?.q || "");
+  if (!q.trim()) return res.json({ results: [] });
+  const limit = Number(req.query?.limit);
+  const { data, error } = await db!.rpc("chat_search_deep", {
+    _user: me.id,
+    _q: q,
+    _conv: String(req.query?.c || "") || null,
+    _sender: String(req.query?.sender || "") || null,
+    _before: String(req.query?.before || "") || null,
+    _limit: Number.isFinite(limit) ? Math.trunc(limit) : 40,
+  });
+  if (error) return fail(res, error);
+  res.json({ results: data ?? [] });
+});
