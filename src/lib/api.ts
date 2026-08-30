@@ -8,6 +8,12 @@
  * The only config the frontend is allowed to know is VITE_API_URL.
  */
 
+/**
+ * SAME-ORIGIN DEFAULT: VITE_API_URL na ho to browser apne hi host par
+ * `/api/*` maangta hai (Caddy us host par 127.0.0.1:3100 ko proxy karta hai).
+ * Cross-origin base (anexomail.com) founderworkspace se CORS/preflight ki
+ * wajah se fail hota tha — "Could not reach the workspace server".
+ */
 const BASE = (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ?? "";
 
 const TOKEN_KEY = "anexo.session.token";
@@ -47,9 +53,11 @@ export async function api<T>(
   path: string,
   init?: RequestInit & { auth?: boolean },
 ): Promise<T> {
-  if (!BASE) {
+  if (!BASE && typeof window === "undefined") {
     throw new ApiError("API base URL is not configured (VITE_API_URL).", 0, "no_api_url");
   }
+
+
 
   const headers = new Headers(init?.headers);
   if (init?.body && !headers.has("content-type")) {
