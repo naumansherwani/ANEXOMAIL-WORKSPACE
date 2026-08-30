@@ -53,9 +53,11 @@ export async function api<T>(
   path: string,
   init?: RequestInit & { auth?: boolean },
 ): Promise<T> {
-  if (!BASE) {
+  if (!BASE && typeof window === "undefined") {
     throw new ApiError("API base URL is not configured (VITE_API_URL).", 0, "no_api_url");
   }
+
+
 
   const headers = new Headers(init?.headers);
   if (init?.body && !headers.has("content-type")) {
