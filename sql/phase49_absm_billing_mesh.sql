@@ -85,8 +85,8 @@ create table if not exists public.billing_state_versions (
 );
 
 create or replace function public.billing_state_hash(p_entity text, p_id uuid, p_state text, p_version int)
-returns text language sql immutable as $$
-  select encode(digest(coalesce(p_entity,'')||'|'||coalesce(p_id::text,'')||'|'||
+returns text language sql immutable set search_path = public, extensions as $$
+  select encode(extensions.digest(coalesce(p_entity,'')||'|'||coalesce(p_id::text,'')||'|'||
                        coalesce(p_state,'')||'|'||coalesce(p_version::text,''), 'sha256'), 'hex');
 $$;
 
