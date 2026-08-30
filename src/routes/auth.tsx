@@ -57,7 +57,7 @@ function AuthPage() {
   const [linkSent, setLinkSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [providerBusy, setProviderBusy] = useState<Provider | null>(null);
+  
   const [showSplash, setShowSplash] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
