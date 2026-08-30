@@ -15,6 +15,8 @@
 
 begin;
 
+create extension if not exists pgcrypto;
+
 -- =========================================================================
 -- 0) billing_intents ko guest-capable + versioned banao (Phase 36 upgrade)
 -- =========================================================================
