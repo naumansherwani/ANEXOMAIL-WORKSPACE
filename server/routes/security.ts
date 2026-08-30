@@ -643,7 +643,7 @@ router.post("/proof/run", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// Founder god-view — /api/founder/security/overview
+// Founder founder view — /api/founder/security/overview
 // ---------------------------------------------------------------------------
 founderRouter.get("/security/overview", async (req, res) => {
   const uid = await requireUser(req, res);

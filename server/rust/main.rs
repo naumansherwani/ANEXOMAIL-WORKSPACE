@@ -743,7 +743,7 @@ async fn dispatch(
             }
         }
 
-        // Founder god-view: measured aggregates (DB hi founder check karta hai)
+        // Founder founder view: measured aggregates (DB hi founder check karta hai)
         "chat.calls.health" => {
             let days = input.get("days").and_then(|v| v.as_i64()).unwrap_or(7);
             match sb_rpc("chat_call_health", json!({ "_user": me.id, "_days": days })).await {

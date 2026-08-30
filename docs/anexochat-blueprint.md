@@ -172,7 +172,7 @@ Yeh Phase 10 ke ANDAR ka hissa hai (naya phase nahi). Business Pro + founder onl
 - Unified Plan · Trickle ICE · perfect negotiation · `restartIce()` watchdog (WiFi→4G par black screen nahi).
 - P2P preferred + coturn TURN fallback (host `anexovideocall.anexomail.com`, ephemeral HMAC creds; `TURN_SECRET` browser par kabhi nahi). TURN na ho to UI sach bolta hai: "P2P only".
 - Signaling: Supabase Realtime broadcast `call:<id>` (persistent) + durable rows catch-up. Polling primary kabhi nahi.
-- Telemetry 3 layers: sab ko badge (🟢/🟡/🔴 + resolution + Connected/Reconnecting) · Business Pro tap-to-expand (RTT/jitter/loss/P2P-TURN/bitrate/FPS/res) · founder god-view `/app/founder/calls` (p50/p95 setup, relay %, reconnect rate).
+- Telemetry 3 layers: sab ko badge (🟢/🟡/🔴 + resolution + Connected/Reconnecting) · Business Pro tap-to-expand (RTT/jitter/loss/P2P-TURN/bitrate/FPS/res) · founder founder view `/app/founder/calls` (p50/p95 setup, relay %, reconnect rate).
 
 **10B — adaptive 8K pipeline, "no fake 8K"** (`src/lib/chat-video-quality.ts`, `sql/anexochat_phase10b_8k_video.sql`)
 - Ladder: 8K (7680×4320, cap 60 Mbps) → 4K → 1440p → 1080p → 720p → 480p, default AUTO.
@@ -396,7 +396,7 @@ Founder side contains the same ANEXOChat product surface/control environment: AN
 
 Critical privacy rule: admin visibility must follow the defined privacy model. Admin access does not automatically mean unrestricted reading of private employee conversations. If founder/admin messaging with internal users is enabled, it must be an explicit workspace policy rather than an accidental backdoor.
 
-## PHASE 45 — FOUNDER GOD-VIEW
+## PHASE 45 — FOUNDER FOUNDER VIEW
 
 Founder cockpit: Companies, Active users, Online users, Messages, Files, Storage, Transfer health, Safety alerts, Device alerts, Reports, System health.
 

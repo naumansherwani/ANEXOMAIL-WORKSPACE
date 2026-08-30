@@ -474,7 +474,7 @@ async function runDueSchedules(uid: string) {
   }
 }
 
-// ---- 9. founder god-view ----
+// ---- 9. founder founder view ----
 founderRouter.get("/settings/overview", async (req, res) => {
   const uid = await requireUser(req, res);
   if (!uid) return;

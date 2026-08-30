@@ -14,7 +14,7 @@ import {
 } from "@/lib/crm";
 
 /**
- * Founder CRM god-view. Lives on founderworkspace.anexomail.com (IP allowlisted
+ * Founder CRM founder view. Lives on founderworkspace.anexomail.com (IP allowlisted
  * in Caddy) — no separate subdomain, no DNS, no extra certificate.
  * Public users reach the CRM at aicrm.anexomail.com -> /app/crm only.
  */
@@ -25,7 +25,7 @@ export const Route = createFileRoute("/app/founder_/crm")({
       {
         name: "description",
         content:
-          "God-view over the AI CRM: kill switch, tenant totals, team permissions and the full audit trail.",
+          "Founder view over the AI CRM: kill switch, tenant totals, team permissions and the full audit trail.",
       },
       { property: "og:title", content: "Founder CRM control — ANEXOMAIL" },
       { property: "og:description", content: "Kill switch, permissions and audit for the AI CRM." },
@@ -60,7 +60,7 @@ function FounderCrm() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Crown className="size-3.5" aria-hidden="true" /> Founder · CRM control
         </p>
-        <h2 className="mt-3 text-3xl text-foreground">CRM god-view</h2>
+        <h2 className="mt-3 text-3xl text-foreground">CRM founder view</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           The public CRM lives at <code className="rounded-md bg-secondary px-1.5 py-0.5 text-foreground">aicrm.anexomail.com</code>.
           This page only exists on the founder host, so the public never sees the switches.

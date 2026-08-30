@@ -6,7 +6,7 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { bytes, useFounderAdmin } from "@/lib/admin-center";
 
 /**
- * Phase 25 — Founder god-view (founderworkspace.anexomail.com).
+ * Phase 25 — Founder founder view (founderworkspace.anexomail.com).
  * Awam ko apna hi tenant dikhta hai; founder ko poora platform.
  */
 export const Route = createFileRoute("/app/founder_/admin")({

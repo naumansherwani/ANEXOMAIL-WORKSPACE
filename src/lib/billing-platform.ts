@@ -144,7 +144,7 @@ export function useChangePlan() {
   });
 }
 
-/** Founder god-view: revenue truth across every tenant. */
+/** Founder founder view: revenue truth across every tenant. */
 export type RevenueTruth = {
   mrr: number;
   arr: number;

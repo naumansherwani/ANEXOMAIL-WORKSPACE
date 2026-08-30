@@ -223,7 +223,7 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
--- Founder god-view (service_role only)
+-- Founder founder view (service_role only)
 -- ---------------------------------------------------------------------------
 create or replace function public.founder_security_overview()
 returns jsonb

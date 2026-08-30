@@ -8,7 +8,7 @@ import { gbp, useFounderRevenue } from "@/lib/revenue";
 export const Route = createFileRoute("/app/founder_/revenue")({
   head: () => ({
     meta: [
-      { title: "Founder revenue god-view — ANEXOMAIL" },
+      { title: "Founder revenue founder view — ANEXOMAIL" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -21,7 +21,7 @@ function FounderRevenuePage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Banknote className="size-3.5" aria-hidden="true" /> Founder god-view</>}
+        eyebrow={<><Banknote className="size-3.5" aria-hidden="true" /> Founder founder view</>}
         title="Money, in one screen"
         blurb="Four roads without AI: subscriptions, migrations, partner commission and enterprise support. Target progress, live leads, and exactly how many seats close the gap."
       >

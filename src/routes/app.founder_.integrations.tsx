@@ -8,7 +8,7 @@ export const Route = createFileRoute("/app/founder_/integrations")({
   component: FounderIntegrations,
 });
 
-/** Phase 22 — founder god-view: har tenant ka connection, migration aur delivery sach. */
+/** Phase 22 — founder founder view: har tenant ka connection, migration aur delivery sach. */
 function FounderIntegrations() {
   const overview = useFounderIntegrations();
 
@@ -16,7 +16,7 @@ function FounderIntegrations() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-4xl px-6 py-8 md:px-8">
         <p className="ax-eyebrow flex items-center gap-2">
-          <PlugZap className="size-3.5" aria-hidden="true" /> Integrations god-view
+          <PlugZap className="size-3.5" aria-hidden="true" /> Integrations founder view
         </p>
         <h2 className="ax-h2 mt-1 text-foreground">Every connection, every failure</h2>
 

@@ -214,7 +214,7 @@ drop policy if exists own_rows on public.leo_actions;
 create policy own_rows on public.leo_actions
   for all to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
 
--- 8. Founder god-view helper
+-- 8. Founder founder view helper
 create or replace function public.founder_integrations_overview()
 returns json
 language sql

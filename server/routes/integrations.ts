@@ -330,7 +330,7 @@ router.post("/leo-actions/toggle", async (req, res) => {
   res.json(data);
 });
 
-// ---- 7. founder god-view ----
+// ---- 7. founder founder view ----
 export const founderIntegrationsRouter = Router();
 founderIntegrationsRouter.get("/integrations/overview", async (req, res) => {
   const uid = await requireUser(req, res);

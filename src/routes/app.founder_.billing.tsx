@@ -14,7 +14,7 @@ export const Route = createFileRoute("/app/founder_/billing")({
   component: FounderRevenue,
 });
 
-/** Phase 21 — founder god-view: revenue truth, no vanity numbers. */
+/** Phase 21 — founder founder view: revenue truth, no vanity numbers. */
 function FounderRevenue() {
   const revenue = useRevenueTruth();
   const replyQueue = useFounderReplyQueue();

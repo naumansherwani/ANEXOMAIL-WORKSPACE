@@ -77,7 +77,7 @@ function FounderCallsPage() {
             title={q.error?.status === 403 ? "Founder-only surface" : "Telemetry unavailable"}
             body={
               q.error?.status === 403
-                ? "This god-view is limited to the founder account."
+                ? "This founder view is limited to the founder account."
                 : "The call engine did not return telemetry. Nothing is shown rather than guessed."
             }
           />

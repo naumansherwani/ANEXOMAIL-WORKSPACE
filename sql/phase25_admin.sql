@@ -246,7 +246,7 @@ drop policy if exists admin_diag_probes_own on public.admin_diagnostic_probes;
 create policy admin_diag_probes_own on public.admin_diagnostic_probes for all to authenticated
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 
--- Founder god-view ----------------------------------------------------------
+-- Founder founder view ----------------------------------------------------------
 create or replace function public.founder_admin_overview()
 returns jsonb
 language sql

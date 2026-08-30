@@ -9,7 +9,7 @@ import { notify } from "@/lib/notify";
 import { useFounderOrgKillSwitch, useFounderOrgList, useFounderOrgState } from "@/lib/org";
 
 /**
- * Founder god-view over every organisation. Lives on
+ * Founder founder view over every organisation. Lives on
  * founderworkspace.anexomail.com (IP allowlisted in Caddy) — awam never sees it.
  * Awam surface is /app/org only.
  */
@@ -20,7 +20,7 @@ export const Route = createFileRoute("/app/founder_/org")({
       {
         name: "description",
         content:
-          "God-view over every organisation: global write kill switch, seats, revenue truth, ledger health and break-glass state.",
+          "Founder view over every organisation: global write kill switch, seats, revenue truth, ledger health and break-glass state.",
       },
       { property: "og:title", content: "Founder org control — ANEXOMAIL" },
       { property: "og:description", content: "Kill switch, seats, revenue truth and ledger health." },

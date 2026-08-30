@@ -164,7 +164,7 @@ cross join (values
 ) as b(action, label, budget_ms)
 on conflict (user_id, action) do update set label = excluded.label, budget_ms = excluded.budget_ms;
 
--- ------------------------------------------------------- founder god-view
+-- ------------------------------------------------------- founder founder view
 create or replace function public.founder_perf_overview()
 returns jsonb
 language sql
