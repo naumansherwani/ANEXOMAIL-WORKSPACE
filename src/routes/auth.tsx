@@ -199,27 +199,6 @@ function AuthPage() {
     }
   };
 
-  /**
-   * Social sign-in. The backend owns the OAuth handshake — the frontend only
-   * asks for the provider URL and hands the browser over. After the provider
-   * returns, the user must claim an @anexomail.com identity before the
-   * workspace opens.
-   */
-  const social = async (provider: Provider) => {
-    setError(null);
-    setProviderBusy(provider);
-    try {
-      const res = await api<{ url: string }>(`/api/auth/oauth/${provider}/start`, {
-        method: "POST",
-        body: JSON.stringify({ redirect_to: `${window.location.origin}/auth/callback` }),
-        auth: false,
-      });
-      window.location.href = res.url;
-    } catch (e) {
-      fail(e);
-      setProviderBusy(null);
-    }
-  };
 
   return (
     <>
