@@ -229,9 +229,9 @@ insert into public.release_checklist (area, label, detail) values
   ('product','Empty states have a next action','Har khali screen par ek hi agla qadam'),
   ('product','Keyboard path for core work','Compose, reply, archive, search sab keyboard se'),
   ('product','Offline read + outbox honest','Send confirm hone se pehle kabhi sent nahi likhta'),
-  ('revenue','Plans page prices correct','Basic £20 · Pro £40 · Business £85'),
+  ('revenue','Plans page prices correct','Basic £23 · Pro £46 · Business £97 · Business Pro £2,850'),
   ('revenue','Lead intake writes a real row','/migration, /partners, /enterprise teeno test'),
-  ('revenue','Migration quote maths reviewed','Rate card £500 floor, £2,000 ceiling'),
+  ('revenue','Migration quote maths reviewed','Rate card £568 floor, £3,350 ceiling'),
   ('revenue','MRR vs one-off separated','Founder deck par committed, pipeline, gap alag')
 on conflict (area, label) do nothing;
 

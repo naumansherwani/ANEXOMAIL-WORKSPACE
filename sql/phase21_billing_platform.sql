@@ -1,5 +1,6 @@
 -- ANEXOMAIL — Phase 21: Billing platform (Supabase #4)
--- Workspace plans only: Basic £20 · Pro £40 · Business £85 (per mailbox / month).
+-- Workspace plans only: Basic £23 · Pro £46 · Business £97 per user/month;
+-- Business Pro £2,850 per company/month.
 -- AI credits alag product hai (phase19_ai_billing.sql). Yahan AI ka koi zikr nahi.
 
 do $$
@@ -35,9 +36,10 @@ create table if not exists public.workspace_plans (
 );
 
 insert into public.workspace_plans (id, label, price, mailboxes_included, storage_per_mailbox_gb, sort_order) values
-  ('basic',    'Basic',    20.00, 3,  5,  1),
-  ('pro',      'Pro',      40.00, 10, 30, 2),
-  ('business', 'Business', 85.00, 25, 100, 3)
+  ('basic',        'Basic',        23.00,   3,  5,   1),
+  ('pro',          'Pro',          46.00,   5,  10,  2),
+  ('business',     'Business',     97.00,  30,  25,  3),
+  ('business_pro', 'Business Pro', 2850.00, 1, 1000, 4)
 on conflict (id) do update
   set label = excluded.label,
       price = excluded.price,
