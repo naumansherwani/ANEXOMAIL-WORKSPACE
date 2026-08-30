@@ -211,3 +211,15 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor**.
 - Backend routes: `POST /api/chat/attachments/ticket|commit|attach` ·
   `GET /api/chat/attachments/:messageId` · `POST /api/chat/profile/avatar/ticket|commit`
 - Verify: `select state, count(*) from public.chat_attachments group by 1;`
+
+## `phase48_storage_quota.sql` — Phase 48 · Inbox Storage & Quota (logical)
+
+- Tables: `storage_plans` · `storage_volumes` · `mailbox_storage` · `storage_events`
+- View: `storage_capacity_health` (70% warning · 85% critical thin-provisioning radar)
+- Functions: `storage_plan_of` (workspace → owner → `entitlement_state.user_id`; founder = business_pro) ·
+  `storage_state` · `storage_can_accept` · `storage_reserve` · `storage_commit` ·
+  `storage_release` · `storage_purge` · `storage_volume_register` · `storage_capacity_sweep`
+- Backend routes: `/api/storage/state|preflight|reserve|commit|release` ·
+  `/api/internal/storage/accept|commit|sweep` · `/api/founder/storage/volumes` · `POST /api/founder/storage/volume`
+- Physical ops (Hetzner Storage Box mount, Dovecot, Caddy `/files/*`): `docs/storage-hetzner.md`
+- Verify: `select name, kind, level, percent from public.storage_capacity_health order by percent desc;`
