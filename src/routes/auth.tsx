@@ -210,6 +210,90 @@ function AuthPage() {
     }
   };
 
+  /**
+   * Passkey enrolment (WebAuthn create) — signup ke foran baad, lazmi.
+   * Server abhi register endpoint na de to sach bolte hain, fake nahi karte.
+   */
+  const enrolPasskey = async () => {
+    setError(null);
+    setEnrolBlocked(null);
+    if (!("credentials" in navigator) || !window.PublicKeyCredential) {
+      setEnrolBlocked("This device can't create a passkey. Open the link on a phone or laptop with Face ID, Touch ID, fingerprint or Windows Hello.");
+      return;
+    }
+    setBusy(true);
+    try {
+      const options = await api<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
+        "/api/auth/passkey/register/options",
+        { method: "POST", body: JSON.stringify({ email }) },
+      );
+      const credential = await navigator.credentials.create({
+        publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options.publicKey),
+      });
+      if (!credential) throw new Error("cancelled");
+      const res = await api<{ token?: string }>("/api/auth/passkey/register/verify", {
+        method: "POST",
+        body: JSON.stringify((credential as PublicKeyCredential).toJSON()),
+      });
+      notify.done("Passkey saved", "This device can now sign you in without a password.");
+      setEnrol(false);
+      await finish(res.token ?? sessionToken.get()!);
+    } catch (e) {
+      if (e instanceof ApiError && e.isNotImplemented) {
+        setEnrolBlocked("Passkey enrolment isn't live on the server yet — it will be required as soon as it is.");
+      } else {
+        fail(e);
+      }
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  if (enrol) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
+        <div className="ax-in w-full max-w-[27rem] rounded-2xl border border-border bg-card p-ax-5 text-center shadow-2xl">
+          <BrandMark />
+          <ShieldCheck className="mx-auto mt-ax-4 size-6 text-cyan-accent" aria-hidden="true" />
+          <h1 className="ax-heading mt-ax-3 text-foreground">Add your passkey</h1>
+          <p className="ax-caption mt-2">
+            Your account is created. A passkey is required — it is what makes this workspace
+            phishing-proof. Face ID, Touch ID, fingerprint or Windows Hello, on this device.
+          </p>
+          {enrolBlocked && (
+            <p role="alert" className="ax-caption mt-ax-3 text-destructive">
+              {enrolBlocked}
+            </p>
+          )}
+          {error && (
+            <p role="alert" className="ax-caption mt-ax-3 text-destructive">
+              {error}
+            </p>
+          )}
+          <Button className="ax-press mt-ax-4 w-full" onClick={enrolPasskey} disabled={busy}>
+            {busy && <Loader2 className="size-4 animate-spin" />}
+            <KeyRound className="size-4" />
+            Create my passkey
+          </Button>
+          {enrolBlocked && (
+            <Button
+              variant="ghost"
+              className="mt-ax-2 w-full"
+              onClick={() => {
+                setEnrol(false);
+                void finish(sessionToken.get()!);
+              }}
+            >
+              Continue and add it later
+            </Button>
+          )}
+          <p className="ax-caption mt-ax-3">
+            Two days of full trial access start the moment you continue.
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <>
