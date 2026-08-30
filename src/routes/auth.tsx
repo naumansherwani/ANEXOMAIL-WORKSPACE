@@ -154,7 +154,10 @@ function AuthPage() {
           body: JSON.stringify({ email, password, name }),
           auth: false,
         });
-        await finish(res.token);
+        // PASSKEY MANDATORY: account ban gaya, magar workspace passkey enrol
+        // hone ke baad khulta hai (password alone kaafi nahi).
+        sessionToken.set(res.token);
+        setEnrol(true);
         return;
       }
 
