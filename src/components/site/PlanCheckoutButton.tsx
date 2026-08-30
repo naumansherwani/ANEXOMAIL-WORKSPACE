@@ -26,9 +26,9 @@ export function CheckoutButton({
   className,
 }: {
   productKey: string;
-  label?: string;
+  label?: string | undefined;
   source: string;
-  className?: string;
+  className?: string | undefined;
 }) {
   const navigate = useNavigate();
   const { status } = useAuth();
