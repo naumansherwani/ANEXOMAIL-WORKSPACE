@@ -35,6 +35,11 @@ export function CheckoutButton({
 
   const startCheckout = async () => {
     setError(null);
+    // Trial ka koi payment nahi — user seedha account banata hai (email + password).
+    if (productKey === "TRIAL") {
+      window.location.assign("/auth?mode=signup");
+      return;
+    }
     setBusy(true);
     try {
       // ABSM: checkout kabhi sign-in par nahi rukta.
