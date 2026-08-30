@@ -45,11 +45,12 @@ function CheckoutDonePage() {
         attempts += 1;
         if (attempts < 20) timer = setTimeout(() => void verify(), 3000);
         else setStatus("failed");
-      } catch (e) {
+      } catch (e: unknown) {
         if (cancelled) return;
         console.error("checkout verify", e);
         // Phase 47 — checkout ka koi bhi glitch founder ke WhatsApp tak jata hai.
-        reportGlitch("checkout_error", `checkout verify failed: ${String(e?.message ?? e)}`, {
+        const message = e instanceof Error ? e.message : String(e);
+        reportGlitch("checkout_error", `checkout verify failed: ${message}`, {
           severity: "critical",
           fingerprint: "checkout_error|verify",
           meta: { checkout_id: checkoutId },

@@ -105,7 +105,7 @@ function AuthPage() {
     sessionToken.set(token);
     await refresh();
     const session = await api<{
-      user: { onboarded: boolean; anexomail_address?: string | null };
+      user: { email: string; onboarded: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
     const checkoutKey = new URLSearchParams(window.location.search).get("checkout");
     if (checkoutKey && /^POLAR_PRODUCT_PLAN_(BASIC|PRO|BUSINESS|BUSINESS_PRO)_(MONTHLY|YEARLY)$/.test(checkoutKey)) {
