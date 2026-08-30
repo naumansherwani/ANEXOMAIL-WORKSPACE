@@ -15,7 +15,7 @@
 
 begin;
 
-create extension if not exists pgcrypto;
+create extension if not exists pgcrypto with schema extensions;
 
 -- =========================================================================
 -- 0) billing_intents ko guest-capable + versioned banao (Phase 36 upgrade)
@@ -205,7 +205,7 @@ create or replace function public.billing_guest_intent_open(
 language plpgsql security definer set search_path = public as $$
 declare v_id uuid; v_tok text;
 begin
-  v_tok := encode(gen_random_bytes(24), 'hex');
+  v_tok := replace(gen_random_uuid()::text, '-', '') || replace(gen_random_uuid()::text, '-', '');
   insert into public.billing_intents
     (user_id, kind, plan, band, product_key, product_id, seats, amount_expected, currency,
      guest_email, guest_token, fsm_state, expires_at)
