@@ -81,8 +81,7 @@ const PROVIDERS: { id: Provider; label: string; icon: (p: IconProps) => React.Re
 ];
 
 type LoginResult =
-  | { token: string; mfa_required?: false }
-  | { mfa_required: true; challenge_id: string };
+  { token: string; mfa_required?: false } | { mfa_required: true; challenge_id: string };
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -105,8 +104,24 @@ function AuthPage() {
     sessionToken.set(token);
     await refresh();
     const session = await api<{
-      user: { onboarded: boolean; anexomail_address?: string | null };
+      user: { email: string; onboarded: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
+    const checkoutKey =
+      new URLSearchParams(window.location.search).get("checkout") ||
+      window.sessionStorage.getItem("anexo.pending.checkout");
+    if (
+      checkoutKey &&
+      /^POLAR_PRODUCT_PLAN_(BASIC|PRO|BUSINESS|BUSINESS_PRO)_(MONTHLY|YEARLY)$/.test(checkoutKey)
+    ) {
+      window.sessionStorage.removeItem("anexo.pending.checkout");
+      const checkout = await api<{ url: string }>("/api/billing/intent", {
+        method: "POST",
+        body: JSON.stringify({ product_key: checkoutKey, seats: 1, email: session.user.email }),
+      });
+      if (!checkout.url.startsWith("https://polar.sh/")) throw new Error("invalid_checkout_url");
+      window.location.assign(checkout.url);
+      return;
+    }
     const target = !session.user.anexomail_address
       ? "/claim"
       : session.user.onboarded
@@ -218,14 +233,11 @@ function AuthPage() {
     setError(null);
     setProviderBusy(provider);
     try {
-      const res = await api<{ url: string }>(
-        `/api/auth/oauth/${provider}/start`,
-        {
-          method: "POST",
-          body: JSON.stringify({ redirect_to: `${window.location.origin}/auth/callback` }),
-          auth: false,
-        },
-      );
+      const res = await api<{ url: string }>(`/api/auth/oauth/${provider}/start`, {
+        method: "POST",
+        body: JSON.stringify({ redirect_to: `${window.location.origin}/auth/callback` }),
+        auth: false,
+      });
       window.location.href = res.url;
     } catch (e) {
       fail(e);
@@ -236,199 +248,202 @@ function AuthPage() {
   return (
     <>
       <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[-12rem] h-[28rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[120px]"
-      />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-[-12rem] h-[28rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[120px]"
+        />
 
-      <div className="ax-in relative w-full max-w-[27rem]">
-        <div className="flex justify-center">
-          <Link to="/" className="ax-focus rounded-md">
-            <BrandMark />
-          </Link>
-        </div>
+        <div className="ax-in relative w-full max-w-[27rem]">
+          <div className="flex justify-center">
+            <Link to="/" className="ax-focus rounded-md">
+              <BrandMark />
+            </Link>
+          </div>
 
-        <div className="mt-ax-5 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
-          {challengeId ? (
-            <Header
-              title="Two-step verification"
-              sub="Enter the 6-digit code from your authenticator app."
-            />
-          ) : mode === "signup" ? (
-            <Header title="Create your workspace" sub="One account owns the domain and the org." />
-          ) : mode === "link" ? (
-            <Header title="Email me a link" sub="No password. The link signs you straight in." />
-          ) : (
-            <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
-          )}
+          <div className="mt-ax-5 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
+            {challengeId ? (
+              <Header
+                title="Two-step verification"
+                sub="Enter the 6-digit code from your authenticator app."
+              />
+            ) : mode === "signup" ? (
+              <Header
+                title="Create your workspace"
+                sub="One account owns the domain and the org."
+              />
+            ) : mode === "link" ? (
+              <Header title="Email me a link" sub="No password. The link signs you straight in." />
+            ) : (
+              <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
+            )}
 
-          {linkSent ? (
-            <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
-              <Mail className="mx-auto size-5 text-cyan-accent" />
-              <p className="ax-label mt-ax-2 text-foreground">Link sent to {email}</p>
-              <p className="ax-caption mt-1">It expires in 15 minutes and works once.</p>
-              <Button
-                variant="ghost"
-                className="mt-ax-3"
-                onClick={() => {
-                  setLinkSent(false);
-                  setMode("login");
-                }}
-              >
-                Use a password instead
-              </Button>
-            </div>
-          ) : (
-            <form onSubmit={submit} className="mt-ax-4 space-y-ax-3">
-              {challengeId ? (
-                <Field
-                  id="code"
-                  label="Authentication code"
-                  value={code}
-                  onChange={setCode}
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  placeholder="123456"
-                />
-              ) : (
-                <>
-                  {mode === "signup" && (
-                    <Field
-                      id="name"
-                      label="Your name"
-                      value={name}
-                      onChange={setName}
-                      autoComplete="name"
-                      placeholder="Nauman Sherwani"
-                    />
-                  )}
-                  <Field
-                    id="email"
-                    label="Work email"
-                    type="email"
-                    value={email}
-                    onChange={setEmail}
-                    autoComplete="email"
-                    placeholder="you@yourdomain.com"
-                  />
-                  {mode !== "link" && (
-                    <Field
-                      id="password"
-                      label="Password"
-                      type="password"
-                      value={password}
-                      onChange={setPassword}
-                      autoComplete={mode === "signup" ? "new-password" : "current-password"}
-                      placeholder="••••••••••••"
-                    />
-                  )}
-                </>
-              )}
-
-              {error && (
-                <p role="alert" className="ax-caption text-destructive">
-                  {error}
-                </p>
-              )}
-
-              <Button type="submit" className="ax-press w-full" disabled={busy}>
-                {busy && <Loader2 className="size-4 animate-spin" />}
-                {challengeId
-                  ? "Verify and continue"
-                  : mode === "signup"
-                    ? "Create workspace"
-                    : mode === "link"
-                      ? "Send me the link"
-                      : "Sign in"}
-              </Button>
-            </form>
-          )}
-
-          {!challengeId && !linkSent && (
-            <>
-              <div className="my-ax-4 flex items-center gap-3">
-                <div aria-hidden className="ax-hairline h-px flex-1" />
-                <span className="ax-caption">or</span>
-                <div aria-hidden className="ax-hairline h-px flex-1" />
+            {linkSent ? (
+              <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
+                <Mail className="mx-auto size-5 text-cyan-accent" />
+                <p className="ax-label mt-ax-2 text-foreground">Link sent to {email}</p>
+                <p className="ax-caption mt-1">It expires in 15 minutes and works once.</p>
+                <Button
+                  variant="ghost"
+                  className="mt-ax-3"
+                  onClick={() => {
+                    setLinkSent(false);
+                    setMode("login");
+                  }}
+                >
+                  Use a password instead
+                </Button>
               </div>
+            ) : (
+              <form onSubmit={submit} className="mt-ax-4 space-y-ax-3">
+                {challengeId ? (
+                  <Field
+                    id="code"
+                    label="Authentication code"
+                    value={code}
+                    onChange={setCode}
+                    inputMode="numeric"
+                    autoComplete="one-time-code"
+                    placeholder="123456"
+                  />
+                ) : (
+                  <>
+                    {mode === "signup" && (
+                      <Field
+                        id="name"
+                        label="Your name"
+                        value={name}
+                        onChange={setName}
+                        autoComplete="name"
+                        placeholder="Nauman Sherwani"
+                      />
+                    )}
+                    <Field
+                      id="email"
+                      label="Work email"
+                      type="email"
+                      value={email}
+                      onChange={setEmail}
+                      autoComplete="email"
+                      placeholder="you@yourdomain.com"
+                    />
+                    {mode !== "link" && (
+                      <Field
+                        id="password"
+                        label="Password"
+                        type="password"
+                        value={password}
+                        onChange={setPassword}
+                        autoComplete={mode === "signup" ? "new-password" : "current-password"}
+                        placeholder="••••••••••••"
+                      />
+                    )}
+                  </>
+                )}
 
-              <div className="space-y-ax-2">
-                {PROVIDERS.map(({ id, label, icon: Icon }) => (
+                {error && (
+                  <p role="alert" className="ax-caption text-destructive">
+                    {error}
+                  </p>
+                )}
+
+                <Button type="submit" className="ax-press w-full" disabled={busy}>
+                  {busy && <Loader2 className="size-4 animate-spin" />}
+                  {challengeId
+                    ? "Verify and continue"
+                    : mode === "signup"
+                      ? "Create workspace"
+                      : mode === "link"
+                        ? "Send me the link"
+                        : "Sign in"}
+                </Button>
+              </form>
+            )}
+
+            {!challengeId && !linkSent && (
+              <>
+                <div className="my-ax-4 flex items-center gap-3">
+                  <div aria-hidden className="ax-hairline h-px flex-1" />
+                  <span className="ax-caption">or</span>
+                  <div aria-hidden className="ax-hairline h-px flex-1" />
+                </div>
+
+                <div className="space-y-ax-2">
+                  {PROVIDERS.map(({ id, label, icon: Icon }) => (
+                    <Button
+                      key={id}
+                      type="button"
+                      variant="outline"
+                      className="ax-press w-full"
+                      onClick={() => void social(id)}
+                      disabled={busy || providerBusy !== null}
+                    >
+                      {providerBusy === id ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <Icon className="size-4" />
+                      )}
+                      {label}
+                    </Button>
+                  ))}
                   <Button
-                    key={id}
                     type="button"
                     variant="outline"
                     className="ax-press w-full"
-                    onClick={() => void social(id)}
-                    disabled={busy || providerBusy !== null}
+                    onClick={passkey}
+                    disabled={busy}
                   >
-                    {providerBusy === id ? (
-                      <Loader2 className="size-4 animate-spin" />
-                    ) : (
-                      <Icon className="size-4" />
-                    )}
-                    {label}
+                    <KeyRound className="size-4" />
+                    Continue with a passkey
                   </Button>
-                ))}
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="ax-press w-full"
-                  onClick={passkey}
-                  disabled={busy}
-                >
-                  <KeyRound className="size-4" />
-                  Continue with a passkey
-                </Button>
-                {mode !== "link" && (
-                  <Button
+                  {mode !== "link" && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full"
+                      onClick={() => {
+                        setError(null);
+                        setMode("link");
+                      }}
+                    >
+                      <Mail className="size-4" />
+                      Email me a sign-in link
+                    </Button>
+                  )}
+                </div>
+
+                <p className="ax-caption mt-ax-3 text-center">
+                  No domain yet? Sign in with Google, Apple or GitHub — then you pick your own{" "}
+                  <span className="font-semibold text-foreground">@anexomail.com</span> address.
+                </p>
+
+                <p className="ax-caption mt-ax-4 text-center">
+                  {mode === "signup" ? "Already have a workspace?" : "New here?"}{" "}
+                  <button
                     type="button"
-                    variant="ghost"
-                    className="w-full"
+                    className="ax-focus rounded font-semibold text-cyan-accent"
                     onClick={() => {
                       setError(null);
-                      setMode("link");
+                      setMode(mode === "signup" ? "login" : "signup");
                     }}
                   >
-                    <Mail className="size-4" />
-                    Email me a sign-in link
-                  </Button>
-                )}
-              </div>
+                    {mode === "signup" ? "Sign in" : "Create a workspace"}
+                  </button>
+                </p>
+              </>
+            )}
+          </div>
 
-              <p className="ax-caption mt-ax-3 text-center">
-                No domain yet? Sign in with Google, Apple or GitHub — then you pick your own{" "}
-                <span className="font-semibold text-foreground">@anexomail.com</span> address.
-              </p>
-
-              <p className="ax-caption mt-ax-4 text-center">
-                {mode === "signup" ? "Already have a workspace?" : "New here?"}{" "}
-                <button
-                  type="button"
-                  className="ax-focus rounded font-semibold text-cyan-accent"
-                  onClick={() => {
-                    setError(null);
-                    setMode(mode === "signup" ? "login" : "signup");
-                  }}
-                >
-                  {mode === "signup" ? "Sign in" : "Create a workspace"}
-                </button>
-              </p>
-            </>
-          )}
+          <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">
+            <ShieldCheck className="size-3.5 text-cyan-accent" />
+            Sessions are device-bound and revocable from your account at any time.
+          </p>
         </div>
+      </main>
 
-        <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">
-          <ShieldCheck className="size-3.5 text-cyan-accent" />
-          Sessions are device-bound and revocable from your account at any time.
-        </p>
-      </div>
-    </main>
-
-    <CinematicSplash
-      open={showSplash}
-      onDone={() => redirectTo && void navigate({ to: redirectTo })}
-    />
+      <CinematicSplash
+        open={showSplash}
+        onDone={() => redirectTo && void navigate({ to: redirectTo })}
+      />
     </>
   );
 }
@@ -459,13 +474,7 @@ function Field({
       <Label htmlFor={id} className="ax-caption text-foreground">
         {label}
       </Label>
-      <Input
-        id={id}
-        value={value}
-        required
-        onChange={(e) => onChange(e.target.value)}
-        {...rest}
-      />
+      <Input id={id} value={value} required onChange={(e) => onChange(e.target.value)} {...rest} />
     </div>
   );
 }

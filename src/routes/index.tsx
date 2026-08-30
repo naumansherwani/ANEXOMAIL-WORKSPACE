@@ -24,6 +24,7 @@ import { Stage } from "@/components/site/Stage";
 import { HeroComposition } from "@/components/site/HeroComposition";
 import { SlaProof } from "@/components/site/SlaProof";
 import { BillingToggle } from "@/components/site/BillingToggle";
+import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { WORKSPACE_PLANS, priceFor, ANNUAL_NOTE, type BillingCycle } from "@/lib/plans";
 
 /* Hero trust badges — every claim verifiable, nothing invented. */
@@ -398,8 +399,8 @@ function Index() {
               Four plans. Monthly or yearly, your choice.
             </h2>
             <p className="mt-5 text-[13px] leading-relaxed text-muted-foreground">
-              Yearly billing gives Basic and Pro 1 month free, and Business and Business Pro 2 months
-              free. Your normal monthly price stays visible on every card.
+              Yearly billing gives Basic and Pro 1 month free, and Business and Business Pro 2
+              months free. Your normal monthly price stays visible on every card.
             </p>
             <div className="mt-7">
               <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Annual savings" />
@@ -451,12 +452,12 @@ function Index() {
                       ))}
                     </ul>
 
-                    <Link
-                      to="/move-in"
-                      className="mt-10 inline-flex items-center justify-center rounded-lg border border-border px-5 py-3 text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                    >
-                      Get started
-                    </Link>
+                    <PlanCheckoutButton
+                      planId={p.id}
+                      cycle={cycle}
+                      source="home"
+                      className="mt-3"
+                    />
                   </article>
                 </Reveal>
               );
@@ -535,7 +536,6 @@ function Index() {
             </div>
           </Reveal>
         </Stage>
-
 
         {/* ── 8 · CLOSING — one line, one button, empty frame ──────── */}
         <Stage volume="hush">

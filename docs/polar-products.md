@@ -174,12 +174,12 @@ Type hamesha **String** rakho (Number/Boolean kabhi nahi). Har row ke baad
 
 **Har plan product — 4 rows:**
 
-| Key             | Type   | Value                                                                                     |
-| --------------- | ------ | ----------------------------------------------------------------------------------------- |
-| `brand`         | String | `anexomail`                                                                               |
-| `kind`          | String | `plan`                                                                                    |
-| `plan`          | String | `basic` / `pro` / `business` / `business_pro`                                              |
-| `billing_cycle` | String | `monthly` / `yearly`                                                                      |
+| Key             | Type   | Value                                         |
+| --------------- | ------ | --------------------------------------------- |
+| `brand`         | String | `anexomail`                                   |
+| `kind`          | String | `plan`                                        |
+| `plan`          | String | `basic` / `pro` / `business` / `business_pro` |
+| `billing_cycle` | String | `monthly` / `yearly`                          |
 
 ## 5) Server 2 — env block (Polar tokens)
 
@@ -198,6 +198,8 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 - Events: `checkout.created`, `checkout.updated`, `order.created`, `order.paid`,
   `subscription.created`, `subscription.active`, `subscription.canceled`, `subscription.revoked`, `subscription.past_due`
 - Secret → `POLAR_WEBHOOK_SECRET` (upar ke block mein).
+- Backend official `standardwebhooks` verifier use karta hai aur exact raw request body verify karta hai.
+- Webhook unavailable ho tab bhi checkout return + `/api/public/billing/sync` Polar se payment pull karke entitlement apply karte hain; webhook payment truth ka single point of failure nahi.
 - **Refund policy:** ANEXOMAIL does not issue refunds. Polar `order.refunded` event is not consumed.
 
 ## 7) Product IDs — LOCKED v2 (14 Aug 2026)
@@ -230,8 +232,8 @@ pm2 restart anexomail-leo --update-env && pm2 logs anexomail-leo --lines 40
 
 ### Locked IDs table
 
-| Product                                             | Polar ID                               | Status      |
-| --------------------------------------------------- | -------------------------------------- | ----------- |
+| Product                                             | Polar ID                               | Status       |
+| --------------------------------------------------- | -------------------------------------- | ------------ |
 | Managed Move-In · 1–5 Mailboxes (£568 one-time)     | `fdcdabc2-9e50-4e4b-91d4-45e4128ef829` | ✅ unchanged |
 | Managed Move-In · 6–15 Mailboxes (£1,670 one-time)  | `a9d1bec3-0d5f-4b9b-ae1c-993efde66da2` | ✅ unchanged |
 | Managed Move-In · 16–29 Mailboxes (£2,210 one-time) | `c7b502c5-ff75-4138-b34d-25d94878fe79` | ✅ unchanged |

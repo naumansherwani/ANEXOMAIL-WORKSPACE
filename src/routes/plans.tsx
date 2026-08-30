@@ -5,6 +5,7 @@ import { useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
+import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
 
 export const Route = createFileRoute("/plans")({
@@ -271,12 +272,15 @@ function PlansPage() {
             <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Annual savings" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months free.
-            Switch to Yearly to see the full annual price on each card.
+            Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months
+            free. Switch to Yearly to see the full annual price on each card.
           </p>
         </section>
 
-        <section data-ax-pricing="plans" className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4">
+        <section
+          data-ax-pricing="plans"
+          className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4"
+        >
           {WORKSPACE_PLANS.map((p) => {
             const price = priceFor(p, cycle);
             return (
@@ -308,13 +312,7 @@ function PlansPage() {
                     </li>
                   ))}
                 </ul>
-                <Link
-                  to="/move-in"
-                  data-ax-price-cta={`plans:${p.id}`}
-                  className="mt-7 block rounded-xl border border-border bg-card px-4 py-3 text-center text-sm font-semibold text-foreground transition-colors duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground"
-                >
-                  Get started
-                </Link>
+                <PlanCheckoutButton planId={p.id} cycle={cycle} source="plans" />
               </article>
             );
           })}
