@@ -210,20 +210,65 @@ internalStorageRouter.post("/storage/commit", async (req, res) => {
 });
 
 // ── founder: storage abstraction (kaunsa volume kitna bhara) ────────────────
+// Thin provisioning radar: sold quota ≠ used bytes. 70% warning · 85% critical.
 founderStorageRouter.get("/storage/volumes", async (req, res) => {
   const me = await requireWs(req, res);
   if (!me) return;
   const v = await db!
-    .from("storage_volumes")
-    .select("id,name,kind,capacity_bytes,used_bytes,accepts_new")
-    .order("name");
+    .from("storage_capacity_health")
+    .select("id,name,kind,capacity_bytes,used_bytes,free_bytes,percent,level,accepts_new")
+    .order("percent", { ascending: false });
   if (v.error) return fail(res, v.error);
   const rows = v.data || [];
+  const sold = await db!
+    .from("mailbox_storage")
+    .select("used_emails_bytes,used_attachments_bytes,used_files_bytes");
+  const logicalUsed = (sold.data || []).reduce(
+    (n: number, r: any) =>
+      n +
+      Number(r.used_emails_bytes || 0) +
+      Number(r.used_attachments_bytes || 0) +
+      Number(r.used_files_bytes || 0),
+    0,
+  );
   res.json({
     volumes: rows,
     capacity_bytes: rows.reduce((n: number, r: any) => n + Number(r.capacity_bytes || 0), 0),
     used_bytes: rows.reduce((n: number, r: any) => n + Number(r.used_bytes || 0), 0),
+    logical_used_bytes: logicalUsed,
+    writable_volumes: rows.filter((r: any) => r.accepts_new).length,
+    worst_level: rows[0]?.level || "ok",
   });
+});
+
+// naya volume attach (Hetzner Storage Box / object storage) — zero migration.
+// body: { name, kind: local|storage_box|object|external, capacity_bytes, endpoint?, drain_others? }
+founderStorageRouter.post("/storage/volume", async (req, res) => {
+  const me = await requireWs(req, res);
+  if (!me) return;
+  const name = String(req.body?.name || "").trim();
+  const kind = String(req.body?.kind || "storage_box");
+  const capacity = Math.floor(Number(req.body?.capacity_bytes) || 0);
+  if (!name || !capacity) {
+    return res.status(400).json({ error: "bad_request", detail: "name + capacity_bytes" });
+  }
+  const r = await db!.rpc("storage_volume_register", {
+    _name: name,
+    _kind: kind,
+    _capacity_bytes: capacity,
+    _endpoint: req.body?.endpoint ? String(req.body.endpoint) : null,
+    _drain_others: req.body?.drain_others === true,
+  });
+  if (r.error) return fail(res, r.error);
+  res.json({ ok: true, volume_id: r.data });
+});
+
+// cron (hourly): 85%+ volumes ko drain par daalta hai, health snapshot deta hai
+internalStorageRouter.post("/storage/sweep", async (req, res) => {
+  if (!cronOk(req, res)) return;
+  const r = await db!.rpc("storage_capacity_sweep", {});
+  if (r.error) return fail(res, r.error);
+  res.json(r.data);
 });
 
 export { storageRouter, internalStorageRouter, founderStorageRouter };
