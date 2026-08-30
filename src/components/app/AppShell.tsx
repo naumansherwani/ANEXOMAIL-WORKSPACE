@@ -36,6 +36,7 @@ import {
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
+import { useAccountState } from "@/lib/trial";
 
 type RailItem = {
   to: string;
@@ -85,6 +86,17 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const { session, organisation, refresh, signOut } = useAuth();
+  const account = useAccountState();
+  const trialAllowed = new Set(account.data?.trial_features ?? []);
+  const visiblePrimary = account.data?.trial_limited
+    ? primary.filter((item) => {
+        if (item.to === "/app") return trialAllowed.has("today");
+        if (item.to.startsWith("/app/mail")) return trialAllowed.has("mail");
+        if (item.to === "/app/people") return trialAllowed.has("people");
+        if (item.to === "/app/calendar") return trialAllowed.has("calendar");
+        return false;
+      })
+    : primary;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.
   const [collapsed, setCollapsed] = useState(false);
@@ -210,7 +222,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-sidebar transition-[width] duration-200 md:flex"
         >
           <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-2.5">
-            {primary.map((item) => {
+            {visiblePrimary.map((item) => {
               const active = isActive(item);
               // PHASE 6: ANEXOChat naye tab mein khulta hai + real unread badge
               if (item.to === "/app/chat") {
@@ -278,7 +290,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         aria-label="Workspace navigation"
         className="flex shrink-0 items-stretch gap-0.5 overflow-x-auto border-t border-border bg-sidebar px-1 [scrollbar-width:none] md:hidden"
       >
-        {primary.map((item) => {
+        {visiblePrimary.map((item) => {
           const active = isActive(item);
           return (
             <Link

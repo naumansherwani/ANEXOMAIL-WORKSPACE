@@ -2,7 +2,7 @@
 -- ANEXOMAIL — Phase 32: TRIAL LIFECYCLE (Supabase #4)
 --
 -- FOUNDER LOCK (locked refinements):
---   1. 48h trial · AI hard zero · mandatory @anexomail.com claim
+--   1. 48h LIMITED trial · AI hard zero · mandatory @anexomail.com claim
 --   2. Recovery path MANDATORY when social login ends (never lock a user out)
 --   3. Frozen mailbox NEVER silently loses incoming mail (hold or reject, logged)
 --   4. Expired/frozen users keep account + billing + recovery access, NOT business data
@@ -162,7 +162,8 @@ begin
     return jsonb_build_object(
       'state','none','hours_left',0,'can_social_login',true,'ai_enabled',false,
       'address',null,'needs_claim',true,'needs_passkey',true,'needs_recovery',true,
-      'business_data',false,'billing_access',true,'recovery_access',true);
+      'business_data',false,'trial_limited',false,'trial_features','[]'::jsonb,
+      'billing_access',true,'recovery_access',true);
   end if;
 
   st := a.status;
@@ -185,7 +186,13 @@ begin
     'can_social_login', st in ('trial','active'),
     'recovery_access', true,
     'billing_access', true,
+    -- Trial core workspace ka real, limited tour hai: account/address, mail,
+    -- people, calendar, search aur security. CRM/org/admin/AI/chat unlock nahi.
     'business_data', st = 'active' or st = 'trial',
+    'trial_limited', st = 'trial',
+    'trial_features', case when st = 'trial' then
+      jsonb_build_array('today','mail','people','calendar','search','account','security','billing')
+      else '[]'::jsonb end,
     'ai_enabled', st = 'active',                 -- trial/expired/frozen = HARD ZERO
     'address', a.anexomail_address,
     'address_reserved_days_left', res_left,

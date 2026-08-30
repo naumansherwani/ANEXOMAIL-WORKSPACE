@@ -8,8 +8,8 @@ import { formatHoursLeft, useAccountState } from "@/lib/trial";
  * Koi red flashing, koi countdown drama. State DB se aata hai, browser se nahi.
  *
  * Jo cheez sabse zaroori hai: trial ke andar hi passkey + recovery set ho jaye,
- * warna 48h baad social login band hone par user apne @anexomail.com se andar
- * nahi aa payega. Is liye pending steps yahin inline dikhte hain.
+ * Passkey + recovery trial ke andar hi complete hon, taa-ke user apne
+ * @anexomail.com account se lock out na ho. Pending steps yahin inline hain.
  */
 export function TrialStrip() {
   const { data } = useAccountState();
