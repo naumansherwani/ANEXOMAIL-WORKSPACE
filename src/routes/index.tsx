@@ -28,7 +28,7 @@ import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { WORKSPACE_PLANS, priceFor, ANNUAL_NOTE, type BillingCycle } from "@/lib/plans";
 
 /* Hero trust badges — every claim verifiable, nothing invented. */
-const badges = ["DKIM verified", "DMARC protected", "TLS 1.3", "Your own domain"];
+const badges = ["DKIM verified", "DMARC protected", "TLS 1.3"];
 
 /* Section 8 — compliance strip. Verifiable facts instead of placeholder logos. */
 const compliance = [
