@@ -37,14 +37,26 @@ export function MessageStream({
   messages,
   pending,
   actions,
+  resume,
 }: {
   /** Oldest -> newest. */
   messages: ChatMessage[];
   pending: OutboxItem[];
   actions: MessageActions;
+  /**
+   * PHASE 12 continuity: canonical resume point server se aata hai.
+   * `anchorSeq` + `atBottom` = doosre device ki asli jagah; `report` wahi
+   * jagah server ko wapis batata hai. Koi guess nahi.
+   */
+  resume?: {
+    anchorSeq: number | null;
+    atBottom: boolean;
+    report: (seq: number, atBottom: boolean) => void;
+  };
 }) {
   const scroller = useRef<HTMLDivElement>(null);
   const [range, setRange] = useState({ start: 0, end: 40 });
+  const restored = useRef(false);
 
   const total = messages.length;
 
@@ -58,17 +70,46 @@ export function MessageStream({
         start: Math.max(0, first - OVERSCAN),
         end: Math.min(total, first + visible + OVERSCAN),
       });
+      if (resume?.report && total) {
+        const bottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+        const index = Math.min(total - 1, Math.max(0, first + Math.floor(visible / 2)));
+        const seq = messages[index]?.seq ?? messages.at(-1)?.seq ?? 0;
+        resume.report(bottom ? (messages.at(-1)?.seq ?? seq) : seq, bottom);
+      }
     };
     onScroll();
     el.addEventListener("scroll", onScroll, { passive: true });
     return () => el.removeEventListener("scroll", onScroll);
-  }, [total]);
+  }, [total, messages, resume]);
 
   const lastSeq = messages.at(-1)?.seq ?? 0;
+
+  // Pehla load: server ka resume point (agar bottom par nahi tha) — warna bottom.
   useEffect(() => {
     const el = scroller.current;
-    if (!el) return;
+    if (!el || restored.current || !total) return;
+    const anchor = resume?.anchorSeq ?? null;
+    if (anchor && resume?.atBottom === false) {
+      const index = messages.findIndex((m) => m.seq >= anchor);
+      if (index >= 0) {
+        restored.current = true;
+        el.scrollTop = Math.max(0, index * ROW_ESTIMATE - el.clientHeight / 2);
+        return;
+      }
+    }
+    restored.current = true;
     el.scrollTop = el.scrollHeight;
+  }, [total, messages, resume]);
+
+  useEffect(() => {
+    restored.current = false;
+  }, [messages[0]?.id]);
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el || !restored.current) return;
+    const bottom = el.scrollHeight - el.scrollTop - el.clientHeight < 220;
+    if (bottom) el.scrollTop = el.scrollHeight;
   }, [lastSeq, pending.length]);
 
   const window_ = useMemo(

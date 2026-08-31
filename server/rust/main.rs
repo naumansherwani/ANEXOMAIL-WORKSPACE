@@ -637,6 +637,117 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 12: CROSS-DEVICE CONTINUITY (Rust PRIMARY) ────────────────
+        // Canonical state Supabase mein; Rust sirf typed procedure hai.
+        // Bun `/api/chat/*` wahi contract fallback ke taur par deta hai.
+        "chat.device.seen" => {
+            let device = s(&input, "device_id");
+            if device.is_empty() {
+                Err("device_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_device_seen",
+                    json!({
+                        "_user": me.id,
+                        "_device_id": device,
+                        "_label": input.get("label").cloned().unwrap_or(Value::Null),
+                        "_kind": if s(&input, "kind").is_empty() { "unknown".to_string() } else { s(&input, "kind") },
+                        "_platform": input.get("platform").cloned().unwrap_or(Value::Null),
+                        "_installed": input.get("installed").and_then(|v| v.as_bool()).unwrap_or(false),
+                    }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+
+        "chat.continuity" => sb_rpc(
+            "chat_continuity",
+            json!({
+                "_user": me.id,
+                "_device_id": input.get("device_id").cloned().unwrap_or(Value::Null),
+            }),
+        )
+        .await
+        .map(|data| data),
+
+        "chat.draft.save" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_required".to_string())
+            } else {
+                let ids: Vec<String> = input
+                    .get("attachment_ids")
+                    .and_then(|v| v.as_array())
+                    .map(|a| {
+                        a.iter()
+                            .filter_map(|x| x.as_str().map(|s| s.to_string()))
+                            .take(20)
+                            .collect()
+                    })
+                    .unwrap_or_default();
+                sb_rpc(
+                    "chat_draft_save",
+                    json!({
+                        "_user": me.id,
+                        "_conv": conv,
+                        "_body": s(&input, "body"),
+                        "_reply_to": input.get("reply_to_id").cloned().unwrap_or(Value::Null),
+                        "_caret": input.get("caret").and_then(|v| v.as_i64()).unwrap_or(0),
+                        "_attachment_ids": ids,
+                        "_rev": input.get("rev").and_then(|v| v.as_i64()).unwrap_or(0),
+                        "_device_id": input.get("device_id").cloned().unwrap_or(Value::Null),
+                        "_device_label": input.get("device_label").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        "chat.position.save" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_position_save",
+                    json!({
+                        "_user": me.id,
+                        "_conv": conv,
+                        "_anchor_seq": input.get("anchor_seq").and_then(|v| v.as_i64()).unwrap_or(0),
+                        "_at_bottom": input.get("at_bottom").and_then(|v| v.as_bool()).unwrap_or(true),
+                        "_rev": input.get("rev").and_then(|v| v.as_i64()).unwrap_or(0),
+                        "_device_id": input.get("device_id").cloned().unwrap_or(Value::Null),
+                        "_device_label": input.get("device_label").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
+        "chat.search.deep" => {
+            let q = s(&input, "q");
+            if q.trim().is_empty() {
+                Ok(json!({ "results": [] }))
+            } else {
+                sb_rpc(
+                    "chat_search_deep",
+                    json!({
+                        "_user": me.id,
+                        "_q": q,
+                        "_conv": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                        "_sender": input.get("sender").cloned().unwrap_or(Value::Null),
+                        "_before": input.get("before").cloned().unwrap_or(Value::Null),
+                        "_limit": input.get("limit").and_then(|v| v.as_i64()).unwrap_or(40),
+                    }),
+                )
+                .await
+                .map(|results| json!({ "results": results }))
+            }
+        }
+
         // ── PHASE 7: ANEXOVideoChat signalling (Business Pro only) ──────────
         "chat.video.gate" => sb_rpc("chat_video_allowed", json!({ "_user_id": me.id }))
             .await
