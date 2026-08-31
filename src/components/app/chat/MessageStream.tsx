@@ -103,7 +103,7 @@ export function MessageStream({
 
   useEffect(() => {
     restored.current = false;
-  }, [messages[0]?.conversation_id]);
+  }, [messages[0]?.id]);
 
   useEffect(() => {
     const el = scroller.current;
