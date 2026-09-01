@@ -34,6 +34,7 @@ import { useCall } from "@/lib/chat-call";
 import { useVideoGate } from "@/lib/chat-video";
 import { filesFromPaste, newUpload, uploadImage, type Upload } from "@/lib/chat-attachments";
 import {
+  deepSearch,
   markDeviceSeen,
   useResumePosition,
   useSyncedDraft,
@@ -94,6 +95,20 @@ function ChatPage() {
   const search = useChatSearch(query);
   const [online, setOnline] = useState(true);
   const live = useChatLive(openId);
+
+  // PHASE 12: device register — continuity ka canonical roster server par.
+  useEffect(() => {
+    if (!entitled) return;
+    void markDeviceSeen().catch(() => undefined);
+  }, [entitled]);
+
+  // PHASE 12: full-history deep search — chat jitni purani ho, hamesha milti hai.
+  const deep = useQuery({
+    queryKey: ["chat", "search", "deep", query],
+    enabled: entitled && query.trim().length >= 2,
+    queryFn: () => deepSearch({ q: query.trim(), limit: 60 }),
+    staleTime: 15_000,
+  });
 
   useEffect(() => {
     const sync = () => setOnline(navigator.onLine);
@@ -222,6 +237,29 @@ function ChatPage() {
                   </button>
                 ))
               )}
+              {(deep.data ?? []).length ? (
+                <>
+                  <p className="pt-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+                    Full history
+                  </p>
+                  {(deep.data ?? []).map((hit) => (
+                    <button
+                      key={hit.message_id}
+                      type="button"
+                      onClick={() => {
+                        setOpenId(hit.conversation_id);
+                        setQuery("");
+                      }}
+                      className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
+                    >
+                      <span className="font-semibold text-foreground">
+                        {hit.conversation_title ?? "Conversation"}
+                      </span>{" "}
+                      {hit.body.slice(0, 70)}
+                    </button>
+                  ))}
+                </>
+              ) : null}
             </div>
           ) : null}
         </div>
