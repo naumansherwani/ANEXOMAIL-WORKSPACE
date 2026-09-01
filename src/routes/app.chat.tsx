@@ -33,7 +33,11 @@ import { chatCall, useChatLive } from "@/lib/chat-transport";
 import { useCall } from "@/lib/chat-call";
 import { useVideoGate } from "@/lib/chat-video";
 import { filesFromPaste, newUpload, uploadImage, type Upload } from "@/lib/chat-attachments";
-import { useDraft } from "@/lib/chat-drafts";
+import {
+  markDeviceSeen,
+  useResumePosition,
+  useSyncedDraft,
+} from "@/lib/chat-continuity";
 import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
 
 export const Route = createFileRoute("/app/chat")({
@@ -62,8 +66,9 @@ function ChatPage() {
   const markRead = useMarkRead(openId);
   const startDirect = useStartDirect();
   const typingPing = useTypingPing(openId);
-  // Phase 11 drafts: har conversation ka apna saved draft (localStorage, device pe).
-  const draftBox = useDraft(openId);
+  // Phase 12 continuity: draft server-authoritative hai — har device par wahi draft.
+  const draftBox = useSyncedDraft(openId);
+  const resume = useResumePosition(openId);
   // Phase 11 attachments: drag-drop / paste / picker — progress + errors asli.
   const [uploads, setUploads] = useState<Upload[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -365,6 +370,7 @@ function ChatPage() {
             <MessageStream
               messages={ordered}
               pending={pending}
+              resume={resume}
               actions={{
                 onReact: (message_id, emoji) => react.mutate({ message_id, emoji }),
                 onReply: (m) => setReplyTo(m),
