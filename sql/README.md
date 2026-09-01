@@ -234,3 +234,4 @@ Detail: `docs/absm-billing-mesh.md`.
 
 - `phase49b_hotfix_random_token.sql` — HOTFIX: gen_random_bytes → gen_random_uuid token,
   billing_state_hash ka search_path `public, extensions` (Supabase pgcrypto fix).
+- `anexochat_phase12_continuity.sql` — PHASE 12 cross-device continuity: `chat_devices`, `chat_drafts` (rev-based), `chat_positions` (anchor seq), `chat_continuity()`, `chat_search_deep()` (trigram full history). Rust PRIMARY arms: chat.device.seen · chat.continuity · chat.draft.save · chat.position.save · chat.search.deep; Bun `/api/chat/*` fallback.
