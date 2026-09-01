@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Paperclip, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
