@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { Paperclip, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -33,7 +34,12 @@ import { chatCall, useChatLive } from "@/lib/chat-transport";
 import { useCall } from "@/lib/chat-call";
 import { useVideoGate } from "@/lib/chat-video";
 import { filesFromPaste, newUpload, uploadImage, type Upload } from "@/lib/chat-attachments";
-import { useDraft } from "@/lib/chat-drafts";
+import {
+  deepSearch,
+  markDeviceSeen,
+  useResumePosition,
+  useSyncedDraft,
+} from "@/lib/chat-continuity";
 import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
 
 export const Route = createFileRoute("/app/chat")({
@@ -62,8 +68,9 @@ function ChatPage() {
   const markRead = useMarkRead(openId);
   const startDirect = useStartDirect();
   const typingPing = useTypingPing(openId);
-  // Phase 11 drafts: har conversation ka apna saved draft (localStorage, device pe).
-  const draftBox = useDraft(openId);
+  // Phase 12 continuity: draft server-authoritative hai — har device par wahi draft.
+  const draftBox = useSyncedDraft(openId);
+  const resume = useResumePosition(openId);
   // Phase 11 attachments: drag-drop / paste / picker — progress + errors asli.
   const [uploads, setUploads] = useState<Upload[]>([]);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -89,6 +96,20 @@ function ChatPage() {
   const search = useChatSearch(query);
   const [online, setOnline] = useState(true);
   const live = useChatLive(openId);
+
+  // PHASE 12: device register — continuity ka canonical roster server par.
+  useEffect(() => {
+    if (!entitled) return;
+    void markDeviceSeen().catch(() => undefined);
+  }, [entitled]);
+
+  // PHASE 12: full-history deep search — chat jitni purani ho, hamesha milti hai.
+  const deep = useQuery({
+    queryKey: ["chat", "search", "deep", query],
+    enabled: entitled && query.trim().length >= 2,
+    queryFn: () => deepSearch({ q: query.trim(), limit: 60 }),
+    staleTime: 15_000,
+  });
 
   useEffect(() => {
     const sync = () => setOnline(navigator.onLine);
@@ -217,6 +238,29 @@ function ChatPage() {
                   </button>
                 ))
               )}
+              {(deep.data ?? []).length ? (
+                <>
+                  <p className="pt-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+                    Full history
+                  </p>
+                  {(deep.data ?? []).map((hit) => (
+                    <button
+                      key={hit.message_id}
+                      type="button"
+                      onClick={() => {
+                        setOpenId(hit.conversation_id);
+                        setQuery("");
+                      }}
+                      className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
+                    >
+                      <span className="font-semibold text-foreground">
+                        {hit.conversation_title ?? "Conversation"}
+                      </span>{" "}
+                      {hit.body.slice(0, 70)}
+                    </button>
+                  ))}
+                </>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -365,6 +409,7 @@ function ChatPage() {
             <MessageStream
               messages={ordered}
               pending={pending}
+              resume={resume}
               actions={{
                 onReact: (message_id, emoji) => react.mutate({ message_id, emoji }),
                 onReply: (m) => setReplyTo(m),
