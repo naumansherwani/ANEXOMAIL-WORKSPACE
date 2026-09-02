@@ -105,8 +105,28 @@ create index if not exists chat_positions_user_idx on public.chat_positions (use
 -- ─────────────────────────────────────────────────────────────────
 -- 5) long-history search: trigram index (koi bhi lambhi chat searchable)
 -- ─────────────────────────────────────────────────────────────────
-create index if not exists chat_messages_body_trgm_idx
-  on public.chat_messages using gin (body extensions.gin_trgm_ops);
+do $$
+declare ns text;
+begin
+  if to_regclass('public.chat_messages_body_trgm_idx') is not null then
+    return;
+  end if;
+  select n.nspname into ns
+    from pg_opclass o
+    join pg_namespace n on n.oid = o.opcnamespace
+    join pg_am a on a.oid = o.opcmethod
+   where o.opcname = 'gin_trgm_ops' and a.amname = 'gin'
+   limit 1;
+  if ns is null then
+    raise notice 'pg_trgm opclass missing — trigram index skip (search LIKE se chalega)';
+    return;
+  end if;
+  execute format(
+    'create index chat_messages_body_trgm_idx on public.chat_messages using gin (body %I.gin_trgm_ops)',
+    ns
+  );
+end $$;
+
 create index if not exists chat_messages_conv_seq_idx
   on public.chat_messages (conversation_id, seq desc);
 
