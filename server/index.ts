@@ -17,6 +17,8 @@ import { support } from "./routes/support";
 import { authRouter } from "./routes/auth";
 import { mailRouter } from "./routes/mail";
 import { mailComposeRouter } from "./routes/mail-compose";
+import { mailPredictRouter } from "./routes/mail-predict";
+
 import { contactsRouter } from "./routes/contacts";
 import { dashboardRouter } from "./routes/dashboard";
 import { workspaceRouter } from "./routes/workspace";
