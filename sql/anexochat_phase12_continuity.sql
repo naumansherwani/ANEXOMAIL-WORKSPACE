@@ -12,9 +12,23 @@
 --   6. Gate wahi purana: public.chat_access(user) — Basic/Pro = access nahi.
 
 -- ─────────────────────────────────────────────────────────────────
--- 0) trigram (search) — Supabase par extensions schema mein
+-- 0) trigram (search) — pg_trgm jahan pehle se hai wahi chalega.
+--    NOTE: `extensions.gin_trgm_ops` hardcode karna galat tha — agar pg_trgm
+--    public (ya kisi aur) schema mein install hai to woh opclass exist nahi karti.
+--    Is liye extension optionally install hoti hai aur opclass ka schema
+--    runtime par dhoonda jata hai (section 5).
 -- ─────────────────────────────────────────────────────────────────
-create extension if not exists pg_trgm with schema extensions;
+do $$
+begin
+  if not exists (select 1 from pg_extension where extname = 'pg_trgm') then
+    begin
+      execute 'create extension pg_trgm with schema extensions';
+    exception when others then
+      execute 'create extension pg_trgm';
+    end;
+  end if;
+end $$;
+
 
 -- ─────────────────────────────────────────────────────────────────
 -- 1) self-heal: purani conflicting tables legacy kar do
