@@ -163,8 +163,11 @@ app.use("/api/founder", founderRevenueRouter);
 app.use("/api/ai/credits", aiCreditsRouter);
 app.use("/api/founder", founderAiCreditsRouter);
 
+// Phase 12A — inline word prediction (Bun FALLBACK; PRIMARY = Rust /rpc/mail.predict)
+app.use("/api/mail/predict", mailPredictRouter);
 // Phase 9 Compose Studio — mount BEFORE mailRouter so its paths win
 app.use("/api/mail", mailComposeRouter);
+
 // Phase 30 — offline outbox send (idempotency-key based)
 app.use("/api/mail", outboxRouter);
 // Phase 28 — Cross-Platform: device handoff (drafts + cursor across devices)
