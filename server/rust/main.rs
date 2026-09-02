@@ -631,7 +631,7 @@ async fn dispatch(
             if q.trim().is_empty() {
                 Ok(json!({ "results": [] }))
             } else {
-                sb_rpc("chat_search_messages", json!({ "_user": me.id, "_q": q, "_limit": 40 }))
+                sb_rpc("chat_search_deep", json!({ "_user": me.id, "_q": q, "_limit": 40 }))
                     .await
                     .map(|results| json!({ "results": results }))
             }
