@@ -748,7 +748,64 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 12A: ADVANCED EMAIL WORD PREDICTION (Rust PRIMARY) ────────
+        // Assistive only: engine chhota phrase deta hai, poora email kabhi nahi.
+        // Bun `/api/mail/predict` wahi contract fallback ke taur par deta hai.
+        "mail.predict" => {
+            let prefix = s(&input, "prefix");
+            if prefix.trim().is_empty() {
+                Ok(json!({ "candidates": [] }))
+            } else {
+                let formality = if s(&input, "formality").is_empty() {
+                    "any".to_string()
+                } else {
+                    s(&input, "formality")
+                };
+                sb_rpc(
+                    "mail_predict",
+                    json!({
+                        "_user": me.id,
+                        "_prefix": prefix,
+                        "_formality": formality,
+                        "_limit": input.get("limit").and_then(|v| v.as_i64()).unwrap_or(3),
+                    }),
+                )
+                .await
+                .map(|data| json!({ "candidates": data }))
+            }
+        }
+
+        "mail.predict.learn" => {
+            let text = s(&input, "text");
+            if text.trim().len() < 12 {
+                Ok(json!({ "learned": 0 }))
+            } else {
+                sb_rpc("mail_predict_learn", json!({ "_user": me.id, "_text": text }))
+                    .await
+                    .map(|data| json!({ "learned": data.as_i64().unwrap_or(0) }))
+            }
+        }
+
+        "mail.predict.event" => {
+            let action = s(&input, "action");
+            if action.is_empty() {
+                Err("action_required".to_string())
+            } else {
+                sb_rpc(
+                    "mail_predict_event",
+                    json!({
+                        "_user": me.id,
+                        "_action": action,
+                        "_prefix": input.get("prefix").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+
         // ── PHASE 7: ANEXOVideoChat signalling (Business Pro only) ──────────
+
         "chat.video.gate" => sb_rpc("chat_video_allowed", json!({ "_user_id": me.id }))
             .await
             .map(|data| json!({ "allowed": data.as_bool().unwrap_or(false), "plan_required": "business_pro" })),
