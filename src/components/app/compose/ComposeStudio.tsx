@@ -416,17 +416,21 @@ export function ComposeStudio({
           ))}
         </div>
 
-        <Textarea
+        {/* Phase 12A — inline word prediction (ghost text). Composer wahi hai. */}
+        <GhostTextArea
           id="studio-body"
           ref={bodyRef}
-          aria-label="Message"
+          ariaLabel="Message"
           required
-          rows={zen ? 18 : variant === "inline" ? 6 : 8
-          }
+          rows={zen ? 18 : variant === "inline" ? 6 : 8}
           value={body}
-          onChange={(e) => setBody(e.target.value)}
+          onChange={setBody}
+          subject={subject}
+          to={to}
+          {...(threadId ? { threadId } : {})}
           placeholder="Write it once. Leo can tighten it, translate it or coach the tone."
         />
+
 
         {/* open variables */}
         {openVars.length > 0 && (
