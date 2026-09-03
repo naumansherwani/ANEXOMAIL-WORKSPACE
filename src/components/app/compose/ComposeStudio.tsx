@@ -18,10 +18,11 @@ import {
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+
 import {
   applyVariables,
   findVariables,
@@ -39,6 +40,7 @@ import {
   type ComposeTone,
   type DraftPayload,
 } from "@/lib/compose";
+import { learnWritingPattern } from "@/lib/mail-predict";
 import { notify } from "@/lib/notify";
 import { useSendMail } from "@/lib/mail";
 import { cn } from "@/lib/utils";
@@ -184,7 +186,7 @@ export function ComposeStudio({
       {
         onSuccess: () => {
           notify.done("Sending", `Held for ${UNDO_HOLD_SECONDS}s — cancel from Sent.`);
-          maybePromiseFollowUp();
+          afterSent();
           onSent?.();
         },
         onError: (error) => {
@@ -198,7 +200,7 @@ export function ComposeStudio({
             {
               onSuccess: () => {
                 notify.done("Sent", "The message left your workspace.");
-                maybePromiseFollowUp();
+                afterSent();
                 onSent?.();
               },
               onError: (err) =>
@@ -208,6 +210,12 @@ export function ComposeStudio({
         },
       },
     );
+  };
+
+  /** Phase 12A: send ke baad user ke apne likhe se pattern seekha jata hai. */
+  const afterSent = () => {
+    void learnWritingPattern(applyVariables(body, variables)).catch(() => undefined);
+    maybePromiseFollowUp();
   };
 
   const maybePromiseFollowUp = () => {
@@ -416,17 +424,21 @@ export function ComposeStudio({
           ))}
         </div>
 
-        <Textarea
+        {/* Phase 12A — inline word prediction (ghost text). Composer wahi hai. */}
+        <GhostTextArea
           id="studio-body"
           ref={bodyRef}
-          aria-label="Message"
+          ariaLabel="Message"
           required
-          rows={zen ? 18 : variant === "inline" ? 6 : 8
-          }
+          rows={zen ? 18 : variant === "inline" ? 6 : 8}
           value={body}
-          onChange={(e) => setBody(e.target.value)}
+          onChange={setBody}
+          subject={subject}
+          to={to}
+          {...(threadId ? { threadId } : {})}
           placeholder="Write it once. Leo can tighten it, translate it or coach the tone."
         />
+
 
         {/* open variables */}
         {openVars.length > 0 && (

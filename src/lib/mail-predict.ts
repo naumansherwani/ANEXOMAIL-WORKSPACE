@@ -139,7 +139,13 @@ export function usePredictionController({
   const seq = useRef(0);
 
   const ctx = useMemo(
-    () => buildPredictionContext(text, caret, { subject, to, thread: Boolean(threadId) }),
+    () =>
+      buildPredictionContext(text, caret, {
+        ...(subject ? { subject } : {}),
+        ...(to ? { to } : {}),
+        thread: Boolean(threadId),
+      }),
+
     [text, caret, subject, to, threadId],
   );
 
