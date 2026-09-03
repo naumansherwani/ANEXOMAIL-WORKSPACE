@@ -40,6 +40,7 @@ import {
   type ComposeTone,
   type DraftPayload,
 } from "@/lib/compose";
+import { learnWritingPattern } from "@/lib/mail-predict";
 import { notify } from "@/lib/notify";
 import { useSendMail } from "@/lib/mail";
 import { cn } from "@/lib/utils";
@@ -185,7 +186,7 @@ export function ComposeStudio({
       {
         onSuccess: () => {
           notify.done("Sending", `Held for ${UNDO_HOLD_SECONDS}s — cancel from Sent.`);
-          maybePromiseFollowUp();
+          afterSent();
           onSent?.();
         },
         onError: (error) => {
@@ -199,7 +200,7 @@ export function ComposeStudio({
             {
               onSuccess: () => {
                 notify.done("Sent", "The message left your workspace.");
-                maybePromiseFollowUp();
+                afterSent();
                 onSent?.();
               },
               onError: (err) =>
@@ -209,6 +210,12 @@ export function ComposeStudio({
         },
       },
     );
+  };
+
+  /** Phase 12A: send ke baad user ke apne likhe se pattern seekha jata hai. */
+  const afterSent = () => {
+    void learnWritingPattern(applyVariables(body, variables)).catch(() => undefined);
+    maybePromiseFollowUp();
   };
 
   const maybePromiseFollowUp = () => {
