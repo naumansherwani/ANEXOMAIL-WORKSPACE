@@ -1,11 +1,13 @@
 /**
- * HOST-AWARE SURFACE (PARALLEL AI BUILD LOCK, 24 Aug 2026)
+ * HOST-AWARE SURFACE (locked 5 Sep 2026 — SINGLE FOUNDER HOST)
  *
- * Ek codebase, do surfaces:
- *   - anexomail.com        = business workspace (founder side, pre-launch lock)
- *   - ai.anexomail.com     = LEO AI product — SAME build, SAME PM2 process.
- *     Awam ko sirf `/` (AI landing) nazar aata hai; /app/* mirror unlock key
- *     ke peeche. Do repo / do design system kabhi nahi.
+ * Ek codebase, teen surfaces:
+ *   - anexomail.com                    = business workspace (awam, pre-launch lock)
+ *   - founderworkspace.anexomail.com   = THE ONLY founder host (Caddy allowlist)
+ *   - ai.anexomail.com                 = LEO AI product (awam ko sirf `/`)
+ *
+ * `aiemail.anexomail.com` RETIRED hai — na domain hai, na Caddy block. Founder ka
+ * har surface (AI workbench samet) founderworkspace.anexomail.com ke andar hai.
  */
 
 export function hostName(): string {
@@ -23,17 +25,25 @@ export function isChatHost(): boolean {
   return hostName() === "anexochat.anexomail.com";
 }
 
-/** Founder-only hosts (Caddy IP allowlist) + local/preview dev. */
+/** Founder host (Caddy IP allowlist) + local/preview dev. Sirf ek host. */
 export function isFounderHost(): boolean {
   const h = hostName();
   return (
     h === "founderworkspace.anexomail.com" ||
-    h === "aiemail.anexomail.com" ||
     h === "localhost" ||
     h === "127.0.0.1" ||
     h.endsWith(".lovable.app") ||
     h.endsWith(".lovableproject.com")
   );
+}
+
+/**
+ * FOUNDER SURFACE GUARD: `/app/founder*` (Founder view) sirf founder host par
+ * render hota hai. Awam host par path exist karta hai magar surface band —
+ * host-guard permanent hai, kisi flag par nahi.
+ */
+export function founderSurfaceAllowed(): boolean {
+  return isFounderHost();
 }
 
 /**
