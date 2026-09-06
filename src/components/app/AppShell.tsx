@@ -292,7 +292,25 @@ export function AppShell({ children }: { children: ReactNode }) {
         {/* Panels */}
         <main className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
           <h1 className="sr-only">{pageHeading(pathname)}</h1>
-          {children}
+          {founderBlocked ? (
+            <div className="flex flex-1 items-center justify-center px-6 py-16">
+              <div className="max-w-sm text-center">
+                <p className="ax-eyebrow">Founder view</p>
+                <h2 className="mt-3 text-lg font-bold text-foreground">Not available here</h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Founder view only opens on the founder workspace host.
+                </p>
+                <Link
+                  to="/app"
+                  className="ax-focus mt-5 inline-flex rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground"
+                >
+                  Back to workspace
+                </Link>
+              </div>
+            </div>
+          ) : (
+            children
+          )}
         </main>
       </div>
 
