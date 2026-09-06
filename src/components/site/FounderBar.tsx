@@ -30,7 +30,7 @@ function onFounderHost(): boolean {
   const h = window.location.hostname;
   return (
     h.startsWith("founderworkspace.") ||
-    h.startsWith("aiemail.") ||
+    
     h === "localhost" ||
     h === "127.0.0.1" ||
     h.endsWith(".lovable.app") ||
