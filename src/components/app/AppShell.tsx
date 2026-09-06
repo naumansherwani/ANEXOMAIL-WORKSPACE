@@ -25,6 +25,7 @@ import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
+import { founderSurfaceAllowed } from "@/lib/host";
 import {
   DropdownMenu,
   DropdownMenuContent,
