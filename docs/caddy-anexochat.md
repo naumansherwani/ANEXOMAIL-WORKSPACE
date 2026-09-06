@@ -183,16 +183,9 @@ founderworkspace.anexomail.com {
         }
 }
 
-aiemail.anexomail.com {
-        @founder {
-        }
-        handle @founder {
-                reverse_proxy localhost:3100
-        }
-        handle {
-                respond "Access Denied: Founder Only." 403
-        }
-}
+# aiemail.anexomail.com — RETIRED (5 Sep 2026). Domain nahi liya gaya; Caddy mein
+# is host ka block bilkul NAHI hona chahiye. Founder ka har surface (AI workbench
+# samet) sirf founderworkspace.anexomail.com ke andar hai.
 
 # ==========================================================
 # ANEXOChat — Rust PRIMARY, Bun FALLBACK
