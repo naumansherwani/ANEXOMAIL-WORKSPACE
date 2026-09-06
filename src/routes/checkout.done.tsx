@@ -50,8 +50,11 @@ function CheckoutDonePage() {
         setDetail(data.status);
         if (data.status === "confirmed" || data.status === "succeeded") {
           setStatus("success");
+          // Usi window mein wapas — 2 second baad automatic.
+          timer = setTimeout(() => window.location.assign(returnTo), 2000);
           return;
         }
+
         attempts += 1;
         if (attempts < 20) timer = setTimeout(() => void verify(), 3000);
         else setStatus("failed");
