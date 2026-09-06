@@ -88,7 +88,13 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { session, organisation, refresh, signOut } = useAuth();
   const account = useAccountState();
   const trialAllowed = new Set(account.data?.trial_features ?? []);
-  const visiblePrimary = account.data?.trial_limited
+  // FOUNDER HOST GUARD (permanent): Founder view sirf founderworkspace host par.
+  // Hydration-safe — SSR par hostname nahi hota, is liye effect ke baad set hota hai.
+  const [founderHost, setFounderHost] = useState(false);
+  useEffect(() => {
+    setFounderHost(founderSurfaceAllowed());
+  }, []);
+  const allowed = account.data?.trial_limited
     ? primary.filter((item) => {
         if (item.to === "/app") return trialAllowed.has("today");
         if (item.to.startsWith("/app/mail")) return trialAllowed.has("mail");
@@ -97,6 +103,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         return false;
       })
     : primary;
+  const visiblePrimary = allowed.filter(
+    (item) => founderHost || !item.to.startsWith("/app/founder"),
+  );
+  const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.
   const [collapsed, setCollapsed] = useState(false);
