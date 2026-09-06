@@ -20,10 +20,20 @@ export const Route = createFileRoute("/checkout/done")({
 });
 
 function CheckoutDonePage() {
-  const search = useSearch({ from: "/checkout/done" }) as { checkout_id?: string };
+  const search = useSearch({ from: "/checkout/done" }) as {
+    checkout_id?: string;
+    return_to?: string;
+  };
   const checkoutId = search.checkout_id;
+  // RETURN-TO-WINDOW LOCK: user jahan se checkout par gaya tha, payment ke baad
+  // wahin wapas. Sirf same-origin path chalta hai (open redirect band).
+  const returnTo =
+    search.return_to && search.return_to.startsWith("/") && !search.return_to.startsWith("//")
+      ? search.return_to
+      : "/app/billing";
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "missing">("loading");
   const [detail, setDetail] = useState<string>("");
+
 
   useEffect(() => {
     if (!checkoutId) {
