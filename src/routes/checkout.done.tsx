@@ -95,10 +95,11 @@ function CheckoutDonePage() {
               Receipt aur next steps aapke email par bhej diye gaye hain.
             </p>
             <Button asChild className="w-full">
-              <a href="/app">Open workspace</a>
+              <a href={returnTo}>Continue where you left off</a>
             </Button>
           </div>
         )}
+
 
         {status === "failed" && (
           <div className="space-y-4 rounded-xl border p-6 bg-destructive/5 border-destructive/20">
