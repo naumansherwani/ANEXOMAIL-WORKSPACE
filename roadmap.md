@@ -9,3 +9,4 @@
 - [x] Correct payment diagnostic SQL and document exact Polar event selection
 
 - [x] Accept separate Polar signing secrets for primary and backup webhook endpoints
+- [x] anexovideocall.anexomail.com Caddy ingress (HTTPS 200) + repo-managed site blocks deploy script
