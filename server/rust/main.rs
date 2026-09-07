@@ -2455,6 +2455,59 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
         }
     };
 
+    // ── PHASE 31A: QUIC SIGNALING MODE (light-speed connect) ───────────────
+    // hello: {"token":..,"conversation_id":..,"mode":"signal"}
+    // SDP/ICE frames isi QUIC stream par 1 RTT mein peer tak jate hain.
+    // Durability DB rows se aati hai (frontend dono likhta hai); ye path sirf
+    // raftaar deta hai — sach ka faisla kabhi nahi karta.
+    if s(&hello, "mode") == "signal" {
+        let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<String>();
+        signal_hub_join(&conv, &me.id, tx);
+        let _ = send
+            .write_all(b"{\"type\":\"ready\",\"transport\":\"webtransport\",\"mode\":\"signal\"}\n")
+            .await;
+
+        let mut sbuf = vec![0u8; 64 * 1024];
+        let mut pending = String::new();
+        loop {
+            tokio::select! {
+                out = rx.recv() => {
+                    match out {
+                        Some(line) => {
+                            if send.write_all(line.as_bytes()).await.is_err() { break; }
+                            if send.write_all(b"\n").await.is_err() { break; }
+                        }
+                        None => break,
+                    }
+                }
+                got = recv.read(&mut sbuf) => {
+                    match got {
+                        Ok(Some(len)) if len > 0 => {
+                            pending.push_str(&String::from_utf8_lossy(&sbuf[..len]));
+                            while let Some(idx) = pending.find('\n') {
+                                let raw: String = pending.drain(..=idx).collect();
+                                let line = raw.trim().to_string();
+                                if line.is_empty() { continue; }
+                                if let Ok(mut frame) = serde_json::from_str::<Value>(&line) {
+                                    // from_user server likhta hai — client jhoot nahi bol sakta
+                                    frame["from_user"] = Value::String(me.id.clone());
+                                    let to = s(&frame, "to_user");
+                                    signal_hub_send(&conv, &me.id, &to, frame.to_string());
+                                }
+                            }
+                        }
+                        Ok(Some(_)) => {}
+                        _ => break,
+                    }
+                }
+            }
+        }
+        signal_hub_leave(&conv, &me.id);
+        return;
+    }
+
+
+
     let mut last_seq = hello.get("after_seq").and_then(|v| v.as_i64()).unwrap_or(0);
     let _ = send
         .write_all(b"{\"type\":\"ready\",\"transport\":\"webtransport\"}\n")
