@@ -12,6 +12,7 @@
     "start": "bun .output/server/index.mjs",
     "start:node": "node .output/server/index.mjs",
     "preview": "vite preview",
+    "i18n:extract": "bun scripts/i18n-extract.mjs",
     "lint": "eslint .",
     "format": "prettier --write ."
   },

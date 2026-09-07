@@ -4,3 +4,6 @@
 - [ ] Add truthful P2P/TURN relay badge UI
 - [ ] Add Phase 31A features to Business, Business Pro, AI Pro, AI Business, AI Executive package cards
 - [ ] Verify Phase 31A and re-check roadmap
+- [ ] Phase 31B translation layer: wrap public site pages (landing, plans, security, ownership, move-in, anexochat, auth, footer) with t()
+- [ ] Phase 31B: wrap /app/* workspace panels with t()
+- [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output
