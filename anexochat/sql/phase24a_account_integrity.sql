@@ -1,5 +1,5 @@
 -- ============================================================================
--- ANEXOMAIL / ANEXOChat — ACCOUNT INTEGRITY BATCH  (Supabase #4)
+-- ANEXOChat — PHASE 24A · ACCOUNT INTEGRITY (one person, one account)  (Supabase #4)
 --
 -- RUN: Supabase SQL editor mein poora file paste -> Run. Idempotent + self-healing.
 --

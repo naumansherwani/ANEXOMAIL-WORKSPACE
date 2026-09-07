@@ -198,3 +198,10 @@ baad 200, Supabase down ho to bhi Polar ko 200), worker backoff 30s→24h + 8 at
 ke baad dead-letter (row zinda, `/api/v1/replay`), `/ready` + `/metrics`.
 Ingress: `docs/caddy-payments-host.md` (`polarpayments.anexomail.com` → Server 2 `62.238.98.98` → 127.0.0.1:3400).
 
+
+## ANEXOChat ka SQL yahan NAHI hai
+
+ANEXOChat (chat · video call · file engine · work/decision/promise engine · account
+integrity Phase 24A) ka har SQL ab apne alag folder mein hai: **`anexochat/sql/`**
+aur uske docs `anexochat/docs/`. Index: `anexochat/README.md`.
+Yeh folder (`sql/`) sirf ANEXOMAIL Workspace ke phases ke liye hai.
