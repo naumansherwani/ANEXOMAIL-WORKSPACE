@@ -220,6 +220,9 @@ end;
 $$;
 
 -- ---------- 7) sync loop: claim / fail / abandon ----------
+-- purani signature (OUT columns badle) ho to pehle hata do — warna
+-- `cannot change return type of existing function`.
+drop function if exists public.billing_sync_claim(int) cascade;
 create or replace function public.billing_sync_claim(p_limit int default 25)
 returns table (id uuid, user_id uuid, kind text, plan text, band text,
                polar_checkout_id text, state text, attempts int, created_at timestamptz)
