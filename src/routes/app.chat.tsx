@@ -448,6 +448,7 @@ function ChatPage() {
               /* PHASE 31A — NEW ADDED: ring truth, group topology, survival */
               ringing={call.ringing}
               topology={call.topology}
+              mediaForwarding={call.mediaForwarding}
               survival={call.survival}
               onDecline={call.decline}
             />

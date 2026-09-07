@@ -141,6 +141,40 @@ export async function iceBundle(): Promise<IceBundle> {
 /** Best-available video codec order — device jo support kare wahi chalta hai. */
 const CODEC_ORDER = ["video/AV1", "video/VP9", "video/H264", "video/VP8"];
 
+/** Opus voice survival is negotiated in SDP, not guessed from sender priority. */
+function tuneOpusSdp(sdp: string | undefined): string | undefined {
+  if (!sdp) return sdp;
+  const opusPayloads = [...sdp.matchAll(/^a=rtpmap:(\d+) opus\/48000(?:\/\d+)?\s*$/gim)].map(
+    (match) => match[1],
+  );
+  let next = sdp;
+  for (const payload of opusPayloads) {
+    if (!payload) continue;
+    const fmtp = new RegExp(`^a=fmtp:${payload} ([^\\r\\n]*)$`, "im");
+    const required = ["useinbandfec=1", "usedtx=1", "stereo=0", "maxaveragebitrate=64000"];
+    if (fmtp.test(next)) {
+      next = next.replace(fmtp, (_line, params: string) => {
+        const keys = new Set(params.split(";").map((part) => part.trim().split("=")[0]?.toLowerCase()));
+        const additions = required.filter((part) => !keys.has(part.split("=")[0]));
+        return `a=fmtp:${payload} ${params}${additions.length ? `;${additions.join(";")}` : ""}`;
+      });
+    } else {
+      next = next.replace(
+        new RegExp(`(^a=rtpmap:${payload} opus/48000(?:/\\d+)?\\s*$)`, "im"),
+        `$1\r\na=fmtp:${payload} ${required.join(";")}`,
+      );
+    }
+  }
+  return next;
+}
+
+function tunedLocalDescription(peer: RTCPeerConnection): RTCSessionDescriptionInit | null {
+  const description = peer.localDescription;
+  if (!description) return null;
+  const sdp = tuneOpusSdp(description.sdp);
+  return sdp === undefined ? { type: description.type } : { type: description.type, sdp };
+}
+
 function preferCodecs(transceiver: RTCRtpTransceiver) {
   const caps = RTCRtpSender.getCapabilities("video");
   if (!caps?.codecs || !("setCodecPreferences" in transceiver)) return;
@@ -202,6 +236,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     null,
   );
   const [topology, setTopology] = useState<"mesh" | "sfu" | null>(null);
+  const [mediaForwarding, setMediaForwarding] = useState(false);
   const [survival, setSurvival] = useState<string | null>(null);
 
   /** Ek mark ek dafa; value na mile to null jata hai — guess kabhi nahi. */
@@ -258,6 +293,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     marked.current.clear();
     audioOnly.current = false;
     setSurvival(null);
+    setMediaForwarding(false);
     sessionId.current = null;
     pc.current?.getSenders().forEach((s) => s.track?.stop());
     try {
@@ -380,7 +416,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         try {
           makingOffer.current = true;
           await peer.setLocalDescription();
-          await link.current?.send(peerId, "offer", { sdp: peer.localDescription?.sdp });
+          await link.current?.send(peerId, "offer", { sdp: tunedLocalDescription(peer)?.sdp });
         } catch {
           /* renegotiation failure = connection state hi sach bolegi */
         } finally {
@@ -428,7 +464,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       setStats((s) => ({ ...s, ice_restarts: restarts.current }));
       try {
         await peer.setLocalDescription(await peer.createOffer({ iceRestart: true }));
-        await link.current?.send(peerId, "restart", { sdp: peer.localDescription?.sdp });
+        await link.current?.send(peerId, "restart", { sdp: tunedLocalDescription(peer)?.sdp });
         setDetail("Reconnecting on the new network path");
       } catch {
         setPhase("failed");
@@ -475,7 +511,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         if (offerCollision) await peer.setLocalDescription({ type: "rollback" }).catch(() => {});
         await peer.setRemoteDescription({ type: "offer", sdp });
         await peer.setLocalDescription();
-        if (peerId) await link.current?.send(peerId, "answer", { sdp: peer.localDescription?.sdp });
+        if (peerId) await link.current?.send(peerId, "answer", { sdp: tunedLocalDescription(peer)?.sdp });
         return;
       }
 
@@ -560,7 +596,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       }
       await peer.setLocalDescription(await peer.createOffer());
       signalSentAt.current = performance.now();
-      await link.current?.send(peerId, "offer", { sdp: peer.localDescription?.sdp });
+      await link.current?.send(peerId, "offer", { sdp: tunedLocalDescription(peer)?.sdp });
       mark("signal_sent", Math.round(performance.now() - startedAt.current));
       setPhase("ringing");
       setDetail("Ringing — candidates are already streaming (Trickle ICE)");
@@ -609,7 +645,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       await registerSession("callee");
       await peer.setRemoteDescription({ type: "offer", sdp: String(offer.payload["sdp"] ?? "") });
       await peer.setLocalDescription();
-      await link.current?.send(offer.from_user, "answer", { sdp: peer.localDescription?.sdp });
+      await link.current?.send(offer.from_user, "answer", { sdp: tunedLocalDescription(peer)?.sdp });
       for (const c of pendingIce.current.splice(0)) await peer.addIceCandidate(c).catch(() => {});
       setIncoming(null);
     } catch (error) {
@@ -684,10 +720,12 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       const room = await sfuEnsure(conversationId, participants).catch(() => null);
       if (!room?.ok) {
         setTopology(null);
+        setMediaForwarding(false);
         return room ?? null;
       }
       sfuRoom.current = room.room_id ?? null;
       setTopology(room.topology ?? null);
+      setMediaForwarding(room.media_forwarding === true);
       if (room.room_id) {
         await sfuJoin(room.room_id, 3, codecs.av1 ? "av1" : codecs.vp9 ? "vp9" : "h264").catch(
           () => {},
@@ -927,6 +965,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     decline,
     ringing,
     topology,
+    mediaForwarding,
     survival,
     prepareGroup,
     sessionId: sessionId.current,

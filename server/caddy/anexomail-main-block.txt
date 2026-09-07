@@ -55,7 +55,7 @@ anexomail.com, www.anexomail.com {
 		reverse_proxy 127.0.0.1:3100
 	}
 
-	# Node SSR web app
+	# React 19 + TanStack Start SSR web app — Bun runtime (:3000)
 	handle {
 		reverse_proxy 127.0.0.1:3000
 	}
