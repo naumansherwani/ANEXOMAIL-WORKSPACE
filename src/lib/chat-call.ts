@@ -923,6 +923,13 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     answer,
     hangup,
     switchDevice,
+    // PHASE 31A — NEW ADDED: ring truth, decline, group topology, survival
+    decline,
+    ringing,
+    topology,
+    survival,
+    prepareGroup,
+    sessionId: sessionId.current,
     // PHASE 10B — NEW ADDED
     quality: choice,
     setQuality,
