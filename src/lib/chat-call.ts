@@ -459,6 +459,12 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
             setIncoming(frame);
             setPhase("ringing");
             setDetail("Incoming ANEXOVideoChat call");
+            // PHASE 31A — RINGTONE (callee). Calm Mode par sirf visual + haptic.
+            if (!ring.current) {
+              const handle = startRing("ringtone");
+              ring.current = handle;
+              setRinging({ tone: "ringtone", audible: handle.audible });
+            }
           }
           return;
         }
