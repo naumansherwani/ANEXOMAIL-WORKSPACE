@@ -369,6 +369,10 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "AI risk detection",
       "AI conversation prioritization",
       "Group calls up to 60 participants with full call business record",
+      // PHASE 31A — NEW ADDED (lightspeed calling)
+      "Company connect report — p50 · p95 · p99 setup times from real calls",
+      "Every connection step timed: pre-warm · signal · answer · media · first frame",
+      "Full ring ledger across the company — answered · declined · no answer",
       "Company-wide relationship graph + 5,000-line document diffs",
       "Priority model routing & higher context limits",
       "AI top-up recharge available",
