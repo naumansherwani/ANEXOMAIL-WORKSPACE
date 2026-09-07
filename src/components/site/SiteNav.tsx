@@ -2,20 +2,28 @@ import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
-import { BrandMark } from "./BrandMark";
+import { useLocale } from "@/lib/i18n";
+import type { LocaleKey } from "@/lib/locales";
 
-const links = [
-  { label: "Workspace", to: "/app" as const },
-  { label: "About", to: "/about" as const },
-  { label: "Security", to: "/security" as const },
-  { label: "Ownership", to: "/ownership" as const },
-  { label: "Pricing", to: "/plans" as const },
-  { label: "Migration", to: "/move-in" as const },
-  { label: "Get started", to: "/get-started" as const },
+import { BrandMark } from "./BrandMark";
+import { LanguagePicker } from "./LanguagePicker";
+
+const links: {
+  key: LocaleKey;
+  to: "/app" | "/about" | "/security" | "/ownership" | "/plans" | "/move-in" | "/anexochat";
+}[] = [
+  { key: "workspace", to: "/app" },
+  { key: "about", to: "/about" },
+  { key: "security", to: "/security" },
+  { key: "ownership", to: "/ownership" },
+  { key: "pricing", to: "/plans" },
+  { key: "migration", to: "/move-in" },
+  { key: "chat", to: "/anexochat" },
 ];
 
 export function SiteNav() {
   const [open, setOpen] = useState(false);
+  const { t } = useLocale();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
@@ -24,7 +32,7 @@ export function SiteNav() {
           <BrandMark />
         </Link>
 
-        <div className="mx-auto hidden items-center gap-8 md:flex">
+        <div className="mx-auto hidden items-center gap-7 md:flex">
           {links.map((l) => (
             <Link
               key={l.to}
@@ -32,7 +40,7 @@ export function SiteNav() {
               activeProps={{ className: "text-foreground" }}
               className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
             >
-              {l.label}
+              {t(l.key)}
             </Link>
           ))}
           <a
@@ -41,22 +49,23 @@ export function SiteNav() {
             rel="noopener"
             className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
-            ANEXOMAIL AI
+            {t("ai")}
           </a>
         </div>
 
         <div className="hidden shrink-0 items-center gap-2 md:flex">
+          <LanguagePicker />
           <Link
             to="/auth"
             className="ax-focus rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
-            Sign in
+            {t("signIn")}
           </Link>
           <Link
             to="/auth"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors duration-200 hover:bg-primary/85"
           >
-            Get started
+            {t("getStarted")}
           </Link>
         </div>
 
@@ -80,7 +89,7 @@ export function SiteNav() {
                 onClick={() => setOpen(false)}
                 className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
               >
-                {l.label}
+                {t(l.key)}
               </Link>
             ))}
             <a
@@ -90,21 +99,24 @@ export function SiteNav() {
               onClick={() => setOpen(false)}
               className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
             >
-              ANEXOMAIL AI
+              {t("ai")}
             </a>
+            <div className="px-2 py-2">
+              <LanguagePicker />
+            </div>
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
               className="rounded-lg px-2 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
             >
-              Sign in
+              {t("signIn")}
             </Link>
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
-              Get started
+              {t("getStarted")}
             </Link>
           </div>
         </div>

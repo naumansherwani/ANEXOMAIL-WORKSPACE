@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AiRouteImport } from './routes/ai'
+import { Route as AnexochatRouteImport } from './routes/anexochat'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClaimRouteImport } from './routes/claim'
@@ -163,6 +164,11 @@ const AboutRoute = AboutRouteImport.update({
 const AiRoute = AiRouteImport.update({
   id: '/ai',
   path: '/ai',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnexochatRoute = AnexochatRouteImport.update({
+  id: '/anexochat',
+  path: '/anexochat',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -859,6 +865,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRoute
+  '/anexochat': typeof AnexochatRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
@@ -1001,6 +1008,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRoute
+  '/anexochat': typeof AnexochatRoute
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
   '/docs': typeof DocsRoute
@@ -1133,6 +1141,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRoute
+  '/anexochat': typeof AnexochatRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/claim': typeof ClaimRoute
@@ -1277,6 +1286,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/anexochat'
     | '/app'
     | '/auth'
     | '/claim'
@@ -1419,6 +1429,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/anexochat'
     | '/auth'
     | '/claim'
     | '/docs'
@@ -1550,6 +1561,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/anexochat'
     | '/app'
     | '/auth'
     | '/claim'
@@ -1693,6 +1705,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AiRoute: typeof AiRoute
+  AnexochatRoute: typeof AnexochatRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   ClaimRoute: typeof ClaimRoute
@@ -1739,6 +1752,13 @@ declare module '@tanstack/react-router' {
       path: '/ai'
       fullPath: '/ai'
       preLoaderRoute: typeof AiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anexochat': {
+      id: '/anexochat'
+      path: '/anexochat'
+      fullPath: '/anexochat'
+      preLoaderRoute: typeof AnexochatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -3049,6 +3069,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiRoute: AiRoute,
+  AnexochatRoute: AnexochatRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   ClaimRoute: ClaimRoute,

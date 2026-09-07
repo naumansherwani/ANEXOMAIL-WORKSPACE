@@ -42,8 +42,8 @@ export function SiteFooter() {
         <div className="max-w-sm">
           <BrandMark />
           <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-            Private business email on your own domain — mail, contacts, calendar and shared
-            work on one fast surface. Your domain, your data, your keys.
+            Private business email on your own domain — mail, contacts, calendar and shared work on
+            one fast surface. Your domain, your data, your keys.
           </p>
           <div className="mt-5 space-y-2">
             <a
@@ -52,7 +52,8 @@ export function SiteFooter() {
             >
               <Mail className="size-4 shrink-0" aria-hidden="true" />
               <span>
-                <span className="text-foreground">hello@anexomail.com</span> — support &amp; enquiries
+                <span className="text-foreground">hello@anexomail.com</span> — support &amp;
+                enquiries
               </span>
             </a>
             <a
@@ -84,6 +85,54 @@ export function SiteFooter() {
             </ul>
           </div>
         ))}
+      </div>
+
+      <div className="border-t border-border">
+        <div className="ax-container grid gap-8 py-10 md:grid-cols-2">
+          <div>
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              Account integrity &amp; privacy
+            </h3>
+            <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+              One person, one account. When you sign in we seal a device record built from five
+              coarse signals only — platform, browser, timezone bucket, screen bucket and language.
+              It is hashed, stored encrypted and carries a deletion date. We do not use biometric
+              fingerprinting, and we do not probe canvas, audio, fonts or graphics hardware.
+            </p>
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+              This exists for one reason: to stop one device farming many accounts for spam, abuse
+              or fraud. You can see and revoke your own devices at any time, and revoking one ends
+              its live sessions immediately.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
+              Fair use &amp; your data on exit
+            </h3>
+            <ul className="mt-4 space-y-2 text-xs leading-relaxed text-muted-foreground">
+              <li>
+                A device used to reach 3 or more accounts, or to create 3 or more accounts within 24
+                hours, is marked suspicious and reviewed.
+              </li>
+              <li>
+                A confirmed violation receives one written final warning before any account is
+                blocked.
+              </li>
+              <li>
+                A repeat violation blocks the account, and a severe pattern adds the device to the
+                ban list so it cannot create new accounts.
+              </li>
+              <li>
+                A blocked account keeps full export access for 72 hours. After that window the data
+                is permanently deleted, as committed.
+              </li>
+              <li>
+                Your conversations are never sent to any AI or third-party moderation service. File
+                safety runs on our own infrastructure.
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
 
       <div className="border-t border-border">
