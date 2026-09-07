@@ -84,3 +84,24 @@ Phase 22 ka parsing DB ke andar deterministic hai — insaani guftagu kisi AI AP
 par nahi jati. Work object bina evidence `done` nahi ho sakta, aur source
 message hide hone par bhi provenance (conversation · sender · sent_at ·
 body_hash) zinda rehti hai.
+
+
+## Site-wide — languages · ANEXOChat landing · account integrity (7 Sep 2026)
+
+Yeh plan-gated feature nahi, poori site par hai:
+
+- **30 asli zubaanein** (`src/lib/locales.ts`) — native script, RTL support
+  (Urdu · Arabic · Farsi · Hebrew), real nav/CTA translations. Picker nav mein,
+  choice `ax.locale`, `<html lang/dir>` set hota hai. Dummy locale mamnu.
+- **`/anexochat`** public landing — ANEXOChat + ANEXOVideoCall ke asli features
+  (Rust/QUIC, 5GB resumable, evidence chain, self-hosted safety, device trust,
+  message→work chain). Nav mein duplicate "Get started" ki jagah yehi link.
+- **One person, one account** ladder (footer + landing + plan cards):
+  3+ accounts per device ya 24h mein 3 signup = suspicious → ek final warning →
+  block + device ban list → blocked account ko 72h export → phir permanent delete.
+
+Plan cards mein add hone wali lines (Business · Business Pro · AI Pro ·
+AI Business · AI Executive): delete for me / delete for everyone (48h ke baad
+bhi), edit sent message, reply-quote/forward/star/pin, voice notes + media,
+Relay video (Business Pro + AI Executive par 8K-capable + simulcast + telemetry),
+sealed device identity, 72h export window.
