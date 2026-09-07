@@ -3,7 +3,9 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 
 import { DetailPanel, ListPanel } from "@/components/app/Panel";
+import { CallRecordPanel } from "@/components/app/work/CallRecordPanel";
 import { ConversationTruth } from "@/components/app/work/ConversationTruth";
+import { FileContextCard } from "@/components/app/work/FileContextCard";
 import { DecisionLedger } from "@/components/app/work/DecisionLedger";
 import { EmailBridge } from "@/components/app/work/EmailBridge";
 import { FollowThroughTable } from "@/components/app/work/FollowThrough";
