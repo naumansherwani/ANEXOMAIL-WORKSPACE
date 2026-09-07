@@ -251,11 +251,7 @@ begin
   if not public.chat_feature_ok(_from, 'call_ring') then
     return jsonb_build_object('ok', false, 'reason', 'plan_not_entitled');
   end if;
-  select coalesce(limit_value, 45) into win
-    from public.chat_phase_entitlements e
-    join public.chat_plan_of(_from) p on true
-   where e.feature = 'call_ring' and e.plan = p limit 1;
-  win := coalesce(win, 45);
+  win := coalesce((public.chat_feature_allowed(_from, 'call_ring')->>'limit')::int, 45);
 
   insert into public.chat_call_rings (session_id, from_user, to_user, tone, calm_mode,
                                       trigger_path, window_s, rang_at_ms)
