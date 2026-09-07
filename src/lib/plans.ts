@@ -291,6 +291,12 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "Deterministic document version diff (no AI)",
       "Call business record with join truth and real duration (group up to 8)",
       "Call → Task · Promise · Decision with call provenance",
+      // PHASE 31A — NEW ADDED (lightspeed calling)
+      "QUIC call setup on our own engine — invite and answer in one trip",
+      "Pre-warmed network path before the call button",
+      "Our own ringtone and ringback, with silent Calm Mode ring",
+      "45-second ring window recorded as “no answer”, never “missed”",
+      "Audio-first survival — the voice and the call stay up",
     ],
   },
   {
