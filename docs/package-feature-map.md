@@ -105,3 +105,27 @@ AI Business · AI Executive): delete for me / delete for everyone (48h ke baad
 bhi), edit sent message, reply-quote/forward/star/pin, voice notes + media,
 Relay video (Business Pro + AI Executive par 8K-capable + simulcast + telemetry),
 sealed device identity, 72h export window.
+
+
+## Phase 23 — Promise recovery engine
+
+DB truth: `chat_work_items` (promise columns) · `promise_recovery_log`
+(append-only) · `promise_board()` · `promise_recover()` · `promise_keep()` ·
+`promise_history()` · `device_ban_appeals` (`sql/phase23_promise_engine.sql`).
+
+| Feature | Basic | Pro | Business | Business Pro | AI Pro | AI Business | AI Executive |
+|---|---|---|---|---|---|---|---|
+| Promise board (open · due soon · overdue · slipped · kept) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Real reminder into the conversation (`chat_send`) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Deadline change with 8+ char reason (original sealed) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Append-only recovery ledger + full history | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| "Kept" only with evidence | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Owner handover (reassign) with logged reason | — | — | — | ✓ | — | ✓ | ✓ |
+| Downstream impact on a slipping promise | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Device block appeal (file one) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Appeal review + unblock decision (logged reason) | — | — | — | ✓ | — | — | ✓ |
+
+LOCK: engine khud kabhi deadline nahi badalti aur khud reminder nahi bhejti —
+har action insaan ka, reason ke saath. `original_due_at` kabhi overwrite nahi
+hota. Ban SIRF device hash par — IP/network/WiFi kabhi ban nahi (cafe aur
+office ke masoom log safe), aur har ban appealable hai.

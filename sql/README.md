@@ -266,3 +266,5 @@ Ingress: `docs/caddy-payments-host.md` (`polarpayments.anexomail.com` → Server
 - `phase13_15_file_engine.sql` — ANEXOChat Phase 13/14/15 file engine: file+version+chunk+transfer tables, pool/transfer separation, integrity ack, resume identity, commit + retention.
 - `phase16_18_file_truth_safety.sql` — file evidence chain, type policy, local scan jobs, safety events, enforcement, download proof.
 - `phase19_22_device_safety_work.sql` — device safety vault (signal minimization + retention purge), device trust + revoke events, safety reports/queue/reveal log/enforcement, work execution chain (provenance, dependency, evidence), message star + forward, `chat_phase_entitlements`.
+
+- `phase23_promise_engine.sql` — promise recovery engine (promise columns on `chat_work_items`, append-only `promise_recovery_log`, `promise_board/recover/keep/history`), plus device ban appeals (`device_ban_appeals`, `device_appeal_open/queue/decide`) — device-only bans, never network.

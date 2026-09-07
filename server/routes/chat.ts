@@ -1042,3 +1042,105 @@ chatRouter.post("/messages/forward", async (req, res) => {
   if (error) return fail(res, error);
   res.json(data);
 });
+
+/* ── PHASE 23: PROMISE RECOVERY ENGINE (fallback; Rust primary) ───────────
+ * Engine khud kabhi deadline nahi badalti — har action insaan karta hai,
+ * reason ke saath, aur ledger append-only hai.
+ */
+
+chatRouter.get("/promises/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("promise_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/promises/recover", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  const action = String(req.body?.action || "");
+  if (!item || !action) return res.status(400).json({ error: "item_id_action_required" });
+  const { data, error } = await db!.rpc("promise_recover", {
+    _item: item,
+    _user: me.id,
+    _action: action,
+    _reason: req.body?.reason ? String(req.body.reason) : null,
+    _new_due: req.body?.new_due_at ? String(req.body.new_due_at) : null,
+    _new_owner: req.body?.new_owner_id ? String(req.body.new_owner_id) : null,
+    _impact: req.body?.downstream_impact ? String(req.body.downstream_impact) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/promises/keep", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("promise_keep", {
+    _item: item,
+    _user: me.id,
+    _evidence: req.body?.evidence ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/promises/history", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.query?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("promise_history", { _item: item, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// Device ban appeal — ban sirf device par, network par kabhi nahi
+chatRouter.post("/devices/appeal", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const hash = String(req.body?.device_hash || "");
+  const statement = String(req.body?.statement || "");
+  if (!hash || !statement.trim()) {
+    return res.status(400).json({ error: "device_hash_statement_required" });
+  }
+  const { data, error } = await db!.rpc("device_appeal_open", {
+    _user: me.id,
+    _device_hash: hash,
+    _statement: statement,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/devices/appeals", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const state = req.query?.state ? String(req.query.state) : null;
+  const { data, error } = await db!.rpc("device_appeal_queue", {
+    _actor: me.id,
+    _state: state && state !== "all" ? state : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/devices/appeals/decide", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const appeal = String(req.body?.appeal_id || "");
+  const decision = String(req.body?.decision || "");
+  if (!appeal || !decision) return res.status(400).json({ error: "appeal_id_decision_required" });
+  const { data, error } = await db!.rpc("device_appeal_decide", {
+    _actor: me.id,
+    _appeal: appeal,
+    _decision: decision,
+    _reason: req.body?.reason ? String(req.body.reason) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});

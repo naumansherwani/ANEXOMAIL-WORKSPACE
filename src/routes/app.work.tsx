@@ -5,6 +5,7 @@ import { useState } from "react";
 import { DetailPanel, ListPanel } from "@/components/app/Panel";
 import { FollowThroughTable } from "@/components/app/work/FollowThrough";
 import { PromiseInbox } from "@/components/app/work/PromiseInbox";
+import { PromiseRecovery } from "@/components/app/work/PromiseRecovery";
 import { TaskBoard } from "@/components/app/work/TaskBoard";
 import { WorkChainBoard } from "@/components/app/work/WorkChainBoard";
 
@@ -86,6 +87,9 @@ function WorkPage() {
               <Plus className="size-3.5" />
               Add
             </Button>
+          </div>
+          <div className="mt-ax-5">
+            <PromiseRecovery />
           </div>
           <div className="mt-ax-5">
             <WorkChainBoard />
