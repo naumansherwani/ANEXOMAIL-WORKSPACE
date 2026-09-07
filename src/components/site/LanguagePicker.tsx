@@ -39,9 +39,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
         className="ax-focus flex items-center gap-2 rounded-full border border-border/70 px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
       >
         <Globe className="size-4 shrink-0" aria-hidden="true" />
-        <span className="text-[11px] font-semibold tracking-wider uppercase">
-          {locale.region}
-        </span>
+        <span className="text-[11px] font-semibold tracking-wider uppercase">{locale.region}</span>
         <span className="max-w-[10rem] truncate">{locale.native}</span>
       </button>
 

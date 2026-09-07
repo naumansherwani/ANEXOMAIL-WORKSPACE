@@ -110,10 +110,9 @@ function AnexoChatLanding() {
             Business messaging that can prove what happened.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-            ANEXOChat lives inside your ANEXOMAIL workspace: same identity, same
-            company domain, same audit trail. Large files move on our own Rust
-            transfer engine, safety runs on our own servers, and every state you
-            see on screen exists as a record you can check later.
+            ANEXOChat lives inside your ANEXOMAIL workspace: same identity, same company domain,
+            same audit trail. Large files move on our own Rust transfer engine, safety runs on our
+            own servers, and every state you see on screen exists as a record you can check later.
           </p>
           <div className="mt-9 flex flex-wrap gap-3">
             <Link
@@ -130,8 +129,8 @@ function AnexoChatLanding() {
             </Link>
           </div>
           <p className="ax-caption mt-5 text-steel">
-            Included with Business, Business Pro and every AI plan. Basic and Pro
-            are mail-only — the app says so honestly instead of failing quietly.
+            Included with Business, Business Pro and every AI plan. Basic and Pro are mail-only —
+            the app says so honestly instead of failing quietly.
           </p>
         </section>
 
@@ -159,14 +158,16 @@ function AnexoChatLanding() {
                 Everything you expect from a messenger
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                The basics are not an afterthought. They behave the way people
-                already expect — with one difference: nothing is claimed unless
-                the server can prove it.
+                The basics are not an afterthought. They behave the way people already expect — with
+                one difference: nothing is claimed unless the server can prove it.
               </p>
               <ul className="mt-8 grid gap-3 sm:grid-cols-2">
                 {messaging.map((m) => (
                   <li key={m} className="flex gap-2.5 text-sm text-muted-foreground">
-                    <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
+                    <CheckCircle2
+                      className="mt-0.5 size-4 shrink-0 text-primary"
+                      aria-hidden="true"
+                    />
                     <span>{m}</span>
                   </li>
                 ))}
@@ -179,9 +180,8 @@ function AnexoChatLanding() {
                 ANEXOVideoCall
               </h2>
               <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Calls start from the conversation you are already in. Media runs
-                on our own Relay servers, so a call does not depend on a
-                third-party meeting product.
+                Calls start from the conversation you are already in. Media runs on our own Relay
+                servers, so a call does not depend on a third-party meeting product.
               </p>
               <ul className="mt-7 space-y-4">
                 {video.map((v) => (
@@ -203,39 +203,34 @@ function AnexoChatLanding() {
                 One person, one account — and a fair way out
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-                Every sign-in seals a device record so the same device cannot be
-                used to farm accounts. If a device signs into three or more
-                different accounts, or creates three or more accounts within 24
-                hours, it is marked suspicious and the accounts reached from it
-                are queued for review.
+                Every sign-in seals a device record so the same device cannot be used to farm
+                accounts. If a device signs into three or more different accounts, or creates three
+                or more accounts within 24 hours, it is marked suspicious and the accounts reached
+                from it are queued for review.
               </p>
               <ol className="mt-6 space-y-3 text-sm text-muted-foreground">
                 <li>
-                  <span className="text-foreground">1. Review.</span> The device
-                  appears as suspicious on your Device Trust page, visible to you
-                  too — not just to us.
+                  <span className="text-foreground">1. Review.</span> The device appears as
+                  suspicious on your Device Trust page, visible to you too — not just to us.
                 </li>
                 <li>
-                  <span className="text-foreground">2. Final warning.</span> A
-                  confirmed violation gets one written warning before any block.
+                  <span className="text-foreground">2. Final warning.</span> A confirmed violation
+                  gets one written warning before any block.
                 </li>
                 <li>
-                  <span className="text-foreground">3. Block.</span> A repeat
-                  violation blocks the account and can add the device to the ban
-                  list, so it cannot create new accounts.
+                  <span className="text-foreground">3. Block.</span> A repeat violation blocks the
+                  account and can add the device to the ban list, so it cannot create new accounts.
                 </li>
                 <li>
-                  <span className="text-foreground">4. 72 hours to export.</span>{" "}
-                  A blocked account keeps full export access for 72 hours. After
-                  that the data is deleted, as committed.
+                  <span className="text-foreground">4. 72 hours to export.</span> A blocked account
+                  keeps full export access for 72 hours. After that the data is deleted, as
+                  committed.
                 </li>
               </ol>
             </div>
             <div className="ax-plane rounded-3xl p-7">
               <Sparkles className="size-5 text-primary" aria-hidden="true" />
-              <h3 className="mt-4 text-base font-semibold text-foreground">
-                What we never do
-              </h3>
+              <h3 className="mt-4 text-base font-semibold text-foreground">What we never do</h3>
               <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
                 <li>No biometric fingerprinting. No canvas, audio, font or GPU probing.</li>
                 <li>Your conversations are never sent to any AI or moderation service.</li>

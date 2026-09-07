@@ -8,7 +8,10 @@ import type { LocaleKey } from "@/lib/locales";
 import { BrandMark } from "./BrandMark";
 import { LanguagePicker } from "./LanguagePicker";
 
-const links: { key: LocaleKey; to: "/app" | "/about" | "/security" | "/ownership" | "/plans" | "/move-in" | "/anexochat" }[] = [
+const links: {
+  key: LocaleKey;
+  to: "/app" | "/about" | "/security" | "/ownership" | "/plans" | "/move-in" | "/anexochat";
+}[] = [
   { key: "workspace", to: "/app" },
   { key: "about", to: "/about" },
   { key: "security", to: "/security" },

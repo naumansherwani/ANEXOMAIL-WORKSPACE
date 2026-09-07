@@ -8,13 +8,7 @@
 
 import { useEffect, useState } from "react";
 
-import {
-  DEFAULT_LOCALE,
-  type Locale,
-  type LocaleKey,
-  STORAGE_KEY,
-  findLocale,
-} from "./locales";
+import { DEFAULT_LOCALE, type Locale, type LocaleKey, STORAGE_KEY, findLocale } from "./locales";
 
 const EVENT = "ax:locale";
 
