@@ -2059,6 +2059,166 @@ async fn dispatch(
             }
         }
 
+        // ── ANEXOVIDEOCALL PHASE 31A · LIGHT-SPEED PATH (RUST PRIMARY) ──────
+        // QUIC signaling · pre-warm marks · own SFU rooms · audio-first
+        // survival · self-made ring truth. Koi number marketing ka nahi.
+
+        "call.ring.start" => {
+            let session = s(&input, "session_id");
+            let to = s(&input, "to_user");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || to.is_empty() || at_ms <= 0 {
+                Err("session_to_user_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_ring_start",
+                    json!({
+                        "_session": session, "_from": me.id, "_to": to,
+                        "_tone": s(&input, "tone"),
+                        "_calm": input.get("calm_mode").and_then(|v| v.as_bool()).unwrap_or(false),
+                        "_trigger": s(&input, "trigger_path"), "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.ring.settle" => {
+            let ring = s(&input, "ring_id");
+            let action = s(&input, "action");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if ring.is_empty() || action.is_empty() || at_ms <= 0 {
+                Err("ring_action_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_ring_settle",
+                    json!({ "_ring": ring, "_user": me.id, "_action": action, "_at_ms": at_ms }),
+                )
+                .await
+            }
+        }
+
+        "call.ring.state" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_id_required".to_string())
+            } else {
+                sb_rpc("call_ring_state", json!({ "_session": session, "_user": me.id })).await
+            }
+        }
+
+        "call.connect.mark" => {
+            let session = s(&input, "session_id");
+            let mark = s(&input, "mark");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || mark.is_empty() || at_ms <= 0 {
+                Err("session_mark_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_connect_mark",
+                    json!({
+                        "_session": session, "_user": me.id, "_mark": mark,
+                        "_value_ms": input.get("value_ms").and_then(|v| v.as_i64()),
+                        "_transport": s(&input, "transport"), "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.connect.report" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_id_required".to_string())
+            } else {
+                sb_rpc("call_connect_report", json!({ "_session": session, "_user": me.id })).await
+            }
+        }
+
+        "call.connect.health" => {
+            sb_rpc(
+                "call_connect_health",
+                json!({
+                    "_user": me.id,
+                    "_days": input.get("days").and_then(|v| v.as_i64()).unwrap_or(7)
+                }),
+            )
+            .await
+        }
+
+        "call.sfu.ensure" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                // engine_host SIRF tab jata hai jab apna SFU asal mein configured ho
+                sb_rpc(
+                    "call_sfu_room_ensure",
+                    json!({
+                        "_conversation": conv, "_user": me.id,
+                        "_participants": input.get("participants").and_then(|v| v.as_i64()).unwrap_or(2),
+                        "_engine_host": env_var("ANEXOCALL_SFU_HOST")
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.sfu.join" => {
+            let room = s(&input, "room_id");
+            if room.is_empty() {
+                Err("room_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_sfu_join",
+                    json!({
+                        "_room": room, "_user": me.id,
+                        "_layers": input.get("layers").and_then(|v| v.as_i64()).unwrap_or(3),
+                        "_codec": s(&input, "codec")
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.sfu.leave" => {
+            let room = s(&input, "room_id");
+            if room.is_empty() {
+                Err("room_id_required".to_string())
+            } else {
+                sb_rpc("call_sfu_leave", json!({ "_room": room, "_user": me.id })).await
+            }
+        }
+
+        "call.sfu.state" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc("call_sfu_state", json!({ "_conversation": conv, "_user": me.id })).await
+            }
+        }
+
+        "call.survival" => {
+            let session = s(&input, "session_id");
+            let state = s(&input, "state");
+            let reason = s(&input, "reason");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || state.is_empty() || reason.len() < 3 || at_ms <= 0 {
+                Err("session_state_reason_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_survival_record",
+                    json!({
+                        "_session": session, "_user": me.id, "_state": state, "_reason": reason,
+                        "_rtt": input.get("rtt_ms").and_then(|v| v.as_i64()),
+                        "_loss": input.get("loss_pct").and_then(|v| v.as_f64()),
+                        "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
 
 
         // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
@@ -2252,6 +2412,55 @@ fn turn_credentials(user_id: &str) -> Value {
 //   {"type":"error","code":"..."}          — koi fake state nahi
 //
 // Yeh path durability ka faisla nahi karta: send hamesha DB write se guzarta hai.
+// ── PHASE 31A: QUIC SIGNALING HUB (per-conversation fan-out, in-memory) ─────
+// Sirf raftaar ke liye. Har frame ka durable ghar `chat_signals` rows hai, is
+// liye process restart par koi sach nahi khota — sirf QUIC path naya banta hai.
+type SignalTx = tokio::sync::mpsc::UnboundedSender<String>;
+static SIGNAL_HUB: std::sync::OnceLock<
+    std::sync::Mutex<std::collections::HashMap<String, Vec<(String, SignalTx)>>>,
+> = std::sync::OnceLock::new();
+
+fn signal_hub() -> &'static std::sync::Mutex<std::collections::HashMap<String, Vec<(String, SignalTx)>>>
+{
+    SIGNAL_HUB.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()))
+}
+
+fn signal_hub_join(conv: &str, user: &str, tx: SignalTx) {
+    if let Ok(mut map) = signal_hub().lock() {
+        let peers = map.entry(conv.to_string()).or_default();
+        peers.retain(|(u, t)| u != user && !t.is_closed());
+        peers.push((user.to_string(), tx));
+    }
+}
+
+fn signal_hub_leave(conv: &str, user: &str) {
+    if let Ok(mut map) = signal_hub().lock() {
+        if let Some(peers) = map.get_mut(conv) {
+            peers.retain(|(u, t)| u != user && !t.is_closed());
+            if peers.is_empty() {
+                map.remove(conv);
+            }
+        }
+    }
+}
+
+/// `to` khali ho to conversation ke sab peers ko (apne aap ko kabhi nahi).
+fn signal_hub_send(conv: &str, from: &str, to: &str, line: String) {
+    if let Ok(map) = signal_hub().lock() {
+        if let Some(peers) = map.get(conv) {
+            for (user, tx) in peers.iter() {
+                if user == from {
+                    continue;
+                }
+                if !to.is_empty() && user != to {
+                    continue;
+                }
+                let _ = tx.send(line.clone());
+            }
+        }
+    }
+}
+
 async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     let Ok(request) = incoming.await else { return };
     let Ok(connection) = request.accept().await else {
@@ -2294,6 +2503,59 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
             return;
         }
     };
+
+    // ── PHASE 31A: QUIC SIGNALING MODE (light-speed connect) ───────────────
+    // hello: {"token":..,"conversation_id":..,"mode":"signal"}
+    // SDP/ICE frames isi QUIC stream par 1 RTT mein peer tak jate hain.
+    // Durability DB rows se aati hai (frontend dono likhta hai); ye path sirf
+    // raftaar deta hai — sach ka faisla kabhi nahi karta.
+    if s(&hello, "mode") == "signal" {
+        let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<String>();
+        signal_hub_join(&conv, &me.id, tx);
+        let _ = send
+            .write_all(b"{\"type\":\"ready\",\"transport\":\"webtransport\",\"mode\":\"signal\"}\n")
+            .await;
+
+        let mut sbuf = vec![0u8; 64 * 1024];
+        let mut pending = String::new();
+        loop {
+            tokio::select! {
+                out = rx.recv() => {
+                    match out {
+                        Some(line) => {
+                            if send.write_all(line.as_bytes()).await.is_err() { break; }
+                            if send.write_all(b"\n").await.is_err() { break; }
+                        }
+                        None => break,
+                    }
+                }
+                got = recv.read(&mut sbuf) => {
+                    match got {
+                        Ok(Some(len)) if len > 0 => {
+                            pending.push_str(&String::from_utf8_lossy(&sbuf[..len]));
+                            while let Some(idx) = pending.find('\n') {
+                                let raw: String = pending.drain(..=idx).collect();
+                                let line = raw.trim().to_string();
+                                if line.is_empty() { continue; }
+                                if let Ok(mut frame) = serde_json::from_str::<Value>(&line) {
+                                    // from_user server likhta hai — client jhoot nahi bol sakta
+                                    frame["from_user"] = Value::String(me.id.clone());
+                                    let to = s(&frame, "to_user");
+                                    signal_hub_send(&conv, &me.id, &to, frame.to_string());
+                                }
+                            }
+                        }
+                        Ok(Some(_)) => {}
+                        _ => break,
+                    }
+                }
+            }
+        }
+        signal_hub_leave(&conv, &me.id);
+        return;
+    }
+
+
 
     let mut last_seq = hello.get("after_seq").and_then(|v| v.as_i64()).unwrap_or(0);
     let _ = send

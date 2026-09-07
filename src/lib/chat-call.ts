@@ -35,6 +35,19 @@ import {
   type QualityChoice,
   type QualityRung,
 } from "./chat-video-quality";
+// PHASE 31A — light-speed path: QUIC signaling truth, pre-warm, self-made ring,
+// apna SFU, audio-first survival. Har reading asli, koi marketing number nahi.
+import {
+  connectMark,
+  ringSettle,
+  ringStart,
+  sfuEnsure,
+  sfuJoin,
+  sfuLeave,
+  survivalRecord,
+} from "./chat-lightspeed";
+import { dropPrewarm, prewarmIce, prewarmReport } from "./chat-prewarm";
+import { calmMode, startRing, type RingHandle } from "./chat-ringtone";
 
 export type CallPhase =
   | "idle"
@@ -177,6 +190,56 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
   const captureCeiling = useRef(LADDER[rungIndex("720p")]!);
   const choiceRef = useRef<QualityChoice>("auto");
 
+  // ── PHASE 31A refs/state ───────────────────────────────────────────────────
+  const ring = useRef<RingHandle | null>(null);
+  const ringId = useRef<string | null>(null);
+  const noAnswer = useRef<number | null>(null);
+  const signalSentAt = useRef<number>(0);
+  const marked = useRef<Set<string>>(new Set());
+  const audioOnly = useRef<boolean>(false);
+  const sfuRoom = useRef<string | null>(null);
+  const [ringing, setRinging] = useState<{ tone: "ringtone" | "ringback"; audible: boolean } | null>(
+    null,
+  );
+  const [topology, setTopology] = useState<"mesh" | "sfu" | null>(null);
+  const [survival, setSurvival] = useState<string | null>(null);
+
+  /** Ek mark ek dafa; value na mile to null jata hai — guess kabhi nahi. */
+  const mark = useCallback(
+    (name: Parameters<typeof connectMark>[0]["mark"], value?: number | null) => {
+      const sid = sessionId.current;
+      if (!sid || marked.current.has(name)) return;
+      marked.current.add(name);
+      void connectMark({
+        session_id: sid,
+        mark: name,
+        value_ms: value ?? null,
+        transport: link.current?.transport() ?? "rows",
+      }).catch(() => {});
+    },
+    [],
+  );
+
+  const stopRing = useCallback(
+    (action: "answered" | "declined" | "no_answer" | null) => {
+      ring.current?.stop();
+      ring.current = null;
+      setRinging(null);
+      if (noAnswer.current) {
+        window.clearTimeout(noAnswer.current);
+        noAnswer.current = null;
+      }
+      const id = ringId.current;
+      if (id && action) {
+        ringId.current = null;
+        void ringSettle({ ring_id: id, action }).catch(() => {});
+      }
+    },
+    [],
+  );
+
+
+
   const teardown = useCallback((reason: string) => {
     if (sessionId.current) {
       void chatCall("chat.call.end", { session_id: sessionId.current, reason }, {
@@ -185,6 +248,16 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         body: { session_id: sessionId.current, reason },
       }).catch(() => {});
     }
+    // PHASE 31A — ring band, SFU seat chhoro, warm socket band
+    stopRing(null);
+    if (sfuRoom.current) {
+      void sfuLeave(sfuRoom.current).catch(() => {});
+      sfuRoom.current = null;
+    }
+    dropPrewarm();
+    marked.current.clear();
+    audioOnly.current = false;
+    setSurvival(null);
     sessionId.current = null;
     pc.current?.getSenders().forEach((s) => s.track?.stop());
     try {
@@ -199,7 +272,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     setRemote(null);
     setStats(EMPTY_STATS);
     pendingIce.current = [];
-  }, []);
+  }, [stopRing]);
 
   const media = useCallback(async () => {
     if (localRef.current) return localRef.current;
@@ -275,12 +348,32 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       peer.onicecandidate = (e) => {
         if (!conversationId || !peerId) return;
         if (e.candidate) {
+          mark("ice_gather_first", Math.round(performance.now() - startedAt.current));
           void link.current?.send(peerId, "ice", e.candidate.toJSON());
         } else {
           void link.current?.send(peerId, "ice-end", {});
         }
       };
-      peer.ontrack = (e) => setRemote(e.streams[0] ?? null);
+      peer.ontrack = (e) => {
+        setRemote(e.streams[0] ?? null);
+        // PHASE 31A — playout tuning: 60-80ms target. Live baat ke liye buffer
+        // chhota, magar audio pehle. Browser support na ho to chup chaap skip.
+        const r = e.receiver as RTCRtpReceiver & { jitterBufferTarget?: number };
+        try {
+          r.jitterBufferTarget = e.track.kind === "audio" ? 80 : 60;
+        } catch {
+          /* browser ne mana kiya — default playout, jhoot nahi */
+        }
+        // Pehli remote frame ka asli waqt (video track ke unmute par)
+        if (e.track.kind === "video") {
+          const stamp = () => {
+            mark("first_remote_frame", Math.round(performance.now() - startedAt.current));
+            stopRing("answered");
+          };
+          if (e.track.muted) e.track.addEventListener("unmute", stamp, { once: true });
+          else stamp();
+        }
+      };
 
       peer.onnegotiationneeded = async () => {
         if (!peerId) return;
@@ -303,6 +396,9 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         if (cs === "connected") {
           setPhase("live");
           setDetail("Connected — encrypted end-to-end (DTLS-SRTP)");
+          mark("ice_connected", Math.round(performance.now() - startedAt.current));
+          stopRing("answered");
+          dropPrewarm(); // warm socket ka kaam khatam
         } else if (cs === "disconnected") {
           setPhase("reconnecting");
           setDetail("Network changed — recovering the same call (ICE restart)");
@@ -321,7 +417,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       pc.current = peer;
       return peer;
     },
-    [conversationId, media, peerId],
+    [conversationId, mark, media, peerId, stopRing],
   );
 
   /** ICE restart — WiFi -> 4G par call nahi tootti, black screen nahi aati. */
@@ -363,6 +459,12 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
             setIncoming(frame);
             setPhase("ringing");
             setDetail("Incoming ANEXOVideoChat call");
+            // PHASE 31A — RINGTONE (callee). Calm Mode par sirf visual + haptic.
+            if (!ring.current) {
+              const handle = startRing("ringtone");
+              ring.current = handle;
+              setRinging({ tone: "ringtone", audible: handle.audible });
+            }
           }
           return;
         }
@@ -379,6 +481,11 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
 
       if (frame.kind === "answer" && peer) {
         if (peer.signalingState !== "have-local-offer") return;
+        // PHASE 31A — signal ka asli round-trip (offer bheja -> answer aaya)
+        if (signalSentAt.current) {
+          mark("signal_rtt", Math.round(performance.now() - signalSentAt.current));
+        }
+        mark("answer_received", Math.round(performance.now() - startedAt.current));
         await peer.setRemoteDescription({ type: "answer", sdp });
         for (const c of pendingIce.current.splice(0)) await peer.addIceCandidate(c).catch(() => {});
         return;
@@ -401,7 +508,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         setIncoming(null);
       }
     },
-    [peerId, teardown],
+    [mark, peerId, teardown],
   );
 
   const registerSession = useCallback(
@@ -445,16 +552,50 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     try {
       const peer = await build(true);
       await registerSession("caller");
+      // PHASE 31A — pre-warm ki asli reading session ke saath likh do
+      const warm = prewarmReport();
+      if (warm) {
+        mark("prewarm_started", 0);
+        mark("prewarm_ready", warm.first_candidate_ms);
+      }
       await peer.setLocalDescription(await peer.createOffer());
+      signalSentAt.current = performance.now();
       await link.current?.send(peerId, "offer", { sdp: peer.localDescription?.sdp });
+      mark("signal_sent", Math.round(performance.now() - startedAt.current));
       setPhase("ringing");
       setDetail("Ringing — candidates are already streaming (Trickle ICE)");
+
+      // RINGBACK (caller) — halka pulse. Calm Mode par sound nahi.
+      if (!ring.current) {
+        const handle = startRing("ringback");
+        ring.current = handle;
+        setRinging({ tone: "ringback", audible: handle.audible });
+      }
+      if (sessionId.current) {
+        const state = await ringStart({
+          session_id: sessionId.current,
+          to_user: peerId,
+          tone: "ringback",
+          calm_mode: calmMode(),
+          trigger_path: link.current?.transport() ?? "rows",
+        }).catch(() => null);
+        ringId.current = state?.ring_id ?? null;
+        // 45s / 60s plan window ke baad "no answer" — jhoota "missed" kabhi nahi
+        const win = (state?.window_seconds ?? 45) * 1000;
+        noAnswer.current = window.setTimeout(() => {
+          if (pc.current?.connectionState === "connected") return;
+          stopRing("no_answer");
+          setDetail("No answer — the call was never picked up");
+          teardown("no_answer");
+          setPhase("ended");
+        }, win);
+      }
     } catch (error) {
       teardown("start_failed");
       setPhase("failed");
       setDetail((error as Error).message);
     }
-  }, [build, conversationId, openLink, peerId, registerSession, teardown]);
+  }, [build, conversationId, mark, openLink, peerId, registerSession, stopRing, teardown]);
 
   const answer = useCallback(async () => {
     const offer = incoming;
@@ -463,6 +604,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     setPhase("connecting");
     setDetail("Connecting");
     try {
+      stopRing("answered"); // uthate hi ring band — record mein "answered"
       const peer = await build(false);
       await registerSession("callee");
       await peer.setRemoteDescription({ type: "offer", sdp: String(offer.payload["sdp"] ?? "") });
@@ -475,7 +617,17 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       setPhase("failed");
       setDetail((error as Error).message);
     }
-  }, [build, conversationId, incoming, openLink, registerSession, teardown]);
+  }, [build, conversationId, incoming, openLink, registerSession, stopRing, teardown]);
+
+  /** Incoming call decline — record mein "declined", "missed" kabhi nahi. */
+  const decline = useCallback(() => {
+    if (incoming) void link.current?.send(incoming.from_user, "end", {});
+    stopRing("declined");
+    teardown("declined");
+    setIncoming(null);
+    setPhase("ended");
+    setDetail("You declined the call");
+  }, [incoming, stopRing, teardown]);
 
   const hangup = useCallback(() => {
     if (peerId) void link.current?.send(peerId, "end", {});
@@ -507,15 +659,56 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     }
   }, []);
 
+  /**
+   * PHASE 31A — pre-warm: call button dabne se PEHLE hi network ka raasta
+   * maloom. Media isse nahi guzarti; 60s baad khud band. Ye koi "instant call"
+   * dawa nahi — sirf waqt bachata hai.
+   */
+  const prewarm = useCallback(async () => {
+    if (prewarmReport()) return;
+    try {
+      const ice = await iceBundle();
+      prewarmIce(ice.iceServers);
+    } catch {
+      /* prewarm optional — call phir bhi normal chalti hai */
+    }
+  }, []);
+
+  /**
+   * PHASE 31A — group topology. 3+ log = apna SFU (media forwarding). 1:1 mesh.
+   * TURN ko SFU kehna mamnu — room row khud bataata hai forwarding hai ya nahi.
+   */
+  const prepareGroup = useCallback(
+    async (participants: number) => {
+      if (!conversationId) return null;
+      const room = await sfuEnsure(conversationId, participants).catch(() => null);
+      if (!room?.ok) {
+        setTopology(null);
+        return room ?? null;
+      }
+      sfuRoom.current = room.room_id ?? null;
+      setTopology(room.topology ?? null);
+      if (room.room_id) {
+        await sfuJoin(room.room_id, 3, codecs.av1 ? "av1" : codecs.vp9 ? "vp9" : "h264").catch(
+          () => {},
+        );
+      }
+      return room;
+    },
+    [codecs.av1, codecs.vp9, conversationId],
+  );
+
   // Signaling link chat khulte hi live (incoming call miss nahi hoti)
   useEffect(() => {
     if (!conversationId || !selfId) return;
     openLink();
+    void prewarm();
     return () => {
       link.current?.close();
       link.current = null;
+      dropPrewarm();
     };
-  }, [conversationId, openLink, selfId]);
+  }, [conversationId, openLink, prewarm, selfId]);
 
   // ── Telemetry: sirf asli readings, append-only DB samples ────────────────
   useEffect(() => {
@@ -651,6 +844,44 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       );
 
       setStats(next);
+
+      // ── PHASE 31A — AUDIO-FIRST SURVIVAL ────────────────────────────────
+      // Network gir jaye to video chhoro, awaaz zinda rakho — call wahi rehti
+      // hai aur record mein wajah likhi jati hai. Reason ke bina kuch nahi.
+      const vSender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+      const badNet = (next.loss_pct ?? 0) > 12 || (next.rtt_ms ?? 0) > 480;
+      const goodNet = (next.loss_pct ?? 0) < 3 && (next.rtt_ms ?? 0) < 220;
+      if (badNet && !audioOnly.current && vSender?.track) {
+        audioOnly.current = true;
+        vSender.track.enabled = false;
+        setSurvival("Audio-only — network dropped the video, the call stayed up");
+        setDetail("Audio-only — video paused to keep the voice clear");
+        if (sessionId.current) {
+          void survivalRecord({
+            session_id: sessionId.current,
+            state: "audio_only",
+            reason:
+              (next.loss_pct ?? 0) > 12
+                ? `packet loss ${next.loss_pct}% — video paused, audio kept`
+                : `round trip ${next.rtt_ms} ms — video paused, audio kept`,
+            rtt_ms: next.rtt_ms,
+            loss_pct: next.loss_pct,
+          }).catch(() => {});
+        }
+      } else if (goodNet && audioOnly.current && vSender?.track) {
+        audioOnly.current = false;
+        vSender.track.enabled = true;
+        setSurvival(null);
+        if (sessionId.current) {
+          void survivalRecord({
+            session_id: sessionId.current,
+            state: "video_restored",
+            reason: "network recovered — video restored",
+            rtt_ms: next.rtt_ms,
+            loss_pct: next.loss_pct,
+          }).catch(() => {});
+        }
+      }
       if (sessionId.current) {
         void chatCall(
           "chat.call.stat",
@@ -692,6 +923,13 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     answer,
     hangup,
     switchDevice,
+    // PHASE 31A — NEW ADDED: ring truth, decline, group topology, survival
+    decline,
+    ringing,
+    topology,
+    survival,
+    prepareGroup,
+    sessionId: sessionId.current,
     // PHASE 10B — NEW ADDED
     quality: choice,
     setQuality,

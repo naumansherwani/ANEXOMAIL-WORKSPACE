@@ -445,6 +445,11 @@ function ChatPage() {
               maxRung={call.maxRung}
               onAnswer={() => void call.answer()}
               onHangup={call.hangup}
+              /* PHASE 31A — NEW ADDED: ring truth, group topology, survival */
+              ringing={call.ringing}
+              topology={call.topology}
+              survival={call.survival}
+              onDecline={call.decline}
             />
 
             <div

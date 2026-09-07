@@ -8,7 +8,7 @@
  *   - Har value asli getStats reading hai. Reading na ho to "measuring" —
  *     speed, latency ya quality ka jhoota claim kabhi nahi.
  */
-import { ChevronDown, Mic, MicOff, PhoneOff, Video, VideoOff } from "lucide-react";
+import { BellRing, ChevronDown, Mic, MicOff, PhoneOff, Video, VideoOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import type { CallPhase, CallStats } from "@/lib/chat-call";
@@ -56,6 +56,11 @@ export function VideoCallOverlay({
   maxRung,
   onAnswer,
   onHangup,
+  // PHASE 31A — NEW ADDED
+  ringing,
+  topology,
+  survival,
+  onDecline,
 }: {
   phase: CallPhase;
   detail: string;
@@ -73,6 +78,10 @@ export function VideoCallOverlay({
   maxRung: QualityRung;
   onAnswer: () => void;
   onHangup: () => void;
+  ringing: { tone: "ringtone" | "ringback"; audible: boolean } | null;
+  topology: "mesh" | "sfu" | null;
+  survival: string | null;
+  onDecline: () => void;
 }) {
   const remoteRef = useRef<HTMLVideoElement>(null);
   const localRef = useRef<HTMLVideoElement>(null);
@@ -149,8 +158,34 @@ export function VideoCallOverlay({
               ))}
           </select>
         </label>
+        {/* PHASE 31A — NEW ADDED: ring ka sach. Calm Mode par awaaz nahi,
+            sirf visual pulse — aur ye baat likhi hui hai. */}
+        {ringing ? (
+          <span
+            className={`inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground ${
+              ringing.audible ? "" : "animate-pulse"
+            }`}
+          >
+            <BellRing className="size-3" aria-hidden />
+            {ringing.tone === "ringback" ? "Ringing them" : "Incoming ring"}
+            {ringing.audible ? "" : " · silent (Calm Mode)"}
+          </span>
+        ) : null}
+        {topology ? (
+          <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground">
+            {topology === "sfu" ? "Group · our media engine" : "Direct · 1-to-1"}
+          </span>
+        ) : null}
         <span>· {detail}</span>
       </div>
+
+      {/* PHASE 31A — NEW ADDED: audio-first survival, jhoot ke bina */}
+      {survival ? (
+        <p className="border-b border-border bg-amber-500/10 px-4 py-1.5 text-[11px] text-foreground">
+          {survival}
+        </p>
+      ) : null}
+
 
       {open && showTechnical ? (
         <div className="border-b border-border bg-card/70 px-4 py-2 text-[11px]">
@@ -245,13 +280,23 @@ export function VideoCallOverlay({
 
       <div className="flex items-center justify-center gap-2 border-t border-border px-4 py-3">
         {incoming ? (
-          <button
-            type="button"
-            onClick={onAnswer}
-            className="ax-press rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-          >
-            Answer
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={onAnswer}
+              className="ax-press rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+            >
+              Answer
+            </button>
+            {/* PHASE 31A — NEW ADDED: decline sach likhta hai, "missed" nahi */}
+            <button
+              type="button"
+              onClick={onDecline}
+              className="ax-press rounded-xl border border-border px-4 py-2 text-sm text-foreground"
+            >
+              Decline
+            </button>
+          </>
         ) : null}
         <button
           type="button"
