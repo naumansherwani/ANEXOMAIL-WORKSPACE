@@ -43,7 +43,6 @@ polarpayments.anexomail.com {
 	# webhook + checkout + billing — dedicated Rust engine
 	handle /api/v1/* {
 		reverse_proxy 127.0.0.1:3400 {
-			header_up X-Forwarded-Host {host}
 			transport http {
 				read_timeout 30s
 				write_timeout 30s
