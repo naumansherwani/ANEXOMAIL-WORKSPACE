@@ -353,7 +353,6 @@ create or replace function public.file_scan_claim(_limit int default 2)
 returns jsonb
 language plpgsql security definer set search_path = public, extensions
 as $$
-declare v_rows jsonb;
 begin
   -- 10 min se atki scanning jobs wapas pending (self-heal)
   update public.file_scan_jobs
@@ -369,13 +368,7 @@ begin
   )
   update public.file_scan_jobs j
      set state = 'scanning', claimed_at = now(), attempts = j.attempts + 1
-   where j.version_id in (select version_id from picked)
-  returning jsonb_build_object(
-    'version_id', j.version_id, 'user_id', j.user_id, 'name', j.name,
-    'bytes', j.bytes, 'content_type', j.content_type,
-    'storage_prefix', j.storage_prefix, 'chunk_count', j.chunk_count,
-    'attempts', j.attempts)
-  into v_rows;
+   where j.version_id in (select version_id from picked);
 
   return jsonb_build_object('jobs', coalesce((
     select jsonb_agg(jsonb_build_object(
@@ -436,8 +429,7 @@ begin
          safety_reason = case when _decision = 'allow' then null
                               else coalesce(_findings->0->>'detail', _classification) end,
          scanned_at = now(),
-         available_at = case when _decision = 'allow' then now() else null end,
-         state = case when _decision = 'block' then 'quarantined' else state end
+         available_at = case when _decision = 'allow' then now() else null end
    where id = _version;
 
   perform public.file_evidence_mark(v_job.user_id, _version, 'verified', 'rust',
@@ -459,7 +451,7 @@ begin
       insert into public.file_enforcement(user_id, strikes, action, last_event)
       values (v_job.user_id, 1, 'warned', now())
       on conflict (user_id) do update
-        set strikes = public.file_enforcement.strikes + 1, last_event = now();
+        set strikes = file_enforcement.strikes + 1, last_event = now();
       select strikes into v_strikes from public.file_enforcement where user_id = v_job.user_id;
       v_action := case when v_strikes >= 5 then 'account_review'
                        when v_strikes >= 3 then 'uploads_paused'
