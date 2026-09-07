@@ -22,7 +22,7 @@ const KEYED = /\bkey:\s*(["'])((?:\\.|(?!\1)[^\\])+)\1/g;
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {
-    if (entry === "i18n" || entry === "node_modules") continue;
+    if (entry === "i18n" || entry === "node_modules" || entry === "i18n.ts") continue;
     const full = join(dir, entry);
     if (statSync(full).isDirectory()) walk(full, files);
     else if (/\.(tsx?|jsx?)$/.test(entry)) files.push(full);
