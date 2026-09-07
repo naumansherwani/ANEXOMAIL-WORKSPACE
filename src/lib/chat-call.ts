@@ -417,7 +417,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       pc.current = peer;
       return peer;
     },
-    [conversationId, media, peerId],
+    [conversationId, mark, media, peerId, stopRing],
   );
 
   /** ICE restart — WiFi -> 4G par call nahi tootti, black screen nahi aati. */
