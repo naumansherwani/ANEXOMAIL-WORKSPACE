@@ -98,6 +98,12 @@ function WorkPage() {
             <PromiseRecovery />
           </div>
           <div className="mt-ax-5">
+            <FileContextCard />
+          </div>
+          <div className="mt-ax-5">
+            <CallRecordPanel />
+          </div>
+          <div className="mt-ax-5">
             <ConversationTruth />
           </div>
           <div className="mt-ax-5">
