@@ -1,0 +1,34 @@
+# ============================================================================
+# ANEXOVIDEOCALL — TURN host ka HTTPS face (Server 2)
+# TURN media UDP 3478/5349 + 49152-49500 par SEEDHA coturn pe jata hai; Caddy
+# sirf is hostname ka TLS cert leta hai (wahi cert coturn use karta hai) aur
+# health face 200 deta hai. Isse `curl https://anexovideocall.anexomail.com`
+# 000 ki jagah 200 deta hai.
+# ============================================================================
+anexovideocall.anexomail.com {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	handle /health {
+		respond "ok" 200
+	}
+
+	handle /ready {
+		respond "ok" 200
+	}
+
+	handle {
+		respond "ANEXOVIDEOCALL TURN Gateway Ready" 200
+	}
+
+	log {
+		output file /var/log/caddy/anexovideocall.log
+		format json
+	}
+}
