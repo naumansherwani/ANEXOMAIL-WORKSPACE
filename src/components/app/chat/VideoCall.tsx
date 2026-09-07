@@ -158,8 +158,34 @@ export function VideoCallOverlay({
               ))}
           </select>
         </label>
+        {/* PHASE 31A — NEW ADDED: ring ka sach. Calm Mode par awaaz nahi,
+            sirf visual pulse — aur ye baat likhi hui hai. */}
+        {ringing ? (
+          <span
+            className={`inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground ${
+              ringing.audible ? "" : "animate-pulse"
+            }`}
+          >
+            <BellRing className="size-3" aria-hidden />
+            {ringing.tone === "ringback" ? "Ringing them" : "Incoming ring"}
+            {ringing.audible ? "" : " · silent (Calm Mode)"}
+          </span>
+        ) : null}
+        {topology ? (
+          <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground">
+            {topology === "sfu" ? "Group · our media engine" : "Direct · 1-to-1"}
+          </span>
+        ) : null}
         <span>· {detail}</span>
       </div>
+
+      {/* PHASE 31A — NEW ADDED: audio-first survival, jhoot ke bina */}
+      {survival ? (
+        <p className="border-b border-border bg-amber-500/10 px-4 py-1.5 text-[11px] text-foreground">
+          {survival}
+        </p>
+      ) : null}
+
 
       {open && showTechnical ? (
         <div className="border-b border-border bg-card/70 px-4 py-2 text-[11px]">
