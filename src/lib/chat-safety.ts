@@ -220,8 +220,9 @@ export function useAdvanceReport() {
       report_id: string;
       to_state: SafetyReport["state"];
       note?: string | undefined;
-      action?: string;
-      until?: string | null;
+      action?: string | undefined;
+      until?: string | null | undefined;
+
     }
   >({
     mutationFn: (input) =>
