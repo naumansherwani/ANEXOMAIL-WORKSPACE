@@ -280,13 +280,23 @@ export function VideoCallOverlay({
 
       <div className="flex items-center justify-center gap-2 border-t border-border px-4 py-3">
         {incoming ? (
-          <button
-            type="button"
-            onClick={onAnswer}
-            className="ax-press rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
-          >
-            Answer
-          </button>
+          <>
+            <button
+              type="button"
+              onClick={onAnswer}
+              className="ax-press rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground"
+            >
+              Answer
+            </button>
+            {/* PHASE 31A — NEW ADDED: decline sach likhta hai, "missed" nahi */}
+            <button
+              type="button"
+              onClick={onDecline}
+              className="ax-press rounded-xl border border-border px-4 py-2 text-sm text-foreground"
+            >
+              Decline
+            </button>
+          </>
         ) : null}
         <button
           type="button"
