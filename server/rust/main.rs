@@ -1407,6 +1407,110 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 25/26/27: TIMELINE · HEALTH · PROVENANCE · COLLISION ──────
+        // Timeline kuch invent nahi karti — communication aur outcome do lane,
+        // har event ka asli record. Health sirf sabit cheez se. Collision sirf
+        // insaani dependency par, har amal 8+ char wajah ke saath.
+
+        "chat.timeline.get" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "conversation_timeline",
+                    json!({
+                        "_conversation": conv, "_user": me.id,
+                        "_lens": input.get("lens").cloned().unwrap_or(json!("all")),
+                        "_limit": input.get("limit").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.timeline.important" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "message_mark_important",
+                    json!({
+                        "_message": msg, "_user": me.id,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                        "_important": input.get("important").cloned().unwrap_or(json!(true)),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.health.conversation" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc("conversation_health", json!({ "_conversation": conv, "_user": me.id })).await
+            }
+        }
+
+        "chat.health.board" => {
+            sb_rpc("conversation_health_board", json!({ "_user": me.id })).await
+        }
+
+        "chat.provenance.message" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("message_provenance", json!({ "_message": msg, "_user": me.id })).await
+            }
+        }
+
+        "chat.provenance.chain" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "conversation_chain_verify",
+                    json!({ "_conversation": conv, "_user": me.id }),
+                )
+                .await
+            }
+        }
+
+        "chat.collision.scan" => {
+            sb_rpc(
+                "commitment_collision_scan",
+                json!({
+                    "_user": me.id,
+                    "_conversation": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "chat.collision.act" => {
+            let id = s(&input, "collision_id");
+            let action = s(&input, "action");
+            if id.is_empty() || action.is_empty() {
+                Err("collision_id_and_action_required".to_string())
+            } else {
+                sb_rpc(
+                    "commitment_collision_act",
+                    json!({
+                        "_collision": id, "_user": me.id, "_action": action,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                        "_new_due": input.get("new_due").cloned().unwrap_or(Value::Null),
+                        "_new_owner": input.get("new_owner").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
         // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
         // Detection sirf device shape par. Engine khud kabhi block nahi karti:
         // warn/block/release har qadam insaan ka, 12+ char reason ke saath.

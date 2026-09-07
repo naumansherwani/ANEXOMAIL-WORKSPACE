@@ -35,6 +35,14 @@
 
 create extension if not exists pgcrypto;
 
+-- helper: chat_feature_allowed() jsonb deta hai; yeh boolean shortcut hai
+create or replace function public.chat_feature_ok(_user uuid, _feature text)
+returns boolean language sql stable security definer
+set search_path = public, extensions as $$
+  select coalesce((public.chat_feature_allowed(_user, _feature)->>'allowed')::boolean, false)
+$$;
+grant execute on function public.chat_feature_ok(uuid, text) to authenticated, service_role;
+
 -- ---------------------------------------------------------------------------
 -- 0) plan entitlements
 -- ---------------------------------------------------------------------------
@@ -267,7 +275,7 @@ set search_path = public, extensions as $$
 declare
   m record; v_id uuid; v_hash text; v_title text; v_when timestamptz; v_work uuid;
 begin
-  if not public.chat_feature_allowed(_user, 'decision_ledger') then
+  if not public.chat_feature_ok(_user, 'decision_ledger') then
     return jsonb_build_object('ok', false, 'error', 'plan_not_allowed');
   end if;
   if _message is null then
@@ -338,7 +346,7 @@ returns jsonb language plpgsql security definer
 set search_path = public, extensions as $$
 declare d record; v_new int; v_title text; v_detail text; v_when timestamptz; v_state text;
 begin
-  if not public.chat_feature_allowed(_user, 'decision_ledger') then
+  if not public.chat_feature_ok(_user, 'decision_ledger') then
     return jsonb_build_object('ok', false, 'error', 'plan_not_allowed');
   end if;
   if _change not in ('amended','superseded','reversed') then
@@ -396,7 +404,7 @@ returns jsonb language plpgsql security definer
 set search_path = public, extensions as $$
 declare d record; v_id uuid;
 begin
-  if not public.chat_feature_allowed(_user, 'decision_impact') then
+  if not public.chat_feature_ok(_user, 'decision_impact') then
     return jsonb_build_object('ok', false, 'error', 'plan_not_allowed');
   end if;
   if _object_type not in ('task','promise','decision','conversation','file','message') then
@@ -501,7 +509,7 @@ begin
   if not public.chat_in_conversation(d.conversation_id, _user) then
     return jsonb_build_object('error', 'not_in_conversation');
   end if;
-  v_allowed := public.chat_feature_allowed(_user, 'decision_impact');
+  v_allowed := public.chat_feature_ok(_user, 'decision_impact');
 
   return jsonb_build_object(
     'decision_id', d.id,
@@ -521,7 +529,7 @@ begin
           when 'task'     then (select w.title from public.chat_work_items w where w.id = l.object_id)
           when 'promise'  then (select w.title from public.chat_work_items w where w.id = l.object_id)
           when 'decision' then (select x.title from public.chat_decisions x where x.id = l.object_id)
-          when 'file'     then (select f.filename from public.chat_files f where f.id = l.object_id)
+          when 'file'     then (select f.name from public.chat_files f where f.id = l.object_id)
           when 'conversation' then (select c.title from public.chat_conversations c where c.id = l.object_id)
           else (select left(g.body, 120) from public.chat_messages g where g.id = l.object_id)
         end,
@@ -530,7 +538,7 @@ begin
           when 'promise' then (select public.promise_state_of(w.state, w.due_at, w.completed_at, w.original_due_at)
                                  from public.chat_work_items w where w.id = l.object_id)
           when 'decision' then (select x.state from public.chat_decisions x where x.id = l.object_id)
-          when 'file'    then (select f.state from public.chat_files f where f.id = l.object_id)
+          when 'file'    then (select v.state from public.chat_file_versions v where v.file_id = l.object_id order by v.version desc limit 1)
           else null end,
         'due_at', case when l.object_type in ('task','promise')
           then (select w.due_at from public.chat_work_items w where w.id = l.object_id) else null end)
@@ -611,14 +619,14 @@ declare v_ws uuid;
 begin
   select workspace_id into v_ws from public.chat_members where user_id = _user limit 1;
   if v_ws is null then
-    return jsonb_build_object('plan', public.chat_feature_allowed(_user,'decision_ledger'),
-      'impact', public.chat_feature_allowed(_user,'decision_impact'),
+    return jsonb_build_object('plan', public.chat_feature_ok(_user,'decision_ledger'),
+      'impact', public.chat_feature_ok(_user,'decision_impact'),
       'decisions', '[]'::jsonb, 'summary', '{}'::jsonb);
   end if;
 
   return jsonb_build_object(
-    'plan',   public.chat_feature_allowed(_user, 'decision_ledger'),
-    'impact', public.chat_feature_allowed(_user, 'decision_impact'),
+    'plan',   public.chat_feature_ok(_user, 'decision_ledger'),
+    'impact', public.chat_feature_ok(_user, 'decision_impact'),
     'summary', (
       select jsonb_build_object(
         'total',      count(*),
