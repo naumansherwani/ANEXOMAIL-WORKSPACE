@@ -800,16 +800,10 @@ async fn reconcile_once(s: &AppState) {
                 .unwrap_or("")
                 .to_string();
             if let Some(key) = product_key_for(s, &pid) {
-                let meta = data
-                    .get_mut("metadata")
-                    .and_then(|m| m.as_object_mut());
-                match meta {
-                    Some(m) => {
-                        m.entry("product_key").or_insert(json!(key));
-                    }
-                    None => {
-                        data["metadata"] = json!({ "product_key": key });
-                    }
+                if let Some(m) = data.get_mut("metadata").and_then(|m| m.as_object_mut()) {
+                    m.entry("product_key").or_insert(json!(key));
+                } else {
+                    data["metadata"] = json!({ "product_key": key });
                 }
             }
             let env = Envelope {
