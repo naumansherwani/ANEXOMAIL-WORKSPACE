@@ -14,4 +14,5 @@
 - [x] Phase 16/17/18 file truth + self-hosted safety (evidence chain, no external API)
 - [x] Phase 19/20/21/22 device safety vault, device trust revoke, safety reporting queue, message→work execution chain
 - [x] Phase 23 promise recovery engine (human-only recovery actions, append-only ledger) + device ban appeals
+- [x] Account integrity batch: one-account ladder (flag -> written final warning -> human block), device-only bans, 72h export before purge
 - [ ] anexomail.com 502 (frontend PM2) confirm green
