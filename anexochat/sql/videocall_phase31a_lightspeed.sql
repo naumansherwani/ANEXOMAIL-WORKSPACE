@@ -386,11 +386,7 @@ begin
   if not public.chat_feature_ok(_user, 'call_sfu') then
     return jsonb_build_object('ok', false, 'reason', 'plan_not_entitled');
   end if;
-  select coalesce(e.limit_value, 8) into cap
-    from public.chat_phase_entitlements e
-    join public.chat_plan_of(_user) p on true
-   where e.feature = 'call_sfu' and e.plan = p limit 1;
-  cap := coalesce(cap, 8);
+  cap := coalesce((public.chat_feature_allowed(_user, 'call_sfu')->>'limit')::int, 8);
   if coalesce(_participants, 2) > cap then
     return jsonb_build_object('ok', false, 'reason', 'group_size_over_plan', 'max_participants', cap);
   end if;
