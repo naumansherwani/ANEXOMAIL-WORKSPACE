@@ -76,6 +76,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       { label: "Ownership", path: "/ownership", note: "Export, delete, domain ownership proof" },
       { label: "Move in", path: "/move-in", note: "Migration from another provider" },
       {
+        label: "ANEXOChat & Relay video",
+        path: "/anexochat",
+        note: "Public product landing — messaging, 5GB resumable transfer, evidence chain, device trust, work chain, ANEXOVideoCall",
+      },
+      {
         label: "Managed migration",
         path: "/migration",
         note: "Phase 28 — fixed-price migration quote calculator (£568 / £1,670 / £2,210 / £3,350 bands) + real booking",
