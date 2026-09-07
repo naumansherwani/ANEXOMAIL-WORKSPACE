@@ -70,7 +70,7 @@ Same `anexomail-web` PM2 process + Caddy mein naya host block
 
 **SHIPPED (25 Aug 2026):**
 
-- Caddy block `ai.anexomail.com` update ho gaya (`docs/caddy-anexochat.md` §2):
+- Caddy block `ai.anexomail.com` update ho gaya (`anexochat/docs/caddy-anexochat.md` §2):
   `/rpc/*` + `/wt/*` → 3200 (Rust PRIMARY) · `/api/chat/*` → 3300 (fallback) ·
   `/api/*` + `/health` → 3100 · baqi sab → 3000 (SSR mirror).
   **Pehle yeh block seedha 3100 par tha — is liye AI host par koi page hi nahi
@@ -84,7 +84,7 @@ Server par lagane ka tarteeb:
 
 ```bash
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak.$(date +%s)
-nano /etc/caddy/Caddyfile     # docs/caddy-anexochat.md §2 se poori file paste
+nano /etc/caddy/Caddyfile     # anexochat/docs/caddy-anexochat.md §2 se poori file paste
 caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
 cd /opt/anexomail-web && git pull && bun install && bun run build:node
 pm2 restart anexomail-web

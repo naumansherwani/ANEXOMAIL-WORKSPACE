@@ -6,7 +6,7 @@
 //   nano /opt/anexomail-rust/src/main.rs     # select all -> paste -> Ctrl+O, Ctrl+X
 //   cd /opt/anexomail-rust && cargo build --release && pm2 restart anexomail-rust
 //
-// BLUEPRINT LOCK (docs/anexochat-blueprint.md PART 0 + PHASE 2):
+// BLUEPRINT LOCK (anexochat/docs/anexochat-blueprint.md PART 0 + PHASE 2):
 //   PRIMARY  : Rust engine — tRPC-style /rpc/* (TCP 3200 behind Caddy HTTP/3)
 //              + WebTransport / HTTP3 / QUIC realtime on UDP 3443
 //   FALLBACK : Bun service /api/chat/* (port 3300) — sirf jab WT/RPC na chale

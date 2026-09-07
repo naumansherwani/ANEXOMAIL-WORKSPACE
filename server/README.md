@@ -245,5 +245,5 @@ Nano: `nano /opt/anexomail/src/routes/chat.ts` (poori file repo se copy karo), p
   `POST /api/chat/typing` · `GET|POST /api/chat/presence`
 - PRIMARY = Rust engine `/rpc/chat.*` + WebTransport/QUIC (udp/3443). Bun `/api/chat/*`
   (service `anexochat`, port 3300) SIRF fallback hai — kabhi primary nahi. Gateway config
-  `docs/caddy-anexochat.md`, Rust source `server/rust/main.rs` + `server/rust/Cargo.toml`.
+  `anexochat/docs/caddy-anexochat.md`, Rust source `server/rust/main.rs` + `server/rust/Cargo.toml`.
 - Naye env ki zaroorat nahi (SUPABASE4_URL + SUPABASE4_SERVICE_ROLE_KEY pehle se hain)
