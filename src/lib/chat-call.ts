@@ -396,6 +396,9 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         if (cs === "connected") {
           setPhase("live");
           setDetail("Connected — encrypted end-to-end (DTLS-SRTP)");
+          mark("ice_connected", Math.round(performance.now() - startedAt.current));
+          stopRing("answered");
+          dropPrewarm(); // warm socket ka kaam khatam
         } else if (cs === "disconnected") {
           setPhase("reconnecting");
           setDetail("Network changed — recovering the same call (ICE restart)");
