@@ -42,7 +42,12 @@ export function ReportForm({
         e.preventDefault();
         if (!subject.trim()) return;
         report.mutate(
-          { subject_kind: kind, subject_id: subject.trim(), reason, note: note.trim() || undefined },
+          {
+            subject_kind: kind,
+            subject_id: subject.trim(),
+            reason,
+            note: note.trim() || undefined,
+          },
           {
             onSuccess: (r) =>
               r.ok
@@ -104,8 +109,8 @@ export function ReportForm({
         File report
       </Button>
       <p className="ax-caption text-steel">
-        Message text is sealed. Reviewers see who, when and why — not the words — unless they
-        record a reason to open it.
+        Message text is sealed. Reviewers see who, when and why — not the words — unless they record
+        a reason to open it.
       </p>
     </form>
   );
@@ -115,7 +120,9 @@ export function MyStanding() {
   const q = useSafetyStanding();
   if (q.isPending) return <p className="ax-caption text-muted-foreground">Loading…</p>;
   if (q.error)
-    return <p className="ax-caption text-amber-400">Standing didn&apos;t load: {q.error.message}</p>;
+    return (
+      <p className="ax-caption text-amber-400">Standing didn&apos;t load: {q.error.message}</p>
+    );
   const d = q.data!;
   return (
     <div className="ax-plane rounded-2xl p-ax-4 text-[12px]">
@@ -124,7 +131,9 @@ export function MyStanding() {
         {d.reports_filed} report(s) filed · {d.open_reports} still open
       </p>
       {d.enforcement.length === 0 ? (
-        <p className="ax-caption mt-1 text-emerald-400">No action has ever been taken on your account.</p>
+        <p className="ax-caption mt-1 text-emerald-400">
+          No action has ever been taken on your account.
+        </p>
       ) : (
         <ul className="ax-caption mt-ax-3 space-y-1 text-amber-400">
           {d.enforcement.map((e, i) => (
@@ -197,8 +206,7 @@ export function SafetyReviewQueue() {
                   <span className="ml-auto text-steel">{relativeTime(r.created_at)}</span>
                 </div>
                 <p className="ax-caption mt-1 text-muted-foreground">
-                  reporter {r.reporter}… → subject {r.subject}…
-                  {r.note ? ` · “${r.note}”` : ""}
+                  reporter {r.reporter}… → subject {r.subject}…{r.note ? ` · “${r.note}”` : ""}
                 </p>
                 <p className="ax-caption mt-1 text-steel">
                   {r.evidence_sealed
@@ -226,9 +234,12 @@ export function SafetyReviewQueue() {
                             action: next === "action" ? "warned" : undefined,
                           },
                           {
-                            onSuccess: () => notify.done("Moved forward", `Now ${next.replace("_", " ")}.`),
+                            onSuccess: () =>
+                              notify.done("Moved forward", `Now ${next.replace("_", " ")}.`),
                             onError: (e) =>
-                              notify.failed("Could not move this report", { description: e.message }),
+                              notify.failed("Could not move this report", {
+                                description: e.message,
+                              }),
                           },
                         )
                       }
@@ -256,7 +267,9 @@ export function SafetyReviewQueue() {
                                 [r.id]: res.evidence ?? "Nothing sealed for this report.",
                               })),
                             onError: (e) =>
-                              notify.failed("Could not open the evidence", { description: e.message }),
+                              notify.failed("Could not open the evidence", {
+                                description: e.message,
+                              }),
                           },
                         );
                       }}

@@ -262,6 +262,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         auth: true,
       },
       {
+        label: "Founder safety review",
+        path: "/app/founder/safety",
+        note: "Phase 21 — review queue (new → under review → action → resolved), logged evidence reveals, enforcement history",
+        auth: true,
+      },
+      {
         label: "AI email center",
         path: "/app/ai-center",
         note: "Leo · Jimmy John · Sherlock · 8 industry desks — drafts awaiting founder approval",

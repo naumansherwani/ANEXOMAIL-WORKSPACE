@@ -264,3 +264,5 @@ baad 200, Supabase down ho to bhi Polar ko 200), worker backoff 30s→24h + 8 at
 ke baad dead-letter (row zinda, `/api/v1/replay`), `/ready` + `/metrics`.
 Ingress: `docs/caddy-payments-host.md` (`polarpayments.anexomail.com` → Server 2 `62.238.98.98` → 127.0.0.1:3400).
 - `phase13_15_file_engine.sql` — ANEXOChat Phase 13/14/15 file engine: file+version+chunk+transfer tables, pool/transfer separation, integrity ack, resume identity, commit + retention.
+- `phase16_18_file_truth_safety.sql` — file evidence chain, type policy, local scan jobs, safety events, enforcement, download proof.
+- `phase19_22_device_safety_work.sql` — device safety vault (signal minimization + retention purge), device trust + revoke events, safety reports/queue/reveal log/enforcement, work execution chain (provenance, dependency, evidence), message star + forward, `chat_phase_entitlements`.

@@ -32,11 +32,17 @@ export function WorkChainBoard() {
     const ref = window.prompt("Completion evidence — a link, a file id, or a short note:");
     if (!ref || !ref.trim()) return;
     complete.mutate(
-      { item_id: item.id, evidence: { kind: ref.startsWith("http") ? "link" : "note", ref: ref.trim() } },
+      {
+        item_id: item.id,
+        evidence: { kind: ref.startsWith("http") ? "link" : "note", ref: ref.trim() },
+      },
       {
         onSuccess: (r) =>
           r.ok
-            ? notify.done("Closed with evidence", `${r.evidence_count} piece(s) of evidence on file.`)
+            ? notify.done(
+                "Closed with evidence",
+                `${r.evidence_count} piece(s) of evidence on file.`,
+              )
             : notify.failed("Not closed", { description: r.message ?? r.error ?? "Try again." }),
         onError: (e) => notify.failed("Not closed", { description: e.message }),
       },
@@ -72,7 +78,9 @@ export function WorkChainBoard() {
               <div className="flex flex-wrap items-center gap-ax-3 text-[12px]">
                 <span className="font-semibold text-foreground">{item.title}</span>
                 <span className="text-muted-foreground">{item.kind}</span>
-                <span className={item.state === "blocked" ? "text-amber-400" : "text-muted-foreground"}>
+                <span
+                  className={item.state === "blocked" ? "text-amber-400" : "text-muted-foreground"}
+                >
                   {item.state}
                 </span>
                 {item.due_at && (
@@ -80,13 +88,15 @@ export function WorkChainBoard() {
                     due {relativeTime(item.due_at)}
                   </span>
                 )}
-                <span className="ml-auto text-steel">
-                  {item.evidence_count} evidence
-                </span>
+                <span className="ml-auto text-steel">{item.evidence_count} evidence</span>
               </div>
 
               <div className="mt-ax-3 flex flex-wrap gap-2">
-                <Button size="sm" variant="ghost" onClick={() => setOpen(open === item.id ? null : item.id)}>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => setOpen(open === item.id ? null : item.id)}
+                >
                   <ShieldCheck className="size-3.5" />
                   {open === item.id ? "Hide chain" : "Show chain"}
                 </Button>
@@ -109,9 +119,13 @@ export function WorkChainBoard() {
                       {
                         onSuccess: (r) => {
                           setDepFrom(null);
-                          r.ok
-                            ? notify.done("Dependency set", "The waiting item is now blocked.")
-                            : notify.failed("Dependency not set", { description: r.error ?? "Try again." });
+                          if (r.ok) {
+                            notify.done("Dependency set", "The waiting item is now blocked.");
+                          } else {
+                            notify.failed("Dependency not set", {
+                              description: r.error ?? "Try again.",
+                            });
+                          }
                         },
                         onError: (e) => {
                           setDepFrom(null);
@@ -122,10 +136,19 @@ export function WorkChainBoard() {
                   }}
                 >
                   <Link2 className="size-3.5" />
-                  {depFrom === item.id ? "Cancel link" : depFrom ? "Blocks the picked item" : "Waits for…"}
+                  {depFrom === item.id
+                    ? "Cancel link"
+                    : depFrom
+                      ? "Blocks the picked item"
+                      : "Waits for…"}
                 </Button>
                 {item.state !== "done" && (
-                  <Button size="sm" variant="secondary" disabled={complete.isPending} onClick={() => finish(item)}>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    disabled={complete.isPending}
+                    onClick={() => finish(item)}
+                  >
                     <CheckCircle2 className="size-3.5" />
                     Close with evidence
                   </Button>
@@ -143,7 +166,8 @@ export function WorkChainBoard() {
 
 function ChainDetail({ itemId }: { itemId: string }) {
   const q = useWorkChain(itemId);
-  if (q.isPending) return <p className="ax-caption mt-ax-3 text-muted-foreground">Loading chain…</p>;
+  if (q.isPending)
+    return <p className="ax-caption mt-ax-3 text-muted-foreground">Loading chain…</p>;
   if (q.error) return <p className="ax-caption mt-ax-3 text-amber-400">{q.error.message}</p>;
   const c = q.data!;
   const p = c.provenance as Record<string, string>;

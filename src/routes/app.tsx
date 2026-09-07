@@ -6,6 +6,8 @@ import { EarnedDelight } from "@/components/app/premium/Delight";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
+import { useRegisterDevice } from "@/lib/chat-safety";
+
 import { useExperience } from "@/lib/experience";
 import { useAccountState } from "@/lib/trial";
 import { founderPreviewFromUrl, setFounderPreview } from "@/lib/founder-preview";
@@ -54,6 +56,19 @@ function AppLayout() {
   useEffect(() => {
     if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
   }, [status, preview, navigate]);
+
+  // PHASE 19 — device safety vault: sign-in ke baad ek dafa is device ka
+  // minimized signal set seal ho kar record hota hai (banned/suspicious device
+  // detection ke liye). Session mein ek se zyada dafa nahi.
+  const register = useRegisterDevice();
+  useEffect(() => {
+    if (status !== "signed-in" || preview) return;
+    if (sessionStorage.getItem("ax.device.vault") === "done") return;
+    sessionStorage.setItem("ax.device.vault", "done");
+    register.mutate(undefined, { onError: () => sessionStorage.removeItem("ax.device.vault") });
+    // register identity is stable for this mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, preview]);
 
   useEffect(() => {
     if (preview) return;
