@@ -248,6 +248,16 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         body: { session_id: sessionId.current, reason },
       }).catch(() => {});
     }
+    // PHASE 31A — ring band, SFU seat chhoro, warm socket band
+    stopRing(null);
+    if (sfuRoom.current) {
+      void sfuLeave(sfuRoom.current).catch(() => {});
+      sfuRoom.current = null;
+    }
+    dropPrewarm();
+    marked.current.clear();
+    audioOnly.current = false;
+    setSurvival(null);
     sessionId.current = null;
     pc.current?.getSenders().forEach((s) => s.track?.stop());
     try {
