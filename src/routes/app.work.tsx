@@ -6,6 +6,8 @@ import { DetailPanel, ListPanel } from "@/components/app/Panel";
 import { FollowThroughTable } from "@/components/app/work/FollowThrough";
 import { PromiseInbox } from "@/components/app/work/PromiseInbox";
 import { TaskBoard } from "@/components/app/work/TaskBoard";
+import { WorkChainBoard } from "@/components/app/work/WorkChainBoard";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateTask } from "@/lib/calendar";
