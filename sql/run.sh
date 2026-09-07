@@ -23,15 +23,15 @@ fi
 
 if [ -n "$URL" ]; then
   if [ "$FILE" = "--check" ]; then
-    OUT="$(psql "$URL" -X -v ON_ERROR_STOP=1 -qAtc 'select 1' 2>&1)"; RC=$?
+    OUT="$(PGOPTIONS='-c client_min_messages=warning' psql "$URL" -X -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -qAtc 'select 1' 2>&1)"; RC=$?
   else
-    OUT="$(psql "$URL" -X -v ON_ERROR_STOP=1 -q -f "$FILE" 2>&1)"; RC=$?
+    OUT="$(psql "$URL" -X -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -q -f "$FILE" 2>&1)"; RC=$?
   fi
 elif [ -n "${PGHOST:-}" ]; then
   if [ "$FILE" = "--check" ]; then
-    OUT="$(psql -X -v ON_ERROR_STOP=1 -qAtc 'select 1' 2>&1)"; RC=$?
+    OUT="$(PGOPTIONS='-c client_min_messages=warning' psql -X -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -qAtc 'select 1' 2>&1)"; RC=$?
   else
-    OUT="$(psql -X -v ON_ERROR_STOP=1 -q -f "$FILE" 2>&1)"; RC=$?
+    OUT="$(psql -X -v ON_ERROR_STOP=1 -v VERBOSITY=verbose -q -f "$FILE" 2>&1)"; RC=$?
   fi
 else
   echo "FAIL: DATABASE_URL/PGHOST server ki protected env files mein nahi mila."
