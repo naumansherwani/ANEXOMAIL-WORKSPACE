@@ -1310,3 +1310,110 @@ chatRouter.post("/integrity/export", async (req, res) => {
   if (error) return fail(res, error);
   res.json(data);
 });
+
+/* ── PHASE 25/26/27 — timeline · health · provenance · collision (fallback) ──
+ * PRIMARY Rust `/rpc/chat.timeline.*|chat.health.*|chat.provenance.*|
+ * chat.collision.*`. Yeh sirf fallback hai. Truth Supabase functions mein hai:
+ * timeline kuch invent nahi karti, health sirf sabit cheez se banti hai, aur
+ * collision sirf insaani dependency par — har amal 8+ char wajah ke saath. */
+
+chatRouter.get("/timeline/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_timeline", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+    _lens: String(req.query?.lens || "all"),
+    _limit: req.query?.limit ? Number(req.query.limit) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/timeline/important", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  if (!message) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("message_mark_important", {
+    _message: message,
+    _user: me.id,
+    _reason: req.body?.reason ?? null,
+    _important: req.body?.important === false ? false : true,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/health/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_health_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/health/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_health", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/provenance/message/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("message_provenance", {
+    _message: req.params.messageId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/provenance/chain/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_chain_verify", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/collisions/scan", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("commitment_collision_scan", {
+    _user: me.id,
+    _conversation: req.body?.conversation_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/collisions/:id/act", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const action = String(req.body?.action || "");
+  const reason = String(req.body?.reason || "");
+  if (!action) return res.status(400).json({ error: "action_required" });
+  if (action !== "viewed_source" && reason.trim().length < 8) {
+    return res.status(400).json({ error: "8_char_reason_required" });
+  }
+  const { data, error } = await db!.rpc("commitment_collision_act", {
+    _collision: req.params.id,
+    _user: me.id,
+    _action: action,
+    _reason: reason || null,
+    _new_due: req.body?.new_due ?? null,
+    _new_owner: req.body?.new_owner ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});

@@ -16,5 +16,6 @@
 - [x] Phase 23 promise recovery engine (human-only recovery actions, append-only ledger) + device ban appeals
 - [x] Phase 24A account integrity: one-account ladder (flag -> written final warning -> human block), device-hash-only bans, 72h export before purge (`anexochat/sql/phase24a_account_integrity.sql`)
 - [x] Phase 24 decision ledger + decision impact map (message provenance + body_hash, versioned history never overwritten, human-only impact links)
+- [x] Phase 25/26/27 conversation → outcome timeline, matter-level health + commitment collision prevention (human-recorded links only), sealed message provenance chain (`anexochat/sql/phase25_27_timeline_health_provenance.sql`)
 
 - [ ] anexomail.com 502 (frontend PM2) confirm green

@@ -129,3 +129,36 @@ LOCK: engine khud kabhi deadline nahi badalti aur khud reminder nahi bhejti —
 har action insaan ka, reason ke saath. `original_due_at` kabhi overwrite nahi
 hota. Ban SIRF device hash par — IP/network/WiFi kabhi ban nahi (cafe aur
 office ke masoom log safe), aur har ban appealable hai.
+
+
+## Phase 25/26/27 — Timeline · health · collision · provenance
+
+DB truth: `chat_message_important` · `chat_message_provenance` (append-only seal
+chain) · `commitment_collisions` · `commitment_collision_events` (append-only) ·
+`conversation_timeline()` · `conversation_health()` / `conversation_health_board()` ·
+`message_provenance()` · `conversation_chain_verify()` · `commitment_collision_scan()` /
+`commitment_collision_act()` (`anexochat/sql/phase25_27_timeline_health_provenance.sql`).
+
+| Feature | Basic | Pro | Business | Business Pro | AI Pro | AI Business | AI Executive |
+|---|---|---|---|---|---|---|---|
+| Conversation → outcome timeline (2 lanes) | — | — | ✓ 200 | ✓ 1,000 | ✓ 200 | ✓ 1,000 | ✓ 2,000 |
+| Mark a message Important (mark + unmark logged) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Lenses: messages · files · tasks · promises · decisions | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Matter health: on track · waiting · blocked · completed | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Health with owner + next date + `reasons[]` evidence | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Message provenance (sender · workspace · ms UTC · receipts) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Integrity Verified against the sealed copy | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Whole-conversation tamper-evident chain audit | — | — | — | ✓ | — | ✓ | ✓ |
+| Commitment collision prevention (recorded links only) | — | — | — | ✓ | — | ✓ | ✓ |
+| Collision actions with 8+ char reason (append-only ledger) | — | — | — | ✓ | — | ✓ | ✓ |
+
+LOCK: timeline kuch invent nahi karti — har event ka asli record hai (message ·
+file evidence · work item · decision version) aur "kya kaha gaya" (communication)
+"kya hua" (outcome) se hamesha alag lane mein rehta hai. Health sirf sabit cheez
+se: khula kaam · overdue deadline · blocked dependency · jawab ka intezar, har
+status ke saath evidence. Collision engine dependency KABHI invent nahi karti —
+sirf `chat_work_items.depends_on` jo insaan ne likha; deadline/owner tabdeeli
+Phase 23 ke `promise_recover` se hoti hai, is liye `original_due_at` kabhi
+overwrite nahi hota. Provenance seal per-conversation hash chain hai (append-only,
+update/delete trigger se band); edit hone par UI sach bolta hai.
+
