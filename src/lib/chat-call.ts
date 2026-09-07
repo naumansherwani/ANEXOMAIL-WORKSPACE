@@ -552,16 +552,50 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     try {
       const peer = await build(true);
       await registerSession("caller");
+      // PHASE 31A — pre-warm ki asli reading session ke saath likh do
+      const warm = prewarmReport();
+      if (warm) {
+        mark("prewarm_started", 0);
+        mark("prewarm_ready", warm.first_candidate_ms);
+      }
       await peer.setLocalDescription(await peer.createOffer());
+      signalSentAt.current = performance.now();
       await link.current?.send(peerId, "offer", { sdp: peer.localDescription?.sdp });
+      mark("signal_sent", Math.round(performance.now() - startedAt.current));
       setPhase("ringing");
       setDetail("Ringing — candidates are already streaming (Trickle ICE)");
+
+      // RINGBACK (caller) — halka pulse. Calm Mode par sound nahi.
+      if (!ring.current) {
+        const handle = startRing("ringback");
+        ring.current = handle;
+        setRinging({ tone: "ringback", audible: handle.audible });
+      }
+      if (sessionId.current) {
+        const state = await ringStart({
+          session_id: sessionId.current,
+          to_user: peerId,
+          tone: "ringback",
+          calm_mode: calmMode(),
+          trigger_path: link.current?.transport() ?? "rows",
+        }).catch(() => null);
+        ringId.current = state?.ring_id ?? null;
+        // 45s / 60s plan window ke baad "no answer" — jhoota "missed" kabhi nahi
+        const win = (state?.window_seconds ?? 45) * 1000;
+        noAnswer.current = window.setTimeout(() => {
+          if (pc.current?.connectionState === "connected") return;
+          stopRing("no_answer");
+          setDetail("No answer — the call was never picked up");
+          teardown("no_answer");
+          setPhase("ended");
+        }, win);
+      }
     } catch (error) {
       teardown("start_failed");
       setPhase("failed");
       setDetail((error as Error).message);
     }
-  }, [build, conversationId, openLink, peerId, registerSession, teardown]);
+  }, [build, conversationId, mark, openLink, peerId, registerSession, stopRing, teardown]);
 
   const answer = useCallback(async () => {
     const offer = incoming;
