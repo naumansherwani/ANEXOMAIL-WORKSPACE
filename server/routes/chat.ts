@@ -1144,3 +1144,66 @@ chatRouter.post("/devices/appeals/decide", async (req, res) => {
   if (error) return fail(res, error);
   res.json(data);
 });
+
+// ===========================================================================
+// ACCOUNT INTEGRITY — one person, one account (Bun FALLBACK; Rust primary)
+// Detection sirf device shape par; IP/network par kabhi ban nahi.
+// warn/block/release insaan karta hai, 12+ char reason ke saath.
+// ===========================================================================
+chatRouter.get("/integrity/state", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("account_integrity_state", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/integrity/evaluate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("account_integrity_evaluate", {
+    _user: me.id,
+    _device_hash: req.body?.device_hash ? String(req.body.device_hash) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/integrity/queue", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const state = req.query?.state ? String(req.query.state) : null;
+  const { data, error } = await db!.rpc("account_integrity_queue", {
+    _actor: me.id,
+    _state: state && state !== "all" ? state : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+for (const [path, fn] of [
+  ["warn", "account_integrity_warn"],
+  ["block", "account_integrity_block"],
+  ["release", "account_integrity_release"],
+] as const) {
+  chatRouter.post(`/integrity/${path}`, async (req, res) => {
+    const me = await requireChat(req, res);
+    if (!me) return;
+    const target = String(req.body?.user_id || "");
+    const reason = String(req.body?.reason || "");
+    if (!target || reason.trim().length < 12) {
+      return res.status(400).json({ error: "user_id_and_12_char_reason_required" });
+    }
+    const { data, error } = await db!.rpc(fn, { _actor: me.id, _user: target, _reason: reason });
+    if (error) return fail(res, error);
+    res.json(data);
+  });
+}
+
+chatRouter.post("/integrity/export", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("account_integrity_export_ready", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
