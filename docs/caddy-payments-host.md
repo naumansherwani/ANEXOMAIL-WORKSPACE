@@ -81,7 +81,11 @@ Settings → Webhooks → endpoint **ANEXOMAIL Production Webhook**:
 
 - URL: `https://polarpayments.anexomail.com/api/v1/polar-webhook`
 - Format: **Raw**
+- API version: **2026-04**
 - Secret: wahi jo `/opt/polar-rust-payment/.env` mein hai (`whsec_...`)
+- Events: `order.paid`, `subscription.created`, `subscription.active`,
+  `subscription.past_due`, `subscription.canceled`, `subscription.revoked`,
+  `subscription.uncanceled` — aur koi event nahi.
 
 Purana `https://anexomail.com/api/v1/polar-webhook` pehle ki tarah live rehta hai.
 Naya host replacement nahi; Polar dashboard mein **do alag endpoints** rehte hain.
