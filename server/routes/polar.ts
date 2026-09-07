@@ -1,18 +1,23 @@
-// ANEXOMAIL — Polar Checkout + Webhook (Server 2 / Brain, port 3100)
+// ANEXOMAIL — Polar legacy bridge (Server 2 / Brain, port 3100)
+//
+// PAYMENT ENGINE LOCK (5 Sep 2026): asli payment/webhook authority
+// dedicated Rust engine `polar-rust-payment` (127.0.0.1:3400) hai.
+// Yeh Express file ab sirf BRIDGE hai:
+//   - purana /api/public/polar/webhook hit ho jaye to raw body
+//     127.0.0.1:3400/api/v1/polar-webhook par forward hoti hai (koi logic yahan nahi)
+//   - read-only billing views (subscription/invoices/payment-health) waise hi rehte hain
+// Polar dashboard mein sirf: https://anexomail.com/api/v1/polar-webhook
 //
 // NANO COMMAND (server par):
 //   cp /opt/anexomail/src/routes/polar.ts /opt/anexomail/src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
 //   nano /opt/anexomail/src/routes/polar.ts
 //   # select all -> paste -> Ctrl+O, Ctrl+X
 //
-// Routes:
-//   POST /api/billing/checkout              auth — create Polar checkout session
-//   GET  /api/billing/checkout/:id          auth — verify checkout state
-//   POST /api/public/polar/webhook          public — verified Polar webhook events
-//
 // Env required:
 //   POLAR_ACCESS_TOKEN, POLAR_WEBHOOK_SECRET, POLAR_SUCCESS_URL
 //   SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY
+//   POLAR_ENGINE_URL (default http://127.0.0.1:3400)
+
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { Webhook } from "standardwebhooks";
