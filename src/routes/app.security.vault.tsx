@@ -32,7 +32,9 @@ function VaultPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <DeviceVaultPanel />
+      <AccountIntegrityPanel />
       <DeviceAppealPanel />
     </div>
+
   );
 }
