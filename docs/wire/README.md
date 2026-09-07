@@ -27,6 +27,7 @@ repo mein kabhi nahi.
 | 7   | [07-inbox-wire.md](./07-inbox-wire.md)            | `/app/mail` inbox asli rows par (mock hataana)                  | Browser mein test mail dikhe             |
 | 8   | [08-verify-gate.md](./08-verify-gate.md)          | Mail launch gate — 18 checks                                    | 18/18 green, warna launch nahi           |
 | 9   | [09-sql-apply.md](./09-sql-apply.md)              | Repo ke **saare 59 SQL files** apply + per-file verify          | MASTER VERIFY zero missing row            |
+| 10  | [10-branding-founder.md](./10-branding-founder.md) | Repo + site par sirf founder ka naam, koi platform credit nahi | repo `rg` zero output + site grep `0`     |
 
 ## Wire ledger (sach, koi "locked" nahi)
 
