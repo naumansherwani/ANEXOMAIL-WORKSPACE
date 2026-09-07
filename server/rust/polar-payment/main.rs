@@ -28,7 +28,7 @@
 //   PORT=3400
 //   DATABASE_URL=postgres://...            # Supabase #4 pooler (session mode)
 //   POLAR_ACCESS_TOKEN=polar_oat_...
-//   POLAR_WEBHOOK_SECRET=whsec_...         # Polar dashboard se as-is (prefix samet)
+//   POLAR_WEBHOOK_SECRET=whsec_...         # legacy/fallback; endpoint secrets API se auto-sync
 //   PUBLIC_APP_URL=https://anexomail.com
 //   WAL_DIR=/opt/polar-rust-payment/wal    # optional (default yehi)
 //   ALERT_EMAIL=hello@anexomail.com        # optional (queue watchdog alert)
@@ -239,7 +239,7 @@ impl Metrics {
 struct AppState {
     db: PgPool,
     http: reqwest::Client,
-    webhook_secret: String,
+    webhook_secrets: Vec<String>,
     polar_token: String,
     app_url: String,
     products: HashMap<String, String>,
@@ -268,6 +268,60 @@ fn product_key_for(state: &AppState, product_id: &str) -> Option<String> {
         .map(|(k, _)| k.to_lowercase())
 }
 
+/// Polar har webhook endpoint ka apna signing secret banata hai. Access token se
+/// dono live endpoint secrets load karo; env wala purana secret fallback rehta hai.
+async fn load_webhook_secrets(http: &reqwest::Client, token: &str) -> Vec<String> {
+    let mut secrets = Vec::new();
+    if let Ok(secret) = env::var("POLAR_WEBHOOK_SECRET") {
+        let secret = secret.trim().to_string();
+        if !secret.is_empty() {
+            secrets.push(secret);
+        }
+    }
+
+    if token.trim().is_empty() {
+        return secrets;
+    }
+
+    let response = http
+        .get("https://api.polar.sh/v1/webhooks/endpoints?limit=100")
+        .bearer_auth(token)
+        .send()
+        .await;
+    let Ok(response) = response else {
+        tracing::warn!("Polar webhook secrets auto-sync unavailable; env fallback active");
+        return secrets;
+    };
+    if !response.status().is_success() {
+        tracing::warn!(status = %response.status(), "Polar webhook secrets auto-sync rejected; env fallback active");
+        return secrets;
+    }
+
+    let payload: Value = response.json().await.unwrap_or_else(|_| json!({}));
+    if let Some(items) = payload.get("items").and_then(Value::as_array) {
+        for item in items {
+            let is_ours = item
+                .get("url")
+                .and_then(Value::as_str)
+                .map(|url| {
+                    url == "https://polarpayments.anexomail.com/api/v1/polar-webhook"
+                        || url == "https://anexomail.com/api/v1/polar-webhook"
+                })
+                .unwrap_or(false);
+            if is_ours {
+                if let Some(secret) = item.get("secret").and_then(Value::as_str) {
+                    let secret = secret.trim().to_string();
+                    if !secret.is_empty() && !secrets.contains(&secret) {
+                        secrets.push(secret);
+                    }
+                }
+            }
+        }
+    }
+    tracing::info!(count = secrets.len(), "Polar webhook signing secrets loaded");
+    secrets
+}
+
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     dotenvy::dotenv().ok();
@@ -282,14 +336,18 @@ async fn main() -> anyhow::Result<()> {
     let wal_dir = env::var("WAL_DIR").unwrap_or_else(|_| "/opt/polar-rust-payment/wal".into());
     let wal = Wal::new(PathBuf::from(&wal_dir))?;
 
+    let http = reqwest::Client::builder()
+        .timeout(Duration::from_secs(20))
+        .build()
+        .unwrap_or_else(|_| reqwest::Client::new());
+    let polar_token = env::var("POLAR_ACCESS_TOKEN").unwrap_or_default();
+    let webhook_secrets = load_webhook_secrets(&http, &polar_token).await;
+
     let state = Arc::new(AppState {
         db,
-        http: reqwest::Client::builder()
-            .timeout(Duration::from_secs(20))
-            .build()
-            .unwrap_or_else(|_| reqwest::Client::new()),
-        webhook_secret: env::var("POLAR_WEBHOOK_SECRET").unwrap_or_default(),
-        polar_token: env::var("POLAR_ACCESS_TOKEN").unwrap_or_default(),
+        http,
+        webhook_secrets,
+        polar_token,
         app_url: env::var("PUBLIC_APP_URL").unwrap_or_else(|_| "https://anexomail.com".into()),
         products: product_map(),
         wal,
@@ -335,7 +393,8 @@ async fn health(State(s): State<Arc<AppState>>) -> impl IntoResponse {
         "wal_writable": s.wal.writable(),
         "queue_depth": depth,
         "oldest_pending_secs": oldest,
-        "webhook_secret": !s.webhook_secret.is_empty(),
+        "webhook_secret": !s.webhook_secrets.is_empty(),
+        "webhook_secrets": s.webhook_secrets.len(),
         "polar_token": !s.polar_token.is_empty(),
         "products": s.products.len(),
     }))
@@ -412,10 +471,14 @@ fn hmac_ok(key: &[u8], msg: &[u8], expected: &[u8]) -> bool {
 
 /// Ok(()) = valid. Err(reason) = reject reason (log ke liye).
 fn verify_signature(s: &AppState, headers: &HeaderMap, body: &[u8]) -> Result<(), String> {
-    if s.webhook_secret.is_empty() {
+    if s.webhook_secrets.is_empty() {
         return Err("secret_missing".into());
     }
-    let keys = secret_keys(&s.webhook_secret);
+    let keys: Vec<Vec<u8>> = s
+        .webhook_secrets
+        .iter()
+        .flat_map(|secret| secret_keys(secret))
+        .collect();
     let h = |name: &str| headers.get(name).and_then(|v| v.to_str().ok()).unwrap_or("");
 
     let sig_header = h("webhook-signature");

@@ -7,3 +7,5 @@
 - [x] Verify routes and deployment instructions
 - [x] Fix Polar self-test for both legacy and Standard Webhooks secrets
 - [x] Correct payment diagnostic SQL and document exact Polar event selection
+
+- [x] Accept separate Polar signing secrets for primary and backup webhook endpoints

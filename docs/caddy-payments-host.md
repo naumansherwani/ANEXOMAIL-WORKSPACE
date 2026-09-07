@@ -82,7 +82,8 @@ Settings → Webhooks → endpoint **ANEXOMAIL Production Webhook**:
 - URL: `https://polarpayments.anexomail.com/api/v1/polar-webhook`
 - Format: **Raw**
 - API version: **2026-04**
-- Secret: wahi jo `/opt/polar-rust-payment/.env` mein hai (`whsec_...`)
+- Secret: Polar har endpoint ke liye khud banata hai; Rust engine `POLAR_ACCESS_TOKEN`
+  se dono secrets auto-load karti hai. `.env` wala `POLAR_WEBHOOK_SECRET` fallback hai.
 - Events: `order.paid`, `subscription.created`, `subscription.active`,
   `subscription.past_due`, `subscription.canceled`, `subscription.revoked`,
   `subscription.uncanceled` — aur koi event nahi.
@@ -132,7 +133,8 @@ bhejay to bhi **duplicate insert nahi hota**. Yeh design se safe hai.
 1. `ANEXOMAIL Production Webhook` → `polarpayments.` wala URL (primary)
 2. `ANEXOMAIL Backup Webhook` → `anexomail.com` wala URL (backup, kabhi delete nahi)
 
-Dono ka secret **ek hi** rakhen (`.env` wala `whsec_...`), warna backup 401 dega.
+Polar dono endpoints ke alag secrets banata hai. Rust engine dono ko Polar API se
+auto-load karti hai; server par secret copy/paste ya `.env` overwrite nahi hota.
 
 ## 7. Nauman ka poora kaam
 

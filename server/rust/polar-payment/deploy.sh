@@ -7,7 +7,8 @@
 #
 # Yeh script:
 #   1. repo se engine files /opt/polar-rust-payment mein copy karti hai (backup ke saath)
-#   2. .env ko KABHI touch nahi karti (secrets sirf server par rehte hain)
+#   2. .env ko KABHI touch nahi karti; Polar access token se dono endpoint
+#      signing secrets engine khud read karti hai
 #   3. WAL folders banati hai (pending/done/dead)
 #   4. cargo build --release + pm2 start/restart
 #   5. polarpayments.anexomail.com ka SECOND Caddy ingress install karti hai
@@ -26,7 +27,7 @@ CADDY_TARGET="$CADDY_DIR/polarpayments.caddy"
 CADDY_MAIN="/etc/caddy/Caddyfile"
 
 echo "==> engine dir: $ENGINE_DIR"
-mkdir -p "$ENGINE_DIR/src" "$ENGINE_DIR/wal/pending" "$ENGINE_DIR/wal/done" "$ENGINE_DIR/wal/dead"
+mkdir -p "$ENGINE_DIR/src" "$ENGINE_DIR/wal/pending" "$ENGINE_DIR/wal/done" "$ENGINE_DIR/wal/dead" "$ENGINE_DIR/wal/rejects"
 
 for pair in "Cargo.toml:Cargo.toml" "main.rs:src/main.rs"; do
   src="$REPO_DIR/${pair%%:*}"
