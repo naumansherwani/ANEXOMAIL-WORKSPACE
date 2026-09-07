@@ -1,8 +1,12 @@
-# ANEXOMAIL — WIRE BOOK (mail launch, dot by dot)
+# ANEXOMAIL — WIRE BOOK (poora project, dot by dot)
 
 Yeh folder sirf **wiring** ke liye hai: har dot ka copy-paste step, koi feature talk nahi.
 Rule: **jo dot green nahi, woh launch nahi.** Har step ke aakhir mein ek verify command hai —
 uska output green aane tak next step start nahi karna.
+
+Koi file delete nahi hogi. Repo ke saare 59 SQL files **step 09** mein hain — apply order,
+per-file verify query, aur ek MASTER VERIFY jo 538 expected tables/functions ek saath check
+karta hai. Uske baad frontend+Caddy, founder side, ANEXOChat, VideoCall ki wire books aayengi.
 
 Server: Hetzner Server 2 (ANEXOMAIL dedicated). Mail stack: **Postfix + Dovecot + OpenDKIM +
 OpenDMARC**, sab mere control mein. Koi external SMTP provider nahi, app ke andar koi SMTP
