@@ -1,21 +1,31 @@
-// ANEXOMAIL — PM2 ecosystem (frontend SSR on Node 22, Bun sirf build ke liye)
+// ANEXOMAIL — PM2 ecosystem (frontend SSR on BUN runtime; Node sirf emergency fallback)
+//
+// TECHNOLOGY LOCK: Rust (:3200 + WT/QUIC udp 3443) PRIMARY engine.
+// Frontend SSR ab Bun runtime par chalta hai (Nitro `bun` preset) — Node nahi.
 //
 // HETZNER COMMANDS:
 //   cd /opt/anexomail-web
 //   git pull
 //   bun install
-//   bun run build:node
-//   pm2 start ecosystem.config.cjs        # pehli baar
-//   pm2 reload ecosystem.config.cjs       # agar already running ho
+//   bun run build:bun
+//   pm2 delete anexomail-web || true
+//   pm2 start ecosystem.config.cjs
 //   pm2 save
 //
-// Note: Agar Node 22 ka path /usr/bin/node se alag ho toh interpreter line update karo.
+// Bun path check: `which bun` (aksar /root/.bun/bin/bun ya /usr/local/bin/bun).
+// Agar path alag ho to neeche interpreter line update karo.
+//
+// EMERGENCY FALLBACK (sirf agar Bun runtime par SSR crash kare):
+//   bun run build:node && pm2 start ecosystem.config.cjs --only anexomail-web-node
+
+const BUN = process.env.BUN_PATH || "/root/.bun/bin/bun";
+
 module.exports = {
   apps: [
     {
       name: "anexomail-web",
       script: "./.output/server/index.mjs",
-      interpreter: "/usr/bin/node",
+      interpreter: BUN,
       instances: 1,
       exec_mode: "fork",
       max_memory_restart: "512M",
@@ -29,6 +39,27 @@ module.exports = {
       log_file: "/var/log/pm2/anexomail-web.log",
       out_file: "/var/log/pm2/anexomail-web-out.log",
       error_file: "/var/log/pm2/anexomail-web-error.log",
+      merge_logs: true,
+      time: true,
+      restart_delay: 3000,
+      max_restarts: 5,
+      min_uptime: "10s",
+      watch: false,
+    },
+    // Emergency-only: `pm2 start ecosystem.config.cjs --only anexomail-web-node`
+    {
+      name: "anexomail-web-node",
+      script: "./.output/server/index.mjs",
+      interpreter: "/usr/bin/node",
+      instances: 1,
+      exec_mode: "fork",
+      max_memory_restart: "512M",
+      autorestart: true,
+      env: {
+        NODE_ENV: "production",
+        PORT: 3000,
+      },
+      log_file: "/var/log/pm2/anexomail-web-node.log",
       merge_logs: true,
       time: true,
       restart_delay: 3000,
