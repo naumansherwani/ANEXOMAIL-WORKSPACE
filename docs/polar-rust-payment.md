@@ -178,7 +178,7 @@ select kind, to_email, sent_at from public.polar_mail_outbox where sent_at is nu
 Postgres trigger **zinda hai** (fast path wahi hai). Iske ooper 5 layer add hue:
 
 ```text
-Polar ──HTTPS──► payments.anexomail.com ──► Caddy ──► :3400
+Polar ──HTTPS──► polarpayments.anexomail.com ──► Caddy ──► :3400
                                              1. HMAC verify (2 keys)
                                              2. local WAL fsync  ──► 200 (10–40ms)
                                                      │
@@ -244,7 +244,7 @@ cd /opt/anexomail-web && git pull && bash server/rust/polar-payment/deploy.sh
 `cargo build --release`, pm2 start/restart + save, phir `/health` `/ready` `/metrics`
 print. **`.env` ko kabhi touch nahi karta.**
 
-Ingress (ek dafa): `docs/caddy-payments-host.md` — `payments.anexomail.com` block.
+Ingress (ek dafa): `docs/caddy-payments-host.md` — `polarpayments.anexomail.com` on Server 2 (`62.238.98.98`).
 
 ### 8.7 Roz ka sach — ek query
 

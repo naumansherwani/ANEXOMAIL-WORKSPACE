@@ -6,7 +6,7 @@
 //   cd /opt/anexomail-web && git pull && bash server/rust/polar-payment/deploy.sh
 //
 // LIFETIME DESIGN (locked 5 Sep 2026, extended 7 Sep 2026):
-//   1. INGRESS boring: Polar -> payments.anexomail.com (TLS) -> Caddy -> 127.0.0.1:3400.
+//   1. INGRESS boring: Polar -> polarpayments.anexomail.com (TLS) -> Caddy -> 127.0.0.1:3400.
 //   2. LOCAL-FIRST DURABILITY: webhook = verify -> local append-only WAL (fsync)
 //      -> 200 OK. Supabase down ho to bhi Polar ko 200 milta hai. Ek bhi payment
 //      event kabhi gir nahi sakta.
