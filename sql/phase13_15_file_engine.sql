@@ -54,34 +54,43 @@ insert into storage.buckets (id, name, public, file_size_limit)
 values ('chat-files', 'chat-files', false, 5368709120)
 on conflict (id) do update set public = false, file_size_limit = 5368709120;
 
--- 2) SELF-HEAL: purane/adhoore table jinme is phase ke columns nahi, unko
---    `_legacy_<timestamp>` naam de kar side par rakh dete hain (data kabhi delete nahi).
+-- 2) SELF-HEAL: purane/adhoore table jinme is phase ka koi bhi lazmi column nahi,
+--    unko `_legacy_<timestamp>` naam de kar side par rakh dete hain (data delete nahi).
 do $$
 declare
   stamp text := to_char(now(), 'YYYYMMDDHH24MISS');
-  chk   text[][] := array[
-    ['chat_files','updated_at'],
-    ['chat_file_versions','storage_prefix'],
-    ['chat_file_chunks','sha256'],
-    ['chat_transfers','bytes_total'],
-    ['chat_transfer_ledger','day']
-  ];
-  i int;
+  need  jsonb := jsonb_build_object(
+    'chat_files',           jsonb_build_array('id','workspace_id','conversation_id','owner_id','name','current_version','latest_bytes','content_type','created_at','updated_at','deleted_at'),
+    'chat_file_versions',   jsonb_build_array('id','file_id','version','bytes','content_type','file_sha256','chunk_size','chunk_count','storage_prefix','state','created_by','created_at','ready_at'),
+    'chat_file_chunks',     jsonb_build_array('version_id','idx','bytes','sha256','state','attempts','updated_at'),
+    'chat_transfers',       jsonb_build_array('id','version_id','workspace_id','user_id','device_id','direction','state','bytes_total','transport','concurrency','started_at','last_seen_at','finished_at','error'),
+    'chat_transfer_ledger', jsonb_build_array('id','workspace_id','user_id','transfer_id','direction','bytes','day','created_at')
+  );
+  tname text;
+  cname text;
+  bad   boolean;
 begin
-  for i in 1 .. array_length(chk, 1) loop
-    if to_regclass('public.' || chk[i][1]) is not null
-       and not exists (
-         select 1 from information_schema.columns
-         where table_schema = 'public'
-           and table_name = chk[i][1]
-           and column_name = chk[i][2]
-       )
-    then
-      execute format('alter table public.%I rename to %I', chk[i][1], chk[i][1] || '_legacy_' || stamp);
-      raise notice 'renamed conflicting table public.% -> %_legacy_%', chk[i][1], chk[i][1], stamp;
+  for tname in select jsonb_object_keys(need) loop
+    if to_regclass('public.' || tname) is null then
+      continue;
+    end if;
+    bad := false;
+    for cname in select jsonb_array_elements_text(need -> tname) loop
+      if not exists (
+        select 1 from information_schema.columns
+        where table_schema = 'public' and table_name = tname and column_name = cname
+      ) then
+        bad := true;
+        exit;
+      end if;
+    end loop;
+    if bad then
+      execute format('alter table public.%I rename to %I', tname, tname || '_legacy_' || stamp);
+      raise notice 'renamed conflicting table public.% -> %_legacy_%', tname, tname, stamp;
     end if;
   end loop;
 end $$;
+
 
 -- 2b) files + versions --------------------------------------------------------
 create table if not exists public.chat_files (
