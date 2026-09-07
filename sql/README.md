@@ -241,3 +241,12 @@ Detail: `docs/absm-billing-mesh.md`.
   `mail_predict_event()`. Rust PRIMARY arms: mail.predict · mail.predict.learn ·
   mail.predict.event; Bun `/api/mail/predict*` fallback. Teen surfaces parallel:
   anexomail.com (founder side), founderworkspace., ai.anexomail.com.
+
+## `phase50_polar_rust_payment.sql` — Phase 50 · Polar Rust Payment Engine
+
+LIFETIME payment lock: webhook sirf signal (Rust `:3400` verify -> `polar_webhook_inbox`
+insert -> instant 200). Business logic Postgres `AFTER INSERT` trigger `polar_inbox_apply()`
+mein: `polar_subscriptions` (canonical plan/status/grace), `polar_checkout_log`
+(return_to samet), `polar_mail_outbox` (receipt · welcome · grace_warning).
+`polar_billing_state(uuid)` in-app panel ka sach — grace 3 din, `service_blocked`
+hamesha `false` (services block kabhi nahi). Detail: `docs/polar-rust-payment.md`.

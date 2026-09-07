@@ -20,10 +20,20 @@ export const Route = createFileRoute("/checkout/done")({
 });
 
 function CheckoutDonePage() {
-  const search = useSearch({ from: "/checkout/done" }) as { checkout_id?: string };
+  const search = useSearch({ from: "/checkout/done" }) as {
+    checkout_id?: string;
+    return_to?: string;
+  };
   const checkoutId = search.checkout_id;
+  // RETURN-TO-WINDOW LOCK: user jahan se checkout par gaya tha, payment ke baad
+  // wahin wapas. Sirf same-origin path chalta hai (open redirect band).
+  const returnTo =
+    search.return_to && search.return_to.startsWith("/") && !search.return_to.startsWith("//")
+      ? search.return_to
+      : "/app/billing";
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "missing">("loading");
   const [detail, setDetail] = useState<string>("");
+
 
   useEffect(() => {
     if (!checkoutId) {
@@ -40,8 +50,11 @@ function CheckoutDonePage() {
         setDetail(data.status);
         if (data.status === "confirmed" || data.status === "succeeded") {
           setStatus("success");
+          // Usi window mein wapas — 2 second baad automatic.
+          timer = setTimeout(() => window.location.assign(returnTo), 2000);
           return;
         }
+
         attempts += 1;
         if (attempts < 20) timer = setTimeout(() => void verify(), 3000);
         else setStatus("failed");
@@ -63,7 +76,7 @@ function CheckoutDonePage() {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [checkoutId]);
+  }, [checkoutId, returnTo]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6">
@@ -85,10 +98,11 @@ function CheckoutDonePage() {
               Receipt aur next steps aapke email par bhej diye gaye hain.
             </p>
             <Button asChild className="w-full">
-              <a href="/app">Open workspace</a>
+              <a href={returnTo}>Continue where you left off</a>
             </Button>
           </div>
         )}
+
 
         {status === "failed" && (
           <div className="space-y-4 rounded-xl border p-6 bg-destructive/5 border-destructive/20">
