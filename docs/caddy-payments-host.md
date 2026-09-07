@@ -1,11 +1,15 @@
 # CADDY — `payments.anexomail.com` (Polar ingress, locked 7 Sep 2026)
 
-Payments ka ingress **boring** hai: koi QUIC/WebTransport mandatory nahi, sirf HTTPS.
-QUIC/WT hamari internal services ke beech rahega, Polar ke saath kabhi nahi.
+Ingress par **HTTP/1.1 + HTTP/2 + HTTP/3 (QUIC)** teeno ON hain — Caddy default yehi hai
+(TLS 1.3, `Alt-Svc: h3` advertise). Farq sirf itna: HTTP/3 **mandatory nahi** — Polar jis
+protocol par aaye (aam tor par HTTP/1.1) woh chalega, aur jo client h3 support karta hai
+usay h3 mil jaayega. UDP 443 firewall mein khula hona zaroori hai, warna h3 chup-chaap
+fallback kar jaayega.
 
 ```text
-Polar  ──HTTPS──►  payments.anexomail.com  ──►  Caddy  ──►  127.0.0.1:3400
+Polar / koi bhi client ──h1 · h2 · h3(QUIC)──►  payments.anexomail.com  ──►  Caddy  ──►  127.0.0.1:3400
 ```
+
 
 ## 1. DNS (ek dafa)
 
@@ -89,3 +93,35 @@ curl -s https://payments.anexomail.com/ready
 curl -s -o /dev/null -w "%{http_code}\n" -X POST https://payments.anexomail.com/api/v1/polar-webhook
 # 401 = ingress theek, engine ne bina signature reject kiya (yehi expected hai)
 ```
+
+
+## 5. HTTP/3 (QUIC) — firewall (ek dafa)
+
+```bash
+ufw allow 443/udp
+ufw allow 443/tcp
+systemctl reload caddy
+curl -sI --http3 https://payments.anexomail.com/health | head -3   # h3 sach check
+curl -sI https://payments.anexomail.com/health | grep -i alt-svc    # Alt-Svc: h3=":443"
+```
+
+h3 na chale to bhi payments safe hain — client khud h2/h1 par fallback karta hai.
+
+## 6. DO ENDPOINT RULE (mashwara, locked)
+
+Ek hi URL par jump karna khatarnak hai (DNS/TLS ke daoran koi event gir sakta hai).
+Is liye **dono endpoints hamesha zinda rehte hain**:
+
+| # | URL | Kirdaar |
+|---|---|---|
+| PRIMARY | `https://payments.anexomail.com/api/v1/polar-webhook` | dedicated ingress → :3400 seedha |
+| BACKUP | `https://anexomail.com/api/v1/polar-webhook` | purana bridge → wahi :3400 |
+
+Dono ek hi engine, ek hi `event_id` unique constraint — is liye agar Polar dono par
+bhejay to bhi **duplicate insert nahi hota**. Yeh design se safe hai.
+
+**Polar dashboard ka mashwara:** do webhook endpoints banayen —
+1. `ANEXOMAIL Production Webhook` → `payments.` wala URL (primary)
+2. `ANEXOMAIL Backup Webhook` → `anexomail.com` wala URL (backup, kabhi delete nahi)
+
+Dono ka secret **ek hi** rakhen (`.env` wala `whsec_...`), warna backup 401 dega.
