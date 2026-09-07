@@ -33,6 +33,10 @@ values
   ('pro',          0,                       0,                        false, 0,                 0, 0),
   ('business',     2147483648,              274877906944,             false, 5497558138880,     3, 10),
   ('business_pro', 5368709120,              1099511627776,            true,  null,              6, 30),
+  -- AI plans: platform included, isliye file engine bhi saath aata hai
+  ('ai_pro',       2147483648,              274877906944,             false, 5497558138880,     4, 10),
+  ('ai_business',  5368709120,              1099511627776,            true,  null,              6, 30),
+  ('ai_executive', 5368709120,              2199023255552,            true,  null,              8, 50),
   ('founder',      5368709120,              1099511627776,            true,  null,              8, 50)
 on conflict (plan) do update set
   max_file_bytes = excluded.max_file_bytes,
