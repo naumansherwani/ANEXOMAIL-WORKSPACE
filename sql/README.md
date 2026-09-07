@@ -263,3 +263,4 @@ bucket se ek hi alert), aur `polar_payment_pulse()` (ek call mein poora payment 
 baad 200, Supabase down ho to bhi Polar ko 200), worker backoff 30s→24h + 8 attempt
 ke baad dead-letter (row zinda, `/api/v1/replay`), `/ready` + `/metrics`.
 Ingress: `docs/caddy-payments-host.md` (`polarpayments.anexomail.com` → Server 2 `62.238.98.98` → 127.0.0.1:3400).
+- `phase13_15_file_engine.sql` — ANEXOChat Phase 13/14/15 file engine: file+version+chunk+transfer tables, pool/transfer separation, integrity ack, resume identity, commit + retention.
