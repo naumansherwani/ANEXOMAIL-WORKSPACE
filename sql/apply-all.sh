@@ -68,17 +68,33 @@ LIST
 )
 
 LOG=/root/anexomail-sql-apply.log
-: > "$LOG"
+: > "$LOG" && chmod 600 "$LOG"
+
+echo "DATABASE PREFLIGHT"
+if ! bash sql/run.sh --check 2>&1 | tee -a "$LOG"; then
+  echo
+  echo "STOP: database connection green nahi; kisi SQL file ko apply nahi kiya."
+  echo "Upar asli shared error hai — 59 files ko ghalat RED mark nahi kiya gaya."
+  exit 1
+fi
+
 G=0; R=0; RED_LIST=""
 for f in $ORDER; do
-  if [ ! -f "$f" ]; then echo "RED    $f (missing)"; R=$((R+1)); RED_LIST="$RED_LIST $f"; continue; fi
+  if [ ! -f "$f" ]; then echo "RED    $f (missing)" | tee -a "$LOG"; R=$((R+1)); RED_LIST="$RED_LIST $f"; break; fi
   out="$(bash sql/run.sh "$f" 2>&1)"; rc=$?
-  echo "=== $f ===" >> "$LOG"; echo "$out" >> "$LOG"
-  if [ "$rc" -eq 0 ]; then echo "GREEN  $f"; G=$((G+1)); else echo "RED    $f"; R=$((R+1)); RED_LIST="$RED_LIST $f"; fi
+  echo "=== $f ===" >> "$LOG"; printf '%s\n' "$out" >> "$LOG"
+  if [ "$rc" -eq 0 ]; then
+    echo "GREEN  $f"; G=$((G+1))
+  else
+    echo "RED    $f"; printf '%s\n' "$out"
+    R=$((R+1)); RED_LIST="$RED_LIST $f"
+    echo "STOP: pehli failing phase par ruk gaya; baqi phases abhi run nahi huin."
+    break
+  fi
 done
 
 echo
 echo "GREEN=$G  RED=$R"
 [ "$R" -gt 0 ] && { echo "RED FILES:$RED_LIST"; echo "detail: $LOG"; }
 [ "$R" -eq 0 ] && echo "ALL SQL GREEN"
-exit 0
+exit "$R"
