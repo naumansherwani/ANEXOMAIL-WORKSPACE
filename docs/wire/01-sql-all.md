@@ -33,3 +33,6 @@ phase aur us ka exact error screen par dikhata hai; baqi dependent phases run na
 `connect.sh` ka login-verified URI hamesha purani app/mail environment files se pehle use hota hai.
 Idempotent `NOTICE` (misal: table pehle se mojood hai) GREEN hota hai; sirf asli
 database `ERROR`/`FATAL` ya non-zero exit phase ko RED karta hai.
+Purani function/view signature (`cannot change return type of existing function`)
+runner khud `HEAL   drop function ...` line ke saath hata kar phase dobara chalata
+hai — aap ko koi manual `DROP` nahi likhna.
