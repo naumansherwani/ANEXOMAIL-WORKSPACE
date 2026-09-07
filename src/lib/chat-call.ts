@@ -481,6 +481,11 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
 
       if (frame.kind === "answer" && peer) {
         if (peer.signalingState !== "have-local-offer") return;
+        // PHASE 31A — signal ka asli round-trip (offer bheja -> answer aaya)
+        if (signalSentAt.current) {
+          mark("signal_rtt", Math.round(performance.now() - signalSentAt.current));
+        }
+        mark("answer_received", Math.round(performance.now() - startedAt.current));
         await peer.setRemoteDescription({ type: "answer", sdp });
         for (const c of pendingIce.current.splice(0)) await peer.addIceCandidate(c).catch(() => {});
         return;
