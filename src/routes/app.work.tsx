@@ -3,6 +3,7 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 
 import { DetailPanel, ListPanel } from "@/components/app/Panel";
+import { DecisionLedger } from "@/components/app/work/DecisionLedger";
 import { FollowThroughTable } from "@/components/app/work/FollowThrough";
 import { PromiseInbox } from "@/components/app/work/PromiseInbox";
 import { PromiseRecovery } from "@/components/app/work/PromiseRecovery";
@@ -90,6 +91,9 @@ function WorkPage() {
           </div>
           <div className="mt-ax-5">
             <PromiseRecovery />
+          </div>
+          <div className="mt-ax-5">
+            <DecisionLedger />
           </div>
           <div className="mt-ax-5">
             <WorkChainBoard />
