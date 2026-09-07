@@ -166,10 +166,10 @@ fn verify_signature(s: &AppState, headers: &HeaderMap, body: &[u8]) -> bool {
     if s.webhook_secret.is_empty() {
         return false;
     }
-    let key = secret_bytes(&s.webhook_secret);
+    let keys = secret_keys(&s.webhook_secret);
     let h = |name: &str| headers.get(name).and_then(|v| v.to_str().ok()).unwrap_or("");
 
-    // 1. Standard Webhooks (Polar default)
+    // 1. webhook-signature header (Standard Webhooks format) — dono keys try
     let sig_header = h("webhook-signature");
     if !sig_header.is_empty() {
         let id = h("webhook-id");
@@ -178,19 +178,23 @@ fn verify_signature(s: &AppState, headers: &HeaderMap, body: &[u8]) -> bool {
         for part in sig_header.split_whitespace() {
             let sig = part.strip_prefix("v1,").unwrap_or(part);
             if let Ok(raw) = B64.decode(sig) {
-                if hmac_ok(&key, signed.as_bytes(), &raw) {
-                    return true;
+                for key in &keys {
+                    if hmac_ok(key, signed.as_bytes(), &raw) {
+                        return true;
+                    }
                 }
             }
         }
     }
 
-    // 2. Legacy hex signature over raw body
+    // 2. Legacy hex signature over raw body — dono keys try
     let legacy = h("x-polar-signature");
     if !legacy.is_empty() {
         if let Ok(raw) = hex::decode(legacy.trim()) {
-            if hmac_ok(&key, body, &raw) {
-                return true;
+            for key in &keys {
+                if hmac_ok(key, body, &raw) {
+                    return true;
+                }
             }
         }
     }
