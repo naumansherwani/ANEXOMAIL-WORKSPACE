@@ -11,4 +11,6 @@
 - [x] Accept separate Polar signing secrets for primary and backup webhook endpoints
 - [x] anexovideocall.anexomail.com Caddy ingress (HTTPS 200) + repo-managed site blocks deploy script
 - [x] Phase 13/14/15 file engine: versioning, chunk integrity, resumable 5GB (Rust primary + Bun fallback)
+- [x] Phase 16/17/18 file truth + self-hosted safety (evidence chain, no external API)
+- [x] Phase 19/20/21/22 device safety vault, device trust revoke, safety reporting queue, message→work execution chain
 - [ ] anexomail.com 502 (frontend PM2) confirm green
