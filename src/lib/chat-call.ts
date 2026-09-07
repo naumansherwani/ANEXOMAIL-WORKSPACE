@@ -35,6 +35,19 @@ import {
   type QualityChoice,
   type QualityRung,
 } from "./chat-video-quality";
+// PHASE 31A — light-speed path: QUIC signaling truth, pre-warm, self-made ring,
+// apna SFU, audio-first survival. Har reading asli, koi marketing number nahi.
+import {
+  connectMark,
+  ringSettle,
+  ringStart,
+  sfuEnsure,
+  sfuJoin,
+  sfuLeave,
+  survivalRecord,
+} from "./chat-lightspeed";
+import { dropPrewarm, prewarmIce, prewarmReport } from "./chat-prewarm";
+import { calmMode, startRing, type RingHandle } from "./chat-ringtone";
 
 export type CallPhase =
   | "idle"
