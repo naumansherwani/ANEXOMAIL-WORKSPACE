@@ -6,6 +6,8 @@ import { EarnedDelight } from "@/components/app/premium/Delight";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
+import { useRegisterDevice } from "@/lib/chat-safety";
+
 import { useExperience } from "@/lib/experience";
 import { useAccountState } from "@/lib/trial";
 import { founderPreviewFromUrl, setFounderPreview } from "@/lib/founder-preview";
