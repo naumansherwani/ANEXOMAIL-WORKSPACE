@@ -61,8 +61,8 @@ Live weather ON — source SIRF Open-Meteo (`src/lib/chat-weather.ts`), zero key
 permission. OpenWeatherMap ya koi doosra weather API kabhi nahi. Reading na mile to UI
 sach bolta hai.
 
-## Lovable Suggestions Features to be added
+## Founder Suggestions Features to be added
 
-Blueprint ki har Phase 28→55 ke neeche ek section hai: **"Lovable Suggestions Features
+Blueprint ki har Phase 28→55 ke neeche ek section hai: **"Founder Suggestions Features
 to be added"** — duniya-level advance features jo mojooda locks (truth-only, API-free,
 human-in-the-loop) ke ain mutabiq hain. Founder tarteeb dega, phir build.

@@ -59,7 +59,7 @@ export const money = (n: number) =>
   `£${n.toLocaleString("en-GB", { maximumFractionDigits: n % 1 === 0 ? 0 : 2 })}`;
 
 /** Price + suffix for a card, for the selected cycle. Yearly shows the REAL
- *  yearly total big (Lovable style) — monthly number kabhi repeat nahi hota. */
+ *  yearly total big — monthly number kabhi repeat nahi hota. */
 export function priceFor(plan: PricedPlan, cycle: BillingCycle) {
   if (cycle === "monthly")
     return { big: money(plan.monthly), suffix: plan.unit, note: null as string | null };

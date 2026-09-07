@@ -5,7 +5,7 @@ Edge Functions mein bilkul nahi — dedicated Hetzner Rust engine (`polar-rust-p
 PM2, port `3400`) handle karti hai. Secrets aur product IDs sirf us server ki
 `.env` mein rehte hain, repo mein kabhi nahi.
 
-## 0. Guardrail (Lovable / kisi bhi agent ke liye)
+## 0. Guardrail (kisi bhi agent ke liye)
 
 > Do NOT modify or regenerate the Polar webhook verification logic, secret names,
 > or payload handling. Webhook = verify + insert + 200 only. Business logic
