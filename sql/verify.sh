@@ -31,16 +31,6 @@ SQL
 )
 
 TMP=$(mktemp /tmp/anexomail-verify-XXXX.sql)
+trap 'rm -f "$TMP"' EXIT
 printf '%s\n' "$Q" > "$TMP"
-bash sql/run.sh "$TMP" >/dev/null 2>&1 || true
-
-URL="${DATABASE_URL:-}"
-if [ -z "$URL" ]; then
-  for f in /etc/anexomail/mail.env /opt/anexomail-web/.env /opt/anexomail/.env /root/.anexomail.env; do
-    [ -f "$f" ] || continue
-    v="$(grep -aoE '(DATABASE_URL|SUPABASE_DB_URL|PG_URL|POSTGRES_URL)=.*' "$f" | head -n1 | cut -d= -f2- | tr -d '"'"'"' ')"
-    if [ -n "${v:-}" ]; then URL="$v"; break; fi
-  done
-fi
-if [ -n "$URL" ]; then psql "$URL" -f "$TMP"; else psql -f "$TMP"; fi
-rm -f "$TMP"
+bash sql/run.sh "$TMP"
