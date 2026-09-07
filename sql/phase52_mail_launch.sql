@@ -108,7 +108,15 @@ create table if not exists public.mail_messages (
 create unique index if not exists mail_messages_msgid_uniq
   on public.mail_messages (message_id) where message_id is not null;
 create index if not exists mail_messages_thread_idx on public.mail_messages (thread_id, sent_at);
-create index if not exists mail_messages_body_trgm on public.mail_messages using gin (body_text gin_trgm_ops);
+do $$
+declare op text;
+begin
+  select n.nspname into op
+    from pg_opclass c join pg_namespace n on n.oid = c.opcnamespace
+   where c.opcname = 'gin_trgm_ops' limit 1;
+  if op is null then raise notice 'pg_trgm missing — trigram index skip'; return; end if;
+  execute format('create index if not exists mail_messages_body_trgm on public.mail_messages using gin (body_text %I.gin_trgm_ops)', op);
+end $$;
 
 -- ---------- attachments ----------
 create table if not exists public.mail_attachments (
