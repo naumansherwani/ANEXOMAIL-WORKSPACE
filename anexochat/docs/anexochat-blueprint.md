@@ -375,6 +375,17 @@ Example: Contract.pdf — Shared by John · Conversation: ABC Renewal · Related
 - **Stale-file warning** — decision badla magar file purani version par hai: red flag with evidence.
 - **Relationship graph edges** — file ↔ person ↔ company ↔ decision graph, sirf recorded links (engine link invent nahi karti).
 
+### ANEXOVideoCall — Phase 31 (VIDEO FOCUS · Rust-first, API-free)
+
+Call ka apna business record: `Call → participants → join/leave truth → files shared in call → work created → decision recorded`.
+
+- **Call business record** — har call ek durable row: kis ne shuru ki, kaun kab join/leave hua (ms UTC), asli duration, transport (WT/QUIC ya fallback), koi "estimated" number nahi.
+- **In-call file share with same evidence chain** — call mein bheji file Phase 16-18 chain se guzarti hai (uploaded → scanned → verified → available); call ke andar bhi "Delivered" jaisa jhoota lafz nahi.
+- **Call → task/promise/decision** — call ke dauran ek click par work object banta hai, provenance `call_id` + timestamp ke saath (insaan likhta hai, engine invent nahi karti).
+- **Join truth ledger** — append-only: invited · ringing · joined · rejoined (network drop) · left; "kabhi join nahi kiya" bhi likha jata hai (negative truth).
+- **Relay honesty badge** — UI sach bolta hai: P2P ya self-hosted relay (coturn `anexovideocall.anexomail.com`), aur kis waqt switch hua.
+- **No third-party video SDK** — signaling Rust axum (`/rpc/call.*`) + WebTransport/QUIC PRIMARY, media WebRTC + apna coturn/SFU; Zoom/Daily/Agora/Twilio kabhi nahi.
+
 ## PHASE 32 — PERMANENT BUSINESS SEARCH
 
 Search "ABC invoice" returns Messages, Files, People, Tasks, Promises, Decisions, Emails. Filters: person, date, conversation, file, task, decision, promise. One business search surface.
@@ -386,6 +397,24 @@ Search "ABC invoice" returns Messages, Files, People, Tasks, Promises, Decisions
 - **Time-travel search** — `as of 12 Aug` — us waqt ki sachai (versions/receipts) par search.
 - **Saved living searches** — search ek live board ban jata hai jo naye rows par khud update hota hai (QUIC push).
 - **Permission-honest results** — jo aapko nahi mil sakta uska count bhi nahi leak hota.
+
+### ANEXOVideoCall — Phase 32 (VIDEO FOCUS · call quality truth)
+
+- **Live call health card** — per-participant asli numbers: RTT, jitter, packet loss, bitrate, resolution, CPU pressure — WebRTC stats se, koi "Excellent" lafz jiske peeche number na ho.
+- **Adaptive ladder with reason** — video degrade hua to UI wajah likhta hai (uplink loss 6% · CPU high), chup-chaap girta nahi.
+- **Reconnect without losing the call record** — network gaya → wapis aaya = same call row, `rejoined` event; naya call kabhi nahi banta.
+- **Bad-network survival mode** — audio-first fallback (video off, screen share paused), Rust backpressure par faisla.
+- **Post-call quality report** — call khatam hone par asli MOS-style report (measured, estimated nahi), founder ko p50/p95/p99.
+- **Searchable call records** — Phase 32 search mein calls bhi ek object type: participant · date · duration · created work.
+
+### ANEXOVideoCall — Phase 33 (VIDEO FOCUS · consent, recording, export)
+
+- **Recording only with explicit consent** — recording start = har participant ko visible banner + consent row; ek ne mana kiya to record nahi hoti.
+- **Recording lives on our own storage** — self-hosted (Phase 13-15 file engine), sha256 sealed, 1TB pool ke andar count; koi external video API nahi.
+- **Call export bundle** — participants · join/leave truth · quality report · shared files + hashes · created work · consent log, JSONL + Markdown, offline verify.
+- **Transcript = optional and honest** — transcript sirf jab AI package ho aur consent ho; warna UI keh deta hai "no transcript recorded" (jhoota summary nahi).
+- **Retention policy per workspace** — recordings ka `retain_until`, purge audit log ke saath, silent delete kabhi nahi.
+- **Legal hold** — matter par hold lagne par recording purge ruk jati hai, wajah + insaan log hota hai.
 
 ## PHASE 33 — CONVERSATION EXPORT
 
@@ -410,6 +439,15 @@ Optional business analytics: Participants 8 · Active attention 46 minutes · Es
 - **Meeting-avoided ledger** — jo faisla chat mein hua uska meeting-equivalent saved cost, assumption khula likha hua.
 - **Rate governance** — rates workspace-level, audit log ke saath; koi silent change nahi.
 - **Opt-out honesty** — analytics off hone par UI keh deta hai ke measurement band hai, khali graph nahi dikhata.
+
+### ANEXOVideoCall — Phase 34 (VIDEO FOCUS · meeting cost + outcome)
+
+- **Explainable meeting cost** — participants × asli in-call minutes × workspace rate; formula UI mein khula, hidden AI scoring nahi.
+- **Meeting outcome ledger** — call ke against recorded outcomes: decisions · tasks · promises · files; kuch record na ho to "no recorded outcome" likha jata hai — "unproductive" lafz KABHI nahi.
+- **No-show / late-join cost** — jo join nahi hua ya der se aaya, uska measured waqt (blame nahi, sirf number + evidence).
+- **Chat-instead-of-call saving** — jo faisla chat mein hua uska meeting-equivalent saved cost, assumption khula.
+- **Rate governance + opt-out** — rates workspace-level audit log ke saath; analytics off = measurement band, khali graph nahi.
+- **Aggregate only for managers** — workspace-level roll-up sirf aggregate; kisi employee ki private call ki body/transcript admin ko khud-ba-khud nahi milti (Phase 44 privacy model).
 
 ## PHASE 35 — ATTENTION LEAKS
 

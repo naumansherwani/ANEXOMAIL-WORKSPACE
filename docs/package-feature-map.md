@@ -162,3 +162,39 @@ Phase 23 ke `promise_recover` se hoti hai, is liye `original_due_at` kabhi
 overwrite nahi hota. Provenance seal per-conversation hash chain hai (append-only,
 update/delete trigger se band); edit hone par UI sach bolta hai.
 
+
+## ANEXOVideoCall — Phase 31/32/33/34 (video focus)
+
+DB truth (aane wali SQL): `call_sessions` · `call_participants` (append-only
+join/leave truth) · `call_files` (Phase 16-18 evidence chain reuse) ·
+`call_work_links` · `call_quality_samples` · `call_recordings` +
+`call_recording_consent` (append-only) · `call_cost_rates` · `call_outcomes`.
+Arms Rust-first: `/rpc/call.*` (:3200) + WebTransport/QUIC; Bun `/api/chat/call/*`
+sirf fallback. Media: WebRTC + apna coturn (`anexovideocall.anexomail.com`) —
+koi Zoom/Daily/Agora/Twilio nahi.
+
+| Feature | Basic | Pro | Business | Business Pro | AI Pro | AI Business | AI Executive |
+|---|---|---|---|---|---|---|---|
+| 1:1 video call | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Group call participants | — | — | ✓ 8 | ✓ 40 | ✓ 8 | ✓ 40 | ✓ 60 |
+| Call business record (join/leave truth) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| In-call file share (scanned · verified chain) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Call → task / promise / decision | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Screen share | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Live call health card (RTT · loss · bitrate) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Post-call quality report (p50/p95/p99) | — | — | — | ✓ | — | ✓ | ✓ |
+| Calls in business search (as an object type) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Recording (consent gated, self-hosted) | — | — | — | ✓ | — | ✓ | ✓ |
+| Recording retention + legal hold | — | — | — | ✓ | — | ✓ | ✓ |
+| Call export bundle (verifiable) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Transcript (consent + AI package only) | — | — | — | — | ✓ | ✓ | ✓ |
+| Meeting cost (explainable formula) | — | — | — | ✓ | — | ✓ | ✓ |
+| Meeting outcome ledger | — | — | — | ✓ | — | ✓ | ✓ |
+| Workspace meeting roll-up (aggregate only) | — | — | — | ✓ | — | ✓ | ✓ |
+
+LOCK: Basic/Pro ko ANEXOChat/VideoCall ka ZERO access (pehle se locked).
+Recording bina consent kabhi nahi; ek participant ke mana karne par record nahi
+hoti. Transcript sirf AI packages + consent — warna UI "no transcript recorded"
+likhta hai, summary invent nahi karta. Cost analytics default OFF, rate insaan
+daalta hai, "unproductive" lafz kabhi nahi. Admin ko private call body/transcript
+khud-ba-khud nahi milti (Phase 44 privacy model + 12+ char justification + log).
