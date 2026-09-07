@@ -229,7 +229,8 @@ begin
       from public.chat_members p
      where p.user_id = coalesce(v_row.owner_user_id, v_row.created_by) limit 1;
 
-    v_body := 'Promise reminder — "' || v_row.title || '"'
+    v_body := 'Promise reminder for ' || coalesce(v_owner_name, 'the owner')
+              || ' — "' || v_row.title || '"'
               || case when v_row.due_at is not null
                       then ' · due ' || to_char(v_row.due_at, 'DD Mon YYYY HH24:MI') else '' end
               || case when v_reason <> '' then ' · ' || v_reason else '' end;
