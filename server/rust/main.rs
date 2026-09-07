@@ -2059,6 +2059,166 @@ async fn dispatch(
             }
         }
 
+        // ── ANEXOVIDEOCALL PHASE 31A · LIGHT-SPEED PATH (RUST PRIMARY) ──────
+        // QUIC signaling · pre-warm marks · own SFU rooms · audio-first
+        // survival · self-made ring truth. Koi number marketing ka nahi.
+
+        "call.ring.start" => {
+            let session = s(&input, "session_id");
+            let to = s(&input, "to_user");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || to.is_empty() || at_ms <= 0 {
+                Err("session_to_user_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_ring_start",
+                    json!({
+                        "_session": session, "_from": me.id, "_to": to,
+                        "_tone": s(&input, "tone"),
+                        "_calm": input.get("calm_mode").and_then(|v| v.as_bool()).unwrap_or(false),
+                        "_trigger": s(&input, "trigger_path"), "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.ring.settle" => {
+            let ring = s(&input, "ring_id");
+            let action = s(&input, "action");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if ring.is_empty() || action.is_empty() || at_ms <= 0 {
+                Err("ring_action_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_ring_settle",
+                    json!({ "_ring": ring, "_user": me.id, "_action": action, "_at_ms": at_ms }),
+                )
+                .await
+            }
+        }
+
+        "call.ring.state" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_id_required".to_string())
+            } else {
+                sb_rpc("call_ring_state", json!({ "_session": session, "_user": me.id })).await
+            }
+        }
+
+        "call.connect.mark" => {
+            let session = s(&input, "session_id");
+            let mark = s(&input, "mark");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || mark.is_empty() || at_ms <= 0 {
+                Err("session_mark_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_connect_mark",
+                    json!({
+                        "_session": session, "_user": me.id, "_mark": mark,
+                        "_value_ms": input.get("value_ms").and_then(|v| v.as_i64()),
+                        "_transport": s(&input, "transport"), "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.connect.report" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_id_required".to_string())
+            } else {
+                sb_rpc("call_connect_report", json!({ "_session": session, "_user": me.id })).await
+            }
+        }
+
+        "call.connect.health" => {
+            sb_rpc(
+                "call_connect_health",
+                json!({
+                    "_user": me.id,
+                    "_days": input.get("days").and_then(|v| v.as_i64()).unwrap_or(7)
+                }),
+            )
+            .await
+        }
+
+        "call.sfu.ensure" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                // engine_host SIRF tab jata hai jab apna SFU asal mein configured ho
+                sb_rpc(
+                    "call_sfu_room_ensure",
+                    json!({
+                        "_conversation": conv, "_user": me.id,
+                        "_participants": input.get("participants").and_then(|v| v.as_i64()).unwrap_or(2),
+                        "_engine_host": env_var("ANEXOCALL_SFU_HOST")
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.sfu.join" => {
+            let room = s(&input, "room_id");
+            if room.is_empty() {
+                Err("room_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_sfu_join",
+                    json!({
+                        "_room": room, "_user": me.id,
+                        "_layers": input.get("layers").and_then(|v| v.as_i64()).unwrap_or(3),
+                        "_codec": s(&input, "codec")
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.sfu.leave" => {
+            let room = s(&input, "room_id");
+            if room.is_empty() {
+                Err("room_id_required".to_string())
+            } else {
+                sb_rpc("call_sfu_leave", json!({ "_room": room, "_user": me.id })).await
+            }
+        }
+
+        "call.sfu.state" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc("call_sfu_state", json!({ "_conversation": conv, "_user": me.id })).await
+            }
+        }
+
+        "call.survival" => {
+            let session = s(&input, "session_id");
+            let state = s(&input, "state");
+            let reason = s(&input, "reason");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || state.is_empty() || reason.len() < 3 || at_ms <= 0 {
+                Err("session_state_reason_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_survival_record",
+                    json!({
+                        "_session": session, "_user": me.id, "_state": state, "_reason": reason,
+                        "_rtt": input.get("rtt_ms").and_then(|v| v.as_i64()),
+                        "_loss": input.get("loss_pct").and_then(|v| v.as_f64()),
+                        "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
 
 
         // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
