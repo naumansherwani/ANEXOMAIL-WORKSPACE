@@ -110,7 +110,9 @@ Polar dashboard → Settings → Webhooks mein do endpoints:
 1. **ANEXOMAIL Production Webhook** — `https://polarpayments.anexomail.com/api/v1/polar-webhook`
 2. **ANEXOMAIL Backup Webhook** — `https://anexomail.com/api/v1/polar-webhook`
 
-Dono format **Raw**, API version **2026-04**, aur same `.env` secret use karte hain.
+Dono format **Raw** aur API version **2026-04** rakhte hain. Polar har endpoint ka
+alag signing secret banata hai; engine `POLAR_ACCESS_TOKEN` se dono automatically
+load karti hai. `.env` wala secret purane endpoint ka fallback rehta hai.
 Purana `anexomail.com` endpoint delete, replace ya modify nahi hota. `event_id` uniqueness
 ki wajah se dono par same delivery duplicate state nahi banati.
 
@@ -140,13 +142,15 @@ ki **umr** par hai:
   key = poora `whsec_...` string ke UTF-8 bytes, as-is.
 
 Engine **dono keys** try karti hai — secret reset ho ya purana ho, kuch badalna nahi.
-Timestamp tolerance 5 min (replay protection). `.env` mein sirf wahi
-`POLAR_WEBHOOK_SECRET=whsec_...` rehta hai — **koi nayi cheez add nahi karni**.
+Timestamp tolerance 5 min (replay protection). `.env` mein purana
+`POLAR_WEBHOOK_SECRET=whsec_...` fallback rehta hai; naya endpoint secret Polar API
+se auto-load hota hai — **koi nayi env line ya manual overwrite nahi**.
 
 ## 5b. `invalid_signature` ka ilaj
 
-1. Polar dashboard se secret **as-is** copy karo — `whsec_` prefix samet.
-2. Secret ke aage/peeche space ya newline nahi (nano mein line ke end par Enter na dabao).
+1. `POLAR_ACCESS_TOKEN` ke paas `webhooks:read` scope hona chahiye; deploy log mein
+   `Polar webhook signing secrets loaded count=2` expected hai.
+2. Koi naya secret `.env` mein copy nahi karna.
 3. Test: `cd /opt/anexomail-web && git pull && bash server/rust/polar-payment/test-event.sh` → phir
    `select event_type, processed, process_error from public.polar_webhook_inbox order by received_at desc limit 5;`
 4. Polar dashboard ka **delivery overview** har delivery ka payload + status dikhata hai —

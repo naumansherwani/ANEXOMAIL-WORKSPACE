@@ -5,9 +5,10 @@
 #   cd /opt/anexomail-web && bash server/rust/polar-payment/test-event.sh
 #
 # Yeh script:
-#   1. /opt/polar-rust-payment/.env se POLAR_WEBHOOK_SECRET parhti hai
+#   1. /opt/polar-rust-payment/.env se legacy/fallback secret parhti hai
 #   2. Standard + legacy dono valid signatures ek header mein banati hai
-#   3. Dono endpoints par bhejti hai (primary + backup)
+#   3. Dono endpoints par bhejti hai; engine Polar API se har endpoint ka apna
+#      secret bhi auto-load karti hai
 #   4. HTTP code print karti hai — 200 = kaamyab
 #
 # Koi paisa, koi asli subscription nahi banti — yeh sirf ek fake test event hai
