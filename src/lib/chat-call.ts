@@ -508,7 +508,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         setIncoming(null);
       }
     },
-    [peerId, teardown],
+    [mark, peerId, teardown],
   );
 
   const registerSession = useCallback(
