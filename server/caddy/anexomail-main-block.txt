@@ -1,0 +1,62 @@
+# =============================================================================
+# /etc/caddy/Caddyfile — anexomail.com block (Phase 13/14/15 ready)
+# Sirf yeh block replace karna hai (baaki file waise hi rehti hai).
+#   cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak.$(date +%s)
+#   nano /etc/caddy/Caddyfile
+#   caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
+# Badla kya: /file/* -> Rust 3200, request_body max 32MB, teen duplicate
+# handle_path /files/* ko ek kar diya.
+# =============================================================================
+
+anexomail.com, www.anexomail.com {
+	encode gzip zstd
+	request_body {
+		max_size 32MB
+	}
+
+	# POLAR RUST PAYMENT ENGINE (:3400)
+	handle /api/v1/polar-webhook* {
+		reverse_proxy 127.0.0.1:3400
+	}
+	handle /api/v1/checkout* {
+		reverse_proxy 127.0.0.1:3400
+	}
+	handle /api/v1/billing/* {
+		reverse_proxy 127.0.0.1:3400
+	}
+
+	# mail attachments (disk)
+	handle_path /files/* {
+		root * /mnt/anexomail-box/attachments
+		header Cache-Control "private, max-age=31536000, immutable"
+		header X-Content-Type-Options nosniff
+		file_server
+	}
+
+	# RUST PRIMARY (:3200) — RPC + large-file chunk path (Phase 13/14/15)
+	handle /rpc/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /file/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /wt/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+
+	# BUN FALLBACK
+	handle /api/chat/* {
+		reverse_proxy 127.0.0.1:3300
+	}
+	handle /api/* {
+		reverse_proxy 127.0.0.1:3100
+	}
+	handle /health {
+		reverse_proxy 127.0.0.1:3100
+	}
+
+	# Node SSR web app
+	handle {
+		reverse_proxy 127.0.0.1:3000
+	}
+}
