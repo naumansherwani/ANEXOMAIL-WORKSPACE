@@ -262,4 +262,4 @@ bucket se ek hi alert), aur `polar_payment_pulse()` (ek call mein poora payment 
 — Founder deck / status page ke liye). Engine side: local append-only WAL (fsync ke
 baad 200, Supabase down ho to bhi Polar ko 200), worker backoff 30s→24h + 8 attempt
 ke baad dead-letter (row zinda, `/api/v1/replay`), `/ready` + `/metrics`.
-Ingress: `docs/caddy-payments-host.md` (`payments.anexomail.com` → 127.0.0.1:3400).
+Ingress: `docs/caddy-payments-host.md` (`polarpayments.anexomail.com` → Server 2 `62.238.98.98` → 127.0.0.1:3400).

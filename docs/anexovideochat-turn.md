@@ -10,7 +10,7 @@ Rule: P2P preferred, TURN automatic fallback. TURN secret **kabhi** frontend pe 
 Cloudflare/DNS panel:
 
 ```
-A   anexovideocall   <Server 2 IP: 88.198.208.90>   Proxy: OFF (DNS only — TURN UDP proxy nahi hota)
+A   anexovideocall   62.238.98.98   Proxy: OFF (DNS only — TURN UDP proxy nahi hota)
 ```
 
 Verify:
@@ -40,7 +40,7 @@ nano /etc/turnserver.conf
 listening-port=3478
 tls-listening-port=5349
 listening-ip=0.0.0.0
-external-ip=88.198.208.90
+external-ip=62.238.98.98
 realm=anexovideocall.anexomail.com
 server-name=anexovideocall.anexomail.com
 
