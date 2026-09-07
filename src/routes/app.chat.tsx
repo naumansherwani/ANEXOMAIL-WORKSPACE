@@ -406,6 +406,8 @@ function ChatPage() {
 
             <WorkStrip conversationId={openId!} />
 
+            <FileTransfers conversationId={openId!} />
+
             <MessageStream
               messages={ordered}
               pending={pending}
