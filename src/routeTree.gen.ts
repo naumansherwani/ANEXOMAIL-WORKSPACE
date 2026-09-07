@@ -120,6 +120,7 @@ import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security
 import { Route as AppSecurityHistoryRouteImport } from './routes/app.security.history'
 import { Route as AppSecurityProofRouteImport } from './routes/app.security.proof'
 import { Route as AppSecuritySessionsRouteImport } from './routes/app.security.sessions'
+import { Route as AppSecurityVaultRouteImport } from './routes/app.security.vault'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
 import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
 import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
@@ -702,6 +703,11 @@ const AppSecuritySessionsRoute = AppSecuritySessionsRouteImport.update({
   path: '/sessions',
   getParentRoute: () => AppSecurityRoute,
 } as any)
+const AppSecurityVaultRoute = AppSecurityVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
+  getParentRoute: () => AppSecurityRoute,
+} as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -943,6 +949,7 @@ export interface FileRoutesByFullPath {
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
+  '/app/security/vault': typeof AppSecurityVaultRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -1071,6 +1078,7 @@ export interface FileRoutesByTo {
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
+  '/app/security/vault': typeof AppSecurityVaultRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -1211,6 +1219,7 @@ export interface FileRoutesById {
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
+  '/app/security/vault': typeof AppSecurityVaultRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -1352,6 +1361,7 @@ export interface FileRouteTypes {
     | '/app/security/history'
     | '/app/security/proof'
     | '/app/security/sessions'
+    | '/app/security/vault'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1480,6 +1490,7 @@ export interface FileRouteTypes {
     | '/app/security/history'
     | '/app/security/proof'
     | '/app/security/sessions'
+    | '/app/security/vault'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1619,6 +1630,7 @@ export interface FileRouteTypes {
     | '/app/security/history'
     | '/app/security/proof'
     | '/app/security/sessions'
+    | '/app/security/vault'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -2461,6 +2473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSecuritySessionsRouteImport
       parentRoute: typeof AppSecurityRoute
     }
+    '/app/security/vault': {
+      id: '/app/security/vault'
+      path: '/vault'
+      fullPath: '/app/security/vault'
+      preLoaderRoute: typeof AppSecurityVaultRouteImport
+      parentRoute: typeof AppSecurityRoute
+    }
     '/app/settings/': {
       id: '/app/settings/'
       path: '/'
@@ -2789,6 +2808,7 @@ interface AppSecurityRouteChildren {
   AppSecurityHistoryRoute: typeof AppSecurityHistoryRoute
   AppSecurityProofRoute: typeof AppSecurityProofRoute
   AppSecuritySessionsRoute: typeof AppSecuritySessionsRoute
+  AppSecurityVaultRoute: typeof AppSecurityVaultRoute
   AppSecurityIndexRoute: typeof AppSecurityIndexRoute
 }
 
@@ -2798,6 +2818,7 @@ const AppSecurityRouteChildren: AppSecurityRouteChildren = {
   AppSecurityHistoryRoute: AppSecurityHistoryRoute,
   AppSecurityProofRoute: AppSecurityProofRoute,
   AppSecuritySessionsRoute: AppSecuritySessionsRoute,
+  AppSecurityVaultRoute: AppSecurityVaultRoute,
   AppSecurityIndexRoute: AppSecurityIndexRoute,
 }
 
