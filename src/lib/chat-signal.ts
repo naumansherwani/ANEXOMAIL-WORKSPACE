@@ -241,11 +241,13 @@ export function openSignalLink(opts: {
         kind,
         payload: (payload ?? {}) as Record<string, unknown>,
       };
-      // 1) instant path
-      if (channel && transport === "realtime") {
+      // 1) light-speed path — QUIC (1 RTT)
+      if (quic && quicLive) quic.send(frame);
+      // 2) instant fallback path
+      else if (channel && transport === "realtime") {
         await channel.send({ type: "broadcast", event: "signal", payload: frame }).catch(() => {});
       }
-      // 2) durable truth (late-join / realtime down)
+      // 3) durable truth (late-join / instant path down) — hamesha
       await chatCall<{ id: string }>(
         "chat.signal.send",
         { conversation_id: conversationId, to_user: to, kind, payload: frame.payload },
@@ -260,6 +262,7 @@ export function openSignalLink(opts: {
     close() {
       stopped = true;
       window.clearInterval(timer);
+      quic?.close();
       try {
         if (channel && sb) void sb.removeChannel(channel);
       } catch {
