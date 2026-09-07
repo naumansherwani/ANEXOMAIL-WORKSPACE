@@ -16,6 +16,10 @@
 //   POST /api/chat/file/mark               → pause / resume / failed
 //   POST /api/chat/file/commit             → version ready (sab chunks verified)
 //   GET  /api/chat/file/versions?file=     → version chain
+//   PHASE 16/17/18 (truth + safety, sab local — koi external API nahi)
+//   GET  /api/chat/file/truth?version=     → evidence chain (7 steps)
+//   GET  /api/chat/file/safety             → engines + queue + enforcement
+//   POST /api/chat/file/download/ack       → Downloaded step (blocked par 409)
 // ============================================================================
 import { createHash } from "crypto";
 
@@ -210,6 +214,42 @@ filesRouter.get("/versions", async (req, res) => {
   });
   if (r.error) return fail(res, r.error);
   res.json(r.data);
+});
+
+// ── PHASE 16: FILE TRUTH — chain sirf DB rows se, koi guess nahi ────────────
+filesRouter.get("/truth", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const r = await db!.rpc("file_truth", {
+    _user: me.id,
+    _version: String(req.query.version || ""),
+  });
+  if (r.error) return fail(res, r.error);
+  res.json(r.data);
+});
+
+// ── PHASE 17/18: safety truth — engine list, queue depth, enforcement state ─
+filesRouter.get("/safety", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const r = await db!.rpc("file_safety_state", { _user: me.id });
+  if (r.error) return fail(res, r.error);
+  res.json(r.data);
+});
+
+// Downloaded step: sirf available + clean file par. Blocked = 409, kabhi bytes nahi.
+filesRouter.post("/download/ack", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const r = await db!.rpc("file_download_ack", {
+    _user: me.id,
+    _version: String(req.body?.version_id || ""),
+    _bytes: Math.max(0, Math.floor(Number(req.body?.bytes) || 0)),
+    _device: String(req.body?.device || "bun-fallback"),
+  });
+  if (r.error) return fail(res, r.error);
+  const out: any = r.data;
+  res.status(out?.ok ? 200 : 409).json(out);
 });
 
 export default filesRouter;
