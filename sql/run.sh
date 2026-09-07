@@ -11,7 +11,9 @@ if [ "$FILE" != "--check" ] && [ ! -f "$FILE" ]; then echo "FAIL: $FILE mojood n
 
 URL="${DATABASE_URL:-}"
 if [ -z "$URL" ]; then
-  for f in /etc/anexomail/mail.env /opt/anexomail-web/.env /opt/anexomail/.env /root/.anexomail.env; do
+  # connect.sh ka login-verified URI authoritative hai. Purani app/mail env files
+  # fallback hain; warna unka stale DATABASE_URL verified URI ko override karta hai.
+  for f in /root/.anexomail.env /etc/anexomail/mail.env /opt/anexomail-web/.env /opt/anexomail/.env; do
     [ -f "$f" ] || continue
     v="$(grep -am1 -E '^[[:space:]]*(export[[:space:]]+)?(DATABASE_URL|SUPABASE_DB_URL|SUPABASE_DATABASE_URL|DIRECT_URL|PG_URL|POSTGRES_URL)=' "$f" | cut -d= -f2-)"
     v="${v#\"}"; v="${v%\"}"; v="${v#\'}"; v="${v%\'}"

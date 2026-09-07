@@ -17,4 +17,6 @@
 - [ ] NEXT: frontend + Caddy, founder side, ANEXOChat, ANEXOVideoCall — isi copy-paste format mein
 - [x] SQL runner: shared DB failure ko 59 jhoote RED ki bajaye preflight par rokna aur asli error foran dikhana
 - [x] SQL connection: hidden prompt, login verify ke baad hi protected env save; shell history/repo mein secret nahi
+- [x] SQL runner: verified `/root/.anexomail.env` ko purani app env se pehle use karna
+- [ ] SERVER: corrected runner se database preflight aur 59 SQL phases GREEN
 
