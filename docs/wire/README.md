@@ -53,6 +53,9 @@ Status sirf teen: **DONE** (live test hua) · **READY** (code/config repo mein, 
 | Inbox UI on real rows        | TODO   | browser                            |
 | noreply inbound discard      | TODO   | mail to noreply@ → /dev/null       |
 | DMARC report mailbox         | TODO   | `dmarc@` mein report aaye          |
+| 59 SQL files applied         | READY  | step 09 MASTER VERIFY zero row     |
+| Public tables ke GRANTs      | TODO   | step 09 GRANT check zero row       |
+| Public tables par RLS        | TODO   | step 09 RLS check zero row         |
 
 ## Mailbox list (anexomail.com only — is launch ka scope)
 
