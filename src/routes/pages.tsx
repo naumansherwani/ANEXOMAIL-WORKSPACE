@@ -276,7 +276,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Founder AI workbench",
         path: "/app/founder/ai",
-        note: "LEO workbench 3-panel: sessions | chat | sources — TTFT, receipts, burn (aiemail host only)",
+        note: "LEO workbench 3-panel: sessions | chat | sources — TTFT, receipts, burn (founderworkspace host only)",
         auth: true,
       },
       {

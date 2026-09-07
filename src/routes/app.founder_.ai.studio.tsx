@@ -24,7 +24,7 @@ import {
 } from "@/lib/ai-studio";
 
 /**
- * Phase 17 — AI Studio, founder surface (aiemail.anexomail.com, IP locked).
+ * Phase 17 — AI Studio, founder surface (founderworkspace.anexomail.com, IP locked).
  * Awam ke liye /ai/studio coming-soon gate hai.
  * NO MOCK: har output server se aata hai, receipt ke saath.
  */

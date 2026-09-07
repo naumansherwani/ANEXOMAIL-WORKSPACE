@@ -1,0 +1,50 @@
+# ============================================================================
+# POLARPAYMENTS — SECOND, INDEPENDENT POLAR INGRESS (Server 2)
+# Existing https://anexomail.com/api/v1/polar-webhook stays untouched.
+# Caddy serves HTTP/1.1 + HTTP/2 + HTTP/3; Polar may use any negotiated version.
+# ============================================================================
+polarpayments.anexomail.com {
+	encode zstd gzip
+
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	# Dedicated Rust payment engine. The old anexomail.com route is separate.
+	handle /api/v1/* {
+		reverse_proxy 127.0.0.1:3400 {
+			header_up X-Forwarded-Host {host}
+			transport http {
+				read_timeout 30s
+				write_timeout 30s
+			}
+		}
+	}
+
+	handle /health {
+		reverse_proxy 127.0.0.1:3400
+	}
+
+	handle /ready {
+		reverse_proxy 127.0.0.1:3400
+	}
+
+	# Metrics remain private to Server 2.
+	handle /metrics {
+		@notlocal not remote_ip 127.0.0.1 ::1 62.238.98.98
+		respond @notlocal 404
+		reverse_proxy 127.0.0.1:3400
+	}
+
+	handle {
+		respond "Not Found" 404
+	}
+
+	log {
+		output file /var/log/caddy/polarpayments.log
+		format json
+	}
+}

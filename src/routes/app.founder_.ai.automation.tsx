@@ -27,7 +27,7 @@ import {
 } from "@/lib/ai-automation";
 
 /**
- * Phase 18 — AI Automation, founder surface (aiemail.anexomail.com, IP locked).
+ * Phase 18 — AI Automation, founder surface (founderworkspace.anexomail.com, IP locked).
  * Awam ke liye /ai/automation coming-soon gate.
  * NO WEBHOOK / NO PUBLIC API: automation LEO Actions + native integrations se chalti hai.
  */
