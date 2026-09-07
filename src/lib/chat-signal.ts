@@ -16,6 +16,7 @@
  */
 import { createClient, type RealtimeChannel, type SupabaseClient } from "@supabase/supabase-js";
 
+import { sessionToken } from "./api";
 import { chatCall } from "./chat-transport";
 
 export type SignalKind = "offer" | "answer" | "ice" | "ice-end" | "restart" | "end" | "ring";
