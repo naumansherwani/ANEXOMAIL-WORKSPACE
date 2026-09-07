@@ -54,7 +54,36 @@ insert into storage.buckets (id, name, public, file_size_limit)
 values ('chat-files', 'chat-files', false, 5368709120)
 on conflict (id) do update set public = false, file_size_limit = 5368709120;
 
--- 2) files + versions --------------------------------------------------------
+-- 2) SELF-HEAL: purane/adhoore table jinme is phase ke columns nahi, unko
+--    `_legacy_<timestamp>` naam de kar side par rakh dete hain (data kabhi delete nahi).
+do $$
+declare
+  stamp text := to_char(now(), 'YYYYMMDDHH24MISS');
+  chk   text[][] := array[
+    ['chat_files','updated_at'],
+    ['chat_file_versions','storage_prefix'],
+    ['chat_file_chunks','sha256'],
+    ['chat_transfers','bytes_total'],
+    ['chat_transfer_ledger','day']
+  ];
+  i int;
+begin
+  for i in 1 .. array_length(chk, 1) loop
+    if to_regclass('public.' || chk[i][1]) is not null
+       and not exists (
+         select 1 from information_schema.columns
+         where table_schema = 'public'
+           and table_name = chk[i][1]
+           and column_name = chk[i][2]
+       )
+    then
+      execute format('alter table public.%I rename to %I', chk[i][1], chk[i][1] || '_legacy_' || stamp);
+      raise notice 'renamed conflicting table public.% -> %_legacy_%', chk[i][1], chk[i][1], stamp;
+    end if;
+  end loop;
+end $$;
+
+-- 2b) files + versions --------------------------------------------------------
 create table if not exists public.chat_files (
   id              uuid primary key default gen_random_uuid(),
   workspace_id    uuid not null,
