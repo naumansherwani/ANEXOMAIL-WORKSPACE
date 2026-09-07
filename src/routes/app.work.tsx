@@ -99,6 +99,12 @@ function WorkPage() {
             <ConversationTruth />
           </div>
           <div className="mt-ax-5">
+            <ReceiptsPanel />
+          </div>
+          <div className="mt-ax-5">
+            <EmailBridge />
+          </div>
+          <div className="mt-ax-5">
             <DecisionLedger />
           </div>
           <div className="mt-ax-5">
