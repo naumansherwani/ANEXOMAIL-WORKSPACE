@@ -27,3 +27,7 @@
 ## SQL WIRE (no delete — har SQL file server par apply + verify)
 - [ ] docs/wire/09-sql-apply.md — sab 61 SQL files dependency order mein, per-file apply + verify query
 - [ ] Har phase SQL ka green proof ledger docs/wire/README.md mein
+
+## BRANDING WIRE (sirf founder ka naam)
+- [x] docs/wire/10-branding-founder.md — repo cleanup + verify commands
+- [ ] Site par platform badge OFF + step 10.3/10.4 green

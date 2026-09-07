@@ -3,9 +3,9 @@ Status: SOURCE OF TRUTH (locked 14 Aug 2026). Build reads from this file. Founde
 
 Host: anexochat.anexomail.com (Caddy + Namecheap DNS already done).
 
-Complete All Phases. Core intelligence, realtime, file transfer, safety and business logic run through Supabase4 + PostgreSQL + Rust + tRPC + WebTransport/QUIC + Caddy HTTP/3. Bun must be included as a fallback/secondary. Lovable builds simultaneously for Founder + Business + Business Pro + ANEXOMAIL AI Pro + AI Business + AI Executive.
+Complete All Phases. Core intelligence, realtime, file transfer, safety and business logic run through Supabase4 + PostgreSQL + Rust + tRPC + WebTransport/QUIC + Caddy HTTP/3. Bun must be included as a fallback/secondary. Build simultaneously for Founder + Business + Business Pro + ANEXOMAIL AI Pro + AI Business + AI Executive.
 
-## LOVABLE — READ THIS FIRST
+## FOUNDER — READ THIS FIRST
 
 This is the complete ANEXOChat project specification.
 
@@ -329,7 +329,7 @@ Message: ✓ Sent ✓ Delivered ✓ Read. Attachment: ✓ Uploaded ✓ Scanned �
 
 Core principle: don't just say it happened. Show what happened.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Receipt Chain Certificate** — har message/file ka receipt chain ek signed, per-conversation hash-linked certificate deta hai jo bahar (court/client) verify ho sakta hai bina ANEXOMAIL login ke.
 - **Per-device receipt truth** — Delivered/Read kis device par hua (platform class + timezone bucket), sealed device vault se, biometric fingerprinting ke bina.
@@ -341,7 +341,7 @@ Core principle: don't just say it happened. Show what happened.
 
 From ANEXOMAIL: "Discuss in ANEXOChat" opens relevant conversation. Email remains the formal record. Chat remains the instant communication layer.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Bidirectional thread stitching** — email thread aur chat conversation ka permanent do-tarfa link: dono taraf ek hi work object, duplicate kabhi nahi.
 - **Formality boundary badge** — chat mein khula email context hamesha batata hai: `Formal record lives in ANEXOMAIL` + message id.
@@ -353,7 +353,7 @@ From ANEXOMAIL: "Discuss in ANEXOChat" opens relevant conversation. Email remain
 
 ANEXOChat → Create formal email → Recipients → Subject → Attachments → Send. No accidental replacement of email.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Chat → formal email draft with citations** — draft ke har line ke saath us chat message ka provenance footnote (sender · UTC ms · body_hash).
 - **Consent gate** — group ke jin logon ke messages quote ho rahe hain, unko notice; objection log hota hai.
@@ -367,7 +367,7 @@ ANEXOChat → Create formal email → Recipients → Subject → Attachments →
 
 Example: Contract.pdf — Shared by John · Conversation: ABC Renewal · Related: Contract Approval · Status: Pending.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **File → business context card** — uploader · conversation · related work · related email · decision/promise, sab asli rows se, ek surface par.
 - **Version diff for documents** — text-like versions ka deterministic diff (koi AI API nahi) + kis message ne kaun version bheja.
@@ -390,7 +390,7 @@ Call ka apna business record: `Call → participants → join/leave truth → fi
 
 Search "ABC invoice" returns Messages, Files, People, Tasks, Promises, Decisions, Emails. Filters: person, date, conversation, file, task, decision, promise. One business search surface.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **One search, seven object types** — messages · files · people · tasks · promises · decisions · emails ek hi ranked surface par (Rust query fan-out, Postgres trigram truth).
 - **Answer with evidence rows** — natural query ka jawab hamesha source rows ke saath; koi summary jiski row na ho, dikhayi nahi jati.
@@ -420,7 +420,7 @@ Search "ABC invoice" returns Messages, Files, People, Tasks, Promises, Decisions
 
 Export messages, timestamps, participants, files, delivery states, decisions, promises, relevant work records. This preserves: no lock-in.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Full evidence export bundle** — messages + receipts + files + hashes + decisions + promises + chain verification report, ek zip mein, offline verify script ke saath.
 - **Third-party verifiable manifest** — export ke andar per-conversation hash chain, koi ANEXOMAIL account ke baghair verify ho.
@@ -432,7 +432,7 @@ Export messages, timestamps, participants, files, delivery states, decisions, pr
 
 Optional business analytics: Participants 8 · Active attention 46 minutes · Estimated attention cost £18.40. Calculation must be explainable. No hidden AI scoring.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Explainable attention cost** — har number ka formula UI mein khula (participants × active minutes × rate), hidden AI scoring nahi.
 - **Cost of a decision** — ek decision tak pohanchne mein lagi guftagu ka cost, decision row se attached.
@@ -455,7 +455,7 @@ Workspace-level analytics: Sales coordination 18% · Support 31% · Internal coo
 
 Purpose: find communication overhead. Not: secretly monitor employees. Privacy boundaries remain explicit.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Attention debt map** — kis kaam ne kitna coordination khaya, sirf recorded events se.
 - **Loop detector** — wahi sawal 3+ dafa repeat: overhead ka asli saboot, message ids ke saath.
@@ -467,7 +467,7 @@ Purpose: find communication overhead. Not: secretly monitor employees. Privacy b
 
 Weather effects OFF · Particles OFF · Sound OFF · Unnecessary motion OFF · Notification pressure reduced. Chat remains fully functional.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **System-wide calm contract** — OS reduced-motion hamesha upar; Calm Mode har animation/sound/particle band karta hai bina feature khoye.
 - **Notification pressure budget** — per-hour interruption cap, jo roka gaya uska honest digest.
@@ -485,7 +485,7 @@ weather API. Reading na mile to UI sach bolta hai — guess kabhi nahi.
 - Layer 2 — Optional device location, used locally only if permission granted. No mandatory external weather service.
 - Layer 3 — Device sensors (Ambient Light Sensor / W3C capabilities) can influence brightness, contrast, atmospheric intensity. If unavailable: graceful fallback.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **LIVE weather (founder approved)** — asli reading Open-Meteo se (zero key, zero cost), user ki ijazat se location; reading na mile to UI sach bolta hai — guess kabhi nahi.
 - **Source-stamped badge** — badge par hamesha source aur waqt: `Clear · 32°C · Open-Meteo, 14:20`.
@@ -499,7 +499,7 @@ Dawn (orange/pink gradient) · Sunny (bright sky) · Cloudy (muted grey) · Rain
 
 Important: if real weather data is not available without an external service, ANEXOChat must not falsely claim it is showing the user's actual weather. The visual system may use time/device/environment context without fabricating weather facts.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **GPU-budgeted atmosphere** — Sunny/Rain/Storm/Snow/Night/Dawn ek shared particle budget par, low-end device par khud degrade.
 - **Atmosphere-matched send effect** — rain mein raindrop sweep, storm mein lightning flash — 300ms cap.
@@ -511,7 +511,7 @@ Important: if real weather data is not available without an external service, AN
 
 `Message → Gradient sweep → 300ms → Fade`. Direction left → right. Brand gradient: Blue → Purple → Teal. Calm Mode: no animation. Motion budget: 300ms.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Truthful send cinematic** — light sweep sirf tab poora hota hai jab DB row confirm ho; animation kabhi jhoota `Sent` nahi kehti.
 - **Optimistic-but-honest** — pending state alag rang, fail par same bubble mein reason.
@@ -525,7 +525,7 @@ Priority: Message correctness → Realtime → Input responsiveness → File tra
 
 If device performance falls: Full effects → Reduced effects → Static atmosphere → Calm Mode.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **60fps frame budget guard** — per-scene GPU/CPU budget, dispose-on-unmount lock (3D leak zero).
 - **Adaptive quality ladder** — device class se particle count/shadow/bloom khud set.
@@ -539,7 +539,7 @@ Groups included, but ANEXOChat remains simple: Sales Team, Support Team, Account
 
 Group features: messages, files, reactions, replies, pinned messages, tasks, promises, decisions, search, notifications.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Group with roles + audit** — owner/admin/member, har membership change append-only log mein.
 - **Per-message audience proof** — kis kis ne receive/read kiya, group mein bhi per-person receipt.
@@ -551,7 +551,7 @@ Group features: messages, files, reactions, replies, pinned messages, tasks, pro
 
 Group conversation can show: 3 active promises · 2 pending tasks · 1 decision · 4 files. No AI required for the core functionality.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Group intelligence from rows only** — kaun kaam kar raha hai, kya rukka hai, kis ka jawab pending — sab evidence se, deterministic (koi AI API nahi).
 - **Unowned commitment detector** — group mein bola gaya kaam jiska owner nahi: red row.
@@ -563,7 +563,7 @@ Group conversation can show: 3 active promises · 2 pending tasks · 1 decision 
 
 Business Pro: 1TB pooled workspace storage. 80%: "Workspace storage is 80% full." 90%: "almost full." 100%: new persistent file uploads are paused; existing files remain available; messaging continues; export continues. No silent deletion.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **1TB pool governance** — per-workspace pool, per-file 5GB, version retention plan se; sab DB truth se.
 - **Memory continuity 500k words** — poori business memory recall keyword+pinned+recency par, embeddings API ke baghair.
@@ -577,7 +577,7 @@ Founder side contains the same ANEXOChat product surface/control environment: AN
 
 Critical privacy rule: admin visibility must follow the defined privacy model. Admin access does not automatically mean unrestricted reading of private employee conversations. If founder/admin messaging with internal users is enabled, it must be an explicit workspace policy rather than an accidental backdoor.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Founder ANEXOChat** — founder ke liye workspace-wide truth board, magar private guftagu ka content default band.
 - **Employee handover continuity** — banda jaye to uske open work/promises/decisions ek handover pack mein, owner reassign logged reason ke saath.
@@ -593,7 +593,7 @@ Example: ABC Ltd — Users 247 · Online 83 · Storage 684GB / 1TB · Messages t
 
 No fake numbers.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Founder view aggregates** — workspaces · conversations · promises kept ratio · blocked matters · storage · transfer, sab live (Rust).
 - **Truth-only KPIs** — koi estimated/derived metric jiska source row na ho, board par nahi.
@@ -607,7 +607,7 @@ No fake numbers.
 
 No message loss. No duplicate message creation. No phantom delivery. Every state reconciles against durable storage.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Transport ladder** — WebTransport/QUIC → /rpc/* → Bun fallback, har step UI par honest label.
 - **Zero-loss outbox** — offline messages local outbox mein, resume par idempotent send (client_msg_id).
@@ -621,7 +621,7 @@ Authentication → Workspace membership → RLS → Authorization → Device Tru
 
 No single security feature is treated as the entire security model.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Sealed device identity** — 5 coarse signals only, envelope encrypted, retain_until purge.
 - **Device-hash-only bans** — IP/network kabhi ban nahi (cafe/office masoom log safe), har ban appealable.
@@ -631,9 +631,9 @@ No single security feature is treated as the entire security model.
 
 ## PHASE 48 — NO MOCK DATA
 
-Lovable must not create fake users, messages, files, storage, presence, audit events, weather, delivery receipts or transfer progress. If backend state doesn't exist: "No conversations yet" — not fake Sarah/John conversations.
+The build must not create fake users, messages, files, storage, presence, audit events, weather, delivery receipts or transfer progress. If backend state doesn't exist: "No conversations yet" — not fake Sarah/John conversations.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **No-mock CI gate** — build fail ho jaye agar UI mein hardcoded sample data mile.
 - **Empty state honesty** — data na ho to `No records yet`, fake preview nahi.
@@ -647,7 +647,7 @@ Must NOT introduce: OpenAI API, Anthropic API, DeepInfra API, OpenWeather API, O
 
 If a capability requires an external service, first look for: browser-native capability → Rust implementation → self-hosted service → PostgreSQL/Supabase capability → local/self-hosted model.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **API-free enforcement scanner** — repo/runtime scan: koi unapproved external host call = build fail.
 - **Approved exception registry** — sirf Open-Meteo (live weather) documented exception, baqi sab band.
@@ -659,7 +659,7 @@ If a capability requires an external service, first look for: browser-native cap
 
 Measure: message p50/p95/p99, delivery latency, read latency, typing latency, presence latency, reconnect time, file throughput, upload resume time, UI interaction latency. Founder sees actual numbers — evidence, not "blazing fast."
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Per-arm latency truth** — har Rust arm ka p50/p95/p99, WT vs fallback alag.
 - **Budget-based alerts** — budget breach par alert, average par nahi.
@@ -671,7 +671,7 @@ Measure: message p50/p95/p99, delivery latency, read latency, typing latency, pr
 
 Keyboard navigation, screen readers, reduced motion, high contrast, focus states, accessible composer, accessible notifications, accessible file status. Weather/cinematic effects must never interfere with communication.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Keyboard-complete chat** — har action keyboard se, focus trap sahi, ⌘K se sab kuch.
 - **Screen-reader receipts** — delivery/read states announce hote hain, timeline lanes labelled.
@@ -683,7 +683,7 @@ Keyboard navigation, screen readers, reduced motion, high contrast, focus states
 
 Desktop: People | Conversation. Tablet: adaptive two-panel. Mobile: People → Conversation. No broken sidebar. No hidden composer. No inaccessible send button.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **One surface, three panels** — desktop 3-panel, tablet 2, mobile morph, koi reload nahi.
 - **Container-query components** — panel ke size par component khud badalta hai.
@@ -695,7 +695,7 @@ Desktop: People | Conversation. Tablet: adaptive two-panel. Mobile: People → C
 
 Before production every item must have a real verification result: Authentication, Workspace isolation, Messaging, Delivery, Read receipts, Typing, Presence, Offline, Reconnect, Files, 5GB enforcement, Scanning, Resume, Storage, 1TB enforcement, Export, Device Trust, Revocation, Audit, Notifications, Groups, Search, Email bridge, Calm Mode, Cinematic UI, Performance, Accessibility.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Release gate = evidence gate** — routes 200 + contract tests + a11y + perf + no-mock + API-free scan, sab green warna release nahi.
 - **Rollback with data safety** — one-command rollback, migrations forward-only + reversible plan.
@@ -735,7 +735,7 @@ Before production every item must have a real verification result: Authenticatio
                               ANEXOMAIL AI
 ```
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Final stack proof panel** — live batata hai: Rust primary, WT/QUIC state, Bun fallback idle/active, Supabase truth.
 - **Single source of truth audit** — koi state jo DB mein na ho, UI mein authoritative nahi.
@@ -749,7 +749,7 @@ Business: £97/user/month — ANEXOMAIL Business. Defined ANEXOChat limits apply
 
 Business Pro: £2,850/month per company. Not per user. Not per mailbox. Not per employee. Included: unlimited legitimate internal users · unlimited ANEXOChat messages · unlimited ANEXOChat transfer volume · 1TB pooled storage · 5GB maximum individual file · groups · read receipts · typing · presence · resumable transfers · business work layer · promise tracking · decision ledger · conversation health · message provenance · business receipts · permanent search · Email ↔ Chat bridge · Device Trust · Audit Ledger · access revocation · export · safety system · cinematic experience · Calm Mode · priority support.
 
-### Lovable Suggestions Features to be added
+### Founder Suggestions Features to be added
 
 - **Entitlement truth at server** — plan features DB se, client kabhi authority nahi; blocked feature par honest server message.
 - **Plan card = repo truth** — pricing sirf `src/lib/plans.ts` se, drift test build par.
@@ -763,7 +763,7 @@ WhatsApp/Messenger gives people easy communication. ANEXOChat gives businesses e
 
 The user should feel: "WhatsApp jaisa simple." Then: "Lekin business ke liye bana hua." Then: "Is mein meri conversation actual work ban sakti hai." And finally: "Mujhe pata hai kya hua, kis ne kiya, aur system ne kya actually verify kiya."
 
-## FINAL LOVABLE MASTER INSTRUCTION (Phases 1–56)
+## FINAL FOUNDER MASTER INSTRUCTION (Phases 1–56)
 
 Build ANEXOChat™ as a native human-to-human private communication system inside ANEXOMAIL. Architecture must be API-FREE from the beginning. Do not introduce third-party chat APIs, AI APIs, weather APIs, file-transfer APIs, moderation APIs or external communication SaaS dependencies. Use the existing Supabase/PostgreSQL/SB4 infrastructure, Supabase Realtime where appropriate, and the Rust/WebTransport/HTTP3/QUIC architecture for realtime and large-file transport.
 
@@ -902,7 +902,7 @@ Founder Lock — ANEXOChat + Leo Intelligence. Phases 1–56 unchanged. Phase 57
 
 Killer principle: the more value Leo creates, the more AI credits the customer chooses to use.
 
-## FINAL LOVABLE LOCK
+## FINAL FOUNDER LOCK
 
 Build the entire ANEXOChat project from Phase 1 through Phase 57.
 

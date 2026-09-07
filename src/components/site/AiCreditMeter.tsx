@@ -1,7 +1,7 @@
 import { Info } from "lucide-react";
 
 /**
- * Credit wallet preview — Lovable-style meter.
+ * Credit wallet preview — credit meter.
  * Display only. Real numbers Supabase wallet se aate hain (signed-in surface);
  * yahan awam ko plan allocation ka honest example dikhta hai.
  */

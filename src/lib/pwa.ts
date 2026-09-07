@@ -2,7 +2,7 @@
  * Phase 28 — Cross-Platform. Service worker registration wrapper.
  *
  * Locked rules:
- * - never register in dev, in an iframe, or on any Lovable preview host
+ * - never register in dev, in an iframe, or on any hosted preview host
  * - `?sw=off` is a kill switch that unregisters the worker
  * - offline READ only in this phase; the real send queue lands in Phase 30
  */
