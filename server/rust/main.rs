@@ -1247,6 +1247,101 @@ async fn dispatch(
 
         "chat.work.board" => sb_rpc("chat_work_board", json!({ "_user": me.id })).await,
 
+        // ── PHASE 23: PROMISE RECOVERY ENGINE ───────────────────────────────
+        // Engine khud kabhi deadline nahi badalti. Har action insaan karta hai,
+        // reason ke saath, aur ledger append-only hai.
+        "chat.promise.board" => sb_rpc("promise_board", json!({ "_user": me.id })).await,
+
+        "chat.promise.recover" => {
+            let item = s(&input, "item_id");
+            let action = s(&input, "action");
+            if item.is_empty() || action.is_empty() {
+                Err("item_id_action_required".to_string())
+            } else {
+                sb_rpc(
+                    "promise_recover",
+                    json!({
+                        "_item": item, "_user": me.id, "_action": action,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                        "_new_due": input.get("new_due_at").cloned().unwrap_or(Value::Null),
+                        "_new_owner": input.get("new_owner_id").cloned().unwrap_or(Value::Null),
+                        "_impact": input.get("downstream_impact").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.promise.keep" => {
+            let item = s(&input, "item_id");
+            if item.is_empty() {
+                Err("item_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "promise_keep",
+                    json!({
+                        "_item": item, "_user": me.id,
+                        "_evidence": input.get("evidence").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.promise.history" => {
+            let item = s(&input, "item_id");
+            if item.is_empty() {
+                Err("item_id_required".to_string())
+            } else {
+                sb_rpc("promise_history", json!({ "_item": item, "_user": me.id })).await
+            }
+        }
+
+        // Device ban appeal: ban sirf device par hota hai, network par kabhi
+        // nahi — is liye har ban ke khilaf insaani appeal ka raasta khula hai.
+        "chat.device.appeal" => {
+            let hash = s(&input, "device_hash");
+            let statement = s(&input, "statement");
+            if hash.is_empty() || statement.trim().is_empty() {
+                Err("device_hash_statement_required".to_string())
+            } else {
+                sb_rpc(
+                    "device_appeal_open",
+                    json!({ "_user": me.id, "_device_hash": hash, "_statement": statement }),
+                )
+                .await
+            }
+        }
+
+        "chat.device.appeal.queue" => {
+            sb_rpc(
+                "device_appeal_queue",
+                json!({
+                    "_actor": me.id,
+                    "_state": input.get("state").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "chat.device.appeal.decide" => {
+            let appeal = s(&input, "appeal_id");
+            let decision = s(&input, "decision");
+            if appeal.is_empty() || decision.is_empty() {
+                Err("appeal_id_decision_required".to_string())
+            } else {
+                sb_rpc(
+                    "device_appeal_decide",
+                    json!({
+                        "_actor": me.id, "_appeal": appeal, "_decision": decision,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+
         // ── messenger basics (loophole fix): star + forward ──────────────────
         "chat.message.star" => {
             let msg = s(&input, "message_id");
