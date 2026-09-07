@@ -177,7 +177,23 @@ create table if not exists public.admin_logs (
 );
 create index if not exists admin_logs_idx on public.admin_logs(user_id, at desc);
 create index if not exists admin_logs_trace_idx on public.admin_logs(trace_id);
-create index if not exists admin_logs_msg_trgm on public.admin_logs using gin (message gin_trgm_ops);
+do $$
+declare op text;
+begin
+  select n.nspname into op
+    from pg_opclass c
+    join pg_namespace n on n.oid = c.opcnamespace
+    join pg_am a on a.oid = c.opcmethod
+   where c.opcname = 'gin_trgm_ops' and a.amname = 'gin'
+   limit 1;
+  if op is null then
+    raise notice 'pg_trgm missing — admin_logs_msg_trgm skip';
+    return;
+  end if;
+  execute format(
+    'create index if not exists admin_logs_msg_trgm on public.admin_logs using gin (message %I.gin_trgm_ops)',
+    op);
+end $$;
 grant select, insert on public.admin_logs to authenticated;
 grant all on public.admin_logs to service_role;
 alter table public.admin_logs enable row level security;
