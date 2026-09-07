@@ -1869,6 +1869,198 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 31 · FILE CONTEXT (RUST PRIMARY) ──────────────────────────
+        // Context card · deterministic diff (koi AI API nahi) · duplicate-by-hash
+        // · stale-file warning · human-recorded relationship graph.
+
+        "file.context.card" => {
+            let file = s(&input, "file_id");
+            if file.is_empty() {
+                Err("file_id_required".to_string())
+            } else {
+                sb_rpc("file_context_card", json!({ "_file": file, "_user": me.id })).await
+            }
+        }
+
+        "file.context.diff" => {
+            let file = s(&input, "file_id");
+            let from = input.get("from").and_then(|v| v.as_i64()).unwrap_or(0);
+            let to = input.get("to").and_then(|v| v.as_i64()).unwrap_or(0);
+            if file.is_empty() || from <= 0 || to <= 0 {
+                Err("file_id_from_to_required".to_string())
+            } else {
+                sb_rpc(
+                    "file_version_diff",
+                    json!({ "_file": file, "_from": from, "_to": to, "_user": me.id }),
+                )
+                .await
+            }
+        }
+
+        "file.context.duplicates" => {
+            let file = s(&input, "file_id");
+            if file.is_empty() {
+                Err("file_id_required".to_string())
+            } else {
+                sb_rpc("file_duplicates", json!({ "_file": file, "_user": me.id })).await
+            }
+        }
+
+        "file.context.stale" => {
+            let file = s(&input, "file_id");
+            if file.is_empty() {
+                Err("file_id_required".to_string())
+            } else {
+                sb_rpc("file_stale_check", json!({ "_file": file, "_user": me.id })).await
+            }
+        }
+
+        "file.context.link" => {
+            let file = s(&input, "file_id");
+            let object_type = s(&input, "object_type");
+            let object_id = s(&input, "object_id");
+            let reason = s(&input, "reason");
+            if file.is_empty() || object_type.is_empty() || object_id.is_empty() {
+                Err("file_object_required".to_string())
+            } else if reason.trim().chars().count() < 8 {
+                Err("reason_min_8_chars".to_string())
+            } else {
+                sb_rpc(
+                    "file_link",
+                    json!({
+                        "_file": file, "_object_type": object_type, "_object_id": object_id,
+                        "_label": s(&input, "label"), "_reason": reason, "_user": me.id
+                    }),
+                )
+                .await
+            }
+        }
+
+        "file.context.unlink" => {
+            let link = s(&input, "link_id");
+            let reason = s(&input, "reason");
+            if link.is_empty() {
+                Err("link_id_required".to_string())
+            } else if reason.trim().chars().count() < 8 {
+                Err("reason_min_8_chars".to_string())
+            } else {
+                sb_rpc(
+                    "file_unlink",
+                    json!({ "_link": link, "_reason": reason, "_user": me.id }),
+                )
+                .await
+            }
+        }
+
+        "file.context.graph" => {
+            let file = s(&input, "file_id");
+            if file.is_empty() {
+                Err("file_id_required".to_string())
+            } else {
+                sb_rpc("file_relationship_graph", json!({ "_file": file, "_user": me.id })).await
+            }
+        }
+
+        // ── ANEXOVIDEOCALL PHASE 31 · CALL BUSINESS RECORD (RUST PRIMARY) ───
+        // Join truth append-only · duration asli events se · in-call file wahi
+        // evidence chain · call → work provenance · relay honesty.
+
+        "call.record" => {
+            let session = s(&input, "session_id");
+            if session.is_empty() {
+                Err("session_id_required".to_string())
+            } else {
+                sb_rpc("call_record", json!({ "_session": session, "_user": me.id })).await
+            }
+        }
+
+        "call.record.board" => {
+            let conv = s(&input, "conversation_id");
+            sb_rpc(
+                "call_record_board",
+                json!({
+                    "_user": me.id,
+                    "_conversation": if conv.is_empty() { Value::Null } else { Value::String(conv) },
+                    "_limit": input.get("limit").and_then(|v| v.as_i64()).unwrap_or(50)
+                }),
+            )
+            .await
+        }
+
+        "call.event" => {
+            let session = s(&input, "session_id");
+            let event = s(&input, "event");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || event.is_empty() || at_ms <= 0 {
+                Err("session_event_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_event_record",
+                    json!({
+                        "_session": session, "_user": me.id, "_event": event, "_at_ms": at_ms,
+                        "_transport": s(&input, "transport"), "_path": s(&input, "path"),
+                        "_detail": input.get("detail").cloned().unwrap_or(json!({}))
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.transport" => {
+            let session = s(&input, "session_id");
+            let path = s(&input, "path");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || path.is_empty() || at_ms <= 0 {
+                Err("session_path_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_transport_record",
+                    json!({
+                        "_session": session, "_user": me.id, "_path": path,
+                        "_relay_host": s(&input, "relay_host"), "_reason": s(&input, "reason"),
+                        "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
+
+        "call.file.share" => {
+            let session = s(&input, "session_id");
+            let version = s(&input, "version_id");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || version.is_empty() || at_ms <= 0 {
+                Err("session_version_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_file_share",
+                    json!({ "_session": session, "_version": version, "_user": me.id, "_at_ms": at_ms }),
+                )
+                .await
+            }
+        }
+
+        "call.work.link" => {
+            let session = s(&input, "session_id");
+            let object_type = s(&input, "object_type");
+            let object_id = s(&input, "object_id");
+            let at_ms = input.get("at_ms").and_then(|v| v.as_i64()).unwrap_or(0);
+            if session.is_empty() || object_type.is_empty() || object_id.is_empty() || at_ms <= 0 {
+                Err("session_object_at_ms_required".to_string())
+            } else {
+                sb_rpc(
+                    "call_work_link",
+                    json!({
+                        "_session": session, "_object_type": object_type, "_object_id": object_id,
+                        "_note": s(&input, "note"), "_user": me.id, "_at_ms": at_ms
+                    }),
+                )
+                .await
+            }
+        }
+
+
+
         // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
         // Detection sirf device shape par. Engine khud kabhi block nahi karti:
         // warn/block/release har qadam insaan ka, 12+ char reason ke saath.

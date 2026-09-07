@@ -1787,3 +1787,180 @@ chatRouter.get("/email/escalations/:messageId", async (req, res) => {
   if (error) return fail(res, error);
   res.json(data);
 });
+
+/* ── PHASE 31 · FILE CONTEXT (Bun FALLBACK — primary Rust /rpc/file.context.*) ─ */
+
+chatRouter.get("/file/context/:fileId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_context_card", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/diff", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const from = Number(req.query.from || 0);
+  const to = Number(req.query.to || 0);
+  if (!from || !to) return res.status(400).json({ error: "from_to_required" });
+  const { data, error } = await db!.rpc("file_version_diff", {
+    _file: req.params.fileId,
+    _from: from,
+    _to: to,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/duplicates", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_duplicates", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/stale", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_stale_check", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/graph", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_relationship_graph", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/file/context/link", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const reason = String(req.body?.reason || "");
+  if (reason.trim().length < 8) return res.status(400).json({ error: "reason_min_8_chars" });
+  const { data, error } = await db!.rpc("file_link", {
+    _file: String(req.body?.file_id || ""),
+    _object_type: String(req.body?.object_type || ""),
+    _object_id: String(req.body?.object_id || ""),
+    _label: String(req.body?.label || ""),
+    _reason: reason,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/file/context/unlink", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const reason = String(req.body?.reason || "");
+  if (reason.trim().length < 8) return res.status(400).json({ error: "reason_min_8_chars" });
+  const { data, error } = await db!.rpc("file_unlink", {
+    _link: String(req.body?.link_id || ""),
+    _reason: reason,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+/* ── ANEXOVIDEOCALL PHASE 31 · CALL RECORD (Bun FALLBACK — primary /rpc/call.*) ─ */
+
+chatRouter.get("/call/record/:sessionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_record", {
+    _session: req.params.sessionId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/records", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_record_board", {
+    _user: me.id,
+    _conversation: req.query.c ? String(req.query.c) : null,
+    _limit: Number(req.query.limit || 50),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/event", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_event_record", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _event: String(req.body?.event || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+    _transport: String(req.body?.transport || ""),
+    _path: String(req.body?.path || ""),
+    _detail: req.body?.detail ?? {},
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/transport", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_transport_record", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _path: String(req.body?.path || ""),
+    _relay_host: String(req.body?.relay_host || ""),
+    _reason: String(req.body?.reason || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/file", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_file_share", {
+    _session: String(req.body?.session_id || ""),
+    _version: String(req.body?.version_id || ""),
+    _user: me.id,
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/work", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_work_link", {
+    _session: String(req.body?.session_id || ""),
+    _object_type: String(req.body?.object_type || ""),
+    _object_id: String(req.body?.object_id || ""),
+    _note: String(req.body?.note || ""),
+    _user: me.id,
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});

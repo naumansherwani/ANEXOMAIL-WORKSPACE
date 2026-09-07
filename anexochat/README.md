@@ -27,6 +27,8 @@ anexochat/
 | `sql/phase23_promise_engine.sql` | 23 | promise recovery (human-only), device ban appeals |
 | `sql/phase24_decision_ledger.sql` | 24 | decision ledger + impact map (versioned, never overwritten) |
 | `sql/phase24a_account_integrity.sql` | 24A | one person, one account ladder — flag -> written warning -> human block, device-hash-only bans, 72h export before purge |
+| `sql/phase31_file_context.sql` | 31 | file business context card, deterministic version diff, duplicate-by-hash, stale-file warning, relationship graph |
+| `sql/videocall_phase31_call_record.sql` | VC 31 | call business record, join truth ledger, in-call file evidence, call → work, relay honesty |
 
 Tafseel: `sql/README.md` (isi folder mein).
 
