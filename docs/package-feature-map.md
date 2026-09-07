@@ -27,3 +27,26 @@ Founder: `founder_accounts` row = 5 GB file · 1 TB pool · unlimited transfer �
 Basic/Pro ko chat file engine ZERO — purana ANEXOChat access lock (Basic/Pro ko
 ANEXOChat nahi milta) qaayam hai. Un plans ke liye file transfer UI dikhta hai
 magar server sach bolta hai: "Not included in your plan."
+
+
+## Phase 16/17/18 — File truth + self-hosted safety
+
+DB truth: `file_evidence` · `file_type_policy` · `file_scan_jobs` ·
+`file_safety_events` · `file_enforcement` · `file_downloads`
+(`sql/phase16_18_file_truth_safety.sql`).
+
+| Feature | Basic | Pro | Business | Business Pro | AI Pro | AI Business | AI Executive |
+|---|---|---|---|---|---|---|---|
+| Evidence chain (Selected→Uploaded→Scanning→Verified→Available→Downloaded) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Append-only evidence rows (step skip mumkin nahi) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| File-type policy (magic bytes + double extension + mime mismatch) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Self-hosted malware scan (local clamd, no external API) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Entropy + archive-bomb protection | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Local content-safety classifier (text-like files only) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Download proof (`file_downloads`) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Safety panel: engines + queue + account standing | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Safety review queue + enforcement history view | — | — | — | ✓ | — | — | ✓ |
+
+LOCK: insaani guftagu kabhi kisi AI API par nahi jati. Safety sirf files par,
+aur woh bhi ANEXOMAIL ke apne infra ke andar (deterministic tools + local
+clamd). "Delivered" lafz UI mein kabhi nahi — sirf woh step jo DB mein sabit ho.
