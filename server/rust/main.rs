@@ -2412,6 +2412,55 @@ fn turn_credentials(user_id: &str) -> Value {
 //   {"type":"error","code":"..."}          — koi fake state nahi
 //
 // Yeh path durability ka faisla nahi karta: send hamesha DB write se guzarta hai.
+// ── PHASE 31A: QUIC SIGNALING HUB (per-conversation fan-out, in-memory) ─────
+// Sirf raftaar ke liye. Har frame ka durable ghar `chat_signals` rows hai, is
+// liye process restart par koi sach nahi khota — sirf QUIC path naya banta hai.
+type SignalTx = tokio::sync::mpsc::UnboundedSender<String>;
+static SIGNAL_HUB: std::sync::OnceLock<
+    std::sync::Mutex<std::collections::HashMap<String, Vec<(String, SignalTx)>>>,
+> = std::sync::OnceLock::new();
+
+fn signal_hub() -> &'static std::sync::Mutex<std::collections::HashMap<String, Vec<(String, SignalTx)>>>
+{
+    SIGNAL_HUB.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()))
+}
+
+fn signal_hub_join(conv: &str, user: &str, tx: SignalTx) {
+    if let Ok(mut map) = signal_hub().lock() {
+        let peers = map.entry(conv.to_string()).or_default();
+        peers.retain(|(u, t)| u != user && !t.is_closed());
+        peers.push((user.to_string(), tx));
+    }
+}
+
+fn signal_hub_leave(conv: &str, user: &str) {
+    if let Ok(mut map) = signal_hub().lock() {
+        if let Some(peers) = map.get_mut(conv) {
+            peers.retain(|(u, t)| u != user && !t.is_closed());
+            if peers.is_empty() {
+                map.remove(conv);
+            }
+        }
+    }
+}
+
+/// `to` khali ho to conversation ke sab peers ko (apne aap ko kabhi nahi).
+fn signal_hub_send(conv: &str, from: &str, to: &str, line: String) {
+    if let Ok(map) = signal_hub().lock() {
+        if let Some(peers) = map.get(conv) {
+            for (user, tx) in peers.iter() {
+                if user == from {
+                    continue;
+                }
+                if !to.is_empty() && user != to {
+                    continue;
+                }
+                let _ = tx.send(line.clone());
+            }
+        }
+    }
+}
+
 async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     let Ok(request) = incoming.await else { return };
     let Ok(connection) = request.accept().await else {
