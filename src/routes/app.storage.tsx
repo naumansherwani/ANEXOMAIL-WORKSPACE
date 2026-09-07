@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Database, HardDrive } from "lucide-react";
 
 import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
+import { FileTransfers } from "@/components/app/chat/FileTransfers";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { gb, LEVEL_COPY, type MailboxStorage, useStorageState } from "@/lib/storage-client";
 
@@ -161,6 +162,9 @@ function StoragePage() {
           )}
         </CardBody>
       </Section>
+
+      {/* PHASE 13/14/15 — file engine: transfer vs storage, resumable 5GB */}
+      <FileTransfers />
     </div>
   );
 }

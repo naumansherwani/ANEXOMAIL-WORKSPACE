@@ -237,7 +237,7 @@ async fn dispatch(
         };
     }
 
-    if !proc.starts_with("chat.") {
+    if !proc.starts_with("chat.") && !proc.starts_with("file.") {
         return err(
             StatusCode::NOT_FOUND,
             "procedure_not_in_rust",
@@ -922,7 +922,79 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 13/14/15: FILE ENGINE (PRIMARY yahan, Bun sirf fallback) ──
+        // Truth DB mein: pool/limits/chunk state/resume identity sab RPC se.
+        "file.state" => {
+            sb_rpc(
+                "file_engine_state",
+                json!({ "_user": me.id, "_workspace": me.workspace_id }),
+            )
+            .await
+        }
+
+        "file.begin" => {
+            sb_rpc(
+                "file_transfer_begin",
+                json!({
+                    "_user": me.id,
+                    "_workspace": me.workspace_id,
+                    "_conv": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                    "_name": s(&input, "name"),
+                    "_content_type": s(&input, "content_type"),
+                    "_bytes": n(&input, "bytes").unwrap_or(0),
+                    "_file_sha256": input.get("file_sha256").cloned().unwrap_or(Value::Null),
+                    "_chunk_size": n(&input, "chunk_size").unwrap_or(8388608),
+                    "_device": s(&input, "device"),
+                }),
+            )
+            .await
+        }
+
+        // Resume ka asli source: missing + corrupt chunk list DB se.
+        "file.transfer.state" => {
+            sb_rpc(
+                "file_transfer_state",
+                json!({ "_user": me.id, "_transfer": s(&input, "transfer_id") }),
+            )
+            .await
+        }
+
+        "file.transfer.mark" => {
+            sb_rpc(
+                "file_transfer_mark",
+                json!({
+                    "_user": me.id,
+                    "_transfer": s(&input, "transfer_id"),
+                    "_state": s(&input, "state"),
+                    "_transport": s(&input, "transport"),
+                    "_error": input.get("error").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "file.commit" => {
+            sb_rpc(
+                "file_commit",
+                json!({
+                    "_user": me.id,
+                    "_transfer": s(&input, "transfer_id"),
+                    "_file_sha256": input.get("file_sha256").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "file.versions" => {
+            sb_rpc(
+                "file_versions",
+                json!({ "_user": me.id, "_file": s(&input, "file_id") }),
+            )
+            .await
+        }
+
         other => {
+
             return err(
                 StatusCode::NOT_FOUND,
                 "procedure_not_in_rust",
@@ -1118,7 +1190,134 @@ async fn start_webtransport() {
     }
 }
 
+// ── PHASE 14: RAW CHUNK PATH (browser → HTTP/3/QUIC → Rust → storage) ──────
+//
+// POST /file/chunk   headers: authorization, x-transfer-id, x-chunk-index,
+//                             x-chunk-sha256 (client ka hash), content-type
+// Body = raw chunk bytes (stream). Rust khud sha256 nikaalta hai aur DB ko
+// dono hash deta hai: match = verified, mismatch = corrupt (sirf woh chunk
+// dobara aayega, poori file kabhi nahi). Backpressure: concurrency DB se.
+async fn sb_storage_put(path: &str, bytes: axum::body::Bytes) -> Result<(), String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let client = reqwest::Client::new();
+    let res = client
+        .post(format!("{url}/storage/v1/object/chat-files/{path}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .header("content-type", "application/octet-stream")
+        .header("x-upsert", "true")
+        .body(bytes)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if !res.status().is_success() {
+        return Err(res.text().await.unwrap_or_else(|_| "storage_error".into()));
+    }
+    Ok(())
+}
+
+fn sha256_hex(bytes: &[u8]) -> String {
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    hasher
+        .finalize()
+        .iter()
+        .map(|b| format!("{b:02x}"))
+        .collect()
+}
+
+async fn file_chunk(headers: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
+    let head = |k: &str| {
+        headers
+            .get(k)
+            .and_then(|v| v.to_str().ok())
+            .unwrap_or("")
+            .to_string()
+    };
+
+    let token = match bearer(&headers) {
+        Some(t) => t,
+        None => return err(StatusCode::UNAUTHORIZED, "unauthorized", "Missing bearer").into_response(),
+    };
+    let me = match chat_identity(&token).await {
+        Ok(me) => me,
+        Err((status, code, detail)) => {
+            return (status, Json(json!({ "error": { "code": code, "message": detail } })))
+                .into_response()
+        }
+    };
+
+    let transfer = head("x-transfer-id");
+    let idx: i64 = head("x-chunk-index").parse().unwrap_or(-1);
+    let client_sha = head("x-chunk-sha256").to_lowercase();
+    if transfer.is_empty() || idx < 0 {
+        return err(
+            StatusCode::BAD_REQUEST,
+            "bad_request",
+            "x-transfer-id + x-chunk-index required",
+        )
+        .into_response();
+    }
+
+    // Transfer identity DB se — prefix client se kabhi nahi liya jata.
+    let state = match sb_rpc(
+        "file_transfer_state",
+        json!({ "_user": me.id, "_transfer": transfer }),
+    )
+    .await
+    {
+        Ok(v) => v,
+        Err(e) => return err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response(),
+    };
+    if state.get("found").and_then(|v| v.as_bool()) != Some(true) {
+        return err(StatusCode::NOT_FOUND, "transfer_not_found", "Transfer nahi mila").into_response();
+    }
+    let prefix = state
+        .get("storage_prefix")
+        .and_then(|v| v.as_str())
+        .unwrap_or_default()
+        .to_string();
+
+    let len = body.len() as i64;
+    let server_sha = sha256_hex(&body);
+
+    if !client_sha.is_empty() && client_sha != server_sha {
+        // Corrupt chunk storage tak nahi jaata — sirf DB mein record hota hai.
+        let ack = sb_rpc(
+            "file_chunk_ack",
+            json!({
+                "_user": me.id, "_transfer": transfer, "_idx": idx,
+                "_bytes": len, "_sha256": client_sha, "_server_sha256": server_sha
+            }),
+        )
+        .await;
+        return match ack {
+            Ok(v) => (StatusCode::CONFLICT, Json(json!({ "result": { "data": v } }))).into_response(),
+            Err(e) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response(),
+        };
+    }
+
+    if let Err(e) = sb_storage_put(&format!("{prefix}/chunks/{idx}"), body).await {
+        return err(StatusCode::BAD_GATEWAY, "storage_error", &e).into_response();
+    }
+
+    match sb_rpc(
+        "file_chunk_ack",
+        json!({
+            "_user": me.id, "_transfer": transfer, "_idx": idx,
+            "_bytes": len, "_sha256": server_sha, "_server_sha256": server_sha
+        }),
+    )
+    .await
+    {
+        Ok(v) => ok(v).into_response(),
+        Err(e) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response(),
+    }
+}
+
 #[tokio::main]
+
 async fn main() {
     let _ = dotenvy::from_path("/opt/anexomail-rust/.env");
     tracing_subscriber::fmt().with_target(false).init();
@@ -1133,6 +1332,11 @@ async fn main() {
     let app = Router::new()
         .route("/rpc/health", get(health).post(health))
         .route("/rpc/:proc", post(dispatch).get(dispatch))
+        // 16 MB chunk ceiling — 5 GB file 8 MB chunks mein aati hai.
+        .route(
+            "/file/chunk",
+            post(file_chunk).layer(axum::extract::DefaultBodyLimit::max(16 * 1024 * 1024)),
+        )
         .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], PORT));

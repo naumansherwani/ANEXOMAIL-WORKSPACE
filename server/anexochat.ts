@@ -19,6 +19,7 @@
 // ============================================================================
 import express from "express";
 import chatRouter from "./routes/chat";
+import filesRouter from "./routes/files";
 
 const PORT = Number(process.env.ANEXOCHAT_PORT) || 3300;
 
@@ -34,6 +35,8 @@ app.get("/api/chat/health", (_req, res) =>
   res.json({ service: "anexochat", port: PORT, transport: "bun", ok: true }),
 );
 
+// PHASE 13/14/15 file engine — fallback only (PRIMARY Rust /rpc/file.* + /file/chunk)
+app.use("/api/chat/file", filesRouter);
 app.use("/api/chat", chatRouter);
 
 // 404 hamesha last
