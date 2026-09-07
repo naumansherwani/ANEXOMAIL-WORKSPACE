@@ -20,7 +20,7 @@ if [ -z "$URL" ]; then
     v="${v#\"}"; v="${v%\"}"; v="${v#\'}"; v="${v%\'}"
     if [ -n "${v:-}" ]; then URL="$v"; break; fi
   done
-done 2>/dev/null
+fi
 
 if [ -z "$URL" ] && [ -z "${PGHOST:-}" ]; then
   echo "FAIL: DATABASE_URL/PGHOST server ki protected env files mein nahi mila."
