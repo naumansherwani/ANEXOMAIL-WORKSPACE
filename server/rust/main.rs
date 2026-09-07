@@ -1332,7 +1332,7 @@ async fn dispatch(
             if target.is_empty() || reason.trim().len() < 12 {
                 Err("user_id_and_12_char_reason_required".to_string())
             } else {
-                let fname = match procedure {
+                let fname = match proc.as_str() {
                     "account.integrity.warn" => "account_integrity_warn",
                     "account.integrity.block" => "account_integrity_block",
                     _ => "account_integrity_release",
