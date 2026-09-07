@@ -8,7 +8,7 @@
  *   - Har value asli getStats reading hai. Reading na ho to "measuring" —
  *     speed, latency ya quality ka jhoota claim kabhi nahi.
  */
-import { BellRing, ChevronDown, Mic, MicOff, PhoneOff, Video, VideoOff } from "lucide-react";
+import { BellRing, ChevronDown, Mic, MicOff, Network, PhoneOff, Video, VideoOff } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import type { CallPhase, CallStats } from "@/lib/chat-call";
@@ -59,6 +59,7 @@ export function VideoCallOverlay({
   // PHASE 31A — NEW ADDED
   ringing,
   topology,
+  mediaForwarding,
   survival,
   onDecline,
 }: {
@@ -80,6 +81,7 @@ export function VideoCallOverlay({
   onHangup: () => void;
   ringing: { tone: "ringtone" | "ringback"; audible: boolean } | null;
   topology: "mesh" | "sfu" | null;
+  mediaForwarding: boolean;
   survival: string | null;
   onDecline: () => void;
 }) {
@@ -173,9 +175,24 @@ export function VideoCallOverlay({
         ) : null}
         {topology ? (
           <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground">
-            {topology === "sfu" ? "Group · our media engine" : "Direct · 1-to-1"}
+            {topology === "sfu" && mediaForwarding
+              ? "Group · Rust media engine live"
+              : topology === "sfu"
+                ? "Group · media engine connecting"
+                : "Direct · 1-to-1"}
           </span>
         ) : null}
+        <span
+          className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
+          aria-label="Current media path"
+        >
+          <Network className="size-3" aria-hidden />
+          {stats.path === "p2p"
+            ? "Direct P2P"
+            : stats.path === "relay"
+              ? "TURN relay"
+              : "Path measuring"}
+        </span>
         <span>· {detail}</span>
       </div>
 
@@ -251,7 +268,13 @@ export function VideoCallOverlay({
           <Row label="Network recoveries" value={String(stats.ice_restarts)} />
           <Row
             label="Signaling"
-            value={signaling === "realtime" ? "Persistent realtime channel" : "Durable rows (realtime unavailable)"}
+            value={
+              signaling === "quic"
+                ? "QUIC · Rust primary"
+                : signaling === "realtime"
+                  ? "Persistent realtime fallback"
+                  : "Durable rows fallback"
+            }
           />
           <Row
             label="TURN fallback"
