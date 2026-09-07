@@ -1964,3 +1964,147 @@ chatRouter.post("/call/work", async (req, res) => {
   if (error) return fail(res, error);
   res.json(data);
 });
+
+/* ── PHASE 31A · LIGHT-SPEED CALL PATH (Bun FALLBACK — primary /rpc/call.*) ── */
+
+chatRouter.post("/call/ring/start", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_ring_start", {
+    _session: String(req.body?.session_id || ""),
+    _from: me.id,
+    _to: String(req.body?.to_user || ""),
+    _tone: String(req.body?.tone || "ringtone"),
+    _calm: Boolean(req.body?.calm_mode),
+    // Bun path par transport ka sach: QUIC nahi, durable rows
+    _trigger: "rows",
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/ring/settle", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_ring_settle", {
+    _ring: String(req.body?.ring_id || ""),
+    _user: me.id,
+    _action: String(req.body?.action || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/ring/:sessionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_ring_state", {
+    _session: req.params.sessionId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/connect/mark", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_connect_mark", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _mark: String(req.body?.mark || ""),
+    _value_ms: req.body?.value_ms == null ? null : Number(req.body.value_ms),
+    _transport: String(req.body?.transport || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/connect/report/:sessionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_connect_report", {
+    _session: req.params.sessionId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/connect/health", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_connect_health", {
+    _user: me.id,
+    _days: Number(req.query.days || 7),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/sfu/ensure", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_room_ensure", {
+    _conversation: String(req.body?.conversation_id || ""),
+    _user: me.id,
+    _participants: Number(req.body?.participants || 2),
+    _engine_host: process.env["ANEXOCALL_SFU_HOST"] ?? "",
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/sfu/join", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_join", {
+    _room: String(req.body?.room_id || ""),
+    _user: me.id,
+    _layers: Number(req.body?.layers || 3),
+    _codec: String(req.body?.codec || ""),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/sfu/leave", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_leave", {
+    _room: String(req.body?.room_id || ""),
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/sfu/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_state", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/survival", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_survival_record", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _state: String(req.body?.state || ""),
+    _reason: String(req.body?.reason || ""),
+    _rtt: req.body?.rtt_ms == null ? null : Number(req.body.rtt_ms),
+    _loss: req.body?.loss_pct == null ? null : Number(req.body.loss_pct),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
