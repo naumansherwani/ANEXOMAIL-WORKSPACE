@@ -147,7 +147,7 @@ Timestamp tolerance 5 min (replay protection). `.env` mein sirf wahi
 
 1. Polar dashboard se secret **as-is** copy karo — `whsec_` prefix samet.
 2. Secret ke aage/peeche space ya newline nahi (nano mein line ke end par Enter na dabao).
-3. Test: Polar dashboard se "Send test event" → phir
+3. Test: `cd /opt/anexomail-web && git pull && bash server/rust/polar-payment/test-event.sh` → phir
    `select event_type, processed, process_error from public.polar_webhook_inbox order by received_at desc limit 5;`
 4. Polar dashboard ka **delivery overview** har delivery ka payload + status dikhata hai —
    wahan se redeliver bhi kar sakte ho.
@@ -170,6 +170,12 @@ Timestamp tolerance 5 min (replay protection). `.env` mein sirf wahi
 select count(*) filter (where not processed) as pending,
        count(*) filter (where process_error is not null) as failed
 from public.polar_webhook_inbox;
+
+-- Individual events (inbox mein column event_type hai; type/attempts nahi)
+select event_id, event_type, processed, process_error, received_at, processed_at
+from public.polar_webhook_inbox
+order by received_at desc
+limit 10;
 
 select product_key, status, grace_until from public.polar_subscriptions order by updated_at desc limit 20;
 
@@ -256,3 +262,23 @@ Ingress (ek dafa): `docs/caddy-payments-host.md` — `polarpayments.anexomail.co
 ```sql
 select public.polar_payment_pulse();
 ```
+
+### 8.8 Polar dashboard — exact webhook form
+
+Do endpoints banao: primary `https://polarpayments.anexomail.com/api/v1/polar-webhook`
+aur backup `https://anexomail.com/api/v1/polar-webhook`. Dono ka format **Raw**, API
+version **2026-04**, aur secret engine `.env` wala same `whsec_...` ho.
+
+Sirf yeh events select karo:
+
+- `order.paid`
+- `subscription.created`
+- `subscription.active`
+- `subscription.past_due`
+- `subscription.canceled`
+- `subscription.revoked`
+- `subscription.uncanceled`
+
+`order.refunded` select nahi karna (no-refunds lock). Baqi Benefit, Checkout,
+Customer, Seat, Discount, Member, Organization, Product aur Refund events is engine
+ko darkar nahi.
