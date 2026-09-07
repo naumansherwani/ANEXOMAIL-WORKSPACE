@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { AtmosphereControl, AtmosphereStage, useAtmosphere } from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
 import { CinemaStage, useCinema } from "@/components/app/chat/CinemaStage";
+import { FileTransfers } from "@/components/app/chat/FileTransfers";
 import { MessageStream } from "@/components/app/chat/MessageStream";
 import { VideoCallOverlay } from "@/components/app/chat/VideoCall";
 import { WorkStrip } from "@/components/app/chat/WorkStrip";
@@ -405,6 +406,8 @@ function ChatPage() {
             </header>
 
             <WorkStrip conversationId={openId!} />
+
+            <FileTransfers conversationId={openId!} />
 
             <MessageStream
               messages={ordered}
