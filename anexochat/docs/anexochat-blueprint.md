@@ -50,13 +50,26 @@ Supporting realtime synchronization may use Supabase Realtime.
 
 - No external chat provider.
 - No external file-transfer service.
-- No external weather service.
 - No external AI API.
 - No DeepInfra dependency.
 - No OpenWeatherMap dependency.
-- No Open-Meteo dependency.
 - No third-party "chat API".
 - No third-party "AI moderation API".
+- LIVE weather = the ONE documented exception (founder approved 7 Sep 2026): Open-Meteo only, zero key, zero cost, user permission; reading na mile to UI sach bolta hai.
+
+### RUST-FIRST RULE (repo lock, 7 Sep 2026 — non-negotiable)
+
+- PRIMARY = Rust engine on `:3200` (async axum) + WebTransport/QUIC on `udp 3443`:
+  `/rpc/*` (tRPC-style arms), `/file/chunk`, `/wt/*`.
+- Bun `:3300` is FALLBACK ONLY — jahan WebTransport/QUIC available na ho. Bun kabhi
+  primary nahi likha jayega aur kabhi 100% remove bhi nahi hoga.
+- SQL-heavy arms (timeline · health · provenance · collision · decision · promise ·
+  integrity) bhi Rust arms se jate hain; Bun sirf mirror hai.
+- EVERY NEW PHASE: pehla arm Rust mein likha jayega (`server/rust/main.rs`, async axum,
+  QUIC/WT path). Bun mirror sirf jab fallback lazmi ho.
+- Caddy contract: `/wt/*` + `/rpc/*` + `/file/*` → `:3200` · `/api/chat/*` → `:3300`
+  fallback · web app → Node SSR `:3000`.
+- Supabase/PostgreSQL hamesha source of truth; koi business logic Bun-only nahi.
 
 ## PHASE 1 — ANEXOCHAT FOUNDATION
 
@@ -424,9 +437,11 @@ Weather effects OFF · Particles OFF · Sound OFF · Unnecessary motion OFF · N
 - **Calm-by-default hours** — workspace quiet window, urgent override ke liye reason lazmi.
 - **Zero-motion proof** — Calm Mode par ek diagnostic panel batata hai ke kitne effects actually disabled hain.
 
-## PHASE 37 — CINEMATIC WEATHER WITHOUT EXTERNAL WEATHER API
+## PHASE 37 — CINEMATIC WEATHER (LIVE, OPEN-METEO ONLY)
 
-No Open-Meteo. No OpenWeatherMap. No weather API.
+LIVE weather ON (founder approved 7 Sep 2026): asli reading SIRF Open-Meteo se
+(zero key, zero cost, user ki ijazat se location). No OpenWeatherMap. No other
+weather API. Reading na mile to UI sach bolta hai — guess kabhi nahi.
 
 - Layer 1 — Device clock (always available): Dawn → orange/pink · Day → bright · Dusk → warm · Night → deep navy/stars.
 - Layer 2 — Optional device location, used locally only if permission granted. No mandatory external weather service.
@@ -1107,13 +1122,11 @@ Principle: don't just trust what the conversation says happened — show what th
 - Calm Mode = koi effect nahi, chat fully functional.
 - Cinematic atmosphere = Business Pro exclusive experience layer.
 
-### OPEN CONFLICT — founder decision pending (do not build until resolved)
+### WEATHER DECISION — RESOLVED (founder, 7 Sep 2026)
 
-Founder's wow-factor brief mentions a real weather source (OpenWeatherMap / "Real weather API check kare", location-based Lahore/Dubai/London). This conflicts with the locked API-FREE rule (Phase 37/38/49: no OpenWeatherMap, no Open-Meteo, no external weather API, and never falsely claim real weather).
-
-Two allowed resolutions — founder chooses one:
-
-1. **API-FREE (current lock):** atmosphere device clock + optional device location + optional ambient-light sensor se banta hai; badge honest rehta hai (e.g. "Dusk · Karachi" ya "Atmosphere: Rain (manual)"), asli weather ka dawa nahi. Sunny/Rain/Storm/Snow/Night/Dawn sab available, user/workspace theme ya self-hosted derivation se.
-2. **Self-hosted weather truth:** weather data self-hosted service (apna Rust worker + open dataset) se aata hai, phir badge "Clear · 32°C" jaisa asli claim kar sakta hai. Yeh Phase 49 exception hai aur founder ki likhi approval chahiye.
-
-Third-party weather API (OpenWeatherMap) core runtime mein tab hi jaayega jab founder explicit likh kar API-FREE lock ko is ek jagah exempt karay. Default = option 1.
+LIVE weather ON. Source = **Open-Meteo only** (`src/lib/chat-weather.ts`): zero key,
+zero cost, location sirf user ki ijazat se. Badge par hamesha asli source aur waqt
+(`Clear · 32°C · Open-Meteo, 14:20`). OpenWeatherMap ya koi doosra weather API kabhi
+nahi. Manual mode ka caption `chosen, not measured`. Reading na mile to UI sach bolta
+hai — jhooti weather claim kabhi nahi. Time bands (Dawn/Day/Dusk/Night) device clock
+se, weather se alag lane. Calm Mode par sab effects OFF.
