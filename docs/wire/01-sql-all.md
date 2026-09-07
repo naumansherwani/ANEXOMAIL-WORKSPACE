@@ -1,6 +1,17 @@
 # 01 — SAARI SQL EK COMMAND SE (copy-paste)
 
-## Apply — sirf yeh ek line copy-paste karo
+## Pehli dafa connection — sirf yeh ek line copy-paste karo
+
+```bash
+cd /opt/anexomail-web && git pull && bash sql/connect.sh
+```
+
+Terminal aap se database ka **connection URI** maangega. Database dashboard ke
+**Connect → URI / Transaction pooler** se poori URI copy karke paste karein aur Enter
+karein. Paste screen par nazar nahi aayega, shell history mein nahi jayega, repo mein
+nahi jayega. Script pehle login test karegi; sirf GREEN par protected file mein save hoga.
+
+## Apply — connection GREEN ke baad sirf yeh ek line copy-paste karo
 
 ```bash
 cd /opt/anexomail-web && git pull && bash sql/apply-all.sh
