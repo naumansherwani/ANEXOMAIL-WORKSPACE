@@ -659,15 +659,56 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     }
   }, []);
 
+  /**
+   * PHASE 31A — pre-warm: call button dabne se PEHLE hi network ka raasta
+   * maloom. Media isse nahi guzarti; 60s baad khud band. Ye koi "instant call"
+   * dawa nahi — sirf waqt bachata hai.
+   */
+  const prewarm = useCallback(async () => {
+    if (prewarmReport()) return;
+    try {
+      const ice = await iceBundle();
+      prewarmIce(ice.iceServers);
+    } catch {
+      /* prewarm optional — call phir bhi normal chalti hai */
+    }
+  }, []);
+
+  /**
+   * PHASE 31A — group topology. 3+ log = apna SFU (media forwarding). 1:1 mesh.
+   * TURN ko SFU kehna mamnu — room row khud bataata hai forwarding hai ya nahi.
+   */
+  const prepareGroup = useCallback(
+    async (participants: number) => {
+      if (!conversationId) return null;
+      const room = await sfuEnsure(conversationId, participants).catch(() => null);
+      if (!room?.ok) {
+        setTopology(null);
+        return room ?? null;
+      }
+      sfuRoom.current = room.room_id ?? null;
+      setTopology(room.topology ?? null);
+      if (room.room_id) {
+        await sfuJoin(room.room_id, 3, codecs.av1 ? "av1" : codecs.vp9 ? "vp9" : "h264").catch(
+          () => {},
+        );
+      }
+      return room;
+    },
+    [codecs.av1, codecs.vp9, conversationId],
+  );
+
   // Signaling link chat khulte hi live (incoming call miss nahi hoti)
   useEffect(() => {
     if (!conversationId || !selfId) return;
     openLink();
+    void prewarm();
     return () => {
       link.current?.close();
       link.current = null;
+      dropPrewarm();
     };
-  }, [conversationId, openLink, selfId]);
+  }, [conversationId, openLink, prewarm, selfId]);
 
   // ── Telemetry: sirf asli readings, append-only DB samples ────────────────
   useEffect(() => {
