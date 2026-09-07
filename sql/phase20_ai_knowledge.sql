@@ -62,8 +62,24 @@ create table if not exists public.knowledge_chunks (
   content text not null,
   created_at timestamptz not null default now()
 );
-create index if not exists knowledge_chunks_trgm_idx
-  on public.knowledge_chunks using gin (content gin_trgm_ops);
+-- TRIGRAM OPCLASS RULE: pg_trgm ka schema runtime par dhoondo (Supabase par `extensions`).
+do $$
+declare op text;
+begin
+  select n.nspname into op
+    from pg_opclass c
+    join pg_namespace n on n.oid = c.opcnamespace
+    join pg_am a on a.oid = c.opcmethod
+   where c.opcname = 'gin_trgm_ops' and a.amname = 'gin'
+   limit 1;
+  if op is null then
+    raise notice 'pg_trgm missing — knowledge_chunks_trgm_idx skip';
+    return;
+  end if;
+  execute format(
+    'create index if not exists knowledge_chunks_trgm_idx on public.knowledge_chunks using gin (content %I.gin_trgm_ops)',
+    op);
+end $$;
 create index if not exists knowledge_chunks_user_idx
   on public.knowledge_chunks (user_id, document_id);
 
