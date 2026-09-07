@@ -260,6 +260,8 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "AI business search in natural language",
       "Work dependencies + evidence-locked completion",
       "5,000 open work objects",
+      "5GB max file sending + resumable transfer (Rust engine)",
+      "Suspicious-device detection with final-warning ladder",
       "AI top-up recharge available",
     ],
   },
