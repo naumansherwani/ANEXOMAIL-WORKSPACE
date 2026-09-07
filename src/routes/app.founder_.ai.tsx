@@ -5,7 +5,7 @@ import { EscalationStrip } from "@/components/app/ai/AiBits";
 
 /**
  * Phase 16 — AI Workspace, founder surface.
- * Host: aiemail.anexomail.com (Caddy IP allowlist). Awam ke liye /ai coming-soon.
+ * Host: founderworkspace.anexomail.com (Caddy IP allowlist). Awam ke liye /ai coming-soon.
  */
 export const Route = createFileRoute("/app/founder_/ai")({
   head: () => ({
@@ -48,7 +48,7 @@ function FounderAiLayout() {
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-6 py-4 md:px-8">
         <p className="ax-eyebrow flex items-center gap-2">
-          <Crown className="size-3.5" aria-hidden="true" /> Founder only · IP locked · ai.anexomail.com product
+          <Crown className="size-3.5" aria-hidden="true" /> Founder only · IP locked · founderworkspace.anexomail.com
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-ax-4">
           <h2 className="ax-h2 text-foreground">AI workspace</h2>

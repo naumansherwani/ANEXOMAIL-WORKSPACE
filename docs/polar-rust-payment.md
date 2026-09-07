@@ -14,7 +14,7 @@ PM2, port `3400`) handle karti hai. Secrets aur product IDs sirf us server ki
 ## 1. Architecture (kyun webhook kabhi disable nahi hota)
 
 ```text
-Polar  ──POST──►  Rust engine :3400 /api/v1/polar-webhook
+Polar  ──POST──►  TWO live HTTPS endpoints ──► Rust :3400 /api/v1/polar-webhook
                     1. HMAC-SHA256 signature verify
                     2. INSERT INTO polar_webhook_inbox (ON CONFLICT DO NOTHING)
                     3. return 200 "Event Accepted"        (<300ms, hamesha)
@@ -84,7 +84,7 @@ curl -s http://127.0.0.1:3400/health
 # { "service":"polar-rust-payment","db":true,"webhook_secret":true,"polar_token":true,"products":9 }
 ```
 
-## 4. Caddy block (webhook public URL)
+## 4. Caddy endpoints (dono hamesha live)
 
 `anexomail.com` site block ke andar, baqi routes se **pehle**:
 
@@ -105,9 +105,14 @@ curl -s http://127.0.0.1:3400/health
 caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
 ```
 
-Polar dashboard → Settings → Webhooks → endpoint **ANEXOMAIL Production Webhook**:
-`https://anexomail.com/api/v1/polar-webhook` · format **Raw** · API version **2026-04** ·
-secret wahi jo `.env` mein hai.
+Polar dashboard → Settings → Webhooks mein do endpoints:
+
+1. **ANEXOMAIL Production Webhook** — `https://polarpayments.anexomail.com/api/v1/polar-webhook`
+2. **ANEXOMAIL Backup Webhook** — `https://anexomail.com/api/v1/polar-webhook`
+
+Dono format **Raw**, API version **2026-04**, aur same `.env` secret use karte hain.
+Purana `anexomail.com` endpoint delete, replace ya modify nahi hota. `event_id` uniqueness
+ki wajah se dono par same delivery duplicate state nahi banati.
 
 ### Purana Express path (bridge, na hataayen)
 

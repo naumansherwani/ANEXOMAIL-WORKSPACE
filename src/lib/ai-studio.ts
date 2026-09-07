@@ -1,7 +1,7 @@
 /**
  * Phase 17 — AI Studio (transport only).
  *
- * AI LOCK: studio sirf ai.anexomail.com / aiemail.anexomail.com ka hissa hai.
+ * AI LOCK: public product ai.anexomail.com par; Founder view founderworkspace.anexomail.com par.
  * NO DUPLICATE: prompts, model routing, guardrails, receipts, credits — sab server par.
  * NO MOCK: endpoint na ho to honest "not wired" state.
  */

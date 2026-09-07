@@ -1,8 +1,8 @@
 /**
  * Phase 16 — ANEXOMAIL AI Workspace (transport only).
  *
- * AI LOCK: ye poora surface sirf ai.anexomail.com / aiemail.anexomail.com ka
- * hissa hai. anexomail.com ke Basic/Pro/Business mein AI kabhi nahi.
+ * AI LOCK: public product ai.anexomail.com par; Founder view
+ * founderworkspace.anexomail.com par. Basic/Pro/Business mein AI kabhi nahi.
  * NO DUPLICATE: model routing, escalation chain (Leo -> Jimmy -> Sherlock),
  * guardrails, credits, tokens aur memory sab server par (Server 2 -> Supabase 4).
  * NO MOCK: missing endpoint = honest "not wired" state, dummy data kabhi nahi.

@@ -1,5 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Crown, MailCheck, RefreshCw, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  Banknote,
+  Building2,
+  Crown,
+  Gauge,
+  MailCheck,
+  Rocket,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 
 import { StateBlock } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
@@ -117,6 +127,11 @@ function FounderDeck() {
               <Sparkles className="size-4" aria-hidden="true" /> AI email center
             </Link>
           </Button>
+          <Button asChild variant="secondary">
+            <Link to="/app/founder/ai">
+              <Sparkles className="size-4" aria-hidden="true" /> Founder AI workspace
+            </Link>
+          </Button>
         </div>
 
         {notWired ? (
@@ -135,6 +150,21 @@ function FounderDeck() {
         <Group title="AI email addresses" items={AI_MAILBOXES} live={live} onProvision={runProvision} />
 
         <section className="mt-10">
+          <h2 className="text-base font-bold text-foreground">Founder surfaces</h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            The former AI founder workspace is preserved here, in order, on the single IP-locked founder host.
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            <FounderLink to="/app/founder/ai" icon={Sparkles} label="AI" detail="Workbench, Studio, Automation, Knowledge, Arena, Prompts, Memory, Receipts, Billing" />
+            <FounderLink to="/app/founder/billing" icon={Banknote} label="Payments · Revenue" detail="MRR truth, billing, support reply clock" />
+            <FounderLink to="/app/founder/org" icon={Building2} label="Org · CRM" detail="Organisation and CRM controls" />
+            <FounderLink to="/app/founder/security" icon={ShieldCheck} label="Security" detail="Platform security and kill switches" />
+            <FounderLink to="/app/founder/perf" icon={Gauge} label="Performance" detail="Budgets, regressions and tenant speed" />
+            <FounderLink to="/app/founder/launch" icon={Rocket} label="Launch" detail="QA, checklist, deployments and release lock" />
+          </div>
+        </section>
+
+        <section className="mt-10">
           <h2 className="text-base font-bold text-foreground">Founder workspace host</h2>
           <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             <code className="rounded-md bg-secondary px-1.5 py-0.5 text-foreground">
@@ -146,6 +176,30 @@ function FounderDeck() {
         </section>
       </div>
     </div>
+  );
+}
+
+function FounderLink({
+  to,
+  icon: Icon,
+  label,
+  detail,
+}: {
+  to: string;
+  icon: typeof Crown;
+  label: string;
+  detail: string;
+}) {
+  return (
+    <Button asChild variant="outline" className="h-auto min-h-16 justify-start whitespace-normal px-4 py-3 text-left">
+      <Link to={to}>
+        <Icon className="size-4" aria-hidden="true" />
+        <span className="min-w-0">
+          <span className="block text-sm font-semibold">{label}</span>
+          <span className="mt-0.5 block text-xs font-normal text-muted-foreground">{detail}</span>
+        </span>
+      </Link>
+    </Button>
   );
 }
 

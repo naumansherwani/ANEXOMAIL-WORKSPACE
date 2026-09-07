@@ -27,7 +27,7 @@ export function SiteLock({ children }: { children: ReactNode }) {
 
   if (allowed) return <>{children}</>;
 
-  // FOUNDER HOST OPEN: founderworkspace.anexomail.com / aiemail.anexomail.com
+  // FOUNDER HOST OPEN: founderworkspace.anexomail.com
   // (Caddy IP allowlist ke peeche) + localhost/preview — yahan poori site khuli
   // rehti hai. anexomail.com aur baqi awam hosts lock ke peeche.
   if (typeof window !== "undefined" && isFounderHost()) {
