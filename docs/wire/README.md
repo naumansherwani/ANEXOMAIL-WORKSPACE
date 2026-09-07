@@ -1,8 +1,12 @@
-# ANEXOMAIL — WIRE BOOK (mail launch, dot by dot)
+# ANEXOMAIL — WIRE BOOK (poora project, dot by dot)
 
 Yeh folder sirf **wiring** ke liye hai: har dot ka copy-paste step, koi feature talk nahi.
 Rule: **jo dot green nahi, woh launch nahi.** Har step ke aakhir mein ek verify command hai —
 uska output green aane tak next step start nahi karna.
+
+Koi file delete nahi hogi. Repo ke saare 59 SQL files **step 09** mein hain — apply order,
+per-file verify query, aur ek MASTER VERIFY jo 538 expected tables/functions ek saath check
+karta hai. Uske baad frontend+Caddy, founder side, ANEXOChat, VideoCall ki wire books aayengi.
 
 Server: Hetzner Server 2 (ANEXOMAIL dedicated). Mail stack: **Postfix + Dovecot + OpenDKIM +
 OpenDMARC**, sab mere control mein. Koi external SMTP provider nahi, app ke andar koi SMTP
@@ -21,7 +25,8 @@ repo mein kabhi nahi.
 | 5   | [05-inbound-pipe.md](./05-inbound-pipe.md)        | Postfix pipe → `server/mail/deliver-to-supabase.ts` → Supabase  | Test mail `mail_messages` mein dikhe     |
 | 6   | [06-outbound.md](./06-outbound.md)                | App → local Postfix `127.0.0.1:25` → Internet (no creds in app) | `/api/mail/send` se asli mail pohnche    |
 | 7   | [07-inbox-wire.md](./07-inbox-wire.md)            | `/app/mail` inbox asli rows par (mock hataana)                  | Browser mein test mail dikhe             |
-| 8   | [08-verify-gate.md](./08-verify-gate.md)          | Final launch gate — 18 checks                                   | 18/18 green, warna launch nahi           |
+| 8   | [08-verify-gate.md](./08-verify-gate.md)          | Mail launch gate — 18 checks                                    | 18/18 green, warna launch nahi           |
+| 9   | [09-sql-apply.md](./09-sql-apply.md)              | Repo ke **saare 59 SQL files** apply + per-file verify          | MASTER VERIFY zero missing row            |
 
 ## Wire ledger (sach, koi "locked" nahi)
 
@@ -48,6 +53,9 @@ Status sirf teen: **DONE** (live test hua) · **READY** (code/config repo mein, 
 | Inbox UI on real rows        | TODO   | browser                            |
 | noreply inbound discard      | TODO   | mail to noreply@ → /dev/null       |
 | DMARC report mailbox         | TODO   | `dmarc@` mein report aaye          |
+| 59 SQL files applied         | READY  | step 09 MASTER VERIFY zero row     |
+| Public tables ke GRANTs      | TODO   | step 09 GRANT check zero row       |
+| Public tables par RLS        | TODO   | step 09 RLS check zero row         |
 
 ## Mailbox list (anexomail.com only — is launch ka scope)
 

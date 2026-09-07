@@ -64,7 +64,23 @@ create index if not exists leo_mem_user_time_idx  on public.leo_memory_vectors (
 create index if not exists leo_mem_session_idx    on public.leo_memory_vectors (session_id, created_at desc);
 create index if not exists leo_mem_thread_idx     on public.leo_memory_vectors (thread_id, created_at desc);
 create index if not exists leo_mem_layer_idx      on public.leo_memory_vectors (layer, importance desc);
-create index if not exists leo_mem_content_trgm   on public.leo_memory_vectors using gin (content gin_trgm_ops);
+do $$
+declare op text;
+begin
+  select n.nspname into op
+    from pg_opclass c
+    join pg_namespace n on n.oid = c.opcnamespace
+    join pg_am a on a.oid = c.opcmethod
+   where c.opcname = 'gin_trgm_ops' and a.amname = 'gin'
+   limit 1;
+  if op is null then
+    raise notice 'pg_trgm missing — leo_mem_content_trgm skip';
+    return;
+  end if;
+  execute format(
+    'create index if not exists leo_mem_content_trgm on public.leo_memory_vectors using gin (content %I.gin_trgm_ops)',
+    op);
+end $$;
 create index if not exists leo_mem_embedding_idx  on public.leo_memory_vectors
   using ivfflat (embedding vector_cosine_ops) with (lists = 200);
 
