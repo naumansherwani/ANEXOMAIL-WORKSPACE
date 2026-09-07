@@ -27,7 +27,102 @@ export type SignalFrame = {
   payload: Record<string, unknown>;
 };
 
-export type SignalTransport = "realtime" | "rows";
+export type SignalTransport = "quic" | "realtime" | "rows";
+
+const WT_URL = (import.meta.env['VITE_ANEXOCHAT_WT_URL'] as string | undefined)?.replace(/\/$/, "");
+
+/**
+ * PHASE 31A — QUIC signaling stream (Rust engine, `mode:"signal"`).
+ * SDP/ICE 1 RTT mein peer tak. Frames durable rows mein bhi jate hain, is liye
+ * QUIC gir jaye to kuch nahi khota.
+ */
+function openQuicSignal(opts: {
+  conversationId: string;
+  token: string;
+  onFrame: (frame: SignalFrame) => void;
+  onReady: (ready: boolean) => void;
+}): { send: (frame: Record<string, unknown>) => void; close: () => void } | null {
+  if (typeof window === "undefined" || !("WebTransport" in window) || !WT_URL) return null;
+
+  let writer: WritableStreamDefaultWriter<Uint8Array> | null = null;
+  let closed = false;
+  let transport: { close: () => void } | null = null;
+  const queue: string[] = [];
+
+  void (async () => {
+    try {
+      const WT = (window as unknown as { WebTransport: new (url: string) => any }).WebTransport;
+      const wt = new WT(`${WT_URL}/wt/chat`);
+      transport = wt;
+      await wt.ready;
+      const stream = await wt.createBidirectionalStream();
+      writer = stream.writable.getWriter();
+      const enc = new TextEncoder();
+      await writer.write(
+        enc.encode(
+          JSON.stringify({
+            token: opts.token,
+            conversation_id: opts.conversationId,
+            mode: "signal",
+          }) + "\n",
+        ),
+      );
+      for (const line of queue.splice(0)) await writer.write(enc.encode(line + "\n"));
+
+      const reader = stream.readable.getReader();
+      const dec = new TextDecoder();
+      let buf = "";
+      while (!closed) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        const lines = buf.split("\n");
+        buf = lines.pop() ?? "";
+        for (const line of lines) {
+          if (!line.trim()) continue;
+          let frame: Record<string, unknown> = {};
+          try {
+            frame = JSON.parse(line) as Record<string, unknown>;
+          } catch {
+            continue;
+          }
+          if (frame['type'] === "ready") {
+            opts.onReady(true);
+            continue;
+          }
+          if (frame['type'] === "error") {
+            opts.onReady(false);
+            continue;
+          }
+          if (frame['kind']) opts.onFrame(frame as unknown as SignalFrame);
+        }
+      }
+    } catch {
+      opts.onReady(false);
+    }
+    opts.onReady(false);
+  })();
+
+  return {
+    send(frame) {
+      const line = JSON.stringify(frame);
+      if (!writer) {
+        queue.push(line);
+        return;
+      }
+      void writer.write(new TextEncoder().encode(line + "\n")).catch(() => {});
+    },
+    close() {
+      closed = true;
+      try {
+        transport?.close();
+      } catch {
+        /* already closed */
+      }
+    },
+  };
+}
+
 
 const RT_URL = import.meta.env['VITE_SUPABASE4_URL'] as string | undefined;
 const RT_KEY = import.meta.env['VITE_SUPABASE4_PUBLISHABLE_KEY'] as string | undefined;
