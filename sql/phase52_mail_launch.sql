@@ -75,7 +75,16 @@ create table if not exists public.mail_threads (
   created_at       timestamptz not null default now()
 );
 create index if not exists mail_threads_box_idx on public.mail_threads (mailbox_address, last_message_at desc);
-create index if not exists mail_threads_subject_trgm on public.mail_threads using gin (subject gin_trgm_ops);
+-- trigram index: opclass ka schema runtime par dhoondo (Supabase par pg_trgm `extensions` mein hai)
+do $$
+declare op text;
+begin
+  select n.nspname into op
+    from pg_opclass c join pg_namespace n on n.oid = c.opcnamespace
+   where c.opcname = 'gin_trgm_ops' limit 1;
+  if op is null then raise notice 'pg_trgm missing — trigram index skip'; return; end if;
+  execute format('create index if not exists mail_threads_subject_trgm on public.mail_threads using gin (subject %I.gin_trgm_ops)', op);
+end $$;
 
 -- ---------- messages ----------
 create table if not exists public.mail_messages (
