@@ -19,4 +19,5 @@
 - [x] SQL connection: hidden prompt, login verify ke baad hi protected env save; shell history/repo mein secret nahi
 - [x] SQL runner: verified `/root/.anexomail.env` ko purani app env se pehle use karna
 - [ ] SERVER: corrected runner se database preflight aur 59 SQL phases GREEN
+- [ ] SQL ko ek-command self-healing apply mein wire karna; har purana conflicting function/table safely reconcile ho aur `GREEN=59 RED=0` live proof aaye
 
