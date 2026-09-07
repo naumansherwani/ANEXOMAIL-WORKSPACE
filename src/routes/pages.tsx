@@ -139,7 +139,13 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "Work",
         path: "/app/work",
-        note: "Task board, promise inbox, follow-through score",
+        note: "Phase 22 — execution chain (owner, dependency, deadline, evidence) + task board",
+        auth: true,
+      },
+      {
+        label: "Safety",
+        path: "/app/safety",
+        note: "Phase 21 — report a message, person, file or conversation; sealed evidence",
         auth: true,
       },
       {
@@ -420,6 +426,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         label: "Device trust",
         path: "/app/security/devices",
         note: "Phase 26 — fingerprint + live trust score + one-click device kill (no API keys)",
+        auth: true,
+      },
+      {
+        label: "Device safety vault",
+        path: "/app/security/vault",
+        note: "Phase 19/20 — sealed non-biometric device identity, retention policy, one-click revoke",
         auth: true,
       },
       {

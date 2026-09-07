@@ -101,6 +101,7 @@ export const SECURITY_SECTIONS: {
   to:
     | "/app/security"
     | "/app/security/devices"
+    | "/app/security/vault"
     | "/app/security/sessions"
     | "/app/security/history"
     | "/app/security/encryption"
@@ -110,6 +111,7 @@ export const SECURITY_SECTIONS: {
 }[] = [
   { to: "/app/security", label: "Overview", summary: "Score, ledger, what to fix next" },
   { to: "/app/security/devices", label: "Device trust", summary: "Fingerprint, score, one-click kill" },
+  { to: "/app/security/vault", label: "Device vault", summary: "Sealed device identity, retention, revoke" },
   { to: "/app/security/sessions", label: "Sessions", summary: "Live sessions and blast-radius kill" },
   { to: "/app/security/history", label: "Login replay", summary: "Every login with its risk story" },
   { to: "/app/security/encryption", label: "Encryption", summary: "At rest, in transit, with proof" },
