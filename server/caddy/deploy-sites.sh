@@ -46,6 +46,33 @@ if id caddy >/dev/null 2>&1; then
 fi
 chmod 755 /var/log/caddy
 
+# ---------------------------------------------------------------------------
+# SELF-HEAL: Caddy ki apni certificate store ka ownership. Agar kabhi coturn ke
+# liye Caddy ki key par chown/chmod kar diya gaya ho to Caddy apni hi private
+# key nahi padh sakta -> TLS "internal error" -> curl 000. Yahan wapas theek.
+# coturn ko cert ki COPY di jati hai, original kabhi nahi chhoora jata.
+# ---------------------------------------------------------------------------
+CADDY_CERT_ROOT="/var/lib/caddy/.local/share/caddy"
+if [ -d "$CADDY_CERT_ROOT" ] && id caddy >/dev/null 2>&1; then
+  chown -R caddy:caddy "$CADDY_CERT_ROOT"
+  find "$CADDY_CERT_ROOT/certificates" -type f -name '*.key' -exec chmod 600 {} \; 2>/dev/null || true
+  find "$CADDY_CERT_ROOT/certificates" -type f -name '*.crt' -exec chmod 644 {} \; 2>/dev/null || true
+  echo ">>> caddy certificate store ownership fixed (caddy:caddy)"
+fi
+
+# coturn ke liye cert ki alag copy (TURN host)
+TURN_CERT_SRC="$(find "$CADDY_CERT_ROOT/certificates" -type d -name '*anexovideocall.anexomail.com*' 2>/dev/null | head -1 || true)"
+if [ -n "${TURN_CERT_SRC:-}" ] && id turnserver >/dev/null 2>&1; then
+  mkdir -p /etc/anexochat/turn
+  cp "$TURN_CERT_SRC"/anexovideocall.anexomail.com.crt /etc/anexochat/turn/fullchain.pem
+  cp "$TURN_CERT_SRC"/anexovideocall.anexomail.com.key /etc/anexochat/turn/privkey.pem
+  chown turnserver:turnserver /etc/anexochat/turn/fullchain.pem /etc/anexochat/turn/privkey.pem
+  chmod 640 /etc/anexochat/turn/fullchain.pem /etc/anexochat/turn/privkey.pem
+  systemctl restart coturn >/dev/null 2>&1 || true
+  echo ">>> coturn cert copy refreshed (/etc/anexochat/turn)"
+fi
+
+
 if [ -f "$CADDY_MAIN" ] && ! grep -Fqx 'import /etc/caddy/sites/*.caddy' "$CADDY_MAIN"; then
   cp "$CADDY_MAIN" "$CADDY_MAIN.bak.$TS"
   printf '\n# Repo-managed independent site blocks\nimport /etc/caddy/sites/*.caddy\n' >> "$CADDY_MAIN"

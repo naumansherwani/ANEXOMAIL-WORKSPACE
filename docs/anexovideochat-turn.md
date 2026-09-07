@@ -70,15 +70,16 @@ denied-peer-ip=169.254.0.0-169.254.255.255
 denied-peer-ip=127.0.0.0-127.255.255.255
 ```
 
-## 3) TLS cert (Caddy jo cert le chuka hai wahi coturn ko do)
+## 3) TLS cert (Caddy jo cert le chuka hai uski COPY coturn ko do)
+
+> KHABARDAR: Caddy ki asli cert/key files par `chown`/`chmod` KABHI nahi.
+> Warna Caddy apni hi private key nahi padh sakti -> TLS internal error -> curl 000.
+> Sirf copy banao. Ab yeh kaam `bash server/caddy/deploy-sites.sh` khud kar deta hai.
 
 ```bash
-mkdir -p /etc/anexochat/turn
-CERT_DIR=$(find /var/lib/caddy/.local/share/caddy/certificates -type d -name '*anexovideocall.anexomail.com*' | head -1)
-cp "$CERT_DIR"/anexovideocall.anexomail.com.crt /etc/anexochat/turn/fullchain.pem
-cp "$CERT_DIR"/anexovideocall.anexomail.com.key /etc/anexochat/turn/privkey.pem
-chown turnserver:turnserver /etc/anexochat/turn/*.pem && chmod 640 /etc/anexochat/turn/*.pem
+cd /opt/anexomail-web && git pull && bash server/caddy/deploy-sites.sh
 ```
+
 
 ## 4) Firewall + start
 
