@@ -171,7 +171,8 @@ function tuneOpusSdp(sdp: string | undefined): string | undefined {
 function tunedLocalDescription(peer: RTCPeerConnection): RTCSessionDescriptionInit | null {
   const description = peer.localDescription;
   if (!description) return null;
-  return { type: description.type, sdp: tuneOpusSdp(description.sdp) };
+  const sdp = tuneOpusSdp(description.sdp);
+  return sdp === undefined ? { type: description.type } : { type: description.type, sdp };
 }
 
 function preferCodecs(transceiver: RTCRtpTransceiver) {
