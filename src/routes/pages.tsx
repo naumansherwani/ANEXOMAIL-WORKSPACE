@@ -39,7 +39,11 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     blurb: "Anyone can open these — this is what the world sees.",
     items: [
       { label: "Landing", path: "/", note: "Hero, positioning, proof, plans teaser" },
-      { label: "About", path: "/about", note: "Why it exists, the four promises, why it is different, who runs it" },
+      {
+        label: "About",
+        path: "/about",
+        note: "Why it exists, the four promises, why it is different, who runs it",
+      },
       { label: "Plans", path: "/plans", note: "Basic £23 · Pro £46 · Business £97" },
       { label: "Leo (AI)", path: "/ai", note: "Coming soon page — AI not public yet" },
       {
@@ -127,7 +131,12 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
     blurb: "Signed-in surfaces. One shell, no reload.",
     items: [
       { label: "Dashboard", path: "/app", note: "Command center widgets", auth: true },
-      { label: "Inbox", path: "/app/mail/inbox", note: "3-panel mail + Compose Studio", auth: true },
+      {
+        label: "Inbox",
+        path: "/app/mail/inbox",
+        note: "3-panel mail + Compose Studio",
+        auth: true,
+      },
       {
         label: "Thread reader",
         path: "/app/mail/inbox",
@@ -165,23 +174,108 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         note: "Week grid, cost meter, availability, team load",
         auth: true,
       },
-      { label: "People", path: "/app/people", note: "Contacts, tags, smart filters, relationship history", auth: true },
-      { label: "Companies", path: "/app/people?view=companies", note: "One domain = one organisation rollup", auth: true },
-      { label: "Search", path: "/app/search", note: "People + companies + threads + attachments, one query", auth: true },
-      { label: "CRM dashboard", path: "/app/crm", note: "Pipeline value, forecast, unworked leads, Leo insights (aicrm.anexomail.com)", auth: true },
-      { label: "CRM leads", path: "/app/crm/leads", note: "Scored leads from real threads, one-click convert", auth: true },
-      { label: "CRM pipeline", path: "/app/crm/pipeline", note: "Stage board, deal thread never lost", auth: true },
-      { label: "CRM shared work", path: "/app/crm/collab", note: "Shared inbox, drafts, mentions, approvals", auth: true },
-      { label: "CRM activity", path: "/app/crm/activity", note: "System-written timeline of every touch", auth: true },
-      { label: "Org overview", path: "/app/org", note: "Seats, security score, ownership proof, privilege radar", auth: true },
-      { label: "Org members", path: "/app/org/members", note: "Instant revoke + offboarding blast radius preview", auth: true },
-      { label: "Org roles", path: "/app/org/roles", note: "Capability matrix + least-privilege radar", auth: true },
-      { label: "Org departments", path: "/app/org/departments", note: "Shared address, SLA, escalation chain, budget", auth: true },
-      { label: "Org policies", path: "/app/org/policies", note: "Policy list + dry-run simulator before switching on", auth: true },
-      { label: "Org security", path: "/app/org/security", note: "Session/device map, kill device, anomaly alerts, break-glass", auth: true },
-      { label: "Org audit ledger", path: "/app/org/audit", note: "Hash-chained append-only ledger with one-click verify", auth: true },
-      { label: "Org graph", path: "/app/org/graph", note: "Live communication graph, centrality, bottlenecks", auth: true },
-      { label: "Org compliance", path: "/app/org/compliance", note: "Retention, export, delete, data region, evidence pack", auth: true },
+      {
+        label: "People",
+        path: "/app/people",
+        note: "Contacts, tags, smart filters, relationship history",
+        auth: true,
+      },
+      {
+        label: "Companies",
+        path: "/app/people?view=companies",
+        note: "One domain = one organisation rollup",
+        auth: true,
+      },
+      {
+        label: "Search",
+        path: "/app/search",
+        note: "People + companies + threads + attachments, one query",
+        auth: true,
+      },
+      {
+        label: "CRM dashboard",
+        path: "/app/crm",
+        note: "Pipeline value, forecast, unworked leads, Leo insights (aicrm.anexomail.com)",
+        auth: true,
+      },
+      {
+        label: "CRM leads",
+        path: "/app/crm/leads",
+        note: "Scored leads from real threads, one-click convert",
+        auth: true,
+      },
+      {
+        label: "CRM pipeline",
+        path: "/app/crm/pipeline",
+        note: "Stage board, deal thread never lost",
+        auth: true,
+      },
+      {
+        label: "CRM shared work",
+        path: "/app/crm/collab",
+        note: "Shared inbox, drafts, mentions, approvals",
+        auth: true,
+      },
+      {
+        label: "CRM activity",
+        path: "/app/crm/activity",
+        note: "System-written timeline of every touch",
+        auth: true,
+      },
+      {
+        label: "Org overview",
+        path: "/app/org",
+        note: "Seats, security score, ownership proof, privilege radar",
+        auth: true,
+      },
+      {
+        label: "Org members",
+        path: "/app/org/members",
+        note: "Instant revoke + offboarding blast radius preview",
+        auth: true,
+      },
+      {
+        label: "Org roles",
+        path: "/app/org/roles",
+        note: "Capability matrix + least-privilege radar",
+        auth: true,
+      },
+      {
+        label: "Org departments",
+        path: "/app/org/departments",
+        note: "Shared address, SLA, escalation chain, budget",
+        auth: true,
+      },
+      {
+        label: "Org policies",
+        path: "/app/org/policies",
+        note: "Policy list + dry-run simulator before switching on",
+        auth: true,
+      },
+      {
+        label: "Org security",
+        path: "/app/org/security",
+        note: "Session/device map, kill device, anomaly alerts, break-glass",
+        auth: true,
+      },
+      {
+        label: "Org audit ledger",
+        path: "/app/org/audit",
+        note: "Hash-chained append-only ledger with one-click verify",
+        auth: true,
+      },
+      {
+        label: "Org graph",
+        path: "/app/org/graph",
+        note: "Live communication graph, centrality, bottlenecks",
+        auth: true,
+      },
+      {
+        label: "Org compliance",
+        path: "/app/org/compliance",
+        note: "Retention, export, delete, data region, evidence pack",
+        auth: true,
+      },
       { label: "Account", path: "/app/account", note: "Profile, sessions, security", auth: true },
       {
         label: "Billing",
@@ -654,8 +748,8 @@ function PageMap() {
             <p className="ax-eyebrow">Private</p>
             <h1 className="ax-display mt-3 text-foreground">This page is internal</h1>
             <p className="ax-body mt-ax-3 max-w-xl">
-              The page map is an internal review tool. Everything built for you lives in the
-              main navigation.
+              The page map is an internal review tool. Everything built for you lives in the main
+              navigation.
             </p>
             <Link
               to="/"
@@ -678,8 +772,8 @@ function PageMap() {
           <p className="ax-eyebrow">Founder review</p>
           <h1 className="ax-display mt-3 text-foreground">Page map</h1>
           <p className="ax-body mt-ax-3 max-w-2xl">
-            Every page that exists in ANEXOMAIL right now — {total} in total. Open each one
-            and check it with your own eyes. Workspace pages need a signed-in session.
+            Every page that exists in ANEXOMAIL right now — {total} in total. Open each one and
+            check it with your own eyes. Workspace pages need a signed-in session.
           </p>
 
           <div className="ax-plane mt-ax-5 flex flex-wrap items-center gap-ax-4 rounded-2xl p-ax-4">
