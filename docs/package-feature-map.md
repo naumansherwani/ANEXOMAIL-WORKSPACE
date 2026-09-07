@@ -50,3 +50,37 @@ DB truth: `file_evidence` · `file_type_policy` · `file_scan_jobs` ·
 LOCK: insaani guftagu kabhi kisi AI API par nahi jati. Safety sirf files par,
 aur woh bhi ANEXOMAIL ke apne infra ke andar (deterministic tools + local
 clamd). "Delivered" lafz UI mein kabhi nahi — sirf woh step jo DB mein sabit ho.
+
+
+## Phase 19/20/21/22 — Device vault · trust · safety reporting · work chain
+
+DB truth: `chat_phase_entitlements` + `chat_feature_allowed()` ·
+`device_vault` · `device_bans` · `device_vault_policy` · `device_trust_events` ·
+`safety_reports` · `safety_report_events` · `safety_enforcement` ·
+`safety_reveal_log` · `chat_work_items` (+chain columns) ·
+`chat_work_evidence` · `chat_work_events`
+(`sql/phase19_22_device_safety_work.sql`).
+
+| Feature | Basic | Pro | Business | Business Pro | AI Pro | AI Business | AI Executive |
+|---|---|---|---|---|---|---|---|
+| Device safety vault (sealed, non-biometric) | ✓ 2 | ✓ 4 | ✓ 10 | ✓ 50 | ✓ 10 | ✓ 50 | ✓ 100 |
+| Device trust list + one-click revoke (session kill) | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Report message · person · file · conversation | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Safety review queue + logged evidence reveal | — | — | — | ✓ | — | — | ✓ |
+| Enforcement history + device ban list | — | — | — | ✓ | — | — | ✓ |
+| Message → Task/Promise/Decision (deterministic) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Work chain: provenance + completion evidence | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Open work objects | — | — | 200 | 5,000 | 200 | 5,000 | 20,000 |
+| Work dependencies (blocked until blocker done) | — | — | ✓ | ✓ | — | ✓ | ✓ |
+| Star + forward message (messenger basics) | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+LOCK: Phase 19 mein sirf 5 coarse signals (platform class · browser class ·
+timezone bucket · screen bucket · language) — canvas/audio/font/webgl signals
+client aur server dono taraf discard hote hain. Vault envelope encrypted,
+`retain_until` ke baad `device_vault_purge()` se delete. Reviewer ko report ka
+content default nahi milta; `safety_report_reveal` bina 12+ character
+justification chalti hi nahi aur har reveal `safety_reveal_log` mein hai.
+Phase 22 ka parsing DB ke andar deterministic hai — insaani guftagu kisi AI API
+par nahi jati. Work object bina evidence `done` nahi ho sakta, aur source
+message hide hone par bhi provenance (conversation · sender · sent_at ·
+body_hash) zinda rehti hai.
