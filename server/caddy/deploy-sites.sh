@@ -52,7 +52,11 @@ if [ -f "$CADDY_MAIN" ] && ! grep -Fqx 'import /etc/caddy/sites/*.caddy' "$CADDY
   echo ">>> import line added to $CADDY_MAIN"
 fi
 
-caddy fmt --overwrite "$CADDY_DIR"/*.caddy
+shopt -s nullglob
+for f in "$CADDY_DIR"/*.caddy; do
+  caddy fmt --overwrite "$f" || true
+done
+shopt -u nullglob
 caddy validate --config "$CADDY_MAIN"
 systemctl reload caddy || systemctl restart caddy
 
