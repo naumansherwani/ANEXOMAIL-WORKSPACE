@@ -162,7 +162,7 @@ export function useReportSubject() {
       subject_kind: SafetyReport["subject_kind"];
       subject_id: string;
       reason: ReportReason;
-      note?: string;
+      note?: string | undefined;
     }
   >({
     mutationFn: (input) =>
@@ -219,7 +219,7 @@ export function useAdvanceReport() {
     {
       report_id: string;
       to_state: SafetyReport["state"];
-      note?: string;
+      note?: string | undefined;
       action?: string;
       until?: string | null;
     }
@@ -352,10 +352,10 @@ export function useWorkFromMessage() {
     ApiError,
     {
       message_id: string;
-      kind?: string;
-      title?: string;
-      owner_user_id?: string | null;
-      due_at?: string | null;
+      kind?: string | undefined;
+      title?: string | undefined;
+      owner_user_id?: string | null | undefined;
+      due_at?: string | null | undefined;
     }
   >({
     mutationFn: (input) =>
@@ -391,7 +391,7 @@ export function useCompleteWork() {
   return useMutation<
     { ok: boolean; error?: string; message?: string; evidence_count?: number },
     ApiError,
-    { item_id: string; evidence?: { kind: "file" | "link" | "note" | "message"; ref: string } }
+    { item_id: string; evidence?: { kind: "file" | "link" | "note" | "message"; ref: string } | undefined }
   >({
     mutationFn: (input) =>
       chatCall("chat.work.complete", input, {
