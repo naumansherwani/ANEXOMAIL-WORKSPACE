@@ -281,6 +281,8 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "Full file safety review queue + enforcement history",
       "Safety review queue with logged evidence reveal",
       "Device ban list + enforcement history",
+      "8K-capable Relay video calls with simulcast & telemetry",
+      "Company-wide delete for everyone (no time limit) with audit record",
       "20,000 open work objects",
       "10,000 AI credits / month",
       "AI Executive Briefing — daily business communication summary",
