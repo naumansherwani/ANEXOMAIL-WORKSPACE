@@ -23,3 +23,7 @@
 - [ ] NEXT wire book: founder side surfaces
 - [ ] NEXT wire book: ANEXOChat dot-by-dot
 - [ ] NEXT wire book: ANEXOVideoCall dot-by-dot
+
+## SQL WIRE (no delete — har SQL file server par apply + verify)
+- [ ] docs/wire/09-sql-apply.md — sab 61 SQL files dependency order mein, per-file apply + verify query
+- [ ] Har phase SQL ka green proof ledger docs/wire/README.md mein
