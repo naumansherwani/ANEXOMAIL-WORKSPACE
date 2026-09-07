@@ -76,7 +76,7 @@ function CheckoutDonePage() {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [checkoutId]);
+  }, [checkoutId, returnTo]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6">
