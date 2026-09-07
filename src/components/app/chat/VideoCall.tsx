@@ -56,6 +56,11 @@ export function VideoCallOverlay({
   maxRung,
   onAnswer,
   onHangup,
+  // PHASE 31A — NEW ADDED
+  ringing,
+  topology,
+  survival,
+  onDecline,
 }: {
   phase: CallPhase;
   detail: string;
@@ -73,6 +78,10 @@ export function VideoCallOverlay({
   maxRung: QualityRung;
   onAnswer: () => void;
   onHangup: () => void;
+  ringing: { tone: "ringtone" | "ringback"; audible: boolean } | null;
+  topology: "mesh" | "sfu" | null;
+  survival: string | null;
+  onDecline: () => void;
 }) {
   const remoteRef = useRef<HTMLVideoElement>(null);
   const localRef = useRef<HTMLVideoElement>(null);
