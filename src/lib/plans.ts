@@ -329,6 +329,10 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "Tamper-evident conversation record — whole-chain integrity audit",
       "Relationship graph — file ↔ person ↔ company ↔ decision (recorded links only)",
       "Group calls up to 40 participants with full join truth ledger",
+      // PHASE 31A — NEW ADDED (lightspeed calling)
+      "Group calls on our own media engine with three quality layers each",
+      "60-second ring window with millisecond ring result on record",
+      "Audio-first survival with the written reason for every pause",
       "AI top-up recharge available",
     ],
   },
