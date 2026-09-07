@@ -462,7 +462,7 @@ begin
        and purge_after < now() and purged_at is null
   loop
     -- sirf is user ka data. Ledger + integrity record subooot ke liye zinda.
-    delete from public.chat_messages where sender_id = v_user;
+    delete from public.chat_messages where sender_user_id = v_user;
     delete from public.chat_work_items where owner_user_id = v_user or created_by = v_user;
     delete from public.device_vault where user_id = v_user;
 
