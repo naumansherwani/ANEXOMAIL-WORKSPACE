@@ -60,9 +60,12 @@ pm2 save
 echo "==> second Polar ingress: polarpayments.anexomail.com"
 if [ -f "$CADDY_MAIN" ] && command -v caddy >/dev/null 2>&1; then
   mkdir -p "$CADDY_DIR" /var/log/caddy
+  # Log file pehle se bana do, warna Caddy reload "permission denied" par fail hota hai.
+  touch /var/log/caddy/polarpayments.log
   if id caddy >/dev/null 2>&1; then
-    chown caddy:caddy /var/log/caddy
+    chown -R caddy:caddy /var/log/caddy
   fi
+  chmod 755 /var/log/caddy
   if [ -f "$CADDY_TARGET" ] && ! cmp -s "$CADDY_SOURCE" "$CADDY_TARGET"; then
     cp "$CADDY_TARGET" "$CADDY_TARGET.bak.$STAMP"
   fi
