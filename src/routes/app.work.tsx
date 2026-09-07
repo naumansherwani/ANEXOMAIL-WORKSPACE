@@ -89,8 +89,12 @@ function WorkPage() {
             </Button>
           </div>
           <div className="mt-ax-5">
+            <WorkChainBoard />
+          </div>
+          <div className="mt-ax-5">
             <TaskBoard />
           </div>
+
         </div>
       </DetailPanel>
     </>
