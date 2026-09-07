@@ -844,6 +844,44 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       );
 
       setStats(next);
+
+      // ── PHASE 31A — AUDIO-FIRST SURVIVAL ────────────────────────────────
+      // Network gir jaye to video chhoro, awaaz zinda rakho — call wahi rehti
+      // hai aur record mein wajah likhi jati hai. Reason ke bina kuch nahi.
+      const vSender = pc.current?.getSenders().find((s) => s.track?.kind === "video");
+      const badNet = (next.loss_pct ?? 0) > 12 || (next.rtt_ms ?? 0) > 480;
+      const goodNet = (next.loss_pct ?? 0) < 3 && (next.rtt_ms ?? 0) < 220;
+      if (badNet && !audioOnly.current && vSender?.track) {
+        audioOnly.current = true;
+        vSender.track.enabled = false;
+        setSurvival("Audio-only — network dropped the video, the call stayed up");
+        setDetail("Audio-only — video paused to keep the voice clear");
+        if (sessionId.current) {
+          void survivalRecord({
+            session_id: sessionId.current,
+            state: "audio_only",
+            reason:
+              (next.loss_pct ?? 0) > 12
+                ? `packet loss ${next.loss_pct}% — video paused, audio kept`
+                : `round trip ${next.rtt_ms} ms — video paused, audio kept`,
+            rtt_ms: next.rtt_ms,
+            loss_pct: next.loss_pct,
+          }).catch(() => {});
+        }
+      } else if (goodNet && audioOnly.current && vSender?.track) {
+        audioOnly.current = false;
+        vSender.track.enabled = true;
+        setSurvival(null);
+        if (sessionId.current) {
+          void survivalRecord({
+            session_id: sessionId.current,
+            state: "video_restored",
+            reason: "network recovered — video restored",
+            rtt_ms: next.rtt_ms,
+            loss_pct: next.loss_pct,
+          }).catch(() => {});
+        }
+      }
       if (sessionId.current) {
         void chatCall(
           "chat.call.stat",
