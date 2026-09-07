@@ -5,7 +5,9 @@ import { useState } from "react";
 import { DetailPanel, ListPanel } from "@/components/app/Panel";
 import { ConversationTruth } from "@/components/app/work/ConversationTruth";
 import { DecisionLedger } from "@/components/app/work/DecisionLedger";
+import { EmailBridge } from "@/components/app/work/EmailBridge";
 import { FollowThroughTable } from "@/components/app/work/FollowThrough";
+import { ReceiptsPanel } from "@/components/app/work/ReceiptsPanel";
 import { PromiseInbox } from "@/components/app/work/PromiseInbox";
 import { PromiseRecovery } from "@/components/app/work/PromiseRecovery";
 import { TaskBoard } from "@/components/app/work/TaskBoard";
@@ -95,6 +97,12 @@ function WorkPage() {
           </div>
           <div className="mt-ax-5">
             <ConversationTruth />
+          </div>
+          <div className="mt-ax-5">
+            <ReceiptsPanel />
+          </div>
+          <div className="mt-ax-5">
+            <EmailBridge />
           </div>
           <div className="mt-ax-5">
             <DecisionLedger />
