@@ -48,6 +48,7 @@ import { Route as AppMoveinRouteImport } from './routes/app.movein'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppPerfRouteImport } from './routes/app.perf'
+import { Route as AppSafetyRouteImport } from './routes/app.safety'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
@@ -95,6 +96,7 @@ import { Route as AppFounderMoveinRouteImport } from './routes/app.founder_.move
 import { Route as AppFounderOrgRouteImport } from './routes/app.founder_.org'
 import { Route as AppFounderPerfRouteImport } from './routes/app.founder_.perf'
 import { Route as AppFounderRevenueRouteImport } from './routes/app.founder_.revenue'
+import { Route as AppFounderSafetyRouteImport } from './routes/app.founder_.safety'
 import { Route as AppFounderSecurityRouteImport } from './routes/app.founder_.security'
 import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
@@ -120,6 +122,7 @@ import { Route as AppSecurityEncryptionRouteImport } from './routes/app.security
 import { Route as AppSecurityHistoryRouteImport } from './routes/app.security.history'
 import { Route as AppSecurityProofRouteImport } from './routes/app.security.proof'
 import { Route as AppSecuritySessionsRouteImport } from './routes/app.security.sessions'
+import { Route as AppSecurityVaultRouteImport } from './routes/app.security.vault'
 import { Route as AppSettingsIndexRouteImport } from './routes/app.settings.index'
 import { Route as AppSettingsAiRouteImport } from './routes/app.settings.ai'
 import { Route as AppSettingsAppearanceRouteImport } from './routes/app.settings.appearance'
@@ -340,6 +343,11 @@ const AppPeopleRoute = AppPeopleRouteImport.update({
 const AppPerfRoute = AppPerfRouteImport.update({
   id: '/perf',
   path: '/perf',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSafetyRoute = AppSafetyRouteImport.update({
+  id: '/safety',
+  path: '/safety',
   getParentRoute: () => AppRoute,
 } as any)
 const AppSearchRoute = AppSearchRouteImport.update({
@@ -577,6 +585,11 @@ const AppFounderRevenueRoute = AppFounderRevenueRouteImport.update({
   path: '/founder/revenue',
   getParentRoute: () => AppRoute,
 } as any)
+const AppFounderSafetyRoute = AppFounderSafetyRouteImport.update({
+  id: '/founder_/safety',
+  path: '/founder/safety',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderSecurityRoute = AppFounderSecurityRouteImport.update({
   id: '/founder_/security',
   path: '/founder/security',
@@ -700,6 +713,11 @@ const AppSecurityProofRoute = AppSecurityProofRouteImport.update({
 const AppSecuritySessionsRoute = AppSecuritySessionsRouteImport.update({
   id: '/sessions',
   path: '/sessions',
+  getParentRoute: () => AppSecurityRoute,
+} as any)
+const AppSecurityVaultRoute = AppSecurityVaultRouteImport.update({
+  id: '/vault',
+  path: '/vault',
   getParentRoute: () => AppSecurityRoute,
 } as any)
 const AppSettingsIndexRoute = AppSettingsIndexRouteImport.update({
@@ -876,6 +894,7 @@ export interface FileRoutesByFullPath {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/perf': typeof AppPerfRouteWithChildren
+  '/app/safety': typeof AppSafetyRoute
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -921,6 +940,7 @@ export interface FileRoutesByFullPath {
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
   '/app/founder/revenue': typeof AppFounderRevenueRoute
+  '/app/founder/safety': typeof AppFounderSafetyRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -943,6 +963,7 @@ export interface FileRoutesByFullPath {
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
+  '/app/security/vault': typeof AppSecurityVaultRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -1009,6 +1030,7 @@ export interface FileRoutesByTo {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/people': typeof AppPeopleRoute
+  '/app/safety': typeof AppSafetyRoute
   '/app/search': typeof AppSearchRoute
   '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
@@ -1050,6 +1072,7 @@ export interface FileRoutesByTo {
   '/app/founder/org': typeof AppFounderOrgRoute
   '/app/founder/perf': typeof AppFounderPerfRoute
   '/app/founder/revenue': typeof AppFounderRevenueRoute
+  '/app/founder/safety': typeof AppFounderSafetyRoute
   '/app/founder/security': typeof AppFounderSecurityRoute
   '/app/founder/settings': typeof AppFounderSettingsRoute
   '/app/mail/outbox': typeof AppMailOutboxRoute
@@ -1071,6 +1094,7 @@ export interface FileRoutesByTo {
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
+  '/app/security/vault': typeof AppSecurityVaultRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -1144,6 +1168,7 @@ export interface FileRoutesById {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/perf': typeof AppPerfRouteWithChildren
+  '/app/safety': typeof AppSafetyRoute
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -1189,6 +1214,7 @@ export interface FileRoutesById {
   '/app/founder_/org': typeof AppFounderOrgRoute
   '/app/founder_/perf': typeof AppFounderPerfRoute
   '/app/founder_/revenue': typeof AppFounderRevenueRoute
+  '/app/founder_/safety': typeof AppFounderSafetyRoute
   '/app/founder_/security': typeof AppFounderSecurityRoute
   '/app/founder_/settings': typeof AppFounderSettingsRoute
   '/app/mail/$folder': typeof AppMailFolderRouteWithChildren
@@ -1211,6 +1237,7 @@ export interface FileRoutesById {
   '/app/security/history': typeof AppSecurityHistoryRoute
   '/app/security/proof': typeof AppSecurityProofRoute
   '/app/security/sessions': typeof AppSecuritySessionsRoute
+  '/app/security/vault': typeof AppSecurityVaultRoute
   '/app/settings/ai': typeof AppSettingsAiRoute
   '/app/settings/appearance': typeof AppSettingsAppearanceRoute
   '/app/settings/health': typeof AppSettingsHealthRoute
@@ -1285,6 +1312,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/perf'
+    | '/app/safety'
     | '/app/search'
     | '/app/security'
     | '/app/settings'
@@ -1330,6 +1358,7 @@ export interface FileRouteTypes {
     | '/app/founder/org'
     | '/app/founder/perf'
     | '/app/founder/revenue'
+    | '/app/founder/safety'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/mail/$folder'
@@ -1352,6 +1381,7 @@ export interface FileRouteTypes {
     | '/app/security/history'
     | '/app/security/proof'
     | '/app/security/sessions'
+    | '/app/security/vault'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1418,6 +1448,7 @@ export interface FileRouteTypes {
     | '/app/integrations'
     | '/app/movein'
     | '/app/people'
+    | '/app/safety'
     | '/app/search'
     | '/app/storage'
     | '/app/work'
@@ -1459,6 +1490,7 @@ export interface FileRouteTypes {
     | '/app/founder/org'
     | '/app/founder/perf'
     | '/app/founder/revenue'
+    | '/app/founder/safety'
     | '/app/founder/security'
     | '/app/founder/settings'
     | '/app/mail/outbox'
@@ -1480,6 +1512,7 @@ export interface FileRouteTypes {
     | '/app/security/history'
     | '/app/security/proof'
     | '/app/security/sessions'
+    | '/app/security/vault'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1552,6 +1585,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/perf'
+    | '/app/safety'
     | '/app/search'
     | '/app/security'
     | '/app/settings'
@@ -1597,6 +1631,7 @@ export interface FileRouteTypes {
     | '/app/founder_/org'
     | '/app/founder_/perf'
     | '/app/founder_/revenue'
+    | '/app/founder_/safety'
     | '/app/founder_/security'
     | '/app/founder_/settings'
     | '/app/mail/$folder'
@@ -1619,6 +1654,7 @@ export interface FileRouteTypes {
     | '/app/security/history'
     | '/app/security/proof'
     | '/app/security/sessions'
+    | '/app/security/vault'
     | '/app/settings/ai'
     | '/app/settings/appearance'
     | '/app/settings/health'
@@ -1957,6 +1993,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppPerfRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/safety': {
+      id: '/app/safety'
+      path: '/safety'
+      fullPath: '/app/safety'
+      preLoaderRoute: typeof AppSafetyRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/search': {
       id: '/app/search'
       path: '/search'
@@ -2286,6 +2329,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderRevenueRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/founder_/safety': {
+      id: '/app/founder_/safety'
+      path: '/founder/safety'
+      fullPath: '/app/founder/safety'
+      preLoaderRoute: typeof AppFounderSafetyRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder_/security': {
       id: '/app/founder_/security'
       path: '/founder/security'
@@ -2459,6 +2509,13 @@ declare module '@tanstack/react-router' {
       path: '/sessions'
       fullPath: '/app/security/sessions'
       preLoaderRoute: typeof AppSecuritySessionsRouteImport
+      parentRoute: typeof AppSecurityRoute
+    }
+    '/app/security/vault': {
+      id: '/app/security/vault'
+      path: '/vault'
+      fullPath: '/app/security/vault'
+      preLoaderRoute: typeof AppSecurityVaultRouteImport
       parentRoute: typeof AppSecurityRoute
     }
     '/app/settings/': {
@@ -2789,6 +2846,7 @@ interface AppSecurityRouteChildren {
   AppSecurityHistoryRoute: typeof AppSecurityHistoryRoute
   AppSecurityProofRoute: typeof AppSecurityProofRoute
   AppSecuritySessionsRoute: typeof AppSecuritySessionsRoute
+  AppSecurityVaultRoute: typeof AppSecurityVaultRoute
   AppSecurityIndexRoute: typeof AppSecurityIndexRoute
 }
 
@@ -2798,6 +2856,7 @@ const AppSecurityRouteChildren: AppSecurityRouteChildren = {
   AppSecurityHistoryRoute: AppSecurityHistoryRoute,
   AppSecurityProofRoute: AppSecurityProofRoute,
   AppSecuritySessionsRoute: AppSecuritySessionsRoute,
+  AppSecurityVaultRoute: AppSecurityVaultRoute,
   AppSecurityIndexRoute: AppSecurityIndexRoute,
 }
 
@@ -2910,6 +2969,7 @@ interface AppRouteChildren {
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppPerfRoute: typeof AppPerfRouteWithChildren
+  AppSafetyRoute: typeof AppSafetyRoute
   AppSearchRoute: typeof AppSearchRoute
   AppSecurityRoute: typeof AppSecurityRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
@@ -2930,6 +2990,7 @@ interface AppRouteChildren {
   AppFounderOrgRoute: typeof AppFounderOrgRoute
   AppFounderPerfRoute: typeof AppFounderPerfRoute
   AppFounderRevenueRoute: typeof AppFounderRevenueRoute
+  AppFounderSafetyRoute: typeof AppFounderSafetyRoute
   AppFounderSecurityRoute: typeof AppFounderSecurityRoute
   AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
@@ -2953,6 +3014,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppPerfRoute: AppPerfRouteWithChildren,
+  AppSafetyRoute: AppSafetyRoute,
   AppSearchRoute: AppSearchRoute,
   AppSecurityRoute: AppSecurityRouteWithChildren,
   AppSettingsRoute: AppSettingsRouteWithChildren,
@@ -2973,6 +3035,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderOrgRoute: AppFounderOrgRoute,
   AppFounderPerfRoute: AppFounderPerfRoute,
   AppFounderRevenueRoute: AppFounderRevenueRoute,
+  AppFounderSafetyRoute: AppFounderSafetyRoute,
   AppFounderSecurityRoute: AppFounderSecurityRoute,
   AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
