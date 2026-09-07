@@ -6,26 +6,108 @@
  * aur transport label wahi jo asal mein use ho raha hai (HTTP/3 ya fallback).
  */
 import { useRef, useState } from "react";
-import { FileStack, History, Pause, Play, UploadCloud } from "lucide-react";
+import {
+  CheckCircle2,
+  Circle,
+  FileStack,
+  History,
+  Loader2,
+  Pause,
+  Play,
+  ShieldAlert,
+  ShieldCheck,
+  UploadCloud,
+} from "lucide-react";
 
 import { Row, Stat } from "@/components/app/analytics/AnalyticsBits";
 import {
+  EVIDENCE_STEPS,
   bytesLabel,
   useFileEngine,
+  useFileSafety,
   useFileTransfers,
+  useFileTruth,
   useFileVersions,
   type TransferUi,
 } from "@/lib/chat-files";
 
+/**
+ * PHASE 16 — copy sirf sach bolti hai. "Delivered"/"Sent" jaisa lafz nahi:
+ * browser ka upload khatam hona sirf "Uploaded" hai; "Available" tab jab
+ * safety verdict + verified row DB mein maujood ho.
+ */
 const STATE_COPY: Record<TransferUi["state"], string> = {
-  preparing: "Preparing",
-  transferring: "Transferring",
+  preparing: "Selected",
+  transferring: "Uploading",
   paused: "Paused",
-  verifying: "Verifying",
-  done: "Stored",
+  verifying: "Verifying chunks",
+  scanning: "Scanning",
+  available: "Available",
+  blocked: "Blocked",
   failed: "Failed",
   rejected: "Refused",
 };
+
+const STEP_LABEL: Record<string, string> = {
+  selected: "Selected",
+  uploading: "Uploading",
+  uploaded: "Uploaded",
+  scanning: "Scanning",
+  verified: "Verified",
+  available: "Available",
+  downloaded: "Downloaded",
+};
+
+/**
+ * Evidence chain: har step ki asli DB row. Jo row nahi hai, woh step "abhi
+ * nahi hua" dikhta hai — UI kabhi aage ka daawa nahi karti.
+ */
+function EvidenceChain({ versionId }: { versionId: string }) {
+  const q = useFileTruth(versionId);
+  const truth = q.data;
+  const done = new Set((truth?.chain ?? []).map((c) => c.state));
+  const blocked = Boolean(truth?.blocked);
+
+  return (
+    <div className="mt-2 rounded-md border border-border/60 p-ax-3">
+      <ol className="flex flex-wrap gap-ax-3 text-sm">
+        {EVIDENCE_STEPS.map((step) => {
+          const reached = done.has(step);
+          const running = !reached && step === "scanning" && truth?.safety === "scanning";
+          return (
+            <li key={step} className="flex items-center gap-1">
+              {reached ? (
+                <CheckCircle2 className="size-3.5 text-primary" aria-hidden="true" />
+              ) : running ? (
+                <Loader2 className="size-3.5 animate-spin text-steel" aria-hidden="true" />
+              ) : (
+                <Circle className="size-3.5 text-steel" aria-hidden="true" />
+              )}
+              <span className={reached ? "text-foreground" : "text-steel"}>{STEP_LABEL[step]}</span>
+            </li>
+          );
+        })}
+      </ol>
+      <p className="mt-2 flex flex-wrap items-center gap-2 text-sm">
+        {blocked ? (
+          <ShieldAlert className="size-3.5 text-destructive" aria-hidden="true" />
+        ) : (
+          <ShieldCheck className="size-3.5 text-primary" aria-hidden="true" />
+        )}
+        <span className="text-muted-foreground">
+          {blocked
+            ? (truth?.safety_reason ?? "Blocked by safety policy — file never becomes available.")
+            : truth?.available
+              ? "Verified in our own infrastructure — no external service saw this file."
+              : "Safety check runs on our own servers. No external AI service is called."}
+        </span>
+        {(truth?.scan?.engines?.length ?? 0) > 0 && (
+          <span className="text-steel">engines: {truth!.scan!.engines.join(" · ")}</span>
+        )}
+      </p>
+    </div>
+  );
+}
 
 function TransferRow({
   t,
@@ -54,7 +136,7 @@ function TransferRow({
         aria-label={`${t.name} transfer progress`}
       >
         <div
-          className={`h-full ${t.state === "failed" || t.state === "rejected" ? "bg-destructive" : t.state === "paused" ? "bg-amber-500" : "bg-primary"}`}
+          className={`h-full ${t.state === "failed" || t.state === "rejected" || t.state === "blocked" ? "bg-destructive" : t.state === "paused" ? "bg-amber-500" : t.state === "scanning" ? "bg-steel" : "bg-primary"}`}
           style={{ width: `${Math.min(t.percent, 100)}%` }}
         />
       </div>
@@ -80,7 +162,49 @@ function TransferRow({
           </button>
         )}
       </div>
+      {t.versionId && <EvidenceChain versionId={t.versionId} />}
     </li>
+  );
+}
+
+/** PHASE 17/18 — safety truth: kaun engine chali, queue, aur enforcement. */
+function SafetyPanel() {
+  const q = useFileSafety();
+  const d = q.data;
+  if (!d) return null;
+  return (
+    <div className="mt-ax-6 rounded-lg border border-border/60 p-ax-4">
+      <h3 className="flex items-center gap-2 font-semibold text-foreground">
+        <ShieldCheck className="size-4" aria-hidden="true" /> File safety (self-hosted)
+      </h3>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Every check runs inside our own infrastructure. Normal conversations are never sent to any
+        AI service.
+      </p>
+      <div className="mt-ax-3 grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
+        <Stat label="Queue" value={`${d.queue.pending} waiting`} hint={`${d.queue.scanning} scanning`} />
+        <Stat label="Engines" value={String(d.engines.length)} hint={d.engines.join(" · ")} />
+        <Stat label="External services" value={d.external_api ? "yes" : "none"} />
+        <Stat
+          label="Account standing"
+          value={d.enforcement.action.replace("_", " ")}
+          hint={`${d.enforcement.strikes} recorded event${d.enforcement.strikes === 1 ? "" : "s"}`}
+        />
+      </div>
+      {d.events.length > 0 && (
+        <ul className="mt-ax-3 space-y-1 text-sm">
+          {d.events.map((e) => (
+            <li key={e.id} className="flex flex-wrap gap-2 text-muted-foreground">
+              <ShieldAlert className="size-3.5 text-destructive" aria-hidden="true" />
+              <span className="text-foreground">{e.name ?? "file"}</span>
+              <span>{e.classification}</span>
+              <span>{e.decision}</span>
+              <span className="text-steel">{new Date(e.created_at).toLocaleString()}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -241,6 +365,8 @@ export function FileTransfers({ conversationId = null }: { conversationId?: stri
           ))}
         </ul>
       )}
+
+      <SafetyPanel />
     </section>
   );
 }

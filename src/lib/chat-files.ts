@@ -83,13 +83,121 @@ export type TransferUi = {
   bytes: number;
   bytesDone: number;
   percent: number;
-  state: "preparing" | "transferring" | "paused" | "verifying" | "done" | "failed" | "rejected";
+  state:
+    | "preparing"
+    | "transferring"
+    | "paused"
+    | "verifying"
+    | "scanning"
+    | "available"
+    | "blocked"
+    | "failed"
+    | "rejected";
   detail: string;
   transport: "rust-quic" | "bun-fallback" | "offline";
   transferId: string | null;
+  versionId: string | null;
   resumed: boolean;
   repaired: number;
 };
+
+/**
+ * PHASE 16 — FILE TRUTH. Chain ke saat step. UI kabhi "Delivered" nahi likhta
+ * jab tak `available` row DB mein sabit na ho — browser ka upload khatam hona
+ * sirf `uploaded` hai, us se aage kuch nahi.
+ */
+export const EVIDENCE_STEPS = [
+  "selected",
+  "uploading",
+  "uploaded",
+  "scanning",
+  "verified",
+  "available",
+  "downloaded",
+] as const;
+
+export type EvidenceStep = (typeof EVIDENCE_STEPS)[number];
+
+export type FileTruth = {
+  found: boolean;
+  version_id?: string;
+  bytes?: number;
+  version?: number;
+  safety?: "pending" | "scanning" | "clean" | "flagged" | "blocked" | "error";
+  safety_reason?: string | null;
+  available?: boolean;
+  blocked?: boolean;
+  chain?: { state: EvidenceStep | "blocked"; at: string; actor: string; detail: unknown }[];
+  scan?: {
+    state: string;
+    engines: string[];
+    findings: { code?: string; detail?: string }[];
+    verdict: string | null;
+    attempts: number;
+    finished_at: string | null;
+  } | null;
+  downloads?: number;
+};
+
+export type FileSafety = {
+  enforcement: { strikes: number; action: string; last_event: string | null };
+  queue: { pending: number; scanning: number };
+  events: {
+    id: number;
+    name: string | null;
+    classification: string;
+    decision: string;
+    reasons: { code?: string; detail?: string }[];
+    engines: string[];
+    review_state: string;
+    created_at: string;
+  }[];
+  engines: string[];
+  external_api: boolean;
+};
+
+/** Evidence chain — server ka sach, poll par. */
+export function useFileTruth(versionId: string | null, live = true) {
+  return useQuery<FileTruth>({
+    queryKey: ["file-engine", "truth", versionId],
+    enabled: Boolean(versionId),
+    refetchInterval: live ? 3000 : false,
+    queryFn: () =>
+      chatCall<FileTruth>(
+        "file.truth",
+        { version_id: versionId },
+        { path: `/api/chat/file/truth?version=${encodeURIComponent(versionId!)}`, method: "GET" },
+      ),
+  });
+}
+
+/** PHASE 17/18 — kaun kaun local engine chali, queue, aur enforcement state. */
+export function useFileSafety() {
+  return useQuery<FileSafety>({
+    queryKey: ["file-engine", "safety"],
+    refetchInterval: 15000,
+    queryFn: () =>
+      chatCall<FileSafety>("file.safety.state", {}, { path: "/api/chat/file/safety", method: "GET" }),
+  });
+}
+
+/** Downloaded step: sirf asli download ke baad. Blocked file par server mana karta hai. */
+export async function ackDownload(versionId: string, bytes: number) {
+  const body = { version_id: versionId, bytes, device: "browser" };
+  return chatCall<{ ok: boolean; reason?: string }>("file.download.ack", body, {
+    path: "/api/chat/file/download/ack",
+    method: "POST",
+    body,
+  }).catch(() => ({ ok: false, reason: "unreachable" }) as { ok: boolean; reason?: string });
+}
+
+export async function fileTruth(versionId: string): Promise<FileTruth> {
+  return chatCall<FileTruth>(
+    "file.truth",
+    { version_id: versionId },
+    { path: `/api/chat/file/truth?version=${encodeURIComponent(versionId)}`, method: "GET" },
+  );
+}
 
 export function bytesLabel(n: number): string {
   if (!Number.isFinite(n) || n <= 0) return "0 B";
@@ -180,7 +288,16 @@ async function mark(transferId: string, state: "active" | "paused" | "failed", t
 
 async function commit(transferId: string, fingerprint: string) {
   const body = { transfer_id: transferId, file_sha256: fingerprint };
-  return chatCall<{ ok: boolean; reason?: string; missing?: number[]; corrupt?: number[]; version?: number }>(
+  return chatCall<{
+    ok: boolean;
+    reason?: string;
+    missing?: number[];
+    corrupt?: number[];
+    version?: number;
+    version_id?: string;
+    safety?: string;
+    available?: boolean;
+  }>(
     "file.commit",
     body,
     { path: "/api/chat/file/commit", method: "POST", body },
@@ -464,12 +581,50 @@ export function useFileTransfers(conversationId: string | null = null) {
           patch(key, { state: "failed", detail: res.reason ?? "Commit nahi hua" });
           return;
         }
+        // PHASE 16: bytes pohonch gayi — bas. Yeh "Delivered" nahi hai.
         patch(key, {
-          state: "done",
+          state: "scanning",
           percent: 100,
           bytesDone: file.size,
-          detail: `Stored as version ${res.version}`,
+          versionId: res.version_id ?? null,
+          detail: "Uploaded — safety check chal raha hai (local engines)",
         });
+
+        // PHASE 17/18: availability ka faisla server par hota hai. Frontend
+        // sirf chain parhta hai; koi bhi step khud se green nahi karta.
+        if (res.version_id) {
+          for (let i = 0; i < 200; i += 1) {
+            const truth = await fileTruth(res.version_id).catch(() => null);
+            if (truth?.blocked) {
+              patch(key, {
+                state: "blocked",
+                detail:
+                  truth.safety_reason ??
+                  truth.scan?.findings?.[0]?.detail ??
+                  "Blocked by content safety policy",
+              });
+              return;
+            }
+            if (truth?.available) {
+              patch(key, {
+                state: "available",
+                detail: `Verified and available · version ${res.version}`,
+              });
+              return;
+            }
+            if (truth?.safety === "flagged") {
+              patch(key, {
+                state: "blocked",
+                detail: truth.safety_reason ?? "Held for review — not available yet",
+              });
+              return;
+            }
+            await new Promise((r) => setTimeout(r, 1500));
+          }
+          patch(key, { state: "scanning", detail: "Safety check still running — review pending" });
+          return;
+        }
+        patch(key, { state: "scanning", detail: "Uploaded — awaiting safety verdict" });
       } catch (e) {
         if ((e as Error).name === "AbortError") return;
         patch(key, { state: "failed", detail: (e as Error).message });
@@ -516,9 +671,10 @@ export function useFileTransfers(conversationId: string | null = null) {
             bytesDone: 0,
             percent: 0,
             state: "preparing",
-            detail: "Resume identity ban rahi hai",
+            detail: "Selected — resume identity ban rahi hai",
             transport: "rust-quic",
             transferId: null,
+            versionId: null,
             resumed: false,
             repaired: 0,
           },

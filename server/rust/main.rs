@@ -178,7 +178,11 @@ async fn file_ping() -> impl IntoResponse {
     ok(json!({
         "service": "anexomail-file-engine",
         "status": "up",
-        "phase": "13-15",
+        "phase": "13-18",
+        "safety": {
+            "external_api": false,
+            "engines": ["type-policy", "clamd-local", "entropy", "archive-ratio", "local-classifier"]
+        },
         "max_file_bytes": 5_368_709_120u64,
         "max_chunk_bytes": 16_777_216u64,
         "resumable": true,
@@ -1005,6 +1009,51 @@ async fn dispatch(
             .await
         }
 
+        // ── PHASE 16: FILE TRUTH — evidence chain (jhoot ki gunjaish nahi) ──
+        // UI sirf yeh chain dikhata hai: jo row DB mein nahi, woh step "abhi
+        // nahi hua". "Delivered" jaisa lafz browser upload par kabhi nahi.
+        "file.truth" => {
+            sb_rpc(
+                "file_truth",
+                json!({ "_user": me.id, "_version": s(&input, "version_id") }),
+            )
+            .await
+        }
+
+        // Client selection ka evidence (chain ka pehla step, insaan ka action).
+        "file.evidence" => {
+            sb_rpc(
+                "file_evidence_for_transfer",
+                json!({
+                    "_user": me.id,
+                    "_transfer": s(&input, "transfer_id"),
+                    "_state": s(&input, "state"),
+                    "_actor": "rust",
+                    "_detail": input.get("detail").cloned().unwrap_or(json!({})),
+                }),
+            )
+            .await
+        }
+
+        // ── PHASE 17/18: safety truth — engines ki list, queue, enforcement ─
+        "file.safety.state" => {
+            sb_rpc("file_safety_state", json!({ "_user": me.id })).await
+        }
+
+        // Downloaded step sirf asli download par (blocked file par 'not_available').
+        "file.download.ack" => {
+            sb_rpc(
+                "file_download_ack",
+                json!({
+                    "_user": me.id,
+                    "_version": s(&input, "version_id"),
+                    "_bytes": n(&input, "bytes").unwrap_or(0),
+                    "_device": s(&input, "device"),
+                }),
+            )
+            .await
+        }
+
         other => {
 
             return err(
@@ -1328,6 +1377,318 @@ async fn file_chunk(headers: HeaderMap, body: axum::body::Bytes) -> axum::respon
     }
 }
 
+
+// ============================================================================
+// PHASE 16 + 17 + 18 — SELF-HOSTED SAFETY WORKER (koi external API nahi)
+//
+// Chain: selected → uploading → uploaded → scanning → verified → available →
+//        downloaded. Yeh worker sirf `scanning → verified/blocked` karta hai,
+//        baqi steps asli events se bante hain.
+//
+// ENGINES (sab ANEXOMAIL infra ke andar):
+//   type-policy      : DB `file_type_verdict` (extension + magic bytes + mime
+//                      mismatch + double extension) — deterministic, model nahi
+//   clamd-local      : self-hosted ClamAV daemon INSTREAM (CLAMD_ADDR,
+//                      default 127.0.0.1:3310). Available na ho to engine list
+//                      mein naam nahi aata — jhooti safety claim kabhi nahi.
+//   entropy          : declared text/document par packed payload ka pata
+//   archive-ratio    : zip local header se compression bomb ratio
+//   local-classifier : local deterministic prohibited-content wordlist, sirf
+//                      text-like bytes par. Insaani guftagu kabhi nahi.
+// ============================================================================
+
+async fn sb_storage_get(path: &str) -> Result<Vec<u8>, String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let res = reqwest::Client::new()
+        .get(format!("{url}/storage/v1/object/chat-files/{path}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if !res.status().is_success() {
+        return Err(format!("storage_get_{}", res.status().as_u16()));
+    }
+    Ok(res.bytes().await.map_err(|e| e.to_string())?.to_vec())
+}
+
+fn hex_head(bytes: &[u8], take: usize) -> String {
+    bytes
+        .iter()
+        .take(take)
+        .map(|b| format!("{b:02x}"))
+        .collect()
+}
+
+fn shannon_entropy(bytes: &[u8]) -> f64 {
+    if bytes.is_empty() {
+        return 0.0;
+    }
+    let mut counts = [0usize; 256];
+    for b in bytes {
+        counts[*b as usize] += 1;
+    }
+    let len = bytes.len() as f64;
+    -counts
+        .iter()
+        .filter(|c| **c > 0)
+        .map(|c| {
+            let p = *c as f64 / len;
+            p * p.log2()
+        })
+        .sum::<f64>()
+}
+
+/// ZIP local file header: compressed vs uncompressed size — bomb ratio.
+fn archive_ratio(bytes: &[u8]) -> Option<f64> {
+    if bytes.len() < 30 || &bytes[0..4] != b"PK\x03\x04" {
+        return None;
+    }
+    let rd = |o: usize| -> u64 {
+        u32::from_le_bytes([bytes[o], bytes[o + 1], bytes[o + 2], bytes[o + 3]]) as u64
+    };
+    let comp = rd(18).max(1);
+    let uncomp = rd(22);
+    if uncomp == 0 {
+        return None;
+    }
+    Some(uncomp as f64 / comp as f64)
+}
+
+/// Self-hosted ClamAV daemon. Reachable na ho to `Ok(None)` — engine chup.
+async fn clamd_scan(bytes: &[u8]) -> Result<Option<String>, String> {
+    use tokio::io::{AsyncReadExt, AsyncWriteExt};
+    let addr = {
+        let v = env_var("CLAMD_ADDR");
+        if v.is_empty() {
+            "127.0.0.1:3310".to_string()
+        } else {
+            v
+        }
+    };
+    let connect = tokio::time::timeout(
+        Duration::from_millis(600),
+        tokio::net::TcpStream::connect(&addr),
+    )
+    .await;
+    let mut stream = match connect {
+        Ok(Ok(s)) => s,
+        _ => return Ok(None), // clamd nahi hai — jhooti clean claim nahi
+    };
+    stream
+        .write_all(b"zINSTREAM\0")
+        .await
+        .map_err(|e| e.to_string())?;
+    for part in bytes.chunks(65536) {
+        stream
+            .write_all(&(part.len() as u32).to_be_bytes())
+            .await
+            .map_err(|e| e.to_string())?;
+        stream.write_all(part).await.map_err(|e| e.to_string())?;
+    }
+    stream
+        .write_all(&0u32.to_be_bytes())
+        .await
+        .map_err(|e| e.to_string())?;
+    let mut reply = Vec::new();
+    let _ = tokio::time::timeout(Duration::from_secs(20), stream.read_to_end(&mut reply)).await;
+    let text = String::from_utf8_lossy(&reply).trim().to_string();
+    if text.is_empty() {
+        return Ok(None);
+    }
+    if text.ends_with("OK") {
+        return Ok(Some("clean".into()));
+    }
+    Ok(Some(text))
+}
+
+/// Local deterministic classifier — sirf text-like bytes, sirf saaf mamnu maal.
+fn local_classify(name: &str, content_type: &str, bytes: &[u8]) -> Option<(String, String)> {
+    let texty = content_type.starts_with("text/")
+        || content_type.contains("json")
+        || content_type.contains("xml")
+        || name.ends_with(".txt")
+        || name.ends_with(".csv")
+        || name.ends_with(".md");
+    if !texty {
+        return None;
+    }
+    let text = String::from_utf8_lossy(&bytes[..bytes.len().min(2 * 1024 * 1024)]).to_lowercase();
+    let markers = [
+        ("credential-dump", vec!["-----begin rsa private key-----", "-----begin openssh private key-----"]),
+        ("card-data-dump", vec!["cvv", "card_number,expiry"]),
+        ("malware-builder", vec!["ransom note", "shellcode payload"]),
+    ];
+    for (label, needles) in markers {
+        if needles.iter().any(|n| text.contains(n)) {
+            return Some((label.to_string(), format!("Local classifier matched {label}")));
+        }
+    }
+    None
+}
+
+async fn scan_one(job: &Value) {
+    let version = job.get("version_id").and_then(|v| v.as_str()).unwrap_or("");
+    let name = job.get("name").and_then(|v| v.as_str()).unwrap_or("");
+    let ctype = job
+        .get("content_type")
+        .and_then(|v| v.as_str())
+        .unwrap_or("application/octet-stream");
+    let prefix = job
+        .get("storage_prefix")
+        .and_then(|v| v.as_str())
+        .unwrap_or("");
+    let chunks = job.get("chunk_count").and_then(|v| v.as_i64()).unwrap_or(0);
+    if version.is_empty() || prefix.is_empty() {
+        return;
+    }
+
+    // Sirf pehle 4 chunks (max 32 MB) — 5 GB file par bhi scan window bounded.
+    let mut sample: Vec<u8> = Vec::new();
+    for idx in 0..chunks.min(4) {
+        match sb_storage_get(&format!("{prefix}/chunks/{idx}")).await {
+            Ok(mut part) => sample.append(&mut part),
+            Err(e) => {
+                let _ = sb_rpc(
+                    "file_scan_report",
+                    json!({
+                        "_version": version,
+                        "_engines": ["type-policy"],
+                        "_classification": "unreadable",
+                        "_decision": "quarantine",
+                        "_findings": [{ "code": "sample_unreadable", "detail": e }]
+                    }),
+                )
+                .await;
+                return;
+            }
+        }
+    }
+
+    let mut engines: Vec<&str> = vec!["type-policy", "entropy", "archive-ratio"];
+    let mut findings: Vec<Value> = Vec::new();
+    let mut decision = "allow";
+    let mut classification = "clean".to_string();
+
+    // 1) deterministic type policy (DB) — magic bytes ke saath
+    if let Ok(v) = sb_rpc(
+        "file_type_verdict",
+        json!({ "_name": name, "_content_type": ctype, "_magic_hex": hex_head(&sample, 8) }),
+    )
+    .await
+    {
+        if let Some(reasons) = v.get("reasons").and_then(|r| r.as_array()) {
+            findings.extend(reasons.clone());
+        }
+        match v.get("decision").and_then(|d| d.as_str()) {
+            Some("block") => {
+                decision = "block";
+                classification = "dangerous".into();
+            }
+            Some("quarantine") => {
+                decision = "quarantine";
+                classification = "suspicious".into();
+            }
+            _ => {}
+        }
+    }
+
+    // 2) EICAR / test signature (deterministic, offline)
+    if sample
+        .windows(20)
+        .any(|w| w == b"EICAR-STANDARD-ANTIV")
+    {
+        decision = "block";
+        classification = "dangerous".into();
+        findings.push(json!({ "code": "signature_match", "detail": "Known test malware signature" }));
+    }
+
+    // 3) self-hosted clamd
+    match clamd_scan(&sample).await {
+        Ok(Some(reply)) => {
+            engines.push("clamd-local");
+            if reply != "clean" {
+                decision = "block";
+                classification = "malware".into();
+                findings.push(json!({ "code": "clamd_found", "detail": reply }));
+            }
+        }
+        _ => {}
+    }
+
+    // 4) archive bomb ratio
+    if let Some(ratio) = archive_ratio(&sample) {
+        if ratio > 200.0 && decision != "block" {
+            decision = "block";
+            classification = "dangerous".into();
+            findings.push(json!({
+                "code": "archive_bomb",
+                "detail": format!("Compression ratio {ratio:.0}x exceeds policy")
+            }));
+        }
+    }
+
+    // 5) entropy: declared document/text magar packed payload
+    let entropy = shannon_entropy(&sample[..sample.len().min(1024 * 1024)]);
+    if decision == "allow"
+        && entropy > 7.95
+        && (ctype.starts_with("text/") || ctype.contains("pdf") || ctype.contains("word"))
+    {
+        decision = "quarantine";
+        classification = "suspicious".into();
+        findings.push(json!({
+            "code": "entropy_mismatch",
+            "detail": format!("Declared document with packed payload (entropy {entropy:.2})")
+        }));
+    }
+
+    // 6) local classifier (Phase 18) — sirf text-like file bytes par
+    if let Some((label, detail)) = local_classify(name, ctype, &sample) {
+        engines.push("local-classifier");
+        decision = "block";
+        classification = label;
+        findings.push(json!({ "code": "content_policy", "detail": detail }));
+    }
+
+    let _ = sb_rpc(
+        "file_scan_report",
+        json!({
+            "_version": version,
+            "_engines": engines,
+            "_classification": classification,
+            "_decision": decision,
+            "_findings": findings
+        }),
+    )
+    .await;
+}
+
+async fn start_safety_worker() {
+    if sb().is_none() {
+        println!("safety worker OFF — SUPABASE4_* missing");
+        return;
+    }
+    loop {
+        match sb_rpc("file_scan_claim", json!({ "_limit": 2 })).await {
+            Ok(v) => {
+                let jobs = v
+                    .get("jobs")
+                    .and_then(|j| j.as_array())
+                    .cloned()
+                    .unwrap_or_default();
+                if jobs.is_empty() {
+                    tokio::time::sleep(Duration::from_secs(4)).await;
+                    continue;
+                }
+                for job in jobs {
+                    scan_one(&job).await;
+                }
+            }
+            Err(_) => tokio::time::sleep(Duration::from_secs(10)).await,
+        }
+    }
+}
+
 #[tokio::main]
 
 async fn main() {
@@ -1335,6 +1696,8 @@ async fn main() {
     tracing_subscriber::fmt().with_target(false).init();
 
     tokio::spawn(start_webtransport());
+    // PHASE 17/18 — self-hosted safety worker (koi external API nahi)
+    tokio::spawn(start_safety_worker());
 
     let cors = CorsLayer::new()
         .allow_origin(Any)
