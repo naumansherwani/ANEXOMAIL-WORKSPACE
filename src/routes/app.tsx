@@ -55,6 +55,20 @@ function AppLayout() {
     if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
   }, [status, preview, navigate]);
 
+  // PHASE 19 — device safety vault: sign-in ke baad ek dafa is device ka
+  // minimized signal set seal ho kar record hota hai (banned/suspicious device
+  // detection ke liye). Session mein ek se zyada dafa nahi.
+  const register = useRegisterDevice();
+  useEffect(() => {
+    if (status !== "signed-in" || preview) return;
+    if (sessionStorage.getItem("ax.device.vault") === "done") return;
+    sessionStorage.setItem("ax.device.vault", "done");
+    register.mutate(undefined, { onError: () => sessionStorage.removeItem("ax.device.vault") });
+    // register identity is stable for this mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, preview]);
+
+
   useEffect(() => {
     if (preview) return;
     const s = account.data?.state;
