@@ -1417,3 +1417,373 @@ chatRouter.post("/collisions/:id/act", async (req, res) => {
   if (error) return fail(res, error);
   res.json(data);
 });
+
+// ===========================================================================
+// PHASE 28 — BUSINESS CONVERSATION RECEIPTS + ZERO-LOSS HANDOVER PACK
+// Bun = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.receipt.* | chat.handover.*
+// (:3200 + WebTransport/QUIC). Steps sirf asli rows se; negative receipts bhi.
+// ===========================================================================
+chatRouter.get("/receipts/message/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("message_receipt_pack", {
+    _message: req.params.messageId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/receipts/record", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const state = String(req.body?.state || "");
+  if (!message || !state) return res.status(400).json({ error: "message_id_and_state_required" });
+  const { data, error } = await db!.rpc("receipt_device_record", {
+    _user: me.id,
+    _message: message,
+    _state: state,
+    _platform_class: req.body?.platform_class ?? null,
+    _tz_bucket: req.body?.tz_bucket ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/receipts/silent", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const hours = req.query?.hours ? Number(req.query.hours) : 24;
+  const { data, error } = await db!.rpc("read_without_response", {
+    _user: me.id,
+    _hours: Number.isFinite(hours) ? hours : 24,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/receipts/replay/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("receipt_replay", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+    _limit: req.query?.limit ? Number(req.query.limit) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/receipts/certificate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conversation = String(req.body?.conversation_id || "");
+  if (!conversation) return res.status(400).json({ error: "conversation_id_required" });
+  const { data, error } = await db!.rpc("receipt_certificate_issue", {
+    _conversation: conversation,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// Certificate verify: bahar se, bina login — body kabhi shamil nahi hoti.
+chatRouter.get("/receipts/verify/:token", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "chat_backend_unconfigured" });
+  const { data, error } = await db.rpc("receipt_certificate_verify", {
+    _token: req.params.token,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/messages/attach-file", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const version = String(req.body?.version_id || "");
+  if (!message || !version) {
+    return res.status(400).json({ error: "message_id_and_version_id_required" });
+  }
+  const { data, error } = await db!.rpc("message_attach_file", {
+    _user: me.id,
+    _message: message,
+    _version: version,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/handover/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("handover_pack_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/handover/build", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const outgoing = String(req.body?.outgoing_user || "");
+  if (!outgoing) return res.status(400).json({ error: "outgoing_user_required" });
+  const { data, error } = await db!.rpc("handover_pack_build", {
+    _actor: me.id,
+    _outgoing: outgoing,
+    _scope: req.body?.scope ?? "workspace",
+    _scope_ref: req.body?.scope_ref ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/handover/:packId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("handover_pack_get", {
+    _pack: req.params.packId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/handover/:packId/assign", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const incoming = String(req.body?.incoming_user || "");
+  const reason = String(req.body?.reason || "");
+  if (!incoming || reason.trim().length < 8) {
+    return res.status(400).json({ error: "incoming_user_and_8_char_reason_required" });
+  }
+  const { data, error } = await db!.rpc("handover_assign", {
+    _actor: me.id,
+    _pack: req.params.packId,
+    _incoming: incoming,
+    _reason: reason,
+    _item: req.body?.item_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/handover/:packId/complete", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const reason = String(req.body?.reason || "");
+  if (reason.trim().length < 8) return res.status(400).json({ error: "8_char_reason_required" });
+  const { data, error } = await db!.rpc("handover_complete", {
+    _actor: me.id,
+    _pack: req.params.packId,
+    _reason: reason,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+// PHASE 29 — EMAIL → CHAT BRIDGE (email formal record rehta hai)
+// Bun = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.bridge.*
+// ===========================================================================
+chatRouter.post("/bridge/discuss", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const thread = String(req.body?.mail_thread_id || "");
+  if (!thread) return res.status(400).json({ error: "mail_thread_id_required" });
+  const { data, error } = await db!.rpc("email_discuss_in_chat", {
+    _user: me.id,
+    _mail_thread: thread,
+    _mail_message: req.body?.mail_message_id ?? null,
+    _conversation: req.body?.conversation_id ?? null,
+    _subject: req.body?.subject ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/bridge/context/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("email_chat_context", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/bridge/thread/:mailThreadId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("email_thread_conversation", {
+    _user: me.id,
+    _mail_thread: req.params.mailThreadId,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/quote", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const thread = String(req.body?.mail_thread_id || "");
+  const text = String(req.body?.quoted_text || "");
+  if (!message || !thread || !text.trim()) {
+    return res.status(400).json({ error: "message_id_mail_thread_id_and_quoted_text_required" });
+  }
+  const { data, error } = await db!.rpc("email_quote_to_chat", {
+    _user: me.id,
+    _message: message,
+    _mail_thread: thread,
+    _quoted_text: text,
+    _mail_message: req.body?.mail_message_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/quote/verify", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const quote = String(req.body?.quote_id || "");
+  if (!quote) return res.status(400).json({ error: "quote_id_required" });
+  const { data, error } = await db!.rpc("email_quote_verify", {
+    _quote: quote,
+    _current_text: req.body?.current_text ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/presence", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const emails = Array.isArray(req.body?.emails) ? req.body.emails.map(String) : [];
+  const { data, error } = await db!.rpc("email_discuss_presence", {
+    _user: me.id,
+    _emails: emails,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/rescue", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const thread = String(req.body?.mail_thread_id || "");
+  const title = String(req.body?.title || "");
+  const owner = String(req.body?.owner_user_id || "");
+  const due = req.body?.due_at ? String(req.body.due_at) : "";
+  if (!thread || title.trim().length < 3 || !owner || !due) {
+    return res.status(400).json({ error: "mail_thread_id_title_owner_and_due_required" });
+  }
+  const { data, error } = await db!.rpc("silent_thread_rescue", {
+    _user: me.id,
+    _mail_thread: thread,
+    _title: title,
+    _owner: owner,
+    _due: due,
+    _mail_message: req.body?.mail_message_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+// PHASE 30 — CHAT → EMAIL (citations + consent + lineage)
+// Bun = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.email.*
+// ===========================================================================
+chatRouter.post("/email/draft", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conversation = String(req.body?.conversation_id || "");
+  const subject = String(req.body?.subject || "");
+  if (!conversation || subject.trim().length < 3) {
+    return res.status(400).json({ error: "conversation_id_and_subject_required" });
+  }
+  const { data, error } = await db!.rpc("chat_email_draft_create", {
+    _user: me.id,
+    _conversation: conversation,
+    _subject: subject,
+    _recipients: Array.isArray(req.body?.recipients) ? req.body.recipients.map(String) : [],
+    _message_ids: Array.isArray(req.body?.message_ids) ? req.body.message_ids.map(String) : [],
+    _intro: req.body?.intro ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/email/drafts", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_email_draft_board", {
+    _user: me.id,
+    _conversation: req.query?.c ? String(req.query.c) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/email/draft/:draftId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_email_draft_get", {
+    _draft: req.params.draftId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/email/draft/:draftId/consent", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const state = String(req.body?.state || "");
+  if (!state) return res.status(400).json({ error: "state_required" });
+  const { data, error } = await db!.rpc("chat_email_draft_consent", {
+    _user: me.id,
+    _draft: req.params.draftId,
+    _state: state,
+    _reason: req.body?.reason ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/email/draft/:draftId/send", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const mail = String(req.body?.mail_message_id || "");
+  if (!mail) return res.status(400).json({ error: "mail_message_id_required" });
+  const { data, error } = await db!.rpc("chat_email_draft_send", {
+    _user: me.id,
+    _draft: req.params.draftId,
+    _mail_message: mail,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/email/decision/:decisionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_to_email", {
+    _user: me.id,
+    _decision: req.params.decisionId,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/email/escalations/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("message_escalations", {
+    _message: req.params.messageId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
