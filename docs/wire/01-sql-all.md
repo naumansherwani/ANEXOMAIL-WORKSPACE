@@ -30,3 +30,4 @@ ALL SQL GREEN
 Runner pehle database connection check karta hai. Connection fail ho to 59 jhoote RED
 nahi deta; foran ruk kar asli error screen par dikhata hai. SQL error ho to pehli failing
 phase aur us ka exact error screen par dikhata hai; baqi dependent phases run nahi hotin.
+`connect.sh` ka login-verified URI hamesha purani app/mail environment files se pehle use hota hai.
