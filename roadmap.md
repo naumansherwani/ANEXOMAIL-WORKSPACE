@@ -19,3 +19,6 @@
 - [x] Phase 25/26/27 conversation → outcome timeline, matter-level health + commitment collision prevention (human-recorded links only), sealed message provenance chain (`anexochat/sql/phase25_27_timeline_health_provenance.sql`)
 
 - [ ] anexomail.com 502 (frontend PM2) confirm green
+- [x] RUST-FIRST rule repo mein locked (blueprint PART 0 + anexochat/README.md + memory): har nayi phase ka pehla arm Rust/QUIC/WT, Bun sirf fallback
+- [x] Live weather decision resolved: Open-Meteo only (no OpenWeatherMap), honest source badge
+- [x] Blueprint Phase 28→55 ke neeche "Lovable Suggestions Features to be added" sections add kiye

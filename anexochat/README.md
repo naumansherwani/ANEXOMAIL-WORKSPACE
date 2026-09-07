@@ -41,3 +41,26 @@ Tafseel: `sql/README.md` (isi folder mein).
 
 Rust PRIMARY engine `server/rust/main.rs`, Bun fallback `server/routes/chat.ts`,
 frontend `src/routes/app.chat*`, `src/components/app/chat/*`, `src/lib/chat-*.ts`.
+
+## RUST-FIRST RULE (repo lock, 7 Sep 2026 — non-negotiable)
+
+- PRIMARY = Rust `:3200` (async axum) + WebTransport/QUIC `udp 3443`: `/rpc/*`,
+  `/file/chunk`, `/wt/*`. Bun `:3300` SIRF fallback (jahan WT/QUIC available na ho).
+- SQL-heavy arms (timeline · health · provenance · collision · decision · promise ·
+  integrity) bhi Rust arms se; Bun sirf mirror.
+- **Har nayi phase ka pehla arm Rust mein** (`server/rust/main.rs`), Bun mirror sirf
+  jab fallback lazmi ho. Bun kabhi primary nahi, aur kabhi 100% remove bhi nahi.
+- Supabase/PostgreSQL hamesha source of truth. Tafseel: `docs/anexochat-blueprint.md`
+  PART 0 → "RUST-FIRST RULE".
+
+## LIVE WEATHER (resolved 7 Sep 2026)
+
+Live weather ON — source SIRF Open-Meteo (`src/lib/chat-weather.ts`), zero key, user
+permission. OpenWeatherMap ya koi doosra weather API kabhi nahi. Reading na mile to UI
+sach bolta hai.
+
+## Lovable Suggestions Features to be added
+
+Blueprint ki har Phase 28→55 ke neeche ek section hai: **"Lovable Suggestions Features
+to be added"** — duniya-level advance features jo mojooda locks (truth-only, API-free,
+human-in-the-loop) ke ain mutabiq hain. Founder tarteeb dega, phir build.
