@@ -190,6 +190,56 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
   const captureCeiling = useRef(LADDER[rungIndex("720p")]!);
   const choiceRef = useRef<QualityChoice>("auto");
 
+  // ── PHASE 31A refs/state ───────────────────────────────────────────────────
+  const ring = useRef<RingHandle | null>(null);
+  const ringId = useRef<string | null>(null);
+  const noAnswer = useRef<number | null>(null);
+  const signalSentAt = useRef<number>(0);
+  const marked = useRef<Set<string>>(new Set());
+  const audioOnly = useRef<boolean>(false);
+  const sfuRoom = useRef<string | null>(null);
+  const [ringing, setRinging] = useState<{ tone: "ringtone" | "ringback"; audible: boolean } | null>(
+    null,
+  );
+  const [topology, setTopology] = useState<"mesh" | "sfu" | null>(null);
+  const [survival, setSurvival] = useState<string | null>(null);
+
+  /** Ek mark ek dafa; value na mile to null jata hai — guess kabhi nahi. */
+  const mark = useCallback(
+    (name: Parameters<typeof connectMark>[0]["mark"], value?: number | null) => {
+      const sid = sessionId.current;
+      if (!sid || marked.current.has(name)) return;
+      marked.current.add(name);
+      void connectMark({
+        session_id: sid,
+        mark: name,
+        value_ms: value ?? null,
+        transport: link.current?.transport() ?? "rows",
+      }).catch(() => {});
+    },
+    [],
+  );
+
+  const stopRing = useCallback(
+    (action: "answered" | "declined" | "no_answer" | null) => {
+      ring.current?.stop();
+      ring.current = null;
+      setRinging(null);
+      if (noAnswer.current) {
+        window.clearTimeout(noAnswer.current);
+        noAnswer.current = null;
+      }
+      const id = ringId.current;
+      if (id && action) {
+        ringId.current = null;
+        void ringSettle({ ring_id: id, action }).catch(() => {});
+      }
+    },
+    [],
+  );
+
+
+
   const teardown = useCallback((reason: string) => {
     if (sessionId.current) {
       void chatCall("chat.call.end", { session_id: sessionId.current, reason }, {
