@@ -85,9 +85,16 @@ begin
       end if;
     end loop;
     if bad then
+      -- purane indexes ke naam bhi hata do warna `create index if not exists` skip kar dega
+      for cname in
+        select indexname from pg_indexes where schemaname = 'public' and tablename = tname
+      loop
+        execute format('alter index public.%I rename to %I', cname, cname || '_legacy_' || stamp);
+      end loop;
       execute format('alter table public.%I rename to %I', tname, tname || '_legacy_' || stamp);
       raise notice 'renamed conflicting table public.% -> %_legacy_%', tname, tname, stamp;
     end if;
+
   end loop;
 end $$;
 
