@@ -79,6 +79,14 @@ if [ -f "$CADDY_MAIN" ] && ! grep -Fqx 'import /etc/caddy/sites/*.caddy' "$CADDY
   echo ">>> import line added to $CADDY_MAIN"
 fi
 
+# ---------------------------------------------------------------------------
+# MAIN CADDYFILE AUTO-PATCH (Phase 13/14/15): har /rpc/* wale host block mein
+# /file/*, /wt/* -> Rust 3200 aur request_body 32MB ensure. Idempotent.
+# ---------------------------------------------------------------------------
+if [ -f "$CADDY_MAIN" ]; then
+  python3 "$REPO_DIR/patch-main-caddyfile.py" "$CADDY_MAIN"
+fi
+
 shopt -s nullglob
 for f in "$CADDY_DIR"/*.caddy; do
   caddy fmt --overwrite "$f" || true
@@ -99,5 +107,10 @@ echo "--- live readings ---"
 for h in anexovideocall.anexomail.com polarpayments.anexomail.com; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$h" || echo 000)
   echo "$h -> $code"
+done
+echo "--- /file/* route readings (401/400 = route zinda, 404 = route missing) ---"
+for h in anexomail.com founderworkspace.anexomail.com ai.anexomail.com; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 -X POST "https://$h/file/chunk" || echo 000)
+  echo "$h/file/chunk -> $code"
 done
 echo "(pehli baar 000 aa sakta hai jab tak cert issue ho raha ho — 20s baad dobara chalao)"
