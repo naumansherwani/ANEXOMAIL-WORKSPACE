@@ -339,6 +339,8 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "AI attention brief",
       "AI risk detection",
       "AI conversation prioritization",
+      "Group calls up to 60 participants with full call business record",
+      "Company-wide relationship graph + 5,000-line document diffs",
       "Priority model routing & higher context limits",
       "AI top-up recharge available",
     ],
