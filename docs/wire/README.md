@@ -25,7 +25,8 @@ repo mein kabhi nahi.
 | 5   | [05-inbound-pipe.md](./05-inbound-pipe.md)        | Postfix pipe → `server/mail/deliver-to-supabase.ts` → Supabase  | Test mail `mail_messages` mein dikhe     |
 | 6   | [06-outbound.md](./06-outbound.md)                | App → local Postfix `127.0.0.1:25` → Internet (no creds in app) | `/api/mail/send` se asli mail pohnche    |
 | 7   | [07-inbox-wire.md](./07-inbox-wire.md)            | `/app/mail` inbox asli rows par (mock hataana)                  | Browser mein test mail dikhe             |
-| 8   | [08-verify-gate.md](./08-verify-gate.md)          | Final launch gate — 18 checks                                   | 18/18 green, warna launch nahi           |
+| 8   | [08-verify-gate.md](./08-verify-gate.md)          | Mail launch gate — 18 checks                                    | 18/18 green, warna launch nahi           |
+| 9   | [09-sql-apply.md](./09-sql-apply.md)              | Repo ke **saare 59 SQL files** apply + per-file verify          | MASTER VERIFY zero missing row            |
 
 ## Wire ledger (sach, koi "locked" nahi)
 
