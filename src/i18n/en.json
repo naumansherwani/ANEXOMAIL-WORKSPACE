@@ -1,6 +1,13 @@
 {
+  "About": "About",
+  "ANEXOChat": "ANEXOChat",
   "ANEXOMAIL AI": "ANEXOMAIL AI",
   "English source string": "English source string",
   "Get started": "Get started",
-  "Sign in": "Sign in"
+  "Migration": "Migration",
+  "Ownership": "Ownership",
+  "Pricing": "Pricing",
+  "Security": "Security",
+  "Sign in": "Sign in",
+  "Workspace": "Workspace"
 }

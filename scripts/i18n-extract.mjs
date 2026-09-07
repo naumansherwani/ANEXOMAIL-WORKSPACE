@@ -17,6 +17,8 @@ const OUT_DIR = join(ROOT, "src", "i18n");
 const OUT = join(OUT_DIR, "en.json");
 
 const CALL = /\bt\(\s*(["'])((?:\\.|(?!\1)[^\\])+)\1\s*\)/g;
+// Nav/menu jaisi jagahein jahan label ek data array mein hai: key: "Pricing"
+const KEYED = /\bkey:\s*(["'])((?:\\.|(?!\1)[^\\])+)\1/g;
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {
@@ -31,9 +33,13 @@ function walk(dir, files = []) {
 const strings = new Set();
 for (const file of walk(SRC)) {
   const code = readFileSync(file, "utf8");
-  for (const m of code.matchAll(CALL)) {
-    const value = m[2].replace(/\\(["'])/g, "$1");
-    if (value.trim().length > 0) strings.add(value);
+  const patterns = [CALL];
+  if (code.includes("useLocale")) patterns.push(KEYED);
+  for (const re of patterns) {
+    for (const m of code.matchAll(re)) {
+      const value = m[2].replace(/\\(["'])/g, "$1");
+      if (value.trim().length > 0) strings.add(value);
+    }
   }
 }
 
