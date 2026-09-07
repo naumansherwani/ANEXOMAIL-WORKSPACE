@@ -108,14 +108,29 @@ caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
 Polar dashboard → Settings → Webhooks → URL:
 `https://anexomail.com/api/v1/polar-webhook` · format **Raw** · secret wahi jo `.env` mein hai.
 
-## 5. `invalid_signature` ka ilaj
+## 5. Signature scheme LOCK (Polar docs, 8 Sep 2026 cutoff)
+
+Polar sirf **ek** header bhejta hai: `webhook-signature: v1,<base64>` (+ `webhook-id`,
+`webhook-timestamp`). Signed content = `{id}.{timestamp}.{raw body}`. HMAC key secret
+ki **umr** par hai:
+
+- **Standard Webhooks** (secret 8 Sep 2026 00:00 UTC ke baad banaya/reset):
+  key = base64-decode(`whsec_` strip karke).
+- **Polar HMAC** (us se pehle ka secret):
+  key = poora `whsec_...` string ke UTF-8 bytes, as-is.
+
+Engine **dono keys** try karti hai — secret reset ho ya purana ho, kuch badalna nahi.
+Timestamp tolerance 5 min (replay protection). `.env` mein sirf wahi
+`POLAR_WEBHOOK_SECRET=whsec_...` rehta hai — **koi nayi cheez add nahi karni**.
+
+## 5b. `invalid_signature` ka ilaj
 
 1. Polar dashboard se secret **as-is** copy karo — `whsec_` prefix samet.
-   Engine khud prefix strip karti hai aur base64 decode karti hai.
 2. Secret ke aage/peeche space ya newline nahi (nano mein line ke end par Enter na dabao).
-3. Secret kabhi double-encode na karo (base64 ka base64 sabse aam ghalti hai).
-4. Test: Polar dashboard se "Send test event" → phir
+3. Test: Polar dashboard se "Send test event" → phir
    `select event_type, processed, process_error from public.polar_webhook_inbox order by received_at desc limit 5;`
+4. Polar dashboard ka **delivery overview** har delivery ka payload + status dikhata hai —
+   wahan se redeliver bhi kar sakte ho.
 
 ## 6. User journey (locked)
 
