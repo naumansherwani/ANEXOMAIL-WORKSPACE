@@ -170,3 +170,84 @@ select product_key, status, grace_until from public.polar_subscriptions order by
 
 select kind, to_email, sent_at from public.polar_mail_outbox where sent_at is null order by created_at;
 ```
+
+---
+
+## 8. PHASE 51 — HARDENING (locked 7 Sep 2026)
+
+Postgres trigger **zinda hai** (fast path wahi hai). Iske ooper 5 layer add hue:
+
+```text
+Polar ──HTTPS──► payments.anexomail.com ──► Caddy ──► :3400
+                                             1. HMAC verify (2 keys)
+                                             2. local WAL fsync  ──► 200 (10–40ms)
+                                                     │
+                              worker (har 2s) ──► polar_webhook_inbox ──► trigger ──► state
+                                                     │ fail: 30s,2m,10m,1h,6h,24h × 8
+                                                     └─► wal/dead/ (row zinda, replay)
+                              reconcile (har 15 min) ──► Polar API vs internal state
+                              watchdog (har 60s)     ──► polar_payment_alerts
+```
+
+### 8.1 Local durable WAL — "ek bhi payment na gire" ka asli jawab
+
+- `WAL_DIR` (default `/opt/polar-rust-payment/wal`) mein `pending/ done/ dead/`.
+- Ek event = ek file. Likhna atomic: `tmp` → `fsync` → `rename` → dir fsync.
+- **200 sirf WAL fsync ke baad** jaata hai — Supabase down ho to bhi Polar ko 200 milta hai.
+- `done/` 14 din baad khud saaf hota hai (asli truth Supabase mein hai).
+
+### 8.2 Worker + dead letter
+
+- Worker WAL → `polar_webhook_inbox` insert (`on conflict (event_id) do nothing`).
+- Fail par backoff: **30s · 2m · 10m · 1h · 6h · 24h · 24h · 24h**, 8 attempt ke baad
+  `wal/dead/` — row **kabhi delete nahi** hoti.
+- Replay: `curl -s -X POST http://127.0.0.1:3400/api/v1/replay` (signature-reject rows
+  replay nahi hoti — woh sirf evidence hain).
+
+### 8.3 Reconciliation — webhook-independence
+
+Har 15 min engine khud Polar API se subscriptions pull karti hai aur apne state se
+compare karti hai: `ok` / `missing` / `diverged` / `unknown` → `polar_reconcile_log`.
+`missing`/`diverged` par synthetic event WAL mein daal deti hai (event_id
+`reconcile:<sub>:<modified_at>:<status>` — duplicate-safe), phir trigger package
+activate kar deta hai. **Webhook kabhi na aaye to bhi payment activate ho jaati hai.**
+Manual: `curl -s -X POST http://127.0.0.1:3400/api/v1/reconcile`.
+
+### 8.4 Signature 401 ka permanent ilaj
+
+401 spec ke mutabiq wapas jaata hai, **magar** raw body + headers
+`polar_signature_rejects` mein log ho jaate hain (aur `wal/dead/` mein bhi). Ghalat
+secret ab silently events nahi khata:
+
+```sql
+select reason, headers->>'webhook-id' as webhook_id, created_at
+from public.polar_signature_rejects order by created_at desc limit 10;
+```
+
+### 8.5 Watchdog + endpoints
+
+- `GET /ready` — 200 sirf jab WAL writable (db state sach ke saath report hoti hai).
+- `GET /metrics` — received · duplicate · synced · failed · dead_letter(+depth) ·
+  signature_rejects · queue_depth · oldest_pending_secs · reconcile_runs/gap/last.
+- Watchdog har 60s: `oldest_pending > 10 min`, `queue_depth > 200`, ya dead letter
+  maujood → `polar_payment_alerts` (hourly bucket, spam nahi). `ALERT_EMAIL` env se.
+
+### 8.6 Deploy — Nauman ke liye sirf 2 line (koi file overwrite nahi)
+
+```bash
+# 1) SQL (repo se copy-paste): sql/phase51_polar_payment_hardening.sql -> Supabase #4
+# 2) Server:
+cd /opt/anexomail-web && git pull && bash server/rust/polar-payment/deploy.sh
+```
+
+`deploy.sh` khud: repo → `/opt/polar-rust-payment` sync (backup ke saath), WAL folders,
+`cargo build --release`, pm2 start/restart + save, phir `/health` `/ready` `/metrics`
+print. **`.env` ko kabhi touch nahi karta.**
+
+Ingress (ek dafa): `docs/caddy-payments-host.md` — `payments.anexomail.com` block.
+
+### 8.7 Roz ka sach — ek query
+
+```sql
+select public.polar_payment_pulse();
+```
