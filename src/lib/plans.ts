@@ -231,6 +231,10 @@ export const AI_PRICED_PLANS: AiPricedPlan[] = [
       "Device Safety Vault + trust list with one-click revoke",
       "Report a message, person, file or conversation",
       "Message → Task · Promise · Decision with evidence chain",
+      "Delete for me · delete for everyone — still works after 48 hours",
+      "Relay video calls with screen share",
+      "One person, one account — sealed device identity, no biometrics",
+      "72-hour export window if an account is ever blocked",
     ],
   },
   {
