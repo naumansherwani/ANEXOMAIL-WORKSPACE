@@ -205,3 +205,5 @@ ANEXOChat (chat · video call · file engine · work/decision/promise engine · 
 integrity Phase 24A) ka har SQL ab apne alag folder mein hai: **`anexochat/sql/`**
 aur uske docs `anexochat/docs/`. Index: `anexochat/README.md`.
 Yeh folder (`sql/`) sirf ANEXOMAIL Workspace ke phases ke liye hai.
+
+| `phase52_mail_launch.sql` | 52 · mail launch | Mail truth: `mail_domains`, `mailboxes` (13 asli anexomail.com addresses), `mail_threads`/`mail_messages`/`mail_attachments`, append-only `mail_inbound_raw` + `mail_outbox_log`, RPC `mail_ingest()` (Postfix pipe) aur `mail_outbox_record()` — threading/dedupe Postgres mein. Wire steps: `docs/wire/` |
