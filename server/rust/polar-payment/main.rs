@@ -174,6 +174,17 @@ fn verify_signature(s: &AppState, headers: &HeaderMap, body: &[u8]) -> bool {
     if !sig_header.is_empty() {
         let id = h("webhook-id");
         let ts = h("webhook-timestamp");
+        // Standard Webhooks spec: timestamp tolerance 5 min (replay protection)
+        if let Ok(ts_num) = ts.parse::<i64>() {
+            let now = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs() as i64)
+                .unwrap_or(0);
+            if (now - ts_num).abs() > 300 {
+                tracing::warn!("polar webhook: timestamp out of tolerance");
+                return false;
+            }
+        }
         let signed = format!("{id}.{ts}.{}", String::from_utf8_lossy(body));
         for part in sig_header.split_whitespace() {
             let sig = part.strip_prefix("v1,").unwrap_or(part);
