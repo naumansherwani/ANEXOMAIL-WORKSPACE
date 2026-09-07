@@ -70,7 +70,6 @@ function AppLayout() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, preview]);
 
-
   useEffect(() => {
     if (preview) return;
     const s = account.data?.state;

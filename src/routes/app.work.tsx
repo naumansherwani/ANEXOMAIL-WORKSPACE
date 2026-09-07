@@ -16,10 +16,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/work")({
   head: () => ({
-    meta: [
-      { title: "Work — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Work — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: WorkPage,
 });
@@ -96,7 +93,6 @@ function WorkPage() {
           <div className="mt-ax-5">
             <TaskBoard />
           </div>
-
         </div>
       </DetailPanel>
     </>

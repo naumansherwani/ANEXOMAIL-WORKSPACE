@@ -110,13 +110,7 @@ export function useSetDeviceTrust() {
 /* ── Phase 21 ──────────────────────────────────────────────────────── */
 
 export type ReportReason =
-  | "spam"
-  | "harassment"
-  | "threat"
-  | "illegal_content"
-  | "malware"
-  | "impersonation"
-  | "other";
+  "spam" | "harassment" | "threat" | "illegal_content" | "malware" | "impersonation" | "other";
 
 export const REPORT_REASONS: { id: ReportReason; label: string }[] = [
   { id: "spam", label: "Spam" },
@@ -222,7 +216,6 @@ export function useAdvanceReport() {
       note?: string | undefined;
       action?: string | undefined;
       until?: string | null | undefined;
-
     }
   >({
     mutationFn: (input) =>
@@ -296,7 +289,13 @@ export type WorkChain = {
     completed_at: string | null;
     retention_class: string;
   };
-  source_message: { id?: string; seq?: number; sent_at?: string; visible: boolean; body: string | null };
+  source_message: {
+    id?: string;
+    seq?: number;
+    sent_at?: string;
+    visible: boolean;
+    body: string | null;
+  };
   provenance: Record<string, unknown>;
   parsed: Record<string, unknown>;
   dependency: { id: string; title: string; state: string } | null;
@@ -392,7 +391,10 @@ export function useCompleteWork() {
   return useMutation<
     { ok: boolean; error?: string; message?: string; evidence_count?: number },
     ApiError,
-    { item_id: string; evidence?: { kind: "file" | "link" | "note" | "message"; ref: string } | undefined }
+    {
+      item_id: string;
+      evidence?: { kind: "file" | "link" | "note" | "message"; ref: string } | undefined;
+    }
   >({
     mutationFn: (input) =>
       chatCall("chat.work.complete", input, {
