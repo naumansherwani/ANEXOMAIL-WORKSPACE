@@ -38,6 +38,10 @@ polarpayments.anexomail.com {
 		reverse_proxy 127.0.0.1:3400
 	}
 
+	handle / {
+		respond "ANEXOMAIL Payments Gateway Ready" 200
+	}
+
 	handle {
 		respond "Not Found" 404
 	}

@@ -59,7 +59,20 @@ while i < len(lines):
     block = lines[i:end + 1]
     body = "\n".join(block)
 
-    if "handle /rpc/*" in body:
+    APP_HOSTS = (
+        "anexomail.com",
+        "www.anexomail.com",
+        "founderworkspace.anexomail.com",
+        "ai.anexomail.com",
+        "anexochat.anexomail.com",
+        "aicrm.anexomail.com",
+        "api.anexomail.com",
+    )
+    host_line = stripped[:-1]
+    hosts = [h.strip() for h in host_line.split(",") if h.strip()]
+    is_app_host = any(h in APP_HOSTS for h in hosts)
+
+    if "handle /rpc/*" in body or is_app_host:
         host = stripped[:-1].strip()
         indent = "\t"
         insert_at = 1  # right after opener
@@ -69,6 +82,12 @@ while i < len(lines):
             additions += [
                 f"{indent}# Phase 13/14/15 — Rust large-file chunk path",
                 f"{indent}handle /file/* {{",
+                f"{indent}\treverse_proxy 127.0.0.1:3200",
+                f"{indent}}}",
+            ]
+        if not re.search(r"handle\s+/rpc/\*", body):
+            additions += [
+                f"{indent}handle /rpc/* {{",
                 f"{indent}\treverse_proxy 127.0.0.1:3200",
                 f"{indent}}}",
             ]

@@ -108,9 +108,13 @@ for h in anexovideocall.anexomail.com polarpayments.anexomail.com; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$h" || echo 000)
   echo "$h -> $code"
 done
-echo "--- /file/* route readings (401/400 = route zinda, 404 = route missing) ---"
+echo "--- file engine readings (200 expected) ---"
 for h in anexomail.com founderworkspace.anexomail.com ai.anexomail.com; do
-  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 -X POST "https://$h/file/chunk" || echo 000)
-  echo "$h/file/chunk -> $code"
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$h/file/ping" || echo 000)
+  echo "$h/file/ping -> $code"
+done
+for h in anexomail.com polarpayments.anexomail.com anexovideocall.anexomail.com; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$h/" || echo 000)
+  echo "$h/ -> $code"
 done
 echo "(pehli baar 000 aa sakta hai jab tak cert issue ho raha ho — 20s baad dobara chalao)"
