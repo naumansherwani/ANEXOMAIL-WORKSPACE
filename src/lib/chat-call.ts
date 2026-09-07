@@ -604,6 +604,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     setPhase("connecting");
     setDetail("Connecting");
     try {
+      stopRing("answered"); // uthate hi ring band — record mein "answered"
       const peer = await build(false);
       await registerSession("callee");
       await peer.setRemoteDescription({ type: "offer", sdp: String(offer.payload["sdp"] ?? "") });
@@ -616,7 +617,17 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       setPhase("failed");
       setDetail((error as Error).message);
     }
-  }, [build, conversationId, incoming, openLink, registerSession, teardown]);
+  }, [build, conversationId, incoming, openLink, registerSession, stopRing, teardown]);
+
+  /** Incoming call decline — record mein "declined", "missed" kabhi nahi. */
+  const decline = useCallback(() => {
+    if (incoming) void link.current?.send(incoming.from_user, "end", {});
+    stopRing("declined");
+    teardown("declined");
+    setIncoming(null);
+    setPhase("ended");
+    setDetail("You declined the call");
+  }, [incoming, stopRing, teardown]);
 
   const hangup = useCallback(() => {
     if (peerId) void link.current?.send(peerId, "end", {});
