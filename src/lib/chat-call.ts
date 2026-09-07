@@ -348,12 +348,32 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       peer.onicecandidate = (e) => {
         if (!conversationId || !peerId) return;
         if (e.candidate) {
+          mark("ice_gather_first", Math.round(performance.now() - startedAt.current));
           void link.current?.send(peerId, "ice", e.candidate.toJSON());
         } else {
           void link.current?.send(peerId, "ice-end", {});
         }
       };
-      peer.ontrack = (e) => setRemote(e.streams[0] ?? null);
+      peer.ontrack = (e) => {
+        setRemote(e.streams[0] ?? null);
+        // PHASE 31A — playout tuning: 60-80ms target. Live baat ke liye buffer
+        // chhota, magar audio pehle. Browser support na ho to chup chaap skip.
+        const r = e.receiver as RTCRtpReceiver & { jitterBufferTarget?: number };
+        try {
+          r.jitterBufferTarget = e.track.kind === "audio" ? 80 : 60;
+        } catch {
+          /* browser ne mana kiya — default playout, jhoot nahi */
+        }
+        // Pehli remote frame ka asli waqt (video track ke unmute par)
+        if (e.track.kind === "video") {
+          const stamp = () => {
+            mark("first_remote_frame", Math.round(performance.now() - startedAt.current));
+            stopRing("answered");
+          };
+          if (e.track.muted) e.track.addEventListener("unmute", stamp, { once: true });
+          else stamp();
+        }
+      };
 
       peer.onnegotiationneeded = async () => {
         if (!peerId) return;
