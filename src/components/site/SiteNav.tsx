@@ -3,22 +3,21 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 import { useLocale } from "@/lib/i18n";
-import type { LocaleKey } from "@/lib/locales";
 
 import { BrandMark } from "./BrandMark";
 import { LanguagePicker } from "./LanguagePicker";
 
 const links: {
-  key: LocaleKey;
+  key: string;
   to: "/app" | "/about" | "/security" | "/ownership" | "/plans" | "/move-in" | "/anexochat";
 }[] = [
-  { key: "workspace", to: "/app" },
-  { key: "about", to: "/about" },
-  { key: "security", to: "/security" },
-  { key: "ownership", to: "/ownership" },
-  { key: "pricing", to: "/plans" },
-  { key: "migration", to: "/move-in" },
-  { key: "chat", to: "/anexochat" },
+  { key: "Workspace", to: "/app" },
+  { key: "About", to: "/about" },
+  { key: "Security", to: "/security" },
+  { key: "Ownership", to: "/ownership" },
+  { key: "Pricing", to: "/plans" },
+  { key: "Migration", to: "/move-in" },
+  { key: "ANEXOChat", to: "/anexochat" },
 ];
 
 export function SiteNav() {
@@ -49,7 +48,7 @@ export function SiteNav() {
             rel="noopener"
             className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
-            {t("ai")}
+            {t("ANEXOMAIL AI")}
           </a>
         </div>
 
@@ -59,13 +58,13 @@ export function SiteNav() {
             to="/auth"
             className="ax-focus rounded-full px-4 py-2.5 text-sm font-semibold whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
           >
-            {t("signIn")}
+            {t("Sign in")}
           </Link>
           <Link
             to="/auth"
             className="rounded-full bg-primary px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-primary-foreground shadow-elev-1 transition-colors duration-200 hover:bg-primary/85"
           >
-            {t("getStarted")}
+            {t("Get started")}
           </Link>
         </div>
 
@@ -99,7 +98,7 @@ export function SiteNav() {
               onClick={() => setOpen(false)}
               className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
             >
-              {t("ai")}
+              {t("ANEXOMAIL AI")}
             </a>
             <div className="px-2 py-2">
               <LanguagePicker />
@@ -109,14 +108,14 @@ export function SiteNav() {
               onClick={() => setOpen(false)}
               className="rounded-lg px-2 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
             >
-              {t("signIn")}
+              {t("Sign in")}
             </Link>
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
               className="mt-2 rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
-              {t("getStarted")}
+              {t("Get started")}
             </Link>
           </div>
         </div>
