@@ -1297,9 +1297,120 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 24: DECISION LEDGER + DECISION IMPACT MAP ─────────────────
+        // Decision hamesha ek ASLI message se banti hai (maker · UTC · source ·
+        // body_hash). History kabhi overwrite nahi hoti — tabdeeli naya version
+        // row banati hai. Impact map sirf insaani link se, engine kabhi
+        // dependency invent nahi karti.
+        "chat.decision.mark" => {
+            let message = s(&input, "message_id");
+            if message.is_empty() {
+                Err("message_required".to_string())
+            } else {
+                sb_rpc(
+                    "decision_mark",
+                    json!({
+                        "_user": me.id, "_message": message,
+                        "_title": input.get("title").cloned().unwrap_or(Value::Null),
+                        "_detail": input.get("detail").cloned().unwrap_or(Value::Null),
+                        "_decided_at": input.get("decided_at").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.decision.board" => {
+            sb_rpc(
+                "decision_board",
+                json!({
+                    "_user": me.id,
+                    "_conversation": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "chat.decision.state" => {
+            let id = s(&input, "decision_id");
+            if id.is_empty() {
+                Err("decision_id_required".to_string())
+            } else {
+                sb_rpc("decision_state", json!({ "_decision": id, "_user": me.id })).await
+            }
+        }
+
+        "chat.decision.impact" => {
+            let id = s(&input, "decision_id");
+            if id.is_empty() {
+                Err("decision_id_required".to_string())
+            } else {
+                sb_rpc("decision_impact", json!({ "_decision": id, "_user": me.id })).await
+            }
+        }
+
+        "chat.decision.amend" => {
+            let id = s(&input, "decision_id");
+            if id.is_empty() {
+                Err("decision_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "decision_amend",
+                    json!({
+                        "_decision": id, "_user": me.id,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                        "_change": input.get("change").cloned().unwrap_or(json!("amended")),
+                        "_title": input.get("title").cloned().unwrap_or(Value::Null),
+                        "_detail": input.get("detail").cloned().unwrap_or(Value::Null),
+                        "_decided_at": input.get("decided_at").cloned().unwrap_or(Value::Null),
+                        "_superseded_by": input.get("superseded_by").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.decision.link" => {
+            let id = s(&input, "decision_id");
+            let object = s(&input, "object_id");
+            let kind = s(&input, "object_type");
+            if id.is_empty() || object.is_empty() || kind.is_empty() {
+                Err("decision_object_required".to_string())
+            } else {
+                sb_rpc(
+                    "decision_link",
+                    json!({
+                        "_decision": id, "_user": me.id,
+                        "_object_type": kind, "_object_id": object,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                        "_relation": input.get("relation").cloned().unwrap_or(json!("affects")),
+                        "_note": input.get("note").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.decision.unlink" => {
+            let link = s(&input, "link_id");
+            if link.is_empty() {
+                Err("link_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "decision_unlink",
+                    json!({
+                        "_link": link, "_user": me.id,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
         // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
         // Detection sirf device shape par. Engine khud kabhi block nahi karti:
         // warn/block/release har qadam insaan ka, 12+ char reason ke saath.
+
         "account.integrity.state" => {
             sb_rpc("account_integrity_state", json!({ "_user": me.id })).await
         }

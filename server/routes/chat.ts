@@ -1146,6 +1146,109 @@ chatRouter.post("/devices/appeals/decide", async (req, res) => {
 });
 
 // ===========================================================================
+// PHASE 24 — DECISION LEDGER + IMPACT MAP (Bun FALLBACK; Rust primary)
+// Decision hamesha asli message se · history kabhi overwrite nahi (naya
+// version row) · impact map sirf insaani link se, engine kuch invent nahi karti.
+// ===========================================================================
+chatRouter.get("/decisions/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_board", {
+    _user: me.id,
+    _conversation: req.query?.conversation_id ? String(req.query.conversation_id) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/decisions/:id", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_state", {
+    _decision: String(req.params.id),
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/decisions/:id/impact", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_impact", {
+    _decision: String(req.params.id),
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/mark", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  if (!message) return res.status(400).json({ error: "message_required" });
+  const { data, error } = await db!.rpc("decision_mark", {
+    _user: me.id,
+    _message: message,
+    _title: req.body?.title ?? null,
+    _detail: req.body?.detail ?? null,
+    _decided_at: req.body?.decided_at ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/:id/amend", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_amend", {
+    _decision: String(req.params.id),
+    _user: me.id,
+    _reason: req.body?.reason ?? null,
+    _change: req.body?.change ?? "amended",
+    _title: req.body?.title ?? null,
+    _detail: req.body?.detail ?? null,
+    _decided_at: req.body?.decided_at ?? null,
+    _superseded_by: req.body?.superseded_by ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/:id/link", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const objectId = String(req.body?.object_id || "");
+  const objectType = String(req.body?.object_type || "");
+  if (!objectId || !objectType) return res.status(400).json({ error: "decision_object_required" });
+  const { data, error } = await db!.rpc("decision_link", {
+    _decision: String(req.params.id),
+    _user: me.id,
+    _object_type: objectType,
+    _object_id: objectId,
+    _reason: req.body?.reason ?? null,
+    _relation: req.body?.relation ?? "affects",
+    _note: req.body?.note ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/link/:linkId/remove", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_unlink", {
+    _link: String(req.params.linkId),
+    _user: me.id,
+    _reason: req.body?.reason ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+
 // ACCOUNT INTEGRITY — one person, one account (Bun FALLBACK; Rust primary)
 // Detection sirf device shape par; IP/network par kabhi ban nahi.
 // warn/block/release insaan karta hai, 12+ char reason ke saath.
