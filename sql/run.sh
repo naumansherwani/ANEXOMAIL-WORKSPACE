@@ -13,7 +13,8 @@ URL="${DATABASE_URL:-}"
 if [ -z "$URL" ]; then
   for f in /etc/anexomail/mail.env /opt/anexomail-web/.env /opt/anexomail/.env /root/.anexomail.env; do
     [ -f "$f" ] || continue
-    v="$(grep -am1 -E '^[[:space:]]*(export[[:space:]]+)?(DATABASE_URL|SUPABASE_DB_URL|SUPABASE_DATABASE_URL|DIRECT_URL|PG_URL|POSTGRES_URL)=' "$f" | sed -E 's/^[[:space:]]*(export[[:space:]]+)?[^=]+=//; s/^[[:space:]]+//; s/[[:space:]]+$//; s/^(["'"'])(.*)\1$/\2/')"
+    v="$(grep -am1 -E '^[[:space:]]*(export[[:space:]]+)?(DATABASE_URL|SUPABASE_DB_URL|SUPABASE_DATABASE_URL|DIRECT_URL|PG_URL|POSTGRES_URL)=' "$f" | cut -d= -f2-)"
+    v="${v#\"}"; v="${v%\"}"; v="${v#\'}"; v="${v%\'}"
     if [ -n "${v:-}" ]; then URL="$v"; break; fi
   done
 fi
