@@ -272,7 +272,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     setRemote(null);
     setStats(EMPTY_STATS);
     pendingIce.current = [];
-  }, []);
+  }, [stopRing]);
 
   const media = useCallback(async () => {
     if (localRef.current) return localRef.current;
