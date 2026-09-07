@@ -1,7 +1,7 @@
 -- ============================================================
 -- ANEXOMAIL · LEO BRAIN MEMORY (Supabase #4)
 -- Leo ko Jimmy jaisa banane ke liye: 3,000,000 msgs long-term memory
--- Idempotent + self-healing + grants + RLS
+-- Idempotent + self-healing + grants + RLS (locked rules)
 -- Tier lock: Jimmy 3M · Leo 3M · Sherlock 1M · Industry AIs 100K
 -- ============================================================
 
@@ -102,22 +102,7 @@ create policy agent_memory_config_read on public.agent_memory_config
   for select to authenticated using (true);
 
 -- ---------------------------------------------- 3. semantic recall (RPC)
--- Purani signature/return-shape create-or-replace ko rok sakti hai. Is RPC ka
--- koi row-data nahi hota, is liye tamam purane overload pehle safely hatao.
-do $$
-declare fn record;
-begin
-  for fn in
-    select p.oid::regprocedure as signature
-      from pg_proc p
-      join pg_namespace n on n.oid = p.pronamespace
-     where n.nspname = 'public' and p.proname = 'leo_recall'
-  loop
-    execute format('drop function %s', fn.signature);
-  end loop;
-end $$;
-
-create function public.leo_recall(
+create or replace function public.leo_recall(
   p_user_id uuid,
   p_embedding vector(1536),
   p_limit int default 12
@@ -143,8 +128,7 @@ $$;
 grant execute on function public.leo_recall(uuid, vector, int) to authenticated, service_role;
 
 -- ---------------------------------------------- 4. 3M cap prune (never delete pinned)
-drop function if exists public.leo_memory_prune();
-create function public.leo_memory_prune()
+create or replace function public.leo_memory_prune()
 returns integer
 language plpgsql
 security definer

@@ -31,3 +31,5 @@ Runner pehle database connection check karta hai. Connection fail ho to 59 jhoot
 nahi deta; foran ruk kar asli error screen par dikhata hai. SQL error ho to pehli failing
 phase aur us ka exact error screen par dikhata hai; baqi dependent phases run nahi hotin.
 `connect.sh` ka login-verified URI hamesha purani app/mail environment files se pehle use hota hai.
+Idempotent `NOTICE` (misal: table pehle se mojood hai) GREEN hota hai; sirf asli
+database `ERROR`/`FATAL` ya non-zero exit phase ko RED karta hai.

@@ -39,7 +39,9 @@ else
 fi
 
 if [ -n "$OUT" ]; then printf '%s\n' "$OUT"; fi
-if printf '%s\n' "$OUT" | grep -aiEq '(^|: )(ERROR|FATAL):|^psql:'; then RC=1; fi
+# `psql:file:line: NOTICE:` normal idempotent output hai, failure nahi.
+# Exit code authoritative hai; explicit server errors sirf safety net hain.
+if printf '%s\n' "$OUT" | grep -aiEq '(^|: )(ERROR|FATAL):|^psql: error:'; then RC=1; fi
 if [ "$RC" -eq 0 ]; then
   if [ "$FILE" = "--check" ]; then echo "GREEN  DATABASE CONNECTION"; else echo "GREEN  $FILE"; fi
 else
