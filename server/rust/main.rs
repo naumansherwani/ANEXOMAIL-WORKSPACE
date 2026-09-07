@@ -54,6 +54,22 @@ fn env_var(key: &str) -> String {
     std::env::var(key).unwrap_or_default()
 }
 
+/// PHASE 19/21 sealing key. `.env` kabhi deploy script se touch nahi hoti, is
+/// liye DEVICE_VAULT_KEY optional hai: na ho to service-role key se derive
+/// hoti hai (server ke andar hi rehti hai, kabhi response mein nahi jati).
+fn vault_key() -> String {
+    let k = env_var("DEVICE_VAULT_KEY");
+    if !k.is_empty() {
+        return k;
+    }
+    let base = env_var("SUPABASE4_SERVICE_ROLE_KEY");
+    if base.is_empty() {
+        return "anexomail-vault-unconfigured".to_string();
+    }
+    format!("anexomail-vault:{}", &base[base.len().saturating_sub(32)..])
+}
+
+
 fn bearer(headers: &HeaderMap) -> Option<String> {
     headers
         .get("authorization")?
@@ -1054,7 +1070,209 @@ async fn dispatch(
             .await
         }
 
+        // ── PHASE 19: DEVICE SAFETY VAULT ───────────────────────────────────
+        // Signals → normalize → hash → sealed vault. Biometric fingerprinting
+        // NAHI: sirf 5 coarse signals, aur raw kabhi plain column mein nahi.
+        "chat.device.vault" => {
+            let mut signals = input.get("signals").cloned().unwrap_or(json!({}));
+            if let Some(obj) = signals.as_object_mut() {
+                obj.remove("canvas");
+                obj.remove("audio");
+                obj.remove("fonts");
+                obj.remove("webgl");
+                obj.remove("ip");
+            }
+            sb_rpc(
+                "device_vault_register",
+                json!({ "_user": me.id, "_signals": signals, "_key": vault_key() }),
+            )
+            .await
+        }
+
+        // ── PHASE 20: DEVICE TRUST — dekho aur ek click mein maar do ────────
+        "chat.device.trust.list" => {
+            sb_rpc("device_trust_list", json!({ "_user": me.id })).await
+        }
+
+        "chat.device.trust.set" => {
+            let hash = s(&input, "device_hash");
+            let state = s(&input, "state");
+            if hash.is_empty() || state.is_empty() {
+                Err("device_hash_state_required".to_string())
+            } else {
+                sb_rpc(
+                    "device_trust_set",
+                    json!({ "_user": me.id, "_device_hash": hash, "_state": state, "_actor": "user" }),
+                )
+                .await
+            }
+        }
+
+        // ── PHASE 21: SAFETY REPORTING ──────────────────────────────────────
+        "chat.safety.report" => {
+            let kind = s(&input, "subject_kind");
+            let subject = s(&input, "subject_id");
+            let reason = s(&input, "reason");
+            if kind.is_empty() || subject.is_empty() || reason.is_empty() {
+                Err("subject_kind_subject_id_reason_required".to_string())
+            } else {
+                sb_rpc(
+                    "safety_report_create",
+                    json!({
+                        "_user": me.id, "_kind": kind, "_subject": subject,
+                        "_reason": reason, "_note": s(&input, "note"), "_key": vault_key(),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.safety.queue" => {
+            let state = s(&input, "state");
+            sb_rpc(
+                "safety_queue",
+                json!({ "_actor": me.id, "_state": if state.is_empty() { Value::Null } else { json!(state) } }),
+            )
+            .await
+        }
+
+        "chat.safety.advance" => {
+            let report = s(&input, "report_id");
+            let to = s(&input, "to_state");
+            if report.is_empty() || to.is_empty() {
+                Err("report_id_to_state_required".to_string())
+            } else {
+                sb_rpc(
+                    "safety_report_advance",
+                    json!({
+                        "_actor": me.id, "_report": report, "_to": to,
+                        "_note": s(&input, "note"),
+                        "_action": input.get("action").cloned().unwrap_or(Value::Null),
+                        "_until": input.get("until").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        // Private content sirf justification + audit row ke saath khulta hai.
+        "chat.safety.reveal" => {
+            let report = s(&input, "report_id");
+            let why = s(&input, "justification");
+            if report.is_empty() || why.trim().chars().count() < 12 {
+                Err("justification_required".to_string())
+            } else {
+                sb_rpc(
+                    "safety_report_reveal",
+                    json!({ "_actor": me.id, "_report": report, "_justification": why, "_key": vault_key() }),
+                )
+                .await
+            }
+        }
+
+        "chat.safety.standing" => {
+            sb_rpc("safety_my_standing", json!({ "_user": me.id })).await
+        }
+
+        // ── PHASE 22: WORK EXECUTION CHAIN ──────────────────────────────────
+        // Message → task/promise/decision → owner → dependency → deadline →
+        // completion → evidence. Parsing deterministic hai: koi AI API nahi,
+        // insaani guftagu kahin bahar nahi jati.
+        "chat.work.suggest" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("chat_work_suggest", json!({ "_msg": msg, "_user": me.id })).await
+            }
+        }
+
+        "chat.work.from_message" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_work_from_message",
+                    json!({
+                        "_msg": msg, "_user": me.id,
+                        "_kind": input.get("kind").cloned().unwrap_or(Value::Null),
+                        "_title": input.get("title").cloned().unwrap_or(Value::Null),
+                        "_owner": input.get("owner_user_id").cloned().unwrap_or(Value::Null),
+                        "_due": input.get("due_at").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.work.depend" => {
+            let item = s(&input, "item_id");
+            let dep = s(&input, "depends_on");
+            if item.is_empty() || dep.is_empty() {
+                Err("item_id_depends_on_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_work_depend",
+                    json!({ "_item": item, "_depends_on": dep, "_user": me.id }),
+                )
+                .await
+            }
+        }
+
+        "chat.work.complete" => {
+            let item = s(&input, "item_id");
+            if item.is_empty() {
+                Err("item_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_work_complete",
+                    json!({
+                        "_item": item, "_user": me.id,
+                        "_evidence": input.get("evidence").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.work.chain" => {
+            let item = s(&input, "item_id");
+            if item.is_empty() {
+                Err("item_id_required".to_string())
+            } else {
+                sb_rpc("chat_work_chain", json!({ "_item": item, "_user": me.id })).await
+            }
+        }
+
+        "chat.work.board" => sb_rpc("chat_work_board", json!({ "_user": me.id })).await,
+
+        // ── messenger basics (loophole fix): star + forward ──────────────────
+        "chat.message.star" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("chat_message_star", json!({ "_msg": msg, "_user": me.id })).await
+            }
+        }
+
+        "chat.message.forward" => {
+            let msg = s(&input, "message_id");
+            let conv = s(&input, "to_conversation_id");
+            if msg.is_empty() || conv.is_empty() {
+                Err("message_id_to_conversation_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_message_forward",
+                    json!({ "_msg": msg, "_to_conv": conv, "_user": me.id }),
+                )
+                .await
+            }
+        }
+
         other => {
+
 
             return err(
                 StatusCode::NOT_FOUND,

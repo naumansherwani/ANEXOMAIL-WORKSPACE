@@ -809,3 +809,236 @@ chatRouter.get("/search/deep", async (req, res) => {
   if (error) return fail(res, error);
   res.json({ results: data ?? [] });
 });
+
+// ============================================================================
+// PHASE 19 + 20 + 21 + 22 — FALLBACK ONLY (PRIMARY = Rust /rpc/chat.*)
+//   19 device safety vault · 20 device trust · 21 safety reporting
+//   22 work execution chain (message → work → owner → dependency → deadline
+//      → completion → evidence). Parsing DB mein deterministic hai, koi AI API
+//      nahi — insaani guftagu kabhi kisi model par nahi jati.
+// ============================================================================
+const VAULT_KEY =
+  process.env.DEVICE_VAULT_KEY ||
+  (SERVICE_KEY ? `anexomail-vault:${SERVICE_KEY.slice(-32)}` : "anexomail-vault-unconfigured");
+
+/** Signal minimization: biometric-type signals server par bhi discard hote hain. */
+function minimizeSignals(raw: any) {
+  const s = raw && typeof raw === "object" ? { ...raw } : {};
+  for (const k of ["canvas", "audio", "fonts", "webgl", "ip"]) delete s[k];
+  return s;
+}
+
+chatRouter.post("/device/vault", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("device_vault_register", {
+    _user: me.id,
+    _signals: minimizeSignals(req.body?.signals),
+    _key: VAULT_KEY,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/device/trust", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("device_trust_list", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/device/trust", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const hash = String(req.body?.device_hash || "");
+  const state = String(req.body?.state || "");
+  if (!hash || !state) return res.status(400).json({ error: "device_hash_state_required" });
+  const { data, error } = await db!.rpc("device_trust_set", {
+    _user: me.id,
+    _device_hash: hash,
+    _state: state,
+    _actor: "user",
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/safety/report", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const kind = String(req.body?.subject_kind || "");
+  const subject = String(req.body?.subject_id || "");
+  const reason = String(req.body?.reason || "");
+  if (!kind || !subject || !reason) {
+    return res.status(400).json({ error: "subject_kind_subject_id_reason_required" });
+  }
+  const { data, error } = await db!.rpc("safety_report_create", {
+    _user: me.id,
+    _kind: kind,
+    _subject: subject,
+    _reason: reason,
+    _note: req.body?.note ? String(req.body.note) : null,
+    _key: VAULT_KEY,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/safety/queue", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("safety_queue", {
+    _actor: me.id,
+    _state: String(req.query?.state || "") || null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/safety/advance", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const report = String(req.body?.report_id || "");
+  const to = String(req.body?.to_state || "");
+  if (!report || !to) return res.status(400).json({ error: "report_id_to_state_required" });
+  const { data, error } = await db!.rpc("safety_report_advance", {
+    _actor: me.id,
+    _report: report,
+    _to: to,
+    _note: req.body?.note ? String(req.body.note) : null,
+    _action: req.body?.action ? String(req.body.action) : null,
+    _until: req.body?.until ? String(req.body.until) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// Sealed evidence sirf justification ke saath khulta hai — reveal log banta hai.
+chatRouter.post("/safety/reveal", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const report = String(req.body?.report_id || "");
+  const why = String(req.body?.justification || "");
+  if (!report || why.trim().length < 12) {
+    return res.status(400).json({ error: "justification_required" });
+  }
+  const { data, error } = await db!.rpc("safety_report_reveal", {
+    _actor: me.id,
+    _report: report,
+    _justification: why,
+    _key: VAULT_KEY,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/safety/standing", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("safety_my_standing", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/work/suggest", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.query?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_work_suggest", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/work/from-message", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_work_from_message", {
+    _msg: msg,
+    _user: me.id,
+    _kind: req.body?.kind ? String(req.body.kind) : null,
+    _title: req.body?.title ? String(req.body.title) : null,
+    _owner: req.body?.owner_user_id ? String(req.body.owner_user_id) : null,
+    _due: req.body?.due_at ? String(req.body.due_at) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/work/depend", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  const dep = String(req.body?.depends_on || "");
+  if (!item || !dep) return res.status(400).json({ error: "item_id_depends_on_required" });
+  const { data, error } = await db!.rpc("chat_work_depend", {
+    _item: item,
+    _depends_on: dep,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/work/complete", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("chat_work_complete", {
+    _item: item,
+    _user: me.id,
+    _evidence: req.body?.evidence ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/work/chain", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.query?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("chat_work_chain", { _item: item, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/work/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_work_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// messenger basics (loophole fix): star + forward
+chatRouter.post("/messages/star", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_message_star", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/messages/forward", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  const conv = String(req.body?.to_conversation_id || "");
+  if (!msg || !conv) {
+    return res.status(400).json({ error: "message_id_to_conversation_id_required" });
+  }
+  const { data, error } = await db!.rpc("chat_message_forward", {
+    _msg: msg,
+    _to_conv: conv,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
