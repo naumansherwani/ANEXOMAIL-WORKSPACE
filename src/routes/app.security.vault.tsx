@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { DeviceAppealPanel } from "@/components/app/security/DeviceAppealPanel";
 import { DeviceVaultPanel } from "@/components/app/security/DeviceVaultPanel";
 
 export const Route = createFileRoute("/app/security/vault")({
