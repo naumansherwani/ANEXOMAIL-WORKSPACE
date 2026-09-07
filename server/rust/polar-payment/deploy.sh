@@ -83,7 +83,7 @@ if [ -f "$CADDY_MAIN" ] && command -v caddy >/dev/null 2>&1; then
   fi
   caddy fmt --overwrite "$CADDY_TARGET"
   caddy validate --config "$CADDY_MAIN"
-  systemctl reload caddy
+  systemctl reload caddy || systemctl restart caddy
   echo "    installed: $CADDY_TARGET (h1 + h2 + h3; UDP/TCP 443 allowed)"
 else
   echo "!!! Caddy not found; engine is green but second public ingress was not installed."
