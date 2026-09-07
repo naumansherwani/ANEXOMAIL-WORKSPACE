@@ -20,7 +20,6 @@
 
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { Webhook } from "standardwebhooks";
 import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
@@ -28,8 +27,12 @@ const SERVICE_KEY =
   process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 const POLAR_TOKEN = process.env.POLAR_ACCESS_TOKEN || "";
-const POLAR_WEBHOOK_SECRET = process.env.POLAR_WEBHOOK_SECRET || "";
 const POLAR_API = "https://api.polar.sh";
+// Payment authority: dedicated Rust engine. Sirf bridge/forward ke liye.
+const POLAR_ENGINE_URL = (process.env.POLAR_ENGINE_URL || "http://127.0.0.1:3400").replace(
+  /\/+$/,
+  "",
+);
 const SUCCESS_URL =
   process.env.POLAR_SUCCESS_URL || "https://anexomail.com/checkout/done?checkout_id={CHECKOUT_ID}";
 
@@ -43,7 +46,8 @@ if (SUPABASE_URL && SERVICE_KEY) {
 }
 
 if (!POLAR_TOKEN) console.error("polar: POLAR_ACCESS_TOKEN missing — checkout will 503");
-if (!POLAR_WEBHOOK_SECRET) console.error("polar: POLAR_WEBHOOK_SECRET missing — webhook will 401");
+console.log(`polar: webhook bridge -> ${POLAR_ENGINE_URL}/api/v1/polar-webhook`);
+
 
 const publicRouter = Router();
 const authRouter = Router();
