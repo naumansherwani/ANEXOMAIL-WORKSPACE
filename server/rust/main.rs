@@ -174,6 +174,18 @@ async fn chat_identity(token: &str) -> Result<Me, (StatusCode, &'static str, Str
     })
 }
 
+async fn file_ping() -> impl IntoResponse {
+    ok(json!({
+        "service": "anexomail-file-engine",
+        "status": "up",
+        "phase": "13-15",
+        "max_file_bytes": 5_368_709_120u64,
+        "max_chunk_bytes": 16_777_216u64,
+        "resumable": true,
+        "integrity": "sha256-per-chunk"
+    }))
+}
+
 async fn health() -> impl IntoResponse {
     ok(json!({
         "service": "anexomail-rust",
@@ -1331,6 +1343,9 @@ async fn main() {
 
     let app = Router::new()
         .route("/rpc/health", get(health).post(health))
+        // Public liveness face of the file engine (auth ke bagair 200) — is se
+        // gateway readings 401/404 ki jagah asli 200 dikhati hain.
+        .route("/file/ping", get(file_ping).post(file_ping))
         .route("/rpc/:proc", post(dispatch).get(dispatch))
         // 16 MB chunk ceiling — 5 GB file 8 MB chunks mein aati hai.
         .route(
