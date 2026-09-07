@@ -14,13 +14,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiError } from "@/lib/api";
 import { chatCall } from "@/lib/chat-transport";
 
-export type PromiseState =
-  | "pending"
-  | "due_soon"
-  | "overdue"
-  | "kept"
-  | "kept_late"
-  | "cancelled";
+export type PromiseState = "pending" | "due_soon" | "overdue" | "kept" | "kept_late" | "cancelled";
 
 export const PROMISE_TONE: Record<PromiseState, string> = {
   pending: "text-muted-foreground",
@@ -107,12 +101,7 @@ export type PromiseHistory = {
   append_only: boolean;
 };
 
-export type RecoveryAction =
-  | "remind"
-  | "deadline_change"
-  | "reassign"
-  | "impact_set"
-  | "cancelled";
+export type RecoveryAction = "remind" | "deadline_change" | "reassign" | "impact_set" | "cancelled";
 
 export type RecoveryResult = {
   ok: boolean;

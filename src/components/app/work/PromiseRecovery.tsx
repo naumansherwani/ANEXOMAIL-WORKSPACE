@@ -99,11 +99,16 @@ export function PromiseRecovery() {
     const impact =
       window.prompt("What breaks downstream if this slips?", item.downstream_impact ?? "") ?? "";
     if (!impact.trim()) return;
-    run({ item_id: item.id, action: "impact_set", downstream_impact: impact.trim() }, "Impact recorded", () => impact.trim());
+    run(
+      { item_id: item.id, action: "impact_set", downstream_impact: impact.trim() },
+      "Impact recorded",
+      () => impact.trim(),
+    );
   };
 
   const cancel = (item: PromiseItem) => {
-    const reason = window.prompt("Why is this promise being dropped? (at least 8 characters)") ?? "";
+    const reason =
+      window.prompt("Why is this promise being dropped? (at least 8 characters)") ?? "";
     if (reason.trim().length < 8) {
       notify.failed("Reason required", { description: "Write at least 8 characters." });
       return;
@@ -137,7 +142,9 @@ export function PromiseRecovery() {
     return <p className="ax-caption text-muted-foreground">Reading the promise ledger…</p>;
   }
   if (board.error) {
-    return <p className="ax-caption text-amber-400">Ledger didn&apos;t load: {board.error.message}</p>;
+    return (
+      <p className="ax-caption text-amber-400">Ledger didn&apos;t load: {board.error.message}</p>
+    );
   }
   if (board.data && !board.data.plan.allowed) {
     return (
@@ -197,7 +204,12 @@ export function PromiseRecovery() {
               <div className="mt-ax-3 flex flex-wrap gap-2">
                 {item.state !== "done" && item.state !== "cancelled" && (
                   <>
-                    <Button size="sm" variant="ghost" disabled={recover.isPending} onClick={() => remind(item)}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      disabled={recover.isPending}
+                      onClick={() => remind(item)}
+                    >
                       <BellRing className="size-3.5" />
                       Remind
                     </Button>
@@ -221,13 +233,23 @@ export function PromiseRecovery() {
                         Hand over
                       </Button>
                     )}
-                    <Button size="sm" variant="ghost" disabled={recover.isPending} onClick={() => setImpact(item)}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      disabled={recover.isPending}
+                      onClick={() => setImpact(item)}
+                    >
                       Impact
                     </Button>
                     <Button size="sm" disabled={keep.isPending} onClick={() => markKept(item)}>
                       Kept — with proof
                     </Button>
-                    <Button size="sm" variant="ghost" disabled={recover.isPending} onClick={() => cancel(item)}>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      disabled={recover.isPending}
+                      onClick={() => cancel(item)}
+                    >
                       <XCircle className="size-3.5" />
                       Dropped
                     </Button>
