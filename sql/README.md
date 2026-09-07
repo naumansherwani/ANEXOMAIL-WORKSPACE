@@ -250,3 +250,16 @@ mein: `polar_subscriptions` (canonical plan/status/grace), `polar_checkout_log`
 (return_to samet), `polar_mail_outbox` (receipt · welcome · grace_warning).
 `polar_billing_state(uuid)` in-app panel ka sach — grace 3 din, `service_blocked`
 hamesha `false` (services block kabhi nahi). Detail: `docs/polar-rust-payment.md`.
+
+## `phase51_polar_payment_hardening.sql` — Phase 51 · Payment hardening
+
+Phase 50 ka trigger ZINDA rehta hai (fast path). Yeh phase sirf sach + safety:
+`polar_signature_rejects` (401 events ka raw body + headers — ghalat secret 2 minute
+mein pakra jaye, data khoye baghair), `polar_reconcile_log` (har 15 min Rust engine
+Polar API vs internal state: ok/missing/diverged/unknown), `polar_payment_alerts`
+(watchdog: queue_stalled · queue_depth_high · dead_letter · reconcile_gap, hourly
+bucket se ek hi alert), aur `polar_payment_pulse()` (ek call mein poora payment sach
+— Founder deck / status page ke liye). Engine side: local append-only WAL (fsync ke
+baad 200, Supabase down ho to bhi Polar ko 200), worker backoff 30s→24h + 8 attempt
+ke baad dead-letter (row zinda, `/api/v1/replay`), `/ready` + `/metrics`.
+Ingress: `docs/caddy-payments-host.md` (`payments.anexomail.com` → 127.0.0.1:3400).
