@@ -181,6 +181,7 @@ export function openSignalLink(opts: {
     onFrame(frame);
   };
 
+  let quicLive = false;
   const sb = realtimeClient();
   if (sb) {
     channel = sb.channel(`call:${conversationId}`, { config: { broadcast: { self: false } } });
@@ -192,10 +193,25 @@ export function openSignalLink(opts: {
       })
       .subscribe((status) => {
         const live = status === "SUBSCRIBED";
-        transport = live ? "realtime" : "rows";
+        if (!quicLive) transport = live ? "realtime" : "rows";
         opts.onTransport?.(transport);
       });
   }
+
+  // PHASE 31A — QUIC pehle. Chal jaye to label "quic", warna jhoot nahi bolta.
+  const token = sessionToken.get();
+  const quic = token
+    ? openQuicSignal({
+        conversationId,
+        token,
+        onFrame: (f) => deliver(f),
+        onReady: (ready) => {
+          quicLive = ready;
+          transport = ready ? "quic" : channel ? "realtime" : "rows";
+          opts.onTransport?.(transport);
+        },
+      })
+    : null;
 
   // Durable catch-up: realtime live ho to slow safety net, warna primary path.
   const tick = async () => {
