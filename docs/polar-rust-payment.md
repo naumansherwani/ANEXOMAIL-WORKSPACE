@@ -105,8 +105,23 @@ curl -s http://127.0.0.1:3400/health
 caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
 ```
 
-Polar dashboard → Settings → Webhooks → URL:
-`https://anexomail.com/api/v1/polar-webhook` · format **Raw** · secret wahi jo `.env` mein hai.
+Polar dashboard → Settings → Webhooks → endpoint **ANEXOMAIL Production Webhook**:
+`https://anexomail.com/api/v1/polar-webhook` · format **Raw** · API version **2026-04** ·
+secret wahi jo `.env` mein hai.
+
+### Purana Express path (bridge, na hataayen)
+
+`https://anexomail.com/api/public/polar/webhook` (Express :3100) ab **koi logic nahi**
+rakhta — raw body jaisi ki taisi `127.0.0.1:3400/api/v1/polar-webhook` par forward hoti hai
+(`POLAR_ENGINE_URL`, default `http://127.0.0.1:3400`). Engine down ho to 503 jaata hai taake
+Polar retry kare. Polar dashboard mein yeh URL **nahi** dalna.
+
+### Response time (sach)
+
+Engine ka kaam sirf verify + ek chhota INSERT hai — aam tor par **10–40ms**. Slow network par
+bhi target **< 300ms**; Polar ka asli limit 10 second hai, hum us se bohat neeche hain.
+"50ms guarantee" likhna jhoot hoga, is liye budget 300ms locked hai.
+
 
 ## 5. Signature scheme LOCK (Polar docs, 8 Sep 2026 cutoff)
 

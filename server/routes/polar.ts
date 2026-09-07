@@ -1,21 +1,25 @@
-// ANEXOMAIL — Polar Checkout + Webhook (Server 2 / Brain, port 3100)
+// ANEXOMAIL — Polar legacy bridge (Server 2 / Brain, port 3100)
+//
+// PAYMENT ENGINE LOCK (5 Sep 2026): asli payment/webhook authority
+// dedicated Rust engine `polar-rust-payment` (127.0.0.1:3400) hai.
+// Yeh Express file ab sirf BRIDGE hai:
+//   - purana /api/public/polar/webhook hit ho jaye to raw body
+//     127.0.0.1:3400/api/v1/polar-webhook par forward hoti hai (koi logic yahan nahi)
+//   - read-only billing views (subscription/invoices/payment-health) waise hi rehte hain
+// Polar dashboard mein sirf: https://anexomail.com/api/v1/polar-webhook
 //
 // NANO COMMAND (server par):
 //   cp /opt/anexomail/src/routes/polar.ts /opt/anexomail/src/routes/polar.ts.bak.$(date +%s) 2>/dev/null
 //   nano /opt/anexomail/src/routes/polar.ts
 //   # select all -> paste -> Ctrl+O, Ctrl+X
 //
-// Routes:
-//   POST /api/billing/checkout              auth — create Polar checkout session
-//   GET  /api/billing/checkout/:id          auth — verify checkout state
-//   POST /api/public/polar/webhook          public — verified Polar webhook events
-//
 // Env required:
 //   POLAR_ACCESS_TOKEN, POLAR_WEBHOOK_SECRET, POLAR_SUCCESS_URL
 //   SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY
+//   POLAR_ENGINE_URL (default http://127.0.0.1:3400)
+
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { Webhook } from "standardwebhooks";
 import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
@@ -23,8 +27,12 @@ const SERVICE_KEY =
   process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 
 const POLAR_TOKEN = process.env.POLAR_ACCESS_TOKEN || "";
-const POLAR_WEBHOOK_SECRET = process.env.POLAR_WEBHOOK_SECRET || "";
 const POLAR_API = "https://api.polar.sh";
+// Payment authority: dedicated Rust engine. Sirf bridge/forward ke liye.
+const POLAR_ENGINE_URL = (process.env.POLAR_ENGINE_URL || "http://127.0.0.1:3400").replace(
+  /\/+$/,
+  "",
+);
 const SUCCESS_URL =
   process.env.POLAR_SUCCESS_URL || "https://anexomail.com/checkout/done?checkout_id={CHECKOUT_ID}";
 
@@ -38,7 +46,8 @@ if (SUPABASE_URL && SERVICE_KEY) {
 }
 
 if (!POLAR_TOKEN) console.error("polar: POLAR_ACCESS_TOKEN missing — checkout will 503");
-if (!POLAR_WEBHOOK_SECRET) console.error("polar: POLAR_WEBHOOK_SECRET missing — webhook will 401");
+console.log(`polar: webhook bridge -> ${POLAR_ENGINE_URL}/api/v1/polar-webhook`);
+
 
 const publicRouter = Router();
 const authRouter = Router();
@@ -153,82 +162,41 @@ authRouter.get("/checkout/:id", async (req, res) => {
   }
 });
 
-// ---------- webhook: public, verified ----------
+// ---------- webhook: legacy bridge -> Rust engine :3400 ----------
+// Yahan koi verification / business logic NAHI. Raw body jaisi ki taisi
+// Rust engine ko chali jati hai; wahi signature verify karta hai aur inbox
+// mein insert karta hai. Polar dashboard mein ab sirf /api/v1/polar-webhook
+// hona chahiye — yeh route sirf purane hits ke liye zinda hai.
 publicRouter.post("/polar/webhook", async (req, res) => {
-  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  if (!POLAR_WEBHOOK_SECRET) return res.status(401).json({ error: "webhook_not_configured" });
-
-  const webhookId = String(req.headers["webhook-id"] || "");
-  const timestamp = String(req.headers["webhook-timestamp"] || "");
-  const signatureHeader = String(req.headers["webhook-signature"] || "");
-  const body = req.rawBody ? Buffer.from(req.rawBody) : Buffer.from(JSON.stringify(req.body));
-  if (!webhookId || !timestamp || !signatureHeader || !body) {
-    await captureRaw(req, webhookId, false, "missing_webhook_headers_or_payload");
-    return res.status(400).json({ error: "missing_webhook_headers_or_payload" });
+  const body = req.rawBody ? Buffer.from(req.rawBody) : Buffer.from(JSON.stringify(req.body ?? {}));
+  const headers: Record<string, string> = { "content-type": "application/json" };
+  for (const key of [
+    "webhook-id",
+    "webhook-timestamp",
+    "webhook-signature",
+    "x-polar-signature",
+    "user-agent",
+  ]) {
+    const value = req.headers[key];
+    if (value) headers[key] = String(value);
   }
 
   try {
-    // Polar gives a plain signing secret. standardwebhooks expects base64,
-    // therefore encode the plain secret once before verification.
-    const verifierSecret = POLAR_WEBHOOK_SECRET.startsWith("whsec_")
-      ? POLAR_WEBHOOK_SECRET
-      : Buffer.from(POLAR_WEBHOOK_SECRET, "utf8").toString("base64");
-    const verifier = new Webhook(verifierSecret);
-    verifier.verify(body, {
-      "webhook-id": webhookId,
-      "webhook-timestamp": timestamp,
-      "webhook-signature": signatureHeader,
+    const upstream = await fetch(`${POLAR_ENGINE_URL}/api/v1/polar-webhook`, {
+      method: "POST",
+      headers,
+      body,
     });
-  } catch (error) {
-    console.error("[polar webhook verify]", error instanceof Error ? error.message : error);
-    await captureRaw(req, webhookId, false, "invalid_signature");
-    return res.status(401).json({ error: "invalid_signature" });
-  }
-
-  const event = req.body as any;
-  const eventId = webhookId;
-
-  // PAYMENT SAFETY: verified hit ka raw payload pehle Supabase mein — chahe
-  // aage kuch bhi fail ho, paisa/proof kabhi zaya nahi hota.
-  await captureRaw(req, eventId, true, null);
-
-  // idempotency: already seen?
-  const { data: existing } = await db
-    .from("polar_webhook_events")
-    .select("id,processed_at")
-    .eq("polar_event_id", eventId)
-    .maybeSingle();
-  if (existing?.processed_at) return res.json({ ok: true, duplicate: true });
-
-  // log event first
-  if (!existing) {
-    const { error: logError } = await db.from("polar_webhook_events").insert({
-      polar_event_id: eventId,
-      type: event?.type || "unknown",
-      payload: event,
-    });
-    if (logError) {
-      console.error("[polar webhook log]", logError);
-      return res.status(500).json({ error: "event_log_failed" });
-    }
-  }
-
-  // process business events — event already durable, is liye Polar ko hamesha
-  // 200 milta hai. Fail hone par humara apna retry queue backoff se replay
-  // karta hai (3 fail ke baad founder alert).
-  try {
-    await processWebhookEvent(event, eventId);
-    await db.rpc("webhook_mark_processed", { p_event_id: eventId });
-    return res.json({ ok: true, processed: true });
+    const text = await upstream.text();
+    return res.status(upstream.status).type("text/plain").send(text || "");
   } catch (e: any) {
-    console.error("[polar webhook process]", e);
-    await db.rpc("webhook_mark_failed", {
-      p_event_id: eventId,
-      p_error: String(e?.message || e),
-    });
-    return res.json({ ok: true, queued_for_retry: true });
+    // Engine down: Polar ko fail mat batao — woh retry karega.
+    console.error("[polar webhook bridge]", e?.message || e);
+    await captureRaw(req, String(req.headers["webhook-id"] || ""), false, "engine_unreachable");
+    return res.status(503).json({ error: "payment_engine_unreachable" });
   }
 });
+
 
 // Har hit ka raw record — signature fail ho to bhi. Yeh kabhi throw nahi karta.
 async function captureRaw(req: any, eventId: string, verified: boolean, reason: string | null) {
