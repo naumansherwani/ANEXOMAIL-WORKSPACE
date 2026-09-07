@@ -48,6 +48,7 @@ import { Route as AppMoveinRouteImport } from './routes/app.movein'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
 import { Route as AppPerfRouteImport } from './routes/app.perf'
+import { Route as AppSafetyRouteImport } from './routes/app.safety'
 import { Route as AppSearchRouteImport } from './routes/app.search'
 import { Route as AppSecurityRouteImport } from './routes/app.security'
 import { Route as AppSettingsRouteImport } from './routes/app.settings'
@@ -341,6 +342,11 @@ const AppPeopleRoute = AppPeopleRouteImport.update({
 const AppPerfRoute = AppPerfRouteImport.update({
   id: '/perf',
   path: '/perf',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppSafetyRoute = AppSafetyRouteImport.update({
+  id: '/safety',
+  path: '/safety',
   getParentRoute: () => AppRoute,
 } as any)
 const AppSearchRoute = AppSearchRouteImport.update({
@@ -882,6 +888,7 @@ export interface FileRoutesByFullPath {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/perf': typeof AppPerfRouteWithChildren
+  '/app/safety': typeof AppSafetyRoute
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -1016,6 +1023,7 @@ export interface FileRoutesByTo {
   '/app/integrations': typeof AppIntegrationsRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/people': typeof AppPeopleRoute
+  '/app/safety': typeof AppSafetyRoute
   '/app/search': typeof AppSearchRoute
   '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
@@ -1152,6 +1160,7 @@ export interface FileRoutesById {
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
   '/app/perf': typeof AppPerfRouteWithChildren
+  '/app/safety': typeof AppSafetyRoute
   '/app/search': typeof AppSearchRoute
   '/app/security': typeof AppSecurityRouteWithChildren
   '/app/settings': typeof AppSettingsRouteWithChildren
@@ -1294,6 +1303,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/perf'
+    | '/app/safety'
     | '/app/search'
     | '/app/security'
     | '/app/settings'
@@ -1428,6 +1438,7 @@ export interface FileRouteTypes {
     | '/app/integrations'
     | '/app/movein'
     | '/app/people'
+    | '/app/safety'
     | '/app/search'
     | '/app/storage'
     | '/app/work'
@@ -1563,6 +1574,7 @@ export interface FileRouteTypes {
     | '/app/org'
     | '/app/people'
     | '/app/perf'
+    | '/app/safety'
     | '/app/search'
     | '/app/security'
     | '/app/settings'
@@ -1967,6 +1979,13 @@ declare module '@tanstack/react-router' {
       path: '/perf'
       fullPath: '/app/perf'
       preLoaderRoute: typeof AppPerfRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/safety': {
+      id: '/app/safety'
+      path: '/safety'
+      fullPath: '/app/safety'
+      preLoaderRoute: typeof AppSafetyRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/search': {
@@ -2931,6 +2950,7 @@ interface AppRouteChildren {
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
   AppPerfRoute: typeof AppPerfRouteWithChildren
+  AppSafetyRoute: typeof AppSafetyRoute
   AppSearchRoute: typeof AppSearchRoute
   AppSecurityRoute: typeof AppSecurityRouteWithChildren
   AppSettingsRoute: typeof AppSettingsRouteWithChildren
@@ -2974,6 +2994,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
   AppPerfRoute: AppPerfRouteWithChildren,
+  AppSafetyRoute: AppSafetyRoute,
   AppSearchRoute: AppSearchRoute,
   AppSecurityRoute: AppSecurityRouteWithChildren,
   AppSettingsRoute: AppSettingsRouteWithChildren,
