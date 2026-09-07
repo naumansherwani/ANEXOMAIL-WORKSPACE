@@ -1,11 +1,15 @@
 # CADDY — `payments.anexomail.com` (Polar ingress, locked 7 Sep 2026)
 
-Payments ka ingress **boring** hai: koi QUIC/WebTransport mandatory nahi, sirf HTTPS.
-QUIC/WT hamari internal services ke beech rahega, Polar ke saath kabhi nahi.
+Ingress par **HTTP/1.1 + HTTP/2 + HTTP/3 (QUIC)** teeno ON hain — Caddy default yehi hai
+(TLS 1.3, `Alt-Svc: h3` advertise). Farq sirf itna: HTTP/3 **mandatory nahi** — Polar jis
+protocol par aaye (aam tor par HTTP/1.1) woh chalega, aur jo client h3 support karta hai
+usay h3 mil jaayega. UDP 443 firewall mein khula hona zaroori hai, warna h3 chup-chaap
+fallback kar jaayega.
 
 ```text
-Polar  ──HTTPS──►  payments.anexomail.com  ──►  Caddy  ──►  127.0.0.1:3400
+Polar / koi bhi client ──h1 · h2 · h3(QUIC)──►  payments.anexomail.com  ──►  Caddy  ──►  127.0.0.1:3400
 ```
+
 
 ## 1. DNS (ek dafa)
 
