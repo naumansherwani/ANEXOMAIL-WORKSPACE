@@ -129,16 +129,28 @@ async fn health(State(s): State<Arc<AppState>>) -> impl IntoResponse {
 }
 
 // ---------------------------------------------------------------------------
-// SIGNATURE — Polar Standard Webhooks
+// SIGNATURE — Polar docs (8 Sep 2026 cutoff) LOCK:
+//   Polar sirf EK header bhejta hai: webhook-signature = "v1,<base64 sig>"
 //   signed content = "{webhook-id}.{webhook-timestamp}.{raw body}"
-//   header webhook-signature = "v1,<base64 sig> v1,<base64 sig>"
-//   secret: Polar dashboard `whsec_<base64>`; prefix strip karke base64 decode.
-//   Fallback: legacy `x-polar-signature` = hex HMAC of raw body.
+//   HMAC key secret ki UMR par depend karti hai:
+//     A) Standard Webhooks (secret 8 Sep 2026 00:00 UTC ke BAAD banaya/reset):
+//        key = base64-decode( whsec_ strip karke )  — Standard Webhooks spec
+//     B) Polar HMAC (us se PEHLE ka secret):
+//        key = UTF-8 bytes of FULL `whsec_...` string (as-is, koi decode nahi)
+//   Polar SDKs 1.0.0-alpha.19+ bhi dono keys try karte hain — hum bhi dono.
+//   Fallback: legacy `x-polar-signature` = hex HMAC of raw body (dono keys).
 // ---------------------------------------------------------------------------
-fn secret_bytes(secret: &str) -> Vec<u8> {
-    let raw = secret.trim().strip_prefix("whsec_").unwrap_or(secret.trim());
-    // Polar ka secret base64 hota hai; agar decode na ho to plain bytes.
-    B64.decode(raw).unwrap_or_else(|_| raw.as_bytes().to_vec())
+fn secret_keys(secret: &str) -> Vec<Vec<u8>> {
+    let full = secret.trim();
+    let raw = full.strip_prefix("whsec_").unwrap_or(full);
+    let mut keys: Vec<Vec<u8>> = Vec::with_capacity(2);
+    // A) Standard Webhooks key: prefix strip -> base64 decode
+    if let Ok(decoded) = B64.decode(raw) {
+        keys.push(decoded);
+    }
+    // B) Polar HMAC key: poora whsec_ string ke UTF-8 bytes, as-is
+    keys.push(full.as_bytes().to_vec());
+    keys
 }
 
 fn hmac_ok(key: &[u8], msg: &[u8], expected: &[u8]) -> bool {
