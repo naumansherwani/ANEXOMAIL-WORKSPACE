@@ -1,7 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { AccountIntegrityPanel } from "@/components/app/security/AccountIntegrityPanel";
 import { DeviceAppealPanel } from "@/components/app/security/DeviceAppealPanel";
 import { DeviceVaultPanel } from "@/components/app/security/DeviceVaultPanel";
+
 
 export const Route = createFileRoute("/app/security/vault")({
   head: () => ({
@@ -30,7 +32,9 @@ function VaultPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <DeviceVaultPanel />
+      <AccountIntegrityPanel />
       <DeviceAppealPanel />
     </div>
+
   );
 }

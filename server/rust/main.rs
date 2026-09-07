@@ -1297,6 +1297,58 @@ async fn dispatch(
             }
         }
 
+        // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
+        // Detection sirf device shape par. Engine khud kabhi block nahi karti:
+        // warn/block/release har qadam insaan ka, 12+ char reason ke saath.
+        "account.integrity.state" => {
+            sb_rpc("account_integrity_state", json!({ "_user": me.id })).await
+        }
+
+        "account.integrity.evaluate" => {
+            sb_rpc(
+                "account_integrity_evaluate",
+                json!({
+                    "_user": me.id,
+                    "_device_hash": input.get("device_hash").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "account.integrity.queue" => {
+            sb_rpc(
+                "account_integrity_queue",
+                json!({
+                    "_actor": me.id,
+                    "_state": input.get("state").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "account.integrity.warn" | "account.integrity.block" | "account.integrity.release" => {
+            let target = s(&input, "user_id");
+            let reason = s(&input, "reason");
+            if target.is_empty() || reason.trim().len() < 12 {
+                Err("user_id_and_12_char_reason_required".to_string())
+            } else {
+                let fname = match proc.as_str() {
+                    "account.integrity.warn" => "account_integrity_warn",
+                    "account.integrity.block" => "account_integrity_block",
+                    _ => "account_integrity_release",
+                };
+                sb_rpc(
+                    fname,
+                    json!({ "_actor": me.id, "_user": target, "_reason": reason }),
+                )
+                .await
+            }
+        }
+
+        "account.integrity.export" => {
+            sb_rpc("account_integrity_export_ready", json!({ "_user": me.id })).await
+        }
+
         // Device ban appeal: ban sirf device par hota hai, network par kabhi
         // nahi — is liye har ban ke khilaf insaani appeal ka raasta khula hai.
         "chat.device.appeal" => {
