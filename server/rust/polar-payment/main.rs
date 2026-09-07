@@ -20,8 +20,8 @@
 //      missing/diverged par synthetic inbox event daal deti hai. Webhook kabhi na
 //      aaye to bhi package activate ho jaata hai.
 //   6. SIGNATURE REJECT LOG: invalid signature par 401 (spec-correct) MAGAR raw
-//      body + headers `polar_signature_rejects` mein log — ghalat secret 2 minute
-//      mein pakra jaata hai, data khota nahi.
+//      body + headers `polar_signature_rejects` aur alag rejects/ evidence WAL
+//      mein log — payment dead-letter queue mein kabhi count nahi hota.
 //   7. SECRETS: sirf /opt/polar-rust-payment/.env mein. Deploy ise touch nahi karta.
 //
 // ENV (/opt/polar-rust-payment/.env):
@@ -135,7 +135,7 @@ fn slug(raw: &str) -> String {
 
 impl Wal {
     fn new(root: PathBuf) -> std::io::Result<Self> {
-        for sub in ["pending", "done", "dead"] {
+        for sub in ["pending", "done", "dead", "rejects"] {
             fs::create_dir_all(root.join(sub))?;
         }
         Ok(Self { root })
@@ -353,7 +353,15 @@ async fn ready(State(s): State<Arc<AppState>>) -> impl IntoResponse {
 async fn metrics(State(s): State<Arc<AppState>>) -> impl IntoResponse {
     let m = &s.metrics;
     let (depth, oldest) = s.wal.queue_stats();
-    let dead_depth = s.wal.list("dead").len() as u64;
+    // Purani releases reject evidence ko dead/ mein rakhti thin. Un files ko bhi
+    // payment failures mein count na karo; replay handler pehle hi unhein skip karta hai.
+    let dead_depth = s
+        .wal
+        .list("dead")
+        .into_iter()
+        .filter_map(|path| Wal::read(&path))
+        .filter(|env| !env.event_type.starts_with("signature_reject:"))
+        .count() as u64;
     Json(json!({
         "received":            m.received.load(Ordering::Relaxed),
         "duplicate":           m.duplicate.load(Ordering::Relaxed),
@@ -473,7 +481,7 @@ async fn handle_polar_webhook(
     body: axum::body::Bytes,
 ) -> impl IntoResponse {
     if let Err(reason) = verify_signature(&s, &headers, &body) {
-        // 401 spec-correct hai, MAGAR event data khota nahi: reject log + WAL dead.
+        // 401 spec-correct hai, MAGAR evidence khota nahi: DB log + isolated rejects WAL.
         s.metrics.rejects.fetch_add(1, Ordering::Relaxed);
         tracing::warn!("polar webhook rejected: {reason}");
         let raw = String::from_utf8_lossy(&body).to_string();
@@ -488,7 +496,7 @@ async fn handle_polar_webhook(
             next_try_secs: 0,
             last_error: Some(reason.clone()),
         };
-        let _ = s.wal.write("dead", &wal_env);
+        let _ = s.wal.write("rejects", &wal_env);
         tokio::spawn(async move {
             let _ = sqlx::query(
                 r#"insert into public.polar_signature_rejects (reason, raw_body, headers)
@@ -658,7 +666,13 @@ async fn watchdog_loop(s: Arc<AppState>) {
     loop {
         tokio::time::sleep(Duration::from_secs(60)).await;
         let (depth, oldest) = s.wal.queue_stats();
-        let dead_depth = s.wal.list("dead").len() as u64;
+        let dead_depth = s
+            .wal
+            .list("dead")
+            .into_iter()
+            .filter_map(|path| Wal::read(&path))
+            .filter(|env| !env.event_type.starts_with("signature_reject:"))
+            .count() as u64;
         let mut alerts: Vec<(&str, Value)> = Vec::new();
         if oldest > 600 {
             alerts.push((
