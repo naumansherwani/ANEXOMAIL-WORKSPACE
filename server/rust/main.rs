@@ -1511,6 +1511,364 @@ async fn dispatch(
             }
         }
 
+        // ── PHASE 28: BUSINESS CONVERSATION RECEIPTS + HANDOVER PACK ────────
+        // RUST-FIRST: yeh arms PRIMARY hain (/rpc/* on :3200 + WT/QUIC 3443);
+        // Bun :3300 sirf fallback. Steps sirf asli rows se — jo record nahi
+        // hua woh "Not recorded" hai. Negative receipts bhi likhe jate hain.
+
+        "chat.receipt.pack" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("message_receipt_pack", json!({ "_message": msg, "_user": me.id })).await
+            }
+        }
+
+        "chat.receipt.record" => {
+            let msg = s(&input, "message_id");
+            let state = s(&input, "state");
+            if msg.is_empty() || state.is_empty() {
+                Err("message_id_and_state_required".to_string())
+            } else {
+                sb_rpc(
+                    "receipt_device_record",
+                    json!({
+                        "_user": me.id, "_message": msg, "_state": state,
+                        "_platform_class": input.get("platform_class").cloned().unwrap_or(Value::Null),
+                        "_tz_bucket": input.get("tz_bucket").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.receipt.silent" => {
+            sb_rpc(
+                "read_without_response",
+                json!({
+                    "_user": me.id,
+                    "_hours": input.get("hours").cloned().unwrap_or(json!(24)),
+                }),
+            )
+            .await
+        }
+
+        "chat.receipt.replay" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "receipt_replay",
+                    json!({
+                        "_conversation": conv, "_user": me.id,
+                        "_limit": input.get("limit").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.receipt.certificate" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "receipt_certificate_issue",
+                    json!({ "_conversation": conv, "_user": me.id }),
+                )
+                .await
+            }
+        }
+
+        // bahar se verify — token kaafi hai, body kabhi shamil nahi
+        "chat.receipt.verify" => {
+            let token = s(&input, "token");
+            if token.is_empty() {
+                Err("token_required".to_string())
+            } else {
+                sb_rpc("receipt_certificate_verify", json!({ "_token": token })).await
+            }
+        }
+
+        "chat.message.attach" => {
+            let msg = s(&input, "message_id");
+            let ver = s(&input, "version_id");
+            if msg.is_empty() || ver.is_empty() {
+                Err("message_id_and_version_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "message_attach_file",
+                    json!({ "_user": me.id, "_message": msg, "_version": ver }),
+                )
+                .await
+            }
+        }
+
+        "chat.handover.board" => sb_rpc("handover_pack_board", json!({ "_user": me.id })).await,
+
+        "chat.handover.build" => {
+            let outgoing = s(&input, "outgoing_user");
+            if outgoing.is_empty() {
+                Err("outgoing_user_required".to_string())
+            } else {
+                sb_rpc(
+                    "handover_pack_build",
+                    json!({
+                        "_actor": me.id, "_outgoing": outgoing,
+                        "_scope": input.get("scope").cloned().unwrap_or(json!("workspace")),
+                        "_scope_ref": input.get("scope_ref").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.handover.get" => {
+            let pack = s(&input, "pack_id");
+            if pack.is_empty() {
+                Err("pack_id_required".to_string())
+            } else {
+                sb_rpc("handover_pack_get", json!({ "_pack": pack, "_user": me.id })).await
+            }
+        }
+
+        "chat.handover.assign" => {
+            let pack = s(&input, "pack_id");
+            let incoming = s(&input, "incoming_user");
+            let reason = s(&input, "reason");
+            if pack.is_empty() || incoming.is_empty() || reason.trim().len() < 8 {
+                Err("pack_id_incoming_user_and_8_char_reason_required".to_string())
+            } else {
+                sb_rpc(
+                    "handover_assign",
+                    json!({
+                        "_actor": me.id, "_pack": pack, "_incoming": incoming,
+                        "_reason": reason,
+                        "_item": input.get("item_id").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.handover.complete" => {
+            let pack = s(&input, "pack_id");
+            let reason = s(&input, "reason");
+            if pack.is_empty() || reason.trim().len() < 8 {
+                Err("pack_id_and_8_char_reason_required".to_string())
+            } else {
+                sb_rpc(
+                    "handover_complete",
+                    json!({ "_actor": me.id, "_pack": pack, "_reason": reason }),
+                )
+                .await
+            }
+        }
+
+        // ── PHASE 29: EMAIL → CHAT BRIDGE ───────────────────────────────────
+        // Email formal record hai, chat instant layer. Link do-tarfa aur ek hi.
+
+        "chat.bridge.discuss" => {
+            let thread = s(&input, "mail_thread_id");
+            if thread.is_empty() {
+                Err("mail_thread_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "email_discuss_in_chat",
+                    json!({
+                        "_user": me.id, "_mail_thread": thread,
+                        "_mail_message": input.get("mail_message_id").cloned().unwrap_or(Value::Null),
+                        "_conversation": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                        "_subject": input.get("subject").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.bridge.context" => {
+            let conv = s(&input, "conversation_id");
+            if conv.is_empty() {
+                Err("conversation_id_required".to_string())
+            } else {
+                sb_rpc("email_chat_context", json!({ "_conversation": conv, "_user": me.id })).await
+            }
+        }
+
+        "chat.bridge.thread" => {
+            let thread = s(&input, "mail_thread_id");
+            if thread.is_empty() {
+                Err("mail_thread_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "email_thread_conversation",
+                    json!({ "_user": me.id, "_mail_thread": thread }),
+                )
+                .await
+            }
+        }
+
+        "chat.bridge.quote" => {
+            let msg = s(&input, "message_id");
+            let thread = s(&input, "mail_thread_id");
+            let text = s(&input, "quoted_text");
+            if msg.is_empty() || thread.is_empty() || text.trim().is_empty() {
+                Err("message_id_mail_thread_id_and_quoted_text_required".to_string())
+            } else {
+                sb_rpc(
+                    "email_quote_to_chat",
+                    json!({
+                        "_user": me.id, "_message": msg, "_mail_thread": thread,
+                        "_quoted_text": text,
+                        "_mail_message": input.get("mail_message_id").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.bridge.quote.verify" => {
+            let quote = s(&input, "quote_id");
+            if quote.is_empty() {
+                Err("quote_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "email_quote_verify",
+                    json!({
+                        "_quote": quote,
+                        "_current_text": input.get("current_text").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.bridge.presence" => {
+            sb_rpc(
+                "email_discuss_presence",
+                json!({
+                    "_user": me.id,
+                    "_emails": input.get("emails").cloned().unwrap_or(json!([])),
+                }),
+            )
+            .await
+        }
+
+        "chat.bridge.rescue" => {
+            let thread = s(&input, "mail_thread_id");
+            let title = s(&input, "title");
+            let owner = s(&input, "owner_user_id");
+            let due = s(&input, "due_at");
+            if thread.is_empty() || title.trim().len() < 3 || owner.is_empty() || due.is_empty() {
+                Err("mail_thread_id_title_owner_and_due_required".to_string())
+            } else {
+                sb_rpc(
+                    "silent_thread_rescue",
+                    json!({
+                        "_user": me.id, "_mail_thread": thread, "_title": title,
+                        "_owner": owner, "_due": due,
+                        "_mail_message": input.get("mail_message_id").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        // ── PHASE 30: CHAT → EMAIL (provenance preserved) ───────────────────
+        // Har line ke saath citation (sender · UTC ms · body_hash). Consent
+        // gate. Email ki jagah chat kabhi nahi leta.
+
+        "chat.email.draft" => {
+            let conv = s(&input, "conversation_id");
+            let subject = s(&input, "subject");
+            if conv.is_empty() || subject.trim().len() < 3 {
+                Err("conversation_id_and_subject_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_email_draft_create",
+                    json!({
+                        "_user": me.id, "_conversation": conv, "_subject": subject,
+                        "_recipients": input.get("recipients").cloned().unwrap_or(json!([])),
+                        "_message_ids": input.get("message_ids").cloned().unwrap_or(json!([])),
+                        "_intro": input.get("intro").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.email.board" => {
+            sb_rpc(
+                "chat_email_draft_board",
+                json!({
+                    "_user": me.id,
+                    "_conversation": input.get("conversation_id").cloned().unwrap_or(Value::Null),
+                }),
+            )
+            .await
+        }
+
+        "chat.email.get" => {
+            let draft = s(&input, "draft_id");
+            if draft.is_empty() {
+                Err("draft_id_required".to_string())
+            } else {
+                sb_rpc("chat_email_draft_get", json!({ "_draft": draft, "_user": me.id })).await
+            }
+        }
+
+        "chat.email.consent" => {
+            let draft = s(&input, "draft_id");
+            let state = s(&input, "state");
+            if draft.is_empty() || state.is_empty() {
+                Err("draft_id_and_state_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_email_draft_consent",
+                    json!({
+                        "_user": me.id, "_draft": draft, "_state": state,
+                        "_reason": input.get("reason").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+            }
+        }
+
+        "chat.email.send" => {
+            let draft = s(&input, "draft_id");
+            let mail = s(&input, "mail_message_id");
+            if draft.is_empty() || mail.is_empty() {
+                Err("draft_id_and_mail_message_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_email_draft_send",
+                    json!({ "_user": me.id, "_draft": draft, "_mail_message": mail }),
+                )
+                .await
+            }
+        }
+
+        "chat.email.decision" => {
+            let decision = s(&input, "decision_id");
+            if decision.is_empty() {
+                Err("decision_id_required".to_string())
+            } else {
+                sb_rpc("decision_to_email", json!({ "_user": me.id, "_decision": decision })).await
+            }
+        }
+
+        "chat.email.escalations" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc("message_escalations", json!({ "_message": msg, "_user": me.id })).await
+            }
+        }
+
         // ── ACCOUNT INTEGRITY (one person, one account) ─────────────────────
         // Detection sirf device shape par. Engine khud kabhi block nahi karti:
         // warn/block/release har qadam insaan ka, 12+ char reason ke saath.
