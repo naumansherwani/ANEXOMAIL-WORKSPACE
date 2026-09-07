@@ -14,7 +14,7 @@
 - [x] Phase 16/17/18 file truth + self-hosted safety (evidence chain, no external API)
 - [x] Phase 19/20/21/22 device safety vault, device trust revoke, safety reporting queue, message→work execution chain
 - [x] Phase 23 promise recovery engine (human-only recovery actions, append-only ledger) + device ban appeals
-- [x] (non-phase guard, out of blueprint order) Account integrity: one-account ladder (flag -> written final warning -> human block), device-only bans, 72h export before purge
+- [x] Phase 24A account integrity: one-account ladder (flag -> written final warning -> human block), device-hash-only bans, 72h export before purge (`anexochat/sql/phase24a_account_integrity.sql`)
 - [x] Phase 24 decision ledger + decision impact map (message provenance + body_hash, versioned history never overwritten, human-only impact links)
 
 - [ ] anexomail.com 502 (frontend PM2) confirm green
