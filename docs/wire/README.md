@@ -57,6 +57,8 @@ Status sirf teen: **DONE** (live test hua) · **READY** (code/config repo mein, 
 | 59 SQL files applied         | READY  | step 09 MASTER VERIFY zero row     |
 | Public tables ke GRANTs      | TODO   | step 09 GRANT check zero row       |
 | Public tables par RLS        | TODO   | step 09 RLS check zero row         |
+| Repo mein sirf founder naam  | READY  | step 10.4 `rg` zero output         |
+| Site par koi platform badge  | TODO   | step 10.3 site grep = 0            |
 
 ## Mailbox list (anexomail.com only — is launch ka scope)
 
