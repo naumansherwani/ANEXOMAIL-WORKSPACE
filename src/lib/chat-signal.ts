@@ -56,9 +56,10 @@ function openQuicSignal(opts: {
       transport = wt;
       await wt.ready;
       const stream = await wt.createBidirectionalStream();
-      writer = stream.writable.getWriter();
+      const w: WritableStreamDefaultWriter<Uint8Array> = stream.writable.getWriter();
+      writer = w;
       const enc = new TextEncoder();
-      await writer.write(
+      await w.write(
         enc.encode(
           JSON.stringify({
             token: opts.token,
@@ -67,7 +68,7 @@ function openQuicSignal(opts: {
           }) + "\n",
         ),
       );
-      for (const line of queue.splice(0)) await writer.write(enc.encode(line + "\n"));
+      for (const line of queue.splice(0)) await w.write(enc.encode(line + "\n"));
 
       const reader = stream.readable.getReader();
       const dec = new TextDecoder();
