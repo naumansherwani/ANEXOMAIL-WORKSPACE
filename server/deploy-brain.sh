@@ -24,8 +24,9 @@ done
 missing=0
 while IFS= read -r module; do
   relative="${module#./}"
-  [ -f "$TARGET/src/${relative}.ts" ] || [ -f "$TARGET/src/${relative}.js" ] || {
-    echo "RED Brain import missing: $TARGET/src/${relative}.{ts,js}"
+  base="${relative%.js}"
+  [ -f "$TARGET/src/${base}.ts" ] || [ -f "$TARGET/src/${base}.js" ] || {
+    echo "RED Brain import missing: $TARGET/src/${base}.ts"
     missing=1
   }
 done < <(grep -oE 'from "\./routes/[^"]+' "$TARGET/src/index.ts" | sed 's/^from "//')
