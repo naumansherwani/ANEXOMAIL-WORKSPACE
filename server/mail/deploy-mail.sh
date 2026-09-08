@@ -287,13 +287,28 @@ done
 for pair in $ALIASES; do
   printf '%s@%s  %s@%s\n' "${pair%%:*}" "$DOMAIN" "${pair##*:}" "$DOMAIN" >> /etc/postfix/valias
 done
-# FOUNDER SINGLE INBOX: har real mailbox ki mail apni box mein bhi jaati hai aur
-# founder inbox mein bhi copy hoti hai (khud founder box par koi alias nahi).
-for m in $MAILBOXES; do
+# FOUNDER SINGLE INBOX: sirf company addresses ki copy founder inbox mein jaati hai.
+# Family accounts (humza/raana) ki mail founder inbox mein KABHI nahi.
+for m in $FOUNDER_COPY; do
   [ "$m" = "$FOUNDER_INBOX" ] && continue
   printf '%s@%s  %s@%s, %s@%s\n' "$m" "$DOMAIN" "$m" "$DOMAIN" "$FOUNDER_INBOX" "$DOMAIN" >> /etc/postfix/valias
 done
 postmap /etc/postfix/vdomains /etc/postfix/vmailbox /etc/postfix/valias
+
+# --------------------------------------------------------------------------
+# 3b) DELETED addresses — backup pehle, phir root se delete
+# --------------------------------------------------------------------------
+BACKUPDIR=/var/backups/anexomail/maildirs-$STAMP
+for m in $REMOVED; do
+  BOX="/var/mail/vhosts/$DOMAIN/$m"
+  if [ -d "$BOX" ]; then
+    mkdir -p "$BACKUPDIR"
+    cp -a "$BOX" "$BACKUPDIR/$m"
+    rm -rf "$BOX"
+    echo ">>> deleted mailbox $m@$DOMAIN (backup: $BACKUPDIR/$m)"
+  fi
+done
+
 
 echo "==> postfix main.cf"
 postconf -e "myhostname = $MAILHOST"
