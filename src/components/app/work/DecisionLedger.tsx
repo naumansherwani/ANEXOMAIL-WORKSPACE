@@ -181,9 +181,10 @@ export function DecisionLedger() {
                         onSuccess: (r) =>
                           r.ok === false
                             ? notify.failed(r.error ?? "Could not draft email")
-                            : notify.done("Email draft created", {
-                                description: "Cited draft is in Mail → Drafts; nothing was sent.",
-                              }),
+                            : notify.done(
+                                "Email draft created",
+                                "Cited draft is in Mail → Drafts; nothing was sent.",
+                              ),
                         onError: (e) =>
                           notify.failed(e.isNotImplemented ? "Not wired yet" : "Draft failed", {
                             description: e.message,
