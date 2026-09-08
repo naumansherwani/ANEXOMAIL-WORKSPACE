@@ -38,7 +38,11 @@ use tower_http::cors::{Any, CorsLayer};
 
 const PORT: u16 = 3200;
 const OBSERVABILITY_PORT: u16 = 3600;
+/// PHASE 31A — SFU: TCP control (loopback) + UDP media forwarding (public).
+const SFU_CONTROL_PORT: u16 = 3500;
+const SFU_MEDIA_PORT: u16 = 3501;
 static WT_LIVE: AtomicBool = AtomicBool::new(false);
+static SFU_LIVE: AtomicBool = AtomicBool::new(false);
 
 fn ok(data: Value) -> impl IntoResponse {
     (StatusCode::OK, Json(json!({ "result": { "data": data } })))
