@@ -17,11 +17,34 @@ Phir SQL editor: `anexochat/sql/phase31c_file_download_manifest.sql` poora paste
 Expected akhri line accounts script ki: `ALL GREEN`. Iske baad A3 → B1 → C1 neeche.
 
 ### Founder protocol (READY, live proof baqi)
+
 Brain `/api/auth/session` + login result ab `is_founder` deta hai (authority `public.founder_accounts`).
 Founder par `/claim` aur `/onboarding` ("Name your organisation") KABHI nahi — seedha `/app`.
 Awam (anexomail.com / ai.anexomail.com signup) ka flow wahi: claim → onboarding → app.
+Login response mein poora verified session aata hai; browser doosri session request ka wait nahi karta,
+is liye auth → app jhatka/redirect race hata di gayi. Session apne mailbox ke operational
+workspace ko `org_members` se ensure karta hai; naya awam onboarding `account_*` aur operational
+workspace membership dono ek saath banata hai. Founder aur awam memberships merge nahi hotin.
 Verify (A3 ke token se): `curl -sS http://127.0.0.1:3100/api/auth/session -H "authorization: Bearer $FT" | grep -o '"is_founder":true'` → print ho = PASS.
 
+### Login + mail workspace regression (READY, live proof baqi)
+
+Server terminal, deploy ke baad:
+
+```bash
+cd /opt/anexomail-web
+bash server/deploy-brain.sh
+bash server/mail/deploy-mail.sh
+bash server/gates/ports-gate.sh
+```
+
+Expected: login ke baad `/app` ek hi transition mein khule; compose par `no_workspace` na aaye;
+`Dovecot IMAP loopback 143` PASS ho. Purani DKIM key ka TXT dobara print nahi hoga.
+DNS TXT dobara dekhna ho to sirf explicit command:
+
+```bash
+cd /opt/anexomail-web && SHOW_DKIM_TXT=1 bash server/mail/deploy-mail.sh
+```
 
 ## A. Login chain (asli, repo se)
 
@@ -45,11 +68,11 @@ Manual raasta (agar script na chale):
 
 Supabase → Authentication → Users → "Add user" → **Auto Confirm User = ON**:
 
-| Email | Kaun |
-|---|---|
+| Email                                  | Kaun                                                                                                |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `naumansherwani.founder@anexomail.com` | Founder (UID `3e3a60ea-1580-4443-94f6-b758de732dce` — agar row pehle se hai to sirf password reset) |
-| `humzasherwani@anexomail.com` | Family, aam user + AI Executive |
-| `raanasherwani@anexomail.com` | Family, aam user + AI Executive |
+| `humzasherwani@anexomail.com`          | Family, aam user + AI Executive                                                                     |
+| `raanasherwani@anexomail.com`          | Family, aam user + AI Executive                                                                     |
 
 Password founder khud set karta hai (chat mein kabhi nahi).
 
@@ -158,25 +181,29 @@ select id, started_at, ended_at, participants from public.chat_call_sessions ord
 
 ## Status board
 
-| Dot | Status |
-|---|---|
-| A Login (founder) | TODO — Supabase Auth password set + A3 200 |
-| A5 Family entitlement | TODO — `family_grants_apply() = 2` |
-| B Chat message 2-user | TODO — B1 + B3 screenshot |
-| C Video call 2-user | TODO — gate GREEN + C2 |
+| Dot                   | Status                                     |
+| --------------------- | ------------------------------------------ |
+| A Login (founder)     | TODO — Supabase Auth password set + A3 200 |
+| A5 Family entitlement | TODO — `family_grants_apply() = 2`         |
+| B Chat message 2-user | TODO — B1 + B3 screenshot                  |
+| C Video call 2-user   | TODO — gate GREEN + C2                     |
 
 ## Phase 31C — file download proof (TODO)
 
 Server par (SQL editor):
+
 ```sql
 -- anexochat/sql/phase31c_file_download_manifest.sql poora paste karo, phir:
 select public.file_download_manifest('00000000-0000-0000-0000-000000000000'::uuid, gen_random_uuid());
 -- expected: {"found":false,"ok":false,"reason":"not_found"}
 ```
+
 Server terminal:
+
 ```bash
 cd /opt/anexomail-web && git pull && bash server/rust/deploy.sh && bash server/deploy-brain.sh
 curl -s -o /dev/null -w '%{http_code}\n' "https://anexochat.anexomail.com/file/download?version=$(uuidgen)"   # 401 bina token = PASS
 ```
+
 Browser: `/app/chat` → Workspace file engine → ek file upload → version `ready` → **Download** → status "Downloaded · recorded".
 SQL saboot: `select * from public.file_evidence where state='downloaded' order by created_at desc limit 1;`

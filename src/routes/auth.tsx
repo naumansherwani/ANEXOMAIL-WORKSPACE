@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api, ApiError, sessionToken } from "@/lib/api";
-import { useAuth } from "@/lib/auth";
+import { useAuth, type Session } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/auth")({
@@ -41,11 +41,12 @@ type Mode = "login" | "signup" | "link" | "forgot" | "reset";
 // User khud account banata hai (email + password) → Supabase → dashboard.
 
 type LoginResult =
-  { token: string; mfa_required?: false } | { mfa_required: true; challenge_id: string };
+  | ({ token: string; mfa_required?: false } & Session)
+  | { mfa_required: true; challenge_id: string };
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { refresh } = useAuth();
+  const { acceptSession } = useAuth();
 
   const [mode, setMode] = useState<Mode>(() => {
     if (typeof window === "undefined") return "login";
@@ -71,17 +72,10 @@ function AuthPage() {
   const [showSplash, setShowSplash] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
-  const finish = async (token: string) => {
+  const finish = async (token: string, authenticated?: Session) => {
     sessionToken.set(token);
-    await refresh();
-    const session = await api<{
-      user: {
-        email: string;
-        onboarded: boolean;
-        is_founder?: boolean;
-        anexomail_address?: string | null;
-      };
-    }>("/api/auth/session");
+    const session = authenticated ?? (await api<Session>("/api/auth/session"));
+    acceptSession(session);
     // ABSM: guest checkout ka intent sign-in ke baad asli user se jodo (idempotent)
     const guestToken = window.sessionStorage.getItem("anexo.guest.checkout_token");
     if (guestToken) {
@@ -228,7 +222,7 @@ function AuthPage() {
         setChallengeId(res.challenge_id);
         return;
       }
-      await finish(res.token);
+      await finish(res.token, res);
     } catch (e) {
       fail(e);
     } finally {

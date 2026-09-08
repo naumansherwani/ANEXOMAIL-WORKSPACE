@@ -30,7 +30,7 @@ check_port "Postfix SMTP 25" 25
 check_port "Postfix submission 587" 587
 check_port "Postfix submissions 465" 465
 check_port "Dovecot IMAPS 993" 993
-check_cmd "Dovecot IMAP 143 listener" bash -c "ss -lnt | grep -Eq '(^|[[:space:]])(127\\.0\\.0\\.1|0\\.0\\.0\\.0|\\[::\\]):143[[:space:]]'"
+check_cmd "Dovecot IMAP loopback 143" bash -c "ss -H -lnt '( sport = :143 )' | grep -q ."
 
 echo "--- outbound database path ---"
 check_cmd "database pooler 6543 reachable" bash -c ". /root/.anexomail.env 2>/dev/null || true; timeout 8 bash /opt/anexomail-web/sql/run.sh --query 'select 1' | tr -d '[:space:]' | grep -qx 1"

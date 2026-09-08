@@ -393,8 +393,10 @@ EOF
 # --------------------------------------------------------------------------
 echo "==> DKIM"
 mkdir -p /etc/opendkim/keys/$DOMAIN
+DKIM_CREATED=0
 if [ ! -f /etc/opendkim/keys/$DOMAIN/mail.private ]; then
   opendkim-genkey -b 2048 -d "$DOMAIN" -D /etc/opendkim/keys/$DOMAIN -s mail
+  DKIM_CREATED=1
 fi
 chown -R opendkim:opendkim /etc/opendkim
 chmod 600 /etc/opendkim/keys/$DOMAIN/mail.private
@@ -433,6 +435,7 @@ systemctl restart dovecot || journalctl -xeu dovecot --no-pager | tail -n 20
 systemctl restart postfix
 postqueue -f >/dev/null 2>&1 || true
 
+if [ "$DKIM_CREATED" -eq 1 ] || [ "${SHOW_DKIM_TXT:-0}" = "1" ]; then
 echo
 echo "=============================================================="
 echo "DNS ke liye DKIM TXT value (registrar par name: mail._domainkey)"
@@ -440,6 +443,8 @@ echo "=============================================================="
 awk -F'"' '{ for (i=2; i<=NF; i+=2) printf "%s", $i } END { print "" }' \
   /etc/opendkim/keys/$DOMAIN/mail.txt
 echo
+fi
+opendkim-testkey -d "$DOMAIN" -s mail -k /etc/opendkim/keys/"$DOMAIN"/mail.private >/dev/null 2>&1 || true
 echo "=============================================================="
 echo "readings:"
 for s in postfix dovecot opendkim; do printf '  %-9s %s\n' "$s" "$(systemctl is-active $s)"; done
