@@ -251,9 +251,22 @@ postconf -e "smtpd_milters = inet:127.0.0.1:8891"
 postconf -e "non_smtpd_milters = inet:127.0.0.1:8891"
 postconf -e "message_size_limit = 52428800"
 
+# bun ki readable copy (pipe vmail user se chalti hai)
+echo "==> bun runtime copy for postfix pipe"
+if [ -x "$BUNSRC" ]; then
+  install -m 0755 -o root -g root "$BUNSRC" "$BUN"
+else
+  echo ">>> bun nahi mila ($BUNSRC) — inbound pipe kaam nahi karegi"
+fi
+# repo path bhi vmail ke liye traversable hona chahiye
+chmod o+rx /opt /opt/anexomail-web 2>/dev/null || true
+chmod -R o+rX "$REPO/server/mail" 2>/dev/null || true
+
 # inbound pipe -> Supabase (Bun). Supabase down ho to mail queue mein rukti hai.
 cp /etc/postfix/master.cf /etc/postfix/master.cf.bak.$STAMP
-grep -q '^anexopipe' /etc/postfix/master.cf || cat >> /etc/postfix/master.cf <<EOF
+# purani anexopipe entry (galat bun path) hamesha refresh — warna Permission denied rehta hai
+sed -i '/^anexopipe/,+1d' /etc/postfix/master.cf
+cat >> /etc/postfix/master.cf <<EOF
 
 anexopipe unix  -       n       n       -       10      pipe
   flags=DRhu user=vmail argv=$BUN $REPO/server/mail/deliver-to-supabase.ts \${recipient} \${sender}
