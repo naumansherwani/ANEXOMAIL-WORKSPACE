@@ -148,11 +148,10 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase36_state_sync.sql
 cd /opt/anexomail-web && bash sql/run.sh sql/phase37_movein_ops.sql
 ```
 
-## 24. phase38_movein_hardening
+## 24. phase38_movein_hardening — SIRF SQL EDITOR
 
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase38_movein_hardening.sql
-```
+Terminal se nahi chalti. File: `sql/editor/phase38_movein_hardening.sql`
+(poora content copy karke SQL editor mein Run). Dekho `docs/wire/15-editor-sql.md`.
 
 ## 25. phase39_movein_fixes
 
