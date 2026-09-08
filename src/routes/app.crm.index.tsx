@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Brain, Gauge, Sparkles, TrendingUp } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { CardBody, DashboardCard, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, CrmStat, SectionTitle } from "@/components/app/crm/CrmBits";
+import { crmAiAllowed } from "@/lib/host";
 import { STAGE_LABEL, money, useCrmInsights, useCrmOverview } from "@/lib/crm";
+
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
