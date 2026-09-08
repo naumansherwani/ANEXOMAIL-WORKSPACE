@@ -231,6 +231,7 @@ create trigger mail_outbox_log_immutable before update or delete on public.mail_
 --            from_address, to:[], cc:[], subject, body_text, body_html,
 --            spf, dkim, sent_at, raw_size, raw_sha256, headers }
 -- =============================================================================
+drop function if exists public.mail_ingest(jsonb) cascade;
 create or replace function public.mail_ingest(payload jsonb)
 returns jsonb
 language plpgsql
@@ -308,6 +309,7 @@ grant execute on function public.mail_ingest(jsonb) to service_role;
 -- =============================================================================
 -- RPC: mail_outbox_record — outbound proof (sirf server)
 -- =============================================================================
+drop function if exists public.mail_outbox_record(jsonb) cascade;
 create or replace function public.mail_outbox_record(payload jsonb)
 returns uuid
 language plpgsql
