@@ -61,15 +61,26 @@ async function saveSession(userId: string, token: string, req: any) {
   }, { onConflict: "token_hash" });
 }
 
+/** FOUNDER PROTOCOL: authority `public.founder_accounts`. Founder par awam ka claim/onboarding flow kabhi nahi. */
+async function isFounderUser(uid: string): Promise<boolean> {
+  const { data } = await getAdmin().from("founder_accounts").select("user_id").eq("user_id", uid).maybeSingle();
+  return Boolean(data);
+}
+
 async function sessionResult(user: any, accessToken: string, req: any) {
   await saveSession(user.id, accessToken, req);
-  const [{ data: profile }, { data: trial }] = await Promise.all([
+  const [{ data: profile }, { data: trial }, founder] = await Promise.all([
     getAdmin().from("account_profiles").select("onboarded").eq("user_id", user.id).maybeSingle(),
     getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", user.id).maybeSingle(),
+    isFounderUser(user.id),
   ]);
   return {
     token: accessToken,
-    user: { onboarded: Boolean(profile?.onboarded), anexomail_address: trial?.anexomail_address || null },
+    user: {
+      is_founder: founder,
+      onboarded: founder || Boolean(profile?.onboarded),
+      anexomail_address: trial?.anexomail_address || (founder ? user.email || null : null),
+    },
   };
 }
 
