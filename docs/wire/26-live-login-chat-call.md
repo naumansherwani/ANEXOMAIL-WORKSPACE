@@ -8,7 +8,19 @@ Status: TODO (kuch bhi DONE tab jab neeche ka verify command green ho)
 - Brain `server/routes/auth.ts:112` → Supabase `signInWithPassword` → token wapas
 - Matlab: account **Supabase Auth (auth.users)** mein hona lazmi, password bhi wahi.
 
-### Step A1 — accounts Supabase Auth mein (dashboard, manual)
+### Step A1 — accounts Supabase Auth mein (EK command — READY, live proof baqi)
+
+Server terminal:
+
+```bash
+cd /opt/anexomail-web && git pull && bun install && bash server/accounts/create-accounts.sh
+```
+
+Teen password chhup ke type karo (founder ka `FOUNDER_MAIL_PASSWORD` `/opt/anexomail/.env` mein ho to woh khud le lega).
+Script: user create/update + Auto Confirm · `founder_accounts` row · `family_grants_apply()` (expected 2) · teen asli login test.
+Expected akhri line: `ALL GREEN`. Koi RED aaye to woh line chat mein paste karo (password kabhi nahi).
+
+Manual raasta (agar script na chale):
 
 Supabase → Authentication → Users → "Add user" → **Auto Confirm User = ON**:
 
