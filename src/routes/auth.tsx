@@ -108,11 +108,14 @@ function AuthPage() {
       window.location.assign(checkout.url);
       return;
     }
-    const target = !session.user.anexomail_address
-      ? "/claim"
-      : session.user.onboarded
-        ? "/app"
-        : "/onboarding";
+    // FOUNDER PROTOCOL: founder ko awam ka claim/onboarding kabhi nahi — seedha /app.
+    const target = session.user.is_founder
+      ? "/app"
+      : !session.user.anexomail_address
+        ? "/claim"
+        : session.user.onboarded
+          ? "/app"
+          : "/onboarding";
     setRedirectTo(target);
     setShowSplash(true);
   };

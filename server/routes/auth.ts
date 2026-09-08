@@ -129,10 +129,11 @@ authRouter.post("/login", async (req, res) => {
 authRouter.get("/session", async (req, res) => {
   const identity = await userFrom(req, res); if (!identity) return;
   const uid = identity.user.id;
-  const [{ data: profile }, { data: memberships }, { data: trial }] = await Promise.all([
+  const [{ data: profile }, { data: memberships }, { data: trial }, founder] = await Promise.all([
     getAdmin().from("account_profiles").select("legal_name,display_name,avatar_url,work_role,preferences,onboarded").eq("user_id", uid).maybeSingle(),
     getAdmin().from("account_org_members").select("role,account_organisations(id,name,slug,domain)").eq("user_id", uid),
     getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", uid).maybeSingle(),
+    isFounderUser(uid),
   ]);
   const organisations = (memberships || []).flatMap((row: any) => row.account_organisations ? [{ ...row.account_organisations, role: row.role }] : []);
   res.json({
@@ -140,8 +141,10 @@ authRouter.get("/session", async (req, res) => {
       id: uid, email: identity.user.email || "", name: profile?.display_name || profile?.legal_name || identity.user.user_metadata?.name || null,
       legal_name: profile?.legal_name || null, display_name: profile?.display_name || null,
       avatar_url: profile?.avatar_url || null, work_role: profile?.work_role || null,
-      preferences: profile?.preferences || {}, mfa_enabled: false, onboarded: Boolean(profile?.onboarded),
-      anexomail_address: trial?.anexomail_address || null,
+      preferences: profile?.preferences || {}, mfa_enabled: false,
+      is_founder: founder,
+      onboarded: founder || Boolean(profile?.onboarded),
+      anexomail_address: trial?.anexomail_address || (founder ? identity.user.email || null : null),
     },
     organisations,
     active_organisation_id: organisations[0]?.id || null,

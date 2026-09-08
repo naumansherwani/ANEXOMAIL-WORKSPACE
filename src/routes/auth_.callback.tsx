@@ -75,11 +75,13 @@ function CallbackPage() {
             });
         sessionToken.set(res.token);
         await refresh();
-        const target = !res.user.anexomail_address
-          ? "/claim"
-          : res.user.onboarded
-            ? "/app"
-            : "/onboarding";
+        const target = res.user.is_founder
+          ? "/app"
+          : !res.user.anexomail_address
+            ? "/claim"
+            : res.user.onboarded
+              ? "/app"
+              : "/onboarding";
         setRedirectTo(target);
         setShowSplash(true);
       } catch (e) {
