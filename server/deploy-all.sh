@@ -36,8 +36,8 @@ for migration in \
   echo "APPLIED $migration"
 done
 
-MAIL_CONTRACT="$(bash sql/run.sh --query "select concat_ws('|', exists(select 1 from information_schema.columns where table_schema='public' and table_name='mailboxes' and column_name='org_id'), exists(select 1 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='cc_addrs'), coalesce(obj_description('public.mail_ingest(jsonb)'::regprocedure),'missing'))" | tr -d '[:space:]')"
-[ "$MAIL_CONTRACT" = "true|true|anexomail-mail-contract-v59" ] || {
+MAIL_CONTRACT="$(bash sql/run.sh --query "select concat_ws('|', (exists(select 1 from information_schema.columns where table_schema='public' and table_name='mailboxes' and column_name='org_id'))::int, (exists(select 1 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='cc_addrs'))::int, coalesce(obj_description('public.mail_ingest(jsonb)'::regprocedure),'missing'))" | tr -d '[:space:]')"
+[ "$MAIL_CONTRACT" = "1|1|anexomail-mail-contract-v59" ] || {
   echo "RED live mail contract mismatch: $MAIL_CONTRACT"
   exit 11
 }
