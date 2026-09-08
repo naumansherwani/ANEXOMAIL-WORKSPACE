@@ -19,6 +19,7 @@
 //   PHASE 16/17/18 (truth + safety, sab local — koi external API nahi)
 //   GET  /api/chat/file/truth?version=     → evidence chain (7 steps)
 //   GET  /api/chat/file/safety             → engines + queue + enforcement
+//   GET  /api/chat/file/download?version=  → PHASE 31C verified chunk stream (fallback)
 //   POST /api/chat/file/download/ack       → Downloaded step (blocked par 409)
 // ============================================================================
 import { createHash } from "crypto";
