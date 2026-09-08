@@ -4,9 +4,12 @@ set -euo pipefail
 
 SOURCE=/opt/anexomail-web/server
 TARGET=/opt/anexomail
+ENV_FILE="${ENV_FILE:-/opt/anexomail/.env}"
+BUN="${BUN:-$(command -v bun || echo /root/.bun/bin/bun)}"
 
 [ -d "$TARGET/src/routes" ] || { echo "RED $TARGET/src/routes missing"; exit 2; }
 [ -f "$TARGET/package.json" ] || { echo "RED $TARGET/package.json missing"; exit 2; }
+[ -r "$ENV_FILE" ] || { echo "RED $ENV_FILE missing/unreadable"; exit 2; }
 
 STAMP="$(date +%s)"
 mkdir -p "$TARGET/backups/$STAMP/routes"
@@ -34,7 +37,11 @@ done < <(grep -oE 'from "\./routes/[^"]+' "$TARGET/src/index.ts" | sed 's/^from 
 
 cd "$TARGET"
 bun install
-pm2 restart anexomail-leo --update-env
+# PM2 ki purani cached environment use nahi hoti. Har deploy par protected
+# env-file Bun khud parse karta hai, bilkul account provisioning ki tarah.
+pm2 delete anexomail-leo >/dev/null 2>&1 || true
+pm2 start "$BUN" --name anexomail-leo --cwd "$TARGET" --interpreter none -- \
+  --env-file="$ENV_FILE" run src/index.ts
 for _ in $(seq 1 30); do
   code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 3 http://127.0.0.1:3100/api/health || true)"
   [ "$code" = "200" ] && break

@@ -81,3 +81,5 @@
 - [ ] PRODUCT: awam/founder surfaces alag karke har real page/feature ka authenticated browser proof
 - [x] READY (repo): login full-session handoff + operational workspace membership bridge; `no_workspace`/redirect-jolt regression live proof baqi (`docs/wire/26`)
 - [x] READY (repo): Dovecot 143 listener gate protocol-safe + DKIM TXT sirf nayi key ya `SHOW_DKIM_TXT=1`; server gate proof baqi
+- [x] READY (repo): Brain har deploy par `/opt/anexomail/.env` fresh load karta hai; account script website ke asli login ko test karta hai
+- [x] READY (repo): founder + Humza + Raana shared ANEXOChat workspace aur do direct conversations; live browser message proof baqi

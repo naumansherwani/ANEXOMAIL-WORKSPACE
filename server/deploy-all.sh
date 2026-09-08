@@ -36,6 +36,16 @@ for migration in \
   echo "APPLIED $migration"
 done
 
+[ -f anexochat/sql/phase31b_family_chat_workspace.sql ] || {
+  echo "RED missing migration: anexochat/sql/phase31b_family_chat_workspace.sql"
+  exit 10
+}
+bash sql/run.sh anexochat/sql/phase31b_family_chat_workspace.sql || {
+  echo "RED migration failed: anexochat/sql/phase31b_family_chat_workspace.sql"
+  exit 10
+}
+echo "APPLIED anexochat/sql/phase31b_family_chat_workspace.sql"
+
 MAIL_CONTRACT="$(bash sql/run.sh --query "select concat_ws('|', (exists(select 1 from information_schema.columns where table_schema='public' and table_name='mailboxes' and column_name='org_id'))::int, (exists(select 1 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='cc_addrs'))::int, coalesce(obj_description('public.mail_ingest(jsonb)'::regprocedure),'missing'))" | tr -d '[:space:]')"
 [ "$MAIL_CONTRACT" = "1|1|anexomail-mail-contract-v59" ] || {
   echo "RED live mail contract mismatch: $MAIL_CONTRACT"

@@ -64,6 +64,7 @@ anexochat/sql/phase28_receipts.sql
 anexochat/sql/phase29_email_to_chat.sql
 anexochat/sql/phase30_chat_to_email.sql
 anexochat/sql/phase31_file_context.sql
+anexochat/sql/phase31b_family_chat_workspace.sql
 anexochat/sql/videocall_phase31_call_record.sql
 anexochat/sql/videocall_phase31a_lightspeed.sql
 LIST
