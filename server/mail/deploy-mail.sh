@@ -100,11 +100,12 @@ if [ "$MAIL_ENV_OK" -ne 1 ]; then
   exit 2
 fi
 
-add_pw() {
-  local key="MAILPW_$(printf '%s' "$1" | tr '.a-z' '_A-Z')"
-  grep -q "^$key=" "$ENVFILE" || printf '%s=%s\n' "$key" "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
-}
-for m in $MAILBOXES $SENDONLY; do add_pw "$m"; done
+# FOUNDER SINGLE PASSWORD: ek hi value sab mailboxes par. Sirf ek dafa banti hai,
+# terminal par kabhi print nahi hoti, existing value kabhi overwrite nahi hoti.
+grep -q -E '^FOUNDER_MAIL_PASSWORD=.+' "$ENVFILE" || \
+  printf 'FOUNDER_MAIL_PASSWORD=%s\n' "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
+grep -q -E '^FOUNDER_MAIL_RECOVERY=' "$ENVFILE" || \
+  printf 'FOUNDER_MAIL_RECOVERY=%s\n' "$FOUNDER_RECOVERY" >> "$ENVFILE"
 # shellcheck disable=SC1090
 set -a; . "$ENVFILE"; set +a
 
