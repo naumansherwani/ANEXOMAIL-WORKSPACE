@@ -86,7 +86,7 @@ Server par lagane ka tarteeb:
 cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak.$(date +%s)
 nano /etc/caddy/Caddyfile     # anexochat/docs/caddy-anexochat.md §2 se poori file paste
 caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
-cd /opt/anexomail-web && git pull && bun install && bun run build:node
+cd /opt/anexomail-web && git pull && bun install && bun run build:bun
 pm2 restart anexomail-web
 curl -s -o /dev/null -w "ai-root:%{http_code}\n" https://ai.anexomail.com/
 curl -s -o /dev/null -w "ai-app:%{http_code}\n"  https://ai.anexomail.com/app/chat

@@ -22,7 +22,7 @@ step() { echo; echo "=============== $* ==============="; }
 
 step "1/5 FRONTEND (anexomail-web :3000)"
 bun install || true
-bun run build:node || echo "!!! frontend build fail — purana build zinda hai"
+bun run build:bun || echo "!!! frontend build fail — purana build zinda hai"
 pm2 restart anexomail-web --update-env || pm2 start ecosystem.config.cjs || true
 
 step "2/5 RUST PRIMARY ENGINE (:3200)"
