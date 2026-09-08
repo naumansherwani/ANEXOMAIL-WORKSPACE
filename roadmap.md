@@ -49,3 +49,8 @@
 - [x] docs/wire/10-final-audit.md — server/gates/all-gates.sh (7 blocks, ek command)
 - [ ] SERVER: gate 2..7 ka asli output GREEN (jab tak nahi, ledger mein READY)
 - [ ] SERVER: `bash server/deploy-all.sh` live output GREEN; blocker: Hetzner server par founder command run karega
+
+## Founder single inbox (8 Sep 2026) — READY
+- [ ] `sql/phase55_founder_single_inbox.sql` — founder inbox truth + recovery `anexomail27@gmail.com`
+- [ ] `server/mail/deploy-mail.sh` — ek password (`FOUNDER_MAIL_PASSWORD`) + har address ki copy founder inbox mein
+- [ ] verify: `docs/wire/19-founder-single-inbox.md` step 3 green
