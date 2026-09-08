@@ -75,3 +75,5 @@
 - [ ] SERVER: phase58 ke baad `postqueue -p` empty + `mail-gate.sh` PASS-only
 - [ ] AUTH: full user profile signup + password visibility + forgot/reset/change password real proof
 - [ ] PRODUCT: awam/founder surfaces alag karke har real page/feature ka authenticated browser proof
+- [x] READY (repo): login full-session handoff + operational workspace membership bridge; `no_workspace`/redirect-jolt regression live proof baqi (`docs/wire/26`)
+- [x] READY (repo): Dovecot 143 listener gate protocol-safe + DKIM TXT sirf nayi key ya `SHOW_DKIM_TXT=1`; server gate proof baqi

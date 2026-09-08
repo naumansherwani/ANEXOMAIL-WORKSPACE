@@ -29,12 +29,21 @@ workspaceRouter.post("/organisations", async (req, res) => {
   const { data: authUser } = await db.auth.admin.getUserById(uid);
   const email = authUser.user?.email || null;
   const { error: legacyOrgError } = await db.from("orgs").upsert({ id: data.id, name }, { onConflict: "id" });
-  if (legacyOrgError) return res.status(500).json({ error: "operational_workspace_failed" });
+  if (legacyOrgError) {
+    await db.from("account_org_members").delete().eq("org_id", data.id).eq("user_id", uid);
+    await db.from("account_organisations").delete().eq("id", data.id);
+    return res.status(500).json({ error: "operational_workspace_failed" });
+  }
   const { error: legacyMemberError } = await db.from("org_members").upsert(
     { org_id: data.id, user_id: uid, email, role: "owner", status: "active" },
     { onConflict: "org_id,user_id" },
   );
-  if (legacyMemberError) return res.status(500).json({ error: "operational_membership_failed" });
+  if (legacyMemberError) {
+    await db.from("orgs").delete().eq("id", data.id);
+    await db.from("account_org_members").delete().eq("org_id", data.id).eq("user_id", uid);
+    await db.from("account_organisations").delete().eq("id", data.id);
+    return res.status(500).json({ error: "operational_membership_failed" });
+  }
   res.status(201).json(data);
 });
 

@@ -20,7 +20,30 @@ Expected akhri line accounts script ki: `ALL GREEN`. Iske baad A3 → B1 → C1 
 Brain `/api/auth/session` + login result ab `is_founder` deta hai (authority `public.founder_accounts`).
 Founder par `/claim` aur `/onboarding` ("Name your organisation") KABHI nahi — seedha `/app`.
 Awam (anexomail.com / ai.anexomail.com signup) ka flow wahi: claim → onboarding → app.
+Login response mein poora verified session aata hai; browser doosri session request ka wait nahi karta,
+is liye auth → app jhatka/redirect race hata di gayi. Session apne mailbox ke operational
+workspace ko `org_members` se ensure karta hai; naya awam onboarding `account_*` aur operational
+workspace membership dono ek saath banata hai. Founder aur awam memberships merge nahi hotin.
 Verify (A3 ke token se): `curl -sS http://127.0.0.1:3100/api/auth/session -H "authorization: Bearer $FT" | grep -o '"is_founder":true'` → print ho = PASS.
+
+### Login + mail workspace regression (READY, live proof baqi)
+
+Server terminal, deploy ke baad:
+
+```bash
+cd /opt/anexomail-web
+bash server/deploy-brain.sh
+bash server/mail/deploy-mail.sh
+bash server/gates/ports-gate.sh
+```
+
+Expected: login ke baad `/app` ek hi transition mein khule; compose par `no_workspace` na aaye;
+`Dovecot IMAP loopback 143` PASS ho. Purani DKIM key ka TXT dobara print nahi hoga.
+DNS TXT dobara dekhna ho to sirf explicit command:
+
+```bash
+cd /opt/anexomail-web && SHOW_DKIM_TXT=1 bash server/mail/deploy-mail.sh
+```
 
 
 ## A. Login chain (asli, repo se)
