@@ -58,6 +58,11 @@ set -a; . "$ENVFILE"; set +a
 # --------------------------------------------------------------------------
 # 2) Dovecot virtual users
 # --------------------------------------------------------------------------
+# purani/toota local.conf pehle hata do — warna `doveadm pw` bhi usay padh kar
+# fail hota hai (yeh "Unknown setting: mail_location" ki asli wajah thi).
+if [ -f /etc/dovecot/local.conf ]; then
+  mv /etc/dovecot/local.conf /etc/dovecot/local.conf.bak.$STAMP
+fi
 : > /etc/dovecot/users.tmp
 for m in $MAILBOXES $SENDONLY; do
   key="MAILPW_$(printf '%s' "$m" | tr '.a-z' '_A-Z')"
