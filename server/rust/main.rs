@@ -38,7 +38,11 @@ use tower_http::cors::{Any, CorsLayer};
 
 const PORT: u16 = 3200;
 const OBSERVABILITY_PORT: u16 = 3600;
+/// PHASE 31A — SFU: TCP control (loopback) + UDP media forwarding (public).
+const SFU_CONTROL_PORT: u16 = 3500;
+const SFU_MEDIA_PORT: u16 = 3501;
 static WT_LIVE: AtomicBool = AtomicBool::new(false);
+static SFU_LIVE: AtomicBool = AtomicBool::new(false);
 
 fn ok(data: Value) -> impl IntoResponse {
     (StatusCode::OK, Json(json!({ "result": { "data": data } })))
@@ -3119,7 +3123,10 @@ async fn start_safety_worker() {
 async fn observability_ready() -> impl IntoResponse {
     let database_configured = sb().is_some();
     let webtransport_live = WT_LIVE.load(Ordering::Relaxed);
-    let ready = database_configured && webtransport_live;
+    // ready = engine apna kaam kar sakta hai (DB truth maujood). WebTransport ki
+    // asli halat alag field mein sach-sach report hoti hai — chhupai nahi jati,
+    // aur uska apna gate (udp 3443 listener) alag hai.
+    let ready = database_configured;
     let status = if ready {
         StatusCode::OK
     } else {
@@ -3161,6 +3168,195 @@ async fn start_observability() {
     axum::serve(listener, app).await.expect("serve observability");
 }
 
+// ── PHASE 31A — REAL SFU MEDIA FORWARDING (:3500 tcp control · :3501 udp media) ──
+//
+// Yeh khali port nahi: UDP :3501 par asli packet forwarding hoti hai.
+//   register datagram : "ANEXOSFU1 <room_id> <participant_id>"  -> "ANEXOSFU1 OK"
+//   media datagram    : koi bhi doosra packet -> usi room ke baqi participants
+//                       ko byte-for-byte forward (SFU = forward, mixing nahi).
+// Media payload (SRTP) Rust kholta nahi — sirf raftaar deta hai; sach DB rows se
+// aata hai. 60 second khamosh participant khud nikal jata hai.
+struct SfuPeer {
+    room: String,
+    participant: String,
+    addr: SocketAddr,
+    last_seen: std::time::Instant,
+}
+
+#[derive(Default)]
+struct SfuState {
+    peers: Vec<SfuPeer>,
+    packets_in: u64,
+    packets_forwarded: u64,
+    bytes_forwarded: u64,
+}
+
+static SFU_STATE: std::sync::OnceLock<std::sync::Mutex<SfuState>> = std::sync::OnceLock::new();
+
+fn sfu_state() -> &'static std::sync::Mutex<SfuState> {
+    SFU_STATE.get_or_init(|| std::sync::Mutex::new(SfuState::default()))
+}
+
+fn sfu_prune(state: &mut SfuState) {
+    state
+        .peers
+        .retain(|p| p.last_seen.elapsed() < Duration::from_secs(60));
+}
+
+fn sfu_register(room: &str, participant: &str, addr: SocketAddr) {
+    let mut state = sfu_state().lock().expect("sfu lock");
+    sfu_prune(&mut state);
+    state
+        .peers
+        .retain(|p| !(p.room == room && p.participant == participant));
+    state.peers.push(SfuPeer {
+        room: room.to_string(),
+        participant: participant.to_string(),
+        addr,
+        last_seen: std::time::Instant::now(),
+    });
+}
+
+/// Sender ke room ke baqi peers ke addresses (sender khud shamil nahi).
+fn sfu_targets(from: SocketAddr, len: usize) -> Vec<SocketAddr> {
+    let mut state = sfu_state().lock().expect("sfu lock");
+    sfu_prune(&mut state);
+    state.packets_in += 1;
+
+    let mut room = None;
+    for p in state.peers.iter_mut() {
+        if p.addr == from {
+            p.last_seen = std::time::Instant::now();
+            room = Some(p.room.clone());
+            break;
+        }
+    }
+    let room = match room {
+        Some(r) => r,
+        None => return Vec::new(),
+    };
+
+    let targets: Vec<SocketAddr> = state
+        .peers
+        .iter()
+        .filter(|p| p.room == room && p.addr != from)
+        .map(|p| p.addr)
+        .collect();
+    state.packets_forwarded += targets.len() as u64;
+    state.bytes_forwarded += (targets.len() * len) as u64;
+    targets
+}
+
+fn sfu_snapshot() -> Value {
+    let mut state = sfu_state().lock().expect("sfu lock");
+    sfu_prune(&mut state);
+    let mut rooms: std::collections::HashMap<String, usize> = std::collections::HashMap::new();
+    for p in state.peers.iter() {
+        *rooms.entry(p.room.clone()).or_insert(0) += 1;
+    }
+    json!({
+        "live": SFU_LIVE.load(Ordering::Relaxed),
+        "media_port": SFU_MEDIA_PORT,
+        "control_port": SFU_CONTROL_PORT,
+        "mode": "selective forwarding (no mixing, no transcoding)",
+        "participants": state.peers.len(),
+        "rooms": rooms.len(),
+        "room_participants": rooms,
+        "packets_in": state.packets_in,
+        "packets_forwarded": state.packets_forwarded,
+        "bytes_forwarded": state.bytes_forwarded
+    })
+}
+
+async fn start_sfu_media() {
+    let socket =
+        match tokio::net::UdpSocket::bind(SocketAddr::from(([0, 0, 0, 0], SFU_MEDIA_PORT))).await {
+            Ok(s) => s,
+            Err(e) => {
+                println!("SFU media OFF — bind udp/{SFU_MEDIA_PORT} failed: {e}");
+                return;
+            }
+        };
+    SFU_LIVE.store(true, Ordering::Relaxed);
+    println!("ANEXOVideoCall SFU media LIVE on udp/{SFU_MEDIA_PORT} (forwarding)");
+
+    let mut buf = vec![0u8; 2048];
+    loop {
+        let (len, from) = match socket.recv_from(&mut buf).await {
+            Ok(v) => v,
+            Err(_) => continue,
+        };
+        let packet = &buf[..len];
+
+        if packet.starts_with(b"ANEXOSFU1 ") {
+            let text = String::from_utf8_lossy(packet);
+            let mut parts = text.trim().split_whitespace().skip(1);
+            let room = parts.next().unwrap_or("").to_string();
+            let participant = parts.next().unwrap_or("").to_string();
+            if room.is_empty() || participant.is_empty() {
+                let _ = socket
+                    .send_to(b"ANEXOSFU1 ERR room_and_participant_required", from)
+                    .await;
+                continue;
+            }
+            sfu_register(&room, &participant, from);
+            let _ = socket.send_to(b"ANEXOSFU1 OK", from).await;
+            continue;
+        }
+
+        for target in sfu_targets(from, len) {
+            let _ = socket.send_to(packet, target).await;
+        }
+    }
+}
+
+async fn sfu_ready() -> impl IntoResponse {
+    let snapshot = sfu_snapshot();
+    let status = if SFU_LIVE.load(Ordering::Relaxed) {
+        StatusCode::OK
+    } else {
+        StatusCode::SERVICE_UNAVAILABLE
+    };
+    (status, Json(snapshot))
+}
+
+async fn sfu_metrics() -> impl IntoResponse {
+    let snapshot = sfu_snapshot();
+    let n = |k: &str| snapshot.get(k).and_then(|v| v.as_u64()).unwrap_or(0);
+    (
+        StatusCode::OK,
+        format!(
+            "anexomail_sfu_live {}\n\
+             anexomail_sfu_participants {}\n\
+             anexomail_sfu_packets_in {}\n\
+             anexomail_sfu_packets_forwarded {}\n\
+             anexomail_sfu_bytes_forwarded {}\n",
+            if SFU_LIVE.load(Ordering::Relaxed) { 1 } else { 0 },
+            n("participants"),
+            n("packets_in"),
+            n("packets_forwarded"),
+            n("bytes_forwarded")
+        ),
+    )
+}
+
+async fn start_sfu_control() {
+    let app = Router::new()
+        .route("/ready", get(sfu_ready))
+        .route("/stats", get(sfu_ready))
+        .route("/metrics", get(sfu_metrics));
+    let addr = SocketAddr::from(([127, 0, 0, 1], SFU_CONTROL_PORT));
+    let listener = match tokio::net::TcpListener::bind(addr).await {
+        Ok(l) => l,
+        Err(e) => {
+            println!("SFU control OFF — bind tcp/{SFU_CONTROL_PORT} failed: {e}");
+            return;
+        }
+    };
+    println!("ANEXOVideoCall SFU control LIVE on {addr} (/ready + /stats + /metrics)");
+    let _ = axum::serve(listener, app).await;
+}
+
 #[tokio::main]
 
 async fn main() {
@@ -3169,6 +3365,9 @@ async fn main() {
 
     tokio::spawn(start_webtransport());
     tokio::spawn(start_observability());
+    // PHASE 31A — asli SFU: media forwarding + control readings
+    tokio::spawn(start_sfu_media());
+    tokio::spawn(start_sfu_control());
     // PHASE 17/18 — self-hosted safety worker (koi external API nahi)
     tokio::spawn(start_safety_worker());
 

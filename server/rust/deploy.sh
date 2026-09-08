@@ -46,11 +46,20 @@ pm2 restart anexomail-rust --update-env >/dev/null 2>&1 || \
   pm2 start "$TARGET/target/release/anexomail-rust" --name anexomail-rust
 pm2 save >/dev/null 2>&1
 
+# SFU media UDP public hai (browser/TURN se seedha aata hai) — control loopback rehta hai
+if command -v ufw >/dev/null 2>&1; then
+  ufw allow 3501/udp >/dev/null 2>&1 || true
+fi
+
 sleep 2
 echo "--- live readings ---"
 curl -s http://127.0.0.1:3200/rpc/health; echo
 printf "private readiness :3600: "
 curl -s http://127.0.0.1:3600/ready; echo
+printf "SFU control :3500: "
+curl -s http://127.0.0.1:3500/ready; echo
+printf "SFU asli packet forwarding: "
+python3 "$REPO_DIR/../gates/sfu-packet-proof.py" || echo "SFU FORWARDING FAIL"
 printf "file chunk path (401 expected without token): "
 curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:3200/file/chunk
 

@@ -55,6 +55,7 @@ for u in \
   http://127.0.0.1:3200/rpc/health \
   http://127.0.0.1:3300/api/chat/health \
   http://127.0.0.1:3400/ready \
+  http://127.0.0.1:3500/ready \
   http://127.0.0.1:3600/ready \
   http://127.0.0.1:5678/healthz; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u" || echo 000)

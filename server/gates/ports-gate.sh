@@ -35,12 +35,13 @@ check_cmd "Dovecot IMAP loopback 143" bash -c "ss -lnt | grep -q '127.0.0.1:143 
 echo "--- outbound database path ---"
 check_cmd "database pooler 6543 reachable" bash -c ". /root/.anexomail.env 2>/dev/null || true; timeout 8 bash /opt/anexomail-web/sql/run.sh --query 'select 1' | tr -d '[:space:]' | grep -qx 1"
 
-echo "--- media + private observability ---"
-if ss -lntu 2>/dev/null | grep -Eq ':3500 |:3501 '; then
-  ok "ANEXOVideoCall SFU :3500/:3501 listener"
-else
-  bad "ANEXOVideoCall SFU :3500/:3501" "Rust media-forwarding binary abhi TODO; fake 200 nahi diya"
-fi
+echo "--- SFU media + private observability ---"
+check_cmd "SFU control tcp 3500" bash -c "ss -lnt | grep -q ':3500 '"
+check_cmd "SFU media udp 3501" bash -c "ss -lnu | grep -q ':3501 '"
+check_http "SFU control readiness" "http://127.0.0.1:3500/ready" 200
+# jhoota listener kaafi nahi — asli do participants ke darmiyan packet forward hota hai
+check_cmd "SFU asli packet forwarding" python3 /opt/anexomail-web/server/gates/sfu-packet-proof.py
+check_body "SFU forwarded counter barha" "http://127.0.0.1:3500/metrics" 'anexomail_sfu_packets_forwarded'
 check_http "Rust private readiness :3600" "http://127.0.0.1:3600/ready" 200
 check_body "Rust private metrics :3600" "http://127.0.0.1:3600/metrics" 'anexomail_webtransport_live 1'
 
