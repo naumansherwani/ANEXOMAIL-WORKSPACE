@@ -1,5 +1,7 @@
 # WIRE BOOK — ANEXOMAIL Workspace (sirf copy-paste)
 
+**START YAHAN SE: [`00-steps.md`](00-steps.md) — sab steps ek ek command, sirf copy-paste.**
+
 Founder: Muhammad Nauman Sherwani
 
 Yahan koi file edit nahi karni. Koi nano nahi. Har step ka ek box copy karo,
