@@ -99,6 +99,12 @@ for a in nauman support trials; do
 done
 check_sql "mail_messages.spf_result column maujood" \
   "select count(*)>0 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='spf_result';" "t"
+check_sql "mailboxes.org_id compatibility maujood" \
+  "select count(*)>0 from information_schema.columns where table_schema='public' and table_name='mailboxes' and column_name='org_id';" "t"
+check_sql "mail_messages.cc_addrs legacy API compatibility maujood" \
+  "select count(*)>0 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='cc_addrs';" "t"
+check_sql "mail_ingest final function zinda" \
+  "select count(*)>0 from pg_proc where pronamespace='public'::regnamespace and proname='mail_ingest';" "t"
 
 
 echo "--- inbound pipe + inbox (round trip) ---"

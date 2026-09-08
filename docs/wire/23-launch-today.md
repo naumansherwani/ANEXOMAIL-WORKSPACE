@@ -7,6 +7,7 @@ Har dot ka apna sabooti command hai. Jo command green na ho, woh dot DONE nahi.
 ```bash
 cd /opt/anexomail-web && git pull
 bash sql/run.sh sql/phase57_mail_schema_heal.sql
+bash sql/run.sh sql/phase58_mail_contract_final.sql
 bash sql/run.sh sql/phase56_mailbox_final.sql
 bash server/mail/deploy-mail.sh
 postqueue -f && sleep 20
@@ -15,7 +16,8 @@ postqueue -p
 bash server/gates/mail-gate.sh
 ```
 
-Sabooti: message count 0 se barha + `Mail queue is empty` + gate PASS-only.
+Sabooti: `mb.org_id`/`cc_addrs` error khatam + message count barha +
+`Mail queue is empty` + gate PASS-only.
 
 ## 2. Website (awam ka har page)
 

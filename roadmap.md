@@ -69,3 +69,7 @@
 - [ ] Mail queue fix — `sql/phase57_mail_schema_heal.sql` + `docs/wire/22-mail-queue-fix.md` (READY)
 - [x] mail-gate final list par sach bolta hai (12 addresses, spf_result column dot)
 - [ ] ANEXOChat live proof — `bash server/gates/chat-gate.sh` output chahiye
+- [x] Live `mb.org_id` + `cc_addrs` drift ka non-destructive final contract repo mein — `sql/phase58_mail_contract_final.sql`
+- [ ] SERVER: phase58 ke baad `postqueue -p` empty + `mail-gate.sh` PASS-only
+- [ ] AUTH: full user profile signup + password visibility + forgot/reset/change password real proof
+- [ ] PRODUCT: awam/founder surfaces alag karke har real page/feature ka authenticated browser proof

@@ -21,11 +21,13 @@ cd "$ROOT"
 
 step() { echo; echo "=============== $* ==============="; }
 
-step "0/7 DATABASE HEAL + FINAL MAILBOX LIST (idempotent)"
-# Yeh do file jitni dafa chalao, wahi nateeja. Koi table drop nahi, koi row delete nahi.
-#   phase57 -> purani mail_messages mein missing column (spf_result …) add karti hai
-#   phase56 -> final address list (9 mailbox + 3 forward) set karti hai
+step "0/7 DATABASE HEAL + FINAL MAIL CONTRACT + MAILBOX LIST (idempotent)"
+# Yeh files jitni dafa chalao, wahi nateeja. Mail row/table delete nahi hoti.
+#   phase57 -> purani mail tables mein missing canonical columns add karti hai
+#   phase58 -> live ingest function + legacy cc_addrs compatibility + schema reload
+#   phase56 -> final address list (9 mailbox/sendonly + 3 forward) set karti hai
 bash sql/run.sh sql/phase57_mail_schema_heal.sql
+bash sql/run.sh sql/phase58_mail_contract_final.sql
 bash sql/run.sh sql/phase56_mailbox_final.sql
 
 step "1/7 FRONTEND (anexomail-web :3000)"
