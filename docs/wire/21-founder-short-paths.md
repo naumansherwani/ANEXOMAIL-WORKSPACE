@@ -37,3 +37,19 @@ done
 ```
 
 307/200 = pass. Status **DONE** sirf tab jab yeh output green ho.
+
+## Founder deck ke chhote paste (READY)
+
+`/founder` aur `/founder/<kuch bhi>` ab seedha `/app/founder/<wahi>` kholta hai —
+misal: `/founder/crm` · `/founder/revenue` · `/founder/launch/qa`. Bina login yeh
+sign-in screen dikhata hai (khali page nahi).
+
+## Ek command auto-sync (READY)
+
+```bash
+cd /opt/anexomail-web && git pull && bash server/deploy-all.sh
+```
+
+Yeh script khud: SQL heal (`phase57`) + final mailbox list (`phase56`) → frontend
+build + pm2 → Rust :3200 → payments :3400 → Caddy → services → mail + TURN →
+saare gates. Pehli RED cheez par ruk jati hai.

@@ -25,6 +25,7 @@ import { Route as CrmRouteImport } from './routes/crm'
 import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
+import { Route as FounderRouteImport } from './routes/founder'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as MailRouteImport } from './routes/mail'
 import { Route as MigrationRouteImport } from './routes/migration'
@@ -72,6 +73,7 @@ import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as CheckoutDoneRouteImport } from './routes/checkout.done'
 import { Route as FounderPreviewRouteImport } from './routes/founder.preview'
+import { Route as FounderSplatRouteImport } from './routes/founder_.$'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
 import { Route as AppAdminAddressesRouteImport } from './routes/app.admin.addresses'
 import { Route as AppAdminAuditRouteImport } from './routes/app.admin.audit'
@@ -245,6 +247,11 @@ const DocsRoute = DocsRouteImport.update({
 const EnterpriseRoute = EnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FounderRoute = FounderRouteImport.update({
+  id: '/founder',
+  path: '/founder',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedRoute = GetStartedRouteImport.update({
@@ -478,8 +485,13 @@ const CheckoutDoneRoute = CheckoutDoneRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const FounderPreviewRoute = FounderPreviewRouteImport.update({
-  id: '/founder/preview',
-  path: '/founder/preview',
+  id: '/preview',
+  path: '/preview',
+  getParentRoute: () => FounderRoute,
+} as any)
+const FounderSplatRoute = FounderSplatRouteImport.update({
+  id: '/founder_/$',
+  path: '/founder/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppAdminIndexRoute = AppAdminIndexRouteImport.update({
@@ -974,6 +986,7 @@ export interface FileRoutesByFullPath {
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
+  '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
@@ -1020,6 +1033,7 @@ export interface FileRoutesByFullPath {
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
+  '/founder/$': typeof FounderSplatRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -1132,6 +1146,7 @@ export interface FileRoutesByTo {
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
+  '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
@@ -1171,6 +1186,7 @@ export interface FileRoutesByTo {
   '/auth/callback': typeof AuthCallbackRoute
   '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
+  '/founder/$': typeof FounderSplatRoute
   '/app': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -1282,6 +1298,7 @@ export interface FileRoutesById {
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
+  '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
@@ -1328,6 +1345,7 @@ export interface FileRoutesById {
   '/auth_/callback': typeof AuthCallbackRoute
   '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
+  '/founder_/$': typeof FounderSplatRoute
   '/app/': typeof AppIndexRoute
   '/app/admin/addresses': typeof AppAdminAddressesRoute
   '/app/admin/audit': typeof AppAdminAuditRoute
@@ -1443,6 +1461,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/docs'
     | '/enterprise'
+    | '/founder'
     | '/get-started'
     | '/mail'
     | '/migration'
@@ -1489,6 +1508,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/checkout/done'
     | '/founder/preview'
+    | '/founder/$'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -1601,6 +1621,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/docs'
     | '/enterprise'
+    | '/founder'
     | '/get-started'
     | '/mail'
     | '/migration'
@@ -1640,6 +1661,7 @@ export interface FileRouteTypes {
     | '/auth/callback'
     | '/checkout/done'
     | '/founder/preview'
+    | '/founder/$'
     | '/app'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -1750,6 +1772,7 @@ export interface FileRouteTypes {
     | '/devices'
     | '/docs'
     | '/enterprise'
+    | '/founder'
     | '/get-started'
     | '/mail'
     | '/migration'
@@ -1796,6 +1819,7 @@ export interface FileRouteTypes {
     | '/auth_/callback'
     | '/checkout/done'
     | '/founder/preview'
+    | '/founder_/$'
     | '/app/'
     | '/app/admin/addresses'
     | '/app/admin/audit'
@@ -1910,6 +1934,7 @@ export interface RootRouteChildren {
   DevicesRoute: typeof DevicesRoute
   DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
+  FounderRoute: typeof FounderRouteWithChildren
   GetStartedRoute: typeof GetStartedRoute
   MailRoute: typeof MailRoute
   MigrationRoute: typeof MigrationRoute
@@ -1934,7 +1959,7 @@ export interface RootRouteChildren {
   AiStudioRoute: typeof AiStudioRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   CheckoutDoneRoute: typeof CheckoutDoneRoute
-  FounderPreviewRoute: typeof FounderPreviewRoute
+  FounderSplatRoute: typeof FounderSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -2049,6 +2074,13 @@ declare module '@tanstack/react-router' {
       path: '/enterprise'
       fullPath: '/enterprise'
       preLoaderRoute: typeof EnterpriseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/founder': {
+      id: '/founder'
+      path: '/founder'
+      fullPath: '/founder'
+      preLoaderRoute: typeof FounderRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started': {
@@ -2375,9 +2407,16 @@ declare module '@tanstack/react-router' {
     }
     '/founder/preview': {
       id: '/founder/preview'
-      path: '/founder/preview'
+      path: '/preview'
       fullPath: '/founder/preview'
       preLoaderRoute: typeof FounderPreviewRouteImport
+      parentRoute: typeof FounderRoute
+    }
+    '/founder_/$': {
+      id: '/founder_/$'
+      path: '/founder/$'
+      fullPath: '/founder/$'
+      preLoaderRoute: typeof FounderSplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/admin/': {
@@ -3387,6 +3426,17 @@ const AppRouteChildren: AppRouteChildren = {
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
+interface FounderRouteChildren {
+  FounderPreviewRoute: typeof FounderPreviewRoute
+}
+
+const FounderRouteChildren: FounderRouteChildren = {
+  FounderPreviewRoute: FounderPreviewRoute,
+}
+
+const FounderRouteWithChildren =
+  FounderRoute._addFileChildren(FounderRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
@@ -3404,6 +3454,7 @@ const rootRouteChildren: RootRouteChildren = {
   DevicesRoute: DevicesRoute,
   DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
+  FounderRoute: FounderRouteWithChildren,
   GetStartedRoute: GetStartedRoute,
   MailRoute: MailRoute,
   MigrationRoute: MigrationRoute,
@@ -3428,7 +3479,7 @@ const rootRouteChildren: RootRouteChildren = {
   AiStudioRoute: AiStudioRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   CheckoutDoneRoute: CheckoutDoneRoute,
-  FounderPreviewRoute: FounderPreviewRoute,
+  FounderSplatRoute: FounderSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
