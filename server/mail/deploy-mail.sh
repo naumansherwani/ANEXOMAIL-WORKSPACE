@@ -32,6 +32,15 @@ SENDONLY="noreply"
 # alias:target
 ALIASES="postmaster:abuse nauman:naumansherwani.founder support:resolved"
 
+# FOUNDER SINGLE INBOX (locked 8 Sep 2026)
+#   - founder ka ek hi inbox: naumansherwani.founder@anexomail.com
+#   - har inbound address ki mail apni box mein bhi rehti hai AUR founder inbox
+#     mein bhi copy hoti hai (kuch bhi khota nahi, routing bhi zinda rehti hai)
+#   - sab mailboxes ka password EK — founder ke liye ek hi login
+#   - recovery account: anexomail27@gmail.com (server par kabhi password nahi print)
+FOUNDER_INBOX="naumansherwani.founder"
+FOUNDER_RECOVERY="anexomail27@gmail.com"
+
 echo "==> packages"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
@@ -91,11 +100,12 @@ if [ "$MAIL_ENV_OK" -ne 1 ]; then
   exit 2
 fi
 
-add_pw() {
-  local key="MAILPW_$(printf '%s' "$1" | tr '.a-z' '_A-Z')"
-  grep -q "^$key=" "$ENVFILE" || printf '%s=%s\n' "$key" "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
-}
-for m in $MAILBOXES $SENDONLY; do add_pw "$m"; done
+# FOUNDER SINGLE PASSWORD: ek hi value sab mailboxes par. Sirf ek dafa banti hai,
+# terminal par kabhi print nahi hoti, existing value kabhi overwrite nahi hoti.
+grep -q -E '^FOUNDER_MAIL_PASSWORD=.+' "$ENVFILE" || \
+  printf 'FOUNDER_MAIL_PASSWORD=%s\n' "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
+grep -q -E '^FOUNDER_MAIL_RECOVERY=' "$ENVFILE" || \
+  printf 'FOUNDER_MAIL_RECOVERY=%s\n' "$FOUNDER_RECOVERY" >> "$ENVFILE"
 # shellcheck disable=SC1090
 set -a; . "$ENVFILE"; set +a
 
@@ -108,11 +118,9 @@ if [ -f /etc/dovecot/local.conf ]; then
   mv /etc/dovecot/local.conf /etc/dovecot/local.conf.bak.$STAMP
 fi
 : > /etc/dovecot/users.tmp
+FOUNDER_HASH="$(doveadm pw -s SHA512-CRYPT -p "$FOUNDER_MAIL_PASSWORD")"
 for m in $MAILBOXES $SENDONLY; do
-  key="MAILPW_$(printf '%s' "$m" | tr '.a-z' '_A-Z')"
-  pw="${!key}"
-  hash="$(doveadm pw -s SHA512-CRYPT -p "$pw")"
-  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$hash" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
+  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$FOUNDER_HASH" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
 done
 [ -f /etc/dovecot/users ] && cp /etc/dovecot/users /etc/dovecot/users.bak.$STAMP
 mv /etc/dovecot/users.tmp /etc/dovecot/users
@@ -266,6 +274,12 @@ for m in $MAILBOXES $SENDONLY; do
 done
 for pair in $ALIASES; do
   printf '%s@%s  %s@%s\n' "${pair%%:*}" "$DOMAIN" "${pair##*:}" "$DOMAIN" >> /etc/postfix/valias
+done
+# FOUNDER SINGLE INBOX: har real mailbox ki mail apni box mein bhi jaati hai aur
+# founder inbox mein bhi copy hoti hai (khud founder box par koi alias nahi).
+for m in $MAILBOXES; do
+  [ "$m" = "$FOUNDER_INBOX" ] && continue
+  printf '%s@%s  %s@%s, %s@%s\n' "$m" "$DOMAIN" "$m" "$DOMAIN" "$FOUNDER_INBOX" "$DOMAIN" >> /etc/postfix/valias
 done
 postmap /etc/postfix/vdomains /etc/postfix/vmailbox /etc/postfix/valias
 
