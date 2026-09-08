@@ -170,21 +170,28 @@ if (founderToken) {
       headers,
       body: "{}",
     });
-    const bootstrap = (await bootstrapResponse.json()) as {
-      members?: { user_id: string }[];
-      error?: unknown;
+    const bootstrapBody = (await bootstrapResponse.json()) as {
+      result?: { data?: { members?: { user_id: string }[] } };
+      error?: { code?: string; message?: string };
     };
-    if (!bootstrapResponse.ok || (bootstrap.members?.length || 0) < 3) {
-      throw new Error(`bootstrap members=${bootstrap.members?.length || 0}`);
+    const members = bootstrapBody.result?.data?.members || [];
+    if (!bootstrapResponse.ok || members.length < 3) {
+      const detail = bootstrapBody.error?.code || bootstrapBody.error?.message;
+      throw new Error(detail || `bootstrap members=${members.length}`);
     }
     const conversationsResponse = await fetch(`${RUST_URL}/rpc/chat.conversations`, {
       method: "POST",
       headers,
       body: "{}",
     });
-    const conversations = (await conversationsResponse.json()) as { conversations?: unknown[] };
-    if (!conversationsResponse.ok || (conversations.conversations?.length || 0) < 2) {
-      throw new Error(`direct conversations=${conversations.conversations?.length || 0}`);
+    const conversationsBody = (await conversationsResponse.json()) as {
+      result?: { data?: { conversations?: unknown[] } };
+      error?: { code?: string; message?: string };
+    };
+    const conversations = conversationsBody.result?.data?.conversations || [];
+    if (!conversationsResponse.ok || conversations.length < 2) {
+      const detail = conversationsBody.error?.code || conversationsBody.error?.message;
+      throw new Error(detail || `direct conversations=${conversations.length}`);
     }
     ok("Rust ANEXOChat founder bootstrap → 3 members + 2 direct conversations visible");
   } catch (e: any) {
