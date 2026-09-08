@@ -5,7 +5,7 @@ dobara banane ki koshish kar rahi thi (isi se `mailboxes_address_key already exi
 error aata tha). Founder ki asli do cheezein yeh hain:
 
 1. **Founder mailbox row** — `naumansherwani.founder@anexomail.com` + alias `nauman@`
-   pehle se Wire 11 (Phase 52) ke 13 addresses mein maujood hai. Kuch alag nahi karna.
+   pehle se Wire 11 (Phase 52) ke final address list mein maujood hai. Kuch alag nahi karna.
 2. **Founder identity/role** — neeche wala block. Isi se `/app/founder`, Founder view,
    billing aur entitlement founder ke naam par khulte hain.
 

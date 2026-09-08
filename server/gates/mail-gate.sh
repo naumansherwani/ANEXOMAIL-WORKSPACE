@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# GATE 4 — MAIL (anexomail.com · 13 addresses) + round-trip
+# GATE 4 — MAIL (anexomail.com · final list: 9 mailbox + 3 forward) + round-trip
 #   bash server/gates/mail-gate.sh
 # DNS/PTR aap ke registrar par hai (wohi ek manual hissa) — yeh gate usay padhta hai.
 # ============================================================================
@@ -83,12 +83,23 @@ else
     | grep -E 'status=(deferred|bounced)|warning:|fatal:' | tail -n 20 || true
 fi
 
-echo "--- 13 addresses DB mein ---"
-check_sql "mailboxes = 13" "select count(*) from public.mailboxes where address like '%@$DOMAIN';" "13"
-for a in hello moveyourbusiness resolved billing noreply leo; do
+echo "--- final address list DB mein (9 mailbox + 3 forward) ---"
+check_sql "mailboxes = 12" "select count(*) from public.mailboxes where address like '%@$DOMAIN' and active;" "12"
+for a in hello moveyourbusiness resolved billing noreply leo naumansherwani.founder humzasherwani raanasherwani; do
   check_sql "address $a@$DOMAIN" \
     "select count(*)>0 from public.mailboxes where address='$a@$DOMAIN';" "t"
 done
+for a in postmaster abuse dmarc; do
+  check_sql "$a@$DOMAIN sirf forward -> resolved@" \
+    "select count(*)>0 from public.mailboxes where address='$a@$DOMAIN' and box_type='alias' and alias_target='resolved@$DOMAIN';" "t"
+done
+for a in nauman support trials; do
+  check_sql "$a@$DOMAIN delete ho chuka" \
+    "select count(*)=0 from public.mailboxes where address='$a@$DOMAIN';" "t"
+done
+check_sql "mail_messages.spf_result column maujood" \
+  "select count(*)>0 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='spf_result';" "t"
+
 
 echo "--- inbound pipe + inbox (round trip) ---"
 BEFORE="$(bash /opt/anexomail-web/sql/run.sh --query 'select count(*) from public.mail_messages;' 2>/dev/null | tr -d '[:space:]')"
@@ -104,4 +115,4 @@ fi
 check_sql "inbound raw proof table maujood" "select count(*)>0 from information_schema.tables where table_schema='public' and table_name='mail_inbound_raw';" "t"
 check_http "inbox UI zinda" "https://anexomail.com/app/mail" 200
 
-gate_result "MAIL 13 ADDRESSES"
+gate_result "MAIL FINAL ADDRESS LIST"

@@ -65,4 +65,7 @@
 - [ ] Server par run + gate green (READY tak) — `docs/wire/20-final-addresses.md`
 - [x] Founder short paths (`/mail` `/calendar` `/chat` `/anexochat` `/anexovideocall` …) — `docs/wire/21-founder-short-paths.md`
 - [x] Local sweep: 144 pages sab 200/307, koi blank nahi
-- [ ] ANEXOChat asli functionality (abhi dummy) — alag kaam
+- [ ] Launch today proof order — `docs/wire/23-launch-today.md`
+- [ ] Mail queue fix — `sql/phase57_mail_schema_heal.sql` + `docs/wire/22-mail-queue-fix.md` (READY)
+- [x] mail-gate final list par sach bolta hai (12 addresses, spf_result column dot)
+- [ ] ANEXOChat live proof — `bash server/gates/chat-gate.sh` output chahiye
