@@ -9,6 +9,8 @@
 - [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output
 
 ## WIRE (sirf copy-paste — koi edit nahi)
+- [ ] SERVER NOW: mail queue failure ko self-diagnosing/self-retry banana aur final mail gate GREEN karna
+- [ ] SERVER NOW: har real service port ko one-command deploy + truthful protocol gate dena; reserved SFU/metrics ko jhoota DONE/200 na kehna
 - [x] Phase 34 ko repeated runner se hata kar SQL-editor-only single source banana
 - [x] Mail deploy/gate mein exact SPF, DKIM local-vs-DNS aur strict DMARC alignment green karna
 - [x] Storage Box username har command mein `u659696` fix karna
