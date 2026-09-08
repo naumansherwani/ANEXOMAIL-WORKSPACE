@@ -381,13 +381,27 @@ function ChatPage() {
                   onMode={atmosphere.setMode}
                   onCalm={atmosphere.setCalm}
                 />
+                <button
+                  type="button"
+                  aria-pressed={cinema.enabled}
+                  onClick={() => cinema.setEnabled(!cinema.enabled)}
+                  className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  {cinema.enabled ? "3D graphics on" : "3D graphics off"}
+                </button>
+                {cinema.pausedByCall ? (
+                  <span className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground">
+                    3D paused for this call
+                  </span>
+                ) : null}
                 <select
                   aria-label="Cinematic quality"
                   value={cinema.pref}
+                  disabled={!cinema.enabled}
                   onChange={(e) =>
                     cinema.setQuality(e.target.value as "auto" | "off" | "low" | "high")
                   }
-                  className="rounded-full border border-border bg-transparent px-2.5 py-1 text-xs text-foreground"
+                  className="rounded-full border border-border bg-transparent px-2.5 py-1 text-xs text-foreground disabled:opacity-40"
                 >
                   <option value="auto">Cinema: auto</option>
                   <option value="high">Cinema: high</option>
