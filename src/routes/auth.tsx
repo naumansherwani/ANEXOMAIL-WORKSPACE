@@ -41,7 +41,8 @@ type Mode = "login" | "signup" | "link" | "forgot" | "reset";
 // User khud account banata hai (email + password) → Supabase → dashboard.
 
 type LoginResult =
-  { token: string; mfa_required?: false } | { mfa_required: true; challenge_id: string };
+  | ({ token: string; mfa_required?: false } & Session)
+  | { mfa_required: true; challenge_id: string };
 
 function AuthPage() {
   const navigate = useNavigate();
@@ -212,7 +213,7 @@ function AuthPage() {
         return;
       }
 
-      const res = await api<LoginResult & Partial<Session>>("/api/auth/login", {
+      const res = await api<LoginResult>("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({ email, password }),
         auth: false,
@@ -221,7 +222,7 @@ function AuthPage() {
         setChallengeId(res.challenge_id);
         return;
       }
-      await finish(res.token, "user" in res ? (res as Session) : undefined);
+      await finish(res.token, res);
     } catch (e) {
       fail(e);
     } finally {

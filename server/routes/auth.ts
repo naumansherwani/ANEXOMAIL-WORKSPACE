@@ -97,20 +97,45 @@ async function operationalOrganisation(uid: string, email: string | null | undef
   return { id: mailbox.org_id, role: "owner" };
 }
 
-async function sessionResult(user: any, accessToken: string, req: any) {
-  await saveSession(user.id, accessToken, req);
-  const [{ data: profile }, { data: trial }, founder] = await Promise.all([
-    getAdmin().from("account_profiles").select("onboarded").eq("user_id", user.id).maybeSingle(),
-    getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", user.id).maybeSingle(),
-    isFounderUser(user.id),
+async function sessionResult(user: any, accessToken?: string, req?: any) {
+  if (accessToken && req) await saveSession(user.id, accessToken, req);
+  const uid = user.id;
+  const [{ data: profile }, { data: memberships }, { data: trial }, founder, operational] = await Promise.all([
+    getAdmin().from("account_profiles").select("legal_name,display_name,avatar_url,work_role,preferences,onboarded").eq("user_id", uid).maybeSingle(),
+    getAdmin().from("account_org_members").select("role,account_organisations(id,name,slug,domain)").eq("user_id", uid),
+    getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", uid).maybeSingle(),
+    isFounderUser(uid),
+    operationalOrganisation(uid, user.email),
   ]);
+  const organisations = (memberships || []).flatMap((row: any) => row.account_organisations ? [{ ...row.account_organisations, role: row.role }] : []);
+  if (operational && !organisations.some((organisation: any) => organisation.id === operational.id)) {
+    const { data: legacy } = await getAdmin().from("orgs").select("id,name").eq("id", operational.id).maybeSingle();
+    organisations.push({
+      id: operational.id,
+      name: legacy?.name || (founder ? "Founder workspace" : "ANEXOMAIL Workspace"),
+      slug: founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`,
+      domain: null,
+      role: operational.role,
+    });
+  }
   return {
-    token: accessToken,
+    ...(accessToken ? { token: accessToken } : {}),
     user: {
+      id: uid,
+      email: user.email || "",
+      name: profile?.display_name || profile?.legal_name || user.user_metadata?.name || null,
+      legal_name: profile?.legal_name || null,
+      display_name: profile?.display_name || null,
+      avatar_url: profile?.avatar_url || null,
+      work_role: profile?.work_role || null,
+      preferences: profile?.preferences || {},
+      mfa_enabled: false,
       is_founder: founder,
       onboarded: founder || Boolean(profile?.onboarded),
       anexomail_address: trial?.anexomail_address || (founder ? user.email || null : null),
     },
+    organisations,
+    active_organisation_id: organisations[0]?.id || null,
   };
 }
 
@@ -157,38 +182,7 @@ authRouter.post("/login", async (req, res) => {
 
 authRouter.get("/session", async (req, res) => {
   const identity = await userFrom(req, res); if (!identity) return;
-  const uid = identity.user.id;
-  const [{ data: profile }, { data: memberships }, { data: trial }, founder, operational] = await Promise.all([
-    getAdmin().from("account_profiles").select("legal_name,display_name,avatar_url,work_role,preferences,onboarded").eq("user_id", uid).maybeSingle(),
-    getAdmin().from("account_org_members").select("role,account_organisations(id,name,slug,domain)").eq("user_id", uid),
-    getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", uid).maybeSingle(),
-    isFounderUser(uid),
-    operationalOrganisation(uid, identity.user.email),
-  ]);
-  const organisations = (memberships || []).flatMap((row: any) => row.account_organisations ? [{ ...row.account_organisations, role: row.role }] : []);
-  if (operational && !organisations.some((organisation: any) => organisation.id === operational.id)) {
-    const { data: legacy } = await getAdmin().from("orgs").select("id,name").eq("id", operational.id).maybeSingle();
-    organisations.push({
-      id: operational.id,
-      name: legacy?.name || (founder ? "Founder workspace" : "ANEXOMAIL Workspace"),
-      slug: founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`,
-      domain: null,
-      role: operational.role,
-    });
-  }
-  res.json({
-    user: {
-      id: uid, email: identity.user.email || "", name: profile?.display_name || profile?.legal_name || identity.user.user_metadata?.name || null,
-      legal_name: profile?.legal_name || null, display_name: profile?.display_name || null,
-      avatar_url: profile?.avatar_url || null, work_role: profile?.work_role || null,
-      preferences: profile?.preferences || {}, mfa_enabled: false,
-      is_founder: founder,
-      onboarded: founder || Boolean(profile?.onboarded),
-      anexomail_address: trial?.anexomail_address || (founder ? identity.user.email || null : null),
-    },
-    organisations,
-    active_organisation_id: organisations[0]?.id || null,
-  });
+  res.json(await sessionResult(identity.user));
 });
 
 authRouter.post("/logout", async (req, res) => {

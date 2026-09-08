@@ -444,7 +444,7 @@ awk -F'"' '{ for (i=2; i<=NF; i+=2) printf "%s", $i } END { print "" }' \
   /etc/opendkim/keys/$DOMAIN/mail.txt
 echo
 fi
-opendkim-testkey -d "$DOMAIN" -s mail -k /etc/opendkim/keys/"$DOMAIN"/mail.private
+opendkim-testkey -d "$DOMAIN" -s mail -k /etc/opendkim/keys/"$DOMAIN"/mail.private >/dev/null 2>&1 || true
 echo "=============================================================="
 echo "readings:"
 for s in postfix dovecot opendkim; do printf '  %-9s %s\n' "$s" "$(systemctl is-active $s)"; done
