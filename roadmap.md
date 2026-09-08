@@ -54,3 +54,14 @@
 - [ ] `sql/phase55_founder_single_inbox.sql` — founder inbox truth + recovery `anexomail27@gmail.com`
 - [ ] `server/mail/deploy-mail.sh` — ek password (`FOUNDER_MAIL_PASSWORD`) + har address ki copy founder inbox mein
 - [ ] verify: `docs/wire/19-founder-single-inbox.md` step 3 green
+
+## 8 Sep 2026 — FINAL ADDRESS LIST (Phase 56)
+- [x] `sql/phase56_mailbox_final.sql` — backup table, `nauman@`/`support@`/`trials@` delete,
+      `postmaster@`/`abuse@`/`dmarc@` sirf forward -> `resolved@`, family accounts
+      (`humzasherwani@`, `raanasherwani@`) business_pro + ai_executive 10,000 credits.
+- [x] `server/mail/deploy-mail.sh` — final MAILBOXES/ALIASES, family ka apna password,
+      founder copy sirf company addresses par, deleted maildirs backup + root delete.
+- [x] `src/lib/founder-plan.ts` + `/app/founder` — sirf asli addresses + family group.
+- [ ] Server par run + gate green (READY tak) — `docs/wire/20-final-addresses.md`
+- [ ] Founder host chhota karna (founderworkspace… -> chhota host + `/` paths) — founder ka faisla pending
+- [ ] ANEXOChat asli functionality (abhi dummy) — alag kaam
