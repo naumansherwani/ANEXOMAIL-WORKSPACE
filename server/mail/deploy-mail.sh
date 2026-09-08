@@ -70,6 +70,66 @@ mv /etc/dovecot/users.tmp /etc/dovecot/users
 chown root:dovecot /etc/dovecot/users; chmod 640 /etc/dovecot/users
 
 [ -f /etc/dovecot/local.conf ] && cp /etc/dovecot/local.conf /etc/dovecot/local.conf.bak.$STAMP
+
+# Dovecot 2.4 ne setting ke naam badal diye (mail_location -> mail_driver+mail_path,
+# passdb/userdb named blocks, ssl_server block). Version dekh kar sahi config likhi
+# jaati hai — is liye 2.3 aur 2.4 dono par service start hoti hai.
+DOVEVER="$(doveconf --version 2>/dev/null | awk '{print $1}' || dovecot --version 2>/dev/null | awk '{print $1}')"
+case "${DOVEVER:-2.3}" in
+  2.4*|3.*) DOVE_NEW=1 ;;
+  *)        DOVE_NEW=0 ;;
+esac
+echo "==> dovecot version ${DOVEVER:-unknown} (new-syntax=$DOVE_NEW)"
+
+if [ "$DOVE_NEW" = "1" ]; then
+cat > /etc/dovecot/local.conf <<EOF
+dovecot_config_version = 2.4.0
+dovecot_storage_version = 2.4.0
+
+protocols = imap lmtp
+mail_driver = maildir
+mail_path = /var/mail/vhosts/%{user | domain}/%{user | username}
+mail_uid = vmail
+mail_gid = vmail
+first_valid_uid = 5000
+auth_allow_cleartext = no
+auth_mechanisms = plain login
+
+passdb passwd-file {
+  passwd_file_path = /etc/dovecot/users
+  default_password_scheme = SHA512-CRYPT
+}
+userdb passwd-file {
+  passwd_file_path = /etc/dovecot/users
+  fields {
+    uid = vmail
+    gid = vmail
+    home = /var/mail/vhosts/%{user | domain}/%{user | username}
+  }
+}
+
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
+}
+service lmtp {
+  unix_listener /var/spool/postfix/private/dovecot-lmtp {
+    mode = 0600
+    user = postfix
+    group = postfix
+  }
+}
+
+ssl = required
+ssl_server {
+  cert_file = /etc/anexomail/mail-cert.pem
+  key_file  = /etc/anexomail/mail-key.pem
+}
+EOF
+else
 cat > /etc/dovecot/local.conf <<EOF
 protocols = imap lmtp
 mail_location = maildir:/var/mail/vhosts/%d/%n
@@ -105,6 +165,7 @@ ssl = required
 ssl_cert = </etc/anexomail/mail-cert.pem
 ssl_key  = </etc/anexomail/mail-key.pem
 EOF
+fi
 
 
 # TLS cert: Caddy ka cert copy, warna self-signed (gate sach report karega)
