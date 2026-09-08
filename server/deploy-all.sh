@@ -21,40 +21,55 @@ cd "$ROOT"
 
 step() { echo; echo "=============== $* ==============="; }
 
-step "0/7 DATABASE HEAL + FINAL MAIL CONTRACT + MAILBOX LIST (idempotent)"
+step "0/8 DATABASE HEAL + FINAL MAIL CONTRACT + MAILBOX LIST (idempotent)"
 # Yeh files jitni dafa chalao, wahi nateeja. Mail row/table delete nahi hoti.
 #   phase57 -> purani mail tables mein missing canonical columns add karti hai
 #   phase58 -> live ingest function + legacy cc_addrs compatibility + schema reload
 #   phase56 -> final address list (9 mailbox/sendonly + 3 forward) set karti hai
-bash sql/run.sh sql/phase57_mail_schema_heal.sql
-bash sql/run.sh sql/phase58_mail_contract_final.sql
-bash sql/run.sh sql/phase56_mailbox_final.sql
+for migration in \
+  sql/phase57_mail_schema_heal.sql \
+  sql/phase58_mail_contract_final.sql \
+  sql/phase59_account_lifecycle.sql \
+  sql/phase56_mailbox_final.sql; do
+  [ -f "$migration" ] || { echo "RED missing migration: $migration"; exit 10; }
+  bash sql/run.sh "$migration" || { echo "RED migration failed: $migration"; exit 10; }
+  echo "APPLIED $migration"
+done
 
-step "1/7 FRONTEND (anexomail-web :3000)"
+MAIL_CONTRACT="$(bash sql/run.sh --query "select concat_ws('|', exists(select 1 from information_schema.columns where table_schema='public' and table_name='mailboxes' and column_name='org_id'), exists(select 1 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='cc_addrs'), coalesce(obj_description('public.mail_ingest(jsonb)'::regprocedure),'missing'))" | tr -d '[:space:]')"
+[ "$MAIL_CONTRACT" = "true|true|anexomail-mail-contract-v59" ] || {
+  echo "RED live mail contract mismatch: $MAIL_CONTRACT"
+  exit 11
+}
+echo "GREEN live mail contract v59"
+
+step "1/8 FRONTEND (anexomail-web :3000)"
 bun install
 bun run build:bun
 pm2 restart anexomail-web --update-env || pm2 start ecosystem.config.cjs
 
-step "2/7 RUST PRIMARY ENGINE (:3200 + UDP :3443)"
+step "2/8 BRAIN API (:3100)"
+bash server/deploy-brain.sh
+
+step "3/8 RUST PRIMARY ENGINE (:3200 + UDP :3443)"
 bash server/rust/deploy.sh
 
-step "3/7 POLAR PAYMENT ENGINE (:3400)"
+step "4/8 POLAR PAYMENT ENGINE (:3400)"
 bash server/rust/polar-payment/deploy.sh
 
-step "4/7 CADDY (:80/:443 TCP + :443 UDP HTTP/3)"
+step "5/8 CADDY (:80/:443 TCP + :443 UDP HTTP/3)"
 bash server/caddy/deploy-sites.sh
 
-step "5/7 SERVICES (:3100 + :3300 fallback + n8n :5678)"
+step "6/8 SERVICES (:3300 fallback + n8n :5678)"
 pm2 restart anexochat --update-env
-pm2 restart anexomail-leo --update-env
 pm2 restart n8n --update-env
 pm2 save
 
-step "6/7 MAIL + TURN"
+step "7/8 MAIL + TURN"
 bash server/mail/deploy-mail.sh
 bash server/rust/turn-env-sync.sh
 
-step "7/7 COMPLETE PROTOCOL AUDIT"
+step "8/8 COMPLETE PROTOCOL AUDIT"
 bash server/gates/all-gates.sh
 
 step "LIVE READINGS (asli codes)"

@@ -44,6 +44,7 @@ sql/phase54_mail_ingest_org_fix.sql
 sql/phase55_founder_single_inbox.sql
 sql/phase57_mail_schema_heal.sql
 sql/phase58_mail_contract_final.sql
+sql/phase59_account_lifecycle.sql
 sql/phase56_mailbox_final.sql
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
