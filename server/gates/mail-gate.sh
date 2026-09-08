@@ -27,7 +27,7 @@ echo "=== GATE 4 · MAIL ==="
 echo "--- DNS chain ---"
 check_cmd "A $MAILHOST" bash -c "dig +short A $MAILHOST | grep -q ."
 check_cmd "MX $DOMAIN -> $MAILHOST" bash -c "dig +short MX $DOMAIN | grep -qi '$MAILHOST'"
-SPF="$(dns_txt "$DOMAIN")"
+SPF="$(dig +short TXT "$DOMAIN" | tr -d '"' | grep '^v=spf1 ' | head -1)"
 [ "$SPF" = "$EXPECTED_SPF" ] && ok "SPF exact + aligned" || bad "SPF exact + aligned" "expected: $EXPECTED_SPF"
 
 if [ -f "$DKIM_FILE" ]; then
