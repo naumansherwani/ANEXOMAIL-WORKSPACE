@@ -6,6 +6,23 @@ import { Stat } from "@/components/app/settings/SettingsBits";
 import { useDrift, useScheduled } from "@/lib/settings";
 
 export const Route = createFileRoute("/app/settings/health")({
+  head: () => ({
+    meta: [
+      { title: "Settings · Health — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Settings · Health · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Settings · Health — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Settings · Health · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: SettingsHealth,
 });
 

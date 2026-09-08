@@ -6,6 +6,23 @@ import { Stat } from "@/components/app/settings/SettingsBits";
 import { useFounderSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/app/founder_/settings")({
+  head: () => ({
+    meta: [
+      { title: "Founder_ · Settings — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Founder_ · Settings · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Founder_ · Settings — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Founder_ · Settings · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: FounderSettings,
 });
 

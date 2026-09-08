@@ -5,6 +5,23 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { useRevertSetting, useSettingHistory } from "@/lib/settings";
 
 export const Route = createFileRoute("/app/settings/history")({
+  head: () => ({
+    meta: [
+      { title: "Settings · History — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Settings · History · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Settings · History — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Settings · History · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: TimeMachine,
 });
 

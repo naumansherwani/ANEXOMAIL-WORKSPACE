@@ -6,6 +6,23 @@ import { api } from "@/lib/api";
 import { relativeTime } from "@/lib/mail";
 
 export const Route = createFileRoute("/app/billing/state")({
+  head: () => ({
+    meta: [
+      { title: "Billing · State — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Billing · State · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Billing · State — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Billing · State · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: BillingStatePage,
 });
 

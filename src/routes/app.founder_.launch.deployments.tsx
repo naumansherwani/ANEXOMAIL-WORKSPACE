@@ -8,6 +8,23 @@ import { ReceiptCard } from "@/components/app/release/ReleaseBits";
 import { useDeployments } from "@/lib/release";
 
 export const Route = createFileRoute("/app/founder_/launch/deployments")({
+  head: () => ({
+    meta: [
+      { title: "Founder_ · Launch · Deployments — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Founder_ · Launch · Deployments · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Founder_ · Launch · Deployments — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Founder_ · Launch · Deployments · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: DeploymentsPage,
 });
 
