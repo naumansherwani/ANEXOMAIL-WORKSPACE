@@ -1,4 +1,4 @@
-import { Copy, EyeOff, Pencil, Pin, Reply, Smile, Trash2 } from "lucide-react";
+import { Copy, EyeOff, MoreHorizontal, Pencil, Pin, Reply, Smile, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Tick } from "@/components/app/chat/Ticks";
@@ -31,6 +31,8 @@ export type MessageActions = {
   onDeleteForEveryone: (messageId: string) => void;
   onHide: (messageId: string) => void;
   onPin: (messageId: string, pin: boolean) => void;
+  /** Star · forward · important · decision · work · receipts · provenance · email draft. */
+  onMore: (message: ChatMessage) => void;
 };
 
 export function MessageStream({
@@ -287,6 +289,12 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
                 <Pencil className="size-3" />
               </IconBtn>
             ) : null}
+            <IconBtn
+              label="More: star, forward, decision, work, receipts"
+              onClick={() => actions.onMore(message)}
+            >
+              <MoreHorizontal className="size-3" />
+            </IconBtn>
             <IconBtn label="Delete for me" onClick={() => actions.onHide(message.id)}>
               <EyeOff className="size-3" />
             </IconBtn>

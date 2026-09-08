@@ -4,6 +4,8 @@
 - [ ] Add truthful P2P/TURN relay badge UI
 - [ ] Add Phase 31A features to Business, Business Pro, AI Pro, AI Business, AI Executive package cards
 - [ ] Verify Phase 31A and re-check roadmap
+- [x] Page audit pass 2 — 21 lib features jo page par nahi thay ab wired (`docs/wire/27` "Page audit" table): MessageTruth drawer · ConversationTruthBar · DiscussInChat · CallConnectReport · Email this decision — READY, DONE sirf live proof par
+- [ ] TODO (sach): file `ackDownload` (download URL nahi) · `useSilentThreadRescue` · `useQuoteEmailInChat`
 - [ ] Phase 31B translation layer: wrap public site pages (landing, plans, security, ownership, move-in, anexochat, auth, footer) with t()
 - [ ] Phase 31B: wrap /app/* workspace panels with t()
 - [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output

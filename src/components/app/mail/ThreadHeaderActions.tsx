@@ -2,6 +2,7 @@ import { Archive, CalendarPlus, Check, Clock, Tag } from "lucide-react";
 import { useState } from "react";
 
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
+import { DiscussInChat } from "@/components/app/mail/DiscussInChat";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -73,6 +74,13 @@ export function ThreadHeaderActions({
         <Archive className="mr-1 inline size-3" />
         Archive
       </button>
+
+      {/* Phase 29: thread -> ANEXOChat in one press; link reused, never duplicated. */}
+      <DiscussInChat
+        threadId={threadId}
+        {...(subject ? { subject } : {})}
+        {...(participants?.length ? { participants } : {})}
+      />
 
       {/* Thread -> meeting in one press: the conversation stays the context. */}
       <button

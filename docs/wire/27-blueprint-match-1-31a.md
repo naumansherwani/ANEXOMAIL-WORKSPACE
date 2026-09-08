@@ -40,6 +40,33 @@ Source: `anexochat/docs/anexochat-blueprint.md` vs `src/routes/app.chat.tsx` (ek
 
 105 unique rpc names frontend (`src/lib/chat*.ts`, `app.chat.tsx`) se nikaale; sab Rust dispatch mein hain siwaye 4 Bun-only (Phase 11 ticket/list/avatar — intentionally, fallback path `src/lib/chat-transport.ts:29`). **Koi orphan call nahi.**
 
+## Page audit (8 Sep 2026, doosra pass) — lib mein tha, page par nahi tha → ab wired
+
+Pehle pass mein RPC naam match kiye thay; doosre pass mein check kiya ke har lib
+function kisi **page** par render bhi hota hai. 20 asli features lib mein thay
+magar koi button/panel unhe call nahi karta tha. Ab wire:
+
+| Phase | Feature (lib) | Ab kahan (page) |
+|---|---|---|
+| 19/22 | `useStarMessage` · `useForwardMessage` | `/app/chat` → message hover “More” drawer (`MessageTruth.tsx`) |
+| 25 | `useMarkImportant` (human reason 3+) | same drawer |
+| 24 | `useDecisionMark` (message → sealed decision) | same drawer |
+| 22 | `useWorkSuggestion` + `useWorkFromMessage` | same drawer (“Make it work”) |
+| 28 | `useReceiptPack` (steps + negative receipts) | drawer → Receipts tab |
+| 27 | `useMessageProvenance` | drawer → Provenance tab |
+| 30 | `useCreateEmailDraft` (chat → cited email draft) | drawer → “Draft email” |
+| 25/26/27 | `useSetConversationState` · `useConversationHealth` · `useConversationChain` | `/app/chat` header bar (`ConversationTruthBar.tsx`) |
+| 29 | `useEmailThreadConversation` · `useDiscussInChat` · `useDiscussPresence` | `/app/mail/$folder/$threadId` → “Discuss in chat” (`DiscussInChat.tsx`) |
+| 30 | `useDecisionToEmail` | `/app/work` → Decision ledger → “Email this decision” |
+| 31A | `connectReport` | `/app/chat` — call khatam hone par “Last call” readings (`CallConnectReport.tsx`) |
+
+Abhi bhi bina page (sach):
+- `ackDownload` / `transferState` — file engine abhi download URL nahi deta (blueprint mein download surface Phase 32+), is liye "Downloaded" step UI se nahi likha ja sakta. TODO.
+- `useSilentThreadRescue` (owner + due lazmi) · `useQuoteEmailInChat` (mail message text select → chat quote) — mail thread par selection UI chahiye. TODO (chhota).
+- `useSplitView` · `setRingSound` · `uploadAvatar` · `ringState` · `sfuState` · `connectHealth` — helper/founder-only readings. TODO ya not-needed.
+
+Status: READY (type-check 0 · lint 0 errors · sandbox render bina crash). DONE sirf live proof (`docs/wire/26`) par.
+
 ## Note
 
 - Blueprint prose mein "Phase 31A" heading nahi — sirf SQL file `videocall_phase31a_lightspeed.sql`. Founder chahe to blueprint mein heading add karein.
