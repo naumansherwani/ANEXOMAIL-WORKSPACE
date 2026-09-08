@@ -1,3 +1,30 @@
+# WIRE 11 — MAIL LAUNCH SQL (Supabase SQL editor mein direct copy-paste)
+
+Yeh Phase 52 hai: mail ka source of truth + 13 asli `anexomail.com` addresses ka seed.
+Runner se RED aaya tha kyunke purane phase ki `mail_threads` / `mail_messages` ka
+dhaancha alag tha. Ab file khud self-heal karti hai (purani conflicting table
+`_legacy_<timestamp>` ban jati hai) aur `mail_ingest` / `mail_outbox_record` ka
+purana signature pehle drop hota hai.
+
+Do raaste — koi bhi:
+
+**A) Supabase SQL editor (aap ka tareeqa):** neeche ka poora block copy karo →
+Supabase #4 → SQL Editor → paste → Run. Aakhir mein `mailboxes = 13`,
+`domains = 1` aana chahiye.
+
+**B) Server se ek line:**
+
+```bash
+cd /opt/anexomail-web && git pull && bash sql/run.sh sql/phase52_mail_launch.sql
+```
+
+Dono ka natija ek hi hai. Yeh file idempotent hai — jitni baar chalao, safe.
+
+---
+
+## POORA SQL (copy from here)
+
+```sql
 -- =============================================================================
 -- ANEXOMAIL — Phase 52: MAIL LAUNCH (real inbound + outbound truth)
 -- Supabase #4 SQL editor mein poori file copy-paste karo. Idempotent + self-healing.
@@ -362,3 +389,22 @@ on conflict (address) do update
 -- verify
 select (select count(*) from public.mailboxes)     as mailboxes,
        (select count(*) from public.mail_domains)  as domains;
+```
+
+---
+
+## Verify (isi editor mein alag se)
+
+```sql
+select count(*) as mailboxes from public.mailboxes;
+select address, box_type, alias_target, is_public from public.mailboxes order by address;
+select proname from pg_proc where proname in ('mail_ingest','mail_outbox_record');
+select relname, relrowsecurity from pg_class
+ where relname in ('mail_domains','mailboxes','mail_threads','mail_messages',
+                   'mail_attachments','mail_inbound_raw','mail_outbox_log');
+```
+
+GREEN ka matlab: `mailboxes = 13`, dono function maujood, saari 7 tables par
+`relrowsecurity = true`.
+
+Iske baad mail block ka agla dot: `docs/wire/06-mail.md`.
