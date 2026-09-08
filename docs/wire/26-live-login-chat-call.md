@@ -168,12 +168,12 @@ select id, started_at, ended_at, participants from public.chat_call_sessions ord
 
 ## Status board
 
-| Dot                   | Status                                     |
-| --------------------- | ------------------------------------------ |
-| A Login (3 accounts)  | TODO — account script ka website-login proof |
-| A5 Family entitlement | TODO — `family_grants_apply() = 2`           |
+| Dot                   | Status                                         |
+| --------------------- | ---------------------------------------------- |
+| A Login (3 accounts)  | TODO — account script ka website-login proof   |
+| A5 Family entitlement | TODO — `family_grants_apply() = 2`             |
 | B Shared chat         | TODO — 3 members + 2 direct chats + B3 message |
-| C Video call 2-user   | TODO — gate GREEN + C2                     |
+| C Video call 2-user   | TODO — gate GREEN + C2                         |
 
 ## Phase 31C — file download proof (TODO)
 

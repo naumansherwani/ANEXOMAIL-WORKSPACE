@@ -15,14 +15,32 @@ const BRAIN_URL = process.env.BRAIN_URL || "http://127.0.0.1:3100";
 const RUST_URL = process.env.RUST_URL || "http://127.0.0.1:3200";
 
 const ACCOUNTS = [
-  { email: "naumansherwani.founder@anexomail.com", name: "Muhammad Nauman Sherwani", pw: "FOUNDER_MAIL_PASSWORD", founder: true },
-  { email: "humzasherwani@anexomail.com", name: "Humza Sherwani", pw: "HUMZA_PASSWORD", founder: false },
-  { email: "raanasherwani@anexomail.com", name: "Raana Sherwani", pw: "RAANA_PASSWORD", founder: false },
+  {
+    email: "naumansherwani.founder@anexomail.com",
+    name: "Muhammad Nauman Sherwani",
+    pw: "FOUNDER_MAIL_PASSWORD",
+    founder: true,
+  },
+  {
+    email: "humzasherwani@anexomail.com",
+    name: "Humza Sherwani",
+    pw: "HUMZA_PASSWORD",
+    founder: false,
+  },
+  {
+    email: "raanasherwani@anexomail.com",
+    name: "Raana Sherwani",
+    pw: "RAANA_PASSWORD",
+    founder: false,
+  },
 ];
 
 let red = 0;
 const ok = (m: string) => console.log("GREEN", m);
-const bad = (m: string) => { red++; console.log("RED  ", m); };
+const bad = (m: string) => {
+  red++;
+  console.log("RED  ", m);
+};
 
 async function findUser(email: string) {
   for (let page = 1; page <= 20; page++) {
@@ -37,18 +55,26 @@ async function findUser(email: string) {
 
 for (const a of ACCOUNTS) {
   const password = process.env[a.pw] || "";
-  if (password.length < 6 || password.length > 15) { bad(`${a.email}: ${a.pw} env 6-15 characters ka hona chahiye — skip`); continue; }
+  if (password.length < 6 || password.length > 15) {
+    bad(`${a.email}: ${a.pw} env 6-15 characters ka hona chahiye — skip`);
+    continue;
+  }
   try {
     const existing = await findUser(a.email);
     if (existing) {
       const { error } = await db.auth.admin.updateUserById(existing.id, {
-        password, email_confirm: true, user_metadata: { full_name: a.name, recovery_email: RECOVERY_EMAIL },
+        password,
+        email_confirm: true,
+        user_metadata: { full_name: a.name, recovery_email: RECOVERY_EMAIL },
       });
       if (error) throw error;
       ok(`${a.email} pehle se tha → password reset + confirmed (uid ${existing.id})`);
     } else {
       const { data, error } = await db.auth.admin.createUser({
-        email: a.email, password, email_confirm: true, user_metadata: { full_name: a.name, recovery_email: RECOVERY_EMAIL },
+        email: a.email,
+        password,
+        email_confirm: true,
+        user_metadata: { full_name: a.name, recovery_email: RECOVERY_EMAIL },
       });
       if (error) throw error;
       ok(`${a.email} created + confirmed (uid ${data.user?.id})`);
@@ -62,12 +88,19 @@ for (const a of ACCOUNTS) {
 {
   const founder = await findUser(ACCOUNTS[0].email);
   if (founder) {
-    const { data, error } = await db.from("founder_accounts").select("user_id").eq("user_id", founder.id).maybeSingle();
+    const { data, error } = await db
+      .from("founder_accounts")
+      .select("user_id")
+      .eq("user_id", founder.id)
+      .maybeSingle();
     if (error) bad(`founder_accounts read: ${error.message}`);
     else if (data) ok(`founder_accounts row present (${founder.id})`);
     else {
-      const ins = await db.from("founder_accounts").insert({ user_id: founder.id, email: founder.email });
-      if (ins.error) bad(`founder_accounts insert: ${ins.error.message} — SQL editor se manually daalo`);
+      const ins = await db
+        .from("founder_accounts")
+        .insert({ user_id: founder.id, email: founder.email });
+      if (ins.error)
+        bad(`founder_accounts insert: ${ins.error.message} — SQL editor se manually daalo`);
       else ok(`founder_accounts row inserted (${founder.id})`);
     }
   }
@@ -83,8 +116,12 @@ for (const a of ACCOUNTS) {
 // Founder + family ek hi real chat workspace mein; direct conversations pehle se ready.
 {
   const { data, error } = await db.rpc("family_chat_workspace_apply");
-  if (error) bad(`family_chat_workspace_apply: ${error.message} (sql/phase60_family_chat_workspace.sql run hai?)`);
-  else if (!data?.ok || data?.members !== 3) bad(`family chat workspace invalid: ${JSON.stringify(data)}`);
+  if (error)
+    bad(
+      `family_chat_workspace_apply: ${error.message} (sql/phase60_family_chat_workspace.sql run hai?)`,
+    );
+  else if (!data?.ok || data?.members !== 3)
+    bad(`family chat workspace invalid: ${JSON.stringify(data)}`);
   else ok("founder + Humza + Raana shared ANEXOChat workspace → 3 members + direct chats ready");
 }
 
@@ -109,7 +146,11 @@ for (const a of ACCOUNTS) {
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ email: a.email, password }),
     });
-    const body = await response.json() as { token?: string; user?: { is_founder?: boolean }; error?: string };
+    const body = (await response.json()) as {
+      token?: string;
+      user?: { is_founder?: boolean };
+      error?: string;
+    };
     if (!response.ok || !body.token) throw new Error(body.error || `HTTP ${response.status}`);
     if (a.founder && body.user?.is_founder !== true) throw new Error("founder authority missing");
     liveTokens.set(a.email, body.token);
@@ -125,16 +166,23 @@ if (founderToken) {
   try {
     const headers = { authorization: `Bearer ${founderToken}`, "content-type": "application/json" };
     const bootstrapResponse = await fetch(`${RUST_URL}/rpc/chat.bootstrap`, {
-      method: "POST", headers, body: "{}",
+      method: "POST",
+      headers,
+      body: "{}",
     });
-    const bootstrap = await bootstrapResponse.json() as { members?: { user_id: string }[]; error?: unknown };
+    const bootstrap = (await bootstrapResponse.json()) as {
+      members?: { user_id: string }[];
+      error?: unknown;
+    };
     if (!bootstrapResponse.ok || (bootstrap.members?.length || 0) < 3) {
       throw new Error(`bootstrap members=${bootstrap.members?.length || 0}`);
     }
     const conversationsResponse = await fetch(`${RUST_URL}/rpc/chat.conversations`, {
-      method: "POST", headers, body: "{}",
+      method: "POST",
+      headers,
+      body: "{}",
     });
-    const conversations = await conversationsResponse.json() as { conversations?: unknown[] };
+    const conversations = (await conversationsResponse.json()) as { conversations?: unknown[] };
     if (!conversationsResponse.ok || (conversations.conversations?.length || 0) < 2) {
       throw new Error(`direct conversations=${conversations.conversations?.length || 0}`);
     }
