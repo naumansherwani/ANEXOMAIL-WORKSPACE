@@ -40,6 +40,11 @@ sql/phase49b_hotfix_random_token.sql
 sql/phase50_polar_rust_payment.sql
 sql/phase51_polar_payment_hardening.sql
 sql/phase52_mail_launch.sql
+sql/phase54_mail_ingest_org_fix.sql
+sql/phase55_founder_single_inbox.sql
+sql/phase57_mail_schema_heal.sql
+sql/phase58_mail_contract_final.sql
+sql/phase56_mailbox_final.sql
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
 anexochat/sql/anexochat_phase10a_call_engine.sql

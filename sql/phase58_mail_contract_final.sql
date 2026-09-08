@@ -87,16 +87,18 @@ begin
   end if;
 
   update public.mailboxes mb
-     set org_id = coalesce(mb.org_id, t.org_id),
-         account_id = coalesce(mb.account_id, t.account_id)
-    from lateral (
-      select mt.org_id, mt.account_id
-        from public.mail_threads mt
-       where lower(mt.mailbox_address) = lower(mb.address)
-         and mt.org_id is not null
-       order by mt.last_message_at desc
-       limit 1
-    ) t;
+     set org_id = coalesce(
+           mb.org_id,
+           (select mt.org_id from public.mail_threads mt
+             where lower(mt.mailbox_address)=lower(mb.address) and mt.org_id is not null
+             order by mt.last_message_at desc limit 1)
+         ),
+         account_id = coalesce(
+           mb.account_id,
+           (select mt.account_id from public.mail_threads mt
+             where lower(mt.mailbox_address)=lower(mb.address) and mt.org_id is not null
+             order by mt.last_message_at desc limit 1)
+         );
 end $$;
 
 -- 3) Canonical mail_ingest: mailboxes.org_id par dependency nahi --------------
@@ -163,7 +165,7 @@ begin
      where mt.org_id is not null order by mt.last_message_at desc limit 1;
   end if;
   if v_org is null and to_regclass('public.orgs') is not null then
-    execute 'select id from public.orgs order by created_at limit 1' into v_org;
+    execute 'select id from public.orgs limit 1' into v_org;
   end if;
   if v_org is null then
     raise exception 'mail_ingest_no_org: % ka workspace owner nahi mila', v_box;

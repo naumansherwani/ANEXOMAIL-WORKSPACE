@@ -16,6 +16,13 @@ Deploy ka database step ab tarteeb se `phase57` → `phase58` → `phase56` chal
 hai. `phase58` koi mail/table delete nahi karta: function replace, dono address
 column generations sync aur Data API schema reload karta hai.
 
+## Auth ka current blocker
+
+Is checkout ka `server/index.ts` auth/mail routers import karta hai, magar unki
+source files repo mein nahi hain. Is liye login, signup, forgot/reset/change
+password ko DONE kehna mana hai jab tak woh backend source isi repo mein restore
+ho kar build aur live browser test pass na kare.
+
 ## Sirf mail ko foran prove karna ho
 
 ```bash
