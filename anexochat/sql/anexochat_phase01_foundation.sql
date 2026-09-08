@@ -289,7 +289,8 @@ drop policy if exists chat_chunks_read on public.chat_file_chunks;
 create policy chat_chunks_read on public.chat_file_chunks for select to authenticated
   using (exists (
     select 1 from public.chat_files f
-    where f.id = file_id and public.chat_in_conversation(f.conversation_id, auth.uid())
+    where f.id = public.chat_file_chunks.file_id
+      and public.chat_in_conversation(f.conversation_id, auth.uid())
   ));
 
 drop policy if exists chat_atm_own on public.chat_atmosphere_prefs;
