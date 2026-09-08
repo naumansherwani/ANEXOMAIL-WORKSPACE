@@ -7,6 +7,8 @@ ab woh RED nahi karti. Inko sirf database ke **SQL editor** mein chalana hai.
 |---|---|---|
 | 38 · Move-In hardening | `sql/editor/phase38_movein_hardening.sql` | SQL editor |
 | ANEXOChat 01 · Foundation | `sql/editor/anexochat_phase01_foundation.sql` | SQL editor |
+| 53 · Legacy tables RLS lock | `sql/editor/phase53_legacy_rls_lock.sql` | SQL editor |
+
 
 ## Tareeqa (dono ke liye same)
 
