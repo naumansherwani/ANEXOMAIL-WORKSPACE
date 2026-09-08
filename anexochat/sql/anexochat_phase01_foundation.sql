@@ -16,6 +16,7 @@
 do $$
 declare
   t record;
+  i record;
 begin
   if to_regclass('public.chat_messages') is not null
      and not exists (
@@ -46,6 +47,17 @@ begin
          select 1 from information_schema.columns
          where table_schema='public' and table_name=t.tbl and column_name=t.col
        ) then
+      -- pehle purane indexes/constraints ka naam free karo, warna fresh create
+      -- "relation <tbl>_pkey already exists" par marta hai.
+      for i in
+        select c.relname
+        from pg_class c
+        join pg_namespace n on n.oid = c.relnamespace
+        where n.nspname = 'public' and c.relkind = 'i'
+          and c.relname like t.tbl || '%'
+      loop
+        execute format('alter index public.%I rename to %I', i.relname, i.relname || '_legacy');
+      end loop;
       execute format('alter table public.%I rename to %I', t.tbl, t.tbl || '_legacy');
       raise notice 'HEAL: public.% -> %_legacy (column % missing)', t.tbl, t.tbl, t.col;
     end if;
