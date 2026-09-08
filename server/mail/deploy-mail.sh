@@ -112,12 +112,18 @@ if [ "$MAIL_ENV_OK" -ne 1 ]; then
   exit 2
 fi
 
-# FOUNDER SINGLE PASSWORD: ek hi value sab mailboxes par. Sirf ek dafa banti hai,
-# terminal par kabhi print nahi hoti, existing value kabhi overwrite nahi hoti.
+# FOUNDER SINGLE PASSWORD: ek hi value founder-side mailboxes par. Sirf ek dafa
+# banti hai, terminal par kabhi print nahi hoti, existing value overwrite nahi hoti.
 grep -q -E '^FOUNDER_MAIL_PASSWORD=.+' "$ENVFILE" || \
   printf 'FOUNDER_MAIL_PASSWORD=%s\n' "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
 grep -q -E '^FOUNDER_MAIL_RECOVERY=' "$ENVFILE" || \
   printf 'FOUNDER_MAIL_RECOVERY=%s\n' "$FOUNDER_RECOVERY" >> "$ENVFILE"
+# FAMILY ACCOUNTS: apna alag password (founder ka password unke pass nahi jata)
+for f in $FAMILY_BOXES; do
+  key="FAMILY_$(echo "$f" | tr 'a-z.' 'A-Z_')_PASSWORD"
+  grep -q -E "^${key}=.+" "$ENVFILE" || \
+    printf '%s=%s\n' "$key" "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
+done
 # shellcheck disable=SC1090
 set -a; . "$ENVFILE"; set +a
 
@@ -132,8 +138,16 @@ fi
 : > /etc/dovecot/users.tmp
 FOUNDER_HASH="$(doveadm pw -s SHA512-CRYPT -p "$FOUNDER_MAIL_PASSWORD")"
 for m in $MAILBOXES $SENDONLY; do
-  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$FOUNDER_HASH" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
+  HASH="$FOUNDER_HASH"
+  case " $FAMILY_BOXES " in
+    *" $m "*)
+      key="FAMILY_$(echo "$m" | tr 'a-z.' 'A-Z_')_PASSWORD"
+      HASH="$(doveadm pw -s SHA512-CRYPT -p "$(eval "printf '%s' \"\$$key\"")")"
+      ;;
+  esac
+  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$HASH" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
 done
+
 [ -f /etc/dovecot/users ] && cp /etc/dovecot/users /etc/dovecot/users.bak.$STAMP
 mv /etc/dovecot/users.tmp /etc/dovecot/users
 chown root:dovecot /etc/dovecot/users; chmod 640 /etc/dovecot/users
