@@ -8,7 +8,8 @@ set -uo pipefail
 FILE="${1:-}"
 if [ -z "$FILE" ]; then echo "FAIL: file nahi di"; exit 2; fi
 cd "$(dirname "$0")/.." || exit 2
-if [ "$FILE" != "--check" ] && [ ! -f "$FILE" ]; then echo "FAIL: $FILE mojood nahi"; exit 2; fi
+if [ "$FILE" != "--check" ] && [ "$FILE" != "--query" ] && [ ! -f "$FILE" ]; then echo "FAIL: $FILE mojood nahi"; exit 2; fi
+
 
 URL="${DATABASE_URL:-}"
 if [ -z "$URL" ]; then
