@@ -41,6 +41,16 @@ if [ "$FILE" = "--check" ]; then
   exit "$RC"
 fi
 
+# Gate helper: ek query ka sirf value print karo (koi shor nahi)
+if [ "$FILE" = "--query" ]; then
+  Q="${2:-}"
+  [ -z "$Q" ] && { echo "FAIL: query nahi di"; exit 2; }
+  PGOPTIONS='-c client_min_messages=warning' psql_run -qAtc "$Q"
+  exit $?
+fi
+
+
+
 HEALED=""
 for attempt in 1 2 3 4 5 6; do
   OUT="$(psql_run -q -f "$FILE")"; RC=$?
