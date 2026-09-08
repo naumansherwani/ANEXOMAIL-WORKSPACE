@@ -127,11 +127,10 @@ service lmtp {
     group = postfix
   }
 }
-# Loopback IMAP 143 — sirf 127.0.0.1 par (internal delivery/health path).
-# Public plaintext IMAP kabhi nahi: baahir sirf 993 IMAPS khula hai.
+# IMAP 143 internal path ke liye (plaintext auth band hai), IMAPS 993 public.
+# Firewall mein 143 kabhi allow nahi hota — bahar se sirf 993 pohanchta hai.
 service imap-login {
   inet_listener imap {
-    address = 127.0.0.1
     port = 143
   }
   inet_listener imaps {
