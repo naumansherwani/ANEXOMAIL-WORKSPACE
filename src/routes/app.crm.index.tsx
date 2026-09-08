@@ -127,7 +127,7 @@ function CrmDashboard() {
         </DashboardCard>
       </div>
 
-      <div className="mt-ax-5">
+      <div className={aiSurface ? "mt-ax-5" : "hidden"} aria-hidden={!aiSurface}>
         <DashboardCard
           title="Leo's deal insights"
           hint="Risk, opportunity and the single next step — written by the AI that reads the thread."
