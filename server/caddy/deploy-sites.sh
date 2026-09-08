@@ -115,7 +115,7 @@ for h in anexochat.anexomail.com anexovideocall.anexomail.com polarpayments.anex
   echo "$h -> $code"
 done
 echo "--- file engine readings (200 expected) ---"
-for h in anexomail.com founderworkspace.anexomail.com ai.anexomail.com; do
+for h in anexomail.com founderworkspace.anexomail.com ai.anexomail.com anexochat.anexomail.com; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$h/file/ping" || echo 000)
   echo "$h/file/ping -> $code"
 done

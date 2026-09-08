@@ -14,6 +14,8 @@
 
 -- ---------- 0) self-heal: purani conflicting tables ko legacy karo ----------
 do $$
+declare
+  t record;
 begin
   if to_regclass('public.chat_messages') is not null
      and not exists (
@@ -22,6 +24,32 @@ begin
      ) then
     execute 'alter table public.chat_messages rename to chat_messages_legacy';
   end if;
+
+  -- purani shape wali tables (2 mahine ke replace-cycles se) -> _legacy, phir fresh.
+  -- Har entry: table -> woh column jo is phase ki asli shape mein lazmi hai.
+  for t in
+    select * from (values
+      ('chat_file_chunks','file_id'),
+      ('chat_files','chunks_total'),
+      ('chat_conversations','next_seq'),
+      ('chat_participants','conversation_id'),
+      ('chat_message_receipts','message_id'),
+      ('chat_members','workspace_id'),
+      ('chat_workspaces','owner_user_id'),
+      ('chat_presence','workspace_id'),
+      ('chat_typing','conversation_id'),
+      ('chat_atmosphere_prefs','calm_mode')
+    ) as v(tbl, col)
+  loop
+    if to_regclass('public.' || t.tbl) is not null
+       and not exists (
+         select 1 from information_schema.columns
+         where table_schema='public' and table_name=t.tbl and column_name=t.col
+       ) then
+      execute format('alter table public.%I rename to %I', t.tbl, t.tbl || '_legacy');
+      raise notice 'HEAL: public.% -> %_legacy (column % missing)', t.tbl, t.tbl, t.col;
+    end if;
+  end loop;
 end $$;
 
 -- ---------- 1) workspace + membership ----------
