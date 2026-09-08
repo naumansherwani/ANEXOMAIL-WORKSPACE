@@ -27,19 +27,31 @@ BUNSRC="$(command -v bun || echo /root/.bun/bin/bun)"
 # (execvp ... Permission denied). Is liye bun ki ek copy sab ke liye readable jagah par.
 BUN=/usr/local/bin/anexo-bun
 
-MAILBOXES="hello moveyourbusiness resolved billing trials abuse dmarc naumansherwani.founder leo"
+      # FINAL LIST (locked 8 Sep 2026, founder ka faisla)
+#   real mailbox: hello moveyourbusiness resolved billing leo
+#                 naumansherwani.founder (founder ka ek hi inbox)
+#                 humzasherwani (brother) raanasherwani (mother) — aam user premium
+#   sendonly:     noreply
+#   forward-only: postmaster abuse dmarc  -> sab resolved@ (koi inbox/password nahi)
+#   DELETED:      nauman support trials   (backup ke baad root se)
+MAILBOXES="hello moveyourbusiness resolved billing leo naumansherwani.founder humzasherwani raanasherwani"
 SENDONLY="noreply"
 # alias:target
-ALIASES="postmaster:abuse nauman:naumansherwani.founder support:resolved"
+ALIASES="postmaster:resolved abuse:resolved dmarc:resolved"
+# in addresses ka mailbox/alias khatam — maildir backup ke baad delete
+REMOVED="nauman support trials abuse dmarc postmaster"
 
 # FOUNDER SINGLE INBOX (locked 8 Sep 2026)
 #   - founder ka ek hi inbox: naumansherwani.founder@anexomail.com
-#   - har inbound address ki mail apni box mein bhi rehti hai AUR founder inbox
-#     mein bhi copy hoti hai (kuch bhi khota nahi, routing bhi zinda rehti hai)
-#   - sab mailboxes ka password EK — founder ke liye ek hi login
-#   - recovery account: anexomail27@gmail.com (server par kabhi password nahi print)
+#   - company addresses ki mail apni box mein bhi rehti hai AUR founder inbox mein
+#     bhi copy hoti hai. Family accounts (humza/raana) ki mail KABHI copy nahi hoti.
+#   - founder-side logins ka password EK; family accounts ka apna password
+#   - recovery account: anexomail27@gmail.com (password kabhi print nahi hota)
 FOUNDER_INBOX="naumansherwani.founder"
+FOUNDER_COPY="hello moveyourbusiness resolved billing leo"
+FAMILY_BOXES="humzasherwani raanasherwani"
 FOUNDER_RECOVERY="anexomail27@gmail.com"
+
 
 echo "==> packages"
 export DEBIAN_FRONTEND=noninteractive
@@ -100,12 +112,18 @@ if [ "$MAIL_ENV_OK" -ne 1 ]; then
   exit 2
 fi
 
-# FOUNDER SINGLE PASSWORD: ek hi value sab mailboxes par. Sirf ek dafa banti hai,
-# terminal par kabhi print nahi hoti, existing value kabhi overwrite nahi hoti.
+# FOUNDER SINGLE PASSWORD: ek hi value founder-side mailboxes par. Sirf ek dafa
+# banti hai, terminal par kabhi print nahi hoti, existing value overwrite nahi hoti.
 grep -q -E '^FOUNDER_MAIL_PASSWORD=.+' "$ENVFILE" || \
   printf 'FOUNDER_MAIL_PASSWORD=%s\n' "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
 grep -q -E '^FOUNDER_MAIL_RECOVERY=' "$ENVFILE" || \
   printf 'FOUNDER_MAIL_RECOVERY=%s\n' "$FOUNDER_RECOVERY" >> "$ENVFILE"
+# FAMILY ACCOUNTS: apna alag password (founder ka password unke pass nahi jata)
+for f in $FAMILY_BOXES; do
+  key="FAMILY_$(echo "$f" | tr 'a-z.' 'A-Z_')_PASSWORD"
+  grep -q -E "^${key}=.+" "$ENVFILE" || \
+    printf '%s=%s\n' "$key" "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
+done
 # shellcheck disable=SC1090
 set -a; . "$ENVFILE"; set +a
 
@@ -120,8 +138,16 @@ fi
 : > /etc/dovecot/users.tmp
 FOUNDER_HASH="$(doveadm pw -s SHA512-CRYPT -p "$FOUNDER_MAIL_PASSWORD")"
 for m in $MAILBOXES $SENDONLY; do
-  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$FOUNDER_HASH" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
+  HASH="$FOUNDER_HASH"
+  case " $FAMILY_BOXES " in
+    *" $m "*)
+      key="FAMILY_$(echo "$m" | tr 'a-z.' 'A-Z_')_PASSWORD"
+      HASH="$(doveadm pw -s SHA512-CRYPT -p "$(eval "printf '%s' \"\$$key\"")")"
+      ;;
+  esac
+  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$HASH" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
 done
+
 [ -f /etc/dovecot/users ] && cp /etc/dovecot/users /etc/dovecot/users.bak.$STAMP
 mv /etc/dovecot/users.tmp /etc/dovecot/users
 chown root:dovecot /etc/dovecot/users; chmod 640 /etc/dovecot/users
@@ -275,13 +301,28 @@ done
 for pair in $ALIASES; do
   printf '%s@%s  %s@%s\n' "${pair%%:*}" "$DOMAIN" "${pair##*:}" "$DOMAIN" >> /etc/postfix/valias
 done
-# FOUNDER SINGLE INBOX: har real mailbox ki mail apni box mein bhi jaati hai aur
-# founder inbox mein bhi copy hoti hai (khud founder box par koi alias nahi).
-for m in $MAILBOXES; do
+# FOUNDER SINGLE INBOX: sirf company addresses ki copy founder inbox mein jaati hai.
+# Family accounts (humza/raana) ki mail founder inbox mein KABHI nahi.
+for m in $FOUNDER_COPY; do
   [ "$m" = "$FOUNDER_INBOX" ] && continue
   printf '%s@%s  %s@%s, %s@%s\n' "$m" "$DOMAIN" "$m" "$DOMAIN" "$FOUNDER_INBOX" "$DOMAIN" >> /etc/postfix/valias
 done
 postmap /etc/postfix/vdomains /etc/postfix/vmailbox /etc/postfix/valias
+
+# --------------------------------------------------------------------------
+# 3b) DELETED addresses — backup pehle, phir root se delete
+# --------------------------------------------------------------------------
+BACKUPDIR=/var/backups/anexomail/maildirs-$STAMP
+for m in $REMOVED; do
+  BOX="/var/mail/vhosts/$DOMAIN/$m"
+  if [ -d "$BOX" ]; then
+    mkdir -p "$BACKUPDIR"
+    cp -a "$BOX" "$BACKUPDIR/$m"
+    rm -rf "$BOX"
+    echo ">>> deleted mailbox $m@$DOMAIN (backup: $BACKUPDIR/$m)"
+  fi
+done
+
 
 echo "==> postfix main.cf"
 postconf -e "myhostname = $MAILHOST"
