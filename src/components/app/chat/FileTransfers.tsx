@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 
 import { Row, Stat } from "@/components/app/analytics/AnalyticsBits";
+import { Button } from "@/components/ui/button";
 import {
   EVIDENCE_STEPS,
   bytesLabel,
