@@ -33,6 +33,8 @@ export type SessionUser = {
   name: string | null;
   mfa_enabled: boolean;
   onboarded: boolean;
+  /** Authority `public.founder_accounts` (Brain). Founder par awam ka claim/onboarding kabhi nahi. */
+  is_founder?: boolean;
   /**
    * The user's ANEXOMAIL identity, e.g. "nauman@anexomail.com". Every account
    * must own one before the workspace opens — social sign-in only proves who

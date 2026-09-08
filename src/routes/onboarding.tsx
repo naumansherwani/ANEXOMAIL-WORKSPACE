@@ -45,9 +45,14 @@ function OnboardingPage() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (status !== "signed-in" || !session) return;
+    // FOUNDER PROTOCOL: founder par awam ka org onboarding kabhi nahi.
+    if (session.user.is_founder) {
+      void navigate({ to: "/app", replace: true });
+      return;
+    }
     // Identity comes first: no workspace setup without an @anexomail.com address.
-    if (status === "signed-in" && session && !session.user.anexomail_address)
-      void navigate({ to: "/claim", replace: true });
+    if (!session.user.anexomail_address) void navigate({ to: "/claim", replace: true });
   }, [status, session, navigate]);
 
   const fail = (e: unknown) =>

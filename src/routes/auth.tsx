@@ -75,7 +75,12 @@ function AuthPage() {
     sessionToken.set(token);
     await refresh();
     const session = await api<{
-      user: { email: string; onboarded: boolean; anexomail_address?: string | null };
+      user: {
+        email: string;
+        onboarded: boolean;
+        is_founder?: boolean;
+        anexomail_address?: string | null;
+      };
     }>("/api/auth/session");
     // ABSM: guest checkout ka intent sign-in ke baad asli user se jodo (idempotent)
     const guestToken = window.sessionStorage.getItem("anexo.guest.checkout_token");
@@ -108,11 +113,14 @@ function AuthPage() {
       window.location.assign(checkout.url);
       return;
     }
-    const target = !session.user.anexomail_address
-      ? "/claim"
-      : session.user.onboarded
-        ? "/app"
-        : "/onboarding";
+    // FOUNDER PROTOCOL: founder ko awam ka claim/onboarding kabhi nahi — seedha /app.
+    const target = session.user.is_founder
+      ? "/app"
+      : !session.user.anexomail_address
+        ? "/claim"
+        : session.user.onboarded
+          ? "/app"
+          : "/onboarding";
     setRedirectTo(target);
     setShowSplash(true);
   };
@@ -185,19 +193,22 @@ function AuthPage() {
 
       if (mode === "signup") {
         if (password !== passwordConfirm) throw new Error("password_mismatch");
-        const res = await api<{ token?: string; confirmation_required?: boolean }>("/api/auth/signup", {
-          method: "POST",
-          body: JSON.stringify({
-            email,
-            password,
-            legal_name: name,
-            display_name: displayName,
-            work_role: workRole || null,
-            avatar_url: avatarUrl || null,
-            preferences: { locale: navigator.language },
-          }),
-          auth: false,
-        });
+        const res = await api<{ token?: string; confirmation_required?: boolean }>(
+          "/api/auth/signup",
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email,
+              password,
+              legal_name: name,
+              display_name: displayName,
+              work_role: workRole || null,
+              avatar_url: avatarUrl || null,
+              preferences: { locale: navigator.language },
+            }),
+            auth: false,
+          },
+        );
         if (res.confirmation_required || !res.token) {
           setLinkSent(true);
           notify.done("Confirm your email", `We sent a confirmation link to ${email}.`);
@@ -379,7 +390,10 @@ function AuthPage() {
             ) : mode === "link" ? (
               <Header title="Email me a link" sub="No password. The link signs you straight in." />
             ) : mode === "forgot" ? (
-              <Header title="Reset your password" sub="We will email a secure one-time reset link." />
+              <Header
+                title="Reset your password"
+                sub="We will email a secure one-time reset link."
+              />
             ) : mode === "reset" ? (
               <Header title="Choose a new password" sub="Use 6 to 15 characters." />
             ) : (
@@ -418,14 +432,50 @@ function AuthPage() {
                   <>
                     {mode === "signup" && (
                       <>
-                        <Field id="name" label="Full legal name" value={name} onChange={setName} autoComplete="name" placeholder="Nauman Sherwani" />
-                        <Field id="display-name" label="Display name" value={displayName} onChange={setDisplayName} placeholder="Nauman" />
-                        <Field id="work-role" label="Work role" value={workRole} onChange={setWorkRole} placeholder="Founder, designer, operations…" required={false} />
-                        <Field id="avatar-url" label="Profile photo URL (optional)" type="url" value={avatarUrl} onChange={setAvatarUrl} placeholder="https://…" required={false} />
+                        <Field
+                          id="name"
+                          label="Full legal name"
+                          value={name}
+                          onChange={setName}
+                          autoComplete="name"
+                          placeholder="Nauman Sherwani"
+                        />
+                        <Field
+                          id="display-name"
+                          label="Display name"
+                          value={displayName}
+                          onChange={setDisplayName}
+                          placeholder="Nauman"
+                        />
+                        <Field
+                          id="work-role"
+                          label="Work role"
+                          value={workRole}
+                          onChange={setWorkRole}
+                          placeholder="Founder, designer, operations…"
+                          required={false}
+                        />
+                        <Field
+                          id="avatar-url"
+                          label="Profile photo URL (optional)"
+                          type="url"
+                          value={avatarUrl}
+                          onChange={setAvatarUrl}
+                          placeholder="https://…"
+                          required={false}
+                        />
                       </>
                     )}
                     {mode !== "reset" && (
-                      <Field id="email" label="Work email" type="email" value={email} onChange={setEmail} autoComplete="email" placeholder="you@yourdomain.com" />
+                      <Field
+                        id="email"
+                        label="Work email"
+                        type="email"
+                        value={email}
+                        onChange={setEmail}
+                        autoComplete="email"
+                        placeholder="you@yourdomain.com"
+                      />
                     )}
                     {mode !== "link" && mode !== "forgot" && (
                       <PasswordField
@@ -437,7 +487,13 @@ function AuthPage() {
                       />
                     )}
                     {(mode === "signup" || mode === "reset") && (
-                      <PasswordField id="password-confirm" label="Confirm password" value={passwordConfirm} onChange={setPasswordConfirm} autoComplete="new-password" />
+                      <PasswordField
+                        id="password-confirm"
+                        label="Confirm password"
+                        value={passwordConfirm}
+                        onChange={setPasswordConfirm}
+                        autoComplete="new-password"
+                      />
                     )}
                   </>
                 )}
@@ -458,9 +514,9 @@ function AuthPage() {
                         ? "Send reset link"
                         : mode === "reset"
                           ? "Save new password"
-                      : mode === "link"
-                        ? "Send me the link"
-                        : "Sign in"}
+                          : mode === "link"
+                            ? "Send me the link"
+                            : "Sign in"}
                 </Button>
               </form>
             )}
@@ -468,7 +524,15 @@ function AuthPage() {
             {!challengeId && !linkSent && (
               <>
                 {mode === "login" && (
-                  <Button type="button" variant="ghost" className="mt-ax-2 w-full" onClick={() => { setError(null); setMode("forgot"); }}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="mt-ax-2 w-full"
+                    onClick={() => {
+                      setError(null);
+                      setMode("forgot");
+                    }}
+                  >
                     Forgot your password?
                   </Button>
                 )}
@@ -511,7 +575,11 @@ function AuthPage() {
                 </p>
 
                 <p className="ax-caption mt-ax-4 text-center">
-                  {mode === "signup" ? "Already have a workspace?" : mode === "forgot" || mode === "reset" ? "Remembered it?" : "New here?"}{" "}
+                  {mode === "signup"
+                    ? "Already have a workspace?"
+                    : mode === "forgot" || mode === "reset"
+                      ? "Remembered it?"
+                      : "New here?"}{" "}
                   <button
                     type="button"
                     className="ax-focus rounded font-semibold text-cyan-accent"
@@ -568,7 +636,7 @@ function Field({
       <Label htmlFor={id} className="ax-caption text-foreground">
         {label}
       </Label>
-       <Input id={id} value={value} required onChange={(e) => onChange(e.target.value)} {...rest} />
+      <Input id={id} value={value} required onChange={(e) => onChange(e.target.value)} {...rest} />
     </div>
   );
 }
@@ -589,10 +657,31 @@ function PasswordField({
   const [visible, setVisible] = useState(false);
   return (
     <div className="space-y-1.5">
-      <Label htmlFor={id} className="ax-caption text-foreground">{label}</Label>
+      <Label htmlFor={id} className="ax-caption text-foreground">
+        {label}
+      </Label>
       <div className="relative">
-        <Input id={id} type={visible ? "text" : "password"} value={value} required minLength={6} maxLength={15} autoComplete={autoComplete} className="pr-10" placeholder="6–15 characters" onChange={(event) => onChange(event.target.value)} />
-        <Button type="button" variant="ghost" size="icon" className="absolute right-0 top-0" aria-label={visible ? "Hide password" : "Show password"} title={visible ? "Hide password" : "Show password"} onClick={() => setVisible((current) => !current)}>
+        <Input
+          id={id}
+          type={visible ? "text" : "password"}
+          value={value}
+          required
+          minLength={6}
+          maxLength={15}
+          autoComplete={autoComplete}
+          className="pr-10"
+          placeholder="6–15 characters"
+          onChange={(event) => onChange(event.target.value)}
+        />
+        <Button
+          type="button"
+          variant="ghost"
+          size="icon"
+          className="absolute right-0 top-0"
+          aria-label={visible ? "Hide password" : "Show password"}
+          title={visible ? "Hide password" : "Show password"}
+          onClick={() => setVisible((current) => !current)}
+        >
           {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
         </Button>
       </div>
