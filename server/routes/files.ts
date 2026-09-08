@@ -19,6 +19,7 @@
 //   PHASE 16/17/18 (truth + safety, sab local — koi external API nahi)
 //   GET  /api/chat/file/truth?version=     → evidence chain (7 steps)
 //   GET  /api/chat/file/safety             → engines + queue + enforcement
+//   GET  /api/chat/file/download?version=  → PHASE 31C verified chunk stream (fallback)
 //   POST /api/chat/file/download/ack       → Downloaded step (blocked par 409)
 // ============================================================================
 import { createHash } from "crypto";
@@ -235,6 +236,44 @@ filesRouter.get("/safety", async (req, res) => {
   const r = await db!.rpc("file_safety_state", { _user: me.id });
   if (r.error) return fail(res, r.error);
   res.json(r.data);
+});
+
+// PHASE 31C — verified chunk stream (Rust /file/download ka mirror; fallback only).
+// DB manifest → chunks tarteeb se, har chunk ka sha256 DB se match, tab bytes.
+// Mismatch = stream wahin band; client "Downloaded" sirf poore bytes par likhta hai.
+filesRouter.get("/download", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const version = String(req.query.version || "");
+  if (!version) return res.status(400).json({ error: "bad_request", detail: "version required" });
+  const m = await db!.rpc("file_download_manifest", { _user: me.id, _version: version });
+  if (m.error) return fail(res, m.error);
+  const man: any = m.data;
+  if (man?.ok !== true) {
+    return res
+      .status(man?.reason === "not_found" ? 404 : 409)
+      .json({ error: man?.reason ?? "not_available", truth: man });
+  }
+  const safeName = String(man.name || "file").replace(/[^A-Za-z0-9 ._-]/g, "_");
+  res.status(200);
+  res.setHeader("content-type", String(man.content_type || "application/octet-stream"));
+  res.setHeader("content-disposition", `attachment; filename="${safeName}"`);
+  res.setHeader("x-file-sha256", String(man.file_sha256 || ""));
+  res.setHeader("x-file-version", version);
+  res.setHeader("cache-control", "private, no-store");
+  if (Number(man.bytes) > 0) res.setHeader("content-length", String(man.bytes));
+  for (const c of man.chunks as { idx: number; sha256: string }[]) {
+    const dl = await db!.storage
+      .from("chat-files")
+      .download(`${man.storage_prefix}/chunks/${c.idx}`);
+    if (dl.error || !dl.data) return res.destroy(new Error(`storage_get_${c.idx}`));
+    const buf = Buffer.from(await dl.data.arrayBuffer());
+    if (createHash("sha256").update(buf).digest("hex") !== String(c.sha256).toLowerCase()) {
+      return res.destroy(new Error(`chunk_${c.idx}_hash_mismatch`));
+    }
+    if (!res.write(buf)) await new Promise<void>((ok) => res.once("drain", () => ok()));
+  }
+  res.end();
 });
 
 // Downloaded step: sirf available + clean file par. Blocked = 409, kabhi bytes nahi.

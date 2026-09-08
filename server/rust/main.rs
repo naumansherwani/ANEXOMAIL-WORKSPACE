@@ -2828,6 +2828,119 @@ async fn file_chunk(headers: HeaderMap, body: axum::body::Bytes) -> axum::respon
 //                      text-like bytes par. Insaani guftagu kabhi nahi.
 // ============================================================================
 
+// ============================================================================
+// PHASE 31C — FILE DOWNLOAD (Phase 16 "downloaded" step ka asli raasta)
+// GET /file/download?version=<uuid>   header: authorization Bearer <token>
+// DB manifest (sirf ready + clean + available, caller participant) → chunks
+// tarteeb se storage se, har chunk ka sha256 DB wale se match → tab hi bytes
+// aage jate hain. Mismatch = stream wahin band (client ko adhoori file milti
+// hai, jo browser fail karta hai) — "Downloaded" step client tab likhta hai
+// jab poore bytes aa jayen (`file.download.ack`). Prefix client ko kabhi nahi.
+// ============================================================================
+async fn file_download(
+    headers: HeaderMap,
+    axum::extract::Query(q): axum::extract::Query<std::collections::HashMap<String, String>>,
+) -> axum::response::Response {
+    let token = match bearer(&headers) {
+        Some(t) => t,
+        None => return err(StatusCode::UNAUTHORIZED, "unauthorized", "Missing bearer").into_response(),
+    };
+    let me = match chat_identity(&token).await {
+        Ok(me) => me,
+        Err((status, code, detail)) => {
+            return (status, Json(json!({ "error": { "code": code, "message": detail } })))
+                .into_response()
+        }
+    };
+    let version = q.get("version").cloned().unwrap_or_default();
+    if version.is_empty() {
+        return err(StatusCode::BAD_REQUEST, "bad_request", "version required").into_response();
+    }
+    let man = match sb_rpc(
+        "file_download_manifest",
+        json!({ "_user": me.id, "_version": version }),
+    )
+    .await
+    {
+        Ok(v) => v,
+        Err(e) => return err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response(),
+    };
+    if man.get("ok").and_then(|v| v.as_bool()) != Some(true) {
+        let reason = man.get("reason").and_then(|v| v.as_str()).unwrap_or("not_available");
+        let status = match reason {
+            "not_found" => StatusCode::NOT_FOUND,
+            _ => StatusCode::CONFLICT,
+        };
+        return (status, Json(json!({ "error": { "code": reason, "message": reason }, "truth": man })))
+            .into_response();
+    }
+
+    let prefix = man.get("storage_prefix").and_then(|v| v.as_str()).unwrap_or("").to_string();
+    let name = man.get("name").and_then(|v| v.as_str()).unwrap_or("file").to_string();
+    let ctype = man
+        .get("content_type")
+        .and_then(|v| v.as_str())
+        .unwrap_or("application/octet-stream")
+        .to_string();
+    let total = man.get("bytes").and_then(|v| v.as_i64()).unwrap_or(0);
+    let file_sha = man.get("file_sha256").and_then(|v| v.as_str()).unwrap_or("").to_string();
+    let chunks: Vec<(i64, String)> = man
+        .get("chunks")
+        .and_then(|v| v.as_array())
+        .map(|a| {
+            a.iter()
+                .map(|c| {
+                    (
+                        c.get("idx").and_then(|v| v.as_i64()).unwrap_or(0),
+                        c.get("sha256").and_then(|v| v.as_str()).unwrap_or("").to_lowercase(),
+                    )
+                })
+                .collect()
+        })
+        .unwrap_or_default();
+
+    // Bounded channel = backpressure: ek waqt mein sirf 2 chunk memory mein.
+    let (tx, rx) = tokio::sync::mpsc::channel::<Result<axum::body::Bytes, std::io::Error>>(2);
+    tokio::spawn(async move {
+        for (idx, want) in chunks {
+            let got = match sb_storage_get(&format!("{prefix}/chunks/{idx}")).await {
+                Ok(b) => b,
+                Err(e) => {
+                    let _ = tx.send(Err(std::io::Error::other(e))).await;
+                    return;
+                }
+            };
+            if sha256_hex(&got) != want {
+                // Storage ka chunk DB ke sabit hash se nahi milta — bytes aage nahi jate.
+                let _ = tx
+                    .send(Err(std::io::Error::other(format!("chunk_{idx}_hash_mismatch"))))
+                    .await;
+                return;
+            }
+            if tx.send(Ok(axum::body::Bytes::from(got))).await.is_err() {
+                return; // client gaya
+            }
+        }
+    });
+    let stream = tokio_stream::wrappers::ReceiverStream::new(rx);
+    let safe_name: String = name
+        .chars()
+        .map(|c| if c.is_ascii_alphanumeric() || ".-_ ".contains(c) { c } else { '_' })
+        .collect();
+    let mut resp = axum::response::Response::builder()
+        .status(StatusCode::OK)
+        .header("content-type", ctype)
+        .header("content-disposition", format!("attachment; filename=\"{safe_name}\""))
+        .header("x-file-sha256", file_sha)
+        .header("x-file-version", version)
+        .header("cache-control", "private, no-store");
+    if total > 0 {
+        resp = resp.header("content-length", total.to_string());
+    }
+    resp.body(axum::body::Body::from_stream(stream))
+        .unwrap_or_else(|_| err(StatusCode::INTERNAL_SERVER_ERROR, "stream_error", "body").into_response())
+}
+
 async fn sb_storage_get(path: &str) -> Result<Vec<u8>, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
     let res = reqwest::Client::new()
@@ -3387,6 +3500,8 @@ async fn main() {
             "/file/chunk",
             post(file_chunk).layer(axum::extract::DefaultBodyLimit::max(16 * 1024 * 1024)),
         )
+        // PHASE 31C — verified chunk stream (Phase 16 "downloaded" step ka raasta).
+        .route("/file/download", get(file_download))
         .layer(cors);
 
     let addr = SocketAddr::from(([0, 0, 0, 0], PORT));

@@ -20,9 +20,11 @@ import {
 } from "lucide-react";
 
 import { Row, Stat } from "@/components/app/analytics/AnalyticsBits";
+import { Button } from "@/components/ui/button";
 import {
   EVIDENCE_STEPS,
   bytesLabel,
+  downloadFile,
   useFileEngine,
   useFileSafety,
   useFileTransfers,
@@ -220,6 +222,53 @@ function SafetyPanel() {
   );
 }
 
+/**
+ * PHASE 31C — asli download. Engine har chunk ka sha256 verify karke stream
+ * karta hai; "Downloaded" step sirf poore bytes ke baad likha jata hai. Blocked /
+ * scanning file par engine 409 deta hai — yahan wahi sach dikhta hai.
+ */
+function DownloadButton({ versionId, bytes }: { versionId: string; bytes: number }) {
+  const [state, setState] = useState<
+    | { kind: "idle" }
+    | { kind: "busy"; received: number }
+    | { kind: "done"; acked: boolean }
+    | { kind: "fail"; reason: string }
+  >({ kind: "idle" });
+  const run = async () => {
+    setState({ kind: "busy", received: 0 });
+    const out = await downloadFile(versionId, (received) => setState({ kind: "busy", received }));
+    if (out.ok) setState({ kind: "done", acked: out.acked });
+    else setState({ kind: "fail", reason: out.reason });
+  };
+  if (state.kind === "busy") {
+    const pct = bytes > 0 ? Math.min(100, Math.round((state.received / bytes) * 100)) : 0;
+    return (
+      <span className="text-xs" aria-live="polite">
+        Verifying + downloading {pct}% ({bytesLabel(state.received)})
+      </span>
+    );
+  }
+  if (state.kind === "done") {
+    return (
+      <span className="text-xs text-foreground" aria-live="polite">
+        Downloaded{state.acked ? " · recorded" : " · record pending"}
+      </span>
+    );
+  }
+  return (
+    <span className="flex items-center gap-2">
+      <Button type="button" size="sm" variant="outline" onClick={run}>
+        Download
+      </Button>
+      {state.kind === "fail" && (
+        <span className="text-xs text-destructive" role="alert">
+          Not downloaded: {state.reason.replace(/_/g, " ")}
+        </span>
+      )}
+    </span>
+  );
+}
+
 function VersionList({ fileId }: { fileId: string }) {
   const q = useFileVersions(fileId);
   if (q.isPending) return <p className="mt-2 text-sm text-steel">Loading versions…</p>;
@@ -228,11 +277,12 @@ function VersionList({ fileId }: { fileId: string }) {
   return (
     <ul className="mt-2 space-y-1 text-sm">
       {versions.map((v) => (
-        <li key={v.version_id} className="flex flex-wrap gap-2 text-muted-foreground">
+        <li key={v.version_id} className="flex flex-wrap items-center gap-2 text-muted-foreground">
           <span className="text-foreground">v{v.version}</span>
           <span>{bytesLabel(v.bytes)}</span>
           <span>{v.state}</span>
           <span>{v.ready_at ? new Date(v.ready_at).toLocaleString() : "in transfer"}</span>
+          {v.state === "ready" && <DownloadButton versionId={v.version_id} bytes={v.bytes} />}
         </li>
       ))}
     </ul>

@@ -143,3 +143,19 @@ select id, started_at, ended_at, participants from public.chat_call_sessions ord
 | A5 Family entitlement | TODO — `family_grants_apply() = 2` |
 | B Chat message 2-user | TODO — B1 + B3 screenshot |
 | C Video call 2-user | TODO — gate GREEN + C2 |
+
+## Phase 31C — file download proof (TODO)
+
+Server par (SQL editor):
+```sql
+-- anexochat/sql/phase31c_file_download_manifest.sql poora paste karo, phir:
+select public.file_download_manifest('00000000-0000-0000-0000-000000000000'::uuid, gen_random_uuid());
+-- expected: {"found":false,"ok":false,"reason":"not_found"}
+```
+Server terminal:
+```bash
+cd /opt/anexomail-web && git pull && bash server/rust/deploy.sh && bash server/deploy-brain.sh
+curl -s -o /dev/null -w '%{http_code}\n' "https://anexochat.anexomail.com/file/download?version=$(uuidgen)"   # 401 bina token = PASS
+```
+Browser: `/app/chat` → Workspace file engine → ek file upload → version `ready` → **Download** → status "Downloaded · recorded".
+SQL saboot: `select * from public.file_evidence where state='downloaded' order by created_at desc limit 1;`

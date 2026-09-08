@@ -61,8 +61,9 @@ magar koi button/panel unhe call nahi karta tha. Ab wire:
 | 31A | `connectReport` | `/app/chat` — call khatam hone par “Last call” readings (`CallConnectReport.tsx`) |
 
 Abhi bhi bina page (sach):
-- `ackDownload` / `transferState` — file engine abhi download URL nahi deta (blueprint mein download surface Phase 32+), is liye "Downloaded" step UI se nahi likha ja sakta. TODO.
-- `useSilentThreadRescue` (owner + due lazmi) · `useQuoteEmailInChat` (mail message text select → chat quote) — mail thread par selection UI chahiye. TODO (chhota).
+- `ackDownload` — READY (Phase 31C): SQL `anexochat/sql/phase31c_file_download_manifest.sql` (`file_download_manifest`, service_role only) · Rust `GET /file/download?version=` (:3200, har chunk sha256 verify karke stream, bounded channel) · Bun `GET /api/chat/file/download` fallback · frontend `downloadFile()` in `src/lib/chat-files.ts` → poore bytes ke BAAD `file.download.ack` · UI `FileTransfers.tsx` VersionList "Download" (sirf `state=ready`). `transferState` pehle se upload resume mein wired.
+- `useSilentThreadRescue` — READY: `src/components/app/mail/ThreadRescue.tsx` ("Rescue thread" in `ThreadHeaderActions`) — owner `useOrgMembers("active")` se, due datetime, title ≥3 → `chat.bridge.rescue`.
+- `useQuoteEmailInChat` — READY: `src/components/app/mail/QuoteInChat.tsx` har mail message ke neeche — selected text → linked conversation (reuse/open) → asli `chat.send` → `chat.bridge.quote` (SHA256 seal).
 - `useSplitView` · `setRingSound` · `uploadAvatar` · `ringState` · `sfuState` · `connectHealth` — helper/founder-only readings. TODO ya not-needed.
 
 Status: READY (type-check 0 · lint 0 errors · sandbox render bina crash). DONE sirf live proof (`docs/wire/26`) par.

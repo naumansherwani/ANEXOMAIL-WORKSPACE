@@ -195,6 +195,118 @@ export async function ackDownload(versionId: string, bytes: number) {
   }).catch(() => ({ ok: false, reason: "unreachable" }) as { ok: boolean; reason?: string });
 }
 
+export type DownloadOutcome =
+  | { ok: true; bytes: number; acked: boolean; sha256_expected: string | null }
+  | { ok: false; reason: string; truth?: unknown };
+
+/**
+ * PHASE 31C — asli download. PRIMARY Rust `GET {BASE}/file/download` (HTTP/3);
+ * 404/502/offline par Bun `/api/chat/file/download`. Engine har chunk ka sha256
+ * DB ke sabit hash se match karke hi bytes deta hai. Browser poore bytes milne
+ * ke BAAD `file.download.ack` bhejta hai — "Downloaded" step kabhi pehle nahi.
+ * File System Access API ho to disk par stream (5 GB safe), warna blob.
+ */
+export async function downloadFile(
+  versionId: string,
+  onProgress?: (received: number, total: number | null) => void,
+): Promise<DownloadOutcome> {
+  const token = sessionToken.get();
+  if (!token) return { ok: false, reason: "not_signed_in" };
+  const headers = { authorization: `Bearer ${token}` };
+  const q = `version=${encodeURIComponent(versionId)}`;
+
+  let res: Response | null = null;
+  try {
+    res = await fetch(`${BASE}/file/download?${q}`, { headers });
+    if ([404, 501, 502, 503, 504].includes(res.status) && !res.headers.get("x-file-version")) {
+      res = null;
+    }
+  } catch {
+    res = null;
+  }
+  if (!res) {
+    try {
+      res = await fetch(`${BASE}/api/chat/file/download?${q}`, { headers });
+    } catch {
+      return { ok: false, reason: "unreachable" };
+    }
+  }
+  if (!res.ok) {
+    let payload: unknown = null;
+    try {
+      payload = await res.json();
+    } catch {
+      /* no body */
+    }
+    const p = payload as { error?: string | { code?: string }; truth?: unknown } | null;
+    const reason =
+      typeof p?.error === "string" ? p.error : (p?.error?.code ?? `http_${res.status}`);
+    return { ok: false, reason, truth: p?.truth };
+  }
+
+  const total = Number(res.headers.get("content-length")) || null;
+  const expected = res.headers.get("x-file-sha256");
+  const name =
+    /filename="([^"]+)"/.exec(res.headers.get("content-disposition") ?? "")?.[1] ?? "file";
+  if (!res.body) return { ok: false, reason: "no_body" };
+
+  let received = 0;
+  const reader = res.body.getReader();
+
+  // Disk stream jab browser de (Chromium): 5 GB memory mein nahi aati.
+  const picker = (
+    window as unknown as {
+      showSaveFilePicker?: (o: { suggestedName: string }) => Promise<{
+        createWritable: () => Promise<
+          WritableStreamDefaultWriter<Uint8Array> & { close(): Promise<void> }
+        >;
+      }>;
+    }
+  ).showSaveFilePicker;
+
+  try {
+    if (picker) {
+      const handle = await picker({ suggestedName: name });
+      const w = await handle.createWritable();
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        await w.write(value);
+        received += value.byteLength;
+        onProgress?.(received, total);
+      }
+      await w.close();
+    } else {
+      const parts: BlobPart[] = [];
+      for (;;) {
+        const { value, done } = await reader.read();
+        if (done) break;
+        parts.push(value);
+        received += value.byteLength;
+        onProgress?.(received, total);
+      }
+      const url = URL.createObjectURL(new Blob(parts));
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = name;
+      a.click();
+      setTimeout(() => URL.revokeObjectURL(url), 30_000);
+    }
+  } catch (e) {
+    // Engine ne mismatch par stream band kiya, ya user ne picker cancel kiya.
+    return {
+      ok: false,
+      reason: (e as Error)?.name === "AbortError" ? "cancelled" : "stream_broken",
+    };
+  }
+
+  if (total !== null && received !== total) {
+    return { ok: false, reason: "incomplete", truth: { received, total } };
+  }
+  const ack = await ackDownload(versionId, received);
+  return { ok: true, bytes: received, acked: ack.ok === true, sha256_expected: expected };
+}
+
 export async function fileTruth(versionId: string): Promise<FileTruth> {
   return chatCall<FileTruth>(
     "file.truth",
