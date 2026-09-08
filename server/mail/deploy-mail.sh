@@ -78,21 +78,34 @@ mail_gid = vmail
 first_valid_uid = 5000
 disable_plaintext_auth = yes
 auth_mechanisms = plain login
-passdb { driver = passwd-file
-  args = scheme=SHA512-CRYPT username_format=%u /etc/dovecot/users }
-userdb { driver = passwd-file
+passdb {
+  driver = passwd-file
+  args = scheme=SHA512-CRYPT username_format=%u /etc/dovecot/users
+}
+userdb {
+  driver = passwd-file
   args = username_format=%u /etc/dovecot/users
-  default_fields = uid=vmail gid=vmail home=/var/mail/vhosts/%d/%n }
+  default_fields = uid=vmail gid=vmail home=/var/mail/vhosts/%d/%n
+}
 service auth {
-  unix_listener /var/spool/postfix/private/auth { mode = 0660 user = postfix group = postfix }
+  unix_listener /var/spool/postfix/private/auth {
+    mode = 0660
+    user = postfix
+    group = postfix
+  }
 }
 service lmtp {
-  unix_listener /var/spool/postfix/private/dovecot-lmtp { mode = 0600 user = postfix group = postfix }
+  unix_listener /var/spool/postfix/private/dovecot-lmtp {
+    mode = 0600
+    user = postfix
+    group = postfix
+  }
 }
 ssl = required
 ssl_cert = </etc/anexomail/mail-cert.pem
 ssl_key  = </etc/anexomail/mail-key.pem
 EOF
+
 
 # TLS cert: Caddy ka cert copy, warna self-signed (gate sach report karega)
 CADDY_CERTS=/var/lib/caddy/.local/share/caddy/certificates
