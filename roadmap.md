@@ -9,6 +9,7 @@
 - [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output
 
 ## WIRE (sirf copy-paste — koi edit nahi)
+- [x] SERVER NOW: Storage Box registration se ghalat Founder JWT dependency hata kar protected SUPABASE4 service RPC lagana
 - [ ] SERVER VERIFY: `SUPABASE4_*` protected values se mail pipe auto-sync, sender/recipient order aur queued mail retry ka live GREEN output
 - [x] SERVER NOW: mail queue failure ko self-diagnosing/self-retry banana aur final mail gate GREEN karna
 - [x] SERVER NOW: har real service port ko one-command deploy + truthful protocol gate dena; SFU ko jhoota DONE/200 na kehna
