@@ -16,12 +16,21 @@ function PrefetchPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Rocket className="size-3.5" aria-hidden="true" /> Prefetch brain</>}
+        eyebrow={
+          <>
+            <Rocket className="size-3.5" aria-hidden="true" /> Prefetch brain
+          </>
+        }
         title="The next screen is already loaded"
         blurb="We predict the thread you are about to open and fetch it early. Here is the hit rate, the time it saved you, and every surface still starting cold."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/perf/prefetch"
           skeleton={<StatSkeleton rows={5} />}
         >
@@ -42,7 +51,9 @@ function PrefetchPage() {
               <ul className="mt-ax-3 space-y-1.5">
                 {d.predictions.map((p) => (
                   <Row key={p.surface}>
-                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{p.surface}</span>
+                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                      {p.surface}
+                    </span>
                     <span className="text-muted-foreground">
                       {p.opened}/{p.predicted} opened
                     </span>
@@ -56,8 +67,12 @@ function PrefetchPage() {
               <ul className="mt-ax-3 space-y-1.5">
                 {d.cold_surfaces.map((c) => (
                   <Row key={c.surface}>
-                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{c.surface}</span>
-                    <span className="text-muted-foreground">first paint {ms(c.first_paint_ms)}</span>
+                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                      {c.surface}
+                    </span>
+                    <span className="text-muted-foreground">
+                      first paint {ms(c.first_paint_ms)}
+                    </span>
                     <span className="text-steel">warm {ms(c.warm_ms)}</span>
                     <span className="ml-auto text-amber-400">{c.cold_starts} cold starts</span>
                   </Row>

@@ -30,7 +30,6 @@ function onFounderHost(): boolean {
   const h = window.location.hostname;
   return (
     h.startsWith("founderworkspace.") ||
-    
     h === "localhost" ||
     h === "127.0.0.1" ||
     h.endsWith(".lovable.app") ||
@@ -54,8 +53,7 @@ function useAllRoutes(): { public: string[]; app: string[] } {
       .filter((p) => !p.includes("$"))
       .filter((p, i, arr) => arr.indexOf(p) === i);
 
-    const sort = (a: string, b: string) =>
-      a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b);
+    const sort = (a: string, b: string) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b));
 
     return {
       public: paths.filter((p) => !p.startsWith("/app")).sort(sort),

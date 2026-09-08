@@ -134,9 +134,7 @@ function MoveInPage() {
                   {s.n}
                 </span>
                 <h2 className="mt-4 text-lg font-bold text-foreground">{s.title}</h2>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {s.body}
-                </p>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
               </li>
             ))}
           </ol>
@@ -160,8 +158,8 @@ function MoveInPage() {
         <section className="ax-container pb-16">
           <h2 className="text-2xl text-foreground md:text-3xl">Book your move</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Fixed one-off bands by mailbox count. Pay securely, and our engineers start the
-            planning call the same week. 50% books the move, 50% on sign-off.
+            Fixed one-off bands by mailbox count. Pay securely, and our engineers start the planning
+            call the same week. 50% books the move, 50% on sign-off.
           </p>
           <div className="mt-7 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -185,8 +183,11 @@ function MoveInPage() {
             ))}
           </div>
           <p className="mt-4 max-w-2xl text-xs leading-relaxed text-muted-foreground">
-            Not sure which band fits? <Link to="/migration" className="underline">Get a move-in quote</Link> and
-            we confirm the band in writing before anything starts.
+            Not sure which band fits?{" "}
+            <Link to="/migration" className="underline">
+              Get a move-in quote
+            </Link>{" "}
+            and we confirm the band in writing before anything starts.
           </p>
         </section>
 
@@ -214,7 +215,10 @@ function MoveInPage() {
             <ul className="mt-6 space-y-3">
               {youProvide.map((y) => (
                 <li key={y} className="flex gap-3 text-sm leading-relaxed text-muted-foreground">
-                  <span aria-hidden className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground/50" />
+                  <span
+                    aria-hidden
+                    className="mt-2 size-1.5 shrink-0 rounded-full bg-foreground/50"
+                  />
                   {y}
                 </li>
               ))}
@@ -223,7 +227,9 @@ function MoveInPage() {
         </section>
 
         <section className="ax-container pb-24">
-          <h2 className="text-2xl text-foreground md:text-3xl">Timeline, cutover and the honest bits</h2>
+          <h2 className="text-2xl text-foreground md:text-3xl">
+            Timeline, cutover and the honest bits
+          </h2>
           <div className="mt-7 grid gap-4 md:grid-cols-2">
             {facts.map((f) => (
               <article key={f.q} className="ax-plane rounded-3xl p-6">

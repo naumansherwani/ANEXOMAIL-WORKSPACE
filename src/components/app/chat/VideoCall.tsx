@@ -8,7 +8,16 @@
  *   - Har value asli getStats reading hai. Reading na ho to "measuring" —
  *     speed, latency ya quality ka jhoota claim kabhi nahi.
  */
-import { BellRing, ChevronDown, Mic, MicOff, Network, PhoneOff, Video, VideoOff } from "lucide-react";
+import {
+  BellRing,
+  ChevronDown,
+  Mic,
+  MicOff,
+  Network,
+  PhoneOff,
+  Video,
+  VideoOff,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import type { CallPhase, CallStats } from "@/lib/chat-call";
@@ -100,8 +109,7 @@ export function VideoCallOverlay({
   useEffect(() => {
     const el = remoteRef.current;
     if (!el) return;
-    const read = () =>
-      setReceived(el.videoWidth ? { w: el.videoWidth, h: el.videoHeight } : null);
+    const read = () => setReceived(el.videoWidth ? { w: el.videoWidth, h: el.videoHeight } : null);
     el.addEventListener("loadedmetadata", read);
     el.addEventListener("resize", read);
     read();
@@ -117,8 +125,7 @@ export function VideoCallOverlay({
   if (phase === "idle" || phase === "ended") return null;
 
   const res = stats.width && stats.height ? `${stats.width}×${stats.height}` : "measuring";
-  const label =
-    phase === "live" ? "Connected" : phase === "reconnecting" ? "Reconnecting" : phase;
+  const label = phase === "live" ? "Connected" : phase === "reconnecting" ? "Reconnecting" : phase;
   const dot = stats.quality ? DOT[stats.quality]! : "bg-muted-foreground";
 
   return (
@@ -139,7 +146,7 @@ export function VideoCallOverlay({
         {/* PHASE 10B — NEW ADDED: honest quality indicator + AUTO/manual selector.
             Rung sirf tab selectable jab camera ne woh resolution di ho. */}
         <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-foreground">
-          ● {stats.rung_label === "measuring" ? capture?.label ?? "measuring" : stats.rung_label}
+          ● {stats.rung_label === "measuring" ? (capture?.label ?? "measuring") : stats.rung_label}
         </span>
         <label className="inline-flex items-center gap-1">
           <span className="sr-only">Video quality</span>
@@ -203,12 +210,20 @@ export function VideoCallOverlay({
         </p>
       ) : null}
 
-
       {open && showTechnical ? (
         <div className="border-b border-border bg-card/70 px-4 py-2 text-[11px]">
-          <Row label="Round-trip time" value={stats.rtt_ms == null ? "measuring" : `${stats.rtt_ms} ms`} />
-          <Row label="Jitter" value={stats.jitter_ms == null ? "measuring" : `${stats.jitter_ms} ms`} />
-          <Row label="Packet loss" value={stats.loss_pct == null ? "measuring" : `${stats.loss_pct}%`} />
+          <Row
+            label="Round-trip time"
+            value={stats.rtt_ms == null ? "measuring" : `${stats.rtt_ms} ms`}
+          />
+          <Row
+            label="Jitter"
+            value={stats.jitter_ms == null ? "measuring" : `${stats.jitter_ms} ms`}
+          />
+          <Row
+            label="Packet loss"
+            value={stats.loss_pct == null ? "measuring" : `${stats.loss_pct}%`}
+          />
           <Row
             label="Media path"
             value={
@@ -219,7 +234,10 @@ export function VideoCallOverlay({
                   : "measuring"
             }
           />
-          <Row label="Bitrate" value={stats.bitrate_kbps == null ? "measuring" : `${stats.bitrate_kbps} kbps`} />
+          <Row
+            label="Bitrate"
+            value={stats.bitrate_kbps == null ? "measuring" : `${stats.bitrate_kbps} kbps`}
+          />
           <Row label="Frame rate" value={stats.fps == null ? "measuring" : `${stats.fps} fps`} />
           <Row label="Resolution" value={res} />
           {/* PHASE 10B — NEW ADDED: capture / encode / decode alag alag sach */}
@@ -249,22 +267,40 @@ export function VideoCallOverlay({
                   : "measuring"
             }
           />
-          <Row label="Quality ladder" value={quality === "auto" ? `AUTO · ${stats.rung ?? "measuring"}` : quality} />
+          <Row
+            label="Quality ladder"
+            value={quality === "auto" ? `AUTO · ${stats.rung ?? "measuring"}` : quality}
+          />
           <Row label="Encoder limitation" value={stats.limitation ?? "measuring"} />
           <Row
             label="Available uplink"
-            value={stats.available_out_kbps == null ? "measuring" : `${stats.available_out_kbps} kbps`}
+            value={
+              stats.available_out_kbps == null ? "measuring" : `${stats.available_out_kbps} kbps`
+            }
           />
-          <Row label="Frames dropped" value={stats.frames_dropped == null ? "measuring" : String(stats.frames_dropped)} />
+          <Row
+            label="Frames dropped"
+            value={stats.frames_dropped == null ? "measuring" : String(stats.frames_dropped)}
+          />
           <Row
             label="Codec support"
-            value={[codecs.av1 && "AV1", codecs.vp9 && "VP9", codecs.h264 && "H.264", codecs.vp8 && "VP8"]
-              .filter(Boolean)
-              .join(" · ") || "unknown"}
+            value={
+              [
+                codecs.av1 && "AV1",
+                codecs.vp9 && "VP9",
+                codecs.h264 && "H.264",
+                codecs.vp8 && "VP8",
+              ]
+                .filter(Boolean)
+                .join(" · ") || "unknown"
+            }
           />
           <Row label="Video codec" value={stats.video_codec ?? "negotiating"} />
           <Row label="Audio codec" value={stats.audio_codec ?? "opus"} />
-          <Row label="Setup time" value={stats.setup_ms == null ? "measuring" : `${stats.setup_ms} ms`} />
+          <Row
+            label="Setup time"
+            value={stats.setup_ms == null ? "measuring" : `${stats.setup_ms} ms`}
+          />
           <Row label="Network recoveries" value={String(stats.ice_restarts)} />
           <Row
             label="Signaling"
@@ -279,7 +315,11 @@ export function VideoCallOverlay({
           <Row
             label="TURN fallback"
             value={
-              turnAvailable == null ? "checking" : turnAvailable ? "Available" : "Not available (P2P only)"
+              turnAvailable == null
+                ? "checking"
+                : turnAvailable
+                  ? "Available"
+                  : "Not available (P2P only)"
             }
           />
         </div>

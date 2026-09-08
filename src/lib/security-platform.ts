@@ -74,8 +74,18 @@ export type Anomaly = {
 };
 
 export type EncryptionState = {
-  at_rest: { surface: string; algorithm: string; state: "on" | "off" | "partial"; detail: string | null }[];
-  in_transit: { hop: string; protocol: string; cipher: string | null; state: "on" | "off" | "partial" }[];
+  at_rest: {
+    surface: string;
+    algorithm: string;
+    state: "on" | "off" | "partial";
+    detail: string | null;
+  }[];
+  in_transit: {
+    hop: string;
+    protocol: string;
+    cipher: string | null;
+    state: "on" | "off" | "partial";
+  }[];
   key_rotated_at: string | null;
   next_rotation_at: string | null;
   ledger: { at: string; action: string; surface: string; hash: string }[];
@@ -88,7 +98,12 @@ export type OwnershipProof = {
   passed: number;
   failed: number;
   proof_hash: string | null;
-  checks: { check: string; result: "pass" | "fail" | "skip"; observed: string | null; fix: string | null }[];
+  checks: {
+    check: string;
+    result: "pass" | "fail" | "skip";
+    observed: string | null;
+    fix: string | null;
+  }[];
 };
 
 export type SecurityDashboard = {
@@ -114,7 +129,7 @@ export type FounderSecurity = {
   worst_tenants: { tenant: string; anomalies: number; failed_logins: number }[];
 };
 
-const get = <T,>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
+const get = <T>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
 
 export const useSecurityDashboard = () =>
   useQuery<SecurityDashboard, ApiError>({
@@ -135,17 +150,30 @@ const invalidate = (keys: string[][]) => (qc: ReturnType<typeof useQueryClient>)
 
 export const useSetDeviceState = () => {
   const qc = useQueryClient();
-  return useMutation<{ device: TrustDevice }, ApiError, { device_id: string; state: TrustDevice["state"] }>({
+  return useMutation<
+    { device: TrustDevice },
+    ApiError,
+    { device_id: string; state: TrustDevice["state"] }
+  >({
     mutationFn: (body) =>
-      rpcOrRest("security.deviceState", { path: "/api/security/devices/state", method: "POST", body }),
-    onSuccess: () => invalidate([["security", "devices"], ["security", "dashboard"]])(qc),
+      rpcOrRest("security.deviceState", {
+        path: "/api/security/devices/state",
+        method: "POST",
+        body,
+      }),
+    onSuccess: () =>
+      invalidate([
+        ["security", "devices"],
+        ["security", "dashboard"],
+      ])(qc),
   });
 };
 
 export const useSecuritySessions = () =>
   useQuery<{ sessions: SecuritySession[] }, ApiError>({
     queryKey: ["security", "sessions"],
-    queryFn: () => get<{ sessions: SecuritySession[] }>("security.sessions", "/api/security/sessions"),
+    queryFn: () =>
+      get<{ sessions: SecuritySession[] }>("security.sessions", "/api/security/sessions"),
     retry: false,
   });
 
@@ -153,15 +181,27 @@ export const useKillSecuritySession = () => {
   const qc = useQueryClient();
   return useMutation<{ ok: boolean }, ApiError, { session_id: string }>({
     mutationFn: (body) =>
-      rpcOrRest("security.killSession", { path: "/api/security/sessions/kill", method: "POST", body }),
-    onSuccess: () => invalidate([["security", "sessions"], ["security", "dashboard"]])(qc),
+      rpcOrRest("security.killSession", {
+        path: "/api/security/sessions/kill",
+        method: "POST",
+        body,
+      }),
+    onSuccess: () =>
+      invalidate([
+        ["security", "sessions"],
+        ["security", "dashboard"],
+      ])(qc),
   });
 };
 
 /** Blast-radius: sab sessions + non-current devices, ek click, ledger entry ke saath. */
 export const useKillSwitch = () => {
   const qc = useQueryClient();
-  return useMutation<{ ok: boolean; sessions_killed: number; devices_blocked: number; hash: string }, ApiError, { reason?: string }>({
+  return useMutation<
+    { ok: boolean; sessions_killed: number; devices_blocked: number; hash: string },
+    ApiError,
+    { reason?: string }
+  >({
     mutationFn: (body) =>
       rpcOrRest("security.killSwitch", { path: "/api/security/kill-switch", method: "POST", body }),
     onSuccess: () =>
@@ -189,7 +229,11 @@ export const useDisownLogin = () => {
   return useMutation<{ ok: boolean; sessions_killed: number }, ApiError, { event_id: string }>({
     mutationFn: (body) =>
       rpcOrRest("security.disown", { path: "/api/security/history/disown", method: "POST", body }),
-    onSuccess: () => invalidate([["security", "history"], ["security", "sessions"]])(qc),
+    onSuccess: () =>
+      invalidate([
+        ["security", "history"],
+        ["security", "sessions"],
+      ])(qc),
   });
 };
 
@@ -204,7 +248,11 @@ export const useRotateKeys = () => {
   const qc = useQueryClient();
   return useMutation<{ ok: boolean; rotated_at: string }, ApiError, { surface?: string }>({
     mutationFn: (body) =>
-      rpcOrRest("security.rotate", { path: "/api/security/encryption/rotate", method: "POST", body }),
+      rpcOrRest("security.rotate", {
+        path: "/api/security/encryption/rotate",
+        method: "POST",
+        body,
+      }),
     onSuccess: () => invalidate([["security", "encryption"]])(qc),
   });
 };
@@ -221,14 +269,19 @@ export const useRunOwnershipProof = () => {
   return useMutation<{ proof: OwnershipProof }, ApiError, { domain?: string }>({
     mutationFn: (body) =>
       rpcOrRest("security.runProof", { path: "/api/security/proof/run", method: "POST", body }),
-    onSuccess: () => invalidate([["security", "proof"], ["security", "dashboard"]])(qc),
+    onSuccess: () =>
+      invalidate([
+        ["security", "proof"],
+        ["security", "dashboard"],
+      ])(qc),
   });
 };
 
 export const useFounderSecurity = () =>
   useQuery<FounderSecurity, ApiError>({
     queryKey: ["founder", "security"],
-    queryFn: () => get<FounderSecurity>("founderSecurity.overview", "/api/founder/security/overview"),
+    queryFn: () =>
+      get<FounderSecurity>("founderSecurity.overview", "/api/founder/security/overview"),
     retry: false,
   });
 

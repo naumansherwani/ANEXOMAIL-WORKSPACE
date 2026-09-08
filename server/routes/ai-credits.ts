@@ -93,11 +93,7 @@ async function requireUser(req: any, res: any): Promise<string | null> {
 /** Wallet ka ghar: workspace. Membership mile to wahi, warna personal workspace = user id. */
 async function ensureWallet(userId: string) {
   const d = db!;
-  const own = await d
-    .from("ai_credit_wallets")
-    .select("*")
-    .eq("owner_id", userId)
-    .maybeSingle();
+  const own = await d.from("ai_credit_wallets").select("*").eq("owner_id", userId).maybeSingle();
   if (own.data) return own.data;
 
   let workspaceId = userId;
@@ -191,7 +187,7 @@ router.get("/ledger", async (req, res) => {
   if (!userId) return;
   try {
     const w = await ensureWallet(userId);
-    const limit = Math.min(Number(req.query['limit']) || 50, 200);
+    const limit = Math.min(Number(req.query["limit"]) || 50, 200);
     const { data, error } = await db!
       .from("ai_credit_ledger")
       .select("*")
@@ -210,7 +206,7 @@ router.get("/actions", async (req, res) => {
   if (!userId) return;
   try {
     const w = await ensureWallet(userId);
-    const limit = Math.min(Number(req.query['limit']) || 50, 200);
+    const limit = Math.min(Number(req.query["limit"]) || 50, 200);
     const { data, error } = await db!
       .from("ai_actions")
       .select(
@@ -312,7 +308,11 @@ router.post("/settle", async (req, res) => {
       _idem: b.idempotency_key ?? null,
     });
     if (error) throw error;
-    res.json({ ok: true, balance: Number(data), receipt: { action_id: b.action_id, charged: Number(b.actual_credits) } });
+    res.json({
+      ok: true,
+      balance: Number(data),
+      receipt: { action_id: b.action_id, charged: Number(b.actual_credits) },
+    });
   } catch (e) {
     fail(res, e);
   }
@@ -400,7 +400,11 @@ founderRouter.get("/ai/credits/overview", async (req, res) => {
   if (!userId) return;
   try {
     const [wallets, actions, ledger] = await Promise.all([
-      db!.from("ai_credit_wallets").select("*").order("updated_at", { ascending: false }).limit(200),
+      db!
+        .from("ai_credit_wallets")
+        .select("*")
+        .order("updated_at", { ascending: false })
+        .limit(200),
       db!
         .from("ai_actions")
         .select("status, actual_credits, provider_cost, infrastructure_cost, model, created_at")

@@ -21,7 +21,11 @@ export const KEYS = {
 export const MODELS = {
   // ── LEO (ANEXOMAIL — Primary AI) ─────────────────────────
   leo: {
-    primary: { model: process.env.LEO_MODEL || "claude-haiku-4-5", provider: "deepinfra", key: "di2" },
+    primary: {
+      model: process.env.LEO_MODEL || "claude-haiku-4-5",
+      provider: "deepinfra",
+      key: "di2",
+    },
     fallback: { model: "deepseek-ai/DeepSeek-V4-Flash", provider: "deepinfra", key: "di2" },
     free: { model: "meta-llama/llama-3.3-70b-instruct:free", provider: "openrouter", key: "or3" },
   },

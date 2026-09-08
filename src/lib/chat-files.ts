@@ -20,7 +20,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ApiError, api, sessionToken } from "./api";
 import { chatCall } from "./chat-transport";
 
-const BASE = (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ?? "";
+const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
 
 export const CHUNK_BYTES = 8 * 1024 * 1024; // 8 MB
 const INFLIGHT_CAP = 24 * 1024 * 1024; // backpressure: 24 MB max in the air
@@ -177,7 +177,11 @@ export function useFileSafety() {
     queryKey: ["file-engine", "safety"],
     refetchInterval: 15000,
     queryFn: () =>
-      chatCall<FileSafety>("file.safety.state", {}, { path: "/api/chat/file/safety", method: "GET" }),
+      chatCall<FileSafety>(
+        "file.safety.state",
+        {},
+        { path: "/api/chat/file/safety", method: "GET" },
+      ),
   });
 }
 
@@ -277,7 +281,12 @@ export async function transferState(transferId: string) {
   );
 }
 
-async function mark(transferId: string, state: "active" | "paused" | "failed", transport: string, error?: string) {
+async function mark(
+  transferId: string,
+  state: "active" | "paused" | "failed",
+  transport: string,
+  error?: string,
+) {
   const body = { transfer_id: transferId, state, transport, error: error ?? null };
   return chatCall<{ ok: boolean }>("file.transfer.mark", body, {
     path: "/api/chat/file/mark",
@@ -297,11 +306,7 @@ async function commit(transferId: string, fingerprint: string) {
     version_id?: string;
     safety?: string;
     available?: boolean;
-  }>(
-    "file.commit",
-    body,
-    { path: "/api/chat/file/commit", method: "POST", body },
-  );
+  }>("file.commit", body, { path: "/api/chat/file/commit", method: "POST", body });
 }
 
 export function useFileEngine() {
@@ -337,7 +342,12 @@ async function putChunk(input: {
   blob: Blob;
   sha: string;
   signal: AbortSignal;
-}): Promise<{ ok: boolean; bytes_done: number; transport: "rust-quic" | "bun-fallback"; corrupt: boolean }> {
+}): Promise<{
+  ok: boolean;
+  bytes_done: number;
+  transport: "rust-quic" | "bun-fallback";
+  corrupt: boolean;
+}> {
   const token = sessionToken.get();
   const headers: Record<string, string> = {
     "content-type": "application/octet-stream",
@@ -383,8 +393,10 @@ async function putChunk(input: {
     body: input.blob,
     signal: input.signal,
   });
-  if (res.status === 409) return { ok: false, bytes_done: 0, transport: "bun-fallback", corrupt: true };
-  if (!res.ok) throw new ApiError(`chunk ${input.idx} reject (${res.status})`, res.status, "chunk_failed");
+  if (res.status === 409)
+    return { ok: false, bytes_done: 0, transport: "bun-fallback", corrupt: true };
+  if (!res.ok)
+    throw new ApiError(`chunk ${input.idx} reject (${res.status})`, res.status, "chunk_failed");
   const json = (await res.json().catch(() => null)) as any;
   return {
     ok: true,
@@ -528,14 +540,20 @@ export function useFileTransfers(conversationId: string | null = null) {
                   return;
                 }
                 queue.push(idx);
-                patch(key, { repaired, detail: `Chunk ${idx} dobara bheja ja raha hai (integrity)` });
+                patch(key, {
+                  repaired,
+                  detail: `Chunk ${idx} dobara bheja ja raha hai (integrity)`,
+                });
               } else {
                 done = out.bytes_done || done + blob.size;
                 patch(key, {
                   bytesDone: done,
                   percent: file.size ? Math.min((done / file.size) * 100, 100) : 0,
                   transport: out.transport,
-                  detail: out.transport === "rust-quic" ? "Transferring over HTTP/3" : "Fallback path (HTTP/1.1)",
+                  detail:
+                    out.transport === "rust-quic"
+                      ? "Transferring over HTTP/3"
+                      : "Fallback path (HTTP/1.1)",
                 });
               }
             } catch (e) {
@@ -559,7 +577,10 @@ export function useFileTransfers(conversationId: string | null = null) {
         const ctl = controls.current.get(key);
         if (!ctl || ctl.paused || ctl.abort.signal.aborted) {
           await mark(transferId!, "paused", "rust-quic");
-          patch(key, { state: "paused", detail: "Transfer paused — resume karne par yahin se chalega" });
+          patch(key, {
+            state: "paused",
+            detail: "Transfer paused — resume karne par yahin se chalega",
+          });
           return;
         }
         const fatal = failure as Error | null;
@@ -643,7 +664,12 @@ export function useFileTransfers(conversationId: string | null = null) {
       setItems((list) =>
         list.map((t) =>
           t.state === "transferring"
-            ? { ...t, state: "paused", transport: "offline", detail: "Transfer paused — connection gayab" }
+            ? {
+                ...t,
+                state: "paused",
+                transport: "offline",
+                detail: "Transfer paused — connection gayab",
+              }
             : t,
         ),
       );

@@ -15,7 +15,10 @@ export const Route = createFileRoute("/app/org/roles")({
           "A capability matrix that shows exactly what each role can do, plus a radar for admin power nobody is using.",
       },
       { property: "og:title", content: "Roles — ANEXOMAIL Organization Center" },
-      { property: "og:description", content: "Capability matrix per role and least-privilege radar." },
+      {
+        property: "og:description",
+        content: "Capability matrix per role and least-privilege radar.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },

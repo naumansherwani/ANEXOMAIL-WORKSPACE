@@ -13,7 +13,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ApiError, sessionToken, type ApiError as ApiErrorType } from "@/lib/api";
 import { rpcOrRest } from "@/lib/rpc";
 
-const BASE = (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ?? "";
+const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
 
 export type AiAgentKey = "leo" | "jimmy" | "sherlock";
 
@@ -129,7 +129,7 @@ export const AGENT_LABEL: Record<AiAgentKey, string> = {
   sherlock: "Sherlock",
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useAiSessions() {
@@ -144,11 +144,9 @@ export function useAiSession(sessionId: string | null) {
   return useQuery<{ session: AiSession; turns: AiTurn[] }, ApiErrorType>({
     queryKey: ["ai", "session", sessionId],
     queryFn: () =>
-      get<{ session: AiSession; turns: AiTurn[] }>(
-        "ai.session",
-        `/api/ai/sessions/${sessionId}`,
-        { session_id: sessionId },
-      ),
+      get<{ session: AiSession; turns: AiTurn[] }>("ai.session", `/api/ai/sessions/${sessionId}`, {
+        session_id: sessionId,
+      }),
     enabled: Boolean(sessionId),
     retry: false,
   });
@@ -294,7 +292,11 @@ export function useSavePromptVersion() {
 
 export function useDecideGuardrail() {
   const qc = useQueryClient();
-  return useMutation<{ state: string }, ApiErrorType, { id: string; decision: "release" | "refuse" }>({
+  return useMutation<
+    { state: string },
+    ApiErrorType,
+    { id: string; decision: "release" | "refuse" }
+  >({
     mutationFn: (body) =>
       rpcOrRest<{ state: string }>(
         "ai.decideGuardrail",

@@ -219,7 +219,7 @@ export type FounderOrgRow = {
 
 /* ------------------------------------------------------------------ reads */
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useOrgOverview() {
@@ -352,14 +352,11 @@ export function useFounderOrgList() {
 
 /* -------------------------------------------------------------- mutations */
 
-function useOrgMutation<TInput, TOutput>(
-  procedure: string,
-  path: string,
-  invalidate: string[][],
-) {
+function useOrgMutation<TInput, TOutput>(procedure: string, path: string, invalidate: string[][]) {
   const qc = useQueryClient();
   return useMutation<TOutput, ApiError, TInput>({
-    mutationFn: (input) => rpcOrRest<TOutput>(procedure, { path, method: "POST", body: input }, input),
+    mutationFn: (input) =>
+      rpcOrRest<TOutput>(procedure, { path, method: "POST", body: input }, input),
     onSuccess: () => {
       for (const key of invalidate) void qc.invalidateQueries({ queryKey: key });
     },
@@ -371,7 +368,12 @@ export function useRevokeMember() {
   return useOrgMutation<{ user_id: string; transfer_to?: string }, { ok: true; ms: number }>(
     "org.members.revoke",
     "/api/org/members/revoke",
-    [["org", "members"], ["org", "overview"], ["org", "audit"], ["org", "sessions"]],
+    [
+      ["org", "members"],
+      ["org", "overview"],
+      ["org", "audit"],
+      ["org", "sessions"],
+    ],
   );
 }
 
@@ -388,7 +390,10 @@ export function useKillSession() {
   return useOrgMutation<{ session_id: string }, { ok: true }>(
     "org.sessions.kill",
     "/api/org/sessions/kill",
-    [["org", "sessions"], ["org", "audit"]],
+    [
+      ["org", "sessions"],
+      ["org", "audit"],
+    ],
   );
 }
 
@@ -404,7 +409,11 @@ export function useTogglePolicy() {
   return useOrgMutation<{ policy_id: string; enabled: boolean }, { ok: true }>(
     "org.policies.toggle",
     "/api/org/policies/toggle",
-    [["org", "policies"], ["org", "overview"], ["org", "audit"]],
+    [
+      ["org", "policies"],
+      ["org", "overview"],
+      ["org", "audit"],
+    ],
   );
 }
 
@@ -420,7 +429,10 @@ export function useGrantBreakGlass() {
   return useOrgMutation<{ reason: string; minutes: number }, BreakGlassGrant>(
     "org.breakGlass.grant",
     "/api/org/break-glass",
-    [["org", "break-glass"], ["org", "audit"]],
+    [
+      ["org", "break-glass"],
+      ["org", "audit"],
+    ],
   );
 }
 

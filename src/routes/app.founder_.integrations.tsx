@@ -38,7 +38,10 @@ function FounderIntegrations() {
                   <Stat label="Needs re-auth" value={String(o.needs_reauth)} />
                   <Stat label="Migrations running" value={String(o.migrations_running)} />
                   <Stat label="Migrations failed" value={String(o.migrations_failed)} />
-                  <Stat label="Threads migrated 30d" value={o.threads_migrated_30d.toLocaleString()} />
+                  <Stat
+                    label="Threads migrated 30d"
+                    value={o.threads_migrated_30d.toLocaleString()}
+                  />
                 </div>
 
                 <h3 className="ax-heading mt-ax-6 text-foreground">By provider</h3>

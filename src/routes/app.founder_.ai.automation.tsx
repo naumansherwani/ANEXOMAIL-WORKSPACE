@@ -43,7 +43,8 @@ export const Route = createFileRoute("/app/founder_/ai/automation")({
       { property: "og:title", content: "AI Automation — ANEXOMAIL" },
       {
         property: "og:description",
-        content: "Workflows, rules, variables and suggestions — dry run first, approval before send.",
+        content:
+          "Workflows, rules, variables and suggestions — dry run first, approval before send.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -82,9 +83,12 @@ function AutomationPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-8 md:px-10">
         <p className="ax-eyebrow flex items-center gap-2">
-          <Bot className="size-3.5" aria-hidden="true" /> Phase 18 · Automation · dry run pehle, approval phir
+          <Bot className="size-3.5" aria-hidden="true" /> Phase 18 · Automation · dry run pehle,
+          approval phir
         </p>
-        <h2 className="mt-2 text-2xl text-foreground">Workflows that never send behind your back</h2>
+        <h2 className="mt-2 text-2xl text-foreground">
+          Workflows that never send behind your back
+        </h2>
         <p className="mt-ax-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           Har workflow default pe approval gate ke saath aata hai. Auto-send tab tak nahi jab tak
           tum khud switch nahi karte — aur dry run pehle bata deta hai kya hota.
@@ -92,7 +96,10 @@ function AutomationPage() {
 
         {/* Workflows */}
         <section className="mt-ax-6">
-          <SectionTitle title="AI workflows" hint="Trigger → steps. Server evaluate karta hai, UI sirf state dikhati hai." />
+          <SectionTitle
+            title="AI workflows"
+            hint="Trigger → steps. Server evaluate karta hai, UI sirf state dikhati hai."
+          />
           <CardBody
             query={{
               data: workflows.data,
@@ -105,7 +112,9 @@ function AutomationPage() {
           >
             {(data) =>
               data.workflows.length === 0 ? (
-                <p className="ax-caption text-muted-foreground">Koi workflow abhi banaya nahi gaya.</p>
+                <p className="ax-caption text-muted-foreground">
+                  Koi workflow abhi banaya nahi gaya.
+                </p>
               ) : (
                 <ul className="space-y-ax-2">
                   {data.workflows.map((w) => (
@@ -120,7 +129,9 @@ function AutomationPage() {
                         <Chip tone={w.requires_approval ? "good" : "warn"}>
                           {w.requires_approval ? "approval gate" : "auto-send"}
                         </Chip>
-                        <Chip tone={w.enabled ? "good" : "quiet"}>{w.enabled ? "live" : "off"}</Chip>
+                        <Chip tone={w.enabled ? "good" : "quiet"}>
+                          {w.enabled ? "live" : "off"}
+                        </Chip>
                         {w.failures > 0 && <Chip tone="bad">{w.failures} failed</Chip>}
                       </div>
                       {w.description && (
@@ -155,7 +166,8 @@ function AutomationPage() {
                             toggleWorkflow.mutate(
                               { id: w.id, enabled: !w.enabled },
                               {
-                                onSuccess: () => notify.done("Switch applied", "Server ne confirm kiya."),
+                                onSuccess: () =>
+                                  notify.done("Switch applied", "Server ne confirm kiya."),
                                 onError: fail("Toggle"),
                               },
                             )
@@ -171,7 +183,8 @@ function AutomationPage() {
                             runWorkflow.mutate(
                               { id: w.id },
                               {
-                                onSuccess: () => notify.done("Run started", "History mein dikh raha hai."),
+                                onSuccess: () =>
+                                  notify.done("Run started", "History mein dikh raha hai."),
                                 onError: fail("Run"),
                               },
                             )
@@ -211,7 +224,9 @@ function AutomationPage() {
           >
             {(data) =>
               data.automations.length === 0 ? (
-                <p className="ax-caption text-muted-foreground">Kisi mailbox pe automation nahi lagi.</p>
+                <p className="ax-caption text-muted-foreground">
+                  Kisi mailbox pe automation nahi lagi.
+                </p>
               ) : (
                 <ul className="space-y-ax-2">
                   {data.automations.map((a) => (
@@ -226,7 +241,9 @@ function AutomationPage() {
                         </Chip>
                         <Chip>{a.handled} handled</Chip>
                         {a.escalations > 0 && <Chip tone="warn">{a.escalations} escalated</Chip>}
-                        <Chip tone={a.enabled ? "good" : "quiet"}>{a.enabled ? "live" : "off"}</Chip>
+                        <Chip tone={a.enabled ? "good" : "quiet"}>
+                          {a.enabled ? "live" : "off"}
+                        </Chip>
                         <Button
                           size="sm"
                           variant="secondary"
@@ -235,7 +252,8 @@ function AutomationPage() {
                             toggleEmail.mutate(
                               { id: a.id, enabled: !a.enabled },
                               {
-                                onSuccess: () => notify.done("Switch applied", "Server ne confirm kiya."),
+                                onSuccess: () =>
+                                  notify.done("Switch applied", "Server ne confirm kiya."),
                                 onError: fail("Toggle"),
                               },
                             )
@@ -254,7 +272,10 @@ function AutomationPage() {
 
         {/* Rules */}
         <section className="mt-10">
-          <SectionTitle title="AI rules" hint="If this, then that — priority order mein server chalata hai." />
+          <SectionTitle
+            title="AI rules"
+            hint="If this, then that — priority order mein server chalata hai."
+          />
           <CardBody
             query={{
               data: rules.data,
@@ -291,7 +312,8 @@ function AutomationPage() {
                           toggleRule.mutate(
                             { id: r.id, enabled: !r.enabled },
                             {
-                              onSuccess: () => notify.done("Rule updated", "Server ne confirm kiya."),
+                              onSuccess: () =>
+                                notify.done("Rule updated", "Server ne confirm kiya."),
                               onError: fail("Rule toggle"),
                             },
                           )
@@ -431,7 +453,11 @@ function AutomationPage() {
                         </p>
                         <Chip>{s.kind}</Chip>
                         {s.confidence !== null && <Chip>{s.confidence}% sure</Chip>}
-                        <Chip tone={s.state === "open" ? "warn" : s.state === "accepted" ? "good" : "quiet"}>
+                        <Chip
+                          tone={
+                            s.state === "open" ? "warn" : s.state === "accepted" ? "good" : "quiet"
+                          }
+                        >
                           {s.state}
                         </Chip>
                       </div>
@@ -462,7 +488,8 @@ function AutomationPage() {
                               decide.mutate(
                                 { id: s.id, decision: "dismiss" },
                                 {
-                                  onSuccess: () => notify.done("Dismissed", "Dobara nahi poochega."),
+                                  onSuccess: () =>
+                                    notify.done("Dismissed", "Dobara nahi poochega."),
                                   onError: fail("Dismiss"),
                                 },
                               )
@@ -482,7 +509,10 @@ function AutomationPage() {
 
         {/* Run history */}
         <section className="mt-10">
-          <SectionTitle title="Automation run history" hint="Kya chala, kya rukka, kitna kharch hua." />
+          <SectionTitle
+            title="Automation run history"
+            hint="Kya chala, kya rukka, kitna kharch hua."
+          />
           <CardBody
             query={{
               data: runs.data,

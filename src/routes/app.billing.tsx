@@ -76,7 +76,9 @@ function WorkspaceBilling() {
                   <Cell label="Seats" value={`${s.seats_used} / ${s.seats}`} />
                   <Cell
                     label="Renews"
-                    value={s.renews_at ? relativeTime(s.renews_at) : s.cancel_at ? "cancelling" : "—"}
+                    value={
+                      s.renews_at ? relativeTime(s.renews_at) : s.cancel_at ? "cancelling" : "—"
+                    }
                   />
                 </div>
                 <p className="ax-caption mt-ax-3 text-steel">
@@ -116,7 +118,9 @@ function WorkspaceBilling() {
             <button
               type="button"
               disabled={preview.isPending}
-              onClick={() => preview.mutate({ plan, seats }, { onError: fail("POST /api/billing/preview") })}
+              onClick={() =>
+                preview.mutate({ plan, seats }, { onError: fail("POST /api/billing/preview") })
+              }
               className="ax-press rounded-xl border border-border px-3 py-2 text-[12px] font-semibold text-foreground disabled:opacity-50"
             >
               Preview cost
@@ -126,11 +130,12 @@ function WorkspaceBilling() {
           {preview.data && (
             <div className="ax-plane mt-ax-3 rounded-2xl p-ax-4">
               <p className="text-[13px] text-foreground">
-                Charge now {gbp(preview.data.charge_now)} · credit back {gbp(preview.data.credit_back)} ·
-                next invoice {gbp(preview.data.next_total)}
+                Charge now {gbp(preview.data.charge_now)} · credit back{" "}
+                {gbp(preview.data.credit_back)} · next invoice {gbp(preview.data.next_total)}
               </p>
               <p className="ax-caption mt-1 text-steel">
-                Effective {relativeTime(preview.data.effective_at)} — pro-rated by the server, not guessed here.
+                Effective {relativeTime(preview.data.effective_at)} — pro-rated by the server, not
+                guessed here.
               </p>
               <button
                 type="button"
@@ -139,7 +144,8 @@ function WorkspaceBilling() {
                   change.mutate(
                     { plan: preview.data!.plan, seats: preview.data!.seats },
                     {
-                      onSuccess: () => notify.done("Plan updated", "Invoice will show the pro-ration."),
+                      onSuccess: () =>
+                        notify.done("Plan updated", "Invoice will show the pro-ration."),
                       onError: fail("POST /api/billing/change"),
                     },
                   )

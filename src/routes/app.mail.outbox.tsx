@@ -12,10 +12,7 @@ import { useOutbox } from "@/lib/release";
 
 export const Route = createFileRoute("/app/mail/outbox")({
   head: () => ({
-    meta: [
-      { title: "Outbox — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Outbox — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: OutboxPage,
 });
@@ -32,7 +29,11 @@ function OutboxPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Inbox className="size-3.5" aria-hidden="true" /> Outbox</>}
+        eyebrow={
+          <>
+            <Inbox className="size-3.5" aria-hidden="true" /> Outbox
+          </>
+        }
         title="Queued on this device, sent only when proven"
         blurb="Offline mail waits here with its own retry clock. Nothing moves to Sent until the server confirms delivery — we do not fake a send."
       >
@@ -42,7 +43,8 @@ function OutboxPage() {
             disabled={outbox.flushing || !net.online}
             onClick={() =>
               void outbox.flush().then((r) => {
-                if (r.sent > 0) notify.done(`${r.sent} sent`, r.failed ? `${r.failed} still queued` : undefined);
+                if (r.sent > 0)
+                  notify.done(`${r.sent} sent`, r.failed ? `${r.failed} still queued` : undefined);
                 else if (r.failed > 0) notify.info("Still queued", "Retry scheduled with backoff.");
                 else notify.info("Nothing to flush");
               })
@@ -53,7 +55,9 @@ function OutboxPage() {
             {outbox.flushing ? "Sending…" : "Send queued mail"}
           </button>
           <span className="ax-caption text-muted-foreground">
-            {net.online ? "Online — the queue flushes automatically" : "Offline — queued safely on this device"}
+            {net.online
+              ? "Online — the queue flushes automatically"
+              : "Offline — queued safely on this device"}
           </span>
         </div>
 
@@ -73,18 +77,31 @@ function OutboxPage() {
         ) : (
           <>
             <div className="mt-ax-5 grid gap-ax-3 sm:grid-cols-3">
-              <Stat label="Queued" value={String(items.filter((i) => i.state === "queued").length)} />
-              <Stat label="Failed" value={String(items.filter((i) => i.state === "failed").length)} hint="after 6 tries" />
+              <Stat
+                label="Queued"
+                value={String(items.filter((i) => i.state === "queued").length)}
+              />
+              <Stat
+                label="Failed"
+                value={String(items.filter((i) => i.state === "failed").length)}
+                hint="after 6 tries"
+              />
               <Stat label="Total on device" value={String(items.length)} />
             </div>
             <ul className="mt-ax-4 space-y-1.5">
               {items.map((i) => (
                 <Row key={i.key}>
-                  <Verdict verdict={i.state === "failed" ? "fail" : i.state === "sending" ? "watch" : "watch"}>
+                  <Verdict
+                    verdict={
+                      i.state === "failed" ? "fail" : i.state === "sending" ? "watch" : "watch"
+                    }
+                  >
                     {i.state}
                   </Verdict>
                   <span className="min-w-0 flex-1">
-                    <span className="block font-semibold text-foreground">{i.subject || "(no subject)"}</span>
+                    <span className="block font-semibold text-foreground">
+                      {i.subject || "(no subject)"}
+                    </span>
                     <span className="block truncate text-steel">
                       {i.to} · try {i.attempts}
                       {i.error ? ` · ${i.error}` : ""}
@@ -98,7 +115,9 @@ function OutboxPage() {
                   <button
                     type="button"
                     aria-label={`Discard ${i.subject}`}
-                    onClick={() => void outbox.drop(i.key).then(() => notify.done("Removed from outbox"))}
+                    onClick={() =>
+                      void outbox.drop(i.key).then(() => notify.done("Removed from outbox"))
+                    }
                     className="ax-press ml-auto text-steel hover:text-foreground"
                   >
                     <Trash2 className="size-3.5" aria-hidden="true" />
@@ -106,7 +125,10 @@ function OutboxPage() {
                 </Row>
               ))}
             </ul>
-            <Note>Retries back off: 5s, 10s, 20s… up to 15 minutes. After six failures an item waits for you.</Note>
+            <Note>
+              Retries back off: 5s, 10s, 20s… up to 15 minutes. After six failures an item waits for
+              you.
+            </Note>
           </>
         )}
       </Section>

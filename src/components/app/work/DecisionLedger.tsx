@@ -15,8 +15,7 @@ import {
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
-const utc = (iso: string) =>
-  new Date(iso).toISOString().replace("T", " ").slice(0, 16) + " UTC";
+const utc = (iso: string) => new Date(iso).toISOString().replace("T", " ").slice(0, 16) + " UTC";
 
 /**
  * PHASE 24 — DECISION LEDGER + DECISION IMPACT MAP.
@@ -95,16 +94,15 @@ export function DecisionLedger() {
           Decision ledger
         </h2>
         <span className="ax-caption text-steel">
-          {summary.total ?? 0} recorded · {summary.active ?? 0} standing ·{" "}
-          {summary.amended ?? 0} changed · {summary.superseded ?? 0} replaced ·{" "}
-          {summary.reversed ?? 0} reversed
+          {summary.total ?? 0} recorded · {summary.active ?? 0} standing · {summary.amended ?? 0}{" "}
+          changed · {summary.superseded ?? 0} replaced · {summary.reversed ?? 0} reversed
         </span>
       </header>
 
       <p className="ax-caption text-muted-foreground">
-        <ShieldCheck className="mr-1.5 inline size-3.5" aria-hidden="true" />
-        A decision is never rewritten in place. Changing one writes a new version with a written
-        reason, and every earlier version stays readable.
+        <ShieldCheck className="mr-1.5 inline size-3.5" aria-hidden="true" />A decision is never
+        rewritten in place. Changing one writes a new version with a written reason, and every
+        earlier version stays readable.
       </p>
 
       {board.isPending ? (

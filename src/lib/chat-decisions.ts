@@ -20,12 +20,7 @@ import { chatCall } from "@/lib/chat-transport";
 
 export type DecisionState = "active" | "superseded" | "reversed";
 export type DecisionObjectType =
-  | "task"
-  | "promise"
-  | "decision"
-  | "conversation"
-  | "file"
-  | "message";
+  "task" | "promise" | "decision" | "conversation" | "file" | "message";
 
 export const DECISION_LABEL: Record<DecisionState, string> = {
   active: "Standing decision",

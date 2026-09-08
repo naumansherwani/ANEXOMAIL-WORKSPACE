@@ -125,7 +125,8 @@ export function HandoffBanner({ onResume }: { onResume?: (draftId: string) => vo
                 notify.done("Draft moved to this device");
                 onResume?.(other.id);
               },
-              onError: (error) => notify.failed("Couldn't pick it up", { description: error.message }),
+              onError: (error) =>
+                notify.failed("Couldn't pick it up", { description: error.message }),
             },
           )
         }

@@ -13,12 +13,21 @@ function PerfOverviewPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Gauge className="size-3.5" aria-hidden="true" /> Speed</>}
+        eyebrow={
+          <>
+            <Gauge className="size-3.5" aria-hidden="true" /> Speed
+          </>
+        }
         title="Speed you can audit, not feel"
         blurb="Every action carries a budget in milliseconds. Real samples decide the score — and name the surface that broke it."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/perf/dashboard"
           skeleton={<StatSkeleton rows={5} />}
         >
@@ -34,17 +43,29 @@ function PerfOverviewPage() {
               <div className="mt-ax-4 grid gap-ax-3 sm:grid-cols-3">
                 <Stat
                   label="Prefetch hit rate"
-                  value={d.prefetch_hit_rate == null ? "—" : `${Math.round(d.prefetch_hit_rate * 100)}%`}
+                  value={
+                    d.prefetch_hit_rate == null ? "—" : `${Math.round(d.prefetch_hit_rate * 100)}%`
+                  }
                 />
-                <Stat label="Time saved" value={d.ms_saved_24h == null ? "—" : `${Math.round(d.ms_saved_24h / 1000)}s`} hint="last 24h" />
-                <Stat label="Cold starts" value={d.cold_starts_24h == null ? "—" : String(d.cold_starts_24h)} hint="last 24h" />
+                <Stat
+                  label="Time saved"
+                  value={d.ms_saved_24h == null ? "—" : `${Math.round(d.ms_saved_24h / 1000)}s`}
+                  hint="last 24h"
+                />
+                <Stat
+                  label="Cold starts"
+                  value={d.cold_starts_24h == null ? "—" : String(d.cold_starts_24h)}
+                  hint="last 24h"
+                />
               </div>
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Slowest right now</h3>
               <ul className="mt-ax-3 space-y-1.5">
                 {d.slowest.map((s) => (
                   <Row key={s.action}>
-                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{s.action}</span>
+                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                      {s.action}
+                    </span>
                     <span className="text-muted-foreground">p95 {ms(s.p95_ms)}</span>
                     <span className="ml-auto text-steel">budget {ms(s.budget_ms)}</span>
                   </Row>

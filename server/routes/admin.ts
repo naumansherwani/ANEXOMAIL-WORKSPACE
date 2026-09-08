@@ -206,9 +206,7 @@ router.get("/storage", async (req, res) => {
       const oldest = list[list.length - 1];
       const days = Math.max(
         1,
-        Math.round(
-          (new Date(newest.day).getTime() - new Date(oldest.day).getTime()) / 86_400_000,
-        ),
+        Math.round((new Date(newest.day).getTime() - new Date(oldest.day).getTime()) / 86_400_000),
       );
       return Math.max(0, Math.round((newest.used_bytes - oldest.used_bytes) / days));
     };
@@ -329,7 +327,10 @@ router.get("/monitoring", async (req, res) => {
     const sent = count("sent");
     const attempts = rows.length;
 
-    const reasons = new Map<string, { reason_code: string; human_reason: string; fixable: boolean; count: number }>();
+    const reasons = new Map<
+      string,
+      { reason_code: string; human_reason: string; fixable: boolean; count: number }
+    >();
     for (const r of rows) {
       if (r.state === "sent" || r.state === "queued") continue;
       const code = r.reason_code || "unknown";
@@ -557,7 +558,12 @@ async function dnsProbes(): Promise<Probe[]> {
 
   return [
     mx,
-    await txt(MAIL_DOMAIN, "SPF record", "v=spf1", `Publish a TXT record: "v=spf1 mx -all" on ${MAIL_DOMAIN}.`),
+    await txt(
+      MAIL_DOMAIN,
+      "SPF record",
+      "v=spf1",
+      `Publish a TXT record: "v=spf1 mx -all" on ${MAIL_DOMAIN}.`,
+    ),
     await txt(
       `${DKIM_SELECTOR}._domainkey.${MAIL_DOMAIN}`,
       "DKIM key",
@@ -586,7 +592,10 @@ function tcpProbe(host: string, port: number, label: string): Promise<Probe> {
             result,
             observed,
             expected: "accepts connections",
-            fix: result === "pass" ? null : `Open port ${port} on ${host} and confirm the service is running.`,
+            fix:
+              result === "pass"
+                ? null
+                : `Open port ${port} on ${host} and confirm the service is running.`,
           });
         };
         socket.setTimeout(4000);
@@ -601,20 +610,29 @@ function tlsProbe(host: string, port: number): Promise<Probe> {
   return timed(
     () =>
       new Promise<Omit<Probe, "ms">>((resolve) => {
-        const socket = tls.connect({ host, port, servername: host, rejectUnauthorized: false }, () => {
-          const cert = socket.getPeerCertificate();
-          const until = cert?.valid_to ? new Date(cert.valid_to) : null;
-          const days = until ? Math.round((until.getTime() - Date.now()) / 86_400_000) : null;
-          socket.destroy();
-          resolve({
-            probe: "TLS certificate",
-            target: `${host}:${port}`,
-            result: days == null ? "unknown" : days > 0 ? "pass" : "fail",
-            observed: days == null ? "no certificate returned" : `${days} days left (${cert.issuer?.O ?? "unknown issuer"})`,
-            expected: "valid, more than 14 days remaining",
-            fix: days != null && days <= 14 ? "Renew the certificate — Caddy should renew automatically; check its logs." : null,
-          });
-        });
+        const socket = tls.connect(
+          { host, port, servername: host, rejectUnauthorized: false },
+          () => {
+            const cert = socket.getPeerCertificate();
+            const until = cert?.valid_to ? new Date(cert.valid_to) : null;
+            const days = until ? Math.round((until.getTime() - Date.now()) / 86_400_000) : null;
+            socket.destroy();
+            resolve({
+              probe: "TLS certificate",
+              target: `${host}:${port}`,
+              result: days == null ? "unknown" : days > 0 ? "pass" : "fail",
+              observed:
+                days == null
+                  ? "no certificate returned"
+                  : `${days} days left (${cert.issuer?.O ?? "unknown issuer"})`,
+              expected: "valid, more than 14 days remaining",
+              fix:
+                days != null && days <= 14
+                  ? "Renew the certificate — Caddy should renew automatically; check its logs."
+                  : null,
+            });
+          },
+        );
         socket.setTimeout(5000);
         socket.once("timeout", () => {
           socket.destroy();

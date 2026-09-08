@@ -21,7 +21,11 @@ function LogsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl space-y-ax-8 px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ScrollText className="size-3.5" aria-hidden="true" /> Log lens</>}
+        eyebrow={
+          <>
+            <ScrollText className="size-3.5" aria-hidden="true" /> Log lens
+          </>
+        }
         title="Logs a human can read"
         blurb="Every line carries its trace id and a one-sentence translation of what actually happened."
       >
@@ -33,7 +37,9 @@ function LogsPage() {
               onClick={() => setLevel(l)}
               className={cn(
                 "ax-press rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors",
-                level === l ? "bg-foreground text-background" : "bg-secondary text-muted-foreground",
+                level === l
+                  ? "bg-foreground text-background"
+                  : "bg-secondary text-muted-foreground",
               )}
             >
               {l}
@@ -49,7 +55,12 @@ function LogsPage() {
 
         <div className="mt-ax-4">
           <CardBody
-            query={{ data: logs.data, isPending: logs.isPending, error: logs.error ?? null, refetch: () => void logs.refetch() }}
+            query={{
+              data: logs.data,
+              isPending: logs.isPending,
+              error: logs.error ?? null,
+              refetch: () => void logs.refetch(),
+            }}
             endpoint="/api/admin/logs"
             skeleton={<StatSkeleton rows={6} />}
           >
@@ -61,7 +72,11 @@ function LogsPage() {
                     <span
                       className={cn(
                         "font-bold",
-                        l.level === "error" ? "text-red-400" : l.level === "warn" ? "text-amber-400" : "text-steel",
+                        l.level === "error"
+                          ? "text-red-400"
+                          : l.level === "warn"
+                            ? "text-amber-400"
+                            : "text-steel",
                       )}
                     >
                       {l.level}
@@ -107,19 +122,27 @@ function LogsPage() {
                     <span
                       className={cn(
                         "font-bold",
-                        i.severity === "critical" ? "text-red-400" : i.severity === "major" ? "text-amber-400" : "text-steel",
+                        i.severity === "critical"
+                          ? "text-red-400"
+                          : i.severity === "major"
+                            ? "text-amber-400"
+                            : "text-steel",
                       )}
                     >
                       {i.severity}
                     </span>
                     <span className="text-muted-foreground">{i.status}</span>
                     {i.minutes != null && <span className="text-steel">{i.minutes}m</span>}
-                    <span className="ml-auto text-steel">{new Date(i.started_at).toLocaleString("en-GB")}</span>
+                    <span className="ml-auto text-steel">
+                      {new Date(i.started_at).toLocaleString("en-GB")}
+                    </span>
                   </div>
                   <ol className="mt-ax-3 space-y-1.5 border-l border-border pl-ax-4">
                     {i.events.map((e, idx) => (
                       <li key={idx} className="text-[12px]">
-                        <span className="text-steel">{new Date(e.at).toLocaleTimeString("en-GB")}</span>{" "}
+                        <span className="text-steel">
+                          {new Date(e.at).toLocaleTimeString("en-GB")}
+                        </span>{" "}
                         <span className="text-muted-foreground">{e.actor}</span>{" "}
                         <span className="text-foreground">{e.message}</span>
                       </li>
@@ -127,7 +150,8 @@ function LogsPage() {
                   </ol>
                   {i.prevention && (
                     <p className="ax-caption mt-ax-3 text-muted-foreground">
-                      <span className="font-semibold text-foreground">Prevention:</span> {i.prevention}
+                      <span className="font-semibold text-foreground">Prevention:</span>{" "}
+                      {i.prevention}
                     </p>
                   )}
                 </li>

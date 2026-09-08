@@ -26,7 +26,10 @@ export const Route = createFileRoute("/app/org/members")({
           "Every member, their role, device count and MFA state — with one-click revoke that shows the blast radius first.",
       },
       { property: "og:title", content: "Members — ANEXOMAIL Organization Center" },
-      { property: "og:description", content: "Members, roles, MFA and instant revoke with handover." },
+      {
+        property: "og:description",
+        content: "Members, roles, MFA and instant revoke with handover.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -35,7 +38,13 @@ export const Route = createFileRoute("/app/org/members")({
   component: MembersPage,
 });
 
-const FILTERS: (OrgMember["status"] | "all")[] = ["active", "invited", "suspended", "revoked", "all"];
+const FILTERS: (OrgMember["status"] | "all")[] = [
+  "active",
+  "invited",
+  "suspended",
+  "revoked",
+  "all",
+];
 
 function MembersPage() {
   const [status, setStatus] = useState<OrgMember["status"] | "all">("active");
@@ -168,7 +177,11 @@ function MembersPage() {
                       <Chip>{m.role}</Chip>
                       {m.department && <Chip>{m.department}</Chip>}
                       <Chip tone={m.mfa ? "good" : "warn"}>{m.mfa ? "MFA on" : "no MFA"}</Chip>
-                      <Chip tone={m.status === "active" ? "good" : m.status === "revoked" ? "bad" : "quiet"}>
+                      <Chip
+                        tone={
+                          m.status === "active" ? "good" : m.status === "revoked" ? "bad" : "quiet"
+                        }
+                      >
                         {m.status}
                       </Chip>
                       <span className="ax-caption text-muted-foreground">

@@ -25,9 +25,7 @@ export function Stage({
 }) {
   return (
     <section id={id} className={`relative ${tone[volume]} ${className ?? ""}`}>
-      {divider && (
-        <div aria-hidden className="ax-hairline absolute inset-x-0 top-0 h-px" />
-      )}
+      {divider && <div aria-hidden className="ax-hairline absolute inset-x-0 top-0 h-px" />}
       <div className="ax-container relative">{children}</div>
     </section>
   );

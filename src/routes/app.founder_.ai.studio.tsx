@@ -40,7 +40,8 @@ export const Route = createFileRoute("/app/founder_/ai/studio")({
       { property: "og:title", content: "AI Studio — ANEXOMAIL" },
       {
         property: "og:description",
-        content: "Nine focused tools, before/after diff, batch mode, recipes — every run with a receipt.",
+        content:
+          "Nine focused tools, before/after diff, batch mode, recipes — every run with a receipt.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -138,7 +139,8 @@ function StudioPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-8 md:px-10">
         <p className="ax-eyebrow flex items-center gap-2">
-          <Wand2 className="size-3.5" aria-hidden="true" /> Phase 17 · Studio · every run has a receipt
+          <Wand2 className="size-3.5" aria-hidden="true" /> Phase 17 · Studio · every run has a
+          receipt
         </p>
         <h2 className="mt-2 text-2xl text-foreground">Nine tools, each finishes one job</h2>
 
@@ -363,7 +365,10 @@ function StudioPage() {
 
         {/* History */}
         <section className="mt-10">
-          <SectionTitle title="Run history" hint="Har run ka input, output, cost aur kahan apply hua." />
+          <SectionTitle
+            title="Run history"
+            hint="Har run ka input, output, cost aur kahan apply hua."
+          />
           <CardBody
             query={{
               data: runs.data,

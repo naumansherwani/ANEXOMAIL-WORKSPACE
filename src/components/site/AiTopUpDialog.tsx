@@ -95,8 +95,8 @@ export function AiTopUpDialog({ onClose }: { onClose: () => void }) {
 
         <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
           Top-up credits sit in the same AI Credit Wallet and never expire while your workspace is
-          active. Monthly plans are always better value than one-off top-ups. Credits are issued only
-          after payment is verified — never from this screen.
+          active. Monthly plans are always better value than one-off top-ups. Credits are issued
+          only after payment is verified — never from this screen.
         </p>
 
         <div className="mt-6 flex flex-col gap-3 sm:flex-row">

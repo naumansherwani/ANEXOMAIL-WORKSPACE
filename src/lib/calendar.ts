@@ -168,10 +168,12 @@ export function useCalendarEvents(range: { from: string; to: string }) {
 }
 
 export function useCalendarEvent(id: string | undefined) {
-  return useQuery<{ event: CalendarEvent; outcome: MeetingOutcome | null; tasks: WorkTask[] }, ApiError>({
+  return useQuery<
+    { event: CalendarEvent; outcome: MeetingOutcome | null; tasks: WorkTask[] },
+    ApiError
+  >({
     queryKey: ["calendar", "event", id],
-    queryFn: () =>
-      rpcOrRest("calendar.event", { path: `/api/calendar/events/${id}` }, { id }),
+    queryFn: () => rpcOrRest("calendar.event", { path: `/api/calendar/events/${id}` }, { id }),
     enabled: Boolean(id),
     retry: false,
   });
@@ -325,7 +327,13 @@ export function useCreateTask() {
   return useMutation<
     unknown,
     ApiError,
-    { title: string; thread_id?: string; event_id?: string; due_at?: string | null; owner?: string | null }
+    {
+      title: string;
+      thread_id?: string;
+      event_id?: string;
+      due_at?: string | null;
+      owner?: string | null;
+    }
   >({
     mutationFn: (payload) =>
       rpcOrRest(
@@ -391,7 +399,8 @@ export function usePostOutcome() {
 
 export function money(cost: MeetingCost) {
   const symbol = cost.currency === "GBP" ? "£" : cost.currency === "USD" ? "$" : "";
-  const value = cost.total >= 1000 ? Math.round(cost.total).toLocaleString() : cost.total.toFixed(2);
+  const value =
+    cost.total >= 1000 ? Math.round(cost.total).toLocaleString() : cost.total.toFixed(2);
   return `${symbol}${value}${symbol ? "" : ` ${cost.currency}`}`;
 }
 

@@ -16,12 +16,21 @@ function QaPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ListChecks className="size-3.5" aria-hidden="true" /> QA suite</>}
+        eyebrow={
+          <>
+            <ListChecks className="size-3.5" aria-hidden="true" /> QA suite
+          </>
+        }
         title="Every check, with its receipt"
         blurb="Suite by suite: response code, latency and the reason. A failing probe is red here and the gate stays shut."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/founder/release/checks"
           skeleton={<StatSkeleton rows={6} />}
         >

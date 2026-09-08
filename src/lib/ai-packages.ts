@@ -17,9 +17,28 @@ export type AiPlan = {
 
 /** Locked monthly plans — 10,000 credits maximum monthly plan. */
 export const AI_PLANS: AiPlan[] = [
-  { id: "ai_pro", name: "AI Pro", price: 400, credits: 1200, blurb: "All Business platform features, plus the AI workspace." },
-  { id: "ai_business", name: "AI Business", price: 1500, credits: 5000, blurb: "Business teams that need AI-powered workflow.", highlight: true },
-  { id: "ai_executive", name: "AI Executive", price: 4000, credits: 10000, blurb: "Business Pro platform plus the full AI bundle." },
+  {
+    id: "ai_pro",
+    name: "AI Pro",
+    price: 400,
+    credits: 1200,
+    blurb: "All Business platform features, plus the AI workspace.",
+  },
+  {
+    id: "ai_business",
+    name: "AI Business",
+    price: 1500,
+    credits: 5000,
+    blurb: "Business teams that need AI-powered workflow.",
+    highlight: true,
+  },
+  {
+    id: "ai_executive",
+    name: "AI Executive",
+    price: 4000,
+    credits: 10000,
+    blurb: "Business Pro platform plus the full AI bundle.",
+  },
 ];
 
 export type TopUp = {

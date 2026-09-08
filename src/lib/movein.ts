@@ -10,8 +10,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, type ApiError } from "@/lib/api";
 
 export type MoveInResult =
-  | "PENDING" | "IN_PROGRESS" | "VERIFIED" | "WARNING" | "BLOCKED" | "FAILED"
-  | "RETRY_REQUIRED" | "CUSTOMER_ACTION_REQUIRED" | "ROLLBACK_REQUIRED" | "SKIPPED";
+  | "PENDING"
+  | "IN_PROGRESS"
+  | "VERIFIED"
+  | "WARNING"
+  | "BLOCKED"
+  | "FAILED"
+  | "RETRY_REQUIRED"
+  | "CUSTOMER_ACTION_REQUIRED"
+  | "ROLLBACK_REQUIRED"
+  | "SKIPPED";
 
 export type CapacityMonth = {
   month: string;
@@ -67,14 +75,47 @@ export type EvidenceBundle = {
   band: string | null;
   price_gbp: number;
   state: string;
-  scope: { mailboxes: number; source_provider: string | null; cutover_window_start: string | null; cutover_window_end: string | null };
+  scope: {
+    mailboxes: number;
+    source_provider: string | null;
+    cutover_window_start: string | null;
+    cutover_window_end: string | null;
+  };
   payments: { leg: string; amount_gbp: number; state: string; paid_at: string | null }[];
   mailbox_ledger: Record<string, unknown>[];
-  dns_proof: { phase: string; record: string; result: MoveInResult; observed: string | null; resolver: string | null; verification_id: string; checked_at: string }[];
-  runbook: { label: string; result: MoveInResult; evidence: string | null; completed_at: string | null }[];
-  exceptions: { scope: string; ref: string | null; severity: MoveInResult; reason: string; required_action: string | null; resolved_at: string | null }[];
+  dns_proof: {
+    phase: string;
+    record: string;
+    result: MoveInResult;
+    observed: string | null;
+    resolver: string | null;
+    verification_id: string;
+    checked_at: string;
+  }[];
+  runbook: {
+    label: string;
+    result: MoveInResult;
+    evidence: string | null;
+    completed_at: string | null;
+  }[];
+  exceptions: {
+    scope: string;
+    ref: string | null;
+    severity: MoveInResult;
+    reason: string;
+    required_action: string | null;
+    resolved_at: string | null;
+  }[];
   rollback: { label: string; available: boolean; created_at: string }[];
-  audit: { actor: string; action: string; from_state: string | null; to_state: string | null; reason: string | null; evidence: string | null; at: string }[];
+  audit: {
+    actor: string;
+    action: string;
+    from_state: string | null;
+    to_state: string | null;
+    reason: string | null;
+    evidence: string | null;
+    at: string;
+  }[];
   health: Record<string, number>;
   cutover_note: string;
   generated_at: string;
@@ -117,12 +158,23 @@ export type MoveInRequest = {
 
 export function useRequestMoveIn() {
   return useMutation<
-    { deal_id: string; reference: string; band: string; price_gbp: number; deposit_gbp: number; capacity: unknown },
+    {
+      deal_id: string;
+      reference: string;
+      band: string;
+      price_gbp: number;
+      deposit_gbp: number;
+      capacity: unknown;
+    },
     ApiError,
     MoveInRequest
   >({
     mutationFn: (body) =>
-      api("/api/public/movein/request", { method: "POST", body: JSON.stringify(body), auth: false }),
+      api("/api/public/movein/request", {
+        method: "POST",
+        body: JSON.stringify(body),
+        auth: false,
+      }),
   });
 }
 
@@ -171,30 +223,51 @@ export const useMoveInTransition = () =>
   );
 
 export const useMoveInSchedule = () =>
-  useCockpitMutation<{ deal_id: string; month: string; window_start?: string; window_end?: string }>(
-    "/api/founder/movein/schedule",
-  );
+  useCockpitMutation<{
+    deal_id: string;
+    month: string;
+    window_start?: string;
+    window_end?: string;
+  }>("/api/founder/movein/schedule");
 
 export const useMoveInArm = () =>
   useCockpitMutation<{ deal_id: string }>("/api/founder/movein/arm");
 
 export const useMoveInRunbookStep = () =>
-  useCockpitMutation<{ deal_id: string; step_key: string; result: MoveInResult; evidence?: string }>(
-    "/api/founder/movein/runbook",
-  );
+  useCockpitMutation<{
+    deal_id: string;
+    step_key: string;
+    result: MoveInResult;
+    evidence?: string;
+  }>("/api/founder/movein/runbook");
 
 export const useMoveInMailbox = () =>
   useCockpitMutation<Record<string, unknown>>("/api/founder/movein/mailbox");
 
 export const useMoveInDnsCheck = () =>
   useCockpitMutation<{
-    deal_id: string; domain: string; record: string; phase?: "PRE" | "POST";
-    result?: MoveInResult; observed?: string; resolver?: string; expected?: string; reason?: string;
+    deal_id: string;
+    domain: string;
+    record: string;
+    phase?: "PRE" | "POST";
+    result?: MoveInResult;
+    observed?: string;
+    resolver?: string;
+    expected?: string;
+    reason?: string;
   }>("/api/founder/movein/dns");
 
 export const useMoveInException = () =>
   useCockpitMutation<
-    | { deal_id: string; reason: string; scope?: string; ref?: string; severity?: MoveInResult; required_action?: string; blocks_cutover?: boolean }
+    | {
+        deal_id: string;
+        reason: string;
+        scope?: string;
+        ref?: string;
+        severity?: MoveInResult;
+        required_action?: string;
+        blocks_cutover?: boolean;
+      }
     | { deal_id: string; resolve_id: string }
   >("/api/founder/movein/exception");
 
@@ -204,9 +277,12 @@ export const useMoveInRollback = () =>
   );
 
 export const useMoveInInvoice = () =>
-  useCockpitMutation<{ deal_id: string; leg: "deposit" | "final"; intent_id?: string; due_at?: string }>(
-    "/api/founder/movein/invoice",
-  );
+  useCockpitMutation<{
+    deal_id: string;
+    leg: "deposit" | "final";
+    intent_id?: string;
+    due_at?: string;
+  }>("/api/founder/movein/invoice");
 
 export const gbp = (n: number | null | undefined) =>
   n == null ? "—" : `£${Math.round(Number(n)).toLocaleString("en-GB")}`;
@@ -226,4 +302,7 @@ export const RESULT_TONE: Record<string, string> = {
 
 /** Founder ke liye readable stage label (DB state hi truth hai). */
 export const stateLabel = (s: string) =>
-  s.replace(/_/g, " ").toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
+  s
+    .replace(/_/g, " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (c) => c.toUpperCase());

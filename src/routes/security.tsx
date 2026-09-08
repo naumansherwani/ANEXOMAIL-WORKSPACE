@@ -122,8 +122,8 @@ function SecurityPage() {
             Every message leaves with your name on it.
           </h1>
           <p className="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Delivery is not a setting you hope was configured once. Records are checked
-            continuously and their state is visible inside your admin centre.
+            Delivery is not a setting you hope was configured once. Records are checked continuously
+            and their state is visible inside your admin centre.
           </p>
         </section>
 
@@ -134,9 +134,7 @@ function SecurityPage() {
                 <s.icon className="size-5" />
               </span>
               <h2 className="mt-5 text-lg font-bold text-foreground">{s.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {s.body}
-              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.body}</p>
             </article>
           ))}
         </section>
@@ -146,8 +144,8 @@ function SecurityPage() {
             What gets checked, and what it costs you when it breaks
           </h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Six records decide whether your company's mail is trusted. We watch all six for
-            you and show the verdict in plain words — not a screenshot of a DNS console.
+            Six records decide whether your company's mail is trusted. We watch all six for you and
+            show the verdict in plain words — not a screenshot of a DNS console.
           </p>
           <div className="mt-7 overflow-hidden rounded-2xl border border-border">
             <div className="grid grid-cols-[88px_1fr] gap-px bg-border sm:grid-cols-[110px_1fr_1fr]">
@@ -180,7 +178,10 @@ function SecurityPage() {
           </div>
           <p className="ax-caption mt-4 text-muted-foreground">
             Live results for the whole platform are published on the{" "}
-            <Link to="/status" className="font-semibold text-foreground underline-offset-4 hover:underline">
+            <Link
+              to="/status"
+              className="font-semibold text-foreground underline-offset-4 hover:underline"
+            >
               status page
             </Link>
             .

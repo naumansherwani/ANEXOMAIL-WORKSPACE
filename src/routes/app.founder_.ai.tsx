@@ -19,7 +19,8 @@ export const Route = createFileRoute("/app/founder_/ai")({
       { property: "og:title", content: "LEO AI workspace — ANEXOMAIL" },
       {
         property: "og:description",
-        content: "Workbench, arena, prompts, memory and receipts — every answer with its real cost.",
+        content:
+          "Workbench, arena, prompts, memory and receipts — every answer with its real cost.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -48,7 +49,8 @@ function FounderAiLayout() {
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-6 py-4 md:px-8">
         <p className="ax-eyebrow flex items-center gap-2">
-          <Crown className="size-3.5" aria-hidden="true" /> Founder only · IP locked · founderworkspace.anexomail.com
+          <Crown className="size-3.5" aria-hidden="true" /> Founder only · IP locked ·
+          founderworkspace.anexomail.com
         </p>
         <div className="mt-2 flex flex-wrap items-center gap-ax-4">
           <h2 className="ax-h2 text-foreground">AI workspace</h2>
@@ -56,7 +58,9 @@ function FounderAiLayout() {
         </div>
         <nav className="mt-ax-4 flex flex-wrap gap-1.5">
           {TABS.map((t) => {
-            const active = t.exact ? pathname.replace(/\/$/, "") === t.to : pathname.startsWith(t.to);
+            const active = t.exact
+              ? pathname.replace(/\/$/, "") === t.to
+              : pathname.startsWith(t.to);
             return (
               <Link
                 key={t.to}

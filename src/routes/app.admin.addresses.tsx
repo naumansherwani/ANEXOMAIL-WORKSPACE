@@ -2,10 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app/admin/addresses")({
   head: () => ({
-    meta: [
-      { title: "Addresses — ANEXOMAIL Admin" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Addresses — ANEXOMAIL Admin" }, { name: "robots", content: "noindex" }],
   }),
   component: AddressesPage,
 });
@@ -38,9 +35,7 @@ function AddressesPage() {
         {kinds.map((k) => (
           <li key={k.title} className="ax-plane rounded-2xl p-5">
             <h2 className="text-base font-bold text-foreground">{k.title}</h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              {k.body}
-            </p>
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{k.body}</p>
           </li>
         ))}
       </ul>

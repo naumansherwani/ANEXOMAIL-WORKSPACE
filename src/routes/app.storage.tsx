@@ -154,8 +154,8 @@ function StoragePage() {
               )}
 
               <p className="mt-ax-6 text-sm text-steel">
-                At 80% you get a warning, at 90% a strong warning. At 100% new incoming mail is
-                held and uploads are refused with the exact reason — nothing is deleted and every
+                At 80% you get a warning, at 90% a strong warning. At 100% new incoming mail is held
+                and uploads are refused with the exact reason — nothing is deleted and every
                 existing email stays readable.
               </p>
             </>

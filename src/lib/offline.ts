@@ -39,7 +39,10 @@ export async function put<T>(store: OfflineStore, key: string, value: T) {
   });
 }
 
-export async function get<T>(store: OfflineStore, key: string): Promise<{ value: T; at: number } | null> {
+export async function get<T>(
+  store: OfflineStore,
+  key: string,
+): Promise<{ value: T; at: number } | null> {
   const db = await open();
   if (!db) return null;
   return new Promise((resolve) => {
@@ -53,7 +56,9 @@ export async function get<T>(store: OfflineStore, key: string): Promise<{ value:
   });
 }
 
-export async function all<T>(store: OfflineStore): Promise<{ key: string; value: T; at: number }[]> {
+export async function all<T>(
+  store: OfflineStore,
+): Promise<{ key: string; value: T; at: number }[]> {
   const db = await open();
   if (!db) return [];
   return new Promise((resolve) => {

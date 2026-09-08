@@ -56,12 +56,17 @@ export function NewMeeting({
       },
       {
         onSuccess: (data) => {
-          notify.done("Meeting created", threadId ? "The invite is in the thread." : "It's on your calendar.");
+          notify.done(
+            "Meeting created",
+            threadId ? "The invite is in the thread." : "It's on your calendar.",
+          );
           onCreated(data.event.id);
         },
         onError: (error) =>
           notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not create", {
-            description: error.isNotImplemented ? "Waiting on POST /api/calendar/events." : error.message,
+            description: error.isNotImplemented
+              ? "Waiting on POST /api/calendar/events."
+              : error.message,
           }),
       },
     );
@@ -74,7 +79,12 @@ export function NewMeeting({
         New meeting
       </p>
 
-      <Input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Title" className="h-8 text-xs" />
+      <Input
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+        placeholder="Title"
+        className="h-8 text-xs"
+      />
       <Input
         value={attendees}
         onChange={(e) => setAttendees(e.target.value)}

@@ -15,7 +15,8 @@ export const Route = createFileRoute("/docs")({
       { property: "og:title", content: "ANEXOMAIL handbook — setup, DNS, migration, export" },
       {
         property: "og:description",
-        content: "Domain setup, DNS records, migration, export and every keyboard shortcut in one page.",
+        content:
+          "Domain setup, DNS records, migration, export and every keyboard shortcut in one page.",
       },
       { property: "og:type", content: "article" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -30,10 +31,22 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     title: "1 · Set up your workspace",
     body: "Ten minutes, once. You keep the domain — we only route mail for it.",
     rows: [
-      ["Create the organisation", "Sign in, name the company, pick the plan (Basic £23 · Pro £46 · Business £97)."],
-      ["Add your domain", "Admin → Domains → Add. We show the exact records to paste at your registrar."],
-      ["Create addresses", "Personal mailboxes for people, shared addresses for sales@, support@, billing@."],
-      ["Invite the team", "Members get a role: owner, admin or member. Shared addresses get their own manager."],
+      [
+        "Create the organisation",
+        "Sign in, name the company, pick the plan (Basic £23 · Pro £46 · Business £97).",
+      ],
+      [
+        "Add your domain",
+        "Admin → Domains → Add. We show the exact records to paste at your registrar.",
+      ],
+      [
+        "Create addresses",
+        "Personal mailboxes for people, shared addresses for sales@, support@, billing@.",
+      ],
+      [
+        "Invite the team",
+        "Members get a role: owner, admin or member. Shared addresses get their own manager.",
+      ],
     ],
   },
   {
@@ -42,9 +55,18 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     body: "Four records decide whether your mail lands. We check them live and show the verdict, not a shrug.",
     rows: [
       ["MX", "Points mail for your domain at our inbound servers. Old MX records must be removed."],
-      ["SPF", "One TXT record listing who may send as you. Only one SPF record per domain — merge, never duplicate."],
-      ["DKIM", "Signing key published as TXT. Signed mail survives forwarding; unsigned mail gets filtered."],
-      ["DMARC", "Tells the world what to do with fakes. Start at p=none, move to p=quarantine, then p=reject."],
+      [
+        "SPF",
+        "One TXT record listing who may send as you. Only one SPF record per domain — merge, never duplicate.",
+      ],
+      [
+        "DKIM",
+        "Signing key published as TXT. Signed mail survives forwarding; unsigned mail gets filtered.",
+      ],
+      [
+        "DMARC",
+        "Tells the world what to do with fakes. Start at p=none, move to p=quarantine, then p=reject.",
+      ],
     ],
   },
   {
@@ -52,10 +74,19 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     title: "3 · Move in from your old provider",
     body: "Nothing is deleted at the source. We copy, verify message-for-message, then you cut over.",
     rows: [
-      ["Connect the source", "Gmail, Google Workspace, Outlook, Microsoft 365, Zoho, Proton bridge or plain IMAP."],
-      ["Dry run", "A test pass reports item counts and anything that will not copy, before the real run."],
+      [
+        "Connect the source",
+        "Gmail, Google Workspace, Outlook, Microsoft 365, Zoho, Proton bridge or plain IMAP.",
+      ],
+      [
+        "Dry run",
+        "A test pass reports item counts and anything that will not copy, before the real run.",
+      ],
       ["Cut over", "Change MX when you are ready — weekend or overnight windows available."],
-      ["Managed option", "Prefer us to do it? Fixed bands £568 (1–5), £1,670 (6–15), £2,210 (16–29), £3,350 (30+) — quoted on the migration page."],
+      [
+        "Managed option",
+        "Prefer us to do it? Fixed bands £568 (1–5), £1,670 (6–15), £2,210 (16–29), £3,350 (30+) — quoted on the migration page.",
+      ],
     ],
   },
   {
@@ -64,8 +95,14 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     body: "No lock-in, ever. Leaving must be as easy as joining, or the promise is empty.",
     rows: [
       ["Export", "One click: mbox for mail, CSV for contacts, JSON for settings and audit."],
-      ["Delete", "Delete means delete — removed from live storage and from backups on the stated schedule."],
-      ["Audit", "Every admin action is written to an append-only ledger you can verify and export."],
+      [
+        "Delete",
+        "Delete means delete — removed from live storage and from backups on the stated schedule.",
+      ],
+      [
+        "Audit",
+        "Every admin action is written to an append-only ledger you can verify and export.",
+      ],
       ["Status", "Component health lives on the public status page, from our own probes."],
     ],
   },
@@ -87,9 +124,18 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     title: "6 · If something goes wrong",
     body: "No ticket numbers. You write to a human and get an answer, usually inside four minutes.",
     rows: [
-      ["Mail not arriving", "Check /status first, then Admin → Diagnostics for a signed DNS and delivery probe."],
-      ["Send stuck", "Offline sends queue in your Outbox with a visible retry clock — nothing is silently lost."],
-      ["Billing question", "billing@anexomail.com — invoices and VAT receipts are issued per payment."],
+      [
+        "Mail not arriving",
+        "Check /status first, then Admin → Diagnostics for a signed DNS and delivery probe.",
+      ],
+      [
+        "Send stuck",
+        "Offline sends queue in your Outbox with a visible retry clock — nothing is silently lost.",
+      ],
+      [
+        "Billing question",
+        "billing@anexomail.com — invoices and VAT receipts are issued per payment.",
+      ],
       ["Anything else", "resolved@anexomail.com. A reply, not a queue position."],
     ],
   },
@@ -124,12 +170,16 @@ function DocsPage() {
           {SECTIONS.map((s) => (
             <section key={s.id} id={s.id} className="scroll-mt-24">
               <h2 className="ax-h2 text-foreground">{s.title}</h2>
-              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">{s.body}</p>
+              <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                {s.body}
+              </p>
               <dl className="mt-5 grid gap-px overflow-hidden rounded-2xl border border-border sm:grid-cols-2">
                 {s.rows.map(([term, detail]) => (
                   <div key={term} className="ax-plane rounded-none border-0 p-5">
                     <dt className="text-sm font-semibold text-foreground">{term}</dt>
-                    <dd className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">{detail}</dd>
+                    <dd className="mt-1.5 text-[12px] leading-relaxed text-muted-foreground">
+                      {detail}
+                    </dd>
                   </div>
                 ))}
               </dl>

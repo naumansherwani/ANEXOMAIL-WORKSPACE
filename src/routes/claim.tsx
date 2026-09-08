@@ -123,10 +123,9 @@ function ClaimPage() {
     }
   };
 
-  return (
-    status !== "signed-in" ? (
-      <ClaimIntro loading={status === "loading"} />
-    ) : (
+  return status !== "signed-in" ? (
+    <ClaimIntro loading={status === "loading"} />
+  ) : (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div
         aria-hidden
@@ -225,7 +224,6 @@ function ClaimPage() {
         </p>
       </div>
     </main>
-    )
   );
 }
 

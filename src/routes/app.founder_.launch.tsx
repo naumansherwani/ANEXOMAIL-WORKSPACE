@@ -7,10 +7,7 @@ import { Rocket } from "lucide-react";
  */
 export const Route = createFileRoute("/app/founder_/launch")({
   head: () => ({
-    meta: [
-      { title: "Release command — ANEXOMAIL" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Release command — ANEXOMAIL" }, { name: "robots", content: "noindex" }],
   }),
   component: LaunchLayout,
 });

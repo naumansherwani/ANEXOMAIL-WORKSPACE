@@ -9,16 +9,10 @@ import { useChatUnread } from "@/lib/chat";
  * Badge sirf DB ka asli unread count (chat_unread_total) dikhata hai;
  * entitlement na ho to koi number nahi — kuch invent nahi hota.
  */
-export function ChatRailLink({
-  collapsed,
-  active,
-}: {
-  collapsed: boolean;
-  active: boolean;
-}) {
+export function ChatRailLink({ collapsed, active }: { collapsed: boolean; active: boolean }) {
   const unread = useChatUnread();
   const count = unread.data?.unread ?? 0;
-  const href = (import.meta.env['VITE_ANEXOCHAT_URL'] as string | undefined) || "/app/chat";
+  const href = (import.meta.env["VITE_ANEXOCHAT_URL"] as string | undefined) || "/app/chat";
 
   return (
     <a

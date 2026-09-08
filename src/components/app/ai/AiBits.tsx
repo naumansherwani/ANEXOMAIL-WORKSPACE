@@ -148,7 +148,9 @@ export function GuardrailCard({
       <p className="flex items-center gap-2 text-[13px] font-bold text-foreground">
         <ShieldAlert className="size-4 text-warning" aria-hidden="true" />
         Paused — {event.keyword}
-        <Chip tone={event.state === "paused" ? "warn" : event.state === "released" ? "good" : "bad"}>
+        <Chip
+          tone={event.state === "paused" ? "warn" : event.state === "released" ? "good" : "bad"}
+        >
           {event.state}
         </Chip>
       </p>

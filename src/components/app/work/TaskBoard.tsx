@@ -55,9 +55,12 @@ export function TaskBoard() {
                       { id: task.id, status: NEXT[task.status] },
                       {
                         onError: (error) =>
-                          notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not update", {
-                            description: error.message,
-                          }),
+                          notify.failed(
+                            error.isNotImplemented ? "Not wired yet" : "Could not update",
+                            {
+                              description: error.message,
+                            },
+                          ),
                       },
                     )
                   }

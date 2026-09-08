@@ -82,7 +82,10 @@ function AppearancePage() {
 
         <p className="mt-ax-3 text-[11px] text-muted-foreground">
           Operating system reduced-motion:{" "}
-          <span className="text-foreground">{exp.osReduced ? "on — motion suppressed" : "off"}</span> · motion currently{" "}
+          <span className="text-foreground">
+            {exp.osReduced ? "on — motion suppressed" : "off"}
+          </span>{" "}
+          · motion currently{" "}
           <span className="text-foreground">{exp.motionAllowed ? "allowed" : "suppressed"}</span>
         </p>
       </div>

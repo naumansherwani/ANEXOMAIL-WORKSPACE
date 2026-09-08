@@ -132,7 +132,20 @@ export function ComposeStudio({
       language,
       ...(scheduling && sendAt ? { send_at: new Date(sendAt).toISOString() } : {}),
     }),
-    [draftId, threadId, identity, to, cc, bcc, subject, body, variables, language, scheduling, sendAt],
+    [
+      draftId,
+      threadId,
+      identity,
+      to,
+      cc,
+      bcc,
+      subject,
+      body,
+      variables,
+      language,
+      scheduling,
+      sendAt,
+    ],
   );
 
   // Autosave every 3s of quiet — the server owns the version history.
@@ -174,7 +187,8 @@ export function ComposeStudio({
             notify.done("Scheduled", `Leaves at ${new Date(sendAt).toLocaleString()}.`);
             onSent?.();
           },
-          onError: (error) => reportFailure(error.isNotImplemented, error.message, "POST /api/mail/schedule"),
+          onError: (error) =>
+            reportFailure(error.isNotImplemented, error.message, "POST /api/mail/schedule"),
         },
       );
       return;
@@ -439,7 +453,6 @@ export function ComposeStudio({
           placeholder="Write it once. Leo can tighten it, translate it or coach the tone."
         />
 
-
         {/* open variables */}
         {openVars.length > 0 && (
           <div className="ax-plane flex flex-col gap-2 rounded-xl p-ax-3">
@@ -663,6 +676,8 @@ export function ComposeStudio({
 
 function reportFailure(notWired: boolean, message: string, endpoint: string) {
   notify.failed(notWired ? "Not wired yet" : "Not sent", {
-    description: notWired ? `Your draft stays here. ${endpoint} is pending on the server.` : message,
+    description: notWired
+      ? `Your draft stays here. ${endpoint} is pending on the server.`
+      : message,
   });
 }

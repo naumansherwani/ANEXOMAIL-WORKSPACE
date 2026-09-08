@@ -19,13 +19,7 @@ import { rpcOrRest } from "@/lib/rpc";
 
 /* ------------------------------------------------------------------ types */
 
-export type DealStage =
-  | "new"
-  | "qualified"
-  | "proposal"
-  | "negotiation"
-  | "won"
-  | "lost";
+export type DealStage = "new" | "qualified" | "proposal" | "negotiation" | "won" | "lost";
 
 export const STAGE_LABEL: Record<DealStage, string> = {
   new: "New",
@@ -177,7 +171,7 @@ export type FounderCrmState = {
 
 /* ------------------------------------------------------------------ reads */
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useCrmOverview() {
@@ -285,8 +279,7 @@ export function useFounderCrmState() {
 function useCrmMutation<TOut, TIn>(procedure: string, path: string, invalidate: string[]) {
   const qc = useQueryClient();
   return useMutation<TOut, ApiError, TIn>({
-    mutationFn: (input) =>
-      rpcOrRest<TOut>(procedure, { path, method: "POST", body: input }, input),
+    mutationFn: (input) => rpcOrRest<TOut>(procedure, { path, method: "POST", body: input }, input),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["crm", ...invalidate] });
     },

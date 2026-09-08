@@ -24,7 +24,9 @@ function unlockKey(): string {
 /** Lock sirf tab active hai jab VITE_SITE_LOCK on/true/1 ho aur key mojood ho. */
 export function siteLockEnabled(): boolean {
   const env = import.meta.env as Record<string, string | undefined>;
-  const flag = String(env["VITE_SITE_LOCK"] ?? "").trim().toLowerCase();
+  const flag = String(env["VITE_SITE_LOCK"] ?? "")
+    .trim()
+    .toLowerCase();
   return (flag === "on" || flag === "true" || flag === "1") && unlockKey().length > 0;
 }
 

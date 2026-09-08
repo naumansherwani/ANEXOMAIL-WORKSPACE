@@ -26,14 +26,7 @@ import { chatCall } from "@/lib/chat-transport";
 export type TimelineLane = "communication" | "outcome";
 
 export type TimelineLens =
-  | "all"
-  | "messages"
-  | "files"
-  | "tasks"
-  | "promises"
-  | "decisions"
-  | "important"
-  | "outcome";
+  "all" | "messages" | "files" | "tasks" | "promises" | "decisions" | "important" | "outcome";
 
 export type TimelineEvent = {
   at: string;
@@ -240,11 +233,7 @@ export function useConversationChain(conversationId: string | null, enabled = tr
 /* ── commitment collisions ──────────────────────────────────────────── */
 
 export type CollisionAction =
-  | "resolve_dependency"
-  | "change_deadline"
-  | "reassign"
-  | "dismiss"
-  | "viewed_source";
+  "resolve_dependency" | "change_deadline" | "reassign" | "dismiss" | "viewed_source";
 
 export type Collision = {
   id: string;

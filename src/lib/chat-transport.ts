@@ -35,7 +35,7 @@ export async function chatCall<T>(
   }
 }
 
-const WT_URL = (import.meta.env['VITE_ANEXOCHAT_WT_URL'] as string | undefined)?.replace(/\/$/, "");
+const WT_URL = (import.meta.env["VITE_ANEXOCHAT_WT_URL"] as string | undefined)?.replace(/\/$/, "");
 
 export function webTransportSupported(): boolean {
   return typeof window !== "undefined" && "WebTransport" in window && Boolean(WT_URL);
@@ -103,7 +103,9 @@ export function useChatLive(conversationId: string | null): {
               continue;
             }
             if (frame.type === "messages") {
-              await queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] });
+              await queryClient.invalidateQueries({
+                queryKey: ["chat", "messages", conversationId],
+              });
               await queryClient.invalidateQueries({ queryKey: ["chat", "conversations"] });
             }
             if (frame.type === "error") {

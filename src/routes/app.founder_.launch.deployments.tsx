@@ -7,7 +7,9 @@ import { EmptyState } from "@/components/app/Panel";
 import { ReceiptCard } from "@/components/app/release/ReleaseBits";
 import { useDeployments } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/deployments")({ component: DeploymentsPage });
+export const Route = createFileRoute("/app/founder_/launch/deployments")({
+  component: DeploymentsPage,
+});
 
 /** Feature 2 — deploy receipt + rollback trail. */
 function DeploymentsPage() {
@@ -16,12 +18,21 @@ function DeploymentsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><History className="size-3.5" aria-hidden="true" /> Deploy receipts</>}
+        eyebrow={
+          <>
+            <History className="size-3.5" aria-hidden="true" /> Deploy receipts
+          </>
+        }
         title="Which commit is live, and what changed"
         blurb="Every deploy keeps its commit, actor, duration and the diff since the last green release — including rollbacks."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/founder/release/deployments"
           skeleton={<StatSkeleton rows={5} />}
         >

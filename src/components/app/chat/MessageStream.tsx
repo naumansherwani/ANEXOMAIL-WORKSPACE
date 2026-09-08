@@ -238,9 +238,7 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
         </div>
 
         {/* Phase 11: attachments sirf tab fetch hote hain jab DB flag > 0 ho. */}
-        {(message.attachment_count ?? 0) > 0 ? (
-          <AttachmentGallery messageId={message.id} />
-        ) : null}
+        {(message.attachment_count ?? 0) > 0 ? <AttachmentGallery messageId={message.id} /> : null}
 
         {reactions.length ? (
           <div className="mt-1 flex flex-wrap gap-1">
@@ -251,7 +249,9 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
                 onClick={() => actions.onReact(message.id, r.emoji)}
                 className={
                   "rounded-full border px-1.5 py-0.5 text-[11px] " +
-                  (r.mine ? "border-primary/60 text-foreground" : "border-border text-muted-foreground")
+                  (r.mine
+                    ? "border-primary/60 text-foreground"
+                    : "border-border text-muted-foreground")
                 }
               >
                 {r.emoji} {r.count}

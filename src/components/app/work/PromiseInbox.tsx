@@ -41,7 +41,9 @@ export function PromiseInbox() {
         onSuccess: () =>
           notify.done(
             decision === "commit" ? "Task created" : "Dismissed",
-            decision === "commit" ? "It is on the board with the promised date." : "LEO will not ask again.",
+            decision === "commit"
+              ? "It is on the board with the promised date."
+              : "LEO will not ask again.",
           ),
         onError: (error) =>
           notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not save", {
@@ -60,7 +62,9 @@ export function PromiseInbox() {
           </p>
           <p className="mt-ax-2 text-[13px] font-semibold text-foreground">{p.suggested_title}</p>
           <p className="ax-caption mt-0.5 text-muted-foreground">
-            {p.suggested_due_at ? `Due ${new Date(p.suggested_due_at).toLocaleDateString()}` : "No date found"}
+            {p.suggested_due_at
+              ? `Due ${new Date(p.suggested_due_at).toLocaleDateString()}`
+              : "No date found"}
             {" · "}
             <Link
               to="/app/mail/$folder/$threadId"
@@ -75,7 +79,12 @@ export function PromiseInbox() {
               <Check className="size-3.5" />
               Make it a task
             </Button>
-            <Button size="sm" variant="ghost" disabled={decide.isPending} onClick={() => act(p.id, "dismiss")}>
+            <Button
+              size="sm"
+              variant="ghost"
+              disabled={decide.isPending}
+              onClick={() => act(p.id, "dismiss")}
+            >
               <X className="size-3.5" />
               Not a promise
             </Button>

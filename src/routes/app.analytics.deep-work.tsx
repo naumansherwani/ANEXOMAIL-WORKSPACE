@@ -14,12 +14,21 @@ function DeepWorkPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><Brain className="size-3.5" aria-hidden="true" /> Deep work map</>}
+          eyebrow={
+            <>
+              <Brain className="size-3.5" aria-hidden="true" /> Deep work map
+            </>
+          }
           title="Real work versus inbox"
           blurb="The week split honestly: focused work, inbox, meetings — and where your best window is."
         >
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/analytics/deep-work"
             skeleton={<StatSkeleton rows={5} />}
           >
@@ -40,7 +49,10 @@ function DeepWorkPage() {
                 </p>
                 <div className="mt-ax-5">
                   <StackBar
-                    rows={d.days.map((x) => ({ label: x.day, values: [x.deep, x.inbox, x.meeting] }))}
+                    rows={d.days.map((x) => ({
+                      label: x.day,
+                      values: [x.deep, x.inbox, x.meeting],
+                    }))}
                     keys={[
                       { label: "Deep", className: "bg-foreground" },
                       { label: "Inbox", className: "bg-steel" },

@@ -16,7 +16,10 @@ export const Route = createFileRoute("/app/org/compliance")({
           "Retention, export, deletion, data region and subprocessors on one page, with a downloadable evidence pack.",
       },
       { property: "og:title", content: "Compliance — ANEXOMAIL Organization Center" },
-      { property: "og:description", content: "Retention, export, deletion and data region in one snapshot." },
+      {
+        property: "og:description",
+        content: "Retention, export, deletion and data region in one snapshot.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -57,20 +60,30 @@ function CompliancePage() {
                 </li>
                 <li>
                   Data region:{" "}
-                  <span className="font-semibold text-foreground">{data.data_region ?? "not set"}</span>
+                  <span className="font-semibold text-foreground">
+                    {data.data_region ?? "not set"}
+                  </span>
                 </li>
                 <li className="flex items-center gap-2">
-                  Export <Chip tone={data.export_enabled ? "good" : "warn"}>{data.export_enabled ? "one click" : "off"}</Chip>
+                  Export{" "}
+                  <Chip tone={data.export_enabled ? "good" : "warn"}>
+                    {data.export_enabled ? "one click" : "off"}
+                  </Chip>
                 </li>
                 <li className="flex items-center gap-2">
-                  Delete <Chip tone={data.delete_is_real ? "good" : "warn"}>{data.delete_is_real ? "real delete" : "soft only"}</Chip>
+                  Delete{" "}
+                  <Chip tone={data.delete_is_real ? "good" : "warn"}>
+                    {data.delete_is_real ? "real delete" : "soft only"}
+                  </Chip>
                 </li>
               </ul>
               <div className="mt-ax-4 flex flex-wrap gap-2">
                 <Button variant="secondary" disabled={!data.evidence_pack_ready} asChild={false}>
                   <span className="flex items-center gap-2">
                     <Download className="size-4" aria-hidden="true" />
-                    {data.evidence_pack_ready ? "Download evidence pack" : "Evidence pack not ready"}
+                    {data.evidence_pack_ready
+                      ? "Download evidence pack"
+                      : "Evidence pack not ready"}
                   </span>
                 </Button>
                 {data.dpa_url && (

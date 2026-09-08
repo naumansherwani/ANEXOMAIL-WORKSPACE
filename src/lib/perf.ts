@@ -47,8 +47,19 @@ export type PrefetchState = {
   hits: number;
   misses: number;
   ms_saved: number;
-  predictions: { surface: string; predicted: number; opened: number; accuracy: number; avg_saved_ms: number }[];
-  cold_surfaces: { surface: string; first_paint_ms: number | null; warm_ms: number | null; cold_starts: number }[];
+  predictions: {
+    surface: string;
+    predicted: number;
+    opened: number;
+    accuracy: number;
+    avg_saved_ms: number;
+  }[];
+  cold_surfaces: {
+    surface: string;
+    first_paint_ms: number | null;
+    warm_ms: number | null;
+    cold_starts: number;
+  }[];
 };
 
 export type SearchTrace = {
@@ -99,7 +110,7 @@ export type FounderPerf = {
   worst_tenants: { tenant: string; p95_ms: number; failing: number }[];
 };
 
-const get = <T,>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
+const get = <T>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
 
 export const usePerfDashboard = () =>
   useQuery<PerfDashboard, ApiError>({
@@ -146,7 +157,8 @@ export const useRegressions = () =>
 /** Query lab: asli query chalti hai server par, stage timings wapas aati hain. */
 export const useRunQueryLab = () =>
   useMutation<{ trace: SearchTrace }, ApiError, { query: string }>({
-    mutationFn: (body) => rpcOrRest("perf.runQuery", { path: "/api/perf/search/run", method: "POST", body }),
+    mutationFn: (body) =>
+      rpcOrRest("perf.runQuery", { path: "/api/perf/search/run", method: "POST", body }),
   });
 
 export const useFounderPerf = () =>

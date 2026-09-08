@@ -37,18 +37,13 @@ export function WeekGrid({
             <div className="flex items-baseline gap-1.5 border-b border-border pb-1.5">
               <span className="ax-eyebrow">{DAY_LABEL[i]}</span>
               <span
-                className={cn(
-                  "text-sm font-bold",
-                  today ? "text-cyan-accent" : "text-foreground",
-                )}
+                className={cn("text-sm font-bold", today ? "text-cyan-accent" : "text-foreground")}
               >
                 {day.getDate()}
               </span>
             </div>
             <div className="mt-ax-2 space-y-1.5">
-              {dayEvents.length === 0 && (
-                <p className="ax-caption text-steel">—</p>
-              )}
+              {dayEvents.length === 0 && <p className="ax-caption text-steel">—</p>}
               {dayEvents.map((event) => (
                 <button
                   key={event.id}

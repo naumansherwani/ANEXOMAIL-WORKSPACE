@@ -220,7 +220,9 @@ function CreditsPage() {
             {ledger.data!.entries.map((e) => (
               <li key={e.id} className="flex items-center justify-between gap-4 p-3 text-sm">
                 <div>
-                  <div className="font-medium text-foreground">{e.entry_type.replace(/_/g, " ")}</div>
+                  <div className="font-medium text-foreground">
+                    {e.entry_type.replace(/_/g, " ")}
+                  </div>
                   <div className="text-xs text-muted-foreground">
                     {e.reason ?? e.credit_type} · {new Date(e.created_at).toLocaleString("en-GB")}
                   </div>
@@ -228,7 +230,9 @@ function CreditsPage() {
                 <div className="text-right">
                   <div
                     className={
-                      Number(e.amount) < 0 ? "tabular-nums text-foreground" : "tabular-nums text-primary"
+                      Number(e.amount) < 0
+                        ? "tabular-nums text-foreground"
+                        : "tabular-nums text-primary"
                     }
                   >
                     {Number(e.amount) > 0 ? "+" : ""}

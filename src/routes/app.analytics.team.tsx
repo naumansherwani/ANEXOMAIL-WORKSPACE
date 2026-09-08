@@ -14,12 +14,21 @@ function TeamPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><Users className="size-3.5" aria-hidden="true" /> Team load</>}
+          eyebrow={
+            <>
+              <Users className="size-3.5" aria-hidden="true" /> Team load
+            </>
+          }
           title="Who is drowning, who is free"
           blurb="Built to rebalance work, not to police people. No keystrokes, no screenshots, ever."
         >
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/analytics/team"
             skeleton={<StatSkeleton rows={5} />}
           >

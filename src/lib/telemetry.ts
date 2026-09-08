@@ -17,7 +17,8 @@ type PostHogLike = {
 };
 
 const KEY = import.meta.env["VITE_POSTHOG_KEY"] as string | undefined;
-const HOST = (import.meta.env["VITE_POSTHOG_HOST"] as string | undefined) ?? "https://eu.i.posthog.com";
+const HOST =
+  (import.meta.env["VITE_POSTHOG_HOST"] as string | undefined) ?? "https://eu.i.posthog.com";
 const API = ((import.meta.env["VITE_API_URL"] as string | undefined) ?? "").replace(/\/$/, "");
 
 let ph: PostHogLike | null = null;

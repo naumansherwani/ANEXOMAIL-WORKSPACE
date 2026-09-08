@@ -50,7 +50,10 @@ export function ComingSoonGate({
 
           <div className="mt-14 grid gap-5 text-left sm:grid-cols-3">
             {cards.map((c) => (
-              <article key={c.title} className="rounded-2xl border border-border bg-card p-6 shadow-elev-1">
+              <article
+                key={c.title}
+                className="rounded-2xl border border-border bg-card p-6 shadow-elev-1"
+              >
                 <span className="flex size-10 items-center justify-center rounded-xl bg-secondary text-steel">
                   <c.icon className="size-5" aria-hidden="true" />
                 </span>

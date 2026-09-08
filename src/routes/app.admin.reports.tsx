@@ -16,7 +16,11 @@ function ReportsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><FileBarChart className="size-3.5" aria-hidden="true" /> Organisation reports</>}
+        eyebrow={
+          <>
+            <FileBarChart className="size-3.5" aria-hidden="true" /> Organisation reports
+          </>
+        }
         title="A report you can hand to the board"
         blurb="Built from real mail, real hours and real spend — never estimated, never rounded up."
       >
@@ -31,7 +35,12 @@ function ReportsPage() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/admin/reports"
             skeleton={<StatSkeleton rows={4} />}
           >
@@ -47,7 +56,9 @@ function ReportsPage() {
                     <ul className="mt-ax-3 grid gap-1.5 sm:grid-cols-2">
                       {Object.entries(r.numbers).map(([k, v]) => (
                         <Row key={k}>
-                          <span className="min-w-0 flex-1 truncate text-muted-foreground">{k.replace(/_/g, " ")}</span>
+                          <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                            {k.replace(/_/g, " ")}
+                          </span>
                           <span className="ml-auto font-semibold text-foreground">{String(v)}</span>
                         </Row>
                       ))}

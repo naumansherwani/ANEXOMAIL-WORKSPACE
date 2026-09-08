@@ -42,7 +42,9 @@ export function EarnedDelight() {
         </span>
         <span className="min-w-0">
           <span className="block text-sm font-semibold text-foreground">{copy.title}</span>
-          <span className="mt-0.5 block text-[12px] leading-relaxed text-muted-foreground">{copy.body}</span>
+          <span className="mt-0.5 block text-[12px] leading-relaxed text-muted-foreground">
+            {copy.body}
+          </span>
         </span>
       </div>
     </div>

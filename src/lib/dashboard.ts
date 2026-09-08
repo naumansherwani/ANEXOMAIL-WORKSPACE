@@ -85,11 +85,7 @@ export const useSummary = (enabled: boolean) =>
   useDashboardQuery<DashboardSummary>("summary", "/api/dashboard/summary", enabled);
 
 export const useActivity = (enabled: boolean) =>
-  useDashboardQuery<{ items: ActivityItem[] }>(
-    "activity",
-    "/api/dashboard/activity",
-    enabled,
-  );
+  useDashboardQuery<{ items: ActivityItem[] }>("activity", "/api/dashboard/activity", enabled);
 
 export const useAiUsage = (enabled: boolean) =>
   useDashboardQuery<AiUsage>("ai-usage", "/api/dashboard/ai-usage", enabled);
@@ -98,11 +94,7 @@ export const useAnalytics = (enabled: boolean) =>
   useDashboardQuery<Analytics>("analytics", "/api/dashboard/analytics", enabled);
 
 export const useUpcoming = (enabled: boolean) =>
-  useDashboardQuery<{ events: CalendarEvent[] }>(
-    "calendar",
-    "/api/dashboard/calendar",
-    enabled,
-  );
+  useDashboardQuery<{ events: CalendarEvent[] }>("calendar", "/api/dashboard/calendar", enabled);
 
 export function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes <= 0) return "0 GB";

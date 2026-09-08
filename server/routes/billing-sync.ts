@@ -404,7 +404,9 @@ publicRouter.post("/billing/guest-intent", async (req, res) => {
   const { product_key, seats = 1, email } = req.body || {};
   const selected = product_key ? configuredProduct(String(product_key)) : null;
   if (!selected) {
-    return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+    return res
+      .status(400)
+      .json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
   const safeSeats = selected.perSeat
     ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1)))
@@ -503,4 +505,3 @@ authRouter.post("/claim-guest", async (req, res) => {
 
 export { authRouter as billingSyncAuthRouter, publicRouter as billingSyncPublicRouter };
 export default authRouter;
-

@@ -13,26 +13,51 @@ function SecurityOverviewPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ShieldCheck className="size-3.5" aria-hidden="true" /> Security posture</>}
+        eyebrow={
+          <>
+            <ShieldCheck className="size-3.5" aria-hidden="true" /> Security posture
+          </>
+        }
         title="Proof, not promises"
         blurb="One score built from real device, session, encryption and delivery checks — with a tamper-evident ledger underneath."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/security/dashboard"
           skeleton={<StatSkeleton rows={5} />}
         >
           {(d) => (
             <>
               <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
-                <Stat label="Security score" value={`${d.score}/100`} hint="recomputed on every check" />
-                <Stat label="Trusted devices" value={String(d.devices_trusted)} hint={`${d.devices_pending} waiting`} />
-                <Stat label="Live sessions" value={String(d.sessions_live)} hint="killable in one click" />
+                <Stat
+                  label="Security score"
+                  value={`${d.score}/100`}
+                  hint="recomputed on every check"
+                />
+                <Stat
+                  label="Trusted devices"
+                  value={String(d.devices_trusted)}
+                  hint={`${d.devices_pending} waiting`}
+                />
+                <Stat
+                  label="Live sessions"
+                  value={String(d.sessions_live)}
+                  hint="killable in one click"
+                />
                 <Stat label="Failed logins" value={String(d.failed_logins_24h)} hint="last 24h" />
               </div>
 
               <div className="mt-ax-4 grid gap-ax-3 sm:grid-cols-3">
-                <Stat label="Open anomalies" value={String(d.open_anomalies)} hint="frozen first, asked later" />
+                <Stat
+                  label="Open anomalies"
+                  value={String(d.open_anomalies)}
+                  hint="frozen first, asked later"
+                />
                 <Stat label="Encryption" value={d.encryption_ok ? "Verified" : "Needs attention"} />
                 <Stat label="Ownership" value={d.ownership_ok ? "Signed" : "Not proven"} />
               </div>
@@ -63,7 +88,9 @@ function SecurityOverviewPage() {
                 {d.ledger.map((e) => (
                   <Row key={e.hash}>
                     <span className="text-steel">{new Date(e.at).toLocaleString("en-GB")}</span>
-                    <span className="min-w-0 flex-1 truncate text-foreground">{e.action.replace(/_/g, " ")}</span>
+                    <span className="min-w-0 flex-1 truncate text-foreground">
+                      {e.action.replace(/_/g, " ")}
+                    </span>
                     <span className="text-muted-foreground">{e.actor}</span>
                     <code className="ml-auto rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">
                       {e.hash.slice(0, 12)}

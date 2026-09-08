@@ -105,8 +105,7 @@ export function useStartTrial() {
 export function useClaimAddress() {
   const done = useInvalidateState();
   return useMutation<{ ok: boolean; state: AccountState }, ApiError, { handle: string }>({
-    mutationFn: (body) =>
-      api("/api/trial/claim", { method: "POST", body: JSON.stringify(body) }),
+    mutationFn: (body) => api("/api/trial/claim", { method: "POST", body: JSON.stringify(body) }),
     onSuccess: () => void done(),
   });
 }

@@ -38,7 +38,10 @@ export function SlaProof() {
 
   const items: { v: string; k: string }[] = [
     { v: duration(data.avg_first_reply_seconds), k: "Average first reply" },
-    { v: data.resolved_count.toLocaleString(), k: `Conversations resolved · last ${data.window_days} days` },
+    {
+      v: data.resolved_count.toLocaleString(),
+      k: `Conversations resolved · last ${data.window_days} days`,
+    },
   ];
   if (data.resolution_rate !== null) {
     items.push({ v: `${Math.round(data.resolution_rate * 100)}%`, k: "Resolved on first reply" });

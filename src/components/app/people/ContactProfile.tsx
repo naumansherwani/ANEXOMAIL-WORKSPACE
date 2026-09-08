@@ -48,7 +48,8 @@ export function ContactProfile({
     return <ErrorState body={detail.error.message} onRetry={() => void detail.refetch()} />;
   }
   if (detail.isPending) return <ThreadSkeleton />;
-  if (!detail.data) return <EmptyState title="Not found" body="This person is no longer in the workspace." />;
+  if (!detail.data)
+    return <EmptyState title="Not found" body="This person is no longer in the workspace." />;
 
   const c = detail.data.contact;
 
@@ -97,7 +98,10 @@ export function ContactProfile({
             onClick={() =>
               update.mutate(
                 { id, vip: !c.vip },
-                { onError: (error) => notify.failed("Could not update", { description: error.message }) },
+                {
+                  onError: (error) =>
+                    notify.failed("Could not update", { description: error.message }),
+                },
               )
             }
           >
@@ -112,7 +116,10 @@ export function ContactProfile({
       </header>
 
       <section className="mt-ax-6 grid grid-cols-2 gap-ax-2 md:grid-cols-4">
-        <Stat label="Last contact" value={c.last_contact_at ? relativeTime(c.last_contact_at) : "—"} />
+        <Stat
+          label="Last contact"
+          value={c.last_contact_at ? relativeTime(c.last_contact_at) : "—"}
+        />
         <Stat label="Avg reply" value={replyTimeLabel(c.avg_reply_minutes)} />
         <Stat label="Messages" value={`${c.messages_in} in · ${c.messages_out} out`} />
         <Stat label="Open threads" value={c.open_threads} />
@@ -128,7 +135,10 @@ export function ContactProfile({
               onRemove={() =>
                 tagAction.mutate(
                   { id, remove: [tag] },
-                  { onError: (error) => notify.failed("Could not remove tag", { description: error.message }) },
+                  {
+                    onError: (error) =>
+                      notify.failed("Could not remove tag", { description: error.message }),
+                  },
                 )
               }
             />

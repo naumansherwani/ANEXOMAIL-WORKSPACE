@@ -152,12 +152,20 @@ function TransferRow({
         </span>
         {t.repaired > 0 && <span className="text-steel">{t.repaired} chunk repaired</span>}
         {t.state === "transferring" && (
-          <button type="button" onClick={onPause} className="inline-flex items-center gap-1 text-primary">
+          <button
+            type="button"
+            onClick={onPause}
+            className="inline-flex items-center gap-1 text-primary"
+          >
             <Pause className="size-3.5" aria-hidden="true" /> Pause
           </button>
         )}
         {(t.state === "paused" || t.state === "failed") && (
-          <button type="button" onClick={onResume} className="inline-flex items-center gap-1 text-primary">
+          <button
+            type="button"
+            onClick={onResume}
+            className="inline-flex items-center gap-1 text-primary"
+          >
             <Play className="size-3.5" aria-hidden="true" /> Resume
           </button>
         )}
@@ -182,7 +190,11 @@ function SafetyPanel() {
         AI service.
       </p>
       <div className="mt-ax-3 grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Queue" value={`${d.queue.pending} waiting`} hint={`${d.queue.scanning} scanning`} />
+        <Stat
+          label="Queue"
+          value={`${d.queue.pending} waiting`}
+          hint={`${d.queue.scanning} scanning`}
+        />
         <Stat label="Engines" value={String(d.engines.length)} hint={d.engines.join(" · ")} />
         <Stat label="External services" value={d.external_api ? "yes" : "none"} />
         <Stat
@@ -276,7 +288,10 @@ export function FileTransfers({ conversationId = null }: { conversationId?: stri
             />
           </div>
           <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-muted">
-            <div className="h-full bg-primary" style={{ width: `${Math.min(pool.percent, 100)}%` }} />
+            <div
+              className="h-full bg-primary"
+              style={{ width: `${Math.min(pool.percent, 100)}%` }}
+            />
           </div>
         </>
       )}
@@ -316,7 +331,12 @@ export function FileTransfers({ conversationId = null }: { conversationId?: stri
       {items.length > 0 && (
         <ul className="mt-ax-4 space-y-ax-3">
           {items.map((t) => (
-            <TransferRow key={t.key} t={t} onPause={() => pause(t.key)} onResume={() => resume(t.key)} />
+            <TransferRow
+              key={t.key}
+              t={t}
+              onPause={() => pause(t.key)}
+              onResume={() => resume(t.key)}
+            />
           ))}
         </ul>
       )}
@@ -343,7 +363,9 @@ export function FileTransfers({ conversationId = null }: { conversationId?: stri
         <History className="size-4" aria-hidden="true" /> Stored files & versions
       </h3>
       {(engine.data?.files.length ?? 0) === 0 ? (
-        <p className="mt-2 text-sm text-steel">Koi file store nahi hui — pehla transfer yahan aayega.</p>
+        <p className="mt-2 text-sm text-steel">
+          Koi file store nahi hui — pehla transfer yahan aayega.
+        </p>
       ) : (
         <ul className="mt-2 space-y-2">
           {engine.data!.files.map((f) => (
@@ -354,7 +376,9 @@ export function FileTransfers({ conversationId = null }: { conversationId?: stri
                 onClick={() => setOpenFile(openFile === f.file_id ? null : f.file_id)}
                 aria-expanded={openFile === f.file_id}
               >
-                <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{f.name}</span>
+                <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                  {f.name}
+                </span>
                 <span className="text-sm text-foreground">{bytesLabel(f.bytes)}</span>
                 <span className="text-sm text-steel">
                   v{f.version} · {f.versions} kept

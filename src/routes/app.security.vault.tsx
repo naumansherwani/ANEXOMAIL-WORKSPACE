@@ -4,7 +4,6 @@ import { AccountIntegrityPanel } from "@/components/app/security/AccountIntegrit
 import { DeviceAppealPanel } from "@/components/app/security/DeviceAppealPanel";
 import { DeviceVaultPanel } from "@/components/app/security/DeviceVaultPanel";
 
-
 export const Route = createFileRoute("/app/security/vault")({
   head: () => ({
     meta: [
@@ -35,6 +34,5 @@ function VaultPage() {
       <AccountIntegrityPanel />
       <DeviceAppealPanel />
     </div>
-
   );
 }

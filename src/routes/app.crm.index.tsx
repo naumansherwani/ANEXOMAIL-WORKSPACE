@@ -7,7 +7,6 @@ import { Chip, CrmStat, SectionTitle } from "@/components/app/crm/CrmBits";
 import { crmAiAllowed } from "@/lib/host";
 import { STAGE_LABEL, money, useCrmInsights, useCrmOverview } from "@/lib/crm";
 
-
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
     meta: [
@@ -17,7 +16,10 @@ export const Route = createFileRoute("/app/crm/")({
         content: "Pipeline value, weighted forecast, unworked leads and Leo's live deal insights.",
       },
       { property: "og:title", content: "CRM dashboard — ANEXOMAIL Workspace" },
-      { property: "og:description", content: "Pipeline, forecast and AI deal insights in one view." },
+      {
+        property: "og:description",
+        content: "Pipeline, forecast and AI deal insights in one view.",
+      },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -31,7 +33,6 @@ function CrmDashboard() {
 
   const overview = useCrmOverview();
   const insights = useCrmInsights();
-
 
   const o = overview.data;
 
@@ -53,10 +54,7 @@ function CrmDashboard() {
           value={o ? money(o.weighted_value, o.currency) : "—"}
           hint="Value × probability"
         />
-        <CrmStat
-          label="Won this month"
-          value={o ? money(o.won_this_month, o.currency) : "—"}
-        />
+        <CrmStat label="Won this month" value={o ? money(o.won_this_month, o.currency) : "—"} />
         <CrmStat
           label="Unworked leads"
           value={o ? String(o.leads_unworked) : "—"}

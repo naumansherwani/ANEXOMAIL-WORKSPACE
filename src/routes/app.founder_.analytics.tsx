@@ -14,11 +14,20 @@ function FounderAnalytics() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-4xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><BarChart3 className="size-3.5" aria-hidden="true" /> Analytics founder view</>}
+          eyebrow={
+            <>
+              <BarChart3 className="size-3.5" aria-hidden="true" /> Analytics founder view
+            </>
+          }
           title="Platform-wide truth"
         >
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/founder/analytics/overview"
             skeleton={<StatSkeleton rows={5} />}
           >

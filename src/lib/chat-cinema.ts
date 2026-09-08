@@ -80,7 +80,15 @@ export function cinemaBudget(
   band: TimeBand,
 ): CinemaBudget {
   if (quality === "off") {
-    return { quality, particles: 0, stars: 0, clouds: false, bloom: false, physics: false, dpr: [1, 1] };
+    return {
+      quality,
+      particles: 0,
+      stars: 0,
+      clouds: false,
+      bloom: false,
+      physics: false,
+      dpr: [1, 1],
+    };
   }
   const heavy = effect === "rain" || effect === "storm" || effect === "snow";
   const base = heavy ? 2400 : 600;
@@ -88,7 +96,7 @@ export function cinemaBudget(
   return {
     quality,
     particles: Math.round(base * scale),
-    stars: band === "night" ? Math.round((quality === "low" ? 900 : 2200)) : 0,
+    stars: band === "night" ? Math.round(quality === "low" ? 900 : 2200) : 0,
     clouds: quality === "high" && (effect === "rain" || effect === "storm"),
     bloom: quality === "high",
     physics: quality === "high" && effect === "snow",

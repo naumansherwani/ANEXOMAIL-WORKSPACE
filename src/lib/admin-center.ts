@@ -147,7 +147,7 @@ export type FounderAdmin = {
   worst_tenants: { tenant: string; failing: number; checks: number }[];
 };
 
-const get = <T,>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
+const get = <T>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
 
 export const useHealth = () =>
   useQuery<HealthOverview, ApiError>({
@@ -159,7 +159,8 @@ export const useHealth = () =>
 export const useHeal = () => {
   const qc = useQueryClient();
   return useMutation<{ ok: boolean; outcome: string; proof: unknown }, ApiError, { key: string }>({
-    mutationFn: (body) => rpcOrRest("admin.heal", { path: "/api/admin/health/heal", method: "POST", body }),
+    mutationFn: (body) =>
+      rpcOrRest("admin.heal", { path: "/api/admin/health/heal", method: "POST", body }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["admin", "health"] }),
   });
 };
@@ -207,7 +208,12 @@ export const useReports = () =>
 export const useGenerateReport = () => {
   const qc = useQueryClient();
   return useMutation<{ report: Report }, ApiError, { period: string }>({
-    mutationFn: (body) => rpcOrRest("admin.generateReport", { path: "/api/admin/reports/generate", method: "POST", body }),
+    mutationFn: (body) =>
+      rpcOrRest("admin.generateReport", {
+        path: "/api/admin/reports/generate",
+        method: "POST",
+        body,
+      }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["admin", "reports"] }),
   });
 };
@@ -222,7 +228,12 @@ export const useDiagnostics = () =>
 export const useRunDiagnostics = () => {
   const qc = useQueryClient();
   return useMutation<{ run: DiagnosticRun }, ApiError, { scope?: string }>({
-    mutationFn: (body) => rpcOrRest("admin.runDiagnostics", { path: "/api/admin/diagnostics/run", method: "POST", body }),
+    mutationFn: (body) =>
+      rpcOrRest("admin.runDiagnostics", {
+        path: "/api/admin/diagnostics/run",
+        method: "POST",
+        body,
+      }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["admin", "diagnostics"] }),
   });
 };

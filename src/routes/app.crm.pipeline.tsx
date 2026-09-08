@@ -74,12 +74,20 @@ function PipelinePage() {
               const total = items.reduce((s, d) => s + d.value, 0);
               const currency = items[0]?.currency ?? "GBP";
               return (
-                <Column key={stage} stage={stage} count={items.length} total={money(total, currency)}>
+                <Column
+                  key={stage}
+                  stage={stage}
+                  count={items.length}
+                  total={money(total, currency)}
+                >
                   {items.length === 0 ? (
                     <p className="ax-caption text-muted-foreground">Nothing here.</p>
                   ) : (
                     items.map((d) => (
-                      <article key={d.id} className="rounded-xl border border-border bg-card p-ax-3">
+                      <article
+                        key={d.id}
+                        className="rounded-xl border border-border bg-card p-ax-3"
+                      >
                         <p className="text-[13px] font-semibold text-foreground">{d.title}</p>
                         <p className="ax-caption mt-0.5 text-muted-foreground">
                           {d.company ?? d.contact_email ?? "No company yet"}

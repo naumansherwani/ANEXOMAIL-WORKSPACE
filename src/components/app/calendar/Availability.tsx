@@ -50,7 +50,9 @@ export function Availability({ date }: { date: string }) {
     <div className="space-y-ax-4 p-ax-4">
       {shareUrl && (
         <div className="flex items-center gap-2 rounded-xl border border-border px-ax-3 py-ax-2">
-          <span className="ax-caption min-w-0 flex-1 truncate text-muted-foreground">{shareUrl}</span>
+          <span className="ax-caption min-w-0 flex-1 truncate text-muted-foreground">
+            {shareUrl}
+          </span>
           <Button
             size="sm"
             variant="outline"

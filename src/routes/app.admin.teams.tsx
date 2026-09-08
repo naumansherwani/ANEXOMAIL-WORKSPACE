@@ -54,8 +54,7 @@ function TeamsPage() {
     retry: false,
   });
 
-  const invalidate = () =>
-    void queryClient.invalidateQueries({ queryKey: ["workspace", "teams"] });
+  const invalidate = () => void queryClient.invalidateQueries({ queryKey: ["workspace", "teams"] });
 
   const create = useMutation({
     mutationFn: (teamName: string) =>

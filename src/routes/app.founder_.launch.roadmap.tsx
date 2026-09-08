@@ -23,7 +23,11 @@ function RoadmapPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><MapIcon className="size-3.5" aria-hidden="true" /> v2.0 roadmap</>}
+        eyebrow={
+          <>
+            <MapIcon className="size-3.5" aria-hidden="true" /> v2.0 roadmap
+          </>
+        }
         title="Everything v1.0 does not do"
         blurb="After the lock, new work lands here — ranked by impact over effort, with the revenue road it serves written next to it."
       >
@@ -78,11 +82,25 @@ function RoadmapPage() {
           </label>
           <label>
             <span className="ax-caption block text-muted-foreground">Impact {impact}</span>
-            <input type="range" min={1} max={5} value={impact} onChange={(e) => setImpact(Number(e.target.value))} className="mt-2 w-full" />
+            <input
+              type="range"
+              min={1}
+              max={5}
+              value={impact}
+              onChange={(e) => setImpact(Number(e.target.value))}
+              className="mt-2 w-full"
+            />
           </label>
           <label>
             <span className="ax-caption block text-muted-foreground">Effort {effort}</span>
-            <input type="range" min={1} max={5} value={effort} onChange={(e) => setEffort(Number(e.target.value))} className="mt-2 w-full" />
+            <input
+              type="range"
+              min={1}
+              max={5}
+              value={effort}
+              onChange={(e) => setEffort(Number(e.target.value))}
+              className="mt-2 w-full"
+            />
           </label>
           <button
             type="submit"
@@ -95,7 +113,12 @@ function RoadmapPage() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/founder/release/roadmap"
             skeleton={<StatSkeleton rows={5} />}
           >
@@ -110,7 +133,15 @@ function RoadmapPage() {
                     .sort((a, b) => b.impact / b.effort - a.impact / a.effort)
                     .map((i) => (
                       <Row key={i.id}>
-                        <Verdict verdict={i.state === "shipped" ? "green" : i.state === "building" ? "watch" : "fail"}>
+                        <Verdict
+                          verdict={
+                            i.state === "shipped"
+                              ? "green"
+                              : i.state === "building"
+                                ? "watch"
+                                : "fail"
+                          }
+                        >
                           {i.state}
                         </Verdict>
                         <span className="min-w-0 flex-1">

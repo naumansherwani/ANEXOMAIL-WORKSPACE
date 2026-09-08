@@ -18,7 +18,10 @@ export const Route = createFileRoute("/app/settings")({
           "Every setting with a version history, one-click revert, a plain-language explanation and the blast radius before you save.",
       },
       { property: "og:title", content: "Settings — ANEXOMAIL Workspace" },
-      { property: "og:description", content: "Settings with history, revert and blast radius before save." },
+      {
+        property: "og:description",
+        content: "Settings with history, revert and blast radius before save.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },

@@ -18,7 +18,10 @@ export const Route = createFileRoute("/app/analytics")({
           "Response debt in real money, what each thread actually cost, and how much of your week was real work instead of inbox.",
       },
       { property: "og:title", content: "Analytics — ANEXOMAIL Workspace" },
-      { property: "og:description", content: "Response debt, thread economics and your real deep-work hours." },
+      {
+        property: "og:description",
+        content: "Response debt, thread economics and your real deep-work hours.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },

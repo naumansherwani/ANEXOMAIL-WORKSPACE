@@ -15,12 +15,21 @@ function HealthPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><HeartPulse className="size-3.5" aria-hidden="true" /> Self-healing health</>}
+        eyebrow={
+          <>
+            <HeartPulse className="size-3.5" aria-hidden="true" /> Self-healing health
+          </>
+        }
         title="It fixes itself, then shows you the receipt"
         blurb="Every check knows its own remedy. Where a fix is safe, one click applies it and the proof is stored."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/admin/health"
           skeleton={<StatSkeleton rows={6} />}
         >
@@ -28,7 +37,11 @@ function HealthPage() {
             <>
               <div className="grid gap-ax-3 sm:grid-cols-3">
                 <Stat label="Health score" value={`${d.score}/100`} />
-                <Stat label="Self-heals (24h)" value={String(d.self_heals_24h)} hint="no human needed" />
+                <Stat
+                  label="Self-heals (24h)"
+                  value={String(d.self_heals_24h)}
+                  hint="no human needed"
+                />
                 <Stat
                   label="Last run"
                   value={d.last_run ? new Date(d.last_run).toLocaleTimeString("en-GB") : "—"}
@@ -38,7 +51,9 @@ function HealthPage() {
               <ul className="mt-ax-5 space-y-1.5">
                 {d.checks.map((c) => (
                   <Row key={c.key}>
-                    <span className={cn("font-bold", STATUS_TONE[c.status])}>{c.status.toUpperCase()}</span>
+                    <span className={cn("font-bold", STATUS_TONE[c.status])}>
+                      {c.status.toUpperCase()}
+                    </span>
                     <span className="min-w-0 flex-1">
                       <span className="block font-semibold text-foreground">{c.label}</span>
                       <span className="block text-steel">{c.detail ?? c.remedy ?? ""}</span>
@@ -61,7 +76,9 @@ function HealthPage() {
               <ul className="mt-ax-3 space-y-1.5">
                 {d.recent.map((r, i) => (
                   <Row key={`${r.key}-${i}`}>
-                    <span className="text-steel">{new Date(r.created_at).toLocaleString("en-GB")}</span>
+                    <span className="text-steel">
+                      {new Date(r.created_at).toLocaleString("en-GB")}
+                    </span>
                     <span className="min-w-0 flex-1 truncate text-foreground">{r.key}</span>
                     <span className="text-muted-foreground">{r.action}</span>
                     <span className="ml-auto text-steel">{r.outcome}</span>

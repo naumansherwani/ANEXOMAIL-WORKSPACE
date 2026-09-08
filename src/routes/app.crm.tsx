@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { crmAiAllowed } from "@/lib/host";
 import { cn } from "@/lib/utils";
 
-
 export const Route = createFileRoute("/app/crm")({
   head: () => ({
     meta: [
@@ -27,7 +26,11 @@ export const Route = createFileRoute("/app/crm")({
   component: CrmLayout,
 });
 
-type Tab = { to: "/app/crm" | "/app/crm/leads" | "/app/crm/pipeline" | "/app/crm/collab" | "/app/crm/activity"; label: string; exact?: boolean };
+type Tab = {
+  to: "/app/crm" | "/app/crm/leads" | "/app/crm/pipeline" | "/app/crm/collab" | "/app/crm/activity";
+  label: string;
+  exact?: boolean;
+};
 
 const TABS: Tab[] = [
   { to: "/app/crm", label: "Dashboard", exact: true },

@@ -75,7 +75,8 @@ function Arena() {
               run.mutate(
                 { question: question.trim(), agents: slots },
                 {
-                  onSuccess: () => notify.done("Arena run finished", "Sherlock scored every answer."),
+                  onSuccess: () =>
+                    notify.done("Arena run finished", "Sherlock scored every answer."),
                   onError: (e) =>
                     notify.failed(e.isNotImplemented ? "Arena not wired yet" : "Run failed", {
                       description: e.message,
@@ -119,11 +120,22 @@ function Arena() {
                         </div>
                         <div className="mt-ax-3 grid gap-2 sm:grid-cols-3">
                           {r.entries.map((e, i) => (
-                            <div key={`${e.agent}-${i}`} className="rounded-xl border border-border p-ax-3">
+                            <div
+                              key={`${e.agent}-${i}`}
+                              className="rounded-xl border border-border p-ax-3"
+                            >
                               <div className="flex flex-wrap items-center gap-1.5">
                                 <Chip>{e.agent}</Chip>
                                 {e.sherlock_score !== null && (
-                                  <Chip tone={e.sherlock_score >= 80 ? "good" : e.sherlock_score >= 50 ? "warn" : "bad"}>
+                                  <Chip
+                                    tone={
+                                      e.sherlock_score >= 80
+                                        ? "good"
+                                        : e.sherlock_score >= 50
+                                          ? "warn"
+                                          : "bad"
+                                    }
+                                  >
                                     {e.sherlock_score}
                                   </Chip>
                                 )}

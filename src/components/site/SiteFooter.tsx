@@ -52,9 +52,7 @@ export function SiteFooter() {
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <Mail className="size-4 shrink-0" aria-hidden="true" />
-              <span>
-                resolved@anexomail.com — support
-              </span>
+              <span>resolved@anexomail.com — support</span>
             </a>
             <a
               href="mailto:hello@anexomail.com"
@@ -104,7 +102,6 @@ export function SiteFooter() {
           </Link>
         </div>
       </div>
-
 
       <div className="border-t border-border">
         <div className="ax-container flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">

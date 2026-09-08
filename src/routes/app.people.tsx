@@ -46,8 +46,7 @@ function PeoplePage() {
 
   type PeopleSearch = { view: View; id: string; q: string; filter: SmartFilter; tag: string };
   const current: PeopleSearch = { view, id, q, filter, tag };
-  const set = (patch: Partial<PeopleSearch>) =>
-    void navigate({ search: { ...current, ...patch } });
+  const set = (patch: Partial<PeopleSearch>) => void navigate({ search: { ...current, ...patch } });
 
   const contacts = useContacts({ q, filter, tag: tag || null });
   const companies = useCompanies({ q });
@@ -113,11 +112,15 @@ function PeoplePage() {
                   onClick={() => set({ tag: tag === t.name ? "" : t.name })}
                   className={cn(
                     "ax-press rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors",
-                    tag === t.name ? "bg-foreground text-background" : "bg-secondary text-steel hover:text-foreground",
+                    tag === t.name
+                      ? "bg-foreground text-background"
+                      : "bg-secondary text-steel hover:text-foreground",
                   )}
                 >
                   {t.name}
-                  {typeof t.count === "number" && <span className="ml-1 opacity-60">{t.count}</span>}
+                  {typeof t.count === "number" && (
+                    <span className="ml-1 opacity-60">{t.count}</span>
+                  )}
                 </button>
               ))}
             </div>
@@ -125,17 +128,9 @@ function PeoplePage() {
         </div>
 
         {view === "people" ? (
-          <PeopleRail
-            state={contacts}
-            activeId={id}
-            onOpen={(next) => set({ id: next })}
-          />
+          <PeopleRail state={contacts} activeId={id} onOpen={(next) => set({ id: next })} />
         ) : (
-          <CompanyRail
-            state={companies}
-            activeId={id}
-            onOpen={(next) => set({ id: next })}
-          />
+          <CompanyRail state={companies} activeId={id} onOpen={(next) => set({ id: next })} />
         )}
       </ListPanel>
 

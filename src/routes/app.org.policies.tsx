@@ -19,7 +19,10 @@ export const Route = createFileRoute("/app/org/policies")({
           "Turn a policy on only after the dry-run tells you exactly how many members and workflows it will affect.",
       },
       { property: "og:title", content: "Policies — ANEXOMAIL Organization Center" },
-      { property: "og:description", content: "Policy list with a dry-run simulator before anything goes live." },
+      {
+        property: "og:description",
+        content: "Policy list with a dry-run simulator before anything goes live.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -52,7 +55,8 @@ function PoliciesPage() {
     toggle.mutate(
       { policy_id: policyId, enabled },
       {
-        onSuccess: () => notify.done(enabled ? "Policy live" : "Policy off", "The server confirmed it."),
+        onSuccess: () =>
+          notify.done(enabled ? "Policy live" : "Policy off", "The server confirmed it."),
         onError: (e) =>
           notify.failed(e.isNotImplemented ? "Policy toggle not wired yet" : "Could not apply", {
             description: e.message,

@@ -28,13 +28,7 @@ const BAND_SUN: Record<TimeBand, [number, number, number]> = {
 const BAND_LIGHT: Record<TimeBand, number> = { dawn: 0.5, day: 0.9, dusk: 0.45, night: 0.18 };
 
 /** Rain / snow particles. Rain = fast vertical streaks, snow = drifting flakes. */
-function Precipitation({
-  count,
-  kind,
-}: {
-  count: number;
-  kind: "rain" | "snow";
-}) {
+function Precipitation({ count, kind }: { count: number; kind: "rain" | "snow" }) {
   const points = useRef<THREE.Points>(null);
   const positions = useMemo(() => {
     const arr = new Float32Array(count * 3);

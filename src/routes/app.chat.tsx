@@ -3,7 +3,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Paperclip, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { AtmosphereControl, AtmosphereStage, useAtmosphere } from "@/components/app/chat/Atmosphere";
+import {
+  AtmosphereControl,
+  AtmosphereStage,
+  useAtmosphere,
+} from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
 import { CinemaStage, useCinema } from "@/components/app/chat/CinemaStage";
 import { FileTransfers } from "@/components/app/chat/FileTransfers";
@@ -45,10 +49,7 @@ import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
-    meta: [
-      { title: "ANEXOChat — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "ANEXOChat — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: ChatPage,
 });
@@ -180,7 +181,7 @@ function ChatPage() {
           body={
             forbidden
               ? "ANEXOChat is included with Business and Business Pro. Basic and Pro do not include it."
-              : bootstrap.error?.message ?? "The workspace server did not answer."
+              : (bootstrap.error?.message ?? "The workspace server did not answer.")
           }
         />
       </div>
@@ -194,60 +195,40 @@ function ChatPage() {
 
       {/* Phase 11 multitasking: pop-out pane (?pane=1) mein sirf detail dikhta hai. */}
       {pane ? null : (
-      <ListPanel
-        title="ANEXOChat"
-        mobileHidden={Boolean(openId)}
-        action={
-          <span className="text-[11px] text-muted-foreground" title={live.detail}>
-            {list.length} {list.length === 1 ? "conversation" : "conversations"} ·{" "}
-            {live.transport === "webtransport" ? "WebTransport live" : "HTTP/3 polling"}
-          </span>
-        }
-      >
-        <div className="border-b border-border px-3 py-2">
-          <label className="sr-only" htmlFor="ax-chat-search">
-            Search messages
-          </label>
-          <div className="flex items-center gap-2 rounded-lg border border-border px-2 py-1.5">
-            <Search className="size-3.5 text-muted-foreground" />
-            <input
-              id="ax-chat-search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search messages"
-              className="w-full bg-transparent text-xs text-foreground outline-none"
-            />
-          </div>
-          {query.trim().length >= 2 ? (
-            <div className="mt-2 flex flex-col gap-1">
-              {(search.data?.results ?? []).length === 0 ? (
-                <p className="text-[11px] text-muted-foreground">
-                  {search.isFetching ? "Searching" : "No message matches that text."}
-                </p>
-              ) : (
-                (search.data?.results ?? []).map((hit) => (
-                  <button
-                    key={hit.id}
-                    type="button"
-                    onClick={() => {
-                      setOpenId(hit.conversation_id);
-                      setQuery("");
-                    }}
-                    className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
-                  >
-                    <span className="font-semibold text-foreground">{hit.sender_name}</span>{" "}
-                    {hit.body.slice(0, 70)}
-                  </button>
-                ))
-              )}
-              {(deep.data ?? []).length ? (
-                <>
-                  <p className="pt-1 text-[10px] uppercase tracking-wide text-muted-foreground">
-                    Full history
+        <ListPanel
+          title="ANEXOChat"
+          mobileHidden={Boolean(openId)}
+          action={
+            <span className="text-[11px] text-muted-foreground" title={live.detail}>
+              {list.length} {list.length === 1 ? "conversation" : "conversations"} ·{" "}
+              {live.transport === "webtransport" ? "WebTransport live" : "HTTP/3 polling"}
+            </span>
+          }
+        >
+          <div className="border-b border-border px-3 py-2">
+            <label className="sr-only" htmlFor="ax-chat-search">
+              Search messages
+            </label>
+            <div className="flex items-center gap-2 rounded-lg border border-border px-2 py-1.5">
+              <Search className="size-3.5 text-muted-foreground" />
+              <input
+                id="ax-chat-search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search messages"
+                className="w-full bg-transparent text-xs text-foreground outline-none"
+              />
+            </div>
+            {query.trim().length >= 2 ? (
+              <div className="mt-2 flex flex-col gap-1">
+                {(search.data?.results ?? []).length === 0 ? (
+                  <p className="text-[11px] text-muted-foreground">
+                    {search.isFetching ? "Searching" : "No message matches that text."}
                   </p>
-                  {(deep.data ?? []).map((hit) => (
+                ) : (
+                  (search.data?.results ?? []).map((hit) => (
                     <button
-                      key={hit.message_id}
+                      key={hit.id}
                       type="button"
                       onClick={() => {
                         setOpenId(hit.conversation_id);
@@ -255,61 +236,81 @@ function ChatPage() {
                       }}
                       className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
                     >
-                      <span className="font-semibold text-foreground">
-                        {hit.conversation_title ?? "Conversation"}
-                      </span>{" "}
+                      <span className="font-semibold text-foreground">{hit.sender_name}</span>{" "}
                       {hit.body.slice(0, 70)}
                     </button>
-                  ))}
-                </>
-              ) : null}
-            </div>
-          ) : null}
-        </div>
-
-        {list.length === 0 ? (
-          <div className="p-4">
-            <EmptyState
-              title="No conversations yet"
-              body={
-                teammates.length
-                  ? "Start a direct conversation with someone in this workspace."
-                  : "Nobody else is in this chat workspace yet, so there is nothing to open."
-              }
-              action={
-                teammates.length ? (
-                  <div className="flex flex-col gap-1">
-                    {teammates.map((m) => (
+                  ))
+                )}
+                {(deep.data ?? []).length ? (
+                  <>
+                    <p className="pt-1 text-[10px] uppercase tracking-wide text-muted-foreground">
+                      Full history
+                    </p>
+                    {(deep.data ?? []).map((hit) => (
                       <button
-                        key={m.user_id}
+                        key={hit.message_id}
                         type="button"
-                        className="ax-press rounded-lg border border-border px-3 py-1.5 text-xs text-foreground"
-                        onClick={() =>
-                          startDirect.mutate(m.user_id, {
-                            onSuccess: (r: { conversation_id: string }) =>
-                              setOpenId(r.conversation_id),
-                          })
-                        }
+                        onClick={() => {
+                          setOpenId(hit.conversation_id);
+                          setQuery("");
+                        }}
+                        className="rounded-lg border border-border px-2 py-1 text-left text-[11px] text-muted-foreground hover:text-foreground"
                       >
-                        Message {m.display_name ?? "teammate"}
+                        <span className="font-semibold text-foreground">
+                          {hit.conversation_title ?? "Conversation"}
+                        </span>{" "}
+                        {hit.body.slice(0, 70)}
                       </button>
                     ))}
-                  </div>
-                ) : undefined
-              }
-            />
+                  </>
+                ) : null}
+              </div>
+            ) : null}
           </div>
-        ) : (
-          list.map((c) => (
-            <ConversationRow
-              key={c.conversation_id}
-              conversation={c}
-              active={c.conversation_id === openId}
-              onOpen={() => setOpenId(c.conversation_id)}
-            />
-          ))
-        )}
-      </ListPanel>
+
+          {list.length === 0 ? (
+            <div className="p-4">
+              <EmptyState
+                title="No conversations yet"
+                body={
+                  teammates.length
+                    ? "Start a direct conversation with someone in this workspace."
+                    : "Nobody else is in this chat workspace yet, so there is nothing to open."
+                }
+                action={
+                  teammates.length ? (
+                    <div className="flex flex-col gap-1">
+                      {teammates.map((m) => (
+                        <button
+                          key={m.user_id}
+                          type="button"
+                          className="ax-press rounded-lg border border-border px-3 py-1.5 text-xs text-foreground"
+                          onClick={() =>
+                            startDirect.mutate(m.user_id, {
+                              onSuccess: (r: { conversation_id: string }) =>
+                                setOpenId(r.conversation_id),
+                            })
+                          }
+                        >
+                          Message {m.display_name ?? "teammate"}
+                        </button>
+                      ))}
+                    </div>
+                  ) : undefined
+                }
+              />
+            </div>
+          ) : (
+            list.map((c) => (
+              <ConversationRow
+                key={c.conversation_id}
+                conversation={c}
+                active={c.conversation_id === openId}
+                onOpen={() => setOpenId(c.conversation_id)}
+              />
+            ))
+          )}
+        </ListPanel>
       )}
 
       <DetailPanel mobileVisible={Boolean(openId)}>
@@ -582,8 +583,8 @@ function ChatPage() {
                 </button>
               </form>
               <p className="mt-1.5 text-[11px] text-muted-foreground">
-                Offline, a message waits here as “Waiting to send”. It is never shown as sent
-                until the workspace has it.
+                Offline, a message waits here as “Waiting to send”. It is never shown as sent until
+                the workspace has it.
               </p>
             </div>
           </div>

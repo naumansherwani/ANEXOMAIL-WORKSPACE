@@ -108,9 +108,7 @@ function OwnershipPage() {
                 <k.icon className="size-5" />
               </span>
               <h2 className="mt-5 text-lg font-bold text-foreground">{k.title}</h2>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {k.body}
-              </p>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{k.body}</p>
             </article>
           ))}
         </section>
@@ -140,16 +138,17 @@ function OwnershipPage() {
 
         <section className="ax-container grid gap-10 pb-24 lg:grid-cols-2">
           <div>
-            <h2 className="text-2xl text-foreground md:text-3xl">
-              What the audit log records
-            </h2>
+            <h2 className="text-2xl text-foreground md:text-3xl">What the audit log records</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
               Append-only. Entries are chained, so a missing or altered line is detectable —
               including by us.
             </p>
             <ul className="mt-6 space-y-3">
               {audited.map((a) => (
-                <li key={a} className="flex gap-3 text-[13px] leading-relaxed text-muted-foreground">
+                <li
+                  key={a}
+                  className="flex gap-3 text-[13px] leading-relaxed text-muted-foreground"
+                >
                   <ScrollText className="mt-0.5 size-4 shrink-0 text-steel" aria-hidden="true" />
                   {a}
                 </li>
@@ -175,7 +174,10 @@ function OwnershipPage() {
             </div>
             <p className="ax-caption mt-4 text-muted-foreground">
               Step-by-step instructions live in the{" "}
-              <Link to="/docs" className="font-semibold text-foreground underline-offset-4 hover:underline">
+              <Link
+                to="/docs"
+                className="font-semibold text-foreground underline-offset-4 hover:underline"
+              >
                 handbook
               </Link>
               , alongside <Download className="inline size-3.5" aria-hidden="true" /> export and{" "}

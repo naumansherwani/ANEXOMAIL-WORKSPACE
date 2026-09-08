@@ -17,7 +17,11 @@ function ProofPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Stamp className="size-3.5" aria-hidden="true" /> Ownership proof</>}
+        eyebrow={
+          <>
+            <Stamp className="size-3.5" aria-hidden="true" /> Ownership proof
+          </>
+        }
         title="Prove the domain is yours, on paper"
         blurb="A live probe of DKIM, SPF, DMARC and TLS, hashed into one signed pack you can hand to a client, an auditor or a bank."
       >
@@ -28,11 +32,15 @@ function ProofPage() {
             run.mutate(
               {},
               {
-                onSuccess: () => notify.done("Proof generated", "Hash recorded — the pack is ready to export."),
+                onSuccess: () =>
+                  notify.done("Proof generated", "Hash recorded — the pack is ready to export."),
                 onError: (e) =>
-                  notify.failed(e.isNotImplemented ? "Proof not wired yet" : "Could not run proof", {
-                    description: e.message,
-                  }),
+                  notify.failed(
+                    e.isNotImplemented ? "Proof not wired yet" : "Could not run proof",
+                    {
+                      description: e.message,
+                    },
+                  ),
               },
             )
           }
@@ -42,7 +50,12 @@ function ProofPage() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/security/proof"
             skeleton={<StatSkeleton rows={4} />}
           >
@@ -55,7 +68,9 @@ function ProofPage() {
                     <li key={p.id} className="ax-plane rounded-2xl p-ax-4">
                       <div className="flex flex-wrap items-center gap-ax-3 text-[12px]">
                         <span className="font-semibold text-foreground">{p.domain}</span>
-                        <span className="text-steel">{new Date(p.ran_at).toLocaleString("en-GB")}</span>
+                        <span className="text-steel">
+                          {new Date(p.ran_at).toLocaleString("en-GB")}
+                        </span>
                         <span className="text-emerald-400">{p.passed} passed</span>
                         {p.failed > 0 && <span className="text-red-400">{p.failed} failed</span>}
                         {p.proof_hash && (
@@ -67,12 +82,20 @@ function ProofPage() {
                       <ul className="mt-ax-3 space-y-1.5">
                         {p.checks.map((c) => (
                           <Row key={c.check}>
-                            <span className="min-w-0 flex-1 font-semibold text-foreground">{c.check}</span>
-                            <span className="min-w-0 flex-1 truncate text-muted-foreground">{c.observed ?? "—"}</span>
+                            <span className="min-w-0 flex-1 font-semibold text-foreground">
+                              {c.check}
+                            </span>
+                            <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                              {c.observed ?? "—"}
+                            </span>
                             {c.fix && <span className="text-amber-400">{c.fix}</span>}
                             <span
                               className={
-                                c.result === "pass" ? "ml-auto text-emerald-400" : c.result === "fail" ? "ml-auto text-red-400" : "ml-auto text-steel"
+                                c.result === "pass"
+                                  ? "ml-auto text-emerald-400"
+                                  : c.result === "fail"
+                                    ? "ml-auto text-red-400"
+                                    : "ml-auto text-steel"
                               }
                             >
                               {c.result}

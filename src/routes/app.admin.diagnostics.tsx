@@ -30,7 +30,11 @@ function DiagnosticsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Stethoscope className="size-3.5" aria-hidden="true" /> Diagnostics proof pack</>}
+        eyebrow={
+          <>
+            <Stethoscope className="size-3.5" aria-hidden="true" /> Diagnostics proof pack
+          </>
+        }
         title="One click, whole stack, signed evidence"
         blurb="DNS, DKIM, SPF, DMARC, TLS, SMTP and IMAP checked end to end — each run hashed so the result can be proven later."
       >
@@ -45,7 +49,12 @@ function DiagnosticsPage() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/admin/diagnostics"
             skeleton={<StatSkeleton rows={5} />}
           >
@@ -68,7 +77,11 @@ function DiagnosticsPage() {
                           <span
                             className={cn(
                               "font-bold",
-                              p.result === "pass" ? "text-emerald-400" : p.result === "fail" ? "text-red-400" : "text-steel",
+                              p.result === "pass"
+                                ? "text-emerald-400"
+                                : p.result === "fail"
+                                  ? "text-red-400"
+                                  : "text-steel",
                             )}
                           >
                             {p.result}
@@ -78,7 +91,9 @@ function DiagnosticsPage() {
                               {p.probe} {p.target ? `· ${p.target}` : ""}
                             </span>
                             <span className="block truncate text-steel">
-                              {p.result === "fail" ? (p.fix ?? p.expected ?? "") : (p.observed ?? "")}
+                              {p.result === "fail"
+                                ? (p.fix ?? p.expected ?? "")
+                                : (p.observed ?? "")}
                             </span>
                           </span>
                           <span className="ml-auto text-muted-foreground">{p.ms}ms</span>
@@ -112,14 +127,22 @@ function MotionMetrics() {
   return (
     <div className="mt-ax-6">
       <Section
-        eyebrow={<><Gauge className="size-3.5" aria-hidden="true" /> Motion performance</>}
+        eyebrow={
+          <>
+            <Gauge className="size-3.5" aria-hidden="true" /> Motion performance
+          </>
+        }
         title="Animation frame time, measured not felt"
         blurb="Real samples from this device: p95 against each named budget, plus every frame the browser blew past 50ms."
       >
         <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
           <Stat label="Samples" value={String(ledger.total)} />
           <Stat label="Over budget" value={String(ledger.failing)} hint="p95 past 1.5× budget" />
-          <Stat label="Long frames" value={frames.watching ? String(frames.longFrames) : "—"} hint="stalls >50ms" />
+          <Stat
+            label="Long frames"
+            value={frames.watching ? String(frames.longFrames) : "—"}
+            hint="stalls >50ms"
+          />
           <Stat label="Worst stall" value={frames.worst_ms ? ms(frames.worst_ms) : "—"} />
         </div>
 
@@ -144,8 +167,8 @@ function MotionMetrics() {
 
         {worstRow && worstRow.verdict !== "green" && (
           <p className="ax-caption mt-ax-3 text-muted-foreground">
-            Jank detected on <span className="font-mono text-foreground">{worstRow.name}</span> — p95{" "}
-            {ms(worstRow.p95)} against a {ms(worstRow.budget_ms)} budget.
+            Jank detected on <span className="font-mono text-foreground">{worstRow.name}</span> —
+            p95 {ms(worstRow.p95)} against a {ms(worstRow.budget_ms)} budget.
           </p>
         )}
       </Section>

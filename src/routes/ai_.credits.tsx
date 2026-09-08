@@ -26,9 +26,21 @@ export const Route = createFileRoute("/ai_/credits")({
       title="AI credits are not open yet."
       body="Credits, wallet and top-ups belong to the separate AI product. Your email plan stays a flat monthly price with no AI billing attached to it."
       cards={[
-        { icon: Wallet, title: "One wallet", body: "Monthly credits, complimentary credits and top-ups in a single balance." },
-        { icon: Gauge, title: "Live burn", body: "Spend today, spend this month and how many days your balance really lasts." },
-        { icon: Receipt, title: "Receipt per answer", body: "Model, tokens, latency and exact cost recorded for every single answer." },
+        {
+          icon: Wallet,
+          title: "One wallet",
+          body: "Monthly credits, complimentary credits and top-ups in a single balance.",
+        },
+        {
+          icon: Gauge,
+          title: "Live burn",
+          body: "Spend today, spend this month and how many days your balance really lasts.",
+        },
+        {
+          icon: Receipt,
+          title: "Receipt per answer",
+          body: "Model, tokens, latency and exact cost recorded for every single answer.",
+        },
       ]}
     />
   ),

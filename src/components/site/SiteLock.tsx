@@ -51,8 +51,8 @@ export function SiteLock({ children }: { children: ReactNode }) {
           Not open yet
         </h1>
         <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-          The workspace is in private build. Public access opens when it is ready —
-          there is nothing to sign up for here today.
+          The workspace is in private build. Public access opens when it is ready — there is nothing
+          to sign up for here today.
         </p>
         <p className="mt-6 text-xs text-muted-foreground">
           Already invited? Open the link you were given, on this device.

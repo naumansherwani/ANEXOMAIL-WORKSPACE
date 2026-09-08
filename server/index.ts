@@ -43,15 +43,8 @@ import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from
 import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
 import billingSupportRouter from "./routes/billing-support";
 import { glitchPublicRouter, founderGlitchRouter } from "./routes/glitch";
-import {
-  storageRouter,
-  internalStorageRouter,
-  founderStorageRouter,
-} from "./routes/storage";
-import {
-  billingSyncAuthRouter,
-  billingSyncPublicRouter,
-} from "./routes/billing-sync";
+import { storageRouter, internalStorageRouter, founderStorageRouter } from "./routes/storage";
+import { billingSyncAuthRouter, billingSyncPublicRouter } from "./routes/billing-sync";
 
 const PORT = Number(process.env.PORT) || 3100;
 

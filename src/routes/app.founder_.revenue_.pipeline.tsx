@@ -8,10 +8,7 @@ import { gbp, useRevenuePipeline } from "@/lib/release";
 
 export const Route = createFileRoute("/app/founder_/revenue_/pipeline")({
   head: () => ({
-    meta: [
-      { title: "Revenue pipeline truth — ANEXOMAIL" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Revenue pipeline truth — ANEXOMAIL" }, { name: "robots", content: "noindex" }],
   }),
   component: PipelinePage,
 });
@@ -26,22 +23,43 @@ function PipelinePage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><TrendingUp className="size-3.5" aria-hidden="true" /> Pipeline truth</>}
+        eyebrow={
+          <>
+            <TrendingUp className="size-3.5" aria-hidden="true" /> Pipeline truth
+          </>
+        }
         title="Committed MRR vs pipeline vs the gap"
         blurb="Recurring money is subscriptions, partner commission and the SLA retainer. Migration cash is counted separately — it never inflates MRR."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/founder/revenue/pipeline"
           skeleton={<StatSkeleton rows={5} />}
         >
           {(d) => (
             <>
               <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
-                <Stat label="Committed MRR" value={gbp(d.committed_mrr_gbp)} hint="signed and recurring" />
-                <Stat label="Pipeline MRR" value={gbp(d.pipeline_mrr_gbp)} hint="weighted by stage" />
+                <Stat
+                  label="Committed MRR"
+                  value={gbp(d.committed_mrr_gbp)}
+                  hint="signed and recurring"
+                />
+                <Stat
+                  label="Pipeline MRR"
+                  value={gbp(d.pipeline_mrr_gbp)}
+                  hint="weighted by stage"
+                />
                 <Stat label="One-off cash" value={gbp(d.one_off_cash_gbp)} hint="not MRR" />
-                <Stat label={`Gap to ${gbp(d.target_gbp)}`} value={gbp(d.gap_gbp)} hint={d.gap_gbp <= 0 ? "target met" : "still to win"} />
+                <Stat
+                  label={`Gap to ${gbp(d.target_gbp)}`}
+                  value={gbp(d.gap_gbp)}
+                  hint={d.gap_gbp <= 0 ? "target met" : "still to win"}
+                />
               </div>
 
               <div className="mt-ax-5">
@@ -55,12 +73,16 @@ function PipelinePage() {
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Committed streams</h3>
               {d.committed.length === 0 ? (
-                <Note>No recurring revenue booked yet — the first £23 subscription starts this board.</Note>
+                <Note>
+                  No recurring revenue booked yet — the first £23 subscription starts this board.
+                </Note>
               ) : (
                 <ul className="mt-ax-3 space-y-1.5">
                   {d.committed.map((s) => (
                     <Row key={s.stream}>
-                      <span className="min-w-0 flex-1 font-semibold text-foreground">{s.stream}</span>
+                      <span className="min-w-0 flex-1 font-semibold text-foreground">
+                        {s.stream}
+                      </span>
                       <span className="text-steel">{s.accounts} accounts</span>
                       <span className="ml-auto font-bold text-foreground">{gbp(s.mrr_gbp)}/mo</span>
                     </Row>
@@ -102,7 +124,9 @@ function PipelinePage() {
                           {p.one_off_gbp ? ` · ${gbp(p.one_off_gbp)} one-off` : ""}
                         </span>
                       </span>
-                      <span className="ml-auto font-bold text-foreground">{gbp(p.expected_mrr_gbp)}/mo</span>
+                      <span className="ml-auto font-bold text-foreground">
+                        {gbp(p.expected_mrr_gbp)}/mo
+                      </span>
                     </Row>
                   ))}
                 </ul>

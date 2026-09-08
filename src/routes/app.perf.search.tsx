@@ -20,7 +20,11 @@ function QueryLabPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><FlaskConical className="size-3.5" aria-hidden="true" /> Query lab</>}
+        eyebrow={
+          <>
+            <FlaskConical className="size-3.5" aria-hidden="true" /> Query lab
+          </>
+        }
         title="See exactly where a search spends its time"
         blurb="Run a real query and get the waterfall back: parse, index, fetch, rank, render. The slowest stage is named — no guessing."
       >
@@ -33,7 +37,8 @@ function QueryLabPage() {
             run.mutate(
               { query: value },
               {
-                onSuccess: (r) => notify.done("Trace captured", `${r.trace.total_ms}ms · ${r.trace.rows} rows`),
+                onSuccess: (r) =>
+                  notify.done("Trace captured", `${r.trace.total_ms}ms · ${r.trace.rows} rows`),
                 onError: (err) =>
                   notify.failed(err.isNotImplemented ? "Query lab not wired yet" : "Query failed", {
                     description: err.message,
@@ -55,7 +60,12 @@ function QueryLabPage() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/perf/search"
             skeleton={<StatSkeleton rows={4} />}
           >
@@ -67,18 +77,28 @@ function QueryLabPage() {
                   {d.traces.map((t) => (
                     <li key={t.id} className="ax-plane rounded-2xl p-ax-4">
                       <div className="flex flex-wrap items-center gap-ax-3 text-[12px]">
-                        <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{t.query}</span>
+                        <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                          {t.query}
+                        </span>
                         <span className="text-muted-foreground">{ms(t.total_ms)}</span>
                         <span className="text-steel">{t.rows} rows</span>
                         {t.cached && <span className="text-emerald-400">cached</span>}
-                        <span className="ml-auto text-steel">{new Date(t.at).toLocaleString("en-GB")}</span>
+                        <span className="ml-auto text-steel">
+                          {new Date(t.at).toLocaleString("en-GB")}
+                        </span>
                       </div>
                       <ul className="mt-ax-3 space-y-1.5">
                         {t.stages.map((s) => (
                           <Row key={s.stage}>
-                            <span className="min-w-0 flex-1 font-semibold text-foreground">{s.stage}</span>
+                            <span className="min-w-0 flex-1 font-semibold text-foreground">
+                              {s.stage}
+                            </span>
                             <span
-                              className={s.stage === t.slowest_stage ? "text-amber-400" : "text-muted-foreground"}
+                              className={
+                                s.stage === t.slowest_stage
+                                  ? "text-amber-400"
+                                  : "text-muted-foreground"
+                              }
                             >
                               {ms(s.ms)}
                             </span>

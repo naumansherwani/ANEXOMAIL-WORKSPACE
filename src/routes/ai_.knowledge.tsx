@@ -26,9 +26,21 @@ export const Route = createFileRoute("/ai_/knowledge")({
       title="The knowledge workspace is not open yet."
       body="Your own documents, your own memory, answers that always quote the source. It belongs to the separate AI product — your mailbox is never used to train anything."
       cards={[
-        { icon: BookOpen, title: "Personal + business", body: "Two scopes, kept apart. Nothing leaks from your private notes into the company space." },
-        { icon: Search, title: "Real recall", body: "Search across documents and real threads, ranked by the server — no guessing." },
-        { icon: Quote, title: "Citations or nothing", body: "If the source is not there, the answer is refused instead of invented." },
+        {
+          icon: BookOpen,
+          title: "Personal + business",
+          body: "Two scopes, kept apart. Nothing leaks from your private notes into the company space.",
+        },
+        {
+          icon: Search,
+          title: "Real recall",
+          body: "Search across documents and real threads, ranked by the server — no guessing.",
+        },
+        {
+          icon: Quote,
+          title: "Citations or nothing",
+          body: "If the source is not there, the answer is refused instead of invented.",
+        },
       ]}
     />
   ),

@@ -181,7 +181,9 @@ function FounderKnowledge() {
                       <ul className="space-y-ax-2">
                         {d.hits.map((h) => (
                           <li key={h.chunk_id} className="ax-plane rounded-xl p-ax-3">
-                            <p className="text-[12px] font-semibold text-foreground">{h.doc_title}</p>
+                            <p className="text-[12px] font-semibold text-foreground">
+                              {h.doc_title}
+                            </p>
                             <p className="ax-caption mt-1 text-muted-foreground">{h.excerpt}</p>
                             <p className="ax-caption mt-1 text-steel">
                               {h.scope} · score {h.score.toFixed(2)}
@@ -229,7 +231,9 @@ function FounderKnowledge() {
                                   onClick={() =>
                                     pin.mutate(
                                       { id: doc.id, pinned: !doc.pinned },
-                                      { onError: notWired("POST /api/knowledge/documents/:id/pin") },
+                                      {
+                                        onError: notWired("POST /api/knowledge/documents/:id/pin"),
+                                      },
                                     )
                                   }
                                   data-on={doc.pinned ? "true" : "false"}
@@ -276,10 +280,7 @@ function FounderKnowledge() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!question.trim()) return;
-                ask.mutate(
-                  { question, scope },
-                  { onError: notWired("POST /api/knowledge/ask") },
-                );
+                ask.mutate({ question, scope }, { onError: notWired("POST /api/knowledge/ask") });
               }}
             >
               <textarea

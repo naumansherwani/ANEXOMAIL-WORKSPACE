@@ -78,11 +78,21 @@ function FounderAiBilling() {
                       value={w.unlimited ? "Founder" : `${w.balance} cr`}
                       hint={w.plan ? `plan ${w.plan}` : "founder"}
                     />
-                    <Stat label="Spent today" value={money(w.spent_today, w.currency)} hint={`${w.burn_per_day.toFixed(2)}/day burn`} />
-                    <Stat label="Spent this month" value={money(w.spent_month, w.currency)} hint={w.renews_at ? `renews ${relativeTime(w.renews_at)}` : "no renewal set"} />
+                    <Stat
+                      label="Spent today"
+                      value={money(w.spent_today, w.currency)}
+                      hint={`${w.burn_per_day.toFixed(2)}/day burn`}
+                    />
+                    <Stat
+                      label="Spent this month"
+                      value={money(w.spent_month, w.currency)}
+                      hint={w.renews_at ? `renews ${relativeTime(w.renews_at)}` : "no renewal set"}
+                    />
                     <Stat
                       label="Runway"
-                      value={w.unlimited ? "∞" : w.runway_days === null ? "—" : `${w.runway_days} days`}
+                      value={
+                        w.unlimited ? "∞" : w.runway_days === null ? "—" : `${w.runway_days} days`
+                      }
                       hint={`monthly grant ${w.monthly_grant} · comp ${w.complimentary}`}
                     />
                   </div>
@@ -123,7 +133,8 @@ function FounderAiBilling() {
                     return (
                       <div className="ax-plane rounded-2xl p-ax-4">
                         <p className="ax-caption text-muted-foreground">
-                          {u.total_credits} credits · {money(u.total_cost, u.currency)} in {days} days
+                          {u.total_credits} credits · {money(u.total_cost, u.currency)} in {days}{" "}
+                          days
                         </p>
                         <div className="mt-ax-4 flex h-28 items-end gap-1">
                           {u.series.map((p) => (
@@ -138,7 +149,9 @@ function FounderAiBilling() {
                         <ul className="mt-ax-4 space-y-1.5">
                           {u.by_surface.map((s) => (
                             <li key={s.surface} className="flex items-center gap-ax-3 text-[12px]">
-                              <span className="w-28 shrink-0 text-muted-foreground">{s.surface}</span>
+                              <span className="w-28 shrink-0 text-muted-foreground">
+                                {s.surface}
+                              </span>
                               <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-secondary">
                                 <span
                                   className="block h-full rounded-full bg-primary"
@@ -171,10 +184,13 @@ function FounderAiBilling() {
                   setSpendCap.mutate(
                     { cap: value },
                     {
-                      onSuccess: () => notify.done("Cap saved", "Server enforces it on every call."),
+                      onSuccess: () =>
+                        notify.done("Cap saved", "Server enforces it on every call."),
                       onError: (err) =>
                         notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                          description: err.isNotImplemented ? "POST /api/ai/billing/cap pending." : err.message,
+                          description: err.isNotImplemented
+                            ? "POST /api/ai/billing/cap pending."
+                            : err.message,
                         }),
                     },
                   );
@@ -231,7 +247,9 @@ function FounderAiBilling() {
                               {e.credits > 0 ? "+" : ""}
                               {e.credits} cr
                             </span>
-                            <span className="text-muted-foreground">{money(e.cost, e.currency)}</span>
+                            <span className="text-muted-foreground">
+                              {money(e.cost, e.currency)}
+                            </span>
                             {e.model && <span className="text-steel">{e.model}</span>}
                             {e.surface && <span className="text-steel">{e.surface}</span>}
                             <span className="ml-auto text-steel">{relativeTime(e.created_at)}</span>

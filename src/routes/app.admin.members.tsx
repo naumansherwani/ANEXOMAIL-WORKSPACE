@@ -19,7 +19,8 @@ export const Route = createFileRoute("/app/admin/members")({
       { title: "Members & roles — ANEXOMAIL Admin" },
       {
         name: "description",
-        content: "Manage the people in your ANEXOMAIL organisation, their roles and pending invitations.",
+        content:
+          "Manage the people in your ANEXOMAIL organisation, their roles and pending invitations.",
       },
       { property: "og:title", content: "Members & roles — ANEXOMAIL Admin" },
       { property: "og:description", content: "People, roles and pending invitations." },
@@ -112,7 +113,10 @@ function MembersPage() {
         body: JSON.stringify({ emails: list, role }),
       }),
     onSuccess: (_data, list) => {
-      notify.done("Invitations sent", `${list.length} invited to ${organisation?.name ?? "your workspace"}.`);
+      notify.done(
+        "Invitations sent",
+        `${list.length} invited to ${organisation?.name ?? "your workspace"}.`,
+      );
       setEmails("");
       invalidate();
     },
@@ -135,8 +139,8 @@ function MembersPage() {
       <p className="ax-eyebrow">People</p>
       <h2 className="mt-3 text-3xl text-foreground">Members &amp; roles</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-        Three roles, deliberately. Extra power is granted per address instead of adding another
-        tier nobody can explain.
+        Three roles, deliberately. Extra power is granted per address instead of adding another tier
+        nobody can explain.
       </p>
 
       {canManage && (
