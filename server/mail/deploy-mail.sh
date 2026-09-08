@@ -50,6 +50,36 @@ chown -R vmail:vmail /var/mail/vhosts
 # 1) Passwords: sirf server par, sirf ek dafa generate
 # --------------------------------------------------------------------------
 touch "$ENVFILE"; chmod 600 "$ENVFILE"
+
+# Inbound pipe ko do server values chahiye. Unhein repo mein rakhna mana hai,
+# is liye existing protected app env se mail.env mein one-time sync karte hain.
+# Value kabhi terminal par print nahi hoti aur existing mail.env value overwrite
+# nahi hoti. Agar kisi source mein na mile to deploy foran exact reason se rukta hai.
+sync_secret() {
+  local key="$1" source value
+  grep -q "^${key}=" "$ENVFILE" && return 0
+  for source in /root/.anexomail.env /opt/anexomail/.env /opt/anexomail-web/.env; do
+    [ -r "$source" ] || continue
+    value="$(grep -am1 -E "^[[:space:]]*(export[[:space:]]+)?${key}=" "$source" | cut -d= -f2- || true)"
+    value="${value#\"}"; value="${value%\"}"; value="${value#\'}"; value="${value%\'}"
+    if [ -n "$value" ]; then
+      printf '%s=%s\n' "$key" "$value" >> "$ENVFILE"
+      echo ">>> $key protected env se mail pipe mein sync"
+      return 0
+    fi
+  done
+  echo ">>> RED: $key kisi protected server env mein nahi mila"
+  return 1
+}
+
+MAIL_ENV_OK=1
+sync_secret SUPABASE_URL || MAIL_ENV_OK=0
+sync_secret SUPABASE_SERVICE_ROLE_KEY || MAIL_ENV_OK=0
+if [ "$MAIL_ENV_OK" -ne 1 ]; then
+  echo ">>> /opt/anexomail/.env mein missing value rakho, phir yahi deploy command dobara chalao."
+  exit 2
+fi
+
 add_pw() {
   local key="MAILPW_$(printf '%s' "$1" | tr '.a-z' '_A-Z')"
   grep -q "^$key=" "$ENVFILE" || printf '%s=%s\n' "$key" "$(openssl rand -base64 24 | tr -d '=+/')" >> "$ENVFILE"
@@ -269,7 +299,7 @@ sed -i '/^anexopipe/,+1d' /etc/postfix/master.cf
 cat >> /etc/postfix/master.cf <<EOF
 
 anexopipe unix  -       n       n       -       10      pipe
-  flags=DRhu user=vmail argv=$BUN $REPO/server/mail/deliver-to-supabase.ts \${recipient} \${sender}
+  flags=DRhu user=vmail argv=$BUN $REPO/server/mail/deliver-to-supabase.ts \${sender} \${recipient}
 EOF
 
 # submission (587)
@@ -335,6 +365,7 @@ fi
 systemctl restart dovecot || journalctl -xeu dovecot --no-pager | tail -n 20
 
 systemctl restart postfix
+postqueue -f >/dev/null 2>&1 || true
 
 echo
 echo "=============================================================="
@@ -347,4 +378,5 @@ echo "=============================================================="
 echo "readings:"
 for s in postfix dovecot opendkim; do printf '  %-9s %s\n' "$s" "$(systemctl is-active $s)"; done
 echo "  passwords: $ENVFILE (chmod 600, repo mein kuch nahi)"
+echo "  inbound DB env: ready (values hidden)"
 echo "  next: cd $REPO && bash server/gates/mail-gate.sh"
