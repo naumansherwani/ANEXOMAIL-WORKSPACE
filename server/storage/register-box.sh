@@ -39,10 +39,12 @@ CAP="$(df -B1 --output=size "$MNT" | tail -1 | tr -d ' ')"
 echo "==> capacity bytes: $CAP"
 
 echo "==> storage volume register (protected service RPC)"
+CURL_AUTH=(-H "apikey: $SERVICE_KEY")
+# Purani service-role JWT ko Authorization chahiye; nayi sb_secret_* opaque key ko nahi.
+case "$SERVICE_KEY" in eyJ*) CURL_AUTH+=(-H "authorization: Bearer $SERVICE_KEY");; esac
 RPC_RESULT="$(curl -sS -w $'\n%{http_code}' -X POST \
   "${DB_URL%/}/rest/v1/rpc/storage_volume_register" \
-  -H "apikey: $SERVICE_KEY" \
-  -H "authorization: Bearer $SERVICE_KEY" \
+  "${CURL_AUTH[@]}" \
   -H 'content-type: application/json' \
   -d "{\"_name\":\"hetzner-box-$BOX\",\"_kind\":\"storage_box\",\"_capacity_bytes\":$CAP,\"_endpoint\":\"$MNT/attachments\",\"_drain_others\":true}")" || {
   echo "FAIL: database RPC tak network request nahi pohanchi"
