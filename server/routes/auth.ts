@@ -61,6 +61,18 @@ async function saveSession(userId: string, token: string, req: any) {
   }, { onConflict: "token_hash" });
 }
 
+async function sessionResult(user: any, accessToken: string, req: any) {
+  await saveSession(user.id, accessToken, req);
+  const [{ data: profile }, { data: trial }] = await Promise.all([
+    getAdmin().from("account_profiles").select("onboarded").eq("user_id", user.id).maybeSingle(),
+    getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", user.id).maybeSingle(),
+  ]);
+  return {
+    token: accessToken,
+    user: { onboarded: Boolean(profile?.onboarded), anexomail_address: trial?.anexomail_address || null },
+  };
+}
+
 authRouter.post("/signup", async (req, res) => {
   if (unavailable(res)) return;
   const email = String(req.body?.email || "").trim().toLowerCase();
@@ -138,6 +150,26 @@ authRouter.post("/forgot-password", async (req, res) => {
   if (!emailPattern.test(email)) return res.status(400).json({ error: "Enter a valid email address." });
   await getPublicAuth().auth.resetPasswordForEmail(email, { redirectTo: `${APP_URL}/auth?mode=reset` });
   res.json({ ok: true });
+});
+
+authRouter.post("/magic-link", async (req, res) => {
+  if (unavailable(res)) return;
+  const email = String(req.body?.email || "").trim().toLowerCase();
+  const redirectTo = String(req.body?.redirect_to || `${APP_URL}/auth/callback`);
+  if (!emailPattern.test(email)) return res.status(400).json({ error: "Enter a valid email address." });
+  const { error } = await getPublicAuth().auth.signInWithOtp({ email, options: { emailRedirectTo: redirectTo, shouldCreateUser: false } });
+  if (error && !/user not found/i.test(error.message)) return authError(res, error);
+  res.json({ ok: true });
+});
+
+// Supabase PKCE email confirmation and magic-link callback. Social providers are not exposed.
+authRouter.post("/oauth/callback", async (req, res) => {
+  if (unavailable(res)) return;
+  const code = String(req.body?.code || "");
+  if (!code) return res.status(400).json({ error: "verification_code_required" });
+  const { data, error } = await getPublicAuth().auth.exchangeCodeForSession(code);
+  if (error || !data.user || !data.session) return authError(res, error, "verification_failed");
+  res.json(await sessionResult(data.user, data.session.access_token, req));
 });
 
 authRouter.post("/reset-password", async (req, res) => {
