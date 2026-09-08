@@ -24,7 +24,6 @@ sql/phase30_release.sql
 sql/phase31_ai_credits.sql
 sql/phase32_trial.sql
 sql/phase33_polar_checkout.sql
-sql/phase34_billing_support.sql
 sql/phase35_payment_safety.sql
 sql/phase36_state_sync.sql
 sql/phase37_movein_ops.sql
@@ -85,15 +84,7 @@ for f in $ORDER; do
   fi
   if [ ! -f "$f" ]; then echo "RED    $f (missing)" | tee -a "$LOG"; R=$((R+1)); RED_LIST="$RED_LIST $f"; break; fi
 
-  # deadlock = koi doosri session (misal SQL editor) usi table par thi. Khud retry.
-  rc=1
-  for try in 1 2 3; do
-    out="$(bash sql/run.sh "$f" 2>&1)"; rc=$?
-    [ "$rc" -eq 0 ] && break
-    printf '%s\n' "$out" | grep -aq 'deadlock detected' || break
-    echo "RETRY  $f (deadlock — dobara koshish $try/3)"
-    sleep 3
-  done
+  out="$(bash sql/run.sh "$f" 2>&1)"; rc=$?
   echo "=== $f ===" >> "$LOG"; printf '%s\n' "$out" >> "$LOG"
   if [ "$rc" -eq 0 ]; then
     echo "GREEN  $f"; G=$((G+1))

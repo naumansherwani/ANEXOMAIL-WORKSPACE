@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # ============================================================================
 # ANEXOMAIL — Storage Box ko storage_volumes mein register (Supabase = truth)
-#   bash server/storage/register-box.sh u123456
+#   bash server/storage/register-box.sh u659696
 # Founder token /etc/anexomail/founder.jwt se, warna FOUNDER_JWT env se.
 # ============================================================================
 set -uo pipefail
-BOX="${1:-${BOX:-box}}"
+BOX="${1:-${BOX:-u659696}}"
+[ "$BOX" = "u659696" ] || { echo "FAIL: issued Storage Box username sirf u659696 hai"; exit 2; }
 MNT=/mnt/anexomail-box
 API=http://127.0.0.1:3100
 

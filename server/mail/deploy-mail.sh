@@ -291,10 +291,11 @@ echo
 echo "=============================================================="
 echo "DNS ke liye DKIM TXT value (registrar par name: mail._domainkey)"
 echo "=============================================================="
-sed -e 's/[\t" ]//g' -e 's/;/; /g' /etc/opendkim/keys/$DOMAIN/mail.txt | tr -d '\n' | sed 's/mail._domainkeyINTXT//'
+awk -F'"' '{ for (i=2; i<=NF; i+=2) printf "%s", $i } END { print "" }' \
+  /etc/opendkim/keys/$DOMAIN/mail.txt
 echo
 echo "=============================================================="
 echo "readings:"
 for s in postfix dovecot opendkim; do printf '  %-9s %s\n' "$s" "$(systemctl is-active $s)"; done
 echo "  passwords: $ENVFILE (chmod 600, repo mein kuch nahi)"
-echo "  next: bash server/gates/mail-gate.sh"
+echo "  next: cd $REPO && bash server/gates/mail-gate.sh"

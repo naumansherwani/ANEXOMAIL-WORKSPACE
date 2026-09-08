@@ -100,7 +100,7 @@ SQL: `sql/phase30_release.sql` (Supabase #4 mein chalao).
 
 ### 6) Phase 34 — Polar billing truth + founder reply clock
 
-Pehle Supabase #4 mein `sql/phase34_billing_support.sql` run karo. Phir server par
+Pehle SQL editor mein `sql/editor/phase34_billing_support.sql` run karo. Phir server par
 in **poori files** ko repo version se nano select-all overwrite karo:
 
 ```bash

@@ -263,7 +263,7 @@ Backend route `server/routes/polar.ts` repo mein add ho gaya hai — checkout + 
 - Founder reply clock: Basic **72h**, Pro **48h**, Business **24h**.
 - `hello@anexomail.com` par inbound conversation aate hi paid plan lookup aur deadline automatic hoti hai; founder ka outbound reply clock ko automatic close karta hai.
 - Founder queue endpoint: `GET /api/founder/support/replies`.
-- SQL: `sql/phase34_billing_support.sql` Supabase #4 mein run karna hai.
+- SQL editor only: `sql/editor/phase34_billing_support.sql` ek dafa run karna hai.
 
 ## 9) Testing (Polar ka sandbox nahi hai)
 

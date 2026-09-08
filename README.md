@@ -45,7 +45,7 @@ Service role key, DB URL, OpenRouter key, mail passwords — **frontend mein kab
 ## Deploy (frontend)
 
 ```sh
-cd /opt/anexomail-web && git pull && bun install && bun run build:node && pm2 restart anexomail-web
+cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save
 ```
 
 ## Local dev
