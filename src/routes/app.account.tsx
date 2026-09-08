@@ -1,10 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { KeyRound, Laptop, ShieldCheck, Loader2 } from "lucide-react";
+import { useState } from "react";
+import { Eye, EyeOff, KeyRound, Laptop, ShieldCheck, Loader2 } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
@@ -44,6 +47,10 @@ type DeviceSession = {
 function AccountPage() {
   const { session } = useAuth();
   const queryClient = useQueryClient();
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   const sessions = useQuery<DeviceSession[], ApiError>({
     queryKey: ["auth", "sessions"],
@@ -59,6 +66,24 @@ function AccountPage() {
     },
     onError: (error: ApiError) =>
       notify.failed("Could not revoke that session", { description: error.message }),
+  });
+
+  const changePassword = useMutation({
+    mutationFn: async () => {
+      if (newPassword !== confirmPassword) throw new Error("New passwords do not match.");
+      return api("/api/auth/change-password", {
+        method: "POST",
+        body: JSON.stringify({ current_password: currentPassword, new_password: newPassword }),
+      });
+    },
+    onSuccess: () => {
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+      notify.done("Password changed", "Other signed-in devices have been revoked.");
+      void queryClient.invalidateQueries({ queryKey: ["auth", "sessions"] });
+    },
+    onError: (error: Error) => notify.failed("Password not changed", { description: error.message }),
   });
 
   return (
@@ -100,6 +125,26 @@ function AccountPage() {
               {session?.user.mfa_enabled ? "Manage two-step" : "Turn on two-step"}
             </Button>
           </div>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card p-ax-4">
+          <h2 className="ax-label text-foreground">Change password</h2>
+          <p className="ax-caption mt-1">Use 12+ characters with uppercase, lowercase and a number.</p>
+          <form className="mt-ax-3 space-y-ax-3" onSubmit={(event) => { event.preventDefault(); changePassword.mutate(); }}>
+            <PasswordInput id="current-password" label="Current password" value={currentPassword} onChange={setCurrentPassword} visible={passwordVisible} />
+            <PasswordInput id="new-password" label="New password" value={newPassword} onChange={setNewPassword} visible={passwordVisible} />
+            <PasswordInput id="confirm-password" label="Confirm new password" value={confirmPassword} onChange={setConfirmPassword} visible={passwordVisible} />
+            <div className="flex items-center justify-between gap-3">
+              <Button type="button" variant="ghost" onClick={() => setPasswordVisible((value) => !value)}>
+                {passwordVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                {passwordVisible ? "Hide passwords" : "Show passwords"}
+              </Button>
+              <Button type="submit" disabled={changePassword.isPending || !currentPassword || !newPassword || !confirmPassword}>
+                {changePassword.isPending && <Loader2 className="size-4 animate-spin" />}
+                Update password
+              </Button>
+            </div>
+          </form>
         </section>
 
         <section>
@@ -159,6 +204,15 @@ function AccountPage() {
           </div>
         </section>
       </div>
+    </div>
+  );
+}
+
+function PasswordInput({ id, label, value, onChange, visible }: { id: string; label: string; value: string; onChange: (value: string) => void; visible: boolean }) {
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id}>{label}</Label>
+      <Input id={id} type={visible ? "text" : "password"} value={value} minLength={12} required autoComplete={id === "current-password" ? "current-password" : "new-password"} onChange={(event) => onChange(event.target.value)} />
     </div>
   );
 }

@@ -23,6 +23,7 @@ drop policy if exists account_profiles_own_update on public.account_profiles;
 create policy account_profiles_own_update on public.account_profiles for update to authenticated using (user_id=auth.uid()) with check (user_id=auth.uid());
 
 do $$ begin create type public.app_role as enum ('admin','moderator','user'); exception when duplicate_object then null; end $$;
+do $$ begin alter type public.app_role add value if not exists 'user'; exception when duplicate_object then null; end $$;
 create table if not exists public.user_roles (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -40,6 +41,13 @@ returns boolean language sql stable security definer set search_path=public as $
   select exists(select 1 from public.user_roles where user_id=_user_id and role=_role)
 $$;
 grant execute on function public.has_role(uuid,public.app_role) to authenticated, service_role;
+
+-- Signup profile is written server-side, but this keeps retries safe if Auth already owns the user.
+create or replace function public.account_profile_touch_updated_at()
+returns trigger language plpgsql as $$ begin new.updated_at=now(); return new; end $$;
+drop trigger if exists account_profiles_touch_updated_at on public.account_profiles;
+create trigger account_profiles_touch_updated_at before update on public.account_profiles
+for each row execute function public.account_profile_touch_updated_at();
 
 create table if not exists public.account_organisations (
   id uuid primary key default gen_random_uuid(),

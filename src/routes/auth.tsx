@@ -185,7 +185,7 @@ function AuthPage() {
 
       if (mode === "signup") {
         if (password !== passwordConfirm) throw new Error("password_mismatch");
-        const res = await api<{ token: string }>("/api/auth/signup", {
+        const res = await api<{ token?: string; confirmation_required?: boolean }>("/api/auth/signup", {
           method: "POST",
           body: JSON.stringify({
             email,
@@ -198,8 +198,11 @@ function AuthPage() {
           }),
           auth: false,
         });
-        // PASSKEY MANDATORY: account ban gaya, magar workspace passkey enrol
-        // hone ke baad khulta hai (password alone kaafi nahi).
+        if (res.confirmation_required || !res.token) {
+          setLinkSent(true);
+          notify.done("Confirm your email", `We sent a confirmation link to ${email}.`);
+          return;
+        }
         sessionToken.set(res.token);
         setEnrol(true);
         return;

@@ -20,6 +20,17 @@ for file in "$SOURCE"/routes/*.ts; do
   install -m 0644 "$file" "$TARGET/src/routes/$name"
 done
 
+# Naya index tabhi restart ho jab uske tamam route modules target par maujood hon.
+missing=0
+while IFS= read -r module; do
+  relative="${module#./}"
+  [ -f "$TARGET/src/${relative}.ts" ] || [ -f "$TARGET/src/${relative}.js" ] || {
+    echo "RED Brain import missing: $TARGET/src/${relative}.{ts,js}"
+    missing=1
+  }
+done < <(grep -oE 'from "\./routes/[^"]+' "$TARGET/src/index.ts" | sed 's/^from "//')
+[ "$missing" -eq 0 ] || exit 2
+
 cd "$TARGET"
 bun install
 pm2 restart anexomail-leo --update-env
