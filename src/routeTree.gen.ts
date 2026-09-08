@@ -25,7 +25,6 @@ import { Route as CrmRouteImport } from './routes/crm'
 import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
-import { Route as FounderworkspaceRouteImport } from './routes/founderworkspace'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as MailRouteImport } from './routes/mail'
 import { Route as MigrationRouteImport } from './routes/migration'
@@ -246,11 +245,6 @@ const DocsRoute = DocsRouteImport.update({
 const EnterpriseRoute = EnterpriseRouteImport.update({
   id: '/enterprise',
   path: '/enterprise',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FounderworkspaceRoute = FounderworkspaceRouteImport.update({
-  id: '/founderworkspace',
-  path: '/founderworkspace',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GetStartedRoute = GetStartedRouteImport.update({
@@ -980,7 +974,6 @@ export interface FileRoutesByFullPath {
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
-  '/founderworkspace': typeof FounderworkspaceRoute
   '/get-started': typeof GetStartedRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
@@ -1139,7 +1132,6 @@ export interface FileRoutesByTo {
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
-  '/founderworkspace': typeof FounderworkspaceRoute
   '/get-started': typeof GetStartedRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
@@ -1290,7 +1282,6 @@ export interface FileRoutesById {
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
-  '/founderworkspace': typeof FounderworkspaceRoute
   '/get-started': typeof GetStartedRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
@@ -1452,7 +1443,6 @@ export interface FileRouteTypes {
     | '/devices'
     | '/docs'
     | '/enterprise'
-    | '/founderworkspace'
     | '/get-started'
     | '/mail'
     | '/migration'
@@ -1611,7 +1601,6 @@ export interface FileRouteTypes {
     | '/devices'
     | '/docs'
     | '/enterprise'
-    | '/founderworkspace'
     | '/get-started'
     | '/mail'
     | '/migration'
@@ -1761,7 +1750,6 @@ export interface FileRouteTypes {
     | '/devices'
     | '/docs'
     | '/enterprise'
-    | '/founderworkspace'
     | '/get-started'
     | '/mail'
     | '/migration'
@@ -1922,7 +1910,6 @@ export interface RootRouteChildren {
   DevicesRoute: typeof DevicesRoute
   DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
-  FounderworkspaceRoute: typeof FounderworkspaceRoute
   GetStartedRoute: typeof GetStartedRoute
   MailRoute: typeof MailRoute
   MigrationRoute: typeof MigrationRoute
@@ -2062,13 +2049,6 @@ declare module '@tanstack/react-router' {
       path: '/enterprise'
       fullPath: '/enterprise'
       preLoaderRoute: typeof EnterpriseRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/founderworkspace': {
-      id: '/founderworkspace'
-      path: '/founderworkspace'
-      fullPath: '/founderworkspace'
-      preLoaderRoute: typeof FounderworkspaceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/get-started': {
@@ -3424,7 +3404,6 @@ const rootRouteChildren: RootRouteChildren = {
   DevicesRoute: DevicesRoute,
   DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
-  FounderworkspaceRoute: FounderworkspaceRoute,
   GetStartedRoute: GetStartedRoute,
   MailRoute: MailRoute,
   MigrationRoute: MigrationRoute,

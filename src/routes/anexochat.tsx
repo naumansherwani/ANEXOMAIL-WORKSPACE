@@ -21,6 +21,17 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { SiteNav } from "@/components/site/SiteNav";
 
 export const Route = createFileRoute("/anexochat")({
+  // Founder host par yeh chhota pata seedha asli chat surface kholta hai;
+  // awam host par yehi public page rehta hai.
+  beforeLoad: () => {
+    if (
+      typeof window !== "undefined" &&
+      window.location.hostname === "founderworkspace.anexomail.com"
+    ) {
+      throw redirect({ to: "/app/chat" });
+    }
+  },
+
   head: () => ({
     meta: [
       { title: "ANEXOChat & Relay Video — business messaging that proves itself" },
