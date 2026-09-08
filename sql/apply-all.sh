@@ -46,7 +46,6 @@ sql/phase57_mail_schema_heal.sql
 sql/phase58_mail_contract_final.sql
 sql/phase59_account_lifecycle.sql
 sql/phase56_mailbox_final.sql
-sql/phase60_family_chat_workspace.sql
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
 anexochat/sql/anexochat_phase10a_call_engine.sql
@@ -65,6 +64,7 @@ anexochat/sql/phase28_receipts.sql
 anexochat/sql/phase29_email_to_chat.sql
 anexochat/sql/phase30_chat_to_email.sql
 anexochat/sql/phase31_file_context.sql
+anexochat/sql/phase31b_family_chat_workspace.sql
 anexochat/sql/videocall_phase31_call_record.sql
 anexochat/sql/videocall_phase31a_lightspeed.sql
 LIST

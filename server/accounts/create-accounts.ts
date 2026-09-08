@@ -118,7 +118,7 @@ for (const a of ACCOUNTS) {
   const { data, error } = await db.rpc("family_chat_workspace_apply");
   if (error)
     bad(
-      `family_chat_workspace_apply: ${error.message} (sql/phase60_family_chat_workspace.sql run hai?)`,
+      `family_chat_workspace_apply: ${error.message} (anexochat/sql/phase31b_family_chat_workspace.sql run hai?)`,
     );
   else if (!data?.ok || data?.members !== 3)
     bad(`family chat workspace invalid: ${JSON.stringify(data)}`);
