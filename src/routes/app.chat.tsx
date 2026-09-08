@@ -10,8 +10,11 @@ import {
 } from "@/components/app/chat/Atmosphere";
 import { ConversationRow, HealthChip } from "@/components/app/chat/ChatBits";
 import { CinemaStage, useCinema } from "@/components/app/chat/CinemaStage";
+import { ConversationTruthBar } from "@/components/app/chat/ConversationTruthBar";
+import { CallConnectReport } from "@/components/app/chat/CallConnectReport";
 import { FileTransfers } from "@/components/app/chat/FileTransfers";
 import { MessageStream } from "@/components/app/chat/MessageStream";
+import { MessageTruth } from "@/components/app/chat/MessageTruth";
 import { VideoCallOverlay } from "@/components/app/chat/VideoCall";
 import { WorkStrip } from "@/components/app/chat/WorkStrip";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
@@ -88,6 +91,9 @@ function ChatPage() {
     }
   }
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
+  // Message-level truth drawer (Phase 19-30 arms) — ek message ek waqt.
+  const [moreFor, setMoreFor] = useState<ChatMessage | null>(null);
+  useEffect(() => setMoreFor(null), [openId]);
   const [query, setQuery] = useState("");
   const react = useReact(openId);
   const editMessage = useEditMessage(openId);
@@ -421,6 +427,8 @@ function ChatPage() {
               </div>
             </header>
 
+            <ConversationTruthBar conversationId={openId!} />
+
             <WorkStrip conversationId={openId!} />
 
             <FileTransfers conversationId={openId!} />
@@ -441,8 +449,21 @@ function ChatPage() {
                 onDeleteForEveryone: (id) => deleteMessage.mutate(id),
                 onHide: (id) => hideMessage.mutate(id),
                 onPin: (message_id, pin) => pinMessage.mutate({ message_id, pin }),
+                onMore: (m) => setMoreFor((cur) => (cur?.id === m.id ? null : m)),
               }}
             />
+
+            {moreFor ? (
+              <MessageTruth
+                message={moreFor}
+                conversationId={openId!}
+                conversations={list}
+                onClose={() => setMoreFor(null)}
+              />
+            ) : null}
+
+            {/* PHASE 31A — call ke baad asli connect readings (null = not measured). */}
+            <CallConnectReport phase={call.phase} sessionId={call.sessionId} />
 
             <VideoCallOverlay
               phase={call.phase}
