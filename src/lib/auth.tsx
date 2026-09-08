@@ -56,6 +56,7 @@ type AuthValue = {
   /** Backend not wired yet — shown as a TODO surface, never faked. */
   unavailableReason: string | null;
   refresh: () => Promise<void>;
+  acceptSession: (session: Session) => void;
   signOut: () => Promise<void>;
 };
 
@@ -91,6 +92,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await queryClient.invalidateQueries({ queryKey: ["auth"] });
   }, [queryClient]);
 
+  const acceptSession = useCallback(
+    (session: Session) => queryClient.setQueryData(["auth", "session"], session),
+    [queryClient],
+  );
+
   const signOut = useCallback(async () => {
     try {
       await api("/api/auth/logout", { method: "POST" });
@@ -110,6 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         status: "signed-out",
         unavailableReason: null,
         refresh,
+        acceptSession,
         signOut,
       };
     }
@@ -133,9 +140,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       status,
       unavailableReason: query.error ? query.error.message : null,
       refresh,
+      acceptSession,
       signOut,
     };
-  }, [query.data, query.error, query.isLoading, refresh, signOut, visitor]);
+  }, [acceptSession, query.data, query.error, query.isLoading, refresh, signOut, visitor]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

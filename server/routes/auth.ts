@@ -67,6 +67,36 @@ async function isFounderUser(uid: string): Promise<boolean> {
   return Boolean(data);
 }
 
+async function operationalOrganisation(uid: string, email: string | null | undefined) {
+  const { data: membership } = await getAdmin()
+    .from("org_members")
+    .select("org_id,role")
+    .eq("user_id", uid)
+    .limit(1)
+    .maybeSingle();
+  if (membership?.org_id) return { id: membership.org_id, role: membership.role || "member" };
+
+  const address = String(email || "").trim().toLowerCase();
+  if (!address) return null;
+  const { data: mailbox } = await getAdmin()
+    .from("mail_accounts")
+    .select("org_id")
+    .eq("address", address)
+    .limit(1)
+    .maybeSingle();
+  if (!mailbox?.org_id) return null;
+
+  const { error } = await getAdmin().from("org_members").upsert(
+    { org_id: mailbox.org_id, user_id: uid, email: address, role: "owner", status: "active" },
+    { onConflict: "org_id,user_id" },
+  );
+  if (error) {
+    console.error("[auth.operational-workspace]", error.message);
+    return null;
+  }
+  return { id: mailbox.org_id, role: "owner" };
+}
+
 async function sessionResult(user: any, accessToken: string, req: any) {
   await saveSession(user.id, accessToken, req);
   const [{ data: profile }, { data: trial }, founder] = await Promise.all([
@@ -122,20 +152,30 @@ authRouter.post("/login", async (req, res) => {
   if (!emailPattern.test(email) || !password) return res.status(400).json({ error: "Email and password are required." });
   const { data, error } = await getPublicAuth().auth.signInWithPassword({ email, password });
   if (error || !data.user || !data.session) return authError(res, error, "invalid_credentials");
-  await saveSession(data.user.id, data.session.access_token, req);
-  res.json({ token: data.session.access_token });
+  res.json(await sessionResult(data.user, data.session.access_token, req));
 });
 
 authRouter.get("/session", async (req, res) => {
   const identity = await userFrom(req, res); if (!identity) return;
   const uid = identity.user.id;
-  const [{ data: profile }, { data: memberships }, { data: trial }, founder] = await Promise.all([
+  const [{ data: profile }, { data: memberships }, { data: trial }, founder, operational] = await Promise.all([
     getAdmin().from("account_profiles").select("legal_name,display_name,avatar_url,work_role,preferences,onboarded").eq("user_id", uid).maybeSingle(),
     getAdmin().from("account_org_members").select("role,account_organisations(id,name,slug,domain)").eq("user_id", uid),
     getAdmin().from("trial_accounts").select("anexomail_address").eq("user_id", uid).maybeSingle(),
     isFounderUser(uid),
+    operationalOrganisation(uid, identity.user.email),
   ]);
   const organisations = (memberships || []).flatMap((row: any) => row.account_organisations ? [{ ...row.account_organisations, role: row.role }] : []);
+  if (operational && !organisations.some((organisation: any) => organisation.id === operational.id)) {
+    const { data: legacy } = await getAdmin().from("orgs").select("id,name").eq("id", operational.id).maybeSingle();
+    organisations.push({
+      id: operational.id,
+      name: legacy?.name || (founder ? "Founder workspace" : "ANEXOMAIL Workspace"),
+      slug: founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`,
+      domain: null,
+      role: operational.role,
+    });
+  }
   res.json({
     user: {
       id: uid, email: identity.user.email || "", name: profile?.display_name || profile?.legal_name || identity.user.user_metadata?.name || null,
