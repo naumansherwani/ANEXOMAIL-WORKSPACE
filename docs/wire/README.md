@@ -23,6 +23,7 @@ Wire 06 ka DNS table (registrar/Hetzner panel) — baqi sab command hai.**
 | 09 | ANEXOVideoCall — signaling · ICE · relay · recording gate | `09-anexovideocall.md` |
 | 10 | FINAL AUDIT — saat blocks ek command mein | `10-final-audit.md` |
 | 11 | Mail launch SQL — editor mein direct paste | `11-mail-sql.md` |
+| 18 | CRM do host (aicrm + AI-free crm) + gate | `18-crm-hosts.md` |
 
 
 ## Ledger — status
@@ -36,6 +37,7 @@ Status sirf teen: **DONE** (live gate green aaya) · **READY** (repo mein hai, s
 | DB verify | `bash sql/verify.sh` | READY |
 | Rust :3200 | `bash server/rust/deploy.sh` + `bash server/gates/rust-gate.sh` | READY |
 | Caddy + frontend | `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` | DONE |
+| CRM do host (aicrm + crm) | `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` | READY |
 | ANEXOChat host HTTPS + h3 | `docs/wire/14-anexochat-host-https3.md` | READY |
 | Mail SQL (13 addresses) | `docs/wire/11-mail-sql.md` (editor) ya `bash sql/run.sh sql/phase52_mail_launch.sql` | READY |
 | Mail 13 addresses | `bash server/mail/deploy-mail.sh` + `bash server/gates/mail-gate.sh` | READY |
