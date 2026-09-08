@@ -248,6 +248,14 @@ async fn dispatch(
         return health().await.into_response();
     }
 
+    // TURN readiness (public, secret-free): sirf yeh batata hai ke server-side
+    // HMAC creds ban sakti hain ya nahi. Asli username/credential yahan KABHI nahi —
+    // woh sirf authenticated `chat.turn.credentials` se milti hai.
+    if proc == "chat.turn.health" {
+        return ok(turn_health()).into_response();
+    }
+
+
     let token = match bearer(&headers) {
         Some(t) => t,
         None => {
