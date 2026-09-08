@@ -1,6 +1,9 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
+import { crmAiAllowed } from "@/lib/host";
 import { cn } from "@/lib/utils";
+
 
 export const Route = createFileRoute("/app/crm")({
   head: () => ({
