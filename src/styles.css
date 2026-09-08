@@ -764,6 +764,25 @@ html[data-ax-motion="reduced"] *::after {
   border-radius: 6px;
 }
 
+/* Pointer sovereignty — har clickable surface par haath wala cursor (Tailwind v4
+   ne button ka default cursor:pointer hataa diya tha). Site-wide, har page. */
+:where(
+  button,
+  [role="button"],
+  [role="option"],
+  [role="tab"],
+  summary,
+  label[for],
+  a[href]
+):not(:disabled):not([aria-disabled="true"]) {
+  cursor: pointer;
+}
+:where(button, [role="button"]):disabled,
+:where(button, [role="button"])[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+
 /* Keyboard sovereignty — a visible ring on every focusable surface, always. */
 :where(a, button, input, select, textarea, [tabindex]):focus-visible {
   outline: 2px solid var(--ring);

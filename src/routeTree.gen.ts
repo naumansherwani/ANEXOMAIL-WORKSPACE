@@ -26,6 +26,7 @@ import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlansRouteImport } from './routes/plans'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as TrialEndedRouteImport } from './routes/trial-ended'
@@ -236,6 +237,11 @@ const PartnersRoute = PartnersRouteImport.update({
 const PlansRoute = PlansRouteImport.update({
   id: '/plans',
   path: '/plans',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SecurityRoute = SecurityRouteImport.update({
@@ -891,6 +897,7 @@ export interface FileRoutesByFullPath {
   '/pages': typeof PagesRoute
   '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
+  '/privacy': typeof PrivacyRoute
   '/security': typeof SecurityRoute
   '/status': typeof StatusRoute
   '/trial-ended': typeof TrialEndedRoute
@@ -1035,6 +1042,7 @@ export interface FileRoutesByTo {
   '/pages': typeof PagesRoute
   '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
+  '/privacy': typeof PrivacyRoute
   '/security': typeof SecurityRoute
   '/status': typeof StatusRoute
   '/trial-ended': typeof TrialEndedRoute
@@ -1171,6 +1179,7 @@ export interface FileRoutesById {
   '/pages': typeof PagesRoute
   '/partners': typeof PartnersRoute
   '/plans': typeof PlansRoute
+  '/privacy': typeof PrivacyRoute
   '/security': typeof SecurityRoute
   '/status': typeof StatusRoute
   '/trial-ended': typeof TrialEndedRoute
@@ -1318,6 +1327,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/partners'
     | '/plans'
+    | '/privacy'
     | '/security'
     | '/status'
     | '/trial-ended'
@@ -1462,6 +1472,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/partners'
     | '/plans'
+    | '/privacy'
     | '/security'
     | '/status'
     | '/trial-ended'
@@ -1597,6 +1608,7 @@ export interface FileRouteTypes {
     | '/pages'
     | '/partners'
     | '/plans'
+    | '/privacy'
     | '/security'
     | '/status'
     | '/trial-ended'
@@ -1743,6 +1755,7 @@ export interface RootRouteChildren {
   PagesRoute: typeof PagesRoute
   PartnersRoute: typeof PartnersRoute
   PlansRoute: typeof PlansRoute
+  PrivacyRoute: typeof PrivacyRoute
   SecurityRoute: typeof SecurityRoute
   StatusRoute: typeof StatusRoute
   TrialEndedRoute: typeof TrialEndedRoute
@@ -1874,6 +1887,13 @@ declare module '@tanstack/react-router' {
       path: '/plans'
       fullPath: '/plans'
       preLoaderRoute: typeof PlansRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/security': {
@@ -3125,6 +3145,7 @@ const rootRouteChildren: RootRouteChildren = {
   PagesRoute: PagesRoute,
   PartnersRoute: PartnersRoute,
   PlansRoute: PlansRoute,
+  PrivacyRoute: PrivacyRoute,
   SecurityRoute: SecurityRoute,
   StatusRoute: StatusRoute,
   TrialEndedRoute: TrialEndedRoute,
