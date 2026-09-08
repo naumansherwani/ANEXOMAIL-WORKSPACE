@@ -381,7 +381,7 @@ function AuthPage() {
             ) : mode === "forgot" ? (
               <Header title="Reset your password" sub="We will email a secure one-time reset link." />
             ) : mode === "reset" ? (
-              <Header title="Choose a new password" sub="Use at least 12 characters, upper/lowercase and a number." />
+              <Header title="Choose a new password" sub="Use 6 to 15 characters." />
             ) : (
               <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
             )}
