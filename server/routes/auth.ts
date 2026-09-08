@@ -84,7 +84,7 @@ authRouter.post("/signup", async (req, res) => {
   const preferences = req.body?.preferences && typeof req.body.preferences === "object" ? req.body.preferences : {};
   if (!emailPattern.test(email)) return res.status(400).json({ error: "Enter a valid email address." });
   if (!legalName || !displayName) return res.status(400).json({ error: "Name and display name are required." });
-  if (!passwordOk(password)) return res.status(400).json({ error: "Password needs 12+ characters, upper/lowercase and a number." });
+  if (!passwordOk(password)) return res.status(400).json({ error: "Password must be 6 to 15 characters." });
 
   const { data, error } = await getPublicAuth().auth.signUp({
     email,
@@ -188,7 +188,7 @@ authRouter.post("/change-password", async (req, res) => {
   const identity = await userFrom(req, res); if (!identity) return;
   const currentPassword = String(req.body?.current_password || "");
   const newPassword = String(req.body?.new_password || "");
-  if (!passwordOk(newPassword)) return res.status(400).json({ error: "New password needs 12+ characters, upper/lowercase and a number." });
+  if (!passwordOk(newPassword)) return res.status(400).json({ error: "New password must be 6 to 15 characters." });
   const email = identity.user.email || "";
   const verified = await getPublicAuth().auth.signInWithPassword({ email, password: currentPassword });
   if (verified.error) return res.status(401).json({ error: "Current password is incorrect." });

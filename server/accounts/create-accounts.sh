@@ -7,7 +7,7 @@ cd "$(dirname "$0")/../.."
 ENV_FILE="${ENV_FILE:-/opt/anexomail/.env}"
 [ -f "$ENV_FILE" ] || { echo "RED  $ENV_FILE nahi mila"; exit 1; }
 
-ask() { local var="$1" label="$2"; if [ -z "${!var:-}" ]; then read -r -s -p "$label password (min 8): " val; echo; export "$var=$val"; fi; }
+ask() { local var="$1" label="$2"; if [ -z "${!var:-}" ]; then read -r -s -p "$label password (6-15 chars): " val; echo; export "$var=$val"; fi; }
 ask FOUNDER_MAIL_PASSWORD "Founder (naumansherwani.founder@)"
 ask HUMZA_PASSWORD        "Humza (humzasherwani@)"
 ask RAANA_PASSWORD        "Raana (raanasherwani@)"
