@@ -36,11 +36,15 @@ const TABS: Tab[] = [
 
 function CrmLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // aicrm.anexomail.com = AI CRM · crm.anexomail.com = AI-free CRM
+  const [aiSurface, setAiSurface] = useState(true);
+  useEffect(() => setAiSurface(crmAiAllowed()), []);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-ax-5 pt-ax-4">
-        <p className="ax-eyebrow">AI CRM</p>
+        <p className="ax-eyebrow">{aiSurface ? "AI CRM" : "CRM"}</p>
+
         <nav className="mt-ax-3 flex gap-1 overflow-x-auto">
           {TABS.map((t) => {
             const active = t.exact
