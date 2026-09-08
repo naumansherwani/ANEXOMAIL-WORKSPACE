@@ -9,9 +9,19 @@ Is block mein **ek hi manual hissa** hai: registrar par DNS records. Baqi sab co
 | A | `mail` | server ka public IP |
 | MX | `@` | `mail.anexomail.com` (priority 10) |
 | TXT | `@` | `v=spf1 mx -all` |
-| TXT | `mail._domainkey` | DKIM public key (Step B ka output deta hai) |
-| TXT | `_dmarc` | `v=DMARC1; p=quarantine; rua=mailto:resolved@anexomail.com` |
+| TXT | `mail._domainkey` | DKIM public key — **Step B ka server output** (Namecheap khud nahi banata) |
+| TXT | `_dmarc` | `v=DMARC1; p=reject; rua=mailto:dmarc@anexomail.com; adkim=s; aspf=s` |
 | PTR | server IP (Hetzner panel) | `mail.anexomail.com` |
+
+> **DMARC (locked):** founder ka mojooda `p=reject; adkim=s; aspf=s` hi sahi hai —
+> woh mera `p=quarantine` se zyada sakht hai. Usay badalna nahi. Shart sirf yeh:
+> DKIM + SPF dono align hon (Step B ke baad `mail-gate.sh` yahi verify karta hai).
+> `dmarc@anexomail.com` mailbox 13 addresses mein pehle se maujood hai.
+
+> **DKIM Namecheap par:** Namecheap DKIM khud generate nahi karta. Key hamare server
+> par banti hai (Step B), aur script screen par exact TXT value print karti hai.
+> Namecheap → Advanced DNS → Add New Record → TXT Record → Host `mail._domainkey`,
+> Value = wahi print hui line (`v=DKIM1; k=rsa; p=...`), TTL **Automatic** theek hai.
 
 ## B · mail stack deploy (Postfix + Dovecot + DKIM, passwords sirf server par)
 
@@ -21,6 +31,7 @@ cd /opt/anexomail-web && git pull && bash server/mail/deploy-mail.sh
 
 Script DKIM key banati hai aur DNS ke liye exact TXT value print karti hai —
 usay Step A ke `mail._domainkey` mein paste karo.
+
 
 ## C · addresses ka SQL (agar phase52 pehle nahi chali)
 
