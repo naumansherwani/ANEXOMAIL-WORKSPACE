@@ -57,11 +57,12 @@ magar koi button/panel unhe call nahi karta tha. Ab wire:
 | 30 | `useCreateEmailDraft` (chat → cited email draft) | drawer → “Draft email” |
 | 25/26/27 | `useSetConversationState` · `useConversationHealth` · `useConversationChain` | `/app/chat` header bar (`ConversationTruthBar.tsx`) |
 | 29 | `useEmailThreadConversation` · `useDiscussInChat` · `useDiscussPresence` | `/app/mail/$folder/$threadId` → “Discuss in chat” (`DiscussInChat.tsx`) |
+| 30 | `useDecisionToEmail` | `/app/work` → Decision ledger → “Email this decision” |
 | 31A | `connectReport` | `/app/chat` — call khatam hone par “Last call” readings (`CallConnectReport.tsx`) |
 
 Abhi bhi bina page (sach):
 - `ackDownload` / `transferState` — file engine abhi download URL nahi deta (blueprint mein download surface Phase 32+), is liye "Downloaded" step UI se nahi likha ja sakta. TODO.
-- `useSilentThreadRescue` (owner + due lazmi) · `useQuoteEmailInChat` · `useDecisionToEmail` — Work page `EmailBridge` panel mein hain? Nahi: board/consent/escalations hain, ye teen nahi. TODO (chhota).
+- `useSilentThreadRescue` (owner + due lazmi) · `useQuoteEmailInChat` (mail message text select → chat quote) — mail thread par selection UI chahiye. TODO (chhota).
 - `useSplitView` · `setRingSound` · `uploadAvatar` · `ringState` · `sfuState` · `connectHealth` — helper/founder-only readings. TODO ya not-needed.
 
 Status: READY (type-check 0 · lint 0 errors · sandbox render bina crash). DONE sirf live proof (`docs/wire/26`) par.
