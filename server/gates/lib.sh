@@ -12,10 +12,13 @@ bad()  { FAIL=$((FAIL+1)); FAILED_LIST="$FAILED_LIST
   - $1"; printf 'FAIL  %s   (%s)\n' "$1" "${2:-no detail}"; }
 
 # check_http <label> <url> <expected-code> [extra curl args...]
+# want=200 par redirect follow hota hai (browser bhi yahi karta hai — canonical
+# search-params wala 307 asli 200 par khatam hota hai).
 check_http() {
   local label="$1" url="$2" want="$3"; shift 3
-  local code
-  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$@" "$url" || echo 000)
+  local code follow=""
+  [ "$want" = "200" ] && follow="-L"
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 $follow "$@" "$url" || echo 000)
   if [ "$code" = "$want" ]; then ok "$label ($code)"; else bad "$label" "got $code want $want · $url"; fi
 }
 
