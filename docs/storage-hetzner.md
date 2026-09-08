@@ -46,23 +46,20 @@ df -h /mnt/anexomail-box
 
 ## 3) Volume ko `storage_volumes` mein register karo (asli wiring)
 
-Founder token se (frontend `/app/storage` bhi isi route ko chhoo sakta hai):
+Mounted capacity ko protected server credentials se seedha register karo. Founder JWT
+ki zarurat nahi aur koi credential terminal par print nahi hota:
 
 ```bash
-curl -s -X POST http://127.0.0.1:3100/api/founder/storage/volume \
-  -H "authorization: Bearer $FOUNDER_JWT" \
-  -H 'content-type: application/json' \
-  -d '{"name":"hetzner-box-1","kind":"storage_box","capacity_bytes":1099511627776,
-       "endpoint":"/mnt/anexomail-box/attachments","drain_others":true}'
+cd /opt/anexomail-web && bash server/storage/register-box.sh u659696
 ```
 
 `drain_others:true` = purana `server2-local` volume `accepts_new=false` ho jata hai.
 Naye attachments Storage Box par jaate hain, purana data jahan hai wahin readable rehta hai — **zero migration, zero UI change**.
 
-Radar dekhne ke liye:
+Radar aur mount gate dekhne ke liye:
 
 ```bash
-curl -s http://127.0.0.1:3100/api/founder/storage/volumes -H "authorization: Bearer $FOUNDER_JWT" | head -40
+cd /opt/anexomail-web && bash server/gates/storage-gate.sh
 ```
 
 ## 4) Capacity sweep cron (85% par auto-drain)

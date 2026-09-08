@@ -24,6 +24,9 @@ Pehli dafa key install par Box ka password ek dafa poochha jayega (kahin save na
 cd /opt/anexomail-web && bash server/storage/register-box.sh u659696
 ```
 
+Koi Founder JWT nahi chahiye. Script protected `SUPABASE4_*` server env se direct
+service RPC karti hai; credential terminal par print nahi hota.
+
 Purana `server2-local` volume `accepts_new=false` ho jata hai — naye attachments Box par,
 purana data jahan hai wahin readable. Zero migration.
 
