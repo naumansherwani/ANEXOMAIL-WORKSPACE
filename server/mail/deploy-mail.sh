@@ -22,7 +22,10 @@ MAILHOST=mail.anexomail.com
 REPO=/opt/anexomail-web
 ENVFILE=/etc/anexomail/mail.env
 STAMP="$(date +%s)"
-BUN="$(command -v bun || echo /root/.bun/bin/bun)"
+BUNSRC="$(command -v bun || echo /root/.bun/bin/bun)"
+# Postfix ka pipe vmail user se chalta hai; /root/... kabhi read nahi kar sakta
+# (execvp ... Permission denied). Is liye bun ki ek copy sab ke liye readable jagah par.
+BUN=/usr/local/bin/anexo-bun
 
 MAILBOXES="hello moveyourbusiness resolved billing trials abuse dmarc naumansherwani.founder leo"
 SENDONLY="noreply"
@@ -127,11 +130,10 @@ service lmtp {
     group = postfix
   }
 }
-# Loopback IMAP 143 — sirf 127.0.0.1 par (internal delivery/health path).
-# Public plaintext IMAP kabhi nahi: baahir sirf 993 IMAPS khula hai.
+# IMAP 143 internal path ke liye (plaintext auth band hai), IMAPS 993 public.
+# Firewall mein 143 kabhi allow nahi hota — bahar se sirf 993 pohanchta hai.
 service imap-login {
   inet_listener imap {
-    address = 127.0.0.1
     port = 143
   }
   inet_listener imaps {
@@ -180,10 +182,9 @@ service lmtp {
     group = postfix
   }
 }
-# Loopback IMAP 143 — sirf 127.0.0.1 (public plaintext IMAP kabhi nahi).
+# IMAP 143 internal (plaintext auth band), IMAPS 993 public. 143 firewall mein band.
 service imap-login {
   inet_listener imap {
-    address = 127.0.0.1
     port = 143
   }
   inet_listener imaps {
@@ -250,9 +251,22 @@ postconf -e "smtpd_milters = inet:127.0.0.1:8891"
 postconf -e "non_smtpd_milters = inet:127.0.0.1:8891"
 postconf -e "message_size_limit = 52428800"
 
+# bun ki readable copy (pipe vmail user se chalti hai)
+echo "==> bun runtime copy for postfix pipe"
+if [ -x "$BUNSRC" ]; then
+  install -m 0755 -o root -g root "$BUNSRC" "$BUN"
+else
+  echo ">>> bun nahi mila ($BUNSRC) — inbound pipe kaam nahi karegi"
+fi
+# repo path bhi vmail ke liye traversable hona chahiye
+chmod o+rx /opt /opt/anexomail-web 2>/dev/null || true
+chmod -R o+rX "$REPO/server/mail" 2>/dev/null || true
+
 # inbound pipe -> Supabase (Bun). Supabase down ho to mail queue mein rukti hai.
 cp /etc/postfix/master.cf /etc/postfix/master.cf.bak.$STAMP
-grep -q '^anexopipe' /etc/postfix/master.cf || cat >> /etc/postfix/master.cf <<EOF
+# purani anexopipe entry (galat bun path) hamesha refresh — warna Permission denied rehta hai
+sed -i '/^anexopipe/,+1d' /etc/postfix/master.cf
+cat >> /etc/postfix/master.cf <<EOF
 
 anexopipe unix  -       n       n       -       10      pipe
   flags=DRhu user=vmail argv=$BUN $REPO/server/mail/deliver-to-supabase.ts \${recipient} \${sender}
