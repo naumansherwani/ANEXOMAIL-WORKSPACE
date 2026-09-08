@@ -36,8 +36,12 @@ export function SiteNav() {
             <Link
               key={l.to}
               to={l.to}
-              activeProps={{ className: "text-foreground" }}
-              className="text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors hover:text-foreground"
+              activeProps={{
+                className:
+                  "ax-platinum-text after:scale-x-100 after:opacity-100",
+                "aria-current": "page",
+              }}
+              className="relative py-1 text-sm font-medium whitespace-nowrap text-muted-foreground transition-colors after:pointer-events-none after:absolute after:-bottom-0.5 after:left-0 after:h-[2px] after:w-full after:origin-left after:scale-x-0 after:rounded-full after:bg-primary after:opacity-0 after:transition-transform after:duration-200 hover:text-foreground hover:after:scale-x-100 hover:after:opacity-60"
             >
               {t(l.key)}
             </Link>
@@ -51,6 +55,7 @@ export function SiteNav() {
             {t("ANEXOMAIL AI")}
           </a>
         </div>
+
 
         <div className="hidden shrink-0 items-center gap-2 md:flex">
           <LanguagePicker />
