@@ -38,9 +38,12 @@ check_http "public fallback path"      "https://anexomail.com/api/chat/health" 2
 echo "--- DB truth (feature tables) ---"
 check_sql "chat_access() maujood"      "select count(*)>0 from pg_proc where proname='chat_access';" "t"
 check_sql "chat_feature_ok() maujood"  "select count(*)>0 from pg_proc where proname='chat_feature_ok';" "t"
+# asli schema ke naam (repo ki SQL se) — koi andaza nahi
 for t in chat_conversations chat_messages chat_transfer_ledger file_evidence \
-         chat_receipts chat_timeline_events chat_message_provenance chat_collisions \
-         chat_decisions chat_decision_versions promise_recovery_log work_chain \
+         chat_message_receipts chat_receipt_devices chat_receipt_certificates \
+         chat_work_items chat_work_events chat_work_evidence \
+         chat_message_provenance chat_message_important commitment_collisions \
+         chat_decisions chat_decision_versions promise_recovery_log \
          safety_reports safety_reveal_log device_vault account_integrity_log \
          device_ban_appeals chat_drafts chat_positions; do
   check_sql "table $t" "select count(*)>0 from information_schema.tables where table_schema='public' and table_name='$t';" "t"

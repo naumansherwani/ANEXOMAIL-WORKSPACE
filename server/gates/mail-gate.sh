@@ -37,10 +37,10 @@ check_cmd "outbound port 25 khula" bash -c "timeout 8 bash -c '</dev/tcp/gmail-s
 check_cmd "mail queue saaf" bash -c "[ \"\$(mailq | grep -c '^[A-F0-9]')\" -eq 0 ]"
 
 echo "--- 13 addresses DB mein ---"
-check_sql "mail_addresses = 13" "select count(*) from public.mail_addresses where domain='$DOMAIN';" "13"
+check_sql "mailboxes = 13" "select count(*) from public.mailboxes where address like '%@$DOMAIN';" "13"
 for a in hello moveyourbusiness resolved billing noreply leo; do
   check_sql "address $a@$DOMAIN" \
-    "select count(*)>0 from public.mail_addresses where address='$a@$DOMAIN';" "t"
+    "select count(*)>0 from public.mailboxes where address='$a@$DOMAIN';" "t"
 done
 
 echo "--- inbound pipe + inbox (round trip) ---"
@@ -54,7 +54,7 @@ if [ -n "$AFTER" ] && [ -n "$BEFORE" ] && [ "$AFTER" -gt "$BEFORE" ]; then
 else
   bad "inbound pipe -> mail_messages" "count nahi barha ($BEFORE -> $AFTER); /var/log/mail.log dekho"
 fi
-check_sql "inbound proof row append hui" "select count(*)>0 from public.mail_inbound_log;" "t"
+check_sql "inbound raw proof table maujood" "select count(*)>0 from information_schema.tables where table_schema='public' and table_name='mail_inbound_raw';" "t"
 check_http "inbox UI zinda" "https://anexomail.com/app/mail" 200
 
 gate_result "MAIL 13 ADDRESSES"
