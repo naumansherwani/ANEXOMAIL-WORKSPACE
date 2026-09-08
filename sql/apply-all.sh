@@ -28,7 +28,6 @@ sql/phase34_billing_support.sql
 sql/phase35_payment_safety.sql
 sql/phase36_state_sync.sql
 sql/phase37_movein_ops.sql
-sql/phase38_movein_hardening.sql
 sql/phase39_movein_fixes.sql
 sql/phase40_evidence_truth.sql
 sql/phase43_annual_billing_lock.sql
@@ -42,7 +41,6 @@ sql/phase49b_hotfix_random_token.sql
 sql/phase50_polar_rust_payment.sql
 sql/phase51_polar_payment_hardening.sql
 sql/phase52_mail_launch.sql
-anexochat/sql/anexochat_phase01_foundation.sql
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql
 anexochat/sql/anexochat_phase10a_call_engine.sql

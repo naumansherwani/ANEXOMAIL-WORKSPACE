@@ -9,7 +9,7 @@ poora content copy karo, Supabase SQL Editor mein paste karo, Run.
 
 | # | Repo file | Kya banti hai |
 |---|---|---|
-| 1 | `anexochat/sql/anexochat_phase01_foundation.sql` | workspaces, conversations, receipts, `chat_access()` |
+| 1 | `sql/editor/anexochat_phase01_foundation.sql` | workspaces, conversations, receipts, `chat_access()` |
 | 2 | `anexochat/sql/anexochat_phase03_message_engine.sql` | messages, `chat_work_items` |
 | 3 | `anexochat/sql/anexochat_phase07_cinema_video.sql` | cinema/video base |
 | 4 | `anexochat/sql/anexochat_phase10a_call_engine.sql` | `chat_call_sessions`, `chat_call_stats` |
