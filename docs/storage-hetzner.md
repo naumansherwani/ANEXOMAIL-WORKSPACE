@@ -13,8 +13,7 @@ Rule: **Supabase = truth, Storage Box = weight, Hetzner = egress (free 20TB).**
 
 ```bash
 ssh-keygen -t ed25519 -f /root/.ssh/storagebox -N ''
-# u123456 = tumhara Storage Box username
-cat /root/.ssh/storagebox.pub | ssh -p23 u123456@u123456.your-storagebox.de install-ssh-key
+cat /root/.ssh/storagebox.pub | ssh -p23 u659696@u659696.your-storagebox.de install-ssh-key
 ```
 
 ## 2) Mount (systemd, reboot-safe)
@@ -30,7 +29,7 @@ After=network-online.target
 Wants=network-online.target
 
 [Mount]
-What=u123456@u123456.your-storagebox.de:/home/anexomail
+What=u659696@u659696.your-storagebox.de:/home/anexomail
 Where=/mnt/anexomail-box
 Type=fuse.sshfs
 Options=_netdev,allow_other,reconnect,ServerAliveInterval=15,ServerAliveCountMax=3,IdentityFile=/root/.ssh/storagebox,port=23,uid=8,gid=8
@@ -39,7 +38,7 @@ Options=_netdev,allow_other,reconnect,ServerAliveInterval=15,ServerAliveCountMax
 WantedBy=multi-user.target
 EOF
 
-ssh -p23 u123456@u123456.your-storagebox.de -i /root/.ssh/storagebox 'mkdir -p /home/anexomail/attachments'
+ssh -p23 u659696@u659696.your-storagebox.de -i /root/.ssh/storagebox 'mkdir -p /home/anexomail/attachments'
 systemctl daemon-reload
 systemctl enable --now 'mnt-anexomail\x2dbox.mount'
 df -h /mnt/anexomail-box

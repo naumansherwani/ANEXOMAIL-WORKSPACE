@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # ============================================================================
 # ANEXOMAIL — Hetzner Storage Box mount (reboot-safe, idempotent)
-#   bash server/storage/mount-box.sh u123456
+#   bash server/storage/mount-box.sh u659696
 # Koi nano, koi manual edit. Password kahin save nahi hota.
 # ============================================================================
 set -uo pipefail
-BOX="${1:-${BOX:-}}"
-[ -n "$BOX" ] || { echo "FAIL: username do -> bash server/storage/mount-box.sh u123456"; exit 2; }
+BOX="${1:-${BOX:-u659696}}"
+[ "$BOX" = "u659696" ] || { echo "FAIL: issued Storage Box username sirf u659696 hai"; exit 2; }
 HOST="$BOX.your-storagebox.de"
 MNT=/mnt/anexomail-box
 KEY=/root/.ssh/storagebox

@@ -10,15 +10,40 @@ set -uo pipefail
 DOMAIN=anexomail.com
 MAILHOST=mail.anexomail.com
 IP="$(curl -s --max-time 10 https://api.ipify.org || echo '')"
+DKIM_FILE="/etc/opendkim/keys/$DOMAIN/mail.txt"
+EXPECTED_SPF='v=spf1 mx -all'
+EXPECTED_DMARC='v=DMARC1;p=reject;rua=mailto:dmarc@anexomail.com;adkim=s;aspf=s'
+
+dns_txt() {
+  dig +short TXT "$1" | tr -d '"\n'
+}
+
+local_dkim() {
+  awk -F'"' '{ for (i=2; i<=NF; i+=2) printf "%s", $i } END { print "" }' "$DKIM_FILE"
+}
 
 echo "=== GATE 4 · MAIL ==="
 
 echo "--- DNS chain ---"
 check_cmd "A $MAILHOST" bash -c "dig +short A $MAILHOST | grep -q ."
 check_cmd "MX $DOMAIN -> $MAILHOST" bash -c "dig +short MX $DOMAIN | grep -qi '$MAILHOST'"
-check_cmd "SPF record" bash -c "dig +short TXT $DOMAIN | grep -q 'v=spf1'"
-check_cmd "DKIM record" bash -c "dig +short TXT mail._domainkey.$DOMAIN | grep -q 'v=DKIM1'"
-check_cmd "DMARC record (p=reject strict)" bash -c "dig +short TXT _dmarc.$DOMAIN | tr -d '\"' | grep -q 'v=DMARC1' && dig +short TXT _dmarc.$DOMAIN | grep -q 'p=reject'"
+SPF="$(dns_txt "$DOMAIN")"
+[ "$SPF" = "$EXPECTED_SPF" ] && ok "SPF exact + aligned" || bad "SPF exact + aligned" "expected: $EXPECTED_SPF"
+
+if [ -f "$DKIM_FILE" ]; then
+  LOCAL_DKIM="$(local_dkim | tr -d '[:space:]')"
+  DNS_DKIM="$(dns_txt "mail._domainkey.$DOMAIN" | tr -d '[:space:]')"
+  [ -n "$LOCAL_DKIM" ] && [ "$DNS_DKIM" = "$LOCAL_DKIM" ] \
+    && ok "DKIM DNS = server public key" \
+    || bad "DKIM DNS = server public key" "Namecheap TXT mail._domainkey mein deploy-mail.sh ka exact output paste karo"
+else
+  bad "DKIM server public key" "$DKIM_FILE nahi mila"
+fi
+
+DMARC="$(dns_txt "_dmarc.$DOMAIN" | tr -d '[:space:]')"
+[ "$DMARC" = "$EXPECTED_DMARC" ] \
+  && ok "DMARC exact strict alignment" \
+  || bad "DMARC exact strict alignment" "expected: v=DMARC1; p=reject; rua=mailto:dmarc@anexomail.com; adkim=s; aspf=s"
 if [ -n "$IP" ]; then
   check_cmd "PTR $IP -> $MAILHOST" bash -c "dig +short -x $IP | grep -qi '$MAILHOST'"
 else
@@ -33,6 +58,8 @@ check_port "smtp 25" 25
 check_port "submission 587" 587
 check_port "imaps 993" 993
 check_cmd "myhostname = $MAILHOST" bash -c "postconf -h myhostname | grep -qi '$MAILHOST'"
+check_cmd "envelope domain = $DOMAIN (SPF aligned)" bash -c "[ \"\$(postconf -h myorigin)\" = '$DOMAIN' ]"
+check_cmd "OpenDKIM selector/key valid" opendkim-testkey -d "$DOMAIN" -s mail -k /etc/opendkim/keys/$DOMAIN/mail.private
 check_cmd "outbound port 25 khula" bash -c "timeout 8 bash -c '</dev/tcp/gmail-smtp-in.l.google.com/25'"
 check_cmd "mail queue saaf" bash -c "[ \"\$(mailq | grep -c '^[A-F0-9]')\" -eq 0 ]"
 

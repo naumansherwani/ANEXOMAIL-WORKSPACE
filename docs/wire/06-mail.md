@@ -13,9 +13,8 @@ Is block mein **ek hi manual hissa** hai: registrar par DNS records. Baqi sab co
 | TXT | `_dmarc` | `v=DMARC1; p=reject; rua=mailto:dmarc@anexomail.com; adkim=s; aspf=s` |
 | PTR | server IP (Hetzner panel) | `mail.anexomail.com` |
 
-> **DMARC (locked):** founder ka mojooda `p=reject; adkim=s; aspf=s` hi sahi hai —
-> woh mera `p=quarantine` se zyada sakht hai. Usay badalna nahi. Shart sirf yeh:
-> DKIM + SPF dono align hon (Step B ke baad `mail-gate.sh` yahi verify karta hai).
+> **DMARC (final):** `p=reject; adkim=s; aspf=s` ko badalna nahi. Step D local
+> DKIM key ko DNS se exact match aur SPF/DMARC alignment verify karta hai.
 > `dmarc@anexomail.com` mailbox 13 addresses mein pehle se maujood hai.
 
 > **DKIM Namecheap par:** Namecheap DKIM khud generate nahi karta. Key hamare server

@@ -6,12 +6,12 @@ Mail body local NVMe par (fast), attachments Box par (sasta).
 ## A · Robot panel (aap ka hissa, 2 toggle)
 
 Storage Box → Settings → **SSH support = ON**, **External reachability = ON**.
-Username note karo (`u123456`).
+Issued username: `u659696`.
 
-## B · key + mount (server terminal, ek command — `u123456` apna daalo)
+## B · key + mount (server terminal, ek command)
 
 ```bash
-BOX=u123456; export BOX && cd /opt/anexomail-web && bash server/storage/mount-box.sh "$BOX"
+cd /opt/anexomail-web && git pull && bash server/storage/mount-box.sh u659696
 ```
 
 Script khud: sshfs install → key banata (`/root/.ssh/storagebox`) → key Box par install
@@ -21,7 +21,7 @@ Pehli dafa key install par Box ka password ek dafa poochha jayega (kahin save na
 ## C · volume register (Supabase = truth)
 
 ```bash
-cd /opt/anexomail-web && bash server/storage/register-box.sh u123456
+cd /opt/anexomail-web && bash server/storage/register-box.sh u659696
 ```
 
 Purana `server2-local` volume `accepts_new=false` ho jata hai — naye attachments Box par,

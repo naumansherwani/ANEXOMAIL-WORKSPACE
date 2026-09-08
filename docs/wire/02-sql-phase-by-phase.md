@@ -124,11 +124,10 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase32_trial.sql
 cd /opt/anexomail-web && bash sql/run.sh sql/phase33_polar_checkout.sql
 ```
 
-## 20. phase34_billing_support
+## 20. phase34_billing_support — SQL EDITOR ONLY
 
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase34_billing_support.sql
-```
+`sql/editor/phase34_billing_support.sql` ka poora content SQL editor mein ek dafa Run karo.
+Server runner is file ko dobara nahi chalata.
 
 ## 21. phase35_payment_safety
 
