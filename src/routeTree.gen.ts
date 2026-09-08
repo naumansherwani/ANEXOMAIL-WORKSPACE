@@ -70,6 +70,7 @@ import { Route as AppAdminMonitoringRouteImport } from './routes/app.admin.monit
 import { Route as AppAdminReportsRouteImport } from './routes/app.admin.reports'
 import { Route as AppAdminStorageRouteImport } from './routes/app.admin.storage'
 import { Route as AppAdminTeamsRouteImport } from './routes/app.admin.teams'
+import { Route as AppAiIndexRouteImport } from './routes/app.ai.index'
 import { Route as AppAiCreditsRouteImport } from './routes/app.ai.credits'
 import { Route as AppAnalyticsIndexRouteImport } from './routes/app.analytics.index'
 import { Route as AppAnalyticsDeepWorkRouteImport } from './routes/app.analytics.deep-work'
@@ -100,6 +101,7 @@ import { Route as AppFounderRevenueRouteImport } from './routes/app.founder_.rev
 import { Route as AppFounderSafetyRouteImport } from './routes/app.founder_.safety'
 import { Route as AppFounderSecurityRouteImport } from './routes/app.founder_.security'
 import { Route as AppFounderSettingsRouteImport } from './routes/app.founder_.settings'
+import { Route as AppMailIndexRouteImport } from './routes/app.mail.index'
 import { Route as AppMailFolderRouteImport } from './routes/app.mail.$folder'
 import { Route as AppMailOutboxRouteImport } from './routes/app.mail.outbox'
 import { Route as AppOrgIndexRouteImport } from './routes/app.org.index'
@@ -456,6 +458,11 @@ const AppAdminTeamsRoute = AppAdminTeamsRouteImport.update({
   path: '/teams',
   getParentRoute: () => AppAdminRoute,
 } as any)
+const AppAiIndexRoute = AppAiIndexRouteImport.update({
+  id: '/ai/',
+  path: '/ai/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppAiCreditsRoute = AppAiCreditsRouteImport.update({
   id: '/ai/credits',
   path: '/ai/credits',
@@ -604,6 +611,11 @@ const AppFounderSecurityRoute = AppFounderSecurityRouteImport.update({
 const AppFounderSettingsRoute = AppFounderSettingsRouteImport.update({
   id: '/founder_/settings',
   path: '/founder/settings',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppMailIndexRoute = AppMailIndexRouteImport.update({
+  id: '/mail/',
+  path: '/mail/',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMailFolderRoute = AppMailFolderRouteImport.update({
@@ -979,8 +991,10 @@ export interface FileRoutesByFullPath {
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/ai/': typeof AppAiIndexRoute
   '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
+  '/app/mail/': typeof AppMailIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/perf/': typeof AppPerfIndexRoute
   '/app/security/': typeof AppSecurityIndexRoute
@@ -1111,8 +1125,10 @@ export interface FileRoutesByTo {
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin': typeof AppAdminIndexRoute
+  '/app/ai': typeof AppAiIndexRoute
   '/app/analytics': typeof AppAnalyticsIndexRoute
   '/app/crm': typeof AppCrmIndexRoute
+  '/app/mail': typeof AppMailIndexRoute
   '/app/org': typeof AppOrgIndexRoute
   '/app/perf': typeof AppPerfIndexRoute
   '/app/security': typeof AppSecurityIndexRoute
@@ -1255,8 +1271,10 @@ export interface FileRoutesById {
   '/app/settings/privacy': typeof AppSettingsPrivacyRoute
   '/app/settings/workspace': typeof AppSettingsWorkspaceRoute
   '/app/admin/': typeof AppAdminIndexRoute
+  '/app/ai/': typeof AppAiIndexRoute
   '/app/analytics/': typeof AppAnalyticsIndexRoute
   '/app/crm/': typeof AppCrmIndexRoute
+  '/app/mail/': typeof AppMailIndexRoute
   '/app/org/': typeof AppOrgIndexRoute
   '/app/perf/': typeof AppPerfIndexRoute
   '/app/security/': typeof AppSecurityIndexRoute
@@ -1400,8 +1418,10 @@ export interface FileRouteTypes {
     | '/app/settings/privacy'
     | '/app/settings/workspace'
     | '/app/admin/'
+    | '/app/ai/'
     | '/app/analytics/'
     | '/app/crm/'
+    | '/app/mail/'
     | '/app/org/'
     | '/app/perf/'
     | '/app/security/'
@@ -1532,8 +1552,10 @@ export interface FileRouteTypes {
     | '/app/settings/privacy'
     | '/app/settings/workspace'
     | '/app/admin'
+    | '/app/ai'
     | '/app/analytics'
     | '/app/crm'
+    | '/app/mail'
     | '/app/org'
     | '/app/perf'
     | '/app/security'
@@ -1675,8 +1697,10 @@ export interface FileRouteTypes {
     | '/app/settings/privacy'
     | '/app/settings/workspace'
     | '/app/admin/'
+    | '/app/ai/'
     | '/app/analytics/'
     | '/app/crm/'
+    | '/app/mail/'
     | '/app/org/'
     | '/app/perf/'
     | '/app/security/'
@@ -2160,6 +2184,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminTeamsRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/ai/': {
+      id: '/app/ai/'
+      path: '/ai'
+      fullPath: '/app/ai/'
+      preLoaderRoute: typeof AppAiIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/ai/credits': {
       id: '/app/ai/credits'
       path: '/ai/credits'
@@ -2368,6 +2399,13 @@ declare module '@tanstack/react-router' {
       path: '/founder/settings'
       fullPath: '/app/founder/settings'
       preLoaderRoute: typeof AppFounderSettingsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/mail/': {
+      id: '/app/mail/'
+      path: '/mail'
+      fullPath: '/app/mail/'
+      preLoaderRoute: typeof AppMailIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/mail/$folder': {
@@ -3015,6 +3053,8 @@ interface AppRouteChildren {
   AppFounderSettingsRoute: typeof AppFounderSettingsRoute
   AppMailFolderRoute: typeof AppMailFolderRouteWithChildren
   AppMailOutboxRoute: typeof AppMailOutboxRoute
+  AppAiIndexRoute: typeof AppAiIndexRoute
+  AppMailIndexRoute: typeof AppMailIndexRoute
   AppFounderRevenuePipelineRoute: typeof AppFounderRevenuePipelineRoute
 }
 
@@ -3060,6 +3100,8 @@ const AppRouteChildren: AppRouteChildren = {
   AppFounderSettingsRoute: AppFounderSettingsRoute,
   AppMailFolderRoute: AppMailFolderRouteWithChildren,
   AppMailOutboxRoute: AppMailOutboxRoute,
+  AppAiIndexRoute: AppAiIndexRoute,
+  AppMailIndexRoute: AppMailIndexRoute,
   AppFounderRevenuePipelineRoute: AppFounderRevenuePipelineRoute,
 }
 

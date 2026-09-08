@@ -25,12 +25,16 @@ check_port "turn 3478 (tcp/udp)" 3478
 check_port "turns 5349" 5349
 check_http "turn host https" "https://$TURNHOST" 200
 check_cmd "turn cert copy maujood" test -f /etc/anexochat/turn/fullchain.pem
-check_body "ICE creds server-side HMAC" "$R/rpc/call.ice" 'credential' \
+# TURN creds ka asli arm: chat.turn.credentials (server-side HMAC, koi external API nahi)
+check_body "ICE creds server-side HMAC" "$R/rpc/chat.turn.credentials" 'credential' \
   -X POST -H 'content-type: application/json' --data '{}'
 
 echo "--- DB truth ---"
-for t in call_sessions call_participants call_events call_quality_samples \
-         call_consent call_recordings call_cost; do
+# asli schema ke naam (anexochat/sql se)
+for t in chat_call_sessions chat_call_stats chat_call_events chat_call_transport_events \
+         chat_call_files chat_call_work chat_call_rings chat_call_ring_log \
+         chat_call_connect_marks chat_call_survival chat_call_sfu_rooms \
+         chat_call_sfu_participants; do
   check_sql "table $t" "select count(*)>0 from information_schema.tables where table_schema='public' and table_name='$t';" "t"
 done
 check_sql "recording sirf consent ke saath" \

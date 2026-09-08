@@ -161,6 +161,12 @@ cd /opt/anexomail-web && bash server/gates/all-gates.sh
 
 ---
 
+## STEP 19 — founder wiring SQL (editor mein) — `docs/wire/12-founder-sql.md`
+
+## STEP 20 — ANEXOChat + VideoCall SQL (editor mein) — `docs/wire/13-chat-video-sql.md`
+
+---
+
 ## Ledger
 
 | Step | Kaam | Status |
@@ -177,3 +183,5 @@ cd /opt/anexomail-web && bash server/gates/all-gates.sh
 | 15-16 | ANEXOChat + gate | TODO |
 | 17 | videocall gate | TODO |
 | 18 | final audit | TODO |
+| 19 | founder SQL (editor) | TODO |
+| 20 | chat+video SQL (editor) | TODO |

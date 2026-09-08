@@ -104,6 +104,20 @@ while i < len(lines):
                 f"{indent}}}",
             ]
 
+        # FOUNDER SURFACE GUARD — /app/founder* sirf founder host par. Awam host
+        # (anexomail.com · www · ai.) par edge se hi 404, SSR tak jaata hi nahi.
+        PUBLIC_ONLY = ("anexomail.com", "www.anexomail.com", "ai.anexomail.com")
+        is_public_host = any(h in PUBLIC_ONLY for h in hosts) and not any(
+            h == "founderworkspace.anexomail.com" for h in hosts
+        )
+        if is_public_host and not re.search(r"handle\s+/app/founder\*", body):
+            additions += [
+                f"{indent}# founder surface awam host par band (locked)",
+                f"{indent}handle /app/founder* {{",
+                f'{indent}\trespond "Not found" 404',
+                f"{indent}}}",
+            ]
+
         if additions:
             block = block[:insert_at] + additions + block[insert_at:]
             changed.append(host)
