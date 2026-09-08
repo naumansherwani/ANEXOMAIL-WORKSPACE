@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# GATE 4 — MAIL (anexomail.com · 13 addresses) + round-trip
+# GATE 4 — MAIL (anexomail.com · final list: 9 mailbox + 3 forward) + round-trip
 #   bash server/gates/mail-gate.sh
 # DNS/PTR aap ke registrar par hai (wohi ek manual hissa) — yeh gate usay padhta hai.
 # ============================================================================
@@ -115,4 +115,4 @@ fi
 check_sql "inbound raw proof table maujood" "select count(*)>0 from information_schema.tables where table_schema='public' and table_name='mail_inbound_raw';" "t"
 check_http "inbox UI zinda" "https://anexomail.com/app/mail" 200
 
-gate_result "MAIL 13 ADDRESSES"
+gate_result "MAIL FINAL ADDRESS LIST"
