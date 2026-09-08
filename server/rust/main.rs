@@ -3123,7 +3123,10 @@ async fn start_safety_worker() {
 async fn observability_ready() -> impl IntoResponse {
     let database_configured = sb().is_some();
     let webtransport_live = WT_LIVE.load(Ordering::Relaxed);
-    let ready = database_configured && webtransport_live;
+    // ready = engine apna kaam kar sakta hai (DB truth maujood). WebTransport ki
+    // asli halat alag field mein sach-sach report hoti hai — chhupai nahi jati,
+    // aur uska apna gate (udp 3443 listener) alag hai.
+    let ready = database_configured;
     let status = if ready {
         StatusCode::OK
     } else {
