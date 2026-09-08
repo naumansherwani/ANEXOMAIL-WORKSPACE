@@ -15,12 +15,13 @@ export const Route = createFileRoute("/app/founder_/launch/checklist")({
       {
         name: "description",
         content:
-          "Founder_ · Launch · Checklist · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+          "Launch · Checklist · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
-      { property: "og:title", content: "Founder_ · Launch · Checklist — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "Launch · Checklist · Founder view — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "Founder_ · Launch · Checklist · Workspace in ANEXOMAIL Workspace.",
+        content:
+          "Launch · Checklist · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

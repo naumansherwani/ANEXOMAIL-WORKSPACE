@@ -9,9 +9,9 @@ export const Route = createFileRoute("/app/settings/ai")({
       {
         name: "description",
         content:
-          "Settings · Ai · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+          "Settings · AI in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
-      { property: "og:title", content: "Settings · Ai — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "Settings · AI — ANEXOMAIL Workspace" },
       { property: "og:description", content: "Settings · AI in ANEXOMAIL Workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

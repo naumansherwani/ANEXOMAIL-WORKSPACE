@@ -34,9 +34,9 @@ export const Route = createFileRoute("/app/founder_/ai/")({
       {
         name: "description",
         content:
-          "Founder_ · Ai · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+          "AI · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
-      { property: "og:title", content: "Founder_ · Ai — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "AI · Founder view — ANEXOMAIL Workspace" },
       { property: "og:description", content: "AI · Founder view in ANEXOMAIL Workspace." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

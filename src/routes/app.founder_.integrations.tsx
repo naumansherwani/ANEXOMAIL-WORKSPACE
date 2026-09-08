@@ -11,12 +11,13 @@ export const Route = createFileRoute("/app/founder_/integrations")({
       {
         name: "description",
         content:
-          "Founder_ · Integrations · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+          "Integrations · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
-      { property: "og:title", content: "Founder_ · Integrations — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "Integrations · Founder view — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "Founder_ · Integrations · Workspace in ANEXOMAIL Workspace.",
+        content:
+          "Integrations · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

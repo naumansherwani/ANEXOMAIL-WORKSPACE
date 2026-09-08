@@ -15,12 +15,13 @@ export const Route = createFileRoute("/app/founder_/ai/memory")({
       {
         name: "description",
         content:
-          "Founder_ · Ai · Memory · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+          "AI · Memory · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
-      { property: "og:title", content: "Founder_ · Ai · Memory — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "AI · Memory · Founder view — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "Founder_ · Ai · Memory · Workspace in ANEXOMAIL Workspace.",
+        content:
+          "AI · Memory · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
