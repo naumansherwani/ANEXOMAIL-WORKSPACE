@@ -23,12 +23,12 @@ begin
    where lower(email) = 'raanasherwani@anexomail.com' limit 1;
 
   if founder_id is null or humza_id is null or raana_id is null then
-    raise exception 'founder_family_auth_users_missing';
+    return jsonb_build_object('ok', false, 'reason', 'founder_family_auth_users_missing');
   end if;
   if not public.chat_access(founder_id)
      or not public.chat_access(humza_id)
      or not public.chat_access(raana_id) then
-    raise exception 'founder_family_chat_access_missing';
+    return jsonb_build_object('ok', false, 'reason', 'founder_family_chat_access_missing');
   end if;
 
   select w.id into ws
