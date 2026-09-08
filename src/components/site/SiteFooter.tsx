@@ -31,6 +31,7 @@ const groups = [
       { label: "Enterprise support", to: "/enterprise" as const },
       { label: "Security", to: "/security" as const },
       { label: "Ownership", to: "/ownership" as const },
+      { label: "Privacy & account integrity", to: "/privacy" as const },
     ],
   },
 ];
@@ -52,7 +53,7 @@ export function SiteFooter() {
             >
               <Mail className="size-4 shrink-0" aria-hidden="true" />
               <span>
-                <span className="text-foreground">resolved@anexomail.com</span> — support
+                resolved@anexomail.com — support
               </span>
             </a>
             <a
