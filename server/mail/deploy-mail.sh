@@ -27,19 +27,31 @@ BUNSRC="$(command -v bun || echo /root/.bun/bin/bun)"
 # (execvp ... Permission denied). Is liye bun ki ek copy sab ke liye readable jagah par.
 BUN=/usr/local/bin/anexo-bun
 
-MAILBOXES="hello moveyourbusiness resolved billing trials abuse dmarc naumansherwani.founder leo"
+      # FINAL LIST (locked 8 Sep 2026, founder ka faisla)
+#   real mailbox: hello moveyourbusiness resolved billing leo
+#                 naumansherwani.founder (founder ka ek hi inbox)
+#                 humzasherwani (brother) raanasherwani (mother) — aam user premium
+#   sendonly:     noreply
+#   forward-only: postmaster abuse dmarc  -> sab resolved@ (koi inbox/password nahi)
+#   DELETED:      nauman support trials   (backup ke baad root se)
+MAILBOXES="hello moveyourbusiness resolved billing leo naumansherwani.founder humzasherwani raanasherwani"
 SENDONLY="noreply"
 # alias:target
-ALIASES="postmaster:abuse nauman:naumansherwani.founder support:resolved"
+ALIASES="postmaster:resolved abuse:resolved dmarc:resolved"
+# in addresses ka mailbox/alias khatam — maildir backup ke baad delete
+REMOVED="nauman support trials abuse dmarc postmaster"
 
 # FOUNDER SINGLE INBOX (locked 8 Sep 2026)
 #   - founder ka ek hi inbox: naumansherwani.founder@anexomail.com
-#   - har inbound address ki mail apni box mein bhi rehti hai AUR founder inbox
-#     mein bhi copy hoti hai (kuch bhi khota nahi, routing bhi zinda rehti hai)
-#   - sab mailboxes ka password EK — founder ke liye ek hi login
-#   - recovery account: anexomail27@gmail.com (server par kabhi password nahi print)
+#   - company addresses ki mail apni box mein bhi rehti hai AUR founder inbox mein
+#     bhi copy hoti hai. Family accounts (humza/raana) ki mail KABHI copy nahi hoti.
+#   - founder-side logins ka password EK; family accounts ka apna password
+#   - recovery account: anexomail27@gmail.com (password kabhi print nahi hota)
 FOUNDER_INBOX="naumansherwani.founder"
+FOUNDER_COPY="hello moveyourbusiness resolved billing leo"
+FAMILY_BOXES="humzasherwani raanasherwani"
 FOUNDER_RECOVERY="anexomail27@gmail.com"
+
 
 echo "==> packages"
 export DEBIAN_FRONTEND=noninteractive
