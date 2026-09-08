@@ -23,7 +23,6 @@ type WebTransportLike = {
   }>;
 };
 
-
 export type ChatTransport = "webtransport" | "rust" | "bun" | "offline";
 
 /** Rust pe route na ho / reachable na ho to Bun fallback — same contract. */
@@ -79,7 +78,8 @@ export function useChatLive(conversationId: string | null): {
 
     (async () => {
       try {
-        const WT = (window as unknown as { WebTransport: new (url: string) => WebTransportLike }).WebTransport;
+        const WT = (window as unknown as { WebTransport: new (url: string) => WebTransportLike })
+          .WebTransport;
         const wt = new WT(`${WT_URL}/wt/chat`);
         transport = wt;
         await wt.ready;

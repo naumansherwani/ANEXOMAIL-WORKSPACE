@@ -28,7 +28,6 @@ type WebTransportLike = {
   }>;
 };
 
-
 export type SignalKind = "offer" | "answer" | "ice" | "ice-end" | "restart" | "end" | "ring";
 
 export type SignalFrame = {
@@ -62,7 +61,8 @@ function openQuicSignal(opts: {
 
   void (async () => {
     try {
-      const WT = (window as unknown as { WebTransport: new (url: string) => WebTransportLike }).WebTransport;
+      const WT = (window as unknown as { WebTransport: new (url: string) => WebTransportLike })
+        .WebTransport;
       const wt = new WT(`${WT_URL}/wt/chat`);
       transport = wt;
       await wt.ready;
