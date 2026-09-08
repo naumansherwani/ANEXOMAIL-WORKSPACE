@@ -9,6 +9,10 @@
 - [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output
 
 ## WIRE (sirf copy-paste — koi edit nahi)
+- [ ] Phase 34 ko repeated runner se hata kar SQL-editor-only single source banana
+- [ ] Mail deploy/gate mein exact SPF, DKIM local-vs-DNS aur strict DMARC alignment green karna
+- [ ] Storage Box username har command mein `u659696` fix karna
+- [ ] Frontend runtime Hetzner + Bun only rakhna; external editor runtime calls na hon
 - [x] docs/wire/01-sql-all.md — ek command se saari 59 SQL apply (`bash sql/apply-all.sh`)
 - [x] docs/wire/02-sql-phase-by-phase.md — har phase ka apna copy-paste command
 - [x] docs/wire/03-verify.md — DB verify (tables · functions · RLS · GRANT)
