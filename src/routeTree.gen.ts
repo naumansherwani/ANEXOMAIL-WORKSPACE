@@ -12,24 +12,37 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as AiRouteImport } from './routes/ai'
+import { Route as AnalyticsRouteImport } from './routes/analytics'
 import { Route as AnexochatRouteImport } from './routes/anexochat'
+import { Route as AnexovideocallRouteImport } from './routes/anexovideocall'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as BillingRouteImport } from './routes/billing'
+import { Route as CalendarRouteImport } from './routes/calendar'
+import { Route as ChatRouteImport } from './routes/chat'
 import { Route as ClaimRouteImport } from './routes/claim'
+import { Route as CrmRouteImport } from './routes/crm'
+import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as GetStartedRouteImport } from './routes/get-started'
+import { Route as MailRouteImport } from './routes/mail'
 import { Route as MigrationRouteImport } from './routes/migration'
 import { Route as MoveInRouteImport } from './routes/move-in'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as OwnershipRouteImport } from './routes/ownership'
 import { Route as PagesRouteImport } from './routes/pages'
 import { Route as PartnersRouteImport } from './routes/partners'
+import { Route as PeopleRouteImport } from './routes/people'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StatusRouteImport } from './routes/status'
+import { Route as StorageRouteImport } from './routes/storage'
 import { Route as TrialEndedRouteImport } from './routes/trial-ended'
+import { Route as WorkRouteImport } from './routes/work'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
 import { Route as AiCreditsRouteImport } from './routes/ai_.credits'
 import { Route as AiKnowledgeRouteImport } from './routes/ai_.knowledge'
@@ -169,9 +182,19 @@ const AiRoute = AiRouteImport.update({
   path: '/ai',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AnalyticsRoute = AnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AnexochatRoute = AnexochatRouteImport.update({
   id: '/anexochat',
   path: '/anexochat',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AnexovideocallRoute = AnexovideocallRouteImport.update({
+  id: '/anexovideocall',
+  path: '/anexovideocall',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AppRoute = AppRouteImport.update({
@@ -184,9 +207,34 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BillingRoute = BillingRouteImport.update({
+  id: '/billing',
+  path: '/billing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChatRoute = ChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ClaimRoute = ClaimRouteImport.update({
   id: '/claim',
   path: '/claim',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CrmRoute = CrmRouteImport.update({
+  id: '/crm',
+  path: '/crm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DevicesRoute = DevicesRouteImport.update({
+  id: '/devices',
+  path: '/devices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocsRoute = DocsRouteImport.update({
@@ -202,6 +250,11 @@ const EnterpriseRoute = EnterpriseRouteImport.update({
 const GetStartedRoute = GetStartedRouteImport.update({
   id: '/get-started',
   path: '/get-started',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MailRoute = MailRouteImport.update({
+  id: '/mail',
+  path: '/mail',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MigrationRoute = MigrationRouteImport.update({
@@ -234,6 +287,11 @@ const PartnersRoute = PartnersRouteImport.update({
   path: '/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PeopleRoute = PeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PlansRoute = PlansRouteImport.update({
   id: '/plans',
   path: '/plans',
@@ -244,9 +302,19 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StatusRoute = StatusRouteImport.update({
@@ -254,9 +322,19 @@ const StatusRoute = StatusRouteImport.update({
   path: '/status',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StorageRoute = StorageRouteImport.update({
+  id: '/storage',
+  path: '/storage',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrialEndedRoute = TrialEndedRouteImport.update({
   id: '/trial-ended',
   path: '/trial-ended',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkRoute = WorkRouteImport.update({
+  id: '/work',
+  path: '/work',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AiAutomationRoute = AiAutomationRouteImport.update({
@@ -883,24 +961,37 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRoute
+  '/analytics': typeof AnalyticsRoute
   '/anexochat': typeof AnexochatRoute
+  '/anexovideocall': typeof AnexovideocallRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/billing': typeof BillingRoute
+  '/calendar': typeof CalendarRoute
+  '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
+  '/crm': typeof CrmRoute
+  '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/get-started': typeof GetStartedRoute
+  '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/pages': typeof PagesRoute
   '/partners': typeof PartnersRoute
+  '/people': typeof PeopleRoute
   '/plans': typeof PlansRoute
   '/privacy': typeof PrivacyRoute
+  '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
+  '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
+  '/storage': typeof StorageRoute
   '/trial-ended': typeof TrialEndedRoute
+  '/work': typeof WorkRoute
   '/ai/automation': typeof AiAutomationRoute
   '/ai/credits': typeof AiCreditsRoute
   '/ai/knowledge': typeof AiKnowledgeRoute
@@ -1029,23 +1120,36 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRoute
+  '/analytics': typeof AnalyticsRoute
   '/anexochat': typeof AnexochatRoute
+  '/anexovideocall': typeof AnexovideocallRoute
   '/auth': typeof AuthRoute
+  '/billing': typeof BillingRoute
+  '/calendar': typeof CalendarRoute
+  '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
+  '/crm': typeof CrmRoute
+  '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/get-started': typeof GetStartedRoute
+  '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/pages': typeof PagesRoute
   '/partners': typeof PartnersRoute
+  '/people': typeof PeopleRoute
   '/plans': typeof PlansRoute
   '/privacy': typeof PrivacyRoute
+  '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
+  '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
+  '/storage': typeof StorageRoute
   '/trial-ended': typeof TrialEndedRoute
+  '/work': typeof WorkRoute
   '/ai/automation': typeof AiAutomationRoute
   '/ai/credits': typeof AiCreditsRoute
   '/ai/knowledge': typeof AiKnowledgeRoute
@@ -1165,24 +1269,37 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/ai': typeof AiRoute
+  '/analytics': typeof AnalyticsRoute
   '/anexochat': typeof AnexochatRoute
+  '/anexovideocall': typeof AnexovideocallRoute
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
+  '/billing': typeof BillingRoute
+  '/calendar': typeof CalendarRoute
+  '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
+  '/crm': typeof CrmRoute
+  '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/get-started': typeof GetStartedRoute
+  '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
   '/onboarding': typeof OnboardingRoute
   '/ownership': typeof OwnershipRoute
   '/pages': typeof PagesRoute
   '/partners': typeof PartnersRoute
+  '/people': typeof PeopleRoute
   '/plans': typeof PlansRoute
   '/privacy': typeof PrivacyRoute
+  '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
+  '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
+  '/storage': typeof StorageRoute
   '/trial-ended': typeof TrialEndedRoute
+  '/work': typeof WorkRoute
   '/ai_/automation': typeof AiAutomationRoute
   '/ai_/credits': typeof AiCreditsRoute
   '/ai_/knowledge': typeof AiKnowledgeRoute
@@ -1313,24 +1430,37 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/analytics'
     | '/anexochat'
+    | '/anexovideocall'
     | '/app'
     | '/auth'
+    | '/billing'
+    | '/calendar'
+    | '/chat'
     | '/claim'
+    | '/crm'
+    | '/devices'
     | '/docs'
     | '/enterprise'
     | '/get-started'
+    | '/mail'
     | '/migration'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
     | '/pages'
     | '/partners'
+    | '/people'
     | '/plans'
     | '/privacy'
+    | '/search'
     | '/security'
+    | '/settings'
     | '/status'
+    | '/storage'
     | '/trial-ended'
+    | '/work'
     | '/ai/automation'
     | '/ai/credits'
     | '/ai/knowledge'
@@ -1459,23 +1589,36 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/analytics'
     | '/anexochat'
+    | '/anexovideocall'
     | '/auth'
+    | '/billing'
+    | '/calendar'
+    | '/chat'
     | '/claim'
+    | '/crm'
+    | '/devices'
     | '/docs'
     | '/enterprise'
     | '/get-started'
+    | '/mail'
     | '/migration'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
     | '/pages'
     | '/partners'
+    | '/people'
     | '/plans'
     | '/privacy'
+    | '/search'
     | '/security'
+    | '/settings'
     | '/status'
+    | '/storage'
     | '/trial-ended'
+    | '/work'
     | '/ai/automation'
     | '/ai/credits'
     | '/ai/knowledge'
@@ -1594,24 +1737,37 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/ai'
+    | '/analytics'
     | '/anexochat'
+    | '/anexovideocall'
     | '/app'
     | '/auth'
+    | '/billing'
+    | '/calendar'
+    | '/chat'
     | '/claim'
+    | '/crm'
+    | '/devices'
     | '/docs'
     | '/enterprise'
     | '/get-started'
+    | '/mail'
     | '/migration'
     | '/move-in'
     | '/onboarding'
     | '/ownership'
     | '/pages'
     | '/partners'
+    | '/people'
     | '/plans'
     | '/privacy'
+    | '/search'
     | '/security'
+    | '/settings'
     | '/status'
+    | '/storage'
     | '/trial-ended'
+    | '/work'
     | '/ai_/automation'
     | '/ai_/credits'
     | '/ai_/knowledge'
@@ -1741,24 +1897,37 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AiRoute: typeof AiRoute
+  AnalyticsRoute: typeof AnalyticsRoute
   AnexochatRoute: typeof AnexochatRoute
+  AnexovideocallRoute: typeof AnexovideocallRoute
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
+  BillingRoute: typeof BillingRoute
+  CalendarRoute: typeof CalendarRoute
+  ChatRoute: typeof ChatRoute
   ClaimRoute: typeof ClaimRoute
+  CrmRoute: typeof CrmRoute
+  DevicesRoute: typeof DevicesRoute
   DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
   GetStartedRoute: typeof GetStartedRoute
+  MailRoute: typeof MailRoute
   MigrationRoute: typeof MigrationRoute
   MoveInRoute: typeof MoveInRoute
   OnboardingRoute: typeof OnboardingRoute
   OwnershipRoute: typeof OwnershipRoute
   PagesRoute: typeof PagesRoute
   PartnersRoute: typeof PartnersRoute
+  PeopleRoute: typeof PeopleRoute
   PlansRoute: typeof PlansRoute
   PrivacyRoute: typeof PrivacyRoute
+  SearchRoute: typeof SearchRoute
   SecurityRoute: typeof SecurityRoute
+  SettingsRoute: typeof SettingsRoute
   StatusRoute: typeof StatusRoute
+  StorageRoute: typeof StorageRoute
   TrialEndedRoute: typeof TrialEndedRoute
+  WorkRoute: typeof WorkRoute
   AiAutomationRoute: typeof AiAutomationRoute
   AiCreditsRoute: typeof AiCreditsRoute
   AiKnowledgeRoute: typeof AiKnowledgeRoute
@@ -1791,11 +1960,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/analytics': {
+      id: '/analytics'
+      path: '/analytics'
+      fullPath: '/analytics'
+      preLoaderRoute: typeof AnalyticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/anexochat': {
       id: '/anexochat'
       path: '/anexochat'
       fullPath: '/anexochat'
       preLoaderRoute: typeof AnexochatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/anexovideocall': {
+      id: '/anexovideocall'
+      path: '/anexovideocall'
+      fullPath: '/anexovideocall'
+      preLoaderRoute: typeof AnexovideocallRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app': {
@@ -1812,11 +1995,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/billing': {
+      id: '/billing'
+      path: '/billing'
+      fullPath: '/billing'
+      preLoaderRoute: typeof BillingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chat': {
+      id: '/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof ChatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/claim': {
       id: '/claim'
       path: '/claim'
       fullPath: '/claim'
       preLoaderRoute: typeof ClaimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crm': {
+      id: '/crm'
+      path: '/crm'
+      fullPath: '/crm'
+      preLoaderRoute: typeof CrmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/devices': {
+      id: '/devices'
+      path: '/devices'
+      fullPath: '/devices'
+      preLoaderRoute: typeof DevicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/docs': {
@@ -1838,6 +2056,13 @@ declare module '@tanstack/react-router' {
       path: '/get-started'
       fullPath: '/get-started'
       preLoaderRoute: typeof GetStartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mail': {
+      id: '/mail'
+      path: '/mail'
+      fullPath: '/mail'
+      preLoaderRoute: typeof MailRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/migration': {
@@ -1882,6 +2107,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/people': {
+      id: '/people'
+      path: '/people'
+      fullPath: '/people'
+      preLoaderRoute: typeof PeopleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/plans': {
       id: '/plans'
       path: '/plans'
@@ -1896,11 +2128,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/security': {
       id: '/security'
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/status': {
@@ -1910,11 +2156,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StatusRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/storage': {
+      id: '/storage'
+      path: '/storage'
+      fullPath: '/storage'
+      preLoaderRoute: typeof StorageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/trial-ended': {
       id: '/trial-ended'
       path: '/trial-ended'
       fullPath: '/trial-ended'
       preLoaderRoute: typeof TrialEndedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work': {
+      id: '/work'
+      path: '/work'
+      fullPath: '/work'
+      preLoaderRoute: typeof WorkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ai_/automation': {
@@ -3131,24 +3391,37 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AiRoute: AiRoute,
+  AnalyticsRoute: AnalyticsRoute,
   AnexochatRoute: AnexochatRoute,
+  AnexovideocallRoute: AnexovideocallRoute,
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
+  BillingRoute: BillingRoute,
+  CalendarRoute: CalendarRoute,
+  ChatRoute: ChatRoute,
   ClaimRoute: ClaimRoute,
+  CrmRoute: CrmRoute,
+  DevicesRoute: DevicesRoute,
   DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
   GetStartedRoute: GetStartedRoute,
+  MailRoute: MailRoute,
   MigrationRoute: MigrationRoute,
   MoveInRoute: MoveInRoute,
   OnboardingRoute: OnboardingRoute,
   OwnershipRoute: OwnershipRoute,
   PagesRoute: PagesRoute,
   PartnersRoute: PartnersRoute,
+  PeopleRoute: PeopleRoute,
   PlansRoute: PlansRoute,
   PrivacyRoute: PrivacyRoute,
+  SearchRoute: SearchRoute,
   SecurityRoute: SecurityRoute,
+  SettingsRoute: SettingsRoute,
   StatusRoute: StatusRoute,
+  StorageRoute: StorageRoute,
   TrialEndedRoute: TrialEndedRoute,
+  WorkRoute: WorkRoute,
   AiAutomationRoute: AiAutomationRoute,
   AiCreditsRoute: AiCreditsRoute,
   AiKnowledgeRoute: AiKnowledgeRoute,

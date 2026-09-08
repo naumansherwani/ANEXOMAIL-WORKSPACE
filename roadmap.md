@@ -63,5 +63,6 @@
       founder copy sirf company addresses par, deleted maildirs backup + root delete.
 - [x] `src/lib/founder-plan.ts` + `/app/founder` — sirf asli addresses + family group.
 - [ ] Server par run + gate green (READY tak) — `docs/wire/20-final-addresses.md`
-- [ ] Founder host chhota karna (founderworkspace… -> chhota host + `/` paths) — founder ka faisla pending
+- [x] Founder short paths (`/mail` `/calendar` `/chat` `/anexochat` `/anexovideocall` …) — `docs/wire/21-founder-short-paths.md`
+- [x] Local sweep: 144 pages sab 200/307, koi blank nahi
 - [ ] ANEXOChat asli functionality (abhi dummy) — alag kaam

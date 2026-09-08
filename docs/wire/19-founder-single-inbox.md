@@ -47,3 +47,11 @@ IMAP/SMTP login: user `naumansherwani.founder@anexomail.com`, server
 `mail.anexomail.com`, IMAP 993 (SSL), SMTP 465 (SSL).
 
 Status **DONE** sirf tab jab step 3 ka output green ho.
+
+## Update 8 Sep 2026 — final list
+
+`trials@`, `support@`, `nauman@` khatam; `postmaster@` · `abuse@` · `dmarc@` ab
+sirf forward hain (`resolved@` par). Founder inbox mein copy sirf company
+addresses ki: hello, moveyourbusiness, resolved, billing, leo. Family accounts
+(`humzasherwani@`, `raanasherwani@`) ki mail founder inbox mein kabhi nahi.
+Tafseel: `docs/wire/20-final-addresses.md`.
