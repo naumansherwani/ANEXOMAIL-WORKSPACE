@@ -53,7 +53,7 @@ function CallbackPage() {
     void (async () => {
       type Result = {
         token: string;
-        user: { onboarded: boolean; anexomail_address?: string | null };
+        user: { onboarded: boolean; is_founder?: boolean; anexomail_address?: string | null };
       };
       try {
         // Social sign-in returns a provider code; magic links return a token.

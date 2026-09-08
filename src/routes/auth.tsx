@@ -75,7 +75,7 @@ function AuthPage() {
     sessionToken.set(token);
     await refresh();
     const session = await api<{
-      user: { email: string; onboarded: boolean; anexomail_address?: string | null };
+      user: { email: string; onboarded: boolean; is_founder?: boolean; anexomail_address?: string | null };
     }>("/api/auth/session");
     // ABSM: guest checkout ka intent sign-in ke baad asli user se jodo (idempotent)
     const guestToken = window.sessionStorage.getItem("anexo.guest.checkout_token");
