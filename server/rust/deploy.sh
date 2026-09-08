@@ -10,7 +10,7 @@
 #   3. cargo build --release
 #   4. pm2 restart anexomail-rust --update-env + pm2 save
 #   5. Caddy par /file/* aur /rpc/* -> 3200 hone ka check (site block repo se)
-#   6. health print
+#   6. health + private observability print
 # ============================================================================
 set -uo pipefail
 
@@ -49,6 +49,8 @@ pm2 save >/dev/null 2>&1
 sleep 2
 echo "--- live readings ---"
 curl -s http://127.0.0.1:3200/rpc/health; echo
+printf "private readiness :3600: "
+curl -s http://127.0.0.1:3600/ready; echo
 printf "file chunk path (401 expected without token): "
 curl -s -o /dev/null -w "%{http_code}\n" -X POST http://127.0.0.1:3200/file/chunk
 

@@ -12,7 +12,7 @@ Har arm ka apna port. Naya arm bina port kabhi nahi.
 | `anexochat` API fallback (`/api/chat/*`) | 3300 | Bun | DONE |
 | `polar-rust-payment` webhook + checkout | 3400 | Rust | DONE |
 | ANEXOVideoCall SFU media forwarding (reserved) | 3500 tcp / 3501 udp | Rust | TODO |
-| Rust `/metrics` + `/ready` scrape | 3600 (loopback only) | Rust | TODO |
+| Rust `/metrics` + `/ready` scrape | 3600 (loopback only) | Rust | READY |
 | `n8n` automation | 5678 | Node (isolated) | DONE |
 | coturn TURN/STUN | 3478, 5349 (+ 49152–49500 udp) | coturn | DONE |
 | Postfix SMTP / submission | 25, 587, 465 | Postfix | READY |

@@ -40,10 +40,7 @@ if ss -lntu 2>/dev/null | grep -Eq ':3500 |:3501 '; then
 else
   bad "ANEXOVideoCall SFU :3500/:3501" "Rust media-forwarding binary abhi TODO; fake 200 nahi diya"
 fi
-if ss -lnt 2>/dev/null | grep -q ':3600 '; then
-  check_http "Rust private readiness :3600" "http://127.0.0.1:3600/ready" 200
-else
-  bad "Rust private readiness :3600" "separate listener abhi TODO; :3200/rpc/health zinda hai"
-fi
+check_http "Rust private readiness :3600" "http://127.0.0.1:3600/ready" 200
+check_body "Rust private metrics :3600" "http://127.0.0.1:3600/metrics" 'anexomail_webtransport_live 1'
 
 gate_result "SERVER PORT MAP"
