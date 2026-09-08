@@ -78,10 +78,25 @@ if ! bash sql/run.sh --check 2>&1 | tee -a "$LOG"; then
   exit 1
 fi
 
+FROM="${1:-}"; [ "$FROM" = "--from" ] && FROM="${2:-}"
+SKIPPING=0; [ -n "$FROM" ] && SKIPPING=1
+
 G=0; R=0; RED_LIST=""
 for f in $ORDER; do
+  if [ "$SKIPPING" -eq 1 ]; then
+    if [ "$f" = "$FROM" ]; then SKIPPING=0; else echo "SKIP   $f"; continue; fi
+  fi
   if [ ! -f "$f" ]; then echo "RED    $f (missing)" | tee -a "$LOG"; R=$((R+1)); RED_LIST="$RED_LIST $f"; break; fi
-  out="$(bash sql/run.sh "$f" 2>&1)"; rc=$?
+
+  # deadlock = koi doosri session (misal SQL editor) usi table par thi. Khud retry.
+  rc=1
+  for try in 1 2 3; do
+    out="$(bash sql/run.sh "$f" 2>&1)"; rc=$?
+    [ "$rc" -eq 0 ] && break
+    printf '%s\n' "$out" | grep -aq 'deadlock detected' || break
+    echo "RETRY  $f (deadlock — dobara koshish $try/3)"
+    sleep 3
+  done
   echo "=== $f ===" >> "$LOG"; printf '%s\n' "$out" >> "$LOG"
   if [ "$rc" -eq 0 ]; then
     echo "GREEN  $f"; G=$((G+1))
@@ -89,9 +104,11 @@ for f in $ORDER; do
     echo "RED    $f"; printf '%s\n' "$out"
     R=$((R+1)); RED_LIST="$RED_LIST $f"
     echo "STOP: pehli failing phase par ruk gaya; baqi phases abhi run nahi huin."
+    echo "RESUME: bash sql/apply-all.sh --from $f"
     break
   fi
 done
+
 
 echo
 echo "GREEN=$G  RED=$R"
