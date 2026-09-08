@@ -158,4 +158,4 @@ cd /opt/anexomail-web && git pull && bash server/rust/deploy.sh && bash server/d
 curl -s -o /dev/null -w '%{http_code}\n' "https://anexochat.anexomail.com/file/download?version=$(uuidgen)"   # 401 bina token = PASS
 ```
 Browser: `/app/chat` → Workspace file engine → ek file upload → version `ready` → **Download** → status "Downloaded · recorded".
-SQL saboot: `select * from public.chat_file_downloads order by 1 desc limit 1;` (ya evidence chain mein `downloaded` step).
+SQL saboot: `select * from public.file_evidence where state='downloaded' order by created_at desc limit 1;`
