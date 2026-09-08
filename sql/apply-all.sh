@@ -35,14 +35,13 @@ sql/phase43_annual_billing_lock.sql
 sql/phase44_polar_ids_v2.sql
 sql/phase45_founder_identity.sql
 sql/phase46_pricing_v5.sql
-sql/phase47_glitch_whatsapp.sql
+sql/phase47_glitch_crm_alert.sql
 sql/phase48_storage_quota.sql
 sql/phase49_absm_billing_mesh.sql
 sql/phase49b_hotfix_random_token.sql
 sql/phase50_polar_rust_payment.sql
 sql/phase51_polar_payment_hardening.sql
 sql/phase52_mail_launch.sql
-sql/phase_wire_founder.sql
 anexochat/sql/anexochat_phase01_foundation.sql
 anexochat/sql/anexochat_phase03_message_engine.sql
 anexochat/sql/anexochat_phase07_cinema_video.sql

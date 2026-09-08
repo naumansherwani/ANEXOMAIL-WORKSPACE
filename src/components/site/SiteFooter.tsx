@@ -42,20 +42,27 @@ export function SiteFooter() {
         <div className="max-w-sm">
           <BrandMark />
           <p className="mt-5 text-sm leading-relaxed text-muted-foreground">
-            Private business email on your own domain — mail, contacts, calendar and shared work on
-            one fast surface. Your domain, your data, your keys.
+            Private business email — mail, contacts, calendar and shared work on one fast surface.
+            Your data, your keys.
           </p>
           <div className="mt-5 space-y-2">
+            <a
+              href="mailto:resolved@anexomail.com"
+              className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <Mail className="size-4 shrink-0" aria-hidden="true" />
+              <span>
+                <span className="text-foreground">resolved@anexomail.com</span> — support
+              </span>
+            </a>
             <a
               href="mailto:hello@anexomail.com"
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
               <Mail className="size-4 shrink-0" aria-hidden="true" />
-              <span>
-                <span className="text-foreground">hello@anexomail.com</span> — support &amp;
-                enquiries
-              </span>
+              <span>hello@anexomail.com — enquiries</span>
             </a>
+
             <a
               href="mailto:moveyourbusiness@anexomail.com"
               className="flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"

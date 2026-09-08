@@ -90,7 +90,7 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
       ["Mail not arriving", "Check /status first, then Admin → Diagnostics for a signed DNS and delivery probe."],
       ["Send stuck", "Offline sends queue in your Outbox with a visible retry clock — nothing is silently lost."],
       ["Billing question", "billing@anexomail.com — invoices and VAT receipts are issued per payment."],
-      ["Anything else", "support@anexomail.com. A reply, not a queue position."],
+      ["Anything else", "resolved@anexomail.com. A reply, not a queue position."],
     ],
   },
 ];

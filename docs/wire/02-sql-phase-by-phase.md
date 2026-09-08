@@ -190,10 +190,10 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase45_founder_identity.sql
 cd /opt/anexomail-web && bash sql/run.sh sql/phase46_pricing_v5.sql
 ```
 
-## 31. phase47_glitch_whatsapp
+## 31. phase47_glitch_crm_alert
 
 ```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase47_glitch_whatsapp.sql
+cd /opt/anexomail-web && bash sql/run.sh sql/phase47_glitch_crm_alert.sql
 ```
 
 ## 32. phase48_storage_quota
@@ -230,12 +230,6 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase51_polar_payment_hardening.sql
 
 ```bash
 cd /opt/anexomail-web && bash sql/run.sh sql/phase52_mail_launch.sql
-```
-
-## 38. phase_wire_founder
-
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase_wire_founder.sql
 ```
 
 ## 39. anexochat_phase01_foundation

@@ -14,7 +14,7 @@ check_port "rust engine" 3200
 
 # local truth
 check_http "local /rpc/health"        "http://127.0.0.1:3200/rpc/health" 200
-check_body "health JSON asli"         "http://127.0.0.1:3200/rpc/health" '"ok"'
+check_body "health JSON asli"         "http://127.0.0.1:3200/rpc/health" '"status":"up"'
 check_http "local /file/ping"         "http://127.0.0.1:3200/file/ping" 200
 
 # asli RPC dispatch: unknown proc par bhi engine JSON deti hai (routing zinda)

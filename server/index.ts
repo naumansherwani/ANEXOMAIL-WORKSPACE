@@ -206,7 +206,7 @@ app.use("/api/public", moveinPublicRouter);
 app.use("/api/movein", moveinRouter);
 app.use("/api/founder", founderMoveinRouter);
 
-// Phase 47 — GLITCH TRUTH -> WHATSAPP
+// Phase 47 — GLITCH TRUTH -> CRM ALERT + EMAIL
 // public: /api/public/glitch/report · /trigger · /sweep (cron)
 // founder: /api/founder/glitch/health
 app.use("/api/public", glitchPublicRouter);

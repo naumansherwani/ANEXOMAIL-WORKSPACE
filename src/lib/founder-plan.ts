@@ -36,7 +36,7 @@ export const FOUNDER_MAILBOXES: PlannedMailbox[] = [
 
 export const SUPPORT_MAILBOXES: PlannedMailbox[] = [
   {
-    address: "support@anexomail.com",
+    address: "resolved@anexomail.com",
     display_name: "ANEXOMAIL Support",
     kind: "support",
     note: "Leo answers like a human. Target resolution under 4 minutes, no tickets.",

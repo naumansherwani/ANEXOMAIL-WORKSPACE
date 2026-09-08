@@ -42,6 +42,10 @@ cd /opt/anexomail-web && bash sql/verify.sh
 `docs/wire/11-mail-sql.md` ka poora SQL block database SQL editor mein paste karke run karo.
 Aakhir mein aana chahiye: `mailboxes = 13`, `domains = 1`.
 
+> Note: `sql/phase_wire_founder.sql` repo se hata diya gaya hai — mailbox registry ab sirf
+> Phase 52 (`docs/wire/11-mail-sql.md`) se banti hai. Glitch alert SQL ka naam ab
+> `sql/phase47_glitch_crm_alert.sql` hai (WhatsApp retired — alert CRM + email par).
+
 ---
 
 ## STEP 6 — Rust engine :3200 deploy
@@ -57,6 +61,12 @@ cd /opt/anexomail-web && bash server/rust/deploy.sh
 ```bash
 cd /opt/anexomail-web && bash server/gates/rust-gate.sh
 ```
+
+> `anexochat.anexomail.com` par `000000` ka matlab: us host ka DNS record nahi hai.
+> Registrar par yeh do record aap ke haath ka kaam hai (baqi sab command hai):
+> `anexochat` → A → server IP, `anexovideocall` → A → server IP.
+> DNS propagate hone ke baad STEP 9 (Caddy) phir STEP 7 dobara chalao.
+
 
 ---
 
