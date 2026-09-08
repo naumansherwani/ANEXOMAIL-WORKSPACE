@@ -22,7 +22,10 @@ MAILHOST=mail.anexomail.com
 REPO=/opt/anexomail-web
 ENVFILE=/etc/anexomail/mail.env
 STAMP="$(date +%s)"
-BUN="$(command -v bun || echo /root/.bun/bin/bun)"
+BUNSRC="$(command -v bun || echo /root/.bun/bin/bun)"
+# Postfix ka pipe vmail user se chalta hai; /root/... kabhi read nahi kar sakta
+# (execvp ... Permission denied). Is liye bun ki ek copy sab ke liye readable jagah par.
+BUN=/usr/local/bin/anexo-bun
 
 MAILBOXES="hello moveyourbusiness resolved billing trials abuse dmarc naumansherwani.founder leo"
 SENDONLY="noreply"
