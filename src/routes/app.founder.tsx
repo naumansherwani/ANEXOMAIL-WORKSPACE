@@ -152,6 +152,13 @@ function FounderDeck() {
           onProvision={runProvision}
         />
         <Group
+          title="Family accounts (AI Executive premium)"
+          items={FAMILY_MAILBOXES}
+          live={live}
+          onProvision={runProvision}
+        />
+
+        <Group
           title="Support desk (Leo)"
           items={SUPPORT_MAILBOXES}
           live={live}
