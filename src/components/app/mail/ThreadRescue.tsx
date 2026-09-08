@@ -74,12 +74,14 @@ export function ThreadRescue({
                 },
                 {
                   onSuccess: (r) => {
-                    if (r.ok === false || r.error) return notify.failed(r.error ?? "Rescue refused");
-                    notify.done("Thread rescued", {
-                      description: r.work_item_id
-                        ? "Owned task created in the linked chat."
-                        : (r.note ?? undefined),
-                    });
+                    if (r.ok === false || r.error) {
+                      notify.failed(r.error ?? "Rescue refused");
+                      return;
+                    }
+                    notify.done(
+                      "Thread rescued",
+                      r.work_item_id ? "Owned task created in the linked chat." : r.note,
+                    );
                     setOpen(false);
                   },
                   onError: (error) =>
