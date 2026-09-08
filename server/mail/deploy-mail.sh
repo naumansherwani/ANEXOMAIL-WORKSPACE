@@ -243,6 +243,16 @@ submission inet n       -       y       -       -       smtpd
   -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 EOF
 
+# implicit TLS submission (465)
+grep -qE '^submissions[[:space:]]' /etc/postfix/master.cf || cat >> /etc/postfix/master.cf <<'EOF'
+
+submissions inet n       -       y       -       -       smtpd
+  -o syslog_name=postfix/submissions
+  -o smtpd_tls_wrappermode=yes
+  -o smtpd_sasl_auth_enable=yes
+  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
+EOF
+
 # --------------------------------------------------------------------------
 # 4) OpenDKIM
 # --------------------------------------------------------------------------
@@ -274,7 +284,7 @@ EOF
 
 echo "==> firewall (agar ufw active)"
 if command -v ufw >/dev/null 2>&1; then
-  for p in 25/tcp 587/tcp 993/tcp; do ufw allow "$p" >/dev/null 2>&1 || true; done
+  for p in 25/tcp 465/tcp 587/tcp 993/tcp; do ufw allow "$p" >/dev/null 2>&1 || true; done
 fi
 
 echo "==> restart services"

@@ -37,6 +37,7 @@ use std::time::Duration;
 use tower_http::cors::{Any, CorsLayer};
 
 const PORT: u16 = 3200;
+const OBSERVABILITY_PORT: u16 = 3600;
 static WT_LIVE: AtomicBool = AtomicBool::new(false);
 
 fn ok(data: Value) -> impl IntoResponse {
@@ -3115,6 +3116,51 @@ async fn start_safety_worker() {
     }
 }
 
+async fn observability_ready() -> impl IntoResponse {
+    let database_configured = sb().is_some();
+    let webtransport_live = WT_LIVE.load(Ordering::Relaxed);
+    let ready = database_configured && webtransport_live;
+    let status = if ready {
+        StatusCode::OK
+    } else {
+        StatusCode::SERVICE_UNAVAILABLE
+    };
+    (
+        status,
+        Json(json!({
+            "ready": ready,
+            "database_configured": database_configured,
+            "webtransport_live": webtransport_live,
+            "rpc_port": PORT,
+            "webtransport_port": 3443
+        })),
+    )
+}
+
+async fn observability_metrics() -> impl IntoResponse {
+    let database_configured = if sb().is_some() { 1 } else { 0 };
+    let webtransport_live = if WT_LIVE.load(Ordering::Relaxed) { 1 } else { 0 };
+    (
+        StatusCode::OK,
+        format!(
+            "anexomail_database_configured {database_configured}\n\
+             anexomail_webtransport_live {webtransport_live}\n"
+        ),
+    )
+}
+
+async fn start_observability() {
+    let app = Router::new()
+        .route("/ready", get(observability_ready))
+        .route("/metrics", get(observability_metrics));
+    let addr = SocketAddr::from(([127, 0, 0, 1], OBSERVABILITY_PORT));
+    let listener = tokio::net::TcpListener::bind(addr)
+        .await
+        .expect("bind observability 3600");
+    println!("ANEXOMAIL Rust observability LIVE on {addr} (/ready + /metrics)");
+    axum::serve(listener, app).await.expect("serve observability");
+}
+
 #[tokio::main]
 
 async fn main() {
@@ -3122,6 +3168,7 @@ async fn main() {
     tracing_subscriber::fmt().with_target(false).init();
 
     tokio::spawn(start_webtransport());
+    tokio::spawn(start_observability());
     // PHASE 17/18 — self-hosted safety worker (koi external API nahi)
     tokio::spawn(start_safety_worker());
 

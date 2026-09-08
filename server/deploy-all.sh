@@ -11,35 +11,55 @@
 #   3. Polar payment engine (server/rust/polar-payment/...)  :3400
 #   4. Caddy site blocks + main Caddyfile auto-patch         (443 / h3)
 #   5. Bun fallback restart (anexochat, anexomail-leo)
-#   6. Aakhir mein asli HTTP readings (claim nahi, reading)
+#   6. Mail stack + TURN secret sync
+#   7. Aakhir mein saare protocol gates (claim nahi, reading)
 # ============================================================================
-set -uo pipefail
+set -euo pipefail
 
 ROOT="/opt/anexomail-web"
 cd "$ROOT"
 
 step() { echo; echo "=============== $* ==============="; }
 
-step "1/5 FRONTEND (anexomail-web :3000)"
-bun install || true
-bun run build:bun || echo "!!! frontend build fail — purana build zinda hai"
-pm2 restart anexomail-web --update-env || pm2 start ecosystem.config.cjs || true
+step "1/7 FRONTEND (anexomail-web :3000)"
+bun install
+bun run build:bun
+pm2 restart anexomail-web --update-env || pm2 start ecosystem.config.cjs
 
-step "2/5 RUST PRIMARY ENGINE (:3200)"
-bash server/rust/deploy.sh || echo "!!! rust deploy fail"
+step "2/7 RUST PRIMARY ENGINE (:3200 + UDP :3443)"
+bash server/rust/deploy.sh
 
-step "3/5 POLAR PAYMENT ENGINE (:3400)"
-bash server/rust/polar-payment/deploy.sh || echo "!!! polar deploy fail"
+step "3/7 POLAR PAYMENT ENGINE (:3400)"
+bash server/rust/polar-payment/deploy.sh
 
-step "4/5 CADDY (sites + main Caddyfile auto-patch)"
-bash server/caddy/deploy-sites.sh || echo "!!! caddy deploy fail"
+step "4/7 CADDY (:80/:443 TCP + :443 UDP HTTP/3)"
+bash server/caddy/deploy-sites.sh
 
-step "5/5 BUN FALLBACKS"
-pm2 restart anexochat --update-env || true
-pm2 restart anexomail-leo --update-env || true
-pm2 save || true
+step "5/7 SERVICES (:3100 + :3300 fallback + n8n :5678)"
+pm2 restart anexochat --update-env
+pm2 restart anexomail-leo --update-env
+pm2 restart n8n --update-env
+pm2 save
+
+step "6/7 MAIL + TURN"
+bash server/mail/deploy-mail.sh
+bash server/rust/turn-env-sync.sh
+
+step "7/7 COMPLETE PROTOCOL AUDIT"
+bash server/gates/all-gates.sh
 
 step "LIVE READINGS (asli codes)"
+for u in \
+  http://127.0.0.1:3000/ \
+  http://127.0.0.1:3100/api/health \
+  http://127.0.0.1:3200/rpc/health \
+  http://127.0.0.1:3300/api/chat/health \
+  http://127.0.0.1:3400/ready \
+  http://127.0.0.1:3600/ready \
+  http://127.0.0.1:5678/healthz; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u" || echo 000)
+  printf '%-55s -> %s\n' "$u" "$code"
+done
 for u in \
   https://anexomail.com/ \
   https://anexomail.com/file/ping \
@@ -47,10 +67,10 @@ for u in \
   https://ai.anexomail.com/file/ping \
   https://polarpayments.anexomail.com/ \
   https://polarpayments.anexomail.com/health \
-  https://anexovideocall.anexomail.com/ ; do
+  https://anexovideocall.anexomail.com/ready ; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u" || echo 000)
   printf '%-55s -> %s\n' "$u" "$code"
 done
 
 echo
-pm2 list --no-color || true
+pm2 list --no-color
