@@ -53,7 +53,7 @@ delete nahi hota, `_legacy` mein zinda rehta hai.
 
 Editor mein dobara chalao:
 
-1. GitHub par `anexochat/sql/anexochat_phase01_foundation.sql` kholo
+1. GitHub par `sql/editor/anexochat_phase01_foundation.sql` kholo
 2. poora content copy → Supabase SQL Editor → Run
 
 Phir tarteeb se `docs/wire/13-chat-video-sql.md` ki baqi files.

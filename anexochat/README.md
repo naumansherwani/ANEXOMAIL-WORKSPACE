@@ -13,7 +13,7 @@ anexochat/
 
 | File | Phase | Kya banata hai |
 | ---- | ----- | -------------- |
-| `sql/anexochat_phase01_foundation.sql` | 1–5 | workspaces, members, conversations, messages, receipts, presence, files, `chat_access()` |
+| `sql/editor/anexochat_phase01_foundation.sql` | 1–5 | workspaces, members, conversations, messages, receipts, presence, files, `chat_access()` |
 | `sql/anexochat_phase03_message_engine.sql` | 3–6 | reactions, edit history, tombstone, work items, conversation state, audit |
 | `sql/anexochat_phase07_cinema_video.sql` | 7–10 | reply/pin, mute/archive, hidden messages, WebRTC signals, `chat_video_allowed()` |
 | `sql/anexochat_phase10a_call_engine.sql` | 10A | call sessions/stats, ICE + relay truth |
