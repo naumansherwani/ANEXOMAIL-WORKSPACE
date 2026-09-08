@@ -19,6 +19,7 @@ check_http "LEO API :3100" "http://127.0.0.1:3100/api/health" 200
 check_http "Rust primary :3200" "http://127.0.0.1:3200/rpc/health" 200
 check_http "chat fallback :3300" "http://127.0.0.1:3300/api/chat/health" 200
 check_http "payments :3400" "http://127.0.0.1:3400/ready" 200
+check_pm2 "n8n"
 check_http "n8n :5678" "http://127.0.0.1:5678/healthz" 200
 
 echo "--- UDP / mail protocols ---"
@@ -34,7 +35,7 @@ check_cmd "Dovecot IMAP loopback 143" bash -c "ss -lnt | grep -q '127.0.0.1:143 
 echo "--- outbound database path ---"
 check_cmd "database pooler 6543 reachable" bash -c ". /root/.anexomail.env 2>/dev/null || true; timeout 8 bash /opt/anexomail-web/sql/run.sh --query 'select 1' | tr -d '[:space:]' | grep -qx 1"
 
-echo "--- reserved arms (jhoota listener/200 nahi) ---"
+echo "--- media + private observability ---"
 if ss -lntu 2>/dev/null | grep -Eq ':3500 |:3501 '; then
   ok "ANEXOVideoCall SFU :3500/:3501 listener"
 else

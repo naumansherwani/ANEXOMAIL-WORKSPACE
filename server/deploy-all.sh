@@ -35,9 +35,10 @@ bash server/rust/polar-payment/deploy.sh
 step "4/7 CADDY (:80/:443 TCP + :443 UDP HTTP/3)"
 bash server/caddy/deploy-sites.sh
 
-step "5/7 BUN SERVICES (:3100 + :3300 fallback)"
+step "5/7 SERVICES (:3100 + :3300 fallback + n8n :5678)"
 pm2 restart anexochat --update-env
 pm2 restart anexomail-leo --update-env
+pm2 restart n8n --update-env
 pm2 save
 
 step "6/7 MAIL + TURN"
@@ -49,13 +50,24 @@ bash server/gates/all-gates.sh
 
 step "LIVE READINGS (asli codes)"
 for u in \
+  http://127.0.0.1:3000/ \
+  http://127.0.0.1:3100/api/health \
+  http://127.0.0.1:3200/rpc/health \
+  http://127.0.0.1:3300/api/chat/health \
+  http://127.0.0.1:3400/ready \
+  http://127.0.0.1:3600/ready \
+  http://127.0.0.1:5678/healthz; do
+  code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u" || echo 000)
+  printf '%-55s -> %s\n' "$u" "$code"
+done
+for u in \
   https://anexomail.com/ \
   https://anexomail.com/file/ping \
   https://founderworkspace.anexomail.com/file/ping \
   https://ai.anexomail.com/file/ping \
   https://polarpayments.anexomail.com/ \
   https://polarpayments.anexomail.com/health \
-  https://anexovideocall.anexomail.com/ ; do
+  https://anexovideocall.anexomail.com/ready ; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$u" || echo 000)
   printf '%-55s -> %s\n' "$u" "$code"
 done

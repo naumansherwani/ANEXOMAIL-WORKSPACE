@@ -10,7 +10,8 @@
 
 ## WIRE (sirf copy-paste — koi edit nahi)
 - [x] SERVER NOW: mail queue failure ko self-diagnosing/self-retry banana aur final mail gate GREEN karna
-- [x] SERVER NOW: har real service port ko one-command deploy + truthful protocol gate dena; reserved SFU/metrics ko jhoota DONE/200 na kehna
+- [x] SERVER NOW: har real service port ko one-command deploy + truthful protocol gate dena; SFU ko jhoota DONE/200 na kehna
+- [x] SERVER NOW: Postfix implicit TLS :465 aur Rust private readiness/metrics :3600 real listeners deploy karna
 - [x] Phase 34 ko repeated runner se hata kar SQL-editor-only single source banana
 - [x] Mail deploy/gate mein exact SPF, DKIM local-vs-DNS aur strict DMARC alignment green karna
 - [x] Storage Box username har command mein `u659696` fix karna
@@ -37,3 +38,4 @@
 - [x] docs/wire/09-anexovideocall.md — signaling · ICE · coturn relay · recording gate
 - [x] docs/wire/10-final-audit.md — server/gates/all-gates.sh (7 blocks, ek command)
 - [ ] SERVER: gate 2..7 ka asli output GREEN (jab tak nahi, ledger mein READY)
+- [ ] SERVER: `bash server/deploy-all.sh` live output GREEN; blocker: Hetzner server par founder command run karega

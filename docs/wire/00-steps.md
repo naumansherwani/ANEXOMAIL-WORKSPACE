@@ -167,6 +167,16 @@ cd /opt/anexomail-web && bash server/gates/all-gates.sh
 
 ---
 
+## STEP 21 — poora server auto-sync + saare gates
+
+```bash
+cd /opt/anexomail-web && git pull && bash server/deploy-all.sh
+```
+
+Yeh command pehli RED service par rukti hai; jhoota GREEN ya fake 200 nahi deti.
+
+---
+
 ## Ledger
 
 | Step | Kaam | Status |
@@ -185,3 +195,4 @@ cd /opt/anexomail-web && bash server/gates/all-gates.sh
 | 18 | final audit | TODO |
 | 19 | founder SQL (editor) | TODO |
 | 20 | chat+video SQL (editor) | TODO |
+| 21 | full server auto-sync + final gates | READY |
