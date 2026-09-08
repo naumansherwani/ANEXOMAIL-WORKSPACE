@@ -36,11 +36,16 @@ fallback naam dono supported hain. Values screen ya repo mein kabhi print nahi h
 Deploy ke aakhir mein purani queue khud retry hoti hai.
 
 
-## C · addresses ka SQL (agar phase52 pehle nahi chali)
+## C · addresses + ingest ka SQL (dono idempotent)
 
 ```bash
 cd /opt/anexomail-web && bash sql/run.sh sql/phase52_mail_launch.sql
+cd /opt/anexomail-web && bash sql/run.sh sql/phase54_mail_ingest_org_fix.sql
 ```
+
+`phase54` `mail_ingest()` ko `org_id`/`account_id` deta hai (mailbox ke
+`mail_accounts` row se, warna ANEXOMAIL System org) — legacy NOT NULL `org_id`
+ki wajah se hi queue mein `temporary failure` aata tha.
 
 ## D · gate (DNS + PTR + services + 13 addresses + asli round-trip)
 

@@ -206,3 +206,4 @@ aur uske docs `anexochat/docs/`. Index: `anexochat/README.md`.
 Yeh folder (`sql/`) sirf ANEXOMAIL Workspace ke phases ke liye hai.
 
 | `phase52_mail_launch.sql` | 52 · mail launch | Mail truth: `mail_domains`, `mailboxes` (13 asli anexomail.com addresses), `mail_threads`/`mail_messages`/`mail_attachments`, append-only `mail_inbound_raw` + `mail_outbox_log`, RPC `mail_ingest()` (Postfix pipe) aur `mail_outbox_record()` — threading/dedupe Postgres mein. Wire steps: `docs/wire/` |
+| `phase54_mail_ingest_org_fix.sql` | 54 · mail ingest org fix | `mail_ingest()` ab `org_id`/`account_id` mailbox ke `mail_accounts` row se leta hai (warna ANEXOMAIL System org) — legacy NOT NULL `org_id` ki wajah se inbound pipe queue mein reh jaati thi. Purani null rows bhi bhar deta hai. Wire steps: `docs/wire/06-mail.md` |
