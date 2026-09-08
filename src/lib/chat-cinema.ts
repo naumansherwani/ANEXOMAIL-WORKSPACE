@@ -16,6 +16,18 @@ export type CinemaQuality = "off" | "low" | "high";
 
 const SOUND_KEY = "ax.chat.cinema.sound";
 const QUALITY_KEY = "ax.chat.cinema.quality";
+const ENABLED_KEY = "ax.chat.cinema.enabled";
+
+/** User ka apna 3D switch. Default ON; ek dafa off kiya to yaad rehta hai. */
+export function readCinemaEnabled(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.localStorage.getItem(ENABLED_KEY) !== "false";
+}
+
+export function writeCinemaEnabled(on: boolean) {
+  if (typeof window === "undefined") return;
+  window.localStorage.setItem(ENABLED_KEY, on ? "true" : "false");
+}
 
 export function isMobileViewport(): boolean {
   if (typeof window === "undefined") return false;
