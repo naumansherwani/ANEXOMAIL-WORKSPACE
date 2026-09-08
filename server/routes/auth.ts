@@ -23,7 +23,7 @@ function getPublicAuth(): SupabaseClient {
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const passwordOk = (value: string) => value.length >= 12 && /[a-z]/.test(value) && /[A-Z]/.test(value) && /\d/.test(value);
+const passwordOk = (value: string) => value.length >= 6 && value.length <= 15;
 const tokenHash = (token: string) => createHash("sha256").update(token).digest("hex");
 
 function unavailable(res: any) {
