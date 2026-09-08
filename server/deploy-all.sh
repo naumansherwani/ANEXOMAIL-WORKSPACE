@@ -30,7 +30,8 @@ for migration in \
   sql/phase57_mail_schema_heal.sql \
   sql/phase58_mail_contract_final.sql \
   sql/phase59_account_lifecycle.sql \
-  sql/phase56_mailbox_final.sql; do
+  sql/phase56_mailbox_final.sql \
+  sql/phase60_family_chat_workspace.sql; do
   [ -f "$migration" ] || { echo "RED missing migration: $migration"; exit 10; }
   bash sql/run.sh "$migration" || { echo "RED migration failed: $migration"; exit 10; }
   echo "APPLIED $migration"

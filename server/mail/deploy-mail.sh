@@ -431,6 +431,15 @@ if ! doveconf -n >/dev/null 2>/tmp/anexo-dovecot.err; then
   echo ">>> DOVECOT CONFIG ERROR:"; cat /tmp/anexo-dovecot.err
 fi
 systemctl restart dovecot || journalctl -xeu dovecot --no-pager | tail -n 20
+for _ in $(seq 1 15); do
+  ss -H -lnt 2>/dev/null | awk '$4 ~ /:143$/ { found=1 } END { exit !found }' && break
+  sleep 1
+done
+if ! ss -H -lnt 2>/dev/null | awk '$4 ~ /:143$/ { found=1 } END { exit !found }'; then
+  echo ">>> RED: Dovecot IMAP 143 listener start nahi hua"
+  journalctl -u dovecot --no-pager -n 40
+  exit 3
+fi
 
 systemctl restart postfix
 postqueue -f >/dev/null 2>&1 || true

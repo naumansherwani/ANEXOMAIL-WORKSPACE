@@ -2,19 +2,19 @@
 
 Status: TODO (kuch bhi DONE tab jab neeche ka verify command green ho)
 
-## Step 0 — EK block: deploy + accounts (server terminal, copy-paste)
+## Step 0 — EK block: latest pull + poora deploy + real accounts/chat proof
 
 ```bash
 cd /opt/anexomail-web && git pull && bun install \
- && bash server/deploy-brain.sh \
- && bash server/rust/deploy.sh \
- && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save \
+ && bash server/deploy-all.sh \
  && bash server/accounts/create-accounts.sh
 ```
 
 Phir SQL editor: `anexochat/sql/phase31c_file_download_manifest.sql` poora paste (Phase 31C download).
 
-Expected akhri line accounts script ki: `ALL GREEN`. Iske baad A3 → B1 → C1 neeche.
+Teen passwords terminal par chhup kar type honge. Expected akhri line:
+`ALL GREEN — website login + shared ANEXOChat ready`.
+Yeh direct Auth ke saath website ke asli Brain login aur Rust chat bootstrap bhi test karta hai.
 
 ### Founder protocol (READY, live proof baqi)
 
@@ -25,7 +25,7 @@ Login response mein poora verified session aata hai; browser doosri session requ
 is liye auth → app jhatka/redirect race hata di gayi. Session apne mailbox ke operational
 workspace ko `org_members` se ensure karta hai; naya awam onboarding `account_*` aur operational
 workspace membership dono ek saath banata hai. Founder aur awam memberships merge nahi hotin.
-Verify (A3 ke token se): `curl -sS http://127.0.0.1:3100/api/auth/session -H "authorization: Bearer $FT" | grep -o '"is_founder":true'` → print ho = PASS.
+Founder authority ka proof account script website ke login response par khud karta hai; `$FT` manually set karna zaroori nahi.
 
 ### Login + mail workspace regression (READY, live proof baqi)
 
@@ -124,24 +124,11 @@ Expected: `family_rows = 2`; teeno par chat + video allow. Founder par `chat_acc
 Chain (repo): page `src/routes/anexochat.tsx` / `app.chat.tsx` → `src/lib/chat-transport.ts` → `POST /rpc/chat.*` (:3200)
 → Rust `main.rs:306 chat.bootstrap` · `:330 chat.conversations.direct` · `:363 chat.send` → SQL `public.chat_send()` → `chat_messages`.
 
-### Step B1 — server terminal (do token, A3 se: founder + humza)
+### Step B1 — automatic proof
 
-```bash
-FT='<founder token>'; HT='<humza token>'
-R=http://127.0.0.1:3200
-curl -sS -X POST $R/rpc/chat.bootstrap -H "authorization: Bearer $FT" -H 'content-type: application/json' -d '{}' | head -c 300; echo
-# direct conversation founder → humza (humza ka uid Step A2 se)
-CONV=$(curl -sS -X POST $R/rpc/chat.conversations.direct -H "authorization: Bearer $FT" -H 'content-type: application/json' \
-  -d '{"peer_id":"<humza uid>"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)["conversation_id"])'); echo "CONV=$CONV"
-curl -sS -X POST $R/rpc/chat.send -H "authorization: Bearer $FT" -H 'content-type: application/json' \
-  -d "{\"conversation_id\":\"$CONV\",\"client_msg_id\":\"proof-$(date +%s)\",\"body\":\"live proof from founder\"}" | head -c 300; echo
-# humza ki taraf se padho
-curl -sS -X POST $R/rpc/chat.messages -H "authorization: Bearer $HT" -H 'content-type: application/json' \
-  -d "{\"conversation_id\":\"$CONV\"}" | head -c 400; echo
-```
-
-Expected: bootstrap 200 JSON · `CONV=<uuid>` · send 200 with message id · humza ke `chat.messages` mein "live proof from founder" dikhe.
-(Field names 400 dein to Rust `main.rs:330-395` ke exact keys paste karo — guess nahi.)
+`bash server/accounts/create-accounts.sh` teen website logins karta hai, shared family workspace
+ensure karta hai, phir Rust par founder bootstrap mein 3 members aur 2 direct conversations verify karta hai.
+Password/token kabhi print nahi hota. Is proof ke fail hone par `ALL GREEN` nahi aata.
 
 ### Step B2 — SQL truth
 
@@ -183,9 +170,9 @@ select id, started_at, ended_at, participants from public.chat_call_sessions ord
 
 | Dot                   | Status                                     |
 | --------------------- | ------------------------------------------ |
-| A Login (founder)     | TODO — Supabase Auth password set + A3 200 |
-| A5 Family entitlement | TODO — `family_grants_apply() = 2`         |
-| B Chat message 2-user | TODO — B1 + B3 screenshot                  |
+| A Login (3 accounts)  | TODO — account script ka website-login proof |
+| A5 Family entitlement | TODO — `family_grants_apply() = 2`           |
+| B Shared chat         | TODO — 3 members + 2 direct chats + B3 message |
 | C Video call 2-user   | TODO — gate GREEN + C2                     |
 
 ## Phase 31C — file download proof (TODO)

@@ -11,6 +11,8 @@ if (!url || !key) {
 const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 
 const RECOVERY_EMAIL = "anexomail27@gmail.com";
+const BRAIN_URL = process.env.BRAIN_URL || "http://127.0.0.1:3100";
+const RUST_URL = process.env.RUST_URL || "http://127.0.0.1:3200";
 
 const ACCOUNTS = [
   { email: "naumansherwani.founder@anexomail.com", name: "Muhammad Nauman Sherwani", pw: "FOUNDER_MAIL_PASSWORD", founder: true },
@@ -78,6 +80,14 @@ for (const a of ACCOUNTS) {
   else ok(`family_grants_apply → ${JSON.stringify(data)} (expected 2)`);
 }
 
+// Founder + family ek hi real chat workspace mein; direct conversations pehle se ready.
+{
+  const { data, error } = await db.rpc("family_chat_workspace_apply");
+  if (error) bad(`family_chat_workspace_apply: ${error.message} (sql/phase60_family_chat_workspace.sql run hai?)`);
+  else if (!data?.ok || data?.members !== 3) bad(`family chat workspace invalid: ${JSON.stringify(data)}`);
+  else ok("founder + Humza + Raana shared ANEXOChat workspace → 3 members + direct chats ready");
+}
+
 // Login proof (service key nahi — asli signInWithPassword, anon-less admin client bhi chalta hai)
 for (const a of ACCOUNTS) {
   const password = process.env[a.pw] || "";
@@ -87,5 +97,52 @@ for (const a of ACCOUNTS) {
   else ok(`login ${a.email} → session OK`);
 }
 
-console.log(red === 0 ? "\nALL GREEN — ab browser /auth se login karo" : `\nRED=${red}`);
+// Website ka asli login endpoint bhi lazmi hai. Direct Auth green aur Brain red ho
+// to script ALL GREEN nahi bolti.
+const liveTokens = new Map<string, string>();
+for (const a of ACCOUNTS) {
+  const password = process.env[a.pw] || "";
+  if (!password) continue;
+  try {
+    const response = await fetch(`${BRAIN_URL}/api/auth/login`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ email: a.email, password }),
+    });
+    const body = await response.json() as { token?: string; user?: { is_founder?: boolean }; error?: string };
+    if (!response.ok || !body.token) throw new Error(body.error || `HTTP ${response.status}`);
+    if (a.founder && body.user?.is_founder !== true) throw new Error("founder authority missing");
+    liveTokens.set(a.email, body.token);
+    ok(`website login ${a.email} → Brain session OK`);
+  } catch (e: any) {
+    bad(`website login ${a.email}: ${e?.message || e}`);
+  }
+}
+
+// Rust PRIMARY par founder ko dono family members aur dono direct conversations nazar aani chahiye.
+const founderToken = liveTokens.get(ACCOUNTS[0].email);
+if (founderToken) {
+  try {
+    const headers = { authorization: `Bearer ${founderToken}`, "content-type": "application/json" };
+    const bootstrapResponse = await fetch(`${RUST_URL}/rpc/chat.bootstrap`, {
+      method: "POST", headers, body: "{}",
+    });
+    const bootstrap = await bootstrapResponse.json() as { members?: { user_id: string }[]; error?: unknown };
+    if (!bootstrapResponse.ok || (bootstrap.members?.length || 0) < 3) {
+      throw new Error(`bootstrap members=${bootstrap.members?.length || 0}`);
+    }
+    const conversationsResponse = await fetch(`${RUST_URL}/rpc/chat.conversations`, {
+      method: "POST", headers, body: "{}",
+    });
+    const conversations = await conversationsResponse.json() as { conversations?: unknown[] };
+    if (!conversationsResponse.ok || (conversations.conversations?.length || 0) < 2) {
+      throw new Error(`direct conversations=${conversations.conversations?.length || 0}`);
+    }
+    ok("Rust ANEXOChat founder bootstrap → 3 members + 2 direct conversations visible");
+  } catch (e: any) {
+    bad(`Rust ANEXOChat live proof: ${e?.message || e}`);
+  }
+}
+
+console.log(red === 0 ? "\nALL GREEN — website login + shared ANEXOChat ready" : `\nRED=${red}`);
 process.exit(red === 0 ? 0 : 1);
