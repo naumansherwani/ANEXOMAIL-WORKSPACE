@@ -232,11 +232,10 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase51_polar_payment_hardening.sql
 cd /opt/anexomail-web && bash sql/run.sh sql/phase52_mail_launch.sql
 ```
 
-## 39. anexochat_phase01_foundation
+## 39. anexochat_phase01_foundation — SIRF SQL EDITOR
 
-```bash
-cd /opt/anexomail-web && bash sql/run.sh anexochat/sql/anexochat_phase01_foundation.sql
-```
+Terminal se nahi chalti. File: `sql/editor/anexochat_phase01_foundation.sql`
+(poora content copy karke SQL editor mein Run). Dekho `docs/wire/15-editor-sql.md`.
 
 ## 40. anexochat_phase03_message_engine
 
