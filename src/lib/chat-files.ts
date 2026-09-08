@@ -246,7 +246,8 @@ export async function downloadFile(
 
   const total = Number(res.headers.get("content-length")) || null;
   const expected = res.headers.get("x-file-sha256");
-  const name = /filename="([^"]+)"/.exec(res.headers.get("content-disposition") ?? "")?.[1] ?? "file";
+  const name =
+    /filename="([^"]+)"/.exec(res.headers.get("content-disposition") ?? "")?.[1] ?? "file";
   if (!res.body) return { ok: false, reason: "no_body" };
 
   let received = 0;
@@ -256,7 +257,9 @@ export async function downloadFile(
   const picker = (
     window as unknown as {
       showSaveFilePicker?: (o: { suggestedName: string }) => Promise<{
-        createWritable: () => Promise<WritableStreamDefaultWriter<Uint8Array> & { close(): Promise<void> }>;
+        createWritable: () => Promise<
+          WritableStreamDefaultWriter<Uint8Array> & { close(): Promise<void> }
+        >;
       }>;
     }
   ).showSaveFilePicker;
@@ -291,7 +294,10 @@ export async function downloadFile(
     }
   } catch (e) {
     // Engine ne mismatch par stream band kiya, ya user ne picker cancel kiya.
-    return { ok: false, reason: (e as Error)?.name === "AbortError" ? "cancelled" : "stream_broken" };
+    return {
+      ok: false,
+      reason: (e as Error)?.name === "AbortError" ? "cancelled" : "stream_broken",
+    };
   }
 
   if (total !== null && received !== total) {
@@ -300,8 +306,6 @@ export async function downloadFile(
   const ack = await ackDownload(versionId, received);
   return { ok: true, bytes: received, acked: ack.ok === true, sha256_expected: expected };
 }
-
-
 
 export async function fileTruth(versionId: string): Promise<FileTruth> {
   return chatCall<FileTruth>(

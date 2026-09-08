@@ -263,7 +263,9 @@ filesRouter.get("/download", async (req, res) => {
   res.setHeader("cache-control", "private, no-store");
   if (Number(man.bytes) > 0) res.setHeader("content-length", String(man.bytes));
   for (const c of man.chunks as { idx: number; sha256: string }[]) {
-    const dl = await db!.storage.from("chat-files").download(`${man.storage_prefix}/chunks/${c.idx}`);
+    const dl = await db!.storage
+      .from("chat-files")
+      .download(`${man.storage_prefix}/chunks/${c.idx}`);
     if (dl.error || !dl.data) return res.destroy(new Error(`storage_get_${c.idx}`));
     const buf = Buffer.from(await dl.data.arrayBuffer());
     if (createHash("sha256").update(buf).digest("hex") !== String(c.sha256).toLowerCase()) {

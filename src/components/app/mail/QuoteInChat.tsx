@@ -95,7 +95,10 @@ export function QuoteInChat({
         });
         return;
       }
-      notify.done("Quoted in chat", q.quoted_hash ? `Sealed ${q.quoted_hash.slice(0, 12)}…` : undefined);
+      notify.done(
+        "Quoted in chat",
+        q.quoted_hash ? `Sealed ${q.quoted_hash.slice(0, 12)}…` : undefined,
+      );
       void navigate({ to: "/app/chat", search: { c: conversationId } as never });
     } catch (e) {
       const err = e as { isNotImplemented?: boolean; message?: string };
@@ -113,7 +116,11 @@ export function QuoteInChat({
     <button
       type="button"
       disabled={!selected || busy}
-      title={selected ? "Post the selected text into the linked chat" : "Select text in this message first"}
+      title={
+        selected
+          ? "Post the selected text into the linked chat"
+          : "Select text in this message first"
+      }
       className="ax-press rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground disabled:opacity-50"
       onClick={run}
     >
