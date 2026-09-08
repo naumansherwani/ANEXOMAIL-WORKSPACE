@@ -118,11 +118,9 @@ if [ -f /etc/dovecot/local.conf ]; then
   mv /etc/dovecot/local.conf /etc/dovecot/local.conf.bak.$STAMP
 fi
 : > /etc/dovecot/users.tmp
+FOUNDER_HASH="$(doveadm pw -s SHA512-CRYPT -p "$FOUNDER_MAIL_PASSWORD")"
 for m in $MAILBOXES $SENDONLY; do
-  key="MAILPW_$(printf '%s' "$m" | tr '.a-z' '_A-Z')"
-  pw="${!key}"
-  hash="$(doveadm pw -s SHA512-CRYPT -p "$pw")"
-  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$hash" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
+  printf '%s@%s:%s:5000:5000::/var/mail/vhosts/%s/%s::\n' "$m" "$DOMAIN" "$FOUNDER_HASH" "$DOMAIN" "$m" >> /etc/dovecot/users.tmp
 done
 [ -f /etc/dovecot/users ] && cp /etc/dovecot/users /etc/dovecot/users.bak.$STAMP
 mv /etc/dovecot/users.tmp /etc/dovecot/users
