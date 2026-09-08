@@ -16,7 +16,9 @@ import {
   Video,
 } from "lucide-react";
 
+import { AnexoChatMark } from "@/components/brand/AnexoChatMark";
 import { SiteFooter } from "@/components/site/SiteFooter";
+
 import { SiteNav } from "@/components/site/SiteNav";
 
 export const Route = createFileRoute("/anexochat")({
