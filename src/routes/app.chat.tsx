@@ -139,9 +139,10 @@ function ChatPage() {
 
   const list = conversations.data?.conversations ?? [];
   const active = list.find((c) => c.conversation_id === openId) ?? null;
-  const cinema = useCinema(atmosphere.calm, atmosphere.effect);
   const gate = useVideoGate(entitled);
   const call = useCall(openId, bootstrap.data?.user_id ?? null, active?.other_user_id ?? null);
+  // 3D sirf tab chalta hai jab koi call live nahi — call par khud-ba-khud OFF.
+  const cinema = useCinema(atmosphere.calm, atmosphere.effect, call.phase !== "idle");
   const ordered = useMemo(
     () => [...(messages.data?.messages ?? [])].sort((a, b) => a.seq - b.seq),
     [messages.data],
