@@ -61,7 +61,26 @@ check_cmd "myhostname = $MAILHOST" bash -c "postconf -h myhostname | grep -qi '$
 check_cmd "envelope domain = $DOMAIN (SPF aligned)" bash -c "[ \"\$(postconf -h myorigin)\" = '$DOMAIN' ]"
 check_cmd "OpenDKIM selector/key valid" opendkim-testkey -d "$DOMAIN" -s mail -k /etc/opendkim/keys/$DOMAIN/mail.private
 check_cmd "outbound port 25 khula" bash -c "timeout 8 bash -c '</dev/tcp/gmail-smtp-in.l.google.com/25'"
-check_cmd "mail queue saaf" bash -c "[ \"\$(mailq | grep -c '^[A-F0-9]')\" -eq 0 ]"
+
+# Purani deferred delivery ko pehle foran retry karo. Queue ko delete nahi karte:
+# asli mail mehfooz rehti hai, aur agar remote server ab bhi mana kare to exact
+# queue ID + reason isi gate output mein nazar aata hai.
+postqueue -f >/dev/null 2>&1 || true
+for _ in $(seq 1 15); do
+  QUEUED="$(postqueue -j 2>/dev/null | awk 'NF {n++} END {print n+0}')"
+  [ "$QUEUED" -eq 0 ] && break
+  sleep 2
+done
+QUEUED="$(postqueue -j 2>/dev/null | awk 'NF {n++} END {print n+0}')"
+if [ "$QUEUED" -eq 0 ]; then
+  ok "mail queue saaf"
+else
+  bad "mail queue saaf" "$QUEUED message abhi queued — neeche exact Postfix reason"
+  postqueue -p
+  echo "--- recent Postfix delivery reason ---"
+  journalctl -u postfix --since '-15 minutes' --no-pager 2>/dev/null \
+    | grep -E 'status=(deferred|bounced)|warning:|fatal:' | tail -n 20 || true
+fi
 
 echo "--- 13 addresses DB mein ---"
 check_sql "mailboxes = 13" "select count(*) from public.mailboxes where address like '%@$DOMAIN';" "13"

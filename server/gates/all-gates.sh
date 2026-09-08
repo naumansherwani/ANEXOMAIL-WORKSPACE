@@ -25,6 +25,8 @@ run_gate "MAIL 13 ADDRESSES"  mail-gate.sh
 run_gate "PAYMENTS :3400"     payments-gate.sh
 run_gate "ANEXOChat"          chat-gate.sh
 run_gate "ANEXOVideoCall"     videocall-gate.sh
+run_gate "STORAGE BOX 1TB"    storage-gate.sh
+run_gate "SERVER PORT MAP"    ports-gate.sh
 
 echo
 echo "================= FINAL AUDIT ================="

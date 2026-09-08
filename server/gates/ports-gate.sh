@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+# ============================================================================
+# SERVER PORT MAP — har deployed arm ka asli protocol/listener proof
+# Caddy sirf HTTP(S) edge :80/:443 hai. SMTP, IMAP, TURN, QUIC aur DB ko
+# Caddy se fake HTTP 200 banana protocol tor deta hai; unko listener/protocol
+# handshake se verify kiya jata hai.
+# ============================================================================
+set -uo pipefail
+. "$(cd "$(dirname "$0")" && pwd)/lib.sh"
+
+echo "=== SERVER PORT MAP ==="
+
+echo "--- HTTP / HTTPS ---"
+check_port "Caddy HTTP" 80
+check_port "Caddy HTTPS TCP" 443
+check_cmd "Caddy HTTP/3 UDP 443" bash -c "ss -lnu | grep -q ':443 '"
+check_http "frontend SSR :3000" "http://127.0.0.1:3000/" 200
+check_http "LEO API :3100" "http://127.0.0.1:3100/api/health" 200
+check_http "Rust primary :3200" "http://127.0.0.1:3200/rpc/health" 200
+check_http "chat fallback :3300" "http://127.0.0.1:3300/api/chat/health" 200
+check_http "payments :3400" "http://127.0.0.1:3400/ready" 200
+check_http "n8n :5678" "http://127.0.0.1:5678/healthz" 200
+
+echo "--- UDP / mail protocols ---"
+check_cmd "Rust WebTransport UDP 3443" bash -c "ss -lnu | grep -q ':3443 '"
+check_port "coturn 3478" 3478
+check_port "coturn TLS 5349" 5349
+check_port "Postfix SMTP 25" 25
+check_port "Postfix submission 587" 587
+check_port "Postfix submissions 465" 465
+check_port "Dovecot IMAPS 993" 993
+check_cmd "Dovecot IMAP loopback 143" bash -c "ss -lnt | grep -q '127.0.0.1:143 '"
+
+echo "--- outbound database path ---"
+check_cmd "database pooler 6543 reachable" bash -c ". /root/.anexomail.env 2>/dev/null || true; timeout 8 bash /opt/anexomail-web/sql/run.sh --query 'select 1' | tr -d '[:space:]' | grep -qx 1"
+
+echo "--- reserved arms (jhoota listener/200 nahi) ---"
+if ss -lntu 2>/dev/null | grep -Eq ':3500 |:3501 '; then
+  ok "ANEXOVideoCall SFU :3500/:3501 listener"
+else
+  bad "ANEXOVideoCall SFU :3500/:3501" "Rust media-forwarding binary abhi TODO; fake 200 nahi diya"
+fi
+if ss -lnt 2>/dev/null | grep -q ':3600 '; then
+  check_http "Rust private readiness :3600" "http://127.0.0.1:3600/ready" 200
+else
+  bad "Rust private readiness :3600" "separate listener abhi TODO; :3200/rpc/health zinda hai"
+fi
+
+gate_result "SERVER PORT MAP"
