@@ -1,0 +1,47 @@
+# ============================================================================
+# ANEXOCHAT HOST — anexochat.anexomail.com
+# Rust :3200 PRIMARY (/rpc/*, /file/*, /wt/*) · Bun :3300 SIRF fallback
+# (/api/chat/*) · baqi sab frontend SSR :3000
+# Asli WebTransport/QUIC session udp/3443 par seedha Rust engine se banti hai.
+# ============================================================================
+anexochat.anexomail.com {
+	encode zstd gzip
+
+	request_body {
+		max_size 32MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	handle /rpc/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /file/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /wt/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+
+	handle /api/chat/* {
+		reverse_proxy 127.0.0.1:3300
+	}
+
+	handle /api/* {
+		reverse_proxy 127.0.0.1:3100
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:3000
+	}
+
+	log {
+		output file /var/log/caddy/anexochat.log
+		format json
+	}
+}

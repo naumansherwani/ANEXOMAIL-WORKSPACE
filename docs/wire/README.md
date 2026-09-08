@@ -35,7 +35,8 @@ Status sirf teen: **DONE** (live gate green aaya) · **READY** (repo mein hai, s
 | 59 SQL phases | `bash sql/apply-all.sh` | READY |
 | DB verify | `bash sql/verify.sh` | READY |
 | Rust :3200 | `bash server/rust/deploy.sh` + `bash server/gates/rust-gate.sh` | READY |
-| Caddy + frontend | `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` | READY |
+| Caddy + frontend | `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` | DONE |
+| ANEXOChat host HTTPS + h3 | `docs/wire/14-anexochat-host-https3.md` | READY |
 | Mail SQL (13 addresses) | `docs/wire/11-mail-sql.md` (editor) ya `bash sql/run.sh sql/phase52_mail_launch.sql` | READY |
 | Mail 13 addresses | `bash server/mail/deploy-mail.sh` + `bash server/gates/mail-gate.sh` | READY |
 | Payments :3400 | `bash server/rust/polar-payment/deploy.sh` + `bash server/gates/payments-gate.sh` | READY |
