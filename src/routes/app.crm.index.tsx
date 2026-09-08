@@ -22,8 +22,13 @@ export const Route = createFileRoute("/app/crm/")({
 });
 
 function CrmDashboard() {
+  // crm.anexomail.com = AI-free CRM host; aicrm.anexomail.com = AI CRM.
+  const [aiSurface, setAiSurface] = useState(true);
+  useEffect(() => setAiSurface(crmAiAllowed()), []);
+
   const overview = useCrmOverview();
   const insights = useCrmInsights();
+
 
   const o = overview.data;
 
