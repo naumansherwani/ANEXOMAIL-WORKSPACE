@@ -6,6 +6,6 @@ import { createFileRoute, redirect } from "@tanstack/react-router";
  */
 export const Route = createFileRoute("/people")({
   beforeLoad: () => {
-    throw redirect({ to: "/app/people" });
+    throw redirect({ to: "/app/people", search: { view: "people", id: "", q: "", filter: "all", tag: "" } });
   },
 });
