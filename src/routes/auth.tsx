@@ -381,7 +381,7 @@ function AuthPage() {
             ) : mode === "forgot" ? (
               <Header title="Reset your password" sub="We will email a secure one-time reset link." />
             ) : mode === "reset" ? (
-              <Header title="Choose a new password" sub="Use at least 12 characters, upper/lowercase and a number." />
+              <Header title="Choose a new password" sub="Use 6 to 15 characters." />
             ) : (
               <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
             )}
@@ -591,7 +591,7 @@ function PasswordField({
     <div className="space-y-1.5">
       <Label htmlFor={id} className="ax-caption text-foreground">{label}</Label>
       <div className="relative">
-        <Input id={id} type={visible ? "text" : "password"} value={value} required minLength={12} autoComplete={autoComplete} className="pr-10" placeholder="12+ characters" onChange={(event) => onChange(event.target.value)} />
+        <Input id={id} type={visible ? "text" : "password"} value={value} required minLength={6} maxLength={15} autoComplete={autoComplete} className="pr-10" placeholder="6–15 characters" onChange={(event) => onChange(event.target.value)} />
         <Button type="button" variant="ghost" size="icon" className="absolute right-0 top-0" aria-label={visible ? "Hide password" : "Show password"} title={visible ? "Hide password" : "Show password"} onClick={() => setVisible((current) => !current)}>
           {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
         </Button>

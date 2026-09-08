@@ -10,6 +10,8 @@ if (!url || !key) {
 }
 const db = createClient(url, key, { auth: { persistSession: false, autoRefreshToken: false } });
 
+const RECOVERY_EMAIL = "anexomail27@gmail.com";
+
 const ACCOUNTS = [
   { email: "naumansherwani.founder@anexomail.com", name: "Muhammad Nauman Sherwani", pw: "FOUNDER_MAIL_PASSWORD", founder: true },
   { email: "humzasherwani@anexomail.com", name: "Humza Sherwani", pw: "HUMZA_PASSWORD", founder: false },
@@ -33,18 +35,18 @@ async function findUser(email: string) {
 
 for (const a of ACCOUNTS) {
   const password = process.env[a.pw] || "";
-  if (password.length < 8) { bad(`${a.email}: ${a.pw} env khali/8 se chhota — skip`); continue; }
+  if (password.length < 6 || password.length > 15) { bad(`${a.email}: ${a.pw} env 6-15 characters ka hona chahiye — skip`); continue; }
   try {
     const existing = await findUser(a.email);
     if (existing) {
       const { error } = await db.auth.admin.updateUserById(existing.id, {
-        password, email_confirm: true, user_metadata: { full_name: a.name },
+        password, email_confirm: true, user_metadata: { full_name: a.name, recovery_email: RECOVERY_EMAIL },
       });
       if (error) throw error;
       ok(`${a.email} pehle se tha → password reset + confirmed (uid ${existing.id})`);
     } else {
       const { data, error } = await db.auth.admin.createUser({
-        email: a.email, password, email_confirm: true, user_metadata: { full_name: a.name },
+        email: a.email, password, email_confirm: true, user_metadata: { full_name: a.name, recovery_email: RECOVERY_EMAIL },
       });
       if (error) throw error;
       ok(`${a.email} created + confirmed (uid ${data.user?.id})`);
