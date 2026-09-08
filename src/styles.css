@@ -764,22 +764,22 @@ html[data-ax-motion="reduced"] *::after {
   border-radius: 6px;
 }
 
-/* Pointer sovereignty — har clickable surface par haath wala cursor (Tailwind v4
-   ne button ka default cursor:pointer hataa diya tha). Site-wide, har page. */
-:where(
-  button,
-  [role="button"],
-  [role="option"],
-  [role="tab"],
-  summary,
-  label[for],
-  a[href]
-):not(:disabled):not([aria-disabled="true"]) {
-  cursor: pointer;
+/* Pointer sovereignty — har clickable surface par haath wala cursor. Tailwind v4
+   preflight button par `cursor: default` lagata hai, is liye :where() (zero
+   specificity) us se haar jaata hai — seedha selector + !important lazmi hai. */
+button:not(:disabled):not([aria-disabled="true"]),
+[role="button"]:not([aria-disabled="true"]),
+[role="option"]:not([aria-disabled="true"]),
+[role="tab"]:not([aria-disabled="true"]),
+[role="link"]:not([aria-disabled="true"]),
+summary,
+label[for],
+a[href] {
+  cursor: pointer !important;
 }
-:where(button, [role="button"]):disabled,
-:where(button, [role="button"])[aria-disabled="true"] {
-  cursor: not-allowed;
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed !important;
 }
 
 
