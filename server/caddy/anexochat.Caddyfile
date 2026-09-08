@@ -18,6 +18,11 @@ anexochat.anexomail.com {
 		-Server
 	}
 
+	# founder surface awam host par band (locked)
+	handle /app/founder* {
+		respond "Not found" 404
+	}
+
 	handle /rpc/* {
 		reverse_proxy 127.0.0.1:3200
 	}
