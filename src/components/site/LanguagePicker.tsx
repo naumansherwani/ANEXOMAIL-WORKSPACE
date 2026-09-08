@@ -49,7 +49,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
           aria-label="Choose your language"
           className="absolute end-0 z-50 mt-2 max-h-[22rem] w-64 overflow-y-auto rounded-2xl border border-border bg-card p-1.5 shadow-elev-2"
         >
-          {LOCALES.map((l) => {
+          {LOCALES.filter((l) => l.tag === "en-GB").map((l) => {
             const active = l.tag === locale.tag;
             return (
               <button
@@ -69,7 +69,6 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
                     : "text-muted-foreground hover:bg-surface-2 hover:text-foreground"
                 }`}
               >
-                <span aria-hidden="true">{flagOf(l.region)}</span>
                 <span className="text-[10px] font-semibold tracking-wider text-steel uppercase">
                   {l.region}
                 </span>
