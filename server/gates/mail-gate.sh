@@ -105,6 +105,8 @@ check_sql "mail_messages.cc_addrs legacy API compatibility maujood" \
   "select count(*)>0 from information_schema.columns where table_schema='public' and table_name='mail_messages' and column_name='cc_addrs';" "t"
 check_sql "mail_ingest final function zinda" \
   "select count(*)>0 from pg_proc where pronamespace='public'::regnamespace and proname='mail_ingest';" "t"
+check_sql "mail_ingest canonical v59" \
+  "select coalesce(obj_description('public.mail_ingest(jsonb)'::regprocedure),'');" "anexomail-mail-contract-v59"
 
 
 echo "--- inbound pipe + inbox (round trip) ---"
