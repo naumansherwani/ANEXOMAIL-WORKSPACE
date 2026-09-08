@@ -49,7 +49,11 @@ chown -R vmail:vmail /var/mail/vhosts
 # --------------------------------------------------------------------------
 # 1) Passwords: sirf server par, sirf ek dafa generate
 # --------------------------------------------------------------------------
-touch "$ENVFILE"; chmod 600 "$ENVFILE"
+# Pipe vmail user se chalti hai, is liye env file vmail GROUP ko readable honi
+# chahiye (600 root-only tha — asli wajah ke "SUPABASE_URL missing in
+# /etc/anexomail/mail.env" queue mein aata tha). World-readable kabhi nahi.
+touch "$ENVFILE"; chown root:vmail "$ENVFILE"; chmod 640 "$ENVFILE"
+chmod 755 /etc/anexomail
 
 # Inbound pipe ko do server values chahiye. Unhein repo mein rakhna mana hai,
 # is liye existing protected app env se mail.env mein one-time sync karte hain.
