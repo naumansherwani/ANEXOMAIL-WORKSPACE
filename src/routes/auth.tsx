@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { CinematicSplash } from "@/components/site/CinematicSplash";
-import { KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Mode = "login" | "signup" | "link";
+type Mode = "login" | "signup" | "link" | "forgot" | "reset";
 
 // LOCKED: social sign-in (Google / Apple / GitHub) ANEXOMAIL par nahi hai.
 // User khud account banata hai (email + password) → Supabase → dashboard.
@@ -47,15 +47,18 @@ function AuthPage() {
   const navigate = useNavigate();
   const { refresh } = useAuth();
 
-  const [mode, setMode] = useState<Mode>(() =>
-    typeof window !== "undefined" &&
-    new URLSearchParams(window.location.search).get("mode") === "signup"
-      ? "signup"
-      : "login",
-  );
+  const [mode, setMode] = useState<Mode>(() => {
+    if (typeof window === "undefined") return "login";
+    const requested = new URLSearchParams(window.location.search).get("mode");
+    return requested === "signup" || requested === "reset" ? requested : "login";
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
   const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
+  const [workRole, setWorkRole] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [code, setCode] = useState("");
   const [challengeId, setChallengeId] = useState<string | null>(null);
   const [linkSent, setLinkSent] = useState(false);
@@ -120,7 +123,9 @@ function AuthPage() {
         ? e.isNotImplemented
           ? "This sign-in method isn't live on the server yet."
           : e.message
-        : "Something went wrong.";
+        : e instanceof Error && e.message === "password_mismatch"
+          ? "Passwords do not match."
+          : "Something went wrong.";
     setError(message);
   };
 
@@ -150,10 +155,47 @@ function AuthPage() {
         return;
       }
 
+      if (mode === "forgot") {
+        await api("/api/auth/forgot-password", {
+          method: "POST",
+          body: JSON.stringify({ email }),
+          auth: false,
+        });
+        setLinkSent(true);
+        notify.done("Reset link sent", `Check ${email} to choose a new password.`);
+        return;
+      }
+
+      if (mode === "reset") {
+        if (password !== passwordConfirm) throw new Error("password_mismatch");
+        const accessToken = new URLSearchParams(window.location.hash.replace(/^#/, "")).get(
+          "access_token",
+        );
+        await api("/api/auth/reset-password", {
+          method: "POST",
+          body: JSON.stringify({ access_token: accessToken, password }),
+          auth: false,
+        });
+        notify.done("Password updated", "You can now sign in with your new password.");
+        setPassword("");
+        setPasswordConfirm("");
+        setMode("login");
+        return;
+      }
+
       if (mode === "signup") {
+        if (password !== passwordConfirm) throw new Error("password_mismatch");
         const res = await api<{ token: string }>("/api/auth/signup", {
           method: "POST",
-          body: JSON.stringify({ email, password, name }),
+          body: JSON.stringify({
+            email,
+            password,
+            legal_name: name,
+            display_name: displayName,
+            work_role: workRole || null,
+            avatar_url: avatarUrl || null,
+            preferences: { locale: navigator.language },
+          }),
           auth: false,
         });
         // PASSKEY MANDATORY: account ban gaya, magar workspace passkey enrol
@@ -238,7 +280,9 @@ function AuthPage() {
       });
       notify.done("Passkey saved", "This device can now sign you in without a password.");
       setEnrol(false);
-      await finish(res.token ?? sessionToken.get()!);
+      const token = res.token ?? sessionToken.get();
+      if (!token) throw new Error("session_missing");
+      await finish(token);
     } catch (e) {
       if (e instanceof ApiError && e.isNotImplemented) {
         setEnrolBlocked(
@@ -283,8 +327,13 @@ function AuthPage() {
               variant="ghost"
               className="mt-ax-2 w-full"
               onClick={() => {
+                const token = sessionToken.get();
+                if (!token) {
+                  setEnrolBlocked("Your session expired. Sign in again.");
+                  return;
+                }
                 setEnrol(false);
-                void finish(sessionToken.get()!);
+                void finish(token);
               }}
             >
               Continue and add it later
@@ -326,6 +375,10 @@ function AuthPage() {
               />
             ) : mode === "link" ? (
               <Header title="Email me a link" sub="No password. The link signs you straight in." />
+            ) : mode === "forgot" ? (
+              <Header title="Reset your password" sub="We will email a secure one-time reset link." />
+            ) : mode === "reset" ? (
+              <Header title="Choose a new password" sub="Use at least 12 characters, upper/lowercase and a number." />
             ) : (
               <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
             )}
@@ -361,34 +414,27 @@ function AuthPage() {
                 ) : (
                   <>
                     {mode === "signup" && (
-                      <Field
-                        id="name"
-                        label="Your name"
-                        value={name}
-                        onChange={setName}
-                        autoComplete="name"
-                        placeholder="Nauman Sherwani"
-                      />
+                      <>
+                        <Field id="name" label="Full legal name" value={name} onChange={setName} autoComplete="name" placeholder="Nauman Sherwani" />
+                        <Field id="display-name" label="Display name" value={displayName} onChange={setDisplayName} placeholder="Nauman" />
+                        <Field id="work-role" label="Work role" value={workRole} onChange={setWorkRole} placeholder="Founder, designer, operations…" required={false} />
+                        <Field id="avatar-url" label="Profile photo URL (optional)" type="url" value={avatarUrl} onChange={setAvatarUrl} placeholder="https://…" required={false} />
+                      </>
                     )}
-                    <Field
-                      id="email"
-                      label="Work email"
-                      type="email"
-                      value={email}
-                      onChange={setEmail}
-                      autoComplete="email"
-                      placeholder="you@yourdomain.com"
-                    />
-                    {mode !== "link" && (
-                      <Field
+                    {mode !== "reset" && (
+                      <Field id="email" label="Work email" type="email" value={email} onChange={setEmail} autoComplete="email" placeholder="you@yourdomain.com" />
+                    )}
+                    {mode !== "link" && mode !== "forgot" && (
+                      <PasswordField
                         id="password"
                         label="Password"
-                        type="password"
                         value={password}
                         onChange={setPassword}
-                        autoComplete={mode === "signup" ? "new-password" : "current-password"}
-                        placeholder="••••••••••••"
+                        autoComplete={mode === "login" ? "current-password" : "new-password"}
                       />
+                    )}
+                    {(mode === "signup" || mode === "reset") && (
+                      <PasswordField id="password-confirm" label="Confirm password" value={passwordConfirm} onChange={setPasswordConfirm} autoComplete="new-password" />
                     )}
                   </>
                 )}
@@ -405,6 +451,10 @@ function AuthPage() {
                     ? "Verify and continue"
                     : mode === "signup"
                       ? "Create workspace"
+                      : mode === "forgot"
+                        ? "Send reset link"
+                        : mode === "reset"
+                          ? "Save new password"
                       : mode === "link"
                         ? "Send me the link"
                         : "Sign in"}
@@ -414,6 +464,11 @@ function AuthPage() {
 
             {!challengeId && !linkSent && (
               <>
+                {mode === "login" && (
+                  <Button type="button" variant="ghost" className="mt-ax-2 w-full" onClick={() => { setError(null); setMode("forgot"); }}>
+                    Forgot your password?
+                  </Button>
+                )}
                 <div className="my-ax-4 flex items-center gap-3">
                   <div aria-hidden className="ax-hairline h-px flex-1" />
                   <span className="ax-caption">or</span>
@@ -431,7 +486,7 @@ function AuthPage() {
                     <KeyRound className="size-4" />
                     Continue with a passkey
                   </Button>
-                  {mode !== "link" && (
+                  {mode !== "link" && mode !== "forgot" && mode !== "reset" && (
                     <Button
                       type="button"
                       variant="ghost"
@@ -453,16 +508,16 @@ function AuthPage() {
                 </p>
 
                 <p className="ax-caption mt-ax-4 text-center">
-                  {mode === "signup" ? "Already have a workspace?" : "New here?"}{" "}
+                  {mode === "signup" ? "Already have a workspace?" : mode === "forgot" || mode === "reset" ? "Remembered it?" : "New here?"}{" "}
                   <button
                     type="button"
                     className="ax-focus rounded font-semibold text-cyan-accent"
                     onClick={() => {
                       setError(null);
-                      setMode(mode === "signup" ? "login" : "signup");
+                      setMode(mode === "login" ? "signup" : "login");
                     }}
                   >
-                    {mode === "signup" ? "Sign in" : "Create a workspace"}
+                    {mode === "login" ? "Create a workspace" : "Sign in"}
                   </button>
                 </p>
               </>
@@ -510,7 +565,34 @@ function Field({
       <Label htmlFor={id} className="ax-caption text-foreground">
         {label}
       </Label>
-      <Input id={id} value={value} required onChange={(e) => onChange(e.target.value)} {...rest} />
+       <Input id={id} value={value} required onChange={(e) => onChange(e.target.value)} {...rest} />
+    </div>
+  );
+}
+
+function PasswordField({
+  id,
+  label,
+  value,
+  onChange,
+  autoComplete,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  autoComplete: string;
+}) {
+  const [visible, setVisible] = useState(false);
+  return (
+    <div className="space-y-1.5">
+      <Label htmlFor={id} className="ax-caption text-foreground">{label}</Label>
+      <div className="relative">
+        <Input id={id} type={visible ? "text" : "password"} value={value} required minLength={12} autoComplete={autoComplete} className="pr-10" placeholder="12+ characters" onChange={(event) => onChange(event.target.value)} />
+        <Button type="button" variant="ghost" size="icon" className="absolute right-0 top-0" aria-label={visible ? "Hide password" : "Show password"} title={visible ? "Hide password" : "Show password"} onClick={() => setVisible((current) => !current)}>
+          {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+        </Button>
+      </div>
     </div>
   );
 }
