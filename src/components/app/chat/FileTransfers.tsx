@@ -23,6 +23,7 @@ import { Row, Stat } from "@/components/app/analytics/AnalyticsBits";
 import {
   EVIDENCE_STEPS,
   bytesLabel,
+  downloadFile,
   useFileEngine,
   useFileSafety,
   useFileTransfers,
