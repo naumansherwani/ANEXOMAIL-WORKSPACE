@@ -19,8 +19,9 @@ Wire 06 ka DNS table (registrar/Hetzner panel) — baqi sab command hai.**
 | 07 | Payments :3400 + webhook gate | `07-payments.md` |
 | 08 | ANEXOChat — feature-by-feature gate | `08-anexochat.md` |
 | 09 | ANEXOVideoCall — signaling · ICE · relay · recording gate | `09-anexovideocall.md` |
-| 11 | Mail launch SQL — editor mein direct paste | `11-mail-sql.md` |
 | 10 | FINAL AUDIT — saat blocks ek command mein | `10-final-audit.md` |
+| 11 | Mail launch SQL — editor mein direct paste | `11-mail-sql.md` |
+
 
 ## Ledger — status
 
