@@ -7,7 +7,7 @@ import { useFounderIntegrations } from "@/lib/integrations";
 export const Route = createFileRoute("/app/founder_/integrations")({
   head: () => ({
     meta: [
-      { title: "Founder_ · Integrations — ANEXOMAIL Workspace" },
+      { title: "Integrations · Founder view — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:

@@ -8,7 +8,7 @@ import { useFounderSettings } from "@/lib/settings";
 export const Route = createFileRoute("/app/founder_/settings")({
   head: () => ({
     meta: [
-      { title: "Founder_ · Settings — ANEXOMAIL Workspace" },
+      { title: "Settings · Founder view — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:

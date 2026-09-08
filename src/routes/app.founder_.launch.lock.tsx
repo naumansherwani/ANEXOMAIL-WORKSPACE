@@ -8,7 +8,26 @@ import { GateBadge, Note } from "@/components/app/release/ReleaseBits";
 import { notify } from "@/lib/notify";
 import { gateFrom, useLocks, useReleaseOverview, useSignLock } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/lock")({ component: LockPage });
+export const Route = createFileRoute("/app/founder_/launch/lock")({
+  head: () => ({
+    meta: [
+      { title: "Launch · Lock · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · Lock · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · Lock · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Launch · Lock · Founder view in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LockPage,
+});
 
 /** Feature 3 — append-only version lock ledger. Red gate = button disabled. */
 function LockPage() {

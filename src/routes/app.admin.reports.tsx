@@ -5,7 +5,23 @@ import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { useGenerateReport, useReports } from "@/lib/admin-center";
 
-export const Route = createFileRoute("/app/admin/reports")({ component: ReportsPage });
+export const Route = createFileRoute("/app/admin/reports")({
+  head: () => ({
+    meta: [
+      { title: "Admin · Reports — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Admin · Reports in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Admin · Reports — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Admin · Reports in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ReportsPage,
+});
 
 const thisPeriod = () => new Date().toISOString().slice(0, 7);
 

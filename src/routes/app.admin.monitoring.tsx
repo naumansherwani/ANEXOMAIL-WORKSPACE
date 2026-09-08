@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { useWatchtower } from "@/lib/admin-center";
 
-export const Route = createFileRoute("/app/admin/monitoring")({ component: MonitoringPage });
+export const Route = createFileRoute("/app/admin/monitoring")({
+  head: () => ({
+    meta: [
+      { title: "Admin · Monitoring — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Admin · Monitoring in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Admin · Monitoring — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Admin · Monitoring in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: MonitoringPage,
+});
 
 /** Feature 4 — Delivery watchtower: queue/defer/bounce reasons plain English mein, live. */
 function MonitoringPage() {

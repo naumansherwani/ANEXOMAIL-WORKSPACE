@@ -8,7 +8,23 @@ import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { TRUST_TONE, useSetDeviceState, useTrustDevices } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/devices")({ component: DevicesPage });
+export const Route = createFileRoute("/app/security/devices")({
+  head: () => ({
+    meta: [
+      { title: "Security · Devices — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · Devices in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · Devices — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · Devices in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: DevicesPage,
+});
 
 /**
  * Feature 1 — Device Trust. API keys permanently retired: access ek device se

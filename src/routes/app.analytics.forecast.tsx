@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { hours, useForecast } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/forecast")({ component: ForecastPage });
+export const Route = createFileRoute("/app/analytics/forecast")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Forecast — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Forecast in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Forecast — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Forecast in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ForecastPage,
+});
 
 /** Feature 6 — Forecast: agla hafta kitna load aayega, kis wajah se. */
 function ForecastPage() {

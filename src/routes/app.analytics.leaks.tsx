@@ -5,7 +5,23 @@ import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { useAttentionLeaks } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/leaks")({ component: LeaksPage });
+export const Route = createFileRoute("/app/analytics/leaks")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Leaks — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Leaks in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Leaks — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Leaks in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LeaksPage,
+});
 
 /** Feature 4 — Attention leaks: kaun/kya tumhara waqt kha raha hai, aur fix. */
 function LeaksPage() {

@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { money, useResponseDebt } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/")({ component: ResponseDebtPage });
+export const Route = createFileRoute("/app/analytics/")({
+  head: () => ({
+    meta: [
+      { title: "Analytics — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ResponseDebtPage,
+});
 
 /** Feature 1 — Response debt: kitne log wait kar rahe hain + £ cost of delay. */
 function ResponseDebtPage() {

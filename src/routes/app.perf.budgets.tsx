@@ -5,7 +5,23 @@ import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { BUDGET_TONE, ms, usePerfBudgets } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/budgets")({ component: BudgetsPage });
+export const Route = createFileRoute("/app/perf/budgets")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Budgets — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Budgets in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Budgets — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Budgets in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: BudgetsPage,
+});
 
 /** Feature 1 — Speed receipts: har action ka budget aur uska asli p50/p95/p99. */
 function BudgetsPage() {

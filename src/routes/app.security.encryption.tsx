@@ -7,7 +7,23 @@ import { Button } from "@/components/ui/button";
 import { notify } from "@/lib/notify";
 import { useEncryption, useRotateKeys } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/encryption")({ component: EncryptionPage });
+export const Route = createFileRoute("/app/security/encryption")({
+  head: () => ({
+    meta: [
+      { title: "Security · Encryption — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · Encryption in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · Encryption — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · Encryption in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: EncryptionPage,
+});
 
 /** Feature 4 — Encryption ledger: har surface aur har hop, hashed proof ke saath. */
 function EncryptionPage() {

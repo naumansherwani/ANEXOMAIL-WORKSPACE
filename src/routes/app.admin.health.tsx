@@ -6,7 +6,23 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { STATUS_TONE, useHeal, useHealth } from "@/lib/admin-center";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/app/admin/health")({ component: HealthPage });
+export const Route = createFileRoute("/app/admin/health")({
+  head: () => ({
+    meta: [
+      { title: "Admin · Health — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Admin · Health in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Admin · Health — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Admin · Health in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: HealthPage,
+});
 
 /** Feature 1 — Self-healing health: check karta hai, khud theek karta hai, proof rakhta hai. */
 function HealthPage() {

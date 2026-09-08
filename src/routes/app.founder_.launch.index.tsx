@@ -8,7 +8,23 @@ import { GateBadge, ReceiptCard } from "@/components/app/release/ReleaseBits";
 import { notify } from "@/lib/notify";
 import { gateFrom, ms, useReleaseOverview, useRunQa } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/")({ component: LaunchCommand });
+export const Route = createFileRoute("/app/founder_/launch/")({
+  head: () => ({
+    meta: [
+      { title: "Launch · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · Founder view — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Launch · Founder view in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LaunchCommand,
+});
 
 /** Feature 1 — Release gate with proof. Red = launch blocked, in code. */
 function LaunchCommand() {

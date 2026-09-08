@@ -13,7 +13,23 @@ import {
   useSecuritySessions,
 } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/sessions")({ component: SessionsPage });
+export const Route = createFileRoute("/app/security/sessions")({
+  head: () => ({
+    meta: [
+      { title: "Security · Sessions — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · Sessions in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · Sessions — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · Sessions in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: SessionsPage,
+});
 
 /** Feature 6 — Blast-radius kill switch: sab sessions + devices ek click, ledger proof. */
 function SessionsPage() {

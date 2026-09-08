@@ -13,7 +13,7 @@ import {
 export const Route = createFileRoute("/app/founder_/billing")({
   head: () => ({
     meta: [
-      { title: "Founder_ · Billing — ANEXOMAIL Workspace" },
+      { title: "Billing · Founder view — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:

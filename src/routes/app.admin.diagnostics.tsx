@@ -9,7 +9,23 @@ import { useDiagnostics, useRunDiagnostics } from "@/lib/admin-center";
 import { celebrate, useFrameWatch, useMotionLedger } from "@/lib/experience";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/app/admin/diagnostics")({ component: DiagnosticsPage });
+export const Route = createFileRoute("/app/admin/diagnostics")({
+  head: () => ({
+    meta: [
+      { title: "Admin · Diagnostics — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Admin · Diagnostics in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Admin · Diagnostics — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Admin · Diagnostics in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: DiagnosticsPage,
+});
 
 /** Feature 6 — Diagnostics proof pack: DNS/DKIM/SPF/DMARC/TLS/SMTP/IMAP + hash proof. */
 function DiagnosticsPage() {

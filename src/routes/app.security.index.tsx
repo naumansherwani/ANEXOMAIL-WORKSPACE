@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { useSecurityDashboard } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/")({ component: SecurityOverviewPage });
+export const Route = createFileRoute("/app/security/")({
+  head: () => ({
+    meta: [
+      { title: "Security — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: SecurityOverviewPage,
+});
 
 /** Overview — score asli checks se, ledger hash-chained, advice actionable. */
 function SecurityOverviewPage() {

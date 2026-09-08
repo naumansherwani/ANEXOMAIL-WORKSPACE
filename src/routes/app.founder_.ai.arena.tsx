@@ -18,7 +18,7 @@ import { notify } from "@/lib/notify";
 export const Route = createFileRoute("/app/founder_/ai/arena")({
   head: () => ({
     meta: [
-      { title: "Founder_ · Ai · Arena — ANEXOMAIL Workspace" },
+      { title: "AI · Arena · Founder view — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:

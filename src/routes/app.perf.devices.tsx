@@ -6,7 +6,23 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { relativeTime } from "@/lib/mail";
 import { ms, useDeviceTwins } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/devices")({ component: DeviceTwinsPage });
+export const Route = createFileRoute("/app/perf/devices")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Devices — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Devices in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Devices — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Devices in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: DeviceTwinsPage,
+});
 
 /** Feature 5 — Device twin: "app slow hai" nahi, "yeh device, yeh surface, yeh number". */
 function DeviceTwinsPage() {

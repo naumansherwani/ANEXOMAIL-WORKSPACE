@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { usePromiseSla } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/promises")({ component: PromisesPage });
+export const Route = createFileRoute("/app/analytics/promises")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Promises — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Promises in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Promises — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Promises in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: PromisesPage,
+});
 
 /** Feature 5 — Promise SLA: jo waada kiya woh poora hua ya nahi. */
 function PromisesPage() {

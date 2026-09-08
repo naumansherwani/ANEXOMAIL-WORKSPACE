@@ -11,7 +11,7 @@ import { useChecklist, useChecklistUpdate, type ChecklistItem } from "@/lib/rele
 export const Route = createFileRoute("/app/founder_/launch/checklist")({
   head: () => ({
     meta: [
-      { title: "Founder_ · Launch · Checklist — ANEXOMAIL Workspace" },
+      { title: "Launch · Checklist · Founder view — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:

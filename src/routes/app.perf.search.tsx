@@ -9,7 +9,23 @@ import { Input } from "@/components/ui/input";
 import { notify } from "@/lib/notify";
 import { ms, useRunQueryLab, useSearchTraces } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/search")({ component: QueryLabPage });
+export const Route = createFileRoute("/app/perf/search")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Search — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Search in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Search — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Search in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: QueryLabPage,
+});
 
 /** Feature 4 — Query lab: asli query chalao, stage-by-stage waterfall dekho. */
 function QueryLabPage() {

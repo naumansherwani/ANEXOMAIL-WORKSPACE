@@ -7,7 +7,23 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { useIncidents, useLogs } from "@/lib/admin-center";
 import { cn } from "@/lib/utils";
 
-export const Route = createFileRoute("/app/admin/logs")({ component: LogsPage });
+export const Route = createFileRoute("/app/admin/logs")({
+  head: () => ({
+    meta: [
+      { title: "Admin · Logs — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Admin · Logs in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Admin · Logs — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Admin · Logs in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LogsPage,
+});
 
 const LEVELS = ["all", "error", "warn", "info"] as const;
 

@@ -10,7 +10,7 @@ import { useDeployments } from "@/lib/release";
 export const Route = createFileRoute("/app/founder_/launch/deployments")({
   head: () => ({
     meta: [
-      { title: "Founder_ · Launch · Deployments — ANEXOMAIL Workspace" },
+      { title: "Launch · Deployments · Founder view — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:

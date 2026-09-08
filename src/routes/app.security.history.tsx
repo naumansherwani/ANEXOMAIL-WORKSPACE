@@ -8,7 +8,23 @@ import { Button } from "@/components/ui/button";
 import { notify } from "@/lib/notify";
 import { useDisownLogin, useLoginHistory } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/history")({ component: HistoryPage });
+export const Route = createFileRoute("/app/security/history")({
+  head: () => ({
+    meta: [
+      { title: "Security · History — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · History in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · History — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · History in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: HistoryPage,
+});
 
 const FILTERS = ["all", "success", "failed", "blocked", "challenged"] as const;
 

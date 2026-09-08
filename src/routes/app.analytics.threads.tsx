@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { money, useThreadEconomics } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/threads")({ component: ThreadEconomicsPage });
+export const Route = createFileRoute("/app/analytics/threads")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Threads — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Threads in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Threads — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Threads in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ThreadEconomicsPage,
+});
 
 /** Feature 2 — Thread economics: har thread pe kitne minutes aur kitne logon ka waqt. */
 function ThreadEconomicsPage() {

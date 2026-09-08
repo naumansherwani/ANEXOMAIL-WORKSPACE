@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { ms, usePrefetch } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/prefetch")({ component: PrefetchPage });
+export const Route = createFileRoute("/app/perf/prefetch")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Prefetch — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Prefetch in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Prefetch — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Prefetch in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: PrefetchPage,
+});
 
 /**
  * Feature 2 + 3 — Prefetch brain aur cold-start killer ek screen par:

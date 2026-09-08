@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { bytes, useStorageForecast } from "@/lib/admin-center";
 
-export const Route = createFileRoute("/app/admin/storage")({ component: StoragePage });
+export const Route = createFileRoute("/app/admin/storage")({
+  head: () => ({
+    meta: [
+      { title: "Admin · Storage — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Admin · Storage in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Admin · Storage — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Admin · Storage in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: StoragePage,
+});
 
 /** Feature 2 — Storage forecast: kab bharega, aur kya safely khali ho sakta hai. */
 function StoragePage() {

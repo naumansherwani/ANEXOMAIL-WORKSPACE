@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { ms, usePerfDashboard } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/")({ component: PerfOverviewPage });
+export const Route = createFileRoute("/app/perf/")({
+  head: () => ({
+    meta: [
+      { title: "Speed — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: PerfOverviewPage,
+});
 
 /** Speed as a feature: score asli samples se banta hai, koi vanity graph nahi. */
 function PerfOverviewPage() {

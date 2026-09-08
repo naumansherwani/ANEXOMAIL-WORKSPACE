@@ -7,7 +7,23 @@ import { Button } from "@/components/ui/button";
 import { notify } from "@/lib/notify";
 import { useOwnershipProofs, useRunOwnershipProof } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/proof")({ component: ProofPage });
+export const Route = createFileRoute("/app/security/proof")({
+  head: () => ({
+    meta: [
+      { title: "Security · Proof — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · Proof in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · Proof — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · Proof in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ProofPage,
+});
 
 /** Feature 3 — Ownership proof: DKIM/SPF/DMARC/TLS live probe, hashed, exportable. */
 function ProofPage() {

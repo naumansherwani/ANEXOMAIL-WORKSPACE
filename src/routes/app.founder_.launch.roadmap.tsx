@@ -8,7 +8,26 @@ import { Verdict } from "@/components/app/premium/PremiumBits";
 import { notify } from "@/lib/notify";
 import { useRoadmap, useRoadmapAdd } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/roadmap")({ component: RoadmapPage });
+export const Route = createFileRoute("/app/founder_/launch/roadmap")({
+  head: () => ({
+    meta: [
+      { title: "Launch · Roadmap · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · Roadmap · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · Roadmap · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Launch · Roadmap · Founder view in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: RoadmapPage,
+});
 
 /** v2.0 board — impact × effort, and which money road each item feeds. */
 function RoadmapPage() {

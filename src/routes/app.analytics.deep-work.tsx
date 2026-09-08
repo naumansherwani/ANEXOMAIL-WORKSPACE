@@ -5,7 +5,23 @@ import { Section, StackBar, Stat } from "@/components/app/analytics/AnalyticsBit
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { hours, useDeepWork } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/deep-work")({ component: DeepWorkPage });
+export const Route = createFileRoute("/app/analytics/deep-work")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Deep work — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Deep work in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Deep work — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Deep work in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: DeepWorkPage,
+});
 
 /** Feature 3 — Deep work map: asli kaam vs inbox mein phansa waqt. */
 function DeepWorkPage() {

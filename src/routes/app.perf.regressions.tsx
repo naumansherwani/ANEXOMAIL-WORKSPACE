@@ -5,7 +5,23 @@ import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { ms, useRegressions } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/regressions")({ component: RegressionsPage });
+export const Route = createFileRoute("/app/perf/regressions")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Regressions — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Regressions in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Regressions — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Regressions in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: RegressionsPage,
+});
 
 /** Feature 6 — Regression sentinel: har release ka latency diff + rollback advice. */
 function RegressionsPage() {
