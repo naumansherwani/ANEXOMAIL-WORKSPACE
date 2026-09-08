@@ -16,13 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiError } from "@/lib/api";
 import { chatCall } from "@/lib/chat-transport";
 
-export type IntegrityState =
-  | "clean"
-  | "suspicious"
-  | "warned"
-  | "blocked"
-  | "released"
-  | "purged";
+export type IntegrityState = "clean" | "suspicious" | "warned" | "blocked" | "released" | "purged";
 
 export const INTEGRITY_LABEL: Record<IntegrityState, string> = {
   clean: "Good standing",

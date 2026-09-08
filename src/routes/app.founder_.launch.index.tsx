@@ -8,7 +8,23 @@ import { GateBadge, ReceiptCard } from "@/components/app/release/ReleaseBits";
 import { notify } from "@/lib/notify";
 import { gateFrom, ms, useReleaseOverview, useRunQa } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/")({ component: LaunchCommand });
+export const Route = createFileRoute("/app/founder_/launch/")({
+  head: () => ({
+    meta: [
+      { title: "Launch · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · Founder view — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Launch · Founder view in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LaunchCommand,
+});
 
 /** Feature 1 — Release gate with proof. Red = launch blocked, in code. */
 function LaunchCommand() {
@@ -19,7 +35,11 @@ function LaunchCommand() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ShieldCheck className="size-3.5" aria-hidden="true" /> Release command</>}
+        eyebrow={
+          <>
+            <ShieldCheck className="size-3.5" aria-hidden="true" /> Release command
+          </>
+        }
         title="One screen, one verdict"
         blurb="Sixty-plus live probes decide the gate — routes, database, mail delivery, ownership proof and speed budgets. Nothing here is a guess."
       >
@@ -33,10 +53,15 @@ function LaunchCommand() {
               { suite: "all" },
               {
                 onSuccess: (d) =>
-                  notify.done(`QA finished · ${d.run.passed} pass · ${d.run.failed} fail`, `${d.run.total} checks in ${ms(d.run.ms)}`),
+                  notify.done(
+                    `QA finished · ${d.run.passed} pass · ${d.run.failed} fail`,
+                    `${d.run.total} checks in ${ms(d.run.ms)}`,
+                  ),
                 onError: (e) =>
                   notify.failed(e.status === 409 ? "A run is already in flight" : "QA run failed", {
-                    description: e.isNotImplemented ? "Waiting on POST /api/founder/release/run." : e.message,
+                    description: e.isNotImplemented
+                      ? "Waiting on POST /api/founder/release/run."
+                      : e.message,
                   }),
               },
             )
@@ -48,16 +73,31 @@ function LaunchCommand() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/founder/release/overview"
             skeleton={<StatSkeleton rows={5} />}
           >
             {(d) => (
               <>
                 <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
-                  <Stat label="Checks passed" value={d.latest_run ? String(d.latest_run.passed) : "—"} />
-                  <Stat label="Checks failed" value={d.latest_run ? String(d.latest_run.failed) : "—"} />
-                  <Stat label="Suite time" value={ms(d.latest_run?.ms ?? null)} hint="target under 5s" />
+                  <Stat
+                    label="Checks passed"
+                    value={d.latest_run ? String(d.latest_run.passed) : "—"}
+                  />
+                  <Stat
+                    label="Checks failed"
+                    value={d.latest_run ? String(d.latest_run.failed) : "—"}
+                  />
+                  <Stat
+                    label="Suite time"
+                    value={ms(d.latest_run?.ms ?? null)}
+                    hint="target under 5s"
+                  />
                   <Stat
                     label="Checklist open"
                     value={`${d.checklist_open}/${d.checklist_total}`}
@@ -68,7 +108,8 @@ function LaunchCommand() {
                 <h3 className="ax-heading mt-ax-6 text-foreground">What is holding the gate</h3>
                 {d.blockers.length === 0 ? (
                   <p className="ax-caption mt-ax-3 text-muted-foreground">
-                    Nothing is blocking. {d.locked_at ? "v1.0 is already signed." : "Sign v1.0 on the Lock tab."}
+                    Nothing is blocking.{" "}
+                    {d.locked_at ? "v1.0 is already signed." : "Sign v1.0 on the Lock tab."}
                   </p>
                 ) : (
                   <ul className="mt-ax-3 space-y-1.5">

@@ -34,10 +34,7 @@ export const notify = {
   },
 
   /** Work in flight — resolves into a single success or failure toast. */
-  working<T>(
-    promise: Promise<T>,
-    copy: { loading: string; success: string; error: string },
-  ) {
+  working<T>(promise: Promise<T>, copy: { loading: string; success: string; error: string }) {
     return toast.promise(promise, {
       loading: copy.loading,
       success: copy.success,

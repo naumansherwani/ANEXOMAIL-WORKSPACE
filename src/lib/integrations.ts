@@ -13,14 +13,7 @@ import type { ApiError } from "@/lib/api";
 import { rpcOrRest } from "@/lib/rpc";
 
 export type ProviderId =
-  | "gmail"
-  | "google_workspace"
-  | "outlook"
-  | "microsoft365"
-  | "zoho"
-  | "proton"
-  | "imap"
-  | "smtp";
+  "gmail" | "google_workspace" | "outlook" | "microsoft365" | "zoho" | "proton" | "imap" | "smtp";
 
 export type Provider = {
   id: ProviderId;
@@ -108,16 +101,17 @@ export type FounderIntegrations = {
   worst_delivery: { domain: string; score: number }[];
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
-const post = <T,>(procedure: string, path: string, body: unknown) =>
+const post = <T>(procedure: string, path: string, body: unknown) =>
   rpcOrRest<T>(procedure, { path, method: "POST", body }, body);
 
 export function useProviders() {
   return useQuery<{ providers: Provider[] }, ApiError>({
     queryKey: ["integrations", "providers"],
-    queryFn: () => get<{ providers: Provider[] }>("integrations.providers", "/api/integrations/providers"),
+    queryFn: () =>
+      get<{ providers: Provider[] }>("integrations.providers", "/api/integrations/providers"),
     retry: false,
   });
 }
@@ -126,7 +120,10 @@ export function useConnections() {
   return useQuery<{ connections: Connection[] }, ApiError>({
     queryKey: ["integrations", "connections"],
     queryFn: () =>
-      get<{ connections: Connection[] }>("integrations.connections", "/api/integrations/connections"),
+      get<{ connections: Connection[] }>(
+        "integrations.connections",
+        "/api/integrations/connections",
+      ),
     retry: false,
   });
 }
@@ -155,7 +152,8 @@ export function useDisconnectProvider() {
 export function useMigrations() {
   return useQuery<{ jobs: MigrationJob[] }, ApiError>({
     queryKey: ["integrations", "migrations"],
-    queryFn: () => get<{ jobs: MigrationJob[] }>("integrations.migrations", "/api/integrations/migrations"),
+    queryFn: () =>
+      get<{ jobs: MigrationJob[] }>("integrations.migrations", "/api/integrations/migrations"),
     refetchInterval: 15_000,
     retry: false,
   });
@@ -175,8 +173,13 @@ export function useStartMigration() {
 
 export function useControlMigration() {
   const qc = useQueryClient();
-  return useMutation<MigrationJob, ApiError, { id: string; action: "pause" | "resume" | "retry" | "cancel" }>({
-    mutationFn: (body) => post("integrations.controlMigration", "/api/integrations/migrations/control", body),
+  return useMutation<
+    MigrationJob,
+    ApiError,
+    { id: string; action: "pause" | "resume" | "retry" | "cancel" }
+  >({
+    mutationFn: (body) =>
+      post("integrations.controlMigration", "/api/integrations/migrations/control", body),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["integrations", "migrations"] }),
   });
 }
@@ -184,7 +187,8 @@ export function useControlMigration() {
 export function useDeliveryHealth() {
   return useQuery<DeliveryHealth, ApiError>({
     queryKey: ["integrations", "delivery"],
-    queryFn: () => get<DeliveryHealth>("integrations.delivery", "/api/integrations/delivery/health"),
+    queryFn: () =>
+      get<DeliveryHealth>("integrations.delivery", "/api/integrations/delivery/health"),
     retry: false,
   });
 }
@@ -200,7 +204,11 @@ export function useExports() {
 /** User Freedom: one-click export, no lock-in. */
 export function useRequestExport() {
   const qc = useQueryClient();
-  return useMutation<ExportJob, ApiError, { scope: ExportJob["scope"]; format: ExportJob["format"] }>({
+  return useMutation<
+    ExportJob,
+    ApiError,
+    { scope: ExportJob["scope"]; format: ExportJob["format"] }
+  >({
     mutationFn: (body) => post("integrations.export", "/api/integrations/exports", body),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["integrations", "exports"] }),
   });
@@ -209,7 +217,8 @@ export function useRequestExport() {
 export function useLeoActions() {
   return useQuery<{ actions: LeoAction[] }, ApiError>({
     queryKey: ["integrations", "leo-actions"],
-    queryFn: () => get<{ actions: LeoAction[] }>("integrations.leoActions", "/api/integrations/leo-actions"),
+    queryFn: () =>
+      get<{ actions: LeoAction[] }>("integrations.leoActions", "/api/integrations/leo-actions"),
     retry: false,
   });
 }
@@ -217,7 +226,8 @@ export function useLeoActions() {
 export function useToggleLeoAction() {
   const qc = useQueryClient();
   return useMutation<LeoAction, ApiError, { id: string; enabled: boolean }>({
-    mutationFn: (body) => post("integrations.toggleLeoAction", "/api/integrations/leo-actions/toggle", body),
+    mutationFn: (body) =>
+      post("integrations.toggleLeoAction", "/api/integrations/leo-actions/toggle", body),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["integrations", "leo-actions"] }),
   });
 }
@@ -226,13 +236,20 @@ export function useFounderIntegrations() {
   return useQuery<FounderIntegrations, ApiError>({
     queryKey: ["founder", "integrations"],
     queryFn: () =>
-      get<FounderIntegrations>("founderIntegrations.overview", "/api/founder/integrations/overview"),
+      get<FounderIntegrations>(
+        "founderIntegrations.overview",
+        "/api/founder/integrations/overview",
+      ),
     retry: false,
   });
 }
 
 export const bytes = (n: number) =>
-  n >= 1e9 ? `${(n / 1e9).toFixed(1)} GB` : n >= 1e6 ? `${(n / 1e6).toFixed(1)} MB` : `${Math.round(n / 1e3)} KB`;
+  n >= 1e9
+    ? `${(n / 1e9).toFixed(1)} GB`
+    : n >= 1e6
+      ? `${(n / 1e6).toFixed(1)} MB`
+      : `${Math.round(n / 1e3)} KB`;
 
 export const pct = (done: number, total: number) =>
   total <= 0 ? 0 : Math.min(100, Math.round((done / total) * 100));

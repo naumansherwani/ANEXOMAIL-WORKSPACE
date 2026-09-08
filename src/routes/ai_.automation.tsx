@@ -20,7 +20,8 @@ export const Route = createFileRoute("/ai_/automation")({
       { property: "og:title", content: "AI Automation — Coming Soon | ANEXOMAIL AI" },
       {
         property: "og:description",
-        content: "Workflows, rules and suggestions with approval gates. Part of the separate AI product.",
+        content:
+          "Workflows, rules and suggestions with approval gates. Part of the separate AI product.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -60,8 +61,8 @@ function AutomationGate() {
             AI Automation is not open yet.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-muted-foreground">
-            Automation belongs to the separate AI product. Your email workspace stays clean,
-            private and completely free of it.
+            Automation belongs to the separate AI product. Your email workspace stays clean, private
+            and completely free of it.
           </p>
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
@@ -80,7 +81,10 @@ function AutomationGate() {
 
           <div className="mt-14 grid gap-5 text-left sm:grid-cols-3">
             {cards.map((c) => (
-              <article key={c.title} className="rounded-2xl border border-border bg-card p-6 shadow-elev-1">
+              <article
+                key={c.title}
+                className="rounded-2xl border border-border bg-card p-6 shadow-elev-1"
+              >
                 <span className="flex size-10 items-center justify-center rounded-xl bg-secondary text-steel">
                   <c.icon className="size-5" aria-hidden="true" />
                 </span>

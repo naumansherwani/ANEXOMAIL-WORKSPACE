@@ -14,10 +14,7 @@ import { formatBytes, useThread } from "@/lib/mail";
 
 export const Route = createFileRoute("/app/mail/$folder/$threadId")({
   head: () => ({
-    meta: [
-      { title: "Thread — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Thread — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: ThreadPage,
 });

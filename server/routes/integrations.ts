@@ -22,7 +22,9 @@ if (SUPABASE_URL && SERVICE_KEY) {
     auth: { persistSession: false, autoRefreshToken: false },
   });
 } else {
-  console.error("integrations: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503");
+  console.error(
+    "integrations: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503",
+  );
 }
 
 const router = Router();

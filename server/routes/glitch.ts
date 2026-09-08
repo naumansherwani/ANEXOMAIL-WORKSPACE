@@ -70,7 +70,9 @@ function floodOk(ip: string): boolean {
 }
 
 function clientIp(req: any): string {
-  return String(req.headers["x-forwarded-for"] || req.ip || "unknown").split(",")[0].trim();
+  return String(req.headers["x-forwarded-for"] || req.ip || "unknown")
+    .split(",")[0]
+    .trim();
 }
 
 publicRouter.post("/glitch/report", async (req, res) => {
@@ -190,12 +192,7 @@ function smtpSend(to: string, subject: string, body: string): Promise<void> {
     const sock = net.createConnection({ host: SMTP_HOST, port: SMTP_PORT });
     sock.setTimeout(15_000);
     let buf = "";
-    const steps = [
-      `EHLO anexomail.com`,
-      `MAIL FROM:<${MAIL_FROM}>`,
-      `RCPT TO:<${to}>`,
-      `DATA`,
-    ];
+    const steps = [`EHLO anexomail.com`, `MAIL FROM:<${MAIL_FROM}>`, `RCPT TO:<${to}>`, `DATA`];
     let i = -1;
     let dataSent = false;
     const fail = (e: any) => {

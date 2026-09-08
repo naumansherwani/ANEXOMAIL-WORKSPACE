@@ -92,8 +92,8 @@ export function EmailBridge() {
         {(context.data?.quotes ?? []).length > 0 && (
           <p className="ax-caption mt-ax-2 flex items-center gap-2 text-steel">
             <Quote className="size-3.5" aria-hidden="true" />
-            {(context.data?.quotes ?? []).length} quoted email passages, each sealed with the original
-            wording.
+            {(context.data?.quotes ?? []).length} quoted email passages, each sealed with the
+            original wording.
           </p>
         )}
       </div>
@@ -131,7 +131,9 @@ export function EmailBridge() {
 
         {open && draft.data && !draft.data.error && (
           <div className="mt-ax-3 space-y-ax-2">
-            <p className="ax-caption whitespace-pre-wrap text-muted-foreground">{draft.data.body}</p>
+            <p className="ax-caption whitespace-pre-wrap text-muted-foreground">
+              {draft.data.body}
+            </p>
             <ul className="space-y-1">
               {(draft.data.citations ?? []).map((c) => (
                 <li key={c.message_id} className="ax-caption text-steel">
@@ -145,7 +147,10 @@ export function EmailBridge() {
                   <li key={a.version_id} className="ax-caption text-muted-foreground">
                     {a.filename} · {a.version_state}
                     {a.lineage
-                      ? ` · ${a.lineage.filter((s) => s.recorded).map((s) => s.step).join(" → ")}`
+                      ? ` · ${a.lineage
+                          .filter((s) => s.recorded)
+                          .map((s) => s.step)
+                          .join(" → ")}`
                       : " · no checks on record"}
                   </li>
                 ))}
@@ -194,7 +199,9 @@ export function EmailBridge() {
                 onClick={() => {
                   const reason = window.prompt("Why do you object? (8+ characters)")?.trim();
                   if (!reason || reason.length < 8) {
-                    notify.failed("A reason is required", { description: "At least 8 characters." });
+                    notify.failed("A reason is required", {
+                      description: "At least 8 characters.",
+                    });
                     return;
                   }
                   consent.mutate(

@@ -24,10 +24,7 @@ import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/calendar")({
   head: () => ({
-    meta: [
-      { title: "Calendar — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Calendar — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: CalendarPage,
 });
@@ -155,7 +152,9 @@ function CalendarPage() {
             ) : (
               <ul className="space-y-ax-3">
                 {load.data?.load.length === 0 && (
-                  <li className="ax-caption text-muted-foreground">Nobody has meetings this week.</li>
+                  <li className="ax-caption text-muted-foreground">
+                    Nobody has meetings this week.
+                  </li>
                 )}
                 {load.data?.load.map((person) => (
                   <li key={person.member}>
@@ -175,10 +174,7 @@ function CalendarPage() {
                     <span className="mt-1 block">
                       <LoadBar
                         minutes={person.meeting_minutes}
-                        max={Math.max(
-                          ...(load.data?.load ?? []).map((p) => p.meeting_minutes),
-                          1,
-                        )}
+                        max={Math.max(...(load.data?.load ?? []).map((p) => p.meeting_minutes), 1)}
                         overloaded={person.overloaded}
                       />
                     </span>
@@ -264,7 +260,12 @@ function CalendarPage() {
           <EventDetail id={selected} />
         ) : (
           <>
-            <WeekGrid start={range.start} events={rows} selectedId={selected} onSelect={setSelected} />
+            <WeekGrid
+              start={range.start}
+              events={rows}
+              selectedId={selected}
+              onSelect={setSelected}
+            />
             {rows.length === 0 && (
               <EmptyState
                 title="Your week is clear"

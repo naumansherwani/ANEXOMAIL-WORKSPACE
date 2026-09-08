@@ -6,6 +6,23 @@ import { Stat } from "@/components/app/settings/SettingsBits";
 import { useDrift, useScheduled } from "@/lib/settings";
 
 export const Route = createFileRoute("/app/settings/health")({
+  head: () => ({
+    meta: [
+      { title: "Settings · Health — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Settings · Health · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Settings · Health — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Settings · Health · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: SettingsHealth,
 });
 
@@ -43,10 +60,15 @@ function SettingsHealth() {
                   </div>
                   <ul className="mt-ax-4 space-y-1.5">
                     {d.items.map((i) => (
-                      <li key={i.key} className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">
+                      <li
+                        key={i.key}
+                        className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
+                      >
                         <span className="font-semibold text-foreground">{i.label}</span>
                         <span className="text-steel">{i.drift}</span>
-                        <span className="ml-auto text-muted-foreground">recommended: {i.recommended}</span>
+                        <span className="ml-auto text-muted-foreground">
+                          recommended: {i.recommended}
+                        </span>
                       </li>
                     ))}
                   </ul>
@@ -81,10 +103,15 @@ function SettingsHealth() {
                 ) : (
                   <ul className="space-y-1.5">
                     {d.changes.map((c) => (
-                      <li key={c.id} className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">
+                      <li
+                        key={c.id}
+                        className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
+                      >
                         <span className="font-semibold text-foreground">{c.key}</span>
                         <span className="text-muted-foreground">→ {c.to_value}</span>
-                        <span className="text-steel">{new Date(c.apply_at).toLocaleString("en-GB")}</span>
+                        <span className="text-steel">
+                          {new Date(c.apply_at).toLocaleString("en-GB")}
+                        </span>
                         <span className="ml-auto text-steel">
                           {c.state}
                           {c.auto_rollback_minutes ? ` · rollback ${c.auto_rollback_minutes}m` : ""}

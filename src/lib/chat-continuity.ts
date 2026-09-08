@@ -48,21 +48,50 @@ export type Continuity = {
 const DEVICE_KEY = "ax.chat.device";
 
 /** Stable per-browser device identity — server par sirf yeh id + label jaati hai. */
-export function deviceIdentity(): { device_id: string; label: string; kind: string; platform: string; installed: boolean } {
+export function deviceIdentity(): {
+  device_id: string;
+  label: string;
+  kind: string;
+  platform: string;
+  installed: boolean;
+} {
   if (typeof window === "undefined") {
-    return { device_id: "ssr", label: "Server", kind: "unknown", platform: "ssr", installed: false };
+    return {
+      device_id: "ssr",
+      label: "Server",
+      kind: "unknown",
+      platform: "ssr",
+      installed: false,
+    };
   }
   let id = window.localStorage.getItem(DEVICE_KEY);
   if (!id) {
-    id = (window.crypto?.randomUUID?.() ?? `dev-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+    id =
+      window.crypto?.randomUUID?.() ?? `dev-${Date.now()}-${Math.random().toString(36).slice(2)}`;
     window.localStorage.setItem(DEVICE_KEY, id);
   }
   const ua = window.navigator.userAgent;
   const installed = window.matchMedia?.("(display-mode: standalone)")?.matches === true;
   const touch = window.navigator.maxTouchPoints > 1;
   const w = window.screen?.width ?? window.innerWidth;
-  const kind = installed ? "pwa" : touch ? (w >= 820 ? "tablet" : "mobile") : w >= 1600 ? "desktop" : "laptop";
-  const platform = /Mac/i.test(ua) ? "macOS" : /Win/i.test(ua) ? "Windows" : /Android/i.test(ua) ? "Android" : /iPhone|iPad/i.test(ua) ? "iOS" : "Linux";
+  const kind = installed
+    ? "pwa"
+    : touch
+      ? w >= 820
+        ? "tablet"
+        : "mobile"
+      : w >= 1600
+        ? "desktop"
+        : "laptop";
+  const platform = /Mac/i.test(ua)
+    ? "macOS"
+    : /Win/i.test(ua)
+      ? "Windows"
+      : /Android/i.test(ua)
+        ? "Android"
+        : /iPhone|iPad/i.test(ua)
+          ? "iOS"
+          : "Linux";
   return { device_id: id, label: `${platform} · ${kind}`, kind, platform, installed };
 }
 
@@ -84,7 +113,11 @@ export async function fetchContinuity(): Promise<Continuity> {
     { device_id: d.device_id },
     { path: `/api/chat/continuity?device=${encodeURIComponent(d.device_id)}`, method: "GET" },
   );
-  return { devices: data?.devices ?? [], drafts: data?.drafts ?? [], positions: data?.positions ?? [] };
+  return {
+    devices: data?.devices ?? [],
+    drafts: data?.drafts ?? [],
+    positions: data?.positions ?? [],
+  };
 }
 
 async function saveDraftRemote(input: {

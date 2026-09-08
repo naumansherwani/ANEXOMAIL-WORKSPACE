@@ -13,7 +13,17 @@ export function Stat({ label, value, hint }: { label: string; value: string; hin
   );
 }
 
-export function Section({ title, eyebrow, blurb, children }: { title: string; eyebrow: ReactNode; blurb?: string; children: ReactNode }) {
+export function Section({
+  title,
+  eyebrow,
+  blurb,
+  children,
+}: {
+  title: string;
+  eyebrow: ReactNode;
+  blurb?: string;
+  children: ReactNode;
+}) {
   return (
     <section>
       <p className="ax-eyebrow flex items-center gap-2">{eyebrow}</p>
@@ -37,7 +47,10 @@ export function StackBar({
     <div>
       <div className="flex flex-wrap gap-ax-3">
         {keys.map((k) => (
-          <span key={k.label} className="ax-caption flex items-center gap-1.5 text-muted-foreground">
+          <span
+            key={k.label}
+            className="ax-caption flex items-center gap-1.5 text-muted-foreground"
+          >
             <span className={cn("size-2.5 rounded-sm", k.className)} aria-hidden="true" /> {k.label}
           </span>
         ))}
@@ -65,6 +78,8 @@ export function StackBar({
 
 export function Row({ children }: { children: ReactNode }) {
   return (
-    <li className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">{children}</li>
+    <li className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">
+      {children}
+    </li>
   );
 }

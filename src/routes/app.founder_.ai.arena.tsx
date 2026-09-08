@@ -16,6 +16,24 @@ import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/founder_/ai/arena")({
+  head: () => ({
+    meta: [
+      { title: "AI · Arena · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "AI · Arena · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "AI · Arena · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "AI · Arena · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Arena,
 });
 
@@ -75,7 +93,8 @@ function Arena() {
               run.mutate(
                 { question: question.trim(), agents: slots },
                 {
-                  onSuccess: () => notify.done("Arena run finished", "Sherlock scored every answer."),
+                  onSuccess: () =>
+                    notify.done("Arena run finished", "Sherlock scored every answer."),
                   onError: (e) =>
                     notify.failed(e.isNotImplemented ? "Arena not wired yet" : "Run failed", {
                       description: e.message,
@@ -119,11 +138,22 @@ function Arena() {
                         </div>
                         <div className="mt-ax-3 grid gap-2 sm:grid-cols-3">
                           {r.entries.map((e, i) => (
-                            <div key={`${e.agent}-${i}`} className="rounded-xl border border-border p-ax-3">
+                            <div
+                              key={`${e.agent}-${i}`}
+                              className="rounded-xl border border-border p-ax-3"
+                            >
                               <div className="flex flex-wrap items-center gap-1.5">
                                 <Chip>{e.agent}</Chip>
                                 {e.sherlock_score !== null && (
-                                  <Chip tone={e.sherlock_score >= 80 ? "good" : e.sherlock_score >= 50 ? "warn" : "bad"}>
+                                  <Chip
+                                    tone={
+                                      e.sherlock_score >= 80
+                                        ? "good"
+                                        : e.sherlock_score >= 50
+                                          ? "warn"
+                                          : "bad"
+                                    }
+                                  >
                                     {e.sherlock_score}
                                   </Chip>
                                 )}

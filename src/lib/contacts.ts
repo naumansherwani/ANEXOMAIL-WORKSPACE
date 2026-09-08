@@ -71,14 +71,7 @@ export type ContactDetail = {
 };
 
 export type SmartFilter =
-  | "all"
-  | "vip"
-  | "customer"
-  | "vendor"
-  | "investor"
-  | "at_risk"
-  | "unanswered"
-  | "dormant";
+  "all" | "vip" | "customer" | "vendor" | "investor" | "at_risk" | "unanswered" | "dormant";
 
 export const SMART_FILTERS: { id: SmartFilter; label: string }[] = [
   { id: "all", label: "Everyone" },
@@ -152,8 +145,7 @@ export function useCompanies(query: { q?: string }) {
 export function useCompany(domain: string | undefined) {
   return useQuery<{ company: Company; people: Contact[] }, ApiError>({
     queryKey: ["companies", "one", domain],
-    queryFn: () =>
-      api<{ company: Company; people: Contact[] }>(`/api/companies/${domain}`),
+    queryFn: () => api<{ company: Company; people: Contact[] }>(`/api/companies/${domain}`),
     enabled: Boolean(domain),
     retry: false,
   });
@@ -232,7 +224,10 @@ export function useUniversalSearch(q: string, enabled = true) {
 
 export function initialsOf(contact: Pick<Contact, "display_name" | "primary_address">) {
   const source = contact.display_name?.trim() || contact.primary_address;
-  const parts = source.replace(/@.*/, "").split(/[\s._-]+/).filter(Boolean);
+  const parts = source
+    .replace(/@.*/, "")
+    .split(/[\s._-]+/)
+    .filter(Boolean);
   return (parts[0]?.[0] ?? "?").concat(parts[1]?.[0] ?? "").toUpperCase();
 }
 

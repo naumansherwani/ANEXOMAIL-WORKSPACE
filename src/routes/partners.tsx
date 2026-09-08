@@ -21,7 +21,8 @@ export const Route = createFileRoute("/partners")({
       { property: "og:title", content: "Partner programme — resell under your own brand" },
       {
         property: "og:description",
-        content: "20–30% recurring commission on every live seat. Your brand on the front, our engine behind it.",
+        content:
+          "20–30% recurring commission on every live seat. Your brand on the front, our engine behind it.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -59,14 +60,17 @@ function PartnersPage() {
             Sell it as yours. Keep the recurring revenue.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Built for IT agencies, MSPs and consultants who already own the client relationship. You brand it and
-            bill it. We run the engine and stay invisible.
+            Built for IT agencies, MSPs and consultants who already own the client relationship. You
+            brand it and bill it. We run the engine and stay invisible.
           </p>
         </section>
 
         <section className="ax-container grid gap-5 pb-14 md:grid-cols-3">
           {tiers.map((t) => (
-            <article key={t.name} className={`ax-plane rounded-3xl p-7 ${input.tier === t.tier ? "ring-1 ring-ring/40" : ""}`}>
+            <article
+              key={t.name}
+              className={`ax-plane rounded-3xl p-7 ${input.tier === t.tier ? "ring-1 ring-ring/40" : ""}`}
+            >
               <p className="ax-eyebrow">{t.name}</p>
               <p className="mt-3 text-4xl text-foreground">{t.rate}</p>
               <p className="mt-2 text-sm text-muted-foreground">recurring commission · {t.need}</p>
@@ -101,7 +105,9 @@ function PartnersPage() {
                 <select
                   id="plan"
                   value={input.plan}
-                  onChange={(e) => setInput({ ...input, plan: e.target.value as PartnerInput["plan"] })}
+                  onChange={(e) =>
+                    setInput({ ...input, plan: e.target.value as PartnerInput["plan"] })
+                  }
                   className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
                 >
                   <option value="basic">Basic — £{PLAN_PRICE.basic}</option>
@@ -113,7 +119,10 @@ function PartnersPage() {
 
             <div className="mt-7 border-t border-border pt-6">
               <p className="ax-eyebrow">{q.tierLabel}</p>
-              <p className="mt-2 text-4xl text-foreground">£{q.monthly.toLocaleString("en-GB")}<span className="text-base text-muted-foreground"> /month</span></p>
+              <p className="mt-2 text-4xl text-foreground">
+                £{q.monthly.toLocaleString("en-GB")}
+                <span className="text-base text-muted-foreground"> /month</span>
+              </p>
               <p className="mt-2 text-sm text-muted-foreground">
                 £{q.yearly.toLocaleString("en-GB")} a year at {Math.round(q.rate * 100)}% of £
                 {q.clientBill.toLocaleString("en-GB")} client billing.

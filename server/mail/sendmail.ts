@@ -156,7 +156,13 @@ function smtpSend(envelopeFrom: string, rcpts: string[], data: string): Promise<
   });
 }
 
-async function recordProof(input: SendMailInput, messageId: string, ok: boolean, smtpResponse: string, error?: string) {
+async function recordProof(
+  input: SendMailInput,
+  messageId: string,
+  ok: boolean,
+  smtpResponse: string,
+  error?: string,
+) {
   const url = process.env["SUPABASE_URL"];
   const key = process.env["SUPABASE_SERVICE_ROLE_KEY"];
   if (!url || !key) return; // proof optional — mail rukni nahi chahiye
@@ -183,7 +189,9 @@ async function recordProof(input: SendMailInput, messageId: string, ok: boolean,
 
 export async function sendMail(input: SendMailInput): Promise<SendMailResult> {
   const messageId = input.messageId ?? `${randomUUID()}@${DOMAIN}`;
-  const rcpts = [...input.to, ...(input.cc ?? []), ...(input.bcc ?? [])].map((r) => r.toLowerCase());
+  const rcpts = [...input.to, ...(input.cc ?? []), ...(input.bcc ?? [])].map((r) =>
+    r.toLowerCase(),
+  );
   if (!rcpts.length) return { ok: false, messageId, smtpResponse: "", error: "no recipients" };
 
   const data = buildMessage(input, messageId);

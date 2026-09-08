@@ -31,7 +31,8 @@ export function CompanyProfile({
     return <ErrorState body={detail.error.message} onRetry={() => void detail.refetch()} />;
   }
   if (detail.isPending) return <ThreadSkeleton />;
-  if (!detail.data) return <EmptyState title="Not found" body="This organisation has no history yet." />;
+  if (!detail.data)
+    return <EmptyState title="Not found" body="This organisation has no history yet." />;
 
   const { company, people } = detail.data;
 

@@ -7,6 +7,23 @@ import { celebrate, useExperience, type Animations, type Speed } from "@/lib/exp
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/settings/appearance")({
+  head: () => ({
+    meta: [
+      { title: "Settings · Appearance — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Settings · Appearance · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Settings · Appearance — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Settings · Appearance · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: AppearancePage,
 });
 
@@ -82,7 +99,10 @@ function AppearancePage() {
 
         <p className="mt-ax-3 text-[11px] text-muted-foreground">
           Operating system reduced-motion:{" "}
-          <span className="text-foreground">{exp.osReduced ? "on — motion suppressed" : "off"}</span> · motion currently{" "}
+          <span className="text-foreground">
+            {exp.osReduced ? "on — motion suppressed" : "off"}
+          </span>{" "}
+          · motion currently{" "}
           <span className="text-foreground">{exp.motionAllowed ? "allowed" : "suppressed"}</span>
         </p>
       </div>

@@ -45,7 +45,6 @@ export function crmAiAllowed(): boolean {
   return !isPlainCrmHost();
 }
 
-
 /** Founder host (Caddy IP allowlist) + local/preview dev. Sirf ek host. */
 export function isFounderHost(): boolean {
   const h = hostName();

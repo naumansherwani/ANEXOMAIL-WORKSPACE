@@ -1,4 +1,10 @@
-import { Outlet, createFileRoute, notFound, useNavigate, useRouterState } from "@tanstack/react-router";
+import {
+  Outlet,
+  createFileRoute,
+  notFound,
+  useNavigate,
+  useRouterState,
+} from "@tanstack/react-router";
 import { Mail, PenLine, Search, X } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 
@@ -10,12 +16,7 @@ import { HandoffBanner } from "@/components/app/CrossPlatformBar";
 import { MAIL_FOLDERS, isMailFolder } from "@/lib/ia";
 import { useNetwork } from "@/lib/network";
 import { notify } from "@/lib/notify";
-import {
-  THREAD_CATEGORIES,
-  useThreadAction,
-  useThreads,
-  type ThreadCategory,
-} from "@/lib/mail";
+import { THREAD_CATEGORIES, useThreadAction, useThreads, type ThreadCategory } from "@/lib/mail";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/mail/$folder")({
@@ -119,7 +120,12 @@ function MailFolderPage() {
         case "e":
           if (!current) return;
           event.preventDefault();
-          act(current.id, { kind: "move", folder: "archive" }, "Archived", "POST /api/mail/thread/:id/move");
+          act(
+            current.id,
+            { kind: "move", folder: "archive" },
+            "Archived",
+            "POST /api/mail/thread/:id/move",
+          );
           break;
         case "s":
           if (!current) return;
@@ -158,7 +164,12 @@ function MailFolderPage() {
         onLabel={setLabel}
         onAccount={setAccount}
         onDropLabel={(labelId, threadId) =>
-          act(threadId, { kind: "labels", add: [labelId] }, "Filed", "POST /api/mail/thread/:id/labels")
+          act(
+            threadId,
+            { kind: "labels", add: [labelId] },
+            "Filed",
+            "POST /api/mail/thread/:id/labels",
+          )
         }
       />
 
@@ -239,7 +250,12 @@ function MailFolderPage() {
           onCursor={setCursor}
           lowData={net.lowData}
           onSwipeArchive={(id) =>
-            act(id, { kind: "move", folder: "archive" }, "Archived", "POST /api/mail/thread/:id/move")
+            act(
+              id,
+              { kind: "move", folder: "archive" },
+              "Archived",
+              "POST /api/mail/thread/:id/move",
+            )
           }
           onSwipeSnooze={(id) =>
             act(

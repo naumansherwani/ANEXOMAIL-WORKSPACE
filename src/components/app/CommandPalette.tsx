@@ -44,7 +44,10 @@ export function CommandPalette({
     void navigate({ to });
   };
 
-  const jump = (to: "/app/people" | "/app/mail/$folder/$threadId", options: Record<string, unknown>) => {
+  const jump = (
+    to: "/app/people" | "/app/mail/$folder/$threadId",
+    options: Record<string, unknown>,
+  ) => {
     onOpenChange(false);
     void navigate({ to, ...options } as never);
   };
@@ -89,7 +92,13 @@ export function CommandPalette({
                 value={`company ${company.name ?? ""} ${company.domain}`}
                 onSelect={() =>
                   jump("/app/people", {
-                    search: { view: "companies", id: company.domain, q: "", filter: "all", tag: "" },
+                    search: {
+                      view: "companies",
+                      id: company.domain,
+                      q: "",
+                      filter: "all",
+                      tag: "",
+                    },
                   })
                 }
               >
@@ -117,9 +126,7 @@ export function CommandPalette({
               >
                 <Mail className="size-4" />
                 {thread.subject || "(no subject)"}
-                <span className="ml-auto text-xs text-muted-foreground">
-                  {thread.from_address}
-                </span>
+                <span className="ml-auto text-xs text-muted-foreground">{thread.from_address}</span>
               </CommandItem>
             ))}
           </CommandGroup>

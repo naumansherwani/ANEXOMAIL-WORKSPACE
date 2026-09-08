@@ -10,7 +10,10 @@ export const Route = createFileRoute("/app/movein")({
       { title: "My move-in · ANEXOMAIL" },
       { name: "description", content: "Track your managed move-in: progress, proof and payments." },
       { property: "og:title", content: "My move-in · ANEXOMAIL" },
-      { property: "og:description", content: "Live progress, verified mailboxes and delivery proof for your move." },
+      {
+        property: "og:description",
+        content: "Live progress, verified mailboxes and delivery proof for your move.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -36,12 +39,14 @@ function MyMoveIn() {
       {q.isLoading && <p className="text-sm text-muted-foreground">Loading your move…</p>}
       {q.isError && (
         <p className="text-sm text-muted-foreground">
-          We could not reach the move-in service just now. It will appear here as soon as it responds.
+          We could not reach the move-in service just now. It will appear here as soon as it
+          responds.
         </p>
       )}
       {q.data && !d && (
         <p className="text-sm text-muted-foreground">
-          No move-in is running on your account yet. Ask us about a managed move-in and it will appear here.
+          No move-in is running on your account yet. Ask us about a managed move-in and it will
+          appear here.
         </p>
       )}
 
@@ -51,7 +56,10 @@ function MyMoveIn() {
             <Stat label="Reference" value={d.reference} />
             <Stat label="Stage" value={stateLabel(d.state)} />
             <Stat label="Progress" value={`${d.progress ?? 0}%`} />
-            <Stat label="Mailboxes verified" value={`${d.mailboxes_verified}/${d.mailboxes_total}`} />
+            <Stat
+              label="Mailboxes verified"
+              value={`${d.mailboxes_verified}/${d.mailboxes_total}`}
+            />
           </section>
 
           <section className="space-y-2">
@@ -69,9 +77,14 @@ function MyMoveIn() {
             <h3 className="text-sm font-medium">Payments</h3>
             <ul className="space-y-1 text-sm">
               {d.payments.map((p) => (
-                <li key={p.leg} className="flex items-center justify-between rounded-lg border px-3 py-2">
+                <li
+                  key={p.leg}
+                  className="flex items-center justify-between rounded-lg border px-3 py-2"
+                >
                   <span>{p.leg === "deposit" ? "Deposit 50%" : "Final 50%"}</span>
-                  <span className={p.state === "paid" ? "text-emerald-500" : "text-muted-foreground"}>
+                  <span
+                    className={p.state === "paid" ? "text-emerald-500" : "text-muted-foreground"}
+                  >
                     {gbp(p.amount_gbp)} · {p.state}
                   </span>
                 </li>
@@ -82,11 +95,16 @@ function MyMoveIn() {
           <section className="space-y-2">
             <h3 className="text-sm font-medium">Delivery proof</h3>
             {d.dns_proof.length === 0 ? (
-              <p className="text-sm text-muted-foreground">Proof records appear as soon as checks run.</p>
+              <p className="text-sm text-muted-foreground">
+                Proof records appear as soon as checks run.
+              </p>
             ) : (
               <ul className="space-y-1 text-sm">
                 {d.dns_proof.map((p) => (
-                  <li key={`${p.phase}-${p.record}`} className="flex items-center justify-between rounded-lg border px-3 py-2">
+                  <li
+                    key={`${p.phase}-${p.record}`}
+                    className="flex items-center justify-between rounded-lg border px-3 py-2"
+                  >
                     <span>
                       {p.phase === "POST" ? "After cut-over" : "Before cut-over"} · {p.record}
                     </span>
@@ -102,7 +120,10 @@ function MyMoveIn() {
               <h3 className="text-sm font-medium">We need one thing from you</h3>
               <ul className="space-y-2">
                 {d.customer_action.map((a, i) => (
-                  <li key={i} className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-sm">
+                  <li
+                    key={i}
+                    className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-sm"
+                  >
                     {a.reason}
                     {a.required_action ? ` — ${a.required_action}` : ""}
                   </li>

@@ -22,7 +22,8 @@ export const Route = createFileRoute("/migration")({
       { property: "og:title", content: "Managed migration — move your email in one night" },
       {
         property: "og:description",
-        content: "Fixed-price move from Gmail, Outlook, Zoho or IMAP. Every message verified, DNS proven green. £568 / £1,670 / £2,210 / £3,350.",
+        content:
+          "Fixed-price move from Gmail, Outlook, Zoho or IMAP. Every message verified, DNS proven green. £568 / £1,670 / £2,210 / £3,350.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -61,8 +62,8 @@ function MigrationPage() {
             We move your company's email. You keep working.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            A fixed price, a named engineer and a dated cut-over plan. Price the job yourself below — the
-            number you see is the number you pay.
+            A fixed price, a named engineer and a dated cut-over plan. Price the job yourself below
+            — the number you see is the number you pay.
           </p>
         </section>
 
@@ -98,7 +99,9 @@ function MigrationPage() {
                 <select
                   id="provider"
                   value={input.provider}
-                  onChange={(e) => setInput({ ...input, provider: e.target.value as MigrationInput["provider"] })}
+                  onChange={(e) =>
+                    setInput({ ...input, provider: e.target.value as MigrationInput["provider"] })
+                  }
                   className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
                 >
                   <option value="gmail">Google Workspace / Gmail</option>
@@ -113,7 +116,9 @@ function MigrationPage() {
                 <select
                   id="urgency"
                   value={input.urgency}
-                  onChange={(e) => setInput({ ...input, urgency: e.target.value as MigrationInput["urgency"] })}
+                  onChange={(e) =>
+                    setInput({ ...input, urgency: e.target.value as MigrationInput["urgency"] })
+                  }
                   className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
                 >
                   <option value="standard">Working hours (standard)</option>
@@ -126,11 +131,17 @@ function MigrationPage() {
             <div className="mt-6 space-y-4">
               <label className="flex items-center justify-between gap-4 text-sm text-foreground">
                 <span>DNS and deliverability handled for us</span>
-                <Switch checked={input.dns} onCheckedChange={(v) => setInput({ ...input, dns: v })} />
+                <Switch
+                  checked={input.dns}
+                  onCheckedChange={(v) => setInput({ ...input, dns: v })}
+                />
               </label>
               <label className="flex items-center justify-between gap-4 text-sm text-foreground">
                 <span>Live onboarding session for the team</span>
-                <Switch checked={input.training} onCheckedChange={(v) => setInput({ ...input, training: v })} />
+                <Switch
+                  checked={input.training}
+                  onCheckedChange={(v) => setInput({ ...input, training: v })}
+                />
               </label>
             </div>
 
@@ -141,16 +152,21 @@ function MigrationPage() {
                     <span className="min-w-0 flex-1 text-muted-foreground">
                       <span className="text-foreground">{l.label}</span> — {l.detail}
                     </span>
-                    <span className="font-semibold text-foreground">£{l.amount.toLocaleString("en-GB")}</span>
+                    <span className="font-semibold text-foreground">
+                      £{l.amount.toLocaleString("en-GB")}
+                    </span>
                   </li>
                 ))}
               </ul>
               <div className="mt-5 flex items-end justify-between gap-4">
                 <div>
                   <p className="ax-eyebrow">Fixed price</p>
-                  <p className="mt-1 text-4xl text-foreground">£{quote.total.toLocaleString("en-GB")}</p>
+                  <p className="mt-1 text-4xl text-foreground">
+                    £{quote.total.toLocaleString("en-GB")}
+                  </p>
                   <p className="mt-2 text-xs text-muted-foreground">
-                    50% deposit (£{quote.deposit.toLocaleString("en-GB")}), rest on proven cut-over · delivery {quote.window}
+                    50% deposit (£{quote.deposit.toLocaleString("en-GB")}), rest on proven cut-over
+                    · delivery {quote.window}
                     {quote.capped ? " · capped at our £3,350 ceiling" : ""}
                   </p>
                 </div>
@@ -186,7 +202,10 @@ function MigrationPage() {
             <p className="text-sm leading-relaxed text-muted-foreground">
               Already sure and just need mailboxes? Start on a plan and we migrate you after.
             </p>
-            <a href="/plans" className="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+            <a
+              href="/plans"
+              className="inline-flex items-center gap-2 text-sm font-semibold text-foreground"
+            >
               See plans <ArrowRight className="size-4" aria-hidden="true" />
             </a>
           </div>

@@ -68,7 +68,12 @@ export function FileContextCard() {
   const addLink = () => {
     if (!fileId || objectId.trim().length < 4 || reason.trim().length < 8) return;
     link.mutate(
-      { file_id: fileId, object_type: objectType, object_id: objectId.trim(), reason: reason.trim() },
+      {
+        file_id: fileId,
+        object_type: objectType,
+        object_id: objectId.trim(),
+        reason: reason.trim(),
+      },
       {
         onSuccess: (r) =>
           r.ok
@@ -307,7 +312,9 @@ export function FileContextCard() {
                       size="sm"
                       variant="ghost"
                       onClick={() => {
-                        const why = window.prompt("Why is this link being removed? (8+ characters)");
+                        const why = window.prompt(
+                          "Why is this link being removed? (8+ characters)",
+                        );
                         if (!why || why.trim().length < 8) return;
                         unlink.mutate(
                           { link_id: l.id, reason: why.trim() },
@@ -316,7 +323,8 @@ export function FileContextCard() {
                               r.ok
                                 ? notify.done("Link removed", "The reason is recorded.")
                                 : notify.failed("Not removed", { description: r.reason ?? "" }),
-                            onError: (e) => notify.failed("Not removed", { description: e.message }),
+                            onError: (e) =>
+                              notify.failed("Not removed", { description: e.message }),
                           },
                         );
                       }}

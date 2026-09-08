@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { hours, useForecast } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/forecast")({ component: ForecastPage });
+export const Route = createFileRoute("/app/analytics/forecast")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Forecast — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Forecast in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Forecast — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Forecast in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ForecastPage,
+});
 
 /** Feature 6 — Forecast: agla hafta kitna load aayega, kis wajah se. */
 function ForecastPage() {
@@ -14,12 +30,21 @@ function ForecastPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><TrendingUp className="size-3.5" aria-hidden="true" /> Next week</>}
+          eyebrow={
+            <>
+              <TrendingUp className="size-3.5" aria-hidden="true" /> Next week
+            </>
+          }
           title="What is coming at you"
           blurb="Volume and hours predicted from your own history — with the reasons, not a mystery number."
         >
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/analytics/forecast"
             skeleton={<StatSkeleton rows={4} />}
           >

@@ -84,7 +84,9 @@ router.get("/state", async (req, res) => {
 // ── address availability (public: signup ke waqt chahiye) ───────
 router.get("/address", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  const handle = String(req.query['handle'] || "").trim().toLowerCase();
+  const handle = String(req.query["handle"] || "")
+    .trim()
+    .toLowerCase();
   if (!/^[a-z0-9]([a-z0-9.-]{1,28})[a-z0-9]$/.test(handle)) {
     return res.json({ handle, available: false, reason: "invalid_handle" });
   }
@@ -132,7 +134,9 @@ router.post("/start", async (req, res) => {
 router.post("/claim", async (req, res) => {
   const user = await requireUser(req, res);
   if (!user) return;
-  const handle = String(req.body?.handle || "").trim().toLowerCase();
+  const handle = String(req.body?.handle || "")
+    .trim()
+    .toLowerCase();
   try {
     const { data, error } = await db!.rpc("trial_claim_address", {
       _user_id: user.id,
@@ -229,7 +233,7 @@ router.get("/mail-holds", async (req, res) => {
 // ── hourly sweep (idempotent) ──────────────────────────────────
 cronRouter.post("/trial/sweep", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  if (!CRON_SECRET || req.headers['x-cron-secret'] !== CRON_SECRET) {
+  if (!CRON_SECRET || req.headers["x-cron-secret"] !== CRON_SECRET) {
     return res.status(401).json({ error: "unauthorized" });
   }
   try {

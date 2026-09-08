@@ -14,10 +14,7 @@ export const Route = createFileRoute("/app/search")({
     q: typeof search["q"] === "string" ? search["q"] : "",
   }),
   head: () => ({
-    meta: [
-      { title: "Search — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Search — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: SearchPage,
 });
@@ -202,7 +199,9 @@ function Group({
         {icon}
         {title}
       </p>
-      <div className="mt-ax-2 divide-y divide-border rounded-xl border border-border">{children}</div>
+      <div className="mt-ax-2 divide-y divide-border rounded-xl border border-border">
+        {children}
+      </div>
     </section>
   );
 }

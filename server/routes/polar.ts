@@ -48,7 +48,6 @@ if (SUPABASE_URL && SERVICE_KEY) {
 if (!POLAR_TOKEN) console.error("polar: POLAR_ACCESS_TOKEN missing — checkout will 503");
 console.log(`polar: webhook bridge -> ${POLAR_ENGINE_URL}/api/v1/polar-webhook`);
 
-
 const publicRouter = Router();
 const authRouter = Router();
 
@@ -188,7 +187,10 @@ publicRouter.post("/polar/webhook", async (req, res) => {
       body,
     });
     const text = await upstream.text();
-    return res.status(upstream.status).type("text/plain").send(text || "");
+    return res
+      .status(upstream.status)
+      .type("text/plain")
+      .send(text || "");
   } catch (e: any) {
     // Engine down: Polar ko fail mat batao — woh retry karega.
     console.error("[polar webhook bridge]", e?.message || e);
@@ -196,7 +198,6 @@ publicRouter.post("/polar/webhook", async (req, res) => {
     return res.status(503).json({ error: "payment_engine_unreachable" });
   }
 });
-
 
 // Har hit ka raw record — signature fail ho to bhi. Yeh kabhi throw nahi karta.
 async function captureRaw(req: any, eventId: string, verified: boolean, reason: string | null) {

@@ -16,13 +16,14 @@
  */
 
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 
 const ENV_FILE = process.env["ANEXOMAIL_MAIL_ENV"] ?? "/etc/anexomail/mail.env";
 
 function loadEnv(): Record<string, string> {
   const out: Record<string, string> = { ...process.env } as Record<string, string>;
   try {
-    const text = require("node:fs").readFileSync(ENV_FILE, "utf8") as string;
+    const text = readFileSync(ENV_FILE, "utf8");
     for (const line of text.split("\n")) {
       const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
       if (!m) continue;
@@ -54,7 +55,10 @@ function parseHeaders(head: string): Record<string, string> {
   return headers;
 }
 
-function decodeBody(body: string, headers: Record<string, string>): { text: string; html: string | null } {
+function decodeBody(
+  body: string,
+  headers: Record<string, string>,
+): { text: string; html: string | null } {
   const ctype = (headers["content-type"] ?? "text/plain").toLowerCase();
   const enc = (headers["content-transfer-encoding"] ?? "7bit").toLowerCase();
 
@@ -77,7 +81,9 @@ function decodeBody(body: string, headers: Record<string, string>): { text: stri
   // multipart: pehla text/plain part, plus pehla text/html part
   const boundary = ctype.match(/boundary="?([^";]+)"?/)?.[1];
   if (boundary) {
-    const parts = body.split(new RegExp(`--${boundary.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:--)?`));
+    const parts = body.split(
+      new RegExp(`--${boundary.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:--)?`),
+    );
     let text = "";
     let html: string | null = null;
     for (const part of parts) {
@@ -94,7 +100,8 @@ function decodeBody(body: string, headers: Record<string, string>): { text: stri
   }
 
   const decoded = decode(body);
-  if (ctype.startsWith("text/html")) return { text: decoded.replace(/<[^>]+>/g, " ").trim(), html: decoded };
+  if (ctype.startsWith("text/html"))
+    return { text: decoded.replace(/<[^>]+>/g, " ").trim(), html: decoded };
   return { text: decoded, html: null };
 }
 
@@ -130,7 +137,9 @@ async function main() {
   const envelopeTo = (process.argv[3] ?? "").toLowerCase();
 
   if (!url || !key) {
-    console.error("anexomail-deliver: SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY missing in " + ENV_FILE);
+    console.error(
+      "anexomail-deliver: SUPABASE_URL / SUPABASE_SERVICE_ROLE_KEY missing in " + ENV_FILE,
+    );
     process.exit(75);
   }
 

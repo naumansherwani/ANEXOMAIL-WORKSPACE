@@ -16,7 +16,10 @@ export const Route = createFileRoute("/app/org/")({
           "Seats, security score, domain ownership proof and open risks for your organisation in one view.",
       },
       { property: "og:title", content: "Organisation overview — ANEXOMAIL Workspace" },
-      { property: "og:description", content: "Seats, security score, proof and risks in one view." },
+      {
+        property: "og:description",
+        content: "Seats, security score, proof and risks in one view.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -38,8 +41,8 @@ function OrgOverviewPage() {
       </p>
       <h2 className="mt-3 text-3xl text-foreground">{o?.name ?? "Your organisation"}</h2>
       <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-        Everything about who works here, what they can do, and the proof that this domain is
-        yours. Every number below is read from the server — nothing is estimated here.
+        Everything about who works here, what they can do, and the proof that this domain is yours.
+        Every number below is read from the server — nothing is estimated here.
       </p>
 
       <div className="mt-8 grid gap-3 sm:grid-cols-4">
@@ -52,7 +55,11 @@ function OrgOverviewPage() {
         <OrgStat label="Departments" value={o ? String(o.departments) : "—"} />
         <OrgStat
           label="Security score"
-          value={o?.security_score !== null && o?.security_score !== undefined ? String(o.security_score) : "—"}
+          value={
+            o?.security_score !== null && o?.security_score !== undefined
+              ? String(o.security_score)
+              : "—"
+          }
           hint={o ? `${o.open_risks} open risk${o.open_risks === 1 ? "" : "s"}` : undefined}
         />
       </div>
@@ -81,7 +88,10 @@ function OrgOverviewPage() {
               </div>
               <p className="ax-caption mt-ax-3 text-muted-foreground">
                 Full evidence pack lives on{" "}
-                <Link to="/app/org/compliance" className="font-semibold text-foreground underline-offset-4 hover:underline">
+                <Link
+                  to="/app/org/compliance"
+                  className="font-semibold text-foreground underline-offset-4 hover:underline"
+                >
                   Compliance
                 </Link>
                 .

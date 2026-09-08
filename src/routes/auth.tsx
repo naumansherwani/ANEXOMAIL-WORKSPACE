@@ -40,7 +40,6 @@ type Mode = "login" | "signup" | "link";
 // LOCKED: social sign-in (Google / Apple / GitHub) ANEXOMAIL par nahi hai.
 // User khud account banata hai (email + password) → Supabase → dashboard.
 
-
 type LoginResult =
   { token: string; mfa_required?: false } | { mfa_required: true; challenge_id: string };
 
@@ -65,7 +64,7 @@ function AuthPage() {
   const [enrolBlocked, setEnrolBlocked] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [showSplash, setShowSplash] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
@@ -218,7 +217,9 @@ function AuthPage() {
     setError(null);
     setEnrolBlocked(null);
     if (!("credentials" in navigator) || !window.PublicKeyCredential) {
-      setEnrolBlocked("This device can't create a passkey. Open the link on a phone or laptop with Face ID, Touch ID, fingerprint or Windows Hello.");
+      setEnrolBlocked(
+        "This device can't create a passkey. Open the link on a phone or laptop with Face ID, Touch ID, fingerprint or Windows Hello.",
+      );
       return;
     }
     setBusy(true);
@@ -240,7 +241,9 @@ function AuthPage() {
       await finish(res.token ?? sessionToken.get()!);
     } catch (e) {
       if (e instanceof ApiError && e.isNotImplemented) {
-        setEnrolBlocked("Passkey enrolment isn't live on the server yet — it will be required as soon as it is.");
+        setEnrolBlocked(
+          "Passkey enrolment isn't live on the server yet — it will be required as soon as it is.",
+        );
       } else {
         fail(e);
       }

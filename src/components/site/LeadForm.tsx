@@ -42,8 +42,8 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
       <div className="ax-plane rounded-2xl p-6">
         <p className="ax-heading text-foreground">Got it — reference {submit.data.reference}</p>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-          A human replies from moveyourbusiness@anexomail.com within 24–48 hours with the plan, the fixed price and the cut-over
-          window. No sales sequence, no bot.
+          A human replies from moveyourbusiness@anexomail.com within 24–48 hours with the plan, the
+          fixed price and the cut-over window. No sales sequence, no bot.
         </p>
       </div>
     );
@@ -54,25 +54,53 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor={`${kind}-company`}>Company</Label>
-          <Input id={`${kind}-company`} required value={company} onChange={(e) => setCompany(e.target.value)} placeholder="NEXATECT Global Ltd" className="mt-2" />
+          <Input
+            id={`${kind}-company`}
+            required
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            placeholder="NEXATECT Global Ltd"
+            className="mt-2"
+          />
         </div>
         <div>
           <Label htmlFor={`${kind}-email`}>Work email</Label>
-          <Input id={`${kind}-email`} type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="you@yourcompany.com" className="mt-2" />
+          <Input
+            id={`${kind}-email`}
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="you@yourcompany.com"
+            className="mt-2"
+          />
         </div>
         <div>
           <Label htmlFor={`${kind}-domain`}>Domain</Label>
-          <Input id={`${kind}-domain`} value={domain} onChange={(e) => setDomain(e.target.value)} placeholder="yourcompany.com" className="mt-2" />
+          <Input
+            id={`${kind}-domain`}
+            value={domain}
+            onChange={(e) => setDomain(e.target.value)}
+            placeholder="yourcompany.com"
+            className="mt-2"
+          />
         </div>
         <div>
           <Label htmlFor={`${kind}-message`}>Anything we should know</Label>
-          <Input id={`${kind}-message`} value={message} onChange={(e) => setMessage(e.target.value)} placeholder="Optional" className="mt-2" />
+          <Input
+            id={`${kind}-message`}
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            placeholder="Optional"
+            className="mt-2"
+          />
         </div>
       </div>
 
       {quoteGbp != null && (
         <p className="mt-4 text-xs text-muted-foreground">
-          Your quote of £{quoteGbp.toLocaleString("en-GB")} is attached to this request and held for 30 days.
+          Your quote of £{quoteGbp.toLocaleString("en-GB")} is attached to this request and held for
+          30 days.
         </p>
       )}
       {note && <p className="mt-2 text-xs text-muted-foreground">{note}</p>}

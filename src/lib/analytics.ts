@@ -100,7 +100,7 @@ export type FounderAnalytics = {
   threads_30d: number;
 };
 
-const get = <T,>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
+const get = <T>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
 
 export const useResponseDebt = () =>
   useQuery<ResponseDebt, ApiError>({
@@ -112,7 +112,8 @@ export const useResponseDebt = () =>
 export const useThreadEconomics = () =>
   useQuery<ThreadEconomics, ApiError>({
     queryKey: ["analytics", "threads"],
-    queryFn: () => get<ThreadEconomics>("analytics.threadEconomics", "/api/analytics/thread-economics"),
+    queryFn: () =>
+      get<ThreadEconomics>("analytics.threadEconomics", "/api/analytics/thread-economics"),
     retry: false,
   });
 
@@ -126,7 +127,8 @@ export const useDeepWork = () =>
 export const useAttentionLeaks = () =>
   useQuery<{ leaks: AttentionLeak[] }, ApiError>({
     queryKey: ["analytics", "leaks"],
-    queryFn: () => get<{ leaks: AttentionLeak[] }>("analytics.attentionLeaks", "/api/analytics/attention-leaks"),
+    queryFn: () =>
+      get<{ leaks: AttentionLeak[] }>("analytics.attentionLeaks", "/api/analytics/attention-leaks"),
     retry: false,
   });
 
@@ -154,11 +156,14 @@ export const useTeamAnalytics = () =>
 export const useFounderAnalytics = () =>
   useQuery<FounderAnalytics, ApiError>({
     queryKey: ["founder", "analytics"],
-    queryFn: () => get<FounderAnalytics>("founderAnalytics.overview", "/api/founder/analytics/overview"),
+    queryFn: () =>
+      get<FounderAnalytics>("founderAnalytics.overview", "/api/founder/analytics/overview"),
     retry: false,
   });
 
 export const money = (n: number, currency = "GBP") =>
-  new Intl.NumberFormat("en-GB", { style: "currency", currency, maximumFractionDigits: 0 }).format(n);
+  new Intl.NumberFormat("en-GB", { style: "currency", currency, maximumFractionDigits: 0 }).format(
+    n,
+  );
 
 export const hours = (n: number) => (n < 1 ? `${Math.round(n * 60)}m` : `${n.toFixed(1)}h`);

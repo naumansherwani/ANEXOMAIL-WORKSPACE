@@ -144,7 +144,13 @@ export function useDiscussPresence() {
 export function useSilentThreadRescue() {
   const qc = useQueryClient();
   return useMutation<
-    { ok?: boolean; conversation_id?: string; work_item_id?: string; error?: string; note?: string },
+    {
+      ok?: boolean;
+      conversation_id?: string;
+      work_item_id?: string;
+      error?: string;
+      note?: string;
+    },
     ApiError,
     {
       mail_thread_id: string;
@@ -243,15 +249,11 @@ export function useEmailDraftBoard(conversationId?: string | null) {
   return useQuery<EmailDraftBoard, ApiError>({
     queryKey: ["chat", "email", "drafts", conversationId ?? "all"],
     queryFn: () =>
-      chatCall(
-        "chat.email.board",
-        conversationId ? { conversation_id: conversationId } : {},
-        {
-          path: conversationId
-            ? `/api/chat/email/drafts?c=${encodeURIComponent(conversationId)}`
-            : "/api/chat/email/drafts",
-        },
-      ),
+      chatCall("chat.email.board", conversationId ? { conversation_id: conversationId } : {}, {
+        path: conversationId
+          ? `/api/chat/email/drafts?c=${encodeURIComponent(conversationId)}`
+          : "/api/chat/email/drafts",
+      }),
     retry: false,
   });
 }

@@ -61,13 +61,16 @@ function FounderCallsPage() {
 
   const h = q.data?.health ?? {};
   const rows = q.data?.calls ?? [];
-  const num = (v: number | null | undefined, suffix = "") =>
-    v == null ? "—" : `${v}${suffix}`;
+  const num = (v: number | null | undefined, suffix = "") => (v == null ? "—" : `${v}${suffix}`);
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><PhoneCall className="size-3.5" aria-hidden="true" /> ANEXOVideoChat</>}
+        eyebrow={
+          <>
+            <PhoneCall className="size-3.5" aria-hidden="true" /> ANEXOVideoChat
+          </>
+        }
         title="Call engine telemetry — measured, never marketed"
         blurb="Setup time, relay share and recovery rate come from real getStats samples written append-only by the calls themselves. Nothing on this page is estimated."
       >
@@ -88,7 +91,11 @@ function FounderCallsPage() {
               <Stat label="Connected" value={num(h.connected)} hint="media path established" />
               <Stat label="Setup p50" value={num(h.setup_p50_ms, " ms")} />
               <Stat label="Setup p95" value={num(h.setup_p95_ms, " ms")} />
-              <Stat label="TURN relay share" value={num(h.relay_pct, "%")} hint="rest went direct P2P" />
+              <Stat
+                label="TURN relay share"
+                value={num(h.relay_pct, "%")}
+                hint="rest went direct P2P"
+              />
               <Stat label="Recoveries per call" value={num(h.reconnect_rate)} hint="ICE restarts" />
             </div>
 
@@ -96,17 +103,33 @@ function FounderCallsPage() {
               <table className="w-full min-w-[52rem] text-left text-xs">
                 <thead className="bg-card/70 text-muted-foreground">
                   <tr>
-                    {["Started", "Setup", "Path", "Signaling", "RTT", "Jitter", "Loss", "Bitrate", "FPS", "Res", "Codec", "Restarts"].map(
-                      (c) => (
-                        <th key={c} className="px-3 py-2 font-medium">{c}</th>
-                      ),
-                    )}
+                    {[
+                      "Started",
+                      "Setup",
+                      "Path",
+                      "Signaling",
+                      "RTT",
+                      "Jitter",
+                      "Loss",
+                      "Bitrate",
+                      "FPS",
+                      "Res",
+                      "Codec",
+                      "Restarts",
+                    ].map((c) => (
+                      <th key={c} className="px-3 py-2 font-medium">
+                        {c}
+                      </th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody className="font-mono">
                   {rows.length === 0 ? (
                     <tr>
-                      <td colSpan={12} className="px-3 py-6 text-center font-sans text-muted-foreground">
+                      <td
+                        colSpan={12}
+                        className="px-3 py-6 text-center font-sans text-muted-foreground"
+                      >
                         No calls recorded yet.
                       </td>
                     </tr>

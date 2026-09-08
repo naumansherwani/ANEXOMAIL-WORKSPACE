@@ -5,7 +5,23 @@ import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { ms, useRegressions } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/regressions")({ component: RegressionsPage });
+export const Route = createFileRoute("/app/perf/regressions")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Regressions — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Regressions in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Regressions — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Regressions in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: RegressionsPage,
+});
 
 /** Feature 6 — Regression sentinel: har release ka latency diff + rollback advice. */
 function RegressionsPage() {
@@ -13,18 +29,29 @@ function RegressionsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Activity className="size-3.5" aria-hidden="true" /> Regression sentinel</>}
+        eyebrow={
+          <>
+            <Activity className="size-3.5" aria-hidden="true" /> Regression sentinel
+          </>
+        }
         title="A release that slows you down gets caught"
         blurb="Every release is compared to the one before it, action by action. If something got slower, it is named here with the advice to roll it back."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/perf/regressions"
           skeleton={<StatSkeleton rows={4} />}
         >
           {(d) =>
             d.regressions.length === 0 ? (
-              <p className="ax-caption text-muted-foreground">No regressions detected — every release held its budget.</p>
+              <p className="ax-caption text-muted-foreground">
+                No regressions detected — every release held its budget.
+              </p>
             ) : (
               <ul className="space-y-ax-3">
                 {d.regressions.map((r) => (
@@ -36,21 +63,31 @@ function RegressionsPage() {
                       </span>
                       <span
                         className={
-                          r.state === "open" ? "text-red-400" : r.state === "acknowledged" ? "text-amber-400" : "text-emerald-400"
+                          r.state === "open"
+                            ? "text-red-400"
+                            : r.state === "acknowledged"
+                              ? "text-amber-400"
+                              : "text-emerald-400"
                         }
                       >
                         {r.state}
                       </span>
-                      <span className="ml-auto text-steel">{new Date(r.detected_at).toLocaleString("en-GB")}</span>
+                      <span className="ml-auto text-steel">
+                        {new Date(r.detected_at).toLocaleString("en-GB")}
+                      </span>
                     </div>
                     <ul className="mt-ax-3 space-y-1.5">
                       <Row>
-                        <span className="min-w-0 flex-1 text-muted-foreground">p95 before → after</span>
+                        <span className="min-w-0 flex-1 text-muted-foreground">
+                          p95 before → after
+                        </span>
                         <span className="text-foreground">
                           {ms(r.before_p95_ms)} → {ms(r.after_p95_ms)}
                         </span>
                         <span className="ml-auto text-red-400">
-                          {r.delta_pct == null ? "—" : `${r.delta_pct > 0 ? "+" : ""}${Math.round(r.delta_pct)}%`}
+                          {r.delta_pct == null
+                            ? "—"
+                            : `${r.delta_pct > 0 ? "+" : ""}${Math.round(r.delta_pct)}%`}
                         </span>
                       </Row>
                       {r.advice && (

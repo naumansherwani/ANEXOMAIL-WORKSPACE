@@ -29,8 +29,7 @@ const STEPS = [
   {
     n: "1",
     title: "Create your account",
-    body:
-      "Create an account with an email you already use and secure it with a passkey. No card is asked for, and nothing is charged during the two free days.",
+    body: "Create an account with an email you already use and secure it with a passkey. No card is asked for, and nothing is charged during the two free days.",
     points: [
       "Two days of real but limited workspace access",
       "No card, no auto-charge when the trial ends",
@@ -40,8 +39,7 @@ const STEPS = [
   {
     n: "2",
     title: "Claim your @anexomail.com address",
-    body:
-      "Choose the name you want and it becomes your working mailbox — for example yourname@anexomail.com. It sends and receives real mail from the first minute.",
+    body: "Choose the name you want and it becomes your working mailbox — for example yourname@anexomail.com. It sends and receives real mail from the first minute.",
     points: [
       "Pick any free name, we tell you instantly if it is taken",
       "Real sending and receiving, not a sandbox",
@@ -51,8 +49,7 @@ const STEPS = [
   {
     n: "3",
     title: "Add a recovery account you trust",
-    body:
-      "You choose the recovery route — Gmail, Apple, Outlook, Yahoo, ProtonMail, any address you can open, or your phone number. It is only used to get you back in.",
+    body: "You choose the recovery route — Gmail, Apple, Outlook, Yahoo, ProtonMail, any address you can open, or your phone number. It is only used to get you back in.",
     points: [
       "Any provider you already own — we do not force one on you",
       "Used only for recovery, never for marketing",
@@ -62,8 +59,7 @@ const STEPS = [
   {
     n: "4",
     title: "Turn on passkey sign-in",
-    body:
-      "Set a passkey on the device in your hand — fingerprint or face on your phone, Touch ID or Windows Hello on your laptop. After that, no password to remember or leak.",
+    body: "Set a passkey on the device in your hand — fingerprint or face on your phone, Touch ID or Windows Hello on your laptop. After that, no password to remember or leak.",
     points: [
       "Fingerprint or face on mobile, Touch ID / Windows Hello on laptop",
       "Add one passkey per device you actually use",
@@ -156,7 +152,10 @@ function GetStarted() {
                 <ul className="mt-4 space-y-2">
                   {s.points.map((p) => (
                     <li key={p} className="flex gap-2 text-[13px] text-foreground">
-                      <span aria-hidden className="mt-[7px] size-1.5 shrink-0 rounded-full bg-primary" />
+                      <span
+                        aria-hidden
+                        className="mt-[7px] size-1.5 shrink-0 rounded-full bg-primary"
+                      />
                       <span>{p}</span>
                     </li>
                   ))}
@@ -194,7 +193,10 @@ function GetStarted() {
           </dl>
           <p className="mt-8 text-[13px] text-muted-foreground">
             Stuck anywhere? Email{" "}
-            <a className="font-semibold text-foreground underline" href="mailto:hello@anexomail.com">
+            <a
+              className="font-semibold text-foreground underline"
+              href="mailto:hello@anexomail.com"
+            >
               hello@anexomail.com
             </a>{" "}
             — a person replies, not a ticket robot.

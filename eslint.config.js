@@ -36,5 +36,11 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    // Legacy Bun API (:3100) PostgREST se untyped JSON rows padhta hai — yahan
+    // `any` jaan-boojh kar hai, is liye rule scope mein OFF (frontend par ON).
+    files: ["server/**/*.ts"],
+    rules: { "@typescript-eslint/no-explicit-any": "off" },
+  },
   eslintPluginPrettier,
 );

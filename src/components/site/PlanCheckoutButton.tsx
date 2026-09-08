@@ -62,7 +62,6 @@ export function CheckoutButton({
     }
   };
 
-
   return (
     <div className="mt-7">
       <Button

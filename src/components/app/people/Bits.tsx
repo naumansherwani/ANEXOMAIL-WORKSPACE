@@ -63,13 +63,7 @@ export function Stat({ label, value }: { label: string; value: ReactNode }) {
   );
 }
 
-export function TagChip({
-  name,
-  onRemove,
-}: {
-  name: string;
-  onRemove?: () => void;
-}) {
+export function TagChip({ name, onRemove }: { name: string; onRemove?: () => void }) {
   return (
     <span className="inline-flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[10px] font-medium text-foreground">
       {name}

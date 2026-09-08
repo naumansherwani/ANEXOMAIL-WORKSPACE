@@ -21,12 +21,21 @@ function FounderSecurityPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ShieldAlert className="size-3.5" aria-hidden="true" /> Founder view</>}
+        eyebrow={
+          <>
+            <ShieldAlert className="size-3.5" aria-hidden="true" /> Founder view
+          </>
+        }
         title="Security across the whole platform"
         blurb="Every tenant, every frozen account, every blocked device — one screen, real rows only."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/founder/security/overview"
           skeleton={<StatSkeleton rows={5} />}
         >
@@ -38,14 +47,20 @@ function FounderSecurityPage() {
                 <Stat label="Frozen accounts" value={String(d.frozen_accounts)} />
                 <Stat label="Blocked devices" value={String(d.devices_blocked)} />
                 <Stat label="Failed logins" value={String(d.failed_logins_24h)} hint="last 24h" />
-                <Stat label="Kill switches" value={String(d.kill_switches_30d)} hint="last 30 days" />
+                <Stat
+                  label="Kill switches"
+                  value={String(d.kill_switches_30d)}
+                  hint="last 30 days"
+                />
               </div>
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Needs a look</h3>
               <ul className="mt-ax-3 space-y-1.5">
                 {d.worst_tenants.map((t) => (
                   <Row key={t.tenant}>
-                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{t.tenant}</span>
+                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                      {t.tenant}
+                    </span>
                     <span className="text-muted-foreground">{t.anomalies} anomalies</span>
                     <span className="ml-auto text-steel">{t.failed_logins} failed logins</span>
                   </Row>

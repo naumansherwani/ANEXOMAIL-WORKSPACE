@@ -99,7 +99,11 @@ export function EventDetail({ id }: { id: string }) {
                 post.mutate(
                   { event_id: event.id },
                   {
-                    onSuccess: () => notify.done("Posted to thread", "Decisions and actions are in the conversation."),
+                    onSuccess: () =>
+                      notify.done(
+                        "Posted to thread",
+                        "Decisions and actions are in the conversation.",
+                      ),
                     onError: (error) =>
                       notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not post", {
                         description: error.message,
@@ -150,7 +154,9 @@ export function EventDetail({ id }: { id: string }) {
           <ul className="mt-ax-2 divide-y divide-border rounded-md border border-border">
             {tasks.map((t) => (
               <li key={t.id} className="flex items-center gap-ax-3 px-ax-3 py-ax-2">
-                <span className="min-w-0 flex-1 truncate text-[13px] text-foreground">{t.title}</span>
+                <span className="min-w-0 flex-1 truncate text-[13px] text-foreground">
+                  {t.title}
+                </span>
                 <span className="ax-caption shrink-0 uppercase text-steel">{t.status}</span>
               </li>
             ))}

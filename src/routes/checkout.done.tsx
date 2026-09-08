@@ -34,7 +34,6 @@ function CheckoutDonePage() {
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "missing">("loading");
   const [detail, setDetail] = useState<string>("");
 
-
   useEffect(() => {
     if (!checkoutId) {
       setStatus("missing");
@@ -102,7 +101,6 @@ function CheckoutDonePage() {
             </Button>
           </div>
         )}
-
 
         {status === "failed" && (
           <div className="space-y-4 rounded-xl border p-6 bg-destructive/5 border-destructive/20">

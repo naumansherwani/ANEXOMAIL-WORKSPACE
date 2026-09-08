@@ -62,7 +62,7 @@ export type CheckoutResult = {
   note: string | null;
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useAiWallet() {
@@ -83,12 +83,17 @@ export function useCreditHistory() {
 
 export function useUsageAnalytics(days = 30) {
   return useQuery<
-    { series: UsagePoint[]; by_surface: UsageBySurface[]; total_credits: number; total_cost: number; currency: string },
+    {
+      series: UsagePoint[];
+      by_surface: UsageBySurface[];
+      total_credits: number;
+      total_cost: number;
+      currency: string;
+    },
     ApiError
   >({
     queryKey: ["ai-billing", "usage", days],
-    queryFn: () =>
-      get("aiBilling.usage", `/api/ai/billing/usage?days=${days}`, { days }),
+    queryFn: () => get("aiBilling.usage", `/api/ai/billing/usage?days=${days}`, { days }),
     retry: false,
   });
 }

@@ -126,7 +126,11 @@ export function useExperience() {
     // Calm is a shortcut for "animations: none" — keep the two from drifting.
     const animations: Animations =
       patch.animations ??
-      (patch.calm === true ? "none" : patch.calm === false && current.animations === "none" ? "full" : current.animations);
+      (patch.calm === true
+        ? "none"
+        : patch.calm === false && current.animations === "none"
+          ? "full"
+          : current.animations);
     const next = withCalm({
       animations,
       speed: patch.speed ?? current.speed,
@@ -300,8 +304,9 @@ export function useFrameWatch() {
 
   useEffect(() => {
     if (typeof PerformanceObserver === "undefined") return;
-    const supported = (PerformanceObserver as unknown as { supportedEntryTypes?: string[] })
-      .supportedEntryTypes ?? [];
+    const supported =
+      (PerformanceObserver as unknown as { supportedEntryTypes?: string[] }).supportedEntryTypes ??
+      [];
     const type = supported.includes("long-animation-frame")
       ? "long-animation-frame"
       : supported.includes("longtask")
@@ -402,18 +407,29 @@ export function auditFocus(): { issues: FocusIssue[]; checked: number } {
 /* --------------------------- earned delight ----------------------------- */
 
 export type Achievement =
-  | "inbox-zero"
-  | "promise-kept"
-  | "dns-green"
-  | "migration-delivered"
-  | "first-paying-seat";
+  "inbox-zero" | "promise-kept" | "dns-green" | "migration-delivered" | "first-paying-seat";
 
 export const ACHIEVEMENTS: Record<Achievement, { title: string; body: string }> = {
-  "inbox-zero": { title: "Inbox zero", body: "Every thread answered, archived or scheduled. Nothing owes you." },
-  "promise-kept": { title: "Promise kept", body: "You said you would, and the thread proves you did." },
-  "dns-green": { title: "Ownership proven", body: "MX, SPF, DKIM and DMARC are all green on your own domain." },
-  "migration-delivered": { title: "Migration delivered", body: "Message-for-message verified. The old provider can be switched off." },
-  "first-paying-seat": { title: "First paying seat", body: "Real money, real recurring. The road to £500/month is open." },
+  "inbox-zero": {
+    title: "Inbox zero",
+    body: "Every thread answered, archived or scheduled. Nothing owes you.",
+  },
+  "promise-kept": {
+    title: "Promise kept",
+    body: "You said you would, and the thread proves you did.",
+  },
+  "dns-green": {
+    title: "Ownership proven",
+    body: "MX, SPF, DKIM and DMARC are all green on your own domain.",
+  },
+  "migration-delivered": {
+    title: "Migration delivered",
+    body: "Message-for-message verified. The old provider can be switched off.",
+  },
+  "first-paying-seat": {
+    title: "First paying seat",
+    body: "Real money, real recurring. The road to £500/month is open.",
+  },
 };
 
 /** Fires a celebration only when the work is genuinely finished. */

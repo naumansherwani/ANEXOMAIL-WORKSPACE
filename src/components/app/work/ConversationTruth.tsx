@@ -28,8 +28,7 @@ import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
 
-const clock = (iso: string) =>
-  new Date(iso).toISOString().slice(11, 16) + " UTC";
+const clock = (iso: string) => new Date(iso).toISOString().slice(11, 16) + " UTC";
 
 const day = (iso: string) => new Date(iso).toISOString().slice(0, 10);
 
@@ -181,9 +180,7 @@ export function ConversationTruth() {
                     event={e}
                     showDay={i === 0 || day(e.at) !== day(timeline.data!.events[i - 1]!.at)}
                     proofOpen={proof === e.object_id && e.object_type === "message"}
-                    onProof={() =>
-                      setProof(proof === e.object_id ? null : e.object_id)
-                    }
+                    onProof={() => setProof(proof === e.object_id ? null : e.object_id)}
                   />
                 ))}
               </ol>
@@ -208,8 +205,7 @@ function HealthReasons({ health }: { health: ConversationHealth }) {
         <ul className="mt-ax-2 space-y-1">
           {health.reasons.map((r) => (
             <li key={r.reason} className="ax-caption text-muted-foreground">
-              · {r.reason}{" "}
-              <span className="text-steel">(from {r.evidence})</span>
+              · {r.reason} <span className="text-steel">(from {r.evidence})</span>
             </li>
           ))}
         </ul>
@@ -395,7 +391,9 @@ function Collisions({ items, loading }: { items: Collision[]; loading: boolean }
           <p className="ax-caption mt-1 text-steel">
             Waiting on: {c.evidence.blocker?.title ?? "another commitment"}
             {c.evidence.blocker?.owner ? ` · ${c.evidence.blocker.owner}` : ""}
-            {c.evidence.blocker?.due_at ? ` · was due ${relativeTime(c.evidence.blocker.due_at)}` : ""}
+            {c.evidence.blocker?.due_at
+              ? ` · was due ${relativeTime(c.evidence.blocker.due_at)}`
+              : ""}
           </p>
           <p className="ax-caption mt-1 text-steel">
             {c.severity === "critical" ? "Already late" : "At risk"} · recorded link, not a guess

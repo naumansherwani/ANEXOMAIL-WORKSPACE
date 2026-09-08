@@ -95,7 +95,11 @@ export function useReadWithoutResponse(hours = 24) {
   return useQuery<SilentBoard, ApiError>({
     queryKey: ["chat", "receipts", "silent", hours],
     queryFn: () =>
-      chatCall("chat.receipt.silent", { hours }, { path: `/api/chat/receipts/silent?hours=${hours}` }),
+      chatCall(
+        "chat.receipt.silent",
+        { hours },
+        { path: `/api/chat/receipts/silent?hours=${hours}` },
+      ),
     retry: false,
   });
 }
@@ -158,11 +162,7 @@ export function useIssueCertificate() {
 /* ── zero-loss handover pack ─────────────────────────────────────────── */
 
 export type HandoverStatus =
-  | "confirmed_fact"
-  | "pending"
-  | "overdue"
-  | "historical_decision"
-  | "open_dependency";
+  "confirmed_fact" | "pending" | "overdue" | "historical_decision" | "open_dependency";
 
 export const HANDOVER_STATUS_LABEL: Record<HandoverStatus, string> = {
   confirmed_fact: "Confirmed fact",

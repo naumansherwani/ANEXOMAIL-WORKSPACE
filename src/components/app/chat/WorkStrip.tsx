@@ -1,12 +1,7 @@
 import { CheckCircle2, Circle, Plus } from "lucide-react";
 import { useState } from "react";
 
-import {
-  useCreateWorkItem,
-  useSetWorkState,
-  useWorkItems,
-  type ChatWorkItem,
-} from "@/lib/chat";
+import { useCreateWorkItem, useSetWorkState, useWorkItems, type ChatWorkItem } from "@/lib/chat";
 
 /**
  * PHASE 3 — business objects on the durable engine.

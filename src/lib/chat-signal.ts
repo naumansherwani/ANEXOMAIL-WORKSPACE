@@ -19,6 +19,15 @@ import { createClient, type RealtimeChannel, type SupabaseClient } from "@supaba
 import { sessionToken } from "./api";
 import { chatCall } from "./chat-transport";
 
+type WebTransportLike = {
+  ready: Promise<void>;
+  close: () => void;
+  createBidirectionalStream: () => Promise<{
+    readable: ReadableStream<Uint8Array>;
+    writable: WritableStream<Uint8Array>;
+  }>;
+};
+
 export type SignalKind = "offer" | "answer" | "ice" | "ice-end" | "restart" | "end" | "ring";
 
 export type SignalFrame = {
@@ -30,7 +39,7 @@ export type SignalFrame = {
 
 export type SignalTransport = "quic" | "realtime" | "rows";
 
-const WT_URL = (import.meta.env['VITE_ANEXOCHAT_WT_URL'] as string | undefined)?.replace(/\/$/, "");
+const WT_URL = (import.meta.env["VITE_ANEXOCHAT_WT_URL"] as string | undefined)?.replace(/\/$/, "");
 
 /**
  * PHASE 31A — QUIC signaling stream (Rust engine, `mode:"signal"`).
@@ -52,7 +61,8 @@ function openQuicSignal(opts: {
 
   void (async () => {
     try {
-      const WT = (window as unknown as { WebTransport: new (url: string) => any }).WebTransport;
+      const WT = (window as unknown as { WebTransport: new (url: string) => WebTransportLike })
+        .WebTransport;
       const wt = new WT(`${WT_URL}/wt/chat`);
       transport = wt;
       await wt.ready;
@@ -88,15 +98,15 @@ function openQuicSignal(opts: {
           } catch {
             continue;
           }
-          if (frame['type'] === "ready") {
+          if (frame["type"] === "ready") {
             opts.onReady(true);
             continue;
           }
-          if (frame['type'] === "error") {
+          if (frame["type"] === "error") {
             opts.onReady(false);
             continue;
           }
-          if (frame['kind']) opts.onFrame(frame as unknown as SignalFrame);
+          if (frame["kind"]) opts.onFrame(frame as unknown as SignalFrame);
         }
       }
     } catch {
@@ -125,9 +135,8 @@ function openQuicSignal(opts: {
   };
 }
 
-
-const RT_URL = import.meta.env['VITE_SUPABASE4_URL'] as string | undefined;
-const RT_KEY = import.meta.env['VITE_SUPABASE4_PUBLISHABLE_KEY'] as string | undefined;
+const RT_URL = import.meta.env["VITE_SUPABASE4_URL"] as string | undefined;
+const RT_KEY = import.meta.env["VITE_SUPABASE4_PUBLISHABLE_KEY"] as string | undefined;
 
 let client: SupabaseClient | null = null;
 

@@ -8,7 +8,27 @@ import { Bar } from "@/components/app/release/ReleaseBits";
 import { notify } from "@/lib/notify";
 import { useChecklist, useChecklistUpdate, type ChecklistItem } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/checklist")({ component: ChecklistPage });
+export const Route = createFileRoute("/app/founder_/launch/checklist")({
+  head: () => ({
+    meta: [
+      { title: "Launch · Checklist · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · Checklist · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · Checklist · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "Launch · Checklist · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: ChecklistPage,
+});
 
 const NEXT: Record<ChecklistItem["state"], ChecklistItem["state"]> = {
   open: "done",
@@ -24,12 +44,21 @@ function ChecklistPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ClipboardCheck className="size-3.5" aria-hidden="true" /> Production checklist</>}
+        eyebrow={
+          <>
+            <ClipboardCheck className="size-3.5" aria-hidden="true" /> Production checklist
+          </>
+        }
         title="Ticked by hand, enforced by code"
         blurb="Tap a row to cycle open → done → blocker. Anything marked blocker keeps the release gate closed."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/founder/release/checklist"
           skeleton={<StatSkeleton rows={6} />}
         >
@@ -38,7 +67,12 @@ function ChecklistPage() {
             const areas = [...new Set(d.items.map((i) => i.area))];
             return (
               <>
-                <Bar label={`${done} of ${d.items.length} complete`} value={done} max={d.items.length} tone="bg-success" />
+                <Bar
+                  label={`${done} of ${d.items.length} complete`}
+                  value={done}
+                  max={d.items.length}
+                  tone="bg-success"
+                />
                 {areas.map((area) => (
                   <section key={area} className="mt-ax-5">
                     <h3 className="ax-heading text-foreground">{area}</h3>
@@ -66,15 +100,27 @@ function ChecklistPage() {
                               className="ax-press"
                               aria-label={`Cycle ${i.label}`}
                             >
-                              <Verdict verdict={i.state === "done" ? "green" : i.state === "blocker" ? "fail" : "watch"}>
+                              <Verdict
+                                verdict={
+                                  i.state === "done"
+                                    ? "green"
+                                    : i.state === "blocker"
+                                      ? "fail"
+                                      : "watch"
+                                }
+                              >
                                 {i.state}
                               </Verdict>
                             </button>
                             <span className="min-w-0 flex-1">
                               <span className="block font-semibold text-foreground">{i.label}</span>
-                              {i.detail && <span className="block truncate text-steel">{i.detail}</span>}
+                              {i.detail && (
+                                <span className="block truncate text-steel">{i.detail}</span>
+                              )}
                             </span>
-                            <span className="ml-auto text-muted-foreground">{i.owner ?? "unassigned"}</span>
+                            <span className="ml-auto text-muted-foreground">
+                              {i.owner ?? "unassigned"}
+                            </span>
                           </Row>
                         ))}
                     </ul>

@@ -275,7 +275,7 @@ export function useChatSend(conversationId: string | null) {
     ) => {
       if (!conversationId) throw new Error("No conversation open.");
       const body = typeof vars === "string" ? vars : vars.body;
-      const replyTo = typeof vars === "string" ? null : vars.reply_to_id ?? null;
+      const replyTo = typeof vars === "string" ? null : (vars.reply_to_id ?? null);
       const attachmentIds = typeof vars === "string" ? [] : (vars.attachment_ids ?? []);
       const item: OutboxItem = {
         client_msg_id: newClientMsgId(),

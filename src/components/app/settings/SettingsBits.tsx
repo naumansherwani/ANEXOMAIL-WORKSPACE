@@ -19,7 +19,15 @@ import { cn } from "@/lib/utils";
  * Phase 23 — one row rhythm for every setting. Har row 4 locked features carry
  * karta hai: Explain (Leo), Blast radius, Simulate (dry run), Time Machine.
  */
-export function SettingsScope({ scope, title, blurb }: { scope: Scope; title: string; blurb: string }) {
+export function SettingsScope({
+  scope,
+  title,
+  blurb,
+}: {
+  scope: Scope;
+  title: string;
+  blurb: string;
+}) {
   const q = useSettings(scope);
 
   return (
@@ -76,7 +84,9 @@ export function SettingRow({ setting }: { setting: Setting }) {
               <span
                 className={cn(
                   "rounded-md px-2 py-0.5 font-semibold",
-                  setting.drift === "risky" ? "bg-destructive/10 text-destructive" : "bg-secondary text-steel",
+                  setting.drift === "risky"
+                    ? "bg-destructive/10 text-destructive"
+                    : "bg-secondary text-steel",
                 )}
               >
                 {setting.drift === "risky" ? "Risky vs baseline" : "Looser than baseline"}
@@ -91,9 +101,24 @@ export function SettingRow({ setting }: { setting: Setting }) {
         </div>
 
         <div className="flex shrink-0 flex-wrap gap-1">
-          <Chip icon={Info} label="Explain" active={open === "explain"} onClick={() => setOpen(open === "explain" ? null : "explain")} />
-          <Chip icon={Users} label="Blast radius" active={open === "blast"} onClick={() => setOpen(open === "blast" ? null : "blast")} />
-          <Chip icon={History} label="History" active={open === "history"} onClick={() => setOpen(open === "history" ? null : "history")} />
+          <Chip
+            icon={Info}
+            label="Explain"
+            active={open === "explain"}
+            onClick={() => setOpen(open === "explain" ? null : "explain")}
+          />
+          <Chip
+            icon={Users}
+            label="Blast radius"
+            active={open === "blast"}
+            onClick={() => setOpen(open === "blast" ? null : "blast")}
+          />
+          <Chip
+            icon={History}
+            label="History"
+            active={open === "history"}
+            onClick={() => setOpen(open === "history" ? null : "history")}
+          />
           {setting.kind === "toggle" && !locked && (
             <button
               type="button"
@@ -129,7 +154,8 @@ export function SettingRow({ setting }: { setting: Setting }) {
             <>
               <p className="flex items-center gap-2 text-[12px] font-semibold text-foreground">
                 <ShieldAlert className="size-3.5" aria-hidden="true" />
-                {b.members_affected} members · {b.mailboxes_affected} mailboxes · {b.automations_affected} automations
+                {b.members_affected} members · {b.mailboxes_affected} mailboxes ·{" "}
+                {b.automations_affected} automations
               </p>
               {b.breaks.length > 0 && (
                 <ul className="ax-caption mt-2 list-disc space-y-0.5 pl-4 text-muted-foreground">
@@ -139,7 +165,8 @@ export function SettingRow({ setting }: { setting: Setting }) {
                 </ul>
               )}
               <p className="ax-caption mt-2 text-steel">
-                Severity {b.severity} · {b.reversible ? "reversible in one click" : "not reversible"}
+                Severity {b.severity} ·{" "}
+                {b.reversible ? "reversible in one click" : "not reversible"}
               </p>
             </>
           )}
@@ -155,7 +182,9 @@ export function SettingRow({ setting }: { setting: Setting }) {
               <ul className="space-y-1.5">
                 {h.versions.map((v) => (
                   <li key={v.id} className="flex items-center gap-ax-3 text-[11px]">
-                    <span className="text-muted-foreground">{new Date(v.changed_at).toLocaleString("en-GB")}</span>
+                    <span className="text-muted-foreground">
+                      {new Date(v.changed_at).toLocaleString("en-GB")}
+                    </span>
                     <span className="text-foreground">
                       {v.from_value ?? "—"} → {v.to_value ?? "—"}
                     </span>

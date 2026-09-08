@@ -13,7 +13,7 @@
 
 import { ApiError, api, sessionToken } from "./api";
 
-const BASE = (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ?? "";
+const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
 
 /** Rust service ka tRPC-compatible endpoint: POST {BASE}/rpc/{procedure} */
 export async function rpc<T>(procedure: string, input?: unknown): Promise<T> {
@@ -40,7 +40,8 @@ export async function rpc<T>(procedure: string, input?: unknown): Promise<T> {
   if (!res.ok) {
     const code = (json as { error?: { code?: string } } | null)?.error?.code;
     const message =
-      (json as { error?: { message?: string } } | null)?.error?.message ?? `RPC ${procedure} failed`;
+      (json as { error?: { message?: string } } | null)?.error?.message ??
+      `RPC ${procedure} failed`;
     throw new ApiError(message, res.status, code);
   }
 

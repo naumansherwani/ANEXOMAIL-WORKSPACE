@@ -42,7 +42,8 @@ export const Route = createFileRoute("/app/integrations")({
       { property: "og:title", content: "Integrations — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "Native mailbox connections, one-run migration, delivery proof and one-click export.",
+        content:
+          "Native mailbox connections, one-run migration, delivery proof and one-click export.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -135,7 +136,11 @@ function ProvidersTab() {
                     <div className="min-w-0">
                       <p className="text-[14px] font-bold text-foreground">{p.label}</p>
                       <p className="ax-caption mt-1 text-muted-foreground">
-                        {p.kind === "oauth" ? "One-tap sign-in" : p.kind === "bridge" ? "Bridge" : "Host + credentials"}
+                        {p.kind === "oauth"
+                          ? "One-tap sign-in"
+                          : p.kind === "bridge"
+                            ? "Bridge"
+                            : "Host + credentials"}
                         {p.can_migrate ? " · migration" : ""}
                         {p.can_sync ? " · live sync" : ""}
                         {p.can_send ? " · sending" : ""}
@@ -212,7 +217,8 @@ function ProvidersTab() {
                         disconnect.mutate(
                           { id: c.id },
                           {
-                            onSuccess: () => notify.done("Disconnected", "Tokens revoked on the server."),
+                            onSuccess: () =>
+                              notify.done("Disconnected", "Tokens revoked on the server."),
                             onError: (err) =>
                               notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
                                 description: err.isNotImplemented
@@ -250,8 +256,8 @@ function MigrationTab() {
     <>
       <h2 className="ax-heading text-foreground">Move in — one run, nothing lost</h2>
       <p className="ax-caption mt-1 text-muted-foreground">
-        Threads, folders, attachments, read state and dates stay intact. Mirror keeps syncing until you
-        cut over; copy runs once.
+        Threads, folders, attachments, read state and dates stay intact. Mirror keeps syncing until
+        you cut over; copy runs once.
       </p>
 
       <form
@@ -352,7 +358,9 @@ function MigrationTab() {
                         style={{ width: `${pct(j.done, j.total)}%` }}
                       />
                     </span>
-                    {j.last_error && <p className="ax-caption mt-1 text-destructive">{j.last_error}</p>}
+                    {j.last_error && (
+                      <p className="ax-caption mt-1 text-destructive">{j.last_error}</p>
+                    )}
                     <div className="mt-ax-3 flex gap-1.5">
                       {(["pause", "resume", "retry", "cancel"] as const).map((a) => (
                         <button
@@ -418,7 +426,10 @@ function DeliveryTab() {
               </div>
               <ul className="mt-ax-4 grid gap-1.5 sm:grid-cols-2">
                 {h.checks.map((c) => (
-                  <li key={c.key} className="rounded-xl border border-border px-ax-4 py-ax-3 text-[12px]">
+                  <li
+                    key={c.key}
+                    className="rounded-xl border border-border px-ax-4 py-ax-3 text-[12px]"
+                  >
                     <div className="flex items-center gap-2">
                       <StateChip state={c.state} />
                       <span className="font-semibold text-foreground">{c.key}</span>
@@ -502,7 +513,8 @@ function ExportTab() {
             request.mutate(
               { scope, format },
               {
-                onSuccess: () => notify.done("Export queued", "Download link appears below when ready."),
+                onSuccess: () =>
+                  notify.done("Export queued", "Download link appears below when ready."),
                 onError: (err) =>
                   notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
                     description: err.isNotImplemented
@@ -637,7 +649,9 @@ function StateChip({ state }: { state: string }) {
         ? "border-destructive/60 text-destructive"
         : "border-border text-muted-foreground";
   return (
-    <span className={cn("rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase", tone)}>
+    <span
+      className={cn("rounded-md border px-1.5 py-0.5 text-[10px] font-semibold uppercase", tone)}
+    >
       {state.replace(/_/g, " ")}
     </span>
   );

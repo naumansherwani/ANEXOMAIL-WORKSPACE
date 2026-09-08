@@ -2,7 +2,14 @@ import { GitCommitHorizontal } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Verdict } from "@/components/app/premium/PremiumBits";
-import { GATE_COPY, ms, verdictOf, type CheckStatus, type Deployment, type Gate } from "@/lib/release";
+import {
+  GATE_COPY,
+  ms,
+  verdictOf,
+  type CheckStatus,
+  type Deployment,
+  type Gate,
+} from "@/lib/release";
 import { cn } from "@/lib/utils";
 
 /** Phase 30 — launch primitives. Presentation only; every value comes from the server. */
@@ -94,7 +101,17 @@ export function ReceiptCard({ deployment }: { deployment: Deployment }) {
   );
 }
 
-export function Bar({ label, value, max, tone }: { label: string; value: number; max: number; tone: string }) {
+export function Bar({
+  label,
+  value,
+  max,
+  tone,
+}: {
+  label: string;
+  value: number;
+  max: number;
+  tone: string;
+}) {
   const pct = max <= 0 ? 0 : Math.min(100, Math.round((value / max) * 100));
   return (
     <div>

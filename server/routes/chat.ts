@@ -510,7 +510,11 @@ chatRouter.get("/video/turn", async (req, res) => {
     });
   }
   // TURN configure na ho to jhoot nahi — sirf STUN bhejte hain.
-  res.json({ ice_servers: iceServers, ttl_seconds: TURN_TTL, turn: Boolean(TURN_HOST && TURN_SECRET) });
+  res.json({
+    ice_servers: iceServers,
+    ttl_seconds: TURN_TTL,
+    turn: Boolean(TURN_HOST && TURN_SECRET),
+  });
 });
 
 chatRouter.post("/video/call/start", async (req, res) => {

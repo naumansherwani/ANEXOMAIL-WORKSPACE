@@ -15,6 +15,24 @@ import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/founder_/ai/prompts")({
+  head: () => ({
+    meta: [
+      { title: "AI · Prompts · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "AI · Prompts · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "AI · Prompts · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "AI · Prompts · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Prompts,
 });
 

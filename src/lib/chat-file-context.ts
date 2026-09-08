@@ -14,13 +14,7 @@ import type { ApiError } from "@/lib/api";
 import { chatCall } from "@/lib/chat-transport";
 
 export type FileLinkObject =
-  | "work_item"
-  | "decision"
-  | "promise"
-  | "mail_thread"
-  | "message"
-  | "person"
-  | "company";
+  "work_item" | "decision" | "promise" | "mail_thread" | "message" | "person" | "company";
 
 export type FileLink = {
   id: string;

@@ -8,11 +8,7 @@ import { useNote, useSaveNote } from "@/lib/calendar";
  * Notes are a live doc attached to a thread or a meeting — never a separate
  * app. Autosave is debounced; the server owns the stored body.
  */
-export function NoteDoc({
-  target,
-}: {
-  target: { thread_id?: string; event_id?: string };
-}) {
+export function NoteDoc({ target }: { target: { thread_id?: string; event_id?: string } }) {
   const query = useNote(target);
   const save = useSaveNote();
   const [body, setBody] = useState<string | null>(null);
@@ -22,9 +18,12 @@ export function NoteDoc({
     if (query.data && body === null) setBody(query.data.note?.body ?? "");
   }, [query.data, body]);
 
-  useEffect(() => () => {
-    if (timer.current) clearTimeout(timer.current);
-  }, []);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
 
   if (query.error) {
     if (query.error.isNotImplemented || query.error.code === "no_api_url") {

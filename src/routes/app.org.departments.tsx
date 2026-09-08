@@ -76,7 +76,9 @@ function DepartmentsPage() {
                     <p>{d.shared_address ?? "no shared address yet"}</p>
                     <p className="flex items-center gap-1.5">
                       <Timer className="size-3.5" aria-hidden="true" />
-                      {d.sla_minutes === null ? "no SLA set" : `first reply within ${d.sla_minutes} min`}
+                      {d.sla_minutes === null
+                        ? "no SLA set"
+                        : `first reply within ${d.sla_minutes} min`}
                     </p>
                     <p>{d.open_threads} open threads</p>
                     <p>{money(d.budget_monthly, d.currency)}</p>

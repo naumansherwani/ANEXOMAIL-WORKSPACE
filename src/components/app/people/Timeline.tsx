@@ -1,5 +1,12 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowDownLeft, ArrowUpRight, CalendarDays, CheckSquare, StickyNote, Tag } from "lucide-react";
+import {
+  ArrowDownLeft,
+  ArrowUpRight,
+  CalendarDays,
+  CheckSquare,
+  StickyNote,
+  Tag,
+} from "lucide-react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
@@ -36,7 +43,8 @@ export function Timeline({
   endpoint: string;
 }) {
   if (error) {
-    if (error.isNotImplemented || error.code === "no_api_url") return <NotWired endpoint={endpoint} />;
+    if (error.isNotImplemented || error.code === "no_api_url")
+      return <NotWired endpoint={endpoint} />;
     return <ErrorState body={error.message} onRetry={onRetry} />;
   }
   if (isPending) return <ListSkeleton rows={5} label="Loading history" />;

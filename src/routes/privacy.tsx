@@ -25,9 +25,7 @@ export const Route = createFileRoute("/privacy")({
 function PrivacyPage() {
   return (
     <main className="ax-container py-16">
-      <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">
-        Policy
-      </p>
+      <p className="text-xs font-semibold tracking-wider text-muted-foreground uppercase">Policy</p>
       <h1 className="ax-display mt-3 text-foreground">Privacy &amp; account integrity</h1>
 
       <section className="mt-10 max-w-3xl space-y-4">

@@ -31,6 +31,14 @@
 - [ ] SQL ko ek-command self-healing apply mein wire karna; har purana conflicting function/table safely reconcile ho aur `GREEN=59 RED=0` live proof aaye
 
 
+## AUDIT 8 Sep 2026 (poora repo)
+- [x] Poore repo ke 1876 code errors 0 par — type-check + build green
+- [x] Har page ka apna browser/search title (55 pages jo khali the)
+- [x] CRM ke dono host repo-managed (`aicrm` + AI-free `crm`) — deploy khud wire karta hai
+- [x] web-gate: CRM do host · AI host ke andar ke pages · har host par HTTP/3 · har awam host par founder-leak check
+- [ ] SERVER: `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` ka GREEN output (CRM hosts ke A record ke baad)
+- [ ] SERVER: mail 13 addresses — SQL + `deploy-mail.sh` + `mail-gate.sh` GREEN
+
 ## WIRE GATES (sirf copy-paste — tarteeb se)
 - [x] docs/wire/04-rust-engine.md — deploy + gate (/rpc/* asli response, HTTP/3, WT sach)
 - [x] docs/wire/05-caddy-frontend.md — frontend build + Caddy sync + har route 200 gate (awam · founder · AI)

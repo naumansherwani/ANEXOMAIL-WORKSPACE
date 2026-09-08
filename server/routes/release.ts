@@ -110,7 +110,14 @@ async function tableProbe(suite: string, table: string): Promise<Probe> {
     const { count, error } = await db!.from(table).select("*", { count: "exact", head: true });
     const ms = Date.now() - started;
     if (error) {
-      return { suite, name: `table ${table}`, status: "fail", ms, code: null, detail: error.message };
+      return {
+        suite,
+        name: `table ${table}`,
+        status: "fail",
+        ms,
+        code: null,
+        detail: error.message,
+      };
     }
     return {
       suite,
@@ -201,13 +208,32 @@ async function ownershipProbes(): Promise<Probe[]> {
     .limit(40);
   if (error) {
     return [
-      { suite: "ownership", name: "diagnostic probes", status: "fail", ms: Date.now() - started, code: null, detail: error.message },
+      {
+        suite: "ownership",
+        name: "diagnostic probes",
+        status: "fail",
+        ms: Date.now() - started,
+        code: null,
+        detail: error.message,
+      },
     ];
   }
-  const rows = (data ?? []) as { probe: string; target: string | null; result: string; ms: number | null }[];
+  const rows = (data ?? []) as {
+    probe: string;
+    target: string | null;
+    result: string;
+    ms: number | null;
+  }[];
   if (rows.length === 0) {
     return [
-      { suite: "ownership", name: "DNS / DKIM / SPF / DMARC / TLS", status: "warn", ms: null, code: null, detail: "No diagnostics run yet — run Admin → Diagnostics" },
+      {
+        suite: "ownership",
+        name: "DNS / DKIM / SPF / DMARC / TLS",
+        status: "warn",
+        ms: null,
+        code: null,
+        detail: "No diagnostics run yet — run Admin → Diagnostics",
+      },
     ];
   }
   const seen = new Set<string>();
@@ -230,11 +256,32 @@ async function ownershipProbes(): Promise<Probe[]> {
 
 /** Speed suite — perf budgets vs asli samples ka p95. */
 async function speedProbes(): Promise<Probe[]> {
-  const { data: budgets, error: be } = await db!.from("perf_budgets").select("action, label, budget_ms");
-  if (be) return [{ suite: "speed", name: "perf budgets", status: "fail", ms: null, code: null, detail: be.message }];
+  const { data: budgets, error: be } = await db!
+    .from("perf_budgets")
+    .select("action, label, budget_ms");
+  if (be)
+    return [
+      {
+        suite: "speed",
+        name: "perf budgets",
+        status: "fail",
+        ms: null,
+        code: null,
+        detail: be.message,
+      },
+    ];
   const list = (budgets ?? []) as { action: string; label: string; budget_ms: number }[];
   if (list.length === 0) {
-    return [{ suite: "speed", name: "perf budgets", status: "warn", ms: null, code: null, detail: "No budgets seeded" }];
+    return [
+      {
+        suite: "speed",
+        name: "perf budgets",
+        status: "warn",
+        ms: null,
+        code: null,
+        detail: "No budgets seeded",
+      },
+    ];
   }
   const since = new Date(Date.now() - 7 * 86_400_000).toISOString();
   const { data: samples } = await db!
@@ -244,16 +291,31 @@ async function speedProbes(): Promise<Probe[]> {
     .limit(20000);
   const rows = (samples ?? []) as { action: string; duration_ms: number }[];
   return list.map((b) => {
-    const mine = rows.filter((s) => s.action === b.action).map((s) => s.duration_ms).sort((a, c) => a - c);
+    const mine = rows
+      .filter((s) => s.action === b.action)
+      .map((s) => s.duration_ms)
+      .sort((a, c) => a - c);
     if (mine.length === 0) {
-      return { suite: "speed", name: b.label, status: "skip" as const, ms: null, code: null, detail: "no samples in 7 days" };
+      return {
+        suite: "speed",
+        name: b.label,
+        status: "skip" as const,
+        ms: null,
+        code: null,
+        detail: "no samples in 7 days",
+      };
     }
     const i = Math.min(mine.length - 1, Math.max(0, Math.ceil(0.95 * mine.length) - 1));
     const p95 = mine[i] ?? 0;
     return {
       suite: "speed",
       name: b.label,
-      status: p95 <= b.budget_ms ? ("pass" as const) : p95 <= b.budget_ms * 1.5 ? ("warn" as const) : ("fail" as const),
+      status:
+        p95 <= b.budget_ms
+          ? ("pass" as const)
+          : p95 <= b.budget_ms * 1.5
+            ? ("warn" as const)
+            : ("fail" as const),
       ms: p95,
       code: null,
       detail: `p95 ${Math.round(p95)}ms vs budget ${b.budget_ms}ms · ${mine.length} samples`,
@@ -264,19 +326,31 @@ async function speedProbes(): Promise<Probe[]> {
 /** Mail delivery suite — held mail, bounces, domain verdicts. */
 async function mailProbes(): Promise<Probe[]> {
   const out: Probe[] = [];
-  const { data: domains, error: de } = await db!.from("mail_domains").select("domain, dkim, spf, dmarc, mx");
+  const { data: domains, error: de } = await db!
+    .from("mail_domains")
+    .select("domain, dkim, spf, dmarc, mx");
   if (de) {
-    out.push({ suite: "mail", name: "mail_domains", status: "fail", ms: null, code: null, detail: de.message });
+    out.push({
+      suite: "mail",
+      name: "mail_domains",
+      status: "fail",
+      ms: null,
+      code: null,
+      detail: de.message,
+    });
   } else {
     for (const d of (domains ?? []) as any[]) {
-      const bad = ["dkim", "spf", "dmarc", "mx"].filter((k) => d[k] && String(d[k]) !== "pass" && String(d[k]) !== "green" && d[k] !== true);
+      const bad = ["dkim", "spf", "dmarc", "mx"].filter(
+        (k) => d[k] && String(d[k]) !== "pass" && String(d[k]) !== "green" && d[k] !== true,
+      );
       out.push({
         suite: "mail",
         name: `domain ${d.domain}`,
         status: bad.length === 0 ? "pass" : "fail",
         ms: null,
         code: null,
-        detail: bad.length === 0 ? "MX / SPF / DKIM / DMARC green" : `needs attention: ${bad.join(", ")}`,
+        detail:
+          bad.length === 0 ? "MX / SPF / DKIM / DMARC green" : `needs attention: ${bad.join(", ")}`,
       });
     }
   }
@@ -363,7 +437,10 @@ founderRouter.post("/release/run", async (req, res) => {
       code: p.code,
       detail: p.detail,
     }));
-    const { data: inserted, error: checkError } = await db!.from("release_checks").insert(rows).select();
+    const { data: inserted, error: checkError } = await db!
+      .from("release_checks")
+      .insert(rows)
+      .select();
     if (checkError) return fail(res, checkError);
 
     res.json({
@@ -473,7 +550,12 @@ founderRouter.get("/release/overview", async (req, res) => {
 
     let blockers: { id: string; label: string; suite: string; detail: string | null }[] = items
       .filter((i) => i.state === "blocker")
-      .map((i) => ({ id: i.id, label: i.label, suite: `checklist · ${i.area}`, detail: i.detail ?? null }));
+      .map((i) => ({
+        id: i.id,
+        label: i.label,
+        suite: `checklist · ${i.area}`,
+        detail: i.detail ?? null,
+      }));
 
     if (latest && latest.failed > 0) {
       const { data: failedChecks } = await db!
@@ -539,7 +621,9 @@ founderRouter.post("/release/checklist/item", async (req, res) => {
   const id = String(req.body?.id || "");
   const state = String(req.body?.state || "");
   if (!id || !["open", "done", "blocker"].includes(state)) {
-    return res.status(400).json({ error: "bad_request", detail: "id + state (open|done|blocker) required" });
+    return res
+      .status(400)
+      .json({ error: "bad_request", detail: "id + state (open|done|blocker) required" });
   }
   try {
     const { data, error } = await db!
@@ -614,9 +698,15 @@ founderRouter.post("/release/lock", async (req, res) => {
   if (!version) return res.status(400).json({ error: "bad_request", detail: "version required" });
   const overrideReason = req.body?.override_reason ? String(req.body.override_reason) : null;
   try {
-    const { data: existing } = await db!.from("release_locks").select("id").eq("version", version).limit(1);
+    const { data: existing } = await db!
+      .from("release_locks")
+      .select("id")
+      .eq("version", version)
+      .limit(1);
     if ((existing ?? []).length > 0) {
-      return res.status(409).json({ error: "already_locked", detail: `v${version} is already frozen` });
+      return res
+        .status(409)
+        .json({ error: "already_locked", detail: `v${version} is already frozen` });
     }
 
     const { data: runs } = await db!
@@ -643,9 +733,16 @@ founderRouter.post("/release/lock", async (req, res) => {
     const frozenAt = new Date().toISOString();
     const signature = createHash("sha256")
       .update(
-        [version, user.email, frozenAt, latest.id, latest.verdict, latest.passed, latest.failed, overrideReason ?? ""].join(
-          "|",
-        ),
+        [
+          version,
+          user.email,
+          frozenAt,
+          latest.id,
+          latest.verdict,
+          latest.passed,
+          latest.failed,
+          overrideReason ?? "",
+        ].join("|"),
       )
       .digest("hex");
 
@@ -769,8 +866,16 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
   try {
     const [accQ, leadQ, tgtQ, partnerQ, pipeQ] = await Promise.all([
       db!.from("revenue_accounts").select("plan, seats, mrr_gbp, sla_addon, state"),
-      db!.from("revenue_leads").select("id, reference, company, kind, stage, seats, quote_gbp, created_at").order("created_at", { ascending: false }).limit(100),
-      db!.from("revenue_targets").select("target_gbp").order("month", { ascending: false }).limit(1),
+      db!
+        .from("revenue_leads")
+        .select("id, reference, company, kind, stage, seats, quote_gbp, created_at")
+        .order("created_at", { ascending: false })
+        .limit(100),
+      db!
+        .from("revenue_targets")
+        .select("target_gbp")
+        .order("month", { ascending: false })
+        .limit(1),
       db!.from("revenue_partners").select("company, tier, live_seats, commission_gbp, stage"),
       db!.from("subscription_pipeline").select("lead_id, plan_seats, expected_mrr_gbp, stage"),
     ]);
@@ -796,7 +901,8 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
       const linked = pipeByLead.get(l.id);
       const weight = STAGE_WEIGHT[String(l.stage || "new")] ?? 0.1;
       const seats = Number(linked?.plan_seats ?? l.seats ?? 1);
-      const expected = linked?.expected_mrr_gbp != null ? Number(linked.expected_mrr_gbp) : seats * 40;
+      const expected =
+        linked?.expected_mrr_gbp != null ? Number(linked.expected_mrr_gbp) : seats * 40;
       return {
         id: l.id,
         reference: l.reference,
@@ -825,9 +931,21 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
       one_off_cash_gbp: Math.round(oneOff),
       gap_gbp: Math.max(0, Math.round(target - committed)),
       committed: [
-        { stream: "Subscriptions (Basic/Pro/Business)", mrr_gbp: Math.round(subsMrr), accounts: live.length },
-        { stream: "Priority Support retainer", mrr_gbp: slaMrr, accounts: live.filter((a) => a.sla_addon).length },
-        { stream: "Partner commission", mrr_gbp: Math.round(partnerMrr), accounts: partners.length },
+        {
+          stream: "Subscriptions (Basic/Pro/Business)",
+          mrr_gbp: Math.round(subsMrr),
+          accounts: live.length,
+        },
+        {
+          stream: "Priority Support retainer",
+          mrr_gbp: slaMrr,
+          accounts: live.filter((a) => a.sla_addon).length,
+        },
+        {
+          stream: "Partner commission",
+          mrr_gbp: Math.round(partnerMrr),
+          accounts: partners.length,
+        },
       ].filter((s) => s.accounts > 0 || s.mrr_gbp > 0),
       pipeline,
     });
@@ -856,9 +974,16 @@ publicRouter.get("/status", async (_req, res) => {
       { key: "speed", name: "Performance", note: "Response times against our published budgets" },
     ];
 
-    let components = suites.map((s) => ({ name: s.name, state: "operational" as const, note: s.note }));
+    let components = suites.map((s) => ({
+      name: s.name,
+      state: "operational" as const,
+      note: s.note,
+    }));
     if (latest) {
-      const { data: checks } = await db.from("release_checks").select("suite, status").eq("run_id", latest.id);
+      const { data: checks } = await db
+        .from("release_checks")
+        .select("suite, status")
+        .eq("run_id", latest.id);
       const rows = (checks ?? []) as { suite: string; status: string }[];
       components = suites.map((s) => {
         const mine = rows.filter((c) => c.suite === s.key);
@@ -866,7 +991,12 @@ publicRouter.get("/status", async (_req, res) => {
         const warned = mine.filter((c) => c.status === "warn").length;
         return {
           name: s.name,
-          state: failed > 0 ? ("down" as const) : warned > 0 ? ("degraded" as const) : ("operational" as const),
+          state:
+            failed > 0
+              ? ("down" as const)
+              : warned > 0
+                ? ("degraded" as const)
+                : ("operational" as const),
           note: s.note,
         };
       });
@@ -878,14 +1008,20 @@ publicRouter.get("/status", async (_req, res) => {
         ? "degraded"
         : "operational";
 
-    let lastIncident: { title: string; started_at: string; resolved_at: string | null } | null = null;
+    let lastIncident: { title: string; started_at: string; resolved_at: string | null } | null =
+      null;
     const { data: incidents } = await db
       .from("incidents")
       .select("title, started_at, resolved_at")
       .order("started_at", { ascending: false })
       .limit(1);
     const inc = (incidents ?? [])[0] as any;
-    if (inc) lastIncident = { title: inc.title, started_at: inc.started_at, resolved_at: inc.resolved_at ?? null };
+    if (inc)
+      lastIncident = {
+        title: inc.title,
+        started_at: inc.started_at,
+        resolved_at: inc.resolved_at ?? null,
+      };
 
     res.json({
       state: worst,
@@ -898,7 +1034,9 @@ publicRouter.get("/status", async (_req, res) => {
     res.json({
       state: "degraded",
       updated_at: new Date().toISOString(),
-      components: [{ name: "Status feed", state: "degraded", note: "Health data temporarily unavailable" }],
+      components: [
+        { name: "Status feed", state: "degraded", note: "Health data temporarily unavailable" },
+      ],
       last_incident: null,
     });
   }
@@ -925,7 +1063,12 @@ outboxRouter.post("/outbox/send", async (req, res) => {
       .limit(1);
     const found = (existing ?? [])[0] as any;
     if (found) {
-      return res.json({ id: found.id, state: found.state, sent_at: found.sent_at ?? null, duplicate: true });
+      return res.json({
+        id: found.id,
+        state: found.state,
+        sent_at: found.sent_at ?? null,
+        duplicate: true,
+      });
     }
 
     const { data, error } = await db!

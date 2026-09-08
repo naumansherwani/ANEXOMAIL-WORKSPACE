@@ -66,7 +66,12 @@ export function quoteMigration(input: MigrationInput): MigrationQuote {
     amount: band.price,
     detail: `Fixed band price for ${mailboxes} mailbox${mailboxes === 1 ? "" : "es"} — mapping, dry run, full history, cut-over plan`,
   });
-  if (gb > 200) lines.push({ label: `Large archive (${gb} GB)`, amount: 250, detail: "Over 200GB of history — extra verification passes" });
+  if (gb > 200)
+    lines.push({
+      label: `Large archive (${gb} GB)`,
+      amount: 250,
+      detail: "Over 200GB of history — extra verification passes",
+    });
 
   const providerFee: Record<MigrationInput["provider"], number> = {
     gmail: 0,
@@ -76,21 +81,56 @@ export function quoteMigration(input: MigrationInput): MigrationQuote {
     other: 150,
   };
   const pf = providerFee[input.provider];
-  if (pf > 0) lines.push({ label: "Source complexity", amount: pf, detail: `${input.provider.toUpperCase()} export + label/folder rebuild` });
+  if (pf > 0)
+    lines.push({
+      label: "Source complexity",
+      amount: pf,
+      detail: `${input.provider.toUpperCase()} export + label/folder rebuild`,
+    });
 
-  if (input.urgency === "weekend") lines.push({ label: "Weekend cut-over", amount: 200, detail: "Cut-over outside working hours, engineer watching the switch" });
-  if (input.urgency === "overnight") lines.push({ label: "Overnight cut-over", amount: 400, detail: "Same-night switch, engineer on call" });
-  if (input.dns) lines.push({ label: "DNS + deliverability", amount: 150, detail: "MX, SPF, DKIM, DMARC set to green and proven" });
-  if (input.training) lines.push({ label: "Team onboarding", amount: 200, detail: "Live session + written runbook for the team" });
+  if (input.urgency === "weekend")
+    lines.push({
+      label: "Weekend cut-over",
+      amount: 200,
+      detail: "Cut-over outside working hours, engineer watching the switch",
+    });
+  if (input.urgency === "overnight")
+    lines.push({
+      label: "Overnight cut-over",
+      amount: 400,
+      detail: "Same-night switch, engineer on call",
+    });
+  if (input.dns)
+    lines.push({
+      label: "DNS + deliverability",
+      amount: 150,
+      detail: "MX, SPF, DKIM, DMARC set to green and proven",
+    });
+  if (input.training)
+    lines.push({
+      label: "Team onboarding",
+      amount: 200,
+      detail: "Live session + written runbook for the team",
+    });
 
   const raw = lines.reduce((s, l) => s + l.amount, 0);
   const total = Math.min(MIGRATION_CEILING, raw);
   const days = mailboxes <= 10 ? "3–5 working days" : mailboxes <= 50 ? "1–2 weeks" : "2–4 weeks";
 
-  return { total, deposit: Math.round(total * 0.5), lines, window: days, capped: raw > MIGRATION_CEILING };
+  return {
+    total,
+    deposit: Math.round(total * 0.5),
+    lines,
+    window: days,
+    capped: raw > MIGRATION_CEILING,
+  };
 }
 
-export type PartnerInput = { seats: number; plan: keyof typeof PLAN_PRICE; tier: "reseller" | "gold" | "platinum" };
+export type PartnerInput = {
+  seats: number;
+  plan: keyof typeof PLAN_PRICE;
+  tier: "reseller" | "gold" | "platinum";
+};
 
 export type PartnerQuote = {
   rate: number;
@@ -113,9 +153,18 @@ export function quotePartner(input: PartnerInput): PartnerQuote {
     monthly,
     yearly: monthly * 12,
     clientBill,
-    tierLabel: input.tier === "platinum" ? "Platinum · 100+ seats" : input.tier === "gold" ? "Gold · 25+ seats" : "Reseller · from 1 seat",
+    tierLabel:
+      input.tier === "platinum"
+        ? "Platinum · 100+ seats"
+        : input.tier === "gold"
+          ? "Gold · 25+ seats"
+          : "Reseller · from 1 seat",
     nextTier:
-      input.tier === "reseller" ? "Reach 25 live seats → Gold, 25%" : input.tier === "gold" ? "Reach 100 live seats → Platinum, 30%" : null,
+      input.tier === "reseller"
+        ? "Reach 25 live seats → Gold, 25%"
+        : input.tier === "gold"
+          ? "Reach 100 live seats → Platinum, 30%"
+          : null,
   };
 }
 
@@ -147,7 +196,11 @@ export type LeadResult = { id: string; reference: string; kind: LeadKind; create
 export function useSubmitLead() {
   return useMutation<LeadResult, ApiError, LeadPayload>({
     mutationFn: (payload) =>
-      api<LeadResult>("/api/public/revenue/lead", { method: "POST", body: JSON.stringify(payload), auth: false }),
+      api<LeadResult>("/api/public/revenue/lead", {
+        method: "POST",
+        body: JSON.stringify(payload),
+        auth: false,
+      }),
   });
 }
 
@@ -160,15 +213,34 @@ export type RevenueOverview = {
   one_off_gbp: number;
   target_progress: number;
   streams: { stream: string; mrr_gbp: number; one_off_gbp: number; accounts: number }[];
-  leads: { id: string; reference: string; kind: LeadKind; company: string; email: string; quote_gbp: number | null; stage: string; created_at: string }[];
-  partners: { id: string; company: string; tier: string; live_seats: number; commission_gbp: number; stage: string }[];
+  leads: {
+    id: string;
+    reference: string;
+    kind: LeadKind;
+    company: string;
+    email: string;
+    quote_gbp: number | null;
+    stage: string;
+    created_at: string;
+  }[];
+  partners: {
+    id: string;
+    company: string;
+    tier: string;
+    live_seats: number;
+    commission_gbp: number;
+    stage: string;
+  }[];
   gap: { seats_needed: number; plan: string; note: string };
 };
 
 export function useFounderRevenue() {
   return useQuery<RevenueOverview, ApiError>({
     queryKey: ["founder", "revenue", "overview"],
-    queryFn: () => rpcOrRest<RevenueOverview>("founder.revenue.overview", { path: "/api/founder/revenue/overview" }),
+    queryFn: () =>
+      rpcOrRest<RevenueOverview>("founder.revenue.overview", {
+        path: "/api/founder/revenue/overview",
+      }),
     retry: false,
   });
 }

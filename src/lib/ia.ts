@@ -44,14 +44,7 @@ export const ADDRESS_MANAGER_FLAG = {
 } as const;
 
 export type MailFolder =
-  | "inbox"
-  | "assigned"
-  | "waiting"
-  | "sent"
-  | "drafts"
-  | "archive"
-  | "spam"
-  | "trash";
+  "inbox" | "assigned" | "waiting" | "sent" | "drafts" | "archive" | "spam" | "trash";
 
 export const MAIL_FOLDERS: { id: MailFolder; label: string }[] = [
   { id: "inbox", label: "Inbox" },
@@ -110,12 +103,36 @@ export const SECURITY_SECTIONS: {
   summary: string;
 }[] = [
   { to: "/app/security", label: "Overview", summary: "Score, ledger, what to fix next" },
-  { to: "/app/security/devices", label: "Device trust", summary: "Fingerprint, score, one-click kill" },
-  { to: "/app/security/vault", label: "Device vault", summary: "Sealed device identity, retention, revoke" },
-  { to: "/app/security/sessions", label: "Sessions", summary: "Live sessions and blast-radius kill" },
-  { to: "/app/security/history", label: "Login replay", summary: "Every login with its risk story" },
-  { to: "/app/security/encryption", label: "Encryption", summary: "At rest, in transit, with proof" },
-  { to: "/app/security/proof", label: "Ownership proof", summary: "DKIM, SPF, DMARC, TLS — signed" },
+  {
+    to: "/app/security/devices",
+    label: "Device trust",
+    summary: "Fingerprint, score, one-click kill",
+  },
+  {
+    to: "/app/security/vault",
+    label: "Device vault",
+    summary: "Sealed device identity, retention, revoke",
+  },
+  {
+    to: "/app/security/sessions",
+    label: "Sessions",
+    summary: "Live sessions and blast-radius kill",
+  },
+  {
+    to: "/app/security/history",
+    label: "Login replay",
+    summary: "Every login with its risk story",
+  },
+  {
+    to: "/app/security/encryption",
+    label: "Encryption",
+    summary: "At rest, in transit, with proof",
+  },
+  {
+    to: "/app/security/proof",
+    label: "Ownership proof",
+    summary: "DKIM, SPF, DMARC, TLS — signed",
+  },
 ];
 
 export const PERF_SECTIONS: {
@@ -130,9 +147,21 @@ export const PERF_SECTIONS: {
   summary: string;
 }[] = [
   { to: "/app/perf", label: "Overview", summary: "Speed score, slowest actions, advice" },
-  { to: "/app/perf/budgets", label: "Speed receipts", summary: "p50/p95/p99 vs budget, per action" },
-  { to: "/app/perf/prefetch", label: "Prefetch brain", summary: "Predicted opens, ms saved, cold map" },
+  {
+    to: "/app/perf/budgets",
+    label: "Speed receipts",
+    summary: "p50/p95/p99 vs budget, per action",
+  },
+  {
+    to: "/app/perf/prefetch",
+    label: "Prefetch brain",
+    summary: "Predicted opens, ms saved, cold map",
+  },
   { to: "/app/perf/search", label: "Query lab", summary: "Stage waterfall of a real query" },
   { to: "/app/perf/devices", label: "Device twins", summary: "Which device is slow, and where" },
-  { to: "/app/perf/regressions", label: "Regression sentinel", summary: "Release-over-release latency diff" },
+  {
+    to: "/app/perf/regressions",
+    label: "Regression sentinel",
+    summary: "Release-over-release latency diff",
+  },
 ];

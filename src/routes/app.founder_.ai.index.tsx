@@ -28,6 +28,20 @@ import { notify } from "@/lib/notify";
 import { relativeTime } from "@/lib/mail";
 
 export const Route = createFileRoute("/app/founder_/ai/")({
+  head: () => ({
+    meta: [
+      { title: "AI · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "AI · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "AI · Founder view — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "AI · Founder view in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Workbench,
 });
 
@@ -84,7 +98,8 @@ function Workbench() {
           else if (event.type === "ttft") setTtft(event.ms);
           else if (event.type === "escalation") setActiveAgent(event.agent);
           else if (event.type === "guardrail") setGuardrail(event.event);
-          else if (event.type === "error") notify.failed("LEO could not answer", { description: event.message });
+          else if (event.type === "error")
+            notify.failed("LEO could not answer", { description: event.message });
         },
         controller.signal,
       );
@@ -239,7 +254,9 @@ function Workbench() {
                       <div className="flex items-center gap-2">
                         <Chip tone="good">LEO</Chip>
                         <TtftBadge ms={ttft} />
-                        {streaming && <span className="ax-caption text-muted-foreground">typing…</span>}
+                        {streaming && (
+                          <span className="ax-caption text-muted-foreground">typing…</span>
+                        )}
                       </div>
                       <p className="mt-ax-3 whitespace-pre-wrap text-[13px] leading-relaxed text-foreground">
                         {live}

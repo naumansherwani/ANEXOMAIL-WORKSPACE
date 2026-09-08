@@ -86,10 +86,7 @@ export function CardGridSkeleton({
   label?: string;
 }) {
   return (
-    <LoadingRegion
-      label={label}
-      className="grid gap-ax-5 sm:grid-cols-2 xl:grid-cols-4"
-    >
+    <LoadingRegion label={label} className="grid gap-ax-5 sm:grid-cols-2 xl:grid-cols-4">
       {Array.from({ length: cards }).map((_, i) => (
         <div key={i} className="ax-plane flex flex-col gap-ax-3 rounded-2xl p-ax-5">
           <SkeletonLine className="h-2.5" width="42%" />
@@ -106,10 +103,7 @@ export function WorkingDot({ className }: { className?: string }) {
   return (
     <span
       aria-hidden="true"
-      className={cn(
-        "ax-breathe inline-block size-1.5 rounded-full bg-cyan-accent",
-        className,
-      )}
+      className={cn("ax-breathe inline-block size-1.5 rounded-full bg-cyan-accent", className)}
     />
   );
 }

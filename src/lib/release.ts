@@ -138,8 +138,14 @@ export function gateFrom(overview: ReleaseOverview | undefined): Gate {
 
 export const GATE_COPY: Record<Gate, { label: string; body: string }> = {
   locked: { label: "v1.0 LOCKED", body: "Signed and frozen. New work goes to the v2.0 roadmap." },
-  ready: { label: "READY TO LOCK", body: "Every check green and no open blocker. Signing is allowed." },
-  blocked: { label: "LAUNCH BLOCKED", body: "A failing check or an open blocker is holding the gate shut." },
+  ready: {
+    label: "READY TO LOCK",
+    body: "Every check green and no open blocker. Signing is allowed.",
+  },
+  blocked: {
+    label: "LAUNCH BLOCKED",
+    body: "A failing check or an open blocker is holding the gate shut.",
+  },
   unknown: { label: "NO VERDICT", body: "No QA run yet — run the suite to get a real verdict." },
 };
 
@@ -155,7 +161,10 @@ export const gbp = (n: number | null | undefined) =>
 export function useReleaseOverview() {
   return useQuery<ReleaseOverview, ApiError>({
     queryKey: ["release", "overview"],
-    queryFn: () => rpcOrRest<ReleaseOverview>("founder.release.overview", { path: "/api/founder/release/overview" }),
+    queryFn: () =>
+      rpcOrRest<ReleaseOverview>("founder.release.overview", {
+        path: "/api/founder/release/overview",
+      }),
     retry: false,
   });
 }
@@ -163,7 +172,8 @@ export function useReleaseOverview() {
 export function useReleaseChecks() {
   return useQuery<{ runs: ReleaseRun[]; checks: ReleaseCheck[] }, ApiError>({
     queryKey: ["release", "checks"],
-    queryFn: () => api<{ runs: ReleaseRun[]; checks: ReleaseCheck[] }>("/api/founder/release/checks"),
+    queryFn: () =>
+      api<{ runs: ReleaseRun[]; checks: ReleaseCheck[] }>("/api/founder/release/checks"),
     retry: false,
   });
 }
@@ -223,9 +233,16 @@ export function useLocks() {
 
 export function useSignLock() {
   const qc = useQueryClient();
-  return useMutation<ReleaseLock, ApiError, { version: string; notes?: string; override_reason?: string }>({
+  return useMutation<
+    ReleaseLock,
+    ApiError,
+    { version: string; notes?: string; override_reason?: string }
+  >({
     mutationFn: (input) =>
-      api<ReleaseLock>("/api/founder/release/lock", { method: "POST", body: JSON.stringify(input) }),
+      api<ReleaseLock>("/api/founder/release/lock", {
+        method: "POST",
+        body: JSON.stringify(input),
+      }),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["release"] });
     },
@@ -242,9 +259,16 @@ export function useRoadmap() {
 
 export function useRoadmapAdd() {
   const qc = useQueryClient();
-  return useMutation<RoadmapItem, ApiError, Omit<RoadmapItem, "id" | "state"> & { state?: RoadmapItem["state"] }>({
+  return useMutation<
+    RoadmapItem,
+    ApiError,
+    Omit<RoadmapItem, "id" | "state"> & { state?: RoadmapItem["state"] }
+  >({
     mutationFn: (input) =>
-      api<RoadmapItem>("/api/founder/release/roadmap", { method: "POST", body: JSON.stringify(input) }),
+      api<RoadmapItem>("/api/founder/release/roadmap", {
+        method: "POST",
+        body: JSON.stringify(input),
+      }),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["release", "roadmap"] });
     },
@@ -287,7 +311,12 @@ export type OutboxItem = {
 
 const backoff = (attempts: number) => Math.min(15 * 60_000, 5_000 * 2 ** attempts);
 
-export async function queueOutbox(input: { to: string; subject: string; body: string; thread_id?: string }) {
+export async function queueOutbox(input: {
+  to: string;
+  subject: string;
+  body: string;
+  thread_id?: string;
+}) {
   const key = `ob_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
   const item: OutboxItem = {
     key,
@@ -303,7 +332,10 @@ export async function queueOutbox(input: { to: string; subject: string; body: st
 
 export async function readOutbox(): Promise<OutboxItem[]> {
   const rows = await offline.all<OutboxItem>("outbox");
-  return rows.map((r) => r.value).filter(Boolean).sort((a, b) => b.queued_at - a.queued_at);
+  return rows
+    .map((r) => r.value)
+    .filter(Boolean)
+    .sort((a, b) => b.queued_at - a.queued_at);
 }
 
 /**
@@ -385,5 +417,14 @@ export function useOutbox() {
     return () => window.removeEventListener("online", onOnline);
   }, [reload, flush]);
 
-  return { items, flushing, reload, flush, drop: async (key: string) => { await dropOutbox(key); await reload(); } };
+  return {
+    items,
+    flushing,
+    reload,
+    flush,
+    drop: async (key: string) => {
+      await dropOutbox(key);
+      await reload();
+    },
+  };
 }

@@ -5,6 +5,24 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { useFounderIntegrations } from "@/lib/integrations";
 
 export const Route = createFileRoute("/app/founder_/integrations")({
+  head: () => ({
+    meta: [
+      { title: "Integrations · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Integrations · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Integrations · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "Integrations · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: FounderIntegrations,
 });
 
@@ -38,7 +56,10 @@ function FounderIntegrations() {
                   <Stat label="Needs re-auth" value={String(o.needs_reauth)} />
                   <Stat label="Migrations running" value={String(o.migrations_running)} />
                   <Stat label="Migrations failed" value={String(o.migrations_failed)} />
-                  <Stat label="Threads migrated 30d" value={o.threads_migrated_30d.toLocaleString()} />
+                  <Stat
+                    label="Threads migrated 30d"
+                    value={o.threads_migrated_30d.toLocaleString()}
+                  />
                 </div>
 
                 <h3 className="ax-heading mt-ax-6 text-foreground">By provider</h3>

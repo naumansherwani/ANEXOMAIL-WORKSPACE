@@ -6,7 +6,23 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { relativeTime } from "@/lib/mail";
 import { ms, useDeviceTwins } from "@/lib/perf";
 
-export const Route = createFileRoute("/app/perf/devices")({ component: DeviceTwinsPage });
+export const Route = createFileRoute("/app/perf/devices")({
+  head: () => ({
+    meta: [
+      { title: "Speed · Devices — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Speed · Devices in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Speed · Devices — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Speed · Devices in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: DeviceTwinsPage,
+});
 
 /** Feature 5 — Device twin: "app slow hai" nahi, "yeh device, yeh surface, yeh number". */
 function DeviceTwinsPage() {
@@ -14,12 +30,21 @@ function DeviceTwinsPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><MonitorSmartphone className="size-3.5" aria-hidden="true" /> Device twins</>}
+        eyebrow={
+          <>
+            <MonitorSmartphone className="size-3.5" aria-hidden="true" /> Device twins
+          </>
+        }
         title="Slow is a device, not a mood"
         blurb="Each device keeps its own performance twin — network class, round-trip time and the exact surfaces that lag on it."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/perf/devices"
           skeleton={<StatSkeleton rows={4} />}
         >
@@ -34,19 +59,22 @@ function DeviceTwinsPage() {
                       <span className="font-semibold text-foreground">{dev.label}</span>
                       <span className="text-muted-foreground">{dev.network}</span>
                       <span className="text-steel">
-                        {dev.downlink_mbps == null ? "—" : `${dev.downlink_mbps} Mbps`} · rtt {ms(dev.rtt_ms)}
+                        {dev.downlink_mbps == null ? "—" : `${dev.downlink_mbps} Mbps`} · rtt{" "}
+                        {ms(dev.rtt_ms)}
                       </span>
                       <span className="ml-auto text-steel">{relativeTime(dev.last_seen_at)}</span>
                     </div>
                     <p className="ax-caption mt-1 text-muted-foreground">
-                      {[dev.platform, dev.browser].filter(Boolean).join(" · ") || "unknown device"} · p95{" "}
-                      {ms(dev.p95_ms)} over {dev.samples} samples
+                      {[dev.platform, dev.browser].filter(Boolean).join(" · ") || "unknown device"}{" "}
+                      · p95 {ms(dev.p95_ms)} over {dev.samples} samples
                     </p>
                     {dev.slow_surfaces.length > 0 && (
                       <ul className="mt-ax-3 space-y-1.5">
                         {dev.slow_surfaces.map((s) => (
                           <Row key={s.surface}>
-                            <span className="min-w-0 flex-1 truncate text-foreground">{s.surface}</span>
+                            <span className="min-w-0 flex-1 truncate text-foreground">
+                              {s.surface}
+                            </span>
                             <span className="ml-auto text-amber-400">p95 {ms(s.p95_ms)}</span>
                           </Row>
                         ))}

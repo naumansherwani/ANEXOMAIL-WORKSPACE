@@ -66,7 +66,7 @@ export type KnowledgeHit = {
   scope: KnowledgeScope;
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path }, input);
 
 export function useKnowledgeSpaces() {
@@ -168,7 +168,11 @@ export function useAskKnowledge() {
 /** Turn a real thread into knowledge — no copy-paste, no duplicate store. */
 export function useIngestThread() {
   const qc = useQueryClient();
-  return useMutation<{ document: KnowledgeDoc }, ApiError, { thread_id: string; space_id?: string }>({
+  return useMutation<
+    { document: KnowledgeDoc },
+    ApiError,
+    { thread_id: string; space_id?: string }
+  >({
     mutationFn: (body) =>
       rpcOrRest<{ document: KnowledgeDoc }>(
         "knowledge.ingestThread",

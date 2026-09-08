@@ -67,8 +67,8 @@ export function NotWired({ endpoint }: { endpoint: string }) {
       <PlugZap aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-steel" />
       <p className="ax-caption text-muted-foreground">
         Not wired yet — waiting on{" "}
-        <code className="rounded bg-secondary px-1 py-0.5 text-[11px]">{endpoint}</code>.
-        Nothing is shown until real data arrives.
+        <code className="rounded bg-secondary px-1 py-0.5 text-[11px]">{endpoint}</code>. Nothing is
+        shown until real data arrives.
       </p>
     </div>
   );
@@ -93,12 +93,7 @@ export function CardBody<T>({
     if (query.error.isNotImplemented || query.error.code === "no_api_url") {
       return <NotWired endpoint={endpoint} />;
     }
-    return (
-      <ErrorState
-        body={query.error.message}
-        onRetry={() => query.refetch()}
-      />
-    );
+    return <ErrorState body={query.error.message} onRetry={() => query.refetch()} />;
   }
   if (query.isPending || !query.data) return <>{skeleton}</>;
   return <>{children(query.data)}</>;

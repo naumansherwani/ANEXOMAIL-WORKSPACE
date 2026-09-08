@@ -68,18 +68,17 @@ function StatusPage() {
       <SiteNav />
       <main className="ax-container pt-20 pb-24 md:pt-24">
         <p className="ax-eyebrow">Service status</p>
-        <h1 className="mt-4 max-w-3xl text-4xl text-foreground md:text-5xl">
-          {headline}
-        </h1>
+        <h1 className="mt-4 max-w-3xl text-4xl text-foreground md:text-5xl">{headline}</h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          This page is generated from the same live probes our release gate runs — mail delivery, workspace,
-          sign-in and domain authentication. If something is broken, it says so here first.
+          This page is generated from the same live probes our release gate runs — mail delivery,
+          workspace, sign-in and domain authentication. If something is broken, it says so here
+          first.
         </p>
 
         {unreachable && (
           <p className="mt-8 rounded-2xl border border-dashed border-border px-5 py-4 text-sm text-muted-foreground">
-            We could not reach the status feed, so this page will not guess. It does not mean mail is
-            down and it does not mean mail is fine — please try again shortly. If your mail is
+            We could not reach the status feed, so this page will not guess. It does not mean mail
+            is down and it does not mean mail is fine — please try again shortly. If your mail is
             affected right now, write to resolved@anexomail.com and a human replies.
           </p>
         )}
@@ -90,24 +89,35 @@ function StatusPage() {
               {q.data.components.map((c) => (
                 <div key={c.name} className="ax-plane rounded-none border-0 p-5">
                   <div className="flex items-center gap-3">
-                    <span className={"rounded-md border px-1.5 py-0.5 text-[11px] font-semibold " + TONE[c.state]}>
+                    <span
+                      className={
+                        "rounded-md border px-1.5 py-0.5 text-[11px] font-semibold " + TONE[c.state]
+                      }
+                    >
                       {c.state}
                     </span>
                     <p className="text-sm font-semibold text-foreground">{c.name}</p>
                   </div>
-                  {c.note && <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">{c.note}</p>}
+                  {c.note && (
+                    <p className="mt-2 text-[12px] leading-relaxed text-muted-foreground">
+                      {c.note}
+                    </p>
+                  )}
                 </div>
               ))}
             </div>
 
             <p className="mt-4 text-[12px] text-muted-foreground">
-              Last checked {new Date(q.data.updated_at).toLocaleString("en-GB")} · refreshes every minute.
+              Last checked {new Date(q.data.updated_at).toLocaleString("en-GB")} · refreshes every
+              minute.
             </p>
 
             <h2 className="ax-h2 mt-12 text-foreground">Last incident</h2>
             {q.data.last_incident ? (
               <div className="ax-plane mt-4 rounded-2xl p-5">
-                <p className="text-sm font-semibold text-foreground">{q.data.last_incident.title}</p>
+                <p className="text-sm font-semibold text-foreground">
+                  {q.data.last_incident.title}
+                </p>
                 <p className="mt-1.5 text-[12px] text-muted-foreground">
                   Started {new Date(q.data.last_incident.started_at).toLocaleString("en-GB")} ·{" "}
                   {q.data.last_incident.resolved_at

@@ -56,7 +56,14 @@ async function requireUser(req: any, res: any): Promise<string | null> {
   return data.user.id;
 }
 
-type Sample = { action: string; surface: string | null; duration_ms: number; device_fingerprint: string | null; cold: boolean; release: string | null };
+type Sample = {
+  action: string;
+  surface: string | null;
+  duration_ms: number;
+  device_fingerprint: string | null;
+  cold: boolean;
+  release: string | null;
+};
 
 const pct = (sorted: number[], p: number): number | null => {
   if (sorted.length === 0) return null;
@@ -96,7 +103,11 @@ function budgetRows(
     let worst_surface: string | null = null;
     let worstVal = -1;
     for (const [surface, list] of bySurface) {
-      const v = pct(list.sort((a, c) => a - c), 0.95) ?? 0;
+      const v =
+        pct(
+          list.sort((a, c) => a - c),
+          0.95,
+        ) ?? 0;
       if (v > worstVal) {
         worstVal = v;
         worst_surface = surface;
@@ -188,7 +199,11 @@ router.get("/dashboard", async (req, res) => {
     const passing = withData.filter((r) => r.state === "pass").length;
 
     const [{ data: pf }, { data: cold }, { count: regressions }] = await Promise.all([
-      db!.from("perf_prefetch_events").select("outcome, saved_ms").eq("user_id", uid).gt("at", since),
+      db!
+        .from("perf_prefetch_events")
+        .select("outcome, saved_ms")
+        .eq("user_id", uid)
+        .gt("at", since),
       db!.from("perf_surface_starts").select("cold").eq("user_id", uid).gt("at", since),
       db!
         .from("perf_regressions")
@@ -253,7 +268,11 @@ router.get("/prefetch", async (req, res) => {
   try {
     const since = new Date(Date.now() - 7 * 86_400_000).toISOString();
     const [{ data: pf, error: e1 }, { data: st, error: e2 }] = await Promise.all([
-      db!.from("perf_prefetch_events").select("surface, outcome, saved_ms").eq("user_id", uid).gt("at", since),
+      db!
+        .from("perf_prefetch_events")
+        .select("surface, outcome, saved_ms")
+        .eq("user_id", uid)
+        .gt("at", since),
       db!
         .from("perf_surface_starts")
         .select("surface, first_paint_ms, warm_ms, cold")
@@ -276,7 +295,12 @@ router.get("/prefetch", async (req, res) => {
       bySurface.set(e.surface, cur);
     }
 
-    const starts = (st ?? []) as { surface: string; first_paint_ms: number | null; warm_ms: number | null; cold: boolean }[];
+    const starts = (st ?? []) as {
+      surface: string;
+      first_paint_ms: number | null;
+      warm_ms: number | null;
+      cold: boolean;
+    }[];
     const coldMap = new Map<string, { fp: number[]; warm: number[]; cold: number }>();
     for (const s of starts) {
       const cur = coldMap.get(s.surface) ?? { fp: [], warm: [], cold: 0 };
@@ -285,7 +309,8 @@ router.get("/prefetch", async (req, res) => {
       if (s.cold) cur.cold += 1;
       coldMap.set(s.surface, cur);
     }
-    const avg = (list: number[]) => (list.length === 0 ? null : Math.round(list.reduce((a, b) => a + b, 0) / list.length));
+    const avg = (list: number[]) =>
+      list.length === 0 ? null : Math.round(list.reduce((a, b) => a + b, 0) / list.length);
 
     res.json({
       hit_rate: events.length === 0 ? null : hits.length / events.length,
@@ -434,7 +459,11 @@ router.get("/devices", async (req, res) => {
   if (!uid) return;
   try {
     const [{ data: devices, error }, samples] = await Promise.all([
-      db!.from("perf_device_profiles").select("*").eq("user_id", uid).order("last_seen_at", { ascending: false }),
+      db!
+        .from("perf_device_profiles")
+        .select("*")
+        .eq("user_id", uid)
+        .order("last_seen_at", { ascending: false }),
       loadSamples(uid, 24 * 7),
     ]);
     if (error) return fail(res, error);
@@ -463,7 +492,11 @@ router.get("/devices", async (req, res) => {
           slow_surfaces: [...bySurface.entries()]
             .map(([surface, list]) => ({
               surface,
-              p95_ms: pct(list.sort((a, b) => a - b), 0.95) ?? 0,
+              p95_ms:
+                pct(
+                  list.sort((a, b) => a - b),
+                  0.95,
+                ) ?? 0,
             }))
             .sort((a, b) => b.p95_ms - a.p95_ms)
             .slice(0, 5),

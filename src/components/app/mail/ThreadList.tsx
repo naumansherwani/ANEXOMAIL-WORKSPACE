@@ -108,7 +108,8 @@ export function ThreadList({
       className="divide-y divide-border"
       onTouchStart={(e) => {
         const scroller = e.currentTarget.parentElement;
-        pullStart.current = (scroller?.scrollTop ?? 0) <= 0 ? (e.touches[0]?.clientY ?? null) : null;
+        pullStart.current =
+          (scroller?.scrollTop ?? 0) <= 0 ? (e.touches[0]?.clientY ?? null) : null;
       }}
       onTouchMove={(e) => {
         if (pullStart.current === null) return;
@@ -135,82 +136,82 @@ export function ThreadList({
           {...(onSwipeSnooze ? { onSnooze: () => onSwipeSnooze(thread.id) } : {})}
           {...(onLongPress ? { onLongPress: () => onLongPress(thread.id) } : {})}
         >
-        <Link
-          to="/app/mail/$folder/$threadId"
-          params={{ folder, threadId: thread.id }}
-          data-cursor={index}
-          draggable
-          onDragStart={(e) => {
-            e.dataTransfer.setData("text/anexo-thread", thread.id);
-            e.dataTransfer.effectAllowed = "copy";
-          }}
-          onMouseEnter={() => onCursor(index)}
-          className={cn(
-            "block px-ax-4 py-ax-3 transition-colors",
-            thread.id === activeId
-              ? "bg-secondary"
-              : cursor === index
-                ? "bg-secondary/50"
-                : "hover:bg-secondary/40",
-          )}
-        >
-          <div className="flex items-center gap-ax-2">
-            <span
-              className={cn(
-                "truncate text-[13px]",
-                thread.unread ? "font-bold text-foreground" : "font-medium text-muted-foreground",
-              )}
-            >
-              {thread.from_name ?? thread.from_address}
-            </span>
-            {thread.starred && <Star className="size-3 shrink-0 text-foreground" />}
-            {thread.has_attachments && <Paperclip className="size-3 shrink-0 text-steel" />}
-            {thread.message_count > 1 && (
-              <span className="shrink-0 text-[10px] text-steel">{thread.message_count}</span>
-            )}
-            <span className="ml-auto shrink-0 text-[10px] text-steel">
-              {relativeTime(thread.last_message_at)}
-            </span>
-          </div>
-
-          <p
+          <Link
+            to="/app/mail/$folder/$threadId"
+            params={{ folder, threadId: thread.id }}
+            data-cursor={index}
+            draggable
+            onDragStart={(e) => {
+              e.dataTransfer.setData("text/anexo-thread", thread.id);
+              e.dataTransfer.effectAllowed = "copy";
+            }}
+            onMouseEnter={() => onCursor(index)}
             className={cn(
-              "mt-1 truncate text-[13px]",
-              thread.unread ? "text-foreground" : "text-muted-foreground",
+              "block px-ax-4 py-ax-3 transition-colors",
+              thread.id === activeId
+                ? "bg-secondary"
+                : cursor === index
+                  ? "bg-secondary/50"
+                  : "hover:bg-secondary/40",
             )}
           >
-            {thread.subject || "(no subject)"}
-          </p>
-          {/* Low-data mode: snippet drops out so a list stays text-minimal on 2G. */}
-          {thread.snippet && !lowData && (
-            <p className="ax-caption mt-0.5 truncate text-muted-foreground">{thread.snippet}</p>
-          )}
-
-          <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-            <span className="rounded-md border border-border bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-              {thread.status}
-            </span>
-            {thread.assignee && (
-              <span className="rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                {thread.assignee}
-              </span>
-            )}
-            {thread.snoozed_until && (
-              <span className="flex items-center gap-1 rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                <Clock className="size-2.5" />
-                {relativeTime(thread.snoozed_until)}
-              </span>
-            )}
-            {thread.labels.map((l) => (
+            <div className="flex items-center gap-ax-2">
               <span
-                key={l}
-                className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                className={cn(
+                  "truncate text-[13px]",
+                  thread.unread ? "font-bold text-foreground" : "font-medium text-muted-foreground",
+                )}
               >
-                {l}
+                {thread.from_name ?? thread.from_address}
               </span>
-            ))}
-          </div>
-        </Link>
+              {thread.starred && <Star className="size-3 shrink-0 text-foreground" />}
+              {thread.has_attachments && <Paperclip className="size-3 shrink-0 text-steel" />}
+              {thread.message_count > 1 && (
+                <span className="shrink-0 text-[10px] text-steel">{thread.message_count}</span>
+              )}
+              <span className="ml-auto shrink-0 text-[10px] text-steel">
+                {relativeTime(thread.last_message_at)}
+              </span>
+            </div>
+
+            <p
+              className={cn(
+                "mt-1 truncate text-[13px]",
+                thread.unread ? "text-foreground" : "text-muted-foreground",
+              )}
+            >
+              {thread.subject || "(no subject)"}
+            </p>
+            {/* Low-data mode: snippet drops out so a list stays text-minimal on 2G. */}
+            {thread.snippet && !lowData && (
+              <p className="ax-caption mt-0.5 truncate text-muted-foreground">{thread.snippet}</p>
+            )}
+
+            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
+              <span className="rounded-md border border-border bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
+                {thread.status}
+              </span>
+              {thread.assignee && (
+                <span className="rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  {thread.assignee}
+                </span>
+              )}
+              {thread.snoozed_until && (
+                <span className="flex items-center gap-1 rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  <Clock className="size-2.5" />
+                  {relativeTime(thread.snoozed_until)}
+                </span>
+              )}
+              {thread.labels.map((l) => (
+                <span
+                  key={l}
+                  className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                >
+                  {l}
+                </span>
+              ))}
+            </div>
+          </Link>
         </SwipeRow>
       ))}
     </div>

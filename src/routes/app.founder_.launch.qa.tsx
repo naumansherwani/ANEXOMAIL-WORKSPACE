@@ -7,7 +7,23 @@ import { CheckRow } from "@/components/app/release/ReleaseBits";
 import { EmptyState } from "@/components/app/Panel";
 import { ms, useReleaseChecks } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/qa")({ component: QaPage });
+export const Route = createFileRoute("/app/founder_/launch/qa")({
+  head: () => ({
+    meta: [
+      { title: "Launch · QA · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · QA · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · QA · Founder view — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Launch · QA · Founder view in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: QaPage,
+});
 
 /** Feature 1 (detail) — 60+ checks, suite-wise, each with its own proof. */
 function QaPage() {
@@ -16,12 +32,21 @@ function QaPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><ListChecks className="size-3.5" aria-hidden="true" /> QA suite</>}
+        eyebrow={
+          <>
+            <ListChecks className="size-3.5" aria-hidden="true" /> QA suite
+          </>
+        }
         title="Every check, with its receipt"
         blurb="Suite by suite: response code, latency and the reason. A failing probe is red here and the gate stays shut."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/founder/release/checks"
           skeleton={<StatSkeleton rows={6} />}
         >

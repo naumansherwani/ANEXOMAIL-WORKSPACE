@@ -56,9 +56,17 @@ const VERDICT: Record<string, string> = {
   fail: "border-danger/40 bg-danger/10 text-danger",
 };
 
-export function Verdict({ verdict, children }: { verdict: "green" | "watch" | "fail"; children: ReactNode }) {
+export function Verdict({
+  verdict,
+  children,
+}: {
+  verdict: "green" | "watch" | "fail";
+  children: ReactNode;
+}) {
   return (
-    <span className={"rounded-md border px-1.5 py-0.5 text-[11px] font-semibold " + VERDICT[verdict]}>
+    <span
+      className={"rounded-md border px-1.5 py-0.5 text-[11px] font-semibold " + VERDICT[verdict]}
+    >
       {children}
     </span>
   );
@@ -85,7 +93,11 @@ export function Segmented<T extends string>({
     <div className="rounded-xl border border-border bg-card px-3 py-3">
       <span className="block text-sm font-semibold text-foreground">{label}</span>
       <span className="mt-0.5 block text-[12px] leading-relaxed text-muted-foreground">{hint}</span>
-      <div role="group" aria-label={label} className="mt-2 inline-flex rounded-lg border border-border p-0.5">
+      <div
+        role="group"
+        aria-label={label}
+        className="mt-2 inline-flex rounded-lg border border-border p-0.5"
+      >
         {options.map((o) => {
           const active = o.value === value;
           return (
@@ -96,7 +108,9 @@ export function Segmented<T extends string>({
               onClick={() => onChange(o.value)}
               className={
                 "ax-press ax-tap rounded-md px-3 py-1 text-[12px] font-semibold transition-colors " +
-                (active ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground")
+                (active
+                  ? "bg-foreground text-background"
+                  : "text-muted-foreground hover:text-foreground")
               }
             >
               {o.label}

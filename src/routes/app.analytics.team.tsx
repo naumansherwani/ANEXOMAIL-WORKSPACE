@@ -5,7 +5,23 @@ import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { money, useTeamAnalytics } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/analytics/team")({ component: TeamPage });
+export const Route = createFileRoute("/app/analytics/team")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Team — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Team in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Team — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Team in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: TeamPage,
+});
 
 /** Team load — surveillance nahi, balance. Kaun doob raha hai, kaun free hai. */
 function TeamPage() {
@@ -14,12 +30,21 @@ function TeamPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><Users className="size-3.5" aria-hidden="true" /> Team load</>}
+          eyebrow={
+            <>
+              <Users className="size-3.5" aria-hidden="true" /> Team load
+            </>
+          }
           title="Who is drowning, who is free"
           blurb="Built to rebalance work, not to police people. No keystrokes, no screenshots, ever."
         >
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/analytics/team"
             skeleton={<StatSkeleton rows={5} />}
           >

@@ -34,11 +34,7 @@ const PULSE = {
       ks: {
         o: {
           a: 1,
-          k: [
-            { t: 0, s: [100], e: [30] },
-            { t: 15, s: [30], e: [100] },
-            { t: 30 },
-          ],
+          k: [{ t: 0, s: [100], e: [30] }, { t: 15, s: [30], e: [100] }, { t: 30 }],
         },
         r: { a: 0, k: 0 },
         p: { a: 0, k: [12, 12, 0] },
@@ -125,7 +121,10 @@ export function Tick({ state }: { state: MessageState }) {
 
   if (state === "failed") {
     return (
-      <span className="inline-flex size-3.5 items-center justify-center rounded-full border border-destructive text-[9px] font-bold text-destructive" title={label}>
+      <span
+        className="inline-flex size-3.5 items-center justify-center rounded-full border border-destructive text-[9px] font-bold text-destructive"
+        title={label}
+      >
         !
       </span>
     );

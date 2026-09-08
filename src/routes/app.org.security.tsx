@@ -6,7 +6,13 @@ import { Chip, SectionTitle } from "@/components/app/org/OrgBits";
 import { Button } from "@/components/ui/button";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
-import { useAnomalies, useBreakGlass, useGrantBreakGlass, useKillSession, useOrgSessions } from "@/lib/org";
+import {
+  useAnomalies,
+  useBreakGlass,
+  useGrantBreakGlass,
+  useKillSession,
+  useOrgSessions,
+} from "@/lib/org";
 
 export const Route = createFileRoute("/app/org/security")({
   head: () => ({
@@ -18,7 +24,10 @@ export const Route = createFileRoute("/app/org/security")({
           "Live sessions and devices with a one-click kill, impossible-travel alerts and time-boxed break-glass access.",
       },
       { property: "og:title", content: "Security — ANEXOMAIL Organization Center" },
-      { property: "og:description", content: "Session map, device kill, anomaly alerts, break-glass access." },
+      {
+        property: "og:description",
+        content: "Session map, device kill, anomaly alerts, break-glass access.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -141,10 +150,18 @@ function SecurityPage() {
                         {a.email}
                       </p>
                       <Chip>{a.kind.replace(/_/g, " ")}</Chip>
-                      <Chip tone={a.severity === "high" ? "bad" : a.severity === "medium" ? "warn" : "quiet"}>
+                      <Chip
+                        tone={
+                          a.severity === "high" ? "bad" : a.severity === "medium" ? "warn" : "quiet"
+                        }
+                      >
                         {a.severity}
                       </Chip>
-                      <Chip tone={a.state === "frozen" ? "bad" : a.state === "cleared" ? "good" : "warn"}>
+                      <Chip
+                        tone={
+                          a.state === "frozen" ? "bad" : a.state === "cleared" ? "good" : "warn"
+                        }
+                      >
                         {a.state}
                       </Chip>
                       <span className="ax-caption text-muted-foreground">

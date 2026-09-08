@@ -65,8 +65,8 @@ export type Estimate = {
   approval_required: boolean;
 };
 
-const get = <T,>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
-const post = <T,>(procedure: string, path: string, input?: unknown) =>
+const get = <T>(procedure: string, path: string) => rpcOrRest<T>(procedure, { path });
+const post = <T>(procedure: string, path: string, input?: unknown) =>
   rpcOrRest<T>(procedure, { path, method: "POST", body: input ?? {} }, input);
 
 export function useCreditProducts() {

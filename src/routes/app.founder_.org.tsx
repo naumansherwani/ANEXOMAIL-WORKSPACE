@@ -23,7 +23,10 @@ export const Route = createFileRoute("/app/founder_/org")({
           "Founder view over every organisation: global write kill switch, seats, revenue truth, ledger health and break-glass state.",
       },
       { property: "og:title", content: "Founder org control — ANEXOMAIL" },
-      { property: "og:description", content: "Kill switch, seats, revenue truth and ledger health." },
+      {
+        property: "og:description",
+        content: "Kill switch, seats, revenue truth and ledger health.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -110,7 +113,11 @@ function FounderOrg() {
                     <span className="flex items-center gap-1.5">
                       <ShieldCheck className="size-3.5" aria-hidden="true" />
                       Ledger{" "}
-                      {d.ledger_ok === null ? "unknown" : d.ledger_ok ? "chain intact" : "chain broken"}
+                      {d.ledger_ok === null
+                        ? "unknown"
+                        : d.ledger_ok
+                          ? "chain intact"
+                          : "chain broken"}
                     </span>
                     <span>{d.break_glass_active} break-glass active</span>
                     <span>
@@ -157,7 +164,15 @@ function FounderOrg() {
                         {o.plan ? ` · ${o.plan}` : ""}
                       </span>
                       {o.security_score !== null && (
-                        <Chip tone={o.security_score >= 80 ? "good" : o.security_score >= 50 ? "warn" : "bad"}>
+                        <Chip
+                          tone={
+                            o.security_score >= 80
+                              ? "good"
+                              : o.security_score >= 50
+                                ? "warn"
+                                : "bad"
+                          }
+                        >
                           score {o.security_score}
                         </Chip>
                       )}

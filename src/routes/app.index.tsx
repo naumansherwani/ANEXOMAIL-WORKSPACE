@@ -54,8 +54,8 @@ function DashboardPage() {
         <p className="ax-eyebrow">Command center</p>
         <h2 className="ax-display mt-3 text-foreground">Dashboard</h2>
         <p className="ax-body mt-ax-3 max-w-xl">
-          {session?.user.name ? `${session.user.name}, ` : ""}everything that needs you —
-          mail, activity, schedule and the numbers behind them. One surface, no reload.
+          {session?.user.name ? `${session.user.name}, ` : ""}everything that needs you — mail,
+          activity, schedule and the numbers behind them. One surface, no reload.
         </p>
 
         <div className="mt-ax-7">

@@ -123,7 +123,11 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
 
 export function QuickActions({ onCompose }: { onCompose: () => void }) {
   return (
-    <DashboardCard title="Quick actions" hint="One keystroke away from the work." icon={<Sparkles className="size-4" />}>
+    <DashboardCard
+      title="Quick actions"
+      hint="One keystroke away from the work."
+      icon={<Sparkles className="size-4" />}
+    >
       <div className="grid gap-ax-2 sm:grid-cols-2">
         <button
           type="button"
@@ -236,7 +240,11 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
       hint="AI usage for the current period."
       icon={<Sparkles className="size-4" />}
     >
-      <CardBody query={query} endpoint="/api/dashboard/ai-usage" skeleton={<StatSkeleton rows={3} />}>
+      <CardBody
+        query={query}
+        endpoint="/api/dashboard/ai-usage"
+        skeleton={<StatSkeleton rows={3} />}
+      >
         {(data) => {
           if (!data.enabled) {
             return (
@@ -308,27 +316,31 @@ export function AnalyticsPanel({ enabled }: { enabled: boolean }) {
       hint="Volume and response speed."
       icon={<ArrowUpRight className="size-4" />}
     >
-      <CardBody query={query} endpoint="/api/dashboard/analytics" skeleton={<StatSkeleton rows={4} />}>
+      <CardBody
+        query={query}
+        endpoint="/api/dashboard/analytics"
+        skeleton={<StatSkeleton rows={4} />}
+      >
         {(data) => {
-          const peak = Math.max(
-            1,
-            ...data.series.map((point) => point.received + point.sent),
-          );
+          const peak = Math.max(1, ...data.series.map((point) => point.received + point.sent));
           return (
             <div>
               <div className="grid grid-cols-2 gap-ax-4 sm:grid-cols-4">
-                <Stat icon={<ArrowDownLeft className="size-3.5" />} label="Received" value={String(data.received)} />
-                <Stat icon={<ArrowUpRight className="size-3.5" />} label="Sent" value={String(data.sent)} />
                 <Stat
-                  label="First reply"
-                  value={formatDuration(data.avg_first_reply_seconds)}
+                  icon={<ArrowDownLeft className="size-3.5" />}
+                  label="Received"
+                  value={String(data.received)}
                 />
+                <Stat
+                  icon={<ArrowUpRight className="size-3.5" />}
+                  label="Sent"
+                  value={String(data.sent)}
+                />
+                <Stat label="First reply" value={formatDuration(data.avg_first_reply_seconds)} />
                 <Stat
                   label="Delivered"
                   value={
-                    data.delivery_rate === null
-                      ? "—"
-                      : `${Math.round(data.delivery_rate * 100)}%`
+                    data.delivery_rate === null ? "—" : `${Math.round(data.delivery_rate * 100)}%`
                   }
                 />
               </div>
@@ -358,24 +370,14 @@ export function AnalyticsPanel({ enabled }: { enabled: boolean }) {
   );
 }
 
-function Stat({
-  icon,
-  label,
-  value,
-}: {
-  icon?: React.ReactNode;
-  label: string;
-  value: string;
-}) {
+function Stat({ icon, label, value }: { icon?: React.ReactNode; label: string; value: string }) {
   return (
     <div>
       <span className="ax-caption flex items-center gap-1.5 text-steel">
         {icon}
         {label}
       </span>
-      <span className="mt-1 block text-xl font-bold tabular-nums text-foreground">
-        {value}
-      </span>
+      <span className="mt-1 block text-xl font-bold tabular-nums text-foreground">{value}</span>
     </div>
   );
 }
@@ -393,7 +395,11 @@ export function UpcomingPanel({ enabled }: { enabled: boolean }) {
       to="/app/calendar"
       ctaLabel="Open calendar"
     >
-      <CardBody query={query} endpoint="/api/dashboard/calendar" skeleton={<StatSkeleton rows={4} />}>
+      <CardBody
+        query={query}
+        endpoint="/api/dashboard/calendar"
+        skeleton={<StatSkeleton rows={4} />}
+      >
         {(data) =>
           data.events.length === 0 ? (
             <StateBlock

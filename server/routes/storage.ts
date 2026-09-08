@@ -80,11 +80,15 @@ async function requireWs(
 }
 
 function parseBody(req: any, res: any): { mailbox: string; bytes: number; kind: string } | null {
-  const mailbox = String(req.body?.mailbox || "").trim().toLowerCase();
+  const mailbox = String(req.body?.mailbox || "")
+    .trim()
+    .toLowerCase();
   const bytes = Math.max(0, Math.floor(Number(req.body?.bytes) || 0));
   const kind = String(req.body?.kind || "attachment");
   if (!mailbox || !KINDS.has(kind)) {
-    res.status(400).json({ error: "bad_request", detail: "mailbox + kind (email|attachment|file)" });
+    res
+      .status(400)
+      .json({ error: "bad_request", detail: "mailbox + kind (email|attachment|file)" });
     return null;
   }
   return { mailbox, bytes, kind };

@@ -137,7 +137,8 @@ router.get("/blast-radius", async (req, res) => {
   const affects: string[] = def.affects ?? [];
   const members = affects.includes("members") ? await safeCount("org_members") : 0;
   const mailboxes = affects.includes("mailboxes") ? await safeCount("mailboxes") : 0;
-  const automations = affects.includes("ai") || affects.includes("outbox") ? await safeCount("automation_rules") : 0;
+  const automations =
+    affects.includes("ai") || affects.includes("outbox") ? await safeCount("automation_rules") : 0;
 
   const weight = members + mailboxes + automations;
   const severity = !def.reversible || weight > 20 ? "high" : weight > 0 ? "medium" : "low";
@@ -205,7 +206,8 @@ router.post("/simulate", async (req, res) => {
 
   const warnings: string[] = [];
   const str = String(value);
-  if (def.kind === "toggle" && !["true", "false"].includes(str)) warnings.push("Toggle sirf true/false leta hai.");
+  if (def.kind === "toggle" && !["true", "false"].includes(str))
+    warnings.push("Toggle sirf true/false leta hai.");
   if (def.kind === "number" && Number.isNaN(Number(str))) warnings.push("Number chahiye.");
   if (def.kind === "choice" && Array.isArray(def.options)) {
     const allowed = (def.options as any[]).map((o) => String(o.value));
@@ -220,7 +222,10 @@ router.post("/simulate", async (req, res) => {
     const affects: string[] = def.affects ?? [];
     const members = affects.includes("members") ? await safeCount("org_members") : 0;
     const mailboxes = affects.includes("mailboxes") ? await safeCount("mailboxes") : 0;
-    const automations = affects.includes("ai") || affects.includes("outbox") ? await safeCount("automation_rules") : 0;
+    const automations =
+      affects.includes("ai") || affects.includes("outbox")
+        ? await safeCount("automation_rules")
+        : 0;
     blast = {
       key,
       members_affected: members,
@@ -238,7 +243,13 @@ router.post("/simulate", async (req, res) => {
 });
 
 // ---- 5. save (Time Machine version + blast snapshot) ----
-async function writeSetting(uid: string, key: string, value: string, reason: string | null, by: string) {
+async function writeSetting(
+  uid: string,
+  key: string,
+  value: string,
+  reason: string | null,
+  by: string,
+) {
   const { data: def } = await db!
     .from("setting_defs")
     .select("key,scope,label,help,kind,default_value,recommended,options,affects,reversible")
@@ -296,10 +307,17 @@ router.post("/save", async (req, res) => {
   if (!uid) return;
   const { key, value, reason } = req.body ?? {};
   if (!key) return res.status(400).json({ error: "key_required" });
-  const out = await writeSetting(uid, String(key), String(value), reason ? String(reason) : null, "self");
-  if (out.error) return out.error.message === "unknown_setting"
-    ? res.status(404).json({ error: "unknown_setting" })
-    : fail(res, out.error);
+  const out = await writeSetting(
+    uid,
+    String(key),
+    String(value),
+    reason ? String(reason) : null,
+    "self",
+  );
+  if (out.error)
+    return out.error.message === "unknown_setting"
+      ? res.status(404).json({ error: "unknown_setting" })
+      : fail(res, out.error);
   res.json(out.setting);
 });
 
@@ -334,7 +352,13 @@ router.post("/revert", async (req, res) => {
   if (error) return fail(res, error);
   if (!ver) return res.status(404).json({ error: "unknown_version" });
 
-  const out = await writeSetting(uid, ver.key, String(ver.from_value ?? ""), `revert of ${ver.id}`, "revert");
+  const out = await writeSetting(
+    uid,
+    ver.key,
+    String(ver.from_value ?? ""),
+    `revert of ${ver.id}`,
+    "revert",
+  );
   if (out.error) return fail(res, out.error);
   await db!.from("setting_versions").update({ reverted: true }).eq("id", ver.id).eq("user_id", uid);
   res.json(out.setting);
@@ -364,7 +388,8 @@ router.get("/drift", async (req, res) => {
     }
   }
   const scored = aligned + loose + risky;
-  const score = scored === 0 ? 100 : Math.max(0, Math.round(((aligned + loose * 0.5) / scored) * 100));
+  const score =
+    scored === 0 ? 100 : Math.max(0, Math.round(((aligned + loose * 0.5) / scored) * 100));
   res.json({ score, aligned, loose, risky, items });
 });
 
@@ -440,7 +465,13 @@ async function runDueSchedules(uid: string) {
 
   for (const s of due ?? []) {
     if (s.state === "scheduled") {
-      const out = await writeSetting(uid, s.key, String(s.to_value), `scheduled ${s.id}`, "schedule");
+      const out = await writeSetting(
+        uid,
+        s.key,
+        String(s.to_value),
+        `scheduled ${s.id}`,
+        "schedule",
+      );
       if (!out.error) {
         await db!
           .from("setting_schedules")
@@ -450,7 +481,9 @@ async function runDueSchedules(uid: string) {
       continue;
     }
     if (s.state === "applied" && s.auto_rollback_minutes && s.applied_at) {
-      const deadline = new Date(new Date(s.applied_at).getTime() + s.auto_rollback_minutes * 60_000);
+      const deadline = new Date(
+        new Date(s.applied_at).getTime() + s.auto_rollback_minutes * 60_000,
+      );
       if (now >= deadline) {
         const { data: ver } = await db!
           .from("setting_versions")
@@ -460,7 +493,13 @@ async function runDueSchedules(uid: string) {
           .order("changed_at", { ascending: false })
           .limit(1)
           .maybeSingle();
-        await writeSetting(uid, s.key, String(ver?.from_value ?? ""), `auto-rollback ${s.id}`, "auto-rollback");
+        await writeSetting(
+          uid,
+          s.key,
+          String(ver?.from_value ?? ""),
+          `auto-rollback ${s.id}`,
+          "auto-rollback",
+        );
         await db!
           .from("setting_schedules")
           .update({
@@ -482,13 +521,19 @@ founderRouter.get("/settings/overview", async (req, res) => {
   const since7 = new Date(Date.now() - 7 * 24 * 3600_000).toISOString();
 
   const [{ count: changes24h }, { count: reverts7d }, { count: pending }] = await Promise.all([
-    db!.from("setting_versions").select("id", { count: "exact", head: true }).gte("changed_at", since24),
+    db!
+      .from("setting_versions")
+      .select("id", { count: "exact", head: true })
+      .gte("changed_at", since24),
     db!
       .from("setting_versions")
       .select("id", { count: "exact", head: true })
       .eq("reverted", true)
       .gte("changed_at", since7),
-    db!.from("setting_schedules").select("id", { count: "exact", head: true }).eq("state", "scheduled"),
+    db!
+      .from("setting_schedules")
+      .select("id", { count: "exact", head: true })
+      .eq("state", "scheduled"),
   ]);
 
   const { data: recent } = await db!

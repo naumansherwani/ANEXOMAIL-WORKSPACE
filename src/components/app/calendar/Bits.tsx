@@ -13,7 +13,9 @@ export function CostMeter({ cost }: { cost: MeetingCost }) {
     <span
       className={cn(
         "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-bold",
-        heavy ? "border-danger/40 bg-danger/10 text-danger" : "border-border bg-secondary text-foreground",
+        heavy
+          ? "border-danger/40 bg-danger/10 text-danger"
+          : "border-border bg-secondary text-foreground",
       )}
       title={`${cost.attendees} people × ${minutesLabel(cost.minutes)}`}
     >
@@ -57,13 +59,7 @@ export function TimeZoneTruthBar({ attendees }: { attendees: AttendeeLocalTime[]
   );
 }
 
-export function ConflictChip({
-  conflict,
-  shield,
-}: {
-  conflict: boolean;
-  shield: boolean;
-}) {
+export function ConflictChip({ conflict, shield }: { conflict: boolean; shield: boolean }) {
   if (!conflict && !shield) return null;
   return (
     <span
@@ -101,6 +97,6 @@ export function LoadBar({
 
 /** Absolute API link for exports (ICS / JSON) — ownership pillar. */
 export function apiHref(path: string) {
-  const base = (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ?? "";
+  const base = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
   return `${base}${path}`;
 }

@@ -20,7 +20,8 @@ import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
 
-const clock = (iso: string | null) => (iso ? `${new Date(iso).toISOString().slice(11, 19)} UTC` : "—");
+const clock = (iso: string | null) =>
+  iso ? `${new Date(iso).toISOString().slice(11, 19)} UTC` : "—";
 
 const STATUS_TONE: Record<HandoverStatus, string> = {
   confirmed_fact: "text-emerald-400",
@@ -96,32 +97,35 @@ export function ReceiptsPanel() {
           <p className="ax-caption mt-ax-2 text-muted-foreground">Nothing recorded yet.</p>
         ) : (
           <ul className="mt-ax-2 space-y-1">
-            {(replay.data?.frames ?? []).slice(-40).reverse().map((f, i) => (
-              <li key={`${f.message_id}-${f.kind}-${i}`} className="ax-caption flex gap-2">
-                <span className="w-24 shrink-0 text-steel">{clock(f.at)}</span>
-                <span
-                  className={cn(
-                    "w-20 shrink-0 font-semibold",
-                    f.kind === "read"
-                      ? "text-emerald-400"
-                      : f.kind === "delivered"
-                        ? "text-cyan-accent"
-                        : "text-foreground",
-                  )}
-                >
-                  {f.kind === "sent" ? "Sent" : f.kind === "delivered" ? "Reached" : "Read"}
-                </span>
-                <span className="min-w-0 flex-1 truncate text-muted-foreground">
-                  {f.actor}
-                  {f.device?.platform_class && f.device.platform_class !== "unknown"
-                    ? ` · ${f.device.platform_class}`
-                    : ""}
-                  {f.device?.timezone_bucket && f.device.timezone_bucket !== "unknown"
-                    ? ` · ${f.device.timezone_bucket}`
-                    : ""}
-                </span>
-              </li>
-            ))}
+            {(replay.data?.frames ?? [])
+              .slice(-40)
+              .reverse()
+              .map((f, i) => (
+                <li key={`${f.message_id}-${f.kind}-${i}`} className="ax-caption flex gap-2">
+                  <span className="w-24 shrink-0 text-steel">{clock(f.at)}</span>
+                  <span
+                    className={cn(
+                      "w-20 shrink-0 font-semibold",
+                      f.kind === "read"
+                        ? "text-emerald-400"
+                        : f.kind === "delivered"
+                          ? "text-cyan-accent"
+                          : "text-foreground",
+                    )}
+                  >
+                    {f.kind === "sent" ? "Sent" : f.kind === "delivered" ? "Reached" : "Read"}
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                    {f.actor}
+                    {f.device?.platform_class && f.device.platform_class !== "unknown"
+                      ? ` · ${f.device.platform_class}`
+                      : ""}
+                    {f.device?.timezone_bucket && f.device.timezone_bucket !== "unknown"
+                      ? ` · ${f.device.timezone_bucket}`
+                      : ""}
+                  </span>
+                </li>
+              ))}
           </ul>
         )}
       </div>
@@ -136,7 +140,10 @@ export function ReceiptsPanel() {
         ) : (
           <ul className="mt-ax-2 space-y-ax-2">
             {(silent.data?.items ?? []).slice(0, 10).map((s) => (
-              <li key={`${s.message_id}-${s.reader_id}`} className="ax-caption text-muted-foreground">
+              <li
+                key={`${s.message_id}-${s.reader_id}`}
+                className="ax-caption text-muted-foreground"
+              >
                 <span className="font-semibold text-foreground">{s.reader}</span> read your message
                 in <span className="text-foreground">{s.title}</span> · {relativeTime(s.read_at)} ·{" "}
                 {s.hours_since}h with no reply recorded
@@ -144,9 +151,7 @@ export function ReceiptsPanel() {
             ))}
           </ul>
         )}
-        {silent.data?.note && (
-          <p className="ax-caption mt-ax-2 text-steel">{silent.data.note}</p>
-        )}
+        {silent.data?.note && <p className="ax-caption mt-ax-2 text-steel">{silent.data.note}</p>}
       </div>
 
       {/* certificate — verifiable outside, no message text inside */}
@@ -181,8 +186,9 @@ export function ReceiptsPanel() {
           </Button>
         </div>
         <p className="ax-caption mt-ax-2 text-muted-foreground">
-          A sealed summary of this conversation: how many messages, how many reached people, how many
-          were read — and the seal that proves nothing was changed. No message text is included.
+          A sealed summary of this conversation: how many messages, how many reached people, how
+          many were read — and the seal that proves nothing was changed. No message text is
+          included.
         </p>
         {cert && (
           <p className="ax-caption mt-ax-2 break-all text-foreground">
@@ -321,7 +327,9 @@ function HandoverPacks() {
               variant="outline"
               disabled={complete.isPending}
               onClick={() => {
-                const reason = window.prompt("Confirm handover complete — why? (8+ characters)")?.trim();
+                const reason = window
+                  .prompt("Confirm handover complete — why? (8+ characters)")
+                  ?.trim();
                 if (!reason || reason.length < 8) {
                   notify.failed("A reason is required", { description: "At least 8 characters." });
                   return;

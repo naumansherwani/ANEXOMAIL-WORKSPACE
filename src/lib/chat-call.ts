@@ -16,7 +16,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { chatCall } from "./chat-transport";
-import { openSignalLink, type SignalFrame, type SignalLink, type SignalTransport } from "./chat-signal";
+import {
+  openSignalLink,
+  type SignalFrame,
+  type SignalLink,
+  type SignalTransport,
+} from "./chat-signal";
 // PHASE 10B — NEW ADDED: adaptive 8K ladder (real capture only, no fake 8K)
 import {
   applyCodecPreference,
@@ -154,7 +159,9 @@ function tuneOpusSdp(sdp: string | undefined): string | undefined {
     const required = ["useinbandfec=1", "usedtx=1", "stereo=0", "maxaveragebitrate=64000"];
     if (fmtp.test(next)) {
       next = next.replace(fmtp, (_line, params: string) => {
-        const keys = new Set(params.split(";").map((part) => part.trim().split("=")[0]?.toLowerCase()));
+        const keys = new Set(
+          params.split(";").map((part) => part.trim().split("=")[0]?.toLowerCase()),
+        );
         const additions = required.filter((part) => !keys.has(part.split("=")[0]));
         return `a=fmtp:${payload} ${params}${additions.length ? `;${additions.join(";")}` : ""}`;
       });
@@ -184,7 +191,11 @@ function preferCodecs(transceiver: RTCRtpTransceiver) {
       CODEC_ORDER.findIndex((c) => c.toLowerCase() === b.mimeType.toLowerCase()),
   );
   try {
-    transceiver.setCodecPreferences(ranked.filter((c) => CODEC_ORDER.some((x) => x.toLowerCase() === c.mimeType.toLowerCase())).concat(ranked));
+    transceiver.setCodecPreferences(
+      ranked
+        .filter((c) => CODEC_ORDER.some((x) => x.toLowerCase() === c.mimeType.toLowerCase()))
+        .concat(ranked),
+    );
   } catch {
     /* browser ne mana kiya to default negotiation — jhoot nahi */
   }
@@ -196,7 +207,11 @@ function preferCodecs(transceiver: RTCRtpTransceiver) {
 
 export type CallHandle = ReturnType<typeof useCall>;
 
-export function useCall(conversationId: string | null, selfId: string | null, peerId: string | null) {
+export function useCall(
+  conversationId: string | null,
+  selfId: string | null,
+  peerId: string | null,
+) {
   const pc = useRef<RTCPeerConnection | null>(null);
   const link = useRef<SignalLink | null>(null);
   const localRef = useRef<MediaStream | null>(null);
@@ -232,9 +247,10 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
   const marked = useRef<Set<string>>(new Set());
   const audioOnly = useRef<boolean>(false);
   const sfuRoom = useRef<string | null>(null);
-  const [ringing, setRinging] = useState<{ tone: "ringtone" | "ringback"; audible: boolean } | null>(
-    null,
-  );
+  const [ringing, setRinging] = useState<{
+    tone: "ringtone" | "ringback";
+    audible: boolean;
+  } | null>(null);
   const [topology, setTopology] = useState<"mesh" | "sfu" | null>(null);
   const [mediaForwarding, setMediaForwarding] = useState(false);
   const [survival, setSurvival] = useState<string | null>(null);
@@ -255,60 +271,62 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     [],
   );
 
-  const stopRing = useCallback(
-    (action: "answered" | "declined" | "no_answer" | null) => {
-      ring.current?.stop();
-      ring.current = null;
-      setRinging(null);
-      if (noAnswer.current) {
-        window.clearTimeout(noAnswer.current);
-        noAnswer.current = null;
+  const stopRing = useCallback((action: "answered" | "declined" | "no_answer" | null) => {
+    ring.current?.stop();
+    ring.current = null;
+    setRinging(null);
+    if (noAnswer.current) {
+      window.clearTimeout(noAnswer.current);
+      noAnswer.current = null;
+    }
+    const id = ringId.current;
+    if (id && action) {
+      ringId.current = null;
+      void ringSettle({ ring_id: id, action }).catch(() => {});
+    }
+  }, []);
+
+  const teardown = useCallback(
+    (reason: string) => {
+      if (sessionId.current) {
+        void chatCall(
+          "chat.call.end",
+          { session_id: sessionId.current, reason },
+          {
+            path: "/api/chat/video/call/end",
+            method: "POST",
+            body: { session_id: sessionId.current, reason },
+          },
+        ).catch(() => {});
       }
-      const id = ringId.current;
-      if (id && action) {
-        ringId.current = null;
-        void ringSettle({ ring_id: id, action }).catch(() => {});
+      // PHASE 31A — ring band, SFU seat chhoro, warm socket band
+      stopRing(null);
+      if (sfuRoom.current) {
+        void sfuLeave(sfuRoom.current).catch(() => {});
+        sfuRoom.current = null;
       }
+      dropPrewarm();
+      marked.current.clear();
+      audioOnly.current = false;
+      setSurvival(null);
+      setMediaForwarding(false);
+      sessionId.current = null;
+      pc.current?.getSenders().forEach((s) => s.track?.stop());
+      try {
+        pc.current?.close();
+      } catch {
+        /* already closed */
+      }
+      pc.current = null;
+      localRef.current?.getTracks().forEach((t) => t.stop());
+      localRef.current = null;
+      setLocal(null);
+      setRemote(null);
+      setStats(EMPTY_STATS);
+      pendingIce.current = [];
     },
-    [],
+    [stopRing],
   );
-
-
-
-  const teardown = useCallback((reason: string) => {
-    if (sessionId.current) {
-      void chatCall("chat.call.end", { session_id: sessionId.current, reason }, {
-        path: "/api/chat/video/call/end",
-        method: "POST",
-        body: { session_id: sessionId.current, reason },
-      }).catch(() => {});
-    }
-    // PHASE 31A — ring band, SFU seat chhoro, warm socket band
-    stopRing(null);
-    if (sfuRoom.current) {
-      void sfuLeave(sfuRoom.current).catch(() => {});
-      sfuRoom.current = null;
-    }
-    dropPrewarm();
-    marked.current.clear();
-    audioOnly.current = false;
-    setSurvival(null);
-    setMediaForwarding(false);
-    sessionId.current = null;
-    pc.current?.getSenders().forEach((s) => s.track?.stop());
-    try {
-      pc.current?.close();
-    } catch {
-      /* already closed */
-    }
-    pc.current = null;
-    localRef.current?.getTracks().forEach((t) => t.stop());
-    localRef.current = null;
-    setLocal(null);
-    setRemote(null);
-    setStats(EMPTY_STATS);
-    pendingIce.current = [];
-  }, [stopRing]);
 
   const media = useCallback(async () => {
     if (localRef.current) return localRef.current;
@@ -338,7 +356,9 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     );
     captureCeiling.current = LADDER[ceilingIdx]!;
     ladder.current = new QualityLadder(
-      choiceRef.current === "auto" ? ceilingIdx : Math.min(ceilingIdx, rungIndex(choiceRef.current)),
+      choiceRef.current === "auto"
+        ? ceilingIdx
+        : Math.min(ceilingIdx, rungIndex(choiceRef.current)),
       ceilingIdx,
     );
     return stream;
@@ -376,7 +396,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           sendEncodings: sendEncodings(ladder.current.current()),
         });
         // AV1 -> VP9 -> H.264 -> VP8 (capability se, assume kuch nahi)
-        applyCodecPreference(t) ?? preferCodecs(t);
+        if (applyCodecPreference(t) === null) preferCodecs(t);
         await applyRung(t.sender, video, ladder.current.current(), captureCeiling.current);
       }
 
@@ -511,7 +531,8 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         if (offerCollision) await peer.setLocalDescription({ type: "rollback" }).catch(() => {});
         await peer.setRemoteDescription({ type: "offer", sdp });
         await peer.setLocalDescription();
-        if (peerId) await link.current?.send(peerId, "answer", { sdp: tunedLocalDescription(peer)?.sdp });
+        if (peerId)
+          await link.current?.send(peerId, "answer", { sdp: tunedLocalDescription(peer)?.sdp });
         return;
       }
 
@@ -572,8 +593,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
             },
           },
         );
-        sessionId.current =
-          typeof res === "string" ? res : (res?.session_id ?? res?.id ?? null);
+        sessionId.current = typeof res === "string" ? res : (res?.session_id ?? res?.id ?? null);
       } catch {
         sessionId.current = null; // telemetry optional — call kabhi block nahi hoti
       }
@@ -645,7 +665,9 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       await registerSession("callee");
       await peer.setRemoteDescription({ type: "offer", sdp: String(offer.payload["sdp"] ?? "") });
       await peer.setLocalDescription();
-      await link.current?.send(offer.from_user, "answer", { sdp: tunedLocalDescription(peer)?.sdp });
+      await link.current?.send(offer.from_user, "answer", {
+        sdp: tunedLocalDescription(peer)?.sdp,
+      });
       for (const c of pendingIce.current.splice(0)) await peer.addIceCandidate(c).catch(() => {});
       setIncoming(null);
     } catch (error) {
@@ -678,7 +700,9 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     const peer = pc.current;
     if (!peer) return;
     const fresh = await navigator.mediaDevices.getUserMedia(
-      kind === "audio" ? { audio: { deviceId: { exact: deviceId } } } : { video: { deviceId: { exact: deviceId } } },
+      kind === "audio"
+        ? { audio: { deviceId: { exact: deviceId } } }
+        : { video: { deviceId: { exact: deviceId } } },
     );
     const track = kind === "audio" ? fresh.getAudioTracks()[0] : fresh.getVideoTracks()[0];
     if (!track) return;
@@ -686,10 +710,13 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
     await sender?.replaceTrack(track);
     const old = localRef.current;
     if (old) {
-      old.getTracks().filter((t) => t.kind === kind).forEach((t) => {
-        old.removeTrack(t);
-        t.stop();
-      });
+      old
+        .getTracks()
+        .filter((t) => t.kind === kind)
+        .forEach((t) => {
+          old.removeTrack(t);
+          t.stop();
+        });
       old.addTrack(track);
       setLocal(new MediaStream(old.getTracks()));
     }
@@ -760,7 +787,7 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
       const peer = pc.current;
       if (!peer) return;
       const report = await peer.getStats();
-      let next: CallStats = { ...EMPTY_STATS, ice_restarts: restarts.current };
+      const next: CallStats = { ...EMPTY_STATS, ice_restarts: restarts.current };
       let bytes = 0;
       let at = 0;
       let pairId = "";
@@ -791,7 +818,15 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           }
         }
         if (r.type === "inbound-rtp" && (r as RTCInboundRtpStreamStats).kind === "video") {
-          const i = r as RTCInboundRtpStreamStats & { jitter?: number; packetsLost?: number; packetsReceived?: number; framesPerSecond?: number; frameWidth?: number; frameHeight?: number; framesDropped?: number };
+          const i = r as RTCInboundRtpStreamStats & {
+            jitter?: number;
+            packetsLost?: number;
+            packetsReceived?: number;
+            framesPerSecond?: number;
+            frameWidth?: number;
+            frameHeight?: number;
+            framesDropped?: number;
+          };
           // PHASE 10B — NEW ADDED: decode truth alag + dropped frames
           if (i.frameWidth) {
             next.decoded_width = i.frameWidth;
@@ -818,7 +853,8 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
           const p = r as RTCIceCandidatePairStats;
           if (p.nominated !== false) {
             pairId = String(p.remoteCandidateId ?? "");
-            if (p.currentRoundTripTime != null) next.rtt_ms = Math.round(p.currentRoundTripTime * 1000);
+            if (p.currentRoundTripTime != null)
+              next.rtt_ms = Math.round(p.currentRoundTripTime * 1000);
           }
         }
         if (r.type === "codec") {
@@ -865,7 +901,8 @@ export function useCall(conversationId: string | null, selfId: string | null, pe
         const decision = ladder.current.step({
           rtt_ms: next.rtt_ms,
           loss_pct: next.loss_pct,
-          available_out_bps: next.available_out_kbps == null ? null : next.available_out_kbps * 1000,
+          available_out_bps:
+            next.available_out_kbps == null ? null : next.available_out_kbps * 1000,
           quality_limitation: next.limitation,
           fps: next.fps,
         });

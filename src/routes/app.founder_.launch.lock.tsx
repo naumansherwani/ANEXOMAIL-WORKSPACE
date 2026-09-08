@@ -8,7 +8,26 @@ import { GateBadge, Note } from "@/components/app/release/ReleaseBits";
 import { notify } from "@/lib/notify";
 import { gateFrom, useLocks, useReleaseOverview, useSignLock } from "@/lib/release";
 
-export const Route = createFileRoute("/app/founder_/launch/lock")({ component: LockPage });
+export const Route = createFileRoute("/app/founder_/launch/lock")({
+  head: () => ({
+    meta: [
+      { title: "Launch · Lock · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Launch · Lock · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Launch · Lock · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Launch · Lock · Founder view in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: LockPage,
+});
 
 /** Feature 3 — append-only version lock ledger. Red gate = button disabled. */
 function LockPage() {
@@ -24,7 +43,11 @@ function LockPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Lock className="size-3.5" aria-hidden="true" /> Version lock</>}
+        eyebrow={
+          <>
+            <Lock className="size-3.5" aria-hidden="true" /> Version lock
+          </>
+        }
         title="Sign v1.0, freeze the product"
         blurb="Signing writes an append-only ledger row with the verdict it was signed against — who, when, and a signature hash that cannot be edited or deleted."
       >
@@ -57,11 +80,20 @@ function LockPage() {
             sign.mutate(
               { version, ...(notes ? { notes } : {}) },
               {
-                onSuccess: (l) => notify.done(`v${l.version} locked`, `Signature ${l.signature_hash.slice(0, 12)}…`),
+                onSuccess: (l) =>
+                  notify.done(
+                    `v${l.version} locked`,
+                    `Signature ${l.signature_hash.slice(0, 12)}…`,
+                  ),
                 onError: (e) =>
-                  notify.failed(e.status === 409 ? "This version is already locked" : "Lock failed", {
-                    description: e.isNotImplemented ? "Waiting on POST /api/founder/release/lock." : e.message,
-                  }),
+                  notify.failed(
+                    e.status === 409 ? "This version is already locked" : "Lock failed",
+                    {
+                      description: e.isNotImplemented
+                        ? "Waiting on POST /api/founder/release/lock."
+                        : e.message,
+                    },
+                  ),
               },
             )
           }
@@ -81,13 +113,20 @@ function LockPage() {
           <h3 className="ax-heading text-foreground">Lock ledger</h3>
           <div className="mt-ax-3">
             <CardBody
-              query={{ data: locks.data, isPending: locks.isPending, error: locks.error ?? null, refetch: () => void locks.refetch() }}
+              query={{
+                data: locks.data,
+                isPending: locks.isPending,
+                error: locks.error ?? null,
+                refetch: () => void locks.refetch(),
+              }}
               endpoint="/api/founder/release/lock"
               skeleton={<StatSkeleton rows={3} />}
             >
               {(d) =>
                 d.locks.length === 0 ? (
-                  <p className="ax-caption text-muted-foreground">No version has been frozen yet.</p>
+                  <p className="ax-caption text-muted-foreground">
+                    No version has been frozen yet.
+                  </p>
                 ) : (
                   <ul className="space-y-1.5">
                     {d.locks.map((l) => (
@@ -95,7 +134,9 @@ function LockPage() {
                         <span className="font-bold text-foreground">v{l.version}</span>
                         <span className="min-w-0 flex-1">
                           <span className="block text-foreground">{l.signed_by}</span>
-                          <span className="block truncate font-mono text-steel">{l.signature_hash}</span>
+                          <span className="block truncate font-mono text-steel">
+                            {l.signature_hash}
+                          </span>
                         </span>
                         <span className="text-steel">{l.verdict}</span>
                         <span className="ml-auto text-muted-foreground">

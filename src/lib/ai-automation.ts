@@ -99,12 +99,11 @@ export type EmailAutomation = {
   last_handled_at: string | null;
 };
 
-const list = <T,>(key: string, procedure: string, path: string) =>
-  ({
-    queryKey: ["ai", "automation", key],
-    queryFn: () => rpcOrRest<T>(procedure, { path }),
-    retry: false as const,
-  });
+const list = <T>(key: string, procedure: string, path: string) => ({
+  queryKey: ["ai", "automation", key],
+  queryFn: () => rpcOrRest<T>(procedure, { path }),
+  retry: false as const,
+});
 
 export function useWorkflows() {
   return useQuery<{ workflows: Workflow[] }, ApiError>(
@@ -182,11 +181,7 @@ export function useRunWorkflow() {
 
 /** Dry run = kuch send nahi hota, sirf batata hai kya hota. */
 export function useDryRunWorkflow() {
-  return useMutation<
-    { would_match: number; log: string[] },
-    ApiError,
-    { id: string }
-  >({
+  return useMutation<{ would_match: number; log: string[] }, ApiError, { id: string }>({
     mutationFn: (body) =>
       rpcOrRest<{ would_match: number; log: string[] }>(
         "ai.dryRunWorkflow",

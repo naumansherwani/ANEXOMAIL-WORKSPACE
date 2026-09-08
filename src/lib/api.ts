@@ -14,7 +14,7 @@
  * Cross-origin base (anexomail.com) founderworkspace se CORS/preflight ki
  * wajah se fail hota tha — "Could not reach the workspace server".
  */
-const BASE = (import.meta.env['VITE_API_URL'] as string | undefined)?.replace(/\/$/, "") ?? "";
+const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
 
 const TOKEN_KEY = "anexo.session.token";
 
@@ -49,15 +49,10 @@ export const sessionToken = {
   },
 };
 
-export async function api<T>(
-  path: string,
-  init?: RequestInit & { auth?: boolean },
-): Promise<T> {
+export async function api<T>(path: string, init?: RequestInit & { auth?: boolean }): Promise<T> {
   if (!BASE && typeof window === "undefined") {
     throw new ApiError("API base URL is not configured (VITE_API_URL).", 0, "no_api_url");
   }
-
-
 
   const headers = new Headers(init?.headers);
   if (init?.body && !headers.has("content-type")) {

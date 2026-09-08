@@ -75,8 +75,7 @@ function AccountPage() {
               onClick={() =>
                 void enrollPasskey().catch((error: unknown) => {
                   notify.failed("Passkey not added", {
-                    description:
-                      error instanceof Error ? error.message : "Please try again.",
+                    description: error instanceof Error ? error.message : "Please try again.",
                   });
                 })
               }
@@ -92,8 +91,7 @@ function AccountPage() {
                   .then((res) => window.open(res.otpauth_url, "_blank", "noopener"))
                   .catch((error: unknown) => {
                     notify.failed("Two-step setup unavailable", {
-                      description:
-                        error instanceof Error ? error.message : "Please try again.",
+                      description: error instanceof Error ? error.message : "Please try again.",
                     });
                   })
               }
@@ -120,10 +118,7 @@ function AccountPage() {
                 onRetry={() => void sessions.refetch()}
               />
             ) : !sessions.data?.length ? (
-              <StateBlock
-                title="No other devices"
-                body="You're only signed in here."
-              />
+              <StateBlock title="No other devices" body="You're only signed in here." />
             ) : (
               <ul className="ax-stagger divide-y divide-border rounded-xl border border-border bg-card">
                 {sessions.data.map((s) => (

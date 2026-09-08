@@ -21,7 +21,8 @@ export const Route = createFileRoute("/app/ai-center")({
       { property: "og:title", content: "AI email center — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "Control room for every AI mailbox, its replies and the drafts waiting for approval.",
+        content:
+          "Control room for every AI mailbox, its replies and the drafts waiting for approval.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -47,7 +48,8 @@ function AiCenter() {
   const mail = useAiMail(state);
   const approve = useApproveAiDraft();
 
-  const notWired = (agents.error?.isNotImplemented ?? false) || (mail.error?.isNotImplemented ?? false);
+  const notWired =
+    (agents.error?.isNotImplemented ?? false) || (mail.error?.isNotImplemented ?? false);
   const items = mail.data?.items ?? [];
 
   return (
@@ -100,7 +102,9 @@ function AiCenter() {
                       {server?.status ?? "not wired"}
                     </span>
                   </div>
-                  <p className="ax-caption mt-1 truncate text-muted-foreground">{planned.address}</p>
+                  <p className="ax-caption mt-1 truncate text-muted-foreground">
+                    {planned.address}
+                  </p>
                   <p className="ax-caption mt-2 text-muted-foreground">
                     {server
                       ? `${server.drafts_pending} awaiting approval · ${server.replies_sent} sent · ${server.escalations} escalated`
@@ -178,7 +182,8 @@ function AiCenter() {
                             approve.mutate(
                               { id: item.id },
                               {
-                                onSuccess: () => notify.done("Sent", "Draft approved and delivered."),
+                                onSuccess: () =>
+                                  notify.done("Sent", "Draft approved and delivered."),
                                 onError: (error) =>
                                   notify.failed("Could not send", { description: error.message }),
                               },
@@ -193,7 +198,9 @@ function AiCenter() {
                       {item.from_address} → {item.to_address}
                       {item.escalated_to ? ` · escalated to ${item.escalated_to}` : ""}
                     </p>
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{item.preview}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                      {item.preview}
+                    </p>
                   </li>
                 ))}
               </ul>

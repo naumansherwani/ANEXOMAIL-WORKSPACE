@@ -17,6 +17,24 @@ import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/founder_/ai/knowledge")({
+  head: () => ({
+    meta: [
+      { title: "AI · Knowledge · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "AI · Knowledge · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "AI · Knowledge · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "AI · Knowledge · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: FounderKnowledge,
 });
 
@@ -181,7 +199,9 @@ function FounderKnowledge() {
                       <ul className="space-y-ax-2">
                         {d.hits.map((h) => (
                           <li key={h.chunk_id} className="ax-plane rounded-xl p-ax-3">
-                            <p className="text-[12px] font-semibold text-foreground">{h.doc_title}</p>
+                            <p className="text-[12px] font-semibold text-foreground">
+                              {h.doc_title}
+                            </p>
                             <p className="ax-caption mt-1 text-muted-foreground">{h.excerpt}</p>
                             <p className="ax-caption mt-1 text-steel">
                               {h.scope} · score {h.score.toFixed(2)}
@@ -229,7 +249,9 @@ function FounderKnowledge() {
                                   onClick={() =>
                                     pin.mutate(
                                       { id: doc.id, pinned: !doc.pinned },
-                                      { onError: notWired("POST /api/knowledge/documents/:id/pin") },
+                                      {
+                                        onError: notWired("POST /api/knowledge/documents/:id/pin"),
+                                      },
                                     )
                                   }
                                   data-on={doc.pinned ? "true" : "false"}
@@ -276,10 +298,7 @@ function FounderKnowledge() {
               onSubmit={(e) => {
                 e.preventDefault();
                 if (!question.trim()) return;
-                ask.mutate(
-                  { question, scope },
-                  { onError: notWired("POST /api/knowledge/ask") },
-                );
+                ask.mutate({ question, scope }, { onError: notWired("POST /api/knowledge/ask") });
               }}
             >
               <textarea

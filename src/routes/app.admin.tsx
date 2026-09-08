@@ -4,10 +4,7 @@ import { ADMIN_SECTIONS } from "@/lib/ia";
 
 export const Route = createFileRoute("/app/admin")({
   head: () => ({
-    meta: [
-      { title: "Admin — ANEXOMAIL Workspace" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Admin — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
   component: AdminLayout,
 });

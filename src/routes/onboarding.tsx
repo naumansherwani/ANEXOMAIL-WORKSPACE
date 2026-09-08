@@ -103,10 +103,9 @@ function OnboardingPage() {
     }
   };
 
-  return (
-    status !== "signed-in" ? (
-      <OnboardingIntro loading={status === "loading"} />
-    ) : (
+  return status !== "signed-in" ? (
+    <OnboardingIntro loading={status === "loading"} />
+  ) : (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div
         aria-hidden
@@ -228,7 +227,6 @@ function OnboardingPage() {
         </div>
       </div>
     </main>
-    )
   );
 }
 

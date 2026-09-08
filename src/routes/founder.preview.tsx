@@ -7,10 +7,7 @@ import { setVisitorPreview } from "@/lib/visitor-preview";
 export const Route = createFileRoute("/founder/preview")({
   ssr: false,
   head: () => ({
-    meta: [
-      { title: "Public preview — ANEXOMAIL founder" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Public preview — ANEXOMAIL founder" }, { name: "robots", content: "noindex" }],
   }),
   component: FounderPublicPreview,
 });
@@ -37,23 +34,25 @@ function usePublicRoutes(): string[] {
   const router = useRouter();
   return useMemo(() => {
     const ids = Object.keys(router.routesById ?? {});
-    return ids
-      .filter((id) => id.startsWith("/"))
-      // `ai_.studio` jaise non-nesting segments ka URL `/ai/studio` hota hai.
-      .map((id) =>
-        id
-          .split("/")
-          .filter((seg) => !seg.startsWith("_"))
-          .map((seg) => (seg.endsWith("_") ? seg.slice(0, -1) : seg))
-          .join("/"),
-      )
-      .map((path) => path.replace(/\/$/, "") || "/")
-      .filter((path) => !path.startsWith("/app"))
-      .filter((path) => !path.startsWith("/founder"))
-      .filter((path) => !path.includes("$"))
-      .filter((path) => path !== "/pages")
-      .filter((path, i, arr) => arr.indexOf(path) === i)
-      .sort((a, b) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b)));
+    return (
+      ids
+        .filter((id) => id.startsWith("/"))
+        // `ai_.studio` jaise non-nesting segments ka URL `/ai/studio` hota hai.
+        .map((id) =>
+          id
+            .split("/")
+            .filter((seg) => !seg.startsWith("_"))
+            .map((seg) => (seg.endsWith("_") ? seg.slice(0, -1) : seg))
+            .join("/"),
+        )
+        .map((path) => path.replace(/\/$/, "") || "/")
+        .filter((path) => !path.startsWith("/app"))
+        .filter((path) => !path.startsWith("/founder"))
+        .filter((path) => !path.includes("$"))
+        .filter((path) => path !== "/pages")
+        .filter((path, i, arr) => arr.indexOf(path) === i)
+        .sort((a, b) => (a === "/" ? -1 : b === "/" ? 1 : a.localeCompare(b)))
+    );
   }, [router]);
 }
 
@@ -64,8 +63,7 @@ async function scanRoute(path: string): Promise<ScanResult> {
     const html = await res.text();
     const title = /<title[^>]*>([^<]*)<\/title>/i.exec(html)?.[1]?.trim() ?? null;
     const description =
-      /<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i.exec(html)?.[1] ??
-      null;
+      /<meta[^>]+name=["']description["'][^>]+content=["']([^"']+)["']/i.exec(html)?.[1] ?? null;
     const body = html
       .replace(/<script[\s\S]*?<\/script>/gi, "")
       .replace(/<style[\s\S]*?<\/style>/gi, "")
@@ -76,8 +74,7 @@ async function scanRoute(path: string): Promise<ScanResult> {
     if (!res.ok) notes.push(`HTTP ${res.status}`);
     if (!title) notes.push("missing <title>");
     if (!description) notes.push("missing meta description");
-    if (body.length < 400)
-      notes.push("thin server HTML — client-rendered, verify in the frame");
+    if (body.length < 400) notes.push("thin server HTML — client-rendered, verify in the frame");
     if (/lorem ipsum|placeholder|coming soon soon|TODO/i.test(body))
       notes.push("placeholder copy found");
 
@@ -168,9 +165,8 @@ function FounderPublicPreview() {
         <p className="ax-eyebrow">Founder only</p>
         <h1 className="ax-display mt-3 text-foreground">Public preview</h1>
         <p className="ax-body mt-ax-3 max-w-2xl">
-          Every public route, exactly as an unknown visitor sees it — no login, no session
-          UI. The list is generated from the router, so a new page appears here the moment
-          it exists.
+          Every public route, exactly as an unknown visitor sees it — no login, no session UI. The
+          list is generated from the router, so a new page appears here the moment it exists.
         </p>
 
         <div className="mt-ax-5 flex flex-wrap items-center gap-2">

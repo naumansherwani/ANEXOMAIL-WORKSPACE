@@ -61,13 +61,12 @@ export function buildPredictionContext(
     .trim();
 
   const blob = `${opts.subject ?? ""} ${before}`.toLowerCase();
-  const formality: PredictionContext["formality"] = /\b(dear|kind regards|yours sincerely|i am writing)\b/.test(
-    blob,
-  )
-    ? "formal"
-    : /\b(hey|hiya|thanks!|cheers)\b/.test(blob)
-      ? "casual"
-      : "any";
+  const formality: PredictionContext["formality"] =
+    /\b(dear|kind regards|yours sincerely|i am writing)\b/.test(blob)
+      ? "formal"
+      : /\b(hey|hiya|thanks!|cheers)\b/.test(blob)
+        ? "casual"
+        : "any";
 
   return {
     prefix,
@@ -100,13 +99,21 @@ export async function predictNext(input: {
 export async function learnWritingPattern(text: string) {
   if (text.trim().length < 12) return;
   const body = { text: text.slice(0, 4000) };
-  await rpcOrRest("mail.predict.learn", { path: "/api/mail/predict/learn", method: "POST", body }, body);
+  await rpcOrRest(
+    "mail.predict.learn",
+    { path: "/api/mail/predict/learn", method: "POST", body },
+    body,
+  );
 }
 
 async function logPredictionEvent(action: "accept" | "dismiss" | "conflict", prefix: string) {
   const body = { action, prefix };
   try {
-    await rpcOrRest("mail.predict.event", { path: "/api/mail/predict/event", method: "POST", body }, body);
+    await rpcOrRest(
+      "mail.predict.event",
+      { path: "/api/mail/predict/event", method: "POST", body },
+      body,
+    );
   } catch {
     /* telemetry never blocks writing */
   }
@@ -208,7 +215,9 @@ export function usePredictionController({
 
   /** Ghost text ko typed text se alag rakhna zaroori hai — sirf presentation. */
   const ghost = candidate?.text ?? "";
-  const needsSpace = ghost ? !/^\s|^[.,!?;:]/.test(ghost) && !/\s$/.test(text.slice(0, caret)) && !ctx.partial : false;
+  const needsSpace = ghost
+    ? !/^\s|^[.,!?;:]/.test(ghost) && !/\s$/.test(text.slice(0, caret)) && !ctx.partial
+    : false;
 
   return {
     ghost,

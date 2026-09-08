@@ -6,6 +6,24 @@ import { Stat } from "@/components/app/settings/SettingsBits";
 import { useFounderSettings } from "@/lib/settings";
 
 export const Route = createFileRoute("/app/founder_/settings")({
+  head: () => ({
+    meta: [
+      { title: "Settings · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Settings · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Settings · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "Settings · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: FounderSettings,
 });
 
@@ -23,7 +41,12 @@ function FounderSettings() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/founder/settings/overview"
             skeleton={<StatSkeleton rows={5} />}
           >
@@ -39,7 +62,10 @@ function FounderSettings() {
                 <h3 className="ax-heading mt-ax-6 text-foreground">Riskiest tenants</h3>
                 <ul className="mt-ax-3 space-y-1.5">
                   {o.risky_tenants.map((t) => (
-                    <li key={t.tenant} className="ax-plane flex items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">
+                    <li
+                      key={t.tenant}
+                      className="ax-plane flex items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
+                    >
                       <span className="font-semibold text-foreground">{t.tenant}</span>
                       <span className="text-steel">{t.risky} risky settings</span>
                       <span className="ml-auto text-foreground">{t.score}/100</span>
@@ -50,7 +76,10 @@ function FounderSettings() {
                 <h3 className="ax-heading mt-ax-6 text-foreground">Most changed settings</h3>
                 <ul className="mt-ax-3 space-y-1.5">
                   {o.most_changed.map((m) => (
-                    <li key={m.key} className="ax-plane flex items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">
+                    <li
+                      key={m.key}
+                      className="ax-plane flex items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
+                    >
                       <span className="font-semibold text-foreground">{m.key}</span>
                       <span className="ml-auto text-steel">{m.changes} changes</span>
                     </li>

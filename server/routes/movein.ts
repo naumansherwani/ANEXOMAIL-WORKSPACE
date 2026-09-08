@@ -222,7 +222,10 @@ founderRouter.post("/movein/arm", async (req, res) => {
   if (!userId || !db) return;
   const { deal_id } = req.body || {};
   if (!deal_id) return res.status(400).json({ error: "deal_id_required" });
-  const { data, error } = await db.rpc("movein_arm_cutover", { p_deal: deal_id, p_actor: "founder" });
+  const { data, error } = await db.rpc("movein_arm_cutover", {
+    p_deal: deal_id,
+    p_actor: "founder",
+  });
   if (error) return fail(res, error);
   return res.status((data as any)?.ok === false ? 409 : 200).json(data);
 });
@@ -231,7 +234,8 @@ founderRouter.post("/movein/mailbox", async (req, res) => {
   const userId = await requireUser(req, res);
   if (!userId || !db) return;
   const b = req.body || {};
-  if (!b.deal_id || !b.address) return res.status(400).json({ error: "deal_id_and_address_required" });
+  if (!b.deal_id || !b.address)
+    return res.status(400).json({ error: "deal_id_and_address_required" });
   const row = {
     deal_id: b.deal_id,
     address: String(b.address).toLowerCase(),
@@ -297,7 +301,8 @@ founderRouter.post("/movein/runbook", async (req, res) => {
   const userId = await requireUser(req, res);
   if (!userId || !db) return;
   const b = req.body || {};
-  if (!b.deal_id || !b.step_key) return res.status(400).json({ error: "deal_id_and_step_key_required" });
+  if (!b.deal_id || !b.step_key)
+    return res.status(400).json({ error: "deal_id_and_step_key_required" });
   const { error } = await db
     .from("movein_runbook")
     .update({
@@ -326,7 +331,8 @@ founderRouter.post("/movein/exception", async (req, res) => {
     if (error) return fail(res, error);
     return res.json({ ok: true, resolved: b.resolve_id });
   }
-  if (!b.deal_id || !b.reason) return res.status(400).json({ error: "deal_id_and_reason_required" });
+  if (!b.deal_id || !b.reason)
+    return res.status(400).json({ error: "deal_id_and_reason_required" });
   const { data, error } = await db
     .from("movein_exceptions")
     .insert({
@@ -412,5 +418,9 @@ founderRouter.post("/movein/invoice", async (req, res) => {
   return res.json({ payments: data ?? [] });
 });
 
-export { publicRouter as moveinPublicRouter, authRouter as moveinRouter, founderRouter as founderMoveinRouter };
+export {
+  publicRouter as moveinPublicRouter,
+  authRouter as moveinRouter,
+  founderRouter as founderMoveinRouter,
+};
 export default authRouter;

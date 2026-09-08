@@ -5,7 +5,23 @@ import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { money, useFounderAnalytics } from "@/lib/analytics";
 
-export const Route = createFileRoute("/app/founder_/analytics")({ component: FounderAnalytics });
+export const Route = createFileRoute("/app/founder_/analytics")({
+  head: () => ({
+    meta: [
+      { title: "Analytics · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Analytics · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Analytics · Founder view — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Analytics · Founder view in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: FounderAnalytics,
+});
 
 /** Phase 24 — founder view: platform-wide debt aur keep rate. */
 function FounderAnalytics() {
@@ -14,11 +30,20 @@ function FounderAnalytics() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-4xl px-6 py-8 md:px-8">
         <Section
-          eyebrow={<><BarChart3 className="size-3.5" aria-hidden="true" /> Analytics founder view</>}
+          eyebrow={
+            <>
+              <BarChart3 className="size-3.5" aria-hidden="true" /> Analytics founder view
+            </>
+          }
           title="Platform-wide truth"
         >
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/founder/analytics/overview"
             skeleton={<StatSkeleton rows={5} />}
           >

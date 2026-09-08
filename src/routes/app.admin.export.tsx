@@ -2,10 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/app/admin/export")({
   head: () => ({
-    meta: [
-      { title: "Export — ANEXOMAIL Admin" },
-      { name: "robots", content: "noindex" },
-    ],
+    meta: [{ title: "Export — ANEXOMAIL Admin" }, { name: "robots", content: "noindex" }],
   }),
   component: ExportPage,
 });
@@ -23,8 +20,8 @@ function ExportPage() {
       <p className="ax-eyebrow">Freedom</p>
       <h2 className="mt-3 text-3xl text-foreground">Export & revoke</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
-        Your data leaves as easily as it arrived. One click, no ticket, no waiting period.
-        Delete means deleted.
+        Your data leaves as easily as it arrived. One click, no ticket, no waiting period. Delete
+        means deleted.
       </p>
 
       <ul className="mt-8 space-y-2.5">

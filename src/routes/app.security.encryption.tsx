@@ -7,7 +7,23 @@ import { Button } from "@/components/ui/button";
 import { notify } from "@/lib/notify";
 import { useEncryption, useRotateKeys } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/encryption")({ component: EncryptionPage });
+export const Route = createFileRoute("/app/security/encryption")({
+  head: () => ({
+    meta: [
+      { title: "Security · Encryption — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · Encryption in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · Encryption — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · Encryption in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: EncryptionPage,
+});
 
 /** Feature 4 — Encryption ledger: har surface aur har hop, hashed proof ke saath. */
 function EncryptionPage() {
@@ -17,12 +33,21 @@ function EncryptionPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><Lock className="size-3.5" aria-hidden="true" /> Encryption ledger</>}
+        eyebrow={
+          <>
+            <Lock className="size-3.5" aria-hidden="true" /> Encryption ledger
+          </>
+        }
         title="Encrypted is a fact you can check"
         blurb="Every surface at rest and every hop in transit, named with its algorithm — plus a hashed entry each time a key moves."
       >
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/security/encryption"
           skeleton={<StatSkeleton rows={5} />}
         >
@@ -31,11 +56,19 @@ function EncryptionPage() {
               <div className="grid gap-ax-3 sm:grid-cols-2">
                 <Stat
                   label="Keys last rotated"
-                  value={d.key_rotated_at ? new Date(d.key_rotated_at).toLocaleDateString("en-GB") : "Never"}
+                  value={
+                    d.key_rotated_at
+                      ? new Date(d.key_rotated_at).toLocaleDateString("en-GB")
+                      : "Never"
+                  }
                 />
                 <Stat
                   label="Next rotation"
-                  value={d.next_rotation_at ? new Date(d.next_rotation_at).toLocaleDateString("en-GB") : "Not scheduled"}
+                  value={
+                    d.next_rotation_at
+                      ? new Date(d.next_rotation_at).toLocaleDateString("en-GB")
+                      : "Not scheduled"
+                  }
                 />
               </div>
 
@@ -43,10 +76,20 @@ function EncryptionPage() {
               <ul className="mt-ax-3 space-y-1.5">
                 {d.at_rest.map((r) => (
                   <Row key={r.surface}>
-                    <span className="min-w-0 flex-1 font-semibold text-foreground">{r.surface}</span>
-                    <code className="rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">{r.algorithm}</code>
-                    <span className="min-w-0 flex-1 truncate text-muted-foreground">{r.detail ?? ""}</span>
-                    <span className={r.state === "on" ? "ml-auto text-emerald-400" : "ml-auto text-amber-400"}>
+                    <span className="min-w-0 flex-1 font-semibold text-foreground">
+                      {r.surface}
+                    </span>
+                    <code className="rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">
+                      {r.algorithm}
+                    </code>
+                    <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                      {r.detail ?? ""}
+                    </span>
+                    <span
+                      className={
+                        r.state === "on" ? "ml-auto text-emerald-400" : "ml-auto text-amber-400"
+                      }
+                    >
                       {r.state}
                     </span>
                   </Row>
@@ -58,9 +101,17 @@ function EncryptionPage() {
                 {d.in_transit.map((r) => (
                   <Row key={r.hop}>
                     <span className="min-w-0 flex-1 font-semibold text-foreground">{r.hop}</span>
-                    <code className="rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">{r.protocol}</code>
-                    <span className="min-w-0 flex-1 truncate text-muted-foreground">{r.cipher ?? ""}</span>
-                    <span className={r.state === "on" ? "ml-auto text-emerald-400" : "ml-auto text-amber-400"}>
+                    <code className="rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">
+                      {r.protocol}
+                    </code>
+                    <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                      {r.cipher ?? ""}
+                    </span>
+                    <span
+                      className={
+                        r.state === "on" ? "ml-auto text-emerald-400" : "ml-auto text-amber-400"
+                      }
+                    >
                       {r.state}
                     </span>
                   </Row>
@@ -74,7 +125,9 @@ function EncryptionPage() {
                 {d.ledger.map((e) => (
                   <Row key={e.hash}>
                     <span className="text-steel">{new Date(e.at).toLocaleString("en-GB")}</span>
-                    <span className="min-w-0 flex-1 truncate text-foreground">{e.action.replace(/_/g, " ")}</span>
+                    <span className="min-w-0 flex-1 truncate text-foreground">
+                      {e.action.replace(/_/g, " ")}
+                    </span>
                     <span className="text-muted-foreground">{e.surface}</span>
                     <code className="ml-auto rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">
                       {e.hash.slice(0, 12)}
@@ -91,11 +144,18 @@ function EncryptionPage() {
                   rotate.mutate(
                     {},
                     {
-                      onSuccess: () => notify.done("Keys rotated", "Old keys are retired and the ledger has the proof."),
+                      onSuccess: () =>
+                        notify.done(
+                          "Keys rotated",
+                          "Old keys are retired and the ledger has the proof.",
+                        ),
                       onError: (e) =>
-                        notify.failed(e.isNotImplemented ? "Rotation not wired yet" : "Could not rotate", {
-                          description: e.message,
-                        }),
+                        notify.failed(
+                          e.isNotImplemented ? "Rotation not wired yet" : "Could not rotate",
+                          {
+                            description: e.message,
+                          },
+                        ),
                     },
                   )
                 }

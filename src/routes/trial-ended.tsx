@@ -64,7 +64,10 @@ function TrialEnded() {
             " your address stays reserved"
           )}
           {reservedDays !== null ? (
-            <> for {Math.ceil(reservedDays)} more day{Math.ceil(reservedDays) === 1 ? "" : "s"}</>
+            <>
+              {" "}
+              for {Math.ceil(reservedDays)} more day{Math.ceil(reservedDays) === 1 ? "" : "s"}
+            </>
           ) : (
             " for 30 days"
           )}
@@ -92,16 +95,16 @@ function TrialEnded() {
             <Mail aria-hidden className="size-4 text-muted-foreground" />
             <h2 className="mt-3 text-sm font-bold text-foreground">Your mail is not lost</h2>
             <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              The mailbox is frozen and inaccessible while the address stays reserved. Incoming
-              mail is held or cleanly rejected so the sender knows — never silently discarded.
+              The mailbox is frozen and inaccessible while the address stays reserved. Incoming mail
+              is held or cleanly rejected so the sender knows — never silently discarded.
             </p>
           </div>
           <div className="rounded-2xl border border-border p-5">
             <LifeBuoy aria-hidden className="size-4 text-muted-foreground" />
             <h2 className="mt-3 text-sm font-bold text-foreground">You can always get back in</h2>
             <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
-              Google, Apple and GitHub sign-in stop working after the trial, but the recovery
-              route you chose still opens your account. No account is ever locked shut.
+              Google, Apple and GitHub sign-in stop working after the trial, but the recovery route
+              you chose still opens your account. No account is ever locked shut.
             </p>
             <a
               className="ax-caption mt-3 inline-flex font-semibold text-foreground underline"
@@ -132,8 +135,8 @@ function TrialEnded() {
 
         {error ? (
           <p className="mt-8 text-[13px] text-muted-foreground">
-            We couldn't reach the account service to read your exact state. Plans and sign-in
-            above still work.
+            We couldn't reach the account service to read your exact state. Plans and sign-in above
+            still work.
           </p>
         ) : null}
 

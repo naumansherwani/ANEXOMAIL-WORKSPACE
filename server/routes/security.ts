@@ -67,7 +67,12 @@ async function requireUser(req: any, res: any): Promise<string | null> {
 const sha = (v: unknown) => createHash("sha256").update(JSON.stringify(v)).digest("hex");
 
 /** Hash-chained ledger: har entry pichli entry ke hash ko lock karti hai. */
-async function ledger(uid: string, action: string, payload: Record<string, unknown>, actor = "owner") {
+async function ledger(
+  uid: string,
+  action: string,
+  payload: Record<string, unknown>,
+  actor = "owner",
+) {
   const { data: last } = await db!
     .from("security_ledger")
     .select("hash")
@@ -107,9 +112,18 @@ router.get("/dashboard", async (req, res) => {
         .eq("user_id", uid)
         .in("outcome", ["failed", "blocked"])
         .gt("at", since),
-      db!.from("security_anomalies").select("id,kind,severity,detail").eq("user_id", uid).eq("state", "open"),
+      db!
+        .from("security_anomalies")
+        .select("id,kind,severity,detail")
+        .eq("user_id", uid)
+        .eq("state", "open"),
       db!.from("security_encryption_surfaces").select("scope,surface,state").eq("user_id", uid),
-      db!.from("security_proofs").select("failed,ran_at").eq("user_id", uid).order("ran_at", { ascending: false }).limit(1),
+      db!
+        .from("security_proofs")
+        .select("failed,ran_at")
+        .eq("user_id", uid)
+        .order("ran_at", { ascending: false })
+        .limit(1),
       db!
         .from("security_ledger")
         .select("at,action,actor,hash,prev_hash")
@@ -140,13 +154,17 @@ router.get("/dashboard", async (req, res) => {
     if (!encryptionOk)
       advice.push({
         title: "Encryption is not fully verified",
-        detail: encRows.length ? "One or more surfaces report partial or off." : "No encryption surfaces recorded yet.",
+        detail: encRows.length
+          ? "One or more surfaces report partial or off."
+          : "No encryption surfaces recorded yet.",
         severity: "high",
       });
     if (!ownershipOk)
       advice.push({
         title: "Ownership proof is not signed",
-        detail: lastProof ? "The last proof pack had failing checks." : "Run an ownership proof to sign DKIM, SPF, DMARC and TLS.",
+        detail: lastProof
+          ? "The last proof pack had failing checks."
+          : "Run an ownership proof to sign DKIM, SPF, DMARC and TLS.",
         severity: "high",
       });
     if (failed24 > 10)
@@ -158,7 +176,10 @@ router.get("/dashboard", async (req, res) => {
 
     const penalty =
       pending * 3 +
-      openAnomalies.reduce((n, a) => n + (a.severity === "high" ? 18 : a.severity === "medium" ? 8 : 3), 0) +
+      openAnomalies.reduce(
+        (n, a) => n + (a.severity === "high" ? 18 : a.severity === "medium" ? 8 : 3),
+        0,
+      ) +
       (encryptionOk ? 0 : 20) +
       (ownershipOk ? 0 : 15) +
       Math.min(15, failed24);
@@ -357,10 +378,15 @@ router.get("/history", async (req, res) => {
       const b = success[i + 1] as any;
       const km = haversine(a, b);
       if (km == null || km < 500) continue;
-      const minutes = Math.max(1, Math.round((new Date(a.at).getTime() - new Date(b.at).getTime()) / 60000));
+      const minutes = Math.max(
+        1,
+        Math.round((new Date(a.at).getTime() - new Date(b.at).getTime()) / 60000),
+      );
       if (km / (minutes / 60) < 900) continue;
       const detail = `${b.city ?? "unknown"} to ${a.city ?? "unknown"} in ${minutes} minutes — physically impossible.`;
-      const dup = (anomalies ?? []).some((x: any) => x.kind === "impossible_travel" && x.detail === detail);
+      const dup = (anomalies ?? []).some(
+        (x: any) => x.kind === "impossible_travel" && x.detail === detail,
+      );
       if (dup) continue;
       const { data: created } = await db!
         .from("security_anomalies")
@@ -465,7 +491,12 @@ router.get("/encryption", async (req, res) => {
     res.json({
       at_rest: rows
         .filter((r) => r.scope === "at_rest")
-        .map((r) => ({ surface: r.surface, algorithm: r.algorithm, state: r.state, detail: r.detail })),
+        .map((r) => ({
+          surface: r.surface,
+          algorithm: r.algorithm,
+          state: r.state,
+          detail: r.detail,
+        })),
       in_transit: rows
         .filter((r) => r.scope === "in_transit")
         .map((r) => ({ hop: r.surface, protocol: r.algorithm, cipher: r.cipher, state: r.state })),
@@ -491,10 +522,7 @@ router.post("/encryption/rotate", async (req, res) => {
       .from("security_key_ledger")
       .insert({ user_id: uid, action: "key_rotated", surface, hash, at });
     if (error) return fail(res, error);
-    await db!
-      .from("security_encryption_surfaces")
-      .update({ updated_at: at })
-      .eq("user_id", uid);
+    await db!.from("security_encryption_surfaces").update({ updated_at: at }).eq("user_id", uid);
     await ledger(uid, "keys_rotated", { surface, key_hash: hash });
     res.json({ ok: true, rotated_at: at });
   } catch (e) {
@@ -551,7 +579,12 @@ router.get("/proof", async (req, res) => {
         ...p,
         checks: (checks ?? [])
           .filter((c: any) => c.proof_id === p.id)
-          .map((c: any) => ({ check: c.check_name, result: c.result, observed: c.observed, fix: c.fix })),
+          .map((c: any) => ({
+            check: c.check_name,
+            result: c.result,
+            observed: c.observed,
+            fix: c.fix,
+          })),
       })),
     });
   } catch (e) {
@@ -577,14 +610,18 @@ router.post("/proof/run", async (req, res) => {
         result: spf.includes("v=spf1") ? "pass" : "fail",
         observed: spf || null,
         expected: "v=spf1 ... -all",
-        fix: spf.includes("v=spf1") ? null : `Publish a TXT record on ${domain} starting with v=spf1.`,
+        fix: spf.includes("v=spf1")
+          ? null
+          : `Publish a TXT record on ${domain} starting with v=spf1.`,
       },
       {
         check_name: "DKIM key",
         result: dkim.includes("p=") ? "pass" : "fail",
         observed: dkim ? `${dkim.slice(0, 60)}…` : null,
         expected: `${DKIM_SELECTOR}._domainkey.${domain} with p=`,
-        fix: dkim.includes("p=") ? null : `Publish the DKIM public key at ${DKIM_SELECTOR}._domainkey.${domain}.`,
+        fix: dkim.includes("p=")
+          ? null
+          : `Publish the DKIM public key at ${DKIM_SELECTOR}._domainkey.${domain}.`,
       },
       {
         check_name: "DMARC policy",

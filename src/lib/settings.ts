@@ -90,8 +90,9 @@ export type FounderSettings = {
   pending_scheduled: number;
 };
 
-const get = <T,>(procedure: string, path: string, input?: unknown) => rpcOrRest<T>(procedure, { path }, input);
-const post = <T,>(procedure: string, path: string, body: unknown) =>
+const get = <T>(procedure: string, path: string, input?: unknown) =>
+  rpcOrRest<T>(procedure, { path }, input);
+const post = <T>(procedure: string, path: string, body: unknown) =>
   rpcOrRest<T>(procedure, { path, method: "POST", body }, body);
 
 export function useSettings(scope: Scope) {
@@ -106,7 +107,8 @@ export function useSettings(scope: Scope) {
 export function useBlastRadius(key: string | null) {
   return useQuery<BlastRadius, ApiError>({
     queryKey: ["settings", "blast", key],
-    queryFn: () => get<BlastRadius>("settings.blastRadius", `/api/settings/blast-radius?key=${key!}`),
+    queryFn: () =>
+      get<BlastRadius>("settings.blastRadius", `/api/settings/blast-radius?key=${key!}`),
     enabled: Boolean(key),
     retry: false,
   });
@@ -124,7 +126,11 @@ export function useExplain(key: string | null) {
 
 export function useSaveSetting() {
   const qc = useQueryClient();
-  return useMutation<Setting, ApiError, { key: string; value: string | number | boolean; reason?: string }>({
+  return useMutation<
+    Setting,
+    ApiError,
+    { key: string; value: string | number | boolean; reason?: string }
+  >({
     mutationFn: (body) => post("settings.save", "/api/settings/save", body),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["settings"] }),
   });
@@ -164,7 +170,8 @@ export function useDrift() {
 export function useScheduled() {
   return useQuery<{ changes: ScheduledChange[] }, ApiError>({
     queryKey: ["settings", "scheduled"],
-    queryFn: () => get<{ changes: ScheduledChange[] }>("settings.scheduled", "/api/settings/scheduled"),
+    queryFn: () =>
+      get<{ changes: ScheduledChange[] }>("settings.scheduled", "/api/settings/scheduled"),
     retry: false,
   });
 }
@@ -195,7 +202,8 @@ export function useSimulate() {
 export function useFounderSettings() {
   return useQuery<FounderSettings, ApiError>({
     queryKey: ["founder", "settings"],
-    queryFn: () => get<FounderSettings>("founderSettings.overview", "/api/founder/settings/overview"),
+    queryFn: () =>
+      get<FounderSettings>("founderSettings.overview", "/api/founder/settings/overview"),
     retry: false,
   });
 }

@@ -19,7 +19,10 @@ export const Route = createFileRoute("/app/org/audit")({
           "An append-only, hash-chained record of every action in your organisation — verify the chain yourself in one click.",
       },
       { property: "og:title", content: "Audit ledger — ANEXOMAIL Organization Center" },
-      { property: "og:description", content: "Hash-chained, append-only audit you can verify yourself." },
+      {
+        property: "og:description",
+        content: "Hash-chained, append-only audit you can verify yourself.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "robots", content: "noindex" },
@@ -40,7 +43,10 @@ function AuditPage() {
         onSuccess: (v) => {
           setVerdict(v);
           if (v.ok) notify.done("Chain intact", `${v.checked} entries verified.`);
-          else notify.failed("Chain broken", { description: `First break at entry #${v.broken_at_seq}.` });
+          else
+            notify.failed("Chain broken", {
+              description: `First break at entry #${v.broken_at_seq}.`,
+            });
         },
         onError: (e) =>
           notify.failed(e.isNotImplemented ? "Verify not wired yet" : "Could not verify", {
@@ -109,7 +115,8 @@ function AuditPage() {
                   </div>
                   <p className="ax-caption mt-1 flex items-center gap-1.5 truncate font-mono text-muted-foreground">
                     <Link2 className="size-3 shrink-0" aria-hidden="true" />
-                    {e.hash.slice(0, 16)}… ← {e.prev_hash ? `${e.prev_hash.slice(0, 16)}…` : "genesis"}
+                    {e.hash.slice(0, 16)}… ←{" "}
+                    {e.prev_hash ? `${e.prev_hash.slice(0, 16)}…` : "genesis"}
                   </p>
                 </li>
               ))}

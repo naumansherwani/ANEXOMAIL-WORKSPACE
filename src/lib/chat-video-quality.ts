@@ -31,8 +31,22 @@ export type Rung = {
 export const LADDER: Rung[] = [
   { key: "480p", label: "480p", width: 854, height: 480, maxBitrate: 500_000, maxFramerate: 30 },
   { key: "720p", label: "720p", width: 1280, height: 720, maxBitrate: 1_500_000, maxFramerate: 30 },
-  { key: "1080p", label: "1080p", width: 1920, height: 1080, maxBitrate: 3_500_000, maxFramerate: 30 },
-  { key: "1440p", label: "1440p", width: 2560, height: 1440, maxBitrate: 7_000_000, maxFramerate: 30 },
+  {
+    key: "1080p",
+    label: "1080p",
+    width: 1920,
+    height: 1080,
+    maxBitrate: 3_500_000,
+    maxFramerate: 30,
+  },
+  {
+    key: "1440p",
+    label: "1440p",
+    width: 2560,
+    height: 1440,
+    maxBitrate: 7_000_000,
+    maxFramerate: 30,
+  },
   { key: "4k", label: "4K", width: 3840, height: 2160, maxBitrate: 18_000_000, maxFramerate: 30 },
   { key: "8k", label: "8K", width: 7680, height: 4320, maxBitrate: 60_000_000, maxFramerate: 30 },
 ];
@@ -40,7 +54,10 @@ export const LADDER: Rung[] = [
 export const TOP_RUNG = LADDER.length - 1;
 
 export function rungIndex(key: QualityRung): number {
-  return Math.max(0, LADDER.findIndex((r) => r.key === key));
+  return Math.max(
+    0,
+    LADDER.findIndex((r) => r.key === key),
+  );
 }
 
 /** Asli pixels -> honest rung label. Kabhi round-up nahi. */
@@ -142,8 +159,18 @@ export function sendEncodings(target: Rung): RTCRtpEncodingParameters[] {
   const top = target.maxBitrate;
   return [
     { rid: "h", maxBitrate: top, maxFramerate: target.maxFramerate, scaleResolutionDownBy: 1 },
-    { rid: "m", maxBitrate: Math.round(top / 4), maxFramerate: target.maxFramerate, scaleResolutionDownBy: 2 },
-    { rid: "l", maxBitrate: Math.round(top / 12), maxFramerate: target.maxFramerate, scaleResolutionDownBy: 4 },
+    {
+      rid: "m",
+      maxBitrate: Math.round(top / 4),
+      maxFramerate: target.maxFramerate,
+      scaleResolutionDownBy: 2,
+    },
+    {
+      rid: "l",
+      maxBitrate: Math.round(top / 12),
+      maxFramerate: target.maxFramerate,
+      scaleResolutionDownBy: 4,
+    },
   ];
 }
 
@@ -220,7 +247,9 @@ export class QualityLadder {
         reason = "already at the lowest rung — call stays up";
       }
     } else {
-      const roomy = have == null || have > (LADDER[Math.min(this.ceiling, this.index + 1)]?.maxBitrate ?? need) * 1.2;
+      const roomy =
+        have == null ||
+        have > (LADDER[Math.min(this.ceiling, this.index + 1)]?.maxBitrate ?? need) * 1.2;
       const smooth = loss < 1 && rtt < 180 && lim === "none";
       if (roomy && smooth) this.clean += 1;
       else this.clean = 0;

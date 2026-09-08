@@ -26,9 +26,7 @@ export function ListPanel({
       }
     >
       <div className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
-        <h2 className="truncate text-sm font-bold tracking-tight text-foreground">
-          {title}
-        </h2>
+        <h2 className="truncate text-sm font-bold tracking-tight text-foreground">{title}</h2>
         <div className="ml-auto flex items-center gap-1">{action}</div>
       </div>
       <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
@@ -50,9 +48,7 @@ export function DetailPanel({
 }) {
   return (
     <div
-      className={
-        "min-h-0 flex-1 overflow-y-auto md:block " + (mobileVisible ? "block" : "hidden")
-      }
+      className={"min-h-0 flex-1 overflow-y-auto md:block " + (mobileVisible ? "block" : "hidden")}
     >
       {children}
     </div>

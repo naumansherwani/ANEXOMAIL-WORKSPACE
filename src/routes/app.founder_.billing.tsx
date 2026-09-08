@@ -11,6 +11,24 @@ import {
 } from "@/lib/billing-platform";
 
 export const Route = createFileRoute("/app/founder_/billing")({
+  head: () => ({
+    meta: [
+      { title: "Billing · Founder view — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Billing · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Billing · Founder view — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content:
+          "Billing · Founder view in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: FounderRevenue,
 });
 

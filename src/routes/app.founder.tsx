@@ -64,20 +64,20 @@ function FounderDeck() {
     (overview.error?.isNotImplemented ?? false) || (mailboxes.error?.isNotImplemented ?? false);
 
   const runProvision = (addresses?: string[]) => {
-    provision.mutate(
-      addresses ? { addresses } : {},
-      {
-        onSuccess: (r) =>
-          notify.done(
-            r.created.length ? `${r.created.length} mailbox(es) created` : "Nothing left to create",
-            r.created.join(", ") || "Every planned mailbox already exists.",
-          ),
-        onError: (error) =>
-          notify.failed(error.isNotImplemented ? "Provisioning not wired yet" : "Could not provision", {
+    provision.mutate(addresses ? { addresses } : {}, {
+      onSuccess: (r) =>
+        notify.done(
+          r.created.length ? `${r.created.length} mailbox(es) created` : "Nothing left to create",
+          r.created.join(", ") || "Every planned mailbox already exists.",
+        ),
+      onError: (error) =>
+        notify.failed(
+          error.isNotImplemented ? "Provisioning not wired yet" : "Could not provision",
+          {
             description: error.message,
-          }),
-      },
-    );
+          },
+        ),
+    });
   };
 
   return (
@@ -145,22 +145,68 @@ function FounderDeck() {
           </div>
         ) : null}
 
-        <Group title="Founder identity" items={FOUNDER_MAILBOXES} live={live} onProvision={runProvision} />
-        <Group title="Support desk (Leo)" items={SUPPORT_MAILBOXES} live={live} onProvision={runProvision} />
-        <Group title="AI email addresses" items={AI_MAILBOXES} live={live} onProvision={runProvision} />
+        <Group
+          title="Founder identity"
+          items={FOUNDER_MAILBOXES}
+          live={live}
+          onProvision={runProvision}
+        />
+        <Group
+          title="Support desk (Leo)"
+          items={SUPPORT_MAILBOXES}
+          live={live}
+          onProvision={runProvision}
+        />
+        <Group
+          title="AI email addresses"
+          items={AI_MAILBOXES}
+          live={live}
+          onProvision={runProvision}
+        />
 
         <section className="mt-10">
           <h2 className="text-base font-bold text-foreground">Founder surfaces</h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            The former AI founder workspace is preserved here, in order, on the single IP-locked founder host.
+            The former AI founder workspace is preserved here, in order, on the single IP-locked
+            founder host.
           </p>
           <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            <FounderLink to="/app/founder/ai" icon={Sparkles} label="AI" detail="Workbench, Studio, Automation, Knowledge, Arena, Prompts, Memory, Receipts, Billing" />
-            <FounderLink to="/app/founder/billing" icon={Banknote} label="Payments · Revenue" detail="MRR truth, billing, support reply clock" />
-            <FounderLink to="/app/founder/org" icon={Building2} label="Org · CRM" detail="Organisation and CRM controls" />
-            <FounderLink to="/app/founder/security" icon={ShieldCheck} label="Security" detail="Platform security and kill switches" />
-            <FounderLink to="/app/founder/perf" icon={Gauge} label="Performance" detail="Budgets, regressions and tenant speed" />
-            <FounderLink to="/app/founder/launch" icon={Rocket} label="Launch" detail="QA, checklist, deployments and release lock" />
+            <FounderLink
+              to="/app/founder/ai"
+              icon={Sparkles}
+              label="AI"
+              detail="Workbench, Studio, Automation, Knowledge, Arena, Prompts, Memory, Receipts, Billing"
+            />
+            <FounderLink
+              to="/app/founder/billing"
+              icon={Banknote}
+              label="Payments · Revenue"
+              detail="MRR truth, billing, support reply clock"
+            />
+            <FounderLink
+              to="/app/founder/org"
+              icon={Building2}
+              label="Org · CRM"
+              detail="Organisation and CRM controls"
+            />
+            <FounderLink
+              to="/app/founder/security"
+              icon={ShieldCheck}
+              label="Security"
+              detail="Platform security and kill switches"
+            />
+            <FounderLink
+              to="/app/founder/perf"
+              icon={Gauge}
+              label="Performance"
+              detail="Budgets, regressions and tenant speed"
+            />
+            <FounderLink
+              to="/app/founder/launch"
+              icon={Rocket}
+              label="Launch"
+              detail="QA, checklist, deployments and release lock"
+            />
           </div>
         </section>
 
@@ -191,7 +237,11 @@ function FounderLink({
   detail: string;
 }) {
   return (
-    <Button asChild variant="outline" className="h-auto min-h-16 justify-start whitespace-normal px-4 py-3 text-left">
+    <Button
+      asChild
+      variant="outline"
+      className="h-auto min-h-16 justify-start whitespace-normal px-4 py-3 text-left"
+    >
       <Link to={to}>
         <Icon className="size-4" aria-hidden="true" />
         <span className="min-w-0">
@@ -232,7 +282,9 @@ function Group({
                 <Badge ok={state?.provisioned ?? false}>
                   {state?.provisioned ? "Mailbox live" : "Not created"}
                 </Badge>
-                <Badge ok={state?.dns_ok ?? false}>{state?.dns_ok ? "DNS green" : "DNS unchecked"}</Badge>
+                <Badge ok={state?.dns_ok ?? false}>
+                  {state?.dns_ok ? "DNS green" : "DNS unchecked"}
+                </Badge>
                 {!state?.provisioned && (
                   <button
                     type="button"

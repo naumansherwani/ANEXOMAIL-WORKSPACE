@@ -18,7 +18,8 @@ export const Route = createFileRoute("/enterprise")({
       { property: "og:title", content: "Priority Support — a response within 2 business days" },
       {
         property: "og:description",
-        content: "A named founder contact, response within 2 business days, quarterly review, priority migration scheduling. £790 a month.",
+        content:
+          "A named founder contact, response within 2 business days, quarterly review, priority migration scheduling. £790 a month.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -98,8 +99,8 @@ function EnterprisePage() {
             When email stops, you call a person — not a portal.
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Every plan already gets human support. This adds a named founder contact, a response within 2 business days,
-            and a quarterly review you can put in front of an auditor.
+            Every plan already gets human support. This adds a named founder contact, a response
+            within 2 business days, and a quarterly review you can put in front of an auditor.
           </p>
         </section>
 

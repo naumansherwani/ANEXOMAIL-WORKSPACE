@@ -5,6 +5,23 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { useRevertSetting, useSettingHistory } from "@/lib/settings";
 
 export const Route = createFileRoute("/app/settings/history")({
+  head: () => ({
+    meta: [
+      { title: "Settings · History — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Settings · History · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Settings · History — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Settings · History · Workspace in ANEXOMAIL Workspace.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: TimeMachine,
 });
 
@@ -26,7 +43,12 @@ function TimeMachine() {
 
         <div className="mt-ax-5">
           <CardBody
-            query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+            query={{
+              data: q.data,
+              isPending: q.isPending,
+              error: q.error ?? null,
+              refetch: () => void q.refetch(),
+            }}
             endpoint="/api/settings/history"
             skeleton={<StatSkeleton rows={6} />}
           >
@@ -36,12 +58,17 @@ function TimeMachine() {
               ) : (
                 <ol className="space-y-1.5">
                   {d.versions.map((v) => (
-                    <li key={v.id} className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]">
+                    <li
+                      key={v.id}
+                      className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
+                    >
                       <span className="w-40 font-semibold text-foreground">{v.key}</span>
                       <span className="text-muted-foreground">
                         {v.from_value ?? "—"} → {v.to_value ?? "—"}
                       </span>
-                      <span className="text-steel">{new Date(v.changed_at).toLocaleString("en-GB")}</span>
+                      <span className="text-steel">
+                        {new Date(v.changed_at).toLocaleString("en-GB")}
+                      </span>
                       <span className="text-steel">{v.changed_by}</span>
                       <span className="ml-auto">
                         {v.reverted ? (

@@ -198,16 +198,18 @@ export function useCancelScheduled() {
 
 export function useCreateFollowUp() {
   const qc = useQueryClient();
-  return useMutation<FollowUp, ApiError, { thread_id?: string; subject?: string; remind_at: string }>(
-    {
-      mutationFn: (payload) =>
-        api<FollowUp>("/api/mail/follow-up", {
-          method: "POST",
-          body: JSON.stringify(payload),
-        }),
-      onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "follow-ups"] }),
-    },
-  );
+  return useMutation<
+    FollowUp,
+    ApiError,
+    { thread_id?: string; subject?: string; remind_at: string }
+  >({
+    mutationFn: (payload) =>
+      api<FollowUp>("/api/mail/follow-up", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "follow-ups"] }),
+  });
 }
 
 export function useFollowUps() {

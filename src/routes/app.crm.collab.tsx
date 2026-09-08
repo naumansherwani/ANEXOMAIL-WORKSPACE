@@ -7,13 +7,7 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { Button } from "@/components/ui/button";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
-import {
-  money,
-  useApprovals,
-  useDecideApproval,
-  useMentions,
-  useSharedItems,
-} from "@/lib/crm";
+import { money, useApprovals, useDecideApproval, useMentions, useSharedItems } from "@/lib/crm";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/crm/collab")({
@@ -207,13 +201,9 @@ function ApprovalsList() {
                   <p className="min-w-0 flex-1 text-[13px] font-semibold text-foreground">
                     {a.subject}
                   </p>
-                  {a.amount !== null && (
-                    <Chip>{money(a.amount, a.currency ?? "GBP")}</Chip>
-                  )}
+                  {a.amount !== null && <Chip>{money(a.amount, a.currency ?? "GBP")}</Chip>}
                   <Chip
-                    tone={
-                      a.state === "approved" ? "good" : a.state === "rejected" ? "bad" : "warn"
-                    }
+                    tone={a.state === "approved" ? "good" : a.state === "rejected" ? "bad" : "warn"}
                   >
                     {a.state}
                   </Chip>
@@ -223,7 +213,11 @@ function ApprovalsList() {
                 </p>
                 {a.state === "pending" && (
                   <div className="mt-ax-3 flex gap-2">
-                    <Button size="sm" disabled={decide.isPending} onClick={() => act(a.id, "approved")}>
+                    <Button
+                      size="sm"
+                      disabled={decide.isPending}
+                      onClick={() => act(a.id, "approved")}
+                    >
                       Approve
                     </Button>
                     <Button

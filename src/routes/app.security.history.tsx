@@ -8,7 +8,23 @@ import { Button } from "@/components/ui/button";
 import { notify } from "@/lib/notify";
 import { useDisownLogin, useLoginHistory } from "@/lib/security-platform";
 
-export const Route = createFileRoute("/app/security/history")({ component: HistoryPage });
+export const Route = createFileRoute("/app/security/history")({
+  head: () => ({
+    meta: [
+      { title: "Security · History — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content:
+          "Security · History in ANEXOMAIL Workspace — real readings from your own workspace, with proof of where every number came from.",
+      },
+      { property: "og:title", content: "Security · History — ANEXOMAIL Workspace" },
+      { property: "og:description", content: "Security · History in ANEXOMAIL Workspace." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: HistoryPage,
+});
 
 const FILTERS = ["all", "success", "failed", "blocked", "challenged"] as const;
 
@@ -24,7 +40,11 @@ function HistoryPage() {
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
       <Section
-        eyebrow={<><History className="size-3.5" aria-hidden="true" /> Login replay</>}
+        eyebrow={
+          <>
+            <History className="size-3.5" aria-hidden="true" /> Login replay
+          </>
+        }
         title="Every sign-in, told as a story"
         blurb="Not a raw log. Each attempt explains where it came from, why it looked safe or not, and lets you say “this wasn’t me” in one click."
       >
@@ -46,7 +66,12 @@ function HistoryPage() {
         </div>
 
         <CardBody
-          query={{ data: q.data, isPending: q.isPending, error: q.error ?? null, refetch: () => void q.refetch() }}
+          query={{
+            data: q.data,
+            isPending: q.isPending,
+            error: q.error ?? null,
+            refetch: () => void q.refetch(),
+          }}
           endpoint="/api/security/history"
           skeleton={<StatSkeleton rows={5} />}
         >
@@ -56,7 +81,9 @@ function HistoryPage() {
                 {d.events.map((e) => (
                   <Row key={e.id}>
                     <span className="text-steel">{new Date(e.at).toLocaleString("en-GB")}</span>
-                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">{e.email}</span>
+                    <span className="min-w-0 flex-1 truncate font-semibold text-foreground">
+                      {e.email}
+                    </span>
                     <span className="text-muted-foreground">{e.method}</span>
                     <span
                       className={
@@ -89,11 +116,17 @@ function HistoryPage() {
                             { event_id: e.id },
                             {
                               onSuccess: (r) =>
-                                notify.done("Reported", `${r.sessions_killed} sessions ended and the device was blocked.`),
+                                notify.done(
+                                  "Reported",
+                                  `${r.sessions_killed} sessions ended and the device was blocked.`,
+                                ),
                               onError: (err) =>
-                                notify.failed(err.isNotImplemented ? "Not wired yet" : "Could not report", {
-                                  description: err.message,
-                                }),
+                                notify.failed(
+                                  err.isNotImplemented ? "Not wired yet" : "Could not report",
+                                  {
+                                    description: err.message,
+                                  },
+                                ),
                             },
                           )
                         }
@@ -114,15 +147,25 @@ function HistoryPage() {
                 ) : (
                   d.anomalies.map((a) => (
                     <Row key={a.id}>
-                      <span className="text-steel">{new Date(a.created_at).toLocaleString("en-GB")}</span>
-                      <span className="font-semibold text-foreground">{a.kind.replace(/_/g, " ")}</span>
-                      <span className="min-w-0 flex-1 truncate text-muted-foreground">{a.detail}</span>
+                      <span className="text-steel">
+                        {new Date(a.created_at).toLocaleString("en-GB")}
+                      </span>
+                      <span className="font-semibold text-foreground">
+                        {a.kind.replace(/_/g, " ")}
+                      </span>
+                      <span className="min-w-0 flex-1 truncate text-muted-foreground">
+                        {a.detail}
+                      </span>
                       {a.km !== null && a.minutes !== null && (
                         <span className="text-muted-foreground">
                           {Math.round(a.km)} km in {a.minutes} min
                         </span>
                       )}
-                      <span className={a.state === "frozen" ? "ml-auto text-red-400" : "ml-auto text-amber-400"}>
+                      <span
+                        className={
+                          a.state === "frozen" ? "ml-auto text-red-400" : "ml-auto text-amber-400"
+                        }
+                      >
                         {a.state}
                       </span>
                     </Row>
