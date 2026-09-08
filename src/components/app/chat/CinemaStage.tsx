@@ -13,8 +13,10 @@ import { Suspense, lazy, useEffect, useMemo, useState } from "react";
 import type { AtmosphereEffect, TimeBand } from "@/lib/chat-atmosphere";
 import {
   autoQuality,
+  readCinemaEnabled,
   readQuality,
   readSound,
+  writeCinemaEnabled,
   writeQuality,
   writeSound,
   type CinemaQuality,
@@ -23,30 +25,37 @@ import { startAtmosphereSound, stopAtmosphereSound } from "@/lib/chat-sound";
 
 const Scene = lazy(() => import("@/components/app/chat/cinema/Scene"));
 
-export function useCinema(calm: boolean, effect: AtmosphereEffect) {
+/**
+ * @param callActive  live call ho to 3D + atmosphere sound khud-ba-khud OFF
+ *                    (Three.js unmount = GPU/CPU poora call ko).
+ */
+export function useCinema(calm: boolean, effect: AtmosphereEffect, callActive = false) {
   const [pref, setPref] = useState<CinemaQuality | "auto">("auto");
   const [sound, setSound] = useState(false);
+  const [enabled, setEnabled] = useState(true);
 
   useEffect(() => {
     setPref(readQuality());
     setSound(readSound());
+    setEnabled(readCinemaEnabled());
   }, []);
 
   const quality: CinemaQuality = useMemo(() => {
-    if (calm) return "off";
+    if (calm || callActive || !enabled) return "off";
     return pref === "auto" ? autoQuality() : pref;
-  }, [calm, pref]);
+  }, [calm, callActive, enabled, pref]);
 
   const soundable = effect === "rain" || effect === "storm";
+  const off = quality === "off";
 
   useEffect(() => {
-    if (calm || !sound || !soundable) {
+    if (off || !sound || !soundable) {
       stopAtmosphereSound();
       return;
     }
     void startAtmosphereSound(effect === "storm" ? "storm" : "rain");
     return () => stopAtmosphereSound();
-  }, [calm, sound, soundable, effect]);
+  }, [off, sound, soundable, effect]);
 
   useEffect(() => () => stopAtmosphereSound(), []);
 
@@ -55,6 +64,13 @@ export function useCinema(calm: boolean, effect: AtmosphereEffect) {
     pref,
     sound,
     soundable,
+    enabled,
+    /** Sach: 3D is waqt call ki wajah se ruka hua hai (user ne off nahi kiya). */
+    pausedByCall: callActive && enabled && !calm,
+    setEnabled: (next: boolean) => {
+      writeCinemaEnabled(next);
+      setEnabled(next);
+    },
     setQuality: (next: CinemaQuality | "auto") => {
       writeQuality(next);
       setPref(next);
