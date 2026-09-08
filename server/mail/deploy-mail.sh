@@ -32,6 +32,15 @@ SENDONLY="noreply"
 # alias:target
 ALIASES="postmaster:abuse nauman:naumansherwani.founder support:resolved"
 
+# FOUNDER SINGLE INBOX (locked 8 Sep 2026)
+#   - founder ka ek hi inbox: naumansherwani.founder@anexomail.com
+#   - har inbound address ki mail apni box mein bhi rehti hai AUR founder inbox
+#     mein bhi copy hoti hai (kuch bhi khota nahi, routing bhi zinda rehti hai)
+#   - sab mailboxes ka password EK — founder ke liye ek hi login
+#   - recovery account: anexomail27@gmail.com (server par kabhi password nahi print)
+FOUNDER_INBOX="naumansherwani.founder"
+FOUNDER_RECOVERY="anexomail27@gmail.com"
+
 echo "==> packages"
 export DEBIAN_FRONTEND=noninteractive
 apt-get update -qq
