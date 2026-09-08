@@ -21,3 +21,13 @@
 - [ ] SERVER: corrected runner se database preflight aur 59 SQL phases GREEN
 - [ ] SQL ko ek-command self-healing apply mein wire karna; har purana conflicting function/table safely reconcile ho aur `GREEN=59 RED=0` live proof aaye
 
+
+## WIRE GATES (sirf copy-paste — tarteeb se)
+- [x] docs/wire/04-rust-engine.md — deploy + gate (/rpc/* asli response, HTTP/3, WT sach)
+- [x] docs/wire/05-caddy-frontend.md — frontend build + Caddy sync + har route 200 gate (awam · founder · AI)
+- [x] docs/wire/06-mail.md — server/mail/deploy-mail.sh (Postfix+Dovecot+DKIM) + round-trip gate; sirf DNS manual
+- [x] docs/wire/07-payments.md — polar-payment deploy + webhook/DB gate
+- [x] docs/wire/08-anexochat.md — feature-by-feature gate (message · file · search · receipts · timeline · provenance …)
+- [x] docs/wire/09-anexovideocall.md — signaling · ICE · coturn relay · recording gate
+- [x] docs/wire/10-final-audit.md — server/gates/all-gates.sh (7 blocks, ek command)
+- [ ] SERVER: gate 2..7 ka asli output GREEN (jab tak nahi, ledger mein READY)
