@@ -396,7 +396,7 @@ export function useCall(
           sendEncodings: sendEncodings(ladder.current.current()),
         });
         // AV1 -> VP9 -> H.264 -> VP8 (capability se, assume kuch nahi)
-        applyCodecPreference(t) ?? preferCodecs(t);
+        if (applyCodecPreference(t) === null) preferCodecs(t);
         await applyRung(t.sender, video, ladder.current.current(), captureCeiling.current);
       }
 

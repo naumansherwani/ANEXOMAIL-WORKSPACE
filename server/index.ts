@@ -83,8 +83,9 @@ app.use("/api/leo", async (req, res) => {
       const { done, value } = await reader.read();
       if (done) break;
       res.write(Buffer.from(value));
-      // @ts-ignore flush for SSE when compression middleware absent
-      if (typeof (res as any).flush === "function") (res as any).flush();
+      // SSE flush jab compression middleware maujood na ho
+      const flushable = res as unknown as { flush?: () => void };
+      if (typeof flushable.flush === "function") flushable.flush();
     }
     res.end();
   } catch (e) {

@@ -19,6 +19,16 @@ import { createClient, type RealtimeChannel, type SupabaseClient } from "@supaba
 import { sessionToken } from "./api";
 import { chatCall } from "./chat-transport";
 
+type WebTransportLike = {
+  ready: Promise<void>;
+  close: () => void;
+  createBidirectionalStream: () => Promise<{
+    readable: ReadableStream<Uint8Array>;
+    writable: WritableStream<Uint8Array>;
+  }>;
+};
+
+
 export type SignalKind = "offer" | "answer" | "ice" | "ice-end" | "restart" | "end" | "ring";
 
 export type SignalFrame = {
@@ -52,7 +62,7 @@ function openQuicSignal(opts: {
 
   void (async () => {
     try {
-      const WT = (window as unknown as { WebTransport: new (url: string) => any }).WebTransport;
+      const WT = (window as unknown as { WebTransport: new (url: string) => WebTransportLike }).WebTransport;
       const wt = new WT(`${WT_URL}/wt/chat`);
       transport = wt;
       await wt.ready;

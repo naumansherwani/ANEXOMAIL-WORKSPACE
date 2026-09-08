@@ -336,6 +336,12 @@ export function useFileVersions(fileId: string | null) {
  * Rust reachable na ho to Bun `/api/chat/file/chunk`. 409 = server ka sha256
  * mismatch → chunk corrupt → wahi chunk dobara (recovery), poori file nahi.
  */
+/** Chunk ack ka asli shape — Rust primary aur Bun fallback, dono. */
+type ChunkAck = {
+  bytes_done?: number | string;
+  result?: { data?: { bytes_done?: number | string } };
+};
+
 async function putChunk(input: {
   transferId: string;
   idx: number;
@@ -369,7 +375,7 @@ async function putChunk(input: {
         return { ok: false, bytes_done: 0, transport: "rust-quic", corrupt: true };
       }
       if (res.ok) {
-        const json = (await res.json().catch(() => null)) as any;
+        const json = (await res.json().catch(() => null)) as ChunkAck | null;
         return {
           ok: true,
           bytes_done: Number(json?.result?.data?.bytes_done ?? json?.bytes_done ?? 0),
@@ -397,7 +403,7 @@ async function putChunk(input: {
     return { ok: false, bytes_done: 0, transport: "bun-fallback", corrupt: true };
   if (!res.ok)
     throw new ApiError(`chunk ${input.idx} reject (${res.status})`, res.status, "chunk_failed");
-  const json = (await res.json().catch(() => null)) as any;
+  const json = (await res.json().catch(() => null)) as ChunkAck | null;
   return {
     ok: true,
     bytes_done: Number(json?.bytes_done ?? 0),

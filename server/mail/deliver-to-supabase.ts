@@ -16,13 +16,14 @@
  */
 
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 
 const ENV_FILE = process.env["ANEXOMAIL_MAIL_ENV"] ?? "/etc/anexomail/mail.env";
 
 function loadEnv(): Record<string, string> {
   const out: Record<string, string> = { ...process.env } as Record<string, string>;
   try {
-    const text = require("node:fs").readFileSync(ENV_FILE, "utf8") as string;
+    const text = readFileSync(ENV_FILE, "utf8");
     for (const line of text.split("\n")) {
       const m = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
       if (!m) continue;
