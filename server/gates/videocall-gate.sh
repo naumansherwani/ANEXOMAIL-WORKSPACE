@@ -25,9 +25,13 @@ check_port "turn 3478 (tcp/udp)" 3478
 check_port "turns 5349" 5349
 check_http "turn host https" "https://$TURNHOST" 200
 check_cmd "turn cert copy maujood" test -f /etc/anexochat/turn/fullchain.pem
-# TURN creds ka asli arm: chat.turn.credentials (server-side HMAC, koi external API nahi)
-check_body "ICE creds server-side HMAC" "$R/rpc/chat.turn.credentials" 'credential' \
+# ICE creds ka asli sach: readiness arm (public, secret-free) + authenticated arm
+# bina token 401 deta hai. Asli credential value kabhi bina auth nahi milti.
+check_body "ICE creds server-side HMAC ready" "$R/rpc/chat.turn.health" '"credential_ready":true' \
   -X POST -H 'content-type: application/json' --data '{}'
+check_http "chat.turn.credentials auth-only (401 expected)" "$R/rpc/chat.turn.credentials" 401 \
+  -X POST -H 'content-type: application/json' --data '{}'
+
 
 echo "--- DB truth ---"
 # asli schema ke naam (anexochat/sql se)
