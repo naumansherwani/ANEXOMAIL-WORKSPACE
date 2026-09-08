@@ -18,7 +18,7 @@ check_cmd "A $MAILHOST" bash -c "dig +short A $MAILHOST | grep -q ."
 check_cmd "MX $DOMAIN -> $MAILHOST" bash -c "dig +short MX $DOMAIN | grep -qi '$MAILHOST'"
 check_cmd "SPF record" bash -c "dig +short TXT $DOMAIN | grep -q 'v=spf1'"
 check_cmd "DKIM record" bash -c "dig +short TXT mail._domainkey.$DOMAIN | grep -q 'v=DKIM1'"
-check_cmd "DMARC record" bash -c "dig +short TXT _dmarc.$DOMAIN | grep -q 'v=DMARC1'"
+check_cmd "DMARC record (p=reject strict)" bash -c "dig +short TXT _dmarc.$DOMAIN | tr -d '\"' | grep -q 'v=DMARC1' && dig +short TXT _dmarc.$DOMAIN | grep -q 'p=reject'"
 if [ -n "$IP" ]; then
   check_cmd "PTR $IP -> $MAILHOST" bash -c "dig +short -x $IP | grep -qi '$MAILHOST'"
 else
