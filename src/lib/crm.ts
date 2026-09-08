@@ -6,8 +6,10 @@
  * server (Server 2 -> Supabase 4). This file only speaks HTTP/RPC.
  * NO MOCK rule: a missing endpoint surfaces as an honest "not wired" state.
  *
- * Awam surface: aicrm.anexomail.com -> /app/crm
+ * Awam surface: aicrm.anexomail.com -> /app/crm (AI CRM, Leo insights ON)
+ *                crm.anexomail.com   -> /app/crm (AI-free CRM, AI panels OFF)
  * Founder surface: founderworkspace.anexomail.com/app/founder/crm (IP locked)
+
  */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

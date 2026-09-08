@@ -66,6 +66,8 @@ while i < len(lines):
         "ai.anexomail.com",
         "anexochat.anexomail.com",
         "aicrm.anexomail.com",
+        "crm.anexomail.com",
+
         "api.anexomail.com",
     )
     host_line = stripped[:-1]

@@ -1,9 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Brain, Gauge, Sparkles, TrendingUp } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { CardBody, DashboardCard, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, CrmStat, SectionTitle } from "@/components/app/crm/CrmBits";
+import { crmAiAllowed } from "@/lib/host";
 import { STAGE_LABEL, money, useCrmInsights, useCrmOverview } from "@/lib/crm";
+
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
@@ -22,8 +25,13 @@ export const Route = createFileRoute("/app/crm/")({
 });
 
 function CrmDashboard() {
+  // crm.anexomail.com = AI-free CRM host; aicrm.anexomail.com = AI CRM.
+  const [aiSurface, setAiSurface] = useState(true);
+  useEffect(() => setAiSurface(crmAiAllowed()), []);
+
   const overview = useCrmOverview();
   const insights = useCrmInsights();
+
 
   const o = overview.data;
 
@@ -119,7 +127,7 @@ function CrmDashboard() {
         </DashboardCard>
       </div>
 
-      <div className="mt-ax-5">
+      <div className={aiSurface ? "mt-ax-5" : "hidden"} aria-hidden={!aiSurface}>
         <DashboardCard
           title="Leo's deal insights"
           hint="Risk, opportunity and the single next step — written by the AI that reads the thread."
