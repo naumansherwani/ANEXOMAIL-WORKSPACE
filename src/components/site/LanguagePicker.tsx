@@ -2,7 +2,7 @@ import { Check, Globe } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { setLocale, useLocale } from "@/lib/i18n";
-import { LOCALES, flagOf } from "@/lib/locales";
+import { LOCALES } from "@/lib/locales";
 
 /**
  * Real language picker — har entry asli zubaan hai, apni script mein.
