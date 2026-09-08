@@ -15,6 +15,8 @@ import { StateBlock } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import {
   FOUNDER_MAILBOXES,
+  FAMILY_MAILBOXES,
+
   FOUNDER_WORKSPACE_HOST,
   KIND_LABEL,
   PLANNED_MAILBOXES,
