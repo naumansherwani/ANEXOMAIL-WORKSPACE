@@ -25,6 +25,12 @@ check_port "turn 3478 (tcp/udp)" 3478
 check_port "turns 5349" 5349
 check_body "turn host https readiness" "https://$TURNHOST/ready" '"credential_ready":true'
 check_cmd "turn cert copy maujood" test -f /etc/anexochat/turn/fullchain.pem
+
+echo "--- SFU media forwarding (apna Rust, koi external video API nahi) ---"
+check_cmd "SFU media udp 3501 live" bash -c "ss -lnu | grep -q ':3501 '"
+check_body "SFU forwarding mode sach" "http://127.0.0.1:3500/ready" '"live":true'
+check_cmd "SFU do participants ke beech asli packet forward" \
+  python3 /opt/anexomail-web/server/gates/sfu-packet-proof.py
 # ICE creds ka asli sach: readiness arm (public, secret-free) + authenticated arm
 # bina token 401 deta hai. Asli credential value kabhi bina auth nahi milti.
 check_body "ICE creds server-side HMAC ready" "$R/rpc/chat.turn.health" '"credential_ready":true' \
