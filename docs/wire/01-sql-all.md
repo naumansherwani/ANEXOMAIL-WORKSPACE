@@ -14,8 +14,23 @@ nahi jayega. Script pehle login test karegi; sirf GREEN par protected file mein 
 ## Apply — connection GREEN ke baad sirf yeh ek line copy-paste karo
 
 ```bash
-cd /opt/anexomail-web && git pull && bash sql/apply-all.sh
+cd /opt/anexomail-web && git checkout -- . && git pull && bash sql/apply-all.sh
 ```
+
+`git checkout -- .` server par ki hui local tabdeeliyan hata deta hai (repo hi asal hai),
+warna `git pull` "local changes would be overwritten" par rukta hai.
+
+## Beech se dobara shuru (jo phase RED thi us se aage)
+
+Jab koi phase aap ne SQL editor mein khud chala li ho, ya deadlock aaya ho:
+
+```bash
+cd /opt/anexomail-web && bash sql/apply-all.sh --from sql/phase35_payment_safety.sql
+```
+
+`--from` ke baad us file ka naam likho jahan se aage chalana hai; us se pehli sab `SKIP` ho jati hain.
+Deadlock (do sessions ek hi table par) par runner khud 3 dafa retry karta hai.
+
 
 Output aisa aata hai:
 
