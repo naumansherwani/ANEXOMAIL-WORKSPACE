@@ -1,4 +1,4 @@
-- [ ] Implement actual Rust SFU media forwarding binary for Phase 31A
+- [ ] SERVER NOW: actual Rust SFU media forwarding :3500 TCP / :3501 UDP banana, deploy karna, aur live packet-forward proof gate dena
 - [ ] Add AV1→VP9→H.264→VP8 codec ladder and 3-layer simulcast
 - [ ] Add Opus DTX/FEC SDP settings
 - [ ] Add truthful P2P/TURN relay badge UI
