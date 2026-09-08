@@ -8,7 +8,8 @@ set -uo pipefail
 FILE="${1:-}"
 if [ -z "$FILE" ]; then echo "FAIL: file nahi di"; exit 2; fi
 cd "$(dirname "$0")/.." || exit 2
-if [ "$FILE" != "--check" ] && [ ! -f "$FILE" ]; then echo "FAIL: $FILE mojood nahi"; exit 2; fi
+if [ "$FILE" != "--check" ] && [ "$FILE" != "--query" ] && [ ! -f "$FILE" ]; then echo "FAIL: $FILE mojood nahi"; exit 2; fi
+
 
 URL="${DATABASE_URL:-}"
 if [ -z "$URL" ]; then
@@ -39,6 +40,16 @@ if [ "$FILE" = "--check" ]; then
   [ "$RC" -eq 0 ] && echo "GREEN  DATABASE CONNECTION" || echo "RED    DATABASE CONNECTION"
   exit "$RC"
 fi
+
+# Gate helper: ek query ka sirf value print karo (koi shor nahi)
+if [ "$FILE" = "--query" ]; then
+  Q="${2:-}"
+  [ -z "$Q" ] && { echo "FAIL: query nahi di"; exit 2; }
+  PGOPTIONS='-c client_min_messages=warning' psql_run -qAtc "$Q"
+  exit $?
+fi
+
+
 
 HEALED=""
 for attempt in 1 2 3 4 5 6; do
