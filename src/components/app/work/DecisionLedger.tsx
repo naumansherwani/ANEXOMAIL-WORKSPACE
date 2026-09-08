@@ -1,4 +1,4 @@
-import { GitBranch, History, Link2, Link2Off, ScrollText, ShieldCheck } from "lucide-react";
+import { GitBranch, History, Link2, Link2Off, Mail, ScrollText, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   useDecisionLink,
   useDecisionUnlink,
 } from "@/lib/chat-decisions";
+import { useDecisionToEmail } from "@/lib/chat-email-bridge";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
@@ -27,6 +28,8 @@ const utc = (iso: string) => new Date(iso).toISOString().replace("T", " ").slice
  */
 export function DecisionLedger() {
   const board = useDecisionBoard();
+  // PHASE 30 — decision → cited email draft (consent gate on send, never auto-sent).
+  const toEmail = useDecisionToEmail();
   const [open, setOpen] = useState<string | null>(null);
   const amend = useDecisionAmend();
 
@@ -166,6 +169,31 @@ export function DecisionLedger() {
                   onClick={() => change(d, "reversed")}
                 >
                   Reverse
+                </Button>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  disabled={toEmail.isPending}
+                  onClick={() =>
+                    toEmail.mutate(
+                      { decision_id: d.id },
+                      {
+                        onSuccess: (r) =>
+                          r.ok === false
+                            ? notify.failed(r.error ?? "Could not draft email")
+                            : notify.done("Email draft created", {
+                                description: "Cited draft is in Mail → Drafts; nothing was sent.",
+                              }),
+                        onError: (e) =>
+                          notify.failed(e.isNotImplemented ? "Not wired yet" : "Draft failed", {
+                            description: e.message,
+                          }),
+                      },
+                    )
+                  }
+                >
+                  <Mail className="size-3.5" aria-hidden="true" />
+                  Email this decision
                 </Button>
               </div>
 
