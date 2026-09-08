@@ -31,8 +31,9 @@ cd /opt/anexomail-web && git pull && bash server/mail/deploy-mail.sh
 Script DKIM key banati hai aur DNS ke liye exact TXT value print karti hai —
 usay Step A ke `mail._domainkey` mein paste karo. Inbound pipe ke database values
 existing protected server env se `/etc/anexomail/mail.env` mein khud sync hoti hain;
-values screen ya repo mein kabhi print nahi hotin. Deploy ke aakhir mein purani queue
-khud retry hoti hai.
+server ke authoritative `SUPABASE4_URL` / `SUPABASE4_SERVICE_ROLE_KEY` naam aur purane
+fallback naam dono supported hain. Values screen ya repo mein kabhi print nahi hotin.
+Deploy ke aakhir mein purani queue khud retry hoti hai.
 
 
 ## C · addresses ka SQL (agar phase52 pehle nahi chali)

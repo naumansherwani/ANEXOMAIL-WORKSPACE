@@ -9,7 +9,7 @@
 - [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output
 
 ## WIRE (sirf copy-paste — koi edit nahi)
-- [x] SERVER NOW: mail pipe ke protected database values auto-sync, sender/recipient order fix, aur queued mail auto-retry
+- [ ] SERVER VERIFY: `SUPABASE4_*` protected values se mail pipe auto-sync, sender/recipient order aur queued mail retry ka live GREEN output
 - [x] SERVER NOW: mail queue failure ko self-diagnosing/self-retry banana aur final mail gate GREEN karna
 - [x] SERVER NOW: har real service port ko one-command deploy + truthful protocol gate dena; SFU ko jhoota DONE/200 na kehna
 - [x] SERVER NOW: Postfix implicit TLS :465 aur Rust private readiness/metrics :3600 real listeners deploy karna
