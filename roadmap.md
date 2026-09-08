@@ -11,6 +11,7 @@
 - [ ] Phase 31B: run server/i18n/translate.py on Hetzner for all 29 locales, review RTL output
 
 ## WIRE (sirf copy-paste — koi edit nahi)
+
 - [x] SERVER NOW: Storage Box registration se ghalat Founder JWT dependency hata kar protected SUPABASE4 service RPC lagana
 - [ ] SERVER VERIFY: `SUPABASE4_*` protected values se mail pipe auto-sync, sender/recipient order aur queued mail retry ka live GREEN output
 - [x] SERVER NOW: mail queue failure ko self-diagnosing/self-retry banana aur final mail gate GREEN karna
@@ -32,8 +33,8 @@
 - [ ] SERVER: corrected runner se database preflight aur 59 SQL phases GREEN
 - [ ] SQL ko ek-command self-healing apply mein wire karna; har purana conflicting function/table safely reconcile ho aur `GREEN=59 RED=0` live proof aaye
 
-
 ## AUDIT 8 Sep 2026 (poora repo)
+
 - [x] Poore repo ke 1876 code errors 0 par — type-check + build green
 - [x] Har page ka apna browser/search title (55 pages jo khali the)
 - [x] CRM ke dono host repo-managed (`aicrm` + AI-free `crm`) — deploy khud wire karta hai
@@ -42,6 +43,7 @@
 - [ ] SERVER: mail 13 addresses — SQL + `deploy-mail.sh` + `mail-gate.sh` GREEN
 
 ## WIRE GATES (sirf copy-paste — tarteeb se)
+
 - [x] docs/wire/04-rust-engine.md — deploy + gate (/rpc/* asli response, HTTP/3, WT sach)
 - [x] docs/wire/05-caddy-frontend.md — frontend build + Caddy sync + har route 200 gate (awam · founder · AI)
 - [x] docs/wire/06-mail.md — server/mail/deploy-mail.sh (Postfix+Dovecot+DKIM) + round-trip gate; sirf DNS manual
@@ -53,11 +55,13 @@
 - [ ] SERVER: `bash server/deploy-all.sh` live output GREEN; blocker: Hetzner server par founder command run karega
 
 ## Founder single inbox (8 Sep 2026) — READY
+
 - [ ] `sql/phase55_founder_single_inbox.sql` — founder inbox truth + recovery `anexomail27@gmail.com`
 - [ ] `server/mail/deploy-mail.sh` — ek password (`FOUNDER_MAIL_PASSWORD`) + har address ki copy founder inbox mein
 - [ ] verify: `docs/wire/19-founder-single-inbox.md` step 3 green
 
 ## 8 Sep 2026 — FINAL ADDRESS LIST (Phase 56)
+
 - [x] `sql/phase56_mailbox_final.sql` — backup table, `nauman@`/`support@`/`trials@` delete,
       `postmaster@`/`abuse@`/`dmarc@` sirf forward -> `resolved@`, family accounts
       (`humzasherwani@`, `raanasherwani@`) business_pro + ai_executive 10,000 credits.
