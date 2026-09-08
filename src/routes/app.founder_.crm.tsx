@@ -62,9 +62,11 @@ function FounderCrm() {
         </p>
         <h2 className="mt-3 text-3xl text-foreground">CRM founder view</h2>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          The public CRM lives at <code className="rounded-md bg-secondary px-1.5 py-0.5 text-foreground">aicrm.anexomail.com</code>.
+          The public CRM lives at <code className="rounded-md bg-secondary px-1.5 py-0.5 text-foreground">aicrm.anexomail.com</code> (with AI)
+          and <code className="rounded-md bg-secondary px-1.5 py-0.5 text-foreground">crm.anexomail.com</code> (without AI).
           This page only exists on the founder host, so the public never sees the switches.
         </p>
+
 
         <div className="mt-8 grid gap-3 sm:grid-cols-4">
           <CrmStat label="Organisations" value={s ? String(s.organisations) : "—"} />
