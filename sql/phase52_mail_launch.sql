@@ -340,7 +340,7 @@ on conflict (domain) do update
 insert into public.mailboxes (address, display_name, box_type, alias_target, purpose, is_public) values
  ('hello@anexomail.com','ANEXOMAIL','mailbox',null,'Footer, get-started, AI page, checkout-done, trial-ended, AI top-up',true),
  ('moveyourbusiness@anexomail.com','ANEXOMAIL Move-Ins','mailbox',null,'Landing hero CTA, migration, enterprise, plans, LeadForm',true),
- ('support@anexomail.com','ANEXOMAIL Support','mailbox',null,'/status and /docs',true),
+ ('support@anexomail.com','ANEXOMAIL Support (alias)','alias','resolved@anexomail.com','Purani support address — sirf alias, sab kuch resolved@ par jaata hai',false),
  ('billing@anexomail.com','ANEXOMAIL Billing','mailbox',null,'/docs — invoices and plan questions',true),
  ('noreply@anexomail.com','ANEXOMAIL (no reply)','sendonly',null,'Outbound system mail (glitch alerts). Inbound discarded.',true),
  ('resolved@anexomail.com','ANEXOMAIL Resolved log','mailbox',null,'Silent BCC log of resolved support replies',false),
