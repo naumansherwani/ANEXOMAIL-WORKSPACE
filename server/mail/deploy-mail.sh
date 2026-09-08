@@ -8,7 +8,7 @@
 #   1. packages install (agar missing)
 #   2. hostname/PTR identity = mail.anexomail.com
 #   3. 13 addresses ke mailbox/alias maps (virtual users, koi system user nahi)
-#   4. mailbox passwords khud generate -> /etc/anexomail/mail.env (chmod 600)
+#   4. mailbox passwords khud generate -> /etc/anexomail/mail.env (chmod 640 root:vmail)
 #      REPO MEIN KABHI NAHI
 #   5. inbound pipe -> Supabase (server/mail/deliver-to-supabase.ts, Bun)
 #   6. DKIM key + DNS ke liye exact TXT value print
@@ -49,7 +49,11 @@ chown -R vmail:vmail /var/mail/vhosts
 # --------------------------------------------------------------------------
 # 1) Passwords: sirf server par, sirf ek dafa generate
 # --------------------------------------------------------------------------
-touch "$ENVFILE"; chmod 600 "$ENVFILE"
+# Pipe vmail user se chalti hai, is liye env file vmail GROUP ko readable honi
+# chahiye (600 root-only tha — asli wajah ke "SUPABASE_URL missing in
+# /etc/anexomail/mail.env" queue mein aata tha). World-readable kabhi nahi.
+touch "$ENVFILE"; chown root:vmail "$ENVFILE"; chmod 640 "$ENVFILE"
+chmod 755 /etc/anexomail
 
 # Inbound pipe ko do server values chahiye. Unhein repo mein rakhna mana hai,
 # is liye existing protected app env se mail.env mein one-time sync karte hain.
@@ -384,6 +388,6 @@ echo
 echo "=============================================================="
 echo "readings:"
 for s in postfix dovecot opendkim; do printf '  %-9s %s\n' "$s" "$(systemctl is-active $s)"; done
-echo "  passwords: $ENVFILE (chmod 600, repo mein kuch nahi)"
+echo "  passwords: $ENVFILE (chmod 640 root:vmail, repo mein kuch nahi)"
 echo "  inbound DB env: ready (values hidden)"
 echo "  next: cd $REPO && bash server/gates/mail-gate.sh"
