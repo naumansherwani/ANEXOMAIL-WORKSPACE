@@ -275,6 +275,12 @@ done
 for pair in $ALIASES; do
   printf '%s@%s  %s@%s\n' "${pair%%:*}" "$DOMAIN" "${pair##*:}" "$DOMAIN" >> /etc/postfix/valias
 done
+# FOUNDER SINGLE INBOX: har real mailbox ki mail apni box mein bhi jaati hai aur
+# founder inbox mein bhi copy hoti hai (khud founder box par koi alias nahi).
+for m in $MAILBOXES; do
+  [ "$m" = "$FOUNDER_INBOX" ] && continue
+  printf '%s@%s  %s@%s, %s@%s\n' "$m" "$DOMAIN" "$m" "$DOMAIN" "$FOUNDER_INBOX" "$DOMAIN" >> /etc/postfix/valias
+done
 postmap /etc/postfix/vdomains /etc/postfix/vmailbox /etc/postfix/valias
 
 echo "==> postfix main.cf"
