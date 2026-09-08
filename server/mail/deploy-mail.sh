@@ -127,6 +127,20 @@ service lmtp {
     group = postfix
   }
 }
+# Loopback IMAP 143 — sirf 127.0.0.1 par (internal delivery/health path).
+# Public plaintext IMAP kabhi nahi: baahir sirf 993 IMAPS khula hai.
+service imap-login {
+  inet_listener imap {
+    address = 127.0.0.1
+    port = 143
+  }
+  inet_listener imaps {
+    port = 993
+    ssl = yes
+  }
+}
+
+
 
 ssl = required
 ssl_server {
@@ -164,6 +178,17 @@ service lmtp {
     mode = 0600
     user = postfix
     group = postfix
+  }
+}
+# Loopback IMAP 143 — sirf 127.0.0.1 (public plaintext IMAP kabhi nahi).
+service imap-login {
+  inet_listener imap {
+    address = 127.0.0.1
+    port = 143
+  }
+  inet_listener imaps {
+    port = 993
+    ssl = yes
   }
 }
 ssl = required
