@@ -10,25 +10,47 @@
 -- Koi dummy row nahi: sirf 13 asli anexomail.com addresses seed hote hain.
 -- =============================================================================
 
-create extension if not exists pg_trgm;
+-- pg_trgm: Supabase par pehle se `extensions` schema mein hota hai. Agar create
+-- ki ijazat na ho to rukna nahi — trigram index neeche khud skip ho jata hai.
+do $$
+begin
+  create extension if not exists pg_trgm;
+exception when others then
+  raise notice 'pg_trgm create skip: %', sqlerrm;
+end $$;
 
--- ---------- self-heal: purani conflicting tables rename ----------
+-- ---------- self-heal: purani conflicting tables _legacy_<ts> rename ----------
+-- Har table ka ek "required column" hai. Agar table maujood hai magar us column
+-- ke baghair (purane phase ka dhaancha), to usay rename kar ke fresh banate hain.
 do $$
 declare
-  ts text := to_char(now(), 'YYYYMMDDHH24MISS');
-  t  text;
+  ts   text := to_char(now(), 'YYYYMMDDHH24MISS');
+  pair text;
+  tbl  text;
+  col  text;
 begin
-  foreach t in array array['mail_inbound_raw','mail_outbox_log'] loop
+  foreach pair in array array[
+    'mail_inbound_raw:created_at',
+    'mail_outbox_log:created_at',
+    'mail_domains:dkim_selector',
+    'mailboxes:box_type',
+    'mail_threads:mailbox_address',
+    'mail_messages:direction',
+    'mail_attachments:disk_path'
+  ] loop
+    tbl := split_part(pair, ':', 1);
+    col := split_part(pair, ':', 2);
     if exists (select 1 from information_schema.tables
-               where table_schema='public' and table_name=t) then
-      -- sirf tab rename jab required column na ho
-      if not exists (select 1 from information_schema.columns
-                     where table_schema='public' and table_name=t and column_name='created_at') then
-        execute format('alter table public.%I rename to %I', t, t||'_legacy_'||ts);
-      end if;
+                where table_schema = 'public' and table_name = tbl)
+       and not exists (select 1 from information_schema.columns
+                where table_schema = 'public' and table_name = tbl and column_name = col) then
+      -- dependent views/functions se na rukein
+      execute format('alter table public.%I rename to %I', tbl, tbl || '_legacy_' || ts);
+      raise notice 'self-heal: % -> %', tbl, tbl || '_legacy_' || ts;
     end if;
   end loop;
 end $$;
+
 
 -- ---------- domains ----------
 create table if not exists public.mail_domains (
