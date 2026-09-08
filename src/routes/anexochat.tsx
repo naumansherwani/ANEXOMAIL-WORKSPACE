@@ -106,7 +106,6 @@ function AnexoChatLanding() {
 
       <main>
         <section className="ax-container py-20 md:py-28">
-          <AnexoChatMark className="mb-6 scale-[1.35] origin-left" />
           <p className="ax-caption text-primary">ANEXOChat · Relay video</p>
 
           <h1 className="mt-4 max-w-3xl text-4xl leading-[1.05] font-semibold tracking-tight text-foreground md:text-6xl">
