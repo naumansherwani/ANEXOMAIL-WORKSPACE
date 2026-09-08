@@ -25,6 +25,27 @@ export function isChatHost(): boolean {
   return hostName() === "anexochat.anexomail.com";
 }
 
+/**
+ * CRM DO HOST (locked 8 Sep 2026):
+ *   - aicrm.anexomail.com = AI CRM (Leo insights, AI scoring wale panels)
+ *   - crm.anexomail.com   = plain CRM (bilkul same pipeline/leads/shared work,
+ *                           magar koi AI panel nahi — AI-free package waalon ke liye)
+ * Dono `/app/crm` hi serve karte hain; farq sirf AI surface ka hai.
+ */
+export function isAiCrmHost(): boolean {
+  return hostName() === "aicrm.anexomail.com";
+}
+
+export function isPlainCrmHost(): boolean {
+  return hostName() === "crm.anexomail.com";
+}
+
+/** AI CRM panels: plain CRM host par kabhi nahi; baqi hosts par plan gate server se. */
+export function crmAiAllowed(): boolean {
+  return !isPlainCrmHost();
+}
+
+
 /** Founder host (Caddy IP allowlist) + local/preview dev. Sirf ek host. */
 export function isFounderHost(): boolean {
   const h = hostName();
