@@ -56,27 +56,34 @@ touch "$ENVFILE"; chmod 600 "$ENVFILE"
 # Value kabhi terminal par print nahi hoti aur existing mail.env value overwrite
 # nahi hoti. Agar kisi source mein na mile to deploy foran exact reason se rukta hai.
 sync_secret() {
-  local key="$1" source value
-  grep -q "^${key}=" "$ENVFILE" && return 0
+  local target="$1" source_key="$2" source value
+  grep -q -E "^${target}=.+" "$ENVFILE" && return 0
   for source in /root/.anexomail.env /opt/anexomail/.env /opt/anexomail-web/.env; do
     [ -r "$source" ] || continue
-    value="$(grep -am1 -E "^[[:space:]]*(export[[:space:]]+)?${key}=" "$source" | cut -d= -f2- || true)"
+    value="$(grep -am1 -E "^[[:space:]]*(export[[:space:]]+)?${source_key}=" "$source" | cut -d= -f2- || true)"
     value="${value#\"}"; value="${value%\"}"; value="${value#\'}"; value="${value%\'}"
     if [ -n "$value" ]; then
-      printf '%s=%s\n' "$key" "$value" >> "$ENVFILE"
-      echo ">>> $key protected env se mail pipe mein sync"
+      printf '%s=%s\n' "$target" "$value" >> "$ENVFILE"
+      echo ">>> $target protected env se mail pipe mein sync"
       return 0
     fi
   done
-  echo ">>> RED: $key kisi protected server env mein nahi mila"
   return 1
 }
 
+sync_database_value() {
+  local target="$1" primary="$2" fallback="$3"
+  sync_secret "$target" "$primary" || sync_secret "$target" "$fallback" || {
+    echo ">>> RED: $primary / $fallback kisi protected server env mein nahi mila"
+    return 1
+  }
+}
+
 MAIL_ENV_OK=1
-sync_secret SUPABASE_URL || MAIL_ENV_OK=0
-sync_secret SUPABASE_SERVICE_ROLE_KEY || MAIL_ENV_OK=0
+sync_database_value SUPABASE_URL SUPABASE4_URL SUPABASE_URL || MAIL_ENV_OK=0
+sync_database_value SUPABASE_SERVICE_ROLE_KEY SUPABASE4_SERVICE_ROLE_KEY SUPABASE_SERVICE_ROLE_KEY || MAIL_ENV_OK=0
 if [ "$MAIL_ENV_OK" -ne 1 ]; then
-  echo ">>> /opt/anexomail/.env mein missing value rakho, phir yahi deploy command dobara chalao."
+  echo ">>> /root/.anexomail.env ya /opt/anexomail/.env mein missing value rakho, phir yahi deploy command dobara chalao."
   exit 2
 fi
 
