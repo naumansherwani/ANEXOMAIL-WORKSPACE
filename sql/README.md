@@ -26,7 +26,6 @@ Har file locked rules follow karti hai:
 | `phase27_perf.sql`             | 27              | Performance Platform: speed budgets (7 real seeded budgets) + samples (p50/p95/p99), prefetch hit/miss + ms saved, cold-start surface map, query-lab stage traces, device performance twins, releases + regressions, `founder_perf_overview()`                                                                                                                                               |
 | `phase28_revenue.sql`          | 28              | Revenue Engine (no AI): `revenue_leads` (public migration/partner/support requests with reference + quote), `revenue_accounts` (plan, seats, MRR, support add-on), `revenue_jobs` (Move-In one-off £568–£3,350 pipeline), `revenue_partners` (20/25/30% commission ladder, live seats), `revenue_targets` (monthly £ target, seeded £500)                                            |
 | `phase30_release.sql`          | 30              | Production & Founder Lock: `release_runs` + `release_checks` (60+ live probes), `release_checklist` (24 real seeded items), `deployments` (commit sha, actor, rollback trail), `release_locks` (append-only signature ledger), `roadmap_items` (v2.0 board, 8 seeded), `mail_outbox` Phase 30 columns (user_id + idempotency_key, additive), `subscription_pipeline` (migration lead -> MRR) |
-| `phase_wire_founder.sql`       | wiring · page 1 | Founder Command Deck + AI Email Center: mailboxes registry (17 real addresses), mail_domains, ai_agents roster, leo_email_drafts, mail_outbox, founder_accounts                                                                                                                                                                                                                              |
 | `phase_leo_memory.sql`         | leo brain       | LEO 3M-message memory: `leo_memory_vectors` (working/episodic/semantic + pgvector), `agent_memory_config` tiers (Jimmy 3M · Leo 3M · Sherlock 1M · Industry 100K), `leo_recall()` RPC, `leo_memory_prune()` cap                                                                                                                                                                              |
 
 Chalane ki tarteeb: file number ke hisaab se (17 → 18 → 19 → 20 → 21 → 22 → 23 → 24 → 25 → 26 → 27 → 28 → 30), phir `phase_wire_*` files.
@@ -135,7 +134,7 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor** (Hetzner par nahi).
 - End par 4 VERIFY queries: auth uid ↔ founder role match, account state, entitlement, aur founder count = 1
 
 - `phase46_pricing_v5.sql` — PRICING v5: Basic £23/£253 · Pro £46/£506 · Business £97/£970 · Business Pro £2,850/£28,500 · Priority Support £790 · Move-In £568/£1,670/£2,210/£3,350
-## phase47_glitch_crm_alert.sql — Glitch truth + WhatsApp alerts
+## phase47_glitch_crm_alert.sql — Glitch truth + CRM alerts
 
 Kahan chalti hai: **Supabase #4 -> SQL Editor**.
 

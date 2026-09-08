@@ -232,12 +232,6 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase51_polar_payment_hardening.sql
 cd /opt/anexomail-web && bash sql/run.sh sql/phase52_mail_launch.sql
 ```
 
-## 38. phase_wire_founder
-
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase_wire_founder.sql
-```
-
 ## 39. anexochat_phase01_foundation
 
 ```bash

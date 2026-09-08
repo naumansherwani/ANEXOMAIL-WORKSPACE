@@ -3,7 +3,7 @@
  *
  * Rules:
  *  - Frontend sirf batata hai ke kya toota. Noise filtering, dedupe aur
- *    WhatsApp alert ka faisla backend + Supabase karta hai (NO DUPLICATE).
+ *    CRM alert ka faisla backend + Supabase karta hai (NO DUPLICATE).
  *  - Config sirf publishable: VITE_POSTHOG_KEY + VITE_POSTHOG_HOST.
  *    Key na ho to sab kuch chup-chaap band — koi crash, koi console shor nahi.
  *  - Glitch report backend par jata hai: POST {VITE_API_URL}/api/public/glitch/report
@@ -159,7 +159,7 @@ function watchErrors() {
   });
 
   // console.error bhi sach hai — lekin severity warning, taake founder ka
-  // WhatsApp sirf asli tootne par bajay.
+  // CRM alert sirf asli tootne par.
   const original = console.error.bind(console);
   console.error = (...args: unknown[]) => {
     original(...args);

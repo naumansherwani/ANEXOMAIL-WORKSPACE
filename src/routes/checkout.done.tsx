@@ -61,7 +61,7 @@ function CheckoutDonePage() {
       } catch (e: unknown) {
         if (cancelled) return;
         console.error("checkout verify", e);
-        // Phase 47 — checkout ka koi bhi glitch founder ke WhatsApp tak jata hai.
+        // Phase 47 — checkout ka koi bhi glitch founder ke CRM alert tak jata hai.
         const message = e instanceof Error ? e.message : String(e);
         reportGlitch("checkout_error", `checkout verify failed: ${message}`, {
           severity: "critical",

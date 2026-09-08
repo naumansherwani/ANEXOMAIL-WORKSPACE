@@ -80,7 +80,7 @@ function StatusPage() {
           <p className="mt-8 rounded-2xl border border-dashed border-border px-5 py-4 text-sm text-muted-foreground">
             We could not reach the status feed, so this page will not guess. It does not mean mail is
             down and it does not mean mail is fine — please try again shortly. If your mail is
-            affected right now, write to support@anexomail.com and a human replies.
+            affected right now, write to resolved@anexomail.com and a human replies.
           </p>
         )}
 

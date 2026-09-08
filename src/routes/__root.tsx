@@ -150,7 +150,7 @@ function RootComponent() {
     registerServiceWorker();
   }, []);
 
-  // Phase 47 — PostHog session replay + glitch reporting (WhatsApp alerts backend se).
+  // Phase 47 — PostHog session replay + glitch reporting (CRM alerts backend se).
   useEffect(() => {
     void startTelemetry();
   }, []);

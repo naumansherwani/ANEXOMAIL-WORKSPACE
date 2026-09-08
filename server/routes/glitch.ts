@@ -27,7 +27,7 @@ const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || ""
 const SERVICE_KEY =
   process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
 const CRON_SECRET = process.env.CRON_SECRET || "";
-// EMAIL channel (WhatsApp retired — founder decision 19 Aug 2026)
+// EMAIL channel (WhatsApp retired, CRM alert + email only — founder decision 19 Aug 2026)
 const MAIL_TO = process.env.GLITCH_ALERT_TO || "";
 const MAIL_FROM = process.env.GLITCH_ALERT_FROM || "noreply@anexomail.com";
 const SMTP_HOST = process.env.GLITCH_SMTP_HOST || "127.0.0.1";
