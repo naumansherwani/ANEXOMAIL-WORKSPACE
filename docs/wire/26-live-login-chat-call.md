@@ -2,6 +2,27 @@
 
 Status: TODO (kuch bhi DONE tab jab neeche ka verify command green ho)
 
+## Step 0 — EK block: deploy + accounts (server terminal, copy-paste)
+
+```bash
+cd /opt/anexomail-web && git pull && bun install \
+ && bash server/deploy-brain.sh \
+ && bash server/rust/deploy.sh \
+ && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save \
+ && bash server/accounts/create-accounts.sh
+```
+
+Phir SQL editor: `anexochat/sql/phase31c_file_download_manifest.sql` poora paste (Phase 31C download).
+
+Expected akhri line accounts script ki: `ALL GREEN`. Iske baad A3 → B1 → C1 neeche.
+
+### Founder protocol (READY, live proof baqi)
+Brain `/api/auth/session` + login result ab `is_founder` deta hai (authority `public.founder_accounts`).
+Founder par `/claim` aur `/onboarding` ("Name your organisation") KABHI nahi — seedha `/app`.
+Awam (anexomail.com / ai.anexomail.com signup) ka flow wahi: claim → onboarding → app.
+Verify (A3 ke token se): `curl -sS http://127.0.0.1:3100/api/auth/session -H "authorization: Bearer $FT" | grep -o '"is_founder":true'` → print ho = PASS.
+
+
 ## A. Login chain (asli, repo se)
 
 - Browser `/auth` → `src/routes/auth.tsx:211` → `POST /api/auth/login` (Brain :3100)
