@@ -84,6 +84,8 @@ fi
 # /file/*, /wt/* -> Rust 3200 aur request_body 32MB ensure. Idempotent.
 # ---------------------------------------------------------------------------
 if [ -f "$CADDY_MAIN" ]; then
+  # duplicate host (repo site file + main file) -> caddy validate fail -> host 000
+  python3 "$REPO_DIR/strip-dup-hosts.py" "$CADDY_MAIN" "$CADDY_DIR"
   python3 "$REPO_DIR/patch-main-caddyfile.py" "$CADDY_MAIN"
 fi
 
@@ -103,8 +105,12 @@ if command -v ufw >/dev/null 2>&1; then
   ufw allow 49152:49500/udp || true
 fi
 
+echo "--- DNS readings (registrar ka sach) ---"
+for h in anexochat.anexomail.com anexovideocall.anexomail.com; do
+  echo "$h A -> $(getent hosts "$h" | awk '{print $1}' | head -1 || echo none)"
+done
 echo "--- live readings ---"
-for h in anexovideocall.anexomail.com polarpayments.anexomail.com; do
+for h in anexochat.anexomail.com anexovideocall.anexomail.com polarpayments.anexomail.com; do
   code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "https://$h" || echo 000)
   echo "$h -> $code"
 done
