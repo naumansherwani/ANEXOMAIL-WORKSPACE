@@ -32,6 +32,15 @@ workspaceRouter.post("/invitations", async (req, res) => {
   const uid = await userId(req, res); if (!uid) return;
   const emails = Array.isArray(req.body?.emails) ? req.body.emails.filter((v: unknown) => typeof v === "string") : [];
   if (!emails.length) return res.status(400).json({ error: "At least one email is required." });
-  // Invitation email transport is not claimed until its dedicated sender is live.
-  res.status(501).json({ error: "invitation_delivery_not_live" });
+  const { data: membership } = await db!.from("account_org_members").select("org_id,role").eq("user_id", uid).in("role", ["owner", "admin"]).limit(1).maybeSingle();
+  if (!membership) return res.status(403).json({ error: "organisation_admin_required" });
+  const invited: string[] = [];
+  for (const raw of emails) {
+    const email = String(raw).trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) continue;
+    const { error } = await db!.auth.admin.inviteUserByEmail(email, { redirectTo: "https://anexomail.com/auth/callback", data: { organisation_id: membership.org_id, role: "member" } });
+    if (!error) invited.push(email);
+  }
+  if (!invited.length) return res.status(502).json({ error: "invitations_not_sent" });
+  res.json({ invited });
 });
