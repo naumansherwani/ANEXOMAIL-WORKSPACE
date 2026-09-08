@@ -135,7 +135,7 @@ Kahan chalti hai: **Supabase #4 -> SQL Editor** (Hetzner par nahi).
 - End par 4 VERIFY queries: auth uid ↔ founder role match, account state, entitlement, aur founder count = 1
 
 - `phase46_pricing_v5.sql` — PRICING v5: Basic £23/£253 · Pro £46/£506 · Business £97/£970 · Business Pro £2,850/£28,500 · Priority Support £790 · Move-In £568/£1,670/£2,210/£3,350
-## phase47_glitch_whatsapp.sql — Glitch truth + WhatsApp alerts
+## phase47_glitch_crm_alert.sql — Glitch truth + WhatsApp alerts
 
 Kahan chalti hai: **Supabase #4 -> SQL Editor**.
 
