@@ -2372,7 +2372,33 @@ async fn dispatch(
 // ── TURN (coturn) ephemeral credentials — REST scheme ───────────────────────
 // username = <unix-expiry>:<user-id>, password = base64(HMAC-SHA1(secret, username))
 // ENV: TURN_HOST, TURN_SECRET, TURN_TTL_SECONDS. Secret frontend pe kabhi nahi.
+// Public readiness: koi secret, username ya credential value leak nahi hoti —
+// sirf yeh sach ke HMAC creds banane ke liye host + secret maujood hain.
+fn turn_health() -> Value {
+    use hmac::{Hmac, Mac};
+    use sha1::Sha1;
+
+    let host = env_var("TURN_HOST");
+    let secret = env_var("TURN_SECRET");
+    let ready = !host.is_empty() && !secret.is_empty();
+    let hmac_ok = ready
+        && Hmac::<Sha1>::new_from_slice(secret.as_bytes())
+            .map(|mut m| {
+                m.update(b"probe");
+                m.finalize().into_bytes().len() == 20
+            })
+            .unwrap_or(false);
+
+    json!({
+        "turn_host": host,
+        "scheme": "hmac-sha1-rest",
+        "credential_ready": hmac_ok,
+        "credential_source": "server-side only (chat.turn.credentials, authenticated)"
+    })
+}
+
 fn turn_credentials(user_id: &str) -> Value {
+
     use base64::Engine as _;
     use hmac::{Hmac, Mac};
     use sha1::Sha1;
