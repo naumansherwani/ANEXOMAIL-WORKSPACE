@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { DiscussInChat } from "@/components/app/mail/DiscussInChat";
+import { ThreadRescue } from "@/components/app/mail/ThreadRescue";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -81,6 +82,8 @@ export function ThreadHeaderActions({
         {...(subject ? { subject } : {})}
         {...(participants?.length ? { participants } : {})}
       />
+      {/* Phase 29: silent thread -> owned task (human picks owner + due). */}
+      <ThreadRescue threadId={threadId} {...(subject ? { subject } : {})} />
 
       {/* Thread -> meeting in one press: the conversation stays the context. */}
       <button

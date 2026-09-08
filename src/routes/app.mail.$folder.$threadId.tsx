@@ -99,7 +99,24 @@ function ThreadPage() {
       <div className="flex flex-col gap-ax-4 p-ax-5">
         <ThreadInsights threadId={thread.id} />
         {thread.messages.map((message) => (
-          <article key={message.id} className="ax-plane rounded-2xl p-ax-5">
+          <MailMessage key={message.id} message={message} threadId={thread.id} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Ek mail message — body + Phase 29 "Quote in chat" (selected text par). */
+function MailMessage({
+  message,
+  threadId,
+}: {
+  message: MailThread["messages"][number];
+  threadId: string;
+}) {
+  const bodyRef = useRef<HTMLDivElement | null>(null);
+  return (
+          <article className="ax-plane rounded-2xl p-ax-5">
             <header className="flex flex-wrap items-baseline gap-ax-2">
               <span className="text-[13px] font-semibold text-foreground">
                 {message.from_name ?? message.from_address}
