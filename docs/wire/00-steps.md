@@ -37,7 +37,7 @@ cd /opt/anexomail-web && bash sql/verify.sh
 
 ---
 
-## STEP 5 — mail SQL (13 addresses) — SIRF editor mein
+## STEP 5 — mail SQL (final address list) — SIRF editor mein
 
 `docs/wire/11-mail-sql.md` ka poora SQL block database SQL editor mein paste karke run karo.
 Aakhir mein aana chahiye: `mailboxes = 13`, `domains = 1`.
@@ -105,7 +105,7 @@ Yeh aur DNS (A · MX · SPF · DMARC · PTR) aap ka wahi ek manual hissa hai.
 
 ---
 
-## STEP 12 — mail gate (DNS chain + 13 address + asli round-trip)
+## STEP 12 — mail gate (DNS chain + final address list + asli round-trip)
 
 ```bash
 cd /opt/anexomail-web && bash server/gates/mail-gate.sh

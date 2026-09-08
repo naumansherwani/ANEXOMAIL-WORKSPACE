@@ -17,7 +17,7 @@ Wire 06 ka DNS table (registrar/Hetzner panel) — baqi sab command hai.**
 | 03 | Database verify (tables · functions · RLS · GRANT) | `03-verify.md` |
 | 04 | Rust PRIMARY engine :3200 + QUIC + gate | `04-rust-engine.md` |
 | 05 | Caddy + frontend (awam · founder · AI host) + gate | `05-caddy-frontend.md` |
-| 06 | Mail — 13 addresses + round-trip gate | `06-mail.md` |
+| 06 | Mail — final address list + round-trip gate | `06-mail.md` |
 | 07 | Payments :3400 + webhook gate | `07-payments.md` |
 | 08 | ANEXOChat — feature-by-feature gate | `08-anexochat.md` |
 | 09 | ANEXOVideoCall — signaling · ICE · relay · recording gate | `09-anexovideocall.md` |
@@ -39,8 +39,8 @@ Status sirf teen: **DONE** (live gate green aaya) · **READY** (repo mein hai, s
 | Caddy + frontend | `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` | DONE |
 | CRM do host (aicrm + crm) | `bash server/caddy/deploy-sites.sh` + `bash server/gates/web-gate.sh` | READY |
 | ANEXOChat host HTTPS + h3 | `docs/wire/14-anexochat-host-https3.md` | READY |
-| Mail SQL (13 addresses) | `docs/wire/11-mail-sql.md` (editor) ya `bash sql/run.sh sql/phase52_mail_launch.sql` | READY |
-| Mail 13 addresses | `bash server/mail/deploy-mail.sh` + `bash server/gates/mail-gate.sh` | READY |
+| Mail SQL (final address list) | `docs/wire/11-mail-sql.md` (editor) ya `bash sql/run.sh sql/phase52_mail_launch.sql` | READY |
+| Mail final address list | `bash server/mail/deploy-mail.sh` + `bash server/gates/mail-gate.sh` | READY |
 | Payments :3400 | `bash server/rust/polar-payment/deploy.sh` + `bash server/gates/payments-gate.sh` | READY |
 | ANEXOChat | `bash server/gates/chat-gate.sh` | READY |
 | ANEXOVideoCall | `bash server/gates/videocall-gate.sh` | READY |

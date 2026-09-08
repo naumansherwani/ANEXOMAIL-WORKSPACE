@@ -1,4 +1,4 @@
-# WIRE 06 — MAIL (anexomail.com · 13 addresses) — copy-paste + sirf DNS aap ka
+# WIRE 06 — MAIL (anexomail.com · final address list) — copy-paste + sirf DNS aap ka
 
 Is block mein **ek hi manual hissa** hai: registrar par DNS records. Baqi sab command.
 
@@ -15,7 +15,7 @@ Is block mein **ek hi manual hissa** hai: registrar par DNS records. Baqi sab co
 
 > **DMARC (final):** `p=reject; adkim=s; aspf=s` ko badalna nahi. Step D local
 > DKIM key ko DNS se exact match aur SPF/DMARC alignment verify karta hai.
-> `dmarc@anexomail.com` mailbox 13 addresses mein pehle se maujood hai.
+> `dmarc@anexomail.com` mailbox final address list mein pehle se maujood hai.
 
 > **DKIM Namecheap par:** Namecheap DKIM khud generate nahi karta. Key hamare server
 > par banti hai (Step B), aur script screen par exact TXT value print karti hai.
@@ -47,7 +47,7 @@ cd /opt/anexomail-web && bash sql/run.sh sql/phase54_mail_ingest_org_fix.sql
 `mail_accounts` row se, warna ANEXOMAIL System org) — legacy NOT NULL `org_id`
 ki wajah se hi queue mein `temporary failure` aata tha.
 
-## D · gate (DNS + PTR + services + 13 addresses + asli round-trip)
+## D · gate (DNS + PTR + services + final address list + asli round-trip)
 
 ```bash
 cd /opt/anexomail-web && bash server/gates/mail-gate.sh
