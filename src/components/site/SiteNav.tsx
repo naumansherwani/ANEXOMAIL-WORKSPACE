@@ -91,11 +91,17 @@ export function SiteNav() {
                 key={l.to}
                 to={l.to}
                 onClick={() => setOpen(false)}
+                activeProps={{
+                  className:
+                    "border-l-2 border-primary bg-surface-2 text-foreground",
+                  "aria-current": "page",
+                }}
                 className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
               >
                 {t(l.key)}
               </Link>
             ))}
+
             <a
               href="/ai"
               target="_blank"
