@@ -214,7 +214,11 @@ fi
 echo "==> restart services"
 systemctl enable --now opendkim >/dev/null 2>&1 || true
 systemctl restart opendkim
-systemctl restart dovecot
+if ! doveconf -n >/dev/null 2>/tmp/anexo-dovecot.err; then
+  echo ">>> DOVECOT CONFIG ERROR:"; cat /tmp/anexo-dovecot.err
+fi
+systemctl restart dovecot || journalctl -xeu dovecot --no-pager | tail -n 20
+
 systemctl restart postfix
 
 echo
