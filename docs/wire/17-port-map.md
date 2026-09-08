@@ -15,7 +15,7 @@ Har arm ka apna port. Naya arm bina port kabhi nahi.
 | Rust `/metrics` + `/ready` scrape | 3600 (loopback only) | Rust | TODO |
 | `n8n` automation | 5678 | Node (isolated) | DONE |
 | coturn TURN/STUN | 3478, 5349 (+ 49152–49500 udp) | coturn | DONE |
-| Postfix SMTP / submission | 25, 587, 465 | Postfix | DONE |
+| Postfix SMTP / submission | 25, 587, 465 | Postfix | READY |
 | Dovecot IMAPS | 993 (143 loopback) | Dovecot 2.4 | DONE |
 | Supabase transaction pooler | 6543 (outbound) | Supabase | DONE |
 

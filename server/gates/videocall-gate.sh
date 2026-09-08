@@ -23,7 +23,7 @@ echo "--- relay (apna coturn, koi external API nahi) ---"
 check_cmd "coturn active" systemctl is-active --quiet coturn
 check_port "turn 3478 (tcp/udp)" 3478
 check_port "turns 5349" 5349
-check_http "turn host https" "https://$TURNHOST" 200
+check_body "turn host https readiness" "https://$TURNHOST/ready" '"credential_ready":true'
 check_cmd "turn cert copy maujood" test -f /etc/anexochat/turn/fullchain.pem
 # ICE creds ka asli sach: readiness arm (public, secret-free) + authenticated arm
 # bina token 401 deta hai. Asli credential value kabhi bina auth nahi milti.

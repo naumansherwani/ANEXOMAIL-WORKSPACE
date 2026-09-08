@@ -56,6 +56,7 @@ check_cmd "dovecot active" systemctl is-active --quiet dovecot
 check_cmd "opendkim active" systemctl is-active --quiet opendkim
 check_port "smtp 25" 25
 check_port "submission 587" 587
+check_port "submissions TLS 465" 465
 check_port "imaps 993" 993
 check_cmd "myhostname = $MAILHOST" bash -c "postconf -h myhostname | grep -qi '$MAILHOST'"
 check_cmd "envelope domain = $DOMAIN (SPF aligned)" bash -c "[ \"\$(postconf -h myorigin)\" = '$DOMAIN' ]"

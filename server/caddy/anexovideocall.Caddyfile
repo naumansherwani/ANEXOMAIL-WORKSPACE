@@ -2,8 +2,7 @@
 # ANEXOVIDEOCALL — TURN host ka HTTPS face (Server 2)
 # TURN media UDP 3478/5349 + 49152-49500 par SEEDHA coturn pe jata hai; Caddy
 # sirf is hostname ka TLS cert leta hai (wahi cert coturn use karta hai) aur
-# health face 200 deta hai. Isse `curl https://anexovideocall.anexomail.com`
-# 000 ki jagah 200 deta hai.
+# health face Rust ki asli readiness se aata hai; static/fake 200 nahi.
 # ============================================================================
 anexovideocall.anexomail.com {
 	encode zstd gzip
@@ -16,15 +15,18 @@ anexovideocall.anexomail.com {
 	}
 
 	handle /health {
-		respond "ok" 200
+		rewrite * /rpc/health
+		reverse_proxy 127.0.0.1:3200
 	}
 
 	handle /ready {
-		respond "ok" 200
+		rewrite * /rpc/chat.turn.health
+		reverse_proxy 127.0.0.1:3200
 	}
 
 	handle {
-		respond "ANEXOVIDEOCALL TURN Gateway Ready" 200
+		rewrite * /rpc/chat.turn.health
+		reverse_proxy 127.0.0.1:3200
 	}
 
 	log {
