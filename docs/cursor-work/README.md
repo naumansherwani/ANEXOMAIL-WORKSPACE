@@ -5,6 +5,32 @@ Is session mein jo bana ya badla woh sab yahan. GitHub → server pull → SQL �
 
 ---
 
+## LOCKED RULE — Server bash command
+
+**Ab se** har server command **yahan likhni hai** — alag nahi, andar nahi, inbox nahi.
+Repo mein bash scripts bhi yahan se reference hongi. Ek command sab:
+
+```bash
+cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save
+```
+
+---
+
+## Folder structure (ab se sab yahan)
+
+```
+docs/cursor-work/
+├── README.md        ← yeh file — master log
+├── sql/             ← naye SQL files (phase 63+)
+├── frontend/        ← frontend changes log
+├── server/          ← server commands + PM2 map
+├── founder/         ← founderworkspace phases
+├── ai/              ← ai.anexomail.com phases
+└── anexochat/       ← ANEXOChat phase 32+ (paste pe)
+```
+
+---
+
 ## STEP 1 — Server pull
 
 ```bash
