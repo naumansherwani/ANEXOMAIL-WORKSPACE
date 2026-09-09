@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import {
   ArrowDownLeft,
   ArrowUpRight,
@@ -13,6 +14,7 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { CardBody, DashboardCard, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { StateBlock } from "@/components/state/StateBlock";
@@ -28,6 +30,54 @@ import {
   useUpcoming,
   type ActivityKind,
 } from "@/lib/dashboard";
+
+/* ----------------------------- Animation helpers ---------------------------- */
+
+/**
+ * Eased count-up from 0 → target in `duration` ms.
+ * Cancels cleanly on unmount or target change — no phantom state updates.
+ */
+function useCountUp(target: number, duration = 650): number {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    let cancelled = false;
+    setValue(0);
+    const start = Date.now();
+    const tick = () => {
+      if (cancelled) return;
+      const elapsed = Date.now() - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      setValue(Math.round(eased * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+    return () => {
+      cancelled = true;
+    };
+  }, [target, duration]);
+  return value;
+}
+
+function AnimatedNumber({ value }: { value: number }) {
+  const display = useCountUp(value);
+  return <>{display}</>;
+}
+
+/** Stagger container — tiles enter one by one, 80 ms apart. */
+const gridVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.05 } },
+};
+
+const tileVariants = {
+  hidden: { opacity: 0, y: 18 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+};
 
 /* ---------------------------------- Widgets --------------------------------- */
 
@@ -61,58 +111,69 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
           { icon: Send, label: "Closed today", value: data.done_today, to: "sent" as const },
         ];
         return (
-          <div className="grid gap-ax-5 sm:grid-cols-2 xl:grid-cols-4">
+          <motion.div
+            className="grid gap-ax-5 sm:grid-cols-2 xl:grid-cols-4"
+            variants={gridVariants}
+            initial="hidden"
+            animate="show"
+          >
             {tiles.map((tile) => (
-              <Link
-                key={tile.label}
-                to="/app/mail/$folder"
-                params={{ folder: tile.to }}
-                className="ax-plane ax-lift ax-press flex flex-col rounded-2xl p-ax-5"
-              >
-                <span className="flex items-center gap-ax-2 text-steel">
-                  <tile.icon aria-hidden="true" className="size-4" />
-                  <span className="ax-caption">{tile.label}</span>
-                </span>
-                <span className="mt-ax-3 text-3xl font-bold tabular-nums text-foreground">
-                  {tile.value}
-                </span>
-              </Link>
-            ))}
-            <div className="ax-plane rounded-2xl p-ax-5 sm:col-span-2 xl:col-span-4">
-              <div className="flex flex-wrap items-center gap-ax-3">
-                <Shield aria-hidden="true" className="size-4 text-steel" />
-                <p className="ax-caption text-muted-foreground">
-                  Storage {formatBytes(data.storage_used_bytes)} of{" "}
-                  {formatBytes(data.storage_limit_bytes)}
-                </p>
-                <span
-                  className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
+              <motion.div key={tile.label} variants={tileVariants}>
+                <Link
+                  to="/app/mail/$folder"
+                  params={{ folder: tile.to }}
+                  className="ax-plane ax-lift ax-press flex w-full flex-col rounded-2xl p-ax-5"
                 >
-                  {data.domain_verified ? "Domain verified" : "Domain not verified"}
-                </span>
+                  <span className="flex items-center gap-ax-2 text-steel">
+                    <tile.icon aria-hidden="true" className="size-4" />
+                    <span className="ax-caption">{tile.label}</span>
+                  </span>
+                  <span className="mt-ax-3 text-3xl font-bold tabular-nums text-foreground">
+                    <AnimatedNumber value={tile.value} />
+                  </span>
+                </Link>
+              </motion.div>
+            ))}
+            <motion.div
+              variants={tileVariants}
+              className="sm:col-span-2 xl:col-span-4"
+            >
+              <div className="ax-plane rounded-2xl p-ax-5">
+                <div className="flex flex-wrap items-center gap-ax-3">
+                  <Shield aria-hidden="true" className="size-4 text-steel" />
+                  <p className="ax-caption text-muted-foreground">
+                    Storage {formatBytes(data.storage_used_bytes)} of{" "}
+                    {formatBytes(data.storage_limit_bytes)}
+                  </p>
+                  <span
+                    className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
+                  >
+                    {data.domain_verified ? "Domain verified" : "Domain not verified"}
+                  </span>
+                </div>
+                <div
+                  role="progressbar"
+                  aria-label="Storage used"
+                  aria-valuemin={0}
+                  aria-valuemax={100}
+                  aria-valuenow={Math.min(
+                    100,
+                    Math.round(
+                      (data.storage_used_bytes / Math.max(1, data.storage_limit_bytes)) * 100,
+                    ),
+                  )}
+                  className="mt-ax-3 h-1.5 w-full overflow-hidden rounded-full bg-secondary"
+                >
+                  <span
+                    className="block h-full rounded-full bg-cyan-accent"
+                    style={{
+                      width: `${Math.min(100, (data.storage_used_bytes / Math.max(1, data.storage_limit_bytes)) * 100)}%`,
+                    }}
+                  />
+                </div>
               </div>
-              <div
-                role="progressbar"
-                aria-label="Storage used"
-                aria-valuemin={0}
-                aria-valuemax={100}
-                aria-valuenow={Math.min(
-                  100,
-                  Math.round(
-                    (data.storage_used_bytes / Math.max(1, data.storage_limit_bytes)) * 100,
-                  ),
-                )}
-                className="mt-ax-3 h-1.5 w-full overflow-hidden rounded-full bg-secondary"
-              >
-                <span
-                  className="block h-full rounded-full bg-cyan-accent"
-                  style={{
-                    width: `${Math.min(100, (data.storage_used_bytes / Math.max(1, data.storage_limit_bytes)) * 100)}%`,
-                  }}
-                />
-              </div>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         );
       }}
     </CardBody>
@@ -350,13 +411,21 @@ export function AnalyticsPanel({ enabled }: { enabled: boolean }) {
                   aria-label={`Volume over the last ${data.range_days} days`}
                   role="img"
                 >
-                  {data.series.map((point) => (
-                    <span
+                  {data.series.map((point, i) => (
+                    <motion.span
                       key={point.date}
+                      initial={{ scaleY: 0 }}
+                      animate={{ scaleY: 1 }}
+                      transition={{
+                        duration: 0.45,
+                        delay: i * 0.022,
+                        ease: "easeOut",
+                      }}
                       title={`${point.date}: ${point.received} in, ${point.sent} out`}
                       className="flex-1 rounded-t bg-cyan-accent/70"
                       style={{
                         height: `${Math.max(4, ((point.received + point.sent) / peak) * 100)}%`,
+                        transformOrigin: "bottom",
                       }}
                     />
                   ))}

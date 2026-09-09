@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
+import { Greeting } from "@/components/app/dashboard/Greeting";
 import {
   ActivityFeed,
   AiUsagePanel,
@@ -51,12 +52,8 @@ function DashboardPage() {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
-        <p className="ax-eyebrow">Command center</p>
-        <h2 className="ax-display mt-3 text-foreground">Dashboard</h2>
-        <p className="ax-body mt-ax-3 max-w-xl">
-          {session?.user.name ? `${session.user.name}, ` : ""}everything that needs you — mail,
-          activity, schedule and the numbers behind them. One surface, no reload.
-        </p>
+        {/* P2 — cinematic greeting with situational awareness strip */}
+        <Greeting enabled={enabled} onCompose={() => setComposing(true)} />
 
         <div className="mt-ax-7">
           <WidgetGrid enabled={enabled} />
