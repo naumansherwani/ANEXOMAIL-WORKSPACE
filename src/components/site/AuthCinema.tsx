@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { Globe, ShieldCheck, Zap } from "lucide-react";
+import { Database, ShieldCheck, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
@@ -12,7 +12,7 @@ const taglines = [
 
 const trust = [
   { icon: ShieldCheck, text: "256-bit TLS · device-bound sessions" },
-  { icon: Globe, text: "Your domain · your data · your choice" },
+  { icon: Database, text: "Your data · export anytime · delete means delete" },
   { icon: Zap, text: "Rust + WebTransport · async Tokio engine" },
 ];
 
