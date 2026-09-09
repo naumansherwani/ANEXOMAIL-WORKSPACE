@@ -14,6 +14,12 @@ import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
+  validateSearch: (search: Record<string, unknown>) => ({
+    mode:
+      search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
+        ? search.mode
+        : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Sign in — ANEXOMAIL Workspace" },
@@ -47,12 +53,13 @@ type LoginResult =
 function AuthPage() {
   const navigate = useNavigate();
   const { acceptSession } = useAuth();
+  const search = Route.useSearch();
 
-  const [mode, setMode] = useState<Mode>(() => {
-    if (typeof window === "undefined") return "login";
-    const requested = new URLSearchParams(window.location.search).get("mode");
-    return requested === "signup" || requested === "reset" ? requested : "login";
-  });
+  const [mode, setMode] = useState<Mode>(() =>
+    search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
+      ? search.mode
+      : "login",
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -76,37 +83,9 @@ function AuthPage() {
     sessionToken.set(token);
     const session = authenticated ?? (await api<Session>("/api/auth/session"));
     acceptSession(session);
-    // ABSM: guest checkout ka intent sign-in ke baad asli user se jodo (idempotent)
-    const guestToken = window.sessionStorage.getItem("anexo.guest.checkout_token");
-    if (guestToken) {
-      try {
-        await api("/api/billing/claim-guest", {
-          method: "POST",
-          body: JSON.stringify({ guest_token: guestToken }),
-        });
-        window.sessionStorage.removeItem("anexo.guest.checkout_token");
-        window.sessionStorage.removeItem("anexo.pending.checkout");
-      } catch {
-        // sweep/reconciliation baad mein khud jod dega — sign-in kabhi nahi rukta
-      }
-    }
-    const checkoutKey =
-      new URLSearchParams(window.location.search).get("checkout") ||
-      window.sessionStorage.getItem("anexo.pending.checkout");
-
-    if (
-      checkoutKey &&
-      /^POLAR_PRODUCT_PLAN_(BASIC|PRO|BUSINESS|BUSINESS_PRO)_(MONTHLY|YEARLY)$/.test(checkoutKey)
-    ) {
-      window.sessionStorage.removeItem("anexo.pending.checkout");
-      const checkout = await api<{ url: string }>("/api/billing/intent", {
-        method: "POST",
-        body: JSON.stringify({ product_key: checkoutKey, seats: 1, email: session.user.email }),
-      });
-      if (!checkout.url.startsWith("https://polar.sh/")) throw new Error("invalid_checkout_url");
-      window.location.assign(checkout.url);
-      return;
-    }
+    window.sessionStorage.removeItem("anexo.pending.checkout");
+    // Polar checkout founder ke dummy webhook / PM2 rust engine par hai — yahan
+    // login polar.sh pe nahi bhejte. Awam ANEXOMAIL pages pe rehta hai.
     // FOUNDER PROTOCOL: founder ko awam ka claim/onboarding kabhi nahi — seedha /app.
     const target = session.user.is_founder
       ? "/app"
@@ -667,17 +646,15 @@ function PasswordField({
           placeholder="6–15 characters"
           onChange={(event) => onChange(event.target.value)}
         />
-        <Button
+        <button
           type="button"
-          variant="ghost"
-          size="icon"
-          className="absolute right-0 top-0"
+          className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none"
           aria-label={visible ? "Hide password" : "Show password"}
           title={visible ? "Hide password" : "Show password"}
           onClick={() => setVisible((current) => !current)}
         >
           {visible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
-        </Button>
+        </button>
       </div>
     </div>
   );
