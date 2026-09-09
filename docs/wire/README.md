@@ -47,5 +47,6 @@ Status sirf teen: **DONE** (live gate green aaya) · **READY** (repo mein hai, s
 | FINAL AUDIT | `bash server/gates/all-gates.sh` | DONE (8 Sep 2026 — 9 blocks green) |
 | Live login · 2-user chat · video call | `docs/wire/26-live-login-chat-call.md` | TODO |
 | Blueprint match Phase 1→31A | `docs/wire/27-blueprint-match-1-31a.md` | READY (static; live proof = 26) |
+| Org identity + calendar + contacts SQL | `docs/wire/28-org-calendar-contacts.md` | READY |
 
 Main koi dot DONE nahi likhunga jab tak uske gate ka asli output green na aaye.
