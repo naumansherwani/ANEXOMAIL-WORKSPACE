@@ -20,3 +20,5 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 ---
 
 Ab se har server-side script yahan track hoga.
+
+Security blueprint (TODO, no code): `docs/anexomail-security-blueprint.md`
