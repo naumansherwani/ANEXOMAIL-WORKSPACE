@@ -217,11 +217,13 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 
 **Existing:** 20+ founder routes (`app.founder_.*`)
 
-**Kya banega (Elon-level founder protocol):**
+**TERMINOLOGY LOCKED:** "Founder View" — NOT "God View". Founder sees what is authorized by the system.
+
+**Kya banega (Founder Protocol — real-time, no fake numbers):**
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  FOUNDER COMMAND CENTER                             │
+│  FOUNDER VIEW                                       │
 │                                                     │
 │  LIVE SYSTEM                     TODAY              │
 │  ● Rust :3200     HEALTHY        Mail: 247 sent     │
@@ -238,18 +240,19 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 └─────────────────────────────────────────────────────┘
 ```
 
-**Features (founder only):**
-- [ ] Live system health (all services, ports, errors)
-- [ ] All workspaces god-view
-- [ ] Revenue dashboard (MRR, ARR, churn)
-- [ ] Safety queue — reports review
-- [ ] AI usage across all users
-- [ ] Launch checklist (existing route)
+**Features (founder only — is_founder server-side check, not client):**
+- [ ] Live system health (Rust :3200, Bun :3100, Postfix, Caddy — real ports)
+- [ ] All workspaces founder-view (real data, real counts)
+- [ ] Revenue dashboard (MRR, ARR, churn — Polar webhook data)
+- [ ] Safety queue — reports review (privacy-preserving)
+- [ ] AI usage across all users (credit consumption)
+- [ ] Launch checklist (existing route — wire to real checks)
 - [ ] SiteLock control — lock/unlock any surface
 - [ ] Move-in manager — new company onboarding
-- [ ] Founder single inbox (all company mail)
+- [ ] Founder single inbox (all company mail via phase55)
 
-**Wire:** `app.founder.tsx` → `GET /api/founder/*` → Rust :3200 → full DB access (founder-only RLS)
+**Wire:** `app.founder.tsx` → `GET /api/founder/*` → Rust :3200 → full DB (founder-only RLS)
+**Realtime:** WebTransport `/wt/founder` → Rust async Tokio → live system metrics stream
 
 ---
 
@@ -351,16 +354,75 @@ Jo pehle se hai woh sab USE karenge:
 
 ---
 
+## ASYNC TOKIO — KAHAN AAYEGA (locked)
+
+```
+Rust main.rs:
+  #[tokio::main]          ← async runtime — ek thread hazaron connections
+  async fn main() { ... }
+
+Async Tokio phases:
+  P3 Mail inbox    → tokio::spawn(watch_mail_notify())  — PostgreSQL LISTEN/NOTIFY
+                     New mail insert → NOTIFY → Tokio watcher → WebTransport push → browser
+  P4 Compose/Send  → tokio::spawn(delivery_tracker())   — SMTP delivery state tracking
+  P7 Calendar      → tokio::spawn(reminder_scheduler()) — time-based event push
+  P8 Founder view  → tokio::spawn(metrics_streamer())   — live system stats per 2s
+  P9 ANEXOChat     → tokio::spawn(chat_room(conv_id))   — already in main.rs (chat.send)
+
+Bun :3100 pe (fallback/REST):
+  → CRUD operations (no long-lived connections needed)
+  → Auth (Supabase Auth, no async runtime needed)
+  → Mail send (Postfix handoff — fire-and-forget)
+```
+
+## SECURITY — PHASES KE SAATH EMERGE (locked)
+
+DKIM pehle se Hetzner pe installed — touch nahi. Security yahan se shuru hogi:
+
+```
+P1 Auth     → S4: rate limit /api/auth/login (5 attempts / 15min window)
+              S3: cookie Secure+HttpOnly+SameSite=Strict
+              S3: CORS allow-list (only anexomail.com + subdomains)
+P2 Dashboard → RLS already Supabase mein — no extra code
+P3 Mail     → S4: attachment size limit enforce (5MB per attachment)
+              S4: input sanitize mail body (XSS prevention)
+P4 Compose  → DKIM signing already via OpenDKIM (Hetzner, no touch)
+              S4: outbound rate limit (no spam abuse)
+P5 Thread   → S3: CSP header — no inline scripts in mail HTML rendering
+P8 Founder  → S4: is_founder check server-side ONLY — never trust client
+              S8: ADMIN_ACTION audit event on every founder API call
+S1-S10      → Server hardening (UFW, SSH, integrity) — jab founder bole
+```
+
+## SQL RULE (locked)
+
+> Jab bhi nayi SQL file banegi main explicitly likhun ga:
+>
+> ⚠️ SQL NEEDED: `sql/phaseNN_naam.sql`
+> GitHub link: https://github.com/naumansherwani/ANEXOMAIL-WORKSPACE/blob/main/sql/phaseNN_naam.sql
+> Supabase #4 SQL Editor → Raw → Copy → Paste → Run
+
+## PREVIEW RULE (locked)
+
+> Har phase push hone ke baad main browser screenshot lunga aur dikhaunga.
+> Aap server pull karo → main screenshot → aap confirm → next phase.
+
 ## STATUS BOARD
 
 | Item | Status |
 |---|---|
-| SQL phase60/61/62 | ⏳ AAPKO RUN KARNA HAI |
-| Server pull | ⏳ SQL ke baad |
-| P1 Auth | READY — eye icon pushed |
-| P2 Dashboard | STARTS after SQL 60 |
-| P3-P9 | TODO — phase by phase |
+| SQL phase60/61/62 | ✅ DONE (aap ne run kiya) |
+| P1 Auth — cinema split | ✅ LIVE — screenshot liya |
+| P2 Dashboard | 🔨 NEXT |
+| P3 Mail inbox + WebTransport | TODO |
+| P4 Compose + send | TODO |
+| P5 Thread view | TODO |
+| P6 Contacts | TODO |
+| P7 Calendar | TODO |
+| P8 Founder View (not god-view) | TODO |
+| P9 ANEXOChat live proof | TODO |
 | Polar payments | 🔒 NO TOUCH |
 | Prices | 🔒 NO TOUCH |
 | Landing page | 🔒 NO TOUCH |
 | Existing UI components | 🔒 NO DELETE |
+| DKIM / Postfix / Dovecot | 🔒 NO TOUCH (already installed Hetzner) |
