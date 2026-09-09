@@ -74,18 +74,38 @@ export async function api<T>(path: string, init?: RequestInit & { auth?: boolean
   const payload = text ? safeJson(text) : null;
 
   if (!response.ok) {
-    const message =
-      (payload && typeof payload === "object" && "error" in payload
-        ? String((payload as { error: unknown }).error)
-        : null) ?? `Request failed (${response.status}).`;
-    const code =
-      payload && typeof payload === "object" && "code" in payload
-        ? String((payload as { code: unknown }).code)
-        : undefined;
-    throw new ApiError(message, response.status, code);
+    const extracted = apiErrorFromPayload(payload, response.status);
+    throw new ApiError(extracted.message, response.status, extracted.code);
   }
 
   return payload as T;
+}
+
+function apiErrorFromPayload(payload: unknown, status: number): { message: string; code?: string } {
+  const fallback = `Request failed (${status}).`;
+  if (!payload || typeof payload !== "object") return { message: fallback };
+  const err = "error" in payload ? (payload as { error: unknown }).error : undefined;
+  if (typeof err === "string" && err && err !== "[object Object]") {
+    return {
+      message: err,
+      code:
+        "code" in payload && (payload as { code: unknown }).code != null
+          ? String((payload as { code: unknown }).code)
+          : undefined,
+    };
+  }
+  if (err && typeof err === "object") {
+    const rec = err as { message?: unknown; code?: unknown };
+    const message =
+      typeof rec.message === "string" && rec.message
+        ? rec.message
+        : typeof rec.code === "string"
+          ? rec.code
+          : fallback;
+    const code = typeof rec.code === "string" ? rec.code : undefined;
+    return { message, code };
+  }
+  return { message: fallback };
 }
 
 function safeJson(text: string): unknown {

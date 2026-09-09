@@ -355,24 +355,6 @@ cd /opt/anexomail-web && bash sql/run.sh anexochat/sql/videocall_phase31_call_re
 cd /opt/anexomail-web && bash sql/run.sh anexochat/sql/videocall_phase31a_lightspeed.sql
 ```
 
-## 60. phase60_org_identity_repair
-
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase60_org_identity_repair.sql
-```
-
-## 61. phase61_calendar_work
-
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase61_calendar_work.sql
-```
-
-## 62. phase62_contacts_intelligence
-
-```bash
-cd /opt/anexomail-web && bash sql/run.sh sql/phase62_contacts_intelligence.sql
-```
-
 ## Aakhir mein verify
 
 ```bash
