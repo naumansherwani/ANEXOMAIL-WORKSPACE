@@ -1,6 +1,8 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
+import { AuthCinema } from "@/components/site/AuthCinema";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
@@ -283,6 +285,7 @@ function AuthPage() {
     }
   };
 
+  // ── Passkey enrolment screen (post-signup) — centred, no split ──
   if (enrol) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
@@ -334,244 +337,280 @@ function AuthPage() {
     );
   }
 
+  // ── Main auth surface — cinematic split layout ──
   return (
     <>
-      <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute left-1/2 top-[-12rem] h-[28rem] w-[52rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[120px]"
-        />
+      <main className="flex min-h-screen overflow-hidden bg-background">
+        {/* LEFT — Cinematic panel (desktop only) */}
+        <AuthCinema className="hidden lg:flex" />
 
-        <div className="ax-in relative w-full max-w-[27rem]">
-          <div className="flex justify-center">
-            <Link to="/" className="ax-focus rounded-md">
-              <BrandMark />
-            </Link>
-          </div>
+        {/* RIGHT — Form panel */}
+        <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
+          <div className="ax-in w-full max-w-[28rem]">
 
-          <div className="mt-ax-5 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
-            {challengeId ? (
-              <Header
-                title="Two-step verification"
-                sub="Enter the 6-digit code from your authenticator app."
-              />
-            ) : mode === "signup" ? (
-              <Header
-                title="Create your workspace"
-                sub="One account owns the domain and the org."
-              />
-            ) : mode === "link" ? (
-              <Header title="Email me a link" sub="No password. The link signs you straight in." />
-            ) : mode === "forgot" ? (
-              <Header
-                title="Reset your password"
-                sub="We will email a secure one-time reset link."
-              />
-            ) : mode === "reset" ? (
-              <Header title="Choose a new password" sub="Use 6 to 15 characters." />
-            ) : (
-              <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
-            )}
+            {/* Logo on mobile (cinema panel has it on desktop) */}
+            <div className="mb-8 flex justify-center lg:hidden">
+              <Link to="/" className="ax-focus rounded-md">
+                <BrandMark />
+              </Link>
+            </div>
 
-            {linkSent ? (
-              <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
-                <Mail className="mx-auto size-5 text-cyan-accent" />
-                <p className="ax-label mt-ax-2 text-foreground">Link sent to {email}</p>
-                <p className="ax-caption mt-1">It expires in 15 minutes and works once.</p>
-                <Button
-                  variant="ghost"
-                  className="mt-ax-3"
-                  onClick={() => {
-                    setLinkSent(false);
-                    setMode("login");
-                  }}
+            {/* Card */}
+            <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
+              {/* Animated header — smooth morph on mode switch */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={challengeId ? "mfa-header" : mode + "-header"}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  Use a password instead
-                </Button>
-              </div>
-            ) : (
-              <form onSubmit={submit} className="mt-ax-4 space-y-ax-3">
-                {challengeId ? (
-                  <Field
-                    id="code"
-                    label="Authentication code"
-                    value={code}
-                    onChange={setCode}
-                    inputMode="numeric"
-                    autoComplete="one-time-code"
-                    placeholder="123456"
-                  />
-                ) : (
-                  <>
-                    {mode === "signup" && (
-                      <>
-                        <Field
-                          id="name"
-                          label="Full legal name"
-                          value={name}
-                          onChange={setName}
-                          autoComplete="name"
-                          placeholder="Nauman Sherwani"
-                        />
-                        <Field
-                          id="display-name"
-                          label="Display name"
-                          value={displayName}
-                          onChange={setDisplayName}
-                          placeholder="Nauman"
-                        />
-                        <Field
-                          id="work-role"
-                          label="Work role"
-                          value={workRole}
-                          onChange={setWorkRole}
-                          placeholder="Founder, designer, operations…"
-                          required={false}
-                        />
-                        <Field
-                          id="avatar-url"
-                          label="Profile photo URL (optional)"
-                          type="url"
-                          value={avatarUrl}
-                          onChange={setAvatarUrl}
-                          placeholder="https://…"
-                          required={false}
-                        />
-                      </>
-                    )}
-                    {mode !== "reset" && (
-                      <Field
-                        id="email"
-                        label="Work email"
-                        type="email"
-                        value={email}
-                        onChange={setEmail}
-                        autoComplete="email"
-                        placeholder="you@yourdomain.com"
-                      />
-                    )}
-                    {mode !== "link" && mode !== "forgot" && (
-                      <PasswordField
-                        id="password"
-                        label="Password"
-                        value={password}
-                        onChange={setPassword}
-                        autoComplete={mode === "login" ? "current-password" : "new-password"}
-                      />
-                    )}
-                    {(mode === "signup" || mode === "reset") && (
-                      <PasswordField
-                        id="password-confirm"
-                        label="Confirm password"
-                        value={passwordConfirm}
-                        onChange={setPasswordConfirm}
-                        autoComplete="new-password"
-                      />
-                    )}
-                  </>
-                )}
+                  {challengeId ? (
+                    <Header
+                      title="Two-step verification"
+                      sub="Enter the 6-digit code from your authenticator app."
+                    />
+                  ) : mode === "signup" ? (
+                    <Header
+                      title="Create your workspace"
+                      sub="One account owns the domain and the org."
+                    />
+                  ) : mode === "link" ? (
+                    <Header title="Email me a link" sub="No password. The link signs you straight in." />
+                  ) : mode === "forgot" ? (
+                    <Header
+                      title="Reset your password"
+                      sub="We will email a secure one-time reset link."
+                    />
+                  ) : mode === "reset" ? (
+                    <Header title="Choose a new password" sub="Use 6 to 15 characters." />
+                  ) : (
+                    <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
+                  )}
+                </motion.div>
+              </AnimatePresence>
 
-                {error && (
-                  <p role="alert" className="ax-caption text-destructive">
-                    {error}
-                  </p>
-                )}
-
-                <Button type="submit" className="ax-press w-full" disabled={busy}>
-                  {busy && <Loader2 className="size-4 animate-spin" />}
-                  {challengeId
-                    ? "Verify and continue"
-                    : mode === "signup"
-                      ? "Create workspace"
-                      : mode === "forgot"
-                        ? "Send reset link"
-                        : mode === "reset"
-                          ? "Save new password"
-                          : mode === "link"
-                            ? "Send me the link"
-                            : "Sign in"}
-                </Button>
-              </form>
-            )}
-
-            {!challengeId && !linkSent && (
-              <>
-                {mode === "login" && (
+              {linkSent ? (
+                <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
+                  <Mail className="mx-auto size-5 text-cyan-accent" />
+                  <p className="ax-label mt-ax-2 text-foreground">Link sent to {email}</p>
+                  <p className="ax-caption mt-1">It expires in 15 minutes and works once.</p>
                   <Button
-                    type="button"
                     variant="ghost"
-                    className="mt-ax-2 w-full"
+                    className="mt-ax-3"
                     onClick={() => {
-                      setError(null);
-                      setMode("forgot");
+                      setLinkSent(false);
+                      setMode("login");
                     }}
                   >
-                    Forgot your password?
+                    Use a password instead
                   </Button>
-                )}
-                <div className="my-ax-4 flex items-center gap-3">
-                  <div aria-hidden className="ax-hairline h-px flex-1" />
-                  <span className="ax-caption">or</span>
-                  <div aria-hidden className="ax-hairline h-px flex-1" />
                 </div>
-
-                <div className="space-y-ax-2">
-                  <Button
-                    type="button"
-                    variant="outline"
-                    className="ax-press w-full"
-                    onClick={passkey}
-                    disabled={busy}
+              ) : (
+                <AnimatePresence mode="wait">
+                  <motion.form
+                    key={challengeId ? "mfa" : mode}
+                    initial={{ opacity: 0, x: 12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -12 }}
+                    transition={{ duration: 0.22, ease: "easeOut" }}
+                    onSubmit={submit}
+                    className="mt-ax-4 space-y-ax-3"
                   >
-                    <KeyRound className="size-4" />
-                    Continue with a passkey
-                  </Button>
-                  {mode !== "link" && mode !== "forgot" && mode !== "reset" && (
+                    {challengeId ? (
+                      <Field
+                        id="code"
+                        label="Authentication code"
+                        value={code}
+                        onChange={setCode}
+                        inputMode="numeric"
+                        autoComplete="one-time-code"
+                        placeholder="123456"
+                      />
+                    ) : (
+                      <>
+                        {mode === "signup" && (
+                          <>
+                            <Field
+                              id="name"
+                              label="Full legal name"
+                              value={name}
+                              onChange={setName}
+                              autoComplete="name"
+                              placeholder="Nauman Sherwani"
+                            />
+                            <Field
+                              id="display-name"
+                              label="Display name"
+                              value={displayName}
+                              onChange={setDisplayName}
+                              placeholder="Nauman"
+                            />
+                            <Field
+                              id="work-role"
+                              label="Work role"
+                              value={workRole}
+                              onChange={setWorkRole}
+                              placeholder="Founder, designer, operations…"
+                              required={false}
+                            />
+                            <Field
+                              id="avatar-url"
+                              label="Profile photo URL (optional)"
+                              type="url"
+                              value={avatarUrl}
+                              onChange={setAvatarUrl}
+                              placeholder="https://…"
+                              required={false}
+                            />
+                          </>
+                        )}
+                        {mode !== "reset" && (
+                          <Field
+                            id="email"
+                            label="Work email"
+                            type="email"
+                            value={email}
+                            onChange={setEmail}
+                            autoComplete="email"
+                            placeholder="you@yourdomain.com"
+                          />
+                        )}
+                        {mode !== "link" && mode !== "forgot" && (
+                          <>
+                            <PasswordField
+                              id="password"
+                              label="Password"
+                              value={password}
+                              onChange={setPassword}
+                              autoComplete={mode === "login" ? "current-password" : "new-password"}
+                            />
+                            {/* Password strength bar — signup only */}
+                            {mode === "signup" && <PasswordStrength password={password} />}
+                          </>
+                        )}
+                        {(mode === "signup" || mode === "reset") && (
+                          <PasswordField
+                            id="password-confirm"
+                            label="Confirm password"
+                            value={passwordConfirm}
+                            onChange={setPasswordConfirm}
+                            autoComplete="new-password"
+                          />
+                        )}
+                      </>
+                    )}
+
+                    {error && (
+                      <motion.p
+                        initial={{ opacity: 0, y: -4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        role="alert"
+                        className="ax-caption text-destructive"
+                      >
+                        {error}
+                      </motion.p>
+                    )}
+
+                    <Button type="submit" className="ax-press w-full" disabled={busy}>
+                      {busy && <Loader2 className="size-4 animate-spin" />}
+                      {challengeId
+                        ? "Verify and continue"
+                        : mode === "signup"
+                          ? "Create workspace"
+                          : mode === "forgot"
+                            ? "Send reset link"
+                            : mode === "reset"
+                              ? "Save new password"
+                              : mode === "link"
+                                ? "Send me the link"
+                                : "Sign in"}
+                    </Button>
+                  </motion.form>
+                </AnimatePresence>
+              )}
+
+              {!challengeId && !linkSent && (
+                <>
+                  {mode === "login" && (
                     <Button
                       type="button"
                       variant="ghost"
-                      className="w-full"
+                      className="mt-ax-2 w-full"
                       onClick={() => {
                         setError(null);
-                        setMode("link");
+                        setMode("forgot");
                       }}
                     >
-                      <Mail className="size-4" />
-                      Email me a sign-in link
+                      Forgot your password?
                     </Button>
                   )}
-                </div>
+                  <div className="my-ax-4 flex items-center gap-3">
+                    <div aria-hidden className="ax-hairline h-px flex-1" />
+                    <span className="ax-caption">or</span>
+                    <div aria-hidden className="ax-hairline h-px flex-1" />
+                  </div>
 
-                <p className="ax-caption mt-ax-3 text-center">
-                  No domain yet? Create your account here — then you pick your own{" "}
-                  <span className="font-semibold text-foreground">@anexomail.com</span> address.
-                </p>
+                  <div className="space-y-ax-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="ax-press w-full"
+                      onClick={passkey}
+                      disabled={busy}
+                    >
+                      <KeyRound className="size-4" />
+                      Continue with a passkey
+                    </Button>
+                    {mode !== "link" && mode !== "forgot" && mode !== "reset" && (
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        className="w-full"
+                        onClick={() => {
+                          setError(null);
+                          setMode("link");
+                        }}
+                      >
+                        <Mail className="size-4" />
+                        Email me a sign-in link
+                      </Button>
+                    )}
+                  </div>
 
-                <p className="ax-caption mt-ax-4 text-center">
-                  {mode === "signup"
-                    ? "Already have a workspace?"
-                    : mode === "forgot" || mode === "reset"
-                      ? "Remembered it?"
-                      : "New here?"}{" "}
-                  <button
-                    type="button"
-                    className="ax-focus rounded font-semibold text-cyan-accent"
-                    onClick={() => {
-                      setError(null);
-                      setMode(mode === "login" ? "signup" : "login");
-                    }}
-                  >
-                    {mode === "login" ? "Create a workspace" : "Sign in"}
-                  </button>
-                </p>
-              </>
-            )}
+                  <p className="ax-caption mt-ax-3 text-center">
+                    No domain yet? Create your account here — then you pick your own{" "}
+                    <span className="font-semibold text-foreground">@anexomail.com</span> address.
+                  </p>
+
+                  <p className="ax-caption mt-ax-4 text-center">
+                    {mode === "signup"
+                      ? "Already have a workspace?"
+                      : mode === "forgot" || mode === "reset"
+                        ? "Remembered it?"
+                        : "New here?"}{" "}
+                    <button
+                      type="button"
+                      className="ax-focus rounded font-semibold text-cyan-accent"
+                      onClick={() => {
+                        setError(null);
+                        setMode(mode === "login" ? "signup" : "login");
+                      }}
+                    >
+                      {mode === "login" ? "Create a workspace" : "Sign in"}
+                    </button>
+                  </p>
+                </>
+              )}
+            </div>
+
+            {/* Shield footer */}
+            <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">
+              <ShieldCheck className="size-3.5 text-cyan-accent" />
+              Sessions are device-bound and revocable from your account at any time.
+            </p>
           </div>
-
-          <p className="ax-caption mt-ax-4 flex items-center justify-center gap-1.5">
-            <ShieldCheck className="size-3.5 text-cyan-accent" />
-            Sessions are device-bound and revocable from your account at any time.
-          </p>
         </div>
       </main>
 
@@ -582,6 +621,8 @@ function AuthPage() {
     </>
   );
 }
+
+// ── Sub-components ────────────────────────────────────────────────────────────
 
 function Header({ title, sub }: { title: string; sub: string }) {
   return (
@@ -658,4 +699,47 @@ function PasswordField({
       </div>
     </div>
   );
+}
+
+/** Password strength bar — signup mode only. 4-bar visual indicator. */
+function PasswordStrength({ password }: { password: string }) {
+  if (!password) return null;
+  const score = getPasswordScore(password);
+  const labels = ["", "Weak", "Fair", "Good", "Strong"];
+  const colours = [
+    "",
+    "bg-destructive",
+    "bg-orange-400",
+    "bg-yellow-400",
+    "bg-green-500",
+  ];
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="space-y-1.5"
+    >
+      <div className="flex gap-1" aria-hidden>
+        {[1, 2, 3, 4].map((i) => (
+          <div
+            key={i}
+            className={`h-1 flex-1 rounded-full transition-all duration-300 ${i <= score ? colours[score] : "bg-border"}`}
+          />
+        ))}
+      </div>
+      <p className="ax-caption text-right">
+        {labels[score]}{" "}
+        {score < 3 && <span className="text-muted-foreground">— add numbers or symbols</span>}
+      </p>
+    </motion.div>
+  );
+}
+
+function getPasswordScore(pw: string): 1 | 2 | 3 | 4 {
+  let s = 0;
+  if (pw.length >= 8) s++;
+  if (/[A-Z]/.test(pw)) s++;
+  if (/[0-9]/.test(pw)) s++;
+  if (/[^A-Za-z0-9]/.test(pw)) s++;
+  return (Math.max(1, s) as 1 | 2 | 3 | 4);
 }
