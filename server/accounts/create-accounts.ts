@@ -36,6 +36,7 @@ const ACCOUNTS = [
 ];
 
 let red = 0;
+let familyWorkspaceId = "";
 const ok = (m: string) => console.log("GREEN", m);
 const bad = (m: string) => {
   red++;
@@ -120,9 +121,19 @@ for (const a of ACCOUNTS) {
     bad(
       `family_chat_workspace_apply: ${error.message} (anexochat/sql/phase31b_family_chat_workspace.sql run hai?)`,
     );
-  else if (!data?.ok || data?.members !== 3)
+  else if (!data?.ok || data?.members !== 3 || typeof data?.workspace_id !== "string")
     bad(`family chat workspace invalid: ${JSON.stringify(data)}`);
-  else ok("founder + Humza + Raana shared ANEXOChat workspace → 3 members + direct chats ready");
+  else {
+    familyWorkspaceId = data.workspace_id;
+    const members = await db
+      .from("chat_members")
+      .select("user_id")
+      .eq("workspace_id", familyWorkspaceId);
+    if (members.error) bad(`family chat members read: ${members.error.message}`);
+    else if ((members.data?.length || 0) !== 3)
+      bad(`family chat database members=${members.data?.length || 0} (expected 3)`);
+    else ok("founder + Humza + Raana shared ANEXOChat workspace → 3 database members ready");
+  }
 }
 
 // Login proof (service key nahi — asli signInWithPassword, anon-less admin client bhi chalta hai)
@@ -171,13 +182,17 @@ if (founderToken) {
       body: "{}",
     });
     const bootstrapBody = (await bootstrapResponse.json()) as {
-      result?: { data?: { members?: { user_id: string }[] } };
+      result?: { data?: { workspace_id?: string; members?: { user_id: string }[] } };
       error?: { code?: string; message?: string };
     };
     const members = bootstrapBody.result?.data?.members || [];
     if (!bootstrapResponse.ok || members.length < 3) {
       const detail = bootstrapBody.error?.code || bootstrapBody.error?.message;
       throw new Error(detail || `bootstrap members=${members.length}`);
+    }
+    const rustWorkspaceId = bootstrapBody.result?.data?.workspace_id || "";
+    if (!familyWorkspaceId || rustWorkspaceId !== familyWorkspaceId) {
+      throw new Error("Rust selected a different workspace than ANEXOMAIL Family");
     }
     const conversationsResponse = await fetch(`${RUST_URL}/rpc/chat.conversations`, {
       method: "POST",
