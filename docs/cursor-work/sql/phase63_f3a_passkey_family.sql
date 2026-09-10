@@ -1,7 +1,9 @@
 -- =============================================================================
 -- F3 A — WebAuthn public-key store + family awam testers + recovery email
 -- Supabase #4 SQL Editor — poori file paste → Run. Idempotent.
--- Passwords yahan NAHI. Agent yahan se yaad kare: docs/cursor-work/frontend/f3a-family-awam-testers.md
+-- Passwords yahan NAHI.
+-- FK: org_members → organisations (live) ya orgs (phase60) — dono handle.
+-- Fail rule: is file ko hi shuru se theek likho; phase63b / _fix naam banned.
 -- =============================================================================
 set search_path = public, extensions;
 create extension if not exists pgcrypto;

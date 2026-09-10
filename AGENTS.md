@@ -99,6 +99,7 @@ Ab se sab kaam `docs/cursor-work/` mein:
 - AI phases → `docs/cursor-work/ai/`
 - ANEXOChat 32+ → `docs/cursor-work/anexochat/`
 
+**SQL fail rule (locked):** Fail ho to **usi file** ko shuru se theek likho. Naya naam (`phaseNNb`, `_fix`, `_v2`) **banned**. Duplicate patch file delete.
 ### Rule 9 — Wire rule
 Har wiring ka record `docs/wire/` ya `docs/cursor-work/` mein. Status sirf DONE / READY / TODO.
 
@@ -120,12 +121,21 @@ ANEXOMAIL aur ANEXOChat blueprints HAMESHA alag rahenge. Kisi bhi agent/session 
 **Delete ban.** **Mix ban.** **Rename sirf founder ke kehne pe.**
 ANEXOChat Phase 32+ build sirf tab jab founder original `## PHASE N` text paste kare.
 
+### Rule 13 — Mail send + receive gate (locked 10 Sep 2026)
+Asli email **bhejni aur aani** ke baghair agla flow nahi.
+
+- **F5 thread / F6 contacts / F7 calendar / F8 work / F9 founder polish / ANEXOChat 32+ / AI** — wait
+- Awam Basic + Pro + Business — **mail included** (chat alag; Basic/Pro ko email nahi katni)
+- Proof: website se send → Postfix → bahar; bahar se receive → Postfix/Dovecot pipe → inbox list
+- Status **DONE** sirf `bash server/gates/mail-gate.sh` green + founder ne live send/receive dekha
+
 ---
 
 ## PENDING (founder action required)
 
 | Item | Action |
 |---|---|
+| MAIL send+receive | **LOCKED** — F5+ wait until live send/receive + mail-gate green |
 | ANEXOMAIL blueprint (59 phases) | **Founder paste kare** → `docs/anexomail-blueprint.md` banegi |
 | SQL phase60/61/62 | Supabase #4 SQL Editor mein paste karo (tarteeb se) |
 | Server pull | `git pull && bun install && bun run build:bun && pm2 restart...` |
