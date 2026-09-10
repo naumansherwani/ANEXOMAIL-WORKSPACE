@@ -101,21 +101,51 @@ BROWSER
 ---
 
 ## 3. PACKAGE / PLAN FEATURE MATRIX
+## SOURCE: src/lib/plans.ts (FOUNDER LOCKED — NEVER TOUCH)
 
-| Feature | Basic | Pro | Business | Business Pro | AI Pro | AI Biz | AI Exec |
-|---|---|---|---|---|---|---|---|
-| Mail send/receive | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Contacts + Calendar | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| ANEXOChat | ❌ | ❌ | ✅ Ph1-56 | ✅ Ph1-56 | ✅ Ph1-57 | ✅ Ph1-57 | ✅ Ph1-57 |
-| Work layer | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Storage | 5GB | 20GB | 50GB | 1TB pooled | 20GB | 50GB | 100GB |
-| LEO AI | ❌ | ❌ | ❌ | ❌ | 1200cr | 5000cr | 10000cr |
-| Snooze / Schedule send | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Read receipts | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Founder workspace | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | is_founder only |
+### Workspace Plans — anexomail.com ONLY
 
-**RULE:** Feature gates → `account.data.plan` check → server-side enforce via RLS.
-Polar webhook already fixed by founder — no touch.
+| Feature | Basic £23/u/mo | Pro £46/u/mo | Business £97/u/mo | Business Pro £2850/co/mo |
+|---|---|---|---|---|
+| Mail send/receive | ✅ | ✅ | ✅ | ✅ |
+| Contacts + Calendar | ✅ | ✅ | ✅ | ✅ |
+| Mailbox storage | 5GB/mailbox | 10GB/mailbox | 25GB/mailbox | 1TB pooled |
+| Addresses | 1 company | 3 company | unlimited | unlimited |
+| Mailboxes | 3 | 5 | 30 users | Unlimited users |
+| Undo send | ✅ 30s | ✅ | ✅ | ✅ |
+| Snooze / Schedule send | ❌ | ✅ | ✅ | ✅ |
+| Shared inbox | ❌ | ✅ | ✅ | ✅ |
+| Thread tasks + analytics | ❌ | ✅ | ✅ | ✅ |
+| ANEXOChat | ❌ | ❌ | ✅ (incl.) | ✅ Business Pro |
+| Chat file transfer | — | — | 2GB max, 15GB/u/mo | 5GB max, resumable |
+| Chat storage | — | — | workspace | 1TB pooled |
+| Work layer (tasks etc.) | basic | ✅ | ✅ | ✅ (5000 objects) |
+| Device Trust + Vault | ❌ | ❌ | ✅ | ✅ |
+| ANEXOVideoCall | ❌ | ❌ | ✅ (group 8) | ✅ (group 40) |
+| Audit ledger | ❌ | ❌ | ✅ | ✅ |
+| LEO AI | ❌ | ❌ | ❌ | ❌ |
+| Support | 72h | 48h | 24h | 12h |
+| Annual saving | 1 mo free | 1 mo free | 2 mo free | 2 mo free |
+
+### AI Plans — ai.anexomail.com ONLY
+
+| Feature | AI Pro £400/mo | AI Business £1500/mo | AI Executive £4000/mo |
+|---|---|---|---|
+| Includes | All Business features | All AI Pro features | Everything in AI Business |
+| LEO credits | 1,200/mo | 5,000/mo | 10,000/mo |
+| ANEXOChat | ✅ (Phase 1-57) | ✅ (Phase 1-57) | ✅ (Phase 1-57) |
+| Platform | Business tier | Business tier | Business Pro tier |
+| Group calls | 8 | 40 | 60 |
+| Storage | Business limits | Business limits | Business Pro 1TB |
+| Top-up recharge | ✅ | ✅ | ✅ |
+| Annual saving | 2 mo free | 2 mo free | 2 mo free |
+
+**SEPARATION RULE (locked):**
+- `WORKSPACE_PLANS` → `anexomail.com` → Basic/Pro/Business/BusinessPro
+- `AI_PRICED_PLANS` → `ai.anexomail.com` → AI Pro/AI Business/AI Executive
+- Code: `src/lib/host.ts` + `src/routes/index.tsx` already separates them
+- Polar webhook: `server/routes/polar.ts` — FOUNDER FIXED, NO TOUCH EVER
+- `src/lib/plans.ts` — NO TOUCH EVER — source of truth for all pricing
 
 ---
 
