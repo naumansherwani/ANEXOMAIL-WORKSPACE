@@ -1,20 +1,18 @@
 /**
- * Mail Core — Phase 7.
+ * Mail Core — Phase 7 / F3.
  *
- * Locked source of truth: Supabase 4 `mail_threads` + `mail_messages`,
- * exposed ONLY through the backend (/api/mail/*). Postfix delivery hook
- * syncs incoming mail into those tables; IMAP/Dovecot is backup access only.
- *
- * NO DUPLICATE rule: no threading, no dedupe, no counting, no search ranking
- * happens in the browser. This file speaks HTTP and nothing else.
- * NO MOCK rule: a missing endpoint surfaces as an honest "not wired" state.
+ * PRIMARY : Rust :3200 — `/rpc/mail.threads` + WebTransport `/wt/mail`
+ * FALLBACK: Bun  :3100 — `/api/mail/*` sirf jab Rust 404/502/503
+ * TRUTH   : Supabase `mail_threads` — browser threading nahi.
  */
 
+import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api, ApiError } from "@/lib/api";
+import { api, ApiError, sessionToken } from "@/lib/api";
 import type { MailFolder, ThreadStatus } from "@/lib/ia";
 import { get as offlineGet, put as offlinePut } from "@/lib/offline";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type MailLabel = {
   id: string;
@@ -110,6 +108,16 @@ function toSearch(query: ThreadQuery) {
   return params.toString();
 }
 
+function threadInput(query: ThreadQuery) {
+  return {
+    folder: query.folder,
+    ...(query.label ? { label: query.label } : {}),
+    ...(query.account ? { account: query.account } : {}),
+    ...(query.category ? { category: query.category } : {}),
+    ...(query.q?.trim() ? { q: query.q.trim() } : {}),
+  };
+}
+
 export function useThreads(query: ThreadQuery, enabled = true) {
   const searching = Boolean(query.q?.trim());
   const cacheKey = `list:${toSearch(query)}`;
@@ -117,10 +125,13 @@ export function useThreads(query: ThreadQuery, enabled = true) {
     queryKey: ["mail", "threads", query],
     queryFn: async () => {
       try {
-        const data = await api<{ threads: ThreadListItem[] }>(
-          `${searching ? "/api/mail/search" : "/api/mail/threads"}?${toSearch(query)}`,
+        const data = await rpcOrRest<{ threads: ThreadListItem[] }>(
+          searching ? "mail.search" : "mail.threads",
+          {
+            path: `${searching ? "/api/mail/search" : "/api/mail/threads"}?${toSearch(query)}`,
+          },
+          threadInput(query),
         );
-        // Phase 28: cache real rows for offline reading. Never faked.
         if (!searching) void offlinePut("threads", cacheKey, data.threads);
         return data;
       } catch (error) {
@@ -134,8 +145,7 @@ export function useThreads(query: ThreadQuery, enabled = true) {
     enabled,
     retry: false,
     staleTime: 15_000,
-    // F3.3 HTTP fallback — /wt/mail Rust push is TODO until live WT is green.
-    refetchInterval: searching ? false : 20_000,
+    refetchInterval: searching ? false : 15_000,
   });
 }
 
@@ -163,7 +173,12 @@ export function useThread(threadId: string | undefined) {
 export function useLabels() {
   return useQuery<{ labels: MailLabel[] }, ApiError>({
     queryKey: ["mail", "labels"],
-    queryFn: () => api<{ labels: MailLabel[] }>("/api/mail/labels"),
+    queryFn: () =>
+      rpcOrRest<{ labels: MailLabel[] }>(
+        "mail.labels",
+        { path: "/api/mail/labels" },
+        {},
+      ),
     retry: false,
     staleTime: 60_000,
   });
@@ -172,7 +187,12 @@ export function useLabels() {
 export function useAccounts() {
   return useQuery<{ accounts: MailAccount[] }, ApiError>({
     queryKey: ["mail", "accounts"],
-    queryFn: () => api<{ accounts: MailAccount[] }>("/api/mail/accounts"),
+    queryFn: () =>
+      rpcOrRest<{ accounts: MailAccount[] }>(
+        "mail.accounts",
+        { path: "/api/mail/accounts" },
+        {},
+      ),
     retry: false,
     staleTime: 60_000,
   });
@@ -183,10 +203,11 @@ export type FolderCounts = Record<string, { total: number; unread: number }>;
 export function useFolderCounts() {
   return useQuery<{ folders: FolderCounts }, ApiError>({
     queryKey: ["mail", "counts"],
-    queryFn: () => api<{ folders: FolderCounts }>("/api/mail/counts"),
+    queryFn: () =>
+      rpcOrRest<{ folders: FolderCounts }>("mail.counts", { path: "/api/mail/counts" }, {}),
     retry: false,
     staleTime: 15_000,
-    refetchInterval: 20_000,
+    refetchInterval: 15_000,
   });
 }
 
@@ -225,6 +246,17 @@ export function useThreadAction() {
   const qc = useQueryClient();
   return useMutation<unknown, ApiError, { threadId: string; action: ThreadAction }>({
     mutationFn: ({ threadId, action }) => {
+      if (action.kind === "star") {
+        return rpcOrRest(
+          "mail.star",
+          {
+            path: `/api/mail/thread/${threadId}/star`,
+            method: "POST",
+            body: { starred: action.starred },
+          },
+          { thread_id: threadId, starred: action.starred },
+        );
+      }
       const path =
         action.kind === "labels"
           ? `/api/mail/thread/${threadId}/labels`
@@ -232,14 +264,110 @@ export function useThreadAction() {
             ? `/api/mail/thread/${threadId}/status`
             : action.kind === "snooze"
               ? `/api/mail/thread/${threadId}/snooze`
-              : action.kind === "star"
-                ? `/api/mail/thread/${threadId}/star`
               : `/api/mail/thread/${threadId}/move`;
       const { kind: _kind, ...body } = action;
       return api(path, { method: "POST", body: JSON.stringify(body) });
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["mail"] }),
   });
+}
+
+type WebTransportLike = {
+  ready: Promise<void>;
+  close: () => void;
+  createBidirectionalStream: () => Promise<{
+    readable: ReadableStream<Uint8Array>;
+    writable: WritableStream<Uint8Array>;
+  }>;
+};
+
+function mailWtUrl(): string {
+  const env = (import.meta.env["VITE_ANEXOCHAT_WT_URL"] as string | undefined)?.replace(/\/$/, "");
+  if (env) return env;
+  if (typeof window === "undefined") return "";
+  return `https://${window.location.hostname}:3443`;
+}
+
+/** F3.3 — Rust WebTransport mail stamp. Fail = honest RPC poll, fake live nahi. */
+export function useMailLive(): { transport: "webtransport" | "poll"; detail: string } {
+  const queryClient = useQueryClient();
+  const [live, setLive] = useState(false);
+  const [detail, setDetail] = useState("HTTP poll (WebTransport unavailable)");
+  const closer = useRef<(() => void) | null>(null);
+
+  useEffect(() => {
+    closer.current?.();
+    closer.current = null;
+    setLive(false);
+
+    const url = mailWtUrl();
+    const token = sessionToken.get();
+    if (!token || typeof window === "undefined" || !("WebTransport" in window) || !url) {
+      return;
+    }
+
+    let stopped = false;
+    let transport: { close: () => void } | null = null;
+
+    void (async () => {
+      try {
+        const WT = (window as unknown as { WebTransport: new (u: string) => WebTransportLike })
+          .WebTransport;
+        const wt = new WT(`${url}/wt/mail`);
+        transport = wt;
+        await wt.ready;
+        const stream = await wt.createBidirectionalStream();
+        const writer = stream.writable.getWriter();
+        await writer.write(new TextEncoder().encode(JSON.stringify({ token, mode: "mail" })));
+        writer.releaseLock();
+
+        const reader = stream.readable.getReader();
+        const decoder = new TextDecoder();
+        let buffer = "";
+        setLive(true);
+        setDetail("Live over WebTransport / QUIC (Rust engine)");
+
+        while (!stopped) {
+          const { value, done } = await reader.read();
+          if (done) break;
+          buffer += decoder.decode(value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop() ?? "";
+          for (const line of lines) {
+            if (!line.trim()) continue;
+            let frame: { type?: string } = {};
+            try {
+              frame = JSON.parse(line) as { type?: string };
+            } catch {
+              continue;
+            }
+            if (frame.type === "mail") {
+              await queryClient.invalidateQueries({ queryKey: ["mail"] });
+            }
+            if (frame.type === "error") {
+              setLive(false);
+              setDetail("HTTP poll (WebTransport refused this session)");
+            }
+          }
+        }
+      } catch {
+        setLive(false);
+        setDetail("HTTP poll (WebTransport unavailable)");
+      }
+    })();
+
+    closer.current = () => {
+      stopped = true;
+      try {
+        transport?.close();
+      } catch {
+        /* already closed */
+      }
+    };
+    return () => closer.current?.();
+  }, [queryClient]);
+
+  return { transport: live ? "webtransport" : "poll", detail };
 }
 
 /** Snooze presets — resolved in the browser only as timestamps, never as state. */

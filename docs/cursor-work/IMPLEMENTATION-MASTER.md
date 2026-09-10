@@ -32,7 +32,7 @@ BROWSER
 |---|---|---|---|
 | F1 Auth | ✅ login/signup/session/passkey | ❌ | Never — session Bun ka kaam |
 | F2 Dashboard | ✅ /api/dashboard/* (summary, activity, analytics, calendar, ai-usage) | ❌ | No |
-| F3 Mail Inbox | ✅ GET /api/mail/threads | ✅ /wt/mail — new mail push | **YES** — new mail bina refresh |
+| F3 Mail Inbox | Bun `/api/mail/*` FALLBACK | `/rpc/mail.*` + `/wt/mail` | **YES — Rust PRIMARY** |
 | F4 Compose+Send | ✅ POST /api/mail/send | ✅ delivery status push | **YES** — sent→delivered→read |
 | F5 Thread View | ✅ GET /api/mail/thread/:id | ✅ inline reply push | Partial |
 | F6 Contacts | ✅ GET /api/contacts | ❌ | No |
@@ -179,21 +179,18 @@ F2.3  Real data via /api/dashboard/* ✅
 ────────────────────────────────────────────────────────────────────
 FLOW 3 — MAIL INBOX (Day 1 PM — Day 2 AM)           [READY — live unproven]
 ────────────────────────────────────────────────────────────────────
-F3.1  Thread list — real data from /api/mail/threads     READY
-      Files: src/components/app/mail/ThreadList.tsx, src/lib/mail.ts
-      Wire: GET /api/mail/threads?folder=inbox → mail_threads → org_scoped
+F3.1  Thread list — Rust `/rpc/mail.threads` PRIMARY, Bun REST fallback
+      Files: src/lib/mail.ts (rpcOrRest), server/rust/main.rs dispatch_mail
+      Wire: mail.threads → mail_threads org_scoped
       UI: unread pip, star toggle, snippet, time — Superhuman density
-      Animation: Framer Motion list stagger (same as dashboard tiles)
 
-F3.2  Mail rail — folders + unread counts                READY
+F3.2  Mail rail — Rust `/rpc/mail.counts` + `mail.accounts`
       Files: src/components/app/mail/MailRail.tsx
-      Wire: GET /api/mail/counts + /api/mail/accounts (mailboxes, org scoped)
-      UI: sidebar rail — Inbox/Assigned/Waiting/Sent/Drafts + unread badges
-      Mobile: horizontal folder chips (rail is desktop-only)
+      UI: sidebar + unread badges; mobile folder chips
 
-F3.3  WebTransport push — new mail without refresh       TODO
-      HTTP fallback now: React Query refetch every 20s (honest, not fake live)
-      Rust /wt/mail does not exist yet — do not claim DONE until mail-gate + WT green
+F3.3  WebTransport `/wt/mail` — stamp push, invalidate React Query
+      Hello: { token, mode: "mail" } · mail_identity (org, not chat_access)
+      Unavailable → honest HTTP poll 15s — fake live nahi
 
 ────────────────────────────────────────────────────────────────────
 FLOW 4 — COMPOSE + SEND (Day 2)                     [SKELETON→WIRE]

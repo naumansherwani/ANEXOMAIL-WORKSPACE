@@ -17,7 +17,9 @@ const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\
 
 /** Rust service ka tRPC-compatible endpoint: POST {BASE}/rpc/{procedure} */
 export async function rpc<T>(procedure: string, input?: unknown): Promise<T> {
-  if (!BASE) throw new ApiError("API base URL is not configured (VITE_API_URL).", 0, "no_api_url");
+  if (!BASE && typeof window === "undefined") {
+    throw new ApiError("API base URL is not configured (VITE_API_URL).", 0, "no_api_url");
+  }
 
   const headers = new Headers({ "content-type": "application/json" });
   const token = sessionToken.get();

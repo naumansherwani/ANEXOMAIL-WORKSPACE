@@ -195,6 +195,453 @@ async fn chat_identity(token: &str) -> Result<Me, (StatusCode, &'static str, Str
     })
 }
 
+/// Mail inbox identity — org_members, NOT chat_access.
+/// Basic/Pro ko mail chahiye; ANEXOChat gate yahan nahi.
+struct MailMe {
+    id: String,
+    email: String,
+    org_id: String,
+}
+
+async fn mail_identity(
+    token: &str,
+    requested_org: &str,
+) -> Result<MailMe, (StatusCode, &'static str, String)> {
+    let (id, email) = auth_user(token)
+        .await
+        .ok_or((StatusCode::UNAUTHORIZED, "unauthorized", String::new()))?;
+
+    let rows = sb_select(&format!(
+        "org_members?select=org_id&user_id=eq.{id}"
+    ))
+    .await
+    .map_err(|e| (StatusCode::INTERNAL_SERVER_ERROR, "db_error", e))?;
+
+    let ids: Vec<String> = rows
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .into_iter()
+        .filter_map(|r| r.get("org_id")?.as_str().map(|s| s.to_string()))
+        .collect();
+    if ids.is_empty() {
+        return Err((
+            StatusCode::CONFLICT,
+            "no_workspace",
+            "no_workspace".to_string(),
+        ));
+    }
+    let org_id = if !requested_org.is_empty() && ids.iter().any(|o| o == requested_org) {
+        requested_org.to_string()
+    } else {
+        ids[0].clone()
+    };
+    Ok(MailMe {
+        id,
+        email: email,
+        org_id,
+    })
+}
+
+async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let client = reqwest::Client::new();
+    let res = client
+        .patch(format!("{url}/rest/v1/{path_and_query}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .header("content-type", "application/json")
+        .header("prefer", "return=minimal")
+        .json(&body)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let status = res.status();
+    if !status.is_success() {
+        let payload: Value = res.json().await.unwrap_or(Value::Null);
+        return Err(payload.to_string());
+    }
+    Ok(json!({ "ok": true }))
+}
+
+async fn sb_count(path_and_query: &str) -> Result<i64, String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let client = reqwest::Client::new();
+    let res = client
+        .get(format!("{url}/rest/v1/{path_and_query}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .header("prefer", "count=exact")
+        .header("range", "0-0")
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    if !res.status().is_success() && res.status().as_u16() != 416 {
+        let payload: Value = res.json().await.unwrap_or(Value::Null);
+        return Err(payload.to_string());
+    }
+    let cr = res
+        .headers()
+        .get("content-range")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("");
+    let total = cr.split('/').nth(1).unwrap_or("0");
+    Ok(total.parse().unwrap_or(0))
+}
+
+fn mail_q_safe(raw: &str) -> String {
+    raw.chars()
+        .filter(|c| c.is_ascii_alphanumeric() || matches!(c, ' ' | '@' | '.' | '-' | '_'))
+        .take(80)
+        .collect()
+}
+
+fn mail_thread_item(t: &Value, labels: Vec<Value>) -> Value {
+    let unread = t
+        .get("unread")
+        .and_then(|v| v.as_bool())
+        .or_else(|| t.get("is_unread").and_then(|v| v.as_bool()))
+        .unwrap_or(false);
+    json!({
+        "id": t.get("id"),
+        "subject": t.get("subject").and_then(|v| v.as_str()).unwrap_or(""),
+        "snippet": t.get("snippet"),
+        "from_name": t.get("from_name"),
+        "from_address": t.get("from_address").and_then(|v| v.as_str()).unwrap_or(""),
+        "account_id": t.get("account_id"),
+        "account_address": t.get("mailbox_address"),
+        "message_count": t.get("message_count").and_then(|v| v.as_i64()).unwrap_or(0),
+        "unread": unread,
+        "starred": t.get("starred").and_then(|v| v.as_bool()).unwrap_or(false),
+        "has_attachments": t.get("has_attachments").and_then(|v| v.as_bool()).unwrap_or(false),
+        "status": t.get("status").and_then(|v| v.as_str()).or_else(|| t.get("state").and_then(|v| v.as_str())).unwrap_or("open"),
+        "assignee": t.get("assignee"),
+        "labels": labels,
+        "category": t.get("category"),
+        "snoozed_until": t.get("snoozed_until"),
+        "last_message_at": t.get("last_message_at").cloned().or_else(|| t.get("created_at").cloned()),
+    })
+}
+
+async fn mail_labels_for(thread_ids: &[String]) -> std::collections::HashMap<String, Vec<Value>> {
+    let mut map = std::collections::HashMap::new();
+    if thread_ids.is_empty() {
+        return map;
+    }
+    let list = thread_ids.join(",");
+    let Ok(data) = sb_select(&format!(
+        "mail_thread_labels?select=thread_id,mail_labels(name)&thread_id=in.({list})"
+    ))
+    .await else {
+        return map;
+    };
+    for row in data.as_array().cloned().unwrap_or_default() {
+        let tid = row
+            .get("thread_id")
+            .and_then(|v| v.as_str())
+            .unwrap_or("")
+            .to_string();
+        if tid.is_empty() {
+            continue;
+        }
+        if let Some(name) = row
+            .get("mail_labels")
+            .and_then(|v| v.get("name"))
+            .and_then(|v| v.as_str())
+        {
+            map.entry(tid)
+                .or_insert_with(Vec::new)
+                .push(Value::String(name.to_string()));
+        }
+    }
+    map
+}
+
+async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String> {
+    let folder = {
+        let f = s(input, "folder");
+        if f.is_empty() {
+            "inbox".to_string()
+        } else {
+            f
+        }
+    };
+    let account = s(input, "account");
+    let category = s(input, "category");
+    let label = s(input, "label");
+    let q = mail_q_safe(&s(input, "q"));
+
+    let mut thread_filter = String::new();
+    if !label.is_empty() {
+        let lab = sb_select(&format!(
+            "mail_labels?select=id&org_id=eq.{org_id}&or=(id.eq.{label},name.eq.{label})&limit=1"
+        ))
+        .await;
+        let lab_id = lab
+            .ok()
+            .and_then(|v| v.as_array().cloned())
+            .and_then(|arr| arr.into_iter().next())
+            .and_then(|r| r.get("id")?.as_str().map(|s| s.to_string()))
+            .unwrap_or(label.clone());
+        let links = match sb_select(&format!(
+            "mail_thread_labels?select=thread_id&label_id=eq.{lab_id}"
+        ))
+        .await
+        {
+            Ok(v) => v,
+            Err(_) => return Ok(json!({ "threads": [] })),
+        };
+        let ids: Vec<String> = links
+            .as_array()
+            .cloned()
+            .unwrap_or_default()
+            .into_iter()
+            .filter_map(|r| r.get("thread_id")?.as_str().map(|s| s.to_string()))
+            .collect();
+        if ids.is_empty() {
+            return Ok(json!({ "threads": [] }));
+        }
+        thread_filter = format!("&id=in.({})", ids.join(","));
+    }
+
+    let mut path = format!(
+        "mail_threads?select=*&org_id=eq.{org_id}&folder=eq.{folder}&order=last_message_at.desc&limit=100{thread_filter}"
+    );
+    if !account.is_empty() {
+        path.push_str(&format!("&account_id=eq.{account}"));
+    }
+    if !category.is_empty() {
+        path.push_str(&format!("&category=eq.{category}"));
+    }
+    if !q.is_empty() {
+        let enc = q.replace(' ', "%20");
+        path.push_str(&format!(
+            "&or=(subject.ilike.*{enc}*,snippet.ilike.*{enc}*,from_address.ilike.*{enc}*)"
+        ));
+    }
+
+    let data = sb_select(&path).await?;
+    let rows: Vec<Value> = data.as_array().cloned().unwrap_or_default();
+    let ids: Vec<String> = rows
+        .iter()
+        .filter_map(|t| t.get("id")?.as_str().map(|s| s.to_string()))
+        .collect();
+    let lmap = mail_labels_for(&ids).await;
+    let threads: Vec<Value> = rows
+        .iter()
+        .map(|t| {
+            let id = t.get("id").and_then(|v| v.as_str()).unwrap_or("");
+            mail_thread_item(t, lmap.get(id).cloned().unwrap_or_default())
+        })
+        .collect();
+    Ok(json!({ "threads": threads }))
+}
+
+async fn mail_inbox_stamp(org_id: &str) -> Result<(i64, String), String> {
+    let rows = sb_select(&format!(
+        "mail_threads?select=unread,last_message_at&org_id=eq.{org_id}&folder=eq.inbox&order=last_message_at.desc&limit=40"
+    ))
+    .await?;
+    let arr = rows.as_array().cloned().unwrap_or_default();
+    let unread = arr
+        .iter()
+        .filter(|t| t.get("unread").and_then(|v| v.as_bool()) == Some(true))
+        .count() as i64;
+    let max_at = arr
+        .first()
+        .and_then(|t| t.get("last_message_at").and_then(|v| v.as_str()))
+        .unwrap_or("")
+        .to_string();
+    Ok((unread, max_at))
+}
+
+/// F3 mail RPC — PRIMARY. Bun `/api/mail/*` sirf jab yeh 404/502.
+async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response::Response {
+    let requested = s(input, "org_id");
+    let me = match mail_identity(token, &requested).await {
+        Ok(me) => me,
+        Err((status, code, detail)) => {
+            return (
+                status,
+                Json(json!({ "error": { "code": code, "message": detail } })),
+            )
+                .into_response()
+        }
+    };
+    let _ = &me.email;
+
+    let result: Result<Value, String> = match proc {
+        "mail.threads" | "mail.search" => mail_query_threads(&me.org_id, input).await,
+        "mail.counts" => {
+            let folders = [
+                "inbox", "assigned", "waiting", "sent", "drafts", "archive", "spam", "trash",
+            ];
+            let mut out = serde_json::Map::new();
+            for folder in folders {
+                let total = sb_count(&format!(
+                    "mail_threads?select=id&org_id=eq.{}&folder=eq.{folder}",
+                    me.org_id
+                ))
+                .await
+                .unwrap_or(0);
+                let unread = sb_count(&format!(
+                    "mail_threads?select=id&org_id=eq.{}&folder=eq.{folder}&unread=eq.true",
+                    me.org_id
+                ))
+                .await
+                .unwrap_or(0);
+                out.insert(folder.to_string(), json!({ "total": total, "unread": unread }));
+            }
+            Ok(json!({ "folders": out }))
+        }
+        "mail.accounts" => {
+            let mut rows = sb_select(&format!(
+                "mailboxes?select=id,address,box_type&org_id=eq.{}&order=address",
+                me.org_id
+            ))
+            .await
+            .unwrap_or(json!([]));
+            if !rows.as_array().map(|a| !a.is_empty()).unwrap_or(false) {
+                rows = sb_select(&format!(
+                    "mail_accounts?select=id,address&org_id=eq.{}&order=address",
+                    me.org_id
+                ))
+                .await
+                .unwrap_or(json!([]));
+            }
+            let unread_rows = sb_select(&format!(
+                "mail_threads?select=account_id,mailbox_address&org_id=eq.{}&unread=eq.true&limit=5000",
+                me.org_id
+            ))
+            .await
+            .unwrap_or(json!([]));
+            let mut by_id: std::collections::HashMap<String, i64> = std::collections::HashMap::new();
+            let mut by_addr: std::collections::HashMap<String, i64> = std::collections::HashMap::new();
+            for r in unread_rows.as_array().cloned().unwrap_or_default() {
+                if let Some(id) = r.get("account_id").and_then(|v| v.as_str()) {
+                    *by_id.entry(id.to_string()).or_insert(0) += 1;
+                }
+                if let Some(addr) = r.get("mailbox_address").and_then(|v| v.as_str()) {
+                    *by_addr.entry(addr.to_lowercase()).or_insert(0) += 1;
+                }
+            }
+            let accounts: Vec<Value> = rows
+                .as_array()
+                .cloned()
+                .unwrap_or_default()
+                .into_iter()
+                .map(|a| {
+                    let id = a.get("id").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                    let address = a.get("address").and_then(|v| v.as_str()).unwrap_or("").to_string();
+                    let kind = if a.get("box_type").and_then(|v| v.as_str()) == Some("alias") {
+                        "shared"
+                    } else {
+                        "personal"
+                    };
+                    let unread = *by_id.get(&id).unwrap_or(&0)
+                        + *by_addr.get(&address.to_lowercase()).unwrap_or(&0);
+                    json!({
+                        "id": id,
+                        "address": address,
+                        "kind": kind,
+                        "unread": unread,
+                    })
+                })
+                .collect();
+            Ok(json!({ "accounts": accounts }))
+        }
+        "mail.labels" => {
+            let data = match sb_select(&format!(
+                "mail_labels?select=id,name,colour&org_id=eq.{}&order=name",
+                me.org_id
+            ))
+            .await
+            {
+                Ok(v) => v,
+                Err(_) => return ok(json!({ "labels": [] })).into_response(),
+            };
+            Ok(json!({ "labels": data }))
+        }
+        "mail.star" => {
+            let thread_id = s(input, "thread_id");
+            if thread_id.is_empty() {
+                Err("thread_id_required".to_string())
+            } else {
+                let starred = input.get("starred").and_then(|v| v.as_bool()).unwrap_or(false);
+                sb_patch(
+                    &format!("mail_threads?id=eq.{thread_id}&org_id=eq.{}", me.org_id),
+                    json!({ "starred": starred }),
+                )
+                .await
+                .map(|_| json!({ "ok": true, "starred": starred }))
+            }
+        }
+        "mail.predict" => {
+            let prefix = s(input, "prefix");
+            if prefix.trim().is_empty() {
+                Ok(json!({ "candidates": [] }))
+            } else {
+                let formality = if s(input, "formality").is_empty() {
+                    "any".to_string()
+                } else {
+                    s(input, "formality")
+                };
+                sb_rpc(
+                    "mail_predict",
+                    json!({
+                        "_user": me.id,
+                        "_prefix": prefix,
+                        "_formality": formality,
+                        "_limit": input.get("limit").and_then(|v| v.as_i64()).unwrap_or(3),
+                    }),
+                )
+                .await
+                .map(|data| json!({ "candidates": data }))
+            }
+        }
+        "mail.predict.learn" => {
+            let text = s(input, "text");
+            if text.trim().len() < 12 {
+                Ok(json!({ "learned": 0 }))
+            } else {
+                sb_rpc("mail_predict_learn", json!({ "_user": me.id, "_text": text }))
+                    .await
+                    .map(|data| json!({ "learned": data.as_i64().unwrap_or(0) }))
+            }
+        }
+        "mail.predict.event" => {
+            let action = s(input, "action");
+            if action.is_empty() {
+                Err("action_required".to_string())
+            } else {
+                sb_rpc(
+                    "mail_predict_event",
+                    json!({
+                        "_user": me.id,
+                        "_action": action,
+                        "_prefix": input.get("prefix").cloned().unwrap_or(Value::Null),
+                    }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+        other => {
+            return err(
+                StatusCode::NOT_FOUND,
+                "procedure_not_in_rust",
+                &format!("{other} Rust pe define nahi hai."),
+            )
+            .into_response()
+        }
+    };
+
+    match result {
+        Ok(data) => ok(data).into_response(),
+        Err(detail) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &detail).into_response(),
+    }
+}
+
 async fn file_ping() -> impl IntoResponse {
     ok(json!({
         "service": "anexomail-file-engine",
@@ -280,6 +727,11 @@ async fn dispatch(
             }
             None => err(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid").into_response(),
         };
+    }
+
+    // F3 mail — org mailbox users (Basic/Pro included). Chat entitlement nahi.
+    if proc.starts_with("mail.") {
+        return dispatch_mail(&proc, &token, &input).await;
     }
 
     if !proc.starts_with("chat.") && !proc.starts_with("file.") {
@@ -2527,7 +2979,60 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
 
     let token = s(&hello, "token");
     let conv = s(&hello, "conversation_id");
-    if token.is_empty() || conv.is_empty() {
+    let mode = s(&hello, "mode");
+    if token.is_empty() {
+        let _ = send
+            .write_all(b"{\"type\":\"error\",\"code\":\"token_required\"}\n")
+            .await;
+        return;
+    }
+
+    // F3 — mail inbox live stamp (org-scoped). Chat hello still needs conversation_id.
+    if mode == "mail" {
+        let requested = s(&hello, "org_id");
+        let me = match mail_identity(&token, &requested).await {
+            Ok(me) => me,
+            Err((_, code, _)) => {
+                let frame = format!("{{\"type\":\"error\",\"code\":\"{code}\"}}\n");
+                let _ = send.write_all(frame.as_bytes()).await;
+                return;
+            }
+        };
+        let _ = send
+            .write_all(b"{\"type\":\"ready\",\"transport\":\"webtransport\",\"mode\":\"mail\"}\n")
+            .await;
+        let mut last = String::new();
+        loop {
+            match mail_inbox_stamp(&me.org_id).await {
+                Ok((unread, max_at)) => {
+                    let stamp = format!("{unread}|{max_at}");
+                    if stamp != last {
+                        last = stamp;
+                        let frame = json!({
+                            "type": "mail",
+                            "unread": unread,
+                            "last_message_at": max_at
+                        })
+                        .to_string();
+                        if send.write_all(frame.as_bytes()).await.is_err() {
+                            return;
+                        }
+                        if send.write_all(b"\n").await.is_err() {
+                            return;
+                        }
+                    }
+                }
+                Err(_) => {
+                    let _ = send
+                        .write_all(b"{\"type\":\"error\",\"code\":\"db_error\"}\n")
+                        .await;
+                }
+            }
+            tokio::time::sleep(Duration::from_millis(700)).await;
+        }
+    }
+
+    if conv.is_empty() {
         let _ = send
             .write_all(b"{\"type\":\"error\",\"code\":\"token_and_conversation_required\"}\n")
             .await;

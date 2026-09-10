@@ -19,6 +19,7 @@ import { notify } from "@/lib/notify";
 import {
   THREAD_CATEGORIES,
   useFolderCounts,
+  useMailLive,
   useThreadAction,
   useThreads,
   type ThreadCategory,
@@ -75,6 +76,7 @@ function MailFolderPage() {
   const threads = query.data?.threads;
   const action = useThreadAction();
   const counts = useFolderCounts();
+  const live = useMailLive();
   const unreadHere = counts.data?.folders[folder]?.unread ?? 0;
 
   const act = useCallback(
@@ -272,7 +274,7 @@ function MailFolderPage() {
               </button>
             ))}
             <span className="ml-auto hidden shrink-0 pl-2 text-[10px] text-steel sm:block">
-              j/k · ↵ open · e archive · s snooze · c compose
+              {live.transport === "webtransport" ? "Rust WT live" : "Rust RPC · poll"} · j/k · ↵
             </span>
           </div>
         </div>
