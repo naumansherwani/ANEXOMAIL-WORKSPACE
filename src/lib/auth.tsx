@@ -31,6 +31,8 @@ export type SessionUser = {
   id: string;
   email: string;
   name: string | null;
+  display_name?: string | null;
+  avatar_url?: string | null;
   mfa_enabled: boolean;
   onboarded: boolean;
   /** Authority `public.founder_accounts` (Brain). Founder par awam ka claim/onboarding kabhi nahi. */

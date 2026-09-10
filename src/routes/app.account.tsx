@@ -45,12 +45,14 @@ type DeviceSession = {
 };
 
 function AccountPage() {
-  const { session } = useAuth();
+  const { session, refresh } = useAuth();
   const queryClient = useQueryClient();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [displayName, setDisplayName] = useState("");
+  const [photoBusy, setPhotoBusy] = useState(false);
 
   const [recoveryKind, setRecoveryKind] = useState("gmail");
   const [recoveryEmail, setRecoveryEmail] = useState("");
@@ -108,10 +110,104 @@ function AccountPage() {
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto max-w-2xl space-y-ax-5 p-ax-4">
-        <h2 className="ax-heading text-foreground">Account &amp; sessions</h2>
+        <h2 className="ax-heading text-foreground">Profile &amp; sessions</h2>
         <section className="rounded-xl border border-border bg-card p-ax-4">
-          <h2 className="ax-label text-foreground">Signed in as</h2>
-          <p className="ax-body mt-1">{session?.user.email ?? "—"}</p>
+          <div className="flex items-start gap-ax-3">
+            <div className="size-16 shrink-0 overflow-hidden rounded-full border border-border bg-secondary">
+              {session?.user.avatar_url ? (
+                <img src={session.user.avatar_url} alt="" className="size-16 object-cover" />
+              ) : (
+                <span className="flex size-16 items-center justify-center text-lg font-semibold text-muted-foreground">
+                  {(session?.user.display_name || session?.user.email || "?").slice(0, 1).toUpperCase()}
+                </span>
+              )}
+            </div>
+            <div className="min-w-0 flex-1">
+              <h2 className="ax-label text-foreground">Your ANEXOMAIL address</h2>
+              <p className="ax-body mt-1 break-all text-foreground">
+                {session?.user.anexomail_address || session?.user.email || "—"}
+              </p>
+              <p className="ax-caption mt-1">This is your mailbox. It does not change when you add a photo.</p>
+            </div>
+          </div>
+          <form
+            className="mt-ax-4 space-y-ax-3"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const name = displayName.trim() || session?.user.display_name || session?.user.name || "";
+              void api("/api/auth/profile", {
+                method: "PATCH",
+                body: JSON.stringify({ display_name: name }),
+              })
+                .then(() => {
+                  notify.done("Profile saved", "Your display name is updated.");
+                  void refresh();
+                })
+                .catch((error: unknown) =>
+                  notify.failed("Profile not saved", {
+                    description: error instanceof Error ? error.message : "Try again.",
+                  }),
+                );
+            }}
+          >
+            <div className="space-y-1.5">
+              <Label htmlFor="display-name">Display name</Label>
+              <Input
+                id="display-name"
+                value={displayName}
+                placeholder={session?.user.display_name || session?.user.name || "Your name"}
+                onChange={(event) => setDisplayName(event.target.value)}
+              />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="photo">Profile photo</Label>
+              <Input
+                id="photo"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                disabled={photoBusy}
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  event.target.value = "";
+                  if (!file) return;
+                  if (file.size > 130_000) {
+                    notify.failed("Photo too large", { description: "Use a jpg or png under 130 KB." });
+                    return;
+                  }
+                  setPhotoBusy(true);
+                  const reader = new FileReader();
+                  reader.onload = () => {
+                    const avatar_url = String(reader.result || "");
+                    void api("/api/auth/profile", {
+                      method: "PATCH",
+                      body: JSON.stringify({ avatar_url }),
+                    })
+                      .then(() => {
+                        notify.done("Photo saved", "Your profile picture is on this account.");
+                        void refresh();
+                      })
+                      .catch((error: unknown) =>
+                        notify.failed("Photo not saved", {
+                          description: error instanceof Error ? error.message : "Try again.",
+                        }),
+                      )
+                      .finally(() => setPhotoBusy(false));
+                  };
+                  reader.onerror = () => {
+                    setPhotoBusy(false);
+                    notify.failed("Photo not read", { description: "Pick another image." });
+                  };
+                  reader.readAsDataURL(file);
+                }}
+              />
+              <p className="ax-caption">jpg / png / webp, under 130 KB. Optional.</p>
+            </div>
+            <Button type="submit">Save name</Button>
+          </form>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card p-ax-4">
+          <h2 className="ax-label text-foreground">Security</h2>
           <div className="mt-ax-3 flex flex-wrap gap-ax-2">
             <Button
               variant="outline"

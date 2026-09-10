@@ -673,6 +673,37 @@ authRouter.delete("/sessions/:id", async (req, res) => {
   res.json({ ok: true });
 });
 
+authRouter.patch("/profile", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const displayName = String(req.body?.display_name || "").trim();
+  const rawAvatar = req.body?.avatar_url;
+  const avatarUrl =
+    rawAvatar === null || rawAvatar === ""
+      ? null
+      : typeof rawAvatar === "string"
+        ? rawAvatar.trim()
+        : undefined;
+  if (displayName && displayName.length < 2)
+    return res.status(400).json({ error: "Display name is too short." });
+  if (avatarUrl) {
+    const httpsOk = /^https:\/\/[^\s]+$/i.test(avatarUrl) && avatarUrl.length <= 500;
+    const dataOk =
+      /^data:image\/(jpeg|jpg|png|webp);base64,/.test(avatarUrl) && avatarUrl.length <= 180_000;
+    if (!httpsOk && !dataOk)
+      return res.status(400).json({ error: "Use a https photo link or a small jpg/png (under 130 KB)." });
+  }
+  const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (displayName) patch.display_name = displayName;
+  if (avatarUrl !== undefined) patch.avatar_url = avatarUrl;
+  const { error } = await getAdmin()
+    .from("account_profiles")
+    .update(patch)
+    .eq("user_id", identity.user.id);
+  if (error) return res.status(500).json({ error: "profile_update_failed" });
+  res.json({ ok: true });
+});
+
 authRouter.post("/onboarding/complete", async (req, res) => {
   const identity = await userFrom(req, res);
   if (!identity) return;

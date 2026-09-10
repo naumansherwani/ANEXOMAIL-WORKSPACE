@@ -219,18 +219,27 @@ export function AppShell({ children }: { children: ReactNode }) {
         <DropdownMenu>
           <DropdownMenuTrigger
             aria-label="Account"
-            className="ax-focus ax-tap ml-1 flex size-9 shrink-0 items-center justify-center rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
+            className="ax-focus ax-tap ml-1 flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
           >
-            <UserCircle2 className="size-5" />
+            {session?.user.avatar_url ? (
+              <img src={session.user.avatar_url} alt="" className="size-9 object-cover" />
+            ) : (
+              <UserCircle2 className="size-5" />
+            )}
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-60">
-            <DropdownMenuLabel className="truncate">
-              {session?.user.email ?? "Signed in"}
+          <DropdownMenuContent align="end" className="w-72">
+            <DropdownMenuLabel className="space-y-0.5 font-normal">
+              <span className="block text-sm font-semibold text-foreground">
+                {session?.user.display_name || session?.user.name || "Account"}
+              </span>
+              <span className="block break-all text-xs font-medium text-muted-foreground">
+                {session?.user.anexomail_address || session?.user.email || "Signed in"}
+              </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void navigate({ to: "/app/account" })}>
               <UserCircle2 className="size-4" />
-              Account &amp; sessions
+              Profile, photo &amp; sessions
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => void handleSignOut()}>
               <LogOut className="size-4" />
