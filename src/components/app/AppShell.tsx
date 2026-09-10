@@ -92,7 +92,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   // FOUNDER HOST GUARD (permanent): Founder view sirf founderworkspace host par.
   // Hydration-safe — SSR par hostname nahi hota, is liye effect ke baad set hota hai.
   const [founderHost, setFounderHost] = useState(false);
-  const [publicMailHost, setPublicMailHost] = useState(false);
+  const [publicMailHost, setPublicMailHost] = useState(true);
   useEffect(() => {
     setFounderHost(founderSurfaceAllowed());
     setPublicMailHost(isPublicMailHost());
@@ -109,9 +109,18 @@ export function AppShell({ children }: { children: ReactNode }) {
   const visiblePrimary = allowed.filter((item) => {
     if (item.to.startsWith("/app/founder")) return founderHost;
     if (!publicMailHost) return true;
-    // anexomail.com awam shell — ANEXOMAIL mail workspace only (recovery plan block 3).
-    const hideOnAwam = ["/app/chat", "/app/ai-center", "/app/perf", "/app/admin"];
-    return !hideOnAwam.includes(item.to);
+    // anexomail.com = mail product. Leo/AI/CRM/founder mix yahan nahi.
+    const hideOnAwam = new Set([
+      "/app",
+      "/app/crm",
+      "/app/org",
+      "/app/work",
+      "/app/ai-center",
+      "/app/perf",
+      "/app/admin",
+      "/app/founder",
+    ]);
+    return !hideOnAwam.has(item.to);
   });
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.

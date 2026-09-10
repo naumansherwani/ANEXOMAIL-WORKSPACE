@@ -64,6 +64,8 @@ Login tak aa gaye — ab **pehli 60 seconds** strong karni hain. Lovable ne awam
 | Login awam → `/app/mail/inbox` (blank dashboard daba nahi) | READY |
 | Hosted mail: "Domain not verified" → "ANEXOMAIL hosted" | READY |
 | Analytics: `delivered` column missing → select without it | READY |
+| `isPublicMailHost` GitHub pe (build MISSING_EXPORT fix) | READY |
+| Awam rail: no Today/CRM/Org/Work/AI/Speed/Admin/Founder; **no Leo credits panel** | READY |
 | F4 mail send/receive | TODO (gate) |
 
 ---

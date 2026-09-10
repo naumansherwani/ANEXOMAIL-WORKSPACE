@@ -1,11 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { Greeting } from "@/components/app/dashboard/Greeting";
 import {
   ActivityFeed,
-  AiUsagePanel,
   AnalyticsPanel,
   QuickActions,
   UpcomingPanel,
@@ -13,6 +12,7 @@ import {
 } from "@/components/app/dashboard/Panels";
 import { useAuth } from "@/lib/auth";
 import { founderPreviewEnabled } from "@/lib/founder-preview";
+import { isFounderHost, isPublicMailHost } from "@/lib/host";
 
 export const Route = createFileRoute("/app/")({
   head: () => ({
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/app/")({
       {
         name: "description",
         content:
-          "The ANEXOMAIL command center: mail counters, recent activity, Leo credits, analytics and the day's schedule on one surface.",
+          "The ANEXOMAIL command center: mail counters, recent activity, analytics and the day's schedule on one surface.",
       },
       { property: "og:title", content: "Dashboard — ANEXOMAIL Workspace" },
       {
@@ -38,21 +38,31 @@ export const Route = createFileRoute("/app/")({
 
 /**
  * Dashboard Command Center — Phase 6.
- * Widgets, activity, AI usage, analytics, calendar and quick actions on one
- * surface. Every number is served by the backend; nothing is computed or
- * invented here.
+ * Widgets, activity, analytics, calendar and quick actions on one
+ * surface. Awam (`anexomail.com`) is redirected to inbox — Leo stays on ai host.
  */
 function DashboardPage() {
+  const navigate = useNavigate();
   const { session, organisation } = useAuth();
   const [composing, setComposing] = useState(false);
+  const [awamMail, setAwamMail] = useState(false);
   // Founder review walks every page without a session, so panels must still
   // call the real API and show honest state instead of staying blank.
   const enabled = Boolean(session && organisation) || founderPreviewEnabled();
 
+  useEffect(() => {
+    const awam = isPublicMailHost() && !isFounderHost();
+    setAwamMail(awam);
+    if (awam) {
+      void navigate({ to: "/app/mail/$folder", params: { folder: "inbox" }, replace: true });
+    }
+  }, [navigate]);
+
+  if (awamMail) return null;
+
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
-        {/* P2 — cinematic greeting with situational awareness strip */}
         <Greeting enabled={enabled} onCompose={() => setComposing(true)} />
 
         <div className="mt-ax-7">
@@ -67,7 +77,6 @@ function DashboardPage() {
           <div className="flex flex-col gap-ax-5">
             <QuickActions onCompose={() => setComposing(true)} />
             <UpcomingPanel enabled={enabled} />
-            <AiUsagePanel enabled={enabled} />
           </div>
         </div>
       </div>

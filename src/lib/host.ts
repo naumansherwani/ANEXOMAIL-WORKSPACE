@@ -2,9 +2,9 @@
  * HOST-AWARE SURFACE (locked 5 Sep 2026 — SINGLE FOUNDER HOST)
  *
  * Ek codebase, teen surfaces:
- *   - anexomail.com                    = business workspace (awam, pre-launch lock)
+ *   - anexomail.com                    = awam business product (real login + mail)
  *   - founderworkspace.anexomail.com   = THE ONLY founder host (Caddy allowlist)
- *   - ai.anexomail.com                 = LEO AI product (awam ko sirf `/`)
+ *   - ai.anexomail.com                 = LEO AI product (awam ko sirf `/` coming soon)
  *
  * `aiemail.anexomail.com` RETIRED hai — na domain hai, na Caddy block. Founder ka
  * har surface (AI workbench samet) founderworkspace.anexomail.com ke andar hai.
@@ -18,6 +18,12 @@ export function hostName(): string {
 /** ai.anexomail.com — awam ka AI product host (mirror of everything, gated). */
 export function isAiHost(): boolean {
   return hostName() === "ai.anexomail.com";
+}
+
+/** anexomail.com / www — awam ka product host. SiteLock yahan “Not open yet” nahi. */
+export function isPublicMailHost(): boolean {
+  const h = hostName();
+  return h === "anexomail.com" || h === "www.anexomail.com";
 }
 
 /** anexochat.anexomail.com — ANEXOChat apna host. */
