@@ -75,7 +75,7 @@ function OnboardingPage() {
     try {
       await api("/api/workspace/personal", { method: "POST", body: "{}" });
       await refresh();
-      void navigate({ to: "/app/mail/$folder", params: { folder: "inbox" }, replace: true });
+      void navigate({ to: "/app", replace: true });
     } catch (e) {
       fail(e);
     } finally {
@@ -119,7 +119,7 @@ function OnboardingPage() {
       }
       await api("/api/auth/onboarding/complete", { method: "POST" });
       await refresh();
-      void navigate({ to: "/app/mail/$folder", params: { folder: "inbox" }, replace: true });
+      void navigate({ to: "/app", replace: true });
     } catch (e) {
       fail(e);
     } finally {

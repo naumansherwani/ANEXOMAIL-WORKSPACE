@@ -30,8 +30,8 @@ import {
   showAdmin,
   showAiCenter,
   showChat,
+  showDashboard,
   showOrg,
-  showTodayDashboard,
   showWork,
 } from "@/lib/plan-surface";
 import {
@@ -56,7 +56,7 @@ type RailItem = {
 };
 
 const primary: RailItem[] = [
-  { to: "/app", label: "Today", icon: Inbox, exact: true },
+  { to: "/app", label: "Dashboard", icon: Inbox, exact: true },
   { to: "/app/mail/inbox", label: "Mail", icon: Mail, match: "/app/mail" },
   { to: "/app/chat", label: "ANEXOChat", icon: MessageSquare },
   { to: "/app/people", label: "People", icon: Users },
@@ -123,7 +123,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (founderHost) return true;
     if (item.to === "/app/perf") return founderHost;
     if (item.to === "/app/crm") return aiHost;
-    if (item.to === "/app") return showTodayDashboard(plan, aiPlan) || aiHost;
+    if (item.to === "/app") return showDashboard();
     if (item.to === "/app/chat") return showChat(plan, aiPlan);
     if (item.to === "/app/org") return showOrg(plan, aiPlan);
     if (item.to === "/app/work") return showWork(plan, aiPlan);
@@ -133,12 +133,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   });
   const mailboxLabel =
     session?.user.display_name ||
-    session?.user.anexomail_address ||
-    session?.user.email ||
-    organisation?.name ||
+    session?.user.name ||
     "ANEXOMAIL";
-  const brandHome =
-    publicMailHost && !showTodayDashboard(plan, aiPlan) ? "/app/mail/inbox" : "/app";
+  const brandHome = "/app";
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.

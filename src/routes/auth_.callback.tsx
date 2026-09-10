@@ -80,7 +80,7 @@ function CallbackPage() {
           : !res.user.anexomail_address
             ? "/claim"
             : res.user.onboarded
-              ? "/app/mail/inbox"
+              ? "/app"
               : "/onboarding";
         setRedirectTo(target);
         setShowSplash(true);

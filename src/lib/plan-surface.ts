@@ -1,10 +1,14 @@
 /**
- * Plan → UI surface (anexomail.com). Pricing lives in plans.ts — DO NOT import to change prices.
- * Hosts stay one codebase. Gate the rail; do not copy 57 phases per subdomain.
+ * Plan → rail (anexomail.com). One codebase, three hosts — 57 phases copy nahi.
+ * plans.ts prices — DO NOT import / change.
+ *
+ * Dashboard: har package.
+ * Admin: sirf founder host — family (Humza/Raana/Masood) pe nahi.
+ * AI: sirf jiska ai_plan ho (Raana AI Executive).
  */
 export function hasAiPlan(aiPlan: string | null | undefined): boolean {
   const p = String(aiPlan || "").trim().toLowerCase();
-  return p.startsWith("ai_") || p === "ai";
+  return Boolean(p) && p !== "none" && (p.startsWith("ai_") || p === "ai" || p === "ai_executive");
 }
 
 export function hasBusinessPlan(plan: string | null | undefined): boolean {
@@ -12,9 +16,8 @@ export function hasBusinessPlan(plan: string | null | undefined): boolean {
   return p === "business" || p === "business_pro";
 }
 
-/** Today dashboard (image 3) — Business / Business Pro / any AI plan. Basic+Pro = mail-first. */
-export function showTodayDashboard(plan: string | null | undefined, aiPlan: string | null | undefined): boolean {
-  return hasBusinessPlan(plan) || hasAiPlan(aiPlan);
+export function showDashboard(): boolean {
+  return true;
 }
 
 export function showChat(plan: string | null | undefined, aiPlan: string | null | undefined): boolean {
@@ -30,7 +33,6 @@ export function showWork(plan: string | null | undefined, aiPlan: string | null 
   return p === "pro" || hasBusinessPlan(plan) || hasAiPlan(aiPlan);
 }
 
-/** Admin / Ownership Center — not for hosted @anexomail.com family testers. */
 export function showAdmin(opts: { founder: boolean; founderHost: boolean }): boolean {
   return opts.founder && opts.founderHost;
 }

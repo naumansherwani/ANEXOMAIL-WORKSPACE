@@ -98,7 +98,7 @@ function AuthPage() {
       : !session.user.anexomail_address
         ? "/claim"
         : session.user.onboarded
-          ? "/app/mail/inbox"
+          ? "/app"
           : "/onboarding";
     setRedirectTo(target);
     setShowSplash(true);

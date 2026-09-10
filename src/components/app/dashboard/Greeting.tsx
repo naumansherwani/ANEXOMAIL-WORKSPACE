@@ -40,8 +40,8 @@ export function Greeting({
 }) {
   const { session } = useAuth();
   const firstName =
-    session?.user.name?.split(" ")[0] ??
-    session?.user.email?.split("@")[0] ??
+    session?.user.display_name?.split(" ")[0] ||
+    session?.user.name?.split(" ")[0] ||
     "";
   const { text, emoji } = timeGreeting();
 
