@@ -32,19 +32,25 @@ export const FOUNDER_MAILBOXES: PlannedMailbox[] = [
   },
 ];
 
-/** Family accounts — aam user ki tarah, AI Executive ke saray premium features. */
+/** Family accounts — aam user. Founder protocol nahi. */
 export const FAMILY_MAILBOXES: PlannedMailbox[] = [
   {
     address: "humzasherwani@anexomail.com",
     display_name: "Humza Sherwani",
-    kind: "founder",
-    note: "Family account. Private inbox — founder inbox mein copy kabhi nahi.",
+    kind: "family",
+    note: "Business Pro tester. Private inbox — founder copy nahi.",
   },
   {
     address: "raanasherwani@anexomail.com",
     display_name: "Raana Sherwani",
-    kind: "founder",
-    note: "Family account. Private inbox — founder inbox mein copy kabhi nahi.",
+    kind: "family",
+    note: "AI Executive tester. Private inbox — founder copy nahi.",
+  },
+  {
+    address: "masoodsherwani@anexomail.com",
+    display_name: "Masood Sherwani",
+    kind: "family",
+    note: "Pro tester (Basic included). Private inbox — founder copy nahi.",
   },
 ];
 
@@ -105,6 +111,7 @@ export const PLANNED_MAILBOXES: PlannedMailbox[] = [
 
 export const KIND_LABEL: Record<MailboxKind, string> = {
   founder: "Founder",
+  family: "Family",
   agent: "AI",
   industry: "Industry AI",
   support: "Support",

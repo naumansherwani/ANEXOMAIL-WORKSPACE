@@ -52,9 +52,28 @@ function AccountPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
 
+  const [recoveryKind, setRecoveryKind] = useState("gmail");
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+
   const sessions = useQuery<DeviceSession[], ApiError>({
     queryKey: ["auth", "sessions"],
     queryFn: () => api<DeviceSession[]>("/api/auth/sessions"),
+    retry: false,
+  });
+
+  const passkeys = useQuery<{ id: string; device_name: string; created_at: string; last_used_at: string | null }[], ApiError>({
+    queryKey: ["auth", "passkeys"],
+    queryFn: () =>
+      api<{ id: string; device_name: string; created_at: string; last_used_at: string | null }[]>(
+        "/api/auth/passkey/list",
+      ),
+    retry: false,
+  });
+
+  const recovery = useQuery<{ set: boolean; kind: string | null; hint: string | null; sms_note: string }, ApiError>({
+    queryKey: ["auth", "recovery"],
+    queryFn: () =>
+      api<{ set: boolean; kind: string | null; hint: string | null; sms_note: string }>("/api/auth/recovery"),
     retry: false,
   });
 
@@ -98,11 +117,13 @@ function AccountPage() {
               variant="outline"
               className="ax-press"
               onClick={() =>
-                void enrollPasskey().catch((error: unknown) => {
-                  notify.failed("Passkey not added", {
-                    description: error instanceof Error ? error.message : "Please try again.",
-                  });
-                })
+                void enrollPasskey()
+                  .then(() => void queryClient.invalidateQueries({ queryKey: ["auth", "passkeys"] }))
+                  .catch((error: unknown) => {
+                    notify.failed("Passkey not added", {
+                      description: error instanceof Error ? error.message : "Please try again.",
+                    });
+                  })
               }
             >
               <KeyRound className="size-4" />
@@ -129,7 +150,7 @@ function AccountPage() {
 
         <section className="rounded-xl border border-border bg-card p-ax-4">
           <h2 className="ax-label text-foreground">Change password</h2>
-          <p className="ax-caption mt-1">Use 12+ characters with uppercase, lowercase and a number.</p>
+          <p className="ax-caption mt-1">Use 6 to 15 characters. Other signed-in devices will be signed out.</p>
           <form className="mt-ax-3 space-y-ax-3" onSubmit={(event) => { event.preventDefault(); changePassword.mutate(); }}>
             <PasswordInput id="current-password" label="Current password" value={currentPassword} onChange={setCurrentPassword} visible={passwordVisible} />
             <PasswordInput id="new-password" label="New password" value={newPassword} onChange={setNewPassword} visible={passwordVisible} />
@@ -144,6 +165,107 @@ function AccountPage() {
                 Update password
               </Button>
             </div>
+          </form>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card p-ax-4">
+          <h2 className="ax-label text-foreground">Passkeys</h2>
+          <p className="ax-caption mt-1">
+            Face ID / Touch ID / Windows Hello on this site only. Remove a passkey if the phone is lost.
+          </p>
+          <div className="mt-ax-3">
+            {passkeys.isLoading ? (
+              <ListSkeleton rows={2} />
+            ) : passkeys.error ? (
+              <ErrorState body={passkeys.error.message} onRetry={() => void passkeys.refetch()} />
+            ) : !passkeys.data?.length ? (
+              <p className="ax-caption">No passkey on this account yet. Password still works.</p>
+            ) : (
+              <ul className="space-y-2">
+                {passkeys.data.map((item) => (
+                  <li
+                    key={item.id}
+                    className="flex items-center justify-between gap-3 rounded-lg border border-border px-3 py-2"
+                  >
+                    <span className="ax-caption truncate text-foreground">{item.device_name}</span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() =>
+                        void api(`/api/auth/passkey/${item.id}`, { method: "DELETE" })
+                          .then(() => {
+                            notify.done("Passkey removed", "That device can no longer sign in with Face ID.");
+                            void queryClient.invalidateQueries({ queryKey: ["auth", "passkeys"] });
+                          })
+                          .catch((error: unknown) =>
+                            notify.failed("Could not remove passkey", {
+                              description: error instanceof Error ? error.message : "Try again.",
+                            }),
+                          )
+                      }
+                    >
+                      Remove
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card p-ax-4">
+          <h2 className="ax-label text-foreground">Recovery account</h2>
+          <p className="ax-caption mt-1">
+            {recovery.data?.set
+              ? `On file: ${recovery.data.hint} (${recovery.data.kind}). Reset links go there.`
+              : "Add a Gmail, iCloud or other inbox you can open. Not Sign in with Apple."}
+          </p>
+          <p className="ax-caption mt-1">{recovery.data?.sms_note}</p>
+          <form
+            className="mt-ax-3 space-y-ax-3"
+            onSubmit={(event) => {
+              event.preventDefault();
+              void api("/api/auth/recovery", {
+                method: "POST",
+                body: JSON.stringify({ kind: recoveryKind, email: recoveryEmail }),
+              })
+                .then(() => {
+                  notify.done("Recovery saved", "Password reset will go to that inbox.");
+                  setRecoveryEmail("");
+                  void queryClient.invalidateQueries({ queryKey: ["auth", "recovery"] });
+                })
+                .catch((error: unknown) =>
+                  notify.failed("Recovery not saved", {
+                    description: error instanceof Error ? error.message : "Try again.",
+                  }),
+                );
+            }}
+          >
+            <div className="space-y-1.5">
+              <Label htmlFor="recovery-kind">Kind</Label>
+              <select
+                id="recovery-kind"
+                className="flex h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
+                value={recoveryKind}
+                onChange={(event) => setRecoveryKind(event.target.value)}
+              >
+                <option value="gmail">Gmail</option>
+                <option value="apple">Apple / iCloud email</option>
+                <option value="outlook">Outlook</option>
+                <option value="other_email">Other email</option>
+              </select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="recovery-email">Recovery email</Label>
+              <Input
+                id="recovery-email"
+                type="email"
+                required
+                value={recoveryEmail}
+                onChange={(event) => setRecoveryEmail(event.target.value)}
+              />
+            </div>
+            <Button type="submit">Save recovery</Button>
           </form>
         </section>
 
@@ -212,7 +334,7 @@ function PasswordInput({ id, label, value, onChange, visible }: { id: string; la
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id}>{label}</Label>
-      <Input id={id} type={visible ? "text" : "password"} value={value} minLength={12} required autoComplete={id === "current-password" ? "current-password" : "new-password"} onChange={(event) => onChange(event.target.value)} />
+      <Input id={id} type={visible ? "text" : "password"} value={value} minLength={6} maxLength={15} required autoComplete={id === "current-password" ? "current-password" : "new-password"} onChange={(event) => onChange(event.target.value)} />
     </div>
   );
 }

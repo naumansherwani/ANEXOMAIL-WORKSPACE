@@ -6,6 +6,19 @@
 **Rule:** Yeh file har session mein read karo. Phases kisi bhi tarteeb mein mat likho —
 sirf is file ke mutabiq chalo.
 
+## MAIL SEND + RECEIVE GATE (founder lock 10 Sep 2026)
+
+**Agay nahi** jab tak website se asli mail jaaye aur asli mail inbox mein aaye.
+
+F3 = list dikhana. F4 = send + receive. F5+ wait.
+
+Aasan raasta:
+1. User Compose se bhejta hai
+2. Server ka Postfix internet par bhejta hai (DKIM pehle se installed)
+3. Wapas aane wali mail Postfix → Dovecot pipe → database → Mail list
+
+Proof: `bash server/gates/mail-gate.sh` green + founder live test.
+
 ---
 
 ## 1. ARCHITECTURE MAP — Rust vs Bun per Phase
@@ -191,6 +204,20 @@ F3.2  Mail rail — Rust `/rpc/mail.counts` + `mail.accounts`
 F3.3  WebTransport `/wt/mail` — stamp push, invalidate React Query
       Hello: { token, mode: "mail" } · mail_identity (org, not chat_access)
       Unavailable → honest HTTP poll 15s — fake live nahi
+
+────────────────────────────────────────────────────────────────────
+FLOW 3 A — FAMILY AWAM TESTERS (before F4)          [READY — live unproven]
+────────────────────────────────────────────────────────────────────
+FULL LOCK: docs/cursor-work/frontend/f3a-family-awam-testers.md
+Passwords repo mein nahi.
+
+Masood  Pro              masoodsherwani@     (Basic shamil)
+Humza   Business Pro     humzasherwani@      (Basic+Pro+Business)
+Raana   AI Executive     raanasherwani@      (puri site + AI grant)
+WebAuthn public-key store LIVE (passkey_set flag = Face ID nahi).
+Recovery reset → user ka Gmail/iCloud/Outlook (login mailbox qaid nahi).
+Apple-equal passkey; recovery + honest gates + family/awam = ANEXOMAIL advance.
+Secure Enclave / iCloud Keychain / Sign in with Apple = claim nahi.
 
 ────────────────────────────────────────────────────────────────────
 FLOW 4 — COMPOSE + SEND (Day 2)                     [SKELETON→WIRE]
@@ -438,7 +465,8 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 | F1 Auth | PARTIAL — live unverified | Sep 9 |
 | F2 Dashboard | **DONE ✅** | Sep 9 P2 |
 | F3 Mail inbox | READY — live unproven | Sep 10 F3 |
-| F4 Compose+Send | TODO | — |
+| F3 A Family awam testers | READY — live unproven | Sep 10 F3 A |
+| F4 Compose+Send | TODO | after F3 A |
 | F5 Thread view | TODO | — |
 | F6 Contacts | TODO | — |
 | F7 Calendar | TODO | — |

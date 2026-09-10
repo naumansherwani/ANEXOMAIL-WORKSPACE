@@ -14,7 +14,7 @@ import { rpcOrRest } from "@/lib/rpc";
 
 /* ------------------------------------------------------------------ types */
 
-export type MailboxKind = "founder" | "agent" | "industry" | "support" | "system";
+export type MailboxKind = "founder" | "family" | "agent" | "industry" | "support" | "system";
 
 export type FounderMailbox = {
   address: string;

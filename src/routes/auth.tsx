@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth, type Session } from "@/lib/auth";
+import { collectDeviceSignals } from "@/lib/chat-safety";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/auth")({
@@ -21,6 +22,7 @@ export const Route = createFileRoute("/auth")({
       search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
         ? search.mode
         : undefined,
+    recovery: typeof search.recovery === "string" ? search.recovery : undefined,
   }),
   head: () => ({
     meta: [
@@ -69,6 +71,8 @@ function AuthPage() {
   const [displayName, setDisplayName] = useState("");
   const [workRole, setWorkRole] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [recoveryKind, setRecoveryKind] = useState("gmail");
+  const [recoveryEmail, setRecoveryEmail] = useState("");
   const [code, setCode] = useState("");
   const [challengeId, setChallengeId] = useState<string | null>(null);
   const [linkSent, setLinkSent] = useState(false);
@@ -139,13 +143,18 @@ function AuthPage() {
       }
 
       if (mode === "forgot") {
-        await api("/api/auth/forgot-password", {
+        const res = await api<{ ok: boolean; sent_to?: string }>("/api/auth/forgot-password", {
           method: "POST",
           body: JSON.stringify({ email }),
           auth: false,
         });
         setLinkSent(true);
-        notify.done("Reset link sent", `Check ${email} to choose a new password.`);
+        notify.done(
+          "Reset link sent",
+          res.sent_to === "recovery"
+            ? "If this account has a recovery inbox, the link went there — not only to ANEXOMAIL."
+            : `Check ${email} to choose a new password.`,
+        );
         return;
       }
 
@@ -156,7 +165,11 @@ function AuthPage() {
         );
         await api("/api/auth/reset-password", {
           method: "POST",
-          body: JSON.stringify({ access_token: accessToken, password }),
+          body: JSON.stringify({
+            access_token: accessToken,
+            recovery: search.recovery,
+            password,
+          }),
           auth: false,
         });
         notify.done("Password updated", "You can now sign in with your new password.");
@@ -168,28 +181,37 @@ function AuthPage() {
 
       if (mode === "signup") {
         if (password !== passwordConfirm) throw new Error("password_mismatch");
-        const res = await api<{ token?: string; confirmation_required?: boolean }>(
-          "/api/auth/signup",
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email,
-              password,
-              legal_name: name,
-              display_name: displayName,
-              work_role: workRole || null,
-              avatar_url: avatarUrl || null,
-              preferences: { locale: navigator.language },
-            }),
-            auth: false,
-          },
-        );
+        const res = await api<{
+          token?: string;
+          confirmation_required?: boolean;
+          family?: boolean;
+          needs_passkey?: boolean;
+        }>("/api/auth/signup", {
+          method: "POST",
+          body: JSON.stringify({
+            email,
+            password,
+            legal_name: name,
+            display_name: displayName,
+            work_role: workRole || null,
+            avatar_url: avatarUrl || null,
+            preferences: { locale: navigator.language },
+            recovery_kind: recoveryKind,
+            recovery_email: recoveryEmail,
+            signals: collectDeviceSignals(),
+          }),
+          auth: false,
+        });
         if (res.confirmation_required || !res.token) {
           setLinkSent(true);
           notify.done("Confirm your email", `We sent a confirmation link to ${email}.`);
           return;
         }
         sessionToken.set(res.token);
+        if (res.family || !res.needs_passkey) {
+          await finish(res.token);
+          return;
+        }
         setEnrol(true);
         return;
       }
@@ -294,8 +316,8 @@ function AuthPage() {
           <ShieldCheck className="mx-auto mt-ax-4 size-6 text-cyan-accent" aria-hidden="true" />
           <h1 className="ax-heading mt-ax-3 text-foreground">Add your passkey</h1>
           <p className="ax-caption mt-2">
-            Your account is created. A passkey is required — it is what makes this workspace
-            phishing-proof. Face ID, Touch ID, fingerprint or Windows Hello, on this device.
+            Face ID, Touch ID, fingerprint or Windows Hello on this device. If this device cannot
+            do that, continue with your password — we will not fake a saved passkey.
           </p>
           {enrolBlocked && (
             <p role="alert" className="ax-caption mt-ax-3 text-destructive">
@@ -312,22 +334,26 @@ function AuthPage() {
             <KeyRound className="size-4" />
             Create my passkey
           </Button>
+          <Button
+            variant="ghost"
+            className="mt-ax-2 w-full"
+            onClick={() => {
+              const token = sessionToken.get();
+              if (!token) {
+                setEnrolBlocked("Your session expired. Sign in again.");
+                return;
+              }
+              setEnrol(false);
+              void finish(token);
+            }}
+          >
+            Continue with password on this device
+          </Button>
           {enrolBlocked && (
-            <Button
-              variant="ghost"
-              className="mt-ax-2 w-full"
-              onClick={() => {
-                const token = sessionToken.get();
-                if (!token) {
-                  setEnrolBlocked("Your session expired. Sign in again.");
-                  return;
-                }
-                setEnrol(false);
-                void finish(token);
-              }}
-            >
-              Continue and add it later
-            </Button>
+            <p className="ax-caption mt-ax-2">
+              Open ANEXOMAIL on a phone or laptop with Face ID, Touch ID or Windows Hello to add a
+              passkey later from Account.
+            </p>
           )}
           <p className="ax-caption mt-ax-3">
             Two days of real, limited workspace access start the moment you continue.
@@ -381,7 +407,7 @@ function AuthPage() {
                   ) : mode === "forgot" ? (
                     <Header
                       title="Reset your password"
-                      sub="We will email a secure one-time reset link."
+                      sub="If you saved a recovery inbox, the link goes there — Gmail, iCloud or whatever you chose."
                     />
                   ) : mode === "reset" ? (
                     <Header title="Choose a new password" sub="Use 6 to 15 characters." />
@@ -498,6 +524,38 @@ function AuthPage() {
                             onChange={setPasswordConfirm}
                             autoComplete="new-password"
                           />
+                        )}
+                        {mode === "signup" && (
+                          <>
+                            <div className="space-y-1.5">
+                              <Label htmlFor="recovery-kind" className="ax-caption text-foreground">
+                                Recovery account
+                              </Label>
+                              <select
+                                id="recovery-kind"
+                                className="flex h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
+                                value={recoveryKind}
+                                onChange={(event) => setRecoveryKind(event.target.value)}
+                              >
+                                <option value="gmail">Gmail</option>
+                                <option value="apple">Apple / iCloud email</option>
+                                <option value="outlook">Outlook</option>
+                                <option value="other_email">Other email I can open</option>
+                              </select>
+                              <p className="ax-caption">
+                                Reset links go here. SMS is not live yet. Not Sign in with Apple.
+                              </p>
+                            </div>
+                            <Field
+                              id="recovery-email"
+                              label="Recovery email"
+                              type="email"
+                              value={recoveryEmail}
+                              onChange={setRecoveryEmail}
+                              autoComplete="off"
+                              placeholder="you@gmail.com"
+                            />
+                          </>
                         )}
                       </>
                     )}

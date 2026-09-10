@@ -2,6 +2,8 @@
 import { createHash } from "node:crypto";
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { sendMail } from "../mail/sendmail";
+import { mountPasskeyRoutes } from "./auth-passkey";
 
 const URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE =
@@ -18,7 +20,6 @@ const publicAuth =
   URL && PUBLIC
     ? createClient(URL, PUBLIC, { auth: { persistSession: false, autoRefreshToken: false } })
     : null;
-export const authRouter = Router();
 
 function getAdmin(): SupabaseClient {
   if (!admin) throw new Error("account_service_not_configured");
@@ -191,6 +192,80 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
   };
 }
 
+function vaultKey() {
+  const k = process.env.DEVICE_VAULT_KEY || "";
+  if (k) return k;
+  const base = process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  if (!base) return "anexomail-vault-unconfigured";
+  return `anexomail-vault:${base.slice(-32)}`;
+}
+
+function recoveryHint(email: string) {
+  const [local, domain] = email.split("@");
+  if (!local || !domain) return "***";
+  return `${local.slice(0, 2)}***@${domain}`;
+}
+
+const RECOVERY_KINDS = new Set(["gmail", "apple", "outlook", "other_email"]);
+
+async function isFamilyEmail(email: string): Promise<boolean> {
+  try {
+    const { data } = await getAdmin()
+      .from("family_accounts")
+      .select("email")
+      .eq("email", email)
+      .maybeSingle();
+    return Boolean(data);
+  } catch {
+    return false;
+  }
+}
+
+async function markPasskeySet(userId: string) {
+  await getAdmin()
+    .from("trial_accounts")
+    .update({ passkey_set: true, updated_at: new Date().toISOString() })
+    .eq("user_id", userId);
+  await getAdmin().rpc("trial_set_security", {
+    _user_id: userId,
+    _passkey: true,
+    _recovery_kind: null,
+    _recovery_hint: null,
+  });
+}
+
+async function saveRecovery(userId: string, kind: string, email: string) {
+  const hint = recoveryHint(email);
+  await getAdmin().from("account_recovery").upsert(
+    {
+      user_id: userId,
+      kind,
+      email,
+      hint,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" },
+  );
+  await getAdmin()
+    .from("trial_accounts")
+    .update({
+      recovery_set: true,
+      recovery_kind: kind,
+      recovery_hint: hint,
+      recovery_email: email,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("user_id", userId);
+  await getAdmin().rpc("trial_set_security", {
+    _user_id: userId,
+    _passkey: false,
+    _recovery_kind: kind,
+    _recovery_hint: hint,
+  });
+}
+
+export const authRouter = Router();
+
 authRouter.post("/signup", async (req, res) => {
   if (unavailable(res)) return;
   const email = String(req.body?.email || "")
@@ -209,6 +284,51 @@ authRouter.post("/signup", async (req, res) => {
     return res.status(400).json({ error: "Name and display name are required." });
   if (!passwordOk(password))
     return res.status(400).json({ error: "Password must be 6 to 15 characters." });
+
+  const family = await isFamilyEmail(email);
+  const recoveryKind = String(req.body?.recovery_kind || "")
+    .trim()
+    .toLowerCase();
+  const recoveryEmail = String(req.body?.recovery_email || "")
+    .trim()
+    .toLowerCase();
+  if (recoveryKind === "phone") {
+    return res.status(400).json({
+      error: "Email recovery is live. SMS recovery is not — choose Gmail, Apple, Outlook or another email.",
+    });
+  }
+  if (!family) {
+    if (!RECOVERY_KINDS.has(recoveryKind) || !emailPattern.test(recoveryEmail)) {
+      return res.status(400).json({
+        error: "Add a recovery email you can open (Gmail, iCloud/Apple, Outlook, or any inbox).",
+      });
+    }
+    if (recoveryEmail === email) {
+      return res.status(400).json({
+        error: "Recovery must be a different inbox — not the same as this ANEXOMAIL login.",
+      });
+    }
+    const signals =
+      req.body?.signals && typeof req.body.signals === "object" ? req.body.signals : {};
+    const { data: gate, error: gateError } = await getAdmin().rpc("signup_device_gate", {
+      _signals: signals,
+      _key: vaultKey(),
+    });
+    if (gateError) {
+      return res.status(500).json({
+        error: "Device gate SQL is missing. Paste docs/cursor-work/sql/phase63_f3a_passkey_family.sql in Supabase.",
+      });
+    }
+    if (gate && gate.ok === false) {
+      const msg =
+        gate.error === "too_many_accounts"
+          ? "This device already has accounts. Sign in instead of creating another."
+          : gate.error === "device_banned"
+            ? "This device cannot create an account."
+            : "This device cannot create an account.";
+      return res.status(403).json({ error: msg, code: gate.error });
+    }
+  }
 
   const { data, error } = await getPublicAuth().auth.signUp({
     email,
@@ -240,9 +360,29 @@ authRouter.post("/signup", async (req, res) => {
     _social_email: email,
     _provider: "email",
   });
+  if (!family && recoveryKind && recoveryEmail) {
+    await saveRecovery(data.user.id, recoveryKind, recoveryEmail);
+  }
+  if (!family) {
+    try {
+      await getAdmin().rpc("device_vault_register", {
+        _user: data.user.id,
+        _signals: req.body?.signals && typeof req.body.signals === "object" ? req.body.signals : {},
+        _key: vaultKey(),
+      });
+    } catch (err) {
+      console.error("[auth.signup.vault]", err);
+    }
+  }
   if (!data.session?.access_token) return res.status(202).json({ confirmation_required: true });
   await saveSession(data.user.id, data.session.access_token, req);
-  res.status(201).json({ token: data.session.access_token, confirmation_required: false });
+  res.status(201).json({
+    token: data.session.access_token,
+    confirmation_required: false,
+    family,
+    needs_passkey: !family,
+    needs_recovery: !family,
+  });
 });
 
 authRouter.post("/login", async (req, res) => {
@@ -282,10 +422,65 @@ authRouter.post("/forgot-password", async (req, res) => {
     .toLowerCase();
   if (!emailPattern.test(email))
     return res.status(400).json({ error: "Enter a valid email address." });
+
+  const { data: uid } = await getAdmin().rpc("auth_user_id_by_email", { _email: email });
+  let sentTo: "recovery" | "account" = "account";
+  let target = email;
+  if (uid) {
+    const { data: rec } = await getAdmin()
+      .from("account_recovery")
+      .select("email")
+      .eq("user_id", uid)
+      .maybeSingle();
+    if (rec?.email && emailPattern.test(rec.email)) {
+      target = rec.email;
+      sentTo = "recovery";
+    }
+  }
+
+  const { data: linkData, error: linkError } = uid
+    ? await getAdmin().auth.admin.generateLink({
+        type: "recovery",
+        email,
+        options: { redirectTo: `${APP_URL}/auth?mode=reset` },
+      })
+    : { data: null, error: null };
+  if (uid && (linkError || !linkData?.properties?.action_link)) {
+    const token = createHash("sha256").update(`${uid}:${Date.now()}:${Math.random()}`).digest("hex");
+    const tokenHashValue = createHash("sha256").update(token).digest("hex");
+    await getAdmin().from("account_recovery_tokens").insert({
+      token_hash: tokenHashValue,
+      user_id: uid,
+      expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+    });
+    const resetUrl = `${APP_URL}/auth?mode=reset&recovery=${token}`;
+    const mailed = await sendMail({
+      from: "noreply@anexomail.com",
+      fromName: "ANEXOMAIL",
+      to: [target],
+      subject: "Reset your ANEXOMAIL password",
+      text: `Use this link once in the next 15 minutes:\n${resetUrl}\n\nIf you did not ask for this, ignore the email.`,
+    });
+    if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
+    return res.json({ ok: true, sent_to: sentTo });
+  }
+
+  if (sentTo === "recovery" && linkData?.properties?.action_link) {
+    const mailed = await sendMail({
+      from: "noreply@anexomail.com",
+      fromName: "ANEXOMAIL",
+      to: [target],
+      subject: "Reset your ANEXOMAIL password",
+      text: `Use this link once in the next 15 minutes:\n${linkData.properties.action_link}\n\nIf you did not ask for this, ignore the email.`,
+    });
+    if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
+    return res.json({ ok: true, sent_to: sentTo });
+  }
+
   await getPublicAuth().auth.resetPasswordForEmail(email, {
     redirectTo: `${APP_URL}/auth?mode=reset`,
   });
-  res.json({ ok: true });
+  res.json({ ok: true, sent_to: sentTo });
 });
 
 authRouter.post("/magic-link", async (req, res) => {
@@ -317,8 +512,29 @@ authRouter.post("/oauth/callback", async (req, res) => {
 authRouter.post("/reset-password", async (req, res) => {
   if (unavailable(res)) return;
   const accessToken = String(req.body?.access_token || "");
+  const recovery = String(req.body?.recovery || req.body?.recovery_token || "");
   const password = String(req.body?.password || "");
-  if (!accessToken || !passwordOk(password))
+  if (!passwordOk(password))
+    return res.status(400).json({ error: "New password must be 6 to 15 characters." });
+  if (recovery) {
+    const tokenHashValue = createHash("sha256").update(recovery).digest("hex");
+    const { data: row } = await getAdmin()
+      .from("account_recovery_tokens")
+      .select("user_id,expires_at,used_at")
+      .eq("token_hash", tokenHashValue)
+      .maybeSingle();
+    if (!row || row.used_at || new Date(row.expires_at).getTime() < Date.now()) {
+      return res.status(401).json({ error: "Reset link is invalid or expired." });
+    }
+    const { error } = await getAdmin().auth.admin.updateUserById(row.user_id, { password });
+    if (error) return authError(res, error);
+    await getAdmin()
+      .from("account_recovery_tokens")
+      .update({ used_at: new Date().toISOString() })
+      .eq("token_hash", tokenHashValue);
+    return res.json({ ok: true });
+  }
+  if (!accessToken)
     return res.status(400).json({ error: "A valid reset link and strong password are required." });
   const { data: who, error: whoError } = await getAdmin().auth.getUser(accessToken);
   if (whoError || !who.user)
@@ -430,4 +646,52 @@ authRouter.post("/identity/claim", async (req, res) => {
   if (error || data?.ok === false)
     return res.status(409).json({ error: error?.message || data?.reason || "address_unavailable" });
   res.json({ address: data.address || `${username}@anexomail.com` });
+});
+
+authRouter.get("/recovery", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const { data } = await getAdmin()
+    .from("account_recovery")
+    .select("kind,hint,updated_at")
+    .eq("user_id", identity.user.id)
+    .maybeSingle();
+  res.json({
+    set: Boolean(data),
+    kind: data?.kind || null,
+    hint: data?.hint || null,
+    sms: false,
+    sms_note: "Email recovery is live. SMS recovery is not wired yet.",
+  });
+});
+
+authRouter.post("/recovery", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const kind = String(req.body?.kind || "")
+    .trim()
+    .toLowerCase();
+  const email = String(req.body?.email || "")
+    .trim()
+    .toLowerCase();
+  if (kind === "phone") {
+    return res.status(400).json({
+      error: "Email recovery is live. SMS recovery is not — use Gmail, Apple, Outlook or another email.",
+    });
+  }
+  if (!RECOVERY_KINDS.has(kind) || !emailPattern.test(email)) {
+    return res.status(400).json({ error: "Choose a recovery inbox you can open." });
+  }
+  if (email === String(identity.user.email || "").toLowerCase()) {
+    return res.status(400).json({ error: "Recovery must be a different inbox than this login." });
+  }
+  await saveRecovery(identity.user.id, kind, email);
+  res.json({ ok: true, hint: recoveryHint(email) });
+});
+
+mountPasskeyRoutes(authRouter, {
+  getAdmin,
+  userFrom,
+  sessionResult,
+  markPasskeySet,
 });

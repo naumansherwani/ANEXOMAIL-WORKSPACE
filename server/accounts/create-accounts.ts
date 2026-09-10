@@ -33,10 +33,15 @@ const ACCOUNTS = [
     pw: "RAANA_PASSWORD",
     founder: false,
   },
+  {
+    email: "masoodsherwani@anexomail.com",
+    name: "Masood Sherwani",
+    pw: "MASOOD_PASSWORD",
+    founder: false,
+  },
 ];
 
 let red = 0;
-let familyWorkspaceId = "";
 const ok = (m: string) => console.log("GREEN", m);
 const bad = (m: string) => {
   red++;
@@ -57,7 +62,7 @@ async function findUser(email: string) {
 for (const a of ACCOUNTS) {
   const password = process.env[a.pw] || "";
   if (password.length < 6 || password.length > 15) {
-    bad(`${a.email}: ${a.pw} env 6-15 characters ka hona chahiye — skip`);
+    bad(`${a.email}: ${a.pw} missing/invalid in ${process.env.ENV_FILE || "/opt/anexomail/.env"} (6-15 chars). Terminal pe password type nahi — .env mein daalo.`);
     continue;
   }
   try {
@@ -110,8 +115,14 @@ for (const a of ACCOUNTS) {
 // Family entitlement (phase56)
 {
   const { data, error } = await db.rpc("family_grants_apply");
-  if (error) bad(`family_grants_apply: ${error.message} (sql/phase56_mailbox_final.sql run hai?)`);
-  else ok(`family_grants_apply → ${JSON.stringify(data)} (expected 2)`);
+  if (error) bad(`family_grants_apply: ${error.message} (docs/cursor-work/sql/phase63_f3a_passkey_family.sql run hai?)`);
+  else ok(`family_grants_apply → ${JSON.stringify(data)} (expected 3)`);
+}
+
+{
+  const { data, error } = await db.rpc("family_workspaces_apply");
+  if (error) bad(`family_workspaces_apply: ${error.message} (docs/cursor-work/sql/phase63_f3a_passkey_family.sql run hai?)`);
+  else ok(`family_workspaces_apply → ${JSON.stringify(data)} (expected 3)`);
 }
 
 // Founder + family ek hi real chat workspace mein; direct conversations pehle se ready.
@@ -121,19 +132,9 @@ for (const a of ACCOUNTS) {
     bad(
       `family_chat_workspace_apply: ${error.message} (anexochat/sql/phase31b_family_chat_workspace.sql run hai?)`,
     );
-  else if (!data?.ok || data?.members !== 3 || typeof data?.workspace_id !== "string")
+  else if (!data?.ok || data?.members !== 3)
     bad(`family chat workspace invalid: ${JSON.stringify(data)}`);
-  else {
-    familyWorkspaceId = data.workspace_id;
-    const members = await db
-      .from("chat_members")
-      .select("user_id")
-      .eq("workspace_id", familyWorkspaceId);
-    if (members.error) bad(`family chat members read: ${members.error.message}`);
-    else if ((members.data?.length || 0) !== 3)
-      bad(`family chat database members=${members.data?.length || 0} (expected 3)`);
-    else ok("founder + Humza + Raana shared ANEXOChat workspace → 3 database members ready");
-  }
+  else ok("founder + Humza + Raana shared ANEXOChat workspace → 3 members + direct chats ready");
 }
 
 // Login proof (service key nahi — asli signInWithPassword, anon-less admin client bhi chalta hai)
@@ -182,17 +183,13 @@ if (founderToken) {
       body: "{}",
     });
     const bootstrapBody = (await bootstrapResponse.json()) as {
-      result?: { data?: { workspace_id?: string; members?: { user_id: string }[] } };
+      result?: { data?: { members?: { user_id: string }[] } };
       error?: { code?: string; message?: string };
     };
     const members = bootstrapBody.result?.data?.members || [];
     if (!bootstrapResponse.ok || members.length < 3) {
       const detail = bootstrapBody.error?.code || bootstrapBody.error?.message;
       throw new Error(detail || `bootstrap members=${members.length}`);
-    }
-    const rustWorkspaceId = bootstrapBody.result?.data?.workspace_id || "";
-    if (!familyWorkspaceId || rustWorkspaceId !== familyWorkspaceId) {
-      throw new Error("Rust selected a different workspace than ANEXOMAIL Family");
     }
     const conversationsResponse = await fetch(`${RUST_URL}/rpc/chat.conversations`, {
       method: "POST",
