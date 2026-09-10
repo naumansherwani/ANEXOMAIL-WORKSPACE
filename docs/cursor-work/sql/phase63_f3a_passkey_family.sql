@@ -2,13 +2,16 @@
 -- F3 A — WebAuthn public-key store + family awam testers + recovery email
 -- Supabase #4 SQL Editor — poori file paste → Run. Idempotent.
 -- Passwords yahan NAHI.
--- Live: organisations.slug NOT NULL; mail_accounts.address pe unique kabhi nahi.
+-- Live notes:
+--   organisations.slug NOT NULL
+--   organisations.domain UNIQUE (shared anexomail.com banned — family pe null)
+--   mail_accounts.address pe unique nahi → UPDATE/INSERT
 -- Fail rule: is file ko hi shuru se theek likho; phase63b / _fix naam banned.
 -- =============================================================================
 set search_path = public, extensions;
 create extension if not exists pgcrypto;
 
--- ── 1) WebAuthn credentials (flag passkey_set ki jagah nahi — asal chaabi) ──
+-- ── 1) WebAuthn credentials ──
 create table if not exists public.webauthn_credentials (
   id              uuid primary key default gen_random_uuid(),
   user_id         uuid not null references auth.users(id) on delete cascade,
@@ -135,7 +138,7 @@ $$;
 revoke all on function public.auth_user_id_by_email(text) from public, anon, authenticated;
 grant execute on function public.auth_user_id_by_email(text) to service_role;
 
--- ── 3) Family testers — aam user plans (founder_accounts nahi)
+-- ── 3) Family testers
 alter table public.family_accounts alter column ai_plan drop default;
 alter table public.family_accounts alter column ai_plan set default '';
 alter table public.family_accounts alter column ai_credits set default 0;
@@ -243,7 +246,7 @@ end $$;
 revoke all on function public.family_grants_apply() from public, anon, authenticated;
 grant execute on function public.family_grants_apply() to service_role;
 
--- ── 4) Family org — slug always; mail_accounts / org_members without ON CONFLICT
+-- ── 4) Family org — domain NOT set (organisations_domain_key is global unique)
 create or replace function public.family_workspaces_apply()
 returns integer
 language plpgsql
@@ -258,12 +261,13 @@ declare
   parent_table text;
   has_status boolean;
   has_slug boolean := false;
-  has_domain boolean := false;
   has_owner_id boolean := false;
   has_created_by boolean := false;
   has_member_email boolean := false;
+  domain_nullable boolean := true;
   v_slug text;
   v_name text;
+  v_domain text;
   cols text;
   vals text;
   member_exists boolean;
@@ -300,16 +304,20 @@ begin
   ) into has_slug;
   select exists (
     select 1 from information_schema.columns
-     where table_schema = 'public' and table_name = parent_table and column_name = 'domain'
-  ) into has_domain;
-  select exists (
-    select 1 from information_schema.columns
      where table_schema = 'public' and table_name = parent_table and column_name = 'owner_id'
   ) into has_owner_id;
   select exists (
     select 1 from information_schema.columns
      where table_schema = 'public' and table_name = parent_table and column_name = 'created_by'
   ) into has_created_by;
+
+  -- domain column: only fill if NOT NULL (then unique per user — never shared anexomail.com)
+  select coalesce(
+    (select c.is_nullable = 'YES'
+       from information_schema.columns c
+      where c.table_schema = 'public' and c.table_name = parent_table and c.column_name = 'domain'),
+    true
+  ) into domain_nullable;
 
   for r in
     select f.email, f.display_name, u.id as uid
@@ -319,6 +327,8 @@ begin
     oid := null;
     v_slug := 'family-' || substr(replace(r.uid::text, '-', ''), 1, 12);
     v_name := r.display_name || ' workspace';
+    -- unique per mailbox local-part — NOT anexomail.com (organisations_domain_key)
+    v_domain := lower(split_part(r.email, '@', 1)) || '.family.anexomail.com';
 
     if has_slug then
       execute format(
@@ -362,9 +372,10 @@ begin
           cols := cols || ', slug';
           vals := vals || ', ' || quote_literal(v_slug);
         end if;
-        if has_domain then
+        -- domain: sirf jab NOT NULL — warna chhodo (null). Kabhi shared anexomail.com nahi.
+        if not domain_nullable then
           cols := cols || ', domain';
-          vals := vals || ', ' || quote_literal('anexomail.com');
+          vals := vals || ', ' || quote_literal(v_domain);
         end if;
         if has_owner_id then
           cols := cols || ', owner_id';
@@ -384,8 +395,38 @@ begin
             if has_slug then
               select id into oid from public.organisations where slug = v_slug limit 1;
             end if;
+            if oid is null and has_owner_id then
+              select id into oid from public.organisations where owner_id = r.uid limit 1;
+            end if;
             if oid is null then
-              raise;
+              -- domain unique collide: retry without domain
+              begin
+                cols := 'name';
+                vals := quote_literal(v_name);
+                if has_slug then
+                  cols := cols || ', slug';
+                  vals := vals || ', ' || quote_literal(v_slug);
+                end if;
+                if has_owner_id then
+                  cols := cols || ', owner_id';
+                  vals := vals || ', ' || quote_literal(r.uid::text) || '::uuid';
+                elsif has_created_by then
+                  cols := cols || ', created_by';
+                  vals := vals || ', ' || quote_literal(r.uid::text) || '::uuid';
+                end if;
+                execute format(
+                  'insert into public.organisations (%s) values (%s) returning id',
+                  cols, vals)
+                  into oid;
+              exception
+                when unique_violation then
+                  if has_slug then
+                    select id into oid from public.organisations where slug = v_slug limit 1;
+                  end if;
+                  if oid is null then
+                    raise;
+                  end if;
+              end;
             end if;
         end;
       else
@@ -399,7 +440,6 @@ begin
       raise exception 'family_workspaces_apply: no org id for %', r.email;
     end if;
 
-    -- org_members: UPDATE / INSERT (live unique pe ON CONFLICT fail ho sakta hai)
     select exists (
       select 1 from public.org_members m
        where m.org_id = oid and m.user_id = r.uid
@@ -451,7 +491,6 @@ begin
       end if;
     end if;
 
-    -- mail_accounts: UPDATE / INSERT — ON CONFLICT (address) live pe 42P10
     if to_regclass('public.mail_accounts') is not null then
       select exists (
         select 1 from public.mail_accounts m
