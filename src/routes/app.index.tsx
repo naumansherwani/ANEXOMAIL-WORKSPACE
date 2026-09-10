@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { Greeting } from "@/components/app/dashboard/Greeting";
+import { useAuth } from "@/lib/auth";
+import { founderPreviewEnabled } from "@/lib/founder-preview";
+import { isFounderHost, isPublicMailHost } from "@/lib/host";
+import { hasAiPlan, showTodayDashboard } from "@/lib/plan-surface";
 import {
   ActivityFeed,
+  AiUsagePanel,
   AnalyticsPanel,
   QuickActions,
   UpcomingPanel,
   WidgetGrid,
 } from "@/components/app/dashboard/Panels";
-import { useAuth } from "@/lib/auth";
-import { founderPreviewEnabled } from "@/lib/founder-preview";
-import { isFounderHost, isPublicMailHost } from "@/lib/host";
 
 export const Route = createFileRoute("/app/")({
   head: () => ({
@@ -39,7 +41,7 @@ export const Route = createFileRoute("/app/")({
 /**
  * Dashboard Command Center — Phase 6.
  * Widgets, activity, analytics, calendar and quick actions on one
- * surface. Awam (`anexomail.com`) is redirected to inbox — Leo stays on ai host.
+ * surface. Basic/Pro stay mail-first. Business / Business Pro / AI keep Today.
  */
 function DashboardPage() {
   const navigate = useNavigate();
@@ -52,11 +54,14 @@ function DashboardPage() {
 
   useEffect(() => {
     const awam = isPublicMailHost() && !isFounderHost();
-    setAwamMail(awam);
-    if (awam) {
+    const plan = session?.user.workspace_plan || "basic";
+    const aiPlan = session?.user.ai_plan || null;
+    const mailFirst = awam && !showTodayDashboard(plan, aiPlan);
+    setAwamMail(mailFirst);
+    if (mailFirst) {
       void navigate({ to: "/app/mail/$folder", params: { folder: "inbox" }, replace: true });
     }
-  }, [navigate]);
+  }, [navigate, session?.user.workspace_plan, session?.user.ai_plan]);
 
   if (awamMail) return null;
 
@@ -77,6 +82,7 @@ function DashboardPage() {
           <div className="flex flex-col gap-ax-5">
             <QuickActions onCompose={() => setComposing(true)} />
             <UpcomingPanel enabled={enabled} />
+            {hasAiPlan(session?.user.ai_plan) ? <AiUsagePanel enabled={enabled} /> : null}
           </div>
         </div>
       </div>

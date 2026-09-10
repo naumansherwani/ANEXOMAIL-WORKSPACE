@@ -145,7 +145,7 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
         .eq("user_id", uid),
       getAdmin()
         .from("trial_accounts")
-        .select("anexomail_address")
+        .select("anexomail_address,plan")
         .eq("user_id", uid)
         .maybeSingle(),
       isFounderUser(uid),
@@ -161,10 +161,17 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
   const { data: familyRow } = anexomailAddress
     ? await getAdmin()
         .from("family_accounts")
-        .select("display_name")
+        .select("display_name,plan,ai_plan")
         .eq("email", anexomailAddress)
         .maybeSingle()
     : { data: null };
+
+  const workspacePlan =
+    String(familyRow?.plan || trial?.plan || "basic")
+      .trim()
+      .toLowerCase() || "basic";
+  const aiPlanRaw = String(familyRow?.ai_plan || "").trim();
+  const aiPlan = aiPlanRaw && aiPlanRaw !== "" ? aiPlanRaw.toLowerCase() : null;
 
   let organisations = (memberships || []).flatMap((row: any) =>
     row.account_organisations
@@ -253,6 +260,8 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       is_founder: founder,
       onboarded,
       anexomail_address: anexomailAddress,
+      workspace_plan: workspacePlan,
+      ai_plan: aiPlan,
     },
     organisations: organisations.map(({ id, name, slug, domain, role }) => ({
       id,

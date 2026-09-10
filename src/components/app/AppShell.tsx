@@ -27,6 +27,14 @@ import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
 import { founderSurfaceAllowed, isAiHost, isPublicMailHost } from "@/lib/host";
 import {
+  showAdmin,
+  showAiCenter,
+  showChat,
+  showOrg,
+  showTodayDashboard,
+  showWork,
+} from "@/lib/plan-surface";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -108,26 +116,29 @@ export function AppShell({ children }: { children: ReactNode }) {
         return false;
       })
     : primary;
+  const plan = session?.user.workspace_plan || "basic";
+  const aiPlan = session?.user.ai_plan || null;
   const visiblePrimary = allowed.filter((item) => {
     if (item.to.startsWith("/app/founder")) return founderHost;
-    if (aiHost || founderHost) return true;
-    if (!publicMailHost) return true;
-    // anexomail.com = personal mail. Image-3 (Today/CRM/AI/Admin) yahan nahi — ai host pe hai.
-    const hideOnAwam = new Set([
-      "/app",
-      "/app/crm",
-      "/app/org",
-      "/app/work",
-      "/app/ai-center",
-      "/app/perf",
-      "/app/admin",
-      "/app/founder",
-    ]);
-    return !hideOnAwam.has(item.to);
+    if (founderHost) return true;
+    if (item.to === "/app/perf") return founderHost;
+    if (item.to === "/app/crm") return aiHost;
+    if (item.to === "/app") return showTodayDashboard(plan, aiPlan) || aiHost;
+    if (item.to === "/app/chat") return showChat(plan, aiPlan);
+    if (item.to === "/app/org") return showOrg(plan, aiPlan);
+    if (item.to === "/app/work") return showWork(plan, aiPlan);
+    if (item.to === "/app/ai-center") return showAiCenter(aiPlan, aiHost);
+    if (item.to === "/app/admin") return showAdmin({ founder: Boolean(session?.user.is_founder), founderHost });
+    return true;
   });
   const mailboxLabel =
-    session?.user.anexomail_address || session?.user.email || organisation?.name || "ANEXOMAIL";
-  const brandHome = publicMailHost ? "/app/mail/inbox" : "/app";
+    session?.user.display_name ||
+    session?.user.anexomail_address ||
+    session?.user.email ||
+    organisation?.name ||
+    "ANEXOMAIL";
+  const brandHome =
+    publicMailHost && !showTodayDashboard(plan, aiPlan) ? "/app/mail/inbox" : "/app";
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.

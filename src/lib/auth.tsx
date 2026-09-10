@@ -42,7 +42,9 @@ export type SessionUser = {
    * must own one before the workspace opens — social sign-in only proves who
    * you are, it does not give you a mailbox. `null` = not claimed yet.
    */
-  anexomail_address?: string | null;
+      anexomail_address?: string | null;
+  workspace_plan?: string | null;
+  ai_plan?: string | null;
 };
 
 export type Session = {
