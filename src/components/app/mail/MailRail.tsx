@@ -1,12 +1,34 @@
 import { Link } from "@tanstack/react-router";
-import { AtSign, Tag } from "lucide-react";
-import { useState } from "react";
+import {
+  Archive,
+  AtSign,
+  Clock,
+  FileText,
+  Inbox,
+  Send,
+  ShieldAlert,
+  Tag,
+  Trash2,
+  UserCheck,
+} from "lucide-react";
+import { useState, type ComponentType } from "react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { SkeletonLine } from "@/components/state/Skeletons";
 import { MAIL_FOLDERS, type MailFolder } from "@/lib/ia";
-import { useAccounts, useLabels } from "@/lib/mail";
+import { useAccounts, useFolderCounts, useLabels } from "@/lib/mail";
 import { cn } from "@/lib/utils";
+
+const FOLDER_ICON: Record<MailFolder, ComponentType<{ className?: string }>> = {
+  inbox: Inbox,
+  assigned: UserCheck,
+  waiting: Clock,
+  sent: Send,
+  drafts: FileText,
+  archive: Archive,
+  spam: ShieldAlert,
+  trash: Trash2,
+};
 
 /**
  * Column 1 of the mail surface: folders, labels, accounts.
@@ -29,26 +51,37 @@ export function MailRail({
 }) {
   const labels = useLabels();
   const accounts = useAccounts();
+  const counts = useFolderCounts();
   const [dropTarget, setDropTarget] = useState<string | null>(null);
 
   return (
     <div className="hidden w-[11.5rem] shrink-0 flex-col gap-ax-4 overflow-y-auto border-r border-border bg-sidebar/60 p-ax-3 lg:flex">
       <nav className="flex flex-col gap-0.5">
-        {MAIL_FOLDERS.map((f) => (
-          <Link
-            key={f.id}
-            to="/app/mail/$folder"
-            params={{ folder: f.id }}
-            className={cn(
-              "rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors",
-              f.id === folder
-                ? "bg-secondary text-foreground"
-                : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
-            )}
-          >
-            {f.label}
-          </Link>
-        ))}
+        {MAIL_FOLDERS.map((f) => {
+          const Icon = FOLDER_ICON[f.id];
+          const unread = counts.data?.folders[f.id]?.unread ?? 0;
+          return (
+            <Link
+              key={f.id}
+              to="/app/mail/$folder"
+              params={{ folder: f.id }}
+              className={cn(
+                "flex items-center gap-2 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors",
+                f.id === folder
+                  ? "bg-secondary text-foreground"
+                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+              )}
+            >
+              <Icon className="size-3.5 shrink-0" aria-hidden="true" />
+              <span className="truncate">{f.label}</span>
+              {unread > 0 && (
+                <span className="ml-auto tabular-nums text-[10px] font-semibold text-foreground">
+                  {unread}
+                </span>
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
       <section className="flex flex-col gap-1.5">

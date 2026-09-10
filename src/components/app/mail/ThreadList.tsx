@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { motion } from "framer-motion";
 import { Archive, Clock, Mail, Paperclip, RefreshCw, Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -28,6 +29,7 @@ export function ThreadList({
   onSwipeArchive,
   onSwipeSnooze,
   onLongPress,
+  onStar,
   lowData = false,
 }: {
   folder: MailFolder;
@@ -44,6 +46,7 @@ export function ThreadList({
   onSwipeSnooze?: (threadId: string) => void;
   /** Mobile: long press → select. */
   onLongPress?: (threadId: string) => void;
+  onStar?: (threadId: string, starred: boolean) => void;
   lowData?: boolean;
 }) {
   const listRef = useRef<HTMLDivElement>(null);
@@ -71,6 +74,24 @@ export function ThreadList({
   }, [folder, isPending, error, threads]);
 
   if (error) {
+    if (error.status === 409 || error.code === "no_workspace") {
+      return (
+        <EmptyState
+          icon={<Mail className="size-5" />}
+          title="No organisation yet"
+          body="Mail needs a workspace. Finish onboarding or ask an owner to add you — this list is empty because there is no org, not because mail is fake."
+        />
+      );
+    }
+    if (error.status === 401 || error.code === "unauthenticated") {
+      return (
+        <EmptyState
+          icon={<Mail className="size-5" />}
+          title="Sign in to read mail"
+          body="Your session expired. Sign in again and this inbox will load from your workspace."
+        />
+      );
+    }
     if (error.isNotImplemented || error.code === "no_api_url") {
       return (
         <div className="p-ax-4">
@@ -102,10 +123,26 @@ export function ThreadList({
     );
   }
 
+  const listVariants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.035, delayChildren: 0.04 } },
+  };
+  const rowVariants = {
+    hidden: { opacity: 0, y: 8 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] },
+    },
+  };
+
   return (
-    <div
+    <motion.div
       ref={listRef}
       className="divide-y divide-border"
+      variants={listVariants}
+      initial="hidden"
+      animate="show"
       onTouchStart={(e) => {
         const scroller = e.currentTarget.parentElement;
         pullStart.current =
@@ -130,8 +167,8 @@ export function ThreadList({
         </div>
       )}
       {threads.map((thread, index) => (
+        <motion.div key={thread.id} variants={rowVariants}>
         <SwipeRow
-          key={thread.id}
           {...(onSwipeArchive ? { onArchive: () => onSwipeArchive(thread.id) } : {})}
           {...(onSwipeSnooze ? { onSnooze: () => onSwipeSnooze(thread.id) } : {})}
           {...(onLongPress ? { onLongPress: () => onLongPress(thread.id) } : {})}
@@ -147,7 +184,7 @@ export function ThreadList({
             }}
             onMouseEnter={() => onCursor(index)}
             className={cn(
-              "block px-ax-4 py-ax-3 transition-colors",
+              "flex gap-ax-2 px-ax-3 py-2.5 transition-colors",
               thread.id === activeId
                 ? "bg-secondary"
                 : cursor === index
@@ -155,6 +192,14 @@ export function ThreadList({
                   : "hover:bg-secondary/40",
             )}
           >
+            <span
+              aria-hidden="true"
+              className={cn(
+                "mt-1.5 size-1.5 shrink-0 rounded-full",
+                thread.unread ? "bg-foreground" : "bg-transparent",
+              )}
+            />
+            <div className="min-w-0 flex-1">
             <div className="flex items-center gap-ax-2">
               <span
                 className={cn(
@@ -164,7 +209,20 @@ export function ThreadList({
               >
                 {thread.from_name ?? thread.from_address}
               </span>
-              {thread.starred && <Star className="size-3 shrink-0 text-foreground" />}
+              <button
+                type="button"
+                aria-label={thread.starred ? "Unstar" : "Star"}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onStar?.(thread.id, !thread.starred);
+                }}
+                className="ax-press shrink-0 rounded p-0.5 text-steel hover:text-foreground"
+              >
+                <Star
+                  className={cn("size-3", thread.starred && "fill-foreground text-foreground")}
+                />
+              </button>
               {thread.has_attachments && <Paperclip className="size-3 shrink-0 text-steel" />}
               {thread.message_count > 1 && (
                 <span className="shrink-0 text-[10px] text-steel">{thread.message_count}</span>
@@ -211,10 +269,12 @@ export function ThreadList({
                 </span>
               ))}
             </div>
+            </div>
           </Link>
         </SwipeRow>
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 

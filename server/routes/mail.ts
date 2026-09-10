@@ -28,22 +28,40 @@ async function ctx(req: any, res: any): Promise<Ctx | null> {
   return { userId, orgId };
 }
 
+const FOLDERS = [
+  "inbox", "assigned", "waiting", "sent", "drafts", "archive", "spam", "trash",
+] as const;
+
 const list = (v: any): string[] =>
   Array.isArray(v) ? v.filter(Boolean)
   : typeof v === "string" ? v.split(",").map((s) => s.trim()).filter(Boolean)
   : [];
 
+function missingRelation(e: any) {
+  const m = String(e?.message || e?.details || e?.code || "");
+  return /does not exist|schema cache|PGRST205|42P01/i.test(m);
+}
+
 async function labelsFor(threadIds: string[]) {
   const map = new Map<string, string[]>();
   if (!threadIds.length) return map;
-  const { data } = await supa
-    .from("mail_thread_labels")
-    .select("thread_id, mail_labels(id,name)")
-    .in("thread_id", threadIds);
-  for (const row of (data || []) as any[]) {
-    const arr = map.get(row.thread_id) || [];
-    if (row.mail_labels?.name) arr.push(row.mail_labels.name);
-    map.set(row.thread_id, arr);
+  try {
+    const { data, error } = await supa
+      .from("mail_thread_labels")
+      .select("thread_id, mail_labels(id,name)")
+      .in("thread_id", threadIds);
+    if (error) {
+      if (missingRelation(error)) return map;
+      throw error;
+    }
+    for (const row of (data || []) as any[]) {
+      const arr = map.get(row.thread_id) || [];
+      if (row.mail_labels?.name) arr.push(row.mail_labels.name);
+      map.set(row.thread_id, arr);
+    }
+  } catch (e: any) {
+    if (missingRelation(e)) return map;
+    throw e;
   }
   return map;
 }
@@ -56,12 +74,12 @@ function threadItem(t: any, labels: string[]) {
     from_name: t.from_name ?? null,
     from_address: t.from_address || "",
     account_id: t.account_id ?? null,
-    account_address: t.mail_accounts?.address ?? null,
+    account_address: t.mailbox_address ?? t.mailboxes?.address ?? t.mail_accounts?.address ?? null,
     message_count: t.message_count ?? 0,
-    unread: !!t.unread,
+    unread: !!(t.unread ?? t.is_unread),
     starred: !!t.starred,
     has_attachments: !!t.has_attachments,
-    status: t.status || "open",
+    status: t.status || t.state || "open",
     assignee: t.assignee ?? null,
     labels,
     category: t.category ?? null,
@@ -79,18 +97,22 @@ async function queryThreads(c: Ctx, req: any) {
 
   let threadIds: string[] | null = null;
   if (label) {
-    const { data: lab } = await supa
+    const lab = await supa
       .from("mail_labels").select("id").eq("org_id", c.orgId)
       .or(`id.eq.${label},name.eq.${label}`).limit(1).maybeSingle();
-    const { data: links } = await supa
-      .from("mail_thread_labels").select("thread_id").eq("label_id", lab?.id || label);
-    threadIds = (links || []).map((r: any) => r.thread_id);
+    if (lab.error && missingRelation(lab.error)) return { threads: [] };
+    const links = await supa
+      .from("mail_thread_labels").select("thread_id").eq("label_id", lab.data?.id || label);
+    if (links.error && missingRelation(links.error)) return { threads: [] };
+    threadIds = (links.data || []).map((r: any) => r.thread_id);
     if (!threadIds.length) return { threads: [] };
   }
 
+  // Canonical columns on mail_threads (phase 52/57/58). Do not embed
+  // mail_accounts — that join 500s when FK points at mailboxes.
   let sel = supa
     .from("mail_threads")
-    .select("*, mail_accounts(address)")
+    .select("*")
     .eq("org_id", c.orgId)
     .eq("folder", folder)
     .order("last_message_at", { ascending: false })
@@ -103,7 +125,13 @@ async function queryThreads(c: Ctx, req: any) {
 
   const { data, error } = await sel;
   if (error) throw error;
-  const rows = (data || []) as any[];
+  const now = Date.now();
+  const rows = ((data || []) as any[]).filter((t) => {
+    if (folder !== "inbox") return true;
+    if (!t.snoozed_until) return true;
+    const until = new Date(t.snoozed_until).getTime();
+    return Number.isNaN(until) || until <= now;
+  });
   const lmap = await labelsFor(rows.map((r) => r.id));
   return { threads: rows.map((r) => threadItem(r, lmap.get(r.id) || [])) };
 }
@@ -122,24 +150,101 @@ mailRouter.get("/search", async (req, res) => {
 
 mailRouter.get("/accounts", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
-  const { data, error } = await supa
-    .from("mailboxes").select("id,address,kind").eq("org_id", c.orgId).order("address");
-  if (error) return res.status(500).json({ error: error.message });
-  res.json({ accounts: data || [] });
+  let rows: any[] = [];
+  const boxes = await supa
+    .from("mailboxes").select("id,address,box_type").eq("org_id", c.orgId).order("address");
+  if (boxes.error && !missingRelation(boxes.error)) {
+    return res.status(500).json({ error: boxes.error.message });
+  }
+  if (!boxes.error && boxes.data?.length) {
+    rows = boxes.data;
+  } else {
+    const acc = await supa
+      .from("mail_accounts").select("id,address").eq("org_id", c.orgId).order("address");
+    if (acc.error && !missingRelation(acc.error)) {
+      return res.status(500).json({ error: acc.error.message });
+    }
+    rows = acc.data || [];
+  }
+
+  const unread = await supa
+    .from("mail_threads")
+    .select("account_id,mailbox_address")
+    .eq("org_id", c.orgId)
+    .eq("unread", true)
+    .limit(5000);
+  const unreadRows = unread.error ? [] : (unread.data || []);
+  const byId = new Map<string, number>();
+  const byAddr = new Map<string, number>();
+  for (const r of unreadRows as any[]) {
+    if (r.account_id) byId.set(r.account_id, (byId.get(r.account_id) || 0) + 1);
+    if (r.mailbox_address) {
+      const k = String(r.mailbox_address).toLowerCase();
+      byAddr.set(k, (byAddr.get(k) || 0) + 1);
+    }
+  }
+
+  res.json({
+    accounts: rows.map((a: any) => ({
+      id: a.id,
+      address: a.address,
+      kind: a.box_type === "alias" ? "shared" : "personal",
+      unread: byId.get(a.id) || byAddr.get(String(a.address || "").toLowerCase()) || 0,
+    })),
+  });
 });
 
 mailRouter.get("/labels", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const { data, error } = await supa
     .from("mail_labels").select("id,name,colour").eq("org_id", c.orgId).order("name");
-  if (error) return res.status(500).json({ error: error.message });
-  res.json({ labels: data || [] });
+  if (error) {
+    if (missingRelation(error)) return res.json({ labels: [] });
+    return res.status(500).json({ error: error.message });
+  }
+  const labels = data || [];
+  if (!labels.length) return res.json({ labels: [] });
+  const ids = labels.map((l: any) => l.id);
+  const links = await supa.from("mail_thread_labels").select("label_id").in("label_id", ids);
+  const counts = new Map<string, number>();
+  if (!links.error) {
+    for (const row of (links.data || []) as any[]) {
+      counts.set(row.label_id, (counts.get(row.label_id) || 0) + 1);
+    }
+  }
+  res.json({
+    labels: labels.map((l: any) => ({
+      ...l,
+      thread_count: counts.get(l.id) || 0,
+    })),
+  });
+});
+
+/** Folder unread/total — rail badges. Real counts, never invented. */
+mailRouter.get("/counts", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  try {
+    const entries = await Promise.all(FOLDERS.map(async (folder) => {
+      const totalQ = supa.from("mail_threads")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", c.orgId).eq("folder", folder);
+      const unreadQ = supa.from("mail_threads")
+        .select("id", { count: "exact", head: true })
+        .eq("org_id", c.orgId).eq("folder", folder).eq("unread", true);
+      const [total, unread] = await Promise.all([totalQ, unreadQ]);
+      if (total.error && !missingRelation(total.error)) throw total.error;
+      return [folder, { total: total.count ?? 0, unread: unread.count ?? 0 }] as const;
+    }));
+    res.json({ folders: Object.fromEntries(entries) });
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
 });
 
 mailRouter.get("/thread/:id", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const { data: t, error } = await supa
-    .from("mail_threads").select("*, mail_accounts(address)")
+    .from("mail_threads").select("*")
     .eq("org_id", c.orgId).eq("id", req.params.id).maybeSingle();
   if (error) return res.status(500).json({ error: error.message });
   if (!t) return res.status(404).json({ error: "not_found" });
@@ -159,7 +264,7 @@ mailRouter.get("/thread/:id", async (req, res) => {
     assignee: t.assignee ?? null,
     labels: lmap.get(t.id) || [],
     snoozed_until: t.snoozed_until ?? null,
-    account_address: (t as any).mail_accounts?.address ?? null,
+    account_address: (t as any).mailbox_address ?? null,
     messages: ((msgs || []) as any[]).map((m) => ({
       id: m.id,
       direction: m.direction,
@@ -257,6 +362,15 @@ mailRouter.post("/thread/:id/snooze", async (req, res) => {
   const { error } = await supa.from("mail_threads").update(patch).eq("id", req.params.id);
   if (error) return res.status(400).json({ error: error.message });
   res.json({ ok: true });
+});
+
+mailRouter.post("/thread/:id/star", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
+  const starred = !!req.body?.starred;
+  const { error } = await supa.from("mail_threads").update({ starred }).eq("id", req.params.id);
+  if (error) return res.status(400).json({ error: error.message });
+  res.json({ ok: true, starred });
 });
 
 mailRouter.post("/thread/:id/move", async (req, res) => {

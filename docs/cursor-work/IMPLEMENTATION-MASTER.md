@@ -177,23 +177,23 @@ F2.2  Animated stat tiles + bar chart ✅
 F2.3  Real data via /api/dashboard/* ✅
 
 ────────────────────────────────────────────────────────────────────
-FLOW 3 — MAIL INBOX (Day 1 PM — Day 2 AM)           [SKELETON→WIRE]
+FLOW 3 — MAIL INBOX (Day 1 PM — Day 2 AM)           [READY — live unproven]
 ────────────────────────────────────────────────────────────────────
-F3.1  Thread list — real data from /api/mail/threads
+F3.1  Thread list — real data from /api/mail/threads     READY
       Files: src/components/app/mail/ThreadList.tsx, src/lib/mail.ts
       Wire: GET /api/mail/threads?folder=inbox → mail_threads → org_scoped
-      UI: unread bold, star, avatar, snippet, time — Superhuman style
+      UI: unread pip, star toggle, snippet, time — Superhuman density
       Animation: Framer Motion list stagger (same as dashboard tiles)
 
-F3.2  Mail rail — folders + unread counts
+F3.2  Mail rail — folders + unread counts                READY
       Files: src/components/app/mail/MailRail.tsx
-      Wire: GET /api/mail/accounts → mail_accounts (SQL60 done)
-      UI: sidebar rail — Inbox/Assigned/Waiting/Sent/Drafts
+      Wire: GET /api/mail/counts + /api/mail/accounts (mailboxes, org scoped)
+      UI: sidebar rail — Inbox/Assigned/Waiting/Sent/Drafts + unread badges
+      Mobile: horizontal folder chips (rail is desktop-only)
 
-F3.3  WebTransport push — new mail without refresh    [Rust PRIMARY]
-      Wire: browser → /wt/mail → Rust :3200 async Tokio task
-      Rust: LISTEN pg_notify → push to browser stream
-      Frontend: invalidate React Query cache on WT message
+F3.3  WebTransport push — new mail without refresh       TODO
+      HTTP fallback now: React Query refetch every 20s (honest, not fake live)
+      Rust /wt/mail does not exist yet — do not claim DONE until mail-gate + WT green
 
 ────────────────────────────────────────────────────────────────────
 FLOW 4 — COMPOSE + SEND (Day 2)                     [SKELETON→WIRE]
@@ -440,7 +440,7 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 |---|---|---|
 | F1 Auth | PARTIAL — live unverified | Sep 9 |
 | F2 Dashboard | **DONE ✅** | Sep 9 P2 |
-| F3 Mail inbox | TODO | — |
+| F3 Mail inbox | READY — live unproven | Sep 10 F3 |
 | F4 Compose+Send | TODO | — |
 | F5 Thread view | TODO | — |
 | F6 Contacts | TODO | — |

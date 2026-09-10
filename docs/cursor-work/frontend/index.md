@@ -16,3 +16,4 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 | src/components/site/SiteLock.tsx | anexomail.com bypass | READY — pull se aayega |
 | src/routes/app.tsx | /app → /auth redirect | READY — pull se aayega |
 | src/components/app/AppShell.tsx | Awam nav hide | READY — pull se aayega |
+| F3 mail inbox | ThreadList + MailRail + /api/mail/threads + counts | READY — live unproven |

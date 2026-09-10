@@ -134,6 +134,8 @@ export function useThreads(query: ThreadQuery, enabled = true) {
     enabled,
     retry: false,
     staleTime: 15_000,
+    // F3.3 HTTP fallback — /wt/mail Rust push is TODO until live WT is green.
+    refetchInterval: searching ? false : 20_000,
   });
 }
 
@@ -176,6 +178,18 @@ export function useAccounts() {
   });
 }
 
+export type FolderCounts = Record<string, { total: number; unread: number }>;
+
+export function useFolderCounts() {
+  return useQuery<{ folders: FolderCounts }, ApiError>({
+    queryKey: ["mail", "counts"],
+    queryFn: () => api<{ folders: FolderCounts }>("/api/mail/counts"),
+    retry: false,
+    staleTime: 15_000,
+    refetchInterval: 20_000,
+  });
+}
+
 export type SendPayload = {
   to: string;
   cc?: string;
@@ -204,6 +218,7 @@ type ThreadAction =
   | { kind: "labels"; add?: string[]; remove?: string[] }
   | { kind: "status"; status: ThreadStatus }
   | { kind: "snooze"; until: string | null }
+  | { kind: "star"; starred: boolean }
   | { kind: "move"; folder: MailFolder };
 
 export function useThreadAction() {
@@ -217,6 +232,8 @@ export function useThreadAction() {
             ? `/api/mail/thread/${threadId}/status`
             : action.kind === "snooze"
               ? `/api/mail/thread/${threadId}/snooze`
+              : action.kind === "star"
+                ? `/api/mail/thread/${threadId}/star`
               : `/api/mail/thread/${threadId}/move`;
       const { kind: _kind, ...body } = action;
       return api(path, { method: "POST", body: JSON.stringify(body) });

@@ -16,7 +16,13 @@ import { HandoffBanner } from "@/components/app/CrossPlatformBar";
 import { MAIL_FOLDERS, isMailFolder } from "@/lib/ia";
 import { useNetwork } from "@/lib/network";
 import { notify } from "@/lib/notify";
-import { THREAD_CATEGORIES, useThreadAction, useThreads, type ThreadCategory } from "@/lib/mail";
+import {
+  THREAD_CATEGORIES,
+  useFolderCounts,
+  useThreadAction,
+  useThreads,
+  type ThreadCategory,
+} from "@/lib/mail";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/mail/$folder")({
@@ -68,6 +74,8 @@ function MailFolderPage() {
   const query = useThreads({ folder, label, account, category, q });
   const threads = query.data?.threads;
   const action = useThreadAction();
+  const counts = useFolderCounts();
+  const unreadHere = counts.data?.folders[folder]?.unread ?? 0;
 
   const act = useCallback(
     (
@@ -177,18 +185,48 @@ function MailFolderPage() {
         mobileHidden={threadOpen}
         title={account ? folderLabel : `${folderLabel} · Unified`}
         action={
-          <button
-            type="button"
-            onClick={() => setComposing(true)}
-            className="ax-press ax-tap inline-flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2"
-          >
-            <PenLine className="size-3.5" />
-            Compose
-          </button>
+          <div className="flex items-center gap-1.5">
+            {unreadHere > 0 && (
+              <span className="hidden tabular-nums text-[10px] font-semibold text-muted-foreground sm:inline">
+                {unreadHere} unread
+              </span>
+            )}
+            <button
+              type="button"
+              onClick={() => setComposing(true)}
+              className="ax-press ax-tap inline-flex items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2"
+            >
+              <PenLine className="size-3.5" />
+              Compose
+            </button>
+          </div>
         }
       >
         <HandoffBanner />
         <div className="sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
+          <div className="flex items-center gap-1 overflow-x-auto lg:hidden">
+            {MAIL_FOLDERS.map((f) => {
+              const unread = counts.data?.folders[f.id]?.unread ?? 0;
+              return (
+                <button
+                  key={f.id}
+                  type="button"
+                  onClick={() =>
+                    void navigate({ to: "/app/mail/$folder", params: { folder: f.id } })
+                  }
+                  className={cn(
+                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                    f.id === folder
+                      ? "bg-secondary text-foreground"
+                      : "text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {f.label}
+                  {unread > 0 ? ` ${unread}` : ""}
+                </button>
+              );
+            })}
+          </div>
           <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-1.5">
             <Search className="size-3.5 shrink-0 text-steel" aria-hidden="true" />
             <input
@@ -269,6 +307,14 @@ function MailFolderPage() {
             const index = (threads ?? []).findIndex((t) => t.id === id);
             if (index >= 0) setCursor(index);
           }}
+          onStar={(id, starred) =>
+            act(
+              id,
+              { kind: "star", starred },
+              starred ? "Starred" : "Star removed",
+              "POST /api/mail/thread/:id/star",
+            )
+          }
         />
       </ListPanel>
 
