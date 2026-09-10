@@ -2,7 +2,7 @@
 -- F3 A — WebAuthn public-key store + family awam testers + recovery email
 -- Supabase #4 SQL Editor — poori file paste → Run. Idempotent.
 -- Passwords yahan NAHI.
--- Live: org_members.org_id → organisations (slug NOT NULL). orgs = phase60 fallback.
+-- Live: organisations.slug NOT NULL; mail_accounts.address pe unique kabhi nahi.
 -- Fail rule: is file ko hi shuru se theek likho; phase63b / _fix naam banned.
 -- =============================================================================
 set search_path = public, extensions;
@@ -71,7 +71,7 @@ drop policy if exists recovery_own_select on public.account_recovery;
 create policy recovery_own_select on public.account_recovery
   for select to authenticated using (user_id = auth.uid());
 
--- ── 2) Signup device gate (vault se alag nishaan nahi — wahi hash, naya account rokna)
+-- ── 2) Signup device gate
 create or replace function public.signup_device_gate(_signals jsonb, _key text)
 returns jsonb
 language plpgsql
@@ -243,7 +243,7 @@ end $$;
 revoke all on function public.family_grants_apply() from public, anon, authenticated;
 grant execute on function public.family_grants_apply() to service_role;
 
--- ── 4) Family org — slug ALWAYS set (live organisations.slug NOT NULL)
+-- ── 4) Family org — slug always; mail_accounts / org_members without ON CONFLICT
 create or replace function public.family_workspaces_apply()
 returns integer
 language plpgsql
@@ -261,10 +261,13 @@ declare
   has_domain boolean := false;
   has_owner_id boolean := false;
   has_created_by boolean := false;
+  has_member_email boolean := false;
   v_slug text;
   v_name text;
   cols text;
   vals text;
+  member_exists boolean;
+  mail_exists boolean;
 begin
   if to_regclass('public.org_members') is null then
     return 0;
@@ -286,6 +289,10 @@ begin
     select 1 from information_schema.columns
      where table_schema = 'public' and table_name = 'org_members' and column_name = 'status'
   ) into has_status;
+  select exists (
+    select 1 from information_schema.columns
+     where table_schema = 'public' and table_name = 'org_members' and column_name = 'email'
+  ) into has_member_email;
 
   select exists (
     select 1 from information_schema.columns
@@ -313,7 +320,6 @@ begin
     v_slug := 'family-' || substr(replace(r.uid::text, '-', ''), 1, 12);
     v_name := r.display_name || ' workspace';
 
-    -- 1) pehle slug se dhoondo (purani fail / partial row)
     if has_slug then
       execute format(
         'select id from public.%I where slug = $1 limit 1',
@@ -322,7 +328,6 @@ begin
         using v_slug;
     end if;
 
-    -- 2) mail_accounts
     if oid is null and to_regclass('public.mail_accounts') is not null then
       execute format(
         $q$
@@ -336,7 +341,6 @@ begin
         using r.email;
     end if;
 
-    -- 3) org_members
     if oid is null then
       execute format(
         $q$
@@ -350,7 +354,6 @@ begin
         using r.uid;
     end if;
 
-    -- 4) naya org — slug ke baghair INSERT kabhi nahi (23502 fix)
     if oid is null then
       if parent_table = 'organisations' then
         cols := 'name';
@@ -396,47 +399,93 @@ begin
       raise exception 'family_workspaces_apply: no org id for %', r.email;
     end if;
 
-    if role_udt = 'org_role' then
-      if has_status then
-        insert into public.org_members (org_id, user_id, email, role, status)
-        values (oid, r.uid, r.email, 'owner'::public.org_role, 'active')
-        on conflict (org_id, user_id) do update
-          set email = excluded.email, status = 'active';
-      else
-        insert into public.org_members (org_id, user_id, email, role)
-        values (oid, r.uid, r.email, 'owner'::public.org_role)
-        on conflict (org_id, user_id) do update
-          set email = excluded.email;
+    -- org_members: UPDATE / INSERT (live unique pe ON CONFLICT fail ho sakta hai)
+    select exists (
+      select 1 from public.org_members m
+       where m.org_id = oid and m.user_id = r.uid
+    ) into member_exists;
+
+    if member_exists then
+      if has_status and has_member_email then
+        update public.org_members
+           set email = r.email, status = 'active'
+         where org_id = oid and user_id = r.uid;
+      elsif has_member_email then
+        update public.org_members
+           set email = r.email
+         where org_id = oid and user_id = r.uid;
+      elsif has_status then
+        update public.org_members
+           set status = 'active'
+         where org_id = oid and user_id = r.uid;
       end if;
     else
-      if has_status then
-        insert into public.org_members (org_id, user_id, email, role, status)
-        values (oid, r.uid, r.email, 'owner', 'active')
-        on conflict (org_id, user_id) do update
-          set email = excluded.email, status = 'active';
+      if role_udt = 'org_role' then
+        if has_status and has_member_email then
+          insert into public.org_members (org_id, user_id, email, role, status)
+          values (oid, r.uid, r.email, 'owner'::public.org_role, 'active');
+        elsif has_member_email then
+          insert into public.org_members (org_id, user_id, email, role)
+          values (oid, r.uid, r.email, 'owner'::public.org_role);
+        elsif has_status then
+          insert into public.org_members (org_id, user_id, role, status)
+          values (oid, r.uid, 'owner'::public.org_role, 'active');
+        else
+          insert into public.org_members (org_id, user_id, role)
+          values (oid, r.uid, 'owner'::public.org_role);
+        end if;
       else
-        insert into public.org_members (org_id, user_id, email, role)
-        values (oid, r.uid, r.email, 'owner')
-        on conflict (org_id, user_id) do update
-          set email = excluded.email;
+        if has_status and has_member_email then
+          insert into public.org_members (org_id, user_id, email, role, status)
+          values (oid, r.uid, r.email, 'owner', 'active');
+        elsif has_member_email then
+          insert into public.org_members (org_id, user_id, email, role)
+          values (oid, r.uid, r.email, 'owner');
+        elsif has_status then
+          insert into public.org_members (org_id, user_id, role, status)
+          values (oid, r.uid, 'owner', 'active');
+        else
+          insert into public.org_members (org_id, user_id, role)
+          values (oid, r.uid, 'owner');
+        end if;
       end if;
     end if;
 
+    -- mail_accounts: UPDATE / INSERT — ON CONFLICT (address) live pe 42P10
     if to_regclass('public.mail_accounts') is not null then
-      insert into public.mail_accounts (org_id, address)
-      values (oid, r.email)
-      on conflict (address) do update set org_id = excluded.org_id;
+      select exists (
+        select 1 from public.mail_accounts m
+         where lower(m.address) = lower(r.email)
+      ) into mail_exists;
+
+      if mail_exists then
+        update public.mail_accounts
+           set org_id = oid
+         where lower(address) = lower(r.email);
+      else
+        insert into public.mail_accounts (org_id, address)
+        values (oid, r.email);
+      end if;
     end if;
 
     if to_regclass('public.account_organisations') is not null then
-      insert into public.account_organisations (name, slug, domain, created_by)
-      values (v_name, v_slug, 'anexomail.com', r.uid)
-      on conflict (slug) do nothing;
-      insert into public.account_org_members (org_id, user_id, role)
-      select a.id, r.uid, 'owner'
-        from public.account_organisations a
-       where a.slug = v_slug
-      on conflict (org_id, user_id) do nothing;
+      if not exists (
+        select 1 from public.account_organisations a where a.slug = v_slug
+      ) then
+        insert into public.account_organisations (name, slug, domain, created_by)
+        values (v_name, v_slug, 'anexomail.com', r.uid);
+      end if;
+
+      if to_regclass('public.account_org_members') is not null then
+        insert into public.account_org_members (org_id, user_id, role)
+        select a.id, r.uid, 'owner'
+          from public.account_organisations a
+         where a.slug = v_slug
+           and not exists (
+             select 1 from public.account_org_members m
+              where m.org_id = a.id and m.user_id = r.uid
+           );
+      end if;
     end if;
 
     n := n + 1;
