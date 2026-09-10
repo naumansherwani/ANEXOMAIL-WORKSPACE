@@ -151,14 +151,37 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       isFounderUser(uid),
       operationalOrganisation(uid, user.email),
     ]);
-  const organisations = (memberships || []).flatMap((row: any) =>
-    row.account_organisations ? [{ ...row.account_organisations, role: row.role }] : [],
+  const emailLower = String(user.email || "")
+    .trim()
+    .toLowerCase();
+  const anexoFromEmail = emailLower.endsWith("@anexomail.com") ? emailLower : null;
+  const anexomailAddress =
+    trial?.anexomail_address || (founder ? emailLower || null : null) || anexoFromEmail;
+
+  const { data: familyRow } = anexomailAddress
+    ? await getAdmin()
+        .from("family_accounts")
+        .select("display_name")
+        .eq("email", anexomailAddress)
+        .maybeSingle()
+    : { data: null };
+
+  let organisations = (memberships || []).flatMap((row: any) =>
+    row.account_organisations
+      ? [{ ...row.account_organisations, role: row.role, source: "account" as const }]
+      : [],
   );
-  if (
-    operational &&
-    !organisations.some((organisation: any) => organisation.id === operational.id)
-  ) {
-    // Prefer live organisations row (F3 B); orgs = legacy fallback only
+
+  let operationalEntry: {
+    id: string;
+    name: string;
+    slug: string;
+    domain: null;
+    role: string;
+    source: "operational";
+  } | null = null;
+
+  if (operational) {
     const { data: liveOrg } = await getAdmin()
       .from("organisations")
       .select("id,name,slug")
@@ -167,7 +190,7 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
     const { data: legacy } = liveOrg
       ? { data: null }
       : await getAdmin().from("orgs").select("id,name").eq("id", operational.id).maybeSingle();
-    organisations.push({
+    operationalEntry = {
       id: operational.id,
       name:
         liveOrg?.name ||
@@ -177,30 +200,52 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
         liveOrg?.slug ||
         (founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`),
       domain: null,
-      role: operational.role,
+      role: operational.role || "owner",
+      source: "operational",
+    };
+  }
+
+  // F3 B fix: @anexomail.com awam = ONE mail workspace (account+ops dual band)
+  if (!founder && anexomailAddress && operationalEntry) {
+    organisations = [operationalEntry];
+  } else if (operationalEntry) {
+    if (!organisations.some((o) => o.id === operationalEntry!.id)) {
+      organisations = [operationalEntry, ...organisations];
+    }
+    const seen = new Set<string>();
+    organisations = organisations.filter((o) => {
+      if (seen.has(o.id)) return false;
+      seen.add(o.id);
+      return true;
     });
   }
 
-  // F3 B: mailbox identity — login email @anexomail.com = address (claim force nahi)
-  const emailLower = String(user.email || "")
-    .trim()
-    .toLowerCase();
-  const anexoFromEmail = emailLower.endsWith("@anexomail.com") ? emailLower : null;
-  const anexomailAddress =
-    trial?.anexomail_address || (founder ? emailLower || null : null) || anexoFromEmail;
+  const prefs = (profile?.preferences || {}) as Record<string, unknown>;
+  const preferred =
+    typeof prefs.active_organisation_id === "string" ? prefs.active_organisation_id : null;
+  const activeId =
+    (preferred && organisations.some((o) => o.id === preferred) && preferred) ||
+    organisations[0]?.id ||
+    null;
 
-  // Ops org pehle se (family SQL) → awam ko org wizard mat dikhao
   const onboarded =
     founder || Boolean(profile?.onboarded) || Boolean(operational && anexomailAddress);
+
+  const displayName =
+    profile?.display_name ||
+    familyRow?.display_name ||
+    profile?.legal_name ||
+    user.user_metadata?.name ||
+    null;
 
   return {
     ...(accessToken ? { token: accessToken } : {}),
     user: {
       id: uid,
       email: user.email || "",
-      name: profile?.display_name || profile?.legal_name || user.user_metadata?.name || null,
+      name: displayName,
       legal_name: profile?.legal_name || null,
-      display_name: profile?.display_name || null,
+      display_name: displayName,
       avatar_url: profile?.avatar_url || null,
       work_role: profile?.work_role || null,
       preferences: profile?.preferences || {},
@@ -209,8 +254,14 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       onboarded,
       anexomail_address: anexomailAddress,
     },
-    organisations,
-    active_organisation_id: organisations[0]?.id || null,
+    organisations: organisations.map(({ id, name, slug, domain, role }) => ({
+      id,
+      name,
+      slug,
+      domain: domain ?? null,
+      role,
+    })),
+    active_organisation_id: activeId,
   };
 }
 

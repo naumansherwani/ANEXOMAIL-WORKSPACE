@@ -25,7 +25,7 @@ import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
-import { founderSurfaceAllowed } from "@/lib/host";
+import { founderSurfaceAllowed, isPublicMailHost } from "@/lib/host";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -92,8 +92,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   // FOUNDER HOST GUARD (permanent): Founder view sirf founderworkspace host par.
   // Hydration-safe — SSR par hostname nahi hota, is liye effect ke baad set hota hai.
   const [founderHost, setFounderHost] = useState(false);
+  const [publicMailHost, setPublicMailHost] = useState(false);
   useEffect(() => {
     setFounderHost(founderSurfaceAllowed());
+    setPublicMailHost(isPublicMailHost());
   }, []);
   const allowed = account.data?.trial_limited
     ? primary.filter((item) => {
@@ -104,9 +106,13 @@ export function AppShell({ children }: { children: ReactNode }) {
         return false;
       })
     : primary;
-  const visiblePrimary = allowed.filter(
-    (item) => founderHost || !item.to.startsWith("/app/founder"),
-  );
+  const visiblePrimary = allowed.filter((item) => {
+    if (item.to.startsWith("/app/founder")) return founderHost;
+    if (!publicMailHost) return true;
+    // anexomail.com awam shell — ANEXOMAIL mail workspace only (recovery plan block 3).
+    const hideOnAwam = ["/app/chat", "/app/ai-center", "/app/perf", "/app/admin"];
+    return !hideOnAwam.includes(item.to);
+  });
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.
@@ -124,6 +130,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   };
 
   const switchOrg = async (id: string) => {
+    if (session?.active_organisation_id === id) return;
+    if ((session?.organisations.length ?? 0) <= 1) return;
     try {
       await api("/api/workspace/active-organisation", {
         method: "PATCH",

@@ -30,6 +30,7 @@ import {
   useUpcoming,
   type ActivityKind,
 } from "@/lib/dashboard";
+import { useAuth } from "@/lib/auth";
 
 /* ----------------------------- Animation helpers ---------------------------- */
 
@@ -145,11 +146,17 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                     Storage {formatBytes(data.storage_used_bytes)} of{" "}
                     {formatBytes(data.storage_limit_bytes)}
                   </p>
-                  <span
-                    className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
-                  >
-                    {data.domain_verified ? "Domain verified" : "Domain not verified"}
-                  </span>
+                  {data.domain_hosted ? (
+                    <span className="ax-status ml-auto text-xs font-semibold text-muted-foreground">
+                      ANEXOMAIL hosted
+                    </span>
+                  ) : (
+                    <span
+                      className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
+                    >
+                      {data.domain_verified ? "Domain verified" : "Domain not verified"}
+                    </span>
+                  )}
                 </div>
                 <div
                   role="progressbar"
@@ -183,6 +190,11 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
 /* ------------------------------- Quick actions ------------------------------ */
 
 export function QuickActions({ onCompose }: { onCompose: () => void }) {
+  const { session } = useAuth();
+  const hostedPersonal = Boolean(
+    session?.user.anexomail_address?.endsWith("@anexomail.com") && !session.user.is_founder,
+  );
+
   return (
     <DashboardCard
       title="Quick actions"
@@ -199,6 +211,14 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
           New email
         </button>
         <Link
+          to="/app/mail/$folder"
+          params={{ folder: "inbox" }}
+          className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
+        >
+          <Inbox aria-hidden="true" className="size-4 text-steel" />
+          Open inbox
+        </Link>
+        <Link
           to="/app/search"
           search={{ q: "" }}
           className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
@@ -206,20 +226,24 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
           <Search aria-hidden="true" className="size-4 text-steel" />
           Search everything
         </Link>
-        <Link
-          to="/app/admin/members"
-          className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
-        >
-          <Users aria-hidden="true" className="size-4 text-steel" />
-          Invite a teammate
-        </Link>
-        <Link
-          to="/app/admin"
-          className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
-        >
-          <Shield aria-hidden="true" className="size-4 text-steel" />
-          Domain & ownership
-        </Link>
+        {!hostedPersonal && (
+          <Link
+            to="/app/admin/members"
+            className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
+          >
+            <Users aria-hidden="true" className="size-4 text-steel" />
+            Invite a teammate
+          </Link>
+        )}
+        {!hostedPersonal && (
+          <Link
+            to="/app/admin"
+            className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
+          >
+            <Shield aria-hidden="true" className="size-4 text-steel" />
+            Domain & ownership
+          </Link>
+        )}
       </div>
     </DashboardCard>
   );

@@ -60,6 +60,10 @@ Login tak aa gaye — ab **pehli 60 seconds** strong karni hain. Lovable ne awam
 | `POST /api/workspace/organisations` → live `organisations` (slug, no shared domain) | READY |
 | `POST /api/workspace/personal` → silent workspace + onboarded | READY |
 | Founder still seedha `/app` | READY |
+| Dual workspace ban: hosted awam = **ek** operational org; `PATCH active-organisation` live | READY |
+| Login awam → `/app/mail/inbox` (blank dashboard daba nahi) | READY |
+| Hosted mail: "Domain not verified" → "ANEXOMAIL hosted" | READY |
+| Analytics: `delivered` column missing → select without it | READY |
 | F4 mail send/receive | TODO (gate) |
 
 ---

@@ -178,6 +178,43 @@ workspaceRouter.post("/organisations", async (req, res) => {
   }
 });
 
+/** Save active workspace — org_members YA account_org_members (dual id not_found band). */
+workspaceRouter.patch("/active-organisation", async (req, res) => {
+  const uid = await userId(req, res);
+  if (!uid || !db) return;
+  const orgId = String(req.body?.organisation_id || "").trim();
+  if (!orgId) return res.status(400).json({ error: "organisation_id_required" });
+
+  const [{ data: accountMem }, { data: opsMem }] = await Promise.all([
+    db
+      .from("account_org_members")
+      .select("org_id")
+      .eq("user_id", uid)
+      .eq("org_id", orgId)
+      .maybeSingle(),
+    db.from("org_members").select("org_id").eq("user_id", uid).eq("org_id", orgId).maybeSingle(),
+  ]);
+  if (!accountMem && !opsMem) return res.status(404).json({ error: "not_found" });
+
+  const { data: profile } = await db
+    .from("account_profiles")
+    .select("preferences")
+    .eq("user_id", uid)
+    .maybeSingle();
+  const preferences = {
+    ...((profile?.preferences as Record<string, unknown>) || {}),
+    active_organisation_id: orgId,
+  };
+  const { error } = await db
+    .from("account_profiles")
+    .upsert(
+      { user_id: uid, preferences, updated_at: new Date().toISOString() },
+      { onConflict: "user_id" },
+    );
+  if (error) return res.status(500).json({ error: "active_organisation_update_failed" });
+  return res.json({ ok: true, active_organisation_id: orgId });
+});
+
 workspaceRouter.post("/invitations", async (req, res) => {
   const uid = await userId(req, res);
   if (!uid) return;

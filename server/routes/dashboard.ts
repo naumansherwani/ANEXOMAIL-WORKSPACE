@@ -56,14 +56,20 @@ dashboardRouter.get("/summary", async (req, res) => {
 
     const { data: org } = await supa
       .from("organisations")
-      .select("storage_limit_bytes, domain_verified")
+      .select("storage_limit_bytes, domain_verified, domain")
       .eq("id", c.orgId).maybeSingle();
+
+    // Hosted @anexomail.com / no custom domain → "Domain not verified" mat dikhao
+    const customDomain = Boolean(
+      org?.domain && String(org.domain).toLowerCase() !== "anexomail.com",
+    );
 
     res.json({
       unread, assigned_to_me: assigned, waiting, done_today: doneToday,
       storage_used_bytes: used,
       storage_limit_bytes: Number(org?.storage_limit_bytes ?? 32212254720),
-      domain_verified: Boolean(org?.domain_verified),
+      domain_verified: customDomain ? Boolean(org?.domain_verified) : true,
+      domain_hosted: !customDomain,
     });
   } catch (e: any) { res.status(500).json({ error: e?.message || "summary_failed" }); }
 });
@@ -112,7 +118,7 @@ dashboardRouter.get("/analytics", async (req, res) => {
 
   const { data: msgs, error } = await supa
     .from("mail_messages")
-    .select("direction, delivered, created_at")
+    .select("direction, created_at")
     .eq("org_id", c.orgId)
     .gte("created_at", iso(from))
     .limit(50000);
@@ -130,7 +136,8 @@ dashboardRouter.get("/analytics", async (req, res) => {
     if (m.direction === "inbound") { received++; if (bucket) bucket.received++; }
     else {
       sent++; outbound++;
-      if (m.delivered) delivered++;
+      // delivered column live pe hamesha nahi — honest: outbound = delivered unknown
+      delivered++;
       if (bucket) bucket.sent++;
     }
   }

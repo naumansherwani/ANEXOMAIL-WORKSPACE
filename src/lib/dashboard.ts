@@ -20,6 +20,7 @@ export type DashboardSummary = {
   storage_used_bytes: number;
   storage_limit_bytes: number;
   domain_verified: boolean;
+  domain_hosted?: boolean;
 };
 
 /** GET /api/dashboard/activity */
