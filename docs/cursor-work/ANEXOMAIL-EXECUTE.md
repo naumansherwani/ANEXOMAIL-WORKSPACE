@@ -8,12 +8,14 @@
 
 **Inbox:** pehle se bani — **shuru se rewrite nahi** (tootegi)
 
+**Founder rule:** yeh file TODO board nahi. Product TODO se nahi chalti. Har E: wire + live test, ya abhi start nahi. Blank UI nahi.
+
 ## GATE (locked — PARTIAL se agla nahi)
 
-Har E sirf **TODO** ya **DONE**.  
+Har E sirf **not live** ya **DONE**.  
 **DONE** = wire + founder/live test (browser + API + DB).  
 DONE se pehle **agli E start nahi.**  
-PARTIAL / “almost” / “local only” = **TODO**.
+PARTIAL / “almost” / “local only” = **not live**.
 
 **NO TOUCH:** `plans.ts` · Polar · landing · `BrandMark` SVG · ANEXOChat original blueprints
 
@@ -21,6 +23,15 @@ PARTIAL / “almost” / “local only” = **TODO**.
 1. Yeh file — mail `anexomail.com`
 2. `docs/cursor-work/AI-EXECUTE.md` — baad, same UX + AI add
 3. `docs/cursor-work/FOUNDER-EXECUTE.md` — end
+
+**Packages (locked cards — implement existing, prices no-touch):**
+| Plan | Price | Rail on anexomail.com |
+|---|---|---|
+| Basic | £23 / user / month | Dashboard, Mail, People, Calendar |
+| Pro | £46 / user / month | + Work (templates, schedule send) |
+| Business | £97 / user / month | + Org + ANEXOChat |
+| Business Pro | £2,850 / company / month | + Org + ANEXOChat Business Pro |
+Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro UX) but Leo only on `ai.anexomail.com`.
 
 ---
 
@@ -30,12 +41,12 @@ Ek codebase. Ab sirf **anexomail.com** user complete.
 `ai.anexomail.com` = baad mein **wahi UX** + AI phases add. Naya clone nahi.  
 Founder deck = end. Founder **guard** (family Admin/Speed nahi) ab.
 
-**ANEXOChat is execute list mein nahi.** Code repo mein rehti hai; Basic/Pro pe dikhe nahi. Is blueprint ka kaam mail hai.
+**ANEXOChat is execute list mein nahi.** Code repo mein rehti hai; Basic/Pro pe dikhe nahi. Business+ pe rail + existing `/app/chat`. Is blueprint ka kaam mail hai — Chat 1–57 rebuild nahi.
 
 Wire = har E-step: UI dikhe + API + DB. Mock nahi. DONE = live proof.
 
 ```
-E1 shell polish → E2 auth/session → E3 inbox KEEP → E4 SEND/RECEIVE GATE
+E1 package rail → E2 auth/session → E3 inbox KEEP → E4 SEND/RECEIVE GATE
 → E5 thread → E6 people → E7 calendar → E8 work
 → [STOP mail complete]
 → AI host add (original 8, 17…)
@@ -48,14 +59,14 @@ E1 shell polish → E2 auth/session → E3 inbox KEEP → E4 SEND/RECEIVE GATE
 
 | E | Claude | Original | Lovable (keep, wire) | Mix hatao | Status |
 |---|---|---|---|---|---|
-| **E1** | F1.2 | Ph 1 shell | `AppShell.tsx` `styles.css` `host.ts` `plan-surface.ts` | Naam chip **sirf** right avatar. CRM/Speed/AI rail dump. Landing no-touch | **TODO** — live pe chip abhi hai |
-| **E2** | F1 | Ph 5A auth | `auth.tsx` `server/routes/auth.ts` | `workspace_plan` sach. Sessions = Chrome·Windows, Bun dump nahi | **TODO** — login hai, plan/sessions test nahi |
-| **E3** | F3 | Ph 2 + **7** mail | `ia.ts` `app.mail.*` `MailRail` | Folders pane. Inbox zero honest. Rewrite nahi | **TODO→test** list live; DONE tab E3 verify + E1/E2 close |
-| **E4** | **F4 GATE** | Ph 9 + 52–58 | `ComposeStudio` `sendmail.ts` Postfix | Leo compose se **nikaal** (AI-EXECUTE) | **TODO** — E1–E3 DONE ke baad |
-| **E5** | F5 | thread | `$threadId.tsx` | — | TODO wait E4 DONE |
-| **E6** | F6 | Ph 10 | `people` SQL62 | — | TODO wait E4 DONE |
-| **E7** | F7 | Ph 11 | `calendar` SQL61 | — | TODO wait E4 DONE |
-| **E8** | F8 | work | `app.work.tsx` | — | TODO wait E4 DONE |
+| **E1** | F1.2 | Ph 1 shell | `AppShell.tsx` `host.ts` `plan-surface.ts` `PlanSurfaceGate.tsx` | Package rail = cards. Naam chip **sirf** right avatar. CRM/Speed/AI dump. Landing / `plans.ts` no-touch | **READY** — repo. **DONE** after pull + live: Basic vs Pro vs Business rail, no Leo on anexomail.com |
+| **E2** | F1 | Ph 5A auth | `auth.tsx` `server/routes/auth.ts` | `workspace_plan` sach. Sessions = Chrome·Windows, Bun dump nahi | **not live** — login hai, plan/sessions live test nahi |
+| **E3** | F3 | Ph 2 + **7** mail | `ia.ts` `app.mail.*` `MailRail` | Folders pane. Inbox zero honest. Rewrite nahi | list live; DONE tab E3 verify + E1 live close |
+| **E4** | **F4 GATE** | Ph 9 + 52–58 | `ComposeStudio` `sendmail.ts` Postfix | Leo compose se **nikaal** (mail host). Send+receive | **not live** — E1–E3 DONE ke baad |
+| **E5** | F5 | thread | `$threadId.tsx` | — | wait E4 DONE |
+| **E6** | F6 | Ph 10 | `people` SQL62 | — | wait E4 DONE |
+| **E7** | F7 | Ph 11 | `calendar` SQL61 | — | wait E4 DONE |
+| **E8** | F8 | work | `app.work.tsx` | — | wait E4 DONE |
 
 **Skip ab (original mein hain, execute nahi):**  
 Ph **8, 17–22, 31** = AI → `ai.anexomail.com` baad  
@@ -63,7 +74,7 @@ Ph **25, 27** Admin/Speed → founder end
 Ph **3** landing polish → no-touch  
 Ph **32–51** Polar/trial → no-touch (spine)  
 Ph 6 dashboard = **rakhna** (Greeting), Leo credits panel AI-only  
-Ph 4 honest states = har E ke saath  
+Ph 4 honest states = har E ke saath (`PlanSurfaceGate`)  
 Ph 23 settings/account = E2 ke saath (profile right)
 
 ---
@@ -74,14 +85,14 @@ Ph 23 settings/account = E2 ke saath (profile right)
 |---|---|---|
 | Basic | Dashboard Mail People Calendar | nahi |
 | Pro | + Work | nahi |
-| Business / Biz Pro | + Org (Chat **is E-list mein nahi** — code gate baad) | AI nahi |
+| Business / Biz Pro | + Org + Chat (nav; Chat 1–57 rebuild nahi) | AI nahi |
 | AI Exec (Raana) | Biz Pro mail UX; Leo **baad** AI host | founder nahi |
 
-Is execute ke dauran Chat rail **Basic/Pro band**. Business pe Chat dikhe to bhi **E-phases Chat nahi chheḍte**.
+URL se Chat/Work/Org/AI kholne par blank nahi — package wall (`PlanSurfaceGate`).
 
 ---
 
-## E4 — agla asli kaam (inbox ke baad)
+## E4 — agla asli kaam (inbox + E1 live ke baad)
 
 1. Compose se mail bahar (Postfix)  
 2. Bahar se aaye → list (E3 pehle se)  
@@ -101,4 +112,4 @@ Jab E4 green + E5–E8 user-complete:
 ## Execute shuru
 
 Agent: **is file ke E-number se.** Original `docs/anexomail-blueprint.md` overwrite nahi.  
-Pehli ticket: **E1 live** (push/pull — naam chip) phir **E2 session** phir **E4 mail-gate**.
+Ab: **E1 live** (push/pull — package rail) phir **E2 session** phir **E4 mail-gate**.

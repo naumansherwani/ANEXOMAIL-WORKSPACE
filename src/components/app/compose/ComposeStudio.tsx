@@ -43,6 +43,9 @@ import {
 import { learnWritingPattern } from "@/lib/mail-predict";
 import { notify } from "@/lib/notify";
 import { useSendMail } from "@/lib/mail";
+import { useAuth } from "@/lib/auth";
+import { isAiHost } from "@/lib/host";
+import { platformPlan, showProMailTools } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 const TONES: { id: ComposeTone; label: string }[] = [
@@ -88,6 +91,12 @@ export function ComposeStudio({
   onSent,
   variant = "overlay",
 }: StudioProps) {
+  const { session } = useAuth();
+  const [aiHost] = useState(isAiHost);
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const proMail = showProMailTools(plan);
+  const leoUi = aiHost;
+
   const [to, setTo] = useState(initialTo);
   const [cc, setCc] = useState("");
   const [bcc, setBcc] = useState("");
@@ -390,21 +399,24 @@ export function ComposeStudio({
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
             />
-            <Button
-              type="button"
-              variant="outline"
-              className="ax-press shrink-0"
-              onClick={() => runLeo({ task: "SUBJECT" })}
-              disabled={leo.isPending}
-            >
-              <Sparkles className="size-4" />
-              Suggest
-            </Button>
+            {leoUi ? (
+              <Button
+                type="button"
+                variant="outline"
+                className="ax-press shrink-0"
+                onClick={() => runLeo({ task: "SUBJECT" })}
+                disabled={leo.isPending}
+              >
+                <Sparkles className="size-4" />
+                Suggest
+              </Button>
+            ) : null}
           </div>
         </div>
 
-        {/* templates + snippets */}
+        {/* templates — Pro card. Snippets stay for every package. */}
         <div className="flex flex-wrap items-center gap-2">
+          {proMail ? (
           <select
             aria-label="Insert template"
             value=""
@@ -425,6 +437,7 @@ export function ComposeStudio({
               </option>
             ))}
           </select>
+          ) : null}
           {snippets.data?.snippets.slice(0, 4).map((s) => (
             <button
               key={s.id}
@@ -450,7 +463,11 @@ export function ComposeStudio({
           subject={subject}
           to={to}
           {...(threadId ? { threadId } : {})}
-          placeholder="Write it once. Leo can tighten it, translate it or coach the tone."
+          placeholder={
+            leoUi
+              ? "Write it once. Leo can tighten it, translate it or coach the tone."
+              : "Write the message."
+          }
         />
 
         {/* open variables */}
@@ -470,7 +487,7 @@ export function ComposeStudio({
           </div>
         )}
 
-        {/* AI row */}
+        {leoUi ? (
         <div className="flex flex-wrap items-center gap-2">
           <Button
             type="button"
@@ -543,6 +560,7 @@ export function ComposeStudio({
             Jimmy se poochho
           </button>
         </div>
+        ) : null}
 
         {/* attachments */}
         <div className="flex flex-wrap items-center gap-2">
@@ -611,7 +629,7 @@ export function ComposeStudio({
           </div>
         )}
 
-        {scheduling && (
+        {proMail && scheduling && (
           <div className="flex flex-col gap-1.5">
             <Label htmlFor="studio-schedule">Send at</Label>
             <Input
@@ -643,8 +661,9 @@ export function ComposeStudio({
         <div className="flex flex-wrap items-center gap-ax-2">
           <Button type="submit" className="ax-press ax-tap" disabled={busy}>
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
-            <span>{scheduling ? "Schedule" : "Send"}</span>
+            <span>{proMail && scheduling ? "Schedule" : "Send"}</span>
           </Button>
+          {proMail ? (
           <Button
             type="button"
             variant="ghost"
@@ -654,6 +673,7 @@ export function ComposeStudio({
             <Clock className="size-4" />
             {scheduling ? "Send now instead" : "Schedule send"}
           </Button>
+          ) : null}
           {followUpDays > 0 && (
             <span className="flex items-center gap-1 text-[10px] text-steel">
               <BellRing className="size-3" />

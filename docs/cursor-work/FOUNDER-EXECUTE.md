@@ -5,7 +5,7 @@
 **Ab:** wall only — `founder_accounts` + host. Humza/Raana/Masood **nahi**.  
 **Lovable PRESERVE:** 33 `app.founder*` + Speed/Admin phenko mat — family rail se **gate**, founder host pe theek karke implement.
 
-GATE: har Fd **TODO / DONE**. DONE = wire + live test. Agli Fd nahi pehle.
+GATE: har Fd **not live / DONE**. DONE = wire + live test. Agli Fd nahi pehle. Yeh file TODO board nahi.
 
 ---
 

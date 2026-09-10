@@ -5,6 +5,7 @@ import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { Greeting } from "@/components/app/dashboard/Greeting";
 import { useAuth } from "@/lib/auth";
 import { founderPreviewEnabled } from "@/lib/founder-preview";
+import { isAiHost } from "@/lib/host";
 import { hasAiPlan } from "@/lib/plan-surface";
 import {
   ActivityFeed,
@@ -59,7 +60,9 @@ function DashboardPage() {
           <div className="flex flex-col gap-ax-5">
             <QuickActions onCompose={() => setComposing(true)} />
             <UpcomingPanel enabled={enabled} />
-            {hasAiPlan(session?.user.ai_plan) ? <AiUsagePanel enabled={enabled} /> : null}
+            {isAiHost() && hasAiPlan(session?.user.ai_plan) ? (
+              <AiUsagePanel enabled={enabled} />
+            ) : null}
           </div>
         </div>
       </div>

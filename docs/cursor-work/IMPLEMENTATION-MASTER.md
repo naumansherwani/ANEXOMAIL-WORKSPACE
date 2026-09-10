@@ -2,14 +2,15 @@
 # Agent Personal Memory — Read This First Every Session
 
 **Founder:** Muhammad Nauman Sherwani
-**Last updated:** Sep 10 2026 (raat — execute merge)
+**Last updated:** Sep 10 2026 (E1 packages — existing cards)
 **Execute (implement yahi):**
 - Mail: `docs/cursor-work/ANEXOMAIL-EXECUTE.md` — **ab**
 - AI: `docs/cursor-work/AI-EXECUTE.md` — mail DONE ke baad
 - Founder: `docs/cursor-work/FOUNDER-EXECUTE.md` — end
 **GATE:** PARTIAL se next nahi. DONE = wire + live test.
-**Original no-touch:** `docs/anexomail-blueprint.md`
-**Rule:** Phases kisi bhi tarteeb mein mat likho — **EXECUTE E1–E8**. Inbox rewrite nahi.
+**Founder rule:** yeh master TODO board nahi. Product TODO se nahi chalti. Status: **DONE / READY / not live**.
+**Original no-touch:** `docs/anexomail-blueprint.md` · `src/lib/plans.ts`
+**Rule:** Phases kisi bhi tarteeb mein mat likho — **EXECUTE E1–E8**. Inbox rewrite nahi. Packages = existing cards (Basic £23 / Pro £46 / Business £97 / Business Pro £2850).
 
 ## MAIL SEND + RECEIVE GATE (founder lock 10 Sep 2026)
 
@@ -28,7 +29,7 @@ Proof: `bash server/gates/mail-gate.sh` green + founder live test.
 
 ## 0. UNMIX AUDIT — Lovable mix vs blueprint vs package cards (10 Sep 2026)
 
-**Yeh section pehle parho.** Code is raat wire mat karo jab tak founder **“gates wire shuru”** na bole.  
+**Yeh section pehle parho.** Founder ne existing packages implement bola — E1 rail/gate **usi** `AppShell` + `host.ts` + `plan-surface.ts` pe. Naya stack nahi.  
 **NO TOUCH:** `src/lib/plans.ts` · `src/lib/ai-packages.ts` · Polar Rust webhook · landing · logo.
 
 ### 0.1 Ek codebase — teen darwaze (57×3 copy nahi)

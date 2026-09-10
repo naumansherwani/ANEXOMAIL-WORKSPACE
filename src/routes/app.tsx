@@ -2,6 +2,7 @@ import { Outlet, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/app/AppShell";
+import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
 import { EarnedDelight } from "@/components/app/premium/Delight";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
@@ -10,7 +11,7 @@ import { useRegisterDevice } from "@/lib/chat-safety";
 
 import { useExperience } from "@/lib/experience";
 import { useAccountState } from "@/lib/trial";
-import { founderPreviewFromUrl, setFounderPreview } from "@/lib/founder-preview";
+import { setFounderPreview, workspaceTourFromUrl } from "@/lib/founder-preview";
 
 export const Route = createFileRoute("/app")({
   // Session lives in the browser, so the gate runs client-side only.
@@ -34,9 +35,8 @@ function AppLayout() {
   const { status, unavailableReason, refresh } = useAuth();
   // Phase 29 — paints calm / delight / focus-audit preferences onto <html>.
   useExperience();
-  // Founder review access. This route is ssr:false, so reading the key in the
-  // initial state is safe and beats the redirect effect to the first commit.
-  const [preview, setPreview] = useState(() => founderPreviewFromUrl());
+  // Tour without login: ONLY `?founder=1` on this URL (not sticky preview key).
+  const [preview, setPreview] = useState(() => workspaceTourFromUrl());
   // Phase 32 — DB is the authority. Trial khatam / frozen ho to business data
   // band, aur user ko /trial-ended pe le jaate hain (account+billing khula rehta hai).
   const account = useAccountState();
@@ -137,7 +137,9 @@ function AppLayout() {
           </button>
         </div>
       )}
-      <Outlet />
+      <PlanSurfaceGate>
+        <Outlet />
+      </PlanSurfaceGate>
     </AppShell>
   );
 }

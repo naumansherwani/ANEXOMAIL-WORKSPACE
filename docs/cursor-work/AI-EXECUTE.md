@@ -6,7 +6,7 @@
 **Prices:** `plans.ts` / `ai-packages.ts` no-touch.  
 **Lovable PRESERVE:** `app.ai*` `ComposeStudio` Leo `ai_.ts` phenko mat — mail se **gate**, phir AI host pe theek karke implement.
 
-GATE: har A-step **TODO / DONE**. DONE se pehle agli A nahi.
+GATE: har A-step **not live / DONE**. DONE se pehle agli A nahi. Yeh file TODO board nahi.
 
 ---
 
@@ -47,4 +47,4 @@ AI Pro / AI Business / AI Executive: platform = Business / Biz Pro **already mai
 
 ## Ab status
 
-**TODO — mail E4 DONE ke baad shuru.** Ab execute nahi.
+**not live — mail E4 DONE ke baad shuru.** Ab execute nahi.

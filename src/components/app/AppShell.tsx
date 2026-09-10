@@ -26,14 +26,7 @@ import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalet
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
 import { founderSurfaceAllowed, isAiHost, isPublicMailHost } from "@/lib/host";
-import {
-  showAdmin,
-  showAiCenter,
-  showChat,
-  showDashboard,
-  showOrg,
-  showWork,
-} from "@/lib/plan-surface";
+import { packageCopyName, platformPlan, railItemVisible } from "@/lib/plan-surface";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -97,16 +90,10 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { session, organisation, refresh, signOut } = useAuth();
   const account = useAccountState();
   const trialAllowed = new Set(account.data?.trial_features ?? []);
-  // FOUNDER HOST GUARD (permanent): Founder view sirf founderworkspace host par.
-  // Hydration-safe — SSR par hostname nahi hota, is liye effect ke baad set hota hai.
-  const [founderHost, setFounderHost] = useState(false);
-  const [publicMailHost, setPublicMailHost] = useState(true);
-  const [aiHost, setAiHost] = useState(false);
-  useEffect(() => {
-    setFounderHost(founderSurfaceAllowed());
-    setPublicMailHost(isPublicMailHost());
-    setAiHost(isAiHost());
-  }, []);
+  // Host once on mount (/app is ssr:false). Founder view sirf founder host.
+  const [founderHost] = useState(founderSurfaceAllowed);
+  const [publicMailHost] = useState(isPublicMailHost);
+  const [aiHost] = useState(isAiHost);
   const allowed = account.data?.trial_limited
     ? primary.filter((item) => {
         if (item.to === "/app") return trialAllowed.has("today");
@@ -116,21 +103,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         return false;
       })
     : primary;
-  const plan = session?.user.workspace_plan || "basic";
-  const aiPlan = session?.user.ai_plan || null;
-  const visiblePrimary = allowed.filter((item) => {
-    if (item.to.startsWith("/app/founder")) return founderHost;
-    if (founderHost) return true;
-    if (item.to === "/app/perf") return founderHost;
-    if (item.to === "/app/crm") return aiHost;
-    if (item.to === "/app") return showDashboard();
-    if (item.to === "/app/chat") return showChat(plan, aiPlan);
-    if (item.to === "/app/org") return showOrg(plan, aiPlan);
-    if (item.to === "/app/work") return showWork(plan, aiPlan);
-    if (item.to === "/app/ai-center") return showAiCenter(aiPlan, aiHost);
-    if (item.to === "/app/admin") return showAdmin({ founder: Boolean(session?.user.is_founder), founderHost });
-    return true;
-  });
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const visiblePrimary = allowed.filter((item) =>
+    railItemVisible(item.to, {
+      plan,
+      founder: Boolean(session?.user.is_founder),
+      founderHost,
+      publicMailHost,
+      aiHost,
+    }),
+  );
   const brandHome = "/app";
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
@@ -243,6 +225,9 @@ export function AppShell({ children }: { children: ReactNode }) {
               </span>
               <span className="block break-all text-xs font-medium text-muted-foreground">
                 {session?.user.anexomail_address || session?.user.email || "Signed in"}
+              </span>
+              <span className="block pt-1 text-[11px] font-medium text-muted-foreground">
+                {packageCopyName(plan)}
               </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

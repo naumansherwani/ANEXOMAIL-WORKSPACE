@@ -6,6 +6,7 @@ import {
   CheckSquare,
   Inbox,
   Mail,
+  MessageSquare,
   Search,
   Shield,
   UserCircle2,
@@ -20,8 +21,17 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { ADMIN_SECTIONS, MAIL_FOLDERS } from "@/lib/ia";
+import { useAuth } from "@/lib/auth";
 import { useUniversalSearch } from "@/lib/contacts";
+import { founderSurfaceAllowed } from "@/lib/host";
+import { ADMIN_SECTIONS, MAIL_FOLDERS } from "@/lib/ia";
+import {
+  platformPlan,
+  showAdmin,
+  showChat,
+  showOrg,
+  showWork,
+} from "@/lib/plan-surface";
 
 /**
  * Rule: Cmd+K is the whole product. Mail, people, calendar, work, admin —
@@ -36,8 +46,18 @@ export function CommandPalette({
   onOpenChange: (open: boolean) => void;
 }) {
   const navigate = useNavigate();
+  const { session } = useAuth();
   const [term, setTerm] = useState("");
   const results = useUniversalSearch(term, open);
+  const [founderHost] = useState(founderSurfaceAllowed);
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const workOpen = founderHost || showWork(plan);
+  const chatOpen = founderHost || showChat(plan);
+  const orgOpen = founderHost || showOrg(plan);
+  const adminOpen = showAdmin({
+    founder: Boolean(session?.user.is_founder),
+    founderHost,
+  });
 
   const go = (to: string) => {
     onOpenChange(false);
@@ -145,10 +165,24 @@ export function CommandPalette({
             <CalendarDays className="size-4" />
             Calendar
           </CommandItem>
-          <CommandItem value="work tasks notes" onSelect={() => go("/app/work")}>
-            <CheckSquare className="size-4" />
-            Work
-          </CommandItem>
+          {workOpen ? (
+            <CommandItem value="work tasks notes" onSelect={() => go("/app/work")}>
+              <CheckSquare className="size-4" />
+              Work
+            </CommandItem>
+          ) : null}
+          {chatOpen ? (
+            <CommandItem value="anexochat chat" onSelect={() => go("/app/chat")}>
+              <MessageSquare className="size-4" />
+              ANEXOChat
+            </CommandItem>
+          ) : null}
+          {orgOpen ? (
+            <CommandItem value="organisation org members" onSelect={() => go("/app/org")}>
+              <Building2 className="size-4" />
+              Organisation
+            </CommandItem>
+          ) : null}
           <CommandItem value="search everything" onSelect={() => go("/app/search")}>
             <Search className="size-4" />
             Search everything
@@ -175,19 +209,21 @@ export function CommandPalette({
           ))}
         </CommandGroup>
 
-        <CommandGroup heading="Admin">
-          {ADMIN_SECTIONS.map((s) => (
-            <CommandItem
-              key={s.to}
-              value={`admin ${s.label} ${s.summary}`}
-              onSelect={() => go(s.to)}
-            >
-              <Shield className="size-4" />
-              {s.label}
-              <span className="ml-auto text-xs text-muted-foreground">{s.summary}</span>
-            </CommandItem>
-          ))}
-        </CommandGroup>
+        {adminOpen ? (
+          <CommandGroup heading="Admin">
+            {ADMIN_SECTIONS.map((s) => (
+              <CommandItem
+                key={s.to}
+                value={`admin ${s.label} ${s.summary}`}
+                onSelect={() => go(s.to)}
+              >
+                <Shield className="size-4" />
+                {s.label}
+                <span className="ml-auto text-xs text-muted-foreground">{s.summary}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        ) : null}
       </CommandList>
     </CommandDialog>
   );
