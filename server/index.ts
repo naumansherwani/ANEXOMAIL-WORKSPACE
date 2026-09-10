@@ -51,6 +51,8 @@ const PORT = Number(process.env.PORT) || 3100;
 const app = express();
 
 app.disable("x-powered-by");
+// Caddy → Bun :3100. Bina iske req.ip hamesha 127.0.0.1, session list jhoot.
+app.set("trust proxy", 1);
 
 // ---- LEO bridge: native (Request -> Response) handler inside Express ----
 app.use("/api/leo", async (req, res) => {

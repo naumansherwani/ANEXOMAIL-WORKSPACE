@@ -44,6 +44,28 @@ type DeviceSession = {
   current: boolean;
 };
 
+function sessionLooksLikeServer(s: DeviceSession): boolean {
+  const blob = `${s.browser || ""} ${s.device || ""}`.toLowerCase();
+  return blob.startsWith("bun/") || blob.includes(" bun/") || blob.startsWith("node/");
+}
+
+function sessionTitle(s: DeviceSession): string {
+  const blob = `${s.browser || ""} ${s.device || ""}`;
+  if (/mozilla\/|applewebkit|win64/i.test(blob)) {
+    const u = blob.toLowerCase();
+    const browser = u.includes("edg/") ? "Edge" : u.includes("firefox") ? "Firefox" : u.includes("chrome") ? "Chrome" : "Browser";
+    const device = u.includes("windows") ? "Windows" : u.includes("mac") ? "Mac" : "Computer";
+    return `${browser} · ${device}`;
+  }
+  if (s.browser && s.device && s.browser !== s.device) return `${s.browser} · ${s.device}`;
+  return s.browser || s.device || "This device";
+}
+
+function sessionMeta(s: DeviceSession): string {
+  const ip = s.ip && s.ip !== "127.0.0.1" && s.ip !== "::1" ? s.ip : null;
+  return [s.location, ip, new Date(s.last_seen_at).toLocaleString()].filter(Boolean).join(" · ");
+}
+
 function AccountPage() {
   const { session, refresh } = useAuth();
   const queryClient = useQueryClient();
@@ -88,6 +110,8 @@ function AccountPage() {
     onError: (error: ApiError) =>
       notify.failed("Could not revoke that session", { description: error.message }),
   });
+
+  const visibleSessions = (sessions.data ?? []).filter((s) => !sessionLooksLikeServer(s));
 
   const changePassword = useMutation({
     mutationFn: async () => {
@@ -368,7 +392,7 @@ function AccountPage() {
         <section>
           <h2 className="ax-label text-foreground">Devices</h2>
           <p className="ax-caption mt-1">
-            Every session is device-bound. Revoke one and that device signs out immediately.
+            Browsers that signed in. Revoke one and that device signs out. Server checks are not listed.
           </p>
 
           <div className="mt-ax-3">
@@ -380,27 +404,23 @@ function AccountPage() {
                 body={sessions.error.message}
                 onRetry={() => void sessions.refetch()}
               />
-            ) : !sessions.data?.length ? (
+            ) : !visibleSessions.length ? (
               <StateBlock title="No other devices" body="You're only signed in here." />
             ) : (
               <ul className="ax-stagger divide-y divide-border rounded-xl border border-border bg-card">
-                {sessions.data.map((s) => (
+                {visibleSessions.map((s) => (
                   <li key={s.id} className="ax-in flex items-center gap-3 p-ax-3">
                     <Laptop className="size-4 shrink-0 text-steel" />
                     <div className="min-w-0">
                       <p className="ax-label truncate text-foreground">
-                        {s.browser ?? "Unknown browser"} · {s.device ?? "Unknown device"}
+                        {sessionTitle(s)}
                         {s.current && (
                           <span className="ml-2 rounded-full bg-cyan-accent/15 px-2 py-0.5 text-[10px] font-semibold text-cyan-accent">
                             This device
                           </span>
                         )}
                       </p>
-                      <p className="ax-caption truncate">
-                        {[s.location, s.ip, new Date(s.last_seen_at).toLocaleString()]
-                          .filter(Boolean)
-                          .join(" · ")}
-                      </p>
+                      <p className="ax-caption truncate">{sessionMeta(s)}</p>
                     </div>
                     {!s.current && (
                       <Button

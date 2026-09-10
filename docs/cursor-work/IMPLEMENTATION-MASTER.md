@@ -2,9 +2,14 @@
 # Agent Personal Memory — Read This First Every Session
 
 **Founder:** Muhammad Nauman Sherwani
-**Last updated:** Sep 10 2026
-**Rule:** Yeh file har session mein read karo. Phases kisi bhi tarteeb mein mat likho —
-sirf is file ke mutabiq chalo.
+**Last updated:** Sep 10 2026 (raat — execute merge)
+**Execute (implement yahi):**
+- Mail: `docs/cursor-work/ANEXOMAIL-EXECUTE.md` — **ab**
+- AI: `docs/cursor-work/AI-EXECUTE.md` — mail DONE ke baad
+- Founder: `docs/cursor-work/FOUNDER-EXECUTE.md` — end
+**GATE:** PARTIAL se next nahi. DONE = wire + live test.
+**Original no-touch:** `docs/anexomail-blueprint.md`
+**Rule:** Phases kisi bhi tarteeb mein mat likho — **EXECUTE E1–E8**. Inbox rewrite nahi.
 
 ## MAIL SEND + RECEIVE GATE (founder lock 10 Sep 2026)
 
@@ -18,6 +23,179 @@ Aasan raasta:
 3. Wapas aane wali mail Postfix → Dovecot pipe → database → Mail list
 
 Proof: `bash server/gates/mail-gate.sh` green + founder live test.
+
+---
+
+## 0. UNMIX AUDIT — Lovable mix vs blueprint vs package cards (10 Sep 2026)
+
+**Yeh section pehle parho.** Code is raat wire mat karo jab tak founder **“gates wire shuru”** na bole.  
+**NO TOUCH:** `src/lib/plans.ts` · `src/lib/ai-packages.ts` · Polar Rust webhook · landing · logo.
+
+### 0.1 Ek codebase — teen darwaze (57×3 copy nahi)
+
+| Host | Product | 1-week matlab |
+|---|---|---|
+| `anexomail.com` | Mail workspace + plan cards Basic/Pro/Business/Business Pro | Login, Dashboard, Mail. Chat/Video **sirf Business+**. LEO **zero**. |
+| `ai.anexomail.com` | LEO + AI plans (AI Pro / AI Business / AI Executive) | Awam **Coming Soon**. Raana grant baad. Duplicate org wizard **nahi**. |
+| `founderworkspace.anexomail.com` | Founder protocol — sirf Nauman (`founder_accounts`) | Admin, Speed, revenue, health. Family testers yahan **kabhi nahi**. |
+
+Har naya page **naya subdomain nahi**. Same `AppShell` + `host.ts` + **plan gate**.
+
+### 0.2 Founder protocol (mix yahan se toot’ti hai)
+
+Founder ≠ Business Pro ≠ AI Executive.
+
+| | Founder | Awam (koi bhi plan) |
+|---|---|---|
+| Host | `founderworkspace.anexomail.com` | `anexomail.com` / `ai.` |
+| DB | `founder_accounts` | `family_accounts` / Polar entitlement |
+| Rail | Sab dikhe (Admin, Speed, Founder) | Plan matrix neeche |
+| Onboarding | Skip — seedha `/app` | Personal \| Business (F3 B) |
+| Payment | Nahi | Polar (no touch) |
+
+Humza/Raana/Masood **founder nahi**. Unko founder rail / Admin **nahi**.
+
+### 0.3 Package → kya dikhe (SOURCE: PACKAGE-FEATURE-FORMULA + plans.ts — prices no touch)
+
+**Workspace (`anexomail.com`)**
+
+| Rail / feature | Basic | Pro | Business | Business Pro |
+|---|---|---|---|---|
+| Dashboard | ✅ | ✅ | ✅ | ✅ |
+| Mail send/receive | ✅ | ✅ | ✅ | ✅ |
+| People (contacts) | ✅ | ✅ | ✅ | ✅ |
+| Calendar | ✅ | ✅ | ✅ | ✅ |
+| Work (tasks / thread analytics) | basic | ✅ | ✅ | ✅ |
+| Snooze / schedule / shared inbox | ❌ | ✅ | ✅ | ✅ |
+| ANEXOChat | ❌ | ❌ | ✅ | ✅ |
+| ANEXOVideoCall | ❌ | ❌ | ✅ (8) | ✅ (40) |
+| Org / members / roles | ❌ | ❌ | ✅ | ✅ |
+| Org Admin (unke domain/DNS — customer) | ❌ | ❌ | limited, F9 baad | ✅, F9 baad |
+| Founder Admin / Speed / revenue | ❌ | ❌ | ❌ | ❌ |
+| LEO / AI center / compose Leo | ❌ | ❌ | ❌ | ❌ |
+
+**AI (`ai.anexomail.com`) — workspace platform ANDAR included, LEO alag meter**
+
+| | AI Pro | AI Business | AI Executive |
+|---|---|---|---|
+| Platform | Business | Business | Business Pro |
+| LEO credits | 1,200 | 5,000 | 10,000 |
+| Chat | Ph 1–57 | Ph 1–57 | Ph 1–57 |
+| Compose Leo / summary / smart reply | ✅ | ✅ | ✅ |
+
+**Family testers (feel = unka plan, founder nahi)**
+
+| Kaun | Plan | Anexomail.com rail |
+|---|---|---|
+| Masood | Pro | Dashboard, Mail, People, Calendar, Work — **no Chat, no AI, no Admin** |
+| Humza | Business Pro | + Chat, Org, Video (plan) — **no LEO, no Founder Admin** |
+| Raana | AI Executive | Business Pro workspace + **AI/Leo** (ai host / AI rail) — **no Founder Admin** |
+
+### 0.4 Clash (Lovable + purani master file — isliye messy laga)
+
+| Jagah | Galat kaha | Sahi (package cards) |
+|---|---|---|
+| Master §6 purana | anexomail.com pe Chat **hide** | Chat **Business+** pe dikhe |
+| Live AppShell (pehle) | Sab ko same CRM/AI/Admin | Plan + host gate |
+| ComposeStudio | Leo buttons har mail user | Sirf AI plan |
+| Blueprint PHASE 6 copy | “AI always visible” | Sirf AI surface |
+| F1.2 purana | awam pe Chat hide | Formula Rule 3 |
+
+**Cinematic dashboard (Greeting, tiles) delete nahi** — Dashboard har package pe. Leo credits panel sirf AI plan.
+
+### 0.5 Lovable dirt (alag karna — delete product nahi, gate)
+
+1. Logo `/` → landing/sign-in (fix started: stay in `/app`)  
+2. Dual workspace rows + `not_found`  
+3. Hosted mailbox pe “Domain not verified”  
+4. Forced org + domain day-1  
+5. Same rail Basic = Business Pro = Founder  
+6. Leo in compose / dashboard for non-AI  
+7. Admin on family  
+8. Claim-username vs mailbox identity  
+9. `app/founder*` awam host pe clickable  
+10. CRM dumped on mail host (CRM = `crm` / `aicrm` hosts, mail mix nahi)
+
+### 0.6 1-week launch (57 phases yahan complete nahi)
+
+**Week ka product:** asli send+receive (F4) + yeh gates.  
+**Nahi:** 57 ANEXOChat phases × 3 hosts, landing redo, Polar, naya theme pack.
+
+Tarteeb: F4 mail-gate → gates wire (AppShell + server 403) → F5+ wait.
+
+**Gates wire tab:** founder bole **“gates wire shuru”**. Abhi discuss freeze.
+
+### 0.7 Lovable mix ki asl jaga (blueprint vs cards vs code)
+
+Teen “sach” files — ek dusre ko kaat’ti hain. Agent ne pehle kabhi yeh, kabhi woh wire kiya. Isliye rail barbad.
+
+| Source | Woh kya kehta hai | Asal ghalti |
+|---|---|---|
+| Blueprint PHASE 6 / design | “AI always visible”, three-panel + LEO | Mail product pe LEO hamesha = mix. LEO = AI host / AI plan. |
+| `docs/ai-packages.md` §6 | Chat + VideoCall **andar** `ai.anexomail.com` | Business card pe Chat **included** hai. Humza ko Coming Soon AI site pe mat bhejo. |
+| PACKAGE formula Rule 3 | Chat Business+; LEO AI-only | Yeh **jeet’ta hai** entitlement ke liye. |
+| Purana Master F1.2 | anexomail.com pe Chat **hide** | Package card ke khilaf. |
+| `host.ts` extra | `anexochat.` `crm.` `aicrm.` + `.lovable.app` = founder | Teen locked hosts ke upar extra dukaan. Lovable preview = founder protocol nahi. |
+| `ia.ts` Admin | Domains, members, DKIM — **org ka** admin | Live `showAdmin` = founder host only. Do alag cheezein ek label “Admin”. |
+| Formula device-trust | Biz Pro + AI Exec top-tier safety queue | Family tester pe “Admin” dikhana ≠ founder protocol. Raana ko founder Admin nahi. |
+
+**Mind (clone nahi):** entitlement package card se. Surface teen hosts se. UI Lovable dump se nahi.
+
+### 0.8 LOCKED GATE — propose (founder confirm ke baad wire)
+
+**Teen hosts sirf.** `anexochat.` / `crm.` / `aicrm.` is week **nahi**. CRM mail rail pe nahi.
+
+**Do Admin (alag naam — mix yahan toot’ti hai)**
+
+| Label | Kya hai | Kis ko | Kab |
+|---|---|---|---|
+| Org | Members, roles, unka workspace | Business+ (Humza) | Rail ab |
+| Workspace Admin | Unka DNS/DKIM, audit, device-trust | Business limited / Biz Pro full | **F9 baad** — family testers pe OFF |
+| Founder protocol | Speed, revenue, sab orgs, health, `/app/founder*` | Sirf Nauman + `founderworkspace` | F9, mail-gate ke baad |
+
+**Chat kahan:** Business+ ko **anexomail.com rail**. AI host par LEO-in-chat + Ph 57. Alag chat subdomain nahi. Phase 32+ wait paste.
+
+**LEO kahan:** Workspace plans (Basic→Biz Pro) **zero**. AI plan (Raana grant) → AI rail OK (same codebase). Awam `ai.anexomail.com` Coming Soon.
+
+**Work:** Pro+ full. Basic = mail-first; Work rail optional later — ab hide (live `showWork`).
+
+**Dashboard:** har package, har host (founder ke alawa public mail). Cinematic greeting delete nahi.
+
+### 0.9 F-series → host → package (Claude F flow, unmixed)
+
+| Flow | Host | Kis package | Status rule |
+|---|---|---|---|
+| F1 Auth | `anexomail.com` | Sab awam | Founder skip wizard |
+| F1.2 Shell gates | teen hosts | §0.8 matrix | Wire sirf “gates wire shuru” |
+| F2 Dashboard | mail + AI | Sab | DONE sirf live |
+| F3 list | mail | Sab mail plans | READY |
+| F3 A testers | mail | Masood Pro, Humza Biz Pro, Raana AI Exec | READY |
+| F3 B onboarding | mail only | Personal \| Business | READY — AI/founder mix nahi |
+| **F4 send+receive** | mail | Sab (Basic+ mail included) | **GATE — F5+ wait** |
+| F5 thread | mail | Sab | wait F4 |
+| F6 People | mail | Sab | wait F4 |
+| F7 Calendar | mail | Sab | wait F4 |
+| F8 Work | mail | Pro+ | wait F4 |
+| F9 Founder protocol | **founder host only** | Nauman | wait F4 |
+| C1–31A Chat | mail rail Business+ | Business, Biz Pro, AI plans | live wire; **32+ paste only** |
+| VideoCall | Business+ entitlement | group 8 / 40 / 60 per card | not a 4th host |
+| AI1–AI4 LEO | `ai.` + `ai_plan` | AI Pro / Biz / Exec | Coming Soon awam |
+
+### 0.10 Extra host dirt (Lovable leftover — build nahi)
+
+`src/lib/host.ts` ab bhi: `anexochat.anexomail.com`, `crm.anexomail.com`, `aicrm.anexomail.com`, `*.lovable.app` = founder.  
+**Locked map teen hosts.** In extra ko naya product mat banao. Founder protocol `.lovable.app` pe nahi.
+
+### 0.11 Founder se 3 sawaal (wire se pehle — ek jawab kaafi)
+
+1. **Chat:** Business+ ko `anexomail.com` pe Chat rail — **haan** (recommend) ya AI host pe bhejo (Coming Soon)?
+2. **Org Admin:** Humza ko `/app/org` dikhe; `/app/admin` family pe band — **haan** (recommend, testers)? Product Admin F9 pe unke domain ke liye?
+3. **Raana LEO:** `anexomail.com` pe AI rail (grant) **ya** sirf `ai.anexomail.com`?
+
+Jawab ke baghair **AppShell dubara nahi chhedna.** Polar / `plans.ts` / landing **no touch**.
+
+**10 Sep shaam lock:** screenshot + sure-shot path → **§12**. Shuru se rewrite **nahi**.  
+Founder emails: `docs/cursor-work/founder/address-audit.md`. Retain map: `docs/cursor-work/LOVABLE-RETAIN-MAP.md`.
 
 ---
 
@@ -176,11 +354,11 @@ F1.1  Auth real verify — login/signup live test
       SQL: phase59 (account_lifecycle) — already run
       Security emerges: rate limit on /api/auth/login (5 req/min)
 
-F1.2  AppShell host guard verify
-      Files: src/components/app/AppShell.tsx, src/lib/host.ts
-      Rule: anexomail.com → hide Chat/AI/Founder
-             ai.anexomail.com → show AI, hide Founder
-             founderworkspace.anexomail.com → show all
+F1.2  AppShell host + **plan** guard (Lovable mix hatao)
+      Files: src/components/app/AppShell.tsx, src/lib/host.ts, src/lib/plan-surface.ts
+      Rule: §0.8 — Chat Business+ on anexomail.com; LEO AI-plan/AI-host;
+             Founder/Speed sirf founder host; CRM mail rail pe nahi.
+             Purana “awam pe Chat hide” **galat** — package cards jeet’te hain.
 
 ────────────────────────────────────────────────────────────────────
 FLOW 2 — DASHBOARD (DONE ✅)                              [P2 LIVE]
@@ -370,29 +548,30 @@ AI4  ANEXOChat Phase 57 — Leo in chat (AI plan gate)
 ## 5. 1-WEEK SPRINT PLAN
 
 ```
-Day 1  (Sep 10)  F1 Auth verify + F2 Dashboard confirm + C1 Chat engine start
-Day 2  (Sep 11)  F3 Mail inbox wire + F4 Compose+Send + C2 Message states
-Day 3  (Sep 12)  F5 Thread view + F6 Contacts + C3 Typing+Presence+Groups
-Day 4  (Sep 13)  F7 Calendar + F8 Work layer + C4 File engine
-Day 5  (Sep 14)  F9 Founder workspace + Security S1-S4 + C5 Business superpowers
-Day 6  (Sep 15)  Mail gate live test + ANEXOChat A→B prove + End-to-end
-Day 7  (Sep 16)  Launch: anexomail.com + founderworkspace + ANEXOChat Business tier
+HONEST WEEK (mail-gate jeet’ta hai — 57×3 copy nahi):
+  Abhi     F3 list + F3A/B testers READY — live unproven
+  Blocker  F4 send+receive + bash server/gates/mail-gate.sh GREEN
+  Uske baad  F1.2 gates wire (founder: “gates wire shuru”)
+  F5+ / F9 / Chat 32+ / cinematic paint  WAIT
 ```
 
-**Parallel rule:** ANEXOMAIL + ANEXOChat parallel — backend same PostgreSQL, RLS separates.
+**Parallel rule:** Chat engine Business+ ke liye parallel *soch* — live product pehle mail. F4 ke baghair F5+ nahi.
 
 ---
 
-## 6. PER-SURFACE HOST RULES (locked)
+## 6. PER-SURFACE HOST RULES (locked — §0 jeet’ta hai)
 
-| Surface | Host | Features visible | Hidden |
+Purana “awam pe Chat hide” **galat** tha (Lovable mix). Package cards jeet’te hain:
+
+| Surface | Host | Dikhe | Kabhi nahi |
 |---|---|---|---|
-| Awam | `anexomail.com` | Mail, Contacts, Calendar, Work, ⌘K | Chat, AI, Speed, Admin, Founder |
-| AI workspace | `ai.anexomail.com` | All above + LEO AI chat + AI Studio | Founder |
-| Founder | `founderworkspace.anexomail.com` | Everything | Nothing |
+| Mail workspace | `anexomail.com` | Dashboard + Mail + People + Calendar; Work Pro+; Chat/Video/Org **Business+** | LEO (zero on workspace plans), Founder, Speed |
+| AI workspace | `ai.anexomail.com` | LEO + AI plan ladder; platform = Business / Business Pro included | Founder protocol |
+| Founder | `founderworkspace.anexomail.com` | Sab + Admin + Speed | Awam / family accounts |
 
-Code: `src/lib/host.ts` → `isPublicMailHost()`, `founderSurfaceAllowed()`
-Shell: `src/components/app/AppShell.tsx` L113 `hideOnAwam` array
+Code: `src/lib/host.ts` (locked) + `src/lib/plan-surface.ts` (gates) + `src/components/app/AppShell.tsx`  
+Formula: `docs/cursor-work/PACKAGE-FEATURE-FORMULA.md`  
+Prices: `src/lib/plans.ts` — NO TOUCH
 
 ---
 
@@ -484,7 +663,7 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 | F7 Calendar | TODO | — |
 | F8 Work layer | TODO | — |
 | F9 Founder view | TODO | — |
-| C1 Chat engine | TODO | — |
+| C1 Chat engine | PARTIAL — Humza list+poll live, WT unproven | Sep 10 screenshot |
 | C2 Message states | TODO | — |
 | C3 Groups+Presence | TODO | — |
 | C4 File engine | TODO | — |
@@ -508,3 +687,289 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 10. Status: DONE / READY / TODO — baaki kuch nahi
 11. Pull command har session ke baad founder ko dena hai
 12. Blueprint files NEVER delete (Rule 12 in AGENTS.md)
+
+---
+
+## 12. SURE-SHOT BUILD PATH (10 Sep shaam — screenshot lock)
+
+**Faisla:** website shuru se **nahi** banegi. 67+ SQL, Polar, Postfix, Caddy, Auth (Humza login), mail tables — yeh spine. Lovable dump + galat gates ko **alag** karo. Naya stack / naya repo / SQL dubara = doosri century.
+
+Latest tech pehle se constitution mein hai: Hetzner, Caddy HTTP/3, TanStack Start, Bun :3000, **Rust :3200 WebTransport PRIMARY**. Dead feel isliye hai ke Command Center zeros + Gmail-unlike chrome — tech missing nahi.
+
+### 12.1 Screenshots kya bolti hain
+
+| Image | Kya dikha | Matlab |
+|---|---|---|
+| 1 Raana `anexomail.com/app` | Rail patli + header **Raana Sherwani** | AI Exec ko Chat+Org+Work+AI. Naam header se nahi (logo retain). Session `ai_plan` poora nahi. |
+| 2 Humza `/app/chat` | Chat+Org+Work + 1 conversation, HTTP/3 polling | Business Pro rail **zinda**. Chat shell pehle se repo mein thi — rail khuli to dikhi. Blank nahi = wire shuru. WT PRIMARY abhi nahi (honest poll). |
+| 3 Sessions | Mozilla UA + Bun + 127.0.0.1 | Hardcoded UA dump. Insaan ka device nahi. |
+| Gmail (ref) | Inbox, folders, naam brand nahi | Logo retain; header mein **display name chip nahi**. Identity avatar. |
+| Mixed rail (purani) | Today Chat CRM Org Work AI Speed Admin | Family pe kabhi nahi. Founder host, teen groups. |
+
+**URL:** `/app` Lovable file-route hai (`app.tsx`). Address bar page ke naam se match kare: Dashboard → `anexomail.com/dashboard`, Mail → `anexomail.com/mail/inbox`. Ab `/mail` **redirect** karta hai `/app/mail` pe — ulta hai. Canonical short path; `/app` piche reh sakta hai.
+
+### 12.2 Existing phases: alag karo, delete mat karo
+
+| Karo | Mat karo |
+|---|---|
+| Shell + session plan + URL aliases unmix | 160 routes rewrite |
+| SQL jo chal chuki use karo | 67 SQL dubara / naya Supabase |
+| Chat 1–31A jo repo mein hai usi ko gate | 57 phases naya likho |
+| Chat 32+ wait founder paste | ChatGPT/Lovable suggestions se 32+ |
+| Polar / `plans.ts` / landing / logo | Naya payment, naya theme pack, NEXATECT public |
+
+### 12.3 Image 4 kahan jati hai (rail split)
+
+**anexomail.com (package cards)**
+
+- Har plan: Dashboard · Mail (folders Mail pane mein, Gmail jaisa) · People · Calendar
+- Pro+: Work
+- Business+: ANEXOChat · Org · VideoCall (chat ke andar, 4th host nahi)
+- AI plan (Raana): + AI/Leo
+- Kabhi nahi: CRM, Speed, Founder Admin
+
+**ai.anexomail.com:** LEO studio / credits / compose-Leo. Awam Coming Soon.
+
+**founderworkspace (Image 4 ka asl ghar — saaf groups)**
+
+1. Product: Dashboard Mail Chat People Calendar Work Org
+2. Founder deck: Founder · Speed · revenue · health · launch
+3. Platform Admin: DNS/all-orgs/audit — **customer Admin nahi**
+
+CRM is week mail pe nahi.
+
+### 12.4 Honest URLs (canonical — `/app` hidden)
+
+| Page | Address bar |
+|---|---|
+| Dashboard | `/dashboard` |
+| Mail inbox | `/mail/inbox` |
+| Thread | `/mail/inbox/:id` |
+| People | `/people` |
+| Calendar | `/calendar` |
+| Work | `/work` |
+| Chat | `/chat` |
+| Org | `/org` |
+| AI | `/ai` (AI plan / AI host) |
+| Account | `/account` (avatar) |
+| Founder deck | `founderworkspace…/founder/…` |
+
+Purane `/app/*` 301 → in paths. 160 files rename ek raat mein **nahi** — alias + redirect invert. Phase naam: **URL honesty**.
+
+### 12.5 Chrome (Gmail se seekho, clone nahi)
+
+- Header: logo + **ANEXOMAIL** (product). Insaan ka poora naam brand nahi.
+- Identity: **ek** avatar top-right → profile, mailbox, sessions. Address 2 jagah: Mail accounts + profile.
+- Mail kholo to **folders** (Inbox Assigned Waiting…) Mail column mein — left rail product sections.
+- Dashboard zeros se product “dead” lagta hai jab tak F4 mail na chale. Beauty **mail three-panel** ke baad; landing no-touch.
+
+### 12.6 Founder protocol — kya powers (mix yahan khatam)
+
+Sirf `founder_accounts` + `founderworkspace.anexomail.com` (Caddy allowlist). Polar se login nahi. Family kabhi nahi.
+
+| Power | Matlab |
+|---|---|
+| Skip onboarding | Seedha workspace, claim/org wizard nahi |
+| God view | Sab orgs ke metrics — customer mailbox padhna nahi (Wire 19) |
+| Revenue | Polar data dekho — webhook **no touch** |
+| Launch / health / Speed | Deploy, PM2, WT live, perf |
+| System mailboxes | hello@, billing@, … founder inbox mein; family mail **alag** |
+| Preview `?founder=1` | Bina session tour — awam login pe sticky nahi |
+| File/ops ceiling | Package map: founder row alag limits |
+| Kill switch | Org freeze / safety — awam Admin button nahi |
+
+Customer **Org** (Humza members) ≠ Founder Admin.
+
+### 12.7 Tarteeb (ek line pe, mix nahi)
+
+```
+1. Session plan truth     Humza=BizPro, Raana=AI Exec, Masood=Pro  (rail ab Basic clone isliye hai)
+2. Package rail §0.8      Chat/Org Humza; AI Raana; Speed/Admin founder host
+3. URL honesty            /dashboard /mail/inbox address bar mein
+4. Chrome                 naam header se hatao, avatar
+5. F4 mail-gate           send+receive GREEN — yahan product zinda
+6. F5–F8                  thread, people, calendar, work — mail ke baad
+7. Chat                   1–31A gate Business+; 32+ paste only
+8. F9 founder             powers §12.6 founder host pe
+9. AI host                Coming Soon awam; Raana grant
+10. UI polish             zeros ke baad cinematic mail — landing no-touch
+```
+
+**Blocker 5 se pehle 6–10 “DONE” nahi.**
+**Shuru karne ka jumla:** pehle `session plan truth shuru` — phir `gates wire shuru` — phir `URL honesty shuru`. Ek saath 160 files nahi.
+
+---
+
+## 13. % COMPLETE + DUPLICATE AUDIT (10 Sep raat — founder sawal)
+
+**Sawal:** Lovable mix alag + Master F-series tarteeb se implement + saath wire → website kitne %?
+
+Teen yardsticks — ek number jhoot hai.
+
+### 13.1 Ab (live, 10 Sep)
+
+| Yardstick | Ab | Master F1–F9 + C1–C5 **wire ke baad** | 57-phase poora sapna |
+|---|---|---|---|
+| **Awam mail product** (`anexomail.com` login + send/receive + package rail) | **~35%** | **~85%** | — |
+| **Master Plan file khud** (F1–F9, C1–C5, S, AI1–4) | **~30%** | **~100% us file ka** | — |
+| **2-saal blueprint** (mail 1–62 + Chat 1–57 + AI host + founder) | **~25%** | **~40–45%** | 100% = 32+ paste + F4 green + AI live + founder F9 |
+
+**Kyun 85% mail, 45% sapna:** Master **jaan-boojh kar** Chat 32–57, AI Coming Soon, cinematic mail polish ko baad rakhta hai. F4 ke baghair mail product 35% pe atka rehta hai.
+
+**Ab ke tukre (jhoot DONE nahi):**
+
+| Tukra | % | Proof |
+|---|---|---|
+| Polar / plans / Caddy / SQL 60–63 | spine | no-touch |
+| F1 login | ~60 | Humza/Raana session |
+| F2 dashboard | ~70 UI / 20 data | zeros |
+| F3 mail list | ~40 | list, send unproven |
+| F4 send+receive | **0 live** | mail-gate |
+| F5–F9 | ~10 skeleton | wait F4 |
+| C1 Chat | ~35 | Humza: 1 real conversation, **HTTP/3 polling** (WT nahi), messages khali |
+| C2–C5 / AI | ~5–10 | repo files, awam nahi |
+| Chrome naam | 0 live | Raana/Humza chip — logo retain, naam nahi; GitHub pe nahi |
+
+### 13.2 Image 2 khush khabri (hardcoded nahi)
+
+`/app/chat` pehle se tha (`useConversations`, `useChatBootstrap`, `chatCall`). Pehle **blank** isliye: rail ne Chat chhupa di / Humza plan `basic` tha. Ab Business Pro rail khuli → wahi shell dikhi.
+
+- “Muhammad Nauman Sherwani · No messages yet” = DB conversation, fake thread nahi.
+- “HTTP/3 polling” = **imaandar** — Rust WebTransport PRIMARY abhi nahi.
+- Chand/sky = Atmosphere UI empty state ke peeche — messages invent nahi.
+- **57 phases complete nahi.** C1 surface. 32+ wait paste.
+
+### 13.3 Image 3 hardcoded (theek nahi)
+
+`saveSession` ne `device`/`browser` mein poora UA + Bun + `127.0.0.1` likh diya. Yeh mock nahi, **ghalat storage**. Local fix READY, live nahi jab tak push + `deploy-brain.sh`.
+
+### 13.4 Master Plan — mix / duplicate (no-mix audit)
+
+| Duplicate / mix | Kya galat | Jeet |
+|---|---|---|
+| Blueprint PHASE N vs F1–F9 vs Chat PHASE N | Teen catalog | Mail = F-series. Chat = anexochat blueprint. Mix number nahi |
+| F2 “DONE” vs zeros | Status inflation | DONE sirf mail-gate / live proof |
+| C1 “TODO” vs Humza screenshot | Board stale | PARTIAL |
+| Purana F1.2 Chat hide vs cards | Mix | Chat Business+ |
+| `host.ts` extra (`crm.` `anexochat.` lovable=founder) | 4th dukaan | Teen hosts |
+| `/app/admin` vs founder Admin vs Org | Ek label | §0.8 |
+| CRM on mail rail | Dump | hide |
+| phase56 Humza/Raana dono AI Exec vs F3 A | Tester mix | F3 A jeet: Humza Biz Pro, Raana AI Exec |
+| `/app` vs `/dashboard` | Lovable path | URL honesty baad |
+| Header naam + logo | Mix pehchan | **Logo lockup har page. Naam nahi.** |
+| Chat 57 vs Master C1–C5 | Duplicate build | 1–31A wire; 32+ paste only |
+| Landing / Polar / `plans.ts` | Touch = mix | no-touch |
+
+**Implement rule:** ek flow ek dafa. Purani F-file + naya clone nahi. SQL same filename.
+
+### 13.5 Shuru kab
+
+Is audit ke baad founder bole: **`session plan truth shuru`**. Us se pehle 160 files nahi.
+
+---
+
+## 14. FINAL TARTEEB (founder 10 Sep raat — lock)
+
+**Sahi hai:** pehle `anexomail.com` complete → phir AI tarteeb se → **end pe** founder deck.  
+**Galat hai:** teen sites parallel, ya F9 founder pages mail se pehle.
+
+### Product order
+
+```
+1. anexomail.com     Blueprint 1→7→9→10→11 + mail-gate GREEN
+2. ai.anexomail.com  PHASE 8 / 17+ — baad
+3. founderworkspace  PHASE 25/27/F9 — END
+```
+
+**Abhi bhi (end tak wait nahi):** founder **guard** — family `founderworkspace` pe nahi, Admin/Speed family pe nahi. Pages baad, wall ab.
+
+### Wire vs parallel
+
+| | Faisla |
+|---|---|
+| Products | **Sequential** — mail khatam, phir AI, phir founder kaam |
+| Har flow ke andar | **Wire saath** — list ke baad send, skeleton dump nahi |
+| 3 hosts ek saath 57×3 | **Nahi** |
+| Polar / landing / plans.ts / logo SVG | **No touch** |
+
+### Header (screenshot lock)
+
+- Left: **sirf** BrandMark (A + ANEXOMAIL WORKSPACE)
+- Right avatar: naam + mailbox + Profile + Sign out — photo mein pehle se yahi sahi hai
+- Logo ke saath Humza/Raana chip: **delete** (`AppShell` local READY — live tab pull)
+
+Mail rail `raanasherwani@…` = mailbox, brand nahi.
+
+---
+
+## 15. ANEXOMAIL-ONLY TRACK (10 Sep raat — founder lock)
+
+**57 phases ANEXOMAIL ki file nahi.** 57 = dusra product (bhool jao is track pe).  
+Claude ka ANEXOMAIL follow = `docs/anexomail-blueprint.md` + is file ka F-map. Catalog: **Phase 1–62, gaps ke saath** (8, 17–22, 31 = AI — ab nahi).
+
+**Source:** `docs/anexomail-blueprint.md` (PROTECTED). Claude order = neeche MAIL ONLY.
+
+### Ab `anexomail.com` — yeh sequence (AI/founder skip)
+
+| Blueprint | Claude F | Kya | Ab |
+|---|---|---|---|
+| **1** Shell + tokens | F1.2 | AppShell, logo lockup, **naam chip nahi** | PARTIAL — chip fix local |
+| **2** IA folders | — | Mail pane folders | PARTIAL |
+| **3** Public pages | — | landing **no-touch** | skip polish |
+| **4** Honest states | — | empty/error sach | PARTIAL |
+| **5A** Auth | **F1** | login/session | PARTIAL live |
+| **6** Dashboard | **F2** | command center | UI live, zeros |
+| **7** Mail core | **F3** | list | READY unproven |
+| **8** LEO delivery | — | **SKIP** → AI baad | — |
+| **9** Compose + send | **F4 GATE** | Postfix out + in | TODO |
+| **10** People | F6 | wait F4 | — |
+| **11** Calendar | F7 | wait F4 | — |
+| 12A prediction | — | mail baad | — |
+| 17–22, 31 AI | — | **SKIP** | — |
+| 23 Settings | — | account/profile | PARTIAL |
+| 25 Admin / 27 Speed | — | **SKIP** founder end | — |
+| 32–51 Polar/trial | — | **no-touch** | spine |
+| 52–58 mail infra | — | Postfix/Dovecot | READY deploy |
+| 59–62 SQL | — | pehle se | run |
+
+**Agli line:** Phase **1** khatam (header live) → **5A** session plan → **7** list proof → **9** mail-gate.  
+Phase 1 se CSS/logo SVG dubara nahi. Follow = wire, rewrite nahi.
+
+---
+
+## 17. EK BLUEPRINT — ABHI KAUN SA (10 Sep raat — confusion band)
+
+**Ab implement:** `docs/anexomail-blueprint.md`  
+**Kahan:** `anexomail.com`  
+**Kaise:** har phase **UI + UX + real wire** (browser + API + DB). Mock nahi.
+
+**Ab nahi:** ANEXOChat 1–57 original (file no-touch, baad). Master C1–C8. AI host pehle.
+
+Claude Master F1–F9 = **us mail blueprint ka order**, teesri kitab nahi.
+
+```
+anexomail.com  =  blueprint MAIL phases (1, 2, 4, 5A, 6, 7, 9, 10, 11…)
+                  skip 8 + 17–22 + 31 (AI)
+                  Polar/landing/plans.ts no-touch
+
+ai.anexomail.com  =  WAHI product (same codebase, same UX)
+                  farq: AI phases tarteeb se ADD (8, 17, 18… Leo)
+                  naya clone / naya design nahi
+
+founderworkspace  =  end
+```
+
+**Agli line:** `ANEXOMAIL Phase 1 shuru` — shell (logo, naam chip off) wire + live.
+
+---
+
+## 16. ANEXOChat original paste vs Master (10 Sep raat)
+
+Founder ne original 1–57 paste kiya = **pehle se** `anexochat/docs/anexochat-blueprint-original.md`. **File no-touch.**  
+Deep report: `docs/cursor-work/ANEXOCHAT-VS-MASTER-AUDIT.md`.
+
+- Master **C1–C8 = duplicate short** — dusri chat nahi.
+- C8 Open-Meteo **galat** — original API-free jeet.
+- Prices paste ke £250/£85 — **`plans.ts` jeet**.
+- 1–31A repo READY, live DONE nahi. 32–57 TODO. 57 = AI plans only.
+- Ab build = **anexomail.com** blueprint. Chat 32+ wait.

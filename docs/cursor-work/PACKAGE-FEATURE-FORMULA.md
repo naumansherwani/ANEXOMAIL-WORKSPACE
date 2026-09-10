@@ -1,6 +1,7 @@
 # PACKAGE + FEATURE FORMULA — Agent Personal Memory
 # Source: docs/ai-packages.md + docs/package-feature-map.md (Lovable originals — DO NOT DELETE)
 # Rule: packages touch NAHI kerne — sirf yeh file dekh ke feature gate decide karo
+# Surface unmix (teen hosts, Chat vs LEO, do Admin): docs/cursor-work/IMPLEMENTATION-MASTER.md §0
 
 ---
 

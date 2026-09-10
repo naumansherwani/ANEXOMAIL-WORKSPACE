@@ -35,6 +35,55 @@ const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordOk = (value: string) => value.length >= 6 && value.length <= 15;
 const tokenHash = (token: string) => createHash("sha256").update(token).digest("hex");
 
+/** Runtime / health UA — yeh user ka laptop nahi. List mein mat dikhao. */
+function isServerUserAgent(ua: string): boolean {
+  const u = ua.trim().toLowerCase();
+  if (!u) return true;
+  return (
+    u.startsWith("bun/") ||
+    u.startsWith("node/") ||
+    u.startsWith("undici") ||
+    u.startsWith("curl/") ||
+    u.startsWith("wget/") ||
+    u.startsWith("python") ||
+    u.startsWith("go-http") ||
+    u.startsWith("got/") ||
+    u.includes("healthcheck")
+  );
+}
+
+function describeUserAgent(ua: string): { browser: string; device: string } {
+  const raw = ua.trim();
+  const u = raw.toLowerCase();
+  let browser = "Browser";
+  if (u.includes("edg/") || u.includes("edgios")) browser = "Edge";
+  else if (u.includes("opr/") || u.includes("opera")) browser = "Opera";
+  else if (u.includes("firefox/") || u.includes("fxios")) browser = "Firefox";
+  else if (u.includes("crios") || (u.includes("chrome/") && !u.includes("edg/"))) browser = "Chrome";
+  else if (u.includes("safari/") && !u.includes("chrome") && !u.includes("crios")) browser = "Safari";
+  else if (raw && !raw.toLowerCase().includes("mozilla")) browser = raw.slice(0, 40);
+
+  let device = "Computer";
+  if (u.includes("iphone")) device = "iPhone";
+  else if (u.includes("ipad")) device = "iPad";
+  else if (u.includes("android")) device = "Android";
+  else if (u.includes("mac os") || u.includes("macintosh")) device = "Mac";
+  else if (u.includes("windows")) device = "Windows";
+  else if (u.includes("cros")) device = "Chromebook";
+  else if (u.includes("linux")) device = "Linux";
+  return { browser, device };
+}
+
+function clientIp(req: any): string | null {
+  const forwarded = String(req.headers["x-forwarded-for"] || "")
+    .split(",")[0]
+    .trim();
+  const real = String(req.headers["x-real-ip"] || "").trim();
+  const raw = (forwarded || real || String(req.ip || "")).replace(/^::ffff:/, "");
+  if (!raw || raw === "127.0.0.1" || raw === "::1" || raw === "localhost") return null;
+  return raw.slice(0, 80);
+}
+
 function unavailable(res: any) {
   if (admin && publicAuth) return false;
   res.status(503).json({ error: "account_service_not_configured" });
@@ -68,16 +117,18 @@ function authError(
 }
 
 async function saveSession(userId: string, token: string, req: any) {
-  const ua = String(req.headers["user-agent"] || "Unknown device").slice(0, 300);
+  const ua = String(req.headers["user-agent"] || "").slice(0, 300);
+  if (isServerUserAgent(ua)) return;
+  const { browser, device } = describeUserAgent(ua);
   await getAdmin()
     .from("account_sessions")
     .upsert(
       {
         user_id: userId,
         token_hash: tokenHash(token),
-        device: ua,
-        browser: ua,
-        ip: String(req.ip || "").slice(0, 80) || null,
+        device,
+        browser,
+        ip: clientIp(req),
         last_seen_at: new Date().toISOString(),
         revoked_at: null,
       },
@@ -663,10 +714,24 @@ authRouter.get("/sessions", async (req, res) => {
     .order("last_seen_at", { ascending: false });
   if (error) return res.status(500).json({ error: "sessions_load_failed" });
   res.json(
-    (data || []).map(({ token_hash, ...row }: any) => ({
-      ...row,
-      current: token_hash === current,
-    })),
+    (data || [])
+      .filter((row: any) => {
+        const blob = `${row.browser || ""} ${row.device || ""}`;
+        return !isServerUserAgent(blob);
+      })
+      .map(({ token_hash, ...row }: any) => {
+        const blob = `${row.browser || ""} ${row.device || ""}`;
+        const looksRaw = /mozilla\/|applewebkit|win64|khtml/i.test(blob);
+        const parsed = looksRaw ? describeUserAgent(blob) : null;
+        const ip = row.ip && row.ip !== "127.0.0.1" && row.ip !== "::1" ? row.ip : null;
+        return {
+          ...row,
+          browser: parsed?.browser || row.browser,
+          device: parsed?.device || row.device,
+          ip,
+          current: token_hash === current,
+        };
+      }),
   );
 });
 

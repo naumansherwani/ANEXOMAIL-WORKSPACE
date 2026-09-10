@@ -7,3 +7,6 @@
 - Phase: TODO — awam (anexomail.com) pehle mukammal hoga
 
 Ab se founder workspace ke changes yahan track honge.
+
+- Addresses (kitne, kaun se): `address-audit.md`
+- Lovable retain vs host: `docs/cursor-work/LOVABLE-RETAIN-MAP.md`

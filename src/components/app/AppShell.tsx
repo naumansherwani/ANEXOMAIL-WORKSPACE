@@ -131,10 +131,6 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (item.to === "/app/admin") return showAdmin({ founder: Boolean(session?.user.is_founder), founderHost });
     return true;
   });
-  const mailboxLabel =
-    session?.user.display_name ||
-    session?.user.name ||
-    "ANEXOMAIL";
   const brandHome = "/app";
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
@@ -187,18 +183,11 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Top bar — brand, org, one search entry for the entire product */}
       <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
-        <Link to={brandHome} className="shrink-0" aria-label="Stay in ANEXOMAIL workspace">
-          <BrandMark compact className="md:hidden" />
-          <span className="hidden md:inline-flex">
-            <BrandMark />
-          </span>
+        <Link to={brandHome} className="shrink-0" aria-label="ANEXOMAIL workspace">
+          <BrandMark />
         </Link>
 
-        {publicMailHost ? (
-          <span className="ml-1 hidden max-w-[18rem] truncate rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground sm:inline-flex">
-            {mailboxLabel}
-          </span>
-        ) : (
+        {publicMailHost ? null : (
           <DropdownMenu>
             <DropdownMenuTrigger className="ax-focus ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
               {organisation?.name ?? "No organisation yet"}
