@@ -198,7 +198,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </DropdownMenu>
         )}
 
-        <LanguagePicker className="shrink-0" />
+        <LanguagePicker className="shrink-0 rtl:order-first" />
 
         <div className="flex min-w-0 flex-1 justify-center px-1">
           <button
