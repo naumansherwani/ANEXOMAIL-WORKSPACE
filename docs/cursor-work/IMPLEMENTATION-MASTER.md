@@ -68,6 +68,7 @@ Humza/Raana/Masood **founder nahi**. Unko founder rail / Admin **nahi**.
 | Calendar | ✅ | ✅ | ✅ | ✅ |
 | Work (tasks / thread analytics) | basic | ✅ | ✅ | ✅ |
 | Snooze / schedule / shared inbox | ❌ | ✅ | ✅ | ✅ |
+| CRM (leads / pipeline) | ❌ | ✅ own book | ✅ team | ✅ + activity ledger |
 | ANEXOChat | ❌ | ❌ | ✅ | ✅ |
 | ANEXOVideoCall | ❌ | ❌ | ✅ (8) | ✅ (40) |
 | Org / members / roles | ❌ | ❌ | ✅ | ✅ |

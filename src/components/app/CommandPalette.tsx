@@ -5,6 +5,7 @@ import {
   CalendarDays,
   CheckSquare,
   Inbox,
+  KanbanSquare,
   Mail,
   MessageSquare,
   Search,
@@ -29,6 +30,7 @@ import {
   platformPlan,
   showAdmin,
   showChat,
+  showCrm,
   showOrg,
   showWork,
 } from "@/lib/plan-surface";
@@ -52,6 +54,7 @@ export function CommandPalette({
   const [founderHost] = useState(founderSurfaceAllowed);
   const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
   const workOpen = founderHost || showWork(plan);
+  const crmOpen = founderHost || showCrm(plan);
   const chatOpen = founderHost || showChat(plan);
   const orgOpen = founderHost || showOrg(plan);
   const adminOpen = showAdmin({
@@ -169,6 +172,12 @@ export function CommandPalette({
             <CommandItem value="work tasks notes" onSelect={() => go("/app/work")}>
               <CheckSquare className="size-4" />
               Work
+            </CommandItem>
+          ) : null}
+          {crmOpen ? (
+            <CommandItem value="crm leads pipeline deals" onSelect={() => go("/app/crm")}>
+              <KanbanSquare className="size-4" />
+              CRM
             </CommandItem>
           ) : null}
           {chatOpen ? (

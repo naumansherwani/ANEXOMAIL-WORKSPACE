@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { UserPlus } from "lucide-react";
 import { useState } from "react";
 
+import { CaptureLead } from "@/components/app/crm/CrmCapture";
 import { Chip, ScoreBar, SectionTitle } from "@/components/app/crm/CrmBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Button } from "@/components/ui/button";
@@ -13,13 +14,12 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/crm/leads")({
   head: () => ({
     meta: [
-      { title: "Leads — ANEXOMAIL AI CRM" },
+      { title: "Leads — ANEXOMAIL CRM" },
       {
         name: "description",
-        content:
-          "Every new contact scored on real behaviour: reply speed, intent and thread depth. Convert a lead to a deal in one click.",
+        content: "Capture a person, work them, convert to a deal. Scores stay empty until mail behaviour exists.",
       },
-      { property: "og:title", content: "Leads — ANEXOMAIL AI CRM" },
+      { property: "og:title", content: "Leads — ANEXOMAIL CRM" },
       { property: "og:description", content: "Leads scored from real email behaviour." },
       { name: "robots", content: "noindex" },
     ],
@@ -38,8 +38,9 @@ function LeadsPage() {
     <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
       <SectionTitle
         title="Leads"
-        hint="Scores come from the server: reply speed, intent words, thread depth. No manual data entry."
+        hint="Your book of people who are not a deal yet. Capture one here — scores appear only when mail behaviour exists."
       />
+      <CaptureLead />
 
       <div className="mb-ax-4 flex flex-wrap gap-1">
         {STATES.map((s) => (
@@ -72,8 +73,7 @@ function LeadsPage() {
         {(data) =>
           data.leads.length === 0 ? (
             <p className="ax-caption text-muted-foreground">
-              No leads in this state. A new inbound thread from an unknown address becomes a lead
-              automatically.
+              No leads in this state. Capture one above — we do not invent inbound people.
             </p>
           ) : (
             <ul className="space-y-ax-2">

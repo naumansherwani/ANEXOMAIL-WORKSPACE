@@ -1,11 +1,10 @@
 /**
- * Founder Preview — locked founder rule: the founder must be able to walk every
- * page of the product before launch, even when a workspace session is not
- * available yet on this device.
+ * Founder Preview — VIEW KEY ONLY (toolbar / page index).
+ * Does not mint a session and does not fake data.
  *
- * This is a VIEW key only. It does not mint a session, does not fake data and
- * does not touch the backend. Every panel still calls the real API, so unwired
- * endpoints show honest "not wired" / empty states (NO MOCK rule intact).
+ * `/app` PRODUCT GATE is separate: sticky localStorage must NOT skip login.
+ * Tour without a session is only the current URL `?founder=1` (see
+ * `workspaceTourFromUrl`). Otherwise `/app` goes to `/auth`.
  */
 
 const KEY = "ax.founder.preview";
@@ -50,4 +49,19 @@ export function founderPreviewFromUrl(): boolean {
     /* ignore */
   }
   return founderPreviewEnabled();
+}
+
+/**
+ * Workspace tour without a session — this URL only.
+ * Does not read/write localStorage, so a leftover FOUNDER VIEW cannot keep
+ * `/app` open as "no session" mail/chat 401s.
+ */
+export function workspaceTourFromUrl(): boolean {
+  if (typeof window === "undefined") return false;
+  try {
+    const value = new URLSearchParams(window.location.search).get("founder");
+    return value === "1" || value === "on";
+  } catch {
+    return false;
+  }
 }

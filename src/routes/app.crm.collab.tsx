@@ -13,13 +13,13 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/app/crm/collab")({
   head: () => ({
     meta: [
-      { title: "Shared work — ANEXOMAIL AI CRM" },
+      { title: "Shared work — ANEXOMAIL CRM" },
       {
         name: "description",
         content:
           "Shared inbox, shared drafts, mentions and approvals — one team surface where nothing gets answered twice.",
       },
-      { property: "og:title", content: "Shared work — ANEXOMAIL AI CRM" },
+      { property: "og:title", content: "Shared work — ANEXOMAIL CRM" },
       { property: "og:description", content: "Shared inbox, drafts, mentions and approvals." },
       { name: "robots", content: "noindex" },
     ],

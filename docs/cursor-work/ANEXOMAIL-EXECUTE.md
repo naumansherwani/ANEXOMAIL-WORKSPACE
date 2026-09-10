@@ -28,9 +28,9 @@ PARTIAL / “almost” / “local only” = **not live**.
 | Plan | Price | Rail on anexomail.com |
 |---|---|---|
 | Basic | £23 / user / month | Dashboard, Mail, People, Calendar |
-| Pro | £46 / user / month | + Work (templates, schedule send) |
-| Business | £97 / user / month | + Org + ANEXOChat |
-| Business Pro | £2,850 / company / month | + Org + ANEXOChat Business Pro |
+| Pro | £46 / user / month | + Work + **CRM** (leads, own pipeline) |
+| Business | £97 / user / month | + Org + ANEXOChat + CRM shared work |
+| Business Pro | £2,850 / company / month | + Org + ANEXOChat + CRM ledger (activity) |
 Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro UX) but Leo only on `ai.anexomail.com`.
 
 ---
@@ -84,8 +84,8 @@ Ph 23 settings/account = E2 ke saath (profile right)
 | Plan | Dikhe | Chat/AI/Founder |
 |---|---|---|
 | Basic | Dashboard Mail People Calendar | nahi |
-| Pro | + Work | nahi |
-| Business / Biz Pro | + Org + Chat (nav; Chat 1–57 rebuild nahi) | AI nahi |
+| Pro | + Work + CRM (own book) | nahi |
+| Business / Biz Pro | + Org + Chat + CRM (shared; Biz Pro + activity ledger) | AI nahi |
 | AI Exec (Raana) | Biz Pro mail UX; Leo **baad** AI host | founder nahi |
 
 URL se Chat/Work/Org/AI kholne par blank nahi — package wall (`PlanSurfaceGate`).

@@ -3,8 +3,8 @@
  * prices / copy). Basic £23 · Pro £46 · Business £97 · Business Pro £2850.
  *
  * Tech (constitution): same AppShell + `host.ts`. No new host, no Polar edit,
- * no Chat 1–57 rebuild. Chat/Org nav is Business+ only. LEO is zero on
- * anexomail.com — AI-EXECUTE opens it on ai.anexomail.com.
+ * Chat/Org nav is Business+ only. CRM is Pro+ (mail-native, no LEO).
+ * LEO is zero on anexomail.com — AI-EXECUTE opens it on ai.anexomail.com.
  *
  * AI grant includes a workspace platform (`ai-packages.ts` blurbs, no-touch):
  *   AI Pro / AI Business → Business
@@ -108,6 +108,30 @@ export function showOrg(
   return showChat(workspacePlan, aiPlan);
 }
 
+/** Mail-native CRM — Pro book of business. Not on Basic. No LEO. */
+export function showCrm(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return showWork(workspacePlan, aiPlan);
+}
+
+/** Shared inbox / mentions / approvals inside CRM — Business card. */
+export function showCrmCollab(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+}
+
+/** Activity timeline + CRM audit — Business Pro (Humza). */
+export function showCrmLedger(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return platformPlan(workspacePlan, aiPlan) === "business_pro";
+}
+
 /** Templates, snooze, schedule send — Pro card. */
 export function showProMailTools(
   workspacePlan: string | null | undefined,
@@ -129,7 +153,7 @@ export function railItemVisible(to: string, opts: SurfaceOpts): boolean {
   if (opts.founderHost) return true;
   if (to.startsWith("/app/founder")) return false;
   if (to === "/app/perf") return false;
-  if (to === "/app/crm") return false;
+  if (to === "/app/crm") return showCrm(opts.plan);
   if (to === "/app/admin") return showAdmin({ founder: opts.founder, founderHost: opts.founderHost });
   if (to === "/app/ai-center") return showAiCenter(opts.aiHost);
   if (to === "/app") return showDashboard();
@@ -162,10 +186,25 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
       body: `Your package is ${name}. Organisation tools for Business sit under Org, not platform Admin.`,
     };
   }
-  if (path.startsWith("/app/crm")) {
+  if (path.startsWith("/app/crm/collab")) {
+    if (showCrmCollab(opts.plan)) return null;
     return {
-      title: "CRM is not part of anexomail.com",
-      body: "This leftover path is closed on the mail workspace. Mail, people and calendar stay here.",
+      title: "Shared CRM work is on Business",
+      body: `Assignment, mentions and approvals sit on Business and Business Pro. Your package is ${name}.`,
+    };
+  }
+  if (path.startsWith("/app/crm/activity")) {
+    if (showCrmLedger(opts.plan)) return null;
+    return {
+      title: "CRM activity ledger is on Business Pro",
+      body: `The company timeline of every touch sits on Business Pro. Your package is ${name}.`,
+    };
+  }
+  if (path.startsWith("/app/crm")) {
+    if (showCrm(opts.plan)) return null;
+    return {
+      title: "CRM is on Pro",
+      body: `Leads and pipeline sit on Pro, Business and Business Pro. Your package is ${name}.`,
     };
   }
   if (path.startsWith("/app/ai-center") || path === "/app/ai" || path.startsWith("/app/ai/")) {

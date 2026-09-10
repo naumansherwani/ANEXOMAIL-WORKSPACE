@@ -8,13 +8,13 @@ import { useCrmActivities, type CrmActivity } from "@/lib/crm";
 export const Route = createFileRoute("/app/crm/activity")({
   head: () => ({
     meta: [
-      { title: "Activity timeline — ANEXOMAIL AI CRM" },
+      { title: "Activity timeline — ANEXOMAIL CRM" },
       {
         name: "description",
         content:
           "One timeline for every touch on an account: mail in, mail out, calls, meetings, notes and stage changes.",
       },
-      { property: "og:title", content: "Activity timeline — ANEXOMAIL AI CRM" },
+      { property: "og:title", content: "Activity timeline — ANEXOMAIL CRM" },
       { property: "og:description", content: "Every account touch on one timeline." },
       { name: "robots", content: "noindex" },
     ],

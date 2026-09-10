@@ -1,22 +1,22 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
 
-import { crmAiAllowed } from "@/lib/host";
+import { useAuth } from "@/lib/auth";
+import { platformPlan, showCrmCollab, showCrmLedger } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/crm")({
   head: () => ({
     meta: [
-      { title: "AI CRM — ANEXOMAIL Workspace" },
+      { title: "CRM — ANEXOMAIL Workspace" },
       {
         name: "description",
         content:
-          "Leads, deals, pipeline and shared work in one CRM that lives inside your email — every number comes from real threads.",
+          "Leads and pipeline that live next to mail — every number comes from real people and deals, not a second product.",
       },
-      { property: "og:title", content: "AI CRM — ANEXOMAIL Workspace" },
+      { property: "og:title", content: "CRM — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "A CRM built on your real email: leads, pipeline, shared inbox, approvals.",
+        content: "A CRM built beside your inbox: leads, pipeline, shared work.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,27 +32,24 @@ type Tab = {
   exact?: boolean;
 };
 
-const TABS: Tab[] = [
-  { to: "/app/crm", label: "Dashboard", exact: true },
-  { to: "/app/crm/leads", label: "Leads" },
-  { to: "/app/crm/pipeline", label: "Pipeline" },
-  { to: "/app/crm/collab", label: "Shared work" },
-  { to: "/app/crm/activity", label: "Activity" },
-];
-
 function CrmLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  // aicrm.anexomail.com = AI CRM · crm.anexomail.com = AI-free CRM
-  const [aiSurface, setAiSurface] = useState(true);
-  useEffect(() => setAiSurface(crmAiAllowed()), []);
+  const { session } = useAuth();
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const tabs: Tab[] = [
+    { to: "/app/crm", label: "Dashboard", exact: true },
+    { to: "/app/crm/leads", label: "Leads" },
+    { to: "/app/crm/pipeline", label: "Pipeline" },
+    ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
+    ...(showCrmLedger(plan) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
+  ];
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-ax-5 pt-ax-4">
-        <p className="ax-eyebrow">{aiSurface ? "AI CRM" : "CRM"}</p>
-
+        <p className="ax-eyebrow">CRM</p>
         <nav className="mt-ax-3 flex gap-1 overflow-x-auto">
-          {TABS.map((t) => {
+          {tabs.map((t) => {
             const active = t.exact
               ? pathname === "/app/crm" || pathname === "/app/crm/"
               : pathname.startsWith(t.to);

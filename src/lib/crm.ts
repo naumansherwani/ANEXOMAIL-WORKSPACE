@@ -1,15 +1,9 @@
 /**
- * Phase 13 — AI CRM Workspace (transport only).
+ * Phase 13 — CRM Workspace (transport only).
  *
- * NO DUPLICATE rule: lead scoring, pipeline maths, deal probability, AI insights,
- * shared-inbox assignment, mentions/comments, approvals and audit ALL live on the
- * server (Server 2 -> Supabase 4). This file only speaks HTTP/RPC.
- * NO MOCK rule: a missing endpoint surfaces as an honest "not wired" state.
- *
- * Awam surface: aicrm.anexomail.com -> /app/crm (AI CRM, Leo insights ON)
- *                crm.anexomail.com   -> /app/crm (AI-free CRM, AI panels OFF)
- * Founder surface: founderworkspace.anexomail.com/app/founder/crm (IP locked)
-
+ * Mail-native CRM on anexomail.com for Pro / Business / Business Pro.
+ * LEO insights stay off this host (AI-EXECUTE).
+ * NO MOCK: a missing endpoint surfaces as an honest "not wired" state.
  */
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -295,11 +289,26 @@ export function useMoveDeal() {
   );
 }
 
+export function useCreateLead() {
+  return useCrmMutation<{ ok: boolean; id?: string }, { email: string; display_name?: string; company?: string }>(
+    "crm.createLead",
+    "/api/crm/leads",
+    ["leads", "overview"],
+  );
+}
+
+export function useCreateDeal() {
+  return useCrmMutation<
+    { ok: boolean; id?: string },
+    { title: string; company?: string; contact_email?: string; value?: number; next_step?: string }
+  >("crm.createDeal", "/api/crm/deals", ["deals", "overview"]);
+}
+
 export function useConvertLead() {
   return useCrmMutation<{ deal_id: string }, { id: string }>(
     "crm.convertLead",
     "/api/crm/leads/convert",
-    ["leads"],
+    ["leads", "deals", "overview"],
   );
 }
 
@@ -329,6 +338,12 @@ export function useCrmKillSwitch() {
 }
 
 /* ------------------------------------------------------------------ format */
+
+export function probabilityPercent(value: number | null | undefined): number | null {
+  if (value === null || value === undefined || Number.isNaN(Number(value))) return null;
+  const n = Number(value);
+  return Math.max(0, Math.min(100, Math.round(n <= 1 ? n * 100 : n)));
+}
 
 export function money(value: number, currency = "GBP") {
   try {

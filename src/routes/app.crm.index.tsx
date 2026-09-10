@@ -1,11 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Brain, Gauge, Sparkles, TrendingUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Gauge, TrendingUp } from "lucide-react";
 
 import { CardBody, DashboardCard, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, CrmStat, SectionTitle } from "@/components/app/crm/CrmBits";
-import { crmAiAllowed } from "@/lib/host";
-import { STAGE_LABEL, money, useCrmInsights, useCrmOverview } from "@/lib/crm";
+import { STAGE_LABEL, money, useCrmOverview } from "@/lib/crm";
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
@@ -13,12 +11,12 @@ export const Route = createFileRoute("/app/crm/")({
       { title: "CRM dashboard — ANEXOMAIL Workspace" },
       {
         name: "description",
-        content: "Pipeline value, weighted forecast, unworked leads and Leo's live deal insights.",
+        content: "Pipeline value, weighted forecast, unworked leads and stale deals from your book.",
       },
       { property: "og:title", content: "CRM dashboard — ANEXOMAIL Workspace" },
       {
         property: "og:description",
-        content: "Pipeline, forecast and AI deal insights in one view.",
+        content: "Pipeline and forecast from real deals — no estimated numbers.",
       },
       { name: "robots", content: "noindex" },
     ],
@@ -27,20 +25,14 @@ export const Route = createFileRoute("/app/crm/")({
 });
 
 function CrmDashboard() {
-  // crm.anexomail.com = AI-free CRM host; aicrm.anexomail.com = AI CRM.
-  const [aiSurface, setAiSurface] = useState(true);
-  useEffect(() => setAiSurface(crmAiAllowed()), []);
-
   const overview = useCrmOverview();
-  const insights = useCrmInsights();
-
   const o = overview.data;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
       <SectionTitle
         title="Revenue at a glance"
-        hint="Every figure is derived from real threads on the server. Nothing here is typed by hand."
+        hint="Figures come from deals you opened. Weighted forecast is value × stage probability — never guessed."
       />
 
       <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -74,25 +66,31 @@ function CrmDashboard() {
             endpoint="/api/crm/overview"
             skeleton={<StatSkeleton rows={4} />}
           >
-            {(data) => (
-              <ul className="space-y-ax-2">
-                {data.stage_counts.map((s) => (
-                  <li key={s.stage} className="flex items-center gap-ax-3">
-                    <span className="w-24 shrink-0 text-[13px] font-semibold text-foreground">
-                      {STAGE_LABEL[s.stage]}
-                    </span>
-                    <span className="ax-caption text-muted-foreground">{s.count} deals</span>
-                    <span className="ml-auto text-[13px] font-semibold text-foreground">
-                      {money(s.value, data.currency)}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
+            {(data) =>
+              data.open_deals === 0 && data.leads_new === 0 ? (
+                <p className="ax-caption text-muted-foreground">
+                  No deals yet. Open Pipeline and capture a lead — empty columns stay empty until you do.
+                </p>
+              ) : (
+                <ul className="space-y-ax-2">
+                  {data.stage_counts.map((s) => (
+                    <li key={s.stage} className="flex items-center gap-ax-3">
+                      <span className="w-24 shrink-0 text-[13px] font-semibold text-foreground">
+                        {STAGE_LABEL[s.stage]}
+                      </span>
+                      <span className="ax-caption text-muted-foreground">{s.count} deals</span>
+                      <span className="ml-auto text-[13px] font-semibold text-foreground">
+                        {money(s.value, data.currency)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              )
+            }
           </CardBody>
         </DashboardCard>
 
-        <DashboardCard title="Speed" icon={<TrendingUp className="size-4" />}>
+        <DashboardCard title="Follow-through" icon={<TrendingUp className="size-4" />}>
           <CardBody
             query={{
               data: overview.data,
@@ -109,68 +107,18 @@ function CrmDashboard() {
                   First reply average:{" "}
                   <strong>
                     {data.avg_first_reply_minutes === null
-                      ? "not enough data"
+                      ? "not enough mail yet"
                       : `${data.avg_first_reply_minutes} min`}
                   </strong>
                 </p>
                 <p className="flex items-center gap-2">
                   Stale deals:{" "}
                   <Chip tone={data.stale_deals > 0 ? "warn" : "good"}>
-                    {data.stale_deals} untouched
+                    {data.stale_deals} untouched 14d+
                   </Chip>
                 </p>
               </div>
             )}
-          </CardBody>
-        </DashboardCard>
-      </div>
-
-      <div className={aiSurface ? "mt-ax-5" : "hidden"} aria-hidden={!aiSurface}>
-        <DashboardCard
-          title="Leo's deal insights"
-          hint="Risk, opportunity and the single next step — written by the AI that reads the thread."
-          icon={<Sparkles className="size-4" />}
-        >
-          <CardBody
-            query={{
-              data: insights.data,
-              isPending: insights.isPending,
-              error: insights.error ?? null,
-              refetch: () => void insights.refetch(),
-            }}
-            endpoint="/api/crm/insights"
-            skeleton={<StatSkeleton rows={3} />}
-          >
-            {(data) =>
-              data.insights.length === 0 ? (
-                <p className="ax-caption text-muted-foreground">
-                  No insights yet — Leo writes one as soon as a deal thread moves.
-                </p>
-              ) : (
-                <ul className="space-y-ax-2">
-                  {data.insights.map((i) => (
-                    <li key={i.id} className="rounded-xl border border-border p-ax-3">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Brain aria-hidden="true" className="size-3.5 text-steel" />
-                        <span className="text-[13px] font-semibold text-foreground">{i.title}</span>
-                        <Chip
-                          tone={
-                            i.kind === "risk" ? "bad" : i.kind === "opportunity" ? "good" : "quiet"
-                          }
-                        >
-                          {i.kind.replace("_", " ")}
-                        </Chip>
-                        <span className="ax-caption ml-auto text-muted-foreground">
-                          {i.agent}
-                          {i.confidence === null ? "" : ` · ${Math.round(i.confidence * 100)}%`}
-                        </span>
-                      </div>
-                      <p className="ax-body mt-1.5">{i.detail}</p>
-                    </li>
-                  ))}
-                </ul>
-              )
-            }
           </CardBody>
         </DashboardCard>
       </div>

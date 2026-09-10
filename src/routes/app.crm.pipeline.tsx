@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Mail } from "lucide-react";
 
+import { OpenDeal } from "@/components/app/crm/CrmCapture";
 import { Chip, SectionTitle } from "@/components/app/crm/CrmBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { notify } from "@/lib/notify";
@@ -8,6 +9,7 @@ import {
   STAGE_LABEL,
   STAGE_ORDER,
   money,
+  probabilityPercent,
   useCrmDeals,
   useMoveDeal,
   type Deal,
@@ -17,13 +19,13 @@ import {
 export const Route = createFileRoute("/app/crm/pipeline")({
   head: () => ({
     meta: [
-      { title: "Pipeline — ANEXOMAIL AI CRM" },
+      { title: "Pipeline — ANEXOMAIL CRM" },
       {
         name: "description",
         content:
           "A stage board where every deal keeps its email thread. Move a deal and the server rewrites its probability and writes the audit line.",
       },
-      { property: "og:title", content: "Pipeline — ANEXOMAIL AI CRM" },
+      { property: "og:title", content: "Pipeline — ANEXOMAIL CRM" },
       { property: "og:description", content: "Deal stages that never lose the email thread." },
       { name: "robots", content: "noindex" },
     ],
@@ -54,8 +56,9 @@ function PipelinePage() {
     <div className="w-full px-ax-5 py-ax-6">
       <SectionTitle
         title="Pipeline"
-        hint="Thread stays the unit of work — open a deal and you land in the conversation, not a form."
+        hint="Thread stays attached when a deal has mail. Empty columns stay empty until you open a deal."
       />
+      <OpenDeal />
 
       <CardBody
         query={{
@@ -81,7 +84,7 @@ function PipelinePage() {
                   total={money(total, currency)}
                 >
                   {items.length === 0 ? (
-                    <p className="ax-caption text-muted-foreground">Nothing here.</p>
+                    <p className="ax-caption text-muted-foreground">Empty</p>
                   ) : (
                     items.map((d) => (
                       <article
@@ -96,8 +99,8 @@ function PipelinePage() {
                           <span className="text-[13px] font-semibold text-foreground">
                             {money(d.value, d.currency)}
                           </span>
-                          {d.probability !== null && (
-                            <Chip>{Math.round(d.probability * 100)}% likely</Chip>
+                          {probabilityPercent(d.probability) !== null && (
+                            <Chip>{probabilityPercent(d.probability)}% likely</Chip>
                           )}
                           {d.stale_days !== null && d.stale_days > 7 && (
                             <Chip tone="warn">{d.stale_days}d quiet</Chip>
