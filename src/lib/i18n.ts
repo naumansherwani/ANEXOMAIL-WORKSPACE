@@ -25,6 +25,23 @@ import { WORKSPACE_I18N } from "./workspace-i18n";
 const EVENT = "ax:locale";
 const CACHE_PREFIX = "ax.i18n.v4.";
 
+/**
+ * Landing display typography is locked English in EVERY locale.
+ * The hero is built from English word-order fragments ("The Workspace" /
+ * "Built Around" / "Email."); translating the fragments one by one breaks
+ * RTL languages into fake-looking half-sentences ("کے گرد بنایا" akela).
+ * Landing layout is no-touch, so these keys are pinned here — full sentences,
+ * buttons, nav and workspace chrome still translate normally.
+ */
+const DISPLAY_ENGLISH = new Set([
+  "The Workspace",
+  "Built Around",
+  "Email.",
+  "Private Email.",
+  "Intelligent Workspace.",
+  "One Platform.",
+]);
+
 type Bundle = Record<string, string>;
 
 const files = import.meta.glob<{ default: Bundle }>("../i18n/*.json");
@@ -178,6 +195,7 @@ export function useLocale(): {
 
   const t = useCallback(
     (key: string) => {
+      if (DISPLAY_ENGLISH.has(key)) return key;
       if (!allowed || locale.tag === DEFAULT_LOCALE.tag) {
         return locale.t[key as LocaleKey] ?? key;
       }

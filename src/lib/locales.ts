@@ -88,7 +88,7 @@ export const LOCALES: Locale[] = [
       migration: "منتقلی",
       chat: "ANEXOChat",
       ai: "ANEXOMAIL AI",
-      signIn: "سائن اِن",
+      signIn: "سائن ان",
       getStarted: "شروع کریں",
     },
   },
