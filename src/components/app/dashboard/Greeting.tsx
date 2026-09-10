@@ -2,19 +2,13 @@ import { motion } from "framer-motion";
 import { MailPlus } from "lucide-react";
 
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
 import {
   formatDuration,
   useAnalytics,
   useSummary,
   useUpcoming,
 } from "@/lib/dashboard";
-
-function timeGreeting(): { text: string; emoji: string } {
-  const h = new Date().getHours();
-  if (h < 12) return { text: "Good morning", emoji: "☀️" };
-  if (h < 17) return { text: "Good afternoon", emoji: "🌤️" };
-  return { text: "Good evening", emoji: "🌙" };
-}
 
 function minutesUntil(iso: string): number {
   return Math.round((new Date(iso).getTime() - Date.now()) / 60_000);
@@ -39,11 +33,19 @@ export function Greeting({
   onCompose: () => void;
 }) {
   const { session } = useAuth();
+  const { t } = useLocale();
   const firstName =
     session?.user.display_name?.split(" ")[0] ||
     session?.user.name?.split(" ")[0] ||
     "";
-  const { text, emoji } = timeGreeting();
+  // Literal t() calls — extractor (scripts/i18n-extract.mjs) inhe dhoond leta hai.
+  const h = new Date().getHours();
+  const greeting =
+    h < 12
+      ? { text: t("Good morning"), emoji: "☀️" }
+      : h < 17
+        ? { text: t("Good afternoon"), emoji: "🌤️" }
+        : { text: t("Good evening"), emoji: "🌙" };
 
   // React Query deduplicates — these calls hit the same in-memory cache
   // used by WidgetGrid, AnalyticsPanel, and UpcomingPanel siblings.
@@ -60,10 +62,10 @@ export function Greeting({
 
   if (s) {
     if (s.unread > 0) {
-      strips.push(`${s.unread} unread ${s.unread === 1 ? "thread" : "threads"}`);
+      strips.push(`${s.unread} ${t(s.unread === 1 ? "unread thread" : "unread threads")}`);
     }
     if (s.assigned_to_me > 0) {
-      strips.push(`${s.assigned_to_me} assigned to you`);
+      strips.push(`${s.assigned_to_me} ${t("assigned to you")}`);
     }
   }
 
@@ -77,11 +79,8 @@ export function Greeting({
   }
 
   if (a?.avg_first_reply_seconds != null) {
-    strips.push(`Avg reply ${formatDuration(a.avg_first_reply_seconds)}`);
+    strips.push(`${t("Avg reply")} ${formatDuration(a.avg_first_reply_seconds)}`);
   }
-
-  const fallback =
-    "Everything that needs you — mail, activity, schedule. One surface, no reload.";
 
   return (
     <motion.header
@@ -91,10 +90,10 @@ export function Greeting({
       className="flex items-start justify-between gap-6"
     >
       <div className="min-w-0">
-        <p className="ax-eyebrow">Command center</p>
+        <p className="ax-eyebrow">{t("Command center")}</p>
         <h2 className="ax-display mt-2 text-foreground">
-          {text}
-          {firstName ? `, ${firstName}` : ""} {emoji}
+          {greeting.text}
+          {firstName ? `, ${firstName}` : ""} {greeting.emoji}
         </h2>
         {strips.length > 0 ? (
           <motion.p
@@ -106,7 +105,9 @@ export function Greeting({
             {strips.join("  ·  ")}
           </motion.p>
         ) : (
-          <p className="ax-body mt-2 max-w-xl text-muted-foreground">{fallback}</p>
+          <p className="ax-body mt-2 max-w-xl text-muted-foreground">
+            {t("Everything that needs you — mail, activity, schedule. One surface, no reload.")}
+          </p>
         )}
       </div>
 
@@ -120,7 +121,7 @@ export function Greeting({
         className="ax-press ax-tap flex shrink-0 items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
       >
         <MailPlus className="size-4" />
-        <span className="hidden sm:inline">New email</span>
+        <span className="hidden sm:inline">{t("New email")}</span>
       </motion.button>
     </motion.header>
   );

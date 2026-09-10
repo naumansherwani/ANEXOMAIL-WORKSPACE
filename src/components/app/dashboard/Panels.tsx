@@ -31,6 +31,7 @@ import {
   type ActivityKind,
 } from "@/lib/dashboard";
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
 
 /* ----------------------------- Animation helpers ---------------------------- */
 
@@ -84,6 +85,7 @@ const tileVariants = {
 
 export function WidgetGrid({ enabled }: { enabled: boolean }) {
   const query = useSummary(enabled);
+  const { t } = useLocale();
 
   return (
     <CardBody
@@ -101,15 +103,15 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
     >
       {(data) => {
         const tiles = [
-          { icon: Inbox, label: "Unread", value: data.unread, to: "inbox" as const },
+          { icon: Inbox, label: t("Unread"), value: data.unread, to: "inbox" as const },
           {
             icon: CheckSquare,
-            label: "Assigned to me",
+            label: t("Assigned to me"),
             value: data.assigned_to_me,
             to: "assigned" as const,
           },
-          { icon: Clock, label: "Waiting", value: data.waiting, to: "waiting" as const },
-          { icon: Send, label: "Closed today", value: data.done_today, to: "sent" as const },
+          { icon: Clock, label: t("Waiting"), value: data.waiting, to: "waiting" as const },
+          { icon: Send, label: t("Closed today"), value: data.done_today, to: "sent" as const },
         ];
         return (
           <motion.div
@@ -143,18 +145,18 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                 <div className="flex flex-wrap items-center gap-ax-3">
                   <Shield aria-hidden="true" className="size-4 text-steel" />
                   <p className="ax-caption text-muted-foreground">
-                    Storage {formatBytes(data.storage_used_bytes)} of{" "}
+                    {t("Storage")} {formatBytes(data.storage_used_bytes)} /{" "}
                     {formatBytes(data.storage_limit_bytes)}
                   </p>
                   {data.domain_hosted ? (
                     <span className="ax-status ml-auto text-xs font-semibold text-muted-foreground">
-                      ANEXOMAIL hosted
+                      {t("ANEXOMAIL hosted")}
                     </span>
                   ) : (
                     <span
                       className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
                     >
-                      {data.domain_verified ? "Domain verified" : "Domain not verified"}
+                      {data.domain_verified ? t("Domain verified") : t("Domain not verified")}
                     </span>
                   )}
                 </div>
@@ -191,14 +193,15 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
 
 export function QuickActions({ onCompose }: { onCompose: () => void }) {
   const { session } = useAuth();
+  const { t } = useLocale();
   const hostedPersonal = Boolean(
     session?.user.anexomail_address?.endsWith("@anexomail.com") && !session.user.is_founder,
   );
 
   return (
     <DashboardCard
-      title="Quick actions"
-      hint="One keystroke away from the work."
+      title={t("Quick actions")}
+      hint={t("One keystroke away from the work.")}
       icon={<Sparkles className="size-4" />}
     >
       <div className="grid gap-ax-2 sm:grid-cols-2">
@@ -208,7 +211,7 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
           className="ax-press ax-tap flex items-center gap-ax-3 rounded-xl bg-primary px-ax-4 py-ax-3 text-left text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           <MailPlus aria-hidden="true" className="size-4" />
-          New email
+          {t("New email")}
         </button>
         <Link
           to="/app/mail/$folder"
@@ -216,7 +219,7 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
           className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
         >
           <Inbox aria-hidden="true" className="size-4 text-steel" />
-          Open inbox
+          {t("Open inbox")}
         </Link>
         <Link
           to="/app/search"
@@ -224,7 +227,7 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
           className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
         >
           <Search aria-hidden="true" className="size-4 text-steel" />
-          Search everything
+          {t("Search everything")}
         </Link>
         {!hostedPersonal && (
           <Link
@@ -232,7 +235,7 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
             className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
           >
             <Users aria-hidden="true" className="size-4 text-steel" />
-            Invite a teammate
+            {t("Invite a teammate")}
           </Link>
         )}
         {!hostedPersonal && (
@@ -241,7 +244,7 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
             className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
           >
             <Shield aria-hidden="true" className="size-4 text-steel" />
-            Domain & ownership
+            {t("Domain & ownership")}
           </Link>
         )}
       </div>
@@ -251,24 +254,25 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
 
 /* ------------------------------ Activity feed ------------------------------- */
 
-const activityLabel: Record<ActivityKind, string> = {
-  message_received: "Received",
-  message_sent: "Sent",
-  thread_assigned: "Assigned",
-  thread_done: "Closed",
-  member_joined: "Joined",
-  domain_verified: "Domain",
-  login: "Sign-in",
-  admin_change: "Admin",
-};
-
 export function ActivityFeed({ enabled }: { enabled: boolean }) {
   const query = useActivity(enabled);
+  const { t } = useLocale();
+
+  const activityLabel: Record<ActivityKind, string> = {
+    message_received: t("Received"),
+    message_sent: t("Sent"),
+    thread_assigned: t("Assigned"),
+    thread_done: t("Closed"),
+    member_joined: t("Joined"),
+    domain_verified: t("Domain"),
+    login: t("Sign-in"),
+    admin_change: t("Admin"),
+  };
 
   return (
     <DashboardCard
-      title="Recent activity"
-      hint="Every action in this workspace, newest first."
+      title={t("Recent activity")}
+      hint={t("Every action in this workspace, newest first.")}
       icon={<Clock className="size-4" />}
     >
       <CardBody
@@ -280,8 +284,8 @@ export function ActivityFeed({ enabled }: { enabled: boolean }) {
           data.items.length === 0 ? (
             <StateBlock
               className="min-h-[10rem]"
-              title="No activity yet"
-              body="As soon as mail moves or someone joins, it shows up here."
+              title={t("No activity yet")}
+              body={t("As soon as mail moves or someone joins, it shows up here.")}
             />
           ) : (
             <ul className="divide-y divide-border">
@@ -318,11 +322,12 @@ export function ActivityFeed({ enabled }: { enabled: boolean }) {
 
 export function AiUsagePanel({ enabled }: { enabled: boolean }) {
   const query = useAiUsage(enabled);
+  const { t } = useLocale();
 
   return (
     <DashboardCard
-      title="Leo credits"
-      hint="AI usage for the current period."
+      title={t("Leo credits")}
+      hint={t("AI usage for the current period.")}
       icon={<Sparkles className="size-4" />}
     >
       <CardBody
@@ -335,14 +340,14 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
             return (
               <StateBlock
                 className="min-h-[10rem]"
-                title="Leo is not on this workspace"
-                body="The AI workspace is a separate product. Your email plan is unaffected."
+                title={t("Leo is not on this workspace")}
+                body={t("The AI workspace is a separate product. Your email plan is unaffected.")}
                 action={
                   <Link
                     to="/ai"
                     className="ax-press rounded-xl border border-border px-ax-4 py-2 text-xs font-semibold text-foreground"
                   >
-                    About Leo
+                    {t("About Leo")}
                   </Link>
                 }
               />
@@ -357,7 +362,7 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
             <div>
               <p className="text-3xl font-bold tabular-nums text-foreground">{remaining}</p>
               <p className="ax-caption mt-1 text-muted-foreground">
-                credits left of {data.credits_total}
+                {t("credits left of")} {data.credits_total}
                 {data.plan ? ` · ${data.plan}` : ""}
               </p>
               <div
@@ -375,7 +380,7 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
               </div>
               {data.period_end && (
                 <p className="ax-caption mt-ax-3 text-muted-foreground">
-                  Resets{" "}
+                  {t("Resets")}{" "}
                   {new Date(data.period_end).toLocaleDateString(undefined, {
                     day: "numeric",
                     month: "short",
@@ -394,11 +399,12 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
 
 export function AnalyticsPanel({ enabled }: { enabled: boolean }) {
   const query = useAnalytics(enabled);
+  const { t } = useLocale();
 
   return (
     <DashboardCard
-      title="Email analytics"
-      hint="Volume and response speed."
+      title={t("Email analytics")}
+      hint={t("Volume and response speed.")}
       icon={<ArrowUpRight className="size-4" />}
     >
       <CardBody
@@ -413,17 +419,17 @@ export function AnalyticsPanel({ enabled }: { enabled: boolean }) {
               <div className="grid grid-cols-2 gap-ax-4 sm:grid-cols-4">
                 <Stat
                   icon={<ArrowDownLeft className="size-3.5" />}
-                  label="Received"
+                  label={t("Received")}
                   value={String(data.received)}
                 />
                 <Stat
                   icon={<ArrowUpRight className="size-3.5" />}
-                  label="Sent"
+                  label={t("Sent")}
                   value={String(data.sent)}
                 />
-                <Stat label="First reply" value={formatDuration(data.avg_first_reply_seconds)} />
+                <Stat label={t("First reply")} value={formatDuration(data.avg_first_reply_seconds)} />
                 <Stat
-                  label="Delivered"
+                  label={t("Delivered")}
                   value={
                     data.delivery_rate === null ? "—" : `${Math.round(data.delivery_rate * 100)}%`
                   }
@@ -479,14 +485,15 @@ function Stat({ icon, label, value }: { icon?: React.ReactNode; label: string; v
 
 export function UpcomingPanel({ enabled }: { enabled: boolean }) {
   const query = useUpcoming(enabled);
+  const { t } = useLocale();
 
   return (
     <DashboardCard
-      title="Upcoming"
-      hint="Next events on your calendar."
+      title={t("Upcoming")}
+      hint={t("Next events on your calendar.")}
       icon={<CalendarDays className="size-4" />}
       to="/app/calendar"
-      ctaLabel="Open calendar"
+      ctaLabel={t("Open calendar")}
     >
       <CardBody
         query={query}
@@ -497,8 +504,8 @@ export function UpcomingPanel({ enabled }: { enabled: boolean }) {
           data.events.length === 0 ? (
             <StateBlock
               className="min-h-[10rem]"
-              title="Nothing scheduled"
-              body="Invitations accepted from mail land here automatically."
+              title={t("Nothing scheduled")}
+              body={t("Invitations accepted from mail land here automatically.")}
             />
           ) : (
             <ul className="divide-y divide-border">

@@ -19,6 +19,10 @@ const OUT = join(OUT_DIR, "en.json");
 const CALL = /\bt\(\s*(["'])((?:\\.|(?!\1)[^\\])+)\1\s*\)/g;
 // Nav/menu jaisi jagahein jahan label ek data array mein hai: key: "Pricing"
 const KEYED = /\bkey:\s*(["'])((?:\\.|(?!\1)[^\\])+)\1/g;
+// Rail/steps jaisi jagahein jahan label data array mein hai: label: "Dashboard"
+const LABELED = /\blabel:\s*(["'])((?:\\.|(?!\1)[^\\])+)\1/g;
+// <T>English source</T> JSX component
+const JSX_T = /<T>([^<>{]+)<\/T>/g;
 
 function walk(dir, files = []) {
   for (const entry of readdirSync(dir)) {
@@ -33,12 +37,12 @@ function walk(dir, files = []) {
 const strings = new Set();
 for (const file of walk(SRC)) {
   const code = readFileSync(file, "utf8");
-  const patterns = [CALL];
-  if (code.includes("useLocale")) patterns.push(KEYED);
+  const patterns = [CALL, JSX_T];
+  if (code.includes("useLocale")) patterns.push(KEYED, LABELED);
   for (const re of patterns) {
     for (const m of code.matchAll(re)) {
-      const value = m[2].replace(/\\(["'])/g, "$1");
-      if (value.trim().length > 0) strings.add(value);
+      const value = (re === JSX_T ? m[1] : m[2]).replace(/\\(["'])/g, "$1");
+      if (value.trim().length > 0) strings.add(value.trim());
     }
   }
 }
