@@ -26,6 +26,7 @@ import { useAuth } from "@/lib/auth";
 import { useUniversalSearch } from "@/lib/contacts";
 import { founderSurfaceAllowed } from "@/lib/host";
 import { ADMIN_SECTIONS, MAIL_FOLDERS } from "@/lib/ia";
+import { useLocale } from "@/lib/i18n";
 import {
   platformPlan,
   showAdmin,
@@ -49,6 +50,7 @@ export function CommandPalette({
 }) {
   const navigate = useNavigate();
   const { session } = useAuth();
+  const { t } = useLocale();
   const [term, setTerm] = useState("");
   const results = useUniversalSearch(term, open);
   const [founderHost] = useState(founderSurfaceAllowed);
@@ -80,10 +82,10 @@ export function CommandPalette({
       <CommandInput
         value={term}
         onValueChange={setTerm}
-        placeholder="Jump to a person, company, thread, folder or setting…"
+        placeholder={t("Jump to a person, company, thread, folder or setting…")}
       />
       <CommandList>
-        <CommandEmpty>Nothing matches that yet.</CommandEmpty>
+        <CommandEmpty>{t("Nothing matches that yet.")}</CommandEmpty>
 
         {(results.data?.people.length ?? 0) > 0 && (
           <CommandGroup heading="People">
@@ -155,57 +157,57 @@ export function CommandPalette({
           </CommandGroup>
         )}
 
-        <CommandGroup heading="Workspace">
+        <CommandGroup heading={t("Workspace")}>
           <CommandItem value="today" onSelect={() => go("/app")}>
             <Inbox className="size-4" />
-            Today
+            {t("Today")}
           </CommandItem>
           <CommandItem value="people contacts" onSelect={() => go("/app/people")}>
             <Users className="size-4" />
-            People
+            {t("People")}
           </CommandItem>
           <CommandItem value="calendar" onSelect={() => go("/app/calendar")}>
             <CalendarDays className="size-4" />
-            Calendar
+            {t("Calendar")}
           </CommandItem>
           {workOpen ? (
             <CommandItem value="work tasks notes" onSelect={() => go("/app/work")}>
               <CheckSquare className="size-4" />
-              Work
+              {t("Work")}
             </CommandItem>
           ) : null}
           {crmOpen ? (
             <CommandItem value="crm leads pipeline deals" onSelect={() => go("/app/crm")}>
               <KanbanSquare className="size-4" />
-              CRM
+              {t("CRM")}
             </CommandItem>
           ) : null}
           {chatOpen ? (
             <CommandItem value="anexochat chat" onSelect={() => go("/app/chat")}>
               <MessageSquare className="size-4" />
-              ANEXOChat
+              {t("ANEXOChat")}
             </CommandItem>
           ) : null}
           {orgOpen ? (
             <CommandItem value="organisation org members" onSelect={() => go("/app/org")}>
               <Building2 className="size-4" />
-              Organisation
+              {t("Organisation")}
             </CommandItem>
           ) : null}
           <CommandItem value="search everything" onSelect={() => go("/app/search")}>
             <Search className="size-4" />
-            Search everything
+            {t("Search everything")}
           </CommandItem>
           <CommandItem
             value="account sessions devices sign out"
             onSelect={() => go("/app/account")}
           >
             <UserCircle2 className="size-4" />
-            Account &amp; sessions
+            {t("Account & sessions")}
           </CommandItem>
         </CommandGroup>
 
-        <CommandGroup heading="Mail">
+        <CommandGroup heading={t("Mail")}>
           {MAIL_FOLDERS.map((f) => (
             <CommandItem
               key={f.id}
@@ -213,13 +215,13 @@ export function CommandPalette({
               onSelect={() => go(`/app/mail/${f.id}`)}
             >
               <Mail className="size-4" />
-              {f.label}
+              {t(f.label)}
             </CommandItem>
           ))}
         </CommandGroup>
 
         {adminOpen ? (
-          <CommandGroup heading="Admin">
+          <CommandGroup heading={t("Admin")}>
             {ADMIN_SECTIONS.map((s) => (
               <CommandItem
                 key={s.to}
@@ -227,8 +229,8 @@ export function CommandPalette({
                 onSelect={() => go(s.to)}
               >
                 <Shield className="size-4" />
-                {s.label}
-                <span className="ml-auto text-xs text-muted-foreground">{s.summary}</span>
+                {t(s.label)}
+                <span className="ml-auto text-xs text-muted-foreground">{t(s.summary)}</span>
               </CommandItem>
             ))}
           </CommandGroup>
