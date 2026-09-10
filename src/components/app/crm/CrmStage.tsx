@@ -28,7 +28,7 @@ type LoopStep = {
   count?: (board: NonNullable<ReturnType<typeof useCrmLive>["data"]>) => number;
 };
 
-/** THE LOOP — founder flagship order. Sirf CRM ke andar ke surfaces. */
+/** Loop steps — founder flagship order. Sirf CRM ke andar ke surfaces. */
 const LOOP: LoopStep[] = [
   { cr: "1", label: "Capture", to: "/app/crm/leads" },
   { cr: "2", label: "Memory", to: "/app/crm/relationships", count: (b) => b.counts.contacts },
@@ -40,9 +40,6 @@ const LOOP: LoopStep[] = [
   { cr: "8", label: "Graph", to: "/app/crm", count: (b) => b.graph.edges.length },
   { cr: "9", label: "Next", to: "/app/crm", count: (b) => b.next_actions.length },
 ];
-
-/** AI track — mail host pe locked. ai.anexomail.com pe aayega (AI-EXECUTE). */
-const AI_LOCKED = ["AI memory", "Autonomous agent"] as const;
 
 function isActive(to: CrmPath, exact: boolean | undefined, pathname: string): boolean {
   if (exact) return pathname === to || pathname === `${to}/`;
@@ -116,7 +113,6 @@ export function CrmStage({ children }: { children: ReactNode }) {
   const board = live.data;
 
   const nav: NavItem[] = [
-    { to: "/app/crm", label: "Dashboard", exact: true },
     { to: "/app/crm/relationships", label: "Relationships" },
     { to: "/app/crm/leads", label: "Leads" },
     { to: "/app/crm/accounts", label: "Accounts" },
@@ -125,7 +121,6 @@ export function CrmStage({ children }: { children: ReactNode }) {
     { to: "/app/crm/tasks", label: "Tasks" },
     { to: "/app/crm/reports", label: "Reports" },
     ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
-    { to: "/app/crm/ai", label: "AI" },
   ];
 
   return (
@@ -137,9 +132,12 @@ export function CrmStage({ children }: { children: ReactNode }) {
       >
         <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-[radial-gradient(80%_100%_at_20%_-30%,oklch(0.455_0.093_258_/_14%),transparent_70%)]" />
 
-        <p className="relative px-3.5 pb-2 pt-4 text-[15px] font-bold tracking-tight text-foreground">
+        <Link
+          to="/app/crm"
+          className="ax-press relative mx-2 mt-2 block rounded-[10px] px-1.5 py-2 text-[15px] font-bold tracking-tight text-foreground"
+        >
           CRM
-        </p>
+        </Link>
 
         <nav className="relative flex flex-col gap-0.5 px-2">
           {nav.map((item) => (
@@ -152,7 +150,7 @@ export function CrmStage({ children }: { children: ReactNode }) {
           ))}
         </nav>
 
-        <div className="relative mt-3 border-t border-border/70 px-2 pt-3">
+        <div className="relative mt-3 flex min-h-0 flex-1 flex-col border-t border-border/70 px-2 pt-3">
           <p className="px-1.5 pb-2 text-[11px] font-bold uppercase tracking-[0.16em] text-steel">
             {t("The loop")}
           </p>
@@ -167,23 +165,6 @@ export function CrmStage({ children }: { children: ReactNode }) {
               </li>
             ))}
           </ol>
-        </div>
-
-        <div className="relative mt-auto shrink-0 border-t border-border/70 px-2 py-2">
-          {AI_LOCKED.map((label) => (
-            <div
-              key={label}
-              className="flex h-9 items-center gap-2 rounded-[10px] px-2 opacity-70"
-              title={t("Runs on the AI host — not on mail.")}
-            >
-              <span className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-muted-foreground">
-                {t(label)}
-              </span>
-              <span className="shrink-0 rounded-full border border-border px-1.5 py-px text-[9px] font-semibold text-steel">
-                {t("AI host")}
-              </span>
-            </div>
-          ))}
         </div>
       </aside>
 

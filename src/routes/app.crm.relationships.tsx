@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { CalendarDays, CheckSquare, KanbanSquare, Mail, Activity } from "lucide-react";
 import { useState } from "react";
 
 import { Chip, HealthRing, SectionTitle } from "@/components/app/crm/CrmBits";
@@ -6,7 +7,7 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { Input } from "@/components/ui/input";
 import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
-import { money, useCrmLive, useCrmMemory } from "@/lib/crm";
+import { money, STAGE_LABEL, useCrmLive, useCrmMemory, type DealStage } from "@/lib/crm";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/crm/relationships")({
@@ -52,6 +53,23 @@ const FILTER_LABEL: Record<Filter, string> = {
   new: "New",
 };
 
+/** Risk label derives from the recorded health score — never a guess. */
+function riskFromHealth(score: number | null): { label: string; tone: "good" | "warn" | "bad" } | null {
+  if (score == null) return null;
+  if (score < 40) return { label: "High", tone: "bad" };
+  if (score < 70) return { label: "Medium", tone: "warn" };
+  return { label: "Low", tone: "good" };
+}
+
+const KIND_ICON: Record<string, typeof Mail> = {
+  mail: Mail,
+  meeting: CalendarDays,
+  calendar: CalendarDays,
+  deal: KanbanSquare,
+  task: CheckSquare,
+  work: CheckSquare,
+};
+
 function RelationshipsPage() {
   const { t } = useLocale();
   const { email: qEmail } = Route.useSearch();
@@ -59,6 +77,8 @@ function RelationshipsPage() {
   const [filter, setFilter] = useState<Filter>("all");
   const live = useCrmLive();
   const memory = useCrmMemory(picked || undefined);
+
+  const pickedPerson = live.data?.people.find((p) => p.primary_address === picked) ?? null;
 
   return (
     <div className="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-8">
@@ -70,7 +90,6 @@ function RelationshipsPage() {
           hint={t("People from real mail. Open one — mail, deals and work sit together.")}
         />
 
-        {/* Filter chips */}
         <div className="mb-4 flex flex-wrap gap-1.5">
           {FILTERS.map((f) => (
             <button
@@ -165,10 +184,6 @@ function RelationshipsPage() {
 
           {/* Customer command panel — 420px */}
           <div className="min-w-0">
-            <SectionTitle
-              title={t("Customer memory")}
-              hint={t("Recorded mail, deals and tasks for this address. Nothing invented.")}
-            />
             <Input
               className="mb-3"
               value={picked}
@@ -191,101 +206,188 @@ function RelationshipsPage() {
                 endpoint="/api/crm/memory"
                 skeleton={<StatSkeleton rows={8} />}
               >
-                {(data) => (
-                  <div className="space-y-4">
-                    <p className="text-[15px] font-bold tracking-tight text-foreground">
-                      {data.person
-                        ? String((data.person as { display_name?: string }).display_name || data.email)
-                        : data.email}
-                    </p>
-
-                    {data.next_actions.length > 0 ? (
-                      <div>
-                        <h3 className="ax-caption mb-2 font-bold uppercase tracking-[0.12em] text-steel">
-                          {t("Next best action")}
-                        </h3>
-                        <ul className="space-y-2">
-                          {data.next_actions.map((a, i) => (
-                            <li key={i} className="rounded-xl border border-border bg-background/40 p-3">
-                              <p className="text-[13px] font-semibold text-foreground">{t(a.action)}</p>
-                              <p className="ax-caption mt-0.5 text-muted-foreground">{a.why}</p>
-                              <a
-                                href={a.href}
-                                className="ax-caption mt-1 inline-block font-semibold text-foreground underline underline-offset-4"
-                              >
-                                {t("Open")}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
+                {(data) => {
+                  const dealValue = data.deals.reduce((s, d) => s + Number(d.value ?? 0), 0);
+                  const currency = data.deals[0]?.currency ?? "GBP";
+                  const openDeals = data.deals.filter(
+                    (d) => !["won", "lost"].includes(d.stage),
+                  );
+                  const risk = riskFromHealth(pickedPerson?.health_score ?? null);
+                  return (
+                    <div className="space-y-4">
+                      {/* Identity header */}
+                      <div className="ax-plane rounded-[18px] p-5">
+                        <div className="flex items-start gap-4">
+                          <HealthRing value={pickedPerson?.health_score ?? null} />
+                          <div className="min-w-0 flex-1">
+                            <p className="truncate text-[17px] font-bold tracking-tight text-foreground">
+                              {data.person
+                                ? String(
+                                    (data.person as { display_name?: string }).display_name ||
+                                      data.email,
+                                  )
+                                : data.email}
+                            </p>
+                            <div className="mt-1.5 flex flex-wrap gap-1.5">
+                              {pickedPerson?.company_name ? (
+                                <Chip>{pickedPerson.company_name}</Chip>
+                              ) : null}
+                              {pickedPerson?.relationship ? (
+                                <Chip>{t(pickedPerson.relationship)}</Chip>
+                              ) : null}
+                              {risk ? <Chip tone={risk.tone}>{t("Risk")}: {t(risk.label)}</Chip> : null}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="mt-4 grid grid-cols-3 gap-3 border-t border-border/70 pt-4">
+                          <div>
+                            <p className="ax-caption text-steel">{t("Deal value")}</p>
+                            <p className="mt-0.5 text-[15px] font-bold tabular-nums text-foreground">
+                              {data.deals.length > 0 ? money(dealValue, currency) : "—"}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="ax-caption text-steel">{t("Open deals")}</p>
+                            <p className="mt-0.5 text-[15px] font-bold tabular-nums text-foreground">
+                              {openDeals.length}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="ax-caption text-steel">{t("Open threads")}</p>
+                            <p className="mt-0.5 text-[15px] font-bold tabular-nums text-foreground">
+                              {pickedPerson?.open_threads ?? 0}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    ) : null}
 
-                    <div>
-                      <h3 className="ax-caption mb-2 font-bold uppercase tracking-[0.12em] text-steel">
-                        {t("Pipeline")}
-                      </h3>
-                      {data.deals.length === 0 ? (
-                        <p className="ax-caption text-muted-foreground">
-                          {t("No deal on this address yet.")}
-                        </p>
-                      ) : (
-                        <ul className="space-y-1">
-                          {data.deals.map((d) => (
-                            <li key={d.id} className="flex justify-between text-[13px]">
-                              <span className="truncate">{d.title}</span>
-                              <span className="shrink-0 tabular-nums">{money(d.value, d.currency)}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
+                      {/* Next best action — the one thing to do */}
+                      {data.next_actions.length > 0 ? (
+                        <div className="ax-plane rounded-[18px] border-foreground/20 p-5">
+                          <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+                            {t("Next best action")}
+                          </p>
+                          <p className="mt-2 text-[14px] font-semibold text-foreground">
+                            {t(data.next_actions[0]!.action)}
+                          </p>
+                          <p className="ax-caption mt-1 text-muted-foreground">
+                            {data.next_actions[0]!.why}
+                          </p>
+                          <a
+                            href={data.next_actions[0]!.href}
+                            className="ax-press mt-3 inline-flex h-9 items-center rounded-lg bg-primary px-3.5 text-[12.5px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                          >
+                            {t("Open")}
+                          </a>
+                          {data.next_actions.length > 1 ? (
+                            <ul className="mt-3 space-y-1.5 border-t border-border/70 pt-3">
+                              {data.next_actions.slice(1, 4).map((a, i) => (
+                                <li key={i} className="flex items-baseline justify-between gap-2">
+                                  <span className="min-w-0 truncate text-[12px] text-muted-foreground">
+                                    {t(a.action)} — {a.why}
+                                  </span>
+                                  <a
+                                    href={a.href}
+                                    className="shrink-0 text-[11px] font-semibold text-foreground underline underline-offset-4"
+                                  >
+                                    {t("Open")}
+                                  </a>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </div>
+                      ) : null}
 
-                    <div>
-                      <h3 className="ax-caption mb-2 font-bold uppercase tracking-[0.12em] text-steel">
-                        {t("Work")}
-                      </h3>
-                      {data.tasks.length === 0 ? (
-                        <p className="ax-caption text-muted-foreground">
-                          {t("No work object linked yet.")}
-                        </p>
-                      ) : (
-                        <ul className="space-y-1">
-                          {data.tasks.map((task) => (
-                            <li key={task.id} className="text-[13px]">
-                              {task.title} · {t(task.status)}
-                              {task.due_at ? ` · ${relativeTime(task.due_at)}` : ""}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </div>
+                      {/* Pipeline */}
+                      <div className="ax-plane rounded-[18px] p-5">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+                          {t("Pipeline")}
+                        </h3>
+                        {data.deals.length === 0 ? (
+                          <p className="ax-caption mt-2 text-muted-foreground">
+                            {t("No deal on this address yet.")}
+                          </p>
+                        ) : (
+                          <ul className="mt-2.5 space-y-2">
+                            {data.deals.map((d) => (
+                              <li key={d.id} className="flex items-center justify-between gap-2">
+                                <span className="min-w-0 truncate text-[13px] font-semibold text-foreground">
+                                  {d.title}
+                                </span>
+                                <span className="flex shrink-0 items-center gap-2">
+                                  <Chip>{t(STAGE_LABEL[d.stage as DealStage] ?? d.stage)}</Chip>
+                                  <span className="text-[12.5px] font-bold tabular-nums text-foreground">
+                                    {money(d.value, d.currency)}
+                                  </span>
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
 
-                    <div>
-                      <h3 className="ax-caption mb-2 font-bold uppercase tracking-[0.12em] text-steel">
-                        {t("Timeline")}
-                      </h3>
-                      {data.timeline.length === 0 ? (
-                        <p className="ax-caption text-muted-foreground">
-                          {t("No mail on record for this address.")}
-                        </p>
-                      ) : (
-                        <ol className="space-y-2">
-                          {data.timeline.map((e, i) => (
-                            <li key={`${e.at}-${i}`}>
-                              <a href={e.href} className="text-[13px] font-semibold text-foreground">
-                                {e.title}
-                              </a>
-                              <p className="ax-caption text-muted-foreground">
-                                {t(e.kind.replace("_", " "))} · {relativeTime(e.at)}
-                              </p>
-                            </li>
-                          ))}
-                        </ol>
-                      )}
+                      {/* Work */}
+                      <div className="ax-plane rounded-[18px] p-5">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+                          {t("Work")}
+                        </h3>
+                        {data.tasks.length === 0 ? (
+                          <p className="ax-caption mt-2 text-muted-foreground">
+                            {t("No work object linked yet.")}
+                          </p>
+                        ) : (
+                          <ul className="mt-2.5 space-y-1.5">
+                            {data.tasks.map((task) => (
+                              <li key={task.id} className="flex items-center gap-2 text-[13px]">
+                                <CheckSquare className="size-3.5 shrink-0 text-steel" />
+                                <span className="min-w-0 truncate text-foreground">{task.title}</span>
+                                <span className="shrink-0 text-[11px] text-muted-foreground">
+                                  {t(task.status)}
+                                  {task.due_at ? ` · ${relativeTime(task.due_at)}` : ""}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+
+                      {/* Timeline */}
+                      <div className="ax-plane rounded-[18px] p-5">
+                        <h3 className="text-[11px] font-bold uppercase tracking-[0.14em] text-steel">
+                          {t("Timeline")}
+                        </h3>
+                        {data.timeline.length === 0 ? (
+                          <p className="ax-caption mt-2 text-muted-foreground">
+                            {t("No mail on record for this address.")}
+                          </p>
+                        ) : (
+                          <ol className="relative mt-3 space-y-3 ps-4 before:absolute before:inset-y-1 before:start-1 before:w-px before:bg-border">
+                            {data.timeline.map((e, i) => {
+                              const Icon = KIND_ICON[e.kind] ?? Activity;
+                              return (
+                                <li key={`${e.at}-${i}`} className="relative flex items-center gap-2.5">
+                                  <span className="absolute -start-[13px] flex size-4 items-center justify-center rounded-full border border-border bg-card">
+                                    <Icon className="size-2.5 text-steel" />
+                                  </span>
+                                  <a
+                                    href={e.href}
+                                    className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground"
+                                  >
+                                    {e.title}
+                                  </a>
+                                  <span className="ax-caption shrink-0 text-muted-foreground">
+                                    {relativeTime(e.at)}
+                                  </span>
+                                </li>
+                              );
+                            })}
+                          </ol>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
+                  );
+                }}
               </CardBody>
             )}
           </div>
