@@ -242,7 +242,7 @@ end $$;
 revoke all on function public.family_grants_apply() from public, anon, authenticated;
 grant execute on function public.family_grants_apply() to service_role;
 
--- ── 4) Har family user ki apni org — F3 list ke liye (founder org mix nahi)
+-- ── 4) Har family user ki apni org — F3 list (FK parent = organisations OR orgs)
 create or replace function public.family_workspaces_apply()
 returns integer
 language plpgsql
@@ -254,51 +254,121 @@ declare
   n int := 0;
   oid uuid;
   role_udt text;
-  role_sql text;
+  parent_table text;
+  has_status boolean;
 begin
-  if to_regclass('public.orgs') is null or to_regclass('public.org_members') is null then
+  if to_regclass('public.org_members') is null then
     return 0;
   end if;
+
+  if to_regclass('public.organisations') is not null then
+    parent_table := 'organisations';
+  elsif to_regclass('public.orgs') is not null then
+    parent_table := 'orgs';
+  else
+    return 0;
+  end if;
+
   select c.udt_name into role_udt
     from information_schema.columns c
    where c.table_schema = 'public' and c.table_name = 'org_members' and c.column_name = 'role';
+
+  select exists (
+    select 1 from information_schema.columns
+     where table_schema = 'public' and table_name = 'org_members' and column_name = 'status'
+  ) into has_status;
 
   for r in
     select f.email, f.display_name, u.id as uid
       from public.family_accounts f
       join auth.users u on lower(u.email) = lower(f.email)
   loop
-    select m.org_id into oid
-      from public.mail_accounts m
-     where lower(m.address) = lower(r.email)
-     limit 1;
+    oid := null;
+
+    if to_regclass('public.mail_accounts') is not null then
+      execute format(
+        $q$
+        select m.org_id
+          from public.mail_accounts m
+          join public.%I p on p.id = m.org_id
+         where lower(m.address) = lower($1)
+         limit 1
+        $q$, parent_table)
+        into oid
+        using r.email;
+    end if;
+
     if oid is null then
-      insert into public.orgs (name) values (r.display_name || ' workspace')
-      returning id into oid;
+      execute format(
+        $q$
+        select m.org_id
+          from public.org_members m
+          join public.%I p on p.id = m.org_id
+         where m.user_id = $1
+         limit 1
+        $q$, parent_table)
+        into oid
+        using r.uid;
+    end if;
+
+    if oid is null then
+      if parent_table = 'organisations' then
+        begin
+          insert into public.organisations (name)
+          values (r.display_name || ' workspace')
+          returning id into oid;
+        exception when others then
+          begin
+            insert into public.organisations (name, slug)
+            values (
+              r.display_name || ' workspace',
+              'family-' || substr(replace(r.uid::text, '-', ''), 1, 12)
+            )
+            returning id into oid;
+          exception when others then
+            insert into public.organisations (id, name)
+            values (gen_random_uuid(), r.display_name || ' workspace')
+            returning id into oid;
+          end;
+        end;
+      else
+        insert into public.orgs (name)
+        values (r.display_name || ' workspace')
+        returning id into oid;
+      end if;
     end if;
 
     if role_udt = 'org_role' then
-      role_sql := 'owner';
-      begin
+      if has_status then
         insert into public.org_members (org_id, user_id, email, role, status)
         values (oid, r.uid, r.email, 'owner'::public.org_role, 'active')
         on conflict (org_id, user_id) do update
           set email = excluded.email, status = 'active';
-      exception when others then
+      else
         insert into public.org_members (org_id, user_id, email, role)
         values (oid, r.uid, r.email, 'owner'::public.org_role)
-        on conflict (org_id, user_id) do nothing;
-      end;
+        on conflict (org_id, user_id) do update
+          set email = excluded.email;
+      end if;
     else
-      insert into public.org_members (org_id, user_id, email, role, status)
-      values (oid, r.uid, r.email, 'owner', 'active')
-      on conflict (org_id, user_id) do update
-        set email = excluded.email, status = 'active';
+      if has_status then
+        insert into public.org_members (org_id, user_id, email, role, status)
+        values (oid, r.uid, r.email, 'owner', 'active')
+        on conflict (org_id, user_id) do update
+          set email = excluded.email, status = 'active';
+      else
+        insert into public.org_members (org_id, user_id, email, role)
+        values (oid, r.uid, r.email, 'owner')
+        on conflict (org_id, user_id) do update
+          set email = excluded.email;
+      end if;
     end if;
 
-    insert into public.mail_accounts (org_id, address)
-    values (oid, r.email)
-    on conflict (address) do update set org_id = excluded.org_id;
+    if to_regclass('public.mail_accounts') is not null then
+      insert into public.mail_accounts (org_id, address)
+      values (oid, r.email)
+      on conflict (address) do update set org_id = excluded.org_id;
+    end if;
 
     if to_regclass('public.account_organisations') is not null then
       insert into public.account_organisations (name, slug, domain, created_by)
