@@ -45,6 +45,21 @@ AI Pro / AI Business / AI Executive: platform = Business / Biz Pro **already mai
 
 ---
 
+## CRM AI (mail CRM ke BAAD — mix nahi)
+
+Workspace CR1–CR12 = recorded graph + rules (`ANEXOMAIL-EXECUTE.md`). Yahan **sirf AI plan + ai host**:
+
+| A-CRM | Flagship | Rule |
+|---|---|---|
+| A-CRM1 | Conversation → intent/task/deadline (B, 6) | estimate → user approve → write CRM row. Silent create nahi |
+| A-CRM2 | AI Customer Memory (F, 10) | cite thread/promise/deal; no source = no confident line |
+| A-CRM3 | Sentiment / competitor mention in radar | evidence span; workspace CR7 counts pehle |
+| A-CRM4 | Next-best-action prose + Executive brief (15, 17) | CR12 rules pehle; Leo wording yahan |
+| A-CRM5 | Autonomous agent (I, 12) | find → prepare → **approve** → execute → evidence. Send bina approve nahi |
+| A-CRM6 | Lifecycle prediction (19) | |
+
+---
+
 ## Ab status
 
 **not live — mail E4 DONE ke baad shuru.** Ab execute nahi.

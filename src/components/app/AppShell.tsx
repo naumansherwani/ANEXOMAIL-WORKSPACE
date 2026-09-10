@@ -22,6 +22,7 @@ import {
 import { useEffect, useState, type ReactNode } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
+import { LanguagePicker } from "@/components/site/LanguagePicker";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
@@ -206,6 +207,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             ⌘K
           </kbd>
         </button>
+
+        <LanguagePicker className="hidden sm:block" />
 
         <DropdownMenu>
           <DropdownMenuTrigger

@@ -102,14 +102,136 @@ Us ke baghair E5–E8 DONE nahi.
 
 ---
 
+## CRM review (flagship vs ab kya hai)
+
+ANEXOMAIL CRM **standalone Salesforce clone nahi** ho sakta — woh mix hai. Flagship = **live relationship object**: Person ke neeche mail, chat, meeting, call, file, task, deal, payment, promise, phir AI memory.
+
+**Ker sakte ho — existing stack pe (naya host / naya CRM product nahi):**  
+`people` + `mail_threads` + chat messages + calendar + work/promises + `crm_deals` + Polar later. Ek `customer_graph` / recorded links. AppShell pe CRM rail (Pro+). Humza = aam Business Pro.
+
+**Abhi kya hai (bc11c07 — DONE nahi):** Pro own book (leads/pipeline/capture), Business shared work, Biz Pro activity list. Deal pe `thread_id` field. Overview par stale count. Leo insights band. Yeh **record system** hai, continuous memory nahi.
+
+**Nahi (is host + workspace packages):** sentiment, “AI samjha”, autonomous agent, lifecycle prediction, executive brief written by Leo. Woh `AI-EXECUTE.md` + AI plan. Workspace cards = LEO zero.
+
+**Mail-gate:** E4 ke baghair timeline/conversation→CRM khali hai. CR1+ E4 DONE ke baad. Capture forms E4 se pehle bhi chalte hain (manual book).
+
+### Package (prices no-touch)
+
+| | Pro | Business | Business Pro (Humza) | AI plans |
+|---|---|---|---|---|
+| Own leads / pipeline | ✅ | ✅ | ✅ | platform included |
+| Team shared + collision | — | ✅ | ✅ | |
+| Activity ledger / graph | — | — | ✅ | |
+| Deterministic health / risk (counts, dates, overdue promises) | light | ✅ | ✅ | |
+| Leo memory / agent / next-best-action prose | ❌ | ❌ | ❌ | `ai.anexomail.com` |
+
+### Flagship → tarteeb (A–M aur 1–20)
+
+Pehle **recorded / deterministic** (is file). Phir **AI retrieve + approve + evidence** (`AI-EXECUTE.md`).
+
+| CR | Flagship | A–M | Kab | Tech (repo) | Mix nahi |
+|---|---|---|---|---|---|
+| **CR0** | CRM rail + capture | — | E1 surface | `app.crm*` `server/routes/crm.ts` | AI CRM naam, Leo panel, alag crm. host |
+| **CR1** | Unified Customer Memory | A, 1 | E4 + **E6** people | Person = hub. Email/chat/cal/work/deal **links**, copy nahi | dusri contacts DB |
+| **CR2** | Unified Relationship Timeline | G, 2, 18 | CR1 | One timeline: mail · chat · meeting · file · deal · payment. Clock UTC | fake activity |
+| **CR3** | Promise / Commitment Engine | C, 3 | **E8** work | Owner, due, evidence, status, at-risk by date. “I’ll send Friday” → work object | AI guess due date |
+| **CR4** | Conversation → CRM (rules) | B, 6 | E4 + CR1 | Known contact + open deal + thread. Manual 8 fields nahi jab link pehle se ho | intent/priority from Leo yahan |
+| **CR5** | CRM → Work conversion | K, 7 | CR3 + deal | Deal → workstream → tasks → owners → files → mail | dusra project app |
+| **CR6** | Relationship Health | D, 4 | CR2+CR3 | Score from **recorded**: latency, unresolved, overdue promises, meeting gap, deal stall. No sentiment | “feelings” model |
+| **CR7** | Revenue Risk Radar | E, 5, 14, 16 | CR6 + Biz Pro | Silent, overdue promise, unpaid (Polar later), stale deal. **Why** = which rows | competitor NLP yahan |
+| **CR8** | Customer Intelligence Graph | H, 13 | Biz Pro card | Person ↔ company ↔ deal ↔ mail ↔ chat ↔ file ↔ work. **Recorded links only** | inferred AI edges |
+| **CR9** | CRM → Calendar | L, 8 | E7 + CR1 | “No decision-maker meeting in 12 days” = date math. Suggest schedule, auto-book nahi | |
+| **CR10** | CRM → Mail | M, 9 | E4 + CR2 | Open support thread → don’t pitch. Folder/state, not vibe | |
+| **CR11** | Evidence-backed CRM | J, 11 | CR3–CR7 | Decision, why, source row, action, result. Activity log se zyada: append-only | |
+| **CR12** | Next-best-action (deterministic) | 15 | CR6–CR10 | One next step from rules (overdue → remind; silent → meeting). Copy English/locale | Leo wording |
+| — | AI Customer Memory | F, 10 | **AI-EXECUTE** | History retrieve + cite | anexomail.com Leo |
+| — | Autonomous CRM Agent | I, 12 | **AI-EXECUTE** | Find → prepare → **approve** → execute → evidence | silent send |
+| — | Lifecycle prediction | 19 | **AI-EXECUTE** | | |
+| — | Executive Relationship Brief | 17 | **AI-EXECUTE** | | |
+| — | Founder CRM command | 20 | **FOUNDER-EXECUTE** | Kill switch already; deck baad | Humza Admin nahi |
+
+Architecture (locked — naya stack nahi):
+
+```
+PEOPLE · DEALS · ACCOUNTS
+        → CUSTOMER GRAPH (recorded)
+MAIL · CHAT · CALENDAR · WORK · FILES
+        → TIMELINE + PROMISES
+        → HEALTH / RISK (counts + dates)
+        → NEXT ACTION (rules)
+        → [AI MEMORY / AGENT  — ai host + plan]
+        → APPROVAL / PROOF → EXECUTION
+```
+
+---
+
+## Languages — 28 real locales (Hebrew + Swahili **nahi**)
+
+**Lock:** translate widget / live Google/Argos **nahi**. User ek zubaan chune → `html lang` + `dir` + **usi locale ke JSON bundles**. Missing string = asli English, dummy nahi.
+
+| # | Language | Tag (repo) | Dir |
+|---|---|---|---|
+| 1 | English | `en-GB` | ltr |
+| 2 | हिन्दी | `hi-IN` | ltr |
+| 3 | اردو | `ur-PK` | rtl |
+| 4 | العربية | `ar-SA` | rtl |
+| 5 | Español | `es-ES` | ltr |
+| 6 | Français | `fr-FR` | ltr |
+| 7 | Deutsch | `de-DE` | ltr |
+| 8 | Schweizerdeutsch | `de-CH` | ltr |
+| 9 | Português | `pt-BR` | ltr |
+| 10 | 中文 | `zh-CN` | ltr |
+| 11 | 日本語 | `ja-JP` | ltr |
+| 12 | 한국어 | `ko-KR` | ltr |
+| 13 | Türkçe | `tr-TR` | ltr |
+| 14 | Italiano | `it-IT` | ltr |
+| 15 | Română | `ro-RO` | ltr |
+| 16 | Русский | `ru-RU` | ltr |
+| 17 | Nederlands | `nl-NL` | ltr |
+| 18 | Polski | `pl-PL` | ltr |
+| 19 | Українська | `uk-UA` | ltr |
+| 20 | Bahasa Indonesia | `id-ID` | ltr |
+| 21 | Bahasa Melayu | `ms-MY` | ltr |
+| 22 | Tiếng Việt | `vi-VN` | ltr |
+| 23 | ไทย | `th-TH` | ltr |
+| 24 | বাংলা | `bn-BD` | ltr |
+| 25 | ਪੰਜਾਬੀ | `pa-IN` | ltr |
+| 26 | فارسی | `fa-IR` | rtl |
+| 27 | Ελληνικά | `el-GR` | ltr |
+| 28 | Svenska | `sv-SE` | ltr |
+
+**Repo pehle se:** `src/lib/locales.ts` `src/lib/i18n.ts` `src/i18n/*.json` `LanguagePicker`.  
+**Abhi ghalat:** picker sirf `en-GB` filter — is liye site local nahi dikhti. Bundles ≈ public nav (11 strings). `/app` rail/mail/CRM `t()` use nahi karti. `translate.py` (Argos) = machine builder — **product copy ka source nahi**.
+
+| L | Kya | DONE |
+|---|---|---|
+| **L0** | 28 list lock. `he-IL` `sw-KE` registry se nikal | picker mein 28, Hebrew/Swahili nahi |
+| **L1** | Picker saari 28; `html lang/dir`; `ax.locale`; workspace header | Humza Urdu chune to RTL + nav local |
+| **L2** | Public site strings — **human locale files**, Argos se overwrite nahi | landing/auth keys complete (landing layout no-touch, strings via `t()`) |
+| **L3** | `/app` chrome: rail, Cmd+K, account menu | Humza workspace local |
+| **L4** | Mail, CRM, work, chat chrome | surfaces local; mail **body** customer ki zubaan rehti hai |
+
+L1 mail-gate ke baghair chal sakti hai (chrome). L4 E3+ ke saath.
+
+---
+
 ## AI baad (same site, add only)
 
 Jab E4 green + E5–E8 user-complete:  
-`ai.anexomail.com` = same AppShell/mail. Add original **8 → 17 → 18 → …** tarteeb se. Duplicate mail app nahi.
+`ai.anexomail.com` = same AppShell/mail. Add original **8 → 17 → 18 → …** tarteeb se. Duplicate mail app nahi.  
+CRM AI (memory, agent, brief, prediction) = `AI-EXECUTE.md`, is E-list mein nahi.
+
+---
+
+## Green build kaunsi phase thi
+
+Jo pull **toota** (`MISSING_EXPORT workspaceTourFromUrl`) = **E1** (Claude F1.2 / original **Phase 1 shell**) — `app.tsx` import, `founder-preview.ts` GitHub par export nahi tha.
+
+Jo pull **nahi toota** (`bc11c07`) = wahi **E1** + CRM **CR0** surface (Pro/Business/Biz Pro rail). Yeh **E4 mail-gate nahi**, **E6 people graph nahi**, **CR1–CR12 nahi**.
 
 ---
 
 ## Execute shuru
 
 Agent: **is file ke E-number se.** Original `docs/anexomail-blueprint.md` overwrite nahi.  
-Ab: **E1 live** (push/pull — package rail) phir **E2 session** phir **E4 mail-gate**.
+Ab: **E1 live** (package rail + CR0) → **L0/L1** locales → **E2 session** → **E4 mail-gate** → E5–E8 → **CR1+**.

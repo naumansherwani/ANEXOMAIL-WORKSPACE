@@ -7,7 +7,7 @@ import { LOCALES } from "@/lib/locales";
 /**
  * Real language picker — har entry asli zubaan hai, apni script mein.
  * Choice localStorage mein save hoti hai aur `<html lang/dir>` set karti hai
- * (Urdu · Arabic · Farsi · Hebrew par poori site right-to-left ho jati hai).
+ * (Urdu · Arabic · Farsi par poori site right-to-left). Hebrew/Swahili list se bahar.
  */
 export function LanguagePicker({ className = "" }: { className?: string }) {
   const { locale } = useLocale();
@@ -49,7 +49,7 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
           aria-label="Choose your language"
           className="absolute end-0 z-50 mt-2 max-h-[22rem] w-64 overflow-y-auto rounded-2xl border border-border bg-card p-1.5 shadow-elev-2"
         >
-          {LOCALES.filter((l) => l.tag === "en-GB").map((l) => {
+          {LOCALES.map((l) => {
             const active = l.tag === locale.tag;
             return (
               <button

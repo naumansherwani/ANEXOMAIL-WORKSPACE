@@ -23,6 +23,7 @@ GATE: har Fd **not live / DONE**. DONE = wire + live test. Agli Fd nahi pehle. Y
 | Preview `?founder=1` | bina session tour | awam sticky |
 | Kill / freeze | org safety | customer `/app/admin` ko founder banana |
 | File ceiling | founder row limits | — |
+| CRM command (flagship 20) | kill switch + later deck | Humza/Raana CRM Admin nahi; unka CRM = awam Business Pro |
 
 Customer **Org** (Business+) ≠ Founder Admin.
 

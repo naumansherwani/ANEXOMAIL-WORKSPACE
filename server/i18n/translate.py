@@ -57,10 +57,8 @@ TARGETS: dict[str, str] = {
     "bn-BD": "bn",
     "pa-IN": "pa",
     "fa-IR": "fa",
-    "he-IL": "he",
     "el-GR": "el",
     "sv-SE": "sv",
-    "sw-KE": "sw",
 }
 
 BRANDS = [
