@@ -22,19 +22,19 @@ type Step = {
 };
 
 const STEPS: Step[] = [
-  { cr: "CR0", label: "Capture", href: "/app/crm/leads", crm: "/app/crm/leads" },
-  { cr: "CR1", label: "Memory", href: "/app/crm/relationships", crm: "/app/crm/relationships", count: (b) => b.counts.contacts },
-  { cr: "CR2", label: "Timeline", href: "/app/crm", crm: "/app/crm", count: (b) => b.timeline.length },
-  { cr: "CR3", label: "Promises", href: "/app/work", count: (b) => b.counts.promises },
-  { cr: "CR4", label: "Thread", href: "/app/crm/pipeline", crm: "/app/crm/pipeline" },
-  { cr: "CR5", label: "Work", href: "/app/crm/pipeline", crm: "/app/crm/pipeline", count: (b) => b.counts.overdue_tasks },
-  { cr: "CR6", label: "Health", href: "/app/crm/relationships", crm: "/app/crm/relationships" },
-  { cr: "CR7", label: "Risk", href: "/app/crm", crm: "/app/crm", count: (b) => b.radar.length },
-  { cr: "CR8", label: "Graph", href: "/app/crm", crm: "/app/crm", count: (b) => b.graph.edges.length },
-  { cr: "CR9", label: "Calendar", href: "/app/calendar" },
-  { cr: "CR10", label: "Mail", href: "/app/mail/inbox" },
-  { cr: "CR11", label: "Evidence", href: "/app/crm/activity", crm: "/app/crm/activity" },
-  { cr: "CR12", label: "Next", href: "/app/crm", crm: "/app/crm", count: (b) => b.next_actions.length },
+  { cr: "CR1", label: "Capture", href: "/app/crm/leads", crm: "/app/crm/leads" },
+  { cr: "CR2", label: "Memory", href: "/app/crm/relationships", crm: "/app/crm/relationships", count: (b) => b.counts.contacts },
+  { cr: "CR3", label: "Timeline", href: "/app/crm", crm: "/app/crm", count: (b) => b.timeline.length },
+  { cr: "CR4", label: "Promises", href: "/app/work", count: (b) => b.counts.promises },
+  { cr: "CR5", label: "Thread", href: "/app/crm/pipeline", crm: "/app/crm/pipeline" },
+  { cr: "CR6", label: "Work", href: "/app/crm/pipeline", crm: "/app/crm/pipeline", count: (b) => b.counts.overdue_tasks },
+  { cr: "CR7", label: "Health", href: "/app/crm/relationships", crm: "/app/crm/relationships" },
+  { cr: "CR8", label: "Risk", href: "/app/crm", crm: "/app/crm", count: (b) => b.radar.length },
+  { cr: "CR9", label: "Graph", href: "/app/crm", crm: "/app/crm", count: (b) => b.graph.edges.length },
+  { cr: "CR10", label: "Calendar", href: "/app/calendar" },
+  { cr: "CR11", label: "Mail", href: "/app/mail/inbox" },
+  { cr: "CR12", label: "Evidence", href: "/app/crm/activity", crm: "/app/crm/activity" },
+  { cr: "CR13", label: "Next", href: "/app/crm", crm: "/app/crm", count: (b) => b.next_actions.length },
 ];
 
 function isStepActive(step: Step, pathname: string): boolean {
