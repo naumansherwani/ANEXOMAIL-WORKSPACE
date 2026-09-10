@@ -261,7 +261,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           aria-label="Workspace navigation"
           data-collapsed={collapsed ? "true" : "false"}
           style={{ width: collapsed ? "4.25rem" : "13.75rem" }}
-          className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-sidebar transition-[width] duration-200 md:flex"
+          className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-sidebar transition-[width] duration-200 sm:flex"
         >
           <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-2.5">
             {visiblePrimary.map((item) => {
@@ -348,7 +348,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Mobile bar */}
       <nav
         aria-label="Workspace navigation"
-        className="flex shrink-0 items-stretch gap-0.5 overflow-x-auto border-t border-border bg-sidebar px-1 [scrollbar-width:none] md:hidden"
+        className="flex shrink-0 items-stretch gap-0.5 overflow-x-auto border-t border-border bg-sidebar px-1 [scrollbar-width:none] sm:hidden"
       >
         {visiblePrimary.map((item) => {
           const active = isActive(item);
