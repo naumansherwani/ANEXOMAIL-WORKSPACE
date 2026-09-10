@@ -21,7 +21,7 @@ export function ListPanel({
   return (
     <div
       className={
-        "min-h-0 flex-col border-border md:border-r lg:w-[22rem] lg:shrink-0 " +
+        "min-h-0 flex-col border-border md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " +
         (mobileHidden ? "hidden md:flex" : "flex")
       }
     >

@@ -3,7 +3,7 @@ import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-r
 import { CrmStage } from "@/components/app/crm/CrmStage";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
-import { platformPlan, showCrmCollab, showCrmLedger } from "@/lib/plan-surface";
+import { platformPlan, showCrmCollab } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/crm")({
@@ -33,9 +33,13 @@ type Tab = {
     | "/app/crm"
     | "/app/crm/relationships"
     | "/app/crm/leads"
+    | "/app/crm/accounts"
     | "/app/crm/pipeline"
+    | "/app/crm/activity"
+    | "/app/crm/tasks"
+    | "/app/crm/reports"
     | "/app/crm/collab"
-    | "/app/crm/activity";
+    | "/app/crm/ai";
   label: string;
   exact?: boolean;
 };
@@ -49,9 +53,13 @@ function CrmLayout() {
     { to: "/app/crm", label: "Dashboard", exact: true },
     { to: "/app/crm/relationships", label: "Relationships" },
     { to: "/app/crm/leads", label: "Leads" },
-    { to: "/app/crm/pipeline", label: "Pipeline" },
+    { to: "/app/crm/accounts", label: "Accounts" },
+    { to: "/app/crm/pipeline", label: "Deals" },
+    { to: "/app/crm/activity", label: "Activities" },
+    { to: "/app/crm/tasks", label: "Tasks" },
+    { to: "/app/crm/reports", label: "Reports" },
     ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
-    ...(showCrmLedger(plan) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
+    { to: "/app/crm/ai", label: "AI" },
   ];
 
   return (
