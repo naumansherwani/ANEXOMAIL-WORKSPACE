@@ -2,10 +2,12 @@ import { useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
 import { useCreateDeal, useCreateLead } from "@/lib/crm";
 
 export function CaptureLead() {
+  const { t } = useLocale();
   const create = useCreateLead();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
@@ -42,7 +44,7 @@ export function CaptureLead() {
   return (
     <form
       onSubmit={submit}
-      className="mb-ax-4 grid gap-2 rounded-2xl border border-border bg-card p-ax-3 sm:grid-cols-[1fr_1fr_1fr_auto]"
+      className="mb-ax-4 grid gap-2 rounded-2xl border border-border/80 bg-card/80 p-ax-3 shadow-elev-1 sm:grid-cols-[1fr_1fr_1fr_auto]"
     >
       <Input
         type="email"
@@ -50,23 +52,24 @@ export function CaptureLead() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         placeholder="name@company.com"
-        aria-label="Lead email"
+        aria-label={t("Lead email")}
       />
-      <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" aria-label="Lead name" />
+      <Input value={name} onChange={(e) => setName(e.target.value)} placeholder={t("Name")} aria-label={t("Lead name")} />
       <Input
         value={company}
         onChange={(e) => setCompany(e.target.value)}
-        placeholder="Company"
-        aria-label="Company"
+        placeholder={t("Company")}
+        aria-label={t("Company")}
       />
       <Button type="submit" disabled={create.isPending} className="ax-press">
-        Capture lead
+        {t("Capture lead")}
       </Button>
     </form>
   );
 }
 
 export function OpenDeal() {
+  const { t } = useLocale();
   const create = useCreateDeal();
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
@@ -109,16 +112,16 @@ export function OpenDeal() {
   return (
     <form
       onSubmit={submit}
-      className="mb-ax-4 grid gap-2 rounded-2xl border border-border bg-card p-ax-3 lg:grid-cols-[1.4fr_1fr_1fr_7rem_1fr_auto]"
+      className="mb-ax-4 grid gap-2 rounded-2xl border border-border/80 bg-card/80 p-ax-3 shadow-elev-1 lg:grid-cols-[1.4fr_1fr_1fr_7rem_1fr_auto]"
     >
-      <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Deal title" aria-label="Deal title" />
-      <Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder="Company" aria-label="Company" />
+      <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("Deal title")} aria-label={t("Deal title")} />
+      <Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder={t("Company")} aria-label={t("Company")} />
       <Input
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
-        placeholder="Contact email"
-        aria-label="Contact email"
+        placeholder={t("Contact email")}
+        aria-label={t("Contact email")}
       />
       <Input
         type="number"
@@ -127,11 +130,11 @@ export function OpenDeal() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
         placeholder="£"
-        aria-label="Deal value"
+        aria-label={t("Deal value")}
       />
-      <Input value={next} onChange={(e) => setNext(e.target.value)} placeholder="Next step" aria-label="Next step" />
+      <Input value={next} onChange={(e) => setNext(e.target.value)} placeholder={t("Next step")} aria-label={t("Next step")} />
       <Button type="submit" disabled={create.isPending} className="ax-press">
-        Open deal
+        {t("Open deal")}
       </Button>
     </form>
   );

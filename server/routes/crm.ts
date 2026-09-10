@@ -132,6 +132,67 @@ async function insertBest(table: string, row: Record<string, unknown>) {
   return admin.from(table).insert(slim).select("id").limit(1);
 }
 
+async function writeEvidence(row: {
+  org_id: string;
+  actor: string;
+  decision: string;
+  why: string;
+  source_table: string;
+  source_id: string | null;
+  action: string;
+  result: string;
+}) {
+  try {
+    await insertBest("crm_evidence", row);
+  } catch {
+    /* table optional until phase64 */
+  }
+}
+
+async function writeEdge(
+  org_id: string,
+  from_kind: string,
+  from_id: string,
+  to_kind: string,
+  to_id: string,
+  kind: string,
+) {
+  try {
+    await insertBest("crm_graph_edges", { org_id, from_kind, from_id, to_kind, to_id, kind });
+  } catch {
+    /* optional */
+  }
+}
+
+async function threadForAddress(orgId: string, email: string): Promise<string | null> {
+  if (!email.includes("@")) return null;
+  const fromMsg = await safe<any[]>(
+    () =>
+      admin
+        .from("mail_messages")
+        .select("thread_id,sent_at")
+        .eq("org_id", orgId)
+        .eq("from_address", email)
+        .not("thread_id", "is", null)
+        .order("sent_at", { ascending: false })
+        .limit(1),
+    [],
+  );
+  if (fromMsg[0]?.thread_id) return String(fromMsg[0].thread_id);
+  const threads = await safe<any[]>(
+    () =>
+      admin
+        .from("mail_threads")
+        .select("id,from_address,last_message_at")
+        .eq("org_id", orgId)
+        .eq("from_address", email)
+        .order("last_message_at", { ascending: false })
+        .limit(1),
+    [],
+  );
+  return threads[0]?.id ? String(threads[0].id) : null;
+}
+
 const STAGE_PROB: Record<string, number> = {
   new: 10,
   qualified: 30,
@@ -200,6 +261,602 @@ crm.get(
   }),
 );
 
+function emailOf(value: unknown) {
+  return String(value || "")
+    .trim()
+    .toLowerCase();
+}
+
+const CONTACT_SELECT =
+  "id, display_name, primary_address, company_domain, health_score, last_contact_at, " +
+  "stats:contact_stats(messages_in, messages_out, avg_reply_minutes, open_threads, last_contact_at, relationship, health_score), company:companies(name)";
+
+function shapePerson(row: any) {
+  const s = row?.stats || {};
+  return {
+    id: String(row.id),
+    display_name: row.display_name ?? null,
+    primary_address: emailOf(row.primary_address),
+    company_name: row.company?.name || row.company_name || row.company_domain || null,
+    relationship: s.relationship || row.relationship || null,
+    health_score: s.health_score ?? row.health_score ?? null,
+    last_contact_at: s.last_contact_at || row.last_contact_at || null,
+    open_threads: Number(s.open_threads ?? row.open_threads ?? 0),
+  };
+}
+
+async function loadPeople(c: CrmCtx, deals: any[], leads: any[]) {
+  const joined = await safe<any[]>(
+    () => admin.from("contacts").select(CONTACT_SELECT).eq("org_id", c.orgId).limit(400),
+    [],
+  );
+  const plain =
+    joined.length > 0
+      ? joined
+      : await safe<any[]>(
+          () =>
+            admin
+              .from("contacts")
+              .select("id,display_name,primary_address,company_domain,health_score,last_contact_at")
+              .eq("org_id", c.orgId)
+              .limit(400),
+          [],
+        );
+  const map = new Map<string, ReturnType<typeof shapePerson>>();
+  for (const row of plain) {
+    const person = shapePerson(row);
+    if (person.primary_address.includes("@")) map.set(person.primary_address, person);
+  }
+  for (const d of deals) {
+    const address = emailOf(d.contact_email);
+    if (!address.includes("@") || map.has(address)) continue;
+    map.set(address, {
+      id: String(d.id),
+      display_name: d.company || address,
+      primary_address: address,
+      company_name: d.company ?? null,
+      relationship: null,
+      health_score: null,
+      last_contact_at: d.updated_at ?? null,
+      open_threads: 0,
+    });
+  }
+  for (const l of leads) {
+    const address = emailOf(l.email);
+    if (!address.includes("@") || map.has(address)) continue;
+    map.set(address, {
+      id: String(l.id),
+      display_name: l.display_name || address,
+      primary_address: address,
+      company_name: l.company ?? null,
+      relationship: null,
+      health_score: null,
+      last_contact_at: l.last_touch_at ?? l.created_at ?? null,
+      open_threads: 0,
+    });
+  }
+  return [...map.values()];
+}
+
+async function loadMail(c: CrmCtx) {
+  const byOrg = await safe<any[]>(
+    () =>
+      admin
+        .from("mail_messages")
+        .select("id,thread_id,subject,from_address,direction,sent_at")
+        .eq("org_id", c.orgId)
+        .order("sent_at", { ascending: false })
+        .limit(40),
+    [],
+  );
+  if (byOrg.length) return byOrg;
+  const threads = await safe<any[]>(
+    () =>
+      admin
+        .from("mail_threads")
+        .select("id,subject,from_address,last_message_at,status,folder")
+        .eq("org_id", c.orgId)
+        .order("last_message_at", { ascending: false })
+        .limit(40),
+    [],
+  );
+  return threads.map((t) => ({
+    id: t.id,
+    thread_id: t.id,
+    subject: t.subject,
+    from_address: t.from_address,
+    direction: "in",
+    sent_at: t.last_message_at,
+    open: t.status === "open" || t.folder === "inbox",
+  }));
+}
+
+crm.get(
+  "/crm/live",
+  guard("pro", async (_req, res, c) => {
+    const deals = await safe<any[]>(() => scopedDeals(c), []);
+    const leads = await safe<any[]>(() => scopedLeads(c), []);
+    const contacts = await loadPeople(c, deals, leads);
+    const tasks = await safe<any[]>(
+      () =>
+        admin.from("work_tasks").select("id,title,status,due_at,owner,thread_id,source,created_at,thread_subject").eq("org_id", c.orgId).limit(300),
+      [],
+    );
+    const promises = await safe<any[]>(
+      () =>
+        admin
+          .from("work_promises")
+          .select("id,quote,suggested_title,suggested_due_at,status,thread_id,thread_subject")
+          .eq("org_id", c.orgId)
+          .limit(200),
+      [],
+    );
+    const events = await safe<any[]>(
+      () =>
+        admin
+          .from("calendar_events")
+          .select("id,title,starts_at,organiser,thread_id")
+          .eq("org_id", c.orgId)
+          .gte("starts_at", new Date(Date.now() - 40 * 86400000).toISOString())
+          .limit(200),
+      [],
+    );
+    const attendees = await safe<any[]>(
+      () => admin.from("calendar_attendees").select("event_id,address,org_id").eq("org_id", c.orgId).limit(2000),
+      [],
+    );
+    const attendeeRows =
+      attendees.length > 0
+        ? attendees
+        : await safe<any[]>(() => admin.from("calendar_attendees").select("event_id,address").limit(2000), []);
+    const mail = await loadMail(c);
+    const activities = await safe<any[]>(
+      () => admin.from("crm_activities").select("id,kind,subject,actor,deal_id,contact_email,created_at").order("created_at", { ascending: false }).limit(40),
+      [],
+    );
+
+    const open = deals.filter((d) => !["won", "lost"].includes(d.stage));
+    const radar: { kind: string; title: string; why: string; source: string; href: string }[] = [];
+    const next_actions: { kind: string; title: string; action: string; why: string; href: string }[] = [];
+    const openMailByAddress = new Map<string, number>();
+    for (const m of mail) {
+      const addr = emailOf(m.from_address);
+      if (!addr.includes("@")) continue;
+      if (m.open || m.direction === "in") {
+        openMailByAddress.set(addr, (openMailByAddress.get(addr) || 0) + 1);
+      }
+    }
+    for (const p of contacts) {
+      if (!p.open_threads) p.open_threads = openMailByAddress.get(p.primary_address) || 0;
+    }
+
+    for (const d of open) {
+      const quiet = days(d.updated_at) ?? 0;
+      if (quiet >= 14) {
+        const href = d.thread_id ? `/app/mail/inbox/${d.thread_id}` : "/app/crm/pipeline";
+        radar.push({
+          kind: "silent",
+          title: d.title,
+          why: `Deal untouched ${quiet} days`,
+          source: `crm_deals:${d.id}`,
+          href,
+        });
+        next_actions.push({
+          kind: "follow_up",
+          title: d.title,
+          action: "Write the thread or set a next step",
+          why: `${quiet} days silent`,
+          href,
+        });
+      }
+      const contact = emailOf(d.contact_email);
+      if (contact) {
+        const meetIds = new Set(
+          attendeeRows.filter((a) => emailOf(a.address) === contact).map((a) => a.event_id),
+        );
+        const lastMeet = events
+          .filter((e) => meetIds.has(e.id) || emailOf(e.organiser) === contact)
+          .sort((a, b) => String(b.starts_at).localeCompare(String(a.starts_at)))[0];
+        const gap = lastMeet ? days(lastMeet.starts_at) : 999;
+        if (gap >= 12) {
+          next_actions.push({
+            kind: "meeting",
+            title: d.title,
+            action: "No decision-maker meeting in 12 days",
+            why: lastMeet ? `Last meeting ${lastMeet.starts_at}` : "No meeting on record",
+            href: "/app/calendar",
+          });
+        }
+      }
+    }
+
+    for (const p of contacts) {
+      const name = p.display_name || p.primary_address;
+      const quiet = days(p.last_contact_at);
+      if (p.health_score == null) {
+        let score = 72;
+        if (quiet == null || quiet >= 14) score -= 18;
+        if ((p.open_threads || 0) > 0) score -= 10;
+        p.health_score = Math.max(0, Math.min(100, score));
+      }
+      if ((p.open_threads || 0) > 0) {
+        next_actions.push({
+          kind: "no_pitch",
+          title: name,
+          action: "Don't send a sales email — an open support thread is still waiting",
+          why: `${p.open_threads} open mail threads`,
+          href: "/app/mail/inbox",
+        });
+      }
+      if (p.relationship === "at_risk" || p.relationship === "dormant" || (quiet != null && quiet >= 14 && open.some((d) => emailOf(d.contact_email) === p.primary_address))) {
+        radar.push({
+          kind: "health",
+          title: name,
+          why: p.relationship
+            ? `Relationship ${p.relationship}${p.health_score != null ? ` · health ${p.health_score}` : ""}`
+            : `Last touch ${quiet ?? "unknown"} days ago · health ${p.health_score}`,
+          source: `contacts:${p.id}`,
+          href: `/app/crm/relationships?email=${encodeURIComponent(p.primary_address)}`,
+        });
+      }
+    }
+
+    for (const t of tasks) {
+      if (t.status === "done") continue;
+      if (t.due_at && new Date(t.due_at).getTime() < Date.now()) {
+        radar.push({
+          kind: "promise_overdue",
+          title: t.title,
+          why: `Due ${t.due_at}`,
+          source: `work_tasks:${t.id}`,
+          href: "/app/work",
+        });
+        next_actions.push({
+          kind: "promise",
+          title: t.title,
+          action: "Promise overdue — complete with evidence or move the date",
+          why: `work_tasks:${t.id}`,
+          href: "/app/work",
+        });
+      }
+    }
+    for (const pr of promises) {
+      const due = pr.suggested_due_at;
+      if (!due || new Date(due).getTime() >= Date.now()) continue;
+      if (String(pr.status || "") === "done" || String(pr.status || "") === "kept") continue;
+      radar.push({
+        kind: "promise_overdue",
+        title: pr.suggested_title || pr.quote || "Promise",
+        why: `Due ${due}`,
+        source: `work_promises:${pr.id}`,
+        href: "/app/work",
+      });
+      next_actions.push({
+        kind: "promise",
+        title: pr.suggested_title || pr.quote || "Promise",
+        action: "Promise overdue — complete with evidence or move the date",
+        why: `work_promises:${pr.id}`,
+        href: "/app/work",
+      });
+    }
+
+    const timeline = [
+      ...mail.map((m) => ({
+        at: m.sent_at,
+        kind: m.direction === "out" ? "email_out" : "email_in",
+        title: m.subject || "(no subject)",
+        source: m.from_address,
+        href: m.thread_id ? `/app/mail/inbox/${m.thread_id}` : "/app/mail/inbox",
+      })),
+      ...events.slice(0, 20).map((e) => ({
+        at: e.starts_at,
+        kind: "meeting",
+        title: e.title,
+        source: e.organiser,
+        href: "/app/calendar",
+      })),
+      ...tasks
+        .filter((t) => t.created_at || t.due_at)
+        .slice(0, 20)
+        .map((t) => ({
+          at: t.created_at || t.due_at,
+          kind: "work",
+          title: t.title,
+          source: t.owner,
+          href: "/app/work",
+        })),
+      ...activities.map((a) => ({
+        at: a.created_at,
+        kind: a.kind || "note",
+        title: a.subject || a.kind,
+        source: a.actor,
+        href: "/app/crm/activity",
+      })),
+    ]
+      .filter((row) => row.at)
+      .sort((a, b) => String(b.at).localeCompare(String(a.at)))
+      .slice(0, 30);
+
+    const nodes: { id: string; kind: string; label: string; email?: string | null }[] = [
+      ...contacts.slice(0, 40).map((p) => ({
+        id: `person:${p.id}`,
+        kind: "person",
+        label: p.display_name || p.primary_address,
+        email: p.primary_address,
+      })),
+      ...open.slice(0, 40).map((d) => ({
+        id: `deal:${d.id}`,
+        kind: "deal",
+        label: d.title,
+        email: d.contact_email,
+      })),
+    ];
+    const seen = new Set(nodes.map((n) => n.id));
+    const addNode = (node: { id: string; kind: string; label: string; email?: string | null }) => {
+      if (seen.has(node.id)) return;
+      seen.add(node.id);
+      nodes.push(node);
+    };
+    const edges: { from: string; to: string; kind: string }[] = [];
+    for (const d of open) {
+      const person = contacts.find((p) => emailOf(p.primary_address) === emailOf(d.contact_email));
+      if (person) edges.push({ from: `person:${person.id}`, to: `deal:${d.id}`, kind: "owns" });
+      if (d.thread_id) {
+        addNode({ id: `mail:${d.thread_id}`, kind: "mail", label: d.title });
+        edges.push({ from: `deal:${d.id}`, to: `mail:${d.thread_id}`, kind: "thread" });
+      }
+    }
+    for (const m of mail) {
+      if (!m.thread_id) continue;
+      addNode({ id: `mail:${m.thread_id}`, kind: "mail", label: m.subject || "(no subject)" });
+      const person = contacts.find((p) => emailOf(p.primary_address) === emailOf(m.from_address));
+      if (person) edges.push({ from: `person:${person.id}`, to: `mail:${m.thread_id}`, kind: "wrote" });
+    }
+    for (const t of tasks) {
+      addNode({ id: `work:${t.id}`, kind: "work", label: t.title });
+      const ownerPerson = contacts.find((p) => emailOf(p.primary_address) === emailOf(t.owner));
+      if (ownerPerson) edges.push({ from: `person:${ownerPerson.id}`, to: `work:${t.id}`, kind: "assigned" });
+      const deal = open.find((d) => d.thread_id && d.thread_id === t.thread_id) || open.find((d) => String(t.source || "").includes(d.id));
+      if (deal) edges.push({ from: `deal:${deal.id}`, to: `work:${t.id}`, kind: "workstream" });
+      if (t.thread_id) {
+        addNode({ id: `mail:${t.thread_id}`, kind: "mail", label: t.thread_subject || t.title });
+        edges.push({ from: `work:${t.id}`, to: `mail:${t.thread_id}`, kind: "thread" });
+      }
+    }
+    for (const e of events) {
+      addNode({ id: `calendar:${e.id}`, kind: "calendar", label: e.title });
+      const who = attendeeRows.filter((a) => a.event_id === e.id).map((a) => emailOf(a.address));
+      if (e.organiser) who.push(emailOf(e.organiser));
+      for (const addr of who) {
+        const person = contacts.find((p) => p.primary_address === addr);
+        if (person) edges.push({ from: `person:${person.id}`, to: `calendar:${e.id}`, kind: "attends" });
+      }
+      if (e.thread_id) {
+        addNode({ id: `mail:${e.thread_id}`, kind: "mail", label: e.title });
+        edges.push({ from: `calendar:${e.id}`, to: `mail:${e.thread_id}`, kind: "thread" });
+      }
+    }
+    const storedEdges = await safe<any[]>(
+      () =>
+        admin
+          .from("crm_graph_edges")
+          .select("from_kind,from_id,to_kind,to_id,kind")
+          .eq("org_id", c.orgId)
+          .limit(80),
+      [],
+    );
+    for (const e of storedEdges) {
+      const fromId = `${e.from_kind}:${e.from_id}`;
+      const toId = `${e.to_kind}:${e.to_id}`;
+      addNode({ id: fromId, kind: e.from_kind, label: e.from_kind });
+      addNode({ id: toId, kind: e.to_kind, label: e.to_kind });
+      edges.push({ from: fromId, to: toId, kind: e.kind });
+    }
+
+    res.json({
+      radar: radar.slice(0, 24),
+      next_actions: next_actions.slice(0, 16),
+      timeline,
+      people: contacts.slice(0, 60),
+      graph: { nodes, edges: edges.slice(0, 80) },
+      counts: {
+        contacts: contacts.length,
+        open_deals: open.length,
+        overdue_tasks: tasks.filter((t) => t.status !== "done" && t.due_at && new Date(t.due_at).getTime() < Date.now()).length,
+        promises: promises.length,
+      },
+    });
+  }),
+);
+
+crm.get(
+  "/crm/memory",
+  guard("pro", async (req, res, c) => {
+    const email = emailOf(req.query.email);
+    if (!email || !email.includes("@")) return res.status(400).json({ error: "email_required" });
+    const allDeals = await safe<any[]>(() => scopedDeals(c), []);
+    const allLeads = await safe<any[]>(() => scopedLeads(c), []);
+    const people = await loadPeople(c, allDeals, allLeads);
+    const person = people.find((p) => p.primary_address === email) || null;
+    const deals = allDeals.filter((d) => emailOf(d.contact_email) === email);
+    const tasks = await safe<any[]>(
+      () => admin.from("work_tasks").select("*").eq("org_id", c.orgId).limit(200),
+      [],
+    );
+    const relatedTasks = tasks.filter(
+      (t) =>
+        emailOf(t.owner) === email ||
+        deals.some((d) => d.thread_id && d.thread_id === t.thread_id) ||
+        String(t.source || "").includes("crm_deal"),
+    );
+    let mail = await safe<any[]>(
+      () =>
+        admin
+          .from("mail_messages")
+          .select("id,thread_id,subject,from_address,direction,sent_at,snippet")
+          .eq("org_id", c.orgId)
+          .or(`from_address.ilike.%${email}%,to_addresses.ilike.%${email}%`)
+          .order("sent_at", { ascending: false })
+          .limit(40),
+      [],
+    );
+    if (!mail.length) {
+      mail = (await loadMail(c)).filter((m) => emailOf(m.from_address) === email);
+    }
+    const events = await safe<any[]>(
+      () =>
+        admin
+          .from("calendar_events")
+          .select("id,title,starts_at,organiser,thread_id")
+          .eq("org_id", c.orgId)
+          .limit(80),
+      [],
+    );
+    const attendees = await safe<any[]>(
+      () => admin.from("calendar_attendees").select("event_id,address").eq("org_id", c.orgId).limit(500),
+      [],
+    );
+    const meetIds = new Set(attendees.filter((a) => emailOf(a.address) === email).map((a) => a.event_id));
+    const relatedEvents = events.filter((e) => meetIds.has(e.id) || emailOf(e.organiser) === email);
+    const no_pitch = Boolean(person?.open_threads) || mail.some((m) => m.open || m.direction === "in");
+    const lastMeet = relatedEvents.sort((a, b) => String(b.starts_at).localeCompare(String(a.starts_at)))[0];
+    const meetGap = lastMeet ? days(lastMeet.starts_at) : 999;
+    res.json({
+      email,
+      person,
+      deals,
+      tasks: relatedTasks.map((t) => ({
+        id: t.id,
+        title: t.title,
+        status: t.status,
+        due_at: t.due_at ?? null,
+        thread_id: t.thread_id ?? null,
+      })),
+      timeline: [
+        ...mail.map((m) => ({
+          at: m.sent_at,
+          kind: m.direction === "out" ? "email_out" : "email_in",
+          title: m.subject || "(no subject)",
+          detail: m.snippet || null,
+          href: m.thread_id ? `/app/mail/inbox/${m.thread_id}` : "/app/mail/inbox",
+        })),
+        ...relatedEvents.map((e) => ({
+          at: e.starts_at,
+          kind: "meeting",
+          title: e.title,
+          detail: e.organiser || null,
+          href: "/app/calendar",
+        })),
+        ...relatedTasks.map((t) => ({
+          at: t.due_at || t.created_at,
+          kind: "work",
+          title: t.title,
+          detail: t.status || null,
+          href: "/app/work",
+        })),
+      ]
+        .filter((row) => row.at)
+        .sort((a, b) => String(b.at).localeCompare(String(a.at)))
+        .slice(0, 40),
+      next_actions: [
+        ...(no_pitch
+          ? [
+              {
+                action: "Don't send a sales email — an open support thread is still waiting",
+                why: `${person?.open_threads || mail.length} open threads`,
+                href: "/app/mail/inbox",
+              },
+            ]
+          : []),
+        ...(deals.length && meetGap >= 12
+          ? [
+              {
+                action: "No decision-maker meeting in 12 days",
+                why: lastMeet ? `Last meeting ${lastMeet.starts_at}` : "No meeting on record",
+                href: "/app/calendar",
+              },
+            ]
+          : []),
+        ...deals
+          .filter((d) => (days(d.updated_at) ?? 0) >= 14)
+          .map((d) => ({
+            action: "Write the thread or set a next step",
+            why: `Deal untouched ${days(d.updated_at)} days`,
+            href: d.thread_id ? `/app/mail/inbox/${d.thread_id}` : "/app/crm/pipeline",
+          })),
+      ],
+    });
+  }),
+);
+
+crm.post(
+  "/crm/deals/work",
+  guard("pro", async (req, res, c) => {
+    const id = String(req.body?.deal_id || req.body?.id || "");
+    if (!id) return res.status(400).json({ error: "deal_id_required" });
+    const owned = await safe<any[]>(() => scopedDeals(c).eq("id", id).limit(1), []);
+    const deal = owned[0];
+    if (!deal) return res.status(404).json({ error: "deal_not_found" });
+    const ins = await insertBest("work_tasks", {
+      org_id: c.orgId,
+      title: deal.title,
+      status: "todo",
+      owner: deal.owner || c.email,
+      due_at: deal.next_step_due || null,
+      thread_id: deal.thread_id || null,
+      source: "crm_deal",
+      created_by: c.user.id,
+    });
+    if (ins.error) return res.status(500).json({ error: ins.error.message || "work_create_failed" });
+    const taskId = (ins.data?.[0] as any)?.id;
+    await writeEdge(c.orgId, "deal", id, "work", String(taskId || id), "workstream");
+    await writeEvidence({
+      org_id: c.orgId,
+      actor: c.email,
+      decision: "CRM → Work",
+      why: deal.title,
+      source_table: "crm_deals",
+      source_id: id,
+      action: "deal.work",
+      result: taskId ? `work_tasks:${taskId}` : "created",
+    });
+    await auditCrm(c.email, "deal.work", id, ipOf(req));
+    res.json({ ok: true, task_id: taskId });
+  }),
+);
+
+crm.post(
+  "/crm/deals/thread",
+  guard("pro", async (req, res, c) => {
+    const id = String(req.body?.deal_id || req.body?.id || "");
+    if (!id) return res.status(400).json({ error: "deal_id_required" });
+    const owned = await safe<any[]>(() => scopedDeals(c).eq("id", id).limit(1), []);
+    const deal = owned[0];
+    if (!deal) return res.status(404).json({ error: "deal_not_found" });
+    const address = emailOf(deal.contact_email);
+    const tid = await threadForAddress(c.orgId, address);
+    if (!tid) return res.status(404).json({ error: "no_thread_for_address" });
+    const up = await admin
+      .from("crm_deals")
+      .update({ thread_id: tid, updated_at: new Date().toISOString() })
+      .eq("id", id);
+    if (up.error) return res.status(500).json({ error: "thread_attach_failed" });
+    await writeEdge(c.orgId, "deal", id, "mail", tid, "thread");
+    await writeEvidence({
+      org_id: c.orgId,
+      actor: c.email,
+      decision: "Conversation → CRM",
+      why: `Recorded thread for ${address}`,
+      source_table: "crm_deals",
+      source_id: id,
+      action: "deal.thread",
+      result: `mail_threads:${tid}`,
+    });
+    await auditCrm(c.email, "deal.thread", `${id}:${tid}`, ipOf(req));
+    res.json({ ok: true, thread_id: tid });
+  }),
+);
+
 /* ------------------------------------------------------------ leads/deals */
 crm.get(
   "/crm/leads",
@@ -246,8 +903,19 @@ crm.post(
       org_id: c.orgId,
     });
     if (ins.error) return res.status(500).json({ error: ins.error.message || "lead_create_failed" });
+    const leadId = (ins.data?.[0] as any)?.id;
+    await writeEvidence({
+      org_id: c.orgId,
+      actor: c.email,
+      decision: "Lead captured",
+      why: email,
+      source_table: "crm_leads",
+      source_id: leadId ? String(leadId) : email,
+      action: "lead.create",
+      result: "new",
+    });
     await auditCrm(c.email, "lead.create", email, ipOf(req));
-    res.json({ ok: true, id: (ins.data?.[0] as any)?.id });
+    res.json({ ok: true, id: leadId });
   }),
 );
 
@@ -305,6 +973,11 @@ crm.post(
     });
     if (ins.error) return res.status(500).json({ error: ins.error.message || "deal_create_failed" });
     const id = (ins.data?.[0] as any)?.id;
+    const tid = contact_email ? await threadForAddress(c.orgId, contact_email) : null;
+    if (id && tid) {
+      await admin.from("crm_deals").update({ thread_id: tid }).eq("id", id);
+      await writeEdge(c.orgId, "deal", String(id), "mail", tid, "thread");
+    }
     try {
       await admin.from("crm_activities").insert({
         kind: "note",
@@ -317,8 +990,18 @@ crm.post(
     } catch {
       /* optional */
     }
+    await writeEvidence({
+      org_id: c.orgId,
+      actor: c.email,
+      decision: "Deal opened",
+      why: title,
+      source_table: "crm_deals",
+      source_id: id ? String(id) : null,
+      action: "deal.create",
+      result: tid ? `thread:${tid}` : "no_thread_yet",
+    });
     await auditCrm(c.email, "deal.create", id || title, ipOf(req));
-    res.json({ ok: true, id });
+    res.json({ ok: true, id, thread_id: tid });
   }),
 );
 
@@ -343,6 +1026,16 @@ crm.post(
       /* optional */
     }
     await auditCrm(c.email, "deal.stage", `${id}:${stage}`, ipOf(req));
+    await writeEvidence({
+      org_id: c.orgId,
+      actor: c.email,
+      decision: `Stage → ${stage}`,
+      why: owned[0]?.title || id,
+      source_table: "crm_deals",
+      source_id: id,
+      action: "deal.stage",
+      result: stage,
+    });
     res.json({ ok: true });
   }),
 );
@@ -367,13 +1060,58 @@ crm.post(
       updated_at: new Date().toISOString(),
     });
     if (ins.error) return res.status(500).json({ error: "convert_failed" });
+    const dealId = (ins.data?.[0] as any)?.id;
+    const tid = await threadForAddress(c.orgId, emailOf(lead.email));
+    if (dealId && tid) {
+      await admin.from("crm_deals").update({ thread_id: tid }).eq("id", dealId);
+      await writeEdge(c.orgId, "deal", String(dealId), "mail", tid, "thread");
+    }
     await admin.from("crm_leads").update({ state: "converted" }).eq("id", lead_id);
+    await writeEvidence({
+      org_id: c.orgId,
+      actor: c.email,
+      decision: "Lead converted",
+      why: lead.email,
+      source_table: "crm_leads",
+      source_id: lead_id,
+      action: "lead.convert",
+      result: dealId ? `crm_deals:${dealId}` : "created",
+    });
     await auditCrm(c.email, "lead.convert", lead_id, ipOf(req));
-    res.json({ ok: true, deal_id: (ins.data?.[0] as any)?.id });
+    res.json({ ok: true, deal_id: dealId, thread_id: tid });
   }),
 );
 
 /* -------------------------------------------------- activities / insights */
+crm.get(
+  "/crm/evidence",
+  guard("pro", async (_req, res, c) => {
+    const rows = await safe<any[]>(
+      () =>
+        admin
+          .from("crm_evidence")
+          .select("id,actor,decision,why,source_table,source_id,action,result,created_at")
+          .eq("org_id", c.orgId)
+          .order("created_at", { ascending: false })
+          .limit(100),
+      [],
+    );
+    res.json({
+      entries: rows.map((r) => ({
+        id: r.id,
+        actor: r.actor ?? null,
+        decision: r.decision,
+        why: r.why ?? null,
+        source_table: r.source_table ?? null,
+        source_id: r.source_id ?? null,
+        action: r.action ?? null,
+        result: r.result ?? null,
+        created_at: r.created_at,
+      })),
+    });
+  }),
+);
+
 crm.get(
   "/crm/activities",
   guard("business_pro", async (_req, res, c) => {

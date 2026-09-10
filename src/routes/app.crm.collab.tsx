@@ -7,6 +7,7 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { Button } from "@/components/ui/button";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
+import { useLocale } from "@/lib/i18n";
 import { money, useApprovals, useDecideApproval, useMentions, useSharedItems } from "@/lib/crm";
 import { cn } from "@/lib/utils";
 
@@ -37,30 +38,31 @@ const TABS: { id: Tab; label: string; icon: typeof Inbox }[] = [
 ];
 
 function CollabPage() {
+  const { t } = useLocale();
   const [tab, setTab] = useState<Tab>("inbox");
 
   return (
     <div className="mx-auto w-full max-w-5xl px-ax-5 py-ax-6">
       <SectionTitle
-        title="Shared work"
-        hint="Assignment, mentions and approvals are server truth — two people can never own the same reply."
+        title={t("Shared work")}
+        hint={t("Assignment, mentions and approvals are server truth — two people can never own the same reply.")}
       />
 
       <div className="mb-ax-4 flex flex-wrap gap-1">
-        {TABS.map((t) => (
+        {TABS.map((item) => (
           <button
-            key={t.id}
+            key={item.id}
             type="button"
-            onClick={() => setTab(t.id)}
+            onClick={() => setTab(item.id)}
             className={cn(
               "ax-press inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-semibold transition-colors",
-              tab === t.id
+              tab === item.id
                 ? "border-foreground bg-secondary text-foreground"
                 : "border-border text-muted-foreground hover:text-foreground",
             )}
           >
-            <t.icon className="size-3.5" aria-hidden="true" />
-            {t.label}
+            <item.icon className="size-3.5" aria-hidden="true" />
+            {t(item.label)}
           </button>
         ))}
       </div>
@@ -77,6 +79,7 @@ function CollabPage() {
 }
 
 function SharedList({ kind }: { kind: "inbox" | "draft" }) {
+  const { t } = useLocale();
   const items = useSharedItems(kind);
   return (
     <CardBody
@@ -92,8 +95,7 @@ function SharedList({ kind }: { kind: "inbox" | "draft" }) {
       {(data) =>
         data.items.length === 0 ? (
           <p className="ax-caption text-muted-foreground">
-            Nothing waiting. Shared items appear when a team address receives mail or a teammate
-            leaves a draft.
+            {t("Nothing waiting. Shared items appear when a team address receives mail or a teammate leaves a draft.")}
           </p>
         ) : (
           <ul className="space-y-ax-2">
@@ -123,6 +125,7 @@ function SharedList({ kind }: { kind: "inbox" | "draft" }) {
 }
 
 function MentionsList() {
+  const { t } = useLocale();
   const mentions = useMentions();
   return (
     <CardBody
@@ -137,16 +140,16 @@ function MentionsList() {
     >
       {(data) =>
         data.mentions.length === 0 ? (
-          <p className="ax-caption text-muted-foreground">No one has mentioned you yet.</p>
+          <p className="ax-caption text-muted-foreground">{t("No one has mentioned you yet.")}</p>
         ) : (
           <ul className="space-y-ax-2">
             {data.mentions.map((m) => (
               <li key={m.id} className="ax-plane rounded-2xl p-ax-4">
                 <div className="flex flex-wrap items-center gap-ax-3">
-                  <p className="min-w-0 flex-1 text-[13px] text-foreground">
-                    <strong>{m.actor}</strong> mentioned {m.target}
-                  </p>
-                  {!m.read && <Chip tone="warn">Unread</Chip>}
+                    <p className="min-w-0 flex-1 text-[13px] text-foreground">
+                    <strong>{m.actor}</strong> {t("mentioned")} {m.target}
+                    </p>
+                    {!m.read && <Chip tone="warn">{t("Unread")}</Chip>}
                   <span className="ax-caption text-muted-foreground">
                     {relativeTime(m.created_at)}
                   </span>
@@ -162,6 +165,7 @@ function MentionsList() {
 }
 
 function ApprovalsList() {
+  const { t } = useLocale();
   const approvals = useApprovals();
   const decide = useDecideApproval();
 
@@ -191,7 +195,7 @@ function ApprovalsList() {
       {(data) =>
         data.approvals.length === 0 ? (
           <p className="ax-caption text-muted-foreground">
-            Nothing needs a decision. Money and legal replies always land here before they send.
+            {t("Nothing needs a decision. Money and legal replies always land here before they send.")}
           </p>
         ) : (
           <ul className="space-y-ax-2">
@@ -218,7 +222,7 @@ function ApprovalsList() {
                       disabled={decide.isPending}
                       onClick={() => act(a.id, "approved")}
                     >
-                      Approve
+                      {t("Approve")}
                     </Button>
                     <Button
                       size="sm"
@@ -226,7 +230,7 @@ function ApprovalsList() {
                       disabled={decide.isPending}
                       onClick={() => act(a.id, "rejected")}
                     >
-                      Reject
+                      {t("Reject")}
                     </Button>
                   </div>
                 )}

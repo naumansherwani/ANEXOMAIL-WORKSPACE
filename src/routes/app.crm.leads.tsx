@@ -8,6 +8,7 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import { Button } from "@/components/ui/button";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
+import { useLocale } from "@/lib/i18n";
 import { useConvertLead, useCrmLeads, type Lead } from "@/lib/crm";
 import { cn } from "@/lib/utils";
 
@@ -30,6 +31,7 @@ export const Route = createFileRoute("/app/crm/leads")({
 const STATES: (Lead["state"] | "all")[] = ["new", "working", "converted", "dropped", "all"];
 
 function LeadsPage() {
+  const { t } = useLocale();
   const [state, setState] = useState<Lead["state"] | "all">("new");
   const leads = useCrmLeads(state);
   const convert = useConvertLead();
@@ -37,8 +39,8 @@ function LeadsPage() {
   return (
     <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
       <SectionTitle
-        title="Leads"
-        hint="Your book of people who are not a deal yet. Capture one here — scores appear only when mail behaviour exists."
+        title={t("Leads")}
+        hint={t("Your book of people who are not a deal yet. Capture one here — scores appear only when mail behaviour exists.")}
       />
       <CaptureLead />
 
@@ -55,7 +57,7 @@ function LeadsPage() {
                 : "border-border text-muted-foreground hover:text-foreground",
             )}
           >
-            {s}
+            {t(s)}
           </button>
         ))}
       </div>
@@ -73,7 +75,7 @@ function LeadsPage() {
         {(data) =>
           data.leads.length === 0 ? (
             <p className="ax-caption text-muted-foreground">
-              No leads in this state. Capture one above — we do not invent inbound people.
+              {t("No leads in this state. Capture one above — we do not invent inbound people.")}
             </p>
           ) : (
             <ul className="space-y-ax-2">
@@ -93,7 +95,7 @@ function LeadsPage() {
                     {l.score !== null && <ScoreBar value={l.score} />}
                     <Chip tone={l.state === "converted" ? "good" : "quiet"}>{l.state}</Chip>
                     <span className="ax-caption text-muted-foreground">
-                      {l.last_touch_at ? relativeTime(l.last_touch_at) : "never touched"}
+                      {l.last_touch_at ? relativeTime(l.last_touch_at) : t("Never touched")}
                     </span>
                     {l.state !== "converted" && (
                       <Button
@@ -116,7 +118,7 @@ function LeadsPage() {
                           )
                         }
                       >
-                        <UserPlus className="size-4" aria-hidden="true" /> Convert
+                        <UserPlus className="size-4" aria-hidden="true" /> {t("Convert")}
                       </Button>
                     )}
                   </div>

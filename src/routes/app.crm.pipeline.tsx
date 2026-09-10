@@ -5,13 +5,16 @@ import { OpenDeal } from "@/components/app/crm/CrmCapture";
 import { Chip, SectionTitle } from "@/components/app/crm/CrmBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { notify } from "@/lib/notify";
+import { useLocale } from "@/lib/i18n";
 import {
   STAGE_LABEL,
   STAGE_ORDER,
   money,
   probabilityPercent,
   useCrmDeals,
+  useDealToWork,
   useMoveDeal,
+  useAttachDealThread,
   type Deal,
   type DealStage,
 } from "@/lib/crm";
@@ -34,8 +37,11 @@ export const Route = createFileRoute("/app/crm/pipeline")({
 });
 
 function PipelinePage() {
+  const { t } = useLocale();
   const deals = useCrmDeals();
   const move = useMoveDeal();
+  const toWork = useDealToWork();
+  const attach = useAttachDealThread();
 
   const advance = (deal: Deal) => {
     const next = STAGE_ORDER[Math.min(STAGE_ORDER.indexOf(deal.stage) + 1, STAGE_ORDER.length - 1)];
@@ -55,8 +61,8 @@ function PipelinePage() {
   return (
     <div className="w-full px-ax-5 py-ax-6">
       <SectionTitle
-        title="Pipeline"
-        hint="Thread stays attached when a deal has mail. Empty columns stay empty until you open a deal."
+        title={t("Pipeline")}
+        hint={t("Thread stays attached when a deal has mail. Empty columns stay empty until you open a deal.")}
       />
       <OpenDeal />
 
@@ -84,7 +90,7 @@ function PipelinePage() {
                   total={money(total, currency)}
                 >
                   {items.length === 0 ? (
-                    <p className="ax-caption text-muted-foreground">Empty</p>
+                    <p className="ax-caption text-muted-foreground">{t("Empty")}</p>
                   ) : (
                     items.map((d) => (
                       <article
@@ -93,23 +99,23 @@ function PipelinePage() {
                       >
                         <p className="text-[13px] font-semibold text-foreground">{d.title}</p>
                         <p className="ax-caption mt-0.5 text-muted-foreground">
-                          {d.company ?? d.contact_email ?? "No company yet"}
+                          {d.company ?? d.contact_email ?? t("No company yet")}
                         </p>
                         <div className="mt-1.5 flex flex-wrap items-center gap-2">
                           <span className="text-[13px] font-semibold text-foreground">
                             {money(d.value, d.currency)}
                           </span>
                           {probabilityPercent(d.probability) !== null && (
-                            <Chip>{probabilityPercent(d.probability)}% likely</Chip>
+                            <Chip>{probabilityPercent(d.probability)}% {t("likely")}</Chip>
                           )}
                           {d.stale_days !== null && d.stale_days > 7 && (
-                            <Chip tone="warn">{d.stale_days}d quiet</Chip>
+                            <Chip tone="warn">{d.stale_days}d {t("quiet")}</Chip>
                           )}
                         </div>
                         {d.next_step && (
                           <p className="ax-caption mt-1.5 text-muted-foreground">
-                            Next: {d.next_step}
-                            {d.next_step_due ? ` · due ${d.next_step_due}` : ""}
+                            {t("Next")}: {d.next_step}
+                            {d.next_step_due ? ` · ${d.next_step_due}` : ""}
                           </p>
                         )}
                         <div className="mt-ax-2 flex items-center gap-2">
@@ -119,9 +125,31 @@ function PipelinePage() {
                               params={{ folder: "inbox", threadId: d.thread_id }}
                               className="ax-press ax-caption inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
                             >
-                              <Mail className="size-3" aria-hidden="true" /> Thread
+                              <Mail className="size-3" aria-hidden="true" /> {t("Thread")}
                             </Link>
                           )}
+                          {!d.thread_id && d.contact_email ? (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                attach.mutate(
+                                  { id: d.id },
+                                  {
+                                    onSuccess: () => notify.done(t("Mail attached from this address"), d.contact_email || ""),
+                                    onError: (e) =>
+                                      notify.failed(
+                                        e.status === 404 ? t("No mail thread on this address yet") : t("Could not attach mail"),
+                                        { description: e.message },
+                                      ),
+                                  },
+                                )
+                              }
+                              disabled={attach.isPending}
+                              className="ax-press ax-caption rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
+                            >
+                              {t("Attach mail")}
+                            </button>
+                          ) : null}
                           {stage !== "won" && stage !== "lost" && (
                             <button
                               type="button"
@@ -129,9 +157,28 @@ function PipelinePage() {
                               disabled={move.isPending}
                               className="ax-press ax-caption inline-flex items-center gap-1 rounded-full border border-cyan-accent/50 px-2 py-0.5 font-semibold text-foreground"
                             >
-                              Advance <ArrowRight className="size-3" aria-hidden="true" />
+                              {t("Advance")} <ArrowRight className="size-3" aria-hidden="true" />
                             </button>
                           )}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              toWork.mutate(
+                                { id: d.id },
+                                {
+                                  onSuccess: () => notify.done("Work opened", "The deal is a task on Work."),
+                                  onError: (e) =>
+                                    notify.failed(e.isNotImplemented ? "Work link not wired yet" : "Could not open work", {
+                                      description: e.message,
+                                    }),
+                                },
+                              )
+                            }
+                            disabled={toWork.isPending}
+                            className="ax-press ax-caption rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
+                          >
+                            {t("Work")}
+                          </button>
                         </div>
                       </article>
                     ))
@@ -157,10 +204,11 @@ function Column({
   total: string;
   children: React.ReactNode;
 }) {
+  const { t } = useLocale();
   return (
     <section className="ax-plane flex w-72 shrink-0 flex-col rounded-2xl p-ax-3">
       <header className="mb-ax-3">
-        <p className="text-[13px] font-bold text-foreground">{STAGE_LABEL[stage]}</p>
+        <p className="text-[13px] font-bold text-foreground">{t(STAGE_LABEL[stage])}</p>
         <p className="ax-caption text-muted-foreground">
           {count} · {total}
         </p>

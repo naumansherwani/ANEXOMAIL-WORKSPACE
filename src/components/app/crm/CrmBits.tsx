@@ -15,7 +15,7 @@ export function CrmStat({
   return (
     <div className="ax-plane rounded-2xl p-ax-4">
       <p className="ax-caption text-muted-foreground">{label}</p>
-      <p className="mt-1 text-2xl font-bold text-foreground">{value}</p>
+      <p className="mt-2 text-3xl font-extrabold tracking-tight text-foreground">{value}</p>
       {hint && <p className="ax-caption mt-1 text-muted-foreground">{hint}</p>}
     </div>
   );
@@ -56,6 +56,40 @@ export function ScoreBar({ value }: { value: number }) {
       </span>
       <span className="ax-caption font-semibold text-foreground">{clamped}</span>
     </span>
+  );
+}
+
+export function HealthRing({ value }: { value: number | null }) {
+  if (value == null) return null;
+  const clamped = Math.max(0, Math.min(100, Math.round(value)));
+  const r = 15;
+  const c = 2 * Math.PI * r;
+  const offset = c - (clamped / 100) * c;
+  return (
+    <svg viewBox="0 0 40 40" className="size-10 shrink-0" aria-hidden="true">
+      <circle cx="20" cy="20" r={r} fill="none" className="stroke-border" strokeWidth="3" />
+      <circle
+        cx="20"
+        cy="20"
+        r={r}
+        fill="none"
+        className="stroke-foreground"
+        strokeWidth="3"
+        strokeLinecap="round"
+        strokeDasharray={c}
+        strokeDashoffset={offset}
+        transform="rotate(-90 20 20)"
+      />
+      <text
+        x="20"
+        y="24"
+        textAnchor="middle"
+        className="fill-foreground"
+        style={{ fontSize: "9px", fontWeight: 700 }}
+      >
+        {clamped}
+      </text>
+    </svg>
   );
 }
 

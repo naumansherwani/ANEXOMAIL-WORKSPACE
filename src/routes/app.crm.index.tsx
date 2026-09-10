@@ -1,23 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Gauge, TrendingUp } from "lucide-react";
+import { Activity, AlertTriangle, GitBranch, ListChecks } from "lucide-react";
 
 import { CardBody, DashboardCard, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, CrmStat, SectionTitle } from "@/components/app/crm/CrmBits";
-import { STAGE_LABEL, money, useCrmOverview } from "@/lib/crm";
+import { CrmGraph } from "@/components/app/crm/CrmGraph";
+import { useLocale } from "@/lib/i18n";
+import { relativeTime } from "@/lib/mail";
+import { money, useCrmLive, useCrmOverview } from "@/lib/crm";
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
     meta: [
-      { title: "CRM dashboard — ANEXOMAIL Workspace" },
-      {
-        name: "description",
-        content: "Pipeline value, weighted forecast, unworked leads and stale deals from your book.",
-      },
-      { property: "og:title", content: "CRM dashboard — ANEXOMAIL Workspace" },
-      {
-        property: "og:description",
-        content: "Pipeline and forecast from real deals — no estimated numbers.",
-      },
+      { title: "CRM — ANEXOMAIL Workspace" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -25,63 +19,68 @@ export const Route = createFileRoute("/app/crm/")({
 });
 
 function CrmDashboard() {
+  const { t } = useLocale();
   const overview = useCrmOverview();
+  const live = useCrmLive();
   const o = overview.data;
+  const board = live.data;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
       <SectionTitle
-        title="Revenue at a glance"
-        hint="Figures come from deals you opened. Weighted forecast is value × stage probability — never guessed."
+        title={t("Live relationship")}
+        hint={t("Mail, people, calendar, work and deals on one board. Empty stays empty until those records exist.")}
       />
 
       <div className="grid gap-ax-3 sm:grid-cols-2 lg:grid-cols-4">
         <CrmStat
-          label="Open pipeline"
+          label={t("Open pipeline")}
           value={o ? money(o.pipeline_value, o.currency) : "—"}
-          hint={o ? `${o.open_deals} open deals` : undefined}
+          hint={o ? `${o.open_deals} ${t("open deals")}` : undefined}
         />
         <CrmStat
-          label="Weighted forecast"
+          label={t("Weighted forecast")}
           value={o ? money(o.weighted_value, o.currency) : "—"}
-          hint="Value × probability"
+          hint={t("Value × probability")}
         />
-        <CrmStat label="Won this month" value={o ? money(o.won_this_month, o.currency) : "—"} />
         <CrmStat
-          label="Unworked leads"
-          value={o ? String(o.leads_unworked) : "—"}
-          hint={o ? `${o.leads_new} new` : undefined}
+          label={t("At risk")}
+          value={board ? String(board.radar.length) : "—"}
+          hint={t("From recorded dates and mail, not a guess")}
+        />
+        <CrmStat
+          label={t("Overdue work")}
+          value={board ? String(board.counts.overdue_tasks) : "—"}
+          hint={t("Promises and tasks past due")}
         />
       </div>
 
       <div className="mt-ax-5 grid gap-ax-3 lg:grid-cols-2">
-        <DashboardCard title="Stage health" icon={<Gauge className="size-4" />}>
+        <DashboardCard title={t("Next action")} icon={<ListChecks className="size-4" />}>
           <CardBody
             query={{
-              data: overview.data,
-              isPending: overview.isPending,
-              error: overview.error ?? null,
-              refetch: () => void overview.refetch(),
+              data: live.data,
+              isPending: live.isPending,
+              error: live.error ?? null,
+              refetch: () => void live.refetch(),
             }}
-            endpoint="/api/crm/overview"
+            endpoint="/api/crm/live"
             skeleton={<StatSkeleton rows={4} />}
           >
             {(data) =>
-              data.open_deals === 0 && data.leads_new === 0 ? (
-                <p className="ax-caption text-muted-foreground">
-                  No deals yet. Open Pipeline and capture a lead — empty columns stay empty until you do.
-                </p>
+              data.next_actions.length === 0 ? (
+                <p className="ax-caption text-muted-foreground">{t("No rule fired. Capture a lead or wait for mail.")}</p>
               ) : (
                 <ul className="space-y-ax-2">
-                  {data.stage_counts.map((s) => (
-                    <li key={s.stage} className="flex items-center gap-ax-3">
-                      <span className="w-24 shrink-0 text-[13px] font-semibold text-foreground">
-                        {STAGE_LABEL[s.stage]}
-                      </span>
-                      <span className="ax-caption text-muted-foreground">{s.count} deals</span>
-                      <span className="ml-auto text-[13px] font-semibold text-foreground">
-                        {money(s.value, data.currency)}
-                      </span>
+                  {data.next_actions.map((a, i) => (
+                    <li key={`${a.kind}-${i}`} className="rounded-xl border border-border/80 bg-background/40 p-ax-3">
+                      <p className="text-[13px] font-semibold text-foreground">{t(a.action)}</p>
+                      <p className="ax-caption mt-0.5 text-muted-foreground">
+                        {a.title} · {a.why}
+                      </p>
+                      <a href={a.href} className="ax-caption mt-1 inline-block font-semibold text-foreground underline">
+                        {t("Open")}
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -90,35 +89,84 @@ function CrmDashboard() {
           </CardBody>
         </DashboardCard>
 
-        <DashboardCard title="Follow-through" icon={<TrendingUp className="size-4" />}>
+        <DashboardCard title={t("Revenue risk")} icon={<AlertTriangle className="size-4" />}>
           <CardBody
             query={{
-              data: overview.data,
-              isPending: overview.isPending,
-              error: overview.error ?? null,
-              refetch: () => void overview.refetch(),
+              data: live.data,
+              isPending: live.isPending,
+              error: live.error ?? null,
+              refetch: () => void live.refetch(),
             }}
-            endpoint="/api/crm/overview"
-            skeleton={<StatSkeleton />}
+            endpoint="/api/crm/live"
+            skeleton={<StatSkeleton rows={4} />}
           >
-            {(data) => (
-              <div className="space-y-ax-2 text-[13px] text-foreground">
-                <p>
-                  First reply average:{" "}
-                  <strong>
-                    {data.avg_first_reply_minutes === null
-                      ? "not enough mail yet"
-                      : `${data.avg_first_reply_minutes} min`}
-                  </strong>
-                </p>
-                <p className="flex items-center gap-2">
-                  Stale deals:{" "}
-                  <Chip tone={data.stale_deals > 0 ? "warn" : "good"}>
-                    {data.stale_deals} untouched 14d+
-                  </Chip>
-                </p>
-              </div>
-            )}
+            {(data) =>
+              data.radar.length === 0 ? (
+                <p className="ax-caption text-muted-foreground">{t("No risk rows. Health uses last touch, overdue work and silent deals.")}</p>
+              ) : (
+                <ul className="space-y-ax-2">
+                  {data.radar.map((r, i) => (
+                    <li key={`${r.source}-${i}`} className="flex items-start gap-2">
+                      <Chip tone="warn">{t(r.kind.replace("_", " "))}</Chip>
+                      <div className="min-w-0">
+                        <p className="truncate text-[13px] font-semibold text-foreground">{r.title}</p>
+                        <p className="ax-caption text-muted-foreground">{r.why}</p>
+                        <p className="ax-caption text-steel">{r.source}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )
+            }
+          </CardBody>
+        </DashboardCard>
+      </div>
+
+      <div className="mt-ax-5 grid gap-ax-3 lg:grid-cols-2">
+        <DashboardCard title={t("Timeline")} icon={<Activity className="size-4" />}>
+          <CardBody
+            query={{
+              data: live.data,
+              isPending: live.isPending,
+              error: live.error ?? null,
+              refetch: () => void live.refetch(),
+            }}
+            endpoint="/api/crm/live"
+            skeleton={<StatSkeleton rows={5} />}
+          >
+            {(data) =>
+              data.timeline.length === 0 ? (
+                <p className="ax-caption text-muted-foreground">{t("No mail, meetings or deal events yet.")}</p>
+              ) : (
+                <ol className="relative space-y-ax-3 ps-4 before:absolute before:inset-y-1 before:start-1 before:w-px before:bg-border">
+                  {data.timeline.map((e, i) => (
+                    <li key={`${e.at}-${i}`} className="relative flex flex-wrap items-center gap-2">
+                      <span className="absolute -start-3.5 top-1.5 size-2 rounded-full bg-foreground" />
+                      <Chip>{t(e.kind.replace("_", " "))}</Chip>
+                      <a href={e.href} className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground">
+                        {e.title}
+                      </a>
+                      <span className="ax-caption text-muted-foreground">{relativeTime(e.at)}</span>
+                    </li>
+                  ))}
+                </ol>
+              )
+            }
+          </CardBody>
+        </DashboardCard>
+
+        <DashboardCard title={t("Graph")} icon={<GitBranch className="size-4" />}>
+          <CardBody
+            query={{
+              data: live.data,
+              isPending: live.isPending,
+              error: live.error ?? null,
+              refetch: () => void live.refetch(),
+            }}
+            endpoint="/api/crm/live"
+            skeleton={<StatSkeleton rows={4} />}
+          >
+            {(data) => <CrmGraph graph={data.graph} />}
           </CardBody>
         </DashboardCard>
       </div>

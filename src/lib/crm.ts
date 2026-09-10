@@ -176,6 +176,55 @@ export function useCrmOverview() {
   });
 }
 
+export type CrmLiveAction = { kind: string; title: string; action: string; why: string; href: string };
+export type CrmLiveRadar = { kind: string; title: string; why: string; source: string; href: string };
+export type CrmLiveEvent = { at: string; kind: string; title: string; source?: string | null; href: string };
+export type CrmLive = {
+  radar: CrmLiveRadar[];
+  next_actions: CrmLiveAction[];
+  timeline: CrmLiveEvent[];
+  people: {
+    id: string;
+    display_name: string | null;
+    primary_address: string;
+    company_name: string | null;
+    relationship: string | null;
+    health_score: number | null;
+    last_contact_at: string | null;
+    open_threads: number;
+  }[];
+  graph: { nodes: { id: string; kind: string; label: string; email?: string | null }[]; edges: { from: string; to: string; kind: string }[] };
+  counts: { contacts: number; open_deals: number; overdue_tasks: number; promises: number };
+};
+
+export function useCrmLive() {
+  return useQuery<CrmLive, ApiError>({
+    queryKey: ["crm", "live"],
+    queryFn: () => get<CrmLive>("crm.live", "/api/crm/live"),
+    retry: false,
+    refetchInterval: 30_000,
+  });
+}
+
+export type CrmMemory = {
+  email: string;
+  person: Record<string, unknown> | null;
+  deals: Deal[];
+  tasks: { id: string; title: string; status: string; due_at: string | null; thread_id: string | null }[];
+  timeline: { at: string; kind: string; title: string; detail: string | null; href: string }[];
+  next_actions: { action: string; why: string; href: string }[];
+};
+
+export function useCrmMemory(email: string | undefined) {
+  const clean = String(email || "").trim().toLowerCase();
+  return useQuery<CrmMemory, ApiError>({
+    queryKey: ["crm", "memory", clean],
+    queryFn: () => get<CrmMemory>("crm.memory", `/api/crm/memory?email=${encodeURIComponent(clean)}`, { email: clean }),
+    enabled: clean.includes("@"),
+    retry: false,
+  });
+}
+
 export function useCrmLeads(state: Lead["state"] | "all") {
   return useQuery<{ leads: Lead[] }, ApiError>({
     queryKey: ["crm", "leads", state],
@@ -285,7 +334,7 @@ export function useMoveDeal() {
   return useCrmMutation<{ deal: Deal }, { id: string; stage: DealStage }>(
     "crm.moveDeal",
     "/api/crm/deals/stage",
-    ["deals"],
+    ["deals", "live", "evidence"],
   );
 }
 
@@ -293,7 +342,7 @@ export function useCreateLead() {
   return useCrmMutation<{ ok: boolean; id?: string }, { email: string; display_name?: string; company?: string }>(
     "crm.createLead",
     "/api/crm/leads",
-    ["leads", "overview"],
+    ["leads", "overview", "live", "evidence"],
   );
 }
 
@@ -301,14 +350,50 @@ export function useCreateDeal() {
   return useCrmMutation<
     { ok: boolean; id?: string },
     { title: string; company?: string; contact_email?: string; value?: number; next_step?: string }
-  >("crm.createDeal", "/api/crm/deals", ["deals", "overview"]);
+  >("crm.createDeal", "/api/crm/deals", ["deals", "overview", "live", "evidence"]);
+}
+
+export function useDealToWork() {
+  return useCrmMutation<{ ok: boolean; task_id?: string }, { id: string }>(
+    "crm.dealWork",
+    "/api/crm/deals/work",
+    ["deals", "live", "evidence"],
+  );
+}
+
+export function useAttachDealThread() {
+  return useCrmMutation<{ ok: boolean; thread_id?: string }, { id: string }>(
+    "crm.dealThread",
+    "/api/crm/deals/thread",
+    ["deals", "live", "overview", "evidence"],
+  );
+}
+
+export type CrmEvidenceEntry = {
+  id: string;
+  actor: string | null;
+  decision: string;
+  why: string | null;
+  source_table: string | null;
+  source_id: string | null;
+  action: string | null;
+  result: string | null;
+  created_at: string;
+};
+
+export function useCrmEvidence() {
+  return useQuery<{ entries: CrmEvidenceEntry[] }, ApiError>({
+    queryKey: ["crm", "evidence"],
+    queryFn: () => get<{ entries: CrmEvidenceEntry[] }>("crm.evidence", "/api/crm/evidence"),
+    retry: false,
+  });
 }
 
 export function useConvertLead() {
   return useCrmMutation<{ deal_id: string }, { id: string }>(
     "crm.convertLead",
     "/api/crm/leads/convert",
-    ["leads", "deals", "overview"],
+    ["leads", "deals", "overview", "live", "evidence"],
   );
 }
 

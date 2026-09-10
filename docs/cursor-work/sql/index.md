@@ -17,3 +17,4 @@ Run: Supabase #4 SQL Editor — paste → Run
 | phase60_org_identity_repair.sql | READY (root sql/ mein hai) | — aap run karo |
 | phase61_calendar_work.sql | READY (root sql/ mein hai) | — aap run karo |
 | phase63_f3a_passkey_family.sql | READY — F3 A (domain unique fix, same name) | **poori file dubara paste** |
+| phase64_crm_locale.sql | READY (SQL founder ne run kaha) — product CRM still not DONE | founder: SQL success |
