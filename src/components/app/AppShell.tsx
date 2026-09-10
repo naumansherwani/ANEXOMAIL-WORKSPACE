@@ -167,14 +167,17 @@ export function AppShell({ children }: { children: ReactNode }) {
       <CommandPalette open={open} onOpenChange={setOpen} />
 
       {/* Top bar — brand, org, one search entry for the entire product */}
-      <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
+      <header
+        dir="ltr"
+        className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4"
+      >
         <Link to={brandHome} className="shrink-0" aria-label="ANEXOMAIL workspace">
           <BrandMark />
         </Link>
 
         {publicMailHost ? null : (
           <DropdownMenu>
-            <DropdownMenuTrigger className="ax-focus ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
+            <DropdownMenuTrigger className="ax-focus hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
                 {organisation?.name ?? t("No organisation yet")}
               <ChevronDown className="size-3.5 text-steel" />
             </DropdownMenuTrigger>
@@ -198,8 +201,6 @@ export function AppShell({ children }: { children: ReactNode }) {
           </DropdownMenu>
         )}
 
-        <LanguagePicker className="shrink-0 rtl:order-first" />
-
         <div className="flex min-w-0 flex-1 justify-center px-1">
           <button
             type="button"
@@ -214,10 +215,12 @@ export function AppShell({ children }: { children: ReactNode }) {
           </button>
         </div>
 
-        <DropdownMenu>
+        <div className="flex shrink-0 items-center gap-2">
+          <LanguagePicker className="shrink-0" align="end" />
+          <DropdownMenu>
           <DropdownMenuTrigger
             aria-label="Account"
-            className="ax-focus ax-tap ml-1 flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
+            className="ax-focus ax-tap flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
           >
             {session?.user.avatar_url ? (
               <img src={session.user.avatar_url} alt="" className="size-9 object-cover" />
@@ -248,6 +251,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
       </header>
       <TrialStrip />
 

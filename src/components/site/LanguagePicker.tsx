@@ -10,7 +10,13 @@ import { publicLocaleAllowed } from "@/lib/public-locale";
  * Real language picker — awam on anexomail.com / ai.anexomail.com only.
  * Founder host + family testers never see this. Hebrew/Swahili list se bahar.
  */
-export function LanguagePicker({ className = "" }: { className?: string }) {
+export function LanguagePicker({
+  className = "",
+  align = "start",
+}: {
+  className?: string;
+  align?: "start" | "end";
+}) {
   const { locale } = useLocale();
   const { session } = useAuth();
   const [open, setOpen] = useState(false);
@@ -53,7 +59,9 @@ export function LanguagePicker({ className = "" }: { className?: string }) {
         <div
           role="listbox"
           aria-label="Choose your language"
-          className="absolute start-0 z-[80] mt-2 max-h-[22rem] w-64 overflow-y-auto rounded-2xl border border-border bg-card p-1.5 shadow-elev-2"
+          className={`absolute z-[80] mt-2 max-h-[22rem] w-64 overflow-y-auto rounded-2xl border border-border bg-card p-1.5 shadow-elev-2 ${
+            align === "end" ? "end-0" : "start-0"
+          }`}
         >
           {LOCALES.map((l) => {
             const active = l.tag === locale.tag;
