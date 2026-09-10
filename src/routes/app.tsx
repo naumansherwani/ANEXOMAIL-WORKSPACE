@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/app/AppShell";
 import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
-import { EarnedDelight } from "@/components/app/premium/Delight";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { useAuth } from "@/lib/auth";
@@ -119,7 +118,6 @@ function AppLayout() {
 
   return (
     <AppShell>
-      <EarnedDelight />
       {stripVisible && (
         <div className="fixed inset-x-0 bottom-0 z-50 flex items-center justify-center gap-3 border-t border-border bg-secondary/95 px-3 py-1.5 backdrop-blur">
           <span className="ax-caption font-semibold text-foreground">
