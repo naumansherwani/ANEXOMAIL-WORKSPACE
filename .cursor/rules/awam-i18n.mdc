@@ -1,0 +1,24 @@
+---
+description: 28 awam locales auto-integrate on every future page. English source via t() / <T>. Missing = English. No dummy. No Argos widget.
+globs: src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# 28 languages — future pages (locked)
+
+Awam on `anexomail.com` and `ai.anexomail.com` only. Founder host + family testers stay English. Hebrew and Swahili are not in the list.
+
+## Magic contract
+
+1. Every user-visible string in `src/routes` and `src/components` uses `t("English source")` or `<T>English source</T>`.
+2. The English sentence **is** the key. If a locale has no row, the same English shows. Never invent filler, never leave a blank.
+3. Do not add a translate widget, Google, or Argos as the product.
+4. New pages inherit the picker (`LanguagePicker` in shell/nav/auth) and `html lang` / `dir` automatically. You still wrap copy in `t()`.
+5. Optional overlay: `ui_copy` in SQL (`docs/cursor-work/sql/phase64_crm_locale.sql`). Runtime loads `/api/locale/bundle`. Insert **original** translations only — never copy English into other locales as a fake translation.
+
+## Do not
+
+- Hard-code UI copy in JSX without `t()`.
+- Build a second i18n system.
+- Translate founder/family surfaces.
+- Claim DONE for locales until awam live proof on the two hosts.

@@ -7,6 +7,7 @@ import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
+import { LanguagePicker } from "@/components/site/LanguagePicker";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -374,11 +375,13 @@ function AuthPage() {
         <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
           <div className="ax-in w-full max-w-[28rem]">
 
-            {/* Logo on mobile (cinema panel has it on desktop) */}
-            <div className="mb-8 flex justify-center lg:hidden">
-              <Link to="/" className="ax-focus rounded-md">
-                <BrandMark />
-              </Link>
+            <div className="mb-6 flex items-center justify-between gap-3">
+              <div className="lg:hidden">
+                <Link to="/" className="ax-focus rounded-md">
+                  <BrandMark />
+                </Link>
+              </div>
+              <LanguagePicker className="ms-auto" />
             </div>
 
             {/* Card */}

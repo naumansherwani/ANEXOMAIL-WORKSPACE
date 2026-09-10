@@ -1,10 +1,10 @@
 /**
  * ANEXOMAIL — REAL TRANSLATION LAYER (Phase 31B)
  *
- * Sach: har zubaan ka apna bundle `src/i18n/<tag>.json` hai. Bundle apne
- * Hetzner server par Argos Translate (offline, koi bahar ka API nahi) se
- * banta hai — `server/i18n/translate.py`. Runtime par:
+ * Awam on anexomail.com / ai.anexomail.com: original locale files (not Argos widget).
+ * Founder host + family testers stay English. Missing string = English.
  *
+ * Runtime:
  *   1. Choice `localStorage["ax.locale"]` mein, `<html lang/dir>` fauran set.
  *   2. Bundle dynamic import se aata hai (code-split) aur localStorage mein
  *      cache hota hai — doosri dafa switch instant, network ka intezar nahi.
@@ -14,10 +14,16 @@
 
 import { useCallback, useEffect, useState } from "react";
 
+import { useAuth } from "./auth";
+import { CRM_I18N } from "./crm-i18n";
+import { hydrateLocalePref, loadSqlBundle, persistLocalePref } from "./locale-sync";
 import { DEFAULT_LOCALE, type Locale, type LocaleKey, STORAGE_KEY, findLocale } from "./locales";
+import { publicLocaleAllowed } from "./public-locale";
+import { SITE_I18N_REST } from "./site-i18n-rest";
+import { WORKSPACE_I18N } from "./workspace-i18n";
 
 const EVENT = "ax:locale";
-const CACHE_PREFIX = "ax.i18n.";
+const CACHE_PREFIX = "ax.i18n.v4.";
 
 type Bundle = Record<string, string>;
 
@@ -81,20 +87,23 @@ export function setLocale(locale: Locale) {
   }
   // Bundle pehle se garam kar do, taake switch par jhatka na ho.
   void loadBundle(locale.tag);
+  void persistLocalePref(locale.tag);
   window.dispatchEvent(new CustomEvent<string>(EVENT, { detail: locale.tag }));
 }
 
 function readStored(): Locale {
   if (typeof window === "undefined") return DEFAULT_LOCALE;
   try {
-    return (
-      findLocale(window.localStorage.getItem(STORAGE_KEY)) ??
-      findLocale(window.navigator.language) ??
-      DEFAULT_LOCALE
-    );
+    return findLocale(window.localStorage.getItem(STORAGE_KEY)) ?? DEFAULT_LOCALE;
   } catch {
     return DEFAULT_LOCALE;
   }
+}
+
+function pinEnglish() {
+  if (typeof document === "undefined") return;
+  document.documentElement.lang = DEFAULT_LOCALE.tag;
+  document.documentElement.dir = "ltr";
 }
 
 /**
@@ -107,18 +116,29 @@ export function useLocale(): {
   t: (key: string) => string;
   ready: boolean;
 } {
+  const { session } = useAuth();
+  const allowed = publicLocaleAllowed(session);
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
   const [bundle, setBundle] = useState<Bundle>({});
+  const [overlay, setOverlay] = useState<Bundle>({});
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
+    if (!allowed) {
+      setLocaleState(DEFAULT_LOCALE);
+      setBundle({});
+      setOverlay({});
+      setReady(true);
+      pinEnglish();
+      return;
+    }
+
     let live = true;
 
     const apply = (next: Locale) => {
       setLocaleState(next);
       document.documentElement.lang = next.tag;
       document.documentElement.dir = next.dir;
-      // Cache se fauran (light speed), phir file se pukhta.
       const instant = memory.get(next.tag) ?? readCache(next.tag);
       if (instant) {
         setBundle(instant);
@@ -126,14 +146,25 @@ export function useLocale(): {
       } else {
         setReady(next.tag === DEFAULT_LOCALE.tag);
       }
-      void loadBundle(next.tag).then((b) => {
+      void Promise.all([loadBundle(next.tag), loadSqlBundle(next.tag)]).then(([b, sql]) => {
         if (!live) return;
         setBundle(b);
+        setOverlay(sql);
         setReady(true);
       });
     };
 
     apply(readStored());
+    void hydrateLocalePref().then((tag) => {
+      if (!live || !tag) return;
+      let hasLocal = false;
+      try {
+        hasLocal = Boolean(window.localStorage.getItem(STORAGE_KEY));
+      } catch {
+        hasLocal = false;
+      }
+      if (!hasLocal) apply(findLocale(tag) ?? DEFAULT_LOCALE);
+    });
     const onChange = (e: Event) => {
       const tag = (e as CustomEvent<string>).detail;
       apply(findLocale(tag) ?? DEFAULT_LOCALE);
@@ -143,17 +174,23 @@ export function useLocale(): {
       live = false;
       window.removeEventListener(EVENT, onChange);
     };
-  }, []);
+  }, [allowed]);
 
   const t = useCallback(
     (key: string) => {
-      if (locale.tag === DEFAULT_LOCALE.tag) {
+      if (!allowed || locale.tag === DEFAULT_LOCALE.tag) {
         return locale.t[key as LocaleKey] ?? key;
       }
-      return bundle[key] ?? locale.t[key as LocaleKey] ?? DEFAULT_LOCALE.t[key as LocaleKey] ?? key;
+      const chrome =
+        overlay[key] ??
+        bundle[key] ??
+        WORKSPACE_I18N[locale.tag]?.[key] ??
+        CRM_I18N[locale.tag]?.[key] ??
+        SITE_I18N_REST[locale.tag]?.[key];
+      return chrome ?? locale.t[key as LocaleKey] ?? DEFAULT_LOCALE.t[key as LocaleKey] ?? key;
     },
-    [bundle, locale],
+    [allowed, bundle, locale, overlay],
   );
 
-  return { locale, t, ready };
+  return { locale: allowed ? locale : DEFAULT_LOCALE, t, ready };
 }

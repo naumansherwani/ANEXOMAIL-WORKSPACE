@@ -24,6 +24,7 @@ import { dashboardRouter } from "./routes/dashboard";
 import { workspaceRouter } from "./routes/workspace";
 import { calendar } from "./routes/calendar";
 import { crm } from "./routes/crm";
+import { localeRouter } from "./routes/locale";
 import { org } from "./routes/org";
 import { ai } from "./routes/ai";
 import { founder } from "./routes/founder";
@@ -121,6 +122,8 @@ app.use("/api", contactsRouter);
 app.use("/api", calendar);
 // Phase 13 AI CRM (/api/crm/*, /api/founder/crm/*)
 app.use("/api", crm);
+// 28 awam locales — overlay + preference (SQL). Missing = English.
+app.use("/api", localeRouter);
 // Phase 15 Organization Center (/api/org/*, /api/founder/org/*)
 app.use("/api", org);
 // Phase 16 AI Workspace (/api/ai/*)

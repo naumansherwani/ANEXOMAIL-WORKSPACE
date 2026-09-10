@@ -16,24 +16,26 @@ import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
 import { SiteLock } from "@/components/site/SiteLock";
 import { FounderBar } from "@/components/site/FounderBar";
 import { VisitorBadge } from "@/components/site/VisitorBadge";
+import { useLocale } from "@/lib/i18n";
 import { registerServiceWorker } from "@/lib/pwa";
 import { startTelemetry } from "@/lib/telemetry";
 
 function NotFoundComponent() {
+  const { t } = useLocale();
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="ax-in max-w-md text-center">
         <h1 className="ax-display ax-platinum-text">404</h1>
-        <h2 className="ax-heading mt-ax-4 text-foreground">Page not found</h2>
+        <h2 className="ax-heading mt-ax-4 text-foreground">{t("Page not found")}</h2>
         <p className="ax-body mt-ax-2">
-          The page you're looking for doesn't exist or has been moved.
+          {t("The page you're looking for doesn't exist or has been moved.")}
         </p>
         <div className="mt-ax-5">
           <Link
             to="/"
             className="ax-press ax-focus ax-tap inline-flex items-center justify-center rounded-md bg-primary px-ax-4 py-ax-2 ax-label text-primary-foreground hover:bg-primary/90"
           >
-            Go home
+            {t("Go home")}
           </Link>
         </div>
       </div>
@@ -44,13 +46,14 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
+  const { t } = useLocale();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="ax-in max-w-md text-center" role="alert">
-        <h1 className="ax-heading text-foreground">This page didn't load</h1>
+        <h1 className="ax-heading text-foreground">{t("This page didn't load")}</h1>
         <p className="ax-body mt-ax-2">
-          Something went wrong on our end. You can try refreshing or head back home.
+          {t("Something went wrong on our end. You can try refreshing or head back home.")}
         </p>
         <div className="mt-ax-5 flex flex-wrap justify-center gap-ax-2">
           <button
@@ -60,13 +63,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
             }}
             className="ax-press ax-focus ax-tap inline-flex items-center justify-center rounded-md bg-primary px-ax-4 py-ax-2 ax-label text-primary-foreground hover:bg-primary/90"
           >
-            Try again
+            {t("Try again")}
           </button>
           <a
             href="/"
             className="ax-press ax-focus ax-tap inline-flex items-center justify-center rounded-md border border-input bg-background px-ax-4 py-ax-2 ax-label text-foreground hover:bg-accent"
           >
-            Go home
+            {t("Go home")}
           </a>
         </div>
       </div>
@@ -126,9 +129,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en-GB" className="dark">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var h=location.hostname;if(h!=="anexomail.com"&&h!=="www.anexomail.com"&&h!=="ai.anexomail.com"){document.documentElement.lang="en-GB";document.documentElement.dir="ltr";return;}var t=localStorage.getItem("ax.locale")||"en-GB";var rtl=/^(ur-PK|ar-SA|fa-IR)$/.test(t);document.documentElement.lang=t;document.documentElement.dir=rtl?"rtl":"ltr";}catch(e){}})();`,
+          }}
+        />
       </head>
       <body>
         {children}
@@ -136,6 +144,11 @@ function RootShell({ children }: { children: ReactNode }) {
       </body>
     </html>
   );
+}
+
+function LocaleRoot({ children }: { children: ReactNode }) {
+  useLocale();
+  return children;
 }
 
 function RootComponent() {
@@ -154,7 +167,8 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        {/* PRE-LAUNCH LOCK: awam ko kuch nahi, founder key wale device pe sab kuch. */}
+        {/* Host gate: anexomail.com = awam product; AI host coming-soon; unlock key baqi. */}
+        <LocaleRoot>
         <SiteLock>
           {/* Founder-only preview strip — awam ko bilkul invisible. */}
           <FounderBar />
@@ -164,6 +178,7 @@ function RootComponent() {
           <VisitorBadge />
           <Toaster />
         </SiteLock>
+        </LocaleRoot>
       </AuthProvider>
     </QueryClientProvider>
   );

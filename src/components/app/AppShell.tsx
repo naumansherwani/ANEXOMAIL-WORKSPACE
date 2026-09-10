@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
 import { useAccountState } from "@/lib/trial";
 
@@ -89,6 +90,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const { session, organisation, refresh, signOut } = useAuth();
+  const { t } = useLocale();
   const account = useAccountState();
   const trialAllowed = new Set(account.data?.trial_features ?? []);
   // Host once on mount (/app is ssr:false). Founder view sirf founder host.
@@ -173,11 +175,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         {publicMailHost ? null : (
           <DropdownMenu>
             <DropdownMenuTrigger className="ax-focus ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
-              {organisation?.name ?? "No organisation yet"}
+                {organisation?.name ?? t("No organisation yet")}
               <ChevronDown className="size-3.5 text-steel" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-60">
-              <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
+              <DropdownMenuLabel>{t("Workspaces")}</DropdownMenuLabel>
               {session?.organisations.length ? (
                 session.organisations.map((org) => (
                   <DropdownMenuItem key={org.id} onSelect={() => void switchOrg(org.id)}>
@@ -189,26 +191,28 @@ export function AppShell({ children }: { children: ReactNode }) {
                 ))
               ) : (
                 <DropdownMenuItem onSelect={() => void navigate({ to: "/onboarding" })}>
-                  Create your organisation
+                  {t("Create your organisation")}
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>
           </DropdownMenu>
         )}
 
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="ml-auto flex w-full max-w-md items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-ring/50"
-        >
-          <Search className="size-4 shrink-0 text-steel" />
-          <span className="truncate">Search mail, people, calendar, work…</span>
-          <kbd className="ml-auto hidden shrink-0 rounded-md border border-border bg-secondary px-1.5 py-0.5 font-sans text-[10px] font-semibold text-steel sm:block">
-            ⌘K
-          </kbd>
-        </button>
+        <LanguagePicker className="shrink-0" />
 
-        <LanguagePicker className="hidden sm:block" />
+        <div className="flex min-w-0 flex-1 justify-center px-1">
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="flex w-full max-w-md items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:border-ring/50"
+          >
+            <Search className="size-4 shrink-0 text-steel" />
+            <span className="truncate">{t("Search mail, people, calendar, work…")}</span>
+            <kbd className="ml-auto hidden shrink-0 rounded-md border border-border bg-secondary px-1.5 py-0.5 font-sans text-[10px] font-semibold text-steel sm:block">
+              ⌘K
+            </kbd>
+          </button>
+        </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -236,11 +240,11 @@ export function AppShell({ children }: { children: ReactNode }) {
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void navigate({ to: "/app/account" })}>
               <UserCircle2 className="size-4" />
-              Profile, photo &amp; sessions
+              {t("Profile, photo & sessions")}
             </DropdownMenuItem>
             <DropdownMenuItem onSelect={() => void handleSignOut()}>
               <LogOut className="size-4" />
-              Sign out
+              {t("Sign out")}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -266,8 +270,8 @@ export function AppShell({ children }: { children: ReactNode }) {
                 <Link
                   key={item.to}
                   to={item.to}
-                  title={collapsed ? item.label : undefined}
-                  aria-label={item.label}
+                  title={collapsed ? t(item.label) : undefined}
+                  aria-label={t(item.label)}
                   className={`flex items-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-colors ${
                     collapsed ? "justify-center px-0" : "px-3"
                   } ${
@@ -277,7 +281,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                   }`}
                 >
                   <item.icon className="size-4 shrink-0" />
-                  {!collapsed && <span className="truncate">{item.label}</span>}
+                  {!collapsed && <span className="truncate">{t(item.label)}</span>}
                 </Link>
               );
             })}
@@ -287,14 +291,14 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="shrink-0 border-t border-border p-2.5">
             {!collapsed && (
               <p className="px-1 pb-2 text-[11px] leading-relaxed text-muted-foreground">
-                Threads carry an owner, a status and a due date — mail is work, not a list.
+                {t("Threads carry an owner, a status and a due date — mail is work, not a list.")}
               </p>
             )}
             <button
               type="button"
               onClick={toggleRail}
-              title={collapsed ? "Expand navigation" : "Collapse navigation"}
-              aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+              title={collapsed ? t("Expand navigation") : t("Collapse navigation")}
+              aria-label={collapsed ? t("Expand navigation") : t("Collapse navigation")}
               aria-pressed={collapsed}
               className={`ax-focus flex w-full items-center gap-2 rounded-lg px-2 py-2 text-[11px] font-semibold text-muted-foreground transition-colors hover:bg-secondary/60 hover:text-foreground ${
                 collapsed ? "justify-center" : ""
@@ -305,7 +309,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               ) : (
                 <>
                   <ChevronsLeft className="size-4 shrink-0" />
-                  <span>Collapse</span>
+                  <span>{t("Collapse")}</span>
                 </>
               )}
             </button>
@@ -318,16 +322,16 @@ export function AppShell({ children }: { children: ReactNode }) {
           {founderBlocked ? (
             <div className="flex flex-1 items-center justify-center px-6 py-16">
               <div className="max-w-sm text-center">
-                <p className="ax-eyebrow">Founder view</p>
-                <h2 className="mt-3 text-lg font-bold text-foreground">Not available here</h2>
+                <p className="ax-eyebrow">{t("Founder view")}</p>
+                <h2 className="mt-3 text-lg font-bold text-foreground">{t("Not available here")}</h2>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Founder view only opens on the founder workspace host.
+                  {t("Founder view only opens on the founder workspace host.")}
                 </p>
                 <Link
                   to="/app"
                   className="ax-focus mt-5 inline-flex rounded-lg border border-border px-3 py-1.5 text-xs font-semibold text-foreground"
                 >
-                  Back to workspace
+                  {t("Back to workspace")}
                 </Link>
               </div>
             </div>
@@ -353,7 +357,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               }`}
             >
               <item.icon className="size-4" />
-              {item.label}
+              {t(item.label)}
             </Link>
           );
         })}
