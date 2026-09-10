@@ -23,6 +23,17 @@ for file in "$SOURCE"/routes/*.ts; do
   install -m 0644 "$file" "$TARGET/src/routes/$name"
 done
 
+# F3 A — auth imports ../mail/sendmail + ../lib/webauthn (Brain crash band)
+mkdir -p "$TARGET/src/mail" "$TARGET/src/lib" "$TARGET/backups/$STAMP/mail" "$TARGET/backups/$STAMP/lib"
+if [ -f "$SOURCE/mail/sendmail.ts" ]; then
+  [ -f "$TARGET/src/mail/sendmail.ts" ] && cp -a "$TARGET/src/mail/sendmail.ts" "$TARGET/backups/$STAMP/mail/sendmail.ts"
+  install -m 0644 "$SOURCE/mail/sendmail.ts" "$TARGET/src/mail/sendmail.ts"
+fi
+if [ -f "$SOURCE/lib/webauthn.ts" ]; then
+  [ -f "$TARGET/src/lib/webauthn.ts" ] && cp -a "$TARGET/src/lib/webauthn.ts" "$TARGET/backups/$STAMP/lib/webauthn.ts"
+  install -m 0644 "$SOURCE/lib/webauthn.ts" "$TARGET/src/lib/webauthn.ts"
+fi
+# auth-passkey imports ../lib/webauthn — path from routes is ../lib ✓
 # Naya index tabhi restart ho jab uske tamam route modules target par maujood hon.
 missing=0
 while IFS= read -r module; do
