@@ -35,6 +35,25 @@ Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro 
 
 ---
 
+## Technology (Claude — locked, naya nahi)
+
+| Layer | Technology |
+|---|---|
+| Host | Hetzner only |
+| Edge | Caddy — HTTPS + HTTP/3 |
+| Frontend | React 19.2 · TanStack Start v1 · Router 1.17.0 · Vite 8.2 · Tailwind v4.2 · Radix + shadcn/ui · Framer Motion · GSAP · Three.js |
+| SSR | Bun · Nitro bun preset · PM2 interpreter bun · :3000 |
+| Backend PRIMARY | Rust :3200 — Tokio async, WebTransport, tRPC, PostgreSQL |
+| Backend FALLBACK | Bun :3100–3300 |
+| Emergency | Node 22 only |
+| Database | Supabase / PostgreSQL |
+| Mail | Postfix / Dovecot / OpenDKIM |
+| Payments | Polar — Rust webhook (no-touch) |
+
+Har E isi stack pe. CRM/locale: pehle `/rpc/*` (Rust), na mile to `/api/*` (Bun). Naya architecture nahi.
+
+---
+
 ## Root (sensible)
 
 Ek codebase. Ab sirf **anexomail.com** user complete.  
@@ -46,7 +65,7 @@ Founder deck = end. Founder **guard** (family Admin/Speed nahi) ab.
 Wire = har E-step: UI dikhe + API + DB. Mock nahi. DONE = live proof.
 
 ```
-E1 package rail → E2 auth/session → E3 inbox KEEP → E4 SEND/RECEIVE GATE
+E1 package rail → E1A CRM + 28 locales → E2 auth/session → E3 inbox KEEP → E4 SEND/RECEIVE GATE
 → E5 thread → E6 people → E7 calendar → E8 work
 → [STOP mail complete]
 → AI host add (original 8, 17…)
@@ -60,6 +79,7 @@ E1 package rail → E2 auth/session → E3 inbox KEEP → E4 SEND/RECEIVE GATE
 | E | Claude | Original | Lovable (keep, wire) | Mix hatao | Status |
 |---|---|---|---|---|---|
 | **E1** | F1.2 | Ph 1 shell | `AppShell.tsx` `host.ts` `plan-surface.ts` `PlanSurfaceGate.tsx` | Package rail = cards. Naam chip **sirf** right avatar. CRM/Speed/AI dump. Landing / `plans.ts` no-touch | **READY** — repo. **DONE** after pull + live: Basic vs Pro vs Business rail, no Leo on anexomail.com |
+| **E1A** | — | CRM + 28 locales | `app.crm*` `i18n` `server/routes/crm.ts` `server/routes/locale.ts` SQL phase64 | Alag CRM product, Argos widget, Leo agent, dummy strings | **READY** — repo. **DONE nahi** until pull + live |
 | **E2** | F1 | Ph 5A auth | `auth.tsx` `server/routes/auth.ts` | `workspace_plan` sach. Sessions = Chrome·Windows, Bun dump nahi | **not live** — login hai, plan/sessions live test nahi |
 | **E3** | F3 | Ph 2 + **7** mail | `ia.ts` `app.mail.*` `MailRail` | Folders pane. Inbox zero honest. Rewrite nahi | list live; DONE tab E3 verify + E1 live close |
 | **E4** | **F4 GATE** | Ph 9 + 52–58 | `ComposeStudio` `sendmail.ts` Postfix | Leo compose se **nikaal** (mail host). Send+receive | **not live** — E1–E3 DONE ke baad |
