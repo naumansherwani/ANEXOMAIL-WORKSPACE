@@ -25,7 +25,7 @@ import { BrandMark } from "@/components/site/BrandMark";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
-import { founderSurfaceAllowed, isPublicMailHost } from "@/lib/host";
+import { founderSurfaceAllowed, isAiHost, isPublicMailHost } from "@/lib/host";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -93,9 +93,11 @@ export function AppShell({ children }: { children: ReactNode }) {
   // Hydration-safe — SSR par hostname nahi hota, is liye effect ke baad set hota hai.
   const [founderHost, setFounderHost] = useState(false);
   const [publicMailHost, setPublicMailHost] = useState(true);
+  const [aiHost, setAiHost] = useState(false);
   useEffect(() => {
     setFounderHost(founderSurfaceAllowed());
     setPublicMailHost(isPublicMailHost());
+    setAiHost(isAiHost());
   }, []);
   const allowed = account.data?.trial_limited
     ? primary.filter((item) => {
@@ -108,8 +110,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     : primary;
   const visiblePrimary = allowed.filter((item) => {
     if (item.to.startsWith("/app/founder")) return founderHost;
+    if (aiHost || founderHost) return true;
     if (!publicMailHost) return true;
-    // anexomail.com = mail product. Leo/AI/CRM/founder mix yahan nahi.
+    // anexomail.com = personal mail. Image-3 (Today/CRM/AI/Admin) yahan nahi — ai host pe hai.
     const hideOnAwam = new Set([
       "/app",
       "/app/crm",
@@ -122,6 +125,9 @@ export function AppShell({ children }: { children: ReactNode }) {
     ]);
     return !hideOnAwam.has(item.to);
   });
+  const mailboxLabel =
+    session?.user.anexomail_address || session?.user.email || organisation?.name || "ANEXOMAIL";
+  const brandHome = publicMailHost ? "/app/mail/inbox" : "/app";
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.
@@ -173,36 +179,42 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       {/* Top bar — brand, org, one search entry for the entire product */}
       <header className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4">
-        <Link to="/" className="shrink-0">
+        <Link to={brandHome} className="shrink-0" aria-label="Stay in ANEXOMAIL workspace">
           <BrandMark compact className="md:hidden" />
           <span className="hidden md:inline-flex">
             <BrandMark />
           </span>
         </Link>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger className="ax-focus ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
-            {organisation?.name ?? "No organisation yet"}
-            <ChevronDown className="size-3.5 text-steel" />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-60">
-            <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
-            {session?.organisations.length ? (
-              session.organisations.map((org) => (
-                <DropdownMenuItem key={org.id} onSelect={() => void switchOrg(org.id)}>
-                  <span className="truncate">{org.name}</span>
-                  <span className="ml-auto text-[10px] uppercase text-muted-foreground">
-                    {org.role}
-                  </span>
+        {publicMailHost ? (
+          <span className="ml-1 hidden max-w-[18rem] truncate rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground sm:inline-flex">
+            {mailboxLabel}
+          </span>
+        ) : (
+          <DropdownMenu>
+            <DropdownMenuTrigger className="ax-focus ml-1 hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
+              {organisation?.name ?? "No organisation yet"}
+              <ChevronDown className="size-3.5 text-steel" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="start" className="w-60">
+              <DropdownMenuLabel>Workspaces</DropdownMenuLabel>
+              {session?.organisations.length ? (
+                session.organisations.map((org) => (
+                  <DropdownMenuItem key={org.id} onSelect={() => void switchOrg(org.id)}>
+                    <span className="truncate">{org.name}</span>
+                    <span className="ml-auto text-[10px] uppercase text-muted-foreground">
+                      {org.role}
+                    </span>
+                  </DropdownMenuItem>
+                ))
+              ) : (
+                <DropdownMenuItem onSelect={() => void navigate({ to: "/onboarding" })}>
+                  Create your organisation
                 </DropdownMenuItem>
-              ))
-            ) : (
-              <DropdownMenuItem onSelect={() => void navigate({ to: "/onboarding" })}>
-                Create your organisation
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
 
         <button
           type="button"

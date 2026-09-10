@@ -193,7 +193,7 @@ export function MailRail({
                     : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
                 )}
               >
-                <span className="truncate">{a.address}</span>
+                <span className="break-all">{a.address}</span>
                 {a.unread ? (
                   <span className="ml-auto text-[10px] font-semibold text-foreground">
                     {a.unread}

@@ -50,10 +50,15 @@ Pehli 3 second: **mera mail, mera naam, compose**. Leo / CRM / Org / Speed yahan
 
 ---
 
-## Host split (locked)
+## Host split (locked — ek codebase, teen host, per-user subdomain NAHI)
 
-| Host | Surface |
+| Host | UI |
 |---|---|
-| `anexomail.com` | Mail (+ Chat/Video plan). **Leo panel nahi.** |
-| `ai.anexomail.com` | LEO only — Coming Soon awam |
-| `founderworkspace…` | Founder dashboard / AI / CRM mix OK |
+| `anexomail.com` | **Personal mail** (image 1): Mail, Chat, People, Calendar. Collapse rehta. Logo → inbox, landing nahi. |
+| `ai.anexomail.com` | **Image 3** (Today, CRM, Org, Work, AI, Admin). Awam Coming Soon. Delete nahi — host alag. |
+| `founderworkspace…` | Founder. |
+
+**Humza / family:** `anexomail.com` pe **personal mail UI**. Business Pro = billing plan, alag website nahi.
+
+**GREEN anexomail-leo :3100** = SSH deploy check. Website pe nahi.
+

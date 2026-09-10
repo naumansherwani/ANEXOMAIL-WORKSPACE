@@ -70,4 +70,4 @@ for endpoint in login signup forgot-password; do
 done
 code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://127.0.0.1:3100/api/auth/session || true)"
 [ "$code" = "401" ] || { echo "RED /api/auth/session guard -> $code"; exit 4; }
-echo "GREEN Brain auth contract :3100"
+echo "GREEN anexomail-leo :3100 — SSH health only, not the website"
