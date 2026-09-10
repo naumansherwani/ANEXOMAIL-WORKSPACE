@@ -220,6 +220,17 @@ Apple-equal passkey; recovery + honest gates + family/awam = ANEXOMAIL advance.
 Secure Enclave / iCloud Keychain / Sign in with Apple = claim nahi.
 
 ────────────────────────────────────────────────────────────────────
+FLOW 3 B — AWAM ONBOARDING POLISH (before F4)       [READY — live unproven]
+────────────────────────────────────────────────────────────────────
+FULL LOCK: docs/cursor-work/frontend/f3b-awam-onboarding-polish.md
+Goal: Lovable mistakes hatao — trust pehli 60s mein.
+Packages: Basic · Pro · Business · Business Pro (AI Exec → ai.anexomail.com LEO).
+Personal | Business; domain Ownership Center baad; no owner-email print.
+Create workspace → /plans pehle. Founder protocol mix nahi.
+ai.anexomail.com = LEO only, duplicate org wizard nahi.
+operational_membership → live organisations + slug (shared domain nahi).
+
+────────────────────────────────────────────────────────────────────
 FLOW 4 — COMPOSE + SEND (Day 2)                     [SKELETON→WIRE]
 ────────────────────────────────────────────────────────────────────
 F4.1  ComposeStudio — rich compose UI
@@ -466,7 +477,8 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 | F2 Dashboard | **DONE ✅** | Sep 9 P2 |
 | F3 Mail inbox | READY — live unproven | Sep 10 F3 |
 | F3 A Family awam testers | READY — live unproven | Sep 10 F3 A |
-| F4 Compose+Send | TODO | after F3 A |
+| F3 B Awam onboarding polish | READY — live unproven | Sep 10 F3 B |
+| F4 Compose+Send | TODO | after F3 B live proof |
 | F5 Thread view | TODO | — |
 | F6 Contacts | TODO | — |
 | F7 Calendar | TODO | — |

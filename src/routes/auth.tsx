@@ -399,8 +399,8 @@ function AuthPage() {
                     />
                   ) : mode === "signup" ? (
                     <Header
-                      title="Create your workspace"
-                      sub="One account owns the domain and the org."
+                      title="Create your account"
+                      sub="After you sign up, choose Personal or Business. Domain comes later."
                     />
                   ) : mode === "link" ? (
                     <Header title="Email me a link" sub="No password. The link signs you straight in." />
@@ -495,12 +495,12 @@ function AuthPage() {
                         {mode !== "reset" && (
                           <Field
                             id="email"
-                            label="Work email"
+                            label="Email"
                             type="email"
                             value={email}
                             onChange={setEmail}
                             autoComplete="email"
-                            placeholder="you@yourdomain.com"
+                            placeholder="you@anexomail.com"
                           />
                         )}
                         {mode !== "link" && mode !== "forgot" && (
@@ -638,7 +638,7 @@ function AuthPage() {
                   </div>
 
                   <p className="ax-caption mt-ax-3 text-center">
-                    No domain yet? Create your account here — then you pick your own{" "}
+                    New mailbox? Pick a plan first, then create your{" "}
                     <span className="font-semibold text-foreground">@anexomail.com</span> address.
                   </p>
 
@@ -648,16 +648,25 @@ function AuthPage() {
                       : mode === "forgot" || mode === "reset"
                         ? "Remembered it?"
                         : "New here?"}{" "}
-                    <button
-                      type="button"
-                      className="ax-focus rounded font-semibold text-cyan-accent"
-                      onClick={() => {
-                        setError(null);
-                        setMode(mode === "login" ? "signup" : "login");
-                      }}
-                    >
-                      {mode === "login" ? "Create a workspace" : "Sign in"}
-                    </button>
+                    {mode === "login" ? (
+                      <Link
+                        to="/plans"
+                        className="ax-focus rounded font-semibold text-cyan-accent"
+                      >
+                        Choose your package
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        className="ax-focus rounded font-semibold text-cyan-accent"
+                        onClick={() => {
+                          setError(null);
+                          setMode("login");
+                        }}
+                      >
+                        Sign in
+                      </button>
+                    )}
                   </p>
                 </>
               )}

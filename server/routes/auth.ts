@@ -158,19 +158,41 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
     operational &&
     !organisations.some((organisation: any) => organisation.id === operational.id)
   ) {
-    const { data: legacy } = await getAdmin()
-      .from("orgs")
-      .select("id,name")
+    // Prefer live organisations row (F3 B); orgs = legacy fallback only
+    const { data: liveOrg } = await getAdmin()
+      .from("organisations")
+      .select("id,name,slug")
       .eq("id", operational.id)
       .maybeSingle();
+    const { data: legacy } = liveOrg
+      ? { data: null }
+      : await getAdmin().from("orgs").select("id,name").eq("id", operational.id).maybeSingle();
     organisations.push({
       id: operational.id,
-      name: legacy?.name || (founder ? "Founder workspace" : "ANEXOMAIL Workspace"),
-      slug: founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`,
+      name:
+        liveOrg?.name ||
+        legacy?.name ||
+        (founder ? "Founder workspace" : "ANEXOMAIL Workspace"),
+      slug:
+        liveOrg?.slug ||
+        (founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`),
       domain: null,
       role: operational.role,
     });
   }
+
+  // F3 B: mailbox identity — login email @anexomail.com = address (claim force nahi)
+  const emailLower = String(user.email || "")
+    .trim()
+    .toLowerCase();
+  const anexoFromEmail = emailLower.endsWith("@anexomail.com") ? emailLower : null;
+  const anexomailAddress =
+    trial?.anexomail_address || (founder ? emailLower || null : null) || anexoFromEmail;
+
+  // Ops org pehle se (family SQL) → awam ko org wizard mat dikhao
+  const onboarded =
+    founder || Boolean(profile?.onboarded) || Boolean(operational && anexomailAddress);
+
   return {
     ...(accessToken ? { token: accessToken } : {}),
     user: {
@@ -184,8 +206,8 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       preferences: profile?.preferences || {},
       mfa_enabled: false,
       is_founder: founder,
-      onboarded: founder || Boolean(profile?.onboarded),
-      anexomail_address: trial?.anexomail_address || (founder ? user.email || null : null),
+      onboarded,
+      anexomail_address: anexomailAddress,
     },
     organisations,
     active_organisation_id: organisations[0]?.id || null,

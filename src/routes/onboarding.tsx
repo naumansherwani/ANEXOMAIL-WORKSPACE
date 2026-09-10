@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, Building2, Globe, Loader2, LogIn, Rocket, Users } from "lucide-react";
+import { ArrowLeft, Building2, Loader2, LogIn, Mail, Rocket, Users } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
@@ -17,13 +17,12 @@ export const Route = createFileRoute("/onboarding")({
       { title: "Set up your workspace — ANEXOMAIL" },
       {
         name: "description",
-        content:
-          "Name your organisation, claim your domain and invite your first people to ANEXOMAIL.",
+        content: "Choose Personal or Business — then open your ANEXOMAIL inbox.",
       },
       { property: "og:title", content: "Set up your workspace — ANEXOMAIL" },
       {
         property: "og:description",
-        content: "Name your organisation, claim your domain, invite your team.",
+        content: "Personal mail or a named business workspace. Domain comes later.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -33,13 +32,14 @@ export const Route = createFileRoute("/onboarding")({
   component: OnboardingPage,
 });
 
+type Path = "choose" | "business-name" | "business-people";
+
 function OnboardingPage() {
   const navigate = useNavigate();
   const { session, status, refresh } = useAuth();
 
-  const [step, setStep] = useState(0);
+  const [path, setPath] = useState<Path>("choose");
   const [org, setOrg] = useState("");
-  const [domain, setDomain] = useState("");
   const [invites, setInvites] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -51,8 +51,13 @@ function OnboardingPage() {
       void navigate({ to: "/app", replace: true });
       return;
     }
-    // Identity comes first: no workspace setup without an @anexomail.com address.
-    if (!session.user.anexomail_address) void navigate({ to: "/claim", replace: true });
+    if (!session.user.anexomail_address) {
+      void navigate({ to: "/claim", replace: true });
+      return;
+    }
+    if (session.user.onboarded) {
+      void navigate({ to: "/app", replace: true });
+    }
   }, [status, session, navigate]);
 
   const fail = (e: unknown) =>
@@ -64,6 +69,20 @@ function OnboardingPage() {
         : "Something went wrong.",
     );
 
+  const goPersonal = async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      await api("/api/workspace/personal", { method: "POST", body: "{}" });
+      await refresh();
+      void navigate({ to: "/app", replace: true });
+    } catch (e) {
+      fail(e);
+    } finally {
+      setBusy(false);
+    }
+  };
+
   const createOrg = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
@@ -71,10 +90,10 @@ function OnboardingPage() {
     try {
       await api("/api/workspace/organisations", {
         method: "POST",
-        body: JSON.stringify({ name: org, domain: domain.trim() || null }),
+        body: JSON.stringify({ name: org }),
       });
       await refresh();
-      setStep(1);
+      setPath("business-people");
     } catch (e) {
       fail(e);
     } finally {
@@ -122,33 +141,69 @@ function OnboardingPage() {
           <BrandMark />
         </div>
 
-        <ol className="mt-ax-5 flex items-center justify-center gap-2" aria-label="Setup progress">
-          {["Organisation", "Your people"].map((label, i) => (
-            <li key={label} className="flex items-center gap-2">
-              <span
-                className={`ax-caption rounded-full px-2.5 py-1 font-semibold ${
-                  i === step
-                    ? "bg-cyan-accent/15 text-cyan-accent"
-                    : i < step
-                      ? "bg-secondary text-foreground"
-                      : "text-muted-foreground"
-                }`}
-              >
-                {label}
-              </span>
-              {i === 0 && <span aria-hidden className="ax-hairline h-px w-6" />}
-            </li>
-          ))}
-        </ol>
-
         <div className="mt-ax-4 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
-          {step === 0 ? (
+          {path === "choose" && (
+            <div className="space-y-ax-3">
+              <div className="text-center">
+                <Rocket className="mx-auto size-5 text-cyan-accent" />
+                <h1 className="ax-heading mt-ax-2 text-foreground">How will you use ANEXOMAIL?</h1>
+                <p className="ax-caption mt-1">
+                  Personal is just your mail. Business adds a named company workspace — domain
+                  comes later in Ownership Center.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => void goPersonal()}
+                className="ax-press flex w-full flex-col items-start gap-1 rounded-xl border border-border bg-background px-4 py-3 text-left hover:border-cyan-accent/40"
+              >
+                <span className="flex items-center gap-2 font-semibold text-foreground">
+                  <Mail className="size-4 text-cyan-accent" />
+                  Personal
+                </span>
+                <span className="ax-caption">
+                  Just my mail — Chat and VideoCall by plan. No company setup.
+                </span>
+              </button>
+
+              <button
+                type="button"
+                disabled={busy}
+                onClick={() => setPath("business-name")}
+                className="ax-press flex w-full flex-col items-start gap-1 rounded-xl border border-border bg-background px-4 py-3 text-left hover:border-cyan-accent/40"
+              >
+                <span className="flex items-center gap-2 font-semibold text-foreground">
+                  <Building2 className="size-4 text-cyan-accent" />
+                  Business
+                </span>
+                <span className="ax-caption">
+                  Name your organisation, then invite people when you are ready.
+                </span>
+              </button>
+
+              {error && (
+                <p role="alert" className="ax-caption text-destructive">
+                  {error}
+                </p>
+              )}
+              {busy && (
+                <p className="ax-caption flex items-center justify-center gap-2">
+                  <Loader2 className="size-4 animate-spin" />
+                  Opening your inbox…
+                </p>
+              )}
+            </div>
+          )}
+
+          {path === "business-name" && (
             <form onSubmit={createOrg} className="space-y-ax-3">
               <div className="text-center">
                 <Building2 className="mx-auto size-5 text-cyan-accent" />
                 <h1 className="ax-heading mt-ax-2 text-foreground">Name your organisation</h1>
                 <p className="ax-caption mt-1">
-                  {session?.user.email ?? "You"} becomes the owner — billing and domain sit here.
+                  Only the name for now. Custom domain and DNS come later in Ownership Center.
                 </p>
               </div>
 
@@ -159,29 +214,11 @@ function OnboardingPage() {
                 <Input
                   id="org"
                   required
+                  minLength={2}
                   value={org}
                   onChange={(e) => setOrg(e.target.value)}
-                  placeholder="NEXATECT Global Ltd"
+                  placeholder="ANEXOMAIL"
                 />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="domain" className="ax-caption text-foreground">
-                  Your domain <span className="text-muted-foreground">(optional now)</span>
-                </Label>
-                <div className="relative">
-                  <Globe className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-steel" />
-                  <Input
-                    id="domain"
-                    className="pl-9"
-                    value={domain}
-                    onChange={(e) => setDomain(e.target.value)}
-                    placeholder="yourcompany.com"
-                  />
-                </div>
-                <p className="ax-caption">
-                  DNS, DKIM, SPF and DMARC get verified in the Ownership Center.
-                </p>
               </div>
 
               {error && (
@@ -192,16 +229,30 @@ function OnboardingPage() {
 
               <Button type="submit" className="ax-press w-full" disabled={busy}>
                 {busy && <Loader2 className="size-4 animate-spin" />}
-                Create organisation
+                Continue
+              </Button>
+              <Button
+                type="button"
+                variant="ghost"
+                className="w-full"
+                disabled={busy}
+                onClick={() => {
+                  setError(null);
+                  setPath("choose");
+                }}
+              >
+                Back
               </Button>
             </form>
-          ) : (
+          )}
+
+          {path === "business-people" && (
             <form onSubmit={sendInvites} className="space-y-ax-3">
               <div className="text-center">
                 <Users className="mx-auto size-5 text-cyan-accent" />
                 <h1 className="ax-heading mt-ax-2 text-foreground">Bring your people in</h1>
                 <p className="ax-caption mt-1">
-                  Paste emails separated by commas. You can always invite more later.
+                  Optional now. Paste emails separated by commas, or skip and invite later.
                 </p>
               </div>
 
@@ -213,7 +264,7 @@ function OnboardingPage() {
                   id="invites"
                   value={invites}
                   onChange={(e) => setInvites(e.target.value)}
-                  placeholder="sara@yourcompany.com, ali@yourcompany.com"
+                  placeholder="sara@anexomail.com, ali@anexomail.com"
                 />
               </div>
 
@@ -225,7 +276,7 @@ function OnboardingPage() {
 
               <Button type="submit" className="ax-press w-full" disabled={busy}>
                 {busy && <Loader2 className="size-4 animate-spin" />}
-                {invites.trim() ? "Send invites and open workspace" : "Open my workspace"}
+                {invites.trim() ? "Send invites and open mail" : "Skip and open mail"}
               </Button>
             </form>
           )}
@@ -235,90 +286,36 @@ function OnboardingPage() {
   );
 }
 
-const explains = [
-  {
-    title: "What onboarding is",
-    body: "The short setup that turns a signed-in account into a working company workspace: your organisation, your domain, and the people who need a mailbox.",
-  },
-  {
-    title: "Who it is for",
-    body: "The person who owns the company's email — usually a founder, an office manager or whoever holds the domain. Everyone else is invited later and skips this entirely.",
-  },
-  {
-    title: "What happens during it",
-    body: "Two steps. First you name the organisation and, if you are ready, add your domain. Then you paste in the email addresses of the people you want, and they get an invitation.",
-  },
-  {
-    title: "What you will need",
-    body: "Your company name, the domain you already own (optional at this point), and the email addresses of the people you want in. Nothing else — no card details are asked for here.",
-  },
-  {
-    title: "After you sign in",
-    body: "You land on step one immediately. It takes a couple of minutes, and the workspace opens at the end of it. You can add domains, people and shared addresses at any time after.",
-  },
-  {
-    title: "What about DNS",
-    body: "We generate the exact MX, SPF, DKIM and DMARC records your domain needs and verify them for you in the Ownership Center. The domain stays registered in your name.",
-  },
-];
-
-/** Public face of /onboarding: explains setup instead of showing a bare sign-in. */
 function OnboardingIntro({ loading }: { loading: boolean }) {
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute left-1/2 top-[-14rem] h-[30rem] w-[54rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[130px]"
-      />
-      <div className="ax-in relative w-full max-w-2xl">
-        <Link
-          to="/"
-          className="ax-focus ax-caption mb-ax-3 inline-flex items-center gap-1.5 rounded-md text-muted-foreground transition-colors hover:text-foreground"
-        >
-          <ArrowLeft className="size-3.5" aria-hidden="true" />
-          Back to home
-        </Link>
-        <div className="flex justify-center">
-          <BrandMark />
-        </div>
-
-        <div className="mt-ax-5 text-center">
-          <Rocket className="mx-auto size-5 text-cyan-accent" aria-hidden="true" />
-          <h1 className="mt-3 text-3xl text-foreground md:text-4xl">Set up your workspace</h1>
-          <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Two steps: name your organisation, then bring your people in. Sign in and you start at
-            step one.
+      <div className="ax-in relative w-full max-w-[28rem] text-center">
+        <BrandMark />
+        <h1 className="ax-heading mt-ax-5 text-foreground">Set up your workspace</h1>
+        <p className="ax-body mt-ax-2">
+          Sign in first. Then choose Personal or Business — no domain required on day one.
+        </p>
+        {loading ? (
+          <p className="ax-caption mt-ax-4 flex items-center justify-center gap-2">
+            <Loader2 className="size-4 animate-spin" />
+            Checking your session…
           </p>
-        </div>
-
-        <div className="mt-8 grid gap-4 sm:grid-cols-2">
-          {explains.map((e) => (
-            <article key={e.title} className="rounded-2xl border border-border bg-card p-5">
-              <h2 className="text-sm font-bold text-foreground">{e.title}</h2>
-              <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">{e.body}</p>
-            </article>
-          ))}
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Link
-            to="/auth"
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-          >
-            {loading ? (
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-            ) : (
-              <LogIn className="size-4" aria-hidden="true" />
-            )}
-            Sign in to start setup
-          </Link>
-          <Link
-            to="/move-in"
-            className="rounded-xl border border-border bg-card px-5 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-surface-2"
-          >
-            Rather we did it for you?
-          </Link>
-        </div>
+        ) : (
+          <div className="mt-ax-4 flex flex-col gap-2">
+            <Button asChild className="ax-press w-full">
+              <Link to="/auth">
+                <LogIn className="size-4" />
+                Sign in
+              </Link>
+            </Button>
+            <Button asChild variant="ghost" className="w-full">
+              <Link to="/plans">
+                <ArrowLeft className="size-4" />
+                Choose a plan first
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
     </main>
   );

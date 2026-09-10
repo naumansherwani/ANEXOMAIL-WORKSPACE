@@ -18,3 +18,4 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 | src/components/app/AppShell.tsx | Awam nav hide | READY — pull se aayega |
 | F3 mail inbox | ThreadList + MailRail + /api/mail/threads + counts | READY — live unproven |
 | F3 A family testers | `f3a-family-awam-testers.md` + `sql/phase63_f3a_passkey_family.sql` — WebAuthn store, recovery, family grants | READY — live unproven |
+| F3 B awam onboarding | `f3b-awam-onboarding-polish.md` — Personal\|Business, no day-1 domain, claim skip, org API fix | READY — live unproven |
