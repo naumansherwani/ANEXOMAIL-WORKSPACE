@@ -2,7 +2,7 @@
 -- F3 A — WebAuthn public-key store + family awam testers + recovery email
 -- Supabase #4 SQL Editor — poori file paste → Run. Idempotent.
 -- Passwords yahan NAHI.
--- FK: org_members → organisations (live) ya orgs (phase60) — dono handle.
+-- Live: org_members.org_id → organisations (slug NOT NULL). orgs = phase60 fallback.
 -- Fail rule: is file ko hi shuru se theek likho; phase63b / _fix naam banned.
 -- =============================================================================
 set search_path = public, extensions;
@@ -113,7 +113,6 @@ begin
 
   select count(distinct user_id) into v_users
     from public.device_vault where device_hash = v_hash;
-  -- ek device shape se bar bar naya account nahi (3+ pe block)
   if v_users >= 3 then
     return jsonb_build_object('ok', false, 'error', 'too_many_accounts',
       'device_hash', v_hash, 'accounts', v_users);
@@ -244,7 +243,7 @@ end $$;
 revoke all on function public.family_grants_apply() from public, anon, authenticated;
 grant execute on function public.family_grants_apply() to service_role;
 
--- ── 4) Har family user ki apni org — F3 list (FK parent = organisations OR orgs)
+-- ── 4) Family org — slug ALWAYS set (live organisations.slug NOT NULL)
 create or replace function public.family_workspaces_apply()
 returns integer
 language plpgsql
@@ -258,6 +257,14 @@ declare
   role_udt text;
   parent_table text;
   has_status boolean;
+  has_slug boolean := false;
+  has_domain boolean := false;
+  has_owner_id boolean := false;
+  has_created_by boolean := false;
+  v_slug text;
+  v_name text;
+  cols text;
+  vals text;
 begin
   if to_regclass('public.org_members') is null then
     return 0;
@@ -280,14 +287,43 @@ begin
      where table_schema = 'public' and table_name = 'org_members' and column_name = 'status'
   ) into has_status;
 
+  select exists (
+    select 1 from information_schema.columns
+     where table_schema = 'public' and table_name = parent_table and column_name = 'slug'
+  ) into has_slug;
+  select exists (
+    select 1 from information_schema.columns
+     where table_schema = 'public' and table_name = parent_table and column_name = 'domain'
+  ) into has_domain;
+  select exists (
+    select 1 from information_schema.columns
+     where table_schema = 'public' and table_name = parent_table and column_name = 'owner_id'
+  ) into has_owner_id;
+  select exists (
+    select 1 from information_schema.columns
+     where table_schema = 'public' and table_name = parent_table and column_name = 'created_by'
+  ) into has_created_by;
+
   for r in
     select f.email, f.display_name, u.id as uid
       from public.family_accounts f
       join auth.users u on lower(u.email) = lower(f.email)
   loop
     oid := null;
+    v_slug := 'family-' || substr(replace(r.uid::text, '-', ''), 1, 12);
+    v_name := r.display_name || ' workspace';
 
-    if to_regclass('public.mail_accounts') is not null then
+    -- 1) pehle slug se dhoondo (purani fail / partial row)
+    if has_slug then
+      execute format(
+        'select id from public.%I where slug = $1 limit 1',
+        parent_table)
+        into oid
+        using v_slug;
+    end if;
+
+    -- 2) mail_accounts
+    if oid is null and to_regclass('public.mail_accounts') is not null then
       execute format(
         $q$
         select m.org_id
@@ -300,6 +336,7 @@ begin
         using r.email;
     end if;
 
+    -- 3) org_members
     if oid is null then
       execute format(
         $q$
@@ -313,31 +350,50 @@ begin
         using r.uid;
     end if;
 
+    -- 4) naya org — slug ke baghair INSERT kabhi nahi (23502 fix)
     if oid is null then
       if parent_table = 'organisations' then
+        cols := 'name';
+        vals := quote_literal(v_name);
+        if has_slug then
+          cols := cols || ', slug';
+          vals := vals || ', ' || quote_literal(v_slug);
+        end if;
+        if has_domain then
+          cols := cols || ', domain';
+          vals := vals || ', ' || quote_literal('anexomail.com');
+        end if;
+        if has_owner_id then
+          cols := cols || ', owner_id';
+          vals := vals || ', ' || quote_literal(r.uid::text) || '::uuid';
+        elsif has_created_by then
+          cols := cols || ', created_by';
+          vals := vals || ', ' || quote_literal(r.uid::text) || '::uuid';
+        end if;
+
         begin
-          insert into public.organisations (name)
-          values (r.display_name || ' workspace')
-          returning id into oid;
-        exception when others then
-          begin
-            insert into public.organisations (name, slug)
-            values (
-              r.display_name || ' workspace',
-              'family-' || substr(replace(r.uid::text, '-', ''), 1, 12)
-            )
-            returning id into oid;
-          exception when others then
-            insert into public.organisations (id, name)
-            values (gen_random_uuid(), r.display_name || ' workspace')
-            returning id into oid;
-          end;
+          execute format(
+            'insert into public.organisations (%s) values (%s) returning id',
+            cols, vals)
+            into oid;
+        exception
+          when unique_violation then
+            if has_slug then
+              select id into oid from public.organisations where slug = v_slug limit 1;
+            end if;
+            if oid is null then
+              raise;
+            end if;
         end;
       else
         insert into public.orgs (name)
-        values (r.display_name || ' workspace')
+        values (v_name)
         returning id into oid;
       end if;
+    end if;
+
+    if oid is null then
+      raise exception 'family_workspaces_apply: no org id for %', r.email;
     end if;
 
     if role_udt = 'org_role' then
@@ -374,17 +430,12 @@ begin
 
     if to_regclass('public.account_organisations') is not null then
       insert into public.account_organisations (name, slug, domain, created_by)
-      values (
-        r.display_name || ' workspace',
-        'family-' || substr(replace(r.uid::text, '-', ''), 1, 12),
-        'anexomail.com',
-        r.uid
-      )
+      values (v_name, v_slug, 'anexomail.com', r.uid)
       on conflict (slug) do nothing;
       insert into public.account_org_members (org_id, user_id, role)
       select a.id, r.uid, 'owner'
         from public.account_organisations a
-       where a.slug = 'family-' || substr(replace(r.uid::text, '-', ''), 1, 12)
+       where a.slug = v_slug
       on conflict (org_id, user_id) do nothing;
     end if;
 

@@ -16,4 +16,4 @@ Run: Supabase #4 SQL Editor — paste → Run
 |---|---|---|
 | phase60_org_identity_repair.sql | READY (root sql/ mein hai) | — aap run karo |
 | phase61_calendar_work.sql | READY (root sql/ mein hai) | — aap run karo |
-| phase63_f3a_passkey_family.sql | READY — F3 A (FK fix included, same name) | **poori file dubara paste** |
+| phase63_f3a_passkey_family.sql | READY — F3 A (slug NOT NULL fix, same name) | **poori file dubara paste** |
