@@ -108,6 +108,18 @@ Repo mein sirf founder + ANEXOMAIL/ANEXOChat/ANEXOVideoCall ka naam. Build-platf
 ### Rule 11 — Git history
 Force push, rebase/amend/squash on pushed commits banned. Connected branch hamesha working state mein rahe.
 
+### Rule 12 — Blueprint protection (locked — touch nahi)
+ANEXOMAIL aur ANEXOChat blueprints HAMESHA alag rahenge. Kisi bhi agent/session ko yeh files delete, overwrite, ya merge karne ki ijazat nahi.
+
+| File | Kya hai | Status |
+|---|---|---|
+| `docs/anexomail-blueprint.md` | ANEXOMAIL workspace blueprint (Phase 1–62+) | PROTECTED |
+| `anexochat/docs/anexochat-blueprint-original.md` | ANEXOChat Phase 1–57 founder original | PROTECTED |
+| `anexochat/docs/anexochat-blueprint-original-with-added-features.md` | ANEXOChat Phase 1–57 + Founder Suggestions + Proof Mode + WOW-FACTOR | PROTECTED |
+
+**Delete ban.** **Mix ban.** **Rename sirf founder ke kehne pe.**
+ANEXOChat Phase 32+ build sirf tab jab founder original `## PHASE N` text paste kare.
+
 ---
 
 ## PENDING (founder action required)
