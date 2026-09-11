@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Polar Rust payment — no-touch
 
-Founder ka payment engine: PM2 **`polar-rust-payment` :3400**. Kabza, **HTTP 200**. Is ko "dummy" mat bolo. Codes **no-touch**.
+Founder ka payment engine: PM2 **`polar-rust-payment` :3400**. Kabza, **HTTP 200**. Codes **no-touch**.
 
 **Touch banned:** `server/rust/polar-payment/` (`main.rs` `Cargo.toml` `deploy.sh`) · `server/routes/polar.ts` webhook/bridge · Polar webhook SQL `sql/phase50*` `sql/phase51*` · Polar dashboard URLs · `.env` secrets · `plans.ts`.
 
