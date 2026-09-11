@@ -21,4 +21,5 @@ Awam on `anexomail.com` and `ai.anexomail.com` only. Founder host + founder acco
 - Hard-code UI copy in JSX without `t()`.
 - Build a second i18n system.
 - Translate founder surfaces.
+- Reopen picker placement (closed 11 Sep 2026).
 - Claim DONE for locales until awam live proof on the two hosts.

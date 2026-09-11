@@ -1,0 +1,20 @@
+---
+description: Follow AGENTS.md. No restore hacks. Language closed. E-series order.
+alwaysApply: true
+---
+
+# Locked ops
+
+Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR, **Rust :3200 PRIMARY**, Bun fallback, Supabase truth.
+
+**Execute order:** E1 → **E1A** → E2 → E3 → **E4 mail-gate** → E5–E8. E1A complete + live pehle agla phase nahi.
+
+**Server pull — sirf yeh (kuch add mat karo):**
+```bash
+cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save
+```
+`git restore src/routeTree.gen.ts` **banned** — user ko kabhi mat bolo. Generated tree build banati hai.
+
+**Language (closed 11 Sep 2026):** Sign-in + landing English, har package. Picker sirf login ke baad workspace header. Founder account English. Is topic ko dubara mat kholo.
+
+SQL fail = **usi file** theek. Naya naam banned. Naya SQL = `docs/cursor-work/sql/` E-series number.
