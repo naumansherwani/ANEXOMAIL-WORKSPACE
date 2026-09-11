@@ -1,6 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { ChevronDown } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
@@ -117,21 +116,15 @@ export function CrmStage({ children }: { children: ReactNode }) {
     { to: "/app/crm", label: "Dashboard", exact: true },
     { to: "/app/crm/leads", label: "Leads" },
     { to: "/app/crm/pipeline", label: "Pipeline" },
+    { to: "/app/crm/relationships", label: "Relationships" },
     ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
     ...(showCrmLedger(plan) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
   ];
 
-  /** Intelligence — folded. Only routes registered in routeTree.gen.ts (build-safe). */
-  const intelligence: NavItem[] = [
-    { to: "/app/crm/relationships", label: "Relationships" },
-  ];
-  const [intelOpen, setIntelOpen] = useState(false);
-
   const loop = LOOP.filter((step) => {
     if (step.cr === "7" || step.cr === "8") return showCrmLedger(plan);
-    if (step.cr === "3" || step.cr === "4" || step.cr === "5" || step.cr === "6" || step.cr === "9") {
-      return showCrmRisk(plan);
-    }
+    if (step.cr === "6") return showCrmRisk(plan);
+    if (step.cr === "3" || step.cr === "4") return showCrmCollab(plan);
     return true;
   });
 
@@ -160,27 +153,6 @@ export function CrmStage({ children }: { children: ReactNode }) {
               label={t(item.label)}
             />
           ))}
-          <button
-            type="button"
-            onClick={() => setIntelOpen((v) => !v)}
-            aria-expanded={intelOpen}
-            className="ax-press flex h-10 items-center justify-between rounded-[10px] ps-3.5 pe-3 text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
-          >
-            <span>{t("Intelligence")}</span>
-            <ChevronDown
-              className={cn("size-3.5 transition-transform", intelOpen && "rotate-180")}
-              aria-hidden="true"
-            />
-          </button>
-          {intelOpen &&
-            intelligence.map((item) => (
-              <NavRow
-                key={item.to}
-                item={item}
-                active={isActive(item.to, item.exact, pathname)}
-                label={t(item.label)}
-              />
-            ))}
         </nav>
 
         <div className="relative mt-3 flex min-h-0 flex-1 flex-col border-t border-border/70 px-2 pt-3">

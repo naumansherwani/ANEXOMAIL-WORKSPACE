@@ -164,6 +164,14 @@ export function showProMailTools(
   return showWork(workspacePlan, aiPlan);
 }
 
+/** Relationship health (scores, silent, at-risk **count**) — Pro CRM own book. */
+export function showCrmHealth(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return showCrm(workspacePlan, aiPlan);
+}
+
 export function showAdmin(opts: { founder: boolean; founderHost: boolean }): boolean {
   return opts.founder && opts.founderHost;
 }

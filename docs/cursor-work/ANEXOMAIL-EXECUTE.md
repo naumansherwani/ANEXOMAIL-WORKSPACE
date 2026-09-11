@@ -161,13 +161,17 @@ ANEXOMAIL CRM **standalone Salesforce clone nahi** ho sakta — woh mix hai. Fla
 
 ### Package (prices no-touch)
 
-| | Pro | Business | Business Pro (Humza) | AI plans |
-|---|---|---|---|---|
-| Own leads / pipeline | ✅ | ✅ | ✅ | platform included |
-| Team shared + collision | — | ✅ | ✅ | |
-| Activity ledger / graph | — | — | ✅ | |
-| Deterministic health / risk (counts, dates, overdue promises) | light | ✅ | ✅ | |
-| Leo memory / agent / next-best-action prose | ❌ | ❌ | ❌ | `ai.anexomail.com` |
+Aapki draft **Premium** = **Business Pro**. CRM-on-Basic nahi — Basic = People only. AI rows is host pe nahi. Full map: `docs/cursor-work/frontend/crm-package-matrix.md`.
+
+| Feature | Basic | Pro (Masood) | Business | Business Pro (Humza) | AI host |
+|---|---|---|---|---|---|
+| People / profiles / tags / person timeline | ✅ | ✅ | ✅ | ✅ | |
+| Email → CRM capture, pipeline, Work tasks | ❌ | ✅ | ✅ | ✅ | |
+| Health + next-step **rules** (no Leo) | ❌ | light | ✅ | ✅ | |
+| Full risk radar / shared CRM | ❌ | ❌ | ✅ | ✅ | |
+| Activity ledger + graph | ❌ | ❌ | ❌ | ✅ | |
+| AI insights / AI NBA / AI memory / automation | ❌ | ❌ | ❌ | ❌ | ✅ |
+| Founder cockpit | ❌ | ❌ | ❌ | ❌ | founder host |
 
 ### Flagship → tarteeb (A–M aur 1–20)
 

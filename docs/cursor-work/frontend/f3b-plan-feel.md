@@ -7,8 +7,8 @@
 
 | Account | Plan | `anexomail.com` rail | Dashboard |
 |---|---|---|---|
-| Masood | Pro | Dashboard, Mail, People, Calendar, Work | **haan** |
-| Humza | Business Pro | + Chat, Org (no LEO, no Founder Admin) | **haan** |
+| Masood | Pro | Dashboard, Mail, People, Calendar, Work, CRM (own book) | **haan** |
+| Humza | Business Pro | + Org, Chat, CRM Shared work, CRM Activity (no LEO, no Founder Admin) | **haan** |
 | Raana | AI Executive | Humza + AI/Leo (grant) — no Founder Admin | **haan** + credits |
 | Founder protocol | — | `founderworkspace` only | — |
 

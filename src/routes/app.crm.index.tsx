@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
 import { money, STAGE_LABEL, useCrmLive, useCrmOverview } from "@/lib/crm";
 import { useAuth } from "@/lib/auth";
-import { platformPlan, showCrmGraph, showCrmRisk } from "@/lib/plan-surface";
+import { platformPlan, showCrm, showCrmGraph, showCrmRisk } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
@@ -26,6 +26,7 @@ function CrmDashboard() {
   const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
   const riskOk = showCrmRisk(plan);
   const graphOk = showCrmGraph(plan);
+  const healthOk = showCrm(plan);
   const overview = useCrmOverview();
   const live = useCrmLive();
   const o = overview.data;
@@ -73,7 +74,7 @@ function CrmDashboard() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Forecast")}</span>
             <span className="text-[15px] font-bold tabular-nums text-foreground">{forecastValue}</span>
           </div>
-          {riskOk ? (
+          {healthOk ? (
           <div className="flex items-baseline gap-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("At risk")}</span>
             <span className="text-[15px] font-bold tabular-nums text-foreground">{atRisk}</span>
@@ -94,7 +95,7 @@ function CrmDashboard() {
         </div>
 
         {/* Main cinematic area — 65 / 35 */}
-        <div className={riskOk ? "mt-6 grid gap-6 lg:grid-cols-[65fr_35fr]" : "mt-6"}>
+        <div className={healthOk ? "mt-6 grid gap-6 lg:grid-cols-[65fr_35fr]" : "mt-6"}>
           <DashboardCard
             title={t("Relationship flow")}
             hint={t("Deal value by stage — the pipeline as a current, not a list.")}
@@ -139,7 +140,7 @@ function CrmDashboard() {
             </CardBody>
           </DashboardCard>
 
-          {riskOk ? (
+          {healthOk ? (
           <DashboardCard
             title={t("Next")}
             hint={t("One step per rule — each carries its why.")}
