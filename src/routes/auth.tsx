@@ -519,19 +519,20 @@ function AuthPage() {
                         {mode === "signup" && (
                           <>
                             <Field
-                              id="name"
+                              id="signup-legal-name"
                               label="Full legal name"
                               value={name}
                               onChange={setName}
-                              autoComplete="name"
-                              placeholder="Nauman Sherwani"
+                              autoComplete="off"
+                              placeholder="Your full name"
                             />
                             <Field
-                              id="display-name"
+                              id="signup-display-name"
                               label="Display name"
                               value={displayName}
                               onChange={setDisplayName}
-                              placeholder="Nauman"
+                              autoComplete="off"
+                              placeholder="What people call you"
                             />
                             <button
                               type="button"
