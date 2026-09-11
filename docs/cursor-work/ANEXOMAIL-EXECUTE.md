@@ -50,7 +50,27 @@ Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro 
 | Mail | Postfix / Dovecot / OpenDKIM |
 | Payments | Polar — Rust webhook (no-touch) |
 
-Har E isi stack pe. CRM/locale: pehle `/rpc/*` (Rust), na mile to `/api/*` (Bun). Naya architecture nahi.
+Har E isi stack pe. Naya architecture nahi. **Backend kis E pe** = neeche wali table (Claude F-map, E-series tarteeb). Alag “Rust phase” **nahi**.
+
+### Backend per E (Claude → E — locked)
+
+| E | Claude | Browser REST (Bun :3100) | Rust :3200 PRIMARY | Rust? |
+|---|---|---|---|---|
+| **E1** | F1.2 shell | — (frontend rail) | — | nahi |
+| **E1A** | F12 CRM + locales | `/api/crm/*` `/api/locale/*` FALLBACK | `/rpc/crm.*` pehle (`rpcOrRest`) | **HAAN** — Bun jab Rust route na ho |
+| **E2** | F1 auth | login / signup / session / passkey | ❌ | **kabhi nahi** — session Bun |
+| **E3** | F3 inbox | `/api/mail/*` FALLBACK | `/rpc/mail.*` + `/wt/mail` | **HAAN — PRIMARY** |
+| **E4** | F4 GATE | `POST /api/mail/send` → Postfix | delivery push sent→delivered→read | **HAAN** — status; SMTP Postfix |
+| **E5** | F5 thread | `GET /api/mail/thread/:id` | inline reply push | Partial |
+| **E6** | F6 people | `/api/contacts` | ❌ | nahi |
+| **E7** | F7 calendar | `/api/calendar/load` | 5min reminder push | **HAAN** — push |
+| **E8** | F8 work | `/api/work/*` | ❌ | nahi |
+| Chat (E-list nahi) | F10 | ❌ | `/wt/chat` poora | **FULLY RUST** |
+| Polar | — | — | webhook (PM2, no-touch) | **pehle se** |
+| Founder (end) | F9 | `/api/founder/*` | `/wt/founder` live | **HAAN** — live metrics |
+| LEO | F11 | `/api/ai/ask` — **AI host baad** | ❌ | nahi is execute pe |
+
+Payments Polar Rust **phase wait nahi** — pehle se. Mail SMTP = Postfix, Rust inbox/push.
 
 ---
 

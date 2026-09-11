@@ -7,7 +7,7 @@ alwaysApply: true
 
 Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR, **Rust :3200 PRIMARY**, Bun fallback, Supabase truth.
 
-**Execute order:** E1 → **E1A** → E2 → E3 → **E4 mail-gate** → E5–E8. E1A complete + live pehle agla phase nahi.
+**Backend kis phase:** sirf `docs/cursor-work/ANEXOMAIL-EXECUTE.md` → **Backend per E**. Claude F-map, E tarteeb. Alag Rust phase / naya stack **banned**. `docs/anexomail-blueprint.md` overwrite nahi.
 
 **Server pull — sirf yeh (kuch add mat karo):**
 ```bash
