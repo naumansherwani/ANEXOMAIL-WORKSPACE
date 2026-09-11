@@ -22,7 +22,7 @@ export const Route = createFileRoute("/checkout/done")({
 });
 
 function CheckoutDonePage() {
-  const { session, status } = useAuth();
+  const { session, status: authStatus } = useAuth();
   const search = useSearch({ from: "/checkout/done" }) as {
     checkout_id?: string;
     return_to?: string;
@@ -35,7 +35,7 @@ function CheckoutDonePage() {
       ? search.return_to
       : null;
   const fromKind =
-    status === "signed-in" && session
+    authStatus === "signed-in" && session
       ? session.user.account_kind === "business" && !session.user.onboarded
         ? "/onboarding"
         : "/dashboard"
