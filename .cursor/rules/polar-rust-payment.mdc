@@ -22,4 +22,4 @@ Agent **sirf** yeh dekh sakta hai: endpoint sahi hai ya nahi. Dummy codes rewrit
 
 Bun `https://anexomail.com/api/public/polar/webhook` Polar dashboard mein **nahi**. Sirf forward `:3400`.
 
-Personal vs Business kind / E2 SQL Polar SKU **map** hai — Polar pe naya product ya dummy engine change **nahi**.
+Personal vs Business kind / checkout land — Polar pe naya product ya dummy engine change **nahi**. Success email recovery inbox pe Polar/engine se jati hai — yahan se mail mat likho.

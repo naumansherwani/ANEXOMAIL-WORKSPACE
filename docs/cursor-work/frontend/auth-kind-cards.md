@@ -24,7 +24,7 @@ Login: email + password, passkey, magic link, forgot/reset. Social nahi.
 2. **New here? Create your account for workspace** (pehle “Choose your package” → `/plans` tha — hata diya).
 3. **Kind cards** — Personal | Business (do columns). Polar SKU nahi.
 4. **Create your account** — Lovable form. Kind `preferences.workspace_kind` mein save.
-5. Passkey → claim address → onboarding (kind pehle se ho to skip/auto).
+5. Passkey → **`/plans`** → Polar checkout. Payment success: Personal `/dashboard` · Business `/onboarding` (org name + domain). CRM Billing = `/app/billing`.
 
 Masood / Humza **buyers** — is flow se nahi; seedha Sign in.
 

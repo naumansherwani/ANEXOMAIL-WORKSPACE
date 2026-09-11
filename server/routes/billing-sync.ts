@@ -32,6 +32,18 @@ const POLAR_API = "https://api.polar.sh";
 const SUCCESS_URL =
   process.env.POLAR_SUCCESS_URL || "https://anexomail.com/checkout/done?checkout_id={CHECKOUT_ID}";
 
+function safeReturnTo(raw: unknown): string | null {
+  const s = String(raw || "").trim();
+  if (!s.startsWith("/") || s.startsWith("//") || s.includes("://") || s.length > 200) return null;
+  return s;
+}
+
+function successUrlWithReturn(returnTo: string | null): string {
+  if (!returnTo) return SUCCESS_URL;
+  const join = SUCCESS_URL.includes("?") ? "&" : "?";
+  return `${SUCCESS_URL}${join}return_to=${encodeURIComponent(returnTo)}`;
+}
+
 let db: SupabaseClient | null = null;
 if (SUPABASE_URL && SERVICE_KEY) {
   db = createClient(SUPABASE_URL, SERVICE_KEY, {
@@ -91,7 +103,7 @@ authRouter.post("/intent", async (req, res) => {
   const userId = await requireUser(req, res);
   if (!userId) return;
 
-  const { product_key, seats = 1, email } = req.body || {};
+  const { product_key, seats = 1, email, return_to } = req.body || {};
   const selected = product_key ? configuredProduct(String(product_key)) : null;
   if (!selected) {
     return res
@@ -149,7 +161,7 @@ authRouter.post("/intent", async (req, res) => {
       // bhi bhejte hain taake naya aur purana schema dono chal jaye.
       product_id: selected.productId,
       products: [selected.productId],
-      success_url: SUCCESS_URL,
+      success_url: successUrlWithReturn(safeReturnTo(return_to)),
       external_customer_id: userId,
       metadata,
     };
@@ -401,7 +413,7 @@ publicRouter.post("/billing/sync", async (req, res) => {
 // ---------------------------------------------------------------------------
 publicRouter.post("/billing/guest-intent", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  const { product_key, seats = 1, email } = req.body || {};
+  const { product_key, seats = 1, email, return_to } = req.body || {};
   const selected = product_key ? configuredProduct(String(product_key)) : null;
   if (!selected) {
     return res
@@ -455,7 +467,7 @@ publicRouter.post("/billing/guest-intent", async (req, res) => {
     const payload: any = {
       product_id: selected.productId,
       products: [selected.productId],
-      success_url: SUCCESS_URL,
+      success_url: successUrlWithReturn(safeReturnTo(return_to) ?? "/auth"),
       metadata,
     };
     if (email) payload.customer_email = String(email);

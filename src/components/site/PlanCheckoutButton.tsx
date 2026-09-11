@@ -29,7 +29,7 @@ export function CheckoutButton({
   source: string;
   className?: string | undefined;
 }) {
-  const { status } = useAuth();
+  const { status, session } = useAuth();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,15 +46,22 @@ export function CheckoutButton({
       // Signed-in → /api/billing/intent · guest → /api/public/billing/guest-intent
       const endpoint =
         status === "signed-in" ? "/api/billing/intent" : "/api/public/billing/guest-intent";
+      const returnTo =
+        status === "signed-in"
+          ? session?.user.account_kind === "business" && !session.user.onboarded
+            ? "/onboarding"
+            : "/dashboard"
+          : "/auth";
       const result = await api<{ url: string; guest_token?: string }>(endpoint, {
         method: "POST",
-        body: JSON.stringify({ product_key: productKey, seats: 1 }),
+        body: JSON.stringify({ product_key: productKey, seats: 1, return_to: returnTo }),
       });
       if (!result.url.startsWith("https://polar.sh/")) throw new Error("invalid_checkout_url");
       if (result.guest_token) {
         window.sessionStorage.setItem("anexo.guest.checkout_token", result.guest_token);
       }
       window.sessionStorage.setItem("anexo.pending.checkout", productKey);
+      window.sessionStorage.setItem("anexo.pending.return_to", returnTo);
       window.location.assign(result.url);
     } catch (caught) {
       setError(caught instanceof ApiError ? caught.message : "Checkout could not be opened.");

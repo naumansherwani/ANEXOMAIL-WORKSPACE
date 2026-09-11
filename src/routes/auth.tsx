@@ -96,6 +96,7 @@ function AuthPage() {
   const [workspaceKind, setWorkspaceKind] = useState<"personal" | "business" | null>(null);
   const [moreDetails, setMoreDetails] = useState(false);
   const lastNameTouched = useRef(false);
+  const fromSignup = useRef(false);
 
   const finish = async (token: string, authenticated?: Session) => {
     sessionToken.set(token);
@@ -110,8 +111,11 @@ function AuthPage() {
     const kind =
       session.user.account_kind ||
       (stored === "personal" || stored === "business" ? stored : null);
+    const createdNow = fromSignup.current;
+    fromSignup.current = false;
     let target = "/onboarding";
     if (session.user.is_founder) target = "/app";
+    else if (createdNow) target = "/plans";
     else if (!session.user.anexomail_address) target = "/claim";
     else if (kind === "personal") {
       try {
@@ -258,6 +262,7 @@ function AuthPage() {
           return;
         }
         sessionToken.set(res.token);
+        fromSignup.current = true;
         if (res.family || !res.needs_passkey) {
           await finish(res.token);
           return;
@@ -474,8 +479,8 @@ function AuthPage() {
                       title="Create your account"
                       sub={
                         workspaceKind === "business"
-                          ? "Business workspace — then claim your @anexomail.com address."
-                          : "Personal workspace — then claim your @anexomail.com address."
+                          ? "Business workspace — then choose your plan."
+                          : "Personal workspace — then choose your plan."
                       }
                     />
                   ) : mode === "link" ? (
@@ -735,8 +740,8 @@ function AuthPage() {
 
                   {mode === "signup" ? (
                     <p className="ax-caption mt-ax-3 text-center">
-                      Next you claim your{" "}
-                      <span className="font-semibold text-foreground">@anexomail.com</span> address.
+                      Next you choose a plan on{" "}
+                      <span className="font-semibold text-foreground">anexomail.com/plans</span>.
                     </p>
                   ) : null}
 
@@ -815,6 +820,10 @@ function AuthPage() {
           if (!redirectTo) return;
           if (redirectTo === "/dashboard") {
             window.location.replace("/dashboard");
+            return;
+          }
+          if (redirectTo === "/plans") {
+            window.location.replace("/plans");
             return;
           }
           void navigate({ to: redirectTo });

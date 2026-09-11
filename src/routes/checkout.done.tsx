@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/site/BrandMark";
 import { reportGlitch } from "@/lib/telemetry";
 import { api } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/checkout/done")({
+  ssr: false,
   component: CheckoutDonePage,
   head: () => ({
     title: "Checkout — ANEXOMAIL",
@@ -20,17 +22,25 @@ export const Route = createFileRoute("/checkout/done")({
 });
 
 function CheckoutDonePage() {
+  const { session, status } = useAuth();
   const search = useSearch({ from: "/checkout/done" }) as {
     checkout_id?: string;
     return_to?: string;
   };
   const checkoutId = search.checkout_id;
-  // RETURN-TO-WINDOW LOCK: user jahan se checkout par gaya tha, payment ke baad
-  // wahin wapas. Sirf same-origin path chalta hai (open redirect band).
-  const returnTo =
+  const stored =
+    typeof window !== "undefined" ? window.sessionStorage.getItem("anexo.pending.return_to") : null;
+  const fromQuery =
     search.return_to && search.return_to.startsWith("/") && !search.return_to.startsWith("//")
       ? search.return_to
-      : "/app/billing";
+      : null;
+  const fromKind =
+    status === "signed-in" && session
+      ? session.user.account_kind === "business" && !session.user.onboarded
+        ? "/onboarding"
+        : "/dashboard"
+      : "/auth";
+  const returnTo = fromQuery || stored || fromKind;
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "missing">("loading");
   const [detail, setDetail] = useState<string>("");
 
@@ -49,7 +59,11 @@ function CheckoutDonePage() {
         setDetail(data.status);
         if (data.status === "confirmed" || data.status === "succeeded") {
           setStatus("success");
-          // Usi window mein wapas — 2 second baad automatic.
+          try {
+            window.sessionStorage.removeItem("anexo.pending.return_to");
+          } catch {
+            /* ignore */
+          }
           timer = setTimeout(() => window.location.assign(returnTo), 2000);
           return;
         }

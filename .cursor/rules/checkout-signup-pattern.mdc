@@ -1,0 +1,29 @@
+---
+description: Founder checkout + signup + payment-success pattern. Polar dummy no-touch. Polish, do not tear.
+alwaysApply: true
+---
+
+# Checkout → account → pay → land (locked)
+
+Do **not** mention SQL files the founder already ran. Polar dummy `:3400` **no-touch**.
+
+ANEXOChat **offer** = Business account. Personal Pro still gets Chat **power**. Org = Business only.
+
+## Two doors
+
+1. **Get started** → `https://anexomail.com/plans` → Polar checkout. Success email = recovery inbox. Engine no-touch.
+2. **Sign in** stays `/auth`. Footer **Create your account for workspace** → Personal | Business → account banta hai → **`/plans`** → Polar checkout.
+
+Masood / Humza / Raana = Sign in. Unhein `/plans` mat bhejo.
+
+## Payment success redirect (existing `/checkout/done`)
+
+| Kind | Land |
+|---|---|
+| Personal | `/dashboard` — CRM **Billing** real wire (`/app/billing`, dummy 200) |
+| Business | `/onboarding` — organisation **name + domain**, then dashboard. CRM Billing bhi real wire |
+| Guest (no session) | `/auth` — email already on recovery |
+
+## Polish, do not tear
+
+Keep Lovable `/plans` cards, checkout button, `/checkout/done`, claim, onboarding org form, `/app/billing`. Wire redirects. Do **not** rewrite `plans.ts`, Polar IDs, `server/rust/polar-payment/`, `server/routes/polar.ts` webhook.

@@ -17,7 +17,8 @@ type CrmPath =
   | "/app/crm/tasks"
   | "/app/crm/reports"
   | "/app/crm/collab"
-  | "/app/crm/ai";
+  | "/app/crm/ai"
+  | "/app/billing";
 
 type NavItem = { to: CrmPath; label: string; exact?: boolean };
 
@@ -121,6 +122,7 @@ export function CrmStage({ children }: { children: ReactNode }) {
       ? [{ to: "/app/crm/collab" as const, label: kind === "personal" ? "Collaboration" : "Shared work" }]
       : []),
     ...(showCrmLedger(billed, null, kind) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
+    { to: "/app/billing", label: "Billing" },
   ];
 
   const loop = LOOP.filter((step) => {
