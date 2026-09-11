@@ -1,9 +1,11 @@
 /**
- * 28 original locales = awam + family testers.
+ * 28 original locales = awam + family testers, after sign-in.
  * anexomail.com + ai.anexomail.com.
  * Founder host + founder account stay English.
- * Family testers (Humza / Raana / Masood) get the picker since 11 Sep 2026 —
- * founder reviews the awam view from Humza's account.
+ * Signed-out auth and landing stay English for every package
+ * (Basic / Pro / Business / Business Pro) — no GB English chip.
+ * Family testers (Humza / Raana / Masood) get the picker in the workspace
+ * since 11 Sep 2026 — founder reviews the awam view from Humza's account.
  */
 
 import type { Session } from "@/lib/auth";
@@ -28,8 +30,12 @@ export function isFounderSession(session: Session | null | undefined): boolean {
   return FOUNDER_MAILBOXES.some((m) => m.address.toLowerCase() === addr);
 }
 
-/** Picker + translations. Signed-out awam + family testers on the two hosts = yes. */
+/**
+ * Picker + translations only after a real sign-in.
+ * No session = English (login, landing, forgot password — same for every plan).
+ */
 export function publicLocaleAllowed(session: Session | null | undefined): boolean {
   if (!localeHostsAllowed()) return false;
+  if (!session) return false;
   return !isFounderSession(session);
 }

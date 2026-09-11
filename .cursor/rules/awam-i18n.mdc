@@ -13,7 +13,7 @@ Awam on `anexomail.com` and `ai.anexomail.com` only. Founder host + founder acco
 1. Every user-visible string in `src/routes` and `src/components` uses `t("English source")` or `<T>English source</T>`.
 2. The English sentence **is** the key. If a locale has no row, the same English shows. Never invent filler, never leave a blank.
 3. Argos runs offline on the server as the bundle **builder** (`server/i18n/translate.py` ← `bun run i18n:extract`). It is a build step, never a runtime widget, Google, or Argos-as-the-product.
-4. New pages inherit the picker (`LanguagePicker` in shell/nav/auth) and `html lang` / `dir` automatically. You still wrap copy in `t()`.
+4. New pages inherit `html lang` / `dir` automatically. `LanguagePicker` is workspace-shell only, after sign-in. Auth and public landing stay English for every package (Basic / Pro / Business / Business Pro). You still wrap copy in `t()`.
 5. Optional overlay: `ui_copy` in SQL (`docs/cursor-work/sql/phase64_crm_locale.sql`). Runtime loads `/api/locale/bundle`. Insert **original** translations only — never copy English into other locales as a fake translation.
 
 ## Do not

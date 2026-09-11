@@ -2,7 +2,8 @@
  * ANEXOMAIL — REAL TRANSLATION LAYER (Phase 31B)
  *
  * Awam on anexomail.com / ai.anexomail.com: original locale files (not Argos widget).
- * Founder host + family testers stay English. Missing string = English.
+ * Founder host + founder account stay English. Signed-out auth/landing stay English
+ * for every package. Missing string = English.
  *
  * Runtime:
  *   1. Choice `localStorage["ax.locale"]` mein, `<html lang/dir>` fauran set.

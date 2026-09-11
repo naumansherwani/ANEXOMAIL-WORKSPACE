@@ -7,8 +7,10 @@ import { LOCALES } from "@/lib/locales";
 import { publicLocaleAllowed } from "@/lib/public-locale";
 
 /**
- * Real language picker — awam on anexomail.com / ai.anexomail.com only.
- * Founder host + family testers never see this. Hebrew/Swahili list se bahar.
+ * Real language picker — workspace chrome after sign-in.
+ * anexomail.com / ai.anexomail.com only. Auth + landing stay English
+ * for every package. Founder account never sees this.
+ * Hebrew/Swahili list se bahar.
  */
 export function LanguagePicker({
   className = "",
