@@ -1,20 +1,23 @@
 ---
-description: Four mail packages on anexomail.com — one AppShell, plan gate, no mix.
+description: One UI for all packages and both public hosts. Features stack Basic→Pro→Business→Biz Pro. AI host = same UI + LEO only.
 alwaysApply: true
 ---
 
-# Package rail (locked)
+# One UI, stacked packages (locked)
 
-Ek website. Teen hosts. Package = session `workspace_plan` (`plan-surface.ts`). `plans.ts` no-touch.
+Tarteeb: **Basic → Pro → Business → Business Pro**. Har step pe feature + website saath. Alag theme / alag app nahi.
 
 | Plan | Rail on `anexomail.com` |
 |---|---|
 | **Basic** | Dashboard · Mail · People · Calendar |
 | **Pro** | + Work + CRM (own book) |
 | **Business** | + Org + Chat + CRM Shared work |
-| **Business Pro** | Business + CRM Activity ledger (audit, team seats) |
+| **Business Pro** | Business + CRM Activity ledger |
 
-- URL se Chat/Work/Org/CRM/AI kholo to blank nahi — `PlanSurfaceGate` wall.
-- LEO / AI Center **nahi** is host pe. AI = `ai.anexomail.com`.
-- Founder / Speed / platform Admin = `founderworkspace.anexomail.com` only.
-- Naya rail item tabhi jab us package ki card pe ho. Mix dump banned.
+**UI same** — AppShell, mail three-panel, tokens, type. Package sirf cheezein **add** karta hai.
+
+**`ai.anexomail.com`:** wahi UI. Farq sirf AI features + **LEO**. Naya layout / naya CRM / naya mail app **banned**.
+
+- Wall on URL for locked surfaces (`PlanSurfaceGate`). Blank nahi.
+- LEO mail host pe nahi. Founder/Speed/Admin = founder host.
+- `plans.ts` no-touch. Naya rail item tabhi jab us package ki card pe ho.

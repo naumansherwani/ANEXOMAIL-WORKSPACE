@@ -101,6 +101,8 @@ Ph 23 settings/account = E2 ke saath (profile right)
 
 ## Rail is track pe (anexomail.com)
 
+**UI same** har package + `ai.anexomail.com`. Farq features hain. AI host pe LEO add. Naya layout nahi.
+
 | Plan | Dikhe | Chat/AI/Founder |
 |---|---|---|
 | Basic | Dashboard Mail People Calendar | nahi |
