@@ -12,7 +12,7 @@
 //
 // FOUNDER LOCK:
 //   1. ANEXOChat ka saara data isi process se guzarta hai (Brain 3100 se alag)
-//   2. Gate DB ka chat_access() — founder + business/business_pro/AI. Basic/Pro 403
+//   2. Gate DB ka chat_access() — founder + Polar Pro + business/business_pro/AI. Basic 403
 //   3. Bun = FALLBACK ONLY. PRIMARY Rust engine hai: /rpc/chat.* (tcp 3200) +
 //      WebTransport/QUIC (udp 3443). Contract dono par bilkul same.
 //   4. Truth Supabase #4 mein (RLS enabled) — yeh service sirf RPC bulati hai

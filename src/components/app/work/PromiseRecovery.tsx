@@ -147,7 +147,7 @@ export function PromiseRecovery() {
   if (board.error && isChatEntitlementError(board.error)) {
     return (
       <p className="ax-caption rounded-xl border border-border px-ax-3 py-ax-3 text-muted-foreground">
-        {t("Promises from ANEXOChat appear here. Nothing is on this ledger yet.")}
+        {t("The promise ledger sits on Personal Pro, Business and Business Pro. This is not an empty list.")}
       </p>
     );
   }

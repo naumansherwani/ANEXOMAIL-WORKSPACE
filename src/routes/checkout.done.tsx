@@ -5,6 +5,7 @@ import { BrandMark } from "@/components/site/BrandMark";
 import { reportGlitch } from "@/lib/telemetry";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
 
 export const Route = createFileRoute("/checkout/done")({
   ssr: false,
@@ -23,6 +24,7 @@ export const Route = createFileRoute("/checkout/done")({
 
 function CheckoutDonePage() {
   const { session, status: authStatus } = useAuth();
+  const { t } = useLocale();
   const search = useSearch({ from: "/checkout/done" }) as {
     checkout_id?: string;
     return_to?: string;
@@ -35,11 +37,13 @@ function CheckoutDonePage() {
       ? search.return_to
       : null;
   const fromKind =
-    authStatus === "signed-in" && session
-      ? session.user.account_kind === "business" && !session.user.onboarded
-        ? "/onboarding"
-        : "/dashboard"
-      : "/auth";
+    authStatus === "loading"
+      ? null
+      : authStatus === "signed-in" && session
+        ? session.user.account_kind === "business" && !session.user.onboarded
+          ? "/onboarding"
+          : "/dashboard"
+        : "/auth";
   const returnTo = fromQuery || stored || fromKind;
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "missing">("loading");
   const [detail, setDetail] = useState<string>("");
@@ -59,12 +63,6 @@ function CheckoutDonePage() {
         setDetail(data.status);
         if (data.status === "confirmed" || data.status === "succeeded") {
           setStatus("success");
-          try {
-            window.sessionStorage.removeItem("anexo.pending.return_to");
-          } catch {
-            /* ignore */
-          }
-          timer = setTimeout(() => window.location.assign(returnTo), 2000);
           return;
         }
 
@@ -74,7 +72,6 @@ function CheckoutDonePage() {
       } catch (e: unknown) {
         if (cancelled) return;
         console.error("checkout verify", e);
-        // Phase 47 — checkout ka koi bhi glitch founder ke CRM alert tak jata hai.
         const message = e instanceof Error ? e.message : String(e);
         reportGlitch("checkout_error", `checkout verify failed: ${message}`, {
           severity: "critical",
@@ -89,55 +86,73 @@ function CheckoutDonePage() {
       cancelled = true;
       if (timer) clearTimeout(timer);
     };
-  }, [checkoutId, returnTo]);
+  }, [checkoutId]);
+
+  useEffect(() => {
+    if (status !== "success" || !returnTo) return;
+    try {
+      window.sessionStorage.removeItem("anexo.pending.return_to");
+    } catch {
+      /* ignore */
+    }
+    const timer = setTimeout(() => window.location.assign(returnTo), 2000);
+    return () => clearTimeout(timer);
+  }, [status, returnTo]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6">
       <div className="w-full max-w-md space-y-8 text-center">
         <BrandMark className="mx-auto h-12 w-12" />
-        <h1 className="text-2xl font-semibold tracking-tight">ANEXOMAIL Checkout</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">{t("ANEXOMAIL Checkout")}</h1>
 
         {status === "loading" && (
           <div className="space-y-2">
-            <p className="text-muted-foreground">Payment confirmation check kar rahe hain…</p>
-            {detail && <p className="text-xs text-muted-foreground">Status: {detail}</p>}
+            <p className="text-muted-foreground">{t("Checking payment confirmation…")}</p>
+            {detail && (
+              <p className="text-xs text-muted-foreground">
+                {t("Status")}: {detail}
+              </p>
+            )}
           </div>
         )}
 
         {status === "success" && (
           <div className="space-y-4 rounded-xl border p-6 bg-green-500/5 border-green-500/20">
-            <p className="text-lg font-medium text-green-600">Payment confirmed ✅</p>
+            <p className="text-lg font-medium text-green-600">{t("Payment confirmed.")}</p>
             <p className="text-sm text-muted-foreground">
-              Receipt aur next steps aapke email par bhej diye gaye hain.
+              {t("A receipt and next steps have been sent to your email.")}
             </p>
-            <Button asChild className="w-full">
-              <a href={returnTo}>Continue where you left off</a>
-            </Button>
+            {returnTo ? (
+              <Button asChild className="w-full">
+                <a href={returnTo}>{t("Continue where you left off")}</a>
+              </Button>
+            ) : (
+              <p className="text-sm text-muted-foreground">{t("Opening your workspace…")}</p>
+            )}
           </div>
         )}
 
         {status === "failed" && (
           <div className="space-y-4 rounded-xl border p-6 bg-destructive/5 border-destructive/20">
-            <p className="text-lg font-medium text-destructive">Confirmation failed</p>
+            <p className="text-lg font-medium text-destructive">{t("Confirmation failed")}</p>
             <p className="text-sm text-muted-foreground">
-              Agar payment kat gaya hai toh 2–3 min wait kar ke refresh karein. Problem rehti hai
-              toh{" "}
+              {t("If the payment was taken, wait 2–3 minutes and refresh. If it is still wrong, write to")}{" "}
               <a href="mailto:hello@anexomail.com" className="underline">
                 hello@anexomail.com
-              </a>{" "}
-              par likhein.
+              </a>
+              .
             </p>
             <Button asChild variant="outline" className="w-full">
-              <a href="/">Back to home</a>
+              <a href="/">{t("Back to home")}</a>
             </Button>
           </div>
         )}
 
         {status === "missing" && (
           <div className="space-y-4 rounded-xl border p-6">
-            <p className="text-muted-foreground">Checkout ID missing hai.</p>
+            <p className="text-muted-foreground">{t("Checkout ID is missing.")}</p>
             <Button asChild variant="outline" className="w-full">
-              <a href="/">Back to home</a>
+              <a href="/">{t("Back to home")}</a>
             </Button>
           </div>
         )}

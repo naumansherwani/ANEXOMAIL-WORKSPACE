@@ -7,7 +7,7 @@
 //
 // FOUNDER LOCK:
 //   1. Truth Supabase #4 mein — yeh file sirf chat_* RPC bulati hai
-//   2. Gate DB ka chat_access(): founder + business/business_pro/AI. Basic/Pro = 403
+//   2. Gate DB ka chat_access(): founder + Polar Pro + business/business_pro/AI. Basic = 403
 //   3. Idempotent send: client_msg_id — duplicate send kabhi doosra message nahi
 //   4. Koi fake state nahi: sent/delivered/read sirf DB rows se
 //   5. Bun path = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.* + WebTransport/QUIC

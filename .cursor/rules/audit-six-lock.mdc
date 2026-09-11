@@ -1,0 +1,20 @@
+---
+description: Audit-six lock. Checkout land, Work 403 honesty, SQL no restuff. Polar no-touch.
+alwaysApply: true
+---
+
+# Audit six (locked 12 Sep 2026)
+
+Jo compile break thi (`checkout.done` do `status`) — **fixed** `0eee57c`. Dobara naam clash **nahi**.
+
+**Website (agent theek kare):**
+- `/checkout/done` — `authStatus === "loading"` pe `fromKind` `/auth` **nahi**. Polar `return_to` / sessionStorage pehle. Copy `t("English")`.
+- Work ledger 403 — empty lie **nahi**. Honest gate. Raw `"business"` wapas **nahi**.
+- `server/routes/chat.ts` comment = `chat_access` (Polar Pro allowed). Logic no-touch.
+
+**SQL — theek = hath nahi:**
+- `docs/cursor-work/sql/phase65*.sql` no-touch. Rename / `_fix` / dubara-run **banned**.
+- `E2_personal_polar.sql` pe `chat_access` pehle se hai. File mein aur ghusana **nahi**. Founder se E2/phase65 dubara paste **mat bolo**.
+
+**No-touch:** Polar rust payment `:3400` · `plans.ts` · `server/rust/polar-payment/`.
+**Backend naya:** Rust Tokio + WebTransport + QUIC. Bun fallback only.

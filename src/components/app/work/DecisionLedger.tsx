@@ -115,7 +115,7 @@ export function DecisionLedger() {
         <p className="ax-caption text-muted-foreground">Reading the ledger…</p>
       ) : board.error && isChatEntitlementError(board.error) ? (
         <p className="ax-caption text-muted-foreground">
-          {t("Decisions from ANEXOChat appear here. Nothing is recorded yet.")}
+          {t("The decision ledger sits on Personal Pro, Business and Business Pro. This is not an empty list.")}
         </p>
       ) : board.error ? (
         <p className="ax-caption text-amber-400">Ledger didn&apos;t load: {board.error.message}</p>
