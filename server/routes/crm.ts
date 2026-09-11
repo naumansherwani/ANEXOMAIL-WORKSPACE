@@ -857,6 +857,55 @@ crm.post(
   }),
 );
 
+/** Skip automated mail so suggested leads stay human. */
+const SUGGEST_SKIP =
+  /noreply|no-reply|donotreply|mailer-daemon|postmaster|newsletter|notifications?@|bounce|auto-?(reply|confirm)|support@|info@|billing@|hello@/i;
+
+/**
+ * Suggested leads from the last 30 days of real inbound mail.
+ * Only addresses that already exist in the mailbox; nothing is invented.
+ * Leads already on the book are excluded so Accept is idempotent.
+ */
+crm.get(
+  "/crm/leads/suggest",
+  guard("pro", async (_req, res, c) => {
+    const since = new Date(Date.now() - 30 * 86400000).toISOString();
+    const msgs = await safe<any[]>(
+      () =>
+        admin
+          .from("mail_messages")
+          .select("id,from_address,sent_at,direction")
+          .eq("org_id", c.orgId)
+          .eq("direction", "in")
+          .gte("sent_at", since)
+          .order("sent_at", { ascending: false })
+          .limit(1500),
+      [],
+    );
+    const existing = await safe<any[]>(() => scopedLeads(c).select("email"), []);
+    const taken = new Set(existing.map((l) => String(l.email || "").toLowerCase()));
+    const own = new Set(c.owners);
+    const agg = new Map<string, { count: number; last: string }>();
+    for (const m of msgs) {
+      const addr = emailOf(m.from_address);
+      if (!addr.includes("@")) continue;
+      if (own.has(addr) || taken.has(addr) || SUGGEST_SKIP.test(addr)) continue;
+      const cur = agg.get(addr);
+      const at = String(m.sent_at || "");
+      if (!cur) agg.set(addr, { count: 1, last: at });
+      else {
+        cur.count += 1;
+        if (at > cur.last) cur.last = at;
+      }
+    }
+    const suggestions = [...agg.entries()]
+      .map(([email, v]) => ({ email, message_count: v.count, last_mail_at: v.last }))
+      .sort((a, b) => b.message_count - a.message_count)
+      .slice(0, 24);
+    res.json({ suggestions });
+  }),
+);
+
 /* ------------------------------------------------------------ leads/deals */
 crm.get(
   "/crm/leads",

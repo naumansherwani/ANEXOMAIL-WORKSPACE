@@ -8,7 +8,7 @@ import { EmptyState } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import type { MailFolder } from "@/lib/ia";
-import { celebrate, measureMotion } from "@/lib/experience";
+import { measureMotion } from "@/lib/experience";
 import { relativeTime, type ThreadListItem } from "@/lib/mail";
 import type { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -66,12 +66,7 @@ export function ThreadList({
     end();
   }, [folder, isPending, threads]);
 
-  // Earned delight: inbox zero is a proven finish, so it may celebrate. Any
-  // other empty folder is just an empty folder — no celebration.
-  useEffect(() => {
-    if (isPending || error) return;
-    if (folder === "inbox" && threads && threads.length === 0) celebrate("inbox-zero");
-  }, [folder, isPending, error, threads]);
+  // Inbox zero is an honest empty state, not a celebration popup.
 
   if (error) {
     if (error.status === 409 || error.code === "no_workspace") {

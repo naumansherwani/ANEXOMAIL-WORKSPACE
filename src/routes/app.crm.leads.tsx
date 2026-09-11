@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { UserPlus } from "lucide-react";
+import { Check, MailPlus, UserPlus } from "lucide-react";
 import { useState } from "react";
 
 import { CaptureLead } from "@/components/app/crm/CrmCapture";
@@ -9,7 +9,14 @@ import { Button } from "@/components/ui/button";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { useLocale } from "@/lib/i18n";
-import { useConvertLead, useCrmLeads, type Lead } from "@/lib/crm";
+import {
+  useConvertLead,
+  useCrmLeadSuggestions,
+  useCrmLeads,
+  useCreateLead,
+  type Lead,
+  type SuggestedLead,
+} from "@/lib/crm";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/crm/leads")({
@@ -43,6 +50,7 @@ function LeadsPage() {
         hint={t("Your book of people who are not a deal yet. Capture one here — scores appear only when mail behaviour exists.")}
       />
       <CaptureLead />
+      <SuggestedFromMail />
 
       <div className="mb-ax-4 flex flex-wrap gap-1">
         {STATES.map((s) => (
@@ -134,3 +142,64 @@ function LeadsPage() {
     </div>
   );
 }
+
+/** Real people who wrote you in the last 30 days. Accept puts them on the book. */
+function SuggestedFromMail() {
+  const { t } = useLocale();
+  const sug = useCrmLeadSuggestions();
+  const accept = useCreateLead();
+  const [done, setDone] = useState<Set<string>>(new Set());
+
+  const list = (sug.data?.suggestions ?? []).filter((s) => !done.has(s.email));
+  if (list.length === 0) return null;
+
+  return (
+    <section className="mb-ax-4 rounded-2xl border border-cyan-accent/30 bg-card/60 p-ax-4">
+      <div className="mb-3 flex items-center gap-2">
+        <MailPlus className="size-4 text-cyan-accent" aria-hidden="true" />
+        <p className="text-[13px] font-bold text-foreground">{t("From your mail — last 30 days")}</p>
+        <Chip tone="quiet">{list.length}</Chip>
+        <p className="ax-caption ml-auto text-muted-foreground">
+          {t("Real senders. Accept to put them on the book.")}
+        </p>
+      </div>
+      <ul className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
+        {list.slice(0, 9).map((s: SuggestedLead) => (
+          <li
+            key={s.email}
+            className="flex items-center gap-2 rounded-xl border border-border/70 bg-card/80 px-2.5 py-2"
+          >
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[12.5px] font-semibold text-foreground">{s.email}</p>
+              <p className="ax-caption text-muted-foreground">
+                {s.message_count} {t("mail")} · {relativeTime(s.last_mail_at)}
+              </p>
+            </div>
+            <Button
+              size="sm"
+              variant="secondary"
+              className="ax-press h-7 shrink-0 px-2 text-[11px]"
+              disabled={accept.isPending}
+              onClick={() =>
+                accept.mutate(
+                  { email: s.email },
+                  {
+                    onSuccess: () => {
+                      setDone((d) => new Set(d).add(s.email));
+                      notify.done(t("On the book"), s.email);
+                    },
+                    onError: (e) =>
+                      notify.failed(t("Could not save lead"), { description: e.message }),
+                  },
+                )
+              }
+            >
+              <Check className="size-3.5" aria-hidden="true" /> {t("Accept")}
+            </Button>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+

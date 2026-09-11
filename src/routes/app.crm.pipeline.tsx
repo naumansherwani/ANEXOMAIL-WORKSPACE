@@ -1,9 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Mail } from "lucide-react";
+import { ArrowRight, Mail, Plus } from "lucide-react";
+import { useState } from "react";
 
-import { OpenDeal } from "@/components/app/crm/CrmCapture";
+import { OpenDealForm } from "@/components/app/crm/CrmCapture";
 import { Chip, SectionTitle } from "@/components/app/crm/CrmBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+} from "@/components/ui/sheet";
 import { notify } from "@/lib/notify";
 import { useLocale } from "@/lib/i18n";
 import {
@@ -42,6 +51,7 @@ function PipelinePage() {
   const move = useMoveDeal();
   const toWork = useDealToWork();
   const attach = useAttachDealThread();
+  const [drawer, setDrawer] = useState(false);
 
   const advance = (deal: Deal) => {
     const next = STAGE_ORDER[Math.min(STAGE_ORDER.indexOf(deal.stage) + 1, STAGE_ORDER.length - 1)];
@@ -60,11 +70,29 @@ function PipelinePage() {
 
   return (
     <div className="w-full px-ax-5 py-ax-6">
-      <SectionTitle
-        title={t("Pipeline")}
-        hint={t("Thread stays attached when a deal has mail. Empty columns stay empty until you open a deal.")}
-      />
-      <OpenDeal />
+      <div className="flex items-start justify-between gap-3">
+        <SectionTitle
+          title={t("Pipeline")}
+          hint={t("Thread stays attached when a deal has mail. Columns stay empty until a real deal lands.")}
+        />
+        <Button onClick={() => setDrawer(true)} className="ax-press shrink-0">
+          <Plus className="size-4" aria-hidden="true" /> {t("New deal")}
+        </Button>
+      </div>
+
+      <Sheet open={drawer} onOpenChange={setDrawer}>
+        <SheetContent side="right" className="w-full sm:max-w-md">
+          <SheetHeader>
+            <SheetTitle>{t("Open a deal")}</SheetTitle>
+            <SheetDescription>
+              {t("Name it. Attach the mail thread later — the board fills from real deals only.")}
+            </SheetDescription>
+          </SheetHeader>
+          <div className="mt-6">
+            <OpenDealForm onDone={() => setDrawer(false)} />
+          </div>
+        </SheetContent>
+      </Sheet>
 
       <CardBody
         query={{
@@ -90,7 +118,22 @@ function PipelinePage() {
                   total={money(total, currency)}
                 >
                   {items.length === 0 ? (
-                    <p className="ax-caption text-muted-foreground">{t("Empty")}</p>
+                    stage === "new" ? (
+                      <button
+                        type="button"
+                        onClick={() => setDrawer(true)}
+                        className="ax-press flex w-full flex-col items-start gap-1 rounded-lg border border-dashed border-border px-2.5 py-3 text-start transition-colors hover:border-foreground/30"
+                      >
+                        <span className="text-[12px] font-semibold text-foreground">
+                          {t("No deals yet")}
+                        </span>
+                        <span className="ax-caption text-muted-foreground">
+                          {t("Capture one from mail or open a deal here.")}
+                        </span>
+                      </button>
+                    ) : (
+                      <p className="ax-caption text-muted-foreground">{t("No deals in this stage")}</p>
+                    )
                   ) : (
                     items.map((d) => (
                       <article

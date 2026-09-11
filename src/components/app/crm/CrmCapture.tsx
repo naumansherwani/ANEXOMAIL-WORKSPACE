@@ -68,7 +68,7 @@ export function CaptureLead() {
   );
 }
 
-export function OpenDeal() {
+export function OpenDealForm({ onDone }: { onDone?: () => void }) {
   const { t } = useLocale();
   const create = useCreateDeal();
   const [title, setTitle] = useState("");
@@ -100,6 +100,7 @@ export function OpenDeal() {
           setValue("");
           setNext("");
           notify.done("Deal opened", "It is on the New column.");
+          onDone?.();
         },
         onError: (err) =>
           notify.failed(err.isNotImplemented ? "Deal create not wired yet" : "Could not open deal", {
@@ -110,10 +111,7 @@ export function OpenDeal() {
   };
 
   return (
-    <form
-      onSubmit={submit}
-      className="mb-ax-4 grid gap-2 rounded-2xl border border-border/80 bg-card/80 p-ax-3 shadow-elev-1 lg:grid-cols-[1.4fr_1fr_1fr_7rem_1fr_auto]"
-    >
+    <form onSubmit={submit} className="flex flex-col gap-3">
       <Input required value={title} onChange={(e) => setTitle(e.target.value)} placeholder={t("Deal title")} aria-label={t("Deal title")} />
       <Input value={company} onChange={(e) => setCompany(e.target.value)} placeholder={t("Company")} aria-label={t("Company")} />
       <Input
@@ -129,11 +127,11 @@ export function OpenDeal() {
         step={1}
         value={value}
         onChange={(e) => setValue(e.target.value)}
-        placeholder="£"
+        placeholder={t("Value (£)")}
         aria-label={t("Deal value")}
       />
       <Input value={next} onChange={(e) => setNext(e.target.value)} placeholder={t("Next step")} aria-label={t("Next step")} />
-      <Button type="submit" disabled={create.isPending} className="ax-press">
+      <Button type="submit" disabled={create.isPending} className="ax-press mt-1">
         {t("Open deal")}
       </Button>
     </form>

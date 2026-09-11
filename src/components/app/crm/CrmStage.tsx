@@ -1,10 +1,11 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import type { ReactNode } from "react";
+import { ChevronDown } from "lucide-react";
+import { useState, type ReactNode } from "react";
 
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 import { useCrmLive } from "@/lib/crm";
-import { platformPlan, showCrmCollab } from "@/lib/plan-surface";
+import { platformPlan, showCrmCollab, showCrmLedger } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 type CrmPath =
@@ -113,15 +114,21 @@ export function CrmStage({ children }: { children: ReactNode }) {
   const board = live.data;
 
   const nav: NavItem[] = [
-    { to: "/app/crm/relationships", label: "Relationships" },
+    { to: "/app/crm", label: "Dashboard", exact: true },
     { to: "/app/crm/leads", label: "Leads" },
+    { to: "/app/crm/pipeline", label: "Pipeline" },
+    ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
+    ...(showCrmLedger(plan) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
+  ];
+
+  /** Intelligence — folded by default so the nav stays five items. */
+  const intelligence: NavItem[] = [
+    { to: "/app/crm/relationships", label: "Relationships" },
     { to: "/app/crm/accounts", label: "Accounts" },
-    { to: "/app/crm/pipeline", label: "Deals" },
-    { to: "/app/crm/activity", label: "Activities" },
     { to: "/app/crm/tasks", label: "Tasks" },
     { to: "/app/crm/reports", label: "Reports" },
-    ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
   ];
+  const [intelOpen, setIntelOpen] = useState(false);
 
   return (
     <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
@@ -148,6 +155,27 @@ export function CrmStage({ children }: { children: ReactNode }) {
               label={t(item.label)}
             />
           ))}
+          <button
+            type="button"
+            onClick={() => setIntelOpen((v) => !v)}
+            aria-expanded={intelOpen}
+            className="ax-press flex h-10 items-center justify-between rounded-[10px] ps-3.5 pe-3 text-[13px] font-semibold text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <span>{t("Intelligence")}</span>
+            <ChevronDown
+              className={cn("size-3.5 transition-transform", intelOpen && "rotate-180")}
+              aria-hidden="true"
+            />
+          </button>
+          {intelOpen &&
+            intelligence.map((item) => (
+              <NavRow
+                key={item.to}
+                item={item}
+                active={isActive(item.to, item.exact, pathname)}
+                label={t(item.label)}
+              />
+            ))}
         </nav>
 
         <div className="relative mt-3 flex min-h-0 flex-1 flex-col border-t border-border/70 px-2 pt-3">

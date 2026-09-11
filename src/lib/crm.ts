@@ -233,6 +233,18 @@ export function useCrmLeads(state: Lead["state"] | "all") {
   });
 }
 
+/** People who wrote you in the last 30 days and are not on the book yet. */
+export type SuggestedLead = { email: string; message_count: number; last_mail_at: string };
+
+export function useCrmLeadSuggestions() {
+  return useQuery<{ suggestions: SuggestedLead[] }, ApiError>({
+    queryKey: ["crm", "leads", "suggest"],
+    queryFn: () => get<{ suggestions: SuggestedLead[] }>("crm.leads.suggest", "/api/crm/leads/suggest"),
+    retry: false,
+    staleTime: 60_000,
+  });
+}
+
 export function useCrmDeals() {
   return useQuery<{ deals: Deal[] }, ApiError>({
     queryKey: ["crm", "deals"],

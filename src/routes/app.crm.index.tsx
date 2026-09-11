@@ -18,18 +18,6 @@ export const Route = createFileRoute("/app/crm/")({
   component: CrmDashboard,
 });
 
-function Kpi({ label, value, hint }: { label: string; value: string; hint?: string }) {
-  return (
-    <div className="ax-plane ax-lift rounded-[18px] p-5" style={{ minHeight: 118 }}>
-      <p className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{label}</p>
-      <p className="mt-2.5 text-[28px] font-bold leading-none tabular-nums tracking-tight text-foreground">
-        {value}
-      </p>
-      {hint ? <p className="ax-caption mt-2 text-muted-foreground">{hint}</p> : null}
-    </div>
-  );
-}
-
 function CrmDashboard() {
   const { t } = useLocale();
   const overview = useCrmOverview();
@@ -41,6 +29,10 @@ function CrmDashboard() {
   const lost = o?.stage_counts.find((s) => s.stage === "lost")?.count ?? 0;
   const conversion = won + lost > 0 ? Math.round((won / (won + lost)) * 100) : null;
   const maxStage = Math.max(1, ...(o?.stage_counts.map((s) => s.value) ?? [1]));
+
+  const openValue = o ? money(o.pipeline_value, o.currency) : "—";
+  const forecastValue = o ? money(o.weighted_value, o.currency) : "—";
+  const atRisk = board ? String(board.radar.length) : "—";
 
   return (
     <div className="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-8">
@@ -57,38 +49,32 @@ function CrmDashboard() {
           {t("Every relationship leaves a trail. Turn the trail into action.")}
         </p>
 
-        {/* KPI row — 6 cards, real rows only */}
-        <div className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-6">
-          <Kpi
-            label={t("Revenue")}
-            value={o ? money(o.won_this_month, o.currency) : "—"}
-            hint={t("Won this month")}
-          />
-          <Kpi
-            label={t("Pipeline")}
-            value={o ? money(o.pipeline_value, o.currency) : "—"}
-            hint={t("Open deal value")}
-          />
-          <Kpi
-            label={t("Open deals")}
-            value={o ? String(o.open_deals) : "—"}
-            hint={t("Not won, not lost")}
-          />
-          <Kpi
-            label={t("At risk")}
-            value={board ? String(board.radar.length) : "—"}
-            hint={t("Recorded reasons only")}
-          />
-          <Kpi
-            label={t("Promises due")}
-            value={board ? String(board.counts.promises) : "—"}
-            hint={t("Open commitments")}
-          />
-          <Kpi
-            label={t("Conversion")}
-            value={conversion != null ? `${conversion}%` : "—"}
-            hint={t("Won vs lost deals")}
-          />
+        {/* Slim KPI strip — one line, not a card wall */}
+        <div className="ax-plane mt-5 flex flex-wrap items-center gap-x-8 gap-y-2 rounded-2xl px-5 py-3.5">
+          <div className="flex items-baseline gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Open")}</span>
+            <span className="text-[15px] font-bold tabular-nums text-foreground">{openValue}</span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Forecast")}</span>
+            <span className="text-[15px] font-bold tabular-nums text-foreground">{forecastValue}</span>
+          </div>
+          <div className="flex items-baseline gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("At risk")}</span>
+            <span className="text-[15px] font-bold tabular-nums text-foreground">{atRisk}</span>
+          </div>
+          <div className="ms-auto flex items-baseline gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Won this month")}</span>
+            <span className="text-[15px] font-bold tabular-nums text-foreground">
+              {o ? money(o.won_this_month, o.currency) : "—"}
+            </span>
+          </div>
+          {conversion != null ? (
+            <div className="flex items-baseline gap-2">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Conversion")}</span>
+              <span className="text-[15px] font-bold tabular-nums text-foreground">{conversion}%</span>
+            </div>
+          ) : null}
         </div>
 
         {/* Main cinematic area — 65 / 35 */}
