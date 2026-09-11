@@ -26,7 +26,7 @@ import {
 } from "@/lib/mail";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/auth";
-import { platformPlan, showProMailTools } from "@/lib/plan-surface";
+import { showProMailTools, surfaceFromSession } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/mail/$folder")({
   loader: ({ params }) => {
@@ -66,10 +66,9 @@ function MailFolderPage() {
   // Phase 28: on a phone the panels morph — list OR thread, never both.
   const threadOpen = Boolean(activeId);
   const net = useNetwork();
-  const { session } = useAuth();
-  const proMail = showProMailTools(
-    platformPlan(session?.user.workspace_plan, session?.user.ai_plan),
-  );
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const proMail = showProMailTools(billed, null, kind);
 
   const [label, setLabel] = useState<string | null>(null);
   const [account, setAccount] = useState<string | null>(null);

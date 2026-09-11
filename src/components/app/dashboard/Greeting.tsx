@@ -3,6 +3,7 @@ import { MailPlus } from "lucide-react";
 
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
+import { surfaceFromSession } from "@/lib/plan-surface";
 import {
   formatDuration,
   useAnalytics,
@@ -32,8 +33,9 @@ export function Greeting({
   enabled: boolean;
   onCompose: () => void;
 }) {
-  const { session } = useAuth();
+  const { session, organisation } = useAuth();
   const { t } = useLocale();
+  const { copyName, kind } = surfaceFromSession(session?.user, organisation?.slug);
   const firstName =
     session?.user.display_name?.split(" ")[0] ||
     session?.user.name?.split(" ")[0] ||
@@ -95,6 +97,9 @@ export function Greeting({
           {greeting.text}
           {firstName ? `, ${firstName}` : ""} {greeting.emoji}
         </h2>
+        {session ? (
+          <p className="ax-caption mt-1.5 text-cyan-accent/90">{t(copyName)}</p>
+        ) : null}
         {strips.length > 0 ? (
           <motion.p
             initial={{ opacity: 0 }}
@@ -106,7 +111,9 @@ export function Greeting({
           </motion.p>
         ) : (
           <p className="ax-body mt-2 max-w-xl text-muted-foreground">
-            {t("Everything that needs you — mail, activity, schedule. One surface, no reload.")}
+            {kind === "personal"
+              ? t("Private command of mail, people, calendar, work, CRM and chat — one surface.")
+              : t("Company mail, org, chat and the shared book — one surface.")}
           </p>
         )}
       </div>

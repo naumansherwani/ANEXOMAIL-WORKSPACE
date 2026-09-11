@@ -45,7 +45,7 @@ import { notify } from "@/lib/notify";
 import { useSendMail } from "@/lib/mail";
 import { useAuth } from "@/lib/auth";
 import { isAiHost } from "@/lib/host";
-import { platformPlan, showProMailTools } from "@/lib/plan-surface";
+import { showMultipleIdentities, showProMailTools, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 const TONES: { id: ComposeTone; label: string }[] = [
@@ -91,10 +91,11 @@ export function ComposeStudio({
   onSent,
   variant = "overlay",
 }: StudioProps) {
-  const { session } = useAuth();
+  const { session, organisation } = useAuth();
   const [aiHost] = useState(isAiHost);
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
-  const proMail = showProMailTools(plan);
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const proMail = showProMailTools(billed, null, kind);
+  const identitiesOk = showMultipleIdentities(billed, null, kind);
   const leoUi = aiHost;
 
   const [to, setTo] = useState(initialTo);
@@ -318,6 +319,7 @@ export function ComposeStudio({
       <div className={cn("mx-auto flex w-full flex-col gap-ax-3", zen && "max-w-3xl")}>
         {/* identity + language */}
         <div className="flex flex-wrap items-center gap-2">
+          {identitiesOk ? (
           <select
             aria-label="Send as"
             value={identity}
@@ -331,6 +333,7 @@ export function ComposeStudio({
               </option>
             ))}
           </select>
+          ) : null}
           <select
             aria-label="Reply language"
             value={language}

@@ -7,7 +7,7 @@ alwaysApply: true
 
 Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR, **Rust :3200 PRIMARY**, Bun fallback, Supabase truth.
 
-**Backend kis phase:** sirf `docs/cursor-work/ANEXOMAIL-EXECUTE.md` → **Backend per E**. Claude F-map, E tarteeb. Alag Rust phase / naya stack **banned**. `docs/anexomail-blueprint.md` overwrite nahi.
+**Next phases (locked 11 Sep 2026):** naya product wire **Rust :3200 transport** — `/rpc/*` + `/wt/*` pehle. Bun `/api/*` sirf fallback, ya **E2 auth** (login/signup/session/passkey **Bun**, Rust nahi). Naya Bun-primary feature **banned**. Polar webhook no-touch.
 
 **Server pull — sirf yeh (kuch add mat karo):**
 ```bash

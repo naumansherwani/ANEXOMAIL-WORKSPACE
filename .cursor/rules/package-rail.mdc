@@ -1,23 +1,27 @@
 ---
-description: One UI for all packages and both public hosts. Features stack Basic→Pro→Business→Biz Pro. AI host = same UI + LEO only.
+description: One UI. Polar stays 4 SKUs. Personal vs Business is account_kind on the backend, not a new Polar product.
 alwaysApply: true
 ---
 
-# One UI, stacked packages (locked)
+# One UI — Polar SKUs + account kind (locked)
 
-Tarteeb: **Basic → Pro → Business → Business Pro**. Har step pe feature + website saath. Alag theme / alag app nahi.
+Tarteeb **Polar cards (no-touch):** **Basic → Pro → Business → Business Pro**. Alag theme / alag app / landing pe Personal cards **nahi**.
 
-| Plan | Rail on `anexomail.com` |
-|---|---|
-| **Basic** | Dashboard · Mail · People · Calendar |
-| **Pro** | + Work + CRM (own book) |
-| **Business** | + Org + Chat + CRM Shared work |
-| **Business Pro** | Business + CRM Activity ledger |
+**Personal vs Business Polar product nahi.** Checkout ke baad onboarding: Personal | Business. Backend session `account_kind`.
 
-**UI same** — AppShell, mail three-panel, tokens, type. Package sirf cheezein **add** karta hai.
+| Polar SKU | Default kind | Power | Org rail |
+|---|---|---|---|
+| **Basic** £23 | personal | Personal Basic — Mail People Calendar Work. Chat/CRM full **nahi** | nahi |
+| **Pro** £46 | personal | **= Business Pro power** (Masood). Chat + full CRM. Presentation private | nahi |
+| **Business** £97 | business | Company mid-tier + Org + Chat | haan |
+| **Business Pro** £2,850 | business | Company book + Org + Chat + CRM activity (Humza) | haan |
 
-**`ai.anexomail.com`:** wahi UI. Farq sirf AI features + **LEO**. Naya layout / naya CRM / naya mail app **banned**.
+**Rule:** Personal Pro = Business Pro **power**, use-case alag (no company Org). Premium copy = same Business Pro Polar SKU + kind personal.
 
-- Wall on URL for locked surfaces (`PlanSurfaceGate`). Blank nahi.
+**UI same** — AppShell, mail three-panel, tokens. Kind sirf chrome + gates.
+
+**`ai.anexomail.com`:** wahi UI. Farq sirf AI + **LEO**. Naya CRM / naya mail app **banned**.
+
+- Wall on URL (`PlanSurfaceGate`). Blank nahi.
 - LEO mail host pe nahi. Founder/Speed/Admin = founder host.
-- `plans.ts` no-touch. Naya rail item tabhi jab us package ki card pe ho.
+- `plans.ts` no-touch. Polar pe Personal SKU add **banned**.

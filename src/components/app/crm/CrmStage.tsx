@@ -4,7 +4,7 @@ import { type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 import { useCrmLive } from "@/lib/crm";
-import { platformPlan, showCrmCollab, showCrmLedger, showCrmRisk } from "@/lib/plan-surface";
+import { showCrmCollab, showCrmLedger, showCrmRisk, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 type CrmPath =
@@ -107,8 +107,8 @@ function LoopRow({
 export function CrmStage({ children }: { children: ReactNode }) {
   const { t } = useLocale();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
-  const { session } = useAuth();
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
   const live = useCrmLive();
   const board = live.data;
 
@@ -117,14 +117,16 @@ export function CrmStage({ children }: { children: ReactNode }) {
     { to: "/app/crm/leads", label: "Leads" },
     { to: "/app/crm/pipeline", label: "Pipeline" },
     { to: "/app/crm/relationships", label: "Relationships" },
-    ...(showCrmCollab(plan) ? [{ to: "/app/crm/collab" as const, label: "Shared work" }] : []),
-    ...(showCrmLedger(plan) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
+    ...(showCrmCollab(billed, null, kind)
+      ? [{ to: "/app/crm/collab" as const, label: kind === "personal" ? "Collaboration" : "Shared work" }]
+      : []),
+    ...(showCrmLedger(billed, null, kind) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
   ];
 
   const loop = LOOP.filter((step) => {
-    if (step.cr === "7" || step.cr === "8") return showCrmLedger(plan);
-    if (step.cr === "6") return showCrmRisk(plan);
-    if (step.cr === "3" || step.cr === "4") return showCrmCollab(plan);
+    if (step.cr === "7" || step.cr === "8") return showCrmLedger(billed, null, kind);
+    if (step.cr === "6") return showCrmRisk(billed, null, kind);
+    if (step.cr === "3" || step.cr === "4") return showCrmCollab(billed, null, kind);
     return true;
   });
 

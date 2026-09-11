@@ -2,17 +2,15 @@
  * Package rail — locked cards in `src/lib/plans.ts` (DO NOT import or change
  * prices / copy). Basic £23 · Pro £46 · Business £97 · Business Pro £2850.
  *
- * Tech (constitution): same AppShell + `host.ts`. No new host, no Polar edit,
- * Chat/Org nav is Business+ only. CRM is Pro+ (mail-native, no LEO).
- * LEO is zero on anexomail.com — AI-EXECUTE opens it on ai.anexomail.com.
- *
- * AI grant includes a workspace platform (`ai-packages.ts` blurbs, no-touch):
- *   AI Pro / AI Business → Business
- *   AI Executive → Business Pro
- * So Raana on anexomail.com gets Biz Pro mail UX, not an AI rail.
+ * Two account kinds (onboarding first): Personal | Business.
+ * Inside each: Basic / Pro / Premium. Premium = Business Pro card.
+ * Rule (founder 11 Sep 2026): Personal Pro = Business Pro **power**,
+ * presentation alag (no Org / company centre). LEO zero on anexomail.com.
  */
 
 export type WorkspacePlanId = "basic" | "pro" | "business" | "business_pro";
+
+export type AccountKind = "personal" | "business";
 
 export type SurfaceHosts = {
   publicMailHost: boolean;
@@ -21,7 +19,10 @@ export type SurfaceHosts = {
 };
 
 export type SurfaceOpts = SurfaceHosts & {
+  /** Polar / entitlement billed plan (Basic · Pro · Business · Business Pro). */
   plan: WorkspacePlanId;
+  /** Personal | Business — NOT a Polar product. Session/backend. */
+  kind?: AccountKind;
   founder: boolean;
 };
 
@@ -41,7 +42,14 @@ export function normalizeWorkspacePlan(plan: string | null | undefined): Workspa
   return "basic";
 }
 
-export function packageCopyName(plan: WorkspacePlanId): string {
+/** Display name. Polar SKU stays Basic/Pro/Business/Business Pro — kind only changes the label. */
+export function packageCopyName(plan: WorkspacePlanId, kind?: AccountKind | null): string {
+  const k = kind ?? resolveAccountKind(null, plan);
+  if (k === "personal") {
+    if (plan === "business_pro" || plan === "business") return "Personal Premium";
+    if (plan === "pro") return "Personal Pro";
+    return "Personal Basic";
+  }
   if (plan === "business_pro") return "Business Pro";
   if (plan === "business") return "Business";
   if (plan === "pro") return "Pro";
@@ -77,6 +85,51 @@ export function platformPlan(
   return planRank(included) > planRank(workspace) ? included : workspace;
 }
 
+/**
+ * Personal | Business — from session, else slug, else plan:
+ * basic/pro → personal (Masood Pro buyer). business / business_pro → company.
+ */
+export function resolveAccountKind(
+  kind: string | null | undefined,
+  workspacePlan: string | null | undefined,
+  orgSlug?: string | null,
+): AccountKind {
+  const k = String(kind || "")
+    .trim()
+    .toLowerCase();
+  if (k === "personal" || k === "business") return k;
+  if (String(orgSlug || "").toLowerCase().startsWith("personal-")) return "personal";
+  const plan = normalizeWorkspacePlan(workspacePlan);
+  if (plan === "basic" || plan === "pro") return "personal";
+  return "business";
+}
+
+/** Personal Pro / Premium = Business Pro feature rank. Org still needs kind=business. */
+export function featurePlan(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: AccountKind | string | null | undefined = null,
+): WorkspacePlanId {
+  const base = platformPlan(workspacePlan, aiPlan);
+  const k = resolveAccountKind(kind, workspacePlan);
+  if (k === "personal" && base !== "basic") return "business_pro";
+  return base;
+}
+
+export function surfaceFromSession(
+  user?: {
+    workspace_plan?: string | null;
+    ai_plan?: string | null;
+    account_kind?: string | null;
+  } | null,
+  orgSlug?: string | null,
+): { billed: WorkspacePlanId; kind: AccountKind; power: WorkspacePlanId; copyName: string } {
+  const billed = platformPlan(user?.workspace_plan, user?.ai_plan);
+  const kind = resolveAccountKind(user?.account_kind, user?.workspace_plan, orgSlug);
+  const power = featurePlan(user?.workspace_plan, user?.ai_plan, kind);
+  return { billed, kind, power, copyName: packageCopyName(billed, kind) };
+}
+
 export function hasBusinessPlan(plan: string | null | undefined): boolean {
   const id = normalizeWorkspacePlan(plan);
   return id === "business" || id === "business_pro";
@@ -86,90 +139,132 @@ export function showDashboard(): boolean {
   return true;
 }
 
+type KindArg = AccountKind | string | null | undefined;
+
+function powerOf(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined,
+  kind: KindArg,
+): WorkspacePlanId {
+  return featurePlan(workspacePlan, aiPlan, kind);
+}
+
+/** Personal table: Work on every Personal tier. Business: Pro+. */
 export function showWork(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
+  const k = resolveAccountKind(kind, workspacePlan);
+  if (k === "personal") return true;
   const plan = platformPlan(workspacePlan, aiPlan);
   return plan === "pro" || hasBusinessPlan(plan);
 }
 
+/** Personal Pro+ = full chat. Personal Basic = wall. Business card+ = chat. */
 export function showChat(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+  return hasBusinessPlan(powerOf(workspacePlan, aiPlan, kind));
 }
 
+/** Company Org — Business account type only. Personal never (even Personal Pro). */
 export function showOrg(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return showChat(workspacePlan, aiPlan);
+  const k = resolveAccountKind(kind, workspacePlan);
+  if (k !== "business") return false;
+  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
 }
 
-/** Mail-native CRM — Pro book of business. Not on Basic. No LEO. */
+/** Full CRM rail. Personal Basic = People only. Personal Pro+ = full book. */
 export function showCrm(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return showWork(workspacePlan, aiPlan);
+  const k = resolveAccountKind(kind, workspacePlan);
+  if (k === "personal") return powerOf(workspacePlan, aiPlan, k) === "business_pro";
+  return showWork(workspacePlan, aiPlan, k);
 }
 
-/** Shared inbox / mentions / approvals inside CRM — Business card. */
+/** Collaboration inside CRM — Personal Pro power and Business cards. */
 export function showCrmCollab(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+  return hasBusinessPlan(powerOf(workspacePlan, aiPlan, kind));
 }
 
-/** Activity timeline + CRM audit — Business Pro (Humza). */
+/** Activity ledger — Personal Pro / Premium and Business Pro. */
 export function showCrmLedger(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return platformPlan(workspacePlan, aiPlan) === "business_pro";
+  return powerOf(workspacePlan, aiPlan, kind) === "business_pro";
 }
 
-/** File / call / promise-recovery / decision ledger on Work — Business card, not Pro. */
+/** Work ledgers (files, calls, recovery) — same power rule as CRM collab. */
 export function showWorkBusinessRecord(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+  return hasBusinessPlan(powerOf(workspacePlan, aiPlan, kind));
 }
 
-/** CRM risk radar — Business card. Pro keeps own book (leads + pipeline). */
 export function showCrmRisk(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+  return hasBusinessPlan(powerOf(workspacePlan, aiPlan, kind));
 }
 
-/** CRM graph — Business Pro card. */
 export function showCrmGraph(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return showCrmLedger(workspacePlan, aiPlan);
+  return showCrmLedger(workspacePlan, aiPlan, kind);
 }
 
-/** Templates, snooze, schedule send — Pro card. */
 export function showProMailTools(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return showWork(workspacePlan, aiPlan);
+  return powerOf(workspacePlan, aiPlan, kind) !== "basic";
 }
 
-/** Relationship health (scores, silent, at-risk **count**) — Pro CRM own book. */
 export function showCrmHealth(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
 ): boolean {
-  return showCrm(workspacePlan, aiPlan);
+  return showCrm(workspacePlan, aiPlan, kind);
+}
+
+export function showMultipleIdentities(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
+): boolean {
+  return powerOf(workspacePlan, aiPlan, kind) !== "basic";
+}
+
+export function showFullVideo(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
+): boolean {
+  return powerOf(workspacePlan, aiPlan, kind) !== "basic";
 }
 
 export function showAdmin(opts: { founder: boolean; founderHost: boolean }): boolean {
@@ -181,23 +276,30 @@ export function showAiCenter(aiHost: boolean): boolean {
   return aiHost;
 }
 
+function optsKind(opts: SurfaceOpts): AccountKind {
+  return opts.kind ?? resolveAccountKind(null, opts.plan);
+}
+
 export function railItemVisible(to: string, opts: SurfaceOpts): boolean {
   if (opts.founderHost) return true;
+  const kind = optsKind(opts);
   if (to.startsWith("/app/founder")) return false;
   if (to === "/app/perf") return false;
-  if (to === "/app/crm") return showCrm(opts.plan);
+  if (to === "/app/crm") return showCrm(opts.plan, null, kind);
   if (to === "/app/admin") return showAdmin({ founder: opts.founder, founderHost: opts.founderHost });
   if (to === "/app/ai-center") return showAiCenter(opts.aiHost);
   if (to === "/app") return showDashboard();
-  if (to === "/app/chat") return showChat(opts.plan);
-  if (to === "/app/org") return showOrg(opts.plan);
-  if (to === "/app/work") return showWork(opts.plan);
+  if (to === "/app/chat") return showChat(opts.plan, null, kind);
+  if (to === "/app/org") return showOrg(opts.plan, null, kind);
+  if (to === "/app/work") return showWork(opts.plan, null, kind);
   return true;
 }
 
 export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenial | null {
   if (opts.founderHost) return null;
   const path = pathname.replace(/\/+$/, "") || "/app";
+  const kind = optsKind(opts);
+  const personal = kind === "personal";
 
   if (path.startsWith("/app/founder")) {
     return {
@@ -218,24 +320,30 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
     };
   }
   if (path.startsWith("/app/crm/collab")) {
-    if (showCrmCollab(opts.plan)) return null;
+    if (showCrmCollab(opts.plan, null, kind)) return null;
     return {
-      title: "Shared CRM work is on Business",
-      body: "Assignment, mentions and approvals sit on Business and Business Pro. Your package is {package}.",
+      title: personal ? "Collaboration is on Personal Pro" : "Shared CRM work is on Business",
+      body: personal
+        ? "Assignment and shared CRM work sit on Personal Pro and Personal Premium. Your package is {package}."
+        : "Assignment, mentions and approvals sit on Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm/activity")) {
-    if (showCrmLedger(opts.plan)) return null;
+    if (showCrmLedger(opts.plan, null, kind)) return null;
     return {
-      title: "CRM activity ledger is on Business Pro",
-      body: "The company timeline of every touch sits on Business Pro. Your package is {package}.",
+      title: personal ? "CRM activity is on Personal Pro" : "CRM activity ledger is on Business Pro",
+      body: personal
+        ? "The timeline of every touch sits on Personal Pro and Personal Premium. Your package is {package}."
+        : "The company timeline of every touch sits on Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm")) {
-    if (showCrm(opts.plan)) return null;
+    if (showCrm(opts.plan, null, kind)) return null;
     return {
-      title: "CRM is on Pro",
-      body: "Leads and pipeline sit on Pro, Business and Business Pro. Your package is {package}.",
+      title: personal ? "Full CRM is on Personal Pro" : "CRM is on Pro",
+      body: personal
+        ? "People stay on Personal Basic. Leads, pipeline and intelligence sit on Personal Pro. Your package is {package}."
+        : "Leads and pipeline sit on Pro, Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/ai-center") || path === "/app/ai" || path.startsWith("/app/ai/")) {
@@ -245,21 +353,25 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
     };
   }
   if (path.startsWith("/app/chat")) {
-    if (showChat(opts.plan)) return null;
+    if (showChat(opts.plan, null, kind)) return null;
     return {
-      title: "ANEXOChat is on Business",
-      body: "Your package is {package}. Chat and ANEXOVideoCall sit on Business and Business Pro.",
+      title: personal ? "ANEXOChat is on Personal Pro" : "ANEXOChat is on Business",
+      body: personal
+        ? "Your package is {package}. Chat and ANEXOVideoCall sit on Personal Pro and Personal Premium."
+        : "Your package is {package}. Chat and ANEXOVideoCall sit on Business and Business Pro.",
     };
   }
   if (path.startsWith("/app/org")) {
-    if (showOrg(opts.plan)) return null;
+    if (showOrg(opts.plan, null, kind)) return null;
     return {
-      title: "Organisation centre is on Business",
-      body: "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.",
+      title: personal ? "Organisation centre is a Business workspace" : "Organisation centre is on Business",
+      body: personal
+        ? "Personal workspaces have no company Org. Roles and departments sit on a Business account. Your package is {package}."
+        : "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/work")) {
-    if (showWork(opts.plan)) return null;
+    if (showWork(opts.plan, null, kind)) return null;
     return {
       title: "Work is on Pro",
       body: "Boards, notes, tasks and thread analytics sit on Pro and above. Your package is {package}.",

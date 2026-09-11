@@ -426,13 +426,13 @@ chatRouter.get("/search", async (req, res) => {
   res.json({ results: data ?? [] });
 });
 
-// ── PHASE 7: ANEXOVideoChat signalling (Business Pro only) ──────
+// ── PHASE 7: ANEXOVideoChat signalling (Pro+ / Personal Pro power) ──────
 chatRouter.get("/video/gate", async (req, res) => {
   const me = await requireChat(req, res);
   if (!me) return;
   const { data, error } = await db!.rpc("chat_video_allowed", { _user_id: me.id });
   if (error) return fail(res, error);
-  res.json({ allowed: data === true, plan_required: "business_pro" });
+  res.json({ allowed: data === true, plan_required: "pro" });
 });
 
 chatRouter.post("/video/signal", async (req, res) => {

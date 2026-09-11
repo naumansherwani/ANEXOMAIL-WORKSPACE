@@ -8,7 +8,7 @@ import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
 import { money, STAGE_LABEL, useCrmLive, useCrmOverview } from "@/lib/crm";
 import { useAuth } from "@/lib/auth";
-import { platformPlan, showCrm, showCrmGraph, showCrmRisk } from "@/lib/plan-surface";
+import { showCrm, showCrmGraph, showCrmRisk, surfaceFromSession } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
@@ -22,11 +22,11 @@ export const Route = createFileRoute("/app/crm/")({
 
 function CrmDashboard() {
   const { t } = useLocale();
-  const { session } = useAuth();
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
-  const riskOk = showCrmRisk(plan);
-  const graphOk = showCrmGraph(plan);
-  const healthOk = showCrm(plan);
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const riskOk = showCrmRisk(billed, null, kind);
+  const graphOk = showCrmGraph(billed, null, kind);
+  const healthOk = showCrm(billed, null, kind);
   const overview = useCrmOverview();
   const live = useCrmLive();
   const o = overview.data;
@@ -41,13 +41,21 @@ function CrmDashboard() {
   const forecastValue = o ? money(o.weighted_value, o.currency) : "—";
   const atRisk = board ? String(board.radar.length) : "—";
   const bookTitle =
-    plan === "business_pro" ? "Company book" : plan === "business" ? "Shared book" : "Your book";
+    kind === "personal"
+      ? "Your book"
+      : billed === "business_pro"
+        ? "Company book"
+        : billed === "business"
+          ? "Shared book"
+          : "Your book";
   const bookHint =
-    plan === "business_pro"
-      ? "Leads, pipeline, shared work and every recorded touch."
-      : plan === "business"
-        ? "Leads, pipeline and shared work for the company."
-        : "Leads and pipeline that sit next to your mail.";
+    kind === "personal"
+      ? "Private intelligence next to your mail — leads, pipeline, activity and every recorded touch."
+      : billed === "business_pro"
+        ? "Leads, pipeline, shared work and every recorded touch."
+        : billed === "business"
+          ? "Leads, pipeline and shared work for the company."
+          : "Leads and pipeline that sit next to your mail.";
 
   return (
     <div className="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-8">

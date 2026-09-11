@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useAuth } from "@/lib/auth";
 import { useCreateTask } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
-import { platformPlan, showWorkBusinessRecord } from "@/lib/plan-surface";
+import { showWorkBusinessRecord, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/work")({
@@ -33,9 +33,9 @@ export const Route = createFileRoute("/app/work")({
 type Rail = "promises" | "score";
 
 function WorkPage() {
-  const { session } = useAuth();
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
-  const businessRecord = showWorkBusinessRecord(plan);
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const businessRecord = showWorkBusinessRecord(billed, null, kind);
   const [rail, setRail] = useState<Rail>("promises");
   const [title, setTitle] = useState("");
   const create = useCreateTask();

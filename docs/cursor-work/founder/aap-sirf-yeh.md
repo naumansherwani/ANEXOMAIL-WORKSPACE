@@ -6,9 +6,11 @@ Packages alag apps **nahi**. Ek website. Test ke liye teen login:
 
 | Login | Package | Investor ko dikhao |
 |---|---|---|
-| Masood | **Pro** | Dashboard Mail People Calendar + Work + CRM |
-| Humza | **Business Pro** | + Org + Chat + CRM Shared + Activity |
-| (Basic user jab ho) | **Basic** | sirf 4: Work/CRM/Chat **nahi** |
+| Masood | **Personal Pro** (Polar `pro`) | Mail People Calendar Work CRM Chat — Org nahi. Buyer, tester nahi |
+| Humza | **Business Pro** | + Org + Chat + CRM Shared + Activity. Buyer |
+| (Basic user jab ho) | **Personal Basic** | Chat/full CRM wall |
+
+Aap Polar pe Personal product **mat** add karo. Kind backend pe hai.
 
 Aap architecture mat socho. Har E pe agent kehte: yeh command chalao.
 
@@ -33,6 +35,10 @@ Output yahan paste (password **mat**). GREEN/RED.
 **3. Browser** — Masood / Humza kholo. Jo tootay: screenshot. Jo theek: **green**.
 
 SQL tabhi jab agent file ka naam de (`docs/cursor-work/sql/…`) → Supabase #4 paste → Run.
+
+**Ab:** `docs/cursor-work/sql/phase65_account_kind.sql` (Personal kind + video Pro+).
+
+Masood **Invalid login credentials** = `.env` mein `MASOOD_PASSWORD` missing/galat. Password chat/GitHub mein **mat**. `bash server/accounts/create-accounts.sh` dubara.
 
 ---
 

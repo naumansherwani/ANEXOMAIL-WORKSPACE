@@ -5,7 +5,7 @@ import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { useAuth } from "@/lib/auth";
 import { useFollowThrough } from "@/lib/calendar";
-import { hasBusinessPlan, platformPlan } from "@/lib/plan-surface";
+import { showCrmCollab, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 /**
@@ -13,9 +13,9 @@ import { cn } from "@/lib/utils";
  * The score is server calculated from real completions, never estimated here.
  */
 export function FollowThroughTable() {
-  const { session } = useAuth();
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
-  const teamOk = hasBusinessPlan(plan);
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const teamOk = kind === "business" && showCrmCollab(billed, null, kind);
   const [scope, setScope] = useState<"person" | "team">("person");
   const query = useFollowThrough(teamOk ? scope : "person");
 

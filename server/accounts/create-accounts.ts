@@ -125,6 +125,40 @@ for (const a of FAMILY) {
 }
 
 {
+  const kinds = [
+    ["masoodsherwani@anexomail.com", "personal"],
+    ["humzasherwani@anexomail.com", "business"],
+    ["raanasherwani@anexomail.com", "business"],
+  ] as const;
+  for (const [email, kind] of kinds) {
+    const u = await findUser(email);
+    if (!u) {
+      bad(`${email}: no auth user — workspace_kind skip`);
+      continue;
+    }
+    const { data: profile } = await db
+      .from("account_profiles")
+      .select("preferences")
+      .eq("user_id", u.id)
+      .maybeSingle();
+    const preferences = {
+      ...((profile?.preferences as Record<string, unknown>) || {}),
+      workspace_kind: kind,
+    };
+    const { error } = await db
+      .from("account_profiles")
+      .update({
+        preferences,
+        onboarded: true,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("user_id", u.id);
+    if (error) bad(`${email} workspace_kind ${kind}: ${error.message}`);
+    else ok(`${email} → account_kind ${kind} (Polar SKU unchanged)`);
+  }
+}
+
+{
   const { data, error } = await db.rpc("family_chat_workspace_apply");
   if (error)
     bad(

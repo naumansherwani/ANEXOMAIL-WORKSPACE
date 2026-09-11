@@ -123,6 +123,28 @@ async function createOperationalOrg(opts: {
   return { id, name: opts.name, slug, domain: null, kind: opts.kind };
 }
 
+async function stampWorkspaceKind(uid: string, kind: "personal" | "business") {
+  if (!db) return;
+  const { data: profile } = await db
+    .from("account_profiles")
+    .select("preferences")
+    .eq("user_id", uid)
+    .maybeSingle();
+  const preferences = {
+    ...((profile?.preferences as Record<string, unknown>) || {}),
+    workspace_kind: kind,
+  };
+  await db.from("account_profiles").upsert(
+    {
+      user_id: uid,
+      preferences,
+      onboarded: true,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" },
+  );
+}
+
 workspaceRouter.post("/personal", async (req, res) => {
   const uid = await userId(req, res);
   if (!uid || !db) return;
@@ -136,10 +158,7 @@ workspaceRouter.post("/personal", async (req, res) => {
     .limit(1)
     .maybeSingle();
   if (existing?.org_id) {
-    await db
-      .from("account_profiles")
-      .update({ onboarded: true, updated_at: new Date().toISOString() })
-      .eq("user_id", uid);
+    await stampWorkspaceKind(uid, "personal");
     return res.status(200).json({ id: existing.org_id, kind: "personal", existing: true });
   }
 
@@ -150,10 +169,7 @@ workspaceRouter.post("/personal", async (req, res) => {
       email,
       kind: "personal",
     });
-    await db
-      .from("account_profiles")
-      .update({ onboarded: true, updated_at: new Date().toISOString() })
-      .eq("user_id", uid);
+    await stampWorkspaceKind(uid, "personal");
     return res.status(201).json(org);
   } catch (e: any) {
     return res.status(500).json({ error: e?.message || "personal_workspace_failed" });
@@ -172,6 +188,7 @@ workspaceRouter.post("/organisations", async (req, res) => {
 
   try {
     const org = await createOperationalOrg({ uid, name, email, kind: "business" });
+    await stampWorkspaceKind(uid, "business");
     return res.status(201).json(org);
   } catch (e: any) {
     return res.status(500).json({ error: e?.message || "operational_workspace_failed" });

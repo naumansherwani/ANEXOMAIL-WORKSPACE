@@ -27,14 +27,7 @@ import { useUniversalSearch } from "@/lib/contacts";
 import { founderSurfaceAllowed } from "@/lib/host";
 import { ADMIN_SECTIONS, MAIL_FOLDERS } from "@/lib/ia";
 import { useLocale } from "@/lib/i18n";
-import {
-  platformPlan,
-  showAdmin,
-  showChat,
-  showCrm,
-  showOrg,
-  showWork,
-} from "@/lib/plan-surface";
+import { showAdmin, showChat, showCrm, showOrg, showWork, surfaceFromSession } from "@/lib/plan-surface";
 
 /**
  * Rule: Cmd+K is the whole product. Mail, people, calendar, work, admin —
@@ -49,16 +42,16 @@ export function CommandPalette({
   onOpenChange: (open: boolean) => void;
 }) {
   const navigate = useNavigate();
-  const { session } = useAuth();
+  const { session, organisation } = useAuth();
   const { t } = useLocale();
   const [term, setTerm] = useState("");
   const results = useUniversalSearch(term, open);
   const [founderHost] = useState(founderSurfaceAllowed);
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
-  const workOpen = founderHost || showWork(plan);
-  const crmOpen = founderHost || showCrm(plan);
-  const chatOpen = founderHost || showChat(plan);
-  const orgOpen = founderHost || showOrg(plan);
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const workOpen = founderHost || showWork(billed, null, kind);
+  const crmOpen = founderHost || showCrm(billed, null, kind);
+  const chatOpen = founderHost || showChat(billed, null, kind);
+  const orgOpen = founderHost || showOrg(billed, null, kind);
   const adminOpen = showAdmin({
     founder: Boolean(session?.user.is_founder),
     founderHost,

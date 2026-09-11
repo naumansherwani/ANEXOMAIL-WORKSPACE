@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import { AuthCinema } from "@/components/site/AuthCinema";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
+import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
 import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
@@ -14,6 +15,9 @@ import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
 import { notify } from "@/lib/notify";
+import { cn } from "@/lib/utils";
+
+const KIND_KEY = "anexo.pending.workspace_kind";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -45,7 +49,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Mode = "login" | "signup" | "link" | "forgot" | "reset";
+type Mode = "login" | "kind" | "signup" | "link" | "forgot" | "reset";
 
 // LOCKED: social sign-in (Google / Apple / GitHub) ANEXOMAIL par nahi hai.
 // User khud account banata hai (email + password) → Supabase → dashboard.
@@ -59,11 +63,11 @@ function AuthPage() {
   const { acceptSession } = useAuth();
   const search = Route.useSearch();
 
-  const [mode, setMode] = useState<Mode>(() =>
-    search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
-      ? search.mode
-      : "login",
-  );
+  const [mode, setMode] = useState<Mode>(() => {
+    if (search.mode === "signup") return "kind";
+    if (search.mode === "reset" || search.mode === "forgot") return search.mode;
+    return "login";
+  });
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -84,6 +88,8 @@ function AuthPage() {
 
   const [showSplash, setShowSplash] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
+  const [workspaceKind, setWorkspaceKind] = useState<"personal" | "business" | null>(null);
+  const [moreDetails, setMoreDetails] = useState(false);
 
   const finish = async (token: string, authenticated?: Session) => {
     sessionToken.set(token);
@@ -105,15 +111,32 @@ function AuthPage() {
   };
 
   const fail = (e: unknown) => {
-    const message =
+    const raw =
       e instanceof ApiError
-        ? e.isNotImplemented
-          ? "This sign-in method isn't live on the server yet."
-          : e.message
-        : e instanceof Error && e.message === "password_mismatch"
+        ? e.message
+        : e instanceof Error
+          ? e.message
+          : "";
+    const message =
+      e instanceof ApiError && e.isNotImplemented
+        ? "This sign-in method isn't live on the server yet."
+        : raw === "password_mismatch"
           ? "Passwords do not match."
-          : "Something went wrong.";
+          : /invalid login|invalid_credentials/i.test(raw)
+            ? "That email and password did not match. Use your @anexomail.com address."
+            : raw || "Something went wrong.";
     setError(message);
+  };
+
+  const pickKind = (kind: "personal" | "business") => {
+    setError(null);
+    setWorkspaceKind(kind);
+    try {
+      window.sessionStorage.setItem(KIND_KEY, kind);
+    } catch {
+      /* ignore */
+    }
+    setMode("signup");
   };
 
   const submit = async (event: React.FormEvent) => {
@@ -181,6 +204,14 @@ function AuthPage() {
 
       if (mode === "signup") {
         if (password !== passwordConfirm) throw new Error("password_mismatch");
+        const stored = window.sessionStorage.getItem(KIND_KEY);
+        const kind =
+          workspaceKind ||
+          (stored === "personal" || stored === "business" ? stored : null);
+        if (!kind) {
+          setMode("kind");
+          return;
+        }
         const res = await api<{
           token?: string;
           confirmation_required?: boolean;
@@ -192,10 +223,13 @@ function AuthPage() {
             email,
             password,
             legal_name: name,
-            display_name: displayName,
+            display_name: displayName.trim() || name.trim(),
             work_role: workRole || null,
             avatar_url: avatarUrl || null,
-            preferences: { locale: navigator.language },
+            preferences: {
+              locale: navigator.language,
+              workspace_kind: kind,
+            },
             recovery_kind: recoveryKind,
             recovery_email: recoveryEmail,
             signals: collectDeviceSignals(),
@@ -372,7 +406,7 @@ function AuthPage() {
 
         {/* RIGHT — Form panel */}
         <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
-          <div className="ax-in w-full max-w-[28rem]">
+          <div className={cn("ax-in w-full", mode === "kind" ? "max-w-[42rem]" : "max-w-[28rem]")}>
 
             <div className="mb-6 lg:hidden">
               <Link to="/" className="ax-focus rounded-md">
@@ -382,6 +416,29 @@ function AuthPage() {
 
             {/* Card */}
             <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
+              {mode === "kind" && !challengeId && !linkSent ? (
+                <>
+                  <WorkspaceKindCards
+                    busy={busy}
+                    onPersonal={() => pickKind("personal")}
+                    onBusiness={() => pickKind("business")}
+                  />
+                  <p className="ax-caption mt-ax-4 text-center">
+                    Already have a workspace?{" "}
+                    <button
+                      type="button"
+                      className="ax-focus rounded font-semibold text-cyan-accent"
+                      onClick={() => {
+                        setError(null);
+                        setMode("login");
+                      }}
+                    >
+                      Sign in
+                    </button>
+                  </p>
+                </>
+              ) : (
+                <>
               {/* Animated header — smooth morph on mode switch */}
               <AnimatePresence mode="wait">
                 <motion.div
@@ -399,7 +456,11 @@ function AuthPage() {
                   ) : mode === "signup" ? (
                     <Header
                       title="Create your account"
-                      sub="After you sign up, choose Personal or Business. Domain comes later."
+                      sub={
+                        workspaceKind === "business"
+                          ? "Business workspace — then claim your @anexomail.com address."
+                          : "Personal workspace — then claim your @anexomail.com address."
+                      }
                     />
                   ) : mode === "link" ? (
                     <Header title="Email me a link" sub="No password. The link signs you straight in." />
@@ -472,6 +533,15 @@ function AuthPage() {
                               onChange={setDisplayName}
                               placeholder="Nauman"
                             />
+                            <button
+                              type="button"
+                              className="ax-caption font-semibold text-cyan-accent"
+                              onClick={() => setMoreDetails((v) => !v)}
+                            >
+                              {moreDetails ? "Hide extra details" : "Add work role and photo (optional)"}
+                            </button>
+                            {moreDetails ? (
+                              <>
                             <Field
                               id="work-role"
                               label="Work role"
@@ -489,6 +559,8 @@ function AuthPage() {
                               placeholder="https://…"
                               required={false}
                             />
+                              </>
+                            ) : null}
                           </>
                         )}
                         {mode !== "reset" && (
@@ -499,7 +571,7 @@ function AuthPage() {
                             value={email}
                             onChange={setEmail}
                             autoComplete="email"
-                            placeholder="you@anexomail.com"
+                            placeholder="name@anexomail.com"
                           />
                         )}
                         {mode !== "link" && mode !== "forgot" && (
@@ -510,6 +582,7 @@ function AuthPage() {
                               value={password}
                               onChange={setPassword}
                               autoComplete={mode === "login" ? "current-password" : "new-password"}
+                              placeholder={mode === "signup" || mode === "reset" ? "6–15 characters" : undefined}
                             />
                             {/* Password strength bar — signup only */}
                             {mode === "signup" && <PasswordStrength password={password} />}
@@ -575,7 +648,7 @@ function AuthPage() {
                       {challengeId
                         ? "Verify and continue"
                         : mode === "signup"
-                          ? "Create workspace"
+                          ? "Create account"
                           : mode === "forgot"
                             ? "Send reset link"
                             : mode === "reset"
@@ -603,6 +676,8 @@ function AuthPage() {
                       Forgot your password?
                     </Button>
                   )}
+                  {mode === "login" ? (
+                    <>
                   <div className="my-ax-4 flex items-center gap-3">
                     <div aria-hidden className="ax-hairline h-px flex-1" />
                     <span className="ax-caption">or</span>
@@ -620,26 +695,28 @@ function AuthPage() {
                       <KeyRound className="size-4" />
                       Continue with a passkey
                     </Button>
-                    {mode !== "link" && mode !== "forgot" && mode !== "reset" && (
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        className="w-full"
-                        onClick={() => {
-                          setError(null);
-                          setMode("link");
-                        }}
-                      >
-                        <Mail className="size-4" />
-                        Email me a sign-in link
-                      </Button>
-                    )}
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full"
+                      onClick={() => {
+                        setError(null);
+                        setMode("link");
+                      }}
+                    >
+                      <Mail className="size-4" />
+                      Email me a sign-in link
+                    </Button>
                   </div>
+                    </>
+                  ) : null}
 
-                  <p className="ax-caption mt-ax-3 text-center">
-                    New mailbox? Pick a plan first, then create your{" "}
-                    <span className="font-semibold text-foreground">@anexomail.com</span> address.
-                  </p>
+                  {mode === "signup" ? (
+                    <p className="ax-caption mt-ax-3 text-center">
+                      Next you claim your{" "}
+                      <span className="font-semibold text-foreground">@anexomail.com</span> address.
+                    </p>
+                  ) : null}
 
                   <p className="ax-caption mt-ax-4 text-center">
                     {mode === "signup"
@@ -648,12 +725,40 @@ function AuthPage() {
                         ? "Remembered it?"
                         : "New here?"}{" "}
                     {mode === "login" ? (
-                      <Link
-                        to="/plans"
+                      <button
+                        type="button"
                         className="ax-focus rounded font-semibold text-cyan-accent"
+                        onClick={() => {
+                          setError(null);
+                          setMode("kind");
+                        }}
                       >
-                        Choose your package
-                      </Link>
+                        Create your account for workspace
+                      </button>
+                    ) : mode === "signup" ? (
+                      <>
+                        <button
+                          type="button"
+                          className="ax-focus rounded font-semibold text-cyan-accent"
+                          onClick={() => {
+                            setError(null);
+                            setMode("kind");
+                          }}
+                        >
+                          Back
+                        </button>
+                        {" · "}
+                        <button
+                          type="button"
+                          className="ax-focus rounded font-semibold text-cyan-accent"
+                          onClick={() => {
+                            setError(null);
+                            setMode("login");
+                          }}
+                        >
+                          Sign in
+                        </button>
+                      </>
                     ) : (
                       <button
                         type="button"
@@ -667,6 +772,8 @@ function AuthPage() {
                       </button>
                     )}
                   </p>
+                </>
+              )}
                 </>
               )}
             </div>
@@ -727,12 +834,14 @@ function PasswordField({
   value,
   onChange,
   autoComplete,
+  placeholder,
 }: {
   id: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
   autoComplete: string;
+  placeholder?: string;
 }) {
   const [visible, setVisible] = useState(false);
   return (
@@ -750,7 +859,7 @@ function PasswordField({
           maxLength={15}
           autoComplete={autoComplete}
           className="pr-10"
-          placeholder="6–15 characters"
+          placeholder={placeholder}
           onChange={(event) => onChange(event.target.value)}
         />
         <button

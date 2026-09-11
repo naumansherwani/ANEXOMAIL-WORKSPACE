@@ -27,7 +27,7 @@ import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalet
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
 import { founderSurfaceAllowed, isAiHost, isPublicMailHost } from "@/lib/host";
-import { packageCopyName, platformPlan, railItemVisible } from "@/lib/plan-surface";
+import { railItemVisible, surfaceFromSession } from "@/lib/plan-surface";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -106,10 +106,11 @@ export function AppShell({ children }: { children: ReactNode }) {
         return false;
       })
     : primary;
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const { billed, kind, copyName } = surfaceFromSession(session?.user, organisation?.slug);
   const visiblePrimary = allowed.filter((item) =>
     railItemVisible(item.to, {
-      plan,
+      plan: billed,
+      kind,
       founder: Boolean(session?.user.is_founder),
       founderHost,
       publicMailHost,
@@ -237,7 +238,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 {session?.user.anexomail_address || session?.user.email || "Signed in"}
               </span>
               <span className="block pt-1 text-[11px] font-medium text-muted-foreground">
-                {packageCopyName(plan)}
+                {t(copyName)}
               </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />

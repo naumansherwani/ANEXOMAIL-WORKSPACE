@@ -1,25 +1,27 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { ArrowLeft, Building2, Loader2, LogIn, Mail, Rocket, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Building2, Loader2, LogIn, Users } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
+import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/onboarding")({
   ssr: false,
   head: () => ({
     meta: [
-      { title: "Set up your workspace — ANEXOMAIL" },
+      { title: "Create your account for workspace — ANEXOMAIL" },
       {
         name: "description",
-        content: "Choose Personal or Business — then open your ANEXOMAIL inbox.",
+        content: "Choose account type: Personal or Business. Then open your ANEXOMAIL inbox.",
       },
-      { property: "og:title", content: "Set up your workspace — ANEXOMAIL" },
+      { property: "og:title", content: "Create your account for workspace — ANEXOMAIL" },
       {
         property: "og:description",
         content: "Personal mail or a named business workspace. Domain comes later.",
@@ -43,6 +45,7 @@ function OnboardingPage() {
   const [invites, setInvites] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const autoKind = useRef(false);
 
   useEffect(() => {
     if (status !== "signed-in" || !session) return;
@@ -57,8 +60,23 @@ function OnboardingPage() {
     }
     if (session.user.onboarded) {
       void navigate({ to: "/app", replace: true });
+      return;
     }
-  }, [status, session, navigate]);
+    if (autoKind.current || busy || path !== "choose") return;
+    const kind = session.user.account_kind;
+    const stored =
+      typeof window !== "undefined" ? window.sessionStorage.getItem("anexo.pending.workspace_kind") : null;
+    const chosen = stored === "personal" || stored === "business" ? stored : kind;
+    if (chosen === "business") {
+      autoKind.current = true;
+      setPath("business-name");
+      return;
+    }
+    if (chosen === "personal") {
+      autoKind.current = true;
+      void goPersonal();
+    }
+  }, [status, session, navigate, busy, path]);
 
   const fail = (e: unknown) =>
     setError(
@@ -136,7 +154,7 @@ function OnboardingPage() {
         className="pointer-events-none absolute left-1/2 top-[-14rem] h-[30rem] w-[54rem] -translate-x-1/2 rounded-full bg-cyan-accent/10 blur-[130px]"
       />
 
-      <div className="ax-in relative w-full max-w-[30rem]">
+      <div className="ax-in relative w-full max-w-[42rem]">
         <div className="flex justify-center">
           <BrandMark />
         </div>
@@ -144,54 +162,15 @@ function OnboardingPage() {
         <div className="mt-ax-4 rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
           {path === "choose" && (
             <div className="space-y-ax-3">
-              <div className="text-center">
-                <Rocket className="mx-auto size-5 text-cyan-accent" />
-                <h1 className="ax-heading mt-ax-2 text-foreground">How will you use ANEXOMAIL?</h1>
-                <p className="ax-caption mt-1">
-                  Personal is just your mail. Business adds a named company workspace — domain
-                  comes later in Ownership Center.
-                </p>
-              </div>
-
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => void goPersonal()}
-                className="ax-press flex w-full flex-col items-start gap-1 rounded-xl border border-border bg-background px-4 py-3 text-left hover:border-cyan-accent/40"
-              >
-                <span className="flex items-center gap-2 font-semibold text-foreground">
-                  <Mail className="size-4 text-cyan-accent" />
-                  Personal
-                </span>
-                <span className="ax-caption">
-                  Just my mail — Chat and VideoCall by plan. No company setup.
-                </span>
-              </button>
-
-              <button
-                type="button"
-                disabled={busy}
-                onClick={() => setPath("business-name")}
-                className="ax-press flex w-full flex-col items-start gap-1 rounded-xl border border-border bg-background px-4 py-3 text-left hover:border-cyan-accent/40"
-              >
-                <span className="flex items-center gap-2 font-semibold text-foreground">
-                  <Building2 className="size-4 text-cyan-accent" />
-                  Business
-                </span>
-                <span className="ax-caption">
-                  Name your organisation, then invite people when you are ready.
-                </span>
-              </button>
+              <WorkspaceKindCards
+                busy={busy}
+                onPersonal={() => void goPersonal()}
+                onBusiness={() => setPath("business-name")}
+              />
 
               {error && (
                 <p role="alert" className="ax-caption text-destructive">
                   {error}
-                </p>
-              )}
-              {busy && (
-                <p className="ax-caption flex items-center justify-center gap-2">
-                  <Loader2 className="size-4 animate-spin" />
-                  Opening your inbox…
                 </p>
               )}
             </div>
@@ -287,13 +266,14 @@ function OnboardingPage() {
 }
 
 function OnboardingIntro({ loading }: { loading: boolean }) {
+  const { t } = useLocale();
   return (
     <main className="relative flex min-h-screen items-center justify-center overflow-hidden bg-background px-4 py-16">
       <div className="ax-in relative w-full max-w-[28rem] text-center">
         <BrandMark />
-        <h1 className="ax-heading mt-ax-5 text-foreground">Set up your workspace</h1>
+        <h1 className="ax-heading mt-ax-5 text-foreground">{t("Create your account for workspace")}</h1>
         <p className="ax-body mt-ax-2">
-          Sign in first. Then choose Personal or Business — no domain required on day one.
+          {t("Sign in first. Then choose Personal or Business — no domain required on day one.")}
         </p>
         {loading ? (
           <p className="ax-caption mt-ax-4 flex items-center justify-center gap-2">
@@ -309,9 +289,8 @@ function OnboardingIntro({ loading }: { loading: boolean }) {
               </Link>
             </Button>
             <Button asChild variant="ghost" className="w-full">
-              <Link to="/plans">
-                <ArrowLeft className="size-4" />
-                Choose a plan first
+              <Link to="/auth" search={{ mode: "signup" }}>
+                Create your account for workspace
               </Link>
             </Button>
           </div>

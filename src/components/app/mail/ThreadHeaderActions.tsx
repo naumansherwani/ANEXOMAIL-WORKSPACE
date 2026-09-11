@@ -15,7 +15,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { notify } from "@/lib/notify";
 import { useAuth } from "@/lib/auth";
 import { snoozePresets, useLabels, useThreadAction } from "@/lib/mail";
-import { platformPlan, showChat, showProMailTools, showWork } from "@/lib/plan-surface";
+import { showChat, showProMailTools, showWork, surfaceFromSession } from "@/lib/plan-surface";
 import type { ThreadStatus } from "@/lib/ia";
 
 /** Thread actions — every one is a backend call; nothing is faked locally. */
@@ -33,11 +33,11 @@ export function ThreadHeaderActions({
   const action = useThreadAction();
   const labels = useLabels();
   const [meeting, setMeeting] = useState(false);
-  const { session } = useAuth();
-  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
-  const proMail = showProMailTools(plan);
-  const workOk = showWork(plan);
-  const chatOk = showChat(plan);
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const proMail = showProMailTools(billed, null, kind);
+  const workOk = showWork(billed, null, kind);
+  const chatOk = showChat(billed, null, kind);
 
   const run = (
     payload: Parameters<typeof action.mutate>[0]["action"],

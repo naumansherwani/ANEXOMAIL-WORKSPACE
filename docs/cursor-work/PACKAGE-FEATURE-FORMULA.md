@@ -69,8 +69,9 @@ New feature decide karne ka formula:
    → Pro+ (Pro, Business, Business Pro, all AI)
 
 3. Kya yeh ANEXOChat feature hai?
-   → Business+ ONLY (Business, Business Pro, AI Pro+)
-   → Basic/Pro ko ZERO ANEXOChat
+   → Personal Pro+ (same power as Business Pro) OR Business / Business Pro Polar SKU
+   → Personal Basic ko Chat wall
+   → Polar pe alag Personal Chat product NAHI
 
 4. Kya yeh large file transfer (>2GB) / 1TB storage?
    → Business Pro + AI Business + AI Executive ONLY

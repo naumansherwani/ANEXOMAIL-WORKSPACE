@@ -31,6 +31,28 @@ function getPublicAuth(): SupabaseClient {
   return publicAuth;
 }
 
+/**
+ * Polar SKU = money (basic/pro/business/business_pro).
+ * account_kind = Personal | Business workspace — not a Polar product.
+ */
+function resolveAccountKind(
+  pref: string | null | undefined,
+  workspacePlan: string | null | undefined,
+  orgSlug?: string | null,
+): "personal" | "business" {
+  const k = String(pref || "")
+    .trim()
+    .toLowerCase();
+  if (k === "personal" || k === "business") return k;
+  if (String(orgSlug || "").toLowerCase().startsWith("personal-")) return "personal";
+  const plan = String(workspacePlan || "basic")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+  if (plan === "basic" || plan === "pro") return "personal";
+  return "business";
+}
+
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordOk = (value: string) => value.length >= 6 && value.length <= 15;
 const tokenHash = (token: string) => createHash("sha256").update(token).digest("hex");
@@ -111,6 +133,11 @@ function authError(
   error: { message?: string; status?: number } | null,
   fallback = "authentication_failed",
 ) {
+  if (fallback === "invalid_credentials") {
+    return res.status(401).json({
+      error: "That email and password did not match. Use your @anexomail.com address.",
+    });
+  }
   const message = error?.message || fallback;
   const status = error?.status && error.status >= 400 && error.status < 500 ? error.status : 400;
   return res.status(status).json({ error: message });
@@ -296,6 +323,10 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
     user.user_metadata?.name ||
     null;
 
+  const prefKind = typeof prefs.workspace_kind === "string" ? prefs.workspace_kind : null;
+  const orgSlug = operationalEntry?.slug || organisations[0]?.slug || null;
+  const accountKind = resolveAccountKind(prefKind, workspacePlan, orgSlug);
+
   return {
     ...(accessToken ? { token: accessToken } : {}),
     user: {
@@ -313,6 +344,7 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       anexomail_address: anexomailAddress,
       workspace_plan: workspacePlan,
       ai_plan: aiPlan,
+      account_kind: accountKind,
     },
     organisations: organisations.map(({ id, name, slug, domain, role }) => ({
       id,

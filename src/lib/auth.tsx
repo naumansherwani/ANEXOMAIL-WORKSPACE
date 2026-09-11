@@ -45,6 +45,8 @@ export type SessionUser = {
       anexomail_address?: string | null;
   workspace_plan?: string | null;
   ai_plan?: string | null;
+  /** Personal | Business — Polar SKU nahi. Session/backend. */
+  account_kind?: "personal" | "business" | null;
 };
 
 export type Session = {

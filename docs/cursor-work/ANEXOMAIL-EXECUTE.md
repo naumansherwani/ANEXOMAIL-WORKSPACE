@@ -24,13 +24,15 @@ PARTIAL / “almost” / “local only” = **not live**.
 2. `docs/cursor-work/AI-EXECUTE.md` — baad, same UX + AI add
 3. `docs/cursor-work/FOUNDER-EXECUTE.md` — end
 
-**Packages (locked cards — implement existing, prices no-touch):**
-| Plan | Price | Rail on anexomail.com |
-|---|---|---|
-| Basic | £23 / user / month | Dashboard, Mail, People, Calendar |
-| Pro | £46 / user / month | + Work + **CRM** (leads, own pipeline) |
-| Business | £97 / user / month | + Org + ANEXOChat + CRM shared work |
-| Business Pro | £2,850 / company / month | + Org + ANEXOChat + CRM ledger (activity) |
+**Packages (locked Polar cards — implement existing, prices no-touch):**
+| Polar SKU | Price | Kind (backend, Polar nahi) | Rail on anexomail.com |
+|---|---|---|---|
+| Basic | £23 / user / month | default **personal** | Dashboard, Mail, People, Calendar, Work. Chat/full CRM nahi |
+| Pro | £46 / user / month | default **personal** | **Personal Pro = Business Pro power**, Org nahi (Masood) |
+| Business | £97 / user / month | default **business** | + Org + ANEXOChat + CRM shared work |
+| Business Pro | £2,850 / company / month | default **business** | + CRM ledger (activity) (Humza) |
+
+Landing / Polar pe Personal cards **nahi**. `account_kind` session se. See `docs/cursor-work/frontend/personal-business-kind.md`.
 Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro UX) but Leo only on `ai.anexomail.com`.
 
 ---
@@ -51,6 +53,8 @@ Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro 
 | Payments | Polar — Rust webhook (no-touch) |
 
 Har E isi stack pe. Naya architecture nahi. **Backend kis E pe** = neeche wali table (Claude F-map, E-series tarteeb). Alag “Rust phase” **nahi**.
+
+**Lock 11 Sep 2026 — next phases:** naya wire **Rust :3200** (`/rpc/*` + `/wt/*`). Bun `/api/*` fallback only, **E2 auth Bun** (login/session/passkey Rust nahi). Naya Bun-primary feature banned. Polar webhook no-touch.
 
 ### Backend per E (Claude → E — locked)
 
