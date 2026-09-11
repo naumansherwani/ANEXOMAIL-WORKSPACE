@@ -9,9 +9,9 @@ import { usePromiseDecision, usePromises } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
 
 /**
- * Promise detection: LEO reads outbound mail for "I'll send this by Friday"
- * and surfaces the exact sentence. It never becomes a task until the human
- * commits it — suggestion, not automation.
+ * Promise detection: outbound mail that said "I'll send this by Friday"
+ * surfaces the exact sentence. It never becomes a task until the human
+ * commits it — suggestion, not automation. No LEO on this host.
  */
 export function PromiseInbox() {
   const promises = usePromises();
@@ -43,7 +43,7 @@ export function PromiseInbox() {
             decision === "commit" ? "Task created" : "Dismissed",
             decision === "commit"
               ? "It is on the board with the promised date."
-              : "LEO will not ask again.",
+              : "It will not be suggested again.",
           ),
         onError: (error) =>
           notify.failed(error.isNotImplemented ? "Not wired yet" : "Could not save", {

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ============================================================================
-# GATE 4 — MAIL (anexomail.com · final list: 9 mailbox + 3 forward) + round-trip
+# GATE 4 — MAIL (anexomail.com · 10 mailbox/sendonly + 3 forward, incl. Masood Pro) + round-trip
 #   bash server/gates/mail-gate.sh
 # DNS/PTR aap ke registrar par hai (wohi ek manual hissa) — yeh gate usay padhta hai.
 # ============================================================================
@@ -83,9 +83,9 @@ else
     | grep -E 'status=(deferred|bounced)|warning:|fatal:' | tail -n 20 || true
 fi
 
-echo "--- final address list DB mein (9 mailbox + 3 forward) ---"
-check_sql "mailboxes = 12" "select count(*) from public.mailboxes where address like '%@$DOMAIN' and active;" "12"
-for a in hello moveyourbusiness resolved billing noreply leo naumansherwani.founder humzasherwani raanasherwani; do
+echo "--- final address list DB mein (10 mailbox/sendonly + 3 forward) ---"
+check_sql "mailboxes = 13" "select count(*) from public.mailboxes where address like '%@$DOMAIN' and active;" "13"
+for a in hello moveyourbusiness resolved billing noreply leo naumansherwani.founder humzasherwani raanasherwani masoodsherwani; do
   check_sql "address $a@$DOMAIN" \
     "select count(*)>0 from public.mailboxes where address='$a@$DOMAIN';" "t"
 done

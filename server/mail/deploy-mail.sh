@@ -27,14 +27,14 @@ BUNSRC="$(command -v bun || echo /root/.bun/bin/bun)"
 # (execvp ... Permission denied). Is liye bun ki ek copy sab ke liye readable jagah par.
 BUN=/usr/local/bin/anexo-bun
 
-      # FINAL LIST (locked 8 Sep 2026, founder ka faisla)
+      # FINAL LIST (locked 8 Sep 2026; Masood Pro mailbox 10 Sep F3 A)
 #   real mailbox: hello moveyourbusiness resolved billing leo
 #                 naumansherwani.founder (founder ka ek hi inbox)
-#                 humzasherwani (brother) raanasherwani (mother) — aam user premium
+#                 humzasherwani raanasherwani masoodsherwani — family, founder nahi
 #   sendonly:     noreply
 #   forward-only: postmaster abuse dmarc  -> sab resolved@ (koi inbox/password nahi)
 #   DELETED:      nauman support trials   (backup ke baad root se)
-MAILBOXES="hello moveyourbusiness resolved billing leo naumansherwani.founder humzasherwani raanasherwani"
+MAILBOXES="hello moveyourbusiness resolved billing leo naumansherwani.founder humzasherwani raanasherwani masoodsherwani"
 SENDONLY="noreply"
 # alias:target
 ALIASES="postmaster:resolved abuse:resolved dmarc:resolved"
@@ -44,12 +44,12 @@ REMOVED="nauman support trials abuse dmarc postmaster"
 # FOUNDER SINGLE INBOX (locked 8 Sep 2026)
 #   - founder ka ek hi inbox: naumansherwani.founder@anexomail.com
 #   - company addresses ki mail apni box mein bhi rehti hai AUR founder inbox mein
-#     bhi copy hoti hai. Family accounts (humza/raana) ki mail KABHI copy nahi hoti.
+#     bhi copy hoti hai. Family mail (humza/raana/masood) KABHI copy nahi hoti.
 #   - founder-side logins ka password EK; family accounts ka apna password
 #   - recovery account: anexomail27@gmail.com (password kabhi print nahi hota)
 FOUNDER_INBOX="naumansherwani.founder"
 FOUNDER_COPY="hello moveyourbusiness resolved billing leo"
-FAMILY_BOXES="humzasherwani raanasherwani"
+FAMILY_BOXES="humzasherwani raanasherwani masoodsherwani"
 FOUNDER_RECOVERY="anexomail27@gmail.com"
 
 

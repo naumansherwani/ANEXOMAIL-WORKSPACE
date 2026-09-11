@@ -119,7 +119,7 @@ export function EventDetail({ id }: { id: string }) {
         </div>
         {!outcome ? (
           <p className="ax-caption mt-ax-2 text-muted-foreground">
-            Nothing captured yet. After the meeting, LEO pulls out the decisions and action items.
+            Nothing captured yet. After the meeting, write the decisions and action items here.
           </p>
         ) : (
           <div className="mt-ax-2 space-y-ax-3">

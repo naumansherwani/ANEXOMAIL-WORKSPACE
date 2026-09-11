@@ -122,7 +122,7 @@ export function NewMeeting({
         rows={3}
         placeholder={
           threadId
-            ? "Agenda — LEO pre-fills this from the thread once wired."
+            ? "Agenda for this thread — what has to be decided?"
             : "Agenda — what has to be decided?"
         }
         className="ax-focus w-full resize-y rounded-md border border-border bg-transparent px-2 py-1.5 text-xs text-foreground outline-none placeholder:text-steel"

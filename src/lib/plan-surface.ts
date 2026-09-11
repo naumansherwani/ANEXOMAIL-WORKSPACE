@@ -132,6 +132,30 @@ export function showCrmLedger(
   return platformPlan(workspacePlan, aiPlan) === "business_pro";
 }
 
+/** File / call / promise-recovery / decision ledger on Work — Business card, not Pro. */
+export function showWorkBusinessRecord(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+}
+
+/** CRM risk radar — Business card. Pro keeps own book (leads + pipeline). */
+export function showCrmRisk(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return hasBusinessPlan(platformPlan(workspacePlan, aiPlan));
+}
+
+/** CRM graph — Business Pro card. */
+export function showCrmGraph(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+): boolean {
+  return showCrmLedger(workspacePlan, aiPlan);
+}
+
 /** Templates, snooze, schedule send — Pro card. */
 export function showProMailTools(
   workspacePlan: string | null | undefined,
@@ -166,7 +190,6 @@ export function railItemVisible(to: string, opts: SurfaceOpts): boolean {
 export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenial | null {
   if (opts.founderHost) return null;
   const path = pathname.replace(/\/+$/, "") || "/app";
-  const name = packageCopyName(opts.plan);
 
   if (path.startsWith("/app/founder")) {
     return {
@@ -183,28 +206,28 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
   if (path.startsWith("/app/admin")) {
     return {
       title: "Platform admin is not on this package",
-      body: `Your package is ${name}. Organisation tools for Business sit under Org, not platform Admin.`,
+      body: "Your package is {package}. Organisation tools for Business sit under Org, not platform Admin.",
     };
   }
   if (path.startsWith("/app/crm/collab")) {
     if (showCrmCollab(opts.plan)) return null;
     return {
       title: "Shared CRM work is on Business",
-      body: `Assignment, mentions and approvals sit on Business and Business Pro. Your package is ${name}.`,
+      body: "Assignment, mentions and approvals sit on Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm/activity")) {
     if (showCrmLedger(opts.plan)) return null;
     return {
       title: "CRM activity ledger is on Business Pro",
-      body: `The company timeline of every touch sits on Business Pro. Your package is ${name}.`,
+      body: "The company timeline of every touch sits on Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm")) {
     if (showCrm(opts.plan)) return null;
     return {
       title: "CRM is on Pro",
-      body: `Leads and pipeline sit on Pro, Business and Business Pro. Your package is ${name}.`,
+      body: "Leads and pipeline sit on Pro, Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/ai-center") || path === "/app/ai" || path.startsWith("/app/ai/")) {
@@ -217,21 +240,21 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
     if (showChat(opts.plan)) return null;
     return {
       title: "ANEXOChat is on Business",
-      body: `Your package is ${name}. Chat and ANEXOVideoCall sit on Business and Business Pro.`,
+      body: "Your package is {package}. Chat and ANEXOVideoCall sit on Business and Business Pro.",
     };
   }
   if (path.startsWith("/app/org")) {
     if (showOrg(opts.plan)) return null;
     return {
       title: "Organisation centre is on Business",
-      body: `Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is ${name}.`,
+      body: "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/work")) {
     if (showWork(opts.plan)) return null;
     return {
       title: "Work is on Pro",
-      body: `Boards, notes, tasks and thread analytics sit on Pro and above. Your package is ${name}.`,
+      body: "Boards, notes, tasks and thread analytics sit on Pro and above. Your package is {package}.",
     };
   }
   return null;

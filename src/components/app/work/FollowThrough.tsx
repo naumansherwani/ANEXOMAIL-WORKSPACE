@@ -3,7 +3,9 @@ import { useState } from "react";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
+import { useAuth } from "@/lib/auth";
 import { useFollowThrough } from "@/lib/calendar";
+import { hasBusinessPlan, platformPlan } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 /**
@@ -11,11 +13,15 @@ import { cn } from "@/lib/utils";
  * The score is server calculated from real completions, never estimated here.
  */
 export function FollowThroughTable() {
+  const { session } = useAuth();
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const teamOk = hasBusinessPlan(plan);
   const [scope, setScope] = useState<"person" | "team">("person");
-  const query = useFollowThrough(scope);
+  const query = useFollowThrough(teamOk ? scope : "person");
 
   return (
     <div>
+      {teamOk ? (
       <div className="mb-ax-3 flex items-center gap-1">
         {(["person", "team"] as const).map((s) => (
           <button
@@ -33,6 +39,7 @@ export function FollowThroughTable() {
           </button>
         ))}
       </div>
+      ) : null}
 
       {query.error ? (
         query.error.isNotImplemented || query.error.code === "no_api_url" ? (

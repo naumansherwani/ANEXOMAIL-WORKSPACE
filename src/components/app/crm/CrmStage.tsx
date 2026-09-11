@@ -5,7 +5,7 @@ import { useState, type ReactNode } from "react";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 import { useCrmLive } from "@/lib/crm";
-import { platformPlan, showCrmCollab, showCrmLedger } from "@/lib/plan-surface";
+import { platformPlan, showCrmCollab, showCrmLedger, showCrmRisk } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 type CrmPath =
@@ -127,6 +127,14 @@ export function CrmStage({ children }: { children: ReactNode }) {
   ];
   const [intelOpen, setIntelOpen] = useState(false);
 
+  const loop = LOOP.filter((step) => {
+    if (step.cr === "7" || step.cr === "8") return showCrmLedger(plan);
+    if (step.cr === "3" || step.cr === "4" || step.cr === "5" || step.cr === "6" || step.cr === "9") {
+      return showCrmRisk(plan);
+    }
+    return true;
+  });
+
   return (
     <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
       {/* Desktop: 236px secondary nav */}
@@ -180,7 +188,7 @@ export function CrmStage({ children }: { children: ReactNode }) {
             {t("The loop")}
           </p>
           <ol className="flex min-h-0 flex-col gap-px overflow-y-auto pb-2">
-            {LOOP.map((step) => (
+            {loop.map((step) => (
               <li key={step.cr}>
                 <LoopRow
                   step={step}

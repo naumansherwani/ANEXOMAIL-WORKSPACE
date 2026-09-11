@@ -13,7 +13,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { notify } from "@/lib/notify";
+import { useAuth } from "@/lib/auth";
 import { snoozePresets, useLabels, useThreadAction } from "@/lib/mail";
+import { platformPlan, showChat, showProMailTools, showWork } from "@/lib/plan-surface";
 import type { ThreadStatus } from "@/lib/ia";
 
 /** Thread actions — every one is a backend call; nothing is faked locally. */
@@ -31,6 +33,11 @@ export function ThreadHeaderActions({
   const action = useThreadAction();
   const labels = useLabels();
   const [meeting, setMeeting] = useState(false);
+  const { session } = useAuth();
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const proMail = showProMailTools(plan);
+  const workOk = showWork(plan);
+  const chatOk = showChat(plan);
 
   const run = (
     payload: Parameters<typeof action.mutate>[0]["action"],
@@ -76,14 +83,16 @@ export function ThreadHeaderActions({
         Archive
       </button>
 
-      {/* Phase 29: thread -> ANEXOChat in one press; link reused, never duplicated. */}
+      {chatOk ? (
       <DiscussInChat
         threadId={threadId}
         {...(subject ? { subject } : {})}
         {...(participants?.length ? { participants } : {})}
       />
-      {/* Phase 29: silent thread -> owned task (human picks owner + due). */}
+      ) : null}
+      {workOk ? (
       <ThreadRescue threadId={threadId} {...(subject ? { subject } : {})} />
+      ) : null}
 
       {/* Thread -> meeting in one press: the conversation stays the context. */}
       <button
@@ -110,6 +119,7 @@ export function ThreadHeaderActions({
         </DialogContent>
       </Dialog>
 
+      {proMail ? (
       <DropdownMenu>
         <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">
           <Clock className="mr-1 inline size-3" />
@@ -133,6 +143,7 @@ export function ThreadHeaderActions({
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
+      ) : null}
 
       <DropdownMenu>
         <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">

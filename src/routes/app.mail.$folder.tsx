@@ -25,6 +25,8 @@ import {
   type ThreadCategory,
 } from "@/lib/mail";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/lib/auth";
+import { platformPlan, showProMailTools } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/mail/$folder")({
   loader: ({ params }) => {
@@ -64,6 +66,10 @@ function MailFolderPage() {
   // Phase 28: on a phone the panels morph — list OR thread, never both.
   const threadOpen = Boolean(activeId);
   const net = useNetwork();
+  const { session } = useAuth();
+  const proMail = showProMailTools(
+    platformPlan(session?.user.workspace_plan, session?.user.ai_plan),
+  );
 
   const [label, setLabel] = useState<string | null>(null);
   const [account, setAccount] = useState<string | null>(null);
@@ -138,7 +144,7 @@ function MailFolderPage() {
           );
           break;
         case "s":
-          if (!current) return;
+          if (!proMail || !current) return;
           event.preventDefault();
           act(
             current.id,
@@ -161,7 +167,7 @@ function MailFolderPage() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [threads, cursor, folder, navigate, act]);
+  }, [threads, cursor, folder, navigate, act, proMail]);
 
   const folderLabel = MAIL_FOLDERS.find((f) => f.id === folder)?.label ?? "Mail";
 
@@ -297,13 +303,16 @@ function MailFolderPage() {
               "POST /api/mail/thread/:id/move",
             )
           }
-          onSwipeSnooze={(id) =>
-            act(
-              id,
-              { kind: "snooze", until: new Date(Date.now() + 86_400_000).toISOString() },
-              "Snoozed until tomorrow",
-              "POST /api/mail/thread/:id/snooze",
-            )
+          onSwipeSnooze={
+            proMail
+              ? (id) =>
+                  act(
+                    id,
+                    { kind: "snooze", until: new Date(Date.now() + 86_400_000).toISOString() },
+                    "Snoozed until tomorrow",
+                    "POST /api/mail/thread/:id/snooze",
+                  )
+              : undefined
           }
           onLongPress={(id) => {
             const index = (threads ?? []).findIndex((t) => t.id === id);

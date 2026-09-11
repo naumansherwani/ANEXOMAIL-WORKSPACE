@@ -7,6 +7,8 @@ import { CrmGraph } from "@/components/app/crm/CrmGraph";
 import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
 import { money, STAGE_LABEL, useCrmLive, useCrmOverview } from "@/lib/crm";
+import { useAuth } from "@/lib/auth";
+import { platformPlan, showCrmGraph, showCrmRisk } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/crm/")({
   head: () => ({
@@ -20,6 +22,10 @@ export const Route = createFileRoute("/app/crm/")({
 
 function CrmDashboard() {
   const { t } = useLocale();
+  const { session } = useAuth();
+  const plan = platformPlan(session?.user.workspace_plan, session?.user.ai_plan);
+  const riskOk = showCrmRisk(plan);
+  const graphOk = showCrmGraph(plan);
   const overview = useCrmOverview();
   const live = useCrmLive();
   const o = overview.data;
@@ -33,6 +39,14 @@ function CrmDashboard() {
   const openValue = o ? money(o.pipeline_value, o.currency) : "—";
   const forecastValue = o ? money(o.weighted_value, o.currency) : "—";
   const atRisk = board ? String(board.radar.length) : "—";
+  const bookTitle =
+    plan === "business_pro" ? "Company book" : plan === "business" ? "Shared book" : "Your book";
+  const bookHint =
+    plan === "business_pro"
+      ? "Leads, pipeline, shared work and every recorded touch."
+      : plan === "business"
+        ? "Leads, pipeline and shared work for the company."
+        : "Leads and pipeline that sit next to your mail.";
 
   return (
     <div className="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-8">
@@ -43,10 +57,10 @@ function CrmDashboard() {
       <div className="relative">
         <p className="ax-eyebrow">{t("CRM")}</p>
         <h1 className="mt-1 text-[32px] font-bold leading-tight tracking-tight text-foreground">
-          {t("Relationship intelligence")}
+          {t(bookTitle)}
         </h1>
         <p className="mt-1.5 max-w-xl text-[14px] text-muted-foreground">
-          {t("Every relationship leaves a trail. Turn the trail into action.")}
+          {t(bookHint)}
         </p>
 
         {/* Slim KPI strip — one line, not a card wall */}
@@ -59,10 +73,12 @@ function CrmDashboard() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Forecast")}</span>
             <span className="text-[15px] font-bold tabular-nums text-foreground">{forecastValue}</span>
           </div>
+          {riskOk ? (
           <div className="flex items-baseline gap-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("At risk")}</span>
             <span className="text-[15px] font-bold tabular-nums text-foreground">{atRisk}</span>
           </div>
+          ) : null}
           <div className="ms-auto flex items-baseline gap-2">
             <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-steel">{t("Won this month")}</span>
             <span className="text-[15px] font-bold tabular-nums text-foreground">
@@ -78,7 +94,7 @@ function CrmDashboard() {
         </div>
 
         {/* Main cinematic area — 65 / 35 */}
-        <div className="mt-6 grid gap-6 lg:grid-cols-[65fr_35fr]">
+        <div className={riskOk ? "mt-6 grid gap-6 lg:grid-cols-[65fr_35fr]" : "mt-6"}>
           <DashboardCard
             title={t("Relationship flow")}
             hint={t("Deal value by stage — the pipeline as a current, not a list.")}
@@ -123,7 +139,7 @@ function CrmDashboard() {
             </CardBody>
           </DashboardCard>
 
-          {/* Next actions — the panel that tells you what to do */}
+          {riskOk ? (
           <DashboardCard
             title={t("Next")}
             hint={t("One step per rule — each carries its why.")}
@@ -168,9 +184,10 @@ function CrmDashboard() {
               }
             </CardBody>
           </DashboardCard>
+          ) : null}
         </div>
 
-        {/* Risk + timeline */}
+        {riskOk ? (
         <div className="mt-6 grid gap-6 lg:grid-cols-2">
           <DashboardCard
             title={t("Risk radar")}
@@ -251,8 +268,9 @@ function CrmDashboard() {
             </CardBody>
           </DashboardCard>
         </div>
+        ) : null}
 
-        {/* Graph — full width cinematic canvas */}
+        {graphOk ? (
         <div className="mt-6">
           <DashboardCard
             title={t("Graph")}
@@ -273,6 +291,7 @@ function CrmDashboard() {
             </CardBody>
           </DashboardCard>
         </div>
+        ) : null}
 
         <div className="mt-6">
           <SectionTitle
