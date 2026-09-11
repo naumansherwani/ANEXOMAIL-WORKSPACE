@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/site/BrandMark";
 
@@ -15,10 +16,12 @@ type Props = {
  */
 export function CinematicSplash({ open, onDone }: Props) {
   const [phase, setPhase] = useState<"closed" | "enter" | "hold" | "exit">("closed");
+  const homeClicked = useRef(false);
 
   useEffect(() => {
     if (!open) {
       setPhase("closed");
+      homeClicked.current = false;
       return;
     }
     setPhase("enter");
@@ -33,7 +36,7 @@ export function CinematicSplash({ open, onDone }: Props) {
   useEffect(() => {
     if (phase !== "exit") return;
     const done = setTimeout(() => {
-      onDone?.();
+      if (!homeClicked.current) onDone?.();
       setPhase("closed");
     }, 600);
     return () => clearTimeout(done);
@@ -55,9 +58,16 @@ export function CinematicSplash({ open, onDone }: Props) {
       </div>
 
       <div className="ax-splash-logo relative z-10 flex flex-col items-center">
-        <div className="scale-[2.2] md:scale-[2.6]">
-          <BrandMark />
-        </div>
+        <Link
+          to="/"
+          className="ax-focus scale-[2.2] rounded-sm md:scale-[2.6]"
+          aria-label="ANEXOMAIL — go to landing"
+          onClick={() => {
+            homeClicked.current = true;
+          }}
+        >
+          <BrandMark home={false} />
+        </Link>
         <h2 className="ax-platinum-text mt-ax-7 text-center text-[1.625rem] font-extrabold tracking-[-0.03em] md:text-[2rem]">
           ANEXOMAIL Workspace
         </h2>

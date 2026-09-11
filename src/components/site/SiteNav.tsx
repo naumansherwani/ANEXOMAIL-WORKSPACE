@@ -29,7 +29,7 @@ export function SiteNav() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <nav className="ax-container flex h-20 items-center gap-6">
         <Link to="/" className="shrink-0">
-          <BrandMark />
+          <BrandMark home={false} />
         </Link>
 
         <div className="mx-auto hidden items-center gap-7 md:flex">

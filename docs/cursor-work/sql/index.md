@@ -1,21 +1,25 @@
 # SQL — docs/cursor-work/sql/
 
-Ab se har naya SQL file **yahan** aayega. `sql/` (root) mein nahi.
+Do tracks. Mix **banned**.
 
-## LOCKED RULE — SQL fail (founder 10 Sep 2026)
+## Phase 60s — founder blueprint (NO TOUCH)
 
-**Agar SQL fail ho:** usi file ko **shuru se** theek likho. **Naya naam mat do** (`phase63b`, `phase63_fix`, `…_v2` — **banned**).  
-Failed / patch duplicate file **delete**. Repo mein sirf **asli naam** rahe.
+`sql/phase60*.sql` · `sql/phase61*.sql` · `sql/phase62*.sql`  
+`docs/cursor-work/sql/phase63*.sql` · `phase64*.sql` · `phase65*.sql`
 
-## Tarteeb
-Har file ka naam: `phaseNN_naam.sql`
-Run: Supabase #4 SQL Editor — paste → Run
+Agent inhein edit, rewrite, undo, ya “ek aur dafa paste” **nahi** kehta. Jo run ho chuka, woh founder ka hai.
 
-## Status
-| File | Status | Supabase mein run hua? |
+## Agent — E-series only
+
+Naya SQL yahan, naam: `E<n>_….sql` (execute board: `docs/cursor-work/ANEXOMAIL-EXECUTE.md`).  
+Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-touch.
+
+**Agar E-file fail ho:** usi file ko shuru se theek likho. Naya naam (`E4b`, `_fix`, `_v2`) **banned**.
+
+| File | Track | Agent |
 |---|---|---|
-| phase60_org_identity_repair.sql | READY (root sql/ mein hai) | — aap run karo |
-| phase61_calendar_work.sql | READY (root sql/ mein hai) | — aap run karo |
-| phase63_f3a_passkey_family.sql | READY — F3 A (domain unique fix, same name) | **poori file dubara paste** |
-| phase64_crm_locale.sql | READY (SQL founder ne run kaha) — product CRM still not DONE | founder: SQL success |
-| phase65_account_kind.sql | READY — Personal\|Business kind stamp + video Pro+ | **aap run karo** |
+| phase60 / 61 / 62 (root `sql/`) | founder | no-touch |
+| phase63_f3a_passkey_family.sql | founder (already run) | no-touch |
+| phase64_crm_locale.sql | founder (already run) | no-touch |
+| phase65_account_kind.sql | founder (already run) | no-touch |
+| E2_personal_polar.sql | E-series — Personal Polar map only | **aap Run** |

@@ -326,6 +326,13 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
   const prefKind = typeof prefs.workspace_kind === "string" ? prefs.workspace_kind : null;
   const orgSlug = operationalEntry?.slug || organisations[0]?.slug || null;
   const accountKind = resolveAccountKind(prefKind, workspacePlan, orgSlug);
+  let personalPlanName: string | null = null;
+  if (accountKind === "personal") {
+    const { data: label, error: labelErr } = await getAdmin().rpc("personal_workspace_label", {
+      _user_id: uid,
+    });
+    if (!labelErr && typeof label === "string" && label.trim()) personalPlanName = label.trim();
+  }
 
   return {
     ...(accessToken ? { token: accessToken } : {}),
@@ -345,6 +352,7 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       workspace_plan: workspacePlan,
       ai_plan: aiPlan,
       account_kind: accountKind,
+      personal_plan_name: personalPlanName,
     },
     organisations: organisations.map(({ id, name, slug, domain, role }) => ({
       id,

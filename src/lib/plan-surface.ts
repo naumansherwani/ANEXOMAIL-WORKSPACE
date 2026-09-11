@@ -148,13 +148,21 @@ export function surfaceFromSession(
     workspace_plan?: string | null;
     ai_plan?: string | null;
     account_kind?: string | null;
+    personal_plan_name?: string | null;
   } | null,
   orgSlug?: string | null,
 ): { billed: WorkspacePlanId; kind: AccountKind; power: WorkspacePlanId; copyName: string } {
   const billed = platformPlan(user?.workspace_plan, user?.ai_plan);
   const kind = resolveAccountKind(user?.account_kind, user?.workspace_plan, orgSlug);
   const power = featurePlan(user?.workspace_plan, user?.ai_plan, kind);
-  return { billed, kind, power, copyName: packageCopyName(billed, kind, user?.ai_plan) };
+  const fromSql =
+    kind === "personal" && !hasAiPlan(user?.ai_plan) ? String(user?.personal_plan_name || "").trim() : "";
+  return {
+    billed,
+    kind,
+    power,
+    copyName: fromSql || packageCopyName(billed, kind, user?.ai_plan),
+  };
 }
 
 export function hasBusinessPlan(plan: string | null | undefined): boolean {

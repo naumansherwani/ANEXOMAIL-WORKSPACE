@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Database, ShieldCheck, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/site/BrandMark";
 
@@ -31,7 +32,6 @@ export function AuthCinema({ className }: { className?: string }) {
 
   return (
     <aside
-      aria-hidden
       className={`relative flex w-[440px] shrink-0 flex-col items-center justify-center overflow-hidden ${className ?? ""}`}
     >
       {/* Breathing gradient background */}
@@ -43,15 +43,21 @@ export function AuthCinema({ className }: { className?: string }) {
       {/* Subtle grain texture */}
       <div className="absolute inset-0 ax-auth-cinema-grain opacity-[0.03]" />
 
+      <Link
+        to="/"
+        className="absolute inset-0 z-20"
+        aria-label="ANEXOMAIL — go to landing"
+      />
+
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center gap-10 px-14 text-center">
+      <div className="relative z-10 pointer-events-none flex flex-col items-center gap-10 px-14 text-center">
         {/* Brand mark — slightly larger */}
         <motion.div
           initial={{ opacity: 0, scale: 0.92 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <BrandMark className="scale-[1.3] origin-center" />
+          <BrandMark home={false} className="scale-[1.3] origin-center" />
         </motion.div>
 
         {/* Rotating taglines */}

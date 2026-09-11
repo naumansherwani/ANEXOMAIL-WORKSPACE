@@ -1,23 +1,29 @@
 import { useId } from "react";
+import { Link } from "@tanstack/react-router";
 
 type Props = {
   /** Hide the wordmark and show the mark alone. */
   compact?: boolean;
   className?: string;
+  /**
+   * Landing `/` — mark is the way home. Pass `false` when a parent already wraps a link
+   * (site nav, workspace shell).
+   */
+  home?: "/" | false;
 };
 
 /**
  * ANEXOMAIL Workspace mark — angular navy planes forming an "A",
  * crossed by a platinum route line with three delivery nodes.
  */
-export function BrandMark({ compact = false, className }: Props) {
+export function BrandMark({ compact = false, className, home = "/" }: Props) {
   // Unique gradient ids per instance — two BrandMarks on one page (one of them
   // display:none) otherwise share ids and the visible mark loses its fills.
   const uid = useId().replace(/[^a-zA-Z0-9]/g, "");
   const gA = `ax-plane-a-${uid}`;
   const gB = `ax-plane-b-${uid}`;
   const gE = `ax-edge-${uid}`;
-  return (
+  const mark = (
     <span className={`flex items-center gap-2.5 ${className ?? ""}`}>
       <svg
         viewBox="0 0 64 64"
@@ -88,5 +94,11 @@ export function BrandMark({ compact = false, className }: Props) {
         </span>
       )}
     </span>
+  );
+  if (home === false) return mark;
+  return (
+    <Link to="/" className="ax-focus inline-flex rounded-sm" aria-label="ANEXOMAIL — go to landing">
+      {mark}
+    </Link>
   );
 }

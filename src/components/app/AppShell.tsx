@@ -173,7 +173,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4"
       >
         <Link to={brandHome} className="shrink-0" aria-label="ANEXOMAIL workspace">
-          <BrandMark />
+          <BrandMark home={false} />
         </Link>
 
         {publicMailHost ? null : (

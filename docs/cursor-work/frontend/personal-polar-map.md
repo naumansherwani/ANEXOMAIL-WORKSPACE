@@ -1,6 +1,6 @@
 # Personal pay — Polar cards, naya SKU nahi
 
-**Status:** READY (repo). Polar webhook / `plans.ts` / landing **no-touch**. Phase 60s SQL **no-touch**.
+**Status:** READY (repo). **DONE** nahi. Polar webhook no-touch. SQL: `docs/cursor-work/sql/E2_personal_polar.sql` (phase 60s nahi).
 
 Do axes mix nahi:
 

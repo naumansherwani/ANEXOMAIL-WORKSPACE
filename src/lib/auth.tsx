@@ -47,6 +47,8 @@ export type SessionUser = {
   ai_plan?: string | null;
   /** Personal | Business — Polar SKU nahi. Session/backend. */
   account_kind?: "personal" | "business" | null;
+  /** SQL E2 personal_polar_map — sirf kind=personal. Business null. */
+  personal_plan_name?: string | null;
 };
 
 export type Session = {
