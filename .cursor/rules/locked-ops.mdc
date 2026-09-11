@@ -7,7 +7,7 @@ alwaysApply: true
 
 Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR, **Rust :3200 PRIMARY**, Bun fallback, Supabase truth.
 
-**Next phases (locked 11 Sep 2026):** naya product wire **Rust :3200 transport** — `/rpc/*` + `/wt/*` pehle. Bun `/api/*` sirf fallback, ya **E2 auth** (login/signup/session/passkey **Bun**, Rust nahi). Naya Bun-primary feature **banned**. Polar webhook no-touch.
+**Polar payment (locked):** asli Polar.com webhook nahi chalti. Founder dummy **`polar-rust-payment` PM2 :3400**. Codes **no-touch**. Agent sirf endpoint check: PRIMARY `https://polarpayments.anexomail.com/api/v1/polar-webhook` · BACKUP `https://anexomail.com/api/v1/polar-webhook` · engine `POST /api/v1/polar-webhook`. Bun `/api/public/polar/webhook` dashboard mein nahi.
 
 **Server pull — sirf yeh (kuch add mat karo):**
 ```bash
@@ -17,4 +17,7 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 
 **Language (closed 11 Sep 2026):** Sign-in + landing English, har package. Picker sirf login ke baad workspace header. Founder account English. Is topic ko dubara mat kholo.
 
-SQL fail = **usi file** theek. Naya naam banned. Naya SQL = `docs/cursor-work/sql/` E-series number.
+**SQL tracks (locked 11 Sep 2026) — mix nahi:**
+- **Phase 60s = founder blueprint.** Touch **banned**: `sql/phase60*.sql` `sql/phase61*.sql` `sql/phase62*.sql` aur `docs/cursor-work/sql/phase63*.sql` `phase64*.sql` `phase65*.sql`. Rewrite / undo / dubara-run mat bolo. Fail ho to founder khud decide kare — agent file mat kaate.
+- **Agent workflow = E-series** (`docs/cursor-work/ANEXOMAIL-EXECUTE.md`): E1 → E1A → E2 → E3 → **E4 mail gate** → E5–E8. Naya SQL sirf `docs/cursor-work/sql/E<n>_….sql`. `phase6Nb` / `_fix` / `_v2` banned.
+- SQL fail = **usi E-file** theek. Phase 60s ko “fix” ke naam pe mat chhedo.

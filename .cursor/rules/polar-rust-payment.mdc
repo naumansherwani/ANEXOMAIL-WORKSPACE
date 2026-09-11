@@ -1,0 +1,25 @@
+---
+description: Polar Rust payment is dummy PM2 on :3400. No-touch. Only check endpoints.
+alwaysApply: true
+---
+
+# Polar Rust payment — no-touch (dummy)
+
+Asli Polar.com webhook **chalti nahi**. Founder ne PM2 pe **`polar-rust-payment` :3400** banayi; codes se **dummy**. Is liye bar bar **no-touch**.
+
+**Touch banned:** `server/rust/polar-payment/` (`main.rs` `Cargo.toml` `deploy.sh`) · `server/routes/polar.ts` webhook/bridge · Polar webhook SQL `sql/phase50*` `sql/phase51*` · Polar dashboard URLs · `.env` secrets · `plans.ts`.
+
+Agent **sirf** yeh dekh sakta hai: endpoint sahi hai ya nahi. Dummy codes rewrite / “fix Polar” / naya webhook **banned**.
+
+## Endpoints (locked)
+
+| Role | URL | Kahan |
+|---|---|---|
+| PRIMARY | `https://polarpayments.anexomail.com/api/v1/polar-webhook` | Caddy → `127.0.0.1:3400` |
+| BACKUP | `https://anexomail.com/api/v1/polar-webhook` | Caddy → wahi `:3400` |
+| Engine | `POST /api/v1/polar-webhook` on `:3400` | PM2 `polar-rust-payment` |
+| Health | `http://127.0.0.1:3400/health` · `/ready` | gate only |
+
+Bun `https://anexomail.com/api/public/polar/webhook` Polar dashboard mein **nahi**. Sirf forward `:3400`.
+
+Personal vs Business kind / E2 SQL Polar SKU **map** hai — Polar pe naya product ya dummy engine change **nahi**.
