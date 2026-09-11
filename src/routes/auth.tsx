@@ -103,7 +103,7 @@ function AuthPage() {
     const session = authenticated ?? (await api<Session>("/api/auth/session"));
     acceptSession(session);
     window.sessionStorage.removeItem("anexo.pending.checkout");
-    // Polar checkout founder ke dummy webhook / PM2 rust engine par hai — yahan
+    // Polar checkout founder ke polar-rust-payment PM2 :3400 par hai — yahan
     // login polar.sh pe nahi bhejte. Awam ANEXOMAIL pages pe rehta hai.
     // FOUNDER PROTOCOL: founder ko awam ka claim/onboarding kabhi nahi — seedha /app.
     const stored =

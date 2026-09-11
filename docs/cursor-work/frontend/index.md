@@ -22,4 +22,4 @@ cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 res
 | Personal vs Business kind | Polar SKU alag nahi — `personal-business-kind.md` + `sql/phase65_account_kind.sql` | READY — live unproven |
 | Auth kind cards | Login “Choose your package” hata → Create your account for workspace + Personal\|Business cards | READY — live unproven |
 | Personal Polar map | `personal-polar-map.md` — paise landing 4 cards; Personal Basic/Pro/Premium = Polar Basic/Pro/Business Pro + kind | READY — live unproven |
-| Checkout + signup land | `checkout-signup-pattern.md` — Get started `/plans`; new account `/plans`; pay then Personal dashboard / Business org; Polar dummy no-touch | READY |
+| Checkout + signup land | `checkout-signup-pattern.md` — Get started `/plans`; new account `/plans`; pay then Personal dashboard / Business org; Polar rust payment no-touch | READY |

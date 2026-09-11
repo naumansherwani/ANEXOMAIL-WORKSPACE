@@ -1,11 +1,11 @@
 ---
-description: Founder checkout + signup + payment-success pattern. Polar dummy no-touch. Polish, do not tear.
+description: Founder checkout + signup + payment-success pattern. Polar rust payment no-touch. Polish, do not tear.
 alwaysApply: true
 ---
 
 # Checkout → account → pay → land (locked)
 
-Do **not** mention SQL files the founder already ran. Polar dummy `:3400` **no-touch**.
+Do **not** mention SQL files the founder already ran. Polar rust payment `:3400` **no-touch**.
 
 ANEXOChat **offer** = Business account. Personal Pro still gets Chat **power**. Org = Business only.
 
@@ -20,7 +20,7 @@ Masood / Humza / Raana = Sign in. Unhein `/plans` mat bhejo.
 
 | Kind | Land |
 |---|---|
-| Personal | `/dashboard` — CRM **Billing** real wire (`/app/billing`, dummy 200) |
+| Personal | `/dashboard` — CRM **Billing** real wire (`/app/billing`, engine 200) |
 | Business | `/onboarding` — organisation **name + domain**, then dashboard. CRM Billing bhi real wire |
 | Guest (no session) | `/auth` — email already on recovery |
 

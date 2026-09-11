@@ -1,6 +1,6 @@
 # Founder pattern — Get started / Sign in / Polar / land
 
-**Status:** READY in repo. Polar dummy `:3400` no-touch.
+**Status:** READY in repo. Polar rust payment `:3400` no-touch.
 
 ANEXOChat Polar pe **Business account** ka offer hai. Personal Pro ko wahi **power** milti hai (Org nahi).
 

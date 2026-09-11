@@ -7,7 +7,7 @@ alwaysApply: true
 
 Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR, **Rust :3200 PRIMARY**, Bun fallback, Supabase truth.
 
-**Polar payment (locked):** asli Polar.com webhook nahi chalti. Founder dummy **`polar-rust-payment` PM2 :3400**. Codes **no-touch**. Agent sirf endpoint check: PRIMARY `https://polarpayments.anexomail.com/api/v1/polar-webhook` · BACKUP `https://anexomail.com/api/v1/polar-webhook` · engine `POST /api/v1/polar-webhook`. Bun `/api/public/polar/webhook` dashboard mein nahi.
+**Polar payment (locked):** founder engine **`polar-rust-payment` PM2 :3400** (HTTP 200, no-touch). Agent sirf endpoint check: PRIMARY `https://polarpayments.anexomail.com/api/v1/polar-webhook` · BACKUP `https://anexomail.com/api/v1/polar-webhook` · engine `POST /api/v1/polar-webhook`. Bun `/api/public/polar/webhook` dashboard mein nahi. Is ko dummy mat bolo.
 
 **Server pull — sirf yeh (kuch add mat karo):**
 ```bash

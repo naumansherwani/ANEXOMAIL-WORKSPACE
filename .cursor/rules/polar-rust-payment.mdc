@@ -1,15 +1,15 @@
 ---
-description: Polar Rust payment is dummy PM2 on :3400. No-touch. Only check endpoints.
+description: Polar Rust payment is founder engine PM2 :3400. No-touch. Only check endpoints.
 alwaysApply: true
 ---
 
-# Polar Rust payment — no-touch (dummy)
+# Polar Rust payment — no-touch
 
-Asli Polar.com webhook **chalti nahi**. Founder ne PM2 pe **`polar-rust-payment` :3400** banayi; codes se **dummy**. Is liye bar bar **no-touch**.
+Founder ka payment engine: PM2 **`polar-rust-payment` :3400**. Kabza, **HTTP 200**. Is ko "dummy" mat bolo. Codes **no-touch**.
 
 **Touch banned:** `server/rust/polar-payment/` (`main.rs` `Cargo.toml` `deploy.sh`) · `server/routes/polar.ts` webhook/bridge · Polar webhook SQL `sql/phase50*` `sql/phase51*` · Polar dashboard URLs · `.env` secrets · `plans.ts`.
 
-Agent **sirf** yeh dekh sakta hai: endpoint sahi hai ya nahi. Dummy codes rewrite / “fix Polar” / naya webhook **banned**.
+Agent **sirf** yeh dekh sakta hai: endpoint sahi hai ya nahi. Engine rewrite / “fix Polar” / naya webhook **banned**.
 
 ## Endpoints (locked)
 
@@ -22,4 +22,4 @@ Agent **sirf** yeh dekh sakta hai: endpoint sahi hai ya nahi. Dummy codes rewrit
 
 Bun `https://anexomail.com/api/public/polar/webhook` Polar dashboard mein **nahi**. Sirf forward `:3400`.
 
-Personal vs Business kind / checkout land — Polar pe naya product ya dummy engine change **nahi**. Success email recovery inbox pe Polar/engine se jati hai — yahan se mail mat likho.
+Personal vs Business kind / checkout land — Polar pe naya product ya engine change **nahi**. Success email recovery inbox pe Polar/engine se jati hai — yahan se mail mat likho.
