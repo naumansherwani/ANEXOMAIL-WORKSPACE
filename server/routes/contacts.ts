@@ -68,10 +68,48 @@ function shapeContact(row: any, tagNames: string[] = []): any {
   };
 }
 
+// No PostgREST `company:companies(...)` embed. Live DB often has company_domain
+// without a contacts→companies FK in the schema cache (PGRST200). Names come
+// from a second query on `companies.domain`.
 const SELECT_CONTACT =
   "id, display_name, primary_address, addresses, title, company_domain, vip, notes, " +
   "stats:contact_stats(messages_in, messages_out, avg_reply_minutes, open_threads, " +
-  "last_contact_at, relationship, health_score), company:companies(name)";
+  "last_contact_at, relationship, health_score)";
+
+const SELECT_CONTACT_PLAIN =
+  "id, display_name, primary_address, addresses, title, company_domain, vip, notes";
+
+async function withCompanyNames(orgId: string, rows: any[]): Promise<any[]> {
+  const domains = [
+    ...new Set(
+      rows
+        .map((r) => String(r.company_domain || "").trim().toLowerCase())
+        .filter(Boolean),
+    ),
+  ];
+  if (!domains.length) return rows;
+  const { data } = await supa
+    .from("companies")
+    .select("domain, name")
+    .eq("org_id", orgId)
+    .in("domain", domains);
+  const names = new Map<string, string>();
+  for (const c of data || []) {
+    const d = String((c as any).domain || "").trim().toLowerCase();
+    const n = String((c as any).name || "").trim();
+    if (d && n) names.set(d, n);
+  }
+  return rows.map((r) => {
+    const d = String(r.company_domain || "").trim().toLowerCase();
+    const name = names.get(d);
+    if (!name) return r;
+    return { ...r, company: { name }, company_name: r.company_name || name };
+  });
+}
+
+function isSchemaCacheError(message: string | undefined): boolean {
+  return /schema cache|PGRST200|relationship between/i.test(String(message || ""));
+}
 
 async function tagsFor(orgId: string, contactIds: string[]) {
   const map = new Map<string, string[]>();
@@ -126,19 +164,25 @@ contactsRouter.get("/contacts", async (req, res) => {
   const filter = String(req.query.filter || "all");
   const tag = String(req.query.tag || "").trim();
 
-  let query = supa.from("contacts").select(SELECT_CONTACT).eq("org_id", c.orgId);
-  if (q) {
-    const like = `%${q}%`;
-    query = query.or(
-      `display_name.ilike.${like},primary_address.ilike.${like},company_domain.ilike.${like}`,
-    );
-  }
-  if (filter === "vip") query = query.eq("vip", true);
+  const applyFilters = (select: string) => {
+    let query = supa.from("contacts").select(select).eq("org_id", c.orgId);
+    if (q) {
+      const like = `%${q}%`;
+      query = query.or(
+        `display_name.ilike.${like},primary_address.ilike.${like},company_domain.ilike.${like}`,
+      );
+    }
+    if (filter === "vip") query = query.eq("vip", true);
+    return query.limit(500);
+  };
 
-  const { data, error } = await query.limit(500);
+  let { data, error } = await applyFilters(SELECT_CONTACT);
+  if (error && isSchemaCacheError(error.message)) {
+    ({ data, error } = await applyFilters(SELECT_CONTACT_PLAIN));
+  }
   if (error) return res.status(500).json({ error: error.message });
 
-  let rows = data || [];
+  let rows = await withCompanyNames(c.orgId, data || []);
 
   // relationship / behaviour filters (stats side)
   const rel = (r: any) => r.stats?.relationship || "new";
@@ -168,16 +212,25 @@ contactsRouter.get("/contacts", async (req, res) => {
 
 contactsRouter.get("/contacts/:id", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
-  const { data, error } = await supa
+  let { data, error } = await supa
     .from("contacts")
     .select(SELECT_CONTACT)
     .eq("org_id", c.orgId)
     .eq("id", req.params.id)
     .maybeSingle();
+  if (error && isSchemaCacheError(error.message)) {
+    ({ data, error } = await supa
+      .from("contacts")
+      .select(SELECT_CONTACT_PLAIN)
+      .eq("org_id", c.orgId)
+      .eq("id", req.params.id)
+      .maybeSingle());
+  }
   if (error) return res.status(500).json({ error: error.message });
   if (!data) return res.status(404).json({ error: "not_found" });
+  const [row] = await withCompanyNames(c.orgId, [data]);
   const tagMap = await tagsFor(c.orgId, [req.params.id]);
-  res.json({ contact: shapeContact(data, tagMap.get(req.params.id) || []) });
+  res.json({ contact: shapeContact(row, tagMap.get(req.params.id) || []) });
 });
 
 contactsRouter.patch("/contacts/:id", async (req, res) => {
@@ -322,13 +375,21 @@ function shapeCompany(row: any, people: any[]): any {
 }
 
 async function peopleOfDomain(orgId: string, domain: string) {
-  const { data } = await supa
+  let { data, error } = await supa
     .from("contacts")
     .select(SELECT_CONTACT)
     .eq("org_id", orgId)
     .eq("company_domain", domain)
     .limit(500);
-  const rows = data || [];
+  if (error && isSchemaCacheError(error.message)) {
+    ({ data } = await supa
+      .from("contacts")
+      .select(SELECT_CONTACT_PLAIN)
+      .eq("org_id", orgId)
+      .eq("company_domain", domain)
+      .limit(500));
+  }
+  const rows = await withCompanyNames(orgId, data || []);
   const tagMap = await tagsFor(orgId, rows.map((r: any) => r.id));
   return rows.map((r: any) => shapeContact(r, tagMap.get(r.id) || []));
 }
@@ -381,13 +442,22 @@ contactsRouter.get("/search/universal", async (req, res) => {
   }
   const like = `%${q}%`;
 
-  const [peopleRes, companyRes, threadRes, attachRes] = await Promise.all([
-    supa
+  let peopleRes = await supa
+    .from("contacts")
+    .select(SELECT_CONTACT)
+    .eq("org_id", c.orgId)
+    .or(`display_name.ilike.${like},primary_address.ilike.${like}`)
+    .limit(8);
+  if (peopleRes.error && isSchemaCacheError(peopleRes.error.message)) {
+    peopleRes = await supa
       .from("contacts")
-      .select(SELECT_CONTACT)
+      .select(SELECT_CONTACT_PLAIN)
       .eq("org_id", c.orgId)
       .or(`display_name.ilike.${like},primary_address.ilike.${like}`)
-      .limit(8),
+      .limit(8);
+  }
+
+  const [companyRes, threadRes, attachRes] = await Promise.all([
     supa
       .from("companies")
       .select("domain, name")
@@ -410,7 +480,7 @@ contactsRouter.get("/search/universal", async (req, res) => {
       .limit(8),
   ]);
 
-  const peopleRows = peopleRes.data || [];
+  const peopleRows = await withCompanyNames(c.orgId, peopleRes.data || []);
   const tagMap = await tagsFor(c.orgId, peopleRows.map((r: any) => r.id));
 
   const companies: any[] = [];

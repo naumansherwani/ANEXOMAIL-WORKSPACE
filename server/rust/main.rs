@@ -162,7 +162,7 @@ async fn auth_user(token: &str) -> Option<(String, String)> {
     Some((id, email))
 }
 
-/// Gate DB ka `chat_access()` — Basic/Pro par false. Frontend ka claim nahi maana jata.
+/// Gate DB ka `chat_access()` — Basic false. Pro / Business / Business Pro / AI true.
 async fn chat_identity(token: &str) -> Result<Me, (StatusCode, &'static str, String)> {
     let (id, email) = auth_user(token)
         .await
@@ -175,7 +175,7 @@ async fn chat_identity(token: &str) -> Result<Me, (StatusCode, &'static str, Str
         return Err((
             StatusCode::FORBIDDEN,
             "chat_not_entitled",
-            "business".to_string(),
+            "Chat is on Personal Pro, Business and Business Pro.".to_string(),
         ));
     }
 

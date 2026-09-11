@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
+import { useLocale } from "@/lib/i18n";
+import { isChatEntitlementError } from "@/lib/chat-transport";
 import {
   PROMISE_LABEL,
   PROMISE_TONE,
@@ -22,6 +24,7 @@ import {
  * "Kept" bina evidence namumkin: server hi mana kar deta hai.
  */
 export function PromiseRecovery() {
+  const { t } = useLocale();
   const board = usePromiseBoard();
   const recover = usePromiseRecover();
   const keep = usePromiseKeep();
@@ -140,6 +143,13 @@ export function PromiseRecovery() {
 
   if (board.isPending) {
     return <p className="ax-caption text-muted-foreground">Reading the promise ledger…</p>;
+  }
+  if (board.error && isChatEntitlementError(board.error)) {
+    return (
+      <p className="ax-caption rounded-xl border border-border px-ax-3 py-ax-3 text-muted-foreground">
+        {t("Promises from ANEXOChat appear here. Nothing is on this ledger yet.")}
+      </p>
+    );
   }
   if (board.error) {
     return (

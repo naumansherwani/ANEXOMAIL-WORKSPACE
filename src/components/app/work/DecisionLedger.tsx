@@ -13,8 +13,10 @@ import {
   useDecisionUnlink,
 } from "@/lib/chat-decisions";
 import { useDecisionToEmail } from "@/lib/chat-email-bridge";
+import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
+import { isChatEntitlementError } from "@/lib/chat-transport";
 
 const utc = (iso: string) => new Date(iso).toISOString().replace("T", " ").slice(0, 16) + " UTC";
 
@@ -27,6 +29,7 @@ const utc = (iso: string) => new Date(iso).toISOString().replace("T", " ").slice
  * anything merely nearby is shown separately as "possibly affected".
  */
 export function DecisionLedger() {
+  const { t } = useLocale();
   const board = useDecisionBoard();
   // PHASE 30 — decision → cited email draft (consent gate on send, never auto-sent).
   const toEmail = useDecisionToEmail();
@@ -110,6 +113,10 @@ export function DecisionLedger() {
 
       {board.isPending ? (
         <p className="ax-caption text-muted-foreground">Reading the ledger…</p>
+      ) : board.error && isChatEntitlementError(board.error) ? (
+        <p className="ax-caption text-muted-foreground">
+          {t("Decisions from ANEXOChat appear here. Nothing is recorded yet.")}
+        </p>
       ) : board.error ? (
         <p className="ax-caption text-amber-400">Ledger didn&apos;t load: {board.error.message}</p>
       ) : decisions.length === 0 ? (

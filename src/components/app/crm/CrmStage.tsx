@@ -113,7 +113,7 @@ export function CrmStage({ children }: { children: ReactNode }) {
   const board = live.data;
 
   const nav: NavItem[] = [
-    { to: "/app/crm", label: "Dashboard", exact: true },
+    { to: "/app/crm", label: "Overview", exact: true },
     { to: "/app/crm/leads", label: "Leads" },
     { to: "/app/crm/pipeline", label: "Pipeline" },
     { to: "/app/crm/relationships", label: "Relationships" },

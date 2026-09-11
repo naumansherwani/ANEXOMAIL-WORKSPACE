@@ -18,6 +18,7 @@ import {
   type SmartFilter,
 } from "@/lib/contacts";
 import { relativeTime } from "@/lib/mail";
+import { useLocale } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 type View = "people" | "companies";
@@ -164,6 +165,7 @@ function PeopleRail({
   activeId: string;
   onOpen: (id: string) => void;
 }) {
+  const { t } = useLocale();
   if (state.error) {
     if (state.error.isNotImplemented || state.error.code === "no_api_url") {
       return (
@@ -180,8 +182,8 @@ function PeopleRail({
     return (
       <EmptyState
         icon={<Users className="size-5" />}
-        title="No contacts match"
-        body="Contacts build themselves from real conversations, and stay editable by hand."
+        title={t("No people yet")}
+        body={t("People appear here from real conversations. Nothing has arrived in this mailbox yet.")}
       />
     );
   }

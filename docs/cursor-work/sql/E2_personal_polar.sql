@@ -127,6 +127,75 @@ grant execute on function public.personal_name_for_polar(text) to authenticated,
 grant execute on function public.personal_workspace_label(uuid) to authenticated, service_role;
 grant select on public.personal_polar_map to authenticated, anon, service_role;
 
+-- Polar Pro (Masood) = Personal Pro = Chat. Old chat_access only allowed
+-- business / business_pro / AI — Pro SKU 403, Work showed "Ledger didn't load: business".
+create or replace function public.chat_access(_user_id uuid)
+returns boolean
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+declare
+  ok boolean := false;
+  pl text;
+  kind text;
+  email text;
+begin
+  if _user_id is null then return false; end if;
+
+  if to_regclass('public.founder_accounts') is not null then
+    execute 'select exists(select 1 from public.founder_accounts where user_id = $1)'
+      into ok using _user_id;
+    if ok then return true; end if;
+  end if;
+
+  select u.email into email from auth.users u where u.id = _user_id;
+
+  if email is not null and to_regclass('public.family_accounts') is not null then
+    execute $q$
+      select plan from public.family_accounts
+      where lower(email) = lower($1)
+      limit 1
+    $q$ into pl using email;
+  end if;
+
+  if (pl is null or btrim(pl) = '')
+     and to_regclass('public.entitlement_state') is not null then
+    execute $q$
+      select plan from public.entitlement_state
+      where user_id = $1
+        and (active_until is null or active_until > now())
+      order by updated_at desc nulls last
+      limit 1
+    $q$ into pl using _user_id;
+  end if;
+
+  pl := replace(lower(coalesce(nullif(btrim(pl), ''), '')), '-', '_');
+  if pl = 'businesspro' then pl := 'business_pro'; end if;
+
+  -- Polar Pro £46 (Personal Pro) · Business · Business Pro · AI grants
+  if pl in ('pro', 'business', 'business_pro', 'ai_pro', 'ai_business', 'ai_executive') then
+    return true;
+  end if;
+
+  if to_regclass('public.account_profiles') is not null then
+    select lower(nullif(btrim(p.preferences->>'workspace_kind'), ''))
+      into kind
+    from public.account_profiles p
+    where p.user_id = _user_id;
+  end if;
+
+  if kind = 'personal' and pl is not null and pl <> '' and pl <> 'basic' then
+    return true;
+  end if;
+
+  return false;
+end;
+$$;
+
+grant execute on function public.chat_access(uuid) to authenticated, service_role;
+
 -- Proof — Personal rows only. Business £97 yahan nahi.
 select polar_sku, personal_name, polar_price_gbp
 from public.personal_polar_map

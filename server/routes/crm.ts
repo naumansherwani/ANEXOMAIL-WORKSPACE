@@ -269,7 +269,7 @@ function emailOf(value: unknown) {
 
 const CONTACT_SELECT =
   "id, display_name, primary_address, company_domain, health_score, last_contact_at, " +
-  "stats:contact_stats(messages_in, messages_out, avg_reply_minutes, open_threads, last_contact_at, relationship, health_score), company:companies(name)";
+  "stats:contact_stats(messages_in, messages_out, avg_reply_minutes, open_threads, last_contact_at, relationship, health_score)";
 
 function shapePerson(row: any) {
   const s = row?.stats || {};
