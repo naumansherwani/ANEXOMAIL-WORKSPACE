@@ -57,7 +57,7 @@ Har E isi stack pe. Naya architecture nahi. **Backend kis E pe** = neeche wali t
 | E | Claude | Browser REST (Bun :3100) | Rust :3200 PRIMARY | Rust? |
 |---|---|---|---|---|
 | **E1** | F1.2 shell | — (frontend rail) | — | nahi |
-| **E1A** | F12 CRM + locales | `/api/crm/*` `/api/locale/*` FALLBACK | `/rpc/crm.*` pehle (`rpcOrRest`) | **HAAN** — Bun jab Rust route na ho |
+| **E1A** | F12 CRM + locales | `/api/crm/*` `/api/locale/*` **FALLBACK only** | `/rpc/crm.*` `/rpc/locale.*` **PRIMARY** (`rpcOrRest`: Rust pehle) | **YES — Rust PRIMARY**. Bun tab jab Rust 404/501/502/503 |
 | **E2** | F1 auth | login / signup / session / passkey | ❌ | **kabhi nahi** — session Bun |
 | **E3** | F3 inbox | `/api/mail/*` FALLBACK | `/rpc/mail.*` + `/wt/mail` | **HAAN — PRIMARY** |
 | **E4** | F4 GATE | `POST /api/mail/send` → Postfix | delivery push sent→delivered→read | **HAAN** — status; SMTP Postfix |
@@ -71,6 +71,8 @@ Har E isi stack pe. Naya architecture nahi. **Backend kis E pe** = neeche wali t
 | LEO | F11 | `/api/ai/ask` — **AI host baad** | ❌ | nahi is execute pe |
 
 Payments Polar Rust **phase wait nahi** — pehle se. Mail SMTP = Postfix, Rust inbox/push.
+
+**E1A lock:** CRM/locale **Rust PRIMARY**. `src/lib/rpc.ts` → pehle `POST /rpc/{procedure}`, Rust route na ho to hi Bun `/api/*`. Bun ko PRIMARY banana **banned**.
 
 ---
 
