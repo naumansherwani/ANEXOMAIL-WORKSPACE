@@ -19,8 +19,8 @@
 | SSR runtime | Bun — Nitro bun preset |
 | PM2 interpreter | bun |
 | Frontend port | 3000 |
-| Backend PRIMARY | Rust :3200 — Tokio async, WebTransport, tRPC, PostgreSQL |
-| Backend FALLBACK | Bun :3100–3300 |
+| Backend PRIMARY | Rust :3200 — Tokio async, WebTransport, QUIC, tRPC, PostgreSQL. **Har naya phase yahi (locked 12 Sep 2026).** |
+| Backend FALLBACK | Bun :3100–3300 — **fallback total**. Naya Bun-primary **nahi**. |
 | Emergency only | Node 22 (normal kaam mein nahi) |
 | Database | Supabase / PostgreSQL (source of truth) |
 | Mail | Postfix / Dovecot / OpenDKIM (Hetzner pe installed) |
@@ -100,6 +100,8 @@ Ab se sab kaam `docs/cursor-work/` mein:
 - ANEXOChat 32+ → `docs/cursor-work/anexochat/`
 
 **SQL fail rule (locked):** Fail ho to **usi file** ko shuru se theek likho. Naya naam (`phaseNNb`, `_fix`, `_v2`) **banned**. Duplicate patch file delete.
+
+**Phase 60s no-touch (locked 11 Sep 2026):** `sql/phase60–62` aur `docs/cursor-work/sql/phase63–65` founder blueprint hain. Agent edit / rewrite / dubara-run **nahi**. Naya SQL = E-series `docs/cursor-work/sql/E<n>_….sql` (`ANEXOMAIL-EXECUTE.md`).
 ### Rule 9 — Wire rule
 Har wiring ka record `docs/wire/` ya `docs/cursor-work/` mein. Status sirf DONE / READY / TODO.
 

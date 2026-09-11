@@ -45,8 +45,8 @@ Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro 
 | Edge | Caddy — HTTPS + HTTP/3 |
 | Frontend | React 19.2 · TanStack Start v1 · Router 1.17.0 · Vite 8.2 · Tailwind v4.2 · Radix + shadcn/ui · Framer Motion · GSAP · Three.js |
 | SSR | Bun · Nitro bun preset · PM2 interpreter bun · :3000 |
-| Backend PRIMARY | Rust :3200 — Tokio async, WebTransport, tRPC, PostgreSQL |
-| Backend FALLBACK | Bun :3100–3300 |
+| Backend PRIMARY | Rust :3200 — Tokio async, WebTransport, QUIC, tRPC, PostgreSQL. Har naya phase yahi (12 Sep 2026). |
+| Backend FALLBACK | Bun :3100–3300 — fallback total. Naya Bun-primary nahi. |
 | Emergency | Node 22 only |
 | Database | Supabase / PostgreSQL |
 | Mail | Postfix / Dovecot / OpenDKIM |
@@ -54,7 +54,7 @@ Workspace cards = **LEO zero**. AI grant includes platform (AI Exec → Biz Pro 
 
 Har E isi stack pe. Naya architecture nahi. **Backend kis E pe** = neeche wali table (Claude F-map, E-series tarteeb). Alag “Rust phase” **nahi**.
 
-**Lock 11 Sep 2026 — next phases:** naya wire **Rust :3200** (`/rpc/*` + `/wt/*`). Bun `/api/*` fallback only, **E2 auth Bun** (login/session/passkey Rust nahi). Naya Bun-primary feature banned. Polar webhook no-touch.
+**Lock 12 Sep 2026 — har naya phase:** backend **Rust :3200** async Tokio + **WebTransport** + **QUIC** (`/rpc/*` + `/wt/*`). Bun `/api/*` = **fallback total**. Naya Bun-primary **banned**. Polar rust payment `:3400` no-touch. Frontend = React + Bun SSR `:3000` (backend nahi).
 
 ### Backend per E (Claude → E — locked)
 

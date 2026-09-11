@@ -5,7 +5,7 @@ alwaysApply: true
 
 # Locked ops
 
-Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR, **Rust :3200 PRIMARY**, Bun fallback, Supabase truth.
+Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun :3000 SSR (frontend only). **Backend PRIMARY = Rust :3200 — async Tokio, WebTransport, QUIC.** Bun `:3100–3300` = **fallback total**. Naya phase Bun-primary **banned**. Polar rust payment `:3400` no-touch.
 
 **Polar payment (locked):** Polar rust payment **`polar-rust-payment` PM2 :3400** (HTTP 200, no-touch). Agent sirf endpoint check: PRIMARY `https://polarpayments.anexomail.com/api/v1/polar-webhook` · BACKUP `https://anexomail.com/api/v1/polar-webhook` · engine `POST /api/v1/polar-webhook`. Bun `/api/public/polar/webhook` dashboard mein nahi.
 
