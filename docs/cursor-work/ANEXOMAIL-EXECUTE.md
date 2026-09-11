@@ -79,7 +79,7 @@ E1 package rail → E1A CRM + 28 locales → E2 auth/session → E3 inbox KEEP �
 | E | Claude | Original | Lovable (keep, wire) | Mix hatao | Status |
 |---|---|---|---|---|---|
 | **E1** | F1.2 | Ph 1 shell | `AppShell.tsx` `host.ts` `plan-surface.ts` `PlanSurfaceGate.tsx` | Package rail = cards. Naam chip **sirf** right avatar. CRM/Speed/AI dump. Landing / `plans.ts` no-touch | **READY** — repo. **DONE** after pull + live: Basic vs Pro vs Business rail, no Leo on anexomail.com |
-| **E1A** | — | CRM + 28 locales | `app.crm*` `i18n` `server/routes/crm.ts` `server/routes/locale.ts` SQL phase64 | Alag CRM product, Argos widget, Leo agent, dummy strings | **READY** — repo. **DONE nahi** until pull + live |
+| **E1A** | — | CRM + 28 locales | `app.crm*` `i18n` `server/routes/crm.ts` `server/routes/locale.ts` SQL phase64 | Alag CRM product, Argos widget, Leo agent, dummy strings | **READY** — GitHub. **DONE nahi** until pull + Humza/Pro live: 5-item CRM nav, suggested leads from mail, New-deal drawer, slim KPI, no auth language chip |
 | **E2** | F1 | Ph 5A auth | `auth.tsx` `server/routes/auth.ts` | `workspace_plan` sach. Sessions = Chrome·Windows, Bun dump nahi | **not live** — login hai, plan/sessions live test nahi |
 | **E3** | F3 | Ph 2 + **7** mail | `ia.ts` `app.mail.*` `MailRail` | Folders pane. Inbox zero honest. Rewrite nahi | list live; DONE tab E3 verify + E1 live close |
 | **E4** | **F4 GATE** | Ph 9 + 52–58 | `ComposeStudio` `sendmail.ts` Postfix | Leo compose se **nikaal** (mail host). Send+receive | **not live** — E1–E3 DONE ke baad |
