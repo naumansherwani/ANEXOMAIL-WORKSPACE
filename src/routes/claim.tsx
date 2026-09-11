@@ -10,9 +10,9 @@ import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 
 /**
- * Identity claim — locked rule: signing in with Google, Apple or GitHub only
- * proves who you are. Before the workspace opens, every account must own an
- * `@anexomail.com` identity. No skip, no back door.
+ * Identity claim — email/password account ke baad har awam user ko
+ * `@anexomail.com` mailbox chahiye. Social sign-in ANEXOMAIL par nahi.
+ * No skip, no back door.
  */
 export const Route = createFileRoute("/claim")({
   ssr: false,
@@ -109,6 +109,20 @@ function ClaimPage() {
       });
       if (res.token) sessionToken.set(res.token);
       await refresh();
+      const stored =
+        typeof window !== "undefined" ? window.sessionStorage.getItem("anexo.pending.workspace_kind") : null;
+      const kind =
+        stored === "personal" || stored === "business"
+          ? stored
+          : session?.user.account_kind === "personal" || session?.user.account_kind === "business"
+            ? session.user.account_kind
+            : null;
+      if (kind === "personal") {
+        await api("/api/workspace/personal", { method: "POST", body: "{}" });
+        window.sessionStorage.removeItem("anexo.pending.workspace_kind");
+        window.location.replace("/dashboard");
+        return;
+      }
       void navigate({ to: "/onboarding", replace: true });
     } catch (e) {
       setError(

@@ -12,6 +12,23 @@ export type WorkspacePlanId = "basic" | "pro" | "business" | "business_pro";
 
 export type AccountKind = "personal" | "business";
 
+export type PersonalTierId = "personal_basic" | "personal_pro" | "personal_premium";
+
+/**
+ * Paise Polar landing cards se. Kind personal hone ke baad SKU yeh naam ban'ta hai.
+ * Landing pe Personal Polar SKU nahi. Webhook no-touch — `workspace_plan` pehle se.
+ *
+ * Polar Basic £23 → Personal Basic
+ * Polar Pro £46 → Personal Pro
+ * Polar Business £97 → Business kind (company). Agar kind personal ho to Personal Pro power.
+ * Polar Business Pro £2850 → kind personal = Personal Premium; kind business = Business Pro
+ */
+export function polarToPersonalTier(plan: WorkspacePlanId): PersonalTierId {
+  if (plan === "business_pro") return "personal_premium";
+  if (plan === "pro" || plan === "business") return "personal_pro";
+  return "personal_basic";
+}
+
 export type SurfaceHosts = {
   publicMailHost: boolean;
   aiHost: boolean;
@@ -42,12 +59,22 @@ export function normalizeWorkspacePlan(plan: string | null | undefined): Workspa
   return "basic";
 }
 
-/** Display name. Polar SKU stays Basic/Pro/Business/Business Pro — kind only changes the label. */
-export function packageCopyName(plan: WorkspacePlanId, kind?: AccountKind | null): string {
+/** Display name. AI grant apna naam rakhta hai — Raana = AI Executive, Business Pro nahi. */
+export function packageCopyName(
+  plan: WorkspacePlanId,
+  kind?: AccountKind | null,
+  aiPlan?: string | null,
+): string {
+  const ai = String(aiPlan || "")
+    .trim()
+    .toLowerCase();
+  if (ai === "ai_executive") return "AI Executive";
+  if (ai === "ai_business") return "AI Business";
+  if (ai === "ai_pro" || ai === "ai") return "AI Pro";
   const k = kind ?? resolveAccountKind(null, plan);
   if (k === "personal") {
-    if (plan === "business_pro" || plan === "business") return "Personal Premium";
-    if (plan === "pro") return "Personal Pro";
+    if (plan === "business_pro") return "Personal Premium";
+    if (plan === "pro" || plan === "business") return "Personal Pro";
     return "Personal Basic";
   }
   if (plan === "business_pro") return "Business Pro";
@@ -127,7 +154,7 @@ export function surfaceFromSession(
   const billed = platformPlan(user?.workspace_plan, user?.ai_plan);
   const kind = resolveAccountKind(user?.account_kind, user?.workspace_plan, orgSlug);
   const power = featurePlan(user?.workspace_plan, user?.ai_plan, kind);
-  return { billed, kind, power, copyName: packageCopyName(billed, kind) };
+  return { billed, kind, power, copyName: packageCopyName(billed, kind, user?.ai_plan) };
 }
 
 export function hasBusinessPlan(plan: string | null | undefined): boolean {

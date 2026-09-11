@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { AuthCinema } from "@/components/site/AuthCinema";
@@ -18,6 +18,11 @@ import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
 
 const KIND_KEY = "anexo.pending.workspace_kind";
+
+function lastNameFromLegal(full: string) {
+  const parts = full.trim().split(/\s+/).filter(Boolean);
+  return parts.length > 1 ? parts[parts.length - 1] : "";
+}
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -90,6 +95,7 @@ function AuthPage() {
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
   const [workspaceKind, setWorkspaceKind] = useState<"personal" | "business" | null>(null);
   const [moreDetails, setMoreDetails] = useState(false);
+  const lastNameTouched = useRef(false);
 
   const finish = async (token: string, authenticated?: Session) => {
     sessionToken.set(token);
@@ -99,13 +105,23 @@ function AuthPage() {
     // Polar checkout founder ke dummy webhook / PM2 rust engine par hai — yahan
     // login polar.sh pe nahi bhejte. Awam ANEXOMAIL pages pe rehta hai.
     // FOUNDER PROTOCOL: founder ko awam ka claim/onboarding kabhi nahi — seedha /app.
-    const target = session.user.is_founder
-      ? "/app"
-      : !session.user.anexomail_address
-        ? "/claim"
-        : session.user.onboarded
-          ? "/app"
-          : "/onboarding";
+    const stored =
+      typeof window !== "undefined" ? window.sessionStorage.getItem(KIND_KEY) : null;
+    const kind =
+      session.user.account_kind ||
+      (stored === "personal" || stored === "business" ? stored : null);
+    let target = "/onboarding";
+    if (session.user.is_founder) target = "/app";
+    else if (!session.user.anexomail_address) target = "/claim";
+    else if (kind === "personal") {
+      try {
+        await api("/api/workspace/personal", { method: "POST", body: "{}" });
+      } catch {
+        /* session still opens; onboarding can retry */
+      }
+      window.sessionStorage.removeItem(KIND_KEY);
+      target = "/dashboard";
+    } else if (session.user.onboarded) target = "/dashboard";
     setRedirectTo(target);
     setShowSplash(true);
   };
@@ -223,7 +239,7 @@ function AuthPage() {
             email,
             password,
             legal_name: name,
-            display_name: displayName.trim() || name.trim(),
+            display_name: displayName.trim() || lastNameFromLegal(name) || name.trim(),
             work_role: workRole || null,
             avatar_url: avatarUrl || null,
             preferences: {
@@ -522,17 +538,22 @@ function AuthPage() {
                               id="signup-legal-name"
                               label="Full legal name"
                               value={name}
-                              onChange={setName}
+                              onChange={(v) => {
+                                setName(v);
+                                if (!lastNameTouched.current) setDisplayName(lastNameFromLegal(v));
+                              }}
                               autoComplete="off"
                               placeholder="Your full name"
                             />
                             <Field
-                              id="signup-display-name"
-                              label="Display name"
+                              id="signup-last-name"
+                              label="Last name"
                               value={displayName}
-                              onChange={setDisplayName}
+                              onChange={(v) => {
+                                lastNameTouched.current = true;
+                                setDisplayName(v);
+                              }}
                               autoComplete="off"
-                              placeholder="What people call you"
                             />
                             <button
                               type="button"
@@ -790,7 +811,14 @@ function AuthPage() {
 
       <CinematicSplash
         open={showSplash}
-        onDone={() => redirectTo && void navigate({ to: redirectTo })}
+        onDone={() => {
+          if (!redirectTo) return;
+          if (redirectTo === "/dashboard") {
+            window.location.replace("/dashboard");
+            return;
+          }
+          void navigate({ to: redirectTo });
+        }}
       />
     </>
   );

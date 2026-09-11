@@ -43,12 +43,38 @@ function slugify(name: string, uid: string) {
   return `${base}-${uid.slice(0, 8)}`;
 }
 
+function normalizeOrgDomain(raw: unknown): string {
+  const s = String(raw || "")
+    .trim()
+    .toLowerCase()
+    .replace(/^https?:\/\//, "")
+    .replace(/\/.*$/, "")
+    .replace(/^www\./, "");
+  if (!s) {
+    const err = new Error("Organisation domain is required.");
+    (err as any).code = "bad_domain";
+    throw err;
+  }
+  if (s === "anexomail.com" || s.endsWith(".anexomail.com")) {
+    const err = new Error("Use your company domain, not anexomail.com.");
+    (err as any).code = "bad_domain";
+    throw err;
+  }
+  if (!/^[a-z0-9]([a-z0-9.-]{0,251}[a-z0-9])?\.[a-z]{2,24}$/.test(s)) {
+    const err = new Error("Enter a domain like company.com.");
+    (err as any).code = "bad_domain";
+    throw err;
+  }
+  return s;
+}
+
 /** Live parent = organisations. Domain kabhi shared anexomail.com nahi (UNIQUE). */
 async function createOperationalOrg(opts: {
   uid: string;
   name: string;
   email: string | null;
   kind: "personal" | "business";
+  domain?: string | null;
 }) {
   if (!db) throw new Error("account_service_not_configured");
   const id = randomUUID();
@@ -57,7 +83,9 @@ async function createOperationalOrg(opts: {
       ? `personal-${opts.uid.replace(/-/g, "").slice(0, 12)}`
       : slugify(opts.name, opts.uid);
 
+  const domain = opts.kind === "business" ? opts.domain || null : null;
   const orgRow: Record<string, unknown> = { id, name: opts.name, slug };
+  if (domain) orgRow.domain = domain;
   // owner_id optional on some schemas
   const withOwner = { ...orgRow, owner_id: opts.uid };
   let orgError = (await db.from("organisations").insert(withOwner)).error;
@@ -93,7 +121,7 @@ async function createOperationalOrg(opts: {
       id,
       name: opts.name,
       slug,
-      domain: null,
+      domain,
       created_by: opts.uid,
     },
     { onConflict: "id" },
@@ -120,7 +148,7 @@ async function createOperationalOrg(opts: {
     }
   }
 
-  return { id, name: opts.name, slug, domain: null, kind: opts.kind };
+  return { id, name: opts.name, slug, domain, kind: opts.kind };
 }
 
 async function stampWorkspaceKind(uid: string, kind: "personal" | "business") {
@@ -180,14 +208,19 @@ workspaceRouter.post("/organisations", async (req, res) => {
   const uid = await userId(req, res);
   if (!uid || !db) return;
   const name = String(req.body?.name || "").trim();
-  // F3 B: domain yahan accept mat karo — Ownership Center baad
   if (name.length < 2) return res.status(400).json({ error: "Organisation name is required." });
+  let domain: string;
+  try {
+    domain = normalizeOrgDomain(req.body?.domain);
+  } catch (e: any) {
+    return res.status(400).json({ error: e?.message || "Organisation domain is required." });
+  }
 
   const { data: authUser } = await db.auth.admin.getUserById(uid);
   const email = authUser.user?.email || null;
 
   try {
-    const org = await createOperationalOrg({ uid, name, email, kind: "business" });
+    const org = await createOperationalOrg({ uid, name, email, kind: "business", domain });
     await stampWorkspaceKind(uid, "business");
     return res.status(201).json(org);
   } catch (e: any) {

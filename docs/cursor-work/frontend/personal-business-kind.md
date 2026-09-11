@@ -1,6 +1,6 @@
 # Personal vs Business — Polar pe naya product NAHI
 
-**Status:** READY (repo). **DONE** nahi — pull + SQL phase65 + Masood/Humza live look.
+**Status:** READY (repo). **DONE** nahi — pull + live look. Paise Polar landing; kind signup. SQL phase65 **no-touch**.
 
 **Mashwara (locked):** Personal Polar cards / landing Personal section **mat banao**. Paise wahi 4 Polar SKUs se aate hain. Kind backend session pe hai.
 
@@ -37,7 +37,7 @@ Premium (copy) = Polar **Business Pro** SKU + kind personal. Naya Polar ID nahi.
 |---|---|---|---|
 | Masood | `pro` | personal | Mail People Calendar Work CRM Chat — **Org nahi** |
 | Humza | `business_pro` | business | + Org + Chat + CRM shared/activity |
-| Raana | AI Exec → platform Biz Pro | business | mail host = Biz Pro UX, LEO nahi |
+| Raana | **AI Executive** (`ai_plan`) | infer from grant — **Business Pro label nahi** | mail host = included platform UX, LEO `ai.anexomail.com` |
 
 ## Files
 

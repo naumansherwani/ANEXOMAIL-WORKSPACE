@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Building2, Loader2, LogIn, Users } from "lucide-react";
+import { Building2, Loader2, LogIn } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
@@ -10,7 +10,6 @@ import { Label } from "@/components/ui/label";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
-import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/onboarding")({
   ssr: false,
@@ -24,7 +23,7 @@ export const Route = createFileRoute("/onboarding")({
       { property: "og:title", content: "Create your account for workspace — ANEXOMAIL" },
       {
         property: "og:description",
-        content: "Personal mail or a named business workspace. Domain comes later.",
+        content: "Personal mail, or a named business workspace with your organisation domain.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -34,7 +33,7 @@ export const Route = createFileRoute("/onboarding")({
   component: OnboardingPage,
 });
 
-type Path = "choose" | "business-name" | "business-people";
+type Path = "choose" | "business-name";
 
 function OnboardingPage() {
   const navigate = useNavigate();
@@ -42,7 +41,7 @@ function OnboardingPage() {
 
   const [path, setPath] = useState<Path>("choose");
   const [org, setOrg] = useState("");
-  const [invites, setInvites] = useState("");
+  const [orgDomain, setOrgDomain] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const autoKind = useRef(false);
@@ -59,7 +58,7 @@ function OnboardingPage() {
       return;
     }
     if (session.user.onboarded) {
-      void navigate({ to: "/app", replace: true });
+      window.location.replace("/dashboard");
       return;
     }
     if (autoKind.current || busy || path !== "choose") return;
@@ -93,7 +92,7 @@ function OnboardingPage() {
     try {
       await api("/api/workspace/personal", { method: "POST", body: "{}" });
       await refresh();
-      void navigate({ to: "/app", replace: true });
+      window.location.replace("/dashboard");
     } catch (e) {
       fail(e);
     } finally {
@@ -108,36 +107,12 @@ function OnboardingPage() {
     try {
       await api("/api/workspace/organisations", {
         method: "POST",
-        body: JSON.stringify({ name: org }),
+        body: JSON.stringify({ name: org, domain: orgDomain }),
       });
-      await refresh();
-      setPath("business-people");
-    } catch (e) {
-      fail(e);
-    } finally {
-      setBusy(false);
-    }
-  };
-
-  const sendInvites = async (event: React.FormEvent) => {
-    event.preventDefault();
-    setError(null);
-    setBusy(true);
-    const emails = invites
-      .split(/[\s,;]+/)
-      .map((e) => e.trim())
-      .filter(Boolean);
-    try {
-      if (emails.length) {
-        await api("/api/workspace/invitations", {
-          method: "POST",
-          body: JSON.stringify({ emails, role: "member" }),
-        });
-        notify.done("Invitations sent", `${emails.length} people invited.`);
-      }
       await api("/api/auth/onboarding/complete", { method: "POST" });
       await refresh();
-      void navigate({ to: "/app", replace: true });
+      window.sessionStorage.removeItem("anexo.pending.workspace_kind");
+      window.location.replace("/dashboard");
     } catch (e) {
       fail(e);
     } finally {
@@ -180,9 +155,9 @@ function OnboardingPage() {
             <form onSubmit={createOrg} className="space-y-ax-3">
               <div className="text-center">
                 <Building2 className="mx-auto size-5 text-cyan-accent" />
-                <h1 className="ax-heading mt-ax-2 text-foreground">Name your organisation</h1>
+                <h1 className="ax-heading mt-ax-2 text-foreground">Your organisation</h1>
                 <p className="ax-caption mt-1">
-                  Only the name for now. Custom domain and DNS come later in Ownership Center.
+                  Name the company workspace, then the domain it will send from.
                 </p>
               </div>
 
@@ -190,13 +165,19 @@ function OnboardingPage() {
                 <Label htmlFor="org" className="ax-caption text-foreground">
                   Organisation name
                 </Label>
+                <Input id="org" required minLength={2} value={org} onChange={(e) => setOrg(e.target.value)} />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="org-domain" className="ax-caption text-foreground">
+                  Organisation domain
+                </Label>
                 <Input
-                  id="org"
+                  id="org-domain"
                   required
-                  minLength={2}
-                  value={org}
-                  onChange={(e) => setOrg(e.target.value)}
-                  placeholder="ANEXOMAIL"
+                  value={orgDomain}
+                  onChange={(e) => setOrgDomain(e.target.value)}
+                  autoComplete="off"
                 />
               </div>
 
@@ -221,41 +202,6 @@ function OnboardingPage() {
                 }}
               >
                 Back
-              </Button>
-            </form>
-          )}
-
-          {path === "business-people" && (
-            <form onSubmit={sendInvites} className="space-y-ax-3">
-              <div className="text-center">
-                <Users className="mx-auto size-5 text-cyan-accent" />
-                <h1 className="ax-heading mt-ax-2 text-foreground">Bring your people in</h1>
-                <p className="ax-caption mt-1">
-                  Optional now. Paste emails separated by commas, or skip and invite later.
-                </p>
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="invites" className="ax-caption text-foreground">
-                  Invite by email
-                </Label>
-                <Input
-                  id="invites"
-                  value={invites}
-                  onChange={(e) => setInvites(e.target.value)}
-                  placeholder="sara@anexomail.com, ali@anexomail.com"
-                />
-              </div>
-
-              {error && (
-                <p role="alert" className="ax-caption text-destructive">
-                  {error}
-                </p>
-              )}
-
-              <Button type="submit" className="ax-press w-full" disabled={busy}>
-                {busy && <Loader2 className="size-4 animate-spin" />}
-                {invites.trim() ? "Send invites and open mail" : "Skip and open mail"}
               </Button>
             </form>
           )}
