@@ -121,12 +121,9 @@ export function CrmStage({ children }: { children: ReactNode }) {
     ...(showCrmLedger(plan) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
   ];
 
-  /** Intelligence — folded by default so the nav stays five items. */
+  /** Intelligence — folded. Only routes registered in routeTree.gen.ts (build-safe). */
   const intelligence: NavItem[] = [
     { to: "/app/crm/relationships", label: "Relationships" },
-    { to: "/app/crm/accounts", label: "Accounts" },
-    { to: "/app/crm/tasks", label: "Tasks" },
-    { to: "/app/crm/reports", label: "Reports" },
   ];
   const [intelOpen, setIntelOpen] = useState(false);
 
