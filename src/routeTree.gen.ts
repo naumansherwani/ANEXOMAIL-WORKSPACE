@@ -97,10 +97,14 @@ import { Route as AppAnalyticsTeamRouteImport } from './routes/app.analytics.tea
 import { Route as AppAnalyticsThreadsRouteImport } from './routes/app.analytics.threads'
 import { Route as AppBillingStateRouteImport } from './routes/app.billing.state'
 import { Route as AppCrmIndexRouteImport } from './routes/app.crm.index'
+import { Route as AppCrmAccountsRouteImport } from './routes/app.crm.accounts'
 import { Route as AppCrmActivityRouteImport } from './routes/app.crm.activity'
 import { Route as AppCrmCollabRouteImport } from './routes/app.crm.collab'
 import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
+import { Route as AppCrmRelationshipsRouteImport } from './routes/app.crm.relationships'
+import { Route as AppCrmReportsRouteImport } from './routes/app.crm.reports'
+import { Route as AppCrmTasksRouteImport } from './routes/app.crm.tasks'
 import { Route as AppFounderAdminRouteImport } from './routes/app.founder_.admin'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
 import { Route as AppFounderAnalyticsRouteImport } from './routes/app.founder_.analytics'
@@ -609,6 +613,11 @@ const AppCrmIndexRoute = AppCrmIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AppCrmRoute,
 } as any)
+const AppCrmAccountsRoute = AppCrmAccountsRouteImport.update({
+  id: '/accounts',
+  path: '/accounts',
+  getParentRoute: () => AppCrmRoute,
+} as any)
 const AppCrmActivityRoute = AppCrmActivityRouteImport.update({
   id: '/activity',
   path: '/activity',
@@ -627,6 +636,21 @@ const AppCrmLeadsRoute = AppCrmLeadsRouteImport.update({
 const AppCrmPipelineRoute = AppCrmPipelineRouteImport.update({
   id: '/pipeline',
   path: '/pipeline',
+  getParentRoute: () => AppCrmRoute,
+} as any)
+const AppCrmRelationshipsRoute = AppCrmRelationshipsRouteImport.update({
+  id: '/relationships',
+  path: '/relationships',
+  getParentRoute: () => AppCrmRoute,
+} as any)
+const AppCrmReportsRoute = AppCrmReportsRouteImport.update({
+  id: '/reports',
+  path: '/reports',
+  getParentRoute: () => AppCrmRoute,
+} as any)
+const AppCrmTasksRoute = AppCrmTasksRouteImport.update({
+  id: '/tasks',
+  path: '/tasks',
   getParentRoute: () => AppCrmRoute,
 } as any)
 const AppFounderAdminRoute = AppFounderAdminRouteImport.update({
@@ -1054,10 +1078,14 @@ export interface FileRoutesByFullPath {
   '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/billing/state': typeof AppBillingStateRoute
+  '/app/crm/accounts': typeof AppCrmAccountsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/crm/relationships': typeof AppCrmRelationshipsRoute
+  '/app/crm/reports': typeof AppCrmReportsRoute
+  '/app/crm/tasks': typeof AppCrmTasksRoute
   '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
@@ -1207,10 +1235,14 @@ export interface FileRoutesByTo {
   '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/billing/state': typeof AppBillingStateRoute
+  '/app/crm/accounts': typeof AppCrmAccountsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/crm/relationships': typeof AppCrmRelationshipsRoute
+  '/app/crm/reports': typeof AppCrmReportsRoute
+  '/app/crm/tasks': typeof AppCrmTasksRoute
   '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
   '/app/founder/billing': typeof AppFounderBillingRoute
@@ -1366,10 +1398,14 @@ export interface FileRoutesById {
   '/app/analytics/team': typeof AppAnalyticsTeamRoute
   '/app/analytics/threads': typeof AppAnalyticsThreadsRoute
   '/app/billing/state': typeof AppBillingStateRoute
+  '/app/crm/accounts': typeof AppCrmAccountsRoute
   '/app/crm/activity': typeof AppCrmActivityRoute
   '/app/crm/collab': typeof AppCrmCollabRoute
   '/app/crm/leads': typeof AppCrmLeadsRoute
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
+  '/app/crm/relationships': typeof AppCrmRelationshipsRoute
+  '/app/crm/reports': typeof AppCrmReportsRoute
+  '/app/crm/tasks': typeof AppCrmTasksRoute
   '/app/founder_/admin': typeof AppFounderAdminRoute
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
   '/app/founder_/analytics': typeof AppFounderAnalyticsRoute
@@ -1529,10 +1565,14 @@ export interface FileRouteTypes {
     | '/app/analytics/team'
     | '/app/analytics/threads'
     | '/app/billing/state'
+    | '/app/crm/accounts'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/crm/relationships'
+    | '/app/crm/reports'
+    | '/app/crm/tasks'
     | '/app/founder/admin'
     | '/app/founder/ai'
     | '/app/founder/analytics'
@@ -1682,10 +1722,14 @@ export interface FileRouteTypes {
     | '/app/analytics/team'
     | '/app/analytics/threads'
     | '/app/billing/state'
+    | '/app/crm/accounts'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/crm/relationships'
+    | '/app/crm/reports'
+    | '/app/crm/tasks'
     | '/app/founder/admin'
     | '/app/founder/analytics'
     | '/app/founder/billing'
@@ -1840,10 +1884,14 @@ export interface FileRouteTypes {
     | '/app/analytics/team'
     | '/app/analytics/threads'
     | '/app/billing/state'
+    | '/app/crm/accounts'
     | '/app/crm/activity'
     | '/app/crm/collab'
     | '/app/crm/leads'
     | '/app/crm/pipeline'
+    | '/app/crm/relationships'
+    | '/app/crm/reports'
+    | '/app/crm/tasks'
     | '/app/founder_/admin'
     | '/app/founder_/ai'
     | '/app/founder_/analytics'
@@ -2580,6 +2628,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCrmIndexRouteImport
       parentRoute: typeof AppCrmRoute
     }
+    '/app/crm/accounts': {
+      id: '/app/crm/accounts'
+      path: '/accounts'
+      fullPath: '/app/crm/accounts'
+      preLoaderRoute: typeof AppCrmAccountsRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
     '/app/crm/activity': {
       id: '/app/crm/activity'
       path: '/activity'
@@ -2606,6 +2661,27 @@ declare module '@tanstack/react-router' {
       path: '/pipeline'
       fullPath: '/app/crm/pipeline'
       preLoaderRoute: typeof AppCrmPipelineRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
+    '/app/crm/relationships': {
+      id: '/app/crm/relationships'
+      path: '/relationships'
+      fullPath: '/app/crm/relationships'
+      preLoaderRoute: typeof AppCrmRelationshipsRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
+    '/app/crm/reports': {
+      id: '/app/crm/reports'
+      path: '/reports'
+      fullPath: '/app/crm/reports'
+      preLoaderRoute: typeof AppCrmReportsRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
+    '/app/crm/tasks': {
+      id: '/app/crm/tasks'
+      path: '/tasks'
+      fullPath: '/app/crm/tasks'
+      preLoaderRoute: typeof AppCrmTasksRouteImport
       parentRoute: typeof AppCrmRoute
     }
     '/app/founder_/admin': {
@@ -3151,18 +3227,26 @@ const AppBillingRouteWithChildren = AppBillingRoute._addFileChildren(
 )
 
 interface AppCrmRouteChildren {
+  AppCrmAccountsRoute: typeof AppCrmAccountsRoute
   AppCrmActivityRoute: typeof AppCrmActivityRoute
   AppCrmCollabRoute: typeof AppCrmCollabRoute
   AppCrmLeadsRoute: typeof AppCrmLeadsRoute
   AppCrmPipelineRoute: typeof AppCrmPipelineRoute
+  AppCrmRelationshipsRoute: typeof AppCrmRelationshipsRoute
+  AppCrmReportsRoute: typeof AppCrmReportsRoute
+  AppCrmTasksRoute: typeof AppCrmTasksRoute
   AppCrmIndexRoute: typeof AppCrmIndexRoute
 }
 
 const AppCrmRouteChildren: AppCrmRouteChildren = {
+  AppCrmAccountsRoute: AppCrmAccountsRoute,
   AppCrmActivityRoute: AppCrmActivityRoute,
   AppCrmCollabRoute: AppCrmCollabRoute,
   AppCrmLeadsRoute: AppCrmLeadsRoute,
   AppCrmPipelineRoute: AppCrmPipelineRoute,
+  AppCrmRelationshipsRoute: AppCrmRelationshipsRoute,
+  AppCrmReportsRoute: AppCrmReportsRoute,
+  AppCrmTasksRoute: AppCrmTasksRoute,
   AppCrmIndexRoute: AppCrmIndexRoute,
 }
 
