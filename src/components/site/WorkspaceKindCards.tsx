@@ -72,7 +72,7 @@ function KindCard({
   features: string;
   onContinue: () => void;
   continueLabel: string;
-  disabled?: boolean;
+  disabled?: boolean | undefined;
 }) {
   return (
     <div

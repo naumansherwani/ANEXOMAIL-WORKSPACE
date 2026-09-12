@@ -21,17 +21,19 @@ const KIND_KEY = "anexo.pending.workspace_kind";
 
 function lastNameFromLegal(full: string) {
   const parts = full.trim().split(/\s+/).filter(Boolean);
-  return parts.length > 1 ? parts[parts.length - 1] : "";
+  return parts.length > 1 ? (parts[parts.length - 1] ?? "") : "";
 }
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (
+    search: Record<string, unknown>,
+  ): { mode?: "signup" | "reset" | "forgot" | undefined; recovery?: string | undefined } => ({
     mode:
-      search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
-        ? search.mode
+      search["mode"] === "signup" || search["mode"] === "reset" || search["mode"] === "forgot"
+        ? search["mode"]
         : undefined,
-    recovery: typeof search.recovery === "string" ? search.recovery : undefined,
+    recovery: typeof search["recovery"] === "string" ? search["recovery"] : undefined,
   }),
   head: () => ({
     meta: [
@@ -879,7 +881,7 @@ function PasswordField({
   value: string;
   onChange: (value: string) => void;
   autoComplete: string;
-  placeholder?: string;
+  placeholder?: string | undefined;
 }) {
   const [visible, setVisible] = useState(false);
   return (

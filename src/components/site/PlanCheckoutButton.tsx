@@ -45,7 +45,7 @@ export function CheckoutButton({
   productKey: string;
   label?: string;
   source: string;
-  className?: string;
+  className?: string | undefined;
 }) {
   const { status, session } = useAuth();
   const [busy, setBusy] = useState(false);
@@ -172,7 +172,7 @@ export function PlanCheckoutButton({
 }: {
   planId: string;
   cycle: BillingCycle;
-  className?: string;
+  className?: string | undefined;
   source: string;
 }) {
   return (

@@ -17,7 +17,6 @@ type CrmPath =
   | "/app/crm/tasks"
   | "/app/crm/reports"
   | "/app/crm/collab"
-  | "/app/crm/ai"
   | "/app/billing";
 
 type NavItem = { to: CrmPath; label: string; exact?: boolean };

@@ -81,7 +81,7 @@ export async function api<T>(path: string, init?: RequestInit & { auth?: boolean
   return payload as T;
 }
 
-function apiErrorFromPayload(payload: unknown, status: number): { message: string; code?: string } {
+function apiErrorFromPayload(payload: unknown, status: number): { message: string; code?: string | undefined } {
   const fallback = `Request failed (${status}).`;
   if (!payload || typeof payload !== "object") return { message: fallback };
   const err = "error" in payload ? (payload as { error: unknown }).error : undefined;

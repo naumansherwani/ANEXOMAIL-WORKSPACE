@@ -79,7 +79,7 @@ export function ThreadList({
   /** Mobile: swipe left → archive. */
   onSwipeArchive?: (threadId: string) => void;
   /** Mobile: swipe right → snooze. */
-  onSwipeSnooze?: (threadId: string) => void;
+  onSwipeSnooze?: ((threadId: string) => void) | undefined;
   /** Mobile: long press → select. */
   onLongPress?: (threadId: string) => void;
   onStar?: (threadId: string, starred: boolean) => void;
@@ -162,7 +162,7 @@ export function ThreadList({
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
     },
   };
 
@@ -195,7 +195,7 @@ export function ThreadList({
         pullStart.current = null;
         setPull(0);
       }}
-      style={pull ? { transform: `translateY(${pull / 2}px)` } : undefined}
+      {...(pull ? { style: { transform: `translateY(${pull / 2}px)` } } : {})}
     >
       {pull > 0 && (
         <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] text-muted-foreground">

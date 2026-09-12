@@ -71,8 +71,8 @@ export function Greeting({
     }
   }
 
-  if (events.length > 0) {
-    const next = events[0];
+  const next = events[0];
+  if (next) {
     const mins = minutesUntil(next.starts_at);
     if (mins > 0 && mins < 480) {
       const label = mins < 60 ? `${mins}m` : `${Math.round(mins / 60)}h`;
