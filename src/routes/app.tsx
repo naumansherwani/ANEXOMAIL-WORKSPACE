@@ -5,6 +5,7 @@ import { AppShell } from "@/components/app/AppShell";
 import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
 import { ErrorState } from "@/components/state/StateBlock";
 import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
+import { sessionToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useRegisterDevice } from "@/lib/chat-safety";
 
@@ -53,7 +54,13 @@ function AppLayout() {
   }, [stripVisible]);
 
   useEffect(() => {
-    if (status === "signed-out" && !preview) void navigate({ to: "/auth", replace: true });
+    // Session confirm se pehle /auth nahi. loading = confirm nahi hua.
+    // Token abhi hai = /api/auth/session confirm pending — 401/slow ko signed-out mat samjho.
+    if (preview) return;
+    if (status === "loading") return;
+    if (status === "unavailable") return;
+    if (status === "signed-out" && sessionToken.get()) return;
+    if (status === "signed-out") void navigate({ to: "/auth", replace: true });
   }, [status, preview, navigate]);
 
   // PHASE 19 — device safety vault: sign-in ke baad ek dafa is device ka

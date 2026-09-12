@@ -21,19 +21,17 @@ const KIND_KEY = "anexo.pending.workspace_kind";
 
 function lastNameFromLegal(full: string) {
   const parts = full.trim().split(/\s+/).filter(Boolean);
-  return parts.length > 1 ? (parts[parts.length - 1] ?? "") : "";
+  return parts.length > 1 ? parts[parts.length - 1] : "";
 }
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
-  validateSearch: (
-    search: Record<string, unknown>,
-  ): { mode?: "signup" | "reset" | "forgot" | undefined; recovery?: string | undefined } => ({
+  validateSearch: (search: Record<string, unknown>) => ({
     mode:
-      search["mode"] === "signup" || search["mode"] === "reset" || search["mode"] === "forgot"
-        ? search["mode"]
+      search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
+        ? search.mode
         : undefined,
-    recovery: typeof search["recovery"] === "string" ? search["recovery"] : undefined,
+    recovery: typeof search.recovery === "string" ? search.recovery : undefined,
   }),
   head: () => ({
     meta: [
@@ -820,14 +818,8 @@ function AuthPage() {
         open={showSplash}
         onDone={() => {
           if (!redirectTo) return;
-          if (redirectTo === "/dashboard") {
-            window.location.replace("/dashboard");
-            return;
-          }
-          if (redirectTo === "/plans") {
-            window.location.replace("/plans");
-            return;
-          }
+          // In-app navigate — session memory (acceptSession) rehti hai.
+          // window.location.replace reload karta tha → gate dobara /auth bounce.
           void navigate({ to: redirectTo });
         }}
       />
@@ -881,7 +873,7 @@ function PasswordField({
   value: string;
   onChange: (value: string) => void;
   autoComplete: string;
-  placeholder?: string | undefined;
+  placeholder?: string;
 }) {
   const [visible, setVisible] = useState(false);
   return (
