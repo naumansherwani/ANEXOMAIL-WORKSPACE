@@ -881,6 +881,183 @@ button:disabled,
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
+/* ── WorkspaceLoader — "the workspace assembles" (pure CSS 3D) ─────────────── */
+
+.ax-loader-stage {
+  animation: ax-splash-fade-in 0.4s var(--ease-cine) both;
+}
+
+.ax-loader-scene {
+  width: 21rem;
+  height: 13rem;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.ax-loader-panel {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
+  background:
+    linear-gradient(160deg, color-mix(in oklch, var(--card) 92%, white 4%) 0%, var(--card) 100%);
+  box-shadow:
+    0 24px 60px -24px oklch(0.09 0.004 265 / 65%),
+    inset 0 1px 0 oklch(1 0 0 / 6%);
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  opacity: 0;
+  transform: rotateX(14deg) rotateY(-22deg) translateZ(-160px) translateY(24px);
+  animation:
+    ax-loader-panel-in 0.9s var(--ease-cine) forwards,
+    ax-loader-panel-float 5s ease-in-out infinite;
+}
+
+.ax-loader-rail {
+  left: 0;
+  width: 3.25rem;
+  align-items: center;
+  animation-delay: 0.05s, 1s;
+}
+
+.ax-loader-list {
+  left: 3.75rem;
+  width: 8.25rem;
+  animation-delay: 0.2s, 1.15s;
+}
+
+.ax-loader-read {
+  left: 12.5rem;
+  width: 8.5rem;
+  animation-delay: 0.35s, 1.3s;
+}
+
+.ax-loader-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--muted-foreground) 35%, transparent);
+}
+
+.ax-loader-dot:first-child {
+  background: var(--primary);
+}
+
+.ax-loader-row {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--muted-foreground) 22%, transparent);
+}
+
+.ax-loader-row--title {
+  height: 0.625rem;
+  width: 70%;
+  background: color-mix(in oklch, var(--foreground) 45%, transparent);
+}
+
+.ax-loader-row--short {
+  width: 45%;
+}
+
+/* Light sweep across the assembled panels — one pass, then gone */
+.ax-loader-sweep {
+  position: absolute;
+  inset: -1rem;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    oklch(1 0 0 / 10%) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  animation: ax-loader-sweep 1.6s var(--ease-cine) 1.1s both;
+  pointer-events: none;
+}
+
+.ax-loader-progress {
+  width: 10rem;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--border) 70%, transparent);
+  overflow: hidden;
+}
+
+.ax-loader-progress > span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: inherit;
+  background: var(--primary);
+  animation: ax-loader-progress-slide 1.4s ease-in-out infinite;
+}
+
+@keyframes ax-loader-panel-in {
+  to {
+    opacity: 1;
+    transform: rotateX(8deg) rotateY(-10deg) translateZ(0) translateY(0);
+  }
+}
+
+@keyframes ax-loader-panel-float {
+  0%,
+  100% {
+    transform: rotateX(8deg) rotateY(-10deg) translateY(0);
+  }
+  50% {
+    transform: rotateX(8deg) rotateY(-10deg) translateY(-6px);
+  }
+}
+
+@keyframes ax-loader-sweep {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes ax-loader-progress-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+.ax-loader-brand {
+  animation: ax-splash-logo-rise 0.6s var(--ease-cine) 0.15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-loader-stage,
+  .ax-loader-panel,
+  .ax-loader-sweep,
+  .ax-loader-brand,
+  .ax-loader-progress > span {
+    animation: none !important;
+  }
+  .ax-loader-panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html[data-ax-calm] .ax-loader-panel,
+html[data-ax-calm] .ax-loader-sweep,
+html[data-ax-calm] .ax-loader-progress > span,
+html[data-ax-motion="reduced"] .ax-loader-panel,
+html[data-ax-motion="reduced"] .ax-loader-sweep,
+html[data-ax-motion="reduced"] .ax-loader-progress > span {
+  animation: none !important;
+}
+html[data-ax-calm] .ax-loader-panel,
+html[data-ax-motion="reduced"] .ax-loader-panel {
+  opacity: 1;
+  transform: none;
+}
+
 /* ── Auth Cinema panel ─────────────────────────────────────────────────────── */
 
 /* Breathing gradient — Blue → Indigo → Deep navy loop, 12s, buttery smooth */
@@ -936,5 +1113,12 @@ html[data-ax-motion="reduced"] .ax-splash-logo,
 html[data-ax-motion="reduced"] .ax-splash-keylight {
   animation: none !important;
   transition: opacity 0.2s ease !important;
+}
+
+/* CRM cinematic stage — workspace CRM only. Landing untouched. */
+@utility ax-crm-stage {
+  background:
+    radial-gradient(70% 42% at 8% -8%, oklch(0.455 0.093 258 / 12%) 0%, transparent 62%),
+    linear-gradient(180deg, var(--background) 0%, color-mix(in oklch, var(--card) 88%, var(--background)) 100%);
 }
 

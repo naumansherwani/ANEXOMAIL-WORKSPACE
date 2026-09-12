@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 
 import { AppShell } from "@/components/app/AppShell";
 import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
+import { WorkspaceLoader } from "@/components/app/WorkspaceLoader";
 import { ErrorState } from "@/components/state/StateBlock";
-import { LoadingRegion, WorkingDot } from "@/components/state/Skeletons";
 import { sessionToken } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useRegisterDevice } from "@/lib/chat-safety";
@@ -102,13 +102,7 @@ function AppLayout() {
   }, [account.data?.trial_limited, preview, navigate]);
 
   if (status === "loading" || (status === "signed-out" && !preview)) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <LoadingRegion label="Opening your workspace">
-          <WorkingDot />
-        </LoadingRegion>
-      </div>
-    );
+    return <WorkspaceLoader />;
   }
 
   if (status === "unavailable" && !preview) {
