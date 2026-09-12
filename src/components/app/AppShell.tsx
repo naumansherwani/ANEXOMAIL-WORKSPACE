@@ -324,8 +324,30 @@ export function AppShell({ children }: { children: ReactNode }) {
             })}
           </div>
 
-          {/* Bottom: context line + pin control — always visible, never clipped */}
+          {/* Bottom: plan + upgrade (awam mail host, har package) + context + pin */}
           <div className="shrink-0 border-t border-border p-2.5">
+            {publicMailHost && (
+              <Link
+                to="/app/billing"
+                title={collapsed ? t("Billing & plans") : undefined}
+                aria-label={t("Billing & plans")}
+                className={`ax-focus mb-2 flex items-center gap-2 rounded-xl border border-border bg-card px-3 py-2 transition-colors hover:border-primary/50 ${
+                  collapsed ? "justify-center px-2" : ""
+                }`}
+              >
+                <Sparkles className="size-3.5 shrink-0 text-primary" aria-hidden="true" />
+                {!collapsed && (
+                  <>
+                    <span className="min-w-0 flex-1 truncate text-[11px] font-semibold text-foreground">
+                      {t(copyName)}
+                    </span>
+                    <span className="shrink-0 text-[10px] font-semibold text-primary">
+                      {billed === "business_pro" ? t("Billing") : t("Upgrade")}
+                    </span>
+                  </>
+                )}
+              </Link>
+            )}
             {!collapsed && (
               <p className="px-1 pb-2 text-[11px] leading-relaxed text-muted-foreground">
                 {t(
