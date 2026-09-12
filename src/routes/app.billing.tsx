@@ -1,76 +1,264 @@
+/**
+ * /app/billing — Billing & Plans
+ *
+ * Shows all 4 Polar plans: Basic | Pro | Business | Business Pro
+ * Current plan highlighted. Others → CheckoutButton → Polar checkout.
+ *
+ * Data (real, Polar-wired):
+ *   useSubscription() → /api/billing/subscription → workspace_subscriptions
+ *                        (Polar webhook → Rust :3400 → Supabase)
+ *   useInvoices()     → /api/billing/invoices     → workspace_invoices
+ *
+ * Personal tier display layer: personal-tiers.ts (plans.ts no-touch).
+ * BILLING_PRODUCTS product IDs: no-touch.
+ */
+
 import { createFileRoute } from "@tanstack/react-router";
-import { CreditCard, FileText, Receipt, ShieldCheck } from "lucide-react";
+import {
+  Check,
+  ChevronDown,
+  ChevronUp,
+  FileText,
+  Receipt,
+  Sparkles,
+} from "lucide-react";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
-import {
-  PLAN_LABEL,
-  gbp,
-  useChangePlan,
-  useInvoices,
-  usePaymentMethods,
-  usePreviewPlanChange,
-  useSaveTaxProfile,
-  useSubscription,
-  useTaxProfile,
-  type WorkspacePlanId,
-} from "@/lib/billing-platform";
+import { CheckoutButton } from "@/components/site/PlanCheckoutButton";
+import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
+import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
-import { notify } from "@/lib/notify";
+import { money, WORKSPACE_PLANS, type BillingCycle } from "@/lib/plans";
+import { PERSONAL_TIERS, polarToPersonalTierId } from "@/lib/personal-tiers";
+import { useAuth } from "@/lib/auth";
+import { surfaceFromSession } from "@/lib/plan-surface";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/billing")({
   head: () => ({
     meta: [
-      { title: "Billing — ANEXOMAIL Workspace" },
-      {
-        name: "description",
-        content:
-          "Billing · Workspace in ANEXOMAIL Workspace — real data from your own workspace, with proof of where every number came from.",
-      },
-      { property: "og:title", content: "Billing — ANEXOMAIL Workspace" },
-      { property: "og:description", content: "Billing · Workspace in ANEXOMAIL Workspace." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { title: "Billing & Plans — ANEXOMAIL Workspace" },
+      { name: "robots", content: "noindex" },
     ],
   }),
   component: WorkspaceBilling,
 });
 
-const PLANS: WorkspacePlanId[] = ["basic", "pro", "business", "business_pro"];
+// ─── plan rank for upgrade / downgrade label ──────────────────────────────────
+const RANK: Record<string, number> = {
+  basic: 1,
+  pro: 2,
+  business: 3,
+  business_pro: 4,
+};
 
-/**
- * Phase 21 — Billing platform, awam surface.
- * Sirf workspace plans (£23/£46/£97 per mailbox + £2,850 Business Pro per company).
- * AI credits ka is page se koi taalluq nahi.
- */
+function ctaLabel(currentId: string | null, targetId: string): "Upgrade" | "Downgrade" | "Switch" {
+  const cur = RANK[currentId ?? "basic"] ?? 0;
+  const tgt = RANK[targetId] ?? 0;
+  if (tgt > cur) return "Upgrade";
+  if (tgt < cur) return "Downgrade";
+  return "Switch";
+}
+
+// ─── collapsible feature list ─────────────────────────────────────────────────
+function FeatureList({ features }: { features: string[] }) {
+  const [expanded, setExpanded] = useState(false);
+  const FOLD = 7;
+  const shown = expanded ? features : features.slice(0, FOLD);
+
+  return (
+    <div>
+      <ul className="flex flex-col gap-1.5">
+        {shown.map((f) => (
+          <li key={f} className="flex items-start gap-2 text-[11px] leading-snug">
+            <Check
+              className={cn(
+                "mt-0.5 size-3 shrink-0",
+                f.startsWith("Everything") ? "text-primary" : "text-emerald-400",
+              )}
+              aria-hidden="true"
+            />
+            <span
+              className={cn(
+                f.startsWith("Everything")
+                  ? "font-semibold text-foreground"
+                  : "text-muted-foreground",
+              )}
+            >
+              {f}
+            </span>
+          </li>
+        ))}
+      </ul>
+      {features.length > FOLD && (
+        <button
+          type="button"
+          onClick={() => setExpanded((e) => !e)}
+          className="mt-2.5 flex items-center gap-1 text-[10px] font-semibold text-muted-foreground/60 hover:text-muted-foreground"
+        >
+          {expanded ? (
+            <><ChevronUp className="size-3" /> Show less</>
+          ) : (
+            <><ChevronDown className="size-3" /> +{features.length - FOLD} more features</>
+          )}
+        </button>
+      )}
+    </div>
+  );
+}
+
+// ─── single plan card ─────────────────────────────────────────────────────────
+function PlanCard({
+  planId,
+  name,
+  badge,
+  tagline,
+  monthly,
+  yearly,
+  yearlyRule,
+  unit,
+  features,
+  currentPlanId,
+  personalLabel,
+  cycle,
+}: {
+  planId: string;
+  name: string;
+  badge?: string;
+  tagline: string;
+  monthly: number;
+  yearly: number;
+  yearlyRule: "one-month-free" | "two-months-free";
+  unit: string;
+  features: string[];
+  currentPlanId: string | null;
+  /** e.g. "Personal Pro" — shown for personal users */
+  personalLabel?: string;
+  cycle: BillingCycle;
+}) {
+  const isCurrent = currentPlanId === planId;
+  const price = cycle === "monthly" ? monthly : Math.round(yearly / 12);
+  const productKey = `POLAR_PRODUCT_PLAN_${planId.toUpperCase()}_${cycle.toUpperCase()}`;
+  const label = ctaLabel(currentPlanId, planId);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className={cn(
+        "flex flex-col rounded-2xl border p-5 transition-colors",
+        isCurrent
+          ? "border-primary bg-primary/5"
+          : "border-border bg-card hover:border-border/60",
+      )}
+    >
+      {/* Plan name + badges */}
+      <div>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <span className="text-[13px] font-bold text-foreground">
+            {personalLabel ?? name}
+          </span>
+          {badge && (
+            <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
+              <Sparkles className="size-2.5" aria-hidden="true" />
+              {badge}
+            </span>
+          )}
+          {isCurrent && (
+            <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+              Current
+            </span>
+          )}
+        </div>
+        {personalLabel && personalLabel !== name && (
+          <p className="mt-0.5 text-[10px] text-muted-foreground/40">{name}</p>
+        )}
+        <p className="mt-1 text-[11px] leading-snug text-muted-foreground/60">{tagline}</p>
+      </div>
+
+      {/* Price */}
+      <div className="mt-3 border-b border-border pb-3">
+        <div className="flex items-baseline gap-1">
+          <span className="text-[22px] font-bold tracking-tight text-foreground">
+            {money(price)}
+          </span>
+          <span className="text-[11px] text-muted-foreground/50">/mo</span>
+        </div>
+        {cycle === "yearly" && (
+          <p className="mt-0.5 text-[10px] text-emerald-400">
+            {yearlyRule === "two-months-free" ? "2 months free" : "1 month free"} · billed
+            yearly
+          </p>
+        )}
+        <p className="mt-0.5 text-[10px] text-muted-foreground/40">
+          {unit}
+        </p>
+      </div>
+
+      {/* Features */}
+      <div className="mt-3 flex-1">
+        <FeatureList features={features} />
+      </div>
+
+      {/* CTA */}
+      <div className="mt-5">
+        {isCurrent ? (
+          <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground/40">
+            Current plan
+          </div>
+        ) : (
+          <CheckoutButton
+            productKey={productKey}
+            label={label}
+            source={`billing:${planId}`}
+            className="h-9 rounded-xl py-0 text-[12px]"
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+// ─── main page ────────────────────────────────────────────────────────────────
 function WorkspaceBilling() {
-  const [plan, setPlan] = useState<WorkspacePlanId>("pro");
-  const [seats, setSeats] = useState(1);
+  const [cycle, setCycle] = useState<BillingCycle>("monthly");
+  const { t } = useLocale();
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
 
   const sub = useSubscription();
   const invoices = useInvoices();
-  const tax = useTaxProfile();
-  const methods = usePaymentMethods();
-  const preview = usePreviewPlanChange();
-  const change = useChangePlan();
-  const saveTax = useSaveTaxProfile();
 
-  const fail = (endpoint: string) => (err: { isNotImplemented: boolean; message: string }) =>
-    notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-      description: err.isNotImplemented ? `${endpoint} is pending on the server.` : err.message,
-    });
+  // Personal tier label (e.g. "Personal Pro") — shown inside the plan card
+  const personalTierId = kind === "personal" ? polarToPersonalTierId(billed) : null;
+  const personalTier = personalTierId
+    ? PERSONAL_TIERS.find((t) => t.id === personalTierId)
+    : null;
+
+  // Current plan display name for the header card
+  const currentPlanName =
+    kind === "personal" && personalTier
+      ? personalTier.name
+      : WORKSPACE_PLANS.find((p) => p.id === billed)?.name ?? "No active plan";
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
-      <div className="mx-auto w-full max-w-4xl px-6 py-8 md:px-8">
+      <div className="mx-auto w-full max-w-6xl px-6 py-8 md:px-8">
+
+        {/* ── Page heading ──────────────────────────────────────── */}
         <p className="ax-eyebrow flex items-center gap-2">
-          <Receipt className="size-3.5" aria-hidden="true" /> Billing
+          <Receipt className="size-3.5" aria-hidden="true" />
+          {t("Billing & Plans")}
         </p>
-        <h2 className="ax-h2 mt-1 text-foreground">Your plan and invoices</h2>
+        <h2 className="ax-h2 mt-1 text-foreground">{t("Your plan and invoices")}</h2>
         <p className="ax-caption mt-2 text-muted-foreground">
-          One flat monthly price per mailbox. No usage meter, no surprise line items.
+          {t("One flat price. No usage meter. No surprise line items.")}
         </p>
 
+        {/* ── Current plan card — real Polar data ───────────────── */}
         <section className="mt-ax-5">
           <CardBody
             query={{
@@ -80,101 +268,145 @@ function WorkspaceBilling() {
               refetch: () => void sub.refetch(),
             }}
             endpoint="/api/billing/subscription"
-            skeleton={<StatSkeleton rows={4} />}
+            skeleton={<StatSkeleton rows={2} />}
           >
             {(s) => (
-              <div className="ax-plane rounded-2xl p-ax-4">
-                <div className="grid gap-ax-3 sm:grid-cols-4">
-                  <Cell label="Plan" value={s.plan ? PLAN_LABEL[s.plan] : "No plan"} />
-                  <Cell label="Status" value={s.state} />
-                  <Cell label="Seats" value={`${s.seats_used} / ${s.seats}`} />
-                  <Cell
-                    label="Renews"
-                    value={
-                      s.renews_at ? relativeTime(s.renews_at) : s.cancel_at ? "cancelling" : "—"
-                    }
-                  />
+              <div className="ax-plane flex flex-wrap items-center justify-between gap-4 rounded-2xl p-ax-4">
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[15px] font-bold text-foreground">
+                      {s.plan ? currentPlanName : t("No active plan")}
+                    </span>
+                    {s.state === "active" && (
+                      <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
+                        {t("Active")}
+                      </span>
+                    )}
+                    {s.state === "trialing" && (
+                      <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-400">
+                        {t("Trial")}
+                      </span>
+                    )}
+                    {s.state === "past_due" && (
+                      <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-400">
+                        {t("Payment due")}
+                      </span>
+                    )}
+                    {s.state === "cancelled" && (
+                      <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                        {t("Cancelled")}
+                      </span>
+                    )}
+                  </div>
+                  <div className="mt-1 flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground">
+                    <span>{gbp(s.price_per_seat)} / {s.interval}</span>
+                    {s.storage_per_mailbox_gb ? (
+                      <span className="text-muted-foreground/50">
+                        · {s.storage_per_mailbox_gb} GB / mailbox
+                      </span>
+                    ) : null}
+                    {s.seats > 0 && (
+                      <span className="text-muted-foreground/50">
+                        · {s.seats_used} / {s.seats}{" "}
+                        {s.seats === 1 ? t("seat") : t("seats")}
+                      </span>
+                    )}
+                  </div>
+                  {s.renews_at && (
+                    <p className="mt-0.5 text-[11px] text-muted-foreground/40">
+                      {t("Auto-renews")} {relativeTime(s.renews_at)}
+                    </p>
+                  )}
+                  {s.cancel_at && (
+                    <p className="mt-0.5 text-[11px] text-amber-400">
+                      {t("Cancels")} {relativeTime(s.cancel_at)}
+                    </p>
+                  )}
                 </div>
-                <p className="ax-caption mt-ax-3 text-steel">
-                  {gbp(s.price_per_seat)} per mailbox / {s.interval}
-                  {s.storage_per_mailbox_gb ? ` · ${s.storage_per_mailbox_gb}GB per mailbox` : ""}
-                </p>
               </div>
             )}
           </CardBody>
         </section>
 
-        <section className="mt-ax-6">
-          <h3 className="ax-heading text-foreground">Change plan</h3>
-          <div className="mt-ax-3 flex flex-wrap items-center gap-2">
-            {PLANS.map((p) => (
+        {/* ── Billing cycle toggle ───────────────────────────────── */}
+        <section className="mt-ax-8">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <h3 className="ax-heading text-foreground">{t("All plans")}</h3>
+            <div className="flex items-center gap-1 rounded-xl border border-border bg-card p-1">
               <button
-                key={p}
                 type="button"
-                onClick={() => setPlan(p)}
-                data-on={plan === p ? "true" : "false"}
-                className="ax-press rounded-xl border border-border px-3 py-2 text-[12px] font-semibold text-muted-foreground data-[on=true]:border-primary data-[on=true]:text-foreground"
+                onClick={() => setCycle("monthly")}
+                className={cn(
+                  "rounded-lg px-3 py-1.5 text-[11px] font-semibold transition-colors",
+                  cycle === "monthly"
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground/50 hover:text-foreground",
+                )}
               >
-                {PLAN_LABEL[p]}
+                {t("Monthly")}
               </button>
-            ))}
-            <label className="ax-caption flex items-center gap-2 text-muted-foreground">
-              Seats
-              <input
-                aria-label="Seats"
-                type="number"
-                min={1}
-                value={seats}
-                onChange={(e) => setSeats(Math.max(1, Number(e.target.value) || 1))}
-                className="h-9 w-16 rounded-lg border border-border bg-card px-2 text-[12px] text-foreground"
-              />
-            </label>
-            <button
-              type="button"
-              disabled={preview.isPending}
-              onClick={() =>
-                preview.mutate({ plan, seats }, { onError: fail("POST /api/billing/preview") })
-              }
-              className="ax-press rounded-xl border border-border px-3 py-2 text-[12px] font-semibold text-foreground disabled:opacity-50"
-            >
-              Preview cost
-            </button>
-          </div>
-
-          {preview.data && (
-            <div className="ax-plane mt-ax-3 rounded-2xl p-ax-4">
-              <p className="text-[13px] text-foreground">
-                Charge now {gbp(preview.data.charge_now)} · credit back{" "}
-                {gbp(preview.data.credit_back)} · next invoice {gbp(preview.data.next_total)}
-              </p>
-              <p className="ax-caption mt-1 text-steel">
-                Effective {relativeTime(preview.data.effective_at)} — pro-rated by the server, not
-                guessed here.
-              </p>
               <button
                 type="button"
-                disabled={change.isPending}
-                onClick={() =>
-                  change.mutate(
-                    { plan: preview.data!.plan, seats: preview.data!.seats },
-                    {
-                      onSuccess: () =>
-                        notify.done("Plan updated", "Invoice will show the pro-ration."),
-                      onError: fail("POST /api/billing/change"),
-                    },
-                  )
-                }
-                className="ax-press mt-ax-3 rounded-xl bg-primary px-3 py-2 text-[12px] font-semibold text-primary-foreground disabled:opacity-50"
+                onClick={() => setCycle("yearly")}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-semibold transition-colors",
+                  cycle === "yearly"
+                    ? "bg-secondary text-foreground"
+                    : "text-muted-foreground/50 hover:text-foreground",
+                )}
               >
-                Confirm change
+                {t("Yearly")}
+                <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-400">
+                  save
+                </span>
               </button>
             </div>
+          </div>
+
+          {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ── */}
+          <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {WORKSPACE_PLANS.map((plan) => {
+              // For personal users — show "Personal Pro" instead of just "Pro"
+              const personalLabel =
+                kind === "personal"
+                  ? PERSONAL_TIERS.find((t) => t.polarPlanId === plan.id)?.name
+                  : undefined;
+
+              return (
+                <PlanCard
+                  key={plan.id}
+                  planId={plan.id}
+                  name={plan.name}
+                  badge={plan.badge}
+                  tagline={plan.tagline}
+                  monthly={plan.monthly}
+                  yearly={plan.yearly}
+                  yearlyRule={plan.annual}
+                  unit={plan.unit}
+                  features={plan.features}
+                  currentPlanId={billed}
+                  personalLabel={personalLabel}
+                  cycle={cycle}
+                />
+              );
+            })}
+          </div>
+
+          {/* ── Personal tier note (only for personal kind) ───────── */}
+          {kind === "personal" && (
+            <p className="mt-4 text-[11px] text-muted-foreground/40">
+              {t(
+                "Personal account — your workspace stays personal after checkout. Business plans unlock company Org, departments and multi-user governance.",
+              )}
+            </p>
           )}
         </section>
 
-        <section className="mt-ax-6">
+        {/* ── Invoices — real data from workspace_invoices ──────── */}
+        <section className="mt-ax-8">
           <h3 className="ax-heading flex items-center gap-2 text-foreground">
-            <FileText className="size-4" aria-hidden="true" /> Invoices
+            <FileText className="size-4" aria-hidden="true" />
+            {t("Invoices")}
           </h3>
           <div className="mt-ax-3">
             <CardBody
@@ -189,25 +421,44 @@ function WorkspaceBilling() {
             >
               {(d) =>
                 d.invoices.length === 0 ? (
-                  <p className="ax-caption text-muted-foreground">No invoices yet.</p>
+                  <p className="ax-caption text-muted-foreground/50">
+                    {t(
+                      "No invoices yet. Your first invoice appears here after your first payment.",
+                    )}
+                  </p>
                 ) : (
-                  <ul className="space-y-1.5">
+                  <ul className="divide-y divide-border overflow-hidden rounded-xl border border-border">
                     {d.invoices.map((inv) => (
                       <li
                         key={inv.id}
-                        className="ax-plane flex flex-wrap items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
+                        className="flex flex-wrap items-center gap-ax-3 px-ax-4 py-3 text-[12px]"
                       >
                         <span className="font-semibold text-foreground">{inv.number}</span>
-                        <span className="rounded-md bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase text-muted-foreground">
+                        <span
+                          className={cn(
+                            "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase",
+                            inv.state === "paid"
+                              ? "bg-emerald-500/15 text-emerald-400"
+                              : inv.state === "open"
+                                ? "bg-amber-500/15 text-amber-400"
+                                : "bg-secondary text-muted-foreground",
+                          )}
+                        >
                           {inv.state}
                         </span>
-                        <span className="text-foreground">{gbp(inv.total)}</span>
-                        <span className="text-steel">tax {gbp(inv.tax)}</span>
-                        <span className="text-steel">{relativeTime(inv.issued_at)}</span>
+                        <span className="font-medium text-foreground">{gbp(inv.total)}</span>
+                        <span className="text-muted-foreground/40">
+                          tax {gbp(inv.tax)}
+                        </span>
+                        <span className="text-muted-foreground/30">
+                          {relativeTime(inv.issued_at)}
+                        </span>
                         {inv.pdf_url && (
                           <a
                             href={inv.pdf_url}
-                            className="ml-auto font-semibold text-primary underline-offset-2 hover:underline"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="ml-auto text-[11px] font-semibold text-primary underline-offset-2 hover:underline"
                           >
                             PDF
                           </a>
@@ -221,137 +472,7 @@ function WorkspaceBilling() {
           </div>
         </section>
 
-        <section className="mt-ax-6 grid gap-ax-4 md:grid-cols-2">
-          <div>
-            <h3 className="ax-heading flex items-center gap-2 text-foreground">
-              <ShieldCheck className="size-4" aria-hidden="true" /> Tax details
-            </h3>
-            <div className="mt-ax-3">
-              <CardBody
-                query={{
-                  data: tax.data,
-                  isPending: tax.isPending,
-                  error: tax.error ?? null,
-                  refetch: () => void tax.refetch(),
-                }}
-                endpoint="/api/billing/tax"
-                skeleton={<StatSkeleton rows={3} />}
-              >
-                {(t) => (
-                  <form
-                    className="ax-plane flex flex-col gap-2 rounded-2xl p-ax-4"
-                    onSubmit={(e) => {
-                      e.preventDefault();
-                      const form = new FormData(e.currentTarget);
-                      saveTax.mutate(
-                        {
-                          legal_name: String(form.get("legal_name") ?? ""),
-                          country: String(form.get("country") ?? ""),
-                          vat_number: String(form.get("vat_number") ?? ""),
-                          address: String(form.get("address") ?? ""),
-                        },
-                        {
-                          onSuccess: () => notify.done("Saved", "Next invoice uses these details."),
-                          onError: fail("POST /api/billing/tax"),
-                        },
-                      );
-                    }}
-                  >
-                    <input
-                      name="legal_name"
-                      aria-label="Legal name"
-                      defaultValue={t.legal_name ?? ""}
-                      placeholder="Legal name"
-                      className="h-9 rounded-lg border border-border bg-card px-2 text-[12px] text-foreground"
-                    />
-                    <input
-                      name="country"
-                      aria-label="Country"
-                      defaultValue={t.country ?? ""}
-                      placeholder="Country"
-                      className="h-9 rounded-lg border border-border bg-card px-2 text-[12px] text-foreground"
-                    />
-                    <input
-                      name="vat_number"
-                      aria-label="VAT number"
-                      defaultValue={t.vat_number ?? ""}
-                      placeholder="VAT number"
-                      className="h-9 rounded-lg border border-border bg-card px-2 text-[12px] text-foreground"
-                    />
-                    <textarea
-                      name="address"
-                      aria-label="Billing address"
-                      defaultValue={t.address ?? ""}
-                      rows={3}
-                      placeholder="Billing address"
-                      className="rounded-lg border border-border bg-card px-2 py-1.5 text-[12px] text-foreground"
-                    />
-                    <p className="ax-caption text-steel">
-                      {t.vat_validated ? "VAT validated" : "VAT not validated"}
-                      {t.reverse_charge ? " · reverse charge applies" : ""}
-                    </p>
-                    <button
-                      type="submit"
-                      disabled={saveTax.isPending}
-                      className="ax-press self-start rounded-xl bg-primary px-3 py-2 text-[12px] font-semibold text-primary-foreground disabled:opacity-50"
-                    >
-                      Save
-                    </button>
-                  </form>
-                )}
-              </CardBody>
-            </div>
-          </div>
-
-          <div>
-            <h3 className="ax-heading flex items-center gap-2 text-foreground">
-              <CreditCard className="size-4" aria-hidden="true" /> Payment methods
-            </h3>
-            <div className="mt-ax-3">
-              <CardBody
-                query={{
-                  data: methods.data,
-                  isPending: methods.isPending,
-                  error: methods.error ?? null,
-                  refetch: () => void methods.refetch(),
-                }}
-                endpoint="/api/billing/methods"
-                skeleton={<StatSkeleton rows={2} />}
-              >
-                {(d) =>
-                  d.methods.length === 0 ? (
-                    <p className="ax-caption text-muted-foreground">No card on file.</p>
-                  ) : (
-                    <ul className="space-y-1.5">
-                      {d.methods.map((m) => (
-                        <li
-                          key={m.id}
-                          className="ax-plane flex items-center gap-ax-3 rounded-xl px-ax-4 py-ax-3 text-[12px]"
-                        >
-                          <span className="font-semibold text-foreground">
-                            {m.brand} ···· {m.last4}
-                          </span>
-                          <span className="text-steel">exp {m.exp}</span>
-                          {m.default && <span className="ml-auto text-primary">default</span>}
-                        </li>
-                      ))}
-                    </ul>
-                  )
-                }
-              </CardBody>
-            </div>
-          </div>
-        </section>
       </div>
-    </div>
-  );
-}
-
-function Cell({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <p className="ax-caption text-muted-foreground">{label}</p>
-      <p className="mt-1 text-[15px] font-bold text-foreground">{value}</p>
     </div>
   );
 }
