@@ -13,6 +13,42 @@ import { relativeTime, type ThreadListItem } from "@/lib/mail";
 import type { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
+// ─── avatar helpers ───────────────────────────────────────────────────────────
+const AVATAR_PALETTES = [
+  "bg-blue-500/15 text-blue-400",
+  "bg-violet-500/15 text-violet-400",
+  "bg-emerald-500/15 text-emerald-400",
+  "bg-amber-500/15 text-amber-400",
+  "bg-rose-500/15 text-rose-400",
+  "bg-sky-500/15 text-sky-400",
+  "bg-orange-500/15 text-orange-400",
+  "bg-teal-500/15 text-teal-400",
+] as const;
+
+function senderInitial(name: string | null | undefined, address: string | null | undefined): string {
+  const src = (name ?? address ?? "?").trim();
+  return (src[0] ?? "?").toUpperCase();
+}
+
+function avatarPalette(address: string | null | undefined): string {
+  const src = address ?? "";
+  let hash = 0;
+  for (let i = 0; i < src.length; i++) hash = src.charCodeAt(i) + ((hash << 5) - hash);
+  return AVATAR_PALETTES[Math.abs(hash) % AVATAR_PALETTES.length] ?? AVATAR_PALETTES[0];
+}
+
+// ─── date group headers ───────────────────────────────────────────────────────
+function getDateGroup(iso: string): string {
+  const d = new Date(iso);
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const yesterdayStart = new Date(todayStart.getTime() - 86_400_000);
+  const msgStart = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  if (msgStart.getTime() >= todayStart.getTime()) return "Today";
+  if (msgStart.getTime() >= yesterdayStart.getTime()) return "Yesterday";
+  return d.toLocaleString("default", { month: "long", year: "numeric" });
+}
+
 /**
  * Column 2 — the thread rail. A thread is the unit of work, so every row
  * carries status, owner and label chips. Rows are draggable onto labels.
@@ -120,16 +156,22 @@ export function ThreadList({
 
   const listVariants = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.035, delayChildren: 0.04 } },
+    show: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
   };
   const rowVariants = {
-    hidden: { opacity: 0, y: 8 },
+    hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      y: 0,
-      transition: { duration: 0.28, ease: [0.25, 0.46, 0.45, 0.94] },
+      transition: { duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] },
     },
   };
+
+  // Pre-process: attach date group label to each thread
+  const grouped = threads.map((thread, i) => ({
+    thread,
+    group: getDateGroup(thread.last_message_at),
+    prevGroup: i > 0 ? getDateGroup(threads[i - 1]!.last_message_at) : null,
+  }));
 
   return (
     <motion.div
@@ -161,8 +203,16 @@ export function ThreadList({
           {pull > 56 ? "Release to refresh" : "Pull to refresh"}
         </div>
       )}
-      {threads.map((thread, index) => (
+      {grouped.map(({ thread, group, prevGroup }, index) => (
         <motion.div key={thread.id} variants={rowVariants}>
+          {/* Date group header — only when group changes */}
+          {group !== prevGroup && (
+            <div className="sticky top-0 z-10 border-b border-border bg-background/95 px-ax-3 py-1 backdrop-blur">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-muted-foreground/50">
+                {group}
+              </span>
+            </div>
+          )}
         <SwipeRow
           {...(onSwipeArchive ? { onArchive: () => onSwipeArchive(thread.id) } : {})}
           {...(onSwipeSnooze ? { onSnooze: () => onSwipeSnooze(thread.id) } : {})}
@@ -179,91 +229,103 @@ export function ThreadList({
             }}
             onMouseEnter={() => onCursor(index)}
             className={cn(
-              "flex gap-ax-2 px-ax-3 py-2.5 transition-colors",
+              "flex gap-3 px-ax-3 py-2.5 transition-opacity",
               thread.id === activeId
-                ? "bg-secondary"
+                ? "bg-secondary opacity-100"
                 : cursor === index
-                  ? "bg-secondary/50"
-                  : "hover:bg-secondary/40",
+                  ? "bg-secondary/50 opacity-100"
+                  : thread.unread
+                    ? "opacity-100 hover:opacity-90"
+                    : "opacity-70 hover:opacity-100",
             )}
           >
-            <span
+            {/* Sender avatar — initials circle */}
+            <div
               aria-hidden="true"
               className={cn(
-                "mt-1.5 size-1.5 shrink-0 rounded-full",
-                thread.unread ? "bg-foreground" : "bg-transparent",
-              )}
-            />
-            <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-ax-2">
-              <span
-                className={cn(
-                  "truncate text-[13px]",
-                  thread.unread ? "font-bold text-foreground" : "font-medium text-muted-foreground",
-                )}
-              >
-                {thread.from_name ?? thread.from_address}
-              </span>
-              <button
-                type="button"
-                aria-label={thread.starred ? "Unstar" : "Star"}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  onStar?.(thread.id, !thread.starred);
-                }}
-                className="ax-press shrink-0 rounded p-0.5 text-steel hover:text-foreground"
-              >
-                <Star
-                  className={cn("size-3", thread.starred && "fill-foreground text-foreground")}
-                />
-              </button>
-              {thread.has_attachments && <Paperclip className="size-3 shrink-0 text-steel" />}
-              {thread.message_count > 1 && (
-                <span className="shrink-0 text-[10px] text-steel">{thread.message_count}</span>
-              )}
-              <span className="ml-auto shrink-0 text-[10px] text-steel">
-                {relativeTime(thread.last_message_at)}
-              </span>
-            </div>
-
-            <p
-              className={cn(
-                "mt-1 truncate text-[13px]",
-                thread.unread ? "text-foreground" : "text-muted-foreground",
+                "mt-0.5 flex size-7 shrink-0 select-none items-center justify-center rounded-full text-[11px] font-semibold",
+                avatarPalette(thread.from_address),
               )}
             >
-              {thread.subject || "(no subject)"}
-            </p>
-            {/* Low-data mode: snippet drops out so a list stays text-minimal on 2G. */}
-            {thread.snippet && !lowData && (
-              <p className="ax-caption mt-0.5 truncate text-muted-foreground">{thread.snippet}</p>
-            )}
-
-            <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
-              <span className="rounded-md border border-border bg-secondary px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                {thread.status}
-              </span>
-              {thread.assignee && (
-                <span className="rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                  {thread.assignee}
-                </span>
-              )}
-              {thread.snoozed_until && (
-                <span className="flex items-center gap-1 rounded-md border border-border px-1.5 py-0.5 text-[10px] text-muted-foreground">
-                  <Clock className="size-2.5" />
-                  {relativeTime(thread.snoozed_until)}
-                </span>
-              )}
-              {thread.labels.map((l) => (
-                <span
-                  key={l}
-                  className="rounded-md bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground"
-                >
-                  {l}
-                </span>
-              ))}
+              {senderInitial(thread.from_name, thread.from_address)}
             </div>
+
+            <div className="min-w-0 flex-1">
+              {/* Row 1: sender · star · attachment · count · date */}
+              <div className="flex items-center gap-1.5">
+                <span
+                  className={cn(
+                    "truncate text-[13px]",
+                    thread.unread
+                      ? "font-semibold text-foreground"
+                      : "font-normal text-muted-foreground",
+                  )}
+                >
+                  {thread.from_name ?? thread.from_address}
+                </span>
+                <button
+                  type="button"
+                  aria-label={thread.starred ? "Unstar" : "Star"}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onStar?.(thread.id, !thread.starred);
+                  }}
+                  className="ax-press shrink-0 rounded p-0.5 text-steel hover:text-foreground"
+                >
+                  <Star
+                    className={cn("size-3", thread.starred && "fill-foreground text-foreground")}
+                  />
+                </button>
+                {thread.has_attachments && (
+                  <Paperclip className="size-3 shrink-0 text-steel" aria-label="Has attachment" />
+                )}
+                {thread.message_count > 1 && (
+                  <span className="shrink-0 text-[10px] text-steel">{thread.message_count}</span>
+                )}
+                <span className="ml-auto shrink-0 text-[10px] font-normal text-muted-foreground/60">
+                  {relativeTime(thread.last_message_at)}
+                </span>
+              </div>
+
+              {/* Row 2: subject */}
+              <p
+                className={cn(
+                  "mt-0.5 truncate text-[13px]",
+                  thread.unread
+                    ? "font-medium text-foreground"
+                    : "font-normal text-muted-foreground/80",
+                )}
+              >
+                {thread.subject || "(no subject)"}
+              </p>
+
+              {/* Row 3: snippet — only on data-rich connections */}
+              {thread.snippet && !lowData && (
+                <p className="ax-caption mt-0.5 truncate font-normal text-muted-foreground/55">
+                  {thread.snippet}
+                </p>
+              )}
+
+              {/* Row 4: snoozed + labels — status chip removed from list view */}
+              {(thread.snoozed_until || thread.labels.length > 0) && (
+                <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                  {thread.snoozed_until && (
+                    <span className="flex items-center gap-1 rounded bg-secondary/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                      <Clock className="size-2.5" />
+                      {relativeTime(thread.snoozed_until)}
+                    </span>
+                  )}
+                  {thread.labels.map((l) => (
+                    <span
+                      key={l}
+                      className="rounded bg-surface-2 px-1.5 py-0.5 text-[10px] text-muted-foreground"
+                    >
+                      {l}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           </Link>
         </SwipeRow>

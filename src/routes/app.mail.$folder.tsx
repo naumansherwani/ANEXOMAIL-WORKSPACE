@@ -178,6 +178,7 @@ function MailFolderPage() {
         account={account}
         onLabel={setLabel}
         onAccount={setAccount}
+        onCompose={() => setComposing(true)}
         onDropLabel={(labelId, threadId) =>
           act(
             threadId,
@@ -329,7 +330,15 @@ function MailFolderPage() {
       </ListPanel>
 
       <DetailPanel mobileVisible={threadOpen}>
-        <Outlet />
+        {activeId ? (
+          <Outlet />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <p className="select-none text-[13px] text-muted-foreground/50">
+              Select a message
+            </p>
+          </div>
+        )}
       </DetailPanel>
 
       {composing && <ComposeOverlay onClose={() => setComposing(false)} />}

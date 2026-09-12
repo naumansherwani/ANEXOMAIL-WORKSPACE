@@ -261,7 +261,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         <nav
           aria-label="Workspace navigation"
           data-collapsed={collapsed ? "true" : "false"}
-          style={{ width: collapsed ? "4.25rem" : "13.75rem" }}
+          style={{ width: collapsed ? "3.5rem" : "13.75rem" }}
           className="hidden min-h-0 shrink-0 flex-col border-r border-border bg-sidebar transition-[width] duration-200 sm:flex"
         >
           <div className="flex min-h-0 flex-1 flex-col gap-0.5 overflow-y-auto p-2.5">
@@ -277,15 +277,27 @@ export function AppShell({ children }: { children: ReactNode }) {
                   to={item.to}
                   title={collapsed ? t(item.label) : undefined}
                   aria-label={t(item.label)}
-                  className={`flex items-center gap-2.5 rounded-xl py-2.5 text-sm font-medium transition-colors ${
-                    collapsed ? "justify-center px-0" : "px-3"
+                  className={`relative flex items-center gap-2.5 rounded-lg py-2 text-[13px] font-medium transition-opacity ${
+                    collapsed ? "justify-center px-2" : "px-3"
                   } ${
                     active
-                      ? "bg-secondary text-foreground"
-                      : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+                      ? "text-foreground"
+                      : "text-muted-foreground opacity-60 hover:opacity-100"
                   }`}
                 >
-                  <item.icon className="size-4 shrink-0" />
+                  {active && !collapsed && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute inset-y-[18%] -left-2.5 w-[3px] rounded-full bg-primary"
+                    />
+                  )}
+                  {active && collapsed && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute bottom-1 left-1/2 h-[3px] w-[3px] -translate-x-1/2 rounded-full bg-primary"
+                    />
+                  )}
+                  <item.icon className="size-[1.0625rem] shrink-0" />
                   {!collapsed && <span className="truncate">{t(item.label)}</span>}
                 </Link>
               );
@@ -357,10 +369,16 @@ export function AppShell({ children }: { children: ReactNode }) {
             <Link
               key={item.to}
               to={item.to}
-              className={`flex min-w-[3.75rem] shrink-0 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold ${
-                active ? "text-foreground" : "text-muted-foreground"
+              className={`relative flex min-w-[3.75rem] shrink-0 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold transition-opacity ${
+                active ? "text-foreground" : "text-muted-foreground opacity-55 hover:opacity-100"
               }`}
             >
+              {active && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-x-[30%] top-0 h-[2px] rounded-full bg-primary"
+                />
+              )}
               <item.icon className="size-4" />
               {t(item.label)}
             </Link>

@@ -5,6 +5,7 @@ import {
   Clock,
   FileText,
   Inbox,
+  PenLine,
   Send,
   ShieldAlert,
   Tag,
@@ -16,6 +17,7 @@ import { useState, type ComponentType } from "react";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { SkeletonLine } from "@/components/state/Skeletons";
 import { MAIL_FOLDERS, type MailFolder } from "@/lib/ia";
+import { useLocale } from "@/lib/i18n";
 import { useAccounts, useFolderCounts, useLabels } from "@/lib/mail";
 import { cn } from "@/lib/utils";
 
@@ -41,6 +43,7 @@ export function MailRail({
   onLabel,
   onAccount,
   onDropLabel,
+  onCompose,
 }: {
   folder: MailFolder;
   label: string | null;
@@ -48,32 +51,51 @@ export function MailRail({
   onLabel: (id: string | null) => void;
   onAccount: (id: string | null) => void;
   onDropLabel: (labelId: string, threadId: string) => void;
+  onCompose?: () => void;
 }) {
   const labels = useLabels();
   const accounts = useAccounts();
   const counts = useFolderCounts();
+  const { t } = useLocale();
   const [dropTarget, setDropTarget] = useState<string | null>(null);
 
   return (
-    <div className="hidden w-[11.5rem] shrink-0 flex-col gap-ax-4 overflow-y-auto border-r border-border bg-sidebar/60 p-ax-3 lg:flex">
+    <div className="hidden w-[13rem] shrink-0 flex-col gap-ax-4 overflow-y-auto border-r border-border bg-sidebar/60 p-ax-3 lg:flex">
+      {onCompose && (
+        <button
+          type="button"
+          onClick={onCompose}
+          className="flex items-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <PenLine className="size-3.5 shrink-0" aria-hidden="true" />
+          {t("New email")}
+        </button>
+      )}
       <nav className="flex flex-col gap-0.5">
         {MAIL_FOLDERS.map((f) => {
           const Icon = FOLDER_ICON[f.id];
           const unread = counts.data?.folders[f.id]?.unread ?? 0;
+          const active = f.id === folder;
           return (
             <Link
               key={f.id}
               to="/app/mail/$folder"
               params={{ folder: f.id }}
               className={cn(
-                "flex items-center gap-2 rounded-lg px-2.5 py-2 text-[13px] font-medium transition-colors",
-                f.id === folder
-                  ? "bg-secondary text-foreground"
-                  : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+                "relative flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] font-medium transition-opacity",
+                active
+                  ? "text-foreground"
+                  : "text-muted-foreground opacity-60 hover:opacity-100",
               )}
             >
+              {active && (
+                <span
+                  aria-hidden="true"
+                  className="absolute inset-y-[18%] left-0 w-[3px] rounded-full bg-primary"
+                />
+              )}
               <Icon className="size-3.5 shrink-0" aria-hidden="true" />
-              <span className="truncate">{f.label}</span>
+              <span className="truncate">{t(f.label)}</span>
               {unread > 0 && (
                 <span className="ml-auto tabular-nums text-[10px] font-semibold text-foreground">
                   {unread}
@@ -86,7 +108,7 @@ export function MailRail({
 
       <section className="flex flex-col gap-1.5">
         <h3 className="ax-eyebrow flex items-center gap-1.5 px-1">
-          <Tag className="size-3" aria-hidden="true" /> Labels
+          <Tag className="size-3" aria-hidden="true" /> {t("Labels")}
         </h3>
         {labels.error ? (
           labels.error.isNotImplemented || labels.error.code === "no_api_url" ? (
@@ -100,7 +122,7 @@ export function MailRail({
             <SkeletonLine className="h-2.5" width="52%" />
           </div>
         ) : labels.data.labels.length === 0 ? (
-          <p className="ax-caption px-1 text-muted-foreground">No labels yet.</p>
+          <p className="ax-caption px-1 text-muted-foreground">{t("No labels yet.")}</p>
         ) : (
           <>
             {label && (
@@ -109,7 +131,7 @@ export function MailRail({
                 onClick={() => onLabel(null)}
                 className="ax-press self-start px-1 text-[11px] font-semibold text-steel underline-offset-4 hover:underline"
               >
-                Clear label filter
+                {t("Clear label filter")}
               </button>
             )}
             {labels.data.labels.map((l) => (
@@ -129,10 +151,10 @@ export function MailRail({
                   if (threadId) onDropLabel(l.id, threadId);
                 }}
                 className={cn(
-                  "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-colors",
+                  "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-opacity",
                   l.id === label
-                    ? "bg-secondary text-foreground"
-                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+                    ? "text-foreground"
+                    : "text-muted-foreground opacity-60 hover:opacity-100",
                   dropTarget === l.id && "ring-2 ring-ring",
                 )}
               >
@@ -153,7 +175,7 @@ export function MailRail({
 
       <section className="flex flex-col gap-1.5">
         <h3 className="ax-eyebrow flex items-center gap-1.5 px-1">
-          <AtSign className="size-3" aria-hidden="true" /> Accounts
+          <AtSign className="size-3" aria-hidden="true" /> {t("Accounts")}
         </h3>
         {accounts.error ? (
           accounts.error.isNotImplemented || accounts.error.code === "no_api_url" ? (
@@ -165,7 +187,7 @@ export function MailRail({
           <SkeletonLine className="mx-1 h-2.5" width="80%" />
         ) : accounts.data.accounts.length === 0 ? (
           <p className="ax-caption px-1 text-muted-foreground">
-            No address yet. Create one in Admin → Addresses.
+            {t("No address yet. Create one in Admin → Addresses.")}
           </p>
         ) : (
           <>
@@ -173,13 +195,13 @@ export function MailRail({
               type="button"
               onClick={() => onAccount(null)}
               className={cn(
-                "rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-colors",
+                "rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-opacity",
                 account === null
-                  ? "bg-secondary text-foreground"
-                  : "text-muted-foreground hover:bg-secondary/60",
+                  ? "text-foreground"
+                  : "text-muted-foreground opacity-60 hover:opacity-100",
               )}
             >
-              Unified inbox
+              {t("Unified inbox")}
             </button>
             {accounts.data.accounts.map((a) => (
               <button
@@ -187,10 +209,10 @@ export function MailRail({
                 type="button"
                 onClick={() => onAccount(a.id === account ? null : a.id)}
                 className={cn(
-                  "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-colors",
+                  "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-opacity",
                   a.id === account
-                    ? "bg-secondary text-foreground"
-                    : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+                    ? "text-foreground"
+                    : "text-muted-foreground opacity-60 hover:opacity-100",
                 )}
               >
                 <span className="break-all">{a.address}</span>
