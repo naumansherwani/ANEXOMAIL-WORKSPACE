@@ -58,8 +58,9 @@ const TONES: { id: ComposeTone; label: string }[] = [
 
 const LANGUAGES = ["English", "Urdu", "Arabic", "French", "German", "Spanish", "Chinese"];
 
-/** How long an outgoing mail is held on the server before it is queued. */
-const UNDO_HOLD_SECONDS = 20;
+/** How long an outgoing mail is held on the server before it is queued.
+ *  Card promise (plans.ts Basic): "Undo send (30s)" — server cap 120s. */
+const UNDO_HOLD_SECONDS = 30;
 
 type StudioProps = {
   threadId?: string;

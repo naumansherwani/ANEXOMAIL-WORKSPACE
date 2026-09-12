@@ -459,4 +459,46 @@ org.post("/founder/org/impersonate", guard(async (req, res, c) => {
   res.json({ ok: true, audit_id: (last[0] as any)?.id ?? (ins.data?.[0] as any)?.id ?? "unrecorded" });
 }));
 
+/* ------------------------------------------------------------ one-click export
+ * Business card: "One-click data export" + "Export & no lock-in guarantee".
+ * Owner only (CAPS: org.export = owner). Real rows from Supabase — jo table
+ * nahi hai woh safe() se empty array, koi fake data nahi.
+ */
+org.get("/org/export", guard(async (_req, res, c) => {
+  if (!c.org_id) return res.status(404).json({ error: "no_org" });
+  const mem = await safe<any[]>(
+    () => admin.from("org_members").select("role").eq("org_id", c.org_id).eq("user_id", c.user.id).limit(1),
+    [],
+  );
+  if ((mem[0]?.role ?? "member") !== "owner") {
+    return res.status(403).json({ error: "owner_only" });
+  }
+
+  const [members, threads, events, tasks, leads, deals] = await Promise.all([
+    safe<any[]>(() => admin.from("org_members").select("*").eq("org_id", c.org_id), []),
+    safe<any[]>(() => admin.from("mail_threads").select("*").eq("org_id", c.org_id).limit(5000), []),
+    safe<any[]>(() => admin.from("calendar_events").select("*").eq("org_id", c.org_id).limit(5000), []),
+    safe<any[]>(() => admin.from("work_tasks").select("*").eq("org_id", c.org_id).limit(5000), []),
+    safe<any[]>(() => admin.from("crm_leads").select("*").eq("org_id", c.org_id).limit(5000), []),
+    safe<any[]>(() => admin.from("crm_deals").select("*").eq("org_id", c.org_id).limit(5000), []),
+  ]);
+
+  await ledger(c.user.email || c.user.id, "org.export", c.org_id, ipOf(_req));
+
+  const stamp = new Date().toISOString().slice(0, 10);
+  res.setHeader("content-type", "application/json; charset=utf-8");
+  res.setHeader("content-disposition", `attachment; filename="anexomail-export-${stamp}.json"`);
+  res.json({
+    exported_at: new Date().toISOString(),
+    org_id: c.org_id,
+    exported_by: c.user.email || c.user.id,
+    members,
+    mail_threads: threads,
+    calendar_events: events,
+    work_tasks: tasks,
+    crm_leads: leads,
+    crm_deals: deals,
+  });
+}));
+
 export default org;

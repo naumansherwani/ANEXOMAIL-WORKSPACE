@@ -1,10 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, FileCheck2 } from "lucide-react";
+import { useState } from "react";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, ProofTileCard, SectionTitle } from "@/components/app/org/OrgBits";
 import { Button } from "@/components/ui/button";
+import { sessionToken } from "@/lib/api";
+import { notify } from "@/lib/notify";
 import { useCompliance, useOwnershipProof } from "@/lib/org";
+
+const API_BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
+
+/**
+ * Business card: "One-click data export". Owner-only endpoint
+ * GET /api/org/export — real JSON bundle, audit-logged server side.
+ */
+async function downloadOrgExport(): Promise<void> {
+  const token = sessionToken.get();
+  const res = await fetch(`${API_BASE}/api/org/export`, {
+    headers: token ? { authorization: `Bearer ${token}` } : {},
+  });
+  if (!res.ok) {
+    const body = (await res.json().catch(() => null)) as { error?: string } | null;
+    throw new Error(body?.error ?? `export_failed_${res.status}`);
+  }
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `anexomail-export-${new Date().toISOString().slice(0, 10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
 
 export const Route = createFileRoute("/app/org/compliance")({
   head: () => ({
@@ -31,6 +58,24 @@ export const Route = createFileRoute("/app/org/compliance")({
 function CompliancePage() {
   const snapshot = useCompliance();
   const proof = useOwnershipProof();
+  const [exporting, setExporting] = useState(false);
+
+  const runExport = () => {
+    setExporting(true);
+    downloadOrgExport()
+      .then(() => notify.done("Export downloaded", "Your full workspace data is in the file."))
+      .catch((e: unknown) =>
+        notify.failed("Export failed", {
+          description:
+            e instanceof Error && e.message === "owner_only"
+              ? "Only the workspace owner can export all data."
+              : e instanceof Error
+                ? e.message
+                : "Try again.",
+        }),
+      )
+      .finally(() => setExporting(false));
+  };
 
   return (
     <div className="mx-auto w-full max-w-5xl px-6 py-10 md:px-10">
@@ -78,6 +123,16 @@ function CompliancePage() {
                 </li>
               </ul>
               <div className="mt-ax-4 flex flex-wrap gap-2">
+                <Button
+                  variant="secondary"
+                  disabled={!data.export_enabled || exporting}
+                  onClick={runExport}
+                >
+                  <span className="flex items-center gap-2">
+                    <Download className="size-4" aria-hidden="true" />
+                    {exporting ? "Exporting…" : "Export all data (JSON)"}
+                  </span>
+                </Button>
                 <Button variant="secondary" disabled={!data.evidence_pack_ready} asChild={false}>
                   <span className="flex items-center gap-2">
                     <Download className="size-4" aria-hidden="true" />
