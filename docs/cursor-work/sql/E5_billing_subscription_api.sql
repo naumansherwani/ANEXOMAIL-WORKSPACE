@@ -104,12 +104,15 @@ create policy "workspace_invoices_service_all"
   using (true) with check (true);
 
 -- ---------------------------------------------------------------------------
--- 1b) Backfill from polar_webhook_inbox (order.paid events → invoice rows)
+-- 1b) Backfill from polar_webhook_inbox
+--     Only order.paid events → paid invoice rows (never order.created)
+--     DISTINCT ON with ORDER BY received_at desc = latest event per order wins
 -- ---------------------------------------------------------------------------
 insert into public.workspace_invoices
   (user_id, polar_order_id, number, status, subtotal, tax, total, currency,
    period_start, period_end, issued_at, paid_at, pdf_url, payload)
 select distinct on ((wi.payload -> 'data' ->> 'id'))
+  -- ORDER BY inside DISTINCT ON: latest event wins per order id
   ps.user_id,
   wi.payload -> 'data' ->> 'id'                                          as polar_order_id,
   coalesce(
@@ -132,9 +135,10 @@ join public.polar_subscriptions ps on (
      (wi.payload->'data'->>'subscription_id')       = ps.polar_subscription_id
   or (wi.payload->'data'->'subscription'->>'id')    = ps.polar_subscription_id
 )
-where wi.event_type in ('order.paid', 'order.created')
+where wi.event_type = 'order.paid'  -- only confirmed paid orders → paid invoices
   and ps.user_id is not null
   and (wi.payload->'data'->>'id') is not null
+order by (wi.payload->'data'->>'id'), wi.received_at desc  -- deterministic: latest event per order
 on conflict (polar_order_id) do nothing;
 
 -- ---------------------------------------------------------------------------
@@ -169,7 +173,7 @@ declare
 begin
   -- ── SECURITY: only own row or service_role ────────────────────────────────
   if auth.uid() is distinct from p_user_id
-     and current_setting('role') <> 'service_role' then
+     and coalesce(auth.role(), '') <> 'service_role' then
     raise exception 'forbidden';
   end if;
 
@@ -336,7 +340,7 @@ declare rows jsonb;
 begin
   -- ── SECURITY ───────────────────────────────────────────────────────────────
   if auth.uid() is distinct from p_user_id
-     and current_setting('role') <> 'service_role' then
+     and coalesce(auth.role(), '') <> 'service_role' then
     raise exception 'forbidden';
   end if;
 
