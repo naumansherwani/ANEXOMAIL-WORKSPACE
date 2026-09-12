@@ -20,8 +20,14 @@ async function ctx(req: any) {
     .eq("user_id", user.id)
     .limit(1)
     .maybeSingle();
-  if (!mem) return null;
-  return { userId: user.id, email: user.email || "", orgId: mem.org_id, role: mem.role };
+  // Personal users (no org) still get calendar — filtered by created_by = userId.
+  // orgId null = personal mode. Routes check c.orgId before querying.
+  return { userId: user.id, email: user.email || "", orgId: mem?.org_id ?? null, role: mem?.role ?? "member" };
+}
+
+/** org filter helper — business: by org_id; personal: by created_by */
+function orgFilter(q: any, c: { orgId: string | null; userId: string }) {
+  return c.orgId ? q.eq("org_id", c.orgId) : q.eq("created_by", c.userId);
 }
 
 function guard(handler: (c: any, req: any, res: any) => Promise<any>) {
@@ -140,34 +146,22 @@ calendar.get(
   guard(async (c, req, res) => {
     const from = String(req.query.from || iso(new Date(Date.now() - 7 * 24 * 60 * MIN)));
     const to = String(req.query.to || iso(new Date(Date.now() + 21 * 24 * 60 * MIN)));
-    const { data, error } = await supa
-      .from("calendar_events")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .gte("starts_at", from)
-      .lt("starts_at", to)
-      .order("starts_at", { ascending: true });
+    const base = supa.from("calendar_events").select("*").gte("starts_at", from).lt("starts_at", to).order("starts_at", { ascending: true });
+    const { data, error } = await orgFilter(base, c);
     if (error) throw error;
-    res.json({ events: await shapeEvents(c.orgId, data || []) });
+    res.json({ events: await shapeEvents(c.orgId ?? c.userId, data || []) });
   }),
 );
 
 calendar.get(
   "/calendar/events/:id",
   guard(async (c, req, res) => {
-    const { data: e } = await supa
-      .from("calendar_events")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .eq("id", req.params.id)
-      .maybeSingle();
+    const base = supa.from("calendar_events").select("*").eq("id", req.params.id);
+    const { data: e } = await orgFilter(base, c).maybeSingle();
     if (!e) return res.status(404).json({ error: { code: "not_found", message: "Event not found" } });
-    const [event] = await shapeEvents(c.orgId, [e]);
-    const { data: tasks } = await supa
-      .from("work_tasks")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .eq("event_id", e.id);
+    const [event] = await shapeEvents(c.orgId ?? c.userId, [e]);
+    const taskBase = supa.from("work_tasks").select("*").eq("event_id", e.id);
+    const { data: tasks } = await orgFilter(taskBase, c);
     res.json({
       event,
       outcome: e.outcome
@@ -207,7 +201,7 @@ calendar.post(
     const { data: e, error } = await supa
       .from("calendar_events")
       .insert({
-        org_id: c.orgId,
+        org_id: c.orgId || null,
         title,
         agenda,
         starts_at: iso(startsAt),
@@ -256,16 +250,10 @@ calendar.get(
     const day = String(req.query.date || new Date().toISOString().slice(0, 10));
     const start = new Date(`${day}T00:00:00.000Z`);
     const end = new Date(start.getTime() + 24 * 60 * MIN);
-    const { data: events } = await supa
-      .from("calendar_events")
-      .select("starts_at, ends_at, title, kind")
-      .eq("org_id", c.orgId)
-      .gte("starts_at", iso(start))
-      .lt("starts_at", iso(end));
-    const { data: windows } = await supa
-      .from("calendar_focus_windows")
-      .select("*")
-      .eq("org_id", c.orgId);
+    const evBase = supa.from("calendar_events").select("starts_at, ends_at, title, kind").gte("starts_at", iso(start)).lt("starts_at", iso(end));
+    const { data: events } = await orgFilter(evBase, c);
+    const winBase = supa.from("calendar_focus_windows").select("*");
+    const { data: windows } = c.orgId ? winBase.eq("org_id", c.orgId) : winBase.eq("created_by", c.userId);
 
     const weekday = (start.getUTCDay() + 6) % 7;
     const slots: any[] = [];
@@ -299,11 +287,8 @@ calendar.get(
 calendar.get(
   "/calendar/focus",
   guard(async (c, _req, res) => {
-    const { data } = await supa
-      .from("calendar_focus_windows")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .order("weekday", { ascending: true });
+    const base = supa.from("calendar_focus_windows").select("*").order("weekday", { ascending: true });
+    const { data } = c.orgId ? await base.eq("org_id", c.orgId) : await base.eq("created_by", c.userId);
     res.json({
       windows: (data || []).map((w: any) => ({
         id: w.id,
@@ -323,21 +308,14 @@ calendar.get(
   guard(async (c, req, res) => {
     const from = String(req.query.from || iso(new Date()));
     const to = String(req.query.to || iso(new Date(Date.now() + 7 * 24 * 60 * MIN)));
-    const { data: events } = await supa
-      .from("calendar_events")
-      .select("id, starts_at, ends_at")
-      .eq("org_id", c.orgId)
-      .gte("starts_at", from)
-      .lt("starts_at", to);
+    const evBase = supa.from("calendar_events").select("id, starts_at, ends_at").gte("starts_at", from).lt("starts_at", to);
+    const { data: events } = await orgFilter(evBase, c);
     const ids = (events || []).map((e: any) => e.id);
     const { data: att } = ids.length
       ? await supa.from("calendar_attendees").select("event_id, address, display_name").in("event_id", ids)
       : { data: [] as any[] };
-    const { data: tasks } = await supa
-      .from("work_tasks")
-      .select("owner, status")
-      .eq("org_id", c.orgId)
-      .neq("status", "done");
+    const taskBase = supa.from("work_tasks").select("owner, status").neq("status", "done");
+    const { data: tasks } = await orgFilter(taskBase, c);
 
     const byMinutes = new Map<string, { name: string | null; minutes: number }>();
     for (const a of att || []) {
@@ -364,11 +342,8 @@ calendar.get(
 calendar.get(
   "/calendar/export",
   guard(async (c, req, res) => {
-    const { data } = await supa
-      .from("calendar_events")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .order("starts_at", { ascending: true });
+    const base = supa.from("calendar_events").select("*").order("starts_at", { ascending: true });
+    const { data } = await orgFilter(base, c);
     if (String(req.query.format) === "json") return res.json({ events: data || [] });
     const stamp = (s: string) => new Date(s).toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
     const lines = [
@@ -397,12 +372,8 @@ calendar.get(
 calendar.post(
   "/calendar/events/:id/outcome",
   guard(async (c, req, res) => {
-    const { data: e } = await supa
-      .from("calendar_events")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .eq("id", req.params.id)
-      .maybeSingle();
+    const outBase = supa.from("calendar_events").select("*").eq("id", req.params.id);
+    const { data: e } = await orgFilter(outBase, c).maybeSingle();
     if (!e) return res.status(404).json({ error: { code: "not_found", message: "Event not found" } });
     if (!e.outcome)
       return res
@@ -413,7 +384,7 @@ calendar.post(
     if (items.length) {
       await supa.from("work_tasks").insert(
         items.map((i) => ({
-          org_id: c.orgId,
+          org_id: c.orgId || null,
           title: i.title,
           owner: i.owner || null,
           due_at: i.due_at || null,
@@ -463,7 +434,7 @@ function shapeTask(t: any) {
 calendar.get(
   "/work/tasks",
   guard(async (c, req, res) => {
-    let q = supa.from("work_tasks").select("*").eq("org_id", c.orgId);
+    let q = orgFilter(supa.from("work_tasks").select("*"), c);
     if (req.query.thread_id) q = q.eq("thread_id", String(req.query.thread_id));
     if (req.query.event_id) q = q.eq("event_id", String(req.query.event_id));
     if (req.query.view === "mine") q = q.eq("owner", c.email);
@@ -482,7 +453,7 @@ calendar.post(
     const { data, error } = await supa
       .from("work_tasks")
       .insert({
-        org_id: c.orgId,
+        org_id: c.orgId || null,
         title,
         status: "todo",
         owner: req.body?.owner ?? c.email,
@@ -509,11 +480,8 @@ calendar.patch(
     }
     if ("owner" in (req.body || {})) patch.owner = req.body.owner;
     if ("due_at" in (req.body || {})) patch.due_at = req.body.due_at;
-    const { data, error } = await supa
-      .from("work_tasks")
-      .update(patch)
-      .eq("org_id", c.orgId)
-      .eq("id", req.params.id)
+    const patchQ = orgFilter(supa.from("work_tasks").update(patch).eq("id", req.params.id), c);
+    const { data, error } = await patchQ
       .select("*")
       .maybeSingle();
     if (error) throw error;
@@ -526,11 +494,8 @@ calendar.patch(
 calendar.get(
   "/work/promises",
   guard(async (c, _req, res) => {
-    const { data, error } = await supa
-      .from("work_promises")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .eq("status", "suggested")
+    const pBase = supa.from("work_promises").select("*").eq("status", "suggested");
+    const { data, error } = await orgFilter(pBase, c)
       .order("detected_at", { ascending: false })
       .limit(100);
     if (error) throw error;
@@ -552,17 +517,13 @@ calendar.get(
 calendar.post(
   "/work/promises/:id/commit",
   guard(async (c, req, res) => {
-    const { data: p } = await supa
-      .from("work_promises")
-      .select("*")
-      .eq("org_id", c.orgId)
-      .eq("id", req.params.id)
-      .maybeSingle();
+    const pBase2 = supa.from("work_promises").select("*").eq("id", req.params.id);
+    const { data: p } = await orgFilter(pBase2, c).maybeSingle();
     if (!p) return res.status(404).json({ error: { code: "not_found", message: "Promise not found" } });
     const { data: task } = await supa
       .from("work_tasks")
       .insert({
-        org_id: c.orgId,
+        org_id: c.orgId || null,
         title: p.suggested_title,
         status: "todo",
         owner: p.owner || c.email,
@@ -585,11 +546,7 @@ calendar.post(
 calendar.post(
   "/work/promises/:id/dismiss",
   guard(async (c, req, res) => {
-    await supa
-      .from("work_promises")
-      .update({ status: "dismissed" })
-      .eq("org_id", c.orgId)
-      .eq("id", req.params.id);
+    await orgFilter(supa.from("work_promises").update({ status: "dismissed" }).eq("id", req.params.id), c);
     res.json({ ok: true });
   }),
 );
@@ -599,11 +556,8 @@ calendar.get(
   "/work/follow-through",
   guard(async (c, req, res) => {
     const scope = String(req.query.scope || "person") === "team" ? "team" : "person";
-    const { data } = await supa
-      .from("work_tasks")
-      .select("owner, status, due_at, completed_at")
-      .eq("org_id", c.orgId)
-      .not("due_at", "is", null);
+    const ftBase = supa.from("work_tasks").select("owner, status, due_at, completed_at").not("due_at", "is", null);
+    const { data } = await orgFilter(ftBase, c);
 
     const bucket = new Map<string, { made: number; onTime: number; late: number; broken: number }>();
     for (const t of data || []) {
@@ -636,7 +590,7 @@ calendar.get(
 calendar.get(
   "/work/notes",
   guard(async (c, req, res) => {
-    let q = supa.from("work_notes").select("*").eq("org_id", c.orgId);
+    let q = orgFilter(supa.from("work_notes").select("*"), c);
     if (req.query.thread_id) q = q.eq("thread_id", String(req.query.thread_id));
     else if (req.query.event_id) q = q.eq("event_id", String(req.query.event_id));
     else return res.json({ note: null });
@@ -679,7 +633,7 @@ calendar.post(
     const { data, error } = await supa
       .from("work_notes")
       .insert({
-        org_id: c.orgId,
+        org_id: c.orgId || null,
         body,
         thread_id: threadId,
         event_id: eventId,
