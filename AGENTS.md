@@ -56,10 +56,11 @@
 ## RULES (sab locked)
 
 ### Rule 1 — GitHub is source of truth
-Sab kuch GitHub repo mein. Server sirf pull karta hai:
+Sab kuch GitHub repo mein. Server sirf pull karta hai. **Curl health locked** (12 Sep 2026) — bina curl ke pull command nahi:
 ```bash
-cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save
+cd /opt/anexomail-web && git pull --no-rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save && echo "--- HTTP ---" && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health && curl -s -o /dev/null -w "bun /api/health %{http_code}\n" --max-time 5 http://127.0.0.1:3100/api/health && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health && curl -s -o /dev/null -w "polar /health %{http_code}\n" --max-time 5 http://127.0.0.1:3400/health
 ```
+Agent output padhe aur **HTTP 200** confirm kare (web `:3000` · bun `:3100` · rust `:3200` · polar `:3400`).
 
 ### Rule 2 — No local clone on agent
 Agent sirf GitHub repo read karta hai, push karta hai. Server pull karta hai. Agent ke pass kuch nahi.

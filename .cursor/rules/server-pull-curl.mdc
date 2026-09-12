@@ -1,0 +1,25 @@
+---
+description: Server pull always includes curl health. Agent must confirm HTTP 200.
+alwaysApply: true
+---
+
+# Server pull + curl (locked 12 Sep 2026)
+
+Founder: har **server pull command** ke saath **curl health** bhejo. Bina curl ke pull **banned**. Build ke baad **PM2 restart** + **HTTP 200 confirm**.
+
+**Sirf yeh command** (add / hatao nahi):
+
+```bash
+cd /opt/anexomail-web && git pull --no-rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save && echo "--- HTTP ---" && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health && curl -s -o /dev/null -w "bun /api/health %{http_code}\n" --max-time 5 http://127.0.0.1:3100/api/health && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health && curl -s -o /dev/null -w "polar /health %{http_code}\n" --max-time 5 http://127.0.0.1:3400/health
+```
+
+Agent output padhe, phir **200 / not 200** likhe:
+
+| Line | Expect |
+|---|---|
+| `web /health` | **200** — Bun SSR `:3000` |
+| `bun /api/health` | **200** — fallback `:3100` |
+| `rust /rpc/health` | **200** — PRIMARY `:3200` |
+| `polar /health` | **200** — Polar rust payment `:3400` (no-touch) |
+
+200 nahi → red code + kaunsa port. Polar engine rewrite **nahi**.
