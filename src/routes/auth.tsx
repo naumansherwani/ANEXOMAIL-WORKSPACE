@@ -671,7 +671,7 @@ function AuthPage() {
                             {mode === "login" && (
                               <label
                                 htmlFor="save-password"
-                                className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-border bg-secondary/40 px-3 py-2.5"
+                                className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-secondary/40 px-3 py-2.5"
                               >
                                 <Checkbox
                                   id="save-password"
@@ -681,15 +681,9 @@ function AuthPage() {
                                     setSavePassword(on);
                                     writeSavePasswordPref(on);
                                   }}
-                                  className="mt-0.5"
                                 />
-                                <span className="min-w-0">
-                                  <span className="block text-[13px] font-semibold text-foreground">
-                                    {t("Save password")}
-                                  </span>
-                                  <span className="ax-caption mt-0.5 block">
-                                    {t("This browser keeps it. We do not store your password on the page.")}
-                                  </span>
+                                <span className="text-[13px] font-semibold text-foreground">
+                                  {t("Save password")}
                                 </span>
                               </label>
                             )}
