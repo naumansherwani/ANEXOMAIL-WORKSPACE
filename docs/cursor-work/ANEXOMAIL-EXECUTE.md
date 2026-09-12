@@ -1,254 +1,204 @@
-# ANEXOMAIL — E-series (clean execute)
+# ANEXOMAIL — E-series = Claude F tarteeb
 
-Yahi implement file hai. **Original blueprint overwrite nahi.**
+**Tumhari formula:** original blueprint (no-touch) + Lovable **positive** codes (preserve) + **Claude F1→F12 tarteeb** = E1→E12. Mix nahi. Original file overwrite nahi.
 
-**Formula (mix nahi — ek tarteeb):**
-`docs/anexomail-blueprint.md` (catalog, no-touch)
-\+ Lovable se **positive** files (phenko mat, mix gate)
-\+ Claude **F1→F9** mail order
-= **E1…E8** yahan.
-
-ANEXOChat 32+ / AI phases / founder deck **is list mein nahi.** Polar rust payment **E nahi** — pehle se `:3400`, no-touch.
-
-**Teen kitab:** (1) yeh file = mail `anexomail.com` (2) `AI-EXECUTE.md` baad (3) `FOUNDER-EXECUTE.md` end.
+Polar rust payment `:3400` **E nahi** — pehle se, no-touch. `plans.ts` / landing no-touch.
 
 ---
 
-## Status words
-
-| Word | Matlab |
-|---|---|
-| **DONE** | Wire + founder live (browser + API + DB). Mail = `mail-gate.sh` green. |
-| **READY** | GitHub pe hai. Server pull / live proof nahi. |
-| **TODO** | Abhi nahi. |
-
-PARTIAL / “almost” **nahi**. DONE se pehle agli E start **nahi**. E4 DONE ke baghair E5–E8 DONE **nahi**.
-
----
-
-## Stack (har E — naya architecture nahi)
+## Stack (har E)
 
 | Layer | Technology |
 |---|---|
-| Host | Hetzner |
-| Edge | Caddy HTTPS + HTTP/3 |
-| **Frontend** | React 19.2 · TanStack Start v1 (router 1.17.0) · Vite 8.2 · Tailwind 4.2 · Radix/shadcn · Framer/GSAP/Three |
-| Frontend run | Bun Nitro SSR `:3000` — **backend nahi** |
-| **Backend PRIMARY** | Rust `:3200` — async **Tokio** + **WebTransport** + **QUIC** (`/rpc/*` + `/wt/*`) |
-| **Backend FALLBACK** | Bun `:3100–3300` `/api/*` — **sirf** jab Rust 404/501/502/503 |
-| DB | Supabase / PostgreSQL |
-| Mail (installed) | Postfix / Dovecot / OpenDKIM — dobara install **nahi** |
-| Pay | Polar rust payment PM2 `:3400` — **no-touch** |
+| Frontend | React 19.2 · TanStack Start v1 · Vite 8.2 · Tailwind 4.2 · Radix/shadcn · Bun SSR `:3000` |
+| Backend PRIMARY | Rust `:3200` Tokio + WebTransport + QUIC (`/rpc` `/wt`) |
+| Backend FALLBACK | Bun `:3100–3300` `/api/*` jab Rust 404/501/502/503 |
+| Mail | Postfix / Dovecot / OpenDKIM — **installed**, dobara nahi |
+| Pay | Polar rust payment `:3400` no-touch |
 
-**Naya phase:** pehle Rust, phir usi kaam ka Bun fallback. Naya Bun-primary **nahi**.  
-**Claude:** UI (package features → rail/gates/Zoho mail look) jab API GitHub pe ho.  
-**Backend agent:** Rust + mail wire. `plans.ts` prices / landing / Polar **no-touch**.
+Naya kaam: pehle Rust, phir Bun fallback.
+
+**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 (send+receive live) ke baghair E5–E8 aage **nahi**.
 
 ---
 
-## Tarteeb (number)
+## Tarteeb — Claude F = E number
 
 ```
-E1 package rail
-  E1A CRM surface + 28 locales
-E2 account / session / Personal Polar map
-E3 inbox KEEP (list — rewrite nahi)
-E4 SEND + RECEIVE GATE
-E5 thread
-E6 people
-E7 calendar
-E8 work
-→ STOP mail user-complete
-→ AI host (AI-EXECUTE)
-→ founder (FOUNDER-EXECUTE)
+E1  = F1   Auth
+E1.2= F1.2 Shell / package rail
+E2  = F2   Dashboard
+E3  = F3   Inbox list
+E3A = F3A  Family testers
+E3B = F3B  Onboarding Personal|Business
+E4  = F4   SEND + RECEIVE GATE
+E5  = F5   Thread
+E6  = F6   People
+E7  = F7   Calendar
+E8  = F8   Work
+E9  = F9   Founder protocol
+E10 = F10  ANEXOChat (1–31A; 32+ paste)
+E11 = F11  LEO (AI-EXECUTE, baad)
+E12 = F12  CRM
 ```
 
 ---
 
-## E1 — package rail
+## Claude frontend — kab aaye (locked)
 
-| | |
-|---|---|
-| Claude | F1.2 |
-| Original | Phase 1 shell |
-| Lovable keep | `AppShell.tsx` `host.ts` `plan-surface.ts` `PlanSurfaceGate.tsx` |
-| Frontend | React / TanStack / AppShell / gates. Cards = Basic→Pro→Business→Business Pro |
-| Backend | Rail frontend. Naya API yahan nahi |
-| **Repo** | **READY** — package rail, kind chrome, wall on URL |
-| **Live** | **DONE nahi** — founder ne har package rail live close nahi ki |
+**Har phase pe naya UI/UX zaroori nahi.** Lovable screen pehle se ho to Claude usko tear nahi karta. Claude **tab** aata hai jab (1) us E ka **backend GitHub pe ho** aur (2) neeche **Claude = HAAN**.
 
-**Mix hatao:** Leo mail host pe nahi. Landing / `plans.ts` no-touch. Naam chip sirf avatar.
-
----
-
-## E1A — CRM surface + 28 locales (E1 ki subphase)
-
-| | |
-|---|---|
-| Claude | F12 + locales |
-| Original | CRM + i18n (mail mix nahi) |
-| Lovable keep | `app.crm*` `src/i18n` `server/routes/crm.ts` `server/routes/locale.ts` |
-| SQL | `phase64_crm_locale.sql` — **already run, no-touch** |
-| Frontend | CRM nav / `t()` / picker **login ke baad** workspace header. Auth+landing English |
-| Backend | **PRIMARY** Rust `/rpc/crm.*` `/rpc/locale.*` · **FALLBACK** Bun `/api/crm/*` `/api/locale/*` |
-| **Repo** | **READY** |
-| **Live** | **DONE nahi** |
-
-Flagship CRM (timeline, graph, CR1+) = E4 + E6 ke baad. Alag `crm.` host **nahi**.
-
----
-
-## E2 — account / session / Personal Polar
-
-| | |
-|---|---|
-| Claude | F1 |
-| Original | Phase 5A auth |
-| Lovable keep | `auth.tsx` `server/routes/auth.ts` |
-| SQL | `phase65_account_kind.sql` no-touch (run). `E2_personal_polar.sql` map (+ `chat_access` file mein hai — dubara paste mat bolo) |
-| Frontend | Sign in `/auth`. Create workspace → Personal \| Business → `/plans`. Get started → `/plans` |
-| Backend | **Ab session Bun** (`/api/auth/*`). Naya auth piece = pehle Rust, phir Bun fallback. Polar engine **nahi** |
-| **Repo** | **READY** — kind, checkout land, Personal map |
-| **Live** | **DONE nahi** — login chalta; har path founder-close nahi |
-
-Masood / Humza / Raana = Sign in, `/plans` nahi.
-
----
-
-## E3 — inbox KEEP
-
-| | |
-|---|---|
-| Claude | F3 |
-| Original | Phase 2 + 7 mail |
-| Lovable keep | `app.mail.*` MailRail `ia.ts` — **rewrite nahi** |
-| Frontend | Three-panel. Empty = khali, fake nahi. Zoho look = Claude, API ke baad |
-| Backend | **PRIMARY** Rust `/rpc/mail.*` + `/wt/mail` · **FALLBACK** Bun `/api/mail/*` |
-| **Repo** | **READY** — list/counts |
-| **Live** | **DONE nahi** — send/receive proof E4 |
-
----
-
-## E4 — SEND + RECEIVE GATE
-
-| | |
-|---|---|
-| Claude | F4 |
-| Original | Phase 9 + 52–58 |
-| Lovable keep | `ComposeStudio` send path — Leo compose se **mail host pe nahi** |
-| Frontend | Compose → asli send. Inbox → asli receive |
-| Backend | SMTP = **Postfix (installed)**. Rust = delivery push sent→delivered→read. Bun `/api/mail/send` **fallback** |
-| **Repo** | **TODO** — wire baaki |
-| **Live** | **TODO** — `bash server/gates/mail-gate.sh` + founder dekhe |
-
-E5–E8 yahan **rukte** hain.
-
----
-
-## E5 — thread
-
-| | |
-|---|---|
-| Claude | F5 |
-| Original | thread |
-| Lovable keep | `$threadId.tsx` |
-| Frontend | Thread view |
-| Backend | **PRIMARY** Rust inline reply push · **FALLBACK** Bun `GET /api/mail/thread/:id` |
-| Status | **TODO** — wait E4 **DONE** |
-
----
-
-## E6 — people
-
-| | |
-|---|---|
-| Claude | F6 |
-| Original | Phase 10 |
-| Lovable keep | people UI |
-| SQL | `phase62` — **already run, no-touch** |
-| Frontend | People list (embed companies **nahi** — PostgREST cache toot’ti thi) |
-| Backend | **PRIMARY** Rust contacts (naya wire) · **FALLBACK** Bun `/api/contacts` |
-| Status | **TODO** — wait E4 **DONE**. Repo pe list-fix **READY**, live mailbox nahi |
-
----
-
-## E7 — calendar
-
-| | |
-|---|---|
-| Claude | F7 |
-| Original | Phase 11 |
-| Lovable keep | calendar |
-| SQL | `phase61` — **already run, no-touch** |
-| Frontend | Calendar |
-| Backend | **PRIMARY** Rust 5min reminder `/wt` · **FALLBACK** Bun `/api/calendar/load` |
-| Status | **TODO** — wait E4 **DONE** |
-
----
-
-## E8 — work
-
-| | |
-|---|---|
-| Claude | F8 |
-| Original | work |
-| Lovable keep | `app.work.tsx` |
-| Frontend | Work. Chat ledger 403 = honest gate, empty lie nahi |
-| Backend | **PRIMARY** Rust work (naya) · **FALLBACK** Bun `/api/work/*`. Chat ledgers = `chat_access` (Rust chat) |
-| Status | **TODO** — wait E4 **DONE** |
-
----
-
-## Polar (E-series nahi)
-
-| | |
-|---|---|
-| Engine | `polar-rust-payment` PM2 `:3400` HTTP 200 |
-| PRIMARY URL | `https://polarpayments.anexomail.com/api/v1/polar-webhook` |
-| BACKUP | `https://anexomail.com/api/v1/polar-webhook` |
-| Codes | `server/rust/polar-payment/` **no-touch** |
-| Cards | `src/lib/plans.ts` **no-touch**. Features → UI = Claude, prices nahi |
-
-`checkout.created` / `updated` **200** = engine ne event li. Woh pay-katna nahi.
-
----
-
-## Package → UI (Claude, API ke baad)
-
-| Polar SKU | Kind default | Rail (cards se — prices no-touch) |
+| E = F | Claude UI/UX? | Kab / kya |
 |---|---|---|
-| Basic £23 | personal | Dashboard Mail People Calendar Work. Chat/full CRM nahi |
-| Pro £46 | personal | Personal Pro = Business Pro **power**, Org nahi |
-| Business £97 | business | + Org + Chat + CRM shared |
-| Business Pro £2850 | business | + CRM activity |
+| E1 F1 Auth | **Nahi** (ab) | Auth+landing English. Naya signup look tabhi jab founder bole |
+| E1.2 F1.2 Shell | **Haan** | Package rail + Zoho chrome — E4 ke baad ya founder “UI shuru” |
+| E2 F2 Dashboard | **Nahi zaroori** | Greeting pehle se. Zeros E4 mail ke baad khud theek |
+| E3 F3 Inbox list | **Haan** | Zoho three-panel — **E4 send/receive API ke baad** |
+| E3A F3A Testers | **Nahi** | Accounts / grants. UI phase nahi |
+| E3B F3B Onboarding | **Nahi zaroori** | Form pehle se. Polish sirf founder bole |
+| **E4 F4 GATE** | **Pehle nahi** | **Backend pehle** (Postfix + Rust + Bun fallback). Claude compose/inbox **wire ke baad** |
+| E5 F5 Thread | **Haan** | Us E ka Rust API GitHub pe ho |
+| E6 F6 People | **Haan** | Wahi |
+| E7 F7 Calendar | **Haan** | Wahi |
+| E8 F8 Work | **Haan** | Wahi |
+| E9 F9 Founder | **Baad** | `FOUNDER-EXECUTE` — mail DONE ke baad |
+| E10 F10 Chat | **Nahi** (1–31A) | Shell repo mein. 32+ founder paste |
+| E11 F11 LEO | **Baad** | `AI-EXECUTE` |
+| E12 F12 CRM | **Nahi zaroori** (ab) | Surface repo. CR1+ E4+E6 ke baad |
+| Polar | **Kabhi nahi** | Engine no-touch |
 
-Same AppShell. `ai.anexomail.com` = wahi UI + LEO baad. Vercel **nahi**.
-
----
-
-## Skip is execute se (original mein hain)
-
-| Original | Kahan |
-|---|---|
-| Ph 8, 17–22, 31 AI | `AI-EXECUTE.md` |
-| Ph 25, 27 Admin/Speed | `FOUNDER-EXECUTE.md` |
-| Ph 3 landing | no-touch |
-| Ph 32–51 Polar/trial spine | no-touch |
-| Chat 1–31A | repo mein; 32+ founder paste |
-| Ph 6 dashboard Greeting | rakhna; Leo credits AI-only |
-
----
-
-## 28 locales (Hebrew / Swahili nahi)
-
-Picker **login ke baad**. Auth + landing English. `t("English")`. Argos = build, product nahi.
+**Ab Claude: nahi.** Ab backend **E4**. Claude pehli dafa **E3+E4 screens** (Zoho inbox + compose) jab E4 API push ho.
 
 ---
 
-## Ab kaunsi E
+## E1 = F1 Auth — DONE
 
-**Backend agent ab:** **E4** — Postfix/Dovecot jo installed hai us se send+receive wire, Rust pehle, Bun fallback.
+Lovable keep: `auth.tsx` `server/routes/auth.ts`  
+Frontend: Sign in `/auth`. Create workspace → Personal | Business → `/plans`.  
+Backend: **ab** Bun `/api/auth/*`. Naya piece = Rust pehle, Bun fallback.  
+SQL: phase65 no-touch; `E2_personal_polar.sql` map (purana E-number naam — yeh E1/E3B ka map).
 
-**Claude:** E4 API GitHub pe aane ke baad UI (Zoho mail look + package gates). Abhi fake inbox **nahi**.
+---
 
-**SQL:** phase60–65 no-touch. Naya = `docs/cursor-work/sql/E<n>_….sql` only.
+## E1.2 = F1.2 Shell — DONE
+
+Lovable keep: `AppShell.tsx` `host.ts` `plan-surface.ts` `PlanSurfaceGate.tsx`  
+Frontend: package rail, URL wall.  
+Backend: nahi (UI).  
+Mix nahi: Leo mail host pe nahi.
+
+---
+
+## E2 = F2 Dashboard — DONE
+
+Lovable keep: Greeting, tiles, `/api/dashboard/*`  
+Frontend: cinematic dashboard rakhna. Leo credits **AI-only**.  
+Backend: Bun dashboard aaj. Naya = Rust pehle, Bun fallback.
+
+---
+
+## E3 = F3 Inbox list — DONE (list only)
+
+Lovable keep: `app.mail.*` MailRail — **rewrite nahi**  
+Frontend: three-panel. Fake empty nahi. Zoho look = Claude, E4 API ke baad.  
+Backend: **PRIMARY** Rust `/rpc/mail.*` `/wt/mail` · **FALLBACK** Bun `/api/mail/*`  
+Send/receive **E4** hai, E3 nahi.
+
+---
+
+## E3A = F3A Testers — DONE (repo)
+
+Masood Pro · Humza Business Pro · Raana AI Executive. Sign in, `/plans` nahi.  
+SQL phase63 no-touch.
+
+---
+
+## E3B = F3B Onboarding — DONE (repo)
+
+Personal | Business. Business → org name+domain. Personal → dashboard. Polar alag.
+
+---
+
+## E4 = F4 SEND + RECEIVE GATE — TODO
+
+Compose → Postfix (installed). Bahar se → Dovecot → list.  
+Backend: Rust delivery push; Bun send fallback.  
+Live: `bash server/gates/mail-gate.sh` + founder dekhe.  
+**Ab backend yahi.** E5–E8 wait.
+
+---
+
+## E5 = F5 Thread — TODO (wait E4)
+
+Lovable: `$threadId.tsx`  
+Backend: Rust reply push · Bun `/api/mail/thread/:id` fallback.
+
+---
+
+## E6 = F6 People — TODO (wait E4)
+
+Lovable: people. SQL phase62 no-touch.  
+Backend: Rust contacts (naya) · Bun `/api/contacts` fallback.  
+Repo list-fix (no companies embed) pehle se hai.
+
+---
+
+## E7 = F7 Calendar — TODO (wait E4)
+
+Lovable: calendar. SQL phase61 no-touch.  
+Backend: Rust reminder `/wt` · Bun `/api/calendar/load` fallback.
+
+---
+
+## E8 = F8 Work — TODO (wait E4)
+
+Lovable: `app.work.tsx`  
+Backend: Rust work (naya) · Bun `/api/work/*` fallback.  
+403 = honest gate.
+
+---
+
+## E9 = F9 Founder — TODO (wait E4; FOUNDER-EXECUTE)
+
+Host: `founderworkspace.anexomail.com` only.  
+Backend: Rust `/wt/founder` live · Bun `/api/founder/*` fallback.
+
+---
+
+## E10 = F10 ANEXOChat — DONE (1–31A repo) / 32+ TODO
+
+Backend: **FULLY RUST** `/wt/chat`. Bun chat **fallback**.  
+32+ sirf founder `## PHASE N` paste.
+
+---
+
+## E11 = F11 LEO — TODO (AI-EXECUTE, E4 ke baad)
+
+`ai.anexomail.com`. Mail host pe Leo nahi.  
+Backend: baad; naya = Rust pehle.
+
+---
+
+## E12 = F12 CRM — DONE (surface repo)
+
+Lovable: `app.crm*` `crm.ts` `locale.ts`  
+Backend: **PRIMARY** Rust `/rpc/crm.*` `/rpc/locale.*` · **FALLBACK** Bun `/api/crm/*` `/api/locale/*`  
+SQL phase64 no-touch. CR1+ flagship = E4+E6 ke baad. Alag crm host nahi.
+
+---
+
+## Polar (E nahi)
+
+`polarpayments.anexomail.com` + `anexomail.com/api/v1/polar-webhook` → `:3400`. HTTP 200. Codes no-touch.
+
+---
+
+## Package → UI (Claude, E4 API ke baad)
+
+Basic / Pro / Business / Business Pro — `plans.ts` prices no-touch. Features → rail/gates Claude.
+
+---
+
+## Ab
+
+Backend agent: **E4**. Claude: **ab nahi** — pehli UI E3+E4 (Zoho) jab E4 API GitHub pe ho. Har E pe UI zaroori nahi — upar wali table.
