@@ -7,6 +7,7 @@ import {
   CheckSquare,
   Clock,
   Inbox,
+  Lock,
   MailPlus,
   Search,
   Send,
@@ -397,74 +398,135 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
 
 /* -------------------------------- Analytics -------------------------------- */
 
-export function AnalyticsPanel({ enabled }: { enabled: boolean }) {
-  const query = useAnalytics(enabled);
+/**
+ * Ghost analytics bar — purely visual, no real numbers.
+ * Shows locked UI so Basic users see the shape of analytics, not real data.
+ * Heights are static design values — never real metrics.
+ */
+function LockedAnalyticsGhost({ t }: { t: (s: string) => string }) {
+  const ghostHeights = [30, 55, 42, 70, 48, 65, 38, 80, 60, 45, 72, 50, 35, 68];
+  return (
+    <div className="relative overflow-hidden rounded-xl">
+      {/* Ghost stat grid */}
+      <div className="grid grid-cols-2 gap-ax-4 sm:grid-cols-4 opacity-20 blur-[1px] select-none pointer-events-none">
+        {[t("Received"), t("Sent"), t("First reply"), t("Delivered")].map((label) => (
+          <div key={label}>
+            <span className="ax-caption text-steel">{label}</span>
+            <span className="mt-1 block text-xl font-bold text-foreground">—</span>
+          </div>
+        ))}
+      </div>
+      {/* Ghost bar chart */}
+      <div
+        className="mt-ax-5 flex h-24 items-end gap-1 opacity-15 blur-[1.5px] select-none pointer-events-none"
+        aria-hidden="true"
+      >
+        {ghostHeights.map((h, i) => (
+          <span
+            key={i}
+            className="flex-1 rounded-t bg-cyan-accent/70"
+            style={{ height: `${h}%` }}
+          />
+        ))}
+      </div>
+      {/* Lock overlay */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-card/80 backdrop-blur-sm">
+        <span className="flex size-9 items-center justify-center rounded-xl bg-secondary">
+          <Lock className="size-4 text-muted-foreground" />
+        </span>
+        <p className="text-[12px] font-bold text-foreground">{t("Email analytics")}</p>
+        <p className="text-center text-[11px] leading-snug text-muted-foreground/60 max-w-[200px]">
+          {t("Volume, reply speed and delivery rate — available on Pro.")}
+        </p>
+        <a
+          href="/app/billing"
+          className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-[11px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+        >
+          <Sparkles className="size-3" />
+          {t("Upgrade to Pro")}
+        </a>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * proAccess: true  → real analytics from Rust :3200 / Bun fallback
+ * proAccess: false → locked ghost panel (Basic) — no real data fetched
+ */
+export function AnalyticsPanel({ enabled, proAccess }: { enabled: boolean; proAccess: boolean }) {
+  const query = useAnalytics(enabled && proAccess);
   const { t } = useLocale();
 
   return (
     <DashboardCard
       title={t("Email analytics")}
-      hint={t("Volume and response speed.")}
+      hint={proAccess ? t("Volume and response speed.") : t("Pro feature.")}
       icon={<ArrowUpRight className="size-4" />}
     >
-      <CardBody
-        query={query}
-        endpoint="/api/dashboard/analytics"
-        skeleton={<StatSkeleton rows={4} />}
-      >
-        {(data) => {
-          const peak = Math.max(1, ...data.series.map((point) => point.received + point.sent));
-          return (
-            <div>
-              <div className="grid grid-cols-2 gap-ax-4 sm:grid-cols-4">
-                <Stat
-                  icon={<ArrowDownLeft className="size-3.5" />}
-                  label={t("Received")}
-                  value={String(data.received)}
-                />
-                <Stat
-                  icon={<ArrowUpRight className="size-3.5" />}
-                  label={t("Sent")}
-                  value={String(data.sent)}
-                />
-                <Stat label={t("First reply")} value={formatDuration(data.avg_first_reply_seconds)} />
-                <Stat
-                  label={t("Delivered")}
-                  value={
-                    data.delivery_rate === null ? "—" : `${Math.round(data.delivery_rate * 100)}%`
-                  }
-                />
-              </div>
-              {data.series.length > 0 && (
-                <div
-                  className="mt-ax-5 flex h-24 items-end gap-1"
-                  aria-label={`Volume over the last ${data.range_days} days`}
-                  role="img"
-                >
-                  {data.series.map((point, i) => (
-                    <motion.span
-                      key={point.date}
-                      initial={{ scaleY: 0 }}
-                      animate={{ scaleY: 1 }}
-                      transition={{
-                        duration: 0.45,
-                        delay: i * 0.022,
-                        ease: "easeOut",
-                      }}
-                      title={`${point.date}: ${point.received} in, ${point.sent} out`}
-                      className="flex-1 rounded-t bg-cyan-accent/70"
-                      style={{
-                        height: `${Math.max(4, ((point.received + point.sent) / peak) * 100)}%`,
-                        transformOrigin: "bottom",
-                      }}
-                    />
-                  ))}
+      {/* Basic — locked ghost panel, no real query fired */}
+      {!proAccess ? (
+        <LockedAnalyticsGhost t={t} />
+      ) : (
+        <CardBody
+          query={query}
+          endpoint="/api/dashboard/analytics"
+          skeleton={<StatSkeleton rows={4} />}
+        >
+          {(data) => {
+            const peak = Math.max(1, ...data.series.map((point) => point.received + point.sent));
+            return (
+              <div>
+                <div className="grid grid-cols-2 gap-ax-4 sm:grid-cols-4">
+                  <Stat
+                    icon={<ArrowDownLeft className="size-3.5" />}
+                    label={t("Received")}
+                    value={String(data.received)}
+                  />
+                  <Stat
+                    icon={<ArrowUpRight className="size-3.5" />}
+                    label={t("Sent")}
+                    value={String(data.sent)}
+                  />
+                  <Stat label={t("First reply")} value={formatDuration(data.avg_first_reply_seconds)} />
+                  <Stat
+                    label={t("Delivered")}
+                    value={
+                      data.delivery_rate === null ? "—" : `${Math.round(data.delivery_rate * 100)}%`
+                    }
+                  />
                 </div>
-              )}
-            </div>
-          );
-        }}
-      </CardBody>
+                {data.series.length > 0 && (
+                  <div
+                    className="mt-ax-5 flex h-24 items-end gap-1"
+                    aria-label={`Volume over the last ${data.range_days} days`}
+                    role="img"
+                  >
+                    {data.series.map((point, i) => (
+                      <motion.span
+                        key={point.date}
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        transition={{
+                          duration: 0.45,
+                          delay: i * 0.022,
+                          ease: "easeOut",
+                        }}
+                        title={`${point.date}: ${point.received} in, ${point.sent} out`}
+                        className="flex-1 rounded-t bg-cyan-accent/70"
+                        style={{
+                          height: `${Math.max(4, ((point.received + point.sent) / peak) * 100)}%`,
+                          transformOrigin: "bottom",
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          }}
+        </CardBody>
+      )}
     </DashboardCard>
   );
 }

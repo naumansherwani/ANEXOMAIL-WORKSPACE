@@ -9,7 +9,8 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { api, ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 /** GET /api/dashboard/summary */
 export type DashboardSummary = {
@@ -72,10 +73,21 @@ export type CalendarEvent = {
   all_day: boolean;
 };
 
-function useDashboardQuery<T>(key: string, path: string, enabled: boolean) {
+/**
+ * Rust :3200 PRIMARY → Bun :3100 FALLBACK.
+ * rpcOrRest() tries POST /rpc/{procedure} on Rust first;
+ * on 404/501/502/503 falls through to Bun /api/dashboard/* route.
+ * No duplicate: Bun routes untouched, no mock data ever.
+ */
+function useDashboardQuery<T>(
+  key: string,
+  procedure: string,
+  restPath: string,
+  enabled: boolean,
+) {
   return useQuery<T, ApiError>({
     queryKey: ["dashboard", key],
-    queryFn: () => api<T>(path),
+    queryFn: () => rpcOrRest<T>(procedure, { path: restPath }),
     enabled,
     retry: false,
     staleTime: 30_000,
@@ -83,19 +95,44 @@ function useDashboardQuery<T>(key: string, path: string, enabled: boolean) {
 }
 
 export const useSummary = (enabled: boolean) =>
-  useDashboardQuery<DashboardSummary>("summary", "/api/dashboard/summary", enabled);
+  useDashboardQuery<DashboardSummary>(
+    "summary",
+    "dashboard.summary",
+    "/api/dashboard/summary",
+    enabled,
+  );
 
 export const useActivity = (enabled: boolean) =>
-  useDashboardQuery<{ items: ActivityItem[] }>("activity", "/api/dashboard/activity", enabled);
+  useDashboardQuery<{ items: ActivityItem[] }>(
+    "activity",
+    "dashboard.activity",
+    "/api/dashboard/activity",
+    enabled,
+  );
 
 export const useAiUsage = (enabled: boolean) =>
-  useDashboardQuery<AiUsage>("ai-usage", "/api/dashboard/ai-usage", enabled);
+  useDashboardQuery<AiUsage>(
+    "ai-usage",
+    "dashboard.ai-usage",
+    "/api/dashboard/ai-usage",
+    enabled,
+  );
 
 export const useAnalytics = (enabled: boolean) =>
-  useDashboardQuery<Analytics>("analytics", "/api/dashboard/analytics", enabled);
+  useDashboardQuery<Analytics>(
+    "analytics",
+    "dashboard.analytics",
+    "/api/dashboard/analytics",
+    enabled,
+  );
 
 export const useUpcoming = (enabled: boolean) =>
-  useDashboardQuery<{ events: CalendarEvent[] }>("calendar", "/api/dashboard/calendar", enabled);
+  useDashboardQuery<{ events: CalendarEvent[] }>(
+    "calendar",
+    "dashboard.calendar",
+    "/api/dashboard/calendar",
+    enabled,
+  );
 
 export function formatBytes(bytes: number): string {
   if (!Number.isFinite(bytes) || bytes <= 0) return "0 GB";

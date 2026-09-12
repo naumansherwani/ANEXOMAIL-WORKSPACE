@@ -15,12 +15,14 @@
 
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  ArrowRight,
   Check,
   ChevronDown,
   ChevronUp,
   FileText,
   Receipt,
   Sparkles,
+  Star,
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -31,7 +33,7 @@ import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
 import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
 import { money, WORKSPACE_PLANS, type BillingCycle } from "@/lib/plans";
-import { PERSONAL_TIERS, polarToPersonalTierId } from "@/lib/personal-tiers";
+import { PERSONAL_TIERS, polarToPersonalTierId, isPersonalUpgrade, type PersonalTier } from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
 import { surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
@@ -222,6 +224,201 @@ function PlanCard({
   );
 }
 
+// ─── personal tier suggestion card ───────────────────────────────────────────
+const TIER_THEME: Record<string, { border: string; badge: string; badgeTxt: string }> = {
+  personal_basic: {
+    border: "border-border",
+    badge: "bg-secondary",
+    badgeTxt: "text-muted-foreground",
+  },
+  personal_pro: {
+    border: "border-primary/50",
+    badge: "bg-primary/15",
+    badgeTxt: "text-primary",
+  },
+  personal_premium: {
+    border: "border-amber-500/40",
+    badge: "bg-amber-500/15",
+    badgeTxt: "text-amber-400",
+  },
+};
+
+function PersonalTierCard({
+  tier,
+  isCurrent,
+  isRecommended,
+  cycle,
+  delay,
+}: {
+  tier: PersonalTier;
+  isCurrent: boolean;
+  isRecommended: boolean;
+  cycle: BillingCycle;
+  delay: number;
+}) {
+  const { t } = useLocale();
+  const theme = TIER_THEME[tier.id] ?? TIER_THEME.personal_basic;
+  const price = cycle === "monthly" ? tier.monthly : Math.round(tier.yearly / 12);
+  const productKey = `POLAR_PRODUCT_PLAN_${tier.polarPlanId.toUpperCase()}_${cycle.toUpperCase()}`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      className={cn(
+        "relative flex flex-col rounded-2xl border-2 bg-card p-5 transition-colors",
+        isCurrent ? "border-emerald-500/50 bg-emerald-500/5" : theme.border,
+      )}
+    >
+      {/* Badges row */}
+      <div className="flex flex-wrap items-center gap-1.5">
+        <span className="text-[13px] font-bold text-foreground">{tier.name}</span>
+        {tier.badge && (
+          <span className={cn("flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[9px] font-semibold", theme.badge, theme.badgeTxt)}>
+            <Star className="size-2.5" aria-hidden="true" />
+            {tier.badge}
+          </span>
+        )}
+        {isCurrent && (
+          <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+            {t("Your plan")}
+          </span>
+        )}
+        {isRecommended && !isCurrent && (
+          <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
+            <Sparkles className="size-2.5" />
+            {t("Recommended")}
+          </span>
+        )}
+      </div>
+
+      {/* Tagline */}
+      <p className="mt-1 text-[11px] leading-snug text-muted-foreground/60">{tier.tagline}</p>
+
+      {/* Price */}
+      <div className="mt-3 border-b border-border pb-3">
+        <div className="flex items-baseline gap-1">
+          <span className="text-[22px] font-bold tracking-tight text-foreground">
+            {money(price)}
+          </span>
+          <span className="text-[11px] text-muted-foreground/50">/mo</span>
+        </div>
+        {cycle === "yearly" && (
+          <p className="mt-0.5 text-[10px] text-emerald-400">
+            {tier.yearlyRule === "two-months-free" ? t("2 months free") : t("1 month free")} · {t("billed yearly")}
+          </p>
+        )}
+        <p className="mt-0.5 text-[10px] text-muted-foreground/40">{tier.unit}</p>
+      </div>
+
+      {/* Top features */}
+      <ul className="mt-3 flex flex-1 flex-col gap-1.5">
+        {tier.features.slice(0, 6).map((f) => (
+          <li key={f} className="flex items-start gap-2 text-[11px] leading-snug">
+            <Check
+              className={cn(
+                "mt-0.5 size-3 shrink-0",
+                f.startsWith("Everything") ? "text-primary" : "text-emerald-400",
+              )}
+              aria-hidden="true"
+            />
+            <span className={cn(f.startsWith("Everything") ? "font-semibold text-foreground" : "text-muted-foreground")}>
+              {f}
+            </span>
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
+      <div className="mt-5">
+        {isCurrent ? (
+          <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground/40">
+            {t("Current plan")}
+          </div>
+        ) : (
+          <CheckoutButton
+            productKey={productKey}
+            label={t("Upgrade")}
+            source={`billing:personal:${tier.id}`}
+            className="h-9 rounded-xl py-0 text-[12px]"
+          />
+        )}
+      </div>
+    </motion.div>
+  );
+}
+
+/**
+ * Personal tier suggestion strip — only shown for personal kind accounts.
+ * Three cards: Personal Basic · Personal Pro · Personal Premium.
+ * Current tier green. Next tier recommended (primary). Premium amber.
+ * Uses existing PERSONAL_TIERS + CheckoutButton → Polar checkout (no-touch).
+ */
+function PersonalTiersSection({
+  currentPlanId,
+  cycle,
+}: {
+  currentPlanId: string | null;
+  cycle: BillingCycle;
+}) {
+  const { t } = useLocale();
+  const currentTierId = polarToPersonalTierId(
+    (currentPlanId as "basic" | "pro" | "business" | "business_pro") ?? "basic",
+  );
+  const currentTierIdx = PERSONAL_TIERS.findIndex((t) => t.id === currentTierId);
+  const recommendedId = PERSONAL_TIERS[Math.min(currentTierIdx + 1, PERSONAL_TIERS.length - 1)]?.id;
+
+  return (
+    <motion.section
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+      className="mt-ax-8"
+    >
+      {/* Header */}
+      <div className="flex flex-wrap items-center gap-2">
+        <h3 className="ax-heading text-foreground">{t("Your personal tiers")}</h3>
+        <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+          {t("Personal account")}
+        </span>
+      </div>
+      <p className="mt-1 text-[11px] text-muted-foreground/50">
+        {t("Workspace stays personal after checkout. Upgrade any time — no seat negotiations.")}
+      </p>
+
+      {/* Upgrade path arrow */}
+      {currentTierIdx < PERSONAL_TIERS.length - 1 && (
+        <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-card p-3">
+          <Sparkles className="size-3.5 text-primary" />
+          <span className="text-[11px] text-foreground">
+            <span className="font-semibold">{PERSONAL_TIERS[currentTierIdx]?.name}</span>
+            <ArrowRight className="mx-1 inline-block size-3 text-muted-foreground" />
+            <span className="font-semibold text-primary">{PERSONAL_TIERS[currentTierIdx + 1]?.name}</span>
+          </span>
+          <span className="ml-auto text-[10px] text-muted-foreground/50">
+            +£{((PERSONAL_TIERS[currentTierIdx + 1]?.monthly ?? 0) - (PERSONAL_TIERS[currentTierIdx]?.monthly ?? 0))}/mo
+          </span>
+        </div>
+      )}
+
+      {/* 3 tier cards */}
+      <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {PERSONAL_TIERS.map((tier, i) => (
+          <PersonalTierCard
+            key={tier.id}
+            tier={tier}
+            isCurrent={tier.id === currentTierId}
+            isRecommended={tier.id === recommendedId}
+            cycle={cycle}
+            delay={i * 0.06}
+          />
+        ))}
+      </div>
+    </motion.section>
+  );
+}
+
 // ─── main page ────────────────────────────────────────────────────────────────
 function WorkspaceBilling() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
@@ -327,6 +524,11 @@ function WorkspaceBilling() {
             )}
           </CardBody>
         </section>
+
+        {/* ── Personal tier suggestions — only for personal kind ─── */}
+        {kind === "personal" && (
+          <PersonalTiersSection currentPlanId={billed} cycle={cycle} />
+        )}
 
         {/* ── Billing cycle toggle ───────────────────────────────── */}
         <section className="mt-ax-8">

@@ -6,7 +6,7 @@ import { Greeting } from "@/components/app/dashboard/Greeting";
 import { useAuth } from "@/lib/auth";
 import { founderPreviewEnabled } from "@/lib/founder-preview";
 import { isAiHost } from "@/lib/host";
-import { hasAiPlan } from "@/lib/plan-surface";
+import { hasAiPlan, showProMailTools, surfaceFromSession } from "@/lib/plan-surface";
 import {
   ActivityFeed,
   AiUsagePanel,
@@ -43,6 +43,11 @@ function DashboardPage() {
   const [composing, setComposing] = useState(false);
   const enabled = Boolean(session && organisation) || founderPreviewEnabled();
 
+  // Plan gate — Rust :3200 PRIMARY → Bun fallback wires in useSummary / useAnalytics.
+  // proAccess = Pro+ (Basic excluded). No mock: AnalyticsPanel shows locked ghost if false.
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const proAccess = showProMailTools(billed, null, kind);
+
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
@@ -54,7 +59,7 @@ function DashboardPage() {
 
         <div className="mt-ax-5 grid gap-ax-5 lg:grid-cols-3">
           <div className="flex flex-col gap-ax-5 lg:col-span-2">
-            <AnalyticsPanel enabled={enabled} />
+            <AnalyticsPanel enabled={enabled} proAccess={proAccess} />
             <ActivityFeed enabled={enabled} />
           </div>
           <div className="flex flex-col gap-ax-5">
