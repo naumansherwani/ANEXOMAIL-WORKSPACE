@@ -61,12 +61,7 @@ function AppLayout() {
     if (status === "unavailable") return;
     if (status === "signed-out" && sessionToken.get()) return;
     if (status === "signed-out") void navigate({ to: "/auth", replace: true });
-    // Pehli dafa ya refresh ke baad signed-in hai toh /dashboard se seedha /app replace
-    // taake browser history mein login bounce na rahe.
-    if (status === "signed-in" && pathname === "/dashboard") {
-      void navigate({ to: "/app", replace: true });
-    }
-  }, [status, preview, navigate, pathname]);
+  }, [status, preview, navigate]);
 
   // PHASE 19 — device safety vault: sign-in ke baad ek dafa is device ka
   // minimized signal set seal ho kar record hota hai (banned/suspicious device
