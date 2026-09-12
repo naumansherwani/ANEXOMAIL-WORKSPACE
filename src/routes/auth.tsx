@@ -168,8 +168,8 @@ function AuthPage() {
         /* session still opens; onboarding can retry */
       }
       window.sessionStorage.removeItem(KIND_KEY);
-      target = "/dashboard";
-    } else if (session.user.onboarded) target = "/dashboard";
+      target = "/app";
+    } else if (session.user.onboarded) target = "/app";
     setRedirectTo(target);
     setShowSplash(true);
   };
