@@ -306,6 +306,15 @@ export function showAdmin(opts: { founder: boolean; founderHost: boolean }): boo
   return opts.founder && opts.founderHost;
 }
 
+/** Safety centre (review queue + device appeals) — Business Pro power only. */
+export function showSafety(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
+): boolean {
+  return powerOf(workspacePlan, aiPlan, kind) === "business_pro";
+}
+
 /** LEO / AI Center — AI host only. Workspace cards have no AI. */
 export function showAiCenter(aiHost: boolean): boolean {
   return aiHost;
@@ -327,6 +336,7 @@ export function railItemVisible(to: string, opts: SurfaceOpts): boolean {
   if (to === "/app/chat") return showChat(opts.plan, null, kind);
   if (to === "/app/org") return showOrg(opts.plan, null, kind);
   if (to === "/app/work") return showWork(opts.plan, null, kind);
+  if (to === "/app/safety") return showSafety(opts.plan, null, kind);
   return true;
 }
 
@@ -410,6 +420,13 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
     return {
       title: "Work is on Pro",
       body: "Boards, notes, tasks and thread analytics sit on Pro and above. Your package is {package}.",
+    };
+  }
+  if (path.startsWith("/app/safety")) {
+    if (showSafety(opts.plan, null, kind)) return null;
+    return {
+      title: "Safety centre is on Business Pro",
+      body: "The review queue, sealed evidence and device appeals sit on Business Pro. Your package is {package}.",
     };
   }
   return null;
