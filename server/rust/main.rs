@@ -455,6 +455,81 @@ async fn mail_inbox_stamp(org_id: &str) -> Result<(i64, String), String> {
     Ok((unread, max_at))
 }
 
+// ── BILLING PROCEDURES — PRIMARY on Rust :3200 ──────────────────────────────
+//
+// billing.subscription  → get_billing_subscription(p_user_id)  [E5 SQL]
+// billing.invoices       → get_billing_invoices(p_user_id)       [E5 SQL]
+//
+// Fallback: Bun /api/billing/subscription aur /api/billing/invoices
+// (rpcOrRest frontend mein: Rust pehle, Bun jab 404/502/503)
+//
+// Polar Rust payment :3400 NO-TOUCH. Yeh sirf subscription read karta hai.
+// plans.ts prices NO-TOUCH. SQL RPCs (E5) se real Polar data aata hai.
+async fn dispatch_billing(proc: &str, token: &str) -> axum::response::Response {
+    let (user_id, _email) = match auth_user(token).await {
+        Some(u) => u,
+        None => {
+            return err(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid")
+                .into_response()
+        }
+    };
+
+    let result: Result<Value, String> = match proc {
+        // GET /rpc/billing.subscription
+        // Returns: Subscription { plan, state, price_per_seat, interval, seats, ... }
+        "billing.subscription" => {
+            sb_rpc(
+                "get_billing_subscription",
+                json!({ "p_user_id": user_id }),
+            )
+            .await
+            .map(|data| {
+                // If RPC returns null (no subscription yet) return empty state
+                if data.is_null() {
+                    json!({
+                        "plan": null,
+                        "state": "none",
+                        "price_per_seat": 0,
+                        "currency": "GBP",
+                        "interval": "month",
+                        "seats": 0,
+                        "seats_used": 0,
+                        "storage_per_mailbox_gb": null,
+                        "renews_at": null,
+                        "cancel_at": null
+                    })
+                } else {
+                    data
+                }
+            })
+        }
+
+        // GET /rpc/billing.invoices
+        // Returns: { invoices: Invoice[] }
+        "billing.invoices" => {
+            sb_rpc(
+                "get_billing_invoices",
+                json!({ "p_user_id": user_id }),
+            )
+            .await
+            .map(|data| {
+                if data.is_null() {
+                    json!({ "invoices": [] })
+                } else {
+                    data
+                }
+            })
+        }
+
+        _ => Err(format!("{proc} billing procedure nahi hai")),
+    };
+
+    match result {
+        Ok(data) => ok(data).into_response(),
+        Err(e) => err(StatusCode::INTERNAL_SERVER_ERROR, "billing_error", &e).into_response(),
+    }
+}
+
 /// F3 mail RPC — PRIMARY. Bun `/api/mail/*` sirf jab yeh 404/502.
 async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response::Response {
     let requested = s(input, "org_id");
@@ -732,6 +807,13 @@ async fn dispatch(
     // F3 mail — org mailbox users (Basic/Pro included). Chat entitlement nahi.
     if proc.starts_with("mail.") {
         return dispatch_mail(&proc, &token, &input).await;
+    }
+
+    // Billing subscription + invoices — reads from polar_billing_state() [Phase 50]
+    // Polar Rust payment :3400 NO-TOUCH. Sirf Supabase RPCs (E5 SQL) se read.
+    // Fallback: Bun /api/billing/subscription + /api/billing/invoices.
+    if proc.starts_with("billing.") {
+        return dispatch_billing(&proc, &token).await;
     }
 
     if !proc.starts_with("chat.") && !proc.starts_with("file.") {

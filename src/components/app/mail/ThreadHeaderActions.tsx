@@ -4,6 +4,7 @@ import { useState } from "react";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { DiscussInChat } from "@/components/app/mail/DiscussInChat";
 import { ThreadRescue } from "@/components/app/mail/ThreadRescue";
+import { FeatureGate } from "@/components/app/FeatureGate";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -119,31 +120,34 @@ export function ThreadHeaderActions({
         </DialogContent>
       </Dialog>
 
+      {/* Snooze — Pro+. Basic sees the locked chip (not hidden). */}
       {proMail ? (
-      <DropdownMenu>
-        <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">
-          <Clock className="mr-1 inline size-3" />
-          Snooze
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>Bring it back</DropdownMenuLabel>
-          {snoozePresets().map((preset) => (
-            <DropdownMenuItem
-              key={preset.label}
-              onSelect={() =>
-                run(
-                  { kind: "snooze", until: preset.at.toISOString() },
-                  `Snoozed — ${preset.label.toLowerCase()}`,
-                  "POST /api/mail/thread/:id/snooze",
-                )
-              }
-            >
-              {preset.label}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuContent>
-      </DropdownMenu>
-      ) : null}
+        <DropdownMenu>
+          <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">
+            <Clock className="mr-1 inline size-3" />
+            Snooze
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>Bring it back</DropdownMenuLabel>
+            {snoozePresets().map((preset) => (
+              <DropdownMenuItem
+                key={preset.label}
+                onSelect={() =>
+                  run(
+                    { kind: "snooze", until: preset.at.toISOString() },
+                    `Snoozed — ${preset.label.toLowerCase()}`,
+                    "POST /api/mail/thread/:id/snooze",
+                  )
+                }
+              >
+                {preset.label}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <FeatureGate allowed={false} requires="pro" label="Snooze" variant="chip" />
+      )}
 
       <DropdownMenu>
         <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">

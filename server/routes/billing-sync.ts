@@ -192,6 +192,43 @@ authRouter.post("/intent", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// FALLBACK: GET /api/billing/subscription  (Rust :3200 PRIMARY)
+// GET /api/billing/invoices               (Rust :3200 PRIMARY)
+//
+// rpcOrRest (billing-platform.ts) tries POST /rpc/billing.* on Rust :3200 first.
+// These Bun routes activate ONLY when Rust returns 404/501/502/503.
+//
+// Both call the same Supabase RPCs (E5_billing_subscription_api.sql):
+//   get_billing_subscription(p_user_id) — uses polar_billing_state() [Phase 50]
+//   get_billing_invoices(p_user_id) — reads workspace_invoices [E5]
+//
+// Polar Rust payment :3400 NO-TOUCH. Chain: :3400 → Supabase → RPCs → here.
+// ---------------------------------------------------------------------------
+authRouter.get("/subscription", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data, error } = await db.rpc("get_billing_subscription", { p_user_id: userId });
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  return res.json(
+    data ?? {
+      plan: null, state: "none", price_per_seat: 0, currency: "GBP",
+      interval: "month", seats: 0, seats_used: 0,
+      storage_per_mailbox_gb: null, renews_at: null, cancel_at: null,
+    },
+  );
+});
+
+authRouter.get("/invoices", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const { data, error } = await db.rpc("get_billing_invoices", { p_user_id: userId });
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  return res.json(data ?? { invoices: [] });
+});
+
+// ---------------------------------------------------------------------------
 // 2) GET /api/billing/state — sirf Supabase se, Polar ko pucha bhi nahi jata
 // ---------------------------------------------------------------------------
 authRouter.get("/state", async (req, res) => {

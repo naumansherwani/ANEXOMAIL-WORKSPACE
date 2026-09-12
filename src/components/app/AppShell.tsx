@@ -13,6 +13,7 @@ import {
   LogOut,
   Mail,
   MessageSquare,
+  Receipt,
   Search,
   Shield,
   Sparkles,
@@ -237,8 +238,20 @@ export function AppShell({ children }: { children: ReactNode }) {
               <span className="block break-all text-xs font-medium text-muted-foreground">
                 {session?.user.anexomail_address || session?.user.email || "Signed in"}
               </span>
-              <span className="block pt-1 text-[11px] font-medium text-muted-foreground">
-                {t(copyName)}
+              <span className="block pt-1">
+                <span
+                  className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                    billed === "business_pro"
+                      ? "bg-amber-500/15 text-amber-400"
+                      : billed === "business"
+                        ? "bg-primary/15 text-primary"
+                        : billed === "pro"
+                          ? "bg-violet-500/15 text-violet-400"
+                          : "bg-secondary text-muted-foreground"
+                  }`}
+                >
+                  {t(copyName)}
+                </span>
               </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
@@ -246,6 +259,11 @@ export function AppShell({ children }: { children: ReactNode }) {
               <UserCircle2 className="size-4" />
               {t("Profile, photo & sessions")}
             </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => void navigate({ to: "/app/billing" })}>
+              <Receipt className="size-4" />
+              {t("Billing & plans")}
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void handleSignOut()}>
               <LogOut className="size-4" />
               {t("Sign out")}
@@ -308,7 +326,17 @@ export function AppShell({ children }: { children: ReactNode }) {
           <div className="shrink-0 border-t border-border p-2.5">
             {!collapsed && (
               <p className="px-1 pb-2 text-[11px] leading-relaxed text-muted-foreground">
-                {t("Threads carry an owner, a status and a due date — mail is work, not a list.")}
+                {t(
+                  billed === "business_pro"
+                    ? "Full stack — email · chat · video · governance · promise engine."
+                    : billed === "business"
+                      ? "Governance, departments, audit ledger and ANEXOChat — one workspace."
+                      : billed === "pro" && kind === "personal"
+                        ? "Full CRM, ANEXOChat and pro mail tools — personal, no company seat."
+                        : billed === "pro"
+                          ? "Shared inbox, boards, full CRM and ANEXOChat — teams done right."
+                          : "Threads carry an owner, a status and a due date — mail is work.",
+                )}
               </p>
             )}
             <button
