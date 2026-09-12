@@ -293,6 +293,19 @@ chatRouter.post("/messages/delete", async (req, res) => {
   res.json(Array.isArray(data) ? data[0] : data);
 });
 
+// E6 — Business Pro: company-wide delete for everyone, NO time limit.
+// Plan gate SQL function ke andar hai (entitlement_state.plan = business_pro).
+// 1-hour window wala /messages/delete har plan ke liye waisa hi rehta hai.
+chatRouter.post("/messages/delete-anytime", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_delete_message_anytime", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
 // ── PHASE 3: work objects (task / promise / decision) ───────────
 chatRouter.post("/work", async (req, res) => {
   const me = await requireChat(req, res);

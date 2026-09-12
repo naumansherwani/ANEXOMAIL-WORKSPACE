@@ -423,6 +423,29 @@ export function useDeleteMessage(conversationId: string | null) {
   });
 }
 
+/**
+ * E6 — Business Pro: company-wide delete for everyone, NO time limit.
+ * Plan gate SQL ke andar hai (entitlement_state.plan = business_pro).
+ * UI sirf business_pro power pe yeh hook call karti hai.
+ */
+export function useDeleteMessageAnytime(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (messageId: string) =>
+      chatCall<{ id: string; deleted_at: string }>(
+        "chat.message.delete_anytime",
+        { message_id: messageId },
+        {
+          path: "/api/chat/messages/delete-anytime",
+          method: "POST",
+          body: { message_id: messageId },
+        },
+      ),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
 // ── PHASE 3: work objects (task / promise / decision) ────────────
 export type ChatWorkItem = {
   id: string;

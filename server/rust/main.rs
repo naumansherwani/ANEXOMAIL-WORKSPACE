@@ -1042,6 +1042,22 @@ async fn dispatch(
             }
         }
 
+        // E6 — Business Pro: company-wide delete, NO time limit.
+        // Plan gate SQL ke andar (entitlement_state.plan = business_pro).
+        "chat.message.delete_anytime" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_delete_message_anytime",
+                    json!({ "_msg": msg, "_user": me.id }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
         // ── PHASE 3: work objects (task / promise / decision) ───────────────
         "chat.work.create" => {
             let conv = s(&input, "conversation_id");

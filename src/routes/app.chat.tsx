@@ -24,6 +24,7 @@ import {
   useChatSearch,
   useConversationPrefs,
   useDeleteMessage,
+  useDeleteMessageAnytime,
   useEditMessage,
   useHideMessage,
   usePinMessage,
@@ -49,6 +50,8 @@ import {
   useSyncedDraft,
 } from "@/lib/chat-continuity";
 import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
+import { useAuth } from "@/lib/auth";
+import { showSafety, surfaceFromSession } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -98,6 +101,12 @@ function ChatPage() {
   const react = useReact(openId);
   const editMessage = useEditMessage(openId);
   const deleteMessage = useDeleteMessage(openId);
+  // E6 — Business Pro power: delete for everyone ka koi time window nahi.
+  // showSafety() = business_pro power (Personal Premium bhi). SQL gate bhi hai.
+  const { session, organisation } = useAuth();
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const anytimeDelete = showSafety(billed, null, kind);
+  const deleteAnytime = useDeleteMessageAnytime(openId);
   const hideMessage = useHideMessage(openId);
   const pinMessage = usePinMessage(openId);
   const prefs = useConversationPrefs(openId);
@@ -447,6 +456,9 @@ function ChatPage() {
                   }
                 },
                 onDeleteForEveryone: (id) => deleteMessage.mutate(id),
+                ...(anytimeDelete
+                  ? { onDeleteAnytime: (id: string) => deleteAnytime.mutate(id) }
+                  : {}),
                 onHide: (id) => hideMessage.mutate(id),
                 onPin: (message_id, pin) => pinMessage.mutate({ message_id, pin }),
                 onMore: (m) => setMoreFor((cur) => (cur?.id === m.id ? null : m)),

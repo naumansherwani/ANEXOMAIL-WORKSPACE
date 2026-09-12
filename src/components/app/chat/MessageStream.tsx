@@ -29,6 +29,8 @@ export type MessageActions = {
   onReply: (message: ChatMessage) => void;
   onEdit: (message: ChatMessage) => void;
   onDeleteForEveryone: (messageId: string) => void;
+  /** E6 — Business Pro: no time limit. Sirf business_pro power pe diya jata hai. */
+  onDeleteAnytime?: (messageId: string) => void;
   onHide: (messageId: string) => void;
   onPin: (messageId: string, pin: boolean) => void;
   /** Star · forward · important · decision · work · receipts · provenance · email draft. */
@@ -214,7 +216,10 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
   const state = messageState(message);
   const [picker, setPicker] = useState(false);
   const canEdit = message.mine && withinWindow(message.created_at, EDIT_WINDOW_MS);
-  const canUnsend = message.mine && withinWindow(message.created_at, DELETE_WINDOW_MS);
+  // E6 — Business Pro power: delete for everyone ka koi time window nahi.
+  const anytime = message.mine && Boolean(actions.onDeleteAnytime);
+  const canUnsend =
+    message.mine && (anytime || withinWindow(message.created_at, DELETE_WINDOW_MS));
   const reactions = message.reactions ?? [];
 
   return (
@@ -300,8 +305,14 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
             </IconBtn>
             {canUnsend ? (
               <IconBtn
-                label="Delete for everyone (1 hour)"
-                onClick={() => actions.onDeleteForEveryone(message.id)}
+                label={anytime ? "Delete for everyone" : "Delete for everyone (1 hour)"}
+                onClick={() =>
+                  // Window ke andar normal delete; Business Pro + window ke bahar
+                  // anytime delete (audit record ke saath, SQL gate).
+                  anytime && !withinWindow(message.created_at, DELETE_WINDOW_MS)
+                    ? actions.onDeleteAnytime!(message.id)
+                    : actions.onDeleteForEveryone(message.id)
+                }
               >
                 <Trash2 className="size-3" />
               </IconBtn>
