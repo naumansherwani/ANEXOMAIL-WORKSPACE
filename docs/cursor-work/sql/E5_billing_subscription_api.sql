@@ -2,30 +2,42 @@
 -- E5 — Billing UI → polar_billing_state() connection
 -- Supabase SQL Editor → poori file paste → Run. Idempotent.
 --
--- DESIGN (locked):
---   polar_billing_state(_user uuid) — Phase 50 mein ALREADY hai. No-touch.
---   Woh polar_subscriptions se product_key return karta hai.
---
---   Yeh file SIRF yeh kaam karta hai:
---   1. workspace_invoices table (real invoice rows from polar_webhook_inbox)
---   2. get_billing_subscription(p_user_id) — calls polar_billing_state() INSIDE
---      + maps product_key -> plan_id, price, interval, storage
---   3. get_billing_invoices(p_user_id) — workspace_invoices se
---   4. RLS + grants
---
--- Chain (DO NOT CHANGE):
+-- Chain (no-touch preserved):
 --   Polar webhook → Rust :3400 (PM2, no-touch)
 --     → polar_subscriptions + entitlement_state → Supabase
 --       → polar_billing_state() [Phase 50, no-touch]
 --         → get_billing_subscription() [this file]
---           → Rust :3200 billing.subscription RPC
---             → Frontend useSubscription() (billing-platform.ts)
+--           → Rust :3200 billing.subscription RPC (PRIMARY)
+--             → Bun /api/billing/subscription (FALLBACK)
+--               → useSubscription() → billing page UI
 --
 -- Fail rule: isi file ko theek likho. E5b / _fix / _v2 naam banned.
 -- phase50 / phase51 / polar-payment / plans.ts — no-touch.
 -- =============================================================================
 
 set search_path = public, extensions;
+
+-- ---------------------------------------------------------------------------
+-- SELF-HEAL: agar workspace_invoices exist karta hai magar polar_order_id
+-- column nahi hai — rename to legacy, fresh create karo (Phase 50 pattern)
+-- ---------------------------------------------------------------------------
+do $$
+declare ts text := to_char(now(), 'YYYYMMDDHH24MISS');
+begin
+  if exists (
+    select 1 from information_schema.tables
+    where table_schema = 'public' and table_name = 'workspace_invoices'
+  ) and not exists (
+    select 1 from information_schema.columns
+    where table_schema = 'public'
+      and table_name   = 'workspace_invoices'
+      and column_name  = 'polar_order_id'
+  ) then
+    execute format(
+      'alter table public.workspace_invoices rename to workspace_invoices_legacy_%s', ts
+    );
+  end if;
+end $$;
 
 -- ---------------------------------------------------------------------------
 -- 1) WORKSPACE_INVOICES — financial invoice rows from Polar order events
@@ -68,7 +80,7 @@ create policy "workspace_invoices_service_all"
 
 -- ---------------------------------------------------------------------------
 -- 1b) Backfill from polar_webhook_inbox (order.paid events → invoice rows)
---     Runs once; on conflict do nothing = safe to re-run.
+--     on conflict do nothing = safe to re-run
 -- ---------------------------------------------------------------------------
 insert into public.workspace_invoices
   (user_id, polar_order_id, number, status, subtotal, tax, total, currency,
@@ -101,9 +113,8 @@ select distinct on ((wi.payload -> 'data' ->> 'id'))
   coalesce(wi.payload -> 'data', '{}'::jsonb)                              as payload
 from public.polar_webhook_inbox wi
 join public.polar_subscriptions ps on (
-     (wi.payload -> 'data' ->> 'subscription_id')        = ps.polar_subscription_id
-  or (wi.payload -> 'data' -> 'subscription' ->> 'id')   = ps.polar_subscription_id
-  or (wi.payload -> 'data' -> 'metadata' ->> 'polar_subscription_id') = ps.polar_subscription_id
+     (wi.payload -> 'data' ->> 'subscription_id')       = ps.polar_subscription_id
+  or (wi.payload -> 'data' -> 'subscription' ->> 'id')  = ps.polar_subscription_id
 )
 where wi.event_type in ('order.paid', 'order.created')
   and ps.user_id is not null
@@ -111,15 +122,9 @@ where wi.event_type in ('order.paid', 'order.created')
 on conflict (polar_order_id) do nothing;
 
 -- ---------------------------------------------------------------------------
--- 2) get_billing_subscription — /rpc/billing.subscription (Rust :3200)
---
--- Calls polar_billing_state() internally (Phase 50, NO TOUCH to that function).
--- Maps product_key -> plan_id / price / interval / storage for the UI.
---
--- product_key format (from polar_subscriptions, Rust :3400 writes this):
---   POLAR_PRODUCT_PLAN_PRO_MONTHLY
---   POLAR_PRODUCT_PLAN_BUSINESS_PRO_YEARLY
---   etc.
+-- 2) get_billing_subscription — called by Rust :3200 billing.subscription
+--    Calls polar_billing_state() [Phase 50, no-touch] internally.
+--    Maps product_key → plan_id / price / interval / storage for the UI.
 -- ---------------------------------------------------------------------------
 create or replace function public.get_billing_subscription(p_user_id uuid)
 returns jsonb
@@ -129,8 +134,8 @@ security definer
 set search_path = public
 as $$
 declare
-  raw        jsonb;         -- polar_billing_state() output
-  pk         text;          -- product_key from Phase 50
+  raw        jsonb;
+  pk         text;
   plan_id    text;
   intv       text;
   price      integer;
@@ -142,24 +147,20 @@ declare
 begin
   if p_user_id is null then return null; end if;
 
-  -- ── Step 1: call polar_billing_state() — Phase 50 function, no-touch ──
-  raw := public.polar_billing_state(p_user_id);
-
-  pk     := lower(coalesce(raw ->> 'plan', ''));
-  st     := coalesce(raw ->> 'status', 'none');
-  seats  := coalesce((raw ->> 'seats')::integer, 1);
+  -- Step 1: polar_billing_state() — Phase 50 function, no-touch
+  raw      := public.polar_billing_state(p_user_id);
+  pk       := lower(coalesce(raw ->> 'plan', ''));
+  st       := coalesce(raw ->> 'status', 'none');
+  seats    := coalesce((raw ->> 'seats')::integer, 1);
   renews_at := (raw ->> 'current_period_end')::timestamptz;
 
-  -- ── Step 2: also try entitlement_state for canonical plan_id ─────────
-  -- entitlement_state.plan = 'pro' (clean) — more reliable than product_key parsing
-  if plan_id is null or plan_id = '' then
-    select es.plan into plan_id
-    from public.entitlement_state es
-    where es.user_id = p_user_id
-    limit 1;
-  end if;
+  -- Step 2: entitlement_state.plan = 'pro' (clean plan_id, canonical)
+  select es.plan into plan_id
+  from public.entitlement_state es
+  where es.user_id = p_user_id
+  limit 1;
 
-  -- ── Step 3: parse product_key if entitlement_state has no plan ────────
+  -- Step 3: parse product_key if entitlement_state empty
   if plan_id is null or plan_id = '' then
     plan_id := case
       when pk ilike '%business_pro%' or pk ilike '%businesspro%' then 'business_pro'
@@ -170,10 +171,10 @@ begin
     end;
   end if;
 
-  -- ── Step 4: billing interval from product_key ────────────────────────
+  -- Step 4: billing interval
   intv := case when pk ilike '%yearly%' then 'year' else 'month' end;
 
-  -- ── Step 5: price from plan (GBP per month) ──────────────────────────
+  -- Step 5: monthly list price (GBP)
   price := case plan_id
     when 'basic'        then 23
     when 'pro'          then 46
@@ -182,44 +183,43 @@ begin
     else 0
   end;
 
-  -- ── Step 6: storage per mailbox (null = pooled) ───────────────────────
+  -- Step 6: storage per mailbox (null = 1TB pooled for business_pro)
   storage := case plan_id
-    when 'basic'        then 5
-    when 'pro'          then 10
-    when 'business'     then 25
-    else null  -- business_pro: 1TB pooled
-  end;
-
-  -- ── Step 7: cancel_at ─────────────────────────────────────────────────
-  cancel_at := case
-    when st in ('canceled', 'cancelled', 'revoked') then renews_at
+    when 'basic'    then 5
+    when 'pro'      then 10
+    when 'business' then 25
     else null
   end;
 
-  -- ── Step 8: map Rust :3400 status -> UI state ─────────────────────────
+  -- Step 7: map Rust :3400 status → UI state
   st := case st
     when 'active'   then 'active'
     when 'past_due' then 'past_due'
     when 'grace'    then 'past_due'
     when 'canceled' then 'cancelled'
     when 'revoked'  then 'cancelled'
-    when 'none'     then 'none'
-    else coalesce(nullif(st, ''), 'none')
+    else 'none'
+  end;
+
+  -- Step 8: cancel_at
+  cancel_at := case
+    when st = 'cancelled' then renews_at
+    else null
   end;
 
   -- No subscription at all
   if plan_id is null then
     return jsonb_build_object(
-      'plan',                  null,
-      'state',                 'none',
-      'price_per_seat',        0,
-      'currency',              'GBP',
-      'interval',              'month',
-      'seats',                 0,
-      'seats_used',            0,
+      'plan',                   null,
+      'state',                  'none',
+      'price_per_seat',         0,
+      'currency',               'GBP',
+      'interval',               'month',
+      'seats',                  0,
+      'seats_used',             0,
       'storage_per_mailbox_gb', null,
-      'renews_at',             null,
-      'cancel_at',             null
+      'renews_at',              null,
+      'cancel_at',              null
     );
   end if;
 
@@ -242,7 +242,7 @@ grant execute on function public.get_billing_subscription(uuid)
   to authenticated, service_role;
 
 -- ---------------------------------------------------------------------------
--- 3) get_billing_invoices — /rpc/billing.invoices (Rust :3200)
+-- 3) get_billing_invoices — called by Rust :3200 billing.invoices
 -- ---------------------------------------------------------------------------
 create or replace function public.get_billing_invoices(p_user_id uuid)
 returns jsonb
@@ -289,16 +289,8 @@ grant execute on function public.get_billing_invoices(uuid)
   to authenticated, service_role;
 
 -- ---------------------------------------------------------------------------
--- 4) Proof queries (run after paste to verify)
+-- Proof (paste in SQL editor to verify after run)
 -- ---------------------------------------------------------------------------
--- Subscription (replace uuid with real user_id):
---   select get_billing_subscription('00000000-0000-0000-0000-000000000000');
---
--- Invoices:
---   select get_billing_invoices('00000000-0000-0000-0000-000000000000');
---
--- Invoice count per user:
---   select user_id, count(*) from workspace_invoices group by user_id;
---
--- Polar billing state (Phase 50 function, direct):
---   select polar_billing_state('00000000-0000-0000-0000-000000000000');
+-- select get_billing_subscription(auth.uid());
+-- select get_billing_invoices(auth.uid());
+-- select count(*) from workspace_invoices;
