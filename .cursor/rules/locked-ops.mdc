@@ -9,12 +9,18 @@ Read `AGENTS.md` before code. Constitution: Hetzner, Caddy, React 19.2, TanStack
 
 **Polar payment (locked):** Polar rust payment **`polar-rust-payment` PM2 :3400** (HTTP 200, no-touch). Agent sirf endpoint check: PRIMARY `https://polarpayments.anexomail.com/api/v1/polar-webhook` · BACKUP `https://anexomail.com/api/v1/polar-webhook` · engine `POST /api/v1/polar-webhook`. Bun `/api/public/polar/webhook` dashboard mein nahi.
 
-**Server pull — sirf yeh (curl locked, kuch aur add mat karo):**
+**Server pull — founder command (khilaaf nahi):**
 ```bash
-cd /opt/anexomail-web && git pull --no-rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && echo "--- HTTP ---" && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health && curl -s -o /dev/null -w "bun /api/health %{http_code}\n" --max-time 5 http://127.0.0.1:3100/api/health && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health && curl -s -o /dev/null -w "polar /health %{http_code}\n" --max-time 5 http://127.0.0.1:3400/health
+cd /opt/anexomail-web \
+&& git restore src/routeTree.gen.ts \
+&& git pull --no-rebase origin main \
+&& bun install \
+&& bun run build:bun \
+&& pm2 restart anexomail-web --update-env \
+&& pm2 save \
+&& curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 ```
-Agent output se **HTTP 200** confirm kare (web `:3000` · bun `:3100` · rust `:3200` · polar `:3400`). Bina curl ke pull command **banned**.
-`git restore src/routeTree.gen.ts` **banned** — user ko kabhi mat bolo. Generated tree build banati hai.
+Agent `web /health` **200** confirm kare.
 
 **Language (closed 11 Sep 2026):** Sign-in + landing English, har package. Picker sirf login ke baad workspace header. Founder account English. Is topic ko dubara mat kholo.
 
