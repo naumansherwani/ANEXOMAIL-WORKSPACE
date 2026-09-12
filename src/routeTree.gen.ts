@@ -22,11 +22,13 @@ import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as ClaimRouteImport } from './routes/claim'
 import { Route as CrmRouteImport } from './routes/crm'
+import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as DevicesRouteImport } from './routes/devices'
 import { Route as DocsRouteImport } from './routes/docs'
 import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as FounderRouteImport } from './routes/founder'
 import { Route as GetStartedRouteImport } from './routes/get-started'
+import { Route as HealthRouteImport } from './routes/health'
 import { Route as MailRouteImport } from './routes/mail'
 import { Route as MigrationRouteImport } from './routes/migration'
 import { Route as MoveInRouteImport } from './routes/move-in'
@@ -238,6 +240,11 @@ const CrmRoute = CrmRouteImport.update({
   path: '/crm',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DevicesRoute = DevicesRouteImport.update({
   id: '/devices',
   path: '/devices',
@@ -261,6 +268,11 @@ const FounderRoute = FounderRouteImport.update({
 const GetStartedRoute = GetStartedRouteImport.update({
   id: '/get-started',
   path: '/get-started',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthRoute = HealthRouteImport.update({
+  id: '/health',
+  path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MailRoute = MailRouteImport.update({
@@ -1007,11 +1019,13 @@ export interface FileRoutesByFullPath {
   '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
   '/crm': typeof CrmRoute
+  '/dashboard': typeof DashboardRoute
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
+  '/health': typeof HealthRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1171,11 +1185,13 @@ export interface FileRoutesByTo {
   '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
   '/crm': typeof CrmRoute
+  '/dashboard': typeof DashboardRoute
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
+  '/health': typeof HealthRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1327,11 +1343,13 @@ export interface FileRoutesById {
   '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
   '/crm': typeof CrmRoute
+  '/dashboard': typeof DashboardRoute
   '/devices': typeof DevicesRoute
   '/docs': typeof DocsRoute
   '/enterprise': typeof EnterpriseRoute
   '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
+  '/health': typeof HealthRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1494,11 +1512,13 @@ export interface FileRouteTypes {
     | '/chat'
     | '/claim'
     | '/crm'
+    | '/dashboard'
     | '/devices'
     | '/docs'
     | '/enterprise'
     | '/founder'
     | '/get-started'
+    | '/health'
     | '/mail'
     | '/migration'
     | '/move-in'
@@ -1658,11 +1678,13 @@ export interface FileRouteTypes {
     | '/chat'
     | '/claim'
     | '/crm'
+    | '/dashboard'
     | '/devices'
     | '/docs'
     | '/enterprise'
     | '/founder'
     | '/get-started'
+    | '/health'
     | '/mail'
     | '/migration'
     | '/move-in'
@@ -1813,11 +1835,13 @@ export interface FileRouteTypes {
     | '/chat'
     | '/claim'
     | '/crm'
+    | '/dashboard'
     | '/devices'
     | '/docs'
     | '/enterprise'
     | '/founder'
     | '/get-started'
+    | '/health'
     | '/mail'
     | '/migration'
     | '/move-in'
@@ -1979,11 +2003,13 @@ export interface RootRouteChildren {
   ChatRoute: typeof ChatRoute
   ClaimRoute: typeof ClaimRoute
   CrmRoute: typeof CrmRoute
+  DashboardRoute: typeof DashboardRoute
   DevicesRoute: typeof DevicesRoute
   DocsRoute: typeof DocsRoute
   EnterpriseRoute: typeof EnterpriseRoute
   FounderRoute: typeof FounderRouteWithChildren
   GetStartedRoute: typeof GetStartedRoute
+  HealthRoute: typeof HealthRoute
   MailRoute: typeof MailRoute
   MigrationRoute: typeof MigrationRoute
   MoveInRoute: typeof MoveInRoute
@@ -2103,6 +2129,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CrmRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/devices': {
       id: '/devices'
       path: '/devices'
@@ -2136,6 +2169,13 @@ declare module '@tanstack/react-router' {
       path: '/get-started'
       fullPath: '/get-started'
       preLoaderRoute: typeof GetStartedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/health': {
+      id: '/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/mail': {
@@ -3535,11 +3575,13 @@ const rootRouteChildren: RootRouteChildren = {
   ChatRoute: ChatRoute,
   ClaimRoute: ClaimRoute,
   CrmRoute: CrmRoute,
+  DashboardRoute: DashboardRoute,
   DevicesRoute: DevicesRoute,
   DocsRoute: DocsRoute,
   EnterpriseRoute: EnterpriseRoute,
   FounderRoute: FounderRouteWithChildren,
   GetStartedRoute: GetStartedRoute,
+  HealthRoute: HealthRoute,
   MailRoute: MailRoute,
   MigrationRoute: MigrationRoute,
   MoveInRoute: MoveInRoute,
