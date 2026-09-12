@@ -9,13 +9,51 @@ import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react"
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
+import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
+
+const SAVE_PASSWORD_KEY = "anexo.auth.save_password";
+
+function readSavePasswordPref(): boolean {
+  try {
+    const stored = window.localStorage.getItem(SAVE_PASSWORD_KEY);
+    if (stored === "0") return false;
+    if (stored === "1") return true;
+  } catch {
+    /* ignore */
+  }
+  return true;
+}
+
+function writeSavePasswordPref(on: boolean) {
+  try {
+    window.localStorage.setItem(SAVE_PASSWORD_KEY, on ? "1" : "0");
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Browser password manager — we do not keep the password in the page. */
+function storeBrowserPassword(email: string, password: string) {
+  try {
+    const Ctor = (
+      window as unknown as {
+        PasswordCredential?: new (data: { id: string; name?: string; password: string }) => Credential;
+      }
+    ).PasswordCredential;
+    if (!Ctor || !navigator.credentials?.store) return;
+    void navigator.credentials.store(new Ctor({ id: email, name: email, password }));
+  } catch {
+    /* user declined or browser has no password store */
+  }
+}
 
 const KIND_KEY = "anexo.pending.workspace_kind";
 
@@ -95,8 +133,14 @@ function AuthPage() {
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
   const [workspaceKind, setWorkspaceKind] = useState<"personal" | "business" | null>(null);
   const [moreDetails, setMoreDetails] = useState(false);
+  const [savePassword, setSavePassword] = useState(true);
   const lastNameTouched = useRef(false);
   const fromSignup = useRef(false);
+  const { t } = useLocale();
+
+  useEffect(() => {
+    setSavePassword(readSavePasswordPref());
+  }, []);
 
   const finish = async (token: string, authenticated?: Session) => {
     sessionToken.set(token);
@@ -170,6 +214,7 @@ function AuthPage() {
           body: JSON.stringify({ challenge_id: challengeId, code }),
           auth: false,
         });
+        if (savePassword) storeBrowserPassword(email, password);
         await finish(res.token);
         return;
       }
@@ -280,6 +325,7 @@ function AuthPage() {
         setChallengeId(res.challenge_id);
         return;
       }
+      if (savePassword) storeBrowserPassword(email, password);
       await finish(res.token, res);
     } catch (e) {
       fail(e);
@@ -523,6 +569,9 @@ function AuthPage() {
                     exit={{ opacity: 0, x: -12 }}
                     transition={{ duration: 0.22, ease: "easeOut" }}
                     onSubmit={submit}
+                    name={mode === "login" ? "login" : undefined}
+                    method="post"
+                    autoComplete={mode === "login" && !savePassword ? "off" : "on"}
                     className="mt-ax-4 space-y-ax-3"
                   >
                     {challengeId ? (
@@ -593,11 +642,12 @@ function AuthPage() {
                         {mode !== "reset" && (
                           <Field
                             id="email"
+                            name="email"
                             label="Email"
                             type="email"
                             value={email}
                             onChange={setEmail}
-                            autoComplete="email"
+                            autoComplete={mode === "login" ? "username" : "email"}
                             placeholder="name@anexomail.com"
                           />
                         )}
@@ -605,12 +655,44 @@ function AuthPage() {
                           <>
                             <PasswordField
                               id="password"
+                              name="password"
                               label="Password"
                               value={password}
                               onChange={setPassword}
-                              autoComplete={mode === "login" ? "current-password" : "new-password"}
+                              autoComplete={
+                                mode === "login"
+                                  ? savePassword
+                                    ? "current-password"
+                                    : "off"
+                                  : "new-password"
+                              }
                               placeholder={mode === "signup" || mode === "reset" ? "6–15 characters" : undefined}
                             />
+                            {mode === "login" && (
+                              <label
+                                htmlFor="save-password"
+                                className="flex cursor-pointer items-start gap-2.5 rounded-lg border border-border bg-secondary/40 px-3 py-2.5"
+                              >
+                                <Checkbox
+                                  id="save-password"
+                                  checked={savePassword}
+                                  onCheckedChange={(v) => {
+                                    const on = v === true;
+                                    setSavePassword(on);
+                                    writeSavePasswordPref(on);
+                                  }}
+                                  className="mt-0.5"
+                                />
+                                <span className="min-w-0">
+                                  <span className="block text-[13px] font-semibold text-foreground">
+                                    {t("Save password")}
+                                  </span>
+                                  <span className="ax-caption mt-0.5 block">
+                                    {t("This browser keeps it. We do not store your password on the page.")}
+                                  </span>
+                                </span>
+                              </label>
+                            )}
                             {/* Password strength bar — signup only */}
                             {mode === "signup" && <PasswordStrength password={password} />}
                           </>
@@ -862,6 +944,7 @@ function Field({
 
 function PasswordField({
   id,
+  name,
   label,
   value,
   onChange,
@@ -869,6 +952,7 @@ function PasswordField({
   placeholder,
 }: {
   id: string;
+  name?: string;
   label: string;
   value: string;
   onChange: (value: string) => void;
@@ -884,6 +968,7 @@ function PasswordField({
       <div className="relative">
         <Input
           id={id}
+          name={name}
           type={visible ? "text" : "password"}
           value={value}
           required
