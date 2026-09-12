@@ -25,4 +25,4 @@ Tarteeb **Polar cards (no-touch):** **Basic → Pro → Business → Business Pr
 - Wall on URL (`PlanSurfaceGate`). Blank nahi.
 - LEO mail host pe nahi. Founder/Speed/Admin = founder host.
 - `plans.ts` no-touch. Polar pe Personal SKU add **banned**.
-- Cards pe likhi **poori feature list ab nahi banana**. Pehle Zoho-compete mail workspace + send/receive.
+- Cards **tear nahi** (`plans.ts` prices no-touch). Feature list → UI/gates **Claude**, tab jab backend API GitHub pe ho. Fake **nahi**.
