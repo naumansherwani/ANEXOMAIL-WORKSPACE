@@ -446,6 +446,31 @@ export function useDeleteMessageAnytime(conversationId: string | null) {
   });
 }
 
+/** Business plan ka delete window — card: "still works after 48 hours". */
+export const DELETE_WINDOW_48H_MS = 48 * 60 * 60 * 1000;
+
+/**
+ * E7 — Business: delete for everyone within 48 hours.
+ * Gate SQL ke andar: business = 48h, business_pro = no limit.
+ */
+export function useDeleteMessage48h(conversationId: string | null) {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (messageId: string) =>
+      chatCall<{ id: string; deleted_at: string }>(
+        "chat.message.delete_48h",
+        { message_id: messageId },
+        {
+          path: "/api/chat/messages/delete-48h",
+          method: "POST",
+          body: { message_id: messageId },
+        },
+      ),
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ["chat", "messages", conversationId] }),
+  });
+}
+
 // ── PHASE 3: work objects (task / promise / decision) ────────────
 export type ChatWorkItem = {
   id: string;

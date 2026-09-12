@@ -1058,6 +1058,22 @@ async fn dispatch(
             }
         }
 
+        // E7 — Business: delete for everyone within 48 HOURS.
+        // Gate SQL ke andar: business = 48h, business_pro = no limit.
+        "chat.message.delete_48h" => {
+            let msg = s(&input, "message_id");
+            if msg.is_empty() {
+                Err("message_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "chat_delete_message_48h",
+                    json!({ "_msg": msg, "_user": me.id }),
+                )
+                .await
+                .map(|data| data.get(0).cloned().unwrap_or(data))
+            }
+        }
+
         // ── PHASE 3: work objects (task / promise / decision) ───────────────
         "chat.work.create" => {
             let conv = s(&input, "conversation_id");

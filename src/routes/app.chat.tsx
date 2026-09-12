@@ -24,6 +24,7 @@ import {
   useChatSearch,
   useConversationPrefs,
   useDeleteMessage,
+  useDeleteMessage48h,
   useDeleteMessageAnytime,
   useEditMessage,
   useHideMessage,
@@ -51,7 +52,7 @@ import {
 } from "@/lib/chat-continuity";
 import { deepLinkConversation, isPaneMode, popOutConversation } from "@/lib/chat-multitask";
 import { useAuth } from "@/lib/auth";
-import { showSafety, surfaceFromSession } from "@/lib/plan-surface";
+import { surfaceFromSession } from "@/lib/plan-surface";
 
 export const Route = createFileRoute("/app/chat")({
   head: () => ({
@@ -101,12 +102,14 @@ function ChatPage() {
   const react = useReact(openId);
   const editMessage = useEditMessage(openId);
   const deleteMessage = useDeleteMessage(openId);
-  // E6 — Business Pro power: delete for everyone ka koi time window nahi.
-  // showSafety() = business_pro power (Personal Premium bhi). SQL gate bhi hai.
+  // Delete ladder (locked): Basic/Pro 1h · Business 48h (E7) · Business Pro no limit (E6).
+  // power = featurePlan (Personal Pro/Premium = business_pro power). SQL gate bhi hai.
   const { session, organisation } = useAuth();
-  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
-  const anytimeDelete = showSafety(billed, null, kind);
+  const { power } = surfaceFromSession(session?.user, organisation?.slug);
+  const anytimeDelete = power === "business_pro";
+  const extended48Delete = power === "business";
   const deleteAnytime = useDeleteMessageAnytime(openId);
+  const delete48h = useDeleteMessage48h(openId);
   const hideMessage = useHideMessage(openId);
   const pinMessage = usePinMessage(openId);
   const prefs = useConversationPrefs(openId);
@@ -458,6 +461,9 @@ function ChatPage() {
                 onDeleteForEveryone: (id) => deleteMessage.mutate(id),
                 ...(anytimeDelete
                   ? { onDeleteAnytime: (id: string) => deleteAnytime.mutate(id) }
+                  : {}),
+                ...(extended48Delete
+                  ? { onDelete48h: (id: string) => delete48h.mutate(id) }
                   : {}),
                 onHide: (id) => hideMessage.mutate(id),
                 onPin: (message_id, pin) => pinMessage.mutate({ message_id, pin }),

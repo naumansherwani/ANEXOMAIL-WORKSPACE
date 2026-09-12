@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Archive, Clock, Mail, Paperclip, RefreshCw, Star } from "lucide-react";
+import { Archive, Clock, Mail, Paperclip, RefreshCw, Star, UserCheck } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
@@ -79,7 +79,7 @@ export function ThreadList({
   /** Mobile: swipe left → archive. */
   onSwipeArchive?: (threadId: string) => void;
   /** Mobile: swipe right → snooze. */
-  onSwipeSnooze?: ((threadId: string) => void) | undefined;
+  onSwipeSnooze?: (threadId: string) => void;
   /** Mobile: long press → select. */
   onLongPress?: (threadId: string) => void;
   onStar?: (threadId: string, starred: boolean) => void;
@@ -162,7 +162,7 @@ export function ThreadList({
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] },
+      transition: { duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] },
     },
   };
 
@@ -195,7 +195,7 @@ export function ThreadList({
         pullStart.current = null;
         setPull(0);
       }}
-      {...(pull ? { style: { transform: `translateY(${pull / 2}px)` } } : {})}
+      style={pull ? { transform: `translateY(${pull / 2}px)` } : undefined}
     >
       {pull > 0 && (
         <div className="flex items-center justify-center gap-1.5 py-2 text-[11px] text-muted-foreground">
@@ -307,9 +307,18 @@ export function ThreadList({
                 </p>
               )}
 
-              {/* Row 4: snoozed + labels — status chip removed from list view */}
-              {(thread.snoozed_until || thread.labels.length > 0) && (
+              {/* Row 4: assignee (shared inbox collision guard) + snoozed + labels */}
+              {(thread.assignee || thread.snoozed_until || thread.labels.length > 0) && (
                 <div className="mt-1.5 flex flex-wrap items-center gap-1">
+                  {thread.assignee && (
+                    <span
+                      className="flex items-center gap-1 rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-semibold text-primary"
+                      title={`Owned by ${thread.assignee} — shared inbox collision guard`}
+                    >
+                      <UserCheck className="size-2.5" />
+                      {thread.assignee}
+                    </span>
+                  )}
                   {thread.snoozed_until && (
                     <span className="flex items-center gap-1 rounded bg-secondary/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
                       <Clock className="size-2.5" />

@@ -306,6 +306,18 @@ chatRouter.post("/messages/delete-anytime", async (req, res) => {
   res.json(Array.isArray(data) ? data[0] : data);
 });
 
+// E7 — Business: delete for everyone within 48 HOURS (card promise).
+// Gate SQL ke andar: business = 48h window, business_pro = no limit.
+chatRouter.post("/messages/delete-48h", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_delete_message_48h", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
 // ── PHASE 3: work objects (task / promise / decision) ───────────
 chatRouter.post("/work", async (req, res) => {
   const me = await requireChat(req, res);

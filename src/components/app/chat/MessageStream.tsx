@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Tick } from "@/components/app/chat/Ticks";
 import { useMessageAttachments } from "@/lib/chat-attachments";
 import {
+  DELETE_WINDOW_48H_MS,
   DELETE_WINDOW_MS,
   EDIT_WINDOW_MS,
   STATE_LABEL,
@@ -31,6 +32,8 @@ export type MessageActions = {
   onDeleteForEveryone: (messageId: string) => void;
   /** E6 — Business Pro: no time limit. Sirf business_pro power pe diya jata hai. */
   onDeleteAnytime?: (messageId: string) => void;
+  /** E7 — Business: 48-hour window. Sirf business power pe diya jata hai. */
+  onDelete48h?: (messageId: string) => void;
   onHide: (messageId: string) => void;
   onPin: (messageId: string, pin: boolean) => void;
   /** Star · forward · important · decision · work · receipts · provenance · email draft. */
@@ -216,10 +219,15 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
   const state = messageState(message);
   const [picker, setPicker] = useState(false);
   const canEdit = message.mine && withinWindow(message.created_at, EDIT_WINDOW_MS);
-  // E6 — Business Pro power: delete for everyone ka koi time window nahi.
+  // Delete ladder (locked): Basic/Pro 1h · Business 48h (E7) · Business Pro no limit (E6).
   const anytime = message.mine && Boolean(actions.onDeleteAnytime);
-  const canUnsend =
-    message.mine && (anytime || withinWindow(message.created_at, DELETE_WINDOW_MS));
+  const extended48 = message.mine && !anytime && Boolean(actions.onDelete48h);
+  const deleteWindow = anytime
+    ? Number.POSITIVE_INFINITY
+    : extended48
+      ? DELETE_WINDOW_48H_MS
+      : DELETE_WINDOW_MS;
+  const canUnsend = message.mine && withinWindow(message.created_at, deleteWindow);
   const reactions = message.reactions ?? [];
 
   return (
@@ -305,14 +313,24 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
             </IconBtn>
             {canUnsend ? (
               <IconBtn
-                label={anytime ? "Delete for everyone" : "Delete for everyone (1 hour)"}
-                onClick={() =>
-                  // Window ke andar normal delete; Business Pro + window ke bahar
-                  // anytime delete (audit record ke saath, SQL gate).
-                  anytime && !withinWindow(message.created_at, DELETE_WINDOW_MS)
-                    ? actions.onDeleteAnytime!(message.id)
-                    : actions.onDeleteForEveryone(message.id)
+                label={
+                  anytime
+                    ? "Delete for everyone"
+                    : extended48
+                      ? "Delete for everyone (48 hours)"
+                      : "Delete for everyone (1 hour)"
                 }
+                onClick={() => {
+                  // 1h ke andar har plan normal delete. Uske bahar:
+                  // Business Pro → anytime (E6), Business → 48h (E7). SQL gate audit ke saath.
+                  if (withinWindow(message.created_at, DELETE_WINDOW_MS)) {
+                    actions.onDeleteForEveryone(message.id);
+                  } else if (anytime) {
+                    actions.onDeleteAnytime!(message.id);
+                  } else {
+                    actions.onDelete48h!(message.id);
+                  }
+                }}
               >
                 <Trash2 className="size-3" />
               </IconBtn>
