@@ -27,9 +27,9 @@ export type ChatTransport = "webtransport" | "rust" | "bun" | "offline";
 
 /** Rust chat_access false → 403 code chat_not_entitled, message historically "business". */
 export function isChatEntitlementError(err: {
-  status?: number;
-  code?: string;
-  message?: string;
+  status?: number | undefined;
+  code?: string | undefined;
+  message?: string | undefined;
 }): boolean {
   if (err.code === "chat_not_entitled") return true;
   const m = String(err.message || "").trim().toLowerCase();
