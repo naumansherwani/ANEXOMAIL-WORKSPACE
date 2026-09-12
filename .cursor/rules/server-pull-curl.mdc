@@ -7,10 +7,10 @@ alwaysApply: true
 
 Founder: har **server pull command** ke saath **curl health** bhejo. Bina curl ke pull **banned**. Build ke baad **PM2 restart** + **HTTP 200 confirm**.
 
-**Sirf yeh command** (add / hatao nahi):
+**Sirf yeh command** (add / hatao nahi). `git restore src/routeTree.gen.ts` **banned** — tree `bun run build:bun` banati hai.
 
 ```bash
-cd /opt/anexomail-web && git pull --no-rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save && echo "--- HTTP ---" && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health && curl -s -o /dev/null -w "bun /api/health %{http_code}\n" --max-time 5 http://127.0.0.1:3100/api/health && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health && curl -s -o /dev/null -w "polar /health %{http_code}\n" --max-time 5 http://127.0.0.1:3400/health
+cd /opt/anexomail-web && git pull --no-rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && echo "--- HTTP ---" && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health && curl -s -o /dev/null -w "bun /api/health %{http_code}\n" --max-time 5 http://127.0.0.1:3100/api/health && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health && curl -s -o /dev/null -w "polar /health %{http_code}\n" --max-time 5 http://127.0.0.1:3400/health
 ```
 
 Agent output padhe, phir **200 / not 200** likhe:
