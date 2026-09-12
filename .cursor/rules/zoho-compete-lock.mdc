@@ -1,0 +1,19 @@
+---
+description: Zoho Mail compete. No Vercel. Cards not all built. Claude UI / Rust backend wall.
+alwaysApply: true
+---
+
+# Zoho compete + agent split (locked 12 Sep 2026)
+
+Product **Zoho Mail se compete** karta hai: real mailbox, folders, list + read pane, New Mail. Generic CRM/SaaS look **nahi**. Vercel / Lovable / Replit / Bolt se website **nahi**. Host **Hetzner**.
+
+**Price cards:** `plans.ts` + landing cards **no-touch**. Jo bullets cards pe likhe hain woh **ab implement mat karo** (Chat, CRM, Video, poori list). Pehle mail look + E4 send/receive.
+
+**Polar rust payment `:3400`:** no-touch. Nayi site Polar se alag **nahi**.
+
+**Look:** ab jo workspace hai woh generic hai. Target = Zoho Mail chrome (founder photos). Landing / logo / `/plans` tear **nahi**. Naya mail app / naya theme pack **nahi**.
+
+**Kaun kya (founder wall):**
+- **Claude (Cursor model):** sirf mail workspace UI — `src/components/app/mail/**`, mail routes, three-panel. `plans.ts` Polar SQL phase60s **nahi**.
+- **Backend agent:** Rust `:3200` Tokio + WebTransport + QUIC, Postfix pipe, Bun fallback only. CSS rewrite / naya frontend **nahi**.
+- Ek GitHub, ek Hetzner pull. Do websites **banned**. Ek din mein dono same file **nahi**.
