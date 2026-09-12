@@ -128,7 +128,7 @@ function PlanCard({
 }: {
   planId: string;
   name: string;
-  badge?: string;
+  badge?: string | undefined;
   tagline: string;
   monthly: number;
   yearly: number;
@@ -137,7 +137,7 @@ function PlanCard({
   features: string[];
   currentPlanId: string | null;
   /** e.g. "Personal Pro" — shown for personal users */
-  personalLabel?: string;
+  personalLabel?: string | undefined;
   cycle: BillingCycle;
 }) {
   const isCurrent = currentPlanId === planId;
@@ -149,7 +149,7 @@ function PlanCard({
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
       className={cn(
         "flex flex-col rounded-2xl border p-5 transition-colors",
         isCurrent
@@ -257,7 +257,7 @@ function PersonalTierCard({
   delay: number;
 }) {
   const { t } = useLocale();
-  const theme = TIER_THEME[tier.id] ?? TIER_THEME.personal_basic;
+  const theme = TIER_THEME[tier.id] ?? TIER_THEME["personal_basic"]!;
   const price = cycle === "monthly" ? tier.monthly : Math.round(tier.yearly / 12);
   const productKey = `POLAR_PRODUCT_PLAN_${tier.polarPlanId.toUpperCase()}_${cycle.toUpperCase()}`;
 
@@ -265,7 +265,7 @@ function PersonalTierCard({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94], delay }}
+      transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number], delay }}
       className={cn(
         "relative flex flex-col rounded-2xl border-2 bg-card p-5 transition-colors",
         isCurrent ? "border-emerald-500/50 bg-emerald-500/5" : theme.border,
@@ -373,7 +373,7 @@ function PersonalTiersSection({
     <motion.section
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+      transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
       className="mt-ax-8"
     >
       {/* Header */}

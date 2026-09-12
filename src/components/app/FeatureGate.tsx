@@ -59,9 +59,9 @@ function LockOverlay({
   className,
 }: {
   requires: Exclude<WorkspacePlanId, "basic">;
-  label?: string;
+  label?: string | undefined;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
 }) {
   const meta = PLAN_META[requires];
   return (
@@ -105,7 +105,7 @@ function WallBlock({
   label,
 }: {
   requires: Exclude<WorkspacePlanId, "basic">;
-  label?: string;
+  label?: string | undefined;
 }) {
   const meta = PLAN_META[requires];
   const price = planPrice(requires);
@@ -175,7 +175,7 @@ export interface FeatureGateProps {
   /** Plan id required for this feature. */
   requires?: Exclude<WorkspacePlanId, "basic">;
   /** Human-readable feature name shown in the gate. */
-  label?: string;
+  label?: string | undefined;
   /**
    * "lock"   — blur overlay on top of children (default)
    * "wall"   — full replacement block
@@ -183,7 +183,7 @@ export interface FeatureGateProps {
    * "hidden" — null
    */
   variant?: "lock" | "wall" | "chip" | "hidden";
-  className?: string;
+  className?: string | undefined;
   children?: ReactNode;
 }
 
