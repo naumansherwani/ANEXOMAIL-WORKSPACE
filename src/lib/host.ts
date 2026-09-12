@@ -31,6 +31,11 @@ export function isChatHost(): boolean {
   return hostName() === "anexochat.anexomail.com";
 }
 
+/** anexovideocall.anexomail.com — ANEXOVideoCall apna host. */
+export function isVideoCallHost(): boolean {
+  return hostName() === "anexovideocall.anexomail.com";
+}
+
 /**
  * CRM DO HOST (locked 8 Sep 2026):
  *   - aicrm.anexomail.com = AI CRM (Leo insights, AI scoring wale panels)

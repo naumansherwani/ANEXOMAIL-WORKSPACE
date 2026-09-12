@@ -169,10 +169,12 @@ function IconBtn({
   label,
   onClick,
   children,
+  danger,
 }: {
   label: string;
   onClick: () => void;
   children: React.ReactNode;
+  danger?: boolean;
 }) {
   return (
     <button
@@ -180,7 +182,11 @@ function IconBtn({
       title={label}
       aria-label={label}
       onClick={onClick}
-      className="ax-press rounded-md border border-border p-1 text-muted-foreground hover:text-foreground"
+      className={`ax-press rounded-lg p-1.5 transition-colors ${
+        danger
+          ? "text-destructive/70 hover:bg-destructive/10 hover:text-destructive"
+          : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+      }`}
     >
       {children}
     </button>
@@ -240,10 +246,10 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
         ) : null}
         <div
           className={
-            "rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed " +
+            "rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm " +
             (message.mine
-              ? "bg-primary/12 text-foreground"
-              : "border border-border bg-card text-foreground")
+              ? "bg-gradient-to-br from-primary/18 to-primary/10 text-foreground ring-1 ring-primary/15"
+              : "border border-border/70 bg-card/80 text-foreground backdrop-blur-sm")
           }
         >
           {message.body}
@@ -281,7 +287,7 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
           <span aria-hidden>·</span>
           <span>{stamp(message.created_at)}</span>
 
-          <span className="ml-1 hidden items-center gap-1 group-hover:inline-flex">
+          <span className="ml-1 hidden items-center gap-0.5 rounded-xl border border-border/50 bg-card/80 px-1 py-0.5 shadow-sm backdrop-blur-sm group-hover:inline-flex">
             <IconBtn label="React" onClick={() => setPicker((v) => !v)}>
               <Smile className="size-3" />
             </IconBtn>
@@ -308,11 +314,12 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
             >
               <MoreHorizontal className="size-3" />
             </IconBtn>
-            <IconBtn label="Delete for me" onClick={() => actions.onHide(message.id)}>
+            <IconBtn label="Delete for me" onClick={() => actions.onHide(message.id)} danger>
               <EyeOff className="size-3" />
             </IconBtn>
             {canUnsend ? (
               <IconBtn
+                danger
                 label={
                   anytime
                     ? "Delete for everyone"

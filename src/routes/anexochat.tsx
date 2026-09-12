@@ -17,18 +17,21 @@ import {
 } from "lucide-react";
 
 import { SiteFooter } from "@/components/site/SiteFooter";
-
 import { SiteNav } from "@/components/site/SiteNav";
+import { isChatHost } from "@/lib/host";
 
 export const Route = createFileRoute("/anexochat")({
-  // Founder host par yeh chhota pata seedha asli chat surface kholta hai;
-  // awam host par yehi public page rehta hai.
+  // Founder host ya ANEXOChat host par seedha workspace chat khulta hai.
+  // Awam host par yehi public landing rehta hai.
   beforeLoad: () => {
-    if (
-      typeof window !== "undefined" &&
-      window.location.hostname === "founderworkspace.anexomail.com"
-    ) {
-      throw redirect({ to: "/app/chat" });
+    if (typeof window !== "undefined") {
+      const h = window.location.hostname;
+      if (
+        h === "founderworkspace.anexomail.com" ||
+        isChatHost()
+      ) {
+        throw redirect({ to: "/app/chat" });
+      }
     }
   },
 

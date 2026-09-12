@@ -237,6 +237,16 @@ export function useCall(
   const [codecs] = useState<CodecSupport>(() => codecSupport());
   const ladder = useRef<QualityLadder>(new QualityLadder(rungIndex("720p"), TOP_RUNG));
   const captureCeiling = useRef(LADDER[rungIndex("720p")]!);
+  // Screen share state — track replaced but original camera kept
+  const [screensharing, setScreensharing] = useState(false);
+  const priorCamTrack = useRef<MediaStreamTrack | null>(null);
+  // Call duration — seconds since phase = "live"
+  const [callDuration, setCallDuration] = useState<number | null>(null);
+  const liveAt = useRef<number | null>(null);
+  // Speaker detection — local audio level > threshold = speaking
+  const [speaking, setSpeaking] = useState(false);
+  const audioCtx = useRef<AudioContext | null>(null);
+  const analyserRef = useRef<AnalyserNode | null>(null);
   const choiceRef = useRef<QualityChoice>("auto");
 
   // ── PHASE 31A refs/state ───────────────────────────────────────────────────
@@ -975,6 +985,110 @@ export function useCall(
 
   useEffect(() => () => teardown("unmount"), [teardown]);
 
+  // ── Call duration counter ────────────────────────────────────────────────
+  useEffect(() => {
+    if (phase === "live") {
+      liveAt.current = liveAt.current ?? Date.now();
+      const t = window.setInterval(() => {
+        setCallDuration(Math.floor((Date.now() - (liveAt.current ?? Date.now())) / 1000));
+      }, 1000);
+      return () => window.clearInterval(t);
+    }
+    if (phase === "ended" || phase === "idle") {
+      liveAt.current = null;
+      setCallDuration(null);
+    }
+  }, [phase]);
+
+  // ── Local speaker detection (Web Audio analyser) ─────────────────────────
+  useEffect(() => {
+    if (phase !== "live" || !local) {
+      audioCtx.current?.close().catch(() => {});
+      audioCtx.current = null;
+      analyserRef.current = null;
+      setSpeaking(false);
+      return;
+    }
+    let stopped = false;
+    const ctx = new AudioContext();
+    audioCtx.current = ctx;
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 256;
+    analyserRef.current = analyser;
+    const src = ctx.createMediaStreamSource(local);
+    src.connect(analyser);
+    const buf = new Uint8Array(analyser.frequencyBinCount);
+    const poll = () => {
+      if (stopped) return;
+      analyser.getByteFrequencyData(buf);
+      const avg = buf.reduce((s, v) => s + v, 0) / buf.length;
+      setSpeaking(avg > 18);
+      window.requestAnimationFrame(poll);
+    };
+    poll();
+    return () => {
+      stopped = true;
+      ctx.close().catch(() => {});
+      audioCtx.current = null;
+      analyserRef.current = null;
+      setSpeaking(false);
+    };
+  }, [phase, local]);
+
+  /** Screen share — replaces video track; browser stop button = auto-restore camera. */
+  const screenShare = useCallback(async () => {
+    const peer = pc.current;
+    if (!peer || screensharing) return;
+    try {
+      const screen = await navigator.mediaDevices.getDisplayMedia({
+        video: { frameRate: { ideal: 30, max: 60 } },
+        audio: false,
+      });
+      const screenTrack = screen.getVideoTracks()[0];
+      if (!screenTrack) return;
+      const sender = peer.getSenders().find((s) => s.track?.kind === "video");
+      // Keep original camera track for restore
+      priorCamTrack.current = sender?.track ?? null;
+      await sender?.replaceTrack(screenTrack);
+      setScreensharing(true);
+      // Auto-restore when user hits browser "Stop sharing"
+      screenTrack.addEventListener(
+        "ended",
+        () => void stopScreenShare(),
+        { once: true },
+      );
+    } catch {
+      /* user cancelled — no action */
+    }
+  }, [screensharing]);
+
+  /** Stop screen share — restores camera at last quality rung. */
+  const stopScreenShare = useCallback(async () => {
+    const peer = pc.current;
+    if (!peer) return;
+    try {
+      const rung = ladder.current.current();
+      const camTrack =
+        priorCamTrack.current ??
+        (
+          await navigator.mediaDevices.getUserMedia({
+            video: captureConstraints(rung, capture?.deviceId),
+          })
+        ).getVideoTracks()[0];
+      priorCamTrack.current = null;
+      if (!camTrack) { setScreensharing(false); return; }
+      const sender = peer.getSenders().find((s) => s.track?.kind === "video");
+      await sender?.replaceTrack(camTrack);
+      const old = localRef.current;
+      if (old) {
+        old.getVideoTracks().forEach((t) => { old.removeTrack(t); t.stop(); });
+        old.addTrack(camTrack);
+        setLocal(new MediaStream(old.getTracks()));
+      }
+    } catch { /* restore failed — call still alive */ }
+    finally { setScreensharing(false); }
+  }, [capture?.deviceId]);
+
   /** PHASE 10B — NEW ADDED: AUTO ya manual rung. 8K sirf tab jab camera de. */
   const setQuality = useCallback(async (next: QualityChoice) => {
     choiceRef.current = next;
@@ -1012,5 +1126,12 @@ export function useCall(
     capture,
     codecs,
     maxRung: captureCeiling.current.key,
+    // Screen share
+    screensharing,
+    screenShare,
+    stopScreenShare,
+    // Duration + speaker
+    callDuration,
+    speaking,
   };
 }

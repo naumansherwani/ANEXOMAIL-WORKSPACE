@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Paperclip, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
+import { Check, Paperclip, Pencil, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -95,6 +95,9 @@ function ChatPage() {
     }
   }
   const [replyTo, setReplyTo] = useState<ChatMessage | null>(null);
+  // Inline edit state — window.prompt se behtar: proper textarea in-stream.
+  const [editTarget, setEditTarget] = useState<ChatMessage | null>(null);
+  const [editDraft, setEditDraft] = useState("");
   // Message-level truth drawer (Phase 19-30 arms) — ek message ek waqt.
   const [moreFor, setMoreFor] = useState<ChatMessage | null>(null);
   useEffect(() => setMoreFor(null), [openId]);
@@ -341,28 +344,38 @@ function ChatPage() {
           </div>
         ) : (
           <div className="flex h-full min-h-0 flex-col">
-            <header className="shrink-0 border-b border-border px-4 py-3">
+            <header className="shrink-0 border-b border-border bg-card/30 px-4 py-3 backdrop-blur-sm">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-sm font-bold tracking-tight text-foreground">
                   {active.other_name ?? "Conversation"}
                 </h2>
                 <HealthChip health={active.health} reason={active.health_reason} />
+                {/* Live transport indicator */}
+                <span
+                  title={live.detail}
+                  className="inline-flex items-center gap-1 rounded-full border border-border bg-card/60 px-2 py-0.5 text-[10px] text-muted-foreground"
+                >
+                  <span
+                    className={`size-1.5 rounded-full ${live.transport === "webtransport" ? "bg-emerald-500" : "bg-amber-400"}`}
+                  />
+                  {live.transport === "webtransport" ? "QUIC live" : "HTTP/3 polling"}
+                </span>
                 {!online ? (
                   <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground">
-                    <WifiOff className="size-3" /> Offline — messages will wait
+                    <WifiOff className="size-3" /> Offline
                   </span>
                 ) : null}
                 {gate.data?.allowed ? (
                   <button
                     type="button"
                     onClick={() => void call.start()}
-                    className="ax-press ml-auto inline-flex items-center gap-1.5 rounded-full border border-border px-2.5 py-1 text-[11px] text-foreground"
+                    className="ax-press ml-auto inline-flex items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 py-1.5 text-[11px] font-medium text-foreground transition-colors hover:border-primary/40 hover:bg-primary/8 hover:text-primary"
                   >
                     <PhoneCall className="size-3" /> Video call
                   </button>
                 ) : (
                   <span className="ml-auto text-[11px] text-muted-foreground">
-                    ANEXOVideoChat is on Business Pro
+                    ANEXOVideoCall · Business Pro
                   </span>
                 )}
                 <button
@@ -389,7 +402,8 @@ function ChatPage() {
                   Archive
                 </button>
               </div>
-              <div className="mt-2 flex flex-wrap items-center gap-2">
+              {/* Atmosphere + Cinema — compact single strip */}
+              <div className="mt-2 flex flex-wrap items-center gap-1.5">
                 <AtmosphereControl
                   band={atmosphere.band}
                   effect={atmosphere.effect}
@@ -400,42 +414,43 @@ function ChatPage() {
                   onMode={atmosphere.setMode}
                   onCalm={atmosphere.setCalm}
                 />
-                <button
-                  type="button"
-                  aria-pressed={cinema.enabled}
-                  onClick={() => cinema.setEnabled(!cinema.enabled)}
-                  className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground"
-                >
-                  {cinema.enabled ? "3D graphics on" : "3D graphics off"}
-                </button>
-                {cinema.pausedByCall ? (
-                  <span className="rounded-full border border-border px-2.5 py-1 text-[11px] text-muted-foreground">
-                    3D paused for this call
-                  </span>
-                ) : null}
-                <select
-                  aria-label="Cinematic quality"
-                  value={cinema.pref}
-                  disabled={!cinema.enabled}
-                  onChange={(e) =>
-                    cinema.setQuality(e.target.value as "auto" | "off" | "low" | "high")
-                  }
-                  className="rounded-full border border-border bg-transparent px-2.5 py-1 text-xs text-foreground disabled:opacity-40"
-                >
-                  <option value="auto">Cinema: auto</option>
-                  <option value="high">Cinema: high</option>
-                  <option value="low">Cinema: low</option>
-                  <option value="off">Cinema: off</option>
-                </select>
-                {cinema.soundable ? (
+                <div className="ml-auto flex items-center gap-1.5">
+                  <select
+                    aria-label="Cinematic quality"
+                    value={cinema.pref}
+                    disabled={!cinema.enabled}
+                    onChange={(e) =>
+                      cinema.setQuality(e.target.value as "auto" | "off" | "low" | "high")
+                    }
+                    className="rounded-full border border-border bg-transparent px-2 py-0.5 text-[11px] text-muted-foreground disabled:opacity-40"
+                  >
+                    <option value="auto">3D auto</option>
+                    <option value="high">3D high</option>
+                    <option value="low">3D low</option>
+                    <option value="off">3D off</option>
+                  </select>
                   <button
                     type="button"
-                    onClick={() => cinema.setSound(!cinema.sound)}
-                    className="rounded-full border border-border px-2.5 py-1 text-xs text-muted-foreground hover:text-foreground"
+                    aria-pressed={cinema.enabled}
+                    onClick={() => cinema.setEnabled(!cinema.enabled)}
+                    className={`rounded-full border px-2 py-0.5 text-[11px] transition-colors ${
+                      cinema.enabled
+                        ? "border-primary/30 bg-primary/8 text-primary"
+                        : "border-border text-muted-foreground hover:text-foreground"
+                    }`}
                   >
-                    {cinema.sound ? "Sound on" : "Sound off"}
+                    {cinema.pausedByCall ? "3D paused" : cinema.enabled ? "3D on" : "3D off"}
                   </button>
-                ) : null}
+                  {cinema.soundable ? (
+                    <button
+                      type="button"
+                      onClick={() => cinema.setSound(!cinema.sound)}
+                      className="rounded-full border border-border px-2 py-0.5 text-[11px] text-muted-foreground hover:text-foreground"
+                    >
+                      {cinema.sound ? "♪ on" : "♪ off"}
+                    </button>
+                  ) : null}
+                </div>
               </div>
             </header>
 
@@ -453,10 +468,8 @@ function ChatPage() {
                 onReact: (message_id, emoji) => react.mutate({ message_id, emoji }),
                 onReply: (m) => setReplyTo(m),
                 onEdit: (m) => {
-                  const next = window.prompt("Edit message", m.body);
-                  if (next && next.trim() && next !== m.body) {
-                    editMessage.mutate({ message_id: m.id, body: next.trim() });
-                  }
+                  setEditTarget(m);
+                  setEditDraft(m.body);
                 },
                 onDeleteForEveryone: (id) => deleteMessage.mutate(id),
                 ...(anytimeDelete
@@ -500,16 +513,79 @@ function ChatPage() {
               maxRung={call.maxRung}
               onAnswer={() => void call.answer()}
               onHangup={call.hangup}
-              /* PHASE 31A — NEW ADDED: ring truth, group topology, survival */
               ringing={call.ringing}
               topology={call.topology}
               mediaForwarding={call.mediaForwarding}
               survival={call.survival}
               onDecline={call.decline}
+              screensharing={call.screensharing}
+              onScreenShare={() => void call.screenShare()}
+              onStopScreenShare={() => void call.stopScreenShare()}
+              callDuration={call.callDuration}
+              speaking={call.speaking}
             />
 
+            {/* Inline edit bar — replaces compose when editing a message */}
+            {editTarget ? (
+              <div className="shrink-0 border-t border-primary/40 bg-primary/5 px-4 py-3">
+                <div className="mb-2 flex items-center justify-between">
+                  <span className="flex items-center gap-1.5 text-[11px] font-semibold text-primary">
+                    <Pencil className="size-3" /> Editing message
+                  </span>
+                  <button
+                    type="button"
+                    aria-label="Cancel edit"
+                    onClick={() => { setEditTarget(null); setEditDraft(""); }}
+                    className="text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="size-3.5" />
+                  </button>
+                </div>
+                <form
+                  className="flex items-end gap-2"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    const body = editDraft.trim();
+                    if (body && body !== editTarget.body) {
+                      editMessage.mutate({ message_id: editTarget.id, body });
+                    }
+                    setEditTarget(null);
+                    setEditDraft("");
+                  }}
+                >
+                  <textarea
+                    autoFocus
+                    value={editDraft}
+                    rows={2}
+                    onChange={(e) => setEditDraft(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") { setEditTarget(null); setEditDraft(""); }
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        const body = editDraft.trim();
+                        if (body && body !== editTarget.body) {
+                          editMessage.mutate({ message_id: editTarget.id, body });
+                        }
+                        setEditTarget(null);
+                        setEditDraft("");
+                      }
+                    }}
+                    className="min-h-[2.5rem] flex-1 resize-none rounded-xl border border-primary/40 bg-transparent px-3 py-2 text-sm text-foreground outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                  />
+                  <button
+                    type="submit"
+                    disabled={!editDraft.trim() || editDraft.trim() === editTarget.body}
+                    className="ax-press inline-flex items-center gap-1.5 rounded-xl bg-primary px-3.5 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-50"
+                  >
+                    <Check className="size-4" /> Save
+                  </button>
+                </form>
+                <p className="mt-1 text-[10px] text-muted-foreground">Enter to save · Esc to cancel</p>
+              </div>
+            ) : null}
+
             <div
-              className="shrink-0 border-t border-border px-4 py-3"
+              className={`shrink-0 border-t border-border px-4 py-3 ${editTarget ? "opacity-40 pointer-events-none" : ""}`}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
