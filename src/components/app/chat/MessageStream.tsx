@@ -382,7 +382,9 @@ function PendingBubble({ item }: { item: OutboxItem }) {
   return (
     <li className="flex justify-end">
       <div className="max-w-[min(38rem,85%)]">
-        <div className="rounded-2xl border border-dashed border-border px-3.5 py-2.5 text-sm leading-relaxed text-foreground">
+        {/* PHASE 39 — send cinematic: gradient sweep 300ms on the fresh bubble.
+            Calm Mode / reduced-motion par CSS khud isse band karti hai. */}
+        <div className="ax-send-sweep rounded-2xl border border-dashed border-border px-3.5 py-2.5 text-sm leading-relaxed text-foreground">
           {item.body}
         </div>
         <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">

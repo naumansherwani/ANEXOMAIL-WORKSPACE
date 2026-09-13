@@ -409,9 +409,7 @@ function ChatPage() {
                   effect={atmosphere.effect}
                   calm={atmosphere.calm}
                   caption={atmosphere.caption}
-                  mode={atmosphere.mode}
                   onEffect={atmosphere.setEffect}
-                  onMode={atmosphere.setMode}
                   onCalm={atmosphere.setCalm}
                 />
                 <div className="ml-auto flex items-center gap-1.5">

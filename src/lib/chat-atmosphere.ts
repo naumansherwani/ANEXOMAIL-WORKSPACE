@@ -1,22 +1,22 @@
 /**
- * ANEXOChat — ATMOSPHERE (locked 14 Aug 2026, weather = Open-Meteo only).
+ * ANEXOChat — ATMOSPHERE (blueprint PHASE 36/37/38 — API-FREE, locked).
  *
- * FOUNDER LOCK:
- *   - Dawn / Day / Dusk / Night SIRF device ke local clock se.
- *   - Weather ke do mode: "manual" (user khud chunta hai) aur "auto"
- *     (Open-Meteo live — zero key, zero cost, user ki ijazat se location).
- *   - Open-Meteo ke ilawa koi weather API kabhi nahi. Reading na mile to
- *     UI sach bolta hai — guess kabhi nahi.
+ * FOUNDER BLUEPRINT LOCK:
+ *   - No Open-Meteo. No OpenWeatherMap. No weather API. (PHASE 37 + PHASE 49)
+ *   - Layer 1 — Device Clock: Dawn/Day/Dusk/Night automatic atmosphere.
+ *   - Layer 2 — Optional Device Location: local calculations only.
+ *   - Layer 3 — Device Sensors: Ambient Light Sensor if supported, graceful
+ *     fallback (browser-native API, koi network call nahi).
+ *   - Weather effect = user ka apna choice (manual). Engine kabhi "asli
+ *     weather" ka daawa nahi karti — caption hamesha "chosen, not measured".
  *   - Calm Mode = koi visual effect nahi (OS reduced-motion hamesha upar).
  */
 
 export type TimeBand = "dawn" | "day" | "dusk" | "night";
 export type AtmosphereEffect = "none" | "rain" | "storm" | "snow" | "sunny";
-export type AtmosphereMode = "manual" | "auto";
 
 const EFFECT_KEY = "ax.chat.atmosphere";
 const CALM_KEY = "ax.chat.calm";
-const MODE_KEY = "ax.chat.atmosphere.mode";
 
 /** Device clock only. Hour bands are fixed and honest — no location guess. */
 export function timeBand(now: Date = new Date()): TimeBand {
@@ -64,15 +64,38 @@ export function writeCalm(on: boolean) {
   window.localStorage.setItem(CALM_KEY, on ? "true" : "false");
 }
 
-/** Manual = user ka choice. Auto = Open-Meteo live reading. */
-export function readMode(): AtmosphereMode {
-  if (typeof window === "undefined") return "manual";
-  return window.localStorage.getItem(MODE_KEY) === "auto" ? "auto" : "manual";
-}
-
-export function writeMode(mode: AtmosphereMode) {
-  if (typeof window === "undefined") return;
-  window.localStorage.setItem(MODE_KEY, mode);
+/**
+ * PHASE 37 Layer 3 — Ambient Light Sensor (browser-native, koi network nahi).
+ * Dark room ho to "dim" true — UI atmosphere ko halka kar sakta hai.
+ * Sensor na ho / ijazat na mile to null — graceful fallback, koi guess nahi.
+ */
+export function watchAmbientLight(
+  onReading: (dim: boolean, lux: number) => void,
+): () => void {
+  if (typeof window === "undefined") return () => {};
+  const ALS = (
+    window as unknown as {
+      AmbientLightSensor?: new (opts?: { frequency?: number }) => {
+        illuminance: number;
+        addEventListener: (t: string, cb: () => void) => void;
+        start: () => void;
+        stop: () => void;
+      };
+    }
+  ).AmbientLightSensor;
+  if (!ALS) return () => {};
+  try {
+    const sensor = new ALS({ frequency: 0.5 });
+    const read = () => {
+      const lux = sensor.illuminance;
+      onReading(lux < 40, lux);
+    };
+    sensor.addEventListener("reading", read);
+    sensor.start();
+    return () => sensor.stop();
+  } catch {
+    return () => {};
+  }
 }
 
 /** Honest caption: local time band + chosen effect. Never a weather claim. */
@@ -81,18 +104,4 @@ export function atmosphereCaption(band: TimeBand, effect: AtmosphereEffect): str
   if (effect === "none") return `${time} · your device time`;
   const label = EFFECTS.find((e) => e.id === effect)?.label ?? "None";
   return `${time} · ${label} (chosen, not measured)`;
-}
-
-/** Auto mode caption: sirf Open-Meteo ka asli reading, source ke saath. */
-export function liveCaption(
-  band: TimeBand,
-  label: string,
-  temperatureC: number,
-  at: string,
-): string {
-  const time = new Date(at).toLocaleTimeString(undefined, {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-  return `${TIME_BAND_LABEL[band]} · ${label} ${Math.round(temperatureC)}°C · Open-Meteo, ${time}`;
 }

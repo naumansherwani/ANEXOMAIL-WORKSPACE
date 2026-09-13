@@ -3,8 +3,8 @@
  *
  * Stack: React Three Fiber + drei + postprocessing + GSAP + Rapier + Tone.js.
  * FOUNDER LOCK:
- *   - Yeh scene sirf DIKHATA hai jo Open-Meteo ne bataya ya user ne chuna.
- *     Khud se kabhi weather tay nahi karta.
+ *   - Yeh scene sirf DIKHATA hai jo user ne chuna ya device clock ne bataya.
+ *     Khud se kabhi weather tay nahi karta (blueprint PHASE 37/49).
  *   - Calm Mode par yeh component unmount hota hai (poora dispose).
  *   - Mobile par particle count budget se aadha (chat-cinema.ts).
  */

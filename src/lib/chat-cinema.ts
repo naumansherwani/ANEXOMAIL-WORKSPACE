@@ -6,8 +6,9 @@
  *     yeh sab client par chalta hai).
  *   - Calm Mode = poora 3D unmount (dispose) — koi rAF loop background mein nahi.
  *   - Sound sirf tab jab user khud on kare; Calm Mode = mute, hamesha.
- *   - Weather sirf Open-Meteo se aati hai (chat-weather.ts). Yeh file sirf
- *     dikhane ka budget decide karti hai, koi weather claim nahi banati.
+ *   - Weather effect = user ka manual choice (chat-atmosphere.ts). Yeh file
+ *     sirf dikhane ka budget decide karti hai, koi weather claim nahi banati.
+ *     Blueprint PHASE 37/49: koi weather API nahi.
  */
 
 import type { AtmosphereEffect, TimeBand } from "@/lib/chat-atmosphere";
