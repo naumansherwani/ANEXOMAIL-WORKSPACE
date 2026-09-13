@@ -5,7 +5,7 @@
 ## Server (ek block)
 
 ```bash
-cd /opt/anexomail-web && git pull --no-rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save
+cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 ```
 
 Agar vim khule: `:wq`. Force / reset mat.

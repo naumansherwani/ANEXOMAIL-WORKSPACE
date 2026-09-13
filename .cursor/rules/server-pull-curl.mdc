@@ -8,14 +8,9 @@ alwaysApply: true
 Agent is command ke khilaf **nahi** jata. Add / hatao / restore mat rok.
 
 ```bash
-cd /opt/anexomail-web \
-&& git restore src/routeTree.gen.ts \
-&& git pull --no-rebase origin main \
-&& bun install \
-&& bun run build:bun \
-&& pm2 restart anexomail-web --update-env \
-&& pm2 save \
-&& curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
+cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 ```
+
+**Locked:** ALWAYS `--rebase`. NEVER `--no-rebase`. Ek copy-paste block only.
 
 Output padho: `web /health` **200** confirm. 200 nahi to code likho.

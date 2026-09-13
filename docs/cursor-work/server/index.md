@@ -4,8 +4,10 @@
 Alag file nahi. Pull command ek. Sirf yeh:
 
 ```bash
-cd /opt/anexomail-web && git pull && bun install && bun run build:bun && pm2 restart anexomail-web && pm2 save
+cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 ```
+
+**Locked:** ALWAYS `git pull --rebase origin main`. NEVER `--no-rebase`. One `&&` block only.
 
 ---
 

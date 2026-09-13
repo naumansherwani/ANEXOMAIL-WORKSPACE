@@ -2,7 +2,7 @@
 # ============================================================================
 # ANEXOMAIL / ANEXOChat — RUST PRIMARY ENGINE auto-deploy (koi nano nahi)
 #
-#   cd /opt/anexomail-web && git pull && bash server/rust/deploy.sh
+#   cd /opt/anexomail-web && git pull --rebase origin main && bash server/rust/deploy.sh
 #
 # Yeh script khud karti hai:
 #   1. repo se main.rs + Cargo.toml -> /opt/anexomail-rust (purani file .bak)

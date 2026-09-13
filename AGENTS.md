@@ -56,16 +56,9 @@
 ## RULES (sab locked)
 
 ### Rule 1 — GitHub is source of truth
-Sab kuch GitHub repo mein. Server sirf pull karta hai. **Founder pull command locked** — agent is ke khilaf nahi jata:
+Sab kuch GitHub repo mein. Server sirf pull karta hai. **Founder pull command locked** — ALWAYS `--rebase`, NEVER `--no-rebase`. Ek `&&` block only:
 ```bash
-cd /opt/anexomail-web \
-&& git restore src/routeTree.gen.ts \
-&& git pull --no-rebase origin main \
-&& bun install \
-&& bun run build:bun \
-&& pm2 restart anexomail-web --update-env \
-&& pm2 save \
-&& curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
+cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 ```
 Agent `web /health` **200** confirm kare.
 
