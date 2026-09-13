@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { Tick } from "@/components/app/chat/Ticks";
 import { useMessageAttachments } from "@/lib/chat-attachments";
+import "./send-sweep.css";
 import {
   DELETE_WINDOW_48H_MS,
   DELETE_WINDOW_MS,
