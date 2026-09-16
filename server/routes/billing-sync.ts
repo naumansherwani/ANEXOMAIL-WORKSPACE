@@ -75,6 +75,31 @@ async function requireUser(req: any, res: any): Promise<string | null> {
   return data.user.id;
 }
 
+async function accountKindFor(userId: string): Promise<"personal" | "business" | null> {
+  if (!db) return null;
+  const { data } = await db
+    .from("account_profiles")
+    .select("preferences")
+    .eq("user_id", userId)
+    .maybeSingle();
+  const kind = String(data?.preferences?.workspace_kind || "").trim().toLowerCase();
+  return kind === "personal" || kind === "business" ? kind : null;
+}
+
+async function enforceAccountKind(
+  userId: string,
+  required: BillingProduct["accountKind"],
+  res: any,
+): Promise<boolean> {
+  if (!required) return true;
+  const actual = await accountKindFor(userId);
+  if (actual !== required) {
+    res.status(403).json({ error: "product_not_available_for_account_kind" });
+    return false;
+  }
+  return true;
+}
+
 async function polarFetch(path: string, init?: RequestInit) {
   const res = await fetch(`${POLAR_API}${path}`, {
     ...init,
@@ -110,6 +135,7 @@ authRouter.post("/intent", async (req, res) => {
       .status(400)
       .json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
+  if (!(await enforceAccountKind(userId, selected.accountKind, res))) return;
   const safeSeats = selected.perSeat
     ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1)))
     : 1;
@@ -145,6 +171,7 @@ authRouter.post("/intent", async (req, res) => {
       seats: String(safeSeats),
       product_key: String(product_key),
       kind: selected.kind,
+      account_kind: selected.accountKind ?? "",
       plan: selected.plan ?? "",
       band: selected.band ?? "",
       billing_cycle: selected.cycle ?? "one_time",
@@ -456,6 +483,9 @@ publicRouter.post("/billing/guest-intent", async (req, res) => {
     return res
       .status(400)
       .json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+  }
+  if (selected.accountKind) {
+    return res.status(403).json({ error: "personal_products_require_sign_in" });
   }
   const safeSeats = selected.perSeat
     ? Math.max(1, Math.min(10000, Math.trunc(Number(seats) || 1)))

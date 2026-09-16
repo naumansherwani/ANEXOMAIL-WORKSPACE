@@ -1,8 +1,8 @@
 /**
  * /app/billing — Billing & Plans
  *
- * Shows all 4 Polar plans: Basic | Pro | Business | Business Pro
- * Current plan highlighted. Others → CheckoutButton → Polar checkout.
+ * Personal accounts see only 3 separate Personal Polar plans.
+ * Business accounts keep the existing 4 workspace plans unchanged.
  *
  * Data (real, Polar-wired):
  *   useSubscription() → /api/billing/subscription → workspace_subscriptions
@@ -10,7 +10,6 @@
  *   useInvoices()     → /api/billing/invoices     → workspace_invoices
  *
  * Personal tier display layer: personal-tiers.ts (plans.ts no-touch).
- * BILLING_PRODUCTS product IDs: no-touch.
  */
 
 import { createFileRoute } from "@tanstack/react-router";
@@ -141,7 +140,7 @@ function PlanCard({
   cycle: BillingCycle;
 }) {
   const isCurrent = currentPlanId === planId;
-  const price = cycle === "monthly" ? monthly : Math.round(yearly / 12);
+  const price = cycle === "monthly" ? monthly : yearly;
   const productKey = `POLAR_PRODUCT_PLAN_${planId.toUpperCase()}_${cycle.toUpperCase()}`;
   const label = ctaLabel(currentPlanId, planId);
 
@@ -187,7 +186,9 @@ function PlanCard({
           <span className="text-[22px] font-bold tracking-tight text-foreground">
             {money(price)}
           </span>
-          <span className="text-[11px] text-muted-foreground/50">/mo</span>
+          <span className="text-[11px] text-muted-foreground/50">
+            {cycle === "monthly" ? "/mo" : "/year"}
+          </span>
         </div>
         {cycle === "yearly" && (
           <p className="mt-0.5 text-[10px] text-emerald-400">
@@ -247,19 +248,22 @@ function PersonalTierCard({
   tier,
   isCurrent,
   isRecommended,
+  currentTierId,
   cycle,
   delay,
 }: {
   tier: PersonalTier;
   isCurrent: boolean;
   isRecommended: boolean;
+  currentTierId: PersonalTier["id"];
   cycle: BillingCycle;
   delay: number;
 }) {
   const { t } = useLocale();
   const theme = TIER_THEME[tier.id] ?? TIER_THEME["personal_basic"]!;
-  const price = cycle === "monthly" ? tier.monthly : Math.round(tier.yearly / 12);
-  const productKey = `POLAR_PRODUCT_PLAN_${tier.polarPlanId.toUpperCase()}_${cycle.toUpperCase()}`;
+  const price = cycle === "monthly" ? tier.monthly : tier.yearly;
+  const productKey = `POLAR_PRODUCT_PLAN_${tier.productPlanId.toUpperCase()}_${cycle.toUpperCase()}`;
+  const cta = isPersonalUpgrade(currentTierId, tier.id) ? t("Upgrade") : t("Downgrade");
 
   return (
     <motion.div
@@ -302,7 +306,9 @@ function PersonalTierCard({
           <span className="text-[22px] font-bold tracking-tight text-foreground">
             {money(price)}
           </span>
-          <span className="text-[11px] text-muted-foreground/50">/mo</span>
+          <span className="text-[11px] text-muted-foreground/50">
+            {cycle === "monthly" ? "/mo" : "/year"}
+          </span>
         </div>
         {cycle === "yearly" && (
           <p className="mt-0.5 text-[10px] text-emerald-400">
@@ -312,23 +318,9 @@ function PersonalTierCard({
         <p className="mt-0.5 text-[10px] text-muted-foreground/40">{tier.unit}</p>
       </div>
 
-      {/* Top features */}
-      <ul className="mt-3 flex flex-1 flex-col gap-1.5">
-        {tier.features.slice(0, 6).map((f) => (
-          <li key={f} className="flex items-start gap-2 text-[11px] leading-snug">
-            <Check
-              className={cn(
-                "mt-0.5 size-3 shrink-0",
-                f.startsWith("Everything") ? "text-primary" : "text-emerald-400",
-              )}
-              aria-hidden="true"
-            />
-            <span className={cn(f.startsWith("Everything") ? "font-semibold text-foreground" : "text-muted-foreground")}>
-              {f}
-            </span>
-          </li>
-        ))}
-      </ul>
+      <div className="mt-3 flex-1">
+        <FeatureList features={tier.features} />
+      </div>
 
       {/* CTA */}
       <div className="mt-5">
@@ -339,7 +331,7 @@ function PersonalTierCard({
         ) : (
           <CheckoutButton
             productKey={productKey}
-            label={t("Upgrade")}
+            label={cta}
             source={`billing:personal:${tier.id}`}
             className="h-9 rounded-xl py-0 text-[12px]"
           />
@@ -410,6 +402,7 @@ function PersonalTiersSection({
             tier={tier}
             isCurrent={tier.id === currentTierId}
             isRecommended={tier.id === recommendedId}
+            currentTierId={currentTierId}
             cycle={cycle}
             delay={i * 0.06}
           />
@@ -525,15 +518,12 @@ function WorkspaceBilling() {
           </CardBody>
         </section>
 
-        {/* ── Personal tier suggestions — only for personal kind ─── */}
-        {kind === "personal" && (
-          <PersonalTiersSection currentPlanId={billed} cycle={cycle} />
-        )}
-
         {/* ── Billing cycle toggle ───────────────────────────────── */}
         <section className="mt-ax-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="ax-heading text-foreground">{t("All plans")}</h3>
+            <h3 className="ax-heading text-foreground">
+              {kind === "personal" ? t("Your personal tiers") : t("All plans")}
+            </h3>
             <div className="flex items-center gap-1 rounded-xl border border-border bg-card p-1">
               <button
                 type="button"
@@ -565,15 +555,13 @@ function WorkspaceBilling() {
             </div>
           </div>
 
-          {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ── */}
-          <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {WORKSPACE_PLANS.map((plan) => {
-              // For personal users — show "Personal Pro" instead of just "Pro"
-              const personalLabel =
-                kind === "personal"
-                  ? PERSONAL_TIERS.find((t) => t.polarPlanId === plan.id)?.name
-                  : undefined;
+          {kind === "personal" && (
+            <PersonalTiersSection currentPlanId={billed} cycle={cycle} />
+          )}
 
+          {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ── */}
+          {kind === "business" && <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {WORKSPACE_PLANS.map((plan) => {
               return (
                 <PlanCard
                   key={plan.id}
@@ -587,19 +575,16 @@ function WorkspaceBilling() {
                   unit={plan.unit}
                   features={plan.features}
                   currentPlanId={billed}
-                  personalLabel={personalLabel}
                   cycle={cycle}
                 />
               );
             })}
-          </div>
+          </div>}
 
           {/* ── Personal tier note (only for personal kind) ───────── */}
           {kind === "personal" && (
             <p className="mt-4 text-[11px] text-muted-foreground/40">
-              {t(
-                "Personal account — your workspace stays personal after checkout. Business plans unlock company Org, departments and multi-user governance.",
-              )}
+              {t("Personal account — your workspace stays personal after checkout. Company Org, departments and multi-user governance are not included.")}
             </p>
           )}
         </section>
