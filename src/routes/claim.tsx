@@ -2,11 +2,11 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { ArrowLeft, AtSign, Check, Loader2, LogIn, ShieldCheck, X } from "lucide-react";
 
+import { AnexoMailField } from "@/components/site/AnexoMailField";
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { api, ApiError, sessionToken } from "@/lib/api";
+import { ANEXOMAIL_DOMAIN, anexomailLocalPart } from "@/lib/anexomail-address";
 import { useAuth } from "@/lib/auth";
 
 /**
@@ -37,7 +37,7 @@ export const Route = createFileRoute("/claim")({
   component: ClaimPage,
 });
 
-const DOMAIN = "anexomail.com";
+const DOMAIN = ANEXOMAIL_DOMAIN;
 const RULE = /^[a-z0-9]([a-z0-9.-]{1,28})[a-z0-9]$/;
 
 type Availability =
@@ -171,22 +171,14 @@ function ClaimPage() {
 
           <form onSubmit={claim} className="mt-ax-4 space-y-ax-3">
             <div className="space-y-1.5">
-              <Label htmlFor="username" className="ax-caption text-foreground">
-                Choose your username
-              </Label>
-              <div className="flex items-center gap-2">
-                <Input
-                  id="username"
-                  required
-                  autoFocus
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value.replace(/\s+/g, ""))}
-                  placeholder="nauman"
-                  autoComplete="off"
-                  spellCheck={false}
-                />
-                <span className="ax-label shrink-0 text-muted-foreground">@{DOMAIN}</span>
-              </div>
+              <AnexoMailField
+                id="username"
+                label="Choose your username"
+                value={username}
+                onChange={(local) => setUsername(anexomailLocalPart(local))}
+                autoComplete="off"
+                autoFocus
+              />
 
               <p className="ax-caption flex items-center gap-1.5">
                 {availability.state === "checking" && (

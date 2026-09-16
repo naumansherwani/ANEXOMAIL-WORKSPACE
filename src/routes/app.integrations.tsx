@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Download, PlugZap, Radar, Sparkles, Truck } from "lucide-react";
 import { useState } from "react";
 
+import { AnexoMailField } from "@/components/site/AnexoMailField";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import {
   bytes,
@@ -20,6 +21,7 @@ import {
   useToggleLeoAction,
   type ExportJob,
 } from "@/lib/integrations";
+import { anexomailAddress } from "@/lib/anexomail-address";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
@@ -264,9 +266,10 @@ function MigrationTab() {
         className="ax-plane mt-ax-4 flex flex-wrap items-end gap-ax-3 rounded-2xl p-ax-4"
         onSubmit={(e) => {
           e.preventDefault();
-          if (!source || !target) return;
+          const mailbox = anexomailAddress(target);
+          if (!source || !mailbox) return;
           start.mutate(
-            { connection_id: source, target_mailbox: target, mode },
+            { connection_id: source, target_mailbox: mailbox, mode },
             {
               onSuccess: () => notify.done("Migration queued", "Progress updates live below."),
               onError: (err) =>
@@ -294,13 +297,14 @@ function MigrationTab() {
             ))}
           </select>
         </label>
-        <label className="flex flex-col gap-1 text-[11px] text-muted-foreground">
+        <label className="flex min-w-[16rem] flex-col gap-1 text-[11px] text-muted-foreground">
           Target mailbox
-          <input
+          <AnexoMailField
+            id="target-mailbox"
+            label={null}
             value={target}
-            onChange={(e) => setTarget(e.target.value)}
-            placeholder="you@anexomail.com"
-            className="h-9 w-56 rounded-lg border border-border bg-card px-2 text-[12px] text-foreground"
+            onChange={setTarget}
+            autoComplete="off"
           />
         </label>
         <label className="flex flex-col gap-1 text-[11px] text-muted-foreground">

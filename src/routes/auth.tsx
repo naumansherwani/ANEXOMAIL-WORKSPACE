@@ -2,9 +2,11 @@ import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { AnexoMailField } from "@/components/site/AnexoMailField";
 import { AuthCinema } from "@/components/site/AuthCinema";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
+import { anexomailAddress } from "@/lib/anexomail-address";
 import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
@@ -206,6 +208,7 @@ function AuthPage() {
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
+    const mailbox = anexomailAddress(email);
     setBusy(true);
     try {
       if (challengeId) {
@@ -214,26 +217,34 @@ function AuthPage() {
           body: JSON.stringify({ challenge_id: challengeId, code }),
           auth: false,
         });
-        if (savePassword) storeBrowserPassword(email, password);
+        if (savePassword) storeBrowserPassword(mailbox || email, password);
         await finish(res.token);
+        return;
+      }
+
+      if (!mailbox && mode !== "reset") {
+        setError("Enter your name only — @anexomail.com is already set.");
         return;
       }
 
       if (mode === "link") {
         await api("/api/auth/magic-link", {
           method: "POST",
-          body: JSON.stringify({ email, redirect_to: `${window.location.origin}/auth/callback` }),
+          body: JSON.stringify({
+            email: mailbox,
+            redirect_to: `${window.location.origin}/auth/callback`,
+          }),
           auth: false,
         });
         setLinkSent(true);
-        notify.done("Link sent", `Check ${email} to finish signing in.`);
+        notify.done("Link sent", `Check ${mailbox} to finish signing in.`);
         return;
       }
 
       if (mode === "forgot") {
         const res = await api<{ ok: boolean; sent_to?: string }>("/api/auth/forgot-password", {
           method: "POST",
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({ email: mailbox }),
           auth: false,
         });
         setLinkSent(true);
@@ -241,7 +252,7 @@ function AuthPage() {
           "Reset link sent",
           res.sent_to === "recovery"
             ? "If this account has a recovery inbox, the link went there — not only to ANEXOMAIL."
-            : `Check ${email} to choose a new password.`,
+            : `Check ${mailbox} to choose a new password.`,
         );
         return;
       }
@@ -285,7 +296,7 @@ function AuthPage() {
         }>("/api/auth/signup", {
           method: "POST",
           body: JSON.stringify({
-            email,
+            email: mailbox,
             password,
             legal_name: name,
             display_name: displayName.trim() || lastNameFromLegal(name) || name.trim(),
@@ -303,7 +314,7 @@ function AuthPage() {
         });
         if (res.confirmation_required || !res.token) {
           setLinkSent(true);
-          notify.done("Confirm your email", `We sent a confirmation link to ${email}.`);
+          notify.done("Confirm your email", `We sent a confirmation link to ${mailbox}.`);
           return;
         }
         sessionToken.set(res.token);
@@ -318,14 +329,14 @@ function AuthPage() {
 
       const res = await api<LoginResult>("/api/auth/login", {
         method: "POST",
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email: mailbox, password }),
         auth: false,
       });
       if ("mfa_required" in res && res.mfa_required) {
         setChallengeId(res.challenge_id);
         return;
       }
-      if (savePassword) storeBrowserPassword(email, password);
+      if (savePassword) storeBrowserPassword(mailbox, password);
       await finish(res.token, res);
     } catch (e) {
       fail(e);
@@ -344,7 +355,7 @@ function AuthPage() {
     try {
       const options = await api<{ publicKey: PublicKeyCredentialRequestOptionsJSON }>(
         "/api/auth/passkey/options",
-        { method: "POST", body: JSON.stringify({ email }), auth: false },
+        { method: "POST", body: JSON.stringify({ email: anexomailAddress(email) }), auth: false },
       );
       const credential = await navigator.credentials.get({
         publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options.publicKey),
@@ -380,7 +391,7 @@ function AuthPage() {
     try {
       const options = await api<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
         "/api/auth/passkey/register/options",
-        { method: "POST", body: JSON.stringify({ email }) },
+        { method: "POST", body: JSON.stringify({ email: anexomailAddress(email) }) },
       );
       const credential = await navigator.credentials.create({
         publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options.publicKey),
@@ -547,7 +558,9 @@ function AuthPage() {
               {linkSent ? (
                 <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
                   <Mail className="mx-auto size-5 text-cyan-accent" />
-                  <p className="ax-label mt-ax-2 text-foreground">Link sent to {email}</p>
+                  <p className="ax-label mt-ax-2 text-foreground">
+                    Link sent to {anexomailAddress(email) || email}
+                  </p>
                   <p className="ax-caption mt-1">It expires in 15 minutes and works once.</p>
                   <Button
                     variant="ghost"
@@ -640,15 +653,12 @@ function AuthPage() {
                           </>
                         )}
                         {mode !== "reset" && (
-                          <Field
+                          <AnexoMailField
                             id="email"
-                            name="email"
                             label="Email"
-                            type="email"
                             value={email}
                             onChange={setEmail}
                             autoComplete={mode === "login" ? "username" : "email"}
-                            placeholder="name@anexomail.com"
                           />
                         )}
                         {mode !== "link" && mode !== "forgot" && (
@@ -931,7 +941,17 @@ function Field({
       <Label htmlFor={id} className="ax-caption text-foreground">
         {label}
       </Label>
-      <Input id={id} value={value} required onChange={(e) => onChange(e.target.value)} {...rest} />
+      <Input
+        id={id}
+        value={value}
+        required
+        onChange={(e) => onChange(e.target.value)}
+        {...rest}
+        className={cn(
+          "bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220] placeholder:font-normal placeholder:text-[#6B7280]",
+          rest.className,
+        )}
+      />
     </div>
   );
 }
@@ -969,7 +989,7 @@ function PasswordField({
           minLength={6}
           maxLength={15}
           autoComplete={autoComplete}
-          className="pr-10"
+          className="pr-10 bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220] placeholder:font-normal placeholder:text-[#6B7280]"
           placeholder={placeholder}
           onChange={(event) => onChange(event.target.value)}
         />

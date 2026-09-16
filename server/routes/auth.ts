@@ -54,6 +54,17 @@ function resolveAccountKind(
 }
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ANEXOMAIL_DOMAIN = "anexomail.com";
+
+/** Login identity is always local@anexomail.com. Recovery inboxes stay full emails. */
+function anexomailIdentity(raw: string): string {
+  const trimmed = String(raw || "")
+    .trim()
+    .toLowerCase();
+  const before = trimmed.includes("@") ? trimmed.slice(0, trimmed.indexOf("@")) : trimmed;
+  const local = before.replace(/[^a-z0-9._-]/g, "");
+  return local ? `${local}@${ANEXOMAIL_DOMAIN}` : "";
+}
 const passwordOk = (value: string) => value.length >= 6 && value.length <= 15;
 const tokenHash = (token: string) => createHash("sha256").update(token).digest("hex");
 
@@ -441,9 +452,7 @@ export const authRouter = Router();
 
 authRouter.post("/signup", async (req, res) => {
   if (unavailable(res)) return;
-  const email = String(req.body?.email || "")
-    .trim()
-    .toLowerCase();
+  const email = anexomailIdentity(req.body?.email);
   const password = String(req.body?.password || "");
   const legalName = String(req.body?.legal_name || req.body?.name || "").trim();
   const displayName = String(req.body?.display_name || legalName).trim();
@@ -560,9 +569,7 @@ authRouter.post("/signup", async (req, res) => {
 
 authRouter.post("/login", async (req, res) => {
   if (unavailable(res)) return;
-  const email = String(req.body?.email || "")
-    .trim()
-    .toLowerCase();
+  const email = anexomailIdentity(req.body?.email);
   const password = String(req.body?.password || "");
   if (!emailPattern.test(email) || !password)
     return res.status(400).json({ error: "Email and password are required." });
@@ -590,9 +597,7 @@ authRouter.post("/logout", async (req, res) => {
 
 authRouter.post("/forgot-password", async (req, res) => {
   if (unavailable(res)) return;
-  const email = String(req.body?.email || "")
-    .trim()
-    .toLowerCase();
+  const email = anexomailIdentity(req.body?.email);
   if (!emailPattern.test(email))
     return res.status(400).json({ error: "Enter a valid email address." });
 
@@ -658,9 +663,7 @@ authRouter.post("/forgot-password", async (req, res) => {
 
 authRouter.post("/magic-link", async (req, res) => {
   if (unavailable(res)) return;
-  const email = String(req.body?.email || "")
-    .trim()
-    .toLowerCase();
+  const email = anexomailIdentity(req.body?.email);
   const redirectTo = String(req.body?.redirect_to || `${APP_URL}/auth/callback`);
   if (!emailPattern.test(email))
     return res.status(400).json({ error: "Enter a valid email address." });

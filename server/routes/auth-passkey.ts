@@ -14,6 +14,15 @@ import {
 
 const APP_URL = process.env.APP_URL || "https://anexomail.com";
 
+function anexomailIdentity(raw: string): string {
+  const trimmed = String(raw || "")
+    .trim()
+    .toLowerCase();
+  const before = trimmed.includes("@") ? trimmed.slice(0, trimmed.indexOf("@")) : trimmed;
+  const local = before.replace(/[^a-z0-9._-]/g, "");
+  return local ? `${local}@anexomail.com` : "";
+}
+
 function fail(res: any, status: number, error: string) {
   return res.status(status).json({ error });
 }
@@ -171,9 +180,7 @@ export function mountPasskeyRoutes(
   authRouter.post("/passkey/options", async (req, res) => {
     try {
       const rp = rpFromRequest(req.headers.origin, APP_URL);
-      const email = String(req.body?.email || "")
-        .trim()
-        .toLowerCase();
+      const email = anexomailIdentity(req.body?.email);
       if (!email) return fail(res, 400, "Email is required.");
       const { data: uid } = await getAdmin().rpc("auth_user_id_by_email", { _email: email });
       const userId = uid as string | null;
