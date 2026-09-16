@@ -21,7 +21,7 @@ export function ListPanel({
   return (
     <div
       className={
-        "min-h-0 flex-col border-border md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " +
+        "relative z-10 min-h-0 flex-col border-border bg-background md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " +
         (mobileHidden ? "hidden md:flex" : "flex")
       }
     >
@@ -48,7 +48,10 @@ export function DetailPanel({
 }) {
   return (
     <div
-      className={"min-h-0 flex-1 overflow-y-auto md:block " + (mobileVisible ? "block" : "hidden")}
+      className={
+        "relative z-10 min-h-0 flex-1 overflow-y-auto bg-background md:block " +
+        (mobileVisible ? "block" : "hidden")
+      }
     >
       {children}
     </div>

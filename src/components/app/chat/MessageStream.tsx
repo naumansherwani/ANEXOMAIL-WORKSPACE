@@ -247,10 +247,10 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
         ) : null}
         <div
           className={
-            "rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed shadow-sm " +
+            "rounded-full px-4 py-2 text-sm leading-relaxed text-foreground shadow-sm " +
             (message.mine
-              ? "bg-gradient-to-br from-primary/18 to-primary/10 text-foreground ring-1 ring-primary/15"
-              : "border border-border/70 bg-card/80 text-foreground backdrop-blur-sm")
+              ? "bg-secondary ring-1 ring-border/80"
+              : "border border-border bg-card")
           }
         >
           {message.body}
@@ -288,7 +288,7 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
           <span aria-hidden>·</span>
           <span>{stamp(message.created_at)}</span>
 
-          <span className="ml-1 hidden items-center gap-0.5 rounded-xl border border-border/50 bg-card/80 px-1 py-0.5 shadow-sm backdrop-blur-sm group-hover:inline-flex">
+          <span className="ml-1 hidden items-center gap-0.5 rounded-full border border-border bg-card px-1.5 py-0.5 shadow-sm group-hover:inline-flex">
             <IconBtn label="React" onClick={() => setPicker((v) => !v)}>
               <Smile className="size-3" />
             </IconBtn>

@@ -8,7 +8,7 @@
  *   - Calm Mode par yeh component unmount hota hai (poora dispose).
  *   - Mobile par particle count budget se aadha (chat-cinema.ts).
  */
-import { Cloud, Sky, Stars } from "@react-three/drei";
+import { Cloud, Stars } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Bloom, EffectComposer, Vignette } from "@react-three/postprocessing";
 import gsap from "gsap";
@@ -18,6 +18,18 @@ import * as THREE from "three";
 import type { AtmosphereEffect, TimeBand } from "@/lib/chat-atmosphere";
 import { cinemaBudget, type CinemaQuality } from "@/lib/chat-cinema";
 
+/**
+ * Workspace stage stays near-black (design lock). Time band only tints.
+ * drei <Sky> is banned here — dawn/day painted a bright skybox over the
+ * whole chat and the product looked like a light-mode page.
+ */
+const STAGE: Record<TimeBand, string> = {
+  dawn: "#120f0c",
+  day: "#0c0e12",
+  dusk: "#110c0f",
+  night: "#07080c",
+};
+
 const BAND_SUN: Record<TimeBand, [number, number, number]> = {
   dawn: [-1, 0.16, -2],
   day: [1, 1, 1],
@@ -25,7 +37,20 @@ const BAND_SUN: Record<TimeBand, [number, number, number]> = {
   night: [0, -1, 0],
 };
 
-const BAND_LIGHT: Record<TimeBand, number> = { dawn: 0.5, day: 0.9, dusk: 0.45, night: 0.18 };
+const BAND_LIGHT: Record<TimeBand, number> = { dawn: 0.2, day: 0.26, dusk: 0.18, night: 0.12 };
+
+function BandGlow({ band }: { band: TimeBand }) {
+  if (band === "night") return null;
+  const color = band === "dawn" ? "#c4843a" : band === "dusk" ? "#c45a2a" : "#4a6a8a";
+  const pos: [number, number, number] =
+    band === "day" ? [6, 10, -12] : band === "dawn" ? [-8, 6, -10] : [8, 5, -10];
+  return (
+    <mesh position={pos}>
+      <sphereGeometry args={[band === "day" ? 2.4 : 1.6, 24, 24]} />
+      <meshBasicMaterial color={color} transparent opacity={band === "day" ? 0.16 : 0.28} />
+    </mesh>
+  );
+}
 
 /** Rain / snow particles. Rain = fast vertical streaks, snow = drifting flakes. */
 function Precipitation({ count, kind }: { count: number; kind: "rain" | "snow" }) {
@@ -129,11 +154,16 @@ export default function Scene({
       dpr={budget.dpr}
       frameloop="always"
       camera={{ position: [0, 3.2, 12], fov: 55 }}
-      gl={{ antialias: budget.quality === "high", powerPreference: "low-power" }}
-      style={{ position: "absolute", inset: 0 }}
+      gl={{ antialias: budget.quality === "high", powerPreference: "low-power", alpha: false }}
+      onCreated={({ gl }) => {
+        gl.setClearColor(STAGE.night, 1);
+      }}
+      style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
     >
+      <color attach="background" args={[STAGE[band]]} />
+      <fog attach="fog" args={[STAGE[band], 14, 40]} />
       <ambientLight intensity={BAND_LIGHT[band]} />
-      <directionalLight position={BAND_SUN[band]} intensity={band === "night" ? 0.1 : 0.7} />
+      <directionalLight position={BAND_SUN[band]} intensity={band === "night" ? 0.08 : 0.22} />
 
       {band === "night" ? (
         <>
@@ -145,11 +175,7 @@ export default function Scene({
           <Aurora />
         </>
       ) : (
-        <Sky
-          sunPosition={BAND_SUN[band]}
-          turbidity={effect === "storm" ? 18 : effect === "rain" ? 12 : 4}
-          rayleigh={band === "dawn" || band === "dusk" ? 3.2 : 1.2}
-        />
+        <BandGlow band={band} />
       )}
 
       {budget.clouds ? (
@@ -163,7 +189,7 @@ export default function Scene({
       {budget.bloom ? (
         <EffectComposer>
           <Bloom intensity={effect === "sunny" ? 0.9 : 0.35} luminanceThreshold={0.35} mipmapBlur />
-          <Vignette eskil={false} offset={0.24} darkness={band === "night" ? 0.75 : 0.4} />
+          <Vignette eskil={false} offset={0.24} darkness={band === "night" ? 0.78 : 0.64} />
         </EffectComposer>
       ) : null}
     </Canvas>

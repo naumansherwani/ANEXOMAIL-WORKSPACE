@@ -93,7 +93,7 @@ export function CinemaStage({
 }) {
   if (quality === "off") return null;
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden opacity-90">
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden opacity-45">
       <ClientOnly fallback={null}>
         <Suspense fallback={null}>
           <Scene band={band} effect={effect} quality={quality} />

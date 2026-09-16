@@ -91,7 +91,7 @@ export function AtmosphereStage({
 }) {
   if (calm) return null;
   return (
-    <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+    <div aria-hidden className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
       <div className={`absolute inset-0 bg-gradient-to-b ${BAND_WASH[band]}`} />
       {effect === "rain" || effect === "storm" ? (
         <div className="absolute inset-0 opacity-[0.16] [background-image:repeating-linear-gradient(105deg,transparent_0_9px,hsl(var(--foreground))_9px_10px)]" />

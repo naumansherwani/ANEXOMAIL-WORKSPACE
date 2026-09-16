@@ -210,7 +210,7 @@ function ChatPage() {
   }
 
   return (
-    <div className="relative flex min-h-0 flex-1 flex-col md:flex-row">
+    <div className="relative flex min-h-0 flex-1 flex-col bg-background md:flex-row">
       <AtmosphereStage band={atmosphere.band} effect={atmosphere.effect} calm={atmosphere.calm} />
       <CinemaStage band={atmosphere.band} effect={atmosphere.effect} quality={cinema.quality} />
 
@@ -344,7 +344,7 @@ function ChatPage() {
           </div>
         ) : (
           <div className="flex h-full min-h-0 flex-col">
-            <header className="shrink-0 border-b border-border bg-card/30 px-4 py-3 backdrop-blur-sm">
+            <header className="relative z-10 shrink-0 border-b border-border bg-background px-4 py-3">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-sm font-bold tracking-tight text-foreground">
                   {active.other_name ?? "Conversation"}
@@ -583,7 +583,7 @@ function ChatPage() {
             ) : null}
 
             <div
-              className={`shrink-0 border-t border-border px-4 py-3 ${editTarget ? "opacity-40 pointer-events-none" : ""}`}
+              className={`relative z-10 shrink-0 border-t border-border bg-background px-4 py-3 ${editTarget ? "opacity-40 pointer-events-none" : ""}`}
               onDragOver={(e) => e.preventDefault()}
               onDrop={(e) => {
                 e.preventDefault();
