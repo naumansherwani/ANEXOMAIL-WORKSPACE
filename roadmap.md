@@ -86,8 +86,8 @@
 
 ## Personal Polar products (16 Sep 2026)
 
-- [ ] Personal Basic £17/£187, Personal Pro+ £83/£913, Personal Premium £1,850/£18,500 ke 6 alag Polar product contracts banana
-- [ ] Personal checkout ko account-kind bound rakhna; existing Business products, prices aur entitlements unchanged
-- [ ] Personal Billing par sirf 3 cards, full yearly totals aur matching features dikhana
-- [ ] Personal product copy/metadata/ID placeholders aur E-series database wiring document karna
+- [x] Personal Basic £17/£187, Personal Pro+ £83/£913, Personal Premium £1,850/£18,500 ke 6 alag Polar product contracts banana
+- [x] Personal checkout ko account-kind bound rakhna; existing Business products, prices aur entitlements unchanged
+- [x] Personal Billing par sirf 3 cards, full yearly totals aur matching features dikhana
+- [x] Personal product copy/metadata/ID placeholders aur E-series database wiring document karna
 - [ ] Typecheck, focused payment tests aur signed-in Personal browser proof; live payment proof tak status READY

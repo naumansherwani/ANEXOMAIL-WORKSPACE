@@ -1,11 +1,10 @@
 -- =============================================================================
--- E2 — personal Polar map (Personal users only)
+-- E2 — personal entitlement map (Personal users only)
 -- Supabase #4 SQL Editor — poori file paste → Run. Idempotent.
 --
--- Polar webhook / plans.ts / landing NO TOUCH. Personal Polar SKU nahi.
--- Landing cards: Basic £23 · Pro £46 · Business £97 · Business Pro £2,850.
--- Yeh table SIRF Personal kind ke liye: Polar SKU → Personal Basic / Pro / Premium.
--- Business £97 is table mein nahi (company card).
+-- Public landing / plans.ts NO TOUCH. Personal checkout ke 6 alag Polar products
+-- docs/cursor-work/sql/E13_personal_polar_products.sql mein hain.
+-- Yeh table canonical entitlement plan → Personal display/power map hai.
 -- Fail = isi file ko theek likho. phase65 / E2b naam banned.
 -- =============================================================================
 set search_path = public, extensions;
@@ -24,22 +23,22 @@ values
     'basic',
     'Personal Basic',
     'basic',
-    23,
-    'Landing Basic card. Mail People Calendar Work. Chat/full CRM nahi.'
+    17,
+    'Personal Basic product. Mail People Calendar Work. Chat/full CRM nahi.'
   ),
   (
     'pro',
-    'Personal Pro',
+    'Personal Pro+',
     'business_pro',
-    46,
-    'Landing Pro card. Power = Business Pro. Org nahi.'
+    83,
+    'Personal Pro+ product. Power = Business Pro. Org nahi.'
   ),
   (
     'business_pro',
     'Personal Premium',
     'business_pro',
-    2850,
-    'Landing Business Pro card + kind personal. Same Polar SKU. Org nahi.'
+    1850,
+    'Personal Premium product. Power = Business Pro. Org nahi.'
   )
 on conflict (polar_sku) do update
 set
@@ -127,7 +126,7 @@ grant execute on function public.personal_name_for_polar(text) to authenticated,
 grant execute on function public.personal_workspace_label(uuid) to authenticated, service_role;
 grant select on public.personal_polar_map to authenticated, anon, service_role;
 
--- Polar Pro (Masood) = Personal Pro = Chat. Old chat_access only allowed
+-- Canonical Pro entitlement = Personal Pro+ = Chat. Old chat_access only allowed
 -- business / business_pro / AI — Pro SKU 403, Work showed "Ledger didn't load: business".
 create or replace function public.chat_access(_user_id uuid)
 returns boolean
@@ -174,7 +173,7 @@ begin
   pl := replace(lower(coalesce(nullif(btrim(pl), ''), '')), '-', '_');
   if pl = 'businesspro' then pl := 'business_pro'; end if;
 
-  -- Polar Pro £46 (Personal Pro) · Business · Business Pro · AI grants
+  -- Canonical Pro entitlement (Personal Pro+) · Business · Business Pro · AI grants
   if pl in ('pro', 'business', 'business_pro', 'ai_pro', 'ai_business', 'ai_executive') then
     return true;
   end if;

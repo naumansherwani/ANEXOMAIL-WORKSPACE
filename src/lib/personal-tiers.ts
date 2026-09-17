@@ -10,7 +10,7 @@
  *
  * Feature gates (plan-surface.ts):
  *   basic  → Personal Basic  — mail, contacts, calendar, work (personal tasks only)
- *   pro    → Personal Pro    — + CRM, ANEXOChat, pro mail tools (power = business_pro)
+ *   pro    → Personal Pro+   — + CRM, ANEXOChat, pro mail tools (power = business_pro)
  *   business_pro → Personal Premium — same power + 1TB / 5GB file / advanced features
  */
 
@@ -93,7 +93,7 @@ export const PERSONAL_TIERS: PersonalTier[] = [
     tagline: "Maximum communication stack for a professional — every feature, no company seat.",
     badge: "Most complete",
     features: [
-      "Everything in Personal Pro",
+      "Everything in Personal Pro+",
       "Unlimited mailboxes · 1TB pooled storage",
       "5GB max file / video sending",
       "Resumable file transfer (Rust engine)",

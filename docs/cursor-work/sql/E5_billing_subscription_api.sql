@@ -18,10 +18,10 @@
 --   = 'personal' | 'business'
 --
 -- Display model (BILLING only — feature gates are plan-surface.ts, not here):
---   personal + basic         → Personal Basic    £23
---   personal + pro           → Personal Pro      £46
---   personal + business      → Personal Pro      £46  (same power, diff Polar SKU)
---   personal + business_pro  → Personal Premium  £2,850
+--   personal + basic         → Personal Basic    £17
+--   personal + pro           → Personal Pro+     £83
+--   personal + business      → Personal Pro+     £83  (legacy canonical fallback)
+--   personal + business_pro  → Personal Premium  £1,850
 --   business + business      → Business          £97
 --   business + business_pro  → Business Pro      £2,850
 --
@@ -230,29 +230,29 @@ begin
 
   -- ── Step 7: kind-aware display name + price + storage ────────────────────
   --    Billing display only. Feature power is plan-surface.ts featurePlan().
-  --    Personal Pro = same POWER as Business Pro, but kind stays personal.
+  --    Personal Pro+ = same POWER as Business Pro, but kind stays personal.
   if kind = 'personal' then
     case plan_id
       when 'basic' then
         display_name := 'Personal Basic';
-        price        := 23;
+        price        := 17;
         storage      := 5;
       when 'pro' then
-        display_name := 'Personal Pro';
-        price        := 46;
+        display_name := 'Personal Pro+';
+        price        := 83;
         storage      := 10;
       when 'business' then
-        -- Personal account on Business SKU → treated as Personal Pro
-        display_name := 'Personal Pro';
-        price        := 46;
+        -- Legacy Personal account on Business entitlement → Personal Pro+
+        display_name := 'Personal Pro+';
+        price        := 83;
         storage      := 10;
       when 'business_pro' then
         display_name := 'Personal Premium';
-        price        := 2850;
+        price        := 1850;
         storage      := null;  -- 1TB pooled
       else
         display_name := 'Personal Basic';
-        price        := 23;
+        price        := 17;
         storage      := 5;
     end case;
   else

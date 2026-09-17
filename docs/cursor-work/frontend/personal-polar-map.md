@@ -1,22 +1,20 @@
-# Personal pay — Polar cards, naya SKU nahi
+# Personal pay — separate Polar products
 
-**Status:** READY (repo). **DONE** nahi. Polar webhook no-touch. SQL: `docs/cursor-work/sql/E2_personal_polar.sql` (phase 60s nahi).
+**Status:** READY (repo). **DONE** nahi. Polar Rust webhook no-touch. SQL: `docs/cursor-work/sql/E13_personal_polar_products.sql`.
 
 Do axes mix nahi:
 
 1. **Kind** (signup): Personal | Business — `account_kind`. Polar product nahi.
-2. **Paise** (landing `/plans`): Basic £23 · Pro £46 · Business £97 · Business Pro £2,850.
+2. **Paise** (signed-in `/app/billing`): Personal Basic £17 · Personal Pro+ £83 · Personal Premium £1,850.
 
-Personal user landing pe wahi 4 cards se paid karta hai. Alag “Personal Polar” card **nahi**.
+Public home aur `/plans` par Business cards unchanged hain. Personal prices sirf signed-in Personal Billing par hain.
 
-| Landing Polar card | Kind | Workspace naam | Power |
-|---|---|---|---|
-| Basic £23 | personal | **Personal Basic** | Mail People Calendar Work. Chat/full CRM nahi |
-| Pro £46 | personal | **Personal Pro** | = Business Pro power, Org nahi |
-| Business £97 | **business** | Business | Org + Chat + CRM shared |
-| Business Pro £2,850 | personal | **Personal Premium** | same SKU, kind personal, Org nahi |
-| Business Pro £2,850 | business | Business Pro | Org + Chat + CRM activity |
+| Personal Polar product            | Kind     | Workspace naam       | Canonical power                                    |
+| --------------------------------- | -------- | -------------------- | -------------------------------------------------- |
+| Personal Basic £17 / £187         | personal | **Personal Basic**   | `basic`; Chat/full CRM nahi                        |
+| Personal Pro+ £83 / £913          | personal | **Personal Pro+**    | `pro` billed; Business Pro feature power; Org nahi |
+| Personal Premium £1,850 / £18,500 | personal | **Personal Premium** | `business_pro`; Org nahi                           |
 
-`workspace_plan` Polar webhook pehle se likhta hai. SQL naya price table **nahi**. Map: `polarToPersonalTier()` in `src/lib/plan-surface.ts`.
+Six Personal keys checkout ko alag price dete hain, lekin entitlement existing `basic` / `pro` / `business_pro` values mein rehta hai. Is se mail, CRM, chat aur video gates stable rehte hain.
 
-Tarteeb: landing card (optional / trial baad) → Create account → Personal | Business → claim `@anexomail.com` → Personal seedha `/dashboard` · Business org name + domain → `/dashboard`.
+Business account Personal key use nahi kar sakta; guest Personal checkout bhi blocked hai. Missing Polar ID par checkout fail-closed hota hai.

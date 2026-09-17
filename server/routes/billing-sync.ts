@@ -22,7 +22,12 @@
 //      POLAR_SUCCESS_URL, CRON_SECRET, POLAR_PRODUCT_* (8 IDs)
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
+import {
+  BILLING_PRODUCTS,
+  configuredProduct,
+  productById,
+  type BillingProduct,
+} from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
@@ -82,7 +87,9 @@ async function accountKindFor(userId: string): Promise<"personal" | "business" |
     .select("preferences")
     .eq("user_id", userId)
     .maybeSingle();
-  const kind = String(data?.preferences?.workspace_kind || "").trim().toLowerCase();
+  const kind = String(data?.preferences?.workspace_kind || "")
+    .trim()
+    .toLowerCase();
   return kind === "personal" || kind === "business" ? kind : null;
 }
 
@@ -239,9 +246,16 @@ authRouter.get("/subscription", async (req, res) => {
   if (error) return res.status(500).json({ error: "db_error", detail: error.message });
   return res.json(
     data ?? {
-      plan: null, state: "none", price_per_seat: 0, currency: "GBP",
-      interval: "month", seats: 0, seats_used: 0,
-      storage_per_mailbox_gb: null, renews_at: null, cancel_at: null,
+      plan: null,
+      state: "none",
+      price_per_seat: 0,
+      currency: "GBP",
+      interval: "month",
+      seats: 0,
+      seats_used: 0,
+      storage_per_mailbox_gb: null,
+      renews_at: null,
+      cancel_at: null,
     },
   );
 });

@@ -16,10 +16,11 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 
 **Agar E-file fail ho:** usi file ko shuru se theek likho. Naya naam (`E4b`, `_fix`, `_v2`) **banned**.
 
-| File | Track | Agent |
-|---|---|---|
-| phase60 / 61 / 62 (root `sql/`) | founder | no-touch |
-| phase63_f3a_passkey_family.sql | founder (already run) | no-touch |
-| phase64_crm_locale.sql | founder (already run) | no-touch |
-| phase65_account_kind.sql | founder (already run) | no-touch |
-| E2_personal_polar.sql | E-series — Personal Polar map only | **aap Run** |
+| File                            | Track                                                              | Agent                   |
+| ------------------------------- | ------------------------------------------------------------------ | ----------------------- |
+| phase60 / 61 / 62 (root `sql/`) | founder                                                            | no-touch                |
+| phase63_f3a_passkey_family.sql  | founder (already run)                                              | no-touch                |
+| phase64_crm_locale.sql          | founder (already run)                                              | no-touch                |
+| phase65_account_kind.sql        | founder (already run)                                              | no-touch                |
+| E2_personal_polar.sql           | E-series — Personal Polar map only                                 | **aap Run**             |
+| E13_personal_polar_products.sql | E-series — six separate Personal Polar prices + account-kind guard | **IDs ke baad aap Run** |
