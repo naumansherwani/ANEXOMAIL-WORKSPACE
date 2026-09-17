@@ -41,6 +41,17 @@ export const Route = createFileRoute("/app/billing")({
   head: () => ({
     meta: [
       { title: "Billing & Plans — ANEXOMAIL Workspace" },
+      {
+        name: "description",
+        content: "Manage your ANEXOMAIL subscription, billing cycle and invoices.",
+      },
+      { property: "og:title", content: "Billing & Plans — ANEXOMAIL Workspace" },
+      {
+        property: "og:description",
+        content: "Manage your ANEXOMAIL subscription, billing cycle and invoices.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },
     ],
   }),
@@ -366,15 +377,8 @@ function PersonalTiersSection({
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
-      className="mt-ax-8"
+      className="mt-ax-3"
     >
-      {/* Header */}
-      <div className="flex flex-wrap items-center gap-2">
-        <h3 className="ax-heading text-foreground">{t("Your personal tiers")}</h3>
-        <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
-          {t("Personal account")}
-        </span>
-      </div>
       <p className="mt-1 text-[11px] text-muted-foreground/50">
         {t("Workspace stays personal after checkout. Upgrade any time — no seat negotiations.")}
       </p>
@@ -524,6 +528,11 @@ function WorkspaceBilling() {
             <h3 className="ax-heading text-foreground">
               {kind === "personal" ? t("Your personal tiers") : t("All plans")}
             </h3>
+            {kind === "personal" && (
+              <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                {t("Personal account")}
+              </span>
+            )}
             <div className="flex items-center gap-1 rounded-xl border border-border bg-card p-1">
               <button
                 type="button"

@@ -1,6 +1,6 @@
 # PACKAGE + FEATURE FORMULA — Agent Personal Memory
 # Source: docs/ai-packages.md + docs/package-feature-map.md (Lovable originals — DO NOT DELETE)
-# Rule: packages touch NAHI kerne — sirf yeh file dekh ke feature gate decide karo
+# Rule: public Business packages touch NAHI kerne — Personal billing products alag hain
 # Surface unmix (teen hosts, Chat vs LEO, do Admin): docs/cursor-work/IMPLEMENTATION-MASTER.md §0
 
 ---
@@ -69,9 +69,10 @@ New feature decide karne ka formula:
    → Pro+ (Pro, Business, Business Pro, all AI)
 
 3. Kya yeh ANEXOChat feature hai?
-   → Personal Pro+ (same power as Business Pro) OR Business / Business Pro Polar SKU
+   → Personal Pro+ / Premium (alag Personal Polar product; same power as Business Pro)
+     OR Business / Business Pro Polar SKU
    → Personal Basic ko Chat wall
-   → Polar pe alag Personal Chat product NAHI
+   → Chat ka separate add-on nahi; Personal Pro+/Premium plan mein included hai
 
 4. Kya yeh large file transfer (>2GB) / 1TB storage?
    → Business Pro + AI Business + AI Executive ONLY

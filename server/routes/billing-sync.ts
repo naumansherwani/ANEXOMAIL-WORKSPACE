@@ -22,7 +22,12 @@
 //      POLAR_SUCCESS_URL, CRON_SECRET, POLAR_PRODUCT_* (8 IDs)
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { BILLING_PRODUCTS, configuredProduct, productById } from "../config/billing-products";
+import {
+  BILLING_PRODUCTS,
+  configuredProduct,
+  productById,
+  type BillingProduct,
+} from "../config/billing-products";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =

@@ -23,3 +23,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | phase64_crm_locale.sql | founder (already run) | no-touch |
 | phase65_account_kind.sql | founder (already run) | no-touch |
 | E2_personal_polar.sql | E-series — Personal Polar map only | **aap Run** |
+| E13_personal_polar_products.sql | E-series — six separate Personal Polar prices + account-kind guard | **IDs ke baad aap Run** |
