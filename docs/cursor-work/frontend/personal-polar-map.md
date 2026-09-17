@@ -9,11 +9,11 @@ Do axes mix nahi:
 
 Public home aur `/plans` par Business cards unchanged hain. Personal prices sirf signed-in Personal Billing par hain.
 
-| Personal Polar product | Kind | Workspace naam | Canonical power |
-|---|---|---|---|
-| Personal Basic £17 / £187 | personal | **Personal Basic** | `basic`; Chat/full CRM nahi |
-| Personal Pro+ £83 / £913 | personal | **Personal Pro+** | `pro` billed; Business Pro feature power; Org nahi |
-| Personal Premium £1,850 / £18,500 | personal | **Personal Premium** | `business_pro`; Org nahi |
+| Personal Polar product            | Kind     | Workspace naam       | Canonical power                                    |
+| --------------------------------- | -------- | -------------------- | -------------------------------------------------- |
+| Personal Basic £17 / £187         | personal | **Personal Basic**   | `basic`; Chat/full CRM nahi                        |
+| Personal Pro+ £83 / £913          | personal | **Personal Pro+**    | `pro` billed; Business Pro feature power; Org nahi |
+| Personal Premium £1,850 / £18,500 | personal | **Personal Premium** | `business_pro`; Org nahi                           |
 
 Six Personal keys checkout ko alag price dete hain, lekin entitlement existing `basic` / `pro` / `business_pro` values mein rehta hai. Is se mail, CRM, chat aur video gates stable rehte hain.
 

@@ -32,7 +32,12 @@ import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
 import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
 import { money, WORKSPACE_PLANS, type BillingCycle } from "@/lib/plans";
-import { PERSONAL_TIERS, polarToPersonalTierId, isPersonalUpgrade, type PersonalTier } from "@/lib/personal-tiers";
+import {
+  PERSONAL_TIERS,
+  polarToPersonalTierId,
+  isPersonalUpgrade,
+  type PersonalTier,
+} from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
 import { surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
@@ -111,9 +116,13 @@ function FeatureList({ features }: { features: string[] }) {
           className="mt-2.5 flex items-center gap-1 text-[10px] font-semibold text-muted-foreground/60 hover:text-muted-foreground"
         >
           {expanded ? (
-            <><ChevronUp className="size-3" /> Show less</>
+            <>
+              <ChevronUp className="size-3" /> Show less
+            </>
           ) : (
-            <><ChevronDown className="size-3" /> +{features.length - FOLD} more features</>
+            <>
+              <ChevronDown className="size-3" /> +{features.length - FOLD} more features
+            </>
           )}
         </button>
       )}
@@ -159,20 +168,19 @@ function PlanCard({
     <motion.div
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
+      transition={{
+        duration: 0.2,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      }}
       className={cn(
         "flex flex-col rounded-2xl border p-5 transition-colors",
-        isCurrent
-          ? "border-primary bg-primary/5"
-          : "border-border bg-card hover:border-border/60",
+        isCurrent ? "border-primary bg-primary/5" : "border-border bg-card hover:border-border/60",
       )}
     >
       {/* Plan name + badges */}
       <div>
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[13px] font-bold text-foreground">
-            {personalLabel ?? name}
-          </span>
+          <span className="text-[13px] font-bold text-foreground">{personalLabel ?? name}</span>
           {badge && (
             <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
               <Sparkles className="size-2.5" aria-hidden="true" />
@@ -203,13 +211,10 @@ function PlanCard({
         </div>
         {cycle === "yearly" && (
           <p className="mt-0.5 text-[10px] text-emerald-400">
-            {yearlyRule === "two-months-free" ? "2 months free" : "1 month free"} · billed
-            yearly
+            {yearlyRule === "two-months-free" ? "2 months free" : "1 month free"} · billed yearly
           </p>
         )}
-        <p className="mt-0.5 text-[10px] text-muted-foreground/40">
-          {unit}
-        </p>
+        <p className="mt-0.5 text-[10px] text-muted-foreground/40">{unit}</p>
       </div>
 
       {/* Features */}
@@ -280,7 +285,11 @@ function PersonalTierCard({
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number], delay }}
+      transition={{
+        duration: 0.25,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+        delay,
+      }}
       className={cn(
         "relative flex flex-col rounded-2xl border-2 bg-card p-5 transition-colors",
         isCurrent ? "border-emerald-500/50 bg-emerald-500/5" : theme.border,
@@ -290,7 +299,13 @@ function PersonalTierCard({
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="text-[13px] font-bold text-foreground">{tier.name}</span>
         {tier.badge && (
-          <span className={cn("flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[9px] font-semibold", theme.badge, theme.badgeTxt)}>
+          <span
+            className={cn(
+              "flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[9px] font-semibold",
+              theme.badge,
+              theme.badgeTxt,
+            )}
+          >
             <Star className="size-2.5" aria-hidden="true" />
             {tier.badge}
           </span>
@@ -323,7 +338,8 @@ function PersonalTierCard({
         </div>
         {cycle === "yearly" && (
           <p className="mt-0.5 text-[10px] text-emerald-400">
-            {tier.yearlyRule === "two-months-free" ? t("2 months free") : t("1 month free")} · {t("billed yearly")}
+            {tier.yearlyRule === "two-months-free" ? t("2 months free") : t("1 month free")} ·{" "}
+            {t("billed yearly")}
           </p>
         )}
         <p className="mt-0.5 text-[10px] text-muted-foreground/40">{tier.unit}</p>
@@ -376,7 +392,10 @@ function PersonalTiersSection({
     <motion.section
       initial={{ opacity: 0, y: 6 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number] }}
+      transition={{
+        duration: 0.22,
+        ease: [0.25, 0.46, 0.45, 0.94] as [number, number, number, number],
+      }}
       className="mt-ax-3"
     >
       <p className="mt-1 text-[11px] text-muted-foreground/50">
@@ -390,10 +409,15 @@ function PersonalTiersSection({
           <span className="text-[11px] text-foreground">
             <span className="font-semibold">{PERSONAL_TIERS[currentTierIdx]?.name}</span>
             <ArrowRight className="mx-1 inline-block size-3 text-muted-foreground" />
-            <span className="font-semibold text-primary">{PERSONAL_TIERS[currentTierIdx + 1]?.name}</span>
+            <span className="font-semibold text-primary">
+              {PERSONAL_TIERS[currentTierIdx + 1]?.name}
+            </span>
           </span>
           <span className="ml-auto text-[10px] text-muted-foreground/50">
-            +£{((PERSONAL_TIERS[currentTierIdx + 1]?.monthly ?? 0) - (PERSONAL_TIERS[currentTierIdx]?.monthly ?? 0))}/mo
+            +£
+            {(PERSONAL_TIERS[currentTierIdx + 1]?.monthly ?? 0) -
+              (PERSONAL_TIERS[currentTierIdx]?.monthly ?? 0)}
+            /mo
           </span>
         </div>
       )}
@@ -428,20 +452,17 @@ function WorkspaceBilling() {
 
   // Personal tier label (e.g. "Personal Pro+") — shown inside the plan card
   const personalTierId = kind === "personal" ? polarToPersonalTierId(billed) : null;
-  const personalTier = personalTierId
-    ? PERSONAL_TIERS.find((t) => t.id === personalTierId)
-    : null;
+  const personalTier = personalTierId ? PERSONAL_TIERS.find((t) => t.id === personalTierId) : null;
 
   // Current plan display name for the header card
   const currentPlanName =
     kind === "personal" && personalTier
       ? personalTier.name
-      : WORKSPACE_PLANS.find((p) => p.id === billed)?.name ?? "No active plan";
+      : (WORKSPACE_PLANS.find((p) => p.id === billed)?.name ?? "No active plan");
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-8 md:px-8">
-
         {/* ── Page heading ──────────────────────────────────────── */}
         <p className="ax-eyebrow flex items-center gap-2">
           <Receipt className="size-3.5" aria-hidden="true" />
@@ -493,7 +514,9 @@ function WorkspaceBilling() {
                     )}
                   </div>
                   <div className="mt-1 flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground">
-                    <span>{gbp(s.price_per_seat)} / {s.interval}</span>
+                    <span>
+                      {gbp(s.price_per_seat)} / {s.interval}
+                    </span>
                     {s.storage_per_mailbox_gb ? (
                       <span className="text-muted-foreground/50">
                         · {s.storage_per_mailbox_gb} GB / mailbox
@@ -501,8 +524,7 @@ function WorkspaceBilling() {
                     ) : null}
                     {s.seats > 0 && (
                       <span className="text-muted-foreground/50">
-                        · {s.seats_used} / {s.seats}{" "}
-                        {s.seats === 1 ? t("seat") : t("seats")}
+                        · {s.seats_used} / {s.seats} {s.seats === 1 ? t("seat") : t("seats")}
                       </span>
                     )}
                   </div>
@@ -564,36 +586,38 @@ function WorkspaceBilling() {
             </div>
           </div>
 
-          {kind === "personal" && (
-            <PersonalTiersSection currentPlanId={billed} cycle={cycle} />
-          )}
+          {kind === "personal" && <PersonalTiersSection currentPlanId={billed} cycle={cycle} />}
 
           {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ── */}
-          {kind === "business" && <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {WORKSPACE_PLANS.map((plan) => {
-              return (
-                <PlanCard
-                  key={plan.id}
-                  planId={plan.id}
-                  name={plan.name}
-                  badge={plan.badge}
-                  tagline={plan.tagline}
-                  monthly={plan.monthly}
-                  yearly={plan.yearly}
-                  yearlyRule={plan.annual}
-                  unit={plan.unit}
-                  features={plan.features}
-                  currentPlanId={billed}
-                  cycle={cycle}
-                />
-              );
-            })}
-          </div>}
+          {kind === "business" && (
+            <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {WORKSPACE_PLANS.map((plan) => {
+                return (
+                  <PlanCard
+                    key={plan.id}
+                    planId={plan.id}
+                    name={plan.name}
+                    badge={plan.badge}
+                    tagline={plan.tagline}
+                    monthly={plan.monthly}
+                    yearly={plan.yearly}
+                    yearlyRule={plan.annual}
+                    unit={plan.unit}
+                    features={plan.features}
+                    currentPlanId={billed}
+                    cycle={cycle}
+                  />
+                );
+              })}
+            </div>
+          )}
 
           {/* ── Personal tier note (only for personal kind) ───────── */}
           {kind === "personal" && (
             <p className="mt-4 text-[11px] text-muted-foreground/40">
-              {t("Personal account — your workspace stays personal after checkout. Company Org, departments and multi-user governance are not included.")}
+              {t(
+                "Personal account — your workspace stays personal after checkout. Company Org, departments and multi-user governance are not included.",
+              )}
             </p>
           )}
         </section>
@@ -643,9 +667,7 @@ function WorkspaceBilling() {
                           {inv.state}
                         </span>
                         <span className="font-medium text-foreground">{gbp(inv.total)}</span>
-                        <span className="text-muted-foreground/40">
-                          tax {gbp(inv.tax)}
-                        </span>
+                        <span className="text-muted-foreground/40">tax {gbp(inv.tax)}</span>
                         <span className="text-muted-foreground/30">
                           {relativeTime(inv.issued_at)}
                         </span>
@@ -667,7 +689,6 @@ function WorkspaceBilling() {
             </CardBody>
           </div>
         </section>
-
       </div>
     </div>
   );

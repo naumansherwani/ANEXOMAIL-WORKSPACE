@@ -4,14 +4,14 @@
 
 Polar mein har billing interval ka alag recurring product banao. Currency **GBP**.
 
-| Product name | Billing | Exact price | Environment key |
-|---|---|---:|---|
-| `ANEXOMAIL Personal Basic — Monthly` | Monthly | £17 | `POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY` |
-| `ANEXOMAIL Personal Basic — Yearly` | Yearly | £187 | `POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY` |
-| `ANEXOMAIL Personal Pro+ — Monthly` | Monthly | £83 | `POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY` |
-| `ANEXOMAIL Personal Pro+ — Yearly` | Yearly | £913 | `POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY` |
-| `ANEXOMAIL Personal Premium — Monthly` | Monthly | £1,850 | `POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY` |
-| `ANEXOMAIL Personal Premium — Yearly` | Yearly | £18,500 | `POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY` |
+| Product name                           | Billing | Exact price | Environment key                               |
+| -------------------------------------- | ------- | ----------: | --------------------------------------------- |
+| `ANEXOMAIL Personal Basic — Monthly`   | Monthly |         £17 | `POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY`   |
+| `ANEXOMAIL Personal Basic — Yearly`    | Yearly  |        £187 | `POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY`    |
+| `ANEXOMAIL Personal Pro+ — Monthly`    | Monthly |         £83 | `POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY`     |
+| `ANEXOMAIL Personal Pro+ — Yearly`     | Yearly  |        £913 | `POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY`      |
+| `ANEXOMAIL Personal Premium — Monthly` | Monthly |      £1,850 | `POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY` |
+| `ANEXOMAIL Personal Premium — Yearly`  | Yearly  |     £18,500 | `POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY`  |
 
 ## Product descriptions
 
@@ -71,12 +71,12 @@ Yearly: £18,500 — two months free. Billed once a year.
 
 Type har row mein **String**:
 
-| Key | Personal Basic | Personal Pro+ | Personal Premium |
-|---|---|---|---|
-| `brand` | `anexomail` | `anexomail` | `anexomail` |
-| `kind` | `plan` | `plan` | `plan` |
-| `account_kind` | `personal` | `personal` | `personal` |
-| `plan` | `basic` | `pro` | `business_pro` |
+| Key             | Personal Basic        | Personal Pro+         | Personal Premium      |
+| --------------- | --------------------- | --------------------- | --------------------- |
+| `brand`         | `anexomail`           | `anexomail`           | `anexomail`           |
+| `kind`          | `plan`                | `plan`                | `plan`                |
+| `account_kind`  | `personal`            | `personal`            | `personal`            |
+| `plan`          | `basic`               | `pro`                 | `business_pro`        |
 | `billing_cycle` | `monthly` or `yearly` | `monthly` or `yearly` | `monthly` or `yearly` |
 
 ## IDs banne ke baad

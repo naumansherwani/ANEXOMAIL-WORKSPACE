@@ -1,11 +1,15 @@
 # PACKAGE + FEATURE FORMULA — Agent Personal Memory
+
 # Source: docs/ai-packages.md + docs/package-feature-map.md (Lovable originals — DO NOT DELETE)
+
 # Rule: public Business packages touch NAHI kerne — Personal billing products alag hain
+
 # Surface unmix (teen hosts, Chat vs LEO, do Admin): docs/cursor-work/IMPLEMENTATION-MASTER.md §0
 
 ---
 
 ## RULE 1 — NEVER TOUCH (locked forever)
+
 ```
 src/lib/plans.ts          ← workspace plans pricing (FOUNDER LOCKED)
 src/lib/ai-packages.ts    ← AI plans pricing (FOUNDER LOCKED)
@@ -32,6 +36,7 @@ Formula:
 ```
 
 **Ladder (jaan boojh kar aisa hai):**
+
 ```
 Basic (£23) → Pro (£46) → Business (£97) → Business Pro (£2850/co)
                                                 ↕
@@ -46,11 +51,11 @@ Basic (£23) → Pro (£46) → Business (£97) → Business Pro (£2850/co)
 
 ## RULE 3 — SURFACE SEPARATION (locked)
 
-| Surface | Host | Plans shown |
-|---|---|---|
-| Workspace | `anexomail.com` | Basic, Pro, Business, Business Pro |
-| AI workspace | `ai.anexomail.com` | AI Pro, AI Business, AI Executive |
-| Founder | `founderworkspace.anexomail.com` | All features, no plan gate |
+| Surface      | Host                             | Plans shown                        |
+| ------------ | -------------------------------- | ---------------------------------- |
+| Workspace    | `anexomail.com`                  | Basic, Pro, Business, Business Pro |
+| AI workspace | `ai.anexomail.com`               | AI Pro, AI Business, AI Executive  |
+| Founder      | `founderworkspace.anexomail.com` | All features, no plan gate         |
 
 `ai.anexomail.com` SAME codebase — sirf host-aware gate.
 ANEXOChat + ANEXOVideoCall = `ai.anexomail.com` ke ANDAR, alag subdomain NAHI.
@@ -93,62 +98,68 @@ New feature decide karne ka formula:
 ## FEATURE GATES PER PLAN (DB-backed, source: package-feature-map.md)
 
 ### Core Mail + Workspace
-| Feature | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
-|---|---|---|---|---|---|---|---|
-| Mail send/receive | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Contacts + Calendar | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Thread ownership | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Undo send 30s | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Snooze / schedule send | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Shared inbox (collision guard) | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Tasks + thread analytics | — | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+| Feature                        | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
+| ------------------------------ | ----- | --- | -------- | ------- | ------ | ------ | ------- |
+| Mail send/receive              | ✓     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Contacts + Calendar            | ✓     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Thread ownership               | ✓     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Undo send 30s                  | ✓     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Snooze / schedule send         | —     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Shared inbox (collision guard) | —     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Tasks + thread analytics       | —     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
 
 ### Storage
-| Plan | Per mailbox / pool |
-|---|---|
-| Basic | 5 GB/mailbox |
-| Pro | 10 GB/mailbox |
-| Business | 25 GB/mailbox |
-| Business Pro | 1 TB pooled |
-| AI Pro | 256 GB pooled |
-| AI Business | 1 TB pooled |
-| AI Executive | 2 TB pooled |
+
+| Plan         | Per mailbox / pool |
+| ------------ | ------------------ |
+| Basic        | 5 GB/mailbox       |
+| Pro          | 10 GB/mailbox      |
+| Business     | 25 GB/mailbox      |
+| Business Pro | 1 TB pooled        |
+| AI Pro       | 256 GB pooled      |
+| AI Business  | 1 TB pooled        |
+| AI Executive | 2 TB pooled        |
 
 ### ANEXOChat
-| Feature | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
-|---|---|---|---|---|---|---|---|
-| 1-to-1 + group chat | ❌ | ❌ | ✓ Ph1-56 | ✓ Ph1-56 | ✓ Ph1-57 | ✓ Ph1-57 | ✓ Ph1-57 |
-| Max file in chat | — | — | 2 GB | 5 GB | 2 GB | 5 GB | 5 GB |
-| Monthly transfer | — | — | 5 TB | unlimited | 5 TB | unlimited | unlimited |
-| Resumable transfer | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
+
+| Feature             | Basic | Pro | Business | Biz Pro   | AI Pro   | AI Biz    | AI Exec   |
+| ------------------- | ----- | --- | -------- | --------- | -------- | --------- | --------- |
+| 1-to-1 + group chat | ❌    | ❌  | ✓ Ph1-56 | ✓ Ph1-56  | ✓ Ph1-57 | ✓ Ph1-57  | ✓ Ph1-57  |
+| Max file in chat    | —     | —   | 2 GB     | 5 GB      | 2 GB     | 5 GB      | 5 GB      |
+| Monthly transfer    | —     | —   | 5 TB     | unlimited | 5 TB     | unlimited | unlimited |
+| Resumable transfer  | —     | —   | ✓        | ✓         | ✓        | ✓         | ✓         |
 
 ### LEO AI (credit-metered)
-| Feature | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
-|---|---|---|---|---|---|---|---|
-| Smart reply / rewrite | ❌ | ❌ | ❌ | ❌ | ✓ | ✓ | ✓ |
-| Thread summary | ❌ | ❌ | ❌ | ❌ | ✓ | ✓ | ✓ |
-| Live translate | ❌ | ❌ | ❌ | ❌ | — | ✓ | ✓ |
-| AI workflow builder | ❌ | ❌ | ❌ | ❌ | — | ✓ | ✓ |
-| AI Executive Briefing | ❌ | ❌ | ❌ | ❌ | — | — | ✓ |
-| Credits per month | 0 | 0 | 0 | 0 | 1,200 | 5,000 | 10,000 |
+
+| Feature               | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
+| --------------------- | ----- | --- | -------- | ------- | ------ | ------ | ------- |
+| Smart reply / rewrite | ❌    | ❌  | ❌       | ❌      | ✓      | ✓      | ✓       |
+| Thread summary        | ❌    | ❌  | ❌       | ❌      | ✓      | ✓      | ✓       |
+| Live translate        | ❌    | ❌  | ❌       | ❌      | —      | ✓      | ✓       |
+| AI workflow builder   | ❌    | ❌  | ❌       | ❌      | —      | ✓      | ✓       |
+| AI Executive Briefing | ❌    | ❌  | ❌       | ❌      | —      | —      | ✓       |
+| Credits per month     | 0     | 0   | 0        | 0       | 1,200  | 5,000  | 10,000  |
 
 ### ANEXOVideoCall
-| Feature | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
-|---|---|---|---|---|---|---|---|
-| 1:1 video call | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Group participants | — | — | 8 | 40 | 8 | 40 | 60 |
-| Screen share | — | — | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Live captions (AI) | — | — | — | — | ✓ | ✓ | ✓ |
-| Post-call LEO notes | — | — | — | — | — | ✓ | ✓ |
-| Recording + search | — | — | — | ✓ | — | ✓ | ✓ |
+
+| Feature             | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
+| ------------------- | ----- | --- | -------- | ------- | ------ | ------ | ------- |
+| 1:1 video call      | —     | —   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Group participants  | —     | —   | 8        | 40      | 8      | 40     | 60      |
+| Screen share        | —     | —   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Live captions (AI)  | —     | —   | —        | —       | ✓      | ✓      | ✓       |
+| Post-call LEO notes | —     | —   | —        | —       | —      | ✓      | ✓       |
+| Recording + search  | —     | —   | —        | ✓       | —      | ✓      | ✓       |
 
 ### Device Trust + Security
-| Feature | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
-|---|---|---|---|---|---|---|---|
-| Device vault (sealed) | ✓ 2 | ✓ 4 | ✓ 10 | ✓ 50 | ✓ 10 | ✓ 50 | ✓ 100 |
-| One-click session kill | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ |
-| Safety review queue | — | — | — | ✓ | — | — | ✓ |
-| Enforcement history | — | — | — | ✓ | — | — | ✓ |
+
+| Feature                | Basic | Pro | Business | Biz Pro | AI Pro | AI Biz | AI Exec |
+| ---------------------- | ----- | --- | -------- | ------- | ------ | ------ | ------- |
+| Device vault (sealed)  | ✓ 2   | ✓ 4 | ✓ 10     | ✓ 50    | ✓ 10   | ✓ 50   | ✓ 100   |
+| One-click session kill | ✓     | ✓   | ✓        | ✓       | ✓      | ✓      | ✓       |
+| Safety review queue    | —     | —   | —        | ✓       | —      | —      | ✓       |
+| Enforcement history    | —     | —   | —        | ✓       | —      | —      | ✓       |
 
 ---
 
@@ -187,14 +198,14 @@ Complimentary: 5/day first 2 days = 10 total per billing cycle.
 
 ## TOP-UP PRICES (locked — source: docs/ai-packages.md)
 
-| Amount | Credits |
-|---|---|
-| £15 | 40 |
-| £30 | 75 |
-| £60 | 170 |
-| £120 | 360 |
-| £250 | 800 |
-| £500 | 1,800 |
-| £1,000 | 4,000 |
-| £2,000 | 9,000 |
+| Amount | Credits               |
+| ------ | --------------------- |
+| £15    | 40                    |
+| £30    | 75                    |
+| £60    | 170                   |
+| £120   | 360                   |
+| £250   | 800                   |
+| £500   | 1,800                 |
+| £1,000 | 4,000                 |
+| £2,000 | 9,000                 |
 | £5,000 | 21,000 (founder-only) |
