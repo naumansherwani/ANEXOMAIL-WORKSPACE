@@ -230,7 +230,7 @@ begin
 
   -- ── Step 7: kind-aware display name + price + storage ────────────────────
   --    Billing display only. Feature power is plan-surface.ts featurePlan().
-  --    Personal Pro = same POWER as Business Pro, but kind stays personal.
+  --    Personal Pro+ = same POWER as Business Pro, but kind stays personal.
   if kind = 'personal' then
     case plan_id
       when 'basic' then
@@ -242,7 +242,7 @@ begin
         price        := 83;
         storage      := 10;
       when 'business' then
-        -- Personal account on Business SKU → treated as Personal Pro
+        -- Legacy Personal account on Business entitlement → Personal Pro+
         display_name := 'Personal Pro+';
         price        := 83;
         storage      := 10;

@@ -146,7 +146,7 @@ function PlanCard({
   unit: string;
   features: string[];
   currentPlanId: string | null;
-  /** e.g. "Personal Pro" — shown for personal users */
+  /** e.g. "Personal Pro+" — shown for personal users */
   personalLabel?: string | undefined;
   cycle: BillingCycle;
 }) {
@@ -354,7 +354,7 @@ function PersonalTierCard({
 
 /**
  * Personal tier suggestion strip — only shown for personal kind accounts.
- * Three cards: Personal Basic · Personal Pro · Personal Premium.
+ * Three cards: Personal Basic · Personal Pro+ · Personal Premium.
  * Current tier green. Next tier recommended (primary). Premium amber.
  * Uses existing PERSONAL_TIERS + CheckoutButton → Polar checkout (no-touch).
  */
@@ -426,7 +426,7 @@ function WorkspaceBilling() {
   const sub = useSubscription();
   const invoices = useInvoices();
 
-  // Personal tier label (e.g. "Personal Pro") — shown inside the plan card
+  // Personal tier label (e.g. "Personal Pro+") — shown inside the plan card
   const personalTierId = kind === "personal" ? polarToPersonalTierId(billed) : null;
   const personalTier = personalTierId
     ? PERSONAL_TIERS.find((t) => t.id === personalTierId)

@@ -173,7 +173,7 @@ begin
   pl := replace(lower(coalesce(nullif(btrim(pl), ''), '')), '-', '_');
   if pl = 'businesspro' then pl := 'business_pro'; end if;
 
-  -- Polar Pro £46 (Personal Pro) · Business · Business Pro · AI grants
+  -- Canonical Pro entitlement (Personal Pro+) · Business · Business Pro · AI grants
   if pl in ('pro', 'business', 'business_pro', 'ai_pro', 'ai_business', 'ai_executive') then
     return true;
   end if;
