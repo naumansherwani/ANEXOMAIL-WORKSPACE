@@ -50,6 +50,12 @@ declare
   actual_kind text;
   expected_product_id text;
 begin
+  -- SIRF Personal products. Business/koi bhi doosra product_key untouched.
+  if new.product_key is null
+     or new.product_key not like 'POLAR_PRODUCT_PLAN_PERSONAL_%' then
+    return new;
+  end if;
+
   select pb.required_account_kind, pb.polar_product_id
     into required_kind, expected_product_id
   from public.billing_price_book pb
