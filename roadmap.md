@@ -90,4 +90,5 @@
 - [x] Personal checkout ko account-kind bound rakhna; existing Business products, prices aur entitlements unchanged
 - [x] Personal Billing par sirf 3 cards, full yearly totals aur matching features dikhana
 - [x] Personal product copy/metadata/ID placeholders aur E-series database wiring document karna
-- [ ] Typecheck, focused payment tests aur signed-in Personal browser proof; live payment proof tak status READY
+- [x] Focused payment tests 4/4 aur changed-file lint/format pass
+- [ ] Project-wide typecheck ke unrelated existing errors aur signed-in Personal browser proof; live payment proof tak status READY
