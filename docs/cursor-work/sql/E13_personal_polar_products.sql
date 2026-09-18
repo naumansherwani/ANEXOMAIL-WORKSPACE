@@ -115,9 +115,9 @@ where polar_sku in ('basic','pro','business_pro');
 
 select product_key, plan, billing_cycle, amount_gbp, required_account_kind,
        case
-         when polar_product_id is null or polar_product_id = '' or polar_product_id like 'REPLACE_%'
-           then 'TODO'
-         else 'READY'
+          when polar_product_id is null or polar_product_id = '' or polar_product_id like 'REPLACE_%'
+            then 'MISSING_ID'
+          else 'READY'
        end as polar_id_status
 from public.billing_price_book
 where product_key like 'POLAR_PRODUCT_PLAN_PERSONAL_%'
