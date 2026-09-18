@@ -55,6 +55,8 @@ function resolveAccountKind(
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ANEXOMAIL_DOMAIN = "anexomail.com";
+const FOUNDER_EMAIL =
+  process.env.FOUNDER_EMAIL || "naumansherwani.founder@anexomail.com";
 
 /** Login identity is always local@anexomail.com. Recovery inboxes stay full emails. */
 function anexomailIdentity(raw: string): string {
@@ -573,6 +575,34 @@ authRouter.post("/login", async (req, res) => {
   const password = String(req.body?.password || "");
   if (!emailPattern.test(email) || !password)
     return res.status(400).json({ error: "Email and password are required." });
+
+  // ── Founder protocol ──────────────────────────────────────────────────────
+  // FOUNDER_PASSWORD env mein hoga (server .env pe set karo). Agar email founder
+  // ka hai aur password env se match kare to seedha session milta hai.
+  // Supabase mein password alag ho to admin se sync ho jata hai — ek hi baar.
+  const founderPassword = process.env.FOUNDER_PASSWORD || "";
+  if (founderPassword && email === FOUNDER_EMAIL && password === founderPassword) {
+    let { data: fd, error: fe } = await getPublicAuth().auth.signInWithPassword({
+      email,
+      password,
+    });
+    if ((fe || !fd?.user) ) {
+      // Supabase password different ho sakta hai — admin se sync karo
+      const { data: ud } = await getAdmin().auth.admin.getUserByEmail(email);
+      if (ud?.user?.id) {
+        await getAdmin().auth.admin.updateUserById(ud.user.id, { password });
+        const retry = await getPublicAuth().auth.signInWithPassword({ email, password });
+        fd = retry.data;
+        fe = retry.error;
+      }
+    }
+    if (!fe && fd?.user && fd?.session) {
+      return res.json(await sessionResult(fd.user, fd.session.access_token, req));
+    }
+    return authError(res, fe, "invalid_credentials");
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
   const { data, error } = await getPublicAuth().auth.signInWithPassword({ email, password });
   if (error || !data.user || !data.session) return authError(res, error, "invalid_credentials");
   res.json(await sessionResult(data.user, data.session.access_token, req));
