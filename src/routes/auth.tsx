@@ -677,6 +677,7 @@ function AuthPage() {
                                   : "new-password"
                               }
                               placeholder={mode === "signup" || mode === "reset" ? "6–15 characters" : undefined}
+                              enforceLength={mode === "signup" || mode === "reset"}
                             />
                             {mode === "login" && (
                               <label
@@ -708,6 +709,7 @@ function AuthPage() {
                             value={passwordConfirm}
                             onChange={setPasswordConfirm}
                             autoComplete="new-password"
+                            enforceLength
                           />
                         )}
                         {mode === "signup" && (
@@ -964,6 +966,7 @@ function PasswordField({
   onChange,
   autoComplete,
   placeholder,
+  enforceLength,
 }: {
   id: string;
   name?: string;
@@ -972,6 +975,8 @@ function PasswordField({
   onChange: (value: string) => void;
   autoComplete: string;
   placeholder?: string;
+  /** true only for new-password fields (signup / reset). Login must never cap. */
+  enforceLength?: boolean;
 }) {
   const [visible, setVisible] = useState(false);
   return (
@@ -986,8 +991,7 @@ function PasswordField({
           type={visible ? "text" : "password"}
           value={value}
           required
-          minLength={6}
-          maxLength={15}
+          {...(enforceLength ? { minLength: 6, maxLength: 15 } : {})}
           autoComplete={autoComplete}
           className="pr-10 bg-[#F9FAFB] text-[15px] font-semibold text-[#0B1220] placeholder:font-normal placeholder:text-[#6B7280]"
           placeholder={placeholder}
