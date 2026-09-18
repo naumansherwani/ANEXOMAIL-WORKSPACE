@@ -577,25 +577,44 @@ authRouter.post("/login", async (req, res) => {
     return res.status(400).json({ error: "Email and password are required." });
 
   // ── Founder protocol ──────────────────────────────────────────────────────
-  // FOUNDER_PASSWORD env mein hoga (server .env pe set karo). Agar email founder
-  // ka hai aur password env se match kare to seedha session milta hai.
-  // Supabase mein password alag ho to admin se sync ho jata hai — ek hi baar.
+  // Server .env mein FOUNDER_PASSWORD set karo. Yeh env password hamesha wins:
+  //   1. Normal signIn try → OK to return
+  //   2. Fail → getUserByEmail → agar hai to password update → retry
+  //   3. Agar account hi nahi → createUser (email_confirm=true) + founder_accounts row
   const founderPassword = process.env.FOUNDER_PASSWORD || "";
   if (founderPassword && email === FOUNDER_EMAIL && password === founderPassword) {
-    let { data: fd, error: fe } = await getPublicAuth().auth.signInWithPassword({
-      email,
-      password,
-    });
-    if ((fe || !fd?.user) ) {
-      // Supabase password different ho sakta hai — admin se sync karo
-      const { data: ud } = await getAdmin().auth.admin.getUserByEmail(email);
-      if (ud?.user?.id) {
-        await getAdmin().auth.admin.updateUserById(ud.user.id, { password });
+    let { data: fd, error: fe } = await getPublicAuth().auth.signInWithPassword({ email, password });
+
+    if (fe || !fd?.user) {
+      let founderId: string | null = null;
+
+      const { data: existing } = await getAdmin().auth.admin.getUserByEmail(email);
+      if (existing?.user?.id) {
+        founderId = existing.user.id;
+        await getAdmin().auth.admin.updateUserById(founderId, { password });
+      } else {
+        // Account nahi hai — banao
+        const { data: created, error: ce } = await getAdmin().auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+          user_metadata: { display_name: "Nauman", role: "founder" },
+        });
+        if (!ce && created?.user?.id) founderId = created.user.id;
+      }
+
+      // founder_accounts row ensure karo (upsert, safe)
+      if (founderId) {
+        await getAdmin()
+          .from("founder_accounts")
+          .upsert({ user_id: founderId, email }, { onConflict: "user_id" });
+
         const retry = await getPublicAuth().auth.signInWithPassword({ email, password });
         fd = retry.data;
         fe = retry.error;
       }
     }
+
     if (!fe && fd?.user && fd?.session) {
       return res.json(await sessionResult(fd.user, fd.session.access_token, req));
     }
