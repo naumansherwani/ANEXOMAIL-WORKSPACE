@@ -651,8 +651,8 @@ async function ensureFounderOrg(founderId: string): Promise<void> {
     }
 
     if (!fe && fd?.user && fd?.session) {
-      // Ensure founder has org + mail_accounts (needed for /api/mail/*)
-      void ensureFounderOrg(fd.user.id);
+      // AWAIT — org must exist before session is returned so orgId is in session
+      await ensureFounderOrg(fd.user.id);
       return res.json(await sessionResult(fd.user, fd.session.access_token, req));
     }
     return authError(res, fe, "invalid_credentials");

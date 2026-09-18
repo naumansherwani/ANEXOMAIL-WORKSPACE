@@ -352,6 +352,11 @@ mailRouter.post("/send", async (req, res) => {
   }).select("id").single();
   if (mErr) return res.status(500).json({ error: mErr.message });
 
+  // message_count update — sent folder count sahi dikhaye
+  await supa.from("mail_threads")
+    .update({ message_count: 1, last_message_at: (scheduled || now).toISOString() })
+    .eq("id", threadId);
+
   if (isScheduled) return res.json({ ok: true, scheduled_at: scheduled!.toISOString(), thread_id: threadId, message_id: msg.id });
 
   const sent = await sendMail({
