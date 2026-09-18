@@ -11,7 +11,7 @@ import { sendMail } from "../mail/sendmail";
 
 export const mailRouter = Router();
 
-type Ctx = { userId: string; orgId: string };
+type Ctx = { userId: string; orgId: string; userEmail: string };
 
 async function ctx(req: any, res: any): Promise<Ctx | null> {
   const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
@@ -20,12 +20,30 @@ async function ctx(req: any, res: any): Promise<Ctx | null> {
   const { data, error } = await supa.auth.getUser(token);
   if (error || !data?.user) { res.status(401).json({ error: "unauthenticated" }); return null; }
   const userId = data.user.id;
+  const userEmail = String(data.user.email || "").toLowerCase();
   const requested = (req.header("x-org-id") || req.query.org_id || "") as string;
+
+  // 1. Try org_members (Business / Pro users + founder after ensureFounderOrg)
   const { data: rows } = await supa.from("org_members").select("org_id").eq("user_id", userId);
   const ids = (rows || []).map((r: any) => r.org_id);
-  if (!ids.length) { res.status(409).json({ error: "no_workspace" }); return null; }
-  const orgId = requested && ids.includes(requested) ? requested : ids[0];
-  return { userId, orgId };
+  if (ids.length) {
+    const orgId = requested && ids.includes(requested) ? requested : ids[0];
+    return { userId, orgId, userEmail };
+  }
+
+  // 2. Fallback: find org_id via this user's email in mail_accounts
+  if (userEmail) {
+    const { data: ma } = await supa
+      .from("mail_accounts")
+      .select("org_id")
+      .ilike("address", userEmail)
+      .limit(1)
+      .maybeSingle();
+    if (ma?.org_id) return { userId, orgId: ma.org_id, userEmail };
+  }
+
+  res.status(409).json({ error: "no_workspace" });
+  return null;
 }
 
 const FOLDERS = [
@@ -291,8 +309,22 @@ mailRouter.post("/send", async (req, res) => {
   const to = list(b.to), cc = list(b.cc), bcc = list(b.bcc);
   if (!to.length) return res.status(400).json({ error: "to_required" });
 
-  const { data: acc } = await supa
+  // mailboxes (post-deploy-mail.sh) → fallback mail_accounts (workspace setup)
+  // → fallback by user email (founder protocol)
+  let acc: { id: string; address: string } | null = null;
+  const boxRes = await supa
     .from("mailboxes").select("id,address").eq("org_id", c.orgId).order("address").limit(1).maybeSingle();
+  if (!boxRes.error && boxRes.data) {
+    acc = boxRes.data;
+  } else {
+    const maRes = await supa
+      .from("mail_accounts").select("id,address").eq("org_id", c.orgId).order("address").limit(1).maybeSingle();
+    if (!maRes.error && maRes.data) acc = maRes.data;
+  }
+  // Last resort: user's own @anexomail.com address (founder / personal Pro)
+  if (!acc && c.userEmail?.endsWith("@anexomail.com")) {
+    acc = { id: c.userId, address: c.userEmail };
+  }
   if (!acc) return res.status(409).json({ error: "no_mail_account" });
 
   const scheduled = b.send_at ? new Date(b.send_at) : null;

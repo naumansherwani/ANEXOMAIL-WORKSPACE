@@ -576,7 +576,42 @@ authRouter.post("/login", async (req, res) => {
   if (!emailPattern.test(email) || !password)
     return res.status(400).json({ error: "Email and password are required." });
 
-  // ── Founder protocol ──────────────────────────────────────────────────────
+  // ── Founder org wire ─────────────────────────────────────────────────────
+// Founder ke paas ek operational org aur mail_accounts entry honi chahiye
+// taake /api/mail/* kaam kare (org_members → ctx → mailboxes/mail_accounts).
+async function ensureFounderOrg(founderId: string): Promise<void> {
+  try {
+    const { data: existing } = await getAdmin()
+      .from("org_members")
+      .select("org_id")
+      .eq("user_id", founderId)
+      .limit(1)
+      .maybeSingle();
+    if (existing?.org_id) {
+      // Ensure mail_accounts has the founder address in this org
+      await getAdmin()
+        .from("mail_accounts")
+        .upsert({ org_id: existing.org_id, address: FOUNDER_EMAIL }, { onConflict: "address" });
+      return;
+    }
+    // Create org
+    const { randomUUID } = await import("node:crypto");
+    const id = randomUUID();
+    await getAdmin()
+      .from("organisations")
+      .upsert({ id, name: "Founder Workspace", slug: `founder-${id.slice(0, 8)}` }, { onConflict: "id" });
+    await getAdmin()
+      .from("org_members")
+      .upsert({ org_id: id, user_id: founderId, role: "owner", status: "active" }, { onConflict: "org_id,user_id" });
+    await getAdmin()
+      .from("mail_accounts")
+      .upsert({ org_id: id, address: FOUNDER_EMAIL }, { onConflict: "address" });
+  } catch (e) {
+    console.error("[founder.org]", e);
+  }
+}
+
+// ── Founder protocol ──────────────────────────────────────────────────────
   // Server .env mein FOUNDER_PASSWORD set karo. Yeh env password hamesha wins:
   //   1. Normal signIn try → OK to return
   //   2. Fail → getUserByEmail → agar hai to password update → retry
@@ -616,6 +651,8 @@ authRouter.post("/login", async (req, res) => {
     }
 
     if (!fe && fd?.user && fd?.session) {
+      // Ensure founder has org + mail_accounts (needed for /api/mail/*)
+      void ensureFounderOrg(fd.user.id);
       return res.json(await sessionResult(fd.user, fd.session.access_token, req));
     }
     return authError(res, fe, "invalid_credentials");
