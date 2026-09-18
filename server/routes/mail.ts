@@ -5,9 +5,9 @@
  * Real data only — koi mock nahi.
  */
 import { Router } from "express";
-import nodemailer from "nodemailer";
 import { admin as supa } from "../lib/supa";
 import { leoSupportPipeline } from "../lib/leo-brain";
+import { sendMail } from "../mail/sendmail";
 
 export const mailRouter = Router();
 
@@ -285,13 +285,6 @@ mailRouter.get("/thread/:id", async (req, res) => {
   });
 });
 
-const smtp = nodemailer.createTransport({
-  host: process.env.SMTP_HOST || "127.0.0.1",
-  port: Number(process.env.SMTP_PORT || 25),
-  secure: false,
-  tls: { rejectUnauthorized: false },
-});
-
 mailRouter.post("/send", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const b = req.body || {};
@@ -329,15 +322,19 @@ mailRouter.post("/send", async (req, res) => {
 
   if (isScheduled) return res.json({ ok: true, scheduled_at: scheduled!.toISOString(), thread_id: threadId, message_id: msg.id });
 
-  try {
-    await smtp.sendMail({
-      from: acc.address, to, cc, bcc,
-      subject: b.subject || "(no subject)", text: b.body || "",
-    });
-  } catch (e: any) {
-    return res.status(502).json({ error: "smtp_failed", detail: e.message });
-  }
-  res.json({ ok: true, thread_id: threadId, message_id: msg.id });
+  const sent = await sendMail({
+    from: acc.address,
+    fromName: b.from_name || undefined,
+    to,
+    cc: cc.length ? cc : undefined,
+    bcc: bcc.length ? bcc : undefined,
+    subject: b.subject || "(no subject)",
+    text: b.body || "",
+    html: b.html || undefined,
+    replyTo: b.reply_to || undefined,
+  });
+  if (!sent.ok) return res.status(502).json({ error: "smtp_failed", detail: sent.error });
+  res.json({ ok: true, thread_id: threadId, message_id: msg.id, message_id_smtp: sent.messageId });
 });
 
 async function ownThread(c: Ctx, id: string) {

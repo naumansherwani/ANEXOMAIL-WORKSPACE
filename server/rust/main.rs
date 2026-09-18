@@ -701,6 +701,16 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 .map(|_| json!({ "ok": true }))
             }
         }
+        // mail.send — Bun pe delegate. Frontend seedha /api/mail/send call karta hai.
+        // Agar koi /rpc/mail.send call kare to Bun fallback signal milta hai.
+        "mail.send" => {
+            return err(
+                StatusCode::NOT_IMPLEMENTED,
+                "use_bun_fallback",
+                "mail.send: POST /api/mail/send (Bun -> local Postfix)",
+            )
+            .into_response()
+        }
         other => {
             return err(
                 StatusCode::NOT_FOUND,
