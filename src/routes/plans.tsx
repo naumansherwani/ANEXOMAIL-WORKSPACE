@@ -367,7 +367,7 @@ function PlansPage() {
                   </ul>
                   <Link
                     to="/auth"
-                    search={{ mode: "signup" }}
+                    search={{ mode: "signup", recovery: undefined }}
                     className="mt-7 inline-flex h-10 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:text-primary"
                   >
                     Get {tier.name}
