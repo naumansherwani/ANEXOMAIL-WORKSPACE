@@ -9,73 +9,9 @@ export type BillingProduct = {
   cycle?: BillingCycle;
   amountGbp: number;
   perSeat: boolean;
-  /** Restricts checkout to the authoritative account kind. */
-  accountKind?: "personal" | "business";
-  /** Personal products have founder-created IDs supplied through server env. */
-  requireEnvProductId?: boolean;
 };
 
 export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
-  POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY: {
-    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY",
-    productId: "485fa38d-1bbd-4136-bd71-eed42121ca5d",
-    kind: "plan",
-    plan: "basic",
-    cycle: "monthly",
-    amountGbp: 17,
-    perSeat: false,
-    accountKind: "personal",
-  },
-  POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY: {
-    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY",
-    productId: "e4913e6d-4667-4979-a131-60acc429ec53",
-    kind: "plan",
-    plan: "basic",
-    cycle: "yearly",
-    amountGbp: 187,
-    perSeat: false,
-    accountKind: "personal",
-  },
-  POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY: {
-    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY",
-    productId: "320a2cab-4ae8-47c9-8469-3bae6e342f59",
-    kind: "plan",
-    plan: "pro",
-    cycle: "monthly",
-    amountGbp: 83,
-    perSeat: false,
-    accountKind: "personal",
-  },
-  POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY: {
-    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY",
-    productId: "a93f0bf2-37aa-45f6-9a8a-fa356d37d59f",
-    kind: "plan",
-    plan: "pro",
-    cycle: "yearly",
-    amountGbp: 913,
-    perSeat: false,
-    accountKind: "personal",
-  },
-  POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY: {
-    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY",
-    productId: "cde7edac-a9fb-4cf2-ab6a-8e4154968e52",
-    kind: "plan",
-    plan: "business_pro",
-    cycle: "monthly",
-    amountGbp: 1850,
-    perSeat: false,
-    accountKind: "personal",
-  },
-  POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY: {
-    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY",
-    productId: "a485e76a-9338-4dfb-b680-7cc3df0adaf8",
-    kind: "plan",
-    plan: "business_pro",
-    cycle: "yearly",
-    amountGbp: 18500,
-    perSeat: false,
-    accountKind: "personal",
-  },
   POLAR_PRODUCT_PLAN_BASIC_MONTHLY: {
     envKey: "POLAR_PRODUCT_PLAN_BASIC_MONTHLY",
     productId: "5e1c7b50-fee5-4214-873c-ad9f350476d9",
@@ -148,6 +84,61 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     amountGbp: 28500,
     perSeat: false,
   },
+  // ── Personal plans (alag Polar products — personal-tiers.ts) ────────────
+  POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY: {
+    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY",
+    productId: "485fa38d-1bbd-4136-bd71-eed42121ca5d",
+    kind: "plan",
+    plan: "basic",
+    cycle: "monthly",
+    amountGbp: 17,
+    perSeat: true,
+  },
+  POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY: {
+    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY",
+    productId: "e4913e6d-4667-4979-a131-60acc429ec53",
+    kind: "plan",
+    plan: "basic",
+    cycle: "yearly",
+    amountGbp: 187,
+    perSeat: true,
+  },
+  POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_MONTHLY: {
+    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_MONTHLY",
+    productId: "320a2cab-4ae8-47c9-8469-3bae6e342f59",
+    kind: "plan",
+    plan: "pro",
+    cycle: "monthly",
+    amountGbp: 83,
+    perSeat: true,
+  },
+  POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_YEARLY: {
+    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_YEARLY",
+    productId: "a93f0bf2-37aa-45f6-9a8a-fa356d37d59f",
+    kind: "plan",
+    plan: "pro",
+    cycle: "yearly",
+    amountGbp: 913,
+    perSeat: true,
+  },
+  POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY: {
+    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY",
+    productId: "cde7edac-a9fb-4cf2-ab6a-8e4154968e52",
+    kind: "plan",
+    plan: "business_pro",
+    cycle: "monthly",
+    amountGbp: 1850,
+    perSeat: true,
+  },
+  POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY: {
+    envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY",
+    productId: "a485e76a-9338-4dfb-b680-7cc3df0adaf8",
+    kind: "plan",
+    plan: "business_pro",
+    cycle: "yearly",
+    amountGbp: 18500,
+    perSeat: true,
+  },
   POLAR_PRODUCT_MOVEIN_1_5: {
     envKey: "POLAR_PRODUCT_MOVEIN_1_5",
     productId: "fdcdabc2-9e50-4e4b-91d4-45e4128ef829",
@@ -194,18 +185,12 @@ export function configuredProduct(key: string): BillingProduct | null {
   const product = BILLING_PRODUCTS[key];
   if (!product) return null;
   const configuredId = process.env[product.envKey];
-  if (product.requireEnvProductId) {
-    if (!configuredId) return null;
-    return { ...product, productId: configuredId };
-  }
   if (configuredId && configuredId !== product.productId) return null;
   return product;
 }
 
 export function productById(productId: string): BillingProduct | null {
-  for (const key of Object.keys(BILLING_PRODUCTS)) {
-    const product = configuredProduct(key);
-    if (!product) continue;
+  for (const product of Object.values(BILLING_PRODUCTS)) {
     if (product.productId === productId) return product;
   }
   return null;

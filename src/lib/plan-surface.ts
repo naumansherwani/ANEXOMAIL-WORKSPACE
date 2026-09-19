@@ -74,7 +74,7 @@ export function packageCopyName(
   const k = kind ?? resolveAccountKind(null, plan);
   if (k === "personal") {
     if (plan === "business_pro") return "Personal Premium";
-    if (plan === "pro" || plan === "business") return "Personal Pro";
+    if (plan === "pro" || plan === "business") return "Personal Pro+";
     return "Personal Basic";
   }
   if (plan === "business_pro") return "Business Pro";

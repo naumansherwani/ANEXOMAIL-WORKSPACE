@@ -1,16 +1,17 @@
 /**
- * Personal account tier display — separate Personal Polar products.
+ * Personal account tier display — what each personal Polar SKU means.
  *
- * plans.ts / Business products NO-TOUCH. Personal kind ≠ Business kind.
+ * plans.ts NO-TOUCH. This file is a read/display layer only.
+ * Personal kind ≠ Business kind. Checkout ke baad onboarding decides kind.
  *
- * Polar mapping:
- *   Personal Basic   → PERSONAL_BASIC   £17 / £187
- *   Personal Pro+    → PERSONAL_PRO     £83 / £913 (power = Business Pro, no Org)
- *   Personal Premium → PERSONAL_PREMIUM £1,850 / £18,500 (no Org)
+ * Personal Polar products (alag from workspace/business plans):
+ *   Personal Basic   → £17  /user/month  (POLAR_PRODUCT_PLAN_PERSONAL_BASIC_*)
+ *   Personal Pro+    → £83  /user/month  (POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_*)
+ *   Personal Premium → £1,850/user/month (POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_*)
  *
  * Feature gates (plan-surface.ts):
- *   basic  → Personal Basic  — mail, contacts, calendar, work (personal tasks only)
- *   pro    → Personal Pro+   — + CRM, ANEXOChat, pro mail tools (power = business_pro)
+ *   basic        → Personal Basic   — mail, contacts, calendar, work (personal tasks only)
+ *   pro          → Personal Pro+    — + CRM, ANEXOChat, pro mail tools
  *   business_pro → Personal Premium — same power + 1TB / 5GB file / advanced features
  */
 
@@ -19,10 +20,12 @@ export type PersonalTierId = "personal_basic" | "personal_pro" | "personal_premi
 export type PersonalTier = {
   id: PersonalTierId;
   name: string;
-  /** Separate Personal Polar product-key segment. */
-  productPlanId: "personal_basic" | "personal_pro" | "personal_premium";
-  /** Existing canonical entitlement plan; keeps all feature gates stable. */
-  entitlementPlanId: "basic" | "pro" | "business_pro";
+  /** Polar plan-surface tier (for feature gates) */
+  polarPlanId: "basic" | "pro" | "business_pro";
+  /** billing-products.ts env key — monthly */
+  productKeyMonthly: string;
+  /** billing-products.ts env key — yearly */
+  productKeyYearly: string;
   /** Monthly price in £ */
   monthly: number;
   /** Yearly total in £ */
@@ -38,8 +41,9 @@ export const PERSONAL_TIERS: PersonalTier[] = [
   {
     id: "personal_basic",
     name: "Personal Basic",
-    productPlanId: "personal_basic",
-    entitlementPlanId: "basic",
+    polarPlanId: "basic",
+    productKeyMonthly: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY",
+    productKeyYearly: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY",
     monthly: 17,
     yearly: 187,
     yearlyRule: "one-month-free",
@@ -60,8 +64,9 @@ export const PERSONAL_TIERS: PersonalTier[] = [
   {
     id: "personal_pro",
     name: "Personal Pro+",
-    productPlanId: "personal_pro",
-    entitlementPlanId: "pro",
+    polarPlanId: "pro",
+    productKeyMonthly: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_MONTHLY",
+    productKeyYearly: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_YEARLY",
     monthly: 83,
     yearly: 913,
     yearlyRule: "one-month-free",
@@ -84,12 +89,13 @@ export const PERSONAL_TIERS: PersonalTier[] = [
   {
     id: "personal_premium",
     name: "Personal Premium",
-    productPlanId: "personal_premium",
-    entitlementPlanId: "business_pro",
+    polarPlanId: "business_pro",
+    productKeyMonthly: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY",
+    productKeyYearly: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY",
     monthly: 1850,
     yearly: 18500,
     yearlyRule: "two-months-free",
-    unit: "/ personal account / month",
+    unit: "/ user / month",
     tagline: "Maximum communication stack for a professional — every feature, no company seat.",
     badge: "Most complete",
     features: [

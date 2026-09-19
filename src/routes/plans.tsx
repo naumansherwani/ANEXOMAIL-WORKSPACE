@@ -5,8 +5,8 @@ import { useState } from "react";
 import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
-import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
-import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
+import { CheckoutButton, PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
+import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, money, type BillingCycle } from "@/lib/plans";
 import { PERSONAL_TIERS } from "@/lib/personal-tiers";
 
 export const Route = createFileRoute("/plans")({
@@ -254,8 +254,12 @@ const services = [
   },
 ];
 
+type PlanKind = "personal" | "business";
+
 function PlansPage() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
+  const [planKind, setPlanKind] = useState<PlanKind>("personal");
+
   return (
     <div className="min-h-screen bg-background">
       <SiteNav />
@@ -263,21 +267,95 @@ function PlansPage() {
         <section className="ax-container pt-20 pb-8 text-center md:pt-24">
           <p className="ax-eyebrow">Plans</p>
           <h1 className="mx-auto mt-4 max-w-2xl text-4xl text-foreground md:text-5xl">
-            Plans that grow with your team.
+            {planKind === "personal" ? "Personal plans." : "Business plans."}
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            Google gives you storage. ANEXOMAIL gives you control over the work happening inside
-            your email.
+            {planKind === "personal"
+              ? "Your own email workspace — no company account needed."
+              : "Company email with governance, shared inboxes and your own domain."}
           </p>
-          <div className="mt-8 flex justify-center">
-            <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Annual savings" />
+
+          {/* Personal / Business toggle */}
+          <div className="mt-6 flex justify-center">
+            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary/40 p-1">
+              {(["personal", "business"] as PlanKind[]).map((k) => (
+                <button
+                  key={k}
+                  type="button"
+                  onClick={() => setPlanKind(k)}
+                  className={`ax-press rounded-full px-5 py-2 text-[13px] font-semibold capitalize transition-colors ${
+                    planKind === k
+                      ? "border border-border bg-card text-foreground"
+                      : "border border-transparent text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {k}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-4 flex justify-center">
+            <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Save with yearly" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            Yearly billing: Basic and Pro get 1 month free. Business and Business Pro get 2 months
-            free. Switch to Yearly to see the full annual price on each card.
+            {planKind === "personal"
+              ? "Personal Basic and Pro+ get 1 month free yearly. Personal Premium gets 2 months free."
+              : "Basic and Pro get 1 month free yearly. Business and Business Pro get 2 months free."}
           </p>
         </section>
 
+        {/* ── Personal plans ─────────────────────────────────── */}
+        {planKind === "personal" && (
+          <section
+            data-ax-pricing="personal-plans"
+            className="ax-container grid gap-5 pb-24 md:grid-cols-3"
+          >
+            {PERSONAL_TIERS.map((tier) => {
+              const price = cycle === "monthly" ? tier.monthly : Math.round(tier.yearly / 12);
+              const pk = cycle === "monthly" ? tier.productKeyMonthly : tier.productKeyYearly;
+              return (
+                <article
+                  key={tier.id}
+                  className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <h2 className="text-sm font-bold tracking-tight text-foreground">{tier.name}</h2>
+                    {tier.badge && (
+                      <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                        {tier.badge}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                    {money(price)}
+                    <span className="text-sm font-medium text-muted-foreground"> / mo</span>
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-primary">
+                    {cycle === "yearly"
+                      ? `${money(tier.yearly)} / year · ${tier.yearlyRule === "two-months-free" ? "2 months free" : "1 month free"}`
+                      : `${tier.yearlyRule === "two-months-free" ? "2 months" : "1 month"} free on yearly billing`}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tier.tagline}</p>
+                  <ul className="mt-6 flex-1 space-y-2.5">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex gap-2 text-sm text-muted-foreground">
+                        <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6">
+                    <CheckoutButton productKey={pk} source={`plans:${tier.id}`} />
+                  </div>
+                </article>
+              );
+            })}
+          </section>
+        )}
+
+        {/* ── Business plans (existing, no-touch) ────────────── */}
+        {planKind === "business" && (
         <section
           data-ax-pricing="plans"
           className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4"
@@ -318,68 +396,7 @@ function PlansPage() {
             );
           })}
         </section>
-
-        <section data-ax-pricing="personal" className="ax-container pb-24">
-          <p className="ax-eyebrow">For one person</p>
-          <h2 className="mt-3 text-2xl text-foreground md:text-3xl">Personal packages</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            One professional, no company organisation. Same engine, personal pricing. Choose your
-            package, create your account, and finish payment inside your billing page.
-          </p>
-
-          <div className="mt-7 grid gap-5 md:grid-cols-3">
-            {PERSONAL_TIERS.map((tier) => {
-              const isYearly = cycle === "yearly";
-              const amount = isYearly ? tier.yearly : tier.monthly;
-              return (
-                <article
-                  key={tier.id}
-                  className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
-                >
-                  <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-sm font-bold tracking-tight text-foreground">
-                      {tier.name}
-                    </h3>
-                    {tier.badge && (
-                      <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                        {tier.badge}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
-                    £{amount.toLocaleString("en-GB")}
-                    <span className="text-sm font-medium text-muted-foreground">
-                      {isYearly ? " / year" : " / month"}
-                    </span>
-                  </p>
-                  <p className="mt-1 text-xs font-semibold text-primary">
-                    {tier.yearlyRule === "two-months-free"
-                      ? "2 months free on yearly billing"
-                      : "1 month free on yearly billing"}
-                  </p>
-                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                    {tier.tagline}
-                  </p>
-                  <ul className="mt-6 flex-1 space-y-2.5">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex gap-2 text-sm text-muted-foreground">
-                        <Check className="mt-0.5 size-4 shrink-0 text-success" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                  <Link
-                    to="/auth"
-                    search={{ mode: "signup", recovery: undefined }}
-                    className="mt-7 inline-flex h-10 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:text-primary"
-                  >
-                    Get {tier.name}
-                  </Link>
-                </article>
-              );
-            })}
-          </div>
-        </section>
+        )}
 
         <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Done-for-you services</h2>
