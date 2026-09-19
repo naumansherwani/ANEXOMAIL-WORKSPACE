@@ -501,4 +501,130 @@ org.get("/org/export", guard(async (_req, res, c) => {
   });
 }));
 
+/* -------------------------------------------------------------- mailboxes
+ * Claude ne yeh live :3100 pe chalaya; GitHub pe nahi tha.
+ * Contract (proved): POST /api/org/mailboxes { address }
+ * → { ok, mailbox:{id,address,display_name,active,purpose}, plan, remaining }
+ */
+function mailboxAddress(raw: unknown): string | null {
+  const address = String(raw || "").trim().toLowerCase();
+  if (!/^[a-z0-9._+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(address)) return null;
+  return address;
+}
+
+async function workspacePlanOf(orgId: string | null, userId: string): Promise<string> {
+  if (orgId) {
+    const byOrg = await safe<any[]>(
+      () => admin.from("workspace_subscriptions").select("plan").eq("org_id", orgId).limit(1),
+      [],
+    );
+    if (byOrg[0]?.plan) return String(byOrg[0].plan);
+  }
+  const byUser = await safe<any[]>(
+    () => admin.from("workspace_subscriptions").select("plan").eq("user_id", userId).limit(1),
+    [],
+  );
+  if (byUser[0]?.plan) return String(byUser[0].plan);
+  const ent = await safe<any[]>(
+    () => admin.from("entitlement_state").select("plan").eq("user_id", userId).limit(1),
+    [],
+  );
+  if (ent[0]?.plan) return String(ent[0].plan);
+  return "basic";
+}
+
+async function mailboxCap(plan: string): Promise<number | null> {
+  const storage = await safe<any[]>(
+    () => admin.from("storage_plans").select("mailbox_limit").eq("plan_id", plan).limit(1),
+    [],
+  );
+  if (storage.length) {
+    const limit = storage[0]?.mailbox_limit;
+    return limit === null || limit === undefined ? null : Number(limit);
+  }
+  const workspace = await safe<any[]>(
+    () => admin.from("workspace_plans").select("mailboxes_included").eq("id", plan).limit(1),
+    [],
+  );
+  const included = workspace[0]?.mailboxes_included;
+  return included === null || included === undefined ? null : Number(included);
+}
+
+async function orgMailboxCount(orgId: string): Promise<number> {
+  const rows = await safe<any[]>(
+    () => admin.from("mailboxes").select("id,box_type").eq("org_id", orgId),
+    [],
+  );
+  return rows.filter((row) => String(row.box_type || "mailbox") === "mailbox").length;
+}
+
+org.get("/org/mailboxes", guard(async (_req, res, c) => {
+  if (!c.org_id) return res.status(404).json({ error: "no_org" });
+  const plan = await workspacePlanOf(c.org_id, c.user.id);
+  const limit = await mailboxCap(plan);
+  const boxes = await safe<any[]>(
+    () =>
+      admin
+        .from("mailboxes")
+        .select("id,address,display_name,active,purpose,box_type")
+        .eq("org_id", c.org_id)
+        .order("address"),
+    [],
+  );
+  const used = boxes.filter((row) => String(row.box_type || "mailbox") === "mailbox").length;
+  res.json({
+    ok: true,
+    mailboxes: boxes,
+    plan,
+    limit,
+    used,
+    remaining: limit === null ? true : used < limit,
+  });
+}));
+
+org.post("/org/mailboxes", guard(async (req, res, c) => {
+  if (!(await writesEnabled())) return res.status(423).json({ error: "org_writes_disabled" });
+  if (!c.org_id) return res.status(404).json({ error: "no_org" });
+
+  const address = mailboxAddress(req.body?.address);
+  if (!address) return res.status(400).json({ error: "address_required" });
+
+  const plan = await workspacePlanOf(c.org_id, c.user.id);
+  const limit = await mailboxCap(plan);
+  const used = await orgMailboxCount(c.org_id);
+  if (limit !== null && used >= limit) {
+    return res.status(403).json({ error: "mailbox_limit", plan, limit, used, remaining: false });
+  }
+
+  const local = address.split("@")[0] || address;
+  const { data, error } = await admin
+    .from("mailboxes")
+    .insert({
+      org_id: c.org_id,
+      address,
+      display_name: local,
+      box_type: "mailbox",
+      purpose: "User-created mailbox",
+      is_public: false,
+      active: true,
+    })
+    .select("id,address,display_name,active,purpose")
+    .single();
+  if (error) {
+    if (String(error.code) === "23505" || /duplicate|unique/i.test(error.message || "")) {
+      return res.status(409).json({ error: "address_taken" });
+    }
+    return res.status(500).json({ error: error.message });
+  }
+
+  await ledger(c.user.email || c.user.id, "mailbox.create", address, ipOf(req));
+  const nextUsed = used + 1;
+  res.json({
+    ok: true,
+    mailbox: data,
+    plan,
+    remaining: limit === null ? true : nextUsed < limit,
+  });
+}));
+
 export default org;

@@ -309,6 +309,32 @@ export function useOrgLedger() {
   });
 }
 
+export type OrgMailbox = {
+  id: string;
+  address: string;
+  display_name: string;
+  active: boolean;
+  purpose: string;
+  box_type?: string;
+};
+
+export type OrgMailboxList = {
+  ok: true;
+  mailboxes: OrgMailbox[];
+  plan: string;
+  limit: number | null;
+  used: number;
+  remaining: boolean;
+};
+
+export function useOrgMailboxes() {
+  return useQuery<OrgMailboxList, ApiError>({
+    queryKey: ["org", "mailboxes"],
+    queryFn: () => get<OrgMailboxList>("org.mailboxes.list", "/api/org/mailboxes"),
+    retry: false,
+  });
+}
+
 export function useOrgGraph(days: number) {
   return useQuery<OrgGraph, ApiError>({
     queryKey: ["org", "graph", days],
@@ -375,6 +401,17 @@ export function useRevokeMember() {
       ["org", "sessions"],
     ],
   );
+}
+
+export function useCreateMailbox() {
+  return useOrgMutation<
+    { address: string },
+    { ok: true; mailbox: OrgMailbox; plan: string; remaining: boolean }
+  >("org.mailboxes.create", "/api/org/mailboxes", [
+    ["org", "mailboxes"],
+    ["org", "overview"],
+    ["org", "audit"],
+  ]);
 }
 
 /** Blast radius preview — never destructive, read-only POST. */

@@ -711,6 +711,22 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
             )
             .into_response()
         }
+        "org.mailboxes.list" => {
+            return err(
+                StatusCode::NOT_IMPLEMENTED,
+                "use_bun_fallback",
+                "org.mailboxes.list: GET /api/org/mailboxes",
+            )
+            .into_response()
+        }
+        "org.mailboxes.create" => {
+            return err(
+                StatusCode::NOT_IMPLEMENTED,
+                "use_bun_fallback",
+                "org.mailboxes.create: POST /api/org/mailboxes",
+            )
+            .into_response()
+        }
         other => {
             return err(
                 StatusCode::NOT_FOUND,
