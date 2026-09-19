@@ -18,12 +18,12 @@ insert into public.billing_price_book
   (product_key,kind,plan,band,billing_cycle,amount_gbp,per_seat,annual_rule,
    polar_listed,active,required_account_kind,polar_product_id)
 values
-  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY','plan','basic',null,'monthly',17,false,null,true,true,'personal','REPLACE_PERSONAL_BASIC_MONTHLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY','plan','basic',null,'yearly',187,false,'one-month-free',true,true,'personal','REPLACE_PERSONAL_BASIC_YEARLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY','plan','pro',null,'monthly',83,false,null,true,true,'personal','REPLACE_PERSONAL_PRO_MONTHLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY','plan','pro',null,'yearly',913,false,'one-month-free',true,true,'personal','REPLACE_PERSONAL_PRO_YEARLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY','plan','business_pro',null,'monthly',1850,false,null,true,true,'personal','REPLACE_PERSONAL_PREMIUM_MONTHLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY','plan','business_pro',null,'yearly',18500,false,'two-months-free',true,true,'personal','REPLACE_PERSONAL_PREMIUM_YEARLY_ID')
+  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY','plan','basic',null,'monthly',17,false,null,true,true,'personal','485fa38d-1bbd-4136-bd71-eed42121ca5d'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY','plan','basic',null,'yearly',187,false,'one-month-free',true,true,'personal','e4913e6d-4667-4979-a131-60acc429ec53'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY','plan','pro',null,'monthly',83,false,null,true,true,'personal','320a2cab-4ae8-47c9-8469-3bae6e342f59'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY','plan','pro',null,'yearly',913,false,'one-month-free',true,true,'personal','a93f0bf2-37aa-45f6-9a8a-fa356d37d59f'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY','plan','business_pro',null,'monthly',1850,false,null,true,true,'personal','cde7edac-a9fb-4cf2-ab6a-8e4154968e52'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY','plan','business_pro',null,'yearly',18500,false,'two-months-free',true,true,'personal','a485e76a-9338-4dfb-b680-7cc3df0adaf8')
 on conflict (product_key) do update set
   kind=excluded.kind,
   plan=excluded.plan,
