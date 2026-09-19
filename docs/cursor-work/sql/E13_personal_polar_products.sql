@@ -18,12 +18,12 @@ insert into public.billing_price_book
   (product_key,kind,plan,band,billing_cycle,amount_gbp,per_seat,annual_rule,
    polar_listed,active,required_account_kind,polar_product_id)
 values
-  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY','plan','basic',null,'monthly',17,false,null,true,true,'personal','REPLACE_PERSONAL_BASIC_MONTHLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY','plan','basic',null,'yearly',187,false,'one-month-free',true,true,'personal','REPLACE_PERSONAL_BASIC_YEARLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY','plan','pro',null,'monthly',83,false,null,true,true,'personal','REPLACE_PERSONAL_PRO_MONTHLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY','plan','pro',null,'yearly',913,false,'one-month-free',true,true,'personal','REPLACE_PERSONAL_PRO_YEARLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY','plan','business_pro',null,'monthly',1850,false,null,true,true,'personal','REPLACE_PERSONAL_PREMIUM_MONTHLY_ID'),
-  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY','plan','business_pro',null,'yearly',18500,false,'two-months-free',true,true,'personal','REPLACE_PERSONAL_PREMIUM_YEARLY_ID')
+  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY','plan','basic',null,'monthly',17,false,null,true,true,'personal','485fa38d-1bbd-4136-bd71-eed42121ca5d'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY','plan','basic',null,'yearly',187,false,'one-month-free',true,true,'personal','e4913e6d-4667-4979-a131-60acc429ec53'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY','plan','pro',null,'monthly',83,false,null,true,true,'personal','320a2cab-4ae8-47c9-8469-3bae6e342f59'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY','plan','pro',null,'yearly',913,false,'one-month-free',true,true,'personal','a93f0bf2-37aa-45f6-9a8a-fa356d37d59f'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY','plan','business_pro',null,'monthly',1850,false,null,true,true,'personal','cde7edac-a9fb-4cf2-ab6a-8e4154968e52'),
+  ('POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY','plan','business_pro',null,'yearly',18500,false,'two-months-free',true,true,'personal','a485e76a-9338-4dfb-b680-7cc3df0adaf8')
 on conflict (product_key) do update set
   kind=excluded.kind,
   plan=excluded.plan,
@@ -118,6 +118,62 @@ set personal_name = case polar_sku
       when 'business_pro' then 'Separate Personal Premium product. Org nahi.'
     end
 where polar_sku in ('basic','pro','business_pro');
+
+-- ---------------------------------------------------------------------------
+-- Personal entitlement bridge — Polar (Rust :3400) → entitlement_state
+-- SIRF Personal product keys. Business rows ko yeh trigger chhoota bhi nahi.
+-- Personal Premium ka feature power = existing business_pro gates.
+-- ---------------------------------------------------------------------------
+create or replace function public.personal_entitlement_sync()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  plan_id text;
+begin
+  if new.product_key is null
+     or new.product_key not ilike 'POLAR_PRODUCT_PLAN_PERSONAL_%'
+     or new.user_id is null then
+    return new;
+  end if;
+
+  plan_id := case
+    when new.product_key ilike '%PERSONAL_PREMIUM%' then 'business_pro'
+    when new.product_key ilike '%PERSONAL_PRO%'     then 'pro'
+    when new.product_key ilike '%PERSONAL_BASIC%'   then 'basic'
+    else null
+  end;
+
+  if plan_id is null then
+    return new;
+  end if;
+
+  if new.status in ('active','past_due','grace') then
+    insert into public.entitlement_state (user_id, plan, seats, active_until, revision, updated_at)
+    values (new.user_id, plan_id, 1, new.current_period_end, 1, now())
+    on conflict (user_id) do update set
+      plan         = plan_id,
+      seats        = greatest(1, entitlement_state.seats),
+      active_until = coalesce(new.current_period_end, entitlement_state.active_until),
+      revision     = entitlement_state.revision + 1,
+      updated_at   = now();
+  end if;
+
+  return new;
+end;
+$$;
+
+revoke execute on function public.personal_entitlement_sync() from public, anon, authenticated;
+grant execute on function public.personal_entitlement_sync() to service_role;
+
+drop trigger if exists personal_entitlement_sync_trg on public.polar_subscriptions;
+create trigger personal_entitlement_sync_trg
+after insert or update of status, product_key, current_period_end, user_id
+on public.polar_subscriptions
+for each row execute function public.personal_entitlement_sync();
+
 
 select product_key,
        case

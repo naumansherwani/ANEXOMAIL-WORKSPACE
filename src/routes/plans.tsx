@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
 import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
+import { PERSONAL_TIERS } from "@/lib/personal-tiers";
 
 export const Route = createFileRoute("/plans")({
   head: () => ({
@@ -316,6 +317,68 @@ function PlansPage() {
               </article>
             );
           })}
+        </section>
+
+        <section data-ax-pricing="personal" className="ax-container pb-24">
+          <p className="ax-eyebrow">For one person</p>
+          <h2 className="mt-3 text-2xl text-foreground md:text-3xl">Personal packages</h2>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            One professional, no company organisation. Same engine, personal pricing. Choose your
+            package, create your account, and finish payment inside your billing page.
+          </p>
+
+          <div className="mt-7 grid gap-5 md:grid-cols-3">
+            {PERSONAL_TIERS.map((tier) => {
+              const isYearly = cycle === "yearly";
+              const amount = isYearly ? tier.yearly : tier.monthly;
+              return (
+                <article
+                  key={tier.id}
+                  className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
+                >
+                  <div className="flex items-start justify-between gap-2">
+                    <h3 className="text-sm font-bold tracking-tight text-foreground">
+                      {tier.name}
+                    </h3>
+                    {tier.badge && (
+                      <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                        {tier.badge}
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-4 text-4xl font-extrabold tracking-tight text-foreground">
+                    £{amount.toLocaleString("en-GB")}
+                    <span className="text-sm font-medium text-muted-foreground">
+                      {isYearly ? " / year" : " / month"}
+                    </span>
+                  </p>
+                  <p className="mt-1 text-xs font-semibold text-primary">
+                    {tier.yearlyRule === "two-months-free"
+                      ? "2 months free on yearly billing"
+                      : "1 month free on yearly billing"}
+                  </p>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                    {tier.tagline}
+                  </p>
+                  <ul className="mt-6 flex-1 space-y-2.5">
+                    {tier.features.map((f) => (
+                      <li key={f} className="flex gap-2 text-sm text-muted-foreground">
+                        <Check className="mt-0.5 size-4 shrink-0 text-success" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                  <Link
+                    to="/auth"
+                    search={{ mode: "signup", recovery: undefined }}
+                    className="mt-7 inline-flex h-10 items-center justify-center rounded-xl border border-border px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary/60 hover:text-primary"
+                  >
+                    Get {tier.name}
+                  </Link>
+                </article>
+              );
+            })}
+          </div>
         </section>
 
         <section className="ax-container pb-20">

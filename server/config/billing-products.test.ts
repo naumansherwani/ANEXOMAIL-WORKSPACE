@@ -32,15 +32,22 @@ describe("Personal Polar products", () => {
     expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY?.amountGbp).toBe(18500);
   });
 
-  test("fails closed until a Personal Polar ID is configured", () => {
-    expect(configuredProduct("POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY")).toBeNull();
+  test("carries the founder-created Personal Polar IDs", () => {
+    expect(configuredProduct("POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY")?.productId).toBe(
+      "485fa38d-1bbd-4136-bd71-eed42121ca5d",
+    );
+    expect(configuredProduct("POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY")?.productId).toBe(
+      "a93f0bf2-37aa-45f6-9a8a-fa356d37d59f",
+    );
+    expect(configuredProduct("POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY")?.productId).toBe(
+      "a485e76a-9338-4dfb-b680-7cc3df0adaf8",
+    );
   });
 
-  test("resolves configured Personal IDs without changing the catalog", () => {
-    process.env.POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY = "personal-basic-monthly-id";
-    const product = configuredProduct("POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY");
-    expect(product?.productId).toBe("personal-basic-monthly-id");
+  test("resolves Personal products by Polar ID and stays account-kind bound", () => {
+    const product = productById("cde7edac-a9fb-4cf2-ab6a-8e4154968e52");
+    expect(product?.plan).toBe("business_pro");
     expect(product?.accountKind).toBe("personal");
-    expect(productById("personal-basic-monthly-id")?.plan).toBe("basic");
+    expect(product?.amountGbp).toBe(1850);
   });
 });
