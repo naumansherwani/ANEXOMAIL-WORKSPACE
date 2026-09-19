@@ -119,6 +119,62 @@ set personal_name = case polar_sku
     end
 where polar_sku in ('basic','pro','business_pro');
 
+-- ---------------------------------------------------------------------------
+-- Personal entitlement bridge — Polar (Rust :3400) → entitlement_state
+-- SIRF Personal product keys. Business rows ko yeh trigger chhoota bhi nahi.
+-- Personal Premium ka feature power = existing business_pro gates.
+-- ---------------------------------------------------------------------------
+create or replace function public.personal_entitlement_sync()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  plan_id text;
+begin
+  if new.product_key is null
+     or new.product_key not ilike 'POLAR_PRODUCT_PLAN_PERSONAL_%'
+     or new.user_id is null then
+    return new;
+  end if;
+
+  plan_id := case
+    when new.product_key ilike '%PERSONAL_PREMIUM%' then 'business_pro'
+    when new.product_key ilike '%PERSONAL_PRO%'     then 'pro'
+    when new.product_key ilike '%PERSONAL_BASIC%'   then 'basic'
+    else null
+  end;
+
+  if plan_id is null then
+    return new;
+  end if;
+
+  if new.status in ('active','past_due','grace') then
+    insert into public.entitlement_state (user_id, plan, seats, active_until, revision, updated_at)
+    values (new.user_id, plan_id, 1, new.current_period_end, 1, now())
+    on conflict (user_id) do update set
+      plan         = plan_id,
+      seats        = greatest(1, entitlement_state.seats),
+      active_until = coalesce(new.current_period_end, entitlement_state.active_until),
+      revision     = entitlement_state.revision + 1,
+      updated_at   = now();
+  end if;
+
+  return new;
+end;
+$$;
+
+revoke execute on function public.personal_entitlement_sync() from public, anon, authenticated;
+grant execute on function public.personal_entitlement_sync() to service_role;
+
+drop trigger if exists personal_entitlement_sync_trg on public.polar_subscriptions;
+create trigger personal_entitlement_sync_trg
+after insert or update of status, product_key, current_period_end, user_id
+on public.polar_subscriptions
+for each row execute function public.personal_entitlement_sync();
+
+
 select product_key,
        case
          when product_key like '%PERSONAL_BASIC%' then 'Personal Basic'
