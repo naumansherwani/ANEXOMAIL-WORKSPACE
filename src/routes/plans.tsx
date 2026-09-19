@@ -7,6 +7,7 @@ import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
 import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, type BillingCycle } from "@/lib/plans";
+import { PERSONAL_TIERS } from "@/lib/personal-tiers";
 
 export const Route = createFileRoute("/plans")({
   head: () => ({
@@ -336,7 +337,9 @@ function PlansPage() {
                   className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
                 >
                   <div className="flex items-start justify-between gap-2">
-                    <h3 className="text-sm font-bold tracking-tight text-foreground">{tier.name}</h3>
+                    <h3 className="text-sm font-bold tracking-tight text-foreground">
+                      {tier.name}
+                    </h3>
                     {tier.badge && (
                       <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-muted-foreground">
                         {tier.badge}
