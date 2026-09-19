@@ -4,14 +4,19 @@
 
 Polar mein har billing interval ka alag recurring product banao. Currency **GBP**.
 
-| Product name                           | Billing | Exact price | Environment key                               |
-| -------------------------------------- | ------- | ----------: | --------------------------------------------- |
-| `ANEXOMAIL Personal Basic — Monthly`   | Monthly |         £17 | `POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY`   |
-| `ANEXOMAIL Personal Basic — Yearly`    | Yearly  |        £187 | `POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY`    |
-| `ANEXOMAIL Personal Pro+ — Monthly`    | Monthly |         £83 | `POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY`     |
-| `ANEXOMAIL Personal Pro+ — Yearly`     | Yearly  |        £913 | `POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY`      |
-| `ANEXOMAIL Personal Premium — Monthly` | Monthly |      £1,850 | `POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY` |
-| `ANEXOMAIL Personal Premium — Yearly`  | Yearly  |     £18,500 | `POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY`  |
+| Product name                           | Billing | Exact price | Polar product ID                       |
+| -------------------------------------- | ------- | ----------: | -------------------------------------- |
+| `ANEXOMAIL Personal Basic — Monthly`   | Monthly |         £17 | `485fa38d-1bbd-4136-bd71-eed42121ca5d` |
+| `ANEXOMAIL Personal Basic — Yearly`    | Yearly  |        £187 | `e4913e6d-4667-4979-a131-60acc429ec53` |
+| `ANEXOMAIL Personal Pro+ — Monthly`    | Monthly |         £83 | `320a2cab-4ae8-47c9-8469-3bae6e342f59` |
+| `ANEXOMAIL Personal Pro+ — Yearly`     | Yearly  |        £913 | `a93f0bf2-37aa-45f6-9a8a-fa356d37d59f` |
+| `ANEXOMAIL Personal Premium — Monthly` | Monthly |      £1,850 | `cde7edac-a9fb-4cf2-ab6a-8e4154968e52` |
+| `ANEXOMAIL Personal Premium — Yearly`  | Yearly  |     £18,500 | `a485e76a-9338-4dfb-b680-7cc3df0adaf8` |
+
+Yeh chhe IDs ab repo mein hain: `server/config/billing-products.ts` aur
+`docs/cursor-work/sql/E13_personal_polar_products.sql`. Server par koi Personal
+environment line likhne ki zaroorat nahi — Rust `polar-payment` product map
+in IDs ko product key se resolve karta hai.
 
 ## Product descriptions
 
@@ -71,19 +76,18 @@ Yearly: £18,500 — two months free. Billed once a year.
 
 Type har row mein **String**:
 
-| Key             | Personal Basic        | Personal Pro+         | Personal Premium      |
-| --------------- | --------------------- | --------------------- | --------------------- |
-| `brand`         | `anexomail`           | `anexomail`           | `anexomail`           |
-| `kind`          | `plan`                | `plan`                | `plan`                |
-| `account_kind`  | `personal`            | `personal`            | `personal`            |
-| `plan`          | `basic`               | `pro`                 | `business_pro`        |
-| `billing_cycle` | `monthly` or `yearly` | `monthly` or `yearly` | `monthly` or `yearly` |
+| Key            | Personal Basic   | Personal Pro+       | Personal Premium   |
+| -------------- | ---------------- | ------------------- | ------------------ |
+| `brand`        | `anexomail`      | `anexomail`         | `anexomail`        |
+| `kind`         | `plan`           | `plan`              | `plan`             |
+| `account_kind` | `personal`       | `personal`          | `personal`         |
+| `plan`         | `personal_basic` | `personal_pro_plus` | `personal_premium` |
 
-## IDs banne ke baad
+## Aap sirf yeh karein
 
-1. Six IDs ko `/opt/anexomail/.env` aur `/opt/polar-rust-payment/.env` mein matching environment keys ke saath rakho. Secret/token print mat karo.
-2. `docs/cursor-work/sql/E13_personal_polar_products.sql` mein six `REPLACE_..._ID` values ko exact Polar IDs se replace karke Supabase #4 SQL Editor mein poori file run karo.
-3. Repo file mein actual IDs commit mat karo jab tak founder unhein public product IDs ke taur par lock na kare.
-4. Deploy ke baad Personal account se monthly/yearly checkout test karo. Business account se Personal key ka response `403` hona chahiye.
+1. Supabase #4 SQL Editor mein `docs/cursor-work/sql/E13_personal_polar_products.sql` poori file paste → Run. Verification mein chhe rows `READY` aani chahiye.
+2. Locked pull command se web deploy karein.
+3. `/plans` par teen Personal cards aur Personal Billing par wahi teen cards check karein.
+4. Personal account se monthly/yearly checkout test karein. Business account Personal key par `403` deta hai.
 
 Checkout existing route use karta hai: `POST /api/billing/intent`. Frontend amount ya product ID nahi bhejta; backend registry aur database exact price enforce karte hain.
