@@ -14,9 +14,23 @@ Polar mein har billing interval ka alag recurring product banao. Currency **GBP*
 | `ANEXOMAIL Personal Premium — Yearly`  | Yearly  |     £18,500 | `a485e76a-9338-4dfb-b680-7cc3df0adaf8` |
 
 Yeh chhe IDs ab repo mein hain: `server/config/billing-products.ts` aur
-`docs/cursor-work/sql/E13_personal_polar_products.sql`. Server par koi Personal
-environment line likhne ki zaroorat nahi — Rust `polar-payment` product map
-in IDs ko product key se resolve karta hai.
+`docs/cursor-work/sql/E13_personal_polar_products.sql`.
+
+Rust `polar-payment` apna product map environment se banata hai, is liye webhook
+mapping ke liye yeh chhe lines `/opt/polar-rust-payment/.env` mein bhi honi
+chahiye (koi secret nahi, sirf product IDs):
+
+```text
+POLAR_PRODUCT_PLAN_PERSONAL_BASIC_MONTHLY=485fa38d-1bbd-4136-bd71-eed42121ca5d
+POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY=e4913e6d-4667-4979-a131-60acc429ec53
+POLAR_PRODUCT_PLAN_PERSONAL_PRO_MONTHLY=320a2cab-4ae8-47c9-8469-3bae6e342f59
+POLAR_PRODUCT_PLAN_PERSONAL_PRO_YEARLY=a93f0bf2-37aa-45f6-9a8a-fa356d37d59f
+POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY=cde7edac-a9fb-4cf2-ab6a-8e4154968e52
+POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY=a485e76a-9338-4dfb-b680-7cc3df0adaf8
+```
+
+Polar key mein `+` nahi chalta, is liye Pro+ ka key `..._PERSONAL_PRO_...` hai —
+naam har jagah "Personal Pro+" hi dikhta hai.
 
 ## Product descriptions
 
