@@ -24,3 +24,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | phase65_account_kind.sql        | founder (already run)                                              | no-touch                |
 | E2_personal_polar.sql           | E-series — Personal Polar map only                                 | **aap Run**             |
 | E13_personal_polar_products.sql | E-series — six separate Personal Polar prices + account-kind guard | **IDs ke baad aap Run** |
+| E14_security_advisor_clean.sql  | E-series — RLS on, security_invoker views, function search_path     | **aap Run**             |
