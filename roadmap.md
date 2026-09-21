@@ -92,3 +92,9 @@
 - [x] Personal product copy/metadata/ID placeholders aur E-series database wiring document karna
 - [x] Focused payment tests 4/4 aur changed-file lint/format pass
 - [ ] Project-wide typecheck ke unrelated existing errors aur signed-in Personal browser proof; live payment proof tak status READY
+
+## ANEXOChat compact tools (20 Sep 2026)
+
+- [x] READY (repo): tasks, promises, decisions aur file engine ko default-open chat flow se hata kar composer ke compact `+` tools panel mein rakhna
+- [x] READY (repo): message hover actions ko fixed overlay banana; hover par bubble/footer width aur provenance text stretch band karna
+- [ ] LIVE: authenticated desktop/mobile browser par `+` panel, upload/task controls aur message hover stability ka proof
