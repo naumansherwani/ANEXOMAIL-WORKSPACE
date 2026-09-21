@@ -306,9 +306,7 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
         <div
           className={
             "rounded-full px-4 py-2 text-sm leading-relaxed text-foreground shadow-sm " +
-            (message.mine
-              ? "bg-secondary ring-1 ring-border/80"
-              : "border border-border bg-card")
+            (message.mine ? "bg-secondary ring-1 ring-border/80" : "border border-border bg-card")
           }
         >
           {message.body}

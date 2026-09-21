@@ -518,9 +518,7 @@ function ChatPage() {
                 ...(anytimeDelete
                   ? { onDeleteAnytime: (id: string) => deleteAnytime.mutate(id) }
                   : {}),
-                ...(extended48Delete
-                  ? { onDelete48h: (id: string) => delete48h.mutate(id) }
-                  : {}),
+                ...(extended48Delete ? { onDelete48h: (id: string) => delete48h.mutate(id) } : {}),
                 onHide: (id) => hideMessage.mutate(id),
                 onPin: (message_id, pin) => pinMessage.mutate({ message_id, pin }),
                 onMore: (m) => setMoreFor((cur) => (cur?.id === m.id ? null : m)),
@@ -578,7 +576,10 @@ function ChatPage() {
                   <button
                     type="button"
                     aria-label="Cancel edit"
-                    onClick={() => { setEditTarget(null); setEditDraft(""); }}
+                    onClick={() => {
+                      setEditTarget(null);
+                      setEditDraft("");
+                    }}
                     className="text-muted-foreground hover:text-foreground"
                   >
                     <X className="size-3.5" />
@@ -602,7 +603,10 @@ function ChatPage() {
                     rows={2}
                     onChange={(e) => setEditDraft(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === "Escape") { setEditTarget(null); setEditDraft(""); }
+                      if (e.key === "Escape") {
+                        setEditTarget(null);
+                        setEditDraft("");
+                      }
                       if (e.key === "Enter" && !e.shiftKey) {
                         e.preventDefault();
                         const body = editDraft.trim();
@@ -623,7 +627,9 @@ function ChatPage() {
                     <Check className="size-4" /> Save
                   </button>
                 </form>
-                <p className="mt-1 text-[10px] text-muted-foreground">Enter to save · Esc to cancel</p>
+                <p className="mt-1 text-[10px] text-muted-foreground">
+                  Enter to save · Esc to cancel
+                </p>
               </div>
             ) : null}
 
@@ -714,9 +720,7 @@ function ChatPage() {
                   onClick={() => setToolsOpen((open) => !open)}
                   className="size-9 shrink-0"
                 >
-                  <Plus
-                    className={`size-4 transition-transform ${toolsOpen ? "rotate-45" : ""}`}
-                  />
+                  <Plus className={`size-4 transition-transform ${toolsOpen ? "rotate-45" : ""}`} />
                 </Button>
                 <button
                   type="button"
