@@ -1,6 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, Paperclip, Pencil, PhoneCall, PictureInPicture2, Search, Send, WifiOff, X } from "lucide-react";
+import {
+  Check,
+  Paperclip,
+  Pencil,
+  PhoneCall,
+  PictureInPicture2,
+  Plus,
+  Search,
+  Send,
+  WifiOff,
+  X,
+} from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
@@ -19,6 +30,7 @@ import { VideoCallOverlay } from "@/components/app/chat/VideoCall";
 import { WorkStrip } from "@/components/app/chat/WorkStrip";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { StateBlock } from "@/components/state/StateBlock";
+import { Button } from "@/components/ui/button";
 import {
   deviceLabel,
   useChatSearch,
@@ -98,9 +110,13 @@ function ChatPage() {
   // Inline edit state — window.prompt se behtar: proper textarea in-stream.
   const [editTarget, setEditTarget] = useState<ChatMessage | null>(null);
   const [editDraft, setEditDraft] = useState("");
+  const [toolsOpen, setToolsOpen] = useState(false);
   // Message-level truth drawer (Phase 19-30 arms) — ek message ek waqt.
   const [moreFor, setMoreFor] = useState<ChatMessage | null>(null);
-  useEffect(() => setMoreFor(null), [openId]);
+  useEffect(() => {
+    setMoreFor(null);
+    setToolsOpen(false);
+  }, [openId]);
   const [query, setQuery] = useState("");
   const react = useReact(openId);
   const editMessage = useEditMessage(openId);
@@ -343,7 +359,7 @@ function ChatPage() {
             />
           </div>
         ) : (
-          <div className="flex h-full min-h-0 flex-col">
+          <div className="relative flex h-full min-h-0 flex-col">
             <header className="relative z-10 shrink-0 border-b border-border bg-background px-4 py-3">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="text-sm font-bold tracking-tight text-foreground">
@@ -454,9 +470,38 @@ function ChatPage() {
 
             <ConversationTruthBar conversationId={openId!} />
 
-            <WorkStrip conversationId={openId!} />
-
-            <FileTransfers conversationId={openId!} />
+            {toolsOpen ? (
+              <aside
+                aria-label="Conversation tools"
+                className="relative z-20 max-h-[48%] shrink-0 overflow-y-auto border-b border-border bg-background shadow-elev-2"
+              >
+                <div className="sticky top-0 z-10 grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-background px-4 py-2.5">
+                  <div className="min-w-0">
+                    <h3 className="truncate text-sm font-semibold text-foreground">
+                      Conversation tools
+                    </h3>
+                    <p className="truncate text-[11px] text-muted-foreground">
+                      Files, tasks, promises and decisions
+                    </p>
+                  </div>
+                  <Button
+                    type="button"
+                    size="icon"
+                    variant="quiet"
+                    aria-label="Close conversation tools"
+                    title="Close conversation tools"
+                    onClick={() => setToolsOpen(false)}
+                    className="size-8 shrink-0"
+                  >
+                    <X className="size-4" />
+                  </Button>
+                </div>
+                <div className="[&>section]:mt-0 [&>section]:rounded-none [&>section]:border-x-0 [&>section]:border-t-0">
+                  <WorkStrip conversationId={openId!} />
+                  <FileTransfers conversationId={openId!} />
+                </div>
+              </aside>
+            ) : null}
 
             <MessageStream
               messages={ordered}
@@ -659,6 +704,20 @@ function ChatPage() {
                     e.target.value = "";
                   }}
                 />
+                <Button
+                  type="button"
+                  size="icon"
+                  variant={toolsOpen ? "secondary" : "outline"}
+                  aria-label={toolsOpen ? "Close conversation tools" : "Open conversation tools"}
+                  title={toolsOpen ? "Close conversation tools" : "Files, tasks and more"}
+                  aria-expanded={toolsOpen}
+                  onClick={() => setToolsOpen((open) => !open)}
+                  className="size-9 shrink-0"
+                >
+                  <Plus
+                    className={`size-4 transition-transform ${toolsOpen ? "rotate-45" : ""}`}
+                  />
+                </Button>
                 <button
                   type="button"
                   onClick={() => fileRef.current?.click()}

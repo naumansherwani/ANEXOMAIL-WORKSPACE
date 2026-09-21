@@ -239,7 +239,65 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
 
   return (
     <li className={"group flex " + (message.mine ? "justify-end" : "justify-start")}>
-      <div className="max-w-[min(38rem,85%)]">
+      <div className="relative w-fit max-w-[min(38rem,85%)] min-w-0">
+        <span
+          className={`absolute -top-9 z-10 hidden h-8 items-center gap-0.5 rounded-lg border border-border bg-card px-1 shadow-elev-1 group-focus-within:flex group-hover:flex ${
+            message.mine ? "right-0" : "left-0"
+          }`}
+        >
+          <IconBtn label="React" onClick={() => setPicker((v) => !v)}>
+            <Smile className="size-3" />
+          </IconBtn>
+          <IconBtn label="Reply" onClick={() => actions.onReply(message)}>
+            <Reply className="size-3" />
+          </IconBtn>
+          <IconBtn label="Copy" onClick={() => void navigator.clipboard.writeText(message.body)}>
+            <Copy className="size-3" />
+          </IconBtn>
+          <IconBtn
+            label={message.pinned_at ? "Unpin" : "Pin"}
+            onClick={() => actions.onPin(message.id, !message.pinned_at)}
+          >
+            <Pin className="size-3" />
+          </IconBtn>
+          {canEdit ? (
+            <IconBtn label="Edit (5 minutes)" onClick={() => actions.onEdit(message)}>
+              <Pencil className="size-3" />
+            </IconBtn>
+          ) : null}
+          <IconBtn
+            label="More: star, forward, decision, work, receipts"
+            onClick={() => actions.onMore(message)}
+          >
+            <MoreHorizontal className="size-3" />
+          </IconBtn>
+          <IconBtn label="Delete for me" onClick={() => actions.onHide(message.id)} danger>
+            <EyeOff className="size-3" />
+          </IconBtn>
+          {canUnsend ? (
+            <IconBtn
+              danger
+              label={
+                anytime
+                  ? "Delete for everyone"
+                  : extended48
+                    ? "Delete for everyone (48 hours)"
+                    : "Delete for everyone (1 hour)"
+              }
+              onClick={() => {
+                if (withinWindow(message.created_at, DELETE_WINDOW_MS)) {
+                  actions.onDeleteForEveryone(message.id);
+                } else if (anytime && actions.onDeleteAnytime) {
+                  actions.onDeleteAnytime(message.id);
+                } else if (actions.onDelete48h) {
+                  actions.onDelete48h(message.id);
+                }
+              }}
+            >
+              <Trash2 className="size-3" />
+            </IconBtn>
+          ) : null}
+        </span>
         {message.reply_to_id ? (
           <div className="mb-1 rounded-lg border-l-2 border-primary/50 bg-muted/40 px-2 py-1 text-[11px] text-muted-foreground">
             {message.reply_to_sender ?? "Teammate"}: {message.reply_to_body ?? "message removed"}
@@ -282,78 +340,11 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
           </div>
         ) : null}
 
-        <div className="mt-1 flex flex-wrap items-center gap-1.5 text-[11px] text-muted-foreground">
+        <div className="mt-1 flex min-h-5 items-center gap-1.5 whitespace-nowrap text-[11px] text-muted-foreground">
           <StateIcon state={state} />
           <span>{STATE_LABEL[state]}</span>
           <span aria-hidden>·</span>
           <span>{stamp(message.created_at)}</span>
-
-          <span className="ml-1 hidden items-center gap-0.5 rounded-full border border-border bg-card px-1.5 py-0.5 shadow-sm group-hover:inline-flex">
-            <IconBtn label="React" onClick={() => setPicker((v) => !v)}>
-              <Smile className="size-3" />
-            </IconBtn>
-            <IconBtn label="Reply" onClick={() => actions.onReply(message)}>
-              <Reply className="size-3" />
-            </IconBtn>
-            <IconBtn label="Copy" onClick={() => void navigator.clipboard.writeText(message.body)}>
-              <Copy className="size-3" />
-            </IconBtn>
-            <IconBtn
-              label={message.pinned_at ? "Unpin" : "Pin"}
-              onClick={() => actions.onPin(message.id, !message.pinned_at)}
-            >
-              <Pin className="size-3" />
-            </IconBtn>
-            {canEdit ? (
-              <IconBtn label="Edit (5 minutes)" onClick={() => actions.onEdit(message)}>
-                <Pencil className="size-3" />
-              </IconBtn>
-            ) : null}
-            <IconBtn
-              label="More: star, forward, decision, work, receipts"
-              onClick={() => actions.onMore(message)}
-            >
-              <MoreHorizontal className="size-3" />
-            </IconBtn>
-            <IconBtn label="Delete for me" onClick={() => actions.onHide(message.id)} danger>
-              <EyeOff className="size-3" />
-            </IconBtn>
-            {canUnsend ? (
-              <IconBtn
-                danger
-                label={
-                  anytime
-                    ? "Delete for everyone"
-                    : extended48
-                      ? "Delete for everyone (48 hours)"
-                      : "Delete for everyone (1 hour)"
-                }
-                onClick={() => {
-                  // 1h ke andar har plan normal delete. Uske bahar:
-                  // Business Pro → anytime (E6), Business → 48h (E7). SQL gate audit ke saath.
-                  if (withinWindow(message.created_at, DELETE_WINDOW_MS)) {
-                    actions.onDeleteForEveryone(message.id);
-                  } else if (anytime) {
-                    actions.onDeleteAnytime!(message.id);
-                  } else {
-                    actions.onDelete48h!(message.id);
-                  }
-                }}
-              >
-                <Trash2 className="size-3" />
-              </IconBtn>
-            ) : null}
-          </span>
-
-          {/* Provenance chip — hover se poori sach: kis ne, kab, kis device se */}
-          <span className="ml-1 hidden rounded-full border border-border px-1.5 py-0.5 group-hover:inline">
-            {message.sender_name} · #{message.seq} · {message.device_label ?? "device unknown"} ·{" "}
-            {message.read_at
-              ? `read ${stamp(message.read_at)}`
-              : message.delivered_at
-                ? `delivered ${stamp(message.delivered_at)}`
-                : "delivery not confirmed yet"}
-          </span>
         </div>
 
         {picker ? (
