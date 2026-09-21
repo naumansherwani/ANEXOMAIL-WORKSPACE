@@ -241,7 +241,7 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
     <li className={"group flex " + (message.mine ? "justify-end" : "justify-start")}>
       <div className="relative w-fit max-w-[min(38rem,85%)] min-w-0">
         <span
-          className={`absolute -top-9 z-10 hidden h-8 items-center gap-0.5 rounded-lg border border-border bg-card px-1 shadow-elev-1 group-focus-within:flex group-hover:flex ${
+          className={`absolute -top-9 z-10 hidden h-8 max-w-[min(28rem,calc(100vw-2rem))] items-center gap-0.5 overflow-x-auto rounded-lg border border-border bg-card px-1 shadow-elev-1 group-focus-within:flex group-hover:flex ${
             message.mine ? "right-0" : "left-0"
           }`}
         >
@@ -346,7 +346,7 @@ function Bubble({ message, actions }: { message: ChatMessage; actions: MessageAc
         </div>
 
         {picker ? (
-          <div className="mt-1 flex gap-1">
+          <div className="mt-1 flex max-w-full gap-1 overflow-x-auto pb-1">
             {QUICK.map((emoji) => (
               <button
                 key={emoji}
