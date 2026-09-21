@@ -21,6 +21,8 @@ cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase o
 
 ---
 
+Frontend pull 21 Sep 2026: **DONE** — `web /health 200`. Proof: `docs/cursor-work/server/pull-20260921-web.md`.
+
 Ab se har server-side script yahan track hoga.
 
 Security blueprint (TODO, no code): `docs/anexomail-security-blueprint.md`
