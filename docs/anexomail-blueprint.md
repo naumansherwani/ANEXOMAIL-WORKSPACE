@@ -321,3 +321,4 @@ Claude ne yeh server pe likha. Repo ab usi file ko rakhta hai. Password is recor
 - `POST /api/mail/thread/:id/assign` live `mail.ts` mein. Pro+ gate `hasFeature(plan, "sharedInbox")`. Basic ko 403. Brain deploy usi waqt `GREEN anexomail-leo :3100`.
 - UI chip pehle se tha. Is paste mein assign button ka frontend save nahi aaya.
 - `server/lib/plan.ts` is paste mein nahi tha. Server par hai, yahan naya nahi likha.
+- 25 Sep 2026 later: GoTrue `users?email=` filter ignore karta hai. Assign email ko client-side match karta hai (`per_page=1000`). Live: thread `fadd90c3-054f-4455-8f9a-ecb0b8a0c6f1` assignee `3e3a60ea-1580-4443-94f6-b758de732dce`, plan `business`, `ok: true`. Step 5 API complete. Frontend assign control is note mein nahi.

@@ -428,10 +428,31 @@ mailRouter.post("/thread/:id/assign", async (req, res) => {
     });
   }
 
-  const assignee = String(req.body?.assignee || "").trim();
+  const assigneeInput = String(req.body?.assignee || "").trim();
+  let assigneeId: string | null = null;
+  if (assigneeInput.includes("@")) {
+    try {
+      // NOTE: GoTrue admin /users?email= query param genuinely IGNORES the
+      // filter (returns first user unfiltered) — confirmed via live test.
+      // Fetch full list, match client-side instead.
+      const supaUrl = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
+      const supaKey = process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+      const r = await fetch(
+        `${supaUrl.replace(/\/$/, "")}/auth/v1/admin/users?per_page=1000`,
+        { headers: { apikey: supaKey, Authorization: `Bearer ${supaKey}` } },
+      );
+      const j: any = await r.json();
+      const match = (j?.users || []).find(
+        (u: any) => String(u?.email || "").toLowerCase() === assigneeInput.toLowerCase(),
+      );
+      assigneeId = match?.id ?? null;
+    } catch (e) {
+      console.error("[mail/assign] email lookup failed:", e);
+    }
+  }
   const { data, error } = await supa.rpc("mail_thread_assign", {
     _thread_id: req.params.id,
-    _assignee: assignee,
+    _assignee: assigneeId || assigneeInput,
     _org_id: c.orgId,
   });
   if (error) return res.status(400).json({ error: error.message });
