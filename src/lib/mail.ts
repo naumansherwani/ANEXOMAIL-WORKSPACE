@@ -240,7 +240,8 @@ type ThreadAction =
   | { kind: "status"; status: ThreadStatus }
   | { kind: "snooze"; until: string | null }
   | { kind: "star"; starred: boolean }
-  | { kind: "move"; folder: MailFolder };
+  | { kind: "move"; folder: MailFolder }
+  | { kind: "assign"; assignee: string };
 
 export function useThreadAction() {
   const qc = useQueryClient();
@@ -264,7 +265,9 @@ export function useThreadAction() {
             ? `/api/mail/thread/${threadId}/status`
             : action.kind === "snooze"
               ? `/api/mail/thread/${threadId}/snooze`
-              : `/api/mail/thread/${threadId}/move`;
+              : action.kind === "assign"
+                ? `/api/mail/thread/${threadId}/assign`
+                : `/api/mail/thread/${threadId}/move`;
       const { kind: _kind, ...body } = action;
       return api(path, { method: "POST", body: JSON.stringify(body) });
     },
