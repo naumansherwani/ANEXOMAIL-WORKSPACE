@@ -18,7 +18,7 @@ Polar rust payment `:3400` **E nahi** — pehle se, no-touch. `plans.ts` / landi
 
 Naya kaam: pehle Rust, phir Bun fallback.
 
-**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 (send+receive live) ke baghair E5–E8 aage **nahi**.
+**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 send founder ne 18–21 Sep 2026 prove kiya (`mail-worker.ts`). Inbound `mail-gate.sh` alag. Steps 5–8 abhi pending.
 
 ---
 
@@ -119,12 +119,14 @@ Personal | Business. Business → org name+domain. Personal → dashboard. Polar
 
 ---
 
-## E4 = F4 SEND + RECEIVE GATE — TODO
+## E4 = F4 SEND + RECEIVE GATE — SEND PROVEN (18–21 Sep 2026)
 
-Compose → Postfix (installed). Bahar se → Dovecot → list.  
-Backend: Rust delivery push; Bun send fallback.  
-Live: `bash server/gates/mail-gate.sh` + founder dekhe.  
-**Ab backend yahi.** E5–E8 wait.
+Founder lock. Compose → `mail_scheduled` → `mail-worker.ts` (5s) → Postfix → deliver.  
+Quota check `admin_storage_snapshots` send se pehle.  
+Proof: login → org → compose → send → deliver.  
+`mail-gate.sh` + inbound receive is line mein alag se green nahi likha.  
+Plan caps 1–4 (mailbox, storage, domain, alias) isi session mein. Steps 5–8 pending.  
+Detail: blueprint append “SESSION 18–21 SEP 2026”.
 
 ---
 

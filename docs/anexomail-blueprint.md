@@ -248,3 +248,58 @@ Source files: `.lovable/plan/` + `roadmap.md` + `sql/` + `docs/wire/`
 4. Mock / dummy success = FAIL
 5. Secrets kabhi output/log mein nahi
 6. Har nayi table ke saath RLS + GRANT same migration mein
+
+---
+
+## SESSION 18–21 SEP 2026 — COMPLETE (founder lock)
+
+Founder ne yeh session **complete** declare kiya (25 Sep 2026). Agents is list ko dubara build / “missing” mat samjhein. Secrets, passwords, `DATABASE_URL` is file mein nahi.
+
+### Infrastructure
+
+- `server/lib/supa.ts` — Brain `:3100` ke liye admin client. `deploy-brain.sh` sync list mein.
+- `deploy-brain.sh` — PM2 ko `--env-file` se fresh env. Stale cached env nahi.
+- Working Postgres `DATABASE_URL` teen env files mein (anexomail, anexomail-web, polar-rust-payment). Purana password stale tha.
+- `polar-rust-payment` crash-loop band. Polar webhook dashboard se re-enable. Engine codes no-touch.
+
+### Founder login
+
+- `naumansherwani.founder@anexomail.com` Supabase password reset. Family accounts no-touch.
+- `ensureFounderOrg()` — organisation + `org_members` + `mail_accounts`. `no_workspace` band. `/api/mail/*` open.
+
+### E4 mail send
+
+- `mail_scheduled` columns: code `to` / `cc` / `bcc` (purana `to_addresses` mismatch theek).
+- `mail-worker.ts` — har 5s `status=queued` ko Postfix se bhejta hai, `sent` / `failed`. Purani phansi mail bhi isi se gayi.
+- `admin_storage_snapshots` har send se pehle quota check.
+- Founder proof: login → org → compose → send → deliver.
+
+### Plan caps (steps 1–4)
+
+- Plan truth SQL `storage_plans`: Basic 3 mailbox / 5GB, Pro 5 / 10GB, Business 30 / 25GB, Business Pro unlimited / 1TB pooled.
+- `POST /api/org/mailboxes` plan cap. Create + limit tested.
+- `mail_domains` / `mail_aliases` pe `org_id` add + backfill.
+- `POST /api/org/domains` aur `POST /api/org/aliases` plan cap. Tested.
+
+### Personal Polar checkout
+
+- Product key `PRO_PLUS` → `PRO` (Polar `+` allow nahi). Config + env.
+- Trigger `billing_personal_product_guard`: NULL `workspace_kind` = unset, reject nahi. Guest checkout Business ki tarah allowed.
+- `personal-tiers.ts` Pro+ keys `PRO` (monthly + yearly).
+- Bfcache: Polar se Back par spinner `pageshow` se reset.
+- Basic, Pro+, Premium — guest aur logged-in — Polar checkout URL tak verified. Card charge abhi nahi.
+
+### ANEXOChat UI (is session)
+
+- Radix Select (native OS dropdown hata).
+- Message actions collapsed menu. Hover-stretch theek.
+- `Scene.tsx` dark-stage + sunny override.
+- Compact tools: Tasks/Files `+` ke peeche (Lovable UI). Lovable source files no-touch rehte hain.
+
+### Abhi pending — yahi agla kaam
+
+1. Plan-feature steps 5–8: shared-inbox assign, thread tasks/notes gate, thread-analytics restrict, integrations + LEO Actions lock.
+2. `hello@` auto-reply (Option C template).
+3. `billing@` receipt on Polar payment success.
+4. MailRail: founder-solo vs company-unified.
+5. Real card payment end-to-end — abhi sirf checkout **open** proven.

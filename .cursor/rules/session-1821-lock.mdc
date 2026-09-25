@@ -1,0 +1,14 @@
+---
+description: Session 18–21 Sep 2026 is complete. Do not rebuild it. Pending list is the only next work.
+alwaysApply: true
+---
+
+# Session 18–21 Sep 2026 — locked complete
+
+Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **SESSION 18–21 SEP 2026**. Do not rewrite that section. Do not write product code to “redo” these items.
+
+**Done — leave alone:** `server/lib/supa.ts` + brain env-file sync · working Postgres URL on the three env files · `polar-rust-payment` out of crash-loop (engine code no-touch) · founder login + `ensureFounderOrg` · E4 send via `mail-worker.ts` · mailbox/storage/domain/alias caps · personal Polar checkout URL (Basic, Pro+, Premium, guest and signed-in) · ANEXOChat dropdowns, message menu, Scene, compact tools.
+
+**Still pending — only this is next:** (1) shared-inbox assign, thread tasks/notes gate, thread-analytics restrict, integrations/LEO lock (2) `hello@` auto-reply Option C (3) `billing@` receipt on Polar success (4) MailRail founder-solo vs company-unified (5) real card charge — checkout open is proven, payment completion is not.
+
+No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.
