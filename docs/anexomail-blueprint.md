@@ -298,7 +298,7 @@ Founder ne yeh session **complete** declare kiya (25 Sep 2026). Agents is list k
 
 ### Abhi pending — yahi agla kaam
 
-1. Plan-feature steps 5–8: shared-inbox assign, thread tasks/notes gate, thread-analytics restrict, integrations + LEO Actions lock.
+1. Plan-feature steps 6–8 still open: thread tasks/notes gate, thread-analytics restrict, integrations + LEO Actions lock. Step 5 assign is dated below.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
@@ -314,3 +314,10 @@ Claude ne yeh server pe likha. Repo ab usi file ko rakhta hai. Password is recor
 - `server/mail-worker.ts` — Claude ka worker. Har 5s `mail_scheduled` `status=queued`. Storage: `chat_ensure_workspace`, `storage_reserve`, `storage_commit`, `storage_release`. Send: `sendMail`. Brain `index.ts` `startMailWorker()` call karta hai. `deploy-brain.sh` file ko `/opt/anexomail/src/mail-worker.ts` copy karta hai.
 - Live proof 25 Sep 2026: `POST /api/mail/schedule` → `{"id":"2f6a82a4-317b-4535-b5e0-d84a833bc716","status":"holding"}`. 35s baad log: `[mail-worker] sent id=2f6a82a4-317b-4535-b5e0-d84a833bc716 to=naumankhansherwani@gmail.com`.
 - `deploy-brain.sh` ne `GREEN anexomail-leo :3100` print kiya. Website pull is entry ke liye nahi.
+
+### 25 Sep 2026 — Step 5 shared-inbox assign
+
+- Supabase function `mail_thread_assign` applied (create, revoke, grant). Repo copy: `docs/cursor-work/sql/E14_mail_thread_assign.sql`. Dubara run nahi.
+- `POST /api/mail/thread/:id/assign` live `mail.ts` mein. Pro+ gate `hasFeature(plan, "sharedInbox")`. Basic ko 403. Brain deploy usi waqt `GREEN anexomail-leo :3100`.
+- UI chip pehle se tha. Is paste mein assign button ka frontend save nahi aaya.
+- `server/lib/plan.ts` is paste mein nahi tha. Server par hai, yahan naya nahi likha.

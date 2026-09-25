@@ -6,6 +6,7 @@
  */
 import { Router } from "express";
 import { admin as supa } from "../lib/supa";
+import { resolvePlan, hasFeature } from "../lib/plan";
 import { leoSupportPipeline } from "../lib/leo-brain";
 import { sendMail } from "../mail/sendmail";
 
@@ -405,6 +406,36 @@ mailRouter.post("/thread/:id/star", async (req, res) => {
   const { error } = await supa.from("mail_threads").update({ starred }).eq("id", req.params.id);
   if (error) return res.status(400).json({ error: error.message });
   res.json({ ok: true, starred });
+});
+
+/**
+ * Step 5 (plan-feature-wire audit): shared-inbox collision-guard assign,
+ * GENUINELY wired (pehle sirf UI chip dikhta tha, save nahi hoti thi).
+ * Pro+ gate — Basic plan ko yeh feature nahi milta (pricing table match).
+ * Recorded 25 Sep 2026 from the live server patch.
+ */
+mailRouter.post("/thread/:id/assign", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
+
+  const plan = await resolvePlan(c.userId, c.userEmail);
+  if (!hasFeature(plan, "sharedInbox")) {
+    return res.status(403).json({
+      error: "feature_not_available",
+      feature: "sharedInbox",
+      plan,
+      message: "Shared inbox with collision guard is a Pro+ feature. Upgrade to assign threads.",
+    });
+  }
+
+  const assignee = String(req.body?.assignee || "").trim();
+  const { data, error } = await supa.rpc("mail_thread_assign", {
+    _thread_id: req.params.id,
+    _assignee: assignee,
+    _org_id: c.orgId,
+  });
+  if (error) return res.status(400).json({ error: error.message });
+  res.json({ ok: true, thread: data, plan });
 });
 
 mailRouter.post("/thread/:id/move", async (req, res) => {
