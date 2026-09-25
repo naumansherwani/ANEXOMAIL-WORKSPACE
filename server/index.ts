@@ -46,6 +46,7 @@ import billingSupportRouter from "./routes/billing-support";
 import { glitchPublicRouter, founderGlitchRouter } from "./routes/glitch";
 import { storageRouter, internalStorageRouter, founderStorageRouter } from "./routes/storage";
 import { billingSyncAuthRouter, billingSyncPublicRouter } from "./routes/billing-sync";
+import { startMailWorker } from "./mail-worker";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -227,6 +228,7 @@ app.use("/api/founder", founderStorageRouter);
 app.use((_req, res) => res.status(404).json({ error: "not_found" }));
 
 app.listen(PORT, "0.0.0.0", () => {
+  startMailWorker();
   console.log(
     `ANEXOMAIL Brain LIVE on port ${PORT} (Leo + auth + workspace + compose + contacts + calendar + crm + org + ai + founder + integrations + settings + admin)`,
   );

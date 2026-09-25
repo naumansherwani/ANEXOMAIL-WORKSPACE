@@ -124,6 +124,7 @@ Personal | Business. Business → org name+domain. Personal → dashboard. Polar
 Founder lock. Compose → `mail_scheduled` → `mail-worker.ts` (5s) → Postfix → deliver.  
 Quota check `admin_storage_snapshots` send se pehle.  
 Proof: login → org → compose → send → deliver.  
+25 Sep 2026: Claude `server/mail-worker.ts` + storage RPC reserve/commit/release. Schedule `2f6a82a4-317b-4535-b5e0-d84a833bc716` sent.  
 `mail-gate.sh` + inbound receive is line mein alag se green nahi likha.  
 Plan caps 1–4 (mailbox, storage, domain, alias) isi session mein. Steps 5–8 pending.  
 Detail: blueprint append “SESSION 18–21 SEP 2026”.

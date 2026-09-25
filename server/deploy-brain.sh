@@ -37,6 +37,10 @@ if [ -f "$SOURCE/lib/supa.ts" ]; then
   [ -f "$TARGET/src/lib/supa.ts" ] && cp -a "$TARGET/src/lib/supa.ts" "$TARGET/backups/$STAMP/lib/supa.ts"
   install -m 0644 "$SOURCE/lib/supa.ts" "$TARGET/src/lib/supa.ts"
 fi
+if [ -f "$SOURCE/mail-worker.ts" ]; then
+  [ -f "$TARGET/src/mail-worker.ts" ] && cp -a "$TARGET/src/mail-worker.ts" "$TARGET/backups/$STAMP/mail-worker.ts"
+  install -m 0644 "$SOURCE/mail-worker.ts" "$TARGET/src/mail-worker.ts"
+fi
 # auth-passkey imports ../lib/webauthn — path from routes is ../lib ✓
 # Naya index tabhi restart ho jab uske tamam route modules target par maujood hon.
 missing=0

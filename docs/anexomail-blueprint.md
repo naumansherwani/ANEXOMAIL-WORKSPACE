@@ -303,3 +303,14 @@ Founder ne yeh session **complete** declare kiya (25 Sep 2026). Agents is list k
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
 5. Real card payment end-to-end — abhi sirf checkout **open** proven.
+
+---
+
+## 25 Sep 2026 — repo copy of what is already on the server
+
+Claude ne yeh server pe likha. Repo ab usi file ko rakhta hai. Password is record mein nahi.
+
+- `server/routes/storage.ts` lines 135–158 (`storage_reserve` result, `storage_commit`, `storage_release`) GitHub se match. Dated 25 Sep 2026.
+- `server/mail-worker.ts` — Claude ka worker. Har 5s `mail_scheduled` `status=queued`. Storage: `chat_ensure_workspace`, `storage_reserve`, `storage_commit`, `storage_release`. Send: `sendMail`. Brain `index.ts` `startMailWorker()` call karta hai. `deploy-brain.sh` file ko `/opt/anexomail/src/mail-worker.ts` copy karta hai.
+- Live proof 25 Sep 2026: `POST /api/mail/schedule` → `{"id":"2f6a82a4-317b-4535-b5e0-d84a833bc716","status":"holding"}`. 35s baad log: `[mail-worker] sent id=2f6a82a4-317b-4535-b5e0-d84a833bc716 to=naumankhansherwani@gmail.com`.
+- `deploy-brain.sh` ne `GREEN anexomail-leo :3100` print kiya. Website pull is entry ke liye nahi.
