@@ -1,0 +1,13 @@
+---
+description: Server git pull only after a specific task is complete. Never a second pull for work already on the server.
+alwaysApply: true
+---
+
+# Pull only after a finished task
+
+Founder lock 25 Sep 2026. The 18–21 Sep audit and the live `storage.ts` paste were sent so the server is not pulled twice for the same work.
+
+- Frontend pull 21 Sep 2026 is already **DONE** (`web /health 200`). Do not send that block again for docs, memory, or a file that is already on the server.
+- Give the pull command only when a **named task** is finished and its commit is on GitHub.
+- One task, one pull. No pull after a chat, a status note, or a rule file.
+- Pull text stays the locked `--rebase` block. Do not invent a second command.
