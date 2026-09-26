@@ -11,6 +11,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **Steps 1–5 GREEN 26 Sep 2026 — do not redo:** plan caps basic=3, pro=5, business=30, business_pro=unlimited. `POST /api/org/mailboxes` cap. Send path `storage_reserve` then `storage_commit`. `/api/org/domains` and `/api/org/aliases` caps. Assign by name, email, UUID, and clear. Frontend Assign control is live on the server. Do not rebuild it. Do not overwrite the server `ThreadHeaderActions.tsx` from the older GitHub copy.
 
-**Still pending — only this is next:** (6) thread tasks/notes gate (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge, inbound mail in the inbox.
+**Step 6 partial 26 Sep 2026 — do not rebuild the list RPC:** Rust `:3200` `work.notes.list` returned one note on thread `fadd90c3-054f-4455-8f9a-ecb0b8a0c6f1`. `work.notes.upsert` failed `42P10` (no unique constraint for ON CONFLICT). GitHub `main.rs` does not contain that procedure — server source was not pasted. Do not write a second one. Stack lock: Rust, Tokio, WebTransport. Bun fallback only.
+
+**Still pending — only this is next:** (6) notes upsert constraint, thread tasks/notes UI, Basic wall (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge, inbound mail in the inbox.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

@@ -18,7 +18,7 @@ Polar rust payment `:3400` **E nahi** — pehle se, no-touch. `plans.ts` / landi
 
 Naya kaam: pehle Rust, phir Bun fallback.
 
-**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 send founder ne 18–21 Sep 2026 prove kiya (`mail-worker.ts`). Inbound `mail-gate.sh` alag. Steps 1–5 GREEN 26 Sep 2026. Do not redo. Steps 6–8 abhi pending.
+**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 send founder ne 18–21 Sep 2026 prove kiya (`mail-worker.ts`). Inbound `mail-gate.sh` alag. Steps 1–5 GREEN 26 Sep 2026. Do not redo. Step 6 list live on Rust `:3200`; upsert `42P10` — not green. Steps 7–8 pending.
 
 ---
 
