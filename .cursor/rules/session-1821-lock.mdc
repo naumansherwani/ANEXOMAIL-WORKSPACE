@@ -15,6 +15,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **E4 mail GREEN 27 Sep 2026 — do not redo:** Founder confirmed send and receive both work. Outbound already proven. Inbound now confirmed. Do not reopen the mail pipe.
 
+**Mail read path GREEN 27 Sep 2026 — do not redo:** Rust primary for `mail.threads`, `mail.search`, `mail.counts`, `mail.accounts`, `mail.labels`, `mail.star`, and `mail.thread`. Frontend tries Rust first and falls back to Bun on down or 404. `mail.send` stays Bun. Do not migrate send. Do not add a second thread client.
+
 **Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

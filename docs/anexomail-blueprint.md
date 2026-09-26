@@ -324,6 +324,22 @@ Rust `:3200`, Tokio, WebTransport. Health `up`, transport `rpc` + `http3`. Threa
 ### 27 Sep 2026 — E4 send and receive GREEN
 
 Founder confirmed after the mail work: email goes out and email comes in. Do not reopen send or receive. Do not treat inbound as still open.
+
+### 27 Sep 2026 — mail.thread on Rust. Do not redo.
+
+Frontend calls Rust `:3200` first for the thread. If Rust is down or returns 404, Bun answers. The site stays up. Duplicate import removed. Deploy succeeded.
+
+| Call | Backend |
+|---|---|
+| mail.threads, mail.search | Rust primary |
+| mail.counts | Rust primary |
+| mail.accounts | Rust primary |
+| mail.labels | Rust primary |
+| mail.star | Rust primary |
+| mail.thread | Rust primary |
+| mail.send | Bun |
+
+Do not move `mail.send` onto Rust. Do not add a second thread client.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.

@@ -130,10 +130,12 @@ Detail: blueprint append “SESSION 18–21 SEP 2026”.
 
 ---
 
-## E5 = F5 Thread — TODO (wait E4)
+## E5 = F5 Thread — detail on Rust (27 Sep 2026)
 
-Lovable: `$threadId.tsx`  
-Backend: Rust reply push · Bun `/api/mail/thread/:id` fallback.
+`mail.thread` is Rust `:3200` primary. Bun `/api/mail/thread/:id` is fallback only (Rust down or 404).  
+Also Rust primary: `mail.threads`, `mail.search`, `mail.counts`, `mail.accounts`, `mail.labels`, `mail.star`.  
+`mail.send` stays Bun. Do not redo this split.  
+Reply push is not this line.
 
 ---
 
