@@ -296,9 +296,21 @@ Founder ne yeh session **complete** declare kiya (25 Sep 2026). Agents is list k
 - `Scene.tsx` dark-stage + sunny override.
 - Compact tools: Tasks/Files `+` ke peeche (Lovable UI). Lovable source files no-touch rehte hain.
 
+### Plan-feature steps 1–5 — GREEN (26 Sep 2026). Do not redo.
+
+| Step | Status |
+|---|---|
+| 1 plan.ts = SQL | GREEN. basic=3, pro=5, business=30, business_pro=unlimited. |
+| 2 Mailbox create + cap | GREEN. `POST /api/org/mailboxes`. Cap live tested. |
+| 3 Storage on send | GREEN. `chat_ensure_workspace` → `storage_reserve` → `storage_commit`. Real send tested. |
+| 4 Domains + aliases | GREEN. `org_id` on `mail_domains` and `mail_aliases`. `/api/org/domains` and `/api/org/aliases`. Cap tested. |
+| 5 Shared-inbox assign | GREEN. Name, email, UUID, and clear proven. Frontend Assign control live on the server: Pro+ open, Basic `FeatureGate` chip, 403/404, spinner, `t()`. |
+
+`ThreadHeaderActions.tsx` in this GitHub tree was not overwritten — the Assign control source was not pasted here. Do not rebuild it. Do not replace the server file with the older GitHub header.
+
 ### Abhi pending — yahi agla kaam
 
-1. Plan-feature steps 6–8 still open: thread tasks/notes gate, thread-analytics restrict, integrations + LEO Actions lock. Step 5 assign is dated below.
+1. Plan-feature steps 6–8: thread tasks/notes gate, thread-analytics restrict to Pro+, integrations and LEO Actions lock to Business+.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
