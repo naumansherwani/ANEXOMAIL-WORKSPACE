@@ -13,6 +13,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **Step 6 and thread reading GREEN 27 Sep 2026 — do not redo:** Rust `:3200` notes upsert overwrites one row (`b7b534a5-661e-4a37-b0f1-a3f888ffddc1`). Tasks create/list, Pro+ gate, Basic 403, thread Tasks/Notes UI. Also green: sender identity, DMARC null-byte, thread messages, collapsed notes, collapsed quoted text, Reply and Forward side by side. Reply keeps sender and subject. Forward leaves To empty, subject `Fwd:`, body quotes From/Date/Subject/To plus the original. Stack: Rust, Tokio, WebTransport. Bun fallback only. Do not write a second notes API or a second Forward control.
 
-**Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge, inbound mail in the inbox.
+**E4 mail GREEN 27 Sep 2026 — do not redo:** Founder confirmed send and receive both work. Outbound already proven. Inbound now confirmed. Do not reopen the mail pipe.
+
+**Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

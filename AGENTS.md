@@ -138,7 +138,7 @@ Asli email **bhejni aur aani** ke baghair agla flow nahi.
 
 | Item | Action |
 |---|---|
-| MAIL send+receive | **LOCKED** — F5+ wait until live send/receive + mail-gate green |
+| MAIL send+receive | **GREEN 27 Sep 2026** — founder confirmed send and receive both live. Do not reopen. |
 | ANEXOMAIL blueprint (59 phases) | **Founder paste kare** → `docs/anexomail-blueprint.md` banegi |
 | SQL phase60/61/62 | Supabase #4 SQL Editor mein paste karo (tarteeb se) |
 | Server pull | `git pull && bun install && bun run build:bun && pm2 restart...` |
