@@ -318,7 +318,8 @@ Rust `:3200`, Tokio, WebTransport. Health `up`, transport `rpc` + `http3`. Threa
 
 - `work.notes.upsert` twice, same id `b7b534a5-661e-4a37-b0f1-a3f888ffddc1`, both `ok: true`. List shows one row, body `Manual upsert test - call 2, should overwrite`.
 - `resolve_plan` canonical SQL, `dispatch_work` Pro+ gate, `work.tasks.create` / `work.tasks.list`, Basic wall 403. Frontend Tasks/Notes on the thread. Do not build a second notes API.
-- Same session, also green: sender identity no longer stuck on `hello@`. DMARC null-byte crash fixed. Thread messages load (`mail_attachments` column). Tasks/Notes panel collapsed so it does not cover the mail. Inline reply collapsed on every plan — one Reply button, compose opens on click.
+- Same session, also green: sender identity no longer stuck on `hello@`. DMARC null-byte crash fixed. Thread messages load (`mail_attachments` column). Tasks/Notes panel collapsed so it does not cover the mail. Inline reply collapsed on every plan. Quoted text collapsed for reading.
+- 27 Sep 2026 thread actions: two buttons side by side, Reply and Forward. Reply opens with To = sender and the same subject. Forward opens with To empty, subject `Fwd: ` plus the original subject, body prefilled with From / Date / Subject / To and the original message. Do not rebuild.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
