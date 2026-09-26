@@ -310,7 +310,15 @@ Founder ne yeh session **complete** declare kiya (25 Sep 2026). Agents is list k
 
 ### Abhi pending — yahi agla kaam
 
-1. Plan-feature step 6 is not green. 26 Sep 2026 Rust `:3200` release build finished. Health `status: up`, transport `rpc` + `http3`, WebTransport live. `work.notes.list` on thread `fadd90c3-054f-4455-8f9a-ecb0b8a0c6f1` returned one row `b7b534a5-661e-4a37-b0f1-a3f888ffddc1`. `work.notes.upsert` returned `42P10` — no unique constraint for `ON CONFLICT`. Do not add a second notes API. Upsert stays red until that constraint exists. Thread UI and Basic wall are still open. Steps 7–8 still open. Stack stays Rust + Tokio + WebTransport. Bun is fallback only.
+1. Plan-feature steps 7–8: thread-analytics restrict to Pro+, integrations and LEO Actions lock to Business+.
+
+### 27 Sep 2026 — Step 6 GREEN. Do not redo.
+
+Rust `:3200`, Tokio, WebTransport. Health `up`, transport `rpc` + `http3`. Thread `fadd90c3-054f-4455-8f9a-ecb0b8a0c6f1`.
+
+- `work.notes.upsert` twice, same id `b7b534a5-661e-4a37-b0f1-a3f888ffddc1`, both `ok: true`. List shows one row, body `Manual upsert test - call 2, should overwrite`.
+- `resolve_plan` canonical SQL, `dispatch_work` Pro+ gate, `work.tasks.create` / `work.tasks.list`, Basic wall 403. Frontend Tasks/Notes on the thread. Do not build a second notes API.
+- Same session, also green: sender identity no longer stuck on `hello@`. DMARC null-byte crash fixed. Thread messages load (`mail_attachments` column). Tasks/Notes panel collapsed so it does not cover the mail. Inline reply collapsed on every plan — one Reply button, compose opens on click.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
