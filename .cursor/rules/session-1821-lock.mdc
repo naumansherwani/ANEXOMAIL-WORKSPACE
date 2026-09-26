@@ -9,7 +9,7 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **Done — leave alone:** `server/lib/supa.ts` + brain env-file sync · working Postgres URL on the three env files · `polar-rust-payment` out of crash-loop (engine code no-touch) · founder login + `ensureFounderOrg` · E4 send via `mail-worker.ts` · mailbox/storage/domain/alias caps · personal Polar checkout URL (Basic, Pro+, Premium, guest and signed-in) · ANEXOChat dropdowns, message menu, Scene, compact tools.
 
-**Step 5 API done 25 Sep 2026 — do not redo:** `mail_thread_assign` already applied. `POST /api/mail/thread/:id/assign` Pro+ gate. Email match is client-side (`per_page=1000`), not `users?email=`. Live assignee id `3e3a60ea-1580-4443-94f6-b758de732dce` on thread `fadd90c3-054f-4455-8f9a-ecb0b8a0c6f1`. `src/lib/mail.ts` assign kind is in the repo. Header UI source was not in the paste.
+**Step 5 API complete 26 Sep 2026 — do not redo:** `POST /api/mail/thread/:id/assign`. Pro+ gate. UUID passes through. Name or email matches `full_name` or email client-side (`per_page=1000`). Empty clears. Unknown name is `400 assignee_not_found`. Proof: "Masood Sherwani" → `670351c7-b377-4371-a3fe-41ce66b1bc8a`; empty → `assignee: null`. Thread `fadd90c3-054f-4455-8f9a-ecb0b8a0c6f1`. `src/lib/mail.ts` assign kind is in the repo. Header UI source was not in the paste.
 
 **Still pending — only this is next:** (1) thread tasks/notes gate, thread-analytics restrict, integrations/LEO lock (2) `hello@` auto-reply Option C (3) `billing@` receipt on Polar success (4) MailRail founder-solo vs company-unified (5) real card charge — checkout open is proven, payment completion is not.
 

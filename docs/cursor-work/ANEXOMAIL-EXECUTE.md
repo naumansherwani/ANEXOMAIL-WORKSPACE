@@ -18,7 +18,7 @@ Polar rust payment `:3400` **E nahi** — pehle se, no-touch. `plans.ts` / landi
 
 Naya kaam: pehle Rust, phir Bun fallback.
 
-**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 send founder ne 18–21 Sep 2026 prove kiya (`mail-worker.ts`). Inbound `mail-gate.sh` alag. Step 5 assign 25 Sep 2026 repo mein. Steps 6–8 abhi pending.
+**DONE** = yeh E repo mein ban chuki (founder: build ho chuka). **TODO** = abhi nahi. E4 send founder ne 18–21 Sep 2026 prove kiya (`mail-worker.ts`). Inbound `mail-gate.sh` alag. Step 5 assign complete 26 Sep 2026 (name, email, UUID, clear). Steps 6–8 abhi pending.
 
 ---
 
@@ -126,7 +126,7 @@ Quota check `admin_storage_snapshots` send se pehle.
 Proof: login → org → compose → send → deliver.  
 25 Sep 2026: Claude `server/mail-worker.ts` + storage RPC reserve/commit/release. Schedule `2f6a82a4-317b-4535-b5e0-d84a833bc716` sent.  
 `mail-gate.sh` + inbound receive is line mein alag se green nahi likha.  
-Plan caps 1–4 (mailbox, storage, domain, alias) isi session mein. Step 5 assign 25 Sep 2026 repo mein. Steps 6–8 pending.  
+Plan caps 1–4 (mailbox, storage, domain, alias) isi session mein. Step 5 assign complete 26 Sep 2026 (name, email, UUID, clear). Steps 6–8 pending.  
 Detail: blueprint append “SESSION 18–21 SEP 2026”.
 
 ---

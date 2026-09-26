@@ -429,25 +429,35 @@ mailRouter.post("/thread/:id/assign", async (req, res) => {
   }
 
   const assigneeInput = String(req.body?.assignee || "").trim();
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
   let assigneeId: string | null = null;
-  if (assigneeInput.includes("@")) {
-    try {
+  if (assigneeInput) {
+    if (UUID_RE.test(assigneeInput)) {
+      assigneeId = assigneeInput; // already a genuine UUID — no lookup needed
+    } else {
+      // "Naam ya email" — email (has @) or full_name, matched client-side.
       // NOTE: GoTrue admin /users?email= query param genuinely IGNORES the
       // filter (returns first user unfiltered) — confirmed via live test.
-      // Fetch full list, match client-side instead.
-      const supaUrl = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
-      const supaKey = process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
-      const r = await fetch(
-        `${supaUrl.replace(/\/$/, "")}/auth/v1/admin/users?per_page=1000`,
-        { headers: { apikey: supaKey, Authorization: `Bearer ${supaKey}` } },
-      );
-      const j: any = await r.json();
-      const match = (j?.users || []).find(
-        (u: any) => String(u?.email || "").toLowerCase() === assigneeInput.toLowerCase(),
-      );
-      assigneeId = match?.id ?? null;
-    } catch (e) {
-      console.error("[mail/assign] email lookup failed:", e);
+      try {
+        const supaUrl = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
+        const supaKey = process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+        const r = await fetch(
+          `${supaUrl.replace(/\/$/, "")}/auth/v1/admin/users?per_page=1000`,
+          { headers: { apikey: supaKey, Authorization: `Bearer ${supaKey}` } },
+        );
+        const j: any = await r.json();
+        const needle = assigneeInput.toLowerCase();
+        const users: any[] = j?.users || [];
+        const match =
+          users.find((u) => String(u?.email || "").toLowerCase() === needle) ||
+          users.find(
+            (u) => String(u?.user_metadata?.full_name || "").toLowerCase() === needle,
+          );
+        assigneeId = match?.id ?? null;
+      } catch (e) {
+        console.error("[mail/assign] lookup failed:", e);
+      }
+      if (!assigneeId) return res.status(400).json({ error: "assignee_not_found" });
     }
   }
   const { data, error } = await supa.rpc("mail_thread_assign", {
