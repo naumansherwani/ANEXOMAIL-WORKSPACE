@@ -188,7 +188,8 @@ Backend: baad; naya = Rust pehle.
 Lovable: `app.crm*` `crm.ts` `locale.ts`  
 Backend: **PRIMARY** Rust `/rpc/crm.*` `/rpc/locale.*` · **FALLBACK** Bun `/api/crm/*` `/api/locale/*`  
 SQL phase64 no-touch. CR1+ flagship = E4+E6 ke baad. Alag crm host nahi.  
-28 Sep 2026 GREEN, do not redo: `crm.promises.list` (list, not a count) and `crm.followups.list` / `crm.followups.setDays` on Rust `:3200`. CRM Overview cards.
+28 Sep 2026 GREEN, do not redo: `crm.promises.list` (list, not a count) and `crm.followups.list` / `crm.followups.setDays` on Rust `:3200`. CRM Overview cards.  
+28 Sep 2026 GREEN, do not redo: CRM Capture — auto-detect, confidence, de-dupe, `inbound_email`, domain company, dismiss, first-response times. Pro+ via existing `resolve_plan()`.
 
 ---
 

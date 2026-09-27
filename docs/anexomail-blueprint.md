@@ -351,6 +351,20 @@ Rust `:3200` primary. Do not add a second list.
 | Follow-ups | `crm.followups.list` and `crm.followups.setDays`, plus the SQL functions. Days are configurable. Detection is automatic. | CRM Overview card and the days input |
 
 Do not rebuild these cards. Do not replace the list with a count.
+
+### 28 Sep 2026 — CRM Capture GREEN
+
+A new inbound address that is not already a contact is detected as a lead. Newsletter replies and spam stay out. Gate is the existing `resolve_plan()` — every package above Basic. Do not add a second capture path.
+
+| Check | Live proof |
+|---|---|
+| Auto-detection | `naumansherwani27@gmail.com` detected on its own |
+| Confidence | `0.35` = base `0.25` + 1 message × `0.1` |
+| De-duplication | Existing leads are excluded. No second record for the same email or domain |
+| Source | `inbound_email` |
+| Auto-enrichment | `suggested_company`: `Gmail`, taken from the domain |
+| Dismiss | `ok: true`, then the row left the list |
+| First-response timer | `first_mail_at` and `last_mail_at` come back for the countdown |
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
