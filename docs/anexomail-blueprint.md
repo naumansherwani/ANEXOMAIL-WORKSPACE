@@ -340,6 +340,17 @@ Frontend calls Rust `:3200` first for the thread. If Rust is down or returns 404
 | mail.send | Bun |
 
 Do not move `mail.send` onto Rust. Do not add a second thread client.
+
+### 28 Sep 2026 — CRM Promises and Follow-ups GREEN
+
+Rust `:3200` primary. Do not add a second list.
+
+| Feature | Backend | Frontend |
+|---|---|---|
+| Promises | `crm.promises.list` — the list, not only a count | CRM Overview card |
+| Follow-ups | `crm.followups.list` and `crm.followups.setDays`, plus the SQL functions. Days are configurable. Detection is automatic. | CRM Overview card and the days input |
+
+Do not rebuild these cards. Do not replace the list with a count.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.

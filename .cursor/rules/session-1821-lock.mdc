@@ -17,6 +17,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **Mail read path GREEN 27 Sep 2026 — do not redo:** Rust primary for `mail.threads`, `mail.search`, `mail.counts`, `mail.accounts`, `mail.labels`, `mail.star`, and `mail.thread`. Frontend tries Rust first and falls back to Bun on down or 404. `mail.send` stays Bun. Do not migrate send. Do not add a second thread client.
 
+**CRM Promises and Follow-ups GREEN 28 Sep 2026 — do not redo:** Rust `crm.promises.list` is the promise list, not a count. Rust `crm.followups.list` and `crm.followups.setDays` plus the SQL functions. CRM Overview shows both cards. Follow-up days are set from the input. Do not add a second CRM list.
+
 **Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.
