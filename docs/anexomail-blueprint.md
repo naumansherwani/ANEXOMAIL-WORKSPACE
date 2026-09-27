@@ -362,7 +362,7 @@ A new inbound address that is not already a contact is detected as a lead. Newsl
 | Confidence | `0.35` = base `0.25` + 1 message × `0.1` |
 | De-duplication | Existing leads are excluded. No second record for the same email or domain |
 | Source | `inbound_email` |
-| Auto-enrichment | `suggested_company`: `Gmail`, taken from the domain |
+| Auto-enrichment | `suggested_company` is only a guess from the sender domain. It is not the lead's company. The test address was an example. |
 | Dismiss | `ok: true`, then the row left the list |
 | First-response timer | `first_mail_at` and `last_mail_at` come back for the countdown |
 
@@ -374,9 +374,13 @@ A new inbound address that is not already a contact is detected as a lead. Newsl
 | Confidence | `35% match` |
 | De-duplication | Existing leads stay one record |
 | Source | `inbound_email` is on the payload. It is not printed as its own label on the card |
-| Auto-enrichment | `Gmail` |
+| Auto-enrichment | The card shows the domain guess. That guess is not a company name. |
 | Dismiss | Not a lead button is live |
 | First-response | `Reply within 2h` is on the live deploy |
+
+### Abhi pending
+
+1. Plan-feature steps 7–8: thread analytics Pro+ only, integrations and LEO Actions Business+ only.
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
