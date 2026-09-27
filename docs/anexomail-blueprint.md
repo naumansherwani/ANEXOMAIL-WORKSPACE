@@ -365,6 +365,18 @@ A new inbound address that is not already a contact is detected as a lead. Newsl
 | Auto-enrichment | `suggested_company`: `Gmail`, taken from the domain |
 | Dismiss | `ok: true`, then the row left the list |
 | First-response timer | `first_mail_at` and `last_mail_at` come back for the countdown |
+
+28 Sep 2026 frontend is green on the same seven points. Do not rebuild the card.
+
+| Check | On the card |
+|---|---|
+| Auto-detection | Shown |
+| Confidence | `35% match` |
+| De-duplication | Existing leads stay one record |
+| Source | `inbound_email` is on the payload. It is not printed as its own label on the card |
+| Auto-enrichment | `Gmail` |
+| Dismiss | Not a lead button is live |
+| First-response | `Reply within 2h` is on the live deploy |
 2. `hello@` auto-reply (Option C template).
 3. `billing@` receipt on Polar payment success.
 4. MailRail: founder-solo vs company-unified.
