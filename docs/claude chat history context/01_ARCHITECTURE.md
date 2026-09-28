@@ -1,16 +1,19 @@
 Anexomail - Architecture (stable facts, rarely changes)
 
 WHICH CODEBASE IS LIVE (check this every time - this has caused bugs before):
-- /opt/anexomail-web/ = REFERENCE / DEV COPY ONLY. Editing this has ZERO
-  effect on the live site. A real bug once got "fixed" here by mistake
-  while production stayed broken.
-- /opt/anexomail/ = LIVE codebase. PM2 process anexomail-leo runs this.
-  Every production fix MUST land here.
-- /opt/anexomail-rust/ = Rust/Axum/Tokio backend. PM2 process
-  anexomail-rust. Rule: all new backend work goes here, not Bun.
+- /opt/anexomail-web/ = THE REAL LIVE anexomail.com. PM2 process
+  anexomail-web runs this (script: /opt/anexomail-web/.output/server/index.mjs).
+  This is the site normal users see. Every production fix for the main
+  site MUST land here.
+- /opt/anexomail/ = Runs a SEPARATE product, ai.anexomail.com (Leo). PM2
+  process anexomail-leo runs this (exec cwd: /opt/anexomail). NOT the
+  main site - do not confuse this with anexomail.com.
+- /opt/anexomail-rust/ = Rust/Axum/Tokio backend, shared by both. PM2
+  process anexomail-rust. Rule: all new backend work goes here, not Bun.
 
 To verify which file a running process actually uses:
-pm2 describe anexomail-leo | grep "script path"
+pm2 describe anexomail-web | grep "script path"
+pm2 describe anexomail-leo | grep "exec cwd"
 
 REQUEST FLOW:
 Frontend calls /rpc/* (Rust) first via rpcOrRest() helper. If Rust 404s,
