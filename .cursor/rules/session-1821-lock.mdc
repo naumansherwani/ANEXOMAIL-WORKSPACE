@@ -21,6 +21,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **CRM Capture GREEN 28 Sep 2026 — backend and frontend, do not redo:** New inbound mail that is not a contact becomes a lead. Card shows detection, `35% match`, a domain guess (not a company name), Not a lead, and `Reply within 2h`. Source `inbound_email` stays on the payload and is not a separate card label. Gate is existing `resolve_plan()` for every package above Basic. Proof: `naumansherwani27@gmail.com` at confidence `0.35`. Do not add a second capture path or a second card.
 
+**CRM Memory GREEN 29 Sep 2026 — do not redo:** `crm.person.timeline`, `crm.contacts.recompute`, `crm.contacts.extractSignature`, `crm.contacts.setNotes`, `crm.contacts.addAlias` on Rust `:3200` `dispatch_crm()`. SQL functions stay in Postgres. Frontend hooks: `useCrmPersonTimeline`, `useContactStats`, `useSetContactNotes`, `useAddContactAlias`, `useExtractSignature`, via `rpc()`. Team context is already org-scoped. Person notes are not thread notes. Do not invent a phone when the signature is empty. Do not add a second Memory page.
+
 **Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

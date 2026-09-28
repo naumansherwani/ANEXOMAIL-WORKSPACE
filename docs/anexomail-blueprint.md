@@ -378,6 +378,28 @@ A new inbound address that is not already a contact is detected as a lead. Newsl
 | Dismiss | Not a lead button is live |
 | First-response | `Reply within 2h` is on the live deploy |
 
+### 29 Sep 2026 — CRM Memory (Relationships) GREEN
+
+Do not rebuild. One person, one record. Rust `:3200` `dispatch_crm()`. Frontend calls Rust through `rpc()`.
+
+| Layer | Technology |
+|---|---|
+| Data | PostgreSQL: `crm_person_timeline`, `recompute_contact_stats`, `crm_extract_signature`, `add_contact_alias` |
+| API | Rust, Axum, Tokio |
+| Identity | Existing `mail_identity()`. No second auth |
+| Database access | Existing `sb_rpc`, `sb_select`, `sb_patch` |
+| Frontend | React, TypeScript, TanStack Query: `useCrmPersonTimeline`, `useContactStats`, `useSetContactNotes`, `useAddContactAlias`, `useExtractSignature` |
+
+| Point | Call | Status |
+|---|---|---|
+| 1 Unified timeline | `crm.person.timeline` | Green. Mail, meeting, task, deal in one order |
+| 2 Relationship health | `crm.contacts.recompute` | Green. Active, cooling, or cold on the person |
+| 3 Response pace | same recompute | Green. The whole contact, not one thread |
+| 4 Signature facts | `crm.contacts.extractSignature` | Green. Empty signature returns empty. No invented phone |
+| 5 Team context | — | No new feature. Business already shares org-scoped rows |
+| 6 Person notes | `crm.contacts.setNotes` | Green. Separate from thread notes |
+| 7 Merge identities | `crm.contacts.addAlias` | Green. A second address joins the same person |
+
 ### Abhi pending
 
 1. Plan-feature steps 7–8: thread analytics Pro+ only, integrations and LEO Actions Business+ only.
