@@ -1,14 +1,10 @@
 Anexomail - Current Status (overwrite this file each session - reflects "now", not history)
 Last updated: 2026-09-29
 
-TOP PRIORITY OPEN ITEM:
-CRM Memory frontend patch (Details card: Refresh health / Extract signature /
-Notes / Add-alias, in app.crm.relationships.tsx + 4 new hooks in lib/crm.ts)
-was built and deployed successfully in /opt/anexomail-web/ (reference copy).
-It has NOT been confirmed applied to /opt/anexomail/ (the LIVE codebase).
-Until it is, it will not appear on the real website.
-Next action: run the same patch against /opt/anexomail/, rebuild, restart
-anexomail-leo, and verify in-browser on the Relationships page.
+TOP PRIORITY OPEN ITEM: NONE - CRM Memory frontend confirmed LIVE on
+anexomail.com (served by anexomail-web process) as of 2026-09-29.
+Verified: "Refresh health" text present in built assets
+(app.crm.relationships-*.js).
 
 CRM - "Memory / Relationships" feature (7-point spec):
 Backend: ALL 7 points DONE, confirmed via curl.
