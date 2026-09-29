@@ -32,6 +32,12 @@ CRM - other features - DONE and confirmed live:
   table does not have health_score/last_contact_at columns (only
   contact_stats does) - this silently broke the People list for every
   user until fixed in CONTACT_SELECT.
+- SECOND People-list bug FIXED (2026-09-29): accepting a lead (POST
+  /crm/leads) only ever wrote to crm_leads, never to contacts - so
+  Relationships stayed empty even after leads were accepted, for every
+  user, on every plan. Fixed: accepting a lead now also inserts into
+  contacts. Verified live: accepted a lead, people array populated with
+  health_score/open_threads correctly.
 
 Account / billing:
 - Personal Pro+ mapping bug FIXED: personal_polar_map had "Personal Pro+"
