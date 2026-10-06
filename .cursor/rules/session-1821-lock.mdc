@@ -25,6 +25,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **Accept lead → contact GREEN 6 Oct 2026 — do not redo:** Browser Accept on Humza's account created `crm_leads` and `contacts`. Live file is `/opt/anexomail/src/routes/crm.ts` via PM2 `anexomail-leo` port 3100. Do not patch only `/opt/anexomail-web/server/routes/crm.ts` and call it live. Suggestion accepts leave `display_name` empty. Duplicate `23505` is ignored.
 
+**CRM promises board GREEN 7 Oct 2026 — do not redo:** `crm_promises_scan` inserts once, the next scan inserts nothing. `crm_promises_board` has `mine` / `theirs` and phases kept, late, broken, pending, suggested. Rust `crm.promises.board` scans only when `scan` is true, then returns the board. Release build finished. Live source is `/opt/anexomail-rust/src/main.rs`. Do not add a second board.
+
 **Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

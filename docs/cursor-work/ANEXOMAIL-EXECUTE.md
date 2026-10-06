@@ -191,7 +191,8 @@ SQL phase64 no-touch. CR1+ flagship = E4+E6 ke baad. Alag crm host nahi.
 28 Sep 2026 GREEN, do not redo: `crm.promises.list` (list, not a count) and `crm.followups.list` / `crm.followups.setDays` on Rust `:3200`. CRM Overview cards.  
 28 Sep 2026 GREEN, do not redo: CRM Capture backend and frontend — auto-detect, `35% match`, de-dupe, domain guess (not a company name), dismiss, `Reply within 2h`. Source `inbound_email` is on the payload. Pro+ via existing `resolve_plan()`.  
 29 Sep 2026 GREEN, do not redo: CRM Memory. Rust `dispatch_crm()` — timeline, recompute, extractSignature, setNotes, addAlias. Frontend `rpc()` plus the five TanStack hooks. Team context is org scope, not a new feature.  
-6 Oct 2026 GREEN, do not redo: Accept lead creates the contact. Live route is `/opt/anexomail/src/routes/crm.ts` (`anexomail-leo` :3100), not `anexomail-web/server/routes`.
+6 Oct 2026 GREEN, do not redo: Accept lead creates the contact. Live route is `/opt/anexomail/src/routes/crm.ts` (`anexomail-leo` :3100), not `anexomail-web/server/routes`.  
+7 Oct 2026 GREEN, do not redo: `crm_promises_scan` and `crm_promises_board`. Rust `crm.promises.board` on `:3200`. Scan only when `scan` is true.
 
 ---
 

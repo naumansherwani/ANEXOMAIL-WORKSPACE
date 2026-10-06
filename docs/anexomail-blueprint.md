@@ -410,6 +410,18 @@ Live API is PM2 `anexomail-leo` on port 3100, folder `/opt/anexomail`, file `/op
 
 `contacts.display_name` stays empty when the lead comes from a mail suggestion, because the suggestion has no name. That is not a failed Accept.
 
+### 7 Oct 2026 — CRM promises board GREEN
+
+Do not rebuild. Test ran inside `begin` / `rollback`. After rollback the fake org and its promises were gone.
+
+| Call | Result |
+|---|---|
+| `crm_promises_scan` | First call inserted 2. Second call inserted 0 |
+| `crm_promises_board` | Phases `kept`, `late`, `broken`, `pending`, `suggested`. Sides `mine` and `theirs` |
+| Side `theirs` | One row |
+
+Rust `:3200` procedure `crm.promises.board`. `scan: true` runs `crm_promises_scan` for 30 days, then the board. Release build finished. Live file is `/opt/anexomail-rust/src/main.rs`. This repo's `server/rust/main.rs` does not contain `crm.timeline`, so the arm was not pasted into a file that cannot compile it. Do not add a second board.
+
 ### Abhi pending
 
 1. Plan-feature steps 7–8: thread analytics Pro+ only, integrations and LEO Actions Business+ only.
