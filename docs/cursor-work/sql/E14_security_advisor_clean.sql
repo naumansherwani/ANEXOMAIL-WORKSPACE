@@ -75,6 +75,8 @@ begin
   loop
     execute format('revoke all on public.%I from anon, authenticated', t.relname);
     execute format('grant all on public.%I to service_role', t.relname);
+    execute format('drop policy if exists "service_role_internal_access" on public.%I', t.relname);
+    execute format('create policy "service_role_internal_access" on public.%I for all to service_role using (true) with check (true)', t.relname);
     raise notice 'no-policy locked: %', t.relname;
   end loop;
 end $$;
@@ -143,6 +145,24 @@ begin
   end loop;
 end $$;
 
+-- 6b) EXTENSION IN PUBLIC warning -> extensions schema mein move
+do $$
+declare ext record;
+begin
+  for ext in
+    select e.extname
+      from pg_extension e
+      join pg_namespace n on n.oid = e.extnamespace
+     where n.nspname = 'public' and e.extname <> 'plpgsql'
+  loop
+    begin
+      execute format('alter extension %I set schema extensions', ext.extname);
+    exception when others then
+      raise notice 'extension skip %: %', ext.extname, sqlerrm;
+    end;
+  end loop;
+end $$;
+
 -- ---------------------------------------------------------------------------
 -- 7) RLS HAMESHA ON — event trigger: public schema mein jo bhi nayi table bane,
 --    usi waqt RLS khud enable ho jata hai (kabhi off nahi rehti).
@@ -192,4 +212,9 @@ select 'FUNCTIONS WITHOUT SEARCH_PATH', count(*)
    and not exists (
      select 1 from unnest(coalesce(p.proconfig, array[]::text[])) cfg
       where cfg like 'search_path=%'
-   );
+   )
+union all
+select 'RLS WITHOUT POLICY', count(*)
+  from pg_class c join pg_namespace n on n.oid = c.relnamespace
+ where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity = true
+   and not exists (select 1 from pg_policy p where p.polrelid = c.oid);
