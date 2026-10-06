@@ -66,7 +66,7 @@ function lastNameFromLegal(full: string) {
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
-  validateSearch: (search: Record<string, unknown>) => ({
+  validateSearch: (search: Record<string, unknown>): { mode?: "signup" | "reset" | "forgot"; recovery?: string } => ({
     mode:
       search.mode === "signup" || search.mode === "reset" || search.mode === "forgot"
         ? search.mode
