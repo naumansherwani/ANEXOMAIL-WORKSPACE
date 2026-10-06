@@ -400,6 +400,16 @@ Do not rebuild. One person, one record. Rust `:3200` `dispatch_crm()`. Frontend 
 | 6 Person notes | `crm.contacts.setNotes` | Green. Separate from thread notes |
 | 7 Merge identities | `crm.contacts.addAlias` | Green. A second address joins the same person |
 
+### 6 Oct 2026 — Accept lead creates the contact. Do not redo.
+
+Verified in the browser on Humza's account. Accept (`POST /crm/leads`) wrote `crm_leads` and `contacts` 0.27s apart. No contacts insert failure in the logs. Duplicate `23505` is ignored. Insert errors are logged.
+
+Live API is PM2 `anexomail-leo` on port 3100, folder `/opt/anexomail`, file `/opt/anexomail/src/routes/crm.ts`. Restart with `pm2 restart anexomail-leo`. No build step.
+
+`/opt/anexomail-web/server/routes/*.ts` is not the process on port 3100. A patch only there does not go live. Frontend stays `/opt/anexomail-web` (`anexomail-web`, `bun run build:bun`, then restart).
+
+`contacts.display_name` stays empty when the lead comes from a mail suggestion, because the suggestion has no name. That is not a failed Accept.
+
 ### Abhi pending
 
 1. Plan-feature steps 7–8: thread analytics Pro+ only, integrations and LEO Actions Business+ only.

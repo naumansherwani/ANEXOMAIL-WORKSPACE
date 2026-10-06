@@ -23,6 +23,8 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **CRM Memory GREEN 29 Sep 2026 — do not redo:** `crm.person.timeline`, `crm.contacts.recompute`, `crm.contacts.extractSignature`, `crm.contacts.setNotes`, `crm.contacts.addAlias` on Rust `:3200` `dispatch_crm()`. SQL functions stay in Postgres. Frontend hooks: `useCrmPersonTimeline`, `useContactStats`, `useSetContactNotes`, `useAddContactAlias`, `useExtractSignature`, via `rpc()`. Team context is already org-scoped. Person notes are not thread notes. Do not invent a phone when the signature is empty. Do not add a second Memory page.
 
+**Accept lead → contact GREEN 6 Oct 2026 — do not redo:** Browser Accept on Humza's account created `crm_leads` and `contacts`. Live file is `/opt/anexomail/src/routes/crm.ts` via PM2 `anexomail-leo` port 3100. Do not patch only `/opt/anexomail-web/server/routes/crm.ts` and call it live. Suggestion accepts leave `display_name` empty. Duplicate `23505` is ignored.
+
 **Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.
