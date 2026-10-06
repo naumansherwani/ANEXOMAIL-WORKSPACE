@@ -144,6 +144,36 @@ begin
 end $$;
 
 -- ---------------------------------------------------------------------------
+-- 7) RLS HAMESHA ON — event trigger: public schema mein jo bhi nayi table bane,
+--    usi waqt RLS khud enable ho jata hai (kabhi off nahi rehti).
+-- ---------------------------------------------------------------------------
+create or replace function public.ax_auto_enable_rls()
+returns event_trigger
+language plpgsql
+security definer
+set search_path = public, extensions
+as $$
+declare obj record;
+begin
+  for obj in
+    select * from pg_event_trigger_ddl_commands()
+     where command_tag in ('CREATE TABLE','CREATE TABLE AS','SELECT INTO')
+       and schema_name = 'public'
+       and object_type = 'table'
+  loop
+    execute format('alter table %s enable row level security', obj.object_identity);
+  end loop;
+end $$;
+
+revoke all on function public.ax_auto_enable_rls() from public, anon, authenticated;
+
+drop event trigger if exists ax_auto_enable_rls_trg;
+create event trigger ax_auto_enable_rls_trg
+  on ddl_command_end
+  when tag in ('CREATE TABLE','CREATE TABLE AS','SELECT INTO')
+  execute function public.ax_auto_enable_rls();
+
+-- ---------------------------------------------------------------------------
 -- READING — teeno ginti 0 honi chahiye
 -- ---------------------------------------------------------------------------
 select 'RLS OFF' as check, count(*) as value
