@@ -129,10 +129,10 @@ begin
       join pg_namespace n on n.oid = p.pronamespace
      where n.nspname = 'public'
        and p.prokind in ('f','p')
-       and not exists (
-         select 1 from unnest(coalesce(p.proconfig, array[]::text[])) cfg
-          where cfg like 'search_path=%'
-       )
+        and not exists (
+          select 1 from unnest(coalesce(p.proconfig, array[]::text[])) as u(cfg)
+           where u.cfg like 'search_path=%'
+        )
   loop
     begin
       execute format(
