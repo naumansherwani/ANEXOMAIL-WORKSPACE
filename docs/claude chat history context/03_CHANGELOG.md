@@ -4,6 +4,17 @@ into 03_CHANGELOG_ARCHIVE.md if this file gets too long.
 
 ---
 
+2026-09-29 (correction)
+- Corrected an earlier entry that claimed the second People-list bug was
+  fixed and verified. It was not verified: the contacts table had no row
+  for Humza's org, so the person shown came from crm_leads.
+- A test lead (naumankhansherwani@gmail.com) had been created on Humza's
+  real account by a curl test. It was deleted from crm_leads
+  (id 18da8c8d-523a-4801-bb8f-8ce5b808abd4, org 6ca49cc3-...) after the
+  owner asked that real buyer accounts never carry test data.
+- RULE: no write-tests on real or family accounts (Masood, Humza) without
+  explicit permission. Use a dedicated test account.
+
 2026-09-29 (later same day)
 - Found and fixed a SECOND People-list bug: accepting a lead (POST
   /crm/leads) never wrote to the contacts table, only crm_leads - so

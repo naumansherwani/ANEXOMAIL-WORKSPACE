@@ -32,12 +32,14 @@ CRM - other features - DONE and confirmed live:
   table does not have health_score/last_contact_at columns (only
   contact_stats does) - this silently broke the People list for every
   user until fixed in CONTACT_SELECT.
-- SECOND People-list bug FIXED (2026-09-29): accepting a lead (POST
-  /crm/leads) only ever wrote to crm_leads, never to contacts - so
-  Relationships stayed empty even after leads were accepted, for every
-  user, on every plan. Fixed: accepting a lead now also inserts into
-  contacts. Verified live: accepted a lead, people array populated with
-  health_score/open_threads correctly.
+- UNVERIFIED (2026-09-29): POST /crm/leads in server/routes/crm.ts now also
+  tries to insert a row into contacts when a lead is accepted. This was NOT
+  verified: a later DB check showed no contacts row for the test lead (the
+  person shown in Relationships came from crm_leads, not contacts). It is
+  still not known whether this insert works on a real account. Do not
+  describe it as fixed until it is tested on a dedicated test account.
+- Why Humza's Relationships list was empty: unconfirmed. The simplest
+  explanation is that his org simply had no leads, deals or contacts yet.
 
 Account / billing:
 - Personal Pro+ mapping bug FIXED: personal_polar_map had "Personal Pro+"
