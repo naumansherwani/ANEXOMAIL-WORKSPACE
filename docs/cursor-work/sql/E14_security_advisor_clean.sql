@@ -129,10 +129,10 @@ begin
       join pg_namespace n on n.oid = p.pronamespace
      where n.nspname = 'public'
        and p.prokind in ('f','p')
-       and not exists (
-         select 1 from unnest(coalesce(p.proconfig, array[]::text[])) cfg
-          where cfg like 'search_path=%'
-       )
+        and not exists (
+          select 1 from unnest(coalesce(p.proconfig, array[]::text[])) as u(cfg)
+           where u.cfg like 'search_path=%'
+        )
   loop
     begin
       execute format(
@@ -176,12 +176,13 @@ as $$
 declare obj record;
 begin
   for obj in
-    select * from pg_event_trigger_ddl_commands()
-     where command_tag in ('CREATE TABLE','CREATE TABLE AS','SELECT INTO')
-       and schema_name = 'public'
-       and object_type = 'table'
+    select t.object_identity as obj_id
+      from pg_event_trigger_ddl_commands() as t
+     where t.command_tag in ('CREATE TABLE','CREATE TABLE AS','SELECT INTO')
+       and t.schema_name = 'public'
+       and t.object_type = 'table'
   loop
-    execute format('alter table %s enable row level security', obj.object_identity);
+    execute format('alter table %s enable row level security', obj.obj_id);
   end loop;
 end $$;
 
@@ -194,24 +195,24 @@ create event trigger ax_auto_enable_rls_trg
   execute function public.ax_auto_enable_rls();
 
 -- ---------------------------------------------------------------------------
--- READING — teeno ginti 0 honi chahiye
+-- READING — chaaron ginti 0 honi chahiye
 -- ---------------------------------------------------------------------------
-select 'RLS OFF' as check, count(*) as value
+select 'RLS OFF' as check_name, count(*) as value
   from pg_class c join pg_namespace n on n.oid = c.relnamespace
  where n.nspname = 'public' and c.relkind = 'r' and c.relrowsecurity = false
 union all
 select 'SECURITY DEFINER VIEWS', count(*)
   from pg_class c join pg_namespace n on n.oid = c.relnamespace
  where n.nspname = 'public' and c.relkind = 'v'
-   and coalesce((select option_value from pg_options_to_table(c.reloptions)
-                  where option_name = 'security_invoker'), 'false') <> 'true'
+   and coalesce((select o.option_value from pg_options_to_table(c.reloptions) as o
+                  where o.option_name = 'security_invoker'), 'false') <> 'true'
 union all
 select 'FUNCTIONS WITHOUT SEARCH_PATH', count(*)
   from pg_proc p join pg_namespace n on n.oid = p.pronamespace
  where n.nspname = 'public' and p.prokind in ('f','p')
    and not exists (
-     select 1 from unnest(coalesce(p.proconfig, array[]::text[])) cfg
-      where cfg like 'search_path=%'
+     select 1 from unnest(coalesce(p.proconfig, array[]::text[])) as u(cfg)
+      where u.cfg like 'search_path=%'
    )
 union all
 select 'RLS WITHOUT POLICY', count(*)
