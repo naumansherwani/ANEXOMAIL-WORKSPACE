@@ -4,6 +4,19 @@ into 03_CHANGELOG_ARCHIVE.md if this file gets too long.
 
 ---
 
+2026-10-06
+- Found why the earlier lead->contacts patch never ran: it had been applied
+  to /opt/anexomail-web/server/routes/crm.ts, but port 3100 (/api) is served
+  by anexomail-leo from /opt/anexomail. Proof: port 3100 pid matched
+  anexomail-leo and the patch text existed only in the anexomail-web copy.
+- Applied the patch to /opt/anexomail/src/routes/crm.ts (insert error is now
+  logged, duplicate 23505 ignored) and restarted anexomail-leo.
+- Verified on Humza's account: the owner pressed Accept in the browser,
+  crm_leads and contacts rows both created, no error in logs.
+- Humza's account was cleaned of the earlier test lead before this test.
+  The lead present now is the owner's own real Accept.
+- Corrected 01_ARCHITECTURE.md about which process serves /api.
+
 2026-09-29 (correction)
 - Corrected an earlier entry that claimed the second People-list bug was
   fixed and verified. It was not verified: the contacts table had no row

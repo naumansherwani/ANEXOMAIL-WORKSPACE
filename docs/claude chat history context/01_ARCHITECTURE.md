@@ -1,18 +1,26 @@
 Anexomail - Architecture (stable facts, rarely changes)
 
 WHICH CODEBASE IS LIVE (check this every time - this has caused bugs before):
-- /opt/anexomail-web/ = THE REAL LIVE anexomail.com. PM2 process
-  anexomail-web runs this (script: /opt/anexomail-web/.output/server/index.mjs).
-  This is the site normal users see. Every production fix for the main
-  site MUST land here.
-- /opt/anexomail/ = Runs a SEPARATE product, ai.anexomail.com (Leo). PM2
-  process anexomail-leo runs this (exec cwd: /opt/anexomail). NOT the
-  main site - do not confuse this with anexomail.com.
+- /opt/anexomail-web/ = frontend (React/SSR). PM2 process anexomail-web runs
+  .output/server/index.mjs. UI changes (src/routes, src/lib) go here and
+  need: cd /opt/anexomail-web && bun run build:bun, then pm2 restart
+  anexomail-web.
+- /opt/anexomail/ = backend API. The bun process listening on port 3100
+  (the /api/* routes: crm, mail, work, calendar) is the PM2 process
+  anexomail-leo, started from /opt/anexomail. Backend route changes go in
+  /opt/anexomail/src/routes/*.ts, then pm2 restart anexomail-leo. No build
+  step is needed.
+- WARNING: /opt/anexomail-web/server/routes/*.ts is NOT what port 3100 runs.
+  Editing it has no effect on the live API. Past fixes made only there never
+  went live.
+- Unknown / still to confirm: whether ai.anexomail.com uses the same
+  anexomail-leo process.
 - /opt/anexomail-rust/ = Rust/Axum/Tokio backend, shared by both. PM2
   process anexomail-rust. Rule: all new backend work goes here, not Bun.
 
-To verify which file a running process actually uses:
-pm2 describe anexomail-web | grep "script path"
+To verify which process owns a port and which folder it runs from:
+ss -ltnp | grep ':3100'
+pm2 pid anexomail-leo
 pm2 describe anexomail-leo | grep "exec cwd"
 
 REQUEST FLOW:
