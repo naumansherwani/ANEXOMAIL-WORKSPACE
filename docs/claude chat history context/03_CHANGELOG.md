@@ -4,6 +4,12 @@ into 03_CHANGELOG_ARCHIVE.md if this file gets too long.
 
 ---
 
+2026-10-08 (CRM Loop, all steps)
+- Built steps 3 Timeline, 4 Promises, 5 Health, 6 Risk, 8 Graph and 9 Next, each with its own SQL
+  function, Rust procedure, page and Loop link. Steps 3 to 9 are shown to every non-Basic plan.
+- Fixed duplicate crm.graph arm in Rust. Added /root/bin/safe-build-web.sh and backups.
+- All browser checks by the owner are still pending.
+
 2026-10-08 (CRM Loop)
 - Built and deployed the Promises page /app/crm/promises and the useCrmPromisesBoard hook.
 - Loop step 4 now links to it; steps 3 and 4 shown to every non-Basic plan.

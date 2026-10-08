@@ -122,3 +122,21 @@ Step 8 Graph (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
 - NOT built: the spec part "which of my teammates talked to whom". mail_accounts has owner_id and
   mail_threads has account_id, so it looks possible, but nothing was written or tested for it.
 - Not done yet: Step 9 Next.
+
+Step 9 Next (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
+- New SQL function crm_next builds one ranked list ONLY from crm_risk, crm_promises_board and
+  crm_health (it has no data of its own, as the spec says). Order: risk items first (by their
+  severity), then promises due within 7 days (suggested or pending), then cooling people you wrote
+  last. Each item carries source (risk, promises or health) and a link to that step's page. One
+  entry per person (duplicates dropped, the higher priority wins). The ordering and the 7 day
+  window are my choice, not the owner's.
+- Seen: rollback test on a fake org returned the 4 expected rows with the right source; Rust
+  crm.next live, Humza got 1 item (risk, reply waiting 12 days).
+- Page /app/crm/next and hook useCrmNext built and deployed; Loop step 9 links to it.
+  Browser check by the owner: pending.
+- Rust cleanup: the crm.graph arm and its routing line were in main.rs twice (the Step 8 patch ran
+  twice); one copy of each was removed. Backup: main.rs.bak-dedup.
+- The CRM Loop now has its own page and own SQL/Rust logic for steps 3, 4, 5, 6, 8, 9. Steps 1, 2
+  and 7 already existed. Still NOT built: Graph teammates (which teammate talked to whom).
+- Still pending browser checks by the owner: Timeline (person click, Meeting filter), Promises
+  empty message, Health, Risk, Graph, Next; the real Work board done button; a Pro account view.
