@@ -105,3 +105,20 @@ Step 6 Risk (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
   Browser check by the owner: pending.
 - The reason text is built in SQL in English only.
 - Not done yet: Step 8 Graph, Step 9 Next (Next must be built from steps 4, 5 and 6).
+
+Step 8 Graph (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
+- The old graph was built inside /crm/live and mixed mail, work and meetings into one web; the
+  table crm_graph_edges is empty (0 rows). New SQL function crm_graph groups people by company
+  (company_domain, else the email domain; gmail, yahoo, outlook, hotmail, live, icloud, proton, aol
+  and similar are not treated as companies) and attaches each deal to its person or company.
+  People with no company go to individuals; deals with no person and no company go to loose_deals.
+  It writes nothing.
+- Seen: rollback test on a fake org (2 companies, acme with 2 people and 1 deal, beta with 1 deal,
+  1 individual, 1 loose deal). Seen: Rust crm.graph live; Humza got no companies, 1 individual
+  (naumankhansherwani@gmail.com), no deals.
+- Page /app/crm/graph and hook useCrmGraphView built and deployed; Loop step 8 links to it and the
+  Loop filter for step 8 was removed, so it shows on every plan that can open CRM (step 7
+  Evidence still needs showCrmLedger). Browser check by the owner: pending.
+- NOT built: the spec part "which of my teammates talked to whom". mail_accounts has owner_id and
+  mail_threads has account_id, so it looks possible, but nothing was written or tested for it.
+- Not done yet: Step 9 Next.
