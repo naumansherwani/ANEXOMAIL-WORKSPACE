@@ -76,3 +76,18 @@ Loop status update (2026-10-08) - this replaces the 'page not built' and 'not ap
   one fails).
 - Still pending: owner checks that clicking a person on Timeline opens Relationships and that
   the Meeting filter shows the empty message; pressing the real Work board done button.
+
+Step 5 Health (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
+- The old recompute_contact_stats only looks at from_address, so it never counts mail you sent
+  (messages_out is always 0, avg_reply_minutes empty, open_threads always 0). The Refresh health
+  button still uses it.
+- New SQL function crm_health computes health fresh from mail in BOTH directions, understands
+  alias emails, writes nothing. Seen: rollback test on a fake org (5 people, right order, alias
+  worked, a person with no mail excluded). Seen: Rust crm.health live, Humza got 1 row, active,
+  waiting_on_me true, 12 days.
+- Page /app/crm/health and hook useCrmHealth built and deployed (build OK, 372 assets, site 200).
+  Loop step 5 links to the page. Ranking: waiting for your reply, then cooling (15-45 days), cold
+  (over 45), active (14 or less). Browser check by the owner: pending.
+- Still pending checks: Loop shows Timeline and Promises; Promises page empty message; Timeline
+  person click and Meeting filter; real Work board done button.
+- Not done yet: Step 6 Risk, Step 8 Graph, Step 9 Next.
