@@ -91,3 +91,17 @@ Step 5 Health (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
 - Still pending checks: Loop shows Timeline and Promises; Promises page empty message; Timeline
   person click and Meeting filter; real Work board done button.
 - Not done yet: Step 6 Risk, Step 8 Graph, Step 9 Next.
+
+Step 6 Risk (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
+- New SQL function crm_risk builds three kinds of danger with a reason each: deal_cold (open deal
+  whose person is cold, more than 45 days), promise_overdue (committed promise past its date and
+  not done), reply_waiting (they wrote last and no reply for 3 days or more). It reuses crm_health
+  and crm_promises_board and writes nothing. The thresholds are my choice, not the owner's.
+- Seen: rollback test on a fake org returned exactly the three kinds in order; a won deal, a
+  recent contact and a person I wrote to were correctly excluded. Seen: Rust crm.risk live, Humza
+  got 1 risk (reply_waiting, 12 days).
+- Page /app/crm/risk and hook useCrmRisk built and deployed; Loop step 6 links to it and the
+  showCrmRisk gate was removed from the Loop filter, so it shows on every plan that can open CRM.
+  Browser check by the owner: pending.
+- The reason text is built in SQL in English only.
+- Not done yet: Step 8 Graph, Step 9 Next (Next must be built from steps 4, 5 and 6).
