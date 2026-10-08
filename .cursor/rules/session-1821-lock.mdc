@@ -27,6 +27,10 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **CRM promises board GREEN 7 Oct 2026 — do not redo:** `crm_promises_scan` inserts once, the next scan inserts nothing. `crm_promises_board` has `mine` / `theirs` and phases kept, late, broken, pending, suggested. Rust `crm.promises.board` scans only when `scan` is true, then returns the board. Release build finished. Live source is `/opt/anexomail-rust/src/main.rs`. Do not add a second board.
 
+**CRM Loop steps 3–9 in code 9 Oct 2026 — do not rebuild the pages:** Timeline, Promises, Health, Risk, Graph, Next. SQL, Rust, and the page exist. Visible on every plan except Basic. Docs `e5ffc00..0d820cb`. Site health 200. Fake-org tests rolled back.
+
+**Still open on the Loop — do not call these done:** real Work Done button (`completed_at`), a real "I'll send the quote by Friday" mail so scan can catch a promise, teammate graph (Business only, not built), old Overview Promises card still shows committed promises as open. Owner has not yet checked the pages with Ctrl+F5. No Pro account is available for that check.
+
 **Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

@@ -422,6 +422,24 @@ Do not rebuild. Test ran inside `begin` / `rollback`. After rollback the fake or
 
 Rust `:3200` procedure `crm.promises.board`. `scan: true` runs `crm_promises_scan` for 30 days, then the board. Release build finished. Live file is `/opt/anexomail-rust/src/main.rs`. This repo's `server/rust/main.rs` does not contain `crm.timeline`, so the arm was not pasted into a file that cannot compile it. Do not add a second board.
 
+### 9 Oct 2026 — CRM Loop steps 3–9 in code. Do not rebuild.
+
+Docs already on GitHub `e5ffc00..0d820cb`. Build wrote 375 assets, including `app.crm.next`. Site `/health` 200. Fake-org tests rolled back. Humza and Masood data were not changed. Steps 3–9 show for every plan except Basic. Each page reads the database.
+
+| Step | Page | Seen in the test |
+|---|---|---|
+| 1, 2, 7 | Already built | Do not redo |
+| 3 Timeline | `/app/crm` person | Browser showed "Re: hi" |
+| 4 Promises | `/app/crm/promises` | Humza: empty list |
+| 5 Health | `/app/crm/health` | Humza: "Waiting for your reply (1)" |
+| 6 Risk | `/app/crm/risk` | Humza: 1 item |
+| 8 Graph | `/app/crm/graph` | Humza: "Individuals (1)" |
+| 9 Next | `/app/crm/next` | Humza: "1. From Risk" |
+
+The Loop shows 9 steps. Each link opens its own page. A name on the timeline opens Relationships. The Meeting filter shows the empty message.
+
+Still open, do not mark done: the real Work-board Done button (`completed_at`), a live mail that says "I'll send the quote by Friday" so Promises can catch it, graph of who a teammate talked to (Business only, not built), and the old CRM Overview Promises card (`crm.promises.list`) which still labels committed promises as open. A Pro account that can open steps 3–9 is not in hand. The owner has not yet pressed Ctrl+F5 on these pages.
+
 ### Abhi pending
 
 1. Plan-feature steps 7–8: thread analytics Pro+ only, integrations and LEO Actions Business+ only.
