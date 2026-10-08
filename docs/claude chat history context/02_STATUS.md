@@ -62,3 +62,17 @@ Known past incident (context only, already resolved):
 A live DB row was mistakenly deleted in an earlier session (organisations
 table test row) during Masood-account testing - was a test org, not
 customer data, already cleaned up. No outstanding data-integrity concern.
+
+Loop status update (2026-10-08) - this replaces the 'page not built' and 'not applied' lines of any earlier Loop status section.
+- Step 4 Promises page /app/crm/promises: built and deployed (build OK, 371 assets, site 200).
+  The hook useCrmPromisesBoard is in lib/crm.ts. Loop step 4 links to the page.
+  Browser check by the owner: pending.
+- Loop steps 3 and 4 are now shown to every plan that can open CRM. The showCrmCollab filter
+  was removed in CrmStage.tsx (backup: CrmStage.tsx.bak-loop-step4).
+  Seen only on Humza's Business Pro account. NOT seen on a Pro account.
+- Opening the Promises page runs the scan (scan true). It writes suggested rows from that
+  user's own mail of the last 30 days. Nothing else writes to work_promises.
+- Frontend builds now go through /root/bin/safe-build-web.sh (restores the old build if the new
+  one fails).
+- Still pending: owner checks that clicking a person on Timeline opens Relationships and that
+  the Meeting filter shows the empty message; pressing the real Work board done button.

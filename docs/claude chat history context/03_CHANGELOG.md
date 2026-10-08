@@ -4,6 +4,11 @@ into 03_CHANGELOG_ARCHIVE.md if this file gets too long.
 
 ---
 
+2026-10-08 (CRM Loop)
+- Built and deployed the Promises page /app/crm/promises and the useCrmPromisesBoard hook.
+- Loop step 4 now links to it; steps 3 and 4 shown to every non-Basic plan.
+- Browser checks by the owner are still pending.
+
 2026-10-06
 - Found why the earlier lead->contacts patch never ran: it had been applied
   to /opt/anexomail-web/server/routes/crm.ts, but port 3100 (/api) is served

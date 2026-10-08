@@ -70,3 +70,13 @@ terminal sessions repeatedly. Before pushing code to GitHub (even
 private), grep for and remove hardcoded secrets:
 grep -rn "postgresql://" /opt/anexomail /opt/anexomail-rust --include="*.ts" --include="*.rs"
 Keep real secrets in .env (gitignored), never in this docs system.
+
+BACKUP RULE (owner, 2026-10-07): ALWAYS back up before changing anything.
+- Frontend builds: run /root/bin/safe-build-web.sh, never bare bun run build:bun. It saves the
+  source, saves the old .output, and restores the old .output if the new build fails.
+  (A failed build deletes .output/public/assets and leaves the live site without JS and CSS.)
+- Any file edit: cp the file to file.bak-<name> first, or take a tar into /root/backups.
+- Backups live in /root/backups. Full backup command: tar the source folders (not node_modules,
+  target, .output) plus pg_dump --schema-only.
+- Large code pasted through a terminal can lose text that starts with <. Give big files in small
+  pieces and check after each piece.
