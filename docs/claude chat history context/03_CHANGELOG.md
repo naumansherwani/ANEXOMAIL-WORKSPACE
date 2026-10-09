@@ -86,3 +86,15 @@ Earlier (2026-06-18 to 2026-09-26)
   creation with plan caps, message-actions dropdown, Rust distributed
   systems work, etc, not just CRM). Going forward, this changelog is the
   source of truth.
+
+## 2026-10-09 - CRM Loop: teammate Graph, promises list fix, tests
+
+- SQL: crm_team_graph(_org_id, _limit) added. Which teammate (by mailbox) exchanged mail with which outside person, how many mails, and how many teammates talk to the same person. Internal mail between teammates is left out. service_role only.
+- Rust: crm.team arm added (backup main.rs.bak-team). Returns { team: [...] }.
+- Frontend: useCrmTeamGraph hook in lib/crm.ts and a "Who in your team talks to whom" section on /app/crm/graph (backups .bak-team).
+- Fix: crm.promises.list now calls crm_promises_open, so the Overview Promises card no longer shows committed promises as open.
+- Tests (fake organisation inside BEGIN ... ROLLBACK, rollback checked = 0 left behind):
+  - crm_team_graph: 4 expected rows, internal mail excluded, teammates_on_person correct.
+  - Promise detection: "I will send the quote by Friday." found as 1 candidate, scan inserted 1, board shows suggested / mine.
+  - Done button: work_task_update(... 'done') sets status done and completed_at.
+  - crm.team on Humza (read only) returned his real mailbox with 1 mail to an outside person.

@@ -140,3 +140,14 @@ Step 9 Next (2026-10-08) - spec in 05_SPEC_CRM_LOOP.md
   and 7 already existed. Still NOT built: Graph teammates (which teammate talked to whom).
 - Still pending browser checks by the owner: Timeline (person click, Meeting filter), Promises
   empty message, Health, Risk, Graph, Next; the real Work board done button; a Pro account view.
+
+## Update 2026-10-09 - CRM Loop status
+
+Backend and database: done and tested on fake organisations (rolled back) for steps 3, 4, 5, 6, 8 (company graph and team graph) and 9, plus the done button and promise detection.
+
+Frontend: all CRM Loop pages are built and deployed (site returns 200). Not yet checked in a browser by the owner:
+- Timeline: person click and Meeting filter
+- Promises, Health, Risk, Graph (including the team section), Next
+- Loop shows steps 3 to 9 on a Pro / Business / Business Pro account
+
+Not part of the CRM Loop and NOT done: new-buyer signup. Nothing creates an organisation at signup, so a new user gets 409 no_workspace on workspace routes. Mailbox provisioning for new buyers is also unverified.
