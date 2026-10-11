@@ -40,7 +40,7 @@ while read -r sha f; do cp -a --parents "$f" $BK/; done < $T/pre.sha
 cp -a --parents src/styles.css "$TF" $BK/
 cat > $BK/restore.sh <<EOF2
 #!/bin/bash
-cd $W && cp -a $BK/src . && rm -f src/components/app/mail/AddressChip.tsx src/lib/mail-identity.ts && /root/bin/safe-build-web.sh && echo RESTORED
+cd $W && cp -a $BK/src . && rm -f src/components/app/mail/AddressChip.tsx src/lib/mail-identity.ts && /root/bin/safe-build-web.sh && pm2 restart anexomail-web --update-env && pm2 save && echo RESTORED
 EOF2
 chmod +x $BK/restore.sh; echo "BACKUP_OK $BK"
 echo "--- 4 lagao"
@@ -53,6 +53,8 @@ grep -q "Mail cinema (mx-\*)" src/styles.css || { echo >> src/styles.css; cat $T
 echo APPLIED
 echo "--- 5 build (safe-build)"
 /root/bin/safe-build-web.sh 2>&1 | tail -15
+# build akeli kaafi nahi: PM2 purani build memory mein rakhta hai -> restart hamesha
+pm2 restart anexomail-web --update-env && pm2 save
 sleep 3
 curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 echo "marker css: $(grep -rl 'mx-row' .output/public 2>/dev/null | wc -l) file(s)"
