@@ -1,26 +1,59 @@
-# ANEXOMAIL — baqi kaam ki tarteeb (11 Oct 2026)
+# ANEXOMAIL — baqi kaam ki poori list (11 Oct 2026)
 
+Total 27: **26 TODO + 1 READY**. Status sirf DONE / READY / TODO.
 Maqsad: awam user kam se kam qadam mein product use kare (signup -> address -> send -> receive).
-Status sirf DONE / READY / TODO. Sirf side branch; main sirf founder ke "repo update" par.
 
-| # | Kaam | Status | Note |
+## A. Mail product (asli buyer ko rokta hai)
+| # | Kaam | Status | Kis par rukta hai |
 |---|---|---|---|
-| 0 | Founder/public alag: `resolved@` + DMARC thread basic account mein dikh rahe hain | TODO | diagnose SQL output chahiye -> E16 SQL |
-| 1 | Mail cinema UI (chip, filter strip, groups, thread badge) | READY | server par load; screenshot par DONE |
-| 2 | Outbound proof: company address se send, Sent thread, DKIM/SPF/DMARC (Gmail) | TODO | live worker repo se alag (server par uncommitted changes) |
-| 3 | Backend: `/accounts` company addresses + `/schedule` identity org-check (security) | TODO | |
-| 4 | Test accounts Pro/Business (4 packages asli buyer jaise) | TODO | |
-| 5 | Naya buyer signup: workspace + member + trial plan + apna @anexomail.com address | TODO | sab se bara; naya phase = Rust |
-| 6 | Part E: Compose "From" selector, Sent mein address | TODO | |
-| 7 | Part D: domain wizard (3 scenes, DNS ticks, copy buttons) | TODO | A,B DONE; C receive DONE |
-| 8 | Business Pro support 12h (phase63 -> E-series rename, polar.ts untouched) | TODO | |
-| 9 | Browser checks (founder): CRM pages, 4 packages, Basic 11-point | TODO | founder ka kaam |
-| 10 | Docs + repo main sync (live-only files samet) | TODO | sirf founder go-ahead |
-| 11 | Purani mail import, founder side | TODO | user-side green ke baad |
+| 1 | Founder/public alag: `resolved@` basic org mein; "inbox sahi nahi" | TODO | founder_accounts wala SQL output |
+| 2 | Company address se send, Sent mein thread, Gmail SPF/DKIM/DMARC | TODO | #1 ke baad send test |
+| 3 | Backend: `/accounts` mein company addresses; `/schedule` identity org-check (security); worker `hello@` fallback | TODO | |
+| 4 | Test accounts Pro + Business (4 packages) | TODO | |
+| 5 | Naya buyer signup: workspace + member + trial plan (Rust) | TODO | sab se bara |
+| 6 | Naye buyer ka apna @anexomail.com address + Postfix auto-sync | TODO | #5 ke saath |
+| 7 | Compose "From" selector (company address rang ke saath) | TODO | #3 ke baad |
+| 8 | Domain wizard UI (3 scenes, DNS ticks, copy buttons) | TODO | #7 ke baad |
+| 9 | Mail cinema UI (server par load) | READY | founder screenshot |
+| 10 | Repo main <-> server sync (thread route + live-only files) | TODO | live diff output |
 
-Security (founder ke zimme): .env plaintext secrets, repo public, purana Supabase token revoke,
-DB password rotate, test passwords rotate, git email.
+## B. Plans aur data
+| # | Kaam | Status |
+|---|---|---|
+| 11 | Business Pro support 12h (phase63 -> E-series, polar.ts untouched) | TODO |
+| 12 | Business Pro `workspace_plans.mailboxes_included = 1` galat data | TODO |
+| 13 | `plan.ts` limits SQL se copy (drift ka khatra) | TODO |
+| 14 | Test accounts ke mailboxes `mail_accounts` mein, `mailboxes` mein nahi -> mailbox limit asli test nahi hui | TODO |
 
-Purani list ki do baatein ab galat/purani hain:
-- "Domain system bana hi nahi": A (DB), B (Rust), C (server sync, receive side) ban chuke.
-- "Worker Sent mein nahi likhta": repo main worker `mail_threads(folder: "sent")` likhta hai; live worker alag hai, test se pakka hoga.
+## C. CRM
+| # | Kaam | Status |
+|---|---|---|
+| 15 | Work board "Done" button ka asli test (completed_at) | TODO (founder) |
+| 16 | Wada pakadne ka test ("I'll send the quote by Friday" -> Promises page) | TODO (founder) |
+| 17 | Graph "teammate ne kis se baat ki" (Business) | TODO, bana nahi |
+| 18 | CRM Overview purana Promises card (`crm.promises.list`) galat status filter | TODO |
+| 19 | Pro account jahan Loop steps 3-9 dikhein | TODO (#4 ke baad) |
+
+## D. Founder ke browser checks (mere fix ke baad)
+| # | Kaam | Status |
+|---|---|---|
+| 20 | CRM ke saare pages har plan ke account se | TODO |
+| 21 | Basic ki 11-point checklist | TODO |
+| 22 | Undo send 30s hold, Cmd+K, plan gating | TODO |
+| 23 | Business Pro card ke ~35 wade (8K, QUIC, AV1, p50/p95/p99 ...) — abhi sirf naam code mein | TODO |
+
+## E. Baad mein
+| # | Kaam | Status |
+|---|---|---|
+| 24 | Purani mail import (Gmail/Outlook) | TODO |
+| 25 | Founder side | TODO |
+| 26 | Spreadsheet ("Create a spreadsheet") — kabhi bana nahi, founder se sawal baqi | TODO |
+| 27 | Docs update (test accounts, 4 packages, env names, Masood ka asli plan, SLA finding) | TODO |
+
+## F. Security (founder ke zimme)
+`/opt/anexomail/.env` plaintext passwords; repo public -> private; purana Supabase token revoke;
+chat mein aaya DB password badalna; test passwords rotate; Git ka asli email.
+
+## DONE (is session mein live verify)
+- Domain system A (DB), B (Rust, asli DNS 5/5), C receive side (company address par inbound mail).
+- Company address mailbox cap + address re-create fix (smoke 17/17).
