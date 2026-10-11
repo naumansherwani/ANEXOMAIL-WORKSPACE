@@ -7,7 +7,7 @@ Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) s
 ## Queue 1 — AWAM product (abhi chal raha hai, #1 se #N tarteeb se)
 | # | Kaam | Status |
 |---|---|---|
-| 1 | `resolved@` basic account se hatana (data leak fix) | DB commit ho chuka; founder ka live dekhna baqi |
+| 1 | `resolved@` basic account se hatana (data leak fix) | DONE — founder screenshot se confirm (11 Oct) |
 | 2 | Company address se send, Sent thread, SPF/DKIM/DMARC | Mail bhej di gayi, delivered; "Show original" ka result baqi |
 | 3 | `/schedule` identity org-check (security) | Live deploy ho chuka |
 | 4 | Test accounts Pro + Business (4 packages) | TODO — agla |
@@ -15,7 +15,7 @@ Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) s
 | 6 | Buyer ka apna @anexomail.com address + Postfix auto-sync | TODO |
 | 7 | Compose "From" selector (company address rang ke saath) | TODO |
 | 8 | Domain wizard UI (3 scenes, DNS ticks) | TODO |
-| 9 | Mail cinema UI | READY (server par load); founder screenshot se DONE |
+| 9 | Mail cinema UI | DONE — founder screenshot se confirm (11 Oct) |
 | 10 | Repo <-> server sync (mail-worker.ts, mail.ts, thread route) | Side branch `wip/e15-ui` par ho chuka; `main` par founder "repo update" kehne par |
 | 11 | Business Pro support 12h (phase63 -> E-series) | TODO |
 | 12 | `workspace_plans.mailboxes_included` Business Pro ke liye galat | TODO |
