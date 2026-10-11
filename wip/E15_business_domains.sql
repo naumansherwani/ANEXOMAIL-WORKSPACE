@@ -175,7 +175,7 @@ begin
   insert into public.org_addresses (org_id, domain_id, local_part, address, kind, owner_user_id, alias_target)
   values (_org, _domain_id, l, addr, k, _owner, lower(nullif(trim(_alias_target),''))) returning * into row_;
   if k <> 'alias' then   -- mail_ingest isi se owner org pehchanta hai
-    insert into public.mail_accounts (org_id, address) values (_org, addr) on conflict (address) do nothing;
+    insert into public.mail_accounts (org_id, address) values (_org, addr) on conflict do nothing;
   end if;
   return jsonb_build_object('ok', true, 'address', to_jsonb(row_));
 end $$;
