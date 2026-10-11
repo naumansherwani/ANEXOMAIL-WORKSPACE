@@ -8,7 +8,7 @@ Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) s
 | # | Kaam | Status |
 |---|---|---|
 | 1 | `resolved@` basic account se hatana (data leak fix) | DONE — founder screenshot se confirm (11 Oct) |
-| 2 | Company address se send, Sent thread, SPF/DKIM/DMARC | Mail bhej di gayi, delivered; "Show original" ka result baqi |
+| 2 | Company address se send, Sent thread, SPF/DKIM/DMARC | DONE — Gmail Show Original: SPF PASS, DKIM PASS (d=mailtest.axonetis.com), DMARC PASS (11 Oct) |
 | 3 | `/schedule` identity org-check (security) | Live deploy ho chuka |
 | 4 | Test accounts Pro + Business (4 packages) | TODO — agla |
 | 5 | Naya buyer signup: workspace + member + trial (Rust) | TODO |
