@@ -31,6 +31,6 @@ Founder lock 25 Sep 2026. Full record: `docs/anexomail-blueprint.md` section **S
 
 **Still open on the Loop — do not call these done:** real Work Done button (`completed_at`), a real "I'll send the quote by Friday" mail so scan can catch a promise, teammate graph (Business only, not built), old Overview Promises card still shows committed promises as open. Owner has not yet checked the pages with Ctrl+F5. No Pro account is available for that check.
 
-**Still pending — only this is next:** (7) thread-analytics Pro+ only (8) integrations and LEO Actions Business+ only. Also still open: `hello@` auto-reply, `billing@` receipt, MailRail founder vs company split, real card charge.
+**Remaining work is one list, 11 Oct 2026.** 26 TODO and 1 READY. Do not open a second queue. Full list: blueprint section "11 Oct 2026 — remaining work". Next buyer path is signup, address, send, receive. Largest item is new-buyer signup in Rust. Item 9 mail cinema is READY until the founder screenshot. Domain system A/B/C and the company-address cap smoke 17/17 are DONE. Do not redo them. Security in section F is founder-only. No secrets in the repo.
 
 No passwords or `DATABASE_URL` in docs, chat, or commits. Lovable files and Polar `:3400` stay no-touch.

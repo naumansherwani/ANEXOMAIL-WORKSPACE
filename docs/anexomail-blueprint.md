@@ -440,13 +440,55 @@ The Loop shows 9 steps. Each link opens its own page. A name on the timeline ope
 
 Still open, do not mark done: the real Work-board Done button (`completed_at`), a live mail that says "I'll send the quote by Friday" so Promises can catch it, graph of who a teammate talked to (Business only, not built), and the old CRM Overview Promises card (`crm.promises.list`) which still labels committed promises as open. A Pro account that can open steps 3–9 is not in hand. The owner has not yet pressed Ctrl+F5 on these pages.
 
-### Abhi pending
+### 11 Oct 2026 — remaining work. One list. Do not open a second.
 
-1. Plan-feature steps 7–8: thread analytics Pro+ only, integrations and LEO Actions Business+ only.
-2. `hello@` auto-reply (Option C template).
-3. `billing@` receipt on Polar payment success.
-4. MailRail: founder-solo vs company-unified.
-5. Real card payment end-to-end — abhi sirf checkout **open** proven.
+Status words: DONE, READY, TODO. Goal: signup, then address, then send, then receive, in as few steps as the buyer needs.
+
+DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/5), C (inbound on a company address). Company-address mailbox cap and address re-create (smoke 17/17).
+
+**A. Mail product**
+
+1. TODO. Founder and public split: `resolved@` sits in the basic org. Needs the `founder_accounts` SQL output.
+2. TODO. Send from a company address, thread in Sent, Gmail SPF/DKIM/DMARC. After 1.
+3. TODO. `/accounts` lists company addresses. `/schedule` checks the identity belongs to the org. Worker must not fall back to `hello@`.
+4. TODO. Test accounts for Pro and Business, four packages.
+5. TODO. New buyer signup creates workspace, member, and trial plan in Rust. This is the largest item.
+6. TODO. That buyer gets their own `@anexomail.com` address and Postfix syncs it. With 5.
+7. TODO. Compose From selector, company address in its own colour. After 3.
+8. TODO. Domain wizard, three scenes, DNS ticks, copy buttons. After 7.
+9. READY. Mail cinema UI is on the server. DONE only after the founder screenshot.
+10. TODO. Repo and server sync for the thread route and live-only files. Needs the live diff.
+
+**B. Plans and data**
+
+11. TODO. Business Pro support 12h. Move it as an E-series file. Do not touch `polar.ts`.
+12. TODO. `workspace_plans.mailboxes_included` for Business Pro is 1. That number is wrong.
+13. TODO. Copy limits from SQL into `plan.ts`. Drift is the risk.
+14. TODO. Test-account mailboxes are in `mail_accounts`, not `mailboxes`, so the mailbox cap was not really tested.
+
+**C. CRM**
+
+15. TODO. Founder presses the real Work Done button. `completed_at` must fill.
+16. TODO. Founder sends "I'll send the quote by Friday", then opens Promises.
+17. TODO. Teammate graph. Business only. Not built.
+18. TODO. Old Overview Promises card (`crm.promises.list`) shows committed promises as open.
+19. TODO. A Pro account that can open Loop steps 3–9. After 4.
+
+**D. Founder browser checks**
+
+20. TODO. Every CRM page from each plan's account.
+21. TODO. Basic 11-point checklist.
+22. TODO. Undo send 30s hold, Cmd+K, plan gating.
+23. TODO. Business Pro card promises (8K, QUIC, AV1, p50/p95/p99) are names in code only.
+
+**E. Later**
+
+24. TODO. Import old mail from Gmail or Outlook.
+25. TODO. Founder side.
+26. TODO. Spreadsheet. Never built. Ask the founder before starting.
+27. TODO. Docs: test accounts, four packages, env names, Masood's real plan, SLA finding.
+
+**F. Security — founder only.** Do not write secrets into the repo. Plaintext passwords in `/opt/anexomail/.env`, public repo to private, revoke the old Supabase token, rotate the database password that appeared in chat, rotate test passwords, set Git to the real email.
 
 ---
 

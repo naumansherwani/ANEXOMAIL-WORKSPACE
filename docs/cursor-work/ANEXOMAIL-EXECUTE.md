@@ -193,7 +193,8 @@ SQL phase64 no-touch. CR1+ flagship = E4+E6 ke baad. Alag crm host nahi.
 29 Sep 2026 GREEN, do not redo: CRM Memory. Rust `dispatch_crm()` — timeline, recompute, extractSignature, setNotes, addAlias. Frontend `rpc()` plus the five TanStack hooks. Team context is org scope, not a new feature.  
 6 Oct 2026 GREEN, do not redo: Accept lead creates the contact. Live route is `/opt/anexomail/src/routes/crm.ts` (`anexomail-leo` :3100), not `anexomail-web/server/routes`.  
 7 Oct 2026 GREEN, do not redo: `crm_promises_scan` and `crm_promises_board`. Rust `crm.promises.board` on `:3200`. Scan only when `scan` is true.  
-9 Oct 2026 Loop steps 3–9 are in code (Timeline, Promises, Health, Risk, Graph, Next). Not done yet: real Done button, a live promise sentence in mail, teammate graph, Overview card status filter.
+9 Oct 2026 Loop steps 3–9 are in code (Timeline, Promises, Health, Risk, Graph, Next). Not done yet: real Done button, a live promise sentence in mail, teammate graph, Overview card status filter.  
+11 Oct 2026: one remaining list, 26 TODO + 1 READY. Blueprint section "11 Oct 2026 — remaining work". Do not open a second queue.
 
 ---
 
