@@ -354,7 +354,7 @@ async function processWebhookEvent(event: any, eventId: string) {
     const isRecurring = data.subscription_id ? true : false;
     const customerEmail =
       data.customer_email || data.customer?.email || data.customer?.billing_address?.email || null;
-    const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24, business_pro: 12 };
+    const responseHours: Record<string, number> = { basic: 72, pro: 48, business: 24 };
 
     const intentId = meta.anexomail_intent_id || null;
     if ((kind === "plan" || kind === "ai_plan") && (!registeredProduct || !intentId)) {

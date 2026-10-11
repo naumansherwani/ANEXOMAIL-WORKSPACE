@@ -172,7 +172,7 @@ export type FounderReply = {
   customer_email: string;
   subject: string;
   plan: WorkspacePlanId;
-  response_due_hours: 12 | 24 | 48 | 72;
+  response_due_hours: 24 | 48 | 72;
   received_at: string;
   respond_by: string;
   state: "awaiting_reply" | "replied" | "closed";
