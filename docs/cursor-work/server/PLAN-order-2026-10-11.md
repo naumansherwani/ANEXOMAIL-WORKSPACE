@@ -1,59 +1,47 @@
-# ANEXOMAIL — baqi kaam ki poori list (11 Oct 2026) — TARTEEB LOCKED (AGENTS.md Rule 14) — copy; asli list: docs/anexomail-blueprint.md "11 Oct 2026 — remaining work"
+# ANEXOMAIL — kaam ki tarteeb (11 Oct 2026) — LOCKED (AGENTS.md Rule 14)
 
-Total 27: **26 TODO + 1 READY**. Status sirf DONE / READY / TODO.
-Maqsad: awam user kam se kam qadam mein product use kare (signup -> address -> send -> receive).
+Asli list: `docs/anexomail-blueprint.md` -> "11 Oct 2026 — remaining work". Yeh file us ki copy hai; farq ho to blueprint jeetta hai.
 
-## A. Mail product (asli buyer ko rokta hai)
-| # | Kaam | Status | Kis par rukta hai |
-|---|---|---|---|
-| 1 | Founder/public alag: `resolved@` basic org mein; "inbox sahi nahi" | TODO | founder_accounts wala SQL output |
-| 2 | Company address se send, Sent mein thread, Gmail SPF/DKIM/DMARC | TODO | #1 ke baad send test |
-| 3 | Backend: `/accounts` mein company addresses; `/schedule` identity org-check (security); worker `hello@` fallback | TODO | |
-| 4 | Test accounts Pro + Business (4 packages) | TODO | |
-| 5 | Naya buyer signup: workspace + member + trial plan (Rust) | TODO | sab se bara |
-| 6 | Naye buyer ka apna @anexomail.com address + Postfix auto-sync | TODO | #5 ke saath |
-| 7 | Compose "From" selector (company address rang ke saath) | TODO | #3 ke baad |
-| 8 | Domain wizard UI (3 scenes, DNS ticks, copy buttons) | TODO | #7 ke baad |
-| 9 | Mail cinema UI (server par load) | READY | founder screenshot |
-| 10 | Repo main <-> server sync (thread route + live-only files) | TODO | live diff output |
+Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) shuru nahi hoga**, jaisa founder ne kaha (AGENTS.md TARTEEB: anexomail.com pehle, founder workspace baad mein).
 
-## B. Plans aur data
+## Queue 1 — AWAM product (abhi chal raha hai, #1 se #N tarteeb se)
 | # | Kaam | Status |
 |---|---|---|
-| 11 | Business Pro support 12h (phase63 -> E-series, polar.ts untouched) | TODO |
-| 12 | Business Pro `workspace_plans.mailboxes_included = 1` galat data | TODO |
-| 13 | `plan.ts` limits SQL se copy (drift ka khatra) | TODO |
-| 14 | Test accounts ke mailboxes `mail_accounts` mein, `mailboxes` mein nahi -> mailbox limit asli test nahi hui | TODO |
-
-## C. CRM
-| # | Kaam | Status |
-|---|---|---|
-| 15 | Work board "Done" button ka asli test (completed_at) | TODO (founder) |
-| 16 | Wada pakadne ka test ("I'll send the quote by Friday" -> Promises page) | TODO (founder) |
-| 17 | Graph "teammate ne kis se baat ki" (Business) | TODO, bana nahi |
-| 18 | CRM Overview purana Promises card (`crm.promises.list`) galat status filter | TODO |
-| 19 | Pro account jahan Loop steps 3-9 dikhein | TODO (#4 ke baad) |
-
-## D. Founder ke browser checks (mere fix ke baad)
-| # | Kaam | Status |
-|---|---|---|
-| 20 | CRM ke saare pages har plan ke account se | TODO |
-| 21 | Basic ki 11-point checklist | TODO |
-| 22 | Undo send 30s hold, Cmd+K, plan gating | TODO |
-| 23 | Business Pro card ke ~35 wade (8K, QUIC, AV1, p50/p95/p99 ...) — abhi sirf naam code mein | TODO |
-
-## E. Baad mein
-| # | Kaam | Status |
-|---|---|---|
+| 1 | `resolved@` basic account se hatana (data leak fix) | DB commit ho chuka; founder ka live dekhna baqi |
+| 2 | Company address se send, Sent thread, SPF/DKIM/DMARC | Mail bhej di gayi, delivered; "Show original" ka result baqi |
+| 3 | `/schedule` identity org-check (security) | Live deploy ho chuka |
+| 4 | Test accounts Pro + Business (4 packages) | TODO — agla |
+| 5 | Naya buyer signup: workspace + member + trial (Rust) | TODO |
+| 6 | Buyer ka apna @anexomail.com address + Postfix auto-sync | TODO |
+| 7 | Compose "From" selector (company address rang ke saath) | TODO |
+| 8 | Domain wizard UI (3 scenes, DNS ticks) | TODO |
+| 9 | Mail cinema UI | READY (server par load); founder screenshot se DONE |
+| 10 | Repo <-> server sync (mail-worker.ts, mail.ts, thread route) | Side branch `wip/e15-ui` par ho chuka; `main` par founder "repo update" kehne par |
+| 11 | Business Pro support 12h (phase63 -> E-series) | TODO |
+| 12 | `workspace_plans.mailboxes_included` Business Pro ke liye galat | TODO |
+| 13 | `plan.ts` limits SQL se copy (drift risk) | TODO |
+| 14 | Test mailboxes `mail_accounts` mein hain, `mailboxes` mein nahi | TODO |
+| 17 | CRM teammate graph (Business only) | TODO, bana nahi |
+| 18 | CRM Overview Promises card (`crm.promises.list`) galat filter | TODO |
+| 19 | Pro account jahan Loop steps 3-9 dikhein | TODO |
 | 24 | Purani mail import (Gmail/Outlook) | TODO |
-| 25 | Founder side | TODO |
-| 26 | Spreadsheet ("Create a spreadsheet") — kabhi bana nahi, founder se sawal baqi | TODO |
-| 27 | Docs update (test accounts, 4 packages, env names, Masood ka asli plan, SLA finding) | TODO |
+| 26 | Spreadsheet ("Create a spreadsheet") | TODO, founder se sawal baqi |
+| 27 | Docs update | TODO |
 
-## F. Security (founder ke zimme)
-`/opt/anexomail/.env` plaintext passwords; repo public -> private; purana Supabase token revoke;
-chat mein aaya DB password badalna; test passwords rotate; Git ka asli email.
+## Queue 2 — Founder side (RECORD, Queue 1 poora hone ke baad shuru)
+Founder ne kaha: kaam bohot zyada hai, awam ke baad karna hai. Yahan sirf list mein, abhi shuru nahi.
+
+| # | Kaam |
+|---|---|
+| 15 | Founder khud Work Done button dabata hai (`completed_at` test) |
+| 16 | Founder "I'll send the quote by Friday" bhejta hai, Promises page kholta hai |
+| 20 | CRM ke saare pages har plan ke account se (founder browser check) |
+| 21 | Basic ki 11-point checklist (founder) |
+| 22 | Undo send 30s hold, Cmd+K, plan gating (founder) |
+| 23 | Business Pro ke ~35 wade (8K, QUIC, AV1, p50/p95/p99 ...) abhi sirf naam code mein |
+| 25 | Founder workspace build (`founderworkspace.anexomail.com`) — AGENTS.md TARTEEB phase 2, awam ke baad |
+| F | Security: `.env` plaintext, repo public->private, token/password rotate, git email |
 
 ## DONE (is session mein live verify)
 - Domain system A (DB), B (Rust, asli DNS 5/5), C receive side (company address par inbound mail).
-- Company address mailbox cap + address re-create fix (smoke 17/17).
+- Company-address mailbox cap + re-create fix (smoke 17/17).
