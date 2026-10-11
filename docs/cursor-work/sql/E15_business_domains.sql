@@ -45,7 +45,7 @@ create table if not exists public.org_addresses (
   created_at     timestamptz not null default now(),
   constraint org_addresses_alias_ck check (kind <> 'alias' or alias_target is not null)
 );
-create unique index if not exists org_addresses_address_uq on public.org_addresses (address);
+create unique index if not exists org_addresses_address_uq on public.org_addresses (address) where active;
 create index if not exists org_addresses_org_idx on public.org_addresses (org_id);
 
 alter table public.org_domains   enable row level security;
@@ -160,7 +160,7 @@ begin
   if l !~ '^[a-z0-9]([a-z0-9._-]{0,62}[a-z0-9])?$' then return jsonb_build_object('ok', false, 'error', 'invalid_local_part'); end if;
   if k = 'alias' and coalesce(trim(_alias_target),'') = '' then return jsonb_build_object('ok', false, 'error', 'alias_target_required'); end if;
   addr := l || '@' || dom.domain;
-  if exists (select 1 from public.org_addresses a where a.address = addr)
+  if exists (select 1 from public.org_addresses a where a.address = addr and a.active)
      or exists (select 1 from public.mail_accounts m where lower(m.address) = addr and m.org_id <> _org) then
     return jsonb_build_object('ok', false, 'error', 'address_taken');
   end if;
