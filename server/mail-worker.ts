@@ -17,51 +17,6 @@ import { sendMail } from "./mail/sendmail";
 const POLL_MS = 5_000;
 const DEFAULT_FROM = "hello@anexomail.com";
 
-async function senderAccount(orgId: string, userId: string | null, identity: string | null) {
-  let email: string | null = identity ? String(identity).toLowerCase() : null;
-  if (!email && userId) {
-    try {
-      const r: any = await supa.auth.admin.getUserById(userId);
-      email = String(r?.data?.user?.email || "").toLowerCase() || null;
-    } catch {}
-  }
-  for (const t of ["mail_accounts", "mailboxes"]) {
-    if (!email) break;
-    const { data } = await supa.from(t).select("id,address").eq("org_id", orgId).ilike("address", email).limit(1).maybeSingle();
-    if (data) return data;
-  }
-  for (const t of ["mail_accounts", "mailboxes"]) {
-    const { data } = await supa.from(t).select("id,address").eq("org_id", orgId).order("address").limit(1).maybeSingle();
-    if (data) return data;
-  }
-  return null;
-}
-
-async function recordSent(row: any, from: string, to: string[], cc: any, bcc: any) {
-  try {
-    const acct: any = await senderAccount(row.org_id, row.user_id, from);
-    const now = new Date().toISOString();
-    const subject = row.subject || "(no subject)";
-    const body = String(row.body || "");
-    const { data: t, error: te } = await supa.from("mail_threads").insert({
-      org_id: row.org_id, account_id: acct ? acct.id : null, subject, snippet: body.slice(0, 180),
-      from_name: null, from_address: from, mailbox_address: from, folder: "sent", status: "open",
-      unread: false, message_count: 1, last_message_at: now,
-    }).select("id").single();
-    if (te || !t) { console.error("[mail-worker] sent-thread failed:", te && te.message); return; }
-    const ccl = cc || [];
-    const bccl = bcc || [];
-    const { error: me } = await supa.from("mail_messages").insert({
-      org_id: row.org_id, thread_id: t.id, direction: "out", from_address: from,
-      to_addresses: to, cc_addresses: ccl, bcc_addresses: bccl,
-      to_addrs: to, cc_addrs: ccl, bcc_addrs: bccl,
-      subject, body_text: body, sent_at: now,
-    });
-    if (me) console.error("[mail-worker] sent-message failed:", me.message);
-    else console.log("[mail-worker] sent-copy ok thread=" + t.id);
-  } catch (e) { console.error("[mail-worker] recordSent error:", e); }
-}
-
 let running = false;
 
 function estimateBytes(subject: string, body: string): number {
@@ -235,7 +190,6 @@ async function processQueue() {
           .from("mail_scheduled")
           .update({ status: "sent", sent_at: new Date().toISOString() })
           .eq("id", row.id);
-        await recordSent(row, fromAddress, toList, ccList, bccList);
         if (workspaceId) await commitStorage(workspaceId, fromAddress, bytes);
         console.log(`[mail-worker] sent id=${row.id} to=${toList.join(",")}`);
       } else {

@@ -5,7 +5,9 @@
 import { Router } from "express";
 import { admin as supa } from "../lib/supa";
 
-type Ctx = { userId: string; orgId: string };
+import { hasFeature, resolvePlan } from "../lib/plan";
+
+type Ctx = { userId: string; orgId: string; email: string };
 
 async function ctx(req: any, res: any): Promise<Ctx | null> {
   const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
@@ -14,12 +16,13 @@ async function ctx(req: any, res: any): Promise<Ctx | null> {
   const { data, error } = await supa.auth.getUser(token);
   if (error || !data?.user) { res.status(401).json({ error: "unauthenticated" }); return null; }
   const userId = data.user.id;
+  const email = data.user.email ?? "";
   const requested = (req.header("x-org-id") || req.query.org_id || "") as string;
   const { data: rows } = await supa.from("org_members").select("org_id").eq("user_id", userId);
   const ids = (rows || []).map((r: any) => r.org_id);
   if (!ids.length) { res.status(409).json({ error: "no_workspace" }); return null; }
   const orgId = requested && ids.includes(requested) ? requested : ids[0];
-  return { userId, orgId };
+  return { userId, orgId, email };
 }
 
 export const mailComposeRouter = Router();
@@ -189,6 +192,24 @@ mailComposeRouter.post("/send-confidence", async (req, res) => {
 mailComposeRouter.post("/schedule", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const b = req.body || {};
+
+  // SECURITY FIX (E15 #3, 11 Oct 2026): "identity" was accepted as any raw
+  // string and later used literally as the From header by mail-worker.ts —
+  // any authenticated user could spoof ANY address as their sender identity.
+  // Now: identity must be a mailbox/alias/address that genuinely belongs to
+  // this user's org (mailboxes OR mail_accounts), or it must be omitted
+  // (worker then resolves the user's own genuine address by user_id).
+  let identity: string | null = b.identity ? String(b.identity).trim().toLowerCase() : null;
+  if (identity) {
+    const [boxRes, maRes] = await Promise.all([
+      supa.from("mailboxes").select("id").eq("org_id", c.orgId).ilike("address", identity).limit(1).maybeSingle(),
+      supa.from("mail_accounts").select("id").eq("org_id", c.orgId).ilike("address", identity).limit(1).maybeSingle(),
+    ]);
+    if (!boxRes.data && !maRes.data) {
+      return res.status(403).json({ error: "identity_not_in_org", identity });
+    }
+  }
+
   const hold = Math.min(Math.max(Number(b.hold_seconds ?? 10), 0), 120);
   const sendAt = b.send_at ? new Date(b.send_at) : new Date(Date.now() + hold * 1000);
 
@@ -196,7 +217,7 @@ mailComposeRouter.post("/schedule", async (req, res) => {
     org_id: c.orgId,
     user_id: c.userId,
     thread_id: b.thread_id || null,
-    identity: b.identity || null,
+    identity,
     to: b.to || "",
     cc: b.cc || null,
     bcc: b.bcc || null,
@@ -261,6 +282,14 @@ mailComposeRouter.get("/follow-up", async (req, res) => {
 mailComposeRouter.get("/thread/:id/insights", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
 
+  // Defense-in-depth gate — Rust /rpc/mail.thread.insights is primary now,
+  // but this legacy REST route must never leak analytics to Basic if it's
+  // ever hit as a fallback.
+  const plan = await resolvePlan(c.userId, c.email);
+  if (!hasFeature(plan, "threadAnalytics")) {
+    return res.status(403).json({ error: "feature_not_available", feature: "threadAnalytics", plan });
+  }
+
   const { data: msgs, error } = await supa
     .from("mail_messages")
     .select("direction, sent_at")
@@ -285,10 +314,12 @@ mailComposeRouter.get("/thread/:id/insights", async (req, res) => {
   const avg = gaps.length ? Math.round(gaps.reduce((a, b) => a + b, 0) / gaps.length) : null;
 
   // best send hour: jin hours mein inbound reply aayi
+  // Honesty fix: a single reply is not a "pattern" — require at least 3
+  // inbound replies before claiming a best-time-to-send insight.
   const hours = rows.filter((m: any) => m.direction === "in").map((m: any) => new Date(m.sent_at).getUTCHours());
   const tally = new Map<number, number>();
   for (const h of hours) tally.set(h, (tally.get(h) || 0) + 1);
-  const best = [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
+  const best = hours.length >= 3 ? ([...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null) : null;
 
   const { data: track } = await supa
     .from("mail_thread_insights")
@@ -304,7 +335,8 @@ mailComposeRouter.get("/thread/:id/insights", async (req, res) => {
     response_rate: outbound ? Math.min(1, inbound / outbound) : null,
     avg_response_minutes: avg,
     best_send_hour: best,
-    recipient_timezone: track?.recipient_timezone ?? null,
+    // Never show a bare hour without saying which timezone it's in.
+    recipient_timezone: track?.recipient_timezone ?? (best !== null ? "UTC" : null),
   });
 });
 

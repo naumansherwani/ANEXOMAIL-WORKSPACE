@@ -270,7 +270,7 @@ mailRouter.get("/thread/:id", async (req, res) => {
 
   const { data: msgs } = await supa
     .from("mail_messages")
-    .select("*, mail_attachments(id,filename,mime_type,size_bytes,storage_path)")
+    .select("*, mail_attachments(*)")
     .eq("thread_id", t.id).order("sent_at", { ascending: true });
 
   const lmap = await labelsFor([t.id]);
@@ -298,7 +298,7 @@ mailRouter.get("/thread/:id", async (req, res) => {
       scheduled_at: m.scheduled_at ?? null,
       attachments: (m.mail_attachments || []).map((a: any) => ({
         id: a.id, filename: a.filename, mime_type: a.mime_type,
-        size_bytes: a.size_bytes ?? 0, url: a.storage_path ?? null,
+        size_bytes: a.size_bytes ?? 0, url: a.url ?? a.storage_path ?? a.path ?? null,
       })),
     })),
   });
@@ -412,7 +412,6 @@ mailRouter.post("/thread/:id/star", async (req, res) => {
  * Step 5 (plan-feature-wire audit): shared-inbox collision-guard assign,
  * GENUINELY wired (pehle sirf UI chip dikhta tha, save nahi hoti thi).
  * Pro+ gate — Basic plan ko yeh feature nahi milta (pricing table match).
- * Recorded 25 Sep 2026 from the live server patch.
  */
 mailRouter.post("/thread/:id/assign", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
@@ -462,7 +461,7 @@ mailRouter.post("/thread/:id/assign", async (req, res) => {
   }
   const { data, error } = await supa.rpc("mail_thread_assign", {
     _thread_id: req.params.id,
-    _assignee: assigneeId || assigneeInput,
+    _assignee: assigneeId,
     _org_id: c.orgId,
   });
   if (error) return res.status(400).json({ error: error.message });

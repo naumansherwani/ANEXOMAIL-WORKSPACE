@@ -8,11 +8,16 @@ import { EmptyState } from "@/components/app/Panel";
 import { InlineReply } from "@/components/app/mail/InlineReply";
 import { QuoteInChat } from "@/components/app/mail/QuoteInChat";
 import { ThreadHeaderActions } from "@/components/app/mail/ThreadHeaderActions";
+import { FeatureGate } from "@/components/app/FeatureGate";
 import { ThreadInsights } from "@/components/app/mail/ThreadInsights";
+import { ThreadWorkPanel } from "@/components/app/mail/ThreadWorkPanel";
 import { AddressChip } from "@/components/app/mail/AddressChip";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { measureMotion } from "@/lib/experience";
+import { useAuth } from "@/lib/auth";
+import { useLocale } from "@/lib/i18n";
+import { showProMailTools } from "@/lib/plan-surface";
 import { type MailThread, formatBytes, useThread } from "@/lib/mail";
 
 export const Route = createFileRoute("/app/mail/$folder/$threadId")({
@@ -25,6 +30,13 @@ export const Route = createFileRoute("/app/mail/$folder/$threadId")({
 function ThreadPage() {
   const { folder, threadId } = Route.useParams();
   const query = useThread(threadId);
+  const { session } = useAuth();
+  const { t } = useLocale();
+  const proMail = showProMailTools(
+    session?.user.workspace_plan,
+    session?.user.ai_plan,
+    session?.user.account_kind,
+  );
 
   // Phase 29 — Motion contract: opening a thread must land inside the calm budget.
   useEffect(() => {
@@ -112,7 +124,10 @@ function ThreadPage() {
       </div>
 
       <div className="flex flex-col gap-ax-4 p-ax-5">
-        <ThreadInsights threadId={thread.id} />
+        <FeatureGate allowed={proMail} requires="pro" label={t("Thread insight")} variant="chip">
+          <ThreadInsights threadId={thread.id} />
+        </FeatureGate>
+        <ThreadWorkPanel threadId={thread.id} />
         {thread.messages.map((message) => (
           <MailMessage key={message.id} message={message} threadId={thread.id} />
         ))}
@@ -146,6 +161,28 @@ function msgAvatarPalette(address: string | null | undefined): string {
 function msgInitial(name: string | null | undefined, addr: string | null | undefined): string {
   return ((name ?? addr ?? "?").trim()[0] ?? "?").toUpperCase();
 }
+
+// Gmail/Zoho-style quote collapsing: a reply carries its whole history inline
+// ("On ... wrote: ..."). Splitting it behind a native <details> toggle keeps
+// the reading view clean without any extra client JS.
+const QUOTE_TEXT_RE = /\n?On .{0,160} wrote:\s*$/m;
+
+function splitQuotedText(text: string): { main: string; quoted: string | null } {
+  const match = text.match(QUOTE_TEXT_RE);
+  if (!match || match.index === undefined) return { main: text, quoted: null };
+  const main = text.slice(0, match.index).trimEnd();
+  const quoted = text.slice(match.index).trim();
+  return { main, quoted: quoted || null };
+}
+
+function collapseQuotedHtml(html: string): string {
+  return html.replace(
+    /<blockquote[\s\S]*?<\/blockquote>/gi,
+    (block) =>
+      `<details class="ax-quote"><summary>Show quoted text</summary>${block}</details>`,
+  );
+}
+
 
 /** Ek mail message — body + Phase 29 "Quote in chat" (selected text par). */
 function MailMessage({
@@ -191,14 +228,31 @@ function MailMessage({
       <div ref={bodyRef}>
         {message.body_html ? (
           <div
-            className="ax-prose mt-ax-3 text-[13px] leading-relaxed text-foreground"
+            className="ax-prose mt-ax-3 text-[13px] leading-relaxed text-foreground [&_.ax-quote]:mt-2 [&_.ax-quote_summary]:cursor-pointer [&_.ax-quote_summary]:text-[11px] [&_.ax-quote_summary]:text-muted-foreground"
             // Backend sanitises stored HTML before it reaches this surface.
-            dangerouslySetInnerHTML={{ __html: message.body_html }}
+            // Quoted history collapses behind a native <details> toggle —
+            // Gmail/Zoho-style clean reading view, no extra client JS.
+            dangerouslySetInnerHTML={{ __html: collapseQuotedHtml(message.body_html) }}
           />
         ) : (
-          <p className="mt-ax-3 whitespace-pre-wrap text-[13px] leading-relaxed text-foreground">
-            {message.body_text}
-          </p>
+          (() => {
+            const { main, quoted } = splitQuotedText(message.body_text ?? "");
+            return (
+              <div className="mt-ax-3 text-[13px] leading-relaxed text-foreground">
+                <p className="whitespace-pre-wrap">{main}</p>
+                {quoted && (
+                  <details className="ax-quote mt-ax-2">
+                    <summary className="cursor-pointer text-[11px] text-muted-foreground hover:text-foreground">
+                      Show quoted text
+                    </summary>
+                    <p className="mt-ax-2 whitespace-pre-wrap border-l-2 border-border pl-ax-3 text-muted-foreground">
+                      {quoted}
+                    </p>
+                  </details>
+                )}
+              </div>
+            );
+          })()
         )}
       </div>
 
