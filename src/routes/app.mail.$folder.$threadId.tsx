@@ -9,6 +9,7 @@ import { InlineReply } from "@/components/app/mail/InlineReply";
 import { QuoteInChat } from "@/components/app/mail/QuoteInChat";
 import { ThreadHeaderActions } from "@/components/app/mail/ThreadHeaderActions";
 import { ThreadInsights } from "@/components/app/mail/ThreadInsights";
+import { AddressChip } from "@/components/app/mail/AddressChip";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { measureMotion } from "@/lib/experience";
@@ -84,10 +85,17 @@ function ThreadPage() {
             {thread.subject || "(no subject)"}
           </h2>
           {thread.account_address && (
-            <p className="truncate text-[11px] text-muted-foreground">
-              {thread.account_address}
-              {thread.assignee ? ` · ${thread.assignee}` : ""}
-            </p>
+            <div className="mt-0.5 flex min-w-0 items-center gap-1.5">
+              <AddressChip
+                address={thread.account_address}
+                dir={folder === "sent" ? "out" : "in"}
+              />
+              {thread.assignee ? (
+                <span className="truncate text-[11px] text-muted-foreground">
+                  · {thread.assignee}
+                </span>
+              ) : null}
+            </div>
           )}
         </div>
         <div className="ml-auto shrink-0">
@@ -163,6 +171,9 @@ function MailMessage({
             {message.from_name ?? message.from_address}
           </span>
           <span className="text-[11px] text-muted-foreground">{message.from_address}</span>
+          <span className="rounded bg-secondary/60 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+            {message.direction === "out" ? "Sent" : "Received"}
+          </span>
           <span className="ml-auto text-[11px] text-muted-foreground/60">
             {message.scheduled_at
               ? `Scheduled · ${new Date(message.scheduled_at).toLocaleString()}`
