@@ -1,23 +1,13 @@
 -- Phase 63 - Business Pro support SLA (card promise: "Priority human support - 12h response")
 -- Idempotent. Run once on the live DB; safe to re-run.
-do $$
-declare c record;
-begin
-  for c in
-    select conname from pg_constraint
-    where conrelid = 'public.founder_reply_queue'::regclass and contype = 'c'
-      and (pg_get_constraintdef(oid) ilike '%response_due_hours%' or pg_get_constraintdef(oid) ilike '%plan%in%')
-      and pg_get_constraintdef(oid) not ilike '%state%'
-  loop
-    execute format('alter table public.founder_reply_queue drop constraint %I', c.conname);
-  end loop;
-  alter table public.founder_reply_queue
-    add constraint founder_reply_queue_plan_check
-    check (plan in ('basic','pro','business','business_pro'));
-  alter table public.founder_reply_queue
-    add constraint founder_reply_queue_response_due_hours_check
-    check (response_due_hours in (12,24,48,72));
-end $$;
+alter table public.founder_reply_queue drop constraint if exists founder_reply_queue_plan_check;
+alter table public.founder_reply_queue drop constraint if exists founder_reply_queue_response_due_hours_check;
+alter table public.founder_reply_queue
+  add constraint founder_reply_queue_plan_check
+  check (plan in ('basic','pro','business','business_pro'));
+alter table public.founder_reply_queue
+  add constraint founder_reply_queue_response_due_hours_check
+  check (response_due_hours in (12,24,48,72));
 
 create or replace function public.enqueue_founder_reply(
   p_user_id uuid, p_customer_email text, p_subject text,
