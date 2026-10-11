@@ -38,6 +38,7 @@ begin
     select c.table_name from information_schema.columns c
     where c.table_schema = 'public' and c.column_name = 'org_id'
       and c.table_name like 'mail%' and c.table_name !~ '(backup|legacy)'
+      and exists (select 1 from information_schema.tables t where t.table_schema = 'public' and t.table_name = c.table_name and t.table_type = 'BASE TABLE')
       and c.table_name not in ('mailboxes', 'mail_threads', 'mail_accounts', 'mail_domains')
       and exists (select 1 from information_schema.columns d
                   where d.table_schema = 'public' and d.table_name = c.table_name and d.column_name = 'thread_id')
@@ -52,6 +53,7 @@ begin
     select c.table_name from information_schema.columns c
     where c.table_schema = 'public' and c.column_name = 'org_id'
       and c.table_name like 'mail%' and c.table_name !~ '(backup|legacy)'
+      and exists (select 1 from information_schema.tables t where t.table_schema = 'public' and t.table_name = c.table_name and t.table_type = 'BASE TABLE')
       and exists (select 1 from information_schema.columns d
                   where d.table_schema = 'public' and d.table_name = c.table_name and d.column_name = 'message_id')
       and not exists (select 1 from information_schema.columns d
