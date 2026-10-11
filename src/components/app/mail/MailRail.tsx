@@ -18,7 +18,8 @@ import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { SkeletonLine } from "@/components/state/Skeletons";
 import { MAIL_FOLDERS, type MailFolder } from "@/lib/ia";
 import { useLocale } from "@/lib/i18n";
-import { useAccounts, useFolderCounts, useLabels } from "@/lib/mail";
+import { useAccounts, useFolderCounts, useLabels, type MailAccount } from "@/lib/mail";
+import { addressTone } from "@/lib/mail-identity";
 import { cn } from "@/lib/utils";
 
 const FOLDER_ICON: Record<MailFolder, ComponentType<{ className?: string }>> = {
@@ -65,7 +66,7 @@ export function MailRail({
         <button
           type="button"
           onClick={onCompose}
-          className="flex items-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          className="mx-bloom flex items-center gap-2 rounded-xl bg-primary px-3 py-2.5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           <PenLine className="size-3.5 shrink-0" aria-hidden="true" />
           {t("New email")}
@@ -203,18 +204,60 @@ export function MailRail({
             >
               {t("Unified inbox")}
             </button>
-            {accounts.data.accounts.map((a) => (
+            <AccountGroups
+              accounts={accounts.data.accounts}
+              active={account}
+              onPick={onAccount}
+              t={t}
+            />
+          </>
+        )}
+      </section>
+    </div>
+  );
+}
+
+/** Accounts: "Your login" (free @anexomail.com) aur "Company" alag, har ek ka apna rang. */
+function AccountGroups({
+  accounts,
+  active,
+  onPick,
+  t,
+}: {
+  accounts: MailAccount[];
+  active: string | null;
+  onPick: (id: string | null) => void;
+  t: (key: string) => string;
+}) {
+  return (
+    <>
+      {(["login", "company"] as const).map((group) => {
+        const list = accounts.filter(
+          (a) => (addressTone(a.address)?.isLogin ?? true) === (group === "login"),
+        );
+        if (list.length === 0) return null;
+        return (
+          <div key={group} className="flex flex-col gap-0.5">
+            <span className="ax-eyebrow px-1 pt-1 text-[10px] opacity-70">
+              {group === "login" ? t("Your login") : t("Company")}
+            </span>
+            {list.map((a) => (
               <button
                 key={a.id}
                 type="button"
-                onClick={() => onAccount(a.id === account ? null : a.id)}
+                onClick={() => onPick(a.id === active ? null : a.id)}
                 className={cn(
                   "flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-opacity",
-                  a.id === account
-                    ? "text-foreground"
+                  a.id === active
+                    ? "bg-secondary/60 text-foreground"
                     : "text-muted-foreground opacity-60 hover:opacity-100",
                 )}
               >
+                <span
+                  aria-hidden="true"
+                  className="size-2 shrink-0 rounded-full"
+                  style={{ background: addressTone(a.address)?.color ?? "currentColor" }}
+                />
                 <span className="break-all">{a.address}</span>
                 {a.unread ? (
                   <span className="ml-auto text-[10px] font-semibold text-foreground">
@@ -223,9 +266,9 @@ export function MailRail({
                 ) : null}
               </button>
             ))}
-          </>
-        )}
-      </section>
-    </div>
+          </div>
+        );
+      })}
+    </>
   );
 }

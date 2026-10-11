@@ -9,6 +9,8 @@ import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import type { MailFolder } from "@/lib/ia";
 import { measureMotion } from "@/lib/experience";
+import { AddressChip } from "@/components/app/mail/AddressChip";
+import { addressTone } from "@/lib/mail-identity";
 import { relativeTime, type ThreadListItem } from "@/lib/mail";
 import type { ApiError } from "@/lib/api";
 import { cn } from "@/lib/utils";
@@ -140,8 +142,8 @@ export function ThreadList({
       return (
         <EmptyState
           icon={<Mail className="size-5" />}
-          title="Inbox zero"
-          body="Nothing owes you a reply. New mail lands here the moment it is delivered."
+          title="No mail yet"
+          body="New mail lands here the moment it is delivered. Press C to write the first one."
         />
       );
     }
@@ -156,7 +158,7 @@ export function ThreadList({
 
   const listVariants = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.03, delayChildren: 0.03 } },
+    show: { transition: { staggerChildren: 0.04, delayChildren: 0.03 } },
   };
   const rowVariants = {
     hidden: { opacity: 0 },
@@ -222,6 +224,7 @@ export function ThreadList({
             to="/app/mail/$folder/$threadId"
             params={{ folder, threadId: thread.id }}
             data-cursor={index}
+            data-active={thread.id === activeId || cursor === index ? "true" : undefined}
             draggable
             onDragStart={(e) => {
               e.dataTransfer.setData("text/anexo-thread", thread.id);
@@ -229,7 +232,10 @@ export function ThreadList({
             }}
             onMouseEnter={() => onCursor(index)}
             className={cn(
-              "flex gap-3 px-ax-3 py-2.5 transition-opacity",
+              "mx-row relative flex gap-3 px-ax-3 py-2.5 transition-opacity",
+              thread.unread &&
+                Date.now() - new Date(thread.last_message_at).getTime() < 90_000 &&
+                "mx-arrive",
               thread.id === activeId
                 ? "bg-secondary opacity-100"
                 : cursor === index
@@ -239,6 +245,11 @@ export function ThreadList({
                     : "opacity-70 hover:opacity-100",
             )}
           >
+            <span
+              aria-hidden="true"
+              className="mx-bar"
+              style={{ background: addressTone(thread.account_address)?.color ?? "transparent" }}
+            />
             {/* Sender avatar — initials circle */}
             <div
               aria-hidden="true"
@@ -253,6 +264,7 @@ export function ThreadList({
             <div className="min-w-0 flex-1">
               {/* Row 1: sender · star · attachment · count · date */}
               <div className="flex items-center gap-1.5">
+                {thread.unread && <span aria-hidden="true" className="mx-dot" />}
                 <span
                   className={cn(
                     "truncate text-[13px]",
@@ -305,6 +317,16 @@ export function ThreadList({
                 <p className="ax-caption mt-0.5 truncate font-normal text-muted-foreground/55">
                   {thread.snippet}
                 </p>
+              )}
+
+              {/* Row 3b: kaun sa address — is par aayi / is se gayi */}
+              {thread.account_address && (
+                <div className="mt-1.5 flex min-w-0">
+                  <AddressChip
+                    address={thread.account_address}
+                    dir={folder === "sent" ? "out" : "in"}
+                  />
+                </div>
               )}
 
               {/* Row 4: assignee (shared inbox collision guard) + snoozed + labels */}

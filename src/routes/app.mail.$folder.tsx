@@ -6,7 +6,7 @@ import {
   useRouterState,
 } from "@tanstack/react-router";
 import { Mail, PenLine, Search, X } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, type CSSProperties } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
@@ -16,8 +16,10 @@ import { HandoffBanner } from "@/components/app/CrossPlatformBar";
 import { MAIL_FOLDERS, isMailFolder } from "@/lib/ia";
 import { useNetwork } from "@/lib/network";
 import { notify } from "@/lib/notify";
+import { addressTone } from "@/lib/mail-identity";
 import {
   THREAD_CATEGORIES,
+  useAccounts,
   useFolderCounts,
   useMailLive,
   useThreadAction,
@@ -81,6 +83,8 @@ function MailFolderPage() {
   const threads = query.data?.threads;
   const action = useThreadAction();
   const counts = useFolderCounts();
+  const accounts = useAccounts();
+  const activeAccount = accounts.data?.accounts.find((a) => a.id === account);
   const live = useMailLive();
   const unreadHere = counts.data?.folders[folder]?.unread ?? 0;
 
@@ -191,7 +195,7 @@ function MailFolderPage() {
 
       <ListPanel
         mobileHidden={threadOpen}
-        title={account ? folderLabel : `${folderLabel} · Unified`}
+        title={activeAccount ? `${folderLabel} · ${activeAccount.address}` : `${folderLabel} · All addresses`}
         action={
           <div className="flex items-center gap-1.5">
             {unreadHere > 0 && (
@@ -211,7 +215,36 @@ function MailFolderPage() {
         }
       >
         <HandoffBanner />
-        <div className="sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
+        <div className="mx-head sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
+          {accounts.data && accounts.data.accounts.length > 0 && (
+            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5" aria-label="Addresses">
+              <button
+                type="button"
+                onClick={() => setAccount(null)}
+                className={cn("mx-chip shrink-0", account === null && "mx-chip-on")}
+              >
+                All addresses
+              </button>
+              {accounts.data.accounts.map((a) => {
+                const tone = addressTone(a.address);
+                return (
+                  <button
+                    key={a.id}
+                    type="button"
+                    onClick={() => setAccount(a.id === account ? null : a.id)}
+                    className={cn("mx-chip shrink-0", a.id === account && "mx-chip-on")}
+                    style={tone ? ({ "--mx-tone": tone.color } as CSSProperties) : undefined}
+                  >
+                    <span aria-hidden="true" className="mx-chip-dot" />
+                    <span className="max-w-[9.5rem] truncate">{a.address}</span>
+                    {a.unread ? (
+                      <span className="tabular-nums font-semibold text-foreground">{a.unread}</span>
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <div className="flex items-center gap-1 overflow-x-auto lg:hidden">
             {MAIL_FOLDERS.map((f) => {
               const unread = counts.data?.folders[f.id]?.unread ?? 0;
@@ -333,9 +366,13 @@ function MailFolderPage() {
         {activeId ? (
           <Outlet />
         ) : (
-          <div className="flex h-full items-center justify-center">
-            <p className="select-none text-[13px] text-muted-foreground/50">
-              Select a message
+          <div className="mx-aurora flex h-full flex-col items-center justify-center gap-2 px-6 text-center">
+            <Mail className="size-6 text-primary/70" aria-hidden="true" />
+            <p className="select-none text-[13px] text-muted-foreground">
+              Select a message to read it here
+            </p>
+            <p className="select-none text-[11px] text-muted-foreground/60">
+              j / k to move · Enter to open · c to compose
             </p>
           </div>
         )}
