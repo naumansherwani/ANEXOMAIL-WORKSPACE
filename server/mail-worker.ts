@@ -17,6 +17,51 @@ import { sendMail } from "./mail/sendmail";
 const POLL_MS = 5_000;
 const DEFAULT_FROM = "hello@anexomail.com";
 
+async function senderAccount(orgId: string, userId: string | null, identity: string | null) {
+  let email: string | null = identity ? String(identity).toLowerCase() : null;
+  if (!email && userId) {
+    try {
+      const r: any = await supa.auth.admin.getUserById(userId);
+      email = String(r?.data?.user?.email || "").toLowerCase() || null;
+    } catch {}
+  }
+  for (const t of ["mail_accounts", "mailboxes"]) {
+    if (!email) break;
+    const { data } = await supa.from(t).select("id,address").eq("org_id", orgId).ilike("address", email).limit(1).maybeSingle();
+    if (data) return data;
+  }
+  for (const t of ["mail_accounts", "mailboxes"]) {
+    const { data } = await supa.from(t).select("id,address").eq("org_id", orgId).order("address").limit(1).maybeSingle();
+    if (data) return data;
+  }
+  return null;
+}
+
+async function recordSent(row: any, from: string, to: string[], cc: any, bcc: any) {
+  try {
+    const acct: any = await senderAccount(row.org_id, row.user_id, from);
+    const now = new Date().toISOString();
+    const subject = row.subject || "(no subject)";
+    const body = String(row.body || "");
+    const { data: t, error: te } = await supa.from("mail_threads").insert({
+      org_id: row.org_id, account_id: acct ? acct.id : null, subject, snippet: body.slice(0, 180),
+      from_name: null, from_address: from, mailbox_address: from, folder: "sent", status: "open",
+      unread: false, message_count: 1, last_message_at: now,
+    }).select("id").single();
+    if (te || !t) { console.error("[mail-worker] sent-thread failed:", te && te.message); return; }
+    const ccl = cc || [];
+    const bccl = bcc || [];
+    const { error: me } = await supa.from("mail_messages").insert({
+      org_id: row.org_id, thread_id: t.id, direction: "out", from_address: from,
+      to_addresses: to, cc_addresses: ccl, bcc_addresses: bccl,
+      to_addrs: to, cc_addrs: ccl, bcc_addrs: bccl,
+      subject, body_text: body, sent_at: now,
+    });
+    if (me) console.error("[mail-worker] sent-message failed:", me.message);
+    else console.log("[mail-worker] sent-copy ok thread=" + t.id);
+  } catch (e) { console.error("[mail-worker] recordSent error:", e); }
+}
+
 let running = false;
 
 function estimateBytes(subject: string, body: string): number {
@@ -121,7 +166,41 @@ async function processQueue() {
         continue;
       }
 
-      const fromAddress = row.identity || DEFAULT_FROM;
+      // ROOT-CAUSE FIX: "identity" column is genuinely ALWAYS empty (frontend
+      // never sends it) — previously this meant EVERY user's mail, including
+      // real paying customers, silently sent as hello@anexomail.com. Now we
+      // resolve the GENUINE sender: their own mailbox address (via user_id),
+      // never a shared generic fallback for a real authenticated sender.
+      let fromAddress = row.identity || "";
+      if (!fromAddress && row.user_id) {
+        const { data: ownMailbox } = await supa
+          .from("mailboxes")
+          .select("address")
+          .eq("org_id", row.org_id)
+          .eq("account_id", row.user_id)
+          .limit(1)
+          .maybeSingle();
+        if (ownMailbox?.address) {
+          fromAddress = ownMailbox.address;
+        } else {
+          // account_id link missing on mailboxes — fall back to the user's
+          // own Supabase auth email (genuinely their real address in this
+          // system's convention, e.g. naumansherwani.founder@anexomail.com).
+          try {
+            const supaUrl = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
+            const supaKey = process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+            const r = await fetch(`${supaUrl.replace(/\/$/, "")}/auth/v1/admin/users?per_page=1000`, {
+              headers: { apikey: supaKey, Authorization: `Bearer ${supaKey}` },
+            });
+            const j: any = await r.json();
+            const match = (j?.users || []).find((u: any) => u?.id === row.user_id);
+            if (match?.email) fromAddress = match.email;
+          } catch (e) {
+            console.error("[mail-worker] sender-identity lookup failed:", e);
+          }
+        }
+      }
+      if (!fromAddress) fromAddress = DEFAULT_FROM; // genuine last resort only
       const bytes = estimateBytes(row.subject || "", row.body || "");
 
       // ── Step 3: GENUINE storage.ts RPC preflight+reserve ──
@@ -156,6 +235,7 @@ async function processQueue() {
           .from("mail_scheduled")
           .update({ status: "sent", sent_at: new Date().toISOString() })
           .eq("id", row.id);
+        await recordSent(row, fromAddress, toList, ccList, bccList);
         if (workspaceId) await commitStorage(workspaceId, fromAddress, bytes);
         console.log(`[mail-worker] sent id=${row.id} to=${toList.join(",")}`);
       } else {
