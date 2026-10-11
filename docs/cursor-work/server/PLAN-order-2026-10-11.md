@@ -1,4 +1,4 @@
-# ANEXOMAIL — baqi kaam ki poori list (11 Oct 2026)
+# ANEXOMAIL — baqi kaam ki poori list (11 Oct 2026) — TARTEEB LOCKED (AGENTS.md Rule 14) — copy; asli list: docs/anexomail-blueprint.md "11 Oct 2026 — remaining work"
 
 Total 27: **26 TODO + 1 READY**. Status sirf DONE / READY / TODO.
 Maqsad: awam user kam se kam qadam mein product use kare (signup -> address -> send -> receive).

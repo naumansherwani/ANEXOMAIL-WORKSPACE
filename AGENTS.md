@@ -132,6 +132,17 @@ Asli email **bhejni aur aani** ke baghair agla flow nahi.
 - Proof: website se send → Postfix → bahar; bahar se receive → Postfix/Dovecot pipe → inbox list
 - Status **DONE** sirf `bash server/gates/mail-gate.sh` green + founder ne live send/receive dekha
 
+### Rule 14 — Kaam ki tarteeb LOCKED (locked 11 Oct 2026)
+Ek hi list: `docs/anexomail-blueprint.md` → section "11 Oct 2026 — remaining work" (27 items; dusri queue nahi). `docs/cursor-work/server/PLAN-order-2026-10-11.md` sirf us ki copy hai; farq ho to blueprint jeetta hai. Tarteeb **#1 se #27**, section A (#1–#10) pehle.
+
+- Agent **skip nahi** karta, aage nahi jata, naya kaam shuru nahi karta jab tak founder na kahe ya pehle wala item DONE na ho.
+- Naya kaam pehle list mein likho, phir tarteeb mein; chupke se beech mein nahi.
+- Item **DONE** sirf live verify (green output) par; warna READY ya TODO (Rule 5).
+- Server par poora `git pull` nahi: sirf specific files, sha-gated installer, backup + `restore.sh`.
+- Har deploy mein build ke baad `pm2 restart anexomail-web --update-env && pm2 save` hamesha.
+- Server 1 (main brain) sensitive: agent wahan kuch chalane ko nahi kehta.
+- Repo `main` par push sirf founder ke "repo update" kehne par; live-only files (jo GitHub par nahi) pehle repo mein aayen, phir overwrite.
+
 ---
 
 ## PENDING (founder action required)
