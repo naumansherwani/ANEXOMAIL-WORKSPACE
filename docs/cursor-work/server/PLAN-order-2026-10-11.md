@@ -11,8 +11,8 @@ Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) s
 | 2 | Company address se send, Sent thread, SPF/DKIM/DMARC | DONE — Gmail Show Original: SPF PASS, DKIM PASS (d=mailtest.axonetis.com), DMARC PASS (11 Oct) |
 | 3 | `/schedule` identity org-check (security) | Live deploy ho chuka |
 | 4 | Test accounts Basic + Pro + Business + Business Pro (4 packages) | DONE — 12 Oct: Pro/Business Postfix routing fix hui; Business Pro ka naya real account banaya (auth.users + identities + organisations + mail_accounts + trial_accounts, plan=business_pro, `pro.test` ke asli row-shape se mirror), `postmap` se Postfix mein confirm |
-| 5 | Naya buyer signup: workspace + member + trial (Rust) | TODO |
-| 6 | Buyer ka apna @anexomail.com address + Postfix auto-sync | TODO |
+| 5 | Naya buyer signup: workspace + member + trial (Rust) | DONE — 12 Oct: `account.signup.*` RPC + `trial_provision_workspace` SQL (E17) live end-to-end verify (real auth user -> login -> claim -> organisations/mail_accounts/org_members auto-create). Frontend `/claim` repointed (personal kind; business unchanged). Fix along the way: GoTrue token-column NULL bug, `trial_events_event_type_check` widen |
+| 6 | Buyer ka apna @anexomail.com address + Postfix auto-sync | DONE — 12 Oct: `postmap -q` confirm, public route (`anexomail.com/rpc/*` -> Caddy -> Rust) bhi verified, dono body shapes. Sirf asal browser click-through test baqi hai (koi insaan ne live page pe click nahi kiya abhi) |
 | 7 | Compose "From" selector (company address rang ke saath) | TODO |
 | 8 | Domain wizard UI (3 scenes, DNS ticks) | TODO |
 | 9 | Mail cinema UI | DONE — founder screenshot se confirm (11 Oct) |
@@ -46,3 +46,4 @@ Founder ne kaha: kaam bohot zyada hai, awam ke baad karna hai. Yahan sirf list m
 - Domain system A (DB), B (Rust, asli DNS 5/5), C receive side (company address par inbound mail).
 - Company-address mailbox cap + re-create fix (smoke 17/17).
 - `/etc/cron.d/anexomail-sync-maps` (login-address -> Postfix sync) ka asal bug fix: fragile double env-sourcing + `%` escaping cron gotcha, jo isay silently fail kar raha tha. Ab har minute reliably chalta hai — yeh #5/#6 (naya buyer auto-sync) ka foundation hai.
+- #5/#6 naya buyer signup (Rust `account.signup.*` + SQL E17 + frontend `/claim` wiring): poora real end-to-end chain live verify hua — fresh auth user, asli GoTrue login, handle claim, workspace+mailbox+org auto-create, Postfix sync, public `anexomail.com/rpc/*` route Caddy se Rust tak. Raste mein mile aur fix hue do real bugs: GoTrue token-column NULL (manual auth.users insert), `trial_events_event_type_check` mein `workspace_provisioned` missing. Live-only Rust CRM/Tasks code jo kabhi GitHub mein push nahi hua tha, usay bhi is session mein `backup/live-rust-12oct` branch par secure kiya gaya.
