@@ -815,6 +815,121 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
     }
 }
 
+// ── Phase 5 — naya real buyer signup (Rust primary) ─────────────────────────
+// Truth: Supabase RPCs (phase32_trial.sql + E17_trial_provision_workspace.sql).
+// Rust yahan sirf dispatch karta hai, apna business logic invent nahi karta.
+// account.signup.address — PUBLIC (auth se pehle dispatch() mein handle hota hai).
+async fn account_signup_address(input: &Value) -> axum::response::Response {
+    let handle = s(input, "handle").trim().to_lowercase();
+    if !regex_handle_ok(&handle) {
+        return ok(json!({ "handle": handle, "available": false, "reason": "invalid_handle" }))
+            .into_response();
+    }
+    let reserved = sb_select(&format!("reserved_handles?select=handle&handle=eq.{handle}")).await;
+    if reserved.map(|v| v.as_array().map(|a| !a.is_empty()).unwrap_or(false)).unwrap_or(false) {
+        return ok(json!({ "handle": handle, "available": false, "reason": "reserved_handle" }))
+            .into_response();
+    }
+    let taken = sb_select(&format!(
+        "trial_accounts?select=user_id&anexomail_handle=eq.{handle}&status=neq.released"
+    ))
+    .await;
+    if taken.map(|v| v.as_array().map(|a| !a.is_empty()).unwrap_or(false)).unwrap_or(false) {
+        return ok(json!({ "handle": handle, "available": false, "reason": "taken" }))
+            .into_response();
+    }
+    ok(json!({ "handle": handle, "available": true, "address": format!("{handle}@anexomail.com") }))
+        .into_response()
+}
+
+fn regex_handle_ok(h: &str) -> bool {
+    let b = h.as_bytes();
+    if b.len() < 3 || b.len() > 30 {
+        return false;
+    }
+    let ok_char = |c: u8| c.is_ascii_lowercase() || c.is_ascii_digit() || c == b'.' || c == b'-';
+    if !b[0].is_ascii_alphanumeric() || !b[b.len() - 1].is_ascii_alphanumeric() {
+        return false;
+    }
+    b.iter().all(|&c| ok_char(c))
+}
+
+/// account.signup.* — authenticated (real Supabase Auth session), lekin
+/// mail_identity ki tarah org_members pehle se hone ki zaroorat NAHI
+/// (brand-new buyer ke paas abhi workspace hi nahi hota).
+async fn dispatch_account(proc: &str, token: &str, input: &Value) -> axum::response::Response {
+    let (user_id, email) = match auth_user(token).await {
+        Some(v) => v,
+        None => return err(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid").into_response(),
+    };
+
+    let result: Result<Value, String> = match proc {
+        "account.signup.state" => sb_rpc("account_state", json!({ "_user_id": user_id })).await,
+        "account.signup.start" => {
+            let provider = if s(input, "provider").is_empty() {
+                "email".to_string()
+            } else {
+                s(input, "provider")
+            };
+            sb_rpc(
+                "trial_start",
+                json!({ "_user_id": user_id, "_social_email": email, "_provider": provider }),
+            )
+            .await
+        }
+        "account.signup.claim" => {
+            let handle = s(input, "handle").trim().to_lowercase();
+            if handle.is_empty() {
+                Err("handle_required".to_string())
+            } else {
+                match sb_rpc(
+                    "trial_claim_address",
+                    json!({ "_user_id": user_id, "_handle": handle }),
+                )
+                .await
+                {
+                    Ok(claim) => {
+                        if claim.get("ok").and_then(|v| v.as_bool()) != Some(true) {
+                            Ok(claim)
+                        } else {
+                            // Yahi woh gap hai jo pro.test/biz.test ke liye manual SQL se
+                            // bhara gaya tha — ab khud-ba-khud: organisations + mail_accounts
+                            // + org_members. Postfix sync already-fixed cron khud utha lega.
+                            match sb_rpc(
+                                "trial_provision_workspace",
+                                json!({ "_user_id": user_id }),
+                            )
+                            .await
+                            {
+                                Ok(prov) => Ok(json!({
+                                    "ok": true,
+                                    "claim": claim,
+                                    "workspace": prov,
+                                })),
+                                Err(e) => Err(e),
+                            }
+                        }
+                    }
+                    Err(e) => Err(e),
+                }
+            }
+        }
+        other => {
+            return err(
+                StatusCode::NOT_FOUND,
+                "procedure_not_in_rust",
+                &format!("{other} Rust pe define nahi hai."),
+            )
+            .into_response()
+        }
+    };
+
+    match result {
+        Ok(data) => ok(data).into_response(),
+        Err(detail) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &detail).into_response(),
+    }
+}
+
 // ── E15 business domains (company mail, Zoho-style) ─────────────────────────
 const MAIL_HOST: &str = "mail.anexomail.com";
 
@@ -1059,6 +1174,10 @@ async fn dispatch(
         return ok(turn_health()).into_response();
     }
 
+    // Phase 5 — signup ke waqt handle-availability check, login se pehle.
+    if proc == "account.signup.address" {
+        return account_signup_address(&input).await;
+    }
 
     let token = match bearer(&headers) {
         Some(t) => t,
@@ -1084,6 +1203,12 @@ async fn dispatch(
     // F3 mail — org mailbox users (Basic/Pro included). Chat entitlement nahi.
     if proc.starts_with("mail.") {
         return dispatch_mail(&proc, &token, &input).await;
+    }
+
+    // Phase 5 — naya buyer signup (workspace abhi nahi bana, is liye mail_identity
+    // use nahi karte — sirf real Supabase Auth session chahiye).
+    if proc.starts_with("account.signup.") {
+        return dispatch_account(&proc, &token, &input).await;
     }
 
     // Billing subscription + invoices — reads from polar_billing_state() [Phase 50]
