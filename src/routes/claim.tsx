@@ -6,6 +6,7 @@ import { AnexoMailField } from "@/components/site/AnexoMailField";
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
 import { api, ApiError, sessionToken } from "@/lib/api";
+import { rpc, rpcOrRest } from "@/lib/rpc";
 import { ANEXOMAIL_DOMAIN, anexomailLocalPart } from "@/lib/anexomail-address";
 import { useAuth } from "@/lib/auth";
 
@@ -74,8 +75,14 @@ function ClaimPage() {
     const timer = window.setTimeout(() => {
       void (async () => {
         try {
-          const res = await api<{ available: boolean; reason?: string }>(
-            `/api/auth/identity/check?username=${encodeURIComponent(normalised)}`,
+          // Phase 5 (E17): Rust /rpc/account.signup.address first (primary, read-only,
+          // no side-effects — safe to switch unconditionally). rpcOrRest falls back to
+          // the old Bun directory check automatically if Rust is unreachable, so this
+          // never breaks the live page even if the Rust side has a problem.
+          const res = await rpcOrRest<{ available: boolean; reason?: string }>(
+            "account.signup.address",
+            { path: `/api/auth/identity/check?username=${encodeURIComponent(normalised)}` },
+            { handle: normalised },
           );
           setAvailability(
             res.available
@@ -103,12 +110,6 @@ function ClaimPage() {
     setError(null);
     setBusy(true);
     try {
-      const res = await api<{ address: string; token?: string }>("/api/auth/identity/claim", {
-        method: "POST",
-        body: JSON.stringify({ username: normalised }),
-      });
-      if (res.token) sessionToken.set(res.token);
-      await refresh();
       const stored =
         typeof window !== "undefined" ? window.sessionStorage.getItem("anexo.pending.workspace_kind") : null;
       const kind =
@@ -117,12 +118,47 @@ function ClaimPage() {
           : session?.user.account_kind === "personal" || session?.user.account_kind === "business"
             ? session.user.account_kind
             : null;
+
       if (kind === "personal") {
+        // Phase 5 (E17): Rust /rpc/account.signup.claim does claim + workspace +
+        // mailbox + org_member in one real, verified step (no fake success state).
+        // Any failure (Rust down, unexpected error) falls back to the exact old
+        // Bun claim call below, so a personal claim behaves exactly as before if
+        // the new backend has a problem — the live page never breaks.
+        try {
+          const claimRes = await rpc<{ ok?: boolean }>("account.signup.claim", {
+            handle: normalised,
+          });
+          if (!claimRes?.ok) throw new Error("rust_claim_not_ok");
+        } catch {
+          const legacy = await api<{ address: string; token?: string }>("/api/auth/identity/claim", {
+            method: "POST",
+            body: JSON.stringify({ username: normalised }),
+          });
+          if (legacy.token) sessionToken.set(legacy.token);
+        }
+        // Always run this, Rust path included: org_members already has a row from
+        // the Rust claim above, so this takes the existing-org fast path (no
+        // duplicate org/mailbox) — but it's still the one place that stamps
+        // account_profiles.preferences.workspace_kind='personal' + onboarded=true,
+        // which billing-sync's enforceAccountKind() reads later. Skipping it would
+        // silently lock a Rust-provisioned personal account out of personal-tier
+        // billing products.
         await api("/api/workspace/personal", { method: "POST", body: "{}" });
+        await refresh();
         window.sessionStorage.removeItem("anexo.pending.workspace_kind");
         window.location.replace("/dashboard");
         return;
       }
+
+      // Business (or kind not chosen yet): unchanged — org+domain provisioning
+      // happens on /onboarding, which the new Rust claim does not attempt.
+      const res = await api<{ address: string; token?: string }>("/api/auth/identity/claim", {
+        method: "POST",
+        body: JSON.stringify({ username: normalised }),
+      });
+      if (res.token) sessionToken.set(res.token);
+      await refresh();
       void navigate({ to: "/onboarding", replace: true });
     } catch (e) {
       setError(
