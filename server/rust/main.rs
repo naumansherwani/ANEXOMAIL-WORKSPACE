@@ -264,6 +264,50 @@ async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
     Ok(json!({ "ok": true }))
 }
 
+async fn sb_insert(path: &str, body: Value) -> Result<Value, String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let client = reqwest::Client::new();
+    let res = client
+        .post(format!("{url}/rest/v1/{path}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .header("content-type", "application/json")
+        .header("prefer", "return=representation")
+        .json(&body)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let status = res.status();
+    let payload: Value = res.json().await.unwrap_or(Value::Null);
+    if !status.is_success() {
+        return Err(payload.to_string());
+    }
+    Ok(payload)
+}
+
+/// Insert-or-update on a unique constraint (e.g. work_notes: one row per org_id+thread_id).
+/// on_conflict_cols must match an existing unique/exclusion constraint's columns.
+async fn sb_upsert(path: &str, on_conflict_cols: &str, body: Value) -> Result<Value, String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let client = reqwest::Client::new();
+    let res = client
+        .post(format!("{url}/rest/v1/{path}?on_conflict={on_conflict_cols}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .header("content-type", "application/json")
+        .header("prefer", "resolution=merge-duplicates,return=representation")
+        .json(&body)
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let status = res.status();
+    let payload: Value = res.json().await.unwrap_or(Value::Null);
+    if !status.is_success() {
+        return Err(payload.to_string());
+    }
+    Ok(payload)
+}
+
 async fn sb_count(path_and_query: &str) -> Result<i64, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
     let client = reqwest::Client::new();
@@ -530,6 +574,326 @@ async fn dispatch_billing(proc: &str, token: &str) -> axum::response::Response {
     }
 }
 
+/// CRM procedures — genuinely new (no Bun equivalent existed as a named RPC).
+/// work_promises is already fetched by Bun's /crm/live for radar/next_actions
+/// but the raw list was never returned — this closes that gap.
+async fn dispatch_crm(proc: &str, token: &str, input: &Value) -> axum::response::Response {
+    let requested = s(input, "org_id");
+    let me = match mail_identity(token, &requested).await {
+        Ok(me) => me,
+        Err((status, code, detail)) => {
+            return (
+                status,
+                Json(json!({ "error": { "code": code, "message": detail } })),
+            )
+                .into_response()
+        }
+    };
+
+    let plan = sb_rpc(
+        "resolve_plan",
+        json!({ "_user_id": me.id, "_email": me.email }),
+    )
+    .await
+    .unwrap_or(json!("basic"));
+    let plan_str = plan.as_str().unwrap_or("basic").to_string();
+    if plan_str == "basic" {
+        return err(
+            StatusCode::FORBIDDEN,
+            "feature_not_available",
+            "CRM is a Pro+ feature.",
+        )
+        .into_response();
+    }
+
+    let result: Result<Value, String> = match proc {
+        "crm.promises.list" => {
+            // Real columns confirmed against work_promises (no thread_subject
+            // column exists there — the pre-existing Bun /crm/live query
+            // asked for it too and silently swallowed the resulting error).
+            sb_rpc("crm_promises_open", json!({ "_org_id": me.org_id }))
+                .await
+                .map(|data| json!({ "promises": data }))
+        }
+        "crm.followups.list" => {
+            // Configurable per-user threshold (default 3 days).
+            let pref_rows = sb_select(&format!(
+                "account_profiles?select=preferences&user_id=eq.{}",
+                me.id
+            ))
+            .await
+            .unwrap_or(json!([]));
+            let days: i64 = pref_rows
+                .as_array()
+                .and_then(|a| a.first())
+                .and_then(|r| r.get("preferences"))
+                .and_then(|p| p.get("followup_days"))
+                .and_then(|v| v.as_i64())
+                .unwrap_or(3);
+
+            sb_rpc(
+                "crm_followups",
+                json!({ "_org_id": me.org_id, "_days": days }),
+            )
+            .await
+            .map(|data| json!({ "followups": data, "days": days }))
+        }
+        "crm.followups.setDays" => {
+            let days = n(input, "days").unwrap_or(3).clamp(1, 30);
+            sb_rpc(
+                "set_user_pref",
+                json!({ "_user_id": me.id, "_key": "followup_days", "_value": days }),
+            )
+            .await
+            .map(|_| json!({ "ok": true, "days": days }))
+        }
+        "crm.leads.suggest" => {
+            // Point 7 (first-response timer): last_mail_at is returned so the
+            // frontend can show "Xh since first contact" — no extra storage
+            // needed, the clock is just derived from the mail timestamp.
+            let own_rows = sb_select(&format!(
+                "mailboxes?select=address&org_id=eq.{}",
+                me.org_id
+            ))
+            .await
+            .unwrap_or(json!([]));
+            let own_addrs: Vec<String> = own_rows
+                .as_array()
+                .cloned()
+                .unwrap_or_default()
+                .into_iter()
+                .filter_map(|r| r.get("address").and_then(|v| v.as_str()).map(|a| a.to_lowercase()))
+                .collect();
+
+            sb_rpc(
+                "crm_capture_suggestions",
+                json!({ "_org_id": me.org_id, "_own_addrs": own_addrs }),
+            )
+            .await
+            .map(|data| json!({ "suggestions": data }))
+        }
+        "crm.leads.dismiss" => {
+            // Point 6: "Not a lead" — remembered per org so it never resurfaces.
+            let email = s(input, "email").to_lowercase();
+            if email.is_empty() {
+                Err("email_required".to_string())
+            } else {
+                sb_upsert(
+                    "crm_lead_dismissals",
+                    "org_id,email",
+                    json!({ "org_id": me.org_id, "email": email }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+        "crm.contacts.recompute" => {
+            // Points 2+3 (Memory): populates the already-wired-but-empty
+            // contact_stats table. resolve_plan gate already applied above.
+            sb_rpc("recompute_contact_stats", json!({ "_org_id": me.org_id }))
+                .await
+                .map(|updated| json!({ "ok": true, "updated": updated }))
+        }
+        "crm.contacts.setNotes" => {
+            // Point 6: contacts.notes already exists as a column, no new table.
+            let contact_id = s(input, "contact_id");
+            let notes = s(input, "notes");
+            if contact_id.is_empty() {
+                Err("contact_id_required".to_string())
+            } else {
+                sb_patch(
+                    &format!("contacts?id=eq.{contact_id}&org_id=eq.{}", me.org_id),
+                    json!({ "notes": notes }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+        "crm.contacts.addAlias" => {
+            // Point 7 (basic): merge a second email into an existing
+            // contact's addresses[] array via the add_contact_alias() RPC.
+            let contact_id = s(input, "contact_id");
+            let email = s(input, "email").to_lowercase();
+            if contact_id.is_empty() || email.is_empty() {
+                Err("contact_id_and_email_required".to_string())
+            } else {
+                sb_rpc(
+                    "add_contact_alias",
+                    json!({ "_contact_id": contact_id, "_email": email }),
+                )
+                .await
+                .map(|addresses| json!({ "ok": true, "addresses": addresses }))
+            }
+        }
+        "crm.promises.board" => {
+            // Loop step 4: promises with mine/theirs and kept/late/broken phases.
+            // Detection (scan) only runs when the page asks for it with scan:true.
+            let side = s(input, "side");
+            let limit = n(input, "limit").unwrap_or(100);
+            let do_scan = input.get("scan").and_then(|v| v.as_bool()).unwrap_or(false);
+            if do_scan {
+                let _ = sb_rpc(
+                    "crm_promises_scan",
+                    json!({ "_org_id": me.org_id, "_days": 30 }),
+                )
+                .await;
+            }
+            sb_rpc(
+                "crm_promises_board",
+                json!({
+                    "_org_id": me.org_id,
+                    "_side": if side.is_empty() { Value::Null } else { json!(side) },
+                    "_limit": limit,
+                }),
+            )
+            .await
+            .map(|data| json!({ "promises": data }))
+        }
+        "crm.next" => {
+            // Loop step 9: one ranked list built only from risk, promises and health.
+            let limit = n(input, "limit").unwrap_or(20);
+            sb_rpc(
+                "crm_next",
+                json!({ "_org_id": me.org_id, "_limit": limit }),
+            )
+            .await
+            .map(|data| json!({ "next": data }))
+        }
+        "crm.team" => {
+            // Loop step 8, team part: which teammate talks to which outside person. Nothing is written.
+            let limit = n(input, "limit").unwrap_or(100);
+            sb_rpc(
+                "crm_team_graph",
+                json!({ "_org_id": me.org_id, "_limit": limit }),
+            )
+            .await
+            .map(|data| json!({ "team": data }))
+        }
+        "crm.graph" => {
+            // Loop step 8: people grouped by company, with their deals. Nothing is written.
+            let limit = n(input, "limit").unwrap_or(60);
+            sb_rpc(
+                "crm_graph",
+                json!({ "_org_id": me.org_id, "_limit": limit }),
+            )
+            .await
+            .map(|data| json!({ "graph": data }))
+        }
+        "crm.risk" => {
+            // Loop step 6: only dangers, each with its reason. Nothing is written.
+            let limit = n(input, "limit").unwrap_or(50);
+            sb_rpc(
+                "crm_risk",
+                json!({ "_org_id": me.org_id, "_limit": limit }),
+            )
+            .await
+            .map(|data| json!({ "risks": data }))
+        }
+        "crm.health" => {
+            // Loop step 5: who needs attention. Fresh calculation, nothing is written.
+            let limit = n(input, "limit").unwrap_or(100);
+            sb_rpc(
+                "crm_health",
+                json!({ "_org_id": me.org_id, "_limit": limit }),
+            )
+            .await
+            .map(|data| json!({ "people": data }))
+        }
+        "crm.timeline" => {
+            // Loop step 3: everyone's activity, newest first, optional filters.
+            let contact_id = s(input, "contact_id");
+            let before = s(input, "before");
+            let kinds: Vec<String> = input
+                .get("kinds")
+                .and_then(|v| v.as_array())
+                .map(|a| {
+                    a.iter()
+                        .filter_map(|x| x.as_str().map(|t| t.to_string()))
+                        .collect()
+                })
+                .unwrap_or_default();
+            let limit = n(input, "limit").unwrap_or(50);
+            sb_rpc(
+                "crm_timeline",
+                json!({
+                    "_org_id": me.org_id,
+                    "_contact_id": if contact_id.is_empty() { Value::Null } else { json!(contact_id) },
+                    "_kinds": if kinds.is_empty() { Value::Null } else { json!(kinds) },
+                    "_before": if before.is_empty() { Value::Null } else { json!(before) },
+                    "_limit": limit,
+                }),
+            )
+            .await
+            .map(|data| json!({ "timeline": data }))
+        }
+        "crm.person.timeline" => {
+            // Point 1: unified per-person feed (mail, meetings, tasks, deals).
+            let contact_id = s(input, "contact_id");
+            if contact_id.is_empty() {
+                Err("contact_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "crm_person_timeline",
+                    json!({ "_org_id": me.org_id, "_contact_id": contact_id }),
+                )
+                .await
+                .map(|data| json!({ "timeline": data }))
+            }
+        }
+        "crm.contacts.extractSignature" => {
+            // Point 4: phone + job-title pulled from the latest inbound mail.
+            let contact_id = s(input, "contact_id");
+            if contact_id.is_empty() {
+                Err("contact_id_required".to_string())
+            } else {
+                sb_rpc(
+                    "crm_extract_signature",
+                    json!({ "_org_id": me.org_id, "_contact_id": contact_id }),
+                )
+                .await
+            }
+        }
+        "crm.people.list" => {
+            // Migrated from Bun's loadPeople()/CONTACT_SELECT — using the
+            // SAME fix (health_score/last_contact_at only exist on
+            // contact_stats, never as raw columns on contacts).
+            sb_select(&format!(
+                "contacts?select=id,display_name,primary_address,company_domain,stats:contact_stats(messages_in,messages_out,avg_reply_minutes,open_threads,last_contact_at,relationship,health_score)&org_id=eq.{}&limit=400",
+                me.org_id
+            ))
+            .await
+            .map(|rows| {
+                let people: Vec<Value> = rows
+                    .as_array()
+                    .cloned()
+                    .unwrap_or_default()
+                    .into_iter()
+                    .map(|row| {
+                        let stats = row.get("stats").cloned().unwrap_or(json!({}));
+                        json!({
+                            "id": row.get("id").cloned().unwrap_or(Value::Null),
+                            "display_name": row.get("display_name").cloned().unwrap_or(Value::Null),
+                            "primary_address": row.get("primary_address").cloned().unwrap_or(Value::Null),
+                            "company_name": row.get("company_domain").cloned().unwrap_or(Value::Null),
+                            "relationship": stats.get("relationship").cloned().unwrap_or(Value::Null),
+                            "health_score": stats.get("health_score").cloned().unwrap_or(Value::Null),
+                            "last_contact_at": stats.get("last_contact_at").cloned().unwrap_or(Value::Null),
+                            "open_threads": stats.get("open_threads").cloned().unwrap_or(json!(0)),
+                        })
+                    })
+                    .collect();
+                json!({ "people": people })
+            })
+        }
+        _ => Err(format!("{proc} not implemented")),
+    };
+
+    match result {
+        Ok(v) => ok(v).into_response(),
+        Err(e) => err(StatusCode::BAD_REQUEST, "crm_error", &e).into_response(),
+    }
+}
+
 /// F3 mail RPC — PRIMARY. Bun `/api/mail/*` sirf jab yeh 404/502.
 async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response::Response {
     let requested = s(input, "org_id");
@@ -624,6 +988,237 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 })
                 .collect();
             Ok(json!({ "accounts": accounts }))
+        }
+        "mail.thread" => {
+            let thread_id = s(input, "id");
+            if thread_id.is_empty() {
+                Err("thread_id_required".to_string())
+            } else {
+                let t_rows = sb_select(&format!(
+                    "mail_threads?select=*&org_id=eq.{}&id=eq.{thread_id}",
+                    me.org_id
+                ))
+                .await;
+                match t_rows {
+                    Err(e) => Err(e),
+                    Ok(rows) => {
+                        let t = rows.as_array().cloned().unwrap_or_default().into_iter().next();
+                        match t {
+                            None => Err("not_found".to_string()),
+                            Some(t) => {
+                                let msgs = sb_select(&format!(
+                                    "mail_messages?select=*,mail_attachments(*)&thread_id=eq.{thread_id}&order=sent_at.asc"
+                                ))
+                                .await
+                                .unwrap_or(json!([]));
+
+                                let label_rows = sb_select(&format!(
+                                    "mail_thread_labels?select=mail_labels(name)&thread_id=eq.{thread_id}"
+                                ))
+                                .await
+                                .unwrap_or(json!([]));
+                                let labels: Vec<String> = label_rows
+                                    .as_array()
+                                    .cloned()
+                                    .unwrap_or_default()
+                                    .into_iter()
+                                    .filter_map(|r| {
+                                        r.get("mail_labels")
+                                            .and_then(|l| l.get("name"))
+                                            .and_then(|v| v.as_str())
+                                            .map(|v| v.to_string())
+                                    })
+                                    .collect();
+
+                                if t.get("unread").and_then(|v| v.as_bool()) == Some(true) {
+                                    let _ = sb_patch(
+                                        &format!("mail_threads?id=eq.{thread_id}&org_id=eq.{}", me.org_id),
+                                        json!({ "unread": false }),
+                                    )
+                                    .await;
+                                }
+
+                                let messages: Vec<Value> = msgs
+                                    .as_array()
+                                    .cloned()
+                                    .unwrap_or_default()
+                                    .into_iter()
+                                    .map(|m| {
+                                        let atts: Vec<Value> = m
+                                            .get("mail_attachments")
+                                            .and_then(|v| v.as_array())
+                                            .cloned()
+                                            .unwrap_or_default()
+                                            .into_iter()
+                                            .map(|a| {
+                                                let url = a
+                                                    .get("url")
+                                                    .or_else(|| a.get("storage_path"))
+                                                    .or_else(|| a.get("disk_path"))
+                                                    .cloned()
+                                                    .unwrap_or(Value::Null);
+                                                json!({
+                                                    "id": a.get("id").cloned().unwrap_or(Value::Null),
+                                                    "filename": a.get("filename").cloned().unwrap_or(Value::Null),
+                                                    "mime_type": a.get("mime_type").cloned().unwrap_or(Value::Null),
+                                                    "size_bytes": a.get("size_bytes").and_then(|v| v.as_i64()).unwrap_or(0),
+                                                    "url": url,
+                                                })
+                                            })
+                                            .collect();
+                                        json!({
+                                            "id": m.get("id").cloned().unwrap_or(Value::Null),
+                                            "direction": m.get("direction").cloned().unwrap_or(Value::Null),
+                                            "from_name": m.get("from_name").cloned().unwrap_or(Value::Null),
+                                            "from_address": m.get("from_address").cloned().unwrap_or(Value::Null),
+                                            "to": m.get("to_addrs").cloned().unwrap_or(json!([])),
+                                            "cc": m.get("cc_addrs").cloned().unwrap_or(json!([])),
+                                            "subject": m.get("subject").cloned().unwrap_or(Value::Null),
+                                            "body_text": m.get("body_text").cloned().unwrap_or(Value::Null),
+                                            "body_html": m.get("body_html").cloned().unwrap_or(Value::Null),
+                                            "sent_at": m.get("sent_at").cloned().unwrap_or(Value::Null),
+                                            "scheduled_at": m.get("scheduled_at").cloned().unwrap_or(Value::Null),
+                                            "attachments": atts,
+                                        })
+                                    })
+                                    .collect();
+
+                                Ok(json!({
+                                    "id": t.get("id").cloned().unwrap_or(Value::Null),
+                                    "subject": t.get("subject").and_then(|v| v.as_str()).unwrap_or(""),
+                                    "status": t.get("status").and_then(|v| v.as_str()).unwrap_or("open"),
+                                    "assignee": t.get("assignee").cloned().unwrap_or(Value::Null),
+                                    "labels": labels,
+                                    "snoozed_until": t.get("snoozed_until").cloned().unwrap_or(Value::Null),
+                                    "account_address": t.get("mailbox_address").cloned().unwrap_or(Value::Null),
+                                    "messages": messages,
+                                }))
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        "mail.thread.insights" => {
+            let thread_id = s(input, "id");
+            if thread_id.is_empty() {
+                Err("thread_id_required".to_string())
+            } else {
+                // Pro+ gate — canonical resolve_plan() RPC, same source of
+                // truth as plan.ts / Step 6's dispatch_work.
+                let plan = sb_rpc(
+                    "resolve_plan",
+                    json!({ "_user_id": me.id, "_email": me.email }),
+                )
+                .await
+                .unwrap_or(json!("basic"));
+                let plan_str = plan.as_str().unwrap_or("basic").to_string();
+                if plan_str == "basic" {
+                    return err(
+                        StatusCode::FORBIDDEN,
+                        "feature_not_available",
+                        "Thread analytics are a Pro+ feature.",
+                    )
+                    .into_response();
+                }
+
+                // Concurrent fetch — genuine Tokio benefit, not cosmetic.
+                // format!() results must be let-bound: passing the temporary
+                // directly into tokio::join! drops it before the futures
+                // are polled (E0716).
+                let q_msgs = format!(
+                    "mail_messages?select=direction,sent_at&org_id=eq.{}&thread_id=eq.{thread_id}&order=sent_at.asc",
+                    me.org_id
+                );
+                let q_track = format!(
+                    "mail_thread_insights?select=opened,open_count,last_opened_at,recipient_timezone&org_id=eq.{}&thread_id=eq.{thread_id}",
+                    me.org_id
+                );
+                let (msgs_res, track_res) = tokio::join!(sb_select(&q_msgs), sb_select(&q_track));
+
+                let rows = msgs_res.unwrap_or(json!([])).as_array().cloned().unwrap_or_default();
+                let inbound = rows
+                    .iter()
+                    .filter(|m| m.get("direction").and_then(|v| v.as_str()) == Some("in"))
+                    .count() as i64;
+                let outbound = rows
+                    .iter()
+                    .filter(|m| m.get("direction").and_then(|v| v.as_str()) == Some("out"))
+                    .count() as i64;
+
+                let mut gaps: Vec<f64> = Vec::new();
+                for w in rows.windows(2) {
+                    let prev = &w[0];
+                    let cur = &w[1];
+                    if prev.get("direction").and_then(|v| v.as_str()) == Some("in")
+                        && cur.get("direction").and_then(|v| v.as_str()) == Some("out")
+                    {
+                        if let (Some(p), Some(c)) = (
+                            prev.get("sent_at").and_then(|v| v.as_str()),
+                            cur.get("sent_at").and_then(|v| v.as_str()),
+                        ) {
+                            if let (Some(pe), Some(ce)) =
+                                (parse_iso_epoch_seconds(p), parse_iso_epoch_seconds(c))
+                            {
+                                gaps.push((ce - pe) as f64 / 60.0);
+                            }
+                        }
+                    }
+                }
+                let avg: Value = if gaps.is_empty() {
+                    Value::Null
+                } else {
+                    json!((gaps.iter().sum::<f64>() / gaps.len() as f64).round() as i64)
+                };
+
+                // Honesty fix (parity with Bun): 1 reply is not a "pattern".
+                let in_hours: Vec<i64> = rows
+                    .iter()
+                    .filter(|m| m.get("direction").and_then(|v| v.as_str()) == Some("in"))
+                    .filter_map(|m| m.get("sent_at").and_then(|v| v.as_str()))
+                    .filter_map(hour_of_iso)
+                    .collect();
+                let mut tally: std::collections::HashMap<i64, i64> = std::collections::HashMap::new();
+                for h in &in_hours {
+                    *tally.entry(*h).or_insert(0) += 1;
+                }
+                let best: Option<i64> = if in_hours.len() >= 3 {
+                    tally.into_iter().max_by_key(|(_, c)| *c).map(|(h, _)| h)
+                } else {
+                    None
+                };
+
+                let track = track_res
+                    .unwrap_or(json!([]))
+                    .as_array()
+                    .cloned()
+                    .unwrap_or_default()
+                    .into_iter()
+                    .next();
+
+                let response_rate: Value = if outbound > 0 {
+                    json!((inbound as f64 / outbound as f64).min(1.0))
+                } else {
+                    Value::Null
+                };
+
+                let recipient_tz: Value = track
+                    .as_ref()
+                    .and_then(|t| t.get("recipient_timezone"))
+                    .cloned()
+                    .filter(|v| !v.is_null())
+                    .unwrap_or_else(|| if best.is_some() { json!("UTC") } else { Value::Null });
+
+                Ok(json!({
+                    "opened": track.as_ref().and_then(|t| t.get("opened")).cloned().unwrap_or(Value::Null),
+                    "open_count": track.as_ref().and_then(|t| t.get("open_count")).and_then(|v| v.as_i64()).unwrap_or(0),
+                    "last_opened_at": track.as_ref().and_then(|t| t.get("last_opened_at")).cloned().unwrap_or(Value::Null),
+                    "response_rate": response_rate,
+                    "avg_response_minutes": avg,
+                    "best_send_hour": best,
+                    "recipient_timezone": recipient_tz,
+                }))
+            }
         }
         "mail.labels" => {
             let data = match sb_select(&format!(
@@ -1035,6 +1630,179 @@ fn n(input: &Value, key: &str) -> Option<i64> {
     input.get(key).and_then(|v| v.as_i64())
 }
 
+/// Minimal ISO-8601 -> epoch-seconds parser (no external crate needed).
+/// PostgREST always returns fixed-width "YYYY-MM-DDTHH:MM:SS[.ffffff]+00:00"
+/// timestamps for timestamptz, so plain slicing is reliable here.
+fn parse_iso_epoch_seconds(ts: &str) -> Option<i64> {
+    let y: i64 = ts.get(0..4)?.parse().ok()?;
+    let mo: i64 = ts.get(5..7)?.parse().ok()?;
+    let d: i64 = ts.get(8..10)?.parse().ok()?;
+    let h: i64 = ts.get(11..13)?.parse().ok()?;
+    let mi: i64 = ts.get(14..16)?.parse().ok()?;
+    let sec: i64 = ts.get(17..19)?.parse().ok()?;
+
+    let y2 = if mo <= 2 { y - 1 } else { y };
+    let era = if y2 >= 0 { y2 } else { y2 - 399 } / 400;
+    let yoe = y2 - era * 400;
+    let mp = (mo + 9) % 12;
+    let doy = (153 * mp + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    let days = era * 146097 + doe - 719468;
+
+    Some(days * 86400 + h * 3600 + mi * 60 + sec)
+}
+
+fn hour_of_iso(ts: &str) -> Option<i64> {
+    ts.get(11..13)?.parse().ok()
+}
+
+/// Step 6 (plan-feature-wire audit) — Tasks + Notes, THREAD-level, Pro+ gate.
+/// NEW feature (koi Bun equivalent nahi tha) — is liye genuinely Rust/async/
+/// Tokio pe, jaisa rule hai: "jo naya hai woh new technology pe hoga".
+async fn dispatch_work(proc: &str, token: &str, input: &Value) -> axum::response::Response {
+    let requested = s(input, "org_id");
+    let me = match mail_identity(token, &requested).await {
+        Ok(me) => me,
+        Err((status, code, detail)) => {
+            return (
+                status,
+                Json(json!({ "error": { "code": code, "message": detail } })),
+            )
+                .into_response()
+        }
+    };
+
+    // Pro+ gate (resolve_plan RPC — canonical, EXACT plan.ts logic mirror).
+    let plan = sb_rpc(
+        "resolve_plan",
+        json!({ "_user_id": me.id, "_email": me.email }),
+    )
+    .await
+    .unwrap_or(json!("basic"));
+    let plan_str = plan.as_str().unwrap_or("basic").to_string();
+    if plan_str == "basic" {
+        return err(
+            StatusCode::FORBIDDEN,
+            "feature_not_available",
+            "Tasks & notes on a thread are a Pro+ feature.",
+        )
+        .into_response();
+    }
+
+    let result: Result<Value, String> = match proc {
+        "work.tasks.list" => {
+            let thread_id = s(input, "thread_id");
+            let query = if !thread_id.is_empty() {
+                format!(
+                    "work_tasks?select=*&org_id=eq.{}&thread_id=eq.{}&order=created_at.desc",
+                    me.org_id, thread_id
+                )
+            } else {
+                format!(
+                    "work_tasks?select=*&org_id=eq.{}&order=created_at.desc&limit=200",
+                    me.org_id
+                )
+            };
+            sb_select(&query).await
+        }
+        "work.tasks.create" => {
+            let title = s(input, "title");
+            if title.is_empty() {
+                Err("title_required".to_string())
+            } else {
+                let thread_id = s(input, "thread_id");
+                let body = json!({
+                    "org_id": me.org_id,
+                    "title": title,
+                    "status": "todo",
+                    "owner": me.email,
+                    "thread_id": if thread_id.is_empty() { Value::Null } else { json!(thread_id) },
+                    "created_by": me.id,
+                });
+                sb_insert("work_tasks", body).await
+            }
+        }
+        "work.tasks.update" => {
+            // completed_at is filled/cleared inside the SQL function so that
+            // kept / late / broken (promises, follow-through) stay correct.
+            let id = s(input, "id");
+            let status_val = s(input, "status");
+            let due_val = s(input, "due_at");
+            if id.is_empty() {
+                Err("id_required".to_string())
+            } else if status_val.is_empty() && due_val.is_empty() {
+                Err("status_or_due_required".to_string())
+            } else {
+                sb_rpc(
+                    "work_task_update",
+                    json!({
+                        "_org_id": me.org_id,
+                        "_id": id,
+                        "_status": if status_val.is_empty() { Value::Null } else { json!(status_val) },
+                        "_due": if due_val.is_empty() { Value::Null } else { json!(due_val) },
+                    }),
+                )
+                .await
+            }
+        }
+        "work.notes.list" => {
+            let thread_id = s(input, "thread_id");
+            if thread_id.is_empty() {
+                Err("thread_id_required".to_string())
+            } else {
+                sb_select(&format!(
+                    "work_notes?select=*&org_id=eq.{}&thread_id=eq.{}&order=updated_at.desc",
+                    me.org_id, thread_id
+                ))
+                .await
+            }
+        }
+        "work.notes.upsert" => {
+            let thread_id = s(input, "thread_id");
+            if thread_id.is_empty() {
+                Err("thread_id_required".to_string())
+            } else {
+                let body_text = s(input, "body");
+                // Partial unique index (org_id, thread_id) WHERE thread_id IS NOT NULL
+                // can't be targeted by PostgREST on_conflict, so upsert manually.
+                let existing = sb_select(&format!(
+                    "work_notes?select=id&org_id=eq.{}&thread_id=eq.{}",
+                    me.org_id, thread_id
+                ))
+                .await
+                .unwrap_or(json!([]));
+                let existing_id = existing
+                    .as_array()
+                    .and_then(|a| a.first())
+                    .and_then(|r| r.get("id"))
+                    .and_then(|v| v.as_str())
+                    .map(|s| s.to_string());
+
+                if let Some(id) = existing_id {
+                    let patch = json!({ "body": body_text, "updated_by": me.id });
+                    sb_patch(&format!("work_notes?id=eq.{id}"), patch)
+                        .await
+                        .map(|_| json!({ "ok": true, "id": id }))
+                } else {
+                    let body = json!({
+                        "org_id": me.org_id,
+                        "thread_id": thread_id,
+                        "body": body_text,
+                        "updated_by": me.id,
+                    });
+                    sb_insert("work_notes", body).await
+                }
+            }
+        }
+        _ => Err(format!("{proc} not implemented")),
+    };
+
+    match result {
+        Ok(v) => ok(v).into_response(),
+        Err(e) => err(StatusCode::BAD_REQUEST, "work_error", &e).into_response(),
+    }
+}
+
 /// tRPC-style dispatch. ANEXOChat ke procedures PRIMARY yahan hain.
 /// Jo procedure Rust pe nahi hai woh 404 deta hai taake frontend fallback kar sake.
 async fn dispatch(
@@ -1081,6 +1849,32 @@ async fn dispatch(
         };
     }
 
+    // CRM — Personal Pro+ / Business feature. Exact-match only (learned from
+    // the work. prefix bug): never intercept a name we don't explicitly own.
+    if matches!(
+        proc.as_str(),
+        "crm.promises.list"
+            | "crm.followups.list"
+            | "crm.followups.setDays"
+            | "crm.leads.suggest"
+            | "crm.leads.dismiss"
+            | "crm.contacts.recompute"
+            | "crm.contacts.setNotes"
+            | "crm.contacts.addAlias"
+            | "crm.person.timeline"
+            | "crm.timeline"
+            | "crm.health"
+            | "crm.risk"
+            | "crm.graph"
+            | "crm.team"
+            | "crm.next"
+            | "crm.promises.board"
+            | "crm.contacts.extractSignature"
+            | "crm.people.list"
+    ) {
+        return dispatch_crm(&proc, &token, &input).await;
+    }
+
     // F3 mail — org mailbox users (Basic/Pro included). Chat entitlement nahi.
     if proc.starts_with("mail.") {
         return dispatch_mail(&proc, &token, &input).await;
@@ -1091,6 +1885,18 @@ async fn dispatch(
     // Fallback: Bun /api/billing/subscription + /api/billing/invoices.
     if proc.starts_with("billing.") {
         return dispatch_billing(&proc, &token).await;
+    }
+
+    // Step 6 (plan-feature-wire audit) — Tasks + Notes, THREAD-level, Pro+.
+    // Narrow match only: a broad "work." prefix match here was intercepting
+    // the pre-existing, working Bun /api/work/tasks and /api/work/promises
+    // (general, non-thread-scoped) procedures and returning a non-fallbackable
+    // "not implemented" error, breaking a feature that already worked.
+    if matches!(
+        proc.as_str(),
+        "work.tasks.list" | "work.tasks.create" | "work.tasks.update" | "work.notes.list" | "work.notes.upsert"
+    ) {
+        return dispatch_work(&proc, &token, &input).await;
     }
 
     if !proc.starts_with("chat.") && !proc.starts_with("file.") {
