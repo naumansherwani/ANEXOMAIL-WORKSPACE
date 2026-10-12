@@ -10,7 +10,7 @@ Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) s
 | 1 | `resolved@` basic account se hatana (data leak fix) | DONE — founder screenshot se confirm (11 Oct) |
 | 2 | Company address se send, Sent thread, SPF/DKIM/DMARC | DONE — Gmail Show Original: SPF PASS, DKIM PASS (d=mailtest.axonetis.com), DMARC PASS (11 Oct) |
 | 3 | `/schedule` identity org-check (security) | Live deploy ho chuka |
-| 4 | Test accounts Pro + Business (4 packages) | TODO — agla |
+| 4 | Test accounts Basic + Pro + Business + Business Pro (4 packages) | DONE — 12 Oct: Pro/Business Postfix routing fix hui; Business Pro ka naya real account banaya (auth.users + identities + organisations + mail_accounts + trial_accounts, plan=business_pro, `pro.test` ke asli row-shape se mirror), `postmap` se Postfix mein confirm |
 | 5 | Naya buyer signup: workspace + member + trial (Rust) | TODO |
 | 6 | Buyer ka apna @anexomail.com address + Postfix auto-sync | TODO |
 | 7 | Compose "From" selector (company address rang ke saath) | TODO |
@@ -45,3 +45,4 @@ Founder ne kaha: kaam bohot zyada hai, awam ke baad karna hai. Yahan sirf list m
 ## DONE (is session mein live verify)
 - Domain system A (DB), B (Rust, asli DNS 5/5), C receive side (company address par inbound mail).
 - Company-address mailbox cap + re-create fix (smoke 17/17).
+- `/etc/cron.d/anexomail-sync-maps` (login-address -> Postfix sync) ka asal bug fix: fragile double env-sourcing + `%` escaping cron gotcha, jo isay silently fail kar raha tha. Ab har minute reliably chalta hai — yeh #5/#6 (naya buyer auto-sync) ka foundation hai.
