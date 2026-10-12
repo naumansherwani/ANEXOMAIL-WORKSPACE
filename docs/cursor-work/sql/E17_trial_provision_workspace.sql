@@ -13,6 +13,28 @@
 -- org-level starting allowance hai, workspace_plans.storage_per_mailbox_gb
 -- se seedha jura nahi (woh alag hisaab hai, item #12/#13 mein already
 -- flagged drift-risk).
+--
+-- FAIL + FIX (12 Oct 2026, live end-to-end test): pehla deploy live test mein
+-- fail hua -- trial_events.trial_events_event_type_check sirf in values ko
+-- allow karta tha: signup, claim, passkey_set, recovery_set, warn_24h,
+-- warn_2h, expired, subscribed, frozen, released, mail_hold, recovery_used.
+-- 'workspace_provisioned' in mein nahi tha (maine deploy se pehle existing
+-- constraint check nahi ki thi), is liye function ka trial_events insert
+-- 23514 (check_violation) de raha tha aur poora provisioning call rollback ho
+-- raha tha (organisations/mail_accounts/org_members teeno 0 reh jate, koi
+-- partial/corrupt row nahi -- transaction safe tha). Rule 8 (SQL fail rule)
+-- ke mutabiq isi file mein fix kiya gaya hai, naya filename nahi banaya:
+-- constraint ko widen kiya (existing 12 values untouched, sirf
+-- 'workspace_provisioned' add) kyunke yeh ek genuinely naya, alag lifecycle
+-- event hai (handle-claim se distinct -- 'claim' already trial_claim_address
+-- khud log karta hai).
+alter table public.trial_events drop constraint if exists trial_events_event_type_check;
+alter table public.trial_events add constraint trial_events_event_type_check
+  check (event_type = any (array[
+    'signup','claim','passkey_set','recovery_set','warn_24h','warn_2h',
+    'expired','subscribed','frozen','released','mail_hold','recovery_used',
+    'workspace_provisioned'
+  ]::text[]));
 
 create or replace function public.trial_provision_workspace(_user_id uuid)
 returns jsonb language plpgsql security definer set search_path = public as $$
