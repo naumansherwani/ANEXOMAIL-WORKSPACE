@@ -66,6 +66,7 @@ select pg_get_functiondef('public.polar_billing_state(uuid)'::regprocedure);
 - Live engine `main.rs` == repo (pichla version): `diff` clean — DONE.
 - E22 SQL Supabase mein run — founder confirm, success — DONE.
 - Rust engine: `cargo build --release` Finished (1m08s), pm2 restart, `/health` + `/ready` + public ingress green, queue 0, dead letter 0 — compile + deploy DONE.
-- Web (Bun `change-plan` + frontend): repo pull ho gaya, **build + `pm2 restart anexomail-web` abhi baqi** — READY.
+- Web (Bun `change-plan` + frontend): build + `pm2 restart anexomail-web` done, `web /health 200`, `app.billing-BHpiXkI_.js` mein "Business plans" mila (purana bundle nahi) — deploy DONE (22:10 PKT log).
+- Engine log: `replace: table not readable yet` warn sirf 17:04–17:06 UTC (SQL run hone se pehle) aaye; engine ne bina restart ke table mil jane par recover kiya (warn ruk gaye).
 - Live verify (upgrade test, old sub revoked, billing page) — TODO.
 Poora E22 tab tak READY, DONE nahi (Rule 5).
