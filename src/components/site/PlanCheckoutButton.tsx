@@ -22,7 +22,7 @@
  */
 
 import { ExternalLink, Loader2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { api, ApiError } from "@/lib/api";
@@ -144,6 +144,20 @@ export function CheckoutButton({
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showFallback, setShowFallback] = useState(false);
+  const resetTimer = useRef<number | null>(null);
+
+  // The button stays "Opening secure checkout…" while the browser navigates to
+  // Polar. If the user comes BACK (browser back button restores the page from
+  // the back/forward cache with its old state) or the navigation never happens,
+  // it would spin forever. Reset on pageshow and after a safety timeout.
+  useEffect(() => {
+    const onShow = () => setBusy(false);
+    window.addEventListener("pageshow", onShow);
+    return () => {
+      window.removeEventListener("pageshow", onShow);
+      if (resetTimer.current !== null) window.clearTimeout(resetTimer.current);
+    };
+  }, []);
 
   const startCheckout = async () => {
     setError(null);
@@ -184,6 +198,9 @@ export function CheckoutButton({
           : "/auth";
 
       await openPolarCheckout({ productKey: pk, endpoint, returnTo });
+      // Navigation has been started; if we are still here after 20s it did not
+      // happen (blocked / cancelled) — free the button instead of spinning.
+      resetTimer.current = window.setTimeout(() => setBusy(false), 20000);
     } catch (caught) {
       setBusy(false);
 
