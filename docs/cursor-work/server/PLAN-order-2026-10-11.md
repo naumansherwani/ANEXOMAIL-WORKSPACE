@@ -58,6 +58,8 @@ Founder ne kaha: kaam bohot zyada hai, awam ke baad karna hai. Yahan sirf list m
 | 36 | Founder workspace build (`founderworkspace.anexomail.com`) — AGENTS.md TARTEEB phase 2, awam ke baad; scope founder batayega |
 | 42 | Security (= F): `.env` plaintext passwords, repo public->private, purana Supabase token revoke, chat wala DB password badalna, test passwords rotate, Git ka asli email — secrets kabhi repo mein nahi |
 
+| — | Password reset raw Supabase link + race condition (E19, 13 Oct, founder live-caught) | READY — `docs/cursor-work/sql/E19_password_reset_hardening.sql` + `server/routes/auth.ts` in repo, Supabase paste + server deploy + live re-verify baaqi (Rule 5) |
+
 ## DONE (is session mein live verify)
 - Domain system A (DB), B (Rust, asli DNS 5/5), C receive side (company address par inbound mail).
 - Company-address mailbox cap + re-create fix (smoke 17/17).

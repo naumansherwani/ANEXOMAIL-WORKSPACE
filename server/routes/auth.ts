@@ -701,48 +701,39 @@ authRouter.post("/forgot-password", async (req, res) => {
     }
   }
 
-  const { data: linkData, error: linkError } = uid
-    ? await getAdmin().auth.admin.generateLink({
-        type: "recovery",
-        email,
-        options: { redirectTo: `${APP_URL}/auth?mode=reset` },
-      })
-    : { data: null, error: null };
-  if (uid && (linkError || !linkData?.properties?.action_link)) {
-    const token = createHash("sha256").update(`${uid}:${Date.now()}:${Math.random()}`).digest("hex");
-    const tokenHashValue = createHash("sha256").update(token).digest("hex");
-    await getAdmin().from("account_recovery_tokens").insert({
-      token_hash: tokenHashValue,
-      user_id: uid,
-      expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-    });
-    const resetUrl = `${APP_URL}/auth?mode=reset&recovery=${token}`;
-    const mailed = await sendMail({
-      from: "noreply@anexomail.com",
-      fromName: "ANEXOMAIL",
-      to: [target],
-      subject: "Reset your ANEXOMAIL password",
-      text: `Use this link once in the next 15 minutes:\n${resetUrl}\n\nIf you did not ask for this, ignore the email.`,
-    });
-    if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
+  // E19 (13 Oct 2026): hamesha apna branded token + anexomail.com link use karo.
+  // Supabase ke generateLink()/resetPasswordForEmail() ka raw action_link
+  // (https://<ref>.supabase.co/auth/v1/verify?...) kabhi seedha user ko mail
+  // mein nahi jaana chahiye — backend vendor expose karta hai, unprofessional.
+  // Yeh do calls ab sirf tab honge jab koi asli Supabase-session-based flow
+  // (reset-password ka accessToken branch) ko zaroorat ho — forgot-password
+  // mein inki ab koi jagah nahi.
+  if (!uid) {
+    // User exist nahi karta — email enumeration na ho, chup chaap ok bhejo.
     return res.json({ ok: true, sent_to: sentTo });
   }
 
-  if (sentTo === "recovery" && linkData?.properties?.action_link) {
-    const mailed = await sendMail({
-      from: "noreply@anexomail.com",
-      fromName: "ANEXOMAIL",
-      to: [target],
-      subject: "Reset your ANEXOMAIL password",
-      text: `Use this link once in the next 15 minutes:\n${linkData.properties.action_link}\n\nIf you did not ask for this, ignore the email.`,
-    });
-    if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
-    return res.json({ ok: true, sent_to: sentTo });
+  const { data: rate } = await getAdmin().rpc("password_reset_rate_ok", { _user_id: uid });
+  if (rate && rate.ok === false) {
+    return res.status(429).json({ error: "Too many reset requests — try again later." });
   }
 
-  await getPublicAuth().auth.resetPasswordForEmail(email, {
-    redirectTo: `${APP_URL}/auth?mode=reset`,
+  const token = createHash("sha256").update(`${uid}:${Date.now()}:${Math.random()}`).digest("hex");
+  const tokenHashValue = createHash("sha256").update(token).digest("hex");
+  await getAdmin().from("account_recovery_tokens").insert({
+    token_hash: tokenHashValue,
+    user_id: uid,
+    expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
   });
+  const resetUrl = `${APP_URL}/auth?mode=reset&recovery=${token}`;
+  const mailed = await sendMail({
+    from: "noreply@anexomail.com",
+    fromName: "ANEXOMAIL",
+    to: [target],
+    subject: "Reset your ANEXOMAIL password",
+    text: `Use this link once in the next 15 minutes:\n${resetUrl}\n\nIf you did not ask for this, ignore the email.`,
+  });
+  if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
   res.json({ ok: true, sent_to: sentTo });
 });
 
@@ -778,21 +769,25 @@ authRouter.post("/reset-password", async (req, res) => {
   if (!passwordOk(password))
     return res.status(400).json({ error: "New password must be 6 to 15 characters." });
   if (recovery) {
+    // E19 (13 Oct 2026): atomic claim via SQL RPC — one UPDATE that checks
+    // used_at/expires_at AND claims the token in the same statement, so two
+    // concurrent requests with the same link can't both pass the check
+    // (the old code did a SELECT then a separate UPDATE — a race window).
     const tokenHashValue = createHash("sha256").update(recovery).digest("hex");
-    const { data: row } = await getAdmin()
-      .from("account_recovery_tokens")
-      .select("user_id,expires_at,used_at")
-      .eq("token_hash", tokenHashValue)
-      .maybeSingle();
-    if (!row || row.used_at || new Date(row.expires_at).getTime() < Date.now()) {
+    const { data: claim, error: claimError } = await getAdmin().rpc(
+      "consume_password_reset_token",
+      { _token_hash: tokenHashValue },
+    );
+    if (claimError) {
+      return res.status(500).json({
+        error: "Password reset SQL is missing. Paste docs/cursor-work/sql/E19_password_reset_hardening.sql in Supabase.",
+      });
+    }
+    if (!claim || claim.ok === false || !claim.user_id) {
       return res.status(401).json({ error: "Reset link is invalid or expired." });
     }
-    const { error } = await getAdmin().auth.admin.updateUserById(row.user_id, { password });
+    const { error } = await getAdmin().auth.admin.updateUserById(claim.user_id, { password });
     if (error) return authError(res, error);
-    await getAdmin()
-      .from("account_recovery_tokens")
-      .update({ used_at: new Date().toISOString() })
-      .eq("token_hash", tokenHashValue);
     return res.json({ ok: true });
   }
   if (!accessToken)
