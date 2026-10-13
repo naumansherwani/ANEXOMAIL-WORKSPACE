@@ -198,6 +198,24 @@ export function useAccounts() {
   });
 }
 
+export type SendIdentity = { address: string; kind: "login" | "mailbox" | "shared" };
+
+/** #7 — Compose "Send from": server (Rust mail.identities) ke jaiz From addresses. */
+export function useIdentities(enabled = true) {
+  return useQuery<{ identities: SendIdentity[]; default: string | null }, ApiError>({
+    queryKey: ["mail", "identities"],
+    enabled,
+    queryFn: () =>
+      rpcOrRest<{ identities: SendIdentity[]; default: string | null }>(
+        "mail.identities",
+        { path: "/api/mail/identities" },
+        {},
+      ),
+    retry: false,
+    staleTime: 60_000,
+  });
+}
+
 export type FolderCounts = Record<string, { total: number; unread: number }>;
 
 export function useFolderCounts() {

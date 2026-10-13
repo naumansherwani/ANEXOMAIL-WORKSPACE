@@ -1093,6 +1093,7 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 .collect();
             Ok(json!({ "accounts": accounts }))
         }
+        "mail.identities" => mail_identities(&me.org_id, &me.email).await,
         "mail.thread" => {
             let thread_id = s(input, "id");
             if thread_id.is_empty() {
@@ -1752,6 +1753,64 @@ async fn doh(name: &str, rtype: &str) -> Vec<String> {
                 .collect()
         })
         .unwrap_or_default()
+}
+
+/// #7 — Compose "Send from": is user ke liye jaiz From addresses. Qaida Bun `lib/identity.ts` jaisa:
+/// org ke mailboxes / mail_accounts / org_addresses (alias nahi, inactive nahi) + apna @anexomail.com login.
+/// Default = apna login (warna pehla). Naya code Rust-first; Bun fallback nahi.
+async fn mail_identities(org: &str, own_email: &str) -> Result<Value, String> {
+    let mut found: std::collections::BTreeMap<String, &'static str> = std::collections::BTreeMap::new();
+    let sources: [(String, &str); 3] = [
+        (format!("mailboxes?select=address,box_type,active&org_id=eq.{org}"), "box_type"),
+        (format!("mail_accounts?select=address&org_id=eq.{org}"), ""),
+        (format!("org_addresses?select=address,kind,active&org_id=eq.{org}"), "kind"),
+    ];
+    for (path, kind_col) in sources.iter() {
+        let rows = sb_select(path).await.unwrap_or(json!([]));
+        for r in rows.as_array().cloned().unwrap_or_default() {
+            let addr = r
+                .get("address")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .trim()
+                .to_lowercase();
+            if addr.is_empty() || !addr.contains('@') {
+                continue;
+            }
+            if r.get("active").and_then(|v| v.as_bool()) == Some(false) {
+                continue;
+            }
+            let kind = if kind_col.is_empty() {
+                "mailbox"
+            } else {
+                r.get(*kind_col).and_then(|v| v.as_str()).unwrap_or("mailbox")
+            };
+            if kind == "alias" {
+                continue;
+            }
+            found.insert(addr, if kind == "shared" { "shared" } else { "mailbox" });
+        }
+    }
+    let own = own_email.trim().to_lowercase();
+    if own.ends_with("@anexomail.com") {
+        found.entry(own.clone()).or_insert("mailbox");
+    }
+    let mut list: Vec<Value> = Vec::new();
+    if found.contains_key(&own) {
+        list.push(json!({ "address": own, "kind": "login" }));
+    }
+    for (addr, kind) in found.iter() {
+        if *addr == own {
+            continue;
+        }
+        list.push(json!({ "address": addr, "kind": kind }));
+    }
+    let default = list
+        .first()
+        .and_then(|v| v.get("address"))
+        .cloned()
+        .unwrap_or(Value::Null);
+    Ok(json!({ "identities": list, "default": default }))
 }
 
 async fn mail_domains_list(org: &str) -> Result<Value, String> {

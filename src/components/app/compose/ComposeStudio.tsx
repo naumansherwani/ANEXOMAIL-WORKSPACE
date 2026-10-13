@@ -34,7 +34,6 @@ import {
   useSaveDraft,
   useScheduleSend,
   useSendConfidence,
-  useSignatures,
   useSnippets,
   useTemplates,
   type ComposeTone,
@@ -42,7 +41,8 @@ import {
 } from "@/lib/compose";
 import { learnWritingPattern } from "@/lib/mail-predict";
 import { notify } from "@/lib/notify";
-import { useSendMail } from "@/lib/mail";
+import { useIdentities, useSendMail } from "@/lib/mail";
+import { addressTone } from "@/lib/mail-identity";
 import { useAuth } from "@/lib/auth";
 import { isAiHost } from "@/lib/host";
 import { showMultipleIdentities, showProMailTools, surfaceFromSession } from "@/lib/plan-surface";
@@ -120,7 +120,7 @@ export function ComposeStudio({
 
   const templates = useTemplates();
   const snippets = useSnippets();
-  const signatures = useSignatures();
+  const identities = useIdentities(identitiesOk);
   const versions = useDraftVersions(showVersions ? draftId : undefined);
   const saveDraft = useSaveDraft();
   const confidence = useSendConfidence();
@@ -320,20 +320,30 @@ export function ComposeStudio({
       <div className={cn("mx-auto flex w-full flex-col gap-ax-3", zen && "max-w-3xl")}>
         {/* identity + language */}
         <div className="flex flex-wrap items-center gap-2">
-          {identitiesOk ? (
-          <select
-            aria-label="Send as"
-            value={identity}
-            onChange={(e) => setIdentity(e.target.value)}
-            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground"
-          >
-            <option value="">Send as — default identity</option>
-            {signatures.data?.signatures.map((sig) => (
-              <option key={sig.id} value={sig.identity}>
-                {sig.identity}
-              </option>
-            ))}
-          </select>
+          {identitiesOk && (identities.data?.identities.length ?? 0) > 0 ? (
+            <div className="flex items-center gap-1.5">
+              <span
+                aria-hidden
+                className="h-2.5 w-2.5 shrink-0 rounded-full"
+                style={{
+                  background:
+                    addressTone(identity || identities.data?.default)?.color ?? "currentColor",
+                }}
+              />
+              <select
+                aria-label="Send from"
+                value={identity}
+                onChange={(e) => setIdentity(e.target.value)}
+                className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground"
+              >
+                <option value="">{`Send from — ${identities.data?.default ?? "default"}`}</option>
+                {identities.data?.identities.map((i) => (
+                  <option key={i.address} value={i.address}>
+                    {i.address}
+                  </option>
+                ))}
+              </select>
+            </div>
           ) : null}
           <select
             aria-label="Reply language"
