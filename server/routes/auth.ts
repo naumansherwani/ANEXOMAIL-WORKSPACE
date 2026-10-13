@@ -504,13 +504,12 @@ authRouter.post("/signup", async (req, res) => {
       });
     }
     if (gate && gate.ok === false) {
-      const msg =
-        gate.error === "too_many_accounts"
-          ? "This device already has accounts. Sign in instead of creating another."
-          : gate.error === "device_banned"
-            ? "This device cannot create an account."
-            : "This device cannot create an account.";
-      return res.status(403).json({ error: msg, code: gate.error });
+      // E18 (13 Oct 2026): sirf human-confirmed device_banned yahan block karta
+      // hai. "too_many_accounts" auto-block hata diya gaya — woh Phase 24A ki
+      // locked ladder ("Engine khud block NAHI karti") todta tha. Device-shape
+      // collision ab signup ke baad device_vault_register() mein sirf
+      // state='suspicious' mark hota hai, signup khud kabhi nahi rukta.
+      return res.status(403).json({ error: "This device cannot create an account.", code: gate.error });
     }
   }
 
