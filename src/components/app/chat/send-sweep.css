@@ -1,0 +1,54 @@
+/*
+ * ANEXOChat PHASE 39 - message send cinematic.
+ * Kept out of src/styles.css: appending after @utility + a non-ASCII
+ * dash broke Vite 8 Rolldown (`styles.css?url` -> `?transform-only`).
+ * This file is plain CSS (no Tailwind at-rules).
+ * Calm Mode / reduced motion = no animation (blueprint lock).
+ */
+
+@keyframes ax-send-sweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0.9;
+  }
+  70% {
+    opacity: 0.55;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.ax-send-sweep {
+  position: relative;
+  overflow: hidden;
+}
+
+.ax-send-sweep::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    oklch(0.62 0.19 250 / 55%) 30%,
+    oklch(0.58 0.2 300 / 55%) 55%,
+    oklch(0.7 0.14 185 / 55%) 80%,
+    transparent 100%
+  );
+  animation: ax-send-sweep 300ms ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-send-sweep::after {
+    animation: none !important;
+    content: none;
+  }
+}
+
+html[data-ax-calm] .ax-send-sweep::after {
+  animation: none !important;
+  content: none;
+}

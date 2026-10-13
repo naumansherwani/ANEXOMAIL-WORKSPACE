@@ -1,0 +1,2139 @@
+// ANEXOMAIL — ANEXOChat PHASE 1 SLICE API (service `anexochat`, port 3300)
+//
+// NANO COMMAND (server par):
+//   cp /opt/anexomail/src/routes/chat.ts /opt/anexomail/src/routes/chat.ts.bak.$(date +%s) 2>/dev/null
+//   nano /opt/anexomail/src/routes/chat.ts
+//   # select all -> paste -> Ctrl+O, Ctrl+X
+//
+// FOUNDER LOCK:
+//   1. Truth Supabase #4 mein — yeh file sirf chat_* RPC bulati hai
+//   2. Gate DB ka chat_access(): founder + Polar Pro + business/business_pro/AI. Basic = 403
+//   3. Idempotent send: client_msg_id — duplicate send kabhi doosra message nahi
+//   4. Koi fake state nahi: sent/delivered/read sirf DB rows se
+//   5. Bun path = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.* + WebTransport/QUIC
+//      (server/rust/main.rs). Frontend pehle Rust, phir yeh.
+//
+// Routes (mount: src/anexochat.ts -> app.use("/api/chat", chatRouter))
+//   GET  /api/chat/bootstrap                auth — workspace + access + me
+//   GET  /api/chat/conversations            auth — list + truthful health
+//   POST /api/chat/conversations/direct     auth — {other_user_id}
+//   GET  /api/chat/messages?c=&before=      auth — page (newest first)
+//   POST /api/chat/messages                 auth — {conversation_id, client_msg_id, body, device}
+//   POST /api/chat/receipts                 auth — {conversation_id, state, upto_seq}
+//   POST /api/chat/typing                   auth — {conversation_id, typing}
+//   POST /api/chat/presence                 auth — {device}
+//   GET  /api/chat/presence?c=              auth — presence + real typing only
+import { Router } from "express";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+
+const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
+const SERVICE_KEY =
+  process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+
+let db: SupabaseClient | null = null;
+if (SUPABASE_URL && SERVICE_KEY) {
+  db = createClient(SUPABASE_URL, SERVICE_KEY, {
+    auth: { persistSession: false, autoRefreshToken: false },
+  });
+} else {
+  console.error("chat: SUPABASE4_* missing — /api/chat/* will 503");
+}
+
+export const chatRouter = Router();
+
+const fail = (res: any, e: any) =>
+  res.status(500).json({ error: "db_error", detail: String(e?.message || e) });
+
+async function requireUser(req: any, res: any): Promise<{ id: string; email: string } | null> {
+  if (!db) {
+    res.status(503).json({ error: "supabase_not_configured" });
+    return null;
+  }
+  const raw = String(req.headers.authorization || "");
+  const token = raw.startsWith("Bearer ") ? raw.slice(7) : "";
+  if (!token) {
+    res.status(401).json({ error: "unauthorized" });
+    return null;
+  }
+  const { data, error } = await db.auth.getUser(token);
+  if (error || !data?.user) {
+    res.status(401).json({ error: "unauthorized" });
+    return null;
+  }
+  return { id: data.user.id, email: data.user.email || "" };
+}
+
+/** Gate DB se — frontend ka koi claim nahi maana jata. */
+async function requireChat(
+  req: any,
+  res: any,
+): Promise<{ id: string; email: string; workspace_id: string } | null> {
+  const user = await requireUser(req, res);
+  if (!user) return null;
+  const gate = await db!.rpc("chat_access", { _user_id: user.id });
+  if (gate.error) {
+    fail(res, gate.error);
+    return null;
+  }
+  if (gate.data !== true) {
+    res.status(403).json({ error: "chat_not_entitled", plan_required: "business" });
+    return null;
+  }
+  const ws = await db!.rpc("chat_ensure_workspace", {
+    _user: user.id,
+    _name: user.email ? user.email.split("@")[1] || "Workspace" : "Workspace",
+  });
+  if (ws.error) {
+    fail(res, ws.error);
+    return null;
+  }
+  return { ...user, workspace_id: String(ws.data) };
+}
+
+// ── bootstrap ───────────────────────────────────────────────────
+chatRouter.get("/bootstrap", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  try {
+    const members = await db!
+      .from("chat_members")
+      .select("user_id, display_name, role")
+      .eq("workspace_id", me.workspace_id);
+    if (members.error) throw members.error;
+    res.json({
+      user_id: me.id,
+      email: me.email,
+      workspace_id: me.workspace_id,
+      members: members.data ?? [],
+      transport: "bun",
+    });
+  } catch (e) {
+    fail(res, e);
+  }
+});
+
+// ── conversations ───────────────────────────────────────────────
+chatRouter.get("/conversations", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_conversation_list", {
+    _ws: me.workspace_id,
+    _me: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json({ conversations: data ?? [] });
+});
+
+chatRouter.post("/conversations/direct", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const other = String(req.body?.other_user_id || "");
+  if (!other) return res.status(400).json({ error: "other_user_id_required" });
+  const { data, error } = await db!.rpc("chat_direct_conversation", {
+    _ws: me.workspace_id,
+    _me: me.id,
+    _other: other,
+  });
+  if (error) return fail(res, error);
+  res.json({ conversation_id: data });
+});
+
+// ── messages ────────────────────────────────────────────────────
+chatRouter.get("/messages", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.query?.c || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const before = req.query?.before ? Number(req.query.before) : null;
+  const limit = req.query?.limit ? Number(req.query.limit) : 80;
+  const { data, error } = await db!.rpc("chat_messages_page", {
+    _conv: conv,
+    _me: me.id,
+    _before_seq: Number.isFinite(before as number) ? before : null,
+    _limit: Number.isFinite(limit) ? limit : 80,
+  });
+  if (error) return fail(res, error);
+  res.json({ messages: data ?? [] });
+});
+
+chatRouter.post("/messages", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const clientId = String(req.body?.client_msg_id || "");
+  const body = String(req.body?.body || "");
+  if (!conv || !clientId || !body.trim()) {
+    return res.status(400).json({ error: "conversation_id_client_msg_id_body_required" });
+  }
+  const { data, error } = await db!.rpc("chat_send", {
+    _conv: conv,
+    _sender: me.id,
+    _client_msg_id: clientId,
+    _body: body,
+    _device: req.body?.device ? String(req.body.device) : null,
+    _reply_to: req.body?.reply_to_id ? String(req.body.reply_to_id) : null,
+  });
+  if (error) return fail(res, error);
+  const row = Array.isArray(data) ? data[0] : data;
+  res.json({ ...row, state: "sent" });
+});
+
+// ── receipts (delivered / read) ─────────────────────────────────
+chatRouter.post("/receipts", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const state = String(req.body?.state || "");
+  const upto = Number(req.body?.upto_seq);
+  if (!conv || !Number.isFinite(upto)) {
+    return res.status(400).json({ error: "conversation_id_upto_seq_required" });
+  }
+  const { data, error } = await db!.rpc("chat_mark", {
+    _conv: conv,
+    _user: me.id,
+    _state: state === "delivered" ? "delivered" : "read",
+    _upto: upto,
+  });
+  if (error) return fail(res, error);
+  res.json({ marked: data ?? 0 });
+});
+
+// ── presence + typing (never guessed) ───────────────────────────
+chatRouter.post("/presence", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { error } = await db!.rpc("chat_presence_ping", {
+    _ws: me.workspace_id,
+    _user: me.id,
+    _device: req.body?.device ? String(req.body.device) : null,
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.post("/typing", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { error } = await db!.rpc("chat_typing_ping", {
+    _conv: conv,
+    _user: me.id,
+    _typing: req.body?.typing === true,
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.get("/presence", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.query?.c || "");
+  try {
+    const presence = await db!
+      .from("chat_presence")
+      .select("user_id, device_label, last_seen_at")
+      .eq("workspace_id", me.workspace_id);
+    if (presence.error) throw presence.error;
+
+    let typing: { user_id: string }[] = [];
+    if (conv) {
+      const t = await db!
+        .from("chat_typing")
+        .select("user_id, until")
+        .eq("conversation_id", conv)
+        .gt("until", new Date().toISOString());
+      if (t.error) throw t.error;
+      typing = (t.data ?? []).filter((r: any) => r.user_id !== me.id);
+    }
+    res.json({ presence: presence.data ?? [], typing });
+  } catch (e) {
+    fail(res, e);
+  }
+});
+
+// ── PHASE 3: message engine (reactions / edit / delete) ─────────
+chatRouter.post("/react", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  const emoji = String(req.body?.emoji || "");
+  if (!msg || !emoji) return res.status(400).json({ error: "message_id_emoji_required" });
+  const { data, error } = await db!.rpc("chat_react", {
+    _msg: msg,
+    _user: me.id,
+    _emoji: emoji,
+  });
+  if (error) return fail(res, error);
+  res.json({ reactions: data ?? [] });
+});
+
+chatRouter.post("/messages/edit", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  const body = String(req.body?.body || "");
+  if (!msg || !body.trim()) return res.status(400).json({ error: "message_id_body_required" });
+  const { data, error } = await db!.rpc("chat_edit_message", {
+    _msg: msg,
+    _user: me.id,
+    _body: body,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.post("/messages/delete", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_delete_message", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+// E6 — Business Pro: company-wide delete for everyone, NO time limit.
+// Plan gate SQL function ke andar hai (entitlement_state.plan = business_pro).
+// 1-hour window wala /messages/delete har plan ke liye waisa hi rehta hai.
+chatRouter.post("/messages/delete-anytime", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_delete_message_anytime", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+// E7 — Business: delete for everyone within 48 HOURS (card promise).
+// Gate SQL ke andar: business = 48h window, business_pro = no limit.
+chatRouter.post("/messages/delete-48h", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_delete_message_48h", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+// ── PHASE 3: work objects (task / promise / decision) ───────────
+chatRouter.post("/work", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const kind = String(req.body?.kind || "");
+  const title = String(req.body?.title || "");
+  if (!conv || !kind || !title.trim()) {
+    return res.status(400).json({ error: "conversation_id_kind_title_required" });
+  }
+  const { data, error } = await db!.rpc("chat_work_create", {
+    _conv: conv,
+    _user: me.id,
+    _msg: req.body?.message_id ? String(req.body.message_id) : null,
+    _kind: kind,
+    _title: title,
+    _due: req.body?.due_at ? String(req.body.due_at) : null,
+  });
+  if (error) return fail(res, error);
+  res.json({ id: data });
+});
+
+chatRouter.get("/work", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.query?.c || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_work_list", { _conv: conv, _user: me.id });
+  if (error) return fail(res, error);
+  res.json({ items: data ?? [] });
+});
+
+chatRouter.post("/work/state", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  const state = String(req.body?.state || "");
+  if (!item || !state) return res.status(400).json({ error: "item_id_state_required" });
+  const { error } = await db!.rpc("chat_work_set_state", {
+    _item: item,
+    _user: me.id,
+    _state: state,
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.post("/conversations/state", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const state = String(req.body?.state || "");
+  if (!conv || !state) return res.status(400).json({ error: "conversation_id_state_required" });
+  const { data, error } = await db!.rpc("chat_conversation_set_state", {
+    _conv: conv,
+    _user: me.id,
+    _state: state,
+    _note: req.body?.note ? String(req.body.note) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+// ── PHASE 6: unread truth for the ANEXOMAIL sidebar badge ───────
+chatRouter.get("/unread", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_unread_total", { _user: me.id });
+  if (error) return fail(res, error);
+  const row = Array.isArray(data) ? data[0] : data;
+  res.json(row ?? { unread: 0, conversations: 0 });
+});
+
+// ── PHASE 8-10: parity (hide / pin / prefs / search) ────────────
+chatRouter.post("/messages/hide", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { error } = await db!.rpc("chat_message_hide", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json({ hidden: true });
+});
+
+chatRouter.post("/messages/pin", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_pin_message", {
+    _msg: msg,
+    _user: me.id,
+    _pin: req.body?.pin !== false,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.post("/conversations/prefs", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_conversation_prefs", {
+    _conv: conv,
+    _user: me.id,
+    _mute_minutes:
+      req.body?.mute_minutes === undefined || req.body?.mute_minutes === null
+        ? null
+        : Number(req.body.mute_minutes),
+    _archived:
+      req.body?.archived === undefined || req.body?.archived === null
+        ? null
+        : Boolean(req.body.archived),
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.get("/search", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const q = String(req.query?.q || "");
+  if (!q.trim()) return res.json({ results: [] });
+  const { data, error } = await db!.rpc("chat_search_messages", {
+    _user: me.id,
+    _q: q,
+    _limit: 40,
+  });
+  if (error) return fail(res, error);
+  res.json({ results: data ?? [] });
+});
+
+// ── PHASE 7: ANEXOVideoChat signalling (Pro+ / Personal Pro power) ──────
+chatRouter.get("/video/gate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_video_allowed", { _user_id: me.id });
+  if (error) return fail(res, error);
+  res.json({ allowed: data === true, plan_required: "pro" });
+});
+
+chatRouter.post("/video/signal", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const to = String(req.body?.to_user || "");
+  const kind = String(req.body?.kind || "");
+  if (!conv || !to || !kind) {
+    return res.status(400).json({ error: "conversation_id_to_user_kind_required" });
+  }
+  const { data, error } = await db!.rpc("chat_signal_send", {
+    _conv: conv,
+    _from: me.id,
+    _to: to,
+    _kind: kind,
+    _payload: req.body?.payload ?? {},
+  });
+  if (error) return fail(res, error);
+  res.json({ id: data });
+});
+
+chatRouter.get("/video/signals", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_signal_poll", {
+    _conv: req.query?.c ? String(req.query.c) : null,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json({ signals: data ?? [] });
+});
+
+export default chatRouter;
+// ── PHASE 10A: ANEXOVIDEOCHAT CALL ENGINE (fallback of Rust /rpc/chat.*) ─────
+//
+// ENV (/opt/anexomail/.env):
+//   TURN_HOST=anexovideocall.anexomail.com
+//   TURN_SECRET=<coturn static-auth-secret>   # frontend pe kabhi nahi
+//   TURN_TTL_SECONDS=3600
+//
+// Ephemeral TURN creds = coturn ka standard REST scheme:
+//   username = <unix-expiry>:<user-id>
+//   password = base64(HMAC-SHA1(secret, username))
+import { createHmac } from "node:crypto";
+
+const TURN_HOST = process.env.TURN_HOST || "";
+const TURN_SECRET = process.env.TURN_SECRET || "";
+const TURN_TTL = Number(process.env.TURN_TTL_SECONDS || 3600);
+
+const STUN_URLS = ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"];
+
+chatRouter.get("/video/turn", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const gate = await db!.rpc("chat_video_allowed", { _user_id: me.id });
+  if (gate.error) return fail(res, gate.error);
+  if (gate.data !== true) {
+    return res.status(403).json({ error: "video_not_entitled", plan_required: "business_pro" });
+  }
+
+  const iceServers: any[] = [{ urls: STUN_URLS }];
+  if (TURN_HOST && TURN_SECRET) {
+    const expiry = Math.floor(Date.now() / 1000) + TURN_TTL;
+    const username = `${expiry}:${me.id}`;
+    const credential = createHmac("sha1", TURN_SECRET).update(username).digest("base64");
+    iceServers.push({
+      urls: [
+        `turn:${TURN_HOST}:3478?transport=udp`,
+        `turn:${TURN_HOST}:3478?transport=tcp`,
+        `turns:${TURN_HOST}:5349?transport=tcp`,
+      ],
+      username,
+      credential,
+    });
+  }
+  // TURN configure na ho to jhoot nahi — sirf STUN bhejte hain.
+  res.json({
+    ice_servers: iceServers,
+    ttl_seconds: TURN_TTL,
+    turn: Boolean(TURN_HOST && TURN_SECRET),
+  });
+});
+
+chatRouter.post("/video/call/start", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_call_start", {
+    _conv: conv,
+    _user: me.id,
+    _peer: req.body?.peer_user_id ? String(req.body.peer_user_id) : null,
+    _role: String(req.body?.role || "caller"),
+    _signaling: String(req.body?.signaling || ""),
+  });
+  if (error) return fail(res, error);
+  res.json({ session_id: data });
+});
+
+chatRouter.post("/video/call/stat", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const session = String(req.body?.session_id || "");
+  if (!session) return res.status(400).json({ error: "session_required" });
+  const { error } = await db!.rpc("chat_call_stat", {
+    _session: session,
+    _user: me.id,
+    _sample: req.body?.sample ?? {},
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.post("/video/call/end", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const session = String(req.body?.session_id || "");
+  if (!session) return res.status(400).json({ error: "session_required" });
+  const { error } = await db!.rpc("chat_call_end", {
+    _session: session,
+    _user: me.id,
+    _reason: String(req.body?.reason || ""),
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+// Founder view (measured, not marketed)
+chatRouter.get("/video/calls/health", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const days = Number(req.query?.days || 7);
+  const health = await db!.rpc("chat_call_health", { _user: me.id, _days: days });
+  if (health.error) return res.status(403).json({ error: "founder_only" });
+  const recent = await db!.rpc("chat_call_recent", { _user: me.id, _limit: 40 });
+  res.json({ health: health.data ?? {}, calls: recent.data ?? [] });
+});
+
+/* ==========================================================================
+ * PHASE 11 — ATTACHMENTS + AVATARS
+ * Bucket `chat-media` private hai. Client ko sirf signed upload URL milta hai;
+ * padhne ke liye signed download URL. Row `ready` hone tak message par nahi
+ * lagta — is liye adhura attachment kabhi nazar nahi aata.
+ * ========================================================================== */
+const MEDIA_BUCKET = "chat-media";
+const MEDIA_MAX_BYTES = 200 * 1024 * 1024; // Phase 11 — NEW ADDED (25 MB -> 200 MB)
+const MEDIA_TYPES = ["image/png", "image/jpeg", "image/webp", "image/avif"];
+
+chatRouter.post("/attachments/ticket", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  const filename = String(req.body?.filename || "image");
+  const contentType = String(req.body?.content_type || "");
+  const bytes = Number(req.body?.bytes || 0);
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  if (!MEDIA_TYPES.includes(contentType)) {
+    return res.status(400).json({ error: "unsupported_type", allowed: MEDIA_TYPES });
+  }
+  if (!bytes || bytes > MEDIA_MAX_BYTES) {
+    return res.status(400).json({ error: "too_large", max_bytes: MEDIA_MAX_BYTES });
+  }
+
+  const created = await db!.rpc("chat_attachment_new", {
+    _user: me.id,
+    _conv: conv,
+    _filename: filename,
+    _content_type: contentType,
+    _bytes: bytes,
+    _width: req.body?.width ? Number(req.body.width) : null,
+    _height: req.body?.height ? Number(req.body.height) : null,
+  });
+  if (created.error) return fail(res, created.error);
+  const row = Array.isArray(created.data) ? created.data[0] : created.data;
+  if (!row?.storage_path) return res.status(500).json({ error: "ticket_failed" });
+
+  const main = await db!.storage.from(MEDIA_BUCKET).createSignedUploadUrl(row.storage_path);
+  if (main.error) return res.status(500).json({ error: main.error.message });
+  const thumb = row.thumb_path
+    ? await db!.storage.from(MEDIA_BUCKET).createSignedUploadUrl(row.thumb_path)
+    : null;
+
+  res.json({
+    attachment_id: row.attachment_id,
+    upload_url: main.data.signedUrl,
+    thumb_upload_url: thumb?.data?.signedUrl ?? null,
+    path: row.storage_path,
+  });
+});
+
+chatRouter.post("/attachments/commit", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const id = String(req.body?.attachment_id || "");
+  if (!id) return res.status(400).json({ error: "attachment_required" });
+  const { data, error } = await db!.rpc("chat_attachment_commit", {
+    _user: me.id,
+    _attachment: id,
+    _width: req.body?.width ? Number(req.body.width) : null,
+    _height: req.body?.height ? Number(req.body.height) : null,
+  });
+  if (error) return fail(res, error);
+  if (data !== true) return res.status(404).json({ error: "attachment_not_found" });
+  res.json({ ok: true });
+});
+
+/** Send ke baad message se jodna. */
+chatRouter.post("/attachments/attach", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const ids: string[] = Array.isArray(req.body?.attachment_ids)
+    ? req.body.attachment_ids.map((v: unknown) => String(v))
+    : [];
+  if (!message || ids.length === 0) {
+    return res.status(400).json({ error: "message_and_attachments_required" });
+  }
+  const { data, error } = await db!.rpc("chat_attachment_attach", {
+    _user: me.id,
+    _message: message,
+    _ids: ids,
+  });
+  if (error) return fail(res, error);
+  res.json({ attached: Number(data ?? 0) });
+});
+
+/** Signed read URLs — private bucket, is liye har baar fresh. */
+chatRouter.get("/attachments/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!
+    .from("chat_attachments")
+    .select("id, filename, content_type, bytes, width, height, storage_path, thumb_path, state")
+    .eq("message_id", String(req.params.messageId))
+    .eq("state", "ready");
+  if (error) return fail(res, error);
+
+  const rows = data ?? [];
+  const out = [];
+  for (const r of rows) {
+    const url = await db!.storage.from(MEDIA_BUCKET).createSignedUrl(r.storage_path, 900);
+    const thumb = r.thumb_path
+      ? await db!.storage.from(MEDIA_BUCKET).createSignedUrl(r.thumb_path, 900)
+      : null;
+    out.push({
+      id: r.id,
+      filename: r.filename,
+      content_type: r.content_type,
+      bytes: r.bytes,
+      width: r.width,
+      height: r.height,
+      url: url.data?.signedUrl ?? null,
+      thumb_url: thumb?.data?.signedUrl ?? null,
+    });
+  }
+  res.json({ attachments: out, viewer: me.id });
+});
+
+chatRouter.post("/profile/avatar/ticket", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const contentType = String(req.body?.content_type || "image/webp");
+  if (!MEDIA_TYPES.includes(contentType)) {
+    return res.status(400).json({ error: "unsupported_type", allowed: MEDIA_TYPES });
+  }
+  const path = `avatars/${me.id}/${Date.now()}.webp`;
+  const signed = await db!.storage.from(MEDIA_BUCKET).createSignedUploadUrl(path);
+  if (signed.error) return res.status(500).json({ error: signed.error.message });
+  res.json({ upload_url: signed.data.signedUrl, path });
+});
+
+chatRouter.post("/profile/avatar/commit", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const path = String(req.body?.path || "");
+  if (!path.startsWith(`avatars/${me.id}/`)) {
+    return res.status(400).json({ error: "path_not_yours" });
+  }
+  const { error } = await db!.rpc("chat_avatar_set", { _user: me.id, _path: path });
+  if (error) return fail(res, error);
+  const signed = await db!.storage.from(MEDIA_BUCKET).createSignedUrl(path, 3600);
+  res.json({ ok: true, path, url: signed.data?.signedUrl ?? null });
+});
+
+// ── PHASE 12: CROSS-DEVICE CONTINUITY (resume anywhere) ─────────
+// Server state authoritative. Device sirf sync + reconcile karta hai.
+//   POST /api/chat/device/seen   {device_id,device_label,kind,platform,installed}
+//   GET  /api/chat/continuity?device=   devices + drafts + positions
+//   POST /api/chat/draft         {conversation_id,body,reply_to_id,caret,attachment_ids,rev,device_id,device_label}
+//   POST /api/chat/position      {conversation_id,anchor_seq,at_bottom,rev,device_id,device_label}
+//   GET  /api/chat/search/deep?q=&c=&sender=&before=&limit=
+chatRouter.post("/device/seen", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const deviceId = String(req.body?.device_id || "");
+  if (!deviceId) return res.status(400).json({ error: "device_id_required" });
+  const { error } = await db!.rpc("chat_device_seen", {
+    _user: me.id,
+    _device_id: deviceId.slice(0, 100),
+    _label: String(req.body?.device_label || "").slice(0, 120) || null,
+    _kind: String(req.body?.kind || "unknown"),
+    _platform: String(req.body?.platform || "").slice(0, 120) || null,
+    _installed: Boolean(req.body?.installed),
+  });
+  if (error) return fail(res, error);
+  res.json({ ok: true });
+});
+
+chatRouter.get("/continuity", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_continuity", {
+    _user: me.id,
+    _device_id: String(req.query?.device || "") || null,
+  });
+  if (error) return fail(res, error);
+  res.json(data ?? { devices: [], drafts: [], positions: [] });
+});
+
+chatRouter.post("/draft", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const ids = Array.isArray(req.body?.attachment_ids)
+    ? req.body.attachment_ids.map((v: unknown) => String(v)).slice(0, 20)
+    : [];
+  const { data, error } = await db!.rpc("chat_draft_save", {
+    _user: me.id,
+    _conv: conv,
+    _body: String(req.body?.body ?? "").slice(0, 20_000),
+    _reply_to: req.body?.reply_to_id ? String(req.body.reply_to_id) : null,
+    _caret: Number.isFinite(Number(req.body?.caret)) ? Math.trunc(Number(req.body.caret)) : 0,
+    _attachment_ids: ids,
+    _rev: Number.isFinite(Number(req.body?.rev)) ? Math.trunc(Number(req.body.rev)) : 0,
+    _device_id: String(req.body?.device_id || "").slice(0, 100) || null,
+    _device_label: String(req.body?.device_label || "").slice(0, 120) || null,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.post("/position", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conv = String(req.body?.conversation_id || "");
+  if (!conv) return res.status(400).json({ error: "conversation_required" });
+  const { data, error } = await db!.rpc("chat_position_save", {
+    _user: me.id,
+    _conv: conv,
+    _anchor_seq: Number.isFinite(Number(req.body?.anchor_seq))
+      ? Math.trunc(Number(req.body.anchor_seq))
+      : 0,
+    _at_bottom: req.body?.at_bottom !== false,
+    _rev: Number.isFinite(Number(req.body?.rev)) ? Math.trunc(Number(req.body.rev)) : 0,
+    _device_id: String(req.body?.device_id || "").slice(0, 100) || null,
+    _device_label: String(req.body?.device_label || "").slice(0, 120) || null,
+  });
+  if (error) return fail(res, error);
+  res.json(Array.isArray(data) ? data[0] : data);
+});
+
+chatRouter.get("/search/deep", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const q = String(req.query?.q || "");
+  if (!q.trim()) return res.json({ results: [] });
+  const limit = Number(req.query?.limit);
+  const { data, error } = await db!.rpc("chat_search_deep", {
+    _user: me.id,
+    _q: q,
+    _conv: String(req.query?.c || "") || null,
+    _sender: String(req.query?.sender || "") || null,
+    _before: String(req.query?.before || "") || null,
+    _limit: Number.isFinite(limit) ? Math.trunc(limit) : 40,
+  });
+  if (error) return fail(res, error);
+  res.json({ results: data ?? [] });
+});
+
+// ============================================================================
+// PHASE 19 + 20 + 21 + 22 — FALLBACK ONLY (PRIMARY = Rust /rpc/chat.*)
+//   19 device safety vault · 20 device trust · 21 safety reporting
+//   22 work execution chain (message → work → owner → dependency → deadline
+//      → completion → evidence). Parsing DB mein deterministic hai, koi AI API
+//      nahi — insaani guftagu kabhi kisi model par nahi jati.
+// ============================================================================
+const VAULT_KEY =
+  process.env.DEVICE_VAULT_KEY ||
+  (SERVICE_KEY ? `anexomail-vault:${SERVICE_KEY.slice(-32)}` : "anexomail-vault-unconfigured");
+
+/** Signal minimization: biometric-type signals server par bhi discard hote hain. */
+function minimizeSignals(raw: any) {
+  const s = raw && typeof raw === "object" ? { ...raw } : {};
+  for (const k of ["canvas", "audio", "fonts", "webgl", "ip"]) delete s[k];
+  return s;
+}
+
+chatRouter.post("/device/vault", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("device_vault_register", {
+    _user: me.id,
+    _signals: minimizeSignals(req.body?.signals),
+    _key: VAULT_KEY,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/device/trust", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("device_trust_list", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/device/trust", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const hash = String(req.body?.device_hash || "");
+  const state = String(req.body?.state || "");
+  if (!hash || !state) return res.status(400).json({ error: "device_hash_state_required" });
+  const { data, error } = await db!.rpc("device_trust_set", {
+    _user: me.id,
+    _device_hash: hash,
+    _state: state,
+    _actor: "user",
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/safety/report", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const kind = String(req.body?.subject_kind || "");
+  const subject = String(req.body?.subject_id || "");
+  const reason = String(req.body?.reason || "");
+  if (!kind || !subject || !reason) {
+    return res.status(400).json({ error: "subject_kind_subject_id_reason_required" });
+  }
+  const { data, error } = await db!.rpc("safety_report_create", {
+    _user: me.id,
+    _kind: kind,
+    _subject: subject,
+    _reason: reason,
+    _note: req.body?.note ? String(req.body.note) : null,
+    _key: VAULT_KEY,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/safety/queue", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("safety_queue", {
+    _actor: me.id,
+    _state: String(req.query?.state || "") || null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/safety/advance", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const report = String(req.body?.report_id || "");
+  const to = String(req.body?.to_state || "");
+  if (!report || !to) return res.status(400).json({ error: "report_id_to_state_required" });
+  const { data, error } = await db!.rpc("safety_report_advance", {
+    _actor: me.id,
+    _report: report,
+    _to: to,
+    _note: req.body?.note ? String(req.body.note) : null,
+    _action: req.body?.action ? String(req.body.action) : null,
+    _until: req.body?.until ? String(req.body.until) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// Sealed evidence sirf justification ke saath khulta hai — reveal log banta hai.
+chatRouter.post("/safety/reveal", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const report = String(req.body?.report_id || "");
+  const why = String(req.body?.justification || "");
+  if (!report || why.trim().length < 12) {
+    return res.status(400).json({ error: "justification_required" });
+  }
+  const { data, error } = await db!.rpc("safety_report_reveal", {
+    _actor: me.id,
+    _report: report,
+    _justification: why,
+    _key: VAULT_KEY,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/safety/standing", async (req, res) => {
+  const me = await requireUser(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("safety_my_standing", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/work/suggest", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.query?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_work_suggest", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/work/from-message", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_work_from_message", {
+    _msg: msg,
+    _user: me.id,
+    _kind: req.body?.kind ? String(req.body.kind) : null,
+    _title: req.body?.title ? String(req.body.title) : null,
+    _owner: req.body?.owner_user_id ? String(req.body.owner_user_id) : null,
+    _due: req.body?.due_at ? String(req.body.due_at) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/work/depend", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  const dep = String(req.body?.depends_on || "");
+  if (!item || !dep) return res.status(400).json({ error: "item_id_depends_on_required" });
+  const { data, error } = await db!.rpc("chat_work_depend", {
+    _item: item,
+    _depends_on: dep,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/work/complete", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("chat_work_complete", {
+    _item: item,
+    _user: me.id,
+    _evidence: req.body?.evidence ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/work/chain", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.query?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("chat_work_chain", { _item: item, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/work/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_work_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// messenger basics (loophole fix): star + forward
+chatRouter.post("/messages/star", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  if (!msg) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("chat_message_star", { _msg: msg, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/messages/forward", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const msg = String(req.body?.message_id || "");
+  const conv = String(req.body?.to_conversation_id || "");
+  if (!msg || !conv) {
+    return res.status(400).json({ error: "message_id_to_conversation_id_required" });
+  }
+  const { data, error } = await db!.rpc("chat_message_forward", {
+    _msg: msg,
+    _to_conv: conv,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+/* ── PHASE 23: PROMISE RECOVERY ENGINE (fallback; Rust primary) ───────────
+ * Engine khud kabhi deadline nahi badalti — har action insaan karta hai,
+ * reason ke saath, aur ledger append-only hai.
+ */
+
+chatRouter.get("/promises/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("promise_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/promises/recover", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  const action = String(req.body?.action || "");
+  if (!item || !action) return res.status(400).json({ error: "item_id_action_required" });
+  const { data, error } = await db!.rpc("promise_recover", {
+    _item: item,
+    _user: me.id,
+    _action: action,
+    _reason: req.body?.reason ? String(req.body.reason) : null,
+    _new_due: req.body?.new_due_at ? String(req.body.new_due_at) : null,
+    _new_owner: req.body?.new_owner_id ? String(req.body.new_owner_id) : null,
+    _impact: req.body?.downstream_impact ? String(req.body.downstream_impact) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/promises/keep", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.body?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("promise_keep", {
+    _item: item,
+    _user: me.id,
+    _evidence: req.body?.evidence ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/promises/history", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const item = String(req.query?.item_id || "");
+  if (!item) return res.status(400).json({ error: "item_id_required" });
+  const { data, error } = await db!.rpc("promise_history", { _item: item, _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// Device ban appeal — ban sirf device par, network par kabhi nahi
+chatRouter.post("/devices/appeal", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const hash = String(req.body?.device_hash || "");
+  const statement = String(req.body?.statement || "");
+  if (!hash || !statement.trim()) {
+    return res.status(400).json({ error: "device_hash_statement_required" });
+  }
+  const { data, error } = await db!.rpc("device_appeal_open", {
+    _user: me.id,
+    _device_hash: hash,
+    _statement: statement,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/devices/appeals", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const state = req.query?.state ? String(req.query.state) : null;
+  const { data, error } = await db!.rpc("device_appeal_queue", {
+    _actor: me.id,
+    _state: state && state !== "all" ? state : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/devices/appeals/decide", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const appeal = String(req.body?.appeal_id || "");
+  const decision = String(req.body?.decision || "");
+  if (!appeal || !decision) return res.status(400).json({ error: "appeal_id_decision_required" });
+  const { data, error } = await db!.rpc("device_appeal_decide", {
+    _actor: me.id,
+    _appeal: appeal,
+    _decision: decision,
+    _reason: req.body?.reason ? String(req.body.reason) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+// PHASE 24 — DECISION LEDGER + IMPACT MAP (Bun FALLBACK; Rust primary)
+// Decision hamesha asli message se · history kabhi overwrite nahi (naya
+// version row) · impact map sirf insaani link se, engine kuch invent nahi karti.
+// ===========================================================================
+chatRouter.get("/decisions/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_board", {
+    _user: me.id,
+    _conversation: req.query?.conversation_id ? String(req.query.conversation_id) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/decisions/:id", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_state", {
+    _decision: String(req.params.id),
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/decisions/:id/impact", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_impact", {
+    _decision: String(req.params.id),
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/mark", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  if (!message) return res.status(400).json({ error: "message_required" });
+  const { data, error } = await db!.rpc("decision_mark", {
+    _user: me.id,
+    _message: message,
+    _title: req.body?.title ?? null,
+    _detail: req.body?.detail ?? null,
+    _decided_at: req.body?.decided_at ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/:id/amend", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_amend", {
+    _decision: String(req.params.id),
+    _user: me.id,
+    _reason: req.body?.reason ?? null,
+    _change: req.body?.change ?? "amended",
+    _title: req.body?.title ?? null,
+    _detail: req.body?.detail ?? null,
+    _decided_at: req.body?.decided_at ?? null,
+    _superseded_by: req.body?.superseded_by ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/:id/link", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const objectId = String(req.body?.object_id || "");
+  const objectType = String(req.body?.object_type || "");
+  if (!objectId || !objectType) return res.status(400).json({ error: "decision_object_required" });
+  const { data, error } = await db!.rpc("decision_link", {
+    _decision: String(req.params.id),
+    _user: me.id,
+    _object_type: objectType,
+    _object_id: objectId,
+    _reason: req.body?.reason ?? null,
+    _relation: req.body?.relation ?? "affects",
+    _note: req.body?.note ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/decisions/link/:linkId/remove", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_unlink", {
+    _link: String(req.params.linkId),
+    _user: me.id,
+    _reason: req.body?.reason ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+
+// ACCOUNT INTEGRITY — one person, one account (Bun FALLBACK; Rust primary)
+// Detection sirf device shape par; IP/network par kabhi ban nahi.
+// warn/block/release insaan karta hai, 12+ char reason ke saath.
+// ===========================================================================
+chatRouter.get("/integrity/state", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("account_integrity_state", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/integrity/evaluate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("account_integrity_evaluate", {
+    _user: me.id,
+    _device_hash: req.body?.device_hash ? String(req.body.device_hash) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/integrity/queue", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const state = req.query?.state ? String(req.query.state) : null;
+  const { data, error } = await db!.rpc("account_integrity_queue", {
+    _actor: me.id,
+    _state: state && state !== "all" ? state : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+for (const [path, fn] of [
+  ["warn", "account_integrity_warn"],
+  ["block", "account_integrity_block"],
+  ["release", "account_integrity_release"],
+] as const) {
+  chatRouter.post(`/integrity/${path}`, async (req, res) => {
+    const me = await requireChat(req, res);
+    if (!me) return;
+    const target = String(req.body?.user_id || "");
+    const reason = String(req.body?.reason || "");
+    if (!target || reason.trim().length < 12) {
+      return res.status(400).json({ error: "user_id_and_12_char_reason_required" });
+    }
+    const { data, error } = await db!.rpc(fn, { _actor: me.id, _user: target, _reason: reason });
+    if (error) return fail(res, error);
+    res.json(data);
+  });
+}
+
+chatRouter.post("/integrity/export", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("account_integrity_export_ready", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+/* ── PHASE 25/26/27 — timeline · health · provenance · collision (fallback) ──
+ * PRIMARY Rust `/rpc/chat.timeline.*|chat.health.*|chat.provenance.*|
+ * chat.collision.*`. Yeh sirf fallback hai. Truth Supabase functions mein hai:
+ * timeline kuch invent nahi karti, health sirf sabit cheez se banti hai, aur
+ * collision sirf insaani dependency par — har amal 8+ char wajah ke saath. */
+
+chatRouter.get("/timeline/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_timeline", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+    _lens: String(req.query?.lens || "all"),
+    _limit: req.query?.limit ? Number(req.query.limit) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/timeline/important", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  if (!message) return res.status(400).json({ error: "message_id_required" });
+  const { data, error } = await db!.rpc("message_mark_important", {
+    _message: message,
+    _user: me.id,
+    _reason: req.body?.reason ?? null,
+    _important: req.body?.important === false ? false : true,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/health/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_health_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/health/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_health", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/provenance/message/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("message_provenance", {
+    _message: req.params.messageId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/provenance/chain/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("conversation_chain_verify", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/collisions/scan", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("commitment_collision_scan", {
+    _user: me.id,
+    _conversation: req.body?.conversation_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/collisions/:id/act", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const action = String(req.body?.action || "");
+  const reason = String(req.body?.reason || "");
+  if (!action) return res.status(400).json({ error: "action_required" });
+  if (action !== "viewed_source" && reason.trim().length < 8) {
+    return res.status(400).json({ error: "8_char_reason_required" });
+  }
+  const { data, error } = await db!.rpc("commitment_collision_act", {
+    _collision: req.params.id,
+    _user: me.id,
+    _action: action,
+    _reason: reason || null,
+    _new_due: req.body?.new_due ?? null,
+    _new_owner: req.body?.new_owner ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+// PHASE 28 — BUSINESS CONVERSATION RECEIPTS + ZERO-LOSS HANDOVER PACK
+// Bun = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.receipt.* | chat.handover.*
+// (:3200 + WebTransport/QUIC). Steps sirf asli rows se; negative receipts bhi.
+// ===========================================================================
+chatRouter.get("/receipts/message/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("message_receipt_pack", {
+    _message: req.params.messageId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/receipts/record", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const state = String(req.body?.state || "");
+  if (!message || !state) return res.status(400).json({ error: "message_id_and_state_required" });
+  const { data, error } = await db!.rpc("receipt_device_record", {
+    _user: me.id,
+    _message: message,
+    _state: state,
+    _platform_class: req.body?.platform_class ?? null,
+    _tz_bucket: req.body?.tz_bucket ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/receipts/silent", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const hours = req.query?.hours ? Number(req.query.hours) : 24;
+  const { data, error } = await db!.rpc("read_without_response", {
+    _user: me.id,
+    _hours: Number.isFinite(hours) ? hours : 24,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/receipts/replay/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("receipt_replay", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+    _limit: req.query?.limit ? Number(req.query.limit) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/receipts/certificate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conversation = String(req.body?.conversation_id || "");
+  if (!conversation) return res.status(400).json({ error: "conversation_id_required" });
+  const { data, error } = await db!.rpc("receipt_certificate_issue", {
+    _conversation: conversation,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// Certificate verify: bahar se, bina login — body kabhi shamil nahi hoti.
+chatRouter.get("/receipts/verify/:token", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "chat_backend_unconfigured" });
+  const { data, error } = await db.rpc("receipt_certificate_verify", {
+    _token: req.params.token,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/messages/attach-file", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const version = String(req.body?.version_id || "");
+  if (!message || !version) {
+    return res.status(400).json({ error: "message_id_and_version_id_required" });
+  }
+  const { data, error } = await db!.rpc("message_attach_file", {
+    _user: me.id,
+    _message: message,
+    _version: version,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/handover/board", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("handover_pack_board", { _user: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/handover/build", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const outgoing = String(req.body?.outgoing_user || "");
+  if (!outgoing) return res.status(400).json({ error: "outgoing_user_required" });
+  const { data, error } = await db!.rpc("handover_pack_build", {
+    _actor: me.id,
+    _outgoing: outgoing,
+    _scope: req.body?.scope ?? "workspace",
+    _scope_ref: req.body?.scope_ref ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/handover/:packId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("handover_pack_get", {
+    _pack: req.params.packId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/handover/:packId/assign", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const incoming = String(req.body?.incoming_user || "");
+  const reason = String(req.body?.reason || "");
+  if (!incoming || reason.trim().length < 8) {
+    return res.status(400).json({ error: "incoming_user_and_8_char_reason_required" });
+  }
+  const { data, error } = await db!.rpc("handover_assign", {
+    _actor: me.id,
+    _pack: req.params.packId,
+    _incoming: incoming,
+    _reason: reason,
+    _item: req.body?.item_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/handover/:packId/complete", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const reason = String(req.body?.reason || "");
+  if (reason.trim().length < 8) return res.status(400).json({ error: "8_char_reason_required" });
+  const { data, error } = await db!.rpc("handover_complete", {
+    _actor: me.id,
+    _pack: req.params.packId,
+    _reason: reason,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+// PHASE 29 — EMAIL → CHAT BRIDGE (email formal record rehta hai)
+// Bun = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.bridge.*
+// ===========================================================================
+chatRouter.post("/bridge/discuss", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const thread = String(req.body?.mail_thread_id || "");
+  if (!thread) return res.status(400).json({ error: "mail_thread_id_required" });
+  const { data, error } = await db!.rpc("email_discuss_in_chat", {
+    _user: me.id,
+    _mail_thread: thread,
+    _mail_message: req.body?.mail_message_id ?? null,
+    _conversation: req.body?.conversation_id ?? null,
+    _subject: req.body?.subject ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/bridge/context/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("email_chat_context", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/bridge/thread/:mailThreadId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("email_thread_conversation", {
+    _user: me.id,
+    _mail_thread: req.params.mailThreadId,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/quote", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const message = String(req.body?.message_id || "");
+  const thread = String(req.body?.mail_thread_id || "");
+  const text = String(req.body?.quoted_text || "");
+  if (!message || !thread || !text.trim()) {
+    return res.status(400).json({ error: "message_id_mail_thread_id_and_quoted_text_required" });
+  }
+  const { data, error } = await db!.rpc("email_quote_to_chat", {
+    _user: me.id,
+    _message: message,
+    _mail_thread: thread,
+    _quoted_text: text,
+    _mail_message: req.body?.mail_message_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/quote/verify", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const quote = String(req.body?.quote_id || "");
+  if (!quote) return res.status(400).json({ error: "quote_id_required" });
+  const { data, error } = await db!.rpc("email_quote_verify", {
+    _quote: quote,
+    _current_text: req.body?.current_text ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/presence", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const emails = Array.isArray(req.body?.emails) ? req.body.emails.map(String) : [];
+  const { data, error } = await db!.rpc("email_discuss_presence", {
+    _user: me.id,
+    _emails: emails,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/bridge/rescue", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const thread = String(req.body?.mail_thread_id || "");
+  const title = String(req.body?.title || "");
+  const owner = String(req.body?.owner_user_id || "");
+  const due = req.body?.due_at ? String(req.body.due_at) : "";
+  if (!thread || title.trim().length < 3 || !owner || !due) {
+    return res.status(400).json({ error: "mail_thread_id_title_owner_and_due_required" });
+  }
+  const { data, error } = await db!.rpc("silent_thread_rescue", {
+    _user: me.id,
+    _mail_thread: thread,
+    _title: title,
+    _owner: owner,
+    _due: due,
+    _mail_message: req.body?.mail_message_id ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+// ===========================================================================
+// PHASE 30 — CHAT → EMAIL (citations + consent + lineage)
+// Bun = FALLBACK ONLY. PRIMARY = Rust /rpc/chat.email.*
+// ===========================================================================
+chatRouter.post("/email/draft", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const conversation = String(req.body?.conversation_id || "");
+  const subject = String(req.body?.subject || "");
+  if (!conversation || subject.trim().length < 3) {
+    return res.status(400).json({ error: "conversation_id_and_subject_required" });
+  }
+  const { data, error } = await db!.rpc("chat_email_draft_create", {
+    _user: me.id,
+    _conversation: conversation,
+    _subject: subject,
+    _recipients: Array.isArray(req.body?.recipients) ? req.body.recipients.map(String) : [],
+    _message_ids: Array.isArray(req.body?.message_ids) ? req.body.message_ids.map(String) : [],
+    _intro: req.body?.intro ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/email/drafts", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_email_draft_board", {
+    _user: me.id,
+    _conversation: req.query?.c ? String(req.query.c) : null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/email/draft/:draftId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("chat_email_draft_get", {
+    _draft: req.params.draftId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/email/draft/:draftId/consent", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const state = String(req.body?.state || "");
+  if (!state) return res.status(400).json({ error: "state_required" });
+  const { data, error } = await db!.rpc("chat_email_draft_consent", {
+    _user: me.id,
+    _draft: req.params.draftId,
+    _state: state,
+    _reason: req.body?.reason ?? null,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/email/draft/:draftId/send", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const mail = String(req.body?.mail_message_id || "");
+  if (!mail) return res.status(400).json({ error: "mail_message_id_required" });
+  const { data, error } = await db!.rpc("chat_email_draft_send", {
+    _user: me.id,
+    _draft: req.params.draftId,
+    _mail_message: mail,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/email/decision/:decisionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("decision_to_email", {
+    _user: me.id,
+    _decision: req.params.decisionId,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/email/escalations/:messageId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("message_escalations", {
+    _message: req.params.messageId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+/* ── PHASE 31 · FILE CONTEXT (Bun FALLBACK — primary Rust /rpc/file.context.*) ─ */
+
+chatRouter.get("/file/context/:fileId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_context_card", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/diff", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const from = Number(req.query.from || 0);
+  const to = Number(req.query.to || 0);
+  if (!from || !to) return res.status(400).json({ error: "from_to_required" });
+  const { data, error } = await db!.rpc("file_version_diff", {
+    _file: req.params.fileId,
+    _from: from,
+    _to: to,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/duplicates", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_duplicates", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/stale", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_stale_check", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/file/context/:fileId/graph", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("file_relationship_graph", {
+    _file: req.params.fileId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/file/context/link", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const reason = String(req.body?.reason || "");
+  if (reason.trim().length < 8) return res.status(400).json({ error: "reason_min_8_chars" });
+  const { data, error } = await db!.rpc("file_link", {
+    _file: String(req.body?.file_id || ""),
+    _object_type: String(req.body?.object_type || ""),
+    _object_id: String(req.body?.object_id || ""),
+    _label: String(req.body?.label || ""),
+    _reason: reason,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/file/context/unlink", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const reason = String(req.body?.reason || "");
+  if (reason.trim().length < 8) return res.status(400).json({ error: "reason_min_8_chars" });
+  const { data, error } = await db!.rpc("file_unlink", {
+    _link: String(req.body?.link_id || ""),
+    _reason: reason,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+/* ── ANEXOVIDEOCALL PHASE 31 · CALL RECORD (Bun FALLBACK — primary /rpc/call.*) ─ */
+
+chatRouter.get("/call/record/:sessionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_record", {
+    _session: req.params.sessionId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/records", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_record_board", {
+    _user: me.id,
+    _conversation: req.query.c ? String(req.query.c) : null,
+    _limit: Number(req.query.limit || 50),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/event", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_event_record", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _event: String(req.body?.event || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+    _transport: String(req.body?.transport || ""),
+    _path: String(req.body?.path || ""),
+    _detail: req.body?.detail ?? {},
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/transport", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_transport_record", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _path: String(req.body?.path || ""),
+    _relay_host: String(req.body?.relay_host || ""),
+    _reason: String(req.body?.reason || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/file", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_file_share", {
+    _session: String(req.body?.session_id || ""),
+    _version: String(req.body?.version_id || ""),
+    _user: me.id,
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/work", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_work_link", {
+    _session: String(req.body?.session_id || ""),
+    _object_type: String(req.body?.object_type || ""),
+    _object_id: String(req.body?.object_id || ""),
+    _note: String(req.body?.note || ""),
+    _user: me.id,
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+/* ── PHASE 31A · LIGHT-SPEED CALL PATH (Bun FALLBACK — primary /rpc/call.*) ── */
+
+chatRouter.post("/call/ring/start", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_ring_start", {
+    _session: String(req.body?.session_id || ""),
+    _from: me.id,
+    _to: String(req.body?.to_user || ""),
+    _tone: String(req.body?.tone || "ringtone"),
+    _calm: Boolean(req.body?.calm_mode),
+    // Bun path par transport ka sach: QUIC nahi, durable rows
+    _trigger: "rows",
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/ring/settle", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_ring_settle", {
+    _ring: String(req.body?.ring_id || ""),
+    _user: me.id,
+    _action: String(req.body?.action || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/ring/:sessionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_ring_state", {
+    _session: req.params.sessionId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/connect/mark", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_connect_mark", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _mark: String(req.body?.mark || ""),
+    _value_ms: req.body?.value_ms == null ? null : Number(req.body.value_ms),
+    _transport: String(req.body?.transport || ""),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/connect/report/:sessionId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_connect_report", {
+    _session: req.params.sessionId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/connect/health", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_connect_health", {
+    _user: me.id,
+    _days: Number(req.query.days || 7),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/sfu/ensure", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_room_ensure", {
+    _conversation: String(req.body?.conversation_id || ""),
+    _user: me.id,
+    _participants: Number(req.body?.participants || 2),
+    _engine_host: process.env["ANEXOCALL_SFU_HOST"] ?? "",
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/sfu/join", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_join", {
+    _room: String(req.body?.room_id || ""),
+    _user: me.id,
+    _layers: Number(req.body?.layers || 3),
+    _codec: String(req.body?.codec || ""),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/sfu/leave", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_leave", {
+    _room: String(req.body?.room_id || ""),
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.get("/call/sfu/:conversationId", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_sfu_state", {
+    _conversation: req.params.conversationId,
+    _user: me.id,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/call/survival", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("call_survival_record", {
+    _session: String(req.body?.session_id || ""),
+    _user: me.id,
+    _state: String(req.body?.state || ""),
+    _reason: String(req.body?.reason || ""),
+    _rtt: req.body?.rtt_ms == null ? null : Number(req.body.rtt_ms),
+    _loss: req.body?.loss_pct == null ? null : Number(req.body.loss_pct),
+    _at_ms: Number(req.body?.at_ms || 0),
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});

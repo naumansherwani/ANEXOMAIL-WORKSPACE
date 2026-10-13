@@ -1,0 +1,390 @@
+import { Copy, EyeOff, MoreHorizontal, Pencil, Pin, Reply, Smile, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useRef, useState } from "react";
+
+import { Tick } from "@/components/app/chat/Ticks";
+import { useMessageAttachments } from "@/lib/chat-attachments";
+import "./send-sweep.css";
+import {
+  DELETE_WINDOW_48H_MS,
+  DELETE_WINDOW_MS,
+  EDIT_WINDOW_MS,
+  STATE_LABEL,
+  messageState,
+  withinWindow,
+  type ChatMessage,
+  type MessageState,
+  type OutboxItem,
+} from "@/lib/chat";
+
+/**
+ * Virtualized message stream — windowed rendering so a huge conversation opens
+ * without a skeleton. Messenger parity: reactions, reply quote, edit (5 min),
+ * delete for me / for everyone (1 hour), pin, copy. Provenance chip on hover.
+ * Har state DB se aata hai — koi guess nahi.
+ */
+const ROW_ESTIMATE = 108;
+const OVERSCAN = 12;
+const QUICK = ["👍", "❤️", "😂", "🙏", "🔥", "✅"];
+
+export type MessageActions = {
+  onReact: (messageId: string, emoji: string) => void;
+  onReply: (message: ChatMessage) => void;
+  onEdit: (message: ChatMessage) => void;
+  onDeleteForEveryone: (messageId: string) => void;
+  /** E6 — Business Pro: no time limit. Sirf business_pro power pe diya jata hai. */
+  onDeleteAnytime?: (messageId: string) => void;
+  /** E7 — Business: 48-hour window. Sirf business power pe diya jata hai. */
+  onDelete48h?: (messageId: string) => void;
+  onHide: (messageId: string) => void;
+  onPin: (messageId: string, pin: boolean) => void;
+  /** Star · forward · important · decision · work · receipts · provenance · email draft. */
+  onMore: (message: ChatMessage) => void;
+};
+
+export function MessageStream({
+  messages,
+  pending,
+  actions,
+  resume,
+}: {
+  /** Oldest -> newest. */
+  messages: ChatMessage[];
+  pending: OutboxItem[];
+  actions: MessageActions;
+  /**
+   * PHASE 12 continuity: canonical resume point server se aata hai.
+   * `anchorSeq` + `atBottom` = doosre device ki asli jagah; `report` wahi
+   * jagah server ko wapis batata hai. Koi guess nahi.
+   */
+  resume?: {
+    anchorSeq: number | null;
+    atBottom: boolean;
+    report: (seq: number, atBottom: boolean) => void;
+  };
+}) {
+  const scroller = useRef<HTMLDivElement>(null);
+  const [range, setRange] = useState({ start: 0, end: 40 });
+  const restored = useRef(false);
+
+  const total = messages.length;
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const onScroll = () => {
+      const visible = Math.ceil((el.clientHeight || 600) / ROW_ESTIMATE);
+      const first = Math.floor(el.scrollTop / ROW_ESTIMATE);
+      setRange({
+        start: Math.max(0, first - OVERSCAN),
+        end: Math.min(total, first + visible + OVERSCAN),
+      });
+      if (resume?.report && total) {
+        const bottom = el.scrollHeight - el.scrollTop - el.clientHeight < 40;
+        const index = Math.min(total - 1, Math.max(0, first + Math.floor(visible / 2)));
+        const seq = messages[index]?.seq ?? messages.at(-1)?.seq ?? 0;
+        resume.report(bottom ? (messages.at(-1)?.seq ?? seq) : seq, bottom);
+      }
+    };
+    onScroll();
+    el.addEventListener("scroll", onScroll, { passive: true });
+    return () => el.removeEventListener("scroll", onScroll);
+  }, [total, messages, resume]);
+
+  const lastSeq = messages.at(-1)?.seq ?? 0;
+
+  // Pehla load: server ka resume point (agar bottom par nahi tha) — warna bottom.
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el || restored.current || !total) return;
+    const anchor = resume?.anchorSeq ?? null;
+    if (anchor && resume?.atBottom === false) {
+      const index = messages.findIndex((m) => m.seq >= anchor);
+      if (index >= 0) {
+        restored.current = true;
+        el.scrollTop = Math.max(0, index * ROW_ESTIMATE - el.clientHeight / 2);
+        return;
+      }
+    }
+    restored.current = true;
+    el.scrollTop = el.scrollHeight;
+  }, [total, messages, resume]);
+
+  useEffect(() => {
+    restored.current = false;
+  }, [messages[0]?.id]);
+
+  useEffect(() => {
+    const el = scroller.current;
+    if (!el || !restored.current) return;
+    const bottom = el.scrollHeight - el.scrollTop - el.clientHeight < 220;
+    if (bottom) el.scrollTop = el.scrollHeight;
+  }, [lastSeq, pending.length]);
+
+  const window_ = useMemo(
+    () => messages.slice(range.start, Math.max(range.end, range.start + 1)),
+    [messages, range],
+  );
+
+  const pinned = useMemo(() => messages.filter((m) => m.pinned_at), [messages]);
+
+  return (
+    <div className="flex min-h-0 flex-1 flex-col">
+      {pinned.length ? (
+        <div className="shrink-0 border-b border-border bg-card/60 px-4 py-2 text-[11px] text-muted-foreground">
+          <span className="inline-flex items-center gap-1.5">
+            <Pin className="size-3" /> {pinned.length} pinned
+          </span>{" "}
+          · {pinned.at(-1)!.sender_name}: {pinned.at(-1)!.body.slice(0, 90)}
+        </div>
+      ) : null}
+      <div ref={scroller} className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+        <div style={{ height: range.start * ROW_ESTIMATE }} aria-hidden />
+        <ul className="flex flex-col gap-2">
+          {window_.map((m) => (
+            <Bubble key={m.id} message={m} actions={actions} />
+          ))}
+          {pending.map((p) => (
+            <PendingBubble key={p.client_msg_id} item={p} />
+          ))}
+        </ul>
+        <div style={{ height: Math.max(0, (total - range.end) * ROW_ESTIMATE) }} aria-hidden />
+      </div>
+    </div>
+  );
+}
+
+function StateIcon({ state }: { state: MessageState }) {
+  return <Tick state={state} />;
+}
+
+function stamp(value: string) {
+  return new Date(value).toLocaleString(undefined, {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+function IconBtn({
+  label,
+  onClick,
+  children,
+  danger,
+}: {
+  label: string;
+  onClick: () => void;
+  children: React.ReactNode;
+  danger?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      title={label}
+      aria-label={label}
+      onClick={onClick}
+      className={`ax-press rounded-lg p-1.5 transition-colors ${
+        danger
+          ? "text-destructive/70 hover:bg-destructive/10 hover:text-destructive"
+          : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground"
+      }`}
+    >
+      {children}
+    </button>
+  );
+}
+
+/** Phase 11: asli attachment gallery — EXIF-stripped originals, signed URLs. */
+function AttachmentGallery({ messageId }: { messageId: string }) {
+  const q = useMessageAttachments(messageId, true);
+  const items = q.data?.attachments ?? [];
+  if (!items.length) return null;
+  return (
+    <div className="mt-1.5 flex flex-wrap gap-1.5">
+      {items.map((a) => (
+        <a
+          key={a.id}
+          href={a.url ?? "#"}
+          target="_blank"
+          rel="noreferrer"
+          title={a.filename}
+          className="ax-press block overflow-hidden rounded-xl border border-border"
+        >
+          <img
+            src={a.thumb_url ?? a.url ?? undefined}
+            alt={a.filename}
+            loading="lazy"
+            className="max-h-44 max-w-56 object-cover"
+          />
+        </a>
+      ))}
+    </div>
+  );
+}
+
+function Bubble({ message, actions }: { message: ChatMessage; actions: MessageActions }) {
+  const state = messageState(message);
+  const [picker, setPicker] = useState(false);
+  const canEdit = message.mine && withinWindow(message.created_at, EDIT_WINDOW_MS);
+  // Delete ladder (locked): Basic/Pro 1h · Business 48h (E7) · Business Pro no limit (E6).
+  const anytime = message.mine && Boolean(actions.onDeleteAnytime);
+  const extended48 = message.mine && !anytime && Boolean(actions.onDelete48h);
+  const deleteWindow = anytime
+    ? Number.POSITIVE_INFINITY
+    : extended48
+      ? DELETE_WINDOW_48H_MS
+      : DELETE_WINDOW_MS;
+  const canUnsend = message.mine && withinWindow(message.created_at, deleteWindow);
+  const reactions = message.reactions ?? [];
+
+  return (
+    <li className={"group flex " + (message.mine ? "justify-end" : "justify-start")}>
+      <div className="relative w-fit max-w-[min(38rem,85%)] min-w-0">
+        <span
+          className={`absolute -top-9 z-10 hidden h-8 max-w-[min(28rem,calc(100vw-2rem))] items-center gap-0.5 overflow-x-auto rounded-lg border border-border bg-card px-1 shadow-elev-1 group-focus-within:flex group-hover:flex ${
+            message.mine ? "right-0" : "left-0"
+          }`}
+        >
+          <IconBtn label="React" onClick={() => setPicker((v) => !v)}>
+            <Smile className="size-3" />
+          </IconBtn>
+          <IconBtn label="Reply" onClick={() => actions.onReply(message)}>
+            <Reply className="size-3" />
+          </IconBtn>
+          <IconBtn label="Copy" onClick={() => void navigator.clipboard.writeText(message.body)}>
+            <Copy className="size-3" />
+          </IconBtn>
+          <IconBtn
+            label={message.pinned_at ? "Unpin" : "Pin"}
+            onClick={() => actions.onPin(message.id, !message.pinned_at)}
+          >
+            <Pin className="size-3" />
+          </IconBtn>
+          {canEdit ? (
+            <IconBtn label="Edit (5 minutes)" onClick={() => actions.onEdit(message)}>
+              <Pencil className="size-3" />
+            </IconBtn>
+          ) : null}
+          <IconBtn
+            label="More: star, forward, decision, work, receipts"
+            onClick={() => actions.onMore(message)}
+          >
+            <MoreHorizontal className="size-3" />
+          </IconBtn>
+          <IconBtn label="Delete for me" onClick={() => actions.onHide(message.id)} danger>
+            <EyeOff className="size-3" />
+          </IconBtn>
+          {canUnsend ? (
+            <IconBtn
+              danger
+              label={
+                anytime
+                  ? "Delete for everyone"
+                  : extended48
+                    ? "Delete for everyone (48 hours)"
+                    : "Delete for everyone (1 hour)"
+              }
+              onClick={() => {
+                if (withinWindow(message.created_at, DELETE_WINDOW_MS)) {
+                  actions.onDeleteForEveryone(message.id);
+                } else if (anytime && actions.onDeleteAnytime) {
+                  actions.onDeleteAnytime(message.id);
+                } else if (actions.onDelete48h) {
+                  actions.onDelete48h(message.id);
+                }
+              }}
+            >
+              <Trash2 className="size-3" />
+            </IconBtn>
+          ) : null}
+        </span>
+        {message.reply_to_id ? (
+          <div className="mb-1 rounded-lg border-l-2 border-primary/50 bg-muted/40 px-2 py-1 text-[11px] text-muted-foreground">
+            {message.reply_to_sender ?? "Teammate"}: {message.reply_to_body ?? "message removed"}
+          </div>
+        ) : null}
+        <div
+          className={
+            "rounded-full px-4 py-2 text-sm leading-relaxed text-foreground shadow-sm " +
+            (message.mine ? "bg-secondary ring-1 ring-border/80" : "border border-border bg-card")
+          }
+        >
+          {message.body}
+          {message.edited_at ? (
+            <span className="ml-1.5 text-[11px] text-muted-foreground">(edited)</span>
+          ) : null}
+        </div>
+
+        {/* Phase 11: attachments sirf tab fetch hote hain jab DB flag > 0 ho. */}
+        {(message.attachment_count ?? 0) > 0 ? <AttachmentGallery messageId={message.id} /> : null}
+
+        {reactions.length ? (
+          <div className="mt-1 flex flex-wrap gap-1">
+            {reactions.map((r) => (
+              <button
+                key={r.emoji}
+                type="button"
+                onClick={() => actions.onReact(message.id, r.emoji)}
+                className={
+                  "rounded-full border px-1.5 py-0.5 text-[11px] " +
+                  (r.mine
+                    ? "border-primary/60 text-foreground"
+                    : "border-border text-muted-foreground")
+                }
+              >
+                {r.emoji} {r.count}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        <div className="mt-1 flex min-h-5 items-center gap-1.5 whitespace-nowrap text-[11px] text-muted-foreground">
+          <StateIcon state={state} />
+          <span>{STATE_LABEL[state]}</span>
+          <span aria-hidden>·</span>
+          <span>{stamp(message.created_at)}</span>
+        </div>
+
+        {picker ? (
+          <div className="mt-1 flex max-w-full gap-1 overflow-x-auto pb-1">
+            {QUICK.map((emoji) => (
+              <button
+                key={emoji}
+                type="button"
+                className="ax-press rounded-md border border-border px-1.5 py-0.5 text-sm"
+                onClick={() => {
+                  actions.onReact(message.id, emoji);
+                  setPicker(false);
+                }}
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </div>
+    </li>
+  );
+}
+
+function PendingBubble({ item }: { item: OutboxItem }) {
+  const state: MessageState = item.attempts > 0 ? "waiting" : "sending";
+  return (
+    <li className="flex justify-end">
+      <div className="max-w-[min(38rem,85%)]">
+        {/* PHASE 39 — send cinematic: gradient sweep 300ms on the fresh bubble.
+            Calm Mode / reduced-motion par CSS khud isse band karti hai. */}
+        <div className="ax-send-sweep rounded-2xl border border-dashed border-border px-3.5 py-2.5 text-sm leading-relaxed text-foreground">
+          {item.body}
+        </div>
+        <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <StateIcon state={state} />
+          <span>{STATE_LABEL[state]}</span>
+          <span aria-hidden>·</span>
+          <span>queued {stamp(item.queued_at)}</span>
+          {item.last_error ? <span>· {item.last_error}</span> : null}
+        </div>
+      </div>
+    </li>
+  );
+}

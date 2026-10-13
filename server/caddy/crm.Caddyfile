@@ -1,0 +1,52 @@
+# ============================================================================
+# AI-FREE CRM HOST — crm.anexomail.com  (locked 8 Sep 2026)
+# Bilkul wahi pipeline/leads/shared work jo aicrm par hai; AI panels OFF.
+# Rust :3200 PRIMARY (/rpc/*, /file/*, /wt/*) · Bun :3100 legacy API ·
+# :3300 chat fallback · baqi sab frontend SSR :3000.
+# Founder surface is host par band — woh sirf founderworkspace par khulta hai.
+# ============================================================================
+crm.anexomail.com {
+	encode zstd gzip
+
+	request_body {
+		max_size 32MB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=31536000"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		-Server
+	}
+
+	# founder surface awam host par band (locked)
+	handle /app/founder* {
+		respond "Not found" 404
+	}
+
+	handle /rpc/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /file/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /wt/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+
+	handle /api/chat/* {
+		reverse_proxy 127.0.0.1:3300
+	}
+	handle /api/* {
+		reverse_proxy 127.0.0.1:3100
+	}
+
+	handle {
+		reverse_proxy 127.0.0.1:3000
+	}
+
+	log {
+		output file /var/log/caddy/crm.log
+		format json
+	}
+}

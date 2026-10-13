@@ -1,0 +1,16 @@
+---
+description: Backend PRIMARY is Rust Tokio + WebTransport + QUIC. Bun is fallback only.
+alwaysApply: true
+---
+
+# Backend — Rust PRIMARY (locked 12 Sep 2026)
+
+Founder: har **naya phase** backend **Rust :3200** — **async Tokio**, **WebTransport**, **QUIC**. Latest isi lock ke andar. Naya stack / naya framework **nahi**.
+
+**Bun `:3100–3300` = FALLBACK TOTAL.** Naya Bun-primary feature / naya Bun API as the product **banned**. Purana `/api/*` sirf tab jab Rust 404/501/502/503.
+
+**Frontend alag hai:** React 19.2 + TanStack + Vite + Bun SSR `:3000`. Woh backend nahi. Website wahi. Backend Rust.
+
+**Already Rust, no-touch:** Polar rust payment PM2 `:3400` (HTTP 200). `server/rust/polar-payment/` mat chhedo. Naya Polar webhook **nahi**.
+
+**Nahi:** naya Bun payment, Bun ko PRIMARY banana, Node 22 normal kaam, WebSocket ki jagah WebTransport hataana.

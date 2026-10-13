@@ -1,0 +1,17 @@
+---
+description: Two Cursor chats. Backend first, then Claude UI from plan features. Mail stack already on Hetzner.
+alwaysApply: true
+---
+
+# Two chats + backend-first (locked 12 Sep 2026)
+
+**Do chats ek saath type nahi.** Pehle **backend chat** (yeh agent) GitHub push. Phir **Claude chat** usi API pe UI. Ek file ek waqt ek agent.
+
+Hetzner pe **Postfix / OpenDKIM / Dovecot pehle se installed.** Dobara install **nahi**. Backend = website → yeh stack **wire**.
+
+**Tarteeb:** (1) Rust `:3200` Tokio + WebTransport + QUIC — mail send/receive + jo package feature ka API chahiye (2) push (3) Claude UI — `plans.ts` ki feature list ko workspace UI/gates mein dikhao, **asli API** pe. Fake data **nahi**.
+
+**Claude:** AppShell / mail / rail / Zoho look. `plans.ts` prices + Polar + SQL phase60s **nahi**.
+**Backend:** `server/rust/**`, mail pipe, `/rpc` `/wt`. Polar rust payment `:3400` **no-touch**. CSS **nahi**.
+
+Cards **tear nahi**. Features UI mein Claude convert kare — prices no-touch. Vercel **nahi**.

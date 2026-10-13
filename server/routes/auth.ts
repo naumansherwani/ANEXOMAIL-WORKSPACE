@@ -1,0 +1,1003 @@
+// ANEXOMAIL account lifecycle API — credentials in Supabase Auth, profile in public tables.
+import { createHash } from "node:crypto";
+import { Router } from "express";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { sendMail } from "../mail/sendmail";
+import { mountPasskeyRoutes } from "./auth-passkey";
+
+const URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
+const SERVICE =
+  process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+const PUBLIC =
+  process.env.SUPABASE4_PUBLISHABLE_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || SERVICE;
+const APP_URL = process.env.APP_URL || "https://anexomail.com";
+
+const admin =
+  URL && SERVICE
+    ? createClient(URL, SERVICE, { auth: { persistSession: false, autoRefreshToken: false } })
+    : null;
+const publicAuth =
+  URL && PUBLIC
+    ? createClient(URL, PUBLIC, { auth: { persistSession: false, autoRefreshToken: false } })
+    : null;
+
+function getAdmin(): SupabaseClient {
+  if (!admin) throw new Error("account_service_not_configured");
+  return admin;
+}
+
+function getPublicAuth(): SupabaseClient {
+  if (!publicAuth) throw new Error("account_service_not_configured");
+  return publicAuth;
+}
+
+/**
+ * Polar SKU = money (basic/pro/business/business_pro).
+ * account_kind = Personal | Business workspace — not a Polar product.
+ */
+function resolveAccountKind(
+  pref: string | null | undefined,
+  workspacePlan: string | null | undefined,
+  orgSlug?: string | null,
+): "personal" | "business" {
+  const k = String(pref || "")
+    .trim()
+    .toLowerCase();
+  if (k === "personal" || k === "business") return k;
+  if (String(orgSlug || "").toLowerCase().startsWith("personal-")) return "personal";
+  const plan = String(workspacePlan || "basic")
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, "_");
+  if (plan === "basic" || plan === "pro") return "personal";
+  return "business";
+}
+
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ANEXOMAIL_DOMAIN = "anexomail.com";
+const FOUNDER_EMAIL =
+  process.env.FOUNDER_EMAIL || "naumansherwani.founder@anexomail.com";
+
+/** Login identity is always local@anexomail.com. Recovery inboxes stay full emails. */
+function anexomailIdentity(raw: string): string {
+  const trimmed = String(raw || "")
+    .trim()
+    .toLowerCase();
+  const before = trimmed.includes("@") ? trimmed.slice(0, trimmed.indexOf("@")) : trimmed;
+  const local = before.replace(/[^a-z0-9._-]/g, "");
+  return local ? `${local}@${ANEXOMAIL_DOMAIN}` : "";
+}
+const passwordOk = (value: string) => value.length >= 6 && value.length <= 15;
+const tokenHash = (token: string) => createHash("sha256").update(token).digest("hex");
+
+/** Runtime / health UA — yeh user ka laptop nahi. List mein mat dikhao. */
+function isServerUserAgent(ua: string): boolean {
+  const u = ua.trim().toLowerCase();
+  if (!u) return true;
+  return (
+    u.startsWith("bun/") ||
+    u.startsWith("node/") ||
+    u.startsWith("undici") ||
+    u.startsWith("curl/") ||
+    u.startsWith("wget/") ||
+    u.startsWith("python") ||
+    u.startsWith("go-http") ||
+    u.startsWith("got/") ||
+    u.includes("healthcheck")
+  );
+}
+
+function describeUserAgent(ua: string): { browser: string; device: string } {
+  const raw = ua.trim();
+  const u = raw.toLowerCase();
+  let browser = "Browser";
+  if (u.includes("edg/") || u.includes("edgios")) browser = "Edge";
+  else if (u.includes("opr/") || u.includes("opera")) browser = "Opera";
+  else if (u.includes("firefox/") || u.includes("fxios")) browser = "Firefox";
+  else if (u.includes("crios") || (u.includes("chrome/") && !u.includes("edg/"))) browser = "Chrome";
+  else if (u.includes("safari/") && !u.includes("chrome") && !u.includes("crios")) browser = "Safari";
+  else if (raw && !raw.toLowerCase().includes("mozilla")) browser = raw.slice(0, 40);
+
+  let device = "Computer";
+  if (u.includes("iphone")) device = "iPhone";
+  else if (u.includes("ipad")) device = "iPad";
+  else if (u.includes("android")) device = "Android";
+  else if (u.includes("mac os") || u.includes("macintosh")) device = "Mac";
+  else if (u.includes("windows")) device = "Windows";
+  else if (u.includes("cros")) device = "Chromebook";
+  else if (u.includes("linux")) device = "Linux";
+  return { browser, device };
+}
+
+function clientIp(req: any): string | null {
+  const forwarded = String(req.headers["x-forwarded-for"] || "")
+    .split(",")[0]
+    .trim();
+  const real = String(req.headers["x-real-ip"] || "").trim();
+  const raw = (forwarded || real || String(req.ip || "")).replace(/^::ffff:/, "");
+  if (!raw || raw === "127.0.0.1" || raw === "::1" || raw === "localhost") return null;
+  return raw.slice(0, 80);
+}
+
+function unavailable(res: any) {
+  if (admin && publicAuth) return false;
+  res.status(503).json({ error: "account_service_not_configured" });
+  return true;
+}
+
+async function userFrom(req: any, res: any) {
+  if (unavailable(res)) return null;
+  const raw = String(req.headers.authorization || "");
+  const token = raw.startsWith("Bearer ") ? raw.slice(7) : "";
+  if (!token) {
+    res.status(401).json({ error: "unauthorized" });
+    return null;
+  }
+  const { data, error } = await getAdmin().auth.getUser(token);
+  if (error || !data.user) {
+    res.status(401).json({ error: "unauthorized" });
+    return null;
+  }
+  return { user: data.user, token };
+}
+
+function authError(
+  res: any,
+  error: { message?: string; status?: number } | null,
+  fallback = "authentication_failed",
+) {
+  if (fallback === "invalid_credentials") {
+    return res.status(401).json({
+      error: "That email and password did not match. Use your @anexomail.com address.",
+    });
+  }
+  const message = error?.message || fallback;
+  const status = error?.status && error.status >= 400 && error.status < 500 ? error.status : 400;
+  return res.status(status).json({ error: message });
+}
+
+async function saveSession(userId: string, token: string, req: any) {
+  const ua = String(req.headers["user-agent"] || "").slice(0, 300);
+  if (isServerUserAgent(ua)) return;
+  const { browser, device } = describeUserAgent(ua);
+  await getAdmin()
+    .from("account_sessions")
+    .upsert(
+      {
+        user_id: userId,
+        token_hash: tokenHash(token),
+        device,
+        browser,
+        ip: clientIp(req),
+        last_seen_at: new Date().toISOString(),
+        revoked_at: null,
+      },
+      { onConflict: "token_hash" },
+    );
+}
+
+/** FOUNDER PROTOCOL: authority `public.founder_accounts`. Founder par awam ka claim/onboarding flow kabhi nahi. */
+async function isFounderUser(uid: string): Promise<boolean> {
+  const { data } = await getAdmin()
+    .from("founder_accounts")
+    .select("user_id")
+    .eq("user_id", uid)
+    .maybeSingle();
+  return Boolean(data);
+}
+
+async function operationalOrganisation(uid: string, email: string | null | undefined) {
+  const { data: membership } = await getAdmin()
+    .from("org_members")
+    .select("org_id,role")
+    .eq("user_id", uid)
+    .limit(1)
+    .maybeSingle();
+  if (membership?.org_id) return { id: membership.org_id, role: membership.role || "member" };
+
+  const address = String(email || "")
+    .trim()
+    .toLowerCase();
+  if (!address) return null;
+  const { data: mailbox } = await getAdmin()
+    .from("mail_accounts")
+    .select("org_id")
+    .eq("address", address)
+    .limit(1)
+    .maybeSingle();
+  if (!mailbox?.org_id) return null;
+
+  const { error } = await getAdmin()
+    .from("org_members")
+    .upsert(
+      { org_id: mailbox.org_id, user_id: uid, email: address, role: "owner", status: "active" },
+      { onConflict: "org_id,user_id" },
+    );
+  if (error) {
+    console.error("[auth.operational-workspace]", error.message);
+    return null;
+  }
+  return { id: mailbox.org_id, role: "owner" };
+}
+
+async function sessionResult(user: any, accessToken?: string, req?: any) {
+  if (accessToken && req) await saveSession(user.id, accessToken, req);
+  const uid = user.id;
+  const [{ data: profile }, { data: memberships }, { data: trial }, founder, operational] =
+    await Promise.all([
+      getAdmin()
+        .from("account_profiles")
+        .select("legal_name,display_name,avatar_url,work_role,preferences,onboarded")
+        .eq("user_id", uid)
+        .maybeSingle(),
+      getAdmin()
+        .from("account_org_members")
+        .select("role,account_organisations(id,name,slug,domain)")
+        .eq("user_id", uid),
+      getAdmin()
+        .from("trial_accounts")
+        .select("anexomail_address,plan")
+        .eq("user_id", uid)
+        .maybeSingle(),
+      isFounderUser(uid),
+      operationalOrganisation(uid, user.email),
+    ]);
+  const emailLower = String(user.email || "")
+    .trim()
+    .toLowerCase();
+  const anexoFromEmail = emailLower.endsWith("@anexomail.com") ? emailLower : null;
+  const anexomailAddress =
+    trial?.anexomail_address || (founder ? emailLower || null : null) || anexoFromEmail;
+
+  const { data: familyRow } = anexomailAddress
+    ? await getAdmin()
+        .from("family_accounts")
+        .select("display_name,plan,ai_plan")
+        .eq("email", anexomailAddress)
+        .maybeSingle()
+    : { data: null };
+
+  const workspacePlan =
+    String(familyRow?.plan || trial?.plan || "basic")
+      .trim()
+      .toLowerCase() || "basic";
+  const aiPlanRaw = String(familyRow?.ai_plan || "").trim();
+  const aiPlan = aiPlanRaw && aiPlanRaw !== "" ? aiPlanRaw.toLowerCase() : null;
+
+  let organisations = (memberships || []).flatMap((row: any) =>
+    row.account_organisations
+      ? [{ ...row.account_organisations, role: row.role, source: "account" as const }]
+      : [],
+  );
+
+  let operationalEntry: {
+    id: string;
+    name: string;
+    slug: string;
+    domain: null;
+    role: string;
+    source: "operational";
+  } | null = null;
+
+  if (operational) {
+    const { data: liveOrg } = await getAdmin()
+      .from("organisations")
+      .select("id,name,slug")
+      .eq("id", operational.id)
+      .maybeSingle();
+    const { data: legacy } = liveOrg
+      ? { data: null }
+      : await getAdmin().from("orgs").select("id,name").eq("id", operational.id).maybeSingle();
+    operationalEntry = {
+      id: operational.id,
+      name:
+        liveOrg?.name ||
+        legacy?.name ||
+        (founder ? "Founder workspace" : "ANEXOMAIL Workspace"),
+      slug:
+        liveOrg?.slug ||
+        (founder ? "founder-workspace" : `workspace-${operational.id.slice(0, 8)}`),
+      domain: null,
+      role: operational.role || "owner",
+      source: "operational",
+    };
+  }
+
+  // F3 B fix: @anexomail.com awam = ONE mail workspace (account+ops dual band)
+  if (!founder && anexomailAddress && operationalEntry) {
+    organisations = [operationalEntry];
+  } else if (operationalEntry) {
+    if (!organisations.some((o) => o.id === operationalEntry!.id)) {
+      organisations = [operationalEntry, ...organisations];
+    }
+    const seen = new Set<string>();
+    organisations = organisations.filter((o) => {
+      if (seen.has(o.id)) return false;
+      seen.add(o.id);
+      return true;
+    });
+  }
+
+  const prefs = (profile?.preferences || {}) as Record<string, unknown>;
+  const preferred =
+    typeof prefs.active_organisation_id === "string" ? prefs.active_organisation_id : null;
+  const activeId =
+    (preferred && organisations.some((o) => o.id === preferred) && preferred) ||
+    organisations[0]?.id ||
+    null;
+
+  const onboarded =
+    founder || Boolean(profile?.onboarded) || Boolean(operational && anexomailAddress);
+
+  const displayName =
+    profile?.display_name ||
+    familyRow?.display_name ||
+    profile?.legal_name ||
+    user.user_metadata?.name ||
+    null;
+
+  const prefKind = typeof prefs.workspace_kind === "string" ? prefs.workspace_kind : null;
+  const orgSlug = operationalEntry?.slug || organisations[0]?.slug || null;
+  const accountKind = resolveAccountKind(prefKind, workspacePlan, orgSlug);
+  let personalPlanName: string | null = null;
+  if (accountKind === "personal") {
+    const { data: label, error: labelErr } = await getAdmin().rpc("personal_workspace_label", {
+      _user_id: uid,
+    });
+    if (!labelErr && typeof label === "string" && label.trim()) personalPlanName = label.trim();
+  }
+
+  return {
+    ...(accessToken ? { token: accessToken } : {}),
+    user: {
+      id: uid,
+      email: user.email || "",
+      name: displayName,
+      legal_name: profile?.legal_name || null,
+      display_name: displayName,
+      avatar_url: profile?.avatar_url || null,
+      work_role: profile?.work_role || null,
+      preferences: profile?.preferences || {},
+      mfa_enabled: false,
+      is_founder: founder,
+      onboarded,
+      anexomail_address: anexomailAddress,
+      workspace_plan: workspacePlan,
+      ai_plan: aiPlan,
+      account_kind: accountKind,
+      personal_plan_name: personalPlanName,
+    },
+    organisations: organisations.map(({ id, name, slug, domain, role }) => ({
+      id,
+      name,
+      slug,
+      domain: domain ?? null,
+      role,
+    })),
+    active_organisation_id: activeId,
+  };
+}
+
+function vaultKey() {
+  const k = process.env.DEVICE_VAULT_KEY || "";
+  if (k) return k;
+  const base = process.env.SUPABASE4_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY || "";
+  if (!base) return "anexomail-vault-unconfigured";
+  return `anexomail-vault:${base.slice(-32)}`;
+}
+
+function recoveryHint(email: string) {
+  const [local, domain] = email.split("@");
+  if (!local || !domain) return "***";
+  return `${local.slice(0, 2)}***@${domain}`;
+}
+
+const RECOVERY_KINDS = new Set(["gmail", "apple", "outlook", "other_email"]);
+
+async function isFamilyEmail(email: string): Promise<boolean> {
+  try {
+    const { data } = await getAdmin()
+      .from("family_accounts")
+      .select("email")
+      .eq("email", email)
+      .maybeSingle();
+    return Boolean(data);
+  } catch {
+    return false;
+  }
+}
+
+async function markPasskeySet(userId: string) {
+  await getAdmin()
+    .from("trial_accounts")
+    .update({ passkey_set: true, updated_at: new Date().toISOString() })
+    .eq("user_id", userId);
+  await getAdmin().rpc("trial_set_security", {
+    _user_id: userId,
+    _passkey: true,
+    _recovery_kind: null,
+    _recovery_hint: null,
+  });
+}
+
+async function saveRecovery(userId: string, kind: string, email: string) {
+  const hint = recoveryHint(email);
+  await getAdmin().from("account_recovery").upsert(
+    {
+      user_id: userId,
+      kind,
+      email,
+      hint,
+      updated_at: new Date().toISOString(),
+    },
+    { onConflict: "user_id" },
+  );
+  await getAdmin()
+    .from("trial_accounts")
+    .update({
+      recovery_set: true,
+      recovery_kind: kind,
+      recovery_hint: hint,
+      recovery_email: email,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("user_id", userId);
+  await getAdmin().rpc("trial_set_security", {
+    _user_id: userId,
+    _passkey: false,
+    _recovery_kind: kind,
+    _recovery_hint: hint,
+  });
+}
+
+export const authRouter = Router();
+
+authRouter.post("/signup", async (req, res) => {
+  if (unavailable(res)) return;
+  const email = anexomailIdentity(req.body?.email);
+  const password = String(req.body?.password || "");
+  const legalName = String(req.body?.legal_name || req.body?.name || "").trim();
+  const displayName = String(req.body?.display_name || legalName).trim();
+  const avatarUrl = req.body?.avatar_url ? String(req.body.avatar_url).trim() : null;
+  const workRole = req.body?.work_role ? String(req.body.work_role).trim() : null;
+  const preferences =
+    req.body?.preferences && typeof req.body.preferences === "object" ? req.body.preferences : {};
+  if (!emailPattern.test(email))
+    return res.status(400).json({ error: "Enter a valid email address." });
+  if (!legalName || !displayName)
+    return res.status(400).json({ error: "Name and display name are required." });
+  if (!passwordOk(password))
+    return res.status(400).json({ error: "Password must be 6 to 15 characters." });
+
+  const family = await isFamilyEmail(email);
+  const recoveryKind = String(req.body?.recovery_kind || "")
+    .trim()
+    .toLowerCase();
+  const recoveryEmail = String(req.body?.recovery_email || "")
+    .trim()
+    .toLowerCase();
+  if (recoveryKind === "phone") {
+    return res.status(400).json({
+      error: "Email recovery is live. SMS recovery is not — choose Gmail, Apple, Outlook or another email.",
+    });
+  }
+  if (!family) {
+    if (!RECOVERY_KINDS.has(recoveryKind) || !emailPattern.test(recoveryEmail)) {
+      return res.status(400).json({
+        error: "Add a recovery email you can open (Gmail, iCloud/Apple, Outlook, or any inbox).",
+      });
+    }
+    if (recoveryEmail === email) {
+      return res.status(400).json({
+        error: "Recovery must be a different inbox — not the same as this ANEXOMAIL login.",
+      });
+    }
+    const signals =
+      req.body?.signals && typeof req.body.signals === "object" ? req.body.signals : {};
+    const { data: gate, error: gateError } = await getAdmin().rpc("signup_device_gate", {
+      _signals: signals,
+      _key: vaultKey(),
+    });
+    if (gateError) {
+      return res.status(500).json({
+        error: "Device gate SQL is missing. Paste docs/cursor-work/sql/phase63_f3a_passkey_family.sql in Supabase.",
+      });
+    }
+    if (gate && gate.ok === false) {
+      // E18 (13 Oct 2026): sirf human-confirmed device_banned yahan block karta
+      // hai. "too_many_accounts" auto-block hata diya gaya — woh Phase 24A ki
+      // locked ladder ("Engine khud block NAHI karti") todta tha. Device-shape
+      // collision ab signup ke baad device_vault_register() mein sirf
+      // state='suspicious' mark hota hai, signup khud kabhi nahi rukta.
+      return res.status(403).json({ error: "This device cannot create an account.", code: gate.error });
+    }
+  }
+
+  const { data, error } = await getPublicAuth().auth.signUp({
+    email,
+    password,
+    options: {
+      data: { name: legalName, display_name: displayName, work_role: workRole },
+      emailRedirectTo: `${APP_URL}/auth/callback`,
+    },
+  });
+  if (error || !data.user) return authError(res, error);
+  const { error: profileError } = await getAdmin().from("account_profiles").upsert(
+    {
+      user_id: data.user.id,
+      email,
+      legal_name: legalName,
+      display_name: displayName,
+      avatar_url: avatarUrl,
+      work_role: workRole,
+      preferences,
+    },
+    { onConflict: "user_id" },
+  );
+  if (profileError) return res.status(500).json({ error: "profile_save_failed" });
+  await getAdmin()
+    .from("user_roles")
+    .upsert({ user_id: data.user.id, role: "user" }, { onConflict: "user_id,role" });
+  await getAdmin().rpc("trial_start", {
+    _user_id: data.user.id,
+    _social_email: email,
+    _provider: "email",
+  });
+  if (!family && recoveryKind && recoveryEmail) {
+    await saveRecovery(data.user.id, recoveryKind, recoveryEmail);
+  }
+  if (!family) {
+    try {
+      await getAdmin().rpc("device_vault_register", {
+        _user: data.user.id,
+        _signals: req.body?.signals && typeof req.body.signals === "object" ? req.body.signals : {},
+        _key: vaultKey(),
+      });
+    } catch (err) {
+      console.error("[auth.signup.vault]", err);
+    }
+  }
+  if (!data.session?.access_token) return res.status(202).json({ confirmation_required: true });
+  await saveSession(data.user.id, data.session.access_token, req);
+  res.status(201).json({
+    token: data.session.access_token,
+    confirmation_required: false,
+    family,
+    needs_passkey: !family,
+    needs_recovery: !family,
+  });
+});
+
+authRouter.post("/login", async (req, res) => {
+  if (unavailable(res)) return;
+  const email = anexomailIdentity(req.body?.email);
+  const password = String(req.body?.password || "");
+  if (!emailPattern.test(email) || !password)
+    return res.status(400).json({ error: "Email and password are required." });
+
+  // ── Founder org wire ─────────────────────────────────────────────────────
+// Founder ke paas ek operational org aur mail_accounts entry honi chahiye
+// taake /api/mail/* kaam kare (org_members → ctx → mailboxes/mail_accounts).
+async function ensureFounderOrg(founderId: string): Promise<void> {
+  try {
+    const { data: existing } = await getAdmin()
+      .from("org_members")
+      .select("org_id")
+      .eq("user_id", founderId)
+      .limit(1)
+      .maybeSingle();
+    if (existing?.org_id) {
+      // Ensure mail_accounts has the founder address in this org
+      await getAdmin()
+        .from("mail_accounts")
+        .upsert({ org_id: existing.org_id, address: FOUNDER_EMAIL }, { onConflict: "address" });
+      return;
+    }
+    // Create org
+    const { randomUUID } = await import("node:crypto");
+    const id = randomUUID();
+    await getAdmin()
+      .from("organisations")
+      .upsert({ id, name: "Founder Workspace", slug: `founder-${id.slice(0, 8)}` }, { onConflict: "id" });
+    await getAdmin()
+      .from("org_members")
+      .upsert({ org_id: id, user_id: founderId, role: "owner", status: "active" }, { onConflict: "org_id,user_id" });
+    await getAdmin()
+      .from("mail_accounts")
+      .upsert({ org_id: id, address: FOUNDER_EMAIL }, { onConflict: "address" });
+  } catch (e) {
+    console.error("[founder.org]", e);
+  }
+}
+
+// ── Founder protocol ──────────────────────────────────────────────────────
+  // Server .env mein FOUNDER_PASSWORD set karo. Yeh env password hamesha wins:
+  //   1. Normal signIn try → OK to return
+  //   2. Fail → getUserByEmail → agar hai to password update → retry
+  //   3. Agar account hi nahi → createUser (email_confirm=true) + founder_accounts row
+  const founderPassword = process.env.FOUNDER_PASSWORD || "";
+  if (founderPassword && email === FOUNDER_EMAIL && password === founderPassword) {
+    let { data: fd, error: fe } = await getPublicAuth().auth.signInWithPassword({ email, password });
+
+    if (fe || !fd?.user) {
+      let founderId: string | null = null;
+
+      const { data: existing } = await getAdmin().auth.admin.getUserByEmail(email);
+      if (existing?.user?.id) {
+        founderId = existing.user.id;
+        await getAdmin().auth.admin.updateUserById(founderId, { password });
+      } else {
+        // Account nahi hai — banao
+        const { data: created, error: ce } = await getAdmin().auth.admin.createUser({
+          email,
+          password,
+          email_confirm: true,
+          user_metadata: { display_name: "Nauman", role: "founder" },
+        });
+        if (!ce && created?.user?.id) founderId = created.user.id;
+      }
+
+      // founder_accounts row ensure karo (upsert, safe)
+      if (founderId) {
+        await getAdmin()
+          .from("founder_accounts")
+          .upsert({ user_id: founderId, email }, { onConflict: "user_id" });
+
+        const retry = await getPublicAuth().auth.signInWithPassword({ email, password });
+        fd = retry.data;
+        fe = retry.error;
+      }
+    }
+
+    if (!fe && fd?.user && fd?.session) {
+      // AWAIT — org must exist before session is returned so orgId is in session
+      await ensureFounderOrg(fd.user.id);
+      return res.json(await sessionResult(fd.user, fd.session.access_token, req));
+    }
+    return authError(res, fe, "invalid_credentials");
+  }
+  // ─────────────────────────────────────────────────────────────────────────
+
+  const { data, error } = await getPublicAuth().auth.signInWithPassword({ email, password });
+  if (error || !data.user || !data.session) return authError(res, error, "invalid_credentials");
+  res.json(await sessionResult(data.user, data.session.access_token, req));
+});
+
+authRouter.get("/session", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  res.json(await sessionResult(identity.user));
+});
+
+authRouter.post("/logout", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  await getAdmin()
+    .from("account_sessions")
+    .update({ revoked_at: new Date().toISOString() })
+    .eq("token_hash", tokenHash(identity.token));
+  await getAdmin().auth.admin.signOut(identity.token, "local");
+  res.json({ ok: true });
+});
+
+authRouter.post("/forgot-password", async (req, res) => {
+  if (unavailable(res)) return;
+  const email = anexomailIdentity(req.body?.email);
+  if (!emailPattern.test(email))
+    return res.status(400).json({ error: "Enter a valid email address." });
+
+  const { data: uid } = await getAdmin().rpc("auth_user_id_by_email", { _email: email });
+  let sentTo: "recovery" | "account" = "account";
+  let target = email;
+  if (uid) {
+    const { data: rec } = await getAdmin()
+      .from("account_recovery")
+      .select("email")
+      .eq("user_id", uid)
+      .maybeSingle();
+    if (rec?.email && emailPattern.test(rec.email)) {
+      target = rec.email;
+      sentTo = "recovery";
+    }
+  }
+
+  const { data: linkData, error: linkError } = uid
+    ? await getAdmin().auth.admin.generateLink({
+        type: "recovery",
+        email,
+        options: { redirectTo: `${APP_URL}/auth?mode=reset` },
+      })
+    : { data: null, error: null };
+  if (uid && (linkError || !linkData?.properties?.action_link)) {
+    const token = createHash("sha256").update(`${uid}:${Date.now()}:${Math.random()}`).digest("hex");
+    const tokenHashValue = createHash("sha256").update(token).digest("hex");
+    await getAdmin().from("account_recovery_tokens").insert({
+      token_hash: tokenHashValue,
+      user_id: uid,
+      expires_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
+    });
+    const resetUrl = `${APP_URL}/auth?mode=reset&recovery=${token}`;
+    const mailed = await sendMail({
+      from: "noreply@anexomail.com",
+      fromName: "ANEXOMAIL",
+      to: [target],
+      subject: "Reset your ANEXOMAIL password",
+      text: `Use this link once in the next 15 minutes:\n${resetUrl}\n\nIf you did not ask for this, ignore the email.`,
+    });
+    if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
+    return res.json({ ok: true, sent_to: sentTo });
+  }
+
+  if (sentTo === "recovery" && linkData?.properties?.action_link) {
+    const mailed = await sendMail({
+      from: "noreply@anexomail.com",
+      fromName: "ANEXOMAIL",
+      to: [target],
+      subject: "Reset your ANEXOMAIL password",
+      text: `Use this link once in the next 15 minutes:\n${linkData.properties.action_link}\n\nIf you did not ask for this, ignore the email.`,
+    });
+    if (!mailed.ok) return res.status(500).json({ error: "Could not send the recovery email." });
+    return res.json({ ok: true, sent_to: sentTo });
+  }
+
+  await getPublicAuth().auth.resetPasswordForEmail(email, {
+    redirectTo: `${APP_URL}/auth?mode=reset`,
+  });
+  res.json({ ok: true, sent_to: sentTo });
+});
+
+authRouter.post("/magic-link", async (req, res) => {
+  if (unavailable(res)) return;
+  const email = anexomailIdentity(req.body?.email);
+  const redirectTo = String(req.body?.redirect_to || `${APP_URL}/auth/callback`);
+  if (!emailPattern.test(email))
+    return res.status(400).json({ error: "Enter a valid email address." });
+  const { error } = await getPublicAuth().auth.signInWithOtp({
+    email,
+    options: { emailRedirectTo: redirectTo, shouldCreateUser: false },
+  });
+  if (error && !/user not found/i.test(error.message)) return authError(res, error);
+  res.json({ ok: true });
+});
+
+// Supabase PKCE email confirmation and magic-link callback. Social providers are not exposed.
+authRouter.post("/oauth/callback", async (req, res) => {
+  if (unavailable(res)) return;
+  const code = String(req.body?.code || "");
+  if (!code) return res.status(400).json({ error: "verification_code_required" });
+  const { data, error } = await getPublicAuth().auth.exchangeCodeForSession(code);
+  if (error || !data.user || !data.session) return authError(res, error, "verification_failed");
+  res.json(await sessionResult(data.user, data.session.access_token, req));
+});
+
+authRouter.post("/reset-password", async (req, res) => {
+  if (unavailable(res)) return;
+  const accessToken = String(req.body?.access_token || "");
+  const recovery = String(req.body?.recovery || req.body?.recovery_token || "");
+  const password = String(req.body?.password || "");
+  if (!passwordOk(password))
+    return res.status(400).json({ error: "New password must be 6 to 15 characters." });
+  if (recovery) {
+    const tokenHashValue = createHash("sha256").update(recovery).digest("hex");
+    const { data: row } = await getAdmin()
+      .from("account_recovery_tokens")
+      .select("user_id,expires_at,used_at")
+      .eq("token_hash", tokenHashValue)
+      .maybeSingle();
+    if (!row || row.used_at || new Date(row.expires_at).getTime() < Date.now()) {
+      return res.status(401).json({ error: "Reset link is invalid or expired." });
+    }
+    const { error } = await getAdmin().auth.admin.updateUserById(row.user_id, { password });
+    if (error) return authError(res, error);
+    await getAdmin()
+      .from("account_recovery_tokens")
+      .update({ used_at: new Date().toISOString() })
+      .eq("token_hash", tokenHashValue);
+    return res.json({ ok: true });
+  }
+  if (!accessToken)
+    return res.status(400).json({ error: "A valid reset link and strong password are required." });
+  const { data: who, error: whoError } = await getAdmin().auth.getUser(accessToken);
+  if (whoError || !who.user)
+    return res.status(401).json({ error: "Reset link is invalid or expired." });
+  const { error } = await getAdmin().auth.admin.updateUserById(who.user.id, { password });
+  if (error) return authError(res, error);
+  res.json({ ok: true });
+});
+
+authRouter.post("/change-password", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const currentPassword = String(req.body?.current_password || "");
+  const newPassword = String(req.body?.new_password || "");
+  if (!passwordOk(newPassword))
+    return res.status(400).json({ error: "New password must be 6 to 15 characters." });
+  const email = identity.user.email || "";
+  const verified = await getPublicAuth().auth.signInWithPassword({
+    email,
+    password: currentPassword,
+  });
+  if (verified.error) return res.status(401).json({ error: "Current password is incorrect." });
+  const { error } = await getAdmin().auth.admin.updateUserById(identity.user.id, {
+    password: newPassword,
+  });
+  if (error) return authError(res, error);
+  await getAdmin()
+    .from("account_sessions")
+    .update({ revoked_at: new Date().toISOString() })
+    .eq("user_id", identity.user.id)
+    .neq("token_hash", tokenHash(identity.token));
+  res.json({ ok: true });
+});
+
+authRouter.get("/sessions", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const current = tokenHash(identity.token);
+  const { data, error } = await getAdmin()
+    .from("account_sessions")
+    .select("id,token_hash,device,browser,ip,location,last_seen_at")
+    .eq("user_id", identity.user.id)
+    .is("revoked_at", null)
+    .order("last_seen_at", { ascending: false });
+  if (error) return res.status(500).json({ error: "sessions_load_failed" });
+  res.json(
+    (data || [])
+      .filter((row: any) => {
+        const blob = `${row.browser || ""} ${row.device || ""}`;
+        return !isServerUserAgent(blob);
+      })
+      .map(({ token_hash, ...row }: any) => {
+        const blob = `${row.browser || ""} ${row.device || ""}`;
+        const looksRaw = /mozilla\/|applewebkit|win64|khtml/i.test(blob);
+        const parsed = looksRaw ? describeUserAgent(blob) : null;
+        const ip = row.ip && row.ip !== "127.0.0.1" && row.ip !== "::1" ? row.ip : null;
+        return {
+          ...row,
+          browser: parsed?.browser || row.browser,
+          device: parsed?.device || row.device,
+          ip,
+          current: token_hash === current,
+        };
+      }),
+  );
+});
+
+authRouter.delete("/sessions/:id", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const { error } = await getAdmin()
+    .from("account_sessions")
+    .update({ revoked_at: new Date().toISOString() })
+    .eq("id", req.params.id)
+    .eq("user_id", identity.user.id);
+  if (error) return res.status(500).json({ error: "session_revoke_failed" });
+  res.json({ ok: true });
+});
+
+authRouter.patch("/profile", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const displayName = String(req.body?.display_name || "").trim();
+  const rawAvatar = req.body?.avatar_url;
+  const avatarUrl =
+    rawAvatar === null || rawAvatar === ""
+      ? null
+      : typeof rawAvatar === "string"
+        ? rawAvatar.trim()
+        : undefined;
+  if (displayName && displayName.length < 2)
+    return res.status(400).json({ error: "Display name is too short." });
+  if (avatarUrl) {
+    const httpsOk = /^https:\/\/[^\s]+$/i.test(avatarUrl) && avatarUrl.length <= 500;
+    const dataOk =
+      /^data:image\/(jpeg|jpg|png|webp);base64,/.test(avatarUrl) && avatarUrl.length <= 180_000;
+    if (!httpsOk && !dataOk)
+      return res.status(400).json({ error: "Use a https photo link or a small jpg/png (under 130 KB)." });
+  }
+  const patch: Record<string, unknown> = { updated_at: new Date().toISOString() };
+  if (displayName) patch.display_name = displayName;
+  if (avatarUrl !== undefined) patch.avatar_url = avatarUrl;
+  const { error } = await getAdmin()
+    .from("account_profiles")
+    .update(patch)
+    .eq("user_id", identity.user.id);
+  if (error) return res.status(500).json({ error: "profile_update_failed" });
+  res.json({ ok: true });
+});
+
+authRouter.post("/onboarding/complete", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const { error } = await getAdmin()
+    .from("account_profiles")
+    .update({ onboarded: true, updated_at: new Date().toISOString() })
+    .eq("user_id", identity.user.id);
+  if (error) return res.status(500).json({ error: "onboarding_update_failed" });
+  res.json({ ok: true });
+});
+
+authRouter.get("/identity/check", async (req, res) => {
+  if (unavailable(res)) return;
+  const username = String(req.query.username || "")
+    .trim()
+    .toLowerCase();
+  if (!/^[a-z0-9]([a-z0-9.-]{1,28})[a-z0-9]$/.test(username))
+    return res.json({ available: false, reason: "invalid_handle" });
+  const [{ data: reserved }, { data: taken }] = await Promise.all([
+    getAdmin().from("reserved_handles").select("handle").eq("handle", username).maybeSingle(),
+    getAdmin()
+      .from("trial_accounts")
+      .select("user_id")
+      .eq("anexomail_handle", username)
+      .neq("status", "released")
+      .maybeSingle(),
+  ]);
+  res.json({
+    available: !reserved && !taken,
+    reason: reserved ? "reserved_handle" : taken ? "taken" : undefined,
+  });
+});
+
+authRouter.post("/identity/claim", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const username = String(req.body?.username || "")
+    .trim()
+    .toLowerCase();
+  const { data, error } = await getAdmin().rpc("trial_claim_address", {
+    _user_id: identity.user.id,
+    _handle: username,
+  });
+  if (error || data?.ok === false)
+    return res.status(409).json({ error: error?.message || data?.reason || "address_unavailable" });
+  res.json({ address: data.address || `${username}@anexomail.com` });
+});
+
+authRouter.get("/recovery", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const { data } = await getAdmin()
+    .from("account_recovery")
+    .select("kind,hint,updated_at")
+    .eq("user_id", identity.user.id)
+    .maybeSingle();
+  res.json({
+    set: Boolean(data),
+    kind: data?.kind || null,
+    hint: data?.hint || null,
+    sms: false,
+    sms_note: "Email recovery is live. SMS recovery is not wired yet.",
+  });
+});
+
+authRouter.post("/recovery", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const kind = String(req.body?.kind || "")
+    .trim()
+    .toLowerCase();
+  const email = String(req.body?.email || "")
+    .trim()
+    .toLowerCase();
+  if (kind === "phone") {
+    return res.status(400).json({
+      error: "Email recovery is live. SMS recovery is not — use Gmail, Apple, Outlook or another email.",
+    });
+  }
+  if (!RECOVERY_KINDS.has(kind) || !emailPattern.test(email)) {
+    return res.status(400).json({ error: "Choose a recovery inbox you can open." });
+  }
+  if (email === String(identity.user.email || "").toLowerCase()) {
+    return res.status(400).json({ error: "Recovery must be a different inbox than this login." });
+  }
+  await saveRecovery(identity.user.id, kind, email);
+  res.json({ ok: true, hint: recoveryHint(email) });
+});
+
+mountPasskeyRoutes(authRouter, {
+  getAdmin,
+  userFrom,
+  sessionResult,
+  markPasskeySet,
+});

@@ -1,0 +1,1241 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * ANEXOMAIL Workspace — cinematic design system.
+ * Rules: one light source · three depth layers · reveal not slide ·
+ * pacing · type as cinematography · light angle on hover · grain + vignette · silence.
+ * Palette derives from the brand mark: deep navy planes, platinum edges, near-black stage.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-navy: var(--navy);
+  --color-navy-deep: var(--navy-deep);
+  --color-platinum: var(--platinum);
+  --color-steel: var(--steel);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-cyan-accent: var(--cyan-accent);
+  --color-danger: var(--danger);
+  --color-surface-2: var(--surface-2);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-inter);
+  --shadow-elev-1: var(--shadow-elev-1);
+  --shadow-elev-2: var(--shadow-elev-2);
+  --shadow-stage: var(--shadow-stage);
+  --ease-cine: var(--ease-cine);
+  /* Spacing rhythm — 8px base scale, locked. */
+  --spacing-ax-1: var(--ax-1);
+  --spacing-ax-2: var(--ax-2);
+  --spacing-ax-3: var(--ax-3);
+  --spacing-ax-4: var(--ax-4);
+  --spacing-ax-5: var(--ax-5);
+  --spacing-ax-6: var(--ax-6);
+  --spacing-ax-7: var(--ax-7);
+  --spacing-ax-8: var(--ax-8);
+  --ease-ax-out: var(--ax-ease-out);
+  --ease-ax-inout: var(--ax-ease-inout);
+  --ease-ax-exit: var(--ax-ease-exit);
+}
+
+:root {
+  --radius: 0.75rem;
+  --font-inter:
+    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --ease-cine: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /*
+   * Motion language — Phase 4. Four durations, three curves. Nothing else.
+   * instant → state flip · quick → hover / press · calm → panel + reveal ·
+   * cinematic → stage entrance. Motion explains a change, it never decorates.
+   */
+  --ax-dur-instant: 90ms;
+  --ax-dur-quick: 180ms;
+  --ax-dur-calm: 380ms;
+  --ax-dur-cinematic: 700ms;
+  --ax-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ax-ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+  --ax-ease-exit: cubic-bezier(0.4, 0, 1, 1);
+
+  /* Spacing rhythm — every gap on this scale, nothing off-grid. */
+  --ax-1: 0.25rem; /* 4  — icon to label */
+  --ax-2: 0.5rem; /* 8  — inside a control */
+  --ax-3: 0.75rem; /* 12 — list row padding */
+  --ax-4: 1rem; /* 16 — card padding */
+  --ax-5: 1.5rem; /* 24 — card gap */
+  --ax-6: 2rem; /* 32 — block gap */
+  --ax-7: 3rem; /* 48 — sub-section gap */
+  --ax-8: 5rem; /* 80 — section gap (120 on md via ax-section) */
+
+  /* Stage — near-black, cool. Light comes from one place only. */
+  --background: oklch(0.135 0.005 265);
+  --foreground: oklch(0.955 0.004 250);
+  --card: oklch(0.185 0.008 264);
+  --card-foreground: oklch(0.955 0.004 250);
+  --surface-2: oklch(0.225 0.010 264);
+  --popover: oklch(0.185 0.008 264);
+  --popover-foreground: oklch(0.955 0.004 250);
+
+  /* Brand mark colours */
+  --navy: oklch(0.455 0.093 258);
+  --navy-deep: oklch(0.325 0.070 258);
+  --platinum: oklch(0.885 0.008 250);
+  --steel: oklch(0.735 0.017 252);
+
+  --primary: oklch(0.455 0.093 258);
+  --primary-foreground: oklch(0.975 0.004 250);
+  --secondary: oklch(0.225 0.010 264);
+  --secondary-foreground: oklch(0.955 0.004 250);
+  --muted: oklch(0.225 0.010 264);
+  --muted-foreground: oklch(0.665 0.014 253);
+  --accent: oklch(0.245 0.012 264);
+  --accent-foreground: oklch(0.955 0.004 250);
+  --destructive: oklch(0.61 0.19 25);
+  --destructive-foreground: oklch(0.975 0.004 250);
+  --success: oklch(0.70 0.115 165);
+  --warning: oklch(0.775 0.135 75);
+  /* Accent set — cyan signal, success, warning, danger. Stage colours untouched. */
+  --cyan-accent: oklch(0.735 0.121 213);
+  --danger: oklch(0.635 0.204 25);
+  --border: oklch(0.285 0.011 264);
+  --input: oklch(0.285 0.011 264);
+  --ring: oklch(0.60 0.085 255);
+
+  --shadow-elev-1: 0 1px 2px 0 oklch(0 0 0 / 55%);
+  --shadow-elev-2: 0 30px 70px -34px oklch(0 0 0 / 85%);
+  --shadow-stage: 0 60px 140px -70px oklch(0.455 0.093 258 / 55%);
+
+  --chart-1: oklch(0.455 0.093 258);
+  --chart-2: oklch(0.735 0.017 252);
+  --chart-3: oklch(0.70 0.115 165);
+  --chart-4: oklch(0.775 0.135 75);
+  --chart-5: oklch(0.325 0.070 258);
+  --sidebar: oklch(0.165 0.007 264);
+  --sidebar-foreground: oklch(0.955 0.004 250);
+  --sidebar-primary: oklch(0.455 0.093 258);
+  --sidebar-primary-foreground: oklch(0.975 0.004 250);
+  --sidebar-accent: oklch(0.225 0.010 264);
+  --sidebar-accent-foreground: oklch(0.955 0.004 250);
+  --sidebar-border: oklch(0.285 0.011 264);
+  --sidebar-ring: oklch(0.60 0.085 255);
+}
+
+/* Single dark stage — the .dark class mirrors :root so tokens never drift. */
+.dark {
+  --background: oklch(0.135 0.005 265);
+  --foreground: oklch(0.955 0.004 250);
+  --card: oklch(0.185 0.008 264);
+  --card-foreground: oklch(0.955 0.004 250);
+  --surface-2: oklch(0.225 0.010 264);
+  --popover: oklch(0.185 0.008 264);
+  --popover-foreground: oklch(0.955 0.004 250);
+  --primary: oklch(0.455 0.093 258);
+  --primary-foreground: oklch(0.975 0.004 250);
+  --border: oklch(0.285 0.011 264);
+  --input: oklch(0.285 0.011 264);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-inter);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Rule 5 — type as cinematography. */
+  h1 {
+    font-weight: 800;
+    letter-spacing: -0.042em;
+    line-height: 1.0;
+  }
+
+  h2 {
+    font-weight: 800;
+    letter-spacing: -0.032em;
+    line-height: 1.06;
+  }
+
+  h3,
+  h4 {
+    font-weight: 700;
+    letter-spacing: -0.018em;
+  }
+
+  ::selection {
+    background: oklch(0.455 0.093 258 / 45%);
+  }
+}
+
+@utility ax-container {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 78rem;
+  padding-inline: 1.5rem;
+}
+
+/* Section rhythm — 120px top and bottom, 8px scale. */
+@utility ax-section {
+  padding-block: 5rem;
+  @media (min-width: 768px) {
+    padding-block: 7.5rem;
+  }
+}
+
+/* Floating hero composition cards — quiet drift, no gimmicks. */
+@keyframes ax-drift {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@utility ax-drift {
+  animation: ax-drift 7s var(--ease-cine) infinite;
+}
+
+/* Rule 1 — one light source. Drop this once, high on the page. */
+@utility ax-keylight {
+  pointer-events: none;
+  position: absolute;
+  inset-inline: 0;
+  top: -28rem;
+  height: 60rem;
+  background:
+    radial-gradient(
+      38% 42% at 50% 50%,
+      oklch(0.60 0.098 256 / 42%) 0%,
+      transparent 68%
+    ),
+    radial-gradient(
+      70% 55% at 50% 40%,
+      oklch(0.40 0.060 258 / 22%) 0%,
+      transparent 75%
+    );
+  filter: blur(24px);
+}
+
+/* Rule 7 — grain. Layer above the stage, below content. */
+@utility ax-grain {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Rule 7 — vignette. Corners fall away. */
+@utility ax-vignette {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      120% 85% at 50% 12%,
+      transparent 42%,
+      oklch(0.09 0.004 265 / 72%) 100%
+    );
+  }
+}
+
+/*
+ * Rules 2 + 6 — three layers of depth and a light angle that shifts on hover.
+ * The top edge carries a 1px platinum line lit from the same key light.
+ */
+@utility ax-plane {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: linear-gradient(
+    180deg,
+    var(--surface-2) 0%,
+    var(--card) 58%,
+    var(--card) 100%
+  );
+  border: 1px solid var(--border);
+  transition:
+    border-color 0.6s var(--ease-cine),
+    transform 0.6s var(--ease-cine);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.885 0.008 250 / 34%) 22%,
+      oklch(0.885 0.008 250 / 12%) 60%,
+      transparent 100%
+    );
+    z-index: 2;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -40%;
+    z-index: -1;
+    opacity: 0;
+    background: radial-gradient(
+      42% 42% at 22% 8%,
+      oklch(0.60 0.098 256 / 30%) 0%,
+      transparent 70%
+    );
+    transition:
+      opacity 0.65s var(--ease-cine),
+      transform 0.65s var(--ease-cine);
+  }
+
+  &:hover {
+    border-color: oklch(0.60 0.085 255 / 42%);
+  }
+
+  &:hover::after {
+    opacity: 1;
+    transform: translate(28%, 14%);
+  }
+}
+
+/* Rule 3 — reveal, not slide. Curtain opens from the baseline. */
+@utility ax-reveal {
+  animation: ax-curtain 0.75s var(--ease-cine) both;
+}
+
+@keyframes ax-curtain {
+  from {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+}
+
+/* Platinum hairline used for stamps, rails and dividers. */
+@utility ax-hairline {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    oklch(0.885 0.008 250 / 26%),
+    transparent
+  );
+}
+
+@utility ax-eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+/*
+ * Type scale — locked. Six steps only. Never invent a seventh.
+ * display → page opener · title → section opener · heading → card opener
+ * body → prose · label → UI control · caption → quiet metadata
+ */
+@utility ax-display {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  letter-spacing: -0.042em;
+  line-height: 1;
+}
+
+@utility ax-title {
+  font-size: clamp(1.875rem, 3.6vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.032em;
+  line-height: 1.06;
+}
+
+@utility ax-heading {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -0.014em;
+  line-height: 1.35;
+}
+
+@utility ax-body {
+  font-size: 0.9375rem;
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--muted-foreground);
+}
+
+@utility ax-label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: -0.006em;
+  line-height: 1.25;
+}
+
+@utility ax-caption {
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--muted-foreground);
+}
+
+/* One focus treatment across the whole product — keyboard users see the key light. */
+@utility ax-focus {
+  outline: none;
+
+  &:focus-visible {
+    box-shadow:
+      0 0 0 2px var(--background),
+      0 0 0 4px oklch(0.60 0.085 255 / 70%);
+  }
+}
+
+/* Status pill — the only way status is shown. Colour never carries meaning alone. */
+@utility ax-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ax-2);
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  padding: 0.1875rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--steel);
+}
+
+/* Vertical rail used to mark the active row in the three-panel surface. */
+@utility ax-rail {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-block: 0.375rem;
+    left: 0;
+    width: 2px;
+    border-radius: 999px;
+    background: var(--cyan-accent);
+  }
+}
+
+@utility ax-platinum-text {
+  background-image: linear-gradient(
+    170deg,
+    oklch(0.985 0.003 250) 0%,
+    oklch(0.855 0.010 252) 52%,
+    oklch(0.665 0.014 253) 100%
+  );
+  background-clip: text;
+  color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-reveal {
+    animation: none;
+  }
+  .ax-drift {
+    animation: none;
+  }
+}
+
+/*
+ * ============================================================
+ * Phase 4 — Emotion UI. Motion, micro-interactions, states.
+ * Every interactive surface answers in under 200ms.
+ * ============================================================
+ */
+
+/* Micro-interaction — press. Physical confirmation, no bounce. */
+@utility ax-press {
+  transition:
+    transform var(--ax-dur-instant) var(--ax-ease-out),
+    background-color var(--ax-dur-quick) var(--ax-ease-out),
+    border-color var(--ax-dur-quick) var(--ax-ease-out),
+    color var(--ax-dur-quick) var(--ax-ease-out),
+    opacity var(--ax-dur-quick) var(--ax-ease-out);
+
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+/* Micro-interaction — lift. The key light catches the top edge on hover. */
+@utility ax-lift {
+  transition:
+    transform var(--ax-dur-calm) var(--ax-ease-out),
+    box-shadow var(--ax-dur-calm) var(--ax-ease-out),
+    border-color var(--ax-dur-calm) var(--ax-ease-out);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-elev-2);
+    border-color: oklch(0.6 0.085 255 / 42%);
+  }
+}
+
+/* Row hover inside the three-panel surface — quiet, never jumpy. */
+@utility ax-row {
+  transition:
+    background-color var(--ax-dur-quick) var(--ax-ease-out),
+    color var(--ax-dur-quick) var(--ax-ease-out);
+
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+/* Entrance — content arrives, it does not slide in from off-stage. */
+@keyframes ax-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@utility ax-in {
+  animation: ax-in var(--ax-dur-calm) var(--ax-ease-out) both;
+}
+
+/* Stagger delays — list children enter in sequence, max six steps. */
+@utility ax-stagger {
+  & > * {
+    animation: ax-in var(--ax-dur-calm) var(--ax-ease-out) both;
+  }
+  & > *:nth-child(1) {
+    animation-delay: 0ms;
+  }
+  & > *:nth-child(2) {
+    animation-delay: 45ms;
+  }
+  & > *:nth-child(3) {
+    animation-delay: 90ms;
+  }
+  & > *:nth-child(4) {
+    animation-delay: 135ms;
+  }
+  & > *:nth-child(5) {
+    animation-delay: 180ms;
+  }
+  & > *:nth-child(n + 6) {
+    animation-delay: 225ms;
+  }
+}
+
+/* Loading — a light sweep across the plane. Replaces opacity pulsing. */
+@keyframes ax-shimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@utility ax-shimmer {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface-2);
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      oklch(0.885 0.008 250 / 9%) 50%,
+      transparent 100%
+    );
+    animation: ax-shimmer 1.4s var(--ax-ease-inout) infinite;
+  }
+}
+
+/* Live signal dot — used for sending, syncing, connected. */
+@keyframes ax-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+}
+
+@utility ax-breathe {
+  animation: ax-breathe 1.8s var(--ax-ease-inout) infinite;
+}
+
+/* Success — one confirming pulse of the signal colour, then silence. */
+@keyframes ax-confirm {
+  0% {
+    box-shadow: 0 0 0 0 oklch(0.7 0.115 165 / 45%);
+  }
+  100% {
+    box-shadow: 0 0 0 12px oklch(0.7 0.115 165 / 0%);
+  }
+}
+
+@utility ax-confirm {
+  animation: ax-confirm var(--ax-dur-cinematic) var(--ax-ease-out) 1;
+}
+
+/* Error — a short, tight shake. Never more than one cycle. */
+@keyframes ax-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-3px);
+  }
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@utility ax-shake {
+  animation: ax-shake var(--ax-dur-calm) var(--ax-ease-inout) 1;
+}
+
+/* Responsive rule — 44px minimum tap target for primary controls on touch. */
+@utility ax-tap {
+  @media (pointer: coarse) {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+/*
+ * Accessibility — motion is an enhancement, never the message.
+ * Reduced motion keeps every state readable with zero movement.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .ax-in,
+  .ax-stagger > *,
+  .ax-confirm,
+  .ax-shake,
+  .ax-breathe,
+  .ax-shimmer::after {
+    animation: none !important;
+  }
+  .ax-press:active,
+  .ax-lift:hover {
+    transform: none;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * ============================================================
+ * Phase 29 — Premium Experience.
+ * Calm Mode is a real kill switch: one attribute on <html> stops every
+ * animation in the product. Delight is opt-in and never decorative.
+ * ============================================================
+ */
+
+/* Calm mode — the user asked for stillness, so nothing moves. */
+[data-ax-calm] *,
+[data-ax-calm] *::before,
+[data-ax-calm] *::after {
+  animation: none !important;
+  transition-duration: 1ms !important;
+  scroll-behavior: auto !important;
+}
+
+/*
+ * Transition tempo — one multiplier, four tokens. The motion language never
+ * changes shape, only its clock.
+ */
+html[data-ax-speed="fast"] {
+  --ax-dur-instant: 54ms;
+  --ax-dur-quick: 108ms;
+  --ax-dur-calm: 228ms;
+  --ax-dur-cinematic: 420ms;
+}
+
+html[data-ax-speed="slow"] {
+  --ax-dur-instant: 135ms;
+  --ax-dur-quick: 270ms;
+  --ax-dur-calm: 570ms;
+  --ax-dur-cinematic: 1050ms;
+}
+
+/*
+ * Reduced animations — essential state changes still cross-fade, but nothing
+ * travels, breathes or loops. Position is announced, never performed.
+ */
+html[data-ax-motion="reduced"] *,
+html[data-ax-motion="reduced"] *::before,
+html[data-ax-motion="reduced"] *::after {
+  animation: none !important;
+  transition-property: opacity, background-color, border-color, color !important;
+}
+
+/* Celebration — one rise, one settle, then it leaves on its own. */
+@keyframes ax-celebrate {
+  0% {
+    opacity: 0;
+    transform: translateY(-12px) scale(0.97);
+  }
+  55% {
+    opacity: 1;
+    transform: translateY(0) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@utility ax-celebrate {
+  animation: ax-celebrate var(--ax-dur-cinematic) var(--ax-ease-out) both;
+}
+
+/* Focus audit overlay — high-contrast proof of where the keyboard is. */
+[data-ax-focus-audit] :focus-visible {
+  outline: 3px solid var(--cyan-accent) !important;
+  outline-offset: 2px !important;
+  border-radius: 6px;
+}
+
+/* Pointer sovereignty — har clickable surface par haath wala cursor. Tailwind v4
+   preflight button par `cursor: default` lagata hai, is liye :where() (zero
+   specificity) us se haar jaata hai — seedha selector + !important lazmi hai. */
+button:not(:disabled):not([aria-disabled="true"]),
+[role="button"]:not([aria-disabled="true"]),
+[role="option"]:not([aria-disabled="true"]),
+[role="tab"]:not([aria-disabled="true"]),
+[role="link"]:not([aria-disabled="true"]),
+summary,
+label[for],
+a[href] {
+  cursor: pointer !important;
+}
+button:disabled,
+[role="button"][aria-disabled="true"] {
+  cursor: not-allowed !important;
+}
+
+
+/* Keyboard sovereignty — a visible ring on every focusable surface, always. */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-celebrate {
+    animation: none !important;
+  }
+}
+
+/*
+ * ============================================================
+ * Cinematic sign-in splash — the "move-in" moment.
+ * Shown after successful auth before the workspace opens.
+ * ============================================================
+ */
+
+.ax-splash-stage {
+  transition:
+    opacity 0.6s var(--ease-cine),
+    transform 0.6s var(--ease-cine);
+}
+
+.ax-splash-enter {
+  animation: ax-splash-fade-in 0.55s var(--ease-cine) both;
+}
+
+.ax-splash-exit {
+  opacity: 0;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+@keyframes ax-splash-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ax-splash-logo {
+  animation: ax-splash-logo-rise 0.7s var(--ease-cine) 0.1s both;
+}
+
+@keyframes ax-splash-logo-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.ax-splash-keylight {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    oklch(0.455 0.093 258 / 35%) 0%,
+    oklch(0.455 0.093 258 / 12%) 45%,
+    transparent 70%
+  );
+  animation: ax-splash-glow 3s var(--ease-cine) infinite alternate;
+}
+
+@keyframes ax-splash-glow {
+  from {
+    opacity: 0.7;
+    transform: scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+.ax-splash-vignette {
+  background: radial-gradient(
+    120% 90% at 50% 45%,
+    transparent 40%,
+    oklch(0.09 0.004 265 / 70%) 100%
+  );
+}
+
+.ax-splash-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ── WorkspaceLoader — "the workspace assembles" (pure CSS 3D) ─────────────── */
+
+.ax-loader-stage {
+  animation: ax-splash-fade-in 0.4s var(--ease-cine) both;
+}
+
+.ax-loader-scene {
+  width: 21rem;
+  height: 13rem;
+  perspective: 900px;
+  transform-style: preserve-3d;
+}
+
+.ax-loader-panel {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in oklch, var(--border) 80%, transparent);
+  background:
+    linear-gradient(160deg, color-mix(in oklch, var(--card) 92%, white 4%) 0%, var(--card) 100%);
+  box-shadow:
+    0 24px 60px -24px oklch(0.09 0.004 265 / 65%),
+    inset 0 1px 0 oklch(1 0 0 / 6%);
+  padding: 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  opacity: 0;
+  transform: rotateX(14deg) rotateY(-22deg) translateZ(-160px) translateY(24px);
+  animation:
+    ax-loader-panel-in 0.9s var(--ease-cine) forwards,
+    ax-loader-panel-float 5s ease-in-out infinite;
+}
+
+.ax-loader-rail {
+  left: 0;
+  width: 3.25rem;
+  align-items: center;
+  animation-delay: 0.05s, 1s;
+}
+
+.ax-loader-list {
+  left: 3.75rem;
+  width: 8.25rem;
+  animation-delay: 0.2s, 1.15s;
+}
+
+.ax-loader-read {
+  left: 12.5rem;
+  width: 8.5rem;
+  animation-delay: 0.35s, 1.3s;
+}
+
+.ax-loader-dot {
+  width: 0.625rem;
+  height: 0.625rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--muted-foreground) 35%, transparent);
+}
+
+.ax-loader-dot:first-child {
+  background: var(--primary);
+}
+
+.ax-loader-row {
+  height: 0.5rem;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--muted-foreground) 22%, transparent);
+}
+
+.ax-loader-row--title {
+  height: 0.625rem;
+  width: 70%;
+  background: color-mix(in oklch, var(--foreground) 45%, transparent);
+}
+
+.ax-loader-row--short {
+  width: 45%;
+}
+
+/* Light sweep across the assembled panels — one pass, then gone */
+.ax-loader-sweep {
+  position: absolute;
+  inset: -1rem;
+  background: linear-gradient(
+    105deg,
+    transparent 30%,
+    oklch(1 0 0 / 10%) 50%,
+    transparent 70%
+  );
+  transform: translateX(-120%);
+  animation: ax-loader-sweep 1.6s var(--ease-cine) 1.1s both;
+  pointer-events: none;
+}
+
+.ax-loader-progress {
+  width: 10rem;
+  height: 2px;
+  border-radius: 999px;
+  background: color-mix(in oklch, var(--border) 70%, transparent);
+  overflow: hidden;
+}
+
+.ax-loader-progress > span {
+  display: block;
+  height: 100%;
+  width: 40%;
+  border-radius: inherit;
+  background: var(--primary);
+  animation: ax-loader-progress-slide 1.4s ease-in-out infinite;
+}
+
+@keyframes ax-loader-panel-in {
+  to {
+    opacity: 1;
+    transform: rotateX(8deg) rotateY(-10deg) translateZ(0) translateY(0);
+  }
+}
+
+@keyframes ax-loader-panel-float {
+  0%,
+  100% {
+    transform: rotateX(8deg) rotateY(-10deg) translateY(0);
+  }
+  50% {
+    transform: rotateX(8deg) rotateY(-10deg) translateY(-6px);
+  }
+}
+
+@keyframes ax-loader-sweep {
+  to {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes ax-loader-progress-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+.ax-loader-brand {
+  animation: ax-splash-logo-rise 0.6s var(--ease-cine) 0.15s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-loader-stage,
+  .ax-loader-panel,
+  .ax-loader-sweep,
+  .ax-loader-brand,
+  .ax-loader-progress > span {
+    animation: none !important;
+  }
+  .ax-loader-panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html[data-ax-calm] .ax-loader-panel,
+html[data-ax-calm] .ax-loader-sweep,
+html[data-ax-calm] .ax-loader-progress > span,
+html[data-ax-motion="reduced"] .ax-loader-panel,
+html[data-ax-motion="reduced"] .ax-loader-sweep,
+html[data-ax-motion="reduced"] .ax-loader-progress > span {
+  animation: none !important;
+}
+html[data-ax-calm] .ax-loader-panel,
+html[data-ax-motion="reduced"] .ax-loader-panel {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Auth Cinema panel ─────────────────────────────────────────────────────── */
+
+/* Breathing gradient — Blue → Indigo → Deep navy loop, 12s, buttery smooth */
+.ax-auth-cinema-bg {
+  background: linear-gradient(135deg, #0b1220 0%, #1e3a8a 35%, #312e81 65%, #0b1220 100%);
+  background-size: 400% 400%;
+  animation: ax-cinema-breathe 12s ease infinite;
+}
+
+@keyframes ax-cinema-breathe {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Radial mesh — soft light sources */
+.ax-auth-cinema-mesh {
+  background-image:
+    radial-gradient(ellipse 60% 50% at 30% 30%, rgba(37, 99, 235, 0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 60% at 75% 70%, rgba(79, 70, 229, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 60% 20%, rgba(6, 182, 212, 0.08) 0%, transparent 60%);
+}
+
+/* Grain texture overlay */
+.ax-auth-cinema-grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-auth-cinema-bg {
+    animation: none;
+    background-position: 50% 50%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ax-splash-enter,
+  .ax-splash-exit,
+  .ax-splash-logo,
+  .ax-splash-keylight {
+    animation: none !important;
+  }
+  .ax-splash-stage {
+    transition: none;
+  }
+}
+
+html[data-ax-calm] .ax-splash-stage,
+html[data-ax-calm] .ax-splash-logo,
+html[data-ax-calm] .ax-splash-keylight,
+html[data-ax-motion="reduced"] .ax-splash-stage,
+html[data-ax-motion="reduced"] .ax-splash-logo,
+html[data-ax-motion="reduced"] .ax-splash-keylight {
+  animation: none !important;
+  transition: opacity 0.2s ease !important;
+}
+
+/* CRM cinematic stage — workspace CRM only. Landing untouched. */
+@utility ax-crm-stage {
+  background:
+    radial-gradient(70% 42% at 8% -8%, oklch(0.455 0.093 258 / 12%) 0%, transparent 62%),
+    linear-gradient(180deg, var(--background) 0%, color-mix(in oklch, var(--card) 88%, var(--background)) 100%);
+}
+
+
+/* ───────── Mail cinema (mx-*) — ek roshni, halki motion, reduced-motion safe ───────── */
+.mx-head {
+  background-image: radial-gradient(
+    90% 160% at 0% -40%,
+    color-mix(in oklab, var(--primary) 18%, transparent),
+    transparent 70%
+  );
+}
+.mx-aurora {
+  background-image:
+    radial-gradient(60% 50% at 50% 0%, color-mix(in oklab, var(--primary) 16%, transparent), transparent 70%),
+    radial-gradient(40% 40% at 80% 100%, color-mix(in oklab, var(--primary) 8%, transparent), transparent 70%);
+}
+.mx-row {
+  overflow: hidden;
+}
+.mx-row::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in oklab, var(--primary) 10%, transparent) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+}
+.mx-row:hover::after {
+  transform: translateX(100%);
+  transition: transform 0.7s ease;
+}
+.mx-bar {
+  position: absolute;
+  left: 0;
+  top: 18%;
+  bottom: 18%;
+  width: 2px;
+  border-radius: 2px;
+  opacity: 0.35;
+  transition: opacity 0.2s ease, box-shadow 0.2s ease;
+}
+.mx-row[data-active="true"] .mx-bar {
+  opacity: 1;
+  box-shadow: 0 0 10px 1px currentColor;
+}
+.mx-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  background: var(--primary);
+  box-shadow: 0 0 8px 1px var(--primary);
+}
+.mx-arrive {
+  animation: mx-arrive 1.4s ease-out 1;
+}
+@keyframes mx-arrive {
+  0% {
+    background-color: color-mix(in oklab, var(--primary) 28%, transparent);
+    transform: translateY(-6px);
+  }
+  100% {
+    background-color: transparent;
+    transform: translateY(0);
+  }
+}
+.mx-bloom {
+  transition: box-shadow 0.25s ease, transform 0.15s ease;
+}
+.mx-bloom:hover {
+  box-shadow: 0 0 22px 2px color-mix(in oklab, var(--primary) 45%, transparent);
+}
+.mx-bloom:active {
+  transform: scale(0.98);
+}
+.mx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  border-radius: 9999px;
+  padding: 0.25rem 0.625rem;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted-foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.mx-chip:hover {
+  color: var(--foreground);
+}
+.mx-chip-on {
+  color: var(--foreground);
+  background: color-mix(in oklab, var(--secondary) 90%, transparent);
+}
+.mx-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: var(--mx-tone, var(--steel));
+  box-shadow: 0 0 6px 0 var(--mx-tone, transparent);
+}
+@media (prefers-reduced-motion: reduce) {
+  .mx-row::after,
+  .mx-arrive,
+  .mx-bar,
+  .mx-bloom,
+  .mx-chip {
+    animation: none !important;
+    transition: none !important;
+  }
+}

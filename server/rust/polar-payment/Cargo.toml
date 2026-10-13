@@ -1,0 +1,43 @@
+# ============================================================================
+# ANEXOMAIL — POLAR RUST PAYMENT ENGINE (PM2: polar-rust-payment, port 3400)
+#
+# LOCK: payments ka poora dimagh yahan hai. Supabase Edge Functions mein koi
+# payment logic NAHI. Webhook ka kaam sirf: verify -> insert -> instant 200.
+# State sync Postgres trigger karta hai (background), is liye Polar ka webhook
+# kabhi disable nahi hota.
+#
+# SERVER SETUP (ek dafa):
+#   mkdir -p /opt/polar-rust-payment/src
+#   cp /opt/anexomail-web/server/rust/polar-payment/Cargo.toml /opt/polar-rust-payment/Cargo.toml
+#   cp /opt/anexomail-web/server/rust/polar-payment/main.rs    /opt/polar-rust-payment/src/main.rs
+#   cd /opt/polar-rust-payment && cargo build --release
+#   pm2 start ./target/release/polar-rust-payment --name polar-rust-payment && pm2 save
+# ============================================================================
+[package]
+name = "polar-rust-payment"
+version = "1.0.0"
+edition = "2021"
+
+[dependencies]
+axum = "0.7"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.5", features = ["cors"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.12", features = ["json", "rustls-tls"], default-features = false }
+sqlx = { version = "0.8", features = ["runtime-tokio-rustls", "postgres", "json", "macros"], default-features = false }
+hmac = "0.12"
+sha2 = "0.10"
+hex = "0.4"
+base64 = "0.22"
+subtle = "2"
+dotenvy = "0.15"
+anyhow = "1"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true

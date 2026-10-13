@@ -1,0 +1,32 @@
+---
+description: Har plan ka frontend UI/UX = wahi jo backend us plan ko deta hai. Audit + real wire.
+alwaysApply: true
+---
+
+# Plan match (locked 12 Sep 2026)
+
+Founder ka rule: **jo features backend kisi plan ko deta hai, awam ko frontend UI/UX mein wahi milenge — kam nahi, zyada nahi, fake nahi.**
+
+| Plan | UI/UX |
+|---|---|
+| **Basic** | Basic ke features ka UI — baaki locked preview / upgrade CTA |
+| **Pro** | Pro ke backend features ka poora UI |
+| **Business** | Business ke complete package features ka UI |
+| **Business Pro** | Jo backend offer karta hai, sab ka UI |
+
+## Kaam ka tareeqa
+
+1. Card = `plans.ts` (no-touch). Backend = Supabase SQL + Rust `:3200` PRIMARY + Bun fallback.
+2. Har card line ko repo se match karo. Missing mile to **real wire** se fix karo — mock / fake / empty lie banned.
+3. Feature gate sirf `plan-surface.ts` se. Naya hard-coded plan string UI mein nahi.
+4. Backend mein hai lekin UI nahi → UI banao. UI hai lekin backend nahi → honest "not wired", fake mat do.
+5. Card vs blueprint SQL conflict ho (jaise 48h delete) → **founder decide kare**, agent khud na badle.
+
+## Ab tak ke audit fixes (12 Sep 2026)
+
+- Undo send 20s → **30s** (Basic card match)
+- Calendar personal users 401 → **fixed** (`orgFilter` by `created_by`)
+- Business one-click export → **`GET /api/org/export`** + Compliance button
+- Business Pro safety centre → **`/app/safety`** (queue + sealed evidence + device appeals)
+- Business Pro delete anytime → **E6 SQL** + `chat.message.delete_anytime` + UI
+- Shared inbox collision guard → thread list pe **assignee chip**
