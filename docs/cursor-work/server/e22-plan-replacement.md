@@ -79,3 +79,11 @@ Wajah: `not_found` `server/index.ts` ka catch-all 404 hai — yani chalta hua **
 Isi wajah se E21 ka server-side `accountKind` tagging bhi Brain par live nahi tha:
 `deploy-brain.sh` `server/config/billing-products.ts` copy hi nahi karta tha. Ab karta hai (backup +
 farq print, `*.test.ts` skip). Command: `cd /opt/anexomail-web && git pull --rebase origin main && bash server/deploy-brain.sh`.
+
+## 13 Oct 22:36 PKT — status update
+- `polar_billing_state()` check `e22_applied = true` — function ka hissa live (founder confirm).
+- `select ... from polar_plan_replacements` -> "no rows" — table maujood, abhi koi replacement nahi (sahi: koi upgrade pay nahi hua).
+- Spinner fix (`d85a615`): checkout se Back dabane par button "Opening secure checkout…" mein atka rehta tha — ab pageshow par reset + 20s timeout.
+- Brain deploy (`bash server/deploy-brain.sh`) — founder ke chalane tak `change-plan` live nahi (Upgrade par `not_found`).
+- Live checkout asli card maangta hai, isliye end-to-end upgrade test (pending row -> payment -> purani subscription `revoked` -> billing page) abhi **nahi hua**. Agar Polar dashboard 100%-off discount code banane de to bina charge ke test ho sakta hai — founder ka faisla.
+- **Status: READY (DONE nahi)** — Rule 5: DONE sirf live green verify par.
