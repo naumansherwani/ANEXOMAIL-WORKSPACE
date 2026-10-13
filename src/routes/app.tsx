@@ -81,6 +81,12 @@ function AppLayout() {
     const s = account.data?.state;
     if (s === "expired" || s === "frozen" || s === "released") {
       void navigate({ to: "/trial-ended", replace: true });
+    } else if (s === "pending_plan") {
+      // E20 (13 Oct 2026): claim ho gaya, koi plan abhi select/pay nahi
+      // hua — /app ke kisi bhi route par seedha /plans. Payment confirm
+      // (trial_subscribe → status 'active') hote hi yeh state kabhi nahi
+      // milega, normal /app flow milta hai.
+      void navigate({ to: "/plans", replace: true });
     }
   }, [account.data?.state, preview, navigate]);
 

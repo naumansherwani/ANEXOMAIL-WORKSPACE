@@ -44,6 +44,8 @@ export type SessionUser = {
    */
       anexomail_address?: string | null;
   workspace_plan?: string | null;
+  /** E20 (13 Oct 2026): true sirf jab koi REAL plan mila (family ya trial_subscribe se) — false = abhi tak kuch select/pay nahi hua. */
+  has_chosen_plan?: boolean | null;
   ai_plan?: string | null;
   /** Personal | Business — Polar SKU nahi. Session/backend. */
   account_kind?: "personal" | "business" | null;

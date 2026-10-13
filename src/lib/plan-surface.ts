@@ -149,6 +149,8 @@ export function surfaceFromSession(
     ai_plan?: string | null;
     account_kind?: string | null;
     personal_plan_name?: string | null;
+    /** E20 (13 Oct 2026): true sirf jab koi REAL plan mila (family/trial_subscribe). */
+    has_chosen_plan?: boolean | null;
   } | null,
   orgSlug?: string | null,
 ): { billed: WorkspacePlanId; kind: AccountKind; power: WorkspacePlanId; copyName: string } {
@@ -157,11 +159,17 @@ export function surfaceFromSession(
   const power = featurePlan(user?.workspace_plan, user?.ai_plan, kind);
   const fromSql =
     kind === "personal" && !hasAiPlan(user?.ai_plan) ? String(user?.personal_plan_name || "").trim() : "";
+  // E20: personal account jisne abhi tak koi plan select/pay nahi kiya —
+  // "billed"/"power" upar gating ke liye waise hi 'basic' default rehte hain
+  // (purane feature-gate consumers na toote), lekin LABEL kabhi jhoota
+  // "Personal Basic" nahi bolta. Business kind ya kisi real plan wale
+  // account ke liye yeh bilkul pehle jaisa hi chalta hai.
+  const noPlanYet = kind === "personal" && !fromSql && user?.has_chosen_plan === false;
   return {
     billed,
     kind,
     power,
-    copyName: fromSql || packageCopyName(billed, kind, user?.ai_plan),
+    copyName: noPlanYet ? "Choose your plan" : fromSql || packageCopyName(billed, kind, user?.ai_plan),
   };
 }
 

@@ -12,7 +12,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { api, type ApiError } from "@/lib/api";
 
 export type AccountState = {
-  state: "none" | "trial" | "active" | "expired" | "frozen" | "released";
+  // E20 (13 Oct 2026): "pending_plan" — real signup, address claimed, lekin
+  // koi plan select/pay nahi hua abhi. Trial nahi hai (no countdown), koi
+  // fake plan label nahi. See docs/cursor-work/sql/E20_personal_plan_pending.sql
+  state: "none" | "pending_plan" | "trial" | "active" | "expired" | "frozen" | "released";
   plan: "basic" | "pro" | "business" | "business_pro" | null;
   hours_left: number;
   trial_ends_at: string | null;

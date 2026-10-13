@@ -59,6 +59,7 @@ Founder ne kaha: kaam bohot zyada hai, awam ke baad karna hai. Yahan sirf list m
 | 42 | Security (= F): `.env` plaintext passwords, repo public->private, purana Supabase token revoke, chat wala DB password badalna, test passwords rotate, Git ka asli email — secrets kabhi repo mein nahi |
 
 | — | Password reset raw Supabase link + race condition (E19, 13 Oct, founder live-caught) | READY — `docs/cursor-work/sql/E19_password_reset_hardening.sql` + `server/routes/auth.ts` in repo, Supabase paste + server deploy + live re-verify baaqi (Rule 5) |
+| — | Real personal signup "Personal Basic" + fake trial countdown (E20, 13 Oct, founder live-caught — "duniya ka sab se bara bug") | READY — `docs/cursor-work/sql/E20_personal_plan_pending.sql` + `server/routes/auth.ts` + `src/routes/claim.tsx` + `src/routes/app.tsx` + `src/lib/plan-surface.ts` + `src/lib/auth.tsx` + `src/lib/trial.ts` in repo, Supabase paste + server deploy + live re-verify baaqi (Rule 5). Asli plan-activation-after-payment (#20 upar) alag, pehle se known gap — isse band nahi hota. |
 
 ## DONE (is session mein live verify)
 - Domain system A (DB), B (Rust, asli DNS 5/5), C receive side (company address par inbound mail).

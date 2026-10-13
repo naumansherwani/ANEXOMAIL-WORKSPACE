@@ -257,10 +257,17 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
         .maybeSingle()
     : { data: null };
 
-  const workspacePlan =
-    String(familyRow?.plan || trial?.plan || "basic")
-      .trim()
-      .toLowerCase() || "basic";
+  // E20 (13 Oct 2026): "basic" yahan sirf GATING fallback hai (featurePlan /
+  // billed — purane consumers, plan-surface.ts ke feature-gates — isi par
+  // chalte hain, isay nahi badla). DISPLAY ke liye alag, honest signal:
+  // hasChosenPlan batata hai koi REAL plan (family ya trial_subscribe se)
+  // mila ya sirf default hai. Dashboard/sidebar label (surfaceFromSession)
+  // isi se "Choose your plan" vs real naam decide karta hai — founder ne
+  // live pakda tha: naya signup, zero payment, phir bhi "Personal Basic"
+  // confidently dikh raha tha.
+  const realPlan = familyRow?.plan || trial?.plan || null;
+  const hasChosenPlan = Boolean(realPlan);
+  const workspacePlan = String(realPlan || "basic").trim().toLowerCase() || "basic";
   const aiPlanRaw = String(familyRow?.ai_plan || "").trim();
   const aiPlan = aiPlanRaw && aiPlanRaw !== "" ? aiPlanRaw.toLowerCase() : null;
 
@@ -363,6 +370,7 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
       onboarded,
       anexomail_address: anexomailAddress,
       workspace_plan: workspacePlan,
+      has_chosen_plan: hasChosenPlan,
       ai_plan: aiPlan,
       account_kind: accountKind,
       personal_plan_name: personalPlanName,
@@ -538,7 +546,16 @@ authRouter.post("/signup", async (req, res) => {
   await getAdmin()
     .from("user_roles")
     .upsert({ user_id: data.user.id, role: "user" }, { onConflict: "user_id,role" });
-  await getAdmin().rpc("trial_start", {
+  // E20 (13 Oct 2026): trial_start() yahan se hata diya — woh har signup
+  // (business ho ya personal) ko unconditionally status='trial' (48h clock)
+  // de deta tha, jab ke poore codebase mein koi deliberate "start a free
+  // trial" button/flow hai hi nahi — har real signup isi se "trial"
+  // mislabel ho jata tha (founder ne live pakda: zero payment, phir bhi
+  // "47h left in your trial" + "Personal Basic"). ensure_trial_account_row
+  // same plumbing row banata hai (claim/provisioning ke liye zaroori) lekin
+  // status='pending_plan' se — koi countdown, koi fake plan label nahi,
+  // jab tak asli Polar payment (trial_subscribe) na ho.
+  await getAdmin().rpc("ensure_trial_account_row", {
     _user_id: data.user.id,
     _social_email: email,
     _provider: "email",

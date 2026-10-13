@@ -147,7 +147,13 @@ function ClaimPage() {
         await api("/api/workspace/personal", { method: "POST", body: "{}" });
         await refresh();
         window.sessionStorage.removeItem("anexo.pending.workspace_kind");
-        window.location.replace("/dashboard");
+        // E20 (13 Oct 2026): seedha /dashboard nahi — koi plan abhi select
+        // nahi hua, koi payment nahi hui. Founder ka locked flow: claim →
+        // /plans (package choose) → Polar checkout → payment → wapis
+        // signed-in /dashboard, jahan billing mein asli plan dikhta hai.
+        // CheckoutButton ka return-to rule already "signed-in personal →
+        // /dashboard" hai, isliye yahan koi aur wiring nahi badalni padi.
+        window.location.replace("/plans");
         return;
       }
 
