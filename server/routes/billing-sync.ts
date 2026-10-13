@@ -276,10 +276,23 @@ authRouter.post("/change-plan", async (req, res) => {
   if (!target) {
     return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
-  if (target.accountKind !== "personal") {
-    return res.status(400).json({ error: "change_plan_personal_tiers_only" });
+  // E21 part 4 (14 Oct 2026): two kinds of target are allowed —
+  //   • personal-tier products (accountKind "personal"): only a personal account
+  //   • generic workspace plans (kind "plan", no accountKind tag): only an
+  //     account that is NOT explicitly personal. A personal account has to
+  //     convert first (ConvertToBusiness) — it cannot buy a business plan
+  //     while still personal. kind null (not stamped yet) is allowed, same as
+  //     /intent already allows it for untagged products.
+  const isPersonalTarget = target.accountKind === "personal";
+  const isWorkspaceTarget = target.kind === "plan" && !target.accountKind;
+  if (!isPersonalTarget && !isWorkspaceTarget) {
+    return res.status(400).json({ error: "change_plan_plan_products_only" });
   }
-  if (!(await enforceAccountKind(userId, target.accountKind, res))) return;
+  if (isPersonalTarget) {
+    if (!(await enforceAccountKind(userId, target.accountKind, res))) return;
+  } else if ((await accountKindFor(userId)) === "personal") {
+    return res.status(403).json({ error: "convert_to_business_first" });
+  }
 
   const { data: current, error: curError } = await db
     .from("polar_subscriptions")
@@ -294,13 +307,34 @@ authRouter.post("/change-plan", async (req, res) => {
   }
 
   const currentProduct = current?.product_id ? productById(String(current.product_id)) : null;
-  const hasActivePersonalSubscription =
-    Boolean(current?.polar_subscription_id) && currentProduct?.accountKind === "personal";
+  // Any active *plan* subscription (personal tier or workspace plan) is
+  // replaced in place — this also covers a just-converted account moving from
+  // its old personal tier to a business plan, so it never ends up paying for
+  // both. Movein/support one-time products are not plans and are ignored.
+  const hasActivePlanSubscription =
+    Boolean(current?.polar_subscription_id) && currentProduct?.kind === "plan";
 
-  if (!hasActivePersonalSubscription) {
+  if (!hasActivePlanSubscription) {
     // Nothing to replace — this is a first-time purchase, not an upgrade.
     await openCheckoutIntent(userId, { product_key, seats: 1, return_to }, res);
     return;
+  }
+
+  // Already on exactly this product — nothing to change, nothing to charge.
+  if (String(current!.product_id) === target.productId) {
+    return res.json({ ok: true, subscription_id: current!.polar_subscription_id, unchanged: true });
+  }
+
+  // Polar rule: a seat-based subscription cannot be switched to a non-seat
+  // product in place (Business Pro is flat, everything else is per-seat).
+  // Say so clearly instead of letting Polar's raw 4xx through — and never
+  // open a second checkout here, that is exactly the double-billing path.
+  if (currentProduct!.perSeat && !target.perSeat) {
+    return res.status(409).json({
+      error: "in_place_change_not_supported",
+      detail:
+        "Moving to this plan changes how it is billed, so it can't be switched in place without a second charge. Contact support and we will move you over without charging twice.",
+    });
   }
 
   if (!POLAR_TOKEN) return res.status(503).json({ error: "polar_not_configured" });

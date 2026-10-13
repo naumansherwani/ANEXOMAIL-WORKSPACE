@@ -24,11 +24,12 @@ import {
   Sparkles,
   Star,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { CheckoutButton } from "@/components/site/PlanCheckoutButton";
+import { Button } from "@/components/ui/button";
 import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
 import { useLocale } from "@/lib/i18n";
 import { relativeTime } from "@/lib/mail";
@@ -124,8 +125,8 @@ function PlanCard({
   unit,
   features,
   currentPlanId,
-  personalLabel,
   cycle,
+  onConvert,
 }: {
   planId: string;
   name: string;
@@ -137,11 +138,16 @@ function PlanCard({
   unit: string;
   features: string[];
   currentPlanId: string | null;
-  /** e.g. "Personal Pro" — shown for personal users */
-  personalLabel?: string;
   cycle: BillingCycle;
+  /**
+   * E21 part 4: set for a PERSONAL account looking at business plans. The card
+   * shows the real business name and price (never a "Personal X" relabel, never
+   * "Current"), and its button starts the convert-to-business flow instead of
+   * a checkout.
+   */
+  onConvert?: (planId: string, name: string) => void;
 }) {
-  const isCurrent = currentPlanId === planId;
+  const isCurrent = !onConvert && currentPlanId === planId;
   const price = cycle === "monthly" ? monthly : Math.round(yearly / 12);
   const productKey = `POLAR_PRODUCT_PLAN_${planId.toUpperCase()}_${cycle.toUpperCase()}`;
   const label = ctaLabel(currentPlanId, planId);
@@ -161,9 +167,7 @@ function PlanCard({
       {/* Plan name + badges */}
       <div>
         <div className="flex flex-wrap items-center gap-1.5">
-          <span className="text-[13px] font-bold text-foreground">
-            {personalLabel ?? name}
-          </span>
+          <span className="text-[13px] font-bold text-foreground">{name}</span>
           {badge && (
             <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
               <Sparkles className="size-2.5" aria-hidden="true" />
@@ -176,9 +180,6 @@ function PlanCard({
             </span>
           )}
         </div>
-        {personalLabel && personalLabel !== name && (
-          <p className="mt-0.5 text-[10px] text-muted-foreground/40">{name}</p>
-        )}
         <p className="mt-1 text-[11px] leading-snug text-muted-foreground/60">{tagline}</p>
       </div>
 
@@ -212,12 +213,23 @@ function PlanCard({
           <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground/40">
             Current plan
           </div>
+        ) : onConvert ? (
+          <Button
+            type="button"
+            variant="outline"
+            className="h-9 w-full rounded-xl py-0 text-[12px] transition-colors duration-200 hover:border-primary hover:bg-primary hover:text-primary-foreground"
+            data-ax-price-cta={`billing:convert:${planId}`}
+            onClick={() => onConvert(planId, name)}
+          >
+            Convert to Business
+          </Button>
         ) : (
           <CheckoutButton
             productKey={productKey}
             label={label}
             source={`billing:${planId}`}
             className="h-9 rounded-xl py-0 text-[12px]"
+            changePlan
           />
         )}
       </div>
@@ -418,9 +430,6 @@ function PersonalTiersSection({
         ))}
       </div>
 
-      {/* E21 (13 Oct 2026): escape hatch — a personal account can still
-          move to a business workspace, same sign-in, no new account. */}
-      <ConvertToBusiness />
     </motion.section>
   );
 }
@@ -428,6 +437,16 @@ function PersonalTiersSection({
 // ─── main page ────────────────────────────────────────────────────────────────
 function WorkspaceBilling() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
+  // E21 part 4: business plan a PERSONAL account picked to convert to.
+  const [convertTarget, setConvertTarget] = useState<{ planId: string; name: string } | null>(
+    null,
+  );
+  const convertRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (convertTarget) {
+      convertRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [convertTarget]);
   const { t } = useLocale();
   const { session, organisation } = useAuth();
   const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
@@ -573,29 +592,65 @@ function WorkspaceBilling() {
             </div>
           </div>
 
-          {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ──
-              E21 (13 Oct 2026): personal-kind accounts only ever buy from
-              PersonalTiersSection above — these are the generic workspace
-              (business) products and are hidden for them so a personal
-              account can't end up checking out the wrong SKU. */}
-          {kind !== "personal" && (
-            <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-              {WORKSPACE_PLANS.map((plan) => (
-                <PlanCard
-                  key={plan.id}
-                  planId={plan.id}
-                  name={plan.name}
-                  badge={plan.badge}
-                  tagline={plan.tagline}
-                  monthly={plan.monthly}
-                  yearly={plan.yearly}
-                  yearlyRule={plan.annual}
-                  unit={plan.unit}
-                  features={plan.features}
-                  currentPlanId={billed}
-                  cycle={cycle}
-                />
-              ))}
+          {/* ── Business / workspace plans: Basic | Pro | Business | Business Pro ──
+              E21 part 4 (14 Oct 2026):
+              • business account → its 4 real plans; "Upgrade" changes the
+                existing subscription in place (changePlan), "Current" is real.
+              • personal account → the SAME 4 real business plans with their
+                real names and prices (never relabelled "Personal X", never
+                marked "Current"); the button converts the account to Business
+                on this same sign-in/email and then moves to that plan. */}
+          {kind === "personal" && (
+            <div className="mt-ax-6">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="ax-heading text-foreground">{t("Business plans")}</h3>
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                  {t("Company workspace")}
+                </span>
+              </div>
+              <p className="mt-1 text-[11px] text-muted-foreground/50">
+                {t(
+                  "Need a company workspace? Pick a plan and convert on this same sign-in and email — no new account, your mailbox stays.",
+                )}
+              </p>
+            </div>
+          )}
+          <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {WORKSPACE_PLANS.map((plan) => (
+              <PlanCard
+                key={plan.id}
+                planId={plan.id}
+                name={plan.name}
+                badge={plan.badge}
+                tagline={plan.tagline}
+                monthly={plan.monthly}
+                yearly={plan.yearly}
+                yearlyRule={plan.annual}
+                unit={plan.unit}
+                features={plan.features}
+                currentPlanId={kind === "personal" ? null : billed}
+                cycle={cycle}
+                {...(kind === "personal"
+                  ? {
+                      onConvert: (planId: string, name: string) =>
+                        setConvertTarget({ planId, name }),
+                    }
+                  : {})}
+              />
+            ))}
+          </div>
+
+          {kind === "personal" && convertTarget && (
+            <div ref={convertRef}>
+              {/* No `key` on purpose: if the account is already converted but the
+                  plan step failed, picking another card must NOT remount this and
+                  re-run the conversion (it would create a second organisation). */}
+              <ConvertToBusiness
+                defaultOpen
+                planLabel={convertTarget.name}
+                checkoutProductKey={`POLAR_PRODUCT_PLAN_${convertTarget.planId.toUpperCase()}_${cycle.toUpperCase()}`}
+                onCancel={() => setConvertTarget(null)}
+              />
             </div>
           )}
         </section>

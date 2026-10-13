@@ -35,6 +35,81 @@ function productKey(planId: string, cycle: BillingCycle) {
   return `POLAR_PRODUCT_PLAN_${planId.toUpperCase()}_${cycle.toUpperCase()}`;
 }
 
+// ─── shared checkout opener ───────────────────────────────────────────────────
+/**
+ * One place that posts a product_key to a billing endpoint and follows the
+ * answer. Used by CheckoutButton and by ConvertToBusiness (E21 part 4) so
+ * there is no second copy of the redirect/safety logic (Rule 6).
+ *
+ *  - `{ ok: true }` without a url  → /change-plan changed the subscription in
+ *    place; nothing to open, go straight to `returnTo`.
+ *  - `{ url }`                     → Polar checkout; only https://polar.sh/ is
+ *    ever followed.
+ *
+ * Throws on any failure; the caller shows the message.
+ */
+export async function openPolarCheckout({
+  productKey: pk,
+  endpoint,
+  returnTo,
+}: {
+  productKey: string;
+  endpoint: string;
+  returnTo: string;
+}): Promise<void> {
+  const result = await api<{ url?: string; guest_token?: string; ok?: boolean }>(endpoint, {
+    method: "POST",
+    body: JSON.stringify({ product_key: pk, seats: 1, return_to: returnTo }),
+  });
+
+  // change-plan changed the subscription in place — no checkout to open.
+  if (result.ok && !result.url) {
+    window.location.assign(returnTo);
+    return;
+  }
+
+  if (!result.url) {
+    throw new Error("Checkout could not be opened.");
+  }
+
+  // Validate Polar URL (safety — never redirect to an unknown domain)
+  if (!result.url.startsWith("https://polar.sh/")) {
+    throw new Error("Checkout URL is not from polar.sh — aborted for safety.");
+  }
+
+  // Persist tokens for /checkout/done
+  if (result.guest_token) {
+    window.sessionStorage.setItem("anexo.guest.checkout_token", result.guest_token);
+  }
+  window.sessionStorage.setItem("anexo.pending.checkout", pk);
+  window.sessionStorage.setItem("anexo.pending.return_to", returnTo);
+
+  // Navigate to Polar
+  window.location.assign(result.url);
+}
+
+/**
+ * Server answers with short error codes; turn the ones a person can actually
+ * run into on the plan-change path into a sentence. Unknown codes pass
+ * through unchanged (same as before).
+ */
+const BILLING_ERROR_TEXT: Record<string, string> = {
+  in_place_change_not_supported:
+    "Moving to this plan changes how it is billed, so it can't be switched in place without a second charge. Contact support and we will move you over without charging twice.",
+  convert_to_business_first:
+    "Convert your account to a Business workspace first, then pick this plan.",
+  product_not_available_for_account_kind:
+    "This plan isn't available for your account type.",
+  change_plan_failed:
+    "We couldn't change your plan just now. Nothing was charged — please try again in a minute.",
+};
+
+export function billingErrorMessage(caught: unknown): string {
+  const raw =
+    caught instanceof Error && caught.message ? caught.message : "Checkout could not be opened.";
+  return BILLING_ERROR_TEXT[raw] ?? raw;
+}
+
 // ─── core checkout button ─────────────────────────────────────────────────────
 export function CheckoutButton({
   productKey: pk,
@@ -110,35 +185,7 @@ export function CheckoutButton({
             : "/dashboard"
           : "/auth";
 
-      const result = await api<{ url?: string; guest_token?: string; ok?: boolean }>(endpoint, {
-        method: "POST",
-        body: JSON.stringify({ product_key: pk, seats: 1, return_to: returnTo }),
-      });
-
-      // change-plan changed the subscription in place — no checkout to open.
-      if (result.ok && !result.url) {
-        window.location.assign(returnTo);
-        return;
-      }
-
-      if (!result.url) {
-        throw new Error("Checkout could not be opened.");
-      }
-
-      // Validate Polar URL (safety — never redirect to an unknown domain)
-      if (!result.url.startsWith("https://polar.sh/")) {
-        throw new Error("Checkout URL is not from polar.sh — aborted for safety.");
-      }
-
-      // Persist tokens for /checkout/done
-      if (result.guest_token) {
-        window.sessionStorage.setItem("anexo.guest.checkout_token", result.guest_token);
-      }
-      window.sessionStorage.setItem("anexo.pending.checkout", pk);
-      window.sessionStorage.setItem("anexo.pending.return_to", returnTo);
-
-      // Navigate to Polar
-      window.location.assign(result.url);
+      await openPolarCheckout({ productKey: pk, endpoint, returnTo });
     } catch (caught) {
       setBusy(false);
 
@@ -147,14 +194,7 @@ export function CheckoutButton({
           ? caught.status >= 500 || caught.status === 0
           : true;
 
-      const message =
-        caught instanceof ApiError
-          ? caught.message
-          : caught instanceof Error
-            ? caught.message
-            : "Checkout could not be opened.";
-
-      setError(message);
+      setError(billingErrorMessage(caught));
 
       // Show fallback link to /plans if it looks like a server/network failure
       if (isServerError) setShowFallback(true);

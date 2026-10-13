@@ -135,6 +135,56 @@ time outside the existing webhook/intent-confirm path — narrow, single
 columns only, reasoned from code already read in this repo, but genuinely
 new ground, so the first live test matters more than usual here.
 
+## Part 4 (14 Oct 2026) — `/app/billing` "All plans" fixed: real business plans + convert
+
+Founder screenshot: internal `/app/billing` (profile billing, **not** the
+`/plans` landing page, which is fine) showed the 4 business-priced cards
+relabelled "Personal Basic / Personal Pro…" with a false "Current" tag, under
+an "All plans" heading — for personal *and* business accounts.
+
+- **`src/routes/app.billing.tsx`** — `PlanCard` no longer has `personalLabel`
+  at all: every card shows its real workspace name and price.
+  - **Personal account:** "Your personal tiers" (unchanged) → "Billing cycle" →
+    new **"Business plans"** block: the same 4 real plans (Basic / Pro /
+    Business / Business Pro), never "Current". Button = **Convert to
+    Business** → opens `ConvertToBusiness` for that plan (same sign-in, same
+    email, same mailbox — no new account).
+  - **Business account:** "All plans", the 4 real plans, real "Current";
+    "Upgrade/Downgrade" now uses `changePlan` (in place, no second
+    subscription).
+  - The old collapsed "Need a business workspace instead?" link under the
+    personal tiers is gone from this page (the Business plans cards are the
+    entry point now). `/plans` still has its link, untouched.
+- **`src/components/site/ConvertToBusiness.tsx`** — new props
+  `defaultOpen`, `checkoutProductKey`, `planLabel`, `onCancel`. With a
+  `checkoutProductKey` it converts the account (org + `account_kind` →
+  business), then calls `/api/billing/change-plan` for that plan. Conversion
+  runs **once**: if the plan step fails, the form shows the error and a
+  "Try again" button that skips the conversion (never a second organisation).
+- **`src/components/site/PlanCheckoutButton.tsx`** — the post→follow-the-answer
+  logic is now one exported `openPolarCheckout()` (used by `CheckoutButton` and
+  `ConvertToBusiness`; Rule 6, no copy). New `billingErrorMessage()` turns the
+  few plan-change error codes into a sentence.
+- **`server/routes/billing-sync.ts` `/change-plan`** — targets now: personal
+  tiers (personal account only, as before) **or** generic workspace plans
+  (`kind: "plan"`, untagged). Workspace plan for an account explicitly
+  `personal` → 403 `convert_to_business_first`. Any active *plan*
+  subscription (personal tier or workspace plan) is replaced in place via
+  `PATCH /v1/subscriptions/{id}` — so a just-converted account moves off its
+  old personal tier instead of paying for both. Same product → `{ok, unchanged}`
+  (no call). No active subscription → first-time checkout (`openCheckoutIntent`).
+  Polar/webhook/Rust `:3400` untouched.
+
+**Known limit, stated up front:** Polar does not allow a seat-based
+subscription to be switched to a non-seat product in place. Basic / Pro /
+Business and all personal tiers are per-seat; **Business Pro is flat
+(`perSeat: false`)**. So anyone on a seat-based plan choosing Business Pro gets
+a clear 409 `in_place_change_not_supported` message ("contact support, we
+move you without charging twice") — it deliberately does **not** open a second
+checkout (that would be double billing). For a personal account that means:
+converted, then told to contact support for Business Pro. Needs a founder
+decision if it should be handled differently (e.g. cancel + new checkout).
+
 ## Verify (zaroori, deploy ke baad)
 
 1. Server deploy — same Rule-1 command, carries `server/config/billing-products.ts`,
@@ -143,8 +193,11 @@ new ground, so the first live test matters more than usual here.
    `src/components/site/ConvertToBusiness.tsx`.
 2. Signed-in **personal** account → `/plans`: no Personal/Business toggle,
    only the 3 personal cards + "Need a business workspace instead?" link.
-   → `/app/billing`: only "Your personal tiers" (+ same link), no 4-card
-   generic grid.
+   → `/app/billing`: "Your personal tiers" + a **"Business plans"** block with
+   the 4 real plans (real names/prices, no "Personal X", no "Current"), each
+   with **Convert to Business**. Stale-build check on the server:
+   `grep -l "Business plans" .output/public/assets/app.billing-*.js` must
+   print a file name (empty = old bundle still being served).
 3. Signed-in **business** account → `/plans`: no toggle, only the 4
    business cards (unchanged from before).
 4. **Guest** (not signed in) → `/plans`: toggle still there, both tabs
@@ -157,10 +210,16 @@ new ground, so the first live test matters more than usual here.
    shows the new product (not a second subscription), confirm only one
    invoice/proration line appears, then confirm `/app/billing` shows the
    new plan name immediately.
-7. "Need a business workspace instead?" on a personal test account →
-   confirm one new organisation is created, `account_kind` flips to
-   business, mailbox still works, and nothing about their existing mail
-   history looks broken.
+7. `/app/billing` → "Business plans" → **Convert to Business** on a personal
+   test account → confirm one new organisation is created, `account_kind`
+   flips to business, mailbox still works, nothing about existing mail
+   history looks broken, and (with an active personal subscription) the
+   *same* Polar subscription id now shows the business product — not a
+   second subscription.
+8. Signed-in **business** account → `/app/billing`: heading "All plans", 4
+   real cards, real "Current", Upgrade changes in place.
+9. Personal/any seat-based account → Business Pro → clear "contact support"
+   message, nothing charged, no second checkout opened.
 
-**Status:** READY — all 3 points built (repo mein), server deploy + live
-re-verify, especially #6 and #7 above, abhi baaqi hai (Rule 5).
+**Status:** READY — all 4 parts built (repo mein), server deploy + live
+re-verify, especially #6–#9 above, abhi baaqi hai (Rule 5).
