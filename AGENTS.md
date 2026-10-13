@@ -146,6 +146,8 @@ Ek hi list: `docs/anexomail-blueprint.md` → section "11 Oct 2026 — remaining
 ### Rule 15 — Server ka sach server par (locked 14 Oct 2026, founder)
 Repo sirf update ki machine hai, sach nahi. Server par jo code/state dekhna ho (live file, diff, pm2, logs, DB) uske liye agent **seedha chat mein command deta hai**, founder server par chalata hai aur output paste karta hai. Agent repo ko live ka sabut nahi maanta, aur "repo == server" ka andaza nahi lagata.
 - Command chat mein, ek block, copy-paste ready. Agent khud server par kuch nahi chalata.
+- **Delivery ka asli tareeqa (founder, 14 Oct):** server hi backend + frontend hai. File badalni ho to chat mein base64 payload (`echo '<b64>' | base64 -d > <server path>`, pehle `.bak`), SQL ho to seedha server se PostgreSQL par (`. /etc/anexomail/sync.env && psql "$WORKING_URL" ...`). Fix ke liye GitHub pull ka intezar nahi. Repo sirf copy/update ki machine hai.
+- Gate/"PASS PASS" scripts founder ko nahi dene; asli output wale seedhe commands (curl code, grep, psql, pm2).
 - Mismatch ho to pehle live ka output manga kar dekhe, phir faisla.
 
 ---
