@@ -533,7 +533,9 @@ function WorkspaceBilling() {
         {/* ── Billing cycle toggle ───────────────────────────────── */}
         <section className="mt-ax-8">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <h3 className="ax-heading text-foreground">{t("All plans")}</h3>
+            <h3 className="ax-heading text-foreground">
+              {kind === "personal" ? t("Billing cycle") : t("All plans")}
+            </h3>
             <div className="flex items-center gap-1 rounded-xl border border-border bg-card p-1">
               <button
                 type="button"
@@ -565,16 +567,14 @@ function WorkspaceBilling() {
             </div>
           </div>
 
-          {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ── */}
-          <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-            {WORKSPACE_PLANS.map((plan) => {
-              // For personal users — show "Personal Pro" instead of just "Pro"
-              const personalLabel =
-                kind === "personal"
-                  ? PERSONAL_TIERS.find((t) => t.polarPlanId === plan.id)?.name
-                  : undefined;
-
-              return (
+          {/* ── 4 plan cards: Basic | Pro | Business | Business Pro ──
+              E21 (13 Oct 2026): personal-kind accounts only ever buy from
+              PersonalTiersSection above — these are the generic workspace
+              (business) products and are hidden for them so a personal
+              account can't end up checking out the wrong SKU. */}
+          {kind !== "personal" && (
+            <div className="mt-ax-3 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {WORKSPACE_PLANS.map((plan) => (
                 <PlanCard
                   key={plan.id}
                   planId={plan.id}
@@ -587,20 +587,10 @@ function WorkspaceBilling() {
                   unit={plan.unit}
                   features={plan.features}
                   currentPlanId={billed}
-                  personalLabel={personalLabel}
                   cycle={cycle}
                 />
-              );
-            })}
-          </div>
-
-          {/* ── Personal tier note (only for personal kind) ───────── */}
-          {kind === "personal" && (
-            <p className="mt-4 text-[11px] text-muted-foreground/40">
-              {t(
-                "Personal account — your workspace stays personal after checkout. Business plans unlock company Org, departments and multi-user governance.",
-              )}
-            </p>
+              ))}
+            </div>
           )}
         </section>
 

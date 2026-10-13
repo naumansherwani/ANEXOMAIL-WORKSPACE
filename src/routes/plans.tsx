@@ -8,6 +8,7 @@ import { BillingToggle } from "@/components/site/BillingToggle";
 import { CheckoutButton, PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, money, type BillingCycle } from "@/lib/plans";
 import { PERSONAL_TIERS } from "@/lib/personal-tiers";
+import { useAuth } from "@/lib/auth";
 
 export const Route = createFileRoute("/plans")({
   head: () => ({
@@ -260,6 +261,17 @@ function PlansPage() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
   const [planKind, setPlanKind] = useState<PlanKind>("personal");
 
+  // E21 (13 Oct 2026): a signed-in account already has a kind — it only
+  // ever gets to choose packages from that kind, never the other one.
+  // Guests (not signed in / kind not decided yet) keep the full toggle.
+  const { status, session } = useAuth();
+  const accountKind: PlanKind | null =
+    status === "signed-in" && (session?.user.account_kind === "personal" || session?.user.account_kind === "business")
+      ? (session.user.account_kind as PlanKind)
+      : null;
+  const kindLocked = accountKind !== null;
+  const effectiveKind: PlanKind = accountKind ?? planKind;
+
   return (
     <div className="min-h-screen bg-background">
       <SiteNav />
@@ -267,46 +279,48 @@ function PlansPage() {
         <section className="ax-container pt-20 pb-8 text-center md:pt-24">
           <p className="ax-eyebrow">Plans</p>
           <h1 className="mx-auto mt-4 max-w-2xl text-4xl text-foreground md:text-5xl">
-            {planKind === "personal" ? "Personal plans." : "Business plans."}
+            {effectiveKind === "personal" ? "Personal plans." : "Business plans."}
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {planKind === "personal"
+            {effectiveKind === "personal"
               ? "Your own email workspace — no company account needed."
               : "Company email with governance, shared inboxes and your own domain."}
           </p>
 
-          {/* Personal / Business toggle */}
-          <div className="mt-6 flex justify-center">
-            <div className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary/40 p-1">
-              {(["personal", "business"] as PlanKind[]).map((k) => (
-                <button
-                  key={k}
-                  type="button"
-                  onClick={() => setPlanKind(k)}
-                  className={`ax-press rounded-full px-5 py-2 text-[13px] font-semibold capitalize transition-colors ${
-                    planKind === k
-                      ? "border border-border bg-card text-foreground"
-                      : "border border-transparent text-muted-foreground hover:text-foreground"
-                  }`}
-                >
-                  {k}
-                </button>
-              ))}
+          {/* Personal / Business toggle — hidden once an account's kind is known */}
+          {!kindLocked && (
+            <div className="mt-6 flex justify-center">
+              <div className="inline-flex items-center gap-1 rounded-full border border-border bg-secondary/40 p-1">
+                {(["personal", "business"] as PlanKind[]).map((k) => (
+                  <button
+                    key={k}
+                    type="button"
+                    onClick={() => setPlanKind(k)}
+                    className={`ax-press rounded-full px-5 py-2 text-[13px] font-semibold capitalize transition-colors ${
+                      planKind === k
+                        ? "border border-border bg-card text-foreground"
+                        : "border border-transparent text-muted-foreground hover:text-foreground"
+                    }`}
+                  >
+                    {k}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="mt-4 flex justify-center">
             <BillingToggle value={cycle} onChange={setCycle} yearlyNote="Save with yearly" />
           </div>
           <p className="mx-auto mt-3 max-w-xl text-xs leading-relaxed text-muted-foreground">
-            {planKind === "personal"
+            {effectiveKind === "personal"
               ? "Personal Basic and Pro+ get 1 month free yearly. Personal Premium gets 2 months free."
               : "Basic and Pro get 1 month free yearly. Business and Business Pro get 2 months free."}
           </p>
         </section>
 
         {/* ── Personal plans ─────────────────────────────────── */}
-        {planKind === "personal" && (
+        {effectiveKind === "personal" && (
           <section
             data-ax-pricing="personal-plans"
             className="ax-container grid gap-5 pb-24 md:grid-cols-3"
@@ -346,7 +360,7 @@ function PlansPage() {
                     ))}
                   </ul>
                   <div className="mt-6">
-                    <CheckoutButton productKey={pk} source={`plans:${tier.id}`} />
+                    <CheckoutButton productKey={pk} source={`plans:${tier.id}`} requireSignIn />
                   </div>
                 </article>
               );
@@ -355,7 +369,7 @@ function PlansPage() {
         )}
 
         {/* ── Business plans (existing, no-touch) ────────────── */}
-        {planKind === "business" && (
+        {effectiveKind === "business" && (
         <section
           data-ax-pricing="plans"
           className="ax-container grid gap-5 pb-24 md:grid-cols-2 xl:grid-cols-4"

@@ -41,11 +41,19 @@ export function CheckoutButton({
   label = "Get started",
   source,
   className,
+  requireSignIn = false,
 }: {
   productKey: string;
   label?: string;
   source: string;
   className?: string | undefined;
+  /**
+   * E21 (13 Oct 2026): personal-tier products now 403 for guest checkout
+   * (account_kind enforcement, billing-sync.ts). Set this for personal
+   * products so a guest is sent to sign up first instead of hitting that
+   * 403 as a raw error string.
+   */
+  requireSignIn?: boolean;
 }) {
   const { status, session } = useAuth();
   const [busy, setBusy] = useState(false);
@@ -58,6 +66,13 @@ export function CheckoutButton({
 
     // Trial: no payment — direct signup
     if (pk === "TRIAL") {
+      window.location.assign("/auth?mode=signup");
+      return;
+    }
+
+    // Personal products — guest must sign up first (account_kind is decided
+    // at signup; there is no "guest personal" to attach a kind to).
+    if (requireSignIn && status !== "signed-in") {
       window.location.assign("/auth?mode=signup");
       return;
     }

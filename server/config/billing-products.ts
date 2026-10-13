@@ -9,6 +9,14 @@ export type BillingProduct = {
   cycle?: BillingCycle;
   amountGbp: number;
   perSeat: boolean;
+  /**
+   * E21 (13 Oct 2026): personal-tier products sirf "personal" account_kind
+   * khareed sakta hai (enforceAccountKind, billing-sync.ts — pehle se wired,
+   * ab activate). Business workspace products (Basic/Pro/Business/Business
+   * Pro) jaan-bojh kar untagged hain — guest checkout (ABSM Phase 49) abhi
+   * bhi sign-in se pehle business plan khareed sakta hai; yeh field na tootay.
+   */
+  accountKind?: "personal" | "business";
 };
 
 export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
@@ -93,6 +101,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     cycle: "monthly",
     amountGbp: 17,
     perSeat: true,
+    accountKind: "personal",
   },
   POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY: {
     envKey: "POLAR_PRODUCT_PLAN_PERSONAL_BASIC_YEARLY",
@@ -102,6 +111,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     cycle: "yearly",
     amountGbp: 187,
     perSeat: true,
+    accountKind: "personal",
   },
   POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_MONTHLY: {
     envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_MONTHLY",
@@ -111,6 +121,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     cycle: "monthly",
     amountGbp: 83,
     perSeat: true,
+    accountKind: "personal",
   },
   POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_YEARLY: {
     envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_YEARLY",
@@ -120,6 +131,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     cycle: "yearly",
     amountGbp: 913,
     perSeat: true,
+    accountKind: "personal",
   },
   POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY: {
     envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_MONTHLY",
@@ -129,6 +141,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     cycle: "monthly",
     amountGbp: 1850,
     perSeat: true,
+    accountKind: "personal",
   },
   POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY: {
     envKey: "POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_YEARLY",
@@ -138,6 +151,7 @@ export const BILLING_PRODUCTS: Record<string, BillingProduct> = {
     cycle: "yearly",
     amountGbp: 18500,
     perSeat: true,
+    accountKind: "personal",
   },
   POLAR_PRODUCT_MOVEIN_1_5: {
     envKey: "POLAR_PRODUCT_MOVEIN_1_5",
