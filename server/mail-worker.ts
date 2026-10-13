@@ -13,6 +13,7 @@
  */
 import { admin as supa } from "./lib/supa";
 import { sendMail } from "./mail/sendmail";
+import { allowedSenderAddresses } from "./lib/identity";
 
 const POLL_MS = 5_000;
 const DEFAULT_FROM = "hello@anexomail.com";
@@ -172,6 +173,20 @@ async function processQueue() {
       // resolve the GENUINE sender: their own mailbox address (via user_id),
       // never a shared generic fallback for a real authenticated sender.
       let fromAddress = row.identity || "";
+      // #3 SECURITY: queue mein pehle se pade rows par bhi From dobara jaancho.
+      if (fromAddress) {
+        const okFrom = row.user_id
+          ? (await allowedSenderAddresses(row.org_id, row.user_id)).has(String(fromAddress).trim().toLowerCase())
+          : false;
+        if (!okFrom) {
+          await supa
+            .from("mail_scheduled")
+            .update({ status: "failed", error: "identity_not_allowed" })
+            .eq("id", row.id);
+          console.error(`[mail-worker] IDENTITY REJECTED id=${row.id} identity=${fromAddress}`);
+          continue;
+        }
+      }
       if (!fromAddress && row.user_id) {
         const { data: ownMailbox } = await supa
           .from("mailboxes")

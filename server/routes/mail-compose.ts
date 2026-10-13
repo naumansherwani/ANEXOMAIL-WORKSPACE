@@ -4,6 +4,7 @@
 // Hierarchy: User -> LEO (primary) -> Jimmy (escalation only) -> Sherlock validation.
 import { Router } from "express";
 import { admin as supa } from "../lib/supa";
+import { allowedSenderAddresses } from "../lib/identity";
 
 type Ctx = { userId: string; orgId: string };
 
@@ -192,11 +193,17 @@ mailComposeRouter.post("/schedule", async (req, res) => {
   const hold = Math.min(Math.max(Number(b.hold_seconds ?? 10), 0), 120);
   const sendAt = b.send_at ? new Date(b.send_at) : new Date(Date.now() + hold * 1000);
 
+  // #3 SECURITY: From sirf is user ke jaiz addresses mein se (client ka identity seedha maan lena spoofing tha).
+  const wantedFrom = String(b.identity || "").trim().toLowerCase();
+  if (wantedFrom && !(await allowedSenderAddresses(c.orgId, c.userId)).has(wantedFrom)) {
+    return res.status(403).json({ error: "identity_not_allowed", identity: wantedFrom });
+  }
+
   const { data, error } = await supa.from("mail_scheduled").insert({
     org_id: c.orgId,
     user_id: c.userId,
     thread_id: b.thread_id || null,
-    identity: b.identity || null,
+    identity: wantedFrom || null,
     to: b.to || "",
     cc: b.cc || null,
     bcc: b.bcc || null,
