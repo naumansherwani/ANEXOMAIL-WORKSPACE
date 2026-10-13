@@ -27,8 +27,8 @@ Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) s
 | 12 | `hello@` auto-reply, Option C (ticket number nahi) | TODO |
 | 13 | `billing@` receipt on payment success (Polar `:3400`, no-touch) | TODO |
 | 14 | Business Pro support 12h (phase63 -> E-series, `polar.ts` no-touch) | TODO |
-| 15 | `workspace_plans.mailboxes_included` Business Pro ke liye galat | TODO |
-| 16 | `plan.ts` limits SQL se copy (drift risk) | TODO |
+| 15 | `workspace_plans.mailboxes_included` Business Pro ke liye galat | READY |
+| 16 | `plan.ts` limits SQL se copy (drift risk) | READY |
 | 17 | Test mailboxes `mail_accounts` mein hain, `mailboxes` mein nahi | TODO |
 | 18 | Thread analytics sirf Pro+ (backend 403, Basic chip, insights call na ho) | TODO |
 | 19 | Integrations + LEO Actions sirf Business+ | TODO |
