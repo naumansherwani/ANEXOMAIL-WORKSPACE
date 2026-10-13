@@ -103,15 +103,9 @@ founder to later work) all keep working exactly as before.
   auto-blocks, or auto-deletes anything.
 - **Self-documenting schema**: `comment on function/view/column` for every
   new object, visible via `\d+` or `information_schema`.
-- **`docs/cursor-work/sql/E20_rollback.sql`** — a dedicated, separate
-  rollback script (never pasted together with the migration by accident):
-  reverts the status/event-type constraints, drops the new view/function,
-  restores `personal_workspace_label()`'s original `'basic'` fallback, and
-  moves any `pending_plan` rows back to `trial`. SQL-side only — says
-  plainly at the top that the application-code half (`server/routes/auth.ts`,
-  `claim.tsx`, `app.tsx`, `plan-surface.ts`) needs its own `git revert` of
-  the E20 commit alongside it, or a fresh signup will call a function this
-  script just dropped.
+
+(13 Oct 2026 — founder's call: no rollback-script file, repo mein sirf real/wire
+SQL. `E20_rollback.sql` deleted.)
 
 ## Known gap this does NOT close
 

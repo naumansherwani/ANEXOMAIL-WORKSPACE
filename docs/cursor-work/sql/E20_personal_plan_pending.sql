@@ -71,10 +71,6 @@
 --   §1b/§2/§4 "comment on". SELF-DOCUMENTING — schema khud apna purpose
 --      bataye (`\d+`, information_schema se visible).
 --
--- Rollback (agar kabhi zaroorat pare): docs/cursor-work/sql/E20_rollback.sql
--- — jaan-bujh kar ALAG file, taake galti se migration + rollback ek saath
--- paste na ho jaye.
---
 -- Fail = isi file ko theek likho. E20b / _fix / _v2 banned.
 -- =============================================================================
 set search_path = public, extensions;
