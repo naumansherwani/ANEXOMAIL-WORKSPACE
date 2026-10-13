@@ -70,3 +70,12 @@ select pg_get_functiondef('public.polar_billing_state(uuid)'::regprocedure);
 - Engine log: `replace: table not readable yet` warn sirf 17:04–17:06 UTC (SQL run hone se pehle) aaye; engine ne bina restart ke table mil jane par recover kiya (warn ruk gaye).
 - Live verify (upgrade test, old sub revoked, billing page) — TODO.
 Poora E22 tab tak READY, DONE nahi (Rule 5).
+
+## 13 Oct 22:25 PKT — live test mein mila: `not_found` (Brain deploy baqi tha)
+`basic.test` (business) se `/app/billing` -> Pro/Business/Business Pro "Upgrade" par laal `not_found`.
+Wajah: `not_found` `server/index.ts` ka catch-all 404 hai — yani chalta hua **Brain (`anexomail-leo` :3100,
+`/opt/anexomail`)** purana tha aur `/api/billing/change-plan` usme tha hi nahi. Rule-1 web command sirf
+`anexomail-web` (:3000) ko update karti hai; Brain ko `server/deploy-brain.sh` update karta hai.
+Isi wajah se E21 ka server-side `accountKind` tagging bhi Brain par live nahi tha:
+`deploy-brain.sh` `server/config/billing-products.ts` copy hi nahi karta tha. Ab karta hai (backup +
+farq print, `*.test.ts` skip). Command: `cd /opt/anexomail-web && git pull --rebase origin main && bash server/deploy-brain.sh`.

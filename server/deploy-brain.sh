@@ -37,6 +37,24 @@ if [ -f "$SOURCE/lib/supa.ts" ]; then
   [ -f "$TARGET/src/lib/supa.ts" ] && cp -a "$TARGET/src/lib/supa.ts" "$TARGET/backups/$STAMP/lib/supa.ts"
   install -m 0644 "$SOURCE/lib/supa.ts" "$TARGET/src/lib/supa.ts"
 fi
+# E22 (14 Oct 2026): billing-sync.ts / polar.ts import ../config/billing-products
+# (accountKind tags, product map). Without syncing it the Brain runs new routes
+# against an OLD product config. Backup first; any difference is printed so it
+# is visible in the deploy log. Only repo-owned config files are installed.
+mkdir -p "$TARGET/src/config" "$TARGET/backups/$STAMP/config"
+for file in "$SOURCE"/config/*.ts; do
+  [ -f "$file" ] || continue
+  name="$(basename "$file")"
+  case "$name" in *.test.ts) continue ;; esac
+  if [ -f "$TARGET/src/config/$name" ]; then
+    if ! cmp -s "$file" "$TARGET/src/config/$name"; then
+      echo "config/$name differs from live — diff (live < > repo), first 40 lines:"
+      diff "$TARGET/src/config/$name" "$file" | head -40 || true
+    fi
+    cp -a "$TARGET/src/config/$name" "$TARGET/backups/$STAMP/config/$name"
+  fi
+  install -m 0644 "$file" "$TARGET/src/config/$name"
+done
 if [ -f "$SOURCE/mail-worker.ts" ]; then
   [ -f "$TARGET/src/mail-worker.ts" ] && cp -a "$TARGET/src/mail-worker.ts" "$TARGET/backups/$STAMP/mail-worker.ts"
   install -m 0644 "$SOURCE/mail-worker.ts" "$TARGET/src/mail-worker.ts"
