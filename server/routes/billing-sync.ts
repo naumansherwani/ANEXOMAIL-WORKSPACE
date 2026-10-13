@@ -473,7 +473,11 @@ authRouter.get("/intent/:id", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// 3b) POST /api/billing/settle — E23 (14 Oct 2026)
+// 3b) POST /api/billing/settle — E23 (14 Oct 2026) — Bun FALLBACK.
+//     PRIMARY: Rust :3200 /rpc/billing.settle (entitled / paid / stuck, SQL-verified).
+//     Yeh route tab chalta hai jab Rust down ho YA intent abhi "open" ho (Polar se
+//     paisa pull karna: Polar :3400 ka read_checkout sirf status deta hai, isliye
+//     yeh hissa abhi Bun mein hai).
 //     /checkout/done Polar se "confirmed" dekhta hai, lekin hamara intent tab tak
 //     sirf cron sweep se settle hota tha (agar cron na chale to user paisa de kar
 //     bhi /plans par wapas). Yeh route us checkout ka intent usi waqt pull-truth

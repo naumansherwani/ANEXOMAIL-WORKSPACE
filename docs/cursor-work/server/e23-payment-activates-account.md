@@ -22,16 +22,16 @@ bhi string se apna plan 'active' kar sakta tha, bina payment (E20 ka lockout bhi
    (jo sirf `billing_intent_confirm` ke verified amount/currency/product ke baad hota) `trial_accounts`
    `pending_plan|trial` -> `active` (`trial_subscribe`). £0/mismatch payment entitlement tak jati hi nahi, account
    active nahi hota. Trigger payment ko kabhi nahi rokta (error = WARNING). Purane paid-par-atke accounts ka backfill.
-2. **`POST /api/trial/subscribe`** ab client ka plan/payment_ref ignore karta hai; sirf `entitlement_state` dekhta.
-3. **`POST /api/billing/settle`** (`billing-sync.ts`): `/checkout/done` Polar "confirmed" ke baad apna intent usi waqt
-   pull-truth se settle karta hai (wohi `pullTruthForIntent` jo cron/`/intent/:id` use karte hain).
+2. **Activate:** Rust :3200 `/rpc/account.signup.activate` **PRIMARY** (Bun `POST /api/trial/subscribe` fallback). Client ka plan/payment_ref ignore; sirf `entitlement_state` dekhta (`trial_activate_if_paid`).
+3. **Settle:** Rust :3200 `/rpc/billing.settle` **PRIMARY** -- intent `entitled` / `paid` / `stuck` ko Supabase ke verified RPC (`billing_intent_confirm`) se settle karta hai. Intent abhi `open` ho (Polar se paisa pull karna) to Rust 503 deta hai aur frontend (`rpcOrRest`) Bun fallback `POST /api/billing/settle` (`pullTruthForIntent`) bulata hai -- kyunke Polar :3400 ka `read_checkout` sirf `status` deta hai (amount/product nahi) aur woh engine no-touch hai. **Open item (aap ki ijazat chahiye):** `read_checkout` mein amount/currency/product/order_id add ho to yeh hissa bhi Rust mein aa jata hai.
 4. **`/checkout/done`**: settle ke retry ke baad hi auto-redirect; settle na ho to "plan activate ho raha hai, ek minute"
    likha aata hai, bounce nahi.
 Webhook / Rust engine / Phase 50 SQL ko haath nahi.
 
 ## Deploy
 1. Supabase #4: E23 SQL paste -> Run.
-2. Web: Rule-1 command. 3. Brain: `bash server/deploy-brain.sh`.
+2. Rust engine (PRIMARY): `docs/cursor-work/server/e24-account-deletion.md` ke "Deploy order" step 2 wala diff-check + `bash server/rust/deploy.sh` + `bash server/gates/rust-gate.sh` (E23 aur E24 ke Rust arms ek hi `main.rs` mein hain, ek hi deploy).
+3. Web: Rule-1 command. 4. Brain (fallback): `bash server/deploy-brain.sh`.
 
 ## Live verify (DONE ke liye)
 Naya personal test signup -> /plans -> asli payment -> `/checkout/done` "Payment confirmed" -> `/dashboard` khule (bounce nahi);

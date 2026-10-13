@@ -1,4 +1,8 @@
-// ANEXOMAIL — E24: account deletion, self-service side (Brain, port 3100)
+// ANEXOMAIL — E24: account deletion, self-service side — Bun FALLBACK (port 3100)
+//
+// PRIMARY yahan nahi: Rust :3200 tRPC `/rpc/account.delete.{state,request,cancel}`
+// (server/rust/main.rs, dispatch_account). Frontend pehle Rust bulata hai
+// (rpcOrRest), yeh routes tabhi chalte hain jab Rust 404/501/502/503 de.
 //
 // Sirf REQUEST / CANCEL / STATE. Asli delete (purge) yahan se kabhi nahi hota:
 // public.account_purge() par kisi role ka execute nahi, sirf founder SQL Editor se

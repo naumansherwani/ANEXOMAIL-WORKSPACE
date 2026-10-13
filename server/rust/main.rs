@@ -509,7 +509,7 @@ async fn mail_inbox_stamp(org_id: &str) -> Result<(i64, String), String> {
 //
 // Polar Rust payment :3400 NO-TOUCH. Yeh sirf subscription read karta hai.
 // plans.ts prices NO-TOUCH. SQL RPCs (E5) se real Polar data aata hai.
-async fn dispatch_billing(proc: &str, token: &str) -> axum::response::Response {
+async fn dispatch_billing(proc: &str, token: &str, input: &Value) -> axum::response::Response {
     let (user_id, _email) = match auth_user(token).await {
         Some(u) => u,
         None => {
@@ -563,6 +563,110 @@ async fn dispatch_billing(proc: &str, token: &str) -> axum::response::Response {
                     data
                 }
             })
+        }
+
+        // POST /rpc/billing.settle  { checkout_id }   (E23, 14 Oct 2026)
+        // /checkout/done Polar se "paid" dekh kar yeh bulata hai. Rust yahan sirf
+        // Supabase ke verified RPCs chalata hai: billing_intent_confirm amount +
+        // currency + product khud check karta hai, aur account 'active' hona
+        // entitlement_state trigger (E23 SQL) karta hai. Intent abhi "open" ho
+        // (Polar se paisa pull karna baqi) to woh hissa Rust mein nahi hai ->
+        // 503 -> frontend (rpcOrRest) Bun fallback /api/billing/settle bulata hai.
+        "billing.settle" => {
+            let checkout_id = s(input, "checkout_id").trim().to_string();
+            if checkout_id.is_empty()
+                || !checkout_id
+                    .chars()
+                    .all(|c| c.is_ascii_alphanumeric() || c == '-' || c == '_')
+            {
+                return err(
+                    StatusCode::BAD_REQUEST,
+                    "checkout_id_required",
+                    "checkout_id is required",
+                )
+                .into_response();
+            }
+            let rows = sb_select(&format!(
+                "billing_intents?select=id,state,currency,product_id&polar_checkout_id=eq.{checkout_id}&user_id=eq.{user_id}&limit=1"
+            ))
+            .await;
+            let intent = match rows {
+                Ok(v) => v.as_array().and_then(|a| a.first()).cloned(),
+                Err(e) => {
+                    return err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response()
+                }
+            };
+            let intent = match intent {
+                Some(i) => i,
+                None => {
+                    return err(
+                        StatusCode::NOT_FOUND,
+                        "intent_not_found",
+                        "No such checkout for this account",
+                    )
+                    .into_response()
+                }
+            };
+            let state = intent
+                .get("state")
+                .and_then(|v| v.as_str())
+                .unwrap_or("")
+                .to_string();
+            match state.as_str() {
+                "entitled" => Ok(json!({ "settled": true, "state": "entitled" })),
+                "paid" | "stuck" => {
+                    let intent_id = intent
+                        .get("id")
+                        .and_then(|v| v.as_str())
+                        .unwrap_or("")
+                        .to_string();
+                    let currency = intent
+                        .get("currency")
+                        .and_then(|v| v.as_str())
+                        .filter(|c| !c.is_empty())
+                        .unwrap_or("GBP")
+                        .to_string();
+                    let product_id = intent.get("product_id").cloned().unwrap_or(Value::Null);
+                    // Bun jaisa: confirm ka error yahan settle ko fail nahi karta
+                    // (jaise payment_amount_mismatch) -- state dobara padhi jati hai.
+                    let _ = sb_rpc(
+                        "billing_intent_confirm",
+                        json!({
+                            "p_intent": intent_id,
+                            "p_checkout_id": checkout_id,
+                            "p_order_id": Value::Null,
+                            "p_amount": Value::Null,
+                            "p_source": "settle",
+                            "p_currency": currency,
+                            "p_product_id": product_id,
+                        }),
+                    )
+                    .await;
+                    let fresh = sb_select(&format!(
+                        "billing_intents?select=state&id=eq.{intent_id}&limit=1"
+                    ))
+                    .await
+                    .ok()
+                    .and_then(|v| {
+                        v.as_array()
+                            .and_then(|a| a.first())
+                            .and_then(|r| r.get("state"))
+                            .and_then(|x| x.as_str())
+                            .map(|x| x.to_string())
+                    })
+                    .unwrap_or_else(|| state.clone());
+                    Ok(json!({ "settled": fresh == "entitled", "state": fresh }))
+                }
+                "open" => {
+                    return err(
+                        StatusCode::SERVICE_UNAVAILABLE,
+                        "settle_pull_in_bun",
+                        "Open checkouts are pulled from Polar by the Bun fallback.",
+                    )
+                    .into_response()
+                }
+                _ => Ok(json!({ "settled": false, "state": state })),
+            }
         }
 
         _ => Err(format!("{proc} billing procedure nahi hai")),
@@ -1449,7 +1553,7 @@ fn regex_handle_ok(h: &str) -> bool {
     b.iter().all(|&c| ok_char(c))
 }
 
-/// account.signup.* — authenticated (real Supabase Auth session), lekin
+/// account.signup.* + account.delete.* (E24) — authenticated (real Supabase Auth session), lekin
 /// mail_identity ki tarah org_members pehle se hone ki zaroorat NAHI
 /// (brand-new buyer ke paas abhi workspace hi nahi hota).
 async fn dispatch_account(proc: &str, token: &str, input: &Value) -> axum::response::Response {
@@ -1507,6 +1611,59 @@ async fn dispatch_account(proc: &str, token: &str, input: &Value) -> axum::respo
                     }
                     Err(e) => Err(e),
                 }
+            }
+        }
+        // E23 -- payment ke baad account activate. Client ka plan/payment_ref
+        // ignore: sirf entitlement_state (billing_intent_confirm ne verify ki).
+        "account.signup.activate" => {
+            match sb_rpc("trial_activate_if_paid", json!({ "_user": user_id })).await {
+                Ok(v) if v.get("ok").and_then(|x| x.as_bool()) == Some(false) => {
+                    return err(
+                        StatusCode::PAYMENT_REQUIRED,
+                        "no_verified_payment",
+                        "No verified payment found for this account yet.",
+                    )
+                    .into_response();
+                }
+                other => other,
+            }
+        }
+        // E24 -- account delete: sirf request / cancel / state. Asli delete
+        // (account_purge) yahan se KABHI nahi: us par kisi role ka execute nahi,
+        // sirf founder SQL Editor se chalta hai.
+        "account.delete.state" => {
+            sb_rpc("account_deletion_state", json!({ "_user": user_id })).await
+        }
+        "account.delete.cancel" => {
+            sb_rpc("account_deletion_cancel", json!({ "_user": user_id })).await
+        }
+        "account.delete.request" => {
+            match sb_rpc(
+                "account_deletion_request",
+                json!({ "_user": user_id, "_confirm_email": s(input, "confirm_email") }),
+            )
+            .await
+            {
+                Ok(v) if v.get("ok").and_then(|x| x.as_bool()) == Some(false) => {
+                    let code = v
+                        .get("error")
+                        .and_then(|x| x.as_str())
+                        .unwrap_or("request_failed")
+                        .to_string();
+                    let (status, msg) = match code.as_str() {
+                        "blocked" => (
+                            StatusCode::CONFLICT,
+                            "Resolve the items listed on the page first.",
+                        ),
+                        "email_mismatch" => (
+                            StatusCode::BAD_REQUEST,
+                            "That email doesn't match this account.",
+                        ),
+                        _ => (StatusCode::BAD_REQUEST, "Deletion could not be scheduled."),
+                    };
+                    return err(status, &code, msg).into_response();
+                }
+                other => other,
             }
         }
         other => {
@@ -2001,7 +2158,7 @@ async fn dispatch(
 
     // Phase 5 — naya buyer signup (workspace abhi nahi bana, is liye mail_identity
     // use nahi karte — sirf real Supabase Auth session chahiye).
-    if proc.starts_with("account.signup.") {
+    if proc.starts_with("account.signup.") || proc.starts_with("account.delete.") {
         return dispatch_account(&proc, &token, &input).await;
     }
 
@@ -2009,7 +2166,7 @@ async fn dispatch(
     // Polar Rust payment :3400 NO-TOUCH. Sirf Supabase RPCs (E5 SQL) se read.
     // Fallback: Bun /api/billing/subscription + /api/billing/invoices.
     if proc.starts_with("billing.") {
-        return dispatch_billing(&proc, &token).await;
+        return dispatch_billing(&proc, &token, &input).await;
     }
 
     // Step 6 (plan-feature-wire audit) — Tasks + Notes, THREAD-level, Pro+.

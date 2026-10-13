@@ -179,6 +179,7 @@ router.post("/security", async (req, res) => {
 // (billing_intent_confirm ne amount+currency+product verify karke likhi) dekhi
 // jati hai. Asli activation entitlement trigger khud karta hai (E23 SQL); yeh
 // route sirf "abhi activate kar do" ka poke hai (checkout ke baad turant).
+// PRIMARY: Rust :3200 /rpc/account.signup.activate. Yeh Bun route sirf FALLBACK hai.
 router.post("/subscribe", async (req, res) => {
   const user = await requireUser(req, res);
   if (!user) return;

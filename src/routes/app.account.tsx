@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { api, ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 
@@ -53,7 +54,8 @@ type DeletionState = {
 
 /** Server sends short codes (ApiError.message); turn the known ones into sentences. */
 function deletionErrorText(error: unknown): string {
-  const raw = error instanceof Error ? error.message : "";
+  // Rust sends {code, message}; the Bun fallback sends the code as the message.
+  const raw = error instanceof ApiError && error.code ? error.code : error instanceof Error ? error.message : "";
   if (raw === "email_mismatch") return "That email doesn't match this account.";
   if (raw === "blocked") return "Resolve the items listed above first.";
   return raw || "Try again in a minute.";
@@ -133,16 +135,23 @@ function AccountPage() {
   // E24 — account deletion (request → 7-day wait → founder-run purge)
   const deletion = useQuery<DeletionState, ApiError>({
     queryKey: ["account-deletion", "state"],
-    queryFn: () => api<DeletionState>("/api/account-deletion/state"),
+    // E24: Rust /rpc/account.delete.state PRIMARY, Bun fallback.
+    queryFn: () =>
+      rpcOrRest<DeletionState>("account.delete.state", { path: "/api/account-deletion/state" }),
     retry: false,
   });
 
   const requestDeletion = useMutation({
     mutationFn: () =>
-      api("/api/account-deletion/request", {
-        method: "POST",
-        body: JSON.stringify({ confirm_email: deleteConfirm.trim() }),
-      }),
+      rpcOrRest(
+        "account.delete.request",
+        {
+          path: "/api/account-deletion/request",
+          method: "POST",
+          body: { confirm_email: deleteConfirm.trim() },
+        },
+        { confirm_email: deleteConfirm.trim() },
+      ),
     onSuccess: () => {
       setDeleteConfirm("");
       notify.done(
@@ -156,7 +165,12 @@ function AccountPage() {
   });
 
   const cancelDeletion = useMutation({
-    mutationFn: () => api("/api/account-deletion/cancel", { method: "POST" }),
+    mutationFn: () =>
+      rpcOrRest(
+        "account.delete.cancel",
+        { path: "/api/account-deletion/cancel", method: "POST", body: {} },
+        {},
+      ),
     onSuccess: () => {
       notify.done("Deletion cancelled", "Your account stays exactly as it is.");
       void queryClient.invalidateQueries({ queryKey: ["account-deletion", "state"] });

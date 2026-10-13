@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/site/BrandMark";
 import { reportGlitch } from "@/lib/telemetry";
 import { api, ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 
@@ -70,10 +71,13 @@ function CheckoutDonePage() {
           let ok = false;
           for (let i = 0; i < 8 && !cancelled && !ok; i += 1) {
             try {
-              const r = await api<{ settled: boolean }>("/api/billing/settle", {
-                method: "POST",
-                body: JSON.stringify({ checkout_id: checkoutId }),
-              });
+              // E23: Rust /rpc/billing.settle PRIMARY; Bun /api/billing/settle only
+              // when Rust is down or the checkout is still "open" (Polar pull is Bun).
+              const r = await rpcOrRest<{ settled: boolean }>(
+                "billing.settle",
+                { path: "/api/billing/settle", method: "POST", body: { checkout_id: checkoutId } },
+                { checkout_id: checkoutId },
+              );
               ok = r.settled;
             } catch (e: unknown) {
               // 404 = no intent for this checkout (older path) — nothing to settle.

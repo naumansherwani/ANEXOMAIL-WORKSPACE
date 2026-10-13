@@ -10,6 +10,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api, type ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type AccountState = {
   // E20 (13 Oct 2026): "pending_plan" — real signup, address claimed, lekin
@@ -133,8 +134,16 @@ export function useSubscribe() {
     ApiError,
     { plan: "basic" | "pro" | "business" | "business_pro"; payment_ref: string }
   >({
+    // E23: Rust /rpc/account.signup.activate PRIMARY, Bun /api/trial/subscribe
+    // fallback. The server ignores plan/payment_ref -- it only activates when a
+    // verified entitlement exists (billing_intent_confirm), so these fields are
+    // kept only for the existing call signature.
     mutationFn: (body) =>
-      api("/api/trial/subscribe", { method: "POST", body: JSON.stringify(body) }),
+      rpcOrRest(
+        "account.signup.activate",
+        { path: "/api/trial/subscribe", method: "POST", body },
+        {},
+      ),
     onSuccess: () => void done(),
   });
 }
