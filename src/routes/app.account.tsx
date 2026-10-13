@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Eye, EyeOff, KeyRound, Laptop, ShieldCheck, Loader2 } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Laptop, ShieldCheck, Loader2, Trash2 } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -44,6 +44,21 @@ type DeviceSession = {
   current: boolean;
 };
 
+type DeletionState = {
+  scheduled: boolean;
+  scheduled_for?: string;
+  days_left?: number;
+  blockers: { code: string; message: string }[];
+};
+
+/** Server sends short codes (ApiError.message); turn the known ones into sentences. */
+function deletionErrorText(error: unknown): string {
+  const raw = error instanceof Error ? error.message : "";
+  if (raw === "email_mismatch") return "That email doesn't match this account.";
+  if (raw === "blocked") return "Resolve the items listed above first.";
+  return raw || "Try again in a minute.";
+}
+
 function sessionLooksLikeServer(s: DeviceSession): boolean {
   const blob = `${s.browser || ""} ${s.device || ""}`.toLowerCase();
   return blob.startsWith("bun/") || blob.includes(" bun/") || blob.startsWith("node/");
@@ -75,6 +90,8 @@ function AccountPage() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const [photoBusy, setPhotoBusy] = useState(false);
+
+  const [deleteConfirm, setDeleteConfirm] = useState("");
 
   const [recoveryKind, setRecoveryKind] = useState("gmail");
   const [recoveryEmail, setRecoveryEmail] = useState("");
@@ -112,6 +129,49 @@ function AccountPage() {
   });
 
   const visibleSessions = (sessions.data ?? []).filter((s) => !sessionLooksLikeServer(s));
+
+  // E24 — account deletion (request → 7-day wait → founder-run purge)
+  const deletion = useQuery<DeletionState, ApiError>({
+    queryKey: ["account-deletion", "state"],
+    queryFn: () => api<DeletionState>("/api/account-deletion/state"),
+    retry: false,
+  });
+
+  const requestDeletion = useMutation({
+    mutationFn: () =>
+      api("/api/account-deletion/request", {
+        method: "POST",
+        body: JSON.stringify({ confirm_email: deleteConfirm.trim() }),
+      }),
+    onSuccess: () => {
+      setDeleteConfirm("");
+      notify.done(
+        "Deletion scheduled",
+        "Your account will be deleted after the waiting period. You can cancel any time before then.",
+      );
+      void queryClient.invalidateQueries({ queryKey: ["account-deletion", "state"] });
+    },
+    onError: (error: ApiError) =>
+      notify.failed("Could not schedule deletion", { description: deletionErrorText(error) }),
+  });
+
+  const cancelDeletion = useMutation({
+    mutationFn: () => api("/api/account-deletion/cancel", { method: "POST" }),
+    onSuccess: () => {
+      notify.done("Deletion cancelled", "Your account stays exactly as it is.");
+      void queryClient.invalidateQueries({ queryKey: ["account-deletion", "state"] });
+    },
+    onError: (error: ApiError) =>
+      notify.failed("Could not cancel deletion", { description: deletionErrorText(error) }),
+  });
+
+  const accountEmail = session?.user.email ?? "";
+  const deletionBlocked = (deletion.data?.blockers.length ?? 0) > 0;
+  const canRequestDeletion =
+    !!accountEmail &&
+    deleteConfirm.trim().toLowerCase() === accountEmail.toLowerCase() &&
+    !deletionBlocked &&
+    !requestDeletion.isPending;
 
   const changePassword = useMutation({
     mutationFn: async () => {
@@ -440,6 +500,92 @@ function AccountPage() {
               </ul>
             )}
           </div>
+        </section>
+
+        <section className="rounded-xl border border-destructive/40 p-ax-4">
+          <h2 className="ax-label text-destructive">Delete account</h2>
+          {deletion.isLoading ? (
+            <div className="mt-ax-3">
+              <ListSkeleton rows={1} />
+            </div>
+          ) : deletion.error ? (
+            deletion.error.isNotImplemented ? (
+              <p className="ax-caption mt-1">Account deletion isn't available on this server yet.</p>
+            ) : (
+              <div className="mt-ax-3">
+                <ErrorState
+                  title="Deletion status didn't load"
+                  body={deletion.error.message}
+                  onRetry={() => void deletion.refetch()}
+                />
+              </div>
+            )
+          ) : deletion.data?.scheduled ? (
+            <div className="mt-1 space-y-ax-3">
+              <p className="ax-caption">
+                Your account is scheduled to be deleted on{" "}
+                <strong className="text-foreground">
+                  {deletion.data.scheduled_for
+                    ? new Date(deletion.data.scheduled_for).toLocaleDateString(undefined, { dateStyle: "long" })
+                    : "—"}
+                </strong>
+                {typeof deletion.data.days_left === "number" && ` (${deletion.data.days_left} day${deletion.data.days_left === 1 ? "" : "s"} left)`}
+                . Until then everything works as usual and you can change your mind.
+              </p>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={cancelDeletion.isPending}
+                onClick={() => cancelDeletion.mutate()}
+              >
+                {cancelDeletion.isPending && <Loader2 className="size-4 animate-spin" />}
+                Cancel deletion
+              </Button>
+            </div>
+          ) : (
+            <div className="mt-1 space-y-ax-3">
+              <p className="ax-caption">
+                This permanently removes your sign-in, your @anexomail.com address and all mail and data in
+                workspaces where you are the only member. There is a 7-day waiting period and you can cancel any
+                time before it ends. After that it cannot be undone.
+              </p>
+              {deletionBlocked && (
+                <ul className="list-disc space-y-1 pl-5 text-[13px] text-destructive">
+                  {deletion.data?.blockers.map((b) => (
+                    <li key={b.code}>{b.message}</li>
+                  ))}
+                </ul>
+              )}
+              <form
+                className="space-y-ax-3"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  if (canRequestDeletion) requestDeletion.mutate();
+                }}
+              >
+                <div className="space-y-1.5">
+                  <Label htmlFor="delete-confirm">
+                    Type <strong>{accountEmail || "your email"}</strong> to confirm
+                  </Label>
+                  <Input
+                    id="delete-confirm"
+                    autoComplete="off"
+                    value={deleteConfirm}
+                    disabled={deletionBlocked}
+                    onChange={(event) => setDeleteConfirm(event.target.value)}
+                  />
+                </div>
+                <Button type="submit" variant="destructive" disabled={!canRequestDeletion}>
+                  {requestDeletion.isPending ? (
+                    <Loader2 className="size-4 animate-spin" />
+                  ) : (
+                    <Trash2 className="size-4" />
+                  )}
+                  Delete my account
+                </Button>
+              </form>
+            </div>
+          )}
         </section>
       </div>
     </div>

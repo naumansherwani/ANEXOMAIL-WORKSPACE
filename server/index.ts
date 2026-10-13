@@ -39,6 +39,7 @@ import revenuePublicRouter, { founderRevenueRouter } from "./routes/revenue";
 import handoffRouter from "./routes/handoff";
 import aiCreditsRouter, { founderAiCreditsRouter } from "./routes/ai-credits";
 import { trialRouter, trialCronRouter } from "./routes/trial";
+import { accountDeletionRouter } from "./routes/account-deletion";
 import releasePublicRouter, { founderReleaseRouter, outboxRouter } from "./routes/release";
 import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from "./routes/polar";
 import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
@@ -184,6 +185,9 @@ app.use("/api/founder", founderReleaseRouter);
 // account_state() = only authority. Cron sweep: POST /api/public/trial/sweep
 app.use("/api/trial", trialRouter);
 app.use("/api/public", trialCronRouter);
+
+// E24 — account delete (request / cancel / state). Purge = founder SQL only.
+app.use("/api/account-deletion", accountDeletionRouter);
 
 // Phase 33 — Polar Checkout + Webhook
 // /api/billing/checkout (auth) + /api/public/polar/webhook (verified)
