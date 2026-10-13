@@ -473,6 +473,7 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 18. TODO. Thread analytics Pro+ only — backend `403`, chip on Basic, insights call must not fire.
 19. TODO. Integrations and LEO Actions — Business+ only.
 20. TODO. A real card charge: checkout URL is green, but money actually being taken and the workspace going active is not confirmed yet.
+    14 Oct 2026 — adjacent work done outside the numbered order at the founder's direct request, all recorded as E-rows above: E20 (pending_plan lockout, DONE), E21 (plan-kind filter + convert, READY), E22 (package change = full price, old closed, READY). None of these makes #20 DONE: a real card charge and plan activation after payment is still unverified.
 
 **C. CRM**
 
