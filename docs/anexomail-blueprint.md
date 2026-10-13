@@ -458,13 +458,14 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 6. DONE (12 Oct 2026). That buyer gets their own `@anexomail.com` address and Postfix syncs it — confirmed via `postmap -q` after the auto-sync cron ran. With 5. (The cron's own reliability bug — fragile env-sourcing plus a `%`-escaping regression — was fixed earlier this session and is the foundation this relies on.) Verified end to end over the real public route too: `https://anexomail.com/rpc/account.signup.address` through Caddy to Rust, both a flat body and the exact `{"input": {...}}` shape the frontend's `rpc()` client sends.
 
    13 Oct 2026 — the human click-through finally happened (founder tried a real signup, legal name "Ali Khan", classic `/auth` signup form). It surfaced a real bug, not in 5/6's Rust claim path but in the older classic signup gate: `signup_device_gate()` (written in phase63/F3A, 12 Oct) was hard-blocking new signups with a pre-auth 403 ("This device already has accounts") once the coarse device-shape hash crossed 3 accounts. That directly violated the already-locked Phase 24A rule ("Engine khud kisi ko block NAHI karti" — engine must never auto-block, only mark suspicious, human decides warn/block) and duplicated `device_vault_register()`, which already marks a device `suspicious` without ever blocking — a Rule 6 duplicate-system violation. Fixed in `docs/cursor-work/sql/E18_signup_device_gate_nonblocking.sql`: removed the automatic account-count block entirely; the gate now only turns away a device a human has already confirmed banned (`device_bans`). `server/routes/auth.ts` updated to match (dead `too_many_accounts` branch removed). Status: DONE (13 Oct 2026) — `server/routes/auth.ts` deployed (`web /health 200`, pm2 restart confirmed), `E18_signup_device_gate_nonblocking.sql` run in Supabase, founder confirmed success on both.
-7. TODO. Compose From selector, company address in its own colour. After 3.
-8. TODO. Domain wizard, three scenes, DNS ticks, copy buttons. After 7.
+7. TODO. Compose From selector, company address in its own colour. After 3. 6 choices: 5 company addresses + founder, real wire. Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
+    7a. TODO. Domains A (DB `org_domains`/`org_addresses`), B (Rust), C (server cron), E (Compose From + Inbox address label) ka live verify — D se pehle. 14 Oct repo audit: A/B/C code repo mein hai, live output baqi.
+8. TODO. Domain wizard, three scenes, DNS ticks, copy buttons. After 7. Yeh founder ki list ka hissa D hai — sirf yahi nahi bana, baqi A/B/C/E 7a mein verify. Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
 9. DONE — founder screenshot confirmed (11 Oct 2026). Mail cinema UI.
 10. READY. Repo and server sync for the thread route and live-only files — done on side branch `wip/e15-ui`, not on `main` yet (needs founder's "repo update"). 14 Oct: ek aur live-only file mili — `/opt/anexomail/src/lib/plan.ts` (Brain `routes/mail.ts` isko import karta hai, repo mein nahi). Mirror karni hai.
-11. TODO. MailRail: founder inbox and company inbox in separate sections.
-12. TODO. `hello@` auto-reply, Option C. No ticket number.
-13. TODO. `billing@` receipt on payment success. Polar engine `:3400` — no touch.
+11. TODO. MailRail: founder inbox and company inbox in separate sections. Founder -> `naumansherwani.founder@` only; Company -> 5 addresses unified with address badge. Founder ka UI/UX alag. Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
+12. TODO. `hello@` auto-reply, Option C. No ticket number. Exact template aur loop-guard spec file mein. 14 Oct audit: `leoSupportPipeline` (user accounts ka LEO) alag cheez hai; `hello@` ka fixed Option C reply nahi bana. Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
+13. TODO. `billing@` receipt on payment success. Polar engine `:3400` — no touch. Content: plan name, amount paid (asli Polar charge), date, next billing date, "Your workspace is now active", invoice ID. Plan/price card spec file mein. Trigger Polar engine ke bahar (settle/entitle ke baad), engine ko haath nahi. Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
 
 **B. Plans and data**
 
@@ -474,7 +475,7 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 17. TODO. Test-account mailboxes are in `mail_accounts`, not `mailboxes`, so the mailbox cap was not really tested.
     17a. READY. Storage preflight mail-send flow mein: live `mail-worker.ts` mein Step 3 `storage_reserve` + `storage_commit` laga hai. Asli send test (reserve -> send -> commit) green nahi chala, isliye DONE nahi.
     17b. TODO. Brain mail-worker log spam: `chat_ensure_workspace failed: chat_not_entitled` (Basic/Pro ke paas chat nahi, yeh expected hai) — error ki jagah chup skip.
-18. TODO. Thread analytics Pro+ only — backend `403`, chip on Basic, insights call must not fire. (14 Oct: backend ready — Rust `mail.thread.insights` Basic ko 403 deta hai; baqi sirf UI: Basic chip + insights call na jaye.)
+18. TODO. Thread analytics Pro+ only — backend `403`, chip on Basic, insights call must not fire. (14 Oct: backend ready — Rust `mail.thread.insights` Basic ko 403 deta hai; baqi sirf UI: Basic chip + insights call na jaye.) Steps 5–8 ka poora spec (assign, tasks/notes, insights 403, integrations) founder ki file mein. Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
     18a. TODO. Tasks/Notes thread ke andar (Pro+). Backend ready (Rust `work.tasks.*` / `work.notes.*`, Basic ko 403); thread UI aur Basic wall baqi.
     18b. READY. Shared-inbox assign: `POST /api/mail/thread/:id/assign` Bun mein hai, Pro+ gate (`hasFeature sharedInbox`), UI usay bulata hai. Live test baqi.
     18c. TODO. 18b ka Rust `/rpc` proc (Rust-first rule), Bun sirf fallback.
@@ -498,6 +499,7 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 28. TODO. E7 — Calendar, Rust reminders.
 29. TODO. E8 — the rest of Work on Rust. Thread notes are already green.
 30. TODO. E12 — CRM flagship. Screens are green. After E6.
+    30a. TODO. CRM ideas jo founder ne paste kiye (follow-up reminder, lead temperature, deal-stuck warning, per-person timeline, relationship health, response pace, signature facts, person notes, duplicate merge, natural search, apne wade). Sirf record — founder ke kehne par, E12 ke baad.
 
 **D. Founder browser checks**
 

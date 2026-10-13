@@ -150,6 +150,13 @@ Repo sirf update ki machine hai, sach nahi. Server par jo code/state dekhna ho (
 - Gate/"PASS PASS" scripts founder ko nahi dene; asli output wale seedhe commands (curl code, grep, psql, pm2).
 - Mismatch ho to pehle live ka output manga kar dekhe, phir faisla.
 
+### Rule 16 — Mail identities LOCKED (locked 14 Oct 2026, founder)
+Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
+- Founder account `naumansherwani.founder@anexomail.com` ka UI/UX **alag**; baqi company addresses (`hello`, `moveyourbusiness`, `resolved`, `billing`, `leo`) ka **ek unified inbox** (address badge ke saath).
+- Send-from = 6 choices (5 company + founder). `hello@` auto-reply (Option C template) aur `billing@` receipt (Polar payment success) ka text spec file mein locked hai; founder ke kehne ke baghair badla nahi jata.
+- Tarteeb blueprint ki numbering se, public user pehle (Rule 14). Polar :3400 engine no-touch rehta hai.
+- Founder se baat hamesha "aap" ke lehje mein, "kero/chalao" — "tu/tera/kar" nahi.
+
 ---
 
 ## PENDING (founder action required)
