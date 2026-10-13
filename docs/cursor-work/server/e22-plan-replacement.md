@@ -62,5 +62,10 @@ select pg_get_functiondef('public.polar_billing_state(uuid)'::regprocedure);
 4. Checkout beech mein chhodo -> purana plan `active` hi rahe, row `pending` (48h baad `abandoned`).
 5. Business Pro: same flow, ab seat-based/flat ka masla nahi.
 
-**Status:** READY — repo mein, SQL + Rust deploy + live verify baqi (Rule 5).
-Rust compile server pe pehli baar hoga.
+**Status (13 Oct 2026, 22:09 PKT — founder-pasted server log):**
+- Live engine `main.rs` == repo (pichla version): `diff` clean — DONE.
+- E22 SQL Supabase mein run — founder confirm, success — DONE.
+- Rust engine: `cargo build --release` Finished (1m08s), pm2 restart, `/health` + `/ready` + public ingress green, queue 0, dead letter 0 — compile + deploy DONE.
+- Web (Bun `change-plan` + frontend): repo pull ho gaya, **build + `pm2 restart anexomail-web` abhi baqi** — READY.
+- Live verify (upgrade test, old sub revoked, billing page) — TODO.
+Poora E22 tab tak READY, DONE nahi (Rule 5).
