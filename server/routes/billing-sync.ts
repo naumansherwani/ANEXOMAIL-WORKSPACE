@@ -473,6 +473,54 @@ authRouter.get("/intent/:id", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
+// 3b) POST /api/billing/settle — E23 (14 Oct 2026)
+//     /checkout/done Polar se "confirmed" dekhta hai, lekin hamara intent tab tak
+//     sirf cron sweep se settle hota tha (agar cron na chale to user paisa de kar
+//     bhi /plans par wapas). Yeh route us checkout ka intent usi waqt pull-truth
+//     se settle karta hai (wohi pullTruthForIntent jo /intent/:id aur cron
+//     istemal karte hain — koi naya payment logic nahi). Sirf apna intent.
+//     Account activation entitlement_state trigger (E23 SQL) se hoti hai.
+// ---------------------------------------------------------------------------
+authRouter.post("/settle", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const checkoutId = String(req.body?.checkout_id || "").trim();
+  if (!checkoutId) return res.status(400).json({ error: "checkout_id_required" });
+
+  const { data: intent, error } = await db
+    .from("billing_intents")
+    .select("*")
+    .eq("polar_checkout_id", checkoutId)
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (error) return res.status(500).json({ error: "db_error", detail: error.message });
+  if (!intent) return res.status(404).json({ error: "intent_not_found" });
+
+  if (intent.state === "entitled") return res.json({ settled: true, state: "entitled" });
+  if (intent.state === "open" && POLAR_TOKEN) {
+    await pullTruthForIntent(intent);
+  } else if (intent.state === "paid" || intent.state === "stuck") {
+    // paid magar entitlement nahi — idempotent dobara apply (sweep jaisa)
+    await db.rpc("billing_intent_confirm", {
+      p_intent: intent.id,
+      p_checkout_id: intent.polar_checkout_id,
+      p_order_id: null,
+      p_amount: null,
+      p_source: "settle",
+      p_currency: intent.currency || "GBP",
+      p_product_id: intent.product_id || null,
+    });
+  }
+  const { data: fresh } = await db
+    .from("billing_intents")
+    .select("state")
+    .eq("id", intent.id)
+    .maybeSingle();
+  return res.json({ settled: fresh?.state === "entitled", state: fresh?.state ?? intent.state });
+});
+
+// ---------------------------------------------------------------------------
 // 4) GET /api/billing/state-health — founder view
 // ---------------------------------------------------------------------------
 authRouter.get("/state-health", async (req, res) => {

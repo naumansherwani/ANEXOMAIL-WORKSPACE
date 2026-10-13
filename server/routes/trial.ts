@@ -173,21 +173,19 @@ router.post("/security", async (req, res) => {
 });
 
 // ── conversion: payment green -> active, seedha dashboard ───────
+// E23 (14 Oct 2026): pehle yeh route client ke bheje `plan` + KISI BHI non-empty
+// `payment_ref` par account 'active' kar deta tha (koi payment verify nahi hoti
+// thi). Ab client ka plan/payment_ref ignore hota hai: sirf entitlement_state
+// (billing_intent_confirm ne amount+currency+product verify karke likhi) dekhi
+// jati hai. Asli activation entitlement trigger khud karta hai (E23 SQL); yeh
+// route sirf "abhi activate kar do" ka poke hai (checkout ke baad turant).
 router.post("/subscribe", async (req, res) => {
   const user = await requireUser(req, res);
   if (!user) return;
-  const plan = String(req.body?.plan || "");
-  const paymentRef = String(req.body?.payment_ref || "");
-  // Paid grant sirf verified payment se. Polar webhook wiring = TODO (product IDs pending).
-  if (!paymentRef) return res.status(402).json({ error: "payment_ref_required" });
   try {
-    const { data, error } = await db!.rpc("trial_subscribe", {
-      _user_id: user.id,
-      _plan: plan,
-      _payment_ref: paymentRef,
-    });
+    const { data, error } = await db!.rpc("trial_activate_if_paid", { _user: user.id });
     if (error) throw error;
-    if (data && data.ok === false) return res.status(400).json(data);
+    if (data && data.ok === false) return res.status(402).json(data);
     res.json(data);
   } catch (e) {
     fail(res, e);

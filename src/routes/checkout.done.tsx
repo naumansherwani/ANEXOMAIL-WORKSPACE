@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { BrandMark } from "@/components/site/BrandMark";
 import { reportGlitch } from "@/lib/telemetry";
-import { api } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 
@@ -47,6 +47,9 @@ function CheckoutDonePage() {
   const returnTo = fromQuery || stored || fromKind;
   const [status, setStatus] = useState<"loading" | "success" | "failed" | "missing">("loading");
   const [detail, setDetail] = useState<string>("");
+  // E23: Polar's "confirmed" is not enough — our own intent must be settled so the
+  // plan is entitled and the account goes active. false = payment seen, still activating.
+  const [settled, setSettled] = useState(true);
 
   useEffect(() => {
     if (!checkoutId) {
@@ -62,6 +65,27 @@ function CheckoutDonePage() {
         if (cancelled) return;
         setDetail(data.status);
         if (data.status === "confirmed" || data.status === "succeeded") {
+          // Settle our intent now (same pull-truth the cron uses) instead of waiting
+          // for the sweep; retry briefly while the entitlement is written.
+          let ok = false;
+          for (let i = 0; i < 8 && !cancelled && !ok; i += 1) {
+            try {
+              const r = await api<{ settled: boolean }>("/api/billing/settle", {
+                method: "POST",
+                body: JSON.stringify({ checkout_id: checkoutId }),
+              });
+              ok = r.settled;
+            } catch (e: unknown) {
+              // 404 = no intent for this checkout (older path) — nothing to settle.
+              if (e instanceof ApiError && e.status === 404) {
+                ok = true;
+                break;
+              }
+            }
+            if (!ok) await new Promise((r) => setTimeout(r, 2000));
+          }
+          if (cancelled) return;
+          setSettled(ok);
           setStatus("success");
           return;
         }
@@ -89,7 +113,7 @@ function CheckoutDonePage() {
   }, [checkoutId]);
 
   useEffect(() => {
-    if (status !== "success" || !returnTo) return;
+    if (status !== "success" || !returnTo || !settled) return;
     try {
       window.sessionStorage.removeItem("anexo.pending.return_to");
     } catch {
@@ -97,7 +121,7 @@ function CheckoutDonePage() {
     }
     const timer = setTimeout(() => window.location.assign(returnTo), 2000);
     return () => clearTimeout(timer);
-  }, [status, returnTo]);
+  }, [status, returnTo, settled]);
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6">
@@ -120,7 +144,9 @@ function CheckoutDonePage() {
           <div className="space-y-4 rounded-xl border p-6 bg-green-500/5 border-green-500/20">
             <p className="text-lg font-medium text-green-600">{t("Payment confirmed.")}</p>
             <p className="text-sm text-muted-foreground">
-              {t("A receipt and next steps have been sent to your email.")}
+              {settled
+                ? t("A receipt and next steps have been sent to your email.")
+                : t("Your plan is being activated — this can take a minute. Refresh in a moment, then continue.")}
             </p>
             {returnTo ? (
               <Button asChild className="w-full">
