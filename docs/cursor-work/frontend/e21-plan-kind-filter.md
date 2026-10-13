@@ -47,22 +47,69 @@ business package, same email.
   only its own 3-tier strip. The Monthly/Yearly cycle toggle stays visible
   for everyone either way, since it also drives that strip's prices.
 
-## Known gaps this does NOT close (flagged to founder, needs its own
-approval before building — real money / Polar subscription logic)
+## Also built (13 Oct 2026, founder: "100% sab hona chahiye")
 
-1. **No double-charge protection on "upgrade" yet.** The personal-tier
-   "Upgrade" button opens a brand-new Polar checkout for the target tier
-   (`/api/billing/intent`) without cancelling the current subscription
-   first. `polar_subscription_id` is stored (`server/routes/polar.ts`,
-   locked webhook), so a real fix is possible — but it means calling
-   Polar's live API to cancel a subscription, which needs careful testing
-   before it touches a real customer, not a same-session change.
-2. **Personal → Business account-kind conversion does not exist anywhere.**
-   `account_kind` (`account_profiles.preferences.workspace_kind`) is only
-   ever written once, at signup/onboarding
-   (`server/routes/auth.ts`, `onboarding.tsx`, `claim.tsx`, `workspace.ts`)
-   — nothing updates it afterwards. "Pay for a business package on the
-   same personal email" is a new feature, not a fix.
+**4. Personal → Business conversion, same email, no new signup.**
+`src/components/site/ConvertToBusiness.tsx` — a small escape hatch shown on
+`/plans` (below the locked personal cards) and on `/app/billing` ("Your
+personal tiers" strip). Deliberately reuses the *exact same two backend
+calls* the existing business-onboarding flow already makes —
+`POST /api/workspace/organisations` (`server/routes/workspace.ts`,
+`createOperationalOrg` + `stampWorkspaceKind`) then
+`POST /api/auth/onboarding/complete`. No new backend route, no new SQL, no
+Polar/webhook code. After it succeeds, `useAuth().refresh()` re-fetches the
+session — `account_kind` flips to `"business"` and every kind-gated section
+(the new `/plans` lock, `/app/billing`'s personal-vs-generic cards) reacts
+automatically. They can then buy a real business package through the
+normal, already-working `/plans` business-tab checkout.
+
+**Honest caveat, not hidden:** this calls code that was already live for
+every business signup — I did not audit whether anything *besides*
+`mail_accounts.org_id` is scoped by org id elsewhere in the product (threads,
+contacts, calendar, etc.). For a brand-new business signup this never
+mattered because there was no prior history. For a personal account
+converting, it's the first time that existing code runs against an account
+that *has* real history, so it deserves a real test with a test account
+that has actual mail/contacts/calendar data before trusting it on a live
+customer — not a new risk I introduced, but a pre-existing one this
+surfaces for the first time.
+
+## Known gap this does NOT close (blocked — need one thing from founder)
+
+**3. No double-charge protection on "upgrade" yet.** The personal-tier
+"Upgrade" button still opens a brand-new Polar checkout for the target tier
+instead of changing the existing subscription in place.
+
+Polar's own docs confirm the correct, safe mechanism exists:
+`PATCH /v1/subscriptions/{id}` with a new `product_id` (+ `proration_behavior`)
+replaces the subscription's plan *in place* — no second subscription, Polar
+handles proration. This can be added to `billing-sync.ts` (Bun, not the
+locked Rust payment engine or the `polar.ts` bridge) as a genuinely new,
+additive route.
+
+**Why it isn't built yet:** finding the current subscription's
+`polar_subscription_id` for a user requires reading the `polar_subscriptions`
+table and/or the `polar_billing_state()` function — both created directly in
+Supabase (not in this repo), and `polar_billing_state()` is explicitly
+commented "Phase 50, no-touch" with its body not visible here. Writing a
+query against a live payment table's exact columns from a guess, with zero
+way to test it before it runs against real customer subscriptions, is
+exactly the kind of payment-logic mistake Rule 4 exists to prevent — this
+is not a "don't want to," it's "cannot verify from here."
+
+**What unblocks it:** run this once in Supabase SQL Editor and paste the
+output back:
+
+```sql
+select column_name, data_type
+from information_schema.columns
+where table_schema = 'public' and table_name = 'polar_subscriptions'
+order by ordinal_position;
+```
+
+Once the real column names (status/active flag, product id, etc.) are
+known, the "change plan in place" endpoint can be written against them
+exactly, not guessed.
 
 ## Verify (zaroori, deploy ke baad)
 

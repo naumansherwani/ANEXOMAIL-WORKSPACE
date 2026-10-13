@@ -9,6 +9,7 @@ import { CheckoutButton, PlanCheckoutButton } from "@/components/site/PlanChecko
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, money, type BillingCycle } from "@/lib/plans";
 import { PERSONAL_TIERS } from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
+import { ConvertToBusiness } from "@/components/site/ConvertToBusiness";
 
 export const Route = createFileRoute("/plans")({
   head: () => ({
@@ -365,6 +366,14 @@ function PlansPage() {
                 </article>
               );
             })}
+          </section>
+        )}
+
+        {/* ── Convert to business — signed-in personal accounts only ───
+            Escape hatch now that the toggle above is locked to their kind. */}
+        {kindLocked && accountKind === "personal" && (
+          <section className="ax-container flex justify-center pb-16">
+            <ConvertToBusiness />
           </section>
         )}
 

@@ -36,6 +36,7 @@ import { money, WORKSPACE_PLANS, type BillingCycle } from "@/lib/plans";
 import { PERSONAL_TIERS, polarToPersonalTierId, isPersonalUpgrade, type PersonalTier } from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
 import { surfaceFromSession } from "@/lib/plan-surface";
+import { ConvertToBusiness } from "@/components/site/ConvertToBusiness";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/billing")({
@@ -415,6 +416,10 @@ function PersonalTiersSection({
           />
         ))}
       </div>
+
+      {/* E21 (13 Oct 2026): escape hatch — a personal account can still
+          move to a business workspace, same sign-in, no new account. */}
+      <ConvertToBusiness />
     </motion.section>
   );
 }
