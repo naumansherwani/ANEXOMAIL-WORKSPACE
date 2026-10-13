@@ -444,6 +444,8 @@ Still open, do not mark done: the real Work-board Done button (`completed_at`), 
 
 Status words: DONE, READY, TODO. Goal: signup, then address, then send, then receive, in as few steps as the buyer needs.
 
+14 Oct 2026 — founder: baqi sab kaam isi list mein, aur end mein sirf yehi list green hogi (koi dusri list nahi). Naye items `a/b/c` suffix ke saath apni jagah par daale gaye hain taake 1–42 ke purane hawale na tootein. Tarteeb upar se neeche (A, B, C ...), har number ke baad uske `a/b/c`. Server ka sach server par hai (AGENTS.md Rule 15): jahan "live" likha hai woh server ke asli output se hai.
+
 DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/5), C (inbound on a company address). Company-address mailbox cap and address re-create (smoke 17/17).
 
 **A. Mail product**
@@ -459,7 +461,7 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 7. TODO. Compose From selector, company address in its own colour. After 3.
 8. TODO. Domain wizard, three scenes, DNS ticks, copy buttons. After 7.
 9. DONE — founder screenshot confirmed (11 Oct 2026). Mail cinema UI.
-10. READY. Repo and server sync for the thread route and live-only files — done on side branch `wip/e15-ui`, not on `main` yet (needs founder's "repo update").
+10. READY. Repo and server sync for the thread route and live-only files — done on side branch `wip/e15-ui`, not on `main` yet (needs founder's "repo update"). 14 Oct: ek aur live-only file mili — `/opt/anexomail/src/lib/plan.ts` (Brain `routes/mail.ts` isko import karta hai, repo mein nahi). Mirror karni hai.
 11. TODO. MailRail: founder inbox and company inbox in separate sections.
 12. TODO. `hello@` auto-reply, Option C. No ticket number.
 13. TODO. `billing@` receipt on payment success. Polar engine `:3400` — no touch.
@@ -467,13 +469,22 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 **B. Plans and data**
 
 14. TODO. Business Pro support 12h. Move it as an E-series file. Do not touch `polar.ts`.
-15. TODO. `workspace_plans.mailboxes_included` for Business Pro is 1. That number is wrong.
-16. TODO. Copy limits from SQL into `plan.ts`. Drift is the risk.
+15. TODO. `workspace_plans.mailboxes_included` for Business Pro is 1. That number is wrong. (14 Oct live: `workspace_plans` = basic 3, pro 5, business 30, business_pro 1. Cap ka asli source `storage_plans.mailbox_limit`, NULL = unlimited. Fix seedha psql se.)
+16. TODO. Copy limits from SQL into `plan.ts`. Drift is the risk. (14 Oct live: `plan.ts` ke numbers SQL se match karte hain — basic 3, pro 5, business 30, business_pro unlimited. Baqi: file sirf server pe hai, repo mein mirror; DB ka business_pro = #15.)
 17. TODO. Test-account mailboxes are in `mail_accounts`, not `mailboxes`, so the mailbox cap was not really tested.
-18. TODO. Thread analytics Pro+ only — backend `403`, chip on Basic, insights call must not fire.
-19. TODO. Integrations and LEO Actions — Business+ only.
+    17a. READY. Storage preflight mail-send flow mein: live `mail-worker.ts` mein Step 3 `storage_reserve` + `storage_commit` laga hai. Asli send test (reserve -> send -> commit) green nahi chala, isliye DONE nahi.
+    17b. TODO. Brain mail-worker log spam: `chat_ensure_workspace failed: chat_not_entitled` (Basic/Pro ke paas chat nahi, yeh expected hai) — error ki jagah chup skip.
+18. TODO. Thread analytics Pro+ only — backend `403`, chip on Basic, insights call must not fire. (14 Oct: backend ready — Rust `mail.thread.insights` Basic ko 403 deta hai; baqi sirf UI: Basic chip + insights call na jaye.)
+    18a. TODO. Tasks/Notes thread ke andar (Pro+). Backend ready (Rust `work.tasks.*` / `work.notes.*`, Basic ko 403); thread UI aur Basic wall baqi.
+    18b. READY. Shared-inbox assign: `POST /api/mail/thread/:id/assign` Bun mein hai, Pro+ gate (`hasFeature sharedInbox`), UI usay bulata hai. Live test baqi.
+    18c. TODO. 18b ka Rust `/rpc` proc (Rust-first rule), Bun sirf fallback.
+19. TODO. Integrations and LEO Actions — Business+ only. (14 Oct: server pe `integrations.ts` aur UI `app.integrations.tsx` dono mein koi plan check nahi. Rust gate proc + UI wall banana hai.)
+    19a. TODO. Free-alias cap (`plan.ts` `freeAliases`): E15 mein aliases ginti se bahar hain, koi limit lagti hi nahi. Cap SQL + Rust address-create mein check.
 20. TODO. A real card charge: checkout URL is green, but money actually being taken and the workspace going active is not confirmed yet.
     14 Oct 2026 — adjacent work done outside the numbered order at the founder's direct request, all recorded as E-rows above: E20 (pending_plan lockout, DONE), E21 (plan-kind filter + convert, READY), E22 (package change = full price, old closed, READY), E23 (payment ke baad account active, READY), E24 (account delete system, READY). None of these makes #20 DONE: a real card charge and plan activation after payment is still unverified.
+    20a. READY. E22 + E23 + E24 ka live verify: package-change ka asli upgrade, payment -> `/dashboard`, delete ka dry-run test account par. Code live hai (14 Oct founder output: Rust binary mein `account.delete.request`, Brain route 401, web 200); verify baqi.
+    20b. TODO. E25 — Tokio loops: payment-intent settle sweeper, deletion-due watcher (details neeche E25).
+    20c. TODO. E26 — WebTransport push `/checkout/done`. 14 Oct gate: HTTP/3 aur UDP 3443 listening hain; asli WT session ka sabut baqi.
 
 **C. CRM**
 
@@ -499,10 +510,12 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 
 35. TODO. Import old mail from Gmail or Outlook.
 36. TODO. Founder host `founderworkspace.anexomail.com`.
+    36a. TODO. Founder-side email addresses aur mailboxes (founder ke apne addresses/mailboxes): scope `founder_accounts`, `mail_accounts`, `mailboxes` ke asli rows dekh kar tay hoga (psql output founder se). #11 aur #17 se juda.
 37. TODO. Spreadsheet. Never built. Ask the founder before starting.
 38. TODO. Docs: test accounts, four packages, env names, Masood's real plan, SLA finding.
 39. TODO. The full Zoho three-panel look. Mail cinema and the From selector do not complete this on their own.
 40. TODO. Chat Phase 32+. Only when the founder pastes `## PHASE N`.
+    40a. TODO. ANEXOChat Phase 1–31A live wire: server pe asal kya chal raha hai (pm2 `anexochat` online) pehle audit-by-command; phir jo wire nahi woh. Phase 32+ phir bhi sirf founder ke paste par.
 41. TODO. LEO only on `ai.anexomail.com`.
 
 **F. Security — founder only.** Do not write secrets into the repo. Plaintext passwords in `.env`, public repo to private, revoke the old Supabase token, rotate the database password that appeared in chat, rotate test passwords, set Git to the real email. Secrets never in the repo.

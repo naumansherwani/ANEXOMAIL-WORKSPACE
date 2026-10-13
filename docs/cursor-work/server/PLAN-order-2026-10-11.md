@@ -6,6 +6,8 @@ Asli list: `docs/anexomail-blueprint.md` -> "11 Oct 2026 — remaining work". Ye
 
 **14 Oct 2026 — hum is waqt kahan hain (Rule 14 honest check):** Section A mein #1, #2, #4, #5, #6, #9 DONE; #3 READY (verify command baqi); #10 READY (side branch, `main` par founder ke "repo update" ka intezar). Tarteeb ke hisab se agla item **#3 ka green verify -> #7 Compose From selector -> #8 Domain wizard**. Pichle do din founder ke seedhe kehne par list se **bahar** ka billing/plan kaam hua (E19 password reset, E20 pending_plan, E21 kind-filter + convert, E22 package-change) — yeh "—" rows hain jo #20 (asli card charge) ke nazdeek hain, #1–#42 ka koi item DONE nahi hua in se. Yeh chupke se nahi, list mein likhe gaye hain (Rule 14).
 
+**14 Oct 2026:** naye items (17a, 17b, 18a-c, 19a, 20a-c, 36a, 40a) sirf `docs/anexomail-blueprint.md` ki list mein hain — wahi asli list hai, yeh file purani copy hai (farq ho to blueprint jeetta hai).
+
 Do queue hain. **Queue 1 (AWAM) pehle, poora khatam hone tak Queue 2 (FOUNDER) shuru nahi hoga**, jaisa founder ne kaha (AGENTS.md TARTEEB: anexomail.com pehle, founder workspace baad mein).
 
 ## Queue 1 — AWAM product (abhi chal raha hai, #1 se #N tarteeb se)
