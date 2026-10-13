@@ -46,6 +46,35 @@
 -- phase32_trial.sql / E2_personal_polar.sql khud edit nahi hue (Rule 8 SQL
 -- fail-rule precedent — E18/E19 ki tarah) — sirf create-or-replace se upar
 -- se override, aur ek naya allowed status value add.
+--
+-- ENGINEERING HARDENING (founder ne poocha "duniya ka advance SQL mein kya
+-- hona chahiye" — yahan woh hai, bulk ke liye nahi, defense-in-depth ke
+-- liye — section numbers neeche inline comments se match karte hain):
+--   §1b. DATA INTEGRITY INVARIANT — DB khud guarantee karta hai ke
+--      status='pending_plan' row par KABHI plan set nahi ho sakta (CHECK
+--      constraint). Application code bug-free rahe tab bhi — agar koi
+--      future code galti se plan set kare bina status 'active' kiye, DB
+--      insert/update khud reject kar dega. Yeh "humein trust karo" se
+--      "DB guarantee karta hai" tak le jata hai.
+--   §1c. FUNNEL AUDIT TRAIL — naya trial_events value 'pending_plan_entered',
+--      idempotency index mein bhi widen (E17 jaisa precedent) — taake har
+--      signup → pending_plan transition queryable audit mein rahe, sirf
+--      current-state snapshot nahi.
+--   §4. MONITORING VIEW (v_signup_plan_funnel) — service_role-only, ek
+--      query se batata hai kitne accounts kis stage par hain aur average
+--      kitna time lag raha hai — business ko pata chalta hai signup →
+--      payment ke beech kahan log ruk rahe hain.
+--   §5. STALE DETECTOR (pending_plan_stale) — READ-ONLY, Phase 24A ki
+--      locked philosophy follow karta hai: engine KABHI khud block/act
+--      nahi karti, sirf surface karti hai (jaise device_vault), human
+--      decide karta hai (win-back email bhejna ya na bhejna).
+--   §1b/§2/§4 "comment on". SELF-DOCUMENTING — schema khud apna purpose
+--      bataye (`\d+`, information_schema se visible).
+--
+-- Rollback (agar kabhi zaroorat pare): docs/cursor-work/sql/E20_rollback.sql
+-- — jaan-bujh kar ALAG file, taake galti se migration + rollback ek saath
+-- paste na ho jaye.
+--
 -- Fail = isi file ko theek likho. E20b / _fix / _v2 banned.
 -- =============================================================================
 set search_path = public, extensions;
@@ -54,6 +83,36 @@ set search_path = public, extensions;
 alter table public.trial_accounts drop constraint if exists trial_accounts_status_check;
 alter table public.trial_accounts add constraint trial_accounts_status_check
   check (status in ('trial','active','expired','frozen','released','pending_plan'));
+
+-- ── 1b) DATA INTEGRITY INVARIANT — pending_plan row par plan kabhi set nahi
+-- ho sakta. trial_subscribe() (phase32) hamesha status + plan EK SAATH,
+-- same UPDATE mein set karta hai ('active', _plan) — isliye yeh constraint
+-- correct code ke liye kabhi fire nahi hoga. Yeh sirf FUTURE bug se bachata
+-- hai: agar kal koi naya code galti se sirf plan set kar de status update
+-- kiye bina, Postgres khud us insert/update ko reject kar dega — "Personal
+-- Basic" wala bug class permanently DB level par band ho jata hai, sirf
+-- application code ke bharose nahi.
+alter table public.trial_accounts drop constraint if exists trial_accounts_pending_plan_no_plan_check;
+alter table public.trial_accounts add constraint trial_accounts_pending_plan_no_plan_check
+  check (status <> 'pending_plan' or plan is null);
+
+-- ── 1c) funnel audit — naya trial_events value + idempotency index widen
+-- (same technique jo E17 ne 'workspace_provisioned' ke liye use ki thi).
+alter table public.trial_events drop constraint if exists trial_events_event_type_check;
+alter table public.trial_events add constraint trial_events_event_type_check
+  check (event_type = any (array[
+    'signup','claim','passkey_set','recovery_set','warn_24h','warn_2h',
+    'expired','subscribed','frozen','released','mail_hold','recovery_used',
+    'workspace_provisioned','pending_plan_entered'
+  ]::text[]));
+
+drop index if exists trial_events_once_idx;
+create unique index trial_events_once_idx
+  on public.trial_events (user_id, event_type)
+  where event_type in (
+    'signup','claim','passkey_set','recovery_set','warn_24h','warn_2h',
+    'expired','frozen','released','pending_plan_entered'
+  );
 
 -- ── 2) ensure_trial_account_row — trial_start() ka naya, honest replacement ─
 -- Same plumbing (claim/provisioning ke liye row chahiye), lekin trial clock
@@ -73,11 +132,21 @@ begin
   insert into public.trial_events (user_id, event_type, detail)
   values (_user_id, 'signup', jsonb_build_object('provider', _provider, 'email', _social_email))
   on conflict do nothing;
+  -- Funnel audit (hardening #6): 'signup' event pehle se tha, lekin woh
+  -- generic hai (business+personal dono, trial_start() ke zamane se).
+  -- 'pending_plan_entered' specifically batata hai "yeh account ab plan
+  -- choose karne ka intezaar kar raha hai" — v_signup_plan_funnel aur
+  -- pending_plan_stale() isi par query karte hain.
+  insert into public.trial_events (user_id, event_type, detail)
+  values (_user_id, 'pending_plan_entered', jsonb_build_object('provider', _provider))
+  on conflict do nothing;
   return public.account_state(_user_id);
 end $$;
 
 revoke all on function public.ensure_trial_account_row(uuid,text,text) from public, anon, authenticated;
 grant execute on function public.ensure_trial_account_row(uuid,text,text) to service_role;
+comment on function public.ensure_trial_account_row(uuid,text,text) is
+  'E20 (13 Oct 2026): signup plumbing row only, status=pending_plan (NOT a trial clock). Replaces trial_start() at /signup for every kind.';
 
 -- ── 3) personal_workspace_label — 'basic' fallback hataya (E2 override) ───
 create or replace function public.personal_workspace_label(_user_id uuid)
@@ -151,8 +220,56 @@ end;
 $$;
 
 grant execute on function public.personal_workspace_label(uuid) to authenticated, service_role;
+comment on function public.personal_workspace_label(uuid) is
+  'E20: returns NULL (never fakes ''basic'') when no real plan exists anywhere for this user — frontend shows "Choose your plan".';
 
--- ── 4) one-time backfill — accounts jo PEHLE se is bug ka shikar hain ─────
+comment on column public.trial_accounts.status is
+  'trial|active|expired|frozen|released = Phase 32 lifecycle (unchanged). pending_plan (E20, 13 Oct 2026) = address claimed, no plan chosen/paid yet — NOT a trial, no countdown.';
+
+-- ── 4) MONITORING VIEW — signup → payment funnel, ek nazar mein ──────────
+-- service_role-only (business-sensitive aggregate data, awam ko nahi).
+-- Founder/dashboard isay query kare: "kitne log pending_plan mein phanse
+-- hain, kitne active ho gaye, average kitna time lagta hai."
+create or replace view public.v_signup_plan_funnel as
+select
+  status,
+  count(*)                                                              as accounts,
+  count(*) filter (where created_at > now() - interval '7 days')        as last_7_days,
+  count(*) filter (where created_at > now() - interval '30 days')       as last_30_days,
+  round(avg(
+    extract(epoch from (coalesce(converted_at, now()) - trial_started_at)) / 3600.0
+  )::numeric, 1)                                                        as avg_hours_in_state
+from public.trial_accounts
+group by status
+order by status;
+
+revoke all on public.v_signup_plan_funnel from public, anon, authenticated;
+grant select on public.v_signup_plan_funnel to service_role;
+comment on view public.v_signup_plan_funnel is
+  'E20: signup->payment funnel by trial_accounts.status. service_role only.';
+
+-- ── 5) STALE DETECTOR — read-only, HUMAN decides (Phase 24A philosophy:
+-- engine kabhi khud block/act nahi karti, sirf surface karti hai, jaise
+-- device_vault "suspicious" marking). Abandoned-checkout accounts flag
+-- karta hai taake founder chahe to win-back email bheje — kuch khud nahi
+-- karta, kisi ko block/delete/email nahi karta.
+create or replace function public.pending_plan_stale(_hours int default 72)
+returns table(user_id uuid, anexomail_address text, hours_pending numeric)
+language sql stable security definer set search_path = public as $$
+  select t.user_id, t.anexomail_address,
+         round(extract(epoch from (now() - t.updated_at)) / 3600.0, 1) as hours_pending
+  from public.trial_accounts t
+  where t.status = 'pending_plan'
+    and t.updated_at <= now() - (_hours || ' hours')::interval
+  order by t.updated_at asc;
+$$;
+
+revoke all on function public.pending_plan_stale(int) from public, anon, authenticated;
+grant execute on function public.pending_plan_stale(int) to service_role;
+comment on function public.pending_plan_stale(int) is
+  'E20: read-only — abandoned-checkout accounts stuck in pending_plan >_hours. Surfaces for a human win-back decision, never auto-acts.';
+
+-- ── 6) one-time backfill — accounts jo PEHLE se is bug ka shikar hain ─────
 -- Sirf woh rows jinke paas kahin bhi koi real plan evidence nahi hai (exactly
 -- founder ke "Ali Khan" test account jaisa). Ek baar chalta hai, dobara
 -- chalane se kuch nahi badalta (already 'pending_plan' wale rows WHERE
