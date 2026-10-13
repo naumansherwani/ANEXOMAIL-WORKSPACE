@@ -143,6 +143,11 @@ Ek hi list: `docs/anexomail-blueprint.md` → section "11 Oct 2026 — remaining
 - Server 1 (main brain) sensitive: agent wahan kuch chalane ko nahi kehta.
 - Repo `main` par push sirf founder ke "repo update" kehne par; live-only files (jo GitHub par nahi) pehle repo mein aayen, phir overwrite.
 
+### Rule 15 — Server ka sach server par (locked 14 Oct 2026, founder)
+Repo sirf update ki machine hai, sach nahi. Server par jo code/state dekhna ho (live file, diff, pm2, logs, DB) uske liye agent **seedha chat mein command deta hai**, founder server par chalata hai aur output paste karta hai. Agent repo ko live ka sabut nahi maanta, aur "repo == server" ka andaza nahi lagata.
+- Command chat mein, ek block, copy-paste ready. Agent khud server par kuch nahi chalata.
+- Mismatch ho to pehle live ka output manga kar dekhe, phir faisla.
+
 ---
 
 ## PENDING (founder action required)
