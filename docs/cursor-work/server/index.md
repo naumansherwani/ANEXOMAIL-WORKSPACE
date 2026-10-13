@@ -26,3 +26,5 @@ Frontend pull 21 Sep 2026: **DONE** — `web /health 200`. Proof: `docs/cursor-w
 Ab se har server-side script yahan track hoga.
 
 Security blueprint (TODO, no code): `docs/anexomail-security-blueprint.md`
+
+Test ka tareeqa (AGENTS.md Rule 17): `t7-send-identity-test.sh` — browser nahi; login token -> Rust/Brain curl -> logs/DB. Test account: `docs/cursor-work/sql/E28_seed_buyer_test_account.sql`.

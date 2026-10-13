@@ -157,6 +157,11 @@ Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
 - Tarteeb blueprint ki numbering se, public user pehle (Rule 14). Polar :3400 engine no-touch rehta hai.
 - Founder se baat hamesha "aap" ke lehje mein, "kero/chalao" — "tu/tera/kar" nahi.
 
+### Rule 17 — Test ka tareeqa + purani records (locked 14 Oct 2026, founder)
+- **Test browser se nahi.** Agent test khud banata hai: test account SQL se (`docs/cursor-work/sql/E28_seed_buyer_test_account.sql` — asli signup ke wohi steps, sirf payment ki jagah `entitlement_state` row), phir login token (GoTrue password grant, keys `/opt/anexomail/.env` se) -> Rust `:3200 /rpc/<proc>` aur Brain `:3100 /api/...` par `curl` -> `mail.log` / `psql` se asli output. Template: `docs/cursor-work/server/t7-send-identity-test.sh`. Founder ko signup/click karne ko nahi kehna; browser sirf wahan jahan screen dekhni zaroori ho (UI dikhna).
+- Command chat mein, ek block, copy-paste (Rule 15). Password/secret repo mein nahi.
+- **Kuch bhi TODO/READY likhne se pehle purani records padho:** `docs/anexomail-blueprint.md` ke "SESSION 18–21 SEP 2026" aur uske baad ke GREEN sections, `.cursor/rules/session-1821-lock.mdc`, aur founder ne server par jo chat record rakha hai (command se dekho). Jo wahan GREEN / "do not redo" hai woh dobara TODO nahi likhna, na dobara banana.
+
 ---
 
 ## PENDING (founder action required)
