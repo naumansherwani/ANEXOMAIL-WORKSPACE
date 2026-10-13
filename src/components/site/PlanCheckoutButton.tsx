@@ -94,8 +94,6 @@ export async function openPolarCheckout({
  * through unchanged (same as before).
  */
 const BILLING_ERROR_TEXT: Record<string, string> = {
-  in_place_change_not_supported:
-    "Moving to this plan changes how it is billed, so it can't be switched in place without a second charge. Contact support and we will move you over without charging twice.",
   convert_to_business_first:
     "Convert your account to a Business workspace first, then pick this plan.",
   product_not_available_for_account_kind:
@@ -131,14 +129,14 @@ export function CheckoutButton({
    */
   requireSignIn?: boolean;
   /**
-   * E21 part 3 (14 Oct 2026): use /api/billing/change-plan instead of
-   * /api/billing/intent. For a personal account with an existing active
-   * subscription this changes it in place (no new Polar checkout, no
-   * double-billing) — the response is `{ ok: true }`, not a checkout URL,
-   * so there's nothing to redirect to; it falls back to a normal checkout
-   * automatically server-side when there's no existing subscription yet
-   * (first purchase). Signed-in only — never set this for a guest-visible
-   * button.
+   * E21/E22: use /api/billing/change-plan instead of /api/billing/intent.
+   * Founder rule: moving to another package = the new package's full price,
+   * no credit for the old one, and the old subscription is closed (by the
+   * Rust payment engine, only after the new one is active). So this still
+   * opens a normal Polar checkout; the server just records which
+   * subscription it replaces. `{ ok: true, unchanged }` comes back when the
+   * user is already on that exact product. Signed-in only — never set this
+   * for a guest-visible button.
    */
   changePlan?: boolean;
 }) {

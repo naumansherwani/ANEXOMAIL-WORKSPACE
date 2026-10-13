@@ -137,6 +137,9 @@ async function openCheckoutIntent(
   userId: string,
   body: { product_key?: unknown; seats?: unknown; email?: unknown; return_to?: unknown },
   res: any,
+  // E22: set by /change-plan when this checkout REPLACES an existing active
+  // subscription (founder rule: full price for the new plan, old one closed).
+  replaces?: { subscriptionId: string },
 ): Promise<void> {
   if (!db) {
     res.status(503).json({ error: "supabase_not_configured" });
@@ -191,6 +194,7 @@ async function openCheckoutIntent(
       band: selected.band ?? "",
       billing_cycle: selected.cycle ?? "one_time",
       amount_expected_gbp: String(expectedAmount),
+      replaces_subscription_id: replaces?.subscriptionId ?? "",
     };
     const metadata: Record<string, string> = {};
     for (const [key, value] of Object.entries(rawMeta)) {
@@ -217,6 +221,33 @@ async function openCheckoutIntent(
       p_intent: intentId,
       p_checkout_id: checkout.id,
     });
+
+    // E22: record "this payment replaces subscription X" BEFORE the user gets
+    // the checkout URL. If this cannot be written they would pay and keep the
+    // old plan running too (double billing) — so no URL is handed out.
+    // The Rust payment engine's replace loop closes the old subscription only
+    // after the new product's subscription is active.
+    if (replaces) {
+      await db
+        .from("polar_plan_replacements")
+        .update({ state: "abandoned", done_at: new Date().toISOString() })
+        .eq("old_subscription_id", replaces.subscriptionId)
+        .eq("state", "pending");
+      const { error: replError } = await db.from("polar_plan_replacements").insert({
+        user_id: userId,
+        old_subscription_id: replaces.subscriptionId,
+        target_product_id: selected.productId,
+        target_product_key: String(product_key),
+        intent_id: intentId,
+        checkout_id: checkout.id,
+      });
+      if (replError) {
+        console.error("[billing intent] replacement record failed:", replError.message);
+        res.status(500).json({ error: "replacement_record_failed", intent_id: intentId });
+        return;
+      }
+    }
+
     res.json({ intent_id: intentId, checkout_id: checkout.id, url: checkout.url });
   } catch (e: any) {
     // intent zinda rehta hai — sweep dobara koshish karega
@@ -241,30 +272,30 @@ authRouter.post("/intent", async (req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// 1b) POST /api/billing/change-plan — E21 part 3 (14 Oct 2026)
+// 1b) POST /api/billing/change-plan — E21 part 3/4 + E22 (14 Oct 2026)
 //
-//     Personal-tier-to-personal-tier plan change, IN PLACE — fixes the
-//     "Upgrade" button opening a brand-new Polar checkout alongside the
-//     still-live old subscription (double-billing risk). Polar's own docs
-//     confirm the supported mechanism: PATCH /v1/subscriptions/{id} with a
-//     new product_id replaces that subscription's plan directly, Polar
-//     handles proration, no second subscription is ever created.
+//     FOUNDER RULE: a user who moves to another package pays the NEW package
+//     in full from the start — no proration, no credit for the old one — and
+//     the old subscription is closed. (Earlier E21 part 3 used Polar's
+//     in-place PATCH with proration_behavior "prorate"; that credited the old
+//     payment and is removed.)
 //
-//     Scope, on purpose: only product_key's with accountKind "personal"
-//     (the personal-tier cards). Business plan changes are untouched —
-//     not asked for, not investigated here.
+//     So this route never changes a subscription itself. It:
+//       • validates the target (personal tier for a personal account, or a
+//         workspace plan for a non-personal account — a personal account has
+//         to convert first),
+//       • finds the user's current active *plan* subscription,
+//       • opens an ordinary full-price checkout (openCheckoutIntent) and
+//         records "this checkout replaces subscription X"
+//         (public.polar_plan_replacements, E22 SQL).
+//     The Rust payment engine (polar-rust-payment :3400, replace loop) closes
+//     subscription X on Polar ONLY after the new product's subscription is
+//     active. Checkout abandoned = old plan untouched.
 //
-//     If the user has no existing *active* subscription yet (first
-//     purchase — e.g. a pending_plan/E20 account clicking a tier card),
-//     this falls back to openCheckoutIntent() — the exact same first-time
-//     checkout path /intent uses. Nothing duplicated (Rule 6).
-//
-//     After a successful PATCH, the local polar_subscriptions row's
-//     product_id/product_key is updated directly from Polar's own response
-//     — same "pull truth, don't just wait on a webhook" principle
-//     pullTruthForIntent() already uses below — so billing display is
-//     correct immediately regardless of what the Rust payment engine's
-//     webhook handler does with subscription.updated.
+//     No active plan subscription (first purchase) = plain checkout, nothing
+//     to replace. Same product as today = {ok, unchanged}.
+//     Works for every plan incl. Business Pro (no seat/non-seat in-place
+//     limit any more, because nothing is switched in place).
 // ---------------------------------------------------------------------------
 authRouter.post("/change-plan", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
@@ -276,13 +307,12 @@ authRouter.post("/change-plan", async (req, res) => {
   if (!target) {
     return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
   }
-  // E21 part 4 (14 Oct 2026): two kinds of target are allowed —
+  // Two kinds of target:
   //   • personal-tier products (accountKind "personal"): only a personal account
   //   • generic workspace plans (kind "plan", no accountKind tag): only an
   //     account that is NOT explicitly personal. A personal account has to
-  //     convert first (ConvertToBusiness) — it cannot buy a business plan
-  //     while still personal. kind null (not stamped yet) is allowed, same as
-  //     /intent already allows it for untagged products.
+  //     convert first (ConvertToBusiness). kind null (not stamped yet) is
+  //     allowed, same as /intent already allows it for untagged products.
   const isPersonalTarget = target.accountKind === "personal";
   const isWorkspaceTarget = target.kind === "plan" && !target.accountKind;
   if (!isPersonalTarget && !isWorkspaceTarget) {
@@ -307,77 +337,23 @@ authRouter.post("/change-plan", async (req, res) => {
   }
 
   const currentProduct = current?.product_id ? productById(String(current.product_id)) : null;
-  // Any active *plan* subscription (personal tier or workspace plan) is
-  // replaced in place — this also covers a just-converted account moving from
-  // its old personal tier to a business plan, so it never ends up paying for
-  // both. Movein/support one-time products are not plans and are ignored.
   const hasActivePlanSubscription =
     Boolean(current?.polar_subscription_id) && currentProduct?.kind === "plan";
 
   if (!hasActivePlanSubscription) {
-    // Nothing to replace — this is a first-time purchase, not an upgrade.
+    // Nothing to replace — first-time purchase.
     await openCheckoutIntent(userId, { product_key, seats: 1, return_to }, res);
     return;
   }
 
-  // Already on exactly this product — nothing to change, nothing to charge.
+  // Already on exactly this product — nothing to buy.
   if (String(current!.product_id) === target.productId) {
     return res.json({ ok: true, subscription_id: current!.polar_subscription_id, unchanged: true });
   }
 
-  // Polar rule: a seat-based subscription cannot be switched to a non-seat
-  // product in place (Business Pro is flat, everything else is per-seat).
-  // Say so clearly instead of letting Polar's raw 4xx through — and never
-  // open a second checkout here, that is exactly the double-billing path.
-  if (currentProduct!.perSeat && !target.perSeat) {
-    return res.status(409).json({
-      error: "in_place_change_not_supported",
-      detail:
-        "Moving to this plan changes how it is billed, so it can't be switched in place without a second charge. Contact support and we will move you over without charging twice.",
-    });
-  }
-
-  if (!POLAR_TOKEN) return res.status(503).json({ error: "polar_not_configured" });
-
-  try {
-    await polarFetch(`/v1/subscriptions/${current!.polar_subscription_id}`, {
-      method: "PATCH",
-      body: JSON.stringify({
-        product_id: target.productId,
-        proration_behavior: "prorate",
-      }),
-    });
-
-    // Pull-truth: sync the local row now, don't wait on a webhook.
-    await db
-      .from("polar_subscriptions")
-      .update({
-        product_id: target.productId,
-        product_key: String(product_key),
-        updated_at: new Date().toISOString(),
-      })
-      .eq("polar_subscription_id", current!.polar_subscription_id);
-
-    // get_billing_subscription() reads entitlement_state.plan FIRST,
-    // before falling back to polar_subscriptions — so that column would
-    // still show the old plan after a successful upgrade without this.
-    // Narrow, single-column update only (the one field that's definitely
-    // stale here); billing_apply_entitlement() owns everything else on
-    // this row and isn't touched. No-op if no row exists yet (fallback
-    // parsing in get_billing_subscription() covers that case from the
-    // polar_subscriptions row updated above).
-    if (target.plan) {
-      await db.from("entitlement_state").update({ plan: target.plan }).eq("user_id", userId);
-    }
-
-    return res.json({ ok: true, subscription_id: current!.polar_subscription_id });
-  } catch (e: any) {
-    console.error("[billing change-plan] polar patch failed:", e?.message || e);
-    return res.status(502).json({
-      error: "change_plan_failed",
-      detail: String(e?.message || e),
-    });
-  }
+  await openCheckoutIntent(userId, { product_key, seats: 1, return_to }, res, {
+    subscriptionId: String(current!.polar_subscription_id),
+  });
 });
 
 // ---------------------------------------------------------------------------

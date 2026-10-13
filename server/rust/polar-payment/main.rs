@@ -359,6 +359,9 @@ async fn main() -> anyhow::Result<()> {
     tokio::spawn(worker_loop(state.clone()));
     tokio::spawn(watchdog_loop(state.clone()));
     tokio::spawn(reconcile_loop(state.clone()));
+    // E22: package badalne par purani subscription band karna — alag task,
+    // webhook / worker / reconcile se koi taalluq nahi; fail ho to sirf log.
+    tokio::spawn(replace_loop(state.clone()));
 
     let app = Router::new()
         .route("/health", get(health))
@@ -899,6 +902,167 @@ async fn reconcile_once(s: &AppState) {
     s.metrics.reconcile_gap.store(gap, Ordering::Relaxed);
     if gap > 0 {
         tracing::warn!("reconcile: {gap} subscription(s) missing/diverged — repaired via WAL");
+    }
+}
+
+// ---------------------------------------------------------------------------
+// E22 — PLAN REPLACEMENT. Founder rule: package badalne wala naye package ka
+// poora price deta hai (koi prorate / credit nahi), purani subscription band.
+//
+// Bun/Rust checkout kholte waqt public.polar_plan_replacements mein 'pending'
+// row likhta hai (purani subscription id + naya product). Yeh loop:
+//   1. dekhta hai ke us user ki NAYE product ki subscription polar_subscriptions
+//      mein 'active' ho chuki hai (webhook / reconcile ne likhi) — us ke baghair
+//      kuch nahi chhua jata. Checkout chhoda gaya = purana plan jaisa tha waisa.
+//   2. tab SIRF wahi ek purani subscription Polar se revoke karta hai.
+// 48h tak naya active na aaye to row 'abandoned'.
+//
+// Safety: payment path se bilkul alag task; har error sirf log + attempts++;
+// table na ho (E22 SQL abhi run nahi hua) to sirf warn. Kabhi kisi aur
+// subscription ko haath nahi lagata.
+// ---------------------------------------------------------------------------
+const REPLACE_MAX_ATTEMPTS: i32 = 20;
+
+async fn replace_loop(s: Arc<AppState>) {
+    tokio::time::sleep(Duration::from_secs(60)).await;
+    loop {
+        replace_once(&s).await;
+        tokio::time::sleep(Duration::from_secs(30)).await;
+    }
+}
+
+async fn replace_mark(s: &AppState, id: &str, state: &str, err: Option<&str>) {
+    let _ = sqlx::query(
+        r#"update public.polar_plan_replacements
+              set state = $2,
+                  last_error = $3,
+                  done_at = case when $2 in ('done','abandoned','failed') then now() else done_at end
+            where id = $1::uuid"#,
+    )
+    .bind(id)
+    .bind(state)
+    .bind(err)
+    .execute(&s.db)
+    .await;
+}
+
+async fn replace_bump(s: &AppState, id: &str, err: &str) {
+    let res = sqlx::query(
+        r#"update public.polar_plan_replacements
+              set attempts = attempts + 1, last_error = $2
+            where id = $1::uuid
+        returning attempts"#,
+    )
+    .bind(id)
+    .bind(err)
+    .fetch_optional(&s.db)
+    .await;
+    if let Ok(Some(row)) = res {
+        use sqlx::Row;
+        let attempts: i32 = row.try_get("attempts").unwrap_or(0);
+        if attempts >= REPLACE_MAX_ATTEMPTS {
+            replace_mark(s, id, "failed", Some(err)).await;
+            tracing::error!("replace {id}: giving up after {attempts} attempts: {err}");
+        }
+    }
+}
+
+async fn replace_once(s: &AppState) {
+    if s.polar_token.is_empty() {
+        return;
+    }
+    // (id, user_id, old_subscription_id, new_subscription_id?, stale)
+    let rows: Result<Vec<(String, String, String, Option<String>, bool)>, sqlx::Error> =
+        sqlx::query_as(
+            r#"select r.id::text,
+                      r.user_id::text,
+                      r.old_subscription_id,
+                      (select n.polar_subscription_id
+                         from public.polar_subscriptions n
+                        where n.user_id = r.user_id
+                          and n.status = 'active'
+                          and n.product_id = r.target_product_id
+                          and n.polar_subscription_id <> r.old_subscription_id
+                          and n.created_at >= r.created_at
+                        order by n.updated_at desc
+                        limit 1) as new_sub,
+                      (r.created_at < now() - interval '48 hours') as stale
+                 from public.polar_plan_replacements r
+                where r.state = 'pending'
+                order by r.created_at
+                limit 20"#,
+        )
+        .fetch_all(&s.db)
+        .await;
+
+    let rows = match rows {
+        Ok(r) => r,
+        Err(e) => {
+            // E22 SQL abhi run nahi hua ho sakta — engine ko is se koi farq nahi.
+            tracing::warn!("replace: table not readable yet: {e}");
+            return;
+        }
+    };
+
+    for (id, user_id, old_sub, new_sub, stale) in rows {
+        let Some(_new_sub) = new_sub else {
+            if stale {
+                replace_mark(s, &id, "abandoned", None).await;
+            }
+            continue;
+        };
+
+        // Purani subscription waqai isi user ki hai? (kabhi kisi aur ki nahi)
+        let owned: Result<Option<(String,)>, sqlx::Error> = sqlx::query_as(
+            r#"select status from public.polar_subscriptions
+                where polar_subscription_id = $1 and user_id = $2::uuid"#,
+        )
+        .bind(&old_sub)
+        .bind(&user_id)
+        .fetch_optional(&s.db)
+        .await;
+        match owned {
+            Ok(Some((status,))) if status == "revoked" => {
+                replace_mark(s, &id, "done", None).await;
+                continue;
+            }
+            Ok(Some(_)) => {}
+            Ok(None) => {
+                replace_mark(s, &id, "failed", Some("old subscription not owned by user")).await;
+                tracing::error!("replace {id}: old subscription {old_sub} not owned by user");
+                continue;
+            }
+            Err(e) => {
+                replace_bump(s, &id, &format!("db: {e}")).await;
+                continue;
+            }
+        }
+
+        let sent = s
+            .http
+            .delete(format!("https://api.polar.sh/v1/subscriptions/{old_sub}"))
+            .bearer_auth(&s.polar_token)
+            .send()
+            .await;
+        match sent {
+            Ok(r) if r.status().is_success() => {
+                replace_mark(s, &id, "done", None).await;
+                tracing::info!("replace {id}: old subscription {old_sub} revoked");
+            }
+            Ok(r) => {
+                let status = r.status();
+                let body = r.text().await.unwrap_or_default();
+                // Polar: pehle se revoke / ended = kaam ho chuka.
+                if body.contains("AlreadyCanceledSubscription") {
+                    replace_mark(s, &id, "done", None).await;
+                } else {
+                    replace_bump(s, &id, &format!("polar {status}: {body}")).await;
+                }
+            }
+            Err(e) => {
+                replace_bump(s, &id, &format!("polar unreachable: {e}")).await;
+            }
+        }
     }
 }
 

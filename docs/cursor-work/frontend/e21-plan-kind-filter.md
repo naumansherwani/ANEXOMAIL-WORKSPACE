@@ -150,8 +150,8 @@ an "All plans" heading — for personal *and* business accounts.
     Business** → opens `ConvertToBusiness` for that plan (same sign-in, same
     email, same mailbox — no new account).
   - **Business account:** "All plans", the 4 real plans, real "Current";
-    "Upgrade/Downgrade" now uses `changePlan` (in place, no second
-    subscription).
+    "Upgrade/Downgrade" uses `changePlan` (full-price checkout, old plan
+    closed after payment — E22).
   - The old collapsed "Need a business workspace instead?" link under the
     personal tiers is gone from this page (the Business plans cards are the
     entry point now). `/plans` still has its link, untouched.
@@ -175,15 +175,16 @@ an "All plans" heading — for personal *and* business accounts.
   (no call). No active subscription → first-time checkout (`openCheckoutIntent`).
   Polar/webhook/Rust `:3400` untouched.
 
-**Known limit, stated up front:** Polar does not allow a seat-based
-subscription to be switched to a non-seat product in place. Basic / Pro /
-Business and all personal tiers are per-seat; **Business Pro is flat
-(`perSeat: false`)**. So anyone on a seat-based plan choosing Business Pro gets
-a clear 409 `in_place_change_not_supported` message ("contact support, we
-move you without charging twice") — it deliberately does **not** open a second
-checkout (that would be double billing). For a personal account that means:
-converted, then told to contact support for Business Pro. Needs a founder
-decision if it should be handled differently (e.g. cancel + new checkout).
+**Superseded by E22 (14 Oct 2026, founder rule):** the in-place `PATCH` with
+`proration_behavior: "prorate"` described in "Also built" #3 and in the
+`/change-plan` bullet above is **removed** — it credited the old payment.
+Rule: a user who moves to another package pays the **new package in full**,
+the old subscription is closed. `/change-plan` now opens a normal full-price
+checkout and records which subscription it replaces
+(`public.polar_plan_replacements`); the Rust payment engine closes the old one
+only after the new one is active. This also removes the old seat-based →
+Business Pro limit (nothing is switched in place any more). Full write-up:
+`docs/cursor-work/server/e22-plan-replacement.md`.
 
 ## Verify (zaroori, deploy ke baad)
 
@@ -218,8 +219,8 @@ decision if it should be handled differently (e.g. cancel + new checkout).
    second subscription.
 8. Signed-in **business** account → `/app/billing`: heading "All plans", 4
    real cards, real "Current", Upgrade changes in place.
-9. Personal/any seat-based account → Business Pro → clear "contact support"
-   message, nothing charged, no second checkout opened.
+9. Any account → Business Pro: normal full-price Polar checkout; after payment
+   the old subscription is closed by the Rust engine (see E22 verify).
 
 **Status:** READY — all 4 parts built (repo mein), server deploy + live
 re-verify, especially #6–#9 above, abhi baaqi hai (Rule 5).
