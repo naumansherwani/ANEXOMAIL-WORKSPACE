@@ -78,52 +78,89 @@ surfaces for the first time.
 
 **3. No double-charge protection on "upgrade" yet.** The personal-tier
 "Upgrade" button still opens a brand-new Polar checkout for the target tier
-instead of changing the existing subscription in place.
+instead of changing the existing subscription in place. **13 Oct 2026 night
+— now built**, once the founder pasted the real `polar_subscriptions` schema
+(the one piece that was missing):
 
-Polar's own docs confirm the correct, safe mechanism exists:
-`PATCH /v1/subscriptions/{id}` with a new `product_id` (+ `proration_behavior`)
-replaces the subscription's plan *in place* — no second subscription, Polar
-handles proration. This can be added to `billing-sync.ts` (Bun, not the
-locked Rust payment engine or the `polar.ts` bridge) as a genuinely new,
-additive route.
-
-**Why it isn't built yet:** finding the current subscription's
-`polar_subscription_id` for a user requires reading the `polar_subscriptions`
-table and/or the `polar_billing_state()` function — both created directly in
-Supabase (not in this repo), and `polar_billing_state()` is explicitly
-commented "Phase 50, no-touch" with its body not visible here. Writing a
-query against a live payment table's exact columns from a guess, with zero
-way to test it before it runs against real customer subscriptions, is
-exactly the kind of payment-logic mistake Rule 4 exists to prevent — this
-is not a "don't want to," it's "cannot verify from here."
-
-**What unblocks it:** run this once in Supabase SQL Editor and paste the
-output back:
-
-```sql
-select column_name, data_type
-from information_schema.columns
-where table_schema = 'public' and table_name = 'polar_subscriptions'
-order by ordinal_position;
+```
+id uuid · polar_subscription_id text · polar_customer_id text · user_id uuid
+· email text · product_key text · product_id text · status text ·
+current_period_end timestamptz · grace_until timestamptz · seats integer ·
+last_event_id text · created_at/updated_at timestamptz
 ```
 
-Once the real column names (status/active flag, product id, etc.) are
-known, the "change plan in place" endpoint can be written against them
-exactly, not guessed.
+**`POST /api/billing/change-plan`** (`server/routes/billing-sync.ts`, new
+route, scoped to `accountKind === "personal"` products only):
+
+1. Looks up the user's current row in `polar_subscriptions` where
+   `status = 'active'`.
+2. **No active row found** (first-time purchase, e.g. an E20 `pending_plan`
+   account clicking a tier card) → falls back to `openCheckoutIntent()` —
+   the `/intent` route's own logic, pulled into a shared function so there
+   is no duplicate checkout-opening code (Rule 6). Behaves exactly like
+   before.
+3. **Active row found** → calls Polar's own documented mechanism,
+   `PATCH /v1/subscriptions/{id}` with the target `product_id` and
+   `proration_behavior: "prorate"` — this changes that one subscription's
+   plan directly; Polar does not create a second subscription, so there is
+   no double-billing.
+4. On success, two narrow pull-truth writes (don't wait on whatever the
+   Rust payment engine's webhook handling does with `subscription.updated`,
+   same principle this file's own `pullTruthForIntent()` already uses for
+   checkouts): `polar_subscriptions.product_id`/`product_key` on that row,
+   and `entitlement_state.plan` — the latter matters because
+   `get_billing_subscription()` reads `entitlement_state.plan` *before*
+   falling back to parsing `polar_subscriptions`, so without this the
+   billing page would still show the old plan name after a successful
+   upgrade. Both are single-column updates to columns whose meaning is
+   confirmed directly from existing, already-read code — not a guess.
+
+**Frontend:** `CheckoutButton` (`PlanCheckoutButton.tsx`) gets a new
+`changePlan` prop. When set, it posts to `/change-plan` instead of
+`/intent`; the response is `{ ok: true }` (no checkout URL — nothing to
+redirect to) when the in-place change ran, so the button sends the browser
+straight to `/dashboard` instead of to Polar. Wired on both the `/app/billing`
+"Upgrade" button and `/plans`' personal cards (so a signed-in personal
+account that already has a subscription and browses back to `/plans` can't
+accidentally open a second one either).
+
+**Honest residual risk, not hidden:** `proration_behavior: "prorate"` was
+chosen as the standard, documented option for "apply now, prorate the
+difference" — Polar's guide names three options (`invoice`, `prorate`,
+`next_period`) without spelling out the exact billing-moment difference
+between the first two, so this is a reasonable default, not a certainty;
+worth watching the first real upgrade's invoice. Also: this writes directly
+to `entitlement_state` and `polar_subscriptions` from Bun code for the first
+time outside the existing webhook/intent-confirm path — narrow, single
+columns only, reasoned from code already read in this repo, but genuinely
+new ground, so the first live test matters more than usual here.
 
 ## Verify (zaroori, deploy ke baad)
 
 1. Server deploy — same Rule-1 command, carries `server/config/billing-products.ts`,
-   `src/routes/plans.tsx`, `src/routes/app.billing.tsx`,
-   `src/components/site/PlanCheckoutButton.tsx`.
+   `server/routes/billing-sync.ts`, `src/routes/plans.tsx`,
+   `src/routes/app.billing.tsx`, `src/components/site/PlanCheckoutButton.tsx`,
+   `src/components/site/ConvertToBusiness.tsx`.
 2. Signed-in **personal** account → `/plans`: no Personal/Business toggle,
-   only the 3 personal cards. → `/app/billing`: only "Your personal tiers",
-   no 4-card generic grid.
+   only the 3 personal cards + "Need a business workspace instead?" link.
+   → `/app/billing`: only "Your personal tiers" (+ same link), no 4-card
+   generic grid.
 3. Signed-in **business** account → `/plans`: no toggle, only the 4
    business cards (unchanged from before).
 4. **Guest** (not signed in) → `/plans`: toggle still there, both tabs
    still work exactly as before — business guest-checkout unaffected.
 5. Guest clicks "Get started" on a personal card → sent to
    `/auth?mode=signup`, not a raw error.
+6. **Real test, carefully, with a test account that has an active personal
+   subscription:** click "Upgrade" on a different personal tier →
+   confirm in Polar's own dashboard that the *same* subscription id now
+   shows the new product (not a second subscription), confirm only one
+   invoice/proration line appears, then confirm `/app/billing` shows the
+   new plan name immediately.
+7. "Need a business workspace instead?" on a personal test account →
+   confirm one new organisation is created, `account_kind` flips to
+   business, mailbox still works, and nothing about their existing mail
+   history looks broken.
 
-**Status:** READY (repo mein, server par abhi deploy/verify nahi hui — Rule 5).
+**Status:** READY — all 3 points built (repo mein), server deploy + live
+re-verify, especially #6 and #7 above, abhi baaqi hai (Rule 5).

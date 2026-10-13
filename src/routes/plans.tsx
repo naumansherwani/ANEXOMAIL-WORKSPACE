@@ -361,7 +361,17 @@ function PlansPage() {
                     ))}
                   </ul>
                   <div className="mt-6">
-                    <CheckoutButton productKey={pk} source={`plans:${tier.id}`} requireSignIn />
+                    {/* changePlan: a signed-in personal account that already
+                        has an active subscription gets it changed in place
+                        instead of a second Polar checkout (E21 part 3). A
+                        guest or first-time buyer falls through to the
+                        normal checkout automatically, server-side. */}
+                    <CheckoutButton
+                      productKey={pk}
+                      source={`plans:${tier.id}`}
+                      requireSignIn
+                      changePlan
+                    />
                   </div>
                 </article>
               );

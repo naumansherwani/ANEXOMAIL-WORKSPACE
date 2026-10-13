@@ -42,6 +42,7 @@ export function CheckoutButton({
   source,
   className,
   requireSignIn = false,
+  changePlan = false,
 }: {
   productKey: string;
   label?: string;
@@ -54,6 +55,17 @@ export function CheckoutButton({
    * 403 as a raw error string.
    */
   requireSignIn?: boolean;
+  /**
+   * E21 part 3 (14 Oct 2026): use /api/billing/change-plan instead of
+   * /api/billing/intent. For a personal account with an existing active
+   * subscription this changes it in place (no new Polar checkout, no
+   * double-billing) — the response is `{ ok: true }`, not a checkout URL,
+   * so there's nothing to redirect to; it falls back to a normal checkout
+   * automatically server-side when there's no existing subscription yet
+   * (first purchase). Signed-in only — never set this for a guest-visible
+   * button.
+   */
+  changePlan?: boolean;
 }) {
   const { status, session } = useAuth();
   const [busy, setBusy] = useState(false);
@@ -82,9 +94,12 @@ export function CheckoutButton({
       // ── Dual-path: signed-in vs guest ──────────────────────────
       // PRIMARY: /api/billing/intent (Brain :3100 → Polar API → checkout URL)
       // GUEST:   /api/public/billing/guest-intent
+      // changePlan: /api/billing/change-plan (signed-in only)
       const endpoint =
         status === "signed-in"
-          ? "/api/billing/intent"
+          ? changePlan
+            ? "/api/billing/change-plan"
+            : "/api/billing/intent"
           : "/api/public/billing/guest-intent";
 
       // Return-to (locked rule: personal → /dashboard, business unboarded → /onboarding, guest → /auth)
@@ -95,10 +110,20 @@ export function CheckoutButton({
             : "/dashboard"
           : "/auth";
 
-      const result = await api<{ url: string; guest_token?: string }>(endpoint, {
+      const result = await api<{ url?: string; guest_token?: string; ok?: boolean }>(endpoint, {
         method: "POST",
         body: JSON.stringify({ product_key: pk, seats: 1, return_to: returnTo }),
       });
+
+      // change-plan changed the subscription in place — no checkout to open.
+      if (result.ok && !result.url) {
+        window.location.assign(returnTo);
+        return;
+      }
+
+      if (!result.url) {
+        throw new Error("Checkout could not be opened.");
+      }
 
       // Validate Polar URL (safety — never redirect to an unknown domain)
       if (!result.url.startsWith("https://polar.sh/")) {

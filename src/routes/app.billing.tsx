@@ -343,6 +343,7 @@ function PersonalTierCard({
             label={t("Upgrade")}
             source={`billing:personal:${tier.id}`}
             className="h-9 rounded-xl py-0 text-[12px]"
+            changePlan
           />
         )}
       </div>

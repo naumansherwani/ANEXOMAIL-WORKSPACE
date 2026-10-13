@@ -129,18 +129,24 @@ async function polarFetch(path: string, init?: RequestInit) {
 
 // ---------------------------------------------------------------------------
 // 1) POST /api/billing/intent — Supabase pehle, Polar baad mein
+//    E21 (14 Oct 2026): body handling pulled out into openCheckoutIntent()
+//    so /change-plan's "no existing subscription yet" fallback can reuse
+//    the exact same first-time-checkout path — no duplicate logic (Rule 6).
 // ---------------------------------------------------------------------------
-authRouter.post("/intent", async (req, res) => {
-  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
-  const userId = await requireUser(req, res);
-  if (!userId) return;
-
-  const { product_key, seats = 1, email, return_to } = req.body || {};
+async function openCheckoutIntent(
+  userId: string,
+  body: { product_key?: unknown; seats?: unknown; email?: unknown; return_to?: unknown },
+  res: any,
+): Promise<void> {
+  if (!db) {
+    res.status(503).json({ error: "supabase_not_configured" });
+    return;
+  }
+  const { product_key, seats = 1, email, return_to } = body || {};
   const selected = product_key ? configuredProduct(String(product_key)) : null;
   if (!selected) {
-    return res
-      .status(400)
-      .json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+    res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+    return;
   }
   if (!(await enforceAccountKind(userId, selected.accountKind, res))) return;
   const safeSeats = selected.perSeat
@@ -162,12 +168,14 @@ authRouter.post("/intent", async (req, res) => {
     p_billing_cycle: selected.cycle ?? null,
   });
   if (intentError) {
-    return res.status(500).json({ error: "intent_open_failed", detail: intentError.message });
+    res.status(500).json({ error: "intent_open_failed", detail: intentError.message });
+    return;
   }
 
   // STEP 2 — messenger ko bolo
   if (!POLAR_TOKEN) {
-    return res.status(503).json({ error: "polar_not_configured", intent_id: intentId });
+    res.status(503).json({ error: "polar_not_configured", intent_id: intentId });
+    return;
   }
   try {
     // Polar metadata: koi bhi empty string bhejne par 422 aata hai —
@@ -209,7 +217,7 @@ authRouter.post("/intent", async (req, res) => {
       p_intent: intentId,
       p_checkout_id: checkout.id,
     });
-    return res.json({ intent_id: intentId, checkout_id: checkout.id, url: checkout.url });
+    res.json({ intent_id: intentId, checkout_id: checkout.id, url: checkout.url });
   } catch (e: any) {
     // intent zinda rehta hai — sweep dobara koshish karega
     console.error("[billing intent] polar checkout failed:", e?.message || e);
@@ -217,9 +225,122 @@ authRouter.post("/intent", async (req, res) => {
       p_intent: intentId,
       p_error: `checkout_create_failed: ${e?.message || e}`,
     });
-    return res.status(502).json({
+    res.status(502).json({
       error: "checkout_failed",
       intent_id: intentId,
+      detail: String(e?.message || e),
+    });
+  }
+}
+
+authRouter.post("/intent", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  await openCheckoutIntent(userId, req.body || {}, res);
+});
+
+// ---------------------------------------------------------------------------
+// 1b) POST /api/billing/change-plan — E21 part 3 (14 Oct 2026)
+//
+//     Personal-tier-to-personal-tier plan change, IN PLACE — fixes the
+//     "Upgrade" button opening a brand-new Polar checkout alongside the
+//     still-live old subscription (double-billing risk). Polar's own docs
+//     confirm the supported mechanism: PATCH /v1/subscriptions/{id} with a
+//     new product_id replaces that subscription's plan directly, Polar
+//     handles proration, no second subscription is ever created.
+//
+//     Scope, on purpose: only product_key's with accountKind "personal"
+//     (the personal-tier cards). Business plan changes are untouched —
+//     not asked for, not investigated here.
+//
+//     If the user has no existing *active* subscription yet (first
+//     purchase — e.g. a pending_plan/E20 account clicking a tier card),
+//     this falls back to openCheckoutIntent() — the exact same first-time
+//     checkout path /intent uses. Nothing duplicated (Rule 6).
+//
+//     After a successful PATCH, the local polar_subscriptions row's
+//     product_id/product_key is updated directly from Polar's own response
+//     — same "pull truth, don't just wait on a webhook" principle
+//     pullTruthForIntent() already uses below — so billing display is
+//     correct immediately regardless of what the Rust payment engine's
+//     webhook handler does with subscription.updated.
+// ---------------------------------------------------------------------------
+authRouter.post("/change-plan", async (req, res) => {
+  if (!db) return res.status(503).json({ error: "supabase_not_configured" });
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+
+  const { product_key, return_to } = req.body || {};
+  const target = product_key ? configuredProduct(String(product_key)) : null;
+  if (!target) {
+    return res.status(400).json({ error: "product_required", known: Object.keys(BILLING_PRODUCTS) });
+  }
+  if (target.accountKind !== "personal") {
+    return res.status(400).json({ error: "change_plan_personal_tiers_only" });
+  }
+  if (!(await enforceAccountKind(userId, target.accountKind, res))) return;
+
+  const { data: current, error: curError } = await db
+    .from("polar_subscriptions")
+    .select("polar_subscription_id, product_id, status")
+    .eq("user_id", userId)
+    .eq("status", "active")
+    .order("updated_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  if (curError) {
+    return res.status(500).json({ error: "db_error", detail: curError.message });
+  }
+
+  const currentProduct = current?.product_id ? productById(String(current.product_id)) : null;
+  const hasActivePersonalSubscription =
+    Boolean(current?.polar_subscription_id) && currentProduct?.accountKind === "personal";
+
+  if (!hasActivePersonalSubscription) {
+    // Nothing to replace — this is a first-time purchase, not an upgrade.
+    await openCheckoutIntent(userId, { product_key, seats: 1, return_to }, res);
+    return;
+  }
+
+  if (!POLAR_TOKEN) return res.status(503).json({ error: "polar_not_configured" });
+
+  try {
+    await polarFetch(`/v1/subscriptions/${current!.polar_subscription_id}`, {
+      method: "PATCH",
+      body: JSON.stringify({
+        product_id: target.productId,
+        proration_behavior: "prorate",
+      }),
+    });
+
+    // Pull-truth: sync the local row now, don't wait on a webhook.
+    await db
+      .from("polar_subscriptions")
+      .update({
+        product_id: target.productId,
+        product_key: String(product_key),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("polar_subscription_id", current!.polar_subscription_id);
+
+    // get_billing_subscription() reads entitlement_state.plan FIRST,
+    // before falling back to polar_subscriptions — so that column would
+    // still show the old plan after a successful upgrade without this.
+    // Narrow, single-column update only (the one field that's definitely
+    // stale here); billing_apply_entitlement() owns everything else on
+    // this row and isn't touched. No-op if no row exists yet (fallback
+    // parsing in get_billing_subscription() covers that case from the
+    // polar_subscriptions row updated above).
+    if (target.plan) {
+      await db.from("entitlement_state").update({ plan: target.plan }).eq("user_id", userId);
+    }
+
+    return res.json({ ok: true, subscription_id: current!.polar_subscription_id });
+  } catch (e: any) {
+    console.error("[billing change-plan] polar patch failed:", e?.message || e);
+    return res.status(502).json({
+      error: "change_plan_failed",
       detail: String(e?.message || e),
     });
   }
