@@ -192,18 +192,20 @@ export function MailRail({
           </p>
         ) : (
           <>
-            <button
-              type="button"
-              onClick={() => onAccount(null)}
-              className={cn(
-                "rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-opacity",
-                account === null
-                  ? "text-foreground"
-                  : "text-muted-foreground opacity-60 hover:opacity-100",
-              )}
-            >
-              {t("Unified inbox")}
-            </button>
+            {accounts.data.accounts.length > 1 && (
+              <button
+                type="button"
+                onClick={() => onAccount(null)}
+                className={cn(
+                  "rounded-lg px-2.5 py-1.5 text-left text-[13px] transition-opacity",
+                  account === null
+                    ? "text-foreground"
+                    : "text-muted-foreground opacity-60 hover:opacity-100",
+                )}
+              >
+                {t("Unified inbox")}
+              </button>
+            )}
             <AccountGroups
               accounts={accounts.data.accounts}
               active={account}
@@ -258,7 +260,9 @@ function AccountGroups({
                   className="size-2 shrink-0 rounded-full"
                   style={{ background: addressTone(a.address)?.color ?? "currentColor" }}
                 />
-                <span className="break-all">{a.address}</span>
+                <span className="min-w-0 truncate" title={a.address}>
+                  {a.address}
+                </span>
                 {a.unread ? (
                   <span className="ml-auto text-[10px] font-semibold text-foreground">
                     {a.unread}

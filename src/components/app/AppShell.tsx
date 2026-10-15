@@ -358,7 +358,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                       : billed === "pro" && kind === "personal"
                         ? "Full CRM, ANEXOChat and pro mail tools — personal, no company seat."
                         : billed === "pro"
-                          ? "Shared inbox, boards, full CRM and ANEXOChat — teams done right."
+                          ? "Shared inbox with collision guard, boards, tasks and CRM — your team, organised."
                           : "Threads carry an owner, a status and a due date — mail is work.",
                 )}
               </p>

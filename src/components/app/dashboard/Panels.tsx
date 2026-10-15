@@ -112,7 +112,12 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
             to: "assigned" as const,
           },
           { icon: Clock, label: t("Waiting"), value: data.waiting, to: "waiting" as const },
-          { icon: Send, label: t("Closed today"), value: data.done_today, to: "sent" as const },
+          {
+            icon: Send,
+            label: t("Sent today"),
+            value: data.sent_today ?? data.done_today,
+            to: "sent" as const,
+          },
         ];
         return (
           <motion.div
@@ -148,6 +153,11 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                   <p className="ax-caption text-muted-foreground">
                     {t("Storage")} {formatBytes(data.storage_used_bytes)} /{" "}
                     {formatBytes(data.storage_limit_bytes)}
+                    {data.storage_model === "per_mailbox" &&
+                    data.storage_per_mailbox_bytes &&
+                    data.storage_mailbox_limit
+                      ? ` · ${formatBytes(data.storage_per_mailbox_bytes)} × ${data.storage_mailbox_limit} ${t("mailboxes")}`
+                      : ""}
                   </p>
                   {data.domain_hosted ? (
                     <span className="ax-status ml-auto text-xs font-semibold text-muted-foreground">
@@ -157,6 +167,7 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                     <span
                       className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
                     >
+                      {data.domain ? `${data.domain} · ` : ""}
                       {data.domain_verified ? t("Domain verified") : t("Domain not verified")}
                     </span>
                   )}
@@ -490,7 +501,7 @@ export function AnalyticsPanel({ enabled, proAccess }: { enabled: boolean; proAc
                   />
                   <Stat label={t("First reply")} value={formatDuration(data.avg_first_reply_seconds)} />
                   <Stat
-                    label={t("Delivered")}
+                    label={t("Send success")}
                     value={
                       data.delivery_rate === null ? "—" : `${Math.round(data.delivery_rate * 100)}%`
                     }

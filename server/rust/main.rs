@@ -1987,6 +1987,131 @@ fn hour_of_iso(ts: &str) -> Option<i64> {
     ts.get(11..13)?.parse().ok()
 }
 
+/// Dashboard (Phase 6 + E30) — Rust PRIMARY. Hisaab Postgres functions mein
+/// (dashboard_summary / dashboard_analytics, E30) taake Bun fallback aur Rust
+/// ek hi sach dikhayein. Koi bhi DB error 502 hota hai: frontend rpcOrRest()
+/// 502 par Bun /api/dashboard/* par girta hai — dashboard kabhi khali nahi.
+async fn dispatch_dashboard(proc: &str, token: &str, input: &Value) -> axum::response::Response {
+    let requested = s(input, "org_id");
+    let me = match mail_identity(token, &requested).await {
+        Ok(me) => me,
+        Err((status, code, detail)) => {
+            return (
+                status,
+                Json(json!({ "error": { "code": code, "message": detail } })),
+            )
+                .into_response()
+        }
+    };
+
+    let result: Result<Value, String> = match proc {
+        "dashboard.summary" => {
+            sb_rpc(
+                "dashboard_summary",
+                json!({ "_org": me.org_id, "_user": me.id, "_email": me.email }),
+            )
+            .await
+        }
+        "dashboard.analytics" => {
+            let days = n(input, "days").unwrap_or(14).clamp(1, 90);
+            sb_rpc(
+                "dashboard_analytics",
+                json!({ "_org": me.org_id, "_days": days }),
+            )
+            .await
+        }
+        "dashboard.activity" => {
+            let limit = n(input, "limit").unwrap_or(20).clamp(1, 50);
+            sb_select(&format!(
+                "activity_log?select=id,kind,actor_label,subject,detail,created_at&org_id=eq.{}&order=created_at.desc&limit={}",
+                me.org_id, limit
+            ))
+            .await
+            .map(|rows| {
+                let items: Vec<Value> = rows
+                    .as_array()
+                    .cloned()
+                    .unwrap_or_default()
+                    .into_iter()
+                    .map(|r| {
+                        json!({
+                            "id": r.get("id").cloned().unwrap_or(Value::Null),
+                            "kind": r.get("kind").cloned().unwrap_or(Value::Null),
+                            "actor": r.get("actor_label").cloned().unwrap_or(Value::Null),
+                            "subject": r.get("subject").cloned().unwrap_or(Value::Null),
+                            "detail": r.get("detail").cloned().unwrap_or(Value::Null),
+                            "created_at": r.get("created_at").cloned().unwrap_or(Value::Null),
+                        })
+                    })
+                    .collect();
+                json!({ "items": items })
+            })
+        }
+        "dashboard.ai-usage" => sb_select(&format!(
+            "ai_credits?select=enabled,plan,credits_total,credits_used,period_end&org_id=eq.{}&limit=1",
+            me.org_id
+        ))
+        .await
+        .map(|rows| {
+            let row = rows
+                .as_array()
+                .and_then(|a| a.first())
+                .cloned()
+                .unwrap_or(Value::Null);
+            json!({
+                "enabled": row.get("enabled").and_then(|v| v.as_bool()).unwrap_or(false),
+                "plan": row.get("plan").cloned().unwrap_or(Value::Null),
+                "credits_total": row.get("credits_total").and_then(|v| v.as_i64()).unwrap_or(0),
+                "credits_used": row.get("credits_used").and_then(|v| v.as_i64()).unwrap_or(0),
+                "period_end": row.get("period_end").cloned().unwrap_or(Value::Null),
+            })
+        }),
+        "dashboard.calendar" => {
+            let from = {
+                let now = std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map(|d| d.as_secs() as i64)
+                    .unwrap_or(0);
+                now - 3600
+            };
+            // epoch -> ISO8601 UTC (PostgREST gte filter), bina extra crate ke.
+            let days = from.div_euclid(86400);
+            let rem = from.rem_euclid(86400);
+            let z = days + 719468;
+            let era = z.div_euclid(146097);
+            let doe = z - era * 146097;
+            let yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+            let y = yoe + era * 400;
+            let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+            let mp = (5 * doy + 2) / 153;
+            let d = doy - (153 * mp + 2) / 5 + 1;
+            let m = if mp < 10 { mp + 3 } else { mp - 9 };
+            let y = if m <= 2 { y + 1 } else { y };
+            let iso = format!(
+                "{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z",
+                y,
+                m,
+                d,
+                rem / 3600,
+                (rem % 3600) / 60,
+                rem % 60
+            );
+            sb_select(&format!(
+                "calendar_events?select=id,title,starts_at,ends_at,location,all_day&org_id=eq.{}&starts_at=gte.{}&order=starts_at.asc&limit=10",
+                me.org_id, iso
+            ))
+            .await
+            .map(|rows| json!({ "events": rows }))
+        }
+        _ => Err(format!("{proc} not implemented")),
+    };
+
+    match result {
+        Ok(v) => ok(v).into_response(),
+        Err(e) => err(StatusCode::BAD_GATEWAY, "dashboard_unavailable", &e).into_response(),
+    }
+}
+
 /// Step 6 (plan-feature-wire audit) — Tasks + Notes, THREAD-level, Pro+ gate.
 /// NEW feature (koi Bun equivalent nahi tha) — is liye genuinely Rust/async/
 /// Tokio pe, jaisa rule hai: "jo naya hai woh new technology pe hoga".
@@ -2226,6 +2351,18 @@ async fn dispatch(
     // Fallback: Bun /api/billing/subscription + /api/billing/invoices.
     if proc.starts_with("billing.") {
         return dispatch_billing(&proc, &token, &input).await;
+    }
+
+    // Dashboard — Rust PRIMARY (E30 SQL functions). Fallback: Bun /api/dashboard/*.
+    if matches!(
+        proc.as_str(),
+        "dashboard.summary"
+            | "dashboard.analytics"
+            | "dashboard.activity"
+            | "dashboard.ai-usage"
+            | "dashboard.calendar"
+    ) {
+        return dispatch_dashboard(&proc, &token, &input).await;
     }
 
     // Step 6 (plan-feature-wire audit) — Tasks + Notes, THREAD-level, Pro+.

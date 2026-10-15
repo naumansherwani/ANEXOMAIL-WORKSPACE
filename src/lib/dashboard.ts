@@ -17,9 +17,18 @@ export type DashboardSummary = {
   unread: number;
   assigned_to_me: number;
   waiting: number;
+  /** Aaj bheji gayi mail (asli `out` messages). `done_today` purana naam, wahi qeemat. */
+  sent_today?: number;
   done_today: number;
   storage_used_bytes: number;
+  /** Plan table (`storage_plans`) se: per-mailbox x mailboxes, ya pooled. */
   storage_limit_bytes: number;
+  storage_model?: "per_mailbox" | "pooled";
+  storage_per_mailbox_bytes?: number | null;
+  storage_mailbox_limit?: number | null;
+  plan?: string;
+  domain?: string | null;
+  domain_status?: "none" | "pending" | "verified";
   domain_verified: boolean;
   domain_hosted?: boolean;
 };

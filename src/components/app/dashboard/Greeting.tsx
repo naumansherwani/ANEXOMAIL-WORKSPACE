@@ -35,7 +35,7 @@ export function Greeting({
 }) {
   const { session, organisation } = useAuth();
   const { t } = useLocale();
-  const { copyName, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const { copyName, kind, billed } = surfaceFromSession(session?.user, organisation?.slug);
   const firstName =
     session?.user.display_name?.split(" ")[0] ||
     session?.user.name?.split(" ")[0] ||
@@ -113,7 +113,9 @@ export function Greeting({
           <p className="ax-body mt-2 max-w-xl text-muted-foreground">
             {kind === "personal"
               ? t("Private command of mail, people, calendar, work, CRM and chat — one surface.")
-              : t("Company mail, org, chat and the shared book — one surface.")}
+              : billed === "business" || billed === "business_pro"
+                ? t("Company mail, org, chat and the shared book — one surface.")
+                : t("Company mail, shared inbox, tasks and the shared book — one surface.")}
           </p>
         )}
       </div>

@@ -195,7 +195,13 @@ function MailFolderPage() {
 
       <ListPanel
         mobileHidden={threadOpen}
-        title={activeAccount ? `${folderLabel} · ${activeAccount.address}` : `${folderLabel} · All addresses`}
+        title={
+          activeAccount
+            ? `${folderLabel} · ${activeAccount.address}`
+            : (accounts.data?.accounts.length ?? 0) > 1
+              ? `${folderLabel} · All addresses`
+              : folderLabel
+        }
         action={
           <div className="flex items-center gap-1.5">
             {unreadHere > 0 && (
@@ -216,7 +222,7 @@ function MailFolderPage() {
       >
         <HandoffBanner />
         <div className="mx-head sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
-          {accounts.data && accounts.data.accounts.length > 0 && (
+          {accounts.data && accounts.data.accounts.length > 1 && (
             <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5" aria-label="Addresses">
               <button
                 type="button"

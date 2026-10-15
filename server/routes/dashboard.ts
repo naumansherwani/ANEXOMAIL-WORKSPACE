@@ -7,7 +7,7 @@ import { admin as supa } from "../lib/supa";
 
 export const dashboardRouter = Router();
 
-type Ctx = { userId: string; orgId: string };
+type Ctx = { userId: string; orgId: string; email: string };
 
 async function ctx(req: any, res: any): Promise<Ctx | null> {
   const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
@@ -27,51 +27,21 @@ async function ctx(req: any, res: any): Promise<Ctx | null> {
   const ids = (rows || []).map((r: any) => r.org_id);
   if (!ids.length) { res.status(409).json({ error: "no_workspace" }); return null; }
   const orgId = requested && ids.includes(requested) ? requested : ids[0];
-  return { userId, orgId };
+  return { userId, orgId, email: String(data.user.email || "") };
 }
 
 const iso = (d: Date) => d.toISOString();
-const startOfToday = () => { const d = new Date(); d.setUTCHours(0, 0, 0, 0); return d; };
-
-async function count(table: string, build: (q: any) => any) {
-  const q = build(supa.from(table).select("id", { count: "exact", head: true }));
-  const { count: c } = await q;
-  return c ?? 0;
-}
 
 /* ---------- GET /api/dashboard/summary ---------- */
+// Hisaab Postgres mein (E30 dashboard_summary) — Rust :3200 PRIMARY wahi function
+// call karta hai. Yeh Bun route sirf FALLBACK hai; dono ka sach ek hi jagah.
 dashboardRouter.get("/summary", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
-  try {
-    const [unread, assigned, waiting, doneToday] = await Promise.all([
-      count("mail_threads", (q) => q.eq("org_id", c.orgId).eq("is_unread", true)),
-      count("mail_threads", (q) => q.eq("org_id", c.orgId).eq("assignee_id", c.userId).neq("state", "done")),
-      count("mail_threads", (q) => q.eq("org_id", c.orgId).eq("state", "waiting")),
-      count("mail_threads", (q) => q.eq("org_id", c.orgId).eq("state", "done").gte("closed_at", iso(startOfToday()))),
-    ]);
-
-    const { data: sizes } = await supa
-      .from("mail_messages").select("size_bytes").eq("org_id", c.orgId).limit(50000);
-    const used = (sizes || []).reduce((s: number, r: any) => s + Number(r.size_bytes || 0), 0);
-
-    const { data: org } = await supa
-      .from("organisations")
-      .select("storage_limit_bytes, domain_verified, domain")
-      .eq("id", c.orgId).maybeSingle();
-
-    // Hosted @anexomail.com / no custom domain → "Domain not verified" mat dikhao
-    const customDomain = Boolean(
-      org?.domain && String(org.domain).toLowerCase() !== "anexomail.com",
-    );
-
-    res.json({
-      unread, assigned_to_me: assigned, waiting, done_today: doneToday,
-      storage_used_bytes: used,
-      storage_limit_bytes: Number(org?.storage_limit_bytes ?? 32212254720),
-      domain_verified: customDomain ? Boolean(org?.domain_verified) : true,
-      domain_hosted: !customDomain,
-    });
-  } catch (e: any) { res.status(500).json({ error: e?.message || "summary_failed" }); }
+  const { data, error } = await supa.rpc("dashboard_summary", {
+    _org: c.orgId, _user: c.userId, _email: c.email,
+  });
+  if (error) return res.status(500).json({ error: error.message || "summary_failed" });
+  res.json(data);
 });
 
 /* ---------- GET /api/dashboard/activity ---------- */
@@ -110,53 +80,14 @@ dashboardRouter.get("/ai-usage", async (req, res) => {
 });
 
 /* ---------- GET /api/dashboard/analytics ---------- */
+// E30 dashboard_analytics: direction 'in'/'out', Delivered mail_scheduled se
+// (koi row nahi -> null, jhoota 100% nahi), pehla jawab asli messages se.
 dashboardRouter.get("/analytics", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const days = Math.min(Math.max(Number(req.query.days) || 14, 1), 90);
-  const from = new Date(Date.now() - (days - 1) * 86400000);
-  from.setUTCHours(0, 0, 0, 0);
-
-  const { data: msgs, error } = await supa
-    .from("mail_messages")
-    .select("direction, created_at")
-    .eq("org_id", c.orgId)
-    .gte("created_at", iso(from))
-    .limit(50000);
-  if (error) return res.status(500).json({ error: error.message });
-
-  const series: Record<string, { date: string; received: number; sent: number }> = {};
-  for (let i = 0; i < days; i++) {
-    const d = new Date(from.getTime() + i * 86400000).toISOString().slice(0, 10);
-    series[d] = { date: d, received: 0, sent: 0 };
-  }
-  let received = 0, sent = 0, outbound = 0, delivered = 0;
-  for (const m of msgs || []) {
-    const key = String(m.created_at).slice(0, 10);
-    const bucket = series[key];
-    if (m.direction === "inbound") { received++; if (bucket) bucket.received++; }
-    else {
-      sent++; outbound++;
-      // delivered column live pe hamesha nahi — honest: outbound = delivered unknown
-      delivered++;
-      if (bucket) bucket.sent++;
-    }
-  }
-
-  const { data: replies } = await supa
-    .from("mail_threads")
-    .select("first_reply_seconds")
-    .eq("org_id", c.orgId)
-    .gte("created_at", iso(from))
-    .not("first_reply_seconds", "is", null)
-    .limit(20000);
-  const vals = (replies || []).map((r: any) => Number(r.first_reply_seconds)).filter(Number.isFinite);
-
-  res.json({
-    range_days: days, received, sent,
-    avg_first_reply_seconds: vals.length ? Math.round(vals.reduce((a, b) => a + b, 0) / vals.length) : null,
-    delivery_rate: outbound ? delivered / outbound : null,
-    series: Object.values(series),
-  });
+  const { data, error } = await supa.rpc("dashboard_analytics", { _org: c.orgId, _days: days });
+  if (error) return res.status(500).json({ error: error.message || "analytics_failed" });
+  res.json(data);
 });
 
 /* ---------- GET /api/dashboard/calendar ---------- */

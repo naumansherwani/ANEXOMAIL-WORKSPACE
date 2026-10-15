@@ -26,3 +26,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E13_personal_polar_products.sql | E-series — six separate Personal Polar prices + account-kind guard | **IDs ke baad aap Run** |
 | E14_security_advisor_clean.sql  | E-series — RLS on, security_invoker views, function search_path     | **aap Run**             |
 | E28_seed_buyer_test_account.sql | E-series — asli business buyer test account (payment ki jagah entitlement row), #20 | **aap Run** (variable ke saath) |
+| E30_dashboard_truth.sql         | E-series — dashboard_summary / dashboard_analytics (Rust + Bun ka ek sach), plan-true storage, domain truth | **aap Run** (installer se pehle) |
