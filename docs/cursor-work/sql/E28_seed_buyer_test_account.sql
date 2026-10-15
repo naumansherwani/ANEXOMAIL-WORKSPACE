@@ -14,12 +14,10 @@
 --                                               + /onboarding/complete (onboarded=true)
 --   E23 trigger entitlement_activates_account_trg -> activate_paid_account -> trial_subscribe
 --
--- Chalane ka tareeqa (server par, ek block; password repo mein NAHI):
---   . /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 \
---     -v handle=pro.buyer -v nm='Pro Buyer' -v org='Pro Buyer Test' \
---     -v domain=probuyer.axonetis.com -v plan=pro -v pw='<password 6-15 chars>' -f - <<'SQL'
---   ...is file ka poora matn...
---   SQL
+-- Chalane ka tareeqa: `docs/cursor-work/server/t7-send-identity-test.sh` (server par ek block).
+-- Woh script password khud banati hai (openssl, 12 char) aur /root/test-accounts/<handle>.pw
+-- (chmod 600, server par) mein rakhti hai; account pehle se ho to sirf naya password set karti hai.
+-- Is file ko seedha chalana ho to: psql -v ON_ERROR_STOP=1 -v handle=.. -v nm=.. -v org=.. -v domain=.. -v plan=.. -v pw=.. -f -
 --
 -- Tarteeb (#20): Business Basic -> Pro -> Business -> Business Pro. Har plan ke liye
 -- naya handle/domain/plan; ek dafa chalta hai (handle ya domain pehle se ho to
