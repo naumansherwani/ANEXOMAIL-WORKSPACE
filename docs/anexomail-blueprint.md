@@ -541,6 +541,17 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
 - **E25 — Tokio background loops (founder ka sawal, 14 Oct 2026).** TODO. (a) Rust :3200 `tokio::spawn` payment-intent settle sweeper (`paid`/`stuck` -> `billing_sync_claim` + `billing_intent_confirm`) taake settle Bun cron ya user ke khule page par nirbhar na rahe; (b) deletion-due watcher (grace khatam hue accounts flag + alert; purge manual). Polar "open" pull ke liye :3400 `read_checkout` badalna padega — founder ki ijazat.
 - **E26 — WebTransport push (14 Oct 2026).** TODO. `/checkout/done` par polling ki jagah "plan active" push; pehle WT ka live green hona (`rust-gate.sh`) verify.
 
+### 15 Oct 2026 — pro.buyer ka asli login UX review (founder ke 4 screenshot + code). Rule 14: naya kaam pehle list mein; sab TODO; founder decide karega tarteeb mein kahan.
+
+`Command center` founder-side nahi: yeh user Dashboard (`/app`, Phase 6) ka chhota heading hai — `src/components/app/dashboard/Greeting.tsx`. Founder cheezein (`/app/founder`, Admin, Speed) rail mein sirf founder host par dikhti hain (`railItemVisible`).
+
+- **U1. TODO. Dashboard ke numbers galat.** Screenshot: ek mail bheji + ek receive hui, dashboard `Received 0 / Sent 2 / Delivered 100%`. Wajah (code): `server/routes/dashboard.ts` `/analytics` direction ko `"inbound"` se milata hai, jabke DB check constraint `direction in ('in','out')` hai (phase52) aur Rust bhi `in`/`out` — isliye har aane wali mail `Sent` mein ginti hai, `Received` hamesha 0. `Delivered` hard-coded hai (`delivered++` har outbound par) — bounce hui mail bhi 100%. Fix: `in`/`out`, aur Delivered asli status se (nahi pata to `—`, jhoota 100% nahi). Live psql se confirm baqi (`select direction,count(*) from mail_messages group by 1`).
+- **U2. TODO. Storage tile plan se nahi.** Pro par `0 GB / 30 GB`; plan table: Pro = 10GB per mailbox x 5 mailboxes. `dashboard.ts`: `organisations.storage_limit_bytes ?? 30GB` (E17 ka flat 30GB). #16 wala hi drift. Plan (`storage_plans`) se aana chahiye.
+- **U3. TODO. Plan ki copy jhooti.** Pro rail text `Shared inbox, boards, full CRM and ANEXOChat` (`AppShell.tsx`) — plan table mein ANEXOChat Business se shuru hai, aur Pro ke rail mein ANEXOChat/Org dikhte hi nahi. Dashboard subtitle `Company mail, org, chat and the shared book` bhi Pro par Org/chat ke baghair. Copy plan ke mutabiq.
+- **U4. TODO. Business buyer ka pehla din.** Pro plan = 3 company addresses + 5 mailboxes, lekin Pro ke rail mein Org nahi (`showOrg` Business+) aur Admin platform-admin hai — domain/address jod'ne ki koi screen nahi milti; dashboard par setup checklist ya domain status nahi. #8 (domain wizard) Pro ko bhi dikhna chahiye aur dashboard se link hona chahiye. `ANEXOMAIL hosted` badge us org par aaya jis ka domain `probuyer.axonetis.com` hai (code ke hisaab se `Domain not verified` aana chahiye) — live `organisations.domain` dekh kar tay karna.
+- **U5. TODO (founder decide). CRM Loop Pro par.** 4 step dikhte hain, numbers 1, 2, 5, 9 (gaps toote hue lagte hain); 3/4/6/8 gayab. 9 Oct record: steps 3–9 Basic ke ilawa sab par; code (`showCrmRisk`/`showCrmCollab` = Business+) kuch aur kehta hai. #25 yahi dekhta hai. Pehle tay ho Pro ko kaun se steps, phir numbering.
+- **U6. TODO (chhota). Mail rail.** `YOUR LOGIN pro.buyer@anexomail.c / om` beech se toot'ta hai (ellipsis + tooltip); ek hi address par `All addresses` / `Unified inbox` dohrate hain; dashboard par `New email` do jagah.
+
 ### Founder's own follow-ups after code lands
 - 9: screenshot of Mail cinema — done.
 - 21: press Work Done.
