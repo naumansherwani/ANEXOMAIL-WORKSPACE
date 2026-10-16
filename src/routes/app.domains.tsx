@@ -144,17 +144,27 @@ function useRegistrarHint(domain: string | null): { id: string; label: string } 
     setHint(null);
     if (!domain) return;
     const ctl = new AbortController();
-    const timer = setTimeout(() => ctl.abort(), 4000);
-    fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=NS`, {
-      headers: { accept: "application/dns-json" },
-      signal: ctl.signal,
-    })
-      .then((r) => (r.ok ? (r.json() as Promise<{ Answer?: { data?: string }[] }>) : null))
-      .then((j) => {
-        const names = (j?.Answer ?? []).map((a) => (a.data ?? "").toLowerCase());
+    const timer = setTimeout(() => ctl.abort(), 6000);
+    const ask = async (name: string): Promise<string[]> => {
+      const r = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&type=NS`, {
+        headers: { accept: "application/dns-json" },
+        signal: ctl.signal,
+      });
+      if (!r.ok) return [];
+      const j = (await r.json()) as { Answer?: { type?: number; data?: string }[] };
+      return (j.Answer ?? []).filter((a) => a.type === 2).map((a) => (a.data ?? "").toLowerCase());
+    };
+    void (async () => {
+      // Subdomain (probuyer.axonetis.com) ke apne NS nahi hote — upar ka domain poochho.
+      const labels = domain.split(".");
+      for (let i = 0; i <= labels.length - 2 && i < 3; i += 1) {
+        const names = await ask(labels.slice(i).join("."));
+        if (names.length === 0) continue;
         const hit = NS_HINTS.find((h) => names.some((n) => h.test.test(n)));
         if (hit) setHint({ id: hit.id, label: hit.label });
-      })
+        return;
+      }
+    })()
       .catch(() => undefined)
       .finally(() => clearTimeout(timer));
     return () => {
@@ -163,6 +173,14 @@ function useRegistrarHint(domain: string | null): { id: string; label: string } 
     };
   }, [domain]);
   return hint;
+}
+
+/** `probuyer.axonetis.com` -> `axonetis.com` (DNS zone jahan records likhe jate hain). Seedha domain par null. */
+const SECOND_LEVEL = new Set(["co", "com", "org", "net", "gov", "edu", "ac"]);
+function parentZone(domain: string): string | null {
+  const l = domain.toLowerCase().split(".");
+  const keep = l.length >= 3 && l[l.length - 1]!.length === 2 && SECOND_LEVEL.has(l[l.length - 2]!) ? 3 : 2;
+  return l.length > keep ? l.slice(-keep).join(".") : null;
 }
 
 function errText(e: unknown, fallback = "Couldn't do that. Try again."): string {
@@ -320,8 +338,20 @@ function Field({ label, value }: { label: string; value: string }) {
   );
 }
 
-function RecordCard({ rec, n, of }: { rec: DnsRecord; n: number; of: number }) {
+function RecordCard({
+  rec,
+  n,
+  of,
+  zone,
+}: {
+  rec: DnsRecord;
+  n: number;
+  of: number;
+  zone: string | null;
+}) {
   const meta = CHECK_LABEL[rec.key];
+  // Subdomain par agar DNS parent zone ka ho to Name lamba likhna parta hai (`_dmarc.probuyer`).
+  const longName = zone && rec.host.endsWith(`.${zone}`) ? rec.host.slice(0, -(zone.length + 1)) : null;
   return (
     <li
       className={cn(
@@ -343,8 +373,20 @@ function RecordCard({ rec, n, of }: { rec: DnsRecord; n: number; of: number }) {
         </span>
       </div>
       <p className="ax-caption mt-1">{meta.why}</p>
-      <div className="mt-3 grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
-        <Field label="Name / Host" value={rec.name} />
+      <div
+        className={cn(
+          "mt-3 grid gap-3",
+          longName && longName !== rec.name
+            ? "md:grid-cols-[minmax(0,1.25fr)_minmax(0,1.75fr)]"
+            : "md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]",
+        )}
+      >
+        <div className="min-w-0 space-y-3">
+          <Field label="Name / Host" value={rec.name} />
+          {longName && longName !== rec.name && (
+            <Field label={`If DNS zone is ${zone}`} value={longName} />
+          )}
+        </div>
         {rec.value ? (
           <Field label="Value" value={rec.value} />
         ) : (
@@ -486,6 +528,7 @@ function Wizard({
   verifyRef.current = verify;
 
   const hint = useRegistrarHint(state.step === 2 && domain ? domain.domain : null);
+  const zone = domain ? parentZone(domain.domain) : null;
   useEffect(() => {
     if (hint && REGISTRARS.some((r) => r.id === hint.id)) setRegistrar(hint.id);
   }, [hint]);
@@ -717,9 +760,18 @@ function Wizard({
               </ol>
             </div>
 
+            {zone && (
+              <p className="ax-body ax-in mt-4 rounded-2xl border border-[var(--cyan-accent)]/30 bg-[var(--cyan-accent)]/5 p-ax-4">
+                <strong className="text-foreground">{domain.domain}</strong> {t("is a subdomain of")}{" "}
+                <strong className="text-foreground">{zone}</strong>.{" "}
+                {t("If your DNS is hosted for")} {zone}, {t("use the longer name shown under each Name below (for example @ becomes")}{" "}
+                <code className="font-mono text-xs text-foreground">{domain.domain.slice(0, -(zone.length + 1))}</code>).
+              </p>
+            )}
+
             <ul className="ax-stagger mt-4 space-y-3">
               {domain.records.map((rec, i) => (
-                <RecordCard key={rec.key} rec={rec} n={i + 1} of={domain.records.length} />
+                <RecordCard key={rec.key} rec={rec} n={i + 1} of={domain.records.length} zone={zone} />
               ))}
             </ul>
 

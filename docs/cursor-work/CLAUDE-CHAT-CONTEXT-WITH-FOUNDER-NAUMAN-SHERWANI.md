@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:50 PKT**.
+Aakhri update: **17 Oct 2026, 03:48 PKT**.
 
 ---
 
@@ -44,6 +44,8 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **17 Oct 03:19 PKT — founder ki maang (is ke baad ka kaam):** (1) Domains ki kamzoriyan theek karo (#8a) aur registrar pehchanna (#8b); (2) UI itni advance ke Vercel se aage ho, tab hi dikhana; phir poori website ke liye "duniya ka best"; (3) "cinematic / cinema feel UI" kya hota hai samjhao; (4) **axonetis.com founder ka doosra project hai, sirf TEST domain** — ANEXOMAIL domain nahi bechta, maqsad hai "user business email kaise banaye"; (5) "repo mein sab code hai, server par sab hai, masla compact ke baad bhool jana hai — latest technology rule par ek hi baar mein theek karo".
 
 **Ho gaya (17 Oct ~03:35 PKT, repo mein, READY):** `src/routes/app.domains.tsx` cinematic standard par dobara likha — hero mein "From: you@<domain>" mail preview, "Use a different domain" asli button, login address pehle, skeleton loader, stagger, registrar auto-pehchan (DNS-over-HTTPS se), step 3 ka jashn. **Asli UI sandbox mein dekhi gayi** (`docs/cursor-work/frontend/ui-harness/`: har state + 390 px screenshots). Standard + poori website ka rasta: `docs/cursor-work/frontend/cinematic-ui-standard.md`. Deploy ab 13.0 (13.6 ka purana block shamil). **Founder ke browser mein dekhna baqi — isliye #8/#8a READY, DONE nahi.**
+
+**17 Oct 03:45 PKT — founder ka asli browser (page text paste): Domains v2 server par LIVE hai aur wizard qadam 1→2 chala.** Nateeja: "1 of 3 domain · Pro", step rail, "At your registrar…" copy, Namecheap/GoDaddy/Cloudflare/Other tabs + "Open Namecheap", 5 record cards (TXT `_anexomail-verify` value `e214…`, MX `@` → `mail.anexomail.com` prio 10, SPF `v=spf1 a:mail.anexomail.com ~all`, DKIM `anexo1._domainkey` "Key is being prepared", DMARC `_dmarc`), "I've added them — check now" / "Finish later", Addresses (login address pehle, locked preview). Yaani qadam 1–2 live DONE-nayi cheez; qadam 3 (live ticks/verified) aur asli DNS check baqi. **Do asli kamiyan mili:** (1) registrar auto-pehchan `probuyer.axonetis.com` par nahi chali (subdomain ke apne NS nahi hote — parent `axonetis.com` poochhna tha), (2) subdomain par agar DNS parent zone ka ho to Name lamba likhna parta hai (`@` → `probuyer`, `_dmarc` → `_dmarc.probuyer`) — page ne yeh nahi bataya. Dono repo mein theek (blueprint 8c, READY); manifest sha badla.
 
 **Agla (abhi pending):** pehle **13.0** (EK pull command: memory + Domains v2 + pm2 restart) chalao + Ctrl+Shift+R; phir founder Domains par **Connect probuyer.axonetis.com** dabaye (wizard qadam 1, naam pehle se bhara hoga) aur screenshot bheje; phir qadam 2 (5 DNS records + Copy), phir qadam 3 (live ticks). Yeh test account hai, domain add hone se Pro ki hadd 1/3 hogi. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
 
@@ -193,7 +195,9 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
-- **17 Oct 03:50 PKT** — Compact ke baad naya chat; founder (03:39): "context kabhi lose na ho, server par bhi update karo, hamesha pull command do, pm2 restart hamesha". Agent ne `docs/cursor-work/server/pull.sh` + `DEPLOY-MANIFEST.txt` likhe (dirty tree ke saath bhi chalta hai; memory/docs taza, code sha-guard, hamesha pm2 restart+save; nakli server par test: pehli bar, dobara, build-fail restore). Section 13.0 (EK command), section 15 (memory qaida: pehle likho phir kaam), AGENTS.md Rule 1 + Rule 18, cursor rule update. Asli server par abhi chala nahi.
+- **17 Oct 03:48 PKT** — Founder ne Domains wizard qadam 2 ka page text paste kiya (asli browser): v2 live, qadam 1→2 sahi. Agent ne do kamiyan theek kin (subdomain par registrar-detect parent zone se; lamba Name "If DNS zone is axonetis.com"), harness mein dekha, manifest sha badla (blueprint 8c). 13.0 dobara chalana hai.
+
+- **17 Oct 03:47 PKT** — Compact ke baad naya chat; founder (03:39): "context kabhi lose na ho, server par bhi update karo, hamesha pull command do, pm2 restart hamesha". Agent ne `docs/cursor-work/server/pull.sh` + `DEPLOY-MANIFEST.txt` likhe (dirty tree ke saath bhi chalta hai; memory/docs taza, code sha-guard, hamesha pm2 restart+save; nakli server par test: pehli bar, dobara, build-fail restore). Section 13.0 (EK command), section 15 (memory qaida: pehle likho phir kaam), AGENTS.md Rule 1 + Rule 18, cursor rule update. Asli server par abhi chala nahi.
 
 - **17 Oct 03:35 PKT** — Founder ne 03:19 par kaha: Domains ki kamzoriyan theek karo, Vercel se aage UI banao tab hi dikhao, "cinematic" samjhao, axonetis sirf test domain hai, sab ek hi baar theek karo. Agent ne `app.domains.tsx` dobara likha (hero mail preview, outline "different domain", login address pehle, skeleton, stagger, registrar DoH detect, step 3 jashn), sandbox harness mein har state aur 390 px dekha, `cinematic-ui-standard.md` aur `ui-harness/README.md` likhe, blueprint #8a/#8b badla (READY). Deploy block 13.6. Browser dekhna baqi.
 
@@ -226,7 +230,7 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ```bash
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)
 ```
-Aakhir mein `OK - memory taza, server taza` aaye aur `memory stamp:` wali line ka waqt is file ke "Aakhri update" se mile to server ki memory taza hai. Status: sandbox mein nakli server par test hua (dirty tree, dobara chalana, build fail par restore); **asli server par abhi chala nahi** (17 Oct 03:50 PKT).
+Aakhir mein `OK - memory taza, server taza` aaye aur `memory stamp:` wali line ka waqt is file ke "Aakhri update" se mile to server ki memory taza hai. Status: sandbox mein nakli server par test hua (dirty tree, dobara chalana, build fail par restore); **asli server par abhi chala nahi** (17 Oct 03:47 PKT).
 
 Har naya block jo founder ko diya jaye woh yahan bhi likho (Rule 18). Neeche wale sab server par chalte hain, repo ya sandbox mein nahi.
 
@@ -298,7 +302,7 @@ else
 fi
 )
 ```
-Status: **founder ne abhi chalaya nahi** (17 Oct 03:50 PKT); 13.0 chalane par yeh file bhi lag jati hai (manifest). Natija aane par yahan likho.
+Status: **founder ne abhi chalaya nahi** (17 Oct 03:47 PKT); 13.0 chalane par yeh file bhi lag jati hai (manifest). Natija aane par yahan likho.
 
 **13.5 — DB ka chhota check (claude.ai chat se, 15–16 Oct; E30 ke baad theek nikla):**
 ```bash

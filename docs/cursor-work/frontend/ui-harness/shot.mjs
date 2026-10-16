@@ -11,7 +11,13 @@ const errs = [];
 // DoH mock: DOH=namecheap|cloudflare|none (default none -> request fails, fallback path)
 const doh = process.env.DOH || "none";
 const NS = { namecheap: "dns1.registrar-servers.com.", cloudflare: "ada.ns.cloudflare.com.", godaddy: "ns01.domaincontrol.com." };
-await page.route("**/cloudflare-dns.com/**", (r) => doh === "none" ? r.abort() : r.fulfill({ status: 200, contentType: "application/dns-json", body: JSON.stringify({ Answer: [{ data: NS[doh] }] }) }));
+// Subdomains (3+ labels) have no NS of their own -> empty answer, like the real internet; the parent answers.
+await page.route("**/cloudflare-dns.com/**", (r) => {
+  if (doh === "none") return r.abort();
+  const name = new URL(r.request().url()).searchParams.get("name") || "";
+  const sub = name.split(".").length >= 3;
+  return r.fulfill({ status: 200, contentType: "application/dns-json", body: JSON.stringify(sub ? { Status: 0, Authority: [{ type: 6 }] } : { Status: 0, Answer: [{ type: 2, data: NS[doh] }] }) });
+});
 page.on("pageerror", (e) => errs.push("pageerror: " + e.message));
 page.on("console", (m) => { if (m.type() === "error") errs.push("console: " + m.text()); });
 await page.goto("file://" + path.join(outDir, "index.html") + "#" + hash);
