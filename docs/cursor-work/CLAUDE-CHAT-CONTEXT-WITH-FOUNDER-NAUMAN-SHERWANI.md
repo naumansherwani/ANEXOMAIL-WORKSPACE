@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:20 PKT**.
+Aakhri update: **17 Oct 2026, 04:35 PKT**.
 
 ---
 
@@ -52,6 +52,15 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **FOUNDER KA MAQSAD (17 Oct 03:54 PKT, locked):** "real user ko website ka best experience dena; test account se real user wali sab cheezein nahi ho sakti, lekin jitna ho sake **user ki tarah socho**." Is liye har screen ko **asli user ke 5 minute** ki nazar se dekho (kya sochega, kahan phansega, kya kho sakta hai), aur jo test se sabit nahi ho sakta (payment, asli registrar par DNS, bahar se aane wali mail, spam folder, asli phone) use alag "founder ko khud dekhna" list mein likho. Real-user khatre ki list: blueprint #8c+.
 
 **17 Oct 04:20 PKT — #8c banaya (READY, sandbox mein dekha):** wizard qadam 2 ab domain ke MX/SPF DNS-over-HTTPS se dekhta hai; pehle se Google/Microsoft/Zoho… ho to warning ("is domain par mail pehle se hai, MX lagane se purane mailboxes band") aur SPF ka merged value + Copy. Subdomain (probuyer) par kuch nahi aata (uska apna MX nahi). Manifest sha ab `04b1b3542f4e9706`. pull.sh ab server-vs-repo ka `git diff --stat origin/main` bhi dikhata hai (dirty-tree survey khud). **Agla qadam wahi: 13.0 dobara + qadam 3 ka check (DNS badle bina).**
+
+**17 Oct 04:06 PKT — founder ne 13.0 (824ab3a) chalaya + 7 photo bheji: asli server par sab theek.** Step 2: "We found your DNS is at Namecheap" aaya (**axonetis.com ka DNS Namecheap par hai**), subdomain note, "If DNS zone is axonetis.com" ke lambe Name (, , , ), DKIM ki asli key (v=DKIM1; k=rsa; p=MIIB…) aa gayi. Step 3: "Checking probuyer.axonetis.com", 0/5 Waiting, countdown, "Checking…", Check now — asli backend par chal raha hai. (Photo mein button cyan/dhundla aur cards grey hain: laptop ki screen/camera ka asar lagta hai, harness mein navy + gehra; asli Win+Shift+S screenshot se pakka karna.) Pull output: server ki  files (AppShell, ComposeStudio, Greeting, mail.ts …) **repo ke BARABAR nikli** ( docs/anexomail-blueprint.md                        |  10 ++
+ docs/cursor-work/frontend/ui-harness/build.mjs     |   1 +
+ .../frontend/ui-harness/stubs/router.ts            |   5 +-
+ docs/cursor-work/server/DEPLOY-MANIFEST.txt        |   2 +-
+ src/routes/app.domains.tsx                         | 170 ++++++++++++++++++---
+ 5 files changed, 166 insertions(+), 22 deletions(-) mein sirf  4 lines,  42 lines, aur untracked /); yani server "dirty" sirf is liye ke server ka git HEAD purana hai.
+
+**FOUNDER KA NAYA HUKM (17 Oct 04:06 PKT, locked):** CEO ki tarah socho; competitor **Google Workspace aur Zoho Mail**; pehle Zoho ka basic flow karo, phir ANEXOMAIL ko un se behtar banao. **Ho gaya:**  (official pages se verify kiya hua baseline + ANEXOMAIL ki jagah + tarteeb); blueprint 8d–8m; **8g READY** ("Someone else manages your DNS?": email instructions + copy all, Zoho ke "Send to DNS admin" jaisa, bina server ke) aur **8h READY** (step 3: "aap ka inbox DNS ke intezar mein bhi chal raha hai" + Open your inbox) — sandbox mein dekha, manifest sha `d3c72ea4e9351247`. **Agle (tarteeb):** 8f pehli mail ka test → 8i IMAP/SMTP settings → 8j IMAP import → 8k dashboard checklist → 8l Domain Connect (founder decide) → 8m catch-all/forwarding/vacation. AI sab se aakhir (#41).
 
 **Agla (abhi pending, 17 Oct 03:55 PKT):** founder 13.0 dobara chalaye (manifest ka sha ab `23b0d74772a46f83`: subdomain fix) + Ctrl+Shift+R. Phir `pro.buyer` > Domains mein wohi wizard (domain pehle se jura hai, qadam 2). Dikhna chahiye: "We found your DNS is at …" wali hari line (axonetis.com ka DNS jahan hai), "probuyer.axonetis.com is a subdomain of axonetis.com" ka note, har card ke neeche "If DNS zone is axonetis.com" ka lamba Name. Phir **"I've added them — check now"** dabaye **bina koi DNS badle** (axonetis.com founder ka doosra project hai — apex par `@` MX/SPF kabhi nahi) aur qadam 3 ka screenshot bheje: 0/5 "Waiting", countdown, "Key is being prepared" wala row. Asli verified tick ka proof baad mein (alag test domain ya sirf `probuyer` subdomain ke naam se, jab founder tay kare).
 
@@ -157,6 +166,23 @@ Detail aur har item ka text: blueprint ki list. Yeh snapshot sirf navigation ke 
 - **Sandbox UI harness** (`docs/cursor-work/frontend/ui-harness/`, 17 Oct): asli `src/styles.css` + asli page code se screenshot. Yeh sabut **READY** deta hai, DONE nahi (stubs nakli, founder ka browser alag). Sandbox mein asli `tsc` nahi (npm registry band, `@types/react` nahi), sirf esbuild syntax + render.
 - **Primary button ka rang:** founder ke photo mein Connect button cyan/dhundla text, repo CSS aur harness mein navy (`--primary`) + saaf near-white text. Photo ya live server ki CSS ka farq — asli screenshot (Win+Shift+S) se tay hoga.
 - **Registrar auto-pehchan** browser se `cloudflare-dns.com` ko DoH call karti hai; Caddy par koi `connect-src` CSP lagi ho to lookup chup-chaap fail hoga (manual tabs rahenge). Repo mein CSP nahi, server ka Caddy dekha nahi.
+- **Server tree ka asli sach (17 Oct 04:06):** 20  files repo ke barabar hain; farq sirf stale git HEAD ka hai. Ek non-destructive ilaaj (sirf founder ke "haan" par):  (HEAD aage, files jaisi hain waisi; purana HEAD reflog mein) — phir On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   docs/anexomail-blueprint.md
+	modified:   docs/cursor-work/frontend/ui-harness/build.mjs
+	modified:   docs/cursor-work/frontend/ui-harness/stubs/router.ts
+	modified:   docs/cursor-work/server/DEPLOY-MANIFEST.txt
+	modified:   src/routes/app.domains.tsx
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	docs/cursor-work/founder/competitive-baseline-zoho-google-2026-10-17.md
+
+no changes added to commit (use "git add" and/or "git commit -a") mein sirf , ,  (secret, kabhi commit nahi) bachte hain aur Rule 1 ka seedha  dobara chal sakta hai. Abhi pull.sh isse bina bhi sahi chal raha hai.
 - **Server ki git tree dirty hai** (17 Oct): Rule 1 ka `git pull --rebase` "unstaged changes" par ruk jata hai, kyunke installers ne files badli hain. Poora pull tab chalega jab `cd /opt/anexomail-web && git status --short` ka output dekh kar tay ho jaye ke kaun si files repo jaisi hain (commit karni hain) aur kaun si live-only (repo mein pehle aani hain). Tab tak single-file sha-guarded block.
 - Basic/Pro par **storage ledger nahi banti** (`chat_ensure_workspace` `chat_not_entitled` deta hai, mail-worker `workspaceId` null par reserve/commit chhor deta hai) — yani Basic/Pro par quota enforce/record nahi hota. Founder decide.
 - **U5** CRM Loop Pro par (numbers 1, 2, 5, 9 dikhte hain; 3/4/6/8 gayab) aur **U7** "Assigned to me" folder khali — dono founder decide.
@@ -200,6 +226,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:35 PKT** — Founder ne 13.0 (824ab3a) ka asli output + 7 photo (step 2/3 asli backend par theek, Namecheap pehchana gaya, DKIM key aayi) bheje aur hukm diya: Google/Zoho se behtar, pehle Zoho ka basic. Agent ne Zoho/Google ke official pages parhe (WebFetch),  likha, blueprint 8d–8m, aur 8g (IT wale ko instructions) + 8h (intezar mein inbox) banaye; sandbox mein dekhe. Server ki dirty tree = repo ke barabar (HEAD stale) — section 9.
 
 - **17 Oct 04:20 PKT** — #8c (existing-mail guard) code + harness (Google Workspace scenario, desktop + 390 px) theek; pull.sh mein server-vs-repo diff stat; manifest sha badla. Founder ko 13.0 dobara.
 

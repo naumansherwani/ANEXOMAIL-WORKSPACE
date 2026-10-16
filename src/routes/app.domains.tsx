@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   AlertTriangle,
   ArrowRight,
@@ -10,6 +10,7 @@ import {
   Globe,
   Loader2,
   Lock,
+  Mail,
   Plus,
   RefreshCw,
   ShieldCheck,
@@ -350,6 +351,29 @@ function PageSkeleton() {
 
 /* ------------------------------ small pieces ------------------------------ */
 
+/** Clipboard: pehle modern API, na chale (http / permission) to purana tareeqa. false = nahi hua. */
+async function copyToClipboard(value: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(value);
+    return true;
+  } catch {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = value;
+      ta.setAttribute("readonly", "");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      const ok = document.execCommand("copy");
+      document.body.removeChild(ta);
+      return ok;
+    } catch {
+      return false;
+    }
+  }
+}
+
 function CopyButton({ value, label }: { value: string; label: string }) {
   const [copied, setCopied] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -360,25 +384,9 @@ function CopyButton({ value, label }: { value: string; label: string }) {
     [],
   );
   const copy = async () => {
-    try {
-      await navigator.clipboard.writeText(value);
-    } catch {
-      // Clipboard API band ho (http / permission): purana tareeqa.
-      try {
-        const ta = document.createElement("textarea");
-        ta.value = value;
-        ta.setAttribute("readonly", "");
-        ta.style.position = "fixed";
-        ta.style.opacity = "0";
-        document.body.appendChild(ta);
-        ta.select();
-        const ok = document.execCommand("copy");
-        document.body.removeChild(ta);
-        if (!ok) throw new Error("copy_failed");
-      } catch {
-        notify.failed("Couldn't copy", { description: "Select the text and copy it by hand." });
-        return;
-      }
+    if (!(await copyToClipboard(value))) {
+      notify.failed("Couldn't copy", { description: "Select the text and copy it by hand." });
+      return;
     }
     setCopied(true);
     if (timer.current) clearTimeout(timer.current);
@@ -403,6 +411,101 @@ function CopyButton({ value, label }: { value: string; label: string }) {
       )}
       <span aria-live="polite">{copied ? "Copied" : "Copy"}</span>
     </Button>
+  );
+}
+
+/** Seedhi saadi zubaan mein poori list — IT wale ko bhejne ke liye (Zoho ka "Send to DNS admin", bina server ke). */
+function instructionsText(d: OrgDomain, zone: string | null): string {
+  const lines = [
+    `Please add these ${d.records.length} DNS records for ${d.domain}.`,
+    "Only add them — don't delete other records. Enter the Name exactly as shown (your DNS host adds the domain itself).",
+    "",
+  ];
+  d.records.forEach((r, i) => {
+    const long = zone && r.host.endsWith(`.${zone}`) ? r.host.slice(0, -(zone.length + 1)) : null;
+    lines.push(`${i + 1}. ${CHECK_LABEL[r.key].title} - type ${r.type}`);
+    lines.push(`   Name: ${r.name}${long && long !== r.name ? `   (if the DNS zone is ${zone}: ${long})` : ""}`);
+    lines.push(`   Value: ${r.value ?? "(still being generated - ask again in a minute)"}`);
+    if (r.type === "MX" && r.priority != null) lines.push(`   Priority: ${r.priority}`);
+    lines.push("");
+  });
+  lines.push("Once saved, please tell me. ANEXOMAIL checks them automatically.");
+  return lines.join("\n");
+}
+
+/** Asli user aksar DNS khud nahi chhoota — IT/web wale ko ek click mein bhejo. */
+function HandoffCard({ domain, zone }: { domain: OrgDomain; zone: string | null }) {
+  const { t } = useLocale();
+  const text = useMemo(() => instructionsText(domain, zone), [domain, zone]);
+  const subject = `DNS records to add for ${domain.domain}`;
+  const full = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(text)}`;
+  // Kuch mail apps lambe mailto kaat dete hain: lamba ho to chhota body + clipboard mein poori list.
+  const tooLong = full.length > 1900;
+  const href = tooLong
+    ? `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent("Paste the DNS records here (copied to your clipboard).")}`
+    : full;
+  const [copied, setCopied] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(
+    () => () => {
+      if (timer.current) clearTimeout(timer.current);
+    },
+    [],
+  );
+  const flash = () => {
+    setCopied(true);
+    if (timer.current) clearTimeout(timer.current);
+    timer.current = setTimeout(() => setCopied(false), 1600);
+  };
+  const copyAll = async () => {
+    if (await copyToClipboard(text)) flash();
+    else notify.failed("Couldn't copy", { description: "Select the text and copy it by hand." });
+  };
+  return (
+    <div className="ax-plane mt-6 rounded-2xl p-ax-4">
+      <div className="flex flex-wrap items-center gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
+          <Mail className="size-4" aria-hidden="true" />
+        </span>
+        <div className="min-w-0 flex-1">
+          <p className="ax-label">{t("Someone else manages your DNS?")}</p>
+          <p className="ax-caption mt-0.5">
+            {t("Send them these records in one click — your web developer, IT person or registrar support.")}
+          </p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <Button asChild variant="outline" size="sm" className="ax-press gap-1.5">
+            <a
+              href={href}
+              onClick={() => {
+                if (tooLong) {
+                  void copyToClipboard(text).then((ok) => {
+                    if (ok) notify.info("Records copied", "Paste them into the email.");
+                  });
+                }
+              }}
+            >
+              <Mail className="size-3.5" aria-hidden="true" />
+              {t("Email these instructions")}
+            </a>
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className={cn("ax-press gap-1.5", copied && "border-success/50 text-success")}
+            onClick={() => void copyAll()}
+          >
+            {copied ? (
+              <CheckCircle2 className="size-3.5 animate-in zoom-in-50 duration-200" aria-hidden="true" />
+            ) : (
+              <Copy className="size-3.5" aria-hidden="true" />
+            )}
+            <span aria-live="polite">{copied ? t("Copied") : t("Copy all as text")}</span>
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -596,6 +699,7 @@ function Wizard({
   atCap,
   capLabel,
   suggestion,
+  loginAddress,
   onClose,
   onDone,
 }: {
@@ -605,6 +709,7 @@ function Wizard({
   atCap: boolean;
   capLabel: string;
   suggestion: string | null;
+  loginAddress: string | null;
   onClose: () => void;
   onDone: (domain: OrgDomain) => void;
 }) {
@@ -880,6 +985,8 @@ function Wizard({
               ))}
             </ul>
 
+            <HandoffCard domain={domain} zone={zone} />
+
             <div className="mt-7 flex flex-wrap items-center gap-2">
               <Button
                 type="button"
@@ -951,6 +1058,28 @@ function Wizard({
                 </li>
               ))}
             </ul>
+
+            {!verified && (
+              <div className="ax-plane mt-5 flex flex-wrap items-center gap-3 rounded-2xl p-ax-4">
+                <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
+                  <Mail className="size-4" aria-hidden="true" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="ax-label">{t("Your inbox already works while DNS updates")}</p>
+                  <p className="ax-caption mt-0.5">
+                    {loginAddress
+                      ? `${t("Mail sent to")} ${loginAddress} ${t("arrives now. Your company address starts working the moment all five ticks are green.")}`
+                      : t("Your company address starts working the moment all five ticks are green.")}
+                  </p>
+                </div>
+                <Button asChild variant="outline" size="sm" className="ax-press gap-1.5">
+                  <Link to="/app/mail">
+                    {t("Open your inbox")}
+                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                  </Link>
+                </Button>
+              </div>
+            )}
 
             {problem && <p role="alert" className="ax-shake ax-label mt-3 text-danger">{problem}</p>}
 
@@ -1584,6 +1713,7 @@ function DomainsPage() {
             atCap={atCap}
             capLabel={capLabel}
             suggestion={suggestion}
+            loginAddress={addr?.login_address ?? null}
             onClose={() => setWizard(null)}
             onDone={(d) => goAddress(d.id)}
           />
