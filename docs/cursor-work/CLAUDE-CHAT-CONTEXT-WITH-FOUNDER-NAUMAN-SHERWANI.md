@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:40 PKT**.
+Aakhri update: **17 Oct 2026, 04:45 PKT**.
 
 ---
 
@@ -52,6 +52,12 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **FOUNDER KA MAQSAD (17 Oct 03:54 PKT, locked):** "real user ko website ka best experience dena; test account se real user wali sab cheezein nahi ho sakti, lekin jitna ho sake **user ki tarah socho**." Is liye har screen ko **asli user ke 5 minute** ki nazar se dekho (kya sochega, kahan phansega, kya kho sakta hai), aur jo test se sabit nahi ho sakta (payment, asli registrar par DNS, bahar se aane wali mail, spam folder, asli phone) use alag "founder ko khud dekhna" list mein likho. Real-user khatre ki list: blueprint #8c+.
 
 **17 Oct 04:20 PKT — #8c banaya (READY, sandbox mein dekha):** wizard qadam 2 ab domain ke MX/SPF DNS-over-HTTPS se dekhta hai; pehle se Google/Microsoft/Zoho… ho to warning ("is domain par mail pehle se hai, MX lagane se purane mailboxes band") aur SPF ka merged value + Copy. Subdomain (probuyer) par kuch nahi aata (uska apna MX nahi). Manifest sha ab `04b1b3542f4e9706`. pull.sh ab server-vs-repo ka `git diff --stat origin/main` bhi dikhata hai (dirty-tree survey khud). **Agla qadam wahi: 13.0 dobara + qadam 3 ka check (DNS badle bina).**
+
+**FOUNDER KA HUKM (17 Oct 04:26 PKT, locked) — gaps sab se aage, Rust-first, har section CEO ki nazar se:**
+1. Jo gaps mile (pehli mail ka test, IMAP/SMTP settings, IMAP import, dashboard checklist, Domain Connect, catch-all/forwarding/vacation) **latest technology par** theek karo aur **sab se aage** rakho (Domains ki aur polish se pehle).
+2. **Backend hamesha Rust** (tRPC-style `/rpc`, QUIC, WebTransport, async Tokio). **Bun sirf emergency fallback.** Naya backend kaam Bun mein nahi. (Sach: abhi `mail.send`, `org.mailboxes.*` Rust se Bun ko "use_bun_fallback" bhejte hain — yeh Rust ki taraf jana hai, plan R1 neeche.)
+3. **CEO ki nazar se har section** dekho — Dashboard, Mail, People, Calendar, Work, CRM, Domains — aur batao competitor se kaise aage nikalna hai. Jawab: `docs/cursor-work/founder/ceo-section-review-2026-10-17.md`.
+4. **Sandbox ki had (sach):** yahan Rust compile nahi ho sakta (crates.io band, `cargo check` fail). Isliye Rust code **READY (compile baqi)** rehta hai jab tak server par `cargo build --release` green na ho; deploy hamesha restore-on-fail block se (purani binary wapas), phir `pm2 restart anexomail-rust --update-env && pm2 save`. Frontend ko harness mein dekha ja sakta hai.
 
 **17 Oct 04:06 PKT — founder ne 13.0 (824ab3a) chalaya + 7 photo bheji: asli server par sab theek.** Step 2: "We found your DNS is at Namecheap" aaya (**axonetis.com ka DNS Namecheap par hai**), subdomain note, "If DNS zone is axonetis.com" ke lambe Name (`_anexomail-verify.probuyer`, `probuyer`, `anexo1._domainkey.probuyer`, `_dmarc.probuyer`), DKIM ki asli key (v=DKIM1; k=rsa; p=MIIB…) aa gayi. Step 3: "Checking probuyer.axonetis.com", 0/5 Waiting, countdown, "Checking…", Check now — asli backend par chal raha hai. (Photo mein button cyan/dhundla aur cards grey hain: laptop ki screen/camera ka asar lagta hai, harness mein navy + gehra; asli Win+Shift+S screenshot se pakka karna.) Pull output: server ki `M` files (AppShell, ComposeStudio, Greeting, mail.ts …) **repo ke BARABAR nikli** (`git diff --stat origin/main` mein sirf `bun.lock` 4 lines, `routeTree.gen.ts` 42 lines, aur untracked `domains.ts` / `app.domains.tsx`); yani server "dirty" sirf is liye ke server ka git HEAD purana hai.
 
@@ -206,6 +212,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:45 PKT** — Founder ka hukm (04:26): gaps sab se aage + latest technology, backend hamesha Rust (tRPC/QUIC/WebTransport/Tokio, Bun sirf emergency), aur har section (Dashboard, Mail, People, Calendar, Work, CRM, Domains) CEO ki nazar se. Agent ne yeh section 1 mein locked likha; sandbox mein cargo hai magar crates.io band (compile nahi ho sakta) — Rust code server par hi compile hoga.
 
 - **17 Oct 04:35 PKT** — Founder ne 13.0 (824ab3a) ka asli output + 7 photo (step 2/3 asli backend par theek, Namecheap pehchana gaya, DKIM key aayi) bheje aur hukm diya: Google/Zoho se behtar, pehle Zoho ka basic. Agent ne Zoho/Google ke official pages parhe (WebFetch), `competitive-baseline-zoho-google-2026-10-17.md` likha, blueprint 8d–8m, aur 8g (IT wale ko instructions) + 8h (intezar mein inbox) banaye; sandbox mein dekhe. Server ki dirty tree = repo ke barabar (HEAD stale) — section 9.
 
