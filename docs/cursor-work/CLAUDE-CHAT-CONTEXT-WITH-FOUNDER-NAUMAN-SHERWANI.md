@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:48 PKT**.
+Aakhri update: **17 Oct 2026, 03:55 PKT**.
 
 ---
 
@@ -47,7 +47,7 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 
 **17 Oct 03:45 PKT — founder ka asli browser (page text paste): Domains v2 server par LIVE hai aur wizard qadam 1→2 chala.** Nateeja: "1 of 3 domain · Pro", step rail, "At your registrar…" copy, Namecheap/GoDaddy/Cloudflare/Other tabs + "Open Namecheap", 5 record cards (TXT `_anexomail-verify` value `e214…`, MX `@` → `mail.anexomail.com` prio 10, SPF `v=spf1 a:mail.anexomail.com ~all`, DKIM `anexo1._domainkey` "Key is being prepared", DMARC `_dmarc`), "I've added them — check now" / "Finish later", Addresses (login address pehle, locked preview). Yaani qadam 1–2 live DONE-nayi cheez; qadam 3 (live ticks/verified) aur asli DNS check baqi. **Do asli kamiyan mili:** (1) registrar auto-pehchan `probuyer.axonetis.com` par nahi chali (subdomain ke apne NS nahi hote — parent `axonetis.com` poochhna tha), (2) subdomain par agar DNS parent zone ka ho to Name lamba likhna parta hai (`@` → `probuyer`, `_dmarc` → `_dmarc.probuyer`) — page ne yeh nahi bataya. Dono repo mein theek (blueprint 8c, READY); manifest sha badla.
 
-**Agla (abhi pending):** pehle **13.0** (EK pull command: memory + Domains v2 + pm2 restart) chalao + Ctrl+Shift+R; phir founder Domains par **Connect probuyer.axonetis.com** dabaye (wizard qadam 1, naam pehle se bhara hoga) aur screenshot bheje; phir qadam 2 (5 DNS records + Copy), phir qadam 3 (live ticks). Yeh test account hai, domain add hone se Pro ki hadd 1/3 hogi. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
+**Agla (abhi pending, 17 Oct 03:55 PKT):** founder 13.0 dobara chalaye (manifest ka sha ab `23b0d74772a46f83`: subdomain fix) + Ctrl+Shift+R. Phir `pro.buyer` > Domains mein wohi wizard (domain pehle se jura hai, qadam 2). Dikhna chahiye: "We found your DNS is at …" wali hari line (axonetis.com ka DNS jahan hai), "probuyer.axonetis.com is a subdomain of axonetis.com" ka note, har card ke neeche "If DNS zone is axonetis.com" ka lamba Name. Phir **"I've added them — check now"** dabaye **bina koi DNS badle** (axonetis.com founder ka doosra project hai — apex par `@` MX/SPF kabhi nahi) aur qadam 3 ka screenshot bheje: 0/5 "Waiting", countdown, "Key is being prepared" wala row. Asli verified tick ka proof baad mein (alag test domain ya sirf `probuyer` subdomain ke naam se, jab founder tay kare).
 
 Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
 
@@ -194,6 +194,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 03:55 PKT** — Founder ne wohi page-text dobara aur ek photo bheji (asli browser, step 2 theek). Do chats ek hi kaam par chal rahe the; 6ca2218 (subdomain fix) pehle push ho chuka tha. Agent ne harness mein subdomain scenario dekha (hint parent se, note, lamba Name) — theek. Section 1 ka "Agla" purana tha, naya likha. Founder ko 13.0 dobara aur step 3 ka check (DNS badle bina) diya.
 
 - **17 Oct 03:48 PKT** — Founder ne Domains wizard qadam 2 ka page text paste kiya (asli browser): v2 live, qadam 1→2 sahi. Agent ne do kamiyan theek kin (subdomain par registrar-detect parent zone se; lamba Name "If DNS zone is axonetis.com"), harness mein dekha, manifest sha badla (blueprint 8c). 13.0 dobara chalana hai.
 
