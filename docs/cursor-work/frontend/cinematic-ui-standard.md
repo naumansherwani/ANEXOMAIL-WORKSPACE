@@ -30,6 +30,15 @@ Vercel/Linear jaisi screens achhi hain kyunke saaf, tez aur khamosh hain. Hum us
 7. 390 px phone par bhi wahi tajurba; keyboard/screen reader ke liye `aria-*`, `role=status/alert`.
 8. Type sirf chhe naap mein; rang sirf tokens se (`--primary`, `--cyan-accent`, success/warning/danger).
 
+## Mobile + tablet (founder ka locked rule, 17 Oct 2026 — AGENTS.md Rule 19)
+
+Har screen **teen width** par verify hoti hai: 1440 (desktop), 820 (tablet), 390 (phone). Teeno theek na hon to READY nahi.
+
+- Horizontal page-scroll nahi; lambi cheez (email, DNS value) wrap ya apne dabbe ke andar scroll.
+- Touch target >= 44 px (`ax-tap`); input font 16 px (iOS zoom nahi); `100dvh`, safe-area (notch/home bar).
+- Nav mobile par drawer ya bottom bar; sheet/dialog mobile par neeche se (bottom sheet), keyboard khule to primary button dikhe.
+- Primary action ek hi, poori chaudai ka button mobile par; teen-column grid mobile par ek column.
+
 ## Kaise verify hota hai (sandbox mein, server par nahi)
 
 `docs/cursor-work/frontend/ui-harness/` asli `src/styles.css` + asli page code ko Tailwind 4 se compile karke Chromium mein screenshot leta hai. Is se rang, spacing, layout, loading skeleton, 390 px aur har state (khali / list / wizard 1–3 / verified / error) dekhi jati hai. **Yeh asli server nahi hai:** data nakli (stubs) hai, aur founder ka browser/screen/zoom alag ho sakta hai. Isliye status **READY** rehta hai jab tak founder asli browser mein na dekh le (Rule 5).

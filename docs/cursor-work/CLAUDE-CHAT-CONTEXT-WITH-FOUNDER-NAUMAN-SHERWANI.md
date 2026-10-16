@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:35 PKT**.
+Aakhri update: **17 Oct 2026, 04:50 PKT**.
 
 ---
 
@@ -63,6 +63,8 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 
 **FOUNDER KA NAYA HUKM (17 Oct 04:06 PKT, locked):** CEO ki tarah socho; competitor **Google Workspace aur Zoho Mail**; pehle Zoho ka basic flow karo, phir ANEXOMAIL ko un se behtar banao. **Ho gaya:** `docs/cursor-work/founder/competitive-baseline-zoho-google-2026-10-17.md` (official pages se verify kiya hua baseline + ANEXOMAIL ki jagah + tarteeb); blueprint 8d–8m; **8g READY** ("Someone else manages your DNS?": email instructions + copy all, Zoho ke "Send to DNS admin" jaisa, bina server ke) aur **8h READY** (step 3: "aap ka inbox DNS ke intezar mein bhi chal raha hai" + Open your inbox) — sandbox mein dekha, manifest sha `d3c72ea4e9351247`. **Agle (tarteeb):** 8f pehli mail ka test → 8i IMAP/SMTP settings → 8j IMAP import → 8k dashboard checklist → 8l Domain Connect (founder decide) → 8m catch-all/forwarding/vacation. AI sab se aakhir (#41).
 
+**FOUNDER KA NAYA HUKM (17 Oct 04:43 PKT, locked — AGENTS.md Rule 19):** (1) **Mobile aur tablet users ke liye bhi website** — unki tadad bahut zyada hai, woh mobile se ANEXOMAIL use kar saken; har screen 1440 / 820 / 390 px par banti aur dekhi jati hai. (2) **Abhi ke abhi** jahan bhi CEO ko gap/loophole dikhe, theek karo — user ka dil aur dimagh ban kar. (3) Soch: yeh product poori duniya mein **viral** kaise hoga — deep thinking, gaps aur loopholes sab. Agent ka pehla qadam: poori app ka mobile/tablet audit (AppShell nav, har section), phir gaps ek ek theek, harness mein teen width par dekh kar. Neeche ki "8k BANA" baat is se pehle ki hai.
+
 **8k BANA (17 Oct 04:35 PKT, READY, sandbox mein dekha):** Dashboard par `SetupChecklist` — Greeting ke neeche, WidgetGrid se pehle. 5 qadam asli data se tick: account ✔ / domain jura (`mail.domains.list`) / DNS verified / company address (`mail.addresses.list`) / pehli mail (`dashboard.analytics` sent>0; analytics na aaye to yeh qadam hi nahi). Kuch nahi dikhta jab: data load na ho, plan mein domains nahi (`domain_cap` 0), sab poora, ya user ne X dabaya (localStorage, sirf per-viewer). Files: `src/components/app/dashboard/SetupChecklist.tsx` (naya) + `src/routes/app.index.tsx` (3 line mount). Manifest sha `cfa23d242cfead4a` + `4f99897a191b92de`. Harness mein har state (dashA..E, cap0, noanalytics) desktop + 820 + 390 px dekhi; mobile par button heading par chadh raha tha — theek kiya. **Sach:** Pro/Basic 'personal' kind hain magar unke paas Domains hai (pro.buyer), isliye card `kind` se nahi, `domain_cap` se chhupta hai. **Founder ke liye:** 13.0 chalao, Ctrl+Shift+R, `pro.buyer` Dashboard par 'Finish setup' card (domain jura hai, DNS pending => 2/5, 'Continue' Domains par le jata hai). **Agla (tarteeb):** 8f pehli mail ka test -> 8i/8j (pehle server fact-finding block) -> 8m -> 8l (founder decide); saath mein CEO section review doc + Rust R1 plan.
 
 Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
@@ -106,6 +108,7 @@ Company addresses ka **ek unified inbox**; `hello@` ka kaam founder-side. **Ali 
 - **Git:** force-push / amend / squash nahi. Har commit ke aakhir mein do trailers: `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>` aur `Claude-Session: <is chat ka session URL>` (URL har chat ka system-reminder deta hai).
 - **Branding:** build-platform ka naam/logo repo ya UI copy mein nahi. NEXATECT sirf internal, public copy mein nahi.
 - **Backend:** naya kaam Rust :3200 primary; Bun sirf fallback.
+- **Mobile + tablet (Rule 19, 17 Oct):** har screen 1440 / 820 / 390 px par banao aur harness mein dekho; teeno theek hon tab hi READY. Nav mobile par drawer/bottom bar, `100dvh`, safe-area, 44 px touch, input 16 px.
 - **Agent ke liye (17 Oct sabaq):** docs likhte waqt shell ke unquoted heredoc mein backtick mat rakho — shell unhein chala deta hai aur file kharab hoti hai. Write tool ya quoted heredoc (`<<'EOF'`) use karo.
 
 ---
@@ -212,6 +215,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:50 PKT** — Founder ka hukm (04:43): mobile + tablet users ke liye bhi website (naya locked rule, AGENTS.md Rule 19), CEO ki nazar se har gap/loophole abhi theek karo, "viral kaise hoga" ki soch. Agent ne rule likha (AGENTS.md, cursor rule, UI standard, yeh file) aur mobile/tablet audit shuru kiya.
 
 - **17 Oct 04:35 PKT** — Founder ke hukm (gaps sab se aage) ka pehla qadam: 8k dashboard setup checklist bana (`SetupChecklist.tsx`, app.index mount), harness mein 7 state + mobile dekhe, manifest sha badla. Status READY (founder ke browser mein dekhna baqi).
 

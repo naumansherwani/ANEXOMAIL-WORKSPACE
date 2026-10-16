@@ -178,6 +178,12 @@ Chat compact hone par context kho jata tha. Ab ek hi file hai: `docs/cursor-work
 - **Pehle likho, phir kaam karo:** founder naya hukm/faisla de to kaam shuru karne se pehle file mein likh kar docs-only commit push karo (compact kisi bhi waqt aa sakta hai). Server ki copy `pull.sh` se taza hoti hai; file ka section 15 dekho.
 - Founder jo purani chat paste kare uska khaas hissa file ke Appendix mein (pehle secret ke liye parho). Kachchi poori transcript dump nahi.
 
+### Rule 19 — Mobile + tablet pehle din se (locked 17 Oct 2026, founder)
+Founder ka hukm: "ab se ek rule hai — mobile users aur tablet users ke liye bhi website build karo; unki tadad bahut zyada hai; woh kabhi mobile se ANEXOMAIL use kar saken."
+- Har naya ya badla hua screen **desktop ke saath mobile (390 px) aur tablet (820 px) par bhi** banta aur dekha jata hai (harness screenshot teeno par: 1440 / 820 / 390). Mobile baad ki cheez nahi; ek screen tab READY nahi jab tak teeno width theek na hon.
+- Minimum: koi horizontal page-scroll nahi; touch targets >= 44 px; mobile par nav (rail) chhote-screen ka apna tareeqa (drawer/bottom bar); `100dvh` (browser ki toolbar se na kate); safe-area (notch/home bar); input 16 px (iOS zoom na ho); keyboard khule to action button na chhupe; lambi cheezein (email, DNS value) wrap/scroll-in-place.
+- CEO soch (founder ka hukm): har section mein gaps aur loopholes dhoondo jo user ka dil jeetein ya tod den, aur "yeh duniya mein viral kaise hoga" ki nazar se: pehle 60 second mein user ko apna address kaam karta dikhe, ek tap mein share/invite, phone se bhi poora kaam.
+
 ---
 
 ## PENDING (founder action required)
