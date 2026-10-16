@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:45 PKT**.
+Aakhri update: **17 Oct 2026, 03:55 PKT**.
 
 ---
 
@@ -138,6 +138,7 @@ Detail aur har item ka text: blueprint ki list. Yeh snapshot sirf navigation ke 
 
 ## 9. Khule findings / founder ke faislay
 
+- **Server ki git tree dirty hai** (17 Oct): Rule 1 ka `git pull --rebase` "unstaged changes" par ruk jata hai, kyunke installers ne files badli hain. Poora pull tab chalega jab `cd /opt/anexomail-web && git status --short` ka output dekh kar tay ho jaye ke kaun si files repo jaisi hain (commit karni hain) aur kaun si live-only (repo mein pehle aani hain). Tab tak single-file sha-guarded block.
 - Basic/Pro par **storage ledger nahi banti** (`chat_ensure_workspace` `chat_not_entitled` deta hai, mail-worker `workspaceId` null par reserve/commit chhor deta hai) — yani Basic/Pro par quota enforce/record nahi hota. Founder decide.
 - **U5** CRM Loop Pro par (numbers 1, 2, 5, 9 dikhte hain; 3/4/6/8 gayab) aur **U7** "Assigned to me" folder khali — dono founder decide.
 - Dashboard par **"Send success 50%"** dikha (pro.buyer: 1 mail bheji, 1 receive). `mail_scheduled` ke sent/failed se aata hai; kya waqai ek failed hai — check baqi.
@@ -180,6 +181,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 03:03 PKT** — Founder ne Rule 1 ki pull command chalayi: git ne `cannot pull with rebase: You have unstaged changes` kehkar roka (kuch nahi badla). Founder ko 13.1 ka sha-guarded block dobara diya gaya. Khula kaam: server tree ki `git status --short` dekhna (live-only files, #10).
 
 - **17 Oct 02:53 PKT** — Founder ne pull ki command maangi, kaha "pm2 restart hamesha karwaya karo", aur poochha "kya sab kaam latest technology par ho raha hai". Pull command section 13.4 mein; pm2 restart ka qaida section 4 mein. Jawab (chat mein): locked stack (React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun, Rust primary) par; teen kamiyan: sandbox mein asli tsc/build nahi, live ticks polling se (WebTransport push E26 TODO), PWA cache purani UI dikhata hai.
 
@@ -240,7 +243,7 @@ git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show
 ```bash
 cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
 ```
-Status: output abhi nahi aaya.
+Status (17 Oct 03:03 PKT, founder ka output): **refused** — `error: cannot pull with rebase: You have unstaged changes.` Kuch nahi badla (`&&` ne build/restart se pehle rok diya). Matlab server ki `/opt/anexomail-web` tree installers se dirty hai; poora pull tab tak nahi chalega jab tak `git status --short` ka output dekh kar tay na ho ke kaun si files live-only hain (#10 ka hissa). Tab tak sirf 13.1 jaisa sha-guarded single-file block.
 
 **13.5 — DB ka chhota check (claude.ai chat se, 15–16 Oct; E30 ke baad theek nikla):**
 ```bash
