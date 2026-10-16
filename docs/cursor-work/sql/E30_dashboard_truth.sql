@@ -82,7 +82,7 @@ begin
          count(*) filter (
            where assignee is not null
              and coalesce(folder, 'inbox') not in ('trash', 'spam', 'archive')
-             and (assignee = _user::text or lower(assignee) = lower(coalesce(_email, '')))
+             and assignee = _user   -- live: mail_threads.assignee uuid hai (user id)
          )
     into _unread, _waiting, _assigned
     from public.mail_threads
