@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:35 PKT**.
+Aakhri update: **17 Oct 2026, 03:50 PKT**.
 
 ---
 
@@ -43,9 +43,9 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 
 **17 Oct 03:19 PKT — founder ki maang (is ke baad ka kaam):** (1) Domains ki kamzoriyan theek karo (#8a) aur registrar pehchanna (#8b); (2) UI itni advance ke Vercel se aage ho, tab hi dikhana; phir poori website ke liye "duniya ka best"; (3) "cinematic / cinema feel UI" kya hota hai samjhao; (4) **axonetis.com founder ka doosra project hai, sirf TEST domain** — ANEXOMAIL domain nahi bechta, maqsad hai "user business email kaise banaye"; (5) "repo mein sab code hai, server par sab hai, masla compact ke baad bhool jana hai — latest technology rule par ek hi baar mein theek karo".
 
-**Ho gaya (17 Oct ~03:35 PKT, repo mein, READY):** `src/routes/app.domains.tsx` cinematic standard par dobara likha — hero mein "From: you@<domain>" mail preview, "Use a different domain" asli button, login address pehle, skeleton loader, stagger, registrar auto-pehchan (DNS-over-HTTPS se), step 3 ka jashn. **Asli UI sandbox mein dekhi gayi** (`docs/cursor-work/frontend/ui-harness/`: har state + 390 px screenshots). Standard + poori website ka rasta: `docs/cursor-work/frontend/cinematic-ui-standard.md`. Deploy block 13.6. **Founder ke browser mein dekhna baqi — isliye #8/#8a READY, DONE nahi.**
+**Ho gaya (17 Oct ~03:35 PKT, repo mein, READY):** `src/routes/app.domains.tsx` cinematic standard par dobara likha — hero mein "From: you@<domain>" mail preview, "Use a different domain" asli button, login address pehle, skeleton loader, stagger, registrar auto-pehchan (DNS-over-HTTPS se), step 3 ka jashn. **Asli UI sandbox mein dekhi gayi** (`docs/cursor-work/frontend/ui-harness/`: har state + 390 px screenshots). Standard + poori website ka rasta: `docs/cursor-work/frontend/cinematic-ui-standard.md`. Deploy ab 13.0 (13.6 ka purana block shamil). **Founder ke browser mein dekhna baqi — isliye #8/#8a READY, DONE nahi.**
 
-**Agla (abhi pending):** pehle 13.6 chalao + Ctrl+Shift+R; phir founder Domains par **Connect probuyer.axonetis.com** dabaye (wizard qadam 1, naam pehle se bhara hoga) aur screenshot bheje; phir qadam 2 (5 DNS records + Copy), phir qadam 3 (live ticks). Yeh test account hai, domain add hone se Pro ki hadd 1/3 hogi. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
+**Agla (abhi pending):** pehle **13.0** (EK pull command: memory + Domains v2 + pm2 restart) chalao + Ctrl+Shift+R; phir founder Domains par **Connect probuyer.axonetis.com** dabaye (wizard qadam 1, naam pehle se bhara hoga) aur screenshot bheje; phir qadam 2 (5 DNS records + Copy), phir qadam 3 (live ticks). Yeh test account hai, domain add hone se Pro ki hadd 1/3 hogi. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
 
 Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
 
@@ -80,6 +80,7 @@ Company addresses ka **ek unified inbox**; `hello@` ka kaam founder-side. **Ali 
 - **Bina zaroorat sawal nahi.** Gate / "PASS PASS" scripts nahi. Asli output wale seedhe commands (curl code, grep, psql, pm2).
 - **Rule 15:** server ka sach server par. Agent server par kuch nahi chala sakta; chat mein ek copy-paste block deta hai, founder chalata hai aur output paste karta hai. Output aane se pehle "DONE" nahi.
 - **Rule 17:** test browser se nahi (SQL-seeded accounts, token, curl). Ab founder UI khud apne login se dekh raha hai, to browser sirf wahan jahan screen dekhni zaroori ho.
+- **Har jawab jo repo badle, uske aakhir mein founder ko 13.0 ki EK pull command do** (founder, 17 Oct 03:39 PKT: "hamesha pull ki command do, pm2 restart hamesha"). Woh command `pull.sh` chalati hai: server ki memory file (yeh file), AGENTS.md aur docs taza karti hai, manifest ki code files sha-guard se lagati hai, aur **hamesha** `pm2 restart anexomail-web --update-env && pm2 save`. Code file badlo to `DEPLOY-MANIFEST.txt` mein uska sha usi commit mein badlo.
 - **Har deploy/pull block mein `pm2 restart <app> --update-env && pm2 save` hamesha** (founder, 17 Oct 2026): web badla to `anexomail-web`, Rust badla to `anexomail-rust`, Brain badla to `anexomail-leo`. `polar-rust-payment` kabhi nahi.
 - **Rule 5:** status sirf DONE (live verify) / READY / TODO.
 - **Secrets repo ya chat mein nahi.** Test passwords sirf server par `/root/test-accounts/<handle>.pw`.
@@ -192,6 +193,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 03:50 PKT** — Compact ke baad naya chat; founder (03:39): "context kabhi lose na ho, server par bhi update karo, hamesha pull command do, pm2 restart hamesha". Agent ne `docs/cursor-work/server/pull.sh` + `DEPLOY-MANIFEST.txt` likhe (dirty tree ke saath bhi chalta hai; memory/docs taza, code sha-guard, hamesha pm2 restart+save; nakli server par test: pehli bar, dobara, build-fail restore). Section 13.0 (EK command), section 15 (memory qaida: pehle likho phir kaam), AGENTS.md Rule 1 + Rule 18, cursor rule update. Asli server par abhi chala nahi.
+
 - **17 Oct 03:35 PKT** — Founder ne 03:19 par kaha: Domains ki kamzoriyan theek karo, Vercel se aage UI banao tab hi dikhao, "cinematic" samjhao, axonetis sirf test domain hai, sab ek hi baar theek karo. Agent ne `app.domains.tsx` dobara likha (hero mail preview, outline "different domain", login address pehle, skeleton, stagger, registrar DoH detect, step 3 jashn), sandbox harness mein har state aur 390 px dekha, `cinematic-ui-standard.md` aur `ui-harness/README.md` likhe, blueprint #8a/#8b badla (READY). Deploy block 13.6. Browser dekhna baqi.
 
 - **17 Oct 03:09 PKT** — Founder ke 2 photo: Domains page ka khali state theek (scroll, hero, locked addresses). Founder ne poochha "kya yeh duniya ka best UI hai?" — jawab: nahi, ~7/10; #8a (polish) aur #8b (registrar detect / ek-click DNS, founder decide) blueprint mein TODO. Wizard abhi dekha nahi.
@@ -217,6 +220,13 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 13. Aakhri commands (copy-paste ready, founder ke server ke liye)
+
+**13.0 — EK pull command (har jawab mein yahi do; founder ka hukm 17 Oct 03:39 PKT).** `git pull --rebase` server par refuse hota hai (tree dirty), isliye yeh script tree ko chhere bina: dirty files ki list dikhati hai, memory/docs taza karti hai, manifest ki code files sha-guard se lagati hai (build fail ho to purani wapas), phir **hamesha** `pm2 restart anexomail-web --update-env && pm2 save` aur health check. Script: `docs/cursor-work/server/pull.sh`, code list: `docs/cursor-work/server/DEPLOY-MANIFEST.txt`. Sirf web; Rust/Brain ke deploy alag block.
+
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)
+```
+Aakhir mein `OK - memory taza, server taza` aaye aur `memory stamp:` wali line ka waqt is file ke "Aakhri update" se mile to server ki memory taza hai. Status: sandbox mein nakli server par test hua (dirty tree, dobara chalana, build fail par restore); **asli server par abhi chala nahi** (17 Oct 03:50 PKT).
 
 Har naya block jo founder ko diya jaye woh yahan bhi likho (Rule 18). Neeche wale sab server par chalte hain, repo ya sandbox mein nahi.
 
@@ -261,7 +271,7 @@ cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase o
 ```
 Status (17 Oct 03:03 PKT, founder ka output): **refused** — `error: cannot pull with rebase: You have unstaged changes.` Kuch nahi badla (`&&` ne build/restart se pehle rok diya). Matlab server ki `/opt/anexomail-web` tree installers se dirty hai; poora pull tab tak nahi chalega jab tak `git status --short` ka output dekh kar tay na ho ke kaun si files live-only hain (#10 ka hissa). Tab tak sirf 13.1 jaisa sha-guarded single-file block.
 
-**13.6 — Domains page v2 deploy (cinematic, 17 Oct 2026, sha `b49297b2f57ff586`).** Sirf `src/routes/app.domains.tsx`; sha-guarded; backup `/root/i9/`; build fail ho to purani file wapas; pm2 restart + save. (Commit push hone ke baad chalao: `git fetch` usi se file uthata hai.)
+**13.6 — (purana, ab zaroorat nahi: 13.0 isay shamil karta hai) Domains page v2 deploy (cinematic, 17 Oct 2026, sha `b49297b2f57ff586`).** Sirf `src/routes/app.domains.tsx`; sha-guarded; backup `/root/i9/`; build fail ho to purani file wapas; pm2 restart + save. (Commit push hone ke baad chalao: `git fetch` usi se file uthata hai.)
 
 ```bash
 (
@@ -288,12 +298,23 @@ else
 fi
 )
 ```
-Status: **founder ne abhi chalaya nahi** (17 Oct 03:35 PKT). Natija aane par yahan likho.
+Status: **founder ne abhi chalaya nahi** (17 Oct 03:50 PKT); 13.0 chalane par yeh file bhi lag jati hai (manifest). Natija aane par yahan likho.
 
 **13.5 — DB ka chhota check (claude.ai chat se, 15–16 Oct; E30 ke baad theek nikla):**
 ```bash
 . /etc/anexomail/sync.env && psql "$WORKING_URL" -c "select direction,count(*) from mail_messages group by 1"
 ```
+
+---
+
+## 15. Memory kabhi lose na ho — qaida (founder, 17 Oct 03:39 PKT)
+
+Sach: Claude ki apni yaadasht ek chat se doosre chat mein nahi jati. **Yeh file hi memory hai.** Isliye:
+1. **Pehle likho, phir kaam karo.** Founder naya hukm, faisla ya khabar de to agent kaam shuru karne SE PEHLE section 1/2 mein likh kar docs-only commit push kare (compact kisi bhi lamhe aa sakta hai).
+2. **Har natije ke baad** section 1, 8, 9, 12, 13 (Rule 18). Lamba kaam chal raha ho to beech beech mein checkpoint.
+3. **Compact / naya chat:** pehla kaam yeh poori file padhna, phir founder ko ek line: "abhi yahan hain: …" aur section 1 se seedha chalna.
+4. **Server ki copy:** 13.0 har baar `/opt/anexomail-web/docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` taza karta hai. Founder `memory stamp` se dekh sakta hai ke server wali copy repo ke barabar hai.
+5. **Agent bhool jaye to?** Founder ek sawal poochh sakta hai: "section 1 ka stamp kab ka hai?" — purana ho to wohi nishani hai ke update chhoota. Phir agent pehle file update kare.
 
 ---
 

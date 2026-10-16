@@ -64,6 +64,12 @@ cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase o
 ```
 Agent `web /health` **200** confirm kare.
 
+**Founder ka hukm (17 Oct 2026): har jawab jo repo badle, uske aakhir mein pull command do aur pm2 restart hamesha.** Server ki tree installers se dirty hai, to upar wali `--rebase` pull "unstaged changes" par refuse hoti hai. Isliye amali command yeh EK hai (`docs/cursor-work/server/pull.sh`: memory/docs taza, `DEPLOY-MANIFEST.txt` ki code files sha-guard + build + restore-on-fail, hamesha `pm2 restart anexomail-web --update-env && pm2 save`):
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)
+```
+Code file badlo to usi commit mein manifest ka sha badlo. Rust/Brain ke deploy alag block (restart `anexomail-rust` / `anexomail-leo`); `polar-rust-payment` kabhi nahi.
+
 ### Rule 2 — No local clone on agent
 Agent sirf GitHub repo read karta hai, push karta hai. Server pull karta hai. Agent ke pass kuch nahi.
 
@@ -169,6 +175,7 @@ Chat compact hone par context kho jata tha. Ab ek hi file hai: `docs/cursor-work
 - **Founder ka rule:** koi bhi founder se chat karega to **pehle yeh context file padhega, phir chat karega.** Naya chat, compact ke baad ka chat, claude.ai ka Claude ya Claude Code session — sab par laagu.
 - **Har natije ke baad** (server ka output, founder ka screenshot/faisla/paste, naya finding, naya command block) usi turn mein file ke sections 1, 8, 9, 12 (log) aur 13 (aakhri commands) update karo, sirf docs ka commit (`handoff: …`) aur `main` par push. Founder ka standing order (17 Oct 2026): "her latest command aur kaam repo mein update ho taake compact chat wala Claude context dekh sake" — Rule 14 ke "push sirf 'repo update' par" ko docs/records ke liye override karta hai.
 - Server par asli badlav phir bhi Rule 15 se (chat block); repo us ki copy/record hai. Status Rule 5 ke mutabiq; farq ho to blueprint jeetta hai.
+- **Pehle likho, phir kaam karo:** founder naya hukm/faisla de to kaam shuru karne se pehle file mein likh kar docs-only commit push karo (compact kisi bhi waqt aa sakta hai). Server ki copy `pull.sh` se taza hoti hai; file ka section 15 dekho.
 - Founder jo purani chat paste kare uska khaas hissa file ke Appendix mein (pehle secret ke liye parho). Kachchi poori transcript dump nahi.
 
 ---

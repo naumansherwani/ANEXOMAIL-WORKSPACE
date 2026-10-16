@@ -90,6 +90,7 @@ d="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://127.0.0.1:3000/
 
 echo "================ RESULT"
 echo "memory file : $W/$MEMORY"
+echo "memory stamp: $(grep -m1 'Aakhri update' "$W/$MEMORY" 2>/dev/null | cut -c1-80)"
 echo "build       : $build"
 echo "web /health : ${h:-?}   /app/domains : ${d:-?}"
 echo "backup      : $BK"
