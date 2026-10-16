@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:55 PKT**.
+Aakhri update: **17 Oct 2026, 04:05 PKT**.
 
 ---
 
@@ -46,6 +46,10 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **Ho gaya (17 Oct ~03:35 PKT, repo mein, READY):** `src/routes/app.domains.tsx` cinematic standard par dobara likha — hero mein "From: you@<domain>" mail preview, "Use a different domain" asli button, login address pehle, skeleton loader, stagger, registrar auto-pehchan (DNS-over-HTTPS se), step 3 ka jashn. **Asli UI sandbox mein dekhi gayi** (`docs/cursor-work/frontend/ui-harness/`: har state + 390 px screenshots). Standard + poori website ka rasta: `docs/cursor-work/frontend/cinematic-ui-standard.md`. Deploy ab 13.0 (13.6 ka purana block shamil). **Founder ke browser mein dekhna baqi — isliye #8/#8a READY, DONE nahi.**
 
 **17 Oct 03:45 PKT — founder ka asli browser (page text paste): Domains v2 server par LIVE hai aur wizard qadam 1→2 chala.** Nateeja: "1 of 3 domain · Pro", step rail, "At your registrar…" copy, Namecheap/GoDaddy/Cloudflare/Other tabs + "Open Namecheap", 5 record cards (TXT `_anexomail-verify` value `e214…`, MX `@` → `mail.anexomail.com` prio 10, SPF `v=spf1 a:mail.anexomail.com ~all`, DKIM `anexo1._domainkey` "Key is being prepared", DMARC `_dmarc`), "I've added them — check now" / "Finish later", Addresses (login address pehle, locked preview). Yaani qadam 1–2 live DONE-nayi cheez; qadam 3 (live ticks/verified) aur asli DNS check baqi. **Do asli kamiyan mili:** (1) registrar auto-pehchan `probuyer.axonetis.com` par nahi chali (subdomain ke apne NS nahi hote — parent `axonetis.com` poochhna tha), (2) subdomain par agar DNS parent zone ka ho to Name lamba likhna parta hai (`@` → `probuyer`, `_dmarc` → `_dmarc.probuyer`) — page ne yeh nahi bataya. Dono repo mein theek (blueprint 8c, READY); manifest sha badla.
+
+**17 Oct 03:54 PKT — 13.0 ASLI SERVER PAR GREEN (founder ka output):** `origin/main = b58694f`, "memory/docs: 4 file(s) taza", `wrote src/routes/app.domains.tsx`, build OK, `/health 200`, `/app/domains 200`, memory stamp server par `03:55 PKT` = repo. Backup `/root/i9/sync-20261016-224907`. Server ki dirty tree ki list mili (#10 survey): `M` = AGENTS.md, bun.lock, 3 docs index/plan files, `src/components/app/{AppShell,CommandPalette,compose/ComposeStudio,dashboard/Greeting,dashboard/Panels,mail/MailRail}.tsx`, `src/lib/{dashboard,mail,plan-surface,workspace-i18n}.ts`, `src/routeTree.gen.ts`, `src/routes/app.admin.addresses.tsx`, `src/routes/app.mail.$folder.tsx`; `??` = `.env` (secret, repo mein KABHI nahi), purani installer scripts (`e3/e7/e30/i8-*`), `t7/t16` scripts, `E27` SQL, `mail-identities-locked…md`. Kaun si `M` file server par repo se alag hai — agle pull.sh se khud dikhega (neeche `git diff --stat origin/main`).
+
+**FOUNDER KA MAQSAD (17 Oct 03:54 PKT, locked):** "real user ko website ka best experience dena; test account se real user wali sab cheezein nahi ho sakti, lekin jitna ho sake **user ki tarah socho**." Is liye har screen ko **asli user ke 5 minute** ki nazar se dekho (kya sochega, kahan phansega, kya kho sakta hai), aur jo test se sabit nahi ho sakta (payment, asli registrar par DNS, bahar se aane wali mail, spam folder, asli phone) use alag "founder ko khud dekhna" list mein likho. Real-user khatre ki list: blueprint #8c+.
 
 **Agla (abhi pending, 17 Oct 03:55 PKT):** founder 13.0 dobara chalaye (manifest ka sha ab `23b0d74772a46f83`: subdomain fix) + Ctrl+Shift+R. Phir `pro.buyer` > Domains mein wohi wizard (domain pehle se jura hai, qadam 2). Dikhna chahiye: "We found your DNS is at …" wali hari line (axonetis.com ka DNS jahan hai), "probuyer.axonetis.com is a subdomain of axonetis.com" ka note, har card ke neeche "If DNS zone is axonetis.com" ka lamba Name. Phir **"I've added them — check now"** dabaye **bina koi DNS badle** (axonetis.com founder ka doosra project hai — apex par `@` MX/SPF kabhi nahi) aur qadam 3 ka screenshot bheje: 0/5 "Waiting", countdown, "Key is being prepared" wala row. Asli verified tick ka proof baad mein (alag test domain ya sirf `probuyer` subdomain ke naam se, jab founder tay kare).
 
@@ -194,6 +198,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:05 PKT** — Founder ne 13.0 ka asli output paste kiya: green (b58694f, build OK, health 200, memory stamp barabar) + server ki dirty-tree list (section 1). Phir maqsad likha: real user ko best experience, test account ki had, "user ki tarah socho". Agent ne real-user lens se Domains par sab se bara khatra pakda: user ke domain par pehle se MX/SPF (Google/Microsoft) ho to hamara MX/SPF lagane se purani mail band ya SPF do ho jata hai — blueprint #8c (existing-mail guard) likha aur banaya.
 
 - **17 Oct 03:55 PKT** — Founder ne wohi page-text dobara aur ek photo bheji (asli browser, step 2 theek). Do chats ek hi kaam par chal rahe the; 6ca2218 (subdomain fix) pehle push ho chuka tha. Agent ne harness mein subdomain scenario dekha (hint parent se, note, lamba Name) — theek. Section 1 ka "Agla" purana tha, naya likha. Founder ko 13.0 dobara aur step 3 ka check (DNS badle bina) diya.
 
