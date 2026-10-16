@@ -1,6 +1,22 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, Circle, Copy, Globe, Loader2, Plus, RefreshCw, Trash2, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ArrowRight,
+  AtSign,
+  CheckCircle2,
+  Circle,
+  Clock,
+  Copy,
+  Globe,
+  Loader2,
+  Lock,
+  Mail,
+  Plus,
+  RefreshCw,
+  ShieldCheck,
+  Trash2,
+  X,
+} from "lucide-react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
 import { Chip } from "@/components/app/org/OrgBits";
 import { ErrorState } from "@/components/state/StateBlock";
@@ -17,6 +33,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ApiError } from "@/lib/api";
+import { useSummary } from "@/lib/dashboard";
 import {
   domainErrorText,
   useAddDomain,
@@ -114,6 +131,25 @@ function capText(used: number, cap: number | null | undefined, noun: string): st
   return cap == null ? `${used} ${noun} · unlimited` : `${used} of ${cap} ${noun}`;
 }
 
+function reducedMotion(): boolean {
+  return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+}
+
+/**
+ * Page ka scroll dabba. AppShell `h-screen overflow-hidden` hai — bina is wrapper ke
+ * neeche ka hissa kat jata hai aur wizard ke 5 records tak pohanchna mumkin nahi
+ * (founder ne 17 Oct 2026 ko pakda). Baqi pages (`app.org`, `app.safety`) wahi dabba lagate hain.
+ */
+function PageScroll({ children }: { children: ReactNode }) {
+  return (
+    <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">
+      <div className="mx-auto w-full max-w-4xl space-y-ax-8 px-5 pb-28 pt-8 sm:px-6 md:px-10 md:pt-12">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 /* ------------------------------ small pieces ------------------------------ */
 
 function CopyButton({ value, label }: { value: string; label: string }) {
@@ -155,12 +191,15 @@ function CopyButton({ value, label }: { value: string; label: string }) {
       type="button"
       variant="outline"
       size="sm"
-      className="ax-press ax-tap h-8 shrink-0 gap-1.5 px-2.5"
+      className={cn(
+        "ax-press ax-tap h-8 shrink-0 gap-1.5 px-2.5",
+        copied && "border-success/50 text-success",
+      )}
       onClick={() => void copy()}
       aria-label={`Copy ${label}`}
     >
       {copied ? (
-        <CheckCircle2 className="size-3.5 text-success" aria-hidden="true" />
+        <CheckCircle2 className="size-3.5 text-success animate-in zoom-in-50 duration-200" aria-hidden="true" />
       ) : (
         <Copy className="size-3.5" aria-hidden="true" />
       )}
@@ -173,7 +212,7 @@ function Tick({ ok, pending }: { ok: boolean; pending?: boolean }) {
   if (ok) {
     return (
       <span className="inline-flex items-center gap-1 text-xs font-semibold text-success">
-        <CheckCircle2 className="size-4" aria-hidden="true" />
+        <CheckCircle2 className="size-4 animate-in zoom-in-50 duration-300" aria-hidden="true" />
         Found
       </span>
     );
@@ -205,13 +244,24 @@ function Field({ label, value, mono = true }: { label: string; value: string; mo
   );
 }
 
-function RecordCard({ rec }: { rec: DnsRecord }) {
+function RecordCard({ rec, n, of }: { rec: DnsRecord; n: number; of: number }) {
   const meta = CHECK_LABEL[rec.key];
   return (
-    <li className="ax-plane rounded-2xl p-ax-4">
+    <li
+      className={cn(
+        "ax-plane rounded-2xl p-ax-4 transition-colors duration-500",
+        rec.ok && "border-success/40",
+      )}
+    >
       <div className="flex flex-wrap items-center gap-2">
-        <Chip>{rec.type}</Chip>
+        <span className="flex size-6 items-center justify-center rounded-full border border-border bg-secondary text-xs font-bold text-foreground">
+          {n}
+        </span>
         <p className="text-sm font-bold text-foreground">{meta.title}</p>
+        <Chip>{rec.type}</Chip>
+        <span className="ax-caption text-muted-foreground">
+          {n} / {of}
+        </span>
         <span className="ml-auto">
           <Tick ok={rec.ok} {...(rec.pending ? { pending: true } : {})} />
         </span>
@@ -222,9 +272,12 @@ function RecordCard({ rec }: { rec: DnsRecord }) {
         {rec.value ? (
           <Field label="Value" value={rec.value} />
         ) : (
-          <p className="ax-caption text-muted-foreground">
-            The signing key is still being generated. Reload in a minute and this row fills in.
-          </p>
+          <div className="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2">
+            <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" />
+            <p className="ax-caption text-muted-foreground">
+              Your signing key is being generated — this row fills in by itself, usually within a minute.
+            </p>
+          </div>
         )}
       </div>
       {rec.type === "MX" && rec.priority != null && (
@@ -236,10 +289,19 @@ function RecordCard({ rec }: { rec: DnsRecord }) {
   );
 }
 
-function StepDots({ step }: { step: 1 | 2 | 3 }) {
-  const steps = ["Your domain", "Add DNS records", "We check"];
+/** Teen qadam, ek jud'ti hui lakeer — jo qadam ho chuka woh bharta jata hai. */
+function StepRail({ step }: { step: 1 | 2 | 3 }) {
+  const { t } = useLocale();
+  const steps = [t("Your domain"), t("Add DNS records"), t("We check")];
+  const fill = ((step - 1) / 2) * 100;
   return (
-    <ol className="flex flex-wrap items-center gap-x-4 gap-y-2" aria-label="Setup steps">
+    <ol className="relative grid grid-cols-3 gap-2" aria-label="Setup steps">
+      <span aria-hidden="true" className="absolute inset-x-[16.667%] top-3 h-px bg-border">
+        <span
+          className="block h-full bg-primary motion-safe:transition-[width] motion-safe:duration-700"
+          style={{ width: `${fill}%` }}
+        />
+      </span>
       {steps.map((label, i) => {
         const n = (i + 1) as 1 | 2 | 3;
         const state = n < step ? "done" : n === step ? "now" : "next";
@@ -247,14 +309,14 @@ function StepDots({ step }: { step: 1 | 2 | 3 }) {
           <li
             key={label}
             aria-current={state === "now" ? "step" : undefined}
-            className="flex items-center gap-2"
+            className="relative flex flex-col items-center gap-2 text-center"
           >
             <span
               className={cn(
-                "flex size-6 items-center justify-center rounded-full border text-xs font-bold",
-                state === "done" && "border-success/40 bg-success/10 text-success",
+                "flex size-6 items-center justify-center rounded-full border text-xs font-bold transition-colors duration-500",
+                state === "done" && "border-success/50 bg-card text-success",
                 state === "now" && "border-primary bg-primary text-primary-foreground",
-                state === "next" && "border-border text-muted-foreground",
+                state === "next" && "border-border bg-card text-muted-foreground",
               )}
             >
               {state === "done" ? <CheckCircle2 className="size-3.5" aria-hidden="true" /> : n}
@@ -274,9 +336,41 @@ function StepDots({ step }: { step: 1 | 2 | 3 }) {
   );
 }
 
+/** x/5 records mile — chhota gola, bharta hua. */
+function Ring({ done, total }: { done: number; total: number }) {
+  const r = 26;
+  const c = 2 * Math.PI * r;
+  const off = c * (1 - (total > 0 ? done / total : 0));
+  const full = total > 0 && done === total;
+  return (
+    <div className="relative size-16 shrink-0" role="img" aria-label={`${done} of ${total} records found`}>
+      <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden="true">
+        <circle cx="32" cy="32" r={r} fill="none" strokeWidth="5" className="stroke-border" />
+        <circle
+          cx="32"
+          cy="32"
+          r={r}
+          fill="none"
+          strokeWidth="5"
+          strokeLinecap="round"
+          strokeDasharray={c}
+          strokeDashoffset={off}
+          className={cn(
+            full ? "stroke-success" : "stroke-primary",
+            "motion-safe:transition-[stroke-dashoffset] motion-safe:duration-700",
+          )}
+        />
+      </svg>
+      <span className="absolute inset-0 grid place-items-center text-sm font-bold text-foreground">
+        {done}/{total}
+      </span>
+    </div>
+  );
+}
+
 /* --------------------------------- wizard --------------------------------- */
 
-type WizardState = { step: 1 | 2 | 3; domainId: string | null };
+type WizardState = { step: 1 | 2 | 3; domainId: string | null; prefill?: string };
 
 function Wizard({
   domains,
@@ -284,6 +378,7 @@ function Wizard({
   setState,
   atCap,
   capLabel,
+  suggestion,
   onClose,
   onDone,
 }: {
@@ -292,16 +387,20 @@ function Wizard({
   setState: (s: WizardState) => void;
   atCap: boolean;
   capLabel: string;
+  suggestion: string | null;
   onClose: () => void;
   onDone: (domain: OrgDomain) => void;
 }) {
   const { t } = useLocale();
   const add = useAddDomain();
   const verify = useVerifyDomain();
-  const [name, setName] = useState("");
+  const { refetch: refetchDomains } = useDomains();
+  const rootRef = useRef<HTMLElement | null>(null);
+  const [name, setName] = useState(state.prefill ?? "");
   const [problem, setProblem] = useState<string | null>(null);
   const [registrar, setRegistrar] = useState("namecheap");
   const [polls, setPolls] = useState(0);
+  const [nextIn, setNextIn] = useState(POLL_MS / 1000);
   const pollsRef = useRef(0);
   const domain = useMemo(
     () => domains.find((d) => d.id === state.domainId) ?? null,
@@ -309,6 +408,11 @@ function Wizard({
   );
   const verifyRef = useRef(verify);
   verifyRef.current = verify;
+
+  // Naya qadam khule to screen foran wahan pohanche (page scroll hota hai — neeche ka hissa chhup na jaye).
+  useEffect(() => {
+    rootRef.current?.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" });
+  }, [state.step, state.domainId]);
 
   const check = useCallback(
     (manual: boolean) => {
@@ -333,26 +437,44 @@ function Wizard({
         onError: (e) => setProblem(errText(e)),
       });
     },
-    [domain, onDone],
+    [domain],
   );
 
-  // Qadam 3: kholte hi ek check, phir har 20s jab tak verified na ho.
+  // Qadam 3: kholte hi ek check, phir har 20s jab tak verified na ho. Ghadi har second chalti hai (countdown).
   const pending = state.step === 3 && domain?.status === "pending";
   useEffect(() => {
     if (!pending) return;
     pollsRef.current = 0;
     setPolls(0);
+    let left = POLL_MS / 1000;
+    setNextIn(left);
     check(false);
     const id = setInterval(() => {
-      if (pollsRef.current >= POLL_MAX) return;
       if (typeof document !== "undefined" && document.hidden) return;
-      pollsRef.current += 1;
-      setPolls(pollsRef.current);
-      check(false);
-    }, POLL_MS);
+      if (pollsRef.current >= POLL_MAX) return;
+      left -= 1;
+      if (left <= 0) {
+        left = POLL_MS / 1000;
+        pollsRef.current += 1;
+        setPolls(pollsRef.current);
+        check(false);
+      }
+      setNextIn(left);
+    }, 1000);
     return () => clearInterval(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- naya domain/qadam hi dobara shuru kare
   }, [pending, domain?.id]);
+
+  // Qadam 2: DKIM key abhi ban rahi ho to list khud taza hoti rahe (cron har minute chalta hai).
+  const keyPending = state.step === 2 && Boolean(domain?.records.some((r) => r.pending));
+  useEffect(() => {
+    if (!keyPending) return;
+    const id = setInterval(() => {
+      if (typeof document !== "undefined" && document.hidden) return;
+      void refetchDomains();
+    }, 8000);
+    return () => clearInterval(id);
+  }, [keyPending, refetchDomains]);
 
   const submitName = () => {
     setProblem(null);
@@ -369,15 +491,24 @@ function Wizard({
     });
   };
 
+  const found = domain ? domain.records.filter((r) => r.ok).length : 0;
+  const total = domain ? domain.records.length : 5;
+
   return (
-    <section className="ax-plane ax-in rounded-3xl p-ax-5 md:p-ax-6" aria-label="Connect a domain">
-      <div className="flex flex-wrap items-center gap-3">
-        <StepDots step={state.step} />
+    <section
+      ref={rootRef}
+      className="ax-plane ax-in scroll-mt-6 rounded-3xl p-ax-5 md:p-ax-6"
+      aria-label="Connect a domain"
+    >
+      <div className="flex items-start gap-3">
+        <div className="min-w-0 flex-1">
+          <StepRail step={state.step} />
+        </div>
         <Button
           type="button"
           variant="ghost"
           size="sm"
-          className="ax-press ml-auto gap-1.5"
+          className="ax-press shrink-0 gap-1.5"
           onClick={onClose}
         >
           <X className="size-4" aria-hidden="true" />
@@ -386,13 +517,13 @@ function Wizard({
       </div>
 
       {state.step === 1 && (
-        <div className="ax-in mt-ax-5">
-          <h3 className="text-xl font-bold text-foreground">{t("Which domain should mail use?")}</h3>
+        <div className="ax-in mt-ax-6">
+          <h3 className="text-2xl font-bold text-foreground">{t("Which domain should mail use?")}</h3>
           <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
             {t("The one you own, like company.com. You will add five DNS records next — nothing changes until you do.")}
           </p>
           <form
-            className="mt-4 flex max-w-xl flex-col gap-2 sm:flex-row"
+            className="mt-5 flex max-w-xl flex-col gap-2 sm:flex-row"
             onSubmit={(e) => {
               e.preventDefault();
               if (!atCap && name.trim()) submitName();
@@ -401,35 +532,56 @@ function Wizard({
             <label className="sr-only" htmlFor="ax-domain-name">
               Domain name
             </label>
-            <Input
-              id="ax-domain-name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="company.com"
-              autoComplete="off"
-              autoCapitalize="off"
-              spellCheck={false}
-              disabled={atCap || add.isPending}
-              className="sm:flex-1"
-            />
+            <div className="relative sm:flex-1">
+              <AtSign
+                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                aria-hidden="true"
+              />
+              <Input
+                id="ax-domain-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="company.com"
+                autoComplete="off"
+                autoCapitalize="off"
+                spellCheck={false}
+                disabled={atCap || add.isPending}
+                className="h-11 pl-9 text-base"
+                autoFocus
+              />
+            </div>
             <Button
               type="submit"
-              className="ax-press ax-tap"
+              size="lg"
+              className="ax-press ax-tap gap-1.5"
               disabled={atCap || add.isPending || !name.trim()}
             >
               {add.isPending ? (
                 <Loader2 className="size-4 animate-spin" aria-hidden="true" />
               ) : null}
               {t("Continue")}
+              {!add.isPending && <ArrowRight className="size-4" aria-hidden="true" />}
             </Button>
           </form>
-          {atCap && <p className="ax-caption mt-2 text-warning">{capLabel}</p>}
+          {suggestion && !name.trim() && !atCap && (
+            <button
+              type="button"
+              onClick={() => setName(suggestion)}
+              className="ax-focus ax-press mt-3 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-primary/50"
+            >
+              <Globe className="size-3.5 text-steel" aria-hidden="true" />
+              {t("Use")} {suggestion}
+              <span className="font-normal text-muted-foreground">· {t("from your signup")}</span>
+            </button>
+          )}
+          {problem && <p className="mt-3 text-sm text-danger">{problem}</p>}
+          {atCap && <p className="ax-caption mt-3 text-warning">{capLabel}</p>}
         </div>
       )}
 
       {state.step === 2 && domain && (
-        <div className="ax-in mt-ax-5">
-          <h3 className="text-xl font-bold text-foreground">
+        <div className="ax-in mt-ax-6">
+          <h3 className="text-2xl font-bold text-foreground">
             {t("Add these records at your registrar")}
           </h3>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -438,44 +590,48 @@ function Wizard({
             {t("Enter only the Name — your registrar adds the domain itself.")}
           </p>
 
-          <div className="mt-4 flex flex-wrap gap-2" role="tablist" aria-label="Registrar">
-            {REGISTRARS.map((r) => (
-              <button
-                key={r.id}
-                type="button"
-                role="tab"
-                aria-selected={registrar === r.id}
-                onClick={() => setRegistrar(r.id)}
-                className={cn(
-                  "ax-focus ax-press rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
-                  registrar === r.id
-                    ? "border-primary bg-primary/10 text-primary"
-                    : "border-border text-muted-foreground hover:text-foreground",
-                )}
-              >
-                {r.name}
-              </button>
-            ))}
+          <div className="mt-5 rounded-2xl border border-border bg-secondary/30 p-ax-4">
+            <div className="flex flex-wrap gap-2" role="tablist" aria-label="Registrar">
+              {REGISTRARS.map((r) => (
+                <button
+                  key={r.id}
+                  type="button"
+                  role="tab"
+                  aria-selected={registrar === r.id}
+                  onClick={() => setRegistrar(r.id)}
+                  className={cn(
+                    "ax-focus ax-press rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
+                    registrar === r.id
+                      ? "border-primary bg-primary/10 text-foreground"
+                      : "border-border text-muted-foreground hover:text-foreground",
+                  )}
+                >
+                  {r.name}
+                </button>
+              ))}
+            </div>
+            <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
+              {(REGISTRARS.find((r) => r.id === registrar) ?? REGISTRARS[3]!).steps.map((s) => (
+                <li key={s}>{s}</li>
+              ))}
+            </ol>
           </div>
-          <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
-            {(REGISTRARS.find((r) => r.id === registrar) ?? REGISTRARS[3]!).steps.map((s) => (
-              <li key={s}>{s}</li>
-            ))}
-          </ol>
 
           <ul className="mt-4 space-y-3">
-            {domain.records.map((rec) => (
-              <RecordCard key={rec.key} rec={rec} />
+            {domain.records.map((rec, i) => (
+              <RecordCard key={rec.key} rec={rec} n={i + 1} of={domain.records.length} />
             ))}
           </ul>
 
-          <div className="mt-5 flex flex-wrap items-center gap-2">
+          <div className="mt-6 flex flex-wrap items-center gap-2">
             <Button
               type="button"
-              className="ax-press ax-tap"
+              size="lg"
+              className="ax-press ax-tap gap-1.5"
               onClick={() => setState({ step: 3, domainId: domain.id })}
             >
               {t("I've added them — check now")}
+              <ArrowRight className="size-4" aria-hidden="true" />
             </Button>
             <Button type="button" variant="ghost" className="ax-press" onClick={onClose}>
               {t("Finish later")}
@@ -485,47 +641,73 @@ function Wizard({
       )}
 
       {state.step === 3 && domain && (
-        <div className="ax-in mt-ax-5" role="status" aria-live="polite">
-          <h3 className="text-xl font-bold text-foreground">
-            {domain.status === "verified"
-              ? `${domain.domain} ${t("is verified")}`
-              : `${t("Checking")} ${domain.domain}`}
-          </h3>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {domain.status === "verified"
-              ? t("All five records are live. You can create addresses on this domain now.")
-              : t("Each tick turns green the moment its record is found. DNS can take a few minutes — you can leave this page open.")}
-          </p>
+        <div className="ax-in mt-ax-6" role="status" aria-live="polite">
+          <div className="flex items-center gap-4">
+            <Ring done={found} total={total} />
+            <div className="min-w-0">
+              <h3 className="text-2xl font-bold text-foreground">
+                {domain.status === "verified"
+                  ? `${domain.domain} ${t("is verified")}`
+                  : `${t("Checking")} ${domain.domain}`}
+              </h3>
+              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                {domain.status === "verified"
+                  ? t("All five records are live. You can create addresses on this domain now.")
+                  : t("Each tick turns green the moment its record is found. DNS can take a few minutes — you can leave this page open.")}
+              </p>
+            </div>
+          </div>
 
-          <ul className="mt-4 grid gap-2 sm:grid-cols-2">
+          <ul className="mt-5 grid gap-2 sm:grid-cols-2">
             {domain.records.map((rec) => (
               <li
                 key={rec.key}
                 className={cn(
-                  "flex items-center gap-3 rounded-2xl border p-3 transition-colors",
+                  "flex items-center gap-3 rounded-2xl border p-3 transition-colors duration-500",
                   rec.ok ? "border-success/40 bg-success/5" : "border-border",
                 )}
               >
+                {rec.ok ? (
+                  <CheckCircle2
+                    className="size-5 shrink-0 text-success animate-in zoom-in-50 duration-300"
+                    aria-hidden="true"
+                  />
+                ) : verify.isPending ? (
+                  <Loader2 className="size-5 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" />
+                ) : (
+                  <Circle className="size-5 shrink-0 text-muted-foreground motion-safe:animate-pulse" aria-hidden="true" />
+                )}
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-bold text-foreground">{CHECK_LABEL[rec.key].title}</p>
-                  <p className="ax-caption text-muted-foreground">{rec.type} · {rec.name}</p>
+                  <p className="ax-caption truncate text-muted-foreground">
+                    {rec.type} · {rec.name}
+                  </p>
                 </div>
-                <Tick ok={rec.ok} {...(rec.pending ? { pending: true } : {})} />
+                <span
+                  className={cn(
+                    "text-xs font-semibold",
+                    rec.ok ? "text-success" : "text-muted-foreground",
+                  )}
+                >
+                  {rec.ok ? t("Found") : rec.pending ? t("Key is being prepared") : t("Waiting")}
+                </span>
               </li>
             ))}
           </ul>
 
           {problem && <p className="mt-3 text-sm text-danger">{problem}</p>}
 
-          <div className="mt-5 flex flex-wrap items-center gap-2">
+          <div className="mt-6 flex flex-wrap items-center gap-2">
             {domain.status === "verified" ? (
-              <Button type="button" className="ax-press ax-tap" onClick={() => onDone(domain)}>
+              <Button type="button" size="lg" className="ax-press ax-tap gap-1.5" onClick={() => onDone(domain)}>
                 {t("Create an address")}
+                <ArrowRight className="size-4" aria-hidden="true" />
               </Button>
             ) : (
               <>
                 <Button
                   type="button"
+                  size="lg"
                   className="ax-press ax-tap gap-1.5"
                   disabled={verify.isPending}
                   onClick={() => check(true)}
@@ -545,12 +727,13 @@ function Wizard({
                 >
                   {t("Show the records again")}
                 </Button>
-                <span className="ax-caption text-muted-foreground">
+                <span className="ax-caption inline-flex items-center gap-1.5 text-muted-foreground">
+                  <Clock className="size-3.5" aria-hidden="true" />
                   {polls >= POLL_MAX
                     ? t("Automatic checks paused — press Check now when your DNS is saved.")
-                    : domain.last_checked_at
-                      ? `${t("Last checked")} ${new Date(domain.last_checked_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`
-                      : t("Checking…")}
+                    : verify.isPending
+                      ? t("Checking…")
+                      : `${t("Next automatic check in")} ${nextIn}s`}
                 </span>
               </>
             )}
@@ -562,6 +745,96 @@ function Wizard({
 }
 
 /* -------------------------------- domains -------------------------------- */
+
+const PREVIEW_STEPS: { icon: typeof Globe; title: string; body: string }[] = [
+  { icon: Globe, title: "Name your domain", body: "Type the one you own, like company.com." },
+  {
+    icon: Copy,
+    title: "Add five DNS records",
+    body: "Copy each Name and Value. Hints for Namecheap, GoDaddy and Cloudflare.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "Watch the ticks turn green",
+    body: "We check live while you wait. DNS can take a few minutes.",
+  },
+];
+
+/** Khali page ka pehla taassur: kya milega, kitna waqt lagega, ek bara button. */
+function EmptyHero({
+  suggestion,
+  capNote,
+  onStart,
+}: {
+  suggestion: string | null;
+  capNote: string;
+  onStart: (prefill?: string) => void;
+}) {
+  const { t } = useLocale();
+  return (
+    <section className="ax-plane relative rounded-3xl p-ax-6 md:p-ax-7" aria-label="Connect your first domain">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -right-24 -top-28 size-80 rounded-full bg-primary/15 blur-3xl"
+      />
+      <div className="relative grid gap-ax-7 md:grid-cols-[1.1fr_1fr] md:items-center">
+        <div>
+          <p className="ax-eyebrow">{t("Your name on every email")}</p>
+          <h3 className="mt-3 text-3xl font-bold leading-tight text-foreground">
+            {suggestion ? `${t("Finish connecting")} ${suggestion}` : t("Send as you@yourcompany.com")}
+          </h3>
+          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-sm">
+            <Mail className="size-4 text-steel" aria-hidden="true" />
+            <span className="font-semibold text-foreground">you</span>
+            <span className="text-muted-foreground">@{suggestion ?? "yourcompany.com"}</span>
+          </div>
+          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
+            {suggestion
+              ? t("This is the domain you gave when you signed up. Add the DNS records once and your team can send and receive on it.")
+              : t("Until you connect one, your mail runs on your ANEXOMAIL address. Connecting takes about five minutes plus DNS time.")}
+          </p>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <Button
+              type="button"
+              size="lg"
+              className="ax-press ax-tap gap-2"
+              onClick={() => onStart(suggestion ?? undefined)}
+            >
+              <Plus className="size-4" aria-hidden="true" />
+              {suggestion ? `${t("Connect")} ${suggestion}` : t("Connect a domain")}
+            </Button>
+            {suggestion && (
+              <Button type="button" variant="ghost" className="ax-press" onClick={() => onStart()}>
+                {t("Use a different domain")}
+              </Button>
+            )}
+          </div>
+          <p className="ax-caption mt-4 text-muted-foreground">{capNote}</p>
+        </div>
+
+        <ol className="space-y-3" aria-label="How it works">
+          {PREVIEW_STEPS.map((s, i) => (
+            <li
+              key={s.title}
+              className="flex items-start gap-3 rounded-2xl border border-border bg-background/40 p-ax-4"
+            >
+              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
+                <s.icon className="size-4" aria-hidden="true" />
+              </span>
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-foreground">
+                  <span className="mr-1.5 text-muted-foreground">{i + 1}.</span>
+                  {t(s.title)}
+                </p>
+                <p className="ax-caption mt-0.5 text-muted-foreground">{t(s.body)}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
 
 function DomainRow({
   d,
@@ -578,7 +851,7 @@ function DomainRow({
   const verified = d.status === "verified";
   const done = d.records.filter((r) => r.ok).length;
   return (
-    <li className="ax-plane rounded-2xl p-ax-4">
+    <li className={cn("ax-plane rounded-2xl p-ax-4", verified && "border-success/30")}>
       <div className="flex flex-wrap items-center gap-3">
         <Globe aria-hidden="true" className="size-4 text-steel" />
         <p className="min-w-0 truncate text-base font-bold text-foreground">{d.domain}</p>
@@ -592,8 +865,9 @@ function DomainRow({
               {t("Add address")}
             </Button>
           ) : (
-            <Button type="button" size="sm" className="ax-press" onClick={onSetup}>
+            <Button type="button" size="sm" className="ax-press gap-1.5" onClick={onSetup}>
               {t("Continue setup")}
+              <ArrowRight className="size-3.5" aria-hidden="true" />
             </Button>
           )}
           <Button
@@ -607,6 +881,17 @@ function DomainRow({
             <Trash2 className="size-4" aria-hidden="true" />
           </Button>
         </div>
+      </div>
+      <div className="mt-3 flex gap-1" aria-hidden="true">
+        {d.records.map((r) => (
+          <span
+            key={r.key}
+            className={cn(
+              "h-1 flex-1 rounded-full transition-colors duration-500",
+              r.ok ? "bg-success" : "bg-border",
+            )}
+          />
+        ))}
       </div>
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1" aria-label="DNS checks">
         {d.records.map((r) => (
@@ -635,6 +920,36 @@ const KINDS: { id: AddressKind; title: string; body: string }[] = [
   { id: "alias", title: "Alias", body: "Delivers to an existing address. No extra seat." },
 ];
 
+/** Domain verify hone se pehle addresses ki jhalak: kya milega, abhi band kyun hai. */
+function AddressesLocked() {
+  const { t } = useLocale();
+  return (
+    <div className="ax-plane rounded-2xl p-ax-5">
+      <div className="flex items-start gap-3">
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
+          <Lock className="size-4" aria-hidden="true" />
+        </span>
+        <div className="min-w-0">
+          <p className="text-sm font-bold text-foreground">
+            {t("Addresses unlock once your domain is verified")}
+          </p>
+          <p className="ax-caption mt-0.5 text-muted-foreground">
+            {t("Then create sales@, support@ or alex@yourcompany.com — mailboxes, shared inboxes and free aliases.")}
+          </p>
+        </div>
+      </div>
+      <ul className="mt-4 grid gap-2 opacity-70 sm:grid-cols-3" aria-hidden="true">
+        {KINDS.map((k) => (
+          <li key={k.id} className="rounded-xl border border-dashed border-border p-3">
+            <span className="block text-sm font-bold text-foreground">{t(k.title)}</span>
+            <span className="ax-caption mt-0.5 block text-muted-foreground">{t(k.body)}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
 function AddressForm({
   domains,
   preferredDomainId,
@@ -660,13 +975,8 @@ function AddressForm({
     if (!verified.some((d) => d.id === domainId)) setDomainId(verified[0]?.id ?? "");
   }, [verified, domainId]);
 
-  if (verified.length === 0) {
-    return (
-      <p className="ax-plane rounded-2xl p-ax-4 text-sm text-muted-foreground">
-        {t("Verify a domain above to create addresses on it.")}
-      </p>
-    );
-  }
+  if (verified.length === 0) return <AddressesLocked />;
+
   const dom = verified.find((d) => d.id === domainId);
   const blocked = Boolean(disabledReason) && kind !== "alias";
 
@@ -697,7 +1007,7 @@ function AddressForm({
   return (
     <form
       id="ax-address-form"
-      className="ax-plane rounded-2xl p-ax-4"
+      className="ax-plane scroll-mt-6 rounded-2xl p-ax-4"
       onSubmit={(e) => {
         e.preventDefault();
         if (local.trim() && !blocked) submit();
@@ -829,6 +1139,7 @@ function DomainsPage() {
   const { t } = useLocale();
   const domainsQ = useDomains();
   const addressesQ = useAddresses();
+  const summaryQ = useSummary(true);
   const removeDomain = useRemoveDomain();
   const removeAddress = useRemoveAddress();
   const [wizard, setWizard] = useState<WizardState | null>(null);
@@ -844,6 +1155,14 @@ function DomainsPage() {
   const atCap = cap != null && domains.length >= cap;
   const capLabel = `${t("Your")} ${planLabel(data?.plan)} ${t("package allows")} ${cap ?? 0} ${t("domains. Remove one or upgrade.")}`;
 
+  // Signup par jo company domain diya tha (dashboard par "Finish setup" wohi dikhata hai) —
+  // yahan bhi wohi dikhe, taake dono jagah ek hi kahani ho.
+  const sum = summaryQ.data;
+  const suggestion =
+    domains.length === 0 && sum && sum.domain_hosted === false && sum.domain && sum.domain_status !== "verified"
+      ? sum.domain
+      : null;
+
   const mailboxFull =
     addr != null && addr.mailbox_cap != null && addr.mailbox_used >= addr.mailbox_cap;
   const mailboxReason = mailboxFull
@@ -854,30 +1173,32 @@ function DomainsPage() {
     setFocusDomain(id);
     setWizard(null);
     window.setTimeout(() => {
-      document.getElementById("ax-address-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
-      document.getElementById("ax-address-local")?.focus();
+      document
+        .getElementById("ax-address-form")
+        ?.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "center" });
+      document.getElementById("ax-address-local")?.focus({ preventScroll: true });
     }, 60);
   }, []);
 
   if (domainsQ.isLoading) {
     return (
-      <div className="mx-auto w-full max-w-4xl px-6 py-10 md:px-10">
+      <PageScroll>
         <p className="ax-caption text-muted-foreground" role="status">
           {t("Loading domains…")}
         </p>
-      </div>
+      </PageScroll>
     );
   }
 
   if (domainsQ.isError || !data) {
     return (
-      <div className="mx-auto w-full max-w-4xl px-6 py-10 md:px-10">
+      <PageScroll>
         <ErrorState
           title={t("Domains didn't load")}
           body={t("The service didn't answer, so nothing is shown rather than something wrong.")}
           onRetry={() => void domainsQ.refetch()}
         />
-      </div>
+      </PageScroll>
     );
   }
 
@@ -894,8 +1215,13 @@ function DomainsPage() {
           }
         : null;
 
+  const showHero = domains.length === 0 && !wizard;
+  const capNote = `${planLabel(data.plan)} · ${cap == null ? t("unlimited domains") : `${t("up to")} ${cap} ${cap === 1 ? t("domain") : t("domains")}`}${
+    addr ? ` · ${addr.mailbox_cap == null ? t("unlimited mailboxes") : `${addr.mailbox_cap} ${t("mailboxes")}`} · ${t("aliases are free")}` : ""
+  }`;
+
   return (
-    <div className="mx-auto w-full max-w-4xl space-y-ax-8 px-6 py-10 md:px-10">
+    <PageScroll>
       <header>
         <p className="ax-eyebrow">{t("Company email")}</p>
         <h2 className="mt-3 text-3xl text-foreground">{t("Domains & addresses")}</h2>
@@ -913,7 +1239,7 @@ function DomainsPage() {
             {capText(domains.length, cap, domains.length === 1 ? "domain" : "domains")} ·{" "}
             {planLabel(data.plan)}
           </span>
-          {!wizard && (
+          {!wizard && !showHero && (
             <Button
               type="button"
               size="sm"
@@ -935,18 +1261,20 @@ function DomainsPage() {
             setState={setWizard}
             atCap={atCap}
             capLabel={capLabel}
+            suggestion={suggestion}
             onClose={() => setWizard(null)}
             onDone={(d) => goAddress(d.id)}
           />
         )}
 
-        {domains.length === 0 && !wizard ? (
-          <div className="ax-plane rounded-2xl p-ax-5">
-            <p className="text-sm font-bold text-foreground">{t("No company domain yet")}</p>
-            <p className="mt-1 max-w-xl text-sm leading-relaxed text-muted-foreground">
-              {t("Until you connect one, your mail runs on your ANEXOMAIL address. Connecting takes about five minutes plus DNS time.")}
-            </p>
-          </div>
+        {showHero ? (
+          <EmptyHero
+            suggestion={suggestion}
+            capNote={capNote}
+            onStart={(prefill) =>
+              setWizard({ step: 1, domainId: null, ...(prefill ? { prefill } : {}) })
+            }
+          />
         ) : (
           <ul className="space-y-3">
             {domains.map((d) => (
@@ -997,9 +1325,7 @@ function DomainsPage() {
               <AddressRow key={a.id} a={a} onRemove={() => setConfirm({ kind: "address", a })} />
             ))}
             {addr && addr.addresses.length === 0 && (
-              <li className="text-sm text-muted-foreground">
-                {t("No company addresses yet.")}
-              </li>
+              <li className="ax-caption px-1 text-muted-foreground">{t("No company addresses yet.")}</li>
             )}
           </ul>
         )}
@@ -1039,6 +1365,6 @@ function DomainsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </PageScroll>
   );
 }

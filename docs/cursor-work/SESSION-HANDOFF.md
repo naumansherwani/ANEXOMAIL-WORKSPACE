@@ -2,7 +2,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule, agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai.
 
-Aakhri update: **17 Oct 2026, 02:50 PKT**.
+Aakhri update: **17 Oct 2026, 03:10 PKT**.
 
 ---
 
@@ -25,9 +25,16 @@ Ho chuka (founder ke screenshot se, 16 Oct 21:37 PKT):
 - Rail ka Pro text ab naya: "Shared inbox with collision guard, boards, tasks and CRM — your team, organised." Pehle founder ko purana "…ANEXOChat — teams done right" dikha tha; wajah browser/service-worker ka purana cache thi (code mein naya tha). Hard refresh se theek hua.
 - Dashboard par: storage "44 B / 50 GB · 10 GB × 5 mailboxes", badge "probuyer.axonetis.com · Domain not verified · Finish setup", Received 1, Sent 1, Send success 50%.
 
-**Agla (abhi pending):** founder ne left rail mein **Domains** kholna hai aur page ka screenshot bhejna hai. Dikhna chahiye: "Domains & addresses"; "1 of 3 domains · Pro"; `probuyer.axonetis.com` ki row ("Needs DNS · x/5", **Continue setup** button); neeche Addresses mein `pro.buyer@anexomail.com` "Your login" ke saath. Founder ne abhi screenshot nahi bheja.
+**Domains page ka pehla look (founder ka screenshot, 17 Oct 02:37 PKT) — 3 cheezein pakdi gayin:**
+1. **Scroll bug (asli bug):** page neeche se kat raha tha ("No company addresses yet." aadha). Wajah: `AppShell` `h-screen overflow-hidden` hai aur `app.domains.tsx` par scroll dabba (`min-h-0 flex-1 overflow-y-auto`) tha hi nahi — wizard ke 5 records tak pohanchna mumkin nahi tha.
+2. **Dashboard vs Domains tazaad:** dashboard "probuyer.axonetis.com · Domain not verified · Finish setup" dikhata tha, Domains page "0 of 3 · No company domain yet". Wajah: domain `organisations.domain` mein (signup/E28 seed) hai, `org_domains` khali (mera Rust test usay hata chuka tha). Asli buyer ke saath bhi yahi hota.
+3. **Khali page sada tha** (plain card, CTA ek kone mein).
 
-Uske baad wizard ka proof (D) ek ek qadam: Connect a domain → naam → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
+Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scroll dabba + wizard scroll-into-view, signup wala domain "Finish connecting <domain>" suggestion (dashboard summary se), hero empty state (3-step preview), jud'ti hui step lakeer, record cards 1/5…5/5, live ring (x/5) + countdown, DKIM row khud refresh, verified celebration, Addresses ka locked preview. Syntax `bun build --no-bundle` green; asli build server par.
+
+**Agla (abhi pending):** founder yeh page server par chalaye (chat block: `git fetch` + sha-guarded `git show` + build + pm2 restart), `Ctrl+Shift+R`, **Domains** dobara kholay aur screenshot bheje. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
+
+Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
 
 ---
 
@@ -165,6 +172,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 02:37–03:10 PKT** — Founder ne Domains page ka screenshot bheja aur kaha "CEO ki nazar se dekho". Scroll bug + dashboard/Domains domain tazaad + sada empty state mila; `app.domains.tsx` dobara likha (section 1). Founder ko deploy block diya jata hai; browser dekhna baqi, isliye #8 abhi bhi READY.
 
 - **17 Oct 02:29–02:50 PKT** — Founder ne compact-chat masla uthaya (context kho jata hai). Yeh `SESSION-HANDOFF.md`, AGENTS.md Rule 18, `.cursor/rules/session-handoff.mdc` aur `t16-accounts-look.sh` repo mein aaye. Blueprint U3 ko DONE kiya (founder screenshot). Founder ka server par chat-record path abhi nahi mila (section 10).
 - **16 Oct 21:37 PKT** — Founder ka screenshot: pro.buyer ka rail aur naya Pro text theek; Domains rail mein hai. Agent ne pehla qadam diya: Domains kholo, screenshot bhejo. Founder ne D aur E ka proof maanga aur advanced UI/UX ki maang ki.
