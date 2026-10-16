@@ -1,0 +1,11 @@
+---
+description: Founder's rule — anyone chatting with the founder reads the context file first, then chats. Keep it updated after every result.
+alwaysApply: true
+---
+
+# Claude chat context with founder Nauman Sherwani (founder lock 17 Oct 2026)
+
+- **Founder's rule:** whoever chats with the founder reads `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` in full FIRST, then chats. New chat, compacted chat, claude.ai Claude or Claude Code session — all of them.
+- Section 1 ("ABHI KA QADAM") says where the last chat stopped. Resume from there; do not ask the founder to repeat what the file already says.
+- After every result (server output, founder screenshot, decision or paste, new finding, new command block) update sections 1, 8, 9, 12 and 13 of that file in the same turn, commit docs only (`handoff: …`) and push to `main`. Full text: AGENTS.md Rule 18.
+- Do not commit raw chat transcripts. Summary plus a deliberately pasted excerpt (checked for secrets) only.

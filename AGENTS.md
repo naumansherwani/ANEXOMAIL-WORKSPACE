@@ -1,6 +1,6 @@
 # ANEXOMAIL Workspace — Agent Rules
 
-> **Naya ya compact chat: kuch bhi karne se pehle `docs/cursor-work/SESSION-HANDOFF.md` poori padho (Rule 18).** Wahan "ABHI KA QADAM" likha hai — wahin se shuru karo, founder se purani baat dobara mat poochho.
+> **FOUNDER KA RULE: jo bhi founder se chat karega, pehle `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` poori padhega, phir chat karega (Rule 18).** Naya ya compact chat bhi wahin se shuru hota hai — "ABHI KA QADAM" dekho, founder se purani baat dobara mat poochho.
 
 **Founder:** Muhammad Nauman Sherwani (NEXATECT Global Ltd, internal only — public copy mein NEXATECT ka zikr nahi).
 
@@ -164,12 +164,12 @@ Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
 - Command chat mein, ek block, copy-paste (Rule 15). Password/secret repo mein nahi.
 - **Kuch bhi TODO/READY likhne se pehle purani records padho:** `docs/anexomail-blueprint.md` ke "SESSION 18–21 SEP 2026" aur uske baad ke GREEN sections, `.cursor/rules/session-1821-lock.mdc`, aur founder ne server par jo chat record rakha hai (command se dekho). Jo wahan GREEN / "do not redo" hai woh dobara TODO nahi likhna, na dobara banana.
 
-### Rule 18 — Session handoff (locked 17 Oct 2026, founder)
-Chat compact hone par context kho jata tha. Ab ek hi file hai: `docs/cursor-work/SESSION-HANDOFF.md` (ABHI KA QADAM, founder ki maangen, qaide, system map, test accounts, status snapshot, khule findings, session log).
-- **Naya ya compact chat:** pehle yeh file poori padho, phir wahin se chalo. Founder se woh mat poochho jo file mein hai.
-- **Har natije ke baad** (server ka output, founder ka screenshot/faisla, naya finding) usi turn mein file ke sections 1, 8, 9 aur 12 (log) update karo, sirf docs ka commit (`handoff: …`) aur `main` par push. Founder ka standing order (17 Oct 2026): "her kaam repo mein update ho taake compact chat wala Claude context dekh sake" — Rule 14 ke "push sirf 'repo update' par" ko docs/records ke liye override karta hai.
+### Rule 18 — Claude chat context with founder Nauman Sherwani (locked 17 Oct 2026, founder)
+Chat compact hone par context kho jata tha. Ab ek hi file hai: `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` (founder ka rule, ABHI KA QADAM, founder ki maangen, qaide, system map, test accounts, status snapshot, khule findings, session log, aakhri commands, do chats ka rishta).
+- **Founder ka rule:** koi bhi founder se chat karega to **pehle yeh context file padhega, phir chat karega.** Naya chat, compact ke baad ka chat, claude.ai ka Claude ya Claude Code session — sab par laagu.
+- **Har natije ke baad** (server ka output, founder ka screenshot/faisla/paste, naya finding, naya command block) usi turn mein file ke sections 1, 8, 9, 12 (log) aur 13 (aakhri commands) update karo, sirf docs ka commit (`handoff: …`) aur `main` par push. Founder ka standing order (17 Oct 2026): "her latest command aur kaam repo mein update ho taake compact chat wala Claude context dekh sake" — Rule 14 ke "push sirf 'repo update' par" ko docs/records ke liye override karta hai.
 - Server par asli badlav phir bhi Rule 15 se (chat block); repo us ki copy/record hai. Status Rule 5 ke mutabiq; farq ho to blueprint jeetta hai.
-- Kachchi chat dump (transcript) repo mein commit nahi — secret ho sakte hain. Sirf khulasa.
+- Founder jo purani chat paste kare uska khaas hissa file ke Appendix mein (pehle secret ke liye parho). Kachchi poori transcript dump nahi.
 
 ---
 

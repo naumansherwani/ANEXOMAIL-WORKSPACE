@@ -1,6 +1,6 @@
 # Cursor Work — Sep 9 2026
 
-> **Naya ya compact chat: pehle `SESSION-HANDOFF.md` (yahi folder) padho.** Abhi ka qadam, qaide, status aur log wahan hai (AGENTS.md Rule 18).
+> **Founder ka rule: founder se chat karne se pehle `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` (yahi folder) padho, phir chat karo.** Abhi ka qadam, qaide, status, log aur aakhri commands wahan hain (AGENTS.md Rule 18).
 
 Is session mein jo bana ya badla woh sab yahan. GitHub → server pull → SQL → frontend.
 **Tarteeb se chalo. Mix nahi.**
