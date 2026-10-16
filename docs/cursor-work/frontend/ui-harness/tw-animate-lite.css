@@ -1,0 +1,7 @@
+/* Minimal stand-in for tw-animate-css (the real package is not installable in the sandbox).
+   Same utility names the pages use: animate-in, fade-in, zoom-in-50, duration-*, etc. */
+@keyframes enter { from { opacity: var(--tw-enter-opacity, 1); transform: scale(var(--tw-enter-scale, 1)); } }
+@utility animate-in { animation: enter 150ms ease both; }
+@utility fade-in { --tw-enter-opacity: 0; }
+@utility zoom-in-50 { --tw-enter-scale: 0.5; }
+@utility zoom-in-95 { --tw-enter-scale: 0.95; }

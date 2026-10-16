@@ -9,7 +9,6 @@ import {
   Globe,
   Loader2,
   Lock,
-  Mail,
   Plus,
   RefreshCw,
   ShieldCheck,
@@ -61,6 +60,14 @@ export const Route = createFileRoute("/app/domains")({
   component: DomainsPage,
 });
 
+/*
+ * Cinematic standard (src/styles.css rules, docs/cursor-work/frontend/cinematic-ui-standard.md):
+ * one light source (ax-keylight) · three depth layers (stage / plane / raised) · reveal, not slide
+ * (ax-in, ax-stagger) · pacing (calm 380ms, stagger 45ms) · type as cinematography (locked six-step
+ * scale: ax-title / ax-heading / ax-body / ax-label / ax-caption) · light angle on hover (ax-lift) ·
+ * grain · silence (one confirming pulse, then still).
+ */
+
 /** Verify poll: har 20s, zyada se zyada 30 baar (~10 min). Uske baad haath se "Check now". */
 const POLL_MS = 20_000;
 const POLL_MAX = 30;
@@ -73,10 +80,13 @@ const CHECK_LABEL: Record<DnsRecordKey, { title: string; why: string }> = {
   dmarc: { title: "Policy (DMARC)", why: "Tells receivers how to treat your mail." },
 };
 
-const REGISTRARS: { id: string; name: string; steps: string[] }[] = [
+type Registrar = { id: string; name: string; url: string; steps: string[] };
+
+const REGISTRARS: Registrar[] = [
   {
     id: "namecheap",
     name: "Namecheap",
+    url: "https://www.namecheap.com/myaccount/",
     steps: [
       "Domain List → Manage → Advanced DNS.",
       "Press Add New Record and pick the type shown below.",
@@ -86,6 +96,7 @@ const REGISTRARS: { id: string; name: string; steps: string[] }[] = [
   {
     id: "godaddy",
     name: "GoDaddy",
+    url: "https://dcc.godaddy.com/",
     steps: [
       "My Products → your domain → DNS.",
       "Press Add New Record and pick the type shown below.",
@@ -95,6 +106,7 @@ const REGISTRARS: { id: string; name: string; steps: string[] }[] = [
   {
     id: "cloudflare",
     name: "Cloudflare",
+    url: "https://dash.cloudflare.com/",
     steps: [
       "Select the domain → DNS → Records → Add record.",
       "Pick the type shown below and paste Name and Value.",
@@ -104,6 +116,7 @@ const REGISTRARS: { id: string; name: string; steps: string[] }[] = [
   {
     id: "other",
     name: "Other",
+    url: "",
     steps: [
       "Open the DNS settings of your registrar or host.",
       "Add one record per row below. Name goes in Host/Name, Value in Value/Content.",
@@ -111,6 +124,46 @@ const REGISTRARS: { id: string; name: string; steps: string[] }[] = [
     ],
   },
 ];
+
+/** Nameserver naam -> registrar. Jo na pehchane woh "Other" (steps general rehte hain). */
+const NS_HINTS: { test: RegExp; id: string; label: string }[] = [
+  { test: /\.ns\.cloudflare\.com\.?$/, id: "cloudflare", label: "Cloudflare" },
+  { test: /registrar-servers\.com\.?$/, id: "namecheap", label: "Namecheap" },
+  { test: /domaincontrol\.com\.?$/, id: "godaddy", label: "GoDaddy" },
+  { test: /awsdns-/, id: "other", label: "Amazon Route 53" },
+  { test: /googledomains\.com\.?$|squarespacedns\.com\.?$/, id: "other", label: "Squarespace / Google Domains" },
+];
+
+/**
+ * Domain ke NS records (DNS-over-HTTPS) dekh kar registrar pehchano. Sirf madad hai: lookup na ho
+ * (network / CSP / timeout) to chup-chaap manual tabs rehte hain. Aage chal kar Rust proc.
+ */
+function useRegistrarHint(domain: string | null): { id: string; label: string } | null {
+  const [hint, setHint] = useState<{ id: string; label: string } | null>(null);
+  useEffect(() => {
+    setHint(null);
+    if (!domain) return;
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 4000);
+    fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(domain)}&type=NS`, {
+      headers: { accept: "application/dns-json" },
+      signal: ctl.signal,
+    })
+      .then((r) => (r.ok ? (r.json() as Promise<{ Answer?: { data?: string }[] }>) : null))
+      .then((j) => {
+        const names = (j?.Answer ?? []).map((a) => (a.data ?? "").toLowerCase());
+        const hit = NS_HINTS.find((h) => names.some((n) => h.test.test(n)));
+        if (hit) setHint({ id: hit.id, label: hit.label });
+      })
+      .catch(() => undefined)
+      .finally(() => clearTimeout(timer));
+    return () => {
+      ctl.abort();
+      clearTimeout(timer);
+    };
+  }, [domain]);
+  return hint;
+}
 
 function errText(e: unknown, fallback = "Couldn't do that. Try again."): string {
   const err = e as Partial<ApiError> | null;
@@ -132,21 +185,49 @@ function capText(used: number, cap: number | null | undefined, noun: string): st
 }
 
 function reducedMotion(): boolean {
-  return typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true;
+  return (
+    typeof window !== "undefined" &&
+    window.matchMedia?.("(prefers-reduced-motion: reduce)").matches === true
+  );
 }
 
 /**
- * Page ka scroll dabba. AppShell `h-screen overflow-hidden` hai — bina is wrapper ke
- * neeche ka hissa kat jata hai aur wizard ke 5 records tak pohanchna mumkin nahi
- * (founder ne 17 Oct 2026 ko pakda). Baqi pages (`app.org`, `app.safety`) wahi dabba lagate hain.
+ * Page ka scroll dabba + stage ki ek roshni. AppShell `h-screen overflow-hidden` hai — bina is
+ * wrapper ke neeche ka hissa kat jata hai aur wizard ke 5 records tak pohanchna mumkin nahi
+ * (founder ne 17 Oct 2026 ko pakda). `app.org` / `app.safety` bhi yehi dabba lagate hain.
  */
 function PageScroll({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-0 min-w-0 flex-1 overflow-y-auto">
-      <div className="mx-auto w-full max-w-4xl space-y-ax-8 px-5 pb-28 pt-8 sm:px-6 md:px-10 md:pt-12">
-        {children}
+      <div className="relative isolate overflow-hidden">
+        <div className="ax-keylight" aria-hidden="true" />
+        <div className="relative mx-auto w-full max-w-4xl space-y-ax-8 px-5 pb-28 pt-8 sm:px-6 md:px-10 md:pt-14">
+          {children}
+        </div>
       </div>
     </div>
+  );
+}
+
+/** Loading par text nahi, wahi shakal jo aane wali hai (ax-shimmer). */
+function PageSkeleton() {
+  const { t } = useLocale();
+  return (
+    <PageScroll>
+      <div role="status" className="space-y-ax-8">
+        <span className="sr-only">{t("Loading domains…")}</span>
+        <div className="space-y-3" aria-hidden="true">
+          <div className="ax-shimmer h-3 w-28 rounded-full" />
+          <div className="ax-shimmer h-10 w-80 max-w-full rounded-xl" />
+          <div className="ax-shimmer h-4 w-[34rem] max-w-full rounded-full" />
+        </div>
+        <div className="ax-shimmer h-[26rem] rounded-3xl" aria-hidden="true" />
+        <div className="space-y-3" aria-hidden="true">
+          <div className="ax-shimmer h-5 w-40 rounded-full" />
+          <div className="ax-shimmer h-16 rounded-2xl" />
+        </div>
+      </div>
+    </PageScroll>
   );
 }
 
@@ -211,31 +292,26 @@ function CopyButton({ value, label }: { value: string; label: string }) {
 function Tick({ ok, pending }: { ok: boolean; pending?: boolean }) {
   if (ok) {
     return (
-      <span className="inline-flex items-center gap-1 text-xs font-semibold text-success">
+      <span className="ax-label inline-flex items-center gap-1 text-success">
         <CheckCircle2 className="size-4 animate-in zoom-in-50 duration-300" aria-hidden="true" />
         Found
       </span>
     );
   }
   return (
-    <span className="inline-flex items-center gap-1 text-xs font-semibold text-muted-foreground">
+    <span className="ax-label inline-flex items-center gap-1 text-muted-foreground">
       <Circle className="size-4" aria-hidden="true" />
       {pending ? "Key is being prepared" : "Not found yet"}
     </span>
   );
 }
 
-function Field({ label, value, mono = true }: { label: string; value: string; mono?: boolean }) {
+function Field({ label, value }: { label: string; value: string }) {
   return (
     <div className="min-w-0">
-      <p className="ax-caption text-muted-foreground">{label}</p>
+      <p className="ax-caption">{label}</p>
       <div className="mt-1 flex items-center gap-2">
-        <code
-          className={cn(
-            "min-w-0 flex-1 break-all rounded-lg border border-border bg-secondary/60 px-2.5 py-1.5 text-xs text-foreground",
-            !mono && "font-sans",
-          )}
-        >
+        <code className="min-w-0 flex-1 break-words rounded-lg border border-border bg-background/60 px-2.5 py-1.5 font-mono text-xs text-foreground">
           {value}
         </code>
         <CopyButton value={value} label={label} />
@@ -254,29 +330,32 @@ function RecordCard({ rec, n, of }: { rec: DnsRecord; n: number; of: number }) {
       )}
     >
       <div className="flex flex-wrap items-center gap-2">
-        <span className="flex size-6 items-center justify-center rounded-full border border-border bg-secondary text-xs font-bold text-foreground">
+        <span className="ax-label flex size-6 items-center justify-center rounded-full border border-border bg-secondary">
           {n}
         </span>
-        <p className="text-sm font-bold text-foreground">{meta.title}</p>
+        <p className="ax-label">{meta.title}</p>
         <Chip>{rec.type}</Chip>
-        <span className="ax-caption text-muted-foreground">
+        <span className="ax-caption">
           {n} / {of}
         </span>
         <span className="ml-auto">
           <Tick ok={rec.ok} {...(rec.pending ? { pending: true } : {})} />
         </span>
       </div>
-      <p className="ax-caption mt-1 text-muted-foreground">{meta.why}</p>
+      <p className="ax-caption mt-1">{meta.why}</p>
       <div className="mt-3 grid gap-3 md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)]">
         <Field label="Name / Host" value={rec.name} />
         {rec.value ? (
           <Field label="Value" value={rec.value} />
         ) : (
-          <div className="flex items-center gap-2 rounded-lg border border-dashed border-border px-3 py-2">
-            <Loader2 className="size-4 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" />
-            <p className="ax-caption text-muted-foreground">
-              Your signing key is being generated — this row fills in by itself, usually within a minute.
-            </p>
+          <div className="rounded-lg border border-dashed border-border p-3">
+            <div className="flex items-center gap-2">
+              <span className="size-1.5 rounded-full bg-warning ax-breathe" aria-hidden="true" />
+              <p className="ax-caption">
+                Your signing key is being generated — this row fills in by itself, usually within a minute.
+              </p>
+            </div>
+            <div className="ax-shimmer mt-2 h-6 w-full rounded-md" aria-hidden="true" />
           </div>
         )}
       </div>
@@ -290,15 +369,15 @@ function RecordCard({ rec, n, of }: { rec: DnsRecord; n: number; of: number }) {
 }
 
 /** Teen qadam, ek jud'ti hui lakeer — jo qadam ho chuka woh bharta jata hai. */
-function StepRail({ step }: { step: 1 | 2 | 3 }) {
+function StepRail({ step }: { step: 1 | 2 | 3 | 4 }) {
   const { t } = useLocale();
   const steps = [t("Your domain"), t("Add DNS records"), t("We check")];
-  const fill = ((step - 1) / 2) * 100;
+  const fill = ((Math.min(step, 3) - 1) / 2) * 100;
   return (
     <ol className="relative grid grid-cols-3 gap-2" aria-label="Setup steps">
       <span aria-hidden="true" className="absolute inset-x-[16.667%] top-3 h-px bg-border">
         <span
-          className="block h-full bg-primary motion-safe:transition-[width] motion-safe:duration-700"
+          className="block h-full bg-[var(--cyan-accent)] motion-safe:transition-[width] motion-safe:duration-700"
           style={{ width: `${fill}%` }}
         />
       </span>
@@ -313,22 +392,15 @@ function StepRail({ step }: { step: 1 | 2 | 3 }) {
           >
             <span
               className={cn(
-                "flex size-6 items-center justify-center rounded-full border text-xs font-bold transition-colors duration-500",
+                "ax-label flex size-6 items-center justify-center rounded-full border transition-colors duration-500",
                 state === "done" && "border-success/50 bg-card text-success",
-                state === "now" && "border-primary bg-primary text-primary-foreground",
+                state === "now" && "border-[var(--cyan-accent)] bg-card text-foreground shadow-[0_0_0_4px_oklch(0.735_0.121_213/14%)]",
                 state === "next" && "border-border bg-card text-muted-foreground",
               )}
             >
               {state === "done" ? <CheckCircle2 className="size-3.5" aria-hidden="true" /> : n}
             </span>
-            <span
-              className={cn(
-                "text-xs font-semibold",
-                state === "next" ? "text-muted-foreground" : "text-foreground",
-              )}
-            >
-              {label}
-            </span>
+            <span className={cn("ax-label", state === "next" && "text-muted-foreground")}>{label}</span>
           </li>
         );
       })}
@@ -337,13 +409,17 @@ function StepRail({ step }: { step: 1 | 2 | 3 }) {
 }
 
 /** x/5 records mile — chhota gola, bharta hua. */
-function Ring({ done, total }: { done: number; total: number }) {
+function Ring({ done, total, celebrate }: { done: number; total: number; celebrate?: boolean }) {
   const r = 26;
   const c = 2 * Math.PI * r;
   const off = c * (1 - (total > 0 ? done / total : 0));
   const full = total > 0 && done === total;
   return (
-    <div className="relative size-16 shrink-0" role="img" aria-label={`${done} of ${total} records found`}>
+    <div
+      className={cn("relative size-16 shrink-0 rounded-full", celebrate && "ax-confirm")}
+      role="img"
+      aria-label={`${done} of ${total} records found`}
+    >
       <svg viewBox="0 0 64 64" className="size-16 -rotate-90" aria-hidden="true">
         <circle cx="32" cy="32" r={r} fill="none" strokeWidth="5" className="stroke-border" />
         <circle
@@ -356,12 +432,12 @@ function Ring({ done, total }: { done: number; total: number }) {
           strokeDasharray={c}
           strokeDashoffset={off}
           className={cn(
-            full ? "stroke-success" : "stroke-primary",
+            full ? "stroke-success" : "stroke-[var(--cyan-accent)]",
             "motion-safe:transition-[stroke-dashoffset] motion-safe:duration-700",
           )}
         />
       </svg>
-      <span className="absolute inset-0 grid place-items-center text-sm font-bold text-foreground">
+      <span className="ax-label absolute inset-0 grid place-items-center">
         {done}/{total}
       </span>
     </div>
@@ -408,6 +484,11 @@ function Wizard({
   );
   const verifyRef = useRef(verify);
   verifyRef.current = verify;
+
+  const hint = useRegistrarHint(state.step === 2 && domain ? domain.domain : null);
+  useEffect(() => {
+    if (hint && REGISTRARS.some((r) => r.id === hint.id)) setRegistrar(hint.id);
+  }, [hint]);
 
   // Naya qadam khule to screen foran wahan pohanche (page scroll hota hai — neeche ka hissa chhup na jaye).
   useEffect(() => {
@@ -493,253 +574,280 @@ function Wizard({
 
   const found = domain ? domain.records.filter((r) => r.ok).length : 0;
   const total = domain ? domain.records.length : 5;
+  const verified = domain?.status === "verified";
+  const reg = REGISTRARS.find((r) => r.id === registrar) ?? REGISTRARS[3]!;
 
   return (
     <section
       ref={rootRef}
-      className="ax-plane ax-in scroll-mt-6 rounded-3xl p-ax-5 md:p-ax-6"
+      className="ax-plane ax-grain ax-in scroll-mt-6 overflow-clip! rounded-3xl p-ax-5 md:p-ax-7"
       aria-label="Connect a domain"
     >
-      <div className="flex items-start gap-3">
-        <div className="min-w-0 flex-1">
-          <StepRail step={state.step} />
-        </div>
-        <Button
-          type="button"
-          variant="ghost"
-          size="sm"
-          className="ax-press shrink-0 gap-1.5"
-          onClick={onClose}
-        >
-          <X className="size-4" aria-hidden="true" />
-          {t("Close")}
-        </Button>
-      </div>
-
-      {state.step === 1 && (
-        <div className="ax-in mt-ax-6">
-          <h3 className="text-2xl font-bold text-foreground">{t("Which domain should mail use?")}</h3>
-          <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground">
-            {t("The one you own, like company.com. You will add five DNS records next — nothing changes until you do.")}
-          </p>
-          <form
-            className="mt-5 flex max-w-xl flex-col gap-2 sm:flex-row"
-            onSubmit={(e) => {
-              e.preventDefault();
-              if (!atCap && name.trim()) submitName();
-            }}
+      <div className="relative z-10">
+        <div className="flex items-start gap-3">
+          <div className="min-w-0 flex-1">
+            <StepRail step={state.step === 3 && domain?.status === "verified" ? 4 : state.step} />
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="sm"
+            className="ax-press shrink-0 gap-1.5"
+            onClick={onClose}
           >
-            <label className="sr-only" htmlFor="ax-domain-name">
-              Domain name
-            </label>
-            <div className="relative sm:flex-1">
-              <AtSign
-                className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
-                aria-hidden="true"
-              />
-              <Input
-                id="ax-domain-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="company.com"
-                autoComplete="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                disabled={atCap || add.isPending}
-                className="h-11 pl-9 text-base"
-                autoFocus
-              />
-            </div>
-            <Button
-              type="submit"
-              size="lg"
-              className="ax-press ax-tap gap-1.5"
-              disabled={atCap || add.isPending || !name.trim()}
-            >
-              {add.isPending ? (
-                <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-              ) : null}
-              {t("Continue")}
-              {!add.isPending && <ArrowRight className="size-4" aria-hidden="true" />}
-            </Button>
-          </form>
-          {suggestion && !name.trim() && !atCap && (
-            <button
-              type="button"
-              onClick={() => setName(suggestion)}
-              className="ax-focus ax-press mt-3 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1.5 text-xs font-semibold text-foreground transition-colors hover:border-primary/50"
-            >
-              <Globe className="size-3.5 text-steel" aria-hidden="true" />
-              {t("Use")} {suggestion}
-              <span className="font-normal text-muted-foreground">· {t("from your signup")}</span>
-            </button>
-          )}
-          {problem && <p className="mt-3 text-sm text-danger">{problem}</p>}
-          {atCap && <p className="ax-caption mt-3 text-warning">{capLabel}</p>}
+            <X className="size-4" aria-hidden="true" />
+            {t("Close")}
+          </Button>
         </div>
-      )}
 
-      {state.step === 2 && domain && (
-        <div className="ax-in mt-ax-6">
-          <h3 className="text-2xl font-bold text-foreground">
-            {t("Add these records at your registrar")}
-          </h3>
-          <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            {t("Copy each Name and Value into the DNS settings for")}{" "}
-            <strong className="text-foreground">{domain.domain}</strong>.{" "}
-            {t("Enter only the Name — your registrar adds the domain itself.")}
-          </p>
-
-          <div className="mt-5 rounded-2xl border border-border bg-secondary/30 p-ax-4">
-            <div className="flex flex-wrap gap-2" role="tablist" aria-label="Registrar">
-              {REGISTRARS.map((r) => (
-                <button
-                  key={r.id}
-                  type="button"
-                  role="tab"
-                  aria-selected={registrar === r.id}
-                  onClick={() => setRegistrar(r.id)}
-                  className={cn(
-                    "ax-focus ax-press rounded-full border px-3 py-1 text-xs font-semibold transition-colors",
-                    registrar === r.id
-                      ? "border-primary bg-primary/10 text-foreground"
-                      : "border-border text-muted-foreground hover:text-foreground",
-                  )}
-                >
-                  {r.name}
-                </button>
-              ))}
-            </div>
-            <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-muted-foreground">
-              {(REGISTRARS.find((r) => r.id === registrar) ?? REGISTRARS[3]!).steps.map((s) => (
-                <li key={s}>{s}</li>
-              ))}
-            </ol>
-          </div>
-
-          <ul className="mt-4 space-y-3">
-            {domain.records.map((rec, i) => (
-              <RecordCard key={rec.key} rec={rec} n={i + 1} of={domain.records.length} />
-            ))}
-          </ul>
-
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              size="lg"
-              className="ax-press ax-tap gap-1.5"
-              onClick={() => setState({ step: 3, domainId: domain.id })}
+        {state.step === 1 && (
+          <div className="ax-in mt-ax-7">
+            <h3 className="ax-title">{t("Which domain should mail use?")}</h3>
+            <p className="ax-body mt-3 max-w-xl">
+              {t("The one you own, like company.com. You will add five DNS records next — nothing changes until you do.")}
+            </p>
+            <form
+              className="mt-6 flex max-w-xl flex-col gap-2 sm:flex-row"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!atCap && name.trim()) submitName();
+              }}
             >
-              {t("I've added them — check now")}
-              <ArrowRight className="size-4" aria-hidden="true" />
-            </Button>
-            <Button type="button" variant="ghost" className="ax-press" onClick={onClose}>
-              {t("Finish later")}
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {state.step === 3 && domain && (
-        <div className="ax-in mt-ax-6" role="status" aria-live="polite">
-          <div className="flex items-center gap-4">
-            <Ring done={found} total={total} />
-            <div className="min-w-0">
-              <h3 className="text-2xl font-bold text-foreground">
-                {domain.status === "verified"
-                  ? `${domain.domain} ${t("is verified")}`
-                  : `${t("Checking")} ${domain.domain}`}
-              </h3>
-              <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-                {domain.status === "verified"
-                  ? t("All five records are live. You can create addresses on this domain now.")
-                  : t("Each tick turns green the moment its record is found. DNS can take a few minutes — you can leave this page open.")}
-              </p>
-            </div>
-          </div>
-
-          <ul className="mt-5 grid gap-2 sm:grid-cols-2">
-            {domain.records.map((rec) => (
-              <li
-                key={rec.key}
-                className={cn(
-                  "flex items-center gap-3 rounded-2xl border p-3 transition-colors duration-500",
-                  rec.ok ? "border-success/40 bg-success/5" : "border-border",
-                )}
+              <label className="sr-only" htmlFor="ax-domain-name">
+                Domain name
+              </label>
+              <div className="relative sm:flex-1">
+                <AtSign
+                  className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"
+                  aria-hidden="true"
+                />
+                <Input
+                  id="ax-domain-name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="company.com"
+                  autoComplete="off"
+                  autoCapitalize="off"
+                  spellCheck={false}
+                  disabled={atCap || add.isPending}
+                  className="h-11 pl-9 text-base"
+                  autoFocus
+                />
+              </div>
+              <Button
+                type="submit"
+                variant="seal"
+                size="lg"
+                className="ax-press ax-tap gap-1.5"
+                disabled={atCap || add.isPending || !name.trim()}
               >
-                {rec.ok ? (
-                  <CheckCircle2
-                    className="size-5 shrink-0 text-success animate-in zoom-in-50 duration-300"
-                    aria-hidden="true"
-                  />
-                ) : verify.isPending ? (
-                  <Loader2 className="size-5 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" />
-                ) : (
-                  <Circle className="size-5 shrink-0 text-muted-foreground motion-safe:animate-pulse" aria-hidden="true" />
+                {add.isPending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
+                {t("Continue")}
+                {!add.isPending && <ArrowRight className="size-4" aria-hidden="true" />}
+              </Button>
+            </form>
+            {suggestion && !name.trim() && !atCap && (
+              <button
+                type="button"
+                onClick={() => setName(suggestion)}
+                className="ax-focus ax-press ax-label mt-3 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-3 py-1.5 transition-colors hover:border-[var(--cyan-accent)]/60"
+              >
+                <Globe className="size-3.5 text-steel" aria-hidden="true" />
+                {t("Use")} {suggestion}
+                <span className="font-normal text-muted-foreground">· {t("from your signup")}</span>
+              </button>
+            )}
+            {problem && <p role="alert" className="ax-shake ax-label mt-3 text-danger">{problem}</p>}
+            {atCap && <p className="ax-caption mt-3 text-warning">{capLabel}</p>}
+          </div>
+        )}
+
+        {state.step === 2 && domain && (
+          <div className="ax-in mt-ax-7">
+            <h3 className="ax-title">{t("Add these DNS records")}</h3>
+            <p className="ax-body mt-3 max-w-2xl">
+              {t("At your registrar, copy each Name and Value into the DNS settings for")}{" "}
+              <strong className="text-foreground">{domain.domain}</strong>.{" "}
+              {t("Enter only the Name — your registrar adds the domain itself.")}
+            </p>
+
+            <div className="mt-6 rounded-2xl border border-border bg-background/40 p-ax-4">
+              {hint && (
+                <p className="ax-label ax-in mb-3 inline-flex items-center gap-2 text-success">
+                  <ShieldCheck className="size-4" aria-hidden="true" />
+                  {t("We found your DNS is at")} {hint.label}
+                  {hint.id === "other" ? ` — ${t("general steps below")}` : ` — ${t("steps below match it")}`}
+                </p>
+              )}
+              <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Registrar">
+                {REGISTRARS.map((r) => (
+                  <button
+                    key={r.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={registrar === r.id}
+                    onClick={() => setRegistrar(r.id)}
+                    className={cn(
+                      "ax-focus ax-press ax-label rounded-full border px-3 py-1 transition-colors",
+                      registrar === r.id
+                        ? "border-[var(--cyan-accent)] bg-[var(--cyan-accent)]/10 text-foreground"
+                        : "border-border text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    {r.name}
+                    {hint?.id === r.id && <span className="sr-only"> ({t("detected")})</span>}
+                  </button>
+                ))}
+                {reg.url && (
+                  <a
+                    href={reg.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ax-focus ax-label ml-auto inline-flex items-center gap-1 text-steel hover:text-foreground"
+                  >
+                    {t("Open")} {reg.name}
+                    <ArrowRight className="size-3.5" aria-hidden="true" />
+                  </a>
                 )}
-                <div className="min-w-0 flex-1">
-                  <p className="text-sm font-bold text-foreground">{CHECK_LABEL[rec.key].title}</p>
-                  <p className="ax-caption truncate text-muted-foreground">
-                    {rec.type} · {rec.name}
-                  </p>
-                </div>
-                <span
-                  className={cn(
-                    "text-xs font-semibold",
-                    rec.ok ? "text-success" : "text-muted-foreground",
-                  )}
-                >
-                  {rec.ok ? t("Found") : rec.pending ? t("Key is being prepared") : t("Waiting")}
-                </span>
-              </li>
-            ))}
-          </ul>
+              </div>
+              <ol className="ax-body mt-3 list-decimal space-y-1 pl-5">
+                {reg.steps.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ol>
+            </div>
 
-          {problem && <p className="mt-3 text-sm text-danger">{problem}</p>}
+            <ul className="ax-stagger mt-4 space-y-3">
+              {domain.records.map((rec, i) => (
+                <RecordCard key={rec.key} rec={rec} n={i + 1} of={domain.records.length} />
+              ))}
+            </ul>
 
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            {domain.status === "verified" ? (
-              <Button type="button" size="lg" className="ax-press ax-tap gap-1.5" onClick={() => onDone(domain)}>
-                {t("Create an address")}
+            <div className="mt-7 flex flex-wrap items-center gap-2">
+              <Button
+                type="button"
+                variant="seal"
+                size="lg"
+                className="ax-press ax-tap gap-1.5"
+                onClick={() => setState({ step: 3, domainId: domain.id })}
+              >
+                {t("I've added them — check now")}
                 <ArrowRight className="size-4" aria-hidden="true" />
               </Button>
-            ) : (
-              <>
+              <Button type="button" variant="ghost" className="ax-press" onClick={onClose}>
+                {t("Finish later")}
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {state.step === 3 && domain && (
+          <div className="ax-in mt-ax-7" role="status" aria-live="polite">
+            <div className={cn("flex items-center gap-4", verified && "ax-celebrate")}>
+              <Ring done={found} total={total} {...(verified ? { celebrate: true } : {})} />
+              <div className="min-w-0">
+                <h3 className="ax-title break-words">
+                  {verified ? `${domain.domain} ${t("is verified")}` : `${t("Checking")} ${domain.domain}`}
+                </h3>
+                <p className="ax-body mt-2 max-w-2xl">
+                  {verified
+                    ? t("All five records are live. You can create addresses on this domain now.")
+                    : t("Each tick turns green the moment its record is found. DNS can take a few minutes — you can leave this page open.")}
+                </p>
+              </div>
+            </div>
+
+            <ul className="ax-stagger mt-6 grid gap-2 sm:grid-cols-2">
+              {domain.records.map((rec) => (
+                <li
+                  key={rec.key}
+                  className={cn(
+                    "flex items-center gap-3 rounded-2xl border p-3 transition-colors duration-500",
+                    rec.ok ? "ax-confirm border-success/40 bg-success/5" : "border-border",
+                  )}
+                >
+                  <span className="flex size-5 shrink-0 items-center justify-center">
+                    {rec.ok ? (
+                      <CheckCircle2
+                        className="size-5 text-success animate-in zoom-in-50 duration-300"
+                        aria-hidden="true"
+                      />
+                    ) : (
+                      <span
+                        className={cn(
+                          "size-2 rounded-full",
+                          rec.pending ? "bg-muted-foreground" : "bg-warning ax-breathe",
+                        )}
+                        aria-hidden="true"
+                      />
+                    )}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <p className="ax-label">{CHECK_LABEL[rec.key].title}</p>
+                    <p className="ax-caption truncate">
+                      {rec.type} · {rec.name}
+                    </p>
+                  </div>
+                  <span className={cn("ax-label", rec.ok ? "text-success" : "text-muted-foreground")}>
+                    {rec.ok ? t("Found") : rec.pending ? t("Key is being prepared") : t("Waiting")}
+                  </span>
+                </li>
+              ))}
+            </ul>
+
+            {problem && <p role="alert" className="ax-shake ax-label mt-3 text-danger">{problem}</p>}
+
+            <div className="mt-7 flex flex-wrap items-center gap-2">
+              {verified ? (
                 <Button
                   type="button"
+                  variant="seal"
                   size="lg"
                   className="ax-press ax-tap gap-1.5"
-                  disabled={verify.isPending}
-                  onClick={() => check(true)}
+                  onClick={() => onDone(domain)}
                 >
-                  {verify.isPending ? (
-                    <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-                  ) : (
-                    <RefreshCw className="size-4" aria-hidden="true" />
-                  )}
-                  {t("Check now")}
+                  {t("Create your first address")}
+                  <ArrowRight className="size-4" aria-hidden="true" />
                 </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="ax-press"
-                  onClick={() => setState({ step: 2, domainId: domain.id })}
-                >
-                  {t("Show the records again")}
-                </Button>
-                <span className="ax-caption inline-flex items-center gap-1.5 text-muted-foreground">
-                  <Clock className="size-3.5" aria-hidden="true" />
-                  {polls >= POLL_MAX
-                    ? t("Automatic checks paused — press Check now when your DNS is saved.")
-                    : verify.isPending
-                      ? t("Checking…")
-                      : `${t("Next automatic check in")} ${nextIn}s`}
-                </span>
-              </>
-            )}
+              ) : (
+                <>
+                  <Button
+                    type="button"
+                    variant="seal"
+                    size="lg"
+                    className="ax-press ax-tap gap-1.5"
+                    disabled={verify.isPending}
+                    onClick={() => check(true)}
+                  >
+                    {verify.isPending ? (
+                      <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                    ) : (
+                      <RefreshCw className="size-4" aria-hidden="true" />
+                    )}
+                    {t("Check now")}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="ax-press"
+                    onClick={() => setState({ step: 2, domainId: domain.id })}
+                  >
+                    {t("Show the records again")}
+                  </Button>
+                  <span className="ax-caption inline-flex items-center gap-1.5">
+                    <Clock className="size-3.5" aria-hidden="true" />
+                    {polls >= POLL_MAX
+                      ? t("Automatic checks paused — press Check now when your DNS is saved.")
+                      : verify.isPending
+                        ? t("Checking…")
+                        : `${t("Next automatic check in")} ${nextIn}s`}
+                  </span>
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </section>
   );
 }
@@ -751,7 +859,7 @@ const PREVIEW_STEPS: { icon: typeof Globe; title: string; body: string }[] = [
   {
     icon: Copy,
     title: "Add five DNS records",
-    body: "Copy each Name and Value. Hints for Namecheap, GoDaddy and Cloudflare.",
+    body: "Copy each Name and Value. Steps for Namecheap, GoDaddy and Cloudflare.",
   },
   {
     icon: ShieldCheck,
@@ -760,7 +868,48 @@ const PREVIEW_STEPS: { icon: typeof Globe; title: string; body: string }[] = [
   },
 ];
 
-/** Khali page ka pehla taassur: kya milega, kitna waqt lagega, ek bara button. */
+/** Aane wali mail ka nateeja: "From" mein aap ka apna address. Sirf jhalak — asli data nahi. */
+function MailPreview({ address }: { address: string }) {
+  const { t } = useLocale();
+  return (
+    <div
+      className="ax-drift relative rounded-2xl border border-border bg-background/70 p-ax-4 shadow-elev-2 backdrop-blur"
+      aria-hidden="true"
+    >
+      <div className="flex items-center gap-1.5">
+        <span className="size-2 rounded-full bg-border" />
+        <span className="size-2 rounded-full bg-border" />
+        <span className="size-2 rounded-full bg-border" />
+        <span className="ax-caption ml-auto">{t("New message")}</span>
+      </div>
+      <div className="mt-4 space-y-3">
+        <div className="flex items-center gap-3 border-b border-border pb-3">
+          <span className="ax-caption w-14 shrink-0">{t("From")}</span>
+          <span className="ax-label inline-flex min-w-0 items-center gap-1.5 rounded-full border border-success/40 bg-success/10 px-2.5 py-1">
+            <span className="size-1.5 shrink-0 rounded-full bg-success ax-breathe" />
+            <span className="truncate">{address}</span>
+          </span>
+        </div>
+        <div className="flex items-center gap-3 border-b border-border pb-3">
+          <span className="ax-caption w-14 shrink-0">{t("To")}</span>
+          <span className="ax-shimmer h-3 w-36 rounded-full" />
+        </div>
+        <div className="flex items-center gap-3 border-b border-border pb-3">
+          <span className="ax-caption w-14 shrink-0">{t("Subject")}</span>
+          <span className="ax-label">{t("Your quote is ready")}</span>
+        </div>
+        <div className="space-y-2 pt-1">
+          <span className="ax-shimmer block h-2.5 w-full rounded-full" />
+          <span className="ax-shimmer block h-2.5 w-[88%] rounded-full" />
+          <span className="ax-shimmer block h-2.5 w-[64%] rounded-full" />
+        </div>
+      </div>
+      <p className="ax-caption mt-4 text-right">{t("Preview — how your mail will look")}</p>
+    </div>
+  );
+}
+
+/** Khali page ka pehla taassur: kya milega, kitna waqt lagega, ek hi bara button. */
 function EmptyHero({
   suggestion,
   capNote,
@@ -771,62 +920,82 @@ function EmptyHero({
   onStart: (prefill?: string) => void;
 }) {
   const { t } = useLocale();
+  const shown = suggestion ?? "yourcompany.com";
   return (
-    <section className="ax-plane relative rounded-3xl p-ax-6 md:p-ax-7" aria-label="Connect your first domain">
+    <section
+      className="ax-plane ax-grain relative overflow-clip! rounded-3xl p-ax-5 md:p-ax-7"
+      aria-label="Connect your first domain"
+    >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -right-24 -top-28 size-80 rounded-full bg-primary/15 blur-3xl"
+        className="pointer-events-none absolute -right-28 -top-32 size-96 rounded-full bg-[var(--cyan-accent)]/10 blur-3xl"
       />
-      <div className="relative grid gap-ax-7 md:grid-cols-[1.1fr_1fr] md:items-center">
-        <div>
-          <p className="ax-eyebrow">{t("Your name on every email")}</p>
-          <h3 className="mt-3 text-3xl font-bold leading-tight text-foreground">
-            {suggestion ? `${t("Finish connecting")} ${suggestion}` : t("Send as you@yourcompany.com")}
-          </h3>
-          <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 py-1.5 text-sm">
-            <Mail className="size-4 text-steel" aria-hidden="true" />
-            <span className="font-semibold text-foreground">you</span>
-            <span className="text-muted-foreground">@{suggestion ?? "yourcompany.com"}</span>
-          </div>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
-            {suggestion
-              ? t("This is the domain you gave when you signed up. Add the DNS records once and your team can send and receive on it.")
-              : t("Until you connect one, your mail runs on your ANEXOMAIL address. Connecting takes about five minutes plus DNS time.")}
-          </p>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <Button
-              type="button"
-              size="lg"
-              className="ax-press ax-tap gap-2"
-              onClick={() => onStart(suggestion ?? undefined)}
-            >
-              <Plus className="size-4" aria-hidden="true" />
-              {suggestion ? `${t("Connect")} ${suggestion}` : t("Connect a domain")}
-            </Button>
+      <div className="relative z-10">
+        <div className="grid gap-ax-6 md:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] md:items-center">
+          <div className="min-w-0">
+            <p className="ax-eyebrow">{t("Your name on every email")}</p>
+            <h3 className="ax-title mt-4 [overflow-wrap:anywhere]">
+              {suggestion ? t("Connect your domain") : t("Email from your own domain")}
+            </h3>
             {suggestion && (
-              <Button type="button" variant="ghost" className="ax-press" onClick={() => onStart()}>
-                {t("Use a different domain")}
-              </Button>
+              <p className="ax-heading mt-4 inline-flex max-w-full items-center gap-2 rounded-full border border-border bg-background/50 py-1.5 pl-3 pr-4">
+                <Globe className="size-4 shrink-0 text-steel" aria-hidden="true" />
+                <span className="min-w-0 truncate">{suggestion}</span>
+                <span className="ax-caption hidden shrink-0 sm:inline">· {t("from your signup")}</span>
+              </p>
             )}
+            <p className="ax-body mt-4 max-w-md">
+              {suggestion
+                ? t("Add the DNS records once and your team can send and receive on it.")
+                : t("Until you connect one, your mail runs on your ANEXOMAIL address. Connecting takes about five minutes plus DNS time.")}
+            </p>
+            <div className="mt-6 flex flex-wrap items-center gap-3">
+              <Button
+                type="button"
+                variant="seal"
+                size="xl"
+                className="ax-press ax-tap max-w-full gap-2"
+                onClick={() => onStart(suggestion ?? undefined)}
+              >
+                <Plus className="size-4 shrink-0" aria-hidden="true" />
+                <span className="truncate">
+                  {suggestion ? `${t("Connect")} ${suggestion}` : t("Connect a domain")}
+                </span>
+              </Button>
+              {suggestion && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  className="ax-press gap-1.5"
+                  onClick={() => onStart()}
+                >
+                  {t("Use a different domain")}
+                  <ArrowRight className="size-4" aria-hidden="true" />
+                </Button>
+              )}
+            </div>
+            <p className="ax-caption mt-5">{capNote}</p>
           </div>
-          <p className="ax-caption mt-4 text-muted-foreground">{capNote}</p>
+          <MailPreview address={`you@${shown}`} />
         </div>
 
-        <ol className="space-y-3" aria-label="How it works">
+        <div className="ax-hairline mt-ax-7 h-px" aria-hidden="true" />
+        <ol className="ax-stagger mt-ax-5 grid gap-3 sm:grid-cols-3" aria-label="How it works">
           {PREVIEW_STEPS.map((s, i) => (
             <li
               key={s.title}
-              className="flex items-start gap-3 rounded-2xl border border-border bg-background/40 p-ax-4"
+              className="ax-lift flex items-start gap-3 rounded-2xl border border-border bg-background/40 p-ax-4"
             >
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
+              <span className="ax-label flex size-8 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
                 <s.icon className="size-4" aria-hidden="true" />
               </span>
               <div className="min-w-0">
-                <p className="text-sm font-bold text-foreground">
+                <p className="ax-label">
                   <span className="mr-1.5 text-muted-foreground">{i + 1}.</span>
                   {t(s.title)}
                 </p>
-                <p className="ax-caption mt-0.5 text-muted-foreground">{t(s.body)}</p>
+                <p className="ax-caption mt-1">{t(s.body)}</p>
               </div>
             </li>
           ))}
@@ -854,7 +1023,7 @@ function DomainRow({
     <li className={cn("ax-plane rounded-2xl p-ax-4", verified && "border-success/30")}>
       <div className="flex flex-wrap items-center gap-3">
         <Globe aria-hidden="true" className="size-4 text-steel" />
-        <p className="min-w-0 truncate text-base font-bold text-foreground">{d.domain}</p>
+        <p className="ax-heading min-w-0 truncate">{d.domain}</p>
         <Chip tone={verified ? "good" : "warn"}>
           {verified ? t("Verified") : `${t("Needs DNS")} · ${done}/5`}
         </Chip>
@@ -874,7 +1043,7 @@ function DomainRow({
             type="button"
             size="sm"
             variant="ghost"
-            className="ax-press text-danger"
+            className="ax-press text-muted-foreground hover:text-danger"
             onClick={onRemove}
             aria-label={`Remove ${d.domain}`}
           >
@@ -895,7 +1064,7 @@ function DomainRow({
       </div>
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1" aria-label="DNS checks">
         {d.records.map((r) => (
-          <li key={r.key} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <li key={r.key} className="ax-caption flex items-center gap-1.5">
             {r.ok ? (
               <CheckCircle2 className="size-3.5 text-success" aria-hidden="true" />
             ) : (
@@ -930,10 +1099,8 @@ function AddressesLocked() {
           <Lock className="size-4" aria-hidden="true" />
         </span>
         <div className="min-w-0">
-          <p className="text-sm font-bold text-foreground">
-            {t("Addresses unlock once your domain is verified")}
-          </p>
-          <p className="ax-caption mt-0.5 text-muted-foreground">
+          <p className="ax-label">{t("Addresses unlock once your domain is verified")}</p>
+          <p className="ax-caption mt-1">
             {t("Then create sales@, support@ or alex@yourcompany.com — mailboxes, shared inboxes and free aliases.")}
           </p>
         </div>
@@ -941,8 +1108,8 @@ function AddressesLocked() {
       <ul className="mt-4 grid gap-2 opacity-70 sm:grid-cols-3" aria-hidden="true">
         {KINDS.map((k) => (
           <li key={k.id} className="rounded-xl border border-dashed border-border p-3">
-            <span className="block text-sm font-bold text-foreground">{t(k.title)}</span>
-            <span className="ax-caption mt-0.5 block text-muted-foreground">{t(k.body)}</span>
+            <span className="ax-label block">{t(k.title)}</span>
+            <span className="ax-caption mt-0.5 block">{t(k.body)}</span>
           </li>
         ))}
       </ul>
@@ -1014,7 +1181,7 @@ function AddressForm({
       }}
     >
       <fieldset>
-        <legend className="ax-caption text-muted-foreground">{t("Type")}</legend>
+        <legend className="ax-caption">{t("Type")}</legend>
         <div className="mt-2 grid gap-2 sm:grid-cols-3" role="radiogroup" aria-label="Address type">
           {KINDS.map((k) => (
             <button
@@ -1025,11 +1192,13 @@ function AddressForm({
               onClick={() => setKind(k.id)}
               className={cn(
                 "ax-focus ax-press rounded-xl border p-3 text-left transition-colors",
-                kind === k.id ? "border-primary bg-primary/10" : "border-border hover:border-primary/40",
+                kind === k.id
+                  ? "border-[var(--cyan-accent)] bg-[var(--cyan-accent)]/10"
+                  : "border-border hover:border-[var(--cyan-accent)]/40",
               )}
             >
-              <span className="block text-sm font-bold text-foreground">{t(k.title)}</span>
-              <span className="ax-caption mt-0.5 block text-muted-foreground">{t(k.body)}</span>
+              <span className="ax-label block">{t(k.title)}</span>
+              <span className="ax-caption mt-0.5 block">{t(k.body)}</span>
             </button>
           ))}
         </div>
@@ -1037,7 +1206,7 @@ function AddressForm({
 
       <div className="mt-4 grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] md:items-end">
         <div>
-          <label className="ax-caption text-muted-foreground" htmlFor="ax-address-local">
+          <label className="ax-caption" htmlFor="ax-address-local">
             {t("Address")}
           </label>
           <Input
@@ -1051,9 +1220,9 @@ function AddressForm({
             className="mt-1"
           />
         </div>
-        <span className="hidden pb-2 text-sm font-bold text-muted-foreground md:block">@</span>
+        <span className="ax-heading hidden pb-2 text-muted-foreground md:block" aria-hidden="true">@</span>
         <div>
-          <label className="ax-caption text-muted-foreground" htmlFor="ax-address-domain">
+          <label className="ax-caption" htmlFor="ax-address-domain">
             {t("Domain")}
           </label>
           <select
@@ -1073,7 +1242,7 @@ function AddressForm({
 
       {kind === "alias" && (
         <div className="mt-3">
-          <label className="ax-caption text-muted-foreground" htmlFor="ax-address-target">
+          <label className="ax-caption" htmlFor="ax-address-target">
             {t("Deliver to")}
           </label>
           <Input
@@ -1089,7 +1258,7 @@ function AddressForm({
       )}
 
       {blocked && disabledReason && <p className="ax-caption mt-3 text-warning">{disabledReason}</p>}
-      {problem && <p className="mt-3 text-sm text-danger">{problem}</p>}
+      {problem && <p role="alert" className="ax-shake ax-label mt-3 text-danger">{problem}</p>}
 
       <div className="mt-4">
         <Button
@@ -1113,17 +1282,15 @@ function AddressRow({ a, onRemove }: { a: OrgAddress; onRemove: () => void }) {
   const { t } = useLocale();
   return (
     <li className="ax-plane flex flex-wrap items-center gap-3 rounded-2xl p-ax-4">
-      <p className="min-w-0 truncate text-sm font-bold text-foreground">{a.address}</p>
+      <p className="ax-label min-w-0 truncate">{a.address}</p>
       <Chip>{t(KINDS.find((k) => k.id === a.kind)?.title ?? a.kind)}</Chip>
-      {a.kind === "alias" && a.alias_target && (
-        <span className="ax-caption text-muted-foreground">→ {a.alias_target}</span>
-      )}
+      {a.kind === "alias" && a.alias_target && <span className="ax-caption">→ {a.alias_target}</span>}
       {!a.active && <Chip tone="warn">{t("Inactive")}</Chip>}
       <Button
         type="button"
         size="sm"
         variant="ghost"
-        className="ax-press ml-auto text-danger"
+        className="ax-press ml-auto text-muted-foreground hover:text-danger"
         onClick={onRemove}
         aria-label={`Remove ${a.address}`}
       >
@@ -1159,7 +1326,11 @@ function DomainsPage() {
   // yahan bhi wohi dikhe, taake dono jagah ek hi kahani ho.
   const sum = summaryQ.data;
   const suggestion =
-    domains.length === 0 && sum && sum.domain_hosted === false && sum.domain && sum.domain_status !== "verified"
+    domains.length === 0 &&
+    sum &&
+    sum.domain_hosted === false &&
+    sum.domain &&
+    sum.domain_status !== "verified"
       ? sum.domain
       : null;
 
@@ -1180,15 +1351,7 @@ function DomainsPage() {
     }, 60);
   }, []);
 
-  if (domainsQ.isLoading) {
-    return (
-      <PageScroll>
-        <p className="ax-caption text-muted-foreground" role="status">
-          {t("Loading domains…")}
-        </p>
-      </PageScroll>
-    );
-  }
+  if (domainsQ.isLoading) return <PageSkeleton />;
 
   if (domainsQ.isError || !data) {
     return (
@@ -1217,25 +1380,27 @@ function DomainsPage() {
 
   const showHero = domains.length === 0 && !wizard;
   const capNote = `${planLabel(data.plan)} · ${cap == null ? t("unlimited domains") : `${t("up to")} ${cap} ${cap === 1 ? t("domain") : t("domains")}`}${
-    addr ? ` · ${addr.mailbox_cap == null ? t("unlimited mailboxes") : `${addr.mailbox_cap} ${t("mailboxes")}`} · ${t("aliases are free")}` : ""
+    addr
+      ? ` · ${addr.mailbox_cap == null ? t("unlimited mailboxes") : `${addr.mailbox_cap} ${t("mailboxes")}`} · ${t("aliases are free")}`
+      : ""
   }`;
 
   return (
     <PageScroll>
-      <header>
+      <header className="ax-in">
         <p className="ax-eyebrow">{t("Company email")}</p>
-        <h2 className="mt-3 text-3xl text-foreground">{t("Domains & addresses")}</h2>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+        <h2 className="ax-title mt-3">{t("Domains & addresses")}</h2>
+        <p className="ax-body mt-4 max-w-2xl">
           {t("Send and receive as you@yourcompany.com. Connect your domain once, then create as many addresses as your package includes.")}
         </p>
       </header>
 
       <section aria-labelledby="ax-domains-h" className="space-y-ax-3">
         <div className="flex flex-wrap items-center gap-3">
-          <h3 id="ax-domains-h" className="ax-heading text-foreground">
+          <h3 id="ax-domains-h" className="ax-heading">
             {t("Domains")}
           </h3>
-          <span className="ax-caption text-muted-foreground">
+          <span className="ax-caption">
             {capText(domains.length, cap, domains.length === 1 ? "domain" : "domains")} ·{" "}
             {planLabel(data.plan)}
           </span>
@@ -1276,8 +1441,10 @@ function DomainsPage() {
             }
           />
         ) : (
-          <ul className="space-y-3">
-            {domains.map((d) => (
+          <ul className="ax-stagger space-y-3">
+            {domains
+              .filter((d) => d.id !== wizard?.domainId)
+              .map((d) => (
               <DomainRow
                 key={d.id}
                 d={d}
@@ -1292,18 +1459,17 @@ function DomainsPage() {
 
       <section aria-labelledby="ax-addresses-h" className="space-y-ax-3">
         <div className="flex flex-wrap items-center gap-3">
-          <h3 id="ax-addresses-h" className="ax-heading text-foreground">
+          <h3 id="ax-addresses-h" className="ax-heading">
             {t("Addresses")}
           </h3>
           {addr && (
-            <span className="ax-caption text-muted-foreground">
+            <span className="ax-caption">
               {capText(addr.mailbox_used, addr.mailbox_cap, "mailboxes")} · {t("aliases are free")}
             </span>
           )}
         </div>
 
-        <AddressForm domains={domains} preferredDomainId={focusDomain} disabledReason={mailboxReason} />
-
+        {/* Pehle woh jo abhi hai (login + company addresses), phir jo bana sakte hain. */}
         {addressesQ.isError ? (
           <ErrorState
             title={t("Addresses didn't load")}
@@ -1311,24 +1477,24 @@ function DomainsPage() {
             onRetry={() => void addressesQ.refetch()}
           />
         ) : (
-          <ul className="space-y-3">
+          <ul className="ax-stagger space-y-3">
             {addr?.login_address && (
               <li className="ax-plane flex flex-wrap items-center gap-3 rounded-2xl p-ax-4">
-                <p className="min-w-0 truncate text-sm font-bold text-foreground">
-                  {addr.login_address}
-                </p>
+                <p className="ax-label min-w-0 truncate">{addr.login_address}</p>
                 <Chip tone="good">{t("Your login")}</Chip>
-                <span className="ax-caption text-muted-foreground">{t("Always yours — not counted above.")}</span>
+                <span className="ax-caption">{t("Always yours — not counted above.")}</span>
               </li>
             )}
             {(addr?.addresses ?? []).map((a) => (
               <AddressRow key={a.id} a={a} onRemove={() => setConfirm({ kind: "address", a })} />
             ))}
             {addr && addr.addresses.length === 0 && (
-              <li className="ax-caption px-1 text-muted-foreground">{t("No company addresses yet.")}</li>
+              <li className="ax-caption px-1">{t("No company addresses yet.")}</li>
             )}
           </ul>
         )}
+
+        <AddressForm domains={domains} preferredDomainId={focusDomain} disabledReason={mailboxReason} />
       </section>
 
       <AlertDialog open={Boolean(confirm)} onOpenChange={(o) => !o && setConfirm(null)}>
