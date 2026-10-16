@@ -352,6 +352,16 @@ Sach: Claude ki apni yaadasht ek chat se doosre chat mein nahi jati. **Yeh file 
 
 ---
 
+**13.7 — IMAP/SMTP fact-finding (sirf padhna, kuch badalta nahi; 17 Oct 2026, 8i/8j se pehle).** Maqsad: user ko phone/Outlook ke liye asli server/port/auth dikhane se pehle sach dekhna — ports ya auth main andaze se nahi likhta. Output mein password nahi aata (sirf paths/naam). Output paste karo, main 8i (settings page + app password) aur 8j (IMAP import) usi par banaunga.
+```bash
+echo "== listening mail ports"; ss -ltn | awk 'NR==1||/:(25|143|465|587|993|995|110)\s/'
+echo "== dovecot"; doveconf -n 2>/dev/null | grep -E '^(protocols|auth_mechanisms|ssl_min_protocol|mail_location|disable_plaintext_auth)\b|^  *driver|^  *args' | sed -E 's#(password|pass)=[^ ]*#\1=***#g'
+echo "== postfix submission/tls"; postconf -n 2>/dev/null | grep -E '^(smtpd_tls_security_level|smtpd_sasl_auth_enable|smtpd_sasl_type|smtpd_sasl_path|myhostname|smtpd_tls_cert_file) '; postconf -M 2>/dev/null | grep -E '^(submission|smtps)/'
+echo "== import tools"; which imapsync doveadm 2>&1
+echo "== tls cert host"; openssl s_client -connect 127.0.0.1:993 -servername mail.anexomail.com </dev/null 2>/dev/null | openssl x509 -noout -subject -enddate 2>&1
+```
+Phir (baad mein, jab 8i shuru ho): ek test mailbox se `openssl s_client -connect mail.anexomail.com:993` aur 587 par login, lekin password founder chat mein nahi, server par hi.
+
 ## 14. Do chats ka rishta (context kahan se aata hai)
 
 Founder do jagah Claude se kaam karta hai; dono ka context isi file mein jama hota hai:
