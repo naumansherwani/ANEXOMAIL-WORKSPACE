@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:55 PKT**.
+Aakhri update: **17 Oct 2026, 04:00 PKT**.
 
 ---
 
@@ -39,7 +39,7 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 
 **17 Oct 02:49 PKT:** founder ne claude.ai wale Claude chat ka context paste kiya (Appendix A) aur kaha: naye naam ki file banao, "her latest command repo mein update ho", aur yeh rule likho ke founder se chat karne wala pehle yeh context padhe. Ho gaya (yeh file, AGENTS.md Rule 18, `.cursor/rules/founder-chat-context.mdc`).
 
-**Agla (abhi pending):** founder yeh page server par chalaye (chat block: `git fetch` + sha-guarded `git show` + build + pm2 restart), `Ctrl+Shift+R`, **Domains** dobara kholay aur screenshot bheje. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
+**Agla (abhi pending):** page server par lag chuka (13.1 green, 17 Oct 03:03 PKT). Ab founder `Ctrl+Shift+R` kare, **Domains** dobara khole, neeche tak scroll kare aur screenshot bheje. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
 
 Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
 
@@ -182,6 +182,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 03:03 PKT** — 13.1 (Domains page, sha `12fdbcdcb0d437e9`) founder ke server par green: build ok, pm2 restart + save, `/health` 200, `/app/domains` 200. Browser ka dekhna baqi; #8 READY.
+
 - **17 Oct 03:03 PKT** — Founder ne Rule 1 ki pull command chalayi: git ne `cannot pull with rebase: You have unstaged changes` kehkar roka (kuch nahi badla). Founder ko 13.1 ka sha-guarded block dobara diya gaya. Khula kaam: server tree ki `git status --short` dekhna (live-only files, #10).
 
 - **17 Oct 02:53 PKT** — Founder ne pull ki command maangi, kaha "pm2 restart hamesha karwaya karo", aur poochha "kya sab kaam latest technology par ho raha hai". Pull command section 13.4 mein; pm2 restart ka qaida section 4 mein. Jawab (chat mein): locked stack (React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun, Rust primary) par; teen kamiyan: sandbox mein asli tsc/build nahi, live ticks polling se (WebTransport push E26 TODO), PWA cache purani UI dikhata hai.
@@ -230,7 +232,7 @@ else
 fi
 )
 ```
-Status: founder ka output abhi nahi aaya.
+Status (17 Oct 03:03 PKT, founder ka output): **chala, green** — `web /health 200`, `web /app/domains 200`, "OK". Build ke baad `pm2 restart anexomail-web --update-env` + `pm2 save` ho chuka. Backup `/root/i9/app.domains.bak`. Browser par dekhna baqi (isliye #8 READY).
 
 **13.2 — Purani chat ka server par path dhoondna:** section 10 ka `find` command. Status: output abhi nahi aaya; path milte hi section 10 mein likho.
 
