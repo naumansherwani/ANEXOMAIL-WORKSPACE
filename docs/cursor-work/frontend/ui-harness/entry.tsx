@@ -125,6 +125,9 @@ function PhoneShell() {
             {["All", "Unread", "Starred"].map((x) => (
               <button key={x} type="button" className="ax-hit shrink-0 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-semibold">{x}</button>
             ))}
+            {["Abs"].map((x) => (
+              <button key={x} type="button" data-abs className="ax-hit absolute right-2 top-[4.5rem] rounded-full bg-secondary px-2.5 py-1 text-[11px] font-semibold">{x}</button>
+            ))}
           </div>
           {Array.from({ length: 14 }, (_, i) => (
             <div key={i} className="border-b border-border py-3">

@@ -437,7 +437,7 @@ function CalendarPage() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="ax-press rounded-md border border-border p-1 text-muted-foreground"
+            className="ax-press ax-hit rounded-md border border-border p-1 text-muted-foreground"
             aria-label="Previous"
           >
             <ChevronLeft className="size-3.5" />
@@ -445,7 +445,7 @@ function CalendarPage() {
           <button
             type="button"
             onClick={() => navigate(1)}
-            className="ax-press rounded-md border border-border p-1 text-muted-foreground"
+            className="ax-press ax-hit rounded-md border border-border p-1 text-muted-foreground"
             aria-label="Next"
           >
             <ChevronRight className="size-3.5" />
@@ -456,7 +456,7 @@ function CalendarPage() {
           <button
             type="button"
             onClick={() => { setAnchor(new Date()); setSelected(""); }}
-            className="ax-press ax-caption rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
+            className="ax-press ax-hit ax-caption rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
           >
             {t("Today")}
           </button>
@@ -470,7 +470,7 @@ function CalendarPage() {
               type="button"
               onClick={() => setView(v)}
               className={cn(
-                "ax-press ax-caption rounded-full border px-2.5 py-1 font-semibold capitalize transition-colors",
+                "ax-press ax-hit ax-caption rounded-full border px-2.5 py-1 font-semibold capitalize transition-colors",
                 view === v
                   ? "border-cyan-accent/50 bg-secondary text-foreground"
                   : "border-border text-muted-foreground",
@@ -486,7 +486,7 @@ function CalendarPage() {
                 type="button"
                 onClick={() => setRail(rail === r ? "agenda" : r)}
                 className={cn(
-                  "ax-press ax-caption rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize transition-colors",
+                  "ax-press ax-hit ax-caption rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize transition-colors",
                   rail === r
                     ? "border-cyan-accent/50 bg-secondary text-foreground"
                     : "border-border text-muted-foreground",

@@ -1286,7 +1286,10 @@ textarea,
 /* Chhote controls (pills, back arrow) ka nazar aane wala size wahi; touch ka hit-area 44 px tak. */
 @utility ax-hit {
   @media (pointer: coarse) {
-    position: relative;
+    /* Pehle se positioned (absolute/fixed/sticky/relative) element ko relative NAHI banate — layout na tute. */
+    &:not(.absolute, .fixed, .sticky, .relative) {
+      position: relative;
+    }
     &::after {
       content: "";
       position: absolute;

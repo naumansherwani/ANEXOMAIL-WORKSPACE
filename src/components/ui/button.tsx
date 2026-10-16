@@ -25,11 +25,12 @@ const buttonVariants = cva(
         link: "text-foreground underline-offset-4 hover:underline",
       },
       size: {
-        default: "h-10 px-4",
-        sm: "h-8 rounded-lg px-3 text-xs",
+        default: "h-10 px-4 [@media(pointer:coarse)]:min-h-11",
+        // sm/icon: nazar aane wala size wahi, touch par 44 px hit-area (ax-hit) — dense toolbars na bigren.
+        sm: "ax-hit h-8 rounded-lg px-3 text-xs",
         lg: "h-11 px-6",
         xl: "h-12 px-7 text-[0.9375rem]",
-        icon: "size-9 rounded-lg",
+        icon: "ax-hit size-9 rounded-lg",
       },
     },
     defaultVariants: {
