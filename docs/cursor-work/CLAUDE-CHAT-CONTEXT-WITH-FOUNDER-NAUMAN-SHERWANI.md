@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:00 PKT**.
+Aakhri update: **17 Oct 2026, 04:15 PKT**.
 
 ---
 
@@ -39,7 +39,9 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 
 **17 Oct 02:49 PKT:** founder ne claude.ai wale Claude chat ka context paste kiya (Appendix A) aur kaha: naye naam ki file banao, "her latest command repo mein update ho", aur yeh rule likho ke founder se chat karne wala pehle yeh context padhe. Ho gaya (yeh file, AGENTS.md Rule 18, `.cursor/rules/founder-chat-context.mdc`).
 
-**Agla (abhi pending):** page server par lag chuka (13.1 green, 17 Oct 03:03 PKT). Ab founder `Ctrl+Shift+R` kare, **Domains** dobara khole, neeche tak scroll kare aur screenshot bheje. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
+**Domains page browser mein dekha (founder ke 2 photo, 17 Oct 03:06 PKT):** scroll theek (scrollbar aaya, neeche "No company addresses yet." poori dikhi); hero "Finish connecting probuyer.axonetis.com" + 3 qadam + "Connect probuyer.axonetis.com" + "Use a different domain" + cap note; Addresses ka locked card. **Founder ka sawal:** kya yeh duniya ka best UI hai? **Mera jawab (honest): nahi — achha professional SaaS level, ~7/10.** Wajahein: sirf copy-paste (registrar detect/ek-click DNS nahi), email page par dikhti nahi, harkat/skeleton kam, "Use a different domain" button jaisa nahi lagta, login address locked card ke neeche. Yeh #8a/#8b ke naam se blueprint mein TODO likhe. Photo se contrast pakka nahi parha (code mein button navy + near-white text hai, photo mein cyan/dhundla) — asli screenshot (Win+Shift+S) maangna.
+
+**Agla (abhi pending):** founder Domains par **Connect probuyer.axonetis.com** dabaye (wizard qadam 1, naam pehle se bhara hoga) aur screenshot bheje; phir qadam 2 (5 DNS records + Copy), phir qadam 3 (live ticks). Yeh test account hai, domain add hone se Pro ki hadd 1/3 hogi. Dikhna chahiye: page scroll ho; hero "Finish connecting probuyer.axonetis.com" + 3 qadam; neeche Addresses "unlock once verified" card.
 
 Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
 
@@ -181,6 +183,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 03:09 PKT** — Founder ke 2 photo: Domains page ka khali state theek (scroll, hero, locked addresses). Founder ne poochha "kya yeh duniya ka best UI hai?" — jawab: nahi, ~7/10; #8a (polish) aur #8b (registrar detect / ek-click DNS, founder decide) blueprint mein TODO. Wizard abhi dekha nahi.
 
 - **17 Oct 03:03 PKT** — 13.1 (Domains page, sha `12fdbcdcb0d437e9`) founder ke server par green: build ok, pm2 restart + save, `/health` 200, `/app/domains` 200. Browser ka dekhna baqi; #8 READY.
 
