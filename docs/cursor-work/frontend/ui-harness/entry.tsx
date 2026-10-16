@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 
+import { ComposeOverlay } from "@/components/app/ComposeOverlay";
+import { MobileNav, type NavItem } from "@/components/app/MobileNav";
 import { SetupChecklist } from "@/components/app/dashboard/SetupChecklist";
+import { CalendarDays, CheckSquare, Globe, Inbox, KanbanSquare, Mail, ShieldCheck, Users } from "lucide-react";
 import { Route } from "@/routes/app.domains";
 
 const Page = (Route as unknown as { component: () => JSX.Element }).component;
@@ -84,5 +87,61 @@ function DashShell() {
   );
 }
 
+// Phone shell: same skeleton as AppShell (h-dvh column: header, main, MobileNav). #nav | #navfew | #navorgs | #navdomains | #compose | #composemin
+const ALL: NavItem[] = [
+  { to: "/app", label: "Dashboard", icon: Inbox },
+  { to: "/app/mail/inbox", label: "Mail", icon: Mail },
+  { to: "/app/people", label: "People", icon: Users },
+  { to: "/app/calendar", label: "Calendar", icon: CalendarDays },
+  { to: "/app/work", label: "Work", icon: CheckSquare },
+  { to: "/app/crm", label: "CRM", icon: KanbanSquare },
+  { to: "/app/domains", label: "Domains", icon: Globe },
+  { to: "/app/safety", label: "Safety", icon: ShieldCheck },
+];
+function PhoneShell() {
+  const h = location.hash;
+  const items = h.includes("navfew") ? ALL.slice(0, 4) : ALL;
+  const activeTo = h.includes("navdomains") ? "/app/domains" : "/app/mail/inbox";
+  const orgs = h.includes("navorgs") ? [{ id: "o1", name: "Acme Studio", role: "owner" }, { id: "o2", name: "Probuyer Labs", role: "admin" }] : [];
+  const [composing, setComposing] = useState(h.includes("compose"));
+  return (
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
+      <header
+        className="flex shrink-0 items-center gap-3 border-b border-border"
+        style={{ height: "calc(3.5rem + env(safe-area-inset-top, 0px))", paddingTop: "env(safe-area-inset-top, 0px)", paddingLeft: "max(1rem, env(safe-area-inset-left, 0px))", paddingRight: "max(1rem, env(safe-area-inset-right, 0px))" }}
+      >
+        <span className="text-sm font-bold">ANEXOMAIL</span>
+        <div className="flex min-w-0 flex-1 items-center rounded-xl border border-border bg-card px-3 py-2 text-sm text-muted-foreground">
+          <span className="truncate">Search mail, people, calendar, work…</span>
+        </div>
+        <span className="grid size-9 place-items-center rounded-full border border-border bg-secondary text-xs">N</span>
+      </header>
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col">
+        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+          <p className="ax-eyebrow">Inbox</p>
+          <div className="mt-2 flex items-center gap-1 overflow-x-auto py-3" data-pills>
+            {["All", "Unread", "Starred"].map((x) => (
+              <button key={x} type="button" className="ax-hit shrink-0 rounded-full bg-secondary px-2.5 py-1 text-[11px] font-semibold">{x}</button>
+            ))}
+          </div>
+          {Array.from({ length: 14 }, (_, i) => (
+            <div key={i} className="border-b border-border py-3">
+              <p className="text-sm font-semibold">Sender {i + 1}</p>
+              <p className="ax-caption text-muted-foreground">Subject line number {i + 1} — preview text</p>
+            </div>
+          ))}
+          <button type="button" className="ax-tap mt-3 rounded-lg border border-border px-3 py-2 text-sm" onClick={() => setComposing(true)}>Compose</button>
+        </div>
+      </main>
+      <MobileNav items={items} isActive={(i) => i.to === activeTo} orgs={orgs} activeOrgId="o1" onSwitchOrg={(id) => (window as unknown as { __toast?: (m: string) => void }).__toast?.("switch " + id)} />
+      {composing && <ComposeOverlay onClose={() => setComposing(false)} />}
+      <Toast />
+    </div>
+  );
+}
+
 document.documentElement.classList.add("dark");
-createRoot(document.getElementById("root")!).render(location.hash.startsWith("#dash") ? <DashShell /> : <Shell />);
+const hh = location.hash;
+createRoot(document.getElementById("root")!).render(
+  hh.startsWith("#nav") || hh.startsWith("#compose") ? <PhoneShell /> : hh.startsWith("#dash") ? <DashShell /> : <Shell />,
+);

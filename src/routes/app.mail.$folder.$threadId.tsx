@@ -75,7 +75,7 @@ function ThreadPage() {
           to="/app/mail/$folder"
           params={{ folder }}
           aria-label="Back to list"
-          className="ax-press -ml-2 shrink-0 rounded-lg p-2 text-muted-foreground md:hidden"
+          className="ax-press ax-tap -ml-2 grid shrink-0 place-items-center rounded-lg p-2 text-muted-foreground md:hidden"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
         </Link>

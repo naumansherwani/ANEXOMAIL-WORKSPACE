@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 
+import { MobileNav } from "@/components/app/MobileNav";
 import { BrandMark } from "@/components/site/BrandMark";
 import { LanguagePicker } from "@/components/site/LanguagePicker";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
@@ -126,18 +127,36 @@ export function AppShell({ children }: { children: ReactNode }) {
   const founderBlocked = pathname.startsWith("/app/founder") && !founderHost;
   // Rail pin state — expanded by default on desktop, collapsed on tablet.
   // Persisted so the founder's choice survives navigation and reloads.
-  const [collapsed, setCollapsed] = useState(false);
-  useEffect(() => {
-    const saved = window.localStorage.getItem("ax.rail.collapsed");
-    if (saved === "true" || saved === "false") setCollapsed(saved === "true");
-    else setCollapsed(window.innerWidth < 1100);
-  }, []);
+  // /app is ssr:false, so window is safe here: tablet pehle frame se hi collapsed (koi expanded->collapsed jhatka nahi).
+  const [collapsed, setCollapsed] = useState(() => {
+    try {
+      const saved = window.localStorage.getItem("ax.rail.collapsed");
+      if (saved === "true" || saved === "false") return saved === "true";
+    } catch {
+      /* storage blocked — width se faisla */
+    }
+    return window.innerWidth < 1100;
+  });
   const toggleRail = () => {
     setCollapsed((c) => {
-      window.localStorage.setItem("ax.rail.collapsed", String(!c));
+      try {
+        window.localStorage.setItem("ax.rail.collapsed", String(!c));
+      } catch {
+        /* private window — sirf is session mein yaad */
+      }
       return !c;
     });
   };
+
+  // Phone par pull-to-refresh app ke beech mein reload kar deta tha (ba'z draft ke saath). Shell ke dauran band.
+  useEffect(() => {
+    const root = document.documentElement;
+    const prev = root.style.overscrollBehaviorY;
+    root.style.overscrollBehaviorY = "none";
+    return () => {
+      root.style.overscrollBehaviorY = prev;
+    };
+  }, []);
 
   const switchOrg = async (id: string) => {
     if (session?.active_organisation_id === id) return;
@@ -167,7 +186,7 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div
-      className="flex h-screen flex-col overflow-hidden bg-background"
+      className="flex h-dvh flex-col overflow-hidden bg-background"
       style={{ paddingBottom: "var(--ax-bottom-strip, 0px)" }}
     >
       <CommandPalette open={open} onOpenChange={setOpen} />
@@ -175,7 +194,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       {/* Top bar — brand, org, one search entry for the entire product */}
       <header
         dir="ltr"
-        className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4"
+        className="flex shrink-0 items-center gap-3 border-b border-border"
+        style={{
+          // notch / status bar (viewport-fit=cover) ke neeche; landscape mein side cut-out se bhi bachao.
+          height: "calc(3.5rem + env(safe-area-inset-top, 0px))",
+          paddingTop: "env(safe-area-inset-top, 0px)",
+          paddingLeft: "max(1rem, env(safe-area-inset-left, 0px))",
+          paddingRight: "max(1rem, env(safe-area-inset-right, 0px))",
+        }}
       >
         <Link to={brandHome} className="shrink-0" aria-label="ANEXOMAIL workspace">
           <BrandMark home={false} />
@@ -412,33 +438,14 @@ export function AppShell({ children }: { children: ReactNode }) {
         </main>
       </div>
 
-      {/* Mobile bar */}
-      <nav
-        aria-label="Workspace navigation"
-        className="flex shrink-0 items-stretch gap-0.5 overflow-x-auto border-t border-border bg-sidebar px-1 [scrollbar-width:none] sm:hidden"
-      >
-        {visiblePrimary.map((item) => {
-          const active = isActive(item);
-          return (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={`relative flex min-w-[3.75rem] shrink-0 flex-col items-center gap-1 py-2.5 text-[10px] font-semibold transition-opacity ${
-                active ? "text-foreground" : "text-muted-foreground opacity-55 hover:opacity-100"
-              }`}
-            >
-              {active && (
-                <span
-                  aria-hidden="true"
-                  className="absolute inset-x-[30%] top-0 h-[2px] rounded-full bg-primary"
-                />
-              )}
-              <item.icon className="size-4" />
-              {t(item.label)}
-            </Link>
-          );
-        })}
-      </nav>
+      {/* Phone: 4 tabs + More (Rule 19) */}
+      <MobileNav
+        items={visiblePrimary}
+        isActive={isActive}
+        orgs={session?.organisations ?? []}
+        activeOrgId={session?.active_organisation_id ?? null}
+        onSwitchOrg={(id) => void switchOrg(id)}
+      />
     </div>
   );
 }

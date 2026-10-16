@@ -1,12 +1,14 @@
 // Usage: node shot.mjs <outDir> <name> <hash> [width] [height] [steps...]
-// steps: click:<text> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
+// steps: click:<text> | label:<aria-label> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
 import path from "node:path";
 import { createRequire } from "node:module";
 const TOOLS = process.env.TOOLS || "/opt/npm-tools/node_modules";
 const { chromium } = createRequire(TOOLS + "/")("playwright");
 const [outDir, name, hash = "empty", w = "1440", h = "900", ...steps] = process.argv.slice(2);
 const browser = await chromium.launch({ executablePath: process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--no-sandbox"] });
-const page = await (await browser.newContext({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1 })).newPage();
+// TOUCH=1: coarse pointer + touch (phone/tablet) so (pointer: coarse) rules (ax-tap, ax-hit, 16px inputs) apply.
+const touch = process.env.TOUCH === "1";
+const page = await (await browser.newContext({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1, hasTouch: touch, isMobile: touch })).newPage();
 const errs = [];
 // DoH mock: DOH=namecheap|cloudflare|none (default none -> request fails, fallback path)
 const doh = process.env.DOH || "none";
@@ -35,6 +37,7 @@ const scroller = () => page.evaluate(() => document.querySelector("main .overflo
 for (const s of steps) {
   const [k, ...r] = s.split(":"); const v = r.join(":");
   if (k === "click") await page.getByText(v, { exact: false }).first().click();
+  else if (k === "label") await page.getByLabel(v).first().click();
   else if (k === "fill") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph).fill(val); }
   else if (k === "wait") await page.waitForTimeout(+v);
   else if (k === "scroll") await page.evaluate((t) => { const el = document.querySelector("main .overflow-y-auto"); if (el) el.scrollTop = t === "bottom" ? el.scrollHeight : t === "top" ? 0 : +t; }, v);

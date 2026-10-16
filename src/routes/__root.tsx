@@ -81,7 +81,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      // viewport-fit=cover: notch/home-bar ke liye env(safe-area-*) chalta hai. interactive-widget=resizes-content: keyboard khulne par
+      // layout chhota hota hai, Send/Reply button keyboard ke neeche nahi chhupta. maximum-scale NAHI (zoom accessibility).
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" },
       { title: "ANEXOMAIL — Business Email Workspace" },
       {
         name: "description",

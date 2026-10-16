@@ -1,6 +1,8 @@
 import { Minus, X } from "lucide-react";
 import { useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { ComposeStudio } from "@/components/app/compose/ComposeStudio";
 
 /**
@@ -23,7 +25,14 @@ export function ComposeOverlay({
   return (
     <aside
       aria-label="New email"
-      className="ax-in fixed bottom-4 right-4 z-50 max-h-[85vh] w-[min(34rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-border bg-card shadow-2xl"
+      className={cn(
+        "ax-in fixed z-50 flex flex-col overflow-y-auto border-border bg-card shadow-2xl",
+        // Phone (Rule 19): poori screen (dvh + safe-area), keyboard khule to bhi Send nazar aaye. Minimise = nav ke upar patti.
+        "inset-x-0 w-full pb-[env(safe-area-inset-bottom,0px)] sm:inset-x-auto sm:bottom-4 sm:right-4 sm:w-[min(34rem,calc(100vw-2rem))] sm:rounded-2xl sm:border sm:pb-0",
+        minimised
+          ? "bottom-[calc(3.5rem+env(safe-area-inset-bottom,0px))] rounded-t-2xl border-t"
+          : "top-0 h-dvh rounded-none pt-[env(safe-area-inset-top,0px)] sm:top-auto sm:h-auto sm:max-h-[85vh] sm:pt-0",
+      )}
     >
       <header className="flex items-center gap-ax-2 border-b border-border px-ax-4 py-ax-3">
         <h2 className="ax-label text-foreground">New email</h2>

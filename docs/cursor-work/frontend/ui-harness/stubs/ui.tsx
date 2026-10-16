@@ -35,3 +35,23 @@ export const AlertDialogTitle = Pass;
 export const AlertDialogDescription = Pass;
 export const AlertDialogAction = ({ children, onClick }: { children?: React.ReactNode; onClick?: () => void }) => <button onClick={onClick}>{children}</button>;
 export const AlertDialogCancel = ({ children }: { children?: React.ReactNode }) => <button>{children}</button>;
+
+// Sheet (Radix dialog) stand-in: same positioning classes as src/components/ui/sheet.tsx side="bottom".
+export const Sheet = ({ open, onOpenChange, children }: { open?: boolean; onOpenChange?: (o: boolean) => void; children?: React.ReactNode }) =>
+  open ? (
+    <div data-sheet>
+      <div className="fixed inset-0 z-50 bg-black/80" onClick={() => onOpenChange?.(false)} />
+      {children}
+    </div>
+  ) : null;
+export const SheetContent = ({ className, children }: { className?: string; side?: string; children?: React.ReactNode }) => (
+  <div role="dialog" className={cn("fixed inset-x-0 bottom-0 z-50 gap-4 border-t bg-background p-6 shadow-lg", className)}>
+    {children}
+  </div>
+);
+export const SheetHeader = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
+  <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)}>{children}</div>
+);
+export const SheetTitle = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
+  <h2 className={cn("text-lg font-semibold text-foreground", className)}>{children}</h2>
+);

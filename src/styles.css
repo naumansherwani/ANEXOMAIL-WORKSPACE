@@ -1239,3 +1239,58 @@ html[data-ax-motion="reduced"] .ax-splash-keylight {
     transition: none !important;
   }
 }
+
+/* ==========================================================================
+ * Mobile + tablet hygiene (AGENTS.md Rule 19, founder 17 Oct 2026)
+ * Yeh block jaan-boojh kar @layer ke BAAHAR hai: unlayered CSS utilities (text-[13px] waghera) ko
+ * haraata hai, isliye ek jagah se poori site theek hoti hai.
+ * ========================================================================== */
+
+/* Landscape mein phone font phula deta hai — band. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* 300 ms tap delay + double-tap zoom band; kaala tap-flash band (apna focus/press style hai). */
+a,
+button,
+summary,
+label,
+select,
+input,
+textarea,
+[role="button"],
+[role="tab"],
+[role="menuitem"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Panel ke andar scroll khatam hone par page/pull-to-refresh na chalein. */
+.overflow-y-auto,
+.overflow-auto {
+  overscroll-behavior: contain;
+}
+
+/* iOS Safari 16 px se chhoti input par focus karte hi poora page zoom kar deta hai (aur wapas nahi aata).
+ * Touch screens par har text field kam az kam 16 px. */
+@media (pointer: coarse) {
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]):not([type="color"]),
+  textarea,
+  select {
+    font-size: max(16px, 1em);
+  }
+}
+
+/* Chhote controls (pills, back arrow) ka nazar aane wala size wahi; touch ka hit-area 44 px tak. */
+@utility ax-hit {
+  @media (pointer: coarse) {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      inset: -0.6rem -0.3rem;
+    }
+  }
+}

@@ -227,7 +227,7 @@ function MailFolderPage() {
               <button
                 type="button"
                 onClick={() => setAccount(null)}
-                className={cn("mx-chip shrink-0", account === null && "mx-chip-on")}
+                className={cn("mx-chip ax-hit shrink-0", account === null && "mx-chip-on")}
               >
                 All addresses
               </button>
@@ -238,7 +238,7 @@ function MailFolderPage() {
                     key={a.id}
                     type="button"
                     onClick={() => setAccount(a.id === account ? null : a.id)}
-                    className={cn("mx-chip shrink-0", a.id === account && "mx-chip-on")}
+                    className={cn("mx-chip ax-hit shrink-0", a.id === account && "mx-chip-on")}
                     style={tone ? ({ "--mx-tone": tone.color } as CSSProperties) : undefined}
                   >
                     <span aria-hidden="true" className="mx-chip-dot" />
@@ -262,7 +262,7 @@ function MailFolderPage() {
                     void navigate({ to: "/app/mail/$folder", params: { folder: f.id } })
                   }
                   className={cn(
-                    "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                    "ax-hit shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
                     f.id === folder
                       ? "bg-secondary text-foreground"
                       : "text-muted-foreground hover:text-foreground",
@@ -295,7 +295,7 @@ function MailFolderPage() {
               type="button"
               onClick={() => setCategory(null)}
               className={cn(
-                "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                "ax-hit shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
                 category === null
                   ? "bg-secondary text-foreground"
                   : "text-muted-foreground hover:text-foreground",
@@ -309,7 +309,7 @@ function MailFolderPage() {
                 type="button"
                 onClick={() => setCategory(c.id === category ? null : c.id)}
                 className={cn(
-                  "shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
+                  "ax-hit shrink-0 rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors",
                   category === c.id
                     ? "bg-secondary text-foreground"
                     : "text-muted-foreground hover:text-foreground",
