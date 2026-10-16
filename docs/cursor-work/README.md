@@ -1,5 +1,7 @@
 # Cursor Work — Sep 9 2026
 
+> **Naya ya compact chat: pehle `SESSION-HANDOFF.md` (yahi folder) padho.** Abhi ka qadam, qaide, status aur log wahan hai (AGENTS.md Rule 18).
+
 Is session mein jo bana ya badla woh sab yahan. GitHub → server pull → SQL → frontend.
 **Tarteeb se chalo. Mix nahi.**
 

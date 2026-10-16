@@ -1,5 +1,7 @@
 # ANEXOMAIL Workspace — Agent Rules
 
+> **Naya ya compact chat: kuch bhi karne se pehle `docs/cursor-work/SESSION-HANDOFF.md` poori padho (Rule 18).** Wahan "ABHI KA QADAM" likha hai — wahin se shuru karo, founder se purani baat dobara mat poochho.
+
 **Founder:** Muhammad Nauman Sherwani (NEXATECT Global Ltd, internal only — public copy mein NEXATECT ka zikr nahi).
 
 ---
@@ -161,6 +163,13 @@ Spec: `docs/cursor-work/founder/mail-identities-locked-2026-10-14.md`.
 - **Test browser se nahi.** Agent test khud banata hai: test account SQL se (`docs/cursor-work/sql/E28_seed_buyer_test_account.sql` — asli signup ke wohi steps, sirf payment ki jagah `entitlement_state` row), phir login token (GoTrue password grant, keys `/opt/anexomail/.env` se) -> Rust `:3200 /rpc/<proc>` aur Brain `:3100 /api/...` par `curl` -> `mail.log` / `psql` se asli output. Template: `docs/cursor-work/server/t7-send-identity-test.sh`. Founder ko signup/click karne ko nahi kehna; browser sirf wahan jahan screen dekhni zaroori ho (UI dikhna).
 - Command chat mein, ek block, copy-paste (Rule 15). Password/secret repo mein nahi.
 - **Kuch bhi TODO/READY likhne se pehle purani records padho:** `docs/anexomail-blueprint.md` ke "SESSION 18–21 SEP 2026" aur uske baad ke GREEN sections, `.cursor/rules/session-1821-lock.mdc`, aur founder ne server par jo chat record rakha hai (command se dekho). Jo wahan GREEN / "do not redo" hai woh dobara TODO nahi likhna, na dobara banana.
+
+### Rule 18 — Session handoff (locked 17 Oct 2026, founder)
+Chat compact hone par context kho jata tha. Ab ek hi file hai: `docs/cursor-work/SESSION-HANDOFF.md` (ABHI KA QADAM, founder ki maangen, qaide, system map, test accounts, status snapshot, khule findings, session log).
+- **Naya ya compact chat:** pehle yeh file poori padho, phir wahin se chalo. Founder se woh mat poochho jo file mein hai.
+- **Har natije ke baad** (server ka output, founder ka screenshot/faisla, naya finding) usi turn mein file ke sections 1, 8, 9 aur 12 (log) update karo, sirf docs ka commit (`handoff: …`) aur `main` par push. Founder ka standing order (17 Oct 2026): "her kaam repo mein update ho taake compact chat wala Claude context dekh sake" — Rule 14 ke "push sirf 'repo update' par" ko docs/records ke liye override karta hai.
+- Server par asli badlav phir bhi Rule 15 se (chat block); repo us ki copy/record hai. Status Rule 5 ke mutabiq; farq ho to blueprint jeetta hai.
+- Kachchi chat dump (transcript) repo mein commit nahi — secret ho sakte hain. Sirf khulasa.
 
 ---
 
