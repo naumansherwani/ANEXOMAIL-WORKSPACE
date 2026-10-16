@@ -12,11 +12,20 @@ const errs = [];
 const doh = process.env.DOH || "none";
 const NS = { namecheap: "dns1.registrar-servers.com.", cloudflare: "ada.ns.cloudflare.com.", godaddy: "ns01.domaincontrol.com." };
 // Subdomains (3+ labels) have no NS of their own -> empty answer, like the real internet; the parent answers.
+// EXISTING=google|none -> apex domains already have MX/SPF at that provider (8c warning); subdomains never do.
+const existing = process.env.EXISTING || "none";
 await page.route("**/cloudflare-dns.com/**", (r) => {
   if (doh === "none") return r.abort();
-  const name = new URL(r.request().url()).searchParams.get("name") || "";
+  const u = new URL(r.request().url());
+  const name = u.searchParams.get("name") || "";
+  const type = u.searchParams.get("type") || "NS";
   const sub = name.split(".").length >= 3;
-  return r.fulfill({ status: 200, contentType: "application/dns-json", body: JSON.stringify(sub ? { Status: 0, Authority: [{ type: 6 }] } : { Status: 0, Answer: [{ type: 2, data: NS[doh] }] }) });
+  const ans = (t, data) => ({ Status: 0, Answer: [{ type: t, data }] });
+  let body = { Status: 0, Authority: [{ type: 6 }] };
+  if (type === "NS" && !sub) body = ans(2, NS[doh]);
+  if (type === "MX" && !sub && existing === "google") body = ans(15, "1 aspmx.l.google.com.");
+  if (type === "TXT" && !sub && existing === "google") body = ans(16, '"v=spf1 include:_spf.google.com ~all"');
+  return r.fulfill({ status: 200, contentType: "application/dns-json", body: JSON.stringify(body) });
 });
 page.on("pageerror", (e) => errs.push("pageerror: " + e.message));
 page.on("console", (m) => { if (m.type() === "error") errs.push("console: " + m.text()); });

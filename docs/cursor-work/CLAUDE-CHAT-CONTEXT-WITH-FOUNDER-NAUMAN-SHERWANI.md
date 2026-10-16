@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:05 PKT**.
+Aakhri update: **17 Oct 2026, 04:20 PKT**.
 
 ---
 
@@ -50,6 +50,8 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **17 Oct 03:54 PKT — 13.0 ASLI SERVER PAR GREEN (founder ka output):** `origin/main = b58694f`, "memory/docs: 4 file(s) taza", `wrote src/routes/app.domains.tsx`, build OK, `/health 200`, `/app/domains 200`, memory stamp server par `03:55 PKT` = repo. Backup `/root/i9/sync-20261016-224907`. Server ki dirty tree ki list mili (#10 survey): `M` = AGENTS.md, bun.lock, 3 docs index/plan files, `src/components/app/{AppShell,CommandPalette,compose/ComposeStudio,dashboard/Greeting,dashboard/Panels,mail/MailRail}.tsx`, `src/lib/{dashboard,mail,plan-surface,workspace-i18n}.ts`, `src/routeTree.gen.ts`, `src/routes/app.admin.addresses.tsx`, `src/routes/app.mail.$folder.tsx`; `??` = `.env` (secret, repo mein KABHI nahi), purani installer scripts (`e3/e7/e30/i8-*`), `t7/t16` scripts, `E27` SQL, `mail-identities-locked…md`. Kaun si `M` file server par repo se alag hai — agle pull.sh se khud dikhega (neeche `git diff --stat origin/main`).
 
 **FOUNDER KA MAQSAD (17 Oct 03:54 PKT, locked):** "real user ko website ka best experience dena; test account se real user wali sab cheezein nahi ho sakti, lekin jitna ho sake **user ki tarah socho**." Is liye har screen ko **asli user ke 5 minute** ki nazar se dekho (kya sochega, kahan phansega, kya kho sakta hai), aur jo test se sabit nahi ho sakta (payment, asli registrar par DNS, bahar se aane wali mail, spam folder, asli phone) use alag "founder ko khud dekhna" list mein likho. Real-user khatre ki list: blueprint #8c+.
+
+**17 Oct 04:20 PKT — #8c banaya (READY, sandbox mein dekha):** wizard qadam 2 ab domain ke MX/SPF DNS-over-HTTPS se dekhta hai; pehle se Google/Microsoft/Zoho… ho to warning ("is domain par mail pehle se hai, MX lagane se purane mailboxes band") aur SPF ka merged value + Copy. Subdomain (probuyer) par kuch nahi aata (uska apna MX nahi). Manifest sha ab `04b1b3542f4e9706`. pull.sh ab server-vs-repo ka `git diff --stat origin/main` bhi dikhata hai (dirty-tree survey khud). **Agla qadam wahi: 13.0 dobara + qadam 3 ka check (DNS badle bina).**
 
 **Agla (abhi pending, 17 Oct 03:55 PKT):** founder 13.0 dobara chalaye (manifest ka sha ab `23b0d74772a46f83`: subdomain fix) + Ctrl+Shift+R. Phir `pro.buyer` > Domains mein wohi wizard (domain pehle se jura hai, qadam 2). Dikhna chahiye: "We found your DNS is at …" wali hari line (axonetis.com ka DNS jahan hai), "probuyer.axonetis.com is a subdomain of axonetis.com" ka note, har card ke neeche "If DNS zone is axonetis.com" ka lamba Name. Phir **"I've added them — check now"** dabaye **bina koi DNS badle** (axonetis.com founder ka doosra project hai — apex par `@` MX/SPF kabhi nahi) aur qadam 3 ka screenshot bheje: 0/5 "Waiting", countdown, "Key is being prepared" wala row. Asli verified tick ka proof baad mein (alag test domain ya sirf `probuyer` subdomain ke naam se, jab founder tay kare).
 
@@ -198,6 +200,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:20 PKT** — #8c (existing-mail guard) code + harness (Google Workspace scenario, desktop + 390 px) theek; pull.sh mein server-vs-repo diff stat; manifest sha badla. Founder ko 13.0 dobara.
 
 - **17 Oct 04:05 PKT** — Founder ne 13.0 ka asli output paste kiya: green (b58694f, build OK, health 200, memory stamp barabar) + server ki dirty-tree list (section 1). Phir maqsad likha: real user ko best experience, test account ki had, "user ki tarah socho". Agent ne real-user lens se Domains par sab se bara khatra pakda: user ke domain par pehle se MX/SPF (Google/Microsoft) ho to hamara MX/SPF lagane se purani mail band ya SPF do ho jata hai — blueprint #8c (existing-mail guard) likha aur banaya.
 

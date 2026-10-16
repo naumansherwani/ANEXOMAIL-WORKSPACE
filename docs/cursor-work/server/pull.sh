@@ -25,6 +25,8 @@ echo "origin/main = $(git rev-parse --short origin/main) · $(git log -1 --forma
 
 echo "--- server tree: badli hui files (git status --short, pehli 40)"
 git status --short </dev/null | head -40
+echo "--- server vs repo (src, bun.lock): jo file origin/main se alag hai (sync SE PEHLE ka haal)"
+git diff --stat origin/main -- src bun.lock </dev/null | tail -25
 echo "---"
 
 mkdir -p "$BK"

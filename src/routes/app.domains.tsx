@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
+  AlertTriangle,
   ArrowRight,
   AtSign,
   CheckCircle2,
@@ -181,6 +182,104 @@ function parentZone(domain: string): string | null {
   const l = domain.toLowerCase().split(".");
   const keep = l.length >= 3 && l[l.length - 1]!.length === 2 && SECOND_LEVEL.has(l[l.length - 2]!) ? 3 : 2;
   return l.length > keep ? l.slice(-keep).join(".") : null;
+}
+
+/* ---- 8c: domain par pehle se mail hai? (asli user ka sab se bara khatra) ---- */
+
+type ExistingMail = { provider: string | null; mx: string[]; spf: string | null };
+
+const MX_PROVIDERS: { test: RegExp; name: string }[] = [
+  { test: /(^|\.)(google|googlemail)\.com$/, name: "Google Workspace" },
+  { test: /mail\.protection\.outlook\.com$/, name: "Microsoft 365" },
+  { test: /(^|\.)zoho\.(com|eu|in|com\.au)$/, name: "Zoho Mail" },
+  { test: /(^|\.)protonmail\.ch$/, name: "Proton Mail" },
+  { test: /(^|\.)privateemail\.com$/, name: "Namecheap Private Email" },
+  { test: /(^|\.)secureserver\.net$/, name: "GoDaddy email" },
+];
+
+async function doh(name: string, type: "MX" | "TXT", signal: AbortSignal): Promise<string[]> {
+  const r = await fetch(`https://cloudflare-dns.com/dns-query?name=${encodeURIComponent(name)}&type=${type}`, {
+    headers: { accept: "application/dns-json" },
+    signal,
+  });
+  if (!r.ok) return [];
+  const j = (await r.json()) as { Answer?: { type?: number; data?: string }[] };
+  const code = type === "MX" ? 15 : 16;
+  return (j.Answer ?? []).filter((a) => a.type === code).map((a) => a.data ?? "");
+}
+
+/**
+ * Domain par pehle se MX (Google/Microsoft…) ya SPF ho to user ko pehle bata do: hamara MX lagane se
+ * purane mailboxes ki mail band hoti hai, aur dusra SPF jorne se SPF toot jata hai. Sirf madad —
+ * lookup na ho (network/timeout) to chup-chaap kuch nahi dikhta.
+ */
+function useExistingMail(domain: string | null): ExistingMail | null {
+  const [found, setFound] = useState<ExistingMail | null>(null);
+  useEffect(() => {
+    setFound(null);
+    if (!domain) return;
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 6000);
+    void (async () => {
+      const [mxRaw, txtRaw] = await Promise.all([doh(domain, "MX", ctl.signal), doh(domain, "TXT", ctl.signal)]);
+      const mx = mxRaw
+        .map((d) => (d.trim().split(/\s+/).pop() ?? "").toLowerCase().replace(/\.$/, ""))
+        .filter((h) => h.length > 0 && !/(^|\.)anexomail\.com$/.test(h));
+      const spf =
+        txtRaw
+          .map((d) => d.replace(/"\s+"/g, "").replace(/^"|"$/g, ""))
+          .find((d) => /^v=spf1(\s|$)/i.test(d) && !/anexomail\.com/i.test(d)) ?? null;
+      if (mx.length === 0 && !spf) return;
+      const provider = MX_PROVIDERS.find((m) => mx.some((h) => m.test.test(h)))?.name ?? null;
+      setFound({ provider, mx, spf });
+    })()
+      .catch(() => undefined)
+      .finally(() => clearTimeout(timer));
+    return () => {
+      ctl.abort();
+      clearTimeout(timer);
+    };
+  }, [domain]);
+  return found;
+}
+
+/** Mojooda SPF mein hamara token sab se aage jodo (ek domain par SPF ek hi ho sakta hai). */
+function mergeSpf(current: string, token: string): string {
+  if (current.includes(token)) return current;
+  return current.replace(/^v=spf1\s*/i, `v=spf1 ${token} `).replace(/\s+/g, " ").trim();
+}
+
+function ExistingMailNotice({ domain, found, spfToken }: { domain: string; found: ExistingMail; spfToken: string }) {
+  const { t } = useLocale();
+  const who = found.provider ?? found.mx[0] ?? t("another provider");
+  return (
+    <div role="note" className="ax-in mt-4 rounded-2xl border border-warning/40 bg-warning/5 p-ax-4">
+      <p className="ax-label inline-flex items-center gap-2 text-warning">
+        <AlertTriangle className="size-4" aria-hidden="true" />
+        {t("This domain already has email set up")}
+      </p>
+      {found.mx.length > 0 && (
+        <p className="ax-body mt-2">
+          <strong className="text-foreground">{who}</strong> {t("currently receives mail for")}{" "}
+          <strong className="text-foreground">{domain}</strong>.{" "}
+          {t("The MX record below sends new mail to ANEXOMAIL instead, so mailboxes there stop receiving. Move or back up those mailboxes first — or connect a different domain.")}
+        </p>
+      )}
+      {found.spf && (
+        <div className="mt-3">
+          <p className="ax-body">
+            {t("A domain can only have one SPF record. Don't add a second one — edit your current SPF and replace it with this:")}
+          </p>
+          <div className="mt-2">
+            <Field label={t("SPF to use (replaces your current one)")} value={mergeSpf(found.spf, spfToken)} />
+          </div>
+          <p className="ax-caption mt-2">
+            {t("Your current SPF:")} <code className="font-mono">{found.spf}</code>
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 function errText(e: unknown, fallback = "Couldn't do that. Try again."): string {
@@ -529,6 +628,10 @@ function Wizard({
 
   const hint = useRegistrarHint(state.step === 2 && domain ? domain.domain : null);
   const zone = domain ? parentZone(domain.domain) : null;
+  const existing = useExistingMail(state.step === 2 && domain ? domain.domain : null);
+  const spfToken =
+    (domain?.records.find((r) => r.key === "spf")?.value ?? "").match(/\b(?:a|include|ip4|ip6):\S+/)?.[0] ??
+    "a:mail.anexomail.com";
   useEffect(() => {
     if (hint && REGISTRARS.some((r) => r.id === hint.id)) setRegistrar(hint.id);
   }, [hint]);
@@ -759,6 +862,8 @@ function Wizard({
                 ))}
               </ol>
             </div>
+
+            {existing && <ExistingMailNotice domain={domain.domain} found={existing} spfToken={spfToken} />}
 
             {zone && (
               <p className="ax-body ax-in mt-4 rounded-2xl border border-[var(--cyan-accent)]/30 bg-[var(--cyan-accent)]/5 p-ax-4">
