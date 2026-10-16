@@ -22,3 +22,12 @@ export const useSummary = () => {
     },
   };
 };
+// Dashboard analytics: dashmail => sent>0 | dashnomail (default) => sent 0 | dashnoanalytics => no data (plan has none)
+export const useAnalytics = (_enabled: boolean) => {
+  const h = useSyncExternalStore(
+    (cb) => (window.addEventListener("hashchange", cb), () => window.removeEventListener("hashchange", cb)),
+    () => location.hash,
+  );
+  if (h.includes("noanalytics")) return { data: undefined };
+  return { data: { range_days: 30, received: 12, sent: h.includes("dashmail") ? 3 : 0, avg_first_reply_seconds: null, delivery_rate: null, series: [] } };
+};

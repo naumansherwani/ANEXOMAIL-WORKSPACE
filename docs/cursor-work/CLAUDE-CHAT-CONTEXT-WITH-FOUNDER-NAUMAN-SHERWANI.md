@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:45 PKT**.
+Aakhri update: **17 Oct 2026, 04:35 PKT**.
 
 ---
 
@@ -63,7 +63,7 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 
 **FOUNDER KA NAYA HUKM (17 Oct 04:06 PKT, locked):** CEO ki tarah socho; competitor **Google Workspace aur Zoho Mail**; pehle Zoho ka basic flow karo, phir ANEXOMAIL ko un se behtar banao. **Ho gaya:** `docs/cursor-work/founder/competitive-baseline-zoho-google-2026-10-17.md` (official pages se verify kiya hua baseline + ANEXOMAIL ki jagah + tarteeb); blueprint 8d–8m; **8g READY** ("Someone else manages your DNS?": email instructions + copy all, Zoho ke "Send to DNS admin" jaisa, bina server ke) aur **8h READY** (step 3: "aap ka inbox DNS ke intezar mein bhi chal raha hai" + Open your inbox) — sandbox mein dekha, manifest sha `d3c72ea4e9351247`. **Agle (tarteeb):** 8f pehli mail ka test → 8i IMAP/SMTP settings → 8j IMAP import → 8k dashboard checklist → 8l Domain Connect (founder decide) → 8m catch-all/forwarding/vacation. AI sab se aakhir (#41).
 
-**Agla (abhi pending, 17 Oct 04:35 PKT):** founder 13.0 phir chalaye (manifest sha `d3c72ea4e9351247`: 8g + 8h) + Ctrl+Shift+R. Phir `pro.buyer` > Domains > wizard: qadam 2 ke neeche "Someone else manages your DNS?" card (Email these instructions mail app kholta hai, Copy all as text), qadam 3 par "Your inbox already works while DNS updates" card. Test domain `axonetis.com` ke apex par DNS **na** badle (doosra project). Uske baad agla item: **8f pehli mail ka test** (recommended), ya asli verified tick ke liye alag test domain (founder tay kare).
+**8k BANA (17 Oct 04:35 PKT, READY, sandbox mein dekha):** Dashboard par `SetupChecklist` — Greeting ke neeche, WidgetGrid se pehle. 5 qadam asli data se tick: account ✔ / domain jura (`mail.domains.list`) / DNS verified / company address (`mail.addresses.list`) / pehli mail (`dashboard.analytics` sent>0; analytics na aaye to yeh qadam hi nahi). Kuch nahi dikhta jab: data load na ho, plan mein domains nahi (`domain_cap` 0), sab poora, ya user ne X dabaya (localStorage, sirf per-viewer). Files: `src/components/app/dashboard/SetupChecklist.tsx` (naya) + `src/routes/app.index.tsx` (3 line mount). Manifest sha `cfa23d242cfead4a` + `4f99897a191b92de`. Harness mein har state (dashA..E, cap0, noanalytics) desktop + 820 + 390 px dekhi; mobile par button heading par chadh raha tha — theek kiya. **Sach:** Pro/Basic 'personal' kind hain magar unke paas Domains hai (pro.buyer), isliye card `kind` se nahi, `domain_cap` se chhupta hai. **Founder ke liye:** 13.0 chalao, Ctrl+Shift+R, `pro.buyer` Dashboard par 'Finish setup' card (domain jura hai, DNS pending => 2/5, 'Continue' Domains par le jata hai). **Agla (tarteeb):** 8f pehli mail ka test -> 8i/8j (pehle server fact-finding block) -> 8m -> 8l (founder decide); saath mein CEO section review doc + Rust R1 plan.
 
 Uske baad wizard ka proof (D) ek ek qadam: Connect → naam (suggestion chip) → 5 DNS records + Namecheap/GoDaddy/Cloudflare tabs + Copy buttons → live ticks. Phir E ka proof (Compose "Send from", Inbox address label, aane wali mail par bhi).
 
@@ -212,6 +212,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:35 PKT** — Founder ke hukm (gaps sab se aage) ka pehla qadam: 8k dashboard setup checklist bana (`SetupChecklist.tsx`, app.index mount), harness mein 7 state + mobile dekhe, manifest sha badla. Status READY (founder ke browser mein dekhna baqi).
 
 - **17 Oct 04:45 PKT** — Founder ka hukm (04:26): gaps sab se aage + latest technology, backend hamesha Rust (tRPC/QUIC/WebTransport/Tokio, Bun sirf emergency), aur har section (Dashboard, Mail, People, Calendar, Work, CRM, Domains) CEO ki nazar se. Agent ne yeh section 1 mein locked likha; sandbox mein cargo hai magar crates.io band (compile nahi ho sakta) — Rust code server par hi compile hoga.
 

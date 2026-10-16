@@ -474,7 +474,7 @@ DONE this session, do not redo: domain system A (database), B (Rust, live DNS 5/
     8h. READY (17 Oct 2026, sandbox mein dekha). Qadam 3 par "Your inbox already works while DNS updates" + "Open your inbox".
     8i. TODO. Mail client settings page (IMAP/SMTP, app password) phone/Outlook ke liye — pehle verify karo kya server par chal raha hai (Dovecot).
     8j. TODO. Self-serve IMAP import (purani mail laana); `/migration` abhi sirf managed service ka page.
-    8k. TODO. Dashboard par asli data se setup checklist (domain → DNS → address → pehli mail → team).
+    8k. READY (17 Oct 2026, sandbox mein dekha). Dashboard par asli data se setup checklist: domain → DNS verified → address → pehli mail (analytics sent>0); poora ho ya X dabe to chhup jata hai. `SetupChecklist.tsx` + `app.index.tsx`. Team qadam baad mein (People ka data aane par).
     8l. TODO (founder decide). Ek-click DNS (Domain Connect: Zoho GoDaddy, IONOS, Cloudflare ke liye deta hai); provider ka template register karna padta hai, bahar ka kaam.
     8m. TODO. Catch-all, forwarding, vacation auto-reply, signature — pehle verify karo kya pehle se maujood hai.
     8c. READY (17 Oct 2026, founder ke asli browser paste se do kamiyan): (1) registrar auto-pehchan subdomain par chalti nahi thi (`probuyer.axonetis.com` ke apne NS nahi) — ab parent domain tak chadh kar poochhta hai; (2) subdomain par DNS parent zone mein ho to lamba Name (`@` → `probuyer`, `_dmarc` → `_dmarc.probuyer`) har record par "If DNS zone is axonetis.com" ke saath dikhta hai, aur ek wazahat wala box. Backend/`domains.ts` nahi badla. Founder ke browser mein qadam 3 aur asli DNS verify baqi.

@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { Greeting } from "@/components/app/dashboard/Greeting";
+import { SetupChecklist } from "@/components/app/dashboard/SetupChecklist";
 import { useAuth } from "@/lib/auth";
 import { founderPreviewEnabled } from "@/lib/founder-preview";
 import { isAiHost } from "@/lib/host";
@@ -52,6 +53,8 @@ function DashboardPage() {
     <div className="min-h-0 flex-1 overflow-y-auto">
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
         <Greeting enabled={enabled} onCompose={() => setComposing(true)} />
+
+        <SetupChecklist enabled={enabled} onCompose={() => setComposing(true)} />
 
         <div className="mt-ax-7">
           <WidgetGrid enabled={enabled} />

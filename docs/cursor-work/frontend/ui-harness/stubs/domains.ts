@@ -25,10 +25,18 @@ const mkDom = (id: string, domain: string, okCount = 0, dkimReady = true): Dom =
 };
 
 const scenario = () => location.hash.replace("#", "");
-let domains: Dom[] = scenario().includes("list") ? [mkDom("d1", "acme-studio.com", 5), mkDom("d2", "probuyer.axonetis.com", 2)] : [];
-let addresses: { id: string; domain_id: string; local_part: string; address: string; kind: "mailbox" | "shared" | "alias"; owner_user_id: null; alias_target: string | null; active: boolean; created_at: string }[] = scenario().includes("list")
-  ? [{ id: "a1", domain_id: "d1", local_part: "sales", address: "sales@acme-studio.com", kind: "shared", owner_user_id: null, alias_target: null, active: true, created_at: "" }]
-  : [];
+// Dashboard checklist scenarios (hash): dashA no domain | dashB domain pending | dashC verified, no address | dashD verified+address | dashE same (mail decided by analytics stub) | dashcap0 plan without domains
+const dash = () => (scenario().match(/dash([A-E])/) || [])[1] as string | undefined;
+const seedDomains = (): Dom[] => {
+  const d = dash();
+  if (d === "B") return [mkDom("d2", "probuyer.axonetis.com", 2)];
+  if (d === "C" || d === "D" || d === "E") return [mkDom("d1", "acme-studio.com", 5)];
+  return scenario().includes("list") ? [mkDom("d1", "acme-studio.com", 5), mkDom("d2", "probuyer.axonetis.com", 2)] : [];
+};
+let domains: Dom[] = seedDomains();
+const oneAddr = [{ id: "a1", domain_id: "d1", local_part: "sales", address: "sales@acme-studio.com", kind: "shared" as const, owner_user_id: null, alias_target: null, active: true, created_at: "" }];
+let addresses: { id: string; domain_id: string; local_part: string; address: string; kind: "mailbox" | "shared" | "alias"; owner_user_id: null; alias_target: string | null; active: boolean; created_at: string }[] =
+  dash() === "D" || dash() === "E" || (!dash() && scenario().includes("list")) ? oneAddr : [];
 let verifyCalls = 0;
 
 const asQuery = <T,>(get: () => T) => () => {
@@ -36,7 +44,7 @@ const asQuery = <T,>(get: () => T) => () => {
   const s = scenario();
   return { data: s.includes("loading") ? undefined : data, isLoading: s.includes("loading"), isError: s.includes("error"), refetch: async () => undefined };
 };
-const snapD = () => ({ domains: domains.slice(), plan: "pro", domain_cap: 3, mail_host: "mail.anexomail.com" });
+const snapD = () => ({ domains: domains.slice(), plan: "pro", domain_cap: scenario().includes("cap0") ? 0 : 3, mail_host: "mail.anexomail.com" });
 const snapA = () => ({ addresses: addresses.slice(), plan: "pro", mailbox_cap: 5, mailbox_used: addresses.filter((a) => a.kind === "mailbox").length, login_address: "pro.buyer@anexomail.com" });
 let cacheD = snapD(), cacheA = snapA();
 const getD = () => cacheD;
