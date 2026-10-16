@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { MobileNav, type NavItem } from "@/components/app/MobileNav";
+import { InstallHint } from "@/components/app/dashboard/InstallHint";
 import { SetupChecklist } from "@/components/app/dashboard/SetupChecklist";
 import { CalendarDays, CheckSquare, Globe, Inbox, KanbanSquare, Mail, ShieldCheck, Users } from "lucide-react";
 import { Route } from "@/routes/app.domains";
@@ -70,6 +71,7 @@ function DashShell() {
               <h1 className="ax-display">Good evening, Nauman</h1>
               <p className="ax-body mt-1 text-muted-foreground">Here is your day.</p>
               <SetupChecklist enabled onCompose={() => (window as unknown as { __toast?: (m: string) => void }).__toast?.("compose opened")} />
+              <InstallHint forceShow={location.hash.includes("ios")} />
               <div className="mt-ax-7 grid gap-ax-5 sm:grid-cols-2 lg:grid-cols-4">
                 {["Inbox", "Sent today", "Drafts", "Calendar"].map((x) => (
                   <div key={x} className="ax-plane rounded-2xl p-ax-5">
@@ -116,8 +118,8 @@ function PhoneShell() {
         </div>
         <span className="grid size-9 place-items-center rounded-full border border-border bg-secondary text-xs">N</span>
       </header>
-      <main className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="min-h-0 flex-1 overflow-y-auto px-4 py-4">
+      <main className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden md:flex-row">
+        <div className={h.includes("tall") ? "px-4 py-4" : "min-h-0 flex-1 overflow-y-auto px-4 py-4"}>
           <p className="ax-eyebrow">Inbox</p>
           <div className="mt-2 flex items-center gap-1 overflow-x-auto py-3" data-pills>
             {["All", "Unread", "Starred"].map((x) => (

@@ -22,7 +22,7 @@ import {
   UserCircle2,
   Users,
 } from "lucide-react";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { MobileNav } from "@/components/app/MobileNav";
 import { BrandMark } from "@/components/site/BrandMark";
@@ -147,6 +147,13 @@ export function AppShell({ children }: { children: ReactNode }) {
       return !c;
     });
   };
+
+  // Jis page ka apna scroll dabba nahi (devices, movein, ...) woh Domains jaisa neeche se kat jata tha. Ab <main> khud
+  // scroll karta hai jab zaroorat ho; panel wale pages (apna scroll) par koi asar nahi. Naye page par upar se shuru.
+  const mainRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    mainRef.current?.scrollTo({ top: 0 });
+  }, [pathname]);
 
   // Phone par pull-to-refresh app ke beech mein reload kar deta tha (ba'z draft ke saath). Shell ke dauran band.
   useEffect(() => {
@@ -414,7 +421,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         </nav>
 
         {/* Panels */}
-        <main className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
+        <main
+          ref={mainRef}
+          className="flex min-h-0 min-w-0 flex-1 flex-col overflow-y-auto overflow-x-hidden md:flex-row"
+        >
           <h1 className="sr-only">{pageHeading(pathname)}</h1>
           {founderBlocked ? (
             <div className="flex flex-1 items-center justify-center px-6 py-16">

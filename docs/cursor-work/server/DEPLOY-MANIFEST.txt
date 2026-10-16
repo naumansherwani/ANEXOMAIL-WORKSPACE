@@ -3,13 +3,14 @@
 # Agent file badalte hi yahan sha update karta hai (sha256sum <file> | cut -c1-16).
 # Sirf /opt/anexomail-web ki files. Rust/Brain alag block se.
 src/routes/app.domains.tsx d3c72ea4e9351247
-src/components/app/dashboard/SetupChecklist.tsx cfa23d242cfead4a
-src/routes/app.index.tsx 4f99897a191b92de
+src/components/app/dashboard/SetupChecklist.tsx d9741035295017f0
+src/routes/app.index.tsx afed72f383259e49
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx f7a073e5ff05b981
+src/components/app/AppShell.tsx 45cee19ca2bba60e
 src/components/app/ComposeOverlay.tsx 26a80ec6509cd92c
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
 src/styles.css 2adbafda9756ee42
 src/routes/app.mail.$folder.tsx e12b7a4339d2728e
 src/routes/app.mail.$folder.$threadId.tsx 84035874e5427fcd
+src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9

@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 05:10 PKT**.
+Aakhri update: **17 Oct 2026, 04:53 PKT**.
 
 ---
 
@@ -62,6 +62,8 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **17 Oct 04:06 PKT — founder ne 13.0 (824ab3a) chalaya + 7 photo bheji: asli server par sab theek.** Step 2: "We found your DNS is at Namecheap" aaya (**axonetis.com ka DNS Namecheap par hai**), subdomain note, "If DNS zone is axonetis.com" ke lambe Name (`_anexomail-verify.probuyer`, `probuyer`, `anexo1._domainkey.probuyer`, `_dmarc.probuyer`), DKIM ki asli key (v=DKIM1; k=rsa; p=MIIB…) aa gayi. Step 3: "Checking probuyer.axonetis.com", 0/5 Waiting, countdown, "Checking…", Check now — asli backend par chal raha hai. (Photo mein button cyan/dhundla aur cards grey hain: laptop ki screen/camera ka asar lagta hai, harness mein navy + gehra; asli Win+Shift+S screenshot se pakka karna.) Pull output: server ki `M` files (AppShell, ComposeStudio, Greeting, mail.ts …) **repo ke BARABAR nikli** (`git diff --stat origin/main` mein sirf `bun.lock` 4 lines, `routeTree.gen.ts` 42 lines, aur untracked `domains.ts` / `app.domains.tsx`); yani server "dirty" sirf is liye ke server ka git HEAD purana hai.
 
 **FOUNDER KA NAYA HUKM (17 Oct 04:06 PKT, locked):** CEO ki tarah socho; competitor **Google Workspace aur Zoho Mail**; pehle Zoho ka basic flow karo, phir ANEXOMAIL ko un se behtar banao. **Ho gaya:** `docs/cursor-work/founder/competitive-baseline-zoho-google-2026-10-17.md` (official pages se verify kiya hua baseline + ANEXOMAIL ki jagah + tarteeb); blueprint 8d–8m; **8g READY** ("Someone else manages your DNS?": email instructions + copy all, Zoho ke "Send to DNS admin" jaisa, bina server ke) aur **8h READY** (step 3: "aap ka inbox DNS ke intezar mein bhi chal raha hai" + Open your inbox) — sandbox mein dekha, manifest sha `d3c72ea4e9351247`. **Agle (tarteeb):** 8f pehli mail ka test → 8i IMAP/SMTP settings → 8j IMAP import → 8k dashboard checklist → 8l Domain Connect (founder decide) → 8m catch-all/forwarding/vacation. AI sab se aakhir (#41).
+
+**MOBILE/TABLET BATCH 2 BANA (04:53 PKT, READY, harness 390/820 dekha — blueprint M7, M10):** (1) **M10:** `AppShell` ka `<main>` ab zaroorat par khud scroll karta hai — jis page ka apna scroll dabba nahi (devices, movein …) woh Domains ki tarah neeche se kat jata tha; panel wale pages par asar nahi; naye page par upar se. (2) **M7:** `InstallHint` — sirf iPhone/iPad Safari par "Share -> Add to Home Screen" card (iOS mein install prompt hota hi nahi; Android chip pehle se hai). (3) Phone par setup checklist compact (progress patti + Next + button; poori list pehli screen kha jati thi). Funnel (landing/auth/onboarding/plans) ka static audit: pages pehle se responsive (`text-4xl md:text-6xl`, `max-w`, table `overflow-x-auto`); sirf global 16px input fix chahiye tha (ho gaya). **Funnel asli phone par dekhna baqi (M5).**
 
 **MOBILE/TABLET BATCH 1 BANA (17 Oct 05:10 PKT, READY, harness 390/820/1440 par dekha — blueprint M1–M4, commit 3736efa):** audit mein asli gaps mile aur theek hue: (1) `AppShell` `h-screen` -> `h-dvh` + header safe-area + viewport `viewport-fit=cover, interactive-widget=resizes-content`; (2) phone ki bottom patti 7–14 items side-scroll karti thi (Domains/CRM chhup jate the) -> naya `MobileNav.tsx`: 4 tabs + More sheet + phone par workspace switch; (3) `ComposeOverlay` phone par chhota floating card tha -> poori screen (tablet/desktop par pehle jaisa); (4) global (`styles.css`): iOS 16px input (zoom band), tap delay band, panel scroll-chaining band, `ax-hit` 44px touch area (mail pills/back arrow par), shell mein pull-to-refresh band (draft na ude), sheet close 44px. Manifest mein 8 file. **Nahi dekha (sach):** asli `ComposeStudio` ka andar ka phone layout, safe-area (notch) asli iPhone par, asli keyboard. Agla: M5 funnel audit (landing/auth/onboarding/plans/checkout phone par), M6 har section, M7 iPhone install hint, M8/M9 viral + Urdu (founder decide) — blueprint mein.
 
@@ -217,6 +219,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 12. Session log (naya upar)
+
+- **17 Oct 04:53 PKT** — Mobile batch 2: main scroll safety net (M10), iPhone InstallHint (M7), compact setup checklist phone par; funnel static audit. Manifest 12 file.
 
 - **17 Oct 05:10 PKT** — Rule 19 par pehla amal: phone/tablet audit (AppShell, mail, compose, global CSS) aur batch 1 (M1–M4) bana (3736efa), harness mein teen width par dekha, manifest 8 file, blueprint M1–M9. Server par deploy 13.0 se; founder ko phone se (ya Chrome DevTools phone mode) dekhna baqi — isliye READY.
 

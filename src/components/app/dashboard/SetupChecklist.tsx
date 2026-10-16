@@ -165,7 +165,20 @@ export function SetupChecklist({ enabled, onCompose }: { enabled: boolean; onCom
         )}
       </div>
 
-      <ol className="ax-stagger mt-ax-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-5">
+      {/* Phone: poori list pehli screen kha jati thi — sirf progress patti; tiles sm se upar (Rule 19). */}
+      <div className="mt-3 flex gap-1 sm:hidden" aria-hidden="true">
+        {steps.map((s) => (
+          <span
+            key={s.id}
+            className={cn(
+              "h-1.5 flex-1 rounded-full transition-colors duration-500",
+              s.done ? "bg-success" : s.id === active.id ? "bg-[var(--cyan-accent)]" : "bg-border",
+            )}
+          />
+        ))}
+      </div>
+
+      <ol className="ax-stagger mt-ax-4 hidden gap-2 sm:grid sm:grid-cols-2 lg:grid-cols-5">
         {steps.map((s, i) => (
           <li
             key={s.id}
