@@ -188,7 +188,10 @@ export function MailRail({
           <SkeletonLine className="mx-1 h-2.5" width="80%" />
         ) : accounts.data.accounts.length === 0 ? (
           <p className="ax-caption px-1 text-muted-foreground">
-            {t("No address yet. Create one in Admin → Addresses.")}
+            {t("No address yet.")}{" "}
+            <Link to="/app/domains" className="ax-focus text-primary underline-offset-2 hover:underline">
+              {t("Create one in Domains & addresses.")}
+            </Link>
           </p>
         ) : (
           <>

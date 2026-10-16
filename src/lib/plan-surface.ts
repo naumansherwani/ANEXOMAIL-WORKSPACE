@@ -310,6 +310,14 @@ export function showFullVideo(
   return powerOf(workspacePlan, aiPlan, kind) !== "basic";
 }
 
+/** Company domains + addresses (#8) — Business account type only; Personal uses its ANEXOMAIL address. */
+export function showDomains(
+  workspacePlan: string | null | undefined,
+  kind: KindArg = null,
+): boolean {
+  return resolveAccountKind(kind, workspacePlan) === "business";
+}
+
 export function showAdmin(opts: { founder: boolean; founderHost: boolean }): boolean {
   return opts.founder && opts.founderHost;
 }
@@ -333,6 +341,8 @@ function optsKind(opts: SurfaceOpts): AccountKind {
 }
 
 export function railItemVisible(to: string, opts: SurfaceOpts): boolean {
+  // Customer company domains: founder host ka apna UI alag hai (locked) — wahan rail mein nahi.
+  if (to === "/app/domains") return !opts.founderHost && showDomains(opts.plan, optsKind(opts));
   if (opts.founderHost) return true;
   const kind = optsKind(opts);
   if (to.startsWith("/app/founder")) return false;
@@ -421,6 +431,13 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
       body: personal
         ? "Personal workspaces have no company Org. Roles and departments sit on a Business account. Your package is {package}."
         : "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.",
+    };
+  }
+  if (path.startsWith("/app/domains")) {
+    if (showDomains(opts.plan, kind)) return null;
+    return {
+      title: "Company domains are on a Business workspace",
+      body: "Personal workspaces send and receive on your ANEXOMAIL address. Connecting your own domain needs a Business workspace. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/work")) {

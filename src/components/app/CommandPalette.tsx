@@ -4,6 +4,7 @@ import {
   Building2,
   CalendarDays,
   CheckSquare,
+  Globe,
   Inbox,
   KanbanSquare,
   Mail,
@@ -27,7 +28,15 @@ import { useUniversalSearch } from "@/lib/contacts";
 import { founderSurfaceAllowed } from "@/lib/host";
 import { ADMIN_SECTIONS, MAIL_FOLDERS } from "@/lib/ia";
 import { useLocale } from "@/lib/i18n";
-import { showAdmin, showChat, showCrm, showOrg, showWork, surfaceFromSession } from "@/lib/plan-surface";
+import {
+  showAdmin,
+  showChat,
+  showCrm,
+  showDomains,
+  showOrg,
+  showWork,
+  surfaceFromSession,
+} from "@/lib/plan-surface";
 
 /**
  * Rule: Cmd+K is the whole product. Mail, people, calendar, work, admin —
@@ -52,6 +61,7 @@ export function CommandPalette({
   const crmOpen = founderHost || showCrm(billed, null, kind);
   const chatOpen = founderHost || showChat(billed, null, kind);
   const orgOpen = founderHost || showOrg(billed, null, kind);
+  const domainsOpen = !founderHost && showDomains(billed, kind);
   const adminOpen = showAdmin({
     founder: Boolean(session?.user.is_founder),
     founderHost,
@@ -185,6 +195,15 @@ export function CommandPalette({
             <CommandItem value="organisation org members" onSelect={() => go("/app/org")}>
               <Building2 className="size-4" />
               {t("Organisation")}
+            </CommandItem>
+          ) : null}
+          {domainsOpen ? (
+            <CommandItem
+              value="domains addresses dns company email"
+              onSelect={() => go("/app/domains")}
+            >
+              <Globe className="size-4" />
+              {t("Domains & addresses")}
             </CommandItem>
           ) : null}
           <CommandItem value="search everything" onSelect={() => go("/app/search")}>

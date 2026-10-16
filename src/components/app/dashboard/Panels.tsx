@@ -33,6 +33,7 @@ import {
 } from "@/lib/dashboard";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
+import { showDomains, surfaceFromSession } from "@/lib/plan-surface";
 
 /* ----------------------------- Animation helpers ---------------------------- */
 
@@ -87,6 +88,10 @@ const tileVariants = {
 export function WidgetGrid({ enabled }: { enabled: boolean }) {
   const query = useSummary(enabled);
   const { t } = useLocale();
+  const { session, organisation } = useAuth();
+  const surface = surfaceFromSession(session?.user, organisation?.slug);
+  // #8: Business account ko domain badge se seedha wizard tak raasta.
+  const canConnect = showDomains(surface.billed, surface.kind);
 
   return (
     <CardBody
@@ -160,15 +165,27 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                       : ""}
                   </p>
                   {data.domain_hosted ? (
-                    <span className="ax-status ml-auto text-xs font-semibold text-muted-foreground">
+                    <span className="ax-status ml-auto flex items-center gap-2 text-xs font-semibold text-muted-foreground">
                       {t("ANEXOMAIL hosted")}
+                      {canConnect && (
+                        <Link to="/app/domains" className="ax-focus text-primary underline-offset-2 hover:underline">
+                          {t("Connect your domain")}
+                        </Link>
+                      )}
                     </span>
                   ) : (
                     <span
-                      className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto text-xs font-semibold`}
+                      className={`ax-status ${data.domain_verified ? "text-success" : "text-warning"} ml-auto flex items-center gap-2 text-xs font-semibold`}
                     >
-                      {data.domain ? `${data.domain} · ` : ""}
-                      {data.domain_verified ? t("Domain verified") : t("Domain not verified")}
+                      <span>
+                        {data.domain ? `${data.domain} · ` : ""}
+                        {data.domain_verified ? t("Domain verified") : t("Domain not verified")}
+                      </span>
+                      {canConnect && (
+                        <Link to="/app/domains" className="ax-focus text-primary underline-offset-2 hover:underline">
+                          {data.domain_verified ? t("Manage") : t("Finish setup")}
+                        </Link>
+                      )}
                     </span>
                   )}
                 </div>
