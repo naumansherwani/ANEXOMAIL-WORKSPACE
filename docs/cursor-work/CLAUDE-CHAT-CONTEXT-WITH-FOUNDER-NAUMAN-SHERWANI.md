@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 03:35 PKT**.
+Aakhri update: **17 Oct 2026, 03:45 PKT**.
 
 ---
 
@@ -74,6 +74,7 @@ Company addresses ka **ek unified inbox**; `hello@` ka kaam founder-side. **Ali 
 - **Bina zaroorat sawal nahi.** Gate / "PASS PASS" scripts nahi. Asli output wale seedhe commands (curl code, grep, psql, pm2).
 - **Rule 15:** server ka sach server par. Agent server par kuch nahi chala sakta; chat mein ek copy-paste block deta hai, founder chalata hai aur output paste karta hai. Output aane se pehle "DONE" nahi.
 - **Rule 17:** test browser se nahi (SQL-seeded accounts, token, curl). Ab founder UI khud apne login se dekh raha hai, to browser sirf wahan jahan screen dekhni zaroori ho.
+- **Har deploy/pull block mein `pm2 restart <app> --update-env && pm2 save` hamesha** (founder, 17 Oct 2026): web badla to `anexomail-web`, Rust badla to `anexomail-rust`, Brain badla to `anexomail-leo`. `polar-rust-payment` kabhi nahi.
 - **Rule 5:** status sirf DONE (live verify) / READY / TODO.
 - **Secrets repo ya chat mein nahi.** Test passwords sirf server par `/root/test-accounts/<handle>.pw`.
 - **SQL fail** ho to usi file ko theek karo (`_v2` nahi). Naya SQL = E-series (`docs/cursor-work/sql/E<n>_….sql`); abhi tak E30 tak bana hai, agla E31.
@@ -180,6 +181,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 02:53 PKT** — Founder ne pull ki command maangi, kaha "pm2 restart hamesha karwaya karo", aur poochha "kya sab kaam latest technology par ho raha hai". Pull command section 13.4 mein; pm2 restart ka qaida section 4 mein. Jawab (chat mein): locked stack (React 19.2, TanStack Start, Vite 8.2, Tailwind 4.2, Bun, Rust primary) par; teen kamiyan: sandbox mein asli tsc/build nahi, live ticks polling se (WebTransport push E26 TODO), PWA cache purani UI dikhata hai.
+
 - **17 Oct 02:49–03:35 PKT** — Founder ne claude.ai chat ka context paste kiya (Appendix A). File ka naam `SESSION-HANDOFF.md` se badal kar `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` kiya (git mv, ek hi file), upar founder ka rule likha ("pehle yeh padho, phir chat"), section 13 (aakhri commands) aur 14 (do chats ka rishta) jode. AGENTS.md top line + Rule 18, `.cursor/rules/founder-chat-context.mdc`, `docs/cursor-work/README.md` naye naam par.
 
 - **17 Oct 02:37–03:10 PKT** — Founder ne Domains page ka screenshot bheja aur kaha "CEO ki nazar se dekho". Scroll bug + dashboard/Domains domain tazaad + sada empty state mila; `app.domains.tsx` dobara likha (section 1). Founder ko deploy block diya jata hai; browser dekhna baqi, isliye #8 abhi bhi READY.
@@ -233,7 +236,11 @@ Status: founder ka output abhi nahi aaya.
 git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/t16-accounts-look.sh | bash
 ```
 
-**13.4 — Standard web deploy (AGENTS.md Rule 1, `--rebase` wala).** Poora pull sirf tab jab founder kahe; warna Rule 14 ke mutabiq sirf specific files.
+**13.4 — Pull (AGENTS.md Rule 1, `--rebase` wala; founder ne 17 Oct 02:53 PKT ko maanga).** Server ki tree installers se badli hui ho sakti hai; us surat mein git `cannot pull with rebase: You have unstaged changes` kehkar **bina kuch badle** ruk jata hai (`&&` ki wajah se build/restart tak nahi pohanchta) — tab 13.1 jaisa sha-guarded single-file block chalao.
+```bash
+cd /opt/anexomail-web && git restore src/routeTree.gen.ts && git pull --rebase origin main && bun install && bun run build:bun && pm2 restart anexomail-web --update-env && pm2 save && curl -s -o /dev/null -w "web /health %{http_code}\n" --max-time 5 http://127.0.0.1:3000/health
+```
+Status: output abhi nahi aaya.
 
 **13.5 — DB ka chhota check (claude.ai chat se, 15–16 Oct; E30 ke baad theek nikla):**
 ```bash
