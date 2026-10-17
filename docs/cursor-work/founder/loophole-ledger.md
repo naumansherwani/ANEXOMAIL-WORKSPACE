@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 18:34 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 18:44 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -22,13 +22,18 @@ Aakhri update: **17 Oct 2026, 18:34 PKT** (`current_time` tool).
 | L12 | Server aur repo mein farq ka koi saboot nahi tha (installers se dirty tree) | founder ka output (41 "M" files) | `pull.sh` ab sync ke BAAD `src/` ki har file ka sha origin/main se milata hai: `same/differ/missing` | READY (agle pull par pehli reading) |
 | L13 | `/rpc/health` ka `wt_port` khali (health jhoot-sa) | founder ka facts output | 8u (Rust ek line) | READY (server par Rust build ke baad) |
 | L14 | "Node chalta hai?" ka andaza | founder ka sawal | TECH-MAP §10 + facts v2 har pm2 process ka interpreter chhapta hai | READY (output ka intezar) |
+| L15 | **Phone par Calendar/People/Work ki detail screen kabhi dikhti hi nahi thi** (event/contact par tap = kuch nahi) | source + harness 390 | `mobileVisible`/`mobileHidden` + back bar (Mail jaisa pattern) | READY |
+| L16 | **Phone par Work ka Tasks board + "Add a task" nazar hi nahi aata tha** (sirf Promises list) — Basic ke "Tasks" ka wada phone par toot'ta tha | harness 390 | Pro+ ko [Tasks & boards \| Promises] switch; Basic ko seedha Tasks | READY |
+| L17 | Calendar week = 7 tang columns ("Cust…"), month pills 10px unreadable | harness 390/820 | din-wari agenda list; month dots + tap-day; detail week grid sirf xl+ | READY |
+| L18 | 820 par TaskBoard 4 pichke columns, contact stats 4 pichke boxes | harness 820 | auto-fit grid (minmax) | READY |
+| L19 | Contact header: VIP/Email naam ko "Ayesha…" tak daba dete the; chips 24px | harness 390 | wrap + `ax-hit`/`ax-tap` | READY |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
 | # | Gap | Kyun khula | Agla qadam |
 |---|---|---|---|
 | G1 | **Attachments (8p)** — bheji mail mein file ja hi nahi sakti | `mail.send` Bun par; Rust par laana (R1) pehle | R1 + 8p; bara kaam |
-| G2 | M6 baqi: People, Calendar (phone par agenda), Work, CRM "Move to…", Billing, Account, Admin | audit baqi | harness mein ek ek section |
+| G2 | M6 baqi: CRM ("Move to…", 7 pages), Billing, Account, Admin (11 pages), Chat | People/Calendar/Work ho gaye (L15–L19) | `entry-routes.tsx` harness mein ek ek section |
 | G3 | R0 Rust latest: edition 2024, axum 0.8.9, wtransport 0.7.2, `opt-level` | sandbox mein compile nahi; server par scratch `cargo check` | founder ka ek command (scratch check), phir theek |
 | G4 | R1 `mail.send` Rust par; R3 typed contract; R4 direct pool; R5 event-driven WebTransport push | bade Rust kaam, R0 ke baad | tarteeb se |
 | G5 | 8s `/api/mail/send` fallback identity ignore karta hai | R1 mein khatam hoga | R1 ke saath |

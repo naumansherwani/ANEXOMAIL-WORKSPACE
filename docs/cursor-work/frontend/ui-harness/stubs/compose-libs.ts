@@ -35,3 +35,12 @@ export const useIdentities = (_ok: boolean) => ({
 export const useSendMail = mut;
 export const addressTone = (a: string | null | undefined) => (a ? { address: a, color: "#7c9cff" } : null);
 export const isAiHost = () => h().includes("aihost");
+
+// People / Calendar harness: relative time label used by ContactProfile, rails and timelines.
+export const relativeTime = (iso: string | null | undefined) => {
+  if (!iso) return "never";
+  const m = Math.round((Date.now() - new Date(iso).getTime()) / 60000);
+  if (m < 60) return `${Math.max(m, 1)}m ago`;
+  if (m < 1440) return `${Math.round(m / 60)}h ago`;
+  return `${Math.round(m / 1440)}d ago`;
+};

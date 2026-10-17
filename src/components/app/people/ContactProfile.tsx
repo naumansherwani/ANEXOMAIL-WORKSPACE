@@ -67,11 +67,12 @@ export function ContactProfile({
   };
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-ax-6 py-ax-6">
-      <header className="flex items-start gap-ax-4">
+    <div className="mx-auto w-full max-w-3xl px-ax-4 py-ax-6 md:px-ax-6">
+      {/* flex-wrap: on a phone the VIP / Email buttons drop under the name instead of squeezing it to "Ayesha…". */}
+      <header className="flex flex-wrap items-start gap-ax-4">
         <Avatar contact={c} size="lg" />
-        <div className="min-w-0 flex-1">
-          <h2 className="truncate text-xl font-bold text-foreground">
+        <div className="min-w-0 flex-1 basis-[12rem]">
+          <h2 className="text-xl font-bold break-words text-foreground sm:truncate">
             {c.display_name || c.primary_address}
           </h2>
           <p className="ax-caption mt-0.5 truncate text-muted-foreground">
@@ -91,7 +92,7 @@ export function ContactProfile({
             )}
           </div>
         </div>
-        <div className="flex shrink-0 items-center gap-2">
+        <div className="flex w-full shrink-0 items-center gap-2 sm:w-auto">
           <Button
             variant="outline"
             size="sm"
@@ -115,7 +116,7 @@ export function ContactProfile({
         </div>
       </header>
 
-      <section className="mt-ax-6 grid grid-cols-2 gap-ax-2 md:grid-cols-4">
+      <section className="mt-ax-6 grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-ax-2">
         <Stat
           label="Last contact"
           value={c.last_contact_at ? relativeTime(c.last_contact_at) : "—"}

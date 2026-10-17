@@ -193,6 +193,8 @@ function WorkPage() {
   const businessRecord = showWorkBusinessRecord(billed, null, kind); // Business+: call/file records
 
   const [rail, setRail] = useState<ListRail>("promises");
+  // Phone shows ONE of the two columns at a time (the detail column is hidden below md by DetailPanel and was never reachable).
+  const [phoneTab, setPhoneTab] = useState<"work" | "promises">("work");
   const [title, setTitle] = useState("");
   const create = useCreateTask();
 
@@ -215,8 +217,40 @@ function WorkPage() {
 
   return (
     <>
+      {/* Phone only: Pro+ has two columns (Tasks & boards | Promises). Basic has only the tasks column, so no switch. */}
+      {proWork && (
+        <div
+          role="tablist"
+          aria-label={t("Work views")}
+          className="flex shrink-0 gap-1 border-b border-border bg-background px-ax-3 py-ax-2 md:hidden"
+        >
+          {(
+            [
+              ["work", t("Tasks & boards")],
+              ["promises", t("Promises")],
+            ] as const
+          ).map(([id, label]) => (
+            <button
+              key={id}
+              type="button"
+              role="tab"
+              aria-selected={phoneTab === id}
+              onClick={() => setPhoneTab(id)}
+              className={cn(
+                "ax-press ax-tap flex-1 rounded-full border px-3 py-1.5 text-[13px] font-semibold transition-colors",
+                phoneTab === id
+                  ? "border-cyan-accent/50 bg-secondary text-foreground"
+                  : "border-border text-muted-foreground",
+              )}
+            >
+              {label}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* ── LIST PANEL — promises/follow-through (Pro+ only) ─────────── */}
-      <ListPanel title="Work">
+      <ListPanel title="Work" mobileHidden={!proWork || phoneTab !== "promises"}>
         {proWork ? (
           <>
             <div className="flex items-center gap-1 border-b border-border px-ax-3 py-ax-2">
@@ -226,7 +260,7 @@ function WorkPage() {
                   type="button"
                   onClick={() => setRail(r)}
                   className={cn(
-                    "ax-press ax-caption rounded-full border px-2.5 py-1 font-semibold transition-colors",
+                    "ax-press ax-hit ax-caption rounded-full border px-2.5 py-1 font-semibold transition-colors",
                     rail === r
                       ? "border-cyan-accent/50 bg-secondary text-foreground"
                       : "border-border text-muted-foreground",
@@ -255,8 +289,8 @@ function WorkPage() {
       </ListPanel>
 
       {/* ── DETAIL PANEL ─────────────────────────────────────────────── */}
-      <DetailPanel>
-        <div className="px-ax-6 py-ax-5">
+      <DetailPanel mobileVisible={!proWork || phoneTab === "work"}>
+        <div className="px-ax-4 py-ax-5 md:px-ax-6">
 
           {/* ── 1. Add task — all plans ───────────────────────────────── */}
           <motion.div

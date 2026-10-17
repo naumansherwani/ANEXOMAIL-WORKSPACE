@@ -1,0 +1,43 @@
+// Harness for the REAL /app list+detail routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work?plan=basic
+// Shell mirrors AppShell: 56px header, <main flex min-h-0 flex-1 flex-col md:flex-row>, phone bottom bar (placeholder, same height).
+import { useSyncExternalStore } from "react";
+import { createRoot } from "react-dom/client";
+
+import { Route as CalendarRoute } from "@/routes/app.calendar";
+import { Route as PeopleRoute } from "@/routes/app.people";
+import { Route as WorkRoute } from "@/routes/app.work";
+
+type R = { component: () => JSX.Element };
+const pick = (h: string): R => {
+  const b = h.replace(/^#/, "").split("?")[0];
+  if (b.startsWith("people")) return PeopleRoute as unknown as R;
+  if (b.startsWith("work")) return WorkRoute as unknown as R;
+  return CalendarRoute as unknown as R;
+};
+const sub = (cb: () => void) => (window.addEventListener("hashchange", cb), () => window.removeEventListener("hashchange", cb));
+
+function Shell() {
+  const h = useSyncExternalStore(sub, () => location.hash, () => "");
+  const Page = pick(h).component;
+  return (
+    <div className="flex h-dvh flex-col overflow-hidden bg-background">
+      <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4 text-sm font-bold">
+        ANEXOMAIL <span className="ax-caption text-muted-foreground">WORKSPACE</span>
+      </div>
+      <div className="flex min-h-0 flex-1">
+        <nav className="hidden w-[190px] shrink-0 flex-col gap-1 border-r border-sidebar-border bg-sidebar p-3 text-sm md:flex">
+          {["Dashboard", "Mail", "People", "Calendar", "Work", "CRM", "Domains"].map((r) => (
+            <span key={r} className="px-3 py-2 text-muted-foreground">{r}</span>
+          ))}
+        </nav>
+        <main className="flex min-h-0 min-w-0 flex-1 flex-col md:flex-row">
+          <Page />
+        </main>
+      </div>
+      <div className="flex h-16 shrink-0 items-center justify-around border-t border-border bg-card text-[11px] text-muted-foreground md:hidden">
+        <span>Dashboard</span><span>Mail</span><span>People</span><span>Calendar</span><span>More</span>
+      </div>
+    </div>
+  );
+}
+createRoot(document.getElementById("root")!).render(<Shell />);

@@ -12,6 +12,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
+  ArrowLeft,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
@@ -82,13 +83,12 @@ function sameDay(a: Date, b: Date) {
 function MonthView({
   anchor,
   events,
-  selectedId,
-  onSelect,
+  onPickDay,
 }: {
   anchor: Date;
   events: CalendarEvent[];
-  selectedId: string;
-  onSelect: (id: string) => void;
+  /** The month grid lives in a narrow rail (and a phone): a day cell is a dotted button that opens that day. */
+  onPickDay: (day: Date) => void;
 }) {
   const today = new Date();
   const year = anchor.getFullYear();
@@ -114,50 +114,43 @@ function MonthView({
         {Array.from({ length: rows * 7 }).map((_, i) => {
           const dayNum = i - startOffset + 1;
           if (dayNum < 1 || dayNum > daysInMonth) {
-            return <div key={i} className="min-h-[4.5rem] rounded-lg" />;
+            return <div key={i} className="min-h-[3.5rem] rounded-lg" />;
           }
           const date = new Date(year, month, dayNum);
           const isToday = sameDay(date, today);
           const dayEvents = events.filter((e) => sameDay(new Date(e.starts_at), date));
 
           return (
-            <motion.div
+            <motion.button
               key={i}
+              type="button"
+              onClick={() => onPickDay(date)}
+              aria-label={`${date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}: ${dayEvents.length} ${dayEvents.length === 1 ? "event" : "events"}`}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.12, delay: i * 0.003 }}
               className={cn(
-                "min-h-[4.5rem] rounded-lg border p-1 transition-colors",
+                "ax-press flex min-h-[3.5rem] flex-col items-center gap-1 rounded-lg border p-1 pt-1.5 transition-colors",
                 isToday ? "border-primary/40 bg-primary/5" : "border-border hover:border-border/80",
               )}
             >
               <span className={cn(
-                "flex size-5 items-center justify-center rounded-full text-[11px] font-bold",
+                "flex size-6 items-center justify-center rounded-full text-[12px] font-bold",
                 isToday ? "bg-primary text-primary-foreground" : "text-foreground",
               )}>
                 {dayNum}
               </span>
-              <div className="mt-1 space-y-0.5">
-                {dayEvents.slice(0, 3).map((ev) => (
-                  <button
-                    key={ev.id}
-                    type="button"
-                    onClick={() => onSelect(ev.id)}
-                    className={cn(
-                      "ax-press w-full truncate rounded px-1 py-0.5 text-left text-[10px] font-semibold transition-opacity",
-                      selectedId === ev.id ? "opacity-100 ring-1 ring-primary" : "opacity-80 hover:opacity-100",
-                      KIND_COLOR[ev.kind] ?? KIND_COLOR.meeting,
-                    )}
-                  >
-                    {ev.all_day ? "" : `${new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })} `}
-                    {ev.title}
-                  </button>
-                ))}
-                {dayEvents.length > 3 && (
-                  <p className="px-1 text-[9px] text-muted-foreground">+{dayEvents.length - 3} more</p>
-                )}
-              </div>
-            </motion.div>
+              {dayEvents.length > 0 && (
+                <span className="flex flex-wrap items-center justify-center gap-0.5" aria-hidden>
+                  {dayEvents.slice(0, 3).map((ev) => (
+                    <span key={ev.id} className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} />
+                  ))}
+                  {dayEvents.length > 3 && (
+                    <span className="text-[9px] font-semibold leading-none text-muted-foreground">+{dayEvents.length - 3}</span>
+                  )}
+                </span>
+              )}
+            </motion.button>
           );
         })}
       </div>
@@ -336,6 +329,120 @@ function DayView({
   );
 }
 
+/* ─── Agenda view (the week, as a list) ──────────────────────────
+ * The rail is 19–22 rem on a desktop and the whole screen on a phone. Seven day-columns
+ * (WeekViewEnhanced) cannot be read in either: titles were cut to "Cust…". The rail shows the
+ * week as day-by-day rows; the wide week grid stays in the detail stage on desktop. */
+function AgendaView({
+  start,
+  events,
+  selectedId,
+  onSelect,
+}: {
+  start: Date;
+  events: CalendarEvent[];
+  selectedId: string;
+  onSelect: (id: string) => void;
+}) {
+  const today = new Date();
+  const days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(start);
+    d.setDate(start.getDate() + i);
+    return d;
+  });
+  const groups = days
+    .map((day) => ({
+      day,
+      items: events
+        .filter((e) => sameDay(new Date(e.starts_at), day))
+        .sort((a, b) => a.starts_at.localeCompare(b.starts_at)),
+    }))
+    .filter((g) => g.items.length > 0);
+
+  if (groups.length === 0) {
+    return (
+      <div className="flex flex-col items-center gap-2 px-ax-4 py-ax-8">
+        <CalendarDays className="size-8 text-muted-foreground/20" />
+        <p className="text-[12px] text-muted-foreground/60">Nothing scheduled this week</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-ax-3 p-ax-3">
+      {groups.map(({ day, items }) => {
+        const isToday = sameDay(day, today);
+        return (
+          <section key={day.toISOString()} aria-label={day.toDateString()}>
+            <h3
+              className={cn(
+                "mb-1.5 flex items-center gap-2 px-1 text-[11px] font-bold uppercase tracking-wide",
+                isToday ? "text-primary" : "text-muted-foreground",
+              )}
+            >
+              {isToday && <span className="rounded-full bg-primary px-1.5 py-0.5 text-[9px] text-primary-foreground">Today</span>}
+              {day.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}
+            </h3>
+            <ul className="space-y-1.5">
+              {items.map((ev) => (
+                <li key={ev.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelect(ev.id)}
+                    className={cn(
+                      "ax-press ax-tap flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors",
+                      selectedId === ev.id ? "border-primary/50 bg-primary/5" : "border-border hover:bg-secondary/50",
+                      ev.status === "cancelled" ? "opacity-50" : "",
+                    )}
+                  >
+                    <span className="w-14 shrink-0 pt-0.5 text-[11px] font-semibold whitespace-nowrap tabular-nums text-muted-foreground">
+                      {ev.all_day
+                        ? "All day"
+                        : new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                    </span>
+                    <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} aria-hidden />
+                    <span className="min-w-0 flex-1">
+                      <span
+                        className={cn(
+                          "block text-[13px] font-bold leading-snug text-foreground",
+                          ev.status === "cancelled" ? "line-through" : "",
+                        )}
+                      >
+                        {ev.title}
+                      </span>
+                      <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">
+                        {!ev.all_day && <span>{clockRange(ev.starts_at, ev.ends_at)}</span>}
+                        {ev.location && (
+                          <span className="flex items-center gap-1">
+                            <MapPin className="size-3" aria-hidden />
+                            {ev.location}
+                          </span>
+                        )}
+                        {ev.attendees.length > 0 && (
+                          <span className="flex items-center gap-1">
+                            <Users className="size-3" aria-hidden />
+                            {ev.attendees.length}
+                          </span>
+                        )}
+                        {ev.conflict && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-destructive/15 px-1.5 py-0.5 text-[10px] font-bold text-destructive">
+                            <Zap className="size-2.5" aria-hidden />
+                            Conflict
+                          </span>
+                        )}
+                      </span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })}
+    </div>
+  );
+}
+
 /* ─── Calendar header stats ──────────────────────────────────────── */
 function WeekStats({ events }: { events: CalendarEvent[] }) {
   const totalMins = events.reduce((s, e) => s + Math.max(0, (new Date(e.ends_at).getTime() - new Date(e.starts_at).getTime()) / 60000), 0);
@@ -416,6 +523,7 @@ function CalendarPage() {
       {/* ── List panel ─────────────────────────────────────────── */}
       <ListPanel
         title={t("Calendar")}
+        mobileHidden={Boolean(selected)}
         action={
           <>
             <a
@@ -567,10 +675,18 @@ function CalendarPage() {
             >
               <WeekStats events={rows} />
               {view === "month" && (
-                <MonthView anchor={anchor} events={rows} selectedId={selected} onSelect={setSelected} />
+                <MonthView
+                  anchor={anchor}
+                  events={rows}
+                  onPickDay={(day) => {
+                    setAnchor(day);
+                    setView("day");
+                    setSelected("");
+                  }}
+                />
               )}
               {view === "week" && (
-                <WeekViewEnhanced start={range.start} events={rows} selectedId={selected} onSelect={setSelected} />
+                <AgendaView start={range.start} events={rows} selectedId={selected} onSelect={setSelected} />
               )}
               {view === "day" && (
                 <DayView anchor={anchor} events={rows} selectedId={selected} onSelect={setSelected} />
@@ -581,18 +697,42 @@ function CalendarPage() {
       </ListPanel>
 
       {/* ── Detail panel ───────────────────────────────────────── */}
-      <DetailPanel>
+      <DetailPanel mobileVisible={Boolean(selected)}>
         {selected ? (
-          <EventDetail id={selected} />
+          <>
+            {/* Phone: the rail steps aside when an event is open (same pattern as Mail), so a way back is required. */}
+            <div className="sticky top-0 z-10 flex items-center border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur md:hidden">
+              <button
+                type="button"
+                onClick={() => setSelected("")}
+                className="ax-press ax-tap -ml-1 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[13px] font-semibold text-muted-foreground"
+              >
+                <ArrowLeft className="size-4" aria-hidden />
+                {t("Calendar")}
+              </button>
+            </div>
+            <EventDetail id={selected} />
+          </>
         ) : (
           <div className="flex flex-col gap-ax-5 p-ax-6">
-            {/* Week grid in detail — always week regardless of list view */}
-            <WeekViewEnhanced
-              start={weekRange(anchor).start}
-              events={rows}
-              selectedId={selected}
-              onSelect={setSelected}
-            />
+            {/* Week grid in the detail stage — 7 columns need room, so only from xl up; below that the rail's agenda is the week. */}
+            <div className="hidden xl:block">
+              <WeekViewEnhanced
+                start={weekRange(anchor).start}
+                events={rows}
+                selectedId={selected}
+                onSelect={setSelected}
+              />
+            </div>
+            {rows.length > 0 && (
+              <div className="xl:hidden">
+                <EmptyState
+                  icon={<CalendarDays className="size-5" />}
+                  title={t("Pick an event")}
+                  body={t("Open an event from the list to see who is coming, the agenda and your notes.")}
+                />
+              </div>
+            )}
             {rows.length === 0 && (
               <EmptyState
                 icon={<CalendarDays className="size-5" />}

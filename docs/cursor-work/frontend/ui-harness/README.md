@@ -50,3 +50,16 @@ TOUCH=1 node shot.mjs <out> q-sent list 390 844 "click:Write the test email" "bt
 
 Overflow check at any width (finds elements past the viewport):
 `FULL=1 TOUCH=1 node shot.mjs <outDir> <name> home 820 1180` → read the `page: {scrollW, winW}` line — `scrollW > winW` means horizontal overflow (with `isMobile` the layout viewport silently grows, e.g. 820 → 980).
+
+## Asli /app routes (M6 audit, 17 Oct 2026)
+
+`ENTRY=entry-routes.tsx node build.mjs <outDir>` bundles the *real* signed-in route files (`src/routes/app.{calendar,people,work}.tsx` + their components) with sample data from `stubs/api-sample.ts` (`stubs/query.ts` = react-query stand-in, `stubs/router.ts` = reactive router so `?id=` / tab navigation works on click). Hash picks the route: `#cal | #people | #people?id=c1 | #work`; suffix `-basicplan` (Basic: no Promises rail) and `?empty=1` (empty states).
+
+```
+ENTRY=entry-routes.tsx node build.mjs $OUT
+TOUCH=1 node shot.mjs $OUT cal-390 '#cal' 390 844
+TOUCH=1 node shot.mjs $OUT cal-detail '#cal' 390 844 "click:Customer"   # event kholo -> poori screen + back
+TOUCH=1 node shot.mjs $OUT people-390 '#people?id=c1' 390 844
+node shot.mjs $OUT work-820 '#work' 820 1180
+```
+Naya route add karna: uska import `entry-routes.tsx` ke route map mein, sample data `stubs/api-sample.ts` mein, aur agar naya lib import ho to `build.mjs` ke alias mein ek line.

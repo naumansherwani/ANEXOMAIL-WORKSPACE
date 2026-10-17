@@ -35,7 +35,7 @@ export function TaskBoard() {
   const rows = tasks.data?.tasks ?? [];
 
   return (
-    <div className="grid grid-cols-1 gap-ax-3 md:grid-cols-4">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(11rem,1fr))] gap-ax-3">
       {TASK_COLUMNS.map((col) => {
         const items = rows.filter((t) => t.status === col.id);
         return (

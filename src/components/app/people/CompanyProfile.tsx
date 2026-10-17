@@ -53,7 +53,7 @@ export function CompanyProfile({
         </div>
       </header>
 
-      <section className="mt-ax-6 grid grid-cols-2 gap-ax-2 md:grid-cols-4">
+      <section className="mt-ax-6 grid grid-cols-[repeat(auto-fit,minmax(8rem,1fr))] gap-ax-2">
         <Stat label="People" value={company.people_count} />
         <Stat label="Messages" value={company.messages_total} />
         <Stat label="Open threads" value={company.open_threads} />

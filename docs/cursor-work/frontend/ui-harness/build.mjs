@@ -11,7 +11,9 @@ const OUT = path.resolve(process.argv[2] || "./out");
 const HERE = path.dirname(new URL(import.meta.url).pathname);
 // ENTRY=entry-site.tsx builds the PUBLIC site harness (landing, plans, get-started, onboarding) instead of the app one.
 const ENTRY = process.env.ENTRY || "entry.tsx";
-const SITE = ENTRY !== "entry.tsx";
+const SITE = ENTRY === "entry-site.tsx";
+// ENTRY=entry-routes.tsx builds the REAL /app list+detail routes (calendar, people, work, ...) on sample data (stubs/api-sample.ts).
+const ROUTES = ENTRY === "entry-routes.tsx";
 const require = createRequire(TOOLS + "/");
 const esbuild = require("esbuild");
 const { compile } = await import(TOOLS + "/tailwindcss/dist/lib.mjs");
@@ -67,9 +69,11 @@ if (SITE) {
   for (const r of ["index", "plans", "get-started", "onboarding", "auth"]) srcs.push(path.join(REPO, "src/routes", r + ".tsx"));
   for (const f of fs.readdirSync(path.join(REPO, "src/components/site"))) if (f.endsWith(".tsx")) srcs.push(path.join(REPO, "src/components/site", f));
 }
+const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : e.name.endsWith(".tsx") ? [path.join(d, e.name)] : []));
+if (ROUTES) for (const f of walk(path.join(REPO, "src"))) srcs.push(f);
 const names = new Set();
 for (const f of srcs) for (const m of fs.readFileSync(f, "utf8").matchAll(/import\s*\{([^}]+)\}\s*from\s*"lucide-react"/g))
-  m[1].split(",").map((s) => s.trim()).filter(Boolean).forEach((n) => names.add(n.replace(/^type\s+/, "")));
+  m[1].split(",").map((s) => s.trim()).filter(Boolean).forEach((n) => names.add(n.replace(/^type\s+/, "").split(/\s+as\s+/)[0]));
 let lucide = 'import * as React from "react";\nconst mk=(inner:string)=>(p:React.SVGProps<SVGSVGElement>)=><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...p} dangerouslySetInnerHTML={{__html:inner}}/>;\n';
 for (const n of names) lucide += `export const ${n}=mk(${JSON.stringify(P[n] || P.Circle)});\n`;
 fs.writeFileSync(path.join(OUT, "lucide.tsx"), lucide);
@@ -96,6 +100,15 @@ const MAP = {
   "lucide-react": path.join(OUT, "lucide.tsx"),
   "@tanstack/react-router": stub("router.ts"),
   "@radix-ui/react-slot": stub("radix-slot.tsx"),
+  ...(ROUTES
+    ? {
+        "motion/react": stub("motion.tsx"),
+        "framer-motion": stub("motion.tsx"),
+        "@tanstack/react-query": stub("query.ts"),
+        "@/lib/api": stub("api-sample.ts"),
+        "@/lib/rpc": stub("api-sample.ts"),
+      }
+    : {}),
   ...(SITE
     ? {
         "motion/react": stub("motion.tsx"),
@@ -110,6 +123,7 @@ const MAP = {
       }
     : {}),
 };
+if (ROUTES) delete MAP["@/components/state/StateBlock"]; // real StateBlock only needs lucide + Button
 const alias = {
   name: "alias",
   setup(b) {
@@ -124,7 +138,7 @@ const alias = {
 };
 await esbuild.build({
   entryPoints: [path.join(HERE, ENTRY)], bundle: true, outfile: path.join(OUT, "app.js"), format: "iife", platform: "browser",
-  jsx: "automatic", nodePaths: [TOOLS], plugins: [alias], define: { "process.env.NODE_ENV": '"development"' }, logLevel: "warning", sourcemap: false,
+  jsx: "automatic", nodePaths: [TOOLS], plugins: [alias], define: { "process.env.NODE_ENV": '"development"', "import.meta.env": "{}" }, logLevel: "warning", sourcemap: false,
 });
 
 // ---- CSS: the real src/styles.css through Tailwind 4's compiler
@@ -136,7 +150,7 @@ const loadStylesheet = async (id, base) => {
   return { path: p, base: path.dirname(p), content: read(p) };
 };
 const compiler = await compile(read(path.join(REPO, "src/styles.css")), { base: path.join(REPO, "src"), loadStylesheet, loadModule: async () => { throw new Error("no plugins in harness"); } });
-const files = [...srcs, path.join(REPO, "src/components/ui/button.tsx"), path.join(REPO, "src/components/ui/input.tsx"), path.join(REPO, "src/components/ui/textarea.tsx"), path.join(REPO, "src/components/ui/label.tsx"), path.join(HERE, ENTRY), stub("ui.tsx"), stub("radix-label.tsx")];
+const files = [...srcs, ...(ROUTES ? walk(path.join(REPO, "src/components")) : []), path.join(REPO, "src/components/ui/button.tsx"), path.join(REPO, "src/components/ui/input.tsx"), path.join(REPO, "src/components/ui/textarea.tsx"), path.join(REPO, "src/components/ui/label.tsx"), path.join(HERE, ENTRY), stub("ui.tsx"), stub("radix-label.tsx")];
 const cand = new Set();
 // two tokenisers: one keeps ( ) , inside arbitrary values like grid-cols-[minmax(0,1fr)_...]; the other strips them
 for (const f of files) for (const re of [/[\s"'`<>{}=;]+/, /[\s"'`<>{}()=;,]+/]) for (const t of read(f).split(re)) if (t) cand.add(t);

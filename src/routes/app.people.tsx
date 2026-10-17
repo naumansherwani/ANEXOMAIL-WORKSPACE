@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Building2, Search, Users, X } from "lucide-react";
+import { ArrowLeft, Building2, Search, Users, X } from "lucide-react";
 import { useState } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
@@ -55,7 +55,7 @@ function PeoplePage() {
 
   return (
     <>
-      <ListPanel title={view === "people" ? "People" : "Companies"}>
+      <ListPanel title={view === "people" ? "People" : "Companies"} mobileHidden={Boolean(id)}>
         <div className="space-y-ax-2 border-b border-border px-ax-4 py-ax-3">
           <div className="flex rounded-lg bg-secondary p-0.5">
             {(["people", "companies"] as View[]).map((v) => (
@@ -64,7 +64,7 @@ function PeoplePage() {
                 type="button"
                 onClick={() => set({ view: v, id: "" })}
                 className={cn(
-                  "ax-press flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors",
+                  "ax-press ax-tap flex flex-1 items-center justify-center gap-1.5 rounded-md px-2 py-1 text-[11px] font-bold uppercase tracking-wide transition-colors",
                   view === v ? "bg-background text-foreground" : "text-steel hover:text-foreground",
                 )}
               >
@@ -83,7 +83,7 @@ function PeoplePage() {
               className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-steel"
             />
             {q && (
-              <button type="button" aria-label="Clear" onClick={() => set({ q: "" })}>
+              <button type="button" aria-label="Clear" className="ax-hit" onClick={() => set({ q: "" })}>
                 <X className="size-3.5 text-steel" />
               </button>
             )}
@@ -97,7 +97,7 @@ function PeoplePage() {
                   type="button"
                   onClick={() => set({ filter: f.id })}
                   className={cn(
-                    "ax-press rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide transition-colors",
+                    "ax-press ax-hit rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide transition-colors",
                     filter === f.id
                       ? "border-foreground text-foreground"
                       : "border-border text-steel hover:text-foreground",
@@ -112,7 +112,7 @@ function PeoplePage() {
                   type="button"
                   onClick={() => set({ tag: tag === t.name ? "" : t.name })}
                   className={cn(
-                    "ax-press rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors",
+                    "ax-press ax-hit rounded-full px-2 py-0.5 text-[10px] font-medium transition-colors",
                     tag === t.name
                       ? "bg-foreground text-background"
                       : "bg-secondary text-steel hover:text-foreground",
@@ -135,7 +135,20 @@ function PeoplePage() {
         )}
       </ListPanel>
 
-      <DetailPanel>
+      <DetailPanel mobileVisible={Boolean(id)}>
+        {id && (
+          // Phone: the list steps aside when a record is open (same pattern as Mail) — so the way back must be here.
+          <div className="sticky top-0 z-10 flex items-center border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur md:hidden">
+            <button
+              type="button"
+              onClick={() => set({ id: "" })}
+              className="ax-press ax-tap -ml-1 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[13px] font-semibold text-muted-foreground"
+            >
+              <ArrowLeft className="size-4" aria-hidden />
+              {view === "people" ? "People" : "Companies"}
+            </button>
+          </div>
+        )}
         {!id ? (
           <EmptyState
             title={view === "people" ? "Nobody selected" : "No company selected"}

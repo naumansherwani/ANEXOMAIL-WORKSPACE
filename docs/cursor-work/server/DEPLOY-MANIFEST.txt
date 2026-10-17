@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx e12b7a4339d2728e
 src/routes/app.mail.$folder.$threadId.tsx 84035874e5427fcd
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 11e36c5c51a9c4fc
+src/routes/app.calendar.tsx 0a6c06f3c8e48b33
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx 7068ed31ed24055f
@@ -24,3 +24,8 @@ src/components/site/SiteNav.tsx f93d2264ef6a5806
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
 src/routes/index.tsx ee7157f9e0bb9ffc
 src/routes/plans.tsx eb14659726822692
+src/routes/app.people.tsx 14a3c13781a35f2d
+src/routes/app.work.tsx 8a4153dd6e7a49c8
+src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
+src/components/app/people/CompanyProfile.tsx e6a0ad41d52df8de
+src/components/app/work/TaskBoard.tsx d5fe96d145484c2f
