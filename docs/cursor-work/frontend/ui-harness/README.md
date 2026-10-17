@@ -19,3 +19,15 @@ Misal: `DOH=namecheap node shot.mjs $OUT wiz empty 390 844 "click:Connect probuy
 Nateeja sirf **READY** hai: stubs asli backend nahi, aur founder ka browser alag ho sakta hai (Rule 5). Naya page add karna ho to `stubs/` mein uske imports ka stub aur `build.mjs` ke alias mein ek line.
 
 **Dashboard scenarios (`#dash…`):** `dashmail` / `dashnomail` / `dashnoanalytics` (setup checklist), `ios` (install hint), founder expiry watch (8o): `expok` | `expwarn` | `expcrit` | `expunknown` | `expstale` | `expnone` (report abhi nahi) | `expfail` (Rust nahi => tile chup) | `nofounder` (tile chup). Misal: `TOUCH=1 node shot.mjs $OUT crit dashexpcrit 390 844`.
+
+## Asli ComposeStudio (17 Oct 2026)
+
+`build.mjs` ab `ComposeStudio.tsx` ko asli code se bundle karta hai (stub nahi): sirf data/network wali libs `stubs/compose-libs.ts` se aati hain, `Label` ke liye `stubs/radix-label.tsx`.
+Phone par dekhne ke liye (touch + keyboard-jitni choti screen):
+
+```
+TOUCH=1 node shot.mjs <outDir> rc2-390 '#compose' 390 844
+TOUCH=1 node shot.mjs <outDir> rc2-390-kb '#compose' 390 480
+node shot.mjs <outDir> rc2-820 '#compose' 820 1180
+```
+(`into:<label>=<text>` step se field mein likha ja sakta hai.) Hash/route ke naam ke liye `entry.tsx` dekho.

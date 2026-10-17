@@ -35,7 +35,7 @@ export const useAnalytics = (_enabled: boolean) => {
 // ---- 8o founder expiry watch. Hash: expok | expwarn | expcrit | expunknown | expstale | expnone | expfail | nofounder
 export const useAuth = () => {
   const h = location.hash;
-  return { session: { user: { is_founder: !h.includes("nofounder") } } };
+  return { session: { user: { is_founder: !h.includes("nofounder"), workspace_plan: h.includes("basicplan") ? "basic" : "pro", account_kind: "business", anexomail_address: "pro.buyer@anexomail.com" } }, organisation: { slug: "acme-studio" } };
 };
 type It = { id: string; group: string; label: string; target: string; status: string; detail: string; days_left?: number };
 const base = (): It[] => [

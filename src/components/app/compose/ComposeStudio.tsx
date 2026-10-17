@@ -110,7 +110,6 @@ export function ComposeStudio({
   const [zen, setZen] = useState(false);
   const [identity, setIdentity] = useState<string>("");
   const [language, setLanguage] = useState(detectedLanguage ?? "English");
-  const [attachments, setAttachments] = useState<File[]>([]);
   const [variables, setVariables] = useState<Record<string, string>>({});
   const [draftId, setDraftId] = useState<string | undefined>();
   const [savedAt, setSavedAt] = useState<string | null>(null);
@@ -266,7 +265,7 @@ export function ComposeStudio({
     }
     // Pre-send confidence scan runs server-side first.
     confidence.mutate(
-      { ...payload, attachments: attachments.length },
+      { ...payload, attachments: 0 },
       {
         onSuccess: (report) => {
           const blockers = report.issues.filter((i) => i.severity === "block");
@@ -334,7 +333,7 @@ export function ComposeStudio({
                 aria-label="Send from"
                 value={identity}
                 onChange={(e) => setIdentity(e.target.value)}
-                className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground"
+                className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
               >
                 <option value="">{`Send from — ${identities.data?.default ?? "default"}`}</option>
                 {identities.data?.identities.map((i) => (
@@ -349,7 +348,7 @@ export function ComposeStudio({
             aria-label="Reply language"
             value={language}
             onChange={(e) => setLanguage(e.target.value)}
-            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground"
+            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
           >
             {LANGUAGES.map((l) => (
               <option key={l} value={l}>
@@ -363,7 +362,7 @@ export function ComposeStudio({
           <button
             type="button"
             onClick={() => setZen((v) => !v)}
-            className="ax-press ml-auto rounded-lg p-1.5 text-steel hover:bg-secondary"
+            className="ax-press ax-hit ml-auto rounded-lg p-1.5 text-steel hover:bg-secondary"
             aria-label={zen ? "Leave full screen" : "Full-screen writer"}
           >
             {zen ? <Minimize2 className="size-4" /> : <Maximize2 className="size-4" />}
@@ -375,6 +374,10 @@ export function ComposeStudio({
           <Input
             id="studio-to"
             type="email"
+            multiple
+            inputMode="email"
+            autoCapitalize="off"
+            spellCheck={false}
             required
             autoComplete="off"
             value={to}
@@ -398,7 +401,7 @@ export function ComposeStudio({
           <button
             type="button"
             onClick={() => setShowMore(true)}
-            className="ax-press self-start text-[11px] font-semibold text-steel underline-offset-4 hover:underline"
+            className="ax-press ax-hit self-start text-[11px] font-semibold text-steel underline-offset-4 hover:underline"
           >
             Add Cc / Bcc
           </button>
@@ -440,7 +443,7 @@ export function ComposeStudio({
               if (tpl.subject) setSubject(tpl.subject);
               setBody((v) => (v ? `${v}\n\n${tpl.body}` : tpl.body));
             }}
-            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground"
+            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
           >
             <option value="">
               {templates.isError ? "Templates — not wired yet" : "Insert template"}
@@ -457,7 +460,7 @@ export function ComposeStudio({
               key={s.id}
               type="button"
               onClick={() => insertSnippet(s.body)}
-              className="ax-press rounded-lg border border-border px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
+              className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
             >
               <Zap className="mr-1 inline size-3" />
               {s.shortcut}
@@ -523,7 +526,7 @@ export function ComposeStudio({
               type="button"
               onClick={() => runLeo({ task: "REWRITE", tone: tone.id })}
               disabled={leo.isPending}
-              className="ax-press rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+              className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
             >
               {tone.label}
             </button>
@@ -532,7 +535,7 @@ export function ComposeStudio({
             type="button"
             onClick={() => runLeo({ task: "TRANSLATE", language })}
             disabled={leo.isPending}
-            className="ax-press rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+            className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
           >
             <Languages className="mr-1 inline size-3" />
             Translate my reply
@@ -568,7 +571,7 @@ export function ComposeStudio({
               )
             }
             disabled={jimmy.isPending}
-            className="ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-foreground hover:bg-secondary"
+            className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-foreground hover:bg-secondary"
           >
             <Crown className="mr-1 inline size-3" />
             Jimmy se poochho
@@ -576,28 +579,21 @@ export function ComposeStudio({
         </div>
         ) : null}
 
-        {/* attachments */}
+        {/* attachments — bheji hui mail mein file abhi jati hi nahi (server par upload/MIME nahi). Pehle UI file "attach" dikha kar
+            chup-chaap chhor deti thi (silent data loss). Jab tak 8p (outgoing attachments) nahi banta, saaf bata do. */}
         <div className="flex flex-wrap items-center gap-2">
-          <label className="ax-press flex cursor-pointer items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground">
-            <Paperclip className="size-3" />
-            Attach
-            <input
-              type="file"
-              multiple
-              className="hidden"
-              onChange={(e) => setAttachments(Array.from(e.target.files ?? []))}
-            />
-          </label>
-          {attachments.map((file) => (
-            <span key={file.name} className="text-[10px] text-steel">
-              {file.name}
-            </span>
-          ))}
+          <span
+            className="flex items-center gap-1.5 rounded-lg border border-dashed border-border px-2 py-1 text-[11px] text-muted-foreground"
+            title="Attachments can't be sent yet"
+          >
+            <Paperclip className="size-3" aria-hidden="true" />
+            Attachments — coming soon
+          </span>
           <button
             type="button"
             onClick={() => setShowVersions((v) => !v)}
             disabled={!draftId}
-            className="ax-press rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground disabled:opacity-40"
+            className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground disabled:opacity-40"
           >
             <History className="mr-1 inline size-3" />
             Version history
@@ -606,7 +602,7 @@ export function ComposeStudio({
             aria-label="Follow-up promise"
             value={followUpDays}
             onChange={(e) => setFollowUpDays(Number(e.target.value))}
-            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground"
+            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
           >
             <option value={0}>No follow-up</option>
             <option value={2}>Remind me in 2 days</option>
@@ -672,7 +668,21 @@ export function ComposeStudio({
           </ul>
         )}
 
-        <div className="flex flex-wrap items-center gap-ax-2">
+        <p className="text-[10px] text-steel">
+          <span className="sm:hidden">{stats.words} words · </span>
+          <span className="[@media(pointer:coarse)]:hidden">⌘↵ send · </span>
+          held {UNDO_HOLD_SECONDS}s on the server so you can still stop it
+        </p>
+
+        {/* Phone par Send hamesha nazar aaye (keyboard khulne par bhi): overlay mein neeche chipki patti. */}
+        <div
+          className={cn(
+            "flex flex-wrap items-center gap-ax-2",
+            variant === "overlay" &&
+              !zen &&
+              "sticky bottom-0 z-10 -mx-ax-4 border-t border-border bg-card/95 px-ax-4 py-2.5 backdrop-blur sm:static sm:mx-0 sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none",
+          )}
+        >
           <Button type="submit" className="ax-press ax-tap" disabled={busy}>
             {busy ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
             <span>{proMail && scheduling ? "Schedule" : "Send"}</span>
@@ -681,7 +691,7 @@ export function ComposeStudio({
           <Button
             type="button"
             variant="ghost"
-            className="ax-press"
+            className="ax-press ax-tap"
             onClick={() => setScheduling((v) => !v)}
           >
             <Clock className="size-4" />
@@ -694,15 +704,12 @@ export function ComposeStudio({
               follow-up in {followUpDays}d
             </span>
           )}
-          <span className="ml-auto flex items-center gap-2 text-[10px] text-steel">
+          <span className="ml-auto hidden items-center gap-2 text-[10px] text-steel sm:flex">
             <FileText className="size-3" />
             {stats.words} words · {stats.seconds}s read · {stats.level}
             {savedAt ? ` · saved ${new Date(savedAt).toLocaleTimeString()}` : ""}
           </span>
         </div>
-        <p className="text-[10px] text-steel">
-          ⌘↵ send · held {UNDO_HOLD_SECONDS}s on the server so you can still stop it
-        </p>
       </div>
     </form>
   );

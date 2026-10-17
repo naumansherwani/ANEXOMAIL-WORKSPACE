@@ -467,14 +467,14 @@ function HandoffCard({ domain, zone }: { domain: OrgDomain; zone: string | null 
         <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
           <Mail className="size-4" aria-hidden="true" />
         </span>
-        <div className="min-w-0 flex-1">
+        <div className="min-w-[12rem] flex-1">
           <p className="ax-label">{t("Someone else manages your DNS?")}</p>
           <p className="ax-caption mt-0.5">
             {t("Send them these records in one click — your web developer, IT person or registrar support.")}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-2">
-          <Button asChild variant="outline" size="sm" className="ax-press gap-1.5">
+        <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+          <Button asChild variant="outline" size="sm" className="ax-press ax-tap w-full gap-1.5 sm:w-auto">
             <a
               href={href}
               onClick={() => {
@@ -493,7 +493,7 @@ function HandoffCard({ domain, zone }: { domain: OrgDomain; zone: string | null 
             type="button"
             variant="outline"
             size="sm"
-            className={cn("ax-press gap-1.5", copied && "border-success/50 text-success")}
+            className={cn("ax-press ax-tap w-full gap-1.5 sm:w-auto", copied && "border-success/50 text-success")}
             onClick={() => void copyAll()}
           >
             {copied ? (
@@ -527,10 +527,13 @@ function Tick({ ok, pending }: { ok: boolean; pending?: boolean }) {
 }
 
 function Field({ label, value }: { label: string; value: string }) {
+  // Lambi value (SPF, DKIM, verify token) phone par Copy ke saath ek line mein dabti thi — "co m ~all" jaisa beech se
+  // toot kar parhna/milana mushkil. Isliye lambi value par phone mein dabba poori chaudai, Copy neeche (sm+ par pehle jaisa).
+  const long = value.length > 24;
   return (
     <div className="min-w-0">
       <p className="ax-caption">{label}</p>
-      <div className="mt-1 flex items-center gap-2">
+      <div className={cn("mt-1 flex gap-2", long ? "flex-col items-stretch sm:flex-row sm:items-center" : "items-center")}>
         <code className="min-w-0 flex-1 break-words rounded-lg border border-border bg-background/60 px-2.5 py-1.5 font-mono text-xs text-foreground">
           {value}
         </code>
@@ -922,6 +925,9 @@ function Wizard({
               {t("Enter only the Name — your registrar adds the domain itself.")}
             </p>
 
+            {/* Sab se bara khatra (purani mail ruk sakti hai) registrar ke general steps se PEHLE dikhe — phone par neeche chhup jata tha. */}
+            {existing && <ExistingMailNotice domain={domain.domain} found={existing} spfToken={spfToken} />}
+
             <div className="mt-6 rounded-2xl border border-border bg-background/40 p-ax-4">
               {hint && (
                 <p className="ax-label ax-in mb-3 inline-flex items-center gap-2 text-success">
@@ -968,8 +974,6 @@ function Wizard({
               </ol>
             </div>
 
-            {existing && <ExistingMailNotice domain={domain.domain} found={existing} spfToken={spfToken} />}
-
             {zone && (
               <p className="ax-body ax-in mt-4 rounded-2xl border border-[var(--cyan-accent)]/30 bg-[var(--cyan-accent)]/5 p-ax-4">
                 <strong className="text-foreground">{domain.domain}</strong> {t("is a subdomain of")}{" "}
@@ -1007,11 +1011,14 @@ function Wizard({
 
         {state.step === 3 && domain && (
           <div className="ax-in mt-ax-7" role="status" aria-live="polite">
-            <div className={cn("flex items-center gap-4", verified && "ax-celebrate")}>
+            {/* Phone: ring upar, heading poori chaudai mein; domain naam dots par tootta hai ("probuyer.axon/etis.com" nahi). */}
+            <div className={cn("flex flex-col items-start gap-4 sm:flex-row sm:items-center", verified && "ax-celebrate")}>
               <Ring done={found} total={total} {...(verified ? { celebrate: true } : {})} />
               <div className="min-w-0">
                 <h3 className="ax-title break-words">
-                  {verified ? `${domain.domain} ${t("is verified")}` : `${t("Checking")} ${domain.domain}`}
+                  {verified
+                    ? `${domain.domain.replace(/\./g, ".\u200b")} ${t("is verified")}`
+                    : `${t("Checking")} ${domain.domain.replace(/\./g, ".\u200b")}`}
                 </h3>
                 <p className="ax-body mt-2 max-w-2xl">
                   {verified
@@ -1064,15 +1071,15 @@ function Wizard({
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-xl border border-border bg-secondary text-steel">
                   <Mail className="size-4" aria-hidden="true" />
                 </span>
-                <div className="min-w-0 flex-1">
+                <div className="min-w-[12rem] flex-1">
                   <p className="ax-label">{t("Your inbox already works while DNS updates")}</p>
-                  <p className="ax-caption mt-0.5">
+                  <p className="ax-caption mt-0.5 [overflow-wrap:anywhere]">
                     {loginAddress
                       ? `${t("Mail sent to")} ${loginAddress} ${t("arrives now. Your company address starts working the moment all five ticks are green.")}`
                       : t("Your company address starts working the moment all five ticks are green.")}
                   </p>
                 </div>
-                <Button asChild variant="outline" size="sm" className="ax-press gap-1.5">
+                <Button asChild variant="outline" size="sm" className="ax-press ax-tap w-full gap-1.5 sm:w-auto">
                   <Link to="/app/mail">
                     {t("Open your inbox")}
                     <ArrowRight className="size-3.5" aria-hidden="true" />

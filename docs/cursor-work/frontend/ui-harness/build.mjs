@@ -56,6 +56,8 @@ const srcs = [
   path.join(REPO, "src/components/app/dashboard/InstallHint.tsx"),
   path.join(REPO, "src/components/app/dashboard/ExpiryWatch.tsx"),
   path.join(REPO, "src/components/app/ComposeOverlay.tsx"),
+  path.join(REPO, "src/components/app/compose/ComposeStudio.tsx"),
+  path.join(REPO, "src/components/app/compose/GhostTextArea.tsx"),
   path.join(HERE, "entry.tsx"),
 ];
 const names = new Set();
@@ -74,11 +76,15 @@ const MAP = {
   "@/lib/expiry": stub("lib.ts"),
   "@/lib/i18n": stub("lib.ts"),
   "@/lib/notify": stub("lib.ts"),
-  "@/lib/plan-surface": stub("lib.ts"),
   "@/components/app/org/OrgBits": stub("ui.tsx"),
   "@/components/state/StateBlock": stub("ui.tsx"),
   "@/components/ui/sheet": stub("ui.tsx"),
-  "@/components/app/compose/ComposeStudio": stub("compose.tsx"),
+  "@/lib/compose": stub("compose-libs.ts"),
+  "@/lib/mail": stub("compose-libs.ts"),
+  "@/lib/mail-predict": stub("compose-libs.ts"),
+  "@/lib/mail-identity": stub("compose-libs.ts"),
+  "@/lib/host": stub("compose-libs.ts"),
+  "@radix-ui/react-label": stub("radix-label.tsx"),
   "@/components/ui/alert-dialog": stub("ui.tsx"),
   "lucide-react": path.join(OUT, "lucide.tsx"),
   "@tanstack/react-router": stub("router.ts"),
@@ -110,7 +116,7 @@ const loadStylesheet = async (id, base) => {
   return { path: p, base: path.dirname(p), content: read(p) };
 };
 const compiler = await compile(read(path.join(REPO, "src/styles.css")), { base: path.join(REPO, "src"), loadStylesheet, loadModule: async () => { throw new Error("no plugins in harness"); } });
-const files = [...srcs, path.join(REPO, "src/components/ui/button.tsx"), path.join(REPO, "src/components/ui/input.tsx"), path.join(HERE, "entry.tsx"), stub("ui.tsx"), stub("compose.tsx")];
+const files = [...srcs, path.join(REPO, "src/components/ui/button.tsx"), path.join(REPO, "src/components/ui/input.tsx"), path.join(REPO, "src/components/ui/textarea.tsx"), path.join(REPO, "src/components/ui/label.tsx"), path.join(HERE, "entry.tsx"), stub("ui.tsx"), stub("radix-label.tsx")];
 const cand = new Set();
 // two tokenisers: one keeps ( ) , inside arbitrary values like grid-cols-[minmax(0,1fr)_...]; the other strips them
 for (const f of files) for (const re of [/[\s"'`<>{}=;]+/, /[\s"'`<>{}()=;,]+/]) for (const t of read(f).split(re)) if (t) cand.add(t);

@@ -1,5 +1,5 @@
 // Usage: node shot.mjs <outDir> <name> <hash> [width] [height] [steps...]
-// steps: click:<text> | label:<aria-label> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
+// steps: click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
 import path from "node:path";
 import { createRequire } from "node:module";
 const TOOLS = process.env.TOOLS || "/opt/npm-tools/node_modules";
@@ -37,6 +37,7 @@ const scroller = () => page.evaluate(() => document.querySelector("main .overflo
 for (const s of steps) {
   const [k, ...r] = s.split(":"); const v = r.join(":");
   if (k === "click") await page.getByText(v, { exact: false }).first().click();
+  else if (k === "into") await page.getByText(v, { exact: false }).first().scrollIntoViewIfNeeded();
   else if (k === "label") await page.getByLabel(v).first().click();
   else if (k === "fill") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph).fill(val); }
   else if (k === "wait") await page.waitForTimeout(+v);
