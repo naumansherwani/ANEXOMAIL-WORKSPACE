@@ -19,6 +19,7 @@ import { Route as CrmAccountsRoute } from "@/routes/app.crm.accounts";
 import { Route as BillingRoute } from "@/routes/app.billing";
 import { Route as AccountRoute } from "@/routes/app.account";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
+import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
 import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
 import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
 
@@ -40,7 +41,10 @@ const ChipsRoute = {
     );
   },
 };
+// #<page>?gate=1&plan=basic[&personal]: the REAL PlanSurfaceGate for that path ("#chat?gate=1&plan=basic&personal" => /app/chat locked for Personal Basic).
+const GateRoute = { component: () => <PlanSurfaceGate><div className="p-6 text-sm">THE REAL PAGE OPENS HERE (not locked)</div></PlanSurfaceGate> };
 const pick = (h: string): R => {
+  if (/[?&]gate=1/.test(h)) return GateRoute as unknown as R;
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
   if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;

@@ -54,3 +54,5 @@ src/components/site/LeadForm.tsx f8927b662e41d639
 src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
+src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
+src/lib/plan-surface.ts 3ec8ae630d178fbb

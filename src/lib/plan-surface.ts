@@ -450,8 +450,10 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
   if (path.startsWith("/app/safety")) {
     if (showSafety(opts.plan, null, kind)) return null;
     return {
-      title: "Safety centre is on Business Pro",
-      body: "The review queue, sealed evidence and device appeals sit on Business Pro. Your package is {package}.",
+      title: personal ? "Safety centre is on Personal Pro" : "Safety centre is on Business Pro",
+      body: personal
+        ? "The review queue, sealed evidence and device appeals sit on Personal Pro and Personal Premium. Your package is {package}."
+        : "The review queue, sealed evidence and device appeals sit on Business Pro. Your package is {package}.",
     };
   }
   return null;

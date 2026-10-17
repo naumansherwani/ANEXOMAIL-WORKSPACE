@@ -35,7 +35,7 @@ export const useAnalytics = (_enabled: boolean) => {
 // ---- 8o founder expiry watch. Hash: expok | expwarn | expcrit | expunknown | expstale | expnone | expfail | nofounder
 export const useAuth = () => {
   const h = location.hash;
-  const plan = /plan=(basic|pro|business|business_pro)/.exec(h)?.[1] ?? (h.includes("basicplan") ? "basic" : "pro");
+  const plan = /plan=(basic|pro|business_pro|business)/.exec(h)?.[1] ?? (h.includes("basicplan") ? "basic" : "pro");
   const kind = h.includes("personal") ? "personal" : "business";
   return { status: "signed-in", refresh: async () => {}, session: { user: { id: "u1", email: "pro.buyer@anexomail.com", onboarded: true, is_founder: !h.includes("nofounder"), workspace_plan: plan, account_kind: kind, anexomail_address: "pro.buyer@anexomail.com" } }, organisation: { id: "o1", name: "Acme Studio", slug: kind === "personal" ? "pro-buyer" : "acme-studio", role: /role=(member|admin)/.exec(h)?.[1] ?? "owner" } };
 };

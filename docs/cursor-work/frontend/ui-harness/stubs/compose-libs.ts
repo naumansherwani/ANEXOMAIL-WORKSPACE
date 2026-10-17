@@ -35,6 +35,8 @@ export const useIdentities = (_ok: boolean) => ({
 export const useSendMail = mut;
 export const addressTone = (a: string | null | undefined) => (a ? { address: a, color: "#7c9cff" } : null);
 export const isAiHost = () => h().includes("aihost");
+export const isPublicMailHost = () => true;
+export const founderSurfaceAllowed = () => false; // gate harness: the mail workspace host, never the founder host
 
 // People / Calendar harness: relative time label used by ContactProfile, rails and timelines.
 export const relativeTime = (iso: string | null | undefined) => {

@@ -66,3 +66,9 @@ TOUCH=1 node shot.mjs $OUT crm-pipe 'crm/pipeline' 390 844            # CRM page
 Naya route add karna: uska import `entry-routes.tsx` ke route map mein, sample data `stubs/api-sample.ts` mein, aur agar naya lib import ho to `build.mjs` ke alias mein ek line.
 
 **Admin (ENTRY=entry-routes.tsx):** `admin-members`, `admin-teams` (+ `?empty=1`, `?err=1` = endpoint 404 "aren't live yet" state, `&role=member|admin` = non-owner view). AlertDialog stub ab real class strings use karta hai (`stubs/ui.tsx`), `click:Remove` / `click:Delete` se dialog khulta hai.
+
+## Locked-page wall (PlanSurfaceGate, 17 Oct 2026)
+
+`#<page>?gate=1&plan=basic|pro|business|business_pro[&personal]` renders the REAL `PlanSurfaceGate` for `/app/<page>` (e.g. `#chat?gate=1&plan=basic&personal`, `#crm/collab?gate=1&plan=pro`, `#safety?gate=1&plan=business`). When the package already opens the page you see "THE REAL PAGE OPENS HERE". Kind is `business` unless the hash contains `personal`. Plan regex lists `business_pro` before `business` on purpose (otherwise `business_pro` silently became `business`).
+
+`#cal` + a file chosen into `input[type=file]` drives the .ics import panel (`#cal?imperr=1` makes every "Standup" fail to shoot the partial-failure state).

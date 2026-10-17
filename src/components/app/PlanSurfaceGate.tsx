@@ -24,14 +24,24 @@ import {
   type WorkspacePlanId,
 } from "@/lib/plan-surface";
 
-// ─── which plan does this surface require? ────────────────────────────────────
-function surfaceRequires(pathname: string): WorkspacePlanId {
-  const p = pathname.replace(/\/+$/, "");
-  if (p.startsWith("/app/org")) return "business";
-  if (p.startsWith("/app/chat")) return "pro";
-  if (p.startsWith("/app/crm")) return "pro";
-  if (p.startsWith("/app/work")) return "pro";
-  return "pro";
+// ─── which plan unlocks this surface? ─────────────────────────────────────────
+// Asked of the SAME rules that locked the page (surfaceDenial), never a second list that can drift: try each
+// paid package above the one the person has and take the first that opens the path. If none does (Org / Domains on a
+// Personal account — locked by account kind; Admin / Speed / AI — not a package feature) there is no upgrade to sell,
+// so no card is shown rather than a button that cannot help.
+const UPGRADE_ORDER: WorkspacePlanId[] = ["pro", "business", "business_pro"];
+const RANK: Record<WorkspacePlanId, number> = { basic: 1, pro: 2, business: 3, business_pro: 4 };
+
+function planThatUnlocks(
+  pathname: string,
+  current: WorkspacePlanId,
+  opts: Omit<Parameters<typeof surfaceDenial>[1], "plan">,
+): WorkspacePlanId | null {
+  for (const plan of UPGRADE_ORDER) {
+    if (RANK[plan] <= RANK[current]) continue;
+    if (surfaceDenial(pathname, { ...opts, plan }) === null) return plan;
+  }
+  return null;
 }
 
 // ─── mini plan card shown in the denial ───────────────────────────────────────
@@ -53,7 +63,7 @@ function UpgradePlanCard({ planId }: { planId: WorkspacePlanId }) {
           </span>
         )}
       </div>
-      <p className="mt-0.5 text-[11px] text-muted-foreground/60">{plan.tagline}</p>
+      <p className="mt-0.5 text-[12px] text-muted-foreground">{plan.tagline}</p>
 
       <div className="my-3 border-t border-border" />
 
@@ -61,12 +71,12 @@ function UpgradePlanCard({ planId }: { planId: WorkspacePlanId }) {
         <span className="text-[20px] font-bold tracking-tight text-foreground">
           {money(plan.monthly)}
         </span>
-        <span className="text-[11px] text-muted-foreground/50">/ mo</span>
+        <span className="text-[12px] text-muted-foreground">/ mo</span>
       </div>
 
       <ul className="flex flex-col gap-1.5">
         {preview.map((f) => (
-          <li key={f} className="flex items-start gap-1.5 text-[11px] text-muted-foreground">
+          <li key={f} className="flex items-start gap-1.5 text-[12px] text-muted-foreground">
             <span className="mt-0.5 text-emerald-400">✓</span>
             <span
               className={
@@ -78,7 +88,7 @@ function UpgradePlanCard({ planId }: { planId: WorkspacePlanId }) {
           </li>
         ))}
         {plan.features.length > 5 && (
-          <li className="text-[10px] text-muted-foreground/40">
+          <li className="text-[11px] text-muted-foreground">
             +{plan.features.length - 5} more features
           </li>
         )}
@@ -86,7 +96,7 @@ function UpgradePlanCard({ planId }: { planId: WorkspacePlanId }) {
 
       <Link
         to="/app/billing"
-        className="mt-4 flex items-center justify-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-[12px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+        className="ax-tap ax-focus ax-press mt-4 flex items-center justify-center gap-1.5 rounded-xl bg-primary px-4 py-2.5 text-[13px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
       >
         <Sparkles className="size-3.5" aria-hidden="true" />
         Upgrade to {plan.name}
@@ -121,14 +131,19 @@ export function PlanSurfaceGate({ children }: { children: ReactNode }) {
 
   if (!denial) return children;
 
-  const neededPlan = surfaceRequires(pathname);
+  const upgradeTo = planThatUnlocks(pathname, billed, {
+    kind,
+    founder: Boolean(session?.user.is_founder),
+    ...hosts,
+  });
+  const kindBound = !upgradeTo && (pathname.startsWith("/app/org") || pathname.startsWith("/app/domains"));
 
   return (
-    <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-6 py-12">
+    <div className="flex min-h-0 flex-1 items-start justify-center overflow-y-auto px-ax-4 py-10 sm:px-6 sm:py-12">
       <div className="flex w-full max-w-xl flex-col items-center gap-6 text-center">
         {/* Lock icon */}
         <span className="flex size-12 items-center justify-center rounded-2xl border border-border bg-card">
-          <Lock className="size-5 text-muted-foreground" />
+          <Lock className="size-5 text-muted-foreground" aria-hidden="true" />
         </span>
 
         {/* Denial copy */}
@@ -141,13 +156,22 @@ export function PlanSurfaceGate({ children }: { children: ReactNode }) {
           </p>
         </div>
 
-        {/* Plan upgrade card */}
-        <UpgradePlanCard planId={neededPlan} />
+        {/* Plan upgrade card — only when a package above this one really opens the page */}
+        {upgradeTo && <UpgradePlanCard planId={upgradeTo} />}
+
+        {kindBound && (
+          <Link
+            to="/app/billing"
+            className="ax-tap ax-focus ax-press inline-flex items-center justify-center rounded-xl border border-border px-4 py-2.5 text-[13px] font-semibold text-foreground"
+          >
+            {t("See what each package includes")}
+          </Link>
+        )}
 
         {/* Back link */}
         <Link
           to="/app"
-          className="text-[11px] font-semibold text-muted-foreground/50 underline-offset-2 hover:text-muted-foreground hover:underline"
+          className="ax-tap ax-focus inline-flex items-center px-2 text-[12px] font-semibold text-muted-foreground underline-offset-2 hover:text-foreground hover:underline"
         >
           {t("Back to dashboard")}
         </Link>
