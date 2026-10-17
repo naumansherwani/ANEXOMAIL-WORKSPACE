@@ -75,7 +75,7 @@ const AFTER = [
   },
   {
     title: "Bring your old mail",
-    body: "Move history, folders and read state from Gmail, Outlook, Zoho or any IMAP host — or ask us to do the whole company for you.",
+    body: "Ask us to move your history and folders from Gmail, Google Workspace, Outlook, Zoho or any IMAP host — a fixed price and a named engineer. Price it on the managed migration page.",
   },
   {
     title: "Prove your domain",

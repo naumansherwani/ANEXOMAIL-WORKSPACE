@@ -66,7 +66,7 @@ const srcs = [
   path.join(HERE, ENTRY),
 ];
 if (SITE) {
-  for (const r of ["index", "plans", "get-started", "onboarding", "auth"]) srcs.push(path.join(REPO, "src/routes", r + ".tsx"));
+  for (const r of ["index", "plans", "get-started", "onboarding", "auth", "migration"]) srcs.push(path.join(REPO, "src/routes", r + ".tsx"));
   for (const f of fs.readdirSync(path.join(REPO, "src/components/site"))) if (f.endsWith(".tsx")) srcs.push(path.join(REPO, "src/components/site", f));
 }
 const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : e.name.endsWith(".tsx") ? [path.join(d, e.name)] : []));
@@ -90,6 +90,7 @@ const MAP = {
   "@/components/app/org/OrgBits": stub("ui.tsx"),
   "@/components/state/StateBlock": stub("ui.tsx"),
   "@/components/ui/sheet": stub("ui.tsx"),
+  "@/components/ui/switch": stub("ui.tsx"),
   "@/lib/compose": stub("compose-libs.ts"),
   "@/lib/mail": stub("compose-libs.ts"),
   "@/lib/mail-predict": stub("compose-libs.ts"),

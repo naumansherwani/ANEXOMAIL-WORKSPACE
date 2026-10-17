@@ -59,7 +59,7 @@ export function LeadForm({ kind, cta, quoteGbp, detail, seats, note }: Props) {
             required
             value={company}
             onChange={(e) => setCompany(e.target.value)}
-            placeholder="NEXATECT Global Ltd"
+            placeholder="Your company Ltd"
             className="mt-2"
           />
         </div>

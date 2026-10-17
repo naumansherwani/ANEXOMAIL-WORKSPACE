@@ -73,3 +73,16 @@ export const SheetHeader = ({ className, children }: { className?: string; child
 export const SheetTitle = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
   <h2 className={cn("text-lg font-semibold text-foreground", className)}>{children}</h2>
 );
+
+// Switch (Radix) stand-in: same size/shape as src/components/ui/switch.tsx (h-5 w-9 track, h-4 w-4 thumb).
+export const Switch = ({ checked, onCheckedChange }: { checked?: boolean; onCheckedChange?: (v: boolean) => void }) => (
+  <button
+    type="button"
+    role="switch"
+    aria-checked={Boolean(checked)}
+    onClick={() => onCheckedChange?.(!checked)}
+    className={cn("peer inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors", checked ? "bg-primary" : "bg-input")}
+  >
+    <span className={cn("pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform", checked ? "translate-x-4" : "translate-x-0")} />
+  </button>
+);

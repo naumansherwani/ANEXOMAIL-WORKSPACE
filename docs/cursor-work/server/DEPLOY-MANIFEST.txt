@@ -48,3 +48,7 @@ src/routes/app.admin.teams.tsx b0386a36d0bb467b
 src/components/app/CrossPlatformBar.tsx ab6434edc184c235
 src/lib/billing-platform.ts 121a9b6e65d8fc91
 src/routes/app.founder_.billing.tsx 66c2dc943a5fb57b
+src/components/site/ConvergenceCanvas.tsx d4f22a2dd32d5da4
+src/routes/migration.tsx fbfcf96604b56446
+src/components/site/LeadForm.tsx f8927b662e41d639
+src/routes/get-started.tsx 26e18cb222848629

@@ -10,6 +10,8 @@ export const api = async <T,>(_path: string, _opts?: unknown): Promise<T> => {
   throw new ApiError("offline (harness)");
 };
 export const sessionToken = () => null;
+export const useMutation = (_o: unknown) => ({ mutate: () => undefined, mutateAsync: async () => undefined, isPending: false, isError: false, isSuccess: false, error: null, reset: () => undefined });
+export const rpcOrRest = async <T,>(): Promise<T> => { throw new Error("harness: no backend"); };
 export const useQuery = (_o: unknown) => ({ data: undefined, isLoading: false, isError: true, error: null });
 
 const hash = () => location.hash;

@@ -5,7 +5,7 @@ import { createRequire } from "node:module";
 const TOOLS = process.env.TOOLS || "/opt/npm-tools/node_modules";
 const { chromium } = createRequire(TOOLS + "/")("playwright");
 const [outDir, name, hash = "empty", w = "1440", h = "900", ...steps] = process.argv.slice(2);
-const browser = await chromium.launch({ executablePath: process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--no-sandbox"] });
+const browser = await chromium.launch({ executablePath: process.env.CHROME || "/opt/pw-browsers/chromium-1194/chrome-linux/chrome", args: ["--no-sandbox", "--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist", "--enable-webgl"] });
 // TOUCH=1: coarse pointer + touch (phone/tablet) so (pointer: coarse) rules (ax-tap, ax-hit, 16px inputs) apply.
 const touch = process.env.TOUCH === "1";
 const page = await (await browser.newContext({ viewport: { width: +w, height: +h }, deviceScaleFactor: 1, hasTouch: touch, isMobile: touch })).newPage();
