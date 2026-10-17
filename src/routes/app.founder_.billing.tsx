@@ -94,7 +94,7 @@ function FounderRevenue() {
           </p>
           <h3 className="ax-heading mt-1 text-foreground">Who needs your reply next</h3>
           <p className="mt-1 text-[12px] text-muted-foreground">
-            Basic 72 hours · Pro 48 hours · Business 24 hours
+            Basic 72 hours · Pro 48 hours · Business 24 hours · Business Pro 12 hours
           </p>
 
           <div className="mt-ax-3">

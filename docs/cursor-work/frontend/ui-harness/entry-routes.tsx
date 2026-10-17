@@ -1,6 +1,6 @@
-// Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, #admin-members, #admin-teams, add ?empty=1 for empty states
+// Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, #admin-members, #admin-teams, #chips, add ?empty=1 for empty states
 // Shell mirrors AppShell: 56px header, <main flex min-h-0 flex-1 flex-col md:flex-row>, phone bottom bar (placeholder, same height).
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
 
 import { Route as CalendarRoute } from "@/routes/app.calendar";
@@ -18,13 +18,31 @@ import { Route as CrmReportsRoute } from "@/routes/app.crm.reports";
 import { Route as CrmAccountsRoute } from "@/routes/app.crm.accounts";
 import { Route as BillingRoute } from "@/routes/app.billing";
 import { Route as AccountRoute } from "@/routes/app.account";
+import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
 import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
 import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
 
 type R = { component: () => JSX.Element; crm?: boolean };
 const CRM: Record<string, unknown> = { leads: CrmLeadsRoute, pipeline: CrmPipelineRoute, relationships: CrmRelRoute, collab: CrmCollabRoute, activity: CrmActivityRoute, tasks: CrmTasksRoute, reports: CrmReportsRoute, accounts: CrmAccountsRoute };
+// #chips: the REAL CrossPlatformBar with a synthetic beforeinstallprompt (shoot with WAIT>=9000: the chip waits 8 s on purpose).
+const ChipsRoute = {
+  component: () => {
+    useEffect(() => {
+      const t = setTimeout(() => { const ev = new Event("beforeinstallprompt") as Event & { prompt: () => Promise<void> }; ev.prompt = async () => {}; window.dispatchEvent(ev); }, 300);
+      return () => clearTimeout(t);
+    }, []);
+    return (
+      <div className="min-h-0 flex-1 p-6">
+        <div className="mx-auto flex h-10 max-w-md items-center rounded-full border border-border px-4 text-sm text-muted-foreground">Search mail, people, threads…</div>
+        <p className="mt-6 text-sm text-muted-foreground">The install chip must never sit on the search field above, and never on the public site.</p>
+        <CrossPlatformBar />
+      </div>
+    );
+  },
+};
 const pick = (h: string): R => {
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
+  if (b.startsWith("chips")) return ChipsRoute as unknown as R;
   if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;
   if (b.startsWith("admin-teams")) return AdminTeamsRoute as unknown as R;
   if (b.startsWith("account")) return AccountRoute as unknown as R;

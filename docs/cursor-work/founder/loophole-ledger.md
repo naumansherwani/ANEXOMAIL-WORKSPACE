@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 19:07 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 19:40 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -41,6 +41,11 @@ Aakhri update: **17 Oct 2026, 19:07 PKT** (`current_time` tool).
 | L31 | **Admin Members/Teams: member "Remove" aur team "Delete" ek hi tap par (koi confirm nahi)** — phone par role pills (~28px) remove icon ke bilkul bagal mein; email phone par kat jaata tha (admin ko pata hi nahi kisko hata raha hai); invite ka Send button/pending-invite email bhi tang | code + apni screenshots (390/820/1440) | confirm dialog (Remove member / Delete team), role pills `ax-tap` 44px, phone par poora email (`break-all`) + controls neeche, Send full-width, copy sach ("sessions revoked" ka dawa hata diya — server se saabit nahi) | READY |
 | L32 | **Invite ka role server ignore karta hai**: Members page `{emails, role}` bhejta hai, `server/routes/workspace.ts` `role: "member"` hard-code karta hai => "Admin" chun kar invite karo to member ban jaata hai | repo audit | OPEN (agent) — live check ke baad (`workspace-api-check.sh`) Brain/Rust mein theek karunga | OPEN |
 | L33 | **Invite accept hone par banda org mein judta hi nahi (repo mein)**: invite email ka `organisation_id/role` sirf Supabase `user_metadata` mein jaata hai aur repo mein koi code usay padhta nahi (aur `user_metadata` user khud badal sakta hai, to usay maan lena security hole hoga). Naya banda `/api/workspace/personal` se apna alag personal workspace pa lega | repo audit | OPEN (agent) — sahi tareeqa: apni invitations table + verified-email match; live DB mein trigger ho sakta hai (check script dikhayegi) | OPEN |
+| L34 | **LIVE (founder ki tasveer): "Install ANEXOMAIL" pill har desktop Chrome/Edge user ke search box ke upar chadha hua** (`CrossPlatformBar` `fixed left-1/2 top-2 z-50`) — public site par bhi | founder ke 4 laptop screenshots | pill neeche (desktop bottom-5, phone bottom bar ke upar), 8 sec baad, sirf `/app` mein, `x` se 30 din chup (localStorage try/catch), 44px | READY |
+| L35 | **LIVE: Windows ka safed classic scrollbar (arrow buttons ke saath) Mail ke tabs aur People list par** — dark stage par bhaddi | founder ke screenshots | `styles.css` mein global thin scrollbar (token ke rang) | READY |
+| L36 | **LIVE: People khali hai to likha "Nothing has arrived in this mailbox yet" jabke Inbox mein mail maujood (apni hi test mail — khud insaan People mein nahi aata)** | founder ke screenshots | copy sach: "as soon as someone else writes to you, or you write to them" | READY |
+| L37 | **Business Pro ka "12h priority support" jhoota tha**: `founder_reply_queue` ka CHECK sirf basic/pro/business aur 24/48/72h leta tha, `enqueue_founder_reply` baqi sab ko 72h (sab se dheema) — to Business Pro ki support mail ya queue mein aati hi nahi thi ya 72h clock par | repo audit (founder ne 12h confirm kiya) | `sql/phase63_business_pro_support_12h.sql` (CHECK 12h + business_pro, function 12h, self-test), founder page copy/type. **Polar/payment ko haath nahi lagaya.** Chalana: `bash sql/run.sh sql/phase63_business_pro_support_12h.sql` | READY (SQL founder chalaye) |
+| L38 | `workspace_subscriptions.response_due_hours` business_pro ke liye 72 rehta hai (Polar handler `responseHours[plan] \|\| 72` likhta hai; kuch padhta nahi) — sirf data ka kachra, SLA nahi | repo audit | Polar NO-TOUCH hai; E-series mein jab founder ijazat de | OPEN (founder-only, harmless) |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
@@ -72,7 +77,8 @@ Aakhri update: **17 Oct 2026, 19:07 PKT** (`current_time` tool).
 | F2 | **8t `milter_default_action` accept→tempfail** | production mail config (GREEN) | founder "haan" |
 | F3 | **D1 PostgreSQL 17.6→18** | database cutover | founder "haan" + staging window |
 | F4 | **M8 viral (V1 "Sent with ANEXOMAIL" line)**, 8l ek-click DNS, P2 SSO, M11 vite.config | product faisle | founder faisla |
-| F5 | **P1 wording**: Business Pro "12h priority support" vs /plans ke Priority Support "2 business days" | plan ka wada | founder wording |
+| F5 | ~~P1 wording~~ **BAND (founder, 17 Oct 19:34 PKT): Business Pro = 12 ghante** (plans.ts/personal-tiers.ts pehle se 12h; ab queue bhi 12h — L37). Naya sawal F5b neeche | founder faisla | — | CLOSED |
+| F5b | **Priority Support add-on (£790/mo) "2 business days" ab Business Pro ke shamil 12h se SUST hai** — Business Pro wale ko add-on bechna ajeeb; /plans, /enterprise, revenue.ts, pages.tsx par yeh wada hai. Mashwara: add-on ko "named founder contact + quarterly review + migration priority" par rakho, reply-time ka number hata do ya Basic/Pro/Business ke liye likho | plan ka wada | founder wording | founder faisla |
 | F6 | **R2 Stalwart (Rust mail server)** | mail ka production raasta | parallel staging + founder "haan" |
 
 ## D. Real-phone check (founder, 2 minute, pull ke baad)

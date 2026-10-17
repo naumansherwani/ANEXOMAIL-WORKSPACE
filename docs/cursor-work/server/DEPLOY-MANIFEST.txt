@@ -10,7 +10,7 @@ src/components/app/AppShell.tsx 45cee19ca2bba60e
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
-src/styles.css 306f5047c547e43c
+src/styles.css 1ca7acbe178125db
 src/routes/app.mail.$folder.tsx e12b7a4339d2728e
 src/routes/app.mail.$folder.$threadId.tsx 84035874e5427fcd
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -24,7 +24,7 @@ src/components/site/SiteNav.tsx f93d2264ef6a5806
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
 src/routes/index.tsx ee7157f9e0bb9ffc
 src/routes/plans.tsx eb14659726822692
-src/routes/app.people.tsx 14a3c13781a35f2d
+src/routes/app.people.tsx 9bbd1102fd13aed9
 src/routes/app.work.tsx 8a4153dd6e7a49c8
 src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
 src/components/app/people/CompanyProfile.tsx e6a0ad41d52df8de
@@ -45,3 +45,6 @@ src/routes/app.account.tsx 843adbe1d21b639f
 src/routes/app.admin.tsx 87cc5625a1cbcad6
 src/routes/app.admin.members.tsx 678f7e5dbcfb9a2f
 src/routes/app.admin.teams.tsx b0386a36d0bb467b
+src/components/app/CrossPlatformBar.tsx ab6434edc184c235
+src/lib/billing-platform.ts 121a9b6e65d8fc91
+src/routes/app.founder_.billing.tsx 66c2dc943a5fb57b

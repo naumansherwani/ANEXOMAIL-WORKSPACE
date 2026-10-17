@@ -187,6 +187,13 @@
     color-scheme: dark;
   }
 
+  /* Thin, quiet scrollbars everywhere. Windows draws the classic light bar with arrow buttons on every overflow strip
+     (Mail tabs, People list) — loud on a dark stage. Colour comes from the tokens, so it follows the theme. */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in oklab, var(--muted-foreground) 40%, transparent) transparent;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);

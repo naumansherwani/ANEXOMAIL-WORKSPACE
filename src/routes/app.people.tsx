@@ -196,7 +196,7 @@ function PeopleRail({
       <EmptyState
         icon={<Users className="size-5" />}
         title={t("No people yet")}
-        body={t("People appear here from real conversations. Nothing has arrived in this mailbox yet.")}
+        body={t("People appear here from real conversations — as soon as someone else writes to you, or you write to them.")}
       />
     );
   }

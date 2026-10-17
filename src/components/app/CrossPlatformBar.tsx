@@ -5,7 +5,8 @@
  */
 
 import { useEffect, useState } from "react";
-import { Download, Laptop, SignalLow, WifiOff } from "lucide-react";
+import { useRouterState } from "@tanstack/react-router";
+import { Download, Laptop, SignalLow, WifiOff, X } from "lucide-react";
 
 import { useNetwork } from "@/lib/network";
 import { deviceId, useClaimHandoff, useHandoffDrafts } from "@/lib/handoff";
@@ -13,10 +14,27 @@ import { notify } from "@/lib/notify";
 
 type InstallPrompt = Event & { prompt: () => Promise<void>; userChoice?: Promise<unknown> };
 
+// Once someone says "not now" the install chip stays away for 30 days. Storage can throw (private window, blocked site data),
+// so every read/write is wrapped and the chip simply behaves as "not dismissed".
+const INSTALL_DISMISS_KEY = "ax:install-dismissed";
+const INSTALL_QUIET_MS = 30 * 24 * 60 * 60 * 1000;
+function installDismissed(): boolean {
+  try {
+    const at = Number(window.localStorage.getItem(INSTALL_DISMISS_KEY) || 0);
+    return at > 0 && Date.now() - at < INSTALL_QUIET_MS;
+  } catch {
+    return false;
+  }
+}
+
 export function CrossPlatformBar() {
   const net = useNetwork();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [prompt, setPrompt] = useState<InstallPrompt | null>(null);
   const [installed, setInstalled] = useState(false);
+  const [quiet, setQuiet] = useState(false);
+  // Never during the first seconds: the person came to read mail, not to be sold an install.
+  const [settled, setSettled] = useState(false);
 
   useEffect(() => {
     const onPrompt = (event: Event) => {
@@ -30,12 +48,16 @@ export function CrossPlatformBar() {
     window.addEventListener("beforeinstallprompt", onPrompt);
     window.addEventListener("appinstalled", onInstalled);
     setInstalled(window.matchMedia("(display-mode: standalone)").matches);
+    setQuiet(installDismissed());
+    const timer = window.setTimeout(() => setSettled(true), 8000);
     return () => {
       window.removeEventListener("beforeinstallprompt", onPrompt);
       window.removeEventListener("appinstalled", onInstalled);
+      window.clearTimeout(timer);
     };
   }, []);
 
+  const inApp = pathname === "/app" || pathname.startsWith("/app/");
   const chips: { key: string; icon: React.ReactNode; text: string; onClick?: () => void }[] = [];
 
   if (!net.online) {
@@ -52,10 +74,12 @@ export function CrossPlatformBar() {
       text: "Low data mode — images off",
     });
   }
-  if (prompt && !installed) {
+  // Install is offered inside the app only (never on the public site), once things have settled, and never again for 30 days after "x".
+  const showInstall = Boolean(prompt) && !installed && !quiet && settled && inApp;
+  if (showInstall && prompt) {
     chips.push({
       key: "install",
-      icon: <Download className="size-3" aria-hidden="true" />,
+      icon: <Download className="size-3.5" aria-hidden="true" />,
       text: "Install ANEXOMAIL",
       onClick: () => {
         void prompt.prompt();
@@ -66,29 +90,53 @@ export function CrossPlatformBar() {
 
   if (chips.length === 0) return null;
 
+  const dismissInstall = () => {
+    try {
+      window.localStorage.setItem(INSTALL_DISMISS_KEY, String(Date.now()));
+    } catch {
+      /* storage blocked: the chip just comes back next visit */
+    }
+    setQuiet(true);
+  };
+
+  // Bottom, not top: the top centre is the search field. On phones sit above the bottom navigation bar (4rem) + home indicator.
   return (
-    <div className="pointer-events-auto fixed left-1/2 top-2 z-50 flex -translate-x-1/2 flex-wrap items-center justify-center gap-1.5">
-      {chips.map((chip) =>
-        chip.onClick ? (
-          <button
-            key={chip.key}
-            type="button"
-            onClick={chip.onClick}
-            className="ax-press flex items-center gap-1.5 rounded-full border border-border bg-card/95 px-2.5 py-1 text-[11px] font-semibold text-foreground backdrop-blur"
-          >
-            {chip.icon}
-            {chip.text}
-          </button>
-        ) : (
-          <span
-            key={chip.key}
-            className="flex items-center gap-1.5 rounded-full border border-border bg-card/95 px-2.5 py-1 text-[11px] font-semibold text-muted-foreground backdrop-blur"
-          >
-            {chip.icon}
-            {chip.text}
-          </span>
-        ),
-      )}
+    <div className="pointer-events-none fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-50 flex justify-center px-ax-4 md:bottom-5">
+      <div className="pointer-events-auto flex max-w-full flex-wrap items-center justify-center gap-1.5">
+        {chips.map((chip) =>
+          chip.onClick ? (
+            <span
+              key={chip.key}
+              className="flex items-center rounded-full border border-border bg-card/95 shadow-lg backdrop-blur"
+            >
+              <button
+                type="button"
+                onClick={chip.onClick}
+                className="ax-focus ax-press ax-tap flex items-center gap-1.5 rounded-full py-1 ps-3.5 pe-2 text-[12px] font-semibold text-foreground"
+              >
+                {chip.icon}
+                {chip.text}
+              </button>
+              <button
+                type="button"
+                onClick={dismissInstall}
+                aria-label="Not now — don't offer to install again for a while"
+                className="ax-focus ax-press ax-tap flex items-center justify-center rounded-full pe-2.5 ps-1.5 text-muted-foreground hover:text-foreground"
+              >
+                <X className="size-3.5" aria-hidden="true" />
+              </button>
+            </span>
+          ) : (
+            <span
+              key={chip.key}
+              className="flex items-center gap-1.5 rounded-full border border-border bg-card/95 px-3 py-1.5 text-[12px] font-semibold text-muted-foreground shadow-lg backdrop-blur"
+            >
+              {chip.icon}
+              {chip.text}
+            </span>
+          ),
+        )}
+      </div>
     </div>
   );
 }

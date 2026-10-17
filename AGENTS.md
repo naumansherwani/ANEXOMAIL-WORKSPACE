@@ -199,6 +199,12 @@ Founder ka hukm: agent CEO hai; **khud screenshot le kar** dekhe (user ke dimaag
 - **Har theek hui cheez ke saath founder ko ek hi pull command**, jo `pm2 restart anexomail-web --update-env && pm2 save` karti hai (purana cache nikalne ke liye; `pull.sh` yeh hamesha karta hai) aur **server==repo ka saboot** chhapti hai (`src/ same/differ/missing`). Repo hamesha up-to-date, server hamesha up-to-date.
 - **Har summary ke aakhir mein "Loophole ledger"**: jo band hue, jo khule hain (wajah + kis ka kaam + agla qadam), aur sach likha ho — jhoota "ek bhi nahi chhoda" kabhi nahi. Ledger ki ek jagah: `docs/cursor-work/founder/loophole-ledger.md` (har fix par update; DONE sirf live saboot par, Rule 5).
 
+### Rule 22 — Founder workspace sirf latest Rust stack par; founder ka pasandida kaam ka style (locked 17 Oct 2026 19:34 PKT, founder)
+Founder ka hukm: founder ka account/protocol awam user se **alag** hai. Founder ki poori profile/workspace **sirf latest technology** par: Rust (axum + tokio async), tRPC-style typed RPC (`/rpc/*`), WebTransport + QUIC (quinn / wtransport). **Founder workspace mein Bun nahi, Node nahi, webhook nahi** — kuch mix nahi (awam ka raasta alag rahe; Polar payment webhook alag cheez hai aur NO-TOUCH hai).
+- **Aaj ki sachai pehle (Rule 5):** founder pages ki kuch calls abhi Bun REST fallback par bhi ja sakti hain, aur page ka HTML/JS Bun SSR se aata hai. Pehle har founder call ka audit (`docs/cursor-work/founder/founder-stack-audit.md`), phir ek ek call Rust par; **fallback tab hi band** jab uska Rust proc live verify ho (warna founder ka page tootega).
+- Rust code sandbox mein compile nahi hota: Rust badlav `rust-safe-deploy.sh` se, founder ke server par compile + rollback ke saath.
+- **Founder ko jo kaam ka style pasand hai (usne kaha "love you ho gaya", 17 Oct 19:34 PKT) — yehi chalta rahe:** (1) har theek hui cheez ke saath **ek hi pull command** (pm2 restart + save), (2) agent **khud screenshot le kar** assess kare (390 / 820 / 1366 laptop / 1440), (3) kaam **bina ruke jaari**, ek batch ke baad agla, (4) har summary ke end mein **sach wali Loophole ledger**, (5) repo + memory file hamesha taaza, (6) founder ke bheje screenshots (live site ki tasveer) ko pehle padho — woh asli user ki nazar hai.
+
 ---
 
 ## PENDING (founder action required)
