@@ -68,6 +68,7 @@ run workspace-api-check.sh 60
 run switch-journey-check.sh 50
 run crm-tenant-check.sh 50
 run org-authz-check.sh 60
+run rls-open-check.sh 80
 run calendar-invite-check.sh 60
 } > "$OUT" 2>&1
 echo
