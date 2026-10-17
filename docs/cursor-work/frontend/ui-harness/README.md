@@ -31,3 +31,15 @@ TOUCH=1 node shot.mjs <outDir> rc2-390-kb '#compose' 390 480
 node shot.mjs <outDir> rc2-820 '#compose' 820 1180
 ```
 (`into:<label>=<text>` step se field mein likha ja sakta hai.) Hash/route ke naam ke liye `entry.tsx` dekho.
+
+## Naye steps / scenarios (17 Oct 2026, 8d/8e/8f)
+
+- `btn:<exact button name>` — role=button, exact (jaise `btn:Send`). `ff:<ms>` — fake clock aage (`CLOCK=1` zaroori; 30 DNS polls = 10 min ek step mein).
+- Domains hash: `list` (verified + pending domain + address), `list-stuck` (verify kabhi aage nahi barhta), domain naam mein `taken` => `domain_taken`.
+- Compose stub ab send par foran success deta hai (post-send states dekhne ke liye).
+
+```
+node shot.mjs <out> q-mine list 1440 900 "click:Connect a domain" "fill:company.com=acme-studio.com" "click:Continue"
+CLOCK=1 TOUCH=1 node shot.mjs <out> q-stuck list-stuck 390 844 "click:Continue setup" "click:I've added them" "ff:640000" "into:Still not found"
+TOUCH=1 node shot.mjs <out> q-sent list 390 844 "click:Write the test email" "btn:Send" "wait:800" "into:Your first email is on its way"
+```

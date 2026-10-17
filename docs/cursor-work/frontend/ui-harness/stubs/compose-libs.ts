@@ -12,8 +12,16 @@ export const useTemplates = () => ({ data: { templates: [{ id: "t1", name: "Intr
 export const useSnippets = () => ({ data: { snippets: [{ id: "s1", shortcut: "/thanks", body: "Thanks!" }, { id: "s2", shortcut: "/meeting", body: "Can we meet?" }, { id: "s3", shortcut: "/sig", body: "— N" }] } });
 export const useDraftVersions = (_id?: string) => ({ data: undefined as undefined | { versions: { id: string; saved_at: string; body: string }[] }, isError: false, isPending: false });
 export const useSaveDraft = mut;
-export const useSendConfidence = mut;
-export const useScheduleSend = mut;
+// Succeeds immediately so "after send" states (e.g. the Domains first-email card) can be photographed.
+const mutOk = () => ({
+  mutate: (_a?: unknown, o?: { onSuccess?: (r: unknown) => void }) => o?.onSuccess?.({ issues: [], id: "stub" }),
+  mutateAsync: async () => ({}),
+  isPending: false,
+  isError: false,
+  data: undefined as undefined | { issues: { severity: string; message: string }[] },
+});
+export const useSendConfidence = mutOk;
+export const useScheduleSend = mutOk;
 export const useLeoCompose = mut;
 export const useAskJimmy = mut;
 export const useCreateFollowUp = mut;

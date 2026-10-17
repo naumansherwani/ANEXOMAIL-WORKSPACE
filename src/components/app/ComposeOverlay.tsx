@@ -15,10 +15,19 @@ import { ComposeStudio } from "@/components/app/compose/ComposeStudio";
  */
 export function ComposeOverlay({
   onClose,
+  onSent,
   initialTo = "",
+  initialSubject = "",
+  initialBody = "",
+  initialIdentity = "",
 }: {
   onClose: () => void;
+  /** Called once the mail was accepted for sending (before the overlay closes). */
+  onSent?: () => void;
   initialTo?: string;
+  initialSubject?: string;
+  initialBody?: string;
+  initialIdentity?: string;
 }) {
   const [minimised, setMinimised] = useState(false);
 
@@ -56,7 +65,19 @@ export function ComposeOverlay({
         </div>
       </header>
 
-      {!minimised && <ComposeStudio variant="overlay" initialTo={initialTo} onSent={onClose} />}
+      {!minimised && (
+        <ComposeStudio
+          variant="overlay"
+          initialTo={initialTo}
+          initialSubject={initialSubject}
+          initialBody={initialBody}
+          initialIdentity={initialIdentity}
+          onSent={() => {
+            onSent?.();
+            onClose();
+          }}
+        />
+      )}
     </aside>
   );
 }

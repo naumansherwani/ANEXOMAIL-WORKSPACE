@@ -45,7 +45,7 @@ import { useIdentities, useSendMail } from "@/lib/mail";
 import { addressTone } from "@/lib/mail-identity";
 import { useAuth } from "@/lib/auth";
 import { isAiHost } from "@/lib/host";
-import { showMultipleIdentities, showProMailTools, surfaceFromSession } from "@/lib/plan-surface";
+import { showProMailTools, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 const TONES: { id: ComposeTone; label: string }[] = [
@@ -66,6 +66,10 @@ type StudioProps = {
   threadId?: string;
   initialTo?: string;
   initialSubject?: string;
+  /** Pre-filled message text (e.g. the first-email test from Domains). */
+  initialBody?: string;
+  /** Start "From" on this address (must be one of the workspace's own addresses; the server re-checks). */
+  initialIdentity?: string;
   /** Language detected from the sender — reply starts here (feature 22). */
   detectedLanguage?: string | null;
   inReplyTo?: string;
@@ -87,6 +91,8 @@ export function ComposeStudio({
   threadId,
   initialTo = "",
   initialSubject = "",
+  initialBody = "",
+  initialIdentity = "",
   detectedLanguage,
   inReplyTo,
   onSent,
@@ -96,7 +102,6 @@ export function ComposeStudio({
   const [aiHost] = useState(isAiHost);
   const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
   const proMail = showProMailTools(billed, null, kind);
-  const identitiesOk = showMultipleIdentities(billed, null, kind);
   const leoUi = aiHost;
 
   const [to, setTo] = useState(initialTo);
@@ -104,11 +109,11 @@ export function ComposeStudio({
   const [bcc, setBcc] = useState("");
   const [showMore, setShowMore] = useState(false);
   const [subject, setSubject] = useState(initialSubject);
-  const [body, setBody] = useState("");
+  const [body, setBody] = useState(initialBody);
   const [sendAt, setSendAt] = useState("");
   const [scheduling, setScheduling] = useState(false);
   const [zen, setZen] = useState(false);
-  const [identity, setIdentity] = useState<string>("");
+  const [identity, setIdentity] = useState<string>(initialIdentity);
   const [language, setLanguage] = useState(detectedLanguage ?? "English");
   const [variables, setVariables] = useState<Record<string, string>>({});
   const [draftId, setDraftId] = useState<string | undefined>();
@@ -119,7 +124,9 @@ export function ComposeStudio({
 
   const templates = useTemplates();
   const snippets = useSnippets();
-  const identities = useIdentities(identitiesOk);
+  // Data decides, not the plan: a Basic user who connected their own domain still has a company
+  // address and must be able to send FROM it (the server allow-list is the real gate, not the plan).
+  const identities = useIdentities(true);
   const versions = useDraftVersions(showVersions ? draftId : undefined);
   const saveDraft = useSaveDraft();
   const confidence = useSendConfidence();
@@ -319,7 +326,7 @@ export function ComposeStudio({
       <div className={cn("mx-auto flex w-full flex-col gap-ax-3", zen && "max-w-3xl")}>
         {/* identity + language */}
         <div className="flex flex-wrap items-center gap-2">
-          {identitiesOk && (identities.data?.identities.length ?? 0) > 0 ? (
+          {(identities.data?.identities.length ?? 0) > 1 ? (
             <div className="flex items-center gap-1.5">
               <span
                 aria-hidden

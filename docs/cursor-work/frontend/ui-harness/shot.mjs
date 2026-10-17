@@ -1,5 +1,5 @@
 // Usage: node shot.mjs <outDir> <name> <hash> [width] [height] [steps...]
-// steps: click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
+// steps: ff:<ms> (needs CLOCK=1) | btn:<exact button name> | click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
 import path from "node:path";
 import { createRequire } from "node:module";
 const TOOLS = process.env.TOOLS || "/opt/npm-tools/node_modules";
@@ -31,16 +31,20 @@ await page.route("**/cloudflare-dns.com/**", (r) => {
 });
 page.on("pageerror", (e) => errs.push("pageerror: " + e.message));
 page.on("console", (m) => { if (m.type() === "error") errs.push("console: " + m.text()); });
+// CLOCK=1: fake timers so long waits (e.g. 30 DNS polls = 10 min) can be skipped with the `ff:<ms>` step.
+if (process.env.CLOCK === "1") await page.clock.install({ time: Date.now() });
 await page.goto("file://" + path.join(outDir, "index.html") + "#" + hash);
 await page.waitForTimeout(700);
 const scroller = () => page.evaluate(() => document.querySelector("main .overflow-y-auto"));
 for (const s of steps) {
   const [k, ...r] = s.split(":"); const v = r.join(":");
   if (k === "click") await page.getByText(v, { exact: false }).first().click();
+  else if (k === "btn") await page.getByRole("button", { name: v, exact: true }).first().click();
   else if (k === "into") await page.getByText(v, { exact: false }).first().scrollIntoViewIfNeeded();
   else if (k === "label") await page.getByLabel(v).first().click();
   else if (k === "fill") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph).fill(val); }
   else if (k === "wait") await page.waitForTimeout(+v);
+  else if (k === "ff") await page.clock.runFor(+v);
   else if (k === "scroll") await page.evaluate((t) => { const el = document.querySelector("main .overflow-y-auto"); if (el) el.scrollTop = t === "bottom" ? el.scrollHeight : t === "top" ? 0 : +t; }, v);
   else if (k === "shot") await page.screenshot({ path: path.join(outDir, v) });
 }

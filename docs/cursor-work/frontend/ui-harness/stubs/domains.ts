@@ -91,6 +91,7 @@ void useMut;
 export const useAddDomain = mutHook<string, unknown>("add", async (name) => {
   const d = name.trim().toLowerCase();
   if (!d.includes(".")) return { ok: false, error: "invalid_domain" };
+  if (d.includes("taken")) return { ok: false, error: "domain_taken" }; // 8e: another workspace owns it
   const id = "d" + (domains.length + 1) + Date.now();
   const dom = mkDom(id, d, 0, false);
   domains = [...domains, dom];
@@ -100,6 +101,7 @@ export const useAddDomain = mutHook<string, unknown>("add", async (name) => {
 });
 export const useVerifyDomain = mutHook<string, unknown>("verify", async (id) => {
   verifyCalls += 1;
+  if (scenario().includes("stuck")) { const d0 = domains.find((x) => x.id === id)!; return { ok: true, ready: false, checks: Object.fromEntries(d0.records.map((r) => [r.key, r.ok])), domain: d0 }; } // 8d: DNS never shows up
   domains = domains.map((x) => {
     if (x.id !== id) return x;
     const have = x.records.filter((r) => r.ok).length;

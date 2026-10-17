@@ -13,12 +13,14 @@ import {
   Mail,
   Plus,
   RefreshCw,
+  Send,
   ShieldCheck,
   Trash2,
   X,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 
+import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { Chip } from "@/components/app/org/OrgBits";
 import { ErrorState } from "@/components/state/StateBlock";
 import {
@@ -34,7 +36,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { ApiError } from "@/lib/api";
-import { useSummary } from "@/lib/dashboard";
+import { useAnalytics, useSummary } from "@/lib/dashboard";
 import {
   domainErrorText,
   useAddDomain,
@@ -693,6 +695,15 @@ function Ring({ done, total, celebrate }: { done: number; total: number; celebra
 
 /* --------------------------------- wizard --------------------------------- */
 
+/** Server (`org_domain_add`) jaisa saaf: scheme/www/path hata kar chhota. Isse apna-vs-doosre ka farq pehle hi pata chal jata hai. */
+function normaliseDomain(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .replace(/^(https?:\/\/)?(www\.)?/, "")
+    .replace(/[/:].*$/, "");
+}
+
 type WizardState = { step: 1 | 2 | 3; domainId: string | null; prefill?: string };
 
 function Wizard({
@@ -723,6 +734,8 @@ function Wizard({
   const rootRef = useRef<HTMLElement | null>(null);
   const [name, setName] = useState(state.prefill ?? "");
   const [problem, setProblem] = useState<string | null>(null);
+  // 8e: "domain_taken" ka seedha matlab do alag halaat hain — yahin (is workspace mein pehle se) ya kisi aur ke paas.
+  const [taken, setTaken] = useState<{ kind: "mine"; domain: OrgDomain } | { kind: "other"; name: string } | null>(null);
   const [registrar, setRegistrar] = useState("namecheap");
   const [polls, setPolls] = useState(0);
   const [nextIn, setNextIn] = useState(POLL_MS / 1000);
@@ -813,9 +826,20 @@ function Wizard({
 
   const submitName = () => {
     setProblem(null);
+    setTaken(null);
+    const clean = normaliseDomain(name);
+    const mine = domains.find((d) => d.domain === clean);
+    if (mine) {
+      setTaken({ kind: "mine", domain: mine });
+      return;
+    }
     add.mutate(name, {
       onSuccess: (r) => {
         if (!r.ok || !r.domain) {
+          if (r.error === "domain_taken") {
+            setTaken({ kind: "other", name: clean });
+            return;
+          }
           setProblem(domainErrorText(r.error, { plan: planLabel(r.plan), limit: r.limit ?? null }));
           return;
         }
@@ -912,6 +936,59 @@ function Wizard({
               </button>
             )}
             {problem && <p role="alert" className="ax-shake ax-label mt-3 text-danger">{problem}</p>}
+            {taken?.kind === "mine" && (
+              <div role="status" className="ax-plane mt-4 flex max-w-xl flex-wrap items-center gap-3 rounded-2xl p-ax-4">
+                <Globe className="size-5 shrink-0 text-steel" aria-hidden="true" />
+                <div className="min-w-[12rem] flex-1">
+                  <p className="ax-label [overflow-wrap:anywhere]">
+                    {taken.domain.domain} {t("is already in this workspace")}
+                  </p>
+                  <p className="ax-caption mt-0.5">
+                    {taken.domain.status === "verified"
+                      ? t("It is verified. Create its addresses next.")
+                      : t("Pick up where you left off — your five records are waiting.")}
+                  </p>
+                </div>
+                <Button
+                  type="button"
+                  variant="seal"
+                  size="sm"
+                  className="ax-press ax-tap w-full gap-1.5 sm:w-auto"
+                  onClick={() => {
+                    if (taken.domain.status === "verified") onDone(taken.domain);
+                    else setState({ step: 2, domainId: taken.domain.id });
+                  }}
+                >
+                  {taken.domain.status === "verified" ? t("Create an address") : t("Continue setup")}
+                  <ArrowRight className="size-3.5" aria-hidden="true" />
+                </Button>
+              </div>
+            )}
+            {taken?.kind === "other" && (
+              <div role="alert" className="ax-plane mt-4 max-w-xl rounded-2xl border border-warning/40 p-ax-4">
+                <div className="flex items-start gap-3">
+                  <AlertTriangle className="mt-0.5 size-5 shrink-0 text-warning" aria-hidden="true" />
+                  <div className="min-w-0">
+                    <p className="ax-label [overflow-wrap:anywhere]">
+                      {taken.name} {t("is already connected to another ANEXOMAIL workspace")}
+                    </p>
+                    <p className="ax-caption mt-1">
+                      {t("If it is yours — for example from an old or test sign-up — sign in to that account, remove the domain there, then connect it here.")}
+                    </p>
+                    <p className="ax-caption mt-2">
+                      {t("Can't find that account?")}{" "}
+                      <a
+                        className="ax-focus font-medium text-foreground underline underline-offset-2"
+                        href={`mailto:hello@anexomail.com?subject=${encodeURIComponent(`Domain already connected: ${taken.name}`)}&body=${encodeURIComponent(`Hello,\n\nI own ${taken.name} but it shows as already connected to another workspace. Please help me move it to my account.\n`)}`}
+                      >
+                        {t("Tell us at hello@anexomail.com")}
+                      </a>{" "}
+                      {t("and we will help you move it.")}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
             {atCap && <p className="ax-caption mt-3 text-warning">{capLabel}</p>}
           </div>
         )}
@@ -1085,6 +1162,39 @@ function Wizard({
                     <ArrowRight className="size-3.5" aria-hidden="true" />
                   </Link>
                 </Button>
+              </div>
+            )}
+
+            {!verified && (
+              <p className="ax-caption mt-4 max-w-xl">
+                {t("DNS usually updates within 5–60 minutes, rarely longer. You don't have to wait here — close this page and come back later; your inbox already works.")}
+              </p>
+            )}
+
+            {!verified && polls >= POLL_MAX && (
+              <div role="status" className="ax-plane mt-5 rounded-2xl border border-warning/40 p-ax-4">
+                <p className="ax-label">{t("Still not found — let's check")}</p>
+                <ul className="ax-caption mt-2 list-disc space-y-1.5 pl-5">
+                  <li className="[overflow-wrap:anywhere]">
+                    {t("Still missing:")}{" "}
+                    {domain.records
+                      .filter((r) => !r.ok)
+                      .map((r) => CHECK_LABEL[r.key].title)
+                      .join(", ") || t("nothing — press Check now")}
+                  </li>
+                  <li>
+                    {t("Was each record saved? Many DNS pages need a separate Save or Publish click after you add them.")}
+                  </li>
+                  <li className="[overflow-wrap:anywhere]">
+                    {t("In the Name box type only the part we show (like _dmarc). The DNS page adds your domain itself — if you see")}{" "}
+                    <span className="font-mono">{`_dmarc.${domain.domain}.${domain.domain}`}</span> {t("the domain was doubled.")}
+                  </li>
+                  {hint && (
+                    <li>
+                      {t("Your DNS looks hosted at")} {hint.label}. {t("Records must be added there, not at another company.")}
+                    </li>
+                  )}
+                </ul>
               </div>
             )}
 
@@ -1593,6 +1703,71 @@ function AddressRow({ a, onRemove }: { a: OrgAddress; onRemove: () => void }) {
   );
 }
 
+/* --------------------------- 8f: pehli mail ka test --------------------------- */
+
+/**
+ * Verified domain + pehla address ban gaya? Ab "bas bhejo": From = naya address, To = aap ka apna login address
+ * (poora raasta ek hi baar mein: bhejna -> DKIM -> Postfix -> wapas inbox mein aana). Zoho/Google yahan user ko
+ * admin console par khali chhor dete hain. Koi nakli "sent" nahi — asli Compose, asli send; mail jaye tabhi card badalta hai.
+ */
+function FirstMailCard({
+  address,
+  to,
+  sent,
+  onWrite,
+}: {
+  address: string;
+  to: string | null;
+  sent: boolean;
+  onWrite: () => void;
+}) {
+  const { t } = useLocale();
+  return (
+    <section
+      className={cn(
+        "ax-plane ax-in relative rounded-2xl p-ax-4",
+        sent && "border border-success/40",
+      )}
+      aria-label={t("Send your first email")}
+    >
+      <div className="flex flex-wrap items-center gap-3">
+        <span
+          className={cn(
+            "grid size-10 shrink-0 place-items-center rounded-xl border",
+            sent ? "border-success/40 bg-success/10 text-success" : "border-border bg-secondary text-steel",
+          )}
+        >
+          {sent ? <CheckCircle2 className="size-5" aria-hidden="true" /> : <Send className="size-5" aria-hidden="true" />}
+        </span>
+        <div className="min-w-[12rem] flex-1">
+          <p className="ax-eyebrow">{sent ? t("Sent") : t("Try it now")}</p>
+          <h4 className="ax-heading mt-1 [overflow-wrap:anywhere]">
+            {sent ? t("Your first email is on its way") : t("Send your first email")}
+          </h4>
+          <p className="ax-caption mt-0.5 [overflow-wrap:anywhere]">
+            {sent
+              ? `${t("It leaves from")} ${address}${to ? ` ${t("and should land in")} ${to} ${t("within a minute — it is held for 30 seconds so you can still undo.")}` : "."}`
+              : `${t("From")} ${address}${to ? ` ${t("to")} ${to}` : ""}. ${t("We fill it in — press Send and watch it arrive.")}`}
+          </p>
+        </div>
+        {sent ? (
+          <Button asChild variant="outline" size="sm" className="ax-press ax-tap w-full gap-1.5 sm:w-auto">
+            <Link to="/app/mail">
+              {t("Open your inbox")}
+              <ArrowRight className="size-3.5" aria-hidden="true" />
+            </Link>
+          </Button>
+        ) : (
+          <Button type="button" variant="seal" className="ax-press ax-tap w-full gap-1.5 sm:w-auto" onClick={onWrite}>
+            <Send className="size-4" aria-hidden="true" />
+            {t("Write the test email")}
+          </Button>
+        )}
+      </div>
+    </section>
+  );
+}
+
 /* ---------------------------------- page ---------------------------------- */
 
 function DomainsPage() {
@@ -1600,10 +1775,12 @@ function DomainsPage() {
   const domainsQ = useDomains();
   const addressesQ = useAddresses();
   const summaryQ = useSummary(true);
+  const analyticsQ = useAnalytics(true);
   const removeDomain = useRemoveDomain();
   const removeAddress = useRemoveAddress();
   const [wizard, setWizard] = useState<WizardState | null>(null);
   const [focusDomain, setFocusDomain] = useState<string | null>(null);
+  const [testMail, setTestMail] = useState<"idle" | "composing" | "sent">("idle");
   const [confirm, setConfirm] = useState<
     { kind: "domain"; d: OrgDomain } | { kind: "address"; a: OrgAddress } | null
   >(null);
@@ -1632,6 +1809,12 @@ function DomainsPage() {
   const mailboxReason = mailboxFull
     ? `${t("Your")} ${planLabel(addr?.plan)} ${t("package allows")} ${addr?.mailbox_cap} ${t("mailboxes. Aliases don't count — or upgrade.")}`
     : null;
+
+  // 8f: pehla asli company address (verified domain par, alias nahi) — usi se test mail.
+  const firstAddress = useMemo(() => {
+    const ok = new Set(domains.filter((d) => d.status === "verified").map((d) => d.id));
+    return (addr?.addresses ?? []).find((a) => a.active && a.kind !== "alias" && ok.has(a.domain_id)) ?? null;
+  }, [domains, addr]);
 
   const goAddress = useCallback((id: string | null) => {
     setFocusDomain(id);
@@ -1763,6 +1946,15 @@ function DomainsPage() {
           )}
         </div>
 
+        {firstAddress && ((analyticsQ.data?.sent ?? 0) === 0 || testMail !== "idle") && (
+          <FirstMailCard
+            address={firstAddress.address}
+            to={addr?.login_address ?? null}
+            sent={testMail === "sent"}
+            onWrite={() => setTestMail("composing")}
+          />
+        )}
+
         {/* Pehle woh jo abhi hai (login + company addresses), phir jo bana sakte hain. */}
         {addressesQ.isError ? (
           <ErrorState
@@ -1790,6 +1982,17 @@ function DomainsPage() {
 
         <AddressForm domains={domains} preferredDomainId={focusDomain} disabledReason={mailboxReason} />
       </section>
+
+      {testMail === "composing" && firstAddress && (
+        <ComposeOverlay
+          initialIdentity={firstAddress.address}
+          initialTo={addr?.login_address ?? ""}
+          initialSubject="My first email from my own domain"
+          initialBody={`Hello,\n\nThis is my first email from ${firstAddress.address}. If you can read it, my company email works.\n`}
+          onSent={() => setTestMail("sent")}
+          onClose={() => setTestMail((m) => (m === "sent" ? "sent" : "idle"))}
+        />
+      )}
 
       <AlertDialog open={Boolean(confirm)} onOpenChange={(o) => !o && setConfirm(null)}>
         <AlertDialogContent>
