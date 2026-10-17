@@ -21,15 +21,15 @@ export function useQuery<T, E = Error>(opts: Opts<T>) {
   useEffect(() => { runners.add(run); return () => { runners.delete(run); }; }, [run]);
   return { data: state.data, error: state.error, isPending: state.pending, isLoading: state.pending, isFetching: state.pending, isError: !!state.error, refetch: run };
 }
-export function useMutation<V = unknown, R = unknown>(opts: { mutationFn?: (v: V) => Promise<R>; onSuccess?: (r: R) => void } = {}) {
-  const [pending, setPending] = useState(false);
-  const mutate = (v: V, cbs?: { onSuccess?: (r: R) => void; onError?: (e: Error) => void }) => {
-    setPending(true);
+export function useMutation<R = unknown, E = Error, V = unknown>(opts: { mutationFn?: (v: V) => Promise<R>; onSuccess?: (r: R) => void } = {}) {
+  const [st, setSt] = useState<{ pending: boolean; data?: R; error: E | null }>({ pending: false, error: null });
+  const mutate = (v: V, cbs?: { onSuccess?: (r: R) => void; onError?: (e: E) => void }) => {
+    setSt({ pending: true, error: null });
     Promise.resolve(opts.mutationFn ? opts.mutationFn(v) : undefined).then(
-      (r) => { setPending(false); opts.onSuccess?.(r as R); cbs?.onSuccess?.(r as R); },
-      (e) => { setPending(false); cbs?.onError?.(e as Error); },
+      (r) => { setSt({ pending: false, data: r as R, error: null }); opts.onSuccess?.(r as R); cbs?.onSuccess?.(r as R); },
+      (e) => { setSt({ pending: false, error: e as E }); cbs?.onError?.(e as E); },
     );
   };
-  return { mutate, mutateAsync: async (v: V) => (opts.mutationFn ? opts.mutationFn(v) : undefined), isPending: pending, error: null, reset: () => {} };
+  return { mutate, mutateAsync: async (v: V) => (opts.mutationFn ? opts.mutationFn(v) : undefined), isPending: st.pending, data: st.data, error: st.error, reset: () => setSt({ pending: false, error: null }) };
 }
 export const useQueryClient = () => ({ invalidateQueries: async () => { setTimeout(() => runners.forEach((r) => r()), 0); }, setQueryData: () => {}, getQueryData: () => undefined, cancelQueries: async () => {} });

@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { CalendarDays, Download, ListChecks, Sparkles } from "lucide-react";
 
 import { CostMeter, TimeZoneTruthBar, ConflictChip, apiHref } from "@/components/app/calendar/Bits";
+import { Guests } from "@/components/app/calendar/Guests";
 import { NoteDoc } from "@/components/app/work/NoteDoc";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
@@ -70,6 +71,8 @@ export function EventDetail({ id }: { id: string }) {
           <TimeZoneTruthBar attendees={event.attendees} />
         </section>
       )}
+
+      <Guests event={event} />
 
       <section className="mt-ax-6">
         <p className="ax-eyebrow">Agenda</p>

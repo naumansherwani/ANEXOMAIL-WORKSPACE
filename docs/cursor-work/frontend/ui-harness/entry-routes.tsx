@@ -1,9 +1,10 @@
 // Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, #admin-members, #admin-teams, #chips, add ?empty=1 for empty states
 // Shell mirrors AppShell: 56px header, <main flex min-h-0 flex-1 flex-col md:flex-row>, phone bottom bar (placeholder, same height).
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
 
 import { Route as CalendarRoute } from "@/routes/app.calendar";
+import { Route as RsvpRoute } from "@/routes/rsvp";
 import { Route as DashboardRoute } from "@/routes/app.index";
 import { Route as PeopleRoute } from "@/routes/app.people";
 import { Route as WorkRoute } from "@/routes/app.work";
@@ -85,6 +86,7 @@ const AdminRoute = {
 const pick = (h: string): R => {
   if (/[?&]gate=1/.test(h)) return GateRoute as unknown as R;
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
+  if (b.startsWith("rsvp")) return RsvpRoute as unknown as R;
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
   if (b.startsWith("inbox")) return InboxRoute as unknown as R;
   if (b.startsWith("dashboard")) return DashboardRoute as unknown as R;
@@ -101,10 +103,18 @@ const pick = (h: string): R => {
 };
 const sub = (cb: () => void) => (window.addEventListener("hashchange", cb), () => window.removeEventListener("hashchange", cb));
 
+// Toast stand-in: the last message the REAL notify.* would have shown (visible in screenshots).
+function Toasts() {
+  const [msg, setMsg] = useState<string | null>(null);
+  useEffect(() => { (window as unknown as { __toast: (m: string) => void }).__toast = (m) => setMsg(m); }, []);
+  if (!msg) return null;
+  return <div role="status" className="fixed inset-x-4 bottom-20 z-50 mx-auto max-w-md rounded-lg border border-border bg-card px-4 py-3 text-xs text-foreground shadow-lg md:bottom-6">{msg}</div>;
+}
 function Shell() {
   const h = useSyncExternalStore(sub, () => location.hash, () => "");
   const picked = pick(h);
   const Page = picked.component;
+  if (/^#\/?rsvp/.test(h)) return <Page />; // public page: no app chrome
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background">
       <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4 text-sm font-bold">
@@ -120,6 +130,7 @@ function Shell() {
           {picked.crm ? <CrmStage><Page /></CrmStage> : <Page />}
         </main>
       </div>
+      <Toasts />
       <div className="flex h-16 shrink-0 items-center justify-around border-t border-border bg-card text-[11px] text-muted-foreground md:hidden">
         <span>Dashboard</span><span>Mail</span><span>People</span><span>Calendar</span><span>More</span>
       </div>

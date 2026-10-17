@@ -1,9 +1,9 @@
 import { useSyncExternalStore } from "react";
 export const useLocale = () => ({ t: (s: string) => s });
 export const notify = {
-  done: (m: string) => (window as unknown as { __toast?: (m: string) => void }).__toast?.(m),
+  done: (m: string, d?: string) => (window as unknown as { __toast?: (m: string) => void }).__toast?.(m + (d ? " — " + d : "")),
   info: (m: string, d?: string) => (window as unknown as { __toast?: (m: string) => void }).__toast?.(m + (d ? " — " + d : "")),
-  failed: (m: string) => (window as unknown as { __toast?: (m: string) => void }).__toast?.(m),
+  failed: (m: string, o?: { description?: string }) => (window as unknown as { __toast?: (m: string) => void }).__toast?.(m + (o?.description ? " — " + o.description : "")),
 };
 export const normalizeWorkspacePlan = (p?: string) => p ?? "pro";
 export const packageCopyName = (p: string) => (p === "pro" ? "Pro" : p);

@@ -44,6 +44,7 @@ import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as StorageRouteImport } from './routes/storage'
+import { Route as RsvpRouteImport } from './routes/rsvp'
 import { Route as TrialEndedRouteImport } from './routes/trial-ended'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
@@ -349,6 +350,11 @@ const StatusRoute = StatusRouteImport.update({
 const StorageRoute = StorageRouteImport.update({
   id: '/storage',
   path: '/storage',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RsvpRoute = RsvpRouteImport.update({
+  id: '/rsvp',
+  path: '/rsvp',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrialEndedRoute = TrialEndedRouteImport.update({
@@ -1047,6 +1053,7 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
+  '/rsvp': typeof RsvpRoute
   '/trial-ended': typeof TrialEndedRoute
   '/work': typeof WorkRoute
   '/ai/automation': typeof AiAutomationRoute
@@ -1214,6 +1221,7 @@ export interface FileRoutesByTo {
   '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
+  '/rsvp': typeof RsvpRoute
   '/trial-ended': typeof TrialEndedRoute
   '/work': typeof WorkRoute
   '/ai/automation': typeof AiAutomationRoute
@@ -1373,6 +1381,7 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
+  '/rsvp': typeof RsvpRoute
   '/trial-ended': typeof TrialEndedRoute
   '/work': typeof WorkRoute
   '/ai_/automation': typeof AiAutomationRoute
@@ -1543,6 +1552,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/status'
     | '/storage'
+    | '/rsvp'
     | '/trial-ended'
     | '/work'
     | '/ai/automation'
@@ -1710,6 +1720,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/status'
     | '/storage'
+    | '/rsvp'
     | '/trial-ended'
     | '/work'
     | '/ai/automation'
@@ -1868,6 +1879,7 @@ export interface FileRouteTypes {
     | '/settings'
     | '/status'
     | '/storage'
+    | '/rsvp'
     | '/trial-ended'
     | '/work'
     | '/ai_/automation'
@@ -2037,6 +2049,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRoute
   StatusRoute: typeof StatusRoute
   StorageRoute: typeof StorageRoute
+  RsvpRoute: typeof RsvpRoute
   TrialEndedRoute: typeof TrialEndedRoute
   WorkRoute: typeof WorkRoute
   AiAutomationRoute: typeof AiAutomationRoute
@@ -2293,6 +2306,13 @@ declare module '@tanstack/react-router' {
       path: '/storage'
       fullPath: '/storage'
       preLoaderRoute: typeof StorageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rsvp': {
+      id: '/rsvp'
+      path: '/rsvp'
+      fullPath: '/rsvp'
+      preLoaderRoute: typeof RsvpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trial-ended': {
@@ -3618,6 +3638,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRoute,
   StatusRoute: StatusRoute,
   StorageRoute: StorageRoute,
+  RsvpRoute: RsvpRoute,
   TrialEndedRoute: TrialEndedRoute,
   WorkRoute: WorkRoute,
   AiAutomationRoute: AiAutomationRoute,

@@ -15,7 +15,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { ApiError } from "@/lib/api";
-import { rpcOrRest } from "@/lib/rpc";
+import { rpc, rpcOrRest } from "@/lib/rpc";
 
 /* ------------------------------------------------------------------ types */
 
@@ -26,6 +26,25 @@ export type AttendeeLocalTime = {
   local_start: string | null;
   /** Server decides what "unsociable" means for that person's working hours. */
   unsociable: boolean;
+  /** Calendar v2 (engine): the guest's answer and what happened to their invitation. */
+  response?: RsvpResponse;
+  invite_status?: InviteStatus;
+  invite_error?: string | null;
+  rsvp_at?: string | null;
+};
+
+export type RsvpResponse = "needs_action" | "accepted" | "tentative" | "declined";
+export type InviteStatus = "not_sent" | "sent" | "failed";
+
+/** What the engine reports after it tried to e-mail the invitations — never guessed in the browser. */
+export type InviteResult = { address: string; status: "sent" | "failed" | "skipped"; error?: string };
+export type InviteSummary = {
+  engine?: string;
+  sent: number;
+  failed: number;
+  skipped: number;
+  results: InviteResult[];
+  note?: string;
 };
 
 export type MeetingCost = {
@@ -57,6 +76,19 @@ export type CalendarEvent = {
   conflict: boolean;
   /** Set when the event collides with a protected deep-work window. */
   shield_conflict: boolean;
+  /** iTIP SEQUENCE — goes up every time the organiser changes or cancels. */
+  sequence?: number;
+};
+
+export type GuestRow = {
+  address: string;
+  role: string;
+  response: RsvpResponse;
+  rsvp_at: string | null;
+  rsvp_comment: string | null;
+  invite_status: InviteStatus;
+  invite_sent_at: string | null;
+  invite_error: string | null;
 };
 
 export type AvailabilitySlot = {
@@ -285,13 +317,25 @@ export type NewMeeting = {
   location?: string;
   thread_id?: string;
   timezone?: string;
+  /** false = save only, send no e-mail. The engine default is to invite. */
+  invite?: boolean;
+  /** Human readable time in the organiser's zone, printed in the invitation mail. */
+  when_label?: string;
+  organiser_name?: string;
+};
+
+export type CreatedMeeting = {
+  event: CalendarEvent;
+  /** Absent when the old route answered: the meeting was saved but NO invitation went out. */
+  invites?: InviteSummary;
+  ignored?: { invalid: string[]; duplicate: string[] };
 };
 
 export function useCreateMeeting() {
   const qc = useQueryClient();
-  return useMutation<{ event: CalendarEvent }, ApiError, NewMeeting>({
+  return useMutation<CreatedMeeting, ApiError, NewMeeting>({
     mutationFn: (payload) =>
-      rpcOrRest<{ event: CalendarEvent }>(
+      rpcOrRest<CreatedMeeting>(
         "calendar.create",
         { path: "/api/calendar/events", method: "POST", body: payload },
         payload,
@@ -301,6 +345,123 @@ export function useCreateMeeting() {
       void qc.invalidateQueries({ queryKey: ["dashboard"] });
     },
   });
+}
+
+export type MeetingChange = {
+  id: string;
+  starts_at?: string;
+  duration_minutes?: number;
+  title?: string;
+  agenda?: string;
+  location?: string;
+  cancel?: boolean;
+  /** Tell the guests (default on). */
+  notify?: boolean;
+  when_label?: string;
+  organiser_name?: string;
+};
+
+/** Reschedule / edit / cancel. The engine bumps SEQUENCE and mails every guest the update or the cancellation. */
+export function useUpdateMeeting() {
+  const qc = useQueryClient();
+  return useMutation<{ event: CalendarEvent; invites?: InviteSummary }, ApiError, MeetingChange>({
+    mutationFn: (payload) =>
+      rpcOrRest(
+        "calendar.update",
+        { path: `/api/calendar/events/${payload.id}`, method: "PATCH", body: payload },
+        payload,
+      ),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ["calendar"] });
+    },
+  });
+}
+
+/** Re-send only to the guests whose invitation failed or who have not answered. */
+export function useResendInvites() {
+  const qc = useQueryClient();
+  return useMutation<
+    { event: CalendarEvent; invites: InviteSummary },
+    ApiError,
+    { id: string; when_label?: string; organiser_name?: string }
+  >({
+    mutationFn: (payload) =>
+      rpcOrRest(
+        "calendar.invites.resend",
+        { path: `/api/calendar/events/${payload.id}/invites`, method: "POST", body: payload },
+        payload,
+      ),
+    onSuccess: () => {
+      void qc.invalidateQueries({ queryKey: ["calendar"] });
+    },
+  });
+}
+
+/** RSVP + invitation ledger for one meeting (engine only — no legacy twin exists). */
+export function useGuests(id: string | undefined) {
+  return useQuery<
+    {
+      event_id: string;
+      status: string;
+      sequence: number;
+      organiser: string | null;
+      is_organiser: boolean;
+      attendees: GuestRow[];
+    },
+    ApiError
+  >({
+    queryKey: ["calendar", "guests", id],
+    queryFn: () => rpc("calendar.guests", { id }),
+    enabled: Boolean(id),
+    retry: false,
+    staleTime: 5_000,
+  });
+}
+
+export type TimeWindow = { start: string; end: string };
+export type FindTimeResult = { slots: TimeWindow[]; checked: string[]; engine?: string };
+
+/** Exact common-free-time maths runs in the engine (UTC intervals); the browser only supplies the hours to search. */
+export function useFindTime() {
+  return useMutation<
+    FindTimeResult,
+    ApiError,
+    {
+      addresses: string[];
+      windows: TimeWindow[];
+      duration_minutes: number;
+      step_minutes?: number;
+      buffer_minutes?: number;
+      limit?: number;
+    }
+  >({
+    mutationFn: (payload) => rpc<FindTimeResult>("calendar.findtime", payload),
+  });
+}
+
+/* ---------------------------------------------------------- public RSVP */
+
+export type RsvpView = {
+  found: boolean;
+  title: string;
+  agenda: string | null;
+  location: string | null;
+  starts_at: string;
+  ends_at: string;
+  organiser: string | null;
+  cancelled: boolean;
+  address: string;
+  response: RsvpResponse;
+  rsvp_at: string | null;
+  error?: string;
+};
+
+export function rsvpLookup(token: string) {
+  return rpc<RsvpView>("calendar.rsvp.lookup", { token });
+}
+
+export function rsvpRespond(token: string, response: "yes" | "maybe" | "no", comment?: string) {
+  return rpc<RsvpView>("calendar.rsvp.respond", { token, response, comment: comment ?? "" });
 }
 
 export function useTaskAction() {
@@ -414,6 +575,27 @@ export function minutesLabel(minutes: number) {
   if (minutes < 60) return `${Math.round(minutes)}m`;
   const hours = minutes / 60;
   return `${hours % 1 === 0 ? hours : hours.toFixed(1)}h`;
+}
+
+/** "Monday 19 October 2026, 15:00–15:30 GMT+5" — printed in the invitation mail, in the organiser's own zone. */
+export function whenLabel(startIso: string, minutes: number, timeZone?: string) {
+  const start = new Date(startIso);
+  const end = new Date(start.getTime() + minutes * 60_000);
+  const opts = timeZone ? { timeZone } : {};
+  const day = start.toLocaleDateString("en-GB", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    ...opts,
+  });
+  const clock = (d: Date) =>
+    d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, ...opts });
+  const zone =
+    new Intl.DateTimeFormat("en-GB", { timeZoneName: "short", ...opts })
+      .formatToParts(start)
+      .find((p) => p.type === "timeZoneName")?.value ?? "";
+  return `${day}, ${clock(start)}–${clock(end)}${zone ? ` ${zone}` : ""}`;
 }
 
 export function isoDate(date: Date) {

@@ -207,7 +207,54 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
     if (key === "dashboard.calendar") return { events: e ? [] : EVENTS().slice(0, 3).map((x) => ({ id: x.id, title: x.title, starts_at: x.starts_at, ends_at: x.ends_at, location: x.location, all_day: false })) };
     if (key === "dashboard.ai-usage") return { enabled: false, plan: null, credits_total: 0, credits_used: 0, period_end: null };
   }
+  // ---- Calendar v2 (invitations / RSVP / find-a-time). Flags in the hash: inv=ok|partial (create report; default = old engine, no report),
+  //      guests=off (engine pending), find=off (find-a-time not live), find=none (no common time).
+  if (key === "calendar.guests") {
+    if (/[?&]guests=off/.test(location.hash)) throw new ApiError("Not found", 404, "not_found");
+    const t = (h: number) => new Date(Date.now() - h * 3600e3).toISOString();
+    return { event_id: String(input?.id), status: /[?&]cancelled=1/.test(location.hash) ? "cancelled" : "confirmed", sequence: 1, organiser: "me@anexomail.com", is_organiser: !/[?&]guest=1/.test(location.hash), attendees: [
+      { address: "me@anexomail.com", role: "required", response: "accepted", rsvp_at: null, rsvp_comment: null, invite_status: "not_sent", invite_sent_at: null, invite_error: null },
+      { address: "ali@axonetis.com", role: "required", response: "accepted", rsvp_at: t(3), rsvp_comment: null, invite_status: "sent", invite_sent_at: t(5), invite_error: null },
+      { address: "sara@acme-studio.co.uk", role: "required", response: "tentative", rsvp_at: t(2), rsvp_comment: "Can join for the first half", invite_status: "sent", invite_sent_at: t(5), invite_error: null },
+      { address: "tom@northwind.co.uk", role: "required", response: "declined", rsvp_at: t(1), rsvp_comment: null, invite_status: "sent", invite_sent_at: t(5), invite_error: null },
+      { address: "priya@brightpath.io", role: "required", response: "needs_action", rsvp_at: null, rsvp_comment: null, invite_status: "sent", invite_sent_at: t(5), invite_error: null },
+      { address: "accounts.payable.northern-region@very-long-domain-name-international.example", role: "required", response: "needs_action", rsvp_at: null, rsvp_comment: null, invite_status: "failed", invite_sent_at: null, invite_error: "550 5.1.1 user unknown" },
+    ] };
+  }
+  if (key === "calendar.findtime") {
+    if (/[?&]find=off/.test(location.hash)) throw new ApiError("Unknown procedure", 404, "unknown_proc");
+    if (/[?&]find=none/.test(location.hash)) return { slots: [], checked: input?.addresses, engine: "rust" };
+    const step = (Number(input?.step_minutes) || 30) * 60000, dur = (Number(input?.duration_minutes) || 30) * 60000;
+    const out: { start: string; end: string }[] = [];
+    for (const w of (input?.windows as { start: string; end: string }[]) ?? []) {
+      for (let t = new Date(w.start).getTime(); t + dur <= new Date(w.end).getTime(); t += step) {
+        const d = new Date(t); const hh = d.getHours() + d.getMinutes() / 60;
+        if (hh >= 12 && hh < 13.5) continue;              // lunch: somebody is busy
+        if (d.getDate() % 2 === 0 && hh < 11) continue;   // an even-dated morning is blocked
+        out.push({ start: d.toISOString(), end: new Date(t + dur).toISOString() });
+      }
+    }
+    return { slots: out.slice(0, Number(input?.limit) || 40), checked: ["me@anexomail.com", ...((input?.addresses as string[]) ?? [])], engine: "rust" };
+  }
+  if (key === "calendar.update" || key === "calendar.invites.resend") {
+    return { event: { id: String(input?.id) }, invites: { engine: "rust", sent: 2, failed: 0, skipped: 0, results: [] } };
+  }
+  if (key === "calendar.rsvp.lookup" || key === "calendar.rsvp.respond") {
+    const tok = String(input?.token ?? "");
+    if (tok === "gone") throw new ApiError("This invitation link is not valid.", 404, "not_found");
+    if (tok === "down") throw new ApiError("Calendar failed", 500, "server_error");
+    const base = { found: true, title: "Customer call — Axonetis renewal", agenda: "Agree the renewal price and the 2027 seat count.\nBring last quarter's usage numbers.", location: "https://meet.example.com/abc-defg-hij", starts_at: at(2, 15, 0, 45)[0], ends_at: at(2, 15, 0, 45)[1], organiser: "nauman@anexomail.com", cancelled: tok === "cancelled", address: "guest@axonetis.com", response: tok === "answered" ? "tentative" : "needs_action", rsvp_at: null };
+    if (key === "calendar.rsvp.respond") { const m: Record<string, string> = { yes: "accepted", maybe: "tentative", no: "declined" }; return { ...base, response: m[String(input?.response)] ?? "needs_action", rsvp_at: new Date().toISOString() }; }
+    return base;
+  }
   if (key === "calendar.create") {
+    const inv = /[?&]inv=(ok|partial)/.exec(location.hash)?.[1];
+    if (inv) {
+      const gs = ((input?.attendees as string[]) ?? []).length;
+      const base = { event: { id: "new-" + Math.random().toString(36).slice(2, 8) } };
+      if (inv === "ok") return { ...base, invites: { engine: "rust", sent: gs, failed: 0, skipped: 0, results: [] } };
+      return { ...base, invites: { engine: "rust", sent: Math.max(1, gs - 1), failed: 1, skipped: 0, results: [{ address: String((input?.attendees as string[])?.[gs - 1] ?? "x@y.z"), status: "failed", error: "550 5.1.1 user unknown" }] } };
+    }
     // Import test: #cal?imperr=1 makes every "Standup" fail so the partial-failure state can be shot.
     if (/[?&]imperr=1/.test(location.hash) && String(input?.title ?? "").includes("Standup")) throw new ApiError("Calendar service is busy", 503, "unavailable");
     return { event: { id: "imp-" + Math.random().toString(36).slice(2, 8) } };
