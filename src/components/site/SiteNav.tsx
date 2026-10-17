@@ -32,7 +32,7 @@ export function SiteNav() {
           <BrandMark home={false} />
         </Link>
 
-        <div className="mx-auto hidden items-center gap-7 md:flex">
+        <div className="mx-auto hidden items-center gap-7 lg:flex">
           {links.map((l) => (
             <Link
               key={l.to}
@@ -56,7 +56,7 @@ export function SiteNav() {
           </a>
         </div>
 
-        <div className="hidden shrink-0 items-center gap-2 md:flex">
+        <div className="hidden shrink-0 items-center gap-2 lg:flex">
           <LanguagePicker />
           <Link
             to="/auth"
@@ -76,14 +76,14 @@ export function SiteNav() {
           type="button"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="ml-auto flex size-9 items-center justify-center rounded-xl border border-border text-foreground md:hidden"
+          className="ml-auto flex size-9 items-center justify-center rounded-xl border border-border text-foreground lg:hidden"
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
       </nav>
 
       {open && (
-        <div className="border-t border-border bg-card md:hidden">
+        <div className="border-t border-border bg-card lg:hidden">
           <div className="ax-container flex flex-col gap-1 py-4">
             {links.map((l) => (
               <Link

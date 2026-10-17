@@ -43,3 +43,10 @@ node shot.mjs <out> q-mine list 1440 900 "click:Connect a domain" "fill:company.
 CLOCK=1 TOUCH=1 node shot.mjs <out> q-stuck list-stuck 390 844 "click:Continue setup" "click:I've added them" "ff:640000" "into:Still not found"
 TOUCH=1 node shot.mjs <out> q-sent list 390 844 "click:Write the test email" "btn:Send" "wait:800" "into:Your first email is on its way"
 ```
+
+## Public site (M5 funnel audit)
+
+`ENTRY=entry-site.tsx node build.mjs <outDir>` builds the *public* routes (asli `src/routes/{index,plans,get-started,onboarding,auth}.tsx` + `src/components/site/*`) with the same Tailwind CSS. Hash picks the page: `#home | #plans | #getstarted | #onboarding | #auth` (query ok: `#auth?mode=signup|forgot|reset`; add `-signed` style via `#signed`). Stubs: `stubs/motion.tsx` (framer-motion/motion/react → plain elements), `stubs/site-libs.ts` (api/auth/i18n/locale/react-query), `stubs/router.ts` (Link, `Route.useSearch()` through the route's own `validateSearch`), `stubs/radix-checkbox.tsx`.
+
+Overflow check at any width (finds elements past the viewport):
+`FULL=1 TOUCH=1 node shot.mjs <outDir> <name> home 820 1180` → read the `page: {scrollW, winW}` line — `scrollW > winW` means horizontal overflow (with `isMobile` the layout viewport silently grows, e.g. 820 → 980).

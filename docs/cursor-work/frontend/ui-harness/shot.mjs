@@ -49,6 +49,7 @@ for (const s of steps) {
   else if (k === "shot") await page.screenshot({ path: path.join(outDir, v) });
 }
 const m = await page.evaluate(() => { const el = document.querySelector("main .overflow-y-auto"); const inner = [...document.querySelectorAll("main *")].filter((e) => e !== el && (e.scrollTop || e.scrollLeft)).map((e) => (e.tagName + "." + String(e.className).slice(0, 30) + ":" + e.scrollTop + "," + e.scrollLeft)); return el ? { scrollH: el.scrollHeight, clientH: el.clientHeight, innerScrolled: inner } : null; });
-await page.screenshot({ path: path.join(outDir, name + ".png") });
-console.log(name, "scroller:", JSON.stringify(m), errs.length ? "\nERRORS:\n" + errs.join("\n") : "no-errors");
+const docW = await page.evaluate(() => ({ scrollW: document.documentElement.scrollWidth, winW: window.innerWidth, scrollH: document.documentElement.scrollHeight }));
+await page.screenshot({ path: path.join(outDir, name + ".png"), fullPage: process.env.FULL === "1" });
+console.log(name, "page:", JSON.stringify(docW), docW.scrollW > docW.winW ? "HORIZONTAL-OVERFLOW" : "", "scroller:", JSON.stringify(m), errs.length ? "\nERRORS:\n" + errs.join("\n") : "no-errors");
 await browser.close();

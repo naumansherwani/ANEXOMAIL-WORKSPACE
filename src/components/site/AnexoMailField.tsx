@@ -48,7 +48,7 @@ export function AnexoMailField({
           placeholder="yourname"
           aria-label={`${label || "Email"} (anexomail.com is already set)`}
           onChange={(e) => onChange(anexomailLocalPart(e.target.value))}
-          className="min-w-0 flex-1 bg-transparent px-3 text-[15px] font-semibold text-[#0B1220] outline-none placeholder:font-normal placeholder:text-[#6B7280]"
+          className="w-0 min-w-0 flex-1 bg-transparent px-3 text-[15px] font-semibold text-[#0B1220] outline-none placeholder:font-normal placeholder:text-[#6B7280]"
         />
         <span
           aria-hidden
