@@ -33,6 +33,7 @@ pub fn owns(proc: &str) -> bool {
             | "calendar.invites.resend"
             | "calendar.busy"
             | "calendar.findtime"
+            | "calendar.guests"
     )
 }
 
@@ -446,6 +447,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         "calendar.invites.resend" => resend(&me, input).await,
         "calendar.busy" => busy(&me, input).await,
         "calendar.findtime" => findtime(&me, input).await,
+        "calendar.guests" => guests(&me, input).await,
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
 }
@@ -861,6 +863,34 @@ async fn resend(me: &Who, input: &Value) -> axum::response::Response {
         .into_response()
 }
 
+/// Who was invited, who answered, and what happened to each invitation. Never exposes the RSVP tokens.
+async fn guests(me: &Who, input: &Value) -> axum::response::Response {
+    let id = st(input, "id");
+    let ev = match load_own_event(me, &id).await {
+        Ok(e) => e,
+        Err(r) => return r,
+    };
+    let rows = attendee_rows(&id).await;
+    crate::ok(json!({
+        "event_id": id,
+        "status": st(&ev, "status"),
+        "sequence": num(&ev, "sequence").unwrap_or(0),
+        "organiser": ev.get("organiser").cloned().unwrap_or(Value::Null),
+        "is_organiser": st(&ev, "organiser").to_lowercase() == me.email,
+        "attendees": rows.iter().map(|r| json!({
+            "address": st(r, "address"),
+            "role": st(r, "role"),
+            "response": st(r, "response"),
+            "rsvp_at": r.get("rsvp_at").cloned().unwrap_or(Value::Null),
+            "rsvp_comment": r.get("rsvp_comment").cloned().unwrap_or(Value::Null),
+            "invite_status": st(r, "invite_status"),
+            "invite_sent_at": r.get("invite_sent_at").cloned().unwrap_or(Value::Null),
+            "invite_error": r.get("invite_error").cloned().unwrap_or(Value::Null),
+        })).collect::<Vec<_>>(),
+    }))
+    .into_response()
+}
+
 fn addresses_of(input: &Value) -> Vec<String> {
     input
         .get("addresses")
@@ -942,13 +972,17 @@ async fn busy(me: &Who, input: &Value) -> axum::response::Response {
 }
 
 async fn findtime(me: &Who, input: &Value) -> axum::response::Response {
-    let addrs = addresses_of(input);
+    let mut addrs = addresses_of(input);
     if addrs.is_empty() {
         return fail(
             StatusCode::BAD_REQUEST,
             "no_addresses",
             "Add at least one valid address",
         );
+    }
+    // the organiser is always part of the search — a time that clashes with their own day is no time at all
+    if !addrs.contains(&me.email) {
+        addrs.insert(0, me.email.clone());
     }
     let mut windows: Vec<Interval> = Vec::new();
     for w in input
