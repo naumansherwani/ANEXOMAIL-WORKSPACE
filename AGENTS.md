@@ -193,6 +193,12 @@ Founder ka hukm (17 Oct 06:04 PKT): backend par **latest technology, koi comprom
 - "Latest" ka matlab verify kiya hua: version/tareekh official source se, andaza nahi (Rule 17 jaisa: purani records pehle).
 - **Agent = CEO + user ka dimaagh.** Maqsad: user ko lage product uska apna hai, competitors se behtar aur aasaan. **Basic, Pro, Business, Business Pro — har plan ka duniya ka best experience**, cinematic frontend; plan-wise soch `docs/cursor-work/founder/plan-experience-2026-10-17.md` mein. Blueprint ke gaps tarteeb se (Rule 14), Rule 19 (mobile + tablet) ke saath.
 
+### Rule 21 — Mission: user ko anexomail.com tak laana; loophole khud band karo; har fix ke saath pull + pm2 restart; end par loophole ledger (locked 17 Oct 2026 18:24 PKT, founder)
+Founder ka hukm: agent CEO hai; **khud screenshot le kar** dekhe (user ke dimaagh se) ke visitor kaise anexomail.com par aaye, ruke aur khareede/signup kare — yehi mission hai. Har chat ka context repo mein update rehta hai (Rule 18).
+- **Loophole/gap khud theek karo, jab tak 100% na ho sakoon nahi.** Jo agent theek kar sakta hai (frontend, docs, scripts, Rust source) woh isi chakkar mein; jo sirf founder kar sakta hai (DNS records, production mail config ka 'haan', paise/account) woh saaf likha jaye — chhupa nahi, bhoola nahi.
+- **Har theek hui cheez ke saath founder ko ek hi pull command**, jo `pm2 restart anexomail-web --update-env && pm2 save` karti hai (purana cache nikalne ke liye; `pull.sh` yeh hamesha karta hai) aur **server==repo ka saboot** chhapti hai (`src/ same/differ/missing`). Repo hamesha up-to-date, server hamesha up-to-date.
+- **Har summary ke aakhir mein "Loophole ledger"**: jo band hue, jo khule hain (wajah + kis ka kaam + agla qadam), aur sach likha ho — jhoota "ek bhi nahi chhoda" kabhi nahi. Ledger ki ek jagah: `docs/cursor-work/founder/loophole-ledger.md` (har fix par update; DONE sirf live saboot par, Rule 5).
+
 ---
 
 ## PENDING (founder action required)

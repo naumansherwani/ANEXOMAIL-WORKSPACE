@@ -1944,7 +1944,8 @@ async fn health() -> impl IntoResponse {
         "role": "primary",
         "transport": ["rpc", "http3"],
         "webtransport": if WT_LIVE.load(Ordering::Relaxed) { "live" } else { "unavailable" },
-        "wt_port": env_var("ANEXOCHAT_WT_PORT"),
+        // Asli listener bhi yahi default leta hai (neeche `unwrap_or(3443)`): health ab sach batata hai, khali string nahi.
+        "wt_port": env_var("ANEXOCHAT_WT_PORT").parse::<u16>().unwrap_or(3443),
         "fallback": { "service": "anexochat-bun", "port": 3300 },
     }))
 }

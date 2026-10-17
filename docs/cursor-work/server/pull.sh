@@ -90,11 +90,30 @@ sleep "${SETTLE:-4}"
 h="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://127.0.0.1:3000/health" 2>/dev/null)"
 d="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 "http://127.0.0.1:3000/app/domains" 2>/dev/null)"
 
+# 4) server == repo saboot (sync KE BAAD): src/ ki har file ka git-blob sha origin/main se
+same=0; differ=0; missing=0; dl=()
+while IFS= read -r -d '' rec; do
+  meta="${rec%%$'\t'*}"; path="${rec#*$'\t'}"; want="${meta##* }"
+  if [ ! -f "$path" ]; then missing=$((missing + 1)); dl+=("MISSING $path"); continue; fi
+  if [ "$(git hash-object -- "$path" 2>/dev/null </dev/null)" = "$want" ]; then same=$((same + 1)); else differ=$((differ + 1)); dl+=("DIFF    $path"); fi
+done < <(git ls-tree -r -z origin/main -- src </dev/null)
+echo "--- server vs repo (SYNC KE BAAD): src/ same=$same differ=$differ missing=$missing"
+if [ "${#dl[@]}" -gt 0 ]; then printf '    %s\n' "${dl[@]:0:25}"; fi
+up="$(pm2 jlist 2>/dev/null </dev/null | python3 -c 'import json,sys,time
+try:
+    for p in json.load(sys.stdin):
+        if p.get("name")==sys.argv[1]:
+            e=p["pm2_env"]; print("%s uptime=%ds restarts=%s"%(e.get("status"), int(time.time()-e.get("pm_uptime",0)/1000), e.get("restart_time")))
+except Exception:
+    print("?")' "$APP")"
+
 echo "================ RESULT"
 echo "memory file : $W/$MEMORY"
 echo "memory stamp: $(grep -m1 'Aakhri update' "$W/$MEMORY" 2>/dev/null | cut -c1-80)"
 echo "build       : $build"
 echo "web /health : ${h:-?}   /app/domains : ${d:-?}"
+echo "pm2 $APP : ${up:-?}   (uptime chhota = abhi restart hua, purana cache nikal gaya)"
+echo "server==repo: src same=$same differ=$differ missing=$missing"
 echo "backup      : $BK"
 if [ "$fail" -eq 0 ] && [ "${h:-}" = "200" ]; then
   echo "OK - memory taza, server taza. Browser mein Ctrl+Shift+R."

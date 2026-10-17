@@ -76,7 +76,7 @@ export function SiteNav() {
           type="button"
           aria-label="Toggle menu"
           onClick={() => setOpen((v) => !v)}
-          className="ml-auto flex size-9 items-center justify-center rounded-xl border border-border text-foreground lg:hidden"
+          className="ax-focus ax-tap ml-auto flex size-9 items-center justify-center rounded-xl border border-border text-foreground lg:hidden"
         >
           {open ? <X className="size-4" /> : <Menu className="size-4" />}
         </button>
@@ -94,7 +94,7 @@ export function SiteNav() {
                   className: "border-l-2 border-primary bg-surface-2 text-foreground",
                   "aria-current": "page",
                 }}
-                className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+                className="ax-tap flex items-center rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
               >
                 {t(l.key)}
               </Link>
@@ -105,7 +105,7 @@ export function SiteNav() {
               target="_blank"
               rel="noopener"
               onClick={() => setOpen(false)}
-              className="rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
+              className="ax-tap flex items-center rounded-lg px-2 py-2.5 text-sm font-medium text-muted-foreground hover:bg-surface-2 hover:text-foreground"
             >
               {t("ai")}
             </a>
@@ -115,14 +115,14 @@ export function SiteNav() {
             <Link
               to="/auth"
               onClick={() => setOpen(false)}
-              className="rounded-lg px-2 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
+              className="ax-tap flex items-center rounded-lg px-2 py-2.5 text-sm font-semibold text-foreground hover:bg-surface-2"
             >
               {t("signIn")}
             </Link>
             <Link
               to="/plans"
               onClick={() => setOpen(false)}
-              className="mt-2 rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
+              className="ax-tap mt-2 flex items-center justify-center rounded-full bg-primary px-4 py-2.5 text-center text-sm font-semibold text-primary-foreground"
             >
               {t("getStarted")}
             </Link>

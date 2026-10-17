@@ -6,6 +6,7 @@ import { SiteNav } from "@/components/site/SiteNav";
 import { SiteFooter } from "@/components/site/SiteFooter";
 import { BillingToggle } from "@/components/site/BillingToggle";
 import { CheckoutButton, PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
+import { PlanFeatureList } from "@/components/site/PlanFeatureList";
 import { ANNUAL_NOTE, WORKSPACE_PLANS, priceFor, money, type BillingCycle } from "@/lib/plans";
 import { PERSONAL_TIERS } from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
@@ -352,14 +353,16 @@ function PlansPage() {
                       : `${tier.yearlyRule === "two-months-free" ? "2 months" : "1 month"} free on yearly billing`}
                   </p>
                   <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{tier.tagline}</p>
-                  <ul className="mt-6 flex-1 space-y-2.5">
-                    {tier.features.map((f) => (
-                      <li key={f} className="flex gap-2 text-sm text-muted-foreground">
+                  <PlanFeatureList
+                    features={tier.features}
+                    className="mt-6 flex-1 space-y-2.5"
+                    renderItem={(f, hidden) => (
+                      <li key={f} hidden={hidden} className="flex gap-2 text-sm text-muted-foreground">
                         <Check className="mt-0.5 size-4 shrink-0 text-success" />
                         {f}
                       </li>
-                    ))}
-                  </ul>
+                    )}
+                  />
                   <div className="mt-6">
                     {/* changePlan: a signed-in personal account that already
                         has an active subscription gets it changed in place
@@ -416,15 +419,17 @@ function PlansPage() {
                   {cycle === "yearly" ? price.note : ANNUAL_NOTE[p.annual] + " on yearly billing"}
                 </p>
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{p.tagline}</p>
-                <ul className="mt-6 flex-1 space-y-2.5">
-                  {p.features.map((f) => (
-                    <li key={f} className="flex gap-2 text-sm text-muted-foreground">
+                <PlanFeatureList
+                  features={p.features}
+                  className="mt-6 flex-1 space-y-2.5"
+                  renderItem={(f, hidden) => (
+                    <li key={f} hidden={hidden} className="flex gap-2 text-sm text-muted-foreground">
                       <Check className="mt-0.5 size-4 shrink-0 text-success" />
                       {f}
                     </li>
-                  ))}
-                </ul>
-                <PlanCheckoutButton planId={p.id} cycle={cycle} source="plans" />
+                  )}
+                />
+                <PlanCheckoutButton planId={p.id} cycle={cycle} source="plans" className="mt-5" />
               </article>
             );
           })}
@@ -504,7 +509,11 @@ function PlansPage() {
             <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
               <thead>
                 <tr className="bg-secondary/50">
-                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                  {/* Sticky first column: on a phone the table scrolls sideways and the row labels must not leave. */}
+                  <th
+                    scope="col"
+                    className="sticky left-0 z-[1] bg-secondary px-5 py-3.5 font-semibold text-foreground shadow-[inset_-1px_0_0_var(--color-border)]"
+                  >
                     Feature
                   </th>
                   <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
@@ -529,12 +538,16 @@ function PlansPage() {
                       colSpan={5}
                       className="ax-eyebrow border-t border-border px-5 py-3 text-left"
                     >
-                      {g.group}
+                      {/* The cell spans the whole table, so only the inner label can stick while the table scrolls. */}
+                      <span className="sticky left-5 inline-block">{g.group}</span>
                     </th>
                   </tr>
                   {g.rows.map((r) => (
                     <tr key={r.label} className="border-t border-border/60">
-                      <th scope="row" className="px-5 py-3 font-normal text-muted-foreground">
+                      <th
+                        scope="row"
+                        className="sticky left-0 z-[1] bg-card px-5 py-3 font-normal text-muted-foreground shadow-[inset_-1px_0_0_var(--color-border)]"
+                      >
                         {r.label}
                       </th>
                       {[r.basic, r.pro, r.business, r.business_pro ?? r.business].map((v, i) => (

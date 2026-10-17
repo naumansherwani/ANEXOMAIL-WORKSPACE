@@ -25,6 +25,7 @@ import { HeroComposition } from "@/components/site/HeroComposition";
 import { SlaProof } from "@/components/site/SlaProof";
 import { BillingToggle } from "@/components/site/BillingToggle";
 import { PlanCheckoutButton } from "@/components/site/PlanCheckoutButton";
+import { PlanFeatureList } from "@/components/site/PlanFeatureList";
 import { WORKSPACE_PLANS, priceFor, ANNUAL_NOTE, type BillingCycle } from "@/lib/plans";
 
 /* Hero trust badges — every claim verifiable, nothing invented. */
@@ -438,9 +439,11 @@ function Index() {
 
                     <div aria-hidden className="ax-hairline my-8 h-px" />
 
-                    <ul className="flex-1 space-y-3.5">
-                      {p.features.map((f) => (
-                        <li key={f} className="flex gap-3">
+                    <PlanFeatureList
+                      features={p.features}
+                      className="flex-1 space-y-3.5"
+                      renderItem={(f, hidden) => (
+                        <li key={f} hidden={hidden} className="flex gap-3">
                           <Check
                             className="mt-0.5 size-3.5 shrink-0 text-steel"
                             strokeWidth={2.6}
@@ -449,8 +452,8 @@ function Index() {
                             {f}
                           </span>
                         </li>
-                      ))}
-                    </ul>
+                      )}
+                    />
 
                     <PlanCheckoutButton
                       planId={p.id}
