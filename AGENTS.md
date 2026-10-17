@@ -184,6 +184,13 @@ Founder ka hukm: "ab se ek rule hai — mobile users aur tablet users ke liye bh
 - Minimum: koi horizontal page-scroll nahi; touch targets >= 44 px; mobile par nav (rail) chhote-screen ka apna tareeqa (drawer/bottom bar); `100dvh` (browser ki toolbar se na kate); safe-area (notch/home bar); input 16 px (iOS zoom na ho); keyboard khule to action button na chhupe; lambi cheezein (email, DNS value) wrap/scroll-in-place.
 - CEO soch (founder ka hukm): har section mein gaps aur loopholes dhoondo jo user ka dil jeetein ya tod den, aur "yeh duniya mein viral kaise hoga" ki nazar se: pehle 60 second mein user ko apna address kaam karta dikhe, ek tap mein share/invite, phone se bhi poora kaam.
 
+### Rule 20 — Latest technology, har cheez sirf apne kaam ke liye; har plan ko duniya ka best experience (locked 17 Oct 2026, founder)
+Founder ka hukm (17 Oct 06:04 PKT): backend par **latest technology, koi compromise nahi**; mail bhi Rust (ya jo sab se latest ho) par jayegi; **website sirf latest technology par**; aur repo mein likha ho **kaun si technology kis kaam ke liye hai — aur sirf usi kaam ke liye.**
+- **Ek hi sach: `docs/cursor-work/TECH-MAP.md`.** Har technology ki ek line: kaam, kis kaam ke liye NAHI, status (LIVE sirf live verify par / READY / PLANNED / REJECTED + wajah). Naya tech lagane se pehle map mein likho (kaam + status + kyun purane se behtar); map mein na ho to code mein na aaye. Constitution ki upar ki rows (locked) nahi badalti — unka vistaar map karta hai.
+- Naya backend kaam Rust (Tokio async) par; Bun sirf emergency. Purani technology badalna (jaise mail server) sirf founder ke "haan" aur parallel staging ke baad — mail send/receive GREEN hai, use tod'na nahi.
+- "Latest" ka matlab verify kiya hua: version/tareekh official source se, andaza nahi (Rule 17 jaisa: purani records pehle).
+- **Agent = CEO + user ka dimaagh.** Maqsad: user ko lage product uska apna hai, competitors se behtar aur aasaan. **Basic, Pro, Business, Business Pro — har plan ka duniya ka best experience**, cinematic frontend; plan-wise soch `docs/cursor-work/founder/plan-experience-2026-10-17.md` mein. Blueprint ke gaps tarteeb se (Rule 14), Rule 19 (mobile + tablet) ke saath.
+
 ---
 
 ## PENDING (founder action required)
