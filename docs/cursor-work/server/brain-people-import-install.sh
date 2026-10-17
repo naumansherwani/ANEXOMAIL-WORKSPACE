@@ -15,15 +15,34 @@ BACKUP="/root/anexomail-backups/brain-people-import-$STAMP"
 BUN="$(command -v bun || echo /root/.bun/bin/bun)"
 show() { git -C "$REPO" show "origin/main:$1" 2>/dev/null; }
 
-BR="$(find "${BRAIN:-/opt/anexomail}" -type d -name routes -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null | head -1)"
-[ -n "$BR" ] || { echo "FAIL: live Brain routes/ nahi mila (BRAIN=${BRAIN:-/opt/anexomail}?)"; exit 2; }
+# live Brain ka SRC (jahan routes/ + index.ts hain) — KABHI backups/dist/node_modules nahi. Pehle /opt/anexomail/src (founder ka system map), phir pm2 se, phir filtered find.
+find_brain_src() {
+  local c cands=() base="${BRAIN:-/opt/anexomail}"
+  [ -n "${BRAIN_SRC:-}" ] && cands+=("$BRAIN_SRC")
+  cands+=("$base/src" "$base/server" "$base")
+  while IFS= read -r c; do [ -n "$c" ] && cands+=("$c"); done < <(pm2 jlist 2>/dev/null | python3 -c 'import json,sys,os
+try:
+    for p in json.load(sys.stdin):
+        if p.get("name")=="anexomail-leo":
+            e=p["pm2_env"]; x=e.get("pm_exec_path") or ""; w=e.get("pm_cwd") or ""
+            for d in (os.path.dirname(x), w, w+"/src", w+"/server"): print(d)
+except Exception: pass' 2>/dev/null)
+  while IFS= read -r c; do cands+=("$(dirname "$c")"); done < <(find "$base" -maxdepth 4 -type d -name routes -not -path '*/node_modules/*' -not -path '*/.git/*' -not -path '*backup*' -not -path '*/dist/*' -not -path '*/build/*' 2>/dev/null)
+  for c in "${cands[@]}"; do
+    case "$c" in *backup*|*/node_modules/*|*/.git/*|*/dist|*/dist/*|*/build|*/build/*) continue ;; esac
+    if [ -d "$c/routes" ] && [ -f "$c/index.ts" ]; then echo "$c"; return 0; fi
+  done
+  return 1
+}
+BR=""; SRC0="$(find_brain_src)" && BR="$SRC0/routes"
+[ -n "$BR" ] || { echo "FAIL: live Brain (routes/ + index.ts) nahi mili. Dhoondha: ${SRC0:-kuch nahi}. 'pm2 describe anexomail-leo | grep -E \"exec cwd|script path\"' ka output Claude ko paste karein."; exit 2; }
 SRC="$(dirname "$BR")"; LIB="$SRC/lib"; IDX="$SRC/index.ts"
 [ -d "$LIB" ] && [ -f "$IDX" ] || { echo "FAIL: $LIB ya $IDX nahi mili"; exit 2; }
 [ -x "$BUN" ] || { echo "FAIL: bun nahi mila"; exit 2; }
 echo "Brain src: $SRC   bun: $($BUN --version)"
 
 echo "== 0) live Brain mein zaroori cheezein hain?"
-grep -Eq 'export (const|let) admin\b' "$LIB/supa.ts" 2>/dev/null || { echo "FAIL: live lib/supa.ts mein 'export const admin' nahi mila — install nahi hua. Output Claude ko paste karein."; exit 2; }
+grep -Eq 'export (const|let) admin\b|export \{[^}]*\badmin\b' "$LIB/supa.ts" 2>/dev/null || { echo "FAIL: live lib/supa.ts mein 'export const admin' nahi mila — install nahi hua. Output Claude ko paste karein."; exit 2; }
 grep -Eq 'export (async )?function resolvePlan\b|export const resolvePlan\b' "$LIB/plan.ts" 2>/dev/null || { echo "FAIL: live lib/plan.ts mein resolvePlan nahi mila — install nahi hua. Output Claude ko paste karein."; exit 2; }
 grep -Eq 'export type PlanTier\b' "$LIB/plan.ts" 2>/dev/null || echo "   (note: live plan.ts mein 'export type PlanTier' nahi — bun type ko ignore karta hai, build par asar nahi)"
 echo "   supa.ts: admin OK   plan.ts: resolvePlan OK"

@@ -8,8 +8,27 @@ set +e
 hr() { printf '\n== %s ==\n' "$1"; }
 MAILWORDS='sendmail|send_mail|sendMail|nodemailer|smtp|lettre|mail_outbox|mail_scheduled|mail_queue|invitation|invite|text/calendar|METHOD:REQUEST'
 
+# live Brain ka SRC (jahan routes/ + index.ts hain) — KABHI backups/dist/node_modules nahi. Pehle /opt/anexomail/src (founder ka system map), phir pm2 se, phir filtered find.
+find_brain_src() {
+  local c cands=() base="${BRAIN:-/opt/anexomail}"
+  [ -n "${BRAIN_SRC:-}" ] && cands+=("$BRAIN_SRC")
+  cands+=("$base/src" "$base/server" "$base")
+  while IFS= read -r c; do [ -n "$c" ] && cands+=("$c"); done < <(pm2 jlist 2>/dev/null | python3 -c 'import json,sys,os
+try:
+    for p in json.load(sys.stdin):
+        if p.get("name")=="anexomail-leo":
+            e=p["pm2_env"]; x=e.get("pm_exec_path") or ""; w=e.get("pm_cwd") or ""
+            for d in (os.path.dirname(x), w, w+"/src", w+"/server"): print(d)
+except Exception: pass' 2>/dev/null)
+  while IFS= read -r c; do cands+=("$(dirname "$c")"); done < <(find "$base" -maxdepth 4 -type d -name routes -not -path '*/node_modules/*' -not -path '*/.git/*' -not -path '*backup*' -not -path '*/dist/*' -not -path '*/build/*' 2>/dev/null)
+  for c in "${cands[@]}"; do
+    case "$c" in *backup*|*/node_modules/*|*/.git/*|*/dist|*/dist/*|*/build|*/build/*) continue ;; esac
+    if [ -d "$c/routes" ] && [ -f "$c/index.ts" ]; then echo "$c"; return 0; fi
+  done
+  return 1
+}
 hr "1. live Brain: routes/calendar.ts — attendees likhne ke paas mail wala koi kaam?"
-CAL="$(find /opt/anexomail -name calendar.ts -path '*routes*' -not -path '*/node_modules/*' -not -path '*/.git/*' 2>/dev/null | head -1)"
+CAL="$(find_brain_src)/routes/calendar.ts"; [ -f "$CAL" ] || CAL=""
 if [ -n "$CAL" ]; then
   echo "$CAL  sha256[:16]=$(sha256sum "$CAL" | cut -c1-16)  lines=$(wc -l < "$CAL")"
   echo "repo origin/main sha256[:16]=$(git -C /opt/anexomail-web show origin/main:server/routes/calendar.ts 2>/dev/null | sha256sum | cut -c1-16)"

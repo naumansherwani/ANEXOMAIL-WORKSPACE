@@ -14,6 +14,25 @@ run() { # run <script> <max lines>
   if [ -z "$body" ]; then echo "(script origin/main par nahi mila — pehle git fetch)"; return; fi
   bash <(printf '%s\n' "$body") 2>&1 | cut -c1-230 | head -"$n"
 }
+# live Brain ka SRC (jahan routes/ + index.ts hain) — KABHI backups/dist/node_modules nahi. Pehle /opt/anexomail/src (founder ka system map), phir pm2 se, phir filtered find.
+find_brain_src() {
+  local c cands=() base="${BRAIN:-/opt/anexomail}"
+  [ -n "${BRAIN_SRC:-}" ] && cands+=("$BRAIN_SRC")
+  cands+=("$base/src" "$base/server" "$base")
+  while IFS= read -r c; do [ -n "$c" ] && cands+=("$c"); done < <(pm2 jlist 2>/dev/null | python3 -c 'import json,sys,os
+try:
+    for p in json.load(sys.stdin):
+        if p.get("name")=="anexomail-leo":
+            e=p["pm2_env"]; x=e.get("pm_exec_path") or ""; w=e.get("pm_cwd") or ""
+            for d in (os.path.dirname(x), w, w+"/src", w+"/server"): print(d)
+except Exception: pass' 2>/dev/null)
+  while IFS= read -r c; do cands+=("$(dirname "$c")"); done < <(find "$base" -maxdepth 4 -type d -name routes -not -path '*/node_modules/*' -not -path '*/.git/*' -not -path '*backup*' -not -path '*/dist/*' -not -path '*/build/*' 2>/dev/null)
+  for c in "${cands[@]}"; do
+    case "$c" in *backup*|*/node_modules/*|*/.git/*|*/dist|*/dist/*|*/build|*/build/*) continue ;; esac
+    if [ -d "$c/routes" ] && [ -f "$c/index.ts" ]; then echo "$c"; return 0; fi
+  done
+  return 1
+}
 {
 echo "ANEXOMAIL checks — $(date '+%Y-%m-%d %H:%M:%S %Z') — host $(hostname) — web HEAD $(git -C "$W" rev-parse --short HEAD 2>/dev/null) / origin $(git -C "$W" rev-parse --short origin/main 2>/dev/null)"
 
@@ -23,7 +42,7 @@ echo "-- Rust: live source files"; ls -l $RS 2>/dev/null | awk '{print $5, $9}' 
 LIVE=$(sha256sum $RS/main.rs 2>/dev/null | cut -c1-16); REPO=$(show server/rust/main.rs | sha256sum | cut -c1-16)
 echo "Rust main.rs  live=${LIVE:-nahi-mila}  repo=$REPO  $( [ -z "$LIVE" ] && echo LIVE-NAHI-MILA || { [ "$LIVE" = "$REPO" ] && echo SAME || echo DIFFER; } )   live lines=$(wc -l < $RS/main.rs 2>/dev/null || echo 0) repo lines=$(show server/rust/main.rs | wc -l)"
 echo "-- Brain routes (live vs repo): same / differ / live-only / repo-only"
-BR=$(find ${BRAIN:-/opt/anexomail} -type d -name routes -not -path '*/node_modules/*' 2>/dev/null | head -1); echo "brain routes dir: ${BR:-nahi mila}"
+BR=$(find_brain_src)/routes; [ -d "$BR" ] || BR=""; echo "brain routes dir: ${BR:-nahi mila}"
 if [ -n "$BR" ]; then
   tmp=$(mktemp)
   git -C "$W" ls-tree --name-only origin/main server/routes/ 2>/dev/null | sed 's#server/routes/##' | sort > $tmp.repo
