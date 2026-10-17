@@ -53,7 +53,7 @@ Overflow check at any width (finds elements past the viewport):
 
 ## Asli /app routes (M6 audit, 17 Oct 2026)
 
-`ENTRY=entry-routes.tsx node build.mjs <outDir>` bundles the *real* signed-in route files (`src/routes/app.{calendar,people,work}.tsx` + their components) with sample data from `stubs/api-sample.ts` (`stubs/query.ts` = react-query stand-in, `stubs/router.ts` = reactive router so `?id=` / tab navigation works on click). Hash picks the route: `cal | people | people?id=c1 | work | crm | crm/pipeline | crm/leads | crm/relationships | crm/collab | crm/activity | crm/tasks | crm/reports | crm/accounts`; suffix `-basicplan` (Basic: no Promises rail) and `?empty=1` (empty states). CRM data is mutable in the harness (`crm.moveDeal` really moves a deal; `stubs/query.ts` re-runs active queries on invalidate).
+`ENTRY=entry-routes.tsx node build.mjs <outDir>` bundles the *real* signed-in route files (`src/routes/app.{calendar,people,work}.tsx` + their components) with sample data from `stubs/api-sample.ts` (`stubs/query.ts` = react-query stand-in, `stubs/router.ts` = reactive router so `?id=` / tab navigation works on click). Hash picks the route (`billing?state=active|past_due|cancelled|none`, `billing-personal`, `account?del=1|blocked=1`): `cal | people | people?id=c1 | work | crm | crm/pipeline | crm/leads | crm/relationships | crm/collab | crm/activity | crm/tasks | crm/reports | crm/accounts`; suffix `-basicplan` (Basic: no Promises rail) and `?empty=1` (empty states). CRM data is mutable in the harness (`crm.moveDeal` really moves a deal; `stubs/query.ts` re-runs active queries on invalidate).
 
 ```
 ENTRY=entry-routes.tsx node build.mjs $OUT

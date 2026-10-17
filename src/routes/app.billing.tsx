@@ -32,13 +32,16 @@ import { CheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { Button } from "@/components/ui/button";
 import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
 import { useLocale } from "@/lib/i18n";
-import { relativeTime } from "@/lib/mail";
 import { money, WORKSPACE_PLANS, type BillingCycle } from "@/lib/plans";
 import { PERSONAL_TIERS, polarToPersonalTierId, isPersonalUpgrade, type PersonalTier } from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
 import { surfaceFromSession } from "@/lib/plan-surface";
 import { ConvertToBusiness } from "@/components/site/ConvertToBusiness";
 import { cn } from "@/lib/utils";
+
+/** "6 Nov 2026" — a renewal or invoice date must be the actual date, not "1d" / "now". */
+const fmtDate = (iso: string) =>
+  new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 
 export const Route = createFileRoute("/app/billing")({
   head: () => ({
@@ -76,7 +79,7 @@ function FeatureList({ features }: { features: string[] }) {
     <div>
       <ul className="flex flex-col gap-1.5">
         {shown.map((f) => (
-          <li key={f} className="flex items-start gap-2 text-[11px] leading-snug">
+          <li key={f} className="flex items-start gap-2 text-[12px] leading-snug">
             <Check
               className={cn(
                 "mt-0.5 size-3 shrink-0",
@@ -100,7 +103,7 @@ function FeatureList({ features }: { features: string[] }) {
         <button
           type="button"
           onClick={() => setExpanded((e) => !e)}
-          className="mt-2.5 flex items-center gap-1 text-[10px] font-semibold text-muted-foreground/60 hover:text-muted-foreground"
+          className="ax-hit mt-2.5 flex items-center gap-1 text-[12px] font-semibold text-muted-foreground hover:text-foreground"
         >
           {expanded ? (
             <><ChevronUp className="size-3" /> Show less</>
@@ -169,18 +172,18 @@ function PlanCard({
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[13px] font-bold text-foreground">{name}</span>
           {badge && (
-            <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
+            <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
               <Sparkles className="size-2.5" aria-hidden="true" />
               {badge}
             </span>
           )}
           {isCurrent && (
-            <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+            <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-400">
               Current
             </span>
           )}
         </div>
-        <p className="mt-1 text-[11px] leading-snug text-muted-foreground/60">{tagline}</p>
+        <p className="mt-1 text-[12px] leading-snug text-muted-foreground">{tagline}</p>
       </div>
 
       {/* Price */}
@@ -189,15 +192,15 @@ function PlanCard({
           <span className="text-[22px] font-bold tracking-tight text-foreground">
             {money(price)}
           </span>
-          <span className="text-[11px] text-muted-foreground/50">/mo</span>
+          <span className="text-[12px] text-muted-foreground">/mo</span>
         </div>
         {cycle === "yearly" && (
-          <p className="mt-0.5 text-[10px] text-emerald-400">
+          <p className="mt-0.5 text-[11px] text-emerald-400">
             {yearlyRule === "two-months-free" ? "2 months free" : "1 month free"} · billed
             yearly
           </p>
         )}
-        <p className="mt-0.5 text-[10px] text-muted-foreground/40">
+        <p className="mt-0.5 text-[11px] text-muted-foreground">
           {unit}
         </p>
       </div>
@@ -210,7 +213,7 @@ function PlanCard({
       {/* CTA */}
       <div className="mt-5">
         {isCurrent ? (
-          <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground/40">
+          <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground">
             Current plan
           </div>
         ) : onConvert ? (
@@ -288,18 +291,18 @@ function PersonalTierCard({
       <div className="flex flex-wrap items-center gap-1.5">
         <span className="text-[13px] font-bold text-foreground">{tier.name}</span>
         {tier.badge && (
-          <span className={cn("flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[9px] font-semibold", theme.badge, theme.badgeTxt)}>
+          <span className={cn("flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[11px] font-semibold", theme.badge, theme.badgeTxt)}>
             <Star className="size-2.5" aria-hidden="true" />
             {tier.badge}
           </span>
         )}
         {isCurrent && (
-          <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-400">
+          <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-400">
             {t("Your plan")}
           </span>
         )}
         {isRecommended && !isCurrent && (
-          <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[9px] font-semibold text-primary">
+          <span className="flex items-center gap-0.5 rounded-full bg-primary/15 px-1.5 py-0.5 text-[11px] font-semibold text-primary">
             <Sparkles className="size-2.5" />
             {t("Recommended")}
           </span>
@@ -307,7 +310,7 @@ function PersonalTierCard({
       </div>
 
       {/* Tagline */}
-      <p className="mt-1 text-[11px] leading-snug text-muted-foreground/60">{tier.tagline}</p>
+      <p className="mt-1 text-[12px] leading-snug text-muted-foreground">{tier.tagline}</p>
 
       {/* Price */}
       <div className="mt-3 border-b border-border pb-3">
@@ -315,20 +318,20 @@ function PersonalTierCard({
           <span className="text-[22px] font-bold tracking-tight text-foreground">
             {money(price)}
           </span>
-          <span className="text-[11px] text-muted-foreground/50">/mo</span>
+          <span className="text-[12px] text-muted-foreground">/mo</span>
         </div>
         {cycle === "yearly" && (
-          <p className="mt-0.5 text-[10px] text-emerald-400">
+          <p className="mt-0.5 text-[11px] text-emerald-400">
             {tier.yearlyRule === "two-months-free" ? t("2 months free") : t("1 month free")} · {t("billed yearly")}
           </p>
         )}
-        <p className="mt-0.5 text-[10px] text-muted-foreground/40">{tier.unit}</p>
+        <p className="mt-0.5 text-[11px] text-muted-foreground">{tier.unit}</p>
       </div>
 
       {/* Top features */}
       <ul className="mt-3 flex flex-1 flex-col gap-1.5">
         {tier.features.slice(0, 6).map((f) => (
-          <li key={f} className="flex items-start gap-2 text-[11px] leading-snug">
+          <li key={f} className="flex items-start gap-2 text-[12px] leading-snug">
             <Check
               className={cn(
                 "mt-0.5 size-3 shrink-0",
@@ -346,7 +349,7 @@ function PersonalTierCard({
       {/* CTA */}
       <div className="mt-5">
         {isCurrent ? (
-          <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground/40">
+          <div className="flex h-9 items-center justify-center rounded-xl border border-border text-[12px] font-semibold text-muted-foreground">
             {t("Current plan")}
           </div>
         ) : (
@@ -393,11 +396,11 @@ function PersonalTiersSection({
       {/* Header */}
       <div className="flex flex-wrap items-center gap-2">
         <h3 className="ax-heading text-foreground">{t("Your personal tiers")}</h3>
-        <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+        <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
           {t("Personal account")}
         </span>
       </div>
-      <p className="mt-1 text-[11px] text-muted-foreground/50">
+      <p className="mt-1 text-[12px] text-muted-foreground">
         {t("Workspace stays personal after checkout. Upgrade any time — no seat negotiations.")}
       </p>
 
@@ -405,13 +408,13 @@ function PersonalTiersSection({
       {currentTierIdx < PERSONAL_TIERS.length - 1 && (
         <div className="mt-3 flex items-center gap-2 rounded-xl border border-border bg-card p-3">
           <Sparkles className="size-3.5 text-primary" />
-          <span className="text-[11px] text-foreground">
+          <span className="text-[12px] text-foreground">
             <span className="font-semibold">{PERSONAL_TIERS[currentTierIdx]?.name}</span>
             <ArrowRight className="mx-1 inline-block size-3 text-muted-foreground" />
             <span className="font-semibold text-primary">{PERSONAL_TIERS[currentTierIdx + 1]?.name}</span>
           </span>
-          <span className="ml-auto text-[10px] text-muted-foreground/50">
-            +£{((PERSONAL_TIERS[currentTierIdx + 1]?.monthly ?? 0) - (PERSONAL_TIERS[currentTierIdx]?.monthly ?? 0))}/mo
+          <span className="ml-auto text-[11px] text-muted-foreground">
+            +{money((PERSONAL_TIERS[currentTierIdx + 1]?.monthly ?? 0) - (PERSONAL_TIERS[currentTierIdx]?.monthly ?? 0))}/mo
           </span>
         </div>
       )}
@@ -468,7 +471,7 @@ function WorkspaceBilling() {
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
-      <div className="mx-auto w-full max-w-6xl px-6 py-8 md:px-8">
+      <div className="mx-auto w-full max-w-6xl px-ax-4 py-ax-5 md:px-8 md:py-8">
 
         {/* ── Page heading ──────────────────────────────────────── */}
         <p className="ax-eyebrow flex items-center gap-2">
@@ -500,22 +503,22 @@ function WorkspaceBilling() {
                       {s.plan ? currentPlanName : t("No active plan")}
                     </span>
                     {s.state === "active" && (
-                      <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[10px] font-semibold text-emerald-400">
+                      <span className="rounded-full bg-emerald-500/15 px-2 py-0.5 text-[11px] font-semibold text-emerald-400">
                         {t("Active")}
                       </span>
                     )}
                     {s.state === "trialing" && (
-                      <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-400">
+                      <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[11px] font-semibold text-amber-400">
                         {t("Trial")}
                       </span>
                     )}
                     {s.state === "past_due" && (
-                      <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[10px] font-semibold text-red-400">
+                      <span className="rounded-full bg-red-500/15 px-2 py-0.5 text-[11px] font-semibold text-red-400">
                         {t("Payment due")}
                       </span>
                     )}
                     {s.state === "cancelled" && (
-                      <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                      <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
                         {t("Cancelled")}
                       </span>
                     )}
@@ -523,31 +526,54 @@ function WorkspaceBilling() {
                   <div className="mt-1 flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground">
                     <span>{gbp(s.price_per_seat)} / {s.interval}</span>
                     {s.storage_per_mailbox_gb ? (
-                      <span className="text-muted-foreground/50">
+                      <span className="text-muted-foreground">
                         · {s.storage_per_mailbox_gb} GB / mailbox
                       </span>
                     ) : null}
                     {s.seats > 0 && (
-                      <span className="text-muted-foreground/50">
+                      <span className="text-muted-foreground">
                         · {s.seats_used} / {s.seats}{" "}
                         {s.seats === 1 ? t("seat") : t("seats")}
                       </span>
                     )}
                   </div>
                   {s.renews_at && (
-                    <p className="mt-0.5 text-[11px] text-muted-foreground/40">
-                      {t("Auto-renews")} {relativeTime(s.renews_at)}
+                    <p className="mt-0.5 text-[12px] text-muted-foreground">
+                      {t("Auto-renews on")} {fmtDate(s.renews_at)}
                     </p>
                   )}
                   {s.cancel_at && (
-                    <p className="mt-0.5 text-[11px] text-amber-400">
-                      {t("Cancels")} {relativeTime(s.cancel_at)}
+                    <p className="mt-0.5 text-[12px] text-amber-400">
+                      {t("Ends on")} {fmtDate(s.cancel_at)}
+                    </p>
+                  )}
+                  {s.state === "past_due" && (
+                    <p className="mt-2 text-[12px] text-amber-400">
+                      {t("Your last payment didn't go through.")}{" "}
+                      <a
+                        href="mailto:billing@anexomail.com?subject=Payment%20problem"
+                        className="ax-hit font-semibold underline underline-offset-2"
+                      >
+                        {t("Email billing@anexomail.com")}
+                      </a>{" "}
+                      {t("and we will fix it with you.")}
                     </p>
                   )}
                 </div>
               </div>
             )}
           </CardBody>
+          {/* No self-serve cancel / card / VAT page yet (needs a Polar customer-portal endpoint, ledger G16): never leave a paying user at a dead end. */}
+          <p className="mt-3 text-[12px] text-muted-foreground">
+            {t("To cancel, change your card or get a VAT invoice, email")}{" "}
+            <a
+              href="mailto:billing@anexomail.com?subject=Billing%20help"
+              className="ax-hit font-semibold text-foreground underline underline-offset-2"
+            >
+              billing@anexomail.com
+            </a>
+            .
+          </p>
         </section>
 
         {/* ── Personal tier suggestions — only for personal kind ─── */}
@@ -566,10 +592,10 @@ function WorkspaceBilling() {
                 type="button"
                 onClick={() => setCycle("monthly")}
                 className={cn(
-                  "rounded-lg px-3 py-1.5 text-[11px] font-semibold transition-colors",
+                  "ax-tap rounded-lg px-3.5 py-2 text-[12px] font-semibold transition-colors",
                   cycle === "monthly"
                     ? "bg-secondary text-foreground"
-                    : "text-muted-foreground/50 hover:text-foreground",
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {t("Monthly")}
@@ -578,14 +604,14 @@ function WorkspaceBilling() {
                 type="button"
                 onClick={() => setCycle("yearly")}
                 className={cn(
-                  "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-semibold transition-colors",
+                  "ax-tap flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-[12px] font-semibold transition-colors",
                   cycle === "yearly"
                     ? "bg-secondary text-foreground"
-                    : "text-muted-foreground/50 hover:text-foreground",
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {t("Yearly")}
-                <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-400">
+                <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[11px] font-semibold text-emerald-400">
                   save
                 </span>
               </button>
@@ -604,11 +630,11 @@ function WorkspaceBilling() {
             <div className="mt-ax-6">
               <div className="flex flex-wrap items-center gap-2">
                 <h3 className="ax-heading text-foreground">{t("Business plans")}</h3>
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-[10px] font-semibold text-muted-foreground">
+                <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
                   {t("Company workspace")}
                 </span>
               </div>
-              <p className="mt-1 text-[11px] text-muted-foreground/50">
+              <p className="mt-1 text-[12px] text-muted-foreground">
                 {t(
                   "Need a company workspace? Pick a plan and convert on this same sign-in and email — no new account, your mailbox stays.",
                 )}
@@ -674,7 +700,7 @@ function WorkspaceBilling() {
             >
               {(d) =>
                 d.invoices.length === 0 ? (
-                  <p className="ax-caption text-muted-foreground/50">
+                  <p className="ax-caption text-muted-foreground">
                     {t(
                       "No invoices yet. Your first invoice appears here after your first payment.",
                     )}
@@ -689,7 +715,7 @@ function WorkspaceBilling() {
                         <span className="font-semibold text-foreground">{inv.number}</span>
                         <span
                           className={cn(
-                            "rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase",
+                            "rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase",
                             inv.state === "paid"
                               ? "bg-emerald-500/15 text-emerald-400"
                               : inv.state === "open"
@@ -700,18 +726,18 @@ function WorkspaceBilling() {
                           {inv.state}
                         </span>
                         <span className="font-medium text-foreground">{gbp(inv.total)}</span>
-                        <span className="text-muted-foreground/40">
+                        <span className="text-muted-foreground">
                           tax {gbp(inv.tax)}
                         </span>
-                        <span className="text-muted-foreground/30">
-                          {relativeTime(inv.issued_at)}
+                        <span className="text-muted-foreground">
+                          {fmtDate(inv.issued_at)}
                         </span>
                         {inv.pdf_url && (
                           <a
                             href={inv.pdf_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="ml-auto text-[11px] font-semibold text-primary underline-offset-2 hover:underline"
+                            className="ml-auto text-[12px] font-semibold text-primary underline-offset-2 hover:underline"
                           >
                             PDF
                           </a>

@@ -129,6 +129,23 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
   if (key === "crm.shared") return { items: e ? [] : [{ id: "s1", kind: input?.kind ?? "inbox", subject: "Quote request — 12 seats", preview: "Hi, could you send a quote for twelve seats and the annual discount?", from_address: "orders@fastgrow.co", assigned_to: null, state: "unassigned", thread_id: "th7", created_at: ago(0, 2) }] };
   if (key === "crm.mentions") return { mentions: e ? [] : [{ id: "m1", actor: "ali@axonetis.com", target: "me@anexomail.com", context: "Can you check the Northwind terms before Friday?", thread_id: "th2", deal_id: "d2", read: false, created_at: ago(0, 1) }] };
   if (key === "crm.approvals") return { approvals: e ? [] : [{ id: "ap1", requested_by: "ali@axonetis.com", subject: "10% discount for Northwind", reason: "Multi-year commitment", amount: 1840, currency: "GBP", state: "pending", created_at: ago(0, 4) }] };
+  if (key === "billing.subscription") {
+    const st = /[?&]state=([a-z_]+)/.exec(location.hash)?.[1] ?? "active";
+    return { plan: st === "none" ? null : "pro", state: st, seats: 5, seats_used: 3, price_per_seat: 12, currency: "GBP", interval: "month", renews_at: new Date(Date.now() + 20 * 86400e3).toISOString(), cancel_at: st === "cancelled" ? new Date(Date.now() + 9 * 86400e3).toISOString() : null, storage_per_mailbox_gb: 10 };
+  }
+  if (key === "billing.invoices") return { invoices: e ? [] : [
+    { id: "i1", number: "ANX-2026-000412", state: "paid", subtotal: 50, tax: 10, total: 60, currency: "GBP", period_start: ago(30), period_end: ago(0), issued_at: ago(1), paid_at: ago(1), pdf_url: "https://polar.sh/example.pdf" },
+    { id: "i2", number: "ANX-2026-000377", state: "open", subtotal: 50, tax: 10, total: 60, currency: "GBP", period_start: ago(60), period_end: ago(30), issued_at: ago(31), paid_at: null, pdf_url: null },
+    { id: "i3", number: "ANX-2026-000301", state: "void", subtotal: 0, tax: 0, total: 0, currency: "GBP", period_start: null, period_end: null, issued_at: ago(90), paid_at: null, pdf_url: null },
+  ] };
+  if (key === "/api/auth/sessions") return [
+    { id: "s1", device: "Windows", browser: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/141.0 Safari/537.36 Edg/141.0", ip: "203.0.113.24", location: "London, GB", last_seen_at: ago(0, 0), current: true },
+    { id: "s2", device: "iPhone", browser: "Safari", ip: "198.51.100.7", location: "Lahore, PK", last_seen_at: ago(2), current: false },
+    { id: "s3", device: "Bun/1.4.0", browser: "Bun/1.4.0", ip: "127.0.0.1", location: null, last_seen_at: ago(0, 1), current: false },
+  ];
+  if (key === "/api/auth/passkey/list") return e ? [] : [{ id: "pk1", device_name: "MacBook Pro — Touch ID", created_at: ago(40), last_used_at: ago(1) }];
+  if (key === "/api/auth/recovery") return { set: !e, kind: "gmail", hint: "n***@gmail.com", sms_note: "SMS recovery is not offered." };
+  if (key === "account.delete.state" || key.startsWith("/api/account-deletion/state")) return /[?&]del=1/.test(location.hash) ? { scheduled: true, scheduled_for: ago(-5), days_left: 5, blockers: [] } : /[?&]blocked=1/.test(location.hash) ? { scheduled: false, blockers: [{ code: "active_subscription", message: "Cancel your active subscription first." }] } : { scheduled: false, blockers: [] };
   if (key === "work.tasks" || key.startsWith("/api/work/tasks")) return { tasks: e ? [] : TASKS };
   if (key === "work.promises" || key.startsWith("/api/work/promises")) return { promises: e ? [] : PROMISES };
   if (key === "work.followThrough" || key.startsWith("/api/work/follow-through")) return { rows: e ? [] : FOLLOW };

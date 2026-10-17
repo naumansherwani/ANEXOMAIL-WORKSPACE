@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 18:55 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 18:59 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -33,13 +33,18 @@ Aakhri update: **17 Oct 2026, 18:55 PKT** (`current_time` tool).
 | L23 | CRM phone par: Activity subject "Re: R…", Task title "Send revised pro…", Leads ka Accept button kata hua | harness 390 | wrap/stack, grid minmax(0) | READY |
 | L24 | CRM nav pills 24px; pipeline par ek hi column nazar aata, actions 20px | harness 390 | 44px pills, stage chips + snap, `ax-hit` | READY |
 | L25 | **SECURITY (repo mein theek): CRM shared/mentions/approvals/audit/permissions BINA workspace filter** — Business user doosre workspace ki rows dekh/decide kar sakta; `/crm/live` timeline mein doosron ki activity | code audit `server/routes/crm.ts` | har read/write `org_id`/owners tak band | READY (live Brain par abhi purana — G14) |
+| L26 | **"Auto-renews now" / "Cancels now" / "due now" — future date hamesha "now" dikhti thi** (`relativeTime` future ko handle nahi karta tha). Renewal ki taareekh = billing ki sab se zaroori cheez | code + unit test | `relativeTime`: "in 3d" / date; Billing par asli taareekh | READY |
+| L27 | Billing par renewal/invoice date/tax 30–50% opacity + 9–11px — phone par parhne layak nahi; toggle 28px | harness 390 | 12px, normal contrast, 44px toggle | READY |
+| L28 | **Paying user ke liye koi rasta nahi: cancel / card badalna / VAT invoice** (past_due par bhi sirf "Payment due" badge, aage kuch nahi) | harness + grep (hooks bane, use nahi) | abhi `billing@anexomail.com` ki sach-muchi line + past_due paigham (G16 asli fix) | READY (interim) |
+| L29 | Account: "Update password" button phone par card se bahar | harness 390 | wrap | READY |
+| L30 | Admin nav 36px pills; 11 sections side-scroll mein current page chhup jata | code | 44px + active nazar mein | READY |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
 | # | Gap | Kyun khula | Agla qadam |
 |---|---|---|---|
 | G1 | **Attachments (8p)** — bheji mail mein file ja hi nahi sakti | `mail.send` Bun par; Rust par laana (R1) pehle | R1 + 8p; bara kaam |
-| G2 | M6 baqi: Billing, Account, Admin (11 pages), Chat | People/Calendar/Work (L15–L19) aur CRM (L20–L25) ho gaye | `entry-routes.tsx` harness mein ek ek section |
+| G2 | M6 baqi: Admin (11 pages — data ke saath harness), Chat | People/Calendar/Work (L15–L19) aur CRM (L20–L25) ho gaye | `entry-routes.tsx` harness mein ek ek section |
 | G3 | R0 Rust latest: edition 2024, axum 0.8.9, wtransport 0.7.2, `opt-level` | sandbox mein compile nahi; server par scratch `cargo check` | founder ka ek command (scratch check), phir theek |
 | G4 | R1 `mail.send` Rust par; R3 typed contract; R4 direct pool; R5 event-driven WebTransport push | bade Rust kaam, R0 ke baad | tarteeb se |
 | G5 | 8s `/api/mail/send` fallback identity ignore karta hai | R1 mein khatam hoga | R1 ke saath |
@@ -53,6 +58,7 @@ Aakhri update: **17 Oct 2026, 18:55 PKT** (`current_time` tool).
 | G13 | Real-phone verification (Rule 5) — abhi sab sandbox/harness | founder ka phone | ek chhoti checklist (neeche) |
 | G14 | **SECURITY live verify + deploy:** L25 ka fix repo mein hai, live Brain (`/opt/anexomail`) par purana ho sakta hai. Sath mein: kisi code se `crm_shared_items/mentions/approvals` mein rows hi nahi banti => 'Shared work' page khali rehta hai (wiring?) | Rule 15: server ka sach server par | founder `crm-tenant-check.sh` (read-only) chalaye; output se Brain installer (sha-guarded, backup) banega |
 | G15 | CRM pages `<a href>` se poora page reload karte hain (SPA Link nahi); `useAssignShared` ka body server se mel nahi khata; `/crm/activities` global 200 rows pehle phir filter (busy workspace dusron ko dabata) | code audit | R-series (Rust) ya chhota fix, tarteeb se |
+| G16 | **Self-serve billing**: cancel subscription / update card / VAT invoice — Polar customer-portal session endpoint (Rust) + button; abhi sirf email (L28). UK/EU mein aasaan cancellation ek kanooni tawaqqo bhi hai | backend kaam (Polar API; polar-rust-payment no-touch => naya endpoint `anexomail-rust` mein) | R-series ke saath; pehle founder se Polar portal ka faisla |
 
 ## C. Founder ke bina nahi ho sakte (chhupa nahi — saaf)
 

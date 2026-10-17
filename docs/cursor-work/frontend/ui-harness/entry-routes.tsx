@@ -16,11 +16,15 @@ import { Route as CrmActivityRoute } from "@/routes/app.crm.activity";
 import { Route as CrmTasksRoute } from "@/routes/app.crm.tasks";
 import { Route as CrmReportsRoute } from "@/routes/app.crm.reports";
 import { Route as CrmAccountsRoute } from "@/routes/app.crm.accounts";
+import { Route as BillingRoute } from "@/routes/app.billing";
+import { Route as AccountRoute } from "@/routes/app.account";
 
 type R = { component: () => JSX.Element; crm?: boolean };
 const CRM: Record<string, unknown> = { leads: CrmLeadsRoute, pipeline: CrmPipelineRoute, relationships: CrmRelRoute, collab: CrmCollabRoute, activity: CrmActivityRoute, tasks: CrmTasksRoute, reports: CrmReportsRoute, accounts: CrmAccountsRoute };
 const pick = (h: string): R => {
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
+  if (b.startsWith("account")) return AccountRoute as unknown as R;
+  if (b.startsWith("billing")) return BillingRoute as unknown as R;
   if (b.startsWith("crm")) { const sub = b.split("/")[1]; return { ...((CRM[sub] ?? CrmIndexRoute) as R), crm: true }; }
   if (b.startsWith("people")) return PeopleRoute as unknown as R;
   if (b.startsWith("work")) return WorkRoute as unknown as R;

@@ -349,7 +349,7 @@ function AccountPage() {
             <PasswordInput id="current-password" label="Current password" value={currentPassword} onChange={setCurrentPassword} visible={passwordVisible} />
             <PasswordInput id="new-password" label="New password" value={newPassword} onChange={setNewPassword} visible={passwordVisible} />
             <PasswordInput id="confirm-password" label="Confirm new password" value={confirmPassword} onChange={setConfirmPassword} visible={passwordVisible} />
-            <div className="flex items-center justify-between gap-3">
+            <div className="flex flex-wrap items-center justify-between gap-3">
               <Button type="button" variant="ghost" onClick={() => setPasswordVisible((value) => !value)}>
                 {passwordVisible ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
                 {passwordVisible ? "Hide passwords" : "Show passwords"}

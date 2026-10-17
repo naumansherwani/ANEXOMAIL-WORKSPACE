@@ -413,6 +413,17 @@ export function relativeTime(iso: string) {
   const then = new Date(iso).getTime();
   if (Number.isNaN(then)) return "";
   const diff = Date.now() - then;
+  // Future (renewals, due dates, scheduled sends): this used to fall into "now" for anything ahead of the clock, so a
+  // renewal in 20 days read "Auto-renews now". Beyond a minute of clock skew we say how far ahead it is.
+  if (diff < -60_000) {
+    const ahead = Math.round(-diff / 60_000);
+    if (ahead < 60) return `in ${ahead}m`;
+    const aheadHours = Math.round(ahead / 60);
+    if (aheadHours < 24) return `in ${aheadHours}h`;
+    const aheadDays = Math.round(aheadHours / 24);
+    if (aheadDays < 7) return `in ${aheadDays}d`;
+    return new Date(iso).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+  }
   const minutes = Math.round(diff / 60_000);
   if (minutes < 1) return "now";
   if (minutes < 60) return `${minutes}m`;
