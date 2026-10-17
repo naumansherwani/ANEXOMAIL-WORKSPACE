@@ -334,6 +334,8 @@ function MailFolderPage() {
           cursor={cursor}
           onCursor={setCursor}
           lowData={net.lowData}
+          onCompose={() => setComposing(true)}
+          filtered={Boolean(label || account || category || q)}
           onSwipeArchive={(id) =>
             act(
               id,

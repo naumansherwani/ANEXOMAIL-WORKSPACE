@@ -10,6 +10,7 @@ import { ErrorState } from "@/components/state/StateBlock";
 import type { MailFolder } from "@/lib/ia";
 import { measureMotion } from "@/lib/experience";
 import { AddressChip } from "@/components/app/mail/AddressChip";
+import { InboxWelcome } from "@/components/app/mail/InboxWelcome";
 import { addressTone } from "@/lib/mail-identity";
 import { relativeTime, type ThreadListItem } from "@/lib/mail";
 import type { ApiError } from "@/lib/api";
@@ -69,6 +70,8 @@ export function ThreadList({
   onLongPress,
   onStar,
   lowData = false,
+  onCompose,
+  filtered = false,
 }: {
   folder: MailFolder;
   threads: ThreadListItem[] | undefined;
@@ -86,6 +89,10 @@ export function ThreadList({
   onLongPress?: (threadId: string) => void;
   onStar?: (threadId: string, starred: boolean) => void;
   lowData?: boolean;
+  /** Opens the composer — the empty-inbox welcome offers it as a tap target (phones have no "C" key). */
+  onCompose?: () => void;
+  /** True when a label, account, category or search is narrowing the list: an empty result is then "nothing matches", not "no mail yet". */
+  filtered?: boolean;
 }) {
   const listRef = useRef<HTMLDivElement>(null);
   // Pull-to-refresh (mobile): only arms at the very top of the rail.
@@ -138,14 +145,8 @@ export function ThreadList({
   if (isPending) return <ListSkeleton rows={8} label="Loading threads" />;
 
   if (!threads || threads.length === 0) {
-    if (folder === "inbox") {
-      return (
-        <EmptyState
-          icon={<Mail className="size-5" />}
-          title="No mail yet"
-          body="New mail lands here the moment it is delivered. Press C to write the first one."
-        />
-      );
+    if (folder === "inbox" && !filtered) {
+      return <InboxWelcome onCompose={onCompose} />;
     }
     return (
       <EmptyState

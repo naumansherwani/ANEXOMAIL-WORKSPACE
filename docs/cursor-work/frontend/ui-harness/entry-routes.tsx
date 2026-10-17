@@ -21,6 +21,7 @@ import { Route as BillingRoute } from "@/routes/app.billing";
 import { Route as AccountRoute } from "@/routes/app.account";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
 import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
+import { InboxWelcome } from "@/components/app/mail/InboxWelcome";
 import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
 import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
 
@@ -44,10 +45,26 @@ const ChipsRoute = {
 };
 // #<page>?gate=1&plan=basic[&personal]: the REAL PlanSurfaceGate for that path ("#chat?gate=1&plan=basic&personal" => /app/chat locked for Personal Basic).
 const GateRoute = { component: () => <PlanSurfaceGate><div className="p-6 text-sm">THE REAL PAGE OPENS HERE (not locked)</div></PlanSurfaceGate> };
+// #inbox[?share=1]: the REAL empty-inbox welcome inside a list-panel-sized column (share=1 fakes navigator.share so the Share button shows).
+const InboxRoute = {
+  component: () => {
+    if (/[?&]share=1/.test(location.hash)) (navigator as unknown as { share: () => Promise<void> }).share = async () => undefined;
+    return (
+      <div className="flex min-h-0 flex-1">
+        <div className="w-full border-border md:w-[19rem] md:border-r lg:w-[22rem]">
+          <div className="flex h-14 items-center border-b border-border px-4 text-sm font-bold">Inbox</div>
+          <InboxWelcome onCompose={() => undefined} />
+        </div>
+        <div className="hidden flex-1 items-center justify-center text-sm text-muted-foreground md:flex">Nothing selected</div>
+      </div>
+    );
+  },
+};
 const pick = (h: string): R => {
   if (/[?&]gate=1/.test(h)) return GateRoute as unknown as R;
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
+  if (b.startsWith("inbox")) return InboxRoute as unknown as R;
   if (b.startsWith("dashboard")) return DashboardRoute as unknown as R;
   if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;
   if (b.startsWith("admin-teams")) return AdminTeamsRoute as unknown as R;

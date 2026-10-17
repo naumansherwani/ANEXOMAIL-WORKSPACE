@@ -11,7 +11,7 @@ src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
 src/styles.css 1ca7acbe178125db
-src/routes/app.mail.$folder.tsx e12b7a4339d2728e
+src/routes/app.mail.$folder.tsx 0afba7c1e19513b6
 src/routes/app.mail.$folder.$threadId.tsx 84035874e5427fcd
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
@@ -58,3 +58,5 @@ src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
 src/lib/plan-surface.ts 3ec8ae630d178fbb
 src/components/app/dashboard/Greeting.tsx 710e3100d8fe2300
 src/components/app/dashboard/Panels.tsx fd10eb0c1dbbc8b5
+src/components/app/mail/InboxWelcome.tsx e78bad1dff9a68fb
+src/components/app/mail/ThreadList.tsx fb8e220fb15b3032
