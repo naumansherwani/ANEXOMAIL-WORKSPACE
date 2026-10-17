@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# TIP: Calendar + People (aur aage ke modules) EK build mein: docs/cursor-work/server/rust-engine-install.sh — do alag build ki zaroorat nahi.
 # ANEXOMAIL — Rust engine: Calendar v2 SAFE install (invitations + RSVP + find-a-time), restore-on-fail.
 #   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-calendar-install.sh)
 #
