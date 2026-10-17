@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 20:41 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 20:16 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
