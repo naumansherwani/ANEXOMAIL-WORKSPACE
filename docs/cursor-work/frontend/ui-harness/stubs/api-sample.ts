@@ -114,6 +114,11 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
     const found = EVENTS().find((x) => x.id === id) ?? EVENTS()[1];
     return { event: found, outcome: null, tasks: [] };
   }
+  if (key === "calendar.create") {
+    // Import test: #cal?imperr=1 makes every "Standup" fail so the partial-failure state can be shot.
+    if (/[?&]imperr=1/.test(location.hash) && String(input?.title ?? "").includes("Standup")) throw new ApiError("Calendar service is busy", 503, "unavailable");
+    return { event: { id: "imp-" + Math.random().toString(36).slice(2, 8) } };
+  }
   if (key === "calendar.availability") return { slots: [], share_url: null };
   if (key === "calendar.load") return { load: e ? [] : [{ member: "me@anexomail.com", display_name: "Nauman", meeting_minutes: 420, open_tasks: 3, overloaded: false }, { member: "ali@axonetis.com", display_name: "Ali Khan", meeting_minutes: 1180, open_tasks: 9, overloaded: true }] };
   if (key === "calendar.focus") return { windows: [] };

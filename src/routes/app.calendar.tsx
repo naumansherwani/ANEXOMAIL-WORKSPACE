@@ -28,6 +28,7 @@ import { useMemo, useState } from "react";
 import { Availability } from "@/components/app/calendar/Availability";
 import { CostMeter, LoadBar, apiHref } from "@/components/app/calendar/Bits";
 import { EventDetail } from "@/components/app/calendar/EventDetail";
+import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
@@ -479,6 +480,7 @@ function CalendarPage() {
   const [rail, setRail] = useState<Rail>("agenda");
   const [selected, setSelected] = useState("");
   const [composing, setComposing] = useState(false);
+  const [icsPlan, setIcsPlan] = useState<LoadedIcs | null>(null);
 
   // For week/month, fetch the full range; for day, fetch the day
   const range = useMemo(() => {
@@ -526,12 +528,14 @@ function CalendarPage() {
         mobileHidden={Boolean(selected)}
         action={
           <>
+            <IcsPickButton onLoaded={setIcsPlan} />
             <a
               href={apiHref(exportPath("ics"))}
-              className="ax-press ax-caption rounded-md border border-border px-1.5 py-1 font-semibold text-muted-foreground"
+              aria-label="Export your calendar (.ics)"
+              className="ax-press ax-focus ax-tap ax-caption inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 font-semibold text-muted-foreground"
               title="Export .ics — no lock-in"
             >
-              <Download className="size-3.5" />
+              <Download className="size-3.5" aria-hidden="true" />
             </a>
             <Button size="sm" variant="outline" onClick={() => setComposing((v) => !v)}>
               <Plus className="size-3.5" />
@@ -540,6 +544,17 @@ function CalendarPage() {
           </>
         }
       >
+        {icsPlan && (
+          <IcsImportPanel
+            plan={icsPlan}
+            onClose={() => setIcsPlan(null)}
+            onShow={(d) => {
+              setAnchor(d);
+              setSelected("");
+            }}
+          />
+        )}
+
         {/* Nav + label */}
         <div className="flex items-center gap-1 border-b border-border px-ax-3 py-ax-2">
           <button

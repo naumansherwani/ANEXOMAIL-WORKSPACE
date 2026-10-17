@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 19:50 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 19:58 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -50,6 +50,7 @@ Aakhri update: **17 Oct 2026, 19:50 PKT** (`current_time` tool).
 | L40 | **Branding leak: LeadForm ka placeholder "NEXATECT Global Ltd" public pages par** (/migration, /enterprise, /partners) — Rule 10 | screenshot | "Your company Ltd" | READY |
 | L41 | Migration calculator ke toggles 20px (phone par pakadna mushkil) | audit | `ax-tap` 44px label rows | READY |
 | L42 | get-started "Bring your old mail" aise likha tha jaise self-serve import maujood ho (repo mein chalane wala worker nahi) | repo audit | copy sach: "Ask us to move…, fixed price, named engineer" | READY |
+| L43 | **Calendar import nahi tha — Google/Zoho/Outlook se aane wale ka calendar chhoot jata tha** (G19b ka calendar hissa) | switch-journey audit | `src/lib/ics.ts` (browser mein parse: TZID/Windows zones/UTC, DST, RRULE daily/weekly/monthly/yearly + EXDATE + moved instances; all-day, cancelled, >30 din purane skip aur **ginti ke saath dikhaye**; unsupported rule = pehli occurrence, sach likha) + `IcsImport.tsx` (confirm panel, 3 saath create, progress, Stop, fail ginti, dobara file chuno to sirf fail wale dobara, "Show on calendar"); header ke export/import buttons ab 44px + aria-label. Attendees default OFF (Rust `calendar.create` ke invite bhejne ka saboot nahi) | READY (live saboot ke baad DONE) |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
@@ -73,7 +74,7 @@ Aakhri update: **17 Oct 2026, 19:50 PKT** (`current_time` tool).
 | G16 | **Self-serve billing**: cancel subscription / update card / VAT invoice — Polar customer-portal session endpoint (Rust) + button; abhi sirf email (L28). UK/EU mein aasaan cancellation ek kanooni tawaqqo bhi hai | backend kaam (Polar API; polar-rust-payment no-touch => naya endpoint `anexomail-rust` mein) | R-series ke saath; pehle founder se Polar portal ka faisla |
 | G17 | **Admin Members/Teams/Invitations: repo ke Brain mein sirf 4 workspace routes hain** (POST /personal, /organisations, /invitations; PATCH /active-organisation). Page jo bulata hai (GET /members, PATCH+DELETE /members/:id, GET+DELETE /invitations, GET+POST+DELETE /teams) uska handler poore repo mein nahi, aur SQL mein `teams`/`invitations` table bhi nahi. Rust source repo mein nahi — ho sakta hai live Rust mein ho. Page crash nahi karta ("Members/Teams aren't live on the server yet"). Teams ek dead end hai: team ban/delete ho sakti hai, par usmein log/addresses jodne ka UI hi nahi, jabki toast kehta hai "Add people and shared addresses next" | repo audit + apni screenshots (`?err=1` state) | founder: `workspace-api-check.sh` chalaye (read-only) -> uske jawab par handlers + migration likhunga | OPEN (founder-run check) |
 | G18 | **Founder workspace abhi Rust-only nahi (Rule 22):** static scan (`founder-stack-audit.md`) — 36 founder routes, **181 calls Rust-pehle par Bun REST fallback ke saath**, **19 calls sirf Bun** (release checks/run/checklist/deployments/lock/roadmap, movein cockpit/deal, revenue pipeline, AI chat, mail thread/send). Blocker: **Rust ka source repo mein nahi** (sirf `/opt/anexomail-rust` par) => agent Rust handlers likh ke review nahi kar sakta | static scan + Rule 22 | founder: `rust-procs-check.sh` chalaye (kitne procs Rust mein sach mein hain) + R0 (Rust source repo mein laana: faisla) — phir ek ek call Rust par, fallback tab band | OPEN (founder-run check + R0) |
-| G19 | **Switch-journey ke asli gaps (Google/Zoho se aane wale ke liye):** (a) Integrations "migrate in one run" job `queued` banti hai, repo mein chalane wala worker nahi => user ko kuch nahi hota; (b) **contacts / calendar import nahi hai** (sirf `.ics` export) — switcher ki pehli maang; (c) team invite (G17/L32/L33); (d) `plans`/`docs`/`integrations` copy mein bhi "migrate everything in one run" jaisi lines | repo audit | founder: `switch-journey-check.sh` chalaye; agent: client-side `.ics`/vCard/CSV import (maujooda create endpoints), queued-state ka sach, copy sudhaar | OPEN |
+| G19 | **Switch-journey ke asli gaps (Google/Zoho se aane wale ke liye):** (a) Integrations "migrate in one run" job `queued` banti hai, repo mein chalane wala worker nahi => user ko kuch nahi hota; (b) **calendar import ab hai (L43, READY); contacts import abhi nahi** (vCard/CSV; founder ka faisla chahiye: kya contacts ko seedha `contacts` table mein daalna hai ya Leads mein) — switcher ki pehli maang; (c) team invite (G17/L32/L33); (d) `plans`/`docs`/`integrations` copy mein bhi "migrate everything in one run" jaisi lines | repo audit | founder: `switch-journey-check.sh` chalaye; agent: vCard/CSV contacts import (founder faisle ke baad), queued-state ka sach, copy sudhaar | OPEN |
 
 ## C. Founder ke bina nahi ho sakte (chhupa nahi — saaf)
 

@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx e12b7a4339d2728e
 src/routes/app.mail.$folder.$threadId.tsx 84035874e5427fcd
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 0a6c06f3c8e48b33
+src/routes/app.calendar.tsx 475e7cd04813f1b4
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx 7068ed31ed24055f
@@ -52,3 +52,5 @@ src/components/site/ConvergenceCanvas.tsx d4f22a2dd32d5da4
 src/routes/migration.tsx fbfcf96604b56446
 src/components/site/LeadForm.tsx f8927b662e41d639
 src/routes/get-started.tsx 26e18cb222848629
+src/lib/ics.ts e5b885bb1f9e0ba8
+src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
