@@ -64,3 +64,5 @@ node shot.mjs $OUT work-820 work 820 1180
 TOUCH=1 node shot.mjs $OUT crm-pipe 'crm/pipeline' 390 844            # CRM pages render inside the real CrmStage nav
 ```
 Naya route add karna: uska import `entry-routes.tsx` ke route map mein, sample data `stubs/api-sample.ts` mein, aur agar naya lib import ho to `build.mjs` ke alias mein ek line.
+
+**Admin (ENTRY=entry-routes.tsx):** `admin-members`, `admin-teams` (+ `?empty=1`, `?err=1` = endpoint 404 "aren't live yet" state, `&role=member|admin` = non-owner view). AlertDialog stub ab real class strings use karta hai (`stubs/ui.tsx`), `click:Remove` / `click:Delete` se dialog khulta hai.

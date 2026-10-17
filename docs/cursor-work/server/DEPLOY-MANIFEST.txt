@@ -43,3 +43,5 @@ src/lib/mail.ts 6ae6054e859d2248
 src/routes/app.billing.tsx ee593ee5d8636e54
 src/routes/app.account.tsx 843adbe1d21b639f
 src/routes/app.admin.tsx 87cc5625a1cbcad6
+src/routes/app.admin.members.tsx 678f7e5dbcfb9a2f
+src/routes/app.admin.teams.tsx b0386a36d0bb467b

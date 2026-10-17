@@ -1,6 +1,7 @@
 // Stand-ins for modules that need packages absent from the sandbox. Visual stand-ins only.
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
 
 export function Chip({ children, tone = "quiet" }: { children: React.ReactNode; tone?: "quiet" | "good" | "warn" | "bad" }) {
   return (
@@ -27,14 +28,28 @@ export function ErrorState({ title, body, onRetry }: { title?: string; body: str
   );
 }
 const Pass = ({ children }: { children?: React.ReactNode }) => <div>{children}</div>;
-export const AlertDialog = ({ open, children }: { open?: boolean; children?: React.ReactNode }) => (open ? <div role="alertdialog">{children}</div> : null);
-export const AlertDialogContent = Pass;
-export const AlertDialogHeader = Pass;
-export const AlertDialogFooter = Pass;
-export const AlertDialogTitle = Pass;
-export const AlertDialogDescription = Pass;
-export const AlertDialogAction = ({ children, onClick }: { children?: React.ReactNode; onClick?: () => void }) => <button onClick={onClick}>{children}</button>;
-export const AlertDialogCancel = ({ children }: { children?: React.ReactNode }) => <button>{children}</button>;
+// AlertDialog stand-in: SAME class strings as src/components/ui/alert-dialog.tsx (minus Radix animation hooks), so the dialog looks as it will live.
+const AdCtx = React.createContext<(o: boolean) => void>(() => {});
+export const AlertDialog = ({ open, onOpenChange, children }: { open?: boolean; onOpenChange?: (o: boolean) => void; children?: React.ReactNode }) =>
+  open ? <AdCtx.Provider value={onOpenChange ?? (() => {})}><div role="alertdialog" aria-modal="true">{children}</div></AdCtx.Provider> : null;
+export const AlertDialogContent = ({ children }: { children?: React.ReactNode }) => (
+  <>
+    <div className="fixed inset-0 z-50 bg-black/80" />
+    <div className="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 sm:rounded-lg">{children}</div>
+  </>
+);
+export const AlertDialogHeader = ({ children }: { children?: React.ReactNode }) => <div className="flex flex-col space-y-2 text-center sm:text-left">{children}</div>;
+export const AlertDialogFooter = ({ children }: { children?: React.ReactNode }) => <div className="flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2">{children}</div>;
+export const AlertDialogTitle = ({ children }: { children?: React.ReactNode }) => <h2 className="text-lg font-semibold">{children}</h2>;
+export const AlertDialogDescription = ({ children }: { children?: React.ReactNode }) => <p className="text-sm text-muted-foreground">{children}</p>;
+export const AlertDialogAction = ({ children, onClick, className }: { children?: React.ReactNode; onClick?: () => void; className?: string }) => {
+  const close = React.useContext(AdCtx);
+  return <button className={cn(buttonVariants(), className)} onClick={() => { onClick?.(); close(false); }}>{children}</button>;
+};
+export const AlertDialogCancel = ({ children }: { children?: React.ReactNode }) => {
+  const close = React.useContext(AdCtx);
+  return <button className={cn(buttonVariants({ variant: "outline" }), "mt-2 sm:mt-0")} onClick={() => close(false)}>{children}</button>;
+};
 
 // Sheet (Radix dialog) stand-in: same positioning classes as src/components/ui/sheet.tsx side="bottom".
 export const Sheet = ({ open, onOpenChange, children }: { open?: boolean; onOpenChange?: (o: boolean) => void; children?: React.ReactNode }) =>

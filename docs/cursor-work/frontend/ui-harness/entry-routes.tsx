@@ -1,4 +1,4 @@
-// Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, add ?empty=1 for empty states
+// Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, #admin-members, #admin-teams, add ?empty=1 for empty states
 // Shell mirrors AppShell: 56px header, <main flex min-h-0 flex-1 flex-col md:flex-row>, phone bottom bar (placeholder, same height).
 import { useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
@@ -18,11 +18,15 @@ import { Route as CrmReportsRoute } from "@/routes/app.crm.reports";
 import { Route as CrmAccountsRoute } from "@/routes/app.crm.accounts";
 import { Route as BillingRoute } from "@/routes/app.billing";
 import { Route as AccountRoute } from "@/routes/app.account";
+import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
+import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
 
 type R = { component: () => JSX.Element; crm?: boolean };
 const CRM: Record<string, unknown> = { leads: CrmLeadsRoute, pipeline: CrmPipelineRoute, relationships: CrmRelRoute, collab: CrmCollabRoute, activity: CrmActivityRoute, tasks: CrmTasksRoute, reports: CrmReportsRoute, accounts: CrmAccountsRoute };
 const pick = (h: string): R => {
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
+  if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;
+  if (b.startsWith("admin-teams")) return AdminTeamsRoute as unknown as R;
   if (b.startsWith("account")) return AccountRoute as unknown as R;
   if (b.startsWith("billing")) return BillingRoute as unknown as R;
   if (b.startsWith("crm")) { const sub = b.split("/")[1]; return { ...((CRM[sub] ?? CrmIndexRoute) as R), crm: true }; }

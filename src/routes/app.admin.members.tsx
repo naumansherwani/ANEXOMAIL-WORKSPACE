@@ -5,6 +5,16 @@ import { Loader2, MailPlus, ShieldCheck, Trash2, UserMinus } from "lucide-react"
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -88,7 +98,7 @@ function MembersPage() {
   const removeMember = useMutation({
     mutationFn: (id: string) => api(`/api/workspace/members/${id}`, { method: "DELETE" }),
     onSuccess: () => {
-      notify.done("Member removed", "Their sessions were revoked.");
+      notify.done("Member removed", "They no longer have access to this organisation.");
       invalidate();
     },
     onError: (e: ApiError) => notify.failed("Member not removed", { description: e.message }),
@@ -102,6 +112,10 @@ function MembersPage() {
     },
     onError: (e: ApiError) => notify.failed("Invitation not revoked", { description: e.message }),
   });
+
+  // Removing someone ends their access at once: never on a single tap (on a phone the role pills sit
+  // right beside the remove icon). Ask first.
+  const [confirmRemove, setConfirmRemove] = useState<Member | null>(null);
 
   const [emails, setEmails] = useState("");
   const [role, setRoleValue] = useState<WorkspaceRole>("member");
@@ -123,6 +137,9 @@ function MembersPage() {
     onError: (e: ApiError) => notify.failed("Invitations not sent", { description: e.message }),
   });
 
+  // Owners and yourself are never editable here; everyone else (when you manage) gets role pills + remove.
+  const editable = (m: Member) => canManage && m.role !== "owner" && m.user_id !== session?.user.id;
+
   if (!organisation) {
     return (
       <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
@@ -135,7 +152,7 @@ function MembersPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
+    <div className="mx-auto w-full max-w-3xl px-ax-4 py-ax-6 md:px-10 md:py-10">
       <p className="ax-eyebrow">People</p>
       <h2 className="mt-3 text-3xl text-foreground">Members &amp; roles</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -174,7 +191,7 @@ function MembersPage() {
                 key={r.id}
                 type="button"
                 onClick={() => setRoleValue(r.id)}
-                className={`ax-focus ax-press rounded-full px-3 py-1.5 text-xs font-semibold ${
+                className={`ax-focus ax-press ax-tap inline-flex items-center justify-center rounded-full px-3.5 py-1.5 text-xs font-semibold ${
                   role === r.id
                     ? "bg-cyan-accent/15 text-cyan-accent"
                     : "bg-secondary text-muted-foreground"
@@ -183,7 +200,7 @@ function MembersPage() {
                 {r.label}
               </button>
             ))}
-            <Button type="submit" className="ax-press ml-auto" disabled={invite.isPending}>
+            <Button type="submit" className="ax-press w-full sm:ml-auto sm:w-auto" disabled={invite.isPending}>
               {invite.isPending ? (
                 <Loader2 className="size-4 animate-spin" />
               ) : (
@@ -221,19 +238,26 @@ function MembersPage() {
                   key={m.id}
                   className="ax-row flex flex-wrap items-center gap-3 rounded-xl border border-border bg-card px-4 py-3"
                 >
-                  <div className="min-w-0 flex-1">
-                    <p className="ax-label truncate text-foreground">{m.name ?? m.email}</p>
-                    <p className="ax-caption truncate">{m.email}</p>
+                  {/* Phone: the full address gets the whole line (an admin must see exactly who they are changing) and the
+                      controls drop below it; from sm up it is one row again. */}
+                  <div className={`min-w-0 ${editable(m) ? "basis-full sm:flex-1 sm:basis-0" : "flex-1"}`}>
+                    {m.name ? <p className="ax-label truncate text-foreground">{m.name}</p> : null}
+                    <p
+                      title={m.email}
+                      className={`break-all sm:truncate ${m.name ? "ax-caption" : "ax-label text-foreground"}`}
+                    >
+                      {m.email}
+                    </p>
                   </div>
-                  {canManage && m.role !== "owner" && m.user_id !== session?.user.id ? (
-                    <div className="flex items-center gap-2">
+                  {editable(m) ? (
+                    <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
                       {(["admin", "member"] as WorkspaceRole[]).map((r) => (
                         <button
                           key={r}
                           type="button"
                           disabled={setRole.isPending}
                           onClick={() => setRole.mutate({ id: m.id, role: r })}
-                          className={`ax-focus rounded-full px-2.5 py-1 text-xs font-semibold ${
+                          className={`ax-focus ax-tap inline-flex items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold ${
                             m.role === r
                               ? "bg-cyan-accent/15 text-cyan-accent"
                               : "bg-secondary text-muted-foreground"
@@ -245,9 +269,9 @@ function MembersPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="ax-press text-destructive"
+                        className="ax-press ml-auto text-destructive sm:ml-0"
                         disabled={removeMember.isPending}
-                        onClick={() => removeMember.mutate(m.id)}
+                        onClick={() => setConfirmRemove(m)}
                         aria-label={`Remove ${m.email}`}
                       >
                         <UserMinus className="size-4" />
@@ -291,7 +315,7 @@ function MembersPage() {
                     className="ax-row flex items-center gap-3 rounded-xl border border-dashed border-border px-4 py-3"
                   >
                     <div className="min-w-0 flex-1">
-                      <p className="ax-label truncate text-foreground">{inv.email}</p>
+                      <p className="ax-label break-all text-foreground sm:truncate">{inv.email}</p>
                       <p className="ax-caption">
                         {inv.role}
                         {inv.expires_at
@@ -332,6 +356,30 @@ function MembersPage() {
           </p>
         </div>
       </section>
+
+      <AlertDialog open={Boolean(confirmRemove)} onOpenChange={(o) => !o && setConfirmRemove(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Remove {confirmRemove?.name ?? confirmRemove?.email}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              {confirmRemove?.email} loses access to this organisation straight away.
+              You can invite them again later.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep them</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                const target = confirmRemove;
+                setConfirmRemove(null);
+                if (target) removeMember.mutate(target.id);
+              }}
+            >
+              Remove member
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

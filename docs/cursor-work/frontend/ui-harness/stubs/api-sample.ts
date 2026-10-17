@@ -160,6 +160,24 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
   if (/^\/api\/companies\/[^/?]+\/timeline/.test(key)) return { events: TIMELINE };
   if (/^\/api\/companies\/[^/?]+/.test(key)) { const d = key.split("/")[3].split("?")[0]; return { company: COMPANIES.find((c) => c.domain === d) ?? COMPANIES[0], people: CONTACTS.slice(0, 2) }; }
   if (key.startsWith("/api/companies")) return { companies: e ? [] : COMPANIES };
+  // ---- Admin → Members / Teams / Invitations (#admin-members, #admin-teams; ?empty=1, ?err=1 = endpoint 404, role=member|admin)
+  if (key.startsWith("/api/workspace/")) {
+    if (/[?&]err=1/.test(location.hash)) throw new ApiError("Not found", 404, "not_found");
+    if (key === "/api/workspace/members") return { members: e ? [] : [
+      { id: "m1", user_id: "u1", email: "pro.buyer@anexomail.com", name: "Pro Buyer", role: "owner", joined_at: ago(120) },
+      { id: "m2", user_id: "u2", email: "sara@acme-studio.co.uk", name: "Sara Khan", role: "admin", joined_at: ago(40) },
+      { id: "m3", user_id: "u3", email: "ali.raza@acme-studio.co.uk", name: "Ali Raza", role: "member", joined_at: ago(12) },
+      { id: "m4", user_id: "u4", email: "accounts.payable.northern-region@acme-studio.co.uk", name: null, role: "member", joined_at: ago(3) },
+    ] };
+    if (key === "/api/workspace/invitations") return { invitations: e ? [] : [
+      { id: "i1", email: "new.hire@acme-studio.co.uk", role: "member", expires_at: ago(-5) },
+      { id: "i2", email: "contractor@freelance-design-partners.example", role: "admin", expires_at: ago(-1) },
+    ] };
+    if (key === "/api/workspace/teams") return { teams: e ? [] : [
+      { id: "t1", name: "Support", slug: "support", member_count: 4 },
+      { id: "t2", name: "Finance & accounts payable northern region", slug: "finance-ap-north", member_count: 1 },
+    ] };
+  }
   throw new ApiError("not wired in harness: " + key, 404, "not_found");
 }
 const later = <T>(v: () => T) => new Promise<T>((res, rej) => setTimeout(() => { try { res(v()); } catch (x) { rej(x); } }, 60));

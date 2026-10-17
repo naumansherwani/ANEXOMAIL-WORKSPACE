@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 18:59 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 19:07 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -38,13 +38,16 @@ Aakhri update: **17 Oct 2026, 18:59 PKT** (`current_time` tool).
 | L28 | **Paying user ke liye koi rasta nahi: cancel / card badalna / VAT invoice** (past_due par bhi sirf "Payment due" badge, aage kuch nahi) | harness + grep (hooks bane, use nahi) | abhi `billing@anexomail.com` ki sach-muchi line + past_due paigham (G16 asli fix) | READY (interim) |
 | L29 | Account: "Update password" button phone par card se bahar | harness 390 | wrap | READY |
 | L30 | Admin nav 36px pills; 11 sections side-scroll mein current page chhup jata | code | 44px + active nazar mein | READY |
+| L31 | **Admin Members/Teams: member "Remove" aur team "Delete" ek hi tap par (koi confirm nahi)** — phone par role pills (~28px) remove icon ke bilkul bagal mein; email phone par kat jaata tha (admin ko pata hi nahi kisko hata raha hai); invite ka Send button/pending-invite email bhi tang | code + apni screenshots (390/820/1440) | confirm dialog (Remove member / Delete team), role pills `ax-tap` 44px, phone par poora email (`break-all`) + controls neeche, Send full-width, copy sach ("sessions revoked" ka dawa hata diya — server se saabit nahi) | READY |
+| L32 | **Invite ka role server ignore karta hai**: Members page `{emails, role}` bhejta hai, `server/routes/workspace.ts` `role: "member"` hard-code karta hai => "Admin" chun kar invite karo to member ban jaata hai | repo audit | OPEN (agent) — live check ke baad (`workspace-api-check.sh`) Brain/Rust mein theek karunga | OPEN |
+| L33 | **Invite accept hone par banda org mein judta hi nahi (repo mein)**: invite email ka `organisation_id/role` sirf Supabase `user_metadata` mein jaata hai aur repo mein koi code usay padhta nahi (aur `user_metadata` user khud badal sakta hai, to usay maan lena security hole hoga). Naya banda `/api/workspace/personal` se apna alag personal workspace pa lega | repo audit | OPEN (agent) — sahi tareeqa: apni invitations table + verified-email match; live DB mein trigger ho sakta hai (check script dikhayegi) | OPEN |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
 | # | Gap | Kyun khula | Agla qadam |
 |---|---|---|---|
 | G1 | **Attachments (8p)** — bheji mail mein file ja hi nahi sakti | `mail.send` Bun par; Rust par laana (R1) pehle | R1 + 8p; bara kaam |
-| G2 | M6 baqi: Admin (11 pages — data ke saath harness), Chat | People/Calendar/Work (L15–L19) aur CRM (L20–L25) ho gaye | `entry-routes.tsx` harness mein ek ek section |
+| G2 | M6 baqi: Admin ke baqi 9 pages (storage, monitoring, health, diagnostics, logs, reports, audit, export, addresses — data ke saath harness), Chat | People/Calendar/Work (L15–L19) aur CRM (L20–L25) ho gaye | `entry-routes.tsx` harness mein ek ek section |
 | G3 | R0 Rust latest: edition 2024, axum 0.8.9, wtransport 0.7.2, `opt-level` | sandbox mein compile nahi; server par scratch `cargo check` | founder ka ek command (scratch check), phir theek |
 | G4 | R1 `mail.send` Rust par; R3 typed contract; R4 direct pool; R5 event-driven WebTransport push | bade Rust kaam, R0 ke baad | tarteeb se |
 | G5 | 8s `/api/mail/send` fallback identity ignore karta hai | R1 mein khatam hoga | R1 ke saath |
@@ -59,6 +62,7 @@ Aakhri update: **17 Oct 2026, 18:59 PKT** (`current_time` tool).
 | G14 | **SECURITY live verify + deploy:** L25 ka fix repo mein hai, live Brain (`/opt/anexomail`) par purana ho sakta hai. Sath mein: kisi code se `crm_shared_items/mentions/approvals` mein rows hi nahi banti => 'Shared work' page khali rehta hai (wiring?) | Rule 15: server ka sach server par | founder `crm-tenant-check.sh` (read-only) chalaye; output se Brain installer (sha-guarded, backup) banega |
 | G15 | CRM pages `<a href>` se poora page reload karte hain (SPA Link nahi); `useAssignShared` ka body server se mel nahi khata; `/crm/activities` global 200 rows pehle phir filter (busy workspace dusron ko dabata) | code audit | R-series (Rust) ya chhota fix, tarteeb se |
 | G16 | **Self-serve billing**: cancel subscription / update card / VAT invoice — Polar customer-portal session endpoint (Rust) + button; abhi sirf email (L28). UK/EU mein aasaan cancellation ek kanooni tawaqqo bhi hai | backend kaam (Polar API; polar-rust-payment no-touch => naya endpoint `anexomail-rust` mein) | R-series ke saath; pehle founder se Polar portal ka faisla |
+| G17 | **Admin Members/Teams/Invitations: repo ke Brain mein sirf 4 workspace routes hain** (POST /personal, /organisations, /invitations; PATCH /active-organisation). Page jo bulata hai (GET /members, PATCH+DELETE /members/:id, GET+DELETE /invitations, GET+POST+DELETE /teams) uska handler poore repo mein nahi, aur SQL mein `teams`/`invitations` table bhi nahi. Rust source repo mein nahi — ho sakta hai live Rust mein ho. Page crash nahi karta ("Members/Teams aren't live on the server yet"). Teams ek dead end hai: team ban/delete ho sakti hai, par usmein log/addresses jodne ka UI hi nahi, jabki toast kehta hai "Add people and shared addresses next" | repo audit + apni screenshots (`?err=1` state) | founder: `workspace-api-check.sh` chalaye (read-only) -> uske jawab par handlers + migration likhunga | OPEN (founder-run check) |
 
 ## C. Founder ke bina nahi ho sakte (chhupa nahi — saaf)
 

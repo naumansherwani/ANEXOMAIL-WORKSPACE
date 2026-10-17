@@ -5,6 +5,16 @@ import { Loader2, Plus, Trash2, Users } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,6 +56,8 @@ function TeamsPage() {
   const queryClient = useQueryClient();
   const canManage = organisation?.role === "owner" || organisation?.role === "admin";
   const [name, setName] = useState("");
+  // Deleting a team drops the shared-address access and assignments that follow it — ask first (one mis-tap on a phone).
+  const [confirmDelete, setConfirmDelete] = useState<Team | null>(null);
 
   const teams = useQuery<{ teams: Team[] }, ApiError>({
     queryKey: ["workspace", "teams", organisation?.id],
@@ -78,7 +90,7 @@ function TeamsPage() {
 
   if (!organisation) {
     return (
-      <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
+      <div className="mx-auto w-full max-w-3xl px-ax-4 py-ax-6 md:px-10 md:py-10">
         <StateBlock
           title="No organisation yet"
           body="Create your organisation first — teams live inside it."
@@ -88,7 +100,7 @@ function TeamsPage() {
   }
 
   return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10 md:px-10">
+    <div className="mx-auto w-full max-w-3xl px-ax-4 py-ax-6 md:px-10 md:py-10">
       <p className="ax-eyebrow">People</p>
       <h2 className="mt-3 text-3xl text-foreground">Teams</h2>
       <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
@@ -164,7 +176,7 @@ function TeamsPage() {
                     size="sm"
                     className="ax-press text-destructive"
                     disabled={remove.isPending}
-                    onClick={() => remove.mutate(team.id)}
+                    onClick={() => setConfirmDelete(team)}
                     aria-label={`Delete ${team.name}`}
                   >
                     <Trash2 className="size-4" />
@@ -175,6 +187,31 @@ function TeamsPage() {
           </ul>
         )}
       </div>
+
+      <AlertDialog open={Boolean(confirmDelete)} onOpenChange={(o) => !o && setConfirmDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete {confirmDelete?.name}?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Anything shared with this team — addresses, assignments, permissions — stops following it. Its{" "}
+              {confirmDelete?.member_count ?? 0} {confirmDelete?.member_count === 1 ? "person keeps" : "people keep"}{" "}
+              their own mailboxes.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Keep team</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                const target = confirmDelete;
+                setConfirmDelete(null);
+                if (target) remove.mutate(target.id);
+              }}
+            >
+              Delete team
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
