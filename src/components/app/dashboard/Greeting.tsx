@@ -66,7 +66,8 @@ export function Greeting({
     if (s.unread > 0) {
       strips.push(`${s.unread} ${t(s.unread === 1 ? "unread thread" : "unread threads")}`);
     }
-    if (s.assigned_to_me > 0) {
+    // Assigning threads is a team idea — a Personal account has nobody to assign to.
+    if (kind !== "personal" && s.assigned_to_me > 0) {
       strips.push(`${s.assigned_to_me} ${t("assigned to you")}`);
     }
   }

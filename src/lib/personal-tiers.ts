@@ -9,10 +9,13 @@
  *   Personal Pro+    → £83  /user/month  (POLAR_PRODUCT_PLAN_PERSONAL_PRO_PLUS_*)
  *   Personal Premium → £1,850/user/month (POLAR_PRODUCT_PLAN_PERSONAL_PREMIUM_*)
  *
- * Feature gates (plan-surface.ts):
- *   basic        → Personal Basic   — mail, contacts, calendar, work (personal tasks only)
- *   pro          → Personal Pro+    — + CRM, ANEXOChat, pro mail tools
- *   business_pro → Personal Premium — same power + 1TB / 5GB file / advanced features
+ * Feature gates (plan-surface.ts) — every line below must stay true to them:
+ *   basic        → Personal Basic   — Dashboard, Mail, People, Calendar, Work. NO Domains
+ *                  (so no company address / aliases / extra mailboxes), NO CRM, NO Chat, NO Org.
+ *   pro          → Personal Pro+    — + CRM, ANEXOChat, video, pro mail tools. Still no Domains/Org.
+ *   business_pro → Personal Premium — same power + 1TB pooled / 5GB file / advanced features
+ * Storage numbers come from sql/phase48_storage_quota.sql (basic 5GB, pro 10GB, business_pro 1TB pooled).
+ * A Personal account is one person: no teammates, so no shared inbox, no thread ownership, no company address.
  */
 
 export type PersonalTierId = "personal_basic" | "personal_pro" | "personal_premium";
@@ -47,18 +50,17 @@ export const PERSONAL_TIERS: PersonalTier[] = [
     monthly: 17,
     yearly: 187,
     yearlyRule: "one-month-free",
-    unit: "/ user / month",
-    tagline: "Solo founder, freelancer, individual professional.",
+    unit: "for one person",
+    tagline: "One private inbox that is simply yours — no company setup.",
     features: [
-      "1 company address",
-      "3 mailboxes · 5GB per mailbox",
-      "5 free aliases",
-      "Undo send (30 seconds)",
-      "Contacts & calendar",
-      "Thread ownership",
-      "Cmd+K workspace search",
-      "Work — personal tasks",
-      "Human support — 72h response",
+      "Your own @anexomail.com address",
+      "5 GB of mail storage",
+      "Undo send — 30 seconds to change your mind",
+      "Contacts and a calendar, built in",
+      "A simple task list in Work",
+      "One search box for your mail and contacts",
+      "Works on phone, tablet and laptop",
+      "Email support — we reply within 72 hours",
     ],
   },
   {
@@ -70,20 +72,18 @@ export const PERSONAL_TIERS: PersonalTier[] = [
     monthly: 83,
     yearly: 913,
     yearlyRule: "one-month-free",
-    unit: "/ user / month",
+    unit: "for one person",
     tagline: "Professionals who need the full communication stack — no company account.",
     features: [
       "Everything in Personal Basic",
-      "3 company addresses",
-      "5 mailboxes · 10GB per mailbox",
-      "Shared inbox with collision guard",
+      "10 GB of mail storage",
       "Snooze & schedule send",
       "Email templates",
       "Work — boards, notes, tasks & thread analytics",
       "Full CRM — leads, pipeline, contacts intelligence",
       "ANEXOChat — full access",
       "ANEXOVideoCall with screen share",
-      "Human support — 48h response",
+      "Email support — we reply within 48 hours",
     ],
   },
   {
@@ -95,12 +95,12 @@ export const PERSONAL_TIERS: PersonalTier[] = [
     monthly: 1850,
     yearly: 18500,
     yearlyRule: "two-months-free",
-    unit: "/ user / month",
+    unit: "for one person",
     tagline: "Maximum communication stack for a professional — every feature, no company seat.",
     badge: "Most complete",
     features: [
       "Everything in Personal Pro+",
-      "Unlimited mailboxes · 1TB pooled storage",
+      "1 TB of pooled storage",
       "5GB max file / video sending",
       "Resumable file transfer (Rust engine)",
       "File evidence chain with download proof",
@@ -113,7 +113,7 @@ export const PERSONAL_TIERS: PersonalTier[] = [
       "Tamper-evident conversation record",
       "Group calls up to 40 participants",
       "8K-capable Relay video calls with simulcast",
-      "Priority human support — 12h response",
+      "Priority support — we reply within 12 hours",
     ],
   },
 ];

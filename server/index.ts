@@ -20,6 +20,7 @@ import { mailComposeRouter } from "./routes/mail-compose";
 import { mailPredictRouter } from "./routes/mail-predict";
 
 import { contactsRouter } from "./routes/contacts";
+import { peopleImport } from "./routes/people-import";
 import { dashboardRouter } from "./routes/dashboard";
 import { workspaceRouter } from "./routes/workspace";
 import { calendar } from "./routes/calendar";
@@ -125,6 +126,8 @@ app.use("/api/dashboard", dashboardRouter);
 app.use("/api", support);
 // Phase 10 Contacts & Communication Intelligence
 app.use("/api", contactsRouter);
+// Bring-your-own address book: contacts/import, crm/leads/import, crm/leads/move-to-people (own file, own org scope).
+app.use("/api", peopleImport);
 // Phase 11 Calendar + Work
 app.use("/api", calendar);
 // Phase 13 AI CRM (/api/crm/*, /api/founder/crm/*)

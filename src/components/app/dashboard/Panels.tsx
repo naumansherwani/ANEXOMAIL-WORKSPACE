@@ -93,6 +93,9 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
   const surface = surfaceFromSession(session?.user, organisation?.slug);
   // #8: Business account ko domain badge se seedha wizard tak raasta.
   const canConnect = showDomains(surface.billed, surface.kind);
+  // A Personal account is one person with one ANEXOMAIL address: no teammates to assign threads to, no domain to
+  // verify, no extra mailboxes. Those Business ideas must not show up on a Personal dashboard.
+  const personal = surface.kind === "personal";
 
   return (
     <CardBody
@@ -109,14 +112,15 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
       }
     >
       {(data) => {
+        const assignedTile = {
+          icon: CheckSquare,
+          label: t("Assigned to me"),
+          value: data.assigned_to_me,
+          to: "assigned" as const,
+        };
         const tiles = [
           { icon: Inbox, label: t("Unread"), value: data.unread, to: "inbox" as const },
-          {
-            icon: CheckSquare,
-            label: t("Assigned to me"),
-            value: data.assigned_to_me,
-            to: "assigned" as const,
-          },
+          ...(personal ? [] : [assignedTile]),
           { icon: Clock, label: t("Waiting"), value: data.waiting, to: "waiting" as const },
           {
             icon: Send,
@@ -127,13 +131,17 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
         ];
         return (
           <motion.div
-            className="grid grid-cols-2 gap-ax-3 sm:gap-ax-5 xl:grid-cols-4"
+            className={`grid grid-cols-2 gap-ax-3 sm:gap-ax-5 ${personal ? "sm:grid-cols-3" : "xl:grid-cols-4"}`}
             variants={gridVariants}
             initial="hidden"
             animate="show"
           >
-            {tiles.map((tile) => (
-              <motion.div key={tile.label} variants={tileVariants}>
+            {tiles.map((tile, i) => (
+              <motion.div
+                key={tile.label}
+                variants={tileVariants}
+                className={personal && i === tiles.length - 1 ? "col-span-2 sm:col-span-1" : undefined}
+              >
                 <Link
                   to="/app/mail/$folder"
                   params={{ folder: tile.to }}
@@ -151,7 +159,7 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
             ))}
             <motion.div
               variants={tileVariants}
-              className="col-span-2 xl:col-span-4"
+              className={personal ? "col-span-2 sm:col-span-3" : "col-span-2 xl:col-span-4"}
             >
               <div className="ax-plane rounded-2xl p-ax-5">
                 <div className="flex flex-wrap items-center gap-ax-3">
@@ -161,11 +169,12 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                     {formatBytes(data.storage_limit_bytes)}
                     {data.storage_model === "per_mailbox" &&
                     data.storage_per_mailbox_bytes &&
-                    data.storage_mailbox_limit
+                    data.storage_mailbox_limit &&
+                    !personal
                       ? ` · ${formatBytes(data.storage_per_mailbox_bytes)} × ${data.storage_mailbox_limit} ${t("mailboxes")}`
                       : ""}
                   </p>
-                  {data.domain_hosted ? (
+                  {data.domain_hosted || personal ? (
                     <span className="ax-status ml-auto flex items-center gap-2 text-xs font-semibold text-muted-foreground">
                       {t("ANEXOMAIL hosted")}
                       {canConnect && (
@@ -448,7 +457,7 @@ export function AiUsagePanel({ enabled }: { enabled: boolean }) {
  * Shows locked UI so Basic users see the shape of analytics, not real data.
  * Heights are static design values — never real metrics.
  */
-function LockedAnalyticsGhost({ t }: { t: (s: string) => string }) {
+function LockedAnalyticsGhost({ t, personal }: { t: (s: string) => string; personal: boolean }) {
   const ghostHeights = [30, 55, 42, 70, 48, 65, 38, 80, 60, 45, 72, 50, 35, 68];
   return (
     <div className="relative overflow-hidden rounded-xl">
@@ -481,14 +490,16 @@ function LockedAnalyticsGhost({ t }: { t: (s: string) => string }) {
         </span>
         <p className="text-[12px] font-bold text-foreground">{t("Email analytics")}</p>
         <p className="text-center text-[11px] leading-snug text-muted-foreground/60 max-w-[200px]">
-          {t("Volume, reply speed and delivery rate — available on Pro.")}
+          {personal
+            ? t("Volume, reply speed and delivery rate — available on Personal Pro+.")
+            : t("Volume, reply speed and delivery rate — available on Pro.")}
         </p>
         <a
           href="/app/billing"
-          className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-[11px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+          className="ax-tap flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-[11px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
           <Sparkles className="size-3" />
-          {t("Upgrade to Pro")}
+          {personal ? t("Upgrade to Personal Pro+") : t("Upgrade to Pro")}
         </a>
       </div>
     </div>
@@ -502,16 +513,18 @@ function LockedAnalyticsGhost({ t }: { t: (s: string) => string }) {
 export function AnalyticsPanel({ enabled, proAccess }: { enabled: boolean; proAccess: boolean }) {
   const query = useAnalytics(enabled && proAccess);
   const { t } = useLocale();
+  const { session, organisation } = useAuth();
+  const personal = surfaceFromSession(session?.user, organisation?.slug).kind === "personal";
 
   return (
     <DashboardCard
       title={t("Email analytics")}
-      hint={proAccess ? t("Volume and response speed.") : t("Pro feature.")}
+      hint={proAccess ? t("Volume and response speed.") : personal ? t("Personal Pro+ feature.") : t("Pro feature.")}
       icon={<ArrowUpRight className="size-4" />}
     >
       {/* Basic — locked ghost panel, no real query fired */}
       {!proAccess ? (
-        <LockedAnalyticsGhost t={t} />
+        <LockedAnalyticsGhost t={t} personal={personal} />
       ) : (
         <CardBody
           query={query}

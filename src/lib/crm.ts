@@ -56,7 +56,7 @@ export type Lead = {
   /** Server truth — why the score is what it is. */
   score_reason: string | null;
   owner: string | null;
-  state: "new" | "working" | "converted" | "dropped";
+  state: "new" | "working" | "converted" | "dropped" | "moved";
   last_touch_at: string | null;
   created_at: string;
 };
@@ -356,6 +356,14 @@ export function useCreateLead() {
     "/api/crm/leads",
     ["leads", "overview", "live", "evidence"],
   );
+}
+
+/** Imported leads -> People (one bulk confirm in the UI). The server only ever moves the caller's own organisation's leads. */
+export function useMoveLeadsToPeople() {
+  return useCrmMutation<
+    { ok: boolean; moved: number; added_to_people: number; already_in_people: number },
+    { source: "import" } | { ids: string[] }
+  >("crm.leadsMoveToPeople", "/api/crm/leads/move-to-people", ["leads", "overview", "live", "evidence"]);
 }
 
 export function useCreateDeal() {

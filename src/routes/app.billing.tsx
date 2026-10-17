@@ -527,10 +527,11 @@ function WorkspaceBilling() {
                     <span>{gbp(s.price_per_seat)} / {s.interval}</span>
                     {s.storage_per_mailbox_gb ? (
                       <span className="text-muted-foreground">
-                        · {s.storage_per_mailbox_gb} GB / mailbox
+                        · {s.storage_per_mailbox_gb} GB {kind === "personal" ? t("of mail storage") : "/ mailbox"}
                       </span>
                     ) : null}
-                    {s.seats > 0 && (
+                    {/* A Personal account is one person — seats are a company idea. */}
+                    {kind !== "personal" && s.seats > 0 && (
                       <span className="text-muted-foreground">
                         · {s.seats_used} / {s.seats}{" "}
                         {s.seats === 1 ? t("seat") : t("seats")}

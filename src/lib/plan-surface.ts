@@ -385,27 +385,27 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
   if (path.startsWith("/app/crm/collab")) {
     if (showCrmCollab(opts.plan, null, kind)) return null;
     return {
-      title: personal ? "Collaboration is on Personal Pro" : "Shared CRM work is on Business",
+      title: personal ? "Collaboration is on Personal Pro+" : "Shared CRM work is on Business",
       body: personal
-        ? "Assignment and shared CRM work sit on Personal Pro and Personal Premium. Your package is {package}."
+        ? "Assignment and shared CRM work sit on Personal Pro+ and Personal Premium. Your package is {package}."
         : "Assignment, mentions and approvals sit on Business and Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm/activity")) {
     if (showCrmLedger(opts.plan, null, kind)) return null;
     return {
-      title: personal ? "CRM activity is on Personal Pro" : "CRM activity ledger is on Business Pro",
+      title: personal ? "CRM activity is on Personal Pro+" : "CRM activity ledger is on Business Pro",
       body: personal
-        ? "The timeline of every touch sits on Personal Pro and Personal Premium. Your package is {package}."
+        ? "The timeline of every touch sits on Personal Pro+ and Personal Premium. Your package is {package}."
         : "The company timeline of every touch sits on Business Pro. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm")) {
     if (showCrm(opts.plan, null, kind)) return null;
     return {
-      title: personal ? "Full CRM is on Personal Pro" : "CRM is on Pro",
+      title: personal ? "Full CRM is on Personal Pro+" : "CRM is on Pro",
       body: personal
-        ? "People stay on Personal Basic. Leads, pipeline and intelligence sit on Personal Pro. Your package is {package}."
+        ? "People stay on Personal Basic. Leads, pipeline and intelligence sit on Personal Pro+. Your package is {package}."
         : "Leads and pipeline sit on Pro, Business and Business Pro. Your package is {package}.",
     };
   }
@@ -418,9 +418,9 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
   if (path.startsWith("/app/chat")) {
     if (showChat(opts.plan, null, kind)) return null;
     return {
-      title: personal ? "ANEXOChat is on Personal Pro" : "ANEXOChat is on Business",
+      title: personal ? "ANEXOChat is on Personal Pro+" : "ANEXOChat is on Business",
       body: personal
-        ? "Your package is {package}. Chat and ANEXOVideoCall sit on Personal Pro and Personal Premium."
+        ? "Your package is {package}. Chat and ANEXOVideoCall sit on Personal Pro+ and Personal Premium."
         : "Your package is {package}. Chat and ANEXOVideoCall sit on Business and Business Pro.",
     };
   }
@@ -450,9 +450,9 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
   if (path.startsWith("/app/safety")) {
     if (showSafety(opts.plan, null, kind)) return null;
     return {
-      title: personal ? "Safety centre is on Personal Pro" : "Safety centre is on Business Pro",
+      title: personal ? "Safety centre is on Personal Pro+" : "Safety centre is on Business Pro",
       body: personal
-        ? "The review queue, sealed evidence and device appeals sit on Personal Pro and Personal Premium. Your package is {package}."
+        ? "The review queue, sealed evidence and device appeals sit on Personal Pro+ and Personal Premium. Your package is {package}."
         : "The review queue, sealed evidence and device appeals sit on Business Pro. Your package is {package}.",
     };
   }

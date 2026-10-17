@@ -204,6 +204,155 @@ const faqs = [
   },
 ];
 
+type CompareGroup = { group: string; rows: { label: string; cells: string[] }[] };
+
+/** Business table — same rows as `compare` above, one cell per column (Business Pro falls back to Business). */
+const businessCompare: CompareGroup[] = compare.map((g) => ({
+  group: g.group,
+  rows: g.rows.map((r) => ({
+    label: r.label,
+    cells: [r.basic, r.pro, r.business, r.business_pro ?? r.business],
+  })),
+}));
+
+const ALL3 = ["Included", "Included", "Included"];
+
+/**
+ * Personal table — every cell must be true to `plan-surface.ts` (rail + gates) and
+ * `sql/phase48_storage_quota.sql` (storage / max send). A Personal account is one person:
+ * no domains, aliases, shared inbox, roles or audit — so none of those rows exist here.
+ */
+const personalCompare: CompareGroup[] = [
+  {
+    group: "Mail and storage",
+    rows: [
+      { label: "Price per month", cells: ["£17", "£83", "£1,850"] },
+      { label: "Your own @anexomail.com address", cells: ALL3 },
+      { label: "Mail storage", cells: ["5 GB", "10 GB", "1 TB pooled"] },
+      { label: "Largest file you can send", cells: ["25 MB", "25 MB", "5 GB"] },
+      { label: "Undo send window", cells: ["30 seconds", "30 seconds", "30 seconds"] },
+    ],
+  },
+  {
+    group: "Everyday tools",
+    rows: [
+      { label: "Contacts and calendar", cells: ALL3 },
+      { label: "One search box for mail and contacts", cells: ALL3 },
+      {
+        label: "Work — your own tasks",
+        cells: ["Simple task list", "Boards, notes, tasks, analytics", "Boards, notes, tasks, analytics"],
+      },
+      { label: "Snooze, schedule send, templates", cells: ["—", "Included", "Included"] },
+      { label: "Full CRM", cells: ["—", "Included", "Included"] },
+      { label: "ANEXOChat and ANEXOVideoCall", cells: ["—", "Included", "Included"] },
+    ],
+  },
+  {
+    group: "Support",
+    rows: [
+      {
+        label: "Human support (no ticket portal)",
+        cells: ["Reply within 72h", "Reply within 48h", "Reply within 12h"],
+      },
+    ],
+  },
+];
+
+const personalFaqs = [
+  {
+    q: "Do I need a company or a domain?",
+    a: "No. A Personal plan gives you your own @anexomail.com address the moment you sign up — no domain, no company account, nothing to set up first.",
+  },
+  {
+    q: "Is VAT included in these prices?",
+    a: "No. £17, £83 and £1,850 are the prices before tax. VAT or local sales tax is added at checkout based on your country, and it appears as a separate line on every receipt.",
+  },
+  {
+    q: "How does billing work?",
+    a: "Monthly or yearly, by card. Yearly gives one month free on Basic and Pro+, and two months free on Premium. There is no setup fee and no minimum term.",
+  },
+  {
+    q: "Can I cancel any time?",
+    a: "Yes. Email billing@anexomail.com and we cancel it — no phone call and no retention conversation. You keep access until the end of the period you already paid for.",
+  },
+  {
+    q: "Can I move to a company workspace later?",
+    a: "Yes. From Billing you can convert the same account to a Business workspace — same sign-in, same email address. Business has its own plans; Personal and Business are kept separate.",
+  },
+  {
+    q: "Is there AI in these plans?",
+    a: "No. Personal plans are email and workspace only. Nothing in your mail is used to train anything.",
+  },
+];
+
+/** One comparison table for every plan kind (same markup the Business table always used). */
+function CompareTable({
+  heads,
+  groups,
+  minWidth,
+}: {
+  heads: string[];
+  groups: CompareGroup[];
+  minWidth: string;
+}) {
+  return (
+    <div className="mt-7 overflow-x-auto rounded-3xl border border-border">
+      <table className={`w-full ${minWidth} border-collapse text-left text-sm`}>
+        <thead>
+          <tr className="bg-secondary/50">
+            {/* Sticky first column: on a phone the table scrolls sideways and the row labels must not leave. */}
+            <th
+              scope="col"
+              className="sticky left-0 z-[1] bg-secondary px-5 py-3.5 font-semibold text-foreground shadow-[inset_-1px_0_0_var(--color-border)]"
+            >
+              Feature
+            </th>
+            {heads.map((h) => (
+              <th key={h} scope="col" className="px-5 py-3.5 font-semibold text-foreground">
+                {h}
+              </th>
+            ))}
+          </tr>
+        </thead>
+        {groups.map((g) => (
+          <tbody key={g.group}>
+            <tr>
+              <th
+                scope="colgroup"
+                colSpan={heads.length + 1}
+                className="ax-eyebrow border-t border-border px-5 py-3 text-left"
+              >
+                {/* The cell spans the whole table, so only the inner label can stick while the table scrolls. */}
+                <span className="sticky left-5 inline-block">{g.group}</span>
+              </th>
+            </tr>
+            {g.rows.map((r) => (
+              <tr key={r.label} className="border-t border-border/60">
+                <th
+                  scope="row"
+                  className="sticky left-0 z-[1] bg-card px-5 py-3 font-normal text-muted-foreground shadow-[inset_-1px_0_0_var(--color-border)]"
+                >
+                  {r.label}
+                </th>
+                {r.cells.map((v, i) => (
+                  <td
+                    key={i}
+                    className={
+                      v === "—" ? "px-5 py-3 text-muted-foreground/60" : "px-5 py-3 text-foreground"
+                    }
+                  >
+                    {v}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        ))}
+      </table>
+    </div>
+  );
+}
+
 const PUBLIC_EMAIL = "moveyourbusiness@anexomail.com";
 
 /** Services — one-off cash and the monthly retainer, both capacity-capped on purpose. */
@@ -436,6 +585,8 @@ function PlansPage() {
         </section>
         )}
 
+        {/* Business only: a Personal buyer must never see company move-in / priority-support prices. */}
+        {effectiveKind === "business" && (
         <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Done-for-you services</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
@@ -497,83 +648,56 @@ function PlansPage() {
             </a>
           </p>
         </section>
+        )}
 
         <section className="ax-container pb-20">
           <h2 className="text-2xl text-foreground md:text-3xl">Feature by feature</h2>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-            Exactly what is in each plan, and what is not. A dash means it is not included on that
-            plan.
+            {effectiveKind === "personal"
+              ? "Exactly what is in each Personal plan, and what is not. A dash means it is not included on that plan."
+              : "Exactly what is in each plan, and what is not. A dash means it is not included on that plan."}
           </p>
 
-          <div className="mt-7 overflow-x-auto rounded-3xl border border-border">
-            <table className="w-full min-w-[42rem] border-collapse text-left text-sm">
-              <thead>
-                <tr className="bg-secondary/50">
-                  {/* Sticky first column: on a phone the table scrolls sideways and the row labels must not leave. */}
-                  <th
-                    scope="col"
-                    className="sticky left-0 z-[1] bg-secondary px-5 py-3.5 font-semibold text-foreground shadow-[inset_-1px_0_0_var(--color-border)]"
-                  >
-                    Feature
-                  </th>
-                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Basic · £23
-                  </th>
-                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Pro · £46
-                  </th>
-                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Business · £97
-                  </th>
-                  <th scope="col" className="px-5 py-3.5 font-semibold text-foreground">
-                    Business Pro · £2,850
-                  </th>
-                </tr>
-              </thead>
-              {compare.map((g) => (
-                <tbody key={g.group}>
-                  <tr>
-                    <th
-                      scope="colgroup"
-                      colSpan={5}
-                      className="ax-eyebrow border-t border-border px-5 py-3 text-left"
+          {effectiveKind === "personal" ? (
+            <>
+              <CompareTable
+                heads={["Personal Basic · £17", "Personal Pro+ · £83", "Personal Premium · £1,850"]}
+                groups={personalCompare}
+                minWidth="min-w-[34rem]"
+              />
+              <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                Need your own company domain, shared inboxes or a team? That is a Business workspace — separate plans,
+                kept apart from Personal.
+                {!kindLocked && (
+                  <>
+                    {" "}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPlanKind("business");
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="ax-tap font-semibold text-foreground underline underline-offset-4"
                     >
-                      {/* The cell spans the whole table, so only the inner label can stick while the table scrolls. */}
-                      <span className="sticky left-5 inline-block">{g.group}</span>
-                    </th>
-                  </tr>
-                  {g.rows.map((r) => (
-                    <tr key={r.label} className="border-t border-border/60">
-                      <th
-                        scope="row"
-                        className="sticky left-0 z-[1] bg-card px-5 py-3 font-normal text-muted-foreground shadow-[inset_-1px_0_0_var(--color-border)]"
-                      >
-                        {r.label}
-                      </th>
-                      {[r.basic, r.pro, r.business, r.business_pro ?? r.business].map((v, i) => (
-                        <td
-                          key={i}
-                          className={
-                            v === "—"
-                              ? "px-5 py-3 text-muted-foreground/60"
-                              : "px-5 py-3 text-foreground"
-                          }
-                        >
-                          {v}
-                        </td>
-                      ))}
-                    </tr>
-                  ))}
-                </tbody>
-              ))}
-            </table>
-          </div>
+                      See Business plans
+                    </button>
+                  </>
+                )}
+              </p>
+            </>
+          ) : (
+            <CompareTable
+              heads={["Basic · £23", "Pro · £46", "Business · £97", "Business Pro · £2,850"]}
+              groups={businessCompare}
+              minWidth="min-w-[42rem]"
+            />
+          )}
         </section>
 
         <section className="ax-container pb-24">
           <h2 className="text-2xl text-foreground md:text-3xl">Questions people actually ask</h2>
           <div className="mt-7 grid gap-4 md:grid-cols-2">
-            {faqs.map((f) => (
+            {(effectiveKind === "personal" ? personalFaqs : faqs).map((f) => (
               <article key={f.q} className="ax-plane rounded-3xl p-6">
                 <h3 className="text-base font-bold text-foreground">{f.q}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{f.a}</p>
@@ -581,11 +705,23 @@ function PlansPage() {
             ))}
           </div>
           <p className="mt-7 text-sm text-muted-foreground">
-            Something not answered here?{" "}
-            <Link to="/migration" className="text-foreground underline underline-offset-4">
-              Ask us on the move-in form
-            </Link>{" "}
-            — a person replies, not a portal.
+            {effectiveKind === "personal" ? (
+              <>
+                Something not answered here? Write to{" "}
+                <a href="mailto:billing@anexomail.com" className="text-foreground underline underline-offset-4">
+                  billing@anexomail.com
+                </a>{" "}
+                — a person replies, not a portal.
+              </>
+            ) : (
+              <>
+                Something not answered here?{" "}
+                <Link to="/migration" className="text-foreground underline underline-offset-4">
+                  Ask us on the move-in form
+                </Link>{" "}
+                — a person replies, not a portal.
+              </>
+            )}
           </p>
         </section>
       </main>

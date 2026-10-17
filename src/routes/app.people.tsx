@@ -8,6 +8,11 @@ import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { Avatar, RelationshipChip } from "@/components/app/people/Bits";
 import { CompanyProfile } from "@/components/app/people/CompanyProfile";
 import { ContactProfile } from "@/components/app/people/ContactProfile";
+import {
+  ContactsImportPanel,
+  ContactsPickButton,
+  type LoadedContacts,
+} from "@/components/app/people/ContactsImport";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import {
@@ -17,8 +22,10 @@ import {
   useContactTags,
   type SmartFilter,
 } from "@/lib/contacts";
+import { useAuth } from "@/lib/auth";
 import { relativeTime } from "@/lib/mail";
 import { useLocale } from "@/lib/i18n";
+import { showCrm, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 type View = "people" | "companies";
@@ -44,6 +51,11 @@ function PeoplePage() {
   const { view, id, q, filter, tag } = Route.useSearch();
   const navigate = useNavigate({ from: "/app/people" });
   const [composeTo, setComposeTo] = useState<string | null>(null);
+  // Import: plans with CRM land in Leads first; plans without CRM (Personal Basic, Basic) go straight to People.
+  const [importPlan, setImportPlan] = useState<LoadedContacts | null>(null);
+  const { session, organisation } = useAuth();
+  const surface = surfaceFromSession(session?.user, organisation?.slug);
+  const hasCrm = showCrm(surface.billed, null, surface.kind);
 
   type PeopleSearch = { view: View; id: string; q: string; filter: SmartFilter; tag: string };
   const current: PeopleSearch = { view, id, q, filter, tag };
@@ -55,7 +67,14 @@ function PeoplePage() {
 
   return (
     <>
-      <ListPanel title={view === "people" ? "People" : "Companies"} mobileHidden={Boolean(id)}>
+      <ListPanel
+        title={view === "people" ? "People" : "Companies"}
+        mobileHidden={Boolean(id)}
+        action={<ContactsPickButton onLoaded={setImportPlan} />}
+      >
+        {importPlan && (
+          <ContactsImportPanel plan={importPlan} hasCrm={hasCrm} onClose={() => setImportPlan(null)} />
+        )}
         <div className="space-y-ax-2 border-b border-border px-ax-4 py-ax-3">
           <div className="flex rounded-lg bg-secondary p-0.5">
             {(["people", "companies"] as View[]).map((v) => (

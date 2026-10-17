@@ -41,11 +41,11 @@ Regenerate: `TOOLS=/opt/npm-tools/node_modules node docs/cursor-work/founder/too
 ## What a locked page says (denial copy), per package
 
 **basic · personal** (Personal Basic)
-- **CRM** → “Full CRM is on Personal Pro”
+- **CRM** → “Full CRM is on Personal Pro+”
 - **Org** → “Organisation centre is a Business workspace”
 - **Domains** → “Company domains are on a Business workspace”
-- **Safety** → “Safety centre is on Personal Pro”
-- **ANEXOChat** → “ANEXOChat is on Personal Pro”
+- **Safety** → “Safety centre is on Personal Pro+”
+- **ANEXOChat** → “ANEXOChat is on Personal Pro+”
 
 **basic · business** (Basic)
 - **Work** → “Work is on Pro”

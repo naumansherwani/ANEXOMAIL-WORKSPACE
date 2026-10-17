@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Check, MailPlus, UserPlus } from "lucide-react";
+import { Check, MailPlus, UserPlus, Users } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { CaptureLead } from "@/components/app/crm/CrmCapture";
@@ -14,6 +15,7 @@ import {
   useCrmLeadSuggestions,
   useCrmLeads,
   useCreateLead,
+  useMoveLeadsToPeople,
   type Lead,
   type SuggestedLead,
 } from "@/lib/crm";
@@ -35,7 +37,7 @@ export const Route = createFileRoute("/app/crm/leads")({
   component: LeadsPage,
 });
 
-const STATES: (Lead["state"] | "all")[] = ["new", "working", "converted", "dropped", "all"];
+const STATES: (Lead["state"] | "all")[] = ["new", "working", "converted", "moved", "dropped", "all"];
 
 function LeadsPage() {
   const { t } = useLocale();
@@ -50,6 +52,7 @@ function LeadsPage() {
         hint={t("Your book of people who are not a deal yet. Capture one here — scores appear only when mail behaviour exists.")}
       />
       <CaptureLead />
+      <ImportedLeadsBar />
       <SuggestedFromMail />
 
       <div className="mb-ax-4 flex flex-wrap gap-2">
@@ -65,7 +68,7 @@ function LeadsPage() {
                 : "border-border text-muted-foreground hover:text-foreground",
             )}
           >
-            {t(s)}
+            {s === "moved" ? t("in People") : t(s)}
           </button>
         ))}
       </div>
@@ -101,11 +104,13 @@ function LeadsPage() {
                       </p>
                     </div>
                     {l.score !== null && <ScoreBar value={l.score} />}
-                    <Chip tone={l.state === "converted" ? "good" : "quiet"}>{l.state}</Chip>
+                    <Chip tone={l.state === "converted" ? "good" : "quiet"}>
+                      {l.state === "moved" ? t("in People") : l.state}
+                    </Chip>
                     <span className="ax-caption text-muted-foreground">
                       {l.last_touch_at ? relativeTime(l.last_touch_at) : t("Never touched")}
                     </span>
-                    {l.state !== "converted" && (
+                    {l.state !== "converted" && l.state !== "moved" && (
                       <Button
                         size="sm"
                         variant="secondary"
@@ -140,6 +145,69 @@ function LeadsPage() {
         }
       </CardBody>
     </div>
+  );
+}
+
+/**
+ * Leads that arrived from an imported contacts file and are still new. One bulk question — "Move these to People?" —
+ * so a switcher with 800 contacts is not left converting them one by one. Asks first, moves only on "Yes".
+ */
+function ImportedLeadsBar() {
+  const { t } = useLocale();
+  const qc = useQueryClient();
+  const newLeads = useCrmLeads("new");
+  const move = useMoveLeadsToPeople();
+  const [asking, setAsking] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const n = (newLeads.data?.leads ?? []).filter((l: Lead) => l.source === "import").length;
+  if (n === 0 || hidden) return null;
+
+  return (
+    <section className="mb-ax-4 rounded-2xl border border-cyan-accent/30 bg-card/60 p-ax-4" aria-label={t("Imported leads")}>
+      <div className="flex flex-wrap items-center gap-2">
+        <Users className="size-4 shrink-0 text-cyan-accent" aria-hidden="true" />
+        <p className="min-w-0 flex-1 basis-full text-[13px] font-bold text-foreground sm:basis-0">
+          {n} {t(n === 1 ? "imported lead is waiting" : "imported leads are waiting")}
+        </p>
+        {!asking ? (
+          <Button size="sm" variant="secondary" onClick={() => setAsking(true)}>
+            <Users className="size-4" aria-hidden="true" /> {t("Move to People?")}
+          </Button>
+        ) : null}
+      </div>
+      {asking && (
+        <div className="mt-2">
+          <p className="ax-caption text-muted-foreground">
+            {t("People is for the ones you already know. Everyone in this list moves; nothing is emailed.")}
+          </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            <Button
+              size="sm"
+              disabled={move.isPending}
+              onClick={() =>
+                move.mutate(
+                  { source: "import" },
+                  {
+                    onSuccess: (r) => {
+                      void qc.invalidateQueries({ queryKey: ["contacts"] });
+                      void qc.invalidateQueries({ queryKey: ["companies"] });
+                      notify.done(t("Moved to People"), `${r.moved}`);
+                      setAsking(false);
+                    },
+                    onError: (e) => notify.failed(t("Could not move them"), { description: e.message }),
+                  },
+                )
+              }
+            >
+              <Check className="size-4" aria-hidden="true" /> {t("Yes, move")} {n}
+            </Button>
+            <Button size="sm" variant="outline" disabled={move.isPending} onClick={() => (setAsking(false), setHidden(true))}>
+              {t("Not now")}
+            </Button>
+          </div>
+        </div>
+      )}
+    </section>
   );
 }
 

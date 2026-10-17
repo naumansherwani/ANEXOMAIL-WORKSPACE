@@ -219,7 +219,21 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
   if (key === "crm.live") return e ? { ...CRM_LIVE, radar: [], next_actions: [], timeline: [], people: [], graph: { nodes: [], edges: [] }, counts: { contacts: 0, open_deals: 0, overdue_tasks: 0, promises: 0 } } : CRM_LIVE;
   if (key === "crm.deals") return { deals: dealsNow() };
   if (key === "crm.moveDeal") { const d = DEALS.find((x) => x.id === input?.id); if (d) { d.stage = String(input?.stage); d.probability = PROB[d.stage]; d.stale_days = d.stage === "won" || d.stage === "lost" ? null : 0; } return { deal: d }; }
-  if (key === "crm.leads") { const st = input?.state; return { leads: e ? [] : LEADS.filter((l) => !st || st === "all" || l.state === st) }; }
+  if (key === "crm.leads") {
+    const st = input?.state;
+    // #crm/leads?imported=1: three leads that came from an imported contacts file (the "Move to People?" bar).
+    const imported = /[?&]imported=1/.test(location.hash) ? [1, 2, 3].map((n) => ({ ...LEADS[0]!, id: `im${n}`, display_name: `Imported Person ${n}`, email: `person${n}@imported.example`, source: "import", score: null, score_reason: null })) : [];
+    return { leads: e ? [] : [...imported, ...LEADS].filter((l) => !st || st === "all" || l.state === st) };
+  }
+  // Contacts import (People "Import" panel). An address containing "known" plays "already there".
+  if (key === "people.import" || key === "crm.leadsImport") {
+    const rows = (input?.rows as { email: string }[]) ?? [];
+    const dup = rows.filter((r) => /known/.test(r.email)).length;
+    return key === "people.import"
+      ? { ok: true, created: rows.length - dup, already_in_people: dup, invalid: 0, duplicate: 0 }
+      : { ok: true, created: rows.length - dup, already_leads: 0, already_in_people: dup, invalid: 0, duplicate: 0 };
+  }
+  if (key === "crm.leadsMoveToPeople") return { ok: true, moved: 4, added_to_people: 4, already_in_people: 0 };
   if (key === "crm.leads.suggest") return { suggestions: e ? [] : [{ email: "sam@fastgrow.co", message_count: 3, last_mail_at: ago(1) }, { email: "accounts@bigcorp-international-holdings.example", message_count: 1, last_mail_at: ago(6) }] };
   if (key === "crm.memory") return { email: input?.email, person: CONTACTS[0], deals: dealsNow().slice(0, 2), tasks: TASKS.slice(0, 2).map((t) => ({ id: t.id, title: t.title, status: t.status, due_at: t.due_at, thread_id: t.thread_id })), timeline: TIMELINE.map((t) => ({ at: t.at, kind: t.kind, title: t.title, detail: t.detail, href: "/app/mail/inbox" })), next_actions: [{ action: "Reply to Ayesha", why: "Waiting 5 hours.", href: "/app/mail/inbox" }] };
   if (key === "crm.activities") return { activities: e ? [] : [{ id: "a1", kind: "email_in", actor: "ayesha@zephyrlabs.io", subject: "Re: Renewal terms for 2027", body: null, deal_id: "d1", contact_email: "ayesha@zephyrlabs.io", created_at: ago(0, 5) }, { id: "a2", kind: "stage_change", actor: "me@anexomail.com", subject: "Stage → won", body: null, deal_id: "d5", contact_email: null, created_at: ago(4) }] };

@@ -43,6 +43,7 @@ for (const s of steps) {
   else if (k === "into") await page.getByText(v, { exact: false }).first().scrollIntoViewIfNeeded();
   else if (k === "label") await page.getByLabel(v).first().click();
   else if (k === "fill") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph).fill(val); }
+  else if (k === "upload") await page.setInputFiles('input[type="file"]', v);  // upload:/abs/path/file.csv
   else if (k === "wait") await page.waitForTimeout(+v);
   else if (k === "ff") await page.clock.runFor(+v);
   else if (k === "scroll") await page.evaluate((t) => { const el = document.querySelector("main .overflow-y-auto"); if (el) el.scrollTop = t === "bottom" ? el.scrollHeight : t === "top" ? 0 : +t; }, v);
