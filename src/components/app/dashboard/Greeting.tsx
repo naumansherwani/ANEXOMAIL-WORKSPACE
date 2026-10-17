@@ -3,7 +3,7 @@ import { MailPlus } from "lucide-react";
 
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
-import { surfaceFromSession } from "@/lib/plan-surface";
+import { showCrm, surfaceFromSession } from "@/lib/plan-surface";
 import {
   formatDuration,
   useAnalytics,
@@ -112,7 +112,9 @@ export function Greeting({
         ) : (
           <p className="ax-body mt-2 max-w-xl text-muted-foreground">
             {kind === "personal"
-              ? t("Private command of mail, people, calendar, work, CRM and chat — one surface.")
+              ? showCrm(billed, null, kind)
+                ? t("Private command of mail, people, calendar, work, CRM and chat — one surface.")
+                : t("Private command of mail, people, calendar and work — one surface.")
               : billed === "business" || billed === "business_pro"
                 ? t("Company mail, org, chat and the shared book — one surface.")
                 : t("Company mail, shared inbox, tasks and the shared book — one surface.")}

@@ -124,7 +124,7 @@ const MAP = {
       }
     : {}),
 };
-if (ROUTES) delete MAP["@/components/state/StateBlock"]; // real StateBlock only needs lucide + Button
+if (ROUTES) { delete MAP["@/components/state/StateBlock"]; delete MAP["@/lib/dashboard"]; } // real StateBlock only needs lucide + Button; the real dashboard hooks run on api-sample.ts data
 const alias = {
   name: "alias",
   setup(b) {

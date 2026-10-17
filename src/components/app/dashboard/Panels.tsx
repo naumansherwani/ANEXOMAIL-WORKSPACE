@@ -98,7 +98,7 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
       query={query}
       endpoint="/api/dashboard/summary"
       skeleton={
-        <div className="grid gap-ax-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-2 gap-ax-3 sm:gap-ax-5 xl:grid-cols-4">
           {Array.from({ length: 4 }).map((_, i) => (
             <div key={i} className="ax-plane rounded-2xl p-ax-5">
               <StatSkeleton rows={3} />
@@ -126,7 +126,7 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
         ];
         return (
           <motion.div
-            className="grid gap-ax-5 sm:grid-cols-2 xl:grid-cols-4"
+            className="grid grid-cols-2 gap-ax-3 sm:gap-ax-5 xl:grid-cols-4"
             variants={gridVariants}
             initial="hidden"
             animate="show"
@@ -136,7 +136,7 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
                 <Link
                   to="/app/mail/$folder"
                   params={{ folder: tile.to }}
-                  className="ax-plane ax-lift ax-press flex w-full flex-col rounded-2xl p-ax-5"
+                  className="ax-plane ax-lift ax-press flex w-full flex-col rounded-2xl p-ax-4 sm:p-ax-5"
                 >
                   <span className="flex items-center gap-ax-2 text-steel">
                     <tile.icon aria-hidden="true" className="size-4" />
@@ -150,7 +150,7 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
             ))}
             <motion.div
               variants={tileVariants}
-              className="sm:col-span-2 xl:col-span-4"
+              className="col-span-2 xl:col-span-4"
             >
               <div className="ax-plane rounded-2xl p-ax-5">
                 <div className="flex flex-wrap items-center gap-ax-3">

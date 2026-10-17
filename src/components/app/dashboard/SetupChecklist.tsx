@@ -3,9 +3,11 @@ import { ArrowRight, CheckCircle2, MailPlus, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/auth";
 import { useAnalytics } from "@/lib/dashboard";
 import { useAddresses, useDomains } from "@/lib/domains";
 import { useLocale } from "@/lib/i18n";
+import { showDomains, surfaceFromSession } from "@/lib/plan-surface";
 import { cn } from "@/lib/utils";
 
 /**
@@ -69,6 +71,12 @@ function MiniRing({ done, total }: { done: number; total: number }) {
 
 export function SetupChecklist({ enabled, onCompose }: { enabled: boolean; onCompose: () => void }) {
   const { t } = useLocale();
+  const { session, organisation } = useAuth();
+  // Personal accounts send and receive on their ANEXOMAIL address; /app/domains is a Business-workspace page and shows a
+  // lock wall for them. The server's domain cap (Basic = 1) says nothing about that, so a Personal first screen must not
+  // point at "Connect a domain" — it gets the one step that is real for it: the first email.
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const personal = !showDomains(billed, kind);
   const domainsQ = useDomains();
   const addressesQ = useAddresses();
   const analyticsQ = useAnalytics(enabled);
@@ -76,7 +84,20 @@ export function SetupChecklist({ enabled, onCompose }: { enabled: boolean; onCom
   useEffect(() => setHidden(readFlag()), []);
 
   const steps = useMemo<Step[] | null>(() => {
-    if (!enabled || !domainsQ.data || !addressesQ.data) return null;
+    if (!enabled) return null;
+    if (personal) {
+      const own: Step[] = [{ id: "account", title: "Create your account", hint: "Done — you're in.", done: true }];
+      if (analyticsQ.data) {
+        own.push({
+          id: "mail",
+          title: "Send your first email",
+          hint: "Watch it arrive — the loop works.",
+          done: analyticsQ.data.sent > 0,
+        });
+      }
+      return own;
+    }
+    if (!domainsQ.data || !addressesQ.data) return null;
     // Plan mein domains hi nahi (cap 0) to is card ka matlab nahi — galat nag nahi.
     if (domainsQ.data.domain_cap === 0) return null;
     const domains = domainsQ.data.domains;
@@ -114,7 +135,7 @@ export function SetupChecklist({ enabled, onCompose }: { enabled: boolean; onCom
       });
     }
     return list;
-  }, [enabled, domainsQ.data, addressesQ.data, analyticsQ.data]);
+  }, [enabled, personal, domainsQ.data, addressesQ.data, analyticsQ.data]);
 
   const finished = steps ? steps.every((s) => s.done) : false;
   // Sab poora (pehli mail ke asli jawab ke saath) ho gaya to yaad rakho: analytics ki 30-din ki window baad
@@ -145,7 +166,7 @@ export function SetupChecklist({ enabled, onCompose }: { enabled: boolean; onCom
         <MiniRing done={done} total={steps.length} />
         <div className="min-w-[12rem] flex-1">
           <p className="ax-eyebrow">{t("Finish setup")}</p>
-          <h3 className="ax-heading mt-1">{t("Get your company email working")}</h3>
+          <h3 className="ax-heading mt-1">{t(personal ? "Your address is ready" : "Get your company email working")}</h3>
           <p className="ax-caption mt-0.5">
             {t("Next:")} {t(active.title)}
           </p>

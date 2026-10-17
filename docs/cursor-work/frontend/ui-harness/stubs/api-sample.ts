@@ -114,6 +114,23 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
     const found = EVENTS().find((x) => x.id === id) ?? EVENTS()[1];
     return { event: found, outcome: null, tasks: [] };
   }
+  if (key.startsWith("dashboard.")) {
+    // #dashboard[?empty=1][&plan=basic|pro|business|business_pro]: empty=1 is a brand-new account (first 60 seconds).
+    const plan = /plan=(basic|pro|business_pro|business)/.exec(location.hash)?.[1] ?? "pro";
+    const GB = 1024 ** 3;
+    const lim = { basic: 10, pro: 50, business: 750, business_pro: 5000 }[plan as "basic"] ?? 10;
+    if (key === "dashboard.summary") return e
+      ? { unread: 0, assigned_to_me: 0, waiting: 0, sent_today: 0, done_today: 0, storage_used_bytes: 0, storage_limit_bytes: lim * GB, plan, domain: null, domain_status: "none", domain_verified: false, domain_hosted: false }
+      : { unread: 7, assigned_to_me: 2, waiting: 3, sent_today: 4, done_today: 4, storage_used_bytes: 1.4 * GB, storage_limit_bytes: lim * GB, plan, domain: "acme-studio.com", domain_status: "verified", domain_verified: true, domain_hosted: false };
+    if (key === "dashboard.activity") return { items: e ? [] : [
+      { id: "a1", kind: "message_received", actor: "ali@axonetis.com", subject: "Re: Renewal terms", detail: null, created_at: ago(0.2) },
+      { id: "a2", kind: "message_sent", actor: "you", subject: "Quote for Q4 retainer", detail: null, created_at: ago(1) },
+      { id: "a3", kind: "thread_done", actor: "you", subject: "Invoice #1042 query", detail: null, created_at: ago(3) },
+    ] };
+    if (key === "dashboard.analytics") return { range_days: 30, received: e ? 0 : 212, sent: e ? 0 : 96, avg_first_reply_seconds: e ? null : 2640, delivery_rate: e ? null : 0.99, series: e ? [] : Array.from({ length: 14 }, (_, i) => ({ date: new Date(Date.now() - (13 - i) * 864e5).toISOString().slice(0, 10), received: 8 + ((i * 7) % 11), sent: 3 + ((i * 5) % 7) })) };
+    if (key === "dashboard.calendar") return { events: e ? [] : EVENTS().slice(0, 3).map((x) => ({ id: x.id, title: x.title, starts_at: x.starts_at, ends_at: x.ends_at, location: x.location, all_day: false })) };
+    if (key === "dashboard.ai-usage") return { enabled: false, plan: null, credits_total: 0, credits_used: 0, period_end: null };
+  }
   if (key === "calendar.create") {
     // Import test: #cal?imperr=1 makes every "Standup" fail so the partial-failure state can be shot.
     if (/[?&]imperr=1/.test(location.hash) && String(input?.title ?? "").includes("Standup")) throw new ApiError("Calendar service is busy", 503, "unavailable");

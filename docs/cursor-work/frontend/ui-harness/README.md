@@ -72,3 +72,5 @@ Naya route add karna: uska import `entry-routes.tsx` ke route map mein, sample d
 `#<page>?gate=1&plan=basic|pro|business|business_pro[&personal]` renders the REAL `PlanSurfaceGate` for `/app/<page>` (e.g. `#chat?gate=1&plan=basic&personal`, `#crm/collab?gate=1&plan=pro`, `#safety?gate=1&plan=business`). When the package already opens the page you see "THE REAL PAGE OPENS HERE". Kind is `business` unless the hash contains `personal`. Plan regex lists `business_pro` before `business` on purpose (otherwise `business_pro` silently became `business`).
 
 `#cal` + a file chosen into `input[type=file]` drives the .ics import panel (`#cal?imperr=1` makes every "Standup" fail to shoot the partial-failure state).
+
+`#dashboard[?plan=…][&personal][&empty=1][&nofounder]` renders the REAL `src/routes/app.index.tsx` (Greeting, SetupChecklist, KPI tiles, panels) on `api-sample.ts` data; `empty=1` = brand-new account, `nofounder` hides the founder-only Expiry Watch. CSS entrance animations (`ax-stagger`) take ~0.6 s: shoot with `wait:1500` or the last tile looks missing.

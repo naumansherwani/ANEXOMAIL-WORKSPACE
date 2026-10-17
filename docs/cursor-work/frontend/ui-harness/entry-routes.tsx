@@ -4,6 +4,7 @@ import { useEffect, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
 
 import { Route as CalendarRoute } from "@/routes/app.calendar";
+import { Route as DashboardRoute } from "@/routes/app.index";
 import { Route as PeopleRoute } from "@/routes/app.people";
 import { Route as WorkRoute } from "@/routes/app.work";
 import { CrmStage } from "@/components/app/crm/CrmStage";
@@ -47,6 +48,7 @@ const pick = (h: string): R => {
   if (/[?&]gate=1/.test(h)) return GateRoute as unknown as R;
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
+  if (b.startsWith("dashboard")) return DashboardRoute as unknown as R;
   if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;
   if (b.startsWith("admin-teams")) return AdminTeamsRoute as unknown as R;
   if (b.startsWith("account")) return AccountRoute as unknown as R;
