@@ -28,6 +28,8 @@
 | Mail | Postfix / Dovecot / OpenDKIM (Hetzner pe installed) |
 | Payments | Polar — Rust webhook (PM2 mein) |
 
+**Vistaar (Rule 20, 17 Oct 2026):** har technology kis kaam ke liye aur kis ke liye NAHI, latest versions, aur purane/naye ka farq `docs/cursor-work/TECH-MAP.md` mein. Upar ki rows locked hain; unka vistaar wahi file karti hai.
+
 **Constitution violations banned:** WebContainer, Supabase Realtime/WebSocket (unless already exists + founder approve), mock backend, fake success states.
 
 ---

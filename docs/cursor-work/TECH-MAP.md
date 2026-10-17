@@ -1,0 +1,113 @@
+# TECH-MAP — kaun si technology, kis kaam ke liye, aur SIRF usi kaam ke liye
+
+**Founder ka hukm (17 Oct 2026, 06:04 PKT) = AGENTS.md Rule 20.** Backend par latest technology, koi compromise nahi; mail bhi Rust (ya jo sab se latest ho) par; website sirf latest technology par; aur yahan saaf likha ho har technology ka kaam. Yeh file **ek hi sach** hai. Map mein na ho to code mein naya tech nahi aata.
+
+**Padhne ka tareeqa.** Status (Rule 5 ke mutabiq, sach):
+- **LIVE** = server par chalta dekha gaya (founder ka output). Bina output ke LIVE nahi likhte.
+- **READY** = code repo mein hai, server par live-verify baqi.
+- **PLANNED** = faisla/plan hai, code nahi. Blueprint ID saath mein.
+- **REJECTED** = soch kar mana kiya, wajah saath.
+
+"Latest" ka matlab verify kiya hua: neeche har version ke saath tareekh aur source hai (17 Oct 2026 ko dekha). Jahan verify nahi hua wahan "verify baqi" likha hai — andaza nahi.
+
+---
+
+## 1. Usool (har naya faisla in par parka jata hai)
+
+1. **Ek kaam = ek technology.** Do cheezein ek kaam na karein (Rule 6: no mix, no duplicate).
+2. **Naya kaam Rust (Tokio async) par.** Bun sirf emergency fallback. Node 22 normal kaam mein nahi.
+3. **Realtime push = WebTransport/QUIC.** Chat/mail/call signaling ke liye. WebSocket nahi (Constitution). Jo browser WebTransport na de uske liye honest HTTP poll — "live" ka jhootha dawa kabhi nahi.
+4. **Frontend mein pehle browser ki apni (native) taqat**, phir JS library: View Transitions, scroll-driven animation, popover/anchor, `dvh`, safe-area. Library tab jab native kaafi na ho. (Har native feature ka browser support use se pehle dekho.)
+5. **Mail ka production raasta tab tak nahi badalta jab tak naya raasta parallel staging mein poora saabit na ho aur founder "haan" na kahe.** Mail send/receive GREEN hai (27 Sep) — use tod'na nahi.
+6. **Server par kuch bhi Rule 15 se:** repo = copy, sach = server ka output.
+
+---
+
+## 2. Edge + transport (browser ↔ server)
+
+| Technology | Sirf is kaam ke liye | Is kaam ke liye NAHI | Status | Verify (17 Oct 2026) |
+|---|---|---|---|---|
+| **Caddy** | TLS (Let's Encrypt auto), reverse proxy, HTTP/3 | Business logic, auth | LIVE (Constitution) | Latest 2.11.1 (25 Feb 2026): ECH key rotation auto, security fixes — server ka version verify baqi ([linuxiac](https://linuxiac.com/caddy-2-11-1-web-server-released-with-automatic-ech-key-rotation/)) |
+| **HTTP/3 (QUIC)** via Caddy | Web page + `/rpc` + file chunk (`/file/*`) ka tez raasta, phone ke network badalne par connection nahi tootta | Server→browser push (woh WebTransport) | LIVE (Caddy HTTP/3) | — |
+| **WebTransport over QUIC** (Rust, UDP 3443) | Server→browser **live push**: naya mail ka stamp, chat, call signaling | Bulk file upload (woh HTTP/3 chunk), page load | READY (code), live status `/rpc/health` ka `webtransport` field batata hai | **Browser support: Safari 26.4 (Mar 2026) ne bhi de diya → ab Baseline; iPhone par bhi chalega** ([webrtc.ventures](https://webrtc.ventures/2026/04/webtransport-is-now-baseline-what-it-means-for-real-time-media/)). Purane iOS ke liye HTTP poll fallback rehta hai. |
+| **Encrypted ClientHello (ECH)** | Privacy: connection mein domain naam chhupana | — | PLANNED (R6, evaluate) | Caddy 2.11 mein hai; fayda/risk server par dekhna baqi |
+
+## 3. Backend (Rust PRIMARY)
+
+| Technology | Sirf is kaam ke liye | NAHI | Status | Verify |
+|---|---|---|---|---|
+| **Rust** | Poora backend: RPC, realtime, file engine, calls, mail ka naya hissa | Frontend, Bun-style scripts | LIVE (`anexomail-rust` :3200) | Latest **1.99.1 (15 Oct 2026)**, **edition 2024** ([blog.rust-lang.org](https://blog.rust-lang.org/releases)). Hamara `Cargo.toml` abhi **edition 2021** → **R0** |
+| **Tokio** (async runtime) | Har I/O, har connection ek task, timers, `spawn` | CPU-bhari kaam seedha async mein (woh `spawn_blocking`) | LIVE | Latest **1.53.3 (13 Oct 2026)**, MSRV 1.71 ([docs.rs](https://docs.rs/crate/tokio/latest)). `tokio = "1"` khud naya uthata hai |
+| **axum** | `/rpc/:proc`, `/file/*`, health, metrics ka HTTP routing | Realtime push | LIVE (0.7) | Latest **0.8.9 (10 Apr 2026)** ([releasealert](https://releasealert.dev/github/tokio-rs/axum)). 0.8 mein path syntax `/:proc` → `/{proc}` badalta hai → **R0** (build server par) |
+| **wtransport** (WebTransport server, Quinn par) | Rust ka WebTransport endpoint (UDP 3443) | HTTP routing | READY | Latest **0.7.2 (11 Aug 2026)**, Quinn ^0.11.6; README khud kehta hai "poori tarah production-ready nahi, spec draft" ([docs.rs](https://docs.rs/crate/wtransport/latest)). Hamara `Cargo.toml` **0.1** (bahut purana) → **R0** |
+| **Quinn** (QUIC) | wtransport ke andar; hum seedha nahi chalate | — | LIVE (andar se) | Latest **0.11.12 (14 Sep 2026)**, rustls 0.23 ([docs.rs](https://docs.rs/crate/quinn/latest)) |
+| **"tRPC-style" RPC** | Frontend↔Rust ka wire: `POST /rpc/<proc>` → `{result:{data}}` / `{error:{code,message}}`; frontend `rpc<T>()` | — | LIVE | **Sach:** yeh tRPC library nahi (woh sirf TypeScript server ke liye hai); yeh tRPC-jaisa wire hai. Types abhi haath se likhe (`src/lib/*.ts`) — drift ka khatra → **R3** (Rust se TS types generate). `rspc` 0.4.1 (Jul 2025) abhi pre-1.0 (specta RC par) → **REJECTED abhi** ([docs.rs](https://docs.rs/rspc)) |
+| **reqwest + rustls** | Bahar ke HTTP (Supabase PostgREST, DNS/RDAP) | — | LIVE | OpenSSL nahi, rustls |
+| **tracing** + `/metrics` (:3600) | Logs aur metrics | — | LIVE (Observability port) | — |
+| **SFU / media engine** (:3500/:3501) | Group call media | Mail | READY | — |
+| **Polar webhook (Rust, :3400)** | Payments | Kuch aur | LIVE, **NO-TOUCH** | — |
+| **Bun fallback** (:3100–3300) | Sirf jab Rust 404/501/502/503 de | Naya feature | LIVE (fallback) | Latest Bun 1.4.3 (9 Oct 2026) ([endoflife.date](https://endoflife.date/api/v1/products/bun/)) |
+
+## 4. Data
+
+| Technology | Sirf is kaam ke liye | NAHI | Status | Verify |
+|---|---|---|---|---|
+| **PostgreSQL** (Supabase #4) | Sach ka ek source, RLS | Cache/queue | LIVE | **PostgreSQL 18 (25 Sep 2025)**: async I/O (3x tak), `uuidv7()`, OAuth ([postgresql.org](https://postgresql.org/about/news/postgresql-18-released-3142/)). Server ka asli version `SELECT version();` se dekhna baqi |
+| **PostgREST (HTTP) se access** | Abhi Rust DB tak REST se jata hai (`sb_select`) | Garam raaste | LIVE | **Sach:** har query ek extra HTTP hop. Garam raaston ke liye seedha pool (sqlx/tokio-postgres) → **R4** |
+| **LISTEN/NOTIFY → broadcast hub** | Naya mail/chat event ek baar sun kar sab connected users ko bhejna | — | **PLANNED (R5)** | **Sach:** abhi WebTransport "mail live" har connected session ke liye **har 700 ms DB poll** karta hai (`wt_session`, `mail_inbox_stamp`) — chhote users par theek, bade scale par DB par bojh. Event-driven fan-out lagna hai |
+| **Storage Box** (wire 16) | File/attachment bytes | Metadata | LIVE (file engine) | — |
+
+## 5. Mail
+
+| Technology | Sirf is kaam ke liye | NAHI | Status | Verify |
+|---|---|---|---|---|
+| **Postfix** | SMTP aana/jaana | App logic | LIVE (GREEN 27 Sep) | C mein; replace sirf R2 ke baad aur founder "haan" par |
+| **Dovecot** | IMAP (mailbox, phone/Outlook clients) | — | LIVE (maujoodgi 13.7 se aadhi dekhi; passdb/userdb baqi) | — |
+| **OpenDKIM** | Outgoing mail par DKIM signature | — | LIVE | Expiry watch (8o) key == DNS check karta hai |
+| **Rust mail-send path** (`mail.send`, `org.mailboxes.*`) | Compose se Postfix tak ka raasta | — | **TODO (R1)** — abhi Bun ke zariye (Rule "Rust-first" ke khilaf) | + attachments (8p) isi mein |
+| **Stalwart Mail Server** (Rust: SMTP + IMAP + POP3 + **JMAP** + CalDAV/CardDAV, DANE, MTA-STS, TLS-RPT; AGPL-3.0) | **Mail ka agla server** agar parallel staging mein Postfix+Dovecot se behtar saabit ho | Seedha production replace | **PLANNED (R2: staging only)** | Latest **v0.16.26 (11 Oct 2026)**, abhi **1.0 se pehle** (upgrade manual, schema final nahi) ([upgrade docs](https://stalw.art/docs/install/upgrade/), [SSD Nodes](https://www.ssdnodes.com/learn/lang/es/stalwart-mail-server-on-a-vps)). **Faisla:** staging par chalao, 1.0 ya migration proof ke baad founder se poochho. AGPL ka matlab: bina badle chalana theek, badle to source dena |
+| **JMAP** (RFC 8620/8621) | Naye native/phone client ke liye HTTP+JSON mail sync | Web app ka RPC (woh `/rpc` hi rahega) | PLANNED (R2 ke saath) | Stalwart deta hai |
+| **MTA-STS / TLS-RPT / DANE / DMARC reports** | Mail ki security + deliverability (dusre server hamari mail ko TLS par majboor karein, reports aayein) | — | **PLANNED (8q)** | Server par abhi kya hai verify baqi |
+| **expiry-watch** (Python stdlib + openssl, systemd timer) | Ops ki nigrani: TLS, domain, DKIM, DNS expire na hon | App logic | READY (8o) | — |
+
+## 6. Frontend (website — sirf latest)
+
+| Technology | Sirf is kaam ke liye | NAHI | Status | Verify |
+|---|---|---|---|---|
+| **React 19.2** | UI | — | LIVE | `package.json ^19.2.0` |
+| **TanStack Start / Router** | SSR + file routes + type-safe links | Data fetching (woh Query) | LIVE | start 1.168.x, router 1.170.x (repo) |
+| **TanStack Query 5** | Server data cache, refetch | Local UI state | LIVE | repo ^5.101 |
+| **Vite 8.2 (Rolldown, Rust bundler)** | Build | — | LIVE | Vite 8 stable **12 Mar 2026**, 10–30x tez build ([vite.dev](https://vite.dev/blog/announcing-vite8.html)) |
+| **Tailwind 4.2** | Styling (`src/styles.css`) | Inline hacks | LIVE | 4.2.0 (18 Feb 2026) ([InfoQ](https://infoq.com/news/2026/04/tailwind-css-4-2-webpack)) |
+| **Radix + shadcn** | Accessible building blocks | — | LIVE | — |
+| **Framer Motion / GSAP / Three.js** | Cinematic motion — landing, onboarding, transitions | **Inbox ke andar bhari 3D** (rafta pehle) | LIVE | repo: framer ^13, gsap ^3.15, three ^0.185 |
+| **Bun SSR + Nitro** | Server-side render | API/backend | LIVE | **Flag:** `nitro 3.0.260603-beta` — beta SSR production mein; nigrani rakho, stable aate hi uthao |
+| **React Compiler 1.0** | Auto-memoize: tez UI bina haath ke `useMemo` | — | **PLANNED (M11)** | **Stable 7 Oct 2025**, Meta par 12% tak load, 2.5x tak interactions ([react.dev](https://de.react.dev/blog/2025/10/07/react-compiler-1)). **Rukawat:** Vite config mein Babel plugin chahiye aur `vite.config.ts` **no-touch** hai → founder ki izazat chahiye |
+| **PWA / service worker** (vite-plugin-pwa) | Install, offline reading | — | LIVE | Web Push (iOS installed PWA) → M9 |
+| **Passkeys (WebAuthn)** | Password-free login | — | PLANNED (P3) | Auth abhi GoTrue; fit dekhna baqi |
+
+## 7. AI
+
+LEO / AI sab se aakhir (blueprint #41). Workspace plans (Basic–Business Pro) mein **zero AI** (PACKAGE-FEATURE-FORMULA Rule 4). Technology tab chunenge jab #41 aaye.
+
+---
+
+## 8. "Dawa vs haqeeqat" — jo gap maujood hai (sach, ek jagah)
+
+| # | Dawa | Haqeeqat (17 Oct 2026) | Item |
+|---|---|---|---|
+| 1 | "tRPC" | tRPC-jaisa wire; types haath ke | R3 |
+| 2 | "Latest Rust" | edition 2021, axum 0.7, wtransport 0.1, `opt-level = "z"` (size, speed nahi) | R0 |
+| 3 | "WebTransport live" | 700 ms DB poll har session ke liye; event-driven nahi | R5 |
+| 4 | "Backend hamesha Rust" | `mail.send`, `org.mailboxes.*` Bun par jate hain | R1 |
+| 5 | "Poora Rust engine" | ek 5,789-line `main.rs` — compile/review/test mushkil | R0 (modules mein torna) |
+| 6 | "DB seedha" | PostgREST HTTP hop | R4 |
+| 7 | Attachments | bheji mail mein attachment ka raasta hi nahi | 8p |
+| 8 | SSR | Nitro beta | nigrani |
+
+## 9. Naya tech lagane ka tareeqa
+
+1. Is file mein pehle likho: kaam, NAHI-kaam, status, verify (tareekh + source).
+2. Rust ho to server par **scratch copy** mein `cargo check` (production ko haath nahi), errors paste, theek, phir `rust-safe-deploy.sh` (build fail → purani src wapas; health 200 na ho → purani binary wapas). `polar-rust-payment` ko haath nahi.
+3. Mail ka koi bhi hissa: parallel staging, founder "haan", phir cutover; rollback tayyar.
+4. Blueprint mein item (R-series / P-series) — Rule 14.
