@@ -27,3 +27,5 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E14_security_advisor_clean.sql  | E-series — RLS on, security_invoker views, function search_path     | **aap Run**             |
 | E28_seed_buyer_test_account.sql | E-series — asli business buyer test account (payment ki jagah entitlement row), #20 | **aap Run** (variable ke saath) |
 | E30_dashboard_truth.sql         | E-series — dashboard_summary / dashboard_analytics (Rust + Bun ka ek sach), plan-true storage, domain truth | **aap Run** (installer se pehle) |
+| E31_calendar_v2.sql             | E-series — Calendar v2: invitation ledger, RSVP token + `calendar_rsvp_lookup/apply`, `calendar_busy` (Rust invitations/RSVP/find-a-time ke liye) | **aap Run** (`rust-calendar-install.sh` se pehle) |
+| E32_tenant_lock.sql             | E-series — tenant lock: ~40 tables se anon/authenticated ki saari policies + grants hata kar service_role-only (pehle `rls-open-check.sh`) | **aap Run** (read-only check ke baad) |
