@@ -17,3 +17,5 @@ node shot.mjs $OUT <name> <hash> [w] [h] [steps...]
 Misal: `DOH=namecheap node shot.mjs $OUT wiz empty 390 844 "click:Connect probuyer" wait:800 "click:Continue" wait:1300`
 
 Nateeja sirf **READY** hai: stubs asli backend nahi, aur founder ka browser alag ho sakta hai (Rule 5). Naya page add karna ho to `stubs/` mein uske imports ka stub aur `build.mjs` ke alias mein ek line.
+
+**Dashboard scenarios (`#dash…`):** `dashmail` / `dashnomail` / `dashnoanalytics` (setup checklist), `ios` (install hint), founder expiry watch (8o): `expok` | `expwarn` | `expcrit` | `expunknown` | `expstale` | `expnone` (report abhi nahi) | `expfail` (Rust nahi => tile chup) | `nofounder` (tile chup). Misal: `TOUCH=1 node shot.mjs $OUT crit dashexpcrit 390 844`.

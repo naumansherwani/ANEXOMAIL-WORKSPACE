@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
+import { ExpiryWatch } from "@/components/app/dashboard/ExpiryWatch";
 import { Greeting } from "@/components/app/dashboard/Greeting";
 import { InstallHint } from "@/components/app/dashboard/InstallHint";
 import { SetupChecklist } from "@/components/app/dashboard/SetupChecklist";
@@ -55,6 +56,8 @@ function DashboardPage() {
       <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
         <Greeting enabled={enabled} onCompose={() => setComposing(true)} />
 
+        {/* Founder-only; urgent cheez (cert/domain expiry) setup se pehle dikhni chahiye. */}
+        <ExpiryWatch enabled={enabled} />
         <SetupChecklist enabled={enabled} onCompose={() => setComposing(true)} />
         <InstallHint />
 

@@ -2261,6 +2261,97 @@ async fn dispatch_work(proc: &str, token: &str, input: &Value) -> axum::response
 
 /// tRPC-style dispatch. ANEXOChat ke procedures PRIMARY yahan hain.
 /// Jo procedure Rust pe nahi hai woh 404 deta hai taake frontend fallback kar sake.
+/// 8o — founder-only: expiry watch. `anexomail-expiry-watch` (systemd timer, din mein 2 baar) yeh file likhta hai;
+/// Rust sirf parhta hai (na secret, na network). Gate Bun ke founder gate jaisa hi: `FOUNDER_EMAILS` (ya default list)
+/// ya `founder_accounts` row. File 36 ghante se purani ho to `stale: true` — monitor khud ruk jaye to bhi chup nahi.
+const EXPIRY_WATCH_FILE: &str = "/var/lib/anexomail/expiry-watch.json";
+const EXPIRY_STALE_SECS: u64 = 36 * 3600;
+
+fn founder_emails() -> Vec<String> {
+    let raw = env_var("FOUNDER_EMAILS");
+    let raw = if raw.trim().is_empty() {
+        "naumansherwani.founder@anexomail.com,naumansherwani.founder@nexatect.com".to_string()
+    } else {
+        raw
+    };
+    raw.split(',')
+        .map(|e| e.trim().to_lowercase())
+        .filter(|e| !e.is_empty())
+        .collect()
+}
+
+async fn is_founder(id: &str, email: &str) -> bool {
+    let email = email.trim().to_lowercase();
+    if !email.is_empty() && founder_emails().iter().any(|f| *f == email) {
+        return true;
+    }
+    // Supabase Auth ka id UUID hota hai — URL mein daalne se pehle sirf hex/dash allow.
+    if id.is_empty() || !id.chars().all(|c| c.is_ascii_hexdigit() || c == '-') {
+        return false;
+    }
+    match sb_select(&format!(
+        "founder_accounts?select=user_id&user_id=eq.{id}&limit=1"
+    ))
+    .await
+    {
+        Ok(rows) => rows.as_array().map(|a| !a.is_empty()).unwrap_or(false),
+        Err(_) => false,
+    }
+}
+
+async fn dispatch_founder(proc: &str, token: &str) -> axum::response::Response {
+    let (id, email) = match auth_user(token).await {
+        Some(u) => u,
+        None => {
+            return err(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid").into_response()
+        }
+    };
+    if !is_founder(&id, &email).await {
+        return err(StatusCode::FORBIDDEN, "founder_only", "Founder only").into_response();
+    }
+    match proc {
+        "founder.expiry.watch" => {
+            let path = std::env::var("EXPIRY_WATCH_FILE")
+                .unwrap_or_else(|_| EXPIRY_WATCH_FILE.to_string());
+            let text = match tokio::fs::read_to_string(&path).await {
+                Ok(t) => t,
+                Err(_) => {
+                    return ok(json!({ "available": false, "reason": "no_report_yet" }))
+                        .into_response()
+                }
+            };
+            let mut report: Value = match serde_json::from_str(&text) {
+                Ok(v) => v,
+                Err(_) => {
+                    return ok(json!({ "available": false, "reason": "unreadable" }))
+                        .into_response()
+                }
+            };
+            let age: Option<u64> = tokio::fs::metadata(&path)
+                .await
+                .ok()
+                .and_then(|m| m.modified().ok())
+                .and_then(|t| t.elapsed().ok())
+                .map(|d| d.as_secs());
+            if let Some(obj) = report.as_object_mut() {
+                obj.insert("available".to_string(), json!(true));
+                obj.insert("age_secs".to_string(), json!(age));
+                obj.insert(
+                    "stale".to_string(),
+                    json!(age.map(|a| a > EXPIRY_STALE_SECS).unwrap_or(true)),
+                );
+            }
+            ok(report).into_response()
+        }
+        _ => err(
+            StatusCode::NOT_FOUND,
+            "procedure_not_in_rust",
+            "Unknown founder procedure",
+        )
+        .into_response(),
+    }
+}
+
 async fn dispatch(
     Path(proc): Path<String>,
     headers: HeaderMap,
@@ -2307,6 +2398,11 @@ async fn dispatch(
             }
             None => err(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid").into_response(),
         };
+    }
+
+    // 8o — founder-only expiry watch (mail TLS, web certs, domain renewal, DKIM). Exact-match only.
+    if proc == "founder.expiry.watch" {
+        return dispatch_founder(&proc, &token).await;
     }
 
     // CRM — Personal Pro+ / Business feature. Exact-match only (learned from

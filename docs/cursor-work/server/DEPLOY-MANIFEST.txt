@@ -4,7 +4,7 @@
 # Sirf /opt/anexomail-web ki files. Rust/Brain alag block se.
 src/routes/app.domains.tsx d3c72ea4e9351247
 src/components/app/dashboard/SetupChecklist.tsx d9741035295017f0
-src/routes/app.index.tsx afed72f383259e49
+src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
 src/components/app/AppShell.tsx 45cee19ca2bba60e
 src/components/app/ComposeOverlay.tsx 26a80ec6509cd92c
@@ -16,3 +16,5 @@ src/routes/app.mail.$folder.$threadId.tsx 84035874e5427fcd
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 11e36c5c51a9c4fc
+src/lib/expiry.ts 0ceb310c152494f5
+src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513

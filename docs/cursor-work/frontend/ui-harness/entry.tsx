@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { MobileNav, type NavItem } from "@/components/app/MobileNav";
+import { ExpiryWatch } from "@/components/app/dashboard/ExpiryWatch";
 import { InstallHint } from "@/components/app/dashboard/InstallHint";
 import { SetupChecklist } from "@/components/app/dashboard/SetupChecklist";
 import { CalendarDays, CheckSquare, Globe, Inbox, KanbanSquare, Mail, ShieldCheck, Users } from "lucide-react";
@@ -70,6 +71,7 @@ function DashShell() {
             <div className="mx-auto w-full max-w-6xl px-6 py-10 md:px-10 md:py-14">
               <h1 className="ax-display">Good evening, Nauman</h1>
               <p className="ax-body mt-1 text-muted-foreground">Here is your day.</p>
+              <ExpiryWatch enabled />
               <SetupChecklist enabled onCompose={() => (window as unknown as { __toast?: (m: string) => void }).__toast?.("compose opened")} />
               <InstallHint forceShow={location.hash.includes("ios")} />
               <div className="mt-ax-7 grid gap-ax-5 sm:grid-cols-2 lg:grid-cols-4">

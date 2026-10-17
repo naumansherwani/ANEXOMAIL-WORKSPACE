@@ -1,0 +1,8 @@
+[Unit]
+Description=ANEXOMAIL expiry watch (mail TLS, web certs, domain renewal, DKIM, mail DNS) -> founder alert + dashboard
+After=network-online.target postfix.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/anexomail-expiry-watch
+Nice=10

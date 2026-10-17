@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 05:19 PKT**.
+Aakhri update: **17 Oct 2026, 05:40 PKT**.
 
 ---
 
@@ -23,6 +23,7 @@ Aakhri update: **17 Oct 2026, 05:19 PKT**.
 
 ## 1. ABHI KA QADAM (17 Oct 2026)
 
+**17 Oct 05:40 PKT — 8o BANA (READY; server par abhi nahi lagaya):** (1) **Expiry watch** `docs/cursor-work/server/expiry-watch/` (Python stdlib + openssl, systemd timer 03:47/15:47 UTC): mail TLS (993+587 live), Caddyfile ke web hosts ka live cert, domain renewal (RDAP), DKIM (OpenDKIM key == DNS), MX/SPF/DMARC/PTR; email alert (founder inbox + ALERT_TO, har level din mein ek baar, theek hone par "all clear"), `unknown` 3 run lagataar to khud alert; `/var/lib/anexomail/expiry-watch.json`. `selftest.py` 40+ check green; test ne ek asli bug pakda (SMTP 587 par smtplib hostname galat verify karta tha — ab SNI se). (2) **Rust `founder.expiry.watch`** (`server/rust/main.rs`; gate = `FOUNDER_EMAILS`/`founder_accounts`; file 36 ghante se purani => `stale`) — compile sandbox mein nahi ho sakta, `rustfmt` parse clean; deploy `server/rust-safe-deploy.sh` (build fail => src wapas, health 500 => binary wapas). (3) **Dashboard `ExpiryWatch`** (sirf founder; "Mail TLS: N days", laal/peela, poori list; sab theek ho to patti; phone par bhi) — harness 1440/820/390 + probes, `tsc --strict` clean. Manifest 16 file. **Founder ka agla kadam: 13.10 (ek command).** Founder ka 05:18 hukm ka doosra hissa (poora kaam screenshot se review) ab chal raha hai.
 **17 Oct 05:19 PKT — CERT FIX ASLI SERVER PAR GREEN (13.9 ka output):** `mail-cert` install chala: purana cert `notAfter 2 Nov 2026` -> **naya `notAfter 1 Jan 2027`** (Caddy ne 3 Oct ko renew kiya tha, copy purani thi), "naya cert laga diya", `exit code: 0`, live verify: **993 (IMAPS) aur 587 (SMTP) dono `Jan 1 2027`** de rahe hain, `cert-status.json` `ok:true days_left:76`, timer lag gaya (agla run 03:21 UTC), Postfix ne dono alert mail `status=sent` kiye, Caddyfile mein `mail.anexomail.com {` block maujood (line 198). **Blueprint 8n = DONE.** (Baqi: founder inbox mein "Test alert" email apni aankh se dekhni.)
 **FOUNDER KA NAYA HUKM (05:19 PKT, locked):** (1) 8o banao: founder dashboard mein "Mail TLS: N din" tile + **expiry watch** (domain renewal, DKIM, web certs — chupke se kuch expire na ho). (2) **Abhi tak ka sara kaam bari bari screenshot se review karo**, blueprint ki tarteeb se sab kaam complete karo (sach ke saath: DONE sirf live-verify par). (3) CEO ki tarah khud screenshot le kar kaam karo, gaps/loopholes hamesha ke liye theek karo, repo aur server dono update rakho.
 
@@ -233,6 +234,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 05:40 PKT** — 8o: expiry-watch collector+timer+installer+selftest, Rust `founder.expiry.watch`, `rust-safe-deploy.sh` (3 raste sandbox mein test: build fail/ok/health fail), dashboard `ExpiryWatch` + harness screenshots (ok/warn/crit/unknown/stale/none/fail/non-founder; 1440/820/390), manifest 16 file. Command 13.10.
+
 - **17 Oct 05:19 PKT** — Founder ne 13.9 chalaya: cert asli server par theek (1 Jan 2027), 993/587 live verify, timer, alert mail sent. 8n DONE. Naya hukm: 8o (dashboard tile + expiry watch), poora kaam screenshot se review, gaps hamesha ke liye theek.
 
 - **17 Oct 05:09 PKT** — Cert monitor+timer+installer bana (`server/mail-cert/`), sandbox simulation (naya cert lagna, galat key reject, reload-fail restore, din mein ek alert, test alert) green; installer dry-run green; deploy-mail.sh mein comment. Command 13.9 founder ko.
@@ -411,11 +414,17 @@ echo "== users / store"; doveadm user '*' 2>&1 | wc -l; ls -ld /var/mail /var/vm
 echo "== IMAP + SMTP banners (no login)"; printf 'a1 CAPABILITY\r\na2 LOGOUT\r\n' | openssl s_client -quiet -connect 127.0.0.1:993 -servername mail.anexomail.com 2>/dev/null | head -3; printf 'EHLO t\r\nQUIT\r\n' | openssl s_client -starttls smtp -quiet -connect 127.0.0.1:587 2>/dev/null | head -12
 ```
 
-**13.9 — MAIL TLS CERT FIX + ALERT (URGENT, founder ka hukm 17 Oct; READY).** Ek command: monitor + systemd timer lagata hai, abhi ek baar sync chalata hai (Caddy ka taza cert ho to lag jata hai, postfix+dovecot reload, live 993/587 verify), aur founder inbox par test alert bhejta hai. Idempotent. Detail: `docs/cursor-work/server/mail-cert/README.md`.
+**13.9 — MAIL TLS CERT FIX + ALERT (URGENT, founder ka hukm 17 Oct; ASLI SERVER PAR GREEN 17 Oct 05:19).** Ek command: monitor + systemd timer lagata hai, abhi ek baar sync chalata hai (Caddy ka taza cert ho to lag jata hai, postfix+dovecot reload, live 993/587 verify), aur founder inbox par test alert bhejta hai. Idempotent. Detail: `docs/cursor-work/server/mail-cert/README.md`.
 ```bash
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mail-cert/install.sh)
 ```
 Natija dekho: (1) "naya cert laga diya" + `993`/`587` ka notAfter naya, (2) `exit code: 0`, (3) founder inbox mein "[ANEXOMAIL] Test alert" aur "Mail TLS cert taza ho gaya". Agar "Caddy ke store mein ... cert nahi mila" ya cert naya nahi hua to output paste karo — tab Caddyfile ka `mail.anexomail.com` block dekhna padega (Caddy usi se renew karta hai). Bahar ke email par bhi alert: `echo 'ALERT_TO="aap@gmail.com"' > /etc/anexomail/alert.env`.
+
+**13.10 — 8o: PULL + EXPIRY WATCH INSTALL + RUST BUILD (ek command; READY, founder ne abhi nahi chalaya).** Teen cheezein tarteeb se, har ek apna restore-on-fail rakhti hai (ek fail ho to agli phir bhi chalti hai): (1) `pull.sh` (web: dashboard tile + docs/memory; `pm2 restart anexomail-web`), (2) `expiry-watch/install.sh` (monitor + timer, abhi ek baar check, founder inbox mein pehla poora report email; Postfix/DNS/Caddy ko sirf padhta hai), (3) `rust-safe-deploy.sh` (Rust `main.rs` naya -> `cargo build --release` kuch minute; build fail => src wapas + error lines; health 200 na aaye => purani binary wapas; phir `pm2 restart anexomail-rust --update-env && pm2 save`; `polar-rust-payment` ko haath nahi lagta).
+```bash
+git -C /opt/anexomail-web fetch -q origin main && { bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh); bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/expiry-watch/install.sh); bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-safe-deploy.sh); }
+```
+Natija dekho: (1) pull ke aakhir mein `OK - memory taza, server taza` + `/health 200`; (2) expiry install ki table (STATUS / KYA / DIN / DETAIL) — `mail-tls` ~76 din, web hosts, `domain:` ki taareekh, `dkim:` ok ya `unknown` (key table ka path alag ho to `/etc/anexomail/expiry-watch.env` mein `DKIM_KEYTABLE=`), aur "founder inbox mein Expiry watch email"; (3) Rust: `build OK`, `/rpc/health: 200`, `founder.expiry.watch (nakli token) ... HTTP 401 -> Rust ne proc pakda`. Phir browser mein founder login ke saath dashboard par **"EXPIRY WATCH — Mail TLS: N days"** tile (Ctrl+Shift+R). Agar `unknown` aaye (RDAP/DKIM/DNS) to output paste karo — wahi theek karunga. Build fail ho to `error` ke line paste karo.
 
 ## 14. Do chats ka rishta (context kahan se aata hai)
 
