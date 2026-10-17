@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 20:22 PKT** (asli ghadi, `current_time` tool; 06:40/07:05/07:20 ke purane stamp andaze the).
+Aakhri update: **17 Oct 2026, 20:30 PKT** (asli ghadi, `current_time` tool; 06:40/07:05/07:20 ke purane stamp andaze the).
 
 ---
 
@@ -256,6 +256,7 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 20:30 PKT** — `server/checks-all.sh`: 6 read-only checks + repo==server (Rust main.rs sha, Brain routes live-only/differ) EK command mein, ek paste. Agla kaam in outputs par depend karta hai (G17/L32/L33 invites, G18 Rust, test accounts).
 - **17 Oct 20:22 PKT** — Dashboard Quick actions: customer ko `/app/admin/*` (founder-only) par bhejna band; Business -> Org members, Basic/Pro -> Domains, Personal -> kuch nahi (L50). Org members mein invite UI abhi nahi => agla bada kaam: team invites (G17/L32/L33).
 - **17 Oct 20:11 PKT** — Basic first-run: dashboard checklist/greeting/KPI fixes (L47–L49); Rust source repo mein mila (purani galti sudhari), founder procs 10/182 repo mein. Harness `#dashboard`.
 - **17 Oct 20:03 PKT** — Plan-wise audit: plan-surface matrix; locked-page upsell card wrong-plan bug fixed (L44), Personal Safety copy (L45), 44px (L46). G20 opened.
@@ -337,6 +338,12 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 ---
 
 ## 13. Aakhri commands (copy-paste ready, founder ke server ke liye)
+
+**13.-1 — EK command, SAB read-only checks (17 Oct 20:30 PKT; founder ek paste, agent ka agla kaam isi par):**
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/checks-all.sh)
+```
+Kya karta hai: (0) Rust `main.rs` live sha vs repo + Brain routes live-only/differ, pm2; (1) `rust-procs-check.sh`; (2) `test-accounts-check.sh`; (3) `workspace-api-check.sh`; (4) `switch-journey-check.sh`; (5) `crm-tenant-check.sh`. Kuch badalta nahi, secret print nahi. "PASTE FROM HERE" se "PASTE UP TO HERE" tak paste karein.
 
 **13.0 — EK pull command (har jawab mein yahi do; founder ka hukm 17 Oct 03:39 PKT).** `git pull --rebase` server par refuse hota hai (tree dirty), isliye yeh script tree ko chhere bina: dirty files ki list dikhati hai, memory/docs taza karti hai, manifest ki code files sha-guard se lagati hai (build fail ho to purani wapas), phir **hamesha** `pm2 restart anexomail-web --update-env && pm2 save` aur health check. Script: `docs/cursor-work/server/pull.sh`, code list: `docs/cursor-work/server/DEPLOY-MANIFEST.txt`. Sirf web; Rust/Brain ke deploy alag block.
 
