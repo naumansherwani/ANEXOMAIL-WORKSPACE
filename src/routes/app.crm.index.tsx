@@ -1,5 +1,5 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Activity, AlertTriangle, GitBranch } from "lucide-react";
+import { Link, createFileRoute } from "@tanstack/react-router";
+import { Activity, AlertTriangle, ArrowRight, GitBranch } from "lucide-react";
 
 import { CardBody, DashboardCard, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, SectionTitle } from "@/components/app/crm/CrmBits";
@@ -20,6 +20,12 @@ export const Route = createFileRoute("/app/crm/")({
   component: CrmDashboard,
 });
 
+const FIRST_STEPS: { to: "/app/crm/leads" | "/app/crm/pipeline"; title: string; hint: string }[] = [
+  { to: "/app/crm/leads", title: "Capture a lead", hint: "Someone who wrote to you, or you just met." },
+  { to: "/app/crm/pipeline", title: "Open a deal", hint: "A named opportunity with a value and a stage." },
+  { to: "/app/crm/leads", title: "Turn your mail into leads", hint: "We list senders from your real inbox — you decide who counts." },
+];
+
 function CrmDashboard() {
   const { t } = useLocale();
   const { session, organisation } = useAuth();
@@ -36,6 +42,8 @@ function CrmDashboard() {
   const lost = o?.stage_counts.find((s) => s.stage === "lost")?.count ?? 0;
   const conversion = won + lost > 0 ? Math.round((won / (won + lost)) * 100) : null;
   const maxStage = Math.max(1, ...(o?.stage_counts.map((s) => s.value) ?? [1]));
+  // A truly empty book (nothing captured, nothing open) gets real first steps instead of a passive sentence.
+  const firstRun = Boolean(o) && o!.open_deals === 0 && o!.leads_new === 0 && won + lost === 0;
 
   const openValue = o ? money(o.pipeline_value, o.currency) : "—";
   const forecastValue = o ? money(o.weighted_value, o.currency) : "—";
@@ -166,9 +174,33 @@ function CrmDashboard() {
             >
               {(data) =>
                 data.next_actions.length === 0 ? (
-                  <p className="ax-caption text-muted-foreground">
-                    {t("No rule fired. Capture a lead or wait for mail.")}
-                  </p>
+                  firstRun ? (
+                    <div className="space-y-2">
+                      <p className="ax-caption text-muted-foreground">
+                        {t("Your book is empty. Three ways to start — each takes under a minute.")}
+                      </p>
+                      <ul className="space-y-2">
+                        {FIRST_STEPS.map((step) => (
+                          <li key={step.title}>
+                            <Link
+                              to={step.to}
+                              className="ax-tap ax-focus ax-press ax-row flex items-center justify-between gap-3 rounded-xl border border-border bg-background/40 px-3 py-2.5"
+                            >
+                              <span className="min-w-0">
+                                <span className="block text-[13px] font-semibold text-foreground">{t(step.title)}</span>
+                                <span className="ax-caption block text-muted-foreground">{t(step.hint)}</span>
+                              </span>
+                              <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <p className="ax-caption text-muted-foreground">
+                      {t("No rule fired. Capture a lead or wait for mail.")}
+                    </p>
+                  )
                 ) : (
                   <ul className="space-y-2">
                     {data.next_actions.slice(0, 6).map((a, i) => (

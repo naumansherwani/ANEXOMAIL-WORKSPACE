@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 20:16 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 20:17 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -59,6 +59,7 @@ Aakhri update: **17 Oct 2026, 20:16 PKT** (`current_time` tool).
 | L49 | Phone par 4 KPI tiles ek ke neeche ek (naye user ko ~1.5 screen zeros) | 390 screenshot | 2×2 grid, chhota padding phone par, storage poori chaurai | READY |
 | L50 | **Dashboard Quick actions: har customer ko "Invite a teammate" aur "Domain & ownership" jo `/app/admin/*` par le jate the (founder host ka platform admin => customer ko lock wall)** — Business ka sab se pehla kaam (team lana) dead end | plan-surface matrix + Panels code | ab package ke hisaab se: Business → `/app/org/members` ("Your team") + `/app/domains`; Basic/Pro company → `/app/domains` ("Company addresses", ek hi link); Personal → dono nahi; sirf founder host par purane admin links. **Baqi: `/app/org/members` mein abhi invite ka UI nahi (G17/L32/L33)** | READY |
 | L51 | **Naye user ka khaali Inbox: "No mail yet — Press C to write the first one"** (phone/tablet par "C" key hai hi nahi; apna address nahi dikhta; copy/share nahi) + **bug: inbox mein search/filter ka khaali nateeja bhi "No mail yet" kehta tha** | Rule 19 first-60-seconds audit | `InboxWelcome`: "Your inbox is ready", apna address + Copy + Share (jahan `navigator.share` ho) + "Write your first email" (44px) + "Moving from Google or Zoho?" → /migration; filter/search par ab "Nothing here". Koi nakli mail nahi | READY |
+| L52 | **CRM "Your book" naye user ke liye khaali aur passive:** "Next" card sirf "No rule fired. Capture a lead or wait for mail." kehta tha — koi tap-able pehla qadam nahi | founder ka live CRM screenshot + harness `crm?empty=1` | jab book sach mein khaali ho (koi open deal, naya lead, won/lost nahi): 3 asli raaste — Capture a lead / Open a deal / Turn your mail into leads (44px rows); warna purana "No rule fired" | READY |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
