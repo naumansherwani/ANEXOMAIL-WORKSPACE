@@ -42,7 +42,7 @@ function CollabPage() {
   const [tab, setTab] = useState<Tab>("inbox");
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-ax-5 py-ax-6">
+    <div className="mx-auto w-full max-w-5xl px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <SectionTitle
         title={t("Shared work")}
         hint={t("Assignment, mentions and approvals are server truth — two people can never own the same reply.")}

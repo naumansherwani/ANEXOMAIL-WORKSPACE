@@ -2,6 +2,7 @@
 // the same fields the app reads: data, error, isPending, isLoading, isFetching, refetch. Mutations only record that they ran.
 import { useCallback, useEffect, useRef, useState } from "react";
 
+const runners = new Set<() => void>();
 type Opts<T> = { queryKey?: unknown[]; queryFn?: () => Promise<T>; enabled?: boolean };
 export function useQuery<T, E = Error>(opts: Opts<T>) {
   const [state, setState] = useState<{ data?: T; error: E | null; pending: boolean }>({ error: null, pending: opts.enabled !== false });
@@ -17,6 +18,7 @@ export function useQuery<T, E = Error>(opts: Opts<T>) {
     );
   }, [opts.enabled]);
   useEffect(() => { run(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [key, opts.enabled]);
+  useEffect(() => { runners.add(run); return () => { runners.delete(run); }; }, [run]);
   return { data: state.data, error: state.error, isPending: state.pending, isLoading: state.pending, isFetching: state.pending, isError: !!state.error, refetch: run };
 }
 export function useMutation<V = unknown, R = unknown>(opts: { mutationFn?: (v: V) => Promise<R>; onSuccess?: (r: R) => void } = {}) {
@@ -30,4 +32,4 @@ export function useMutation<V = unknown, R = unknown>(opts: { mutationFn?: (v: V
   };
   return { mutate, mutateAsync: async (v: V) => (opts.mutationFn ? opts.mutationFn(v) : undefined), isPending: pending, error: null, reset: () => {} };
 }
-export const useQueryClient = () => ({ invalidateQueries: async () => {}, setQueryData: () => {}, getQueryData: () => undefined, cancelQueries: async () => {} });
+export const useQueryClient = () => ({ invalidateQueries: async () => { setTimeout(() => runners.forEach((r) => r()), 0); }, setQueryData: () => {}, getQueryData: () => undefined, cancelQueries: async () => {} });

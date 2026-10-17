@@ -28,7 +28,7 @@ function AccountsPage() {
   const companies = useCompanies({});
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
+    <div className="mx-auto w-full max-w-6xl px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <SectionTitle
         title={t("Accounts")}
         hint={t("Companies built from your real conversations. A company appears here only when mail with its domain exists.")}

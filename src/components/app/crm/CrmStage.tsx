@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { type ReactNode } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
@@ -52,7 +52,7 @@ function NavRow({ item, active, label }: { item: NavItem; active: boolean; label
       to={item.to}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "ax-press group relative flex h-10 items-center rounded-[10px] ps-3.5 pe-3 text-[13px] font-semibold transition-colors",
+        "ax-press ax-tap group relative flex h-10 items-center rounded-[10px] ps-3.5 pe-3 text-[13px] font-semibold transition-colors",
         active ? "text-foreground" : "text-muted-foreground hover:text-foreground",
       )}
     >
@@ -79,7 +79,7 @@ function LoopRow({
   return (
     <Link
       to={step.to}
-      className="ax-press group flex items-center gap-2.5 rounded-[10px] px-2 py-[5px] transition-colors hover:bg-secondary/50"
+      className="ax-press ax-tap group flex items-center gap-2.5 rounded-[10px] px-2 py-[5px] transition-colors hover:bg-secondary/50"
     >
       <span
         className="flex size-6 shrink-0 items-center justify-center rounded-full border border-border/80 font-mono text-[9px] font-bold text-steel transition-colors group-hover:border-foreground/40 group-hover:text-foreground"
@@ -117,12 +117,23 @@ export function CrmStage({ children }: { children: ReactNode }) {
     { to: "/app/crm/leads", label: "Leads" },
     { to: "/app/crm/pipeline", label: "Pipeline" },
     { to: "/app/crm/relationships", label: "Relationships" },
+    // 17 Oct 2026 (M6): these three pages were built but no link in the app led to them — a user could never open them.
+    { to: "/app/crm/accounts", label: "Accounts" },
+    { to: "/app/crm/tasks", label: "Tasks" },
+    { to: "/app/crm/reports", label: "Reports" },
     ...(showCrmCollab(billed, null, kind)
       ? [{ to: "/app/crm/collab" as const, label: kind === "personal" ? "Collaboration" : "Shared work" }]
       : []),
     ...(showCrmLedger(billed, null, kind) ? [{ to: "/app/crm/activity" as const, label: "Activity" }] : []),
     { to: "/app/billing", label: "Billing" },
   ];
+
+  // The phone strip scrolls sideways (10 pills): keep the current page's pill in view after navigating.
+  const stripRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const el = stripRef.current?.querySelector<HTMLElement>('[aria-current="page"]');
+    el?.scrollIntoView({ inline: "center", block: "nearest" });
+  }, [pathname]);
 
   const loop = LOOP.filter((step) => {
     if (step.cr === "7" || step.cr === "8") return showCrmLedger(billed, null, kind);
@@ -178,15 +189,16 @@ export function CrmStage({ children }: { children: ReactNode }) {
 
       {/* Phone: contained nav strip — never overlaps anything */}
       <div className="shrink-0 border-b border-border/80 px-ax-3 py-ax-2 lg:hidden">
-        <nav className="flex gap-1 overflow-x-auto [scrollbar-width:none]">
+        <nav ref={stripRef} aria-label="CRM sections" className="flex gap-1.5 overflow-x-auto [scrollbar-width:none]">
           {nav.map((item) => {
             const active = isActive(item.to, item.exact, pathname);
             return (
               <Link
                 key={item.to}
                 to={item.to}
+                aria-current={active ? "page" : undefined}
                 className={cn(
-                  "ax-press shrink-0 rounded-full border px-2.5 py-1 text-[11px] font-semibold",
+                  "ax-press ax-tap inline-flex shrink-0 items-center rounded-full border px-3 py-1 text-[12px] font-semibold",
                   active
                     ? "border-foreground/50 bg-secondary text-foreground"
                     : "border-border/80 text-muted-foreground",

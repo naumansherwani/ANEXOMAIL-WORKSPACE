@@ -39,7 +39,7 @@ function ActivityPage() {
   const evidence = useCrmEvidence();
 
   return (
-    <div className="mx-auto w-full max-w-4xl px-ax-5 py-ax-6">
+    <div className="mx-auto w-full max-w-4xl px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <SectionTitle
         title={t("Activity")}
         hint={t("Written by the system as work happens. Nobody logs activity by hand in ANEXOMAIL.")}
@@ -64,14 +64,15 @@ function ActivityPage() {
             <ol className="space-y-ax-2">
               {data.activities.map((a) => (
                 <li key={a.id} className="ax-plane rounded-2xl p-ax-4">
-                  <div className="flex flex-wrap items-center gap-ax-3">
+                  {/* Phone: kind + who/when on one line, the subject on its own full-width line (it was cut to "Re: R…"). */}
+                  <div className="flex flex-wrap items-center gap-x-ax-3 gap-y-1">
                     <Chip>{t(KIND_LABEL[a.kind])}</Chip>
-                    <p className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground">
-                      {a.subject ?? a.contact_email ?? "—"}
-                    </p>
-                    <span className="ax-caption text-muted-foreground">
+                    <span className="ax-caption min-w-0 truncate text-muted-foreground sm:order-3">
                       {a.actor ?? t("system")} · {relativeTime(a.created_at)}
                     </span>
+                    <p className="basis-full break-words text-[13px] font-semibold text-foreground sm:order-2 sm:min-w-0 sm:flex-1 sm:basis-0 sm:truncate">
+                      {a.subject ?? a.contact_email ?? "—"}
+                    </p>
                   </div>
                   {a.body && <p className="ax-body mt-1">{a.body}</p>}
                 </li>

@@ -36,7 +36,7 @@ function CrmTasksPage() {
   const tasks = useTasks({});
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
+    <div className="mx-auto w-full max-w-6xl px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <SectionTitle
         title={t("Tasks")}
         hint={t("Deal → work conversion lands here. A task always carries an owner and a due date — never an island.")}
@@ -64,7 +64,7 @@ function CrmTasksPage() {
           ) : (
             <div className="ax-plane divide-y divide-border rounded-2xl">
               {data.tasks.map((task) => (
-                <div key={task.id} className="flex items-center gap-ax-3 px-ax-4 py-ax-3">
+                <div key={task.id} className="flex flex-wrap items-center gap-x-ax-3 gap-y-2 px-ax-4 py-ax-3 sm:flex-nowrap">
                   <span
                     className={cn(
                       "flex size-8 shrink-0 items-center justify-center rounded-xl",
@@ -78,7 +78,7 @@ function CrmTasksPage() {
                   <span className="min-w-0 flex-1">
                     <span
                       className={cn(
-                        "block truncate text-sm font-semibold",
+                        "block break-words text-sm font-semibold sm:truncate",
                         task.status === "done"
                           ? "text-muted-foreground line-through"
                           : "text-foreground",
@@ -92,19 +92,22 @@ function CrmTasksPage() {
                       {task.thread_subject ? ` · ${task.thread_subject}` : ""}
                     </span>
                   </span>
-                  {task.late && task.status !== "done" ? (
-                    <Chip tone="bad">{t("Late")}</Chip>
-                  ) : null}
-                  <Chip tone={STATUS_TONE[task.status] ?? "quiet"}>{t(task.status)}</Chip>
-                  {task.thread_id ? (
-                    <Link
-                      to="/app/mail/$folder/$threadId"
-                      params={{ folder: "inbox", threadId: task.thread_id }}
-                      className="ax-press shrink-0 text-[11px] font-semibold text-foreground underline-offset-4 hover:underline"
-                    >
-                      {t("Open thread")}
-                    </Link>
-                  ) : null}
+                  {/* Phone: status chips + link sit under the title (aligned with it), not squeezing it to "Send revised pro…". */}
+                  <div className="flex basis-full items-center gap-ax-3 ps-11 sm:basis-auto sm:ps-0">
+                    {task.late && task.status !== "done" ? (
+                      <Chip tone="bad">{t("Late")}</Chip>
+                    ) : null}
+                    <Chip tone={STATUS_TONE[task.status] ?? "quiet"}>{t(task.status)}</Chip>
+                    {task.thread_id ? (
+                      <Link
+                        to="/app/mail/$folder/$threadId"
+                        params={{ folder: "inbox", threadId: task.thread_id }}
+                        className="ax-press ax-hit shrink-0 text-[12px] font-semibold text-foreground underline-offset-4 hover:underline"
+                      >
+                        {t("Open thread")}
+                      </Link>
+                    ) : null}
+                  </div>
                 </div>
               ))}
             </div>

@@ -44,7 +44,7 @@ function LeadsPage() {
   const convert = useConvertLead();
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
+    <div className="mx-auto w-full max-w-6xl px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <SectionTitle
         title={t("Leads")}
         hint={t("Your book of people who are not a deal yet. Capture one here — scores appear only when mail behaviour exists.")}
@@ -52,14 +52,14 @@ function LeadsPage() {
       <CaptureLead />
       <SuggestedFromMail />
 
-      <div className="mb-ax-4 flex flex-wrap gap-1">
+      <div className="mb-ax-4 flex flex-wrap gap-2">
         {STATES.map((s) => (
           <button
             key={s}
             type="button"
             onClick={() => setState(s)}
             className={cn(
-              "ax-press rounded-full border px-3 py-1 text-[12px] font-semibold capitalize transition-colors",
+              "ax-press ax-hit rounded-full border px-3 py-1 text-[12px] font-semibold capitalize transition-colors",
               state === s
                 ? "border-foreground bg-secondary text-foreground"
                 : "border-border text-muted-foreground hover:text-foreground",
@@ -90,11 +90,11 @@ function LeadsPage() {
               {data.leads.map((l) => (
                 <li key={l.id} className="ax-plane rounded-2xl p-ax-4">
                   <div className="flex flex-wrap items-center gap-ax-3">
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-[13px] font-semibold text-foreground">
+                    <div className="min-w-0 flex-1 basis-full sm:basis-0">
+                      <p className="break-words text-[13px] font-semibold text-foreground sm:truncate">
                         {l.display_name ?? l.email}
                       </p>
-                      <p className="ax-caption truncate text-muted-foreground">
+                      <p className="ax-caption break-words text-muted-foreground sm:truncate">
                         {l.email}
                         {l.company ? ` · ${l.company}` : ""}
                         {l.source ? ` · via ${l.source}` : ""}
@@ -155,15 +155,15 @@ function SuggestedFromMail() {
 
   return (
     <section className="mb-ax-4 rounded-2xl border border-cyan-accent/30 bg-card/60 p-ax-4">
-      <div className="mb-3 flex items-center gap-2">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
         <MailPlus className="size-4 text-cyan-accent" aria-hidden="true" />
         <p className="text-[13px] font-bold text-foreground">{t("From your mail — last 30 days")}</p>
         <Chip tone="quiet">{list.length}</Chip>
-        <p className="ax-caption ml-auto text-muted-foreground">
+        <p className="ax-caption basis-full text-muted-foreground sm:ml-auto sm:basis-auto">
           {t("Real senders. Accept to put them on the book.")}
         </p>
       </div>
-      <ul className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="grid grid-cols-1 gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
         {list.slice(0, 9).map((s: SuggestedLead) => (
           <li
             key={s.email}
@@ -178,7 +178,7 @@ function SuggestedFromMail() {
             <Button
               size="sm"
               variant="secondary"
-              className="ax-press h-7 shrink-0 px-2 text-[11px]"
+              className="ax-press ax-hit h-7 shrink-0 px-2 text-[11px]"
               disabled={accept.isPending}
               onClick={() =>
                 accept.mutate(

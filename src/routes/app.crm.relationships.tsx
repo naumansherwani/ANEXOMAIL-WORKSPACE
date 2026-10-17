@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { CalendarDays, CheckSquare, KanbanSquare, Mail, Activity } from "lucide-react";
-import { useState } from "react";
+import { ArrowUp, CalendarDays, CheckSquare, KanbanSquare, Mail, Activity } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import { Chip, HealthRing, SectionTitle } from "@/components/app/crm/CrmBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
@@ -80,24 +80,42 @@ function RelationshipsPage() {
 
   const pickedPerson = live.data?.people.find((p) => p.primary_address === picked) ?? null;
 
+  // Below xl the person panel sits UNDER the table: tapping a row changed nothing visible (the panel was a screen away).
+  // Bring it into view on phone/tablet — after its data has arrived, because before that the page is too short to scroll.
+  // The "All people" link in the panel takes you back to the top.
+  const panelRef = useRef<HTMLDivElement>(null);
+  const topRef = useRef<HTMLDivElement>(null);
+  const wantScroll = useRef(false);
+  const pick = (address: string) => {
+    wantScroll.current =
+      typeof window !== "undefined" && !window.matchMedia("(min-width: 80rem)").matches;
+    setPicked(address);
+  };
+  const arrived = memory.data?.email === picked.trim().toLowerCase();
+  useEffect(() => {
+    if (!wantScroll.current || !arrived) return;
+    wantScroll.current = false;
+    panelRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [picked, arrived]);
+
   return (
-    <div className="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-8">
+    <div className="relative mx-auto w-full max-w-[1400px] px-ax-4 py-ax-5 md:px-6 md:py-8 lg:px-8">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(60%_90%_at_85%_-20%,oklch(0.455_0.093_258_/_12%),transparent_65%)]" />
 
-      <div className="relative">
+      <div ref={topRef} className="relative scroll-mt-4">
         <SectionTitle
           title={t("Relationships")}
           hint={t("People from real mail. Open one — mail, deals and work sit together.")}
         />
 
-        <div className="mb-4 flex flex-wrap gap-1.5">
+        <div className="mb-4 flex flex-wrap gap-2">
           {FILTERS.map((f) => (
             <button
               key={f}
               type="button"
               onClick={() => setFilter(f)}
               className={cn(
-                "ax-press rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-colors",
+                "ax-press ax-hit rounded-full border px-3 py-1.5 text-[12px] font-semibold transition-colors",
                 filter === f
                   ? "border-foreground bg-secondary text-foreground"
                   : "border-border text-muted-foreground hover:text-foreground",
@@ -143,7 +161,7 @@ function RelationshipsPage() {
                       <li key={p.id}>
                         <button
                           type="button"
-                          onClick={() => setPicked(p.primary_address)}
+                          onClick={() => pick(p.primary_address)}
                           className={cn(
                             "ax-press grid w-full grid-cols-1 items-center gap-2 px-4 py-3.5 text-start transition-colors md:grid-cols-[1.4fr_1fr_72px_96px_64px] md:gap-3",
                             picked === p.primary_address ? "bg-secondary/70" : "hover:bg-secondary/40",
@@ -161,17 +179,28 @@ function RelationshipsPage() {
                               </span>
                             </span>
                           </span>
-                          <span className="truncate text-[12.5px] text-muted-foreground">
+                          {/* Desktop/tablet-wide: the table cells under the header row. */}
+                          <span className="hidden truncate text-[12.5px] text-muted-foreground md:block">
                             {p.company_name ?? "—"}
                           </span>
-                          <span className="text-[12.5px] font-bold tabular-nums text-foreground">
+                          <span className="hidden text-[12.5px] font-bold tabular-nums text-foreground md:block">
                             {p.health_score ?? "—"}
                           </span>
-                          <span className="text-[12px] text-muted-foreground">
+                          <span className="hidden text-[12px] text-muted-foreground md:block">
                             {p.last_contact_at ? relativeTime(p.last_contact_at) : t("Never")}
                           </span>
-                          <span className="text-end text-[12.5px] font-bold tabular-nums text-foreground">
+                          <span className="hidden text-end text-[12.5px] font-bold tabular-nums text-foreground md:block">
                             {p.open_threads}
+                          </span>
+                          {/* Phone: no header row exists, so bare numbers meant nothing — one labelled line instead. */}
+                          <span className="ax-caption ps-12 text-muted-foreground md:hidden">
+                            {[
+                              p.company_name,
+                              p.last_contact_at ? relativeTime(p.last_contact_at) : t("Never"),
+                              p.open_threads > 0 ? `${p.open_threads} ${t("open")}` : null,
+                            ]
+                              .filter(Boolean)
+                              .join(" · ")}
                           </span>
                         </button>
                       </li>
@@ -183,7 +212,16 @@ function RelationshipsPage() {
           </CardBody>
 
           {/* Customer command panel — 420px */}
-          <div className="min-w-0">
+          <div ref={panelRef} className="min-w-0 scroll-mt-4">
+            {picked.includes("@") ? (
+              <button
+                type="button"
+                onClick={() => topRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                className="ax-press ax-tap -ms-1 mb-2 inline-flex items-center gap-1 rounded-lg px-1 text-[13px] font-semibold text-muted-foreground hover:text-foreground xl:hidden"
+              >
+                <ArrowUp className="size-4" aria-hidden="true" /> {t("All people")}
+              </button>
+            ) : null}
             <Input
               className="mb-3"
               value={picked}
@@ -275,7 +313,7 @@ function RelationshipsPage() {
                           </p>
                           <a
                             href={data.next_actions[0]!.href}
-                            className="ax-press mt-3 inline-flex h-9 items-center rounded-lg bg-primary px-3.5 text-[12.5px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
+                            className="ax-press ax-tap mt-3 inline-flex h-9 items-center rounded-lg bg-primary px-3.5 text-[12.5px] font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                           >
                             {t("Open")}
                           </a>
@@ -288,7 +326,7 @@ function RelationshipsPage() {
                                   </span>
                                   <a
                                     href={a.href}
-                                    className="shrink-0 text-[11px] font-semibold text-foreground underline underline-offset-4"
+                                    className="ax-hit shrink-0 text-[12px] font-semibold text-foreground underline underline-offset-4"
                                   >
                                     {t("Open")}
                                   </a>

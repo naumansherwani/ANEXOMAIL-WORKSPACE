@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Mail, Plus } from "lucide-react";
-import { useState } from "react";
+import { ArrowRight, ChevronDown, Mail, Plus } from "lucide-react";
+import { useRef, useState } from "react";
 
 import { OpenDealForm } from "@/components/app/crm/CrmCapture";
 import { Chip, SectionTitle } from "@/components/app/crm/CrmBits";
@@ -53,9 +53,19 @@ function PipelinePage() {
   const attach = useAttachDealThread();
   const [drawer, setDrawer] = useState(false);
 
-  const advance = (deal: Deal) => {
-    const next = STAGE_ORDER[Math.min(STAGE_ORDER.indexOf(deal.stage) + 1, STAGE_ORDER.length - 1)];
-    if (!next || next === deal.stage) return;
+  const boardRef = useRef<HTMLDivElement>(null);
+  /** Phone: tap a stage chip to bring that column into view (columns are 18rem wide; only one fits). */
+  const jumpTo = (stage: DealStage) =>
+    boardRef.current
+      ?.querySelector<HTMLElement>(`[data-stage="${stage}"]`)
+      ?.scrollIntoView({ behavior: "smooth", inline: "start", block: "nearest" });
+
+  /**
+   * One mover for every path. The server (/crm/deals/stage) accepts any of the six stages, so a deal can be
+   * advanced, marked Lost, or reopened — before M6 only "advance one step" existed, so Lost could never be set.
+   */
+  const moveTo = (deal: Deal, next: DealStage) => {
+    if (next === deal.stage) return;
     move.mutate(
       { id: deal.id, stage: next },
       {
@@ -67,9 +77,13 @@ function PipelinePage() {
       },
     );
   };
+  const advance = (deal: Deal) => {
+    const next = STAGE_ORDER[Math.min(STAGE_ORDER.indexOf(deal.stage) + 1, STAGE_ORDER.length - 1)];
+    if (next) moveTo(deal, next);
+  };
 
   return (
-    <div className="w-full px-ax-5 py-ax-6">
+    <div className="w-full px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <div className="flex items-start justify-between gap-3">
         <SectionTitle
           title={t("Pipeline")}
@@ -105,7 +119,30 @@ function PipelinePage() {
         skeleton={<StatSkeleton rows={6} />}
       >
         {(data) => (
-          <div className="flex gap-ax-3 overflow-x-auto pb-ax-4">
+          <>
+            {/* Phone: the whole pipeline at a glance; tap a stage to jump to its column. */}
+            <nav
+              aria-label={t("Pipeline stages")}
+              className="-mx-ax-4 mb-ax-3 flex gap-1.5 overflow-x-auto px-ax-4 [scrollbar-width:none] md:hidden"
+            >
+              {STAGE_ORDER.map((stage) => (
+                <button
+                  key={stage}
+                  type="button"
+                  onClick={() => jumpTo(stage)}
+                  className="ax-press ax-tap inline-flex shrink-0 items-center gap-1.5 rounded-full border border-border px-3 py-1 text-[12px] font-semibold text-foreground"
+                >
+                  {t(STAGE_LABEL[stage])}
+                  <span className="tabular-nums text-muted-foreground">
+                    {data.deals.filter((d) => d.stage === stage).length}
+                  </span>
+                </button>
+              ))}
+            </nav>
+          <div
+            ref={boardRef}
+            className="flex snap-x snap-mandatory gap-ax-3 overflow-x-auto pb-ax-4 md:snap-none"
+          >
             {STAGE_ORDER.map((stage) => {
               const items = data.deals.filter((d) => d.stage === stage);
               const total = items.reduce((s, d) => s + d.value, 0);
@@ -140,7 +177,7 @@ function PipelinePage() {
                         key={d.id}
                         className="rounded-xl border border-border bg-card p-ax-3"
                       >
-                        <p className="text-[13px] font-semibold text-foreground">{d.title}</p>
+                        <p className="break-words text-[13px] font-semibold text-foreground">{d.title}</p>
                         <p className="ax-caption mt-0.5 text-muted-foreground">
                           {d.company ?? d.contact_email ?? t("No company yet")}
                         </p>
@@ -161,12 +198,12 @@ function PipelinePage() {
                             {d.next_step_due ? ` · ${d.next_step_due}` : ""}
                           </p>
                         )}
-                        <div className="mt-ax-2 flex items-center gap-2">
+                        <div className="mt-ax-2 flex flex-wrap items-center gap-2">
                           {d.thread_id && (
                             <Link
                               to="/app/mail/$folder/$threadId"
                               params={{ folder: "inbox", threadId: d.thread_id }}
-                              className="ax-press ax-caption inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
+                              className="ax-press ax-hit ax-caption inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
                             >
                               <Mail className="size-3" aria-hidden="true" /> {t("Thread")}
                             </Link>
@@ -188,7 +225,7 @@ function PipelinePage() {
                                 )
                               }
                               disabled={attach.isPending}
-                              className="ax-press ax-caption rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
+                              className="ax-press ax-hit ax-caption rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
                             >
                               {t("Attach mail")}
                             </button>
@@ -198,7 +235,7 @@ function PipelinePage() {
                               type="button"
                               onClick={() => advance(d)}
                               disabled={move.isPending}
-                              className="ax-press ax-caption inline-flex items-center gap-1 rounded-full border border-cyan-accent/50 px-2 py-0.5 font-semibold text-foreground"
+                              className="ax-press ax-hit ax-caption inline-flex items-center gap-1 rounded-full border border-cyan-accent/50 px-2 py-0.5 font-semibold text-foreground"
                             >
                               {t("Advance")} <ArrowRight className="size-3" aria-hidden="true" />
                             </button>
@@ -218,10 +255,31 @@ function PipelinePage() {
                               )
                             }
                             disabled={toWork.isPending}
-                            className="ax-press ax-caption rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
+                            className="ax-press ax-hit ax-caption rounded-full border border-border px-2 py-0.5 font-semibold text-foreground"
                           >
                             {t("Work")}
                           </button>
+                          {/* Native <select> laid invisibly over a pill: the OS picker on phones, pill look everywhere. Works for Lost / Reopen too. */}
+                          <label className="ax-press ax-caption relative inline-flex cursor-pointer items-center gap-1 rounded-full border border-border px-2 py-0.5 font-semibold text-foreground focus-within:ring-2 focus-within:ring-ring">
+                            {t("Move to…")}
+                            <ChevronDown className="size-3" aria-hidden="true" />
+                            <select
+                              aria-label={t("Move deal to another stage")}
+                              value=""
+                              disabled={move.isPending}
+                              onChange={(e) => moveTo(d, e.target.value as DealStage)}
+                              className="absolute -inset-x-1 -inset-y-2 h-[calc(100%+1rem)] w-[calc(100%+0.5rem)] cursor-pointer opacity-0"
+                            >
+                              <option value="" disabled>
+                                {t("Move to…")}
+                              </option>
+                              {STAGE_ORDER.filter((st) => st !== d.stage).map((st) => (
+                                <option key={st} value={st}>
+                                  {t(STAGE_LABEL[st])}
+                                </option>
+                              ))}
+                            </select>
+                          </label>
                         </div>
                       </article>
                     ))
@@ -230,6 +288,7 @@ function PipelinePage() {
               );
             })}
           </div>
+          </>
         )}
       </CardBody>
     </div>
@@ -249,7 +308,7 @@ function Column({
 }) {
   const { t } = useLocale();
   return (
-    <section className="ax-plane flex w-72 shrink-0 flex-col rounded-2xl p-ax-3">
+    <section data-stage={stage} className="ax-plane flex w-72 shrink-0 snap-start flex-col rounded-2xl p-ax-3">
       <header className="mb-ax-3">
         <p className="text-[13px] font-bold text-foreground">{t(STAGE_LABEL[stage])}</p>
         <p className="ax-caption text-muted-foreground">

@@ -2,7 +2,7 @@
 
 Rule 21 (founder, 17 Oct 2026 18:24 PKT). Yeh file har fix par update hoti hai; har summary ke aakhir mein isi ka khulasa. **DONE sirf live saboot par** (Rule 5): founder ka server output ya browser. Sandbox mein dekha hua = READY.
 
-Aakhri update: **17 Oct 2026, 18:44 PKT** (`current_time` tool).
+Aakhri update: **17 Oct 2026, 18:55 PKT** (`current_time` tool).
 
 ## A. Band hue (loophole tha → ab nahi)
 
@@ -27,13 +27,19 @@ Aakhri update: **17 Oct 2026, 18:44 PKT** (`current_time` tool).
 | L17 | Calendar week = 7 tang columns ("Cust…"), month pills 10px unreadable | harness 390/820 | din-wari agenda list; month dots + tap-day; detail week grid sirf xl+ | READY |
 | L18 | 820 par TaskBoard 4 pichke columns, contact stats 4 pichke boxes | harness 820 | auto-fit grid (minmax) | READY |
 | L19 | Contact header: VIP/Email naam ko "Ayesha…" tak daba dete the; chips 24px | harness 390 | wrap + `ax-hit`/`ax-tap` | READY |
+| L20 | **CRM ke 3 pages (Tasks, Reports, Accounts) app mein kahin se link nahi the** — user kabhi khol nahi sakta tha | code (`grep` mein koi link nahi) + harness | CrmStage nav mein Accounts / Tasks / Reports | READY |
+| L21 | **Deal "Lost" nahi ho sakta / peeche nahi ja sakta tha** (sirf ek qadam aage; Lost column hamesha khali; pipeline value jhooti barhti) | code + harness | har card par "Move to…" (native picker, Lost/Reopen sab) | READY |
+| L22 | CRM Relationships phone par: bina label ke numbers; person par tap = kuch nahi dikhta (panel list ke neeche) | harness 390/820 | labelled line + panel scroll + "All people" | READY |
+| L23 | CRM phone par: Activity subject "Re: R…", Task title "Send revised pro…", Leads ka Accept button kata hua | harness 390 | wrap/stack, grid minmax(0) | READY |
+| L24 | CRM nav pills 24px; pipeline par ek hi column nazar aata, actions 20px | harness 390 | 44px pills, stage chips + snap, `ax-hit` | READY |
+| L25 | **SECURITY (repo mein theek): CRM shared/mentions/approvals/audit/permissions BINA workspace filter** — Business user doosre workspace ki rows dekh/decide kar sakta; `/crm/live` timeline mein doosron ki activity | code audit `server/routes/crm.ts` | har read/write `org_id`/owners tak band | READY (live Brain par abhi purana — G14) |
 
 ## B. Khule hain (agent kar sakta hai — agla kaam, tarteeb se)
 
 | # | Gap | Kyun khula | Agla qadam |
 |---|---|---|---|
 | G1 | **Attachments (8p)** — bheji mail mein file ja hi nahi sakti | `mail.send` Bun par; Rust par laana (R1) pehle | R1 + 8p; bara kaam |
-| G2 | M6 baqi: CRM ("Move to…", 7 pages), Billing, Account, Admin (11 pages), Chat | People/Calendar/Work ho gaye (L15–L19) | `entry-routes.tsx` harness mein ek ek section |
+| G2 | M6 baqi: Billing, Account, Admin (11 pages), Chat | People/Calendar/Work (L15–L19) aur CRM (L20–L25) ho gaye | `entry-routes.tsx` harness mein ek ek section |
 | G3 | R0 Rust latest: edition 2024, axum 0.8.9, wtransport 0.7.2, `opt-level` | sandbox mein compile nahi; server par scratch `cargo check` | founder ka ek command (scratch check), phir theek |
 | G4 | R1 `mail.send` Rust par; R3 typed contract; R4 direct pool; R5 event-driven WebTransport push | bade Rust kaam, R0 ke baad | tarteeb se |
 | G5 | 8s `/api/mail/send` fallback identity ignore karta hai | R1 mein khatam hoga | R1 ke saath |
@@ -45,6 +51,8 @@ Aakhri update: **17 Oct 2026, 18:44 PKT** (`current_time` tool).
 | G11 | D2 Bun 1.4.0→1.4.3 | chhota script baqi | `upgrade-bun.sh` |
 | G12 | Rust `anexomail-rust` restarts=48 — wajah nahi pata | facts v2 ka panic count | output dekh kar |
 | G13 | Real-phone verification (Rule 5) — abhi sab sandbox/harness | founder ka phone | ek chhoti checklist (neeche) |
+| G14 | **SECURITY live verify + deploy:** L25 ka fix repo mein hai, live Brain (`/opt/anexomail`) par purana ho sakta hai. Sath mein: kisi code se `crm_shared_items/mentions/approvals` mein rows hi nahi banti => 'Shared work' page khali rehta hai (wiring?) | Rule 15: server ka sach server par | founder `crm-tenant-check.sh` (read-only) chalaye; output se Brain installer (sha-guarded, backup) banega |
+| G15 | CRM pages `<a href>` se poora page reload karte hain (SPA Link nahi); `useAssignShared` ka body server se mel nahi khata; `/crm/activities` global 200 rows pehle phir filter (busy workspace dusron ko dabata) | code audit | R-series (Rust) ya chhota fix, tarteeb se |
 
 ## C. Founder ke bina nahi ho sakte (chhupa nahi — saaf)
 

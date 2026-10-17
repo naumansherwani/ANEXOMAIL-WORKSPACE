@@ -58,7 +58,7 @@ function CrmDashboard() {
           : "Leads and pipeline that sit next to your mail.";
 
   return (
-    <div className="relative mx-auto w-full max-w-[1400px] px-6 py-8 lg:px-8">
+    <div className="relative mx-auto w-full max-w-[1400px] px-ax-4 py-ax-5 md:px-6 md:py-8 lg:px-8">
       {/* Cinematic depth — subtle, static, never distracting */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-[radial-gradient(60%_90%_at_85%_-20%,oklch(0.455_0.093_258_/_12%),transparent_65%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-72 bg-[radial-gradient(50%_80%_at_8%_110%,oklch(0.5_0.07_300_/_8%),transparent_65%)]" />
@@ -182,7 +182,7 @@ function CrmDashboard() {
                         </p>
                         <a
                           href={a.href}
-                          className="ax-caption mt-1 inline-block font-semibold text-foreground underline underline-offset-4"
+                          className="ax-caption ax-hit mt-1 inline-block font-semibold text-foreground underline underline-offset-4"
                         >
                           {t("Open")}
                         </a>

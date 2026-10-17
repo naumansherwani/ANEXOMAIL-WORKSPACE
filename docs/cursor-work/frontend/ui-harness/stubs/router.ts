@@ -28,4 +28,9 @@ export const useNavigate = () => (o?: { search?: Record<string, unknown> }) => {
 export const useRouter = () => ({ navigate: () => undefined });
 export const useSearch = () => ({});
 export const useParams = () => ({});
-export const useRouterState = () => ({ location: { pathname: "/" } });
+// pathname mirrors the hash so route-aware chrome (CrmStage nav) highlights the page: "#crm/pipeline" or "#/app/crm/pipeline" -> "/app/crm/pipeline".
+export const useRouterState = <T = { location: { pathname: string } }>(o?: { select?: (s: { location: { pathname: string } }) => T }) => {
+  useSyncExternalStore(sub, hash, () => "");
+  const s = { location: { pathname: "/app/" + hash().replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0] } };
+  return (o?.select ? o.select(s) : s) as T;
+};

@@ -26,7 +26,7 @@ function ReportsPage() {
   const overview = useCrmOverview();
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-ax-5 py-ax-6">
+    <div className="mx-auto w-full max-w-6xl px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
       <SectionTitle
         title={t("Reports")}
         hint={t("Numbers from your deal rows. If a figure is zero, the rows behind it are zero.")}

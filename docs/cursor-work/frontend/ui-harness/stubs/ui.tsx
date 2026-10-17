@@ -44,10 +44,13 @@ export const Sheet = ({ open, onOpenChange, children }: { open?: boolean; onOpen
       {children}
     </div>
   ) : null;
-export const SheetContent = ({ className, children }: { className?: string; side?: string; children?: React.ReactNode }) => (
-  <div role="dialog" className={cn("fixed inset-x-0 bottom-0 z-50 gap-4 border-t bg-background p-6 shadow-lg", className)}>
+export const SheetContent = ({ className, side = "bottom", children }: { className?: string; side?: string; children?: React.ReactNode }) => (
+  <div role="dialog" className={cn("fixed z-50 gap-4 bg-background p-6 shadow-lg", side === "right" ? "inset-y-0 right-0 h-full w-3/4 border-l sm:max-w-sm" : "inset-x-0 bottom-0 border-t", className)}>
     {children}
   </div>
+);
+export const SheetDescription = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
+  <p className={cn("text-sm text-muted-foreground", className)}>{children}</p>
 );
 export const SheetHeader = ({ className, children }: { className?: string; children?: React.ReactNode }) => (
   <div className={cn("flex flex-col space-y-2 text-center sm:text-left", className)}>{children}</div>
