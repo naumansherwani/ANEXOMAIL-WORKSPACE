@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 04:54 PKT**.
+Aakhri update: **17 Oct 2026, 05:00 PKT**.
 
 ---
 
@@ -62,6 +62,12 @@ Fix (repo mein, 17 Oct 2026): `src/routes/app.domains.tsx` dobara likha — scro
 **17 Oct 04:06 PKT — founder ne 13.0 (824ab3a) chalaya + 7 photo bheji: asli server par sab theek.** Step 2: "We found your DNS is at Namecheap" aaya (**axonetis.com ka DNS Namecheap par hai**), subdomain note, "If DNS zone is axonetis.com" ke lambe Name (`_anexomail-verify.probuyer`, `probuyer`, `anexo1._domainkey.probuyer`, `_dmarc.probuyer`), DKIM ki asli key (v=DKIM1; k=rsa; p=MIIB…) aa gayi. Step 3: "Checking probuyer.axonetis.com", 0/5 Waiting, countdown, "Checking…", Check now — asli backend par chal raha hai. (Photo mein button cyan/dhundla aur cards grey hain: laptop ki screen/camera ka asar lagta hai, harness mein navy + gehra; asli Win+Shift+S screenshot se pakka karna.) Pull output: server ki `M` files (AppShell, ComposeStudio, Greeting, mail.ts …) **repo ke BARABAR nikli** (`git diff --stat origin/main` mein sirf `bun.lock` 4 lines, `routeTree.gen.ts` 42 lines, aur untracked `domains.ts` / `app.domains.tsx`); yani server "dirty" sirf is liye ke server ka git HEAD purana hai.
 
 **FOUNDER KA NAYA HUKM (17 Oct 04:06 PKT, locked):** CEO ki tarah socho; competitor **Google Workspace aur Zoho Mail**; pehle Zoho ka basic flow karo, phir ANEXOMAIL ko un se behtar banao. **Ho gaya:** `docs/cursor-work/founder/competitive-baseline-zoho-google-2026-10-17.md` (official pages se verify kiya hua baseline + ANEXOMAIL ki jagah + tarteeb); blueprint 8d–8m; **8g READY** ("Someone else manages your DNS?": email instructions + copy all, Zoho ke "Send to DNS admin" jaisa, bina server ke) aur **8h READY** (step 3: "aap ka inbox DNS ke intezar mein bhi chal raha hai" + Open your inbox) — sandbox mein dekha, manifest sha `d3c72ea4e9351247`. **Agle (tarteeb):** 8f pehli mail ka test → 8i IMAP/SMTP settings → 8j IMAP import → 8k dashboard checklist → 8l Domain Connect (founder decide) → 8m catch-all/forwarding/vacation. AI sab se aakhir (#41).
+
+**17 Oct 05:00 PKT — founder ka asli output (2 hisse):**
+1. **Deploy GREEN:** `origin/main = ced4a63`, manifest ki 14 files server par `same` (pehle hi lag chuki thin), memory stamp `04:54 PKT` = repo, `/health 200`, `/app/domains 200`. Mobile batch 1–3 ab server par hai; **founder ne abhi phone par dekha nahi — isliye READY, DONE nahi.**
+2. **13.7 (IMAP/SMTP fact-finding) ka sach:** ports 25, 143, 465, 587, 993 sunn rahe hain (110/995 nahi). Dovecot: `protocols = imap lmtp`, `auth_mechanisms = plain login`. Postfix: `smtpd_sasl_type = dovecot`, `smtpd_sasl_path = private/auth`, `smtpd_tls_security_level = may`, cert `/etc/anexomail/mail-cert.pem` (CN `mail.anexomail.com`). `doveadm` hai, `imapsync` nahi.
+   **Jo is output se SABIT NAHI hota (isliye 8i abhi nahi banta):** (a) `doveconf -n` mein koi passdb/userdb nahi dikha — pata nahi Dovecot asli user-login karata hai ya mail sirf Postgres mein hai; (b) `postconf -M` ne `submission`/`smtps` nahi dikhaye jabke 587/465 sunn rahe hain — kaun sa process sun raha hai (Postfix ya kuch aur) maloom nahi; (c) mail ka store Maildir hai ya Postgres, maloom nahi. 8i (settings page) / 8j (import) in teeno ke jawab ke baghair nahi — andaze se port/auth likhna user ko galat setting dega.
+   **BARA LOOPHOLE (naya):** TLS cert `notAfter = 2 Nov 2026 21:05 GMT` — **16 din baad**. Agar yeh Let's Encrypt ka copy hai aur khud renew nahi hota to IMAP/SMTP TLS tootega. Renew ab tak nahi hua (30 din se kam bache hain) — shak. Check: 13.8.
 
 **BATCH 3 + CEO REVIEW (04:54 PKT, READY):** (1) `docs/cursor-work/founder/ceo-section-review-2026-10-17.md` likha — viral loops (V1–V8, Hotmail wali "Sent with ANEXOMAIL" line founder ke faisle par), phone/tablet status, aur sab 7 sections (Dashboard, Mail, People, Calendar, Work, CRM, Domains): kya hai (code se), gap, competitor se aage kaise, tarteeb. (2) Touch: `Button` default 44px (touch par), `sm`/`icon` par `ax-hit` (nazar aane wala size wahi, hit-area 44px); calendar ke nav/view pills par `ax-hit`; `ax-hit` pehle se positioned (absolute/fixed/sticky/relative) element ko relative nahi banata (harness mein dekha). **Founder ke faisle:** V1 (mail ke neeche line, kis plan par), V8 referral, 8l Domain Connect. **Agla (tarteeb):** 8f pehli mail ka test -> 13.7 output aane par 8i/8j -> R1 Rust -> M5/M6 asli phone par.
 
@@ -222,6 +228,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 05:00 PKT** — Founder ne pull (ced4a63: 14 file `same`, health 200, stamp 04:54) aur 13.7 ka output bheja. Mobile batch 1–3 server par. 13.7 se: ports/auth ka aadha sach mila, magar passdb/userdb, submission ka process aur mail store (Maildir/Postgres) abhi nahi dikha -> 8i/8j ruke; naya loophole: TLS cert 2 Nov ko expire (16 din) -> block 13.8.
+
 - **17 Oct 04:54 PKT** — CEO section review doc + viral plan likha; Button/calendar touch targets; ax-hit positioned-element guard. Manifest 14 file.
 
 - **17 Oct 04:53 PKT** — Mobile batch 2: main scroll safety net (M10), iPhone InstallHint (M7), compact setup checklist phone par; funnel static audit. Manifest 12 file.
@@ -378,6 +386,19 @@ echo "== import tools"; which imapsync doveadm 2>&1
 echo "== tls cert host"; openssl s_client -connect 127.0.0.1:993 -servername mail.anexomail.com </dev/null 2>/dev/null | openssl x509 -noout -subject -enddate 2>&1
 ```
 Phir (baad mein, jab 8i shuru ho): ek test mailbox se `openssl s_client -connect mail.anexomail.com:993` aur 587 par login, lekin password founder chat mein nahi, server par hi.
+
+**13.8 — TLS cert renewal + mail store ka sach (sirf padhna; 17 Oct 2026).** Pehle cert (16 din), phir 8i/8j ke teen sawal. Output mein koi password nahi aata (redact lagaya hai).
+```bash
+echo "== cert file"; ls -l --time-style=long-iso /etc/anexomail/mail-cert.pem /etc/anexomail/mail-key.pem 2>&1 | sed 's#  *# #g'
+echo "== cert dates / issuer"; openssl x509 -in /etc/anexomail/mail-cert.pem -noout -issuer -dates 2>&1
+echo "== web cert (caddy) for comparison"; echo | openssl s_client -connect 127.0.0.1:443 -servername anexomail.com 2>/dev/null | openssl x509 -noout -issuer -dates 2>&1
+echo "== who refreshes mail-cert"; grep -rIl "mail-cert" /etc/cron* /etc/letsencrypt /etc/systemd /etc/caddy /usr/local/bin /opt/anexomail* --include=* 2>/dev/null | head; systemctl list-timers 2>/dev/null | grep -iE 'certbot|acme|cert' 
+echo "== who listens on submission ports"; ss -ltnp 2>/dev/null | awk '/:(587|465|993|143)\s/{print $4, $NF}' | sed 's/users:(("//; s/".*//'
+echo "== master.cf submission"; grep -nE '^(submission|smtps)' /etc/postfix/master.cf 2>&1
+echo "== dovecot auth (redacted)"; doveconf -n 2>/dev/null | grep -vE '^#' | sed -E 's#(password|pass|secret)=[^ ]*#\1=***#g' | head -70
+echo "== users / store"; doveadm user '*' 2>&1 | wc -l; ls -ld /var/mail /var/vmail /home/vmail 2>&1 | head -3
+echo "== IMAP + SMTP banners (no login)"; printf 'a1 CAPABILITY\r\na2 LOGOUT\r\n' | openssl s_client -quiet -connect 127.0.0.1:993 -servername mail.anexomail.com 2>/dev/null | head -3; printf 'EHLO t\r\nQUIT\r\n' | openssl s_client -starttls smtp -quiet -connect 127.0.0.1:587 2>/dev/null | head -12
+```
 
 ## 14. Do chats ka rishta (context kahan se aata hai)
 
