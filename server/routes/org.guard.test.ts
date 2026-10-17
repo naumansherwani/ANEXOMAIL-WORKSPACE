@@ -45,7 +45,7 @@ mock.module("../lib/supa", () => ({
     from,
     rpc: async (fn: string, args: any) => {
       rpcCalls.push({ fn, args });
-      return { data: fn === "org_ledger_verify" ? [{ ok: true, checked: 3, broken_at_seq: null }] : 1, error: null };
+      return { data: fn === "org_chain_verify" ? [{ ok: true, checked: 3, broken_at_seq: null }] : 1, error: null };
     },
     auth: {
       getUser: async (token: string) => ({ data: { user: users[token] ?? null } }),
@@ -115,7 +115,7 @@ beforeEach(() => {
     { id: "s-member", org_id: A, user_id: "u-member" },
     { id: "s-b", org_id: B, user_id: "u-b-owner" },
   ];
-  db["org_audit_ledger"] = [
+  db["org_audit_chain"] = [
     { id: "l1", org_id: A, seq: 1, actor: "owner@acme.co.uk", action: "member.revoke", hash: "h1" },
     { id: "l2", org_id: B, seq: 1, actor: "owner@other.com", action: "mailbox.create", hash: "h2" },
     { id: "l3", org_id: null, seq: 1, actor: "founder", action: "global.writes.disable", hash: "h3" },
@@ -172,14 +172,14 @@ describe("audit ledger", () => {
     expect(r.payload.entries.map((e: any) => e.id)).toEqual(["l1"]);
   });
   test("an organisation with no entries gets an empty list, not everybody's entries", async () => {
-    db["org_audit_ledger"] = db["org_audit_ledger"]!.filter((e) => e.org_id !== A);
+    db["org_audit_chain"] = db["org_audit_chain"]!.filter((e) => e.org_id !== A);
     const r = await call("GET /org/audit", "t-owner");
     expect(r.payload.entries).toEqual([]);
   });
   test("verify runs for the caller's own chain only", async () => {
     const r = await call("POST /org/audit/verify", "t-owner");
     expect(r.payload.ok).toBe(true);
-    expect(rpcCalls.find((c) => c.fn === "org_ledger_verify")!.args).toEqual({ p_org: A });
+    expect(rpcCalls.find((c) => c.fn === "org_chain_verify")!.args).toEqual({ p_org: A });
     expect((await call("POST /org/audit/verify", "t-member")).status).toBe(403);
   });
 });
@@ -195,7 +195,7 @@ describe("member revoke", () => {
     expect(r.status).toBe(200);
     expect(db["org_members"]!.find((m) => m.user_id === "u-member")!.status).toBe("revoked");
     expect(db["org_sessions"]!.some((s) => s.user_id === "u-member")).toBe(false);
-    const led = rpcCalls.find((c) => c.fn === "org_ledger_append")!;
+    const led = rpcCalls.find((c) => c.fn === "org_chain_append")!;
     expect(led.args).toMatchObject({ p_action: "member.revoke", p_target: "u-member", p_org: A });
   });
   test("the owner cannot be revoked, nor yourself, nor a person from another organisation", async () => {

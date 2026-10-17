@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ANEXOMAIL — READ-ONLY Organisation authorisation + audit-ledger check (17 Oct 2026). Kuch badalta nahi, koi secret/email print nahi.
-# Sawal: (1) kya live Brain `routes/org.ts` mein founder-gate / role-gate hai? (2) kya audit-ledger table + functions maujood hain (sql/phase64)?
+# Sawal: (1) kya live Brain `routes/org.ts` mein founder-gate / role-gate hai? (2) kya audit-chain table + functions maujood hain (sql/phase64_org_audit_ledger.sql) aur purani org_audit_ledger ki shakal kya hai?
 # (3) kya har organisation ka koi owner hai (warna role-gate ke baad koi revoke/policy nahi badal sakega)?
 # Chalana:  bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/org-authz-check.sh)
 set +e
@@ -19,13 +19,16 @@ hr "2. database: tables + functions"
 if [ -r /etc/anexomail/sync.env ]; then
   ( . /etc/anexomail/sync.env 2>/dev/null
     psql "$WORKING_URL" -Atc "
-      select t, coalesce(to_regclass('public.'||t)::text,'MISSING') from unnest(array['org_members','organisations','organizations','orgs','org_audit_ledger','org_policies','org_sessions','org_break_glass','org_switches','founder_accounts']) t order by 1" 2>&1 | sed 's/|/  ->  /'
-    echo "-- ledger functions (phase64 ke baad: org_ledger_append(text,text,text,text,uuid) + org_ledger_verify(uuid))"
-    psql "$WORKING_URL" -Atc "select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.proname like 'org_ledger%' order by 1" 2>&1 | head -6
-    echo "-- ledger rows"
-    psql "$WORKING_URL" -Atc "select count(*) rows, count(distinct org_id) orgs, count(*) filter (where org_id is null) platform_rows from public.org_audit_ledger" 2>&1 | head -2
-    echo "-- ledger chain (platform chain): ok|checked|broken_at"
-    psql "$WORKING_URL" -Atc "select ok, checked, broken_at_seq from public.org_ledger_verify(null)" 2>&1 | head -2
+      select t, coalesce(to_regclass('public.'||t)::text,'MISSING') from unnest(array['org_members','organisations','organizations','orgs','org_audit_chain','org_audit_ledger','org_policies','org_sessions','org_break_glass','org_switches','founder_accounts']) t order by 1" 2>&1 | sed 's/|/  ->  /'
+    echo "-- chain functions (phase64 ke baad: org_chain_append(text,text,text,text,uuid) + org_chain_verify(uuid))"
+    psql "$WORKING_URL" -Atc "select p.oid::regprocedure from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and (p.proname like 'org_chain%' or p.proname like 'org_ledger%') order by 1" 2>&1 | head -8
+    echo "-- chain rows (naya table)"
+    psql "$WORKING_URL" -Atc "select count(*) rows, count(distinct org_id) orgs, count(*) filter (where org_id is null) platform_rows from public.org_audit_chain" 2>&1 | head -2
+    echo "-- chain verify (platform chain): ok|checked|broken_at"
+    psql "$WORKING_URL" -Atc "select ok, checked, broken_at_seq from public.org_chain_verify(null)" 2>&1 | head -2
+    echo "-- PURANI org_audit_ledger (phase64 isko chhoo-ti nahi): columns + rows"
+    psql "$WORKING_URL" -Atc "select column_name||' '||data_type||case when is_nullable='NO' then ' NOT NULL' else '' end from information_schema.columns where table_schema='public' and table_name='org_audit_ledger' order by ordinal_position" 2>&1 | head -20
+    psql "$WORKING_URL" -Atc "select count(*) from public.org_audit_ledger" 2>&1 | head -1
   )
 else
   echo "(/etc/anexomail/sync.env nahi mila)"
@@ -41,4 +44,4 @@ if [ -r /etc/anexomail/sync.env ]; then
   )
 fi
 echo
-echo "Matlab: step 1 mein founderGuard>0 aur OLD pattern=0 ho to Brain fix live hai. Step 2 mein org_audit_ledger MISSING ho to phase64 chalao."
+echo "Matlab: step 1 mein founderGuard>0 aur OLD pattern=0 ho to Brain fix live hai. Step 2 mein org_audit_chain MISSING ho to phase64 chalao."

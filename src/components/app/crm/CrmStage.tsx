@@ -69,10 +69,13 @@ function NavRow({ item, active, label }: { item: NavItem; active: boolean; label
 
 function LoopRow({
   step,
+  n,
   count,
   label,
 }: {
   step: LoopStep;
+  /** Position in the loop AS SHOWN to this person (1, 2, 3 …) — a plan that hides steps must not leave gaps like 1, 2, 5, 9. */
+  n: number;
   count: number | null;
   label: string;
 }) {
@@ -85,7 +88,7 @@ function LoopRow({
         className="flex size-6 shrink-0 items-center justify-center rounded-full border border-border/80 font-mono text-[9px] font-bold text-steel transition-colors group-hover:border-foreground/40 group-hover:text-foreground"
         aria-hidden="true"
       >
-        {step.cr}
+        {n}
       </span>
       <span className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-muted-foreground transition-colors group-hover:text-foreground">
         {label}
@@ -174,10 +177,11 @@ export function CrmStage({ children }: { children: ReactNode }) {
             {t("The loop")}
           </p>
           <ol className="flex min-h-0 flex-col gap-px overflow-y-auto pb-2">
-            {loop.map((step) => (
+            {loop.map((step, i) => (
               <li key={step.cr}>
                 <LoopRow
                   step={step}
+                  n={i + 1}
                   count={board && step.count ? step.count(board) : null}
                   label={t(step.label)}
                 />

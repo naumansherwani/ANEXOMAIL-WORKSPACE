@@ -29,7 +29,7 @@ src/routes/app.work.tsx 8a4153dd6e7a49c8
 src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
 src/components/app/people/CompanyProfile.tsx e6a0ad41d52df8de
 src/components/app/work/TaskBoard.tsx d5fe96d145484c2f
-src/components/app/crm/CrmStage.tsx c1627d0e3219c266
+src/components/app/crm/CrmStage.tsx 1f926e1c2225733f
 src/routes/app.crm.pipeline.tsx 074d2991e6d106bb
 src/routes/app.crm.leads.tsx 17b3b3245a157660
 src/routes/app.crm.activity.tsx 0b64cfacab7ac435

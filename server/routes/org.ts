@@ -146,7 +146,7 @@ async function writesEnabled(): Promise<boolean> {
 /** One tamper-evident chain per organisation (sql/phase64). orgId null = platform-level action (founder). */
 async function ledger(actor: string, action: string, target: string | null, ip: string | null, orgId: string | null) {
   try {
-    const { error } = await admin.rpc("org_ledger_append", { p_actor: actor, p_action: action, p_target: target, p_ip: ip, p_org: orgId });
+    const { error } = await admin.rpc("org_chain_append", { p_actor: actor, p_action: action, p_target: target, p_ip: ip, p_org: orgId });
     if (error) console.error("[ledger]", error.message);
   } catch (e) { console.error("[ledger]", (e as any)?.message); }
 }
@@ -401,7 +401,7 @@ org.get("/org/proof", guard(async (_req, res, c) => {
 org.get("/org/audit", guardCap("org.audit.read", async (_req, res, c) => {
   // ONLY this organisation's chain. (It used to fall back to the whole table when the organisation had no entries yet.)
   const rows = c.org_id
-    ? await safe<any[]>(() => admin.from("org_audit_ledger").select("*").eq("org_id", c.org_id).order("seq", { ascending: false }).limit(200), [])
+    ? await safe<any[]>(() => admin.from("org_audit_chain").select("*").eq("org_id", c.org_id).order("seq", { ascending: false }).limit(200), [])
     : [];
   res.json({
     entries: rows.map((e) => ({
@@ -413,7 +413,7 @@ org.get("/org/audit", guardCap("org.audit.read", async (_req, res, c) => {
 
 org.post("/org/audit/verify", guardCap("org.audit.read", async (_req, res, c) => {
   try {
-    const { data, error } = await admin.rpc("org_ledger_verify", { p_org: c.org_id });
+    const { data, error } = await admin.rpc("org_chain_verify", { p_org: c.org_id });
     if (error) throw error;
     const v: any = Array.isArray(data) ? data[0] : data;
     return res.json({
@@ -497,7 +497,7 @@ org.get("/founder/org/state", founderGuard(async (_req, res) => {
   const bg = await safe<any[]>(() => admin.from("org_break_glass").select("expires_at,state"), []);
   let ledger_ok: boolean | null = null;
   try {
-    const { data } = await admin.rpc("org_ledger_verify");
+    const { data } = await admin.rpc("org_chain_verify");
     const v: any = Array.isArray(data) ? data[0] : data;
     ledger_ok = v?.ok ?? null;
   } catch {}
@@ -554,7 +554,7 @@ org.post("/founder/org/impersonate", founderGuard(async (req, res, c) => {
   if (!user_id || reason.length < 8) return res.status(400).json({ error: "user_id_and_reason_required" });
   // audit FIRST, session after — ownership proof rule
   await ledger(c.user.email || c.user.id, "founder.impersonate", `${user_id} :: ${reason}`, ipOf(req), null);
-  const last = await safe<any[]>(() => admin.from("org_audit_ledger").select("id").is("org_id", null).order("seq", { ascending: false }).limit(1), []);
+  const last = await safe<any[]>(() => admin.from("org_audit_chain").select("id").is("org_id", null).order("seq", { ascending: false }).limit(1), []);
   res.json({ ok: true, audit_id: (last[0] as any)?.id ?? "unrecorded" });
 }));
 
