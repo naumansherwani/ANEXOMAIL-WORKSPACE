@@ -57,4 +57,4 @@ src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
 src/lib/plan-surface.ts 3ec8ae630d178fbb
 src/components/app/dashboard/Greeting.tsx 710e3100d8fe2300
-src/components/app/dashboard/Panels.tsx 50e16b58489361b8
+src/components/app/dashboard/Panels.tsx fd10eb0c1dbbc8b5

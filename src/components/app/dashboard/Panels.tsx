@@ -33,7 +33,8 @@ import {
 } from "@/lib/dashboard";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
-import { showDomains, surfaceFromSession } from "@/lib/plan-surface";
+import { founderSurfaceAllowed } from "@/lib/host";
+import { showDomains, showOrg, surfaceFromSession } from "@/lib/plan-surface";
 
 /* ----------------------------- Animation helpers ---------------------------- */
 
@@ -221,11 +222,27 @@ export function WidgetGrid({ enabled }: { enabled: boolean }) {
 /* ------------------------------- Quick actions ------------------------------ */
 
 export function QuickActions({ onCompose }: { onCompose: () => void }) {
-  const { session } = useAuth();
+  const { session, organisation } = useAuth();
   const { t } = useLocale();
-  const hostedPersonal = Boolean(
-    session?.user.anexomail_address?.endsWith("@anexomail.com") && !session.user.is_founder,
-  );
+  // Where "my team" and "my domain" really live depends on the package. /app/admin/* is the founder host's platform
+  // admin — a customer who is sent there only meets a lock wall — so customers go to the page their package owns:
+  // Business -> Org (members), Basic/Pro company accounts -> Domains (company addresses), Personal -> neither.
+  const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
+  const founderHere = Boolean(session?.user.is_founder) && founderSurfaceAllowed();
+  const team: { to: "/app/admin/members" | "/app/org/members" | "/app/domains"; label: string } | null = founderHere
+    ? { to: "/app/admin/members", label: "Invite a teammate" }
+    : showOrg(billed, null, kind)
+      ? { to: "/app/org/members", label: "Your team" }
+      : showDomains(billed, kind)
+        ? { to: "/app/domains", label: "Company addresses" }
+        : null;
+  const domain: { to: "/app/admin" | "/app/domains"; label: string } | null = founderHere
+    ? { to: "/app/admin", label: "Domain & ownership" }
+    : showDomains(billed, kind)
+      ? { to: "/app/domains", label: "Your domain" }
+      : null;
+  // One link per destination (Basic/Pro would otherwise show Domains twice).
+  const showDomainLink = Boolean(domain) && !(team && team.to === domain!.to);
 
   return (
     <DashboardCard
@@ -258,22 +275,22 @@ export function QuickActions({ onCompose }: { onCompose: () => void }) {
           <Search aria-hidden="true" className="size-4 text-steel" />
           {t("Search everything")}
         </Link>
-        {!hostedPersonal && (
+        {team && (
           <Link
-            to="/app/admin/members"
+            to={team.to}
             className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
           >
             <Users aria-hidden="true" className="size-4 text-steel" />
-            {t("Invite a teammate")}
+            {t(team.label)}
           </Link>
         )}
-        {!hostedPersonal && (
+        {showDomainLink && domain && (
           <Link
-            to="/app/admin"
+            to={domain.to}
             className="ax-press ax-tap ax-row flex items-center gap-ax-3 rounded-xl border border-border px-ax-4 py-ax-3 text-sm font-semibold text-foreground"
           >
             <Shield aria-hidden="true" className="size-4 text-steel" />
-            {t("Domain & ownership")}
+            {t(domain.label)}
           </Link>
         )}
       </div>

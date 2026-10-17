@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 20:11 PKT** (asli ghadi, `current_time` tool; 06:40/07:05/07:20 ke purane stamp andaze the).
+Aakhri update: **17 Oct 2026, 20:22 PKT** (asli ghadi, `current_time` tool; 06:40/07:05/07:20 ke purane stamp andaze the).
 
 ---
 
@@ -256,6 +256,7 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 20:22 PKT** — Dashboard Quick actions: customer ko `/app/admin/*` (founder-only) par bhejna band; Business -> Org members, Basic/Pro -> Domains, Personal -> kuch nahi (L50). Org members mein invite UI abhi nahi => agla bada kaam: team invites (G17/L32/L33).
 - **17 Oct 20:11 PKT** — Basic first-run: dashboard checklist/greeting/KPI fixes (L47–L49); Rust source repo mein mila (purani galti sudhari), founder procs 10/182 repo mein. Harness `#dashboard`.
 - **17 Oct 20:03 PKT** — Plan-wise audit: plan-surface matrix; locked-page upsell card wrong-plan bug fixed (L44), Personal Safety copy (L45), 44px (L46). G20 opened.
 - **17 Oct 19:58 PKT** — Calendar `.ics` import (parser + confirm/progress panel); header buttons 44px + aria-label. Ledger L43, G19 narrowed.
