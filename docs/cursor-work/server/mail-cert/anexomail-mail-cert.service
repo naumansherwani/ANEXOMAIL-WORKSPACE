@@ -1,0 +1,8 @@
+[Unit]
+Description=ANEXOMAIL mail TLS cert sync + expiry alert (Caddy cert -> Postfix/Dovecot)
+After=network-online.target postfix.service dovecot.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/anexomail-mail-cert-sync
+Nice=10

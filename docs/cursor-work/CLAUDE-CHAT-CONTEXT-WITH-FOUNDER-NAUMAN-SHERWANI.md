@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **17 Oct 2026, 05:06 PKT**.
+Aakhri update: **17 Oct 2026, 05:09 PKT**.
 
 ---
 
@@ -23,7 +23,7 @@ Aakhri update: **17 Oct 2026, 05:06 PKT**.
 
 ## 1. ABHI KA QADAM (17 Oct 2026)
 
-**FOUNDER KA HUKM (05:06 PKT, locked, URGENT): TLS cert ka masla sab se bada — jaldi, HAMESHA ke liye, aur founder ko alert aaye.** Founder ka output (13.8) aa gaya, root cause pakka: mail cert Let's Encrypt ka hai (`notBefore 4 Aug`, `notAfter 2 Nov 2026`), file `/etc/anexomail/mail-cert.pem` ki mtime **18 Sep** — yani `server/mail/deploy-mail.sh` ne Caddy ke store se **ek baar copy** kiya. Caddy apna cert khud renew karta hai (web cert 3 Oct ko renew hua, `notAfter 1 Jan 2027`), magar mail wali copy ko koi refresh nahi karta (sirf `deploy-mail.sh` copy karta hai). Fix: `docs/cursor-work/server/mail-cert/` (monitor script + systemd timer, din mein 2 baar: Caddy ka naya cert dhoondo, key milao, atomic lagao, postfix+dovecot reload, live 993/587 par verify, fail ho to purana wapas; <21 din bache ya masla ho to founder inbox + ALERT_TO par email, roz ek baar; `/var/lib/anexomail/cert-status.json`). **READY — founder ne install block abhi nahi chalaya.** Dusre facts 13.8 se: 587/465 asli **Postfix master** hain (`master.cf` mein `submission`/`submissions`), 993/143 Dovecot (`ssl = required`); Dovecot **2.4.0**, `mail_driver = maildir`, `mail_path /var/mail/vhosts/%{user|domain}/%{user|username}`, `passdb pam` + `userdb passwd`, `doveadm user '*'` = 12 users (company addresses; customer mailboxes ka Dovecot mein hona SABIT NAHI — 8i/8j ke liye ek aur sawal).
+**FOUNDER KA HUKM (05:06 PKT, locked, URGENT): TLS cert ka masla sab se bada — jaldi, HAMESHA ke liye, aur founder ko alert aaye.** Founder ka output (13.8) aa gaya, root cause pakka: mail cert Let's Encrypt ka hai (`notBefore 4 Aug`, `notAfter 2 Nov 2026`), file `/etc/anexomail/mail-cert.pem` ki mtime **18 Sep** — yani `server/mail/deploy-mail.sh` ne Caddy ke store se **ek baar copy** kiya. Caddy apna cert khud renew karta hai (web cert 3 Oct ko renew hua, `notAfter 1 Jan 2027`), magar mail wali copy ko koi refresh nahi karta (sirf `deploy-mail.sh` copy karta hai). Fix: `docs/cursor-work/server/mail-cert/` (monitor script + systemd timer, din mein 2 baar: Caddy ka naya cert dhoondo, key milao, atomic lagao, postfix+dovecot reload, live 993/587 par verify, fail ho to purana wapas; <21 din bache ya masla ho to founder inbox + ALERT_TO par email, roz ek baar; `/var/lib/anexomail/cert-status.json`). **READY (sandbox simulation green) — founder ne install command (13.9) abhi nahi chalaya.** Dusre facts 13.8 se: 587/465 asli **Postfix master** hain (`master.cf` mein `submission`/`submissions`), 993/143 Dovecot (`ssl = required`); Dovecot **2.4.0**, `mail_driver = maildir`, `mail_path /var/mail/vhosts/%{user|domain}/%{user|username}`, `passdb pam` + `userdb passwd`, `doveadm user '*'` = 12 users (company addresses; customer mailboxes ka Dovecot mein hona SABIT NAHI — 8i/8j ke liye ek aur sawal).
 
 Founder **asli browser login** se test accounts ek ek karke check kar raha hai. Agent har waqt **sirf ek cheez** batata hai ke kya dekhna hai; founder dekh le to agli. Current account: **`pro.buyer@anexomail.com`** (Pro plan, Business workspace). Basic founder ne chhod diya ("Basic ko chhodo, Pro karo"); Pro ke baad Business, phir Business Pro.
 
@@ -230,6 +230,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **17 Oct 05:09 PKT** — Cert monitor+timer+installer bana (`server/mail-cert/`), sandbox simulation (naya cert lagna, galat key reject, reload-fail restore, din mein ek alert, test alert) green; installer dry-run green; deploy-mail.sh mein comment. Command 13.9 founder ko.
+
 - **17 Oct 05:06 PKT** — Founder ne 13.8 ka output bheja aur hukm diya: cert masla urgent, hamesha ke liye theek, alert founder ko. Root cause: deploy-mail.sh ne Caddy cert ek baar copy kiya (18 Sep), koi refresh nahi. Agent ne `mail-cert/` monitor+timer+installer likha (sandbox mein simulate), blueprint 8n.
 
 - **17 Oct 05:00 PKT** — Founder ne pull (ced4a63: 14 file `same`, health 200, stamp 04:54) aur 13.7 ka output bheja. Mobile batch 1–3 server par. 13.7 se: ports/auth ka aadha sach mila, magar passdb/userdb, submission ka process aur mail store (Maildir/Postgres) abhi nahi dikha -> 8i/8j ruke; naya loophole: TLS cert 2 Nov ko expire (16 din) -> block 13.8.
@@ -403,6 +405,12 @@ echo "== dovecot auth (redacted)"; doveconf -n 2>/dev/null | grep -vE '^#' | sed
 echo "== users / store"; doveadm user '*' 2>&1 | wc -l; ls -ld /var/mail /var/vmail /home/vmail 2>&1 | head -3
 echo "== IMAP + SMTP banners (no login)"; printf 'a1 CAPABILITY\r\na2 LOGOUT\r\n' | openssl s_client -quiet -connect 127.0.0.1:993 -servername mail.anexomail.com 2>/dev/null | head -3; printf 'EHLO t\r\nQUIT\r\n' | openssl s_client -starttls smtp -quiet -connect 127.0.0.1:587 2>/dev/null | head -12
 ```
+
+**13.9 — MAIL TLS CERT FIX + ALERT (URGENT, founder ka hukm 17 Oct; READY).** Ek command: monitor + systemd timer lagata hai, abhi ek baar sync chalata hai (Caddy ka taza cert ho to lag jata hai, postfix+dovecot reload, live 993/587 verify), aur founder inbox par test alert bhejta hai. Idempotent. Detail: `docs/cursor-work/server/mail-cert/README.md`.
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mail-cert/install.sh)
+```
+Natija dekho: (1) "naya cert laga diya" + `993`/`587` ka notAfter naya, (2) `exit code: 0`, (3) founder inbox mein "[ANEXOMAIL] Test alert" aur "Mail TLS cert taza ho gaya". Agar "Caddy ke store mein ... cert nahi mila" ya cert naya nahi hua to output paste karo — tab Caddyfile ka `mail.anexomail.com` block dekhna padega (Caddy usi se renew karta hai). Bahar ke email par bhi alert: `echo 'ALERT_TO="aap@gmail.com"' > /etc/anexomail/alert.env`.
 
 ## 14. Do chats ka rishta (context kahan se aata hai)
 

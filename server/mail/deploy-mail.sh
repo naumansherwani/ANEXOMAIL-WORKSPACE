@@ -275,6 +275,7 @@ fi
 
 
 # TLS cert: Caddy ka cert copy, warna self-signed (gate sach report karega)
+# NOTE (17 Oct 2026): yeh copy EK BAAR hoti hai. Taza rakhna aur expiry alert: docs/cursor-work/server/mail-cert/ (anexomail-mail-cert-sync, systemd timer).
 CADDY_CERTS=/var/lib/caddy/.local/share/caddy/certificates
 SRC="$(find "$CADDY_CERTS" -type d -name "*$MAILHOST*" 2>/dev/null | head -1 || true)"
 if [ -n "${SRC:-}" ] && [ -f "$SRC/$MAILHOST.crt" ]; then
