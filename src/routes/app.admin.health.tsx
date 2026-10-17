@@ -70,8 +70,8 @@ function HealthPage() {
                     <span className={cn("font-bold", STATUS_TONE[c.status])}>
                       {c.status.toUpperCase()}
                     </span>
-                    <span className="min-w-0 flex-1">
-                      <span className="block font-semibold text-foreground">{c.label}</span>
+                    <span className="min-w-[min(100%,12rem)] flex-1">
+                      <span className="block break-words font-semibold text-foreground">{c.label}</span>
                       <span className="block text-steel">{c.detail ?? c.remedy ?? ""}</span>
                     </span>
                     {c.can_self_heal && c.status !== "ok" && (
@@ -79,7 +79,7 @@ function HealthPage() {
                         type="button"
                         onClick={() => heal.mutate({ key: c.key })}
                         disabled={heal.isPending}
-                        className="ax-press ml-auto flex items-center gap-1.5 rounded-lg bg-secondary px-2.5 py-1.5 text-[12px] font-semibold text-foreground disabled:opacity-50"
+                        className="ax-press ax-focus ax-tap ml-auto flex items-center justify-center gap-1.5 rounded-lg bg-secondary px-2.5 py-1.5 text-[12px] font-semibold text-foreground disabled:opacity-50 max-sm:w-full"
                       >
                         <Wrench className="size-3.5" aria-hidden="true" /> Heal now
                       </button>

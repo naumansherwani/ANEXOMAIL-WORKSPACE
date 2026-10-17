@@ -35,7 +35,7 @@ function AdminLayout() {
             inactiveProps={{
               className: "text-muted-foreground hover:bg-secondary/60",
             }}
-            className="ax-tap inline-flex items-center rounded-xl px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors"
+            className="ax-tap inline-flex shrink-0 items-center rounded-xl px-3 py-2 text-sm font-medium whitespace-nowrap transition-colors"
           >
             {s.label}
           </Link>

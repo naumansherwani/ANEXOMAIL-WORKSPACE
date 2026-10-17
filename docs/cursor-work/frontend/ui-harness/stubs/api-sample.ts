@@ -114,6 +114,82 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
     const found = EVENTS().find((x) => x.id === id) ?? EVENTS()[1];
     return { event: found, outcome: null, tasks: [] };
   }
+  if (key === "org.audit") {
+    if (/[?&]err=1/.test(location.hash)) throw new ApiError("Forbidden", 403, "forbidden");
+    if (/[?&]empty=1/.test(location.hash)) return { entries: [] };
+    const at = (m: number) => new Date(Date.now() - m * 60e3).toISOString();
+    const rows = [
+      ["member.revoke", "owner@acme-studio-holdings.co.uk", "9f1c0a52-3b7e-4c1d-8a20-6d1f2e9b4c11", "203.0.113.24"],
+      ["mailbox.create", "owner@acme-studio-holdings.co.uk", "northern-region@acme-studio-holdings.co.uk", "203.0.113.24"],
+      ["policy.enable", "admin@acme-studio-holdings.co.uk", "p-require-mfa", null],
+      ["org.export", "owner@acme-studio-holdings.co.uk", "aaaaaaaa-0000-0000-0000-000000000001", "203.0.113.24"],
+    ];
+    return { entries: rows.map((r, i) => ({ id: "l" + i, seq: rows.length - i, actor: r[1], action: r[0], target: r[2], ip: r[3], hash: "9f3a71c2d8e04b6a" + i + "c0ffee1234567890", prev_hash: i === rows.length - 1 ? null : "b27de19c40a85f3" + i + "deadbeef12345678", created_at: at(i * 190 + 12) })) };
+  }
+  if (key === "org.audit.verify") return { ok: true, checked: 4, broken_at_seq: null, verified_at: new Date().toISOString() };
+  if (key.startsWith("admin.") || key === "founderAdmin.overview") {
+    // #admin/<page>[?empty=1|err=1]: Admin Center (health, storage, monitoring, logs, reports, diagnostics) sample data.
+    if (/[?&]err=1/.test(location.hash)) throw new ApiError("Admin service unavailable", 503, "unavailable");
+    const m = (h: number, mm = 0) => new Date(Date.now() - h * 3600e3 - mm * 60e3).toISOString();
+    if (key === "admin.health") return e ? { score: 100, checks: [], self_heals_24h: 0, last_run: null, recent: [] } : {
+      score: 87, self_heals_24h: 3, last_run: m(0, 4),
+      checks: [
+        { key: "mail-tls", label: "Mail TLS certificate", category: "security", status: "ok", detail: "Valid for 76 more days", can_self_heal: false, remedy: null, heals_24h: 0, last_healed_at: null, checked_at: m(0, 4) },
+        { key: "dkim", label: "DKIM signing for northern-region.acme-studio-holdings.co.uk", category: "dns", status: "warn", detail: "Selector anexo1._domainkey has no TXT record yet — mail still sends but may land in spam", can_self_heal: true, remedy: "Publish the DKIM record", heals_24h: 1, last_healed_at: m(5), checked_at: m(0, 4) },
+        { key: "queue", label: "Outbound queue", category: "mail", status: "fail", detail: "14 messages deferred for more than 30 minutes", can_self_heal: true, remedy: "Flush the queue", heals_24h: 2, last_healed_at: m(2), checked_at: m(0, 4) },
+        { key: "disk", label: "Mail store disk", category: "storage", status: "ok", detail: "41% used", can_self_heal: false, remedy: null, heals_24h: 0, last_healed_at: null, checked_at: m(0, 4) },
+      ],
+      recent: [
+        { key: "queue", action: "flush", outcome: "ok — 9 delivered", created_at: m(2) },
+        { key: "dkim", action: "publish-record", outcome: "ok", created_at: m(5) },
+        { key: "mail-tls-renew", action: "renew-certificate-dry-run", outcome: "skipped — not due", created_at: m(11) },
+      ],
+    };
+    const GB = 1024 ** 3;
+    if (key === "admin.storage") return e ? { used_bytes: 0, quota_bytes: 0, growth_bytes_per_day: 0, days_until_full: null, reclaimable_bytes: 0, mailboxes: [], reclaim: [] } : {
+      used_bytes: 41.2 * GB, quota_bytes: 750 * GB, growth_bytes_per_day: 1.4 * GB, days_until_full: 506, reclaimable_bytes: 3.1 * GB,
+      mailboxes: [
+        { mailbox: "naumansherwani.founder@anexomail.com", used_bytes: 12.4 * GB, quota_bytes: 50 * GB, growth_bytes_per_day: 0.4 * GB, days_until_full: 94, reclaimable_bytes: 1.2 * GB },
+        { mailbox: "accounts.payable.northern-region@acme-studio-holdings.co.uk", used_bytes: 28.8 * GB, quota_bytes: 30 * GB, growth_bytes_per_day: 1 * GB, days_until_full: 1, reclaimable_bytes: 1.9 * GB },
+      ],
+      reclaim: [{ label: "Spam older than 30 days", bytes: 1.9 * GB, safe: true }, { label: "Attachments in archived threads over 25 MB", bytes: 1.2 * GB, safe: false }],
+    };
+    if (key === "admin.incidents") return { incidents: e ? [] : [{
+      id: "inc1", title: "Outbound mail deferred by a remote provider", severity: "major", status: "resolved", surface: "smtp", started_at: m(30), resolved_at: m(28), minutes: 96, impact: "Customers saw 14 messages delayed", cause: "Remote greylisting", fix: "Retried with backoff", prevention: "Warm the sending IP before bulk sends",
+      auto_detected: true,
+      events: [{ at: m(30), actor: "watchtower", kind: "detect", message: "Deferred count crossed 10 in 15 minutes" }, { at: m(29), actor: "heal", kind: "action", message: "Flushed queue, 9 delivered" }, { at: m(28), actor: "heal", kind: "recover", message: "Queue back to zero" }],
+    }] };
+    if (key === "admin.monitoring") return e ? { window_hours: 24, sent: 0, queued: 0, deferred: 0, bounced: 0, rejected: 0, delivery_rate: 100, reasons: [], recent: [] } : {
+      window_hours: 24, sent: 412, queued: 3, deferred: 14, bounced: 5, rejected: 2, delivery_rate: 98,
+      reasons: [
+        { reason_code: "4.7.1-greylisted", human_reason: "The receiving server asked us to try again later (greylisting) — it will retry automatically", count: 11, fixable: false },
+        { reason_code: "5.1.1-user-unknown", human_reason: "That address does not exist at the receiving domain", count: 4, fixable: true },
+      ],
+      recent: [
+        { id: "r1", at: m(0, 2), direction: "out", address: "finance.team@very-long-customer-domain-name-international.example", remote: "mx1.very-long-customer-domain-name-international.example", state: "deferred", human_reason: "Greylisted — will retry in 5 minutes" },
+        { id: "r2", at: m(0, 9), direction: "in", address: "hello@anexomail.com", remote: "mail.google.com", state: "delivered", human_reason: null },
+        { id: "r3", at: m(0, 15), direction: "out", address: "ali@axonetis.com", remote: null, state: "bounced", human_reason: "Address does not exist" },
+      ],
+    };
+    if (key === "admin.logs") { const lv = String(input?.level ?? "all"); const all = [
+      { id: "l1", at: m(0, 1), level: "error", source: "brain", trace_id: "tr_9f3a71c2d8e04b", route: "POST /api/mail/send", status: 502, duration_ms: 1840, message: "upstream timeout talking to postfix submission", plain: "Sending failed because the mail server did not answer in time." },
+      { id: "l2", at: m(0, 3), level: "warn", source: "rust", trace_id: null, route: "rpc/mail.counts", status: 200, duration_ms: 980, message: "slow query", plain: null },
+      { id: "l3", at: m(0, 4), level: "info", source: "web", trace_id: "tr_1b2c3d4e5f60718", route: "GET /app/mail/inbox", status: 200, duration_ms: 64, message: "ssr render ok", plain: "A page loaded normally." },
+    ]; return { logs: e ? [] : all.filter((x) => lv === "all" || x.level === lv) }; }
+    if (key === "admin.reports") return { reports: e ? [] : [{ id: "rp1", period: "2026-09", title: "Organisation report 2026-09", status: "ready", numbers: { threads_started: 1240, messages_handled: 5120, incidents_recorded: 0, self_heals: 3, delivery_events: 4871, avg_first_reply_minutes: 44, delivery_rate_percent: 98.4, storage_used_gb: 41.2, spend_gbp: 1164 }, highlights: ["3 problems fixed themselves — no human time spent.", "No incidents recorded in this period."] }, { id: "rp2", period: "2026-08", title: "Organisation report 2026-08", status: "failed", numbers: {}, highlights: [] }] };
+    if (key === "admin.diagnostics") return { runs: e ? [] : [{
+      id: "dg1", started_at: m(1), finished_at: m(1), scope: "all", passed: 6, failed: 1, proof_hash: "9f3a71c2d8e04b6a1c77e0d2f4a98b15c3d60e7f", export_ready: true,
+      probes: [
+        { probe: "MX", target: "acme-studio-holdings.co.uk", result: "pass", observed: "mail.anexomail.com (10)", expected: null, fix: null, ms: 41 },
+        { probe: "SPF", target: "acme-studio-holdings.co.uk", result: "pass", observed: "v=spf1 include:_spf.anexomail.com ~all", expected: null, fix: null, ms: 38 },
+        { probe: "DKIM", target: "anexo1._domainkey.acme-studio-holdings.co.uk", result: "fail", observed: null, expected: "v=DKIM1; k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA…", fix: "Add the TXT record shown on the Domains page, then run diagnostics again", ms: 52 },
+        { probe: "DMARC", target: "_dmarc.acme-studio-holdings.co.uk", result: "pass", observed: "v=DMARC1; p=quarantine", expected: null, fix: null, ms: 30 },
+        { probe: "TLS", target: "mail.anexomail.com:993", result: "pass", observed: "TLS 1.3, 76 days left", expected: null, fix: null, ms: 120 },
+        { probe: "SMTP", target: "mail.anexomail.com:587", result: "pass", observed: "250 STARTTLS", expected: null, fix: null, ms: 88 },
+        { probe: "IMAP", target: "mail.anexomail.com:993", result: "pass", observed: "OK Dovecot ready", expected: null, fix: null, ms: 95 },
+      ] }] };
+    if (key === "founderAdmin.overview") return { tenants: 12, failing_checks: 2, self_heals_24h: 3, open_incidents: 0, deferred_1h: 4, errors_1h: 1, storage_used_bytes: 41.2 * GB, worst_tenants: [{ tenant: "acme-studio-holdings", failing: 2, checks: 9 }] };
+  }
   if (key.startsWith("dashboard.")) {
     // #dashboard[?empty=1][&plan=basic|pro|business|business_pro]: empty=1 is a brand-new account (first 60 seconds).
     const plan = /plan=(basic|pro|business_pro|business)/.exec(location.hash)?.[1] ?? "pro";

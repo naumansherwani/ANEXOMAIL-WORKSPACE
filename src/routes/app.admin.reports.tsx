@@ -4,6 +4,7 @@ import { FileBarChart } from "lucide-react";
 import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { useGenerateReport, useReports } from "@/lib/admin-center";
+import { reportLabel, reportValue } from "@/lib/report-figures";
 
 export const Route = createFileRoute("/app/admin/reports")({
   head: () => ({
@@ -44,7 +45,7 @@ function ReportsPage() {
           type="button"
           onClick={() => gen.mutate({ period: thisPeriod() })}
           disabled={gen.isPending}
-          className="ax-press rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50"
+          className="ax-press ax-focus ax-tap rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50 max-sm:w-full"
         >
           {gen.isPending ? "Building…" : `Build report for ${thisPeriod()}`}
         </button>
@@ -72,10 +73,10 @@ function ReportsPage() {
                     <ul className="mt-ax-3 grid gap-1.5 sm:grid-cols-2">
                       {Object.entries(r.numbers).map(([k, v]) => (
                         <Row key={k}>
-                          <span className="min-w-0 flex-1 truncate text-muted-foreground">
-                            {k.replace(/_/g, " ")}
+                          <span className="min-w-0 flex-1 text-muted-foreground">{reportLabel(k)}</span>
+                          <span className="ml-auto font-semibold tabular-nums text-foreground">
+                            {reportValue(k, v)}
                           </span>
-                          <span className="ml-auto font-semibold text-foreground">{String(v)}</span>
                         </Row>
                       ))}
                     </ul>

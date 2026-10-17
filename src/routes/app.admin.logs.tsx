@@ -45,14 +45,15 @@ function LogsPage() {
         title="Logs a human can read"
         blurb="Every line carries its trace id and a one-sentence translation of what actually happened."
       >
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Filter by level">
           {LEVELS.map((l) => (
             <button
               key={l}
               type="button"
+              aria-pressed={level === l}
               onClick={() => setLevel(l)}
               className={cn(
-                "ax-press rounded-lg px-2.5 py-1.5 text-[12px] font-semibold transition-colors",
+                "ax-press ax-focus ax-tap rounded-lg px-3 py-1.5 text-[12px] font-semibold transition-colors",
                 level === l
                   ? "bg-foreground text-background"
                   : "bg-secondary text-muted-foreground",
@@ -62,10 +63,14 @@ function LogsPage() {
             </button>
           ))}
           <input
+            type="search"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="Search message, route or trace id"
-            className="ax-plane min-w-0 flex-1 rounded-lg px-3 py-1.5 text-[12px] text-foreground outline-none"
+            aria-label="Search logs by message, route or trace id"
+            enterKeyHint="search"
+            autoComplete="off"
+            className="ax-plane ax-focus ax-tap min-w-0 basis-full rounded-lg px-3 py-1.5 text-base text-foreground outline-none sm:basis-0 sm:flex-1 sm:text-[12px]"
           />
         </div>
 
@@ -98,7 +103,9 @@ function LogsPage() {
                       {l.level}
                     </span>
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-foreground">{l.plain ?? l.message}</span>
+                      <span className="line-clamp-3 break-words text-foreground sm:line-clamp-none sm:block sm:truncate">
+                        {l.plain ?? l.message}
+                      </span>
                       <span className="block truncate text-steel">
                         {l.route ?? l.source}
                         {l.status ? ` · ${l.status}` : ""}

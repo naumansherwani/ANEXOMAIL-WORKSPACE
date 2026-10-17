@@ -86,3 +86,13 @@ export const Switch = ({ checked, onCheckedChange }: { checked?: boolean; onChec
     <span className={cn("pointer-events-none block h-4 w-4 rounded-full bg-background shadow-lg ring-0 transition-transform", checked ? "translate-x-4" : "translate-x-0")} />
   </button>
 );
+
+// Same markup as src/components/app/crm/CrmBits.tsx SectionTitle (real file not bundled here).
+export function SectionTitle({ title, hint }: { title: string; hint?: string }) {
+  return (
+    <div className="mb-ax-3">
+      <h2 className="ax-heading text-foreground">{title}</h2>
+      {hint && <p className="ax-caption mt-1 text-muted-foreground">{hint}</p>}
+    </div>
+  );
+}

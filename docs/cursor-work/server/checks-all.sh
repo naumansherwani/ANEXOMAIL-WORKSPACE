@@ -48,6 +48,7 @@ run test-accounts-check.sh 60
 run workspace-api-check.sh 60
 run switch-journey-check.sh 50
 run crm-tenant-check.sh 50
+run org-authz-check.sh 60
 } > "$OUT" 2>&1
 echo
 echo "================= PASTE FROM HERE ================="

@@ -48,6 +48,7 @@ import { glitchPublicRouter, founderGlitchRouter } from "./routes/glitch";
 import { storageRouter, internalStorageRouter, founderStorageRouter } from "./routes/storage";
 import { billingSyncAuthRouter, billingSyncPublicRouter } from "./routes/billing-sync";
 import { startMailWorker } from "./mail-worker";
+import { founderGate } from "./lib/founder-gate";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -113,6 +114,10 @@ app.use(
 app.get(["/health", "/api/health"], (_req, res) =>
   res.json({ ok: true, service: "ANEXOMAIL Brain", ai: "Leo" }),
 );
+
+// Founder gate — EVERY /api/founder/* call (movein, release, revenue, storage, org god-view …) needs a founder identity.
+// Mounted before all routers: each of them only checked "somebody is signed in", so any customer token could call them.
+app.use("/api/founder", founderGate);
 
 app.use("/api/auth", authRouter);
 app.use("/api/workspace", workspaceRouter);

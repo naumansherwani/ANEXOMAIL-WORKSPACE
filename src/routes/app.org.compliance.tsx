@@ -5,33 +5,9 @@ import { useState } from "react";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Chip, ProofTileCard, SectionTitle } from "@/components/app/org/OrgBits";
 import { Button } from "@/components/ui/button";
-import { sessionToken } from "@/lib/api";
 import { notify } from "@/lib/notify";
 import { useCompliance, useOwnershipProof } from "@/lib/org";
-
-const API_BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
-
-/**
- * Business card: "One-click data export". Owner-only endpoint
- * GET /api/org/export — real JSON bundle, audit-logged server side.
- */
-async function downloadOrgExport(): Promise<void> {
-  const token = sessionToken.get();
-  const res = await fetch(`${API_BASE}/api/org/export`, {
-    headers: token ? { authorization: `Bearer ${token}` } : {},
-  });
-  if (!res.ok) {
-    const body = (await res.json().catch(() => null)) as { error?: string } | null;
-    throw new Error(body?.error ?? `export_failed_${res.status}`);
-  }
-  const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = `anexomail-export-${new Date().toISOString().slice(0, 10)}.json`;
-  a.click();
-  URL.revokeObjectURL(url);
-}
+import { downloadOrgExport, exportErrorText } from "@/lib/org-export";
 
 export const Route = createFileRoute("/app/org/compliance")({
   head: () => ({
@@ -64,16 +40,7 @@ function CompliancePage() {
     setExporting(true);
     downloadOrgExport()
       .then(() => notify.done("Export downloaded", "Your full workspace data is in the file."))
-      .catch((e: unknown) =>
-        notify.failed("Export failed", {
-          description:
-            e instanceof Error && e.message === "owner_only"
-              ? "Only the workspace owner can export all data."
-              : e instanceof Error
-                ? e.message
-                : "Try again.",
-        }),
-      )
+      .catch((e: unknown) => notify.failed("Export failed", { description: exportErrorText(e) }))
       .finally(() => setExporting(false));
   };
 

@@ -22,8 +22,19 @@ import { Route as AccountRoute } from "@/routes/app.account";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
 import { PlanSurfaceGate } from "@/components/app/PlanSurfaceGate";
 import { InboxWelcome } from "@/components/app/mail/InboxWelcome";
+import { Route as AdminLayoutRoute } from "@/routes/app.admin";
+import { Route as AdminIndexRoute } from "@/routes/app.admin.index";
+import { Route as AdminHealthRoute } from "@/routes/app.admin.health";
+import { Route as AdminStorageRoute } from "@/routes/app.admin.storage";
+import { Route as AdminMonitoringRoute } from "@/routes/app.admin.monitoring";
+import { Route as AdminLogsRoute } from "@/routes/app.admin.logs";
+import { Route as AdminReportsRoute } from "@/routes/app.admin.reports";
+import { Route as AdminDiagnosticsRoute } from "@/routes/app.admin.diagnostics";
+import { Route as AdminAuditRoute } from "@/routes/app.admin.audit";
+import { Route as AdminExportRoute } from "@/routes/app.admin.export";
 import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
 import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
+import { Route as OrgAuditRoute } from "@/routes/app.org.audit";
 
 type R = { component: () => JSX.Element; crm?: boolean };
 const CRM: Record<string, unknown> = { leads: CrmLeadsRoute, pipeline: CrmPipelineRoute, relationships: CrmRelRoute, collab: CrmCollabRoute, activity: CrmActivityRoute, tasks: CrmTasksRoute, reports: CrmReportsRoute, accounts: CrmAccountsRoute };
@@ -60,12 +71,25 @@ const InboxRoute = {
     );
   },
 };
+// #admin/<health|storage|monitoring|logs|reports|diagnostics|audit|export|addresses|members|teams> (and #admin for Domains): the REAL admin layout (section nav) around the real page.
+const ADMIN_PAGES: Record<string, unknown> = { "": AdminIndexRoute, health: AdminHealthRoute, storage: AdminStorageRoute, monitoring: AdminMonitoringRoute, logs: AdminLogsRoute, reports: AdminReportsRoute, diagnostics: AdminDiagnosticsRoute, audit: AdminAuditRoute, export: AdminExportRoute, members: AdminMembersRoute, teams: AdminTeamsRoute };
+const AdminRoute = {
+  component: () => {
+    const sub = location.hash.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0].split("/")[1] ?? "";
+    const Page = ((ADMIN_PAGES[sub] ?? AdminIndexRoute) as R).component;
+    (globalThis as unknown as { __axOutlet: () => JSX.Element }).__axOutlet = () => <Page />;
+    const Layout = (AdminLayoutRoute as unknown as R).component;
+    return <Layout />;
+  },
+};
 const pick = (h: string): R => {
   if (/[?&]gate=1/.test(h)) return GateRoute as unknown as R;
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
   if (b.startsWith("inbox")) return InboxRoute as unknown as R;
   if (b.startsWith("dashboard")) return DashboardRoute as unknown as R;
+  if (b === "admin" || b.startsWith("admin/")) return AdminRoute as unknown as R;
+  if (b === "org/audit") return OrgAuditRoute as unknown as R;
   if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;
   if (b.startsWith("admin-teams")) return AdminTeamsRoute as unknown as R;
   if (b.startsWith("account")) return AccountRoute as unknown as R;

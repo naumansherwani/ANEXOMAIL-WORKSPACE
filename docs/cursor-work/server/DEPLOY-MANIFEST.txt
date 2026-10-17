@@ -42,7 +42,7 @@ src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts 6ae6054e859d2248
 src/routes/app.billing.tsx ee593ee5d8636e54
 src/routes/app.account.tsx 843adbe1d21b639f
-src/routes/app.admin.tsx 87cc5625a1cbcad6
+src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx 678f7e5dbcfb9a2f
 src/routes/app.admin.teams.tsx b0386a36d0bb467b
 src/components/app/CrossPlatformBar.tsx ab6434edc184c235
@@ -60,3 +60,14 @@ src/components/app/dashboard/Greeting.tsx 710e3100d8fe2300
 src/components/app/dashboard/Panels.tsx fd10eb0c1dbbc8b5
 src/components/app/mail/InboxWelcome.tsx e78bad1dff9a68fb
 src/components/app/mail/ThreadList.tsx fb8e220fb15b3032
+src/routes/app.admin.audit.tsx c7884b9e5e926572
+src/routes/app.admin.diagnostics.tsx 74d7869da9bcda74
+src/routes/app.admin.export.tsx 4879f16dfcfad346
+src/routes/app.admin.health.tsx e52d5a397b2c31e8
+src/routes/app.admin.logs.tsx 1d7fe12770035f11
+src/routes/app.admin.reports.tsx f9765eb2f3c50ef0
+src/routes/app.org.audit.tsx 8f6bacde2cb0b590
+src/routes/app.org.compliance.tsx 584f2d054ea4efea
+src/components/app/org/LedgerPanel.tsx 060c6f042e8a14bd
+src/lib/org-export.ts 221df989c4969375
+src/lib/report-figures.ts 21b05c7f52004220

@@ -58,7 +58,7 @@ function DiagnosticsPage() {
           type="button"
           onClick={() => run.mutate({ scope: "all" })}
           disabled={run.isPending}
-          className="ax-press rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50"
+          className="ax-press ax-focus ax-tap rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50 max-sm:w-full"
         >
           {run.isPending ? "Running probes…" : "Run full diagnostics"}
         </button>

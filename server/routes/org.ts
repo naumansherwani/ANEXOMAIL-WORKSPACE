@@ -1,34 +1,77 @@
 import { Router } from "express";
 import { admin } from "../lib/supa";
+import {
+  CAP_ROLES,
+  isFounderEmail,
+  normaliseRole,
+  orgIdFromMemberRow,
+  parseFounderEmails,
+  revokeVerdict,
+  roleAllows,
+  type Cap,
+  type OrgRole,
+} from "../lib/org-authz";
 
 export const org = Router();
 
 /* ---------------------------------------------------------------- session */
-async function ctx(req: any) {
+const FOUNDER_EMAILS = parseFounderEmails(
+  process.env.FOUNDER_EMAILS,
+  "naumansherwani.founder@anexomail.com,naumansherwani.founder@nexatect.com",
+);
+
+type Ctx = { user: any; org_id: string | null; role: OrgRole | null; founder: boolean };
+const NO_SESSION: Ctx = { user: null, org_id: null, role: null, founder: false };
+
+/**
+ * Who is calling, which organisation they belong to and in what role.
+ * - org_members rows differ by schema generation, so the row is read whole (a select naming columns that do not exist
+ *   fails the whole request and used to leave EVERY customer without an organisation).
+ * - a revoked / removed / suspended member has no organisation any more.
+ * - the old "no membership → show the first organisation in the database" fallback is now founder-only: for a customer it
+ *   handed over someone else's organisation.
+ */
+async function ctx(req: any): Promise<Ctx> {
   const h = String(req.headers["authorization"] || "");
   const token = h.startsWith("Bearer ") ? h.slice(7) : "";
-  if (!token) return { user: null as any, org_id: null as string | null };
+  if (!token) return NO_SESSION;
   const { data } = await admin.auth.getUser(token);
   const user = data?.user || null;
-  if (!user) return { user: null as any, org_id: null as string | null };
+  if (!user) return NO_SESSION;
+
+  let founder = isFounderEmail(user.email, FOUNDER_EMAILS);
+  if (!founder) {
+    try {
+      const r = await admin.from("founder_accounts").select("user_id").eq("user_id", user.id).limit(1);
+      founder = Boolean(r.data?.length);
+    } catch {}
+  }
+
   let org_id: string | null = null;
+  let role: OrgRole | null = null;
   for (const t of ["org_members", "organization_members", "memberships"]) {
     try {
-      const r = await admin.from(t).select("org_id, organisation_id, organization_id").eq("user_id", user.id).limit(1);
-      const row: any = r.data?.[0];
-      if (row) { org_id = row.org_id ?? row.organisation_id ?? row.organization_id ?? null; break; }
+      const r = await admin.from(t).select("*").eq("user_id", user.id).limit(10);
+      for (const row of (r.data as any[]) || []) {
+        const id = orgIdFromMemberRow(row);
+        if (id) { org_id = id; role = normaliseRole(row.role) ?? "member"; break; }
+      }
+      if (org_id) break;
     } catch {}
   }
-  if (!org_id) {
-    try {
-      const r = await admin.from("organizations").select("id").limit(1);
-      org_id = (r.data?.[0] as any)?.id ?? null;
-    } catch {}
+  if (!org_id && founder) {
+    for (const t of ["organisations", "organizations"]) {
+      try {
+        const r = await admin.from(t).select("id").limit(1);
+        const id = (r.data?.[0] as any)?.id ?? null;
+        if (id) { org_id = id; role = "owner"; break; }
+      } catch {}
+    }
   }
-  return { user, org_id };
+  return { user, org_id, role, founder };
 }
 
-function guard(handler: (req: any, res: any, c: any) => Promise<any>) {
+function guard(handler: (req: any, res: any, c: Ctx) => Promise<any>) {
   return async (req: any, res: any) => {
     try {
       const c = await ctx(req);
@@ -39,6 +82,46 @@ function guard(handler: (req: any, res: any, c: any) => Promise<any>) {
       return res.status(500).json({ error: "org_failed" });
     }
   };
+}
+
+/** signed in AND allowed to do this in their organisation (role from org_members; founder passes). */
+function guardCap(cap: Cap, handler: (req: any, res: any, c: Ctx) => Promise<any>) {
+  return guard(async (req, res, c) => {
+    if (!roleAllows(c.role, cap, c.founder)) {
+      return res.status(403).json({ error: "forbidden", needs: CAP_ROLES[cap] });
+    }
+    return handler(req, res, c);
+  });
+}
+
+/** founder-only (platform god view). 403 for every customer, whatever their plan. */
+function founderGuard(handler: (req: any, res: any, c: Ctx) => Promise<any>) {
+  return guard(async (req, res, c) => {
+    if (!c.founder) return res.status(403).json({ error: "founder_only" });
+    return handler(req, res, c);
+  });
+}
+
+/** organisations live as `organisations` (British, live FK parent); `organizations` is the legacy name. */
+const ORG_TABLES = ["organisations", "organizations"] as const;
+async function orgRowById(id: string | null): Promise<any> {
+  if (!id) return {};
+  for (const t of ORG_TABLES) {
+    try {
+      const r = await admin.from(t).select("*").eq("id", id).limit(1);
+      if (!r.error && r.data?.[0]) return r.data[0];
+    } catch {}
+  }
+  return {};
+}
+async function allOrgRows(): Promise<any[]> {
+  for (const t of ORG_TABLES) {
+    try {
+      const r = await admin.from(t).select("*");
+      if (!r.error && Array.isArray(r.data) && r.data.length) return r.data as any[];
+    } catch {}
+  }
+  return [];
 }
 
 /** table read that never explodes when a table/column is absent */
@@ -60,9 +143,12 @@ async function writesEnabled(): Promise<boolean> {
   return v === true || v === "true" || v?.enabled === true;
 }
 
-async function ledger(actor: string, action: string, target: string | null, ip: string | null) {
-  try { await admin.rpc("org_ledger_append", { p_actor: actor, p_action: action, p_target: target, p_ip: ip }); }
-  catch (e) { console.error("[ledger]", (e as any)?.message); }
+/** One tamper-evident chain per organisation (sql/phase64). orgId null = platform-level action (founder). */
+async function ledger(actor: string, action: string, target: string | null, ip: string | null, orgId: string | null) {
+  try {
+    const { error } = await admin.rpc("org_ledger_append", { p_actor: actor, p_action: action, p_target: target, p_ip: ip, p_org: orgId });
+    if (error) console.error("[ledger]", error.message);
+  } catch (e) { console.error("[ledger]", (e as any)?.message); }
 }
 
 const ipOf = (req: any) =>
@@ -75,8 +161,7 @@ org.get("/org/overview", guard(async (_req, res, c) => {
   const policies = await safe<any[]>(() => admin.from("org_policies").select("id,enabled").eq("org_id", c.org_id), []);
   const proof = await safe<any[]>(() => admin.from("org_dns_proof").select("*").eq("org_id", c.org_id), []);
   const anomalies = await safe<any[]>(() => admin.from("org_anomalies").select("id,state").eq("org_id", c.org_id), []);
-  const orgRow = await safe<any[]>(() => admin.from("organizations").select("*").eq("id", c.org_id).limit(1), []);
-  const o: any = orgRow[0] || {};
+  const o: any = await orgRowById(c.org_id);
   const active = members.filter((m) => (m.status ?? "active") === "active");
   const mfaOn = active.filter((m) => m.mfa === true).length;
   const dnsGreen = proof.length ? proof.every((p) => p.state === "ok") : null;
@@ -126,9 +211,11 @@ org.get("/org/members", guard(async (req, res, c) => {
   });
 }));
 
-org.post("/org/members/blast-radius", guard(async (req, res, c) => {
+org.post("/org/members/blast-radius", guardCap("org.members.revoke", async (req, res, c) => {
   const user_id = String(req.body?.user_id || "");
   if (!user_id) return res.status(400).json({ error: "user_id_required" });
+  const there = await safe<any[]>(() => admin.from("org_members").select("user_id").eq("org_id", c.org_id).eq("user_id", user_id).limit(1), []);
+  if (!there.length) return res.status(404).json({ error: "not_a_member" });
   const threads = await safe<any[]>(() => admin.from("mail_threads").select("id").eq("owner_id", user_id), []);
   const boxes = await safe<any[]>(() => admin.from("mailboxes").select("id").eq("owner_id", user_id), []);
   const appr = await safe<any[]>(() => admin.from("crm_approvals").select("id").eq("requested_by", user_id).eq("state", "pending"), []);
@@ -144,15 +231,21 @@ org.post("/org/members/blast-radius", guard(async (req, res, c) => {
   });
 }));
 
-org.post("/org/members/revoke", guard(async (req, res, c) => {
+org.post("/org/members/revoke", guardCap("org.members.revoke", async (req, res, c) => {
   if (!(await writesEnabled())) return res.status(423).json({ error: "org_writes_disabled" });
   const t0 = Date.now();
   const user_id = String(req.body?.user_id || "");
   if (!user_id) return res.status(400).json({ error: "user_id_required" });
+  // only people who really belong to THIS organisation can be revoked, and never the owner or yourself
+  const target = await safe<any[]>(() => admin.from("org_members").select("role").eq("org_id", c.org_id).eq("user_id", user_id).limit(1), []);
+  const verdict = revokeVerdict(c.role, c.user.id, target.length ? (normaliseRole(target[0]?.role) ?? "member") : null, user_id, c.founder);
+  if (verdict !== "ok") {
+    const code = verdict === "not_a_member" ? 404 : verdict === "self" ? 400 : verdict === "forbidden" ? 403 : 409;
+    return res.status(code).json({ error: verdict });
+  }
   try { await admin.from("org_members").update({ status: "revoked" }).eq("org_id", c.org_id).eq("user_id", user_id); } catch {}
   try { await admin.from("org_sessions").delete().eq("org_id", c.org_id).eq("user_id", user_id); } catch {}
-  try { await admin.auth.admin.signOut(user_id as any); } catch {}
-  await ledger(c.user.email || c.user.id, "member.revoke", user_id, ipOf(req));
+  await ledger(c.user.email || c.user.id, "member.revoke", user_id, ipOf(req), c.org_id);
   res.json({ ok: true, ms: Date.now() - t0 });
 }));
 
@@ -246,14 +339,14 @@ org.post("/org/policies/simulate", guard(async (req, res, c) => {
   });
 }));
 
-org.post("/org/policies/toggle", guard(async (req, res, c) => {
+org.post("/org/policies/toggle", guardCap("org.policies.write", async (req, res, c) => {
   if (!(await writesEnabled())) return res.status(423).json({ error: "org_writes_disabled" });
   const policy_id = String(req.body?.policy_id || "");
   const enabled = req.body?.enabled === true;
   if (!policy_id) return res.status(400).json({ error: "policy_id_required" });
-  try { await admin.from("org_policies").update({ enabled, updated_at: new Date().toISOString() }).eq("id", policy_id); }
+  try { await admin.from("org_policies").update({ enabled, updated_at: new Date().toISOString() }).eq("org_id", c.org_id).eq("id", policy_id); }
   catch { return res.status(500).json({ error: "toggle_failed" }); }
-  await ledger(c.user.email || c.user.id, enabled ? "policy.enable" : "policy.disable", policy_id, ipOf(req));
+  await ledger(c.user.email || c.user.id, enabled ? "policy.enable" : "policy.disable", policy_id, ipOf(req), c.org_id);
   res.json({ ok: true });
 }));
 
@@ -273,8 +366,13 @@ org.post("/org/sessions/kill", guard(async (req, res, c) => {
   if (!(await writesEnabled())) return res.status(423).json({ error: "org_writes_disabled" });
   const session_id = String(req.body?.session_id || "");
   if (!session_id) return res.status(400).json({ error: "session_id_required" });
-  try { await admin.from("org_sessions").delete().eq("id", session_id); } catch {}
-  await ledger(c.user.email || c.user.id, "session.kill", session_id, ipOf(req));
+  const row = await safe<any[]>(() => admin.from("org_sessions").select("user_id").eq("org_id", c.org_id).eq("id", session_id).limit(1), []);
+  if (!row.length) return res.status(404).json({ error: "session_not_found" });
+  if (row[0].user_id !== c.user.id && !roleAllows(c.role, "org.sessions.kill", c.founder)) {
+    return res.status(403).json({ error: "forbidden", needs: CAP_ROLES["org.sessions.kill"] });
+  }
+  try { await admin.from("org_sessions").delete().eq("org_id", c.org_id).eq("id", session_id); } catch {}
+  await ledger(c.user.email || c.user.id, "session.kill", session_id, ipOf(req), c.org_id);
   res.json({ ok: true });
 }));
 
@@ -291,7 +389,7 @@ org.get("/org/anomalies", guard(async (_req, res, c) => {
 /* ------------------------------------------------------------------ proof */
 org.get("/org/proof", guard(async (_req, res, c) => {
   const rows = await safe<any[]>(() => admin.from("org_dns_proof").select("*").eq("org_id", c.org_id), []);
-  const o = (await safe<any[]>(() => admin.from("organizations").select("primary_domain,domain").eq("id", c.org_id).limit(1), []))[0] as any;
+  const o = (await orgRowById(c.org_id)) as any;
   res.json({
     tiles: rows.map((r) => ({ key: r.key, state: r.state ?? "warn", detail: r.detail ?? "", checked_at: r.checked_at ?? null })),
     domain: o?.primary_domain ?? o?.domain ?? null,
@@ -300,20 +398,22 @@ org.get("/org/proof", guard(async (_req, res, c) => {
 }));
 
 /* ----------------------------------------------------------------- ledger */
-org.get("/org/audit", guard(async (_req, res, c) => {
-  const rows = await safe<any[]>(() => admin.from("org_audit_ledger").select("*").eq("org_id", c.org_id).order("seq", { ascending: false }).limit(200), []);
-  const all = rows.length ? rows : await safe<any[]>(() => admin.from("org_audit_ledger").select("*").order("seq", { ascending: false }).limit(200), []);
+org.get("/org/audit", guardCap("org.audit.read", async (_req, res, c) => {
+  // ONLY this organisation's chain. (It used to fall back to the whole table when the organisation had no entries yet.)
+  const rows = c.org_id
+    ? await safe<any[]>(() => admin.from("org_audit_ledger").select("*").eq("org_id", c.org_id).order("seq", { ascending: false }).limit(200), [])
+    : [];
   res.json({
-    entries: all.map((e) => ({
+    entries: rows.map((e) => ({
       id: e.id, seq: e.seq, actor: e.actor ?? "", action: e.action ?? "", target: e.target ?? null,
       ip: e.ip ?? null, hash: e.hash ?? "", prev_hash: e.prev_hash ?? null, created_at: e.created_at,
     })),
   });
 }));
 
-org.post("/org/audit/verify", guard(async (_req, res) => {
+org.post("/org/audit/verify", guardCap("org.audit.read", async (_req, res, c) => {
   try {
-    const { data, error } = await admin.rpc("org_ledger_verify");
+    const { data, error } = await admin.rpc("org_ledger_verify", { p_org: c.org_id });
     if (error) throw error;
     const v: any = Array.isArray(data) ? data[0] : data;
     return res.json({
@@ -375,7 +475,7 @@ org.get("/org/break-glass", guard(async (_req, res, c) => {
   });
 }));
 
-org.post("/org/break-glass", guard(async (req, res, c) => {
+org.post("/org/break-glass", guardCap("org.break_glass", async (req, res, c) => {
   const reason = String(req.body?.reason || "").trim();
   const minutes = Math.max(5, Math.min(240, Number(req.body?.minutes) || 30));
   if (reason.length < 8) return res.status(400).json({ error: "reason_too_short" });
@@ -385,14 +485,14 @@ org.post("/org/break-glass", guard(async (req, res, c) => {
     .insert({ org_id: c.org_id, actor: c.user.email || c.user.id, reason, granted_at, expires_at, state: "active" })
     .select("*").limit(1);
   if (ins.error) return res.status(500).json({ error: "grant_failed" });
-  await ledger(c.user.email || c.user.id, "break_glass.grant", reason, ipOf(req));
+  await ledger(c.user.email || c.user.id, "break_glass.grant", reason, ipOf(req), c.org_id);
   const g: any = ins.data?.[0];
   res.json({ id: g.id, actor: g.actor, reason: g.reason, granted_at, expires_at, state: "active" });
 }));
 
 /* ------------------------------------------------------- founder god view */
-org.get("/founder/org/state", guard(async (_req, res) => {
-  const orgs = await safe<any[]>(() => admin.from("organizations").select("*"), []);
+org.get("/founder/org/state", founderGuard(async (_req, res) => {
+  const orgs = await allOrgRows();
   const members = await safe<any[]>(() => admin.from("org_members").select("user_id,status"), []);
   const bg = await safe<any[]>(() => admin.from("org_break_glass").select("expires_at,state"), []);
   let ledger_ok: boolean | null = null;
@@ -418,8 +518,8 @@ org.get("/founder/org/state", guard(async (_req, res) => {
   });
 }));
 
-org.get("/founder/org/list", guard(async (_req, res) => {
-  const orgs = await safe<any[]>(() => admin.from("organizations").select("*").order("created_at", { ascending: false }), []);
+org.get("/founder/org/list", founderGuard(async (_req, res) => {
+  const orgs = (await allOrgRows()).sort((a, b) => String(b.created_at ?? "").localeCompare(String(a.created_at ?? "")));
   const members = await safe<any[]>(() => admin.from("org_members").select("org_id,status"), []);
   res.json({
     organisations: orgs.map((o: any) => ({
@@ -433,30 +533,29 @@ org.get("/founder/org/list", guard(async (_req, res) => {
   });
 }));
 
-org.post("/founder/org/kill-switch", guard(async (req, res, c) => {
+org.post("/founder/org/kill-switch", founderGuard(async (req, res, c) => {
   const { org_writes_enabled, organisation_id, writes_enabled } = req.body || {};
   if (typeof org_writes_enabled === "boolean") {
     const up = await admin.from("org_switches")
       .upsert({ key: "org_writes_enabled", value: org_writes_enabled, updated_at: new Date().toISOString() }, { onConflict: "key" });
     if (up.error) return res.status(500).json({ error: "switch_failed" });
-    await ledger(c.user.email || c.user.id, org_writes_enabled ? "global.writes.enable" : "global.writes.disable", null, ipOf(req));
+    await ledger(c.user.email || c.user.id, org_writes_enabled ? "global.writes.enable" : "global.writes.disable", null, ipOf(req), null);
   }
   if (organisation_id && typeof writes_enabled === "boolean") {
-    try { await admin.from("organizations").update({ writes_enabled }).eq("id", organisation_id); } catch {}
-    await ledger(c.user.email || c.user.id, writes_enabled ? "org.writes.enable" : "org.writes.disable", organisation_id, ipOf(req));
+    for (const t of ORG_TABLES) { try { await admin.from(t).update({ writes_enabled }).eq("id", organisation_id); } catch {} }
+    await ledger(c.user.email || c.user.id, writes_enabled ? "org.writes.enable" : "org.writes.disable", organisation_id, ipOf(req), String(organisation_id));
   }
   res.json({ ok: true });
 }));
 
-org.post("/founder/org/impersonate", guard(async (req, res, c) => {
+org.post("/founder/org/impersonate", founderGuard(async (req, res, c) => {
   const user_id = String(req.body?.user_id || "");
   const reason = String(req.body?.reason || "").trim();
   if (!user_id || reason.length < 8) return res.status(400).json({ error: "user_id_and_reason_required" });
   // audit FIRST, session after — ownership proof rule
-  const ins = await admin.from("org_audit_ledger").select("id").limit(1);
-  await ledger(c.user.email || c.user.id, "founder.impersonate", `${user_id} :: ${reason}`, ipOf(req));
-  const last = await safe<any[]>(() => admin.from("org_audit_ledger").select("id").order("seq", { ascending: false }).limit(1), []);
-  res.json({ ok: true, audit_id: (last[0] as any)?.id ?? (ins.data?.[0] as any)?.id ?? "unrecorded" });
+  await ledger(c.user.email || c.user.id, "founder.impersonate", `${user_id} :: ${reason}`, ipOf(req), null);
+  const last = await safe<any[]>(() => admin.from("org_audit_ledger").select("id").is("org_id", null).order("seq", { ascending: false }).limit(1), []);
+  res.json({ ok: true, audit_id: (last[0] as any)?.id ?? "unrecorded" });
 }));
 
 /* ------------------------------------------------------------ one-click export
@@ -466,11 +565,7 @@ org.post("/founder/org/impersonate", guard(async (req, res, c) => {
  */
 org.get("/org/export", guard(async (_req, res, c) => {
   if (!c.org_id) return res.status(404).json({ error: "no_org" });
-  const mem = await safe<any[]>(
-    () => admin.from("org_members").select("role").eq("org_id", c.org_id).eq("user_id", c.user.id).limit(1),
-    [],
-  );
-  if ((mem[0]?.role ?? "member") !== "owner") {
+  if (!roleAllows(c.role, "org.export", c.founder)) {
     return res.status(403).json({ error: "owner_only" });
   }
 
@@ -483,7 +578,7 @@ org.get("/org/export", guard(async (_req, res, c) => {
     safe<any[]>(() => admin.from("crm_deals").select("*").eq("org_id", c.org_id).limit(5000), []),
   ]);
 
-  await ledger(c.user.email || c.user.id, "org.export", c.org_id, ipOf(_req));
+  await ledger(c.user.email || c.user.id, "org.export", c.org_id, ipOf(_req), c.org_id);
 
   const stamp = new Date().toISOString().slice(0, 10);
   res.setHeader("content-type", "application/json; charset=utf-8");
@@ -582,7 +677,7 @@ org.get("/org/mailboxes", guard(async (_req, res, c) => {
   });
 }));
 
-org.post("/org/mailboxes", guard(async (req, res, c) => {
+org.post("/org/mailboxes", guardCap("org.mailboxes.create", async (req, res, c) => {
   if (!(await writesEnabled())) return res.status(423).json({ error: "org_writes_disabled" });
   if (!c.org_id) return res.status(404).json({ error: "no_org" });
 
@@ -617,7 +712,7 @@ org.post("/org/mailboxes", guard(async (req, res, c) => {
     return res.status(500).json({ error: error.message });
   }
 
-  await ledger(c.user.email || c.user.id, "mailbox.create", address, ipOf(req));
+  await ledger(c.user.email || c.user.id, "mailbox.create", address, ipOf(req), c.org_id);
   const nextUsed = used + 1;
   res.json({
     ok: true,
