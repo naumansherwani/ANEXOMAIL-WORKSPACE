@@ -7,7 +7,10 @@
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
-# Sirf kuch modules chahiye: MODULES="people" bash <(...)   (default: jo repo mein hon sab)
+#   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
+#             [pehle E35 SQL chalayen] [OPT-IN: default mein NAHI — Cargo.toml mein 2 crate judte hain (rustls, webpki-roots), isliye
+#              sirf tab jab aap khud likhen:  MODULES=mig bash <(...)  ]
+# Sirf kuch modules chahiye: MODULES="people" bash <(...)   (default: cal people team — jo repo mein hon)
 #
 # Kya karta hai (sirf anexomail-rust; polar-rust-payment :3400, Brain, web, Cargo.toml, .env ko haath nahi):
 #   0. har module ke *_core.rs ke unit tests SERVER PAR chalata hai (std-only, kuch second) — fail => kuch nahi badalta.
@@ -28,7 +31,9 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team"
+ALL_MODULES="cal people team"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+# extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
+extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -41,7 +46,9 @@ command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo nahi mila"; exit 2; }
 MODS=""
 for m in $WANT; do
   show "server/rust/${m}_core.rs" >"$T/${m}_core.rs"; show "server/rust/${m}_glue.rs" >"$T/${m}_glue.rs"
-  if [ -s "$T/${m}_core.rs" ] && [ -s "$T/${m}_glue.rs" ]; then MODS="$MODS $m"
+  have_extra=1
+  for x in $(extras_of "$m"); do show "server/rust/$x" >"$T/$x"; [ -s "$T/$x" ] || have_extra=0; done
+  if [ -s "$T/${m}_core.rs" ] && [ -s "$T/${m}_glue.rs" ] && [ "$have_extra" -eq 1 ]; then MODS="$MODS $m"
   elif [ -n "$EXPLICIT" ]; then echo "FAIL: repo (origin/main) mein server/rust/${m}_core.rs / ${m}_glue.rs nahi — git fetch hua?"; exit 2
   else echo "   (module '$m' abhi repo mein nahi — chhod diya)"; fi
 done
@@ -64,6 +71,7 @@ CFG={
  "cal":    {"public": True,  "label": "calendar",  "procs": ['"calendar.create"']},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
+ "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
 }
 changed=[]
 for m in mods:
@@ -122,28 +130,57 @@ for h in 'fn sb()' 'fn sb_select(' 'fn sb_insert(' 'fn sb_patch(' 'fn sb_rpc(' '
   grep -qF "$h" "$TARGET/src/main.rs" || echo "   (dhyan: live main.rs mein '$h' seedha nahi dikha — build isko pakad lega; fail hua to restore ho jayega)"
 done
 
+# Cargo.toml — SIRF mig ke liye (2 crate: rustls, webpki-roots; founder ki ijazat G30, 19 Oct 2026). Copy par try; asli file backup ke baad badalti hai.
+NEED_CARGO=0
+case " $MODS " in *" mig "*) NEED_CARGO=1;; esac
+cp "$TARGET/Cargo.toml" "$T/Cargo.toml.try"
+if [ "$NEED_CARGO" -eq 1 ]; then
+  echo "== 1b) Cargo.toml (sirf mig): 2 crate judte hain — copy par try"
+  show docs/cursor-work/server/cargo_migration_deps.py >"$T/cargo_migration_deps.py"
+  [ -s "$T/cargo_migration_deps.py" ] || { echo "FAIL: repo (origin/main) mein docs/cursor-work/server/cargo_migration_deps.py nahi — git fetch hua?"; exit 2; }
+  python3 -I "$T/cargo_migration_deps.py" "$T/Cargo.toml.try"; crc=$?
+  [ "$crc" -eq 0 ] || { echo "!! Cargo.toml safe tareeqe se nahi badal sakta — kuch install nahi hua. Upar wali lines Claude ko paste karein."; exit 4; }
+fi
+
 same=1
 for m in $MODS; do
   for k in core glue; do cmp -s "$T/${m}_$k.rs" "$TARGET/src/${m}_$k.rs" 2>/dev/null || same=0; done
+  for x in $(extras_of "$m"); do cmp -s "$T/$x" "$TARGET/src/$x" 2>/dev/null || same=0; done
 done
 cmp -s "$T/main.rs.try" "$TARGET/src/main.rs" || same=0
+cmp -s "$T/Cargo.toml.try" "$TARGET/Cargo.toml" || same=0
 
 if [ "$same" -eq 1 ]; then
   echo "   pehle se install hai (files same) — build ki zaroorat nahi."
 else
   echo "== 2) backup + install"
   cp -p "$TARGET/src/main.rs" "$TARGET/src/main.rs.bak.$STAMP"
-  for m in $MODS; do for k in core glue; do f="${m}_$k.rs"; [ -f "$TARGET/src/$f" ] && cp -p "$TARGET/src/$f" "$TARGET/src/$f.bak.$STAMP"; done; done
+  for m in $MODS; do for k in core glue; do f="${m}_$k.rs"; [ -f "$TARGET/src/$f" ] && cp -p "$TARGET/src/$f" "$TARGET/src/$f.bak.$STAMP"; done
+    for x in $(extras_of "$m"); do [ -f "$TARGET/src/$x" ] && cp -p "$TARGET/src/$x" "$TARGET/src/$x.bak.$STAMP"; done; done
+  if [ "$NEED_CARGO" -eq 1 ]; then
+    cp -p "$TARGET/Cargo.toml" "$TARGET/Cargo.toml.bak.$STAMP"
+    [ -f "$TARGET/Cargo.lock" ] && cp -p "$TARGET/Cargo.lock" "$TARGET/Cargo.lock.bak.$STAMP"
+  fi
   [ -f "$BIN" ] && cp -p "$BIN" "$BIN.bak.$STAMP"
   restore_src() {
     cp -p "$TARGET/src/main.rs.bak.$STAMP" "$TARGET/src/main.rs"
     for m in $MODS; do for k in core glue; do
       f="${m}_$k.rs"
       if [ -f "$TARGET/src/$f.bak.$STAMP" ]; then cp -p "$TARGET/src/$f.bak.$STAMP" "$TARGET/src/$f"; else rm -f "$TARGET/src/$f"; fi
-    done; done
+    done
+      for x in $(extras_of "$m"); do
+        if [ -f "$TARGET/src/$x.bak.$STAMP" ]; then cp -p "$TARGET/src/$x.bak.$STAMP" "$TARGET/src/$x"; else rm -f "$TARGET/src/$x"; fi
+      done
+    done
+    if [ "$NEED_CARGO" -eq 1 ]; then
+      [ -f "$TARGET/Cargo.toml.bak.$STAMP" ] && cp -p "$TARGET/Cargo.toml.bak.$STAMP" "$TARGET/Cargo.toml"
+      [ -f "$TARGET/Cargo.lock.bak.$STAMP" ] && cp -p "$TARGET/Cargo.lock.bak.$STAMP" "$TARGET/Cargo.lock"
+    fi
   }
-  for m in $MODS; do cp "$T/${m}_core.rs" "$TARGET/src/${m}_core.rs"; cp "$T/${m}_glue.rs" "$TARGET/src/${m}_glue.rs"; done
+  for m in $MODS; do cp "$T/${m}_core.rs" "$TARGET/src/${m}_core.rs"; cp "$T/${m}_glue.rs" "$TARGET/src/${m}_glue.rs"
+    for x in $(extras_of "$m"); do cp "$T/$x" "$TARGET/src/$x"; done; done
   cp "$T/main.rs.try" "$TARGET/src/main.rs"
+  [ "$NEED_CARGO" -eq 1 ] && cp "$T/Cargo.toml.try" "$TARGET/Cargo.toml"
 
   echo "== 3) cargo build --release (kuch minute lagte hain; server par load kam rakhne ke liye nice; log: $LOG)"
   ( cd "$TARGET" && nice -n 10 cargo build --release >"$LOG" 2>&1 ); brc=$?
@@ -195,6 +232,24 @@ for m in $MODS; do
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> team: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> team: jawab upar dekhein";;
       esac;;
+    mig)
+      r="$(probe migration.providers '{"input":{}}')"
+      echo "   migration.providers (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> mig: Rust ne proc pakda (bina asli login ke 401 = theek)";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> mig: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> mig: jawab upar dekhein";;
+      esac
+      if [ -r /etc/anexomail/sync.env ]; then
+        has="$( ( . /etc/anexomail/sync.env 2>/dev/null; psql "$WORKING_URL" -tAc "select to_regprocedure('public.migration_ingest(text,jsonb)') is not null" 2>/dev/null ) | tr -d ' \r\n' )"
+        case "$has" in
+          t) echo "   -> mig: E35 SQL lagi hui hai";;
+          f) echo "   -> mig: E35 SQL abhi NAHI lagi — docs/cursor-work/sql/E35_migration_walled_garden.sql chalayen (jab tak nahi, migration shuru nahi hogi)";;
+          *) echo "   -> mig: E35 SQL ka check nahi ho saka (psql / sync.env) — E35 chala hua ho to theek";;
+        esac
+      fi
+      if timeout 6 bash -c 'exec 3<>/dev/tcp/imap.gmail.com/993' 2>/dev/null; then echo "   -> mig: server se bahar ka IMAP raasta khula hai (imap.gmail.com:993)"
+      else echo "   -> mig: server imap.gmail.com:993 tak nahi pahunch raha — firewall / outbound 993 dekhein (nahi to copy shuru hi nahi hogi)"; fi;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"
       echo "   people.import (nakli token): $r"
@@ -207,4 +262,4 @@ for m in $MODS; do
 done
 pm2 describe anexomail-rust 2>/dev/null | grep -E "status|restarts|uptime" | sed 's/^/   /' | head -4
 echo "OK — Rust par: $MODS. (polar-rust-payment :3400 aur Brain ko haath nahi lagaya; Bun routes fallback ke taur par jaisi thin waisi hain)"
-echo "   wapas lene ke liye: cp $TARGET/src/main.rs.bak.$STAMP $TARGET/src/main.rs && (cd $TARGET/src && rm -f $(for m in $MODS; do printf '%s_core.rs %s_glue.rs ' $m $m; done)) && (cd $TARGET && cargo build --release) && pm2 restart anexomail-rust --update-env"
+echo "   wapas lene ke liye: cp $TARGET/src/main.rs.bak.$STAMP $TARGET/src/main.rs && (cd $TARGET/src && rm -f $(for m in $MODS; do printf '%s_core.rs %s_glue.rs ' $m $m; for x in $(extras_of "$m"); do printf '%s ' $x; done; done)) && $( [ "$NEED_CARGO" -eq 1 ] && printf 'cp %s/Cargo.toml.bak.%s %s/Cargo.toml && ' "$TARGET" "$STAMP" "$TARGET" )(cd $TARGET && cargo build --release) && pm2 restart anexomail-rust --update-env"
