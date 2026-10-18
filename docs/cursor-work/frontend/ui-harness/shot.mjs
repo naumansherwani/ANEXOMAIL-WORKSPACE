@@ -1,5 +1,5 @@
 // Usage: node shot.mjs <outDir> <name> <hash> [width] [height] [steps...]
-// steps: select:<label>=<value> | ff:<ms> (needs CLOCK=1) | btn:<exact button name> | click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | fillx:<exact placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
+// steps: typel:<exact label>=<text> | select:<label>=<value> | ff:<ms> (needs CLOCK=1) | btn:<exact button name> | click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | fillx:<exact placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
 import path from "node:path";
 import { createRequire } from "node:module";
 const TOOLS = process.env.TOOLS || "/opt/npm-tools/node_modules";
@@ -46,6 +46,7 @@ for (const s of steps) {
   else if (k === "fillx") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph, { exact: true }).fill(val); }  // fillx:<exact placeholder>=<value> (when a placeholder is a substring of another)
   else if (k === "upload") await page.setInputFiles('input[type="file"]', v);  // upload:/abs/path/file.csv
   else if (k === "select") { const i = v.lastIndexOf("="); await page.getByLabel(v.slice(0, i)).selectOption(v.slice(i + 1)); }  // select:<aria-label>=<option value>
+  else if (k === "typel") { const i = v.indexOf("="); await page.getByLabel(v.slice(0, i), { exact: true }).fill(v.slice(i + 1)); }  // typel:<exact label>=<text> (password fields have no placeholder)
   else if (k === "wait") await page.waitForTimeout(+v);
   else if (k === "ff") await page.clock.runFor(+v);
   else if (k === "scroll") await page.evaluate((t) => { const el = document.querySelector("main .overflow-y-auto"); if (el) el.scrollTop = t === "bottom" ? el.scrollHeight : t === "top" ? 0 : +t; }, v);

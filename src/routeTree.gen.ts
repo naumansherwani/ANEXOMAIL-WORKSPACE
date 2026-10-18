@@ -87,6 +87,7 @@ import { Route as AppAdminExportRouteImport } from './routes/app.admin.export'
 import { Route as AppAdminHealthRouteImport } from './routes/app.admin.health'
 import { Route as AppAdminLogsRouteImport } from './routes/app.admin.logs'
 import { Route as AppAdminMembersRouteImport } from './routes/app.admin.members'
+import { Route as AppAdminMigrateRouteImport } from './routes/app.admin.migrate'
 import { Route as AppAdminMonitoringRouteImport } from './routes/app.admin.monitoring'
 import { Route as AppAdminReportsRouteImport } from './routes/app.admin.reports'
 import { Route as AppAdminStorageRouteImport } from './routes/app.admin.storage'
@@ -566,6 +567,11 @@ const AppAdminLogsRoute = AppAdminLogsRouteImport.update({
 const AppAdminMembersRoute = AppAdminMembersRouteImport.update({
   id: '/members',
   path: '/members',
+  getParentRoute: () => AppAdminRoute,
+} as any)
+const AppAdminMigrateRoute = AppAdminMigrateRouteImport.update({
+  id: '/migrate',
+  path: '/migrate',
   getParentRoute: () => AppAdminRoute,
 } as any)
 const AppAdminMonitoringRoute = AppAdminMonitoringRouteImport.update({
@@ -1101,6 +1107,7 @@ export interface FileRoutesByFullPath {
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/migrate': typeof AppAdminMigrateRoute
   '/app/admin/monitoring': typeof AppAdminMonitoringRoute
   '/app/admin/reports': typeof AppAdminReportsRoute
   '/app/admin/storage': typeof AppAdminStorageRoute
@@ -1263,6 +1270,7 @@ export interface FileRoutesByTo {
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/migrate': typeof AppAdminMigrateRoute
   '/app/admin/monitoring': typeof AppAdminMonitoringRoute
   '/app/admin/reports': typeof AppAdminReportsRoute
   '/app/admin/storage': typeof AppAdminStorageRoute
@@ -1431,6 +1439,7 @@ export interface FileRoutesById {
   '/app/admin/health': typeof AppAdminHealthRoute
   '/app/admin/logs': typeof AppAdminLogsRoute
   '/app/admin/members': typeof AppAdminMembersRoute
+  '/app/admin/migrate': typeof AppAdminMigrateRoute
   '/app/admin/monitoring': typeof AppAdminMonitoringRoute
   '/app/admin/reports': typeof AppAdminReportsRoute
   '/app/admin/storage': typeof AppAdminStorageRoute
@@ -1603,6 +1612,7 @@ export interface FileRouteTypes {
     | '/app/admin/health'
     | '/app/admin/logs'
     | '/app/admin/members'
+    | '/app/admin/migrate'
     | '/app/admin/monitoring'
     | '/app/admin/reports'
     | '/app/admin/storage'
@@ -1765,6 +1775,7 @@ export interface FileRouteTypes {
     | '/app/admin/health'
     | '/app/admin/logs'
     | '/app/admin/members'
+    | '/app/admin/migrate'
     | '/app/admin/monitoring'
     | '/app/admin/reports'
     | '/app/admin/storage'
@@ -1932,6 +1943,7 @@ export interface FileRouteTypes {
     | '/app/admin/health'
     | '/app/admin/logs'
     | '/app/admin/members'
+    | '/app/admin/migrate'
     | '/app/admin/monitoring'
     | '/app/admin/reports'
     | '/app/admin/storage'
@@ -2622,6 +2634,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAdminMembersRouteImport
       parentRoute: typeof AppAdminRoute
     }
+    '/app/admin/migrate': {
+      id: '/app/admin/migrate'
+      path: '/migrate'
+      fullPath: '/app/admin/migrate'
+      preLoaderRoute: typeof AppAdminMigrateRouteImport
+      parentRoute: typeof AppAdminRoute
+    }
     '/app/admin/monitoring': {
       id: '/app/admin/monitoring'
       path: '/monitoring'
@@ -3263,6 +3282,7 @@ interface AppAdminRouteChildren {
   AppAdminHealthRoute: typeof AppAdminHealthRoute
   AppAdminLogsRoute: typeof AppAdminLogsRoute
   AppAdminMembersRoute: typeof AppAdminMembersRoute
+  AppAdminMigrateRoute: typeof AppAdminMigrateRoute
   AppAdminMonitoringRoute: typeof AppAdminMonitoringRoute
   AppAdminReportsRoute: typeof AppAdminReportsRoute
   AppAdminStorageRoute: typeof AppAdminStorageRoute
@@ -3278,6 +3298,7 @@ const AppAdminRouteChildren: AppAdminRouteChildren = {
   AppAdminHealthRoute: AppAdminHealthRoute,
   AppAdminLogsRoute: AppAdminLogsRoute,
   AppAdminMembersRoute: AppAdminMembersRoute,
+  AppAdminMigrateRoute: AppAdminMigrateRoute,
   AppAdminMonitoringRoute: AppAdminMonitoringRoute,
   AppAdminReportsRoute: AppAdminReportsRoute,
   AppAdminStorageRoute: AppAdminStorageRoute,

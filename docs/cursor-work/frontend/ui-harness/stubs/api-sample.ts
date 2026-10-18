@@ -399,6 +399,54 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
       { id: "t2", name: "Finance & accounts payable northern region", slug: "finance-ap-north", member_count: 1 },
     ] };
   }
+  // ---- Import mail (Rust procs migration.*). ?m=empty|starting|running|stopped|done|cancelling|off|err
+  //      start result ?start=auth|slow|ok   receipt ?v=ok|broken|mismatch   no mailbox to copy into: ?nomb
+  if (key.startsWith("migration.")) {
+    const mode = /[?&]m=(\w+)/.exec(location.hash)?.[1] ?? "empty";
+    if (mode === "off") throw new ApiError("Unknown procedure", 404, "procedure_not_in_rust");
+    if (mode === "err") throw new ApiError("Could not reach the database", 500, "server_error");
+    const live = { id: "11111111-aaaa-4aaa-8aaa-111111111111", mailbox: "pro.buyer@anexomail.com", provider: "gmail", source_login: "founder@gmail.com", status: "running", locked: false, stale: false, cancel_requested: false, current_folder: "INBOX", folders_total: 4, folders_done: 1, skipped_folders: [{ name: "[Gmail]/All Mail", why: "duplicate_view" }, { name: "[Gmail]/Spam", why: "trash_or_spam_not_requested" }], found: 4200, copied: 1830, duplicate: 25, skipped: 1, failed: 2, bytes: 1_240_000_000, last_error: null, chain_len: 1858, seal_hash: null, created_at: ago(1), started_at: ago(0.9), heartbeat_at: ago(0), finished_at: null };
+    const hash = "6f6d4bba585fe9082fcd358e92d38efc82ff976c47dba1aa7074d13b42047847";
+    const finished = { ...live, id: "22222222-bbbb-4bbb-8bbb-222222222222", provider: "outlook", source_login: "founder@outlook.com", status: "completed", locked: true, current_folder: null, folders_done: 4, found: 9120, copied: 9014, duplicate: 98, skipped: 3, failed: 5, bytes: 3_900_000_000, chain_len: 9121, seal_hash: hash, created_at: ago(4), started_at: ago(4), finished_at: ago(3) };
+    const cancelled = { ...live, id: "33333333-cccc-4ccc-8ccc-333333333333", status: "cancelled", locked: true, current_folder: null, found: 300, copied: 40, duplicate: 0, skipped: 0, failed: 0, bytes: 20_000_000, chain_len: 41, last_error: "cancelled_by_user", seal_hash: "a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e5f60718293a4b5c6d7e8f90", created_at: ago(9), finished_at: ago(9) };
+    const refused = { ...live, id: "44444444-dddd-4ddd-8ddd-444444444444", status: "failed", locked: true, current_folder: null, found: 0, copied: 0, duplicate: 0, skipped: 0, failed: 0, bytes: 0, chain_len: 1, last_error: "auth_failed", seal_hash: "0f0e0d0c0b0a09080706050403020100ffeeddccbbaa99887766554433221100", created_at: ago(12), finished_at: ago(12) };
+    if (key === "migration.providers") return { providers: [
+      { id: "gmail", label: "Gmail / Google Workspace", host: "imap.gmail.com", port: 993, custom: false, note: "Turn on 2-Step Verification, then create an App Password in your Google account. Use that 16-letter password here, not your normal one." },
+      { id: "outlook", label: "Outlook.com / Hotmail", host: "outlook.office365.com", port: 993, custom: false, note: "Personal Microsoft accounts: create an App Password under Security. Work or school Microsoft 365 accounts usually block passwords for IMAP; those need the sign-in method we add later." },
+      { id: "yahoo", label: "Yahoo Mail", host: "imap.mail.yahoo.com", port: 993, custom: false, note: "Create an App Password in Yahoo Account Security and use it here." },
+      { id: "icloud", label: "iCloud Mail", host: "imap.mail.me.com", port: 993, custom: false, note: "Create an app-specific password at appleid.apple.com and use it here." },
+      { id: "zoho", label: "Zoho Mail", host: "imap.zoho.com", port: 993, custom: false, note: "Create an application-specific password in Zoho security settings. IMAP must be switched on in your Zoho mail settings." },
+      { id: "custom", label: "Another IMAP server", host: "", port: 993, custom: true, note: "Enter your provider's IMAP host. Only secure connections (port 993) are accepted." },
+    ] };
+    if (key === "migration.list") {
+      const started = (globalThis as unknown as { __migStarted?: boolean }).__migStarted;
+      if (started && mode === "empty") return { sessions: [{ ...live, found: 0, copied: 0, duplicate: 0, skipped: 0, failed: 0, bytes: 0, chain_len: 0, current_folder: null, folders_total: 0, folders_done: 0, skipped_folders: [], status: "verified" }], max_workers: 3 };
+      const by: Record<string, unknown[]> = {
+        empty: [],
+        starting: [{ ...live, status: "verified", found: 0, copied: 0, duplicate: 0, skipped: 0, failed: 0, bytes: 0, chain_len: 0, current_folder: null, folders_total: 0, folders_done: 0, skipped_folders: [] }],
+        running: [live, finished],
+        stopped: [{ ...live, stale: true, last_error: "connection_lost", heartbeat_at: ago(0.1) }, finished],
+        cancelling: [{ ...live, cancel_requested: true }],
+        done: [finished, cancelled, refused],
+      };
+      return { sessions: by[mode] ?? [], max_workers: 3 };
+    }
+    if (key === "migration.start") {
+      const st = /[?&]start=(\w+)/.exec(location.hash)?.[1] ?? "ok";
+      if (st === "auth") throw new ApiError("The provider refused the login. Check the address and use an App Password (your normal password usually does not work for IMAP).", 400, "auth_failed");
+      (globalThis as unknown as { __migStarted?: boolean }).__migStarted = true;
+      return st === "slow" ? { session_id: live.id, status: "created", connecting: true } : { session_id: live.id, status: "verified" };
+    }
+    if (key === "migration.resume") return { session_id: live.id, status: "verified" };
+    if (key === "migration.cancel") return { requested: true, already: false, status: "running", seal_hash: "" };
+    if (key === "migration.verify") {
+      const v = /[?&]v=(\w+)/.exec(location.hash)?.[1] ?? "ok";
+      const okV = { ok: true, entries: 9121, expected_entries: 9121, head: hash, sealed: true, seal_hash: hash, matches_seal: true, rust_check: true, database_check: true, partial: false, broken_at: null, why: null };
+      if (v === "broken") return { ...okV, ok: false, rust_check: false, matches_seal: false, broken_at: 17, why: "entry_hash_mismatch" };
+      if (v === "mismatch") return { ...okV, ok: false, matches_seal: false };
+      return okV;
+    }
+  }
   throw new ApiError("not wired in harness: " + key, 404, "not_found");
 }
 const later = <T>(v: () => T) => new Promise<T>((res, rej) => setTimeout(() => { try { res(v()); } catch (x) { rej(x); } }, 60));

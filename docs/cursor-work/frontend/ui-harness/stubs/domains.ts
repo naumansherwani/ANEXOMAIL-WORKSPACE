@@ -35,7 +35,11 @@ const seedDomains = (): Dom[] => {
 };
 let domains: Dom[] = seedDomains();
 const oneAddr = [{ id: "a1", domain_id: "d1", local_part: "sales", address: "sales@acme-studio.com", kind: "shared" as const, owner_user_id: null, alias_target: null, active: true, created_at: "" }];
-let addresses: { id: string; domain_id: string; local_part: string; address: string; kind: "mailbox" | "shared" | "alias"; owner_user_id: null; alias_target: string | null; active: boolean; created_at: string }[] =
+let addresses: { id: string; domain_id: string; local_part: string; address: string; kind: "mailbox" | "shared" | "alias"; owner_user_id: string | null; alias_target: string | null; active: boolean; created_at: string }[] =
+  scenario().includes("migrate") && !scenario().includes("nomb") ? [
+    { id: "a9", domain_id: "d1", local_part: "pro.buyer", address: "pro.buyer@anexomail.com", kind: "mailbox", owner_user_id: "u1", alias_target: null, active: true, created_at: "" },
+    { id: "a10", domain_id: "d1", local_part: "sara", address: "sara@acme-studio.co.uk", kind: "mailbox", owner_user_id: "u2", alias_target: null, active: true, created_at: "" },
+  ] :
   dash() === "D" || dash() === "E" || (!dash() && scenario().includes("list")) ? oneAddr : [];
 let verifyCalls = 0;
 

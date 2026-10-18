@@ -36,6 +36,7 @@ import { Route as AdminAuditRoute } from "@/routes/app.admin.audit";
 import { Route as AdminExportRoute } from "@/routes/app.admin.export";
 import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
 import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
+import { Route as AdminMigrateRoute } from "@/routes/app.admin.migrate";
 import { Route as OrgAuditRoute } from "@/routes/app.org.audit";
 
 type R = { component: () => JSX.Element; crm?: boolean };
@@ -73,8 +74,8 @@ const InboxRoute = {
     );
   },
 };
-// #admin/<health|storage|monitoring|logs|reports|diagnostics|audit|export|addresses|members|teams> (and #admin for Domains): the REAL admin layout (section nav) around the real page.
-const ADMIN_PAGES: Record<string, unknown> = { "": AdminIndexRoute, health: AdminHealthRoute, storage: AdminStorageRoute, monitoring: AdminMonitoringRoute, logs: AdminLogsRoute, reports: AdminReportsRoute, diagnostics: AdminDiagnosticsRoute, audit: AdminAuditRoute, export: AdminExportRoute, members: AdminMembersRoute, teams: AdminTeamsRoute };
+// #admin/<health|storage|monitoring|logs|reports|diagnostics|audit|export|addresses|members|teams|migrate> (and #admin for Domains): the REAL admin layout (section nav) around the real page.
+const ADMIN_PAGES: Record<string, unknown> = { "": AdminIndexRoute, health: AdminHealthRoute, storage: AdminStorageRoute, monitoring: AdminMonitoringRoute, logs: AdminLogsRoute, reports: AdminReportsRoute, diagnostics: AdminDiagnosticsRoute, audit: AdminAuditRoute, export: AdminExportRoute, members: AdminMembersRoute, teams: AdminTeamsRoute, migrate: AdminMigrateRoute };
 const AdminRoute = {
   component: () => {
     const sub = location.hash.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0].split("/")[1] ?? "";

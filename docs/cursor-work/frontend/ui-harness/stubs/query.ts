@@ -19,17 +19,17 @@ export function useQuery<T, E = Error>(opts: Opts<T>) {
   }, [opts.enabled]);
   useEffect(() => { run(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [key, opts.enabled]);
   useEffect(() => { runners.add(run); return () => { runners.delete(run); }; }, [run]);
-  return { data: state.data, error: state.error, isPending: state.pending, isLoading: state.pending, isFetching: state.pending, isError: !!state.error, refetch: run };
+  return { data: state.data, error: state.error, isPending: state.pending, isLoading: state.pending && state.data === undefined, isFetching: state.pending, isError: !!state.error, refetch: run };
 }
-export function useMutation<R = unknown, E = Error, V = unknown>(opts: { mutationFn?: (v: V) => Promise<R>; onSuccess?: (r: R) => void } = {}) {
-  const [st, setSt] = useState<{ pending: boolean; data?: R; error: E | null }>({ pending: false, error: null });
+export function useMutation<R = unknown, E = Error, V = unknown>(opts: { mutationFn?: (v: V) => Promise<R>; onSuccess?: (r: R) => void; onSettled?: () => void } = {}) {
+  const [st, setSt] = useState<{ pending: boolean; data?: R; error: E | null; variables?: V }>({ pending: false, error: null });
   const mutate = (v: V, cbs?: { onSuccess?: (r: R) => void; onError?: (e: E) => void }) => {
-    setSt({ pending: true, error: null });
+    setSt({ pending: true, error: null, variables: v });
     Promise.resolve(opts.mutationFn ? opts.mutationFn(v) : undefined).then(
-      (r) => { setSt({ pending: false, data: r as R, error: null }); opts.onSuccess?.(r as R); cbs?.onSuccess?.(r as R); },
-      (e) => { setSt({ pending: false, error: e as E }); cbs?.onError?.(e as E); },
+      (r) => { setSt({ pending: false, data: r as R, error: null, variables: v }); opts.onSuccess?.(r as R); cbs?.onSuccess?.(r as R); opts.onSettled?.(); },
+      (e) => { setSt({ pending: false, error: e as E, variables: v }); cbs?.onError?.(e as E); opts.onSettled?.(); },
     );
   };
-  return { mutate, mutateAsync: async (v: V) => (opts.mutationFn ? opts.mutationFn(v) : undefined), isPending: st.pending, data: st.data, error: st.error, reset: () => setSt({ pending: false, error: null }) };
+  return { mutate, mutateAsync: async (v: V) => (opts.mutationFn ? opts.mutationFn(v) : undefined), isPending: st.pending, variables: st.variables, data: st.data, error: st.error, reset: () => setSt({ pending: false, error: null }) };
 }
 export const useQueryClient = () => ({ invalidateQueries: async () => { setTimeout(() => runners.forEach((r) => r()), 0); }, setQueryData: () => {}, getQueryData: () => undefined, cancelQueries: async () => {} });

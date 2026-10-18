@@ -127,9 +127,14 @@ async fn ctx(token: &str, input: &Value) -> Result<Ctx, Resp> {
 }
 
 async fn rpc(func: &str, body: Value) -> Result<Value, Resp> {
-    crate::sb_rpc(func, body)
-        .await
-        .map_err(|_| fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not reach the database"))
+    crate::sb_rpc(func, body).await.map_err(|e| {
+        // PostgREST says the function does not exist => the E35 SQL has not been applied on this database yet
+        if e.contains("PGRST202") || e.contains("Could not find the function") {
+            fail(StatusCode::NOT_IMPLEMENTED, "migration_sql_missing", "Mail copy is not switched on for this workspace yet.")
+        } else {
+            fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not reach the database")
+        }
+    })
 }
 
 /// A database function answered {ok:false,error:..}: turn it into an HTTP answer (never 401/502/503 — the app would
