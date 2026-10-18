@@ -49,22 +49,22 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
       {
         label: "AI Studio (AI)",
         path: "/ai/studio",
-        note: "Coming soon gate — studio belongs to ai.anexomail.com, not the email plans",
+        note: "Coming soon gate — not part of the email plans",
       },
       {
         label: "AI Automation (AI)",
         path: "/ai/automation",
-        note: "Coming soon gate — workflows, rules and suggestions live on ai.anexomail.com",
+        note: "Coming soon gate — workflows, rules and suggestions",
       },
       {
         label: "AI Credits (AI)",
         path: "/ai/credits",
-        note: "Coming soon gate — wallet, burn and top-ups belong to ai.anexomail.com",
+        note: "Coming soon gate — wallet, burn and top-ups",
       },
       {
         label: "AI Knowledge (AI)",
         path: "/ai/knowledge",
-        note: "Coming soon gate — documents, memory and cited answers on ai.anexomail.com",
+        note: "Coming soon gate — documents, memory and cited answers",
       },
       { label: "Security", path: "/security", note: "TLS, DKIM/SPF/DMARC, data handling" },
       {

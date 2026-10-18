@@ -412,7 +412,7 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
   if (path.startsWith("/app/ai-center") || path === "/app/ai" || path.startsWith("/app/ai/")) {
     return {
       title: "LEO is not on this workspace",
-      body: "Basic, Pro, Business and Business Pro have no AI. AI plans open on ai.anexomail.com.",
+      body: "Basic, Pro, Business and Business Pro have no AI.",
     };
   }
   if (path.startsWith("/app/chat")) {

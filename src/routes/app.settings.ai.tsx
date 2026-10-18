@@ -21,7 +21,7 @@ export const Route = createFileRoute("/app/settings/ai")({
     <SettingsScope
       scope="ai"
       title="AI settings"
-      blurb="Leo behaviour for this workspace. AI billing lives on ai.anexomail.com only."
+      blurb="Leo behaviour for this workspace."
     />
   ),
 });

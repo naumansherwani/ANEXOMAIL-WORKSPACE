@@ -20,10 +20,13 @@ pub const MAX_TEAM_MEMBERS: usize = 500;
 
 /* ------------------------------------------------------------------- roles */
 
+/// Same order as the SQL function `team_role_rank` (E33): owner > admin > manager > member > viewer.
+/// "manager" exists in live organisations (org-authz) even though an invitation cannot hand it out.
 pub fn rank(role: &str) -> u8 {
     match role {
-        "owner" => 4,
-        "admin" => 3,
+        "owner" => 5,
+        "admin" => 4,
+        "manager" => 3,
         "member" => 2,
         "viewer" => 1,
         _ => 0,
@@ -651,6 +654,27 @@ mod tests {
         // the old bug: whatever the browser sent became "member"; and "owner" must never be grantable
         assert_eq!(parse_assignable("owner"), None);
         assert_eq!(parse_assignable("root"), None);
+    }
+
+    #[test]
+    fn rank_order_matches_the_sql_function() {
+        // E33 team_role_rank: owner 5, admin 4, manager 3, member 2, viewer 1, anything else 0
+        let order = ["owner", "admin", "manager", "member", "viewer"];
+        for w in order.windows(2) {
+            assert!(rank(w[0]) > rank(w[1]), "{} must outrank {}", w[0], w[1]);
+        }
+        assert_eq!(rank("manager"), 3);
+        assert_eq!(rank(""), 0);
+        assert_eq!(rank("root"), 0);
+    }
+
+    #[test]
+    fn a_manager_is_looked_after_like_a_member_not_like_an_admin() {
+        // an admin may demote/remove a manager (not an admin); nobody can make a manager through an invitation
+        assert_eq!(check_member_change("admin", "a", "manager", "m", Some("member")), Ok(()));
+        assert_eq!(check_member_change("admin", "a", "manager", "m", None), Ok(()));
+        assert_eq!(check_member_change("manager", "m", "member", "x", None), Err("not_allowed"));
+        assert_eq!(parse_assignable("manager"), None);
     }
 
     #[test]

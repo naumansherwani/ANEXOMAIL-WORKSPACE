@@ -18,6 +18,8 @@
 #   3. `nice cargo build --release` (kuch minute). Build FAIL => src wapas, purani binary chalti rehti hai, errors dikhata hai.
 #   4. Build OK => pm2 restart anexomail-rust + /rpc/health; 200 na aaye => purani binary + src wapas.
 #   5. Naye procs ka live saboot (nakli token se): Rust ne proc pakda ya nahi.
+# Saath mein (alag "membership guard" step, GUARD=0 se band): Rust ki "user kis organisation ka hai" wali reads mein nikale hue
+#   (revoked) member ko bahar rakhna — production mail path ka chhota, anchor-based, idempotent patch (founder "haan" 19 Oct 2026).
 # Bun (Brain) fallback hamesha rehta hai: Rust 404/501/502/503 de to frontend purane route par girta hai — kuch toot'ta nahi.
 set -uo pipefail
 REPO="${REPO:-/opt/anexomail-web}"
@@ -105,6 +107,17 @@ echo "== 1) live main.rs par patch laga sakte hain? (copy par try, kuch badla na
 cp "$TARGET/src/main.rs" "$T/main.rs.try"
 patch_main "$T/main.rs.try"; prc=$?
 [ "$prc" -eq 0 ] || { echo "!! patch nahi lag sakta — kuch install nahi hua. Output Claude ko paste karein."; exit 4; }
+
+# Membership guard (founder "haan" 19 Oct 2026): Brain "revoke" sirf org_members.status='revoked' likhta hai, par Rust ki "ye user kis
+# organisation ka hai" wali reads us ko nahi dekhti thin — nikala hua member mail khol sakta tha. Guard sirf un string-literals mein
+# `&or=(status.is.null,status.neq.revoked)` jodta hai (code ko nahi). Kuch bhi safe tareeqe se patch na ho to ruk jata hai, kuch nahi badalta.
+# Band karna ho: GUARD=0 bash <(...)
+if [ "${GUARD:-1}" = "1" ]; then
+  show docs/cursor-work/server/membership_guard.py >"$T/membership_guard.py"
+  [ -s "$T/membership_guard.py" ] || { echo "FAIL: repo (origin/main) mein docs/cursor-work/server/membership_guard.py nahi — git fetch hua?"; exit 2; }
+  python3 -I "$T/membership_guard.py" "$T/main.rs.try"; grc=$?
+  [ "$grc" -eq 0 ] || { echo "!! membership guard safe tareeqe se nahi lag sakta — kuch install nahi hua. Upar wali lines Claude ko paste karein."; exit 4; }
+fi
 for h in 'fn sb()' 'fn sb_select(' 'fn sb_insert(' 'fn sb_patch(' 'fn sb_rpc(' 'fn auth_user(' 'fn ok(' 'fn err('; do
   grep -qF "$h" "$TARGET/src/main.rs" || echo "   (dhyan: live main.rs mein '$h' seedha nahi dikha — build isko pakad lega; fail hua to restore ho jayega)"
 done

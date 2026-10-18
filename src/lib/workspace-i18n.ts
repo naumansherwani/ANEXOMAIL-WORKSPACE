@@ -186,8 +186,8 @@ export const WORKSPACE_I18N: Record<string, Record<string, string>> = {
     "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.":
       "भूमिकाएँ, विभाग, नीतियाँ और ऑडिट बिज़नेस और बिज़नेस प्रो पर हैं। आपका पैकेज {package} है।",
     "LEO is not on this workspace": "LEO इस कार्यक्षेत्र पर नहीं है",
-    "Basic, Pro, Business and Business Pro have no AI. AI plans open on ai.anexomail.com.":
-      "बेसिक, प्रो, बिज़नेस और बिज़नेस प्रो में AI नहीं। AI योजनाएँ ai.anexomail.com पर खुलती हैं।",
+    "Basic, Pro, Business and Business Pro have no AI.":
+      "बेसिक, प्रो, बिज़नेस और बिज़नेस प्रो में AI नहीं।",
     "Founder view is not on this host": "संस्थापक दृश्य इस होस्ट पर नहीं",
     "Founder tools open only on the founder workspace host. This mail workspace stays on your package.":
       "संस्थापक उपकरण केवल संस्थापक होस्ट पर। यह मेल कार्यक्षेत्र आपके पैकेज पर रहता है।",
@@ -375,8 +375,8 @@ export const WORKSPACE_I18N: Record<string, Record<string, string>> = {
     "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.":
       "کردار، شعبے، پالیسیاں اور آڈٹ بزنس اور بزنس پرو پر ہیں۔ آپ کا پیکیج {package} ہے۔",
     "LEO is not on this workspace": "LEO اس ورک اسپیس پر نہیں",
-    "Basic, Pro, Business and Business Pro have no AI. AI plans open on ai.anexomail.com.":
-      "بیسک، پرو، بزنس اور بزنس پرو میں AI نہیں۔ AI منصوبے ai.anexomail.com پر کھلتے ہیں۔",
+    "Basic, Pro, Business and Business Pro have no AI.":
+      "بیسک، پرو، بزنس اور بزنس پرو میں AI نہیں۔",
     "Founder view is not on this host": "بانی منظر اس ہوسٹ پر نہیں",
     "Founder tools open only on the founder workspace host. This mail workspace stays on your package.":
       "بانی کے اوزار صرف بانی ہوسٹ پر۔ یہ میل ورک اسپیس آپ کے پیکیج پر رہتا ہے۔",
@@ -564,8 +564,8 @@ export const WORKSPACE_I18N: Record<string, Record<string, string>> = {
     "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.":
       "الأدوار والأقسام والسياسات وسجل التدقيق على Business وBusiness Pro. باقتك {package}.",
     "LEO is not on this workspace": "LEO ليس على مساحة العمل هذه",
-    "Basic, Pro, Business and Business Pro have no AI. AI plans open on ai.anexomail.com.":
-      "Basic وPro وBusiness وBusiness Pro بلا ذكاء اصطناعي. خطط AI تُفتح على ai.anexomail.com.",
+    "Basic, Pro, Business and Business Pro have no AI.":
+      "Basic وPro وBusiness وBusiness Pro بلا ذكاء اصطناعي.",
     "Founder view is not on this host": "عرض المؤسس ليس على هذا المضيف",
     "Founder tools open only on the founder workspace host. This mail workspace stays on your package.":
       "أدوات المؤسس تُفتح فقط على مضيف مساحة المؤسس. مساحة البريد تبقى على باقتك.",
@@ -753,8 +753,8 @@ export const WORKSPACE_I18N: Record<string, Record<string, string>> = {
     "Roles, departments, policies and the audit ledger sit on Business and Business Pro. Your package is {package}.":
       "نقش‌ها، بخش‌ها، سیاست‌ها و دفتر حسابرسی روی Business و Business Pro است. بسته شما {package} است.",
     "LEO is not on this workspace": "LEO روی این فضای کار نیست",
-    "Basic, Pro, Business and Business Pro have no AI. AI plans open on ai.anexomail.com.":
-      "Basic، Pro، Business و Business Pro هوش مصنوعی ندارند. طرح‌های AI روی ai.anexomail.com باز می‌شوند.",
+    "Basic, Pro, Business and Business Pro have no AI.":
+      "Basic، Pro، Business و Business Pro هوش مصنوعی ندارند.",
     "Founder view is not on this host": "نمای بنیان‌گذار روی این میزبان نیست",
     "Founder tools open only on the founder workspace host. This mail workspace stays on your package.":
       "ابزار بنیان‌گذار فقط روی میزبان فضای بنیان‌گذار. این فضای نامه روی بسته شما می‌ماند.",

@@ -55,7 +55,7 @@ src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
-src/lib/plan-surface.ts 64c4721008f30d57
+src/lib/plan-surface.ts 03671e4b12654baa
 src/components/app/dashboard/Greeting.tsx ec52e5aff361e8db
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
 src/components/app/mail/InboxWelcome.tsx e78bad1dff9a68fb
@@ -91,3 +91,6 @@ src/lib/team-report.ts 19e8a928c1ab2d1b
 src/routes/join.tsx b35ce54530f1df55
 src/routes/auth.tsx f41cf236515f3868
 src/routes/app.integrations.tsx b556cdf994245dca
+src/lib/workspace-i18n.ts 616c123f5cf62ede
+src/routes/app.settings.ai.tsx 67d3e1596be41f2a
+src/routes/pages.tsx 1739e265926da35f
