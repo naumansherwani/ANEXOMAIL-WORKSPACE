@@ -6,6 +6,7 @@
 # woh SAB ek hi build mein lagata hai: ek backup, ek build, ek restart, ek health check, ek rollback.
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
+#   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 # Sirf kuch modules chahiye: MODULES="people" bash <(...)   (default: jo repo mein hon sab)
 #
 # Kya karta hai (sirf anexomail-rust; polar-rust-payment :3400, Brain, web, Cargo.toml, .env ko haath nahi):
@@ -25,7 +26,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people"
+ALL_MODULES="cal people team"
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -60,6 +61,7 @@ p=sys.argv[1]; mods=sys.argv[2].split(); s=open(p).read()
 CFG={
  "cal":    {"public": True,  "label": "calendar",  "procs": ['"calendar.create"']},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
+ "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
 }
 changed=[]
 for m in mods:
@@ -169,6 +171,16 @@ for m in $MODS; do
         *calendar_v2_sql_missing*) echo "   -> Rust ne calendar proc pakda, par E31 SQL abhi nahi lagi — docs/cursor-work/sql/E31_calendar_v2.sql chalayen";;
         *"not valid"*) echo "   -> calendar: Rust ne proc pakda aur E31 SQL lagi hui hai (nakli link par 'not valid' = theek)";;
         *) echo "   -> calendar: jawab upar dekhein";;
+      esac;;
+    team)
+      r1="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{"token":"00000000-0000-0000-0000-000000000000"}}' "$RPC/rpc/team.invite.lookup" 2>/dev/null)"
+      echo "   team.invite.lookup (nakli uuid): $r1"
+      echo "   team.members.list (nakli token): $(probe team.members.list '{"input":{}}')"
+      case "$r1" in
+        *team_v1_sql_missing*) echo "   -> team: Rust ne proc pakda, par E33 SQL abhi nahi lagi — docs/cursor-work/sql/E33_team_invites.sql chalayen";;
+        *invite_not_found*) echo "   -> team: Rust ne proc pakda aur E33 SQL lagi hui hai (nakli link par 'not valid' = theek)";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> team: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> team: jawab upar dekhein";;
       esac;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"

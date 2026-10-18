@@ -1,7 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Loader2, Plus, Trash2, Users } from "lucide-react";
+import { Check, ChevronDown, Loader2, Plus, Trash2, Users } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -18,9 +17,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api, ApiError } from "@/lib/api";
+import type { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
+import { useMembers, useTeamActions, useTeamPeople, useTeams, type Team } from "@/lib/team";
+import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/admin/teams")({
   head: () => ({
@@ -44,49 +45,16 @@ export const Route = createFileRoute("/app/admin/teams")({
   component: TeamsPage,
 });
 
-type Team = {
-  id: string;
-  name: string;
-  slug: string;
-  member_count: number;
-};
-
 function TeamsPage() {
   const { organisation } = useAuth();
-  const queryClient = useQueryClient();
   const canManage = organisation?.role === "owner" || organisation?.role === "admin";
   const [name, setName] = useState("");
   // Deleting a team drops the shared-address access and assignments that follow it — ask first (one mis-tap on a phone).
   const [confirmDelete, setConfirmDelete] = useState<Team | null>(null);
+  const [open, setOpen] = useState<string | null>(null);
 
-  const teams = useQuery<{ teams: Team[] }, ApiError>({
-    queryKey: ["workspace", "teams", organisation?.id],
-    queryFn: () => api<{ teams: Team[] }>("/api/workspace/teams"),
-    enabled: Boolean(organisation),
-    retry: false,
-  });
-
-  const invalidate = () => void queryClient.invalidateQueries({ queryKey: ["workspace", "teams"] });
-
-  const create = useMutation({
-    mutationFn: (teamName: string) =>
-      api("/api/workspace/teams", { method: "POST", body: JSON.stringify({ name: teamName }) }),
-    onSuccess: () => {
-      notify.done("Team created", "Add people and shared addresses to it next.");
-      setName("");
-      invalidate();
-    },
-    onError: (e: ApiError) => notify.failed("Team not created", { description: e.message }),
-  });
-
-  const remove = useMutation({
-    mutationFn: (id: string) => api(`/api/workspace/teams/${id}`, { method: "DELETE" }),
-    onSuccess: () => {
-      notify.done("Team deleted", "Its people keep their own mailboxes.");
-      invalidate();
-    },
-    onError: (e: ApiError) => notify.failed("Team not deleted", { description: e.message }),
-  });
+  const teams = useTeams(organisation?.id);
+  const { create, remove } = useTeamActions(organisation?.id);
 
   if (!organisation) {
     return (
@@ -114,7 +82,13 @@ function TeamsPage() {
           onSubmit={(event) => {
             event.preventDefault();
             if (!name.trim()) return;
-            create.mutate(name.trim());
+            create.mutate(name.trim(), {
+              onSuccess: () => {
+                notify.done("Team created", "Press People on it to choose who is in the team.");
+                setName("");
+              },
+              onError: (e: ApiError) => notify.failed("Team not created", { description: e.message }),
+            });
           }}
         >
           <div className="space-y-1.5">
@@ -159,10 +133,8 @@ function TeamsPage() {
         ) : (
           <ul className="space-y-2">
             {teams.data.teams.map((team) => (
-              <li
-                key={team.id}
-                className="ax-row flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3"
-              >
+              <li key={team.id} className="rounded-xl border border-border bg-card">
+              <div className="ax-row flex items-center gap-3 px-4 py-3">
                 <Users className="size-4 text-cyan-accent" aria-hidden />
                 <div className="min-w-0 flex-1">
                   <p className="ax-label truncate text-foreground">{team.name}</p>
@@ -170,6 +142,16 @@ function TeamsPage() {
                     {team.member_count} {team.member_count === 1 ? "person" : "people"}
                   </p>
                 </div>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="ax-press ax-tap"
+                  aria-expanded={open === team.id}
+                  onClick={() => setOpen(open === team.id ? null : team.id)}
+                >
+                  People
+                  <ChevronDown className={cn("size-3.5 transition-transform", open === team.id && "rotate-180")} aria-hidden />
+                </Button>
                 {canManage && (
                   <Button
                     variant="ghost"
@@ -182,6 +164,10 @@ function TeamsPage() {
                     <Trash2 className="size-4" />
                   </Button>
                 )}
+              </div>
+              {open === team.id && (
+                <TeamPeople orgId={organisation.id} team={team} canManage={canManage} onDone={() => setOpen(null)} />
+              )}
               </li>
             ))}
           </ul>
@@ -204,7 +190,11 @@ function TeamsPage() {
               onClick={() => {
                 const target = confirmDelete;
                 setConfirmDelete(null);
-                if (target) remove.mutate(target.id);
+                if (target)
+                  remove.mutate(target.id, {
+                    onSuccess: () => notify.done("Team deleted", "Its people keep their own mailboxes."),
+                    onError: (e: ApiError) => notify.failed("Team not deleted", { description: e.message }),
+                  });
               }}
             >
               Delete team
@@ -212,6 +202,106 @@ function TeamsPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+    </div>
+  );
+}
+
+/** Who is in the team: every active member of the organisation as a tick-box. Saved in one step. */
+function TeamPeople({
+  orgId,
+  team,
+  canManage,
+  onDone,
+}: {
+  orgId: string;
+  team: Team;
+  canManage: boolean;
+  onDone: () => void;
+}) {
+  const members = useMembers(orgId);
+  const current = useTeamPeople(orgId, team.id);
+  const { setPeople } = useTeamActions(orgId);
+  const [picked, setPicked] = useState<Set<string> | null>(null);
+  const chosen = picked ?? new Set(current.data?.user_ids ?? []);
+
+  const toggle = (id: string) => {
+    if (!canManage) return;
+    const next = new Set(chosen);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setPicked(next);
+  };
+
+  return (
+    <div className="border-t border-border px-4 py-3">
+      {members.isLoading || current.isLoading ? (
+        <ListSkeleton rows={2} />
+      ) : members.error || current.error ? (
+        <p className="ax-caption text-danger">
+          {(members.error ?? current.error)?.isNotImplemented
+            ? "Team people aren't live on the server yet."
+            : ((members.error ?? current.error)?.message ?? "Could not load.")}
+        </p>
+      ) : !members.data?.members.length ? (
+        <p className="ax-caption">Nobody to add yet — invite people first.</p>
+      ) : (
+        <>
+          <ul className="space-y-1.5" aria-label={`People in ${team.name}`}>
+            {members.data.members.map((m) => {
+              const on = chosen.has(m.user_id);
+              return (
+                <li key={m.user_id}>
+                  <button
+                    type="button"
+                    role="checkbox"
+                    aria-checked={on}
+                    disabled={!canManage}
+                    onClick={() => toggle(m.user_id)}
+                    className="ax-press ax-focus ax-tap flex w-full items-center gap-3 rounded-lg px-2 py-1.5 text-left hover:bg-secondary disabled:opacity-70"
+                  >
+                    <span
+                      className={cn(
+                        "grid size-5 shrink-0 place-items-center rounded border",
+                        on ? "border-cyan-accent bg-cyan-accent/20 text-cyan-accent" : "border-border",
+                      )}
+                    >
+                      {on && <Check className="size-3.5" aria-hidden />}
+                    </span>
+                    <span className="min-w-0 flex-1 break-all text-sm text-foreground sm:truncate">{m.email}</span>
+                    <span className="ax-caption shrink-0">{m.role}</span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+          {canManage && (
+            <div className="mt-3 flex items-center gap-2">
+              <Button
+                size="sm"
+                className="ax-tap"
+                disabled={picked === null || setPeople.isPending}
+                onClick={() =>
+                  setPeople.mutate(
+                    { id: team.id, user_ids: [...chosen] },
+                    {
+                      onSuccess: (res) => {
+                        notify.done("Team saved", `${res.added} added, ${res.removed} removed.`);
+                        onDone();
+                      },
+                      onError: (e: ApiError) => notify.failed("Team not saved", { description: e.message }),
+                    },
+                  )
+                }
+              >
+                {setPeople.isPending ? "Saving…" : "Save people"}
+              </Button>
+              <Button size="sm" variant="ghost" className="ax-tap" onClick={onDone}>
+                Close
+              </Button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 }

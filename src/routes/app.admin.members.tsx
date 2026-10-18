@@ -1,4 +1,3 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { Loader2, MailPlus, ShieldCheck, Trash2, UserMinus } from "lucide-react";
@@ -18,10 +17,18 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api, ApiError } from "@/lib/api";
+import type { ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { ADDRESS_MANAGER_FLAG, ROLES, type WorkspaceRole } from "@/lib/ia";
 import { notify } from "@/lib/notify";
+import {
+  summariseInvites,
+  useInvitations,
+  useMembers,
+  useTeamMutations,
+  type TeamInvitation,
+  type TeamMember,
+} from "@/lib/team";
 
 export const Route = createFileRoute("/app/admin/members")({
   head: () => ({
@@ -42,76 +49,17 @@ export const Route = createFileRoute("/app/admin/members")({
   component: MembersPage,
 });
 
-type Member = {
-  id: string;
-  user_id: string;
-  email: string;
-  name: string | null;
-  role: WorkspaceRole;
-  joined_at: string | null;
-};
-
-type Invitation = {
-  id: string;
-  email: string;
-  role: WorkspaceRole;
-  expires_at: string | null;
-};
+type Member = TeamMember;
+type Invitation = TeamInvitation;
 
 function MembersPage() {
   const { organisation, session } = useAuth();
-  const queryClient = useQueryClient();
   const canManage = organisation?.role === "owner" || organisation?.role === "admin";
+  const isOwner = organisation?.role === "owner";
 
-  const members = useQuery<{ members: Member[] }, ApiError>({
-    queryKey: ["workspace", "members", organisation?.id],
-    queryFn: () => api<{ members: Member[] }>("/api/workspace/members"),
-    enabled: Boolean(organisation),
-    retry: false,
-  });
-
-  const invitations = useQuery<{ invitations: Invitation[] }, ApiError>({
-    queryKey: ["workspace", "invitations", organisation?.id],
-    queryFn: () => api<{ invitations: Invitation[] }>("/api/workspace/invitations"),
-    enabled: Boolean(organisation) && canManage,
-    retry: false,
-  });
-
-  const invalidate = () => {
-    void queryClient.invalidateQueries({ queryKey: ["workspace", "members"] });
-    void queryClient.invalidateQueries({ queryKey: ["workspace", "invitations"] });
-  };
-
-  const setRole = useMutation({
-    mutationFn: (vars: { id: string; role: WorkspaceRole }) =>
-      api(`/api/workspace/members/${vars.id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ role: vars.role }),
-      }),
-    onSuccess: () => {
-      notify.done("Role updated", "The change applies on their next request.");
-      invalidate();
-    },
-    onError: (e: ApiError) => notify.failed("Role not changed", { description: e.message }),
-  });
-
-  const removeMember = useMutation({
-    mutationFn: (id: string) => api(`/api/workspace/members/${id}`, { method: "DELETE" }),
-    onSuccess: () => {
-      notify.done("Member removed", "They no longer have access to this organisation.");
-      invalidate();
-    },
-    onError: (e: ApiError) => notify.failed("Member not removed", { description: e.message }),
-  });
-
-  const revokeInvite = useMutation({
-    mutationFn: (id: string) => api(`/api/workspace/invitations/${id}`, { method: "DELETE" }),
-    onSuccess: () => {
-      notify.done("Invitation revoked", "That link no longer works.");
-      invalidate();
-    },
-    onError: (e: ApiError) => notify.failed("Invitation not revoked", { description: e.message }),
-  });
+  const members = useMembers(organisation?.id);
+  const invitations = useInvitations(organisation?.id, canManage);
+  const { setRole, remove: removeMember, invite, revoke: revokeInvite, resend } = useTeamMutations(organisation?.id);
 
   // Removing someone ends their access at once: never on a single tap (on a phone the role pills sit
   // right beside the remove icon). Ask first.
@@ -120,25 +68,30 @@ function MembersPage() {
   const [emails, setEmails] = useState("");
   const [role, setRoleValue] = useState<WorkspaceRole>("member");
 
-  const invite = useMutation({
-    mutationFn: (list: string[]) =>
-      api("/api/workspace/invitations", {
-        method: "POST",
-        body: JSON.stringify({ emails: list, role }),
-      }),
-    onSuccess: (_data, list) => {
-      notify.done(
-        "Invitations sent",
-        `${list.length} invited to ${organisation?.name ?? "your workspace"}.`,
-      );
-      setEmails("");
-      invalidate();
-    },
-    onError: (e: ApiError) => notify.failed("Invitations not sent", { description: e.message }),
-  });
+  const sendInvites = (list: string[]) =>
+    invite.mutate(
+      { emails: list, role },
+      {
+        onSuccess: (res) => {
+          const sum = summariseInvites(res, list.length);
+          if (sum.tone === "done") notify.done(sum.title, sum.detail);
+          else if (sum.tone === "info") notify.info(sum.title, sum.detail);
+          else notify.failed(sum.title, { description: sum.detail });
+          if (sum.tone === "done" || sum.tone === "partial") setEmails("");
+        },
+        onError: (e: ApiError) => notify.failed("Invitations not sent", { description: e.message }),
+      },
+    );
+
+  const doResend = (inv: Invitation) =>
+    resend.mutate(inv.id, {
+      onSuccess: () => notify.done("Invitation sent again", `${inv.email} gets a fresh e-mail with the same link.`),
+      onError: (e: ApiError) => notify.failed("Not sent", { description: e.message }),
+    });
 
   // Owners and yourself are never editable here; everyone else (when you manage) gets role pills + remove.
-  const editable = (m: Member) => canManage && m.role !== "owner" && m.user_id !== session?.user.id;
+  const editable = (m: Member) =>
+    canManage && m.role !== "owner" && m.user_id !== session?.user.id && (isOwner || m.role !== "admin");
 
   if (!organisation) {
     return (
@@ -170,7 +123,7 @@ function MembersPage() {
               .map((e) => e.trim())
               .filter(Boolean);
             if (!list.length) return;
-            invite.mutate(list);
+            sendInvites(list);
           }}
         >
           <h2 className="ax-label text-foreground">Invite people</h2>
@@ -186,7 +139,7 @@ function MembersPage() {
             />
           </div>
           <div className="mt-3 flex flex-wrap items-center gap-2">
-            {ROLES.filter((r) => r.id !== "owner").map((r) => (
+            {ROLES.filter((r) => r.id !== "owner" && (isOwner || r.id !== "admin")).map((r) => (
               <button
                 key={r.id}
                 type="button"
@@ -251,12 +204,20 @@ function MembersPage() {
                   </div>
                   {editable(m) ? (
                     <div className="flex w-full items-center gap-2 sm:w-auto sm:gap-3">
-                      {(["admin", "member"] as WorkspaceRole[]).map((r) => (
+                      {(isOwner ? (["admin", "member"] as WorkspaceRole[]) : (["member"] as WorkspaceRole[])).map((r) => (
                         <button
                           key={r}
                           type="button"
                           disabled={setRole.isPending}
-                          onClick={() => setRole.mutate({ id: m.id, role: r })}
+                          onClick={() =>
+                            setRole.mutate(
+                              { id: m.id, role: r },
+                              {
+                                onSuccess: () => notify.done("Role updated", "The change applies on their next request."),
+                                onError: (e: ApiError) => notify.failed("Role not changed", { description: e.message }),
+                              },
+                            )
+                          }
                           className={`ax-focus ax-tap inline-flex items-center justify-center rounded-full px-3.5 py-1 text-xs font-semibold ${
                             m.role === r
                               ? "bg-cyan-accent/15 text-cyan-accent"
@@ -318,17 +279,39 @@ function MembersPage() {
                       <p className="ax-label break-all text-foreground sm:truncate">{inv.email}</p>
                       <p className="ax-caption">
                         {inv.role}
-                        {inv.expires_at
-                          ? ` · expires ${new Date(inv.expires_at).toLocaleDateString()}`
-                          : ""}
+                        {inv.expired
+                          ? " · expired — press Resend"
+                          : inv.expires_at
+                            ? ` · expires ${new Date(inv.expires_at).toLocaleDateString()}`
+                            : ""}
                       </p>
+                      {inv.send_error ? (
+                        <p className="ax-caption text-amber-400">E-mail not delivered — press Resend.</p>
+                      ) : inv.last_sent_at ? (
+                        <p className="ax-caption">E-mailed {new Date(inv.last_sent_at).toLocaleString()}</p>
+                      ) : null}
                     </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="ax-press ax-tap"
+                      disabled={resend.isPending}
+                      onClick={() => doResend(inv)}
+                      aria-label={`Send the invitation to ${inv.email} again`}
+                    >
+                      Resend
+                    </Button>
                     <Button
                       variant="ghost"
                       size="sm"
                       className="ax-press text-destructive"
                       disabled={revokeInvite.isPending}
-                      onClick={() => revokeInvite.mutate(inv.id)}
+                      onClick={() =>
+                        revokeInvite.mutate(inv.id, {
+                          onSuccess: () => notify.done("Invitation revoked", "That link no longer works."),
+                          onError: (e: ApiError) => notify.failed("Invitation not revoked", { description: e.message }),
+                        })
+                      }
                       aria-label={`Revoke invitation for ${inv.email}`}
                     >
                       <Trash2 className="size-4" />
@@ -372,7 +355,11 @@ function MembersPage() {
               onClick={() => {
                 const target = confirmRemove;
                 setConfirmRemove(null);
-                if (target) removeMember.mutate(target.id);
+                if (target)
+                  removeMember.mutate(target.id, {
+                    onSuccess: () => notify.done("Member removed", "They no longer have access to this organisation."),
+                    onError: (e: ApiError) => notify.failed("Member not removed", { description: e.message }),
+                  });
               }}
             >
               Remove member

@@ -319,6 +319,53 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
   if (/^\/api\/companies\/[^/?]+\/timeline/.test(key)) return { events: TIMELINE };
   if (/^\/api\/companies\/[^/?]+/.test(key)) { const d = key.split("/")[3].split("?")[0]; return { company: COMPANIES.find((c) => c.domain === d) ?? COMPANIES[0], people: CONTACTS.slice(0, 2) }; }
   if (key.startsWith("/api/companies")) return { companies: e ? [] : COMPANIES };
+  // ---- Team (Rust procs team.*; same data as the old /api/workspace/* routes). ?err=1 = engine down, ?inv=ok|partial|fail = invitation batch result
+  if (key.startsWith("team.")) {
+    if (/[?&]err=1/.test(location.hash)) throw new ApiError("Not found", 501, "team_v1_sql_missing");
+    const E = empty();
+    if (key === "team.members.list") return { members: E ? [] : [
+      { id: "u1", user_id: "u1", email: "pro.buyer@anexomail.com", name: null, role: "owner", status: "active", joined_at: ago(120), is_you: true },
+      { id: "u2", user_id: "u2", email: "sara@acme-studio.co.uk", name: null, role: "admin", status: "active", joined_at: ago(40) },
+      { id: "u3", user_id: "u3", email: "ali.raza@acme-studio.co.uk", name: null, role: "member", status: "active", joined_at: ago(12) },
+      { id: "u4", user_id: "u4", email: "accounts.payable.northern-region@acme-studio.co.uk", name: null, role: "member", status: "active", joined_at: ago(3) },
+    ] };
+    if (key === "team.invites.list") return { invitations: E ? [] : [
+      { id: "i1", email: "new.hire@acme-studio.co.uk", role: "member", expires_at: ago(-5), last_sent_at: ago(0.2), send_error: null, expired: false },
+      { id: "i2", email: "contractor@freelance-design-partners.example", role: "admin", expires_at: ago(-1), last_sent_at: null, send_error: "550 5.1.1 user unknown", expired: false },
+      { id: "i3", email: "old.invite@acme-studio.co.uk", role: "member", expires_at: ago(2), last_sent_at: ago(16), send_error: null, expired: true },
+    ] };
+    if (key === "team.invites.create") {
+      const mode = /[?&]inv=(ok|partial|fail)/.exec(location.hash)?.[1] ?? "ok";
+      const em = (input?.emails as string[]) ?? [];
+      if (mode === "fail") return { ok: true, role: input?.role, invited: [], resent: [], failed: em.map((e) => ({ email: e, error: "smtp connect timeout" })), already_member: [], invalid: 0, duplicate: 0, over_cap: 0 };
+      if (mode === "partial") return { ok: true, role: input?.role, invited: em.slice(0, 1), resent: [], failed: em.slice(1).map((e) => ({ email: e, error: "550 5.1.1 user unknown" })), already_member: ["ali.raza@acme-studio.co.uk"], invalid: 1, duplicate: 0, over_cap: 0 };
+      return { ok: true, role: input?.role, invited: em, resent: [], failed: [], already_member: [], invalid: 0, duplicate: 0, over_cap: 0 };
+    }
+    if (key === "team.invites.resend" || key === "team.invites.revoke") return { ok: true, sent: true };
+    if (key === "team.members.update" || key === "team.members.remove") return { ok: true };
+    if (key === "team.teams.list") return { teams: E ? [] : [
+      { id: "t1", name: "Support", slug: "support", member_count: 2 },
+      { id: "t2", name: "Finance & accounts payable northern region", slug: "finance-ap-north", member_count: 1 },
+    ] };
+    if (key === "team.teams.create") return { ok: true, team: { id: "t9", name: input?.name, slug: "new", member_count: 0 } };
+    if (key === "team.teams.delete") return { ok: true };
+    if (key === "team.teams.members") return { team_id: String(input?.id), user_ids: input?.id === "t1" ? ["u2", "u3"] : ["u4"] };
+    if (key === "team.teams.setMembers") return { ok: true, added: 1, removed: 0, ignored: 0, over_cap: 0, count: ((input?.user_ids as string[]) ?? []).length };
+    if (key === "team.invites.mine") return { verified: true, invitations: E ? [] : [
+      { token: "11111111-1111-1111-1111-111111111111", org_name: "Northwind Trading Ltd", role: "member", invited_by: "tom@northwind.co.uk", expires_at: ago(-9) },
+    ] };
+    if (key === "team.invite.lookup") {
+      const tok = String(input?.token ?? "");
+      if (tok === "gone") throw new ApiError("This invitation link is not valid.", 404, "invite_not_found");
+      if (tok === "down") throw new ApiError("Could not open", 500, "server_error");
+      const status = tok === "revoked" ? "revoked" : tok === "expired" ? "expired" : tok === "used" ? "accepted" : "pending";
+      return { org_name: tok === "long" ? "Meridian International Logistics & Freight Forwarding (UK) Limited" : "Acme Studio", role: tok === "admin" ? "admin" : "member", email: "ali.raza@acme-studio.co.uk", invited_by: "pro.buyer@anexomail.com", expires_at: ago(status === "expired" ? 2 : -11), status };
+    }
+    if (key === "team.invite.accept") {
+      if (String(input?.token) === "racy") throw new ApiError("already used", 409, "used");
+      return { ok: true, org_id: "o2", org_name: "Acme Studio", role: "member" };
+    }
+  }
   // ---- Admin → Members / Teams / Invitations (#admin-members, #admin-teams; ?empty=1, ?err=1 = endpoint 404, role=member|admin)
   if (key.startsWith("/api/workspace/")) {
     if (/[?&]err=1/.test(location.hash)) throw new ApiError("Not found", 404, "not_found");

@@ -160,7 +160,16 @@ function AuthPage() {
     const createdNow = fromSignup.current;
     fromSignup.current = false;
     let target = "/onboarding";
+    // An invitation link was opened before signing in (team invite): go back to it first — joining an
+    // organisation needs no plan, no claim and no workspace of your own.
+    let invited = false;
+    try {
+      invited = Boolean(window.sessionStorage.getItem("anexo.pending.invite"));
+    } catch {
+      /* private window: the link in the e-mail still works */
+    }
     if (session.user.is_founder) target = "/app";
+    else if (invited) target = "/join";
     else if (createdNow) target = "/plans";
     else if (!session.user.anexomail_address) target = "/claim";
     else if (kind === "personal") {

@@ -1,10 +1,11 @@
-// Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, #admin-members, #admin-teams, #chips, add ?empty=1 for empty states
+// Harness for the REAL /app routes. Hash = "<page>[?search]": #cal, #people, #people?id=c1, #work, #work-basicplan, #crm, #crm/pipeline|leads|relationships|collab|activity|tasks|reports|accounts, #admin-members, #admin-teams, #join?t=<token> (add &signedout=1 | t=gone|revoked|expired|used|down), #rsvp?t=…, #chips, add ?empty=1 for empty states
 // Shell mirrors AppShell: 56px header, <main flex min-h-0 flex-1 flex-col md:flex-row>, phone bottom bar (placeholder, same height).
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { createRoot } from "react-dom/client";
 
 import { Route as CalendarRoute } from "@/routes/app.calendar";
 import { Route as RsvpRoute } from "@/routes/rsvp";
+import { Route as JoinRoute } from "@/routes/join";
 import { Route as DashboardRoute } from "@/routes/app.index";
 import { Route as PeopleRoute } from "@/routes/app.people";
 import { Route as WorkRoute } from "@/routes/app.work";
@@ -87,6 +88,7 @@ const pick = (h: string): R => {
   if (/[?&]gate=1/.test(h)) return GateRoute as unknown as R;
   const b = h.replace(/^#\/?/, "").replace(/^app\//, "").split("?")[0];
   if (b.startsWith("rsvp")) return RsvpRoute as unknown as R;
+  if (b.startsWith("join")) return JoinRoute as unknown as R;
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
   if (b.startsWith("inbox")) return InboxRoute as unknown as R;
   if (b.startsWith("dashboard")) return DashboardRoute as unknown as R;
@@ -114,7 +116,7 @@ function Shell() {
   const h = useSyncExternalStore(sub, () => location.hash, () => "");
   const picked = pick(h);
   const Page = picked.component;
-  if (/^#\/?rsvp/.test(h)) return <Page />; // public page: no app chrome
+  if (/^#\/?(rsvp|join)/.test(h)) return <Page />; // public pages: no app chrome
   return (
     <div className="flex h-dvh flex-col overflow-hidden bg-background">
       <div className="flex h-14 shrink-0 items-center gap-3 border-b border-border px-4 text-sm font-bold">

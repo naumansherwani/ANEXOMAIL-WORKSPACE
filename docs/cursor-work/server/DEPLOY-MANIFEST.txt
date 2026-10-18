@@ -43,8 +43,8 @@ src/lib/mail.ts 6ae6054e859d2248
 src/routes/app.billing.tsx 4b4c93d6ab168fc4
 src/routes/app.account.tsx 843adbe1d21b639f
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
-src/routes/app.admin.members.tsx 678f7e5dbcfb9a2f
-src/routes/app.admin.teams.tsx b0386a36d0bb467b
+src/routes/app.admin.members.tsx 62a6434ee68edfbb
+src/routes/app.admin.teams.tsx e97e4983a7605ae5
 src/components/app/CrossPlatformBar.tsx ab6434edc184c235
 src/lib/billing-platform.ts 121a9b6e65d8fc91
 src/routes/app.founder_.billing.tsx 66c2dc943a5fb57b
@@ -85,4 +85,9 @@ src/components/app/calendar/EventDetail.tsx 3f6a9025086ddc26
 src/components/app/calendar/Guests.tsx dffa0499316208d9
 src/components/app/calendar/FindTime.tsx 499767b811ead3f3
 src/routes/rsvp.tsx 126ff4cb28431afd
-src/routeTree.gen.ts f4a806b736ba1098
+src/routeTree.gen.ts 9ee7fb40d1ec3316
+src/lib/team.ts e426bda76cd793a9
+src/lib/team-report.ts 19e8a928c1ab2d1b
+src/routes/join.tsx b35ce54530f1df55
+src/routes/auth.tsx f41cf236515f3868
+src/routes/app.integrations.tsx b556cdf994245dca

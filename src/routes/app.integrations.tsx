@@ -39,13 +39,13 @@ export const Route = createFileRoute("/app/integrations")({
       {
         name: "description",
         content:
-          "Connect Gmail, Microsoft 365, Zoho, Proton or any IMAP mailbox, migrate everything in one run, prove delivery and export your data whenever you want.",
+          "Connect Gmail, Microsoft 365, Zoho, Proton or any IMAP mailbox, ask for a guided move of your old mail, prove delivery and export your data whenever you want.",
       },
       { property: "og:title", content: "Integrations — ANEXOMAIL Workspace" },
       {
         property: "og:description",
         content:
-          "Native mailbox connections, one-run migration, delivery proof and one-click export.",
+          "Native mailbox connections, guided mail move, delivery proof and one-click export.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -256,10 +256,11 @@ function MigrationTab() {
 
   return (
     <>
-      <h2 className="ax-heading text-foreground">Move in — one run, nothing lost</h2>
+      <h2 className="ax-heading text-foreground">Move in — a guided move</h2>
       <p className="ax-caption mt-1 text-muted-foreground">
-        Threads, folders, attachments, read state and dates stay intact. Mirror keeps syncing until
-        you cut over; copy runs once.
+        Ask for your old mail to be moved here. The move is not automatic yet: it is started with you
+        by our team, and its status shows below as it runs. Copy moves once; mirror keeps syncing
+        until you cut over.
       </p>
 
       <form
@@ -271,7 +272,7 @@ function MigrationTab() {
           start.mutate(
             { connection_id: source, target_mailbox: mailbox, mode },
             {
-              onSuccess: () => notify.done("Migration queued", "Progress updates live below."),
+              onSuccess: () => notify.done("Move requested", "Our team starts it with you. The status shows below."),
               onError: (err) =>
                 notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
                   description: err.isNotImplemented
@@ -323,7 +324,7 @@ function MigrationTab() {
           disabled={start.isPending}
           className="ax-press h-9 rounded-xl bg-primary px-3 text-[12px] font-semibold text-primary-foreground disabled:opacity-50"
         >
-          Start migration
+          Request move
         </button>
       </form>
 
@@ -340,7 +341,7 @@ function MigrationTab() {
         >
           {(d) =>
             d.jobs.length === 0 ? (
-              <p className="ax-caption text-muted-foreground">No migration has run yet.</p>
+              <p className="ax-caption text-muted-foreground">No move requested yet.</p>
             ) : (
               <ul className="space-y-ax-3">
                 {d.jobs.map((j) => (
