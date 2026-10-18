@@ -6,7 +6,7 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **18 Oct 2026, 05:35 PKT** (asli ghadi, `date` command; pichle stamp andaze the).
+Aakhri update: **18 Oct 2026, 05:43 PKT** (asli ghadi, `date` command; pichle stamp andaze the).
 
 ---
 
@@ -22,6 +22,8 @@ Aakhri update: **18 Oct 2026, 05:35 PKT** (asli ghadi, `date` command; pichle st
 ---
 
 ## 1. ABHI KA QADAM (17 Oct 2026)
+
+**18 Oct 2026, 05:43 PKT — SQL EMERGENCY THEEK (E31 + E33 shuru se dobara likhi, usi file mein; READY — founder ko dobara Run karna hai):** local Postgres 16 par dono asli errors dohraaye (line 45 / 77 at RAISE). E33 ka bug sirf self-test mein nahi tha — `team_invite_accept` ka apna write `org_role` enum par girta; ab accept column ka asli type DB se dhoondh kar likhta hai. E31 ka self-test ab asli org (FK target pg_constraint se) use karta hai. Dono mein Part 1 (schema) aur Part 2 (self-test) alag transactions; aakhir mein ek jawab-row (`e31_result` / `e33_result`, selftest = PASSED ya SKIPPED+wajah). Test: 5+5 schema-variants (enum/text, FK org/orgs/none, status+email ho/na ho), dobara chalana, purani state par upgrade, 9+12 mutation (sab pakde gaye), `service_role` se chala kar, browser role refuse. **Founder ke liye tarteeb:** E31 pehle, phir E33, phir `rust-engine-install.sh`. **ai.anexomail.com par is chakkar mein koi kaam nahi (Rule 23); founder ne kaha SQL ke baad ruk jao — ruk gaya.** Ledger L78, G32.
 
 **18 Oct 2026, 05:35 PKT — FOUNDER KA SAKHT HUKM (ai.anexomail.com BAND) + SQL EMERGENCY:** (1) **`ai.anexomail.com` (LEO AI product) ek ALAG product hai, agle saal launch hoga, founder ke liye priority nahi; anexomail.com (human side) 100% bug-free hone ke baad hi uska kaam shuru hoga.** Ab se koi agent/session us par KAAM NAHI karta, na check, na naya feature, na copy badalna, na uske liye installer — jab tak founder khud likh kar na kahe. Jo AI surface repo mein pehle se hai woh jaisa hai waisa chhoda gaya (SiteLock: awam ko sirf `/` coming-soon; baqi sab gated). Founder ne kaha 'tum ne touch kiya aur khol diya' — repo ka git saboot: 17 Oct 18:00 PKT ke baad ke kisi commit ne AI file / `host.ts` / `SiteLock` / Caddy / gates nahi chhua; lekin ek codebase teen host serve karta hai, is liye web pull ka naya code (join/rsvp/calendar/team) `ai.` host par bhi jata hai aur uska gate server ki `VITE_SITE_LOCK` par hai — yeh live dekh kar hi pakka hota hai, founder ne ab is par kaam rokne ko kaha. (2) **SQL emergency:** E31 fail (`calendar_events_org_id_fkey` — self-test ne bana-banaya org uuid daala; asli table mein FK hai) aur E33 fail (`org_members.role` ka type `org_role` enum hai, SQL `text` daal raha tha). Founder: E31 'shuru se, super advance level par' likho; dono usi file mein (SQL fail rule). Is chakkar mein sirf yeh do SQL files; uske baad ruko.
 
