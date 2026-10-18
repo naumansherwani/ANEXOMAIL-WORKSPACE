@@ -205,6 +205,9 @@ Founder ka hukm: founder ka account/protocol awam user se **alag** hai. Founder 
 - Rust code sandbox mein compile nahi hota: Rust badlav `rust-safe-deploy.sh` se, founder ke server par compile + rollback ke saath.
 - **Founder ko jo kaam ka style pasand hai (usne kaha "love you ho gaya", 17 Oct 19:34 PKT) — yehi chalta rahe:** (1) har theek hui cheez ke saath **ek hi pull command** (pm2 restart + save), (2) agent **khud screenshot le kar** assess kare (390 / 820 / 1366 laptop / 1440), (3) kaam **bina ruke jaari**, ek batch ke baad agla, (4) har summary ke end mein **sach wali Loophole ledger**, (5) repo + memory file hamesha taaza, (6) founder ke bheje screenshots (live site ki tasveer) ko pehle padho — woh asli user ki nazar hai.
 
+### Rule 23 — ai.anexomail.com BAND: koi kaam nahi (locked 18 Oct 2026, 05:35 PKT, founder)
+Founder ka hukm: `ai.anexomail.com` (LEO AI) alag product hai, **agle saal launch**, abhi priority nahi; pehle anexomail.com 100% bug-free. Jab tak founder khud likh kar na kahe: **AI surface par koi kaam nahi** — na naya feature, na copy/UI badlav, na check script, na installer, na Rust/Brain proc usi ke liye. Jo pehle se repo mein hai (SiteLock: awam ko sirf `/` coming-soon, baqi gated; `docs/cursor-work/ai/`) jaisa hai waisa rahe aur awam ko wahan kuch naya nazar nahi aana chahiye. Koi kaam AI surface ko chhuta lage to ruk kar founder se poochho.
+
 ---
 
 ## PENDING (founder action required)
