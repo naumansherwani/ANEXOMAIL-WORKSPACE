@@ -45,6 +45,7 @@ pub fn owns(proc: &str) -> bool {
             | "team.teams.delete"
             | "team.teams.members"
             | "team.teams.setMembers"
+            | "team.seats"
     )
 }
 
@@ -267,15 +268,82 @@ fn need_manage(c: &Ctx) -> Option<Resp> {
     }
 }
 
-/// Append-only people log. Never fails the action it describes.
+/// Append-only people log AND the tamper-evident hash chain (E34 `team_audit`: one call writes both). If E34 is not applied yet the
+/// old direct insert into the people log still happens. Never fails the action it describes.
 async fn log(c: &Ctx, action: &str, target: &str, detail: Value) {
-    let _ = rest(
-        "POST",
-        "org_people_log",
-        Some(json!({ "org_id": c.org_id, "actor": c.email, "action": action, "target": target, "detail": detail })),
-        "return=minimal",
+    let via_db = crate::sb_rpc(
+        "team_audit",
+        json!({ "p_org": c.org_id, "p_actor": c.email, "p_action": action, "p_target": target, "p_detail": detail.clone() }),
     )
     .await;
+    if via_db.is_err() {
+        let _ = rest(
+            "POST",
+            "org_people_log",
+            Some(json!({ "org_id": c.org_id, "actor": c.email, "action": action, "target": target, "detail": detail })),
+            "return=minimal",
+        )
+        .await;
+    }
+}
+
+fn num(v: &Value, k: &str) -> i64 {
+    v.get(k).and_then(|x| x.as_i64()).unwrap_or(0)
+}
+
+/// Invitation columns. V2 adds the optional work address (E34); an older database answers 400 for them, so every read tries V2 first.
+const INV_COLS_V2: &str =
+    "id,email,token,role,expires_at,invite_count,mailbox_local,mailbox_domain_id";
+const INV_COLS_V1: &str = "id,email,token,role,expires_at,invite_count";
+
+async fn read_invitations(tail: &str) -> Result<Value, String> {
+    match rest(
+        "GET",
+        &format!("org_invitations?select={}&{}", INV_COLS_V2, tail),
+        None,
+        "",
+    )
+    .await
+    {
+        Ok(v) => Ok(v),
+        Err(_) => {
+            rest(
+                "GET",
+                &format!("org_invitations?select={}&{}", INV_COLS_V1, tail),
+                None,
+                "",
+            )
+            .await
+        }
+    }
+}
+
+/// "sara@acme.com" for an invitation that asks for a work address, "" otherwise (or when the domain cannot be resolved).
+async fn workmail_of(org_id: &str, inv: &Value) -> String {
+    let local = st(inv, "mailbox_local");
+    if local.is_empty() {
+        return String::new();
+    }
+    let dom = if st(inv, "mailbox_domain_id").is_empty() {
+        Value::Null
+    } else {
+        json!(st(inv, "mailbox_domain_id"))
+    };
+    match crate::sb_rpc(
+        "team_invite_domain",
+        json!({ "p_org": org_id, "p_domain_id": dom }),
+    )
+    .await
+    {
+        Ok(v) => v
+            .as_array()
+            .and_then(|a| a.first().cloned())
+            .map(|d| st(&d, "domain"))
+            .filter(|d| !d.is_empty())
+            .map(|d| format!("{}@{}", local, d))
+            .unwrap_or_default(),
+        Err(_) => String::new(),
+    }
 }
 
 /* ----------------------------------------------------------------- SMTP */
@@ -374,6 +442,7 @@ async fn deliver(c: &Ctx, inv: &Value) -> Result<(), String> {
     let expires = tc::parse_ts(&st(inv, "expires_at")).unwrap_or(stamp + 14 * 86400);
     let link = format!("{}/join?t={}", app_url(), tok);
     let role = st(inv, "role");
+    let workmail = workmail_of(&c.org_id, inv).await;
     let invite = tc::Invite {
         org_name: if c.org_name.is_empty() {
             "an organisation"
@@ -385,6 +454,7 @@ async fn deliver(c: &Ctx, inv: &Value) -> Result<(), String> {
         to: &to,
         link: &link,
         expires_epoch: expires,
+        workmail: &workmail,
     };
     let from = invite_from();
     let message_id = format!("team.{}.{}@anexomail.com", id.replace('-', ""), stamp);
@@ -443,6 +513,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         "team.teams.delete" => teams_delete(&c, input).await,
         "team.teams.members" => teams_members(&c, input).await,
         "team.teams.setMembers" => teams_set_members(&c, input).await,
+        "team.seats" => seats_state(&c).await,
         _ => fail(StatusCode::NOT_FOUND, "procedure_not_in_rust", proc),
     }
 }
@@ -474,6 +545,11 @@ fn join_error(code: &str) -> Resp {
             StatusCode::CONFLICT,
             "used",
             "This invitation was already used by someone else.",
+        ),
+        "seats_full" => fail(
+            StatusCode::CONFLICT,
+            "seats_full",
+            "This organisation has no free seat right now. Ask the organiser to add a seat — your invitation stays valid.",
         ),
         _ => fail(
             StatusCode::NOT_FOUND,
@@ -945,6 +1021,29 @@ async fn invites_create(c: &Ctx, input: &Value) -> Resp {
             "At least one e-mail address is required.",
         );
     }
+    // optional work address (E34): "sara" -> sara@<verified domain>, created for them when they join
+    let mailbox_raw = st(input, "mailbox");
+    let mailbox_local: Option<String> =
+        if mailbox_raw.trim().is_empty() {
+            None
+        } else {
+            match tc::clean_local_part(&mailbox_raw) {
+                Some(l) => Some(l),
+                None => return fail(
+                    StatusCode::BAD_REQUEST,
+                    "bad_mailbox",
+                    "A work address can use letters, numbers, dots, dashes and underscores only.",
+                ),
+            }
+        };
+    let want_domain = st(input, "domain_id").trim().to_lowercase();
+    if !want_domain.is_empty() && !tc::is_uuid(&want_domain) {
+        return fail(
+            StatusCode::BAD_REQUEST,
+            "bad_domain",
+            "Choose one of your verified domains.",
+        );
+    }
     let org = tc::pct(&c.org_id);
 
     // who is already in / already invited
@@ -988,8 +1087,78 @@ async fn invites_create(c: &Ctx, input: &Value) -> Resp {
             )
         }
     };
-    let plan = tc::plan_invites(&raw, &members, &pending);
+    let mut plan = tc::plan_invites(&raw, &members, &pending);
+
+    // seats (E34). The database counts; unknown / unlimited / SQL not applied => no limit here (a guess never blocks a paying customer).
+    // The hard stop is team_invite_accept (inside a lock) — this only tells the organiser before an e-mail is wasted.
+    let seat = crate::sb_rpc("team_seat_state", json!({ "p_org": c.org_id }))
+        .await
+        .ok();
+    let free = seat.as_ref().and_then(|v| {
+        tc::seats_free(
+            v.get("enforced").and_then(|x| x.as_bool()).unwrap_or(false),
+            num(v, "seats"),
+            num(v, "used"),
+            num(v, "pending"),
+        )
+    });
+    let over_seats = tc::apply_seat_cap(&mut plan, free);
     let todo = plan.fresh.len() + plan.resend.len();
+    if todo == 0 && over_seats > 0 {
+        let seats = seat.as_ref().map(|v| num(v, "seats")).unwrap_or(0);
+        return fail(
+            StatusCode::CONFLICT,
+            "seats_full",
+            &format!(
+                "All {} seat{} are in use (people plus invitations waiting). Remove someone or add seats in Billing, then invite again.",
+                seats,
+                if seats == 1 { "" } else { "s" }
+            ),
+        );
+    }
+
+    // work address: one person, a verified domain, and E34 on the database — otherwise it could never be created when they join
+    let mut workmail = String::new();
+    let mut domain_used = String::new();
+    if let Some(l) = &mailbox_local {
+        if todo != 1 {
+            return fail(
+                StatusCode::BAD_REQUEST,
+                "mailbox_needs_one_person",
+                "A work address is created for one person at a time — invite that person on their own.",
+            );
+        }
+        let dom_arg = if want_domain.is_empty() {
+            Value::Null
+        } else {
+            json!(want_domain)
+        };
+        match crate::sb_rpc(
+            "team_invite_domain",
+            json!({ "p_org": c.org_id, "p_domain_id": dom_arg }),
+        )
+        .await
+        {
+            Err(_) => {
+                return fail(
+                    StatusCode::NOT_IMPLEMENTED,
+                    "team_v2_sql_missing",
+                    "Work addresses on invitations need the latest server update.",
+                )
+            }
+            Ok(v) => match v.as_array().and_then(|a| a.first().cloned()) {
+                Some(d) if !st(&d, "domain").is_empty() => {
+                    workmail = format!("{}@{}", l, st(&d, "domain"));
+                    domain_used = st(&d, "id");
+                }
+                _ => return fail(
+                    StatusCode::CONFLICT,
+                    "no_verified_domain",
+                    "Connect and verify a domain first (Domains), then invite with a work address.",
+                ),
+            },
+        }
+    }
 
     // daily cap on invitation e-mails (abuse guard), counted from the ledger
     if todo > 0 {
@@ -1021,21 +1190,30 @@ async fn invites_create(c: &Ctx, input: &Value) -> Resp {
     let t = now();
     let expires = tc::fmt_iso(t + 14 * 86400);
     for e in &plan.fresh {
-        let row = json!({
+        let mut row = json!({
             "org_id": c.org_id, "email": e, "role": role, "invited_by": c.id,
             "invited_by_email": c.email, "expires_at": expires,
         });
+        if let (Some(l), Some(o)) = (&mailbox_local, row.as_object_mut()) {
+            o.insert("mailbox_local".to_string(), json!(l));
+            o.insert("mailbox_domain_id".to_string(), json!(domain_used));
+        }
         // a parallel request may have created it a moment ago: the pending-unique index refuses, the refresh below covers it
         let _ = rest("POST", "org_invitations", Some(row), "return=minimal").await;
     }
     if !plan.resend.is_empty() {
+        let mut patch = json!({ "role": role, "expires_at": expires, "invited_by": c.id, "invited_by_email": c.email });
+        if let (Some(l), Some(o)) = (&mailbox_local, patch.as_object_mut()) {
+            o.insert("mailbox_local".to_string(), json!(l));
+            o.insert("mailbox_domain_id".to_string(), json!(domain_used));
+        }
         let _ = rest(
             "PATCH",
             &format!(
                 "org_invitations?org_id=eq.{org}&status=eq.pending&{}",
                 tc::in_filter("email", &plan.resend)
             ),
-            Some(json!({ "role": role, "expires_at": expires, "invited_by": c.id, "invited_by_email": c.email })),
+            Some(patch),
             "return=minimal",
         )
         .await;
@@ -1051,10 +1229,10 @@ async fn invites_create(c: &Ctx, input: &Value) -> Resp {
     let mut failed: Vec<Value> = Vec::new();
     if !all.is_empty() {
         let q = format!(
-            "org_invitations?select=id,email,token,role,expires_at,invite_count&org_id=eq.{org}&status=eq.pending&{}",
+            "org_id=eq.{org}&status=eq.pending&{}",
             tc::in_filter("email", &all)
         );
-        let invs = match rest("GET", &q, None, "").await {
+        let invs = match read_invitations(&q).await {
             Ok(v) => rows(&v),
             Err(_) => {
                 return fail(
@@ -1081,7 +1259,7 @@ async fn invites_create(c: &Ctx, input: &Value) -> Resp {
             c,
             "invite.sent",
             &format!("{} address{}", all.len(), if all.len() == 1 { "" } else { "es" }),
-            json!({ "role": role, "sent": sent.len(), "resent": resent.len(), "failed": failed.len() }),
+            json!({ "role": role, "sent": sent.len(), "resent": resent.len(), "failed": failed.len(), "over_seats": over_seats, "work_address": workmail }),
         )
         .await;
     }
@@ -1095,8 +1273,38 @@ async fn invites_create(c: &Ctx, input: &Value) -> Resp {
         "invalid": plan.invalid,
         "duplicate": plan.duplicate,
         "over_cap": plan.over_cap,
+        "over_seats": over_seats,
+        "work_address": if workmail.is_empty() { Value::Null } else { json!(workmail) },
     }))
     .into_response()
+}
+
+/// Seats at a glance (E34): who may see it = any member; the numbers come from the database, never from a guess. Without E34 it says so.
+async fn seats_state(c: &Ctx) -> Resp {
+    let mut v = match crate::sb_rpc("team_seat_state", json!({ "p_org": c.org_id })).await {
+        Ok(v) => v,
+        Err(_) => {
+            json!({ "enforced": false, "known": false, "unlimited": false, "seats": Value::Null, "used": Value::Null,
+                          "pending": 0, "free": Value::Null, "sql_missing": true })
+        }
+    };
+    // verified domains, so the invite form can offer "create a work address"
+    let domains = rest(
+        "GET",
+        &format!(
+            "org_domains?select=id,domain&org_id=eq.{}&status=eq.verified&order=domain",
+            tc::pct(&c.org_id)
+        ),
+        None,
+        "",
+    )
+    .await
+    .map(|d| rows(&d))
+    .unwrap_or_default();
+    if let Some(o) = v.as_object_mut() {
+        o.insert("domains".to_string(), json!(domains));
+    }
+    crate::ok(v).into_response()
 }
 
 async fn pending_by_id(c: &Ctx, input: &Value) -> Result<Value, Resp> {
@@ -1108,18 +1316,19 @@ async fn pending_by_id(c: &Ctx, input: &Value) -> Result<Value, Resp> {
             "Say which invitation.",
         ));
     }
-    let found = rest(
-        "GET",
-        &format!(
-            "org_invitations?select=id,email,token,role,expires_at,invite_count&id=eq.{}&org_id=eq.{}&status=eq.pending",
-            tc::pct(&id),
-            tc::pct(&c.org_id)
-        ),
-        None,
-        "",
-    )
+    let found = read_invitations(&format!(
+        "id=eq.{}&org_id=eq.{}&status=eq.pending",
+        tc::pct(&id),
+        tc::pct(&c.org_id)
+    ))
     .await
-    .map_err(|_| fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not read the invitation"))?;
+    .map_err(|_| {
+        fail(
+            StatusCode::INTERNAL_SERVER_ERROR,
+            "server_error",
+            "Could not read the invitation",
+        )
+    })?;
     rows(&found).into_iter().next().ok_or_else(|| {
         fail(
             StatusCode::NOT_FOUND,

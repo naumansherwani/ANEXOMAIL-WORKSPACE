@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { summariseInvites } from "../../../../src/lib/team-report";
+import { describeSeats, describeWorkMail, summariseInvites } from "../../../../src/lib/team-report";
 
 describe("summariseInvites — what the person is told comes from the engine's own report", () => {
   test("everything delivered", () => {
@@ -53,5 +53,61 @@ describe("summariseInvites — what the person is told comes from the engine's o
 
   test("a missing report is not a success claim", () => {
     expect(summariseInvites(undefined, 3).tone).toBe("info");
+  });
+});
+
+describe("seats — the database's own count, said honestly", () => {
+  test("no information => says nothing (never a made-up limit)", () => {
+    expect(describeSeats(undefined).tone).toBe("none");
+    expect(describeSeats({ sql_missing: true }).tone).toBe("none");
+    expect(describeSeats({ enforced: false, known: false }).line).toBe("");
+    expect(describeSeats({ enforced: true, seats: 0 }).tone).toBe("none");
+  });
+
+  test("Business Pro is unlimited people", () => {
+    const r = describeSeats({ unlimited: true, enforced: false, used: 41, pending: 2 });
+    expect(r.tone).toBe("ok");
+    expect(r.line).toBe("Unlimited people on your plan · 41 people in · 2 invitations waiting");
+    expect(describeSeats({ unlimited: true, used: 1, pending: 0 }).line).toBe("Unlimited people on your plan · 1 person in");
+  });
+
+  test("per-seat plan: used / free / full", () => {
+    const ok = describeSeats({ enforced: true, seats: 10, used: 4, pending: 1, free: 5 });
+    expect(ok).toEqual({ line: "4 of 10 seats used · 1 invitation waiting · 5 seats free", tone: "ok" });
+    expect(describeSeats({ enforced: true, seats: 3, used: 2, pending: 0, free: 1 }).tone).toBe("warn");
+    const full = describeSeats({ enforced: true, seats: 1, used: 1, pending: 0, free: 0 });
+    expect(full.tone).toBe("full");
+    expect(full.line).toBe("1 of 1 seat used — no free seat. Add seats in Billing to invite more people.");
+  });
+
+  test("free is worked out when the server did not send it, and never negative", () => {
+    expect(describeSeats({ enforced: true, seats: 5, used: 7, pending: 3 }).tone).toBe("full");
+  });
+});
+
+describe("invitations that hit the seat limit or ask for a work address", () => {
+  test("refused-for-seats are told, not dropped silently", () => {
+    const r = summariseInvites({ invited: ["a@x.com"], over_seats: 2 }, 3);
+    expect(r.tone).toBe("done");
+    expect(r.detail).toContain("2 more people would go over your seats");
+    expect(summariseInvites({ invited: ["a@x.com"], over_seats: 1 }, 2).detail).toContain("1 more person would go over");
+  });
+
+  test("the planned work address is named", () => {
+    const r = summariseInvites({ invited: ["sara@x.com"], work_address: "sara@acme.com" }, 1);
+    expect(r.detail).toContain("Work address sara@acme.com is created when they join.");
+    expect(summariseInvites({ invited: ["a@x.com"], work_address: null }, 1).detail).not.toContain("Work address");
+  });
+});
+
+describe("what a new joiner is told about their work address", () => {
+  test("created / pending / each failure", () => {
+    expect(describeWorkMail({ status: "created", address: "sara@acme.com" })).toBe("Your work address sara@acme.com is ready.");
+    expect(describeWorkMail({ status: "pending" })).toContain("organiser can add a work address");
+    expect(describeWorkMail(undefined)).toContain("organiser can add a work address");
+    expect(describeWorkMail({ status: "failed", error: "address_taken" })).toContain("already taken");
+    expect(describeWorkMail({ status: "failed", error: "mailbox_limit" })).toContain("used all its mailboxes");
+    expect(describeWorkMail({ status: "failed", error: "domain_not_verified" })).toContain("not verified");
+    expect(describeWorkMail({ status: "failed", error: "mailbox_failed" })).toContain("could not be created");
   });
 });

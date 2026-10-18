@@ -1,5 +1,5 @@
 // Usage: node shot.mjs <outDir> <name> <hash> [width] [height] [steps...]
-// steps: select:<label>=<value> | ff:<ms> (needs CLOCK=1) | btn:<exact button name> | click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
+// steps: select:<label>=<value> | ff:<ms> (needs CLOCK=1) | btn:<exact button name> | click:<text> | into:<text> (scroll into view) | label:<aria-label> | fill:<placeholder>=<value> | fillx:<exact placeholder>=<value> | wait:<ms> | scroll:<top|bottom|px> | shot:<file>
 import path from "node:path";
 import { createRequire } from "node:module";
 const TOOLS = process.env.TOOLS || "/opt/npm-tools/node_modules";
@@ -43,6 +43,7 @@ for (const s of steps) {
   else if (k === "into") await page.getByText(v, { exact: false }).first().scrollIntoViewIfNeeded();
   else if (k === "label") await page.getByLabel(v).first().click();
   else if (k === "fill") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph).fill(val); }
+  else if (k === "fillx") { const [ph, val] = v.split("="); await page.getByPlaceholder(ph, { exact: true }).fill(val); }  // fillx:<exact placeholder>=<value> (when a placeholder is a substring of another)
   else if (k === "upload") await page.setInputFiles('input[type="file"]', v);  // upload:/abs/path/file.csv
   else if (k === "select") { const i = v.lastIndexOf("="); await page.getByLabel(v.slice(0, i)).selectOption(v.slice(i + 1)); }  // select:<aria-label>=<option value>
   else if (k === "wait") await page.waitForTimeout(+v);

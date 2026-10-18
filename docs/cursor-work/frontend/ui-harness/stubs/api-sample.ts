@@ -359,11 +359,26 @@ function sample(key: string, input: Record<string, unknown> | undefined): unknow
       if (tok === "gone") throw new ApiError("This invitation link is not valid.", 404, "invite_not_found");
       if (tok === "down") throw new ApiError("Could not open", 500, "server_error");
       const status = tok === "revoked" ? "revoked" : tok === "expired" ? "expired" : tok === "used" ? "accepted" : "pending";
-      return { org_name: tok === "long" ? "Meridian International Logistics & Freight Forwarding (UK) Limited" : "Acme Studio", role: tok === "admin" ? "admin" : "member", email: "ali.raza@acme-studio.co.uk", invited_by: "pro.buyer@anexomail.com", expires_at: ago(status === "expired" ? 2 : -11), status };
+      return { org_name: tok === "long" ? "Meridian International Logistics & Freight Forwarding (UK) Limited" : "Acme Studio", role: tok === "admin" ? "admin" : "member", email: "ali.raza@acme-studio.co.uk", mailbox: tok === "mailbox" || tok === "taken" ? "ali.raza@acme-studio.co.uk" : null, invited_by: "pro.buyer@anexomail.com", expires_at: ago(status === "expired" ? 2 : -11), status };
     }
     if (key === "team.invite.accept") {
-      if (String(input?.token) === "racy") throw new ApiError("already used", 409, "used");
+      const tk = String(input?.token);
+      if (tk === "racy") throw new ApiError("already used", 409, "used");
+      if (tk === "full") throw new ApiError("no free seat", 409, "seats_full");
+      if (tk === "mailbox") return { ok: true, org_id: "o2", org_name: "Acme Studio", role: "member", mailbox: { status: "created", address: "ali.raza@acme-studio.co.uk" } };
+      if (tk === "taken") return { ok: true, org_id: "o2", org_name: "Acme Studio", role: "member", mailbox: { status: "failed", error: "address_taken" } };
       return { ok: true, org_id: "o2", org_name: "Acme Studio", role: "member" };
+    }
+    // Seats + verified domains for the invite form. ?seats=full|last|unlimited|many|none, ?doms=1|2 (default 2 domains)
+    if (key === "team.seats") {
+      const m = /[?&]seats=(\w+)/.exec(location.hash)?.[1] ?? "ok";
+      const nd = /[?&]doms=(\d)/.exec(location.hash)?.[1] ?? "2";
+      const domains = nd === "0" ? [] : nd === "1" ? [{ id: "d1", domain: "acme-studio.co.uk" }] : [{ id: "d1", domain: "acme-studio.co.uk" }, { id: "d2", domain: "acme-studio-holdings.co.uk" }];
+      if (m === "none") return { plan: "business", enforced: false, known: true, seats: null, used: 4, pending: 0, free: null, domains };
+      if (m === "unlimited") return { plan: "business_pro", enforced: false, unlimited: true, known: true, seats: null, used: 14, pending: 2, free: null, domains };
+      if (m === "full") return { plan: "business", enforced: true, known: true, seats: 6, used: 4, pending: 2, free: 0, domains };
+      if (m === "last") return { plan: "business", enforced: true, known: true, seats: 6, used: 4, pending: 1, free: 1, domains };
+      return { plan: "business", enforced: true, known: true, seats: 10, used: 4, pending: 2, free: 4, domains };
     }
   }
   // ---- Admin → Members / Teams / Invitations (#admin-members, #admin-teams; ?empty=1, ?err=1 = endpoint 404, role=member|admin)

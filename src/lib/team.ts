@@ -13,10 +13,10 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { ApiError, api } from "@/lib/api";
 import { rpc } from "@/lib/rpc";
-import type { InviteResult, TeamRole } from "@/lib/team-report";
+import type { InviteResult, SeatState, TeamRole, WorkMail } from "@/lib/team-report";
 
-export { summariseInvites } from "@/lib/team-report";
-export type { InviteResult } from "@/lib/team-report";
+export { describeSeats, describeWorkMail, summariseInvites } from "@/lib/team-report";
+export type { InviteResult, SeatState, WorkMail } from "@/lib/team-report";
 
 export type TeamMember = {
   id: string;
@@ -50,9 +50,19 @@ export type JoinView = {
   invited_by: string | null;
   expires_at: string;
   status: "pending" | "accepted" | "revoked" | "expired";
+  /** the work address that will be created for them, when the organiser asked for one */
+  mailbox?: string | null;
 };
 
-export type JoinResult = { ok: boolean; already?: boolean; org_id: string; org_name: string; role: TeamRole };
+export type JoinResult = {
+  ok: boolean;
+  already?: boolean;
+  org_id: string;
+  org_name: string;
+  role: TeamRole;
+  /** what happened to the work address (E34); absent on an older server */
+  mailbox?: WorkMail;
+};
 
 export type MyInvitation = { token: string; org_name: string; role: TeamRole; invited_by: string; expires_at: string };
 
@@ -97,6 +107,16 @@ export function useMembers(orgId: string | undefined) {
   });
 }
 
+/** Seats and the verified domains for the invite form — the database's own numbers. Rust only; an old server just shows nothing. */
+export function useSeats(orgId: string | undefined, enabled: boolean) {
+  return useQuery<SeatState, ApiError>({
+    queryKey: ["workspace", "seats", orgId],
+    queryFn: () => rpc<SeatState>("team.seats", { org_id: orgId }),
+    enabled: Boolean(orgId) && enabled,
+    retry: false,
+  });
+}
+
 export function useInvitations(orgId: string | undefined, enabled: boolean) {
   return useQuery<{ invitations: TeamInvitation[] }, ApiError>({
     queryKey: ["workspace", "invitations", orgId],
@@ -112,6 +132,7 @@ export function useTeamMutations(orgId: string | undefined) {
     void qc.invalidateQueries({ queryKey: ["workspace", "members"] });
     void qc.invalidateQueries({ queryKey: ["workspace", "invitations"] });
     void qc.invalidateQueries({ queryKey: ["workspace", "teams"] });
+    void qc.invalidateQueries({ queryKey: ["workspace", "seats"] });
   };
   const setRole = useMutation<unknown, ApiError, { id: string; role: TeamRole }>({
     mutationFn: ({ id, role }) =>
@@ -123,9 +144,18 @@ export function useTeamMutations(orgId: string | undefined) {
       call("team.members.remove", { org_id: orgId, id }, { path: `/api/workspace/members/${id}`, method: "DELETE" }),
     onSuccess: refresh,
   });
-  const invite = useMutation<InviteResult, ApiError, { emails: string[]; role: TeamRole }>({
-    mutationFn: ({ emails, role }) =>
-      call("team.invites.create", { org_id: orgId, emails, role }, { path: "/api/workspace/invitations", body: { emails, role } }),
+  const invite = useMutation<
+    InviteResult,
+    ApiError,
+    { emails: string[]; role: TeamRole; mailbox?: string; domain_id?: string }
+  >({
+    // the optional work address (mailbox / domain_id) exists only in Rust; the old route simply invites
+    mutationFn: ({ emails, role, mailbox, domain_id }) =>
+      call(
+        "team.invites.create",
+        { org_id: orgId, emails, role, ...(mailbox ? { mailbox } : {}), ...(domain_id ? { domain_id } : {}) },
+        mailbox ? null : { path: "/api/workspace/invitations", body: { emails, role } },
+      ),
     onSuccess: refresh,
   });
   const revoke = useMutation<unknown, ApiError, string>({

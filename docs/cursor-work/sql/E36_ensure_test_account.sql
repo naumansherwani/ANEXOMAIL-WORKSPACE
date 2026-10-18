@@ -13,6 +13,7 @@
 -- Chalane ka tareeqa: `docs/cursor-work/server/bizpro-login-fix.sh` (password silent prompt se; kahin store nahi hota).
 -- Seedha: psql -v ON_ERROR_STOP=1 -v handle=.. -v nm=.. -v org=.. -v domain=.. -v plan=.. -v pw=.. -f E36_ensure_test_account.sql
 --
+-- Test seats: entitlement_state.seats kam se kam 5 rakhi jati hai (E28 ki 1 seat se team invite/seat-limit test nahi ho sakta); Business Pro par seat limit hai hi nahi.
 -- Kya NAHI chhedta: family_accounts (sirf dikhata hai agar plan alag ho), polar-rust-payment, kisi aur user ki koi row.
 -- Natija: step | result ki list + aakhri "RESULT" row (OK / KUCH ADHURA). Har public step apna alag subtransaction hai: ek table ki
 -- galti baqi ko nahi rokti; login wali layer (auth.users) hamesha poori hoti hai.
@@ -212,9 +213,9 @@ begin
   -- ───────── 5) plan (payment ki jagah entitlement; baqi sab asli code ke raaste) ─────────
   begin
     if exists (select 1 from public.entitlement_state e where e.user_id = uid) then
-      execute format('update public.entitlement_state set plan = %L, active_until = greatest(coalesce(active_until, now()), now() + interval ''31 days'') where user_id = %L', _plan, uid);
+      execute format('update public.entitlement_state set plan = %L, seats = greatest(coalesce(seats, 0), 5), active_until = greatest(coalesce(active_until, now()), now() + interval ''31 days'') where user_id = %L', _plan, uid);
     else
-      execute format('insert into public.entitlement_state (user_id, plan, seats, support_active, active_until) values (%L, %L, 1, false, now() + interval ''31 days'')', uid, _plan);
+      execute format('insert into public.entitlement_state (user_id, plan, seats, support_active, active_until) values (%L, %L, 5, false, now() + interval ''31 days'')', uid, _plan);
     end if;
     select t.status, t.plan into ts, tp from public.trial_accounts t where t.user_id = uid;
     if ts is distinct from 'active' or tp is distinct from _plan then

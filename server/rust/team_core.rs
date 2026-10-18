@@ -175,6 +175,54 @@ pub fn plan_invites(
     plan
 }
 
+/* ------------------------------------------------------------------- seats (E34) */
+
+/// Seats still free for NEW invitations, or None when nothing is enforced (unlimited plan, or the seat count is not known — a guess
+/// must never block a paying customer). `pending` = invitations already waiting: each of them will take a seat when accepted.
+pub fn seats_free(enforced: bool, seats: i64, used: i64, pending: i64) -> Option<i64> {
+    if !enforced || seats <= 0 {
+        return None;
+    }
+    Some((seats - used.max(0) - pending.max(0)).max(0))
+}
+
+/// Cuts the brand-new invitations down to the free seats (first come, in the order typed). Re-sends are untouched — their seat is
+/// already counted as pending. Returns how many valid new invitations were refused for lack of seats: told to the caller, never dropped silently.
+pub fn apply_seat_cap(plan: &mut InvitePlan, free: Option<i64>) -> usize {
+    match free {
+        None => 0,
+        Some(f) => {
+            let keep = f.max(0) as usize;
+            if plan.fresh.len() > keep {
+                let dropped = plan.fresh.len() - keep;
+                plan.fresh.truncate(keep);
+                dropped
+            } else {
+                0
+            }
+        }
+    }
+}
+
+/// Work-address local part for an invitation ("  Sara " -> "sara"). Same shape the SQL accepts (E15/E34), a little stricter on dots.
+pub fn clean_local_part(raw: &str) -> Option<String> {
+    let l = raw.trim().to_lowercase();
+    if l.is_empty() || l.len() > 64 || l.contains("..") {
+        return None;
+    }
+    let ok_chars = l
+        .chars()
+        .all(|c| c.is_ascii_lowercase() || c.is_ascii_digit() || c == '.' || c == '_' || c == '-');
+    let first = l.chars().next()?;
+    let last = l.chars().last()?;
+    let edge = |c: char| c.is_ascii_lowercase() || c.is_ascii_digit();
+    if ok_chars && edge(first) && edge(last) {
+        Some(l)
+    } else {
+        None
+    }
+}
+
 /* ------------------------------------------------------------------- teams */
 
 /// "  Customer   Support " -> Some("Customer Support"); control characters become spaces; 1..=80 chars.
@@ -536,6 +584,8 @@ pub struct Invite<'a> {
     pub to: &'a str,
     pub link: &'a str,
     pub expires_epoch: i64,
+    /// work address that will be created when they join (empty = none requested)
+    pub workmail: &'a str,
 }
 
 pub fn invite_subject(i: &Invite) -> String {
@@ -546,12 +596,37 @@ pub fn invite_subject(i: &Invite) -> String {
     )
 }
 
+fn work_line_text(i: &Invite) -> String {
+    let w = clean_line(i.workmail, 254);
+    if w.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "When you join, your work address {} is created for you.\r\n\r\n",
+            w
+        )
+    }
+}
+
+fn work_line_html(i: &Invite) -> String {
+    let w = clean_line(i.workmail, 254);
+    if w.is_empty() {
+        String::new()
+    } else {
+        format!(
+            "<p style=\"margin:0 0 18px;font-size:15px;line-height:1.5\">When you join, your work address <b>{}</b> is created for you.</p>",
+            html_escape(&w)
+        )
+    }
+}
+
 pub fn invite_text(i: &Invite) -> String {
     format!(
         "{inviter} invited you to join {org} on ANEXOMAIL as {role}.\r\n\r\n\
          Open this link, sign in (or create your account) with {to}, then press \"Join\":\r\n{link}\r\n\r\n\
-         The invitation works until {day}. If you were not expecting it, ignore this e-mail — nothing happens until you press Join.\r\n\r\n\
+         {work}The invitation works until {day}. If you were not expecting it, ignore this e-mail — nothing happens until you press Join.\r\n\r\n\
          ANEXOMAIL\r\n",
+        work = work_line_text(i),
         inviter = clean_line(i.inviter, 80),
         org = clean_line(i.org_name, 80),
         role = role_phrase(i.role),
@@ -568,9 +643,10 @@ pub fn invite_html(i: &Invite) -> String {
          <p style=\"margin:0 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5b6b7f\">ANEXOMAIL</p>\
          <h1 style=\"margin:0 0 14px;font-size:20px;line-height:1.3\">{inviter} invited you to {org}</h1>\
          <p style=\"margin:0 0 18px;font-size:15px;line-height:1.5\">You will join as {role}. Sign in (or create your account) with <b>{to}</b>, then press <b>Join</b>.</p>\
-         <p style=\"margin:0 0 18px\"><a href=\"{link}\" style=\"display:inline-block;background:#0b1220;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:12px 22px;border-radius:10px\">Open invitation</a></p>\
+         {work}<p style=\"margin:0 0 18px\"><a href=\"{link}\" style=\"display:inline-block;background:#0b1220;color:#ffffff;text-decoration:none;font-weight:700;font-size:15px;padding:12px 22px;border-radius:10px\">Open invitation</a></p>\
          <p style=\"margin:0;font-size:12px;line-height:1.5;color:#5b6b7f\">Works until {day}. Nothing happens until you press Join — if you were not expecting this, ignore it.<br>If the button does not open, paste this link: {link}</p>\
          </div></body></html>",
+        work = work_line_html(i),
         inviter = html_escape(&clean_line(i.inviter, 80)),
         org = html_escape(&clean_line(i.org_name, 80)),
         role = html_escape(role_phrase(i.role)),
@@ -671,9 +747,18 @@ mod tests {
     #[test]
     fn a_manager_is_looked_after_like_a_member_not_like_an_admin() {
         // an admin may demote/remove a manager (not an admin); nobody can make a manager through an invitation
-        assert_eq!(check_member_change("admin", "a", "manager", "m", Some("member")), Ok(()));
-        assert_eq!(check_member_change("admin", "a", "manager", "m", None), Ok(()));
-        assert_eq!(check_member_change("manager", "m", "member", "x", None), Err("not_allowed"));
+        assert_eq!(
+            check_member_change("admin", "a", "manager", "m", Some("member")),
+            Ok(())
+        );
+        assert_eq!(
+            check_member_change("admin", "a", "manager", "m", None),
+            Ok(())
+        );
+        assert_eq!(
+            check_member_change("manager", "m", "member", "x", None),
+            Err("not_allowed")
+        );
         assert_eq!(parse_assignable("manager"), None);
     }
 
@@ -861,6 +946,7 @@ mod tests {
             to: "guest@example.com",
             link: "https://anexomail.com/join?t=123e4567-e89b-12d3-a456-426614174000",
             expires_epoch: 1_793_491_200,
+            workmail: "",
         }
     }
 
@@ -909,6 +995,87 @@ mod tests {
         let head = raw.split("\r\n\r\n").next().unwrap();
         assert!(head.is_ascii());
         assert!(head.contains("=?UTF-8?B?"));
+    }
+
+    #[test]
+    fn seats_are_counted_honestly() {
+        // not enforced (unlimited plan, or seat count unknown) => never a limit
+        assert_eq!(seats_free(false, 5, 1, 0), None);
+        assert_eq!(seats_free(true, 0, 1, 0), None);
+        // 5 seats, 3 in, 1 invitation waiting => 1 left
+        assert_eq!(seats_free(true, 5, 3, 1), Some(1));
+        assert_eq!(seats_free(true, 2, 2, 0), Some(0));
+        // more people than seats (seats were reduced) => 0, never negative
+        assert_eq!(seats_free(true, 2, 5, 4), Some(0));
+        assert_eq!(seats_free(true, 3, -1, -4), Some(3));
+    }
+
+    fn fresh_plan(n: usize, resend: &[&str]) -> InvitePlan {
+        InvitePlan {
+            fresh: (0..n).map(|i| format!("p{}@x.com", i)).collect(),
+            resend: resend.iter().map(|s| s.to_string()).collect(),
+            ..InvitePlan::default()
+        }
+    }
+
+    #[test]
+    fn seat_cap_keeps_the_first_and_tells_how_many_were_refused() {
+        let mut p = fresh_plan(3, &["old@x.com"]);
+        assert_eq!(apply_seat_cap(&mut p, Some(1)), 2);
+        assert_eq!(p.fresh, vec!["p0@x.com".to_string()]);
+        assert_eq!(p.resend, vec!["old@x.com".to_string()]); // a re-send never takes a new seat
+        let mut q = fresh_plan(2, &[]);
+        assert_eq!(apply_seat_cap(&mut q, None), 0);
+        assert_eq!(q.fresh.len(), 2);
+        let mut r = fresh_plan(2, &["a@x.com"]);
+        assert_eq!(apply_seat_cap(&mut r, Some(0)), 2);
+        assert!(r.fresh.is_empty());
+        assert_eq!(r.resend.len(), 1);
+        let mut e = fresh_plan(2, &[]);
+        assert_eq!(apply_seat_cap(&mut e, Some(5)), 0);
+        assert_eq!(e.fresh.len(), 2);
+    }
+
+    #[test]
+    fn work_address_local_part_is_clean_or_refused() {
+        assert_eq!(
+            clean_local_part("  Sara.Khan "),
+            Some("sara.khan".to_string())
+        );
+        assert_eq!(clean_local_part("a"), Some("a".to_string()));
+        assert_eq!(
+            clean_local_part("sales-team_2"),
+            Some("sales-team_2".to_string())
+        );
+        for bad in [
+            "",
+            "   ",
+            ".sara",
+            "sara.",
+            "sa..ra",
+            "sara@acme.com",
+            "sa ra",
+            "-sara",
+            "sara-",
+            "são",
+            "a/b",
+            &"x".repeat(65),
+        ] {
+            assert_eq!(clean_local_part(bad), None, "{:?}", bad);
+        }
+        assert!(clean_local_part(&"x".repeat(64)).is_some());
+    }
+
+    #[test]
+    fn invitation_mail_mentions_the_work_address_only_when_one_is_created() {
+        let mut i = sample("Anna", "Acme");
+        assert!(!invite_text(&i).contains("work address"));
+        assert!(!invite_html(&i).contains("work address"));
+        i.workmail = "sara@acme.com";
+        assert!(invite_text(&i).contains("work address sara@acme.com is created"));
+        assert!(invite_html(&i).contains("<b>sara@acme.com</b>"));
+        i.workmail = "x<script>@acme.com";
+        assert!(!invite_html(&i).contains("<script>"));
     }
 
     #[test]

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Building2, Check, Clock, ShieldCheck, UserPlus } from "lucide-react";
+import { Building2, Check, Clock, Mail, ShieldCheck, UserPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
@@ -9,6 +9,7 @@ import { api, type ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import {
   ROLE_LABEL,
+  describeWorkMail,
   forgetInvite,
   inviteAccept,
   inviteLookup,
@@ -62,6 +63,10 @@ const WHY: Record<string, { title: string; body: string }> = {
   used: {
     title: "This invitation was already used",
     body: "Someone has already joined with it. Ask the organisation for a new invitation.",
+  },
+  seats_full: {
+    title: "No free seat right now",
+    body: "This organisation has no free seat right now. Ask the organiser to add a seat — your invitation stays valid.",
   },
 };
 
@@ -254,6 +259,14 @@ function Invitation({ token, signedIn, authLoading }: { token: string; signedIn:
               <span className="min-w-0 break-all">Invited by {view.invited_by}</span>
             </li>
           )}
+          {!joined && view.mailbox && (
+            <li className="flex items-start gap-2.5">
+              <Mail className="mt-0.5 size-4 shrink-0 text-steel" aria-hidden="true" />
+              <span className="min-w-0 break-all">
+                Your work address will be <b>{view.mailbox}</b>
+              </span>
+            </li>
+          )}
           {!joined && (
             <li className="flex items-start gap-2.5">
               <Clock className="mt-0.5 size-4 shrink-0 text-steel" aria-hidden="true" />
@@ -274,6 +287,9 @@ function Invitation({ token, signedIn, authLoading }: { token: string; signedIn:
             <Check className="size-4" aria-hidden="true" />
             {joined.already ? "You are already in this organisation." : "Welcome — you are now a member."}
           </p>
+          {joined.mailbox && (
+            <p className="mt-2 break-words text-sm text-foreground">{describeWorkMail(joined.mailbox)}</p>
+          )}
           <Button className="ax-tap mt-3 w-full" size="lg" onClick={() => void open(joined.org_id)}>
             Open {joined.org_name}
           </Button>

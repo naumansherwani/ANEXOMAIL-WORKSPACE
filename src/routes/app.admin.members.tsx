@@ -22,9 +22,11 @@ import { useAuth } from "@/lib/auth";
 import { ADDRESS_MANAGER_FLAG, ROLES, type WorkspaceRole } from "@/lib/ia";
 import { notify } from "@/lib/notify";
 import {
+  describeSeats,
   summariseInvites,
   useInvitations,
   useMembers,
+  useSeats,
   useTeamMutations,
   type TeamInvitation,
   type TeamMember,
@@ -60,6 +62,8 @@ function MembersPage() {
   const members = useMembers(organisation?.id);
   const invitations = useInvitations(organisation?.id, canManage);
   const { setRole, remove: removeMember, invite, revoke: revokeInvite, resend } = useTeamMutations(organisation?.id);
+  const seats = useSeats(organisation?.id, true);
+  const seatLine = describeSeats(seats.data);
 
   // Removing someone ends their access at once: never on a single tap (on a phone the role pills sit
   // right beside the remove icon). Ask first.
@@ -67,17 +71,28 @@ function MembersPage() {
 
   const [emails, setEmails] = useState("");
   const [role, setRoleValue] = useState<WorkspaceRole>("member");
+  // optional work address for ONE person: "sara" -> sara@<verified domain>, created for them when they join
+  const [mailbox, setMailbox] = useState("");
+  const [domainId, setDomainId] = useState("");
+  const domains = seats.data?.domains ?? [];
 
   const sendInvites = (list: string[]) =>
     invite.mutate(
-      { emails: list, role },
+      {
+        emails: list,
+        role,
+        ...(mailbox.trim() ? { mailbox: mailbox.trim(), ...(domainId ? { domain_id: domainId } : {}) } : {}),
+      },
       {
         onSuccess: (res) => {
           const sum = summariseInvites(res, list.length);
           if (sum.tone === "done") notify.done(sum.title, sum.detail);
           else if (sum.tone === "info") notify.info(sum.title, sum.detail);
           else notify.failed(sum.title, { description: sum.detail });
-          if (sum.tone === "done" || sum.tone === "partial") setEmails("");
+          if (sum.tone === "done" || sum.tone === "partial") {
+            setEmails("");
+            setMailbox("");
+          }
         },
         onError: (e: ApiError) => notify.failed("Invitations not sent", { description: e.message }),
       },
@@ -127,6 +142,14 @@ function MembersPage() {
           }}
         >
           <h2 className="ax-label text-foreground">Invite people</h2>
+          {seatLine.tone !== "none" && (
+            <p
+              className={`ax-caption mt-1 ${seatLine.tone === "full" ? "text-danger" : seatLine.tone === "warn" ? "text-warning" : "text-muted-foreground"}`}
+              role={seatLine.tone === "full" ? "alert" : undefined}
+            >
+              {seatLine.line}
+            </p>
+          )}
           <div className="mt-3 space-y-1.5">
             <Label htmlFor="invite-emails" className="ax-caption text-foreground">
               Emails
@@ -138,6 +161,50 @@ function MembersPage() {
               placeholder="sara@yourcompany.com, ali@yourcompany.com"
             />
           </div>
+          {domains.length > 0 && (
+            <div className="mt-3 space-y-1.5">
+              <Label htmlFor="invite-mailbox" className="ax-caption text-foreground">
+                Work address <span className="text-muted-foreground">(optional, one person)</span>
+              </Label>
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                <Input
+                  id="invite-mailbox"
+                  value={mailbox}
+                  onChange={(event) => setMailbox(event.target.value)}
+                  placeholder="sara"
+                  autoCapitalize="none"
+                  autoCorrect="off"
+                  spellCheck={false}
+                  className="w-full sm:w-48"
+                />
+                <div className="flex min-w-0 items-center gap-2">
+                  <span className="text-sm text-muted-foreground" aria-hidden="true">
+                    @
+                  </span>
+                  {domains.length === 1 ? (
+                    <span className="min-w-0 break-all text-sm text-foreground">{domains[0]!.domain}</span>
+                  ) : (
+                    <select
+                      aria-label="Domain for the work address"
+                      value={domainId}
+                      onChange={(event) => setDomainId(event.target.value)}
+                      className="ax-tap min-w-0 flex-1 rounded-md border border-border bg-background px-2 py-2 text-base sm:flex-none"
+                    >
+                      <option value="">{domains[0]!.domain}</option>
+                      {domains.slice(1).map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.domain}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </div>
+              </div>
+              <p className="ax-caption text-muted-foreground">
+                Created for them the moment they join. Leave empty to add it later from Domains.
+              </p>
+            </div>
+          )}
           <div className="mt-3 flex flex-wrap items-center gap-2">
             {ROLES.filter((r) => r.id !== "owner" && (isOwner || r.id !== "admin")).map((r) => (
               <button
