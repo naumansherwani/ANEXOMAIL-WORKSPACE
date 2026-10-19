@@ -48,6 +48,11 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 19 Oct 2026 06:44 PKT — founder ne sandbox ko `anexomail.com` kholne ki ijazat di; agent ne LIVE website khud dekhi (public pages)
+Live check (Chromium, 4 pages x 390/820/1366/1440): `/`, `/plans`, `/auth`, `/get-started` — sab HTTP 200, **kisi width par horizontal overflow nahi**, h1 sahi, "AI plans open on ai.anexomail.com" **nazar nahi aati**. Mobile (390) landing + sign-in theek dikhte hain (screenshots agent ke scratchpad mein).
+**Finding (naya kaam nahi — sirf record, queue ke baad):** har page par console error "bad HTTP response code (404) fetching the script" — `src/lib/pwa.ts` `/sw.js` register karta hai, par `public/` mein `sw.js` hai hi nahi (live `/sw.js` = 404). Matlab "PWA offline" abhi kaam nahi karta (manifest 200 hai). TECH-MAP "PWA / service worker LIVE" sach nahi — shaam ki queue ke baad sudharna (ya sw.js bana-na, ya register band).
+Login ke andar ke screens: founder test account email+password denge (repo mein KABHI nahi, sirf test accounts).
+
 ### 19 Oct 2026 06:34 PKT — founder: technology-kahan table = LAW + version upgrades PRIORITY queue (verbatim)
 (Founder ne agent ka "kaun si technology kahan" wala jawab (table + "Aaj ke kaam kahan lagenge") wapas paste kiya — wohi table ab `TECH-MAP.md` section 0 mein LAW ke taur par hai.) Founder ke apne alfaaz:
 "is ko que main dalo jaldi se aur yeh priorty pe kaam karay gay. aur yeh technology jahan pe ani hai yeh rule hai law hai constitution hai aur goal hai ke ahista ahista puri website sql likhne advance level pe bun se shift kerna hai yeh technology pe ya is se bhi advance technology pe."
