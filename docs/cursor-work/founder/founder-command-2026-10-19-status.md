@@ -12,7 +12,7 @@ Aap ke faislay chahiye
 
 * G30 (Gmail/Outlook migration worker): abhi nahi bana. Pehle ye tay karna hai: app-password IMAP se shuru karein ya OAuth se. OAuth ke liye Google aur Microsoft app registration aap ki taraf se hogi. Saath mein `Cargo.toml` mein IMAP/TLS crate ki ijazat chahiye aur inbound write ka (toh is ka jawab likh lo aur yehi advance level codes likho 1. The Strategy: App-Password IMAP se Shuru Karein (The "Zero- friction" Entry)
 
-> 🟢 **HO GAYA** App-Password IMAP pehle (OAuth baad mein enterprise ke liye) — worker PRIMARY Rust :3200 mein. Server par chalana baqi: E35 SQL -> `MODULES=mig` Rust -> Web.
+> 🟢 **HO GAYA** App-Password IMAP pehle (OAuth baad mein enterprise ke liye) — worker PRIMARY Rust :3200 mein. Server par chalana baqi: E35 SQL 🟢 LIVE DONE (05:54); baqi `MODULES=mig` Rust -> Web.
 
 > 🔴 **NAHI HUA** OAuth (Phase 2) — jaan-boojh kar baad mein, app registration founder-side.
 
@@ -112,7 +112,7 @@ Loophole ledger (sach)
 
 > 🟢 **HO GAYA** "AI plans open on ai.anexomail.com" wali EK pointer line anexomail.com se hati; baqi AI zikr waisa hi (Web pull baqi).
 
-> 🟢 **HO GAYA** Business Pro test account login fix + naya Business Pro account: `bizpro-login-fix.sh` + E36 (password script poochti hai). **Script abhi chalani baqi.**
+> 🟢 **HO GAYA — LIVE DONE (19 Oct 05:54 PKT):** Business Pro test account login fix + naya `bpro.test` account: dono LOGIN OK (GoTrue 200, website login 200). Founder: dobara touch nahi karna.
 
 > 🔴 **NAHI HUA** Focus Business / Business Pro blueprint tarteeb se, latest technology, "ek bhi point nahi bachna" — jari.
 

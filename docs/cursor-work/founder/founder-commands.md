@@ -10,11 +10,13 @@
 
 ## ▶ ABHI KA KAAM — sirf yeh (founder ka hukm 19 Oct 05:47 PKT: "ek time pe sirf ek ya do point")
 
-1. **E35 live par chalana** (founder ke server par; self-test ab thread ki ginti gin kar set karta hai, commit e6a6cc1) — green = `E35 OK` + `PASSED (54 checks…)`.
-2. **Attachments ki files copy karna** (migration + live inbound dono).
+✅ **DONE (live saboot, founder 19 Oct 05:54 PKT):** E35 SQL live par chal gayi (COMMIT, error nahi). E36 / Business Pro login: `business_pro.test@anexomail.com` aur naya `bpro.test@anexomail.com` dono LOGIN OK (GoTrue 200, website /api/auth/login 200, Rust dashboard.summary plan=business_pro). **Founder: "yeh ab dobara touch nahi kerna hai."**
+
+1. **E34 SQL live par chalana** (self-test ki galti theek, commit 5866900) — green = `E34 OK` + `PASSED`.
+2. **Attachments ki files copy karna** (migration + live inbound dono) — design sawal founder se pehle (live inbound = production mail path, "haan" chahiye).
 
 **Qaida:** is jagah sirf 1–2 point rehte hain. Jab inka server par pull/chalna green ho jaye (founder batata hai), tab hi agla point yahan aata hai. Agent apne se koi naya kaam nahi jodta.
-**Baad mein (abhi nahi, tarteeb se):** E34 SQL -> Rust `MODULES=mig` -> Web pull -> E36 script -> Chat audit -> iMIP REPLY -> Bun routes Rust par (Business/Business Pro) -> Caddy read-only check script -> Business/Business Pro blueprint tarteeb. (Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.)
+**Baad mein (abhi nahi, tarteeb se):** Rust `MODULES=mig` -> Web pull -> Chat audit -> iMIP REPLY -> Bun routes Rust par (Business/Business Pro) -> Caddy read-only check script -> Business/Business Pro blueprint tarteeb. (Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.)
 
 ---
 
@@ -23,7 +25,7 @@
 | # | Founder ka hukm (19 Oct 03:35 PKT wala bada message) | Halat | Server par chalane ki command (technology ke hisab se) |
 |---|---|---|---|
 | 1 | G29 — revoked member ko Rust `mail_identity` na roke: fix | READY | Rust: `rust-engine-install.sh` (GUARD step) |
-| 2 | G30 — migration worker: App-Password IMAP, PRIMARY Rust :3200, walled garden + `migration_session_token`, SHA-256 chain, rustls/webpki crates | READY (E35: folder enum 5866900 + direction enum cast; server par chalna baqi) | SQL E35 -> Rust `MODULES=mig` -> Web pull |
+| 2 | G30 — migration worker: App-Password IMAP, PRIMARY Rust :3200, walled garden + `migration_session_token`, SHA-256 chain, rustls/webpki crates | SQL E35 **DONE (live, 05:54)**; Rust `MODULES=mig` + Web pull baqi | SQL E35 -> Rust `MODULES=mig` -> Web pull |
 | 3 | G31 — team ke baqi hisse: seat limit, audit chain, work address | E34 SQL galti theek (5866900), server par chalna baqi | SQL E34 -> Rust -> Web |
 | 4 | G32 — Rust `manager` role rank 0 na ho | READY | Rust installer |
 | 5 | Chat audit | TODO | — |
@@ -32,7 +34,7 @@
 | 8 | Caddy (Edge + HTTP/3) saath chalna; kabhi nahi tootna: read-only check, backup, `caddy validate`, reload | TODO (check script + TECH-MAP row) | Caddy: alag command |
 | 9 | Har technology ki pull/install command ALAG (Web, SQL, Rust, Brain, Caddy) | Rule 24 mein likha | — |
 | 10 | Sirf "AI plans open on ai.anexomail.com" pointer line anexomail.com par na dikhe; baqi AI zikr jaisa tha waisa | READY (Web pull) | Web pull |
-| 11 | Business Pro test account `business_pro.test@anexomail.com` login theek + naya Business Pro test account | READY (`bizpro-login-fix.sh`, E36) | `bizpro-login-fix.sh` (E36 uski andar psql se chalti hai — editor mein paste NAHI; password script poochti hai, store nahi) |
+| 11 | Business Pro test account `business_pro.test@anexomail.com` login theek + naya Business Pro test account (`bpro.test@anexomail.com`) | **DONE 19 Oct 05:54 (live: dono LOGIN OK) — dobara touch nahi** (`bizpro-login-fix.sh`, E36) | `bizpro-login-fix.sh` (E36 uski andar psql se chalti hai — editor mein paste NAHI; password script poochti hai, store nahi) |
 | 12 | Focus: Business + Business Pro, blueprint tarteeb, latest technology, ek bhi point nahi bachna | JARI | — |
 | 13 | Final jawab: sirf "kya theek hua" + "jo theek nahi uska mashwara"; ledger IDs / purane loophole dobara nahi; simple Roman Urdu | QAIDA | — |
 | 14 | Attachments ki files copy (migration + live inbound dono) — agent ka mashwara: agla kaam yehi (founder ne "Nahi hua" list mein confirm ki, 05:40) | TODO | — |
