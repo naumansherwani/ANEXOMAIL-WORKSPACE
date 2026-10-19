@@ -25,10 +25,40 @@
 | 11 | Business Pro test account `business_pro.test@anexomail.com` login theek + naya Business Pro test account | READY (`bizpro-login-fix.sh`, E36) | `bizpro-login-fix.sh` (E36 uski andar psql se chalti hai — editor mein paste NAHI; password script poochti hai, store nahi) |
 | 12 | Focus: Business + Business Pro, blueprint tarteeb, latest technology, ek bhi point nahi bachna | JARI | — |
 | 13 | Final jawab: sirf "kya theek hua" + "jo theek nahi uska mashwara"; ledger IDs / purane loophole dobara nahi; simple Roman Urdu | QAIDA | — |
-| 14 | Attachments ki files copy (migration + live inbound dono) — agent ka mashwara: agla kaam yehi | TODO | — |
+| 14 | Attachments ki files copy (migration + live inbound dono) — agent ka mashwara: agla kaam yehi (founder ne "Nahi hua" list mein confirm ki, 05:40) | TODO | — |
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 05:40 PKT — founder ne "NAHI HUA" list confirm ki + "no duplicate, chat wali command repo mein likho" (verbatim)
+Jo abhi theek nahi, aur mera mashwara
+
+* Attachments ki files copy nahi hoti. Sirf "attachment tha" ka nishan aata hai. Live inbound mail bhi attachments store nahi karta, isliye yeh alag kaam hai. Mera mashwara hai ke agla kaam yehi ho.
+* Pehli real build aur real TLS: rustls ka build aur asli Gmail/Outlook se connection server par pehli baar hoga. Sandbox mein yeh ho nahi sakta tha. Installer fail par sab wapas kar deta hai.
+* Port 993: server se bahar yeh khula hai ya nahi, installer batayega. Band hua to hosting side par kholna hoga.
+* E35 SQL: abhi sirf local test database par chala hai. Live par step 1 se chalega, aur kuch ghalat hua to page "abhi on nahi hai" dikhayega, tootega nahi.
+* Restart: server restart par chalti copy ruk jati hai. Resume par password dobara poochha jata hai (kahin save nahi hota).
+* Work/school Microsoft 365: unke liye OAuth baad mein aayega. Abhi App Password wale accounts chalenge.
+
+Nahi hua
+   * OAuth: baad mein, jaan-boojh kar.
+   * "30MB RAM for 50GB", "Throttle Bypass", "Zero Broken Sessions": maine nahi likha, kyunke naapa nahi gaya. Naapa hua sach file mein hai.
+   * Attachments ki files copy nahi hoti.
+   * Rust ka asli compile server par pehli baar hona baqi.
+   * Chat audit.
+   * iMIP REPLY.
+   * Bun routes Rust par: people, calendar aur team Rust par bane hain. Business aur Business Pro ke baqi routes baqi hain.
+   * Caddy ka read-only check script: nahi bana. Caddy ko chheda bhi nahi, HTTP/3 safe hai.
+   * Bun se door hona: jari.
+   * Business aur Business Pro blueprint ki tarteeb: jari.
+
+no duplicate aur yeh chat wali command likho repo main takay yeh compact wali maslay se bach jaye.
+
+**Agent ka note (kaam ki queue, tarteeb se — "Nahi hua" list hi ab TODO queue hai; duplicate nahi, upar ki halat table se jurti hai):**
+1. E35 live par chalana (founder ke paas: self-test ka "root+reply" check live par fail — ab asli rows dikhata hai; output ka intezar) -> phir E34 -> `MODULES=mig` Rust -> Web pull.
+2. Attachments ki files (migration + live inbound dono) — agent ka mashwara: agla kaam.
+3. Chat audit, 4. iMIP REPLY (G26), 5. Bun routes -> Rust (Business/Business Pro), 6. Caddy read-only check script + TECH-MAP row, 7. Business/Business Pro blueprint tarteeb.
+Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.
 
 ### 19 Oct 2026 05:37 PKT — E35 server par fail + E36 (founder)
 E35 (server, psql): `ERROR: E35 FAILED: root+reply ek thread/unread/attachments nahi` (self-test, DO block line 120) — local pass, live fail => live schema mein kuch alag. E36: Supabase SQL editor mein `\set ON_ERROR_STOP on` par `42601 syntax error` — E36 / script editor mein paste nahi hoti, sirf `bizpro-login-fix.sh` se.
