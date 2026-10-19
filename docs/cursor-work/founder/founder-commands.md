@@ -24,16 +24,16 @@
 
 | # | Founder ka hukm (19 Oct 03:35 PKT wala bada message) | Halat | Server par chalane ki command (technology ke hisab se) |
 |---|---|---|---|
-| 1 | G29 — revoked member ko Rust `mail_identity` na roke: fix | READY | Rust: `rust-engine-install.sh` (GUARD step) |
-| 2 | G30 — migration worker: App-Password IMAP, PRIMARY Rust :3200, walled garden + `migration_session_token`, SHA-256 chain, rustls/webpki crates | SQL E35 **DONE (live, 05:54)**; Rust `MODULES=mig` + Web pull baqi | SQL E35 -> Rust `MODULES=mig` -> Web pull |
-| 3 | G31 — team ke baqi hisse: seat limit, audit chain, work address | E34 SQL galti theek (5866900), server par chalna baqi | SQL E34 -> Rust -> Web |
-| 4 | G32 — Rust `manager` role rank 0 na ho | READY | Rust installer |
+| 1 | G29 — revoked member ko Rust `mail_identity` na roke: fix | **DONE (live 06:16, GUARD 2 reads)** | Rust: `rust-engine-install.sh` (GUARD step) |
+| 2 | G30 — migration worker: App-Password IMAP, PRIMARY Rust :3200, walled garden + `migration_session_token`, SHA-256 chain, rustls/webpki crates | **DONE (live): E35 SQL 05:54 + Rust mig 06:16 + Web page 06:16 + port 993 khula**; nakli-login live test `mig-live-test.sh` baqi (founder ka output) | SQL E35 -> Rust `MODULES=mig` -> Web pull |
+| 3 | G31 — team ke baqi hisse: seat limit, audit chain, work address | **DONE (live: E34 06:06 + Rust 06:16)** | SQL E34 -> Rust -> Web |
+| 4 | G32 — Rust `manager` role rank 0 na ho | **DONE (live 06:16)** | Rust installer |
 | 5 | Chat audit | TODO | — |
 | 6 | Inbound iMIP REPLY (G26) | TODO | — |
 | 7 | Bun routes -> Rust (Business / Business Pro pehle), differential tests ke saath | TODO | — |
 | 8 | Caddy (Edge + HTTP/3) saath chalna; kabhi nahi tootna: read-only check, backup, `caddy validate`, reload | TODO (check script + TECH-MAP row) | Caddy: alag command |
 | 9 | Har technology ki pull/install command ALAG (Web, SQL, Rust, Brain, Caddy) | Rule 24 mein likha | — |
-| 10 | Sirf "AI plans open on ai.anexomail.com" pointer line anexomail.com par na dikhe; baqi AI zikr jaisa tha waisa | READY (Web pull) | Web pull |
+| 10 | Sirf "AI plans open on ai.anexomail.com" pointer line anexomail.com par na dikhe; baqi AI zikr jaisa tha waisa | **DONE (Web pull 06:16, /health 200)** | Web pull |
 | 11 | Business Pro test account `business_pro.test@anexomail.com` login theek + naya Business Pro test account (`bpro.test@anexomail.com`) | **DONE 19 Oct 05:54 (live: dono LOGIN OK) — dobara touch nahi** (`bizpro-login-fix.sh`, E36) | `bizpro-login-fix.sh` (E36 uski andar psql se chalti hai — editor mein paste NAHI; password script poochti hai, store nahi) |
 | 12 | Focus: Business + Business Pro, blueprint tarteeb, latest technology, ek bhi point nahi bachna | JARI | — |
 | 13 | Final jawab: sirf "kya theek hua" + "jo theek nahi uska mashwara"; ledger IDs / purane loophole dobara nahi; simple Roman Urdu | QAIDA | — |

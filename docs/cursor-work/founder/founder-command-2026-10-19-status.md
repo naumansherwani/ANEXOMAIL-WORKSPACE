@@ -8,11 +8,11 @@ Aap ke faislay chahiye
 
 * G29 (security): Rust `mail_identity` revoked member ko nahi rokta. Fix ek line ka hai, lekin ye mail production path hai, isliye aap ka “haan” chahiye. E33 chalne ke baad hi lagega.
 
-> 🟢 **HO GAYA** (repo mein bana + test pass; **server par chalana baqi** — Rust installer ka GUARD step). Rule 5: DONE tab jab live saboot.
+> 🟢 **HO GAYA** **LIVE DONE (06:16):** Rust GUARD — 2 reads revoked member ko bahar rakhte hain.
 
 * G30 (Gmail/Outlook migration worker): abhi nahi bana. Pehle ye tay karna hai: app-password IMAP se shuru karein ya OAuth se. OAuth ke liye Google aur Microsoft app registration aap ki taraf se hogi. Saath mein `Cargo.toml` mein IMAP/TLS crate ki ijazat chahiye aur inbound write ka (toh is ka jawab likh lo aur yehi advance level codes likho 1. The Strategy: App-Password IMAP se Shuru Karein (The "Zero- friction" Entry)
 
-> 🟢 **HO GAYA** App-Password IMAP pehle (OAuth baad mein enterprise ke liye) — worker PRIMARY Rust :3200 mein. Server par chalana baqi: E35 SQL 🟢 LIVE DONE (05:54); baqi `MODULES=mig` Rust -> Web.
+> 🟢 **HO GAYA** App-Password IMAP pehle (OAuth baad mein enterprise ke liye) — worker PRIMARY Rust :3200 mein. **LIVE DONE:** E35 SQL (05:54), Rust `mig` (06:16, build OK), Web page (06:16), port 993 khula.
 
 > 🔴 **NAHI HUA** OAuth (Phase 2) — jaan-boojh kar baad mein, app registration founder-side.
 
@@ -27,7 +27,7 @@ Duniya ko hila dene ke liye aapko App-Password IMAP se shuru karna chahiye, OAut
 Chunkay aapka core rule hai ke Founder workspace sirf Rust/tRPC/WebTransport/QUIC par chalega, isliye G30 worker ko seedha PRIMARY `:3200` Rust Backend ka hissa hona chahiye.
 Aapko `Cargo.toml` mein async-native, zero-copy IMAP crate aur modern TLS interface ki ijazat bilkul deni chahiye: toml
 
-> 🟢 **HO GAYA** Cargo.toml: IMAP/TLS crate ijazat par **rustls 0.23 + webpki-roots 0.26** judte hain (agent ka faisla: std-only IMAP client; `async-imap`/`tokio-native-tls`/`tls-codec` nahi, kyunke `tls-codec` TLS connection ke liye nahi hai). Asli build server par pehli baar.
+> 🟢 **HO GAYA** Cargo.toml: IMAP/TLS crate ijazat par **rustls 0.23 + webpki-roots 0.26** judte hain (agent ka faisla: std-only IMAP client; `async-imap`/`tokio-native-tls`/`tls-codec` nahi, kyunke `tls-codec` TLS connection ke liye nahi hai). **Live build OK (06:16).**
 
 
 ```
@@ -76,11 +76,11 @@ Loophole ledger (sach)
 
 * Rust build: cal/people/team ka asli compile server par pehli baar hoga. Sandbox mein sirf mock se type-check hua hai (G28).
 
-> 🔴 **NAHI HUA** Rust ka asli compile server par pehli baar hona baqi (sandbox mein sirf mock se type-check).
+> 🟢 **LIVE DONE (06:16):** Rust cal+people+team+mig ka asli compile server par: build OK 1m43s, health 200, procs live.
 
 * G31: naya banda `/join` ke baad bhi mailbox admin ke saath hi banata hai. Role/remove ka record `org_people_log` mein hai, tamper-evident audit chain mein nahi. Plan ke seat limit invite par lagu nahi. toh is ko fix kero. mujhe sirf fix kerne ke baad bolo khud ka demkh use kero.
 
-> 🟢 **HO GAYA** G31 fix bana (seat limit invite par, audit chain, work address) — E34 SQL (galti theek, commit 5866900). **Server par chalana baqi.**
+> 🟢 **HO GAYA** G31 fix bana (seat limit invite par, audit chain, work address) — E34 SQL (galti theek, commit 5866900). **LIVE DONE** (E34 06:06 + Rust 06:16).
 
 * Chat audit: shuru nahi hua.
 
@@ -92,13 +92,13 @@ Loophole ledger (sach)
 
 * Bun routes: fallback ke taur par bache hain, jab tak har proc Rust par nahi aata. toh rust pe leke aao latest technology pe leke aao.
 
-> 🔴 **NAHI HUA** Bun routes Rust par — jari: people / calendar / team Rust par bane (READY); baqi Business/Business Pro routes baqi.
+> 🔴 **NAHI HUA (jari)** Bun routes Rust par — people / calendar / team Rust par **LIVE (06:16)**; baqi Business/Business Pro routes baqi.
 
 * Docs: ledger L75–L77, G29–G31 aur memory file update ho gaye. yeh sab kero  aur mujhe loophole nahi send kiya kero bus loophole fixes ki summary do aur ainda pehle walay loopholes ya gaps agar hai woh bhi mujhe send nahi kerna hai. tumhara kaam hai loopholes aur gaps ko theek ker ke mujhe batna hai ke yeh theek ker diye hain aur jo nahi theek huway hain us ka mashwara do bus ke kya best hai yeh jo tum send kerte ho L75 77 G29 yeh bawas mujhe send nahi kiya kero mujhe simple easy words main fix kero aur user ke liye website 100% green kero. Rust ka `manager` role ko 0 rank dena (G32) khula hai toh is ko fix kero. Pehle se khule: G29 (revoked member ka mail path, aap ka “haan” chahiye), G30 (migration worker), G31 (team ke baqi hisse). yeh sab pe haan hai bus website nahi tootay aur jaisa rule bola hai ke jo technology jis ki hai us ke hisab se pull kerwao. baki sql sab sucess hai.  aur caddyserver ko saath leke chalo yeh mera ek aur brain hai is ke bina zero hoon main. aur bun se dur ho jao. Users ko ab bhi do purani cheezein nazar aati hain. Aap ne hide karne ka kaha hai, magar yeh purana kaam hai, isliye aap ka “haan” chahiye. Pehli, ai host ke `/` par coming-soon page. Doosri, anexomail.com par plan ki line “AI plans open on ai.anexomail.com” is ko fix kero yeh future aag  product hai aur yeh mujhe anexomail.com main nazar nahi aye. Caddy Edge + HTTP/3) yeh kabhi mat bhulna verna bhut bura hoga. aur ai.anexomail.com ko mainay blocked ker diya hai tum tension nahi lo aur ab is pe koi baat nahi kero gay. Tumhara goal hai ke jo blueprint ko tarteeb se implement kerna hai. abhi basic, pro,(yeh complete hai) business aur bussiness pro ko pe focused hai is main business account ka business_pro.test@anexomail.com aur password hai [PASSWORD — chat mein diya tha, repo mein KABHI nahi]  aur yeh login nahi ho raha hai is ko working banao aur bussiness pro ke liye test account banao. ab focused kero latest technology pe aur mainay jitna bhi tumhay points batye han woh tarteeb se implemnet kero aur ek bhi point nahi bachna chaiye hai. Remeber tareeb yaad rakho aur mainay yeh nahi bola tha ke AI ka zikar anexomail.com se hata do idiot you are bloody.
 
 > 🟢 **HO GAYA** Docs/ledger/memory update.
 
-> 🟢 **HO GAYA** G32 — Rust `manager` rank 0 nahi (bana; Rust installer par chalana baqi).
+> 🟢 **HO GAYA** G32 — Rust `manager` rank 0 nahi **LIVE DONE (06:16).**.
 
 > 🟢 **HO GAYA** G29 / G30 / G31 par "haan" — likha gaya.
 
@@ -110,7 +110,7 @@ Loophole ledger (sach)
 
 > ⚪ ai host `/` coming-soon — founder ne ai.anexomail.com khud block kar diya; Rule 23: koi kaam nahi.
 
-> 🟢 **HO GAYA** "AI plans open on ai.anexomail.com" wali EK pointer line anexomail.com se hati; baqi AI zikr waisa hi (Web pull baqi).
+> 🟢 **HO GAYA** "AI plans open on ai.anexomail.com" wali EK pointer line anexomail.com se hati; baqi AI zikr waisa hi **LIVE DONE (Web pull 06:16).**.
 
 > 🟢 **HO GAYA — LIVE DONE (19 Oct 05:54 PKT):** Business Pro test account login fix + naya `bpro.test` account: dono LOGIN OK (GoTrue 200, website login 200). Founder: dobara touch nahi karna.
 

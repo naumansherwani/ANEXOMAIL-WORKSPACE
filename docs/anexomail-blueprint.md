@@ -677,17 +677,17 @@ Docs: ledger L75–L77, G29–G31 aur memory file update ho gaye. yeh sab kero a
 
 | Founder ki tajweez | Ab kya hai | Halat |
 |---|---|---|
-| App-Password IMAP pehle, OAuth baad mein (enterprise bulk) | App-Password IMAP (Gmail, Outlook.com, Yahoo, iCloud, aur custom IMAP server — sirf 993 TLS). OAuth: Phase 2 | 🟢 repo + E35 SQL **LIVE DONE** (19 Oct 05:54); Rust installer + Web pull baqi |
-| Worker seedha PRIMARY Rust :3200 mein | `server/rust/mig_core.rs`, `mig_imap.rs`, `mig_mime.rs`, `mig_run.rs`, `mig_glue.rs` (57 unit tests, fake IMAP server ke saath) | 🟢 repo; server par pehli real build baqi |
-| Cargo.toml: IMAP/TLS crate ki ijazat | **rustls 0.23 (ring) + webpki-roots 0.26** judte hain (`cargo_migration_deps.py`). Aap ke draft ki `async-imap` / `tokio-native-tls` / `tls-codec` nahi lagi: `tls-codec` TLS connection ke liye nahi hai (wire-format codec), aur IMAP client khud likha (std-only, test-able) | 🟢 repo; asli build server par |
+| App-Password IMAP pehle, OAuth baad mein (enterprise bulk) | App-Password IMAP (Gmail, Outlook.com, Yahoo, iCloud, aur custom IMAP server — sirf 993 TLS). OAuth: Phase 2 | 🟢 **LIVE DONE (19 Oct 06:16):** E35 SQL, Rust build, Web page, server se `imap.gmail.com:993` khula. Asli (nakli-login) test: `mig-live-test.sh` |
+| Worker seedha PRIMARY Rust :3200 mein | `server/rust/mig_core.rs`, `mig_imap.rs`, `mig_mime.rs`, `mig_run.rs`, `mig_glue.rs` (57 unit tests, fake IMAP server ke saath) | 🟢 **LIVE DONE (06:16):** server par real build OK (1m43s), 57 tests pass, health 200 |
+| Cargo.toml: IMAP/TLS crate ki ijazat | **rustls 0.23 (ring) + webpki-roots 0.26** judte hain (`cargo_migration_deps.py`). Aap ke draft ki `async-imap` / `tokio-native-tls` / `tls-codec` nahi lagi: `tls-codec` TLS connection ke liye nahi hai (wire-format codec), aur IMAP client khud likha (std-only, test-able) | 🟢 **LIVE DONE (06:16):** Cargo.toml mein rustls + webpki-roots, build OK |
 | Inbound write sirf MIGRATION-ONLY WALLED GARDEN: `migration_session_token`, migration khatam => write gate band (read-only) | `migration_session_token` DB mein sirf SHA-256 hash; likhne wala sirf `migration_ingest`; trigger `mail_messages_mig_gate`; finish par seal + lock. ("PostgreSQL 18" ka daawa nahi — live version par nahi likha.) | 🟢 **E35 LIVE DONE** |
-| Har email ka SHA-256 append-only ledger + client ko evidence chain | `mig_chain` (append-only trigger), sealed receipt, "Check receipt" (Rust + database dono check). Tamper-evident, tamper-proof nahi | 🟢 E35 live; page Web pull ke baad |
+| Har email ka SHA-256 append-only ledger + client ko evidence chain | `mig_chain` (append-only trigger), sealed receipt, "Check receipt" (Rust + database dono check). Tamper-evident, tamper-proof nahi | 🟢 **LIVE DONE:** E35 + Rust + page (Web pull 06:16) |
 | "50GB par sirf 30MB RAM" | **Likha nahi** — napa nahi gaya. Naapa: 1 GB / 20k mail ~6.5 MB peak (sirf core), 20 MB ki ek mail ~105 MB peak | 🔴 daawa nahi |
 | "Throttle Bypassing / Zero Broken Sessions" | **Likha nahi** — napa nahi gaya. Asli: provider throttle par backoff + retry; restart par copy ruk jati hai, Resume par password dobara | 🔴 daawa nahi |
 | "ek bhi email ya attachment drop nahi hua" | Email: chain mein har email ka hisaab. **Attachments ki files copy nahi hoti** (sirf flag) — live inbound bhi store nahi karta | 🔴 attachments: ABHI KA KAAM (founder faisla baqi) |
-| G29 revoked member | Rust `mail_identity` guard (installer ka alag step, `GUARD=0` se band) | 🟢 repo; Rust installer par chalana baqi |
-| G31 seat limit / audit chain / work address | E34 SQL + Rust `team_core` | 🟢 repo; **E34 live chalana baqi (ABHI KA KAAM)** |
-| G32 `manager` rank | Rust `team_core` rank | 🟢 repo; Rust installer baqi |
+| G29 revoked member | Rust `mail_identity` guard (installer ka alag step, `GUARD=0` se band) | 🟢 **LIVE DONE (06:16):** GUARD — 2 reads revoked member ko bahar rakhte hain |
+| G31 seat limit / audit chain / work address | E34 SQL + Rust `team_core` | 🟢 **LIVE DONE:** E34 SQL (06:06) + Rust team (06:16) |
+| G32 `manager` rank | Rust `team_core` rank | 🟢 **LIVE DONE (06:16):** Rust team rank |
 | Chat audit · iMIP REPLY (G26) · Bun routes Rust par · Caddy read-only check | — | 🔴 TODO (tarteeb se, ek time par 1–2 point) |
 
 **Pull ka qaida (Rule 24):** har technology ki alag — SQL (psql), Rust (`rust-engine-install.sh`), Web (`pull.sh`), Brain, Caddy; ek ek karke.

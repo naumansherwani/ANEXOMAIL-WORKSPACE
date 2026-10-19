@@ -2,7 +2,7 @@
 # ANEXOMAIL — Import mail (G30) ka LIVE test, asli website ke raaste se, bina kisi asli Gmail password ke.
 #   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mig-live-test.sh)
 #
-# Kya jaanchta hai (test account bpro.test@anexomail.com ke naam se; us ka password SIRF yahan chup-chaap poochta hai, kahin save nahi):
+# Kya jaanchta hai (test account bpro.test@anexomail.com ke naam se; password NAHI poochta — service key se chhota token banata hai; na chale to hi password poochta hai, kahin save nahi):
 #   1. login (GoTrue) -> token.
 #   2. Rust `migration.providers`  -> provider list aati hai.
 #   3. Rust `migration.list`       -> khali/purani list aati hai (E35 SQL lagi hui hai).
@@ -17,15 +17,33 @@ for b in curl python3; do command -v "$b" >/dev/null 2>&1 || { echo "FAIL: $b na
 envval() { grep -m1 "^$1=" "$APP_ENV" 2>/dev/null | cut -d= -f2- | tr -d "\"' "; }
 U="$(envval SUPABASE4_URL)"; K="$(envval SUPABASE4_ANON_KEY)"
 [ -n "$U" ] && [ -n "$K" ] || { echo "FAIL: $APP_ENV mein SUPABASE4_URL / SUPABASE4_ANON_KEY nahi mili"; exit 2; }
-PW=""; trap 'unset PW TOK 2>/dev/null' EXIT
-read -r -s -p "   $ACC ka password (screen par nahi dikhega, save nahi hota): " PW; echo
-BODY="$(python3 -c 'import sys,json; print(json.dumps({"email":sys.argv[1],"password":sys.stdin.read().rstrip("\n")}))' "$ACC" <<<"$PW")"
-TOK="$(curl -s -m 15 "$U/auth/v1/token?grant_type=password" -H "apikey: $K" -H 'content-type: application/json' --data-binary @- <<<"$BODY" | python3 -c 'import sys,json
+PW=""; TOK=""; trap 'unset PW TOK SK 2>/dev/null' EXIT
+# 1) bina password: service key se test account ke liye ek chhota "magic link" token (password na padha na badla)
+SK="$(envval SUPABASE4_SERVICE_ROLE_KEY)"
+if [ -n "$SK" ]; then
+  HT="$(curl -s -m 15 -X POST "$U/auth/v1/admin/generate_link" -H "apikey: $SK" -H "authorization: Bearer $SK" -H 'content-type: application/json' \
+        -d "{\"type\":\"magiclink\",\"email\":\"$ACC\"}" | python3 -c 'import sys,json
+try: d=json.loads(sys.stdin.read()); print(d.get("hashed_token") or (d.get("properties") or {}).get("hashed_token") or "")
+except Exception: print("")')"
+  if [ -n "$HT" ]; then
+    TOK="$(curl -s -m 15 -X POST "$U/auth/v1/verify" -H "apikey: $K" -H 'content-type: application/json' -d "{\"type\":\"magiclink\",\"token_hash\":\"$HT\"}" | python3 -c 'import sys,json
 try: print(json.loads(sys.stdin.read()).get("access_token",""))
 except Exception: print("")')"
-unset PW BODY
-[ -n "$TOK" ] || { echo "FAIL 1: login nahi hua (password galat?)"; exit 1; }
-echo "OK   1 login"
+  fi
+fi
+unset SK HT
+# 2) agar upar wala na chale to hi password poochta hai
+if [ -z "$TOK" ]; then
+  echo "   (bina-password raasta nahi chala — password poochta hoon)"
+  read -r -s -p "   $ACC ka password (screen par kuch nahi dikhega — type karke Enter dabayein): " PW; echo
+  BODY="$(python3 -c 'import sys,json; print(json.dumps({"email":sys.argv[1],"password":sys.stdin.read().rstrip("\n")}))' "$ACC" <<<"$PW")"
+  TOK="$(curl -s -m 15 "$U/auth/v1/token?grant_type=password" -H "apikey: $K" -H 'content-type: application/json' --data-binary @- <<<"$BODY" | python3 -c 'import sys,json
+try: print(json.loads(sys.stdin.read()).get("access_token",""))
+except Exception: print("")')"
+  unset PW BODY
+fi
+[ -n "$TOK" ] || { echo "FAIL 1: login token nahi bana"; exit 1; }
+echo "OK   1 login (token mil gaya)"
 call() { curl -s -m "${3:-70}" -X POST "$RUST/rpc/$1" -H "authorization: Bearer $TOK" -H 'content-type: application/json' -d "$2"; }
 show() { python3 -c 'import sys,json
 t=sys.stdin.read()
