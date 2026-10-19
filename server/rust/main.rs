@@ -2353,12 +2353,26 @@ async fn dispatch_founder(proc: &str, token: &str) -> axum::response::Response {
     }
 }
 
+/// axum 0.7 ke `Option<Json<Value>>` ka bartao jaisa ka taisa (axum 0.8 mein `Option<Json>` galat Content-Type / kharab body par
+/// request ko reject karne laga, pehle sab kuch chupke se `None` ban jata tha): body tab hi parse hoti hai jab Content-Type JSON ho
+/// (`application/json` ya `application/*+json`); koi bhi gadbad (type, syntax, size) => None => input `{}`.
+fn rpc_json_body(headers: &HeaderMap, body: Option<axum::body::Bytes>) -> Option<Value> {
+    let bytes = body?;
+    let ct = headers.get(axum::http::header::CONTENT_TYPE)?.to_str().ok()?;
+    let mime = ct.split(';').next()?.trim().to_ascii_lowercase();
+    let is_json = mime == "application/json" || (mime.starts_with("application/") && mime.ends_with("+json"));
+    if !is_json {
+        return None;
+    }
+    serde_json::from_slice::<Value>(&bytes).ok()
+}
+
 async fn dispatch(
     Path(proc): Path<String>,
     headers: HeaderMap,
-    body: Option<Json<Value>>,
+    body: Result<axum::body::Bytes, axum::extract::rejection::BytesRejection>,
 ) -> axum::response::Response {
-    let raw = body.map(|Json(v)| v).unwrap_or(json!({}));
+    let raw = rpc_json_body(&headers, body.ok()).unwrap_or(json!({}));
     let input = raw
         .get("input")
         .cloned()
@@ -4724,6 +4738,15 @@ fn signal_hub_send(conv: &str, from: &str, to: &str, line: String) {
     }
 }
 
+/// NOTE N7 (20 Oct 2026): aakhri (error) frame bhej kar stream ko gracefully band karo aur peer ke ack ka intezar karo
+/// (`finish()` ack tak rukta hai; zyada se zyada 2s taake atka hua client server ko na roke). Pehle frame likh kar turant
+/// `return` hota tha -> Connection drop -> frame aksar raaste mein kho jata, browser ko sirf "Connection lost" milta tha.
+async fn wt_send_final(send: &mut wtransport::SendStream, frame: &[u8]) {
+    if send.write_all(frame).await.is_ok() {
+        let _ = tokio::time::timeout(Duration::from_secs(2), send.finish()).await;
+    }
+}
+
 async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     let Ok(request) = incoming.await else { return };
     let Ok(connection) = request.accept().await else {
@@ -4742,9 +4765,7 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     let hello: Value = match serde_json::from_slice(&buf[..read]) {
         Ok(v) => v,
         Err(_) => {
-            let _ = send
-                .write_all(b"{\"type\":\"error\",\"code\":\"bad_hello\"}\n")
-                .await;
+            wt_send_final(&mut send, b"{\"type\":\"error\",\"code\":\"bad_hello\"}\n").await;
             return;
         }
     };
@@ -4753,9 +4774,7 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     let conv = s(&hello, "conversation_id");
     let mode = s(&hello, "mode");
     if token.is_empty() {
-        let _ = send
-            .write_all(b"{\"type\":\"error\",\"code\":\"token_required\"}\n")
-            .await;
+        wt_send_final(&mut send, b"{\"type\":\"error\",\"code\":\"token_required\"}\n").await;
         return;
     }
 
@@ -4766,7 +4785,7 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
             Ok(me) => me,
             Err((_, code, _)) => {
                 let frame = format!("{{\"type\":\"error\",\"code\":\"{code}\"}}\n");
-                let _ = send.write_all(frame.as_bytes()).await;
+                wt_send_final(&mut send, frame.as_bytes()).await;
                 return;
             }
         };
@@ -4805,9 +4824,7 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
     }
 
     if conv.is_empty() {
-        let _ = send
-            .write_all(b"{\"type\":\"error\",\"code\":\"token_and_conversation_required\"}\n")
-            .await;
+        wt_send_final(&mut send, b"{\"type\":\"error\",\"code\":\"token_and_conversation_required\"}\n").await;
         return;
     }
 
@@ -4815,7 +4832,7 @@ async fn wt_session(incoming: wtransport::endpoint::IncomingSession) {
         Ok(me) => me,
         Err((_, code, _)) => {
             let frame = format!("{{\"type\":\"error\",\"code\":\"{code}\"}}\n");
-            let _ = send.write_all(frame.as_bytes()).await;
+            wt_send_final(&mut send, frame.as_bytes()).await;
             return;
         }
     };
@@ -4939,7 +4956,7 @@ async fn start_webtransport() {
 
     let config = wtransport::ServerConfig::builder()
         .with_bind_default(port)
-        .with_identity(&identity)
+        .with_identity(identity)
         .build();
 
     let endpoint = match wtransport::Endpoint::server(config) {
@@ -5771,7 +5788,7 @@ async fn main() {
         // Public liveness face of the file engine (auth ke bagair 200) — is se
         // gateway readings 401/404 ki jagah asli 200 dikhati hain.
         .route("/file/ping", get(file_ping).post(file_ping))
-        .route("/rpc/:proc", post(dispatch).get(dispatch))
+        .route("/rpc/{proc}", post(dispatch).get(dispatch))
         // 16 MB chunk ceiling — 5 GB file 8 MB chunks mein aati hai.
         .route(
             "/file/chunk",
