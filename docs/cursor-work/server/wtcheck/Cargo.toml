@@ -1,0 +1,13 @@
+# ANEXOMAIL — WebTransport live check client (sirf test ke liye; production binary ka hissa NAHI). wtransport-upgrade.sh /tmp mein build karta hai.
+[package]
+name = "wtcheck"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+wtransport = { version = "=0.7.2", features = ["dangerous-configuration"] }
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "time", "net"] }
+
+[profile.release]
+opt-level = 1
