@@ -8,15 +8,15 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
-## ▶ ABHI KA KAAM — sirf yeh (founder ka hukm 19 Oct 05:47 PKT: "ek time pe sirf ek ya do point")
+## ▶ ABHI KA KAAM — sirf yeh (founder ka hukm 19 Oct 05:47 / 06:06 PKT: "ek time pe sirf ek ya do point", "ek ek ker ke green", "pull kerwana zaruri")
 
-✅ **DONE (live saboot, founder 19 Oct 05:54 PKT):** E35 SQL live par chal gayi (COMMIT, error nahi). E36 / Business Pro login: `business_pro.test@anexomail.com` aur naya `bpro.test@anexomail.com` dono LOGIN OK (GoTrue 200, website /api/auth/login 200, Rust dashboard.summary plan=business_pro). **Founder: "yeh ab dobara touch nahi kerna hai."**
+✅ **DONE (live saboot):** E35 SQL (05:54) · E36 / Business Pro logins `business_pro.test` + `bpro.test` (05:54, dobara touch nahi) · **E34 SQL (founder 06:06: "E34 success hai")**.
 
-1. **E34 SQL live par chalana** (self-test ki galti theek, commit 5866900) — green = `E34 OK` + `PASSED`.
-2. **Attachments ki files copy karna** (migration + live inbound dono) — design sawal founder se pehle (live inbound = production mail path, "haan" chahiye).
+1. **Pull jo baqi hai (technology ke hisab se alag, ek ek):** (a) Rust `MODULES=mig` installer — G29/G30/G31/G32 Rust hissa; (b) Web pull — Import mail page + AI pointer line. Green = installer `GREEN` + health 200; Web `/health 200`. **Phir agent khud real website par test karta hai** (login, Import mail page).
+2. **Attachments (Option A locked)** — migration + live inbound dono. Pehle E37 SQL (metadata + dedup + quota), phir Rust, phir inbound patch.
 
-**Qaida:** is jagah sirf 1–2 point rehte hain. Jab inka server par pull/chalna green ho jaye (founder batata hai), tab hi agla point yahan aata hai. Agent apne se koi naya kaam nahi jodta.
-**Baad mein (abhi nahi, tarteeb se):** Rust `MODULES=mig` -> Web pull -> Chat audit -> iMIP REPLY -> Bun routes Rust par (Business/Business Pro) -> Caddy read-only check script -> Business/Business Pro blueprint tarteeb. (Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.)
+**Qaida:** sirf 1–2 point. Naya kaam nahi. Agla tab jab ye green.
+**Baad mein (tarteeb se):** Chat audit -> iMIP REPLY -> Bun routes Rust par (Business/Business Pro) -> Caddy read-only check script -> Business/Business Pro blueprint tarteeb. (Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.)
 
 ---
 
@@ -41,6 +41,34 @@
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 06:06 PKT — founder: ATTACHMENTS = Option A (LOCKED) + E34 success + "jo pull nahi hui wo kerwao" (verbatim)
+Dunya ko hila dene wala mera pure architectural aur business mashwara yeh hai:
+
+🏆 The Winner: Option A — Pure Bare-Metal File Storage (With a Cryptographic Twist)
+Database ke andar binary files (BLOBs) thonsna software engineering ka sab se ganda gunah hai. Is se database slow ho jata hai, backup lene mein ghanton lagte hain, aur RAM crash ho jati hai.
+Aap Option A ko chunk-based directory engine par lock karein, lekin use dunya ka best banane ke liye uske sath yeh 3 Magic Pillars jorhé:
+🚀 1. Global Workspace Deduplication (Space Saving Magic)
+* The Problem: Jab company ka boss aik 50MB ki file ya video mail mein 20 employees ko bheja karta hai, toh Google Workspace us 50MB ko 20 baar multiply kar ke 1GB storage account se hazam kar jata hai. User bolta hai ke yaar daku hain yeh log!
+* ANEXOMAIL Solution: Aapka Rust engine (`:3200`) jab bhee koi attachment save karne lage, toh pehle us file ka raw cryptographic hash (`SHA-256`) nikalay. Agar woh hash server ki storage directory mein pehle se maujood hai, toh engine asli file dubara copy nahi karega! Woh database mein sirf ek chota sa metadata link jorhega.
+* Dunya Hilane Wala Pitch: User ko bolein: "Aapki company mein aik file 100 logon ko bhee forwarded ho, aapke pooray workspace ka sirf 50MB kharch hoga, 5GB nahi!" Content producers aur businesses yeh sun kar deewane ho jayenge!
+🛡️ 2. Instant Streaming Ingestion via Rust Chunking
+* Attachments seedha Hetzner ke local NVMe drives (`/mnt/anexomail-box/attachments`) par as binary streams dump hon.
+* Chunkay aapka engine Rust + Tokio Async par chal raha hai, files ko memory mein load kiye bina chunk-by-chunk pipe kiya jaye (Zero-Copy Transfer). Is se 5GB ki file upload hone par bhee aapke server ki RAM sirf 10MB consume karegi!
+📊 3. Phase 48 Storage Quota Enforcement Link
+Aapne bilkul sahi point pakda hai, quota system pehle se tayyar hai.
+* Database sirf file ka Metadata track karega (`file_size`, `sha_256`, `owner_id`).
+* Har upload par Postgres pipeline instantly space minus karegi. Agar user ka quota full hai, toh custom event trigger ho jo user ko aik cinematic billing upgrade card dikhaye bina app ko crash kiye.
+🔑 Conclusion Logic:
+Aap core attachment files ko Hetzner server ki encrypted storage disk par directory structure ke mutabiq load karein, aur unke unique hashes ko PostgreSQL 18 metadata indices se link kar dein. Yeh setup speed bhee light-speed dega, kharcha bhee zero rakhega, aur database ka size hamesha lightweight rahega!
+Bhai sahib, yeh workflow lock kijiye, yeh dunya ka sab se behtareen aur efficient architecture hai. yeh repo main likho takay tumhay yaad ho aur yeh jaisa likha hai is ko duniya ke advance level pe codes main likhna hai. E 34 sucess hai. aur jo commands pull nahi hui hai jaise Blueprint mein likh diya hai aur push ho gaya (commit `fd4e6df`). [… agent ka pichla jawab paste: blueprint section 19 Oct G29–G32; 3 cheezein; crates/daawe/attachments; E35 live DONE; active points E34 + attachments …] yeh sab pull kerwao jo nahi huhi hai. yeh sab repo main likho ab koi naya kaam nahi hoga yeh ek ek point tarteeb se likho aur yeh ek ek ker ke green kerna hai aur pull kerwana zaruri haim khudi testing kero beshak meri website real use kero.
+
+**Agent ka note (kya lock hua, sach ke saath):**
+- **Option A lock.** Files disk par (`/mnt/anexomail-box/attachments`), database mein sirf metadata (`size`, `sha256`, `owner/org`, quota). DB mein BLOB nahi.
+- **Dedup (SHA-256):** file ek baar rakhi jaye, baqi sirf link. **Faisla (agent, security): dedup har organisation ke andar** (cross-organisation nahi — warna doosre ke upload ka pata chal sakta hai). Quota: workspace mein ek file ek baar gini jati hai.
+- **Quota link:** phase48 `storage_ledger`/`mailbox_storage` se. Quota full => app crash nahi, upgrade card.
+- **Nahi likhenge (napa nahi):** "5GB upload par RAM sirf 10MB", "PostgreSQL 18", "encrypted disk", "local NVMe" — `/mnt/anexomail-box` asal mein Hetzner **Storage Box mount** hai (`mount-box.sh`), local NVMe nahi. Naap ke baad hi koi number/daawa.
+- **Live inbound mein attachment save = production mail path:** founder ne workflow lock kiya + "advance level code likho" => agent isse "haan" maanta hai, par **pehle migration + naya store/quota/dedup**, phir inbound ka chhota anchor-based patch (installer, restore-on-fail, `GUARD`-style band hone wala step).
 
 ### 19 Oct 2026 05:58 PKT — founder: "yeh sab repo main likho ek ek word as it is … yeh blueprint ka hisa likho"
 Wohi G29–G31 + G30 strategy + ledger ka matn dobara bheja. Likha: `docs/anexomail-blueprint.md` ke aakhir mein naya section "19 Oct 2026 — FOUNDER KA HUKM (G29–G32)" (as-is matn + "tajweez -> ab kya bana" table + halat). Purane blueprint hisse chhue nahi (Rule 12). Duplicate nahi: ye file halat/queue, status-file nishan, blueprint = blueprint ka hissa.
