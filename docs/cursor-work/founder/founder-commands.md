@@ -8,6 +8,16 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ ABHI KA KAAM — sirf yeh (founder ka hukm 19 Oct 05:47 PKT: "ek time pe sirf ek ya do point")
+
+1. **E35 live par chalana** (founder ke server par; self-test ab thread ki ginti gin kar set karta hai, commit e6a6cc1) — green = `E35 OK` + `PASSED (54 checks…)`.
+2. **Attachments ki files copy karna** (migration + live inbound dono).
+
+**Qaida:** is jagah sirf 1–2 point rehte hain. Jab inka server par pull/chalna green ho jaye (founder batata hai), tab hi agla point yahan aata hai. Agent apne se koi naya kaam nahi jodta.
+**Baad mein (abhi nahi, tarteeb se):** E34 SQL -> Rust `MODULES=mig` -> Web pull -> E36 script -> Chat audit -> iMIP REPLY -> Bun routes Rust par (Business/Business Pro) -> Caddy read-only check script -> Business/Business Pro blueprint tarteeb. (Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.)
+
+---
+
 ## Halat (aakhri update: 19 Oct 2026 05:20 PKT)
 
 | # | Founder ka hukm (19 Oct 03:35 PKT wala bada message) | Halat | Server par chalane ki command (technology ke hisab se) |

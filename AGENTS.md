@@ -217,6 +217,7 @@ Founder ka hukm (verbatim): "jo chat main command dun ga … woh paste hoga repo
 - **Ek jagah: `docs/cursor-work/founder/founder-commands.md`** (halat table + verbatim commands). Founder ka har naya hukm/command **usi turn mein, kaam shuru karne se pehle**, verbatim wahan paste (naya sabse upar) + halat (DONE/READY/TODO) — phir docs-only commit + push.
 - **Har naye chat / compact ke baad: pehle yeh file (aur Rule 18 ki memory file) poori padho; uske baghair koi command/kaam shuru nahi.** Purani command dobara chalane se pehle yahan halat dekho.
 - **Jo kaam ho chuka (READY/DONE) uski usi waqt founder ko pull/install command do** — **har technology ki alag, ek ek karke**: SQL (psql), Rust (`rust-engine-install.sh`), Web (`pull.sh`), Brain, Caddy. Mix ek block mein nahi.
+- **Ek time par sirf 1–2 point (founder, 19 Oct 05:47):** `founder-commands.md` ke "ABHI KA KAAM" mein bas yehi 1–2 point; baqi "Baad mein". Agla point tab jab ye server par pull/chalne ke baad green ho (founder batata hai). Agent apne se naya pending nahi jodta.
 - Secret/password founder chat mein de to bhi file mein `[REDACTED]`; scripts silent prompt se lein.
 - Caddy (Edge + HTTP/3) kabhi nahi tootna: koi bhi badlav read-only check -> backup -> `caddy validate` -> reload.
 
