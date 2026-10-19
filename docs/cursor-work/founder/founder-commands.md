@@ -8,15 +8,20 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
-## ▶ ABHI KA KAAM — sirf yeh (founder ka hukm 19 Oct 05:47 / 06:06 PKT: "ek time pe sirf ek ya do point", "ek ek ker ke green", "pull kerwana zaruri")
+## ▶ ABHI KA KAAM — founder ka hukm 19 Oct 06:27 PKT: "is tarteeb se codes likhna hai. lekin SHAAM KO."
 
-✅ **DONE (live saboot):** **Rust installer cal+people+team+mig (06:16, build OK, health OK, imap.gmail.com:993 khula)** · **Web pull db11a0b (06:16, /health 200)** · E35 SQL (05:54) · E36 / Business Pro logins `business_pro.test` + `bpro.test` (05:54, dobara touch nahi) · **E34 SQL (founder 06:06: "E34 success hai")**.
+✅ **DONE (live saboot):** E36 / Business Pro logins (05:54, dobara touch nahi) · E35 SQL (05:54) · E34 SQL (06:06) · Rust cal+people+team+mig (06:16: build OK 1m43s, health 200, GUARD 2 reads, port 993 khula) · Web pull db11a0b (06:16, /health 200) · **Import mail live test GREEN (06:27: asli imap.gmail.com se `auth_failed` jawab, nakli login)**.
 
-1. **Live test (agent ki taraf se, asli website ke raaste, nakli Gmail login ke saath):** `mig-live-test.sh` — green = provider list + list + asli imap.gmail.com se "login refused" jawab.
-2. **Attachments (Option A locked)** — migration + live inbound dono. Pehle E37 SQL (metadata + dedup + quota), phir Rust, phir inbound patch.
+**Shaam ko, is tarteeb se (ek ek, jab ek green tab agla):**
+1. **Attachments E37** — Option A locked (policy: 06:16 entry): SHA-256 dedup sirf org ke andar, `/mnt/anexomail-box/attachments` (Storage Box mount, NVMe nahi), phase48 quota, DB mein sirf metadata; pehle migration, phir live inbound ka chhota anchor-based patch.
+2. Chat audit.
+3. iMIP REPLY (G26).
+4. Bun routes -> Rust (Business / Business Pro pehle), differential tests ke saath.
+5. Caddy read-only check script (+ TECH-MAP row) — Caddy/HTTP3 ko chhedna nahi.
+6. Business / Business Pro blueprint tarteeb.
+(Port 993: khula, DONE. OAuth: jaan-boojh kar baad mein.)
 
-**Qaida:** sirf 1–2 point. Naya kaam nahi. Agla tab jab ye green.
-**Baad mein (tarteeb se):** Chat audit -> iMIP REPLY -> Bun routes Rust par (Business/Business Pro) -> Caddy read-only check script -> Business/Business Pro blueprint tarteeb. (Port 993 / asli TLS: installer server par batayega. OAuth: jaan-boojh kar baad mein.)
+**Qaida:** ek time par sirf 1–2 point; naya kaam nahi; har kaam ke baad technology-wise alag pull command + agent khud test.
 
 ---
 
@@ -41,6 +46,10 @@
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 06:27 PKT — founder: live test GREEN + "is tarteeb se codes likhna hai. lekin shaam ko."
+`mig-live-test.sh` output: login OK · migration.providers OK · migration.list OK (`max_workers 3`, sessions []) · asli `imap.gmail.com:993` par nakli login -> `auth_failed` "The provider refused the login…" (TLS + IMAP LOGIN asli server tak gaya) · koi mail copy nahi · **RESULT: GREEN**. (Bina-password raasta nahi chala, script ne password poocha — fallback; test phir bhi green. Shaam ko is raaste ko theek karna ek chhota kaam.)
+Founder ka hukm: queue ki tarteeb — (2) Attachments E37 -> (3) Chat audit -> (4) iMIP REPLY -> (5) Bun routes Rust par (Business/Business Pro) -> (6) Caddy read-only check -> (7) Business/Business Pro blueprint tarteeb — **in sab ke codes SHAAM KO likhne hain (abhi nahi).**
 
 ### 19 Oct 2026 06:16 PKT — founder: Rust + Web pull ho gaye; attachment policy "lock" (verbatim)
 Rust installer output: cal 21, people 16, team 19, mig 57 tests pass; build OK (1m43s); health OK; calendar/people/team/mig procs live; E33+E35 SQL lagi; `imap.gmail.com:993` raasta khula; GUARD 2 reads. Web pull: `build OK`, `web /health 200`, `server==repo src same=456 differ=1` (routeTree.gen.ts — build ka output, theek).
