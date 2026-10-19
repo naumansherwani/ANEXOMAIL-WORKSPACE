@@ -10,9 +10,9 @@
 
 ## ▶ ABHI KA KAAM — sirf yeh (founder ka hukm 19 Oct 05:47 / 06:06 PKT: "ek time pe sirf ek ya do point", "ek ek ker ke green", "pull kerwana zaruri")
 
-✅ **DONE (live saboot):** E35 SQL (05:54) · E36 / Business Pro logins `business_pro.test` + `bpro.test` (05:54, dobara touch nahi) · **E34 SQL (founder 06:06: "E34 success hai")**.
+✅ **DONE (live saboot):** **Rust installer cal+people+team+mig (06:16, build OK, health OK, imap.gmail.com:993 khula)** · **Web pull db11a0b (06:16, /health 200)** · E35 SQL (05:54) · E36 / Business Pro logins `business_pro.test` + `bpro.test` (05:54, dobara touch nahi) · **E34 SQL (founder 06:06: "E34 success hai")**.
 
-1. **Pull jo baqi hai (technology ke hisab se alag, ek ek):** (a) Rust `MODULES=mig` installer — G29/G30/G31/G32 Rust hissa; (b) Web pull — Import mail page + AI pointer line. Green = installer `GREEN` + health 200; Web `/health 200`. **Phir agent khud real website par test karta hai** (login, Import mail page).
+1. **Live test (agent ki taraf se, asli website ke raaste, nakli Gmail login ke saath):** `mig-live-test.sh` — green = provider list + list + asli imap.gmail.com se "login refused" jawab.
 2. **Attachments (Option A locked)** — migration + live inbound dono. Pehle E37 SQL (metadata + dedup + quota), phir Rust, phir inbound patch.
 
 **Qaida:** sirf 1–2 point. Naya kaam nahi. Agla tab jab ye green.
@@ -41,6 +41,16 @@
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 06:16 PKT — founder: Rust + Web pull ho gaye; attachment policy "lock" (verbatim)
+Rust installer output: cal 21, people 16, team 19, mig 57 tests pass; build OK (1m43s); health OK; calendar/people/team/mig procs live; E33+E35 SQL lagi; `imap.gmail.com:993` raasta khula; GUARD 2 reads. Web pull: `build OK`, `web /health 200`, `server==repo src same=456 differ=1` (routeTree.gen.ts — build ka output, theek).
+Founder ne Claude ko yeh policy "raw message" ke taur par bheji (verbatim):
+> 🔒 Core Constraints Enforced: Attachment Storage Policy Lock
+> "Attachment storage engine limits are now locked on Option A with the following structural mandates based on strict telemetry truth:
+> 1. Intra-Organisation Deduplication Only (Strict Walled Garden): Cryptographic `SHA-256` hashing will evaluate duplications strictly bound within individual organisation scopes (`org_id`). Global server-wide cross-deduplication is prohibited to block cross-company enumeration attacks. The performance pitch remains intact: 'If a message or file is forwarded to 100 users inside your company workspace, storage is hit only once.'
+> 2. Hetzner Storage Box Infrastructure Integration: The target ingestion directory path `/mnt/anexomail-box/attachments` is a mounted Hetzner Storage Box network drive configuration, not local machine hardware (NVMe NVMe).
+> 3. No Decorative or Unmeasured Claims: All metrics claims regarding memory usage ceilings ("10MB RAM for 5GB transfer") or direct local storage processing constraints are suspended until strict performance profiling tests are fully measured under staging load. No theoretical predictions will be documented as platform facts before true system boundaries are measured."
+Founder: "is ka jawab repo main founder ka likho aur yeh codes main advance level pe leke jana hai." — yeh policy ab ATTACHMENTS ka locked qaida hai (code/copy/docs mein yehi).
 
 ### 19 Oct 2026 06:06 PKT — founder: ATTACHMENTS = Option A (LOCKED) + E34 success + "jo pull nahi hui wo kerwao" (verbatim)
 Dunya ko hila dene wala mera pure architectural aur business mashwara yeh hai:
