@@ -6,6 +6,8 @@
 > **Password/secret yahan KABHI nahi** — founder ne chat mein diya ho to bhi `[REDACTED]` likho.
 > Halat sirf: DONE (live saboot) / READY (repo mein, server par chalana baqi) / TODO (Rule 5).
 
+> **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
+
 ## Halat (aakhri update: 19 Oct 2026 05:20 PKT)
 
 | # | Founder ka hukm (19 Oct 03:35 PKT wala bada message) | Halat | Server par chalane ki command (technology ke hisab se) |
@@ -27,6 +29,9 @@
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 05:31 PKT — founder ne wohi bada hukm dobara bheja
+"yeh repo main likho … jo nahi huwa hai woh mark kero nahi huwa hai aur jo hogaya hai woh 100% green kero. yeh as it is repo main likho" -> `founder-command-2026-10-19-status.md` (as-is + nishan).
 
 ### 19 Oct 2026 05:25 PKT — E35 aur E36 failed (founder)
 E35: `ERROR 42804: column "direction" is of type mail_direction but expression is of type text` (mail_messages insert, migration_ingest line 161). E36: `ERROR 42601: syntax error at or near "-"  LINE 1: - E36 — test account ...` — "fix kero".
