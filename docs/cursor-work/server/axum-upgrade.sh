@@ -69,10 +69,10 @@ echo "   BAAD:  $(tr '\n' ' ' <"$T/after.txt")"
 echo "   /rpc/health: $H   UDP 3443: $U"
 if [ "$H" != "200" ] || [ "$U" != "yes" ] || ! diff -q "$T/before.txt" "$T/after.txt" >/dev/null; then
   echo "!! farq mila — PURANI binary + src wapas:"; diff "$T/before.txt" "$T/after.txt" | sed 's/^/   /'
-  cp -p "$BIN.bak.$STAMP" "$BIN"; restore_src
+  cp -p "$BIN.bak.$STAMP" "$BIN.new.$STAMP" && mv -f "$BIN.new.$STAMP" "$BIN"; restore_src
   pm2 restart anexomail-rust --update-env >/dev/null 2>&1; sleep 4
   echo "   ab: /rpc/health $(health)   UDP 3443 $(udp3443)"; pm2 save >/dev/null 2>&1; exit 1
 fi
 pm2 save >/dev/null 2>&1
 echo "OK — axum: $OLD -> $(lockver axum)  (13/13 jawab pehle jaise, health 200, WebTransport 3443 sun raha)"
-echo "   wapas lene ke liye: cd $TARGET && for f in Cargo.toml Cargo.lock src/main.rs; do cp \$f.bak.$STAMP \$f; done && cp $BIN.bak.$STAMP $BIN && pm2 restart anexomail-rust --update-env"
+echo "   wapas lene ke liye: cd $TARGET && for f in Cargo.toml Cargo.lock src/main.rs; do cp \$f.bak.$STAMP \$f; done && cp $BIN.bak.$STAMP $BIN.new && mv -f $BIN.new $BIN && pm2 restart anexomail-rust --update-env"

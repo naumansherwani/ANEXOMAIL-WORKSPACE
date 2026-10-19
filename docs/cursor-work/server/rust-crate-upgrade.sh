@@ -57,10 +57,10 @@ echo "   /rpc/health: $H   UDP 3443: $U   procs (nakli token => 401 = theek): da
 for c in "$P1" "$P2" "$P3"; do [ "$c" = "401" ] || ok=0; done
 if [ "$ok" != 1 ]; then
   echo "!! naye build par kuch theek nahi — PURANI binary + Cargo.lock wapas"
-  cp -p "$BIN.bak.$STAMP" "$BIN"; restore_lock
+  cp -p "$BIN.bak.$STAMP" "$BIN.new.$STAMP" && mv -f "$BIN.new.$STAMP" "$BIN"; restore_lock
   pm2 restart anexomail-rust --update-env >/dev/null 2>&1; sleep 4
   echo "   ab: /rpc/health $(health)   UDP 3443 $(udp3443)"; pm2 save >/dev/null 2>&1; exit 1
 fi
 pm2 save >/dev/null 2>&1
 echo "OK — $CRATE: $OLD -> $(lockver "$CRATE")   (health 200, WebTransport 3443 sun raha, procs jawab de rahe)"
-echo "   wapas lene ke liye: cd $TARGET && cp Cargo.lock.bak.$STAMP Cargo.lock && cp $BIN.bak.$STAMP $BIN && pm2 restart anexomail-rust --update-env"
+echo "   wapas lene ke liye: cd $TARGET && cp Cargo.lock.bak.$STAMP Cargo.lock && cp $BIN.bak.$STAMP $BIN.new && mv -f $BIN.new $BIN && pm2 restart anexomail-rust --update-env"
