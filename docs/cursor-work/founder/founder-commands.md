@@ -42,6 +42,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 19 Oct 2026 05:58 PKT — founder: "yeh sab repo main likho ek ek word as it is … yeh blueprint ka hisa likho"
+Wohi G29–G31 + G30 strategy + ledger ka matn dobara bheja. Likha: `docs/anexomail-blueprint.md` ke aakhir mein naya section "19 Oct 2026 — FOUNDER KA HUKM (G29–G32)" (as-is matn + "tajweez -> ab kya bana" table + halat). Purane blueprint hisse chhue nahi (Rule 12). Duplicate nahi: ye file halat/queue, status-file nishan, blueprint = blueprint ka hissa.
+
 ### 19 Oct 2026 05:45 PKT — founder (gussa) + E35 live output
 "tumne mera kaam aur zedia ker diya … mujhe kaam complete kerna hai ek ek ker ke task takay yeh sab pending green ho jaye. tum her bar naya pending kaam leke atay ho. ya toh tum repo main context dekho aur yahan chat main seedha comand do. ya ek task ya main repo disconnect ker ke kisi aur ke pass jata hoon."
 E35 live: `root+reply … asli rows: Quote please message_count 3 (2 chahiye), Different 2 (1), Future 2 (1)` => live mein naye thread par ginti pehle se 1 hoti hai, mera `+ 1` ek zyada deta tha.
