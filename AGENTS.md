@@ -221,6 +221,13 @@ Founder ka hukm (verbatim): "jo chat main command dun ga … woh paste hoga repo
 - Secret/password founder chat mein de to bhi file mein `[REDACTED]`; scripts silent prompt se lein.
 - Caddy (Edge + HTTP/3) kabhi nahi tootna: koi bhi badlav read-only check -> backup -> `caddy validate` -> reload.
 
+### Rule 25 — Technology kahan lagti hai: LAW + Constitution + goal (locked 19 Oct 2026 06:34 PKT, founder)
+Founder ka hukm (verbatim): "yeh technology jahan pe ani hai yeh rule hai law hai constitution hai aur goal hai ke ahista ahista puri website sql likhne advance level pe bun se shift kerna hai yeh technology pe ya is se bhi advance technology pe."
+- **Ek jagah: `docs/cursor-work/TECH-MAP.md` section 0 ("LAW — kaun si technology KAHAN")** — Jagah -> Technology -> Kaam (sirf yehi). Is se bahar koi technology kisi kaam par nahi; naya tech pehle wahan likho.
+- **Goal:** website + SQL likhna Bun se hata kar us table ki technology (ya usse advance) par — ahista ahista, har qadam differential test + live verify ke baad; website kabhi nahi tootti.
+- **Version upgrades PRIORITY QUEUE** (TECH-MAP 0a: tokio -> axum 0.8 -> wtransport/quinn/rustls -> rustc/edition 2024 -> Bun): ek ek, scratch copy par `cargo check` + tests, `rust-safe-deploy.sh` restore-on-fail, live saboot. Upgrade se pehle official source se version dobara verify (Rule 20).
+- Caddy (Edge + HTTP/3) aur Polar :3400 kabhi nahi tootne; mail (Postfix/Dovecot/OpenDKIM) founder ke "haan" ke baghair nahi.
+
 ---
 
 ## PENDING (founder action required)

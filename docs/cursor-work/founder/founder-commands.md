@@ -13,6 +13,7 @@
 ✅ **DONE (live saboot):** E36 / Business Pro logins (05:54, dobara touch nahi) · E35 SQL (05:54) · E34 SQL (06:06) · Rust cal+people+team+mig (06:16: build OK 1m43s, health 200, GUARD 2 reads, port 993 khula) · Web pull db11a0b (06:16, /health 200) · **Import mail live test GREEN (06:27: asli imap.gmail.com se `auth_failed` jawab, nakli login)**.
 
 **Shaam ko, is tarteeb se (ek ek, jab ek green tab agla):**
+0. **PRIORITY (founder 06:34): technology version upgrades** — TECH-MAP 0a: tokio -> axum 0.8 -> wtransport/quinn/rustls -> rustc/edition 2024 -> Bun. Ek ek, restore-on-fail, har ke baad health + `mig-live-test.sh` GREEN. (Pehla qadam: official source se versions dobara verify.)
 1. **Attachments E37** — Option A locked (policy: 06:16 entry): SHA-256 dedup sirf org ke andar, `/mnt/anexomail-box/attachments` (Storage Box mount, NVMe nahi), phase48 quota, DB mein sirf metadata; pehle migration, phir live inbound ka chhota anchor-based patch.
 2. Chat audit.
 3. iMIP REPLY (G26).
@@ -46,6 +47,11 @@
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 06:34 PKT — founder: technology-kahan table = LAW + version upgrades PRIORITY queue (verbatim)
+(Founder ne agent ka "kaun si technology kahan" wala jawab (table + "Aaj ke kaam kahan lagenge") wapas paste kiya — wohi table ab `TECH-MAP.md` section 0 mein LAW ke taur par hai.) Founder ke apne alfaaz:
+"is ko que main dalo jaldi se aur yeh priorty pe kaam karay gay. aur yeh technology jahan pe ani hai yeh rule hai law hai constitution hai aur goal hai ke ahista ahista puri website sql likhne advance level pe bun se shift kerna hai yeh technology pe ya is se bhi advance technology pe."
+(Agent ne: version upgrades [tokio, axum 0.8, wtransport/quinn/rustls, rustc/edition 2024, Bun] ko PRIORITY queue mein sabse upar rakha — TECH-MAP 0a; AGENTS.md Rule 25.)
 
 ### 19 Oct 2026 06:29 PKT — LIVE SABOOT (founder ne confirm kiya: "bilkul accurate")
 founder: "yeh bilkul accurate hai — script ne password manga, mujhe samajh nahi aya tha, baad mein password maine khud add kiya tha. yehi accurate LIVE update hai repo mein dalo."

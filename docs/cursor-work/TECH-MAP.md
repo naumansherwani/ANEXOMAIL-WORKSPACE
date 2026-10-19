@@ -12,6 +12,44 @@
 
 ---
 
+## 0. LAW — kaun si technology KAHAN aati hai (founder ka hukm 19 Oct 2026, 06:34 PKT — Constitution; Rule 25)
+
+> Founder: "yeh technology jahan pe ani hai yeh **rule hai, law hai, constitution hai** aur **goal** hai ke **ahista ahista poori website, SQL likhna, advance level pe Bun se shift** karna hai is technology pe ya **is se bhi advance technology** pe."
+> Is jagah se bahar koi technology kisi kaam par nahi lagti. Naya tech lagane se pehle neeche ki "Jagah" dekho; map mein na ho to pehle yahan likho (section 9).
+
+| Jagah | Technology | Kaam (sirf yehi) |
+|---|---|---|
+| **Edge (browser ↔ server)** | Caddy (HTTPS + HTTP/3) | TLS, reverse proxy, HTTP/3. Business logic nahi. **Kabhi nahi tootna** (read-only check -> backup -> `caddy validate` -> reload). |
+| | WebTransport over QUIC (Rust, UDP 3443) | Server se browser ko live push: naya mail, chat, call signaling. |
+| **Backend (naya sab)** | Rust :3200 (Tokio, axum) | `/rpc/*`, file engine, calendar, people, team, Import mail, aane wale attachments. |
+| | rustls | Import mail ka secure connection (Gmail/Outlook IMAP). |
+| | reqwest + rustls | Rust se bahar ke HTTP (Supabase wagera). |
+| | Bun :3100–3300 | **Sirf fallback** jab Rust 404/501/502/503 de. Naya kaam yahan nahi. |
+| **Database** | PostgreSQL (Supabase #4) | Sach ka ek source: mail metadata, migration walled garden, quota, chain. |
+| **Files / attachments** | Hetzner Storage Box (`/mnt/anexomail-box/attachments`) | Sirf file ke bytes. Database mein sirf metadata. (Storage Box network mount hai, local NVMe nahi.) |
+| **Mail** | Postfix, Dovecot, OpenDKIM | Mail bhejna aur lena. GREEN — abhi chheda nahi jata. |
+| | Stalwart, JMAP | PLANNED: sirf founder ke "haan" + parallel staging ke baad. |
+| **Website** | React 19.2, TanStack Start/Router/Query | Pages, routes, data cache. |
+| | Vite 8.2, Tailwind 4.2, Radix/shadcn | Build, styling, UI blocks. |
+| | Framer Motion, GSAP, Three.js | Cinematic landing aur onboarding. Inbox ke andar bhari 3D nahi. |
+| | Bun SSR (Nitro) | **Sirf website ka server-side render**, API nahi. |
+| **Payments** | Polar Rust webhook :3400 | **NO-TOUCH.** |
+
+**Aaj ke kaam kahan lagenge:** Attachments = bytes Storage Box par, SHA-256 dedup Rust se **sirf organisation ke andar**, DB mein sirf metadata + phase48 quota, live inbound ka chhota patch Rust mein · Chat audit + iMIP REPLY = Rust (iMIP ka SQL PostgreSQL) · Bun routes (Business/Business Pro) = Rust par; jab har Rust proc live verify ho tab Bun fallback band · Caddy = koi code nahi, sirf read-only HTTP/3 check script · Pull command har technology ki alag.
+
+**GOAL (founder):** ahista ahista poori website + SQL likhna Bun se hata kar is table ki technology (ya is se bhi advance) par — har qadam differential test + live verify ke baad (Rule 5/22), website kabhi nahi tootti.
+
+### 0a. Version upgrades — PRIORITY QUEUE (founder 19 Oct 06:34: "is ko que main dalo jaldi se aur yeh priority pe")
+Server par asli vs latest (TECH-MAP section 3/10, 17 Oct; **har upgrade se pehle official source se dobara verify**, Rule 20). Ek ek, scratch copy par `cargo check` + unit tests, phir `rust-safe-deploy.sh` (restore-on-fail), phir live saboot:
+1. **tokio** 1.53.1 -> latest 1.53.x (patch, kam khatra).
+2. **axum** 0.7.9 -> 0.8.x (path syntax `/:proc` -> `/{proc}`; saare routes ka test).
+3. **wtransport** 0.1.14 -> 0.7.x (saath mein quinn 0.10 -> 0.11, rustls 0.21 -> 0.23 — WebTransport live push par asar; sab se bada khatra, parallel staging).
+4. **rustc** 1.97.1 -> latest + edition 2024 (`opt-level = "z"` ka faisla alag).
+5. **Bun** 1.4.0 -> latest (sirf SSR host); Nitro beta ki nigrani.
+**Qaida:** upgrade se live kuch tootna nahi chahiye — har ek ke baad `/rpc/health` 200, WebTransport sun raha, `mig-live-test.sh` GREEN.
+
+---
+
 ## 1. Usool (har naya faisla in par parka jata hai)
 
 1. **Ek kaam = ek technology.** Do cheezein ek kaam na karein (Rule 6: no mix, no duplicate).
