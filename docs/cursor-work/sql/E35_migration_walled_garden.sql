@@ -898,7 +898,12 @@ begin
       select count(*) into v_n from public.mail_threads where lower(mailbox_address) = v_mb;
       if v_n <> 3 then raise exception 'E35 FAILED: thread ginti % (3 honi chahiye)', v_n using errcode = 'AX053'; end if;
       select count(*) into v_n from public.mail_threads t where lower(t.mailbox_address) = v_mb and t.subject = 'Quote please' and t.message_count = 2 and t.unread and t.has_attachments and t.folder = 'inbox';
-      if v_n <> 1 then raise exception 'E35 FAILED: root+reply ek thread/unread/attachments nahi' using errcode = 'AX053'; end if;
+      if v_n <> 1 then
+        raise exception 'E35 FAILED: root+reply ek thread/unread/attachments nahi — asli rows: %',
+          (select coalesce(jsonb_agg(jsonb_build_object('subject', t.subject, 'message_count', t.message_count, 'unread', t.unread,
+                                                         'has_attachments', t.has_attachments, 'folder', t.folder::text)), '[]'::jsonb)
+             from public.mail_threads t where lower(t.mailbox_address) = v_mb) using errcode = 'AX053';
+      end if;
       select count(*) into v_n from public.mail_messages m join public.mail_threads t on t.id = m.thread_id
        where lower(t.mailbox_address) = v_mb and m.mig_session_id = v_sid and m.direction = 'out' and t.folder = 'sent' and t.unread = false;
       if v_n <> 1 then raise exception 'E35 FAILED: sent mail direction/folder' using errcode = 'AX053'; end if;

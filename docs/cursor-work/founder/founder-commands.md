@@ -30,6 +30,10 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 19 Oct 2026 05:37 PKT — E35 server par fail + E36 (founder)
+E35 (server, psql): `ERROR: E35 FAILED: root+reply ek thread/unread/attachments nahi` (self-test, DO block line 120) — local pass, live fail => live schema mein kuch alag. E36: Supabase SQL editor mein `\set ON_ERROR_STOP on` par `42601 syntax error` — E36 / script editor mein paste nahi hoti, sirf `bizpro-login-fix.sh` se.
+(Agent: E35 ka yeh check ab fail par asli thread rows (subject/message_count/unread/has_attachments/folder) dikhata hai — ek run mein wajah pata chalegi. E36: sirf script command.)
+
 ### 19 Oct 2026 05:31 PKT — founder ne wohi bada hukm dobara bheja
 "yeh repo main likho … jo nahi huwa hai woh mark kero nahi huwa hai aur jo hogaya hai woh 100% green kero. yeh as it is repo main likho" -> `founder-command-2026-10-19-status.md` (as-is + nishan).
 
