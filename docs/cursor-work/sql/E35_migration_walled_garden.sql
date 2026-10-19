@@ -480,6 +480,8 @@ begin
     v_subj := coalesce(nullif(btrim(coalesce(it->>'subject', '')), ''), '(no subject)');
     v_norm := regexp_replace(v_subj, '^((re|fwd|fw)\s*:\s*)+', '', 'i');
     v_app  := case when it->>'app_folder' in ('inbox', 'sent', 'drafts', 'archive', 'spam', 'trash') then it->>'app_folder' else 'archive' end;
+    -- live mail_threads.folder enum (public.mail_folder) hai: jo label enum mein na ho uski jagah 'inbox'
+    if not exists (select 1 from pg_enum en where en.enumtypid = 'public.mail_folder'::regtype and en.enumlabel = v_app) then v_app := 'inbox'; end if;
     v_dir  := case when it->>'direction' = 'out' then 'out' else 'in' end;
     v_seen := coalesce((it->>'seen')::boolean, false);
     begin
@@ -536,7 +538,7 @@ begin
     end if;
     if v_thread is null then
       select t.id into v_thread from public.mail_threads t
-       where lower(t.mailbox_address) = s.mailbox and t.folder = v_app and t.subject = v_norm
+       where lower(t.mailbox_address) = s.mailbox and t.folder = v_app::public.mail_folder and t.subject = v_norm
          and abs(extract(epoch from (t.last_message_at - v_sent))) <= 30 * 86400
        order by t.last_message_at desc limit 1;
     end if;
@@ -545,7 +547,7 @@ begin
                                        message_count, unread, starred, has_attachments, folder, last_message_at)
       values (s.org_id, v_acct, s.mailbox, v_norm, left(v_text, 180), it->>'from_name', v_from, 0,
               (v_dir = 'in' and not v_seen), coalesce((it->>'flagged')::boolean, false),
-              (v_att is not null and jsonb_array_length(v_att) > 0), v_app, v_sent)
+              (v_att is not null and jsonb_array_length(v_att) > 0), v_app::public.mail_folder, v_sent)
       returning id into v_thread;
     end if;
 

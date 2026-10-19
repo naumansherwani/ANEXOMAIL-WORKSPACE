@@ -494,7 +494,7 @@ begin
         -- (D4) pehle se active member ka role badalna seat nahi leta (org bhara hone par bhi)
         execute $f$create or replace function public.team_seat_state(p_org uuid) returns jsonb language sql as
                    $b$select public.team_seat_calc('business', 4, 4, 0)$b$ $f$;
-        insert into public.org_invitations (org_id, email, role) values (v_org, 'again@e34.test', 'viewer') returning token into v_tok3;
+        insert into public.org_invitations (org_id, email, role) values (v_org, 'again@e34.test', 'admin') returning token into v_tok3;
         v_r := public.team_invite_accept(v_tok3, v_user2, 'free@e34.test');
         if (v_r->>'ok')::boolean is not true then raise exception 'E34 FAILED: bhare org mein purane member ki invitation ruk gayi %', v_r using errcode = 'AX040'; end if;
         v_chk := v_chk + 1;
