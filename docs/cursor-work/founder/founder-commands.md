@@ -30,6 +30,12 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 19 Oct 2026 05:45 PKT — founder (gussa) + E35 live output
+"tumne mera kaam aur zedia ker diya … mujhe kaam complete kerna hai ek ek ker ke task takay yeh sab pending green ho jaye. tum her bar naya pending kaam leke atay ho. ya toh tum repo main context dekho aur yahan chat main seedha comand do. ya ek task ya main repo disconnect ker ke kisi aur ke pass jata hoon."
+E35 live: `root+reply … asli rows: Quote please message_count 3 (2 chahiye), Different 2 (1), Future 2 (1)` => live mein naye thread par ginti pehle se 1 hoti hai, mera `+ 1` ek zyada deta tha.
+**QAIDA (agent ke liye): naya kaam nahi. Sirf pehle se likhe pending ek ek ker ke green. Order: E35 -> E34 -> Rust `MODULES=mig` -> Web pull -> E36 script -> (phir queue ka agla).**
+(Fix: E35 ab `message_count` ko gin kar set karta hai — local par live jaisa trigger laga kar wohi 3/2/2 dobara bana kar test, naye code par pass.)
+
 ### 19 Oct 2026 05:40 PKT — founder ne "NAHI HUA" list confirm ki + "no duplicate, chat wali command repo mein likho" (verbatim)
 Jo abhi theek nahi, aur mera mashwara
 

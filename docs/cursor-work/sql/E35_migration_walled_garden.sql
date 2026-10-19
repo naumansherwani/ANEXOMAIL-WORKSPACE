@@ -557,7 +557,7 @@ begin
     returning id into v_msg;
 
     update public.mail_threads
-       set message_count = message_count + 1,
+       set message_count = (select count(*) from public.mail_messages m2 where m2.thread_id = v_thread),  -- gina hua (live mein thread naya banne par ginti pehle se 1 thi => '+ 1' galat deta)
            unread = unread or (v_dir = 'in' and not v_seen),
            starred = starred or coalesce((it->>'flagged')::boolean, false),
            has_attachments = has_attachments or (v_att is not null and jsonb_array_length(v_att) > 0),
