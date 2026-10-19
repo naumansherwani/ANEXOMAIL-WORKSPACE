@@ -691,3 +691,22 @@ Docs: ledger L75–L77, G29–G31 aur memory file update ho gaye. yeh sab kero a
 | Chat audit · iMIP REPLY (G26) · Bun routes Rust par · Caddy read-only check | — | 🔴 TODO (tarteeb se, ek time par 1–2 point) |
 
 **Pull ka qaida (Rule 24):** har technology ki alag — SQL (psql), Rust (`rust-engine-install.sh`), Web (`pull.sh`), Brain, Caddy; ek ek karke.
+
+### LIVE saboot — Import mail (G30), 19 Oct 2026 06:29 PKT (founder ne "bilkul accurate" kaha)
+
+Server par asli website ke raaste se, **nakli Gmail login ke saath** (asli password nahi). Founder ne `bpro.test` ka password khud type kiya (kahin save nahi hua).
+
+```
+root@mail:~# git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mig-live-test.sh)
+   bpro.test@anexomail.com ka password (screen par nahi dikhega, save nahi hota):
+OK   1 login
+OK   2 migration.providers: provider list aayi
+OK   3 migration.list: {"max_workers": 3, "sessions": []}
+     4 asli imap.gmail.com:993 par NAKLI login (45 second tak lag sakta hai)...
+OK   4 provider ne login mana kiya (matlab TLS + IMAP LOGIN asli server tak gaya): {"error": {"code": "auth_failed", "message": "The provider refused the login. Check the address and use an App Password (your normal password usually does not work for IMAP)."}}
+     5 ab ki list: {"max_workers": 3, "sessions": [{"bytes": 0, "cancel_requested": false, "chain_len": 1, "copied": 0, "created_at": "2026-10-19T01:25:00.057837+00:00", "current_folder": null, "duplicate": 0, "failed": 0, "finished_at": "2026-10-19T01:25:00.422811+00:00", "folders_done": 0, "folders_total": 0, "found
+OK   5 koi mail copy nahi hui (nakli login)
+== RESULT: GREEN — Import mail asli website ke raaste se kaam kar raha hai (nakli login par sahi jawab)
+```
+
+Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-password ka jawab live kaam karte hain; koi mail copy nahi hui. **Halat: 🟢 LIVE DONE.**

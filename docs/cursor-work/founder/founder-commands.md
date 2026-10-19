@@ -47,8 +47,24 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 19 Oct 2026 06:29 PKT — LIVE SABOOT (founder ne confirm kiya: "bilkul accurate")
+founder: "yeh bilkul accurate hai — script ne password manga, mujhe samajh nahi aya tha, baad mein password maine khud add kiya tha. yehi accurate LIVE update hai repo mein dalo."
+Sahi tashreeh: script ne `bpro.test` ka password poocha (silent prompt); founder ne baad mein password khud type kiya (repo/script mein kahin save nahi). Test asli server par chala. Output as-is:
+```
+root@mail:~# git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/mig-live-test.sh)
+   bpro.test@anexomail.com ka password (screen par nahi dikhega, save nahi hota):
+OK   1 login
+OK   2 migration.providers: provider list aayi
+OK   3 migration.list: {"max_workers": 3, "sessions": []}
+     4 asli imap.gmail.com:993 par NAKLI login (45 second tak lag sakta hai)...
+OK   4 provider ne login mana kiya (matlab TLS + IMAP LOGIN asli server tak gaya): {"error": {"code": "auth_failed", "message": "The provider refused the login. Check the address and use an App Password (your normal password usually does not work for IMAP)."}}
+     5 ab ki list: {"max_workers": 3, "sessions": [{"bytes": 0, "cancel_requested": false, "chain_len": 1, "copied": 0, "created_at": "2026-10-19T01:25:00.057837+00:00", "current_folder": null, "duplicate": 0, "failed": 0, "finished_at": "2026-10-19T01:25:00.422811+00:00", "folders_done": 0, "folders_total": 0, "found
+OK   5 koi mail copy nahi hui (nakli login)
+== RESULT: GREEN — Import mail asli website ke raaste se kaam kar raha hai (nakli login par sahi jawab)
+```
+
 ### 19 Oct 2026 06:27 PKT — founder: live test GREEN + "is tarteeb se codes likhna hai. lekin shaam ko."
-`mig-live-test.sh` output: login OK · migration.providers OK · migration.list OK (`max_workers 3`, sessions []) · asli `imap.gmail.com:993` par nakli login -> `auth_failed` "The provider refused the login…" (TLS + IMAP LOGIN asli server tak gaya) · koi mail copy nahi · **RESULT: GREEN**. (Bina-password raasta nahi chala, script ne password poocha — fallback; test phir bhi green. Shaam ko is raaste ko theek karna ek chhota kaam.)
+`mig-live-test.sh` output: login OK · migration.providers OK · migration.list OK (`max_workers 3`, sessions []) · asli `imap.gmail.com:993` par nakli login -> `auth_failed` "The provider refused the login…" (TLS + IMAP LOGIN asli server tak gaya) · koi mail copy nahi · **RESULT: GREEN**. (Script ne password poocha; founder ne khud type kiya — 06:29 entry. Bina-password raasta chala ya nahi: output mein nahi dikha; shaam ko ek chhota check.)
 Founder ka hukm: queue ki tarteeb — (2) Attachments E37 -> (3) Chat audit -> (4) iMIP REPLY -> (5) Bun routes Rust par (Business/Business Pro) -> (6) Caddy read-only check -> (7) Business/Business Pro blueprint tarteeb — **in sab ke codes SHAAM KO likhne hain (abhi nahi).**
 
 ### 19 Oct 2026 06:16 PKT — founder: Rust + Web pull ho gaye; attachment policy "lock" (verbatim)
