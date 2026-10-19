@@ -553,7 +553,7 @@ begin
 
     insert into public.mail_messages (org_id, thread_id, direction, message_id, in_reply_to, from_name, from_address,
                                       to_addresses, cc_addresses, to_addrs, cc_addrs, subject, body_text, body_html, sent_at, mig_session_id)
-    values (s.org_id, v_thread, v_dir, v_msgid, v_reply, it->>'from_name', v_from, v_to, v_cc, v_to, v_cc, v_subj, v_text, v_html, v_sent, s.id)
+    values (s.org_id, v_thread, v_dir::public.mail_direction, v_msgid, v_reply, it->>'from_name', v_from, v_to, v_cc, v_to, v_cc, v_subj, v_text, v_html, v_sent, s.id)
     returning id into v_msg;
 
     update public.mail_threads

@@ -11,7 +11,7 @@
 | # | Founder ka hukm (19 Oct 03:35 PKT wala bada message) | Halat | Server par chalane ki command (technology ke hisab se) |
 |---|---|---|---|
 | 1 | G29 — revoked member ko Rust `mail_identity` na roke: fix | READY | Rust: `rust-engine-install.sh` (GUARD step) |
-| 2 | G30 — migration worker: App-Password IMAP, PRIMARY Rust :3200, walled garden + `migration_session_token`, SHA-256 chain, rustls/webpki crates | READY (E35 SQL galti theek, 5866900; ab server par chalna baqi) | SQL E35 -> Rust `MODULES=mig` -> Web pull |
+| 2 | G30 — migration worker: App-Password IMAP, PRIMARY Rust :3200, walled garden + `migration_session_token`, SHA-256 chain, rustls/webpki crates | READY (E35: folder enum 5866900 + direction enum cast; server par chalna baqi) | SQL E35 -> Rust `MODULES=mig` -> Web pull |
 | 3 | G31 — team ke baqi hisse: seat limit, audit chain, work address | E34 SQL galti theek (5866900), server par chalna baqi | SQL E34 -> Rust -> Web |
 | 4 | G32 — Rust `manager` role rank 0 na ho | READY | Rust installer |
 | 5 | Chat audit | TODO | — |
@@ -20,13 +20,17 @@
 | 8 | Caddy (Edge + HTTP/3) saath chalna; kabhi nahi tootna: read-only check, backup, `caddy validate`, reload | TODO (check script + TECH-MAP row) | Caddy: alag command |
 | 9 | Har technology ki pull/install command ALAG (Web, SQL, Rust, Brain, Caddy) | Rule 24 mein likha | — |
 | 10 | Sirf "AI plans open on ai.anexomail.com" pointer line anexomail.com par na dikhe; baqi AI zikr jaisa tha waisa | READY (Web pull) | Web pull |
-| 11 | Business Pro test account `business_pro.test@anexomail.com` login theek + naya Business Pro test account | READY (`bizpro-login-fix.sh`, E36) | SQL E36 + script (password script poochti hai, store nahi) |
+| 11 | Business Pro test account `business_pro.test@anexomail.com` login theek + naya Business Pro test account | READY (`bizpro-login-fix.sh`, E36) | `bizpro-login-fix.sh` (E36 uski andar psql se chalti hai — editor mein paste NAHI; password script poochti hai, store nahi) |
 | 12 | Focus: Business + Business Pro, blueprint tarteeb, latest technology, ek bhi point nahi bachna | JARI | — |
 | 13 | Final jawab: sirf "kya theek hua" + "jo theek nahi uska mashwara"; ledger IDs / purane loophole dobara nahi; simple Roman Urdu | QAIDA | — |
 | 14 | Attachments ki files copy (migration + live inbound dono) — agent ka mashwara: agla kaam yehi | TODO | — |
 | 15 | E31, E33 SQL | DONE (founder: "baki sql sab success hai") | — |
 
 ## Commands (verbatim, naya sabse upar)
+
+### 19 Oct 2026 05:25 PKT — E35 aur E36 failed (founder)
+E35: `ERROR 42804: column "direction" is of type mail_direction but expression is of type text` (mail_messages insert, migration_ingest line 161). E36: `ERROR 42601: syntax error at or near "-"  LINE 1: - E36 — test account ...` — "fix kero".
+(Agent: E35 mein `v_dir::public.mail_direction` cast, usi file mein; local test (folder + direction dono enum) 54 checks pass. E36 file theek hai — paste mein ek `-` kat gaya, AUR E36 psql-script hai (`\gset`, `:'pw'`), Supabase editor mein paste nahi hoti; sirf `bizpro-login-fix.sh` se chalti hai.)
 
 ### 19 Oct 2026 05:20 PKT — RULE 24 (founder)
 yeh ab se rule hogaya jo chat main command dun ga pehle woh strict rule yeh hoga ke woh paste hoga repo main ja ke compact chat ho bhi jaye tum meri command jo mainay chat pe di thi us ko repo main ja ke read kero gay aur jo kaam us main se hogaya hai us ko usi time mujhe pull ki command do gay. ab mainay yeh jitni commands di hai is ko repo main paste kero. yeh rule strictly follow kerna hai yeh rule read kiye bina kaam nahi shuru hoga
