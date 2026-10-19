@@ -121,7 +121,7 @@ Server par asli vs latest (TECH-MAP section 3/10, 17 Oct; **har upgrade se pehle
 | **Framer Motion / GSAP / Three.js** | Cinematic motion — landing, onboarding, transitions | **Inbox ke andar bhari 3D** (rafta pehle) | LIVE | repo: framer ^13, gsap ^3.15, three ^0.185 |
 | **Bun SSR + Nitro** | Server-side render | API/backend | LIVE | **Flag:** `nitro 3.0.260603-beta` — beta SSR production mein; nigrani rakho, stable aate hi uthao |
 | **React Compiler 1.0** | Auto-memoize: tez UI bina haath ke `useMemo` | — | **PLANNED (M11)** | **Stable 7 Oct 2025**, Meta par 12% tak load, 2.5x tak interactions ([react.dev](https://de.react.dev/blog/2025/10/07/react-compiler-1)). **Rukawat:** Vite config mein Babel plugin chahiye aur `vite.config.ts` **no-touch** hai → founder ki izazat chahiye |
-| **PWA / service worker** (vite-plugin-pwa) | Install, offline reading | — | LIVE | Web Push (iOS installed PWA) → M9 |
+| **PWA / service worker** (vite-plugin-pwa) | Install, offline reading | — | **PARTIAL (sach, 19 Oct live check):** manifest LIVE (200) · **service worker NAHI** — `src/lib/pwa.ts` `/sw.js` register karta hai par `public/sw.js` maujood nahi (live `/sw.js` = 404, har page par console error) => offline mode kaam nahi karta | Web Push (iOS installed PWA) → M9; sw.js banana ya register band karna: queue ke baad |
 | **Passkeys (WebAuthn)** | Password-free login | — | PLANNED (P3) | Auth abhi GoTrue; fit dekhna baqi |
 
 ## 7. AI
