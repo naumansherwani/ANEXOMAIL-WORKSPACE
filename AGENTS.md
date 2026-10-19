@@ -234,6 +234,7 @@ Founder (verbatim): "ab tumharay pass login hai tumhay human yani mere se better
 - **Behtar kya hoga (soch):** pehle 60 second mein apna address kaam karta dikhe; ek tap mein purani mail andar (Import mail) sealed receipt ke saath; organisation ke andar file dedup (ek file ek baar); har cheez phone par bhi poori; sach bolne wali screens (koi jhoota "live" nahi); latest technology (Rule 25) par tez aur mehfooz.
 - **Kaam ka tareeqa:** tarteeb `founder-commands.md` "ABHI KA KAAM" se; ek waqt ek package + ek masla; code advance level ka, par **website kabhi nahi tootti** (backup, restore-on-fail, health check); har kaam ke baad technology ke hisab se alag pull command; founder se dobara wohi sawal nahi.
 - **Live user-testing (founder 20 Oct 03:59, verbatim):** "tumne live website user ki tarah use kerni hai aur CEO ki tarah montor kerni hai … one by one dekho jab sab perfect ho jaye phir next package pe jana hai. awam ko honesty sale kerni hai imamndari aur duniya ke advance working wire features send kerna hai." Tarteeb (founder 04:03): Basic -> Pro -> Business -> Business Pro; ek package perfect, phir agla; masle NOTES mein.
+- **Founder 20 Oct 04:37:** har jawab ke saath latest GitHub pull command (Web `pull.sh`) HAMESHA. Mila hua masla founder ko naya kaam bana kar nahi dena — CEO khud theek kare aur saboot ke saath "green" bataye.
 - **Passwords:** founder chat mein deta hai; agent sirf usi chat mein test ke liye use karta hai; repo/memory/script mein KABHI nahi.
 
 ---
