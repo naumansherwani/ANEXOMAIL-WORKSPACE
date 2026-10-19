@@ -1,5 +1,7 @@
 # ANEXOMAIL Workspace — Agent Rules
 
+> **RULE 24 (strict): compact/naye chat par KAAM SHURU karne se pehle `docs/cursor-work/founder/founder-commands.md` padho — founder ki chat commands wahan verbatim + halat. Uske baghair kaam nahi.**
+>
 > **FOUNDER KA RULE: jo bhi founder se chat karega, pehle `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` poori padhega, phir chat karega (Rule 18).** Naya ya compact chat bhi wahin se shuru hota hai — "ABHI KA QADAM" dekho, founder se purani baat dobara mat poochho.
 
 **Founder:** Muhammad Nauman Sherwani (NEXATECT Global Ltd, internal only — public copy mein NEXATECT ka zikr nahi).
@@ -207,6 +209,16 @@ Founder ka hukm: founder ka account/protocol awam user se **alag** hai. Founder 
 
 ### Rule 23 — ai.anexomail.com BAND: koi kaam nahi (locked 18 Oct 2026, 05:35 PKT, founder)
 Founder ka hukm: `ai.anexomail.com` (LEO AI) alag product hai, **agle saal launch**, abhi priority nahi; pehle anexomail.com 100% bug-free. Jab tak founder khud likh kar na kahe: **AI surface par koi kaam nahi** — na naya feature, na copy/UI badlav, na check script, na installer, na Rust/Brain proc usi ke liye. Jo pehle se repo mein hai (SiteLock: awam ko sirf `/` coming-soon, baqi gated; `docs/cursor-work/ai/`) jaisa hai waisa rahe aur awam ko wahan kuch naya nazar nahi aana chahiye. Koi kaam AI surface ko chhuta lage to ruk kar founder se poochho.
+
+---
+
+### Rule 24 — Founder ki chat commands repo mein paste; compact ke baad PEHLE wohi padho; kaam hote hi pull command (locked 19 Oct 2026 05:20 PKT, founder)
+Founder ka hukm (verbatim): "jo chat main command dun ga … woh paste hoga repo main … compact chat ho bhi jaye tum meri command jo mainay chat pe di thi us ko repo main ja ke read kero gay aur jo kaam us main se hogaya hai us ko usi time mujhe pull ki command do gay … yeh rule strictly follow kerna hai yeh rule read kiye bina kaam nahi shuru hoga."
+- **Ek jagah: `docs/cursor-work/founder/founder-commands.md`** (halat table + verbatim commands). Founder ka har naya hukm/command **usi turn mein, kaam shuru karne se pehle**, verbatim wahan paste (naya sabse upar) + halat (DONE/READY/TODO) — phir docs-only commit + push.
+- **Har naye chat / compact ke baad: pehle yeh file (aur Rule 18 ki memory file) poori padho; uske baghair koi command/kaam shuru nahi.** Purani command dobara chalane se pehle yahan halat dekho.
+- **Jo kaam ho chuka (READY/DONE) uski usi waqt founder ko pull/install command do** — **har technology ki alag, ek ek karke**: SQL (psql), Rust (`rust-engine-install.sh`), Web (`pull.sh`), Brain, Caddy. Mix ek block mein nahi.
+- Secret/password founder chat mein de to bhi file mein `[REDACTED]`; scripts silent prompt se lein.
+- Caddy (Edge + HTTP/3) kabhi nahi tootna: koi bhi badlav read-only check -> backup -> `caddy validate` -> reload.
 
 ---
 

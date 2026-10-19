@@ -1,5 +1,7 @@
 # CLAUDE CHAT CONTEXT WITH FOUNDER NAUMAN SHERWANI
 
+> **RULE 24 (founder, 19 Oct 05:20 PKT, STRICT): sabse pehle `docs/cursor-work/founder/founder-commands.md` padho (founder ki commands verbatim + halat). Uske baghair koi kaam shuru nahi. Jo kaam ho gaya uski usi waqt pull command, har technology ki alag.**
+
 > ## FOUNDER KA RULE (locked, 17 Oct 2026)
 > **Jo bhi Claude / agent / session founder Nauman Sherwani se chat karega, woh PEHLE yeh poori file padhega, PHIR chat karega.**
 > Yeh founder ka rule hai. Bina padhe chat shuru nahi hoti, aur founder se woh sawal nahi poochhe jate jinka jawab is file mein likha hai.
@@ -557,3 +559,4 @@ Output paste kero.
 
 Is review ke har nukte ka anjaam: U1/U2 DONE (16 Oct live), U3 DONE (16 Oct browser), U4/U6 READY, U5/U7 founder ka faisla (section 9), #8 ab browser dekhne ke qareeb (section 1).
 - **19 Oct 04:55 PKT** — G30 migration worker READY (commit 7f0d20a backend + frontend commit): E35 SQL, Rust mig_* modules (57 tests), `/app/admin/migrate` "Import mail" page. Page flows harness mein test (start, galat password, custom host, resume, stop dialog, receipts ok/broken/mismatch, off/err/no-mailbox, member vs owner). Harness fix: `stubs/query.ts` isLoading ab sirf pehli load par (asli TanStack jaisa). Naapa: 1 GB/20k mail ~6.5 MB peak (core), 20 MB mail ~105 MB peak. Khula: attachments copy nahi (live inbound bhi nahi), asli rustls build + live TLS server par pehli baar, port 993 outbound unverified, E35 live nahi chala, restart par copy ruk jati hai, OAuth baad mein. Install: E35 SQL -> `MODULES=mig` Rust installer -> web pull. Agla: G26 iMIP reply, Chat audit, Bun->Rust Business/Business Pro, Caddy read-only check script.
+- **19 Oct 05:20 PKT** — Founder gussa (compact par context khona, 1 ghanta zaya). Do SQL fail: E34 (self-test mein live-mein-na-hone-wala role "viewer") aur E35 (`mail_threads.folder` enum `mail_folder`, text se compare) — dono usi file mein theek, local PG16 par pass (E34 28 checks, E35 54 checks), commit 5866900. Naya Rule 24 (AGENTS.md) + `founder/founder-commands.md`. Founder ne chat mein jo test password diya wo repo mein REDACTED. Server par abhi chalna baqi: E34, E35 SQL; phir `MODULES=mig` Rust; phir web pull.
