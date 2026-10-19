@@ -228,6 +228,13 @@ Founder ka hukm (verbatim): "yeh technology jahan pe ani hai yeh rule hai law ha
 - **Version upgrades PRIORITY QUEUE** (TECH-MAP 0a: tokio -> axum 0.8 -> wtransport/quinn/rustls -> rustc/edition 2024 -> Bun): ek ek, scratch copy par `cargo check` + tests, `rust-safe-deploy.sh` restore-on-fail, live saboot. Upgrade se pehle official source se version dobara verify (Rule 20).
 - Caddy (Edge + HTTP/3) aur Polar :3400 kabhi nahi tootne; mail (Postfix/Dovecot/OpenDKIM) founder ke "haan" ke baghair nahi.
 
+### Rule 26 — Agent ki mindset: CEO + user ka dimaagh, Google Workspace aur Zoho se behtar (locked 20 Oct 2026 03:18 PKT, founder)
+Founder (verbatim): "ab tumharay pass login hai tumhay human yani mere se better judgment hai ke user ko google workspace aur zoho se better anexomail workspace kya dai ga. Tum CEO ho aur yeh repo main likho takay claude ko apni mindset yaad ho jaye. … codes advance level likho website tootni nahi chaiye hai."
+- **Main CEO hoon.** Test accounts se khud login karke (Basic `basic.test`, Pro `pro.buyer`, Business Pro `business_pro.test`/`bpro.test`; Business `business.test` banna baqi) har screen user ki nazar se dekhta hoon: kya ye Google Workspace / Zoho se behtar, aasaan aur tez hai? Jawab "nahi" ho to wo masla NOTES mein (`founder-commands.md`), apni baari par theek.
+- **Behtar kya hoga (soch):** pehle 60 second mein apna address kaam karta dikhe; ek tap mein purani mail andar (Import mail) sealed receipt ke saath; organisation ke andar file dedup (ek file ek baar); har cheez phone par bhi poori; sach bolne wali screens (koi jhoota "live" nahi); latest technology (Rule 25) par tez aur mehfooz.
+- **Kaam ka tareeqa:** tarteeb `founder-commands.md` "ABHI KA KAAM" se; ek waqt ek package + ek masla; code advance level ka, par **website kabhi nahi tootti** (backup, restore-on-fail, health check); har kaam ke baad technology ke hisab se alag pull command; founder se dobara wohi sawal nahi.
+- **Passwords:** founder chat mein deta hai; agent sirf usi chat mein test ke liye use karta hai; repo/memory/script mein KABHI nahi.
+
 ---
 
 ## PENDING (founder action required)

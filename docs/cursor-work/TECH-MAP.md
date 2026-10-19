@@ -41,7 +41,8 @@
 
 ### 0a. Version upgrades — PRIORITY QUEUE (founder 19 Oct 06:34: "is ko que main dalo jaldi se aur yeh priority pe")
 Server par asli vs latest (TECH-MAP section 3/10, 17 Oct; **har upgrade se pehle official source se dobara verify**, Rule 20). Ek ek, scratch copy par `cargo check` + unit tests, phir `rust-safe-deploy.sh` (restore-on-fail), phir live saboot:
-1. **tokio** 1.53.1 -> latest 1.53.x (patch, kam khatra).
+**Verify 20 Oct 2026 03:20 PKT (crates.io API, official):** tokio **1.54.0** (19 Oct 2026, MSRV 1.85) / 1.53.3 (13 Oct) · axum **0.8.9** (14 Apr 2026) · wtransport **0.7.2** (11 Aug 2026) · quinn **0.11.12** (14 Sep 2026) · rustls **0.23.46** (14 Oct 2026).
+1. **tokio** 1.53.1 -> **1.53.3** pehle (patch, kam khatra; script `rust-crate-upgrade.sh`), phir **1.54.0** jab ek hafta purana ho jaye (abhi sirf 1 din purana — naye release ki regressions se bachne ke liye).
 2. **axum** 0.7.9 -> 0.8.x (path syntax `/:proc` -> `/{proc}`; saare routes ka test).
 3. **wtransport** 0.1.14 -> 0.7.x (saath mein quinn 0.10 -> 0.11, rustls 0.21 -> 0.23 — WebTransport live push par asar; sab se bada khatra, parallel staging).
 4. **rustc** 1.97.1 -> latest + edition 2024 (`opt-level = "z"` ka faisla alag).
