@@ -8,7 +8,7 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
-## ▶ ABHI KA KAAM — founder ka hukm 19 Oct 06:27 PKT: "is tarteeb se codes likhna hai. lekin SHAAM KO."
+## ▶ ABHI KA KAAM — founder ka hukm 19 Oct 06:27 PKT: "is tarteeb se codes likhna hai." (founder 20 Oct 03:55: "woh shaam ajj hai" — "shaam ko" wali shart khatam, tarteeb ab CHAL RAHI hai)
 
 ✅ **DONE (live saboot):** E36 / Business Pro logins (05:54, dobara touch nahi) · E35 SQL (05:54) · E34 SQL (06:06) · Rust cal+people+team+mig (06:16: build OK 1m43s, health 200, GUARD 2 reads, port 993 khula) · Web pull db11a0b (06:16, /health 200) · **Import mail live test GREEN (06:27: asli imap.gmail.com se `auth_failed` jawab, nakli login)**.
 
@@ -53,6 +53,10 @@ Founder ne chat mein 4 test accounts ke passwords diye: `business_pro.test@anexo
 Founder ke alfaaz: "yeh sab tumhay yaad hona chaiye hai. baki tarteeb se tumne jo points hain woh repo main founder ka ja ke read kero aur exactly codes waha se dekh ke likho; compact chat ke anay se pehle yeh her 10 seconds baad update kerna hai takay compact chat ho bhi jaye claude context nahi bhulay; aur yeh bhi repo main likho: sw.js wala asli masla (har page par script 404; `src/lib/pwa.ts` `/sw.js` register karta hai par `public/sw.js` nahi; PWA offline kaam nahi; manifest theek; TECH-MAP ka "LIVE" sach nahi tha)."
 Agent: sw.js finding pehle se repo mein (5fce7bf) + ab TECH-MAP ki PWA row sach ki. "Har 10 second" = agent har natije/qadam ke baad usi turn mein is file + memory file update karta hai (Rule 18/24); agent ghadi par apne aap 10 second ka timer nahi chala sakta.
 
+### 20 Oct 2026 03:55 PKT — founder (verbatim)
+"Kya Vite 8.2 aur Tailwind 4.2 ke naye styles dashboard tiles par bina kisi font alignment error ke clean display ho rahe hain? main darr gaya tha ke tumne itna lamba command run kiya aur socha ke tum context bhul gaye ho aur woh jo shaam wali baat hai us ko khatham ker do kyun ke woh shaam ajj hai aur hum already tarteeb se kaam ker rahay hain. tum please rules ko strctly follow kero. tarteeb follow kero. mainay yumhay output send kerta hoon aur mujhe yeh batao ke next tarteeb kaun si next hai aur kya kaam kerna baki hai?"
+Halat: "shaam ko" shart hata di. Dashboard tiles ka sawal = **NOTE N6** (aaj check nahi hua; apni baari par 390/820/1366/1440 screenshot). Founder ka axum output baqi.
+
 ### 20 Oct 2026 03:28 PKT — founder: tokio + live test output; "bar bar bpro.test ka password nahi kero … ab jaldi se next pe chalo" (verbatim)
 Output: **tokio 1.53.1 -> 1.53.3 OK** (build 1m47s, `/rpc/health` 200, UDP 3443 yes, procs dashboard/migration/team 401 = theek). `mig-live-test.sh` **GREEN** — is baar **bina password** (`OK 1 login (token mil gaya)`) — bina-password raasta chal gaya.
 **Step 0.1 DONE (live).** Qaida: founder se test accounts ka password bar bar nahi maangna (script service-key se token banati hai).
@@ -72,6 +76,7 @@ Live check 20 Oct 03:05 PKT, `bpro.test` (Business Pro) se login, 9 screens x 14
 - **N3 (sab packages):** har page par `/rpc/locale.pref` aur `/rpc/locale.bundle` Rust se 404 (Bun fallback chal jata hai, page nahi tootta). Bun->Rust queue mein.
 - **N4 (sab packages):** `/sw.js` 404 — PWA offline kaam nahi karta (06:44 entry).
 - **N5:** Business plan ka test account (`business.test@anexomail.com`) banana baqi — `PLAN=business ACCT=... bizpro-login-fix.sh` (script tayyar, commit d443811).
+- **N6** (20 Oct 03:55, founder sawal): dashboard tiles par Vite 8.2 / Tailwind 4.2 styles aur font alignment saaf hain ya nahi — aaj verify NAHI hua. Apni baari par live login screenshot 390/820/1366/1440 (Rule 19).
 
 ### 20 Oct 2026 03:03 PKT — founder (verbatim; PASSWORD [REDACTED] — repo mein kabhi nahi)
 "business_pro.test@anexomail.com aur bpro.test@anexomail.com dono ka password hai same aur woh yeh hai password [REDACTED]. aur basic ka email address hai basic.test@anexomail.com password hai [REDACTED]. pro.buyer@anexomail.com aur password hai [REDACTED]. yeh sab tumhay yaad hona chaiye hai. baki tarteeb se tumne jo points hain woh repo main founder ka ja ke read kero aur exactly codes waha se dekh ke likho. agar compact chat ke anay se pehle yeh her 10 seconds baad update kerna hai takay compact chat ho bhi jaye claude context nahi bhulay aur yeh bhi repo main likho [sw.js 404 wali finding]. sirf business ka test email address generate kerna baki hai aur baki sab ho gaya hai."
