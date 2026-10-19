@@ -25,7 +25,8 @@ ACCOUNTS=(
   "business_pro.test|Business Pro Test|Business Pro Test|bizprotest.axonetis.com"
   "bpro.test|Business Pro Test Two|Business Pro Test Two|bprotest.axonetis.com"
 )
-PLAN="business_pro"
+PLAN="${PLAN:-business_pro}"          # Business ka test account: PLAN=business ACCT="business.test|Business Test|Business Test|biztest.axonetis.com"
+[ -n "${ACCT:-}" ] && ACCOUNTS=("$ACCT")
 PW=""; PW2=""
 trap 'unset PW PW2 pw_esc 2>/dev/null' EXIT
 hr() { printf '\n== %s ==\n' "$1"; }
