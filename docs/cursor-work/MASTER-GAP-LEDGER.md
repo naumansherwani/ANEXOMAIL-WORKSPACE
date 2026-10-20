@@ -87,3 +87,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - **UX fix (code):** mail pane ka action row (Done/Archive/Meeting/Snooze/Label) md+ par `overflow-visible` tha: tang pane mein buttons kat-te the, drag/scroll nahi. Ab HScroll (‹ › + mouse drag). Live verify Web pull ke baad.
 - **BUG (mila, fix baqi):** purani mail ke preview mein mojibake "5:31â¯AM" (U+202F UTF-8 ko Latin-1 padha) — preview/ingest charset; frontend par safe-clean + ingest source dekhna.
 - **BUG (mila):** thread card ka upar ka hissa (sender line) kabhi kabhi andar scroll ho kar kat jata hai (click ke baad) — dekhna.
+- **390 (Chrome iframe-viewport, basic.test) GREEN:** inbox (bottom nav, list, tabs), calendar (meeting list), thread (actions, attachment chip) — saaf. 820: calendar OK.
+- **820 BUG (mila, fix code):** mail mein 3 tang columns (nav 220 + list 304 + thread ~270): action row (Snooze) kat-ti, thread pane mein horizontal scrollbar. Fix: tablet (<1024) par master-detail — `ListPanel/DetailPanel stackBelow="lg"`, thread header back arrow `lg:hidden`, X `lg:grid`. Laptop 1024+ par teen columns wahi. Live verify Web pull ke baad.

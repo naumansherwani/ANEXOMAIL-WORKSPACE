@@ -196,6 +196,7 @@ function MailFolderPage() {
 
       <ListPanel
         mobileHidden={threadOpen}
+        stackBelow="lg"
         title={
           activeAccount
             ? `${folderLabel} · ${activeAccount.address}`
@@ -371,7 +372,7 @@ function MailFolderPage() {
         />
       </ListPanel>
 
-      <DetailPanel mobileVisible={threadOpen}>
+      <DetailPanel mobileVisible={threadOpen} stackBelow="lg">
         {activeId ? (
           <Outlet />
         ) : (

@@ -93,7 +93,7 @@ function ThreadPage() {
           to="/app/mail/$folder"
           params={{ folder }}
           aria-label="Back to list"
-          className="ax-press ax-tap -ml-2 grid shrink-0 place-items-center rounded-lg p-2 text-muted-foreground md:hidden"
+          className="ax-press ax-tap -ml-2 grid shrink-0 place-items-center rounded-lg p-2 text-muted-foreground lg:hidden"
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
         </Link>
@@ -128,7 +128,7 @@ function ThreadPage() {
             params={{ folder }}
             aria-label="Close message"
             title="Close (Esc)"
-            className="ax-press ax-tap ax-focus hidden size-9 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:grid"
+            className="ax-press ax-tap ax-focus hidden size-9 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground lg:grid"
           >
             <X className="size-4" aria-hidden="true" />
           </Link>
