@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 09:44 PKT — founder: "compact chat ke baad sab context tum bhul gaye ho gay jo abhi sab kaam kiya hai is ko repo main dalo takay claude read karay ke kya kaam huwa hai aur duplicate nahi phir se ban jaye samjhay! aur batch 4 ki pull command do"
+- Halat: **DONE**. `docs/cursor-work/BASIC-AUDIT-DONE.md` (batch 1-6, pull status, baqi kaam, tareeqa) + AGENTS.md Rule 27 + README pointer. Batch 4 (Settings toggles) = sirf Web pull.
+
 ### 20 Oct 2026 — agent (CEO): batch 5 + 6 — Integrations + Calendar (READY)
 - Batch 5 Integrations: "Connect" buttons hamesha 501 dete the (OAuth Bun mein bana hi nahi). Ab jhoota button nahi; "Copy my mail" /app/import (asli IMAP copy) par le jata hai. (Web)
 - Batch 6 Calendar: **live Basic par Calendar ke events kabhi load nahi hote the** — `calendar.events`, `calendar.event`, `calendar.load` na Rust mein the na Bun mein (404, page "not wired" dikhata tha). Ab Rust `cal_glue.rs` mein teeno: range (<=62 din) mein events + guests, clash nishan, team meeting-minutes + overload (cal_core.rs ke pure fn, 22 unit test pass).

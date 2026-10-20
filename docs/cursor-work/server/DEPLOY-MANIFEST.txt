@@ -119,3 +119,4 @@ src/lib/settings.ts f81c76075cfa96a2
 src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
+AGENTS.md 564272a44d995e37
