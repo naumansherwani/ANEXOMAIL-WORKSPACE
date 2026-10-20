@@ -23,6 +23,8 @@
 
 | 9 | (10:5x) | Server pull OK, AI tab gaya, par mail list ki patti par drag phir bhi "nahi chalta" (asli reason mere test mein reproduce nahi hua — test-browser mein drag chalta hai) | `HScroll.tsx`: jahan cheezein chhupi hon wahan kinare par saaf ‹ › button (click se scroll — kisi bhi mouse/touchpad par pakka), grab cursor, scrollbar par pakadna drag se alag; mail ke 3 rows + settings tabs par. Drag (`installDragScroll`) bhi qaim. **Ab bhi na chale to founder se: kis rows par, kaunsa browser/mouse — ek screenshot** | Web |
 
+| 10 | (11:0x) | Drag phir bhi nahi: **asli sabab** = Chrome pakad kar khinchne par native drag-and-drop (`dragstart`) shuru karta hai => `pointercancel` => category row 9px hil kar ruk jati thi (mere pehle test mein nahi dikha, kyunki woh sirf kuch jagah se shuru hone par hota hai). Aur meri galti: "Leo Actions" tab **sab** plans se hata diya tha, jabke locked plans table mein Business/Business Pro mein Included hai | `installDragScroll`: row ke andar `dragstart`/`selectstart` preventDefault; HScroll rows `select-none`. Leo Actions tab wapas Business + Business Pro ko (Basic/Pro ko nahi; AI SETTINGS sab se gaya). Test: local, category row 9->90px | Web |
+
 ## 3D GRAPHICS — kahan ana hai (CEO faisla 20 Oct 2026; abhi bana NAHI, sirf naksha)
 Halat: asli Three.js sirf AnexoChat `chat/cinema/Scene.tsx` mein hai. Baqi "cinematic" 2D canvas/CSS hai. Qaida: jahan 3D madad kare, jahan kaam ke raste mein aaye wahan NAHI (inbox/compose/settings = tez + saaf, 3D nahi).
 | Jagah | 3D kya | Plan | Mobile |

@@ -78,7 +78,7 @@ export function HScroll({
 
   return (
     <div className={cn("relative min-w-0", wrapperClassName)}>
-      <Tag ref={ref} className={cn("cursor-grab", className)} {...rest}>
+      <Tag ref={ref} className={cn("cursor-grab select-none [&_*]:[-webkit-user-drag:none]", className)} {...rest}>
         {children}
       </Tag>
       {edge.left && arrow(-1)}

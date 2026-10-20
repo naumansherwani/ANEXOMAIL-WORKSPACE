@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 10:53 PKT — founder: "collapse chalta hai lekin drag nahi aur yeh kya baqwas hai meri family ke accounts profle un ke packages ke mutabiq update kyon nahi huhi hai? yeh universal website hai ke jab bhi koi bhi update hogi woh un ke packages ke accordingly mile gi mere bhai ka account hai humzasherwani@anexomail.com business pro hai meri family hai"
+- Halat: drag **READY** (batch 10, asli sabab mila: native dragstart). Leo Actions Business/BP ko wapas (meri galti thi). **Hamza (business_pro) profile/package mismatch: jaanch jari** — session `family_accounts` se plan padhta hai (server/routes/auth.ts); live DB access nahi, isliye Hamza ke login/screenshot ya DB output chahiye. Qaida: har naya feature plan-wise sab 4 plans par test (sirf Basic nahi).
+
 ### 20 Oct 2026 10:35 PKT — founder: "ai settings gahyab hai lekin yeh drag nahi chalta hai. yeh side bar dekho is pe jab cursor jaye toh drag hona chaiye hain lekin nahi hota hai." (+ pull output: build OK, differ=1 routeTree.gen.ts sirf, AI tab gaya)
 - Halat: **READY** (batch 9, HScroll). Drag code live tha (build mein 2 files), phir bhi na chale = mere test-browser mein reproduce nahi hua. Isliye pakka hal: ‹ › arrow buttons + grab cursor, drag bhi. Rule 28 ke mutabiq manifest verify.
 

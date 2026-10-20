@@ -21,7 +21,9 @@ import {
   type ExportJob,
 } from "@/lib/integrations";
 import { anexomailAddress } from "@/lib/anexomail-address";
+import { useAuth } from "@/lib/auth";
 import { isAiHost } from "@/lib/host";
+import { surfaceFromSession } from "@/lib/plan-surface";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
@@ -67,8 +69,12 @@ type TabId = (typeof TABS)[number]["id"];
 
 function Integrations() {
   const [tab, setTab] = useState<TabId>("providers");
-  // Workspace plans mein AI nahi — "Leo Actions" tab sirf AI host par.
-  const tabs = isAiHost() ? TABS : TABS.filter((t) => t.id !== "actions");
+  // Plans table (locked): "Native integrations and LEO Actions" = Business aur Business Pro mein Included; Basic/Pro mein nahi.
+  // 20 Oct galti: yeh tab sab workspace plans se hata diya tha — Business ka paid feature chhup gaya tha.
+  const { session, organisation } = useAuth();
+  const { billed } = surfaceFromSession(session?.user, organisation?.slug);
+  const hasActions = isAiHost() || billed === "business" || billed === "business_pro";
+  const tabs = hasActions ? TABS : TABS.filter((t) => t.id !== "actions");
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">

@@ -90,7 +90,7 @@ src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
 src/routes/auth.tsx f41cf236515f3868
-src/routes/app.integrations.tsx 09ad736b5d6c3a59
+src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
 src/routes/pages.tsx 49b6ca73eb919b73
@@ -120,8 +120,8 @@ src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
 AGENTS.md 1cd15e70755d13cc
-src/lib/use-drag-scroll.ts 5ba156dc3b1fe59e
+src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
-src/components/app/HScroll.tsx f27ee8894f302f7d
-docs/cursor-work/BASIC-AUDIT-DONE.md cd93caca87a475fe
+src/components/app/HScroll.tsx e34a9413af2e25dd
+docs/cursor-work/BASIC-AUDIT-DONE.md 8f28b4327a72e371

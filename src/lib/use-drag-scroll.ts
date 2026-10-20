@@ -87,12 +87,22 @@ export function installDragScroll(): () => void {
     }
   };
 
+  // Chrome pakad kar khinchne par apna native drag-and-drop (dragstart) ya text-select shuru kar deta hai, jo hamare
+  // drag ko pointercancel kar deta hai (live test: category row sirf ~9px hil kar ruk jati thi). Row ke andar rok do.
+  const stopNative = (e: Event) => {
+    if (row) e.preventDefault();
+  };
+
+  document.addEventListener("dragstart", stopNative, true);
+  document.addEventListener("selectstart", stopNative, true);
   document.addEventListener("pointerdown", down, true);
   document.addEventListener("pointermove", move, true);
   document.addEventListener("pointerup", end, true);
   document.addEventListener("pointercancel", end, true);
   document.addEventListener("click", click, true);
   return () => {
+    document.removeEventListener("dragstart", stopNative, true);
+    document.removeEventListener("selectstart", stopNative, true);
     document.removeEventListener("pointerdown", down, true);
     document.removeEventListener("pointermove", move, true);
     document.removeEventListener("pointerup", end, true);
