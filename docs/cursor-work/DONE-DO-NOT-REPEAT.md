@@ -111,3 +111,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 03:50 Calendar desktop week = real TimeGrid (hour rows, now-line, overlap columns, drag move + resize, notify-guests confirm). Frontend only: data/update stay on Rust calendar.update (founder: calendar Rust pe hi rahega). Live check baqi.
 - 21 Oct 04:05 G-DOM fix: Domains cap note neutral+singular ('Basic includes 1 domain — all in use...'), not warning-orange.
 - 21 Oct 04:20 G-ALIAS (Option A): E52_alias_cap.sql trigger (Basic/Pro 5 aliases, Business unlimited) — local PG16 test OK; UI 'n of 5 aliases' + alias_limit message. SQL server par chalana baqi: sql-run.sh E52_alias_cap CHECK_E52
+- 21 Oct 04:30 E52 alias-cap REVERT (founder: reality = server/repo). Card text reality par: 'Free aliases — no extra seat'. Plan cards ka har wada product se match hona chahiye.

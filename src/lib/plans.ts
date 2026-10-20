@@ -85,7 +85,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "1 company address",
       "3 mailboxes",
       "5GB per mailbox",
-      "5 free aliases",
+      "Free aliases — no extra seat",
       "Undo send (30s)",
       "Contacts & calendar",
       "Thread ownership",

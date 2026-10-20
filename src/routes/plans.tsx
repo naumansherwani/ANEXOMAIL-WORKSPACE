@@ -63,7 +63,7 @@ const compare: { group: string; rows: Row[] }[] = [
         business_pro: "1TB pooled",
       },
       { label: "Company addresses you can host", basic: "1", pro: "3", business: "On request" },
-      { label: "Free aliases", basic: "5", pro: "5", business: "On request" },
+      { label: "Free aliases", basic: "Included", pro: "Included", business: "Included" },
       { label: "Undo send window", basic: "30 seconds", pro: "30 seconds", business: "30 seconds" },
     ],
   },

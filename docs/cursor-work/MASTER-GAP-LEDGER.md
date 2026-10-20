@@ -114,3 +114,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - OK live: 1 domain (Domains '1 of 1'), 3 mailboxes, 5GB x3 (dashboard '5.0 GB x 3'), Undo send 30s, Contacts & calendar, Thread ownership, Cmd+K, 72h support (personal-tiers/plans.ts ek jaisa). Landing '/' saaf (koi 3D nahi, overflow 0).
 - **GAP G-ALIAS:** card '5 free aliases' likhta hai par app + SQL (E15: 'alias ginti mein nahi') alias par koi cap lagata hi nahi, UI 'aliases are free' (unlimited). Faisla chahiye: (a) cap 5 enforce (SQL/Rust surgical) ya (b) card ko 'free aliases' likhna.
 - **BUG G-DOM:** Domains page '1 of 1 domain' par narangi warning 'allows 1 domains. Remove one or upgrade.' — limit poori nahi hui (== cap), grammar bhi ghalat. Fix: warning sirf used>cap par + singular.
+
+- **21 Oct 04:30 FAISLA (founder: 'jo server/repo par hai wahi reality, packages theek karo'):** G-ALIAS = card ko reality par laaya ('Free aliases — no extra seat'; plans table 'Included'). E52 cap-trigger WAPAS (kabhi server par nahi chala). G-DOM fixed 6deff50. Rule: plan card ka har wada asli product se milna chahiye — jhooti marketing nahi.
