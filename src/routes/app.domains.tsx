@@ -39,6 +39,7 @@ import type { ApiError } from "@/lib/api";
 import { useAnalytics, useSummary } from "@/lib/dashboard";
 import {
   domainErrorText,
+  aliasCapFor,
   useAddDomain,
   useAddresses,
   useCreateAddress,
@@ -299,6 +300,12 @@ function errText(e: unknown, fallback = "Couldn't do that. Try again."): string 
 
 function planLabel(plan: string | undefined): string {
   return packageCopyName(normalizeWorkspacePlan(plan), "business");
+}
+
+function aliasText(addr: { plan: string; addresses: { kind: string; active: boolean }[] }) {
+  const cap = aliasCapFor(addr.plan);
+  const used = addr.addresses.filter((a) => a.kind === "alias" && a.active).length;
+  return cap == null ? `${used} aliases · free` : `${used} of ${cap} aliases`;
 }
 
 function capText(used: number, cap: number | null | undefined, noun: string): string {
@@ -1870,7 +1877,7 @@ function DomainsPage() {
   const showHero = domains.length === 0 && !wizard;
   const capNote = `${planLabel(data.plan)} · ${cap == null ? t("unlimited domains") : `${t("up to")} ${cap} ${cap === 1 ? t("domain") : t("domains")}`}${
     addr
-      ? ` · ${addr.mailbox_cap == null ? t("unlimited mailboxes") : `${addr.mailbox_cap} ${t("mailboxes")}`} · ${t("aliases are free")}`
+      ? ` · ${addr.mailbox_cap == null ? t("unlimited mailboxes") : `${addr.mailbox_cap} ${t("mailboxes")}`} · ${aliasText(addr)}`
       : ""
   }`;
 
@@ -1954,7 +1961,7 @@ function DomainsPage() {
           </h3>
           {addr && (
             <span className="ax-caption">
-              {capText(addr.mailbox_used, addr.mailbox_cap, "mailboxes")} · {t("aliases are free")}
+              {capText(addr.mailbox_used, addr.mailbox_cap, "mailboxes")} · {aliasText(addr)}
             </span>
           )}
         </div>

@@ -181,7 +181,16 @@ export function useCreateAddress() {
     ApiError,
     { domain_id: string; local_part: string; kind: AddressKind; alias_target?: string }
   >({
-    mutationFn: (input) => rpc<AddressCreateResult>("mail.addresses.create", input),
+    mutationFn: async (input) => {
+      try {
+        return await rpc<AddressCreateResult>("mail.addresses.create", input);
+      } catch (e) {
+        // E52 trigger: 'alias_limit:<plan>:<cap>' — turn the DB error into the same shape as every other refusal.
+        const m = /alias_limit:([a-z_]+):(\d+)/.exec(e instanceof Error ? e.message : String(e));
+        if (m) return { ok: false, error: "alias_limit", plan: m[1], limit: Number(m[2]) } as AddressCreateResult;
+        throw e;
+      }
+    },
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: KEYS.addresses });
       void qc.invalidateQueries({ queryKey: ["mail", "identities"] });
@@ -200,6 +209,11 @@ export function useRemoveAddress() {
       void qc.invalidateQueries({ queryKey: ["mail", "accounts"] });
     },
   });
+}
+
+/** Free aliases per plan (mirror of SQL E52 org_alias_cap). null = unlimited. */
+export function aliasCapFor(plan: string | undefined): number | null {
+  return plan === "basic" || plan === "pro" ? 5 : null;
 }
 
 /** Server ke `error` codes -> insaan ki zubaan (E15). */
@@ -229,6 +243,8 @@ export function domainErrorText(
       return "That address already exists.";
     case "mailbox_limit":
       return `Your ${extra?.plan ?? "current"} package allows ${extra?.limit ?? 0} mailboxes. Aliases don't count — or upgrade.`;
+    case "alias_limit":
+      return `Your ${extra?.plan ?? "current"} package includes ${extra?.limit ?? 5} aliases and they are all in use. Remove one or upgrade.`;
     case "alias_target_required":
       return "An alias needs an address to deliver to.";
     case "invalid_kind":
