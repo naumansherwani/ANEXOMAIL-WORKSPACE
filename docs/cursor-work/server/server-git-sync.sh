@@ -17,22 +17,26 @@ R="${R:-/opt/anexomail-web}"; STAMP="$(date +%s)"; BK="${BK:-/root/i9/gitsync-$S
 cd "$R" || { echo "FAIL: $R nahi"; exit 2; }
 git fetch -q origin main || { echo "FAIL: git fetch"; exit 2; }
 ALLOW='^(src/routeTree\.gen\.ts|bun\.lock)$'
+# docs/ aur AGENTS.md: pull.sh in ki copy deta hai — server wali purani ho sakti hai; reset unhein repo ki NAYI copy se badal deta hai (koi code nahi).
+DOCS='^(docs/|AGENTS\.md$|README\.md$)'
 echo "== 1) haal: HEAD $(git rev-parse --short HEAD) | origin/main $(git rev-parse --short origin/main) | peeche: $(git rev-list --count HEAD..origin/main) commit"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 git status --porcelain --untracked-files=all | sed -E 's/^(..) //' >"$T/all"
 echo "   badli/untracked files: $(wc -l <"$T/all")"
-: >"$T/differ"; : >"$T/keep"; same=0; local_only=0
+: >"$T/differ"; : >"$T/keep"; : >"$T/docs"; same=0; local_only=0
 while IFS= read -r f; do
   [ -n "$f" ] || continue
   f="${f#\"}"; f="${f%\"}"
   if git cat-file -e "origin/main:$f" 2>/dev/null; then
     if git show "origin/main:$f" | cmp -s - "$f"; then same=$((same+1))
     elif [[ "$f" =~ $ALLOW ]]; then echo "$f" >>"$T/keep"
+    elif [[ "$f" =~ $DOCS ]]; then echo "$f" >>"$T/docs"
     else echo "$f" >>"$T/differ"; fi
   else
     local_only=$((local_only+1))
   fi
 done <"$T/all"
+echo "   docs jo repo ki nayi copy se badlenge: $(wc -l <"$T/docs") ($(head -5 "$T/docs" | tr '\n' ' '))"
 echo "   repo jaisi (same): $same | allowed farq: $(wc -l <"$T/keep") ($(tr '\n' ' ' <"$T/keep")) | sirf server par (reset chhoota nahi): $local_only"
 if [ -s "$T/differ" ]; then
   echo "!! YE files repo se ALAG hain — kuch nahi badla. Claude ko yeh list bhejein:"; sed 's/^/     /' "$T/differ" | head -40; exit 1

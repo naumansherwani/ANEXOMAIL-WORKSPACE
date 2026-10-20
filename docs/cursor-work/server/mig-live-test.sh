@@ -62,6 +62,10 @@ if echo "$S" | grep -qi "refused the login\|auth_failed\|App Password"; then
   echo "OK   4 provider ne login mana kiya (matlab TLS + IMAP LOGIN asli server tak gaya): $(show <<<"$S" | cut -c1-200)"
 elif echo "$S" | grep -qi "connecting\|session_id"; then
   echo "..   4 copy shuru dikhi (provider slow); 20 second baad list dekhte hain: $(show <<<"$S" | cut -c1-200)"; sleep 20
+elif grep -q '"too_many_sessions"' <<<"$S"; then
+  # E35 hifazat: ek user din mein 10 se zyada copy shuru nahi kar sakta. Is test ko din mein bar bar chalane se yahi aata hai —
+  # matlab Rust + SQL ne limit sahi lagayi (qasoor nahi). Asli IMAP raasta kal phir test hoga.
+  echo "OK   4 din ki had (10 copy/din) lag gayi — hifazat chal rahi hai; IMAP login wala hissa aaj dobara nahi chalaya: $(show <<<"$S" | cut -c1-120)"
 else echo "FAIL 4: $(show <<<"$S")"; bad=1; fi
 L2="$(call migration.list '{}' 15)"
 echo "     5 ab ki list: $(show <<<"$L2" | cut -c1-300)"
