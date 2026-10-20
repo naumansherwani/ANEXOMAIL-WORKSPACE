@@ -113,3 +113,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 04:20 G-ALIAS (Option A): E52_alias_cap.sql trigger (Basic/Pro 5 aliases, Business unlimited) — local PG16 test OK; UI 'n of 5 aliases' + alias_limit message. SQL server par chalana baqi: sql-run.sh E52_alias_cap CHECK_E52
 - 21 Oct 04:30 E52 alias-cap REVERT (founder: reality = server/repo). Card text reality par: 'Free aliases — no extra seat'. Plan cards ka har wada product se match hona chahiye.
 - 21 Oct 04:10 CEO faisla: Basic card = domain/mailboxes/5GB/undo/ownership/contacts/cmd+K/'Free aliases' (cap card par NAHI); chhupa fair-use cap 25 alias via E52_alias_fair_use.sql (local PG16 test OK; server par chalana baqi: sql-run.sh E52_alias_fair_use CHECK_E52). Card: '1 company domain' / Pro '3 company domains'.
+- 21 Oct 04:20 Plans compare table: 'Company domains you can host' 1/3/Unlimited (E15 org_domain_cap NULL=unlimited). Cards single-source plans.ts.
