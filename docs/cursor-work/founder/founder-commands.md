@@ -48,6 +48,12 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 — agent (CEO): batch 5 + 6 — Integrations + Calendar (READY)
+- Batch 5 Integrations: "Connect" buttons hamesha 501 dete the (OAuth Bun mein bana hi nahi). Ab jhoota button nahi; "Copy my mail" /app/import (asli IMAP copy) par le jata hai. (Web)
+- Batch 6 Calendar: **live Basic par Calendar ke events kabhi load nahi hote the** — `calendar.events`, `calendar.event`, `calendar.load` na Rust mein the na Bun mein (404, page "not wired" dikhata tha). Ab Rust `cal_glue.rs` mein teeno: range (<=62 din) mein events + guests, clash nishan, team meeting-minutes + overload (cal_core.rs ke pure fn, 22 unit test pass).
+- Saboot: unit test + type-check; **live saboot baqi** (Rust engine pull ke baad /app/calendar par event dikhna chahiye).
+- Bina test ke baqi: compose/undo-send ka live script selector par ruka (script ka masla, app ka nahi) — agla kaam.
+
 ### 20 Oct 2026 09:25 PKT — founder: purana output (dnsauth 08:29, mig-live-test, sw.js) + "yeh sirf read kerna hai ke masla solve hai ke nahi bus."
 - Halat: **batch 1 DONE (live saboot 09:3x: sw activated, offline inbox 7 threads, Basic greeting sahi)**. dnsauth DONE. mig FAIL 4 = 08:29 ka purana script (fix 08:38); too_many_sessions = E35 hifazat.
 

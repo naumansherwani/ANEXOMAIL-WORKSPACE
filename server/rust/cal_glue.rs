@@ -34,6 +34,9 @@ pub fn owns(proc: &str) -> bool {
             | "calendar.busy"
             | "calendar.findtime"
             | "calendar.guests"
+            | "calendar.events"
+            | "calendar.event"
+            | "calendar.load"
     )
 }
 
@@ -448,6 +451,9 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         "calendar.busy" => busy(&me, input).await,
         "calendar.findtime" => findtime(&me, input).await,
         "calendar.guests" => guests(&me, input).await,
+        "calendar.events" => events(&me, input).await,
+        "calendar.event" => event_one(&me, input).await,
+        "calendar.load" => team_load(&me, input).await,
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
 }
@@ -906,6 +912,137 @@ fn addresses_of(input: &Value) -> Vec<String> {
             out
         })
         .unwrap_or_default()
+}
+
+/* ------------------------------------------------ reads: events / event / load (20 Oct 2026) */
+
+fn range_of(input: &Value) -> Option<(i64, i64)> {
+    match (cal::parse_ts(&st(input, "from")), cal::parse_ts(&st(input, "to"))) {
+        (Some(f), Some(t)) if t > f && t - f <= 62 * 86_400 => Some((f, t)),
+        _ => None,
+    }
+}
+
+async fn events_between(me: &Who, from: i64, to: i64) -> Result<Vec<Value>, ()> {
+    let q = format!(
+        "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null&starts_at=lt.{}&ends_at=gt.{}&order=starts_at.asc&limit=500",
+        me.org_id,
+        cal::fmt_rfc3339(to),
+        cal::fmt_rfc3339(from)
+    );
+    let v = crate::sb_select(&q).await.map_err(|_| ())?;
+    Ok(v.as_array().cloned().unwrap_or_default())
+}
+
+async fn attendees_of_many(ids: &[String]) -> Vec<Value> {
+    if ids.is_empty() {
+        return vec![];
+    }
+    crate::sb_select(&format!(
+        "calendar_attendees?select=*&event_id=in.({})&order=created_at.asc&limit=5000",
+        ids.join(",")
+    ))
+    .await
+    .ok()
+    .and_then(|v| v.as_array().cloned())
+    .unwrap_or_default()
+}
+
+async fn events(me: &Who, input: &Value) -> axum::response::Response {
+    let (from, to) = match range_of(input) {
+        Some(r) => r,
+        None => return fail(StatusCode::BAD_REQUEST, "bad_range", "from/to must be a range of at most 62 days"),
+    };
+    let evs = match events_between(me, from, to).await {
+        Ok(e) => e,
+        Err(_) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
+    };
+    let ids: Vec<String> = evs.iter().map(|e| st(e, "id")).filter(|i| cal::token_shape_ok(i)).collect();
+    let all = attendees_of_many(&ids).await;
+    let spans: Vec<Interval> = evs
+        .iter()
+        .map(|e| Interval {
+            start: cal::parse_ts(&st(e, "starts_at")).unwrap_or(0),
+            end: cal::parse_ts(&st(e, "ends_at")).unwrap_or(0),
+        })
+        .collect();
+    let clash = cal::mark_conflicts(&spans);
+    let out: Vec<Value> = evs
+        .iter()
+        .enumerate()
+        .map(|(i, e)| {
+            let id = st(e, "id");
+            let mine: Vec<Value> = all.iter().filter(|a| st(a, "event_id") == id).cloned().collect();
+            let mut j = event_json(e, &mine);
+            let k = st(e, "kind");
+            if let Some(o) = j.as_object_mut() {
+                o.insert("conflict".to_string(), json!(clash[i]));
+                if ["meeting", "focus", "hold", "personal"].contains(&k.as_str()) {
+                    o.insert("kind".to_string(), json!(k));
+                }
+            }
+            j
+        })
+        .collect();
+    crate::ok(json!({ "events": out })).into_response()
+}
+
+async fn event_one(me: &Who, input: &Value) -> axum::response::Response {
+    let id = st(input, "id");
+    let ev = match load_own_event(me, &id).await {
+        Ok(e) => e,
+        Err(r) => return r,
+    };
+    let rows = attendee_rows(&id).await;
+    crate::ok(json!({ "event": event_json(&ev, &rows), "outcome": Value::Null, "tasks": [] })).into_response()
+}
+
+async fn team_load(me: &Who, input: &Value) -> axum::response::Response {
+    let (from, to) = match range_of(input) {
+        Some(r) => r,
+        None => return fail(StatusCode::BAD_REQUEST, "bad_range", "from/to must be a range of at most 62 days"),
+    };
+    let evs = match events_between(me, from, to).await {
+        Ok(e) => e,
+        Err(_) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
+    };
+    let ids: Vec<String> = evs.iter().map(|e| st(e, "id")).filter(|i| cal::token_shape_ok(i)).collect();
+    let all = attendees_of_many(&ids).await;
+    // person -> their meetings (organiser + every guest who did not decline)
+    let mut per: Vec<(String, Vec<Interval>)> = Vec::new();
+    let mut add = |who: String, iv: Interval| {
+        let who = who.trim().to_lowercase();
+        if who.is_empty() {
+            return;
+        }
+        match per.iter_mut().find(|p| p.0 == who) {
+            Some(p) => p.1.push(iv),
+            None => per.push((who, vec![iv])),
+        }
+    };
+    for e in &evs {
+        let iv = Interval {
+            start: cal::parse_ts(&st(e, "starts_at")).unwrap_or(0),
+            end: cal::parse_ts(&st(e, "ends_at")).unwrap_or(0),
+        };
+        add(st(e, "organiser"), iv);
+        let id = st(e, "id");
+        for a in all.iter().filter(|a| st(a, "event_id") == id && st(a, "response") != "declined") {
+            add(st(a, "address"), iv);
+        }
+    }
+    let mut load: Vec<Value> = per
+        .iter()
+        .map(|(m, v)| {
+            let mins = cal::minutes_in(v, from, to);
+            json!({ "member": m, "display_name": Value::Null, "meeting_minutes": mins, "open_tasks": 0, "overloaded": cal::overloaded(mins, from, to) })
+        })
+        .collect();
+    load.sort_by(|a, b| {
+        let m = |v: &Value| v.get("meeting_minutes").and_then(|x| x.as_i64());
+        m(b).cmp(&m(a))
+    });
+    crate::ok(json!({ "load": load })).into_response()
 }
 
 async fn busy_for(

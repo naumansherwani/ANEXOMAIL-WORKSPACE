@@ -944,6 +944,56 @@ pub fn invite_quota_left(sent_last_24h: i64, cap: i64) -> i64 {
 
 /* ------------------------------------------------------------------ tests */
 
+/* ---------------------------------------------------- calendar reads (20 Oct 2026) */
+
+/// For each event (start,end): does it overlap ANY other event in the list? Touching edges are not a clash.
+pub fn mark_conflicts(ev: &[Interval]) -> Vec<bool> {
+    let mut out = vec![false; ev.len()];
+    for i in 0..ev.len() {
+        for j in (i + 1)..ev.len() {
+            if ev[i].start < ev[j].end && ev[j].start < ev[i].end {
+                out[i] = true;
+                out[j] = true;
+            }
+        }
+    }
+    out
+}
+
+/// Meeting minutes inside [from,to): only the part of each meeting that falls in the window counts.
+pub fn minutes_in(ev: &[Interval], from: i64, to: i64) -> i64 {
+    merge_intervals(ev.to_vec())
+        .iter()
+        .map(|i| (i.end.min(to) - i.start.max(from)).max(0))
+        .sum::<i64>()
+        / 60
+}
+
+/// Overloaded = more than half of the working time (8h per weekday-ish: 5/7 of the days) is meetings.
+pub fn overloaded(minutes: i64, from: i64, to: i64) -> bool {
+    let days = ((to - from).max(0) as f64) / 86_400.0;
+    let work_minutes = days * 5.0 / 7.0 * 8.0 * 60.0;
+    work_minutes >= 60.0 && (minutes as f64) > work_minutes * 0.5
+}
+
+#[cfg(test)]
+mod read_tests {
+    use super::*;
+    #[test]
+    fn reads() {
+        let a = Interval { start: 0, end: 3600 };
+        let b = Interval { start: 1800, end: 5400 };
+        let c = Interval { start: 5400, end: 7200 };
+        assert_eq!(mark_conflicts(&[a, b, c]), vec![true, true, false]);
+        assert_eq!(mark_conflicts(&[a, c]), vec![false, false]);
+        assert_eq!(minutes_in(&[a, b, c], 0, 7200), 120);
+        assert_eq!(minutes_in(&[a], 1800, 99999), 30);
+        assert!(!overloaded(600, 0, 7 * 86_400));
+        assert!(overloaded(1300, 0, 7 * 86_400));
+        assert!(!overloaded(500, 0, 3600));
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
