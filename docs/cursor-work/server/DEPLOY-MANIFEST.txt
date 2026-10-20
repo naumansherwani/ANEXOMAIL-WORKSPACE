@@ -119,14 +119,14 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs ab6884c10e960fd6
-AGENTS.md b1f976f9e1629f8d
+AGENTS.md d620386ba167a53f
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md 74de48642a5dc1a9
-docs/cursor-work/founder/founder-commands.md ddcfe25ca9fcfe95
+docs/cursor-work/founder/founder-commands.md 9c2461695debda29
 docs/anexomail-blueprint.md bd0b56a4ece85a89
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 7a5f3b9c7af8f7a1
+docs/cursor-work/MASTER-GAP-LEDGER.md a2780819868125ee
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md b1c1e85cb0fb5cbd
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -224,3 +224,4 @@ src/lib/notify.ts 28ac0eff9454cdd6
 src/components/app/Panel.tsx 31764bb31659e16f
 src/lib/experience.ts adfcffbb33979c2c
 src/routes/app.settings.appearance.tsx 7911ac3654c2b006
+docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
