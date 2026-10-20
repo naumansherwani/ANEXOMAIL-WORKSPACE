@@ -63,6 +63,14 @@ function AppLayout() {
     if (status === "signed-out") void navigate({ to: "/auth", replace: true });
   }, [status, preview, navigate]);
 
+  // Login-loop guard (21 Oct 2026): token maujood hai magar cache "signed-out" dikha raha hai (purana null result)
+  // => loader mein atakna nahi: server se ek dafa asli session dobara poochho. Asli 401 ho to token saaf hoga aur /auth khulega.
+  useEffect(() => {
+    if (preview || status !== "signed-out" || !sessionToken.get()) return;
+    const t = setTimeout(() => void refresh(), 500);
+    return () => clearTimeout(t);
+  }, [status, preview, refresh]);
+
   // PHASE 19 — device safety vault: sign-in ke baad ek dafa is device ka
   // minimized signal set seal ho kar record hota hai (banned/suspicious device
   // detection ke liye). Session mein ek se zyada dafa nahi.
