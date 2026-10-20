@@ -29,11 +29,38 @@
 | **Files / attachments** | Hetzner Storage Box (`/mnt/anexomail-box/attachments`) | Sirf file ke bytes. Database mein sirf metadata. (Storage Box network mount hai, local NVMe nahi.) |
 | **Mail** | Postfix, Dovecot, OpenDKIM | Mail bhejna aur lena. GREEN — abhi chheda nahi jata. |
 | | Stalwart, JMAP | PLANNED: sirf founder ke "haan" + parallel staging ke baad. |
-| **Website** | React 19.2, TanStack Start/Router/Query | Pages, routes, data cache. |
-| | Vite 8.2, Tailwind 4.2, Radix/shadcn | Build, styling, UI blocks. |
-| | Framer Motion, GSAP, Three.js | Cinematic landing aur onboarding. Inbox ke andar bhari 3D nahi. |
+| **Website (frontend)** — founder list 20 Oct 06:36 | React 19.2 | Saare pages/components. |
+| | TanStack Start v1 + Router 1.17.0 (+ Query) | Routes, SSR wiring, data cache. |
+| | Vite 8.2 | Build. |
+| | Tailwind v4.2 | Styling (`src/styles.css`). |
+| | Radix + shadcn/ui | UI blocks (dialog, sheet, menu...). |
+| | Framer Motion | UI motion (page/panel transitions, micro-interactions) — app ke andar bhi. |
+| | GSAP | Scroll/timeline cinematic sequences (landing, onboarding, feature tours). |
+| | Three.js (aur 3D/WebGL cinematic graphics) | 3D cinematic scenes — **founder 20 Oct: server load uthayega, jahan behtar lage use karo** (landing, onboarding, empty states, dashboard hero). Mobile/tablet par halka version + `prefers-reduced-motion` par band (Rule 19). |
 | | Bun SSR (Nitro) | **Sirf website ka server-side render**, API nahi. |
 | **Payments** | Polar Rust webhook :3400 | **NO-TOUCH.** |
+
+### 0b. Har technology ki PULL command (founder 20 Oct 06:36: "kaun si technology ki pull hai") — har jawab mein alag block, label ke saath
+| Technology | Code kahan likha jata hai (repo) | Server par kaise aata hai (sirf yehi raasta) |
+|---|---|---|
+| **PostgreSQL (SQL)** | `docs/cursor-work/sql/E<n>_*.sql` (fail ho to wohi file theek) | Server: `. /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/sql/E<n>.sql)` — ya founder Supabase SQL Editor mein paste (isliye har E-file editor-safe: koi `\` psql command nahi, koi temp table statements ke beech nahi). |
+| **Rust :3200** | `server/rust/<module>_core.rs` + `_glue.rs`; upgrades `docs/cursor-work/server/*-upgrade.sh` | `MODULES=<m> bash <(… rust-engine-install.sh)` / upgrade script — backup, build, restart, health, restore-on-fail. |
+| **Website (React/TanStack/Vite/Tailwind)** | `src/**` | `bash <(… pull.sh)` — sha-guard, build, `pm2 restart anexomail-web --update-env && pm2 save`. |
+| **Bun Brain :3100** | `server/routes/*.ts` (sirf fallback; naya kaam nahi) | Alag Brain block (`anexomail-leo` restart) — sirf jab zaroori. |
+| **Caddy** | koi code nahi | Read-only check -> backup -> `caddy validate` -> reload. |
+| **Server ops (cron, rustup, system)** | `docs/cursor-work/server/*.sh` | Seedha script (backup + check + restore). |
+| **Mail (Postfix/Dovecot/OpenDKIM)** | `server/mail/*` | Founder "haan" + script (backup + `postfix check` + reload). |
+
+### 0c. Aaj ka kaam kis technology mein gaya (log — har kaam ke saath update)
+| Kaam | Technology (jagah) | Status |
+|---|---|---|
+| tokio 1.53.3, axum 0.8.9, wtransport 0.7.2 (+quinn 0.11/rustls 0.23), rustc 1.99.1 + edition 2024 | Rust :3200 | DONE live 20 Oct |
+| WebTransport error frame (N7) | Rust :3200 (WebTransport) | DONE live 20 Oct |
+| Language bundle/pref `/rpc/locale.*` (N3) | Rust :3200 (Bun `/api/locale/*` sirf fallback) | DONE live 20 Oct |
+| Anjaan pate ki mail kisi aur org mein na jaye (E37) | PostgreSQL (`mail_ingest` gate + `mail_quarantine`) | READY (founder run baqi) |
+| Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
+| Attachments (E38) | Bytes: Storage Box · dedup/patch: Rust · metadata: PostgreSQL | PLANNED |
+| Import mail customer tak, Terms page, PWA offline | Website (React/TanStack) + PWA service worker | PLANNED (Basic list) |
 
 **Aaj ke kaam kahan lagenge:** Attachments = bytes Storage Box par, SHA-256 dedup Rust se **sirf organisation ke andar**, DB mein sirf metadata + phase48 quota, live inbound ka chhota patch Rust mein · Chat audit + iMIP REPLY = Rust (iMIP ka SQL PostgreSQL) · Bun routes (Business/Business Pro) = Rust par; jab har Rust proc live verify ho tab Bun fallback band · Caddy = koi code nahi, sirf read-only HTTP/3 check script · Pull command har technology ki alag.
 
