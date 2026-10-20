@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md 1ab7654e13e647e5
-docs/cursor-work/founder/founder-commands.md 096177d11c720b49
+docs/cursor-work/founder/founder-commands.md 734e319e73c3989e
 docs/anexomail-blueprint.md 3b2a7185917da05d
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -197,3 +197,6 @@ src/lib/mail-attachments-core.test.ts 4947ee83be835067
 src/lib/mail-attachments-core.ts 4c8d15ce14d2938b
 src/lib/mail-attachments.ts 1240deda22af0bc2
 docs/cursor-work/server/sql-run.sh 13a8817d7512820b
+docs/cursor-work/sql/E37_mail_ingest_no_stray_org.sql b94641071972a335
+docs/cursor-work/server/tests/e37/stubs.sql dc31be31a83ba369
+docs/cursor-work/server/tests/e37/run.sh 1b19c23248114e49

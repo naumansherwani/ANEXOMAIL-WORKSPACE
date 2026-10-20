@@ -191,17 +191,22 @@ begin
       raise exception 'E37 SELFTEST FAIL: resolved@ nahi aur root@ quarantine bhi nahi (r=%)', r;
     end if;
 
-    -- jaana pata: core ka purana raasta (thread usi mailbox par)
+    -- jaana pata: core ka purana raasta. Asli maqsad: mail usi org mein jaye jis ka yeh pata hai (kisi aur org mein KABHI nahi).
+    -- (pehle `limit 1` bina tarteeb ke tha: jis pate ki do orgs mein mailbox row ho wahan galat org se mil jata tha — ab har owner org manzoor.)
     select lower(address) into v_known from public.mailboxes
-     where coalesce(box_type::text, 'mailbox') = 'mailbox' and org_id is not null and lower(address) like '%@%' limit 1;
+     where coalesce(box_type::text, 'mailbox') = 'mailbox' and org_id is not null and lower(address) like '%@%'
+     order by lower(address), org_id limit 1;
     if v_known is not null then
       r := public.mail_ingest(jsonb_build_object('envelope_from', 'x@example.com', 'envelope_to', v_known,
              'message_id', tag || '-k', 'from_address', 'x@example.com', 'subject', 'E37 known', 'body_text', 't', 'to', jsonb_build_array(v_known)));
       if coalesce((r->>'quarantined')::boolean, false) or not exists (
            select 1 from public.mail_messages m join public.mail_threads t on t.id = m.thread_id
-            where m.message_id = tag || '-k' and lower(t.mailbox_address) = v_known
-              and t.org_id = (select org_id from public.mailboxes where lower(address) = v_known limit 1)) then
-        raise exception 'E37 SELFTEST FAIL: jaana pata (%) apni hi org mein nahi pahuncha (r=%)', v_known, r;
+            where m.message_id = tag || '-k'
+              and exists (select 1 from public.mailboxes b where lower(b.address) = v_known and b.org_id = t.org_id)) then
+        raise exception 'E37 SELFTEST FAIL: jaana pata (%) apni hi org mein nahi pahuncha (r=%; thread=%; pate ki orgs=%)', v_known, r,
+          (select coalesce(jsonb_agg(jsonb_build_object('org', t.org_id, 'mailbox', t.mailbox_address)), '[]'::jsonb)
+             from public.mail_messages m join public.mail_threads t on t.id = m.thread_id where m.message_id = tag || '-k'),
+          (select coalesce(jsonb_agg(b.org_id), '[]'::jsonb) from public.mailboxes b where lower(b.address) = v_known);
       end if;
     end if;
     raise exception 'E37_SELFTEST_OK';

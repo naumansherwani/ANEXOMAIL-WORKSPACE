@@ -450,3 +450,5 @@ Loophole ledger (sach)
 
 ### 20 Oct 2026 21:30 PKT — founder (verbatim): "tumne jitne bhi sql ab tak diye hain ajj ke aur kal ke woh sab main server pe run kerun ga woh sql ab se server pe tum commands do. repo main jitne bhi sql hai woh sever pe main run kerun ga commands do"
 **Halat:** `sql-run.sh` (E37..E48 + CHECK, ledger, stop-on-fail) repo mein; ab SQL hamesha server command se. Chrome: 2 browsers connected, confirm screen ka jawab nahi aaya (timeout) — live login test baqi.
+
+### 20 Oct 2026 21:34 PKT — founder pasted: Rust `MODULES="attach"` OK (12 tests, build OK, 3 routes 401); sql-run.sh stopped at E37 self-test (jaana pata `naumansherwani.founder@...` apni org mein nahi pahuncha). Hal: E37 selftest `limit 1` bina tarteeb hataya (har owner org manzoor + diagnostics), `tests/e37/run.sh` 4 haalat. Kuch nahi badla tha (ek transaction rollback).
