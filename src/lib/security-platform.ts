@@ -85,10 +85,14 @@ export type EncryptionState = {
     protocol: string;
     cipher: string | null;
     state: "on" | "off" | "partial";
+    /** live check: "certificate valid for …" or why it failed */
+    detail?: string | null;
   }[];
   key_rotated_at: string | null;
   next_rotation_at: string | null;
   ledger: { at: string; action: string; surface: string; hash: string }[];
+  /** set when the Rust engine measured it live */
+  source?: string;
 };
 
 export type OwnershipProof = {

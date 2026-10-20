@@ -101,6 +101,12 @@ function SecurityOverviewPage() {
 
               <h3 className="ax-heading mt-ax-6 text-foreground">Tamper-evident ledger</h3>
               <ul className="mt-ax-3 space-y-1.5">
+                {d.ledger.length === 0 && (
+                  <li className="ax-caption text-muted-foreground">
+                    Nothing yet. Ending a session, the kill switch and device decisions are written
+                    here, each entry locked to the one before it.
+                  </li>
+                )}
                 {d.ledger.map((e) => (
                   <Row key={e.hash}>
                     <span className="text-steel">{new Date(e.at).toLocaleString("en-GB")}</span>

@@ -1,11 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { KeyRound, Lock } from "lucide-react";
 
-import { Row, Section, Stat } from "@/components/app/analytics/AnalyticsBits";
+import { Row, Section } from "@/components/app/analytics/AnalyticsBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
-import { Button } from "@/components/ui/button";
-import { notify } from "@/lib/notify";
-import { useEncryption, useRotateKeys } from "@/lib/security-platform";
+import { useEncryption } from "@/lib/security-platform";
 
 export const Route = createFileRoute("/app/security/encryption")({
   head: () => ({
@@ -28,7 +26,6 @@ export const Route = createFileRoute("/app/security/encryption")({
 /** Feature 4 — Encryption ledger: har surface aur har hop, hashed proof ke saath. */
 function EncryptionPage() {
   const q = useEncryption();
-  const rotate = useRotateKeys();
 
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 md:px-8">
@@ -39,7 +36,7 @@ function EncryptionPage() {
           </>
         }
         title="Encrypted is a fact you can check"
-        blurb="Every surface at rest and every hop in transit, named with its algorithm — plus a hashed entry each time a key moves."
+        blurb="Every surface at rest and every hop in transit, named with its algorithm — each one checked live, not promised."
       >
         <CardBody
           query={{
@@ -53,24 +50,11 @@ function EncryptionPage() {
         >
           {(d) => (
             <>
-              <div className="grid gap-ax-3 sm:grid-cols-2">
-                <Stat
-                  label="Keys last rotated"
-                  value={
-                    d.key_rotated_at
-                      ? new Date(d.key_rotated_at).toLocaleDateString("en-GB")
-                      : "Never"
-                  }
-                />
-                <Stat
-                  label="Next rotation"
-                  value={
-                    d.next_rotation_at
-                      ? new Date(d.next_rotation_at).toLocaleDateString("en-GB")
-                      : "Not scheduled"
-                  }
-                />
-              </div>
+              <p className="ax-caption text-muted-foreground">
+                {d.source
+                  ? "Checked live: this server opens a real encrypted connection to each door and verifies the certificate against public roots (refreshed every 10 minutes)."
+                  : "Readings recorded for this workspace."}
+              </p>
 
               <h3 className="ax-heading mt-ax-6 text-foreground">At rest</h3>
               <ul className="mt-ax-3 space-y-1.5">
@@ -98,14 +82,20 @@ function EncryptionPage() {
 
               <h3 className="ax-heading mt-ax-6 text-foreground">In transit</h3>
               <ul className="mt-ax-3 space-y-1.5">
+                {d.in_transit.length === 0 && (
+                  <li className="ax-caption text-muted-foreground">No live reading yet.</li>
+                )}
                 {d.in_transit.map((r) => (
                   <Row key={r.hop}>
                     <span className="min-w-0 flex-1 font-semibold text-foreground">{r.hop}</span>
                     <code className="rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">
                       {r.protocol}
                     </code>
-                    <span className="min-w-0 flex-1 truncate text-muted-foreground">
-                      {r.cipher ?? ""}
+                    <span
+                      className="min-w-0 flex-1 truncate text-muted-foreground"
+                      title={r.detail ?? r.cipher ?? ""}
+                    >
+                      {r.state === "on" ? (r.cipher ?? r.detail ?? "") : (r.detail ?? "")}
                     </span>
                     <span
                       className={
@@ -118,50 +108,11 @@ function EncryptionPage() {
                 ))}
               </ul>
 
-              <h3 className="ax-heading mt-ax-6 flex items-center gap-2 text-foreground">
-                <KeyRound className="size-3.5" aria-hidden="true" /> Key ledger
-              </h3>
-              <ul className="mt-ax-3 space-y-1.5">
-                {d.ledger.map((e) => (
-                  <Row key={e.hash}>
-                    <span className="text-steel">{new Date(e.at).toLocaleString("en-GB")}</span>
-                    <span className="min-w-0 flex-1 truncate text-foreground">
-                      {e.action.replace(/_/g, " ")}
-                    </span>
-                    <span className="text-muted-foreground">{e.surface}</span>
-                    <code className="ml-auto rounded bg-secondary px-1 py-0.5 text-[11px] text-steel">
-                      {e.hash.slice(0, 12)}
-                    </code>
-                  </Row>
-                ))}
-              </ul>
-
-              <Button
-                className="mt-ax-5"
-                variant="secondary"
-                disabled={rotate.isPending}
-                onClick={() =>
-                  rotate.mutate(
-                    {},
-                    {
-                      onSuccess: () =>
-                        notify.done(
-                          "Keys rotated",
-                          "Old keys are retired and the ledger has the proof.",
-                        ),
-                      onError: (e) =>
-                        notify.failed(
-                          e.isNotImplemented ? "Rotation not wired yet" : "Could not rotate",
-                          {
-                            description: e.message,
-                          },
-                        ),
-                    },
-                  )
-                }
-              >
-                {rotate.isPending ? "Rotating…" : "Rotate keys now"}
-              </Button>
+              <p className="ax-caption mt-ax-5 flex items-start gap-2 text-muted-foreground">
+                <KeyRound className="mt-0.5 size-3.5 shrink-0" aria-hidden="true" />
+                Storage keys are held and rotated by the database provider. We do not show a
+                "rotate" button that would change nothing.
+              </p>
             </>
           )}
         </CardBody>

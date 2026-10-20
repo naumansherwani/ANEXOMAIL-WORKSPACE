@@ -72,35 +72,38 @@ function SessionsPage() {
                       {s.device_label ?? "Unknown device"}
                     </span>
                     <span className="text-muted-foreground">
-                      {[s.city, s.country].filter(Boolean).join(", ") || "unknown location"}
-                      {s.ip ? ` · ${s.ip}` : ""}
+                      {[[s.city, s.country].filter(Boolean).join(", "), s.ip]
+                        .filter(Boolean)
+                        .join(" · ") || "network not recorded"}
                     </span>
                     <span className={RISK_TONE[s.risk]}>{s.risk} risk</span>
                     {s.current && <span className="text-emerald-400">this device</span>}
                     <span className="ml-auto text-steel">{relativeTime(s.last_seen_at)}</span>
-                    <Button
-                      size="sm"
-                      variant="secondary"
-                      disabled={kill.isPending}
-                      onClick={() =>
-                        kill.mutate(
-                          { session_id: s.id },
-                          {
-                            onSuccess: () =>
-                              notify.done("Session ended", "That device is signed out."),
-                            onError: (e) =>
-                              notify.failed(
-                                e.isNotImplemented ? "Not wired yet" : "Could not end session",
-                                {
-                                  description: e.message,
-                                },
-                              ),
-                          },
-                        )
-                      }
-                    >
-                      Kill
-                    </Button>
+                    {!s.current && (
+                      <Button
+                        size="sm"
+                        variant="secondary"
+                        disabled={kill.isPending}
+                        onClick={() =>
+                          kill.mutate(
+                            { session_id: s.id },
+                            {
+                              onSuccess: () =>
+                                notify.done("Session ended", "That device is signed out."),
+                              onError: (e) =>
+                                notify.failed(
+                                  e.isNotImplemented ? "Not wired yet" : "Could not end session",
+                                  {
+                                    description: e.message,
+                                  },
+                                ),
+                            },
+                          )
+                        }
+                      >
+                        Kill
+                      </Button>
+                    )}
                   </li>
                 ))}
               </ul>
@@ -117,7 +120,7 @@ function SessionsPage() {
             </>
           }
           title="Lost a laptop? End the whole blast radius."
-          blurb="Every session dies, every device except this one is blocked, and the ledger keeps a permanent signed entry of who pulled it and when."
+          blurb="Every session except the one you are using now is signed out at once, and the ledger keeps a permanent hash-chained entry of when you pulled it."
         >
           <Button
             variant="secondary"
@@ -129,7 +132,7 @@ function SessionsPage() {
                   onSuccess: (r) =>
                     notify.done(
                       "Blast radius cleared",
-                      `${r.sessions_killed} sessions ended, ${r.devices_blocked} devices blocked.`,
+                      `${r.sessions_killed} other session${r.sessions_killed === 1 ? "" : "s"} signed out.`,
                     ),
                   onError: (e) =>
                     notify.failed(

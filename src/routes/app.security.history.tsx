@@ -117,8 +117,8 @@ function HistoryPage() {
                             {
                               onSuccess: (r) =>
                                 notify.done(
-                                  "Reported",
-                                  `${r.sessions_killed} sessions ended and the device was blocked.`,
+                                  "Every other session signed out",
+                                  `${r.sessions_killed} ended. Change your password now (Account) so the old one stops working too.`,
                                 ),
                               onError: (err) =>
                                 notify.failed(

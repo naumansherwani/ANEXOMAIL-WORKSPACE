@@ -7,6 +7,7 @@
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
+#   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
 #             [pehle E35 SQL chalayen] [OPT-IN: default mein NAHI — Cargo.toml mein 2 crate judte hain (rustls, webpki-roots), isliye
 #              sirf tab jab aap khud likhen:  MODULES=mig bash <(...)  ]
@@ -31,7 +32,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device dnsauth"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device dnsauth security"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -80,6 +81,8 @@ CFG={
  "device": {"public": False, "label": "device",    "procs": []},
  # dnsauth (D2): `mail.domains.verify` ko mail dispatch se PEHLE pakadta hai (authoritative NS); main.rs wala DoH arm dead fallback.
  "dnsauth": {"public": False, "label": "dnsauth",   "procs": []},
+ # security (E39): Security page sach — auth.sessions / device_vault / audit log / live TLS. Pehle E39 SQL chalayen.
+ "security": {"public": False, "label": "security",  "procs": ['"security.dashboard"','"security.sessions"']},
 }
 changed=[]
 for m in mods:
@@ -140,7 +143,7 @@ done
 
 # Cargo.toml — SIRF mig ke liye (2 crate: rustls, webpki-roots; founder ki ijazat G30, 19 Oct 2026). Copy par try; asli file backup ke baad badalti hai.
 NEED_CARGO=0
-case " $MODS " in *" mig "*) NEED_CARGO=1;; esac
+case " $MODS " in *" mig "*|*" security "*) NEED_CARGO=1;; esac   # security bhi rustls/webpki-roots (wohi 2 crate) istemal karta hai
 cp "$TARGET/Cargo.toml" "$T/Cargo.toml.try"
 if [ "$NEED_CARGO" -eq 1 ]; then
   echo "== 1b) Cargo.toml (sirf mig): 2 crate judte hain — copy par try"
@@ -267,6 +270,24 @@ for m in $MODS; do
       esac
       for h in 1.1.1.1 8.8.8.8; do
         if timeout 4 bash -c "exec 3<>/dev/udp/$h/53" 2>/dev/null; then echo "   -> server se $h:53 (UDP) ka raasta khula"; else echo "   -> $h:53 tak raasta nahi — authoritative check public DoH par wapas chalega"; fi
+      done;;
+    security)
+      r="$(probe security.dashboard '{"input":{}}')"
+      echo "   security.dashboard (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> security: Rust ne proc pakda (nakli login 401 = theek)";;
+        *) echo "   -> security: jawab upar dekhein";;
+      esac
+      has="$( ( . /etc/anexomail/sync.env 2>/dev/null; psql "$WORKING_URL" -tAc "select to_regprocedure('public.sec_dashboard(uuid,uuid)') is not null" 2>/dev/null ) | tr -d ' \r\n' )"
+      case "$has" in
+        t) echo "   -> security: E39 SQL lagi hui hai";;
+        f) echo "   -> security: E39 SQL abhi NAHI lagi — tab tak page purane Bun route par chalta hai (toot-ta nahi). docs/cursor-work/sql/E39_security_truth.sql chalayen";;
+        *) echo "   -> security: E39 ka check nahi ho saka (psql / sync.env)";;
+      esac
+      for hp in "anexomail.com 443" "mail.anexomail.com 993"; do
+        set -- $hp
+        v="$(echo | timeout 6 openssl s_client -connect 127.0.0.1:$2 -servername "$1" -verify_return_error 2>/dev/null | grep -E '^ *(Protocol|Verify return code)' | tr -s ' ' | tr '\n' ' ')"
+        echo "   -> TLS $1:$2 => ${v:-jawab nahi}"
       done;;
     device)
       r="$(probe chat.device.trust.list '{"input":{}}')"
