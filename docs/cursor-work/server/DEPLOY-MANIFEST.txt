@@ -217,3 +217,4 @@ docs/cursor-work/MASTER-GAP-LEDGER.md c043bc512c67d1f9
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md b1c1e85cb0fb5cbd
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
+docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
