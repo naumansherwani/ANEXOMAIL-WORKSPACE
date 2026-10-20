@@ -9,7 +9,7 @@
 -- Dobara chalana safe (idempotent). Har step apna subtransaction: ek table ki galti baqi ko nahi rokti.
 -- Chalane ka tareeqa: Supabase SQL editor mein poori file paste karo, Run. Natija: email | step | result.
 -- Sirf ek account: aakhri select mein  ax_family_real_buyer('humzasherwani@anexomail.com')  likho.
-\set ON_ERROR_STOP on
+-- (psql ka `\set ON_ERROR_STOP` yahan se hata diya: Supabase SQL editor psql nahi hai, 20 Oct 2026 founder ne line 12 mein yehi error dekha)
 set search_path = public, extensions;
 
 begin;

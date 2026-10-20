@@ -15,7 +15,7 @@ set search_path = public, extensions;
 create table if not exists public.account_integrity_tombstones (
   id            bigserial primary key,
   user_id       uuid not null,                 -- FK nahi: user mit chuka hota hai
-  email_sha256  text,
+  email_sha256  text,                          -- purana naam; ab ismein HMAC-SHA256 (HASHING.md) hota hai, key na ho to NULL
   state_before  text,
   reason        text,
   warned_at     timestamptz,
@@ -46,7 +46,19 @@ begin
     check (event in ('evaluated','suspicious','warned','blocked','export_window_opened','exported','released','purged','appeal_linked','purge_blocked'));
 end $$;
 
-create or replace function public.account_integrity_purge_due()
+-- HASHING.md: email jaisi andaza-yogya personal cheez ka hash HMAC-SHA256 (subkey = HMAC(key,'anexomail/email-hash/v1')). Key server env se aati hai.
+create or replace function public.email_hmac_v1(_email text, _key text)
+returns text language sql immutable set search_path = public, extensions as $$
+  select case when coalesce(_key, '') = '' or coalesce(_email, '') = '' then null
+    else encode(hmac(convert_to(lower(btrim(_email)), 'UTF8'),
+           hmac(convert_to('anexomail/email-hash/v1', 'UTF8'), convert_to(_key, 'UTF8'), 'sha256'), 'sha256'), 'hex') end
+$$;
+revoke all on function public.email_hmac_v1(text, text) from public, anon, authenticated;
+grant execute on function public.email_hmac_v1(text, text) to service_role;
+
+-- purani bina-argument wali (phase24a) hatao; nayi `_key default null` ke saath (dono rehte to `purge_due()` call ambiguous hoti)
+drop function if exists public.account_integrity_purge_due();
+create or replace function public.account_integrity_purge_due(_key text default null)
 returns jsonb language plpgsql security definer
 set search_path = public, extensions as $$
 declare
@@ -89,7 +101,7 @@ begin
     if coalesce((v_rep->>'ok')::boolean, false) then
       insert into public.account_integrity_tombstones
         (user_id, email_sha256, state_before, reason, warned_at, blocked_at, export_until, purge_report, timeline)
-      values (r.user_id, encode(sha256(convert_to(v_email, 'UTF8')), 'hex'), r.state, r.reason, r.warned_at, r.blocked_at, r.export_until,
+      values (r.user_id, public.email_hmac_v1(v_email, _key), r.state, r.reason, r.warned_at, r.blocked_at, r.export_until,
               jsonb_build_object('anonymised_rows', v_rep->'anonymised_rows', 'ledgers_unlocked', v_rep->'ledgers_unlocked'), v_tl);
       v_done := v_done + 1;
     else
@@ -103,8 +115,8 @@ begin
   end loop;
   return jsonb_build_object('ok', true, 'purged', v_done, 'blocked', v_stuck);
 end $$;
-revoke all on function public.account_integrity_purge_due() from public, anon, authenticated;
-grant execute on function public.account_integrity_purge_due() to service_role;
+revoke all on function public.account_integrity_purge_due(text) from public, anon, authenticated;
+grant execute on function public.account_integrity_purge_due(text) to service_role;
 
 notify pgrst, 'reload schema';
 

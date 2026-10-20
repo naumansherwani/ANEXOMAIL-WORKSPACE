@@ -243,6 +243,15 @@ Founder (verbatim): "ab tumharay pass login hai tumhay human yani mere se better
 - **Design (founder 20 Oct 06:07):** cinematic 3D (Three.js / GSAP / Framer Motion — Constitution mein maujood) jahan sach mein behtar lage wahan *thora* — har jagah nahi; mobile par halka (Rule 19), `prefers-reduced-motion` ka khayal.
 - **Passwords:** founder chat mein deta hai; agent sirf usi chat mein test ke liye use karta hai; repo/memory/script mein KABHI nahi.
 
+### Rule 29 — Loophole sab GREEN: founder ko loophole-list nahi, sirf fix ki summary (locked 20 Oct 2026 19:54 PKT, founder, "last warning")
+Founder (verbatim): "tumhay bola tha ke mujhe loophole khatham ker ke do aur jab green ho jaye tab bolo lekin tum mujhe bolte ho ke loophole baki hai … agar baki hai phir tumhara kya faida hai live login use kerne ka?? last warning … repo main rule likh lo ke mujhe loophole sab green chaiye hain ek bhi blunder nahi bachay."
+- **Loophole ki list founder ko kabhi nahi bhejni.** Jo loophole mile use usi turn mein khud band karo (code + test + repo + push), phir sirf "kya fix hua + pull command + saboot" batao. "Baqi hai" sirf tab, jab kaam sach mein founder ke bas ki cheez ho (server par un ka command chalana, Supabase paste) — woh bhi command ke saath, savaal ke taur par nahi.
+- **Founder se password/login dobara nahi maangne.** Live test ke liye khud test account banao (real signup flow, Rule 26 "business.test banna baqi"), password sirf ephemeral (env/process), repo/memory/log mein kabhi nahi. Account na ban sake to local real-stack test (Postgres + real crates + Playwright) karo aur likho kya live nahi ho saka aur kyun — phir bhi loophole nahi, "verified-local" ki halat ke saath.
+- **"Green" ka matlab:** test chala, natija dekha. Nakli green nahi (Rule 5). Jo kaam promise (footer/policy) hai woh `PROMISES.md` mein sabut ke saath.
+- **Har founder command ke BAAD repo update + push (compact ka khatra hamesha):** founder-commands.md (verbatim + halat), blueprint/PROMISES ki halat, DEPLOY-MANIFEST sync+verify (Rule 28), phir push. Claude compact ke baad wahin se continue kare.
+- **Har technology ki alag pull command** (SQL / Rust / Brain / Web / timer) har kaam ke saath — mix block nahi.
+- **Hash policy (founder 20 Oct):** `docs/cursor-work/HASHING.md` — HMAC-SHA256 aur SHA-256 kab kaunsa; code wahi follow kare.
+
 ---
 
 ## PENDING (founder action required)
