@@ -247,3 +247,4 @@ docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 502bd525545091bb
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
 docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 9df68e1ba719042f
+docs/cursor-work/server/jwt-life-probe.sh db8622c56c6df63b
