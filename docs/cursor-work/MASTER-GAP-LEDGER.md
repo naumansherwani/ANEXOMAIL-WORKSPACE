@@ -76,3 +76,6 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - Live check (CHECK_CAL_CREATE) ne dikhaya: `calendar_attendees_response_check` 'needs_action' ko rokta hai (live default 'pending'). Rust 'needs_action' bhejta hai -> attendee insert fail -> event yatim reh jata (2 yatim mile).
 - Fix: `E51_calendar_response_fix.sql` (check badla, default needs_action, yatim cancel, selftest rollback, PostgREST reload) — local DB par pehle error reproduce, phir E51 2 baar chala OK. Rust `cal_glue.rs` mein error log + attendee fail par event auto-cancel (cargo check OK; live par Rust rebuild baqi).
 - Live GREEN tab: E51 server par -> Chrome mein meeting grid mein + Load tab.
+- **A2-A4 script:** `repo-capture-server.sh` (founder server se chalayega, push bhi wahi se): schema-only SQL, Brain/Rust farq, redacted config + cron -> `docs/cursor-work/live-snapshot/`. Secret mila to push nahi. Phir main merge karunga (repo ko live ke barabar).
+- **A5 FOUNDER_PASSWORD:** `server/routes/auth.ts:631` — env password match par founder account ka password reset + login (plain `===` compare). Dizayn ka hissa hai par khatarnak: env khali ho to band; founder ki marzi par hata kar passkey/2FA par jana (G35 ke baad).
+- Founder 21 Oct 00:35: SQL ab server se seedha Postgres (psql WORKING_URL, sql-run.sh) — pehle se aisa hi hai.
