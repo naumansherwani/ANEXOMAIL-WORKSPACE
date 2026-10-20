@@ -8,7 +8,11 @@
 
 Yeh file isliye hai ke chat compact ho ya naya chat khule (claude.ai ka Claude chat ho ya Claude Code ka cloud session), agla Claude **wahin se** kaam shuru kare jahan pichla chhoda tha. Founder ko kuch dobara samjhana nahi parna chahiye. Isko update karna AGENTS.md **Rule 18** hai. (Pehle yeh `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` thi; founder ke kehne par 17 Oct 2026 ko is naam se badli — ek hi file, duplicate nahi.)
 
-Aakhri update: **21 Oct 2026, 04:30 PKT — BASIC 100% GREEN (live saboot BASIC-AUDIT-DONE.md; repo==server). AGLA QADAM: PRO live test (pro.* account `/root/.anexo-test-creds`), phir Business, Business Pro, phir Rust login G42.** Founder-note: browser tab ko founder bhi use karta hai — apna test naye tab mein karo.
+Aakhri update: **21 Oct 2026, 04:35 PKT — FOUNDER HUKM (04:21): "sab ka sab implement, batch + tarteeb se; har batch se pehle memory update repo+sandbox, live test, loophole khatam, green; har complete ke baad pull command (SQL ho to postgres par); technology har minute read, advance code".**
+Batch tarteeb: **B1 Rust JWT local verify** (Supabase network call/request khatam; HS256 hmac+sha2 ya ES256/JWKS — alg `jwt-life-probe.sh` se; revoked sessions `account_sessions.revoked_at` check ZAROORI; fallback network getUser) -> B2 G42 passkey/recovery login Rust -> B3 R1 mail.send + org.mailboxes.* -> B4 R5 event-driven WebTransport push -> B5 G40 work/crm/org/integrations/settings RPC -> B6 G16 self-serve billing (polar :3400 NO-TOUCH) -> B7 G26/G27 iMIP reply, recurrence, scheduling link, CalDAV -> B8 Bun Brain 38 route files -> Rust + Bun 1.4.3 + tokio 1.54. Har batch: differential test, restore-on-fail installer, Rule 35 (live Rust sirf surgical script se).
+**Abhi B1 mein:** jwt-life-probe.sh (alg/kid/JWKS/secret-env-NAAM, token nahi) founder se chalwana; output ke baad code.
+
+**21 Oct 2026, 04:30 PKT — BASIC 100% GREEN (live saboot BASIC-AUDIT-DONE.md; repo==server). AGLA QADAM: PRO live test (pro.* account `/root/.anexo-test-creds`), phir Business, Business Pro, phir Rust login G42.** Founder-note: browser tab ko founder bhi use karta hai — apna test naye tab mein karo.
 
 **21 Oct 2026, 03:35 PKT** (asli ghadi; session compact hone ke baad bahal).
 

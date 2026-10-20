@@ -33,5 +33,12 @@ import sys,base64,json
 t=sys.argv[1].split('.')[1];t+='='*(-len(t)%4)
 d=json.loads(base64.urlsafe_b64decode(t));print("JWT lifetime (sec):",d["exp"]-d["iat"],"=",round((d["exp"]-d["iat"])/3600,2),"ghante")
 P
+python3 - "$TOK" <<'P2'
+import sys,base64,json
+h=sys.argv[1].split('.')[0];h+='='*(-len(h)%4)
+d=json.loads(base64.urlsafe_b64decode(h));print("JWT header: alg=%s kid=%s"%(d.get("alg"),"yes" if d.get("kid") else "no"))
+P2
+for f in /opt/anexomail/.env /etc/anexomail/sync.env /opt/anexomail-rust/.env; do [ -r "$f" ] && grep -oE "^(SUPABASE[A-Z0-9_]*JWT[A-Z_]*|JWT_SECRET|SUPABASE[A-Z0-9_]*URL)=" "$f" | sed "s|^|$f has: |"; done
+curl -s -m 8 -o /dev/null -w "JWKS /auth/v1/.well-known/jwks.json -> HTTP %{http_code}\n" "$URL/auth/v1/.well-known/jwks.json"
 echo "Supabase expires_in / refresh_token mila: $EXPIN"
 unset TOK SESS
