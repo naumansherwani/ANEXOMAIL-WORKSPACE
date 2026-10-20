@@ -63,3 +63,16 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 5. D10: walid ka account -> founder profile -> AnexoChat.
 
 **PARKED (founder 21 Oct 00:14):** 3D/Three.js -> `PLAN-3D-PARKED.md`. Tarteeb mein nahi.
+
+## A1 NATEEJA (founder ne chalaya, 21 Oct 00:27 PKT; /root/audit-A1.txt) — repo != live
+- **Brain:** DIFFERS anexochat.ts, index.ts, routes/crm.ts; SERVER-ONLY lib/*.ts (~65 files, frontend-jaisi lib ki purani copy Brain mein) + routes/index.ts, routes/storage-client.ts, server.ts, start.ts, routeTree.gen.ts; REPO-ONLY accounts/create-accounts.ts, mail/deliver-to-supabase.ts (Brain par nahi — Postfix ab Rust anexopipe).
+- **Rust:** main.rs DIFFERS (installers live patch karte hain — mirror lena baqi); anexomail-deliver.rs SERVER-ONLY (repo mein deliver_bin.rs hai — mel dekhna).
+- **SQL:** ~230 functions / ~300 tables / ~400 policies live mein, repo ke E-files mein NAHI (chat_*, ai_*, billing_*, movein_*, file_*, security_*, polar_*, safety_*, org_*, perf_*, setting_*, legacy/backup tables). Repo mein sirf E31-E51 + purane `sql/phase*.sql`. -> A2: schema-only dump (koi data nahi) repo mein.
+- **Edge:** Caddyfile (147 lines), postfix main.cf/master.cf, dovecot.conf, opendkim.conf repo mein NAHI. -> A3: secret-redacted copy repo mein.
+- **systemd:** 6 anexomail timers sab repo mein (OK). Cron: `anexomail-sync-domains.sh`, `anexomail-sync-maps.sh` (har minute, DUPLICATE line crontab + /etc/cron.d mein dono!) repo mein script nahi -> A4.
+- **pm2:** env key naam repo se match (value nahi dekhi). `anexomail-leo` ke env key khali (Brain env file se padhta hoga).
+- **Khatra jo mila:** `process.env.FOUNDER_PASSWORD` Brain mein use hota hai — dekhna (plain password env mein?). A5.
+## G-CAL (21 Oct 00:29): calendar.create 500 — SABAB MILA
+- Live check (CHECK_CAL_CREATE) ne dikhaya: `calendar_attendees_response_check` 'needs_action' ko rokta hai (live default 'pending'). Rust 'needs_action' bhejta hai -> attendee insert fail -> event yatim reh jata (2 yatim mile).
+- Fix: `E51_calendar_response_fix.sql` (check badla, default needs_action, yatim cancel, selftest rollback, PostgREST reload) — local DB par pehle error reproduce, phir E51 2 baar chala OK. Rust `cal_glue.rs` mein error log + attendee fail par event auto-cancel (cargo check OK; live par Rust rebuild baqi).
+- Live GREEN tab: E51 server par -> Chrome mein meeting grid mein + Load tab.

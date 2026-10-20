@@ -23,7 +23,7 @@ if [ $# -eq 0 ]; then
   set --
   for f in E37_mail_ingest_no_stray_org E38_thread_message_count_truth E39_security_truth E40_billing_price_truth E41_family_real_buyer \
            E42_device_hash_hmac E43_passkey_recovery_codes E44_account_export E45_integrity_purge E46_integrity_notices_appeal \
-           E47_device_revoke_real_sessions E48_outgoing_attachments E49_attach_ceiling_18mb E50_inbound_attachments CHECK_E42_E47 CHECK_E48 CHECK_E50; do set -- "$@" "$f"; done
+           E47_device_revoke_real_sessions E48_outgoing_attachments E49_attach_ceiling_18mb E50_inbound_attachments E51_calendar_response_fix E52_calendar_response_values CHECK_E42_E47 CHECK_E48 CHECK_E50; do set -- "$@" "$f"; done
 fi
 T="$(mktemp)"; trap 'rm -f "$T"' EXIT
 rc=0

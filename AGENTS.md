@@ -280,3 +280,6 @@ Founder (verbatim): "mainay dekha hai ke bar bar same kaam repeat kaam ker rahay
 - User ka mindset (har kaam se pehle): main us package ka asli customer hoon — pehle 10 minute mein kya karunga? Kya wada kiya gaya hai aur kya sach mein chalta hai? Kya phone par (390) bhi? Jo wada pura nahi, copy halki karo (jhoota nahi). Basic user = mail, people, calendar, work (CRM/chat/AI nahi). Pro/Business/Business Pro apni surface; "mix" nahi.
 - Repo == live: server par jo hai (Brain files, SQL functions, Caddy/Postfix/systemd, pm2 env) wo PEHLE read-only audit se dekho (A1 in `MASTER-GAP-LEDGER.md`), phir repo mein laao; "repo mein nahi" ka matlab "server par nahi" NAHI. Kisi live cheez ko repo ke andaze se overwrite mat karo.
 - Master hisaab: `docs/cursor-work/MASTER-GAP-LEDGER.md` (GREEN / CODE / TODO / CHECK / FOUNDER). Har kaam ke baad wahan ek line.
+
+## Rule 33 — Kaam ka tareeqa: pehle khud, phir founder (founder 21 Oct 2026 00:26 PKT)
+Masla mile to: (1) khud repo/code mein wajah dhoondho, (2) fix likho, (3) sandbox/local DB mein reproduce + test, (4) repo update + manifest 0 bad + push, (5) founder ko ek command (sirf wo jo server hi kar sakta hai), (6) Chrome mein live verify. Founder se diagnosis ke liye baar baar mat maango; Chrome ruk jaye to code se aage badho. Sandbox copy: /home/claude/FOUNDER-RULES.md.

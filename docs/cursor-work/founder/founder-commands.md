@@ -465,3 +465,8 @@ Loophole ledger (sach)
 ## 21 Oct 2026 00:11 PKT
 - Founder (verbatim): "Do not execute more than 3 terminal commands or browser tests without asking for my confirmation. Stop and show me the progress first.\" is rule ko goli maaro." -> Rule 31 ki 3-command had radd.
 - Founder ne `cd /opt/anexomail-web && bash pull.sh ...` chalaya: "pull.sh: No such file" — meri galti (pull.sh repo mein docs/cursor-work/server/ mein hai, /opt/anexomail-web ki jad mein nahi). Sahi command neeche.
+
+## 21 Oct 2026 00:26 PKT
+- Founder (verbatim ka matlab): "yeh kaam karne ka tareeqa sahi nahi; pehle tum khud live code likhte, repo mein, khud live testing, compare, login karte the — ab Chrome mein phans gaye. Masle/loophole khud nazar aayein to code likho, theek karo, phir live dekho."  -> Rule: pehle khud code mein wajah dhoondho + fix + local test, phir founder ko ek command, phir live verify. Founder se sirf wohi maango jo sirf server de sakta hai.
+## 21 Oct 2026 00:29 PKT
+- Founder: "saath ke saath repo update verna compact chat yeh sandbox update kero" -> har kaam ke saath repo + sandbox (/home/claude/FOUNDER-RULES.md etc.) update.

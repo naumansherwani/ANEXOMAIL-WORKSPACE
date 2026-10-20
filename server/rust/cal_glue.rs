@@ -515,6 +515,9 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
         }),
     )
     .await;
+    if let Err(e) = &ev_row {
+        eprintln!("calendar.create: event insert failed: {}", e.chars().take(400).collect::<String>());
+    }
     let ev = match ev_row
         .ok()
         .and_then(|v| v.as_array().and_then(|a| a.first().cloned()))
@@ -545,7 +548,18 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
         .collect();
     let rows = match crate::sb_insert("calendar_attendees", Value::Array(attendee_body)).await {
         Ok(v) => v.as_array().cloned().unwrap_or_default(),
-        Err(_) => {
+        Err(e) => {
+            eprintln!("calendar.create: attendee insert failed: {}", e.chars().take(400).collect::<String>());
+            // Yatim event na rahe: attendee na bane to event wapas hata do.
+            let now = std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_secs() as i64)
+                .unwrap_or(0);
+            let _ = crate::sb_patch(
+                &format!("calendar_events?id=eq.{}", event_id),
+                json!({ "cancelled_at": cal::fmt_rfc3339(now), "status": "cancelled" }),
+            )
+            .await;
             return fail(
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "server_error",
