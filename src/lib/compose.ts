@@ -26,6 +26,8 @@ export type DraftPayload = {
   body: string;
   send_at?: string;
   language?: string;
+  /** G38: Rust upload se mile file ids (sirf bhejte/schedule karte waqt; draft autosave mein nahi) */
+  attachment_ids?: string[];
 };
 
 export type DraftRecord = { id: string; version: number; saved_at: string };

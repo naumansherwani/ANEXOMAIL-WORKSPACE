@@ -1,0 +1,10 @@
+[Unit]
+Description=ANEXOMAIL attachments safai — roz
+
+[Timer]
+OnCalendar=*-*-* 03:41
+RandomizedDelaySec=600
+Persistent=true
+
+[Install]
+WantedBy=timers.target

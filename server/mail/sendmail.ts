@@ -29,6 +29,8 @@ export type SendMailInput = {
   fromName?: string;
   /** header + log ke liye; na do to bana diya jayega */
   messageId?: string;
+  /** G38: disk par parakhi hui files (server/mail/attachments.ts: toOutAttachments) */
+  attachments?: { filename: string; mimeType: string; path: string; sha256: string; size: number }[];
 };
 
 export type SendMailResult = {
@@ -43,6 +45,7 @@ const PORT = Number(process.env["MAIL_SMTP_PORT"] ?? 25);
 const DOMAIN = "anexomail.com";
 
 function encodeHeader(value: string) {
+  value = String(value).replace(/[\r\n]+/g, " "); // G38: header injection band (subject/naam mein CR/LF)
   // non-ASCII subject/name ko RFC 2047 base64 mein
   // eslint-disable-next-line no-control-regex
   if (!/[^\x00-\x7F]/.test(value)) return value;
@@ -194,7 +197,20 @@ export async function sendMail(input: SendMailInput): Promise<SendMailResult> {
   );
   if (!rcpts.length) return { ok: false, messageId, smtpResponse: "", error: "no recipients" };
 
-  const data = buildMessage(input, messageId);
+  // G38: attachments hon to message multipart/mixed ban jata hai; file badli/kharab/gayab ho to mail NAHI jati (saaf error)
+  let data: string;
+  try {
+    if (input.attachments?.length) {
+      const att = await import("./attachments");
+      data = att.wrapWithAttachments(buildMessage(input, messageId), await att.readAttachments(input.attachments));
+    } else {
+      data = buildMessage(input, messageId);
+    }
+  } catch (error) {
+    const message = (error as Error).message;
+    await recordProof(input, messageId, false, "", message);
+    return { ok: false, messageId, smtpResponse: "", error: message };
+  }
   try {
     const smtpResponse = await smtpSend(input.from.toLowerCase(), rcpts, data);
     await recordProof(input, messageId, true, smtpResponse);

@@ -32,7 +32,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device dnsauth security export"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device dnsauth security export attach"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -91,10 +91,26 @@ CFG={
             # G37: blocked account guard — token ke foran baad, SAB module hooks se pehle
             "guard_marker": "export_glue::blocked(",
             "guard_code": '    // G37 — blocked/purged account: sirf export / halat / apna delete (export_glue::blocked)\n    if let Some(r) = export_glue::blocked(&proc, &token).await {\n        return r;\n    }\n\n'},
+ # attach (G38): bheji jane wali mail ke attachments (stream upload, org-ke-andar SHA-256 dedup, clamd, quota). SQL E48 PEHLE.
+ # Routes: POST /file/attach (upload), GET /file/attach/get?id= (download). Thread read ka `url` (jo server ka disk_path de deta tha) band + `stored` flag.
+ "attach": {"public": False, "label": "attach",    "procs": ['"mail.attach.limits"','"mail.attach.remove"'],
+            "route_marker": "attach_glue::upload",
+            "route_after": '.route("/file/download", get(file_download))',
+            "route_add": '.route("/file/attach", post(attach_glue::upload))\n        .route("/file/attach/get", get(attach_glue::download))',
+            "replace": [
+              ('                                                    .or_else(|| a.get("disk_path"))\n', '', 'server ka disk_path client ko nahi jata'),
+              ('                                                    "size_bytes": a.get("size_bytes").and_then(|v| v.as_i64()).unwrap_or(0),\n',
+               '                                                    "size_bytes": a.get("size_bytes").and_then(|v| v.as_i64()).unwrap_or(0),\n                                                    "stored": a.get("sha256").map(|v| !v.is_null()).unwrap_or(false),\n', 'stored flag'),
+            ]},
 }
 changed=[]
 for m in mods:
     c=CFG[m]; g=m+"_glue"
+    for (fnd, rep, why) in c.get("replace", []):
+        if fnd in s:
+            s=s.replace(fnd, rep, 1); changed.append(c["label"]+" ("+why+")")
+        elif rep and rep not in s:
+            print("   (dhyan: main.rs mein '%s' wala hissa seedha nahi mila — yeh chhota sudhar chhoot gaya, baqi install chalta hai)"%why)
     have_mod=("mod %s;"%g) in s
     have_auth=(g+"::owns(") in s
     have_pub=(not c["public"]) or ((g+"::public_owns(") in s)
@@ -293,6 +309,18 @@ for m in $MODS; do
         *'"unauthorized"'*invalid_ticket*|*invalid_ticket*'"unauthorized"'*) echo "   -> export: Rust ne proc bhi pakda aur download route bhi (bina asli login/ticket ke 401 = theek). SQL E44 chala hona lazmi.";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> export: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> export: jawab upar dekhein";;
+      esac;;
+    attach)
+      r="$(probe mail.attach.limits '{"input":{}}')"
+      echo "   mail.attach.limits (nakli token): $r"
+      r2="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'authorization: Bearer not-a-real-token' --data-binary 'x' "$RPC/file/attach" 2>/dev/null)"
+      echo "   POST /file/attach (nakli token): $r2"
+      r3="$(curl -s -m 8 -w ' [HTTP %{http_code}]' "$RPC/file/attach/get?id=00000000-0000-0000-0000-000000000000" 2>/dev/null)"
+      echo "   GET /file/attach/get (bina token): $r3"
+      case "$r$r2$r3" in
+        *'"unauthorized"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> attach: Rust ne proc, upload route aur download route teeno pakde (bina asli login ke 401 = theek). SQL E48 chala hona lazmi. Storage/scan ka haal: bash docs/cursor-work/server/attach-check.sh";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> attach: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> attach: jawab upar dekhein";;
       esac;;
     mig)
       r="$(probe migration.providers '{"input":{}}')"

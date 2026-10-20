@@ -64,6 +64,8 @@ export type MailAttachment = {
   mime_type: string | null;
   size_bytes: number;
   url: string | null;
+  /** G38: server par asli bytes hain (download ho sakti hai) */
+  stored?: boolean;
 };
 
 export type MailMessage = {
@@ -246,6 +248,8 @@ export type SendPayload = {
   in_reply_to?: string;
   /** ISO timestamp — schedule send. Omitted means send now. */
   send_at?: string;
+  /** G38: Rust upload se mile attachment ids */
+  attachment_ids?: string[];
 };
 
 export function useSendMail() {

@@ -9,6 +9,7 @@ import { admin as supa } from "../lib/supa";
 import { resolvePlan, hasFeature } from "../lib/plan";
 import { leoSupportPipeline } from "../lib/leo-brain";
 import { sendMail } from "../mail/sendmail";
+import { loadStaged, toOutAttachments, commitAttached } from "../mail/attachments"; // G38
 
 export const mailRouter = Router();
 
@@ -270,7 +271,7 @@ mailRouter.get("/thread/:id", async (req, res) => {
 
   const { data: msgs } = await supa
     .from("mail_messages")
-    .select("*, mail_attachments(id,filename,mime_type,size_bytes,storage_path)")
+    .select("*, mail_attachments(id,filename,mime_type,size_bytes,sha256)")
     .eq("thread_id", t.id).order("sent_at", { ascending: true });
 
   const lmap = await labelsFor([t.id]);
@@ -298,7 +299,7 @@ mailRouter.get("/thread/:id", async (req, res) => {
       scheduled_at: m.scheduled_at ?? null,
       attachments: (m.mail_attachments || []).map((a: any) => ({
         id: a.id, filename: a.filename, mime_type: a.mime_type,
-        size_bytes: a.size_bytes ?? 0, url: a.storage_path ?? null,
+        size_bytes: a.size_bytes ?? 0, url: null, stored: !!a.sha256, // G38: server path kabhi client ko nahi
       })),
     })),
   });
@@ -309,6 +310,16 @@ mailRouter.post("/send", async (req, res) => {
   const b = req.body || {};
   const to = list(b.to), cc = list(b.cc), bcc = list(b.bcc);
   if (!to.length) return res.status(400).json({ error: "to_required" });
+
+  // G38 — attachments: sab ids isi user/org ki, limit ke andar, disk par maujood aur sha256 mel khata hua (kuch bhi galat => mail bani hi nahi)
+  const att = await loadStaged(supa, c.orgId, c.userId, b.attachment_ids);
+  if (!att.ok) return res.status(att.status).json({ error: att.error, ...(att.detail || {}) });
+  if (att.files.length && b.send_at && new Date(b.send_at).getTime() > Date.now()) {
+    return res.status(400).json({ error: "use_schedule_for_attachments" });
+  }
+  let outAtt: Awaited<ReturnType<typeof toOutAttachments>> = [];
+  try { outAtt = await toOutAttachments(att.files); }
+  catch (e) { return res.status(409).json({ error: "attachment_unavailable", detail: String((e as Error).message).slice(0, 200) }); }
 
   // mailboxes (post-deploy-mail.sh) → fallback mail_accounts (workspace setup)
   // → fallback by user email (founder protocol)
@@ -370,8 +381,10 @@ mailRouter.post("/send", async (req, res) => {
     text: b.body || "",
     html: b.html || undefined,
     replyTo: b.reply_to || undefined,
+    attachments: outAtt.length ? outAtt : undefined, // G38
   });
   if (!sent.ok) return res.status(502).json({ error: "smtp_failed", detail: sent.error });
+  await commitAttached(supa, c.orgId, c.userId, att.files.map((x) => x.id), msg.id); // G38: Sent mein asli rows
   res.json({ ok: true, thread_id: threadId, message_id: msg.id, message_id_smtp: sent.messageId });
 });
 

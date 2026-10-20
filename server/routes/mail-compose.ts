@@ -6,6 +6,7 @@ import { Router } from "express";
 import { admin as supa } from "../lib/supa";
 import { allowedSenderAddresses } from "../lib/identity";
 
+import { loadStaged } from "../mail/attachments"; // G38
 type Ctx = { userId: string; orgId: string };
 
 async function ctx(req: any, res: any): Promise<Ctx | null> {
@@ -199,6 +200,10 @@ mailComposeRouter.post("/schedule", async (req, res) => {
     return res.status(403).json({ error: "identity_not_allowed", identity: wantedFrom });
   }
 
+  // G38 — attachments: ids parakh kar hi queue mein (limit/ownership/blocked sab SQL E48 dekhta hai)
+  const att = await loadStaged(supa, c.orgId, c.userId, b.attachment_ids);
+  if (!att.ok) return res.status(att.status).json({ error: att.error, ...(att.detail || {}) });
+
   const { data, error } = await supa.from("mail_scheduled").insert({
     org_id: c.orgId,
     user_id: c.userId,
@@ -210,6 +215,7 @@ mailComposeRouter.post("/schedule", async (req, res) => {
     subject: b.subject || null,
     body: b.body || null,
     status: "holding",
+    attachment_ids: att.files.length ? att.files.map((x) => x.id) : null, // G38
     send_at: sendAt.toISOString(),
   }).select("id, status").single();
   if (error) return res.status(500).json({ error: error.message });

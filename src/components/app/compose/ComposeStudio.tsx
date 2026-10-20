@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   Sparkles,
   Wand2,
+  X,
   Zap,
 } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -40,6 +41,8 @@ import {
   type DraftPayload,
 } from "@/lib/compose";
 import { learnWritingPattern } from "@/lib/mail-predict";
+import { removeAttachment, uploadAttachment, useAttachLimits } from "@/lib/mail-attachments";
+import { anyUploading, fmtBytes, precheck, readyIds, type AttachItem } from "@/lib/mail-attachments-core";
 import { notify } from "@/lib/notify";
 import { useIdentities, useSendMail } from "@/lib/mail";
 import { addressTone } from "@/lib/mail-identity";
@@ -121,6 +124,17 @@ export function ComposeStudio({
   const [showVersions, setShowVersions] = useState(false);
   const [followUpDays, setFollowUpDays] = useState(0);
   const bodyRef = useRef<HTMLTextAreaElement | null>(null);
+  // G38 — attachments: upload turant (Rust), bhejte waqt sirf ids jati hain
+  const [files, setFiles] = useState<AttachItem[]>([]);
+  const filesRef = useRef<AttachItem[]>([]);
+  const aborts = useRef<Map<string, AbortController>>(new Map());
+  const fileInput = useRef<HTMLInputElement | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const attachLimits = useAttachLimits();
+  const limits = {
+    message_cap_bytes: attachLimits.data?.message_cap_bytes ?? 7_000_000,
+    max_files: attachLimits.data?.max_files ?? 10,
+  };
 
   const templates = useTemplates();
   const snippets = useSnippets();
@@ -183,7 +197,7 @@ export function ComposeStudio({
 
   const openVars = findVariables(body).filter((name) => !variables[name]?.trim());
   const stats = readingStats(body);
-  const busy = send.isPending || schedule.isPending || confidence.isPending;
+  const busy = send.isPending || schedule.isPending || confidence.isPending || anyUploading(files);
 
   const insertSnippet = (text: string) => {
     const el = bodyRef.current;
@@ -195,10 +209,46 @@ export function ComposeStudio({
     setBody(`${body.slice(0, start)}${text}${body.slice(el.selectionEnd ?? start)}`);
   };
 
+  const setFilesBoth = (next: AttachItem[]) => {
+    filesRef.current = next;
+    setFiles(next);
+  };
+  const patchFile = (key: string, patch: Partial<AttachItem>) =>
+    setFilesBoth(filesRef.current.map((f) => (f.key === key ? { ...f, ...patch } : f)));
+
+  const addFiles = (list: FileList | File[] | null) => {
+    if (!list) return;
+    for (const file of Array.from(list)) {
+      const why = precheck(file, filesRef.current, limits);
+      if (why) {
+        notify.failed("Not attached", { description: why });
+        continue;
+      }
+      const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+      const ctl = new AbortController();
+      aborts.current.set(key, ctl);
+      setFilesBoth([...filesRef.current, { key, name: file.name, size: file.size, status: "uploading", progress: 0 }]);
+      uploadAttachment(file, { signal: ctl.signal, onProgress: (progress) => patchFile(key, { progress }) })
+        .then((r) => patchFile(key, { status: "ready", progress: 100, id: r.id, deduped: r.deduped, scanned: r.scanned }))
+        .catch((e: Error & { code?: string }) => {
+          if (e.code === "aborted") return;
+          patchFile(key, { status: "error", error: e.message });
+        })
+        .finally(() => aborts.current.delete(key));
+    }
+    if (fileInput.current) fileInput.current.value = "";
+  };
+
+  const dropFile = (item: AttachItem) => {
+    aborts.current.get(item.key)?.abort();
+    if (item.id) void removeAttachment(item.id).catch(() => undefined); // server 24 ghante baad bhi saaf kar deta hai
+    setFilesBoth(filesRef.current.filter((f) => f.key !== item.key));
+  };
+
   const finalSend = () => {
     if (scheduling && sendAt) {
       schedule.mutate(
-        { ...payload, hold_seconds: 0 },
+        { ...payload, attachment_ids: readyIds(files), hold_seconds: 0 },
         {
           onSuccess: () => {
             notify.done("Scheduled", `Leaves at ${new Date(sendAt).toLocaleString()}.`);
@@ -213,7 +263,7 @@ export function ComposeStudio({
 
     // Undo Send = a real server-side hold, not a browser timer.
     schedule.mutate(
-      { ...payload, hold_seconds: UNDO_HOLD_SECONDS },
+      { ...payload, attachment_ids: readyIds(files), hold_seconds: UNDO_HOLD_SECONDS },
       {
         onSuccess: () => {
           notify.done("Sending", `Held for ${UNDO_HOLD_SECONDS}s — cancel from Sent.`);
@@ -227,7 +277,7 @@ export function ComposeStudio({
           }
           // Hold queue not wired yet: send directly rather than lose the mail.
           send.mutate(
-            { ...payload, ...(inReplyTo ? { in_reply_to: inReplyTo } : {}) },
+            { ...payload, attachment_ids: readyIds(files), ...(inReplyTo ? { in_reply_to: inReplyTo } : {}) },
             {
               onSuccess: () => {
                 notify.done("Sent", "The message left your workspace.");
@@ -270,9 +320,13 @@ export function ComposeStudio({
       });
       return;
     }
+    if (anyUploading(files)) {
+      notify.failed("Still uploading", { description: "Wait for your attachments to finish, or remove them." });
+      return;
+    }
     // Pre-send confidence scan runs server-side first.
     confidence.mutate(
-      { ...payload, attachments: 0 },
+      { ...payload, attachments: readyIds(files).length },
       {
         onSuccess: (report) => {
           const blockers = report.issues.filter((i) => i.severity === "block");
@@ -311,7 +365,24 @@ export function ComposeStudio({
         zen && "fixed inset-0 z-[60] overflow-y-auto bg-background p-ax-6 md:p-12",
         !zen && variant === "inline" && "ax-plane rounded-2xl p-ax-4",
         !zen && variant === "overlay" && "p-ax-4",
+        dragging && "ring-2 ring-primary/60",
       )}
+      onDragOver={(event) => {
+        if (event.dataTransfer?.types?.includes("Files")) {
+          event.preventDefault();
+          setDragging(true);
+        }
+      }}
+      onDragLeave={(event) => {
+        if (event.currentTarget === event.target) setDragging(false);
+      }}
+      onDrop={(event) => {
+        if (event.dataTransfer?.files?.length) {
+          event.preventDefault();
+          setDragging(false);
+          addFiles(event.dataTransfer.files);
+        }
+      }}
       onSubmit={(event) => {
         event.preventDefault();
         submit();
@@ -586,16 +657,26 @@ export function ComposeStudio({
         </div>
         ) : null}
 
-        {/* attachments — bheji hui mail mein file abhi jati hi nahi (server par upload/MIME nahi). Pehle UI file "attach" dikha kar
-            chup-chaap chhor deti thi (silent data loss). Jab tak 8p (outgoing attachments) nahi banta, saaf bata do. */}
+        {/* G38 — attachments: asli upload (Rust), type/virus/size server dekhta hai; yahan sirf wahi dikhta hai jo sach hai */}
         <div className="flex flex-wrap items-center gap-2">
-          <span
-            className="flex items-center gap-1.5 rounded-lg border border-dashed border-border px-2 py-1 text-[11px] text-muted-foreground"
-            title="Attachments can't be sent yet"
+          <button
+            type="button"
+            data-testid="compose-attach"
+            onClick={() => fileInput.current?.click()}
+            title={`Attach files — up to ${fmtBytes(limits.message_cap_bytes)} per message`}
+            className="ax-press ax-hit flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
           >
             <Paperclip className="size-3" aria-hidden="true" />
-            Attachments — coming soon
-          </span>
+            Attach files
+          </button>
+          <input
+            ref={fileInput}
+            type="file"
+            multiple
+            hidden
+            data-testid="compose-attach-input"
+            onChange={(e) => addFiles(e.target.files)}
+          />
           <button
             type="button"
             onClick={() => setShowVersions((v) => !v)}
@@ -618,6 +699,42 @@ export function ComposeStudio({
             <option value={7}>Remind me in a week</option>
           </select>
         </div>
+
+        {files.length > 0 && (
+          <ul className="flex flex-col gap-1.5" data-testid="compose-attachments" aria-label="Attachments">
+            {files.map((f) => (
+              <li
+                key={f.key}
+                className="flex items-center gap-2 rounded-lg border border-border bg-card px-2 py-1.5 text-[11px]"
+                data-state={f.status}
+              >
+                <Paperclip className="size-3 shrink-0 text-muted-foreground" aria-hidden="true" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-foreground">{f.name}</span>
+                  <span className={cn("block truncate", f.status === "error" ? "text-destructive" : "text-steel")}>
+                    {f.status === "uploading"
+                      ? `Uploading… ${f.progress}%`
+                      : f.status === "error"
+                        ? f.error
+                        : `${fmtBytes(f.size)}${f.scanned ? " · virus-checked" : ""}`}
+                  </span>
+                </span>
+                {f.status === "uploading" ? <Loader2 className="size-3.5 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" /> : null}
+                <button
+                  type="button"
+                  onClick={() => dropFile(f)}
+                  aria-label={`Remove ${f.name}`}
+                  className="ax-press ax-hit grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground hover:bg-secondary hover:text-foreground [@media(pointer:coarse)]:size-11"
+                >
+                  <X className="size-3.5" aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+            <li className="text-[10px] text-steel">
+              {fmtBytes(files.filter((f) => f.status !== "error").reduce((n, f) => n + f.size, 0))} of {fmtBytes(limits.message_cap_bytes)} per message
+            </li>
+          </ul>
+        )}
 
         {showVersions && (
           <div className="ax-plane flex flex-col gap-1.5 rounded-xl p-ax-3">

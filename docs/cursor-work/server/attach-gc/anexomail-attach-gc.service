@@ -1,0 +1,8 @@
+[Unit]
+Description=ANEXOMAIL attachments safai (purani adhoori uploads + be-malik files)
+After=network-online.target mnt-anexomail\x2dbox.mount
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/anexomail-attach-gc
+Nice=10

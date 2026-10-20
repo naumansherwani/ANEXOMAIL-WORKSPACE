@@ -14,6 +14,8 @@ import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { measureMotion } from "@/lib/experience";
 import { type MailThread, formatBytes, useThread } from "@/lib/mail";
+import { downloadAttachment } from "@/lib/mail-attachments";
+import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/mail/$folder/$threadId")({
   head: () => ({
@@ -236,14 +238,32 @@ function MailMessage({
         <ul className="mt-ax-3 flex flex-wrap gap-2">
           {message.attachments.map((file) => (
             <li key={file.id}>
-              <a
-                href={file.url ?? "#"}
-                className="ax-press flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
-              >
-                <Paperclip className="size-3" />
-                <span className="truncate">{file.filename}</span>
-                <span className="text-steel">{formatBytes(file.size_bytes)}</span>
-              </a>
+              {/* G38: sirf woh file download hoti hai jis ke asli bytes server par hain (bheji hui mail / staged). Baqi par jhootha link nahi. */}
+              {file.stored || (message.direction === "out" && file.stored !== false) ? (
+                <button
+                  type="button"
+                  data-testid="attachment-download"
+                  onClick={() =>
+                    downloadAttachment(file.id, file.filename).catch((e: Error) =>
+                      notify.failed("Download failed", { description: e.message }),
+                    )
+                  }
+                  className="ax-press ax-hit flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+                >
+                  <Paperclip className="size-3" />
+                  <span className="max-w-[40vw] truncate sm:max-w-xs">{file.filename}</span>
+                  <span className="text-steel">{formatBytes(file.size_bytes)}</span>
+                </button>
+              ) : (
+                <span
+                  className="flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground"
+                  title="Download isn't available for this file yet"
+                >
+                  <Paperclip className="size-3" />
+                  <span className="max-w-[40vw] truncate sm:max-w-xs">{file.filename}</span>
+                  <span className="text-steel">{formatBytes(file.size_bytes)}</span>
+                </span>
+              )}
             </li>
           ))}
         </ul>

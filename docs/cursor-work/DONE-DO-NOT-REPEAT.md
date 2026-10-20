@@ -28,6 +28,12 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 ## Web (`pull.sh`) — IntegrityGate, export card, appeal form, "deleted automatically on" — DONE (founder 20:21, server==repo, build OK).
 ## File safety — `file-safety-check.sh`: clamd **DOWN (RED)** 20:21 -> founder `INSTALL=1` chalaye (ClamAV install); GREEN tab jab EICAR FOUND aaye.
 
+## G38 attachments bhejna (20 Oct 2026) — CODE DONE + local test, server install baqi (founder pull)
+- SQL `E48_outgoing_attachments.sql` (+ `CHECK_E48.sql`), Rust `attach` module, Bun `mail/attachments.ts` + `brain-attach-install.sh`, GC timer `attach-gc/`, `attach-check.sh`, Compose UI + thread download — sab ban chuka, local test GREEN (SQL 37/37, Rust 12, Bun 27, real browser 3 sizes). Dobara mat banao; sirf server par chalwana.
+- Policy: dedup SIRF org ke andar; bytes `/mnt/anexomail-box/attachments` (mount na ho to 503, NVMe par nahi likhta); DB mein sirf metadata; cap = min(plan, 7 MB raw); clamd down => `scanned:false` (jhoot nahi).
+- Pending (founder haan): Caddy `/files/*` band (`attach-caddy-close-files.sh`), Postfix size limit. Pending (kaam): G38b inbound bytes, phase48 ledger se quota milana, ClamAV green.
+- Test infra: `docs/cursor-work/server/tests/attach/` (README). Dobara mat banao.
+
 ## Loopholes jo band ho chuke (dobara audit nahi)
 - Export sirf queue thi -> asli streaming ZIP (e2e real crates) DONE.
 - Block kahin enforce nahi hota tha -> Rust + Brain + Leo guard, fail-open, 30s cache DONE (unit tests).
@@ -43,6 +49,6 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 ## TODO (sirf yeh)
 1. Founder pulls: SQL E46 -> E47 -> CHECK; Rust `MODULES="device export"`; Timer install; Web pull; `file-safety-check.sh`.
 2. Review queue UI + device deletion date UI ka live dekhna (code maujood: AccountIntegrityPanel, DeviceVaultPanel).
-3. G38 attachments sending; G40 Rust RPC (work/crm/org/integrations/settings); G42 passkey Rust port (Bun exception, TECH-MAP).
+3. G38 server install + G38b inbound bytes; G40 Rust RPC (work/crm/org/integrations/settings); G42 passkey Rust port (Bun exception, TECH-MAP).
 4. Founder protocol/profile (AnexoChat) — maujooda code modify karna, shuru se nahi.
 5. Basic/Pro/Business remaining audit 1440/820/390; father ka account sab ke baad.

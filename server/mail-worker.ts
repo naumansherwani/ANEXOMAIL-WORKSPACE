@@ -13,6 +13,7 @@
  */
 import { admin as supa } from "./lib/supa";
 import { sendMail } from "./mail/sendmail";
+import { loadStaged, toOutAttachments, commitAttached } from "./mail/attachments"; // G38
 import { allowedSenderAddresses } from "./lib/identity";
 
 const POLL_MS = 5_000;
@@ -52,14 +53,19 @@ async function recordSent(row: any, from: string, to: string[], cc: any, bcc: an
     if (te || !t) { console.error("[mail-worker] sent-thread failed:", te && te.message); return; }
     const ccl = cc || [];
     const bccl = bcc || [];
-    const { error: me } = await supa.from("mail_messages").insert({
+    const { data: msgRow, error: me } = await supa.from("mail_messages").insert({
       org_id: row.org_id, thread_id: t.id, direction: "out", from_address: from,
       to_addresses: to, cc_addresses: ccl, bcc_addresses: bccl,
       to_addrs: to, cc_addrs: ccl, bcc_addrs: bccl,
       subject, body_text: body, sent_at: now,
-    });
+    }).select("id").single();
     if (me) console.error("[mail-worker] sent-message failed:", me.message);
-    else console.log("[mail-worker] sent-copy ok thread=" + t.id);
+    else {
+      console.log("[mail-worker] sent-copy ok thread=" + t.id);
+      if (Array.isArray(row.attachment_ids) && row.attachment_ids.length && msgRow) {
+        await commitAttached(supa, row.org_id, row.user_id, row.attachment_ids, msgRow.id); // G38: Sent mein asli rows
+      }
+    }
   } catch (e) { console.error("[mail-worker] recordSent error:", e); }
 }
 
@@ -130,7 +136,7 @@ async function processQueue() {
     const nowIso = new Date().toISOString();
     const { data: rows, error } = await supa
       .from("mail_scheduled")
-      .select("id, org_id, user_id, identity, to, cc, bcc, subject, body, thread_id")
+      .select("id, org_id, user_id, identity, to, cc, bcc, subject, body, thread_id, attachment_ids")
       .eq("status", "queued")
       .lte("send_at", nowIso)
       .limit(20);
@@ -236,6 +242,22 @@ async function processQueue() {
         }
       }
 
+      // G38 — attachments: dobara parakho (schedule ke baad file badli/gayab ho sakti hai) — kuch galat => row failed, mail nahi jati
+      let outAtt: Awaited<ReturnType<typeof toOutAttachments>> = [];
+      const attIds: string[] = Array.isArray(row.attachment_ids) ? row.attachment_ids : [];
+      if (attIds.length) {
+        try {
+          const ld = await loadStaged(supa, row.org_id, row.user_id, attIds);
+          if (!ld.ok) throw new Error(ld.error);
+          outAtt = await toOutAttachments(ld.files);
+        } catch (e) {
+          await supa.from("mail_scheduled").update({ status: "failed", error: "attachments: " + String((e as Error).message).slice(0, 200) }).eq("id", row.id);
+          if (workspaceId) await releaseStorage(workspaceId, fromAddress, bytes);
+          console.error(`[mail-worker] ATTACHMENTS REJECTED id=${row.id}:`, (e as Error).message);
+          continue;
+        }
+      }
+
       const result = await sendMail({
         from: fromAddress,
         to: toList,
@@ -243,6 +265,7 @@ async function processQueue() {
         bcc: bccList,
         subject: row.subject || "(no subject)",
         text: row.body || "",
+        attachments: outAtt.length ? outAtt : undefined, // G38
       });
 
       if (result.ok) {
