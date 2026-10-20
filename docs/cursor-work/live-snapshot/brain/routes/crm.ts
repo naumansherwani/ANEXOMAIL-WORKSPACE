@@ -124,6 +124,20 @@ async function safe<T>(fn: () => Promise<{ data: any; error: any }>, fallback: T
   }
 }
 
+/**
+ * Tenant isolation (17 Oct 2026, found in the M6 CRM audit): shared items, mentions, approvals, audit and permissions
+ * were read/updated with the service-role client and NO org filter, so any Business user could read — and decide —
+ * another workspace's rows. Every read/write below is now pinned to the caller's workspace (`c.orgId`); rows that carry
+ * no org_id are hidden (fail closed). The founder god-view page keeps its all-workspace audit/permissions read.
+ */
+async function isFounderUser(userId: string): Promise<boolean> {
+  const r = await safe<any[]>(
+    () => admin.from("founder_accounts").select("user_id").eq("user_id", userId).limit(1),
+    [],
+  );
+  return r.length > 0;
+}
+
 async function insertBest(table: string, row: Record<string, unknown>) {
   const first = await admin.from(table).insert(row).select("id").limit(1);
   if (!first.error) return first;
@@ -410,10 +424,21 @@ crm.get(
         ? attendees
         : await safe<any[]>(() => admin.from("calendar_attendees").select("event_id,address").limit(2000), []);
     const mail = await loadMail(c);
-    const activities = await safe<any[]>(
-      () => admin.from("crm_activities").select("id,kind,subject,actor,deal_id,contact_email,created_at").order("created_at", { ascending: false }).limit(40),
-      [],
-    );
+    // crm_activities has no org_id: keep only rows written by (or about) people of THIS workspace. Before this, the 40 newest
+    // rows of every workspace fed everyone's CRM timeline (subject + actor email).
+    const ownerSet = new Set(c.owners);
+    const activities = (
+      await safe<any[]>(
+        () => admin.from("crm_activities").select("id,kind,subject,actor,deal_id,contact_email,created_at").order("created_at", { ascending: false }).limit(300),
+        [],
+      )
+    )
+      .filter(
+        (a) =>
+          ownerSet.has(String(a.actor || "").toLowerCase()) ||
+          ownerSet.has(String(a.contact_email || "").toLowerCase()),
+      )
+      .slice(0, 40);
 
     const open = deals.filter((d) => !["won", "lost"].includes(d.stage));
     const radar: { kind: string; title: string; why: string; source: string; href: string }[] = [];
@@ -1171,7 +1196,7 @@ crm.get(
     const allow = new Set(c.owners);
     res.json({
       activities: rows.filter(
-        (a) => !a.actor || allow.has(String(a.actor).toLowerCase()) || allow.has(String(a.contact_email || "").toLowerCase()),
+        (a) => allow.has(String(a.actor || "").toLowerCase()) || allow.has(String(a.contact_email || "").toLowerCase()),
       ),
     });
   }),
@@ -1185,10 +1210,16 @@ crm.get("/crm/insights", guard("pro", async (_req, res) => {
 /* ---------------------------------------------------- shared inbox/drafts */
 crm.get(
   "/crm/shared",
-  guard("business", async (req, res) => {
+  guard("business", async (req, res, c) => {
     const kind = String(req.query.kind || "");
     const rows = await safe<any[]>(
-      () => admin.from("crm_shared_items").select("*").order("created_at", { ascending: false }).limit(200),
+      () =>
+        admin
+          .from("crm_shared_items")
+          .select("*")
+          .eq("org_id", c.orgId)
+          .order("created_at", { ascending: false })
+          .limit(200),
       [],
     );
     res.json({ items: kind ? rows.filter((r) => r.kind === kind) : rows });
@@ -1201,8 +1232,16 @@ crm.post(
     const id = String(req.body?.item_id || req.body?.id || "");
     const assigned_to = String(req.body?.assigned_to || "").trim().toLowerCase();
     if (!id || !assigned_to) return res.status(400).json({ error: "item_id_and_assignee_required" });
-    const up = await admin.from("crm_shared_items").update({ assigned_to, state: "assigned" }).eq("id", id);
+    // Only a teammate of the same workspace can own the item, and only an item of this workspace can be assigned.
+    if (!c.owners.includes(assigned_to)) return res.status(400).json({ error: "assignee_not_in_workspace" });
+    const up = await admin
+      .from("crm_shared_items")
+      .update({ assigned_to, state: "assigned" })
+      .eq("id", id)
+      .eq("org_id", c.orgId)
+      .select("id");
     if (up.error) return res.status(500).json({ error: "assign_failed" });
+    if (!up.data?.length) return res.status(404).json({ error: "item_not_found" });
     await auditCrm(c.email, "shared.assign", `${id}->${assigned_to}`, ipOf(req));
     res.json({ ok: true });
   }),
@@ -1211,9 +1250,15 @@ crm.post(
 /* ------------------------------------ mentions / approvals / audit / team */
 crm.get(
   "/crm/mentions",
-  guard("business", async (_req, res) => {
+  guard("business", async (_req, res, c) => {
     const rows = await safe<any[]>(
-      () => admin.from("crm_mentions").select("*").order("created_at", { ascending: false }).limit(200),
+      () =>
+        admin
+          .from("crm_mentions")
+          .select("*")
+          .eq("org_id", c.orgId)
+          .order("created_at", { ascending: false })
+          .limit(200),
       [],
     );
     res.json({ mentions: rows });
@@ -1222,9 +1267,15 @@ crm.get(
 
 crm.get(
   "/crm/approvals",
-  guard("business", async (_req, res) => {
+  guard("business", async (_req, res, c) => {
     const rows = await safe<any[]>(
-      () => admin.from("crm_approvals").select("*").order("created_at", { ascending: false }).limit(200),
+      () =>
+        admin
+          .from("crm_approvals")
+          .select("*")
+          .eq("org_id", c.orgId)
+          .order("created_at", { ascending: false })
+          .limit(200),
       [],
     );
     res.json({ approvals: rows });
@@ -1242,8 +1293,11 @@ crm.post(
     const up = await admin
       .from("crm_approvals")
       .update({ state: decision, decided_by: c.email, decided_at: new Date().toISOString() })
-      .eq("id", id);
+      .eq("id", id)
+      .eq("org_id", c.orgId)
+      .select("id");
     if (up.error) return res.status(500).json({ error: "decide_failed" });
+    if (!up.data?.length) return res.status(404).json({ error: "approval_not_found" });
     await auditCrm(c.email, `approval.${decision}`, id, ipOf(req));
     res.json({ ok: true });
   }),
@@ -1251,9 +1305,19 @@ crm.post(
 
 crm.get(
   "/crm/audit",
-  guard("business_pro", async (_req, res) => {
+  guard("business_pro", async (_req, res, c) => {
+    // crm_audit has no org_id: a customer sees only actions by people of their own workspace; the founder sees all.
+    const founder = await isFounderUser(c.user.id);
     const rows = await safe<any[]>(
-      () => admin.from("crm_audit").select("*").order("created_at", { ascending: false }).limit(200),
+      () =>
+        founder
+          ? admin.from("crm_audit").select("*").order("created_at", { ascending: false }).limit(200)
+          : admin
+              .from("crm_audit")
+              .select("*")
+              .in("actor", c.owners)
+              .order("created_at", { ascending: false })
+              .limit(200),
       [],
     );
     res.json({ entries: rows });
@@ -1262,8 +1326,15 @@ crm.get(
 
 crm.get(
   "/crm/permissions",
-  guard("business_pro", async (_req, res) => {
-    const rows = await safe<any[]>(() => admin.from("crm_permissions").select("*"), []);
+  guard("business_pro", async (_req, res, c) => {
+    const founder = await isFounderUser(c.user.id);
+    const rows = await safe<any[]>(
+      () =>
+        founder
+          ? admin.from("crm_permissions").select("*")
+          : admin.from("crm_permissions").select("*").eq("org_id", c.orgId),
+      [],
+    );
     res.json({
       members: rows.map((r) => ({
         user_id: r.user_id,
