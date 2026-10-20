@@ -31,7 +31,7 @@ type Pending = { id: string; title: string; patch: { starts_at: string; duration
  */
 export function TimeGrid({
   start,
-  events,
+  events: serverEvents,
   selectedId,
   onSelect,
 }: {
@@ -41,6 +41,36 @@ export function TimeGrid({
   onSelect: (id: string) => void;
 }) {
   const update = useUpdateMeeting();
+  // Optimistic: after a drop the block stays where it was dropped until the server's list catches up
+  // (otherwise it jumps back for a second). Cleared when the server copy matches, or on error.
+  const [opt, setOpt] = useState<Record<string, { starts_at: string; duration_minutes: number }>>({});
+  const events = useMemo(
+    () =>
+      serverEvents.map((e) => {
+        const o = opt[e.id];
+        if (!o) return e;
+        return {
+          ...e,
+          starts_at: o.starts_at,
+          ends_at: new Date(new Date(o.starts_at).getTime() + o.duration_minutes * 60000).toISOString(),
+        };
+      }),
+    [serverEvents, opt],
+  );
+  useEffect(() => {
+    setOpt((cur) => {
+      const next = { ...cur };
+      let changed = false;
+      for (const e of serverEvents) {
+        const o = cur[e.id];
+        if (o && new Date(e.starts_at).getTime() === new Date(o.starts_at).getTime()) {
+          delete next[e.id];
+          changed = true;
+        }
+      }
+      return changed ? next : cur;
+    });
+  }, [serverEvents]);
   const colsRef = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const [drag, setDragState] = useState<Drag | null>(null);
@@ -81,11 +111,19 @@ export function TimeGrid({
 
   const commit = (ev: CalendarEvent, patch: Pending["patch"], notifyGuests: boolean) => {
     setPending(null);
+    setOpt((cur) => ({ ...cur, [ev.id]: patch }));
     update.mutate(
       { id: ev.id, ...patch, notify: notifyGuests },
       {
         onSuccess: () => notify.done("Rescheduled", notifyGuests ? "Guests were sent the update." : undefined),
-        onError: (e) => notify.failed("Could not move the event", { description: e.message }),
+        onError: (e) => {
+          setOpt((cur) => {
+            const n = { ...cur };
+            delete n[ev.id];
+            return n;
+          });
+          notify.failed("Could not move the event", { description: e.message });
+        },
       },
     );
   };

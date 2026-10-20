@@ -114,3 +114,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 04:30 E52 alias-cap REVERT (founder: reality = server/repo). Card text reality par: 'Free aliases — no extra seat'. Plan cards ka har wada product se match hona chahiye.
 - 21 Oct 04:10 CEO faisla: Basic card = domain/mailboxes/5GB/undo/ownership/contacts/cmd+K/'Free aliases' (cap card par NAHI); chhupa fair-use cap 25 alias via E52_alias_fair_use.sql (local PG16 test OK; server par chalana baqi: sql-run.sh E52_alias_fair_use CHECK_E52). Card: '1 company domain' / Pro '3 company domains'.
 - 21 Oct 04:20 Plans compare table: 'Company domains you can host' 1/3/Unlimited (E15 org_domain_cap NULL=unlimited). Cards single-source plans.ts.
+- 21 Oct 04:25 Calendar drag LIVE VERIFIED (Rust calendar.update, move+day change, persisted). Optimistic update added (no jump-back). Test event restored to Wed 02:30.
