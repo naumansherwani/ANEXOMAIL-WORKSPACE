@@ -91,3 +91,9 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - **820 BUG (mila, fix code):** mail mein 3 tang columns (nav 220 + list 304 + thread ~270): action row (Snooze) kat-ti, thread pane mein horizontal scrollbar. Fix: tablet (<1024) par master-detail — `ListPanel/DetailPanel stackBelow="lg"`, thread header back arrow `lg:hidden`, X `lg:grid`. Laptop 1024+ par teen columns wahi. Live verify Web pull ke baad.
 - **Basic sweep (21 Oct 02:00, Chrome basic.test, 21 pages):** sab render, koi "not wired/coming soon"; CRM/Admin/Settings-AI plan-gated (lock text). Account: SMS honest copy LIVE GREEN. Calendar, G38b download, Undo = GREEN.
 - **Basic ke baqi (code live par chalna baqi):** Web pull (HScroll + 820 master-detail) -> live retest; G35 passkey banana = sirf founder (device authenticator, 27 Oct deadline); mojibake purani mail preview; thread card top clip.
+
+## 21 Oct 01:45 — batch
+- CODE: Settings -> Appearance "Graphics & visual effects" toggle (experience.graphics, html[data-ax-fx]); sidebar nav scrollbar hidden (styles.css). Live retest 390/820/laptop after Web pull.
+- CODE: server/brain-crm-install.sh (CRM tenant isolation, live crm.ts purana) — Brain command pending founder run.
+- NOTE: G35 deadline real users only; test accounts exempt. cron `.bak` file inert (Debian ignores dotted names).
+- TODO: schema-public.sql capture rerun without Ctrl+C.

@@ -470,3 +470,6 @@ Loophole ledger (sach)
 - Founder (verbatim ka matlab): "yeh kaam karne ka tareeqa sahi nahi; pehle tum khud live code likhte, repo mein, khud live testing, compare, login karte the — ab Chrome mein phans gaye. Masle/loophole khud nazar aayein to code likho, theek karo, phir live dekho."  -> Rule: pehle khud code mein wajah dhoondho + fix + local test, phir founder ko ek command, phir live verify. Founder se sirf wohi maango jo sirf server de sakta hai.
 ## 21 Oct 2026 00:29 PKT
 - Founder: "saath ke saath repo update verna compact chat yeh sandbox update kero" -> har kaam ke saath repo + sandbox (/home/claude/FOUNDER-RULES.md etc.) update.
+
+## 21 Oct 2026 01:31 PKT (verbatim)
+"yeh grapics side pe ata hain is ko settings main toggle on and off ka hona chaiye hain aur yeh universal features hai jo sab main ho gay. ... yeh 27 october wali deadline test accounts ke liye nahi hai yeh real user ka hoga. aur passkey ki zarurat nahi hai. is ke elwa koi major issues hai woh theek kero koi loophole hai us ko theek kero aur green kero yeh target hai. mobile tablet walay ko sab se bari prioty do yeh sandbox main likho jab bhi website edit hogi toh yeh live test tum mobile aur table laptop computer ke liye test live kero gay sandbox main. yaad rakhna. aur yeh image 2 dekho jahan pe cursor hai waha pe chota sa scrol bar hai yeh bura lagta hai is ko khatham kero."

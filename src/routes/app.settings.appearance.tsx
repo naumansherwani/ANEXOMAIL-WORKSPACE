@@ -79,6 +79,15 @@ function AppearancePage() {
             onChange={(v) => exp.set({ speed: v })}
           />
           <Toggle
+            label="Graphics & visual effects"
+            hint="Glows, aurora backgrounds and floating cards (and future 3D scenes). Turn off for a flat, fast, battery-friendly look. Same on every plan."
+            checked={exp.graphics}
+            onChange={(v) => {
+              exp.set({ graphics: v });
+              notify.done(v ? "Graphics on" : "Graphics off — flat and fast");
+            }}
+          />
+          <Toggle
             label="Celebration (earned delight)"
             hint="On by default. Fires only when work is genuinely finished — inbox zero, a promise kept, your domain proven green."
             checked={exp.delight}

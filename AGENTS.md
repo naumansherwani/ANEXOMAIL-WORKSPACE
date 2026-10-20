@@ -284,3 +284,6 @@ Founder (verbatim): "mainay dekha hai ke bar bar same kaam repeat kaam ker rahay
 ## Rule 33 — Kaam ka tareeqa: pehle khud, phir founder (founder 21 Oct 2026 00:26 PKT)
 Masla mile to: (1) khud repo/code mein wajah dhoondho, (2) fix likho, (3) sandbox/local DB mein reproduce + test, (4) repo update + manifest 0 bad + push, (5) founder ko ek command (sirf wo jo server hi kar sakta hai), (6) Chrome mein live verify. Founder se diagnosis ke liye baar baar mat maango; Chrome ruk jaye to code se aage badho. Sandbox copy: /home/claude/FOUNDER-RULES.md.
 (Rule 33 ka hissa, founder 21 Oct 00:42) Tareeqa: founder ke pull ke baad Chrome mein live dekho -> root se fix -> repo update -> live dobara test -> har technology ki alag command. Login founder khud karta hai; main uske logged-in session par test karta hoon.
+
+## Rule 34 — MOBILE + TABLET sab se upar (founder 21 Oct 2026 01:31 PKT)
+Mobile aur tablet ko SAB SE BARI PRIORITY. Website mein jab bhi koi edit ho, pull ke baad LIVE Chrome mein 390 (phone), 820 (tablet), 1200+ (laptop) — teeno par test, tabhi GREEN. Sandbox/repo mein har step ke saath likho. (Rule 34 ka hissa) G35 passkey 27 Oct deadline sirf REAL users ke liye; test accounts (basic.test etc.) par passkey nahi banana/force nahi karna. Graphics ON/OFF Settings -> Appearance (data-ax-fx) har plan ke liye universal.

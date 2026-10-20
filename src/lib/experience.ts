@@ -29,6 +29,8 @@ export type Experience = {
   delight: boolean;
   /** Focus ring + focus ledger overlay for keyboard auditing. */
   focusAudit: boolean;
+  /** Decorative graphics (aurora, glow, floating cards, future 3D). Universal, every plan. */
+  graphics: boolean;
   /** Derived: animations === "none". Kept for the calm-mode kill switch. */
   calm: boolean;
 };
@@ -47,7 +49,7 @@ function withCalm(e: Omit<Experience, "calm">): Experience {
 
 export function defaultExperience(): Experience {
   // Delight is ON by default for everyone — inbox zero is rare and worth marking.
-  return withCalm({ animations: "full", speed: "normal", delight: true, focusAudit: false });
+  return withCalm({ animations: "full", speed: "normal", delight: true, focusAudit: false, graphics: true });
 }
 
 export function readExperience(): Experience {
@@ -68,6 +70,7 @@ export function readExperience(): Experience {
       speed: SPEEDS.includes(parsed.speed as Speed) ? (parsed.speed as Speed) : base.speed,
       delight: typeof parsed.delight === "boolean" ? parsed.delight : base.delight,
       focusAudit: typeof parsed.focusAudit === "boolean" ? parsed.focusAudit : base.focusAudit,
+      graphics: typeof parsed.graphics === "boolean" ? parsed.graphics : base.graphics,
     });
   } catch {
     return base;
@@ -95,6 +98,7 @@ function paint(exp: Experience) {
   el.toggleAttribute("data-ax-calm", exp.calm);
   el.toggleAttribute("data-ax-delight", exp.delight && !exp.calm);
   el.toggleAttribute("data-ax-focus-audit", exp.focusAudit);
+  el.setAttribute("data-ax-fx", exp.graphics ? "on" : "off");
   el.setAttribute("data-ax-motion", exp.animations);
   el.setAttribute("data-ax-speed", exp.speed);
 }
@@ -102,7 +106,7 @@ function paint(exp: Experience) {
 export function useExperience() {
   const [exp, setExp] = useState<Experience>(() =>
     typeof window === "undefined"
-      ? withCalm({ animations: "full", speed: "normal", delight: false, focusAudit: false })
+      ? withCalm({ animations: "full", speed: "normal", delight: false, focusAudit: false, graphics: true })
       : readExperience(),
   );
 
@@ -136,6 +140,7 @@ export function useExperience() {
       speed: patch.speed ?? current.speed,
       delight: patch.delight ?? current.delight,
       focusAudit: patch.focusAudit ?? current.focusAudit,
+      graphics: patch.graphics ?? current.graphics,
     });
     writeExperience(next);
     setExp(next);

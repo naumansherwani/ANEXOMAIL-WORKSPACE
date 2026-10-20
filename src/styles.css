@@ -1304,3 +1304,15 @@ textarea,
     }
   }
 }
+
+/* Graphics OFF (Settings → Appearance): drop purely decorative layers. Content and layout never change. */
+html[data-ax-fx="off"] .mx-aurora { background-image: none; }
+html[data-ax-fx="off"] .ax-drift { animation: none !important; }
+html[data-ax-fx="off"] .ax-auth-cinema-bg,
+html[data-ax-fx="off"] .ax-auth-cinema-mesh,
+html[data-ax-fx="off"] .ax-auth-cinema-grain,
+html[data-ax-fx="off"] .ax-splash-grain::after,
+html[data-ax-fx="off"] [data-ax-fx-layer] { display: none !important; }
+/* Left workspace nav: scroll still works, the thin bar is hidden. */
+nav[aria-label="Workspace navigation"] > div { scrollbar-width: none; }
+nav[aria-label="Workspace navigation"] > div::-webkit-scrollbar { display: none; }

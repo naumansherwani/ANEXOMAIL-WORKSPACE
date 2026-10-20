@@ -10,7 +10,7 @@ src/components/app/AppShell.tsx 8955ad28919004e1
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
-src/styles.css 1ca7acbe178125db
+src/styles.css 8684e1eb922e9428
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -222,3 +222,5 @@ docs/cursor-work/sql/E51_calendar_response_fix.sql 6ffd0145f2bed06c
 docs/cursor-work/server/repo-capture-server.sh 09e7d2fd890c557d
 src/lib/notify.ts 28ac0eff9454cdd6
 src/components/app/Panel.tsx 31764bb31659e16f
+src/lib/experience.ts adfcffbb33979c2c
+src/routes/app.settings.appearance.tsx 7911ac3654c2b006
