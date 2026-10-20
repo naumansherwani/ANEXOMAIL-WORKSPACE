@@ -124,4 +124,4 @@ src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
-docs/cursor-work/BASIC-AUDIT-DONE.md 8f28b4327a72e371
+docs/cursor-work/BASIC-AUDIT-DONE.md 235c5b4de7bae0a2

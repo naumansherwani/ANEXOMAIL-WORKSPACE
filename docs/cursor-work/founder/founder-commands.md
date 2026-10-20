@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 18:34 PKT — founder: Supabase SQL ki tasveer (family/entitlement/trial = business_pro) + "humzasherwani@anexomail.com [password chat mein diya, yahan nahi likha] ... yeh real user mera brother hai sirf farq hai ke yeh lifetime free user hai baki is ka sab kuch real buyer wala hoga package ... tumhara ultimate goal yeh hai ke sab ke packages main same cheeze aur same changes hone chaiye hain. mere father ka account bhi hai jo ke personal pro+ pe hai woh next pe hoga mujhe yeh batao ke bussiness ka pro package 100% green done hai. tumhay bola bhi hai ke real live login tum khud kero aur yeh rule hai ke tum live login her waqat rakho gay"
+- Halat: Business Pro live audit **DONE**; verdict: **100% green NAHI** — upar `BASIC-AUDIT-DONE.md` "BUSINESS PRO live audit" (attachments bhejna sabse bada baqi). Rule: har change sab 4 plans par live login se test (Basic basic.test, Business Pro Hamza; Business/Personal Pro+ ke login chahiye).
+
 ### 20 Oct 2026 10:53 PKT — founder: "collapse chalta hai lekin drag nahi aur yeh kya baqwas hai meri family ke accounts profle un ke packages ke mutabiq update kyon nahi huhi hai? yeh universal website hai ke jab bhi koi bhi update hogi woh un ke packages ke accordingly mile gi mere bhai ka account hai humzasherwani@anexomail.com business pro hai meri family hai"
 - Halat: drag **READY** (batch 10, asli sabab mila: native dragstart). Leo Actions Business/BP ko wapas (meri galti thi). **Hamza (business_pro) profile/package mismatch: jaanch jari** — session `family_accounts` se plan padhta hai (server/routes/auth.ts); live DB access nahi, isliye Hamza ke login/screenshot ya DB output chahiye. Qaida: har naya feature plan-wise sab 4 plans par test (sirf Basic nahi).
 

@@ -25,6 +25,17 @@
 
 | 10 | (11:0x) | Drag phir bhi nahi: **asli sabab** = Chrome pakad kar khinchne par native drag-and-drop (`dragstart`) shuru karta hai => `pointercancel` => category row 9px hil kar ruk jati thi (mere pehle test mein nahi dikha, kyunki woh sirf kuch jagah se shuru hone par hota hai). Aur meri galti: "Leo Actions" tab **sab** plans se hata diya tha, jabke locked plans table mein Business/Business Pro mein Included hai | `installDragScroll`: row ke andar `dragstart`/`selectstart` preventDefault; HScroll rows `select-none`. Leo Actions tab wapas Business + Business Pro ko (Basic/Pro ko nahi; AI SETTINGS sab se gaya). Test: local, category row 9->90px | Web |
 
+## BUSINESS PRO live audit (20 Oct 2026 18:5x, humzasherwani@anexomail.com — lifetime free, baqi sab real buyer jaisa; password KABHI repo mein nahi)
+DB sahi: family_accounts + entitlement_state + trial_accounts teeno `business_pro`. Session/menu "Business Pro" dikhata hai.
+**Green (live dekha):** 37 pages render, koi JS error nahi; plan-gating sahi (Admin lock, Settings/AI lock "AI settings are not on this workspace", AI-center rail mein nahi); Leo Actions tab Business Pro ko hai; Settings tabs mein AI nahi; Domains "unlimited domains · unlimited mailboxes · aliases free"; Billing "Business Pro £2850/month" + current plan; CRM overview asli data; Work: task banta + reload ke baad bhi rehta hai; Org members/Compliance/Audit ledger tabs; Chat; Safety; **Mail bhejna: 30s hold -> Sent mein -> Inbox mein deliver (poora chala)**; category row ‹ › arrow aate hain.
+**Rust RPC 404 (CHAAL, kharabi nahi):** work.tasks/promises, crm.*, org.audit/compliance/proof, integrations.connections/providers, settings.list/history, call.record* — Rust mein nahi, `rpcOrRest` Bun par girta hai, Bun 200 deta hai (page theek). Speed-rule ke mutabiq asal mein inhe Rust par aana hai (baad ka kaam).
+**BAQI / 100% green NAHI:**
+1. **Compose mein attachments bheji nahi ja saktin** ("Attachments — coming soon", ComposeStudio.tsx ~597) — sab plans par. Parhna/download (inbound) maujood hai; bhejna (upload -> storage -> MIME -> Rust send) bana nahi. BADA kaam (ek technology = Rust MIME + storage + UI).
+2. Compose: "Version history" band.
+3. Settings > Workspace: "Retention window" ki value sirf "0" (matlab/unit nahi) — copy/value theek karni hai.
+4. Billing: Hamza lifetime-free hai par billing "£2850/month" dikhata hai (family accounts ke liye "Lifetime access" label chahiye).
+5. Mobile (390) Business Pro abhi test nahi hua; Business (non-Pro) aur Personal Pro+ (father) account alag test.
+
 ## 3D GRAPHICS — kahan ana hai (CEO faisla 20 Oct 2026; abhi bana NAHI, sirf naksha)
 Halat: asli Three.js sirf AnexoChat `chat/cinema/Scene.tsx` mein hai. Baqi "cinematic" 2D canvas/CSS hai. Qaida: jahan 3D madad kare, jahan kaam ke raste mein aaye wahan NAHI (inbox/compose/settings = tez + saaf, 3D nahi).
 | Jagah | 3D kya | Plan | Mobile |
