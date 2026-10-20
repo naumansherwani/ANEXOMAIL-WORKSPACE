@@ -100,3 +100,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - 21 Oct 02:00: LIVE GREEN basic.test: Graphics toggle visible in Settings->Appearance; sidebar scrollbar gone; Brain CRM tenant isolation installed (health 200, unauth 401).
 - CODE: auth-passkey.ts /passkey/status exempts test accounts (email local part ends "test") — Brain passkey installer to run. Capture script false RED (alphabet constant) filtered.
 - NOTE: "graphics" abhi sirf aurora/glow/float par asar; 3D abhi bana hi nahi — toggle tayyar, 3D usay padhega.
+- 21 Oct 02:20 BASIC FINAL LIVE (basic.test): 13 routes x 390/820/1200 = 39 loads, 0 empty, 0 error; only overflow = public SiteNav at 1024-1268px (fixed 138de99, hamburger until xl, needs Web pull). Billing -> Pro Upgrade opens Polar checkout (Pro £46/mo, not paid). Graphics toggle + sidebar scrollbar verified live. Brain CRM isolation live.
+- BASIC = GREEN except: (a) passkey banner on test accounts until Brain passkey install, (b) SiteNav fix retest after pull. NEXT: PRO.
