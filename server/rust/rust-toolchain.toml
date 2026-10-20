@@ -1,0 +1,4 @@
+# ANEXOMAIL — sirf is Rust engine ka compiler (TECH-MAP 0a). Server ka default rustc aur polar :3400 is se nahi badalte.
+[toolchain]
+channel = "1.99.1"
+profile = "minimal"

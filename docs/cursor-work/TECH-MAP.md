@@ -45,7 +45,7 @@ Server par asli vs latest (TECH-MAP section 3/10, 17 Oct; **har upgrade se pehle
 1. **tokio** 1.53.1 -> **1.53.3** pehle (patch, kam khatra; script `rust-crate-upgrade.sh`), phir **1.54.0** jab ek hafta purana ho jaye (abhi sirf 1 din purana — naye release ki regressions se bachne ke liye).
 2. **axum** 0.7.9 -> 0.8.x (path syntax `/:proc` -> `/{proc}`; saare routes ka test). **DONE live 20 Oct 03:59 (0.8.9).** `axum-upgrade.sh` (sandbox: 0.8.9 build OK, differential 26/26 same; `Option<Json>` ka 0.7 bartao `rpc_json_body` se bachaya).
 3. **wtransport** 0.1.14 -> 0.7.x (saath mein quinn 0.10 -> 0.11, rustls 0.21 -> 0.23 — WebTransport live push par asar; sab se bada khatra, parallel staging). **DONE live 20 Oct 04:37 (0.7.2; N7 fix 05:03).** `wtransport-upgrade.sh` (sandbox: 0.7.2 build OK, Chromium 141 + native client handshake pehle/baad same, HTTP 26/26 same).
-4. **rustc** 1.97.1 -> latest + edition 2024 (`opt-level = "z"` ka faisla alag).
+4. **rustc** 1.97.1 -> latest + edition 2024 (`opt-level = "z"` ka faisla alag). **DONE live 20 Oct 06:07: rustc 1.99.1 (project-pinned `rust-toolchain.toml`) + edition 2024.**
 5. **Bun** 1.4.0 -> latest (sirf SSR host); Nitro beta ki nigrani.
 **Qaida:** upgrade se live kuch tootna nahi chahiye — har ek ke baad `/rpc/health` 200, WebTransport sun raha, `mig-live-test.sh` GREEN.
 

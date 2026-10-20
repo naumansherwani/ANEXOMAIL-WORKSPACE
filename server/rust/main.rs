@@ -48,7 +48,7 @@ fn ok(data: Value) -> impl IntoResponse {
     (StatusCode::OK, Json(json!({ "result": { "data": data } })))
 }
 
-fn err(status: StatusCode, code: &str, message: &str) -> impl IntoResponse {
+fn err(status: StatusCode, code: &str, message: &str) -> impl IntoResponse + use<> {
     (
         status,
         Json(json!({ "error": { "code": code, "message": message } })),
