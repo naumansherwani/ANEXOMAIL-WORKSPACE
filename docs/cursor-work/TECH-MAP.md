@@ -27,7 +27,8 @@
 | | Bun :3100–3300 | **Sirf fallback** jab Rust 404/501/502/503 de. Naya kaam yahan nahi. |
 | **Database** | PostgreSQL (Supabase #4) | Sach ka ek source: mail metadata, migration walled garden, quota, chain. |
 | **Files / attachments** | Hetzner Storage Box (`/mnt/anexomail-box/attachments`) | Sirf file ke bytes. Database mein sirf metadata. (Storage Box network mount hai, local NVMe nahi.) |
-| **Mail** | Postfix, Dovecot, OpenDKIM | Mail bhejna aur lena. GREEN — abhi chheda nahi jata. |
+| **Mail — app ka har hissa (founder "haan" 20 Oct 06:41)** | **Rust :3200 — tRPC-style `/rpc`, async Tokio, WebTransport/QUIC push** | `mail.send` (R1), `org.mailboxes.*` (R1), **aane wali mail ka pipe** (Postfix `anexopipe` -> abhi Bun `deliver-to-supabase.ts`; Rust `anexomail-deliver` par jana hai, MIME = `mig_mime.rs`), pane wale ki pehchan (E37 ka Rust twin), attachments (E38), inbox live push (R5: event-driven, 700 ms poll nahi). Bun sirf fallback jab tak Rust live verify na ho. |
+| | Postfix, Dovecot, OpenDKIM | Sirf **transport** (SMTP le jana/lana, DKIM sign, IMAP). App logic yahan nahi. Badlav founder "haan" + backup + `postfix check` + reload. |
 | | Stalwart, JMAP | PLANNED: sirf founder ke "haan" + parallel staging ke baad. |
 | **Website (frontend)** — founder list 20 Oct 06:36 | React 19.2 | Saare pages/components. |
 | | TanStack Start v1 + Router 1.17.0 (+ Query) | Routes, SSR wiring, data cache. |
@@ -57,7 +58,8 @@
 | tokio 1.53.3, axum 0.8.9, wtransport 0.7.2 (+quinn 0.11/rustls 0.23), rustc 1.99.1 + edition 2024 | Rust :3200 | DONE live 20 Oct |
 | WebTransport error frame (N7) | Rust :3200 (WebTransport) | DONE live 20 Oct |
 | Language bundle/pref `/rpc/locale.*` (N3) | Rust :3200 (Bun `/api/locale/*` sirf fallback) | DONE live 20 Oct |
-| Anjaan pate ki mail kisi aur org mein na jaye (E37) | PostgreSQL (`mail_ingest` gate + `mail_quarantine`) | READY (founder run baqi) |
+| Anjaan pate ki mail kisi aur org mein na jaye (E37) | PostgreSQL (`mail_ingest` gate + `mail_quarantine`) — DB ki aakhri deewar; Rust inbound pipe mein bhi wohi check aayega (R1a) | DONE live 20 Oct 06:41 |
+| Aane wali mail ka pipe Bun -> Rust (R1a), `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |
 | Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
 | Attachments (E38) | Bytes: Storage Box · dedup/patch: Rust · metadata: PostgreSQL | PLANNED |
 | Import mail customer tak, Terms page, PWA offline | Website (React/TanStack) + PWA service worker | PLANNED (Basic list) |
