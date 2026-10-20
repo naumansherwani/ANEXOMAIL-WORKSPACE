@@ -65,6 +65,7 @@
 | Thread ki mail ginti hamesha sach (trigger) | PostgreSQL (E38) | DONE live 20 Oct 07:54 (62 threads theek) |
 | Mail padhne ka tareeqa: sirf mail, Reply/Reply all/Forward par composer; HTML mail sandboxed iframe (koi script nahi, tracking images band) | Website (React) | READY — `pull.sh` |
 | **D2** Authoritative-NS live check (`mail.domains.verify` seedha domain ke nameservers se, RD=0, EDNS0 + TCP; public DoH sirf 'phail raha hai' + fallback) | Rust :3200 (`dnsauth_core.rs` std DNS wire + `dnsauth_glue.rs` Tokio UDP/TCP) + React (3s poll) | READY — `MODULES=dnsauth` + `pull.sh` |
+| Security page sach: sessions = `auth.sessions` (asli kill), devices = `device_vault`, login replay = `auth.audit_log_entries`, encryption = live TLS handshake (443/993/587/25), ledger sha256 zanjeer; fake "rotate" hataya | SQL E39 + Rust :3200 (`security_core.rs` std + `security_glue.rs` Tokio/rustls) + React | READY — E39 -> `MODULES=security` -> `pull.sh` |
 | D3 admin link, D1 zero-gap switch, catch-all/forwarding/vacation, health guard, DMARC reader, Domain Connect, BIMI (founder HAAN 08:17) | Rust + PostgreSQL + React (+ WebTransport) | NEXT, tarteeb se |
 | Aane wali mail ka pipe Rust (R1a) | Rust + Postfix argv | DONE live 20 Oct 07:00 |
 | `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |

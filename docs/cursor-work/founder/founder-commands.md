@@ -48,6 +48,12 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 — agent (CEO): Basic audit batch 2 — Security page sach (READY)
+- Masla: Security page ki har ginti khaali tables se ("Live sessions 0" jab user login hai; "Kill" kuch nahi maarta tha; "Encryption needs attention" khaali table se; "Rotate keys" sirf ek row likhta tha; ledger kabhi nahi likha jata tha).
+- Hal: **E39 SQL** (service_role-only functions: `auth.sessions`, `auth.audit_log_entries`, `device_vault`, sha256 ledger zanjeer) + **Rust `security` module** (`security_core.rs` 4 unit tests + `security_glue.rs`: live TLS handshake 443/993/587/25, cert public roots se check) + **Web** (rotate button hataya; kill switch / disown ka sach; "this device" par Kill nahi).
+- Saboot (sandbox): PG16 mock par E39 self-test PASSED + 2 dafa chala (idempotent); engine build OK; kill ke baad us session ka token 401; apna session kill = 409 "use Sign out"; ledger 3 entries zanjeer judi; fake cert = "off" (verification chal rahi hai); 1440/390 koi overflow nahi.
+- Tarteeb: SQL E39 -> Rust `MODULES=security` -> Web pull -> live test.
+
 ### 20 Oct 2026 09:09 PKT — founder: server ki live jaankari (Rust sockets, WT cert, Caddy validate, ufw) + "yeh save ker lo server ki live information."
 - Halat: **DONE (saved)** -> `docs/cursor-work/server/live-facts-2026-10-20.md`.
 - Is se 2 masle mile: (1) `3443/udp` ufw mein band; (2) WT cert sirf `anexochat.anexomail.com`, website `anexomail.com:3443` se judti thi. **READY:** `src/lib/wt-url.ts` (Web pull) + `ufw allow 3443/udp` (Server).
