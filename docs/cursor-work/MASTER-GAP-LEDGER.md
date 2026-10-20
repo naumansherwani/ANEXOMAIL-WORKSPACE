@@ -116,3 +116,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - **BUG G-DOM:** Domains page '1 of 1 domain' par narangi warning 'allows 1 domains. Remove one or upgrade.' — limit poori nahi hui (== cap), grammar bhi ghalat. Fix: warning sirf used>cap par + singular.
 
 - **21 Oct 04:30 FAISLA (founder: 'jo server/repo par hai wahi reality, packages theek karo'):** G-ALIAS = card ko reality par laaya ('Free aliases — no extra seat'; plans table 'Included'). E52 cap-trigger WAPAS (kabhi server par nahi chala). G-DOM fixed 6deff50. Rule: plan card ka har wada asli product se milna chahiye — jhooti marketing nahi.
+
+- **21 Oct 04:10 CEO FAISLA (plan cards):** Basic = pehle paisa-wali cheezein (1 company domain, 3 mailboxes, 5GB, Undo send, Thread ownership...), "Free aliases" baad mein, chhupa fair-use cap 25 (E52_alias_fair_use). G-ALIAS CODE; SQL server par baqi.

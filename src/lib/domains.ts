@@ -181,7 +181,16 @@ export function useCreateAddress() {
     ApiError,
     { domain_id: string; local_part: string; kind: AddressKind; alias_target?: string }
   >({
-    mutationFn: (input) => rpc<AddressCreateResult>("mail.addresses.create", input),
+    mutationFn: async (input) => {
+      try {
+        return await rpc<AddressCreateResult>("mail.addresses.create", input);
+      } catch (e) {
+        // E52 fair-use trigger: 'alias_fair_use:<cap>' -> same shape as every other refusal.
+        if (/alias_fair_use/.test(e instanceof Error ? e.message : String(e)))
+          return { ok: false, error: "alias_fair_use" } as AddressCreateResult;
+        throw e;
+      }
+    },
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: KEYS.addresses });
       void qc.invalidateQueries({ queryKey: ["mail", "identities"] });
@@ -229,6 +238,8 @@ export function domainErrorText(
       return "That address already exists.";
     case "mailbox_limit":
       return `Your ${extra?.plan ?? "current"} package allows ${extra?.limit ?? 0} mailboxes. Aliases don't count — or upgrade.`;
+    case "alias_fair_use":
+      return "You have reached the fair-use limit for aliases. Remove one you no longer use, or contact support if you need more.";
     case "alias_target_required":
       return "An alias needs an address to deliver to.";
     case "invalid_kind":
