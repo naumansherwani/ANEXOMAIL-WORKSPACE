@@ -50,6 +50,7 @@ import { storageRouter, internalStorageRouter, founderStorageRouter } from "./ro
 import { billingSyncAuthRouter, billingSyncPublicRouter } from "./routes/billing-sync";
 import { startMailWorker } from "./mail-worker";
 import { founderGate } from "./lib/founder-gate";
+import { integrityGate } from "./lib/integrity-gate";
 
 const PORT = Number(process.env.PORT) || 3100;
 
@@ -58,6 +59,9 @@ const app = express();
 app.disable("x-powered-by");
 // Caddy → Bun :3100. Bina iske req.ip hamesha 127.0.0.1, session list jhoot.
 app.set("trust proxy", 1);
+
+// Blocked account guard (G37) — Leo bridge ke liye bhi (yeh express.json se pehle mount hai, isliye alag).
+app.use("/api/leo", integrityGate);
 
 // ---- LEO bridge: native (Request -> Response) handler inside Express ----
 app.use("/api/leo", async (req, res) => {
@@ -119,6 +123,9 @@ app.get(["/health", "/api/health"], (_req, res) =>
 // Founder gate — EVERY /api/founder/* call (movein, release, revenue, storage, org god-view …) needs a founder identity.
 // Mounted before all routers: each of them only checked "somebody is signed in", so any customer token could call them.
 app.use("/api/founder", founderGate);
+
+// Blocked/purged account (G37): sirf auth / apna delete / public / health. Founder gate ke BAAD, baqi sab routers se PEHLE.
+app.use("/api", integrityGate);
 
 app.use("/api/auth", authRouter);
 app.use("/api/workspace", workspaceRouter);

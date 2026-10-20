@@ -12,6 +12,7 @@ import { api, ApiError } from "@/lib/api";
 import { rpcOrRest } from "@/lib/rpc";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
+import { exportErrorMessage, startExport } from "@/lib/account-export";
 import { enrolPasskey, PASSKEY_STATUS_KEY, regenerateRecoveryCodes, usePasskeyStatus } from "@/lib/passkey";
 import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
 
@@ -369,6 +370,26 @@ function AccountPage() {
               </Button>
             </div>
           </form>
+        </section>
+
+        <section className="rounded-xl border border-border bg-card p-ax-4">
+          <h2 className="ax-label text-foreground">Your data</h2>
+          <p className="ax-caption mt-1">
+            Download everything that is yours as one ZIP: all mail (.mbox), attachments, contacts (.csv and .vcf) and
+            calendar (.ics). It is yours to keep or move — nothing is sent anywhere.
+          </p>
+          <Button
+            variant="outline"
+            className="ax-press mt-ax-3"
+            data-testid="export-my-data"
+            onClick={() =>
+              void startExport()
+                .then(() => notify.done("Export started", "Your download begins in a moment. Large mailboxes take longer."))
+                .catch((error: unknown) => notify.failed("Export not started", { description: exportErrorMessage(error) }))
+            }
+          >
+            Download my data
+          </Button>
         </section>
 
         <section className="rounded-xl border border-border bg-card p-ax-4">

@@ -1,0 +1,8 @@
+[Unit]
+Description=ANEXOMAIL blocked-account purge (72h export window ke baad)
+After=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/anexomail-integrity-purge
+Nice=10

@@ -12,9 +12,9 @@
 | 5 | Device record par **deletion date** | `device_vault.retain_until` (180 din, `device_vault_purge`) | code padha; UI par dikhana VERIFY | CODE DONE |
 | 6 | Apne devices dekh kar revoke; revoke se live session foran khatam | E39 `sec_session_kill`; device revoke ? | - | AADHA |
 | 7 | 3+ account / 24 ghante mein 3 account = suspicious, review | `device_vault_register`: >=3 accounts ya 24h mein >=3 registrations => state `suspicious` (block nahi, E18) | code padha | CODE DONE; review queue UI VERIFY (G37) |
-| 8 | Likhit ek final warning, phir block | `AccountIntegrityPanel`, `account-integrity.ts` | - | VERIFY (G37) |
+| 8 | Likhit ek final warning, phir block | `AccountIntegrityPanel` (insaan: warn/block, 12+ char wajah) + user ko `IntegrityGate` (warned = upar patti, blocked/purged = poori screen) | UI 3 sizes mock test; SQL phase24a | CODE DONE (live baqi) |
 | 9 | Dobara violation = block; severe = device ban list | `device_bans` | - | VERIFY |
-| 10 | Block ke baad **72 ghante export**, phir hamesha delete | ? | - | VERIFY (G36) |
+| 10 | Block ke baad **72 ghante export**, phir hamesha delete | export: Rust `export_core/glue` + E44 (ZIP stream); enforce: Rust `export_glue::blocked` + Brain `integrity-gate.ts`; delete: E45 `account_integrity_purge_due` (account_purge + tombstone) + hourly timer `integrity-purge/` | export e2e real-crate; E45 local DB (purge/window/founder-blocker/trigger); gate unit tests | CODE DONE (server par install baqi) |
 | 11 | Baatein kisi AI/third-party moderation ko nahi jatin | koi call nahi | code padha | DONE |
 | 12 | File safety apne infrastructure par | ? | - | VERIFY |
 

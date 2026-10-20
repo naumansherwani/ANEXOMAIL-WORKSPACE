@@ -87,7 +87,10 @@ CFG={
  "export": {"public": False, "label": "export",    "procs": ['"account.export.ticket"','"account.integrity.me"'],
             "route_marker": "export_glue::download",
             "route_after": '.route("/file/download", get(file_download))',
-            "route_add": '.route("/file/account-export", get(export_glue::download))'},
+            "route_add": '.route("/file/account-export", get(export_glue::download))',
+            # G37: blocked account guard — token ke foran baad, SAB module hooks se pehle
+            "guard_marker": "export_glue::blocked(",
+            "guard_code": '    // G37 — blocked/purged account: sirf export / halat / apna delete (export_glue::blocked)\n    if let Some(r) = export_glue::blocked(&proc, &token).await {\n        return r;\n    }\n\n'},
 }
 changed=[]
 for m in mods:
@@ -96,8 +99,27 @@ for m in mods:
     have_auth=(g+"::owns(") in s
     have_pub=(not c["public"]) or ((g+"::public_owns(") in s)
     have_route=(not c.get("route_marker")) or (c["route_marker"] in s)
-    if have_mod and have_auth and have_pub and have_route:
+    have_guard=(not c.get("guard_marker")) or (c["guard_marker"] in s)
+    if have_mod and have_auth and have_pub and have_route and have_guard:
         print("main.rs: %s pehle se judi hai"%c["label"]); continue
+    only_extras = have_mod and have_auth and have_pub and (not have_route or not have_guard)
+    if only_extras:
+        d=re.search(r'^(?:pub )?async fn dispatch\(\s*Path\(proc\)', s, re.M)
+        if not d: print("PATCH FAIL: `async fn dispatch(Path(proc)...` nahi mila"); sys.exit(4)
+        if not have_guard:
+            bm=re.compile(r'^    let token = match bearer\(&headers\) \{', re.M).search(s, d.start())
+            if not bm: print("PATCH FAIL: dispatch mein `let token = match bearer(&headers)` nahi mila"); sys.exit(4)
+            e=s.find("\n    };\n", bm.start())
+            if e<0: print("PATCH FAIL: token match ka end nahi mila"); sys.exit(4)
+            e+=len("\n    };\n")
+            s=s[:e]+"\n"+c["guard_code"].rstrip("\n")+"\n"+s[e:]
+        if not have_route:
+            ra=s.find(c["route_after"])
+            if ra<0: print("PATCH FAIL: route anchor nahi mila: "+c["route_after"]); sys.exit(4)
+            ra+=len(c["route_after"])
+            s=s[:ra]+"\n        "+c["route_add"]+s[ra:]
+        changed.append(c["label"]+" (guard/route)")
+        continue
     if have_mod or (g+"::") in s:
         print("PATCH FAIL: main.rs mein %s adhoori judi hai — haath se dekhna padega"%c["label"]); sys.exit(4)
     for pr in c["procs"]:
@@ -127,6 +149,14 @@ for m in mods:
         if ra<0: print("PATCH FAIL: route anchor nahi mila: "+c["route_after"]); sys.exit(4)
         ra+=len(c["route_after"])
         s=s[:ra]+"\n        "+c["route_add"]+s[ra:]
+    if c.get("guard_marker"):
+        d2=re.search(r'^(?:pub )?async fn dispatch\(\s*Path\(proc\)', s, re.M)
+        bm=re.compile(r'^    let token = match bearer\(&headers\) \{', re.M).search(s, d2.start())
+        if not bm: print("PATCH FAIL: guard ke liye token match nahi mila"); sys.exit(4)
+        e=s.find("\n    };\n", bm.start())
+        if e<0: print("PATCH FAIL: token match ka end nahi mila"); sys.exit(4)
+        e+=len("\n    };\n")
+        s=s[:e]+"\n"+c["guard_code"].rstrip("\n")+"\n"+s[e:]
     changed.append(c["label"])
 open(p,"w").write(s)
 print("main.rs: judi -> "+(", ".join(changed) if changed else "(kuch nahi badla)"))

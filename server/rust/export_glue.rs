@@ -54,6 +54,58 @@ pub async fn dispatch(proc: &str, token: &str, _input: &Value) -> Resp {
     }
 }
 
+
+// ───────────────────────── blocked-account guard (G37) ─────────────────────────
+// main.rs ke dispatch mein token ke FORAN baad lagta hai (installer): blocked/purged account ki har call 403 `account_blocked`,
+// siwaye export / apni halat / apna delete. Token ka sub bina verify padha jata hai (jhoota sub sirf us user ka haal dikhata hai).
+// DB ya cache mein koi masla ho to guard KHULA rehta hai (fail-open): outage mein sab ko lock nahi karte.
+static BLOCK_CACHE: std::sync::OnceLock<std::sync::Mutex<HashMap<String, (bool, std::time::Instant)>>> = std::sync::OnceLock::new();
+
+async fn is_blocked(sub: &str) -> bool {
+    let cache = BLOCK_CACHE.get_or_init(|| std::sync::Mutex::new(HashMap::new()));
+    if let Ok(m) = cache.lock() {
+        if let Some((v, at)) = m.get(sub) {
+            if at.elapsed() < std::time::Duration::from_secs(30) {
+                return *v;
+            }
+        }
+    }
+    let blocked = match crate::sb_select(&format!("account_integrity?user_id=eq.{sub}&select=state&limit=1")).await {
+        Ok(Value::Array(a)) => a
+            .first()
+            .and_then(|r| r.get("state"))
+            .and_then(|s| s.as_str())
+            .map(|s| s == "blocked" || s == "purged")
+            .unwrap_or(false),
+        _ => false,
+    };
+    if let Ok(mut m) = cache.lock() {
+        if m.len() > 5000 {
+            m.clear();
+        }
+        m.insert(sub.to_string(), (blocked, std::time::Instant::now()));
+    }
+    blocked
+}
+
+pub async fn blocked(proc: &str, token: &str) -> Option<Resp> {
+    if ec::allowed_when_blocked(proc) {
+        return None;
+    }
+    let sub = ec::jwt_sub(token)?;
+    if !is_blocked(&sub).await {
+        return None;
+    }
+    Some(
+        crate::err(
+            StatusCode::FORBIDDEN,
+            "account_blocked",
+            "This account is blocked. You can still download your data until the export window ends.",
+        )
+        .into_response(),
+    )
+}
+
 // ───────────────────────── download ─────────────────────────
 
 fn now_unix() -> i64 {

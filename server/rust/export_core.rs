@@ -378,6 +378,56 @@ pub fn ics_event(e: &IcsEvent) -> String {
     s
 }
 
+
+// ───────────────────────── blocked-account guard ke pure helpers (G37) ─────────────────────────
+fn b64url_decode(s: &str) -> Option<Vec<u8>> {
+    let mut out = Vec::with_capacity(s.len() * 3 / 4);
+    let (mut buf, mut bits) = (0u32, 0u32);
+    for c in s.trim_end_matches('=').bytes() {
+        let v = match c {
+            b'A'..=b'Z' => c - b'A',
+            b'a'..=b'z' => c - b'a' + 26,
+            b'0'..=b'9' => c - b'0' + 52,
+            b'-' | b'+' => 62,
+            b'_' | b'/' => 63,
+            _ => return None,
+        } as u32;
+        buf = (buf << 6) | v;
+        bits += 6;
+        if bits >= 8 {
+            bits -= 8;
+            out.push((buf >> bits) as u8);
+            buf &= (1 << bits) - 1;
+        }
+    }
+    Some(out)
+}
+pub fn valid_uuid(s: &str) -> bool {
+    let b = s.as_bytes();
+    b.len() == 36 && b.iter().enumerate().all(|(i, c)| if matches!(i, 8 | 13 | 18 | 23) { *c == b'-' } else { c.is_ascii_hexdigit() })
+}
+/// JWT ka `sub` — SIGNATURE VERIFY NAHI (sirf "kis ka token hai" dekhne ke liye; asli verify baad mein Supabase karta hai).
+/// Jhoota sub sirf us user ki halat dikhata hai; kisi ko access nahi deta.
+pub fn jwt_sub(token: &str) -> Option<String> {
+    let payload = token.split('.').nth(1)?;
+    let bytes = b64url_decode(payload)?;
+    let text = String::from_utf8(bytes).ok()?;
+    let i = text.find("\"sub\"")?;
+    let rest = &text[i + 5..];
+    let q1 = rest.find('"')?;
+    let rest2 = &rest[q1 + 1..];
+    let q2 = rest2.find('"')?;
+    let sub = &rest2[..q2];
+    if valid_uuid(sub) { Some(sub.to_string()) } else { None }
+}
+/// Blocked account jo calls kar sakta hai (export, apni halat, apna delete).
+pub fn allowed_when_blocked(proc: &str) -> bool {
+    matches!(
+        proc,
+        "whoami" | "account.export.ticket" | "account.integrity.me" | "account.delete.state" | "account.delete.request" | "account.delete.cancel"
+    )
+}
+
 // ───────────────────────── file ka naam ─────────────────────────
 /// ZIP entry ka naam: path-traversal / control chars hata kar. `dir/` prefix glue deta hai.
 pub fn safe_name(s: &str) -> String {
@@ -649,6 +699,26 @@ mod tests {
         assert_eq!(safe_name("..."), "file");
         assert_eq!(safe_name(""), "file");
         assert_eq!(safe_name("ok name.pdf"), "ok name.pdf");
+    }
+
+    #[test]
+    fn jwt_sub_and_guard_helpers() {
+        // header.payload.sig  — payload {"sub":"00000000-0000-0000-0000-0000000000a1","role":"authenticated"}
+        let payload = b64("{\"sub\":\"00000000-0000-0000-0000-0000000000a1\",\"role\":\"authenticated\"}".as_bytes())
+            .replace('+', "-").replace('/', "_").trim_end_matches('=').to_string();
+        let tok = format!("eyJhbGciOiJIUzI1NiJ9.{payload}.sig");
+        assert_eq!(jwt_sub(&tok).as_deref(), Some("00000000-0000-0000-0000-0000000000a1"));
+        assert_eq!(jwt_sub("garbage"), None);
+        assert_eq!(jwt_sub("a.b.c"), None);
+        let bad = b64("{\"sub\":\"x' or 1=1\"}".as_bytes()).replace('+', "-").replace('/', "_").trim_end_matches('=').to_string();
+        assert_eq!(jwt_sub(&format!("h.{bad}.s")), None);
+        assert!(valid_uuid("00000000-0000-0000-0000-0000000000a1"));
+        assert!(!valid_uuid("00000000000000000000000000000000"));
+        assert!(!valid_uuid("00000000-0000-0000-0000-0000000000a1; drop"));
+        assert!(allowed_when_blocked("account.export.ticket"));
+        assert!(allowed_when_blocked("account.integrity.me"));
+        assert!(!allowed_when_blocked("mail.send"));
+        assert!(!allowed_when_blocked("chat.send"));
     }
 
     #[test]
