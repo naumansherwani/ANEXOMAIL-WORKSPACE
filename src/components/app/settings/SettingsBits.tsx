@@ -5,7 +5,7 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import type { Scope, Setting } from "@/lib/settings";
 import {
   isOn,
-  shortValue,
+  describeValue,
   useBlastRadius,
   useExplain,
   useSaveSetting,
@@ -83,7 +83,7 @@ export function SettingRow({ setting }: { setting: Setting }) {
           </p>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
             <span className="rounded-md bg-secondary px-2 py-0.5 font-semibold text-foreground">
-              {shortValue(setting.value)}
+              {describeValue(setting)}
             </span>
             {setting.drift && setting.drift !== "aligned" && (
               <span

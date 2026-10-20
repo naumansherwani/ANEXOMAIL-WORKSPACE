@@ -524,7 +524,13 @@ function WorkspaceBilling() {
                     )}
                   </div>
                   <div className="mt-1 flex flex-wrap items-center gap-3 text-[12px] text-muted-foreground">
-                    <span>{gbp(s.price_per_seat)} / {s.interval}</span>
+                    {s.lifetime ? (
+                      <span className="font-semibold text-emerald-400">
+                        {t("Lifetime access")} · {t("complimentary")} ({gbp(s.price_per_seat)} / {s.interval} {t("value")})
+                      </span>
+                    ) : (
+                      <span>{gbp(s.price_per_seat)} / {s.interval}</span>
+                    )}
                     {s.storage_per_mailbox_gb ? (
                       <span className="text-muted-foreground">
                         · {s.storage_per_mailbox_gb} GB {kind === "personal" ? t("of mail storage") : "/ mailbox"}
@@ -538,7 +544,7 @@ function WorkspaceBilling() {
                       </span>
                     )}
                   </div>
-                  {s.renews_at && (
+                  {s.renews_at && !s.lifetime && (
                     <p className="mt-0.5 text-[12px] text-muted-foreground">
                       {t("Auto-renews on")} {fmtDate(s.renews_at)}
                     </p>

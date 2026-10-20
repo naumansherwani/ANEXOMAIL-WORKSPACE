@@ -20,6 +20,8 @@ export type Subscription = {
   seats: number;
   seats_used: number;
   price_per_seat: number;
+  /** Family account: plan muft aur umar bhar ka (baqi sab asli buyer jaisa). */
+  lifetime?: boolean;
   currency: string;
   interval: "month" | "year";
   renews_at: string | null;

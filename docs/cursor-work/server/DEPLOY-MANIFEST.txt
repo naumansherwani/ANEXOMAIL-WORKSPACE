@@ -18,7 +18,7 @@ src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 475e7cd04813f1b4
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
-src/components/app/compose/ComposeStudio.tsx 7068ed31ed24055f
+src/components/app/compose/ComposeStudio.tsx 550e54af4f298a83
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx f93d2264ef6a5806
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
@@ -40,13 +40,13 @@ src/routes/app.crm.collab.tsx 2955adff7ecb6af7
 src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts 69362c78d74e8ac6
-src/routes/app.billing.tsx 4b4c93d6ab168fc4
+src/routes/app.billing.tsx 8d59ed0431521528
 src/routes/app.account.tsx 843adbe1d21b639f
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx b75efea04cb39d90
 src/routes/app.admin.teams.tsx e97e4983a7605ae5
 src/components/app/CrossPlatformBar.tsx ab6434edc184c235
-src/lib/billing-platform.ts 121a9b6e65d8fc91
+src/lib/billing-platform.ts 4e37f9bdec504102
 src/routes/app.founder_.billing.tsx 66c2dc943a5fb57b
 src/components/site/ConvergenceCanvas.tsx d4f22a2dd32d5da4
 src/routes/migration.tsx fbfcf96604b56446
@@ -115,8 +115,8 @@ src/routes/app.security.sessions.tsx 24fc4e4e08f66e9f
 src/routes/app.security.index.tsx 0b17a6df56ffc1a8
 src/routes/app.security.history.tsx dbf374ef8e2cab0b
 src/lib/security-platform.ts d3383b6b2357c97c
-src/lib/settings.ts f81c76075cfa96a2
-src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
+src/lib/settings.ts 1eb117ec1e8235ae
+src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
 AGENTS.md 1cd15e70755d13cc

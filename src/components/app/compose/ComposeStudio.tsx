@@ -600,6 +600,7 @@ export function ComposeStudio({
             type="button"
             onClick={() => setShowVersions((v) => !v)}
             disabled={!draftId}
+            title={draftId ? "See earlier versions of this draft" : "Opens after your first autosave — keep typing"}
             className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground disabled:opacity-40"
           >
             <History className="mr-1 inline size-3" />

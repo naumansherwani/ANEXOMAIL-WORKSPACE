@@ -31,6 +31,7 @@ declare
   seats        integer;
   renews_at    timestamptz;
   cancel_at    timestamptz;
+  lifetime     boolean := false;
 begin
   -- ── SECURITY: only own row or service_role ────────────────────────────────
   if auth.uid() is distinct from p_user_id
@@ -39,6 +40,14 @@ begin
   end if;
 
   if p_user_id is null then return null; end if;
+
+  -- Family accounts (founder ka parivar) = asli buyer jaisa SAB KUCH, farq sirf itna ke unka plan muft aur umar bhar ka hai.
+  -- Billing page "£/month" ki jagah "Lifetime access" dikhata hai. Koi alag code path nahi.
+  select exists (
+    select 1 from auth.users u
+    join public.family_accounts f on lower(f.email) = lower(u.email)
+    where u.id = p_user_id
+  ) into lifetime;
 
   -- ── Step 1: account_kind — personal vs business [Phase 65] ───────────────
   select lower(nullif(btrim(coalesce(
@@ -170,7 +179,8 @@ begin
       'seats_used',             0,
       'storage_per_mailbox_gb', null,
       'renews_at',              null,
-      'cancel_at',              null
+      'cancel_at',              null,
+      'lifetime',               lifetime
     );
   end if;
 
@@ -186,7 +196,8 @@ begin
     'seats_used',             1,
     'storage_per_mailbox_gb', storage,
     'renews_at',              renews_at,
-    'cancel_at',              cancel_at
+    'cancel_at',              cancel_at,
+    'lifetime',               lifetime
   );
 end;
 $$;

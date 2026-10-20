@@ -241,6 +241,18 @@ export const shortValue = (v: Setting["value"]) =>
         : "Off"
       : String(v);
 
+/**
+ * Setting ki value insani zuban mein (key dekh kar). Pehle "Retention window" sirf "0" dikhata tha — kisi ko samajh nahi aata
+ * ke 0 ka matlab kya hai. Retention: 0 = "Keep forever (nothing is deleted automatically)", N = "N days".
+ */
+export function describeValue(setting: Pick<Setting, "key" | "value">): string {
+  const n = typeof setting.value === "string" ? Number(setting.value.trim()) : setting.value;
+  if (/retention/i.test(setting.key) && typeof n === "number" && Number.isFinite(n)) {
+    return n <= 0 ? "Keep forever — nothing is deleted automatically" : `${n} day${n === 1 ? "" : "s"} then permanently deleted`;
+  }
+  return shortValue(setting.value);
+}
+
 /** "Bahar ki tasveerein khud na kholo" (tracking pixel). Default ON; sirf user ne khud band kiya ho to OFF. */
 export function useBlockRemoteImages(): boolean {
   const q = useSettings("privacy");
