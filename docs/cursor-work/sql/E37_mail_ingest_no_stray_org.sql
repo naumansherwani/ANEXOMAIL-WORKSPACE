@@ -18,9 +18,9 @@
 --      (mailbox_address bhi resolved@). Agar resolved@ ki org na mile to sirf 'trash' folder. Delete kuch nahi hota.
 --   4. self-test (sab rollback): system pata -> resolved@, anjaan pata -> quarantine (koi thread nahi bana), jaana pata -> core.
 -- Grants: naya mail_ingest sirf service_role (+ owner); mail_ingest_core public/anon/authenticated se wapas (bypass band).
--- Chalane ka tareeqa: . /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f E37_mail_ingest_no_stray_org.sql
+-- Chalane ka tareeqa: Supabase SQL Editor mein poori file paste -> Run (psql ka koi \-command nahi), ya server se:
+--   . /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f E37_mail_ingest_no_stray_org.sql
 -- Fail ho to poora rollback (ek hi transaction). SQL fail rule: isi file ko theek kiya jayega.
-\set ON_ERROR_STOP on
 set search_path = public, extensions;
 begin;
 select pg_advisory_xact_lock(hashtext('E37_mail_ingest_no_stray_org'));
