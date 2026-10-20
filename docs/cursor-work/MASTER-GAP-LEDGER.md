@@ -97,3 +97,6 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - CODE: server/brain-crm-install.sh (CRM tenant isolation, live crm.ts purana) — Brain command pending founder run.
 - NOTE: G35 deadline real users only; test accounts exempt. cron `.bak` file inert (Debian ignores dotted names).
 - TODO: schema-public.sql capture rerun without Ctrl+C.
+- 21 Oct 02:00: LIVE GREEN basic.test: Graphics toggle visible in Settings->Appearance; sidebar scrollbar gone; Brain CRM tenant isolation installed (health 200, unauth 401).
+- CODE: auth-passkey.ts /passkey/status exempts test accounts (email local part ends "test") — Brain passkey installer to run. Capture script false RED (alphabet constant) filtered.
+- NOTE: "graphics" abhi sirf aurora/glow/float par asar; 3D abhi bana hi nahi — toggle tayyar, 3D usay padhega.

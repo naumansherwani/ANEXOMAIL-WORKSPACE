@@ -295,6 +295,11 @@ export function mountPasskeyRoutes(
   authRouter.get("/passkey/status", async (req, res) => {
     const identity = await userFrom(req, res);
     if (!identity) return;
+    // Founder 21 Oct 2026: 27 Oct deadline sirf REAL users ke liye. Test accounts (basic.test@, pro.test@, g38b-test@ ...) par
+    // na banner na gate — ghalti se lock na hon. Asli users ka email "test@" par khatam nahi hota.
+    if (/(^|[._-])test@/i.test(String((identity.user as any).email || ""))) {
+      return res.json({ exempt: true, required: false, hard: false, count: 0, target: 0, codes_remaining: 1 });
+    }
     const { data, error } = await getAdmin().rpc("passkey_status", { _user: identity.user.id });
     if (error) {
       // E43 SQL abhi nahi chala: gate nahi lagate (honest: "unknown"), kuch toota nahi

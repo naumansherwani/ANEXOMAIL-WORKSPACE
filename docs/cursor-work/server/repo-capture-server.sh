@@ -57,7 +57,7 @@ echo "   (dobara-line saboot: sync-maps wali lines kitni jagah)"; grep -c "anexo
 echo "== 6) safety: secret bacha to push NAHI"
 BAD=$(grep -rEIn '(pass(word)?|secret|token|api[_-]?key)[A-Za-z0-9_]*[[:space:]]*[=:][[:space:]]*[^[:space:]\[]{8,}' "$SNAP" --exclude-dir=sql 2>/dev/null | grep -v "REDACTED" | grep -vE 'process\.env|\$\{|\$[A-Z_]+|=\s*(true|false|null|""|'"''"')' | head -8)
 # SQL dump: function bodies mein 'token = ...' normal hai; sirf lambi random literal (hardcoded secret jaisi) rokte hain
-BADSQL=$(grep -rEIn "'[A-Za-z0-9+/=]{32,}'|eyJ[A-Za-z0-9_-]{20,}|sk_(live|test)_|whsec_" "$SNAP/sql" 2>/dev/null | head -8)
+BADSQL=$(grep -rEIn "'[A-Za-z0-9+/=]{32,}'|eyJ[A-Za-z0-9_-]{20,}|sk_(live|test)_|whsec_" "$SNAP/sql" 2>/dev/null | grep -viE 'alphabet|charset|chars +constant' | head -8)
 BAD="$BAD$BADSQL"
 if [ -n "$BAD" ]; then echo "RED: shak wali lines (sirf file:line, value nahi):"; echo "$BAD" | sed -E "s#^$SNAP/##; s/'[A-Za-z0-9+\/=_-]{32,}'/'<LONG-LITERAL>'/g; s/eyJ[A-Za-z0-9_-]{20,}/<JWT>/g; s/(sk_(live|test)_|whsec_)[A-Za-z0-9]+/\1<X>/g" | cut -c1-170 | sort -u; echo "Push roka. Folder: $SNAP"; exit 1; fi
 echo "   saaf"
