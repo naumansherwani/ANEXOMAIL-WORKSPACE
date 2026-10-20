@@ -12,6 +12,8 @@ import { api, ApiError } from "@/lib/api";
 import { rpcOrRest } from "@/lib/rpc";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
+import { enrolPasskey, PASSKEY_STATUS_KEY, regenerateRecoveryCodes, usePasskeyStatus } from "@/lib/passkey";
+import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
 
 export const Route = createFileRoute("/app/account")({
   head: () => ({
@@ -86,6 +88,8 @@ function sessionMeta(s: DeviceSession): string {
 function AccountPage() {
   const { session, refresh } = useAuth();
   const queryClient = useQueryClient();
+  const [newCodes, setNewCodes] = useState<string[] | null>(null);
+  const pkStatus = usePasskeyStatus();
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -311,8 +315,13 @@ function AccountPage() {
               variant="outline"
               className="ax-press"
               onClick={() =>
-                void enrollPasskey()
-                  .then(() => void queryClient.invalidateQueries({ queryKey: ["auth", "passkeys"] }))
+                void enrolPasskey()
+                  .then((res) => {
+                    void queryClient.invalidateQueries({ queryKey: ["auth", "passkeys"] });
+                    void queryClient.invalidateQueries({ queryKey: PASSKEY_STATUS_KEY });
+                    if (res.recovery_codes) setNewCodes(res.recovery_codes);
+                    else notify.done("Passkey added", "You can now sign in without a password.");
+                  })
                   .catch((error: unknown) => {
                     notify.failed("Passkey not added", {
                       description: error instanceof Error ? error.message : "Please try again.",
@@ -365,8 +374,14 @@ function AccountPage() {
         <section className="rounded-xl border border-border bg-card p-ax-4">
           <h2 className="ax-label text-foreground">Passkeys</h2>
           <p className="ax-caption mt-1">
-            Face ID / Touch ID / Windows Hello on this site only. Remove a passkey if the phone is lost.
+            Face ID / Touch ID / Windows Hello, or your phone by QR code. Keep two (for example phone and laptop) so losing
+            one never locks you out. Remove a passkey if its device is lost.
           </p>
+          {pkStatus.data && !pkStatus.data.unknown ? (
+            <p className="ax-caption mt-1 font-semibold text-foreground" data-testid="passkey-count">
+              {pkStatus.data.count} of {pkStatus.data.target} passkeys · {pkStatus.data.codes_remaining} recovery codes left
+            </p>
+          ) : null}
           <div className="mt-ax-3">
             {passkeys.isLoading ? (
               <ListSkeleton rows={2} />
@@ -405,6 +420,30 @@ function AccountPage() {
               </ul>
             )}
           </div>
+          {pkStatus.data && !pkStatus.data.unknown && pkStatus.data.count > 0 ? (
+            <div className="mt-ax-3 border-t border-border pt-ax-3">
+              {newCodes ? (
+                <RecoveryCodesPanel codes={newCodes} doneLabel="Done" onDone={() => { setNewCodes(null); void queryClient.invalidateQueries({ queryKey: PASSKEY_STATUS_KEY }); }} />
+              ) : (
+                <Button
+                  variant="outline"
+                  className="ax-press"
+                  onClick={() =>
+                    void regenerateRecoveryCodes()
+                      .then((codes) => setNewCodes(codes))
+                      .catch((error: unknown) =>
+                        notify.failed("Could not create recovery codes", {
+                          description: error instanceof Error ? error.message : "Try again.",
+                        }),
+                      )
+                  }
+                >
+                  New recovery codes
+                </Button>
+              )}
+              {!newCodes && <p className="ax-caption mt-1">Creating new codes cancels the old ones.</p>}
+            </div>
+          ) : null}
         </section>
 
         <section className="rounded-xl border border-border bg-card p-ax-4">
@@ -615,20 +654,3 @@ function PasswordInput({ id, label, value, onChange, visible }: { id: string; la
   );
 }
 
-/** WebAuthn registration — the backend owns the challenge and the credential store. */
-async function enrollPasskey() {
-  if (!window.PublicKeyCredential) throw new Error("This device doesn't support passkeys.");
-  const options = await api<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
-    "/api/auth/passkey/register/options",
-    { method: "POST" },
-  );
-  const credential = await navigator.credentials.create({
-    publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options.publicKey),
-  });
-  if (!credential) throw new Error("Passkey creation was cancelled.");
-  await api("/api/auth/passkey/register/verify", {
-    method: "POST",
-    body: JSON.stringify((credential as PublicKeyCredential).toJSON()),
-  });
-  notify.done("Passkey added", "You can now sign in without a password.");
-}

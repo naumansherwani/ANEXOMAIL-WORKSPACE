@@ -19,6 +19,8 @@ import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
+import { enrolPasskey as createPasskey } from "@/lib/passkey";
+import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
 import { cn } from "@/lib/utils";
 
 const SAVE_PASSWORD_KEY = "anexo.auth.save_password";
@@ -94,7 +96,7 @@ export const Route = createFileRoute("/auth")({
   component: AuthPage,
 });
 
-type Mode = "login" | "kind" | "signup" | "link" | "forgot" | "reset";
+type Mode = "login" | "kind" | "signup" | "link" | "forgot" | "reset" | "recovery";
 
 // LOCKED: social sign-in (Google / Apple / GitHub) ANEXOMAIL par nahi hai.
 // User khud account banata hai (email + password) → Supabase → dashboard.
@@ -128,6 +130,9 @@ function AuthPage() {
   /** Passkey enrolment gate — signup ke baad lazmi step. */
   const [enrol, setEnrol] = useState(false);
   const [enrolBlocked, setEnrolBlocked] = useState<string | null>(null);
+  /** G35: pehle passkey ke saath bane 10 recovery codes — user save kar le tab aage */
+  const [enrolCodes, setEnrolCodes] = useState<string[] | null>(null);
+  const [recoveryCode, setRecoveryCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -233,6 +238,20 @@ function AuthPage() {
 
       if (!mailbox && mode !== "reset") {
         setError("Enter your name only — @anexomail.com is already set.");
+        return;
+      }
+
+      if (mode === "recovery") {
+        const res = await api<{ token: string; codes_left?: number } & Session>("/api/auth/recovery-codes/redeem", {
+          method: "POST",
+          body: JSON.stringify({ email: mailbox, code: recoveryCode }),
+          auth: false,
+        });
+        notify.done(
+          "Signed in with a recovery code",
+          `${res.codes_left ?? 0} codes left. Add a new passkey now — your old devices may be lost.`,
+        );
+        await finish(res.token, res);
         return;
       }
 
@@ -392,34 +411,25 @@ function AuthPage() {
     setEnrolBlocked(null);
     if (!("credentials" in navigator) || !window.PublicKeyCredential) {
       setEnrolBlocked(
-        "This device can't create a passkey. Open the link on a phone or laptop with Face ID, Touch ID, fingerprint or Windows Hello.",
+        "This browser can't create a passkey. Open ANEXOMAIL in an up-to-date Chrome, Edge, Safari or Firefox — on a computer without Face ID or Windows Hello you can use your phone (QR code).",
       );
       return;
     }
     setBusy(true);
     try {
-      const options = await api<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
-        "/api/auth/passkey/register/options",
-        { method: "POST", body: JSON.stringify({ email: anexomailAddress(email) }) },
-      );
-      const credential = await navigator.credentials.create({
-        publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options.publicKey),
-      });
-      if (!credential) throw new Error("cancelled");
-      const res = await api<{ token?: string }>("/api/auth/passkey/register/verify", {
-        method: "POST",
-        body: JSON.stringify((credential as PublicKeyCredential).toJSON()),
-      });
-      notify.done("Passkey saved", "This device can now sign you in without a password.");
+      const res = await createPasskey();
+      notify.done("Passkey saved", "You can now sign in without a password.");
+      if (res.recovery_codes) {
+        setEnrolCodes(res.recovery_codes);
+        return;
+      }
       setEnrol(false);
       const token = res.token ?? sessionToken.get();
       if (!token) throw new Error("session_missing");
       await finish(token);
     } catch (e) {
       if (e instanceof ApiError && e.isNotImplemented) {
-        setEnrolBlocked(
-          "Passkey enrolment isn't live on the server yet — it will be required as soon as it is.",
-        );
+        setEnrolBlocked("Passkey enrolment isn't live on the server yet.");
       } else {
         fail(e);
       }
@@ -428,57 +438,55 @@ function AuthPage() {
     }
   };
 
+  const finishAfterCodes = async () => {
+    setEnrolCodes(null);
+    setEnrol(false);
+    const token = sessionToken.get();
+    if (!token) {
+      setError("Your session expired. Sign in again.");
+      return;
+    }
+    await finish(token);
+  };
+
   // ── Passkey enrolment screen (post-signup) — centred, no split ──
   if (enrol) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16">
         <div className="ax-in w-full max-w-[27rem] rounded-2xl border border-border bg-card p-ax-5 text-center shadow-2xl">
           <BrandMark />
-          <ShieldCheck className="mx-auto mt-ax-4 size-6 text-cyan-accent" aria-hidden="true" />
-          <h1 className="ax-heading mt-ax-3 text-foreground">Add your passkey</h1>
-          <p className="ax-caption mt-2">
-            Face ID, Touch ID, fingerprint or Windows Hello on this device. If this device cannot
-            do that, continue with your password — we will not fake a saved passkey.
-          </p>
-          {enrolBlocked && (
-            <p role="alert" className="ax-caption mt-ax-3 text-destructive">
-              {enrolBlocked}
-            </p>
+          {enrolCodes ? (
+            <div className="mt-ax-4">
+              <RecoveryCodesPanel codes={enrolCodes} onDone={() => void finishAfterCodes()} />
+            </div>
+          ) : (
+            <>
+              <ShieldCheck className="mx-auto mt-ax-4 size-6 text-cyan-accent" aria-hidden="true" />
+              <h1 className="ax-heading mt-ax-3 text-foreground">Add your passkey</h1>
+              <p className="ax-caption mt-2">
+                A passkey is required, together with your password. Use Face ID, Touch ID, fingerprint or Windows Hello on
+                this device — or choose your phone and scan the QR code the browser shows.
+              </p>
+              {enrolBlocked && (
+                <p role="alert" className="ax-caption mt-ax-3 text-destructive">
+                  {enrolBlocked}
+                </p>
+              )}
+              {error && (
+                <p role="alert" className="ax-caption mt-ax-3 text-destructive">
+                  {error}
+                </p>
+              )}
+              <Button className="ax-press mt-ax-4 w-full" onClick={enrolPasskey} disabled={busy}>
+                {busy && <Loader2 className="size-4 animate-spin" />}
+                <KeyRound className="size-4" />
+                Create my passkey
+              </Button>
+              <p className="ax-caption mt-ax-3">
+                Two days of real, limited workspace access start the moment your passkey is saved.
+              </p>
+            </>
           )}
-          {error && (
-            <p role="alert" className="ax-caption mt-ax-3 text-destructive">
-              {error}
-            </p>
-          )}
-          <Button className="ax-press mt-ax-4 w-full" onClick={enrolPasskey} disabled={busy}>
-            {busy && <Loader2 className="size-4 animate-spin" />}
-            <KeyRound className="size-4" />
-            Create my passkey
-          </Button>
-          <Button
-            variant="ghost"
-            className="mt-ax-2 w-full"
-            onClick={() => {
-              const token = sessionToken.get();
-              if (!token) {
-                setEnrolBlocked("Your session expired. Sign in again.");
-                return;
-              }
-              setEnrol(false);
-              void finish(token);
-            }}
-          >
-            Continue with password on this device
-          </Button>
-          {enrolBlocked && (
-            <p className="ax-caption mt-ax-2">
-              Open ANEXOMAIL on a phone or laptop with Face ID, Touch ID or Windows Hello to add a
-              passkey later from Account.
-            </p>
-          )}
-          <p className="ax-caption mt-ax-3">
-            Two days of real, limited workspace access start the moment you continue.
-          </p>
         </div>
       </main>
     );
@@ -549,6 +557,8 @@ function AuthPage() {
                           : "Personal workspace — then choose your plan."
                       }
                     />
+                  ) : mode === "recovery" ? (
+                    <Header title="Use a recovery code" sub="Lost your phone and your passkeys? Enter one of the 10 codes you saved. Each works once." />
                   ) : mode === "link" ? (
                     <Header title="Email me a link" sub="No password. The link signs you straight in." />
                   ) : mode === "forgot" ? (
@@ -670,7 +680,17 @@ function AuthPage() {
                             autoComplete={mode === "login" ? "username" : "email"}
                           />
                         )}
-                        {mode !== "link" && mode !== "forgot" && (
+                        {mode === "recovery" && (
+                          <Field
+                            id="recovery-code"
+                            label="Recovery code"
+                            value={recoveryCode}
+                            onChange={setRecoveryCode}
+                            autoComplete="off"
+                            placeholder="XXXX-XXXX-XXXX"
+                          />
+                        )}
+                        {mode !== "link" && mode !== "forgot" && mode !== "recovery" && (
                           <>
                             <PasswordField
                               id="password"
@@ -779,7 +799,9 @@ function AuthPage() {
                               ? "Save new password"
                               : mode === "link"
                                 ? "Send me the link"
-                                : "Sign in"}
+                                : mode === "recovery"
+                                  ? "Sign in with code"
+                                  : "Sign in"}
                     </Button>
                   </motion.form>
                 </AnimatePresence>
@@ -831,6 +853,18 @@ function AuthPage() {
                       <Mail className="size-4" />
                       Email me a sign-in link
                     </Button>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-full"
+                      onClick={() => {
+                        setError(null);
+                        setMode("recovery");
+                      }}
+                    >
+                      <ShieldCheck className="size-4" />
+                      Lost your passkey? Use a recovery code
+                    </Button>
                   </div>
                     </>
                   ) : null}
@@ -845,7 +879,7 @@ function AuthPage() {
                   <p className="ax-caption mt-ax-4 text-center">
                     {mode === "signup"
                       ? "Already have a workspace?"
-                      : mode === "forgot" || mode === "reset"
+                      : mode === "forgot" || mode === "reset" || mode === "recovery"
                         ? "Remembered it?"
                         : "New here?"}{" "}
                     {mode === "login" ? (

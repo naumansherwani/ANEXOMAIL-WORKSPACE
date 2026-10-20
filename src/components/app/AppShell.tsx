@@ -33,6 +33,7 @@ import { LanguagePicker } from "@/components/site/LanguagePicker";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
+import { PasskeyGate } from "@/components/app/security/PasskeyGate";
 import { founderSurfaceAllowed, isAiHost, isPublicMailHost } from "@/lib/host";
 import { railItemVisible, surfaceFromSession } from "@/lib/plan-surface";
 import {
@@ -320,6 +321,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </header>
       <TrialStrip />
+      <PasskeyGate />
 
       <div className="flex min-h-0 flex-1">
         {/* Rail */}

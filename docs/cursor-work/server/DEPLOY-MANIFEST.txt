@@ -6,7 +6,7 @@ src/routes/app.domains.tsx 518f36d7e161bad0
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx ebe14394b7858d92
+src/components/app/AppShell.tsx f7ae04dd620793a0
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
@@ -41,7 +41,7 @@ src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts 69362c78d74e8ac6
 src/routes/app.billing.tsx 8d59ed0431521528
-src/routes/app.account.tsx 843adbe1d21b639f
+src/routes/app.account.tsx 5c24a00ebe06d672
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx b75efea04cb39d90
 src/routes/app.admin.teams.tsx e97e4983a7605ae5
@@ -89,7 +89,7 @@ src/routeTree.gen.ts defa7284fa250b42
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
-src/routes/auth.tsx f41cf236515f3868
+src/routes/auth.tsx cf2443f6865f2218
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -125,9 +125,14 @@ src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
-docs/cursor-work/PROMISES.md 98c21639c995c36c
+docs/cursor-work/PROMISES.md 90aec91938ecef43
 docs/cursor-work/founder/founder-commands.md f8c3f444564f96e5
-docs/anexomail-blueprint.md 96d2626a4d9ca1e7
+docs/anexomail-blueprint.md 32a4780311095a7c
 docs/cursor-work/sql/E41_family_real_buyer.sql aed0627ce876b104
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
 docs/cursor-work/server/device-hash-migrate.sh a23c198866587da0
+src/lib/passkey.ts ca09a15968cb24af
+src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
+src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
+server/routes/auth-passkey.ts 0863d9eca19a97e1
+docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c

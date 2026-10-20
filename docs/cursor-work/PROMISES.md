@@ -19,3 +19,10 @@
 | 12 | File safety apne infrastructure par | ? | - | VERIFY |
 
 Audit chalte waqt har "VERIFY" ko live/code se green ya TODO banana hai.
+
+## Passkey (G35) — founder ka faisla 20 Oct: password + passkey dono, passkey lazmi
+- Naya account: signup ke foran baad passkey screen (skip button hata diya), phir 10 recovery codes (save tick lazmi).
+- Purana account (Humza, test, Masood...): 7 din grace (patti), phir poori-screen gate. `passkey_policy.enforced_at` E43 chalne ka din; `grace_days` = 7.
+- 2 passkey (target): 1 hone par patti "backup passkey"; recovery codes khatam hon to patti.
+- Login: password ya passkey ya recovery code (`/api/auth/recovery-codes/redeem`, 15 min mein 5 galat par rok).
+- Family accounts: koi chhoot nahi (asli buyer jaisa).

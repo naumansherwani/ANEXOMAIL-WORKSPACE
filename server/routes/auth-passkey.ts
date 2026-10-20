@@ -102,6 +102,12 @@ export function mountPasskeyRoutes(
         expires_at: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
       });
       if (error) return fail(res, 500, "passkey_challenge_failed");
+      // G35: pehle se registered credentials exclude (ek hi device par dobara nahi) —
+      // aur `authenticatorAttachment` NAHI lagate: phone (QR/hybrid), laptop, security key sab chalen.
+      const { data: existing } = await getAdmin()
+        .from("webauthn_credentials")
+        .select("credential_id")
+        .eq("user_id", identity.user.id);
       res.json({
         publicKey: {
           challenge,
@@ -115,8 +121,11 @@ export function mountPasskeyRoutes(
             { type: "public-key", alg: -7 },
             { type: "public-key", alg: -257 },
           ],
+          excludeCredentials: (existing || []).map((c: any) => ({
+            type: "public-key",
+            id: String(c.credential_id),
+          })),
           authenticatorSelection: {
-            authenticatorAttachment: "platform",
             residentKey: "preferred",
             userVerification: "required",
           },
@@ -158,7 +167,8 @@ export function mountPasskeyRoutes(
         origin: rp.origin,
         rpId: rp.rpId,
       });
-      const ua = String(req.headers["user-agent"] || "This device").slice(0, 80);
+      const label = String(req.body?.label || "").replace(/[^\w .,'()-]/g, "").trim().slice(0, 60);
+      const ua = label || String(req.headers["user-agent"] || "This device").slice(0, 80);
       const { error: insError } = await getAdmin().from("webauthn_credentials").insert({
         user_id: identity.user.id,
         credential_id: parsed.credentialId,
@@ -171,7 +181,19 @@ export function mountPasskeyRoutes(
       if (insError) return fail(res, 400, insError.message.includes("duplicate") ? "passkey_already_registered" : "passkey_save_failed");
       await getAdmin().from("webauthn_challenges").delete().eq("challenge", row.challenge);
       await markPasskeySet(identity.user.id);
-      res.json({ token: identity.token, ok: true });
+      const { count } = await getAdmin()
+        .from("webauthn_credentials")
+        .select("id", { count: "exact", head: true })
+        .eq("user_id", identity.user.id);
+      // G35: pehla passkey bante hi 10 recovery codes (plain sirf yahin, ek baar; DB mein sirf hash)
+      let recovery_codes: string[] | null = null;
+      if ((count || 0) === 1) {
+        const { data: codes } = await getAdmin().rpc("recovery_codes_regenerate", {
+          _user: identity.user.id,
+        });
+        if (Array.isArray(codes)) recovery_codes = codes as string[];
+      }
+      res.json({ token: identity.token, ok: true, passkey_count: count || 0, recovery_codes });
     } catch (e: any) {
       return fail(res, 400, String(e?.message || "passkey_verify_failed"));
     }
@@ -266,6 +288,48 @@ export function mountPasskeyRoutes(
       res.json(session);
     } catch (e: any) {
       return fail(res, 400, String(e?.message || "passkey_verify_failed"));
+    }
+  });
+
+  // G35: passkey status (gate + banners ke liye) — session ko bhari nahi karta
+  authRouter.get("/passkey/status", async (req, res) => {
+    const identity = await userFrom(req, res);
+    if (!identity) return;
+    const { data, error } = await getAdmin().rpc("passkey_status", { _user: identity.user.id });
+    if (error) {
+      // E43 SQL abhi nahi chala: gate nahi lagate (honest: "unknown"), kuch toota nahi
+      return res.json({ unknown: true, required: false, hard: false, count: 0, target: 2, codes_remaining: 0 });
+    }
+    res.json(data);
+  });
+
+  // G35: recovery codes dobara banao (purane unused mit jate hain). Kam az kam ek passkey lazmi.
+  authRouter.post("/recovery-codes/generate", async (req, res) => {
+    const identity = await userFrom(req, res);
+    if (!identity) return;
+    const { count } = await getAdmin()
+      .from("webauthn_credentials")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", identity.user.id);
+    if (!count) return fail(res, 400, "passkey_required_first");
+    const { data, error } = await getAdmin().rpc("recovery_codes_regenerate", { _user: identity.user.id });
+    if (error || !Array.isArray(data)) return fail(res, 500, "recovery_codes_failed");
+    res.json({ codes: data });
+  });
+
+  // G35: passkey/phone kho gaya + password bhi yaad nahi => email + ek recovery code => session (phir naya passkey lazmi)
+  authRouter.post("/recovery-codes/redeem", async (req, res) => {
+    try {
+      const email = anexomailIdentity(String(req.body?.email || ""));
+      const code = String(req.body?.code || "").slice(0, 40);
+      if (!email || !code) return fail(res, 400, "invalid");
+      const { data, error } = await getAdmin().rpc("recovery_code_redeem", { _email: email, _code: code });
+      if (error) return fail(res, 500, "recovery_codes_unavailable");
+      if (!data?.ok) return fail(res, data?.error === "too_many_attempts" ? 429 : 400, data?.error || "invalid");
+      const session = await sessionForEmail(getAdmin(), email, req, sessionResult);
+      res.json({ ...(session as object), codes_left: data.codes_left, must_add_passkey: true });
+    } catch (e: any) {
+      return fail(res, 400, String(e?.message || "recovery_failed"));
     }
   });
 
