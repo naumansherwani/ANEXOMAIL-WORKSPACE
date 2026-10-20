@@ -119,14 +119,14 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
-AGENTS.md 4d172b7cf05b9af3
+AGENTS.md f70626cb87a13d95
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md 1ab7654e13e647e5
-docs/cursor-work/founder/founder-commands.md 01d5cf8e7bc0e948
+docs/cursor-work/founder/founder-commands.md fe0429182e15da22
 docs/anexomail-blueprint.md 2b7e8c4788e5d2a7
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -164,3 +164,4 @@ docs/cursor-work/sql/E47_device_revoke_real_sessions.sql e49676f1750d6dbb
 server/rust/device_core.rs fbfbfac4b8ad41fd
 server/rust/device_glue.rs f234c8637dc504d6
 src/components/app/security/DeviceVaultPanel.tsx 762e353ee01093f8
+docs/cursor-work/DONE-LOG.md 8184b39c9125a0ad
