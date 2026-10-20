@@ -11,7 +11,7 @@ src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
 src/styles.css 1ca7acbe178125db
-src/routes/app.mail.$folder.tsx 86645a2c7f8343a2
+src/routes/app.mail.$folder.tsx 0afba7c1e19513b6
 src/routes/app.mail.$folder.$threadId.tsx 644c573c59a903c4
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0

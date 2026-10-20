@@ -48,6 +48,11 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 10:30 PKT — founder: "na drag chalta hai aur na AI settings tamamam packages se remove hota hai is ko chat main fix kero" (+ server pull output)
+- Wajah (server output se): pull ka **build FAIL** hua (`Missing export`) => purani files wapas. Meri galti: batch 8 mein `app.mail.$folder.tsx` revert ki par DEPLOY-MANIFEST ka sha update nahi kiya => server ne file chhodi (SHA MISMATCH) aur purani file nayi `use-drag-scroll.ts` se `useDragScroll` mangti thi (ab hai nahi).
+- Fix: manifest-sync + **saari 120 manifest entries ka sha repo se verify (0 stale)**. Qaida: koi bhi file revert/badalne ke baad manifest-sync, phir sab entries verify, phir push.
+- Founder ko wahi pull dobara; "server==repo differ=0" aur "build: OK" aana chahiye.
+
 ### 20 Oct 2026 10:06 PKT — founder: "sab green hai, yeh drag right side pe jahan pe mail open hoti hain waha pe nahi ho raha hai. aur basic package main AI settings kyon hai yeh itnay blunder kyon tum live login ke bawajod bhi incompetent ho. fix kero aur login ker ke dekho phir batao"
 - Halat: **READY** (batch 8). Drag ab har patti par (thread side bhi); Basic se AI settings + Leo Actions tab hata (AI zero qaida). Live-login (basic.test) local build par test: list + thread ki 6 patti drag OK; settings tabs mein AI nahi; integrations mein Leo Actions nahi.
 - Sabaq: naya feature/page likhne se pehle PACKAGE-FEATURE-FORMULA.md ke "kis plan ko kya" gate check karo; AI = sirf ai host.
