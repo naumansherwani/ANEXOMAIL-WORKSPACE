@@ -14,8 +14,6 @@ export function FxAmbient({ plan }: { plan?: string | null }) {
       className="ax-fx-ambient pointer-events-none fixed inset-0 z-[5]"
       style={{ ["--fx-core" as string]: o.core, ["--fx-glow" as string]: o.glow, ["--fx-ring" as string]: o.ring ?? o.glow }}
     >
-      <span className="ax-fx-blob ax-fx-blob-a" />
-      <span className="ax-fx-blob ax-fx-blob-b" />
       <span className="ax-fx-edge" />
     </div>
   );

@@ -1336,17 +1336,14 @@ nav[aria-label="Workspace navigation"] > div::-webkit-scrollbar { display: none;
 .ax-fx-blob-b { bottom: -22%; right: -12%; width: 42vmax; height: 42vmax; background: var(--fx-glow); opacity: .16; animation: ax-fx-float-b 32s ease-in-out infinite; }
 /* Chamakti hui border: plan ke rang ki roshni screen ke kinare ke saath ghoomti hai */
 .ax-fx-edge {
-  position: absolute; inset: 0; padding: 2px; pointer-events: none;
+  position: absolute; inset: 0; padding: 1px; pointer-events: none; opacity: .55;
   background: conic-gradient(from var(--ax-fx-a), transparent 0deg, var(--fx-core) 70deg, var(--fx-ring) 120deg, transparent 200deg, transparent 260deg, var(--fx-glow) 310deg, transparent 360deg);
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   animation: ax-fx-spin 9s linear infinite, ax-fx-pulse 5s ease-in-out infinite;
-  filter: drop-shadow(0 0 6px var(--fx-glow));
 }
 @media (max-width: 1023px) {          /* phone + tablet: halka */
-  .ax-fx-blob { filter: blur(48px); opacity: .16; }
-  .ax-fx-blob-b { display: none; }
-  .ax-fx-edge { padding: 1.5px; animation-duration: 12s, 6s; filter: none; }
+  .ax-fx-edge { animation-duration: 12s, 6s; opacity: .4; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ax-fx-blob, .ax-fx-edge { animation: none !important; }

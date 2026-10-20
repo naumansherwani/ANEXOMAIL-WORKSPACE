@@ -492,3 +492,6 @@ Loophole ledger (sach)
 ## 21 Oct 2026 02:42 PKT
 "yeh grapichs jo brown border pe hai abhi tak live nahi huway hain aur appearance main in ka toggle bana diya hai ... Graphics & visual effects yeh abhi real working banao jaldi se"
 -> FxAmbient: workspace ke kinare par plan-rang ki ghoomti roshni border + 2 halke aurora blobs + card hover glow (CSS only, phone/tablet halka). Toggle OFF/calm/reduced-motion par chhupa. READY (src/components/fx/FxAmbient.tsx + styles.css "FX AMBIENT"). Live test Web pull ke baad.
+
+## 21 Oct 2026 02:49 PKT
+Founder ne screenshot dikhaya: ambient aurora blob se neela dhabba + hard edge (sidebar ke sath). "yeh kya barbad kar dia". -> blobs hata diye, edge-light 1px halki. Brain installer FAIL (express resolve: node_modules upar) fix kiya; kuch install nahi hua tha (safe).

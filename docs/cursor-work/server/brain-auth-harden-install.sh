@@ -29,9 +29,12 @@ chk routes/auth.ts "$OLD_AUTH" || exit 3
 echo "status:$ST"
 case "$ST" in *update*|*:new*) ;; *) echo "Sab pehle se lagi hain."; exit 0;; esac
 # pre-flight: poori Brain copy par nayi files lagao aur build karo (live ko haath lagane se pehle)
-mkdir -p "$T/pf"; (cd "$SRC" && tar cf - --exclude=node_modules .) | (cd "$T/pf" && tar xf -); [ -d "$SRC/node_modules" ] && ln -s "$SRC/node_modules" "$T/pf/node_modules"
-cp "$T/lib/auth-harden.ts" "$T/pf/lib/"; cp "$T/lib/supa.ts" "$T/pf/lib/"; cp "$T/routes/auth.ts" "$T/pf/routes/"
-"$BUN" build "$T/pf/index.ts" --target=bun --outfile "$T/pf/out.js" >"$T/b.log" 2>&1 || { tail -20 "$T/b.log"; echo "!! nayi files ka build FAIL — kuch install nahi hua."; exit 1; }
+# node_modules Brain src ke upar (ya andar) hota hai — upar chadh kar dhoondo, pre-flight copy ke saath lagao.
+NM=""; d="$SRC"; for _ in 1 2 3; do [ -d "$d/node_modules" ] && { NM="$d/node_modules"; break; }; d="$(dirname "$d")"; done
+[ -n "$NM" ] || { echo "FAIL: Brain ka node_modules nahi mila (SRC=$SRC)"; exit 2; }
+mkdir -p "$T/pf/app/src"; (cd "$SRC" && tar cf - --exclude=node_modules .) | (cd "$T/pf/app/src" && tar xf -); ln -s "$NM" "$T/pf/app/node_modules"; PF="$T/pf/app/src"
+cp "$T/lib/auth-harden.ts" "$PF/lib/"; cp "$T/lib/supa.ts" "$PF/lib/"; cp "$T/routes/auth.ts" "$PF/routes/"
+"$BUN" build "$PF/index.ts" --target=bun --outfile "$T/pf/out.js" >"$T/b.log" 2>&1 || { tail -20 "$T/b.log"; echo "!! nayi files ka build FAIL — kuch install nahi hua."; exit 1; }
 mkdir -p "$B/lib" "$B/routes"
 for f in lib/supa.ts routes/auth.ts lib/auth-harden.ts; do [ -f "$SRC/$f" ] && cp -p "$SRC/$f" "$B/$f"; done
 cp "$T/lib/auth-harden.ts" "$SRC/lib/auth-harden.ts"; cp "$T/lib/supa.ts" "$SRC/lib/supa.ts"; cp "$T/routes/auth.ts" "$SRC/routes/auth.ts"
