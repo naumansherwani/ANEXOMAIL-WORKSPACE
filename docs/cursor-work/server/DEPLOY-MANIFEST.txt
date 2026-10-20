@@ -12,7 +12,7 @@ src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
 src/styles.css 1ca7acbe178125db
 src/routes/app.mail.$folder.tsx 28eb369bffc64912
-src/routes/app.mail.$folder.$threadId.tsx 4a20aa32edf5b394
+src/routes/app.mail.$folder.$threadId.tsx 595f72e0e279dd7d
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 475e7cd04813f1b4
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md ec57aa1fef15f3ce
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 2c119a202b4e146b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -213,11 +213,11 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md f82068087ff95f96
+docs/cursor-work/MASTER-GAP-LEDGER.md 72c878687338adab
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md b1c1e85cb0fb5cbd
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
 docs/cursor-work/sql/E51_calendar_response_fix.sql 6ffd0145f2bed06c
-docs/cursor-work/server/repo-capture-server.sh 048664c03b4d89fc
+docs/cursor-work/server/repo-capture-server.sh 09e7d2fd890c557d
 src/lib/notify.ts 28ac0eff9454cdd6

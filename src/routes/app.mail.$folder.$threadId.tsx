@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
 import { ArrowLeft, MailOpen, Paperclip, X } from "lucide-react";
 
+import { HScroll } from "@/components/app/HScroll";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
 import { InlineReply } from "@/components/app/mail/InlineReply";
@@ -108,16 +109,19 @@ function ThreadPage() {
           )}
         </div>
         {/* Phone par actions apni line mein (subject kat-ta nahi), desktop par dayein. */}
-        <div className="order-last flex w-full items-center gap-1 overflow-x-auto md:order-none md:ml-auto md:w-auto md:shrink-0 md:overflow-visible">
-          <ThreadHeaderActions
-            threadId={thread.id}
-            status={thread.status}
-            {...(thread.subject ? { subject: thread.subject } : {})}
-            participants={thread.messages
-              .map((m) => m.from_address)
-              .filter((a): a is string => Boolean(a))
-              .filter((a, i, arr) => arr.indexOf(a) === i)}
-          />
+        {/* Pane tang ho (laptop) to buttons katte nahi: HScroll = ‹ › + mouse drag + grab cursor (use-drag-scroll). */}
+        <div className="order-last flex w-full items-center gap-1 md:order-none md:ml-auto md:w-auto md:min-w-0 md:max-w-[72%]">
+          <HScroll wrapperClassName="min-w-0 flex-1" className="flex items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <ThreadHeaderActions
+              threadId={thread.id}
+              status={thread.status}
+              {...(thread.subject ? { subject: thread.subject } : {})}
+              participants={thread.messages
+                .map((m) => m.from_address)
+                .filter((a): a is string => Boolean(a))
+                .filter((a, i, arr) => arr.indexOf(a) === i)}
+            />
+          </HScroll>
           {/* Desktop/tablet par band karne ka button (phone par upar wala ← hai). Esc bhi yahi karta hai. */}
           <Link
             to="/app/mail/$folder"
