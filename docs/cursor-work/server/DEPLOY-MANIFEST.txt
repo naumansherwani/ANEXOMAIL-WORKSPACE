@@ -20,7 +20,7 @@ src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx 2e508aae6e3e3a6b
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
-src/components/site/SiteNav.tsx f93d2264ef6a5806
+src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
 src/routes/index.tsx ee7157f9e0bb9ffc
 src/routes/plans.tsx a1d82f6c281e20e4
