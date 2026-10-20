@@ -30,3 +30,6 @@ Qaida: Business Pro ka orb sab se zyada layers (inner glow + platinum ring + hal
 - Plans page: Basic card par halka tilt (Basic ko dikhane ke liye).
 - Dashboard hero Basic neela orb.
 - Sab jagah: mobile/tablet halka, laptop poora, ON/OFF toggle, reduced-motion band, lazy-load.
+
+## 21 Oct 2026 03:00 — STATUS: BANA (v1) — ab PARKED nahi
+Sab 5 jagah wire ho chuki hain (landing hero mailbox, loader logo, dashboard plan-orb, empty inbox/calendar, plans tilt). Mobile/tablet = "lite" (kam polygons/particles, dpr 1), laptop = "full" (pointer parallax). Toggle: Settings -> Appearance -> Graphics. Live test: 390/820/laptop pull ke baad.

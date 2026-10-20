@@ -1,3 +1,4 @@
+import { Fx3D } from "@/components/fx/Fx3D";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Archive, Clock, Mail, Paperclip, RefreshCw, Star, UserCheck } from "lucide-react";
@@ -150,7 +151,7 @@ export function ThreadList({
     }
     return (
       <EmptyState
-        icon={<Mail className="size-5" />}
+        icon={<Fx3D scene="gem" variant="inbox" className="pointer-events-none h-24 w-32" fallback={<Mail className="size-5" />} label="Empty inbox" />}
         title="Nothing here"
         body="No thread matches this folder or filter. New mail lands here the moment it is delivered."
       />

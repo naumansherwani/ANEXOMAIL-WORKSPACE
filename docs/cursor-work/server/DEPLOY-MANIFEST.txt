@@ -213,9 +213,9 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 11bb0a3f365e4cd2
+docs/cursor-work/MASTER-GAP-LEDGER.md 57ae8627bc4ee750
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
-docs/cursor-work/PLAN-3D-PARKED.md b1c1e85cb0fb5cbd
+docs/cursor-work/PLAN-3D-PARKED.md f7d55046bd8003f8
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
 docs/cursor-work/sql/E51_calendar_response_fix.sql 6ffd0145f2bed06c
@@ -226,3 +226,4 @@ src/lib/experience.ts adfcffbb33979c2c
 src/routes/app.settings.appearance.tsx 7911ac3654c2b006
 docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
 server/routes/auth-passkey.ts b6432ef501e9e322
+docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2

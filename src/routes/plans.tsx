@@ -1,3 +1,4 @@
+import { TiltCard } from "@/components/fx/TiltCard";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { useState } from "react";
@@ -548,9 +549,9 @@ function PlansPage() {
           {WORKSPACE_PLANS.map((p) => {
             const price = priceFor(p, cycle);
             return (
+              <TiltCard key={p.id} className="flex">
               <article
-                key={p.id}
-                className="ax-plane group flex flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
+                className="ax-plane group flex w-full flex-col rounded-3xl p-7 transition-colors duration-300 hover:border-primary/55"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h2 className="text-sm font-bold tracking-tight text-foreground">{p.name}</h2>
@@ -580,6 +581,7 @@ function PlansPage() {
                 />
                 <PlanCheckoutButton planId={p.id} cycle={cycle} source="plans" className="mt-5" />
               </article>
+              </TiltCard>
             );
           })}
         </section>

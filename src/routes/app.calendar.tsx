@@ -1,3 +1,4 @@
+import { Fx3D } from "@/components/fx/Fx3D";
 /**
  * /app/calendar — World-class Calendar
  *
@@ -259,7 +260,7 @@ function DayView({
     <div className="p-ax-4">
       {dayEvents.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8">
-          <CalendarDays className="size-8 text-muted-foreground/20" />
+          <Fx3D scene="gem" variant="calendar" className="pointer-events-none h-24 w-28" fallback={<CalendarDays className="size-8 text-muted-foreground/20" />} label="Empty calendar" />
           <p className="text-[12px] text-muted-foreground/50">Nothing scheduled today</p>
         </div>
       ) : (
