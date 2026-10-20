@@ -22,7 +22,7 @@ src/components/app/compose/ComposeStudio.tsx 2e508aae6e3e3a6b
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
-src/routes/index.tsx 1cce711ea82f9085
+src/routes/index.tsx ee7157f9e0bb9ffc
 src/routes/plans.tsx 89dff243447fd17f
 src/routes/app.people.tsx 423eb4164a4dceb4
 src/routes/app.work.tsx 8a4153dd6e7a49c8
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md fa933fa60dbcf39e
+docs/cursor-work/founder/founder-commands.md ef8f8ecd31ac11fd
 docs/anexomail-blueprint.md bd0b56a4ece85a89
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 8486bf77a7dd34dd
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 173bdd17c25188ed
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -215,7 +215,7 @@ server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
 docs/cursor-work/MASTER-GAP-LEDGER.md 57ae8627bc4ee750
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
-docs/cursor-work/PLAN-3D-PARKED.md f7d55046bd8003f8
+docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
 docs/cursor-work/sql/E51_calendar_response_fix.sql 6ffd0145f2bed06c

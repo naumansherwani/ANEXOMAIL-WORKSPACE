@@ -1,4 +1,3 @@
-import { Fx3D } from "@/components/fx/Fx3D";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "motion/react";
 import { useState } from "react";
@@ -253,10 +252,7 @@ function Index() {
               </motion.ul>
             </div>
 
-            <div className="relative">
-              <Fx3D scene="mailbox" className="pointer-events-none mx-auto mb-2 h-52 w-56 md:h-60 md:w-64" label="Mail packets falling into a 3D mailbox" />
-              <HeroComposition />
-            </div>
+            <HeroComposition />
           </div>
         </section>
 

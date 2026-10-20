@@ -478,3 +478,6 @@ Loophole ledger (sach)
 "... 3D graphics kahan aayenge ... Landing hero mailbox; login/loader 3D logo; dashboard plan orb (Basic neela, Pro jamuni, Business sunehri, Business Pro royalty feel); khali inbox/calendar 3D; plans tilt ... mobile aur tablet walon ko bhi cinematic 3d experience do aur toggle on and off do aur laptop walon ko bhi ... yeh kaam bari bari kerne hain. ... ek ek line read kero aur codes likho advance super level ceo saab"
 ## 21 Oct 2026 02:11 PKT
 "comapct chat se pehle jitna tumne kaam kiya hai codes likhe hain jo bhi kiya hai woh laetst kaam ko update kero repo aur sandbox main"
+
+## 21 Oct 2026 02:20 PKT
+"ruko yeh landing pages main baqwas graphics mat dalo" -> LANDING PAGES (public site) par koi 3D nahi. Mailbox hero hata diya. 3D sirf workspace ke andar (dashboard orb, loader logo, khali inbox/calendar) + plans tilt dekhna baqi.

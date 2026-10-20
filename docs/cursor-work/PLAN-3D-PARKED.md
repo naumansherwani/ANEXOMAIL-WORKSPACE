@@ -1,4 +1,5 @@
 # 3D / Three.js plan — PARKED (founder 21 Oct 2026 00:14: 'chodo, repo main alag ker do')
+FOUNDER 21 Oct 02:20: landing pages par 3D NAHI (mailbox hero hata). Baqi 3D workspace ke andar.
 Order: Basic-green kaam pehle; 3D uske baad, ek ek (pehla = landing hero 3D mailbox). Faisla: TECH-MAP.md 0d.
 Founder ki extras: mobile+tablet+laptop sab ko cinematic experience, ON/OFF toggle; Business Pro orb 'shahi/sab se mehnga'.
 
