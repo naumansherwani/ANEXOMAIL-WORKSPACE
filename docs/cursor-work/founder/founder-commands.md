@@ -499,3 +499,7 @@ Founder ne screenshot dikhaya: ambient aurora blob se neela dhabba + hard edge (
 ## 21 Oct 2026 03:07 PKT
 "pehle claude ne bhut zyada latest technology pe migrate ho chuka hai aur us ko touch mat kerna ... rust ka latest version mere se install kerwaya tha ... abhi jitna kaam huwa hai latest update kero takay compact ke baad bhool na jao ... sandbox mein sab test accounts ke login email/passwords hain yaad rakhna ... 10000000000000 bar bola hai green kero live testing ker lo phir wapis ana ... chrome ne kaam barbad kiya. Pehle: capabilities se website ka dimagh, login, sandbox live test, server par run, phir har technology ki pull command — woh kaam acha chal raha tha."
 -> Rule 35 (AGENTS.md): Rust/migrated NO-TOUCH; creds /root/.anexo-test-creds; tareeqa wapis (code->sandbox test->server test->technology-wise pull->live). login-probe.sh (server-side proof, password silent prompt).
+
+## 21 Oct 2026 03:15 PKT
+"meri suno chorme ke binaa kaam kero. yeh tab use kero jab main pull ker chuka hoon ga jab final look website user ko kaisi nazar ati hai woh jab dekhni ho tab sirf only ... rule 35 haan meri latest technology pe."
+-> Rule 36 (AGENTS.md). Rust auth_user login-loop fix: server/rust/main.rs (cargo check OK offline, rustc 1.97 sandbox) + rust-auth-harden.sh (surgical, restore-on-fail). login-probe.sh: founder ne email 'amexomail' likh diya tha (typo) -> 401; sahi: basic.test@anexomail.com.

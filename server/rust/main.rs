@@ -139,27 +139,62 @@ struct Me {
 }
 
 /// Identity Supabase Auth se — Rust apna session store nahi rakhta.
+/// LOGIN-LOOP FIX (founder 21 Oct 2026, Rule 35): pehle har request par Supabase ko poochha jata tha aur Supabase ka koi bhi
+/// temporary error / 429 / 5xx / network masla `None` => 401 ban kar user ko sign-out kar deta tha (dashboard -> login -> loading).
+///   1) kamyab verify 20 s cache (token -> id,email): dashboard ki 15 parallel calls = 1 Supabase call,
+///   2) SIRF temporary masle (network, 429, 5xx) par 3 koshish (150/300/450 ms); asli invalid token (400/401/403/422) foran None,
+///   3) lock kabhi `.await` ke across nahi (future Send rehta hai). Koi naya crate nahi.
+static AUTH_CACHE: std::sync::OnceLock<
+    std::sync::Mutex<std::collections::HashMap<String, (std::time::Instant, (String, String))>>,
+> = std::sync::OnceLock::new();
+
 async fn auth_user(token: &str) -> Option<(String, String)> {
+    let cache = AUTH_CACHE.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()));
+    {
+        if let Ok(m) = cache.lock() {
+            if let Some((at, v)) = m.get(token) {
+                if at.elapsed() < Duration::from_secs(20) {
+                    return Some(v.clone());
+                }
+            }
+        }
+    }
     let (url, key) = sb()?;
     let client = reqwest::Client::new();
-    let res = client
-        .get(format!("{url}/auth/v1/user"))
-        .header("apikey", &key)
-        .header("authorization", format!("Bearer {token}"))
-        .send()
-        .await
-        .ok()?;
-    if !res.status().is_success() {
-        return None;
+    for attempt in 0..3u64 {
+        let sent = client
+            .get(format!("{url}/auth/v1/user"))
+            .header("apikey", &key)
+            .header("authorization", format!("Bearer {token}"))
+            .send()
+            .await;
+        if let Ok(res) = sent {
+            let st = res.status().as_u16();
+            if res.status().is_success() {
+                let body: Value = res.json().await.ok()?;
+                let id = body.get("id")?.as_str()?.to_string();
+                let email = body
+                    .get("email")
+                    .and_then(|v| v.as_str())
+                    .unwrap_or("")
+                    .to_string();
+                let out = (id, email);
+                if let Ok(mut m) = cache.lock() {
+                    if m.len() > 4000 {
+                        m.clear();
+                    }
+                    m.insert(token.to_string(), (std::time::Instant::now(), out.clone()));
+                }
+                return Some(out);
+            }
+            if matches!(st, 400 | 401 | 403 | 422) {
+                return None; // asli invalid / expired token — retry nahi
+            }
+            // 429 / 5xx: temporary — retry
+        }
+        tokio::time::sleep(Duration::from_millis(150 * (attempt + 1))).await;
     }
-    let body: Value = res.json().await.ok()?;
-    let id = body.get("id")?.as_str()?.to_string();
-    let email = body
-        .get("email")
-        .and_then(|v| v.as_str())
-        .unwrap_or("")
-        .to_string();
-    Some((id, email))
+    None
 }
 
 /// Gate DB ka `chat_access()` — Basic false. Pro / Business / Business Pro / AI true.

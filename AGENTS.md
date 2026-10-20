@@ -294,3 +294,6 @@ Mobile aur tablet ko SAB SE BARI PRIORITY. Website mein jab bhi koi edit ho, pul
 - Maine 21 Oct ko sirf yeh badla: Bun ke andar `server/lib/auth-harden.ts`, `server/lib/supa.ts`, `server/routes/auth.ts` (userFrom 503), `routes/crm.ts` install, `auth-passkey` status exempt — Rust ko koi haath nahi.
 - Test accounts ke email+password sandbox mein `/root/.anexo-test-creds` (chmod 600, repo ke bahar) — kabhi repo/chat/log mein nahi. Production site (anexomail.com) ke login form mein password type karna cloud agent ke liye mana hai; uski jagah server-side `docs/cursor-work/server/login-probe.sh` (founder silent prompt mein password deta hai) + Chrome mein founder ke apne logged-in session par dekhna.
 - Kaam ka tareeqa (jo founder ko pasand hai): website ka dimaagh (code) -> sandbox/local test -> server par chal kar test -> har technology ki ALAG pull command -> live dekhna.
+
+## Rule 36 — Chrome sirf FINAL LOOK ke liye (founder 21 Oct 2026 03:15 PKT)
+Chrome ke baghair kaam karo (code -> sandbox test -> server par test -> technology-wise pull). Chrome tab SIRF jab founder pull kar chuka ho aur website user ko final kaisi nazar aati hai woh dekhni ho. Chrome se debugging/loop-chasing nahi. Founder ne Rule 35 par "haan" kaha: latest technology (Rust) par kaam ki ijazat — phir bhi har Rust badlav sirf surgical + `cargo check` + restore-on-fail script se.
