@@ -274,3 +274,9 @@ Founder (verbatim): "mainay dekha hai ke bar bar same kaam repeat kaam ker rahay
 - Compact ke baad PEHLE: `docs/cursor-work/founder/founder-commands.md` + `docs/cursor-work/DONE-DO-NOT-REPEAT.md` + is file ke Rules. Jo "DONE" hai dobara nahi (Basic ka kaam hazaron bar ho chuka). Sirf "TODO" par kaam.
 - Har kaam ke baad repo update + manifest 0 bad + push, compact se pehle bhi. Sandbox copy: /home/claude/FOUNDER-RULES.md.
 - Tarteeb (founder): live test Basic->Pro->Business->Business Pro (1440/820/390) | G38 | G40 | G42 | Business Pro baqi | walid ka account | founder profile | AnexoChat. Ek green hone par agla.
+
+## Rule 32 — CEO + user ka mindset + REPO == LIVE (founder 20 Oct 2026 23:57 PKT)
+- Founder (verbatim ka matlab): "tum CEO ho; user ka mindset tumne likhna hai; pura repo green karna hai aur repo ke codes live website se match karne hain; jahan gap hai theek karo; BAHUT KAAM server par hai repo mein nahi — smartly socho."
+- User ka mindset (har kaam se pehle): main us package ka asli customer hoon — pehle 10 minute mein kya karunga? Kya wada kiya gaya hai aur kya sach mein chalta hai? Kya phone par (390) bhi? Jo wada pura nahi, copy halki karo (jhoota nahi). Basic user = mail, people, calendar, work (CRM/chat/AI nahi). Pro/Business/Business Pro apni surface; "mix" nahi.
+- Repo == live: server par jo hai (Brain files, SQL functions, Caddy/Postfix/systemd, pm2 env) wo PEHLE read-only audit se dekho (A1 in `MASTER-GAP-LEDGER.md`), phir repo mein laao; "repo mein nahi" ka matlab "server par nahi" NAHI. Kisi live cheez ko repo ke andaze se overwrite mat karo.
+- Master hisaab: `docs/cursor-work/MASTER-GAP-LEDGER.md` (GREEN / CODE / TODO / CHECK / FOUNDER). Har kaam ke baad wahan ek line.

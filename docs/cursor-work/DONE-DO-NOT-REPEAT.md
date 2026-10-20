@@ -71,3 +71,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - Brain install: "check FAIL" jhootha tha — mail-worker "Gateway Timeout" Supabase ka wakti masla, E48 nahi; installer ab sirf schema error par fail (commit). Purani Brain files wapas hain => Brain attach DOBARA chalana hai.
 - clamd: service chal raha hai par 127.0.0.1:3310 band (Debian socket-activation, TCPSocket ignore) => `clamd-tcp-fix.sh` (localhost ListenStream drop-in, backup/wapas).
 - Pending founder pulls (tarteeb): Brain attach · Rust inbound (`rust-inbound-attach-install.sh`, abhi chala nahi) · Web pull · clamd-tcp-fix.
+- MASTER hisaab ek jagah: docs/cursor-work/MASTER-GAP-LEDGER.md (20 Oct 23:59). Compact ke baad pehle wahi.

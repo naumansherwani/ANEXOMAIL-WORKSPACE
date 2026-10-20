@@ -458,3 +458,6 @@ Loophole ledger (sach)
 
 ### 20 Oct 2026 21:50 PKT — founder: "(Postfix/Caddy) meri haan hai ... ClamAV + aane wali mail ke attachments (G38b) fix kero"; "done hai dekh lo" (Browser 1 mein basic.test login)
 **Halat:** G38b code + E50 + installer tayyar (tests upar). Chrome Browser 1: Basic dashboard + inbox dekha; live finding: R1a mail ka attachment chip nahi tha. ClamAV: founder ke `INSTALL=1 file-safety-check.sh` output ka intezar.
+
+### 20 Oct 2026 23:57 PKT — founder: "repo mein jao detail mein dekho blueprint/founder md ki tarteeb jo implement nahi hui uski list; jo ho chuki unhein green; sandbox mein rule: pura repo green + repo ke codes live se match; bahut kaam server par hai repo mein nahi; commands baad mein; 3-command rule yahan nahi"
+**Halat:** MASTER-GAP-LEDGER.md bana, Rule 32 likha. Agla: A1 repo-vs-server audit script.
