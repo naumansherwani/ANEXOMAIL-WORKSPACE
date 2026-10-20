@@ -68,7 +68,7 @@ function Orb({ plan, full }: { plan?: string; full: boolean }) {
 
 export default function OrbScene({ tier, active, plan }: SceneProps) {
   return (
-    <Stage tier={tier} active={active} camera={[0, 0, 5.6]} fov={34}>
+    <Stage tier={tier} active={active} camera={[0, 0, orbFor(plan).layers >= 4 ? 6.6 : orbFor(plan).layers === 3 ? 5.4 : 4.4]} fov={34}>
       <Orb plan={plan} full={tier === "full"} />
     </Stage>
   );

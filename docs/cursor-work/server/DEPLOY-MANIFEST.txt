@@ -22,7 +22,7 @@ src/components/app/compose/ComposeStudio.tsx 2e508aae6e3e3a6b
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
-src/routes/index.tsx 49f92999ad309dcd
+src/routes/index.tsx 1cce711ea82f9085
 src/routes/plans.tsx 89dff243447fd17f
 src/routes/app.people.tsx 423eb4164a4dceb4
 src/routes/app.work.tsx 8a4153dd6e7a49c8
@@ -230,9 +230,9 @@ docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
 src/lib/fx.ts 801eab59f8d63f54
 src/components/fx/Fx3D.tsx d4bbbb32b593ab7b
 src/components/fx/Stage.tsx 4ad7cd7bfe088bca
-src/components/fx/MailboxScene.tsx e821f81c40f13253
+src/components/fx/MailboxScene.tsx 2b25f9e3f1fbc94b
 src/components/fx/LogoScene.tsx 5630e27d3e2a9672
-src/components/fx/OrbScene.tsx ec82df41e2a94f55
+src/components/fx/OrbScene.tsx 7709e50fb0c21387
 src/components/fx/GemScene.tsx e51392ff7bc1bec5
 src/components/fx/TiltCard.tsx d4972cae3ca77cf7
 src/components/app/WorkspaceLoader.tsx c90bab09456fadf1
