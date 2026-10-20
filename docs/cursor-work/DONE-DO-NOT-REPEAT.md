@@ -77,3 +77,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 00:20: technology consolidation DONE — TECH-MAP.md section 0d (ek faisla); founder/TECH-MAP.md = pointer; sandbox /home/claude/TECH-DECISION.md. Dobara mat karo.
 - 21 Oct 00:11: Rule 31 (3-command had) RADD by founder. Pull ka sahi raasta: bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)
 - 21 Oct 00:14: 3D plan alag file PLAN-3D-PARKED.md (parked), ledger mein note.
+- 21 Oct 00:25: A1 script repo-vs-server-audit.sh likha (founder ko chalana baqi); 3D plan mein plan-orb rang (Business Pro = Imperial Ruby+Platinum).
