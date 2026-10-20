@@ -61,3 +61,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 3. D1 G33 + D2 Basic -> Pro -> Business -> Business Pro live test (har package GREEN, phir agla).
 4. D3 G40, D4 G42, D5 R1, D6 G16, D7 Business Pro baqi.
 5. D10: walid ka account -> founder profile -> AnexoChat.
+
+**PARKED (founder 21 Oct 00:14):** 3D/Three.js -> `PLAN-3D-PARKED.md`. Tarteeb mein nahi.
