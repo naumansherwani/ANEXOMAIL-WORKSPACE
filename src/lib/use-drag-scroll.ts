@@ -39,6 +39,12 @@ export function installDragScroll(): () => void {
     if (e.pointerType !== "mouse" || e.button !== 0) return;
     row = rowAt(e.target);
     if (!row) return;
+    // patli scrollbar par seedha pakadna = browser ka apna thumb-drag; usse na ulajhna
+    const r = row.getBoundingClientRect();
+    if (e.clientY > r.top + row.clientHeight) {
+      row = null;
+      return;
+    }
     moved = false;
     startX = e.clientX;
     startLeft = row.scrollLeft;

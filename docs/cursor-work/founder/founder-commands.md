@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 10:35 PKT — founder: "ai settings gahyab hai lekin yeh drag nahi chalta hai. yeh side bar dekho is pe jab cursor jaye toh drag hona chaiye hain lekin nahi hota hai." (+ pull output: build OK, differ=1 routeTree.gen.ts sirf, AI tab gaya)
+- Halat: **READY** (batch 9, HScroll). Drag code live tha (build mein 2 files), phir bhi na chale = mere test-browser mein reproduce nahi hua. Isliye pakka hal: ‹ › arrow buttons + grab cursor, drag bhi. Rule 28 ke mutabiq manifest verify.
+
 ### 20 Oct 2026 10:32 PKT — founder: "Sabaq. Ab main koi bhi file badalne ya revert karne ke baad saari manifest entries verify karunga. Tab hi push karunga, taake server par aise adha deploy dobara na ho. yeh repo main likho as a rule strict"
 - Halat: **DONE**. `AGENTS.md` RULE 28 (strict) + `docs/cursor-work/server/manifest-verify.py` (har entry ka sha check, exit 1 = push mat karo).
 

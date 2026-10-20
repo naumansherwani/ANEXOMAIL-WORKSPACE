@@ -1,5 +1,6 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
 
+import { HScroll } from "@/components/app/HScroll";
 import { isAiHost } from "@/lib/host";
 import { cn } from "@/lib/utils";
 
@@ -64,7 +65,7 @@ function SettingsLayout() {
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-ax-5 pt-ax-4">
         <p className="ax-eyebrow">Settings Center</p>
-        <nav className="mt-ax-3 flex gap-1 overflow-x-auto">
+        <HScroll as="nav" wrapperClassName="mt-ax-3" className="flex gap-1 overflow-x-auto">
           {tabs.map((t) => {
             const active = t.exact
               ? pathname === "/app/settings" || pathname === "/app/settings/"
@@ -84,7 +85,7 @@ function SettingsLayout() {
               </Link>
             );
           })}
-        </nav>
+        </HScroll>
       </header>
       <Outlet />
     </div>

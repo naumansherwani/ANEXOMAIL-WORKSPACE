@@ -11,7 +11,7 @@ src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
 src/styles.css 1ca7acbe178125db
-src/routes/app.mail.$folder.tsx 0afba7c1e19513b6
+src/routes/app.mail.$folder.tsx 28eb369bffc64912
 src/routes/app.mail.$folder.$threadId.tsx 644c573c59a903c4
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
@@ -120,6 +120,8 @@ src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
 AGENTS.md 1cd15e70755d13cc
-src/lib/use-drag-scroll.ts c4b30374be97817d
-src/routes/app.settings.tsx 8470356630372059
+src/lib/use-drag-scroll.ts 5ba156dc3b1fe59e
+src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
+src/components/app/HScroll.tsx f27ee8894f302f7d
+docs/cursor-work/BASIC-AUDIT-DONE.md cd93caca87a475fe

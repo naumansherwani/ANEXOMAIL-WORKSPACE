@@ -10,6 +10,7 @@ import { useCallback, useEffect, useState, type CSSProperties } from "react";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
+import { HScroll } from "@/components/app/HScroll";
 import { MailRail } from "@/components/app/mail/MailRail";
 import { ThreadList } from "@/components/app/mail/ThreadList";
 import { HandoffBanner } from "@/components/app/CrossPlatformBar";
@@ -223,7 +224,7 @@ function MailFolderPage() {
         <HandoffBanner />
         <div className="mx-head sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
           {accounts.data && accounts.data.accounts.length > 1 && (
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5" aria-label="Addresses">
+            <HScroll className="flex items-center gap-1.5 overflow-x-auto pb-0.5" aria-label="Addresses">
               <button
                 type="button"
                 onClick={() => setAccount(null)}
@@ -249,9 +250,9 @@ function MailFolderPage() {
                   </button>
                 );
               })}
-            </div>
+            </HScroll>
           )}
-          <div className="flex items-center gap-1 overflow-x-auto lg:hidden">
+          <HScroll wrapperClassName="lg:hidden" className="flex items-center gap-1 overflow-x-auto">
             {MAIL_FOLDERS.map((f) => {
               const unread = counts.data?.folders[f.id]?.unread ?? 0;
               return (
@@ -273,7 +274,7 @@ function MailFolderPage() {
                 </button>
               );
             })}
-          </div>
+          </HScroll>
           <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-2.5 py-1.5">
             <Search className="size-3.5 shrink-0 text-steel" aria-hidden="true" />
             <input
@@ -290,7 +291,7 @@ function MailFolderPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-1 overflow-x-auto">
+          <HScroll className="flex items-center gap-1 overflow-x-auto">
             <button
               type="button"
               onClick={() => setCategory(null)}
@@ -321,7 +322,7 @@ function MailFolderPage() {
             <span className="ml-auto hidden shrink-0 pl-2 text-[10px] text-steel sm:block">
               {live.transport === "webtransport" ? "Rust WT live" : "Rust RPC · poll"} · j/k · ↵
             </span>
-          </div>
+          </HScroll>
         </div>
 
         <ThreadList
