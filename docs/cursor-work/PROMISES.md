@@ -16,7 +16,7 @@
 | 9 | Dobara violation = block; severe = device ban list | `device_bans` | - | VERIFY |
 | 10 | Block ke baad **72 ghante export**, phir hamesha delete | export: Rust `export_core/glue` + E44 (ZIP stream); enforce: Rust `export_glue::blocked` + Brain `integrity-gate.ts`; delete: E45 `account_integrity_purge_due` (account_purge + tombstone) + hourly timer `integrity-purge/` | export e2e real-crate; E45 local DB (purge/window/founder-blocker/trigger); gate unit tests | CODE DONE (server par install baqi) |
 | 11 | Baatein kisi AI/third-party moderation ko nahi jatin | koi call nahi | code padha | DONE |
-| 12 | File safety apne infrastructure par | ? | - | VERIFY |
+| 12 | File safety apne infrastructure par | clamd 127.0.0.1:3310 (apna server) + Rust `inbound_attach`/`attach_glue` | founder output 20 Oct: EICAR FOUND, inbound mail scan=clean, Storage Box par bytes | **GREEN (live)** |
 
 Audit chalte waqt har "VERIFY" ko live/code se green ya TODO banana hai.
 
