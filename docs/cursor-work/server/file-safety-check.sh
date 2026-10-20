@@ -52,9 +52,17 @@ cp -p "$CONF" "$CONF.bak.$(date +%s)"
 grep -q '^TCPSocket' "$CONF" || printf '\nTCPSocket %s\n' "$PORT" >>"$CONF"
 grep -q '^TCPAddr' "$CONF"   || printf 'TCPAddr %s\n' "$HOST" >>"$CONF"
 sed -i 's/^Example/#Example/' "$CONF" 2>/dev/null || true
-echo "   signatures (freshclam) ..."; (systemctl stop clamav-freshclam >/dev/null 2>&1; freshclam >/dev/null 2>&1) || echo "   WARN: freshclam fail (network allowlist?) — baad mein dobara"
+echo "   signatures (freshclam) ..."; systemctl stop clamav-freshclam >/dev/null 2>&1; freshclam 2>&1 | tail -4 | sed "s/^/   /"; ls /var/lib/clamav/*.c?d >/dev/null 2>&1 || echo "   WARN: signature database (main/daily .cvd/.cld) nahi mili — clamd shuru nahi hoga"
 systemctl enable --now clamav-freshclam >/dev/null 2>&1 || true
 systemctl enable --now "$SVC" >/dev/null 2>&1 || { echo "FAIL: $SVC start nahi hua (journalctl -u $SVC)"; exit 2; }
 echo "== 3) intezar (clamd signatures load karta hai, 90s tak)"
 for i in $(seq 1 18); do sleep 5; OUT="$(probe 2>&1)" && { echo "   $OUT"; echo "GREEN: ClamAV laga aur EICAR pakad raha hai."; exit 0; }; done
-echo "   $OUT"; echo "RED: install hua par EICAR abhi nahi pakda — 'journalctl -u $SVC -n 30' ka output Claude ko bhejein."; exit 1
+echo "   $OUT"
+echo "RED: install hua par EICAR abhi nahi pakda. Sabab (khud nikala, Claude ko yeh poora block bhejein):"
+echo "--- systemctl status $SVC"; systemctl status "$SVC" --no-pager -l 2>&1 | head -14
+echo "--- journalctl -u $SVC (aakhri 25)"; journalctl -u "$SVC" -n 25 --no-pager 2>&1 | cut -c1-220
+echo "--- memory (clamd ko ~1.5 GB free chahiye)"; free -m 2>&1 | head -3
+echo "--- signatures"; ls -la /var/lib/clamav 2>&1 | head -6
+echo "--- $CONF (TCP/Socket lines)"; grep -nE '^(TCPSocket|TCPAddr|LocalSocket|User|Foreground)' "$CONF" 2>&1
+echo "--- port $PORT"; (ss -ltnp 2>/dev/null | grep ":$PORT " || echo "port $PORT par koi nahi sun raha")
+exit 1
