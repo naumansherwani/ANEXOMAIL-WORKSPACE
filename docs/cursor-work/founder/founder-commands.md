@@ -48,6 +48,18 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 — agent (CEO): Basic live audit, batch 1 (08:37 hukm par)
+- Live Basic login, 22 pages x (1440 + 390). Overflow koi nahi. Gates (Work/CRM/Org) theek.
+- **FIX 1 READY — PWA:** `/sw.js` live par hamesha 404 tha (vite-plugin-pwa file `dist/` mein likhta hai, server `.output/public` dikhata hai; precache 0). Har page par console error, mobile offline zero. Ab `public/sw.js` (asli worker): app shell + assets offline, `/rpc /api /auth` kabhi cache nahi. Offline par pichla tasdeeq-shuda session => inbox cached mail ke saath khulta hai (saboot: local build + live API, offline reload = 7 threads). vite.config.ts ko haath NAHI lagaya.
+- **FIX 2 READY — privacy:** Sign out par offline mail (IndexedDB) + worker cache saaf nahi hote the. Ab saaf (saboot: sign out ke baad threads 0, session 0).
+- **FIX 3 READY — copy:** Basic dashboard "shared inbox, tasks" likhta tha (Pro cheezein). Ab Basic ko sach.
+- Note (agla): Security page "Live sessions 0" jab user khud login hai; "Encryption needs attention" khali table se. Calendar/Security/Settings/Integrations `/rpc` 404 => Bun fallback (kaam karta hai; Rust par lana Rule 25 queue).
+- Pull: Web `pull.sh` (sirf).
+
+### 20 Oct 2026 08:37 PKT — founder (verbatim, apna hissa)
+> "yeh sab tumharay pass website ka excess hai reached hai tumne khud dekhna hai match kerna hai ke kaunsi live website pe nazar nahi ati ya mismatch hai agar kuch bhi masla hai seedha fix kero lekin user pehle complete hoga phir next founder aur anexochat shuru kerna hai. basic ke baad pro hai. Tum CEO hi tum dekho ke kya kami hai aur jo bhi kami hai us ko seedha fiex kero mujhe bus fix ki list do green kero"
+- Halat: CHAL RAHA (Basic audit; batch 1 READY upar).
+
 ### 20 Oct 2026 03:02 PKT — founder: test accounts diye (passwords REDACTED) + "tarteeb se points repo se padh kar likho" + "har 10 second update"
 Founder ne chat mein 4 test accounts ke passwords diye: `business_pro.test@anexomail.com` aur `bpro.test@anexomail.com` (dono ka ek hi password), `basic.test@anexomail.com`, `pro.buyer@anexomail.com` — **passwords [REDACTED: repo mein KABHI nahi, Rule 17/24]**. Agent inhe sirf us session mein, ek command ke environment variable mein, login-test ke liye use karta hai; kisi file/repo/memory mein nahi. (Naye chat mein founder dobara de ya server par root-only file `/etc/anexomail/test-accounts.env` (chmod 600) mein rakhe — repo mein nahi.)
 Founder ke alfaaz: "yeh sab tumhay yaad hona chaiye hai. baki tarteeb se tumne jo points hain woh repo main founder ka ja ke read kero aur exactly codes waha se dekh ke likho; compact chat ke anay se pehle yeh her 10 seconds baad update kerna hai takay compact chat ho bhi jaye claude context nahi bhulay; aur yeh bhi repo main likho: sw.js wala asli masla (har page par script 404; `src/lib/pwa.ts` `/sw.js` register karta hai par `public/sw.js` nahi; PWA offline kaam nahi; manifest theek; TECH-MAP ka "LIVE" sach nahi tha)."

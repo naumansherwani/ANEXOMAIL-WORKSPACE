@@ -56,7 +56,7 @@ src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
 src/lib/plan-surface.ts 03671e4b12654baa
-src/components/app/dashboard/Greeting.tsx ec52e5aff361e8db
+src/components/app/dashboard/Greeting.tsx 0f8cd23526189b1f
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
 src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
 src/components/app/mail/ThreadList.tsx fb8e220fb15b3032

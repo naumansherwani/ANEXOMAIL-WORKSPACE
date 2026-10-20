@@ -118,7 +118,9 @@ export function Greeting({
                 : t("Private command of mail, people, calendar and work — one surface.")
               : billed === "business" || billed === "business_pro"
                 ? t("Company mail, org, chat and the shared book — one surface.")
-                : t("Company mail, shared inbox, tasks and the shared book — one surface.")}
+                : billed === "pro"
+                  ? t("Company mail, shared inbox, tasks and the shared book — one surface.")
+                  : t("Company mail on your own domain, people and calendar — one surface.")}
           </p>
         )}
       </div>
