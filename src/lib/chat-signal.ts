@@ -14,6 +14,7 @@
  *     judta hai use frame milta hai (zero missed offer).
  *   - Transport label kabhi jhoot nahi bolta.
  */
+import { wtBaseUrl } from "@/lib/wt-url";
 import { createClient, type RealtimeChannel, type SupabaseClient } from "@supabase/supabase-js";
 
 import { sessionToken } from "./api";
@@ -39,7 +40,7 @@ export type SignalFrame = {
 
 export type SignalTransport = "quic" | "realtime" | "rows";
 
-const WT_URL = (import.meta.env["VITE_ANEXOCHAT_WT_URL"] as string | undefined)?.replace(/\/$/, "");
+const WT_URL = wtBaseUrl();
 
 /**
  * PHASE 31A — QUIC signaling stream (Rust engine, `mode:"signal"`).

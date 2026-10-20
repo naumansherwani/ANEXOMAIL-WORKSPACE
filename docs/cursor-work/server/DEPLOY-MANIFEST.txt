@@ -39,7 +39,7 @@ src/routes/app.crm.accounts.tsx 12bf5c11a8b49bda
 src/routes/app.crm.collab.tsx 2955adff7ecb6af7
 src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
-src/lib/mail.ts a897c490c204629f
+src/lib/mail.ts 69362c78d74e8ac6
 src/routes/app.billing.tsx 4b4c93d6ab168fc4
 src/routes/app.account.tsx 843adbe1d21b639f
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
@@ -107,3 +107,6 @@ src/lib/domains.ts 36a5093c5ee95b08
 public/sw.js 048374b66d00be5f
 src/lib/auth.tsx 2695768e0a696c57
 src/lib/offline.ts 2d14d739b85f7beb
+src/lib/wt-url.ts f63f9f717972c4d4
+src/lib/chat-transport.ts ff0170ac5a2ea988
+src/lib/chat-signal.ts 35d831d205121ba6

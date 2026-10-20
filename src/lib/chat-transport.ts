@@ -8,6 +8,7 @@
  * TRUTH     : states sirf DB rows se. Transport label kabhi jhoot nahi bolta.
  */
 
+import { wtBaseUrl } from "@/lib/wt-url";
 import { useEffect, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -55,7 +56,7 @@ export async function chatCall<T>(
   }
 }
 
-const WT_URL = (import.meta.env["VITE_ANEXOCHAT_WT_URL"] as string | undefined)?.replace(/\/$/, "");
+const WT_URL = wtBaseUrl();
 
 export function webTransportSupported(): boolean {
   return typeof window !== "undefined" && "WebTransport" in window && Boolean(WT_URL);

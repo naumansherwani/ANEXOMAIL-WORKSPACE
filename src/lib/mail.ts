@@ -6,6 +6,7 @@
  * TRUTH   : Supabase `mail_threads` — browser threading nahi.
  */
 
+import { wtBaseUrl } from "@/lib/wt-url";
 import { useEffect, useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
@@ -309,10 +310,7 @@ type WebTransportLike = {
 };
 
 function mailWtUrl(): string {
-  const env = (import.meta.env["VITE_ANEXOCHAT_WT_URL"] as string | undefined)?.replace(/\/$/, "");
-  if (env) return env;
-  if (typeof window === "undefined") return "";
-  return `https://${window.location.hostname}:3443`;
+  return wtBaseUrl();
 }
 
 /** F3.3 — Rust WebTransport mail stamp. Fail = honest RPC poll, fake live nahi. */

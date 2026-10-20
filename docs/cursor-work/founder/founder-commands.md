@@ -48,6 +48,10 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 09:09 PKT — founder: server ki live jaankari (Rust sockets, WT cert, Caddy validate, ufw) + "yeh save ker lo server ki live information."
+- Halat: **DONE (saved)** -> `docs/cursor-work/server/live-facts-2026-10-20.md`.
+- Is se 2 masle mile: (1) `3443/udp` ufw mein band; (2) WT cert sirf `anexochat.anexomail.com`, website `anexomail.com:3443` se judti thi. **READY:** `src/lib/wt-url.ts` (Web pull) + `ufw allow 3443/udp` (Server).
+
 ### 20 Oct 2026 — agent (CEO): Basic live audit, batch 1 (08:37 hukm par)
 - Live Basic login, 22 pages x (1440 + 390). Overflow koi nahi. Gates (Work/CRM/Org) theek.
 - **FIX 1 READY — PWA:** `/sw.js` live par hamesha 404 tha (vite-plugin-pwa file `dist/` mein likhta hai, server `.output/public` dikhata hai; precache 0). Har page par console error, mobile offline zero. Ab `public/sw.js` (asli worker): app shell + assets offline, `/rpc /api /auth` kabhi cache nahi. Offline par pichla tasdeeq-shuda session => inbox cached mail ke saath khulta hai (saboot: local build + live API, offline reload = 7 threads). vite.config.ts ko haath NAHI lagaya.
