@@ -121,3 +121,6 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - Brain: `POST /api/auth/refresh`; login/oauth/passkey return `refresh_token` + `expires_at`.
 - Client: `api.ts` one-shot 401→refresh→retry (parallel calls share one refresh), `ensureFreshToken` timer in `auth.tsx` (last 5 min, 60s tick, visibility/online). Tests: `src/lib/api-refresh.test.ts` (8), `jwt_core` (9).
 - Install order: SQL E53 → Brain `brain-refresh-install.sh` → Web pull.sh → Rust `rust-jwt-install.sh`. GREEN only after live proof (login stays, refresh works, logout revokes).
+
+## FOUNDER RULE (21 Oct 04:37, LOCKED): pull commands HAMESHA poori copy-paste form mein, technology ke hisab se alag block (SQL / Brain / Web / Rust). Sirf script ka naam NAHI. Batch ke saath-saath memory (repo + sandbox-state) update, compact ka intezar nahi.
+Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/<script>.sh) [args]`
