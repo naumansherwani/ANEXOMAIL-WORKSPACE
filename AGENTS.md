@@ -235,6 +235,7 @@ Founder (verbatim): "ab tumharay pass login hai tumhay human yani mere se better
 - **Kaam ka tareeqa:** tarteeb `founder-commands.md` "ABHI KA KAAM" se; ek waqt ek package + ek masla; code advance level ka, par **website kabhi nahi tootti** (backup, restore-on-fail, health check); har kaam ke baad technology ke hisab se alag pull command; founder se dobara wohi sawal nahi.
 - **Live user-testing (founder 20 Oct 03:59, verbatim):** "tumne live website user ki tarah use kerni hai aur CEO ki tarah montor kerni hai … one by one dekho jab sab perfect ho jaye phir next package pe jana hai. awam ko honesty sale kerni hai imamndari aur duniya ke advance working wire features send kerna hai." Tarteeb (founder 04:03): Basic -> Pro -> Business -> Business Pro; ek package perfect, phir agla; masle NOTES mein.
 - **Founder 20 Oct 04:37:** har jawab ke saath latest GitHub pull command (Web `pull.sh`) HAMESHA. Mila hua masla founder ko naya kaam bana kar nahi dena — CEO khud theek kare aur saboot ke saath "green" bataye.
+- **Deploy PATTERN (founder 20 Oct 05:03, LOCKED):** har kaam ke baad founder ko teen command isi tarteeb se: (1) fix/install (technology ka, pm2 restart andar), (2) Web pull `pull.sh` (latest GitHub, pm2 restart + save), (3) live test. Live login (test accounts) bhoolna nahi.
 - **Passwords:** founder chat mein deta hai; agent sirf usi chat mein test ke liye use karta hai; repo/memory/script mein KABHI nahi.
 
 ---
