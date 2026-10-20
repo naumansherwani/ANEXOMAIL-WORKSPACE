@@ -227,3 +227,11 @@ src/routes/app.settings.appearance.tsx 7911ac3654c2b006
 docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
 server/routes/auth-passkey.ts b6432ef501e9e322
 docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
+src/lib/fx.ts 801eab59f8d63f54
+src/components/fx/Fx3D.tsx d4bbbb32b593ab7b
+src/components/fx/Stage.tsx 4ad7cd7bfe088bca
+src/components/fx/MailboxScene.tsx e821f81c40f13253
+src/components/fx/LogoScene.tsx 5630e27d3e2a9672
+src/components/fx/OrbScene.tsx ec82df41e2a94f55
+src/components/fx/GemScene.tsx e51392ff7bc1bec5
+src/components/fx/TiltCard.tsx d4972cae3ca77cf7
