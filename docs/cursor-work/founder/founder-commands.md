@@ -495,3 +495,7 @@ Loophole ledger (sach)
 
 ## 21 Oct 2026 02:49 PKT
 Founder ne screenshot dikhaya: ambient aurora blob se neela dhabba + hard edge (sidebar ke sath). "yeh kya barbad kar dia". -> blobs hata diye, edge-light 1px halki. Brain installer FAIL (express resolve: node_modules upar) fix kiya; kuch install nahi hua tha (safe).
+
+## 21 Oct 2026 03:07 PKT
+"pehle claude ne bhut zyada latest technology pe migrate ho chuka hai aur us ko touch mat kerna ... rust ka latest version mere se install kerwaya tha ... abhi jitna kaam huwa hai latest update kero takay compact ke baad bhool na jao ... sandbox mein sab test accounts ke login email/passwords hain yaad rakhna ... 10000000000000 bar bola hai green kero live testing ker lo phir wapis ana ... chrome ne kaam barbad kiya. Pehle: capabilities se website ka dimagh, login, sandbox live test, server par run, phir har technology ki pull command — woh kaam acha chal raha tha."
+-> Rule 35 (AGENTS.md): Rust/migrated NO-TOUCH; creds /root/.anexo-test-creds; tareeqa wapis (code->sandbox test->server test->technology-wise pull->live). login-probe.sh (server-side proof, password silent prompt).

@@ -104,3 +104,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct LOGIN-LOOP fix code (auth-harden.ts + client retry + /auth redirect for signed-in) — READY; live verify baqi (founder login ke baad).
 - 21 Oct 02:45 FxAmbient (edge glow + aurora blobs, plan colours, toggle-controlled) READY; Web pull + live test baqi.
 - FOUNDER LOCK 21 Oct 02:50: FxAmbient aurora blobs HATA (hard blue stain bura laga). Sirf patli edge-light + 3D scenes + hover glow. Brain installer pre-flight node_modules upar se dhoondta hai (pehle FAIL tha, kuch install nahi hua tha).
+- 21 Oct 03:15 Rule 35 + login-probe.sh. Rust no-touch. Bun-only edits listed in AGENTS Rule 35.
