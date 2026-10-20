@@ -461,3 +461,7 @@ Loophole ledger (sach)
 
 ### 20 Oct 2026 23:57 PKT — founder: "repo mein jao detail mein dekho blueprint/founder md ki tarteeb jo implement nahi hui uski list; jo ho chuki unhein green; sandbox mein rule: pura repo green + repo ke codes live se match; bahut kaam server par hai repo mein nahi; commands baad mein; 3-command rule yahan nahi"
 **Halat:** MASTER-GAP-LEDGER.md bana, Rule 32 likha. Agla: A1 repo-vs-server audit script.
+
+## 21 Oct 2026 00:11 PKT
+- Founder (verbatim): "Do not execute more than 3 terminal commands or browser tests without asking for my confirmation. Stop and show me the progress first.\" is rule ko goli maaro." -> Rule 31 ki 3-command had radd.
+- Founder ne `cd /opt/anexomail-web && bash pull.sh ...` chalaya: "pull.sh: No such file" — meri galti (pull.sh repo mein docs/cursor-work/server/ mein hai, /opt/anexomail-web ki jad mein nahi). Sahi command neeche.
