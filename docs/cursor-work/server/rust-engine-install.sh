@@ -31,7 +31,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -75,6 +75,7 @@ CFG={
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
+ "locale": {"public": True,  "label": "locale",    "procs": ['"locale.pref"','"locale.bundle"','"locale.pref.set"']},
 }
 changed=[]
 for m in mods:
@@ -203,7 +204,7 @@ else
   code="$(curl -s -m 8 -o /dev/null -w '%{http_code}' "$RPC/rpc/health" 2>/dev/null)"
   if [ "$code" != "200" ]; then
     echo "!! naye build par /rpc/health = $code — PURANI binary + src wapas laga raha hoon"
-    [ -f "$BIN.bak.$STAMP" ] && cp -p "$BIN.bak.$STAMP" "$BIN"
+    [ -f "$BIN.bak.$STAMP" ] && cp -p "$BIN.bak.$STAMP" "$BIN.new.$STAMP" && mv -f "$BIN.new.$STAMP" "$BIN"   # chalti binary par seedha cp = "Text file busy"
     restore_src
     pm2 restart anexomail-rust --update-env >/dev/null 2>&1; pm2 save >/dev/null 2>&1
     sleep 3
@@ -253,6 +254,16 @@ for m in $MODS; do
       fi
       if timeout 6 bash -c 'exec 3<>/dev/tcp/imap.gmail.com/993' 2>/dev/null; then echo "   -> mig: server se bahar ka IMAP raasta khula hai (imap.gmail.com:993)"
       else echo "   -> mig: server imap.gmail.com:993 tak nahi pahunch raha — firewall / outbound 993 dekhein (nahi to copy shuru hi nahi hogi)"; fi;;
+    locale)
+      r1="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{"tag":"ur-PK"}}' "$RPC/rpc/locale.bundle" 2>/dev/null)"
+      r2="$(probe locale.pref '{"input":{}}')"
+      echo "   locale.bundle ur-PK (public): $(printf '%s' "$r1" | cut -c1-110)"
+      echo "   locale.pref (nakli token): $r2"
+      case "$r1$r2" in
+        *'"tag":"ur-PK"'*'"unauthorized"'*) echo "   -> locale: Rust ne dono proc pakde (bundle 200, nakli login 401 = theek) — browser ke 404 band";;
+        *procedure_not_in_rust*) echo "   -> locale: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> locale: jawab upar dekhein";;
+      esac;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"
       echo "   people.import (nakli token): $r"
