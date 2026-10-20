@@ -1316,3 +1316,44 @@ html[data-ax-fx="off"] [data-ax-fx-layer] { display: none !important; }
 /* Left workspace nav: scroll still works, the thin bar is hidden. */
 nav[aria-label="Workspace navigation"] > div { scrollbar-width: none; }
 nav[aria-label="Workspace navigation"] > div::-webkit-scrollbar { display: none; }
+
+/* ---------------------------------------------------------------------------------------------------------------
+   FX AMBIENT (Graphics & visual effects) — founder 21 Oct 2026. Sirf transform/opacity; mobile par halka.
+   Rule: Graphics OFF  => poora layer chhupa. Calm mode (animations none) => chhupa. Reduced motion => sirf static chamak.
+--------------------------------------------------------------------------------------------------------------- */
+@property --ax-fx-a { syntax: "<angle>"; initial-value: 0deg; inherits: false; }
+@keyframes ax-fx-spin { to { --ax-fx-a: 360deg; } }
+@keyframes ax-fx-float-a { 0%,100% { transform: translate3d(-8%, -6%, 0) scale(1); } 50% { transform: translate3d(6%, 8%, 0) scale(1.12); } }
+@keyframes ax-fx-float-b { 0%,100% { transform: translate3d(8%, 6%, 0) scale(1.05); } 50% { transform: translate3d(-6%, -8%, 0) scale(0.95); } }
+@keyframes ax-fx-pulse { 0%,100% { opacity: .55; } 50% { opacity: .95; } }
+
+.ax-fx-ambient { contain: strict; overflow: hidden; }
+.ax-fx-blob {
+  position: absolute; border-radius: 9999px; filter: blur(70px); opacity: .22;
+  mix-blend-mode: screen; will-change: transform;
+}
+.ax-fx-blob-a { top: -18%; left: -10%; width: 46vmax; height: 46vmax; background: var(--fx-core); animation: ax-fx-float-a 26s ease-in-out infinite; }
+.ax-fx-blob-b { bottom: -22%; right: -12%; width: 42vmax; height: 42vmax; background: var(--fx-glow); opacity: .16; animation: ax-fx-float-b 32s ease-in-out infinite; }
+/* Chamakti hui border: plan ke rang ki roshni screen ke kinare ke saath ghoomti hai */
+.ax-fx-edge {
+  position: absolute; inset: 0; padding: 2px; pointer-events: none;
+  background: conic-gradient(from var(--ax-fx-a), transparent 0deg, var(--fx-core) 70deg, var(--fx-ring) 120deg, transparent 200deg, transparent 260deg, var(--fx-glow) 310deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: ax-fx-spin 9s linear infinite, ax-fx-pulse 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px var(--fx-glow));
+}
+@media (max-width: 1023px) {          /* phone + tablet: halka */
+  .ax-fx-blob { filter: blur(48px); opacity: .16; }
+  .ax-fx-blob-b { display: none; }
+  .ax-fx-edge { padding: 1.5px; animation-duration: 12s, 6s; filter: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-fx-blob, .ax-fx-edge { animation: none !important; }
+}
+html[data-ax-fx="off"] .ax-fx-ambient,
+html[data-ax-calm] .ax-fx-ambient,
+html[data-ax-motion="none"] .ax-fx-ambient { display: none !important; }
+html[data-ax-motion="reduced"] .ax-fx-blob, html[data-ax-motion="reduced"] .ax-fx-edge { animation: none !important; }
+/* Kaardon par halki roshni (hover) — sirf graphics ON par */
+html[data-ax-fx="on"] .ax-plane:hover { box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent), 0 10px 40px -12px color-mix(in oklab, var(--primary) 45%, transparent); }

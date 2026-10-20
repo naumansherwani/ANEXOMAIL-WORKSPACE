@@ -102,3 +102,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - FOUNDER LOCK 21 Oct 02:20: public/landing pages par 3D/graphics NAHI. MailboxScene.tsx file rakhi hai par kahin wire nahi; dobara landing mein mat lagao.
 - FOUNDER LOCK 21 Oct 02:31: dashboard plan-orb HATA (bura laga). Dobara nahi.
 - 21 Oct LOGIN-LOOP fix code (auth-harden.ts + client retry + /auth redirect for signed-in) — READY; live verify baqi (founder login ke baad).
+- 21 Oct 02:45 FxAmbient (edge glow + aurora blobs, plan colours, toggle-controlled) READY; Web pull + live test baqi.

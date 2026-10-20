@@ -46,6 +46,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { api } from "@/lib/api";
+import { FxAmbient } from "@/components/fx/FxAmbient";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
@@ -204,6 +205,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       className="flex h-dvh flex-col overflow-hidden bg-background"
       style={{ paddingBottom: "var(--ax-bottom-strip, 0px)" }}
     >
+      <FxAmbient plan={billed} />
       <CommandPalette open={open} onOpenChange={setOpen} />
 
       {/* Top bar — brand, org, one search entry for the entire product */}

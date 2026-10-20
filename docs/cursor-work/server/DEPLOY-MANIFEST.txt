@@ -6,11 +6,11 @@ src/routes/app.domains.tsx 518f36d7e161bad0
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx 8955ad28919004e1
+src/components/app/AppShell.tsx 6a2b53356fd464cd
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
-src/styles.css 8684e1eb922e9428
+src/styles.css e59c9385b11c110c
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4c9ef939ba452c15
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md dd28abba360ba817
+docs/cursor-work/founder/founder-commands.md ccad1f268b505dd7
 docs/anexomail-blueprint.md bd0b56a4ece85a89
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 8296c9245414b89f
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 31354616995d6102
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -241,3 +241,4 @@ server/lib/auth-harden.test.ts 7f48134d9beead8a
 server/lib/supa.ts 859a9dbbf8c3b8d7
 server/routes/auth.ts 768d265adecb8f19
 docs/cursor-work/server/brain-auth-harden-install.sh f415585368cddd2c
+src/components/fx/FxAmbient.tsx 6ac8a13d558fe421

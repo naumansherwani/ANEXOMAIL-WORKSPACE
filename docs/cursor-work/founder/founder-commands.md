@@ -488,3 +488,7 @@ Loophole ledger (sach)
 ## 21 Oct 2026 02:36 PKT
 "... basic ko user ki tarah aur ceo ki nazar se hard stress test ... sab fix and green ker ke khudi live test ker ke bolo ... sab se bara bug: login ke baad dashboard pe jata hai phir wapis login pe ata hai phir wapis dashboard ke liye loading kerta hai, yeh sab packages mein bug hai fix it new technology pe."
 -> LOGIN LOOP: sabab = Supabase auth.getUser har request par; temporary error/429 -> 401 -> client sign-out. Fix READY: server/lib/auth-harden.ts (cache+retry, temp=503), routes/auth.ts userFrom 503, src/lib/auth.tsx retry (5xx/0/429; fresh-login 401 recheck), src/routes/auth.tsx (logged-in user /auth khole to seedha /app). Brain installer brain-auth-harden-install.sh + Web pull. Live test baqi.
+
+## 21 Oct 2026 02:42 PKT
+"yeh grapichs jo brown border pe hai abhi tak live nahi huway hain aur appearance main in ka toggle bana diya hai ... Graphics & visual effects yeh abhi real working banao jaldi se"
+-> FxAmbient: workspace ke kinare par plan-rang ki ghoomti roshni border + 2 halke aurora blobs + card hover glow (CSS only, phone/tablet halka). Toggle OFF/calm/reduced-motion par chhupa. READY (src/components/fx/FxAmbient.tsx + styles.css "FX AMBIENT"). Live test Web pull ke baad.
