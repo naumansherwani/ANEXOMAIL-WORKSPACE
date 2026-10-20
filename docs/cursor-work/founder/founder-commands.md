@@ -48,6 +48,14 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 09:25 PKT — founder: purana output (dnsauth 08:29, mig-live-test, sw.js) + "yeh sirf read kerna hai ke masla solve hai ke nahi bus."
+- Halat: **batch 1 DONE (live saboot 09:3x: sw activated, offline inbox 7 threads, Basic greeting sahi)**. dnsauth DONE. mig FAIL 4 = 08:29 ka purana script (fix 08:38); too_many_sessions = E35 hifazat.
+
+### 20 Oct 2026 — agent (CEO): batch 3 — Billing daam (READY)
+- Masla: Billing par Basic (business account) "£97.00 / month · 25 GB / mailbox". E5 `get_billing_subscription` business ka har na-business plan Business daam deta tha; saalana par mahine ka daam "/ year".
+- Hal: **E40 SQL** (wohi function, sirf yeh 2 cheezein; self-test business Basic = £23/5 GB). PG16 mock par 2 dafa PASSED.
+- Note (agla, Bun fallback): `/api/billing/subscription` live par `storage_per_mailbox_gb does not exist` deta hai — Rust primary chal raha hai is liye user ko nazar nahi aata.
+
 ### 20 Oct 2026 — agent (CEO): Basic audit batch 2 — Security page sach (READY)
 - Masla: Security page ki har ginti khaali tables se ("Live sessions 0" jab user login hai; "Kill" kuch nahi maarta tha; "Encryption needs attention" khaali table se; "Rotate keys" sirf ek row likhta tha; ledger kabhi nahi likha jata tha).
 - Hal: **E39 SQL** (service_role-only functions: `auth.sessions`, `auth.audit_log_entries`, `device_vault`, sha256 ledger zanjeer) + **Rust `security` module** (`security_core.rs` 4 unit tests + `security_glue.rs`: live TLS handshake 443/993/587/25, cert public roots se check) + **Web** (rotate button hataya; kill switch / disown ka sach; "this device" par Kill nahi).
