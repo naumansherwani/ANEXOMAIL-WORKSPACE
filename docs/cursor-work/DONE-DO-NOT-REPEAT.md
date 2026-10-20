@@ -85,3 +85,17 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 01:25: G38b download GREEN, Undo-send GREEN (Chrome). Thread action row HScroll (code). capture script: UUID/underscore literals ab RED nahi.
 - 21 Oct 01:45: 390 GREEN (inbox/calendar/thread). 820 mail master-detail fix (code). Test method: Chrome same-origin iframe viewport (window resize kaam nahi karta).
 - 21 Oct 02:00: Basic 21-page sweep clean; PROMISES #12 GREEN; SMS copy live GREEN.
+
+## 21 Oct 2026 (compact ke baad ka poora hisaab — dobara mat karo)
+- Calendar create (E51 constraint) GREEN; inbound hello.txt download GREEN; Compose send hold + Undo GREEN (server-side hold, cancel 200); SMS recovery copy honest; 21 Basic pages clean; 390/820 mail master-detail + HScroll header drag.
+- Settings -> Appearance: "Graphics & visual effects" toggle (experience.graphics, html[data-ax-fx]) — LIVE GREEN.
+- Left nav scrollbar hidden (styles.css) — LIVE GREEN.
+- Brain CRM tenant isolation installed (brain-crm-install.sh) — health 200, unauth 401.
+- SiteNav hamburger until xl (1024-1268 overflow) — pushed 138de99, live retest pending.
+- 39-load sweep (13 routes x 390/820/1200): 0 empty/0 error.
+- Checkout: Basic -> Pro Upgrade opens Polar (Pro £46/mo); not paid.
+- Capture script: pg_dump OK 40772 lines, snapshot PUSHED af24025 (live-snapshot/sql/schema-public.sql etc.); false RED (alphabet constant) filtered.
+- Passkey: test accounts exempt in repo auth-passkey.ts; live Brain file differs from repo => use brain-passkey-exempt.sh (surgical), NOT brain-passkey-install.sh.
+- 3D v1 BUILT 216b00c: src/lib/fx.ts + src/components/fx/* (mailbox hero, logo loader, plan orb, empty gems, plans tilt). Live test after Web pull.
+- Rule 34 (mobile/tablet priority + test accounts exempt from passkey deadline) in AGENTS.md.
+- Manifest: sync only auto-tracks git-status src changes; pass explicit paths for new/committed files, always verify 0 bad.

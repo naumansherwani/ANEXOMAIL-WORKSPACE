@@ -473,3 +473,8 @@ Loophole ledger (sach)
 
 ## 21 Oct 2026 01:31 PKT (verbatim)
 "yeh grapics side pe ata hain is ko settings main toggle on and off ka hona chaiye hain aur yeh universal features hai jo sab main ho gay. ... yeh 27 october wali deadline test accounts ke liye nahi hai yeh real user ka hoga. aur passkey ki zarurat nahi hai. is ke elwa koi major issues hai woh theek kero koi loophole hai us ko theek kero aur green kero yeh target hai. mobile tablet walay ko sab se bari prioty do yeh sandbox main likho jab bhi website edit hogi toh yeh live test tum mobile aur table laptop computer ke liye test live kero gay sandbox main. yaad rakhna. aur yeh image 2 dekho jahan pe cursor hai waha pe chota sa scrol bar hai yeh bura lagta hai is ko khatham kero."
+
+## 21 Oct 2026 02:03 PKT (verbatim, summary)
+"... 3D graphics kahan aayenge ... Landing hero mailbox; login/loader 3D logo; dashboard plan orb (Basic neela, Pro jamuni, Business sunehri, Business Pro royalty feel); khali inbox/calendar 3D; plans tilt ... mobile aur tablet walon ko bhi cinematic 3d experience do aur toggle on and off do aur laptop walon ko bhi ... yeh kaam bari bari kerne hain. ... ek ek line read kero aur codes likho advance super level ceo saab"
+## 21 Oct 2026 02:11 PKT
+"comapct chat se pehle jitna tumne kaam kiya hai codes likhe hain jo bhi kiya hai woh laetst kaam ko update kero repo aur sandbox main"

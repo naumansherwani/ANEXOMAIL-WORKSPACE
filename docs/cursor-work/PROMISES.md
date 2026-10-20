@@ -26,3 +26,6 @@ Audit chalte waqt har "VERIFY" ko live/code se green ya TODO banana hai.
 - 2 passkey (target): 1 hone par patti "backup passkey"; recovery codes khatam hon to patti.
 - Login: password ya passkey ya recovery code (`/api/auth/recovery-codes/redeem`, 15 min mein 5 galat par rok).
 - Family accounts: koi chhoot nahi (asli buyer jaisa).
+
+- #13 (21 Oct): 3D v1 + Graphics toggle (har plan, mobile/tablet lite) — code 216b00c; live 390/820/laptop test pending Web pull.
+- #14 (21 Oct): test accounts passkey-exempt (real users 27 Oct) — brain-passkey-exempt.sh pending founder run.
