@@ -34,6 +34,8 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - Pending (founder haan): Caddy `/files/*` band (`attach-caddy-close-files.sh`), Postfix size limit. Pending (kaam): G38b inbound bytes, phase48 ledger se quota milana, ClamAV green.
 - Test infra: `docs/cursor-work/server/tests/attach/` (README). Dobara mat banao.
 
+- **SQL ab server se (founder 21:28):** `docs/cursor-work/server/sql-run.sh` — ek command, tarteeb se E37..E48 + CHECK_E42_E47 + CHECK_E48; ledger; fail par ruk jata hai (local test: chali, 2nd run skip, FORCE, bad file ruki, CHECK false => exit 1). Editor mein paste ab zaroori nahi. E28/E36 isme nahi (password).
+
 ## Loopholes jo band ho chuke (dobara audit nahi)
 - Export sirf queue thi -> asli streaming ZIP (e2e real crates) DONE.
 - Block kahin enforce nahi hota tha -> Rust + Brain + Leo guard, fail-open, 30s cache DONE (unit tests).

@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md 1ab7654e13e647e5
-docs/cursor-work/founder/founder-commands.md 540486f41442504b
+docs/cursor-work/founder/founder-commands.md 096177d11c720b49
 docs/anexomail-blueprint.md 3b2a7185917da05d
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -136,7 +136,7 @@ src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
 src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c
 docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
-docs/cursor-work/TECH-MAP.md 801427bcddc57fdf
+docs/cursor-work/TECH-MAP.md 17ea4b6f2f948a1c
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md e4d3eef60f5313ef
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1761c78f7943b6c2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -196,3 +196,4 @@ server/rust/attach_glue.rs 3d5ab0ac5c7b24b2
 src/lib/mail-attachments-core.test.ts 4947ee83be835067
 src/lib/mail-attachments-core.ts 4c8d15ce14d2938b
 src/lib/mail-attachments.ts 1240deda22af0bc2
+docs/cursor-work/server/sql-run.sh 13a8817d7512820b

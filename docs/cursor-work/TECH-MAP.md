@@ -44,7 +44,7 @@
 ### 0b. Har technology ki PULL command (founder 20 Oct 06:36: "kaun si technology ki pull hai") — har jawab mein alag block, label ke saath
 | Technology | Code kahan likha jata hai (repo) | Server par kaise aata hai (sirf yehi raasta) |
 |---|---|---|
-| **PostgreSQL (SQL)** | `docs/cursor-work/sql/E<n>_*.sql` (fail ho to wohi file theek) | Server: `. /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/sql/E<n>.sql)` — ya founder Supabase SQL Editor mein paste (isliye har E-file editor-safe: koi `\` psql command nahi, koi temp table statements ke beech nahi). |
+| **PostgreSQL (SQL)** | `docs/cursor-work/sql/E<n>_*.sql` (fail ho to wohi file theek) | **Founder hukm 20 Oct 21:28: SQL ab SERVER se** — `sql-run.sh` (bina naam = E37..E48 + CHECK; sha256 ledger `/var/lib/anexomail/sql-applied.tsv`, FORCE=1 dobara). Haath se: `. /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/sql/E<n>.sql)` — ya founder Supabase SQL Editor mein paste (isliye har E-file editor-safe: koi `\` psql command nahi, koi temp table statements ke beech nahi). |
 | **Rust :3200** | `server/rust/<module>_core.rs` + `_glue.rs`; upgrades `docs/cursor-work/server/*-upgrade.sh` | `MODULES=<m> bash <(… rust-engine-install.sh)` / upgrade script — backup, build, restart, health, restore-on-fail. |
 | **Website (React/TanStack/Vite/Tailwind)** | `src/**` | `bash <(… pull.sh)` — sha-guard, build, `pm2 restart anexomail-web --update-env && pm2 save`. |
 | **Bun Brain :3100** | `server/routes/*.ts` (sirf fallback; naya kaam nahi) | Alag Brain block (`anexomail-leo` restart) — sirf jab zaroori. |

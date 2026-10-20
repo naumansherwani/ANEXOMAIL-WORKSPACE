@@ -447,3 +447,6 @@ Loophole ledger (sach)
 
 ## 20 Oct 2026 (G38 — founder standing directive, dobara)
 * Founder (verbatim, summary of standing orders): Basic -> Pro -> Business -> Business Pro, har package live login test, father ka account sab ke baad, phir founder profile/AnexoChat; har technology ki pull command alag; Rule 28 manifest "0 bad" commit se pehle. Passwords `[REDACTED]` — sirf `/root/.anexo-test-creds` (repo se bahar).
+
+### 20 Oct 2026 21:30 PKT — founder (verbatim): "tumne jitne bhi sql ab tak diye hain ajj ke aur kal ke woh sab main server pe run kerun ga woh sql ab se server pe tum commands do. repo main jitne bhi sql hai woh sever pe main run kerun ga commands do"
+**Halat:** `sql-run.sh` (E37..E48 + CHECK, ledger, stop-on-fail) repo mein; ab SQL hamesha server command se. Chrome: 2 browsers connected, confirm screen ka jawab nahi aaya (timeout) — live login test baqi.
