@@ -243,6 +243,6 @@ server/routes/auth.ts 768d265adecb8f19
 docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
 src/routes/app.tsx f873a19be7ebbea5
-docs/cursor-work/server/login-probe.sh 6b357c62dc22fa24
+docs/cursor-work/server/login-probe.sh 957e742e42de995a
 server/rust/main.rs 502bd525545091bb
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be

@@ -6,8 +6,13 @@
 # Sirf padhne wali calls; kuch badalta nahi; token/password kabhi screen par nahi aata.
 set -uo pipefail
 BASE="${BASE:-http://127.0.0.1:3100}"
-read -r -p "Test account email (jaise basic.test@anexomail.com): " EM
-read -r -s -p "Password (nazar nahi aayega): " PW; echo
+read -r -p "Email (sirf Enter dabayein = basic.test@anexomail.com): " EM
+EM="${EM:-basic.test@anexomail.com}"
+PW=""
+while [ -z "$PW" ]; do
+  read -r -s -p "Password likhein (nazar nahi aayega, phir Enter): " PW; echo
+  [ -z "$PW" ] && echo "   (khaali tha — dobara likhein)"
+done
 J="$(python3 -c 'import json,sys;print(json.dumps({"email":sys.argv[1],"password":sys.argv[2]}))' "$EM" "$PW")"; unset PW
 T0=$(date +%s.%N)
 R="$(curl -s -m 20 -w '\n%{http_code}' -H 'content-type: application/json' -H 'user-agent: Mozilla/5.0 (Windows NT 10.0) Chrome/130 Safari/537.36' -d "$J" "$BASE/api/auth/login")"; unset J
