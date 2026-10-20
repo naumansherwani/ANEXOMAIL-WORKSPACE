@@ -43,7 +43,13 @@ export function TimeGrid({
   const update = useUpdateMeeting();
   const colsRef = useRef<HTMLDivElement>(null);
   const scroller = useRef<HTMLDivElement>(null);
-  const [drag, setDrag] = useState<Drag | null>(null);
+  const [drag, setDragState] = useState<Drag | null>(null);
+  // Ref mirrors state so fast pointer sequences (down→move→up before a re-render) never read a stale closure.
+  const dragRef = useRef<Drag | null>(null);
+  const setDrag = (d: Drag | null) => {
+    dragRef.current = d;
+    setDragState(d);
+  };
   const [pending, setPending] = useState<Pending | null>(null);
   const [now, setNow] = useState(() => new Date());
 
@@ -91,6 +97,7 @@ export function TimeGrid({
     setDrag({ id: ev.id, mode, x0: e.clientX, y0: e.clientY, dDay: 0, dMin: 0, moved: false });
   };
   const track = (e: React.PointerEvent) => {
+    const drag = dragRef.current;
     if (!drag) return;
     const colW = (colsRef.current?.getBoundingClientRect().width ?? 700) / 7;
     const dy = e.clientY - drag.y0;
@@ -103,7 +110,7 @@ export function TimeGrid({
     });
   };
   const finish = (ev: CalendarEvent) => {
-    const d = drag;
+    const d = dragRef.current;
     setDrag(null);
     if (!d) return;
     if (!d.moved || (d.dDay === 0 && d.dMin === 0)) {
