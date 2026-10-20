@@ -31,6 +31,7 @@ import { CostMeter, LoadBar, apiHref } from "@/components/app/calendar/Bits";
 import { EventDetail } from "@/components/app/calendar/EventDetail";
 import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
+import { TimeGrid } from "@/components/app/calendar/TimeGrid";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
@@ -161,84 +162,6 @@ function MonthView({
 }
 
 /* ─── Week view (enhanced) ───────────────────────────────────────── */
-function WeekViewEnhanced({
-  start,
-  events,
-  selectedId,
-  onSelect,
-}: {
-  start: Date;
-  events: CalendarEvent[];
-  selectedId: string;
-  onSelect: (id: string) => void;
-}) {
-  const today = new Date();
-  const days = Array.from({ length: 7 }, (_, i) => {
-    const d = new Date(start);
-    d.setDate(start.getDate() + i);
-    return d;
-  });
-
-  return (
-    <div className="grid grid-cols-7 gap-1 p-ax-3">
-      {days.map((day, i) => {
-        const dayEvents = events.filter((e) => sameDay(new Date(e.starts_at), day))
-          .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
-        const isToday = sameDay(day, today);
-        return (
-          <div key={day.toISOString()}>
-            {/* Day header */}
-            <div className={cn(
-              "mb-1.5 flex flex-col items-center gap-0.5 rounded-xl py-2",
-              isToday ? "bg-primary/10" : "",
-            )}>
-              <span className="text-[10px] font-semibold uppercase text-muted-foreground">{DAY_SHORT[i]}</span>
-              <span className={cn(
-                "flex size-6 items-center justify-center rounded-full text-sm font-bold",
-                isToday ? "bg-primary text-primary-foreground" : "text-foreground",
-              )}>
-                {day.getDate()}
-              </span>
-            </div>
-            {/* Events */}
-            <div className="space-y-1">
-              {dayEvents.length === 0 && (
-                <div className="flex h-8 items-center justify-center">
-                  <span className="text-[10px] text-muted-foreground/30">—</span>
-                </div>
-              )}
-              {dayEvents.map((ev) => (
-                <button
-                  key={ev.id}
-                  type="button"
-                  onClick={() => onSelect(ev.id)}
-                  className={cn(
-                    "ax-press w-full rounded-lg px-1.5 py-1.5 text-left transition-all",
-                    selectedId === ev.id ? "ring-2 ring-primary ring-offset-1" : "",
-                    KIND_COLOR[ev.kind] ?? KIND_COLOR.meeting,
-                    ev.status === "cancelled" ? "opacity-40 line-through" : "",
-                  )}
-                >
-                  <span className="block truncate text-[10px] font-bold leading-tight">{ev.title}</span>
-                  {!ev.all_day && (
-                    <span className="block text-[9px] opacity-80">
-                      {new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
-                    </span>
-                  )}
-                  {ev.conflict && (
-                    <span className="mt-0.5 block rounded bg-destructive/20 px-1 text-[8px] font-bold text-destructive">
-                      Conflict
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
 
 /* ─── Day view ───────────────────────────────────────────────────── */
 function DayView({
@@ -733,7 +656,7 @@ function CalendarPage() {
           <div className="flex flex-col gap-ax-5 p-ax-6">
             {/* Week grid in the detail stage — 7 columns need room, so only from xl up; below that the rail's agenda is the week. */}
             <div className="hidden xl:block">
-              <WeekViewEnhanced
+              <TimeGrid
                 start={weekRange(anchor).start}
                 events={rows}
                 selectedId={selected}

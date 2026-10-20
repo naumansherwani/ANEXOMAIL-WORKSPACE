@@ -108,3 +108,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 03:30 Rust auth_user hardened (cache 20s + transient retry) READY: rust-auth-harden.sh. Chrome = sirf final look (Rule 36).
 - 21 Oct 03:28 login-probe v2: koi typing nahi (admin magic-link token, Brain+Rust parallel probe). Founder ne v1 par empty Enter dabaya tha.
 - 21 Oct 03:35 PROBE RESULT: Brain 4 auth routes x72 calls sab 200 (login-loop server-side band). Web bb9007e pulled OK. Rust auth cache already live. Probe Rust path fixed (billing.subscription).
+- 21 Oct 03:50 Calendar desktop week = real TimeGrid (hour rows, now-line, overlap columns, drag move + resize, notify-guests confirm). Frontend only: data/update stay on Rust calendar.update (founder: calendar Rust pe hi rahega). Live check baqi.

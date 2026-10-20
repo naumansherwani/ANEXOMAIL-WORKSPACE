@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx ff96e8cc380f6248
+src/routes/app.calendar.tsx 6a416ad77849a07c
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx 2e508aae6e3e3a6b
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md a97af05eea255003
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 914d5729a09ef9d0
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -248,3 +248,6 @@ server/rust/main.rs 502bd525545091bb
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
 docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 9df68e1ba719042f
 docs/cursor-work/server/jwt-life-probe.sh db8622c56c6df63b
+src/lib/time-grid.ts 67225ce68bd76f30
+src/lib/time-grid.test.ts 27f58c1aac704716
+src/components/app/calendar/TimeGrid.tsx e38d94cd86dbffe3
