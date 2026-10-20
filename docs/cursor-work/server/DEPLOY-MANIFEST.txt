@@ -136,7 +136,7 @@ src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
 src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c
 docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
-docs/cursor-work/TECH-MAP.md f15a1881ac079c92
+docs/cursor-work/TECH-MAP.md 2245a02ad9b27429
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
@@ -235,3 +235,4 @@ src/components/fx/LogoScene.tsx 5630e27d3e2a9672
 src/components/fx/OrbScene.tsx ec82df41e2a94f55
 src/components/fx/GemScene.tsx e51392ff7bc1bec5
 src/components/fx/TiltCard.tsx d4972cae3ca77cf7
+src/components/app/WorkspaceLoader.tsx c90bab09456fadf1

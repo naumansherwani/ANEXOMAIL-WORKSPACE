@@ -242,3 +242,21 @@ Is jadval ke bahar koi tech kisi kaam par nahi. Purani `founder/TECH-MAP.md` (18
 | Web SSR host | Bun (Nitro) | Sirf page render, API nahi. |
 | Payments | Polar Rust :3400 | NO-TOUCH. |
 | Rejected/PLANNED | Stalwart/JMAP, ECH, PostgreSQL 18 | Founder "haan" + staging ke baad. |
+
+### 0e. 3D / graphics / animation technology — KAUN SI KAHAN (founder 21 Oct 2026 02:17 PKT; Rule 25 ke tahat)
+Status sirf sach (Rule 5): INSTALLED = package.json mein; LIVE = live verify; USED = code mein kahan.
+| Technology | Kaam (sirf yeh) | NAHI | Halat (21 Oct) |
+|---|---|---|---|
+| Three.js 0.185 | Asli 3D core: scenes, lighting, particles (WebGL) | inbox/compose/settings/billing | INSTALLED; USED: AnexoChat cinema Scene.tsx + naya fx layer (`src/components/fx/*`) |
+| React Three Fiber 9 | Three.js ko React components mein (declarative) | non-3D UI | INSTALLED; USED: Scene.tsx + fx scenes (Mailbox/Logo/Orb/Gem) |
+| @react-three/drei 10 | R3F helpers: Stars, Cloud, Text3D, (Environment: network HDR laata hai — fx layer mein jaanbujh kar NAHI) | — | INSTALLED; USED: AnexoChat Stars/Cloud |
+| @react-three/postprocessing 3 | Camera effects: Bloom, Vignette, DoF, chromatic | phone par (bhari) | INSTALLED; USED: AnexoChat sirf; fx layer mein NAHI (mobile halka) |
+| @react-three/rapier 2 + Rapier | Physics (raindrop splash, snow, file-transfer ball drop) | UI jahan physics ki zaroorat nahi | INSTALLED; USED: abhi KAHIN NAHI (READY). Cannon.js ki zaroorat nahi — Rapier (Rust/WASM) behtar, sirf ek physics engine |
+| GSAP 3.15 | Timeline animation: message-send sweep, UI transitions, Scene camera | scroll-jacking | INSTALLED; USED: Scene.tsx, chat Ticks |
+| Framer Motion 13 / `motion` | React gesture + spring + page transitions + drag | 3D | INSTALLED; USED: dashboard Greeting, HeroComposition, kai pages |
+| Tone.js 15 | Audio (rain/thunder; Calm Mode = mute) | UI click sounds default par | INSTALLED; USED: AnexoChat atmosphere sound |
+| Lottie (lottie-react 2.4) | Pre-made vector animation: sent tick, loading, emoji reactions | bhari 3D | INSTALLED; USED: chat Ticks |
+| Leva 0.10 | Founder ke liye live tweak/debug panel (weather, quality) | awam ko NAHI dikhna | INSTALLED; USED: chat-continuity (debug) |
+| Motion Canvas | Video jaisi cinematic sequences (tutorial/onboarding overlay, offline render) | runtime app mein NAHI (editor-tool) | NOT INSTALLED — PLANNED; pehle founder "haan" (naya dependency) |
+| Theatre.js | Keyframe timeline editor — cinematic 3D camera sequences | har page | NOT INSTALLED — PLANNED; tab jab hero ko keyframe editor chahiye ho; pehle "haan" |
+Qaida (fx layer, 21 Oct): `src/lib/fx.ts` hi tay karta hai 3D chale ya nahi (Settings toggle, calm, OS reduced-motion, Data-saver, WebGL, laptop=full / phone+tablet=lite). Har scene lazy, screen par ho tab hi render, error par fallback. Naya 3D scene = naya file `src/components/fx/<Name>Scene.tsx` + yahan ek row.
