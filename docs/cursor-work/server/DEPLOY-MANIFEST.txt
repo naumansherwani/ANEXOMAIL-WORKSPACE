@@ -2,7 +2,7 @@
 # Format: <repo path> <sha256 pehle 16 akshar>. Sirf woh files jo server par lagni hain.
 # Agent file badalte hi yahan sha update karta hai (sha256sum <file> | cut -c1-16).
 # Sirf /opt/anexomail-web ki files. Rust/Brain alag block se.
-src/routes/app.domains.tsx 6199031545b0e239
+src/routes/app.domains.tsx 518f36d7e161bad0
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
@@ -103,3 +103,4 @@ src/routes/app.import.tsx c85edcdc1d377621
 src/components/app/mail/MailRail.tsx 53a2e7f6b93b96b6
 src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
 src/components/app/mail/SafeMailBody.tsx 8bc1172e0cde11ae
+src/lib/domains.ts 36a5093c5ee95b08

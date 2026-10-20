@@ -72,9 +72,10 @@ export const Route = createFileRoute("/app/domains")({
  * grain · silence (one confirming pulse, then still).
  */
 
-/** Verify poll: har 20s, zyada se zyada 30 baar (~10 min). Uske baad haath se "Check now". */
-const POLL_MS = 20_000;
-const POLL_MAX = 30;
+/** Verify poll (D2, 20 Oct 2026): Rust ab domain ke APNE nameservers se seedha poochta hai (cache nahi, ~0.3s) — is liye
+ *  har 3s; zyada se zyada 200 baar (~10 min), phir haath se "Check now". Tab chhupa ho to ruka rehta hai. */
+const POLL_MS = 3_000;
+const POLL_MAX = 200;
 
 const CHECK_LABEL: Record<DnsRecordKey, { title: string; why: string }> = {
   txt: { title: "Ownership", why: "Proves the domain is yours." },
@@ -739,6 +740,8 @@ function Wizard({
   const [registrar, setRegistrar] = useState("namecheap");
   const [polls, setPolls] = useState(0);
   const [nextIn, setNextIn] = useState(POLL_MS / 1000);
+  // D2: kis nameserver se seedha dekha (null = purana public raasta)
+  const [liveAt, setLiveAt] = useState<string[] | null>(null);
   const pollsRef = useRef(0);
   const domain = useMemo(
     () => domains.find((d) => d.id === state.domainId) ?? null,
@@ -772,6 +775,7 @@ function Wizard({
             return;
           }
           setProblem(null);
+          setLiveAt(r.source === "authoritative" && r.nameservers?.length ? r.nameservers : null);
           if (r.ready) {
             notify.done(`${r.domain.domain} is verified`);
           } else if (manual) {
@@ -1165,9 +1169,18 @@ function Wizard({
               </div>
             )}
 
+            {!verified && liveAt && (
+              <p className="ax-caption mt-4 max-w-xl [overflow-wrap:anywhere]">
+                <span className="mr-1.5 inline-block size-2 animate-pulse rounded-full bg-success align-middle" aria-hidden="true" />
+                {t("Checking directly at your DNS host")} ({liveAt.slice(0, 2).join(", ")}){" "}
+                {t("— no waiting for caches. The moment a record is saved there, it turns green here.")}
+              </p>
+            )}
             {!verified && (
               <p className="ax-caption mt-4 max-w-xl">
-                {t("DNS usually updates within 5–60 minutes, rarely longer. You don't have to wait here — close this page and come back later; your inbox already works.")}
+                {liveAt
+                  ? t("You don't have to wait here — close this page and come back later; your inbox already works.")
+                  : t("DNS usually updates within 5–60 minutes, rarely longer. You don't have to wait here — close this page and come back later; your inbox already works.")}
               </p>
             )}
 

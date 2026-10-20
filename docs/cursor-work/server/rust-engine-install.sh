@@ -31,7 +31,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device dnsauth"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -78,6 +78,8 @@ CFG={
  "locale": {"public": True,  "label": "locale",    "procs": ['"locale.pref"','"locale.bundle"','"locale.pref.set"']},
  # device: procs khaali JAAN-BOOJH kar — chat arm mein wohi naam hain (dead fallback rehta hai); yeh module unhein chat gate se PEHLE har plan ke liye pakadta hai.
  "device": {"public": False, "label": "device",    "procs": []},
+ # dnsauth (D2): `mail.domains.verify` ko mail dispatch se PEHLE pakadta hai (authoritative NS); main.rs wala DoH arm dead fallback.
+ "dnsauth": {"public": False, "label": "dnsauth",   "procs": []},
 }
 changed=[]
 for m in mods:
@@ -256,6 +258,16 @@ for m in $MODS; do
       fi
       if timeout 6 bash -c 'exec 3<>/dev/tcp/imap.gmail.com/993' 2>/dev/null; then echo "   -> mig: server se bahar ka IMAP raasta khula hai (imap.gmail.com:993)"
       else echo "   -> mig: server imap.gmail.com:993 tak nahi pahunch raha — firewall / outbound 993 dekhein (nahi to copy shuru hi nahi hogi)"; fi;;
+    dnsauth)
+      r="$(probe mail.domains.verify '{"input":{"domain_id":"x"}}')"
+      echo "   mail.domains.verify (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> dnsauth: Rust ne proc pakda (nakli login 401 = theek)";;
+        *) echo "   -> dnsauth: jawab upar dekhein";;
+      esac
+      for h in 1.1.1.1 8.8.8.8; do
+        if timeout 4 bash -c "exec 3<>/dev/udp/$h/53" 2>/dev/null; then echo "   -> server se $h:53 (UDP) ka raasta khula"; else echo "   -> $h:53 tak raasta nahi — authoritative check public DoH par wapas chalega"; fi
+      done;;
     device)
       r="$(probe chat.device.trust.list '{"input":{}}')"
       echo "   chat.device.trust.list (nakli token): $r"

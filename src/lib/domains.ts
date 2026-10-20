@@ -87,6 +87,12 @@ export type DomainVerifyResult = {
   ready: boolean;
   checks: Record<DnsRecordKey, boolean>;
   domain: OrgDomain;
+  /** D2 (20 Oct 2026): "authoritative" = seedha domain ke apne nameservers se (cache nahi); "public" = purana DoH raasta. */
+  source?: "authoritative" | "public";
+  zone?: string | null;
+  nameservers?: string[];
+  /** Duniya ke public resolvers kya dekh rahe hain (sirf jaankari — "phail raha hai"). */
+  public?: Record<DnsRecordKey, boolean>;
 };
 
 export type AddressCreateResult = {

@@ -105,7 +105,7 @@ export const useAddDomain = mutHook<string, unknown>("add", async (name) => {
 });
 export const useVerifyDomain = mutHook<string, unknown>("verify", async (id) => {
   verifyCalls += 1;
-  if (scenario().includes("stuck")) { const d0 = domains.find((x) => x.id === id)!; return { ok: true, ready: false, checks: Object.fromEntries(d0.records.map((r) => [r.key, r.ok])), domain: d0 }; } // 8d: DNS never shows up
+  if (scenario().includes("stuck")) { const d0 = domains.find((x) => x.id === id)!; return { ok: true, ready: false, checks: Object.fromEntries(d0.records.map((r) => [r.key, r.ok])), domain: d0, source: "authoritative", zone: "acme-studio.com", nameservers: ["ns1.namecheaphosting.com", "ns2.namecheaphosting.com"] }; } // 8d: DNS never shows up
   domains = domains.map((x) => {
     if (x.id !== id) return x;
     const have = x.records.filter((r) => r.ok).length;
@@ -114,7 +114,7 @@ export const useVerifyDomain = mutHook<string, unknown>("verify", async (id) => 
     return { ...x, records, status: next === 5 ? "verified" : "pending", last_checked_at: new Date().toISOString() };
   });
   const dom = domains.find((x) => x.id === id)!;
-  return { ok: true, ready: dom.status === "verified", checks: Object.fromEntries(dom.records.map((r) => [r.key, r.ok])), domain: dom };
+  return { ok: true, ready: dom.status === "verified", checks: Object.fromEntries(dom.records.map((r) => [r.key, r.ok])), domain: dom, source: "authoritative", zone: "acme-studio.com", nameservers: ["ns1.namecheaphosting.com", "ns2.namecheaphosting.com"] };
 });
 export const useRemoveDomain = mutHook<string, unknown>("rmd", async (id) => { domains = domains.filter((d) => d.id !== id); return { ok: true }; });
 export const useCreateAddress = mutHook<{ domain_id: string; local_part: string; kind: "mailbox" | "shared" | "alias"; alias_target?: string }, unknown>("mk", async (i) => {
