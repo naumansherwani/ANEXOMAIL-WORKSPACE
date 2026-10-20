@@ -762,3 +762,4 @@ Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-pass
 | G39 | **Family = real buyer**: billing "Lifetime access" (E40 `lifetime`), retention "Keep forever", baqi har cheez wahi | Aadha DONE (60bbe0f); `E41_family_real_buyer.sql` READY (20 Oct) — server par chalana + live check baqi | SQL + Web |
 | G40 | Rust par RPC: work.*, crm.*, org.*, integrations.*, settings.* (abhi Bun par girte hain, page theek, sirf speed) | TODO | Rust |
 | G41 | Mobile + tablet + desktop har package par (Business Pro 390/820 audit shuru 19:1x) | Jari | live |
+| G42 | WebAuthn/passkey + recovery-code login ko Rust par shift karna (`/rpc/auth.passkey.*`, p256 + ciborium + sha2, Supabase admin generate_link se session) — tab Bun apwad khatam | TODO (G35 ke baad) | Rust |

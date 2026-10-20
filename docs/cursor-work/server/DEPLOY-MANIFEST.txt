@@ -127,12 +127,13 @@ src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md 90aec91938ecef43
 docs/cursor-work/founder/founder-commands.md f8c3f444564f96e5
-docs/anexomail-blueprint.md 32a4780311095a7c
+docs/anexomail-blueprint.md 533b9261844a7f0c
 docs/cursor-work/sql/E41_family_real_buyer.sql aed0627ce876b104
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
 docs/cursor-work/server/device-hash-migrate.sh a23c198866587da0
 src/lib/passkey.ts ca09a15968cb24af
 src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
 src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
-server/routes/auth-passkey.ts 0863d9eca19a97e1
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c
+docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
+docs/cursor-work/TECH-MAP.md fecebbf50bceb924

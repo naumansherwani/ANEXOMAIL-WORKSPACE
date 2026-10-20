@@ -48,6 +48,7 @@
 | **Rust :3200** | `server/rust/<module>_core.rs` + `_glue.rs`; upgrades `docs/cursor-work/server/*-upgrade.sh` | `MODULES=<m> bash <(… rust-engine-install.sh)` / upgrade script — backup, build, restart, health, restore-on-fail. |
 | **Website (React/TanStack/Vite/Tailwind)** | `src/**` | `bash <(… pull.sh)` — sha-guard, build, `pm2 restart anexomail-web --update-env && pm2 save`. |
 | **Bun Brain :3100** | `server/routes/*.ts` (sirf fallback; naya kaam nahi) | Alag Brain block (`anexomail-leo` restart) — sirf jab zaroori. |
+| **Bun Brain — apwad (founder ne G35 maanzoor kiya, 20 Oct)** | `server/routes/auth-passkey.ts` (WebAuthn register/verify/login, recovery-code redeem, status) | `bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-passkey-install.sh)` — sha-guard + bun build pre-flight + restart `anexomail-leo` + restore-on-fail. **G42 = yeh Rust (p256 + ciborium + sha2, `/rpc/auth.passkey.*`) mein jayega**; tab tak yeh apwad. |
 | **Caddy** | koi code nahi | Read-only check -> backup -> `caddy validate` -> reload. |
 | **Server ops (cron, rustup, system)** | `docs/cursor-work/server/*.sh` | Seedha script (backup + check + restore). |
 | **Mail (Postfix/Dovecot/OpenDKIM)** | `server/mail/*` | Founder "haan" + script (backup + `postfix check` + reload). |
