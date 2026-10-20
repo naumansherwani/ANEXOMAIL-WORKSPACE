@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 09:52 PKT — founder: (2 tasveerein) "yeh image 1 main drag system banao cursor se drag ho sakay right left takay icons puray nazar aye yeh UI UX fix kero aur yeh second image main settings ki option yahan pe dalo sirf yeh kerna hai aur abhi tak 3D grapichs kahan ana hai yeh tumne nahi batya hai baki sab green hai"
+- Halat: **READY** (batch 7, commit 562b6c2). Mail rows par mouse-drag/wheel scroll; profile menu mein Settings. 3D ka naksha `BASIC-AUDIT-DONE.md` mein (abhi bana nahi, founder ke hukm par).
+
 ### 20 Oct 2026 09:44 PKT — founder: "compact chat ke baad sab context tum bhul gaye ho gay jo abhi sab kaam kiya hai is ko repo main dalo takay claude read karay ke kya kaam huwa hai aur duplicate nahi phir se ban jaye samjhay! aur batch 4 ki pull command do"
 - Halat: **DONE**. `docs/cursor-work/BASIC-AUDIT-DONE.md` (batch 1-6, pull status, baqi kaam, tareeqa) + AGENTS.md Rule 27 + README pointer. Batch 4 (Settings toggles) = sirf Web pull.
 
