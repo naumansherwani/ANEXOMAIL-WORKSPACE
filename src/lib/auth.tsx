@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { api, ApiError, sessionToken } from "@/lib/api";
+import { api, ApiError, ensureFreshToken, sessionToken } from "@/lib/api";
 import { visitorPreviewFromUrl } from "@/lib/visitor-preview";
 import { clearOffline } from "@/lib/offline";
 
@@ -160,6 +160,23 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     retry: false,
     staleTime: 30_000,
   });
+
+  // Access token (1 ghanta) khatam hone se pehle chupke se naya: har minute jaanch + tab wapas aane / internet wapas aane par.
+  const hasSession = Boolean(query.data);
+  useEffect(() => {
+    if (!hasSession || typeof window === "undefined") return;
+    const tick = () => void ensureFreshToken();
+    tick();
+    const iv = window.setInterval(tick, 60_000);
+    const onVis = () => document.visibilityState === "visible" && tick();
+    document.addEventListener("visibilitychange", onVis);
+    window.addEventListener("online", tick);
+    return () => {
+      window.clearInterval(iv);
+      document.removeEventListener("visibilitychange", onVis);
+      window.removeEventListener("online", tick);
+    };
+  }, [hasSession]);
 
   const refresh = useCallback(async () => {
     await queryClient.invalidateQueries({ queryKey: ["auth"] });

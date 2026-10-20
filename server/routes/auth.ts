@@ -228,7 +228,15 @@ async function operationalOrganisation(uid: string, email: string | null | undef
   return { id: mailbox.org_id, role: "owner" };
 }
 
-async function sessionResult(user: any, accessToken?: string, req?: any) {
+/** `rt` = Supabase session ke refresh credentials (login/passkey/callback par). Client inhein sirf `api()` ke andar rakhta hai aur
+ *  access token (1 ghanta) khatam hone se pehle `/api/auth/refresh` se naya leta hai — user kabhi har ghante logout nahi hota. */
+type RefreshInfo = { refresh_token?: string | null; expires_at?: number | null };
+const rtOf = (session: any): RefreshInfo => ({
+  refresh_token: session?.refresh_token ?? null,
+  expires_at: typeof session?.expires_at === "number" ? session.expires_at : null,
+});
+
+async function sessionResult(user: any, accessToken?: string, req?: any, rt?: RefreshInfo) {
   if (accessToken && req) await saveSession(user.id, accessToken, req);
   const uid = user.id;
   const [{ data: profile }, { data: memberships }, { data: trial }, founder, operational] =
@@ -364,6 +372,7 @@ async function sessionResult(user: any, accessToken?: string, req?: any) {
 
   return {
     ...(accessToken ? { token: accessToken } : {}),
+    ...(rt?.refresh_token ? { refresh_token: rt.refresh_token, expires_at: rt.expires_at ?? null } : {}),
     user: {
       id: uid,
       email: user.email || "",
@@ -677,7 +686,7 @@ async function ensureFounderOrg(founderId: string): Promise<void> {
     if (!fe && fd?.user && fd?.session) {
       // AWAIT — org must exist before session is returned so orgId is in session
       await ensureFounderOrg(fd.user.id);
-      return res.json(await sessionResult(fd.user, fd.session.access_token, req));
+      return res.json(await sessionResult(fd.user, fd.session.access_token, req, rtOf(fd.session)));
     }
     return authError(res, fe, "invalid_credentials");
   }
@@ -685,7 +694,28 @@ async function ensureFounderOrg(founderId: string): Promise<void> {
 
   const { data, error } = await getPublicAuth().auth.signInWithPassword({ email, password });
   if (error || !data.user || !data.session) return authError(res, error, "invalid_credentials");
-  res.json(await sessionResult(data.user, data.session.access_token, req));
+  res.json(await sessionResult(data.user, data.session.access_token, req, rtOf(data.session)));
+});
+
+/** Refresh: refresh_token -> naya access_token (+ naya refresh_token, Supabase rotation). Session id wahi rehti hai, isliye
+ *  logout / device-revoke (auth.sessions row) refresh ke baad bhi asli rehte hain. Asli invalid => 401, temporary => 503. */
+authRouter.post("/refresh", async (req, res) => {
+  if (unavailable(res)) return;
+  const rtoken = String(req.body?.refresh_token || "");
+  if (!rtoken || rtoken.length > 512) return res.status(400).json({ error: "refresh_token_required" });
+  const { data, error } = await getPublicAuth().auth.refreshSession({ refresh_token: rtoken });
+  if (error || !data.session || !data.user) {
+    if (error && isTransientAuthError(error)) {
+      return res.status(503).json({ error: "auth_temporarily_unavailable", retry: true });
+    }
+    return res.status(401).json({ error: "refresh_invalid" });
+  }
+  await saveSession(data.user.id, data.session.access_token, req);
+  res.json({
+    token: data.session.access_token,
+    refresh_token: data.session.refresh_token,
+    expires_at: data.session.expires_at ?? null,
+  });
 });
 
 authRouter.get("/session", async (req, res) => {
@@ -784,7 +814,7 @@ authRouter.post("/oauth/callback", async (req, res) => {
   if (!code) return res.status(400).json({ error: "verification_code_required" });
   const { data, error } = await getPublicAuth().auth.exchangeCodeForSession(code);
   if (error || !data.user || !data.session) return authError(res, error, "verification_failed");
-  res.json(await sessionResult(data.user, data.session.access_token, req));
+  res.json(await sessionResult(data.user, data.session.access_token, req, rtOf(data.session)));
 });
 
 authRouter.post("/reset-password", async (req, res) => {

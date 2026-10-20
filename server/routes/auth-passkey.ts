@@ -52,7 +52,7 @@ async function sessionForEmail(admin: SupabaseClient, email: string, req: any, s
       token_hash: hashed,
     });
     if (!verifyError && verified.user && verified.session?.access_token) {
-      return sessionResult(verified.user, verified.session.access_token, req);
+      return sessionResult(verified.user, verified.session.access_token, req, { refresh_token: verified.session.refresh_token, expires_at: verified.session.expires_at });
     }
   }
   const action = String(data.properties.action_link || "");
@@ -71,7 +71,7 @@ async function sessionForEmail(admin: SupabaseClient, email: string, req: any, s
   if (verifyError || !verified.user || !verified.session?.access_token) {
     throw new Error("passkey_session_failed");
   }
-  return sessionResult(verified.user, verified.session.access_token, req);
+  return sessionResult(verified.user, verified.session.access_token, req, { refresh_token: verified.session.refresh_token, expires_at: verified.session.expires_at });
 }
 
 export function mountPasskeyRoutes(
@@ -79,7 +79,7 @@ export function mountPasskeyRoutes(
   deps: {
     getAdmin: () => SupabaseClient;
     userFrom: (req: any, res: any) => Promise<{ user: any; token: string } | null>;
-    sessionResult: (user: any, accessToken?: string, req?: any) => Promise<unknown>;
+    sessionResult: (user: any, accessToken?: string, req?: any, rt?: { refresh_token?: string | null; expires_at?: number | null }) => Promise<unknown>;
     markPasskeySet: (userId: string) => Promise<void>;
   },
 ) {

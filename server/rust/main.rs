@@ -96,7 +96,7 @@ fn sb() -> Option<(String, String)> {
 
 async fn sb_rpc(func: &str, body: Value) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .post(format!("{url}/rest/v1/rpc/{func}"))
         .header("apikey", &key)
@@ -116,7 +116,7 @@ async fn sb_rpc(func: &str, body: Value) -> Result<Value, String> {
 
 async fn sb_select(path_and_query: &str) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .get(format!("{url}/rest/v1/{path_and_query}"))
         .header("apikey", &key)
@@ -138,15 +138,117 @@ struct Me {
     workspace_id: String,
 }
 
+/// Ek hi shared HTTP client (connection pool + keep-alive). 21 Oct 2026 (B1): pehle har call par `http()` = har
+/// baar naya TLS handshake + naya pool; ab ek client, keep-alive connections dobara istemal. Koi total-timeout nahi (badi file/IMAP
+/// transfers na katen) — sirf connect 5 s aur read-inactivity 30 s.
+static HTTP: std::sync::OnceLock<reqwest::Client> = std::sync::OnceLock::new();
+fn http() -> reqwest::Client {
+    HTTP.get_or_init(|| {
+        reqwest::Client::builder()
+            .pool_idle_timeout(Duration::from_secs(60))
+            .pool_max_idle_per_host(32)
+            .tcp_keepalive(Duration::from_secs(30))
+            .connect_timeout(Duration::from_secs(5))
+            .read_timeout(Duration::from_secs(30))
+            .build()
+            .unwrap_or_else(|_| reqwest::Client::new())
+    })
+    .clone()
+}
+
+mod jwt_core;
+
 /// Identity Supabase Auth se — Rust apna session store nahi rakhta.
-/// LOGIN-LOOP FIX (founder 21 Oct 2026, Rule 35): pehle har request par Supabase ko poochha jata tha aur Supabase ka koi bhi
-/// temporary error / 429 / 5xx / network masla `None` => 401 ban kar user ko sign-out kar deta tha (dashboard -> login -> loading).
-///   1) kamyab verify 20 s cache (token -> id,email): dashboard ki 15 parallel calls = 1 Supabase call,
-///   2) SIRF temporary masle (network, 429, 5xx) par 3 koshish (150/300/450 ms); asli invalid token (400/401/403/422) foran None,
-///   3) lock kabhi `.await` ke across nahi (future Send rehta hai). Koi naya crate nahi.
+/// LOGIN-LOOP FIX (founder 21 Oct 2026, Rule 35) + B1 LOCAL VERIFY (founder 21 Oct 04:21, "lamba time intact"):
+///   1) kamyab verify 20 s cache (token -> id,email): dashboard ki 15 parallel calls = ek jaanch,
+///   2) LOCAL: ES256 signature + exp + aud + iss `jwt_core` se (JWKS 10 min cache; unknown kid par 30 s mein ek refresh) — network nahi,
+///   3) REVOCATION: token ka `session_id` `auth.sessions` mein zinda hai? (`auth_session_alive`, E53, 5 s cache). Logout / device-revoke
+///      ussi row ko hatate hain, isliye "sign out everywhere" asli rehta hai. RPC na chale (E53 install nahi / DB error) => GoTrue par girta hai,
+///   4) FALLBACK: unknown kid / naya alg / session_id nahi / revocation jaanch na ho paye => purana GoTrue `/auth/v1/user`
+///      (SIRF temporary masle par 3 retry; asli invalid 400/401/403/422 foran None),
+///   5) lock kabhi `.await` ke across nahi (future Send rehta hai).
 static AUTH_CACHE: std::sync::OnceLock<
     std::sync::Mutex<std::collections::HashMap<String, (std::time::Instant, (String, String))>>,
 > = std::sync::OnceLock::new();
+
+type JwksState = (Option<std::time::Instant>, Option<std::time::Instant>, Vec<jwt_core::Jwk>);
+static JWKS: std::sync::OnceLock<std::sync::Mutex<JwksState>> = std::sync::OnceLock::new();
+static SESS_ALIVE: std::sync::OnceLock<
+    std::sync::Mutex<std::collections::HashMap<String, (std::time::Instant, bool)>>,
+> = std::sync::OnceLock::new();
+
+/// JWKS (Supabase signing keys). 10 min cache; `want_kid` cache mein na ho to 30 s mein ek baar refresh (rotation).
+async fn jwks_get(want_kid: &str) -> Vec<jwt_core::Jwk> {
+    let st = JWKS.get_or_init(|| std::sync::Mutex::new((None, None, Vec::new())));
+    let need = {
+        let g = match st.lock() {
+            Ok(g) => g,
+            Err(_) => return Vec::new(),
+        };
+        let fresh = g.0.map(|t| t.elapsed() < Duration::from_secs(600)).unwrap_or(false);
+        let has = g.2.iter().any(|k| k.kid == want_kid);
+        let can_try = g.1.map(|t| t.elapsed() > Duration::from_secs(30)).unwrap_or(true);
+        if (fresh && has) || !can_try {
+            return g.2.clone();
+        }
+        true
+    };
+    if !need {
+        return Vec::new();
+    }
+    if let Ok(mut g) = st.lock() {
+        g.1 = Some(std::time::Instant::now());
+    }
+    let Some((url, _)) = sb() else { return Vec::new() };
+    let got = http().get(format!("{url}/auth/v1/.well-known/jwks.json")).send().await;
+    if let Ok(res) = got {
+        if res.status().is_success() {
+            if let Ok(doc) = res.json::<Value>().await {
+                let keys = jwt_core::parse_jwks(&doc);
+                if !keys.is_empty() {
+                    if let Ok(mut g) = st.lock() {
+                        g.0 = Some(std::time::Instant::now());
+                        g.2 = keys.clone();
+                    }
+                    return keys;
+                }
+            }
+        }
+    }
+    st.lock().map(|g| g.2.clone()).unwrap_or_default()
+}
+
+/// `auth.sessions` mein session zinda hai? Some(true/false) ya None (jaanch na ho saki => caller GoTrue par gire).
+async fn session_alive(sid: &str) -> Option<bool> {
+    let cache = SESS_ALIVE.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()));
+    if let Ok(m) = cache.lock() {
+        if let Some((at, v)) = m.get(sid) {
+            if at.elapsed() < Duration::from_secs(5) {
+                return Some(*v);
+            }
+        }
+    }
+    let r = sb_rpc("auth_session_alive", json!({ "_sid": sid })).await.ok()?;
+    let alive = r.as_bool()?;
+    if let Ok(mut m) = cache.lock() {
+        if m.len() > 8000 {
+            m.clear();
+        }
+        m.insert(sid.to_string(), (std::time::Instant::now(), alive));
+    }
+    Some(alive)
+}
+
+fn remember_auth(token: &str, out: &(String, String)) {
+    if let Some(cache) = AUTH_CACHE.get() {
+        if let Ok(mut m) = cache.lock() {
+            if m.len() > 4000 {
+                m.clear();
+            }
+            m.insert(token.to_string(), (std::time::Instant::now(), out.clone()));
+        }
+    }
+}
 
 async fn auth_user(token: &str) -> Option<(String, String)> {
     let cache = AUTH_CACHE.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()));
@@ -160,7 +262,35 @@ async fn auth_user(token: &str) -> Option<(String, String)> {
         }
     }
     let (url, key) = sb()?;
-    let client = reqwest::Client::new();
+
+    // ── LOCAL (B1): signature + exp + aud + iss, phir session zinda? ──
+    if let Some(kid) = jwt_core::token_kid(token) {
+        let keys = jwks_get(&kid).await;
+        let now = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .map(|d| d.as_secs() as i64)
+            .unwrap_or(0);
+        match jwt_core::verify(token, &keys, &format!("{url}/auth/v1"), now) {
+            Ok(c) => {
+                if let Some(sid) = c.session_id.as_deref() {
+                    match session_alive(sid).await {
+                        Some(true) => {
+                            let out = (c.sub, c.email);
+                            remember_auth(token, &out);
+                            return Some(out);
+                        }
+                        Some(false) => return None, // logout / device revoke — session hat chuki
+                        None => {}                   // jaanch na ho saki => GoTrue
+                    }
+                }
+            }
+            Err(e) if !e.should_fallback() => return None,
+            Err(_) => {}
+        }
+    }
+
+    // ── FALLBACK: GoTrue ──
+    let client = http();
     for attempt in 0..3u64 {
         let sent = client
             .get(format!("{url}/auth/v1/user"))
@@ -179,12 +309,7 @@ async fn auth_user(token: &str) -> Option<(String, String)> {
                     .unwrap_or("")
                     .to_string();
                 let out = (id, email);
-                if let Ok(mut m) = cache.lock() {
-                    if m.len() > 4000 {
-                        m.clear();
-                    }
-                    m.insert(token.to_string(), (std::time::Instant::now(), out.clone()));
-                }
+                remember_auth(token, &out);
                 return Some(out);
             }
             if matches!(st, 400 | 401 | 403 | 422) {
@@ -280,7 +405,7 @@ async fn mail_identity(
 
 async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .patch(format!("{url}/rest/v1/{path_and_query}"))
         .header("apikey", &key)
@@ -301,7 +426,7 @@ async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
 
 async fn sb_insert(path: &str, body: Value) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .post(format!("{url}/rest/v1/{path}"))
         .header("apikey", &key)
@@ -324,7 +449,7 @@ async fn sb_insert(path: &str, body: Value) -> Result<Value, String> {
 /// on_conflict_cols must match an existing unique/exclusion constraint's columns.
 async fn sb_upsert(path: &str, on_conflict_cols: &str, body: Value) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .post(format!("{url}/rest/v1/{path}?on_conflict={on_conflict_cols}"))
         .header("apikey", &key)
@@ -345,7 +470,7 @@ async fn sb_upsert(path: &str, on_conflict_cols: &str, body: Value) -> Result<Va
 
 async fn sb_count(path_and_query: &str) -> Result<i64, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .get(format!("{url}/rest/v1/{path_and_query}"))
         .header("apikey", &key)
@@ -5020,7 +5145,7 @@ async fn start_webtransport() {
 // dobara aayega, poori file kabhi nahi). Backpressure: concurrency DB se.
 async fn sb_storage_put(path: &str, bytes: axum::body::Bytes) -> Result<(), String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = reqwest::Client::new();
+    let client = http();
     let res = client
         .post(format!("{url}/storage/v1/object/chat-files/{path}"))
         .header("apikey", &key)
@@ -5272,7 +5397,7 @@ async fn file_download(
 
 async fn sb_storage_get(path: &str) -> Result<Vec<u8>, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let res = reqwest::Client::new()
+    let res = http()
         .get(format!("{url}/storage/v1/object/chat-files/{path}"))
         .header("apikey", &key)
         .header("authorization", format!("Bearer {key}"))

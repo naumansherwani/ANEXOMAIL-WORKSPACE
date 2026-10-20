@@ -105,7 +105,7 @@ src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
 src/components/app/mail/SafeMailBody.tsx 294c78c645522697
 src/lib/domains.ts b7201ad41a29e57d
 public/sw.js 048374b66d00be5f
-src/lib/auth.tsx f2d7879936c58df4
+src/lib/auth.tsx 6f97b8c42c2179e6
 src/lib/offline.ts 2d14d739b85f7beb
 src/lib/wt-url.ts f63f9f717972c4d4
 src/lib/chat-transport.ts ff0170ac5a2ea988
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 0e39aa5e7bccb3f4
+docs/cursor-work/DONE-DO-NOT-REPEAT.md b433e1a44ddfb3cb
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 85d578ba7f11bd1b
+docs/cursor-work/MASTER-GAP-LEDGER.md 5312b77ad83640e2
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -225,7 +225,7 @@ src/components/app/Panel.tsx 31764bb31659e16f
 src/lib/experience.ts adfcffbb33979c2c
 src/routes/app.settings.appearance.tsx 7911ac3654c2b006
 docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
-server/routes/auth-passkey.ts b6432ef501e9e322
+server/routes/auth-passkey.ts 08ceee0689c95337
 docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
 src/lib/fx.ts 801eab59f8d63f54
 src/components/fx/Fx3D.tsx d4bbbb32b593ab7b
@@ -239,12 +239,12 @@ src/components/app/WorkspaceLoader.tsx c90bab09456fadf1
 server/lib/auth-harden.ts 024b4bc0a34ff47c
 server/lib/auth-harden.test.ts 7f48134d9beead8a
 server/lib/supa.ts 859a9dbbf8c3b8d7
-server/routes/auth.ts 768d265adecb8f19
+server/routes/auth.ts 5c9ba9731c709480
 docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
 src/routes/app.tsx f873a19be7ebbea5
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
-server/rust/main.rs 502bd525545091bb
+server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
 docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3edb5818e8146eb2
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
@@ -254,3 +254,6 @@ src/components/app/calendar/TimeGrid.tsx f0ca17db91deed09
 src/lib/plans.ts 4d31c58ca080c878
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898
+src/lib/api.ts cc24d62ac7793896
+src/lib/api-refresh.test.ts 4039fb727ec8e788
+server/rust/jwt_core.rs 1e419b367e46ec3c
