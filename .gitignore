@@ -30,3 +30,11 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets — server par /opt/anexomail-web/.env untracked pada hai; ghalti se `git add -A` ho to bhi kabhi commit/push na ho (20 Oct 2026)
+.env
+.env.*
+!.env.example
+# Python cache (server scripts)
+__pycache__/
+*.pyc
