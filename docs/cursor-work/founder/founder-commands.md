@@ -481,3 +481,6 @@ Loophole ledger (sach)
 
 ## 21 Oct 2026 02:20 PKT
 "ruko yeh landing pages main baqwas graphics mat dalo" -> LANDING PAGES (public site) par koi 3D nahi. Mailbox hero hata diya. 3D sirf workspace ke andar (dashboard orb, loader logo, khali inbox/calendar) + plans tilt dekhna baqi.
+
+## 21 Oct 2026 02:31 PKT
+"repo main read kero mainay kya note kerwaya tha 3D graphics se related ... Khali inbox aur khali calendar: chhoti 3D tasveer ... Plans page: tilt ... mobile par halka ya band, reduced-motion band, page pehle 3D baad mein ... orbit bura lagta hai remove kero. aur agay tarteeb pe chalo" -> orb hata diya; baqi 3D (loader logo, khali inbox/calendar, plans tilt) rakha; ab Pro tarteeb.

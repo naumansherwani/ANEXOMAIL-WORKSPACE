@@ -36,7 +36,11 @@ DB sahi: family_accounts + entitlement_state + trial_accounts teeno `business_pr
 4. Billing: Hamza lifetime-free hai par billing "£2850/month" dikhata hai (family accounts ke liye "Lifetime access" label chahiye).
 5. Mobile (390) Business Pro abhi test nahi hua; Business (non-Pro) aur Personal Pro+ (father) account alag test.
 
-## 3D GRAPHICS — kahan ana hai (CEO faisla 20 Oct 2026; abhi bana NAHI, sirf naksha)
+## 3D GRAPHICS — STATUS 21 Oct 2026 02:35 (founder ke hukm se)
+- Landing hero mailbox: **HATA DIYA** (founder 02:20: "landing pages main baqwas graphics mat dalo") — dobara nahi.
+- Dashboard plan-orb: **HATA DIYA** (founder 02:31: "orbit bura lagta hai remove kero") — dobara nahi (OrbScene.tsx file rakhi, wire nahi).
+- BANA + LIVE-TEST BAQI: loader 3D logo, khali inbox/calendar gem, plans tilt. Graphics ON/OFF toggle LIVE.
+## (purana naksha — 20 Oct)
 Halat: asli Three.js sirf AnexoChat `chat/cinema/Scene.tsx` mein hai. Baqi "cinematic" 2D canvas/CSS hai. Qaida: jahan 3D madad kare, jahan kaam ke raste mein aaye wahan NAHI (inbox/compose/settings = tez + saaf, 3D nahi).
 | Jagah | 3D kya | Plan | Mobile |
 |---|---|---|---|

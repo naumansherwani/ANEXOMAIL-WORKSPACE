@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import { MailPlus } from "lucide-react";
 
-import { Fx3D } from "@/components/fx/Fx3D";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 import { showCrm, surfaceFromSession } from "@/lib/plan-surface";
@@ -126,8 +125,6 @@ export function Greeting({
         )}
       </div>
 
-      <div className="flex shrink-0 items-center gap-3">
-      <Fx3D scene="orb" plan={billed} className="pointer-events-none size-16 md:size-24" label={`${billed} plan orb`} />
       <motion.button
         initial={{ opacity: 0, scale: 0.92 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -140,7 +137,6 @@ export function Greeting({
         <MailPlus className="size-4" />
         <span className="hidden sm:inline">{t("New email")}</span>
       </motion.button>
-      </div>
     </motion.header>
   );
 }

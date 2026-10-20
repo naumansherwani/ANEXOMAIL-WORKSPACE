@@ -100,3 +100,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - Rule 34 (mobile/tablet priority + test accounts exempt from passkey deadline) in AGENTS.md.
 - Manifest: sync only auto-tracks git-status src changes; pass explicit paths for new/committed files, always verify 0 bad.
 - FOUNDER LOCK 21 Oct 02:20: public/landing pages par 3D/graphics NAHI. MailboxScene.tsx file rakhi hai par kahin wire nahi; dobara landing mein mat lagao.
+- FOUNDER LOCK 21 Oct 02:31: dashboard plan-orb HATA (bura laga). Dobara nahi.
