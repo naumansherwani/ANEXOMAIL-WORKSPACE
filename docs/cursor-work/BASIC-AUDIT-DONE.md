@@ -90,3 +90,14 @@ Har jagah: `prefers-reduced-motion` par band, lazy-load (pehle page chale, phir 
 - Gates theek: Basic par CRM = 'CRM is on Pro' upsell + Upgrade to Pro; admin gated.
 - Compose 390px par khulta hai (From/To/Subject/body/Attach/Send). Graphics toggle on->off->on, html[data-ax-fx] badalta hai.
 - BAQI (green declare karne se pehle): login form ka naya login-flow (password founder type kare), empty-calendar gem + loader logo ka drishya, mail send/undo e2e, laptop 1536 par har page ka screenshot-look, Rust rpc routes ka sweep.
+
+# ✅ BASIC = 100% GREEN — 21 Oct 2026, 04:30 PKT (repo == server, founder pulls done, SQL E52 + CHECK green)
+Live saboot (basic.test, anexomail.com): 
+- Login-loop: ~60 fresh loads, koi /auth bounce nahi; Brain probe 72/72 = 200; Rust auth cache + Brain harden + client retry live.
+- 390/820/laptop: har Basic page (dashboard, mail, people, calendar, domains, settings x7, account, billing, security, integrations, work, crm-gate, admin-gate, plans) overflow 0, error text 0.
+- Calendar: asli time-grid (hour rows, now-line, overlap), drag move/resize Rust `calendar.update` se persist (live verify), optimistic (no jump-back).
+- Mail: compose -> 'Held for 30s' Undo toast -> Undo -> 60s+ baad inbox/sent mein NAHI aaya (undo asli).
+- Plans/landing: ek hi source plans.ts; Basic card = 1 company domain, 3 mailboxes, 5GB, Undo send, Thread ownership, Contacts & calendar, Cmd+K, Free aliases, 72h support; compare table 'Company domains you can host 1/3/Unlimited'; purani 5-alias wording nahi. Chhupa fair-use cap 25 (E52 live).
+- Domains page: neutral singular cap note (orange warning gaya). Graphics toggle, empty-inbox gem, loader, plans tilt live.
+- Passkey: test accounts exempt (live). CRM tenant isolation live.
+Open items is package ke liye: KOI NAHI. Agla: PRO -> Business -> Business Pro (G41), phir Rust login (G42/JWT local verify), R1, R5, G40, G16.
