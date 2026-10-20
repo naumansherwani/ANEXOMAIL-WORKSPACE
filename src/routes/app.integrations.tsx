@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Download, PlugZap, Radar, Sparkles, Truck } from "lucide-react";
 import { useState } from "react";
 
@@ -7,7 +7,6 @@ import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard
 import {
   bytes,
   pct,
-  useConnectProvider,
   useConnections,
   useControlMigration,
   useDeliveryHealth,
@@ -110,10 +109,13 @@ function Integrations() {
   );
 }
 
+/** Jo provider hamara Rust IMAP copy (/app/import) sach mein utha sakta hai. */
+const importable = (p: { kind: string; can_migrate?: boolean }) =>
+  (p.kind === "oauth" || p.kind === "imap") && p.can_migrate !== false;
+
 function ProvidersTab() {
   const providers = useProviders();
   const connections = useConnections();
-  const connect = useConnectProvider();
   const disconnect = useDisconnectProvider();
 
   return (
@@ -138,41 +140,23 @@ function ProvidersTab() {
                     <div className="min-w-0">
                       <p className="text-[14px] font-bold text-foreground">{p.label}</p>
                       <p className="ax-caption mt-1 text-muted-foreground">
-                        {p.kind === "oauth"
-                          ? "One-tap sign-in"
+                        {/* 20 Oct 2026: pehle "one-tap sign-in · live sync · sending" likha tha aur har Connect fail hota
+                            tha (OAuth 501, IMAP ka account kabhi bheja hi nahi jata tha). Ab sirf jo sach mein chalta hai. */}
+                        {importable(p)
+                          ? "Copy every folder in with an app password — the provider's own login, checked live."
                           : p.kind === "bridge"
-                            ? "Bridge"
-                            : "Host + credentials"}
-                        {p.can_migrate ? " · migration" : ""}
-                        {p.can_sync ? " · live sync" : ""}
-                        {p.can_send ? " · sending" : ""}
+                            ? "Needs Proton Bridge running on your own computer, which our servers cannot reach."
+                            : "Not offered from this page."}
                       </p>
-                      {p.notes && <p className="ax-caption mt-1 text-steel">{p.notes}</p>}
                     </div>
-                    <button
-                      type="button"
-                      disabled={!p.available || connect.isPending}
-                      onClick={() =>
-                        connect.mutate(
-                          { provider: p.id },
-                          {
-                            onSuccess: (r) => {
-                              if (r.redirect_url) window.location.assign(r.redirect_url);
-                              else notify.done("Connected", `${p.label} is linked.`);
-                            },
-                            onError: (err) =>
-                              notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
-                                description: err.isNotImplemented
-                                  ? "POST /api/integrations/connect pending."
-                                  : err.message,
-                              }),
-                          },
-                        )
-                      }
-                      className="ax-press ml-auto shrink-0 rounded-xl bg-primary px-3 py-2 text-[12px] font-semibold text-primary-foreground disabled:opacity-40"
-                    >
-                      {p.available ? "Connect" : "Soon"}
-                    </button>
+                    {importable(p) && (
+                      <Link
+                        to="/app/import"
+                        className="ax-press ml-auto shrink-0 rounded-xl bg-primary px-3 py-2 text-[12px] font-semibold text-primary-foreground"
+                      >
+                        Copy my mail
+                      </Link>
+                    )}
                   </div>
                 </li>
               ))}
@@ -258,9 +242,9 @@ function MigrationTab() {
     <>
       <h2 className="ax-heading text-foreground">Move in — a guided move</h2>
       <p className="ax-caption mt-1 text-muted-foreground">
-        Ask for your old mail to be moved here. The move is not automatic yet: it is started with you
-        by our team, and its status shows below as it runs. Copy moves once; mirror keeps syncing
-        until you cut over.
+        Ask for your old mail to be moved here. The move is not automatic yet: it is started with
+        you by our team, and its status shows below as it runs. Copy moves once; mirror keeps
+        syncing until you cut over.
       </p>
 
       <form
@@ -272,7 +256,11 @@ function MigrationTab() {
           start.mutate(
             { connection_id: source, target_mailbox: mailbox, mode },
             {
-              onSuccess: () => notify.done("Move requested", "Our team starts it with you. The status shows below."),
+              onSuccess: () =>
+                notify.done(
+                  "Move requested",
+                  "Our team starts it with you. The status shows below.",
+                ),
               onError: (err) =>
                 notify.failed(err.isNotImplemented ? "Not wired yet" : "Failed", {
                   description: err.isNotImplemented

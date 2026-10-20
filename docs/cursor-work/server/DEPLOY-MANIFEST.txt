@@ -90,7 +90,7 @@ src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
 src/routes/auth.tsx f41cf236515f3868
-src/routes/app.integrations.tsx b556cdf994245dca
+src/routes/app.integrations.tsx a78983f1e2915735
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
 src/routes/pages.tsx 49b6ca73eb919b73
