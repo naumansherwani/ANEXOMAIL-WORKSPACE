@@ -154,7 +154,13 @@ export function useThread(threadId: string | undefined) {
     queryKey: ["mail", "thread", threadId],
     queryFn: async () => {
       try {
-        const data = await api<MailThread>(`/api/mail/thread/${threadId}`);
+        // Rust PRIMARY (`/rpc/mail.thread`, TECH-MAP 0); Bun sirf fallback (Rust 404/501/502/503).
+        // 20 Oct 2026 live: Bun `/api/mail/thread/:id` har thread par `messages: []` deta tha — mail khulti thi magar khaali.
+        const data = await rpcOrRest<MailThread>(
+          "mail.thread",
+          { path: `/api/mail/thread/${threadId}` },
+          { id: threadId },
+        );
         void offlinePut("thread", String(threadId), data);
         return data;
       } catch (error) {

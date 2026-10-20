@@ -59,9 +59,11 @@
 | WebTransport error frame (N7) | Rust :3200 (WebTransport) | DONE live 20 Oct |
 | Language bundle/pref `/rpc/locale.*` (N3) | Rust :3200 (Bun `/api/locale/*` sirf fallback) | DONE live 20 Oct |
 | Anjaan pate ki mail kisi aur org mein na jaye (E37) | PostgreSQL (`mail_ingest` gate + `mail_quarantine`) — DB ki aakhri deewar; Rust inbound pipe mein bhi wohi check aayega (R1a) | DONE live 20 Oct 06:41 |
-| Aane wali mail ka pipe Bun -> Rust (R1a): `anexomail-deliver` (Rust bin, Tokio + reqwest/rustls, MIME = `mig_mime.rs`) | Rust (crate ka doosra binary) + Postfix `anexopipe` argv | READY — `rust-deliver-install.sh` |
 | Device record (privacy page ka 5-signal wada) har plan ke liye — `chat.device.*` chat gate se pehle | Rust :3200 (`device_core.rs` + `device_glue.rs`) | READY — `MODULES=device rust-engine-install.sh` |
 | Import mail customer ka darwaza `/app/import` + Mail rail + Inbox card; apna login pata nishana | Website (React/TanStack) | READY — `pull.sh` |
+| Mail kholna (thread detail) Bun -> Rust `mail.thread` (Bun har thread par khaali `messages` deta tha) + band karne ka X / Esc | Website (React) -> Rust :3200 | READY — `pull.sh` |
+| Thread ki mail ginti hamesha sach (trigger) | PostgreSQL (E38) | READY |
+| Aane wali mail ka pipe Rust (R1a) | Rust + Postfix argv | DONE live 20 Oct 07:00 |
 | `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |
 | Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
 | Attachments (E38) | Bytes: Storage Box · dedup/patch: Rust · metadata: PostgreSQL | PLANNED |

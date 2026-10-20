@@ -1,7 +1,7 @@
-import { Link, createFileRoute } from "@tanstack/react-router";
+import { Link, createFileRoute, useNavigate } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useEffect, useRef } from "react";
-import { ArrowLeft, MailOpen, Paperclip } from "lucide-react";
+import { ArrowLeft, MailOpen, Paperclip, X } from "lucide-react";
 
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
@@ -24,6 +24,20 @@ export const Route = createFileRoute("/app/mail/$folder/$threadId")({
 function ThreadPage() {
   const { folder, threadId } = Route.useParams();
   const query = useThread(threadId);
+  const navigate = useNavigate();
+
+  // Esc = thread band karke list par wapas (Gmail/Zoho jaisa). Text likhte waqt (input/textarea/editor) Esc ko nahi chhedte.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented) return;
+      const el = e.target as HTMLElement | null;
+      if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
+      if (document.querySelector('[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]')) return;
+      void navigate({ to: "/app/mail/$folder", params: { folder } });
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [folder, navigate]);
 
   // Phase 29 — Motion contract: opening a thread must land inside the calm budget.
   useEffect(() => {
@@ -90,7 +104,7 @@ function ThreadPage() {
             </p>
           )}
         </div>
-        <div className="ml-auto shrink-0">
+        <div className="ml-auto flex shrink-0 items-center gap-1">
           <ThreadHeaderActions
             threadId={thread.id}
             status={thread.status}
@@ -100,6 +114,16 @@ function ThreadPage() {
               .filter((a): a is string => Boolean(a))
               .filter((a, i, arr) => arr.indexOf(a) === i)}
           />
+          {/* Desktop/tablet par band karne ka button (phone par upar wala ← hai). Esc bhi yahi karta hai. */}
+          <Link
+            to="/app/mail/$folder"
+            params={{ folder }}
+            aria-label="Close message"
+            title="Close (Esc)"
+            className="ax-press ax-tap ax-focus hidden size-9 shrink-0 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground md:grid"
+          >
+            <X className="size-4" aria-hidden="true" />
+          </Link>
         </div>
       </div>
 

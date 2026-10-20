@@ -53,6 +53,11 @@ Founder ne chat mein 4 test accounts ke passwords diye: `business_pro.test@anexo
 Founder ke alfaaz: "yeh sab tumhay yaad hona chaiye hai. baki tarteeb se tumne jo points hain woh repo main founder ka ja ke read kero aur exactly codes waha se dekh ke likho; compact chat ke anay se pehle yeh her 10 seconds baad update kerna hai takay compact chat ho bhi jaye claude context nahi bhulay; aur yeh bhi repo main likho: sw.js wala asli masla (har page par script 404; `src/lib/pwa.ts` `/sw.js` register karta hai par `public/sw.js` nahi; PWA offline kaam nahi; manifest theek; TECH-MAP ka "LIVE" sach nahi tha)."
 Agent: sw.js finding pehle se repo mein (5fce7bf) + ab TECH-MAP ki PWA row sach ki. "Har 10 second" = agent har natije/qadam ke baad usi turn mein is file + memory file update karta hai (Rule 18/24); agent ghadi par apne aap 10 second ka timer nahi chala sakta.
 
+### 20 Oct 2026 07:00 PKT — founder: R1a output + hukm (verbatim, apna hissa)
+"ek masla hai ke mail kholne ke baad xcross ka button nahi hai? yeh masa solve kero aur kisi bhi package main sent email folder main kuch nahi show hota hai yeh bug theek kero sab packages ke andar aur yeh sab folder spam ho ya koi bhi folder ho yeh ana chaiye hai kya aya hai. aur zoho ki tarah user kaise business account yani forexample abc@company.com banye ga aur woh wasiye toh codes main auto website pehchan leta hai kiya hai tum is ko touch nahi kerna hai bus nazar maar lo. break nahi kerna hai"
+Output: **R1a DONE (live)** — 18 tests, vmail ke 2 test (quarantine + basic.test text=true), Postfix argv Rust, sendmail end-to-end DB=1 `status=sent (delivered via anexopipe ... anexomail-deliver: OK)`. mig-live-test GREEN.
+Agent ne live dekha (basic.test): **asal jad — mail kholne par andar KUCH nahi** (Bun `/api/mail/thread/:id` har thread par `messages: []`; Rust `mail.thread` sahi deta hai, magar website Bun ko seedha bulati thi). Isi liye "Sent mein kuch nahi dikhta" (list aati hai, kholo to khaali). Theek: website thread Rust se (Bun fallback). Desktop par X + Esc. Basic se asli mail bheji (compose ka raasta) -> 10 sec mein Sent + Inbox dono mein. Thread par "2" (1 mail) -> E38 trigger. Domains (abc@company.com) sirf dekha, chheda nahi.
+
 ### 20 Oct 2026 06:50 PKT — founder: "yeh kaam kitna huwa hai jo nahi huwa hai us ko solve kero green kero wire kero working kero. dekh ke batao"
 Agent ne basic.test se live dekha (06:55):
 - **1 privacy leak — GREEN live:** inbox mein root/cron 0 (E37).
@@ -89,7 +94,7 @@ Output: **Step 0.4 DONE (live)** — rustc 1.97.1 -> 1.99.1 (sirf /opt/anexomail
 **Footer:** AI ke ilawa sab GREEN (17/17 links asli page, 3 mailto). Refund: founder refund nahi deta — refund page nahi chahiye. Terms of Service: CEO faisla — agla, asli product facts se (no-refund saaf likha), founder dekh le.
 **Design rule (founder):** cinematic 3D (Three.js/GSAP/Framer — Constitution mein maujood) jahan behtar lage *thora* — AGENTS Rule 26.
 **Allow-list (agle session ke liye founder ko list bhejni):** static.rust-lang.org (diya), index.crates.io + static.crates.io (chal rahe), registry.npmjs.org, github.com, anexomail.com (+ subdomains), blog.rust-lang.org.
-**Attachments ab E38** (E37 is fix ko mila).
+**Attachments ab E39** (E37 = mail leak, E38 = thread ginti).
 
 ### 20 Oct 2026 — agent (CEO): Basic live login + footer audit + locale + cron (05:37 hukm par kaam)
 - **Basic live login (basic.test, 1440 + 390):** dashboard, mail, calendar, people, work, domains, billing sab khule; koi horizontal scroll nahi; tiles mobile par saaf (N6: 1440/390 par alignment theek dikha). Admin pages Basic ko saaf "not on this package" dikhati hain.
