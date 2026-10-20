@@ -2,6 +2,8 @@
 
 > **Founder ka rule: founder se chat karne se pehle `CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` (yahi folder) padho, phir chat karo.** Abhi ka qadam, qaide, status, log aur aakhri commands wahan hain (AGENTS.md Rule 18).
 
+> **Compact ke baad: `BASIC-AUDIT-DONE.md` (yahi folder) padho — Basic audit mein kya ho chuka, kya baqi, duplicate nahi banana.**
+
 Is session mein jo bana ya badla woh sab yahan. GitHub → server pull → SQL → frontend.
 **Tarteeb se chalo. Mix nahi.**
 
