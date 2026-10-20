@@ -107,3 +107,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 03:15 Rule 35 + login-probe.sh. Rust no-touch. Bun-only edits listed in AGENTS Rule 35.
 - 21 Oct 03:30 Rust auth_user hardened (cache 20s + transient retry) READY: rust-auth-harden.sh. Chrome = sirf final look (Rule 36).
 - 21 Oct 03:28 login-probe v2: koi typing nahi (admin magic-link token, Brain+Rust parallel probe). Founder ne v1 par empty Enter dabaya tha.
+- 21 Oct 03:35 PROBE RESULT: Brain 4 auth routes x72 calls sab 200 (login-loop server-side band). Web bb9007e pulled OK. Rust auth cache already live. Probe Rust path fixed (billing.subscription).

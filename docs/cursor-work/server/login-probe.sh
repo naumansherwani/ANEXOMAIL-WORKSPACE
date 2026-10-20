@@ -7,8 +7,9 @@
 # Sirf padhne wali calls (GET). Token/key kabhi screen par nahi aata. Email badalna ho: EMAIL=pro.buyer@anexomail.com bash <(...)
 set -uo pipefail
 EMAIL="${EMAIL:-basic.test@anexomail.com}"
-for f in /opt/anexomail/.env /etc/anexomail/sync.env; do [ -r "$f" ] && { set -a; . "$f"; set +a; }; done
-URL="${SUPABASE4_URL:-${SUPABASE_URL:-}}"; KEY="${SUPABASE4_SERVICE_ROLE_KEY:-${SUPABASE_SERVICE_ROLE_KEY:-}}"
+envv(){ for f in /opt/anexomail/.env /etc/anexomail/sync.env; do [ -r "$f" ] && grep -m1 -E "^$1=" "$f" | cut -d= -f2- | sed -e "s/^[\"']//" -e "s/[\"']$//"; done | head -1; }
+URL="${SUPABASE4_URL:-$(envv SUPABASE4_URL)}"; [ -n "$URL" ] || URL="$(envv SUPABASE_URL)"
+KEY="$(envv SUPABASE4_SERVICE_ROLE_KEY)"; [ -n "$KEY" ] || KEY="$(envv SUPABASE_SERVICE_ROLE_KEY)"
 [ -n "$URL" ] && [ -n "$KEY" ] || { echo "FAIL: /opt/anexomail/.env mein SUPABASE4_URL / SERVICE_ROLE_KEY nahi mili"; exit 2; }
 URL="${URL%/}"
 LINK="$(curl -s -m 20 -H "apikey: $KEY" -H "authorization: Bearer $KEY" -H 'content-type: application/json' -d "{\"type\":\"magiclink\",\"email\":\"$EMAIL\"}" "$URL/auth/v1/admin/generate_link")"
@@ -28,7 +29,7 @@ for round in 1 2 3; do
   OUT="$(mktemp)"
   for i in 1 2 3 4; do
     for p in "${B_PATHS[@]}"; do ( curl -s -o /dev/null -m 20 -w "BRAIN %{http_code} $p\n" -H "authorization: Bearer $TOK" "$BRAIN$p" >>"$OUT" ) & done
-    ( curl -s -o /dev/null -m 20 -w "RUST  %{http_code} /rpc/mail.inbox\n" -X POST -H "authorization: Bearer $TOK" -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/mail.inbox" >>"$OUT" ) &
+    ( curl -s -o /dev/null -m 20 -w "RUST  %{http_code} /rpc/billing.subscription\n" -H "authorization: Bearer $TOK" "$RUST/rpc/billing.subscription" >>"$OUT" ) &
   done; wait
   echo "--- round $round:"; sort "$OUT" | uniq -c | sort -rn; rm -f "$OUT"; sleep 1
 done
