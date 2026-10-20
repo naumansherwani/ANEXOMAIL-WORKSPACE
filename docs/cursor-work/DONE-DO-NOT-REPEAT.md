@@ -74,3 +74,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - MASTER hisaab ek jagah: docs/cursor-work/MASTER-GAP-LEDGER.md (20 Oct 23:59). Compact ke baad pehle wahi.
 
 - 21 Oct: Account page SMS line -> honest copy ("SMS recovery planned, not available yet"); Brain sms_note untouched. Calendar/Compose live tests: Chrome tab was on /auth (not logged in) -> waiting founder login.
+- 21 Oct 00:20: technology consolidation DONE — TECH-MAP.md section 0d (ek faisla); founder/TECH-MAP.md = pointer; sandbox /home/claude/TECH-DECISION.md. Dobara mat karo.

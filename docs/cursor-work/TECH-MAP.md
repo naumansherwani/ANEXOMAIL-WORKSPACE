@@ -221,3 +221,24 @@ LEO / AI sab se aakhir (blueprint #41). Workspace plans (Basic–Business Pro) m
 | Mail store | `/var/mail/vhosts/anexomail.com` sirf **8 KB** | — | IMAP mailbox ka asli maal yahan nahi (verify: facts v2) |
 
 **Seedha natija:** Constitution wale "Rust + QUIC + WebTransport" ke dawe sach hain (3443 bind, health live) — par versions purane hain (R0), aur mail ka "IMAP phone ke liye" raasta abhi aadha hai (8i/8j).
+
+### 0d. CEO ka ek faisla — kaun si technology KAHAN (21 Oct 2026, 00:20 PKT; Rule 26/32; sab docs padh kar)
+Is jadval ke bahar koi tech kisi kaam par nahi. Purani `founder/TECH-MAP.md` (18 Oct) ab sirf is section ka pointer hai.
+| Kaam | Technology | Faisla |
+|---|---|---|
+| Naya backend, RPC, files, attachments, inbound mail, calendar, people, team | Rust :3200 (Tokio, axum 0.8) | PRIMARY. Naya kaam yahin. |
+| Live push (mail/chat/call) | WebTransport/QUIC UDP 3443 | WebSocket nahi. Safari 26.4 ke baad poora Baseline; purane browser ko honest HTTP poll. |
+| Data, quota, RLS, atomic gates | PostgreSQL (E-files, `sql-run.sh` server se) | Sach ka ek source. |
+| Attachment bytes | Hetzner Storage Box (sshfs) | DB mein sirf metadata; download sirf authenticated `/file/attach/get`. |
+| Virus scan | clamd 127.0.0.1:3310 | Apni infra; bahari service nahi. |
+| SMTP / IMAP / DKIM | Postfix, Dovecot, OpenDKIM | Sirf transport; badlav founder "haan" ke baad. |
+| MIME jodna + SMTP bhejna | Bun (mail/attachments.ts, sendmail.ts) | Sirf R1 (`mail.send` Rust) tak; phir Rust. |
+| Passkey (G35) | Bun apwad abhi | G42 mein Rust (p256+ciborium+sha2). |
+| Website | React 19.2, TanStack Start/Router/Query, Vite 8, Tailwind 4, Radix/shadcn | Sirf UI. |
+| UI motion | Framer Motion | App ke andar chhoti transitions. |
+| Scroll cinematic | GSAP | Landing/onboarding sequences. |
+| 3D | Three.js via @react-three/fiber+drei (pehle se dependency) | Sirf: landing hero (PEHLA), loader logo, dashboard plan-orb (Basic neela, Pro jamuni, Business sunehri, Business Pro shahi), khali inbox/calendar, plans tilt. Inbox/compose/settings mein NAHI. `React.lazy` + IntersectionObserver (page pehle, 3D baad), 1 page = 1 canvas, mobile/tablet halka, `prefers-reduced-motion` par band, user ON/OFF toggle (localStorage, try/catch). |
+| Edge | Caddy (HTTP/3) | Sirf TLS/proxy; read-only check -> backup -> validate -> reload. |
+| Web SSR host | Bun (Nitro) | Sirf page render, API nahi. |
+| Payments | Polar Rust :3400 | NO-TOUCH. |
+| Rejected/PLANNED | Stalwart/JMAP, ECH, PostgreSQL 18 | Founder "haan" + staging ke baad. |
