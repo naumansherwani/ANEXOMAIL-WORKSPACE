@@ -739,3 +739,26 @@ Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-pass
 8. BIMI-ready logo (Gmail/Apple Mail mein inbox par company logo) — DMARC p=reject ke baad.
 
 **Tarteeb (founder "haan" ke baad, baari par):** Basic list ke baqi kaam (Terms, PWA, attachments E39, Basic test) -> D2 -> 5 (catch-all/forwarding/vacation) -> D1 -> D3 -> 6 -> 7 -> 4 (registrar manzoori ke saath) -> 8.
+
+
+## 20 Oct 2026 (19:02 PKT) — FOUNDER KA HUKM: G33–G41 (Business Pro ke baqi kaam + Account-integrity wade + passkeys) — blueprint ka hissa
+
+**Founder (verbatim, mukhtasar):** "tum gusa dai rahay ho mainay bola bhi tha family account aur test account main farq hai test account woh hai jo real user ko nazar ata hai family account special hai lekin in ko treatment same real buyer wali daini hai ... mere father wla tab karay gay jab basic, pro, bussinss aur business pro green hoga kuch bhi mix nahi hoga ... passkeys aur password dono rakho ... meri taraf se done hai ... in main se jaun sa zedia advance aur zedia zabardast ho woh implement kero repo main sab likho ... blueprint number dai do ... humza ka business pro ko latest technology pe transfer kero ... mobile aur tablet hamesha saath dekha kero yeh rule hai koi bhi package hai mobile tablet aur computer lazmi hai"
+
+**Qaide (is hukm se):**
+- **Test account** (basic.test, pro.buyer, ...) = asli buyer jo dekhta hai. **Family account** (Humza, Raana, Masood) = special (umar bhar muft) lekin **baqi sab asli buyer jaisa**: wohi code-path, wohi pages, wohi gates. Sirf farq: billing par "Lifetime access" label.
+- Tarteeb: Basic -> Pro -> Business -> Business Pro **sab green**, kuch mix nahi. Uske BAAD hi Masood (Personal Pro+, father). Raana (AI Executive) uske baad.
+- Har package par **mobile (390) + tablet (820) + computer (1440) SAATH** test — lazmi (Rule 19). Live login har waqat: basic.test + Humza (Business Pro). Passwords sirf chat mein, kabhi repo mein nahi.
+- Fix ke baad Web/SQL/Rust ke alag-alag pull commands + pm2 restart (Rule 24, AGENTS.md).
+
+| # | Kaam | Halat | Technology |
+|---|---|---|---|
+| G33 | **Wade ka audit** — footer/privacy ke har wade ka `PROMISES.md` (wada -> code -> live saboot -> green/nahi). Jo bana nahi us ki line tab tak halki (UK GDPR: jhoota bayan nahi) | TODO (pehle) | docs + live |
+| G34 | **HMAC-SHA256 device hash** (plain SHA-256+pepper ki jagah), pepper ka `key_version` (rotation), purane hash dobara hash karne ka migration | TODO | SQL (pgcrypto `hmac`) |
+| G35 | **Passkey lazmi (password + passkey)**: signup ke foran baad passkey; **2 passkey** (phone + laptop) + **10 recovery codes** (hash ho kar); QR/hybrid se phone ka passkey; naye device par passkey; recovery sirf recovery-email/codes se; family exempt-nahi ab asli buyer jaisa (Humza/Raana test) | TODO | Bun passkey routes + SQL + Web |
+| G36 | Block ke baad **72 ghante export, phir hamesha ke liye delete** (job + countdown + email) | TODO | Rust job + SQL |
+| G37 | **24 ghante mein 3 account = suspicious/review**; likhit **final warning -> block -> device ban** flow | TODO | SQL + Rust + Web |
+| G38 | **Compose mein attachments BHEJNA** (upload -> storage -> MIME -> Rust send; size limit; virus-scan apne infra par) | TODO (bada) | Web + Rust + storage |
+| G39 | **Family = real buyer**: billing "Lifetime access" (E40 `lifetime`), retention "Keep forever", baqi har cheez wahi | Aadha DONE (60bbe0f); Humza ka poora real-buyer provisioning check TODO | SQL + Web |
+| G40 | Rust par RPC: work.*, crm.*, org.*, integrations.*, settings.* (abhi Bun par girte hain, page theek, sirf speed) | TODO | Rust |
+| G41 | Mobile + tablet + desktop har package par (Business Pro 390/820 audit shuru 19:1x) | Jari | live |

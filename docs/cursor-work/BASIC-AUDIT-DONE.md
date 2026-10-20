@@ -72,3 +72,9 @@ Har jagah: `prefers-reduced-motion` par band, lazy-load (pehle page chale, phir 
 - Local test: Postgres 16 `/var/tmp/anexo-pg`, mock Supabase, Rust type-check harness `rustmock/app` (asli crates sandbox mein blocked), Playwright `/opt/pw-browsers/chromium-1194`, npm ke liye `--proxy "$HTTPS_PROXY"`.
 - Deploy: fix -> `manifest-sync.py <files>` -> commit/push `main` -> founder per-technology pull command (Web `pull.sh`, SQL, Rust installer) -> live test.
 - Frontend pattern: `rpcOrRest()` pehle Rust, 404/501 par Bun. Naya read-proc Rust mein `owns()` + `dispatch()` + test.
+
+
+## BUSINESS PRO — tablet (820) + mobile (390) live audit (20 Oct 2026 19:2x, Humza)
+- 38 pages har ek size par. **Koi OVERFLOW nahi** (na 820, na 390). AI settings / LEO center ka lock page 820 par theek (screenshot dekha).
+- Console mein sirf do tarah ki cheezen: (a) `/rpc/work.*, crm.*, org.*, integrations.*, settings.*` 404 — Rust mein nahi, Bun fallback chalta hai, page chalte hain (G40 speed ka kaam); (b) WebTransport `:3443/wt/mail` ERR_TUNNEL_CONNECTION_FAILED — sirf is test sandbox mein (UDP band), founder ke browser mein `ufw allow 3443/udp` ke baad dekhna hai.
+- Rule 19 (mobile+tablet+computer saath) ab har package par lazmi.
