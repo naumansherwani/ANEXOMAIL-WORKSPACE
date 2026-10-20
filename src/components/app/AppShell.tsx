@@ -25,6 +25,8 @@ import {
 } from "lucide-react";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
+import { installDragScroll } from "@/lib/use-drag-scroll";
+
 import { MobileNav } from "@/components/app/MobileNav";
 import { BrandMark } from "@/components/site/BrandMark";
 import { LanguagePicker } from "@/components/site/LanguagePicker";
@@ -155,6 +157,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
   }, [pathname]);
+
+  // Mouse se kisi bhi left-right patti ko pakad kar ghumao (poori app mein, ek jagah).
+  useEffect(() => installDragScroll(), []);
 
   // Phone par pull-to-refresh app ke beech mein reload kar deta tha (ba'z draft ke saath). Shell ke dauran band.
   useEffect(() => {

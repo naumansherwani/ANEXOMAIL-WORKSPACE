@@ -19,6 +19,8 @@
 
 | 7 | (09:5x) | Mail ke address chips + folder + category tabs (All/Primary/Updates/People/Promotions) sirf patli scrollbar se scroll hote the; baqi icons nazar nahi aate | `src/lib/use-drag-scroll.ts` (mouse drag + wheel, click bachta hai) teeno rows par; profile menu mein **Settings** (-> `/app/settings`). Browser test: drag 0->154px->0, click chalta, menu mein Settings | Web |
 
+| 8 | (10:1x) | (a) drag sirf mail list ki do patti par tha, mail kholne wali side par nahi chalta tha; (b) **Basic mein "AI settings" tab + Integrations "Leo Actions" tab** — qaida: workspace plans ko AI ZERO (PACKAGE-FEATURE-FORMULA rule 5) | (a) `installDragScroll()` AppShell se poori app mein har left-right patti par (thread header, settings/integrations tabs sab); purane per-row hooks hata diye. (b) AI tab/Leo tab sirf `isAiHost()`; `/app/settings/ai` seedha kholo to `surfaceDenial` lock deta hai | Web |
+
 ## 3D GRAPHICS — kahan ana hai (CEO faisla 20 Oct 2026; abhi bana NAHI, sirf naksha)
 Halat: asli Three.js sirf AnexoChat `chat/cinema/Scene.tsx` mein hai. Baqi "cinematic" 2D canvas/CSS hai. Qaida: jahan 3D madad kare, jahan kaam ke raste mein aaye wahan NAHI (inbox/compose/settings = tez + saaf, 3D nahi).
 | Jagah | 3D kya | Plan | Mobile |

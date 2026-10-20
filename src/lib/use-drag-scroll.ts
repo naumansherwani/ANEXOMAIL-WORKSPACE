@@ -1,94 +1,96 @@
-import { useCallback, useRef } from "react";
-
 /**
- * Mouse se pakad kar left/right ghumao (touch par browser khud swipe deta hai).
- * Kyun: mail ke address chips aur category tabs (All / Primary / Updates / People / Promotions ...) ek line mein
- * scroll hote hain; desktop par sirf patli scrollbar thi, baqi icons nazar nahi aate the (20 Oct 2026 founder).
+ * Poore app mein: jis bhi ek-line wali (left-right scroll hone wali) patti par mouse se pakad kar ghumao.
+ * Touch par browser pehle se swipe deta hai; yeh sirf mouse ke liye hai.
  *
- * - 5px se kam hilna = click (button chalta hai). Us se zyada = drag (click nigal liya jata hai).
- * - Mouse wheel (upar/neeche) bhi us row ko side mein ghumata hai jab wo row overflow ho.
- * - Overflow na ho to kuch nahi badalta.
+ * Kyun (20 Oct 2026, founder): mail list ke address chips / category tabs, mail kholne wali side ki buttons, settings tabs,
+ * integrations tabs — sab sirf patli scrollbar se chalte the, baqi icons nazar nahi aate the. Pehle har patti par alag hook
+ * tha; ab ek jagah (AppShell) se sab par, aur nayi patti khud-ba-khud shamil.
+ *
+ * Qaide:
+ *  - Sirf wahi element jo asal mein chauda ho (scrollWidth > clientWidth) aur UPAR-NEECHE scroll na hota ho.
+ *    Is liye lambi list / mail ka text pakadna (select karna) kabhi nahi chheenta.
+ *  - input / textarea / select / contenteditable / [data-no-drag] par drag shuru nahi hota.
+ *  - 5px se kam hilna = click (button chalta hai). Us se zyada = drag, aur uska click nigal liya jata hai.
+ *  - Mail body sandboxed iframe mein hai, uske andar yeh chalta hi nahi.
  */
-export function useDragScroll<T extends HTMLElement = HTMLDivElement>() {
-  const cleanup = useRef<(() => void) | null>(null);
+const THRESHOLD = 5;
 
-  // callback ref: row baad mein (jab data aaye) bane tab bhi judta hai, hatne par saaf ho jata hai
-  return useCallback((el: T | null) => {
-    cleanup.current?.();
-    cleanup.current = null;
-    if (!el) return;
-    let down = false;
-    let moved = false;
-    let startX = 0;
-    let startLeft = 0;
-    let pid = -1;
+function rowAt(start: EventTarget | null): HTMLElement | null {
+  let el = start instanceof Element ? (start as HTMLElement) : null;
+  while (el && el !== document.body && el !== document.documentElement) {
+    if (el.matches("input, textarea, select, [contenteditable=''], [contenteditable='true'], [data-no-drag]")) return null;
+    if (el.scrollWidth > el.clientWidth + 2 && el.scrollHeight <= el.clientHeight + 2) {
+      const ox = getComputedStyle(el).overflowX;
+      if (ox === "auto" || ox === "scroll") return el;
+    }
+    el = el.parentElement;
+  }
+  return null;
+}
 
-    const onDown = (e: PointerEvent) => {
-      if (e.pointerType !== "mouse" || e.button !== 0) return;
-      if (el.scrollWidth <= el.clientWidth) return;
-      down = true;
-      moved = false;
-      startX = e.clientX;
-      startLeft = el.scrollLeft;
-      pid = e.pointerId;
-    };
-    const onMove = (e: PointerEvent) => {
-      if (!down) return;
-      const dx = e.clientX - startX;
-      if (!moved && Math.abs(dx) < 5) return;
-      if (!moved) {
-        moved = true;
-        try {
-          el.setPointerCapture(pid);
-        } catch {
-          /* koi baat nahi */
-        }
-        el.style.cursor = "grabbing";
-        el.style.userSelect = "none";
-      }
-      el.scrollLeft = startLeft - dx;
-    };
-    const end = () => {
-      if (!down) return;
-      down = false;
-      el.style.cursor = "";
-      el.style.userSelect = "";
+export function installDragScroll(): () => void {
+  let row: HTMLElement | null = null;
+  let moved = false;
+  let startX = 0;
+  let startLeft = 0;
+  let pid = -1;
+
+  const down = (e: PointerEvent) => {
+    if (e.pointerType !== "mouse" || e.button !== 0) return;
+    row = rowAt(e.target);
+    if (!row) return;
+    moved = false;
+    startX = e.clientX;
+    startLeft = row.scrollLeft;
+    pid = e.pointerId;
+  };
+  const move = (e: PointerEvent) => {
+    if (!row) return;
+    const dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) < THRESHOLD) return;
+    if (!moved) {
+      moved = true;
       try {
-        el.releasePointerCapture(pid);
+        row.setPointerCapture(pid);
       } catch {
         /* koi baat nahi */
       }
-    };
-    const onClick = (e: MouseEvent) => {
-      if (moved) {
-        e.preventDefault();
-        e.stopPropagation();
-        moved = false;
-      }
-    };
-    const onWheel = (e: WheelEvent) => {
-      if (el.scrollWidth <= el.clientWidth) return;
-      if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
-      const max = el.scrollWidth - el.clientWidth;
-      const next = Math.max(0, Math.min(max, el.scrollLeft + e.deltaY));
-      if (next === el.scrollLeft) return; // kinare par — page ko apna scroll karne do
+      row.style.cursor = "grabbing";
+      row.style.userSelect = "none";
+    }
+    row.scrollLeft = startLeft - dx;
+  };
+  const end = () => {
+    if (!row) return;
+    row.style.cursor = "";
+    row.style.userSelect = "";
+    try {
+      row.releasePointerCapture(pid);
+    } catch {
+      /* koi baat nahi */
+    }
+    row = null;
+    // click is pointerup ke foran baad aata hai — usay nigalne ke liye moved thodi der rakho
+    if (moved) window.setTimeout(() => (moved = false), 0);
+  };
+  const click = (e: MouseEvent) => {
+    if (moved) {
       e.preventDefault();
-      el.scrollLeft = next;
-    };
+      e.stopPropagation();
+      moved = false;
+    }
+  };
 
-    el.addEventListener("pointerdown", onDown);
-    el.addEventListener("pointermove", onMove);
-    el.addEventListener("pointerup", end);
-    el.addEventListener("pointercancel", end);
-    el.addEventListener("click", onClick, true);
-    el.addEventListener("wheel", onWheel, { passive: false });
-    cleanup.current = () => {
-      el.removeEventListener("pointerdown", onDown);
-      el.removeEventListener("pointermove", onMove);
-      el.removeEventListener("pointerup", end);
-      el.removeEventListener("pointercancel", end);
-      el.removeEventListener("click", onClick, true);
-      el.removeEventListener("wheel", onWheel);
-    };
-  }, []);
+  document.addEventListener("pointerdown", down, true);
+  document.addEventListener("pointermove", move, true);
+  document.addEventListener("pointerup", end, true);
+  document.addEventListener("pointercancel", end, true);
+  document.addEventListener("click", click, true);
+  return () => {
+    document.removeEventListener("pointerdown", down, true);
+    document.removeEventListener("pointermove", move, true);
+    document.removeEventListener("pointerup", end, true);
+    document.removeEventListener("pointercancel", end, true);
+    document.removeEventListener("click", click, true);
+  };
 }

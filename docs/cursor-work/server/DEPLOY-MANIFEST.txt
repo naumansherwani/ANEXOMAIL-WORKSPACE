@@ -6,7 +6,7 @@ src/routes/app.domains.tsx 518f36d7e161bad0
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx 8155d7d7b9c85b54
+src/components/app/AppShell.tsx ebe14394b7858d92
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
@@ -55,7 +55,7 @@ src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
-src/lib/plan-surface.ts 03671e4b12654baa
+src/lib/plan-surface.ts 1fef7c4c84f09c7d
 src/components/app/dashboard/Greeting.tsx 0f8cd23526189b1f
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
 src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
@@ -90,7 +90,7 @@ src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
 src/routes/auth.tsx f41cf236515f3868
-src/routes/app.integrations.tsx a78983f1e2915735
+src/routes/app.integrations.tsx 09ad736b5d6c3a59
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
 src/routes/pages.tsx 49b6ca73eb919b73
@@ -120,4 +120,5 @@ src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
 AGENTS.md 564272a44d995e37
-src/lib/use-drag-scroll.ts 6318093cfe53169b
+src/lib/use-drag-scroll.ts c4b30374be97817d
+src/routes/app.settings.tsx 8470356630372059

@@ -409,6 +409,12 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
         : "Leads and pipeline sit on Pro, Business and Business Pro. Your package is {package}.",
     };
   }
+  if (path === "/app/settings/ai" && !opts.aiHost) {
+    return {
+      title: "AI settings are not on this workspace",
+      body: "Your package is {package}. AI lives in the separate ANEXOMAIL AI product, so there is nothing to set here.",
+    };
+  }
   if (path.startsWith("/app/ai-center") || path === "/app/ai" || path.startsWith("/app/ai/")) {
     return {
       title: "LEO is not on this workspace",

@@ -48,6 +48,10 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 10:06 PKT — founder: "sab green hai, yeh drag right side pe jahan pe mail open hoti hain waha pe nahi ho raha hai. aur basic package main AI settings kyon hai yeh itnay blunder kyon tum live login ke bawajod bhi incompetent ho. fix kero aur login ker ke dekho phir batao"
+- Halat: **READY** (batch 8). Drag ab har patti par (thread side bhi); Basic se AI settings + Leo Actions tab hata (AI zero qaida). Live-login (basic.test) local build par test: list + thread ki 6 patti drag OK; settings tabs mein AI nahi; integrations mein Leo Actions nahi.
+- Sabaq: naya feature/page likhne se pehle PACKAGE-FEATURE-FORMULA.md ke "kis plan ko kya" gate check karo; AI = sirf ai host.
+
 ### 20 Oct 2026 09:52 PKT — founder: (2 tasveerein) "yeh image 1 main drag system banao cursor se drag ho sakay right left takay icons puray nazar aye yeh UI UX fix kero aur yeh second image main settings ki option yahan pe dalo sirf yeh kerna hai aur abhi tak 3D grapichs kahan ana hai yeh tumne nahi batya hai baki sab green hai"
 - Halat: **READY** (batch 7, commit 562b6c2). Mail rows par mouse-drag/wheel scroll; profile menu mein Settings. 3D ka naksha `BASIC-AUDIT-DONE.md` mein (abhi bana nahi, founder ke hukm par).
 

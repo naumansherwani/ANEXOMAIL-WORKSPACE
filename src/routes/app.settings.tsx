@@ -1,5 +1,6 @@
 import { Link, Outlet, createFileRoute, useRouterState } from "@tanstack/react-router";
 
+import { isAiHost } from "@/lib/host";
 import { cn } from "@/lib/utils";
 
 /**
@@ -57,12 +58,14 @@ const TABS: Tab[] = [
 
 function SettingsLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Workspace plans (Basic/Pro/Business/Business Pro) mein AI ZERO hai — "AI settings" sirf AI host par.
+  const tabs = isAiHost() ? TABS : TABS.filter((t) => t.to !== "/app/settings/ai");
   return (
     <div className="flex min-h-0 flex-1 flex-col">
       <header className="shrink-0 border-b border-border px-ax-5 pt-ax-4">
         <p className="ax-eyebrow">Settings Center</p>
         <nav className="mt-ax-3 flex gap-1 overflow-x-auto">
-          {TABS.map((t) => {
+          {tabs.map((t) => {
             const active = t.exact
               ? pathname === "/app/settings" || pathname === "/app/settings/"
               : pathname.startsWith(t.to);

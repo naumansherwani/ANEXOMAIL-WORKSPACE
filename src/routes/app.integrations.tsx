@@ -21,6 +21,7 @@ import {
   type ExportJob,
 } from "@/lib/integrations";
 import { anexomailAddress } from "@/lib/anexomail-address";
+import { isAiHost } from "@/lib/host";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
@@ -66,6 +67,8 @@ type TabId = (typeof TABS)[number]["id"];
 
 function Integrations() {
   const [tab, setTab] = useState<TabId>("providers");
+  // Workspace plans mein AI nahi — "Leo Actions" tab sirf AI host par.
+  const tabs = isAiHost() ? TABS : TABS.filter((t) => t.id !== "actions");
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
@@ -77,7 +80,7 @@ function Integrations() {
           actually works.
         </p>
         <nav className="mt-ax-3 flex gap-1 overflow-x-auto">
-          {TABS.map((t) => (
+          {tabs.map((t) => (
             <button
               key={t.id}
               type="button"
