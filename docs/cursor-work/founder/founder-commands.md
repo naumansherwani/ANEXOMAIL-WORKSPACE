@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 20 Oct 2026 10:32 PKT — founder: "Sabaq. Ab main koi bhi file badalne ya revert karne ke baad saari manifest entries verify karunga. Tab hi push karunga, taake server par aise adha deploy dobara na ho. yeh repo main likho as a rule strict"
+- Halat: **DONE**. `AGENTS.md` RULE 28 (strict) + `docs/cursor-work/server/manifest-verify.py` (har entry ka sha check, exit 1 = push mat karo).
+
 ### 20 Oct 2026 10:30 PKT — founder: "na drag chalta hai aur na AI settings tamamam packages se remove hota hai is ko chat main fix kero" (+ server pull output)
 - Wajah (server output se): pull ka **build FAIL** hua (`Missing export`) => purani files wapas. Meri galti: batch 8 mein `app.mail.$folder.tsx` revert ki par DEPLOY-MANIFEST ka sha update nahi kiya => server ne file chhodi (SHA MISMATCH) aur purani file nayi `use-drag-scroll.ts` se `useDragScroll` mangti thi (ab hai nahi).
 - Fix: manifest-sync + **saari 120 manifest entries ka sha repo se verify (0 stale)**. Qaida: koi bhi file revert/badalne ke baad manifest-sync, phir sab entries verify, phir push.

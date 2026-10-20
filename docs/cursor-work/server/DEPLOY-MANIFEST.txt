@@ -119,6 +119,7 @@ src/lib/settings.ts f81c76075cfa96a2
 src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
-AGENTS.md 564272a44d995e37
+AGENTS.md 1cd15e70755d13cc
 src/lib/use-drag-scroll.ts c4b30374be97817d
 src/routes/app.settings.tsx 8470356630372059
+docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a

@@ -2,6 +2,8 @@
 
 > **RULE 24 (strict): compact/naye chat par KAAM SHURU karne se pehle `docs/cursor-work/founder/founder-commands.md` padho — founder ki chat commands wahan verbatim + halat. Uske baghair kaam nahi.**
 >
+> **RULE 28 (STRICT, founder 20 Oct 2026, 10:32 PKT): koi bhi file badalne YA revert karne ke baad, push se PEHLE: (1) `python3 docs/cursor-work/server/manifest-sync.py <har badli/revert hui file>` (2) `python3 docs/cursor-work/server/manifest-verify.py` — exit 0 aur "0 bad" chahiye. Exit 1 ho to push MAT karo. Warna server par `SHA MISMATCH` se file chhoot jati hai, aadha deploy hota hai, build FAIL, aur purani files wapas — founder ko kuch badla nazar nahi aata (20 Oct ka `useDragScroll` hadsa). Revert ka matlab bhi "file badli" hai.**
+>
 > **RULE 27: compact ke baad `docs/cursor-work/BASIC-AUDIT-DONE.md` bhi padho — 20 Oct 2026 ke live audit mein kya fix ho chuka (batch 1-6), kya baqi; wahi cheez dobara mat banao. Har naya batch us file ki table mein ek row + founder-commands.md mein entry.**
 >
 > **FOUNDER KA RULE: jo bhi founder se chat karega, pehle `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` poori padhega, phir chat karega (Rule 18).** Naya ya compact chat bhi wahin se shuru hota hai — "ABHI KA QADAM" dekho, founder se purani baat dobara mat poochho.
