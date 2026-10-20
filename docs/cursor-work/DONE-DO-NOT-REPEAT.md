@@ -7,25 +7,26 @@ Compact ke baad: pehle `founder-commands.md` + yeh file padho. Neeche ki cheez d
 - Local Postgres (`/var/run/postgresql`, DB e39–e45 stubs) — SQL test; real Rust crates offline: scratchpad `realchk`/`fullchk` (`cargo check --offline`); `ptmp.py` = installer ka patch script; Playwright `live/integ.mjs` (blocked/warned/appeal, 3 sizes), `live/pkgate.mjs`, `live/recov.mjs`; local web `build/` + bun :3999 + `proxy.py` :8090.
 - DHYAAN: `pkill -f` / `xargs kill` jisme apni command ka text ho shell ko maar deta hai (exit 144) — pid se maro.
 
-## SQL (founder Supabase mein CHALA CHUKA: E41–E45 green; E46, E47 abhi chalane baqi)
+## SQL — **E41–E47 + CHECK_E42_E47 sab GREEN (founder 20 Oct 20:21)**
 | File | Kya | Halat |
 |---|---|---|
 | E41 family=real buyer | `\set` line hata di | DONE (live chala) |
 | E42 device hash HMAC | `device_hash_v2` + migrate fn | DONE SQL (migrate script chalana: `device-hash-migrate.sh`) |
 | E43 passkey/recovery codes | | DONE (live chala) |
 | E44 export (scope/page/ticket) | | DONE (live chala) |
-| E45 72h purge + tombstone (HMAC email) | `account_integrity_purge_due(_key)` | founder dobara chalaye (purana function `{ok,purged}` tha) |
-| E46 notices + appeal + email_hmac migrate | warn/block/24h/purged email outbox, `account_integrity_appeal` | READY — chalana baqi |
-| E47 device revoke = asli `auth.sessions` kill + links | `device_session_link`, naya `device_trust_set` | READY — chalana baqi |
+| E45 72h purge + tombstone (HMAC email) | `account_integrity_purge_due(_key)` | DONE (live: purge runner `{ok,purged:0,blocked:0}`) |
+| E46 notices + appeal + email_hmac migrate | warn/block/24h/purged email outbox, `account_integrity_appeal` | DONE (live chala) |
+| E47 device revoke = asli `auth.sessions` kill + links | `device_session_link`, naya `device_trust_set` | DONE (live chala) |
 Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 
 ## Rust (`rust-engine-install.sh`, `MODULES="device export"`)
 - export module (ZIP stream, ticket, `account.integrity.me`) + **blocked guard** `export_glue::blocked` — DONE, founder ne chalaya (build OK, 401 saboot).
-- `account.integrity.appeal` proc + `device_glue` session link (E47) — READY, dobara installer chalana baqi.
+- `account.integrity.appeal` proc + `device_glue` session link (E47) — DONE, founder ne chalaya (20:21: device 4 tests, export 11 tests, build OK, 401 saboot).
 
 ## Brain (`brain-integrity-install.sh`) — DONE, founder ne chalaya (guard + Leo bridge guard, health 200).
-## Timers (`integrity-purge/install.sh`) — purge timer DONE (founder chalaya). notify worker (5 min, Postfix) + device_vault_purge hourly — READY, install dobara chalana baqi.
-## Web (`pull.sh`) — IntegrityGate (warned/blocked/purged), "Your data" export card, appeal form, "deleted automatically on" — READY.
+## Timers (`integrity-purge/install.sh`) — purge timer DONE (founder chalaya). notify worker (5 min, Postfix) + device_vault_purge hourly — DONE (founder chalaya 20:21; notify claimed=0 sent=0 failed=0 = koi pending notice nahi, theek).
+## Web (`pull.sh`) — IntegrityGate, export card, appeal form, "deleted automatically on" — DONE (founder 20:21, server==repo, build OK).
+## File safety — `file-safety-check.sh`: clamd **DOWN (RED)** 20:21 -> founder `INSTALL=1` chalaye (ClamAV install); GREEN tab jab EICAR FOUND aaye.
 
 ## Loopholes jo band ho chuke (dobara audit nahi)
 - Export sirf queue thi -> asli streaming ZIP (e2e real crates) DONE.

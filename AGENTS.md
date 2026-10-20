@@ -250,7 +250,7 @@ Founder (verbatim): "tumhay bola tha ke mujhe loophole khatham ker ke do aur jab
 - **"Green" ka matlab:** test chala, natija dekha. Nakli green nahi (Rule 5). Jo kaam promise (footer/policy) hai woh `PROMISES.md` mein sabut ke saath.
 - **Har founder command ke BAAD repo update + push (compact ka khatra hamesha):** founder-commands.md (verbatim + halat), blueprint/PROMISES ki halat, DEPLOY-MANIFEST sync+verify (Rule 28), phir push. Claude compact ke baad wahin se continue kare.
 - **Har technology ki alag pull command** (SQL / Rust / Brain / Web / timer) har kaam ke saath — mix block nahi.
-- **DONE-LOG (founder 20 Oct 20:10, "bar bar same kaam repeat"):** `docs/cursor-work/DONE-LOG.md` mein jo kaam ho chuka woh dobara nahi; har kaam ke baad wahan ek line + compact se pehle repo update. Latest technology (Rule 25) hi.
+- **DONE-LOG (founder 20 Oct 20:10, "bar bar same kaam repeat"):** `docs/cursor-work/DONE-DO-NOT-REPEAT.md` mein jo kaam ho chuka woh dobara nahi; har kaam ke baad wahan ek line + compact se pehle repo update. Latest technology (Rule 25) hi.
 - **Hash policy (founder 20 Oct):** `docs/cursor-work/HASHING.md` — HMAC-SHA256 aur SHA-256 kab kaunsa; code wahi follow kare.
 
 ### Rule 30 — Jo kaam ho chuka dobara nahi: DONE ledger + sirf latest technology (locked 20 Oct 2026 20:09 PKT, founder)
