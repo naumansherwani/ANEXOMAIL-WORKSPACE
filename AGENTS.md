@@ -268,3 +268,9 @@ Founder (verbatim): "mainay dekha hai ke bar bar same kaam repeat kaam ker rahay
 | ANEXOMAIL blueprint (59 phases) | **Founder paste kare** → `docs/anexomail-blueprint.md` banegi |
 | SQL phase60/61/62 | Supabase #4 SQL Editor mein paste karo (tarteeb se) |
 | Server pull | `git pull && bun install && bun run build:bun && pm2 restart...` |
+
+## Rule 31 — Founder ka STOP-AND-SHOW qaida (20 Oct 2026 23:50 PKT, verbatim: "Do not execute more than 3 terminal commands or browser tests without asking for my confirmation. Stop and show me the progress first.")
+- Ek jawab mein 3 se zyada terminal command ya browser test NAHI. 3 ke baad ruko, progress dikhao (kitna ho chuka, kya green, agla kya), founder ki confirmation lo.
+- Compact ke baad PEHLE: `docs/cursor-work/founder/founder-commands.md` + `docs/cursor-work/DONE-DO-NOT-REPEAT.md` + is file ke Rules. Jo "DONE" hai dobara nahi (Basic ka kaam hazaron bar ho chuka). Sirf "TODO" par kaam.
+- Har kaam ke baad repo update + manifest 0 bad + push, compact se pehle bhi. Sandbox copy: /home/claude/FOUNDER-RULES.md.
+- Tarteeb (founder): live test Basic->Pro->Business->Business Pro (1440/820/390) | G38 | G40 | G42 | Business Pro baqi | walid ka account | founder profile | AnexoChat. Ek green hone par agla.

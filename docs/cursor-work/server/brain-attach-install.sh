@@ -100,7 +100,10 @@ if command -v pm2 >/dev/null 2>&1 && [ -z "${NO_PM2:-}" ]; then
   S="$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'content-type: application/json' -d '{}' http://127.0.0.1:3100/api/mail/send)"
   C="$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'content-type: application/json' -d '{}' http://127.0.0.1:3100/api/mail/schedule)"
   echo "Brain health $H · bina login /api/mail/send $S · /api/mail/schedule $C (401 = routes zinda)"
-  WLOG="$(pm2 logs anexomail-leo --nostream --lines 80 2>/dev/null | grep -E 'mail-worker\] queue fetch failed' | tail -1)"
+  # sirf SCHEMA ki shikayat (attachment_ids column / 42703) E48 na chalne ka saboot hai. "Gateway Timeout" Supabase ka wakti masla hai — fail nahi.
+  WLOG="$(pm2 logs anexomail-leo --nostream --lines 80 2>/dev/null | grep -E 'mail-worker\]' | grep -iE 'attachment_ids|42703|does not exist' | tail -1)"
+  TLOG="$(pm2 logs anexomail-leo --nostream --lines 80 2>/dev/null | grep -E 'mail-worker\] queue fetch failed' | tail -1)"
+  [ -n "$TLOG" ] && [ -z "$WLOG" ] && echo "(info: mail-worker ne Supabase ka wakti masla dekha — '$(echo "$TLOG" | cut -c1-90)' — E48 ka masla nahi, install ko nahi rokta)"
   if [ "$H" != "200" ] || [ "$S" != "401" ] || [ "$C" != "401" ] || [ -n "$WLOG" ]; then
     [ -n "$WLOG" ] && echo "mail-worker: $WLOG   -> SQL E48 (attachment_ids column) shayad abhi nahi chali: docs/cursor-work/sql/E48_outgoing_attachments.sql"
     restore; exit 1

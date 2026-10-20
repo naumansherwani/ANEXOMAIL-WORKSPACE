@@ -66,3 +66,8 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - Code: Basic ki sab maloom cheezein repo mein (G33 audit chhor kar). Basic live (Chrome Browser 1, basic.test) dashboard + inbox khule theek.
 - Basic ko GREEN banne se roakne wali SIRF yeh cheezein: (1) server pulls: sql-run (E37–E50), Rust attach + inbound installer, Brain attach, Web pull, Caddy /files/* band; (2) ClamAV green (clamd DOWN); (3) pulls ke baad live: Compose attach bhejna + aane wali mail ka download + 3 screen size; (4) G33 PROMISES.md har wade ka live saboot; (5) G35 passkey gate live (27 Oct deadline) check.
 - Basic GREEN = upar ke 5 live-verified. Us ke baad Pro. G40/G42 (Rust speed) Basic ko nahi rokte.
+
+## Server par GREEN (founder 20 Oct 23:50): SQL E37–E50 + CHECK sab green · Rust attach (3x401) · attach-gc timer · Caddy /files/* band (probe 404) · attach-check GREEN (clamd WARN chhor kar)
+- Brain install: "check FAIL" jhootha tha — mail-worker "Gateway Timeout" Supabase ka wakti masla, E48 nahi; installer ab sirf schema error par fail (commit). Purani Brain files wapas hain => Brain attach DOBARA chalana hai.
+- clamd: service chal raha hai par 127.0.0.1:3310 band (Debian socket-activation, TCPSocket ignore) => `clamd-tcp-fix.sh` (localhost ListenStream drop-in, backup/wapas).
+- Pending founder pulls (tarteeb): Brain attach · Rust inbound (`rust-inbound-attach-install.sh`, abhi chala nahi) · Web pull · clamd-tcp-fix.
