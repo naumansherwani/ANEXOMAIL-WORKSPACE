@@ -1,6 +1,8 @@
 import { ImageOff } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useBlockRemoteImages } from "@/lib/settings";
+
 /**
  * Bahar se aayi HTML mail ko MEHFOOZ dikhana (20 Oct 2026 — pehle `dangerouslySetInnerHTML` se seedha page mein lagti thi,
  * aur na Bun pipe na Rust pipe HTML saaf karta hai: kisi mail ka `<script>` / `onerror=` humari app ke andar chal kar login token
@@ -27,7 +29,10 @@ ${images ? "" : 'img[src^="http:"],img[src^="https:"],img[src^="//"]{visibility:
 export function SafeMailBody({ html }: { html: string }) {
   const frame = useRef<HTMLIFrameElement | null>(null);
   const [height, setHeight] = useState(120);
-  const [images, setImages] = useState(false);
+  // Settings → Privacy → "Block tracking pixels" band kiya ho to tasveerein seedha (user ka apna faisla)
+  const block = useBlockRemoteImages();
+  const [shown, setImages] = useState(false);
+  const images = shown || !block;
   const hasRemote = useMemo(() => REMOTE_IMG.test(html) || REMOTE_CSS_BG.test(html), [html]);
   const srcDoc = useMemo(() => doc(html, images), [html, images]);
 
@@ -55,7 +60,9 @@ export function SafeMailBody({ html }: { html: string }) {
         ro = new ResizeObserver(() => measure());
         ro.observe(d.body);
       }
-      d.querySelectorAll("img").forEach((im) => im.addEventListener("load", measure, { once: true }));
+      d.querySelectorAll("img").forEach((im) =>
+        im.addEventListener("load", measure, { once: true }),
+      );
     };
     f.addEventListener("load", onLoad);
     return () => {

@@ -51,6 +51,11 @@
 ### 20 Oct 2026 09:25 PKT — founder: purana output (dnsauth 08:29, mig-live-test, sw.js) + "yeh sirf read kerna hai ke masla solve hai ke nahi bus."
 - Halat: **batch 1 DONE (live saboot 09:3x: sw activated, offline inbox 7 threads, Basic greeting sahi)**. dnsauth DONE. mig FAIL 4 = 08:29 ka purana script (fix 08:38); too_many_sessions = E35 hifazat.
 
+### 20 Oct 2026 — agent (CEO): batch 4 — Settings toggles (READY)
+- Masla: server toggle ki value text ("false") bhejta hai; `!"false"` = false => **koi band toggle kabhi ON nahi hota tha** (har settings page). Click ke baad 2–3 second purani halat; doosra click ulta. "Read receipts" toggle kuch nahi karta tha (hum receipt bhejte hi nahi). "Block tracking pixels" ka mail kholne par koi asar nahi tha.
+- Hal (Web): `isOn()` + On/Off; foran (optimistic) badalna, fail par wapas; Read receipts = "Never sent" (sach); tracking setting ab mail ki tasveerein control karta hai (default band).
+- Saboot: local build + live API — Off->On->Off foran, aakhir mein On wapas.
+
 ### 20 Oct 2026 — agent (CEO): batch 3 — Billing daam (READY)
 - Masla: Billing par Basic (business account) "£97.00 / month · 25 GB / mailbox". E5 `get_billing_subscription` business ka har na-business plan Business daam deta tha; saalana par mahine ka daam "/ year".
 - Hal: **E40 SQL** (wohi function, sirf yeh 2 cheezein; self-test business Basic = £23/5 GB). PG16 mock par 2 dafa PASSED.

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import type { Scope, Setting } from "@/lib/settings";
 import {
+  isOn,
   shortValue,
   useBlastRadius,
   useExplain,
@@ -75,7 +76,11 @@ export function SettingRow({ setting }: { setting: Setting }) {
       <div className="flex flex-wrap items-start gap-ax-3">
         <div className="min-w-0 flex-1">
           <p className="text-[13px] font-semibold text-foreground">{setting.label}</p>
-          <p className="ax-caption mt-0.5 text-muted-foreground">{setting.help}</p>
+          <p className="ax-caption mt-0.5 text-muted-foreground">
+            {setting.key === "privacy.read_receipts"
+              ? "ANEXOMAIL never tells a sender when you open their mail — there is nothing to switch on."
+              : setting.help}
+          </p>
           <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
             <span className="rounded-md bg-secondary px-2 py-0.5 font-semibold text-foreground">
               {shortValue(setting.value)}
@@ -119,19 +124,26 @@ export function SettingRow({ setting }: { setting: Setting }) {
             active={open === "history"}
             onClick={() => setOpen(open === "history" ? null : "history")}
           />
-          {setting.kind === "toggle" && !locked && (
-            <button
-              type="button"
-              className="ax-press rounded-lg bg-foreground px-2.5 py-1 text-[11px] font-semibold text-background"
-              disabled={save.isPending}
-              onClick={() => {
-                const next = !setting.value;
-                simulate.mutate({ key: setting.key, value: next });
-                save.mutate({ key: setting.key, value: next });
-              }}
-            >
-              {setting.value ? "Turn off" : "Turn on"}
-            </button>
+          {setting.key === "privacy.read_receipts" ? (
+            <span className="rounded-lg bg-secondary px-2.5 py-1 text-[11px] font-semibold text-steel">
+              Never sent
+            </span>
+          ) : (
+            setting.kind === "toggle" &&
+            !locked && (
+              <button
+                type="button"
+                className="ax-press rounded-lg bg-foreground px-2.5 py-1 text-[11px] font-semibold text-background"
+                disabled={save.isPending}
+                onClick={() => {
+                  const next = !isOn(setting.value);
+                  simulate.mutate({ key: setting.key, value: next });
+                  save.mutate({ key: setting.key, value: next });
+                }}
+              >
+                {isOn(setting.value) ? "Turn off" : "Turn on"}
+              </button>
+            )
           )}
         </div>
       </div>

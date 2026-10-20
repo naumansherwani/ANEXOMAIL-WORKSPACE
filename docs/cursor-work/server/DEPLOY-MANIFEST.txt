@@ -102,7 +102,7 @@ src/components/app/migrate/ImportMailPage.tsx 73dfc0e8312acadb
 src/routes/app.import.tsx c85edcdc1d377621
 src/components/app/mail/MailRail.tsx 53a2e7f6b93b96b6
 src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
-src/components/app/mail/SafeMailBody.tsx 8bc1172e0cde11ae
+src/components/app/mail/SafeMailBody.tsx 294c78c645522697
 src/lib/domains.ts 36a5093c5ee95b08
 public/sw.js 048374b66d00be5f
 src/lib/auth.tsx 2695768e0a696c57
@@ -115,3 +115,5 @@ src/routes/app.security.sessions.tsx 24fc4e4e08f66e9f
 src/routes/app.security.index.tsx 0b17a6df56ffc1a8
 src/routes/app.security.history.tsx dbf374ef8e2cab0b
 src/lib/security-platform.ts d3383b6b2357c97c
+src/lib/settings.ts f81c76075cfa96a2
+src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491

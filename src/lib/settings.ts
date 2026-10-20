@@ -132,7 +132,26 @@ export function useSaveSetting() {
     { key: string; value: string | number | boolean; reason?: string }
   >({
     mutationFn: (body) => post("settings.save", "/api/settings/save", body),
-    onSuccess: () => void qc.invalidateQueries({ queryKey: ["settings"] }),
+    // Foran dikhe (pehle 2–3 second purani halat dikhti thi, doosra click ulta kaam karta tha). Fail => wapas.
+    onMutate: async (body) => {
+      await qc.cancelQueries({ queryKey: ["settings"] });
+      const before = qc.getQueriesData<{ settings: Setting[] }>({ queryKey: ["settings"] });
+      for (const [key, data] of before) {
+        if (!data?.settings) continue;
+        qc.setQueryData(key, {
+          ...data,
+          settings: data.settings.map((x) =>
+            x.key === body.key ? { ...x, value: body.value } : x,
+          ),
+        });
+      }
+      return { before };
+    },
+    onError: (_e, _body, ctx) => {
+      const c = ctx as { before?: [readonly unknown[], unknown][] } | undefined;
+      for (const [key, data] of c?.before ?? []) qc.setQueryData(key, data);
+    },
+    onSettled: () => void qc.invalidateQueries({ queryKey: ["settings"] }),
   });
 }
 
@@ -208,5 +227,23 @@ export function useFounderSettings() {
   });
 }
 
+/** Toggle ki asli halat. Server value text mein bhejta hai ("true" / "false") — `!"false"` false hota tha, is liye
+ *  koi bhi band toggle kabhi ON nahi hota tha (20 Oct 2026 Basic audit). */
+export const isOn = (v: Setting["value"]) =>
+  v === true || v === 1 || (typeof v === "string" && /^(true|on|1|yes)$/i.test(v.trim()));
+
 export const shortValue = (v: Setting["value"]) =>
-  v === null ? "—" : typeof v === "boolean" ? (v ? "On" : "Off") : String(v);
+  v === null
+    ? "—"
+    : typeof v === "boolean" || (typeof v === "string" && /^(true|false)$/i.test(v.trim()))
+      ? isOn(v)
+        ? "On"
+        : "Off"
+      : String(v);
+
+/** "Bahar ki tasveerein khud na kholo" (tracking pixel). Default ON; sirf user ne khud band kiya ho to OFF. */
+export function useBlockRemoteImages(): boolean {
+  const q = useSettings("privacy");
+  const row = q.data?.settings.find((x) => x.key === "privacy.link_tracking");
+  return row ? isOn(row.value) : true;
+}
