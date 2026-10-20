@@ -125,7 +125,9 @@ src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
-docs/cursor-work/PROMISES.md dead665d1c273bfd
+docs/cursor-work/PROMISES.md 98c21639c995c36c
 docs/cursor-work/founder/founder-commands.md f8c3f444564f96e5
-docs/anexomail-blueprint.md 971b687b756dfad2
+docs/anexomail-blueprint.md 96d2626a4d9ca1e7
 docs/cursor-work/sql/E41_family_real_buyer.sql aed0627ce876b104
+docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
+docs/cursor-work/server/device-hash-migrate.sh a23c198866587da0

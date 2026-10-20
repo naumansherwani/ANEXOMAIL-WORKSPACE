@@ -754,11 +754,11 @@ Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-pass
 | # | Kaam | Halat | Technology |
 |---|---|---|---|
 | G33 | **Wade ka audit** — footer/privacy ke har wade ka `PROMISES.md` (wada -> code -> live saboot -> green/nahi). Jo bana nahi us ki line tab tak halki (UK GDPR: jhoota bayan nahi) | TODO (pehle) | docs + live |
-| G34 | **HMAC-SHA256 device hash** (plain SHA-256+pepper ki jagah), pepper ka `key_version` (rotation), purane hash dobara hash karne ka migration | TODO | SQL (pgcrypto `hmac`) |
+| G34 | **HMAC-SHA256 device hash** (plain SHA-256+pepper ki jagah), pepper ka `key_version` (rotation), purane hash dobara hash karne ka migration | READY (20 Oct): `E42_device_hash_hmac.sql` + `server/device-hash-migrate.sh` — stub DB par test (v1 ban/3+/24h dono dikhte hain, migrate idempotent, HMAC Python se match) | SQL (pgcrypto `hmac`) |
 | G35 | **Passkey lazmi (password + passkey)**: signup ke foran baad passkey; **2 passkey** (phone + laptop) + **10 recovery codes** (hash ho kar); QR/hybrid se phone ka passkey; naye device par passkey; recovery sirf recovery-email/codes se; family exempt-nahi ab asli buyer jaisa (Humza/Raana test) | TODO | Bun passkey routes + SQL + Web |
 | G36 | Block ke baad **72 ghante export, phir hamesha ke liye delete** (job + countdown + email) | TODO | Rust job + SQL |
 | G37 | **24 ghante mein 3 account = suspicious/review**; likhit **final warning -> block -> device ban** flow | TODO | SQL + Rust + Web |
 | G38 | **Compose mein attachments BHEJNA** (upload -> storage -> MIME -> Rust send; size limit; virus-scan apne infra par) | TODO (bada) | Web + Rust + storage |
-| G39 | **Family = real buyer**: billing "Lifetime access" (E40 `lifetime`), retention "Keep forever", baqi har cheez wahi | Aadha DONE (60bbe0f); `E41_family_real_buyer.sql` READY (21 Oct) — server par chalana + live check baqi | SQL + Web |
+| G39 | **Family = real buyer**: billing "Lifetime access" (E40 `lifetime`), retention "Keep forever", baqi har cheez wahi | Aadha DONE (60bbe0f); `E41_family_real_buyer.sql` READY (20 Oct) — server par chalana + live check baqi | SQL + Web |
 | G40 | Rust par RPC: work.*, crm.*, org.*, integrations.*, settings.* (abhi Bun par girte hain, page theek, sirf speed) | TODO | Rust |
 | G41 | Mobile + tablet + desktop har package par (Business Pro 390/820 audit shuru 19:1x) | Jari | live |
