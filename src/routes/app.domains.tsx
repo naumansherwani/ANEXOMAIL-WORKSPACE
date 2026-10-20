@@ -993,7 +993,7 @@ function Wizard({
                 </div>
               </div>
             )}
-            {atCap && <p className="ax-caption mt-3 text-warning">{capLabel}</p>}
+            {atCap && <p className="ax-caption mt-3 text-muted-foreground">{capLabel}</p>}
           </div>
         )}
 
@@ -1803,7 +1803,7 @@ function DomainsPage() {
   const domains = data?.domains ?? [];
   const cap = data?.domain_cap ?? null;
   const atCap = cap != null && domains.length >= cap;
-  const capLabel = `${t("Your")} ${planLabel(data?.plan)} ${t("package allows")} ${cap ?? 0} ${t("domains. Remove one or upgrade.")}`;
+  const capLabel = `${planLabel(data?.plan)} ${t("includes")} ${cap ?? 0} ${cap === 1 ? t("domain") : t("domains")} ${t("— all in use. To add another, upgrade or remove one.")}`;
 
   // Signup par jo company domain diya tha (dashboard par "Finish setup" wohi dikhata hai) —
   // yahan bhi wohi dikhe, taake dono jagah ek hi kahani ho.
@@ -1906,7 +1906,7 @@ function DomainsPage() {
             </Button>
           )}
         </div>
-        {atCap && !wizard && <p className="ax-caption text-warning">{capLabel}</p>}
+        {atCap && !wizard && <p className="ax-caption text-muted-foreground">{capLabel}</p>}
 
         {wizard && (
           <Wizard
