@@ -25,7 +25,8 @@ redact() { sed -E \
 echo "== 1) SQL schema-only (public) — koi data nahi"
 . /etc/anexomail/sync.env 2>/dev/null
 if [ -n "${WORKING_URL:-}" ] && command -v pg_dump >/dev/null; then
-  if pg_dump "$WORKING_URL" --schema-only --no-owner --no-privileges --schema=public -f "$SNAP/sql/schema-public.sql" 2>"$WORK/pgdump.err"; then
+  if pg_dump "$WORKING_URL" --schema-only --no-owner --no-privileges --schema=public -f "$WORK/schema.raw" 2>"$WORK/pgdump.err"; then
+    redact < "$WORK/schema.raw" > "$SNAP/sql/schema-public.sql"; rm -f "$WORK/schema.raw"
     echo "   pg_dump OK ($(wc -l <"$SNAP/sql/schema-public.sql") lines)"
   else
     echo "   pg_dump fail ($(head -c 300 "$WORK/pgdump.err")) — psql catalog se banata hoon"
@@ -54,7 +55,10 @@ for f in /usr/local/bin/anexomail-sync-domains.sh /usr/local/bin/anexomail-sync-
 echo "   (dobara-line saboot: sync-maps wali lines kitni jagah)"; grep -c "anexomail-sync-maps.sh" "$SNAP/cron/cron-all.txt"
 
 echo "== 6) safety: secret bacha to push NAHI"
-BAD=$(grep -rEIn '(pass(word)?|secret|token|api[_-]?key)[A-Za-z0-9_]*[[:space:]]*[=:][[:space:]]*[^[:space:]\[]{8,}' "$SNAP" 2>/dev/null | grep -v "REDACTED" | grep -vE 'process\.env|\$\{|\$[A-Z_]+|=\s*(true|false|null|""|'"''"')' | head -8)
+BAD=$(grep -rEIn '(pass(word)?|secret|token|api[_-]?key)[A-Za-z0-9_]*[[:space:]]*[=:][[:space:]]*[^[:space:]\[]{8,}' "$SNAP" --exclude-dir=sql 2>/dev/null | grep -v "REDACTED" | grep -vE 'process\.env|\$\{|\$[A-Z_]+|=\s*(true|false|null|""|'"''"')' | head -8)
+# SQL dump: function bodies mein 'token = ...' normal hai; sirf lambi random literal (hardcoded secret jaisi) rokte hain
+BADSQL=$(grep -rEIn "'[A-Za-z0-9+/=_-]{32,}'|eyJ[A-Za-z0-9_-]{20,}|sk_(live|test)_|whsec_" "$SNAP/sql" 2>/dev/null | head -8)
+BAD="$BAD$BADSQL"
 if [ -n "$BAD" ]; then echo "RED: shak wali lines (sirf file:line, value nahi):"; echo "$BAD" | cut -d: -f1,2 | sort -u; echo "Push roka. Folder: $SNAP"; exit 1; fi
 echo "   saaf"
 

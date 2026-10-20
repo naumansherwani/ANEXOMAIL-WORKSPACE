@@ -119,7 +119,7 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs ab6884c10e960fd6
-AGENTS.md e6b8024bb41bfbc7
+AGENTS.md b1f976f9e1629f8d
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md fd199d1882d5c537
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 2415f882f37b2ca3
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -213,10 +213,10 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 4851db800b589181
+docs/cursor-work/MASTER-GAP-LEDGER.md a4a5c0375cf67704
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md b1c1e85cb0fb5cbd
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
 docs/cursor-work/sql/E51_calendar_response_fix.sql 6ffd0145f2bed06c
-docs/cursor-work/server/repo-capture-server.sh c4541a22307ed7ed
+docs/cursor-work/server/repo-capture-server.sh 05a10a90361f9570

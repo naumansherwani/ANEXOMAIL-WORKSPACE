@@ -283,3 +283,4 @@ Founder (verbatim): "mainay dekha hai ke bar bar same kaam repeat kaam ker rahay
 
 ## Rule 33 — Kaam ka tareeqa: pehle khud, phir founder (founder 21 Oct 2026 00:26 PKT)
 Masla mile to: (1) khud repo/code mein wajah dhoondho, (2) fix likho, (3) sandbox/local DB mein reproduce + test, (4) repo update + manifest 0 bad + push, (5) founder ko ek command (sirf wo jo server hi kar sakta hai), (6) Chrome mein live verify. Founder se diagnosis ke liye baar baar mat maango; Chrome ruk jaye to code se aage badho. Sandbox copy: /home/claude/FOUNDER-RULES.md.
+(Rule 33 ka hissa, founder 21 Oct 00:42) Tareeqa: founder ke pull ke baad Chrome mein live dekho -> root se fix -> repo update -> live dobara test -> har technology ki alag command. Login founder khud karta hai; main uske logged-in session par test karta hoon.
