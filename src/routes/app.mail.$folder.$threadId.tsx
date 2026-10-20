@@ -7,6 +7,7 @@ import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { EmptyState } from "@/components/app/Panel";
 import { InlineReply } from "@/components/app/mail/InlineReply";
 import { QuoteInChat } from "@/components/app/mail/QuoteInChat";
+import { SafeMailBody } from "@/components/app/mail/SafeMailBody";
 import { ThreadHeaderActions } from "@/components/app/mail/ThreadHeaderActions";
 import { ThreadInsights } from "@/components/app/mail/ThreadInsights";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
@@ -83,7 +84,7 @@ function ThreadPage() {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.18, ease: [0.25, 0.46, 0.45, 0.94] }}
     >
-      <div className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-ax-3 border-b border-border bg-background/95 px-5 backdrop-blur">
+      <div className="sticky top-0 z-10 flex min-h-14 shrink-0 flex-wrap items-center gap-x-ax-3 gap-y-2 border-b border-border bg-background/95 px-5 py-2 backdrop-blur">
         {/* Phase 28 — 1-panel morph: back to the list on a phone. */}
         <Link
           to="/app/mail/$folder"
@@ -93,7 +94,7 @@ function ThreadPage() {
         >
           <ArrowLeft className="size-4" aria-hidden="true" />
         </Link>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h2 className="truncate text-sm font-bold tracking-tight text-foreground">
             {thread.subject || "(no subject)"}
           </h2>
@@ -104,7 +105,8 @@ function ThreadPage() {
             </p>
           )}
         </div>
-        <div className="ml-auto flex shrink-0 items-center gap-1">
+        {/* Phone par actions apni line mein (subject kat-ta nahi), desktop par dayein. */}
+        <div className="order-last flex w-full items-center gap-1 overflow-x-auto md:order-none md:ml-auto md:w-auto md:shrink-0 md:overflow-visible">
           <ThreadHeaderActions
             threadId={thread.id}
             status={thread.status}
@@ -159,6 +161,19 @@ function msgAvatarPalette(address: string | null | undefined): string {
   return MSG_PALETTES[Math.abs(hash) % MSG_PALETTES.length] ?? MSG_PALETTES[0];
 }
 
+/** Gmail jaisa waqt: "Oct 20, 6:57 AM (1 hour ago)" — poora waqt hover par. */
+function mailWhen(iso: string): string {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "";
+  const now = Date.now();
+  const sameYear = d.getFullYear() === new Date(now).getFullYear();
+  const abs = d.toLocaleString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }), hour: "numeric", minute: "2-digit" });
+  const mins = Math.round((now - d.getTime()) / 60000);
+  const rel =
+    mins < 1 ? "just now" : mins < 60 ? `${mins} min ago` : mins < 1440 ? `${Math.round(mins / 60)} hour${Math.round(mins / 60) === 1 ? "" : "s"} ago` : mins < 10080 ? `${Math.round(mins / 1440)} day${Math.round(mins / 1440) === 1 ? "" : "s"} ago` : "";
+  return rel ? `${abs} (${rel})` : abs;
+}
+
 function msgInitial(name: string | null | undefined, addr: string | null | undefined): string {
   return ((name ?? addr ?? "?").trim()[0] ?? "?").toUpperCase();
 }
@@ -190,7 +205,7 @@ function MailMessage({
           <span className="ml-auto text-[11px] text-muted-foreground/60">
             {message.scheduled_at
               ? `Scheduled · ${new Date(message.scheduled_at).toLocaleString()}`
-              : new Date(message.sent_at).toLocaleString()}
+              : mailWhen(message.sent_at)}
           </span>
         </div>
       </header>
@@ -203,11 +218,8 @@ function MailMessage({
 
       <div ref={bodyRef}>
         {message.body_html ? (
-          <div
-            className="ax-prose mt-ax-3 text-[13px] leading-relaxed text-foreground"
-            // Backend sanitises stored HTML before it reaches this surface.
-            dangerouslySetInnerHTML={{ __html: message.body_html }}
-          />
+          // Bahar ki HTML kabhi app ke page mein seedha nahi: band dabba (koi script nahi, tracking images default band).
+          <SafeMailBody html={message.body_html} />
         ) : (
           <p className="mt-ax-3 whitespace-pre-wrap text-[13px] leading-relaxed text-foreground">
             {message.body_text}

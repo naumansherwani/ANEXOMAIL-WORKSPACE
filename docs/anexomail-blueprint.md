@@ -710,3 +710,32 @@ OK   5 koi mail copy nahi hui (nakli login)
 ```
 
 Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-password ka jawab live kaam karte hain; koi mail copy nahi hui. **Halat: 🟢 LIVE DONE.**
+
+---
+
+## 20 Oct 2026 — FOUNDER KI SUGGESTIONS: Domains (Zoho / Google ko peeche chhodna) — as-is + CEO ki technical raaye + tarteeb
+
+**Founder (verbatim, 07:54 PKT):**
+> 1. 🛡️ DNS Shadow Proxy & Inbound Spillover Buffer (No Mail Drops) — Problem: MX badalte waqt DNS propagation (1–24 ghante) mein beech ki important emails drop/bounce. Anexomail ek Shadow Proxy Buffer banayega: domain add hote hi background mein purane active server (Google/Exchange) se connection rakhega; jab tak naye records 100% resolve na hon, R1a Rust engine dono taraf ka traffic filter karega aur jo naye server tak na pahunche use fallback pipeline se nikaal kar inbox mein daal dega — transition par 0 data loss.
+> 2. ⚡ Adaptive Tunnel Routing (Recursive NS Polling) — Google/Zoho public DNS (8.8.8.8) par verify karte hain, user baar baar button dabata hai. Anexomail registrar (Namecheap, Cloudflare, GoDaddy) ke authoritative nameservers ko seedha poochega; user ne wahan Save dabaya, yahan ~3 second mein record hara — TanStack Start streams se instant feedback.
+> 3. 🧩 Single-Use Encrypted "DNS Admin Gate" Portal — "Generate Encrypted Admin Tunnel Link": 15 minute mein khud khatam hone wala link; admin ko na workspace ka access na dashboard ka; uske registrar (jaise Namecheap) ka clone interface simulation jo bataye kaunsa button, kahan copy-paste; live channel jo admin ke updates real-time dikhaye.
+
+**CEO (agent) ki raaye — kya bilkul ban sakta hai, aur kahan seedha sach bolna zaroori hai:**
+
+| # | Kya banega (asli) | Technology (TECH-MAP law) | Sach / had |
+|---|---|---|---|
+| D1 Shadow Buffer | **"Zero-gap switch":** domain jodte hi purane mailbox (Google/M365/Zoho) se **Import mail ka IMAP worker incremental mode** mein chalta rahe — har 60 sec naye mail kheenche — jab tak (a) duniya ke bade resolvers (Google/Cloudflare/Quad9 + domain ke apne authoritative NS) sab hamara MX na dikhayen **aur** (b) purane mailbox mein 24 ghante koi naya mail na aaye. Phir khud band + receipt "switch ke dauran N mail bachaye". Duplicate kabhi nahi (Message-ID + SHA-256 chain, E35 jaisa). | Rust :3200 (mig worker + Tokio timer), PostgreSQL (state), WebTransport (live ginti) | Purane provider ke *server ke beech* packet "filter" karna mumkin nahi (woh hamara network nahi). Asli raasta: purane mailbox ko IMAP se padhna — isi se 0 loss hota hai. User ko purane provider ka App Password dena hoga (OAuth baad mein). |
+| D2 Authoritative NS polling | Rust domain ke NS records khud nikaale, **seedha unhi nameservers** se TXT/MX/CNAME poochhe (cache nahi), har 3 sec; record dikhte hi WebTransport push se UI hara. "Duniya mein phail gaya?" alag line (Google/Cloudflare/Quad9 resolvers). | Rust (async DNS resolver, Tokio), WebTransport push (Constitution: WebSocket nahi), React | Registrar ka apna server jitni der mein update kare (Cloudflare ~sec, GoDaddy/Namecheap kabhi 1–5 min) us se tez nahi ho sakta — "3 second" sirf jab registrar ne publish kar diya ho. Sach wala UI: "Namecheap ne abhi publish nahi kiya — hum har 3 sec dekh rahe hain". |
+| D3 Admin Gate link | Ek-baar ka, 15 min ka, signed link (DB mein sirf hash): admin ko **sirf** 5 records + uske registrar ke liye qadam-ba-qadam guide (screenshot jaisi tasveeren *hamari apni banayi*, registrar ka naam) + har record ka live hara/laal (D2). Koi workspace/dashboard access nahi; istemal ke baad ya 15 min par khatam; owner ko "admin ne link khola / records lag gaye" notification. | Rust (token issue/verify), PostgreSQL (hash + expiry), React page, WebTransport (live) | Registrar (Namecheap/GoDaddy) ka **hubahu clone interface nahi** banayenge — woh kisi asli company ki naqal (impersonation) hogi, phishing jaisa lagta hai aur unke brand/T&C ka masla. Hamari apni saaf guide unke naam ke saath — wahi faida, khatra nahi. |
+
+**CEO list — Zoho/Google ko Domains mein peeche chhodne ke liye (founder ko pehle list, phir implement — founder ka hukm):**
+1. D2 Authoritative-NS live check (sab se tez "hara" — Zoho/Google button dabwate hain).
+2. D1 Zero-gap switch (transition par 0 mail loss + receipt) — Google/Zoho mein nahi.
+3. D3 Ek-baar ka Admin link (IT admin ko sirf records, live status).
+4. **Domain Connect (ek click mein DNS):** Cloudflare / GoDaddy / IONOS jaise registrars "Domain Connect" template qubool karte hain — hum template submit karte hain, woh approve karte hain, phir user "Connect" dabaye to records khud lag jate hain. **Sirf code nahi — registrar ki manzoori lagti hai** (har registrar alag, hafte lag sakte hain). Is liye pehle hum template tayyar + submit; tab tak D2/D3.
+5. Catch-all, forwarding (bahar ke pate par copy), vacation auto-reply — Rust inbound pipe (R1a) ke baad ab yeh seedhe ban sakte hain (aane wali mail ab Rust se guzarti hai).
+6. Domain health guard: SPF/DKIM/DMARC/MX roz khud check; koi record toota (registrar change, expiry) to owner ko pehle se alert + "theek karo" ek click (Google/Zoho sirf setup par check karte hain).
+7. DMARC report reader: aane wali DMARC reports (dmarc@ -> resolved@) ko padh kar saaf zuban mein "aap ke naam se kaun mail bhej raha hai" — spoofing pakadna.
+8. BIMI-ready logo (Gmail/Apple Mail mein inbox par company logo) — DMARC p=reject ke baad.
+
+**Tarteeb (founder "haan" ke baad, baari par):** Basic list ke baqi kaam (Terms, PWA, attachments E39, Basic test) -> D2 -> 5 (catch-all/forwarding/vacation) -> D1 -> D3 -> 6 -> 7 -> 4 (registrar manzoori ke saath) -> 8.

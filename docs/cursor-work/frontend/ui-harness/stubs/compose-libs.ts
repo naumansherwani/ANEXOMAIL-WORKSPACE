@@ -46,3 +46,31 @@ export const relativeTime = (iso: string | null | undefined) => {
   if (m < 1440) return `${Math.round(m / 60)}h ago`;
   return `${Math.round(m / 1440)}d ago`;
 };
+
+// Thread view harness (#thread): one HTML mail with a script + tracking pixel (must NOT run / load), one text reply.
+export const formatBytes = (n: number) => `${Math.round(n / 1024)} KB`;
+export const useThread = (_id?: string) => ({
+  isPending: false,
+  error: null,
+  refetch: noop,
+  data: {
+    id: "t1",
+    subject: "Quarterly numbers",
+    status: "open",
+    assignee: null,
+    labels: [],
+    snoozed_until: null,
+    account_address: "you@acme-studio.com",
+    messages: [
+      {
+        id: "m1", direction: "in", from_name: "Sara Khan", from_address: "sara@client.co.uk", to: ["you@acme-studio.com"], cc: ["ali@client.co.uk"],
+        subject: "Quarterly numbers", body_text: "", sent_at: new Date(Date.now() - 3600e3).toISOString(), scheduled_at: null, attachments: [],
+        body_html: '<div style="font-family:Arial"><h2 style="color:#0b5">Q3 summary</h2><p>Hi, numbers attached. <a href="https://example.com/report">Open report</a></p><img src="https://tracker.example.com/pixel.gif" width="1" height="1"><script>parent.document.body.setAttribute("data-pwned","1")</script><img src="x" onerror="parent.document.body.setAttribute(\'data-pwned\',\'2\')"><table border="1" style="width:900px"><tr><td>Revenue</td><td>£120k</td></tr></table></div>',
+      },
+      {
+        id: "m2", direction: "out", from_name: null, from_address: "you@acme-studio.com", to: ["sara@client.co.uk"], cc: [],
+        subject: "Re: Quarterly numbers", body_text: "Thanks Sara — looks great.", body_html: null, sent_at: new Date(Date.now() - 1800e3).toISOString(), scheduled_at: null, attachments: [],
+      },
+    ],
+  },
+});
