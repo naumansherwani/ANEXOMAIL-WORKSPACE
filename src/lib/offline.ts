@@ -77,6 +77,12 @@ export async function remove(store: OfflineStore, key: string) {
 }
 
 export async function clearOffline() {
+  // service worker ka shell/asset cache bhi (public/sw.js) — us mein user data nahi hota, phir bhi "clear" ka matlab sab
+  try {
+    navigator.serviceWorker?.controller?.postMessage({ type: "anexo-clear" });
+  } catch {
+    /* sw nahi — theek */
+  }
   const db = await open();
   if (!db) return;
   const tx = db.transaction(STORES as unknown as string[], "readwrite");

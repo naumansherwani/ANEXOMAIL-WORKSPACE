@@ -104,3 +104,6 @@ src/components/app/mail/MailRail.tsx 53a2e7f6b93b96b6
 src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
 src/components/app/mail/SafeMailBody.tsx 8bc1172e0cde11ae
 src/lib/domains.ts 36a5093c5ee95b08
+public/sw.js 048374b66d00be5f
+src/lib/auth.tsx 2695768e0a696c57
+src/lib/offline.ts 2d14d739b85f7beb

@@ -11,6 +11,7 @@ import {
 
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { visitorPreviewFromUrl } from "@/lib/visitor-preview";
+import { clearOffline } from "@/lib/offline";
 
 /**
  * Session state — Phase 5A.
@@ -72,6 +73,33 @@ type AuthValue = {
 
 const AuthContext = createContext<AuthValue | null>(null);
 
+// Aakhri tasdeeq-shuda session (sirf offline ke liye). Token pehle se isi browser mein hota hai; sign out / 401 par saaf.
+const LAST_SESSION = "anexo.session.last";
+const lastSession = {
+  save(s: Session) {
+    try {
+      localStorage.setItem(LAST_SESSION, JSON.stringify(s));
+    } catch {
+      /* storage band — offline session nahi, bas */
+    }
+  },
+  load(): Session | null {
+    try {
+      const raw = localStorage.getItem(LAST_SESSION);
+      return raw ? (JSON.parse(raw) as Session) : null;
+    } catch {
+      return null;
+    }
+  },
+  clear() {
+    try {
+      localStorage.removeItem(LAST_SESSION);
+    } catch {
+      /* theek */
+    }
+  },
+};
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient();
   // VISITOR PREVIEW: render layer par session ko ignore karte hain — logout nahi.
@@ -85,11 +113,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryFn: async () => {
       if (!sessionToken.get()) return null;
       try {
-        return await api<Session>("/api/auth/session");
+        const s = await api<Session>("/api/auth/session");
+        lastSession.save(s);
+        return s;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
           sessionToken.clear();
+          lastSession.clear();
           return null;
+        }
+        // Internet nahi (offline / server tak raasta nahi): pichla session — taake mobile par offline bhi cached mail
+        // khule (Gmail jaisa). Server ka asli jawab aate hi yeh khud badal jata hai; 401 par sab saaf.
+        if (error instanceof ApiError && error.status === 0) {
+          const cached = lastSession.load();
+          if (cached) return cached;
         }
         throw error;
       }
@@ -114,6 +151,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Token is being dropped locally regardless; the backend revokes on its side.
     }
     sessionToken.clear();
+    lastSession.clear();
+    // Sign out = is browser par is user ki offline mail/drafts bhi khatam (shared computer par agla shakhs na dekhe).
+    await clearOffline().catch(() => {});
     await queryClient.cancelQueries();
     queryClient.clear();
   }, [queryClient]);
