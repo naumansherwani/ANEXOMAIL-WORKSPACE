@@ -210,51 +210,39 @@ begin
   end;
 end $$;
 
--- 6) purani bikhri hui system mail (root@ wagaira) jo kisi customer org mein padi hai -> ops (resolved@) ki org, warna trash
-create temp table e37_moved (what text, n bigint) on commit drop;
-do $$
-declare
-  v_ops_org uuid;
-  v_ops_acc uuid;
-  v_threads uuid[];
-  n_t bigint := 0;
-  n_m bigint := 0;
-begin
-  select org_id, account_id into v_ops_org, v_ops_acc from public.mailboxes where lower(address) = 'resolved@anexomail.com' limit 1;
-  select coalesce(array_agg(id), '{}') into v_threads from public.mail_threads
-   where public.mail_system_local_part(mailbox_address)
-     and (v_ops_org is null or org_id is distinct from v_ops_org);
-  if cardinality(v_threads) = 0 then
-    insert into e37_moved values ('bikhri system threads', 0);
-    return;
-  end if;
-  if v_ops_org is not null then
-    update public.mail_messages set org_id = v_ops_org where thread_id = any(v_threads);
-    get diagnostics n_m = row_count;
-    update public.mail_threads
-       set org_id = v_ops_org,
-           account_id = v_ops_acc,
-           mailbox_address = 'resolved@anexomail.com'
-     where id = any(v_threads);
-    get diagnostics n_t = row_count;
-    insert into e37_moved values ('system threads -> resolved@ (ops)', n_t), ('un ke messages', n_m);
-  else
-    update public.mail_threads set folder = 'trash' where id = any(v_threads);
-    get diagnostics n_t = row_count;
-    insert into e37_moved values ('system threads -> trash (resolved@ ki org nahi mili)', n_t);
-  end if;
-end $$;
-
--- 7) natija
+-- 6+7) purani bikhri hui system mail (root@ wagaira) jo kisi customer org mein padi hai -> ops (resolved@) ki org, warna 'trash';
+--      aur natija — EK hi statement (temp table nahi: Supabase SQL Editor har statement alag chalata hai).
+with ops as (
+  select org_id, account_id from public.mailboxes where lower(address) = 'resolved@anexomail.com' and org_id is not null limit 1
+), stray as (
+  select t.id from public.mail_threads t
+   where public.mail_system_local_part(t.mailbox_address)
+     and t.org_id is distinct from (select org_id from ops)
+), mv_msgs as (
+  update public.mail_messages m set org_id = (select org_id from ops)
+   where exists (select 1 from ops) and m.thread_id in (select id from stray)
+  returning 1
+), mv_threads as (
+  update public.mail_threads t
+     set org_id = (select org_id from ops), account_id = (select account_id from ops), mailbox_address = 'resolved@anexomail.com'
+   where exists (select 1 from ops) and t.id in (select id from stray)
+  returning 1
+), to_trash as (
+  update public.mail_threads t set folder = 'trash'
+   where not exists (select 1 from ops) and t.id in (select id from stray)
+  returning 1
+)
 select 'mail_ingest' as cheez, case when pg_get_functiondef('public.mail_ingest(jsonb)'::regprocedure) like '%E37 gate%' then 'E37 darwaza laga' else 'GALAT' end as haal
 union all select 'mail_ingest_core', case when to_regprocedure('public.mail_ingest_core(jsonb)') is not null then 'purana raasta andar maujood' else 'GALAT' end
-union all select 'resolved@ (ops inbox)', case when public.mail_recipient_known('resolved@anexomail.com') then 'maujood — system mail yahan' else 'NAHI — system mail quarantine mein' end
+union all select 'resolved@ (ops inbox)', case when exists (select 1 from ops) then 'maujood — system mail yahan' else 'NAHI — system mail quarantine/trash' end
 union all select 'self-test', 'PASSED (sab rollback)'
-union all select what, n::text from e37_moved
-union all select 'quarantine (abhi)', count(*)::text from public.mail_quarantine
+union all select 'system threads -> resolved@ (ops)', (select count(*) from mv_threads)::text
+union all select 'un ke messages', (select count(*) from mv_msgs)::text
+union all select 'system threads -> trash (ops org nahi mili)', (select count(*) from to_trash)::text
+union all select 'quarantine (abhi)', (select count(*) from public.mail_quarantine)::text
 union all select 'purane threads jin ka pata ab kisi ka nahi (sirf ginti; hata hua address bhi ho sakta hai — chhede nahi)',
-  count(*)::text from public.mail_threads t
-   where t.mailbox_address is not null and not public.mail_system_local_part(t.mailbox_address)
-     and not public.mail_recipient_known(t.mailbox_address);
+  (select count(*) from public.mail_threads t
+    where t.mailbox_address is not null and not public.mail_system_local_part(t.mailbox_address)
+      and not public.mail_recipient_known(t.mailbox_address))::text;
 
 commit;
