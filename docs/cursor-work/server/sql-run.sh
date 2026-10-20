@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ANEXOMAIL — SQL ab SERVER se (Supabase editor mein paste ki zaroorat nahi). Founder hukm 20 Oct 2026 21:28.
 #   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)
-#   (bina naam: kal+aaj ki sab SQL E37..E48 tarteeb se, phir CHECK_E42_E47 + CHECK_E48. Ya naam do, bina .sql ke: ... sql-run.sh) E48_outgoing_attachments CHECK_E48)
+#   (bina naam: kal+aaj ki sab SQL E37..E49 tarteeb se, phir CHECK_E42_E47 + CHECK_E48. Ya naam do, bina .sql ke: ... sql-run.sh) E48_outgoing_attachments CHECK_E48)
 #   E28/E36 is mein nahi: unhein password chahiye (`bizpro-login-fix.sh` alag). E2..E34 purani, pehle chal chuki hain — naam de kar hi chalengi.
 # Kya karta hai:
 #   - /etc/anexomail/sync.env ka WORKING_URL (wahi jo baqi check scripts use karte hain), psql ON_ERROR_STOP
@@ -23,7 +23,7 @@ if [ $# -eq 0 ]; then
   set --
   for f in E37_mail_ingest_no_stray_org E38_thread_message_count_truth E39_security_truth E40_billing_price_truth E41_family_real_buyer \
            E42_device_hash_hmac E43_passkey_recovery_codes E44_account_export E45_integrity_purge E46_integrity_notices_appeal \
-           E47_device_revoke_real_sessions E48_outgoing_attachments CHECK_E42_E47 CHECK_E48; do set -- "$@" "$f"; done
+           E47_device_revoke_real_sessions E48_outgoing_attachments E49_attach_ceiling_18mb CHECK_E42_E47 CHECK_E48; do set -- "$@" "$f"; done
 fi
 T="$(mktemp)"; trap 'rm -f "$T"' EXIT
 rc=0

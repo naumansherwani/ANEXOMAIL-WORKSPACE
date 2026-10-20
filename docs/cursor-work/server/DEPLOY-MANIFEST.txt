@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md 1ab7654e13e647e5
-docs/cursor-work/founder/founder-commands.md 734e319e73c3989e
+docs/cursor-work/founder/founder-commands.md bfc7b91b619cd84a
 docs/anexomail-blueprint.md 3b2a7185917da05d
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 1761c78f7943b6c2
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 7657c42b26b5f21c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -170,7 +170,7 @@ server/routes/mail-compose.ts b573a3ce49d5ce29
 server/routes/mail.ts 8a0014f8b93f352b
 src/lib/compose.ts 90e4a3a578416232
 docs/cursor-work/server/attach-caddy-close-files.sh 7623871b09c33865
-docs/cursor-work/server/attach-check.sh 167fbd10dbb750e1
+docs/cursor-work/server/attach-check.sh 96f0b48ba580bf05
 docs/cursor-work/server/attach-gc/anexomail-attach-gc.service 315952e242bafae7
 docs/cursor-work/server/attach-gc/anexomail-attach-gc.py 207fdbad1f097f73
 docs/cursor-work/server/attach-gc/install.sh 92752a570aa5a9c4
@@ -196,7 +196,8 @@ server/rust/attach_glue.rs 3d5ab0ac5c7b24b2
 src/lib/mail-attachments-core.test.ts 4947ee83be835067
 src/lib/mail-attachments-core.ts 4c8d15ce14d2938b
 src/lib/mail-attachments.ts 1240deda22af0bc2
-docs/cursor-work/server/sql-run.sh 13a8817d7512820b
+docs/cursor-work/server/sql-run.sh 9309b8e5f055397b
 docs/cursor-work/sql/E37_mail_ingest_no_stray_org.sql b94641071972a335
 docs/cursor-work/server/tests/e37/stubs.sql dc31be31a83ba369
 docs/cursor-work/server/tests/e37/run.sh 1b19c23248114e49
+docs/cursor-work/sql/E49_attach_ceiling_18mb.sql 2f55c2eb60d9ed3d

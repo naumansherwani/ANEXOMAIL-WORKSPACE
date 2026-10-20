@@ -6,7 +6,11 @@
 set -uo pipefail
 ROOT="${ATTACH_DIR:-/mnt/anexomail-box/attachments}"
 RPC="${RPC:-http://127.0.0.1:3200}"
-CAP="${CAP:-7000000}"          # SQL mail_attach_limits.server_ceiling_bytes ki default
+CAP="${CAP:-7000000}"          # SQL mail_attach_limits.server_ceiling_bytes ki default; DB se mil jaye to wahi (neeche)
+if [ -r /etc/anexomail/sync.env ] && command -v psql >/dev/null 2>&1; then
+  _c="$( . /etc/anexomail/sync.env 2>/dev/null; psql "${WORKING_URL:-}" -X -At -c "select value from public.mail_attach_limits where key='server_ceiling_bytes'" 2>/dev/null | head -1 )"
+  [[ "$_c" =~ ^[0-9]+$ ]] && CAP="$_c"
+fi
 bad=0
 say() { printf '%-9s %s\n' "$1" "$2"; }
 
@@ -29,7 +33,7 @@ if command -v postconf >/dev/null 2>&1; then
     say INFO "Postfix message_size_limit = $L bytes; cap $CAP raw => mail ~$NEED bytes"
     if [ "$NEED" -le "$L" ]; then say OK "cap Postfix ki limit ke andar hai (bounce nahi hoga). Is limit par sabse bari mehfooz cap: $SAFE raw bytes"
     else say FAIL "cap Postfix se bari hai — attachment wali mail bounce hogi. Ya SQL se cap kam karein: update public.mail_attach_limits set value=$SAFE where key='server_ceiling_bytes';"; bad=1; fi
-    say INFO "bari attachments (jaise 18 MB) ke liye Postfix limit badhani hogi — sirf founder ki 'haan' ke baad: postconf -e message_size_limit=26214400 && systemctl reload postfix; phir SQL: update public.mail_attach_limits set value=18874368 where key='server_ceiling_bytes';"
+    if [ "$SAFE" -lt 18874368 ]; then say INFO "18 MB tak ke liye Postfix limit badhani hogi (founder 'haan' ke baad): postconf -e message_size_limit=26214400 && systemctl reload postfix"; fi
   else say WARN "postconf se limit nahi mili"; fi
 else say WARN "postconf nahi mila (yeh server Postfix wala nahi?)"; fi
 

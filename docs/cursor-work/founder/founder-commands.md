@@ -452,3 +452,6 @@ Loophole ledger (sach)
 **Halat:** `sql-run.sh` (E37..E48 + CHECK, ledger, stop-on-fail) repo mein; ab SQL hamesha server command se. Chrome: 2 browsers connected, confirm screen ka jawab nahi aaya (timeout) — live login test baqi.
 
 ### 20 Oct 2026 21:34 PKT — founder pasted: Rust `MODULES="attach"` OK (12 tests, build OK, 3 routes 401); sql-run.sh stopped at E37 self-test (jaana pata `naumansherwani.founder@...` apni org mein nahi pahuncha). Hal: E37 selftest `limit 1` bina tarteeb hataya (har owner org manzoor + diagnostics), `tests/e37/run.sh` 4 haalat. Kuch nahi badla tha (ek transaction rollback).
+
+### 20 Oct 2026 21:38 PKT — founder (verbatim): "meri haan hai ... is ko fix kero. compact chat ke baad phir se context tum bhul gaye ho ke mainay password email address diye thay test accounts ke. chorme login kero hostflowaibuilder@gmail.com wala chorome pe"
+**Halat:** Caddy /files/* band + 18 MB hadd = HAAN. Postfix pehle se 50 MB — koi badlaav nahi. E49 + sql-run. Chrome "Browser 1" select hua, anexomail.com/auth khula (login nahi). Passwords: safety rule — main asli site par password khud type nahi karta; founder khud login kare, phir main us session par test karta hoon. ClamAV + G38b (aane wali mail ke attachments) agla.
