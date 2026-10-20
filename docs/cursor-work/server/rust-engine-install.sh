@@ -100,13 +100,19 @@ CFG={
             "replace": [
               ('                                                    .or_else(|| a.get("disk_path"))\n', '', 'server ka disk_path client ko nahi jata'),
               ('                                                    "size_bytes": a.get("size_bytes").and_then(|v| v.as_i64()).unwrap_or(0),\n',
-               '                                                    "size_bytes": a.get("size_bytes").and_then(|v| v.as_i64()).unwrap_or(0),\n                                                    "stored": a.get("sha256").map(|v| !v.is_null()).unwrap_or(false),\n', 'stored flag'),
+               '                                                    "size_bytes": a.get("size_bytes").and_then(|v| v.as_i64()).unwrap_or(0),\n                                                    "stored": a.get("sha256").map(|v| !v.is_null()).unwrap_or(false),\n                                                    "blocked": a.get("scan").and_then(|v| v.get("clamd")).and_then(|v| v.as_str()) == Some("found"),\n', 'stored + blocked flag', '"stored": a.get("sha256")'),
+              ('                                                    "stored": a.get("sha256").map(|v| !v.is_null()).unwrap_or(false),\n',
+               '                                                    "stored": a.get("sha256").map(|v| !v.is_null()).unwrap_or(false),\n                                                    "blocked": a.get("scan").and_then(|v| v.get("clamd")).and_then(|v| v.as_str()) == Some("found"),\n', 'blocked flag (virus mila: bytes nahi rakhe)', '"blocked": a.get("scan")'),
             ]},
 }
 changed=[]
 for m in mods:
     c=CFG[m]; g=m+"_glue"
-    for (fnd, rep, why) in c.get("replace", []):
+    for ent in c.get("replace", []):
+        fnd, rep, why = ent[0], ent[1], ent[2]
+        unless = ent[3] if len(ent) > 3 else (rep or None)   # pehle se lagi ho to dobara nahi (har dafa chalane par duplicate nahi)
+        if unless and unless in s:
+            continue
         if fnd in s:
             s=s.replace(fnd, rep, 1); changed.append(c["label"]+" ("+why+")")
         elif rep and rep not in s:

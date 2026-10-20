@@ -53,6 +53,20 @@ if [ -d "$ROOT" ]; then
   fi
 fi
 
+echo "== 4b) aane wali mail ke attachments (G38b: spool -> scan -> Storage Box)"
+SP="${ANEXOMAIL_INBOUND_SPOOL:-/var/spool/anexomail-inbound}"
+if [ -d "$SP" ]; then
+  n="$(find "$SP" -maxdepth 1 -name '*.eml' 2>/dev/null | wc -l)"
+  old="$(find "$SP" -maxdepth 1 -name '*.eml' -printf '%T@\n' 2>/dev/null | sort -n | head -1)"
+  age=0; [ -n "$old" ] && age=$(( $(date +%s) - ${old%.*} ))
+  if [ "$n" -eq 0 ]; then say OK "spool khali (koi mail intezar mein nahi)"
+  elif [ "$age" -gt 900 ]; then say FAIL "$n mail(s) spool mein, sab se purani $((age/60)) minute ki — worker atka hua (Storage Box / DB?). journalctl -u anexomail-inbound-attach -n 20"; bad=1
+  else say INFO "$n mail(s) spool mein (sab se purani $((age))s) — agle minute mein jayengi"; fi
+else say WARN "spool folder nahi ($SP) — G38b abhi install nahi: rust-inbound-attach-install.sh"; fi
+if command -v systemctl >/dev/null 2>&1; then
+  if systemctl is-active --quiet anexomail-inbound-attach.timer 2>/dev/null; then say OK "timer chal raha hai (har minute)"; else say WARN "anexomail-inbound-attach.timer band/nahi laga"; fi
+fi
+
 echo "== 4) Rust raaste (bina login)"
 a="$(curl -s -m 6 -o /dev/null -w '%{http_code}' -X POST -H 'authorization: Bearer x' --data-binary x "$RPC/file/attach")"
 b="$(curl -s -m 6 -o /dev/null -w '%{http_code}' "$RPC/file/attach/get?id=00000000-0000-0000-0000-000000000000")"

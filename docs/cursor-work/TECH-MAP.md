@@ -72,6 +72,7 @@
 | `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |
 | Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
 | Attachments BHEJNA (G38): upload/storage/dedup(org)/scan/download | Rust :3200 (`attach_core.rs`+`attach_glue.rs`); bytes Storage Box; metadata PostgreSQL E48; MIME jodna + SMTP bhejna Bun (`mail/attachments.ts`, mojooda sender, Rust `mail.send` aane tak) | CODE DONE — `MODULES=attach` + `brain-attach-install.sh` |
+| Aane wali mail ke attachments (G38b): spool + scan + Storage Box + org-dedup | Rust (`anexomail-deliver --spool-run`, `inbound_attach.rs`) · metadata PostgreSQL E50 · systemd timer | CODE DONE — `rust-inbound-attach-install.sh` |
 | Attachments (E38) | Bytes: Storage Box · dedup/patch: Rust · metadata: PostgreSQL | PLANNED |
 | Import mail customer tak, Terms page, PWA offline | Website (React/TanStack) + PWA service worker | PLANNED (Basic list) |
 

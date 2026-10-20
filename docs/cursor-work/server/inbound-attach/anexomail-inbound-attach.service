@@ -1,0 +1,10 @@
+[Unit]
+Description=ANEXOMAIL inbound attachments (spool -> scan -> Storage Box) — G38b
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+Nice=10
+EnvironmentFile=-/etc/anexomail/mail.env
+ExecStart=/usr/local/bin/anexomail-deliver-rs --spool-run

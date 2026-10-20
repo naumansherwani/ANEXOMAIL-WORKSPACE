@@ -27,6 +27,15 @@ pub struct Attachment {
     pub size: usize,
 }
 
+/// Where an attachment's body sits inside the raw message (G38b): byte offset + length + Content-Transfer-Encoding.
+/// Same order and count as `Parsed.attachments`. The import worker ignores it; the inbound-attachment worker decodes from it.
+#[derive(Debug, Clone, PartialEq)]
+pub struct AttachSrc {
+    pub off: usize,
+    pub len: usize,
+    pub cte: String,
+}
+
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct Parsed {
     pub message_id: Option<String>,
@@ -41,6 +50,7 @@ pub struct Parsed {
     pub text: String,
     pub html: Option<String>,
     pub attachments: Vec<Attachment>,
+    pub attachment_src: Vec<AttachSrc>,
     pub lossy: bool,
     pub truncated: bool,
 }
@@ -781,6 +791,8 @@ pub fn html_to_text(html: &str) -> String {
 struct Walk<'a> {
     out: &'a mut Parsed,
     parts: usize,
+    /// address of the first byte of the raw message — attachment bodies are sub-slices of it
+    base: usize,
 }
 
 fn cut(s: String, max: usize, truncated: &mut bool) -> String {
@@ -880,6 +892,7 @@ fn walk(w: &mut Walk, head: &[(String, String)], body: &[u8], depth: usize) {
             }
         });
         w.out.attachments.push(Attachment { filename: name, mime: ctype, size });
+        w.out.attachment_src.push(AttachSrc { off: (body.as_ptr() as usize).saturating_sub(w.base), len: body.len(), cte: cte.trim().to_string() });
         return;
     }
 
@@ -896,6 +909,17 @@ fn walk(w: &mut Walk, head: &[(String, String)], body: &[u8], depth: usize) {
     } else {
         w.out.text.push_str("\n\n");
         w.out.text.push_str(&text);
+    }
+}
+
+/// The decoded bytes of one attachment found by `parse` (G38b). Only called by the inbound-attachment worker, one at a time.
+pub fn attachment_bytes(raw: &[u8], src: &AttachSrc) -> Vec<u8> {
+    let end = src.off.saturating_add(src.len).min(raw.len());
+    let body = raw.get(src.off..end).unwrap_or(&[]);
+    match src.cte.to_ascii_lowercase().as_str() {
+        "base64" => base64_decode(body),
+        "quoted-printable" => qp_decode(body),
+        _ => body.to_vec(),
     }
 }
 
@@ -921,7 +945,7 @@ pub fn parse(raw: &[u8]) -> Parsed {
     p.lossy = lossy;
 
     {
-        let mut w = Walk { out: &mut p, parts: 0 };
+        let mut w = Walk { out: &mut p, parts: 0, base: raw.as_ptr() as usize };
         walk(&mut w, &head, body, 0);
     }
     if p.html.is_some() && p.text.trim().is_empty() {

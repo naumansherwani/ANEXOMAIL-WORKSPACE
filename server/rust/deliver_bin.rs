@@ -21,6 +21,14 @@
 #[allow(dead_code)]
 mod mig_mime;
 
+// G38b: aane wali mail ke attachments ke bytes (spool -> Storage Box). Dono files crate ke src/ mein hain (attach module + yeh installer).
+#[path = "../attach_core.rs"]
+#[allow(dead_code)]
+mod attach_core;
+#[path = "../inbound_attach.rs"]
+#[allow(dead_code)]
+mod inbound_attach;
+
 use serde_json::{json, Map, Value};
 use sha2::{Digest, Sha256};
 use std::io::Read;
@@ -147,8 +155,34 @@ pub fn build_payload(raw: &[u8], envelope_from: &str, envelope_to: &str) -> Valu
     })
 }
 
+/// `anexomail-deliver --spool-run` (systemd timer, root): spool ki mails ke attachments Storage Box par (G38b). Exit 0 = theek ya kuch nahi;
+/// 1 = kuch dobara koshish par chhoda (spool file wahin hai); 2 = Storage Box / env tayyar nahi (kuch nahi chhoota).
+fn spool_run(env: &Map<String, Value>) -> ExitCode {
+    let rt = match tokio::runtime::Builder::new_current_thread().enable_all().build() {
+        Ok(rt) => rt,
+        Err(e) => {
+            eprintln!("inbound-attach: runtime: {e}");
+            return ExitCode::from(2);
+        }
+    };
+    match rt.block_on(inbound_attach::run_spool(env)) {
+        Ok(t) => {
+            println!("inbound-attach: processed={} failed={} left={} oldest_age_s={}", t.processed, t.failed, t.left, t.oldest_age_s);
+            if t.failed > 0 { ExitCode::from(1) } else { ExitCode::SUCCESS }
+        }
+        Err(e) => {
+            eprintln!("inbound-attach: {e}");
+            ExitCode::from(2)
+        }
+    }
+}
+
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(|a| a.as_str()) == Some("--spool-run") {
+        let env_file = std::env::var("ANEXOMAIL_MAIL_ENV").unwrap_or_else(|_| ENV_FILE_DEFAULT.to_string());
+        return spool_run(&load_env(&env_file));
+    }
     let envelope_from = args.get(1).map(|s| s.to_lowercase()).unwrap_or_default();
     let envelope_to = args.get(2).map(|s| s.to_lowercase()).unwrap_or_default();
     let env_file = std::env::var("ANEXOMAIL_MAIL_ENV").unwrap_or_else(|_| ENV_FILE_DEFAULT.to_string());
@@ -197,6 +231,10 @@ fn main() -> ExitCode {
     match result {
         Ok(out) => {
             eprintln!("anexomail-deliver: OK {envelope_to} {}", out.chars().take(300).collect::<String>());
+            // G38b: attachments ke bytes baad mein (mail DB mein hai); yahan kuch bhi ho, Postfix ko SUCCESS hi milta hai
+            if let Some(note) = inbound_attach::maybe_spool(&raw, &out) {
+                eprintln!("anexomail-deliver: {note}");
+            }
             ExitCode::SUCCESS
         }
         Err(e) => {

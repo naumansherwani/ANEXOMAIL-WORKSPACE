@@ -254,10 +254,21 @@ function MailMessage({
                   <span className="max-w-[40vw] truncate sm:max-w-xs">{file.filename}</span>
                   <span className="text-steel">{formatBytes(file.size_bytes)}</span>
                 </button>
+              ) : file.blocked ? (
+                <span
+                  data-testid="attachment-blocked"
+                  className="flex items-center gap-1.5 rounded-lg border border-destructive/40 px-2 py-1 text-[11px] text-destructive"
+                  title="Our virus scanner flagged this file, so it was not kept."
+                >
+                  <Paperclip className="size-3" />
+                  <span className="max-w-[40vw] truncate sm:max-w-xs line-through">{file.filename}</span>
+                  <span>Removed: looks malicious</span>
+                </span>
               ) : (
                 <span
+                  data-testid="attachment-pending"
                   className="flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground"
-                  title="Download isn't available for this file yet"
+                  title="Not available to download yet. Incoming files are scanned and saved within a minute; very large files may not be kept."
                 >
                   <Paperclip className="size-3" />
                   <span className="max-w-[40vw] truncate sm:max-w-xs">{file.filename}</span>

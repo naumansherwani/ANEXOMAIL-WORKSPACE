@@ -66,6 +66,8 @@ export type MailAttachment = {
   url: string | null;
   /** G38: server par asli bytes hain (download ho sakti hai) */
   stored?: boolean;
+  /** G38b: the virus scanner flagged this incoming file; its bytes were not kept. */
+  blocked?: boolean;
 };
 
 export type MailMessage = {

@@ -455,3 +455,6 @@ Loophole ledger (sach)
 
 ### 20 Oct 2026 21:38 PKT — founder (verbatim): "meri haan hai ... is ko fix kero. compact chat ke baad phir se context tum bhul gaye ho ke mainay password email address diye thay test accounts ke. chorme login kero hostflowaibuilder@gmail.com wala chorome pe"
 **Halat:** Caddy /files/* band + 18 MB hadd = HAAN. Postfix pehle se 50 MB — koi badlaav nahi. E49 + sql-run. Chrome "Browser 1" select hua, anexomail.com/auth khula (login nahi). Passwords: safety rule — main asli site par password khud type nahi karta; founder khud login kare, phir main us session par test karta hoon. ClamAV + G38b (aane wali mail ke attachments) agla.
+
+### 20 Oct 2026 21:50 PKT — founder: "(Postfix/Caddy) meri haan hai ... ClamAV + aane wali mail ke attachments (G38b) fix kero"; "done hai dekh lo" (Browser 1 mein basic.test login)
+**Halat:** G38b code + E50 + installer tayyar (tests upar). Chrome Browser 1: Basic dashboard + inbox dekha; live finding: R1a mail ka attachment chip nahi tha. ClamAV: founder ke `INSTALL=1 file-safety-check.sh` output ka intezar.
