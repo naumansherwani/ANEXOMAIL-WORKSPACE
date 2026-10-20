@@ -137,3 +137,7 @@ src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c
 docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
 docs/cursor-work/TECH-MAP.md fecebbf50bceb924
+server/rust/export_core.rs 5b799b331b241bf5
+server/rust/export_glue.rs 1db5248870d52a33
+docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
+docs/cursor-work/server/rust-engine-install.sh 68845b4db38a65c9

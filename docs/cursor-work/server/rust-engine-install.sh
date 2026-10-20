@@ -32,7 +32,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device dnsauth security"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device dnsauth security export"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -83,6 +83,11 @@ CFG={
  "dnsauth": {"public": False, "label": "dnsauth",   "procs": []},
  # security (E39): Security page sach — auth.sessions / device_vault / audit log / live TLS. Pehle E39 SQL chalayen.
  "security": {"public": False, "label": "security",  "procs": ['"security.dashboard"','"security.sessions"']},
+ # export (G36): asli data export (ZIP stream) + apni integrity halat. Extra HTTP route: GET /file/account-export?t=<ticket> (/file/download ke baad). SQL E44 PEHLE.
+ "export": {"public": False, "label": "export",    "procs": ['"account.export.ticket"','"account.integrity.me"'],
+            "route_marker": "export_glue::download",
+            "route_after": '.route("/file/download", get(file_download))',
+            "route_add": '.route("/file/account-export", get(export_glue::download))'},
 }
 changed=[]
 for m in mods:
@@ -90,7 +95,8 @@ for m in mods:
     have_mod=("mod %s;"%g) in s
     have_auth=(g+"::owns(") in s
     have_pub=(not c["public"]) or ((g+"::public_owns(") in s)
-    if have_mod and have_auth and have_pub:
+    have_route=(not c.get("route_marker")) or (c["route_marker"] in s)
+    if have_mod and have_auth and have_pub and have_route:
         print("main.rs: %s pehle se judi hai"%c["label"]); continue
     if have_mod or (g+"::") in s:
         print("PATCH FAIL: main.rs mein %s adhoori judi hai — haath se dekhna padega"%c["label"]); sys.exit(4)
@@ -116,6 +122,11 @@ for m in mods:
     auth=('    // %s — Rust PRIMARY (exact-match procs). Bun route sirf fallback (Rust 404/501/502/503 par).\n'
           '    if %s::owns(&proc) {\n        return %s::dispatch(&proc, &token, &input).await;\n    }\n\n')%(c["label"],g,g)
     s=s[:w]+auth+s[w:]
+    if c.get("route_marker"):
+        ra=s.find(c["route_after"])
+        if ra<0: print("PATCH FAIL: route anchor nahi mila: "+c["route_after"]); sys.exit(4)
+        ra+=len(c["route_after"])
+        s=s[:ra]+"\n        "+c["route_add"]+s[ra:]
     changed.append(c["label"])
 open(p,"w").write(s)
 print("main.rs: judi -> "+(", ".join(changed) if changed else "(kuch nahi badla)"))
@@ -242,6 +253,16 @@ for m in $MODS; do
         *invite_not_found*) echo "   -> team: Rust ne proc pakda aur E33 SQL lagi hui hai (nakli link par 'not valid' = theek)";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> team: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> team: jawab upar dekhein";;
+      esac;;
+    export)
+      r="$(probe account.export.ticket '{"input":{}}')"
+      echo "   account.export.ticket (nakli token): $r"
+      r2="$(curl -s -m 8 -w ' [HTTP %{http_code}]' "$RPC/file/account-export?t=00000000000000000000000000000000000000000000dead" 2>/dev/null)"
+      echo "   /file/account-export (nakli ticket): $r2"
+      case "$r$r2" in
+        *'"unauthorized"'*invalid_ticket*|*invalid_ticket*'"unauthorized"'*) echo "   -> export: Rust ne proc bhi pakda aur download route bhi (bina asli login/ticket ke 401 = theek). SQL E44 chala hona lazmi.";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> export: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> export: jawab upar dekhein";;
       esac;;
     mig)
       r="$(probe migration.providers '{"input":{}}')"
