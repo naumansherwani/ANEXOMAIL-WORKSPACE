@@ -14,12 +14,15 @@ const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\
 export async function startExport(): Promise<void> {
   const res = await rpc<{ url: string; expires_in: number }>("account.export.ticket", {});
   if (!res?.url) throw new ApiError("The server did not give an export link.", 502, "no_ticket");
-  const a = document.createElement("a");
-  a.href = `${BASE}${res.url}`;
-  a.rel = "noopener";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
+  // Chhupa iframe: server `Content-Disposition: attachment` deta hai to download shuru, aur agar server galti de (JSON error) to
+  // poora tab us JSON par nahi jata — app screen par hi rehti hai (blocked screen band nahi hoti).
+  const frame = document.createElement("iframe");
+  frame.setAttribute("aria-hidden", "true");
+  frame.tabIndex = -1;
+  frame.style.cssText = "position:fixed;width:0;height:0;border:0;opacity:0;pointer-events:none";
+  frame.src = `${BASE}${res.url}`;
+  document.body.appendChild(frame);
+  window.setTimeout(() => frame.remove(), 10 * 60_000);
 }
 
 export function exportErrorMessage(e: unknown): string {
@@ -50,4 +53,11 @@ export function useMyIntegrity(enabled = true) {
     retry: false,
     queryFn: () => rpc<MyIntegrity>("account.integrity.me", {}),
   });
+}
+
+export type AppealResult = { ok: boolean; appeal_id?: string; devices?: number; error?: string; message?: string };
+
+/** Blocked user ka apna appeal (E46): device hash user ko nahi chahiye, server us ke banned devices dhoondta hai. */
+export async function sendAppeal(statement: string): Promise<AppealResult> {
+  return rpc<AppealResult>("account.integrity.appeal", { statement });
 }

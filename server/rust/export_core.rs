@@ -424,7 +424,7 @@ pub fn jwt_sub(token: &str) -> Option<String> {
 pub fn allowed_when_blocked(proc: &str) -> bool {
     matches!(
         proc,
-        "whoami" | "account.export.ticket" | "account.integrity.me" | "account.delete.state" | "account.delete.request" | "account.delete.cancel"
+        "whoami" | "account.export.ticket" | "account.integrity.me" | "account.integrity.appeal" | "account.delete.state" | "account.delete.request" | "account.delete.cancel"
     )
 }
 
@@ -717,6 +717,7 @@ mod tests {
         assert!(!valid_uuid("00000000-0000-0000-0000-0000000000a1; drop"));
         assert!(allowed_when_blocked("account.export.ticket"));
         assert!(allowed_when_blocked("account.integrity.me"));
+        assert!(allowed_when_blocked("account.integrity.appeal"));
         assert!(!allowed_when_blocked("mail.send"));
         assert!(!allowed_when_blocked("chat.send"));
     }

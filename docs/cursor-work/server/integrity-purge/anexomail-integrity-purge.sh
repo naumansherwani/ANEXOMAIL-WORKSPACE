@@ -11,5 +11,7 @@ KEY="${DEVICE_VAULT_KEY:-}"; [ -n "$KEY" ] || KEY="anexomail-vault:${SRK: -32}" 
 BODY="$(python3 -c 'import json,sys; print(json.dumps({"_key": sys.argv[1]}))' "$KEY")"
 OUT="$(curl -sS --max-time 120 -X POST "$URL/rest/v1/rpc/account_integrity_purge_due" \
   -H "apikey: $SRK" -H "Authorization: Bearer $SRK" -H "Content-Type: application/json" -d "$BODY" 2>&1)"
-echo "integrity-purge $(date -u +%FT%TZ) $OUT" | cut -c1-400
+# device record ki "deletion date" asli ho: retain_until guzri rows mitao (E47 / phase19 device_vault_purge)
+DV="$(curl -sS --max-time 60 -X POST "$URL/rest/v1/rpc/device_vault_purge" -H "apikey: $SRK" -H "Authorization: Bearer $SRK" -H "Content-Type: application/json" -d '{}' 2>&1)"
+echo "integrity-purge $(date -u +%FT%TZ) $OUT device_vault_purge=$DV" | cut -c1-500
 case "$OUT" in *'"ok"'*true*) exit 0 ;; *) exit 1 ;; esac

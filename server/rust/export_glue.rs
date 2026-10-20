@@ -3,6 +3,7 @@
 //
 //   account.export.ticket  {}        -> ek-bar ka download ticket (10 min)  -> {url:"/file/account-export?t=…"}
 //   account.integrity.me   {}        -> apni account-integrity halat (clean / warned / blocked + export ke ghante)
+//   account.integrity.appeal {statement} -> apna appeal (E46): user ke banned devices par, reviewer ko jata hai
 //   GET /file/account-export?t=…     -> streaming ZIP: mail (.mbox + .jsonl) · attachments · contacts (.csv/.vcf) · calendar (.ics) · manifest.json
 //
 // Procedures sab plans ke liye (chat gate se pehle). Blocked account ko ticket sirf 72 ghante ki export window mein milta hai
@@ -25,10 +26,10 @@ type Resp = axum::response::Response;
 type Tx = Sender<Result<Bytes, std::io::Error>>;
 
 pub fn owns(proc: &str) -> bool {
-    matches!(proc, "account.export.ticket" | "account.integrity.me")
+    matches!(proc, "account.export.ticket" | "account.integrity.me" | "account.integrity.appeal")
 }
 
-pub async fn dispatch(proc: &str, token: &str, _input: &Value) -> Resp {
+pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
     let user = match crate::auth_user(token).await {
         Some((id, _)) => id,
         None => return crate::err(StatusCode::UNAUTHORIZED, "unauthorized", "").into_response(),
@@ -50,6 +51,17 @@ pub async fn dispatch(proc: &str, token: &str, _input: &Value) -> Resp {
             // phase24a SQL na chala ho: kuch rokna nahi, sach batana
             Err(_) => crate::ok(json!({ "state": "clean", "unknown": true })).into_response(),
         },
+        // blocked/warned user ka apna appeal (device hash user ko nahi chahiye: SQL us ke banned devices dhoondta hai)
+        "account.integrity.appeal" => {
+            let statement = input.get("statement").and_then(|x| x.as_str()).unwrap_or("").trim().to_string();
+            if statement.chars().count() < 20 || statement.chars().count() > 2000 {
+                return crate::err(StatusCode::BAD_REQUEST, "statement_required", "Write 20 to 2000 characters explaining why this block is wrong.").into_response();
+            }
+            match crate::sb_rpc("account_integrity_appeal", json!({ "_user": user, "_statement": statement })).await {
+                Ok(v) => crate::ok(v).into_response(),
+                Err(e) => crate::err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response(),
+            }
+        }
         _ => crate::err(StatusCode::NOT_FOUND, "procedure_not_in_rust", "Unknown export procedure").into_response(),
     }
 }

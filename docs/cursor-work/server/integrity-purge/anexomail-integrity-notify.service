@@ -1,0 +1,8 @@
+[Unit]
+Description=ANEXOMAIL integrity notices (warn/block/reminder/deleted) email
+After=network-online.target postfix.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/anexomail-integrity-notify
+Nice=10

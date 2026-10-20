@@ -30,6 +30,42 @@ pub fn valid_device_hash(s: &str) -> bool {
     !s.is_empty() && s.len() <= 128 && s.bytes().all(|b| b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_' | b'+' | b'/' | b'='))
 }
 
+
+/// JWT ke payload se `session_id` (uuid) — signature VERIFY NAHI (token pehle `auth_user` se verify ho chuka hota hai; yahan sirf link ke liye padhte hain,
+/// aur SQL `device_session_link` khud dekhta hai ke session isi user ki maujood hai). Galat shakal => None.
+pub fn jwt_session_id(token: &str) -> Option<String> {
+    let payload = token.split('.').nth(1)?;
+    let mut out = Vec::with_capacity(payload.len() * 3 / 4);
+    let (mut buf, mut bits) = (0u32, 0u32);
+    for c in payload.trim_end_matches('=').bytes() {
+        let v = match c {
+            b'A'..=b'Z' => c - b'A',
+            b'a'..=b'z' => c - b'a' + 26,
+            b'0'..=b'9' => c - b'0' + 52,
+            b'-' | b'+' => 62,
+            b'_' | b'/' => 63,
+            _ => return None,
+        } as u32;
+        buf = (buf << 6) | v;
+        bits += 6;
+        if bits >= 8 {
+            bits -= 8;
+            out.push((buf >> bits) as u8);
+            buf &= (1 << bits) - 1;
+        }
+    }
+    let text = String::from_utf8(out).ok()?;
+    let i = text.find("\"session_id\"")?;
+    let rest = &text[i + 12..];
+    let q1 = rest.find('"')?;
+    let rest2 = &rest[q1 + 1..];
+    let q2 = rest2.find('"')?;
+    let id = &rest2[..q2];
+    let b = id.as_bytes();
+    let ok = b.len() == 36 && b.iter().enumerate().all(|(i, c)| if matches!(i, 8 | 13 | 18 | 23) { *c == b'-' } else { c.is_ascii_hexdigit() });
+    if ok { Some(id.to_string()) } else { None }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -48,6 +84,18 @@ mod tests {
     fn user_states() {
         assert!(valid_user_state("trusted") && valid_user_state("revoked") && valid_user_state("suspicious"));
         assert!(!valid_user_state("banned") && !valid_user_state("") && !valid_user_state("Trusted"));
+    }
+
+    #[test]
+    fn session_id_from_jwt() {
+        // {"sub":"s","session_id":"11111111-0000-0000-0000-000000000001"}
+        let tok = "h.eyJzdWIiOiJzIiwic2Vzc2lvbl9pZCI6IjExMTExMTExLTAwMDAtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMSJ9.sig";
+        assert_eq!(jwt_session_id(tok).as_deref(), Some("11111111-0000-0000-0000-000000000001"));
+        assert_eq!(jwt_session_id("garbage"), None);
+        assert_eq!(jwt_session_id("a.b.c"), None);
+        // uuid nahi => None (injection ka raasta band)
+        // {"session_id":"x' or 1=1"}
+        assert_eq!(jwt_session_id("h.eyJzZXNzaW9uX2lkIjoieCcgb3IgMT0xIn0.s"), None);
     }
 
     #[test]

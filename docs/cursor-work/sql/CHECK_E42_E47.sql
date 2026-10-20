@@ -1,4 +1,4 @@
--- CHECK E42–E45 — sirf padhta hai (kuch badalta nahi). Supabase SQL editor mein paste, Run. Har row ka ok = true hona chahiye.
+-- CHECK E42–E47 — sirf padhta hai (kuch badalta nahi). Supabase SQL editor mein paste, Run. Har row ka ok = true hona chahiye.
 -- (E41 temp function hai, uska asar alag dekha jata hai: neeche aakhri query.)
 select item, ok from (
   select 'E42 device_hash_v2'            as item, to_regprocedure('public.device_hash_v2(text,text)') is not null as ok, 1 as o
@@ -13,6 +13,11 @@ select item, ok from (
   union all select 'E45 tombstones table',        to_regclass('public.account_integrity_tombstones') is not null, 10
   union all select 'E45 email_hmac_v1',           to_regprocedure('public.email_hmac_v1(text,text)') is not null, 11
   union all select 'E45 log event purge_blocked', exists (select 1 from pg_constraint where conrelid = 'public.account_integrity_log'::regclass and contype = 'c' and pg_get_constraintdef(oid) ilike '%purge_blocked%'), 12
+  union all select 'E46 notices table + trigger', to_regclass('public.account_integrity_notices') is not null and exists (select 1 from pg_trigger where tgname = 'account_integrity_notice_trg'), 13
+  union all select 'E46 notice_claim/done',       to_regprocedure('public.account_integrity_notice_claim(integer)') is not null and to_regprocedure('public.account_integrity_notice_done(bigint,boolean,text)') is not null, 14
+  union all select 'E46 account_integrity_appeal', to_regprocedure('public.account_integrity_appeal(uuid,text)') is not null, 15
+  union all select 'E47 device_session_link',     to_regprocedure('public.device_session_link(uuid,text,uuid)') is not null, 16
+  union all select 'E47 device_trust_set kills auth.sessions', pg_get_functiondef('public.device_trust_set(uuid,text,text,text)'::regprocedure) ilike '%auth.sessions%', 17
 ) t order by o;
 
 -- E41 ka asar (Humza): plan/entitlement dikhao — kuch badalta nahi

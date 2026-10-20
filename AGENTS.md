@@ -252,6 +252,11 @@ Founder (verbatim): "tumhay bola tha ke mujhe loophole khatham ker ke do aur jab
 - **Har technology ki alag pull command** (SQL / Rust / Brain / Web / timer) har kaam ke saath — mix block nahi.
 - **Hash policy (founder 20 Oct):** `docs/cursor-work/HASHING.md` — HMAC-SHA256 aur SHA-256 kab kaunsa; code wahi follow kare.
 
+### Rule 30 — Jo kaam ho chuka dobara nahi: DONE ledger + sirf latest technology (locked 20 Oct 2026 20:09 PKT, founder)
+Founder (verbatim): "mainay dekha hai ke bar bar same kaam repeat kaam ker rahay ho compact chat se pehle repo update kero aur likho ke yeh kaam already ho chuka phir se repeat nahi kerna hai … latest technology pe kaam kero sirf."
+- **`docs/cursor-work/DONE-DO-NOT-REPEAT.md`**: har kaam ke baad ek line (kya DONE, kis saboot se). Compact ke baad Rule 24 ki file ke saath ise padho; jo wahan DONE hai use dobara na banao, na dobara audit karo.
+- **Sirf latest technology** (Rule 25 / TECH-MAP section 0): naya backend Rust; purani/dead technology par naya kaam nahi.
+
 ---
 
 ## PENDING (founder action required)

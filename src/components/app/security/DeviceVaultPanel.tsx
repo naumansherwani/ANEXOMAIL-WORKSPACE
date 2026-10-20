@@ -101,7 +101,7 @@ export function DeviceVaultPanel() {
                   seen {d.registrations}× · last {relativeTime(d.last_seen_at)}
                 </span>
                 <span className="ml-auto text-steel">
-                  kept until {new Date(d.retain_until).toLocaleDateString()}
+                  deleted automatically on {new Date(d.retain_until).toLocaleDateString()}
                 </span>
               </div>
               <code className="ax-caption mt-1 block truncate text-steel">{d.device_hash}</code>

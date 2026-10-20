@@ -3,7 +3,7 @@
 //
 //   chat.device.vault        {signals}              -> device_vault_register  (seal 5 coarse signals; flags 3+ accounts / bursts)
 //   chat.device.trust.list   {}                     -> device_trust_list      (your devices + policy)
-//   chat.device.trust.set    {device_hash, state}   -> device_trust_set       (revoke ends that device's sessions)
+//   chat.device.trust.set    {device_hash, state}   -> device_trust_set       (revoke ends that device's REAL login sessions — E47)
 //
 // Procedure names are unchanged (the browser already calls them); they are answered here BEFORE the chat gate, so Basic
 // gets the same protection as every other plan. Same SQL functions, same arguments, same {result:{data}} / 500 db_error
@@ -38,7 +38,15 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             } else {
                 signals = json!({});
             }
-            crate::sb_rpc("device_vault_register", json!({ "_user": user, "_signals": signals, "_key": crate::vault_key() })).await
+            let reg = crate::sb_rpc("device_vault_register", json!({ "_user": user, "_signals": signals, "_key": crate::vault_key() })).await;
+            // E47: is device ko isi login session se jodo — revoke par asli session (auth.sessions) yahi se maregi.
+            // Jodna fail ho (SQL E47 na chala ho) to register ka jawab waisa hi jaye: kuch nahi tootta.
+            if let (Ok(v), Some(sid)) = (&reg, dc::jwt_session_id(token)) {
+                if let Some(h) = v.get("device_hash").and_then(|x| x.as_str()) {
+                    let _ = crate::sb_rpc("device_session_link", json!({ "_user": user, "_device_hash": h, "_session": sid })).await;
+                }
+            }
+            reg
         }
         "chat.device.trust.list" => crate::sb_rpc("device_trust_list", json!({ "_user": user })).await,
         "chat.device.trust.set" => {

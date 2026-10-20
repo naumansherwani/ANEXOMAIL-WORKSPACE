@@ -2,7 +2,7 @@ import { Download, Loader2, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { exportErrorMessage, startExport, useMyIntegrity } from "@/lib/account-export";
+import { exportErrorMessage, sendAppeal, startExport, useMyIntegrity } from "@/lib/account-export";
 import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 
@@ -17,6 +17,9 @@ export function IntegrityGate() {
   const { session, signOut } = useAuth();
   const { data } = useMyIntegrity(Boolean(session));
   const [busy, setBusy] = useState(false);
+  const [appealText, setAppealText] = useState("");
+  const [appealBusy, setAppealBusy] = useState(false);
+  const [appealDone, setAppealDone] = useState(false);
   if (!session || !data || data.unknown) return null;
 
   const doExport = async () => {
@@ -28,6 +31,28 @@ export function IntegrityGate() {
       notify.failed("Export not started", { description: exportErrorMessage(e) });
     } finally {
       setBusy(false);
+    }
+  };
+
+  const doAppeal = async () => {
+    const text = appealText.trim();
+    if (text.length < 20) {
+      notify.failed("Tell us more", { description: "Write at least 20 characters explaining why this block is wrong." });
+      return;
+    }
+    setAppealBusy(true);
+    try {
+      const r = await sendAppeal(text);
+      if (r.ok) {
+        setAppealDone(true);
+        notify.done("Appeal sent", "A person reviews it and the decision is written down.");
+      } else {
+        notify.failed("Appeal not sent", { description: r.message ?? r.error ?? "Try again." });
+      }
+    } catch (e) {
+      notify.failed("Appeal not sent", { description: e instanceof Error ? e.message : "Try again." });
+    } finally {
+      setAppealBusy(false);
     }
   };
 
@@ -68,6 +93,30 @@ export function IntegrityGate() {
               </Button>
             </>
           )}
+          {!purged ? (
+            <div className="mt-ax-3 border-t border-border pt-ax-3" data-testid="integrity-appeal">
+              <h2 className="ax-caption font-semibold text-foreground">Appeal this block</h2>
+              {appealDone ? (
+                <p className="ax-caption mt-1">Your appeal is with a reviewer. You will get the decision by email.</p>
+              ) : (
+                <>
+                  <p className="ax-caption mt-1">The block is on your device record only — never your address or network. Tell us what is wrong.</p>
+                  <textarea
+                    aria-label="Why is this block wrong?"
+                    value={appealText}
+                    onChange={(e) => setAppealText(e.target.value)}
+                    maxLength={2000}
+                    rows={3}
+                    className="mt-2 w-full rounded-md border border-border bg-background p-2 text-sm text-foreground"
+                  />
+                  <Button variant="outline" className="mt-2 w-full" onClick={doAppeal} disabled={appealBusy}>
+                    {appealBusy ? <Loader2 className="size-4 animate-spin" /> : null}
+                    Send appeal
+                  </Button>
+                </>
+              )}
+            </div>
+          ) : null}
           <p className="ax-caption mt-ax-3">
             If you think this is a mistake, write to{" "}
             <a className="underline" href="mailto:resolved@anexomail.com">

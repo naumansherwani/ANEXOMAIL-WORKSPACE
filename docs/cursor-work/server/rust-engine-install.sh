@@ -84,7 +84,7 @@ CFG={
  # security (E39): Security page sach — auth.sessions / device_vault / audit log / live TLS. Pehle E39 SQL chalayen.
  "security": {"public": False, "label": "security",  "procs": ['"security.dashboard"','"security.sessions"']},
  # export (G36): asli data export (ZIP stream) + apni integrity halat. Extra HTTP route: GET /file/account-export?t=<ticket> (/file/download ke baad). SQL E44 PEHLE.
- "export": {"public": False, "label": "export",    "procs": ['"account.export.ticket"','"account.integrity.me"'],
+ "export": {"public": False, "label": "export",    "procs": ['"account.export.ticket"','"account.integrity.me"','"account.integrity.appeal"'],
             "route_marker": "export_glue::download",
             "route_after": '.route("/file/download", get(file_download))',
             "route_add": '.route("/file/account-export", get(export_glue::download))',
