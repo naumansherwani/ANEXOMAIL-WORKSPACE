@@ -82,3 +82,11 @@ Har jagah: `prefers-reduced-motion` par band, lazy-load (pehle page chale, phir 
 - 38 pages har ek size par. **Koi OVERFLOW nahi** (na 820, na 390). AI settings / LEO center ka lock page 820 par theek (screenshot dekha).
 - Console mein sirf do tarah ki cheezen: (a) `/rpc/work.*, crm.*, org.*, integrations.*, settings.*` 404 — Rust mein nahi, Bun fallback chalta hai, page chalte hain (G40 speed ka kaam); (b) WebTransport `:3443/wt/mail` ERR_TUNNEL_CONNECTION_FAILED — sirf is test sandbox mein (UDP band), founder ke browser mein `ufw allow 3443/udp` ke baad dekhna hai.
 - Rule 19 (mobile+tablet+computer saath) ab har package par lazmi.
+
+## 21 Oct 2026 03:50 PKT — Basic LIVE pass (founder tab, same-origin iframe 390/820, repo=server bb9007e)
+- Login-loop: ~60 fresh page loads (hard reload /app + iframe loads) — KOI bounce /auth nahi, session stable. Server probe: Brain 72/72 calls 200.
+- 390px: /app, mail inbox/sent/trash, people, calendar, domains, settings (+workspace/appearance/notifications/privacy/history/health), account, billing, security, integrations, work, crm, admin, plans — horizontal overflow 0, koi 'undefined/NaN/error' text nahi.
+- 820px: billing, security, integrations, work, crm, settings/appearance, mail sent/trash — saaf.
+- Gates theek: Basic par CRM = 'CRM is on Pro' upsell + Upgrade to Pro; admin gated.
+- Compose 390px par khulta hai (From/To/Subject/body/Attach/Send). Graphics toggle on->off->on, html[data-ax-fx] badalta hai.
+- BAQI (green declare karne se pehle): login form ka naya login-flow (password founder type kare), empty-calendar gem + loader logo ka drishya, mail send/undo e2e, laptop 1536 par har page ka screenshot-look, Rust rpc routes ka sweep.
