@@ -124,3 +124,5 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 
 ## FOUNDER RULE (21 Oct 04:37, LOCKED): pull commands HAMESHA poori copy-paste form mein, technology ke hisab se alag block (SQL / Brain / Web / Rust). Sirf script ka naam NAHI. Batch ke saath-saath memory (repo + sandbox-state) update, compact ka intezar nahi.
 Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/<script>.sh) [args]`
+
+## B1 GREEN (21 Oct 04:55) — server par live: SQL E53, Brain refresh, Web pull, Rust jwt. Logout 26s baad token 401 (revocation asli), refresh asli. Dobara mat banao.

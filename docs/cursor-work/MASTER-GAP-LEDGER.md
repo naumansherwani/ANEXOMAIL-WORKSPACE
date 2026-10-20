@@ -121,4 +121,4 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 
 - **21 Oct 04:30 BASIC = GREEN (founder haan; saboot BASIC-AUDIT-DONE.md). NEXT: PRO.**
 
-- B1 (Rust JWT local verify + session refresh): code+tests in repo; awaiting server install + live proof. B2–B8 queued in founder order.
+- B1 (Rust JWT local verify + session refresh): GREEN live 21 Oct. Next B2.
