@@ -297,3 +297,10 @@ Mobile aur tablet ko SAB SE BARI PRIORITY. Website mein jab bhi koi edit ho, pul
 
 ## Rule 36 — Chrome sirf FINAL LOOK ke liye (founder 21 Oct 2026 03:15 PKT)
 Chrome ke baghair kaam karo (code -> sandbox test -> server par test -> technology-wise pull). Chrome tab SIRF jab founder pull kar chuka ho aur website user ko final kaisi nazar aati hai woh dekhni ho. Chrome se debugging/loop-chasing nahi. Founder ne Rule 35 par "haan" kaha: latest technology (Rust) par kaam ki ijazat — phir bhi har Rust badlav sirf surgical + `cargo check` + restore-on-fail script se.
+
+
+## Rule 37 — UNIVERSAL UI (founder 21 Oct 2026, LOCKED)
+Website/app ka har UI, copy, layout, calendar/mail/domains/dashboard badlav **sab packages par ek saath** lagta hai. Package ke hisab se alag code/alag edit nahi — warna kaam har package par dobara karna parta hai.
+- Package ka farq SIRF: `plan-surface.ts` (kya khulta hai: capability), `plans.ts`/`personal-tiers.ts` (card, price), billing/checkout/onboarding. Component/route mein `billed === "pro"` jaisi tier-literal comparison NAHI; tier logic `plan-surface.ts` mein capability bana kar rakho, component sirf capability dekhe.
+- Guard: `src/lib/tier-guard.test.ts` (+ `tier-guard.baseline.json`, ratchet: sirf ghat sakta hai; naya file 0). Test fail = tier-code galat jagah. Purane 18 comparisons (AppShell, Greeting, crm.index, integrations, FollowThrough) kabhi chhoo to capability mein nikalo aur baseline ghatao.
+- Har UI badlav ke baad chaaron packages: `docs/cursor-work/server/tier-sweep.sh` (server) + live look 1440/820/390 sirf farq-wali jagah par.
