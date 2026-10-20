@@ -1,0 +1,11 @@
+# crontab -l (root)
+7 * * * * curl -s -X POST http://127.0.0.1:3100/api/internal/storage/sweep -H 'x-cron-secret: [REDACTED] >/dev/null
+# /etc/cron.d/anexomail-sync-domains
+* * * * * root /usr/local/bin/anexomail-sync-domains.sh >> /var/log/anexomail-sync-domains.log 2>&1
+# /etc/cron.d/anexomail-sync-maps
+* * * * * root { echo "$(date -u +\%FT\%TZ) RUN_START"; /usr/bin/flock -n /var/lock/anexomail-sync.lock /usr/local/bin/anexomail-sync-maps.sh; echo "$(date -u +\%FT\%TZ) RUN_END exit=$?"; } >> /var/log/anexomail-sync-maps.log 2>&1
+# /etc/cron.d/anexomail-sync-maps.bak-1791763527
+* * * * * root { echo "$(date -u +%FT%TZ) RUN_START"; /usr/bin/flock -n /var/lock/anexomail-sync.lock /usr/local/bin/anexomail-sync-maps.sh; echo "$(date -u +%FT%TZ) RUN_END exit=$?"; } >> /var/log/anexomail-sync-maps.log 2>&1
+# /etc/cron.d/e2scrub_all
+30 3 * * 0 root test -e /run/systemd/system || SERVICE_MODE=1 /usr/libexec/e2fsprogs/e2scrub_all_cron
+10 3 * * * root test -e /run/systemd/system || SERVICE_MODE=1 /sbin/e2scrub_all -A -r

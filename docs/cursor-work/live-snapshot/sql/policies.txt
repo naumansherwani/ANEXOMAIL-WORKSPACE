@@ -1,0 +1,536 @@
+POLICY public.account_integrity own integrity read SELECT roles={authenticated} using=((user_id = auth.uid()) OR safety_can_review(auth.uid())) check=
+POLICY public.account_integrity_log own integrity log SELECT roles={authenticated} using=((user_id = auth.uid()) OR safety_can_review(auth.uid())) check=
+POLICY public.account_integrity_policy integrity policy readable SELECT roles={authenticated} using=true check=
+POLICY public.account_org_members account_org_members_own_select SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.account_organisations account_organisations_member_select SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM account_org_members m
+  WHERE ((m.org_id = account_organisations.id) AND (m.user_id = auth.uid())))) check=
+POLICY public.account_profiles account_profiles_own_select SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.account_profiles account_profiles_own_update UPDATE roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.account_recovery recovery_own_select SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.account_recovery_tokens service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.account_sessions account_sessions_own_select SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.activity_log activity_member_read SELECT roles={authenticated} using=is_org_member(org_id) check=
+POLICY public.admin_delivery_events admin_delivery_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_diagnostic_probes admin_diag_probes_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_diagnostic_runs admin_diag_runs_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_health_checks admin_health_checks_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_health_runs admin_health_runs_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_incident_events admin_incident_events_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_incidents admin_incidents_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_logs admin_logs_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_reports admin_reports_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.admin_storage_snapshots admin_storage_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.agent_memory_config agent_memory_config_read SELECT roles={authenticated} using=true check=
+POLICY public.agent_memory_config service_role_all ALL roles={service_role} using=true check=
+POLICY public.ai_actions read_own SELECT roles={authenticated} using=((user_id = auth.uid()) OR (workspace_id IN ( SELECT ai_credit_wallets.workspace_id
+   FROM ai_credit_wallets
+  WHERE (ai_credit_wallets.owner_id = auth.uid())))) check=
+POLICY public.ai_agents ai_agents_read SELECT roles={authenticated} using=true check=
+POLICY public.ai_arena_runs own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_arena_runs_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_checkouts own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_credit_events own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_credit_grants read_own SELECT roles={authenticated} using=(workspace_id IN ( SELECT ai_credit_wallets.workspace_id
+   FROM ai_credit_wallets
+  WHERE (ai_credit_wallets.owner_id = auth.uid()))) check=
+POLICY public.ai_credit_ledger ai_ledger_ai_enabled SELECT roles={authenticated} using=((user_id = auth.uid()) AND ai_enabled()) check=
+POLICY public.ai_credit_ledger read_own SELECT roles={authenticated} using=((user_id = auth.uid()) OR (workspace_id IN ( SELECT ai_credit_wallets.workspace_id
+   FROM ai_credit_wallets
+  WHERE (ai_credit_wallets.owner_id = auth.uid())))) check=
+POLICY public.ai_credit_plans read_plans SELECT roles={anon,authenticated} using=active check=
+POLICY public.ai_credit_topup_products read_products SELECT roles={anon,authenticated} using=(active AND public_visible) check=
+POLICY public.ai_credit_wallets ai_wallet_ai_enabled SELECT roles={authenticated} using=((owner_id = auth.uid()) AND ai_enabled()) check=
+POLICY public.ai_credit_wallets read_own SELECT roles={authenticated} using=(owner_id = auth.uid()) check=
+POLICY public.ai_credits ai_credits_member_read SELECT roles={authenticated} using=is_org_member(org_id) check=
+POLICY public.ai_credits_ledger own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_credits_ledger_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_email_automations own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_guardrail_events own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_guardrail_events_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_mail service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_memory own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_memory_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_memory_vectors service_role_all ALL roles={service_role} using=true check=
+POLICY public.ai_prompt_versions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_prompt_versions_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_prompts own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_prompts_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_receipts own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_receipts_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_rules own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_sessions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_sessions_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_studio_batches own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_studio_recipe_runs own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_studio_recipes own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_studio_runs own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_suggestions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_topup_packs read_packs SELECT roles={authenticated} using=active check=
+POLICY public.ai_turns own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_turns_legacy_20260809021559 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.ai_usage_log service_role_all ALL roles={service_role} using=true check=
+POLICY public.ai_variables own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_wallets own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_workflow_runs own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_workflow_steps own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.ai_workflows own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.analytics_attention_leaks analytics_leaks_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.analytics_debt_daily analytics_debt_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.analytics_deep_work analytics_deep_work_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.analytics_promises analytics_promises_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.analytics_rates analytics_rates_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.analytics_thread_cost analytics_thread_cost_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.anexomail_addresses service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.awam_locale_pref awam_locale_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.billing_event_receipts founder_reads_billing_receipts SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid()))) check=
+POLICY public.billing_event_receipts users_read_own_billing_receipts SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.billing_failures service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_inbox service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_intents service manages intents ALL roles={service_role} using=true check=true
+POLICY public.billing_intents users read own intents SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.billing_observations service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_outbox service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_payment_methods own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.billing_price_book price_book_read SELECT roles={authenticated} using=true check=
+POLICY public.billing_receipts own_receipts SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.billing_receipts service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_reconciliation_items service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_reconciliation_runs service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_state_log service manages state log ALL roles={service_role} using=true check=true
+POLICY public.billing_state_log users read own state log SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.billing_state_versions service_all ALL roles={service_role} using=true check=true
+POLICY public.billing_tax_profiles own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.billing_watermarks service_all ALL roles={service_role} using=true check=true
+POLICY public.calendar_attendees service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.calendar_events service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.calendar_focus_windows service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.calendar_invite_log service_role_all ALL roles={service_role} using=true check=true
+POLICY public.chat_atmosphere_prefs chat_atm_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.chat_attachments chat_attachments_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_attachments.conversation_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_attachments chat_attachments_write INSERT roles={authenticated} using= check=((uploader_id = auth.uid()) AND (EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_attachments.conversation_id) AND (p.user_id = auth.uid())))))
+POLICY public.chat_audit chat_audit_read SELECT roles={authenticated} using=chat_is_member(workspace_id, auth.uid()) check=
+POLICY public.chat_call_connect_marks chat_call_connect_marks_insert INSERT roles={authenticated} using= check=(user_id = auth.uid())
+POLICY public.chat_call_connect_marks chat_call_connect_marks_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_events chat_call_events_insert INSERT roles={authenticated} using= check=(user_id = auth.uid())
+POLICY public.chat_call_events chat_call_events_read SELECT roles={authenticated} using=((EXISTS ( SELECT 1
+   FROM chat_call_sessions s
+  WHERE ((s.id = chat_call_events.session_id) AND ((s.caller_id = auth.uid()) OR (s.peer_id = auth.uid()))))) OR (user_id = auth.uid())) check=
+POLICY public.chat_call_files chat_call_files_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_ring_log chat_call_ring_log_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_rings chat_call_rings_read SELECT roles={authenticated} using=((from_user = auth.uid()) OR (to_user = auth.uid())) check=
+POLICY public.chat_call_sessions chat_call_sessions_own SELECT roles={authenticated} using=((caller_id = auth.uid()) OR (peer_id = auth.uid())) check=
+POLICY public.chat_call_sfu_participants chat_call_sfu_participants_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_sfu_rooms chat_call_sfu_rooms_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_stats chat_call_stats_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_call_sessions s
+  WHERE ((s.id = chat_call_stats.session_id) AND ((s.caller_id = auth.uid()) OR (s.peer_id = auth.uid()))))) check=
+POLICY public.chat_call_survival chat_call_survival_insert INSERT roles={authenticated} using= check=(user_id = auth.uid())
+POLICY public.chat_call_survival chat_call_survival_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_transport_events chat_call_transport_insert INSERT roles={authenticated} using= check=(user_id = auth.uid())
+POLICY public.chat_call_transport_events chat_call_transport_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_call_work chat_call_work_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_conversation_state chat_convstate_read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_conversations chat_conv_read SELECT roles={authenticated} using=(chat_access(auth.uid()) AND chat_in_conversation(id, auth.uid())) check=
+POLICY public.chat_decision_impact_log decision log read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_decisions d
+  WHERE ((d.id = chat_decision_impact_log.decision_id) AND chat_in_conversation(d.conversation_id, auth.uid())))) check=
+POLICY public.chat_decision_links decision link read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_decisions d
+  WHERE ((d.id = chat_decision_links.decision_id) AND chat_in_conversation(d.conversation_id, auth.uid())))) check=
+POLICY public.chat_decision_versions decision version read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_decisions d
+  WHERE ((d.id = chat_decision_versions.decision_id) AND chat_in_conversation(d.conversation_id, auth.uid())))) check=
+POLICY public.chat_decisions decision read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_devices chat_devices_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.chat_drafts chat_drafts_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.chat_email_consent email_consent_read SELECT roles={authenticated} using=((user_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM chat_email_drafts d
+  WHERE ((d.id = chat_email_consent.draft_id) AND (d.created_by = auth.uid()))))) check=
+POLICY public.chat_email_draft_citations email_citation_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_email_drafts d
+     JOIN chat_participants p ON ((p.conversation_id = d.conversation_id)))
+  WHERE ((d.id = chat_email_draft_citations.draft_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_email_drafts email_draft_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_email_drafts.conversation_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_email_links email_link_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_email_links.conversation_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_email_quotes email_quote_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_messages m
+     JOIN chat_participants p ON ((p.conversation_id = m.conversation_id)))
+  WHERE ((m.id = chat_email_quotes.message_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_file_chunks chat_file_chunks_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_file_versions v
+     JOIN chat_files f ON ((f.id = v.file_id)))
+  WHERE ((v.id = chat_file_chunks.version_id) AND (f.owner_id = auth.uid())))) check=
+POLICY public.chat_file_chunks_legacy chat_file_chunks_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_file_versions v
+     JOIN chat_files_legacy f ON ((f.id = v.file_id)))
+  WHERE ((v.id = chat_file_chunks_legacy.version_id) AND (f.owner_id = auth.uid())))) check=
+POLICY public.chat_file_chunks_legacy_20260907051508 chat_chunks_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_files_legacy_20260907051508 f
+  WHERE ((f.id = chat_file_chunks_legacy_20260907051508.file_id) AND chat_in_conversation(f.conversation_id, auth.uid())))) check=
+POLICY public.chat_file_chunks_legacy_20260908025849 chat_chunks_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_files_legacy_20260908025849 f
+  WHERE ((f.id = chat_file_chunks_legacy_20260908025849.file_id) AND chat_in_conversation(f.conversation_id, auth.uid())))) check=
+POLICY public.chat_file_link_log chat_file_link_log_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_file_links chat_file_links_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_file_version_text chat_file_version_text_read SELECT roles={authenticated} using=true check=
+POLICY public.chat_file_versions chat_file_versions_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_files f
+  WHERE ((f.id = chat_file_versions.file_id) AND ((f.owner_id = auth.uid()) OR (EXISTS ( SELECT 1
+           FROM chat_participants p
+          WHERE ((p.conversation_id = f.conversation_id) AND (p.user_id = auth.uid())))))))) check=
+POLICY public.chat_files chat_files_read SELECT roles={authenticated} using=((owner_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_files.conversation_id) AND (p.user_id = auth.uid()))))) check=
+POLICY public.chat_files_legacy chat_files_read SELECT roles={authenticated} using=((owner_id = auth.uid()) OR (EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_files_legacy.conversation_id) AND (p.user_id = auth.uid()))))) check=
+POLICY public.chat_files_legacy_20260907051508 chat_files_read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_files_legacy_20260908025849 chat_files_read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_handover_items handover_items_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_handover_packs p
+  WHERE ((p.id = chat_handover_items.pack_id) AND ((p.outgoing_user = auth.uid()) OR (p.incoming_user = auth.uid()) OR (p.built_by = auth.uid()))))) check=
+POLICY public.chat_handover_log handover_log_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_handover_packs p
+  WHERE ((p.id = chat_handover_log.pack_id) AND ((p.outgoing_user = auth.uid()) OR (p.incoming_user = auth.uid()) OR (p.built_by = auth.uid()))))) check=
+POLICY public.chat_handover_packs handover_read SELECT roles={authenticated} using=((outgoing_user = auth.uid()) OR (incoming_user = auth.uid()) OR (built_by = auth.uid())) check=
+POLICY public.chat_members chat_members_read SELECT roles={authenticated} using=(chat_access(auth.uid()) AND chat_is_member(workspace_id, auth.uid())) check=
+POLICY public.chat_message_edits chat_edits_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_messages m
+  WHERE ((m.id = chat_message_edits.message_id) AND chat_in_conversation(m.conversation_id, auth.uid())))) check=
+POLICY public.chat_message_escalations escalation_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_messages m
+     JOIN chat_participants p ON ((p.conversation_id = m.conversation_id)))
+  WHERE ((m.id = chat_message_escalations.message_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_message_files message_files_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_messages m
+     JOIN chat_participants p ON ((p.conversation_id = m.conversation_id)))
+  WHERE ((m.id = chat_message_files.message_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_message_hidden chat_hidden_own SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.chat_message_important important_read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_message_provenance prov_read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_message_receipts chat_receipt_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_messages m
+  WHERE ((m.id = chat_message_receipts.message_id) AND chat_in_conversation(m.conversation_id, auth.uid())))) check=
+POLICY public.chat_message_stars own stars SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.chat_messages chat_msg_read SELECT roles={authenticated} using=(chat_access(auth.uid()) AND chat_in_conversation(conversation_id, auth.uid())) check=
+POLICY public.chat_participants chat_part_read SELECT roles={authenticated} using=(chat_access(auth.uid()) AND chat_in_conversation(conversation_id, auth.uid())) check=
+POLICY public.chat_phase_entitlements entitlements readable SELECT roles={anon,authenticated} using=true check=
+POLICY public.chat_positions chat_positions_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.chat_presence chat_presence_read SELECT roles={authenticated} using=chat_is_member(workspace_id, auth.uid()) check=
+POLICY public.chat_reactions chat_reactions_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_messages m
+  WHERE ((m.id = chat_reactions.message_id) AND chat_in_conversation(m.conversation_id, auth.uid())))) check=
+POLICY public.chat_receipt_certificates cert_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_participants p
+  WHERE ((p.conversation_id = chat_receipt_certificates.conversation_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_receipt_devices receipt_device_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (chat_messages m
+     JOIN chat_participants p ON ((p.conversation_id = m.conversation_id)))
+  WHERE ((m.id = chat_receipt_devices.message_id) AND (p.user_id = auth.uid())))) check=
+POLICY public.chat_signals chat_signals_own SELECT roles={authenticated} using=((to_user = auth.uid()) OR (from_user = auth.uid())) check=
+POLICY public.chat_transfer_ledger chat_transfer_ledger_read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.chat_transfers chat_transfers_read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.chat_typing chat_typing_read SELECT roles={authenticated} using=chat_in_conversation(conversation_id, auth.uid()) check=
+POLICY public.chat_work_events work events read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_work_items w
+  WHERE ((w.id = chat_work_events.item_id) AND chat_in_conversation(w.conversation_id, auth.uid())))) check=
+POLICY public.chat_work_evidence work evidence read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_work_items w
+  WHERE ((w.id = chat_work_evidence.item_id) AND chat_in_conversation(w.conversation_id, auth.uid())))) check=
+POLICY public.chat_work_items chat_work_read SELECT roles={authenticated} using=(chat_access(auth.uid()) AND chat_in_conversation(conversation_id, auth.uid())) check=
+POLICY public.chat_workspaces chat_ws_read SELECT roles={authenticated} using=(chat_access(auth.uid()) AND chat_is_member(id, auth.uid())) check=
+POLICY public.commitment_collision_events collision_log_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM (commitment_collisions x
+     JOIN chat_work_items w ON ((w.id = x.item_id)))
+  WHERE ((x.id = commitment_collision_events.collision_id) AND chat_in_conversation(w.conversation_id, auth.uid())))) check=
+POLICY public.commitment_collisions collision_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_work_items w
+  WHERE ((w.id = commitment_collisions.item_id) AND chat_in_conversation(w.conversation_id, auth.uid())))) check=
+POLICY public.companies service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.contact_stats service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.contact_tag_map service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.contact_tags service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.contacts service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_activities service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_approvals service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_audit service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_deals service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_evidence service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_graph_edges service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_insights service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_lead_dismissals service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_leads service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_mentions service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_permissions service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_shared_items service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.crm_switches service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.customer_glitch_logs founder_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid()))) check=
+POLICY public.delivery_blocklists service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.delivery_checks service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.deployments service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.device_ban_appeals own appeal read SELECT roles={authenticated} using=((user_id = auth.uid()) OR safety_can_review(auth.uid())) check=
+POLICY public.device_bans service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.device_handoff handoff_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.device_sessions service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.device_trust_events own trust events SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.device_vault own vault read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.device_vault_policy policy readable SELECT roles={authenticated} using=true check=
+POLICY public.email_drafts service_role_all ALL roles={service_role} using=true check=
+POLICY public.entitlement_state service manages entitlement ALL roles={service_role} using=true check=true
+POLICY public.entitlement_state users read own entitlement SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.family_accounts family reads own row SELECT roles={authenticated} using=(lower(email) = lower(COALESCE((auth.jwt() ->> 'email'::text), ''::text))) check=
+POLICY public.feedback_user_triggers founder_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid()))) check=
+POLICY public.file_downloads own downloads read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.file_enforcement own enforcement read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.file_evidence own evidence read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.file_plan_limits file_plan_limits_read SELECT roles={authenticated} using=true check=
+POLICY public.file_safety_events own safety read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.file_scan_jobs own scan read SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.file_type_policy service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.founder_accounts founder_accounts_self SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.founder_inbox_config founder reads own inbox config SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.founder_reply_queue founder_manages_reply_queue ALL roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid()))) check=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid())))
+POLICY public.glitch_alerts founder_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid()))) check=
+POLICY public.glitch_noise_rules founder_read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM founder_accounts f
+  WHERE (f.user_id = auth.uid()))) check=
+POLICY public.integration_connections own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.integration_exports own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.integration_migration_items own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.integration_migrations own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.integration_providers service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.invitations service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.knowledge_answers own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.knowledge_chunks own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.knowledge_documents own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.knowledge_spaces own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.leo_actions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.leo_email_drafts drafts_member ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.leo_email_drafts leo_email_drafts_read SELECT roles={authenticated} using=true check=
+POLICY public.leo_memory service_role_all ALL roles={service_role} using=true check=
+POLICY public.leo_memory_vectors leo_mem_own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.locale_registry locale_registry_read SELECT roles={anon,authenticated} using=true check=
+POLICY public.magic_links service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_accounts service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_aliases service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_attachments service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_attachments_legacy_20260908002041 auth_read SELECT roles={authenticated} using=true check=
+POLICY public.mail_attachments_legacy_20260908002041 auth_write ALL roles={authenticated} using=true check=true
+POLICY public.mail_attachments_legacy_20260908002041 mail_attachments_member ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_autoreply_guard guard members ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_domains service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_domains_legacy_20260908002041 auth_read SELECT roles={authenticated} using=true check=
+POLICY public.mail_domains_legacy_20260908002041 mail_domains_read SELECT roles={authenticated} using=true check=
+POLICY public.mail_drafts_versions org_members_all ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_events service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_follow_ups org_members_all ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_inbound_raw service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_labels mail_labels_member ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_messages service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_outbox mail_outbox_read SELECT roles={authenticated} using=true check=
+POLICY public.mail_outbox own outbox ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.mail_outbox_log service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_predict_events mail_predict_events_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.mail_predict_phrases mail_predict_read SELECT roles={authenticated} using=((user_id IS NULL) OR (user_id = auth.uid())) check=
+POLICY public.mail_scheduled org_members_all ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_sessions service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_signatures org_members_all ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_snippets org_members_all ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_templates org_members_all ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.mail_thread_events service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_thread_labels mail_thread_labels_member ALL roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM mail_threads t
+  WHERE ((t.id = mail_thread_labels.thread_id) AND is_org_member(t.org_id)))) check=(EXISTS ( SELECT 1
+   FROM mail_threads t
+  WHERE ((t.id = mail_thread_labels.thread_id) AND is_org_member(t.org_id))))
+POLICY public.mail_threads service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mail_users service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailbox_storage ms_read_own_ws SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_members m
+  WHERE ((m.workspace_id = mailbox_storage.workspace_id) AND (m.user_id = auth.uid())))) check=
+POLICY public.mailboxes service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908082607 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908083056 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908084912 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908092957 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908093218 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908093226 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908093558 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908094806 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908100607 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908110902 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908111329 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908111941 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908112248 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260908135510 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260909041715 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260909143038 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_backup_20260909144304 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_legacy_20260808064522 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_legacy_20260908002041 auth_read SELECT roles={authenticated} using=true check=
+POLICY public.mailboxes_legacy_20260908002041 mailboxes_read SELECT roles={authenticated} using=true check=
+POLICY public.mailboxes_legacy_20260908003749 auth_read SELECT roles={authenticated} using=true check=
+POLICY public.mailboxes_legacy_20260908004112 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.mailboxes_legacy_20260908004904 auth_read SELECT roles={authenticated} using=true check=
+POLICY public.mailboxes_legacy_20260908013208 service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.meeting_outcomes org_members_all ALL roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM org_members m
+  WHERE ((m.org_id = meeting_outcomes.org_id) AND (m.user_id = auth.uid())))) check=(EXISTS ( SELECT 1
+   FROM org_members m
+  WHERE ((m.org_id = meeting_outcomes.org_id) AND (m.user_id = auth.uid()))))
+POLICY public.mfa_challenges service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.movein_audit movein_audit_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_audit.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_capacity service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.movein_deals movein_deals_own SELECT roles={authenticated} using=((user_id = auth.uid()) OR (owner_id = auth.uid())) check=
+POLICY public.movein_dns_checks movein_dns_checks_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_dns_checks.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_exceptions movein_exceptions_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_exceptions.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_mailboxes movein_mailboxes_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_mailboxes.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_payments movein_payments_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_payments.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_reference_counter service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.movein_rollback_points movein_rollback_points_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_rollback_points.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_runbook movein_runbook_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_runbook.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.movein_transitions service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.movein_waitlist movein_waitlist_own SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM movein_deals d
+  WHERE ((d.id = movein_waitlist.deal_id) AND ((d.user_id = auth.uid()) OR (d.owner_id = auth.uid()))))) check=
+POLICY public.org_anomalies service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_audit_chain org_audit_chain_service_read SELECT roles={service_role} using=true check=
+POLICY public.org_audit_ledger service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_break_glass service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_compliance service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_department_members service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_departments service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_dns_proof service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_graph_edges service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_invitations service_role_all ALL roles={service_role} using=true check=true
+POLICY public.org_members service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_people_log service_role_all ALL roles={service_role} using=true check=true
+POLICY public.org_policies service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_privilege_usage service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_sessions service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_switches service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.org_team_members service_role_all ALL roles={service_role} using=true check=true
+POLICY public.org_teams service_role_all ALL roles={service_role} using=true check=true
+POLICY public.organisations service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.orgs service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.passkeys service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.payment_alerts service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.perf_budgets own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_device_profiles own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_prefetch_events own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_regressions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_releases own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_samples own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_search_traces own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.perf_surface_starts own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.personal_polar_map service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.polar_checkout_log own_rows SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.polar_checkout_sessions service manages checkout sessions ALL roles={service_role} using=true check=true
+POLICY public.polar_checkout_sessions users read own checkout sessions SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.polar_mail_outbox service_all ALL roles={service_role} using=true check=true
+POLICY public.polar_payment_alerts service_all ALL roles={service_role} using=true check=true
+POLICY public.polar_plan_replacements service_all ALL roles={service_role} using=true check=true
+POLICY public.polar_reconcile_log service_all ALL roles={service_role} using=true check=true
+POLICY public.polar_signature_rejects service_all ALL roles={service_role} using=true check=true
+POLICY public.polar_subscriptions own_rows SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.polar_webhook_events service manages webhook events ALL roles={service_role} using=true check=true
+POLICY public.polar_webhook_events users cannot write webhook events SELECT roles={authenticated} using=false check=
+POLICY public.polar_webhook_inbox service_all ALL roles={service_role} using=true check=true
+POLICY public.polar_webhook_raw service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.promise_recovery_log promise log read SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM chat_work_items w
+  WHERE ((w.id = promise_recovery_log.item_id) AND chat_in_conversation(w.conversation_id, auth.uid())))) check=
+POLICY public.release_checklist service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.release_checks own checks ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.release_locks service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.release_runs own runs ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.reserved_handles reserved_handles_read SELECT roles={anon,authenticated} using=true check=
+POLICY public.reserved_usernames service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.resolution_log resolution_member ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.revenue_accounts service manages accounts ALL roles={service_role} using=true check=true
+POLICY public.revenue_jobs service manages jobs ALL roles={service_role} using=true check=true
+POLICY public.revenue_leads service manages leads ALL roles={service_role} using=true check=true
+POLICY public.revenue_partners service manages partners ALL roles={service_role} using=true check=true
+POLICY public.revenue_targets service manages targets ALL roles={service_role} using=true check=true
+POLICY public.roadmap_items service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.safety_enforcement own enforcement read SELECT roles={authenticated} using=(subject_user = auth.uid()) check=
+POLICY public.safety_report_events own report events SELECT roles={authenticated} using=(EXISTS ( SELECT 1
+   FROM safety_reports r
+  WHERE ((r.id = safety_report_events.report_id) AND (r.reporter_id = auth.uid())))) check=
+POLICY public.safety_reports own reports read SELECT roles={authenticated} using=(reporter_id = auth.uid()) check=
+POLICY public.safety_reveal_log reveal log service only SELECT roles={authenticated} using=false check=
+POLICY public.security_anomalies own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_devices own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_encryption_surfaces own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_key_ledger own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_kill_switches own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_ledger own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_login_events own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_proof_checks own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_proofs own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.security_sessions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.setting_defs setting_defs_read SELECT roles={anon,authenticated} using=true check=
+POLICY public.setting_explanations setting_explanations_read SELECT roles={authenticated} using=true check=
+POLICY public.setting_schedules setting_schedules_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.setting_values setting_values_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.setting_versions setting_versions_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.storage_events service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.storage_plans plans_read SELECT roles={authenticated} using=true check=
+POLICY public.storage_volumes service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.subscription_pipeline service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.support_conversations support_conv_member ALL roles={authenticated} using=is_org_member(org_id) check=is_org_member(org_id)
+POLICY public.team_members service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.teams service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.trial_accounts trial_accounts_own SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.trial_events trial_events_own SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.trial_mail_holds trial_mail_holds_own SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.ui_copy ui_copy_read SELECT roles={anon,authenticated} using=true check=
+POLICY public.user_devices devices_own ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())
+POLICY public.user_identities service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.user_roles user_roles_own_select SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.user_settings service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.webauthn_challenges service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.webauthn_credentials webauthn_own_select SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.work_notes service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.work_promises service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.work_tasks service_role_internal_access ALL roles={service_role} using=true check=true
+POLICY public.workspace_invoices workspace_invoices_owner_read SELECT roles={public} using=(auth.uid() = user_id) check=
+POLICY public.workspace_invoices workspace_invoices_service_all ALL roles={service_role} using=true check=true
+POLICY public.workspace_invoices_legacy_20260912134209 own_rows SELECT roles={authenticated} using=(user_id = auth.uid()) check=
+POLICY public.workspace_plans read_plans SELECT roles={authenticated} using=active check=
+POLICY public.workspace_subscriptions own_rows ALL roles={authenticated} using=(user_id = auth.uid()) check=(user_id = auth.uid())

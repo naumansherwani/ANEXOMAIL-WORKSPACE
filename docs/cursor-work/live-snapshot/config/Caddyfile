@@ -1,0 +1,147 @@
+# ==========================================================
+# ANEXOMAIL Production Gateway  (HTTP/1.1 + HTTP/2 + HTTP/3)
+# ==========================================================
+{
+        email admin@nexatect.com
+        servers {
+                protocols h1 h2 h3
+        }
+}
+anexomail.com, www.anexomail.com {
+	# founder surface awam host par band (locked)
+	handle /app/founder* {
+		respond "Not found" 404
+	}
+	# Phase 13/14/15 — Rust large-file chunk path
+	handle /file/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /wt/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	request_body {
+		max_size 32MB
+	}
+	# POLAR RUST PAYMENT ENGINE (:3400)
+	handle /api/v1/polar-webhook* {
+		reverse_proxy 127.0.0.1:3400
+	}
+	handle /api/v1/checkout* {
+		reverse_proxy 127.0.0.1:3400
+	}
+	handle /api/v1/billing/* {
+		reverse_proxy 127.0.0.1:3400
+	}
+        encode gzip zstd
+# (G38) /files/* band: attachments ab sirf login-wali /file/attach/get se milte hain
+        handle /rpc/* {
+                reverse_proxy localhost:3200
+        }
+        handle /api/chat/* {
+                reverse_proxy localhost:3300
+        }
+        handle /api/* {
+                reverse_proxy localhost:3100
+        }
+        handle /health {
+                reverse_proxy localhost:3100
+        }
+        handle {
+                reverse_proxy localhost:3000
+        }
+}
+app.anexomail.com {
+        encode gzip zstd
+        reverse_proxy localhost:3000
+}
+ai.anexomail.com {
+        # ANEXOMAIL AI — Coming Soon (Locked for Users)
+        respond "ANEXOMAIL AI coming soon for users — product features are currently locked." 403
+}
+api.anexomail.com {
+	# Phase 13/14/15 — Rust large-file chunk path
+	handle /file/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /wt/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	request_body {
+		max_size 32MB
+	}
+# (G38) /files/* band: attachments ab sirf login-wali /file/attach/get se milte hain
+        handle /rpc/* {
+                reverse_proxy localhost:3200
+        }
+        handle {
+                reverse_proxy localhost:3100
+        }
+}
+# aicrm.anexomail.com — repo-managed block (/etc/caddy/sites) mein chala gaya
+runtime.anexomail.com {
+        reverse_proxy localhost:3003
+}
+auth.anexomail.com {
+        reverse_proxy localhost:54321
+}
+storage.anexomail.com {
+        reverse_proxy localhost:9000
+}
+cdn.anexomail.com {
+        root * /opt/anexomail/storage/cdn
+        encode gzip zstd
+        file_server
+}
+docs.anexomail.com {
+        reverse_proxy localhost:3004
+}
+status.anexomail.com {
+        reverse_proxy localhost:3005
+}
+preview.anexomail.com {
+        reverse_proxy localhost:3006
+}
+sandbox.anexomail.com {
+        reverse_proxy localhost:3007
+}
+settings.anexomail.com {
+        reverse_proxy localhost:3008
+}
+admin.anexomail.com {
+        reverse_proxy localhost:3009
+}
+mail.anexomail.com {
+        respond "ANEXOMAIL Mail Gateway Ready" 200
+}
+founderworkspace.anexomail.com {
+	# Phase 13/14/15 — Rust large-file chunk path
+	handle /file/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /rpc/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	handle /wt/* {
+		reverse_proxy 127.0.0.1:3200
+	}
+	request_body {
+		max_size 32MB
+	}
+	@api path /api/*
+	reverse_proxy @api 127.0.0.1:3100
+	@rpc path /rpc/* /wt/*
+	reverse_proxy @rpc 127.0.0.1:3200
+	reverse_proxy 127.0.0.1:3000
+        reverse_proxy localhost:3000
+}
+aiemail.anexomail.com {
+	@api path /api/*
+	reverse_proxy @api 127.0.0.1:3100
+	@rpc path /rpc/* /wt/*
+	reverse_proxy @rpc 127.0.0.1:3200
+	reverse_proxy 127.0.0.1:3000
+        reverse_proxy localhost:3100
+}
+
+# Repo-managed independent site blocks
+import /etc/caddy/sites/*.caddy
