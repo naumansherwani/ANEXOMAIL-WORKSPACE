@@ -18,7 +18,7 @@ src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 475e7cd04813f1b4
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
-src/components/app/compose/ComposeStudio.tsx ccd096016284e96d
+src/components/app/compose/ComposeStudio.tsx 2e508aae6e3e3a6b
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx f93d2264ef6a5806
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 2415f882f37b2ca3
+docs/cursor-work/DONE-DO-NOT-REPEAT.md ec57aa1fef15f3ce
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -168,7 +168,7 @@ server/mail-worker.ts 86e53ccb0ef636f8
 server/mail/sendmail.ts 349c9163d9a1e592
 server/routes/mail-compose.ts b573a3ce49d5ce29
 server/routes/mail.ts 8a0014f8b93f352b
-src/lib/compose.ts 90e4a3a578416232
+src/lib/compose.ts 2f6841859bf6cdcf
 docs/cursor-work/server/attach-caddy-close-files.sh 7623871b09c33865
 docs/cursor-work/server/attach-check.sh a9a8340e824cc5e8
 docs/cursor-work/server/attach-gc/anexomail-attach-gc.service 315952e242bafae7
@@ -213,10 +213,11 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md a4a5c0375cf67704
+docs/cursor-work/MASTER-GAP-LEDGER.md f82068087ff95f96
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md b1c1e85cb0fb5cbd
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
 docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
 docs/cursor-work/sql/E51_calendar_response_fix.sql 6ffd0145f2bed06c
-docs/cursor-work/server/repo-capture-server.sh 05a10a90361f9570
+docs/cursor-work/server/repo-capture-server.sh 048664c03b4d89fc
+src/lib/notify.ts 28ac0eff9454cdd6

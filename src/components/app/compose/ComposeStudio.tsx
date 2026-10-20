@@ -17,6 +17,7 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
@@ -26,6 +27,7 @@ import { Label } from "@/components/ui/label";
 
 import {
   applyVariables,
+  cancelScheduledSend,
   findVariables,
   readingStats,
   useAskJimmy,
@@ -145,6 +147,7 @@ export function ComposeStudio({
   const saveDraft = useSaveDraft();
   const confidence = useSendConfidence();
   const schedule = useScheduleSend();
+  const qc = useQueryClient();
   const send = useSendMail();
   const leo = useLeoCompose();
   const jimmy = useAskJimmy();
@@ -265,8 +268,19 @@ export function ComposeStudio({
     schedule.mutate(
       { ...payload, attachment_ids: readyIds(files), hold_seconds: UNDO_HOLD_SECONDS },
       {
-        onSuccess: () => {
-          notify.done("Sending", `Held for ${UNDO_HOLD_SECONDS}s — cancel from Sent.`);
+        onSuccess: (res) => {
+          notify.undoable("Sending…", `Held for ${UNDO_HOLD_SECONDS}s. Changed your mind?`, UNDO_HOLD_SECONDS * 1000, () => {
+            cancelScheduledSend(res.id)
+              .then(() => {
+                void qc.invalidateQueries({ queryKey: ["mail"] });
+                notify.done("Not sent", "Your message was stopped before it left.");
+              })
+              .catch((err: { status?: number }) =>
+                notify.failed(err?.status === 409 ? "Already sent" : "Could not undo", {
+                  description: err?.status === 409 ? "It left your workspace before Undo." : "Please try again.",
+                }),
+              );
+          });
           afterSent();
           onSent?.();
         },

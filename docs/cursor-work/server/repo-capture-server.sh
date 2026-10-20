@@ -59,7 +59,7 @@ BAD=$(grep -rEIn '(pass(word)?|secret|token|api[_-]?key)[A-Za-z0-9_]*[[:space:]]
 # SQL dump: function bodies mein 'token = ...' normal hai; sirf lambi random literal (hardcoded secret jaisi) rokte hain
 BADSQL=$(grep -rEIn "'[A-Za-z0-9+/=_-]{32,}'|eyJ[A-Za-z0-9_-]{20,}|sk_(live|test)_|whsec_" "$SNAP/sql" 2>/dev/null | head -8)
 BAD="$BAD$BADSQL"
-if [ -n "$BAD" ]; then echo "RED: shak wali lines (sirf file:line, value nahi):"; echo "$BAD" | cut -d: -f1,2 | sort -u; echo "Push roka. Folder: $SNAP"; exit 1; fi
+if [ -n "$BAD" ]; then echo "RED: shak wali lines (sirf file:line, value nahi):"; echo "$BAD" | sed -E "s#^$SNAP/##; s/'[A-Za-z0-9+\/=_-]{32,}'/'<LONG-LITERAL>'/g; s/eyJ[A-Za-z0-9_-]{20,}/<JWT>/g; s/(sk_(live|test)_|whsec_)[A-Za-z0-9]+/\1<X>/g" | cut -c1-170 | sort -u; echo "Push roka. Folder: $SNAP"; exit 1; fi
 echo "   saaf"
 
 cd "$WORK/repo" && echo "snapshot $STAMP" > "$SNAP/README.txt" && git add docs/cursor-work/live-snapshot && git -c user.name="anexomail-server" -c user.email="server@anexomail.com" commit -qm "live-snapshot $STAMP (schema-only SQL, Brain/Rust diffs, redacted config, cron)" && git push -q origin HEAD:main && { echo "PUSHED $(git rev-parse --short HEAD)"; cd /; rm -rf "$WORK"; } || echo "PUSH fail — folder: $SNAP"

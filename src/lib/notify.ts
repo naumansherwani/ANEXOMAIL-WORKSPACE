@@ -33,6 +33,15 @@ export const notify = {
     });
   },
 
+  /** Undo window: toast with an Undo button for `ms` (e.g. send held on the server). Voice: "already happened". */
+  undoable(message: string, description: string, ms: number, onUndo: () => void) {
+    return toast(message, {
+      description,
+      duration: ms,
+      action: { label: "Undo", onClick: onUndo },
+    });
+  },
+
   /** Work in flight — resolves into a single success or failure toast. */
   working<T>(promise: Promise<T>, copy: { loading: string; success: string; error: string }) {
     return toast.promise(promise, {

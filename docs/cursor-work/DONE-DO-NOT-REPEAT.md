@@ -81,3 +81,4 @@ Check: `docs/cursor-work/sql/CHECK_E42_E47.sql` (17 row, sab true).
 - 21 Oct 00:35: calendar.create 500 = response_check ('needs_action') — E51_calendar_response_fix.sql (local proved). A1 audit natija MASTER-GAP-LEDGER mein. Calendar GREEN abhi nahi (live E51 + Chrome retest baqi).
 - 21 Oct 00:40: repo-capture-server.sh likha (A2-A4). SQL run sirf server se psql (sql-run.sh) — confirm.
 - 21 Oct 00:50: Calendar Basic LIVE GREEN (meeting banti hai, list mein, Load tab chalta hai) after E51. capture script safety check theek (SQL dump redact + sirf lambi literal rokti).
+- 21 Oct 01:00: Undo button (30s) code likha (ComposeStudio+notify+compose.ts), tsc saaf apni files par; Web pull ke baad live test. Compose open + To/Subject/Body + Send held = Chrome par chala.

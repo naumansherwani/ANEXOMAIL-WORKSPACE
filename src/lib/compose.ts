@@ -187,6 +187,11 @@ export function useScheduleSend() {
   });
 }
 
+/** Plain call (no hook): the Undo toast outlives the closed composer, so it cannot depend on a mounted component. */
+export function cancelScheduledSend(id: string): Promise<unknown> {
+  return api(`/api/mail/schedule/${id}/cancel`, { method: "POST", body: JSON.stringify({}) });
+}
+
 export function useCancelScheduled() {
   const qc = useQueryClient();
   return useMutation<unknown, ApiError, { id: string }>({
