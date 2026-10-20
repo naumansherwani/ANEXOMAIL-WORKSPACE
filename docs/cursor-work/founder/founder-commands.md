@@ -53,6 +53,15 @@ Founder ne chat mein 4 test accounts ke passwords diye: `business_pro.test@anexo
 Founder ke alfaaz: "yeh sab tumhay yaad hona chaiye hai. baki tarteeb se tumne jo points hain woh repo main founder ka ja ke read kero aur exactly codes waha se dekh ke likho; compact chat ke anay se pehle yeh her 10 seconds baad update kerna hai takay compact chat ho bhi jaye claude context nahi bhulay; aur yeh bhi repo main likho: sw.js wala asli masla (har page par script 404; `src/lib/pwa.ts` `/sw.js` register karta hai par `public/sw.js` nahi; PWA offline kaam nahi; manifest theek; TECH-MAP ka "LIVE" sach nahi tha)."
 Agent: sw.js finding pehle se repo mein (5fce7bf) + ab TECH-MAP ki PWA row sach ki. "Har 10 second" = agent har natije/qadam ke baad usi turn mein is file + memory file update karta hai (Rule 18/24); agent ghadi par apne aap 10 second ka timer nahi chala sakta.
 
+### 20 Oct 2026 06:50 PKT — founder: "yeh kaam kitna huwa hai jo nahi huwa hai us ko solve kero green kero wire kero working kero. dekh ke batao"
+Agent ne basic.test se live dekha (06:55):
+- **1 privacy leak — GREEN live:** inbox mein root/cron 0 (E37).
+- **2 locale 404 — GREEN live:** /app aur inbox par locale ka koi 404 nahi.
+- **Naya mila (6 ka hissa):** har page par `403 /rpc/chat.device.vault` — device record (privacy page ka "5 signals seal") chat gate ke peeche tha => **Basic ka device record kabhi nahi bana** + "3 accounts/24h" check Basic ko dekhta hi nahi tha. Theek: Rust module `device` (har plan; fingerprint keys hamesha nikalti hain; mock par 7/7). READY.
+- **3 Import mail — READY:** `/app/import` (har plan) + Mail rail "Import old mail" + Inbox card. Live probe mein mila: `mail.addresses.list` login pata alag deta hai => Basic ko "No mailbox to copy into" dikhta; ab login pata pehla nishana (E35 apna email qubool karta hai). Harness 1440/820/390 saaf.
+- **R1a (aane wali mail Rust) — READY** (pichla jawab).
+- Baqi: 4 attachments (E38), 5 Terms, 6 baqi wade (72h export, final warning), 7 PWA, 8 send/meeting/contact test.
+
 ### 20 Oct 2026 — agent: R1a READY (aane wali mail ka pipe Rust par)
 - `server/rust/deliver_bin.rs` -> live crate mein `src/bin/anexomail-deliver.rs` (doosra binary; engine :3200 ko haath nahi). MIME = `mig_mime.rs` (Import mail wala tested reader). Payload ki keys bilkul Bun wali + `attachments` (naam/size, E38 ke liye), `mime_lossy`, `body_truncated`, `parser`.
 - **Sandbox differential (Bun vs Rust, 6 mails):** purane contract ki har key same; farq sirf jahan **Bun galat tha**: (1) attachment wali mail (mixed > alternative) ka **text Bun mein KHALI** (customer ko khali mail dikhti thi), (2) `=?UTF-8?…?=` subject/naam kachcha, (3) ISO-8859-1 mail ka text "Sch�ne" + raw_sha256/raw_size galat (bytes ki jagah string se). Supabase 500 / band / env nahi => exit 75 (queue, mail nahi khoti). 18 unit tests pass.

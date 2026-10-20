@@ -31,7 +31,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -76,6 +76,8 @@ CFG={
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
  "locale": {"public": True,  "label": "locale",    "procs": ['"locale.pref"','"locale.bundle"','"locale.pref.set"']},
+ # device: procs khaali JAAN-BOOJH kar — chat arm mein wohi naam hain (dead fallback rehta hai); yeh module unhein chat gate se PEHLE har plan ke liye pakadta hai.
+ "device": {"public": False, "label": "device",    "procs": []},
 }
 changed=[]
 for m in mods:
@@ -254,6 +256,14 @@ for m in $MODS; do
       fi
       if timeout 6 bash -c 'exec 3<>/dev/tcp/imap.gmail.com/993' 2>/dev/null; then echo "   -> mig: server se bahar ka IMAP raasta khula hai (imap.gmail.com:993)"
       else echo "   -> mig: server imap.gmail.com:993 tak nahi pahunch raha — firewall / outbound 993 dekhein (nahi to copy shuru hi nahi hogi)"; fi;;
+    device)
+      r="$(probe chat.device.trust.list '{"input":{}}')"
+      echo "   chat.device.trust.list (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> device: Rust ne proc chat gate se PEHLE pakda (nakli login 401 = theek; asli Basic login ab 403 nahi)";;
+        *chat_not_entitled*) echo "   -> device: abhi bhi chat gate — patch/build dobara dekhein";;
+        *) echo "   -> device: jawab upar dekhein";;
+      esac;;
     locale)
       r1="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{"tag":"ur-PK"}}' "$RPC/rpc/locale.bundle" 2>/dev/null)"
       r2="$(probe locale.pref '{"input":{}}')"

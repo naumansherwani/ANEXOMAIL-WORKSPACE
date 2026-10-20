@@ -92,12 +92,14 @@ export function InboxWelcome({ onCompose }: { onCompose?: () => void }) {
       )}
 
       <Link
-        to="/migration"
+        to="/app/import"
         className="ax-tap ax-focus ax-row flex items-center justify-between gap-2 rounded-xl border border-border px-ax-3 py-ax-2 text-[13px] font-semibold text-foreground"
       >
         <span className="min-w-0">
-          Moving from Google or Zoho?
-          <span className="ax-caption block font-normal">See how to bring your mail, contacts and calendar.</span>
+          Moving from Gmail, Outlook or Zoho?
+          <span className="ax-caption block font-normal">
+            Import your old mail here. We only read the old mailbox — nothing there is changed — and you get a sealed receipt.
+          </span>
         </span>
         <ArrowRight className="size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
       </Link>

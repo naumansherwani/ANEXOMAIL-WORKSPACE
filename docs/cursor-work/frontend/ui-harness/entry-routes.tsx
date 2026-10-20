@@ -37,6 +37,7 @@ import { Route as AdminExportRoute } from "@/routes/app.admin.export";
 import { Route as AdminMembersRoute } from "@/routes/app.admin.members";
 import { Route as AdminTeamsRoute } from "@/routes/app.admin.teams";
 import { Route as AdminMigrateRoute } from "@/routes/app.admin.migrate";
+import { Route as ImportRoute } from "@/routes/app.import";
 import { Route as OrgAuditRoute } from "@/routes/app.org.audit";
 
 type R = { component: () => JSX.Element; crm?: boolean };
@@ -93,6 +94,7 @@ const pick = (h: string): R => {
   if (b.startsWith("chips")) return ChipsRoute as unknown as R;
   if (b.startsWith("inbox")) return InboxRoute as unknown as R;
   if (b.startsWith("dashboard")) return DashboardRoute as unknown as R;
+  if (b.startsWith("import")) return ImportRoute as unknown as R;
   if (b === "admin" || b.startsWith("admin/")) return AdminRoute as unknown as R;
   if (b === "org/audit") return OrgAuditRoute as unknown as R;
   if (b.startsWith("admin-members")) return AdminMembersRoute as unknown as R;

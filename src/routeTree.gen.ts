@@ -65,6 +65,7 @@ import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppDevicesRouteImport } from './routes/app.devices'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
 import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
+import { Route as AppImportRouteImport } from './routes/app.import'
 import { Route as AppMoveinRouteImport } from './routes/app.movein'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
@@ -457,6 +458,11 @@ const AppFounderRoute = AppFounderRouteImport.update({
 const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
   id: '/integrations',
   path: '/integrations',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppImportRoute = AppImportRouteImport.update({
+  id: '/import',
+  path: '/import',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMoveinRoute = AppMoveinRouteImport.update({
@@ -1085,6 +1091,7 @@ export interface FileRoutesByFullPath {
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
+  '/app/import': typeof AppImportRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
@@ -1252,6 +1259,7 @@ export interface FileRoutesByTo {
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
+  '/app/import': typeof AppImportRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/people': typeof AppPeopleRoute
   '/app/safety': typeof AppSafetyRoute
@@ -1417,6 +1425,7 @@ export interface FileRoutesById {
   '/app/devices': typeof AppDevicesRoute
   '/app/founder': typeof AppFounderRoute
   '/app/integrations': typeof AppIntegrationsRoute
+  '/app/import': typeof AppImportRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
@@ -1590,6 +1599,7 @@ export interface FileRouteTypes {
     | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
+    | '/app/import'
     | '/app/movein'
     | '/app/org'
     | '/app/people'
@@ -1757,6 +1767,7 @@ export interface FileRouteTypes {
     | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
+    | '/app/import'
     | '/app/movein'
     | '/app/people'
     | '/app/safety'
@@ -1921,6 +1932,7 @@ export interface FileRouteTypes {
     | '/app/devices'
     | '/app/founder'
     | '/app/integrations'
+    | '/app/import'
     | '/app/movein'
     | '/app/org'
     | '/app/people'
@@ -2478,6 +2490,13 @@ declare module '@tanstack/react-router' {
       path: '/integrations'
       fullPath: '/app/integrations'
       preLoaderRoute: typeof AppIntegrationsRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/import': {
+      id: '/app/import'
+      path: '/import'
+      fullPath: '/app/import'
+      preLoaderRoute: typeof AppImportRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/movein': {
@@ -3547,6 +3566,7 @@ interface AppRouteChildren {
   AppDevicesRoute: typeof AppDevicesRoute
   AppFounderRoute: typeof AppFounderRoute
   AppIntegrationsRoute: typeof AppIntegrationsRoute
+  AppImportRoute: typeof AppImportRoute
   AppMoveinRoute: typeof AppMoveinRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
@@ -3595,6 +3615,7 @@ const AppRouteChildren: AppRouteChildren = {
   AppDevicesRoute: AppDevicesRoute,
   AppFounderRoute: AppFounderRoute,
   AppIntegrationsRoute: AppIntegrationsRoute,
+  AppImportRoute: AppImportRoute,
   AppMoveinRoute: AppMoveinRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,

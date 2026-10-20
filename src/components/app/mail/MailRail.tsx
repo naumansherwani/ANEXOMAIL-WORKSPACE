@@ -3,6 +3,7 @@ import {
   Archive,
   AtSign,
   Clock,
+  DownloadCloud,
   FileText,
   Inbox,
   PenLine,
@@ -217,6 +218,14 @@ export function MailRail({
             />
           </>
         )}
+        {/* Import mail — har plan; Rust `migration.*` (read-only old side, sealed receipt). */}
+        <Link
+          to="/app/import"
+          className="ax-tap ax-focus mt-1 flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <DownloadCloud className="size-3.5 shrink-0" aria-hidden="true" />
+          {t("Import old mail")}
+        </Link>
       </section>
     </div>
   );

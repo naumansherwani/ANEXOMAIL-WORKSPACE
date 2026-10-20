@@ -58,7 +58,7 @@ src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
 src/lib/plan-surface.ts 03671e4b12654baa
 src/components/app/dashboard/Greeting.tsx ec52e5aff361e8db
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
-src/components/app/mail/InboxWelcome.tsx e78bad1dff9a68fb
+src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
 src/components/app/mail/ThreadList.tsx fb8e220fb15b3032
 src/routes/app.admin.audit.tsx c7884b9e5e926572
 src/routes/app.admin.diagnostics.tsx 74d7869da9bcda74
@@ -85,7 +85,7 @@ src/components/app/calendar/EventDetail.tsx 3f6a9025086ddc26
 src/components/app/calendar/Guests.tsx dffa0499316208d9
 src/components/app/calendar/FindTime.tsx 499767b811ead3f3
 src/routes/rsvp.tsx 126ff4cb28431afd
-src/routeTree.gen.ts de38c39d0de18711
+src/routeTree.gen.ts defa7284fa250b42
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
@@ -93,8 +93,11 @@ src/routes/auth.tsx f41cf236515f3868
 src/routes/app.integrations.tsx b556cdf994245dca
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
-src/routes/pages.tsx e2d909cc6ccb7a01
+src/routes/pages.tsx 49b6ca73eb919b73
 src/lib/ia.ts 360ed83914f46c1b
 src/lib/migration-report.ts 891244cee18a2821
 src/lib/migration.ts d0b8fbc0336aea9c
-src/routes/app.admin.migrate.tsx e692835da1412370
+src/routes/app.admin.migrate.tsx 2c150b039eb1f772
+src/components/app/migrate/ImportMailPage.tsx 73dfc0e8312acadb
+src/routes/app.import.tsx c85edcdc1d377621
+src/components/app/mail/MailRail.tsx 53a2e7f6b93b96b6

@@ -60,6 +60,8 @@
 | Language bundle/pref `/rpc/locale.*` (N3) | Rust :3200 (Bun `/api/locale/*` sirf fallback) | DONE live 20 Oct |
 | Anjaan pate ki mail kisi aur org mein na jaye (E37) | PostgreSQL (`mail_ingest` gate + `mail_quarantine`) — DB ki aakhri deewar; Rust inbound pipe mein bhi wohi check aayega (R1a) | DONE live 20 Oct 06:41 |
 | Aane wali mail ka pipe Bun -> Rust (R1a): `anexomail-deliver` (Rust bin, Tokio + reqwest/rustls, MIME = `mig_mime.rs`) | Rust (crate ka doosra binary) + Postfix `anexopipe` argv | READY — `rust-deliver-install.sh` |
+| Device record (privacy page ka 5-signal wada) har plan ke liye — `chat.device.*` chat gate se pehle | Rust :3200 (`device_core.rs` + `device_glue.rs`) | READY — `MODULES=device rust-engine-install.sh` |
+| Import mail customer ka darwaza `/app/import` + Mail rail + Inbox card; apna login pata nishana | Website (React/TanStack) | READY — `pull.sh` |
 | `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |
 | Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
 | Attachments (E38) | Bytes: Storage Box · dedup/patch: Rust · metadata: PostgreSQL | PLANNED |
