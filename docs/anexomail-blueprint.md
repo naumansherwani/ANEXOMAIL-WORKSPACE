@@ -759,6 +759,6 @@ Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-pass
 | G36 | Block ke baad **72 ghante export, phir hamesha ke liye delete** (job + countdown + email) | TODO | Rust job + SQL |
 | G37 | **24 ghante mein 3 account = suspicious/review**; likhit **final warning -> block -> device ban** flow | TODO | SQL + Rust + Web |
 | G38 | **Compose mein attachments BHEJNA** (upload -> storage -> MIME -> Rust send; size limit; virus-scan apne infra par) | TODO (bada) | Web + Rust + storage |
-| G39 | **Family = real buyer**: billing "Lifetime access" (E40 `lifetime`), retention "Keep forever", baqi har cheez wahi | Aadha DONE (60bbe0f); Humza ka poora real-buyer provisioning check TODO | SQL + Web |
+| G39 | **Family = real buyer**: billing "Lifetime access" (E40 `lifetime`), retention "Keep forever", baqi har cheez wahi | Aadha DONE (60bbe0f); `E41_family_real_buyer.sql` READY (21 Oct) — server par chalana + live check baqi | SQL + Web |
 | G40 | Rust par RPC: work.*, crm.*, org.*, integrations.*, settings.* (abhi Bun par girte hain, page theek, sirf speed) | TODO | Rust |
 | G41 | Mobile + tablet + desktop har package par (Business Pro 390/820 audit shuru 19:1x) | Jari | live |

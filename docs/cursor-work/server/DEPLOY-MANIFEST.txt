@@ -127,4 +127,5 @@ src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 8833f22b7f57e110
 docs/cursor-work/PROMISES.md dead665d1c273bfd
 docs/cursor-work/founder/founder-commands.md f8c3f444564f96e5
-docs/anexomail-blueprint.md 335e08d5ef7fbea4
+docs/anexomail-blueprint.md 971b687b756dfad2
+docs/cursor-work/sql/E41_family_real_buyer.sql aed0627ce876b104
