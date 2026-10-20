@@ -13,7 +13,7 @@
 ✅ **DONE (live saboot):** E36 / Business Pro logins (05:54, dobara touch nahi) · E35 SQL (05:54) · E34 SQL (06:06) · Rust cal+people+team+mig (06:16: build OK 1m43s, health 200, GUARD 2 reads, port 993 khula) · Web pull db11a0b (06:16, /health 200) · **Import mail live test GREEN (06:27: asli imap.gmail.com se `auth_failed` jawab, nakli login)**.
 
 **Shaam ko, is tarteeb se (ek ek, jab ek green tab agla):**
-0. **PRIORITY (founder 06:34): technology version upgrades** — 0.1 tokio 1.53.3 **DONE (live 03:28)** · 0.2 axum 0.8.9 **DONE (live 03:59)** · 0.3 wtransport 0.7.2 **DONE (live 04:37)** · N7 **DONE (live 05:03)** · ▶ **CHAL RAHA: 0.4 rustc latest + edition 2024** — TECH-MAP 0a: tokio -> axum 0.8 -> wtransport/quinn/rustls -> rustc/edition 2024 -> Bun. Ek ek, restore-on-fail, har ke baad health + `mig-live-test.sh` GREEN. (Pehla qadam: official source se versions dobara verify.)
+0. **PRIORITY (founder 06:34): technology version upgrades** — 0.1 tokio 1.53.3 **DONE (live 03:28)** · 0.2 axum 0.8.9 **DONE (live 03:59)** · 0.3 wtransport 0.7.2 **DONE (live 04:37)** · N7 **DONE (live 05:03)** · ▶ **CHAL RAHA: 0.4 rustc 1.99.1 + edition 2024 — READY (`rustc-edition-upgrade.sh`), founder ka output baqi** — TECH-MAP 0a: tokio -> axum 0.8 -> wtransport/quinn/rustls -> rustc/edition 2024 -> Bun. Ek ek, restore-on-fail, har ke baad health + `mig-live-test.sh` GREEN. (Pehla qadam: official source se versions dobara verify.)
 1. **Attachments E37** — Option A locked (policy: 06:16 entry): SHA-256 dedup sirf org ke andar, `/mnt/anexomail-box/attachments` (Storage Box mount, NVMe nahi), phase48 quota, DB mein sirf metadata; pehle migration, phir live inbound ka chhota anchor-based patch.
 2. Chat audit.
 3. iMIP REPLY (G26).
@@ -52,6 +52,12 @@
 Founder ne chat mein 4 test accounts ke passwords diye: `business_pro.test@anexomail.com` aur `bpro.test@anexomail.com` (dono ka ek hi password), `basic.test@anexomail.com`, `pro.buyer@anexomail.com` — **passwords [REDACTED: repo mein KABHI nahi, Rule 17/24]**. Agent inhe sirf us session mein, ek command ke environment variable mein, login-test ke liye use karta hai; kisi file/repo/memory mein nahi. (Naye chat mein founder dobara de ya server par root-only file `/etc/anexomail/test-accounts.env` (chmod 600) mein rakhe — repo mein nahi.)
 Founder ke alfaaz: "yeh sab tumhay yaad hona chaiye hai. baki tarteeb se tumne jo points hain woh repo main founder ka ja ke read kero aur exactly codes waha se dekh ke likho; compact chat ke anay se pehle yeh her 10 seconds baad update kerna hai takay compact chat ho bhi jaye claude context nahi bhulay; aur yeh bhi repo main likho: sw.js wala asli masla (har page par script 404; `src/lib/pwa.ts` `/sw.js` register karta hai par `public/sw.js` nahi; PWA offline kaam nahi; manifest theek; TECH-MAP ka "LIVE" sach nahi tha)."
 Agent: sw.js finding pehle se repo mein (5fce7bf) + ab TECH-MAP ki PWA row sach ki. "Har 10 second" = agent har natije/qadam ke baad usi turn mein is file + memory file update karta hai (Rule 18/24); agent ghadi par apne aap 10 second ka timer nahi chala sakta.
+
+### 20 Oct 2026 — agent: Step 0.4 rustc 1.99.1 + edition 2024 READY
+- Latest stable verify: **Rust 1.99.1 (15 Oct 2026)**, blog.rust-lang.org. Server abhi 1.97.x.
+- Sandbox (poora live-jaisa code): `cargo fix --edition` -> sirf 1 line (`err() -> impl IntoResponse + use<>`); edition 2024 build OK; core unit tests 2024 par 113 pass; WebTransport native 12 + Chromium 6 + HTTP 26: 2021 vs 2024 sab same; panic 0. Ek drop-order note (mig_glue `dial()` error raaste) — asar nahi.
+- Sandbox se rustup ka server (static.rust-lang.org) band hai, is liye 1.99.1 ka build server par: script `rust-toolchain.toml` sirf `/opt/anexomail-rust` mein pin karti hai (server default rustc + polar :3400 nahi badalte). Sim: fail -> poora restore (toolchain file bhi), success, dobara -> kuch nahi.
+- `rust-engine-install.sh` ab live Cargo.toml ki edition + pinned compiler se unit tests chalata hai.
 
 ### 20 Oct 2026 05:03 PKT — founder: N7 + pull + live test + business.test output; hukm (verbatim, apna hissa)
 "rule yeh hai ke fix command pull kerwao phir Web pull (latest GitHub):phir live test command yeh pattern rakho aur restart kerwao pm2 load kerwao next time ke liye. tarteeb se next kaam shuru kero jo green hai woh green ker do. aur tum live login kero yeh bhul nahi kero."

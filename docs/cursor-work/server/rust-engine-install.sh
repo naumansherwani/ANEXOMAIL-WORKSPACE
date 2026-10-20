@@ -56,9 +56,12 @@ MODS="${MODS# }"
 [ -n "$MODS" ] || { echo "FAIL: koi module nahi mila"; exit 2; }
 echo "modules: $MODS"
 
+# live Cargo.toml ki edition (2024 upgrade ke baad bhi wahi; na mile to 2021). Live compiler: rust-toolchain.toml (agar hai) — `cd "$TARGET"` se rustc wahi leta hai.
+EDITION="$(grep -E '^edition[[:space:]]*=' "$TARGET/Cargo.toml" 2>/dev/null | head -1 | tr -d ' "' | cut -d= -f2)"; EDITION="${EDITION:-2021}"
 echo "== 0) pre-flight: unit tests (server par)"
+echo "   (rustc $(cd "$TARGET" && rustc --version | cut -d' ' -f2), edition $EDITION)"
 for m in $MODS; do
-  ( cd "$T" && rustc --edition 2021 --test "${m}_core.rs" -o "${m}_core_test" >"$T/rustc-$m.log" 2>&1 && "./${m}_core_test" >"$T/test-$m.log" 2>&1 ); trc=$?
+  ( cd "$TARGET" && R="$(rustup which rustc 2>/dev/null || command -v rustc)"; cd "$T" && "$R" --edition "$EDITION" --test "${m}_core.rs" -o "${m}_core_test" >"$T/rustc-$m.log" 2>&1 && "./${m}_core_test" >"$T/test-$m.log" 2>&1 ); trc=$?
   echo "   $m: $(grep -E '^test result' "$T/test-$m.log" 2>/dev/null | head -1)"
   [ "$trc" -eq 0 ] || { echo "!! $m unit tests FAIL — kuch install nahi hua. Output Claude ko paste karein:"; head -20 "$T/rustc-$m.log" | cut -c1-180; tail -15 "$T/test-$m.log" 2>/dev/null | cut -c1-180; exit 1; }
 done
