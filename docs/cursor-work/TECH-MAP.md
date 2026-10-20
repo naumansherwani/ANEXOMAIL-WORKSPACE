@@ -59,7 +59,8 @@
 | WebTransport error frame (N7) | Rust :3200 (WebTransport) | DONE live 20 Oct |
 | Language bundle/pref `/rpc/locale.*` (N3) | Rust :3200 (Bun `/api/locale/*` sirf fallback) | DONE live 20 Oct |
 | Anjaan pate ki mail kisi aur org mein na jaye (E37) | PostgreSQL (`mail_ingest` gate + `mail_quarantine`) — DB ki aakhri deewar; Rust inbound pipe mein bhi wohi check aayega (R1a) | DONE live 20 Oct 06:41 |
-| Aane wali mail ka pipe Bun -> Rust (R1a), `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |
+| Aane wali mail ka pipe Bun -> Rust (R1a): `anexomail-deliver` (Rust bin, Tokio + reqwest/rustls, MIME = `mig_mime.rs`) | Rust (crate ka doosra binary) + Postfix `anexopipe` argv | READY — `rust-deliver-install.sh` |
+| `mail.send` + `org.mailboxes.*` Rust (R1), live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (tarteeb) |
 | Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
 | Attachments (E38) | Bytes: Storage Box · dedup/patch: Rust · metadata: PostgreSQL | PLANNED |
 | Import mail customer tak, Terms page, PWA offline | Website (React/TanStack) + PWA service worker | PLANNED (Basic list) |
