@@ -484,3 +484,7 @@ Loophole ledger (sach)
 
 ## 21 Oct 2026 02:31 PKT
 "repo main read kero mainay kya note kerwaya tha 3D graphics se related ... Khali inbox aur khali calendar: chhoti 3D tasveer ... Plans page: tilt ... mobile par halka ya band, reduced-motion band, page pehle 3D baad mein ... orbit bura lagta hai remove kero. aur agay tarteeb pe chalo" -> orb hata diya; baqi 3D (loader logo, khali inbox/calendar, plans tilt) rakha; ab Pro tarteeb.
+
+## 21 Oct 2026 02:36 PKT
+"... basic ko user ki tarah aur ceo ki nazar se hard stress test ... sab fix and green ker ke khudi live test ker ke bolo ... sab se bara bug: login ke baad dashboard pe jata hai phir wapis login pe ata hai phir wapis dashboard ke liye loading kerta hai, yeh sab packages mein bug hai fix it new technology pe."
+-> LOGIN LOOP: sabab = Supabase auth.getUser har request par; temporary error/429 -> 401 -> client sign-out. Fix READY: server/lib/auth-harden.ts (cache+retry, temp=503), routes/auth.ts userFrom 503, src/lib/auth.tsx retry (5xx/0/429; fresh-login 401 recheck), src/routes/auth.tsx (logged-in user /auth khole to seedha /app). Brain installer brain-auth-harden-install.sh + Web pull. Live test baqi.

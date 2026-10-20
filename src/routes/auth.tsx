@@ -107,8 +107,10 @@ type LoginResult =
 
 function AuthPage() {
   const navigate = useNavigate();
-  const { acceptSession } = useAuth();
+  const { acceptSession, status: authStatus } = useAuth();
   const search = Route.useSearch();
+  /** Login form se aaya = finish() ka apna redirect chalega; aur logged-in banda /auth khole to seedha /app. */
+  const loginStarted = useRef(false);
 
   const [mode, setMode] = useState<Mode>(() => {
     if (search.mode === "signup") return "kind";
@@ -149,7 +151,21 @@ function AuthPage() {
     setSavePassword(readSavePasswordPref());
   }, []);
 
+  // Pehle se logged-in banda /auth par aaye (back button, purana tab) to login form nahi — seedha workspace.
+  useEffect(() => {
+    if (authStatus === "signed-in" && !loginStarted.current && !showSplash && mode === "login") {
+      void navigate({ to: "/app", replace: true });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authStatus]);
+
   const finish = async (token: string, authenticated?: Session) => {
+    loginStarted.current = true;
+    try {
+      window.sessionStorage.setItem("anexo.login.at", String(Date.now()));
+    } catch {
+      /* private window: bas retry-guard nahi */
+    }
     sessionToken.set(token);
     const session = authenticated ?? (await api<Session>("/api/auth/session"));
     acceptSession(session);

@@ -4,6 +4,9 @@ import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { sendMail } from "../mail/sendmail";
 import { mountPasskeyRoutes } from "./auth-passkey";
+import { forgetAuthToken, hardenSupabaseAuth, isTransientAuthError } from "../lib/auth-harden";
+
+hardenSupabaseAuth();
 
 const URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE =
@@ -135,6 +138,11 @@ async function userFrom(req: any, res: any) {
   }
   const { data, error } = await getAdmin().auth.getUser(token);
   if (error || !data.user) {
+    // Supabase ka temporary masla (429/5xx/network) token ghalat NAHI — 401 dene se client sign-out ho jata tha (login loop).
+    if (error && isTransientAuthError(error)) {
+      res.status(503).json({ error: "auth_temporarily_unavailable", retry: true });
+      return null;
+    }
     res.status(401).json({ error: "unauthorized" });
     return null;
   }
@@ -694,6 +702,7 @@ authRouter.post("/logout", async (req, res) => {
     .update({ revoked_at: new Date().toISOString() })
     .eq("token_hash", tokenHash(identity.token));
   await getAdmin().auth.admin.signOut(identity.token, "local");
+  forgetAuthToken(identity.token);
   res.json({ ok: true });
 });
 

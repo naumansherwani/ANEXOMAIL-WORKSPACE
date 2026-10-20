@@ -9,6 +9,11 @@
  */
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
+import { hardenSupabaseAuth } from "./auth-harden";
+
+// Login-loop fix: auth.getUser ko cache + temporary-error retry (poore process mein).
+hardenSupabaseAuth();
+
 const URL =
   process.env.SUPABASE4_URL ||
   process.env.SUPABASE_URL ||

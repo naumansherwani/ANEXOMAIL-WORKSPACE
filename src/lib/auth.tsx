@@ -112,8 +112,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     queryKey: ["auth", "session"],
     queryFn: async () => {
       if (!sessionToken.get()) return null;
+      // Login-loop fix (21 Oct 2026): server/network ka temporary masla (0 / 429 / 5xx) sign-out NAHI hai —
+      // 3 baar retry (backoff). Naye login ke 30 s ke andar pehla 401 bhi ek dafa dobara verify hota hai.
+      const JUST = "anexo.login.at";
+      const recentLogin = () => {
+        try {
+          return Date.now() - Number(sessionStorage.getItem(JUST) || 0) < 30_000;
+        } catch {
+          return false;
+        }
+      };
       try {
-        const s = await api<Session>("/api/auth/session");
+        let s: Session | null = null;
+        for (let attempt = 0; attempt < 4; attempt++) {
+          try {
+            s = await api<Session>("/api/auth/session");
+            break;
+          } catch (e) {
+            const st = e instanceof ApiError ? e.status : -1;
+            const transient = st === 0 || st === 429 || st >= 500;
+            const freshLogin401 = st === 401 && recentLogin() && attempt < 2;
+            if ((transient && attempt < 3) || freshLogin401) {
+              await new Promise((r) => setTimeout(r, 400 * (attempt + 1)));
+              continue;
+            }
+            throw e;
+          }
+        }
+        if (!s) throw new ApiError("Session check failed.", 503, "session_retry_exhausted");
         lastSession.save(s);
         return s;
       } catch (error) {
