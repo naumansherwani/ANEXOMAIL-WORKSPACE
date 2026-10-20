@@ -474,7 +474,7 @@ function AccountPage() {
               ? `On file: ${recovery.data.hint} (${recovery.data.kind}). Reset links go there.`
               : "Add a Gmail, iCloud or other inbox you can open. Not Sign in with Apple."}
           </p>
-          <p className="ax-caption mt-1">{recovery.data?.sms_note}</p>
+          <p className="ax-caption mt-1">Recovery codes go to your recovery email. Text-message (SMS) recovery is planned, not available yet.</p>
           <form
             className="mt-ax-3 space-y-ax-3"
             onSubmit={(event) => {
