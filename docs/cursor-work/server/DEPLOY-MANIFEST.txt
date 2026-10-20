@@ -6,12 +6,12 @@ src/routes/app.domains.tsx 518f36d7e161bad0
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx 45cee19ca2bba60e
+src/components/app/AppShell.tsx 8155d7d7b9c85b54
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
 src/styles.css 1ca7acbe178125db
-src/routes/app.mail.$folder.tsx 0afba7c1e19513b6
+src/routes/app.mail.$folder.tsx 86645a2c7f8343a2
 src/routes/app.mail.$folder.$threadId.tsx 644c573c59a903c4
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
@@ -120,3 +120,4 @@ src/components/app/settings/SettingsBits.tsx 745f1f6bbe8be491
 server/rust/cal_core.rs de629cfbcfceb8b3
 server/rust/cal_glue.rs 807cbe708ff4d2a0
 AGENTS.md 564272a44d995e37
+src/lib/use-drag-scroll.ts 6318093cfe53169b

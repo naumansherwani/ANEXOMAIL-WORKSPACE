@@ -16,6 +16,7 @@ import {
   MessageSquare,
   Receipt,
   Search,
+  Settings,
   Shield,
   ShieldCheck,
   Sparkles,
@@ -299,6 +300,10 @@ export function AppShell({ children }: { children: ReactNode }) {
             <DropdownMenuItem onSelect={() => void navigate({ to: "/app/billing" })}>
               <Receipt className="size-4" />
               {t("Billing & plans")}
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => void navigate({ to: "/app/settings" })}>
+              <Settings className="size-4" />
+              {t("Settings")}
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={() => void handleSignOut()}>

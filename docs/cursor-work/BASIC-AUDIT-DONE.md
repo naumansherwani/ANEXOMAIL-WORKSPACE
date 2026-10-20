@@ -17,6 +17,21 @@
 | 5 | ffe9131 | Integrations "Connect" hamesha 501 | Jhoota button hata; "Copy my mail" -> `/app/import` (asli IMAP copy, Rust `mig_*`) | Web |
 | 6 | 3e5a8d5 | **Calendar events kabhi load nahi hote the** (`calendar.events/event/load` na Rust na Bun) | `cal_glue.rs` mein teeno + `cal_core.rs` (`mark_conflicts`, `minutes_in`, `overloaded`), 22 unit test | Rust |
 
+| 7 | (09:5x) | Mail ke address chips + folder + category tabs (All/Primary/Updates/People/Promotions) sirf patli scrollbar se scroll hote the; baqi icons nazar nahi aate | `src/lib/use-drag-scroll.ts` (mouse drag + wheel, click bachta hai) teeno rows par; profile menu mein **Settings** (-> `/app/settings`). Browser test: drag 0->154px->0, click chalta, menu mein Settings | Web |
+
+## 3D GRAPHICS — kahan ana hai (CEO faisla 20 Oct 2026; abhi bana NAHI, sirf naksha)
+Halat: asli Three.js sirf AnexoChat `chat/cinema/Scene.tsx` mein hai. Baqi "cinematic" 2D canvas/CSS hai. Qaida: jahan 3D madad kare, jahan kaam ke raste mein aaye wahan NAHI (inbox/compose/settings = tez + saaf, 3D nahi).
+| Jagah | 3D kya | Plan | Mobile |
+|---|---|---|---|
+| Landing hero | Dak ke packets ek 3D mailbox mein girte hain (ConvergenceCanvas ka 3D version) | sab | halka (kam particles) |
+| Login / pehla workspace loader | BrandMark ka ghoomta 3D logo (WorkspaceLoader) | sab | halka |
+| Dashboard hero (Greeting ke upar) | Plan ke rang ka chhota 3D badge/orb: Basic neela, Pro jamuni, Business sunehri | sab, 1 canvas | band (CSS gradient) |
+| Empty states (khali inbox, khali calendar) | Chhoti 3D tasveer, sirf jab list khali ho | sab | band |
+| Upgrade/plans page | Plan cards par halka 3D tilt | Basic ko dikhane ke liye | band |
+| AnexoChat | Cinema scene (pehle se) | Pro+ | halka |
+| **NAHI**: inbox list, thread, compose, settings, security, billing | — | — | — |
+Har jagah: `prefers-reduced-motion` par band, lazy-load (pehle page chale, phir 3D), 1 page = 1 canvas. Founder ka hukm milne par ek ek karke banega; pehle landing hero.
+
 ## Pull / SQL status (founder ne chalana hai — aakhri maloom halat)
 - Batch 1, dnsauth: LIVE green (founder output 09:25).
 - Batch 2: Web pull + SQL E39 + `MODULES=security` Rust — founder ka output ka intezar.

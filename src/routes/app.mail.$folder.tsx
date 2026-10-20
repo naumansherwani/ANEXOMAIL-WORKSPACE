@@ -7,6 +7,7 @@ import {
 } from "@tanstack/react-router";
 import { Mail, PenLine, Search, X } from "lucide-react";
 import { useCallback, useEffect, useState, type CSSProperties } from "react";
+import { useDragScroll } from "@/lib/use-drag-scroll";
 
 import { ComposeOverlay } from "@/components/app/ComposeOverlay";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
@@ -84,6 +85,9 @@ function MailFolderPage() {
   const action = useThreadAction();
   const counts = useFolderCounts();
   const accounts = useAccounts();
+  const dragAddr = useDragScroll();
+  const dragFolders = useDragScroll();
+  const dragCats = useDragScroll();
   const activeAccount = accounts.data?.accounts.find((a) => a.id === account);
   const live = useMailLive();
   const unreadHere = counts.data?.folders[folder]?.unread ?? 0;
@@ -223,7 +227,7 @@ function MailFolderPage() {
         <HandoffBanner />
         <div className="mx-head sticky top-0 z-10 flex flex-col gap-ax-2 border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur">
           {accounts.data && accounts.data.accounts.length > 1 && (
-            <div className="flex items-center gap-1.5 overflow-x-auto pb-0.5" aria-label="Addresses">
+            <div ref={dragAddr} className="flex items-center gap-1.5 overflow-x-auto pb-0.5" aria-label="Addresses">
               <button
                 type="button"
                 onClick={() => setAccount(null)}
@@ -251,7 +255,7 @@ function MailFolderPage() {
               })}
             </div>
           )}
-          <div className="flex items-center gap-1 overflow-x-auto lg:hidden">
+          <div ref={dragFolders} className="flex items-center gap-1 overflow-x-auto lg:hidden">
             {MAIL_FOLDERS.map((f) => {
               const unread = counts.data?.folders[f.id]?.unread ?? 0;
               return (
@@ -290,7 +294,7 @@ function MailFolderPage() {
             )}
           </div>
 
-          <div className="flex items-center gap-1 overflow-x-auto">
+          <div ref={dragCats} className="flex items-center gap-1 overflow-x-auto">
             <button
               type="button"
               onClick={() => setCategory(null)}
