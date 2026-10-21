@@ -1,4 +1,7 @@
 # ANEXOMAIL — Master Build Plan
+
+> **Ek blueprint:** `docs/BLUEPRINT.md` — status wahan + `docs/cursor-work/GREEN-BOARD/` se parho. Is file ka P1–P9 STATUS BOARD purana hai.
+
 # Locked: Sep 9 2026 | Founder: Muhammad Nauman Sherwani
 
 > Yeh document code shuru hone se pehle lock hai.

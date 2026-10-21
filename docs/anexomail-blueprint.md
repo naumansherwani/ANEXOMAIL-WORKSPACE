@@ -764,3 +764,7 @@ Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-pass
 | G40 | Rust par RPC: work.*, crm.*, org.*, integrations.*, settings.* (abhi Bun par girte hain, page theek, sirf speed) | TODO | Rust |
 | G41 | Mobile + tablet + desktop har package par (Business Pro 390/820 audit shuru 19:1x) | Jari | live |
 | G42 | WebAuthn/passkey + recovery-code login ko Rust par shift karna (`/rpc/auth.passkey.*`, p256 + ciborium + sha2, Supabase admin generate_link se session) — tab Bun apwad khatam | TODO (G35 ke baad) | Rust |
+
+
+---
+> **21 Oct 2026:** Ek blueprint ab `docs/BLUEPRINT.md` hai; yeh file detail/history (append-only) rahegi. Status: `docs/cursor-work/GREEN-BOARD/`.

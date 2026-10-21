@@ -608,3 +608,5 @@ Is review ke har nukte ka anjaam: U1/U2 DONE (16 Oct live), U3 DONE (16 Oct brow
 **21 Oct 2026, 06:50 PKT — B4 GREEN (server par chala, founder output).** `rust-events-install.sh`: events_core 7 tests, main.rs events judi, build OK, health 200, proof SAB PASS (UDP 3443 sun raha, /internal/event 401/403/400/204, publish layer 4xx not 5xx, FAMILY accounts 3/3 ka org hai). Deliver binary (hub push) 06:40 lag chuki, Web pull (live.ts/live-core.ts/AppShell/mail.ts/crm.ts) 06:35 lag chuka. Agla: B5 (G40, 19 Bun-only routes). Dobara mat likho.
 
 **FOUNDER LOCK (21 Oct 06:49):** Migration technology ke jo bhi codes website par aate hain unki testing END par (sab B-batch ke baad); pehle technology POORI website ke liye secure ho — family accounts aur aane wale sab future accounts bhi (org-membership se, plan se nahi). GREEN-BOARD server par `pull.sh` se aata hai.
+
+**21 Oct 06:55 — EK BLUEPRINT:** founder ne poocha 5 blueprint kyon; ab `docs/BLUEPRINT.md` ek hi blueprint (identity, packages, tech, B-series, security, modules, rules, document map). Baqi files detail/history; security-blueprint founder-original (chhua nahi). Dobara alag blueprint mat banao.

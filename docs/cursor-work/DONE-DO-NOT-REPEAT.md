@@ -150,3 +150,5 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## GREEN-BOARD (21 Oct 06:50): docs + repo ka green/not-green hisaab `docs/cursor-work/GREEN-BOARD/` (+ `NOT-GREEN/` side folder) — bana diya. Dobara mat banao; status badalne par sirf wahi row update.
 
 ## B4 GREEN (21 Oct 06:50): event-driven push Rust par server par chala, proof SAB PASS (family bhi). Dobara mat likho.
+
+## EK BLUEPRINT (21 Oct 06:55): docs/BLUEPRINT.md bana; MASTER-BUILD-PLAN + anexomail-blueprint par pointer. Naya blueprint mat banao, isi mein update.
