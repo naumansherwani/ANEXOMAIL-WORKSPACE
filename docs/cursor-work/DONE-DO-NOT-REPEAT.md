@@ -295,3 +295,8 @@ Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/cl
 - Sandbox: Chromium 1440/820/390 teeno par month/week/day/sheet, koi overflow nahi.
 - Baqi: server pull + live Chrome dekhna (har plan ek jaisa).
 - 22 Oct 04:10 LIVE Chrome: test series "Recurrence test (delete me)" "All events in the series" se cancel — toast "Meeting cancelled", Oct view khali => scope "all" PASS. Series saaf. Chrome extension wapas connect (disconnect ek-do baar hota hai; retry nahi, tabs_context se dekho).
+
+## 22 Oct 2026 03:45 — Calendar "Google-se-aage" roadmap (founder: "ek bhi nahi chodna")
+Founder ne spec bheji (Google sync, CalDAV, booking page, iMIP reply, event attachments, colors/overlay, timezone pins). Code-check: reminders / working hours / OOO / multiple calendars+colors / overlay / event attachments = KOI NAHI (grep 0). Agreed order:
+1 working hours + OOO + calendars/colors + reminders (SQL E57) -> 2 booking page B7c -> 3 iMIP reply (G26 click RSVP, phir inbound parse + sender verify) -> 4 timezone world-clock pins + team overlay (free/busy) + ICS subscribe -> 5 event attachments (reuse mail attach pipeline) -> 6 CalDAV server (app passwords, .well-known via Caddy additive) -> 7 Google Calendar OAuth sync (founder Google Cloud + verification pehle shuru) -> 8 rooms/resources as pseudo-attendee. Native store app / Meet-link = abhi nahi (reason chat mein).
+Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "Calendly/Meet se tez" — sirf measured LCP/INP targets.
