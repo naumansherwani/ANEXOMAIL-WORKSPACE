@@ -29,6 +29,7 @@ import { Route as EnterpriseRouteImport } from './routes/enterprise'
 import { Route as FounderRouteImport } from './routes/founder'
 import { Route as GetStartedRouteImport } from './routes/get-started'
 import { Route as HealthRouteImport } from './routes/health'
+import { Route as JoinRouteImport } from './routes/join'
 import { Route as MailRouteImport } from './routes/mail'
 import { Route as MigrationRouteImport } from './routes/migration'
 import { Route as MoveInRouteImport } from './routes/move-in'
@@ -39,13 +40,12 @@ import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PeopleRouteImport } from './routes/people'
 import { Route as PlansRouteImport } from './routes/plans'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as RsvpRouteImport } from './routes/rsvp'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as SecurityRouteImport } from './routes/security'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as StatusRouteImport } from './routes/status'
 import { Route as StorageRouteImport } from './routes/storage'
-import { Route as RsvpRouteImport } from './routes/rsvp'
-import { Route as JoinRouteImport } from './routes/join'
 import { Route as TrialEndedRouteImport } from './routes/trial-ended'
 import { Route as WorkRouteImport } from './routes/work'
 import { Route as AiAutomationRouteImport } from './routes/ai_.automation'
@@ -59,13 +59,13 @@ import { Route as AppAiCenterRouteImport } from './routes/app.ai-center'
 import { Route as AppAnalyticsRouteImport } from './routes/app.analytics'
 import { Route as AppBillingRouteImport } from './routes/app.billing'
 import { Route as AppCalendarRouteImport } from './routes/app.calendar'
-import { Route as AppDomainsRouteImport } from './routes/app.domains'
 import { Route as AppChatRouteImport } from './routes/app.chat'
 import { Route as AppCrmRouteImport } from './routes/app.crm'
 import { Route as AppDevicesRouteImport } from './routes/app.devices'
+import { Route as AppDomainsRouteImport } from './routes/app.domains'
 import { Route as AppFounderRouteImport } from './routes/app.founder'
-import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppImportRouteImport } from './routes/app.import'
+import { Route as AppIntegrationsRouteImport } from './routes/app.integrations'
 import { Route as AppMoveinRouteImport } from './routes/app.movein'
 import { Route as AppOrgRouteImport } from './routes/app.org'
 import { Route as AppPeopleRouteImport } from './routes/app.people'
@@ -280,6 +280,11 @@ const HealthRoute = HealthRouteImport.update({
   path: '/health',
   getParentRoute: () => rootRouteImport,
 } as any)
+const JoinRoute = JoinRouteImport.update({
+  id: '/join',
+  path: '/join',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MailRoute = MailRouteImport.update({
   id: '/mail',
   path: '/mail',
@@ -330,6 +335,11 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RsvpRoute = RsvpRouteImport.update({
+  id: '/rsvp',
+  path: '/rsvp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SearchRoute = SearchRouteImport.update({
   id: '/search',
   path: '/search',
@@ -353,16 +363,6 @@ const StatusRoute = StatusRouteImport.update({
 const StorageRoute = StorageRouteImport.update({
   id: '/storage',
   path: '/storage',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const RsvpRoute = RsvpRouteImport.update({
-  id: '/rsvp',
-  path: '/rsvp',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const JoinRoute = JoinRouteImport.update({
-  id: '/join',
-  path: '/join',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrialEndedRoute = TrialEndedRouteImport.update({
@@ -430,11 +430,6 @@ const AppCalendarRoute = AppCalendarRouteImport.update({
   path: '/calendar',
   getParentRoute: () => AppRoute,
 } as any)
-const AppDomainsRoute = AppDomainsRouteImport.update({
-  id: '/domains',
-  path: '/domains',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppChatRoute = AppChatRouteImport.update({
   id: '/chat',
   path: '/chat',
@@ -450,19 +445,24 @@ const AppDevicesRoute = AppDevicesRouteImport.update({
   path: '/devices',
   getParentRoute: () => AppRoute,
 } as any)
+const AppDomainsRoute = AppDomainsRouteImport.update({
+  id: '/domains',
+  path: '/domains',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppFounderRoute = AppFounderRouteImport.update({
   id: '/founder',
   path: '/founder',
   getParentRoute: () => AppRoute,
 } as any)
-const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
-  id: '/integrations',
-  path: '/integrations',
-  getParentRoute: () => AppRoute,
-} as any)
 const AppImportRoute = AppImportRouteImport.update({
   id: '/import',
   path: '/import',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppIntegrationsRoute = AppIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
   getParentRoute: () => AppRoute,
 } as any)
 const AppMoveinRoute = AppMoveinRouteImport.update({
@@ -1056,6 +1056,7 @@ export interface FileRoutesByFullPath {
   '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
   '/health': typeof HealthRoute
+  '/join': typeof JoinRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1066,13 +1067,12 @@ export interface FileRoutesByFullPath {
   '/people': typeof PeopleRoute
   '/plans': typeof PlansRoute
   '/privacy': typeof PrivacyRoute
+  '/rsvp': typeof RsvpRoute
   '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
-  '/rsvp': typeof RsvpRoute
-  '/join': typeof JoinRoute
   '/trial-ended': typeof TrialEndedRoute
   '/work': typeof WorkRoute
   '/ai/automation': typeof AiAutomationRoute
@@ -1085,13 +1085,13 @@ export interface FileRoutesByFullPath {
   '/app/analytics': typeof AppAnalyticsRouteWithChildren
   '/app/billing': typeof AppBillingRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
-  '/app/domains': typeof AppDomainsRoute
   '/app/chat': typeof AppChatRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/devices': typeof AppDevicesRoute
+  '/app/domains': typeof AppDomainsRoute
   '/app/founder': typeof AppFounderRoute
-  '/app/integrations': typeof AppIntegrationsRoute
   '/app/import': typeof AppImportRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
@@ -1227,6 +1227,7 @@ export interface FileRoutesByTo {
   '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
   '/health': typeof HealthRoute
+  '/join': typeof JoinRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1237,13 +1238,12 @@ export interface FileRoutesByTo {
   '/people': typeof PeopleRoute
   '/plans': typeof PlansRoute
   '/privacy': typeof PrivacyRoute
+  '/rsvp': typeof RsvpRoute
   '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
-  '/rsvp': typeof RsvpRoute
-  '/join': typeof JoinRoute
   '/trial-ended': typeof TrialEndedRoute
   '/work': typeof WorkRoute
   '/ai/automation': typeof AiAutomationRoute
@@ -1254,12 +1254,12 @@ export interface FileRoutesByTo {
   '/app/ai-center': typeof AppAiCenterRoute
   '/app/billing': typeof AppBillingRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
-  '/app/domains': typeof AppDomainsRoute
   '/app/chat': typeof AppChatRoute
   '/app/devices': typeof AppDevicesRoute
+  '/app/domains': typeof AppDomainsRoute
   '/app/founder': typeof AppFounderRoute
-  '/app/integrations': typeof AppIntegrationsRoute
   '/app/import': typeof AppImportRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/people': typeof AppPeopleRoute
   '/app/safety': typeof AppSafetyRoute
@@ -1390,6 +1390,7 @@ export interface FileRoutesById {
   '/founder': typeof FounderRouteWithChildren
   '/get-started': typeof GetStartedRoute
   '/health': typeof HealthRoute
+  '/join': typeof JoinRoute
   '/mail': typeof MailRoute
   '/migration': typeof MigrationRoute
   '/move-in': typeof MoveInRoute
@@ -1400,13 +1401,12 @@ export interface FileRoutesById {
   '/people': typeof PeopleRoute
   '/plans': typeof PlansRoute
   '/privacy': typeof PrivacyRoute
+  '/rsvp': typeof RsvpRoute
   '/search': typeof SearchRoute
   '/security': typeof SecurityRoute
   '/settings': typeof SettingsRoute
   '/status': typeof StatusRoute
   '/storage': typeof StorageRoute
-  '/rsvp': typeof RsvpRoute
-  '/join': typeof JoinRoute
   '/trial-ended': typeof TrialEndedRoute
   '/work': typeof WorkRoute
   '/ai_/automation': typeof AiAutomationRoute
@@ -1419,13 +1419,13 @@ export interface FileRoutesById {
   '/app/analytics': typeof AppAnalyticsRouteWithChildren
   '/app/billing': typeof AppBillingRouteWithChildren
   '/app/calendar': typeof AppCalendarRoute
-  '/app/domains': typeof AppDomainsRoute
   '/app/chat': typeof AppChatRoute
   '/app/crm': typeof AppCrmRouteWithChildren
   '/app/devices': typeof AppDevicesRoute
+  '/app/domains': typeof AppDomainsRoute
   '/app/founder': typeof AppFounderRoute
-  '/app/integrations': typeof AppIntegrationsRoute
   '/app/import': typeof AppImportRoute
+  '/app/integrations': typeof AppIntegrationsRoute
   '/app/movein': typeof AppMoveinRoute
   '/app/org': typeof AppOrgRouteWithChildren
   '/app/people': typeof AppPeopleRoute
@@ -1564,6 +1564,7 @@ export interface FileRouteTypes {
     | '/founder'
     | '/get-started'
     | '/health'
+    | '/join'
     | '/mail'
     | '/migration'
     | '/move-in'
@@ -1574,13 +1575,12 @@ export interface FileRouteTypes {
     | '/people'
     | '/plans'
     | '/privacy'
+    | '/rsvp'
     | '/search'
     | '/security'
     | '/settings'
     | '/status'
     | '/storage'
-    | '/rsvp'
-    | '/join'
     | '/trial-ended'
     | '/work'
     | '/ai/automation'
@@ -1593,13 +1593,13 @@ export interface FileRouteTypes {
     | '/app/analytics'
     | '/app/billing'
     | '/app/calendar'
-    | '/app/domains'
     | '/app/chat'
     | '/app/crm'
     | '/app/devices'
+    | '/app/domains'
     | '/app/founder'
-    | '/app/integrations'
     | '/app/import'
+    | '/app/integrations'
     | '/app/movein'
     | '/app/org'
     | '/app/people'
@@ -1735,6 +1735,7 @@ export interface FileRouteTypes {
     | '/founder'
     | '/get-started'
     | '/health'
+    | '/join'
     | '/mail'
     | '/migration'
     | '/move-in'
@@ -1745,13 +1746,12 @@ export interface FileRouteTypes {
     | '/people'
     | '/plans'
     | '/privacy'
+    | '/rsvp'
     | '/search'
     | '/security'
     | '/settings'
     | '/status'
     | '/storage'
-    | '/rsvp'
-    | '/join'
     | '/trial-ended'
     | '/work'
     | '/ai/automation'
@@ -1762,12 +1762,12 @@ export interface FileRouteTypes {
     | '/app/ai-center'
     | '/app/billing'
     | '/app/calendar'
-    | '/app/domains'
     | '/app/chat'
     | '/app/devices'
+    | '/app/domains'
     | '/app/founder'
-    | '/app/integrations'
     | '/app/import'
+    | '/app/integrations'
     | '/app/movein'
     | '/app/people'
     | '/app/safety'
@@ -1897,6 +1897,7 @@ export interface FileRouteTypes {
     | '/founder'
     | '/get-started'
     | '/health'
+    | '/join'
     | '/mail'
     | '/migration'
     | '/move-in'
@@ -1907,13 +1908,12 @@ export interface FileRouteTypes {
     | '/people'
     | '/plans'
     | '/privacy'
+    | '/rsvp'
     | '/search'
     | '/security'
     | '/settings'
     | '/status'
     | '/storage'
-    | '/rsvp'
-    | '/join'
     | '/trial-ended'
     | '/work'
     | '/ai_/automation'
@@ -1926,13 +1926,13 @@ export interface FileRouteTypes {
     | '/app/analytics'
     | '/app/billing'
     | '/app/calendar'
-    | '/app/domains'
     | '/app/chat'
     | '/app/crm'
     | '/app/devices'
+    | '/app/domains'
     | '/app/founder'
-    | '/app/integrations'
     | '/app/import'
+    | '/app/integrations'
     | '/app/movein'
     | '/app/org'
     | '/app/people'
@@ -2070,6 +2070,7 @@ export interface RootRouteChildren {
   FounderRoute: typeof FounderRouteWithChildren
   GetStartedRoute: typeof GetStartedRoute
   HealthRoute: typeof HealthRoute
+  JoinRoute: typeof JoinRoute
   MailRoute: typeof MailRoute
   MigrationRoute: typeof MigrationRoute
   MoveInRoute: typeof MoveInRoute
@@ -2080,13 +2081,12 @@ export interface RootRouteChildren {
   PeopleRoute: typeof PeopleRoute
   PlansRoute: typeof PlansRoute
   PrivacyRoute: typeof PrivacyRoute
+  RsvpRoute: typeof RsvpRoute
   SearchRoute: typeof SearchRoute
   SecurityRoute: typeof SecurityRoute
   SettingsRoute: typeof SettingsRoute
   StatusRoute: typeof StatusRoute
   StorageRoute: typeof StorageRoute
-  RsvpRoute: typeof RsvpRoute
-  JoinRoute: typeof JoinRoute
   TrialEndedRoute: typeof TrialEndedRoute
   WorkRoute: typeof WorkRoute
   AiAutomationRoute: typeof AiAutomationRoute
@@ -2240,6 +2240,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HealthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/join': {
+      id: '/join'
+      path: '/join'
+      fullPath: '/join'
+      preLoaderRoute: typeof JoinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mail': {
       id: '/mail'
       path: '/mail'
@@ -2310,6 +2317,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/rsvp': {
+      id: '/rsvp'
+      path: '/rsvp'
+      fullPath: '/rsvp'
+      preLoaderRoute: typeof RsvpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/search': {
       id: '/search'
       path: '/search'
@@ -2343,20 +2357,6 @@ declare module '@tanstack/react-router' {
       path: '/storage'
       fullPath: '/storage'
       preLoaderRoute: typeof StorageRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/rsvp': {
-      id: '/rsvp'
-      path: '/rsvp'
-      fullPath: '/rsvp'
-      preLoaderRoute: typeof RsvpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/join': {
-      id: '/join'
-      path: '/join'
-      fullPath: '/join'
-      preLoaderRoute: typeof JoinRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/trial-ended': {
@@ -2450,13 +2450,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppCalendarRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/domains': {
-      id: '/app/domains'
-      path: '/domains'
-      fullPath: '/app/domains'
-      preLoaderRoute: typeof AppDomainsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/chat': {
       id: '/app/chat'
       path: '/chat'
@@ -2478,6 +2471,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDevicesRouteImport
       parentRoute: typeof AppRoute
     }
+    '/app/domains': {
+      id: '/app/domains'
+      path: '/domains'
+      fullPath: '/app/domains'
+      preLoaderRoute: typeof AppDomainsRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/app/founder': {
       id: '/app/founder'
       path: '/founder'
@@ -2485,18 +2485,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFounderRouteImport
       parentRoute: typeof AppRoute
     }
-    '/app/integrations': {
-      id: '/app/integrations'
-      path: '/integrations'
-      fullPath: '/app/integrations'
-      preLoaderRoute: typeof AppIntegrationsRouteImport
-      parentRoute: typeof AppRoute
-    }
     '/app/import': {
       id: '/app/import'
       path: '/import'
       fullPath: '/app/import'
       preLoaderRoute: typeof AppImportRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/app/integrations': {
+      id: '/app/integrations'
+      path: '/integrations'
+      fullPath: '/app/integrations'
+      preLoaderRoute: typeof AppIntegrationsRouteImport
       parentRoute: typeof AppRoute
     }
     '/app/movein': {
@@ -3560,13 +3560,13 @@ interface AppRouteChildren {
   AppAnalyticsRoute: typeof AppAnalyticsRouteWithChildren
   AppBillingRoute: typeof AppBillingRouteWithChildren
   AppCalendarRoute: typeof AppCalendarRoute
-  AppDomainsRoute: typeof AppDomainsRoute
   AppChatRoute: typeof AppChatRoute
   AppCrmRoute: typeof AppCrmRouteWithChildren
   AppDevicesRoute: typeof AppDevicesRoute
+  AppDomainsRoute: typeof AppDomainsRoute
   AppFounderRoute: typeof AppFounderRoute
-  AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppImportRoute: typeof AppImportRoute
+  AppIntegrationsRoute: typeof AppIntegrationsRoute
   AppMoveinRoute: typeof AppMoveinRoute
   AppOrgRoute: typeof AppOrgRouteWithChildren
   AppPeopleRoute: typeof AppPeopleRoute
@@ -3609,13 +3609,13 @@ const AppRouteChildren: AppRouteChildren = {
   AppAnalyticsRoute: AppAnalyticsRouteWithChildren,
   AppBillingRoute: AppBillingRouteWithChildren,
   AppCalendarRoute: AppCalendarRoute,
-  AppDomainsRoute: AppDomainsRoute,
   AppChatRoute: AppChatRoute,
   AppCrmRoute: AppCrmRouteWithChildren,
   AppDevicesRoute: AppDevicesRoute,
+  AppDomainsRoute: AppDomainsRoute,
   AppFounderRoute: AppFounderRoute,
-  AppIntegrationsRoute: AppIntegrationsRoute,
   AppImportRoute: AppImportRoute,
+  AppIntegrationsRoute: AppIntegrationsRoute,
   AppMoveinRoute: AppMoveinRoute,
   AppOrgRoute: AppOrgRouteWithChildren,
   AppPeopleRoute: AppPeopleRoute,
@@ -3685,6 +3685,7 @@ const rootRouteChildren: RootRouteChildren = {
   FounderRoute: FounderRouteWithChildren,
   GetStartedRoute: GetStartedRoute,
   HealthRoute: HealthRoute,
+  JoinRoute: JoinRoute,
   MailRoute: MailRoute,
   MigrationRoute: MigrationRoute,
   MoveInRoute: MoveInRoute,
@@ -3695,13 +3696,12 @@ const rootRouteChildren: RootRouteChildren = {
   PeopleRoute: PeopleRoute,
   PlansRoute: PlansRoute,
   PrivacyRoute: PrivacyRoute,
+  RsvpRoute: RsvpRoute,
   SearchRoute: SearchRoute,
   SecurityRoute: SecurityRoute,
   SettingsRoute: SettingsRoute,
   StatusRoute: StatusRoute,
   StorageRoute: StorageRoute,
-  RsvpRoute: RsvpRoute,
-  JoinRoute: JoinRoute,
   TrialEndedRoute: TrialEndedRoute,
   WorkRoute: WorkRoute,
   AiAutomationRoute: AiAutomationRoute,
