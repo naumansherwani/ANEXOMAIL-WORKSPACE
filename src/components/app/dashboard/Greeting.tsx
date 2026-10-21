@@ -93,8 +93,9 @@ export function Greeting({
       className="flex items-start justify-between gap-6"
     >
       <div className="min-w-0">
-        <p className="ax-eyebrow">{t("Command center")}</p>
-        <h2 className="ax-display mt-2 text-foreground">
+        {/* "Command center" sirf founder ke liye (22 Oct hukm) — real user ko yeh label nahi dikhta */}
+        {session?.user.is_founder ? <p className="ax-eyebrow">{t("Command center")}</p> : null}
+        <h2 className={`ax-display text-foreground ${session?.user.is_founder ? "mt-2" : ""}`}>
           {greeting.text}
           {firstName ? `, ${firstName}` : ""} {greeting.emoji}
         </h2>
