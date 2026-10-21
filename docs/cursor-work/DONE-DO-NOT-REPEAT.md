@@ -129,4 +129,4 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 
 ## Universal UI mechanism (21 Oct 05:00): AGENTS Rule 37 + `src/lib/tier-guard.test.ts` (ratchet, baseline 18) + `tier-sweep.sh`. Package-wise alag edit nahi; tier farq sirf plan-surface.ts capability se.
 
-## B2 READY (21 Oct 05:35): passkey/recovery login Rust par — code+tests+installer+proof repo mein; server par chalna baqi. GREEN sirf `rust-passkey-install.sh` proof + Web pull ke baad. Dobara mat likho.
+## B2 GREEN (21 Oct 05:50): passkey/recovery login Rust par server par chala, proof SAB PASS + Web pull. Dobara mat likho.
