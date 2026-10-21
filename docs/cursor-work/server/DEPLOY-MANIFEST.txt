@@ -335,4 +335,4 @@ src/components/site/BootSplash.tsx 236493e056acc67c
 docs/claude/BILLING-PORTAL-BLUEPRINT.md efe53440d1cbfd49
 portal/public/index.html 4c466e37e6bb5dec
 docs/cursor-work/server/caddy-billingportal.sh c87dccf4b7476e61
-docs/cursor-work/server/polar-control-plane-install.sh 8d363a08501ec914
+docs/cursor-work/server/polar-control-plane-install.sh df8da2a70ce21261

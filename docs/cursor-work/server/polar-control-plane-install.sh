@@ -94,7 +94,6 @@ fi
 ok "build theek"
 
 say "4/5 restart + PROOF"
-M0="$(curl -fsS -m 6 "$L/metrics" 2>/dev/null | grep -o '"received": *[0-9]*' | grep -o '[0-9]*$' || echo 0)"
 pm2 restart "$PM2N" --update-env >/dev/null 2>&1 || restore "pm2 restart fail"
 pm2 save >/dev/null 2>&1 || true
 for i in $(seq 1 30); do
@@ -103,6 +102,8 @@ for i in $(seq 1 30); do
 done
 
 FAIL=0
+# metrics process-local hain (restart par zero) => baseline restart KE BAAD lena zaroori hai
+M0="$(curl -fsS -m 6 "$L/metrics" 2>/dev/null | grep -o '"received": *[0-9]*' | grep -o '[0-9]*$' || echo 0)"
 curl -fsS -m 8 "$L/ready" | grep -q '"ready":true' && ok "/ready true" || { bad "/ready"; FAIL=1; }
 H="$(curl -fsS -m 8 "$L/health" 2>/dev/null)"
 echo "$H" | grep -q '"webhook_secret":true' && ok "/health: webhook secrets loaded" || { bad "/health webhook secret nahi"; FAIL=1; }
