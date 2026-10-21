@@ -30,3 +30,5 @@
 
 ## Har batch ka usool (dobara likhna nahi parega)
 memory pehle update -> advanced code -> sandbox proof -> poore pull commands -> "green" sirf founder ke server output ke baad -> frontend+backend combo audit (390/820/1440) -> manifest-sync + verify -> commit/push + `/home/claude/sandbox-state/` copies.
+
+## STATUS 22:05 — B6a code likha ja chuka (0a32282). Ab sirf SERVER INSTALL + founder output + GREEN. Phir B6b (checkout prewarm, founder ijazat) / B6c. Phir B7 (calendar), B8. Code dobara mat likho — DONE-DO-NOT-REPEAT.md dekho.
