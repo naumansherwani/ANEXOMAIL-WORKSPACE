@@ -398,8 +398,8 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/v1/replay", post(replay_dead))
         .route("/api/v1/reconcile", post(reconcile_now))
         .route("/api/v1/checkout", post(create_checkout))
-        .route("/api/v1/checkout/:id", get(read_checkout))
-        .route("/api/v1/billing/:user_id", get(read_billing))
+        .route("/api/v1/checkout/{id}", get(read_checkout))
+        .route("/api/v1/billing/{user_id}", get(read_billing))
         .route("/api/v1/portal", post(create_portal))
         .route_layer(axum::middleware::from_fn_with_state(state.clone(), pcp_gate));
 

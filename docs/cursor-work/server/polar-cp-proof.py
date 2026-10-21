@@ -129,7 +129,7 @@ try:
         extra = set(jn) - set(jo)
         check(f"{path}: status barabar ({so}/{sn})", so == sn)
         check(f"{path}: purani saari keys maujood", set(jo) <= set(jn))
-        check(f"{path}: naya sirf pcp_* jodta hai", extra <= {"pcp_ok", "pcp_denied"}, extra)
+        check(f"{path}: naya sirf pcp_* + secrets_complete jodta hai", extra <= {"pcp_ok", "pcp_denied", "secrets_complete"}, extra)
 
     print("\n== C. PURANA ENGINE: sabit karo ke darwaaza khula tha ==")
     s, b = req(3491, "GET", f"/api/v1/billing/{UID}")
