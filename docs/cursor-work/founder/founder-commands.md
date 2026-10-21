@@ -532,3 +532,9 @@ HALAT 22 Oct 04:50: READY — account-level calendar pref. Teen alag commands (h
 2) Rust:  git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)
 3) Web:   bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6
 SAHI NAAM (founder ne poocha "E57 tha E58 kyun"): SQL ab E57_ui_pref + CHECK_E57 (E58 nahi). Command: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E57_ui_pref CHECK_E57
+
+## 22 Oct 2026 04:25 — founder: "sari commands run ki hain, green hai; jitna kaam hai green karo, repo update compact se pehle"
+HALAT: GREEN (founder ke server output + Chrome live, 1440, Pro session):
+- E57 SQL + Rust locale.uipref + Web pull chale (founder). Live: Classic default (rail + week grid, do scrollbar), clock "Karachi" (GMT nahi), Auto=12h (PK), 24h switch grid/clock badalta hai, Expanded toggle, account-save SABIT: localStorage saaf + reload => expanded/24h server se wapas aaya. Pasand wapas Classic/Auto kar di.
+- Phone 390 / tablet 820 LIVE nahi dekha (extension window resize nahi hua) — sirf sandbox (Playwright) mein PASS; live phone check founder ke phone ke screenshot ya agle Chrome mauqe par.
+AGLA: E58 (working hours, out-of-office, calendars+colors, reminders) -> booking page B7c -> iMIP reply G26 -> CalDAV -> Google sync.
