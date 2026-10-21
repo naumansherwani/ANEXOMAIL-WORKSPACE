@@ -51,7 +51,13 @@ export function WorkspaceLoader({ label }: { label?: string }) {
 
       {/* Brand + status */}
       <div className="ax-loader-brand relative z-10 mt-10 flex flex-col items-center">
-        <Fx3D scene="logo" className="pointer-events-none mb-2 h-28 w-28" fallback={<BrandMark home={false} />} label="Spinning ANEXOMAIL logo" />
+        <Fx3D
+          scene="logo"
+          className="pointer-events-none mb-2 h-28 w-28"
+          fallback={<BrandMark compact home={false} />}
+          hideFallbackWhenLive
+          label="Spinning ANEXOMAIL logo"
+        />
         <BrandMark home={false} />
         <p className="ax-caption mt-4 text-steel">{label ?? t("Opening your workspace")}</p>
         <div className="ax-loader-progress mt-3" aria-hidden>

@@ -10,7 +10,7 @@ src/components/app/AppShell.tsx aa518d26a77538c2
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx da6ea0bd32b5fa35
-src/styles.css fea7c708305fa984
+src/styles.css f4abc84c01553a8d
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md d372a3eb43ff31fe
+docs/cursor-work/DONE-DO-NOT-REPEAT.md aa4ebfed1ac1ff5a
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -228,14 +228,14 @@ docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
 server/routes/auth-passkey.ts 1c3323da4c6fdeca
 docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
 src/lib/fx.ts 801eab59f8d63f54
-src/components/fx/Fx3D.tsx d4bbbb32b593ab7b
+src/components/fx/Fx3D.tsx c86d1c0f2af292ec
 src/components/fx/Stage.tsx 4ad7cd7bfe088bca
 src/components/fx/MailboxScene.tsx 2b25f9e3f1fbc94b
 src/components/fx/LogoScene.tsx 5630e27d3e2a9672
 src/components/fx/OrbScene.tsx 7709e50fb0c21387
 src/components/fx/GemScene.tsx e51392ff7bc1bec5
 src/components/fx/TiltCard.tsx d4972cae3ca77cf7
-src/components/app/WorkspaceLoader.tsx c90bab09456fadf1
+src/components/app/WorkspaceLoader.tsx 7e9c05802a16b56b
 server/lib/auth-harden.ts 024b4bc0a34ff47c
 server/lib/auth-harden.test.ts 7f48134d9beead8a
 server/lib/supa.ts 859a9dbbf8c3b8d7

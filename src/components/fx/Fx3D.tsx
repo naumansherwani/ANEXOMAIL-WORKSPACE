@@ -15,13 +15,26 @@ const GemScene = lazy(() => import("./GemScene"));
 export type SceneProps = { tier: Exclude<FxTier, "off">; active: boolean; plan?: string; variant?: "inbox" | "calendar" };
 export type SceneName = "mailbox" | "logo" | "orb" | "gem";
 
-class Guard extends Component<{ children: ReactNode; fallback: ReactNode }, { bad: boolean }> {
+/** Lazy scene ke mount hone par ek baar bolta hai ("3D ab screen par hai") — Suspense ke andar sirf resolve ke baad chalta hai. */
+function Ready({ onReady }: { onReady: () => void }) {
+  useEffect(() => {
+    // 2 frame ruko: canvas ka pehla frame paint ho chuke, tab fallback hatao (khali jhalak na aaye)
+    let a = requestAnimationFrame(() => {
+      a = requestAnimationFrame(onReady);
+    });
+    return () => cancelAnimationFrame(a);
+  }, [onReady]);
+  return null;
+}
+
+class Guard extends Component<{ children: ReactNode; fallback: ReactNode; onBad?: () => void }, { bad: boolean }> {
   state = { bad: false };
   static getDerivedStateFromError() {
     return { bad: true };
   }
   componentDidCatch() {
     /* 3D fail ho to fallback — kuch aur nahi tootta */
+    this.props.onBad?.();
   }
   render() {
     return this.state.bad ? this.props.fallback : this.props.children;
@@ -35,6 +48,7 @@ export function Fx3D({
   plan,
   variant,
   label,
+  hideFallbackWhenLive = false,
 }: {
   scene: SceneName;
   className?: string;
@@ -42,8 +56,11 @@ export function Fx3D({
   plan?: string;
   variant?: "inbox" | "calendar";
   label?: string;
+  /** true: jab 3D asli mein chal pade to 2D fallback chhup jaye (transparent canvas ke neeche dobara logo na dikhe). 3D fail ho to fallback wapas. */
+  hideFallbackWhenLive?: boolean;
 }) {
   const tier = useFxTier();
+  const [live3d, setLive3d] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const [seen, setSeen] = useState(false);
   const [active, setActive] = useState(false);
@@ -74,11 +91,15 @@ export function Fx3D({
   return (
     <div ref={ref} className={`relative ${className}`} data-fx-scene={scene} role="img" aria-label={label ?? "Decorative 3D scene"}>
       {/* fallback hamesha neeche — 3D aane tak ya na aane par bhi jagah bhari rehti hai */}
-      <div className="absolute inset-0 flex items-center justify-center" aria-hidden>
+      <div
+        className="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
+        style={hideFallbackWhenLive && live3d ? { opacity: 0 } : undefined}
+        aria-hidden
+      >
         {fallback}
       </div>
       {props && (
-        <Guard fallback={null}>
+        <Guard fallback={null} onBad={() => setLive3d(false)}>
           <Suspense fallback={null}>
             <div className="absolute inset-0">
               {scene === "mailbox" && <MailboxScene {...props} />}
@@ -86,6 +107,7 @@ export function Fx3D({
               {scene === "orb" && <OrbScene {...props} />}
               {scene === "gem" && <GemScene {...props} />}
             </div>
+            <Ready onReady={() => setLive3d(true)} />
           </Suspense>
         </Guard>
       )}
