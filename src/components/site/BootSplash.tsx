@@ -6,7 +6,7 @@
  * (plain markup + inline CSS, zero JS needed to paint), uses the REAL BrandMark (no second copy of the logo), and fades
  * out the moment React mounts (RootComponent sets `data-ax-ready`) so WorkspaceLoader takes over seamlessly.
  *
- * Only on /app* (client-rendered area). Public pages are server-rendered with real content — an overlay there would
+ * Only on client-rendered (ssr:false) routes (22 Oct: /app se badha kar auth, checkout/done, claim, join, onboarding, rsvp, trial-ended, founder/preview). Public pages are server-rendered with real content — an overlay there would
  * HIDE content and slow what people see, so an inline script marks them ready before first paint (landing untouched).
  * Failsafe: 15 s after load the overlay lets go no matter what, so it can never trap a user. Reduced motion respected.
  */
@@ -30,8 +30,8 @@ html[data-ax-ready] #ax-boot{opacity:0;visibility:hidden;pointer-events:none;tra
 @media (prefers-reduced-motion:reduce){#ax-boot svg,#ax-boot .w,#ax-boot .b,#ax-boot .b i{animation:none!important}}
 `;
 
-/** Runs in <head> before first paint. Non-/app paths: overlay off at once. /app: off after 15 s at the latest. */
-export const BOOT_SCRIPT = `(function(){var d=document.documentElement;if(!/^\\/app(\\/|$)/.test(location.pathname)){d.setAttribute("data-ax-ready","");return}setTimeout(function(){d.setAttribute("data-ax-ready","")},15000)})();`;
+/** Runs in <head> before first paint. Public SSR pages (landing etc.): overlay off at once. Client-rendered (ssr:false) pages — /app, /auth, /checkout/done, /claim, /join, /onboarding, /rsvp, /trial-ended, /founder/preview — overlay on, 15 s failsafe. */
+export const BOOT_SCRIPT = `(function(){var d=document.documentElement;if(!/^\\/(app|auth|checkout\\/done|claim|join|onboarding|rsvp|trial-ended|founder\\/preview)(\\/|$)/.test(location.pathname)){d.setAttribute("data-ax-ready","");return}setTimeout(function(){d.setAttribute("data-ax-ready","")},15000)})();`;
 
 export function BootSplash() {
   return (

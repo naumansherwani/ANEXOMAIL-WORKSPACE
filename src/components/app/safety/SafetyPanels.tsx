@@ -1,4 +1,5 @@
-import { Eye, Flag, Gavel, Loader2 } from "lucide-react";
+import { BrandSpinner, InlineLoading } from "@/components/state/BrandLoader";
+import { Eye, Flag, Gavel } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -105,7 +106,7 @@ export function ReportForm({
         className="h-8 text-xs"
       />
       <Button size="sm" type="submit" disabled={!subject.trim() || report.isPending}>
-        {report.isPending && <Loader2 className="size-3.5 animate-spin" />}
+        {report.isPending && <BrandSpinner className="size-3.5" />}
         File report
       </Button>
       <p className="ax-caption text-steel">
@@ -118,7 +119,7 @@ export function ReportForm({
 
 export function MyStanding() {
   const q = useSafetyStanding();
-  if (q.isPending) return <p className="ax-caption text-muted-foreground">Loading…</p>;
+  if (q.isPending) return <InlineLoading label="Loading…" />;
   if (q.error)
     return (
       <p className="ax-caption text-amber-400">Standing didn&apos;t load: {q.error.message}</p>
@@ -156,7 +157,7 @@ export function SafetyReviewQueue() {
   const reveal = useRevealEvidence();
   const [opened, setOpened] = useState<Record<string, string>>({});
 
-  if (q.isPending) return <p className="ax-caption text-muted-foreground">Loading queue…</p>;
+  if (q.isPending) return <InlineLoading label="Loading queue…" />;
   if (q.error) return <p className="ax-caption text-amber-400">{q.error.message}</p>;
   if (q.data && q.data.ok === false)
     return (

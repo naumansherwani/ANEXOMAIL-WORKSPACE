@@ -2,7 +2,7 @@
 # Format: <repo path> <sha256 pehle 16 akshar>. Sirf woh files jo server par lagni hain.
 # Agent file badalte hi yahan sha update karta hai (sha256sum <file> | cut -c1-16).
 # Sirf /opt/anexomail-web ki files. Rust/Brain alag block se.
-src/routes/app.domains.tsx 8671f21906791c51
+src/routes/app.domains.tsx e98909709a51f120
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
@@ -10,7 +10,7 @@ src/components/app/AppShell.tsx aa518d26a77538c2
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx da6ea0bd32b5fa35
-src/styles.css 0dbf42bf16f9c983
+src/styles.css b3b39caa283d7fa2
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -18,7 +18,7 @@ src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 6a416ad77849a07c
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
-src/components/app/compose/ComposeStudio.tsx 2e508aae6e3e3a6b
+src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
@@ -41,10 +41,10 @@ src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts a5dc71c3d3686f1f
 src/routes/app.billing.tsx 2d1b959d742e6a2e
-src/routes/app.account.tsx 027e460f1c6cd2a2
+src/routes/app.account.tsx c0100b3fe2df2619
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
-src/routes/app.admin.members.tsx b75efea04cb39d90
-src/routes/app.admin.teams.tsx e97e4983a7605ae5
+src/routes/app.admin.members.tsx 36e5510fd5d4ba79
+src/routes/app.admin.teams.tsx d45f69cb4d910fa5
 src/components/app/CrossPlatformBar.tsx ab6434edc184c235
 src/lib/billing-platform.ts 39bb9d2ffd153ad8
 src/routes/app.founder_.billing.tsx 66c2dc943a5fb57b
@@ -53,7 +53,7 @@ src/routes/migration.tsx fbfcf96604b56446
 src/components/site/LeadForm.tsx f8927b662e41d639
 src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
-src/components/app/calendar/IcsImport.tsx e14ce1f4d85f9eb7
+src/components/app/calendar/IcsImport.tsx 4f9a9943bcf9ad9a
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
 src/lib/plan-surface.ts 1fef7c4c84f09c7d
 src/components/app/dashboard/Greeting.tsx d55aa491193cb906
@@ -62,7 +62,7 @@ src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
 src/components/app/mail/ThreadList.tsx d8fc33d6ba0336ec
 src/routes/app.admin.audit.tsx c7884b9e5e926572
 src/routes/app.admin.diagnostics.tsx 74d7869da9bcda74
-src/routes/app.admin.export.tsx 4879f16dfcfad346
+src/routes/app.admin.export.tsx be039aaaca4d1ae5
 src/routes/app.admin.health.tsx e52d5a397b2c31e8
 src/routes/app.admin.logs.tsx 1d7fe12770035f11
 src/routes/app.admin.reports.tsx f9765eb2f3c50ef0
@@ -71,25 +71,25 @@ src/routes/app.org.compliance.tsx 584f2d054ea4efea
 src/components/app/org/LedgerPanel.tsx 060c6f042e8a14bd
 src/lib/org-export.ts 221df989c4969375
 src/lib/report-figures.ts 21b05c7f52004220
-src/components/app/work/DecisionLedger.tsx 9db8efa39f1818f8
-src/components/app/work/PromiseRecovery.tsx edc25ad6992fda60
+src/components/app/work/DecisionLedger.tsx 5db4d0eb44ee890a
+src/components/app/work/PromiseRecovery.tsx a490927789d4bd77
 src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
-src/components/app/people/ContactsImport.tsx f950e77dc93935b6
+src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
 src/lib/calendar.ts 3a7d8eaea5b1aab4
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx 5481e4191b3f421c
 src/components/app/calendar/EventDetail.tsx 3f6a9025086ddc26
-src/components/app/calendar/Guests.tsx dffa0499316208d9
+src/components/app/calendar/Guests.tsx ca86023d04a582a7
 src/components/app/calendar/FindTime.tsx 499767b811ead3f3
 src/routes/rsvp.tsx 126ff4cb28431afd
 src/routeTree.gen.ts 86e576c512b7306b
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
-src/routes/auth.tsx 15b64d022e3cb05f
+src/routes/auth.tsx 4a4972ab463fcb94
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -98,7 +98,7 @@ src/lib/ia.ts 360ed83914f46c1b
 src/lib/migration-report.ts 891244cee18a2821
 src/lib/migration.ts d0b8fbc0336aea9c
 src/routes/app.admin.migrate.tsx 2c150b039eb1f772
-src/components/app/migrate/ImportMailPage.tsx 73dfc0e8312acadb
+src/components/app/migrate/ImportMailPage.tsx 1142ff3adc903f76
 src/routes/app.import.tsx c85edcdc1d377621
 src/components/app/mail/MailRail.tsx 53a2e7f6b93b96b6
 src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
@@ -133,7 +133,7 @@ docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
 docs/cursor-work/server/device-hash-migrate.sh a23c198866587da0
 src/lib/passkey.ts 4ef2ca2c50c5457f
 src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
-src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
+src/components/app/security/PasskeyGate.tsx 352233554cdc0116
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c
 docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
 docs/cursor-work/TECH-MAP.md 4689acd147ef4735
@@ -141,7 +141,7 @@ server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
 docs/cursor-work/server/rust-engine-install.sh 92ba8901deca4e4b
-src/components/app/security/IntegrityGate.tsx 2d1385eb5d62c751
+src/components/app/security/IntegrityGate.tsx c2c6092f7fdef7a6
 src/lib/account-export.ts a9bc75ae97a15153
 docs/cursor-work/sql/E45_integrity_purge.sql 4cc5092c77e9f0e9
 docs/cursor-work/server/brain-integrity-install.sh abe68ebd496f7028
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 3f21164cf567d564
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 955cc04e11b90699
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -163,7 +163,7 @@ docs/cursor-work/sql/E46_integrity_notices_appeal.sql 62e63fafb304b159
 docs/cursor-work/sql/E47_device_revoke_real_sessions.sql e49676f1750d6dbb
 server/rust/device_core.rs fbfbfac4b8ad41fd
 server/rust/device_glue.rs f234c8637dc504d6
-src/components/app/security/DeviceVaultPanel.tsx 762e353ee01093f8
+src/components/app/security/DeviceVaultPanel.tsx 9cf95483da96bd08
 server/mail-worker.ts 40fc4a9fd34aa0dd
 server/mail/sendmail.ts 349c9163d9a1e592
 server/routes/mail-compose.ts 9e68b9af8c930b21
@@ -323,15 +323,15 @@ src/routes/app.movein.tsx db2a5d3341081843
 src/routes/status.tsx 63446194a25640c4
 src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e
 docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
-src/routes/app.founder.tsx 55493891045ccb78
+src/routes/app.founder.tsx aba91747c5c00284
 docs/claude/FOUNDER-WORKSPACE-PLAN.md 5732f90e95270367
 docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
 docs/claude/EVENING-PENDING-2026-10-21.md 544b444b7e60c955
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
-src/components/app/billing/ManageBilling.tsx 4a7b9f37c032c3ce
+src/components/app/billing/ManageBilling.tsx 99c528b016f084ce
 src/routes/billing-policy.tsx 319299016682f12e
-src/components/site/BootSplash.tsx 236493e056acc67c
+src/components/site/BootSplash.tsx 050ad56cd525094c
 docs/claude/BILLING-PORTAL-BLUEPRINT.md efe53440d1cbfd49
 portal/public/index.html 4c466e37e6bb5dec
 docs/cursor-work/server/caddy-billingportal.sh c87dccf4b7476e61
@@ -339,3 +339,15 @@ docs/cursor-work/server/polar-control-plane-install.sh df8da2a70ce21261
 server/rust/polar-payment/main.rs 44c699ae4ea9b670
 docs/cursor-work/server/polar-secrets-install.sh 0df1d4d5a530f2d0
 docs/cursor-work/server/polar-secrets-proof.py bfe236119abb0a49
+src/components/app/chat/FileTransfers.tsx ecb3bba321699a1f
+src/components/app/safety/SafetyPanels.tsx 279e4cc7afc2b2f9
+src/components/app/work/WorkChainBoard.tsx 32dbcc104db8f5d7
+src/components/site/ConvertToBusiness.tsx 67474c7622d3134e
+src/components/site/PlanCheckoutButton.tsx 45204c00bd9e267f
+src/components/site/WorkspaceKindCards.tsx 64cc3a54d2b2bd84
+src/router.tsx 51db1d45b9cef095
+src/routes/app.safety.tsx cf3f6060251021d2
+src/routes/auth_.callback.tsx 7b6e0e097af5c818
+src/routes/claim.tsx 152c22b3ac3470a0
+src/routes/onboarding.tsx 246b62d511649ddb
+src/components/state/BrandLoader.tsx 50e644941f822d44

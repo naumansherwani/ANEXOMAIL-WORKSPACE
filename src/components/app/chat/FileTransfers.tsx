@@ -5,13 +5,13 @@
  * progress sirf verified chunks se, resume/pause asli transfer identity par,
  * aur transport label wahi jo asal mein use ho raha hai (HTTP/3 ya fallback).
  */
+import { BrandSpinner, InlineLoading } from "@/components/state/BrandLoader";
 import { useRef, useState } from "react";
 import {
   CheckCircle2,
   Circle,
   FileStack,
   History,
-  Loader2,
   Pause,
   Play,
   ShieldAlert,
@@ -81,7 +81,7 @@ function EvidenceChain({ versionId }: { versionId: string }) {
               {reached ? (
                 <CheckCircle2 className="size-3.5 text-primary" aria-hidden="true" />
               ) : running ? (
-                <Loader2 className="size-3.5 animate-spin text-steel" aria-hidden="true" />
+                <BrandSpinner className="size-3.5 text-steel" aria-hidden="true" />
               ) : (
                 <Circle className="size-3.5 text-steel" aria-hidden="true" />
               )}
@@ -271,7 +271,7 @@ function DownloadButton({ versionId, bytes }: { versionId: string; bytes: number
 
 function VersionList({ fileId }: { fileId: string }) {
   const q = useFileVersions(fileId);
-  if (q.isPending) return <p className="mt-2 text-sm text-steel">Loading versions…</p>;
+  if (q.isPending) return <InlineLoading label="Loading versions…" />;
   const versions = q.data?.versions ?? [];
   if (!versions.length) return <p className="mt-2 text-sm text-steel">No stored version yet.</p>;
   return (

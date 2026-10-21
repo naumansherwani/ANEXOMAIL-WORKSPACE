@@ -1,6 +1,7 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Loader2, MailPlus, ShieldCheck, Trash2, UserMinus } from "lucide-react";
+import { MailPlus, ShieldCheck, Trash2, UserMinus } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -222,7 +223,7 @@ function MembersPage() {
             ))}
             <Button type="submit" className="ax-press w-full sm:ml-auto sm:w-auto" disabled={invite.isPending}>
               {invite.isPending ? (
-                <Loader2 className="size-4 animate-spin" />
+                <BrandSpinner className="size-4" />
               ) : (
                 <MailPlus className="size-4" />
               )}

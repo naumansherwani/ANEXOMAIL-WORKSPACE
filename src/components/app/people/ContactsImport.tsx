@@ -10,9 +10,10 @@
  *   - plans WITHOUT CRM (Personal Basic, Basic) -> straight into People, because there is no Leads page to look in.
  * Every skipped row is counted and shown.
  */
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { Link } from "@tanstack/react-router";
 import { useQueryClient } from "@tanstack/react-query";
-import { Check, Loader2, Upload, UserPlus, X } from "lucide-react";
+import { Check, Upload, UserPlus, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -309,7 +310,7 @@ export function ContactsImportPanel({
 
       {running && (
         <div className="mt-3 flex items-center gap-2">
-          <Loader2 className="size-3.5 animate-spin text-muted-foreground" aria-hidden="true" />
+          <BrandSpinner className="size-3.5 text-muted-foreground" aria-hidden="true" />
           <Button size="sm" variant="outline" onClick={() => (cancelled.current = true)}>
             Stop after this batch
           </Button>
@@ -343,7 +344,7 @@ export function ContactsImportPanel({
               </p>
               <div className="mt-2 flex flex-wrap gap-2">
                 <Button size="sm" onClick={() => void moveAll()} disabled={moving}>
-                  {moving ? <Loader2 className="size-3.5 animate-spin" aria-hidden="true" /> : <Check className="size-3.5" aria-hidden="true" />}
+                  {moving ? <BrandSpinner className="size-3.5" aria-hidden="true" /> : <Check className="size-3.5" aria-hidden="true" />}
                   Move {res.created} to People
                 </Button>
                 <Button size="sm" variant="outline" onClick={() => setKeptInLeads(true)} disabled={moving}>

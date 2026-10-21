@@ -1,3 +1,4 @@
+import { InlineLoading } from "@/components/state/BrandLoader";
 import { Ban, CalendarClock, Check, CircleHelp, Clock, Mail, RefreshCw, X } from "lucide-react";
 import { useState } from "react";
 
@@ -63,7 +64,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
     return (
       <section className="mt-ax-6" aria-busy="true">
         <p className="ax-eyebrow">Guests</p>
-        <p className="ax-caption mt-ax-2 text-muted-foreground">Loading answers…</p>
+        <InlineLoading label="Loading answers…" />
       </section>
     );
   }

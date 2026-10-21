@@ -1,3 +1,4 @@
+import { BrandSpinner, InlineLoading } from "@/components/state/BrandLoader";
 import {
   AlertTriangle,
   BellRing,
@@ -6,7 +7,6 @@ import {
   FileText,
   History,
   Languages,
-  Loader2,
   Maximize2,
   Minimize2,
   Paperclip,
@@ -606,7 +606,7 @@ export function ComposeStudio({
             onClick={() => runLeo({ task: "COACH" })}
           >
             {leo.isPending ? (
-              <Loader2 className="size-4 animate-spin" />
+              <BrandSpinner className="size-4" />
             ) : (
               <Wand2 className="size-4" />
             )}
@@ -733,7 +733,7 @@ export function ComposeStudio({
                         : `${fmtBytes(f.size)}${f.scanned ? " · virus-checked" : ""}`}
                   </span>
                 </span>
-                {f.status === "uploading" ? <Loader2 className="size-3.5 shrink-0 animate-spin text-muted-foreground" aria-hidden="true" /> : null}
+                {f.status === "uploading" ? <BrandSpinner className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" /> : null}
                 <button
                   type="button"
                   onClick={() => dropFile(f)}
@@ -757,7 +757,7 @@ export function ComposeStudio({
                 GET /api/mail/drafts/:id is pending on the server.
               </p>
             ) : versions.isPending ? (
-              <p className="text-[11px] text-steel">Loading versions…</p>
+              <InlineLoading label="Loading versions…" />
             ) : (
               versions.data?.versions.map((v) => (
                 <button
@@ -823,7 +823,7 @@ export function ComposeStudio({
           )}
         >
           <Button type="submit" className="ax-press ax-tap" disabled={busy}>
-            {busy ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
+            {busy ? <BrandSpinner className="size-4" /> : <Send className="size-4" />}
             <span>{proMail && scheduling ? "Schedule" : "Send"}</span>
           </Button>
           {proMail ? (

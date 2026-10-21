@@ -1,4 +1,5 @@
-import { Fingerprint, Loader2, ShieldCheck } from "lucide-react";
+import { BrandSpinner, InlineLoading } from "@/components/state/BrandLoader";
+import { Fingerprint, ShieldCheck } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -60,7 +61,7 @@ export function DeviceVaultPanel() {
             })
           }
         >
-          {register.isPending && <Loader2 className="size-3.5 animate-spin" />}
+          {register.isPending && <BrandSpinner className="size-3.5" />}
           Record this device
         </Button>
       </header>
@@ -83,7 +84,7 @@ export function DeviceVaultPanel() {
       )}
 
       {q.isPending ? (
-        <p className="ax-caption text-muted-foreground">Loading your devices…</p>
+        <InlineLoading label="Loading your devices…" />
       ) : q.error ? (
         <p className="ax-caption text-amber-400">Devices didn&apos;t load: {q.error.message}</p>
       ) : devices.length === 0 ? (

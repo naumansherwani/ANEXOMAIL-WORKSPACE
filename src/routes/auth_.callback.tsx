@@ -1,6 +1,6 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
@@ -115,7 +115,7 @@ function CallbackPage() {
             </div>
           ) : (
             <p className="ax-body mt-ax-5 flex items-center justify-center gap-2">
-              <Loader2 className="size-4 animate-spin text-cyan-accent" />
+              <BrandSpinner className="size-4 text-cyan-accent" />
               Finishing your sign-in…
             </p>
           )}

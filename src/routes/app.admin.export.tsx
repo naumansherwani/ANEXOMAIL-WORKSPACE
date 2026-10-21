@@ -1,5 +1,6 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Download, Loader2 } from "lucide-react";
+import { Download } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -57,7 +58,7 @@ function ExportPage() {
         <div className="mt-ax-4 flex flex-wrap items-center gap-3">
           <Button className="ax-tap max-sm:w-full" onClick={run} disabled={busy}>
             {busy ? (
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              <BrandSpinner className="size-4" aria-hidden="true" />
             ) : (
               <Download className="size-4" aria-hidden="true" />
             )}

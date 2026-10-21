@@ -1,6 +1,7 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Check, ChevronDown, Loader2, Plus, Trash2, Users } from "lucide-react";
+import { Check, ChevronDown, Plus, Trash2, Users } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -104,7 +105,7 @@ function TeamsPage() {
           </div>
           <Button type="submit" className="ax-press mt-3" disabled={create.isPending}>
             {create.isPending ? (
-              <Loader2 className="size-4 animate-spin" />
+              <BrandSpinner className="size-4" />
             ) : (
               <Plus className="size-4" />
             )}

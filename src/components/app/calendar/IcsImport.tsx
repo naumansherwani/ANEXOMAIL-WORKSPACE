@@ -3,8 +3,9 @@
  * The file is read in the browser (src/lib/ics.ts); only events the person confirms are created, one by one, through the same
  * calendar.create route a hand-made meeting uses. Every skip is counted and shown — nothing disappears silently.
  */
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { useQueryClient } from "@tanstack/react-query";
-import { CalendarPlus, Loader2, Upload, X } from "lucide-react";
+import { CalendarPlus, Upload, X } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -251,7 +252,7 @@ export function IcsImportPanel({
 
       {running && (
         <div className="mt-3 flex items-center gap-2">
-          <Loader2 className="size-3.5 animate-spin text-muted-foreground" aria-hidden="true" />
+          <BrandSpinner className="size-3.5 text-muted-foreground" aria-hidden="true" />
           <Button
             size="sm"
             variant="outline"

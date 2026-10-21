@@ -21,7 +21,8 @@
  * plans.ts NO-TOUCH. billing-products.ts product IDs NO-TOUCH.
  */
 
-import { ExternalLink, Loader2 } from "lucide-react";
+import { BrandSpinner } from "@/components/state/BrandLoader";
+import { ExternalLink } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -231,7 +232,7 @@ export function CheckoutButton({
       >
         {busy ? (
           <>
-            <Loader2 className="size-4 animate-spin" />
+            <BrandSpinner className="size-4" />
             Opening secure checkout…
           </>
         ) : (

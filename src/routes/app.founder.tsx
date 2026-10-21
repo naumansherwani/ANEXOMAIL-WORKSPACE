@@ -1,3 +1,4 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   Banknote,
@@ -118,7 +119,7 @@ function FounderDeck() {
           </div>
           <Button onClick={() => runProvision()} disabled={provision.isPending}>
             {provision.isPending ? (
-              <RefreshCw className="size-4 animate-spin" aria-hidden="true" />
+              <BrandSpinner className="size-4" aria-hidden="true" />
             ) : (
               <MailCheck className="size-4" aria-hidden="true" />
             )}

@@ -2,8 +2,9 @@
 //   /app/import        every signed-in customer (Basic, Pro, Business, Business Pro) — copy YOUR old mailbox in
 //   /app/admin/migrate founder's platform-admin surface (unchanged)
 // Backend: Rust :3200 `migration.*` (G30, walled garden E35) — this file is only the screen.
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { useEffect, useMemo, useState } from "react";
-import { AlertTriangle, Check, CheckCircle2, Copy, Inbox, Loader2, RotateCcw, ShieldCheck, X } from "lucide-react";
+import { AlertTriangle, Check, CheckCircle2, Copy, Inbox, RotateCcw, ShieldCheck, X } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -53,7 +54,7 @@ const toneClass: Record<Tone, string> = {
 };
 
 function ToneIcon({ tone, busy }: { tone: Tone; busy?: boolean }) {
-  if (busy) return <Loader2 className="size-5 animate-spin text-cyan-accent" aria-hidden="true" />;
+  if (busy) return <BrandSpinner className="size-5 text-cyan-accent" aria-hidden="true" />;
   if (tone === "ok") return <CheckCircle2 className="size-5 text-success" aria-hidden="true" />;
   if (tone === "bad") return <X className="size-5 text-danger" aria-hidden="true" />;
   if (tone === "warn") return <AlertTriangle className="size-5 text-warning" aria-hidden="true" />;
@@ -389,7 +390,7 @@ function StartForm({
       </label>
 
       <Button type="submit" className="ax-press mt-5 w-full sm:w-auto" disabled={!ready}>
-        {pending ? <Loader2 className="size-4 animate-spin" /> : <Inbox className="size-4" />}
+        {pending ? <BrandSpinner className="size-4" /> : <Inbox className="size-4" />}
         {pending ? "Signing in…" : "Start copying"}
       </Button>
     </form>
@@ -513,7 +514,7 @@ function ActiveCard({
             data-lpignore="true"
           />
           <Button type="submit" className="ax-press w-full sm:w-auto" disabled={!password || busyResume}>
-            {busyResume ? <Loader2 className="size-4 animate-spin" /> : <RotateCcw className="size-4" />}
+            {busyResume ? <BrandSpinner className="size-4" /> : <RotateCcw className="size-4" />}
             Resume
           </Button>
         </form>
@@ -526,7 +527,7 @@ function ActiveCard({
           disabled={busyCancel || ph === "cancelling"}
           onClick={() => setConfirm(true)}
         >
-          {busyCancel ? <Loader2 className="size-4 animate-spin" /> : <X className="size-4" />}
+          {busyCancel ? <BrandSpinner className="size-4" /> : <X className="size-4" />}
           {ph === "stopped" ? "Cancel this copy" : "Stop copying"}
         </Button>
       </div>
@@ -619,7 +620,7 @@ function HistoryRow({
           </code>
           <CopyCode code={s.seal_hash ?? ""} />
           <Button variant="outline" size="sm" className="ax-press ax-tap ml-auto" disabled={checking} onClick={onCheck}>
-            {checking ? <Loader2 className="size-4 animate-spin" /> : <ShieldCheck className="size-4" />}
+            {checking ? <BrandSpinner className="size-4" /> : <ShieldCheck className="size-4" />}
             Check receipt
           </Button>
         </div>

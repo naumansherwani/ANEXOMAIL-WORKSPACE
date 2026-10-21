@@ -1,3 +1,4 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -7,7 +8,7 @@ import { AuthCinema } from "@/components/site/AuthCinema";
 import { CinematicSplash } from "@/components/site/CinematicSplash";
 import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
 import { anexomailAddress } from "@/lib/anexomail-address";
-import { Eye, EyeOff, KeyRound, Mail, ShieldCheck, Loader2 } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Mail, ShieldCheck } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
@@ -483,7 +484,7 @@ function AuthPage() {
                 </p>
               )}
               <Button className="ax-press mt-ax-4 w-full" onClick={enrolPasskey} disabled={busy}>
-                {busy && <Loader2 className="size-4 animate-spin" />}
+                {busy && <BrandSpinner className="size-4" />}
                 <KeyRound className="size-4" />
                 Create my passkey
               </Button>
@@ -793,7 +794,7 @@ function AuthPage() {
                     )}
 
                     <Button type="submit" className="ax-press w-full" disabled={busy}>
-                      {busy && <Loader2 className="size-4 animate-spin" />}
+                      {busy && <BrandSpinner className="size-4" />}
                       {challengeId
                         ? "Verify and continue"
                         : mode === "signup"

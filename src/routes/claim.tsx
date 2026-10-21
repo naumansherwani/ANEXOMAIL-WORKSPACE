@@ -1,6 +1,7 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ArrowLeft, AtSign, Check, Loader2, LogIn, ShieldCheck, X } from "lucide-react";
+import { ArrowLeft, AtSign, Check, LogIn, ShieldCheck, X } from "lucide-react";
 
 import { AnexoMailField } from "@/components/site/AnexoMailField";
 import { BrandMark } from "@/components/site/BrandMark";
@@ -225,7 +226,7 @@ function ClaimPage() {
               <p className="ax-caption flex items-center gap-1.5">
                 {availability.state === "checking" && (
                   <>
-                    <Loader2 className="size-3.5 animate-spin text-cyan-accent" />
+                    <BrandSpinner className="size-3.5 text-cyan-accent" />
                     Checking {address}…
                   </>
                 )}
@@ -260,7 +261,7 @@ function ClaimPage() {
               className="ax-press w-full"
               disabled={busy || !valid || availability.state !== "free"}
             >
-              {busy && <Loader2 className="size-4 animate-spin" />}
+              {busy && <BrandSpinner className="size-4" />}
               Claim {valid ? address : "my address"}
             </Button>
           </form>
@@ -340,7 +341,7 @@ function ClaimIntro({ loading }: { loading: boolean }) {
             className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             {loading ? (
-              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+              <BrandSpinner className="size-4" aria-hidden="true" />
             ) : (
               <LogIn className="size-4" aria-hidden="true" />
             )}

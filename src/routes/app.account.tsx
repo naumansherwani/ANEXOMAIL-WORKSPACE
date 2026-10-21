@@ -1,7 +1,8 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Eye, EyeOff, KeyRound, Laptop, ShieldCheck, Loader2, Trash2 } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Laptop, ShieldCheck, Trash2 } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -367,7 +368,7 @@ function AccountPage() {
                 {passwordVisible ? "Hide passwords" : "Show passwords"}
               </Button>
               <Button type="submit" disabled={changePassword.isPending || !currentPassword || !newPassword || !confirmPassword}>
-                {changePassword.isPending && <Loader2 className="size-4 animate-spin" />}
+                {changePassword.isPending && <BrandSpinner className="size-4" />}
                 Update password
               </Button>
             </div>
@@ -566,7 +567,7 @@ function AccountPage() {
                         onClick={() => revoke.mutate(s.id)}
                       >
                         {revoke.isPending && revoke.variables === s.id && (
-                          <Loader2 className="size-4 animate-spin" />
+                          <BrandSpinner className="size-4" />
                         )}
                         Revoke
                       </Button>
@@ -614,7 +615,7 @@ function AccountPage() {
                 disabled={cancelDeletion.isPending}
                 onClick={() => cancelDeletion.mutate()}
               >
-                {cancelDeletion.isPending && <Loader2 className="size-4 animate-spin" />}
+                {cancelDeletion.isPending && <BrandSpinner className="size-4" />}
                 Cancel deletion
               </Button>
             </div>
@@ -653,7 +654,7 @@ function AccountPage() {
                 </div>
                 <Button type="submit" variant="destructive" disabled={!canRequestDeletion}>
                   {requestDeletion.isPending ? (
-                    <Loader2 className="size-4 animate-spin" />
+                    <BrandSpinner className="size-4" />
                   ) : (
                     <Trash2 className="size-4" />
                   )}

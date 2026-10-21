@@ -1,4 +1,5 @@
-import { Building2, Loader2, UserRound } from "lucide-react";
+import { BrandSpinner } from "@/components/state/BrandLoader";
+import { Building2, UserRound } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { useLocale } from "@/lib/i18n";
@@ -49,7 +50,7 @@ export function WorkspaceKindCards({
 
       {busy ? (
         <p className="ax-caption flex items-center justify-center gap-2 text-muted-foreground">
-          <Loader2 className="size-4 animate-spin" />
+          <BrandSpinner className="size-4" />
           {t("Opening the next step…")}
         </p>
       ) : null}

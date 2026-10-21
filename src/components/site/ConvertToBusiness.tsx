@@ -1,5 +1,6 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { useState } from "react";
-import { Building2, Loader2 } from "lucide-react";
+import { Building2 } from "lucide-react";
 
 import { billingErrorMessage, openPolarCheckout } from "@/components/site/PlanCheckoutButton";
 import { Button } from "@/components/ui/button";
@@ -185,7 +186,7 @@ export function ConvertToBusiness({
 
       <div className="mt-3 flex gap-2">
         <Button type="submit" size="sm" disabled={busy} className="ax-press">
-          {busy && <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />}
+          {busy && <BrandSpinner className="size-3.5" aria-hidden="true" />}
           {converted ? "Try again" : checkoutProductKey ? "Convert & continue" : "Convert"}
         </Button>
         <Button

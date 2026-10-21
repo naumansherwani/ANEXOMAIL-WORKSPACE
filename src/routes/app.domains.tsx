@@ -1,3 +1,4 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { Link, createFileRoute } from "@tanstack/react-router";
 import {
   AlertTriangle,
@@ -8,7 +9,6 @@ import {
   Clock,
   Copy,
   Globe,
-  Loader2,
   Lock,
   Mail,
   Plus,
@@ -923,7 +923,7 @@ function Wizard({
                 className="ax-press ax-tap gap-1.5"
                 disabled={atCap || add.isPending || !name.trim()}
               >
-                {add.isPending ? <Loader2 className="size-4 animate-spin" aria-hidden="true" /> : null}
+                {add.isPending ? <BrandSpinner className="size-4" aria-hidden="true" /> : null}
                 {t("Continue")}
                 {!add.isPending && <ArrowRight className="size-4" aria-hidden="true" />}
               </Button>
@@ -1236,7 +1236,7 @@ function Wizard({
                     onClick={() => check(true)}
                   >
                     {verify.isPending ? (
-                      <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+                      <BrandSpinner className="size-4" aria-hidden="true" />
                     ) : (
                       <RefreshCw className="size-4" aria-hidden="true" />
                     )}
@@ -1683,7 +1683,7 @@ function AddressForm({
           disabled={create.isPending || !local.trim() || blocked || (kind === "alias" && !target.trim())}
         >
           {create.isPending ? (
-            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            <BrandSpinner className="size-4" aria-hidden="true" />
           ) : (
             <Plus className="size-4" aria-hidden="true" />
           )}

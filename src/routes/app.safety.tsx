@@ -17,9 +17,10 @@
  * Backend bhi khud 403 deta hai — UI sirf honest surface hai.
  */
 
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { Gavel, Loader2, ShieldCheck, Smartphone } from "lucide-react";
+import { Gavel, ShieldCheck, Smartphone } from "lucide-react";
 import { useState } from "react";
 
 import { MyStanding, SafetyReviewQueue } from "@/components/app/safety/SafetyPanels";
@@ -145,7 +146,7 @@ function DeviceAppealsPanel() {
                       disabled={decide.isPending}
                       onClick={() => act(a.id, "reviewing")}
                     >
-                      {decide.isPending && <Loader2 className="size-3.5 animate-spin" />}
+                      {decide.isPending && <BrandSpinner className="size-3.5" />}
                       {t("Start review")}
                     </Button>
                   )}

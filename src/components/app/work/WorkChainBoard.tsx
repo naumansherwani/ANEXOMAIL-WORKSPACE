@@ -1,3 +1,4 @@
+import { InlineLoading } from "@/components/state/BrandLoader";
 import { CheckCircle2, GitBranch, Link2, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
@@ -64,7 +65,7 @@ export function WorkChainBoard() {
       </header>
 
       {board.isPending ? (
-        <p className="ax-caption text-muted-foreground">Loading work objects…</p>
+        <InlineLoading label="Loading work objects…" />
       ) : board.error ? (
         <p className="ax-caption text-amber-400">Board didn&apos;t load: {board.error.message}</p>
       ) : items.length === 0 ? (
@@ -167,7 +168,7 @@ export function WorkChainBoard() {
 function ChainDetail({ itemId }: { itemId: string }) {
   const q = useWorkChain(itemId);
   if (q.isPending)
-    return <p className="ax-caption mt-ax-3 text-muted-foreground">Loading chain…</p>;
+    return <InlineLoading label="Loading chain…" />;
   if (q.error) return <p className="ax-caption mt-ax-3 text-amber-400">{q.error.message}</p>;
   const c = q.data!;
   const p = c.provenance as Record<string, string>;

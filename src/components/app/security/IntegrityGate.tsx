@@ -1,4 +1,5 @@
-import { Download, Loader2, ShieldAlert } from "lucide-react";
+import { BrandSpinner } from "@/components/state/BrandLoader";
+import { Download, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -88,7 +89,7 @@ export function IntegrityGate() {
                 . After that the account and its data are permanently deleted.
               </p>
               <Button className="ax-press mt-ax-4 w-full" onClick={doExport} disabled={busy}>
-                {busy ? <Loader2 className="size-4 animate-spin" /> : <Download className="size-4" />}
+                {busy ? <BrandSpinner className="size-4" /> : <Download className="size-4" />}
                 Download all my data
               </Button>
             </>
@@ -110,7 +111,7 @@ export function IntegrityGate() {
                     className="mt-2 w-full rounded-md border border-border bg-background p-2 text-sm text-foreground"
                   />
                   <Button variant="outline" className="mt-2 w-full" onClick={doAppeal} disabled={appealBusy}>
-                    {appealBusy ? <Loader2 className="size-4 animate-spin" /> : null}
+                    {appealBusy ? <BrandSpinner className="size-4" /> : null}
                     Send appeal
                   </Button>
                 </>

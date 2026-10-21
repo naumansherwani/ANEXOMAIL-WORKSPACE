@@ -1,6 +1,7 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
-import { Building2, Loader2, LogIn } from "lucide-react";
+import { Building2, LogIn } from "lucide-react";
 
 import { BrandMark } from "@/components/site/BrandMark";
 import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
@@ -188,7 +189,7 @@ function OnboardingPage() {
               )}
 
               <Button type="submit" className="ax-press w-full" disabled={busy}>
-                {busy && <Loader2 className="size-4 animate-spin" />}
+                {busy && <BrandSpinner className="size-4" />}
                 Continue
               </Button>
               <Button
@@ -223,7 +224,7 @@ function OnboardingIntro({ loading }: { loading: boolean }) {
         </p>
         {loading ? (
           <p className="ax-caption mt-ax-4 flex items-center justify-center gap-2">
-            <Loader2 className="size-4 animate-spin" />
+            <BrandSpinner className="size-4" />
             Checking your session…
           </p>
         ) : (

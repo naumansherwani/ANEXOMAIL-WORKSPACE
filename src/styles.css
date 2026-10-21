@@ -1001,6 +1001,27 @@ button:disabled,
   }
 }
 
+.ax-a-pulse {
+  animation: ax-a-pulse 1.1s ease-in-out infinite;
+}
+
+/* Chhote A ka navy neele button par bhi saaf dikhe: platinum chamak */
+.ax-a-pulse svg {
+  filter: brightness(1.9) saturate(0.85) drop-shadow(0 0 1.5px rgba(255, 255, 255, 0.55));
+}
+
+@keyframes ax-a-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
 .ax-loader-progress {
   width: 10rem;
   height: 2px;
@@ -1059,6 +1080,7 @@ button:disabled,
   .ax-loader-panel,
   .ax-loader-sweep,
   .ax-loader-logo,
+  .ax-a-pulse,
   .ax-loader-brand,
   .ax-loader-progress > span {
     animation: none !important;

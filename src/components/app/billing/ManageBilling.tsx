@@ -8,7 +8,8 @@
  * click par seedha navigate — hamari taraf ka intezaar ~0. Itna hi rate-limit: 1 link / 3 min.
  * Sirf https://*.polar.sh par jaata hai (server bhi check karta hai, yahan bhi).
  */
-import { CreditCard, ExternalLink, Loader2 } from "lucide-react";
+import { BrandSpinner } from "@/components/state/BrandLoader";
+import { CreditCard, ExternalLink } from "lucide-react";
 import { useCallback, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -97,7 +98,7 @@ export function ManageBilling() {
           data-ax-billing-portal
         >
           {busy ? (
-            <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+            <BrandSpinner className="size-4" aria-hidden="true" />
           ) : (
             <CreditCard className="size-4" aria-hidden="true" />
           )}

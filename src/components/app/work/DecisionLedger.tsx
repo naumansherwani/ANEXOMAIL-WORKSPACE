@@ -1,3 +1,4 @@
+import { InlineLoading } from "@/components/state/BrandLoader";
 import { GitBranch, History, Link2, Link2Off, Mail, ScrollText, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
@@ -262,7 +263,7 @@ function DecisionDetailView({ id }: { id: string }) {
     );
   };
 
-  if (q.isPending) return <p className="ax-caption mt-ax-3 text-muted-foreground">Loading…</p>;
+  if (q.isPending) return <InlineLoading label="Loading…" />;
   if (q.error)
     return <p className="ax-caption mt-ax-3 text-amber-400">Didn&apos;t load: {q.error.message}</p>;
   if (!d?.decision) return null;

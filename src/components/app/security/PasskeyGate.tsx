@@ -1,5 +1,6 @@
+import { BrandSpinner } from "@/components/state/BrandLoader";
 import { useQueryClient } from "@tanstack/react-query";
-import { KeyRound, Loader2, ShieldAlert } from "lucide-react";
+import { KeyRound, ShieldAlert } from "lucide-react";
 import { useState } from "react";
 
 import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
@@ -94,7 +95,7 @@ export function PasskeyGate() {
             </p>
           )}
           <Button className="ax-press mt-ax-4 w-full" onClick={add} disabled={busy || !passkeySupported()}>
-            {busy ? <Loader2 className="size-4 animate-spin" /> : <KeyRound className="size-4" />}
+            {busy ? <BrandSpinner className="size-4" /> : <KeyRound className="size-4" />}
             Create my passkey
           </Button>
           <Button variant="ghost" className="mt-ax-2 w-full" onClick={() => void signOut()}>
@@ -126,7 +127,7 @@ export function PasskeyGate() {
       <span className="ax-caption text-foreground">{message}</span>
       {data.count < data.target || data.required ? (
         <Button size="sm" variant="outline" className="h-7" onClick={add} disabled={busy}>
-          {busy && <Loader2 className="size-3.5 animate-spin" />}
+          {busy && <BrandSpinner className="size-3.5" />}
           {data.required ? "Create passkey" : "Add backup passkey"}
         </Button>
       ) : null}

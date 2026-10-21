@@ -1,3 +1,4 @@
+import { InlineLoading } from "@/components/state/BrandLoader";
 import { AlertTriangle, BellRing, CalendarClock, History, UserCog, XCircle } from "lucide-react";
 import { useState } from "react";
 
@@ -287,7 +288,7 @@ export function PromiseRecovery() {
 function PromiseTrail({ itemId }: { itemId: string }) {
   const history = usePromiseHistory(itemId);
   if (history.isPending) {
-    return <p className="ax-caption mt-ax-3 text-muted-foreground">Opening the trail…</p>;
+    return <InlineLoading label="Opening the trail…" />;
   }
   if (history.error) {
     return <p className="ax-caption mt-ax-3 text-amber-400">{history.error.message}</p>;
