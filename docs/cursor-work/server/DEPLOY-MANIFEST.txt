@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md f0fc050499a26c1b
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 2a7d0e1e1a722fa7
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -323,6 +323,4 @@ src/routes/app.movein.tsx db2a5d3341081843
 src/routes/status.tsx 63446194a25640c4
 src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e
 docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
-src/routes/app.founder.tsx 0bb55ea3b7e5fd7d
-src/lib/founder-brain.ts 523e8bdb8c961916
-src/components/app/founder/CommandCenter.tsx 037914aada5a3df7
+src/routes/app.founder.tsx 55493891045ccb78

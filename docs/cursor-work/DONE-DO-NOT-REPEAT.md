@@ -183,3 +183,9 @@ Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green 
 - Frontend: `src/lib/founder-brain.ts`, `src/components/app/founder/CommandCenter.tsx`, `src/routes/app.founder.tsx` (command center sab se upar, "Run the company" mein SAB 14 founder surfaces — pehle Move-In/Analytics/Calls/Integrations/Safety/Settings/Admin ka link hi nahi tha, mailboxes neeche).
 - Rule: Bun twin NAHI (naya kaam). Rust band ho to screen saaf likhti hai, andaza nahi lagati.
 - Server par chalana: Web pull + `MODULES=b5 rust-engine-install.sh` (+ `brain-pricefix-install.sh`).
+
+## 21 Oct 2026 08:1x — FOUNDER KA HUKM (locked): founder workspace = NO BUN, NO NODE, shuru se
+- Founder ne React CommandCenter (b4c3666) pull karne se mana kiya => repo se HATA diya (app.founder.tsx purani, CommandCenter.tsx + founder-brain.ts delete). Rust `founder.brain.command` + `attention` rules (b5_core.rs) RAHENGE — naya founder service wohi data use karega.
+- Naya founder workspace: akela Rust binary (`anexomail-founder`), server-rendered, koi Node/Bun/React/npm build nahi; founder host par hi; premium, latest tech. Banana shuru.
+- Web pull ka sahi form: `bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)` ( /opt/anexomail-web/pull.sh maujood NAHI — founder ka pehla try "No such file").
+- Brain price-fix installer server par OK (backup /root/anexomail-backups/brain-pricefix-20261021-025455). Rust b5 installer ne "files same" kaha kyunki Web pull nahi hua tha (working tree purani) — Web pull ke baad `MODULES=b5` dobara.
