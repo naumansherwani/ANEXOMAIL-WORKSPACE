@@ -15,6 +15,7 @@ echo "==> server IP (bahar se): $IP_WANT"
 echo "==> DNS $HOST:  $(getent hosts $HOST | awk '{print $1}' | head -1 || true)  (upar wale IP se milna chahiye)"
 [ -f "$MAIN" ] || { echo "!!! $MAIN nahi mila"; exit 1; }
 grep -Fq 'import /etc/caddy/sites/*.caddy' "$MAIN" || { echo "!!! Caddyfile mein 'import /etc/caddy/sites/*.caddy' nahi — pehle deploy.sh wali import line chahiye. Kuch nahi badla."; exit 1; }
+grep -Eq "^[[:space:]]*billingportal\.anexomail\.com[[:space:]]*\{" "$MAIN" && { echo "==> $HOST pehle se $MAIN mein hai (haath se joda hua). Duplicate block se Caddy fail hota hai, isliye kuch nahi badla."; exit 0; }
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
 git -C "$WEB" show origin/main:portal/public/index.html >"$T/index.html" 2>/dev/null && [ -s "$T/index.html" ] || { echo "!!! repo se portal/public/index.html nahi mila (git fetch?)"; exit 1; }
 cat >"$T/site.caddy" <<CADDY
