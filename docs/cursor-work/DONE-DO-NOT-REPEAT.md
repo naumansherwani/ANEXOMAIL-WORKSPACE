@@ -189,3 +189,8 @@ Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green 
 - Naya founder workspace: akela Rust binary (`anexomail-founder`), server-rendered, koi Node/Bun/React/npm build nahi; founder host par hi; premium, latest tech. Banana shuru.
 - Web pull ka sahi form: `bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)` ( /opt/anexomail-web/pull.sh maujood NAHI — founder ka pehla try "No such file").
 - Brain price-fix installer server par OK (backup /root/anexomail-backups/brain-pricefix-20261021-025455). Rust b5 installer ne "files same" kaha kyunki Web pull nahi hua tha (working tree purani) — Web pull ke baad `MODULES=b5` dobara.
+
+## 21 Oct 2026 08:2x — FOUNDER WORKSPACE PLAN likha (docs/claude/FOUNDER-WORKSPACE-PLAN.md)
+- Founder: God-level admin view (har user, abuse), Mail Desk (jawab dena), duniya ka advanced 3D (WebGPU/wgpu), tokio async, Rust-only (no Bun/Node). **B-series (B5–B8) KHATAM hone ke BAAD** shuru (F0 design pehle). Abhi kuch build/deploy nahi — React CommandCenter repo se hata diya, dobara mat banao.
+- Sandbox: crates/wasm target ke liye `NO_PROXY= no_proxy=` karna padta hai; Leptos 0.8 + wasm32 mil jata hai.
+- God view L3 (content) = break-glass raaye (founder faisla karega).
