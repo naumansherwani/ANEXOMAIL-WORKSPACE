@@ -16,7 +16,7 @@ jahan se founder poori ANEXOMAIL **dekhta, samajhta, faisla karta aur jawab deta
 3. **Sach pehle:** jo naapa nahi gaya wahan "Not measured". Jhoota "sab theek" kabhi nahi. Har number ke saath uska source aur umar (kitni purani reading).
 4. **Do-tap rule:** paisa, delete, lock, release, kill-switch, user suspend — hamesha do-tap confirm + reason + audit row.
 5. **Audit sab kuch:** founder ka har dekhna-karna `founder_audit` (append-only, hash-chained) mein. Founder khud bhi apne aap ko jawabdeh rakhe.
-6. **God view ≠ andha content-access.** (neeche §3) — yeh founder ki hifazat hai (UK GDPR, ICO) aur customers ka bharosa.
+6. **Founder view ≠ andha content-access.** (neeche §3) — yeh founder ki hifazat hai (UK GDPR, ICO) aur customers ka bharosa.
 7. **Fast hai to hi premium:** budgets: first paint < 1.0 s (4G), live update < 300 ms, WASM bundle gz < 600 KB core (3D alag, lazy).
 8. **Har phase:** sandbox proof → founder ka server output → tab hi GREEN (founder rule). Har phase ke saath frontend 390/820/1440 check.
 
@@ -35,7 +35,9 @@ jahan se founder poori ANEXOMAIL **dekhta, samajhta, faisla karta aur jawab deta
 
 Feasibility (sandbox, checked 21 Oct): Leptos 0.8 + `wasm32` target yahan mil jate hain (NO_PROXY clear karna padta hai); 2 cores / 5 GB disk free => build sandbox mein, artifact server par.
 
-## 3. God view — metadata-only (privacy locked)
+## 3. Founder view — metadata-only (privacy locked)
+> Naam: "God view" ki jagah **Founder view** (founder ka hukm 21 Oct 08:20).
+> **Email:** founder ka ALAG email system (apna). ANEXOMAIL ke baqi banaye hue addresses (founder@, support@, leads@ ...) aur parent company **Nexatect** ke addresses BAAD ka kaam hain (phase F5+ ke baad), abhi scope mein nahi.
 **Level 1 — Operational (hamesha on):** har user/org: plan, seats, state, trial, last seen, devices, storage, mailboxes, DNS health, send volume, bounce/complaint rate,
 failed logins, payment state, support tickets, abuse score, security events. Search "kaun kaam kharab kar raha hai": spam/abuse ranking, bounce spikes, impossible-travel, credential stuffing, bulk-send, storage hogs.
 **Level 2 — Actions:** suspend/restore, rate-limit, force sign-out, revoke device, reset MFA, extend trial, comp plan, refund request, kill switch (per user/org/global), IP block. Do-tap + reason + audit.
@@ -45,7 +47,7 @@ Kyun: customer privacy hi product hai (UK GDPR). Code mein bhi enforce: founder 
 ## 4. Screens ("decks")
 1. **Bridge (home):** "Right now" ranked decisions (Rust `attention`), 3D live system, paisa vs target, light (green/amber/red).
 2. **Money:** MRR/ARR, target gap, pipeline, leads, Priority Support, partner commission, move-in cash, refunds, cohort/churn, forecast.
-3. **People (God view):** global search, user/org 360°, abuse board, timeline, actions (§3).
+3. **People (Founder view):** global search, user/org 360°, abuse board, timeline, actions (§3).
 4. **Mail Desk:** founder ka apna inbox + **support/leads inbox** — reply yahin se; AI draft (Leo) + tone/translate, canned replies, SLA clock, snooze, assign, "reply & close", bulk triage. (Mail send/Rust queue B3 pehle se.)
 5. **Release:** QA run, blockers, lock, deployments, rollback button, canary.
 6. **Move-In:** migrations board, cutover tonight, evidence bundle, cash.
@@ -77,7 +79,7 @@ Sab WebGPU (wgpu), 60 fps, kam power; mobile par automatic 2D/low-detail; `prefe
 | **F1 Foundation** | crate `server/founder/` (axum+Leptos), auth (JWT + passkey + IP + device), shell, nav, command bar, audit table, live channel, Caddy route (live file dekh kar) | login → empty shell live, audit row, 401/403 tests, sandbox PASS |
 | **F2 Bridge** | Command Center (data = `founder.brain.command`), light, ranked list, tiles, live push | seeded-truth proof (b5 4b pattern) + 3 screenshots |
 | **F3 Money + Release** | pages 2 & 5 (Rust procs already B5) | differential vs old pages |
-| **F4 People (God view L1+L2)** | new RPCs `founder.people.*`, abuse scoring (pure core, tested), actions + audit | hostile tests, audit hash-chain verify |
+| **F4 People (Founder view L1+L2)** | new RPCs `founder.people.*`, abuse scoring (pure core, tested), actions + audit | hostile tests, audit hash-chain verify |
 | **F5 Mail Desk** | founder inbox/support desk, reply, AI draft, SLA | send via Rust queue, idempotency, undo-send |
 | **F6 Systems + Move-In** | pages 6 & 7 | probes real, blind-spot honest |
 | **F7 3D** | globe, topology, flow, terrain (WebGPU) | FPS budget, fallback 2D, a11y tables |

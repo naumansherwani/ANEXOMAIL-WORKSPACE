@@ -196,3 +196,4 @@ Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green 
 - God view L3 (content) = break-glass raaye (founder faisla karega).
 
 - 21 Oct 08:15 LOCKED: founder customer ki privacy kabhi breach nahi karega — content access (break-glass samet) HATA diya, sirf metadata. Founder side B-series GREEN hone ke baad shuru.
+- 21 Oct 08:20: "God view" ka naam => **Founder view**. Founder ka alag email system; baqi ANEXOMAIL addresses + Nexatect (parent company) addresses baad ka kaam. B5 verification: repo se alag, server par seedha command. B6 shaam ko.
