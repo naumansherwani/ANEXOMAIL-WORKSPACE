@@ -117,13 +117,7 @@ export function ManageBilling() {
       </p>
       {error && (
         <p role="alert" className="mt-2 text-[12px] text-destructive">
-          {error}{" "}
-          <a
-            href="mailto:billing@anexomail.com?subject=Billing%20help"
-            className="ax-hit font-semibold underline underline-offset-2"
-          >
-            billing@anexomail.com
-          </a>
+          {error}
         </p>
       )}
     </div>

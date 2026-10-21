@@ -57,14 +57,7 @@ function BillingPolicyPage() {
           </li>
         </ul>
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Questions about a charge? Email{" "}
-          <a
-            href="mailto:billing@anexomail.com?subject=Billing%20help"
-            className="font-semibold text-foreground underline underline-offset-2"
-          >
-            billing@anexomail.com
-          </a>
-          .
+          Every charge, receipt and VAT invoice is in <strong className="text-foreground">Billing &rarr; Manage billing</strong>, and Polar emails a receipt automatically after each payment.
         </p>
       </section>
     </main>

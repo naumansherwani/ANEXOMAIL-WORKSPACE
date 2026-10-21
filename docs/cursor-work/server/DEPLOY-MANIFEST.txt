@@ -40,7 +40,7 @@ src/routes/app.crm.collab.tsx 2955adff7ecb6af7
 src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts a5dc71c3d3686f1f
-src/routes/app.billing.tsx 2d1b959d742e6a2e
+src/routes/app.billing.tsx af893c562619c5a5
 src/routes/app.account.tsx c0100b3fe2df2619
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx 36e5510fd5d4ba79
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md b341bc2b4c69140c
+docs/cursor-work/DONE-DO-NOT-REPEAT.md d5aa4eb200289eb0
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx f873a19be7ebbea5
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 1ab389792916e35a
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48ca4e7112875ef9
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -326,11 +326,11 @@ docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
 src/routes/app.founder.tsx aba91747c5c00284
 docs/claude/FOUNDER-WORKSPACE-PLAN.md 5732f90e95270367
 docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
-docs/claude/EVENING-PENDING-2026-10-21.md de5b2dc97c9e5712
+docs/claude/EVENING-PENDING-2026-10-21.md 9a9471c075caa786
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
-src/components/app/billing/ManageBilling.tsx 99c528b016f084ce
-src/routes/billing-policy.tsx 319299016682f12e
+src/components/app/billing/ManageBilling.tsx 40b1b719c8939210
+src/routes/billing-policy.tsx 30c97bf37a90a6bb
 src/components/site/BootSplash.tsx 050ad56cd525094c
 docs/claude/BILLING-PORTAL-BLUEPRINT.md efe53440d1cbfd49
 portal/public/index.html 4c466e37e6bb5dec

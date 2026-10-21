@@ -557,14 +557,7 @@ function WorkspaceBilling() {
                   )}
                   {s.state === "past_due" && (
                     <p className="mt-2 text-[12px] text-amber-400">
-                      {t("Your last payment didn't go through.")}{" "}
-                      <a
-                        href="mailto:billing@anexomail.com?subject=Payment%20problem"
-                        className="ax-hit font-semibold underline underline-offset-2"
-                      >
-                        {t("Email billing@anexomail.com")}
-                      </a>{" "}
-                      {t("and we will fix it with you.")}
+                      {t("Your last payment didn't go through. Update your card in Manage billing below — we retry automatically.")}
                     </p>
                   )}
                 </div>
@@ -576,14 +569,7 @@ function WorkspaceBilling() {
             <ManageBilling />
           ) : (
             <p className="mt-3 text-[12px] text-muted-foreground">
-              {t("Billing questions? Email")}{" "}
-              <a
-                href="mailto:billing@anexomail.com?subject=Billing%20help"
-                className="ax-hit font-semibold text-foreground underline underline-offset-2"
-              >
-                billing@anexomail.com
-              </a>
-              .
+              {t("Your plan is included with your account — there is nothing to pay.")}
             </p>
           )}
         </section>

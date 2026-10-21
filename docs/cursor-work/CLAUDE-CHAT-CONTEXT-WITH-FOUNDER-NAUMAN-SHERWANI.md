@@ -642,3 +642,7 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - GREEN: Polar webhook fix (2 secrets, dono endpoints 200), Polar engine axum 0.8.9/edition 2024, engine non-root user 'polar' + .env 600 + pcp.key 640, Caddy lockdown, Brain portal route, Rust b6, billingportal placeholder, web pull (BrandLoader asli A har jagah, Command-center founder-only).
 - B6a baqi: step 6 asli Manage billing click (Chrome, Pro login). Phir B6b/c (prewarm, tuning, alarms, Polar token scopes + reconcile check).
 - Founder hukm: B6 poora green pehle; portal/B7/B8 uske baad; discount kabhi nahi; grace 3 din countdown->read-only+sending pause, inbound hamesha.
+
+## 22 Oct 2026 02:45 — FOUNDER FAISLE (final)
+- B6a GREEN/CLOSED (pending nahi). B6b/c DROPPED (zaroorat nahi). billing@anexomail.com UI se hata (portal banega). alikhan@anexomail.com = real-user test account, Claude login nahi karta.
+- AGLA: B7 (calendar: iMIP reply G26 founder "haan" chahiye, recurrence G27, booking page, 2-way sync/CalDAV) -> B8 (Brain ~504 endpoints -> Rust) -> migration tests -> Basic + Pro package green -> billing portal P2-P8. Discount kabhi nahi; grace 3 din countdown->read-only+sending pause; inbound hamesha.
