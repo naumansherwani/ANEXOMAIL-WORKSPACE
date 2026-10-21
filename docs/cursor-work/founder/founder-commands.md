@@ -511,3 +511,7 @@ Founder ne screenshot dikhaya: ambient aurora blob se neela dhabba + hard edge (
 ## 21 Oct 2026 03:15 PKT
 "meri suno chorme ke binaa kaam kero. yeh tab use kero jab main pull ker chuka hoon ga jab final look website user ko kaisi nazar ati hai woh jab dekhni ho tab sirf only ... rule 35 haan meri latest technology pe."
 -> Rule 36 (AGENTS.md). Rust auth_user login-loop fix: server/rust/main.rs (cargo check OK offline, rustc 1.97 sandbox) + rust-auth-harden.sh (surgical, restore-on-fail). login-probe.sh: founder ne email 'amexomail' likh diya tha (typo) -> 401; sahi: basic.test@anexomail.com.
+
+## 22 Oct 2026 03:53 — founder (verbatim)
+"pehle pull comamnd do Backup kahan hai" — web pull (layout v2 live) pehle; backup branch `backup/calendar-v2-20261022` + docs/cursor-work/backups/calendar-v2-20261022/. Rust install dobara nahi chahiye (founder ne ce621ed ke baad chala diya: cal 38 passed, build OK).
+Command: bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6
