@@ -164,3 +164,7 @@ Kaam: founder pages ki Bun-only calls Rust /rpc/* par (movein capacity/request/d
 Plan: server/rust/b5_core.rs (std-only, rustc --test) + b5_glue.rs; b5_patch.py; rust-b5-install.sh; b5-proof.py; client rpcOrRest. Sab Supabase #4 (Rust sb_* wahi). Bun REST fallback rahega.
 Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green sirf founder ke server output ke baad.
 - B5 21 Oct ~08:10: server/rust/b5_core.rs (19 tests) + b5_glue.rs + engine-installer `b5` module (public_call w/ headers) + docs/cursor-work/server/b5-sandbox-proof.py (+tests/b5/{bun-harness.ts,express-shim.js}) => SAB PASS (~80 checks, ASLI Bun routes vs Rust, ek hi mock DB). Baaki: client rpcOrRest wiring, memory, manifest, push, founder pull. AI chat B8 mein (Leo memory+OpenRouter stream). mail.thread pehle se Rust.
+
+## STANDING ROLE 21 Oct 07:35: CEO-agent — advance code + 4 devices (mobile/tablet/laptop/desktop) UX + frontend tech audit; Lovable/Cursor ki galtiyan khud fix.
+
+## STANDING RULE 21 Oct 07:35: frontend (mobile/tablet/laptop/desktop UX) + Lovable/Cursor ki galtiyan khud fix karna — CEO ka kaam (CHAT-CONTEXT dekho).

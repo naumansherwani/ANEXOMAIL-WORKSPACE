@@ -618,3 +618,8 @@ Is review ke har nukte ka anjaam: U1/U2 DONE (16 Oct live), U3 DONE (16 Oct brow
 **21 Oct 07:09:** ops-ufw-passkey.sh founder output: ufw 3443/udp rule pehle se, passkey exempt marker live — dono GREEN. Agla: B5 code.
 
 ## 21 Oct 07:20 — B5 shuru. B4 GREEN. Ab: b5_core.rs/b5_glue.rs likhna (movein, release, revenue, status, outbox, thread, ai chat). Routes padh li: movein.ts (Supabase4 RPC movein_*), release.ts, revenue.ts. Memory: har step ke baad repo + /home/claude/sandbox-state update.
+
+## STANDING ROLE (founder, 21 Oct 07:35): Main CEO-agent hoon. Mera kaam: advance-level code likhna; website ka mobile / tablet / laptop / computer user-experience aur frontend technology SAB dekhna; Lovable ya Cursor ne jo galat kiya ho use khud theek karna (fix) — founder se loophole list nahi maangni. Har batch mein: jo galti milti hai wahi fix + DONE-DO-NOT-REPEAT mein likhna.
+
+## FOUNDER RULE 21 Oct 07:35 (STANDING) — CEO ka kaam
+Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tablet / laptop / desktop user experience + frontend technology sab dekhna. Agar Lovable ya Cursor ne kuch GALAT kiya hai to usay mujhe khud theek/fix karna hai (founder ko loophole list nahi dena). Har batch ke saath frontend check (390/820/1440) + purani galtiyan fix; end-of-migration Chrome test mein bhi.
