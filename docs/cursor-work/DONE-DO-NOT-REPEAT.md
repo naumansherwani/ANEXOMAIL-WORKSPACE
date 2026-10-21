@@ -278,3 +278,8 @@ Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/cl
 - NEXT: B7c booking page, B7d iMIP reply + CalDAV, B8.
 
 - RULE (founder gussa 22 Oct 02:56): SQL KABHI Supabase editor se nahi — hamesha `sql-run.sh <NAME> CHECK_<NAME>` server command. Har technology ki alag command: SQL=sql-run.sh, Rust=rust-engine-install.sh, Web=pull.sh, Brain=brain-*-install.sh. Pehle is file ko padho, phir commands do. E56 ki command: sql-run.sh E56_calendar_recurrence CHECK_E56
+
+## 22 Oct 2026 03:10 — B7b GREEN on server (founder output dekha)
+- sql-run.sh E56_calendar_recurrence + CHECK_E56: sab OK (5 columns, 2 functions, anon band). Rust rust-engine-install.sh: cal 38 tests, build OK 2m02, restart, calendar procs live. Web pull.sh: build OK, /health 200, server==repo 498 same.
+- Supabase editor "PRIVATE (66)" = sirf saved untitled queries ki ginti, koi bug nahi (SQL ab sql-run.sh se).
+- Baqi: asli login se recurring meeting ka live test (founder ya test account) — Claude apne aap founder ke calendar mein event nahi banata. NEXT: B7c booking page.
