@@ -439,7 +439,7 @@ Already live (poori website, plan se nahi): Tokio 1.53.3, axum 0.8.9, QUIC via w
 | B1 | Rust JWT local verify + refresh | ✅ GREEN |
 | B2 / B2b | Passkey/recovery login Rust par + Bun fallback hardening + passkey list/delete | ✅ GREEN |
 | B3 | `mail.send`, undo-send hold, Rust queue worker, `org.mailboxes.*` (R1) | ✅ GREEN (21 Oct 06:00) |
-| B4 | Event-driven WebTransport push (R5), family accounts included; client `live-core.ts`/`live.ts`; inbound mail hub push | 🟡 READY — repo `5e084a3`, sandbox asli QUIC proof PASS; server install baqi (`rust-events-install.sh` -> `rust-deliver-install.sh` -> Web pull) |
+| B4 | Event-driven WebTransport push (R5), family accounts included | ✅ GREEN (21 Oct 06:50, server proof SAB PASS) |
 | B5 | G40: 19 Bun-only founder routes (work/crm/org/integrations/settings) Rust par | TODO |
 | B6 | G16 self-serve billing Rust par (Polar :3400 NO TOUCH) | TODO |
 | B7 | G26/G27 calendar: iMIP reply, recurring, scheduling link, CalDAV | TODO |

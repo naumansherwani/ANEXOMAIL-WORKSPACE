@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 55a2a094a25d6fdc
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 643a62321b17f381
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 9ceefe27b4560f81
+docs/cursor-work/MASTER-GAP-LEDGER.md a8df8c2422d126fd
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -246,7 +246,7 @@ src/routes/app.tsx f873a19be7ebbea5
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a0882f94b6074ffa
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 13cd691be4590b2a
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -283,12 +283,12 @@ src/lib/mail-rpc.test.ts d7eb203ea04402f0
 src/lib/live.ts 785060ea4f8a9206
 src/lib/live-core.ts 0376a86bb88a5f1e
 src/lib/live-core.test.ts 836a79e2c4d846ec
-docs/MASTER-BUILD-PLAN.md 59e352732ce4396b
+docs/MASTER-BUILD-PLAN.md 9bb99b02537a581e
 docs/cursor-work/server/events_patch.py 4cd2cb3d33aad7db
 docs/cursor-work/GREEN-BOARD/01-GREEN.md b1ad06751a4b1d6b
 docs/cursor-work/GREEN-BOARD/02-PLAN-P1-P9-vs-REPO.md 6bd817a28a4cce96
 docs/cursor-work/GREEN-BOARD/03-G-SERIES.md f8f05e130dd709e0
-docs/cursor-work/GREEN-BOARD/04-TECHNOLOGY.md 0094cec49bf83d17
+docs/cursor-work/GREEN-BOARD/04-TECHNOLOGY.md 0d7d8393bf4e71a8
 docs/cursor-work/GREEN-BOARD/05-DOCS-INVENTORY.md c2aa7ba0ee2ec2c8
 docs/cursor-work/GREEN-BOARD/06-REPO-INVENTORY.md 7e7dab6d94fe73ac
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/00-INDEX.md ac788e7ccc98da0b

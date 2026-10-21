@@ -12,7 +12,7 @@
 | B2 passkey/recovery Rust (G42) | 🟢 GREEN | 05:50 |
 | B2b Bun hardening + passkey list/delete | 🟢 GREEN | 05:50 |
 | B3 mail.send/undo/queue worker/org.mailboxes (R1) | 🟢 GREEN | 06:00 |
-| B4 event-driven push (R5) | 🟡 CODE (bana, live saboot baqi) | repo b18c4b9; deliver binary live (hub-push); rust-events-install.sh dobara chalana baqi (patch anchor fix pushed); Web pull ho chuka |
+| B4 event-driven push (R5) | 🟢 GREEN | 21 Oct 06:50 founder output: proof SAB PASS (UDP 3443, /internal/event, family 3/3) |
 | B5 G40 19 Bun-only routes -> Rust | 🔴 TODO (bana nahi) |  |
 | B6 G16 self-serve billing Rust | 🔴 TODO (bana nahi) | Polar :3400 NO-TOUCH |
 | B7 G26/G27 calendar iMIP/recurrence/link/CalDAV | 🔴 TODO (bana nahi) |  |

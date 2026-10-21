@@ -129,3 +129,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - **21 Oct 06:45 A1/A2 stale-TODO theek kiya:** A1 audit pehle hi chal chuka tha (00:27) — table mein "TODO" reh gaya tha. Ab GREEN. Khula sirf **A5** (`FOUNDER_PASSWORD` env compare, auth.ts) — G35 passkey/2FA ke baad hatana; aur repo `main.rs` ko live ke barabar mirror karna (installers live patch karte hain) B-series ke saath.
 
 - **21 Oct 06:50 GREEN-BOARD banaya:** `docs/cursor-work/GREEN-BOARD/` (README + 01-GREEN, 02-PLAN-P1-P9-vs-REPO, 03-G-SERIES, 04-TECHNOLOGY, 05-DOCS-INVENTORY, 06-REPO-INVENTORY) aur side folder `GREEN-BOARD/NOT-GREEN/` (code-live-baqi, todo, partial, founder-chahiye, stale-docs, parked). MASTER-BUILD-PLAN ka STATUS BOARD purana hai — sach board GREEN-BOARD. Dobara mat banao; sirf status badalne par update karo.
+
+- **B4 GREEN 21 Oct 06:50** (D5b: R5 event-driven push — live, proof SAB PASS, family 3/3). Agla B5.
