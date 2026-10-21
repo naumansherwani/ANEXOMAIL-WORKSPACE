@@ -284,3 +284,4 @@ src/lib/live.ts 785060ea4f8a9206
 src/lib/live-core.ts 0376a86bb88a5f1e
 src/lib/live-core.test.ts 836a79e2c4d846ec
 docs/MASTER-BUILD-PLAN.md 59e352732ce4396b
+docs/cursor-work/server/events_patch.py 4cd2cb3d33aad7db

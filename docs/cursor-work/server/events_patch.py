@@ -19,12 +19,11 @@ hook = ('    // B4 (R5) — event-driven hub: ek org ka ek hub, polling per-sess
         '    if events_glue::enabled() && (mode == "events" || mode == "mail") {\n'
         '        events_glue::serve(send, &token, &hello).await;\n        return;\n    }\n\n')
 s = s.replace(anchor, hook + anchor, 1)
-r = '        .route("/file/download", get(file_download))\n        .layer(cors);'
-if s.count(r) != 1: print("PATCH FAIL: router end anchor nahi mila (%d)" % s.count(r)); sys.exit(4)
-s = s.replace(r, '        .route("/file/download", get(file_download))\n'
-              '        // B4: loopback + secret; inbound mail pipe / Bun fallback yahan se live push dete hain\n'
-              '        .route("/internal/event", post(events_glue::internal_event))\n'
-              '        .layer(axum::middleware::from_fn(events_glue::publish_layer))\n'
-              '        .layer(cors);', 1)
+ms = list(re.finditer(r'\n([ \t]*)\.layer\(cors\);', s))
+if len(ms) != 1: print("PATCH FAIL: router end `.layer(cors);` anchor nahi mila ya ek se zyada (%d)" % len(ms)); sys.exit(4)
+m = ms[0]; ind = m.group(1)
+s = (s[:m.start()] + "\n" + ind + "// B4: loopback + secret; inbound mail pipe / Bun fallback yahan se live push dete hain\n"
+     + ind + '.route("/internal/event", post(events_glue::internal_event))\n'
+     + ind + ".layer(axum::middleware::from_fn(events_glue::publish_layer))\n" + ind + ".layer(cors);" + s[m.end():])
 open(p, "w").write(s)
 print("main.rs: events judi")

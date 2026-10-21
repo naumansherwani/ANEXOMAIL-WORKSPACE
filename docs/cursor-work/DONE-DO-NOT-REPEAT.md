@@ -144,3 +144,5 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 
 
 ## B4 READY (21 Oct 07:30): R5 event-driven WT push (events_core/events_glue/events_patch/rust-events-install/events-proof, client live-core.ts+live.ts, deliver_bin hub push). Asli QUIC sandbox proof SAB PASS (family org bhi). Install: rust-events-install.sh -> rust-deliver-install.sh -> Web pull. Dobara mat likho.
+
+## B4 install fix (21 Oct): live main.rs mein router end ka exact text alag tha => events_patch.py ab regex anchor (`.layer(cors);` ek hi) se judta hai. EVENT_SECRET live .env + mail.env mein likha ja chuka. deliver install OK (35 tests, asli Postfix->Rust OK) — hub push wali binary lag chuki. Baqi: rust-events-install.sh dobara.
