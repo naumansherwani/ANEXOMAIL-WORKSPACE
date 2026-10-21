@@ -612,3 +612,5 @@ Is review ke har nukte ka anjaam: U1/U2 DONE (16 Oct live), U3 DONE (16 Oct brow
 **21 Oct 06:55 — EK BLUEPRINT:** founder ne poocha 5 blueprint kyon; ab `docs/claude/FINAL-FOUNDER-BLUEPRINT.md` ek hi blueprint (identity, packages, tech, B-series, security, modules, rules, document map). Baqi files detail/history; security-blueprint founder-original (chhua nahi). Dobara alag blueprint mat banao.
 
 **21 Oct 06:58:** ek blueprint ka naam/jagah founder ne tay ki: `docs/claude/FINAL-FOUNDER-BLUEPRINT.md` (folder `docs/claude/`). Status wahi update hoga.
+
+**FOUNDER RULE (21 Oct 06:56, LOCKED): "file server par aa gayi aur wire hai = GREEN."** (Live Chrome click-test alag, baad mein.) GREEN-BOARD isi rule se dobara graded: live-dekha + server-par dono green; NOT-GREEN = jo server par aaya hi nahi (TODO/PARTIAL/FOUNDER). B5 = G40: founder pages ki 19 Bun-only calls (movein 5, release 7, revenue pipeline/lead 2, public status, ai chat, mail thread, outbox/send; mail.send B3 mein ho chuka) Rust `/rpc/*` par.

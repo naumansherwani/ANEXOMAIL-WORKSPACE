@@ -1,8 +1,8 @@
 # NOT-GREEN — index (side folder)
 
-Yeh woh sab hai jo GREEN nahi. Ginti: TODO 41 · CODE 43 · PARTIAL 25 · FOUNDER 14.
+Yeh woh sab hai jo GREEN nahi. Ginti: TODO 41 · PARTIAL 25 · FOUNDER 14.
 
-1. `01-code-live-baqi.md` — sab se tez: sirf chalana/dekhna.
+1. `01-code-live-baqi.md` — (green hain) sirf Chrome click-test list.
 2. `02-todo-not-built.md` — bana nahi (B5–B8, G16, G26/27, G40 …).
 3. `03-partial.md` — aadha.
 4. `04-founder-chahiye.md` — aapka faisla/login/DNS.

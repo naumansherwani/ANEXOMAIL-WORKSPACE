@@ -4,15 +4,15 @@
 
 | Technology / batch | Status | Note |
 |---|---|---|
-| Tokio async 1.53.3 | 🟢 GREEN | live |
-| axum 0.8.9 | 🟢 GREEN | live |
-| QUIC wtransport 0.7.2 (quinn) | 🟢 GREEN | live; ufw 3443/udp open item D11 |
-| tRPC-style /rpc/* | 🟢 GREEN | live |
-| B1 Rust JWT local verify + refresh | 🟢 GREEN | 21 Oct 04:55 |
-| B2 passkey/recovery Rust (G42) | 🟢 GREEN | 05:50 |
-| B2b Bun hardening + passkey list/delete | 🟢 GREEN | 05:50 |
-| B3 mail.send/undo/queue worker/org.mailboxes (R1) | 🟢 GREEN | 06:00 |
-| B4 event-driven push (R5) | 🟢 GREEN | 21 Oct 06:50 founder output: proof SAB PASS (UDP 3443, /internal/event, family 3/3) |
+| Tokio async 1.53.3 | 🟢 GREEN (live dekha/proof) | live |
+| axum 0.8.9 | 🟢 GREEN (live dekha/proof) | live |
+| QUIC wtransport 0.7.2 (quinn) | 🟢 GREEN (live dekha/proof) | live; ufw 3443/udp open item D11 |
+| tRPC-style /rpc/* | 🟢 GREEN (live dekha/proof) | live |
+| B1 Rust JWT local verify + refresh | 🟢 GREEN (live dekha/proof) | 21 Oct 04:55 |
+| B2 passkey/recovery Rust (G42) | 🟢 GREEN (live dekha/proof) | 05:50 |
+| B2b Bun hardening + passkey list/delete | 🟢 GREEN (live dekha/proof) | 05:50 |
+| B3 mail.send/undo/queue worker/org.mailboxes (R1) | 🟢 GREEN (live dekha/proof) | 06:00 |
+| B4 event-driven push (R5) | 🟢 GREEN (live dekha/proof) | 21 Oct 06:50 founder output: proof SAB PASS (UDP 3443, /internal/event, family 3/3) |
 | B5 G40 19 Bun-only routes -> Rust | 🔴 TODO (bana nahi) |  |
 | B6 G16 self-serve billing Rust | 🔴 TODO (bana nahi) | Polar :3400 NO-TOUCH |
 | B7 G26/G27 calendar iMIP/recurrence/link/CalDAV | 🔴 TODO (bana nahi) |  |
@@ -28,7 +28,7 @@
 | Bun /api/billing/subscription bug | 🔴 TODO (bana nahi) | D11 |
 | E24 email_hash HMAC migrate run | 🔴 TODO (bana nahi) | D11 |
 | E52 alias fair-use SQL (cap 25) server par | 🔴 TODO (bana nahi) | sql-run.sh E52_alias_fair_use CHECK_E52 |
-| clamd tcp fix / EICAR | 🟢 GREEN | PROMISES #12 GREEN |
+| clamd tcp fix / EICAR | 🟢 GREEN (live dekha/proof) | PROMISES #12 GREEN |
 | A5 FOUNDER_PASSWORD plain env compare (auth.ts:631) | 🔴 TODO (bana nahi) | G35 passkey/2FA ke baad hatana |
 | repo main.rs live ke barabar mirror | 🔴 TODO (bana nahi) | installers live patch karte hain; A1 gap |
 | Cron anexomail-sync-domains/maps duplicate (crontab + /etc/cron.d) + script repo mein nahi | 🔴 TODO (bana nahi) | A4 |

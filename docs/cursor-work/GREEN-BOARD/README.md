@@ -2,21 +2,22 @@
 
 21 Oct 2026, asli ghadi ~06:50 PKT · repo HEAD b18c4b9+ · source: MASTER-BUILD-PLAN.md, MASTER-GAP-LEDGER.md, loophole-ledger.md, blueprint G-table, DONE-DO-NOT-REPEAT.md, PROMISES.md, TECH-MAP.md + repo grep (src/, server/).
 
-**Zubaan (sach, jhoot nahi):**
+**FOUNDER RULE (21 Oct 06:56): file server par aa gayi aur wire hai = GREEN.** Do darje: 🟢 live dekha/proof (pakka) · 🟢 server par aaya + wire (live click-test baqi). Baqi sab NOT-GREEN.
+**Zubaan:**
 - 🟢 **GREEN** = live saboot (founder ka server output ya Chrome mein dekha) — dobara mat chhuo.
-- 🟡 **CODE** = repo mein bana (file maujood), live par chalne/dekhne ka saboot nahi.
+- 🟢 **GREEN (server par)** = file repo mein hai AUR pull/installer se server par aa chuki (Web server==repo 490/491; Rust/Brain installer chala) — ab sirf Chrome mein dekhna.
 - 🟠 **PARTIAL** = kuch hissa green/maujood, kuch baqi.
 - 🔴 **TODO** = repo mein bana hi nahi (ya server par nahi chala).
 - 🔵 **FOUNDER** = founder ka faisla/haan/login/DNS chahiye.
 - ⚪ **PARKED** = founder ne rok rakha.
-**Dhyaan:** P1–P9 ke "CODE" ka matlab sirf itna ki file maujood hai (grep se mila) — chalta hai ya nahi, wo live test se hi tay hoga. Isse zyada main daawa nahi karta.
+**Dhyaan:** "server par aaya" repo grep + server==repo pull output se hai; chalta hai ya nahi wo Chrome click-test se tay hoga (list: NOT-GREEN/01).
 
 ## Ginti (kul)
-| Hissa | Kul | 🟢 GREEN | 🟡 CODE | 🟠 PARTIAL | 🔴 TODO | 🔵 FOUNDER |
+| Hissa | Kul | 🟢 live dekha | 🟢 server par (click-test baqi) | 🟠 PARTIAL | 🔴 TODO | 🔵 FOUNDER |
 |---|---|---|---|---|---|---|
 | MASTER-BUILD-PLAN P1–P9 (is plan ke 68 items) | 68 | 9 | 40 | 12 | 7 | 0 |
 | G-series G1–G42 | 43 | 10 | 2 | 13 | 16 | 2 |
-| Technology (live stack + B1–B8 + R) | 15 | 8 | 1 | 0 | 6 | 0 |
+| Technology (live stack + B1–B8 + R) | 15 | 9 | 0 | 0 | 6 | 0 |
 | Ops / bugs / ledger khule | 13 | 1 | – | – | 11 | 1 |
 
 ## Files

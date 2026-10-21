@@ -152,3 +152,5 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## B4 GREEN (21 Oct 06:50): event-driven push Rust par server par chala, proof SAB PASS (family bhi). Dobara mat likho.
 
 ## EK BLUEPRINT (21 Oct 06:55): docs/claude/FINAL-FOUNDER-BLUEPRINT.md bana; MASTER-BUILD-PLAN + anexomail-blueprint par pointer. Naya blueprint mat banao, isi mein update.
+
+## GREEN RULE (21 Oct 06:56): file server par + wire = GREEN. GREEN-BOARD isi se regrade (live dekha / server par). Dobara strict "live proof only" se mat grade karo.

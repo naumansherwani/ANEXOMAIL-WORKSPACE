@@ -6,6 +6,10 @@ Qaida: is file mein sirf **sach** hai (live ya repo mein saabit). Naya faisla �
 
 ---
 
+**GREEN ka qaida (founder, 21 Oct 06:56):** file server par aa gayi + wire hai = GREEN. Chrome click-test alag, baad mein.
+
+---
+
 ## 1. Kya hai (identity + teen surface)
 - **Product:** ANEXOMAIL Workspace — AI-native email workspace (Google Workspace / Zoho Mail ka replacement). Cinematic, mobile-pehle.
 - **Ek codebase, teen surface** (`src/lib/host.ts`): `anexomail.com` awam (Mail + Chat + People + Calendar + Work) · `ai.anexomail.com` (LEO AI) · `founderworkspace.anexomail.com` (sirf Nauman, "Founder View").

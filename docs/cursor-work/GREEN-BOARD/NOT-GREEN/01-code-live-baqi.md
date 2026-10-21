@@ -1,8 +1,8 @@
-# NOT-GREEN 1 — CODE bana, live saboot baqi (sab se tez green hone wale)
+# 01 — Green hain (server par), bas Chrome click-test baqi
 
 21 Oct 2026, asli ghadi ~06:50 PKT · repo HEAD b18c4b9+ · source: MASTER-BUILD-PLAN.md, MASTER-GAP-LEDGER.md, loophole-ledger.md, blueprint G-table, DONE-DO-NOT-REPEAT.md, PROMISES.md, TECH-MAP.md + repo grep (src/, server/).
 
-Inhe sirf server par chalana / Chrome mein dekhna hai — naya code nahi.
+Founder rule se yeh GREEN hain. Yahan sirf wo list jo live dekhna hai (Pro/Business/Business Pro ke saath).
 
 | Item | Kaam | Agla qadam |
 |---|---|---|
@@ -54,4 +54,3 @@ Inhe sirf server par chalana / Chrome mein dekhna hai — naya code nahi.
 
 | Tech | Baqi |
 |---|---|
-| B4 event-driven push (R5) | repo b18c4b9; deliver binary live (hub-push); rust-events-install.sh dobara chalana baqi (patch anchor fix pushed); Web pull ho chuka |
