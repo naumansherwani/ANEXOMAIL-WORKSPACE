@@ -524,3 +524,10 @@ Command (web): bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /
 ## 22 Oct 2026 04:07 — founder (verbatim ka matlab)
 "sab kero advance level codes likho soch ke likho … image kero ke ek advance calander kya hoga aur google video meet ki zarurat nahi hai kyun ke mere pass anexochat hai. jitne codes likhe hain compact chat se pehle update kero repo main — yeh server pe codes hain, ab phir se nahi likhna."
 Batch: Availability+FindTime 12h/24h, invitation mail mein shehar-naam/12h-24h, dono layouts ka polish, account mein pref save (locale). Video link: Meet nahi — ANEXOChat call link (decision). HALAT: TODO->kaam chal raha.
+
+## 22 Oct 2026 04:11 — founder (verbatim ka matlab, gussa)
+"tujhe nahi pata ke loopholes ko khatam karna hai root se green karna hai, ja ke repo pura read karo" — account-save wala kaam poocha nahi jaye, khud poora karo (Rule 29: loophole-list nahi, fix). HALAT: kaam chal raha — account-level clock/layout pref (SQL E58 + Rust locale uipref + web sync).
+HALAT 22 Oct 04:50: READY — account-level calendar pref. Teen alag commands (har technology ki alag, is tarteeb se):
+1) SQL:   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E58_ui_pref CHECK_E58
+2) Rust:  git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)
+3) Web:   bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6

@@ -302,3 +302,4 @@ Founder ne spec bheji (Google sync, CalDAV, booking page, iMIP reply, event atta
 Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "Calendly/Meet se tez" — sirf measured LCP/INP targets.
 - 22 Oct 04:10 Calendar: Classic (purana dual, ce621ed) default + Expanded (v2) toggle (src/components/app/calendar/CalendarClassic.tsx, TimeBar.tsx, src/lib/timeFormat.ts); clock shehar-naam + 12h/24h/Auto; sandbox 1440/820/390 x en-PK/en-GB PASS; live GREEN baqi (founder pull).
 - 22 Oct 04:30 Calendar: Availability+FindTime 12h/24h, invitation mail label shehar-naam (whenLabel, frontend), layout crossfade + toggle label. Baqi: account-level pref save (SQL+Rust locale alag step), live green.
+- 22 Oct 04:50 Calendar account-pref: SQL E58_ui_pref+CHECK_E58, Rust locale.uipref(.set) (locale_core 6 tests, cargo check OK), installer probe, web hydrateUiPref/pushRemote. Live GREEN baqi (founder 3 commands: SQL, Rust, Web).

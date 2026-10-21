@@ -50,7 +50,7 @@ import {
   type CalendarEvent,
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
-import { fmtTime, useCalLayout, useClockPref } from "@/lib/timeFormat";
+import { fmtTime, hydrateUiPref, useCalLayout, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/calendar")({
@@ -450,6 +450,9 @@ type Rail = "agenda" | "availability" | "load";
 /** Chooses the layout the viewer picked (Classic by default) — both are always available via the toggle. */
 function CalendarPage() {
   const [layout] = useCalLayout();
+  useEffect(() => {
+    void hydrateUiPref();
+  }, []);
   // A short cross-fade when the viewer switches layout (key = layout), respecting reduced motion via framer's default.
   return (
     <motion.div

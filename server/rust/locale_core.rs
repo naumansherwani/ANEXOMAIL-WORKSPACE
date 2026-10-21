@@ -64,6 +64,15 @@ pub fn rfc3339_utc(unix: u64) -> String {
     format!("{y:04}-{m:02}-{d:02}T{h:02}:{mi:02}:{s:02}Z")
 }
 
+/// Calendar display preference values the account may hold (E58 CHECK constraints mirror these).
+pub fn clock_ok(s: &str) -> bool {
+    matches!(s, "auto" | "12" | "24")
+}
+
+pub fn layout_ok(s: &str) -> bool {
+    matches!(s, "classic" | "expanded")
+}
+
 pub fn now_rfc3339() -> String {
     rfc3339_utc(SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0))
 }
@@ -100,6 +109,14 @@ mod tests {
         assert!(keep_row("ur-PK", "Inbox", "ان باکس"));
         assert!(!keep_row("ur-PK", "", "x"));
         assert!(!keep_row("ur-PK", "x", ""));
+    }
+
+    #[test]
+    fn ui_pref_values_are_exact() {
+        assert!(clock_ok("auto") && clock_ok("12") && clock_ok("24"));
+        assert!(!clock_ok("") && !clock_ok("12h") && !clock_ok("AUTO") && !clock_ok("24 "));
+        assert!(layout_ok("classic") && layout_ok("expanded"));
+        assert!(!layout_ok("") && !layout_ok("Classic") && !layout_ok("dual"));
     }
 
     #[test]

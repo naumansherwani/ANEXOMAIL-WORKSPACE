@@ -8,6 +8,8 @@
  */
 import { useSyncExternalStore } from "react";
 
+import { rpcOrRest } from "@/lib/rpc";
+
 export type ClockPref = "auto" | "12" | "24";
 export type CalLayout = "classic" | "expanded";
 
@@ -25,7 +27,7 @@ function read(key: string): string | null {
   }
 }
 
-function write(key: string, value: string) {
+function write(key: string, value: string, remote = true) {
   memory[key] = value;
   try {
     window.localStorage.setItem(key, value);
@@ -33,6 +35,7 @@ function write(key: string, value: string) {
     /* private window / blocked storage: the in-memory value still works for this visit */
   }
   listeners.forEach((fn) => fn());
+  if (remote) void pushRemote();
 }
 
 function subscribe(fn: () => void) {
@@ -45,6 +48,42 @@ function subscribe(fn: () => void) {
     listeners.delete(fn);
     if (typeof window !== "undefined") window.removeEventListener("storage", onStorage);
   };
+}
+
+/**
+ * Account sync (E58 + Rust /rpc/locale.uipref*): the choice follows the user to every device.
+ * Best-effort and silent — signed out, SQL not run yet, or offline: the device value still works.
+ */
+async function pushRemote() {
+  try {
+    await rpcOrRest(
+      "locale.uipref.set",
+      { path: "/api/locale/uipref", method: "PUT", body: { clock: readClockPref(), layout: readLayoutPref() } },
+      { clock: readClockPref(), layout: readLayoutPref() },
+    );
+  } catch {
+    /* keep the local value */
+  }
+}
+
+let hydrated = false;
+
+/** Once per page load: the account's saved choice wins; if the account has none yet, upload this device's. */
+export async function hydrateUiPref(): Promise<void> {
+  if (hydrated || typeof window === "undefined") return;
+  hydrated = true;
+  try {
+    const res = await rpcOrRest<{ clock: string | null; layout: string | null }>("locale.uipref", {
+      path: "/api/locale/uipref",
+    });
+    const clock = res.clock === "12" || res.clock === "24" || res.clock === "auto" ? res.clock : null;
+    const layout = res.layout === "classic" || res.layout === "expanded" ? res.layout : null;
+    if (clock) write(CLOCK_KEY, clock, false);
+    if (layout) write(LAYOUT_KEY, layout, false);
+    if (!clock && !layout && (read(CLOCK_KEY) || read(LAYOUT_KEY))) void pushRemote();
+  } catch {
+    /* signed out / not installed yet */
+  }
 }
 
 export function readClockPref(): ClockPref {
