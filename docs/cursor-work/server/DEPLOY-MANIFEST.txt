@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 6c8c14d7d0dc4b9b
+docs/cursor-work/DONE-DO-NOT-REPEAT.md e504fbca99eee5bb
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -320,5 +320,5 @@ src/routes/app.founder_.launch.roadmap.tsx 5402b35b686f0e77
 src/routes/app.founder_.launch.tsx 56040594796bfe2a
 src/routes/app.founder_.movein.tsx e540a4a623b14bca
 src/routes/app.movein.tsx db2a5d3341081843
-src/routes/status.tsx 93b5a1c0c209b160
+src/routes/status.tsx 63446194a25640c4
 src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e

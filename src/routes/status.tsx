@@ -87,7 +87,7 @@ function StatusPage() {
           <>
             <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-border sm:grid-cols-2">
               {q.data.components.map((c) => (
-                <div key={c.name} className="ax-plane rounded-none border-0 p-5">
+                <div key={c.name} className="ax-plane rounded-none border-0 p-5 sm:last:odd:col-span-2">
                   <div className="flex items-center gap-3">
                     <span
                       className={
