@@ -8,6 +8,7 @@ RPC = os.environ.get("RPC", "http://127.0.0.1:3200"); BRAIN = os.environ.get("BR
 SBU = os.environ["SBU"].rstrip("/"); SBK = os.environ["SBK"]; EMAIL = os.environ.get("EMAIL", "basic.test@anexomail.com")
 ORIGIN = "https://anexomail.com"; UA = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36"
 fails = []
+RUN_IP = "198.51.100.%d" % (1 + os.urandom(1)[0] % 250)   # har run ka apna IP: per-IP limiter (30/20/10 in a minute) agle run ko na roke
 
 def b64(b): return base64.urlsafe_b64encode(b).rstrip(b"=").decode()
 def req(method, url, body=None, headers=None):
@@ -21,7 +22,7 @@ def req(method, url, body=None, headers=None):
 def sb(method, path, body=None, extra=None):
     return req(method, SBU + path, body, dict({"apikey": SBK, "authorization": "Bearer " + SBK, "prefer": "return=representation"}, **(extra or {})))
 def rpc(proc, inp, origin=ORIGIN, auth=None):
-    h = {"origin": origin, "user-agent": UA}
+    h = {"origin": origin, "user-agent": UA, "x-forwarded-for": RUN_IP}
     if auth: h["authorization"] = "Bearer " + auth
     code, j = req("POST", f"{RPC}/rpc/{proc}", {"input": inp}, h)
     data = ((j or {}).get("result") or {}).get("data"); e = (j or {}).get("error") or {}
@@ -80,10 +81,11 @@ try:
     if token and not os.environ.get("PUBLIC_ONLY"):
         c, _, e = rpc("chat.conversations.list", {}, auth=token)
         check("naye token par Rust auth chali (401 nahi)", c != 401, c)
-        r = urllib.request.Request(BRAIN + "/api/auth/session", headers={"authorization": "Bearer " + token}); 
-        try: bc = urllib.request.urlopen(r, timeout=20).status
-        except urllib.error.HTTPError as ex: bc = ex.code
-        check("naye token par Brain /api/auth/session 200", bc == 200, bc)
+        if BRAIN != "skip":
+            r = urllib.request.Request(BRAIN + "/api/auth/session", headers={"authorization": "Bearer " + token})
+            try: bc = urllib.request.urlopen(r, timeout=20).status
+            except urllib.error.HTTPError as ex: bc = ex.code
+            check("naye token par Brain /api/auth/session 200", bc == 200, bc)
         c, d, e = rpc("auth.passkey.status", {}, auth=token)
         check("status: test account exempt", c == 200 and (d or {}).get("exempt") is True, (c, d))
     # 6 replay of the very same assertion
@@ -99,6 +101,23 @@ try:
     # 9 garbage never reaches a filter
     c, _, e = rpc("auth.passkey.verify", {"id": "x)&or=(id.gt.0", "response": {"clientDataJSON": b64(b'{"type":"webauthn.get","challenge":"a,b","origin":"https://anexomail.com"}')}})
     check("filter-injection waala challenge -> 400", c == 400, c)
+    # 10 list / delete (authenticated) — sab se aakhir mein, kyunki delete hamara test passkey hata deta hai
+    if token and not os.environ.get("PUBLIC_ONLY"):
+        c, d, e = rpc("auth.passkey.list", {}, auth=token)
+        rows = d if isinstance(d, list) else []
+        mine = [r for r in rows if r.get("device_name") == "B2 proof (auto-delete)"]
+        check("list: apna test passkey dikha", c == 200 and len(mine) == 1, (c, e))
+        c, _, e = rpc("auth.passkey.delete", {"id": "not-a-uuid"}, auth=token)
+        check("delete: ghalat id -> 400", c == 400 and e == "passkey_id_invalid", (c, e))
+        c, _, e = rpc("auth.passkey.delete", {"id": "00000000-0000-0000-0000-000000000000"}, auth=token)
+        check("delete: kisi aur ki/anjaan row -> ok par kuch nahi mita", c == 200, (c, e))
+        c, d, e = rpc("auth.passkey.list", {}, auth=token)
+        check("list: anjaan delete ke baad hamara passkey salamat", c == 200 and len([r for r in (d or []) if r.get("device_name") == "B2 proof (auto-delete)"]) == 1, (c, e))
+        if mine:
+            c, _, e = rpc("auth.passkey.delete", {"id": mine[0]["id"]}, auth=token)
+            check("delete: apna passkey hata", c == 200, (c, e))
+            c, d, e = rpc("auth.passkey.list", {}, auth=token)
+            check("list: ab nahi dikhta", c == 200 and not [r for r in (d or []) if r.get("device_name") == "B2 proof (auto-delete)"], (c, e))
 finally:
     sb("DELETE", "/rest/v1/webauthn_credentials?credential_id=eq." + cred_id)
     sb("DELETE", "/rest/v1/webauthn_challenges?user_id=eq." + uid)

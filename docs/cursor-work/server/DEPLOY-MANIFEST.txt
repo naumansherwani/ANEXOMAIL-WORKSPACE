@@ -41,7 +41,7 @@ src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts 0c13153d849a95a2
 src/routes/app.billing.tsx 8d59ed0431521528
-src/routes/app.account.tsx 2e23a305b9586fb1
+src/routes/app.account.tsx 027e460f1c6cd2a2
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx b75efea04cb39d90
 src/routes/app.admin.teams.tsx e97e4983a7605ae5
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 0bd4dd7b98c3052a
+docs/cursor-work/DONE-DO-NOT-REPEAT.md bdfbed7150624389
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -225,7 +225,7 @@ src/components/app/Panel.tsx 31764bb31659e16f
 src/lib/experience.ts adfcffbb33979c2c
 src/routes/app.settings.appearance.tsx 7911ac3654c2b006
 docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
-server/routes/auth-passkey.ts 08ceee0689c95337
+server/routes/auth-passkey.ts 1c3323da4c6fdeca
 docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
 src/lib/fx.ts 801eab59f8d63f54
 src/components/fx/Fx3D.tsx d4bbbb32b593ab7b
@@ -246,7 +246,7 @@ src/routes/app.tsx f873a19be7ebbea5
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 681a742797354c75
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 6cd937d7e64ff5e0
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -261,8 +261,11 @@ docs/cursor-work/server/tier-sweep.sh 1a6b7aa79d0ace53
 src/lib/tier-guard.test.ts d7308453842c1a6b
 src/lib/tier-guard.baseline.json 75095fd08628920d
 server/rust/passkey_core.rs 5aa795ff74733765
-server/rust/passkey_glue.rs 196d3cb12633e0ff
+server/rust/passkey_glue.rs 606c2c6075ca2bab
 src/lib/passkey-login.test.ts 5e28c0154e783588
 docs/cursor-work/server/passkey_patch.py 26ac57c951cd9d1f
-docs/cursor-work/server/passkey-proof.py be344413dc55858b
+docs/cursor-work/server/passkey-proof.py 747096e2afc9560e
 docs/cursor-work/server/rust-passkey-install.sh 70124a09f7ab588f
+server/routes/auth-passkey.test.ts 9c5227558359a871
+docs/cursor-work/server/brain_passkey_harden.py 6a26723d89bacc63
+docs/cursor-work/server/brain-passkey-harden-install.sh b1b5af51f20048a3

@@ -112,8 +112,10 @@ function AccountPage() {
   const passkeys = useQuery<{ id: string; device_name: string; created_at: string; last_used_at: string | null }[], ApiError>({
     queryKey: ["auth", "passkeys"],
     queryFn: () =>
-      api<{ id: string; device_name: string; created_at: string; last_used_at: string | null }[]>(
-        "/api/auth/passkey/list",
+      rpcOrRest<{ id: string; device_name: string; created_at: string; last_used_at: string | null }[]>(
+        "auth.passkey.list",
+        { path: "/api/auth/passkey/list", method: "GET" },
+        {},
       ),
     retry: false,
   });
@@ -422,7 +424,7 @@ function AccountPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() =>
-                        void api(`/api/auth/passkey/${item.id}`, { method: "DELETE" })
+                        void rpcOrRest("auth.passkey.delete", { path: `/api/auth/passkey/${item.id}`, method: "DELETE" }, { id: item.id })
                           .then(() => {
                             notify.done("Passkey removed", "That device can no longer sign in with Face ID.");
                             void queryClient.invalidateQueries({ queryKey: ["auth", "passkeys"] });

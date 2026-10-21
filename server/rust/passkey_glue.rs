@@ -9,6 +9,7 @@
 //   auth.passkey.register.options / register.verify        -> enrol a passkey (first one also returns 10 recovery codes)
 //   auth.passkey.status                                    -> gate/banner status (test accounts exempt)
 //   auth.recovery.generate                                 -> new recovery codes
+//   auth.passkey.list / auth.passkey.delete {id}           -> your devices (Account page); delete re-opens the passkey gate at 0
 //
 // Sessions: Supabase GoTrue admin generate_link + verify (same as the Bun code), so the browser gets a normal access token +
 // refresh token (B1) and the revocation path (auth.sessions / account_sessions) is the SAME as every other login.
@@ -42,7 +43,12 @@ pub fn public_owns(proc: &str) -> bool {
 pub fn owns(proc: &str) -> bool {
     matches!(
         proc,
-        "auth.passkey.register.options" | "auth.passkey.register.verify" | "auth.passkey.status" | "auth.recovery.generate"
+        "auth.passkey.register.options"
+            | "auth.passkey.register.verify"
+            | "auth.passkey.status"
+            | "auth.recovery.generate"
+            | "auth.passkey.list"
+            | "auth.passkey.delete"
     )
 }
 
@@ -530,8 +536,36 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value, headers: &HeaderMa
         "auth.passkey.register.options" => register_options(&uid, &email, headers).await,
         "auth.passkey.register.verify" => register_verify(&uid, token, input, headers).await,
         "auth.recovery.generate" => recovery_generate(&uid).await,
+        "auth.passkey.list" => list(&uid).await,
+        "auth.passkey.delete" => delete(&uid, input).await,
         _ => fail(StatusCode::NOT_FOUND, "procedure_not_in_rust"),
     }
+}
+
+async fn list(uid: &str) -> Resp {
+    match crate::sb_select(&format!(
+        "webauthn_credentials?select=id,device_name,created_at,last_used_at&user_id=eq.{uid}&order=created_at.desc"
+    ))
+    .await
+    {
+        Ok(v) => crate::ok(if v.is_array() { v } else { json!([]) }).into_response(),
+        Err(_) => fail(StatusCode::INTERNAL_SERVER_ERROR, "passkey_list_failed"),
+    }
+}
+
+/// Only YOUR row can go (user_id filter in the same DELETE). Last passkey gone => trial_accounts.passkey_set=false (gate returns).
+async fn delete(uid: &str, input: &Value) -> Resp {
+    let id = st(input, "id");
+    if !is_uuid(&id) {
+        return bad("passkey_id_invalid");
+    }
+    if pg_delete(&format!("webauthn_credentials?id=eq.{id}&user_id=eq.{uid}")).await.is_err() {
+        return fail(StatusCode::INTERNAL_SERVER_ERROR, "passkey_delete_failed");
+    }
+    if credential_count(uid).await == 0 {
+        let _ = crate::sb_patch(&format!("trial_accounts?user_id=eq.{uid}"), json!({ "passkey_set": false, "updated_at": pc::iso_utc(now_secs()) })).await;
+    }
+    crate::ok(json!({ "ok": true })).into_response()
 }
 
 async fn status(uid: &str, email: &str) -> Resp {

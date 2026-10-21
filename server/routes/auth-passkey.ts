@@ -149,14 +149,18 @@ export function mountPasskeyRoutes(
       const client = JSON.parse(b64urlToBuf(cred.clientDataJSON).toString("utf8")) as {
         challenge?: string;
       };
-      const { data: row, error } = await getAdmin()
+      // B2 hardening: challenge SINGLE-USE — pehle mitao (DB-side expiry), phir verify. Replay ka darwaza band.
+      if (!/^[A-Za-z0-9_-]{1,128}$/.test(String(client.challenge || ""))) return fail(res, 400, "passkey_challenge_expired");
+      const { data: consumed, error } = await getAdmin()
         .from("webauthn_challenges")
-        .select("challenge,origin,rp_id,expires_at")
+        .delete()
         .eq("user_id", identity.user.id)
         .eq("kind", "register")
-        .eq("challenge", client.challenge || "")
-        .maybeSingle();
-      if (error || !row || new Date(row.expires_at).getTime() < Date.now()) {
+        .eq("challenge", client.challenge)
+        .gt("expires_at", new Date().toISOString())
+        .select("challenge,origin,rp_id,expires_at");
+      const row = Array.isArray(consumed) ? consumed[0] : null;
+      if (error || !row) {
         return fail(res, 400, "passkey_challenge_expired");
       }
       if (row.origin !== rp.origin || row.rp_id !== rp.rpId) return fail(res, 400, "passkey_origin_mismatch");
@@ -252,13 +256,17 @@ export function mountPasskeyRoutes(
       const client = JSON.parse(b64urlToBuf(cred.clientDataJSON).toString("utf8")) as {
         challenge?: string;
       };
-      const { data: ch } = await getAdmin()
+      // B2 hardening: challenge SINGLE-USE — pehle mitao (DB-side expiry), phir signature. Pakda hua jawab dobara nahi chalta.
+      if (!/^[A-Za-z0-9_-]{1,128}$/.test(String(client.challenge || ""))) return fail(res, 400, "passkey_challenge_expired");
+      const { data: consumed } = await getAdmin()
         .from("webauthn_challenges")
-        .select("*")
+        .delete()
         .eq("kind", "authenticate")
-        .eq("challenge", client.challenge || "")
-        .maybeSingle();
-      if (!ch || new Date(ch.expires_at).getTime() < Date.now()) {
+        .eq("challenge", client.challenge)
+        .gt("expires_at", new Date().toISOString())
+        .select("*");
+      const ch = Array.isArray(consumed) ? consumed[0] : null;
+      if (!ch) {
         return fail(res, 400, "passkey_challenge_expired");
       }
       const { data: stored } = await getAdmin()
@@ -267,6 +275,8 @@ export function mountPasskeyRoutes(
         .eq("credential_id", cred.id)
         .maybeSingle();
       if (!stored) return fail(res, 400, "passkey_unknown");
+      // challenge kisi khaas user ke liye bana tha to usi ka passkey chalega
+      if (ch.user_id && ch.user_id !== stored.user_id) return fail(res, 400, "passkey_unknown");
       const { signCount } = verifyAssertion({
         clientDataJSON: cred.clientDataJSON,
         authenticatorData: cred.authenticatorData,
