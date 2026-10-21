@@ -13,6 +13,7 @@ import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth";
 import { CrossPlatformBar } from "@/components/app/CrossPlatformBar";
+import { BootSplash, BOOT_CSS, BOOT_SCRIPT, useBootRelease } from "@/components/site/BootSplash";
 import { SiteLock } from "@/components/site/SiteLock";
 import { FounderBar } from "@/components/site/FounderBar";
 import { VisitorBadge } from "@/components/site/VisitorBadge";
@@ -133,6 +134,9 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en-GB" className="dark">
       <head>
+        {/* B6: the "A" shows instantly on /app (client-rendered => empty HTML otherwise). Inline = paints before any JS/CSS file. */}
+        <style dangerouslySetInnerHTML={{ __html: BOOT_CSS }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
         <HeadContent />
         <script
           dangerouslySetInnerHTML={{
@@ -141,6 +145,7 @@ function RootShell({ children }: { children: ReactNode }) {
         />
       </head>
       <body>
+        <BootSplash />
         {children}
         <Scripts />
       </body>
@@ -160,6 +165,9 @@ function RootComponent() {
   useEffect(() => {
     registerServiceWorker();
   }, []);
+
+  // Fade the boot "A" out once a real page / loader is painted (BootSplash).
+  useBootRelease();
 
   // Phase 47 — PostHog session replay + glitch reporting (CRM alerts backend se).
   useEffect(() => {

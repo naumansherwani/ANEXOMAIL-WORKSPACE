@@ -18,6 +18,7 @@ import { Route as AnexovideocallRouteImport } from './routes/anexovideocall'
 import { Route as AppRouteImport } from './routes/app'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BillingRouteImport } from './routes/billing'
+import { Route as BillingPolicyRouteImport } from './routes/billing-policy'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as ChatRouteImport } from './routes/chat'
 import { Route as ClaimRouteImport } from './routes/claim'
@@ -223,6 +224,11 @@ const AuthRoute = AuthRouteImport.update({
 const BillingRoute = BillingRouteImport.update({
   id: '/billing',
   path: '/billing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BillingPolicyRoute = BillingPolicyRouteImport.update({
+  id: '/billing-policy',
+  path: '/billing-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CalendarRoute = CalendarRouteImport.update({
@@ -1045,6 +1051,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/billing': typeof BillingRoute
+  '/billing-policy': typeof BillingPolicyRoute
   '/calendar': typeof CalendarRoute
   '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
@@ -1216,6 +1223,7 @@ export interface FileRoutesByTo {
   '/anexovideocall': typeof AnexovideocallRoute
   '/auth': typeof AuthRoute
   '/billing': typeof BillingRoute
+  '/billing-policy': typeof BillingPolicyRoute
   '/calendar': typeof CalendarRoute
   '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
@@ -1379,6 +1387,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/auth': typeof AuthRoute
   '/billing': typeof BillingRoute
+  '/billing-policy': typeof BillingPolicyRoute
   '/calendar': typeof CalendarRoute
   '/chat': typeof ChatRoute
   '/claim': typeof ClaimRoute
@@ -1553,6 +1562,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/billing'
+    | '/billing-policy'
     | '/calendar'
     | '/chat'
     | '/claim'
@@ -1724,6 +1734,7 @@ export interface FileRouteTypes {
     | '/anexovideocall'
     | '/auth'
     | '/billing'
+    | '/billing-policy'
     | '/calendar'
     | '/chat'
     | '/claim'
@@ -1886,6 +1897,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/auth'
     | '/billing'
+    | '/billing-policy'
     | '/calendar'
     | '/chat'
     | '/claim'
@@ -2059,6 +2071,7 @@ export interface RootRouteChildren {
   AppRoute: typeof AppRouteWithChildren
   AuthRoute: typeof AuthRoute
   BillingRoute: typeof BillingRoute
+  BillingPolicyRoute: typeof BillingPolicyRoute
   CalendarRoute: typeof CalendarRoute
   ChatRoute: typeof ChatRoute
   ClaimRoute: typeof ClaimRoute
@@ -2161,6 +2174,13 @@ declare module '@tanstack/react-router' {
       path: '/billing'
       fullPath: '/billing'
       preLoaderRoute: typeof BillingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/billing-policy': {
+      id: '/billing-policy'
+      path: '/billing-policy'
+      fullPath: '/billing-policy'
+      preLoaderRoute: typeof BillingPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/calendar': {
@@ -3674,6 +3694,7 @@ const rootRouteChildren: RootRouteChildren = {
   AppRoute: AppRouteWithChildren,
   AuthRoute: AuthRoute,
   BillingRoute: BillingRoute,
+  BillingPolicyRoute: BillingPolicyRoute,
   CalendarRoute: CalendarRoute,
   ChatRoute: ChatRoute,
   ClaimRoute: ClaimRoute,

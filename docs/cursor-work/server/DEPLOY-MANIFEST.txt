@@ -9,7 +9,7 @@ src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
 src/components/app/AppShell.tsx aa518d26a77538c2
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
-src/routes/__root.tsx 272e44a9fba99db0
+src/routes/__root.tsx da6ea0bd32b5fa35
 src/styles.css fea7c708305fa984
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
@@ -85,7 +85,7 @@ src/components/app/calendar/EventDetail.tsx 3f6a9025086ddc26
 src/components/app/calendar/Guests.tsx dffa0499316208d9
 src/components/app/calendar/FindTime.tsx 499767b811ead3f3
 src/routes/rsvp.tsx 126ff4cb28431afd
-src/routeTree.gen.ts 036225c5d96474ca
+src/routeTree.gen.ts 86e576c512b7306b
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 7bab5aaa08701412
+docs/cursor-work/DONE-DO-NOT-REPEAT.md f51d781dc6e1bc28
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -331,3 +331,4 @@ docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
 src/components/app/billing/ManageBilling.tsx 4a7b9f37c032c3ce
 src/routes/billing-policy.tsx 319299016682f12e
+src/components/site/BootSplash.tsx 236493e056acc67c
