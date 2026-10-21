@@ -520,3 +520,7 @@ Command: bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/an
 "mujhe old version leke aao Version 1 leke aao" (pehle: "purana aesa nahi tha shit woh codes gayae. abhi wala ka backup lo codes ka"; "time gmt nahi kero jo country hai us ka time adaptive … 12hours ya 24hours option").
 HALAT: READY (sandbox 1440/820/390 pass). Purana dual layout (ce621ed) asli git code se wapas = default "Classic"; v2 = "Expanded"; ek button (rail/toolbar ke upar) se switch, yaad rehta hai. Live clock shehar ke naam ke saath (Karachi, GMT nahi), 12h/24h/Auto (Auto = us country ka rivaaj), grid labels/chips/sheet sab mein. Backup: branch backup/calendar-v2-20261022.
 Command (web): bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6
+
+## 22 Oct 2026 04:07 — founder (verbatim ka matlab)
+"sab kero advance level codes likho soch ke likho … image kero ke ek advance calander kya hoga aur google video meet ki zarurat nahi hai kyun ke mere pass anexochat hai. jitne codes likhe hain compact chat se pehle update kero repo main — yeh server pe codes hain, ab phir se nahi likhna."
+Batch: Availability+FindTime 12h/24h, invitation mail mein shehar-naam/12h-24h, dono layouts ka polish, account mein pref save (locale). Video link: Meet nahi — ANEXOChat call link (decision). HALAT: TODO->kaam chal raha.
