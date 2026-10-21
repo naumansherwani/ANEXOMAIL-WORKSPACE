@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 99b34ed7058e6e31
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 8dde0ea0d00a9a42
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -288,7 +288,7 @@ docs/cursor-work/server/events_patch.py 4cd2cb3d33aad7db
 docs/cursor-work/GREEN-BOARD/01-GREEN.md 82f535ef18af7d9b
 docs/cursor-work/GREEN-BOARD/02-PLAN-P1-P9-vs-REPO.md 1f0e7d41908b938d
 docs/cursor-work/GREEN-BOARD/03-G-SERIES.md ff13378136b654c8
-docs/cursor-work/GREEN-BOARD/04-TECHNOLOGY.md deb3e1acd88be786
+docs/cursor-work/GREEN-BOARD/04-TECHNOLOGY.md cdd8600ec9940c22
 docs/cursor-work/GREEN-BOARD/05-DOCS-INVENTORY.md c2aa7ba0ee2ec2c8
 docs/cursor-work/GREEN-BOARD/06-REPO-INVENTORY.md 7e7dab6d94fe73ac
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/00-INDEX.md 4247f7cfc0cd071b
@@ -324,4 +324,5 @@ src/routes/status.tsx 63446194a25640c4
 src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e
 docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
 src/routes/app.founder.tsx 55493891045ccb78
-docs/claude/FOUNDER-WORKSPACE-PLAN.md f9a07df074f0a0ed
+docs/claude/FOUNDER-WORKSPACE-PLAN.md 55352265d09c9429
+docs/claude/TECH-STACK-BEAST.md 70b492453bb20d17
