@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md dd75711f9886dc21
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 6699ca05207e7e5d
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -291,12 +291,13 @@ docs/cursor-work/GREEN-BOARD/03-G-SERIES.md 6080333287447da4
 docs/cursor-work/GREEN-BOARD/04-TECHNOLOGY.md a9c5be04a81d8ba8
 docs/cursor-work/GREEN-BOARD/05-DOCS-INVENTORY.md c2aa7ba0ee2ec2c8
 docs/cursor-work/GREEN-BOARD/06-REPO-INVENTORY.md 7e7dab6d94fe73ac
-docs/cursor-work/GREEN-BOARD/NOT-GREEN/00-INDEX.md b4c840e8634ef5d4
+docs/cursor-work/GREEN-BOARD/NOT-GREEN/00-INDEX.md 3e980898716a2f03
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/01-code-live-baqi.md 2f73b616d84c8858
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/02-todo-not-built.md 5b6563892ac78b25
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/03-partial.md 9f0252059e429ec2
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/04-founder-chahiye.md 6ada4ffc4bc62173
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/05-stale-docs.md bd3762eb903f62ae
 docs/cursor-work/GREEN-BOARD/NOT-GREEN/06-parked-locks.md d67b1adb0ddffd38
-docs/cursor-work/GREEN-BOARD/README.md acebaeb59ed740f1
+docs/cursor-work/GREEN-BOARD/README.md ab9ec3275ff50b98
 docs/claude/FINAL-FOUNDER-BLUEPRINT.md 67ccf9e057e542ac
+docs/cursor-work/GREEN-BOARD/07-FOUNDER-COMMANDS-vs-SERVER.md 6d335b77af61d248

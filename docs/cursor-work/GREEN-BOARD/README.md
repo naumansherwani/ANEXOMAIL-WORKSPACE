@@ -27,6 +27,7 @@
 - `04-TECHNOLOGY.md` — stack + B-series + R-items.
 - `05-DOCS-INVENTORY.md` — docs ki har file: kya hai, kitni purani/saaf, kya STALE hai.
 - `06-REPO-INVENTORY.md` — repo mein kya kya hai (routes, components, Rust modules, SQL, scripts) ginti ke saath.
+- `07-FOUNDER-COMMANDS-vs-SERVER.md` — founder-commands.md ki har command: code mein? server tak aaya?
 - **`NOT-GREEN/`** — jo green NAHI hai woh alag folder mein (side par), 5 file: code-live-baqi, todo, partial, founder-chahiye, stale-doc + parked.
 
 ## Sabse bada sach (3 line)
