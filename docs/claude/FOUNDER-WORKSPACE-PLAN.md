@@ -1,5 +1,6 @@
 # FOUNDER WORKSPACE — "HQ" (plan, locked 21 Oct 2026, founder: Muhammad Nauman Sherwani)
 
+> **FOUNDER KA HUKM (21 Oct 08:15, LOCKED): "Main kabhi kisi user ki privacy breach nahi karunga." => customer ka mail/file CONTENT founder workspace mein KABHI nahi dikhta (break-glass bhi nahi). Founder side tab shuru hogi jab B-series poori GREEN ho.**
 > Status: **PLAN ONLY.** Build starts AFTER B-series (B5–B8) is complete. Nothing here is deployed.
 > Founder ka hukm (21 Oct 08:12): "main admin hoon, mere pas God ke baad wali powers hain, har user ko dekh sakta hoon, kaun kaam kharab kar raha hai,
 > mails ke jawab dunga, duniya ka advanced 3D frontend, tokio async, sab repo mein tarteeb se phases ke saath. Bun/Node founder mein kahin nahi."
@@ -34,12 +35,12 @@ jahan se founder poori ANEXOMAIL **dekhta, samajhta, faisla karta aur jawab deta
 
 Feasibility (sandbox, checked 21 Oct): Leptos 0.8 + `wasm32` target yahan mil jate hain (NO_PROXY clear karna padta hai); 2 cores / 5 GB disk free => build sandbox mein, artifact server par.
 
-## 3. God view — kya, kaise (faisla founder ka, design meri hifazati raaye)
+## 3. God view — metadata-only (privacy locked)
 **Level 1 — Operational (hamesha on):** har user/org: plan, seats, state, trial, last seen, devices, storage, mailboxes, DNS health, send volume, bounce/complaint rate,
 failed logins, payment state, support tickets, abuse score, security events. Search "kaun kaam kharab kar raha hai": spam/abuse ranking, bounce spikes, impossible-travel, credential stuffing, bulk-send, storage hogs.
 **Level 2 — Actions:** suspend/restore, rate-limit, force sign-out, revoke device, reset MFA, extend trial, comp plan, refund request, kill switch (per user/org/global), IP block. Do-tap + reason + audit.
-**Level 3 — Content (BREAK-GLASS, kabhi default nahi):** customer ka mail/file content sirf: reason (abuse/legal/support-ticket id) + time-boxed (15 min) + founder re-auth (passkey) + immutable audit + (policy ke mutabiq) customer ko notice.
-Kyun: customer mail privacy hi hamara product hai; bina audit ke content dekhna UK GDPR/ICO aur trust ka sab se bada khatra hai — founder ko bhi bachata hai. (Founder isay badal sakta hai; yeh meri raaye hai, rule nahi.)
+**Level 3 — Content: HAMESHA BAND (founder ka locked hukm).** Mail/file/calendar content, subject, contact list founder ko kabhi nahi dikhta. Sirf metadata (counts, sizes, rates, health, security events). Support ke liye customer khud kisi ticket mein share kare to wahi dikhta hai jo usne share kiya.
+Kyun: customer privacy hi product hai (UK GDPR). Code mein bhi enforce: founder RPCs ke SELECT mein content columns hain hi nahi, aur test unhein dhoondta hai.
 
 ## 4. Screens ("decks")
 1. **Bridge (home):** "Right now" ranked decisions (Rust `attention`), 3D live system, paisa vs target, light (green/amber/red).
@@ -80,11 +81,11 @@ Sab WebGPU (wgpu), 60 fps, kam power; mobile par automatic 2D/low-detail; `prefe
 | **F5 Mail Desk** | founder inbox/support desk, reply, AI draft, SLA | send via Rust queue, idempotency, undo-send |
 | **F6 Systems + Move-In** | pages 6 & 7 | probes real, blind-spot honest |
 | **F7 3D** | globe, topology, flow, terrain (WebGPU) | FPS budget, fallback 2D, a11y tables |
-| **F8 Break-glass (L3) + Control + AI** | content access with reason/timebox/audit, kill switches, flags | audit tamper test |
+| **F8 Control + AI** | kill switches, flags, audit viewer; test: koi founder RPC content column nahi padhta | audit tamper test + no-content grep test |
 | **F9 Cutover** | purane React founder pages band, root redirect, docs, runbook | server==repo, old routes 301/404 |
 
 ## 8. Founder se faisle (jab F0 shuru ho)
-1. God view Level 3 (content) — break-glass jaisa (meri raaye) ya kuch aur?
+1. (Band: content kabhi nahi — locked.)
 2. Login: passkey + device approval (meri raaye) — password bhi?
 3. Bridge par sab se pehle: paisa ya "kya bigad raha hai"? (meri raaye: dono ek hi fold mein, light + ranked list upar)
 4. Mail Desk: kaun se inbox (founder@, support@, leads@…)?

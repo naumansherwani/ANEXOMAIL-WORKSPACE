@@ -194,3 +194,5 @@ Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green 
 - Founder: God-level admin view (har user, abuse), Mail Desk (jawab dena), duniya ka advanced 3D (WebGPU/wgpu), tokio async, Rust-only (no Bun/Node). **B-series (B5–B8) KHATAM hone ke BAAD** shuru (F0 design pehle). Abhi kuch build/deploy nahi — React CommandCenter repo se hata diya, dobara mat banao.
 - Sandbox: crates/wasm target ke liye `NO_PROXY= no_proxy=` karna padta hai; Leptos 0.8 + wasm32 mil jata hai.
 - God view L3 (content) = break-glass raaye (founder faisla karega).
+
+- 21 Oct 08:15 LOCKED: founder customer ki privacy kabhi breach nahi karega — content access (break-glass samet) HATA diya, sirf metadata. Founder side B-series GREEN hone ke baad shuru.
