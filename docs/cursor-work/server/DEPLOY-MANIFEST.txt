@@ -330,7 +330,7 @@ docs/claude/EVENING-PENDING-2026-10-21.md 9a9471c075caa786
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
 src/components/app/billing/ManageBilling.tsx 40b1b719c8939210
-src/routes/billing-policy.tsx 30c97bf37a90a6bb
+src/routes/billing-policy.tsx 82467f4d45d832d2
 src/components/site/BootSplash.tsx 050ad56cd525094c
 docs/claude/BILLING-PORTAL-BLUEPRINT.md efe53440d1cbfd49
 portal/public/index.html 4c466e37e6bb5dec

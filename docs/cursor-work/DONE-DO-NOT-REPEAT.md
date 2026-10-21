@@ -260,3 +260,5 @@ Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/cl
   3) billing@anexomail.com ka mailto user ko NAHI dikhana (auto payment email jati hai; support ke liye portal banega billingportal.anexomail.com — BILLING-PORTAL-BLUEPRINT.md). Hata diya: ManageBilling error, app.billing past_due + lifetime fallback, billing-policy. (docs.tsx / founder-plan.ts mein sirf receipts-sender ka zikr, chhoda.)
   4) alikhan@anexomail.com = real-user TEST account (payment karta hai phir dashboard redirect, create-workspace flow dekhne ke liye) — Claude ise login/use NAHI karta. Founder ka Pro login complimentary (Polar customer nahi).
   5) TARTEEB: pehle poori B-series green (B7 calendar -> B8 Brain->Rust -> migration tests) PHIR Basic aur Pro package green (live package tests, plan-promise audit) taake user ko Basic/Pro asli mile; phir billing portal blueprint P2-P8.
+
+- 22 Oct 2026 02:50 — billing-policy.tsx: "Anything wrong with a charge? Write to resolved@anexomail.com" (billing@ UI se hata; receipts ka reply resolved@ par, founder command center se live). Dobara mat karna.
