@@ -1,4 +1,4 @@
-# ANEXOMAIL — BLUEPRINT (EK hi)
+# ANEXOMAIL — FINAL FOUNDER BLUEPRINT (EK hi)
 
 **Yeh woh ek file hai.** Baqi blueprint/plan files iski *detail* hain — unka status yahan se parho, wahan se nahi.
 Founder: Muhammad Nauman Sherwani · bani: 21 Oct 2026 · halat ka asli saboot: `docs/cursor-work/GREEN-BOARD/` (README ginti + NOT-GREEN/).
@@ -46,7 +46,7 @@ Rule 30 (jo ho chuka dobara nahi) · Rule 35 (Rust live sirf surgical script) ·
 ## 8. Document map (kaun si file kya hai)
 | File | Role |
 |---|---|
-| **docs/BLUEPRINT.md** | **EK blueprint (yeh)** |
+| **docs/claude/FINAL-FOUNDER-BLUEPRINT.md** | **EK blueprint (yeh)** |
 | docs/cursor-work/GREEN-BOARD/ | green / not-green ka asli board (status yahan) |
 | docs/cursor-work/MASTER-GAP-LEDGER.md | gap hisaab (A–F) |
 | docs/cursor-work/DONE-DO-NOT-REPEAT.md | jo ho chuka |

@@ -767,4 +767,4 @@ Matlab: rustls build, asli TLS (`imap.gmail.com:993`), IMAP LOGIN aur galat-pass
 
 
 ---
-> **21 Oct 2026:** Ek blueprint ab `docs/BLUEPRINT.md` hai; yeh file detail/history (append-only) rahegi. Status: `docs/cursor-work/GREEN-BOARD/`.
+> **21 Oct 2026:** Ek blueprint ab `docs/claude/FINAL-FOUNDER-BLUEPRINT.md` hai; yeh file detail/history (append-only) rahegi. Status: `docs/cursor-work/GREEN-BOARD/`.
