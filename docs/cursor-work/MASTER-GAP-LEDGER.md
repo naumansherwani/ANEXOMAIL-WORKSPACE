@@ -123,3 +123,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 
 - B1 (Rust JWT local verify + session refresh): GREEN live 21 Oct.
 - B2 (G42 passkey/recovery login Rust): GREEN live 21 Oct. Baqi: Bun fallback replay-hardening + passkey/list + DELETE passkey/:id -> Rust (in progress).
+
+| D5b | R5 event-driven WebTransport push (polling khatam) — **READY 21 Oct (B4), server par chalna baqi; sandbox QUIC proof SAB PASS; family accounts included** | Rust |

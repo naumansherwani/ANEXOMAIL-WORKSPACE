@@ -6,11 +6,10 @@
  * TRUTH   : Supabase `mail_threads` — browser threading nahi.
  */
 
-import { wtBaseUrl } from "@/lib/wt-url";
-import { useEffect, useRef, useState } from "react";
+import { liveRefetch, useLiveState } from "@/lib/live";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api, ApiError, sessionToken } from "@/lib/api";
+import { api, ApiError } from "@/lib/api";
 import type { MailFolder, ThreadStatus } from "@/lib/ia";
 import { get as offlineGet, put as offlinePut } from "@/lib/offline";
 import { rpcOrRest } from "@/lib/rpc";
@@ -150,7 +149,7 @@ export function useThreads(query: ThreadQuery, enabled = true) {
     enabled,
     retry: false,
     staleTime: 15_000,
-    refetchInterval: searching ? false : 15_000,
+    refetchInterval: searching ? false : liveRefetch(15_000),
   });
 }
 
@@ -236,7 +235,7 @@ export function useFolderCounts() {
       rpcOrRest<{ folders: FolderCounts }>("mail.counts", { path: "/api/mail/counts" }, {}),
     retry: false,
     staleTime: 15_000,
-    refetchInterval: 15_000,
+    refetchInterval: liveRefetch(15_000),
   });
 }
 
@@ -307,99 +306,9 @@ export function useThreadAction() {
   });
 }
 
-type WebTransportLike = {
-  ready: Promise<void>;
-  close: () => void;
-  createBidirectionalStream: () => Promise<{
-    readable: ReadableStream<Uint8Array>;
-    writable: WritableStream<Uint8Array>;
-  }>;
-};
-
-function mailWtUrl(): string {
-  return wtBaseUrl();
-}
-
-/** F3.3 — Rust WebTransport mail stamp. Fail = honest RPC poll, fake live nahi. */
+/** Mail screen's view of the ONE shared live connection (opened once by AppShell via useLiveEvents; B4). */
 export function useMailLive(): { transport: "webtransport" | "poll"; detail: string } {
-  const queryClient = useQueryClient();
-  const [live, setLive] = useState(false);
-  const [detail, setDetail] = useState("HTTP poll (WebTransport unavailable)");
-  const closer = useRef<(() => void) | null>(null);
-
-  useEffect(() => {
-    closer.current?.();
-    closer.current = null;
-    setLive(false);
-
-    const url = mailWtUrl();
-    const token = sessionToken.get();
-    if (!token || typeof window === "undefined" || !("WebTransport" in window) || !url) {
-      return;
-    }
-
-    let stopped = false;
-    let transport: { close: () => void } | null = null;
-
-    void (async () => {
-      try {
-        const WT = (window as unknown as { WebTransport: new (u: string) => WebTransportLike })
-          .WebTransport;
-        const wt = new WT(`${url}/wt/mail`);
-        transport = wt;
-        await wt.ready;
-        const stream = await wt.createBidirectionalStream();
-        const writer = stream.writable.getWriter();
-        await writer.write(new TextEncoder().encode(JSON.stringify({ token, mode: "mail" })));
-        writer.releaseLock();
-
-        const reader = stream.readable.getReader();
-        const decoder = new TextDecoder();
-        let buffer = "";
-        setLive(true);
-        setDetail("Live over WebTransport / QUIC (Rust engine)");
-
-        while (!stopped) {
-          const { value, done } = await reader.read();
-          if (done) break;
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() ?? "";
-          for (const line of lines) {
-            if (!line.trim()) continue;
-            let frame: { type?: string } = {};
-            try {
-              frame = JSON.parse(line) as { type?: string };
-            } catch {
-              continue;
-            }
-            if (frame.type === "mail") {
-              await queryClient.invalidateQueries({ queryKey: ["mail"] });
-            }
-            if (frame.type === "error") {
-              setLive(false);
-              setDetail("HTTP poll (WebTransport refused this session)");
-            }
-          }
-        }
-      } catch {
-        setLive(false);
-        setDetail("HTTP poll (WebTransport unavailable)");
-      }
-    })();
-
-    closer.current = () => {
-      stopped = true;
-      try {
-        transport?.close();
-      } catch {
-        /* already closed */
-      }
-    };
-    return () => closer.current?.();
-  }, [queryClient]);
-
-  return { transport: live ? "webtransport" : "poll", detail };
+  return useLiveState();
 }
 
 /** Snooze presets — resolved in the browser only as timestamps, never as state. */

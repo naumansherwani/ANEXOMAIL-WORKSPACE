@@ -48,6 +48,7 @@ import {
 import { api } from "@/lib/api";
 import { FxAmbient } from "@/components/fx/FxAmbient";
 import { useAuth } from "@/lib/auth";
+import { useLiveEvents } from "@/lib/live";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
 import { useAccountState } from "@/lib/trial";
@@ -102,6 +103,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
   const { session, organisation, refresh, signOut } = useAuth();
+  useLiveEvents(); // B4: one shared WebTransport push connection for every plan and account kind
   const { t } = useLocale();
   const account = useAccountState();
   const trialAllowed = new Set(account.data?.trial_features ?? []);

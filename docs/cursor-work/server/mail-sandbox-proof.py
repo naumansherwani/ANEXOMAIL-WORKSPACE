@@ -16,6 +16,9 @@ ORG_A, ORG_B = str(uuid.uuid4()), str(uuid.uuid4())
 OWNER, MEMBER = str(uuid.uuid4()), str(uuid.uuid4())
 OWNER_EMAIL, MEMBER_EMAIL = "owner.test@anexomail.com", "member.test@anexomail.com"
 FOREIGN_THREAD = str(uuid.uuid4())
+OTHER, FAM, ORG_C, ORG_F = str(uuid.uuid4()), str(uuid.uuid4()), str(uuid.uuid4()), str(uuid.uuid4())
+WT_PROBE = os.environ.get("WT_PROBE", "/tmp/claude-0/rs/target/debug/examples/wt_probe")
+EVENT_SECRET = uuid.uuid4().hex + uuid.uuid4().hex
 tmp = tempfile.mkdtemp()
 ATTACH = os.path.join(tmp, "attach"); os.makedirs(ATTACH)
 fails = []
@@ -38,13 +41,16 @@ def mint(uid, email):
 
 # ── mock Supabase ───────────────────────────────────────────────────────────
 T = {
-    "org_members": [{"user_id": OWNER, "org_id": ORG_A, "role": "owner"}, {"user_id": MEMBER, "org_id": ORG_A, "role": "member"}],
+    "org_members": [{"user_id": OWNER, "org_id": ORG_A, "role": "owner"}, {"user_id": MEMBER, "org_id": ORG_A, "role": "member"},
+                    {"user_id": OTHER, "org_id": ORG_C, "role": "owner"}, {"user_id": FAM, "org_id": ORG_F, "role": "owner"}],
     "mailboxes": [{"id": str(uuid.uuid4()), "org_id": ORG_A, "address": "hello@anexomail.com", "box_type": "mailbox", "display_name": "hello", "active": True, "purpose": "x"}],
-    "workspace_subscriptions": [{"org_id": ORG_A, "plan": "business"}],
+    "family_accounts": [{"email": "fam.user@anexomail.com", "plan": "family"}],
+    "workspace_subscriptions": [{"org_id": ORG_A, "plan": "business"}, {"org_id": ORG_F, "plan": "family"}],
     "storage_plans": [{"plan_id": "business", "mailbox_limit": 3}],
     "mail_threads": [{"id": FOREIGN_THREAD, "org_id": ORG_B, "message_count": 7, "subject": "foreign"}],
     "mail_messages": [], "mail_scheduled": [], "org_addresses": [], "mail_accounts": [], "storage_log": [], "deny_storage": [], "org_switches": [], "staged": [], "outbox": [], "chain": [], "commits": [], "founder_accounts": [],
 }
+LOGQ = []
 def match(row, q):
     for k, vals in q.items():
         if k in ("select", "limit", "on_conflict", "order"): continue
@@ -67,11 +73,14 @@ class MockH(BaseHTTPRequestHandler):
     def do_PATCH(self): self.h("PATCH")
     def h(self, m):
         u = urlparse(self.path); p = u.path; q = parse_qs(u.query, keep_blank_values=True)
+        LOGQ.append(p)
         n = int(self.headers.get("content-length") or 0); raw = self.rfile.read(n) if n else b""
         try: body = json.loads(raw) if raw else None
         except Exception: body = None
         if p == "/auth/v1/.well-known/jwks.json": return self._send(200, JWKS)
-        if p == "/auth/v1/admin/generate_link": return self._send(200, {"hashed_token": "h-" + uuid.uuid4().hex})
+        if p == "/auth/v1/admin/generate_link":
+            em = (body or {}).get("email", ""); uid = {OWNER_EMAIL: OWNER, "fam.user@anexomail.com": FAM}.get(em)
+            return self._send(200, dict({"hashed_token": "h-" + uuid.uuid4().hex}, **({"id": uid} if uid else {})))
         if p == "/auth/v1/verify": return self._send(200, {"access_token": mint(OWNER, OWNER_EMAIL), "user": {"id": OWNER}})
         if p.startswith("/auth/v1/admin/users/"):
             uid = p.rsplit("/", 1)[1]
@@ -116,7 +125,7 @@ class MockH(BaseHTTPRequestHandler):
             if m == "GET":
                 rows = [r for r in tb if match(r, q)]
                 if "order" in q:
-                    f = q["order"][0].split(".")[0]; rows.sort(key=lambda r: str(r.get(f)))
+                    f = q["order"][0].split(".")[0]; rows.sort(key=lambda r: str(r.get(f) or ""), reverse=q["order"][0].endswith(".desc"))
                 if "limit" in q: rows = rows[: int(q["limit"][0])]
                 return self._send(200, rows, {"content-range": f"0-0/{len(rows)}"})
             if m == "POST":
@@ -191,7 +200,12 @@ def main():
     threading.Thread(target=lambda: ThreadingHTTPServer(("127.0.0.1", HTTP_PORT), MockH).serve_forever(), daemon=True).start()
     smtp = TS(("127.0.0.1", SMTP_PORT), SmtpH); threading.Thread(target=smtp.serve_forever, daemon=True).start()
     env = dict(os.environ, SUPABASE4_URL=f"http://127.0.0.1:{HTTP_PORT}", SUPABASE4_SERVICE_ROLE_KEY="svc-test", MAIL_SMTP_PORT=str(SMTP_PORT),
-               MAIL_SMTP_HOST="127.0.0.1", ATTACH_DIR=ATTACH, ATTACH_MOUNT="none", RUST_LOG="error")
+               MAIL_SMTP_HOST="127.0.0.1", ATTACH_DIR=ATTACH, ATTACH_MOUNT="none", RUST_LOG="error", EVENT_SECRET=EVENT_SECRET)
+    have_wt = os.path.exists(WT_PROBE)
+    if have_wt:
+        subprocess.check_call(["openssl", "req", "-x509", "-newkey", "ec", "-pkeyopt", "ec_paramgen_curve:prime256v1", "-nodes", "-keyout", tmp + "/wt.key", "-out", tmp + "/wt.crt",
+                               "-days", "2", "-subj", "/CN=localhost", "-addext", "subjectAltName=DNS:localhost"], stderr=subprocess.DEVNULL)
+        env.update(ANEXOCHAT_WT_CERT=tmp + "/wt.crt", ANEXOCHAT_WT_KEY=tmp + "/wt.key", ANEXOCHAT_WT_PORT="3443")
     log = open(tmp + "/rust.log", "w")
     proc = subprocess.Popen([RUST_BIN], env=env, stdout=log, stderr=log)
     try:
@@ -367,6 +381,84 @@ def main():
                             env=dict(os.environ, RPC=RPC, SBU=f"http://127.0.0.1:{HTTP_PORT}", SBK="svc-test", EMAIL=OWNER_EMAIL), capture_output=True, text=True, timeout=300)
         print(pr.stdout[-3500:] + pr.stderr[-800:])
         check("mail-proof.py (installer ka saboot) sandbox par SAB PASS", pr.returncode == 0, pr.returncode)
+
+        if have_wt:
+            print("== 8) B4: event-driven push over REAL QUIC/WebTransport (wt_probe client)")
+            class Probe:
+                def __init__(self, token, mode, topics, secs, org=""):
+                    self.lines = []; self.t0 = time.time()
+                    self.p = subprocess.Popen([WT_PROBE, "https://127.0.0.1:3443", token, mode, topics, str(secs), org], stdout=subprocess.PIPE, text=True)
+                    threading.Thread(target=self._rd, daemon=True).start()
+                def _rd(self):
+                    for ln in self.p.stdout:
+                        parts = ln.strip().split(" ", 1)
+                        if len(parts) == 2: self.lines.append((time.time(), parts[1]))
+                def find(self, needle, since=0):
+                    return [(t, l) for t, l in self.lines if t >= since and needle in l]
+                def wait_for(self, needle, since, secs=6):
+                    t_end = time.time() + secs
+                    while time.time() < t_end:
+                        f = self.find(needle, since)
+                        if f: return f[0]
+                        time.sleep(0.05)
+                    return None
+            ftok, otok = mint(FAM, "fam.user@anexomail.com"), mint(OTHER, "other.user@anexomail.com")
+            pa = Probe(tok, "events", "mail,calendar,crm,org", 40)
+            pm = Probe(mtok, "events", "mail,calendar", 40)           # same org, other member
+            pf = Probe(ftok, "events", "mail,calendar", 40)           # FAMILY plan org: plan must not matter
+            po = Probe(otok, "events", "mail,calendar,crm,org", 40)   # different org: must see NOTHING of org A
+            pl = Probe(tok, "mail", "", 40)                           # legacy mode:"mail" client
+            for nm, pr in (("owner", pa), ("member", pm), ("family", pf), ("other-org", po), ("legacy mail", pl)):
+                check(f"{nm}: QUIC connect + ready frame", pr.wait_for('"type":"ready"', 0, 8) is not None, pr.lines[:3])
+            check("ready lists exactly the allowed topics", any('"topics":["mail","calendar","crm","org"]' in l for _, l in pa.lines))
+            check("pehla mail stamp turant (baseline)", pa.wait_for('"topic":"mail"', 0, 3) is not None and pl.wait_for('"type":"mail"', 0, 3) is not None)
+            time.sleep(0.5)
+            t = time.time()
+            code, d, e = call("mail.schedule", {"to": "a@example.com", "subject": "ev1", "body": "x", "hold_seconds": 60}, tok)
+            hit = pa.wait_for('"topic":"mail"', t, 1.5)
+            check("RPC mutation => mail event <1.5 s (polling nahi, instant)", hit is not None and hit[0] - t < 1.5, (hit and hit[0] - t))
+            check("same-org member ko bhi mila", pm.wait_for('"topic":"mail"', t, 2) is not None)
+            check("legacy mode:mail client ko purana frame mila", pl.wait_for('"type":"mail"', t, 2) is not None)
+            check("mail event mein unread + last_message_at stamp", any('"unread":' in l and '"last_message_at":' in l for _, l in pa.find('"topic":"mail"', t)))
+            check("doosre org ko kuch nahi mila (isolation)", not po.find('"topic":"mail"', t) and not po.find('"topic":"org"', t))
+            t = time.time()
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": ORG_A, "topic": "org"}, {"x-event-secret": EVENT_SECRET})
+            check("org topic event => owner ko mila (failed/423 mutation event nahi deti)", code == 204 and pa.wait_for('"topic":"org"', t, 2) is not None, code)
+            check("jo topic subscribe nahi kiya woh nahi aaya (member: org)", not pm.find('"topic":"org"', t))
+            t = time.time()
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": ORG_A, "topic": "calendar"}, {"x-event-secret": EVENT_SECRET})
+            check("internal event (secret) => 204 + calendar event", code == 204 and pa.wait_for('"topic":"calendar"', t, 2) is not None, code)
+            check("calendar event member + owner dono ko", pm.wait_for('"topic":"calendar"', t, 2) is not None)
+            check("family-plan org ko calendar nahi aaya (org A ka event)", not pf.find('"topic":"calendar"', t))
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": ORG_F, "topic": "calendar"}, {"x-event-secret": EVENT_SECRET})
+            check("FAMILY org event => family user ko mila (plan se farq nahi)", code == 204 and pf.wait_for('"topic":"calendar"', time.time() - 1, 2) is not None, code)
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": ORG_A, "topic": "calendar"}, {"x-event-secret": "x" * 40})
+            check("ghalat secret => 401", code == 401, code)
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": ORG_A, "topic": "calendar"}, {"x-event-secret": EVENT_SECRET, "x-forwarded-for": "1.2.3.4"})
+            check("proxy ke raste aaya => 403 (secret theek bhi ho)", code == 403, code)
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": "x&y", "topic": "calendar"}, {"x-event-secret": EVENT_SECRET})
+            check("kharab org_id => 400", code == 400, code)
+            code, _ = req("POST", RPC + "/internal/event", {"org_id": ORG_A, "topic": "chat"}, {"x-event-secret": EVENT_SECRET})
+            check("allow-list se bahar topic => 400", code == 400, code)
+            t = time.time()
+            T["mail_threads"].append({"id": str(uuid.uuid4()), "org_id": ORG_A, "folder": "inbox", "unread": True, "last_message_at": "2099-01-01T00:00:00Z", "subject": "inbound"})
+            hit = pa.wait_for('"topic":"mail"', t, 6)
+            check("bahar se (DB) aayi mail <=3.5 s mein push (reconcile, har session ka poll nahi)", hit is not None and hit[0] - t < 3.5, hit and hit[0] - t)
+            check("unread count 1 aaya", hit is not None and '"unread":1' in hit[1], hit)
+            n_before = len([1 for r in LOGQ if "mail_threads" in r])
+            time.sleep(6)
+            n_after = len([1 for r in LOGQ if "mail_threads" in r])
+            check("5 sessions, 6 s: DB stamp queries <= 12 (3 active orgs x ~3 ticks; session-per-0.7s hota to 40+)", n_after - n_before <= 12, n_after - n_before)
+            print("== 9) events-proof.py (installer ka saboot) isi sandbox par")
+            ep = subprocess.run([sys.executable, "-I", os.path.join(REPO, "docs/cursor-work/server/events-proof.py")],
+                                env=dict(os.environ, RPC=RPC, SBU=f"http://127.0.0.1:{HTTP_PORT}", SBK="svc-test", EMAIL=OWNER_EMAIL, EVENT_SECRET=EVENT_SECRET), capture_output=True, text=True, timeout=120)
+            print(ep.stdout[-2500:] + ep.stderr[-600:])
+            check("events-proof.py sandbox par SAB PASS", ep.returncode == 0, ep.returncode)
+            for pr in (pa, pm, pf, po, pl):
+                try: pr.p.terminate()
+                except Exception: pass
+        else:
+            print("== 8) WT probe nahi mila (WT_PROBE) — QUIC e2e chhoda")
     finally:
         proc.terminate()
         try: proc.wait(5)

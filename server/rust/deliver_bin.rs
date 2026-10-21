@@ -177,6 +177,30 @@ fn spool_run(env: &Map<String, Value>) -> ExitCode {
     }
 }
 
+/// B4: tell the Rust event hub a mail landed so open browsers refresh in ~100 ms instead of waiting for the 2 s reconcile.
+/// Best effort ONLY: no secret / hub down / slow => silently nothing (the reconcile still delivers it). Never delays or fails Postfix.
+fn push_mail_event(rt: &tokio::runtime::Runtime, env: &Map<String, Value>, ingest_response: &str) {
+    let secret = env_str(env, "EVENT_SECRET");
+    if secret.len() < 24 {
+        return;
+    }
+    let Some((_msg, org)) = inbound_attach::ingest_ids(ingest_response) else { return };
+    let base = {
+        let b = env_str(env, "EVENT_URL");
+        if b.is_empty() { "http://127.0.0.1:3200".to_string() } else { b }
+    };
+    let _ = rt.block_on(async {
+        let client = reqwest::Client::builder().timeout(Duration::from_millis(1500)).build().ok()?;
+        client
+            .post(format!("{}/internal/event", base.trim_end_matches('/')))
+            .header("x-event-secret", secret)
+            .json(&json!({ "org_id": org, "topic": "mail" }))
+            .send()
+            .await
+            .ok()
+    });
+}
+
 fn main() -> ExitCode {
     let args: Vec<String> = std::env::args().collect();
     if args.get(1).map(|a| a.as_str()) == Some("--spool-run") {
@@ -231,6 +255,7 @@ fn main() -> ExitCode {
     match result {
         Ok(out) => {
             eprintln!("anexomail-deliver: OK {envelope_to} {}", out.chars().take(300).collect::<String>());
+            push_mail_event(&rt, &env, &out);
             // G38b: attachments ke bytes baad mein (mail DB mein hai); yahan kuch bhi ho, Postfix ko SUCCESS hi milta hai
             if let Some(note) = inbound_attach::maybe_spool(&raw, &out) {
                 eprintln!("anexomail-deliver: {note}");

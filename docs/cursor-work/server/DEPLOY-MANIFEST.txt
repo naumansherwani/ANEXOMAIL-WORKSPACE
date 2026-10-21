@@ -6,7 +6,7 @@ src/routes/app.domains.tsx 8671f21906791c51
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx 6a2b53356fd464cd
+src/components/app/AppShell.tsx aa518d26a77538c2
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx 272e44a9fba99db0
@@ -39,7 +39,7 @@ src/routes/app.crm.accounts.tsx 12bf5c11a8b49bda
 src/routes/app.crm.collab.tsx 2955adff7ecb6af7
 src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
-src/lib/mail.ts 70ade0b783738a3c
+src/lib/mail.ts a5dc71c3d3686f1f
 src/routes/app.billing.tsx 8d59ed0431521528
 src/routes/app.account.tsx 027e460f1c6cd2a2
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
@@ -73,7 +73,7 @@ src/lib/org-export.ts 221df989c4969375
 src/lib/report-figures.ts 21b05c7f52004220
 src/components/app/work/DecisionLedger.tsx 9db8efa39f1818f8
 src/components/app/work/PromiseRecovery.tsx edc25ad6992fda60
-src/lib/crm.ts 74e13d292ea494e6
+src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
 src/components/app/people/ContactsImport.tsx f950e77dc93935b6
 src/lib/contacts-import.ts b0615264d021d4f1
@@ -280,3 +280,6 @@ docs/cursor-work/server/brain-mail-install.sh 58385c2820dcdd2b
 docs/cursor-work/sql/E54_mail_queue_claim.sql 23c39aabf974e488
 docs/cursor-work/sql/CHECK_E54.sql 1f999acfbefde994
 src/lib/mail-rpc.test.ts d7eb203ea04402f0
+src/lib/live.ts 785060ea4f8a9206
+src/lib/live-core.ts 0376a86bb88a5f1e
+src/lib/live-core.test.ts 836a79e2c4d846ec

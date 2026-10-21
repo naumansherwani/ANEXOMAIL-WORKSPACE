@@ -8,6 +8,7 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { liveRefetch } from "@/lib/live";
 import type { ApiError } from "@/lib/api";
 import { rpcOrRest } from "@/lib/rpc";
 
@@ -202,7 +203,7 @@ export function useCrmLive() {
     queryKey: ["crm", "live"],
     queryFn: () => get<CrmLive>("crm.live", "/api/crm/live"),
     retry: false,
-    refetchInterval: 30_000,
+    refetchInterval: liveRefetch(30_000),
   });
 }
 

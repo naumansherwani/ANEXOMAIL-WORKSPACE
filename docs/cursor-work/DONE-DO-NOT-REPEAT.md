@@ -142,3 +142,5 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## B3 GREEN (21 Oct 06:00): mail.send + undo-send + Rust queue worker + org.mailboxes Rust par server par chala, proof SAB PASS (asli Postfix). Dobara mat likho.
 ## Tarteeb (founder locked 05:53): technology migration B4->B8 pehle, phir Pro -> Business -> Business Pro. Agla: B4 (WT push), B5 G40, B6 G16, B7 G26/G27, B8 Brain->Rust.
 
+
+## B4 READY (21 Oct 07:30): R5 event-driven WT push (events_core/events_glue/events_patch/rust-events-install/events-proof, client live-core.ts+live.ts, deliver_bin hub push). Asli QUIC sandbox proof SAB PASS (family org bhi). Install: rust-events-install.sh -> rust-deliver-install.sh -> Web pull. Dobara mat likho.
