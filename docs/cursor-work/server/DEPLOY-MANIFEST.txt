@@ -338,4 +338,4 @@ docs/cursor-work/server/caddy-billingportal.sh c87dccf4b7476e61
 docs/cursor-work/server/polar-control-plane-install.sh df8da2a70ce21261
 server/rust/polar-payment/main.rs 44c699ae4ea9b670
 docs/cursor-work/server/polar-secrets-install.sh 0df1d4d5a530f2d0
-docs/cursor-work/server/polar-secrets-proof.py c4f7a0c9b7144bef
+docs/cursor-work/server/polar-secrets-proof.py bfe236119abb0a49
