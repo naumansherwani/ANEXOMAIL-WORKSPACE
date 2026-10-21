@@ -4,7 +4,8 @@
  */
 import { useQuery } from "@tanstack/react-query";
 
-import { api } from "@/lib/api";
+import { api, storeRefresh } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type PasskeyStatus = {
   /** E43 SQL abhi server par nahi chala — gate nahi lagta */
@@ -27,7 +28,7 @@ export function usePasskeyStatus(enabled = true) {
     enabled,
     staleTime: 60_000,
     retry: false,
-    queryFn: () => api<PasskeyStatus>("/api/auth/passkey/status"),
+    queryFn: () => rpcOrRest<PasskeyStatus>("auth.passkey.status", { path: "/api/auth/passkey/status", method: "GET" }, {}),
   });
 }
 
@@ -67,20 +68,20 @@ export type EnrolResult = { passkey_count: number; recovery_codes: string[] | nu
 /** WebAuthn create: server challenge → browser → server verify. Pehla passkey 10 recovery codes bhi deta hai (sirf ek baar). */
 export async function enrolPasskey(label?: string): Promise<EnrolResult> {
   if (!passkeySupported()) throw new Error("This browser can't create passkeys. Use a phone or laptop with Face ID, Touch ID, fingerprint or Windows Hello.");
-  const options = await api<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
-    "/api/auth/passkey/register/options",
-    { method: "POST", body: "{}" },
+  const options = await rpcOrRest<{ publicKey: PublicKeyCredentialCreationOptionsJSON }>(
+    "auth.passkey.register.options",
+    { path: "/api/auth/passkey/register/options", method: "POST", body: {} },
+    {},
   );
   const credential = await navigator.credentials.create({
     publicKey: PublicKeyCredential.parseCreationOptionsFromJSON(options.publicKey),
   });
   if (!credential) throw new Error("Passkey creation was cancelled.");
-  const res = await api<{ token?: string; passkey_count?: number; recovery_codes?: string[] | null }>(
-    "/api/auth/passkey/register/verify",
-    {
-      method: "POST",
-      body: JSON.stringify({ ...(credential as PublicKeyCredential).toJSON(), label: label || deviceLabel() }),
-    },
+  const payload = { ...(credential as PublicKeyCredential).toJSON(), label: label || deviceLabel() };
+  const res = await rpcOrRest<{ token?: string; passkey_count?: number; recovery_codes?: string[] | null }>(
+    "auth.passkey.register.verify",
+    { path: "/api/auth/passkey/register/verify", method: "POST", body: payload },
+    payload,
   );
   return {
     passkey_count: res.passkey_count ?? 1,
@@ -90,6 +91,56 @@ export async function enrolPasskey(label?: string): Promise<EnrolResult> {
 }
 
 export async function regenerateRecoveryCodes(): Promise<string[]> {
-  const res = await api<{ codes: string[] }>("/api/auth/recovery-codes/generate", { method: "POST", body: "{}" });
+  const res = await rpcOrRest<{ codes: string[] }>(
+    "auth.recovery.generate",
+    { path: "/api/auth/recovery-codes/generate", method: "POST", body: {} },
+    {},
+  );
   return res.codes;
+}
+
+/** Login jawab: Rust sirf token+refresh deta hai (profile Brain /api/auth/session se); Bun poora Session bhi deta hai. */
+export type LoginResult = {
+  token: string;
+  refresh_token?: string;
+  expires_at?: number;
+  needs_session?: boolean;
+  codes_left?: number;
+  must_add_passkey?: boolean;
+};
+
+function keepRefresh<T extends LoginResult>(r: T): T {
+  storeRefresh(r.refresh_token, r.expires_at);
+  return r;
+}
+
+/** Passkey login, step 1 (challenge). Rust PRIMARY, Bun fallback (404/501/502/503). */
+export async function passkeyLoginOptions(email: string): Promise<{ publicKey: PublicKeyCredentialRequestOptionsJSON }> {
+  return rpcOrRest(
+    "auth.passkey.options",
+    { path: "/api/auth/passkey/options", method: "POST", body: { email } },
+    { email },
+  );
+}
+
+/** Passkey login, step 2 (assertion -> real session). */
+export async function passkeyLoginVerify(credentialJson: unknown): Promise<LoginResult> {
+  return keepRefresh(
+    await rpcOrRest<LoginResult>(
+      "auth.passkey.verify",
+      { path: "/api/auth/passkey/verify", method: "POST", body: credentialJson },
+      credentialJson,
+    ),
+  );
+}
+
+/** Recovery-code login (passkey/phone lost). */
+export async function recoveryCodeLogin(email: string, code: string): Promise<LoginResult> {
+  return keepRefresh(
+    await rpcOrRest<LoginResult>(
+      "auth.recovery.redeem",
+      { path: "/api/auth/recovery-codes/redeem", method: "POST", body: { email, code } },
+      { email, code },
+    ),
+  );
 }

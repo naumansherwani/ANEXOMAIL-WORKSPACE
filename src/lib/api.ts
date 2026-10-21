@@ -55,7 +55,8 @@ export const sessionToken = {
   },
 };
 
-function storeRefresh(refresh: unknown, expiresAt: unknown) {
+/** rpc() (Rust) jawabon se bhi refresh credentials rakhne ke liye (api() payload se khud rakhta hai). */
+export function storeRefresh(refresh: unknown, expiresAt: unknown) {
   if (typeof window === "undefined" || typeof refresh !== "string" || !refresh) return;
   try {
     window.localStorage.setItem(REFRESH_KEY, refresh);

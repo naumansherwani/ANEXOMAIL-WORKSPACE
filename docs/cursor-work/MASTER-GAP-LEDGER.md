@@ -121,4 +121,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 
 - **21 Oct 04:30 BASIC = GREEN (founder haan; saboot BASIC-AUDIT-DONE.md). NEXT: PRO.**
 
-- B1 (Rust JWT local verify + session refresh): GREEN live 21 Oct. Next B2.
+- B1 (Rust JWT local verify + session refresh): GREEN live 21 Oct.
+- B2 (G42 passkey/recovery login Rust): READY in repo, install+proof pending. Bun-only baqi: passkey/list, DELETE passkey/:id.

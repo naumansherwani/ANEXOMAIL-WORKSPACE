@@ -128,3 +128,5 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## B1 GREEN (21 Oct 04:55) — server par live: SQL E53, Brain refresh, Web pull, Rust jwt. Logout 26s baad token 401 (revocation asli), refresh asli. Dobara mat banao.
 
 ## Universal UI mechanism (21 Oct 05:00): AGENTS Rule 37 + `src/lib/tier-guard.test.ts` (ratchet, baseline 18) + `tier-sweep.sh`. Package-wise alag edit nahi; tier farq sirf plan-surface.ts capability se.
+
+## B2 READY (21 Oct 05:35): passkey/recovery login Rust par — code+tests+installer+proof repo mein; server par chalna baqi. GREEN sirf `rust-passkey-install.sh` proof + Web pull ke baad. Dobara mat likho.

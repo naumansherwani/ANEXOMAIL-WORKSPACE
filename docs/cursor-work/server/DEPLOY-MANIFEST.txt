@@ -89,7 +89,7 @@ src/routeTree.gen.ts defa7284fa250b42
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
-src/routes/auth.tsx 642a4718cf370353
+src/routes/auth.tsx 15b64d022e3cb05f
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -131,7 +131,7 @@ docs/anexomail-blueprint.md bd0b56a4ece85a89
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
 docs/cursor-work/server/device-hash-migrate.sh a23c198866587da0
-src/lib/passkey.ts ca09a15968cb24af
+src/lib/passkey.ts 4ef2ca2c50c5457f
 src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
 src/components/app/security/PasskeyGate.tsx 3b3a0f02e57a18fe
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 6ee37396617b539c
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md d4c27dd8bdcfaba4
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 315d06217787da73
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 43367b2383a3736b
+docs/cursor-work/MASTER-GAP-LEDGER.md 9a5b94ce44cf60a9
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -246,7 +246,7 @@ src/routes/app.tsx f873a19be7ebbea5
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 6299ed2a1e4fbf4b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 920c1819c12e42c9
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -254,9 +254,15 @@ src/components/app/calendar/TimeGrid.tsx f0ca17db91deed09
 src/lib/plans.ts 4d31c58ca080c878
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898
-src/lib/api.ts cc24d62ac7793896
+src/lib/api.ts 46cdb8f80338e27f
 src/lib/api-refresh.test.ts 4039fb727ec8e788
 server/rust/jwt_core.rs 1e419b367e46ec3c
 docs/cursor-work/server/tier-sweep.sh 1a6b7aa79d0ace53
 src/lib/tier-guard.test.ts d7308453842c1a6b
 src/lib/tier-guard.baseline.json 75095fd08628920d
+server/rust/passkey_core.rs 5aa795ff74733765
+server/rust/passkey_glue.rs 196d3cb12633e0ff
+src/lib/passkey-login.test.ts 5e28c0154e783588
+docs/cursor-work/server/passkey_patch.py 26ac57c951cd9d1f
+docs/cursor-work/server/passkey-proof.py be344413dc55858b
+docs/cursor-work/server/rust-passkey-install.sh 70124a09f7ab588f

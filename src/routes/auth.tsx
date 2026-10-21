@@ -19,7 +19,7 @@ import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
-import { enrolPasskey as createPasskey } from "@/lib/passkey";
+import { enrolPasskey as createPasskey, passkeyLoginOptions, passkeyLoginVerify, recoveryCodeLogin } from "@/lib/passkey";
 import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
 import { cn } from "@/lib/utils";
 
@@ -258,16 +258,12 @@ function AuthPage() {
       }
 
       if (mode === "recovery") {
-        const res = await api<{ token: string; codes_left?: number } & Session>("/api/auth/recovery-codes/redeem", {
-          method: "POST",
-          body: JSON.stringify({ email: mailbox, code: recoveryCode }),
-          auth: false,
-        });
+        const res = await recoveryCodeLogin(mailbox, recoveryCode);
         notify.done(
           "Signed in with a recovery code",
           `${res.codes_left ?? 0} codes left. Add a new passkey now — your old devices may be lost.`,
         );
-        await finish(res.token, res);
+        await finish(res.token, res.needs_session ? undefined : (res as unknown as Session));
         return;
       }
 
@@ -397,19 +393,12 @@ function AuthPage() {
     }
     setBusy(true);
     try {
-      const options = await api<{ publicKey: PublicKeyCredentialRequestOptionsJSON }>(
-        "/api/auth/passkey/options",
-        { method: "POST", body: JSON.stringify({ email: anexomailAddress(email) }), auth: false },
-      );
+      const options = await passkeyLoginOptions(anexomailAddress(email));
       const credential = await navigator.credentials.get({
         publicKey: PublicKeyCredential.parseRequestOptionsFromJSON(options.publicKey),
       });
       if (!credential) throw new Error("cancelled");
-      const res = await api<{ token: string }>("/api/auth/passkey/verify", {
-        method: "POST",
-        body: JSON.stringify((credential as PublicKeyCredential).toJSON()),
-        auth: false,
-      });
+      const res = await passkeyLoginVerify((credential as PublicKeyCredential).toJSON());
       await finish(res.token);
     } catch (e) {
       fail(e);
