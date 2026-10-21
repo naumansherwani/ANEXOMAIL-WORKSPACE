@@ -8,7 +8,12 @@
 
 ## SHAAM KI TARTEEB
 1. **B6 (G16): self-serve billing Rust par.** Polar :3400 payments/prices/landing = **NO TOUCH**. Rust-first `billing.*` procs (plan view, usage, invoices list, cancel/resume request, seats change request — jo Polar webhook se confirm hon), Bun `/api/billing/subscription` bug theek, frontend `app.billing` rpcOrRest, sandbox proof (mock Supabase + asli Bun routes vs Rust), installer (rust-engine-install.sh mein naya module), pull commands. Frontend 390/820/1440 combo audit.
-2. **B7 (G26/G27): calendar** — inbound iMIP reply, recurrence, scheduling link, CalDAV.
+2. **B7 (G26/G27): calendar** — status PARTIAL (live Chrome check 08:4x, c0df9e4). Maujood: Month/Week/Day, time-grid + drag/resize, new-meeting form (agenda gate), Find a time, Avail. (availability API link), .ics import/export, RSVP lookup/respond. **Banana hai (shaam):**
+   1. **G26 iMIP reply** — guest Gmail/Outlook se Accept/Decline kare to ANEXOMAIL event mein khud aaye (anexopipe hook; production mail path => founder ki "haan" chahiye pehle).
+   2. **G27 recurrence** — har din/hafta/mahina/saal, INTERVAL/COUNT/UNTIL/EXDATE, "is event / sab events" edit (ics.ts parser pehle se hai, UI + Rust expand banao).
+   3. **G27 scheduling link (booking page)** — public page jahan mehmaan khali slot chun kar book kare (Avail. API buniyad hai).
+   4. **G27 2-way sync** + **CalDAV** server.
+   Frontend 390/820/1440 combo audit saath. Pro/Business account par kal shaam wala "naya calendar" demo — founder switch kare to dekhna (Basic tab mein naya kuch nahi mila).
 3. **B8: Brain ~38 route files / ~504 endpoints -> Rust** incl. AI chat (Leo memory + OpenRouter stream), Bun 1.4.3, tokio 1.54, axum 0.8 (`axum-upgrade.sh`), beast-mode list `TECH-STACK-BEAST.md` §A2.
 4. **Migration testing — SAB B-batches ke END par** (founder ka order).
 5. **Live package tests** Pro -> Business -> Business Pro, 1440/820/390, NAYE Chrome tab: WebTransport push (B4) asli browser mein, Humza lifetime label, version history, Security page, Domains page, outbound attachment send.
