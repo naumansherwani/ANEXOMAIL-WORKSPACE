@@ -1,4 +1,3 @@
-import { Fx3D } from "@/components/fx/Fx3D";
 import { BrandMark } from "@/components/site/BrandMark";
 import { useLocale } from "@/lib/i18n";
 
@@ -51,14 +50,12 @@ export function WorkspaceLoader({ label }: { label?: string }) {
 
       {/* Brand + status */}
       <div className="ax-loader-brand relative z-10 mt-10 flex flex-col items-center">
-        <Fx3D
-          scene="logo"
-          className="pointer-events-none mb-2 h-28 w-28"
-          fallback={<BrandMark compact home={false} />}
-          hideFallbackWhenLive
-          label="Spinning ANEXOMAIL logo"
-        />
-        <BrandMark home={false} />
+        {/* Hero = ASLI ANEXOMAIL "A" (BrandMark svg) — generic silver 3D A hata diya (22 Oct, founder). */}
+        <div className="ax-loader-logo mb-3" aria-hidden>
+          <BrandMark compact home={false} className="[&_svg]:size-24" />
+        </div>
+        {/* Neeche sirf wordmark (A upar hero mein hai — dobara A nahi) */}
+        <BrandMark home={false} className="[&_svg]:hidden" />
         <p className="ax-caption mt-4 text-steel">{label ?? t("Opening your workspace")}</p>
         <div className="ax-loader-progress mt-3" aria-hidden>
           <span />

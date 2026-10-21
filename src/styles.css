@@ -986,6 +986,21 @@ button:disabled,
   pointer-events: none;
 }
 
+.ax-loader-logo {
+  filter: drop-shadow(0 0 28px rgba(86, 120, 210, 0.38));
+  animation: ax-loader-logo-swing 3.6s ease-in-out infinite;
+}
+
+@keyframes ax-loader-logo-swing {
+  0%,
+  100% {
+    transform: perspective(700px) rotateY(-16deg) translateY(0);
+  }
+  50% {
+    transform: perspective(700px) rotateY(16deg) translateY(-5px);
+  }
+}
+
 .ax-loader-progress {
   width: 10rem;
   height: 2px;
@@ -1043,6 +1058,7 @@ button:disabled,
   .ax-loader-stage,
   .ax-loader-panel,
   .ax-loader-sweep,
+  .ax-loader-logo,
   .ax-loader-brand,
   .ax-loader-progress > span {
     animation: none !important;
