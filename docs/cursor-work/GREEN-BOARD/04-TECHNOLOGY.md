@@ -15,7 +15,7 @@
 | B4 event-driven push (R5) | 🟢 GREEN (live dekha/proof) | 21 Oct 06:50 founder output: proof SAB PASS (UDP 3443, /internal/event, family 3/3) |
 | B5 G40 19 Bun-only routes -> Rust | 🟢 GREEN (founder ka server output 21 Oct 08:27: public procs live, founder procs 401, daam 790/46 Rust+Brain) | repo + sandbox PASS (~80 checks, asli Bun vs Rust); server par rust-engine-install.sh baqi |
 | B6 G16 self-serve billing Rust | 🔴 TODO (bana nahi) | Polar :3400 NO-TOUCH |
-| B7 G26/G27 calendar iMIP/recurrence/link/CalDAV | 🔴 TODO (bana nahi) |  |
+| B7 G26/G27 calendar iMIP/recurrence/link/CalDAV | 🟠 PARTIAL — live Chrome check 21 Oct 08:4x (Basic acct): maujood = week/month/day, time-grid, drag, new-meeting form (title/guests/datetime/duration/find-a-time/location/agenda-gate), .ics import/export, Avail. (copyable /api/calendar/availability link). NAHI = recurrence UI, booking page, iMIP reply, CalDAV, 2-way sync | shaam ko banega |
 | B8 Brain 38 files/504 endpoints -> Rust, Bun 1.4.3, tokio 1.54 | 🔴 TODO (bana nahi) |  |
 | R3 typed contract | 🔴 TODO (bana nahi) |  |
 | R4 direct DB pool | 🔴 TODO (bana nahi) |  |
