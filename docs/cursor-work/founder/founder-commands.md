@@ -8,6 +8,10 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 04:43 PKT — SQL ADVANCE LEVEL rule (verbatim, status: DONE rule + E58 dobara likha, READY server par)
+Founder: "ek baat bata kya sql duniya ka advance hai rule likho ke founder ke strict rule hai ke sql duniya ke advance hogay claude sql read karay ga tab tak read karay ga jab tak sql duniya ka advance level pe reach nahi ker jaye sql likho advance level"
+- AGENTS.md Rule 38 likha. E58 same file mein advance banaya (DB-level shape validator, NOT VALID+VALIDATE, lock_timeout, reminder index) + CHECK_E58 mein behaviour tests; local PG par saaf DB par 2 baar + real insert test PASS. E57 server par chal chuka hai isliye E57 ko chhua nahi; E58 usi ka constraint upgrade karta hai.
+
 ## ▶ 22 Oct 2026 05:20 PKT — E58 READY (working hours, out-of-office, calendars+colours, reminders) — founder ke 3 command, is tarteeb se
 Founder (04:30, roadmap #1): "Working hours, out-of-office, alag calendars aur rang, reminders" — "yeh kerna hai".
 - Halat: READY (repo mein, server par chalana baqi). Live GREEN sirf founder ke output + Chrome look ke baad.
