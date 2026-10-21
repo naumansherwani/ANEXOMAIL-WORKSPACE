@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CalendarDays, Download, ListChecks, Sparkles } from "lucide-react";
+import { CalendarDays, Download, ListChecks, Repeat, Sparkles } from "lucide-react";
 
 import { CostMeter, TimeZoneTruthBar, ConflictChip, apiHref } from "@/components/app/calendar/Bits";
 import { Guests } from "@/components/app/calendar/Guests";
@@ -11,6 +11,7 @@ import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import { clockRange, exportPath, useCalendarEvent, usePostOutcome } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
+import { humanRrule } from "@/lib/recurrence";
 
 /**
  * Meeting detail — cost, every attendee's local time, the thread it was born
@@ -55,6 +56,12 @@ export function EventDetail({ id }: { id: string }) {
           <div className="mt-ax-2 flex flex-wrap items-center gap-2">
             <ConflictChip conflict={event.conflict} shield={event.shield_conflict} />
             {event.cost && <CostMeter cost={event.cost} />}
+            {event.recurring && (
+              <span className="inline-flex items-center gap-1 rounded-full border border-border px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
+                <Repeat className="size-3" aria-hidden="true" />
+                {event.is_exception ? "Changed occurrence" : humanRrule(event.rrule) || "Repeats"}
+              </span>
+            )}
           </div>
         </div>
         <a

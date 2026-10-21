@@ -53,6 +53,9 @@ export function Guests({ event }: { event: CalendarEvent }) {
   const resend = useResendInvites();
   const [mode, setMode] = useState<"" | "reschedule" | "cancel">("");
   const [notifyGuests, setNotifyGuests] = useState(true);
+  // repeating meeting: change just this one, or the whole series
+  const inSeries = Boolean(event.recurring) && event.id.includes("~");
+  const [scope, setScope] = useState<"this" | "all">("this");
   const minutes = Math.max(
     5,
     Math.round((new Date(event.ends_at).getTime() - new Date(event.starts_at).getTime()) / 60_000),
@@ -142,6 +145,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
         duration_minutes: duration,
         notify: notifyGuests,
         when_label: label(),
+        ...(inSeries ? { scope } : {}),
       },
       {
         onSuccess: (res) => {
@@ -167,7 +171,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
 
   const onCancel = () =>
     update.mutate(
-      { id: event.id, cancel: true, notify: notifyGuests },
+      { id: event.id, cancel: true, notify: notifyGuests, ...(inSeries ? { scope } : {}) },
       {
         onSuccess: (res) => {
           if (!notifyGuests) notify.done("Meeting cancelled", "Guests were not told.");
@@ -278,6 +282,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
 
       {mode === "reschedule" && (
         <div className="mt-ax-3 space-y-ax-2 rounded-md border border-border p-ax-3">
+          {inSeries && <ScopeChoice scope={scope} onChange={setScope} />}
           <div className="flex gap-2">
             <Input
               type="datetime-local"
@@ -318,8 +323,12 @@ export function Guests({ event }: { event: CalendarEvent }) {
       {mode === "cancel" && (
         <div className="mt-ax-3 space-y-ax-2 rounded-md border border-danger/40 p-ax-3">
           <p className="text-[13px] text-foreground">
-            Cancel “{event.title}”? It leaves your calendar and the guests’ calendars.
+            Cancel “{event.title}”?{" "}
+            {inSeries && scope === "all"
+              ? "Every meeting in the series leaves your calendar and the guests’ calendars."
+              : "It leaves your calendar and the guests’ calendars."}
           </p>
+          {inSeries && <ScopeChoice scope={scope} onChange={setScope} />}
           <label className="ax-tap flex items-center gap-2 text-[12px] text-foreground">
             <input
               type="checkbox"
@@ -347,4 +356,30 @@ export function Guests({ event }: { event: CalendarEvent }) {
 function toLocalInput(d: Date) {
   const pad = (n: number) => String(n).padStart(2, "0");
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
+
+/** "This event only / All events in the series" — shown for repeating meetings. */
+function ScopeChoice({ scope, onChange }: { scope: "this" | "all"; onChange: (s: "this" | "all") => void }) {
+  const opts: { v: "this" | "all"; label: string }[] = [
+    { v: "this", label: "This event only" },
+    { v: "all", label: "All events in the series" },
+  ];
+  return (
+    <div role="radiogroup" aria-label="Apply to" className="flex flex-wrap gap-2">
+      {opts.map((o) => (
+        <button
+          key={o.v}
+          type="button"
+          role="radio"
+          aria-checked={scope === o.v}
+          onClick={() => onChange(o.v)}
+          className={`ax-press ax-focus ax-tap rounded-full border px-3 py-1 text-[12px] font-semibold ${
+            scope === o.v ? "border-transparent bg-foreground text-background" : "border-border text-muted-foreground"
+          }`}
+        >
+          {o.label}
+        </button>
+      ))}
+    </div>
+  );
 }

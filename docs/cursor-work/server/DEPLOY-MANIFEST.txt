@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 6a416ad77849a07c
+src/routes/app.calendar.tsx f52eeedf6ad9aa70
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -77,12 +77,12 @@ src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
-src/lib/calendar.ts 3a7d8eaea5b1aab4
+src/lib/calendar.ts 053d788af873504b
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
-src/components/app/calendar/NewMeeting.tsx 5481e4191b3f421c
-src/components/app/calendar/EventDetail.tsx 3f6a9025086ddc26
-src/components/app/calendar/Guests.tsx ca86023d04a582a7
+src/components/app/calendar/NewMeeting.tsx bfaa988ff49954c3
+src/components/app/calendar/EventDetail.tsx fefb23d520381729
+src/components/app/calendar/Guests.tsx db3dd5d31c78d994
 src/components/app/calendar/FindTime.tsx 499767b811ead3f3
 src/routes/rsvp.tsx 126ff4cb28431afd
 src/routeTree.gen.ts 86e576c512b7306b
@@ -117,8 +117,8 @@ src/routes/app.security.history.tsx dbf374ef8e2cab0b
 src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
-server/rust/cal_core.rs de629cfbcfceb8b3
-server/rust/cal_glue.rs ab6884c10e960fd6
+server/rust/cal_core.rs 339f850b8633f8e2
+server/rust/cal_glue.rs a097c326d2f188ef
 AGENTS.md e6992a5b223e9d30
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 5031af3b24d36d29
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 123eb5d563aff1ea
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -250,7 +250,7 @@ docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48ca4e71128
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx f0ca17db91deed09
+src/components/app/calendar/TimeGrid.tsx 4ac818c9b3282576
 src/lib/plans.ts 4d31c58ca080c878
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898
@@ -354,3 +354,5 @@ src/components/state/BrandLoader.tsx eeba4448a61b1ba4
 server/rust/polar-payment/Cargo.toml b19720335aa99719
 docs/cursor-work/server/polar-cp-proof.py 3eca410c891a98cc
 docs/cursor-work/server/polar-nonroot-install.sh f62c5701915dcee3
+src/lib/recurrence.ts a591d7e108eb3817
+src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de

@@ -592,18 +592,37 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
     }
     let tz = opt(input, "timezone").map(|t| cal::clean_line(&t, 64));
     let thread_id = opt(input, "thread_id").filter(|t| cal::token_shape_ok(t));
+    // repeating meeting (every package): rule is validated and stored in canonical form
+    let mut rrule_store: Option<String> = None;
+    if let Some(r) = opt(input, "rrule").map(|r| r.trim().trim_start_matches("RRULE:").to_string()).filter(|r| !r.is_empty()) {
+        if !recur_ready().await {
+            return fail(StatusCode::NOT_IMPLEMENTED, "calendar_recurrence_sql_missing", "Repeating meetings need the E56 SQL.");
+        }
+        match recur::parse(&r) {
+            Ok(rule) => rrule_store = Some(recur::to_string(&rule)),
+            Err(m) => return fail(StatusCode::BAD_REQUEST, "bad_rrule", &m),
+        }
+    }
+    let tz_off = num(input, "tz_offset_min").map(|n| n.clamp(-840, 840));
 
-    let ev_row = crate::sb_insert(
-        "calendar_events",
-        json!({
+    let mut ev_body = json!({
             "org_id": me.org_id, "title": title, "agenda": agenda,
             "starts_at": cal::fmt_rfc3339(starts), "ends_at": cal::fmt_rfc3339(ends), "all_day": false,
             "location": opt(input, "location").map(|l| cal::clean_line(&l, 300)),
             "organiser": me.email, "thread_id": thread_id, "thread_subject": opt(input, "thread_subject").map(|t| cal::clean_line(&t, 200)),
             "kind": "meeting", "status": "confirmed", "created_by": me.id, "tz": tz, "sequence": 0,
-        }),
-    )
-    .await;
+        });
+    if recur_ready().await {
+        if let Some(o) = ev_body.as_object_mut() {
+            if let Some(r) = &rrule_store {
+                o.insert("rrule".into(), json!(r));
+            }
+            if let Some(n) = tz_off {
+                o.insert("tz_offset_min".into(), json!(n));
+            }
+        }
+    }
+    let ev_row = crate::sb_insert("calendar_events", ev_body).await;
     if let Err(e) = &ev_row {
         eprintln!("calendar.create: event insert failed: {}", e.chars().take(400).collect::<String>());
     }
@@ -690,7 +709,7 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
             &rows,
             &[],
             Method::Request,
-            &when_label_of(input, starts),
+            &repeat_label(&when_label_of(input, starts), &spec),
         )
         .await;
         invites_json(&sent, "")
@@ -748,8 +767,179 @@ fn organiser_only(me: &Who, ev: &Value) -> Option<axum::response::Response> {
     }
 }
 
+/// "This meeting only" for a repeating series: cancel one occurrence (exdate + CANCEL for that date) or edit it
+/// (exception row with its own time/title, the master skips that date).
+async fn update_this(me: &Who, input: &Value, ev: &Value, occ: i64) -> axum::response::Response {
+    let cancel = input.get("cancel").and_then(|v| v.as_bool()).unwrap_or(false);
+    let notify = input.get("notify").and_then(|v| v.as_bool()).unwrap_or(true);
+    let master_id = st(ev, "id");
+    let found = occurrences(ev, occ, occ + 1)
+        .into_iter()
+        .find(|o| cal::parse_ts(&st(o, "starts_at")) == Some(occ));
+    let o = match found {
+        Some(o) => o,
+        None => return fail(StatusCode::NOT_FOUND, "not_found", "That occurrence no longer exists"),
+    };
+    let o_end = cal::parse_ts(&st(&o, "ends_at")).unwrap_or(occ + 3600);
+    let mut ex = exdates_of(ev);
+    if !ex.contains(&occ) {
+        ex.push(occ);
+    }
+    ex.sort();
+    let ex_json: Vec<String> = ex.iter().map(|x| cal::fmt_rfc3339(*x)).collect();
+    let seq = num(ev, "sequence").unwrap_or(0) + 1;
+    let rows = attendee_rows(&master_id).await;
+    let guests = rows.iter().any(|r| st(r, "address").to_lowercase() != me.email);
+    let rec_iso = cal::fmt_rfc3339(occ);
+
+    if cancel {
+        if crate::sb_patch(
+            &format!("calendar_events?id=eq.{}&org_id=eq.{}", master_id, me.org_id),
+            json!({ "exdates": ex_json, "sequence": seq, "updated_at": cal::fmt_rfc3339(now_epoch()) }),
+        )
+        .await
+        .is_err()
+        {
+            return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed");
+        }
+        let mut synth = o.clone();
+        if let Some(m) = synth.as_object_mut() {
+            m.remove("_occ");
+            m.insert("id".into(), json!(master_id));
+            m.insert("rrule".into(), Value::Null);
+            m.insert("series_id".into(), json!(master_id));
+            m.insert("recurrence_id".into(), json!(rec_iso));
+            m.insert("sequence".into(), json!(seq));
+            m.insert("status".into(), json!("cancelled"));
+        }
+        let invites = if notify && guests {
+            match event_spec(&synth, opt(input, "organiser_name"), &rows) {
+                Some(spec) => {
+                    let sent = send_to(me, &spec, &rows, &[], Method::Cancel, &when_label_of(input, spec.starts)).await;
+                    invites_json(&sent, "")
+                }
+                None => json!({ "engine": "rust", "sent": 0, "failed": 0, "skipped": 0, "results": [], "note": "time could not be read" }),
+            }
+        } else {
+            json!({ "engine": "rust", "sent": 0, "failed": 0, "skipped": 0, "results": [], "note": "guests were not notified" })
+        };
+        return crate::ok(json!({ "event": event_json(&synth, &rows), "invites": invites, "cancelled": true, "scope": "this" })).into_response();
+    }
+
+    let mut new_start = occ;
+    let mut moved = false;
+    if let Some(t) = input.get("starts_at").and_then(|v| v.as_str()) {
+        match cal::parse_ts(t) {
+            Some(x) => new_start = x,
+            None => return fail(StatusCode::BAD_REQUEST, "bad_time", "Start time is invalid"),
+        }
+    }
+    let minutes = num(input, "duration_minutes").unwrap_or((o_end - occ) / 60);
+    if !(5..=1440).contains(&minutes) {
+        return fail(StatusCode::BAD_REQUEST, "bad_duration", "Duration must be between 5 minutes and 24 hours");
+    }
+    let new_end = new_start + minutes * 60;
+    if new_start != occ || new_end != o_end {
+        moved = true;
+    }
+    let mut changed = moved;
+    let mut title = st(ev, "title");
+    if let Some(t) = input.get("title").and_then(|v| v.as_str()) {
+        let t = cal::clean_line(t, 200);
+        if t.chars().count() < 2 {
+            return fail(StatusCode::BAD_REQUEST, "bad_title", "Title is required");
+        }
+        if t != title {
+            title = t;
+            changed = true;
+        }
+    }
+    let mut agenda = opt(ev, "agenda");
+    if let Some(a) = input.get("agenda").and_then(|v| v.as_str()) {
+        if a.trim().chars().count() < 5 {
+            return fail(StatusCode::BAD_REQUEST, "agenda_required", "A meeting needs a purpose");
+        }
+        if Some(a.trim().to_string()) != agenda {
+            agenda = Some(a.trim().to_string());
+            changed = true;
+        }
+    }
+    let mut location = opt(ev, "location");
+    if let Some(l) = input.get("location").and_then(|v| v.as_str()) {
+        let l = cal::clean_line(l, 300);
+        let l = if l.is_empty() { None } else { Some(l) };
+        if l != location {
+            location = l;
+            changed = true;
+        }
+    }
+    if !changed {
+        return fail(StatusCode::BAD_REQUEST, "nothing_to_change", "Nothing to change");
+    }
+    let row = crate::sb_insert(
+        "calendar_events",
+        json!({
+            "org_id": me.org_id, "title": title, "agenda": agenda, "location": location,
+            "starts_at": cal::fmt_rfc3339(new_start), "ends_at": cal::fmt_rfc3339(new_end), "all_day": false,
+            "organiser": me.email, "kind": "meeting", "status": "confirmed", "created_by": me.id,
+            "tz": ev.get("tz").cloned().unwrap_or(Value::Null), "tz_offset_min": ev.get("tz_offset_min").cloned().unwrap_or(Value::Null),
+            "sequence": seq, "series_id": master_id, "recurrence_id": rec_iso,
+        }),
+    )
+    .await;
+    let exc = match row.ok().and_then(|v| v.as_array().and_then(|a| a.first().cloned())) {
+        Some(r) => r,
+        None => return fail(StatusCode::CONFLICT, "exception_exists", "This occurrence was already changed — reload the calendar."),
+    };
+    let exc_id = st(&exc, "id");
+    let body: Vec<Value> = rows
+        .iter()
+        .map(|r| {
+            let mine = st(r, "address").to_lowercase() == me.email;
+            json!({
+                "event_id": exc_id, "org_id": me.org_id, "address": st(r, "address"),
+                "display_name": r.get("display_name").cloned().unwrap_or(Value::Null),
+                "role": if st(r, "role").is_empty() { "required".to_string() } else { st(r, "role") },
+                "timezone": r.get("timezone").cloned().unwrap_or(Value::Null),
+                "response": if mine { "accepted".to_string() } else if moved { "needs_action".to_string() } else { st(r, "response") },
+                "invite_status": "not_sent",
+            })
+        })
+        .collect();
+    let new_rows = crate::sb_insert("calendar_attendees", Value::Array(body))
+        .await
+        .ok()
+        .and_then(|v| v.as_array().cloned())
+        .unwrap_or_default();
+    // the master now skips that date (the exception row stands in for it)
+    if crate::sb_patch(
+        &format!("calendar_events?id=eq.{}&org_id=eq.{}", master_id, me.org_id),
+        json!({ "exdates": ex_json, "updated_at": cal::fmt_rfc3339(now_epoch()) }),
+    )
+    .await
+    .is_err()
+    {
+        return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed");
+    }
+    let invites = if notify && guests {
+        match event_spec(&exc, opt(input, "organiser_name"), &new_rows) {
+            Some(spec) => {
+                let sent = send_to(me, &spec, &new_rows, &[], Method::Request, &when_label_of(input, spec.starts)).await;
+                invites_json(&sent, "")
+            }
+            None => json!({ "engine": "rust", "sent": 0, "failed": 0, "skipped": 0, "results": [], "note": "time could not be read" }),
+        }
+    } else {
+        json!({ "engine": "rust", "sent": 0, "failed": 0, "skipped": 0, "results": [], "note": "guests were not notified" })
+    };
+    let fresh = attendee_rows(&exc_id).await;
+    crate::ok(json!({ "event": event_json(&exc, &fresh), "invites": invites, "cancelled": false, "scope": "this" })).into_response()
+}
+
 async fn update(me: &Who, input: &Value) -> axum::response::Response {
-    let id = st(input, "id");
+    let raw = st(input, "id");
+    let (id_s, occ) = recur::split_occ(&raw);
+    let id = id_s.to_string();
     let ev = match load_own_event(me, &id).await {
         Ok(e) => e,
         Err(r) => return r,
@@ -763,6 +953,14 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
             "already_cancelled",
             "This meeting is already cancelled.",
         );
+    }
+    let master = is_master(&ev);
+    if master {
+        if let Some(o) = occ {
+            if st(input, "scope") != "all" {
+                return update_this(me, input, &ev, o).await;
+            }
+        }
     }
     let cancel = input
         .get("cancel")
@@ -783,7 +981,8 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
     if input.get("starts_at").is_some() || input.get("duration_minutes").is_some() {
         if let Some(t) = input.get("starts_at").and_then(|v| v.as_str()) {
             match cal::parse_ts(t) {
-                Some(x) => new_start = x,
+                // "all events": the user dragged ONE occurrence; the whole series moves by the same distance
+                Some(x) => new_start = if master { old_start + (x - occ.unwrap_or(old_start)) } else { x },
                 None => return fail(StatusCode::BAD_REQUEST, "bad_time", "Start time is invalid"),
             }
         }
@@ -836,6 +1035,21 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
             changed = true;
         }
     }
+    if master {
+        if let Some(r) = input.get("rrule").and_then(|v| v.as_str()) {
+            match recur::parse(r.trim().trim_start_matches("RRULE:")) {
+                Ok(rule) => {
+                    let canon = recur::to_string(&rule);
+                    if canon != st(&ev, "rrule") {
+                        patch.insert("rrule".into(), json!(canon));
+                        changed = true;
+                        moved = true;
+                    }
+                }
+                Err(m) => return fail(StatusCode::BAD_REQUEST, "bad_rrule", &m),
+            }
+        }
+    }
     if !cancel && !changed {
         return fail(
             StatusCode::BAD_REQUEST,
@@ -862,6 +1076,13 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
             "server_error",
             "Calendar failed",
         );
+    }
+    if cancel && master {
+        let _ = crate::sb_patch(
+            &format!("calendar_events?series_id=eq.{}&org_id=eq.{}&cancelled_at=is.null", id, me.org_id),
+            json!({ "status": "cancelled", "cancelled_at": cal::fmt_rfc3339(now_epoch()) }),
+        )
+        .await;
     }
     if moved {
         // a new time means everyone is asked again (the organiser stays accepted)
@@ -898,7 +1119,7 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
                     &rows,
                     &[],
                     method,
-                    &when_label_of(input, spec.starts),
+                    &repeat_label(&when_label_of(input, spec.starts), &spec),
                 )
                 .await;
                 invites_json(&sent, "")
@@ -918,7 +1139,7 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
 }
 
 async fn resend(me: &Who, input: &Value) -> axum::response::Response {
-    let id = st(input, "id");
+    let id = recur::split_occ(&st(input, "id")).0.to_string();
     let ev = match load_own_event(me, &id).await {
         Ok(e) => e,
         Err(r) => return r,
@@ -965,7 +1186,7 @@ async fn resend(me: &Who, input: &Value) -> axum::response::Response {
         &rows,
         &only,
         Method::Request,
-        &when_label_of(input, spec.starts),
+        &repeat_label(&when_label_of(input, spec.starts), &spec),
     )
     .await;
     let fresh = attendee_rows(&id).await;
@@ -975,7 +1196,7 @@ async fn resend(me: &Who, input: &Value) -> axum::response::Response {
 
 /// Who was invited, who answered, and what happened to each invitation. Never exposes the RSVP tokens.
 async fn guests(me: &Who, input: &Value) -> axum::response::Response {
-    let id = st(input, "id");
+    let id = recur::split_occ(&st(input, "id")).0.to_string();
     let ev = match load_own_event(me, &id).await {
         Ok(e) => e,
         Err(r) => return r,

@@ -5,7 +5,9 @@ import { FindTime } from "@/components/app/calendar/FindTime";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateMeeting, whenLabel } from "@/lib/calendar";
+import { RepeatPicker } from "@/components/app/calendar/RepeatPicker";
 import { reportInvites } from "@/lib/calendar-invites";
+import { NO_REPEAT, buildRrule, type RepeatSpec } from "@/lib/recurrence";
 import { notify } from "@/lib/notify";
 
 /**
@@ -43,6 +45,7 @@ export function NewMeeting({
   const [location, setLocation] = useState("");
   const [invite, setInvite] = useState(true);
   const [finding, setFinding] = useState(false);
+  const [repeat, setRepeat] = useState<RepeatSpec>(NO_REPEAT);
 
   const agendaOk = agenda.trim().length >= 10;
   const ready = title.trim().length > 1 && when && agendaOk;
@@ -52,6 +55,7 @@ export function NewMeeting({
     if (!ready) return;
     const startsAt = new Date(when).toISOString();
     const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const rrule = buildRrule(repeat, new Date(when));
     create.mutate(
       {
         title: title.trim(),
@@ -64,6 +68,7 @@ export function NewMeeting({
         timezone: zone,
         invite,
         when_label: whenLabel(startsAt, duration, zone),
+        ...(rrule ? { rrule, tz_offset_min: -new Date(when).getTimezoneOffset() } : {}),
       },
       {
         onSuccess: (data) => {
@@ -125,6 +130,8 @@ export function NewMeeting({
           ))}
         </select>
       </div>
+
+      <RepeatPicker value={repeat} onChange={setRepeat} start={new Date(when)} />
 
       <button
         type="button"

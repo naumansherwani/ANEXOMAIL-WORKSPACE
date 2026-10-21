@@ -78,6 +78,14 @@ export type CalendarEvent = {
   shield_conflict: boolean;
   /** iTIP SEQUENCE — goes up every time the organiser changes or cancels. */
   sequence?: number;
+  /** Repeating meetings (B7b). `id` of an occurrence is "<series>~<start epoch>"; the engine understands it. */
+  rrule?: string | null;
+  recurring?: boolean;
+  series_id?: string | null;
+  recurrence_id?: string | null;
+  /** True for one occurrence that was changed on its own. */
+  is_exception?: boolean;
+  timezone?: string | null;
 };
 
 export type GuestRow = {
@@ -322,6 +330,10 @@ export type NewMeeting = {
   /** Human readable time in the organiser's zone, printed in the invitation mail. */
   when_label?: string;
   organiser_name?: string;
+  /** RFC 5545 rule from buildRrule(); omitted = one meeting. */
+  rrule?: string;
+  /** Organiser's UTC offset in minutes (east positive) — keeps the series right if the server has no tz database. */
+  tz_offset_min?: number;
 };
 
 export type CreatedMeeting = {
@@ -359,6 +371,10 @@ export type MeetingChange = {
   notify?: boolean;
   when_label?: string;
   organiser_name?: string;
+  /** Repeating meetings: "this" = only this one, "all" = the whole series. The engine defaults to "this". */
+  scope?: "this" | "all";
+  /** Change the repeat rule (scope "all" only). */
+  rrule?: string;
 };
 
 /** Reschedule / edit / cancel. The engine bumps SEQUENCE and mails every guest the update or the cancellation. */

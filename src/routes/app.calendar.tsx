@@ -21,6 +21,7 @@ import {
   Download,
   MapPin,
   Plus,
+  Repeat,
   Users,
   Zap,
 } from "lucide-react";
@@ -217,6 +218,7 @@ function DayView({
                   "text-[13px] font-bold text-foreground",
                   ev.status === "cancelled" ? "line-through opacity-50" : "",
                 )}>
+                  {ev.recurring ? <Repeat className="mr-1 inline size-3 opacity-70" aria-label="Repeats" /> : null}
                   {ev.title}
                 </p>
                 <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
@@ -333,6 +335,7 @@ function AgendaView({
                           ev.status === "cancelled" ? "line-through" : "",
                         )}
                       >
+                        {ev.recurring ? <Repeat className="mr-1 inline size-3 opacity-70" aria-label="Repeats" /> : null}
                         {ev.title}
                       </span>
                       <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">

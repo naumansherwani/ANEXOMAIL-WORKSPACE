@@ -1,3 +1,4 @@
+import { Repeat } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { clockRange, useUpdateMeeting, type CalendarEvent } from "@/lib/calendar";
@@ -113,7 +114,7 @@ export function TimeGrid({
     setPending(null);
     setOpt((cur) => ({ ...cur, [ev.id]: patch }));
     update.mutate(
-      { id: ev.id, ...patch, notify: notifyGuests },
+      { id: ev.id, ...patch, notify: notifyGuests, ...(ev.recurring && ev.id.includes("~") ? { scope: "this" as const } : {}) },
       {
         onSuccess: () => notify.done("Rescheduled", notifyGuests ? "Guests were sent the update." : undefined),
         onError: (e) => {
@@ -344,6 +345,7 @@ export function TimeGrid({
                         }}
                       >
                         <span className="block truncate text-[11px] font-semibold leading-tight text-foreground">
+                          {ev.recurring ? <Repeat className="mr-0.5 inline size-2.5 opacity-70" aria-label="Repeats" /> : null}
                           {ev.title}
                         </span>
                         {h >= 34 && (
