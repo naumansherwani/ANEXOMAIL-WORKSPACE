@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md fe17144cfcb54a88
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 664151df0127320c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx f873a19be7ebbea5
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3db2997346f73c46
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a1af07cfbd6f3cc6
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -326,7 +326,7 @@ docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
 src/routes/app.founder.tsx 55493891045ccb78
 docs/claude/FOUNDER-WORKSPACE-PLAN.md 5732f90e95270367
 docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
-docs/claude/EVENING-PENDING-2026-10-21.md 06dfef8f03062664
+docs/claude/EVENING-PENDING-2026-10-21.md 544b444b7e60c955
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
 src/components/app/billing/ManageBilling.tsx 4a7b9f37c032c3ce

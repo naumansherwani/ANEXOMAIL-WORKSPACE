@@ -629,3 +629,11 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 
 **Aakhri update 22:05 (21 Oct 2026):** B6a (Polar control plane: muhar-band engine, billing.portal Rust b6, Bun fallback, Manage billing UI, Caddy lockdown script, installers) CODE LIKHA JA CHUKA, commit 0a32282, sandbox-proven, server par abhi nahi chala => GREEN nahi. Founder hukm: jo likh diya dobara mat likho, compact ke baad bhi. Install tarteeb: DONE-DO-NOT-REPEAT.md "B6a" section. Caddy kahin nahi jata; webhook/WAL ko haath nahi; checkout prewarm ke liye pehle founder ki ijazat.
 **Aakhri update 23:55:** BootSplash (asli A logo, mobile) live-ready commit 17d9d32; /billing-policy; BILLING-PORTAL-BLUEPRINT.md likha (founder ki Hyper-Advanced list + CEO verdict: 421-SMTP grace nahi, ZKP => verifiable receipt, flat-price => what-if calculator, Polar PDF invoice legal). P1 caddy-billingportal.sh + portal/public placeholder. Founder ke 4 faisle baqi (discount, grace, auth, finance role). Sandbox mein ab bun install/tsc/vite build/Playwright mobile chalta hai.
+
+
+## 22 Oct 2026 00:50 — B6a server progress (founder ka output dekha)
+- Founder order: B6 poora GREEN pehle, phir portal/B7/B8. Discount kabhi nahi. Grace 3 din = countdown -> read-only + sending pause; inbound hamesha qabool; 421 nahi.
+- GREEN: step 2 (polar-control-plane, muhar+kill switch+signed Polar probe) aur step 3 (Rust b6 billing.portal, nakli token 401). BAQI: step 4 brain-portal-install, step 5 caddy-polar-lockdown (plan->apply), step 6 asli Manage billing click.
+- Loader: asli BrandMark A hero (generic silver 3D A hata diya, bc59368); WORKSPACE lockup Option 1/2 jawab baqi; favicon ek-source demo baqi.
+- billingportal.anexomail.com Caddy par live (placeholder). Portal build B6 green ke BAAD.
+- Yaad: pull.sh sirf manifest files; Rust sources git objects se; pkill -x; kabhi poori Caddyfile overwrite nahi.

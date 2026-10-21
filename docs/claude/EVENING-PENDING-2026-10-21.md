@@ -34,3 +34,11 @@ memory pehle update -> advanced code -> sandbox proof -> poore pull commands -> 
 ## STATUS 22:05 — B6a code likha ja chuka (0a32282). Ab sirf SERVER INSTALL + founder output + GREEN. Phir B6b (checkout prewarm, founder ijazat) / B6c. Phir B7 (calendar), B8. Code dobara mat likho — DONE-DO-NOT-REPEAT.md dekho.
 
 ## 23:55 — BILLING PORTAL (billingportal.anexomail.com): blueprint repo mein, P1 (Caddy+placeholder) bana. Agla: P2 core read (portal.summary/invoices Rust, plan card, invoices, Polar handshake). Ye B6 install (steps 2-5) ke saath chalega. B7/B8 abhi baad mein.
+
+
+## 22 Oct 2026 00:50 — B6a server progress (founder ka output dekha)
+- Founder order: B6 poora GREEN pehle, phir portal/B7/B8. Discount kabhi nahi. Grace 3 din = countdown -> read-only + sending pause; inbound hamesha qabool; 421 nahi.
+- GREEN: step 2 (polar-control-plane, muhar+kill switch+signed Polar probe) aur step 3 (Rust b6 billing.portal, nakli token 401). BAQI: step 4 brain-portal-install, step 5 caddy-polar-lockdown (plan->apply), step 6 asli Manage billing click.
+- Loader: asli BrandMark A hero (generic silver 3D A hata diya, bc59368); WORKSPACE lockup Option 1/2 jawab baqi; favicon ek-source demo baqi.
+- billingportal.anexomail.com Caddy par live (placeholder). Portal build B6 green ke BAAD.
+- Yaad: pull.sh sirf manifest files; Rust sources git objects se; pkill -x; kabhi poori Caddyfile overwrite nahi.
