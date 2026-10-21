@@ -35,6 +35,22 @@ jahan se founder poori ANEXOMAIL **dekhta, samajhta, faisla karta aur jawab deta
 
 Feasibility (sandbox, checked 21 Oct): Leptos 0.8 + `wasm32` target yahan mil jate hain (NO_PROXY clear karna padta hai); 2 cores / 5 GB disk free => build sandbox mein, artifact server par.
 
+
+## 2b. FOUNDER KA STACK (founder ne diya, 21 Oct 08:25 — repo mein darj; is se upar §2 ki jagah yeh WINS jahan takrao ho)
+**Edge:** Caddy reverse proxy; HTTPS + **HTTP/3** dual-stack (low-latency handshake).
+**Frontend/Client UI:** React 19.2 · Vite 8.2 · TanStack Start v1 + TanStack Router 1.17 (type-safe routing) · Tailwind CSS v4.2 · Radix UI + shadcn/ui · **Three.js** (3D workspace) · Framer Motion + GSAP (premium micro-interactions).
+**Rust SSE/live:** Rust se push -> "webpage khudi refresh ho jaye ga" (SSE/WebTransport; page refresh ke baghair khud update).
+**Backend:** Rust (tokio async), Supabase, Polar (NO TOUCH) — jo pehle se hai.
+
+### TAKRAO jo founder ko batana hai (mera faisla nahi, tumhara)
+Pehle hukm: "founder mein Bun/Node kahin nahi". Ab frontend stack React/Vite/TanStack Start — yeh Node-tooling hai (Vite build Node par chalta hai; TanStack Start SSR runtime Node/Bun par).
+**Meri sulah (dono hukm poore):** React/Vite/TanStack/Tailwind/shadcn/Three.js/Framer/GSAP **build-time par** sandbox/CI mein build -> **static SPA assets** -> founder host par **sirf Rust binary** unhein serve kare (SPA mode, TanStack Start SSR runtime nahi) + Rust SSE/WebTransport live refresh. Server par na Node na Bun chalta hai, phir bhi frontend wohi world-class stack. (Leptos/wgpu wala §2 option badal sakta hai agar founder pure-Rust chahe.)
+Founder se ek lafz chahiye: **"sulah theek"** ya **"pure Rust (Leptos)"**. Tab tak F0 design dono ke liye ek jaisa (tokens/mock) hai.
+
+## 2c. Email addresses (founder ka hukm 21 Oct 08:25) — ALAG kaam, B6 + B-series ke BAAD
+Repo ki list `src/lib/founder-plan.ts` (PLANNED_MAILBOXES, 10 address): naumansherwani.founder@, humzasherwani@, raanasherwani@, masoodsherwani@, resolved@, moveyourbusiness@, hello@, billing@, noreply@, leo@ (anexomail.com).
+Kaam: har address **build (provision) + working wire** (Postfix/Dovecot/DKIM/inbound->app/send), server par proof ke saath. Founder ka alag email system bhi. Nexatect (parent company) ke addresses uske baad.
+
 ## 3. Founder view — metadata-only (privacy locked)
 > Naam: "God view" ki jagah **Founder view** (founder ka hukm 21 Oct 08:20).
 > **Email:** founder ka ALAG email system (apna). ANEXOMAIL ke baqi banaye hue addresses (founder@, support@, leads@ ...) aur parent company **Nexatect** ke addresses BAAD ka kaam hain (phase F5+ ke baad), abhi scope mein nahi.
