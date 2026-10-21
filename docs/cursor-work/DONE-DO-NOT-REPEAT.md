@@ -135,3 +135,7 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 
 ## B3 READY (21 Oct 07:00): R1 mail pipeline Rust par — repo mein, server par chalna baqi. `mail_core.rs`+`mail_glue.rs` (mail.send, mail.schedule, mail.schedule.cancel, Rust queue worker, org.mailboxes.list/create), SQL E54 claim, Brain claim/cancel patch, client Rust-first. Sandbox proof SAB PASS (Bun bytes ke barabar). Install: SQL E54 -> Brain brain-mail-install.sh -> Rust rust-mail-install.sh -> Web pull. Dobara mat likho.
 
+## B2b GREEN (21 Oct 05:50): founder output — Brain passkey-harden OK, Rust passkey-install proof SAB PASS (list/delete included), Web pull OK. Dobara mat likho.
+## B3 server par: SQL E54 OK, Brain brain-mail-install OK, Web pull OK. BAQI: rust-mail-install.sh output -> phir B3 GREEN.
+## Technology (founder locked): Tokio/axum/QUIC(wtransport 0.7.2)/tRPC-style /rpc = pehle se LIVE, poori website ke liye (plan-wise nahi). Baqi sirf B4 (event-driven WT push) + B8 (tokio 1.54, Bun 1.4.3, Brain->Rust).
+
