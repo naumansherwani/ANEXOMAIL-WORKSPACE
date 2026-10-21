@@ -85,7 +85,7 @@ src/components/app/calendar/EventDetail.tsx 3f6a9025086ddc26
 src/components/app/calendar/Guests.tsx dffa0499316208d9
 src/components/app/calendar/FindTime.tsx 499767b811ead3f3
 src/routes/rsvp.tsx 126ff4cb28431afd
-src/routeTree.gen.ts defa7284fa250b42
+src/routeTree.gen.ts 036225c5d96474ca
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md a8199ef29f0dbbe3
+docs/cursor-work/founder/founder-commands.md a814fbc4b20c2a08
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
