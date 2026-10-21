@@ -283,3 +283,9 @@ Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/cl
 - sql-run.sh E56_calendar_recurrence + CHECK_E56: sab OK (5 columns, 2 functions, anon band). Rust rust-engine-install.sh: cal 38 tests, build OK 2m02, restart, calendar procs live. Web pull.sh: build OK, /health 200, server==repo 498 same.
 - Supabase editor "PRIVATE (66)" = sirf saved untitled queries ki ginti, koi bug nahi (SQL ab sql-run.sh se).
 - Baqi: asli login se recurring meeting ka live test (founder ya test account) — Claude apne aap founder ke calendar mein event nahi banata. NEXT: B7c booking page.
+
+## 22 Oct 2026 03:35 — LIVE Chrome test of recurrence (founder Pro, mere naye tab mein) + fixes
+- Live PASS: New meeting picker (Every week, ends after 4) -> "Meeting created"; detail badge "Every week on Fri, 4 times"; Oct 23/30, Nov 6 occurrences dikhe; "This event only" cancel Oct 30 -> sirf wahi hata, Nov 6 rahi.
+- Bug mila: hata di gayi occurrence ki detail "Not wired yet" (server 404 -> rpcOrRest legacy fallback). FIX: server ab 410 occurrence_gone; UI stale "<series>~<t>" selection band karta hai. Default calendar view ab MONTH (founder order).
+- Test series "Recurrence test (delete me)" founder ke calendar mein bachi hai (Fri 23 Oct 10:00, 4 baar; 30 Oct cancel; 6 Nov ko 14:00 move karne ka click ho chuka tha, extension disconnect hone se result nahi dekha) — founder khud "All events" cancel kar de ya agli live session mein main karunga.
+- Chrome extension disconnect hua: retry nahi kiya.

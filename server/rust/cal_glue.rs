@@ -778,7 +778,7 @@ async fn update_this(me: &Who, input: &Value, ev: &Value, occ: i64) -> axum::res
         .find(|o| cal::parse_ts(&st(o, "starts_at")) == Some(occ));
     let o = match found {
         Some(o) => o,
-        None => return fail(StatusCode::NOT_FOUND, "not_found", "That occurrence no longer exists"),
+        None => return fail(StatusCode::GONE, "occurrence_gone", "That occurrence no longer exists"),
     };
     let o_end = cal::parse_ts(&st(&o, "ends_at")).unwrap_or(occ + 3600);
     let mut ex = exdates_of(ev);
@@ -1356,7 +1356,7 @@ async fn event_one(me: &Who, input: &Value) -> axum::response::Response {
         if let Some(u) = occ {
             match occurrences(&ev, u, u + 1).into_iter().find(|o| cal::parse_ts(&st(o, "starts_at")) == Some(u)) {
                 Some(o) => shown = o,
-                None => return fail(StatusCode::NOT_FOUND, "not_found", "That occurrence no longer exists"),
+                None => return fail(StatusCode::GONE, "occurrence_gone", "That occurrence no longer exists"),
             }
         }
     }

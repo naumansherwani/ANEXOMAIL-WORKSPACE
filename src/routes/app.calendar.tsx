@@ -25,7 +25,7 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Availability } from "@/components/app/calendar/Availability";
 import { CostMeter, LoadBar, apiHref } from "@/components/app/calendar/Bits";
@@ -403,7 +403,7 @@ type Rail = "agenda" | "availability" | "load";
 function CalendarPage() {
   const { t } = useLocale();
   const [anchor, setAnchor] = useState(() => new Date());
-  const [view, setView] = useState<ViewType>("week");
+  const [view, setView] = useState<ViewType>("month");
   const [rail, setRail] = useState<Rail>("agenda");
   const [selected, setSelected] = useState("");
   const [composing, setComposing] = useState(false);
@@ -430,6 +430,12 @@ function CalendarPage() {
   const load = useTeamLoad({ from: range.from, to: range.to });
 
   const rows = events.data?.events ?? [];
+
+  // A repeating meeting's single occurrence was cancelled/moved elsewhere: its "<series>~<time>" id is gone — close the stale detail.
+  useEffect(() => {
+    if (!selected.includes("~") || events.isFetching || !events.data) return;
+    if (!events.data.events.some((e) => e.id === selected)) setSelected("");
+  }, [selected, events.data, events.isFetching]);
 
   const navigate = (dir: number) => {
     const next = new Date(anchor);
