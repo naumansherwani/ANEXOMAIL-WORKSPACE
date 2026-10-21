@@ -408,7 +408,7 @@ S1-S10      → Server hardening (UFW, SSH, integrity) — jab founder bole
 > Aap server pull karo → main screenshot → aap confirm → next phase.
 
 > **Update 21 Oct 2026 (B4):** Mail/calendar/crm/work/people/org live push ab PostgreSQL LISTEN/NOTIFY se nahi, Rust event hub se chalta hai
-> (per-org tokio broadcast, publish layer, `/internal/event`, 2 s reconcile per active org) -> WebTransport/QUIC. Har plan + family accounts. Files: `server/rust/events_core.rs`, `events_glue.rs`.
+> (per-org tokio broadcast, publish layer, `/internal/event`, 2 s reconcile per active org) -> WebTransport/QUIC. Har plan + family accounts. Files: `server/rust/events_core.rs`, `events_glue.rs`, `docs/cursor-work/server/{events_patch.py,rust-events-install.sh,events-proof.py}`, client `src/lib/live-core.ts` + `live.ts` (shared connection, backoff 1-30 s, resync) mounted once in `AppShell`, `deliver_bin.rs` inbound push. Dobara mat likho.
 
 ## STATUS BOARD
 
