@@ -637,3 +637,8 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - Loader: asli BrandMark A hero (generic silver 3D A hata diya, bc59368); WORKSPACE lockup Option 1/2 jawab baqi; favicon ek-source demo baqi.
 - billingportal.anexomail.com Caddy par live (placeholder). Portal build B6 green ke BAAD.
 - Yaad: pull.sh sirf manifest files; Rust sources git objects se; pkill -x; kabhi poori Caddyfile overwrite nahi.
+
+## 22 Oct 2026 02:00 — SERVER PAR GREEN (founder ka output dekha)
+- GREEN: Polar webhook fix (2 secrets, dono endpoints 200), Polar engine axum 0.8.9/edition 2024, engine non-root user 'polar' + .env 600 + pcp.key 640, Caddy lockdown, Brain portal route, Rust b6, billingportal placeholder, web pull (BrandLoader asli A har jagah, Command-center founder-only).
+- B6a baqi: step 6 asli Manage billing click (Chrome, Pro login). Phir B6b/c (prewarm, tuning, alarms, Polar token scopes + reconcile check).
+- Founder hukm: B6 poora green pehle; portal/B7/B8 uske baad; discount kabhi nahi; grace 3 din countdown->read-only+sending pause, inbound hamesha.
