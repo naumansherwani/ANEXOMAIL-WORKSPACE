@@ -515,3 +515,8 @@ Founder ne screenshot dikhaya: ambient aurora blob se neela dhabba + hard edge (
 ## 22 Oct 2026 03:53 — founder (verbatim)
 "pehle pull comamnd do Backup kahan hai" — web pull (layout v2 live) pehle; backup branch `backup/calendar-v2-20261022` + docs/cursor-work/backups/calendar-v2-20261022/. Rust install dobara nahi chahiye (founder ne ce621ed ke baad chala diya: cal 38 passed, build OK).
 Command: bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6
+
+## 22 Oct 2026 03:57 — founder (verbatim, gussa mein)
+"mujhe old version leke aao Version 1 leke aao" (pehle: "purana aesa nahi tha shit woh codes gayae. abhi wala ka backup lo codes ka"; "time gmt nahi kero jo country hai us ka time adaptive … 12hours ya 24hours option").
+HALAT: READY (sandbox 1440/820/390 pass). Purana dual layout (ce621ed) asli git code se wapas = default "Classic"; v2 = "Expanded"; ek button (rail/toolbar ke upar) se switch, yaad rehta hai. Live clock shehar ke naam ke saath (Karachi, GMT nahi), 12h/24h/Auto (Auto = us country ka rivaaj), grid labels/chips/sheet sab mein. Backup: branch backup/calendar-v2-20261022.
+Command (web): bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6

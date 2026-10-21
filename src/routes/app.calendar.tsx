@@ -31,7 +31,9 @@ import { CostMeter, LoadBar, apiHref } from "@/components/app/calendar/Bits";
 import { EventDetail } from "@/components/app/calendar/EventDetail";
 import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
+import { CalendarClassic } from "@/components/app/calendar/CalendarClassic";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
+import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
@@ -48,6 +50,7 @@ import {
   type CalendarEvent,
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
+import { fmtTime, useCalLayout, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/calendar")({
@@ -177,7 +180,7 @@ function MonthView({
                         <span className="truncate">
                           {!ev.all_day && (
                             <span className="mr-1 font-normal tabular-nums text-muted-foreground">
-                              {new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                              {fmtTime(ev.starts_at)}
                             </span>
                           )}
                           {ev.title}
@@ -251,7 +254,7 @@ function DayView({
               {/* Time */}
               <div className="w-10 shrink-0 text-right">
                 <span className="text-[10px] font-semibold tabular-nums text-muted-foreground">
-                  {ev.all_day ? "all" : new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                  {ev.all_day ? "all" : fmtTime(ev.starts_at)}
                 </span>
               </div>
               {/* Dot */}
@@ -369,7 +372,7 @@ function AgendaView({
                     <span className="w-14 shrink-0 pt-0.5 text-[11px] font-semibold whitespace-nowrap tabular-nums text-muted-foreground">
                       {ev.all_day
                         ? "All day"
-                        : new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                        : fmtTime(ev.starts_at)}
                     </span>
                     <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} aria-hidden />
                     <span className="min-w-0 flex-1">
@@ -444,37 +447,16 @@ function WeekStats({ events }: { events: CalendarEvent[] }) {
 type ViewType = "month" | "week" | "day";
 type Rail = "agenda" | "availability" | "load";
 
-/**
- * Live clock in the VIEWER's own time zone (whatever country they are in — the browser knows it).
- * Server-render shows an empty box of the same size, so hydration never mismatches.
- */
-function LiveClock() {
-  const [now, setNow] = useState<Date | null>(null);
-  useEffect(() => {
-    setNow(new Date());
-    const timer = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
-  if (!now) return <span className="inline-block h-7 w-[8.5rem]" aria-hidden />;
-  const zone = new Intl.DateTimeFormat(undefined, { timeZoneName: "short" })
-    .formatToParts(now)
-    .find((p) => p.type === "timeZoneName")?.value;
-  const iana = Intl.DateTimeFormat().resolvedOptions().timeZone;
-  return (
-    <span
-      role="timer"
-      title={`${iana} · ${now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}`}
-      className="inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-full border border-border bg-secondary/60 px-2.5 text-[12px] font-semibold tabular-nums text-foreground"
-    >
-      <span className="size-1.5 animate-pulse rounded-full bg-red-500" aria-hidden />
-      {now.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
-      {zone ? <span className="font-normal text-muted-foreground">{zone}</span> : null}
-    </span>
-  );
+/** Chooses the layout the viewer picked (Classic by default) — both are always available via the toggle. */
+function CalendarPage() {
+  const [layout] = useCalLayout();
+  return layout === "expanded" ? <CalendarExpanded /> : <CalendarClassic />;
 }
 
-function CalendarPage() {
+/** One toolbar, full-width calendar, events in a side sheet. */
+function CalendarExpanded() {
   const { t } = useLocale();
+  useClockPref();
   const [anchor, setAnchor] = useState(() => new Date());
   const [view, setView] = useState<ViewType>("month");
   const [rail, setRail] = useState<Rail>("agenda");
@@ -613,7 +595,9 @@ function CalendarPage() {
 
         <span className="hidden flex-1 md:block" />
         <LiveClock />
+        <ClockFormatToggle />
         <div className="flex items-center gap-1.5">
+          <LayoutToggle className="ax-tap px-2 py-1.5" />
           {railButton("availability", t("Avail."))}
           {railButton("load", t("Load"))}
           <IcsPickButton onLoaded={setIcsPlan} />

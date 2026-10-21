@@ -16,6 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { ApiError } from "@/lib/api";
 import { rpc, rpcOrRest } from "@/lib/rpc";
+import { fmtTime } from "@/lib/timeFormat";
 
 /* ------------------------------------------------------------------ types */
 
@@ -582,9 +583,7 @@ export function money(cost: MeetingCost) {
 }
 
 export function clockRange(startIso: string, endIso: string) {
-  const fmt = (iso: string) =>
-    new Date(iso).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
-  return `${fmt(startIso)} – ${fmt(endIso)}`;
+  return `${fmtTime(startIso)} – ${fmtTime(endIso)}`;
 }
 
 export function minutesLabel(minutes: number) {

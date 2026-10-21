@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 5e6854847a6a41a3
+src/routes/app.calendar.tsx fec7ae64080a4c77
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -77,7 +77,7 @@ src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
-src/lib/calendar.ts 053d788af873504b
+src/lib/calendar.ts 8dd82d1557686ea2
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx bfaa988ff49954c3
@@ -250,7 +250,7 @@ docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48ca4e71128
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx fdf439e5fb394e3a
+src/components/app/calendar/TimeGrid.tsx 4c4bce244b519ab8
 src/lib/plans.ts 4d31c58ca080c878
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898
@@ -357,3 +357,7 @@ docs/cursor-work/server/polar-nonroot-install.sh f62c5701915dcee3
 src/lib/recurrence.ts a591d7e108eb3817
 src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql 7d3171ea0c99072d
+src/lib/timeFormat.ts b7338b87067395b9
+src/components/app/calendar/TimeBar.tsx 3e99f7434773ba14
+src/components/app/calendar/CalendarClassic.tsx 9d78e34f7bb1fa29
+src/components/app/calendar/Bits.tsx ff3c03680788468a

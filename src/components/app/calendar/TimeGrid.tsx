@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { clockRange, useUpdateMeeting, type CalendarEvent } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
+import { fmtHour } from "@/lib/timeFormat";
 import { minutesOfDay, movedTo, packDay, snap } from "@/lib/time-grid";
 import { cn } from "@/lib/utils";
 
@@ -276,7 +277,7 @@ export function TimeGrid({
                 className="absolute right-1.5 -translate-y-1/2 text-[10px] text-muted-foreground"
                 style={{ top: h * HOUR }}
               >
-                {h === 0 ? "" : `${String(h).padStart(2, "0")}:00`}
+                {h === 0 ? "" : fmtHour(h)}
               </span>
             ))}
           </div>

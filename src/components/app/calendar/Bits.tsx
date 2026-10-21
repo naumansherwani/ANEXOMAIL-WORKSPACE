@@ -1,6 +1,7 @@
 import { AlertTriangle, Coins, Globe2, ShieldCheck } from "lucide-react";
 
 import { minutesLabel, money, type AttendeeLocalTime, type MeetingCost } from "@/lib/calendar";
+import { fmtTime } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
 /**
@@ -45,10 +46,7 @@ export function TimeZoneTruthBar({ attendees }: { attendees: AttendeeLocalTime[]
           {a.display_name || a.address}:{" "}
           <span className={a.unsociable ? "font-bold text-danger" : "text-foreground"}>
             {a.local_start
-              ? new Date(a.local_start).toLocaleTimeString(undefined, {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })
+              ? fmtTime(a.local_start)
               : "—"}
           </span>
           {a.timezone && <span className="text-steel"> {a.timezone}</span>}
