@@ -51,7 +51,7 @@ function subscribe(fn: () => void) {
 }
 
 /**
- * Account sync (E58 + Rust /rpc/locale.uipref*): the choice follows the user to every device.
+ * Account sync (E57 + Rust /rpc/locale.uipref*): the choice follows the user to every device.
  * Best-effort and silent — signed out, SQL not run yet, or offline: the device value still works.
  */
 async function pushRemote() {

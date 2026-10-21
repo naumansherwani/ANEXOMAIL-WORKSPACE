@@ -64,7 +64,7 @@ pub fn rfc3339_utc(unix: u64) -> String {
     format!("{y:04}-{m:02}-{d:02}T{h:02}:{mi:02}:{s:02}Z")
 }
 
-/// Calendar display preference values the account may hold (E58 CHECK constraints mirror these).
+/// Calendar display preference values the account may hold (E57 CHECK constraints mirror these).
 pub fn clock_ok(s: &str) -> bool {
     matches!(s, "auto" | "12" | "24")
 }

@@ -398,7 +398,7 @@ for m in $MODS; do
       r3="$(probe locale.uipref '{"input":{}}')"
       echo "   locale.uipref (nakli token): $r3"
       case "$r3" in
-        *'"unauthorized"'*) echo "   -> locale.uipref: Rust ne proc pakda (nakli login 401 = theek). SQL E58 chala hona lazmi.";;
+        *'"unauthorized"'*) echo "   -> locale.uipref: Rust ne proc pakda (nakli login 401 = theek). SQL E57 chala hona lazmi.";;
         *procedure_not_in_rust*) echo "   -> locale.uipref: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> locale.uipref: jawab upar dekhein";;
       esac

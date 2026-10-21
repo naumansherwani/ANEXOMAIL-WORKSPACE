@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md e1030b305fc9cc76
+docs/cursor-work/founder/founder-commands.md 85ec324c8ead956c
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md 4689acd147ef4735
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
-docs/cursor-work/server/rust-engine-install.sh 93d2be34090eb814
+docs/cursor-work/server/rust-engine-install.sh 996eaef68c3b206e
 src/components/app/security/IntegrityGate.tsx c2c6092f7fdef7a6
 src/lib/account-export.ts a9bc75ae97a15153
 docs/cursor-work/sql/E45_integrity_purge.sql 4cc5092c77e9f0e9
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 36aaacf6cfb24734
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 70e54e4435429602
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -357,10 +357,12 @@ docs/cursor-work/server/polar-nonroot-install.sh f62c5701915dcee3
 src/lib/recurrence.ts a591d7e108eb3817
 src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql 7d3171ea0c99072d
-src/lib/timeFormat.ts 01aee6019827d2dd
+src/lib/timeFormat.ts e603401c56c5be95
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
 src/components/app/calendar/CalendarClassic.tsx 9d78e34f7bb1fa29
 src/components/app/calendar/Bits.tsx ff3c03680788468a
 src/components/app/calendar/Availability.tsx 63c43c65a4cd32fd
-server/rust/locale_core.rs 575330f61a71f83e
-server/rust/locale_glue.rs 3c3129a091e186aa
+server/rust/locale_core.rs 980c6b1aa814b973
+server/rust/locale_glue.rs f75fb2ab9de3ee1b
+docs/cursor-work/sql/CHECK_E57.sql 9f3c3cfb82d06676
+docs/cursor-work/sql/E57_ui_pref.sql 481a027744e2a1aa

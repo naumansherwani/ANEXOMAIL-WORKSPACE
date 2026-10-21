@@ -1,4 +1,4 @@
--- E58 — calendar ki display pasand (clock 12h/24h/auto + layout classic/expanded) ACCOUNT mein save (22 Oct 2026)
+-- E57 — calendar ki display pasand (clock 12h/24h/auto + layout classic/expanded) ACCOUNT mein save (22 Oct 2026)
 -- Pehle sirf us device ke localStorage mein thi; ab user kisi bhi device par login kare to wahi pasand milti hai.
 -- Sirf service_role (Rust /rpc/locale.uipref*). Dobara chalana safe. Koi table DROP nahi.
 create table if not exists public.awam_ui_pref (

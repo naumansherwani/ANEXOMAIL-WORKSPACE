@@ -6,7 +6,7 @@
 //   locale.registry    PUBLIC  {}     -> {locales:[...]} the 28 locales (tag, english, native, dir, sort_n)
 //   locale.pref        AUTH    {}     -> {tag|null}      the caller's saved language (cross-device)
 //   locale.pref.set    AUTH    {tag}  -> {ok, tag}       save it (upsert on user_id)
-//   locale.uipref      AUTH    {}     -> {clock|null, layout|null}  calendar display pasand (E58), cross-device
+//   locale.uipref      AUTH    {}     -> {clock|null, layout|null}  calendar display pasand (E57), cross-device
 //   locale.uipref.set  AUTH    {clock?, layout?} -> {ok, clock, layout}  save (a wrong value is 400, never stored)
 //
 // Answers are byte-for-byte the shapes the Bun twin (server/routes/locale.ts) returns, inside the usual `{result:{data}}`:
