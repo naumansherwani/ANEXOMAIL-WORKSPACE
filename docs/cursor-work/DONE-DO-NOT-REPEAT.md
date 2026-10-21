@@ -156,3 +156,5 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## GREEN RULE (21 Oct 06:56): file server par + wire = GREEN. GREEN-BOARD isi se regrade (live dekha / server par). Dobara strict "live proof only" se mat grade karo.
 
 ## founder-commands.md vs server (21 Oct 07:10): GREEN-BOARD/07 bana — poori file padhi. Server par NAHI: chat audit, iMIP, Bun->Rust baqi, Caddy check script, /terms page, Domains ke 7 features. Dobara mat padho; naya command aaye to sirf 07 mein row.
+
+## ops-ufw-passkey.sh (21 Oct 07:10): ufw 3443/udp + passkey test-exempt ek idempotent command. Founder output aane par D11 ufw + passkey-exempt GREEN.
