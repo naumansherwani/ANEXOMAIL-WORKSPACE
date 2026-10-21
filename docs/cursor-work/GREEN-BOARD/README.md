@@ -18,7 +18,7 @@
 | MASTER-BUILD-PLAN P1–P9 (is plan ke 68 items) | 68 | 9 | 40 | 12 | 7 | 0 |
 | G-series G1–G42 | 43 | 10 | 2 | 13 | 16 | 2 |
 | Technology (live stack + B1–B8 + R) | 15 | 9 | 0 | 0 | 6 | 0 |
-| Ops / bugs / ledger khule | 13 | 1 | – | – | 11 | 1 |
+| Ops / bugs / ledger khule | 14 | 3 | – | – | 10 | 1 |
 
 ## Files
 - `01-GREEN.md` — jo live saboot ke saath green hai (dobara mat chhuo).
@@ -27,7 +27,6 @@
 - `04-TECHNOLOGY.md` — stack + B-series + R-items.
 - `05-DOCS-INVENTORY.md` — docs ki har file: kya hai, kitni purani/saaf, kya STALE hai.
 - `06-REPO-INVENTORY.md` — repo mein kya kya hai (routes, components, Rust modules, SQL, scripts) ginti ke saath.
-- `07-FOUNDER-COMMANDS-vs-SERVER.md` — founder-commands.md ki har command: code mein? server tak aaya?
 - **`NOT-GREEN/`** — jo green NAHI hai woh alag folder mein (side par), 5 file: code-live-baqi, todo, partial, founder-chahiye, stale-doc + parked.
 
 ## Sabse bada sach (3 line)

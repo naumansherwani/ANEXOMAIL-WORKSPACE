@@ -1,6 +1,6 @@
 # NOT-GREEN — index (side folder)
 
-Yeh woh sab hai jo GREEN nahi. Ginti: TODO 41 · PARTIAL 25 · FOUNDER 14.
+Yeh woh sab hai jo GREEN nahi. Ginti: TODO 40 · PARTIAL 25 · FOUNDER 14.
 
 1. `01-code-live-baqi.md` — (green hain) sirf Chrome click-test list.
 2. `02-todo-not-built.md` — bana nahi (B5–B8, G16, G26/27, G40 …).
@@ -10,5 +10,3 @@ Yeh woh sab hai jo GREEN nahi. Ginti: TODO 41 · PARTIAL 25 · FOUNDER 14.
 6. `06-parked-locks.md` — rok rakha / no-touch.
 
 **Tarteeb (founder locked 05:53):** B4 install -> B5 -> B6 -> B7 -> B8 -> Pro -> Business -> Business Pro.
-
-**Founder-commands se (07 file, Section D):** Chat audit · iMIP reply · Bun->Rust baqi (B5–B8) · Caddy check script · Terms page `/terms` · Domains ke 7 baqi features · server: ufw 3443/udp, passkey-exempt check, E24 migrate.

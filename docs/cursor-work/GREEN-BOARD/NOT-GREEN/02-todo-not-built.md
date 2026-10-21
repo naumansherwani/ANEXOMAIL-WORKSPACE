@@ -44,7 +44,6 @@ Technology migration order (founder 05:53): B4→B5→B6→B7→B8, phir Pro→B
 
 | Ops | Note |
 |---|---|
-| ufw 3443/udp (QUIC) | D11 |
 | Bun /api/billing/subscription bug | D11 |
 | E24 email_hash HMAC migrate run | D11 |
 | E52 alias fair-use SQL (cap 25) server par | sql-run.sh E52_alias_fair_use CHECK_E52 |

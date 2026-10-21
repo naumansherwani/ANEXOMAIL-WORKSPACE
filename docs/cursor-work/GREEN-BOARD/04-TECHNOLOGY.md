@@ -23,7 +23,8 @@
 ## Ops
 | Item | Status | Note |
 |---|---|---|
-| ufw 3443/udp (QUIC) | 🔴 TODO (bana nahi) | D11 |
+| ufw 3443/udp (QUIC) | 🟢 GREEN (live dekha/proof) | 21 Oct 07:09 founder output: ufw active, rule pehle se hai |
+| Passkey test-account exempt (Brain live) | 🟢 GREEN (live dekha/proof) | 21 Oct 07:09 founder output: marker live auth-passkey.ts mein |
 | Caddy cert renewal 12 Nov | 🔵 FOUNDER chahiye | D11 — 12 Nov se pehle dekhna |
 | Bun /api/billing/subscription bug | 🔴 TODO (bana nahi) | D11 |
 | E24 email_hash HMAC migrate run | 🔴 TODO (bana nahi) | D11 |

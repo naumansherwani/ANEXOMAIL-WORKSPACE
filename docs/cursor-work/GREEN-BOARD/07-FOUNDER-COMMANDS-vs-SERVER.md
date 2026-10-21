@@ -51,7 +51,7 @@
 | 21 Oct 02:31 / 02:20 | Landing par 3D nahi; orb hata | MailboxScene unwired, orb removed | 🟢 (LOCK) |
 | 21 Oct 02:03 | 3D kahan kahan | fx/* (loader logo, empty gems, plans tilt) | 🟢 live test baqi |
 | 21 Oct 02:11 / 00:29 | Repo + sandbox update har kaam par | memory files + sandbox-state | 🟢 |
-| 21 Oct 01:31 | Graphics settings toggle; 27 Oct deadline sirf real users; test accounts exempt | experience.graphics; passkey exempt | 🟢 toggle ✔; 🔵 **exempt ka server check:** `grep -n "test" /opt/anexomail/src/routes/auth-passkey.ts` (brain-passkey-exempt.sh chala tha ya nahi, record nahi) |
+| 21 Oct 01:31 | Graphics settings toggle; 27 Oct deadline sirf real users; test accounts exempt | experience.graphics; passkey exempt | 🟢 toggle ✔; 🟢✔ exempt marker live Brain mein (07:09 output) |
 | 21 Oct 00:26 / 00:11 | Kaam ka tareeqa; 3-command had radd | AGENTS Rule 31 radd | 🟢 |
 | 20 Oct 23:57 | Blueprint/founder md ki tarteeb, repo=live | MASTER-GAP-LEDGER, GREEN-BOARD | 🟢 |
 | 20 Oct 21:50 | Postfix/Caddy haan; ClamAV + G38b | E50, inbound_attach, clamd-tcp-fix | 🟢✔ (EICAR FOUND, hello.txt) |
@@ -70,7 +70,7 @@
 | batch 3 Billing daam | E40 | SQL | 🟢 |
 | batch 2 Security page sach | E39 + Rust security module | security_*.rs | 🟢 (Chrome check baqi) |
 | batch 1 PWA / sign-out saaf / copy | public/sw.js | Web | 🟢✔ (sw activated, offline inbox) |
-| 20 Oct 09:09 | Server live facts; 3443/udp, WT cert | wt-url.ts | 🟢 Web; 🔵 **`ufw allow 3443/udp`** ka record nahi (UDP 3443 sun raha hai, par ufw rule alag — D11) |
+| 20 Oct 09:09 | Server live facts; 3443/udp, WT cert | wt-url.ts | 🟢 Web; 🟢✔ ufw active, 3443/udp rule maujood (07:09 output) |
 | 20 Oct 08:37 / 08:29 | Server user ki tarah; git 143 peeche; .env khatra | .gitignore `.env` jod diya | 🟢 |
 | 20 Oct 08:18 | Blueprint green; Domains 8 features (D1/D2/D3…) | `dnsauth_*` (D2) | 🟢✔ D2; 🔴 **baqi 7 domain features** (D3 admin link, D1 zero-gap, catch-all/forwarding/vacation, health guard, DMARC reader, Domain Connect, BIMI) |
 | 20 Oct 07:54 | Mail kholne par sirf mail; Reply/Forward neeche | InlineReply, SafeMailBody | 🟢✔ |
@@ -99,5 +99,5 @@
 4. **Caddy read-only check script** — kabhi bana hi nahi.
 5. **Terms of Service page (`/terms`)** — repo mein route nahi (legal text aap ka; main product-facts se draft dunga agar kahen).
 6. **Domains ke baqi 7 features** (zero-gap, admin link, catch-all/forwarding/vacation, health guard, DMARC reader, Domain Connect, BIMI).
-7. **Server kaam (aapka):** `ufw allow 3443/udp` ka record; passkey test-account exempt ka server check; E24 email_hash HMAC migrate; Caddy cert 12 Nov se pehle.
+7. **Server kaam (aapka):** E24 email_hash HMAC migrate; Caddy cert 12 Nov se pehle. (ufw 3443/udp + passkey exempt: DONE 07:09.)
 8. **Live Chrome click-test baqi (code server par hai):** Humza lifetime label + version history, Security page (E39), Domains page, outbound attach bhejna.
