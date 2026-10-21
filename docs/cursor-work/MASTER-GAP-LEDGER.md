@@ -7,8 +7,8 @@ Stale warning: blueprint ke "PHASES 1–62" ka "READY/Supabase run baqi" likha h
 ## A. SAB SE PEHLE (naya, har kaam ki buniyaad) — repo == live
 | # | Kaam | Status | Kaise |
 |---|---|---|---|
-| A1 | **Repo vs server audit (read-only)**: Web (pull.sh sha) ✔ pehle se; Rust procs (`rust-procs-check.sh`, G23: live 182 procs) ✔ pehle se; **Brain files** (live `/opt/anexomail/src` vs `server/`) ✘; **SQL objects** (live functions/tables/policies vs E-files + phase-files) ✘; Caddyfile/Postfix/Dovecot/OpenDKIM/systemd/cron/pm2 env (naam, secrets nahi) ✘ | TODO (pehla) | ek `repo-vs-server-audit.sh` (sirf padhta, secrets chhapta nahi) -> output -> jo server par hai repo mein nahi wo repo mein lana, jo repo mein hai server par nahi wo gap list |
-| A2 | Rule 31/32 sandbox + AGENTS.md mein | DONE (c25da5f + is commit) | — |
+| A1 | **Repo vs server audit (read-only)** — founder ne chalaya 21 Oct 00:27 (`/root/audit-A1.txt`); nateeja neeche "A1 NATEEJA". Web/Rust procs/Brain files/SQL objects/edge config/systemd/cron/pm2 sab audit hue | **GREEN (audit DONE)** — gaps ka kaam A2–A4 mein; sirf A5 khula | `repo-vs-server-audit.sh` + `repo-capture-server.sh` (live-snapshot af24025 repo mein) |
+| A2 | Rule 31/32 sandbox + AGENTS.md mein; schema-only SQL + Brain/Rust farq + redacted Caddy/Postfix/Dovecot/OpenDKIM/cron `live-snapshot/` mein | **GREEN (DONE c25da5f + af24025)** | — |
 
 ## B. GREEN — live saboot mil chuka (dobara mat chhuo)
 | Item | Saboot |
@@ -125,3 +125,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - B2 (G42 passkey/recovery login Rust): GREEN live 21 Oct. Baqi: Bun fallback replay-hardening + passkey/list + DELETE passkey/:id -> Rust (in progress).
 
 | D5b | R5 event-driven WebTransport push (polling khatam) — **READY 21 Oct (B4), server par chalna baqi; sandbox QUIC proof SAB PASS; family accounts included** | Rust |
+
+- **21 Oct 06:45 A1/A2 stale-TODO theek kiya:** A1 audit pehle hi chal chuka tha (00:27) — table mein "TODO" reh gaya tha. Ab GREEN. Khula sirf **A5** (`FOUNDER_PASSWORD` env compare, auth.ts) — G35 passkey/2FA ke baad hatana; aur repo `main.rs` ko live ke barabar mirror karna (installers live patch karte hain) B-series ke saath.
