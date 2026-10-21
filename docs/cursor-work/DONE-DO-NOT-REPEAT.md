@@ -309,3 +309,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 05:20 E58 READY (live nahi): SQL E58+CHECK_E58 (local PG test), Rust calendar.meta.set + locale extra (4 tests, cargo check), web calprefs/CalSettings/ReminderWatcher, month colours+OOO tint, NewMeeting calendar/reminder, EventDetail MetaEditor. tsc+tier-guard clean. Live baqi: 3 commands.
 - 22 Oct 05:40 Rule 38 (SQL advance level) AGENTS.md mein. E58 SQL advance rewrite (awam_ui_extra_ok, NOT VALID+VALIDATE, lock_timeout, remind index) + CHECK_E58 behaviour tests, local PG PASS. Server par chalana baqi (founder SQL command).
 - 22 Oct 04:52 Rust E58 (cal.meta.set + locale extra) server par installed, tests ok, build OK, probes 401 = pakda (founder output). Dobara install nahi. Baqi: SQL E58 + Web pull.
+- 22 Oct 05:00 /auth A logo: cursor-follow tilt (AuthCinema, useFxTier gated). READY, live dekhna baqi.
