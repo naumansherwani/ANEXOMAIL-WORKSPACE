@@ -139,3 +139,6 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## B3 server par: SQL E54 OK, Brain brain-mail-install OK, Web pull OK. BAQI: rust-mail-install.sh output -> phir B3 GREEN.
 ## Technology (founder locked): Tokio/axum/QUIC(wtransport 0.7.2)/tRPC-style /rpc = pehle se LIVE, poori website ke liye (plan-wise nahi). Baqi sirf B4 (event-driven WT push) + B8 (tokio 1.54, Bun 1.4.3, Brain->Rust).
 
+## B3 GREEN (21 Oct 06:00): mail.send + undo-send + Rust queue worker + org.mailboxes Rust par server par chala, proof SAB PASS (asli Postfix). Dobara mat likho.
+## Tarteeb (founder locked 05:53): technology migration B4->B8 pehle, phir Pro -> Business -> Business Pro. Agla: B4 (WT push), B5 G40, B6 G16, B7 G26/G27, B8 Brain->Rust.
+
