@@ -84,6 +84,7 @@ export function LayoutToggle({ className }: { className?: string }) {
       )}
     >
       <Icon className="size-3.5" aria-hidden="true" />
+      <span className="ml-1 hidden text-[11px] font-semibold xl:inline">{toExpanded ? "Expanded" : "Classic"}</span>
     </button>
   );
 }

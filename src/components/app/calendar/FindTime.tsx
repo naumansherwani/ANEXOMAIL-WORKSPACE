@@ -13,6 +13,7 @@ import {
   zoneLabel,
 } from "@/lib/find-time";
 import { cn } from "@/lib/utils";
+import { fmtHour } from "@/lib/timeFormat";
 
 /**
  * Find a time that works for everyone.
@@ -99,7 +100,7 @@ export function FindTime({
           >
             {Array.from({ length: 15 }, (_, i) => i + 6).map((h) => (
               <option key={h} value={h}>
-                {String(h).padStart(2, "0")}:00
+                {fmtHour(h)}
               </option>
             ))}
           </select>
@@ -113,7 +114,7 @@ export function FindTime({
           >
             {Array.from({ length: 17 }, (_, i) => i + 8).map((h) => (
               <option key={h} value={h}>
-                {String(h).padStart(2, "0")}:00
+                {fmtHour(h)}
               </option>
             ))}
           </select>

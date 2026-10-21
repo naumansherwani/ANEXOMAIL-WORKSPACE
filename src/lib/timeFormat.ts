@@ -111,3 +111,31 @@ export function zoneCity(): { city: string; iana: string } {
   const last = iana.split("/").pop() ?? "";
   return { city: last.replace(/_/g, " ") || "Local time", iana };
 }
+
+/** "14:30" or "2:30 PM" from minutes since midnight (availability slots). */
+export function fmtMinutes(m: number): string {
+  const h = Math.floor(m / 60) % 24;
+  const mi = m % 60;
+  if (use12h()) return `${h % 12 || 12}:${two(mi)} ${h < 12 ? "AM" : "PM"}`;
+  return `${two(h)}:${two(mi)}`;
+}
+
+/** A clock time in any IANA zone, following the clock preference (used where the zone is not the viewer's). */
+export function fmtTimeIn(d: Date, timeZone?: string): string {
+  try {
+    return new Intl.DateTimeFormat(use12h() ? "en-US" : "en-GB", {
+      hour: use12h() ? "numeric" : "2-digit",
+      minute: "2-digit",
+      hour12: use12h(),
+      ...(timeZone ? { timeZone } : {}),
+    }).format(d);
+  } catch {
+    return fmtTime(d);
+  }
+}
+
+/** "Asia/Karachi" -> "Karachi". */
+export function cityOf(iana?: string): string {
+  const last = (iana ?? zoneCity().iana).split("/").pop() ?? "";
+  return last.replace(/_/g, " ");
+}

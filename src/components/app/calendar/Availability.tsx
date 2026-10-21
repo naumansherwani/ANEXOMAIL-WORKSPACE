@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { clockRange, useAvailability, useFocusWindows } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
+import { fmtMinutes } from "@/lib/timeFormat";
 
 const STATE_TONE = {
   free: "border-success/40 text-success",
@@ -111,5 +112,5 @@ export function Availability({ date }: { date: string }) {
 }
 
 function minute(m: number) {
-  return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+  return fmtMinutes(m);
 }

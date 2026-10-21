@@ -16,7 +16,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { ApiError } from "@/lib/api";
 import { rpc, rpcOrRest } from "@/lib/rpc";
-import { fmtTime } from "@/lib/timeFormat";
+import { cityOf, fmtTime, fmtTimeIn } from "@/lib/timeFormat";
 
 /* ------------------------------------------------------------------ types */
 
@@ -592,7 +592,7 @@ export function minutesLabel(minutes: number) {
   return `${hours % 1 === 0 ? hours : hours.toFixed(1)}h`;
 }
 
-/** "Monday 19 October 2026, 15:00–15:30 GMT+5" — printed in the invitation mail, in the organiser's own zone. */
+/** "Monday 19 October 2026, 3:00 PM–3:30 PM Karachi" — printed in the invitation mail, in the organiser's own zone. */
 export function whenLabel(startIso: string, minutes: number, timeZone?: string) {
   const start = new Date(startIso);
   const end = new Date(start.getTime() + minutes * 60_000);
@@ -604,12 +604,8 @@ export function whenLabel(startIso: string, minutes: number, timeZone?: string) 
     year: "numeric",
     ...opts,
   });
-  const clock = (d: Date) =>
-    d.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: false, ...opts });
-  const zone =
-    new Intl.DateTimeFormat("en-GB", { timeZoneName: "short", ...opts })
-      .formatToParts(start)
-      .find((p) => p.type === "timeZoneName")?.value ?? "";
+  const clock = (d: Date) => fmtTimeIn(d, timeZone);
+  const zone = cityOf(timeZone);
   return `${day}, ${clock(start)}–${clock(end)}${zone ? ` ${zone}` : ""}`;
 }
 

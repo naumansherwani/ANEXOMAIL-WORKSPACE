@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx fec7ae64080a4c77
+src/routes/app.calendar.tsx 4a97d4611b74b69b
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -77,13 +77,13 @@ src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
-src/lib/calendar.ts 8dd82d1557686ea2
+src/lib/calendar.ts 4cad0b478d87c17e
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx bfaa988ff49954c3
 src/components/app/calendar/EventDetail.tsx fefb23d520381729
 src/components/app/calendar/Guests.tsx db3dd5d31c78d994
-src/components/app/calendar/FindTime.tsx 499767b811ead3f3
+src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
 src/routeTree.gen.ts 86e576c512b7306b
 src/lib/team.ts 642bf49a0ba831fc
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 6c0618ce18f42acc
+docs/cursor-work/DONE-DO-NOT-REPEAT.md ef18b9f655fcd1f7
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -357,7 +357,8 @@ docs/cursor-work/server/polar-nonroot-install.sh f62c5701915dcee3
 src/lib/recurrence.ts a591d7e108eb3817
 src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql 7d3171ea0c99072d
-src/lib/timeFormat.ts b7338b87067395b9
-src/components/app/calendar/TimeBar.tsx 3e99f7434773ba14
+src/lib/timeFormat.ts d6779198e16c015c
+src/components/app/calendar/TimeBar.tsx 4124289797441e90
 src/components/app/calendar/CalendarClassic.tsx 9d78e34f7bb1fa29
 src/components/app/calendar/Bits.tsx ff3c03680788468a
+src/components/app/calendar/Availability.tsx 63c43c65a4cd32fd

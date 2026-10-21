@@ -450,7 +450,18 @@ type Rail = "agenda" | "availability" | "load";
 /** Chooses the layout the viewer picked (Classic by default) — both are always available via the toggle. */
 function CalendarPage() {
   const [layout] = useCalLayout();
-  return layout === "expanded" ? <CalendarExpanded /> : <CalendarClassic />;
+  // A short cross-fade when the viewer switches layout (key = layout), respecting reduced motion via framer's default.
+  return (
+    <motion.div
+      key={layout}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.16 }}
+      className="flex min-h-0 w-full min-w-0 flex-1"
+    >
+      {layout === "expanded" ? <CalendarExpanded /> : <CalendarClassic />}
+    </motion.div>
+  );
 }
 
 /** One toolbar, full-width calendar, events in a side sheet. */
