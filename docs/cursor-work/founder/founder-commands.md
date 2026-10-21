@@ -8,6 +8,11 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 04:52 PKT — Rust E58 install server par DONE (founder output); roadmap halat (verbatim: "yeh update kero jo pelhe hai code aye hain mere pass compact chat se pehle update kero")
+Founder ne `rust-engine-install.sh` chalayi: unit tests sab ok (cal 38, locale 6 ...), build OK 2m04s, pm2 online, `calendar.meta.set` (nakli token) 401 = Rust ne proc pakda, `locale.uipref` 401 = pakda. Rollback: `/opt/anexomail-rust/src/main.rs.bak.1792626417`.
+- Rust = DONE (live). SQL E58 (advance version) aur Web pull = baqi (founder ke command). E58 LIVE GREEN sirf in dono ke baad + Chrome look.
+- Roadmap: 0 Layout v2 GREEN | 1 E58 Rust DONE, SQL+Web baqi | 2 Booking page B7c TODO | 3 iMIP reply G26 TODO | 4 World-clock pins, team overlay, ICS subscribe TODO | 5 Event files TODO | 6 CalDAV TODO | 7 Google sync TODO (founder Google Cloud verification shuru kare) | 8 Rooms TODO.
+
 ## ▶ 22 Oct 2026 04:43 PKT — SQL ADVANCE LEVEL rule (verbatim, status: DONE rule + E58 dobara likha, READY server par)
 Founder: "ek baat bata kya sql duniya ka advance hai rule likho ke founder ke strict rule hai ke sql duniya ke advance hogay claude sql read karay ga tab tak read karay ga jab tak sql duniya ka advance level pe reach nahi ker jaye sql likho advance level"
 - AGENTS.md Rule 38 likha. E58 same file mein advance banaya (DB-level shape validator, NOT VALID+VALIDATE, lock_timeout, reminder index) + CHECK_E58 mein behaviour tests; local PG par saaf DB par 2 baar + real insert test PASS. E57 server par chal chuka hai isliye E57 ko chhua nahi; E58 usi ka constraint upgrade karta hai.
