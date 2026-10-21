@@ -6,7 +6,7 @@ src/routes/app.domains.tsx e98909709a51f120
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx b06d35f43cb9bbd2
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx aa518d26a77538c2
+src/components/app/AppShell.tsx 9fe593da35ac7ef1
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx da6ea0bd32b5fa35
@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx d81526866e07e610
+src/routes/app.calendar.tsx 2a8ab7407c2abf63
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -77,11 +77,11 @@ src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
-src/lib/calendar.ts 4cad0b478d87c17e
+src/lib/calendar.ts 6fd625ba3d906098
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
-src/components/app/calendar/NewMeeting.tsx bfaa988ff49954c3
-src/components/app/calendar/EventDetail.tsx fefb23d520381729
+src/components/app/calendar/NewMeeting.tsx d51d8a4fedb75161
+src/components/app/calendar/EventDetail.tsx df2589d28280c20b
 src/components/app/calendar/Guests.tsx db3dd5d31c78d994
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
@@ -118,7 +118,7 @@ src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs 339f850b8633f8e2
-server/rust/cal_glue.rs cf478d8ff7bb1f18
+server/rust/cal_glue.rs 12755e48f2376011
 AGENTS.md e6992a5b223e9d30
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md eee7f2eccd574e42
+docs/cursor-work/founder/founder-commands.md 234d3db4dc04aa43
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md 4689acd147ef4735
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
-docs/cursor-work/server/rust-engine-install.sh 996eaef68c3b206e
+docs/cursor-work/server/rust-engine-install.sh 0ef6339b5a3668d0
 src/components/app/security/IntegrityGate.tsx c2c6092f7fdef7a6
 src/lib/account-export.ts a9bc75ae97a15153
 docs/cursor-work/sql/E45_integrity_purge.sql 4cc5092c77e9f0e9
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 0fbf2bcd5bf8a307
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 3c146e96741468d3
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -250,7 +250,7 @@ docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48ca4e71128
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx 4c4bce244b519ab8
+src/components/app/calendar/TimeGrid.tsx bed1f80a069b7de3
 src/lib/plans.ts 4d31c58ca080c878
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898
@@ -359,10 +359,15 @@ src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql 7d3171ea0c99072d
 src/lib/timeFormat.ts e603401c56c5be95
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
-src/components/app/calendar/CalendarClassic.tsx 9d78e34f7bb1fa29
+src/components/app/calendar/CalendarClassic.tsx c67c3c4d05ade46f
 src/components/app/calendar/Bits.tsx ff3c03680788468a
 src/components/app/calendar/Availability.tsx 63c43c65a4cd32fd
 server/rust/locale_core.rs 980c6b1aa814b973
-server/rust/locale_glue.rs f75fb2ab9de3ee1b
+server/rust/locale_glue.rs a2c781805cb232c1
 docs/cursor-work/sql/CHECK_E57.sql cd224a3803079714
 docs/cursor-work/sql/E57_ui_pref.sql 73d268b8e6e47304
+docs/cursor-work/sql/CHECK_E58.sql 2c77c1e369e230bd
+docs/cursor-work/sql/E58_calendar_prefs_reminders.sql 17fe9ce75ddc6c25
+src/components/app/calendar/CalSettings.tsx 8b3ac595012c683f
+src/components/app/calendar/ReminderWatcher.tsx 1f3df7e2b711f974
+src/lib/calprefs.ts c4594d95f833ad90

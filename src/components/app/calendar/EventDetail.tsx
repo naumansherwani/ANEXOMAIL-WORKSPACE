@@ -11,6 +11,7 @@ import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import { clockRange, exportPath, useCalendarEvent, usePostOutcome } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
+import { REMINDER_CHOICES, useCalPrefs, useSetEventMeta } from "@/lib/calprefs";
 import { humanRrule } from "@/lib/recurrence";
 
 /**
@@ -80,6 +81,8 @@ export function EventDetail({ id }: { id: string }) {
       )}
 
       <Guests event={event} />
+
+      <MetaEditor eventId={event.id} calendarKey={event.calendar_key ?? ""} remind={event.remind_min?.[0] ?? 10} />
 
       <section className="mt-ax-6">
         <p className="ax-eyebrow">Agenda</p>
@@ -181,5 +184,54 @@ export function EventDetail({ id }: { id: string }) {
         </div>
       </section>
     </div>
+  );
+}
+
+/** Calendar + in-app reminder of one event. Changing them never re-sends the invitation (no SEQUENCE bump). */
+function MetaEditor({ eventId, calendarKey, remind }: { eventId: string; calendarKey: string; remind: number }) {
+  const prefs = useCalPrefs();
+  const set = useSetEventMeta();
+  const save = (p: { calendar_key?: string | null; remind_min?: number[] }) =>
+    set.mutate(
+      { id: eventId, ...p },
+      {
+        onSuccess: () => notify.done("Saved", "Guests were not e-mailed."),
+        onError: (error) => notify.failed("Could not save", { description: error.message }),
+      },
+    );
+  return (
+    <section className="mt-ax-5 grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <label className="text-[11px] font-semibold text-muted-foreground">
+        Calendar
+        <select
+          value={calendarKey}
+          disabled={set.isPending}
+          onChange={(e) => save({ calendar_key: e.target.value || null })}
+          className="ax-focus mt-1 h-9 w-full rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
+        >
+          <option value="">{prefs.calendars[0]?.name ?? "My calendar"}</option>
+          {prefs.calendars.map((c) => (
+            <option key={c.id} value={c.id}>
+              {c.name}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="text-[11px] font-semibold text-muted-foreground">
+        Reminder (in app)
+        <select
+          value={remind}
+          disabled={set.isPending}
+          onChange={(e) => save({ remind_min: [Number(e.target.value)] })}
+          className="ax-focus mt-1 h-9 w-full rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
+        >
+          {REMINDER_CHOICES.map((r) => (
+            <option key={r.min} value={r.min}>
+              {r.label}
+            </option>
+          ))}
+        </select>
+      </label>
+    </section>
   );
 }

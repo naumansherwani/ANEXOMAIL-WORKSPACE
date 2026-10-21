@@ -30,6 +30,7 @@ import { installDragScroll } from "@/lib/use-drag-scroll";
 import { MobileNav } from "@/components/app/MobileNav";
 import { BrandMark } from "@/components/site/BrandMark";
 import { LanguagePicker } from "@/components/site/LanguagePicker";
+import { ReminderWatcher } from "@/components/app/calendar/ReminderWatcher";
 import { CommandPalette, useCommandPalette } from "@/components/app/CommandPalette";
 import { ChatRailLink } from "@/components/app/chat/ChatRailLink";
 import { TrialStrip } from "@/components/app/trial/TrialStrip";
@@ -209,6 +210,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     >
       <FxAmbient plan={billed} />
       <CommandPalette open={open} onOpenChange={setOpen} />
+      <ReminderWatcher />
 
       {/* Top bar — brand, org, one search entry for the entire product */}
       <header

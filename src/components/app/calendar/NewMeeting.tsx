@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateMeeting, whenLabel } from "@/lib/calendar";
 import { RepeatPicker } from "@/components/app/calendar/RepeatPicker";
+import { REMINDER_CHOICES, outsideHours, useCalPrefs } from "@/lib/calprefs";
 import { reportInvites } from "@/lib/calendar-invites";
 import { NO_REPEAT, buildRrule, type RepeatSpec } from "@/lib/recurrence";
 import { notify } from "@/lib/notify";
@@ -37,6 +38,9 @@ export function NewMeeting({
   onCancel: () => void;
 }) {
   const create = useCreateMeeting();
+  const prefs = useCalPrefs();
+  const [calendarKey, setCalendarKey] = useState("");
+  const [remind, setRemind] = useState(10);
   const [title, setTitle] = useState(defaultTitle ?? "");
   const [attendees, setAttendees] = useState(defaultAttendees ?? "");
   const [when, setWhen] = useState(defaultLocalDateTime());
@@ -67,6 +71,8 @@ export function NewMeeting({
         ...(threadId ? { thread_id: threadId } : {}),
         timezone: zone,
         invite,
+        ...(calendarKey ? { calendar_key: calendarKey } : {}),
+        remind_min: [remind],
         when_label: whenLabel(startsAt, duration, zone),
         ...(rrule ? { rrule, tz_offset_min: -new Date(when).getTimezoneOffset() } : {}),
       },
@@ -126,6 +132,45 @@ export function NewMeeting({
           {[15, 25, 30, 45, 60, 90].map((m) => (
             <option key={m} value={m}>
               {m}m
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {(() => {
+        const away = when ? outsideHours(new Date(when), prefs) : null;
+        return away ? (
+          <p className="ax-caption text-amber-400">
+            {away === "ooo" ? "You are marked out of office on this day." : "This is outside your working hours."}
+          </p>
+        ) : null;
+      })()}
+
+      <div className="flex gap-2">
+        {prefs.calendars.length > 1 && (
+          <select
+            value={calendarKey}
+            onChange={(e) => setCalendarKey(e.target.value)}
+            aria-label="Calendar"
+            className="ax-focus h-8 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
+          >
+            <option value="">Calendar: {prefs.calendars[0]?.name}</option>
+            {prefs.calendars.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
+        )}
+        <select
+          value={remind}
+          onChange={(e) => setRemind(Number(e.target.value))}
+          aria-label="Reminder (in app)"
+          className="ax-focus h-8 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
+        >
+          {REMINDER_CHOICES.map((r) => (
+            <option key={r.min} value={r.min}>
+              {r.label} · in app
             </option>
           ))}
         </select>

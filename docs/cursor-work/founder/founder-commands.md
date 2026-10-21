@@ -8,6 +8,15 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 05:20 PKT — E58 READY (working hours, out-of-office, calendars+colours, reminders) — founder ke 3 command, is tarteeb se
+Founder (04:30, roadmap #1): "Working hours, out-of-office, alag calendars aur rang, reminders" — "yeh kerna hai".
+- Halat: READY (repo mein, server par chalana baqi). Live GREEN sirf founder ke output + Chrome look ke baad.
+- Reminders abhi sirf in-app (ReminderWatcher); mail reminder ke liye server timer alag step — sach likha.
+- Command 1 (SQL): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E58_calendar_prefs_reminders CHECK_E58`
+- Command 2 (Rust): rust-engine-install.sh (calendar.meta.set probe andar)
+- Command 3 (Web): pull.sh
+- Agla (roadmap): booking page B7c -> iMIP G26 -> world-clock/team overlay/ICS subscribe -> event attachments -> CalDAV -> Google sync -> rooms.
+
 ## ▶ 22 Oct 2026 03:30 PKT — CALENDAR LAYOUT hukm (verbatim ka matlab, status: TODO -> kaam shuru)
 Founder: "do side bar anay se woh neechay rehta hai … pehle woh seedha jo live time pe rehta tha. aur time live dekhna chaiye … sab plans mein. **duniya mein jo bhi user hoga us ki country ka time chalay ga** … demo like kiya (ek sidebar, upar toolbar, Month default, live ghadi + laal now-line). Calendar Google se advance kaise hoga bhi batao. mobile / tablet / laptop teeno dekhna. website already calendar Rust pe hai (engine ko mat chhedo). sab kero. Chrome login tha achanak kya hua dekho."
 - Faisla: ek hi sidebar (app menu), calendar ka beech wala panel desktop par hata; toolbar mein Month/Week/Day/Today/tir/+Meeting/live ghadi (browser ka time zone); week/day mein laal now-line; Month default; detail grid ke upar overlay; phone par list+detail alag screen; SAB packages barabar (Rule 37, koi tier code nahi). Rust calendar engine untouched.

@@ -87,6 +87,10 @@ export type CalendarEvent = {
   /** True for one occurrence that was changed on its own. */
   is_exception?: boolean;
   timezone?: string | null;
+  /** Which of the viewer's calendars (name + colour) the meeting sits in — E58. */
+  calendar_key?: string | null;
+  /** Reminders: minutes before the start — E58. */
+  remind_min?: number[] | null;
 };
 
 export type GuestRow = {
@@ -335,6 +339,8 @@ export type NewMeeting = {
   rrule?: string;
   /** Organiser's UTC offset in minutes (east positive) — keeps the series right if the server has no tz database. */
   tz_offset_min?: number;
+  calendar_key?: string;
+  remind_min?: number[];
 };
 
 export type CreatedMeeting = {

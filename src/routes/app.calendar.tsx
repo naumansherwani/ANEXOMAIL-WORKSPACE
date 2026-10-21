@@ -33,6 +33,7 @@ import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { CalendarClassic } from "@/components/app/calendar/CalendarClassic";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
+import { CalSettingsButton } from "@/components/app/calendar/CalSettings";
 import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
@@ -50,6 +51,7 @@ import {
   type CalendarEvent,
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
+import { eventColor, oooOn, useCalPrefs } from "@/lib/calprefs";
 import { fmtTime, hydrateUiPref, useCalLayout, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
@@ -99,6 +101,7 @@ function MonthView({
   /** Tablet / laptop: the event chips inside a cell open the event directly. */
   onSelect: (id: string) => void;
 }) {
+  const prefs = useCalPrefs();
   const today = new Date();
   const year = anchor.getFullYear();
   const month = anchor.getMonth();
@@ -128,7 +131,8 @@ function MonthView({
           const dayEvents = events
             .filter((e) => sameDay(new Date(e.starts_at), date))
             .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
-          const label = `${date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}: ${dayEvents.length} ${dayEvents.length === 1 ? "event" : "events"}`;
+          const away = oooOn(date, prefs.ooo);
+          const label = `${date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}: ${dayEvents.length} ${dayEvents.length === 1 ? "event" : "events"}${away ? ", out of office" : ""}`;
 
           return (
             <div
@@ -136,7 +140,9 @@ function MonthView({
               className={cn(
                 "flex min-h-[3.5rem] min-w-0 flex-col rounded-lg border transition-colors md:min-h-[6.75rem]",
                 isToday ? "border-primary/40 bg-primary/5" : "border-border hover:border-border/80",
+                away && !isToday && "bg-amber-500/10",
               )}
+              title={away ? (away.note ? `Out of office — ${away.note}` : "Out of office") : undefined}
             >
               <button
                 type="button"
@@ -155,7 +161,11 @@ function MonthView({
                 {dayEvents.length > 0 && (
                   <span className="flex flex-wrap items-center justify-center gap-0.5 md:hidden" aria-hidden>
                     {dayEvents.slice(0, 3).map((ev) => (
-                      <span key={ev.id} className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} />
+                      <span
+                        key={ev.id}
+                        className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)}
+                        style={eventColor(ev, prefs.calendars) ? { backgroundColor: eventColor(ev, prefs.calendars) } : undefined}
+                      />
                     ))}
                     {dayEvents.length > 3 && (
                       <span className="text-[9px] font-semibold leading-none text-muted-foreground">+{dayEvents.length - 3}</span>
@@ -175,7 +185,11 @@ function MonthView({
                           ev.status === "cancelled" ? "line-through opacity-50" : "",
                         )}
                       >
-                        <span className={cn("size-1.5 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} aria-hidden />
+                        <span
+                          className={cn("size-1.5 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)}
+                          style={eventColor(ev, prefs.calendars) ? { backgroundColor: eventColor(ev, prefs.calendars) } : undefined}
+                          aria-hidden
+                        />
                         {ev.recurring ? <Repeat className="size-2.5 shrink-0 opacity-70" aria-label="Repeats" /> : null}
                         <span className="truncate">
                           {!ev.all_day && (
@@ -609,9 +623,10 @@ function CalendarExpanded() {
 
         <span className="hidden flex-1 md:block" />
         <LiveClock />
-        <ClockFormatToggle />
+        <ClockFormatToggle className="hidden sm:inline-flex" />
         <div className="flex items-center gap-1.5">
           <LayoutToggle className="ax-tap px-2 py-1.5" />
+          <CalSettingsButton className="ax-tap px-2 py-1.5" />
           {railButton("availability", t("Avail."))}
           {railButton("load", t("Load"))}
           <IcsPickButton onLoaded={setIcsPlan} />

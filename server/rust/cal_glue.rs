@@ -39,6 +39,7 @@ pub fn owns(proc: &str) -> bool {
             | "calendar.events"
             | "calendar.event"
             | "calendar.load"
+            | "calendar.meta.set"
     )
 }
 
@@ -126,6 +127,44 @@ async fn recur_ready() -> bool {
         REC_READY.store(true, Ordering::Relaxed);
     }
     ok
+}
+
+static E58_READY: AtomicBool = AtomicBool::new(false);
+static E58_CHECKED: std::sync::atomic::AtomicI64 = std::sync::atomic::AtomicI64::new(0);
+
+/// Calendar key / reminders SQL (E58) installed? Same cache rule as `recur_ready`: a "yes" is final, a "no" is re-checked
+/// once a minute, so a calendar without E58 keeps working exactly as before (those two fields are just not stored).
+async fn e58_ready() -> bool {
+    if E58_READY.load(Ordering::Relaxed) {
+        return true;
+    }
+    let now = now_epoch();
+    if now - E58_CHECKED.load(Ordering::Relaxed) < 60 {
+        return false;
+    }
+    E58_CHECKED.store(now, Ordering::Relaxed);
+    let ok = crate::sb_select("calendar_events?select=calendar_key,remind_min&limit=1").await.is_ok();
+    if ok {
+        E58_READY.store(true, Ordering::Relaxed);
+    }
+    ok
+}
+
+/// `calendar_key` from a request: short lowercase key or nothing.
+fn calendar_key_of(input: &Value) -> Option<String> {
+    opt(input, "calendar_key").filter(|k| {
+        !k.is_empty() && k.len() <= 40 && k.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'_' || b == b'-')
+    })
+}
+
+/// `remind_min` from a request: up to 5 whole minutes-before values, 0..=40320 (four weeks), no duplicates, sorted.
+fn remind_of(input: &Value) -> Option<Vec<i64>> {
+    let a = input.get("remind_min")?.as_array()?;
+    let mut v: Vec<i64> = a.iter().filter_map(|x| x.as_i64()).filter(|n| (0..=40320).contains(n)).collect();
+    v.sort_unstable();
+    v.dedup();
+    v.truncate(5);
+    Some(v)
 }
 
 fn zone_of(ev: &Value) -> std::sync::Arc<recur::Tz> {
@@ -507,6 +546,8 @@ fn event_json(ev: &Value, rows: &[Value]) -> Value {
         "recurrence_id": opt(ev, "recurrence_id").map(Value::from).unwrap_or(Value::Null),
         "is_exception": !st(ev, "series_id").is_empty() && st(ev, "rrule").is_empty() && ev.get("_occ").is_none(),
         "timezone": opt(ev, "tz").map(Value::from).unwrap_or(Value::Null),
+        "calendar_key": opt(ev, "calendar_key").map(Value::from).unwrap_or(Value::Null),
+        "remind_min": ev.get("remind_min").cloned().filter(|v| v.is_array()).unwrap_or(Value::Null),
     })
 }
 
@@ -543,6 +584,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         "calendar.events" => events(&me, input).await,
         "calendar.event" => event_one(&me, input).await,
         "calendar.load" => team_load(&me, input).await,
+        "calendar.meta.set" => meta_set(&me, input).await,
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
 }
@@ -619,6 +661,16 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
             }
             if let Some(n) = tz_off {
                 o.insert("tz_offset_min".into(), json!(n));
+            }
+        }
+    }
+    if e58_ready().await {
+        if let Some(o) = ev_body.as_object_mut() {
+            if let Some(k) = calendar_key_of(input) {
+                o.insert("calendar_key".into(), json!(k));
+            }
+            if let Some(r) = remind_of(input).filter(|r| !r.is_empty()) {
+                o.insert("remind_min".into(), json!(r));
             }
         }
     }
@@ -764,6 +816,56 @@ fn organiser_only(me: &Who, ev: &Value) -> Option<axum::response::Response> {
         ))
     } else {
         None
+    }
+}
+
+/// Personal labels of a meeting — which of the organiser's calendars it sits in, and when to remind. These are NOT a change to the
+/// meeting: no new SEQUENCE, no mail to guests. (For a repeating series the label sits on the master, so every occurrence shares it.)
+async fn meta_set(me: &Who, input: &Value) -> axum::response::Response {
+    if !e58_ready().await {
+        return fail(StatusCode::NOT_IMPLEMENTED, "calendar_e58_sql_missing", "Calendar labels and reminders need the E58 SQL.");
+    }
+    let ev = match load_own_event(me, &st(input, "id")).await {
+        Ok(e) => e,
+        Err(r) => return r,
+    };
+    if let Some(r) = organiser_only(me, &ev) {
+        return r;
+    }
+    let mut patch = serde_json::Map::new();
+    if input.get("calendar_key").is_some() {
+        match input.get("calendar_key") {
+            Some(Value::Null) => {
+                patch.insert("calendar_key".into(), Value::Null);
+            }
+            _ => match calendar_key_of(input) {
+                Some(k) => {
+                    patch.insert("calendar_key".into(), json!(k));
+                }
+                None => return fail(StatusCode::BAD_REQUEST, "bad_calendar", "Calendar key is not valid"),
+            },
+        }
+    }
+    if input.get("remind_min").is_some() {
+        match input.get("remind_min") {
+            Some(Value::Null) => {
+                patch.insert("remind_min".into(), Value::Null);
+            }
+            _ => match remind_of(input) {
+                Some(r) => {
+                    patch.insert("remind_min".into(), if r.is_empty() { Value::Null } else { json!(r) });
+                }
+                None => return fail(StatusCode::BAD_REQUEST, "bad_reminders", "Reminders must be a list of minutes"),
+            },
+        }
+    }
+    if patch.is_empty() {
+        return fail(StatusCode::BAD_REQUEST, "nothing_to_change", "Nothing to change");
+    }
+    let id = st(&ev, "id");
+    match crate::sb_patch(&format!("calendar_events?id=eq.{}&org_id=eq.{}", id, me.org_id), Value::Object(patch)).await {
+        Ok(_) => crate::ok(json!({ "ok": true, "id": id })).into_response(),
+        Err(_) => fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
     }
 }
 

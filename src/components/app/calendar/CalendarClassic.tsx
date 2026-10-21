@@ -32,6 +32,7 @@ import { EventDetail } from "@/components/app/calendar/EventDetail";
 import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
+import { CalSettingsButton } from "@/components/app/calendar/CalSettings";
 import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
@@ -49,6 +50,7 @@ import {
   type CalendarEvent,
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
+import { eventColor, oooOn, useCalPrefs } from "@/lib/calprefs";
 import { fmtTime, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
@@ -88,6 +90,7 @@ function MonthView({
   /** The month grid lives in a narrow rail (and a phone): a day cell is a dotted button that opens that day. */
   onPickDay: (day: Date) => void;
 }) {
+  const prefs = useCalPrefs();
   const today = new Date();
   const year = anchor.getFullYear();
   const month = anchor.getMonth();
@@ -117,6 +120,7 @@ function MonthView({
           const date = new Date(year, month, dayNum);
           const isToday = sameDay(date, today);
           const dayEvents = events.filter((e) => sameDay(new Date(e.starts_at), date));
+          const away = oooOn(date, prefs.ooo);
 
           return (
             <motion.button
@@ -130,7 +134,9 @@ function MonthView({
               className={cn(
                 "ax-press flex min-h-[3.5rem] flex-col items-center gap-1 rounded-lg border p-1 pt-1.5 transition-colors",
                 isToday ? "border-primary/40 bg-primary/5" : "border-border hover:border-border/80",
+                away && !isToday && "bg-amber-500/10",
               )}
+              title={away ? (away.note ? `Out of office — ${away.note}` : "Out of office") : undefined}
             >
               <span className={cn(
                 "flex size-6 items-center justify-center rounded-full text-[12px] font-bold",
@@ -141,7 +147,11 @@ function MonthView({
               {dayEvents.length > 0 && (
                 <span className="flex flex-wrap items-center justify-center gap-0.5" aria-hidden>
                   {dayEvents.slice(0, 3).map((ev) => (
-                    <span key={ev.id} className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} />
+                    <span
+                      key={ev.id}
+                      className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)}
+                      style={eventColor(ev, prefs.calendars) ? { backgroundColor: eventColor(ev, prefs.calendars) } : undefined}
+                    />
                   ))}
                   {dayEvents.length > 3 && (
                     <span className="text-[9px] font-semibold leading-none text-muted-foreground">+{dayEvents.length - 3}</span>
@@ -458,6 +468,7 @@ export function CalendarClassic() {
         action={
           <>
             <LayoutToggle />
+            <CalSettingsButton />
             <IcsPickButton onLoaded={setIcsPlan} />
             <a
               href={apiHref(exportPath("ics"))}

@@ -299,6 +299,7 @@ for m in $MODS; do
       r1="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{"token":"00000000-0000-0000-0000-000000000000"}}' "$RPC/rpc/calendar.rsvp.lookup" 2>/dev/null)"
       echo "   calendar.rsvp.lookup (nakli uuid): $r1"
       echo "   calendar.create (nakli token): $(probe calendar.create '{"input":{}}')"
+      echo "   calendar.meta.set (nakli token): $(probe calendar.meta.set '{"input":{}}')"
       case "$r1" in
         *calendar_v2_sql_missing*) echo "   -> Rust ne calendar proc pakda, par E31 SQL abhi nahi lagi — docs/cursor-work/sql/E31_calendar_v2.sql chalayen";;
         *"not valid"*) echo "   -> calendar: Rust ne proc pakda aur E31 SQL lagi hui hai (nakli link par 'not valid' = theek)";;

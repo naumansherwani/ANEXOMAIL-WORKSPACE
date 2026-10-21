@@ -3,6 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import { clockRange, useUpdateMeeting, type CalendarEvent } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
+import { eventColor, oooOn, useCalPrefs, workWindow } from "@/lib/calprefs";
 import { fmtHour } from "@/lib/timeFormat";
 import { minutesOfDay, movedTo, packDay, snap } from "@/lib/time-grid";
 import { cn } from "@/lib/utils";
@@ -79,6 +80,7 @@ export function TimeGrid({
     });
   }, [serverEvents]);
   const colsRef = useRef<HTMLDivElement>(null);
+  const prefs = useCalPrefs();
   const scroller = useRef<HTMLDivElement>(null);
   const [drag, setDragState] = useState<Drag | null>(null);
   // Ref mirrors state so fast pointer sequences (down→move→up before a re-render) never read a stale closure.
@@ -306,6 +308,28 @@ export function TimeGrid({
                     backgroundSize: `100% ${HOUR}px`,
                   }}
                 >
+                  {(() => {
+                    // out of office = the whole day is shaded and labelled; working hours = only the hours outside them
+                    const away = oooOn(d, prefs.ooo);
+                    const w = prefs.hoursSet ? workWindow(d, prefs.workHours) : undefined;
+                    if (away)
+                      return (
+                        <div
+                          className="pointer-events-none absolute inset-0 z-0 bg-amber-500/10"
+                          title={away.note ? `Out of office — ${away.note}` : "Out of office"}
+                          aria-hidden
+                        />
+                      );
+                    if (w === undefined) return null;
+                    const shade = "pointer-events-none absolute inset-x-0 z-0 bg-foreground/[0.05]";
+                    if (w === null) return <div className={shade} style={{ top: 0, bottom: 0 }} aria-hidden />;
+                    return (
+                      <>
+                        <div className={shade} style={{ top: 0, height: (w.start / 60) * HOUR }} aria-hidden />
+                        <div className={shade} style={{ top: (w.end / 60) * HOUR, bottom: 0 }} aria-hidden />
+                      </>
+                    );
+                  })()}
                   {today && (
                     <div
                       className="pointer-events-none absolute inset-x-0 z-20 flex items-center"
@@ -322,6 +346,7 @@ export function TimeGrid({
                       15,
                       Math.round((new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000),
                     );
+                    const color = eventColor(ev, prefs.calendars);
                     const dragging = drag?.id === ev.id && drag.moved;
                     const dMin = dragging ? drag!.dMin : 0;
                     const dDay = dragging && drag!.mode === "move" ? drag!.dDay : 0;
@@ -348,6 +373,7 @@ export function TimeGrid({
                           dragging && "z-30 cursor-grabbing opacity-90 ring-1 ring-cyan-accent",
                         )}
                         style={{
+                          ...(color ? { backgroundColor: `${color}26`, borderLeft: `3px solid ${color}` } : null),
                           top,
                           height: Math.max(h - 2, 18),
                           left: `calc(${(col / cols) * 100}% + 1px)`,
