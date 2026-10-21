@@ -34,7 +34,7 @@ Qaida: is file mein sirf **sach** hai (live ya repo mein saabit). Naya faisla �
 Detail: `docs/cursor-work/TECH-MAP.md`.
 
 ## 4. Migration (B-series) — founder tarteeb
-B1 JWT/refresh ✅ · B2/B2b passkey-recovery Rust ✅ · B3 mail.send/undo/queue ✅ · **B4 event-driven push ✅** · B5 G40 (19 Bun-only founder routes) · B6 G16 self-serve billing · B7 G26/G27 calendar (iMIP, recurrence, scheduling link, CalDAV) · B8 Brain->Rust + Bun 1.4.3 + tokio 1.54. **Testing sab ke baad (end par); pehle poori website secure.** Phir packages: Basic ✅ -> Pro -> Business -> Business Pro (1440/820/390).
+B1 JWT/refresh ✅ · B2/B2b passkey-recovery Rust ✅ · B3 mail.send/undo/queue ✅ · **B4 event-driven push ✅** · **B5 G40 code + sandbox PASS, server pull baqi** (15 procs Rust; AI chat -> B8) · B6 G16 self-serve billing · B7 G26/G27 calendar (iMIP, recurrence, scheduling link, CalDAV) · B8 Brain->Rust + Bun 1.4.3 + tokio 1.54. **Testing sab ke baad (end par); pehle poori website secure.** Phir packages: Basic ✅ -> Pro -> Business -> Business Pro (1440/820/390).
 
 ## 5. Security
 - Founder original: `docs/anexomail-security-blueprint.md` (**DO NOT MODIFY**, S1–S10 jab founder bole).

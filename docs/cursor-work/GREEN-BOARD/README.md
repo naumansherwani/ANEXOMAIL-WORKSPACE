@@ -15,9 +15,9 @@
 ## Ginti (kul)
 | Hissa | Kul | 🟢 live dekha | 🟢 server par (click-test baqi) | 🟠 PARTIAL | 🔴 TODO | 🔵 FOUNDER |
 |---|---|---|---|---|---|---|
-| MASTER-BUILD-PLAN P1–P9 (is plan ke 68 items) | 68 | 9 | 40 | 12 | 7 | 0 |
-| G-series G1–G42 | 43 | 10 | 2 | 13 | 16 | 2 |
-| Technology (live stack + B1–B8 + R) | 15 | 9 | 0 | 0 | 6 | 0 |
+| MASTER-BUILD-PLAN P1–P9 (is plan ke 68 items) | 68 | 9 | 41 | 12 | 6 | 0 |
+| G-series G1–G42 | 43 | 10 | 3 | 13 | 15 | 2 |
+| Technology (live stack + B1–B8 + R) | 15 | 9 | 1 | 0 | 5 | 0 |
 | Ops / bugs / ledger khule | 14 | 3 | – | – | 10 | 1 |
 
 ## Files

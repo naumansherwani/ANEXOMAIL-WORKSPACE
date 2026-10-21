@@ -23,7 +23,7 @@
 | G4 | R1 mail.send / R3 typed contract / R4 direct pool / R5 push | R1 GREEN (B3 06:00); R5 READY (B4, install baqi); R3 + R4 TODO |
 | G5 | /api/mail/send Bun fallback identity ignore | Rust send identity-checked (GREEN); Bun fallback par identity check = CHECK |
 | G14 | SECURITY L25 crm tenant isolation live | Brain CRM tenant isolation installed (02:00, health 200, unauth 401); crm-tenant-check.sh live baqi |
-| G18 | Founder workspace Rust-only (Rule 22) | 181 Rust-pehle, 19 Bun-only -> B5/G40 |
+| G18 | Founder workspace Rust-only (Rule 22) | B5 se 15 procs Rust; baqi: AI chat (B8) |
 | G19 | Switch-journey gaps (a Integrations migrate, b…) | G19a = G30 worker (code+installer; 'Import mail' screen dikhi); baqi parts audit |
 | G30 | Gmail/Outlook IMAP import worker | code+installer; live saboot ka record CHECK; OAuth app = Phase 2 founder |
 | G33 | Wade ka audit (PROMISES.md) | 12 rows + #13/#14; 'VERIFY' rows baqi (3,5,6,7,9 …) |

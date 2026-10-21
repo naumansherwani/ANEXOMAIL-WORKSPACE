@@ -31,7 +31,7 @@
 | G15 | CRM SPA Link (full reload hataana) + useAssignShared body | 🔴 TODO (bana nahi) | code audit baqi |
 | G16 | Self-serve billing (cancel/card/VAT via Polar portal) | 🔴 TODO (bana nahi) | B6 (Polar :3400 NO-TOUCH) |
 | G17 | Admin Members/Teams/Invitations | 🟢 GREEN (live dekha/proof) | ledger B: G17/L76 team invites live |
-| G18 | Founder workspace Rust-only (Rule 22) | 🟠 PARTIAL | 181 Rust-pehle, 19 Bun-only -> B5/G40 |
+| G18 | Founder workspace Rust-only (Rule 22) | 🟠 PARTIAL | B5 se 15 procs Rust; baqi: AI chat (B8) |
 | G19 | Switch-journey gaps (a Integrations migrate, b…) | 🟠 PARTIAL | G19a = G30 worker (code+installer; 'Import mail' screen dikhi); baqi parts audit |
 | G20 | Plan-wise baqi (Business Pro data/entitlement bpro.test) | 🔴 TODO (bana nahi) | D7 |
 | G21 | Baqi Brain routers authz audit | 🔴 TODO (bana nahi) | D7 |
@@ -54,6 +54,6 @@
 | G38 | Compose attachments bhejna | 🟠 PARTIAL | see G1 |
 | G38b | Aane wali mail ke attachment bytes | 🟢 GREEN (live dekha/proof) | inbound hello.txt download 200 (01:15); PROMISES #12 EICAR FOUND |
 | G39 | Family = real buyer / lifetime label | 🟠 PARTIAL | E41 GREEN; 'Lifetime access' label live check (Humza) C8 |
-| G40 | Rust RPC work/crm/org/integrations/settings (19 Bun-only) | 🔴 TODO (bana nahi) | B5 |
+| G40 | Rust RPC work/crm/org/integrations/settings (19 Bun-only) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | B5: 19 mein se 15 Rust (4 public + 11 founder/auth), mail.thread pehle se Rust, mail.send B3; AI chat B8 |
 | G41 | Har package par 390/820/1440 live test | 🟠 PARTIAL | Basic GREEN (04:30). Pro/Business/Business Pro TODO |
 | G42 | Passkey/recovery login Rust par | 🟢 GREEN (live dekha/proof) | B2 GREEN 05:50 |

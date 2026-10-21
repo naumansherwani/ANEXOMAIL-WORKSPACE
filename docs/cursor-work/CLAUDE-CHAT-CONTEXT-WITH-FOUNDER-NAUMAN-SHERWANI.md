@@ -616,3 +616,5 @@ Is review ke har nukte ka anjaam: U1/U2 DONE (16 Oct live), U3 DONE (16 Oct brow
 **FOUNDER RULE (21 Oct 06:56, LOCKED): "file server par aa gayi aur wire hai = GREEN."** (Live Chrome click-test alag, baad mein.) GREEN-BOARD isi rule se dobara graded: live-dekha + server-par dono green; NOT-GREEN = jo server par aaya hi nahi (TODO/PARTIAL/FOUNDER). B5 = G40: founder pages ki 19 Bun-only calls (movein 5, release 7, revenue pipeline/lead 2, public status, ai chat, mail thread, outbox/send; mail.send B3 mein ho chuka) Rust `/rpc/*` par.
 
 **21 Oct 07:09:** ops-ufw-passkey.sh founder output: ufw 3443/udp rule pehle se, passkey exempt marker live — dono GREEN. Agla: B5 code.
+
+## 21 Oct 07:20 — B5 shuru. B4 GREEN. Ab: b5_core.rs/b5_glue.rs likhna (movein, release, revenue, status, outbox, thread, ai chat). Routes padh li: movein.ts (Supabase4 RPC movein_*), release.ts, revenue.ts. Memory: har step ke baad repo + /home/claude/sandbox-state update.

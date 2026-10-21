@@ -104,7 +104,7 @@
 | SiteLock control | 🟢 GREEN (server par aaya + wire; live click-test baqi) | SiteLock.tsx + site-lock.ts | founder Chrome |
 | Move-in manager | 🟢 GREEN (server par aaya + wire; live click-test baqi) | app.founder_.movein.tsx + server/routes/movein.ts | founder Chrome |
 | Founder single inbox (phase55) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | docs/wire/19 (status READY); founder-plan.ts | founder Chrome |
-| Founder routes Rust-only (Rule 22, G18/G40) | 🔴 TODO (bana nahi) | 181 Rust-pehle, 19 sirf Bun (B5) | B5 |
+| Founder routes Rust-only (Rule 22, G18/G40) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | B5 bana (movein/release/revenue/status/outbox Rust), sandbox SAB PASS; server par pull baqi. AI chat -> B8 | server pull |
 
 ## P9
 | Item | Status | Evidence | Agla qadam |

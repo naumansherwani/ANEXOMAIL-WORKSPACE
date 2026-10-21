@@ -11,7 +11,6 @@ Technology migration order (founder 05:53): B4→B5→B6→B7→B8, phir Pro→B
 | Plan P4 | Inline image paste | build |
 | Plan P5 | Link preview cards | build |
 | Plan P7 | Availability sharing link / scheduling link | B7 |
-| Plan P8 | Founder routes Rust-only (Rule 22, G18/G40) | B5 |
 | Plan P9 | ANEXOChat live proof (status board 'P9') | D10 |
 
 | G | Kaam | Note |
@@ -31,11 +30,9 @@ Technology migration order (founder 05:53): B4→B5→B6→B7→B8, phir Pro→B
 | G25 | founderworkspace host par public site aaya (WebFetch) | edge/redirect check baqi |
 | G26 | Calendar guest iMIP reply | B7 (production mail path: founder 'haan' chahiye) |
 | G27 | Recurrence / scheduling link / 2-way sync / CalDAV | B7 |
-| G40 | Rust RPC work/crm/org/integrations/settings (19 Bun-only) | B5 |
 
 | Tech | Note |
 |---|---|
-| B5 G40 19 Bun-only routes -> Rust |  |
 | B6 G16 self-serve billing Rust | Polar :3400 NO-TOUCH |
 | B7 G26/G27 calendar iMIP/recurrence/link/CalDAV |  |
 | B8 Brain 38 files/504 endpoints -> Rust, Bun 1.4.3, tokio 1.54 |  |

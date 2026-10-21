@@ -13,7 +13,7 @@
 | B2b Bun hardening + passkey list/delete | 🟢 GREEN (live dekha/proof) | 05:50 |
 | B3 mail.send/undo/queue worker/org.mailboxes (R1) | 🟢 GREEN (live dekha/proof) | 06:00 |
 | B4 event-driven push (R5) | 🟢 GREEN (live dekha/proof) | 21 Oct 06:50 founder output: proof SAB PASS (UDP 3443, /internal/event, family 3/3) |
-| B5 G40 19 Bun-only routes -> Rust | 🔴 TODO (bana nahi) |  |
+| B5 G40 19 Bun-only routes -> Rust | 🟢 GREEN (server par aaya + wire; live click-test baqi) | repo + sandbox PASS (~80 checks, asli Bun vs Rust); server par rust-engine-install.sh baqi |
 | B6 G16 self-serve billing Rust | 🔴 TODO (bana nahi) | Polar :3400 NO-TOUCH |
 | B7 G26/G27 calendar iMIP/recurrence/link/CalDAV | 🔴 TODO (bana nahi) |  |
 | B8 Brain 38 files/504 endpoints -> Rust, Bun 1.4.3, tokio 1.54 | 🔴 TODO (bana nahi) |  |

@@ -40,6 +40,7 @@ Founder rule se yeh GREEN hain. Yahan sirf wo list jo live dekhna hai (Pro/Busin
 | Plan P8 | SiteLock control | founder Chrome |
 | Plan P8 | Move-in manager | founder Chrome |
 | Plan P8 | Founder single inbox (phase55) | founder Chrome |
+| Plan P8 | Founder routes Rust-only (Rule 22, G18/G40) | server pull |
 | Plan P9 | LEO chat always-visible sidebar | AI account |
 | Plan P9 | AI Studio | AI account |
 | Plan P9 | Knowledge base (upload docs, ask) | AI account |
@@ -51,6 +52,8 @@ Founder rule se yeh GREEN hain. Yahan sirf wo list jo live dekhna hai (Pro/Busin
 |---|---|---|
 | G36 | 72 h export → delete (countdown + email) | E44/E45/E46 live; UI/email countdown ka live dekhna (C7) |
 | G37 | 24h me 3 account suspicious/review + warn→block→ban | review queue UI live dekhna (C7) |
+| G40 | Rust RPC work/crm/org/integrations/settings (19 Bun-only) | B5: 19 mein se 15 Rust (4 public + 11 founder/auth), mail.thread pehle se Rust, mail.send B3; AI chat B8 |
 
 | Tech | Baqi |
 |---|---|
+| B5 G40 19 Bun-only routes -> Rust | repo + sandbox PASS (~80 checks, asli Bun vs Rust); server par rust-engine-install.sh baqi |

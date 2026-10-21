@@ -263,3 +263,4 @@ Status sirf sach (Rule 5): INSTALLED = package.json mein; LIVE = live verify; US
 Qaida (fx layer, 21 Oct): `src/lib/fx.ts` hi tay karta hai 3D chale ya nahi (Settings toggle, calm, OS reduced-motion, Data-saver, WebGL, laptop=full / phone+tablet=lite). Har scene lazy, screen par ho tab hi render, error par fallback. Naya 3D scene = naya file `src/components/fx/<Name>Scene.tsx` + yahan ek row.
 
 | Event-driven live push (R5) mail/calendar/crm/work/people/org, har plan + family | Rust :3200 / wtransport (QUIC) + tokio broadcast hub per org | READY 21 Oct (B4), install baqi |
+| Founder pages (move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, offline outbox) | Rust :3200 `/rpc/*` b5_core+b5_glue (Supabase #4), Bun fallback | CODE 21 Oct (B5), sandbox PASS, server install baqi |

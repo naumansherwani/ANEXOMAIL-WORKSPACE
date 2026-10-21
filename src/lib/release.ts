@@ -173,7 +173,9 @@ export function useReleaseChecks() {
   return useQuery<{ runs: ReleaseRun[]; checks: ReleaseCheck[] }, ApiError>({
     queryKey: ["release", "checks"],
     queryFn: () =>
-      api<{ runs: ReleaseRun[]; checks: ReleaseCheck[] }>("/api/founder/release/checks"),
+      rpcOrRest<{ runs: ReleaseRun[]; checks: ReleaseCheck[] }>("founder.release.checks", {
+        path: "/api/founder/release/checks",
+      }),
     retry: false,
   });
 }
@@ -183,10 +185,11 @@ export function useRunQa() {
   const qc = useQueryClient();
   return useMutation<{ run: ReleaseRun; checks: ReleaseCheck[] }, ApiError, { suite?: string }>({
     mutationFn: (input) =>
-      api<{ run: ReleaseRun; checks: ReleaseCheck[] }>("/api/founder/release/run", {
-        method: "POST",
-        body: JSON.stringify({ suite: input.suite ?? "all" }),
-      }),
+      rpcOrRest<{ run: ReleaseRun; checks: ReleaseCheck[] }>(
+        "founder.release.run",
+        { path: "/api/founder/release/run", method: "POST", body: { suite: input.suite ?? "all" } },
+        { suite: input.suite ?? "all" },
+      ),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["release"] });
     },
@@ -196,7 +199,10 @@ export function useRunQa() {
 export function useChecklist() {
   return useQuery<{ items: ChecklistItem[] }, ApiError>({
     queryKey: ["release", "checklist"],
-    queryFn: () => api<{ items: ChecklistItem[] }>("/api/founder/release/checklist"),
+    queryFn: () =>
+      rpcOrRest<{ items: ChecklistItem[] }>("founder.release.checklist", {
+        path: "/api/founder/release/checklist",
+      }),
     retry: false,
   });
 }
@@ -205,10 +211,11 @@ export function useChecklistUpdate() {
   const qc = useQueryClient();
   return useMutation<ChecklistItem, ApiError, { id: string; state: ChecklistItem["state"] }>({
     mutationFn: (input) =>
-      api<ChecklistItem>("/api/founder/release/checklist/item", {
-        method: "POST",
-        body: JSON.stringify(input),
-      }),
+      rpcOrRest<ChecklistItem>(
+        "founder.release.checklist.item",
+        { path: "/api/founder/release/checklist/item", method: "POST", body: input },
+        input,
+      ),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["release"] });
     },
@@ -218,7 +225,10 @@ export function useChecklistUpdate() {
 export function useDeployments() {
   return useQuery<{ deployments: Deployment[] }, ApiError>({
     queryKey: ["release", "deployments"],
-    queryFn: () => api<{ deployments: Deployment[] }>("/api/founder/release/deployments"),
+    queryFn: () =>
+      rpcOrRest<{ deployments: Deployment[] }>("founder.release.deployments", {
+        path: "/api/founder/release/deployments",
+      }),
     retry: false,
   });
 }
@@ -226,7 +236,10 @@ export function useDeployments() {
 export function useLocks() {
   return useQuery<{ locks: ReleaseLock[] }, ApiError>({
     queryKey: ["release", "locks"],
-    queryFn: () => api<{ locks: ReleaseLock[] }>("/api/founder/release/lock"),
+    queryFn: () =>
+      rpcOrRest<{ locks: ReleaseLock[] }>("founder.release.lock.list", {
+        path: "/api/founder/release/lock",
+      }),
     retry: false,
   });
 }
@@ -239,10 +252,11 @@ export function useSignLock() {
     { version: string; notes?: string; override_reason?: string }
   >({
     mutationFn: (input) =>
-      api<ReleaseLock>("/api/founder/release/lock", {
-        method: "POST",
-        body: JSON.stringify(input),
-      }),
+      rpcOrRest<ReleaseLock>(
+        "founder.release.lock.create",
+        { path: "/api/founder/release/lock", method: "POST", body: input },
+        input,
+      ),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["release"] });
     },
@@ -252,7 +266,10 @@ export function useSignLock() {
 export function useRoadmap() {
   return useQuery<{ items: RoadmapItem[] }, ApiError>({
     queryKey: ["release", "roadmap"],
-    queryFn: () => api<{ items: RoadmapItem[] }>("/api/founder/release/roadmap"),
+    queryFn: () =>
+      rpcOrRest<{ items: RoadmapItem[] }>("founder.release.roadmap.list", {
+        path: "/api/founder/release/roadmap",
+      }),
     retry: false,
   });
 }
@@ -265,10 +282,11 @@ export function useRoadmapAdd() {
     Omit<RoadmapItem, "id" | "state"> & { state?: RoadmapItem["state"] }
   >({
     mutationFn: (input) =>
-      api<RoadmapItem>("/api/founder/release/roadmap", {
-        method: "POST",
-        body: JSON.stringify(input),
-      }),
+      rpcOrRest<RoadmapItem>(
+        "founder.release.roadmap.create",
+        { path: "/api/founder/release/roadmap", method: "POST", body: input },
+        input,
+      ),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["release", "roadmap"] });
     },
@@ -278,7 +296,10 @@ export function useRoadmapAdd() {
 export function useRevenuePipeline() {
   return useQuery<RevenuePipeline, ApiError>({
     queryKey: ["founder", "revenue", "pipeline"],
-    queryFn: () => api<RevenuePipeline>("/api/founder/revenue/pipeline"),
+    queryFn: () =>
+      rpcOrRest<RevenuePipeline>("founder.revenue.pipeline", {
+        path: "/api/founder/revenue/pipeline",
+      }),
     retry: false,
   });
 }
@@ -288,7 +309,7 @@ export function useRevenuePipeline() {
 export function useStatusPage() {
   return useQuery<StatusPage, ApiError>({
     queryKey: ["public", "status"],
-    queryFn: () => api<StatusPage>("/api/public/status", { auth: false }),
+    queryFn: () => rpcOrRest<StatusPage>("status.public", { path: "/api/public/status" }, {}),
     retry: false,
     refetchInterval: 60_000,
   });
@@ -356,17 +377,19 @@ export async function flushOutbox(): Promise<{ sent: number; failed: number; kep
     }
     await offline.put("outbox", item.key, { ...item, state: "sending" } satisfies OutboxItem);
     try {
-      await api("/api/mail/outbox/send", {
-        method: "POST",
-        headers: { "idempotency-key": item.key },
-        body: JSON.stringify({
-          idempotency_key: item.key,
-          to: item.to,
-          subject: item.subject,
-          body: item.body,
-          ...(item.thread_id ? { thread_id: item.thread_id } : {}),
-        }),
-      });
+      const payload = {
+        idempotency_key: item.key,
+        to: item.to,
+        subject: item.subject,
+        body: item.body,
+        ...(item.thread_id ? { thread_id: item.thread_id } : {}),
+      };
+      // B5: Rust PRIMARY (`outbox.send`); same idempotency key => same answer, never two mails.
+      await rpcOrRest(
+        "outbox.send",
+        { path: "/api/mail/outbox/send", method: "POST", body: payload },
+        payload,
+      );
       await offline.remove("outbox", item.key);
       sent += 1;
     } catch (e) {

@@ -196,11 +196,11 @@ export type LeadResult = { id: string; reference: string; kind: LeadKind; create
 export function useSubmitLead() {
   return useMutation<LeadResult, ApiError, LeadPayload>({
     mutationFn: (payload) =>
-      api<LeadResult>("/api/public/revenue/lead", {
-        method: "POST",
-        body: JSON.stringify(payload),
-        auth: false,
-      }),
+      rpcOrRest<LeadResult>(
+        "revenue.lead",
+        { path: "/api/public/revenue/lead", method: "POST", body: payload },
+        payload,
+      ),
   });
 }
 

@@ -158,3 +158,9 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 ## founder-commands.md vs server (21 Oct 07:10): GREEN-BOARD/07 bana — poori file padhi. Server par NAHI: chat audit, iMIP, Bun->Rust baqi, Caddy check script, /terms page, Domains ke 7 features. Dobara mat padho; naya command aaye to sirf 07 mein row.
 
 ## ops-ufw-passkey.sh (21 Oct 07:10): ufw 3443/udp + passkey test-exempt ek idempotent command. Founder output aane par D11 ufw + passkey-exempt GREEN.
+
+## B5 (G40) SHURU 21 Oct 07:20 — IN PROGRESS (green nahi)
+Kaam: founder pages ki Bun-only calls Rust /rpc/* par (movein capacity/request/deal/cockpit/deal-id; release checks/run/checklist/item/deployments/lock/roadmap; revenue pipeline/lead; public status; ai chat; mail thread; outbox/send). mail.send B3 mein ho chuki.
+Plan: server/rust/b5_core.rs (std-only, rustc --test) + b5_glue.rs; b5_patch.py; rust-b5-install.sh; b5-proof.py; client rpcOrRest. Sab Supabase #4 (Rust sb_* wahi). Bun REST fallback rahega.
+Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green sirf founder ke server output ke baad.
+- B5 21 Oct ~08:10: server/rust/b5_core.rs (19 tests) + b5_glue.rs + engine-installer `b5` module (public_call w/ headers) + docs/cursor-work/server/b5-sandbox-proof.py (+tests/b5/{bun-harness.ts,express-shim.js}) => SAB PASS (~80 checks, ASLI Bun routes vs Rust, ek hi mock DB). Baaki: client rpcOrRest wiring, memory, manifest, push, founder pull. AI chat B8 mein (Leo memory+OpenRouter stream). mail.thread pehle se Rust.

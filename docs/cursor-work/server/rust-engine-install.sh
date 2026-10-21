@@ -8,6 +8,7 @@
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
+#   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
 #             [pehle E35 SQL chalayen] [OPT-IN: default mein NAHI — Cargo.toml mein 2 crate judte hain (rustls, webpki-roots), isliye
 #              sirf tab jab aap khud likhen:  MODULES=mig bash <(...)  ]
@@ -32,7 +33,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device dnsauth security export attach"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device dnsauth security export attach b5"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -91,6 +92,10 @@ CFG={
             # G37: blocked account guard — token ke foran baad, SAB module hooks se pehle
             "guard_marker": "export_glue::blocked(",
             "guard_code": '    // G37 — blocked/purged account: sirf export / halat / apna delete (export_glue::blocked)\n    if let Some(r) = export_glue::blocked(&proc, &token).await {\n        return r;\n    }\n\n'},
+ # b5 (G40): founder pages ki Bun-only calls Rust par — move-in, release gate/lock/roadmap, revenue pipeline/lead, public status, offline outbox. Koi nayi SQL nahi.
+ # Public procs ko request headers chahiye (revenue.lead ki IP rate-limit) — isliye public_call alag.
+ "b5":     {"public": True,  "label": "founder-pages", "procs": ['"movein.capacity"','"revenue.lead"','"status.public"','"founder.release.run"'],
+            "public_call": "public(&proc, &input, &headers)"},
  # attach (G38): bheji jane wali mail ke attachments (stream upload, org-ke-andar SHA-256 dedup, clamd, quota). SQL E48 PEHLE.
  # Routes: POST /file/attach (upload), GET /file/attach/get?id= (download). Thread read ka `url` (jo server ka disk_path de deta tha) band + `stored` flag.
  "attach": {"public": False, "label": "attach",    "procs": ['"mail.attach.limits"','"mail.attach.remove"'],
@@ -157,7 +162,7 @@ for m in mods:
         if not bm: print("PATCH FAIL: dispatch mein `let token = match bearer(&headers)` nahi mila"); sys.exit(4)
         b=bm.start()
         pub=('    // %s — public proc (token se; bearer nahi chahiye). Token = DB ka random uuid.\n'
-             '    if %s::public_owns(&proc) {\n        return %s::public(&proc, &input).await;\n    }\n\n')%(c["label"],g,g)
+             '    if %s::public_owns(&proc) {\n        return %s::%s.await;\n    }\n\n')%(c["label"],g,g,c.get("public_call","public(&proc, &input)"))
         s=s[:b]+pub+s[b:]
     w=s.find('    if proc == "whoami" {', d.start())
     if w<0:
@@ -391,6 +396,20 @@ for m in $MODS; do
         *'"tag":"ur-PK"'*'"unauthorized"'*) echo "   -> locale: Rust ne dono proc pakde (bundle 200, nakli login 401 = theek) — browser ke 404 band";;
         *procedure_not_in_rust*) echo "   -> locale: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> locale: jawab upar dekhein";;
+      esac;;
+    b5)
+      r1="$(curl -s -m 10 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RPC/rpc/status.public" 2>/dev/null)"
+      r2="$(curl -s -m 10 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RPC/rpc/movein.capacity" 2>/dev/null)"
+      r3="$(probe founder.release.run '{"input":{}}')"
+      r4="$(probe founder.revenue.pipeline '{"input":{}}')"
+      echo "   status.public (public): $(printf '%s' "$r1" | cut -c1-150)"
+      echo "   movein.capacity (public): $(printf '%s' "$r2" | cut -c1-110)"
+      echo "   founder.release.run (nakli token): $r3"
+      echo "   founder.revenue.pipeline (nakli token): $r4"
+      case "$r1$r3$r4" in
+        *'"state"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> b5: Rust ne public status bhi diya aur founder procs bhi pakde (nakli login 401 = theek). Poora saboot: python3 b5-proof.py";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> b5: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> b5: jawab upar dekhein";;
       esac;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"

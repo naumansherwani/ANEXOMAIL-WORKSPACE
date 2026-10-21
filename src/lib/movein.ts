@@ -8,6 +8,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api, type ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type MoveInResult =
   | "PENDING"
@@ -141,7 +142,9 @@ export type CustomerDeal = {
 export function useMoveInCapacity() {
   return useQuery<{ months: CapacityMonth[] }, ApiError>({
     queryKey: ["movein", "capacity"],
-    queryFn: () => api("/api/public/movein/capacity", { auth: false }),
+    // B5 (G40): Rust PRIMARY (`movein.capacity`); Bun sirf fallback.
+    queryFn: () =>
+      rpcOrRest<{ months: CapacityMonth[] }>("movein.capacity", { path: "/api/public/movein/capacity" }),
     retry: false,
   });
 }
@@ -170,11 +173,11 @@ export function useRequestMoveIn() {
     MoveInRequest
   >({
     mutationFn: (body) =>
-      api("/api/public/movein/request", {
-        method: "POST",
-        body: JSON.stringify(body),
-        auth: false,
-      }),
+      rpcOrRest(
+        "movein.request",
+        { path: "/api/public/movein/request", method: "POST", body },
+        body,
+      ),
   });
 }
 
@@ -183,7 +186,8 @@ export function useRequestMoveIn() {
 export function useMyMoveIn() {
   return useQuery<{ deal: CustomerDeal | null }, ApiError>({
     queryKey: ["movein", "mine"],
-    queryFn: () => api("/api/movein/deal"),
+    queryFn: () =>
+      rpcOrRest<{ deal: CustomerDeal | null }>("movein.deal", { path: "/api/movein/deal" }, {}),
     retry: false,
   });
 }
@@ -193,7 +197,7 @@ export function useMyMoveIn() {
 export function useMoveInCockpit() {
   return useQuery<Cockpit, ApiError>({
     queryKey: ["founder", "movein", "cockpit"],
-    queryFn: () => api("/api/founder/movein/cockpit"),
+    queryFn: () => rpcOrRest<Cockpit>("founder.movein.cockpit", { path: "/api/founder/movein/cockpit" }, {}),
     retry: false,
   });
 }
@@ -201,7 +205,12 @@ export function useMoveInCockpit() {
 export function useMoveInDeal(id: string | null) {
   return useQuery<{ deal: EvidenceBundle }, ApiError>({
     queryKey: ["founder", "movein", "deal", id],
-    queryFn: () => api(`/api/founder/movein/deal/${id}`),
+    queryFn: () =>
+      rpcOrRest<{ deal: EvidenceBundle }>(
+        "founder.movein.deal",
+        { path: `/api/founder/movein/deal/${id}` },
+        { id },
+      ),
     enabled: !!id,
     retry: false,
   });

@@ -48,6 +48,7 @@
 | P8 | SiteLock control | 🟢 GREEN (server par aaya + wire; live click-test baqi) | SiteLock.tsx + site-lock.ts |
 | P8 | Move-in manager | 🟢 GREEN (server par aaya + wire; live click-test baqi) | app.founder_.movein.tsx + server/routes/movein.ts |
 | P8 | Founder single inbox (phase55) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | docs/wire/19 (status READY); founder-plan.ts |
+| P8 | Founder routes Rust-only (Rule 22, G18/G40) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | B5 bana (movein/release/revenue/status/outbox Rust), sandbox SAB PASS; server par pull baqi. AI chat -> B8 |
 | P9 | LEO chat always-visible sidebar | 🟢 GREEN (server par aaya + wire; live click-test baqi) | AiBits.tsx / leo.ts; ai.anexomail.com live test nahi |
 | P9 | AI Studio | 🟢 GREEN (server par aaya + wire; live click-test baqi) | ai_.studio.tsx + ai-studio.ts |
 | P9 | Knowledge base (upload docs, ask) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | ai_.knowledge.tsx |
@@ -69,6 +70,7 @@
 | G36 | 72 h export → delete (countdown + email) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | E44/E45/E46 live; UI/email countdown ka live dekhna (C7) |
 | G37 | 24h me 3 account suspicious/review + warn→block→ban | 🟢 GREEN (server par aaya + wire; live click-test baqi) | review queue UI live dekhna (C7) |
 | G38b | Aane wali mail ke attachment bytes | 🟢 GREEN (live dekha/proof) | inbound hello.txt download 200 (01:15); PROMISES #12 EICAR FOUND |
+| G40 | Rust RPC work/crm/org/integrations/settings (19 Bun-only) | 🟢 GREEN (server par aaya + wire; live click-test baqi) | B5: 19 mein se 15 Rust (4 public + 11 founder/auth), mail.thread pehle se Rust, mail.send B3; AI chat B8 |
 | G42 | Passkey/recovery login Rust par | 🟢 GREEN (live dekha/proof) | B2 GREEN 05:50 |
 
 ## C. Technology green
@@ -83,6 +85,7 @@
 | B2b Bun hardening + passkey list/delete | 🟢 GREEN (live dekha/proof) | 05:50 |
 | B3 mail.send/undo/queue worker/org.mailboxes (R1) | 🟢 GREEN (live dekha/proof) | 06:00 |
 | B4 event-driven push (R5) | 🟢 GREEN (live dekha/proof) | 21 Oct 06:50 founder output: proof SAB PASS (UDP 3443, /internal/event, family 3/3) |
+| B5 G40 19 Bun-only routes -> Rust | 🟢 GREEN (server par aaya + wire; live click-test baqi) | repo + sandbox PASS (~80 checks, asli Bun vs Rust); server par rust-engine-install.sh baqi |
 
 ## D. Ledger section B (live green, dobara mat chhuo)
 - tokio 1.53.3 / axum 0.8.9 / wtransport 0.7.2 / rustc 1.99.1 + edition 2024 — live 20 Oct.
