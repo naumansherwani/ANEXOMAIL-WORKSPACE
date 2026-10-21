@@ -19,6 +19,14 @@ set -uo pipefail
 
 WEB="${WEB:-/opt/anexomail-web}"
 SRC="$WEB/server/rust/polar-payment"
+# Rust files web-manifest mein nahi hote => working tree mein na hon to seedha origin/main (git objects) se nikalo.
+if [ ! -f "$SRC/pcp.rs" ] || [ "${FROM_GIT:-1}" = "1" ]; then
+  git -C "$WEB" fetch -q origin main </dev/null 2>/dev/null || true
+  STAGE="$(mktemp -d)"; SRC="$STAGE"
+  for f in main.rs pcp.rs Cargo.toml pcp-call.sh test-event.sh; do
+    git -C "$WEB" show "origin/main:server/rust/polar-payment/$f" >"$STAGE/$f" 2>/dev/null </dev/null || rm -f "$STAGE/$f"
+  done
+fi
 ENG="${ENGINE_DIR:-/opt/polar-rust-payment}"
 PM2N="polar-rust-payment"
 STAMP="$(date +%Y%m%d-%H%M%S)"
