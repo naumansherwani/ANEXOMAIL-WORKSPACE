@@ -262,3 +262,11 @@ Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/cl
   5) TARTEEB: pehle poori B-series green (B7 calendar -> B8 Brain->Rust -> migration tests) PHIR Basic aur Pro package green (live package tests, plan-promise audit) taake user ko Basic/Pro asli mile; phir billing portal blueprint P2-P8.
 
 - 22 Oct 2026 02:50 — billing-policy.tsx: "Anything wrong with a charge? Write to resolved@anexomail.com" (billing@ UI se hata; receipts ka reply resolved@ par, founder command center se live). Dobara mat karna.
+
+- 22 Oct 2026 02:55 — STATUS (compaction ke baad): billing@ UI se hata, policy page par resolved@ (f648aeb pushed). B7b calendar recurrence SHURU (design: SQL E56 rrule/exdates/series_id/recurrence_id/tz_offset_min + GRANT; Rust `cal_core::recur` = RRULE parse+expand + TZif/POSIX tz std-only; instance id = `<uuid>~<epoch>`; scope this/all; "following" baad mein). Calendar advanced features SAB packages ko (no gating). G26 iMIP reply = user-click action (founder "sab kero" = go). Is entry ke baad jo likha ho woh naya kaam hai.
+
+## 22 Oct 2026 02:55 — STATE AFTER COMPACTION (founder order: B-series pehle, Pro fixes saath, calendar SAB packages ko barabar)
+- DONE & pushed: B6 closed (a), B6b/c dropped; billing@ UI se hata; billing-policy mein resolved@anexomail.com line (f648aeb). alikhan@ = founder ka real-user TEST account (Claude login nahi karega).
+- IN PROGRESS: B7b calendar recurrence (G27) — koi package gating nahi. Design: SQL E56 (rrule, exdates, series_id, recurrence_id, tz_offset_min + explicit GRANTs + calendar_busy_series rpc); cal_core.rs `pub mod recur` (RRULE parse/expand, std-only TZif+POSIX-footer reader, fixed-offset fallback); cal_glue: instance id = `<uuid>~<epoch>`, scope this|all on update/cancel (this = exception row + master exdate), events/busy/findtime expand masters, ICS RRULE/EXDATE; frontend picker + this/all scope.
+- NEXT after B7b: B7c booking page, B7d iMIP reply (G26, user-click RSVP) + CalDAV, B8 Brain->Rust, migration tests, Basic+Pro green, billing portal P2-P8.
+- G26 decision: founder "sab kero/kaam shuru kero" = go-ahead; iMIP reply = user-initiated RSVP only.

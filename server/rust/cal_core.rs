@@ -121,6 +121,14 @@ pub fn fmt_ics(epoch: i64) -> String {
 }
 
 /// 2026-10-20T14:00:00Z
+/// Floating local time for ICS (`20261027T090000`) from wall-clock seconds.
+pub fn fmt_ics_local(local: i64) -> String {
+    let d = local.div_euclid(86_400);
+    let t = local.rem_euclid(86_400);
+    let (y, m, dd) = civil_from_days(d);
+    format!("{:04}{:02}{:02}T{:02}{:02}{:02}", y, m, dd, t / 3600, (t % 3600) / 60, t % 60)
+}
+
 pub fn fmt_rfc3339(epoch: i64) -> String {
     let days = epoch.div_euclid(86400);
     let rem = epoch.rem_euclid(86400);
@@ -478,6 +486,13 @@ pub struct EventSpec {
     pub organiser: Person,
     pub guests: Vec<Guest>,
     pub now: i64,
+    /// recurrence (B7b): RRULE text on the series master; exdates = UTC starts that were removed / replaced
+    pub rrule: Option<String>,
+    pub exdates: Vec<i64>,
+    /// set on an exception ("only this meeting"): ORIGINAL start of the instance it replaces; `id` is then the master's id
+    pub recurrence_id: Option<i64>,
+    /// IANA zone name + loaded zone — only used so repeating meetings keep their wall-clock time across DST in guests' calendars
+    pub tz: Option<(String, recur::Tz)>,
 }
 
 pub const DOMAIN: &str = "anexomail.com";
@@ -489,11 +504,29 @@ pub fn build_ics(method: Method, ev: &EventSpec, app_url: &str) -> String {
         "VERSION:2.0".into(),
         "CALSCALE:GREGORIAN".into(),
         format!("METHOD:{}", method.word()),
+    ];
+    // repeating meetings travel in the organiser's real zone (with a VTIMEZONE) so DST never shifts them in a guest's calendar
+    let zone: Option<(&str, String)> = match (&ev.tz, ev.rrule.is_some() || ev.recurrence_id.is_some()) {
+        (Some((name, z)), true) if recur::ics_zone_name_ok(name) => z.vtimezone(name, ev.starts).map(|v| (name.as_str(), v)),
+        _ => None,
+    };
+    if let Some((_, v)) = &zone {
+        for line in v.lines() {
+            l.push(line.to_string());
+        }
+    }
+    let when = |t: i64| -> String {
+        match (&zone, &ev.tz) {
+            (Some((n, _)), Some((_, z))) => format!(";TZID={}:{}", n, fmt_ics_local(z.to_local(t))),
+            _ => format!(":{}", fmt_ics(t)),
+        }
+    };
+    l.extend(vec![
         "BEGIN:VEVENT".into(),
         format!("UID:{}@{}", clean_line(&ev.id, 64), DOMAIN),
         format!("DTSTAMP:{}", fmt_ics(ev.now)),
-        format!("DTSTART:{}", fmt_ics(ev.starts)),
-        format!("DTEND:{}", fmt_ics(ev.ends)),
+        format!("DTSTART{}", when(ev.starts)),
+        format!("DTEND{}", when(ev.ends)),
         format!("SEQUENCE:{}", ev.sequence),
         format!(
             "STATUS:{}",
@@ -504,7 +537,23 @@ pub fn build_ics(method: Method, ev: &EventSpec, app_url: &str) -> String {
             }
         ),
         format!("SUMMARY:{}", ics_escape(&clean_line(&ev.title, 200))),
-    ];
+    ]);
+    if let Some(r) = ev.rrule.as_deref().filter(|r| recur::parse(r).is_ok()) {
+        l.push(format!("RRULE:{}", r.trim().trim_start_matches("RRULE:")));
+        if !ev.exdates.is_empty() {
+            let v: Vec<String> = ev.exdates.iter().take(400).map(|t| match (&zone, &ev.tz) {
+                (Some(_), Some((_, z))) => fmt_ics_local(z.to_local(*t)),
+                _ => fmt_ics(*t),
+            }).collect();
+            match (&zone, &ev.tz) {
+                (Some((n, _)), _) => l.push(format!("EXDATE;TZID={}:{}", n, v.join(","))),
+                _ => l.push(format!("EXDATE:{}", v.join(","))),
+            }
+        }
+    }
+    if let Some(rid) = ev.recurrence_id {
+        l.push(format!("RECURRENCE-ID{}", when(rid)));
+    }
     let mut desc = String::new();
     if let Some(a) = ev.agenda.as_deref().filter(|a| !a.trim().is_empty()) {
         desc.push_str(a.trim());
@@ -1011,6 +1060,7 @@ mod tests {
                 address: "ali@anexomail.com".into(),
                 name: Some("Ali Khan".into()),
             },
+            rrule: None, exdates: vec![], recurrence_id: None, tz: None,
             guests: vec![
                 Guest {
                     address: "ali@anexomail.com".into(),
@@ -1245,6 +1295,34 @@ mod tests {
         }
         assert!(flat.contains("DESCRIPTION:Decide the budget.\\nBring numbers.\\n\\nDetails and RSVP: https://anexomail.com/rsvp?t=T"));
         assert_eq!(ics.matches("BEGIN:VEVENT").count(), 1);
+    }
+
+    #[test]
+    fn ics_recurring_in_zone() {
+        let ny = match std::fs::read("/usr/share/zoneinfo/America/New_York").ok().and_then(|b| recur::parse_tzif(&b)) { Some(z) => z, None => return };
+        let mut e = ev();
+        e.starts = parse_ts("2026-10-27T13:00:00Z").unwrap();
+        e.ends = e.starts + 3600;
+        e.rrule = Some("FREQ=WEEKLY;BYDAY=TU".into());
+        e.exdates = vec![parse_ts("2026-11-03T14:00:00Z").unwrap()];
+        e.tz = Some(("America/New_York".into(), ny));
+        let ics = build_ics(Method::Request, &e, "");
+        assert!(ics.contains("BEGIN:VTIMEZONE\r\nTZID:America/New_York"), "{}", ics);
+        assert!(ics.contains("DTSTART;TZID=America/New_York:20261027T090000"), "{}", ics);
+        assert!(ics.contains("RRULE:FREQ=WEEKLY;BYDAY=TU"), "{}", ics);
+        assert!(ics.contains("EXDATE;TZID=America/New_York:20261103T090000"), "{}", ics);
+        // exception row: RECURRENCE-ID, no RRULE
+        let mut x = ev();
+        x.recurrence_id = Some(parse_ts("2026-11-10T14:00:00Z").unwrap());
+        let ics = build_ics(Method::Request, &x, "");
+        assert!(ics.contains("RECURRENCE-ID:20261110T140000Z") && !ics.contains("RRULE"), "{}", ics);
+        // a bad rule never reaches a guest's calendar
+        let mut b = ev();
+        b.rrule = Some("FREQ=SECONDLY".into());
+        assert!(!build_ics(Method::Request, &b, "").contains("RRULE"));
+        // one-off meetings are byte-for-byte what they were: UTC, no VTIMEZONE
+        let plain = build_ics(Method::Request, &ev(), "");
+        assert!(plain.contains("DTSTART:20261020T140000Z") && !plain.contains("VTIMEZONE"));
     }
 
     #[test]
@@ -1486,5 +1564,614 @@ mod tests {
         assert_eq!(invite_quota_left(10, 200), 190);
         assert_eq!(invite_quota_left(250, 200), 0);
         assert_eq!(invite_quota_left(-5, 200), 200);
+    }
+}
+
+/* ====================================================================== recurrence (B7b, 22 Oct 2026)
+ * RFC 5545 RRULE (DAILY/WEEKLY/MONTHLY/YEARLY, INTERVAL, COUNT, UNTIL, BYDAY[+nth], BYMONTHDAY[+negative], BYMONTH, WKST)
+ * + time zones WITHOUT any crate: TZif (/usr/share/zoneinfo) + POSIX footer rule, so DST is right for every user,
+ * every package. Fixed-offset fallback when the zone file is missing. Pure std — no clock, no network.
+ */
+pub mod recur {
+    use super::{civil_from_days, days_from_civil};
+    use std::collections::HashMap;
+    use std::sync::{Arc, Mutex, OnceLock};
+
+    pub const MAX_COUNT: u32 = 1000;
+    pub const MAX_INSTANCES: usize = 800;
+
+    #[derive(Clone, Copy, Debug, PartialEq)]
+    pub enum Freq { Daily, Weekly, Monthly, Yearly }
+
+    #[derive(Clone, Debug, PartialEq)]
+    pub struct Rule {
+        pub freq: Freq,
+        pub interval: i64,
+        pub count: Option<u32>,
+        pub until: Option<i64>,          // UTC epoch, inclusive
+        pub byday: Vec<(i8, u8)>,        // (nth or 0, weekday 0=Sun..6=Sat)
+        pub bymonthday: Vec<i8>,
+        pub bymonth: Vec<u8>,
+        pub wkst: u8,                    // 0=Sun..6=Sat (default Monday = 1)
+    }
+
+    fn wd_code(s: &str) -> Option<u8> {
+        Some(match s { "SU" => 0, "MO" => 1, "TU" => 2, "WE" => 3, "TH" => 4, "FR" => 5, "SA" => 6, _ => return None })
+    }
+
+    /// 1970-01-01 was a Thursday. 0 = Sunday.
+    pub fn weekday_of_day(days: i64) -> u8 { (days + 4).rem_euclid(7) as u8 }
+
+    pub fn days_in_month(y: i64, m: u32) -> u32 {
+        match m { 1 | 3 | 5 | 7 | 8 | 10 | 12 => 31, 4 | 6 | 9 | 11 => 30,
+            _ => if (y % 4 == 0 && y % 100 != 0) || y % 400 == 0 { 29 } else { 28 } }
+    }
+
+    fn parse_until(v: &str) -> Option<i64> {
+        let b = v.as_bytes();
+        if b.len() < 8 || !b[..8].iter().all(|c| c.is_ascii_digit()) { return None; }
+        let n = |a: usize, z: usize| v.get(a..z)?.parse::<i64>().ok();
+        let (y, mo, d) = (n(0, 4)?, n(4, 6)? as u32, n(6, 8)? as u32);
+        if !(1..=12).contains(&mo) || d < 1 || d > days_in_month(y, mo) { return None; }
+        let (h, mi, s) = if b.len() >= 15 && b[8] == b'T' { (n(9, 11)?, n(11, 13)?, n(13, 15)?) } else { (23, 59, 59) };
+        Some(days_from_civil(y, mo, d) * 86_400 + h * 3600 + mi * 60 + s)
+    }
+
+    pub fn parse(src: &str) -> Result<Rule, String> {
+        let src = src.trim();
+        let src = src.strip_prefix("RRULE:").unwrap_or(src);
+        if src.is_empty() || src.len() > 300 { return Err("rrule_empty".into()); }
+        let mut r = Rule { freq: Freq::Daily, interval: 1, count: None, until: None, byday: vec![], bymonthday: vec![], bymonth: vec![], wkst: 1 };
+        let mut have_freq = false;
+        for part in src.split(';') {
+            let (k, v) = part.split_once('=').ok_or("rrule_syntax")?;
+            let (k, v) = (k.trim().to_ascii_uppercase(), v.trim().to_ascii_uppercase());
+            match k.as_str() {
+                "FREQ" => {
+                    r.freq = match v.as_str() { "DAILY" => Freq::Daily, "WEEKLY" => Freq::Weekly, "MONTHLY" => Freq::Monthly, "YEARLY" => Freq::Yearly, _ => return Err("rrule_freq".into()) };
+                    have_freq = true;
+                }
+                "INTERVAL" => { r.interval = v.parse::<i64>().map_err(|_| "rrule_interval")?; if !(1..=99).contains(&r.interval) { return Err("rrule_interval".into()); } }
+                "COUNT" => { let c = v.parse::<u32>().map_err(|_| "rrule_count")?; if c == 0 || c > MAX_COUNT { return Err("rrule_count".into()); } r.count = Some(c); }
+                "UNTIL" => r.until = Some(parse_until(&v).ok_or("rrule_until")?),
+                "WKST" => r.wkst = wd_code(&v).ok_or("rrule_wkst")?,
+                "BYDAY" => {
+                    for d in v.split(',') {
+                        let d = d.trim();
+                        if d.len() < 2 { return Err("rrule_byday".into()); }
+                        let (num, code) = d.split_at(d.len() - 2);
+                        let n: i8 = if num.is_empty() { 0 } else { num.parse().map_err(|_| "rrule_byday")? };
+                        if !(-5..=5).contains(&n) { return Err("rrule_byday".into()); }
+                        r.byday.push((n, wd_code(code).ok_or("rrule_byday")?));
+                    }
+                }
+                "BYMONTHDAY" => for d in v.split(',') { let n: i8 = d.trim().parse().map_err(|_| "rrule_monthday")?; if n == 0 || !(-31..=31).contains(&n) { return Err("rrule_monthday".into()); } r.bymonthday.push(n); },
+                "BYMONTH" => for d in v.split(',') { let n: u8 = d.trim().parse().map_err(|_| "rrule_month")?; if !(1..=12).contains(&n) { return Err("rrule_month".into()); } r.bymonth.push(n); },
+                _ => return Err("rrule_unsupported".into()),   // BYSETPOS, BYHOUR… not offered — better a clear error than a wrong calendar
+            }
+        }
+        if !have_freq { return Err("rrule_freq".into()); }
+        if r.count.is_some() && r.until.is_some() { return Err("rrule_count_until".into()); }
+        if r.freq == Freq::Weekly && r.byday.iter().any(|d| d.0 != 0) { return Err("rrule_byday".into()); }
+        Ok(r)
+    }
+
+    pub fn to_string(r: &Rule) -> String {
+        let mut s = String::from(match r.freq { Freq::Daily => "FREQ=DAILY", Freq::Weekly => "FREQ=WEEKLY", Freq::Monthly => "FREQ=MONTHLY", Freq::Yearly => "FREQ=YEARLY" });
+        if r.interval != 1 { s.push_str(&format!(";INTERVAL={}", r.interval)); }
+        if let Some(c) = r.count { s.push_str(&format!(";COUNT={}", c)); }
+        if let Some(u) = r.until { s.push_str(&format!(";UNTIL={}", super::fmt_ics(u))); }
+        if !r.byday.is_empty() {
+            let n = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+            let v: Vec<String> = r.byday.iter().map(|(k, d)| if *k == 0 { n[*d as usize].to_string() } else { format!("{}{}", k, n[*d as usize]) }).collect();
+            s.push_str(&format!(";BYDAY={}", v.join(",")));
+        }
+        if !r.bymonthday.is_empty() { s.push_str(&format!(";BYMONTHDAY={}", r.bymonthday.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(","))); }
+        if !r.bymonth.is_empty() { s.push_str(&format!(";BYMONTH={}", r.bymonth.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(","))); }
+        if r.wkst != 1 { s.push_str(&format!(";WKST={}", ["SU", "MO", "TU", "WE", "TH", "FR", "SA"][r.wkst as usize])); }
+        s
+    }
+
+    /* -------------------------------------------------------------- time zones */
+
+    #[derive(Clone, Debug)]
+    pub struct PosixRule { m: u32, w: u32, d: u32, time: i64 }
+    #[derive(Clone, Debug)]
+    pub struct Posix { std: i32, dst: Option<(i32, PosixRule, PosixRule)> }
+
+    #[derive(Clone, Debug)]
+    pub enum Tz {
+        Fixed(i32),
+        Zone { trans: Vec<(i64, usize)>, types: Vec<i32>, initial: i32, footer: Option<Posix> },
+    }
+
+    fn parse_posix_name(b: &[u8], i: &mut usize) -> bool {
+        if *i < b.len() && b[*i] == b'<' { while *i < b.len() && b[*i] != b'>' { *i += 1; } if *i >= b.len() { return false; } *i += 1; return true; }
+        let s = *i; while *i < b.len() && b[*i].is_ascii_alphabetic() { *i += 1; } *i - s >= 3
+    }
+    fn parse_hms(b: &[u8], i: &mut usize) -> Option<i64> {
+        let mut sign = 1i64;
+        if *i < b.len() && (b[*i] == b'+' || b[*i] == b'-') { if b[*i] == b'-' { sign = -1; } *i += 1; }
+        let mut parts = [0i64; 3]; let mut p = 0;
+        loop {
+            let s = *i; while *i < b.len() && b[*i].is_ascii_digit() { *i += 1; }
+            if s == *i { return None; }
+            parts[p] = std::str::from_utf8(&b[s..*i]).ok()?.parse().ok()?;
+            p += 1;
+            if p < 3 && *i < b.len() && b[*i] == b':' { *i += 1; } else { break; }
+        }
+        Some(sign * (parts[0] * 3600 + parts[1] * 60 + parts[2]))
+    }
+    fn parse_rule(b: &[u8], i: &mut usize) -> Option<PosixRule> {
+        if *i >= b.len() || b[*i] != b'M' { return None; }
+        *i += 1;
+        let mut nums = [0u32; 3];
+        for k in 0..3 {
+            let s = *i; while *i < b.len() && b[*i].is_ascii_digit() { *i += 1; }
+            nums[k] = std::str::from_utf8(&b[s..*i]).ok()?.parse().ok()?;
+            if k < 2 { if *i >= b.len() || b[*i] != b'.' { return None; } *i += 1; }
+        }
+        let mut time = 7200;
+        if *i < b.len() && b[*i] == b'/' { *i += 1; time = parse_hms(b, i)?; }
+        Some(PosixRule { m: nums[0], w: nums[1], d: nums[2], time })
+    }
+    fn parse_posix(s: &str) -> Option<Posix> {
+        let b = s.as_bytes(); let mut i = 0;
+        if !parse_posix_name(b, &mut i) { return None; }
+        let std = -(parse_hms(b, &mut i)? as i32);
+        if i >= b.len() { return Some(Posix { std, dst: None }); }
+        if !parse_posix_name(b, &mut i) { return None; }
+        let mut dst = std + 3600;
+        if i < b.len() && b[i] != b',' { dst = -(parse_hms(b, &mut i)? as i32); }
+        if i >= b.len() || b[i] != b',' { return Some(Posix { std, dst: None }); }
+        i += 1; let a = parse_rule(b, &mut i)?;
+        if i >= b.len() || b[i] != b',' { return None; }
+        i += 1; let z = parse_rule(b, &mut i)?;
+        Some(Posix { std, dst: Some((dst, a, z)) })
+    }
+    /// Local wall-clock seconds (as if UTC) of "month m, week w (5=last), weekday d" of `y`, plus time-of-day.
+    fn rule_local(y: i64, r: &PosixRule) -> i64 {
+        let first = days_from_civil(y, r.m, 1);
+        let mut day = first + ((r.d as i64 - weekday_of_day(first) as i64).rem_euclid(7)) + 7 * (r.w as i64 - 1);
+        while day >= first + days_in_month(y, r.m) as i64 { day -= 7; }
+        day * 86_400 + r.time
+    }
+    impl Posix {
+        fn offset_at(&self, t: i64) -> i32 {
+            let (dst, a, z) = match &self.dst { Some(x) => x, None => return self.std };
+            let y = civil_from_days((t + self.std as i64).div_euclid(86_400)).0;
+            let start = rule_local(y, a) - self.std as i64;
+            let end = rule_local(y, z) - *dst as i64;
+            let on = if start < end { t >= start && t < end } else { !(t >= end && t < start) };
+            if on { *dst } else { self.std }
+        }
+    }
+
+    fn be32(b: &[u8], o: usize) -> Option<i64> { Some(i32::from_be_bytes(b.get(o..o + 4)?.try_into().ok()?) as i64) }
+    fn be64(b: &[u8], o: usize) -> Option<i64> { Some(i64::from_be_bytes(b.get(o..o + 8)?.try_into().ok()?)) }
+
+    pub fn parse_tzif(b: &[u8]) -> Option<Tz> {
+        if b.get(0..4)? != b"TZif" { return None; }
+        let ver = *b.get(4)?;
+        let hdr = |o: usize| -> Option<[usize; 6]> {
+            let mut c = [0usize; 6];
+            for k in 0..6 { c[k] = be32(b, o + 20 + 4 * k)? as usize; }
+            Some(c)           // isutcnt, isstdcnt, leapcnt, timecnt, typecnt, charcnt
+        };
+        let h1 = hdr(0)?;
+        let v1_len = h1[3] * 5 + h1[4] * 6 + h1[5] + h1[2] * 8 + h1[1] + h1[0];
+        let (base, tsz, h) = if ver >= b'2' { let o = 44 + v1_len; (o, 8usize, hdr(o)?) } else { (0usize, 4usize, h1) };
+        let (timecnt, typecnt, charcnt, leapcnt, isstd, isut) = (h[3], h[4], h[5], h[2], h[1], h[0]);
+        let mut o = base + 44;
+        let mut times = Vec::with_capacity(timecnt);
+        for k in 0..timecnt { times.push(if tsz == 8 { be64(b, o + 8 * k)? } else { be32(b, o + 4 * k)? }); }
+        o += timecnt * tsz;
+        let idx: Vec<usize> = b.get(o..o + timecnt)?.iter().map(|x| *x as usize).collect();
+        o += timecnt;
+        let mut types = Vec::with_capacity(typecnt);
+        for k in 0..typecnt { types.push(be32(b, o + 6 * k)? as i32); }
+        o += typecnt * 6 + charcnt + leapcnt * (tsz + 4) + isstd + isut;
+        let mut footer = None;
+        if ver >= b'2' {
+            if let Some(rest) = b.get(o..) {
+                if rest.first() == Some(&b'\n') {
+                    if let Some(end) = rest[1..].iter().position(|c| *c == b'\n') { footer = std::str::from_utf8(&rest[1..1 + end]).ok().and_then(parse_posix); }
+                }
+            }
+        }
+        if types.is_empty() { return None; }
+        if idx.iter().any(|i| *i >= types.len()) { return None; }
+        let initial = types[0];
+        Some(Tz::Zone { trans: times.into_iter().zip(idx).collect(), types, initial, footer })
+    }
+
+    impl Tz {
+        pub fn utc() -> Tz { Tz::Fixed(0) }
+        /// Offset (seconds east of UTC) in force at the UTC instant `t`.
+        pub fn offset_at(&self, t: i64) -> i32 {
+            match self {
+                Tz::Fixed(o) => *o,
+                Tz::Zone { trans, types, initial, footer } => {
+                    let beyond = trans.last().map_or(true, |l| t >= l.0);
+                    if beyond { if let Some(f) = footer { return f.offset_at(t); } }
+                    if trans.is_empty() || t < trans[0].0 { return *initial; }
+                    let p = trans.partition_point(|x| x.0 <= t);
+                    types[trans[p - 1].1]
+                }
+            }
+        }
+        /// Wall-clock `local` (seconds, as if UTC) -> UTC instant. Fold (clocks back) = first occurrence; gap (clocks forward) = shifted forward.
+        pub fn local_to_utc(&self, local: i64) -> i64 {
+            let a = self.offset_at(local - 86_400) as i64;
+            let b = self.offset_at(local + 86_400) as i64;
+            let ok = |o: i64| self.offset_at(local - o) as i64 == o;
+            match (ok(a), ok(b)) {
+                (true, true) => (local - a).min(local - b),
+                (true, false) => local - a,
+                (false, true) => local - b,
+                (false, false) => local - a,   // gap: use the offset from before the jump
+            }
+        }
+        pub fn to_local(&self, t: i64) -> i64 { t + self.offset_at(t) as i64 }
+
+        /// iCalendar VTIMEZONE block (LF-joined, no trailing newline) so guests' calendars repeat in this zone with correct DST.
+        /// None for a fixed-offset fallback (then the invite stays in UTC).
+        pub fn vtimezone(&self, name: &str, at: i64) -> Option<String> {
+            let footer = match self { Tz::Zone { footer, .. } => footer, Tz::Fixed(_) => return None };
+            let off = |o: i32| { let a = o.abs(); format!("{}{:02}{:02}", if o < 0 { "-" } else { "+" }, a / 3600, (a % 3600) / 60) };
+            let day = ["SU", "MO", "TU", "WE", "TH", "FR", "SA"];
+            let tod = |t: i64| { let t = t.clamp(0, 86_399); format!("19700101T{:02}{:02}{:02}", t / 3600, (t % 3600) / 60, t % 60) };
+            let rr = |r: &PosixRule| format!("FREQ=YEARLY;BYMONTH={};BYDAY={}{}", r.m, if r.w >= 5 { "-1".to_string() } else { r.w.to_string() }, day[(r.d % 7) as usize]);
+            let mut v: Vec<String> = vec!["BEGIN:VTIMEZONE".into(), format!("TZID:{}", name)];
+            match footer {
+                Some(Posix { std, dst: Some((d, a, z)) }) => {
+                    v.extend([format!("BEGIN:DAYLIGHT"), format!("DTSTART:{}", tod(a.time)), format!("TZOFFSETFROM:{}", off(*std)), format!("TZOFFSETTO:{}", off(*d)), format!("RRULE:{}", rr(a)), "END:DAYLIGHT".to_string()]);
+                    v.extend([format!("BEGIN:STANDARD"), format!("DTSTART:{}", tod(z.time)), format!("TZOFFSETFROM:{}", off(*d)), format!("TZOFFSETTO:{}", off(*std)), format!("RRULE:{}", rr(z)), "END:STANDARD".to_string()]);
+                }
+                other => {
+                    let o = match other { Some(Posix { std, .. }) => *std, None => self.offset_at(at) };
+                    v.extend(["BEGIN:STANDARD".to_string(), "DTSTART:19700101T000000".to_string(), format!("TZOFFSETFROM:{}", off(o)), format!("TZOFFSETTO:{}", off(o)), "END:STANDARD".to_string()]);
+                }
+            }
+            v.push("END:VTIMEZONE".into());
+            Some(v.join("\n"))
+        }
+    }
+
+    /// TZID written into an .ics must be a plain IANA name (no header injection, no odd characters).
+    pub fn ics_zone_name_ok(n: &str) -> bool { zone_name_ok(n) && !n.contains('+') || n == "Etc/GMT+0" }
+
+    /// Short English description for invitation mails ("every 2 weeks on Mon, Thu until 31 Dec 2026").
+    pub fn human(r: &Rule) -> String {
+        let unit = match r.freq { Freq::Daily => "day", Freq::Weekly => "week", Freq::Monthly => "month", Freq::Yearly => "year" };
+        let mut s = if r.interval == 1 { format!("every {}", unit) } else { format!("every {} {}s", r.interval, unit) };
+        if !r.byday.is_empty() {
+            let n = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+            let v: Vec<String> = r.byday.iter().map(|(k, d)| match *k { 0 => n[*d as usize].to_string(), -1 => format!("last {}", n[*d as usize]), k => format!("{} {}", ["", "1st", "2nd", "3rd", "4th", "5th"][k.unsigned_abs() as usize % 6], n[*d as usize]) }).collect();
+            s.push_str(&format!(" on {}", v.join(", ")));
+        }
+        if let Some(c) = r.count { s.push_str(&format!(", {} times", c)); }
+        if let Some(u) = r.until { s.push_str(&format!(" until {}", super::fmt_human_utc(u).split(',').next().unwrap_or(""))); }
+        s
+    }
+
+    fn zone_name_ok(n: &str) -> bool {
+        !n.is_empty() && n.len() <= 64 && !n.contains("..") && !n.starts_with('/')
+            && n.bytes().all(|c| c.is_ascii_alphanumeric() || matches!(c, b'_' | b'-' | b'+' | b'/'))
+    }
+
+    /// Real zone from the OS database (cached). Missing/bad name -> `Fixed(fallback_offset_secs)`.
+    pub fn load_tz(name: &str, fallback_offset_secs: i32) -> Arc<Tz> {
+        static CACHE: OnceLock<Mutex<HashMap<String, Arc<Tz>>>> = OnceLock::new();
+        let cache = CACHE.get_or_init(|| Mutex::new(HashMap::new()));
+        let key = name.to_string();
+        if let Ok(m) = cache.lock() { if let Some(t) = m.get(&key) { return t.clone(); } }
+        let tz = if zone_name_ok(name) {
+            ["/usr/share/zoneinfo/", "/usr/lib/zoneinfo/", "/usr/share/lib/zoneinfo/"].iter()
+                .find_map(|d| std::fs::read(format!("{}{}", d, name)).ok())
+                .and_then(|b| parse_tzif(&b))
+        } else { None };
+        match tz {
+            Some(t) => { let a = Arc::new(t); if let Ok(mut m) = cache.lock() { if m.len() < 400 { m.insert(key, a.clone()); } } a }
+            None => Arc::new(Tz::Fixed(fallback_offset_secs)),   // not cached: a late-installed tzdata is picked up
+        }
+    }
+
+    /* -------------------------------------------------------------- expansion */
+
+    fn nth_weekday(y: i64, m: u32, nth: i8, wd: u8) -> Option<i64> {
+        let dim = days_in_month(y, m) as i64;
+        let first = days_from_civil(y, m, 1);
+        if nth > 0 {
+            let d = (wd as i64 - weekday_of_day(first) as i64).rem_euclid(7) + 7 * (nth as i64 - 1);
+            if d < dim { Some(first + d) } else { None }
+        } else {
+            let last = first + dim - 1;
+            let d = (weekday_of_day(last) as i64 - wd as i64).rem_euclid(7) + 7 * (-(nth as i64) - 1);
+            if d < dim { Some(last - d) } else { None }
+        }
+    }
+    fn month_days(y: i64, m: u32, r: &Rule, start_day_of_month: u32, start_wd: u8) -> Vec<i64> {
+        let dim = days_in_month(y, m);
+        let first = days_from_civil(y, m, 1);
+        let mut out: Vec<i64> = Vec::new();
+        if !r.byday.is_empty() {
+            for (n, wd) in &r.byday {
+                if *n == 0 { for d in 0..dim as i64 { if weekday_of_day(first + d) == *wd { out.push(first + d); } } }
+                else if let Some(x) = nth_weekday(y, m, *n, *wd) { out.push(x); }
+            }
+            if !r.bymonthday.is_empty() {
+                let md: Vec<i64> = r.bymonthday.iter().filter_map(|d| { let d = if *d > 0 { *d as i64 } else { dim as i64 + 1 + *d as i64 }; if d >= 1 && d <= dim as i64 { Some(first + d - 1) } else { None } }).collect();
+                out.retain(|x| md.contains(x));
+            }
+        } else if !r.bymonthday.is_empty() {
+            for d in &r.bymonthday { let d = if *d > 0 { *d as i64 } else { dim as i64 + 1 + *d as i64 }; if d >= 1 && d <= dim as i64 { out.push(first + d - 1); } }
+        } else if start_day_of_month <= dim { out.push(first + start_day_of_month as i64 - 1); }
+        let _ = start_wd;
+        out.sort_unstable(); out.dedup(); out
+    }
+
+    /// Occurrence start instants (UTC epoch) of a series that begins at `start` (UTC), in the wall-clock of `tz`,
+    /// overlapping [from, to) given a fixed `duration`; `exdates` (UTC starts) are skipped but still count toward COUNT.
+    /// Result sorted, capped at MAX_INSTANCES.
+    pub fn expand(rule: &Rule, start: i64, duration: i64, tz: &Tz, exdates: &[i64], from: i64, to: i64) -> Vec<i64> {
+        let mut out = Vec::new();
+        let local0 = tz.to_local(start);
+        let day0 = local0.div_euclid(86_400);
+        let tod = local0.rem_euclid(86_400);
+        let (y0, m0, d0) = civil_from_days(day0);
+        let wd0 = weekday_of_day(day0);
+        let step = rule.interval;
+        let counted = rule.count.is_some();
+        let want_end = |u: i64| u < to;
+        let mut produced: u32 = 0;
+        // fast-forward when COUNT does not force us to walk from the start
+        let from_day = tz.to_local(from - duration.max(0) - 86_400).div_euclid(86_400);
+        let mut k: i64 = if counted { 0 } else { match rule.freq {
+            Freq::Daily => ((from_day - day0) / step - 1).max(0),
+            Freq::Weekly => ((from_day - day0) / (7 * step) - 1).max(0),
+            Freq::Monthly => { let (fy, fm, _) = civil_from_days(from_day); (((fy * 12 + fm as i64 - 1) - (y0 * 12 + m0 as i64 - 1)) / step - 1).max(0) }
+            Freq::Yearly => { let (fy, _, _) = civil_from_days(from_day); ((fy - y0) / step - 1).max(0) }
+        } };
+        let mut guard = 0u32;
+        loop {
+            guard += 1; if guard > 40_000 { break; }
+            let days: Vec<i64> = match rule.freq {
+                Freq::Daily => { let d = day0 + k * step; vec![d] }
+                Freq::Weekly => {
+                    let wk0 = day0 - ((wd0 as i64 - rule.wkst as i64).rem_euclid(7));
+                    let ws = wk0 + 7 * step * k;
+                    let mut set: Vec<u8> = if rule.byday.is_empty() { vec![wd0] } else { rule.byday.iter().map(|x| x.1).collect() };
+                    set.sort_unstable(); set.dedup();
+                    let mut v: Vec<i64> = set.iter().map(|w| ws + ((*w as i64 - rule.wkst as i64).rem_euclid(7))).collect();
+                    v.sort_unstable(); v
+                }
+                Freq::Monthly => {
+                    let mi = y0 * 12 + m0 as i64 - 1 + k * step;
+                    let (y, m) = (mi.div_euclid(12), (mi.rem_euclid(12) + 1) as u32);
+                    if !rule.bymonth.is_empty() && !rule.bymonth.contains(&(m as u8)) { vec![] } else { month_days(y, m, rule, d0, wd0) }
+                }
+                Freq::Yearly => {
+                    let y = y0 + k * step;
+                    let months: Vec<u32> = if rule.bymonth.is_empty() { vec![m0] } else { let mut v: Vec<u32> = rule.bymonth.iter().map(|x| *x as u32).collect(); v.sort_unstable(); v };
+                    let mut v = Vec::new();
+                    for m in months { v.extend(month_days(y, m, rule, d0, wd0)); }
+                    v
+                }
+            };
+            let mut period_min = i64::MAX;
+            for d in days {
+                // daily/weekly/yearly BY* filters
+                if matches!(rule.freq, Freq::Daily) {
+                    if !rule.byday.is_empty() && !rule.byday.iter().any(|x| x.1 == weekday_of_day(d)) { continue; }
+                    if !rule.bymonth.is_empty() && !rule.bymonth.contains(&(civil_from_days(d).1 as u8)) { continue; }
+                    if !rule.bymonthday.is_empty() { let (y, m, dd) = civil_from_days(d); let dim = days_in_month(y, m) as i64; if !rule.bymonthday.iter().any(|x| (if *x > 0 { *x as i64 } else { dim + 1 + *x as i64 }) == dd as i64) { continue; } }
+                }
+                if matches!(rule.freq, Freq::Weekly) && !rule.bymonth.is_empty() && !rule.bymonth.contains(&(civil_from_days(d).1 as u8)) { continue; }
+                if d < day0 || (d == day0 && false) { continue; }
+                let u = tz.local_to_utc(d * 86_400 + tod);
+                if u < start { continue; }
+                period_min = period_min.min(u);
+                if let Some(un) = rule.until { if u > un { return out; } }
+                produced += 1;
+                if let Some(c) = rule.count { if produced > c { return out; } }
+                if exdates.iter().any(|e| *e == u) { continue; }
+                if u + duration > from && want_end(u) { out.push(u); if out.len() >= MAX_INSTANCES { return out; } }
+            }
+            if period_min != i64::MAX && period_min >= to && !matches!(rule.freq, Freq::Daily) { break; }
+            if matches!(rule.freq, Freq::Daily) && (day0 + k * step) * 86_400 > to + 2 * 86_400 { break; }
+            if matches!(rule.freq, Freq::Weekly) && (day0 + 7 * step * k) * 86_400 > to + 8 * 86_400 { break; }
+            if matches!(rule.freq, Freq::Monthly) && k * step > 12 * 200 { break; }
+            if matches!(rule.freq, Freq::Yearly) && k * step > 200 { break; }
+            if (matches!(rule.freq, Freq::Monthly) || matches!(rule.freq, Freq::Yearly)) && period_min == i64::MAX {
+                // empty period (e.g. 31st in short month): keep going, but stop once we are far past `to`
+                let probe = match rule.freq { Freq::Monthly => { let mi = y0 * 12 + m0 as i64 - 1 + k * step; days_from_civil(mi.div_euclid(12), (mi.rem_euclid(12) + 1) as u32, 1) }, _ => days_from_civil(y0 + k * step, 1, 1) };
+                if probe * 86_400 > to + 400 * 86_400 { break; }
+            }
+            k += 1;
+        }
+        out
+    }
+
+    /// Instance id: "<uuid>~<original start epoch>".
+    pub fn occ_id(master: &str, start: i64) -> String { format!("{}~{}", master, start) }
+    pub fn split_occ(id: &str) -> (&str, Option<i64>) {
+        match id.split_once('~') { Some((m, e)) => (m, e.parse::<i64>().ok()), None => (id, None) }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use super::super::parse_ts as ts;
+        fn t(s: &str) -> i64 { ts(s).unwrap() }
+        fn iso(v: &[i64]) -> Vec<String> { v.iter().map(|x| super::super::fmt_rfc3339(*x)).collect() }
+
+        #[test]
+        fn parse_and_print() {
+            let r = parse("RRULE:FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,WE;COUNT=6").unwrap();
+            assert_eq!(to_string(&r), "FREQ=WEEKLY;INTERVAL=2;COUNT=6;BYDAY=MO,WE");
+            assert!(parse("FREQ=HOURLY").is_err());
+            assert!(parse("FREQ=DAILY;COUNT=5;UNTIL=20261231").is_err());
+            assert!(parse("FREQ=DAILY;BYSETPOS=1").is_err());
+            assert!(parse("FREQ=DAILY;COUNT=99999").is_err());
+            assert!(parse("FREQ=WEEKLY;BYDAY=1MO").is_err());
+            assert!(parse("").is_err());
+        }
+
+        #[test]
+        fn daily_count_and_exdate() {
+            let r = parse("FREQ=DAILY;COUNT=4").unwrap();
+            let s = t("2026-10-20T09:00:00Z");
+            let v = expand(&r, s, 1800, &Tz::utc(), &[], 0, s + 30 * 86_400);
+            assert_eq!(v.len(), 4);
+            let v = expand(&r, s, 1800, &Tz::utc(), &[s + 86_400], 0, s + 30 * 86_400);
+            assert_eq!(v.len(), 3);           // exdate removed, COUNT still 4 instances long
+            assert_eq!(v[1], s + 2 * 86_400);
+        }
+
+        #[test]
+        fn weekly_byday_interval() {
+            let r = parse("FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH").unwrap();
+            let s = t("2026-10-22T10:00:00Z");   // Thursday
+            let v = expand(&r, s, 3600, &Tz::utc(), &[], s, s + 40 * 86_400);
+            assert_eq!(iso(&v)[..4], ["2026-10-22T10:00:00Z", "2026-11-02T10:00:00Z", "2026-11-05T10:00:00Z", "2026-11-16T10:00:00Z"].map(String::from));
+        }
+
+        #[test]
+        fn monthly_rules() {
+            let s = t("2026-01-31T08:00:00Z");
+            let r = parse("FREQ=MONTHLY").unwrap();                         // 31st: months without 31 are skipped
+            let v = expand(&r, s, 60, &Tz::utc(), &[], s, t("2026-06-30T00:00:00Z"));
+            assert_eq!(iso(&v), ["2026-01-31T08:00:00Z", "2026-03-31T08:00:00Z", "2026-05-31T08:00:00Z"].map(String::from));
+            let r = parse("FREQ=MONTHLY;BYDAY=-1FR").unwrap();               // last Friday
+            let s2 = t("2026-10-30T12:00:00Z");
+            let v = expand(&r, s2, 60, &Tz::utc(), &[], s2, t("2027-01-31T00:00:00Z"));
+            assert_eq!(iso(&v), ["2026-10-30T12:00:00Z", "2026-11-27T12:00:00Z", "2026-12-25T12:00:00Z", "2027-01-29T12:00:00Z"].map(String::from));
+            let r = parse("FREQ=MONTHLY;BYDAY=2TU").unwrap();                // 2nd Tuesday
+            let s3 = t("2026-10-13T12:00:00Z");
+            let v = expand(&r, s3, 60, &Tz::utc(), &[], s3, t("2026-12-31T00:00:00Z"));
+            assert_eq!(iso(&v), ["2026-10-13T12:00:00Z", "2026-11-10T12:00:00Z", "2026-12-08T12:00:00Z"].map(String::from));
+            let r = parse("FREQ=MONTHLY;BYMONTHDAY=-1").unwrap();            // last day
+            let s4 = t("2026-02-28T12:00:00Z");
+            let v = expand(&r, s4, 60, &Tz::utc(), &[], s4, t("2026-05-01T00:00:00Z"));
+            assert_eq!(iso(&v), ["2026-02-28T12:00:00Z", "2026-03-31T12:00:00Z", "2026-04-30T12:00:00Z"].map(String::from));
+        }
+
+        #[test]
+        fn yearly_and_leap() {
+            let r = parse("FREQ=YEARLY").unwrap();
+            let s = t("2024-02-29T10:00:00Z");
+            let v = expand(&r, s, 60, &Tz::utc(), &[], s, t("2033-01-01T00:00:00Z"));
+            assert_eq!(iso(&v), ["2024-02-29T10:00:00Z", "2028-02-29T10:00:00Z", "2032-02-29T10:00:00Z"].map(String::from));
+        }
+
+        #[test]
+        fn until_inclusive_and_window_fastforward() {
+            let r = parse("FREQ=DAILY;UNTIL=20261024T090000Z").unwrap();
+            let s = t("2026-10-20T09:00:00Z");
+            let v = expand(&r, s, 60, &Tz::utc(), &[], 0, s + 90 * 86_400);
+            assert_eq!(v.len(), 5);
+            // long-running series seen through a 7-day window far from its start
+            let r = parse("FREQ=DAILY").unwrap();
+            let s = t("2020-01-01T09:00:00Z");
+            let w0 = t("2026-10-19T00:00:00Z");
+            let v = expand(&r, s, 60, &Tz::utc(), &[], w0, w0 + 7 * 86_400);
+            assert_eq!(v.len(), 7);
+            let r = parse("FREQ=WEEKLY;BYDAY=TU").unwrap();
+            let s = t("2020-01-07T09:00:00Z");
+            let v = expand(&r, s, 60, &Tz::utc(), &[], w0, w0 + 14 * 86_400);
+            assert_eq!(iso(&v), ["2026-10-20T09:00:00Z", "2026-10-27T09:00:00Z"].map(String::from));
+        }
+
+        #[test]
+        fn overlap_counts_running_instance() {
+            let r = parse("FREQ=DAILY").unwrap();
+            let s = t("2026-10-20T23:00:00Z");
+            let v = expand(&r, s, 7200, &Tz::utc(), &[], t("2026-10-21T00:30:00Z"), t("2026-10-21T01:00:00Z"));
+            assert_eq!(iso(&v), ["2026-10-20T23:00:00Z"].map(String::from));   // started yesterday, still running
+        }
+
+        #[test]
+        fn fixed_zone_karachi() {
+            let tz = Tz::Fixed(5 * 3600);
+            let r = parse("FREQ=DAILY;COUNT=2").unwrap();
+            let s = t("2026-10-22T04:00:00Z");        // 09:00 PKT
+            let v = expand(&r, s, 60, &tz, &[], 0, s + 5 * 86_400);
+            assert_eq!(iso(&v), ["2026-10-22T04:00:00Z", "2026-10-23T04:00:00Z"].map(String::from));
+        }
+
+        fn zone(n: &str) -> Option<Tz> { std::fs::read(format!("/usr/share/zoneinfo/{}", n)).ok().and_then(|b| parse_tzif(&b)) }
+
+        #[test]
+        fn dst_new_york_weekly_keeps_wall_clock() {
+            let tz = match zone("America/New_York") { Some(z) => z, None => return };
+            let r = parse("FREQ=WEEKLY").unwrap();
+            let s = t("2026-10-27T13:00:00Z");        // Tue 09:00 EDT
+            let v = expand(&r, s, 3600, &tz, &[], s, t("2026-11-12T00:00:00Z"));
+            // US DST ends Sun 1 Nov 2026 -> from 3 Nov the same 09:00 is 14:00Z
+            assert_eq!(iso(&v), ["2026-10-27T13:00:00Z", "2026-11-03T14:00:00Z", "2026-11-10T14:00:00Z"].map(String::from));
+        }
+
+        #[test]
+        fn dst_footer_far_future_and_london() {
+            let ny = match zone("America/New_York") { Some(z) => z, None => return };
+            assert_eq!(ny.offset_at(t("2040-07-01T12:00:00Z")), -4 * 3600);
+            assert_eq!(ny.offset_at(t("2040-01-15T12:00:00Z")), -5 * 3600);
+            let ld = match zone("Europe/London") { Some(z) => z, None => return };
+            assert_eq!(ld.offset_at(t("2026-03-29T00:59:00Z")), 0);
+            assert_eq!(ld.offset_at(t("2026-03-29T01:00:00Z")), 3600);
+            let khi = match zone("Asia/Karachi") { Some(z) => z, None => return };
+            assert_eq!(khi.offset_at(t("2026-10-22T00:00:00Z")), 5 * 3600);
+            let syd = match zone("Australia/Sydney") { Some(z) => z, None => return };
+            assert_eq!(syd.offset_at(t("2026-01-15T00:00:00Z")), 11 * 3600);   // southern summer
+            assert_eq!(syd.offset_at(t("2026-07-15T00:00:00Z")), 10 * 3600);
+            assert_eq!(syd.offset_at(t("2045-01-15T00:00:00Z")), 11 * 3600);
+        }
+
+        #[test]
+        fn dst_gap_and_fold() {
+            let ny = match zone("America/New_York") { Some(z) => z, None => return };
+            // 2026-03-08 02:30 local does not exist -> shifted forward to 03:30 EDT = 07:30Z
+            let local = days_from_civil(2026, 3, 8) * 86_400 + 2 * 3600 + 1800;
+            assert_eq!(super::super::fmt_rfc3339(ny.local_to_utc(local)), "2026-03-08T07:30:00Z");
+            // 2026-11-01 01:30 local happens twice -> first (EDT) = 05:30Z
+            let local = days_from_civil(2026, 11, 1) * 86_400 + 3600 + 1800;
+            assert_eq!(super::super::fmt_rfc3339(ny.local_to_utc(local)), "2026-11-01T05:30:00Z");
+        }
+
+        #[test]
+        fn human_text() {
+            assert_eq!(human(&parse("FREQ=WEEKLY;INTERVAL=2;BYDAY=MO,TH;COUNT=6").unwrap()), "every 2 weeks on Mon, Thu, 6 times");
+            assert_eq!(human(&parse("FREQ=MONTHLY;BYDAY=-1FR").unwrap()), "every month on last Fri");
+            assert_eq!(human(&parse("FREQ=DAILY").unwrap()), "every day");
+        }
+
+        #[test]
+        fn vtimezone_block() {
+            let ny = match zone("America/New_York") { Some(z) => z, None => return };
+            let v = ny.vtimezone("America/New_York", 0).unwrap();
+            assert!(v.contains("BEGIN:DAYLIGHT") && v.contains("TZOFFSETTO:-0400") && v.contains("BYMONTH=3;BYDAY=2SU"), "{}", v);
+            assert!(v.contains("BEGIN:STANDARD") && v.contains("TZOFFSETTO:-0500") && v.contains("BYMONTH=11;BYDAY=1SU"), "{}", v);
+            let k = match zone("Asia/Karachi") { Some(z) => z, None => return };
+            let v = k.vtimezone("Asia/Karachi", t("2026-10-22T00:00:00Z")).unwrap();
+            assert!(!v.contains("DAYLIGHT") && v.contains("TZOFFSETTO:+0500"), "{}", v);
+            assert!(Tz::Fixed(3600).vtimezone("x", 0).is_none());
+            assert!(!ics_zone_name_ok("a\r\nX:1") && ics_zone_name_ok("Europe/London"));
+        }
+
+        #[test]
+        fn occ_ids() {
+            assert_eq!(split_occ("abc~123"), ("abc", Some(123)));
+            assert_eq!(split_occ("abc"), ("abc", None));
+            assert_eq!(occ_id("m", 5), "m~5");
+        }
+
+        #[test]
+        fn zone_names_are_safe() {
+            assert!(!zone_name_ok("../etc/passwd"));
+            assert!(!zone_name_ok("/etc/passwd"));
+            assert!(zone_name_ok("America/Argentina/Buenos_Aires"));
+            assert!(matches!(&*load_tz("../../x", 3600), Tz::Fixed(3600)));
+        }
     }
 }

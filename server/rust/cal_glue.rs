@@ -13,7 +13,7 @@
 // frontend purane Bun route par girta hai (event ban jata hai, invitations nahi jati) — kuch toot'ta nahi.
 // ============================================================================
 
-use crate::cal_core::{self as cal, EventSpec, Guest, Interval, InviteLinks, Method, Person};
+use crate::cal_core::{self as cal, recur, EventSpec, Guest, Interval, InviteLinks, Method, Person};
 use axum::{http::StatusCode, response::IntoResponse};
 use serde_json::{json, Value};
 use std::sync::atomic::{AtomicBool, AtomicU64, Ordering};
@@ -23,6 +23,8 @@ const MAX_GUESTS: usize = 50;
 const DAILY_INVITE_CAP: i64 = 200;
 
 static V2_READY: AtomicBool = AtomicBool::new(false);
+static REC_READY: AtomicBool = AtomicBool::new(false);
+static REC_CHECKED: std::sync::atomic::AtomicI64 = std::sync::atomic::AtomicI64::new(0);
 static MSG_SEQ: AtomicU64 = AtomicU64::new(0);
 
 pub fn owns(proc: &str) -> bool {
@@ -104,6 +106,79 @@ async fn v2_ready() -> bool {
         V2_READY.store(true, Ordering::Relaxed);
     }
     ready
+}
+
+/// Recurrence SQL (E56) installed? Positive answer is cached for good; a "no" is re-checked at most once a minute,
+/// so a calendar without E56 behaves exactly as before (one-off meetings only).
+async fn recur_ready() -> bool {
+    if REC_READY.load(Ordering::Relaxed) {
+        return true;
+    }
+    let now = now_epoch();
+    if now - REC_CHECKED.load(Ordering::Relaxed) < 60 {
+        return false;
+    }
+    REC_CHECKED.store(now, Ordering::Relaxed);
+    let ok = crate::sb_select("calendar_events?select=rrule,exdates,series_id,recurrence_id,tz_offset_min&limit=1")
+        .await
+        .is_ok();
+    if ok {
+        REC_READY.store(true, Ordering::Relaxed);
+    }
+    ok
+}
+
+fn zone_of(ev: &Value) -> std::sync::Arc<recur::Tz> {
+    let off = (num(ev, "tz_offset_min").unwrap_or(0).clamp(-840, 840) * 60) as i32;
+    recur::load_tz(&st(ev, "tz"), off)
+}
+
+fn exdates_of(ev: &Value) -> Vec<i64> {
+    ev.get("exdates")
+        .and_then(|v| v.as_array())
+        .map(|a| a.iter().filter_map(|x| x.as_str().and_then(cal::parse_ts)).collect())
+        .unwrap_or_default()
+}
+
+fn is_master(ev: &Value) -> bool {
+    !st(ev, "rrule").is_empty()
+}
+
+/// Every occurrence of a series master that overlaps [from, to), as event rows with composite ids.
+fn occurrences(ev: &Value, from: i64, to: i64) -> Vec<Value> {
+    let rule = match recur::parse(&st(ev, "rrule")) {
+        Ok(r) => r,
+        Err(_) => return vec![],
+    };
+    let (s, e) = match (cal::parse_ts(&st(ev, "starts_at")), cal::parse_ts(&st(ev, "ends_at"))) {
+        (Some(s), Some(e)) => (s, e),
+        _ => return vec![],
+    };
+    let dur = (e - s).max(60);
+    let tz = zone_of(ev);
+    recur::expand(&rule, s, dur, &tz, &exdates_of(ev), from, to)
+        .into_iter()
+        .map(|u| {
+            let mut j = ev.clone();
+            if let Some(o) = j.as_object_mut() {
+                o.insert("id".into(), json!(recur::occ_id(&st(ev, "id"), u)));
+                o.insert("starts_at".into(), json!(cal::fmt_rfc3339(u)));
+                o.insert("ends_at".into(), json!(cal::fmt_rfc3339(u + dur)));
+                o.insert("series_id".into(), json!(st(ev, "id")));
+                o.insert("recurrence_id".into(), json!(cal::fmt_rfc3339(u)));
+                o.insert("_occ".into(), json!(true));
+            }
+            j
+        })
+        .collect()
+}
+
+/// "when" text for a mail, with the repeat rule appended for series.
+fn repeat_label(label: &str, spec: &EventSpec) -> String {
+    match spec.rrule.as_deref().and_then(|r| recur::parse(r).ok()) {
+        Some(r) if spec.recurrence_id.is_none() => format!("{} (repeats {})", label, recur::human(&r)),
+        _ => label.to_string(),
+    }
 }
 
 struct Who {
@@ -241,8 +316,12 @@ fn guests_of(rows: &[Value]) -> Vec<Guest> {
 }
 
 fn event_spec(ev: &Value, organiser_name: Option<String>, rows: &[Value]) -> Option<EventSpec> {
+    let sid = st(ev, "series_id");
+    let exc = !sid.is_empty();
+    let tzname = st(ev, "tz");
+    let zone = zone_of(ev);
     Some(EventSpec {
-        id: st(ev, "id"),
+        id: if exc { sid } else { st(ev, "id") },
         sequence: num(ev, "sequence").unwrap_or(0).max(0) as u32,
         title: st(ev, "title"),
         agenda: opt(ev, "agenda"),
@@ -255,6 +334,10 @@ fn event_spec(ev: &Value, organiser_name: Option<String>, rows: &[Value]) -> Opt
         },
         guests: guests_of(rows),
         now: now_epoch(),
+        rrule: opt(ev, "rrule"),
+        exdates: exdates_of(ev),
+        recurrence_id: if exc { cal::parse_ts(&st(ev, "recurrence_id")) } else { None },
+        tz: if tzname.is_empty() { None } else { Some((tzname, (*zone).clone())) },
     })
 }
 
@@ -418,6 +501,12 @@ fn event_json(ev: &Value, rows: &[Value]) -> Value {
         "thread_subject": ev.get("thread_subject").cloned().unwrap_or(Value::Null),
         "kind": "meeting", "status": st(ev, "status"), "sequence": num(ev, "sequence").unwrap_or(0),
         "cost": Value::Null, "conflict": false, "shield_conflict": false,
+        "rrule": ev.get("rrule").cloned().filter(|v| v.as_str().map_or(false, |x| !x.is_empty())).unwrap_or(Value::Null),
+        "recurring": !st(ev, "rrule").is_empty() || !st(ev, "series_id").is_empty(),
+        "series_id": opt(ev, "series_id").map(Value::from).unwrap_or(Value::Null),
+        "recurrence_id": opt(ev, "recurrence_id").map(Value::from).unwrap_or(Value::Null),
+        "is_exception": !st(ev, "series_id").is_empty() && st(ev, "rrule").is_empty() && ev.get("_occ").is_none(),
+        "timezone": opt(ev, "tz").map(Value::from).unwrap_or(Value::Null),
     })
 }
 
@@ -619,7 +708,8 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
     .into_response()
 }
 
-async fn load_own_event(me: &Who, id: &str) -> Result<Value, axum::response::Response> {
+async fn load_own_event(me: &Who, raw_id: &str) -> Result<Value, axum::response::Response> {
+    let id = recur::split_occ(raw_id).0; // "<uuid>~<epoch>" = one occurrence of a series
     if !cal::token_shape_ok(id) {
         return Err(fail(
             StatusCode::BAD_REQUEST,
@@ -938,14 +1028,43 @@ fn range_of(input: &Value) -> Option<(i64, i64)> {
 }
 
 async fn events_between(me: &Who, from: i64, to: i64) -> Result<Vec<Value>, ()> {
+    let rec = recur_ready().await;
     let q = format!(
-        "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null&starts_at=lt.{}&ends_at=gt.{}&order=starts_at.asc&limit=500",
+        "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null{}&starts_at=lt.{}&ends_at=gt.{}&order=starts_at.asc&limit=500",
         me.org_id,
+        if rec { "&rrule=is.null" } else { "" },
         cal::fmt_rfc3339(to),
         cal::fmt_rfc3339(from)
     );
     let v = crate::sb_select(&q).await.map_err(|_| ())?;
-    Ok(v.as_array().cloned().unwrap_or_default())
+    let mut out = v.as_array().cloned().unwrap_or_default();
+    if rec {
+        // series masters start before the window and repeat into it: expand them here (time zone + DST aware)
+        let mq = format!(
+            "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null&rrule=not.is.null&starts_at=lt.{}&limit=300",
+            me.org_id,
+            cal::fmt_rfc3339(to)
+        );
+        let masters = crate::sb_select(&mq).await.map_err(|_| ())?;
+        for m in masters.as_array().cloned().unwrap_or_default() {
+            if st(&m, "status") == "cancelled" {
+                continue;
+            }
+            out.extend(occurrences(&m, from, to));
+        }
+        out.sort_by_key(|e| cal::parse_ts(&st(e, "starts_at")).unwrap_or(0));
+        out.truncate(1500);
+    }
+    Ok(out)
+}
+
+/// The real event row an expanded occurrence belongs to (attendees live on the master).
+fn base_id(e: &Value) -> String {
+    if e.get("_occ").is_some() {
+        st(e, "series_id")
+    } else {
+        st(e, "id")
+    }
 }
 
 async fn attendees_of_many(ids: &[String]) -> Vec<Value> {
@@ -971,7 +1090,9 @@ async fn events(me: &Who, input: &Value) -> axum::response::Response {
         Ok(e) => e,
         Err(_) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
     };
-    let ids: Vec<String> = evs.iter().map(|e| st(e, "id")).filter(|i| cal::token_shape_ok(i)).collect();
+    let mut ids: Vec<String> = evs.iter().map(base_id).filter(|i| cal::token_shape_ok(i)).collect();
+    ids.sort();
+    ids.dedup();
     let all = attendees_of_many(&ids).await;
     let spans: Vec<Interval> = evs
         .iter()
@@ -985,7 +1106,7 @@ async fn events(me: &Who, input: &Value) -> axum::response::Response {
         .iter()
         .enumerate()
         .map(|(i, e)| {
-            let id = st(e, "id");
+            let id = base_id(e);
             let mine: Vec<Value> = all.iter().filter(|a| st(a, "event_id") == id).cloned().collect();
             let mut j = event_json(e, &mine);
             let k = st(e, "kind");
@@ -1007,8 +1128,18 @@ async fn event_one(me: &Who, input: &Value) -> axum::response::Response {
         Ok(e) => e,
         Err(r) => return r,
     };
-    let rows = attendee_rows(&id).await;
-    crate::ok(json!({ "event": event_json(&ev, &rows), "outcome": Value::Null, "tasks": [] })).into_response()
+    let (base, occ) = recur::split_occ(&id);
+    let rows = attendee_rows(base).await;
+    let mut shown = ev.clone();
+    if is_master(&ev) {
+        if let Some(u) = occ {
+            match occurrences(&ev, u, u + 1).into_iter().find(|o| cal::parse_ts(&st(o, "starts_at")) == Some(u)) {
+                Some(o) => shown = o,
+                None => return fail(StatusCode::NOT_FOUND, "not_found", "That occurrence no longer exists"),
+            }
+        }
+    }
+    crate::ok(json!({ "event": event_json(&shown, &rows), "outcome": Value::Null, "tasks": [] })).into_response()
 }
 
 async fn team_load(me: &Who, input: &Value) -> axum::response::Response {
@@ -1020,7 +1151,9 @@ async fn team_load(me: &Who, input: &Value) -> axum::response::Response {
         Ok(e) => e,
         Err(_) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
     };
-    let ids: Vec<String> = evs.iter().map(|e| st(e, "id")).filter(|i| cal::token_shape_ok(i)).collect();
+    let mut ids: Vec<String> = evs.iter().map(base_id).filter(|i| cal::token_shape_ok(i)).collect();
+    ids.sort();
+    ids.dedup();
     let all = attendees_of_many(&ids).await;
     // person -> their meetings (organiser + every guest who did not decline)
     let mut per: Vec<(String, Vec<Interval>)> = Vec::new();
@@ -1040,7 +1173,7 @@ async fn team_load(me: &Who, input: &Value) -> axum::response::Response {
             end: cal::parse_ts(&st(e, "ends_at")).unwrap_or(0),
         };
         add(st(e, "organiser"), iv);
-        let id = st(e, "id");
+        let id = base_id(e);
         for a in all.iter().filter(|a| st(a, "event_id") == id && st(a, "response") != "declined") {
             add(st(a, "address"), iv);
         }
@@ -1079,6 +1212,26 @@ async fn busy_for(
         ) {
             if let Some(slot) = per.iter_mut().find(|p| p.0 == a) {
                 slot.1.push(Interval { start: s, end: e });
+            }
+        }
+    }
+    // repeating meetings: expand every master that any of these people attend (E56 not installed => nothing to add)
+    if recur_ready().await {
+        if let Ok(ms) = crate::sb_rpc(
+            "calendar_busy_masters",
+            json!({ "p_org": me.org_id, "p_addresses": addrs, "p_to": cal::fmt_rfc3339(to) }),
+        )
+        .await
+        {
+            for m in ms.as_array().cloned().unwrap_or_default() {
+                let a = st(&m, "address").to_lowercase();
+                if let Some(slot) = per.iter_mut().find(|p| p.0 == a) {
+                    for o in occurrences(&m, from, to) {
+                        if let (Some(s), Some(e)) = (cal::parse_ts(&st(&o, "starts_at")), cal::parse_ts(&st(&o, "ends_at"))) {
+                            slot.1.push(Interval { start: s, end: e });
+                        }
+                    }
+                }
             }
         }
     }
