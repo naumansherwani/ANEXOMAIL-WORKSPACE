@@ -48,6 +48,9 @@
 
 ## Commands (verbatim, naya sabse upar)
 
+### 21 Oct 2026 07:45 PKT — founder (verbatim): "yeh anexomail ka logo jo tumne A banya hai kya is ka code hai tumharay pass? agar hai yahan chat main dai do main server pe pull ker lun ga. baki tumne repo ko touch nahi kerna hai specific yeh logi ki command daini hai"
+**Halat:** READY — logo ka asli code chat mein de diya: `src/components/site/BrandMark.tsx` (SVG "A" mark + wordmark) aur `public/favicon.svg` (tab icon), dono base64 server command ke saath (.bak backup + locked build/restart block). Repo ka koi code file touch NAHI hua; sirf yeh halat entry likhi gayi (Rule 24).
+
 ### 20 Oct 2026 20:09 PKT — founder (verbatim): "repo update kero mainay dekha hai ke bar bar same kaam repeat kaam ker rahay ho compact chat se pehle repo updat kero aur likho ke yeh kaam already ho chuka phir se repeat nahi kerna hai. compact chat se pehle update kero. latest technology pe kaam kero sirf"
 **Halat:** DONE — `docs/cursor-work/DONE-DO-NOT-REPEAT.md` + AGENTS.md Rule 30. E46 (notices+appeal), E47 (revoke asli session), notify worker, file-safety-check, appeal form READY (pull baqi).
 
