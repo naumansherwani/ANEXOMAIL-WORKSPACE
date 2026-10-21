@@ -19,3 +19,6 @@ Reconcile query (`polar_*` pending replacements) har ~15 min 1.0–1.35 s (slow-
 2. `anexomail-rust`: `billing.portal` (login, subscription active/past_due check, rate-limit, internal HMAC call) + Bun fallback `/api/billing/portal`.
 3. Frontend `app.billing`: "Manage billing" (cancel/card/VAT) — dead end "email karein" hatao. 390/820/1440.
 4. Alag chhota: Bun `/api/billing/subscription` shadow bug (polar.ts purana route pehle mount hota hai) -> `index.ts` mount order, polar.ts untouched.
+
+## Update 21:41
+Webhook receiver already WAL-first (verify -> WAL fsync -> 200; worker; reconcile 15 min; reject log; secrets auto-sync, 2 Polar endpoints: polarpayments.anexomail.com (Sep 7) + anexomail.com (Aug 12, legacy signing)). Caddy logs: billing/ 1 hit, checkout 0, webhook 264. Design: POLAR-CONTROL-PLANE-PLAN.md.

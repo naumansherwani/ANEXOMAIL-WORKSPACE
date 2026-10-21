@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md fc77c1b647b043a4
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 5e7a959ecda33f13
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -326,5 +326,6 @@ docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
 src/routes/app.founder.tsx 55493891045ccb78
 docs/claude/FOUNDER-WORKSPACE-PLAN.md 5732f90e95270367
 docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
-docs/claude/EVENING-PENDING-2026-10-21.md f9632c7d2b4b8f2f
-docs/claude/POLAR-ENGINE-MAP.md 5d7bb8c12e4b3309
+docs/claude/EVENING-PENDING-2026-10-21.md d69ee1c4a9711763
+docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
+docs/claude/POLAR-CONTROL-PLANE-PLAN.md 56b2b109c209aa1a
