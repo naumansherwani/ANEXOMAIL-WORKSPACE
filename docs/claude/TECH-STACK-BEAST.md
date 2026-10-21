@@ -48,3 +48,34 @@ Har batch ke saath 390/820/1440 check; touch ≥ 44px; loading/error/empty state
 
 ## C. Adoption process
 Naya tech tabhi `LIVE` jab: sandbox proof -> founder ka server output -> GREEN-BOARD. Pehle `NEXT` mein likho, measure (before/after), phir apnao. Version bumps (Bun 1.4.3, tokio 1.54, axum 0.8) B8 mein.
+
+## D. WASM · Kernel · SHA-256 · HMAC-SHA256 — kahan lagte hain (founder sawal 21 Oct 08:35)
+**Aaj ki sachai (repo grep):** WASM = kahin nahi. Kernel-level features = kahin nahi (sirf ufw 3443/udp). SHA-256 aur HMAC = pehle se bahut jagah LIVE.
+
+### D1. WASM
+| Jagah | Kya | Status |
+|---|---|---|
+| ANEXOMAIL client (public app) | Rust->WASM crate `web-wasm/`, Web Worker mein lazy: mail search/diff, MIME preview parse, bade list sort/filter, attachment SHA-256 (streaming, upload se pehle integrity) | NEXT (B8 ke baad) |
+| Server (Rust) | `wasmtime` sandbox: user automations/rules/plugins safe chalane ke liye (CPU/RAM/time limit, no network) | LATER |
+| Founder side (static SPA) | audit-log **hash-chain verify browser mein** (WASM), 3D/data crunch Worker+OffscreenCanvas mein | F-phases |
+Rule: WASM sirf hot path jahan JS dheema; baqi React. Module ka SHA-256 pin (D3).
+
+### D2. Kernel (Linux, app code nahi — server hardening)
+| Feature | Kahan | Status |
+|---|---|---|
+| nftables/ufw (3443/udp live) + founder host IP allowlist **kernel level par bhi** (Caddy ke saath double lock) | server | NEXT |
+| systemd sandbox: founder/rust service alag user, `NoNewPrivileges`, `ProtectSystem=strict`, `PrivateTmp`, seccomp filter, Landlock — attachment/AV/WASM runner par | server | NEXT |
+| sysctl tuning: BBR congestion control, `somaxconn`, UDP buffers (QUIC/WebTransport) | server | NEXT |
+| eBPF: per-IP rate-limit/DDoS drop (XDP), syscall-level observability | server | LATER |
+| io_uring (`monoio`): attachment/storage I/O | Rust engine | LATER |
+
+### D3. SHA-256 (fingerprint — bina key, koi bhi nikal sakta hai)
+LIVE: attachment dedup/integrity (`attach_glue.rs`, `attachments.ts`), release **lock signature** (`b5_glue.rs`), export, passkey/webauthn, mail MIME ids, events.
+NEXT: **founder audit hash-chain** (har row = SHA-256(prev_hash + row)), static SPA asset hashes + **SRI** (`integrity=`), WASM module pinning, release artifact checksums (installer verify).
+Rule: SHA-256 se kabhi email/phone/password hash nahi (guess-able) — wahan HMAC ya argon2.
+
+### D4. HMAC-SHA256 (authenticity — secret key chahiye)
+LIVE: device hash (E41 `device_hash`), Polar webhook verify (NO TOUCH), session/idempotency signed paths.
+PENDING: **E24 `email_hash` HMAC migrate**, G34 purane device hash HMAC migrate (`device-hash-migrate.sh`).
+NEXT: founder session cookie sign, CSRF tokens, **signed download URLs** (attachments, expiry), SSE/WebTransport session tokens, audit-chain **signature** (HMAC key server-only — tamper-evident), internal service-to-service calls (Rust<->Brain).
+Rule: key `.env` mein, alag key har kaam ka (key separation), constant-time compare, rotation plan.
