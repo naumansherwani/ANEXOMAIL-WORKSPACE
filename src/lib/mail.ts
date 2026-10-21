@@ -257,8 +257,9 @@ export type SendPayload = {
 export function useSendMail() {
   const qc = useQueryClient();
   return useMutation<unknown, ApiError, SendPayload>({
+    // B3: Rust PRIMARY (mail.send), Bun /api/mail/send fallback. Rust smtp_failed = 424 (fallback nahi: mail dobara na jaye).
     mutationFn: (payload) =>
-      api("/api/mail/send", { method: "POST", body: JSON.stringify(payload) }),
+      rpcOrRest("mail.send", { path: "/api/mail/send", method: "POST", body: payload }, payload),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["mail"] });
       void qc.invalidateQueries({ queryKey: ["dashboard"] });

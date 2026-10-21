@@ -133,13 +133,16 @@ async function processQueue() {
   if (running) return;
   running = true;
   try {
-    const nowIso = new Date().toISOString();
-    const { data: rows, error } = await supa
-      .from("mail_scheduled")
-      .select("id, org_id, user_id, identity, to, cc, bcc, subject, body, thread_id, attachment_ids")
-      .eq("status", "queued")
-      .lte("send_at", nowIso)
-      .limit(20);
+    // B3: ek row ek hi worker (Bun ya Rust) uthaye — mail_queue_claim (E54, FOR UPDATE SKIP LOCKED). E54 na ho to purana tareeqa.
+    let { data: rows, error }: { data: any[] | null; error: any } = (await supa.rpc("mail_queue_claim", { _limit: 20, _stale_minutes: 10 })) as any;
+    if (error && /mail_queue_claim|PGRST202|schema cache/i.test(String(error.message || error.code || ""))) {
+      ({ data: rows, error } = (await supa
+        .from("mail_scheduled")
+        .select("id, org_id, user_id, identity, to, cc, bcc, subject, body, thread_id, attachment_ids")
+        .eq("status", "queued")
+        .lte("send_at", new Date().toISOString())
+        .limit(20)) as any);
+    }
 
     if (error) {
       console.error("[mail-worker] queue fetch failed:", error.message);

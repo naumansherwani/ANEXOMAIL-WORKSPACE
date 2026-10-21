@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, mock, test } from "bun:test";
 
 // sandbox mein node_modules nahi: react-query sirf usePasskeyStatus ke liye chahiye, in tests mein nahi
-mock.module("@tanstack/react-query", () => ({ useQuery: () => null }));
+mock.module("@tanstack/react-query", () => ({ useQuery: () => null, useMutation: (o: unknown) => o, useQueryClient: () => ({ invalidateQueries: () => undefined }) }));
 
 const store = new Map<string, string>();
 (globalThis as any).window = {

@@ -225,6 +225,9 @@ mailComposeRouter.post("/schedule", async (req, res) => {
 
 mailComposeRouter.post("/schedule/:id/cancel", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  // B3 (E54): jo row kisi worker ne utha li woh cancel nahi hoti (mail nikal rahi hai). E54 na ho to neeche purana tareeqa.
+  const rc: any = await supa.rpc("mail_queue_cancel", { _id: req.params.id, _user: c.userId, _org: c.orgId });
+  if (!rc.error) return rc.data === true ? res.json({ ok: true }) : res.status(409).json({ error: "already_sent" });
   const { data, error } = await supa
     .from("mail_scheduled")
     .update({ status: "cancelled" })

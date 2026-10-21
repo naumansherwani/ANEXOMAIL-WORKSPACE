@@ -12,6 +12,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { api, ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type ComposeTone = "warm" | "direct" | "formal" | "short" | "apologetic";
 
@@ -181,22 +182,22 @@ export function useScheduleSend() {
     ApiError,
     DraftPayload & { hold_seconds?: number }
   >({
+    // B3: Rust PRIMARY (mail.schedule), Bun /api/mail/schedule fallback (Rust 404/501/502/503 par)
     mutationFn: (payload) =>
-      api("/api/mail/schedule", { method: "POST", body: JSON.stringify(payload) }),
+      rpcOrRest("mail.schedule", { path: "/api/mail/schedule", method: "POST", body: payload }, payload),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail"] }),
   });
 }
 
 /** Plain call (no hook): the Undo toast outlives the closed composer, so it cannot depend on a mounted component. */
 export function cancelScheduledSend(id: string): Promise<unknown> {
-  return api(`/api/mail/schedule/${id}/cancel`, { method: "POST", body: JSON.stringify({}) });
+  return rpcOrRest("mail.schedule.cancel", { path: `/api/mail/schedule/${id}/cancel`, method: "POST", body: {} }, { id });
 }
 
 export function useCancelScheduled() {
   const qc = useQueryClient();
   return useMutation<unknown, ApiError, { id: string }>({
-    mutationFn: ({ id }) =>
-      api(`/api/mail/schedule/${id}/cancel`, { method: "POST", body: JSON.stringify({}) }),
+    mutationFn: ({ id }) => cancelScheduledSend(id),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail"] }),
   });
 }
