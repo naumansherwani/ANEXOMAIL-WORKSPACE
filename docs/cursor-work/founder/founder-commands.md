@@ -8,6 +8,11 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 03:30 PKT — CALENDAR LAYOUT hukm (verbatim ka matlab, status: TODO -> kaam shuru)
+Founder: "do side bar anay se woh neechay rehta hai … pehle woh seedha jo live time pe rehta tha. aur time live dekhna chaiye … sab plans mein. **duniya mein jo bhi user hoga us ki country ka time chalay ga** … demo like kiya (ek sidebar, upar toolbar, Month default, live ghadi + laal now-line). Calendar Google se advance kaise hoga bhi batao. mobile / tablet / laptop teeno dekhna. website already calendar Rust pe hai (engine ko mat chhedo). sab kero. Chrome login tha achanak kya hua dekho."
+- Faisla: ek hi sidebar (app menu), calendar ka beech wala panel desktop par hata; toolbar mein Month/Week/Day/Today/tir/+Meeting/live ghadi (browser ka time zone); week/day mein laal now-line; Month default; detail grid ke upar overlay; phone par list+detail alag screen; SAB packages barabar (Rule 37, koi tier code nahi). Rust calendar engine untouched.
+- Pehle ka B7b (recurrence) server par GREEN (E56 + Rust + web). Live Chrome test aadha: "this only" cancel PASS; test series "Recurrence test (delete me)" cleanup baqi.
+
 ## ▶ ABHI KA KAAM — founder ka hukm 19 Oct 06:27 PKT: "is tarteeb se codes likhna hai." (founder 20 Oct 03:55: "woh shaam ajj hai" — "shaam ko" wali shart khatam, tarteeb ab CHAL RAHI hai)
 
 ✅ **DONE (live saboot):** E36 / Business Pro logins (05:54, dobara touch nahi) · E35 SQL (05:54) · E34 SQL (06:06) · Rust cal+people+team+mig (06:16: build OK 1m43s, health 200, GUARD 2 reads, port 993 khula) · Web pull db11a0b (06:16, /health 200) · **Import mail live test GREEN (06:27: asli imap.gmail.com se `auth_failed` jawab, nakli login)**.
