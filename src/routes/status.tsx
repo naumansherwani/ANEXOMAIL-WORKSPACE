@@ -58,7 +58,7 @@ function StatusPage() {
 
   const unreachable = Boolean(q.error) || (timedOut && !q.data);
   const headline = q.data
-    ? HEADLINE[q.data.state]
+    ? (HEADLINE[q.data.state] ?? HEADLINE["degraded"])
     : unreachable
       ? "Live status is currently unavailable"
       : "Checking the platform…";
@@ -68,7 +68,7 @@ function StatusPage() {
       <SiteNav />
       <main className="ax-container pt-20 pb-24 md:pt-24">
         <p className="ax-eyebrow">Service status</p>
-        <h1 className="mt-4 max-w-3xl text-4xl text-foreground md:text-5xl">{headline}</h1>
+        <h1 aria-live="polite" className="mt-4 max-w-3xl text-3xl text-foreground sm:text-4xl md:text-5xl">{headline}</h1>
         <p className="mt-5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
           This page is generated from the same live probes our release gate runs — mail delivery,
           workspace, sign-in and domain authentication. If something is broken, it says so here
@@ -91,7 +91,7 @@ function StatusPage() {
                   <div className="flex items-center gap-3">
                     <span
                       className={
-                        "rounded-md border px-1.5 py-0.5 text-[11px] font-semibold " + TONE[c.state]
+                        "rounded-md border px-1.5 py-0.5 text-[11px] font-semibold " + (TONE[c.state] ?? TONE["degraded"])
                       }
                     >
                       {c.state}

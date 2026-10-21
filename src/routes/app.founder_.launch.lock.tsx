@@ -97,7 +97,7 @@ function LockPage() {
               },
             )
           }
-          className="ax-press mt-ax-4 rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-40"
+          className="ax-press ax-tap mt-ax-4 rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-40"
         >
           {sign.isPending ? "Signing…" : `Sign and freeze v${version}`}
         </button>

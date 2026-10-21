@@ -623,3 +623,4 @@ Is review ke har nukte ka anjaam: U1/U2 DONE (16 Oct live), U3 DONE (16 Oct brow
 
 ## FOUNDER RULE 21 Oct 07:35 (STANDING) — CEO ka kaam
 Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tablet / laptop / desktop user experience + frontend technology sab dekhna. Agar Lovable ya Cursor ne kuch GALAT kiya hai to usay mujhe khud theek/fix karna hai (founder ko loophole list nahi dena). Har batch ke saath frontend check (390/820/1440) + purani galtiyan fix; end-of-migration Chrome test mein bhi.
+- 07:37 founder: frontend check HAMESHA, har batch mein, backend+frontend ka COMBO (B5 ke founder pages ka audit B6 ka intezar nahi karega — abhi).

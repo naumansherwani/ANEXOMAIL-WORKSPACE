@@ -97,8 +97,8 @@ function ChecklistPage() {
                                   },
                                 )
                               }
-                              className="ax-press"
-                              aria-label={`Cycle ${i.label}`}
+                              className="ax-press ax-tap -m-1 rounded-lg p-1"
+                              aria-label={`${i.label}: ${i.state}. Tap to change.`}
                             >
                               <Verdict
                                 verdict={

@@ -31,8 +31,10 @@ if (SUPABASE_URL && SERVICE_KEY) {
   console.error("revenue: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503");
 }
 
-const PLAN_PRICE: Record<string, number> = { basic: 20, pro: 40, business: 85 };
-const SLA_PRICE = 700;
+// Locked list prices (server/config/billing-products.ts, Polar): Basic £23 · Pro £46 · Business £97 per seat; Priority Support £790/mo.
+// 21 Oct 2026: these were stale (20/40/85/700) and understated every revenue number on the founder board.
+const PLAN_PRICE: Record<string, number> = { basic: 23, pro: 46, business: 97 };
+const SLA_PRICE = 790;
 
 const publicRouter = Router();
 const founderRouter = Router();

@@ -66,7 +66,8 @@ function LaunchCommand() {
               },
             )
           }
-          className="ax-press mt-ax-4 rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50"
+          aria-busy={run.isPending}
+          className="ax-press ax-tap mt-ax-4 rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50"
         >
           {run.isPending ? "Running the suite…" : "Run full QA"}
         </button>
@@ -118,7 +119,7 @@ function LaunchCommand() {
                         <Verdict verdict="fail">blocker</Verdict>
                         <span className="min-w-0 flex-1">
                           <span className="block font-semibold text-foreground">{b.label}</span>
-                          <span className="block truncate text-steel">
+                          <span className="block break-words text-steel sm:truncate">
                             {b.suite}
                             {b.detail ? ` · ${b.detail}` : ""}
                           </span>

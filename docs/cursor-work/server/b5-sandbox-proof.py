@@ -298,7 +298,7 @@ def main():
         _, ov, _ = rust("founder.release.overview", {}, F)
         check("overview: gate 'locked' (lock maujood), blockers = 1 checklist + 1 failed check seeded", ov["gate"] == "locked" and len(ov["blockers"]) == 2 and ov["checklist_open"] == 3, ov)
         _, pp, _ = rust("founder.revenue.pipeline", {}, F)
-        check("pipeline: committed = 425 + 80.5 (live) + 500 (1 live SLA) + 60 (active partner) = 1065.5 -> 1066; gap = round(1500-1065.5) = 435", pp["committed_mrr_gbp"] == 1066 and pp["gap_gbp"] == 435 and pp["one_off_cash_gbp"] == 1200, pp)
+        check("pipeline: committed = 425 + 80.5 (live) + 790 (1 live SLA, locked £790) + 60 (active partner) = 1355.5 -> 1356; gap = round(1500-1355.5) = 145", pp["committed_mrr_gbp"] == 1356 and pp["gap_gbp"] == 145 and pp["one_off_cash_gbp"] == 1200, pp)
 
         print("== 5) founder gate")
         for proc, inp in [("founder.release.run", {}), ("founder.release.lock.create", {"version": "9"}), ("founder.revenue.pipeline", {}), ("founder.movein.cockpit", {})]:

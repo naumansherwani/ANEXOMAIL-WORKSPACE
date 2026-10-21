@@ -134,3 +134,4 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 
 - **21 Oct 07:09 D11 ufw 3443/udp GREEN** (ufw active, rule maujood) + **passkey test-account exempt GREEN** (marker live Brain mein). Baqi D11: Caddy cert 12 Nov, Bun billing bug, E24 HMAC migrate, Bun 1.4.3/tokio 1.54 (B8).
 - **B5 (G40) CODE 21 Oct 08:20** — server/rust/b5_core.rs + b5_glue.rs, engine-installer `b5` module, client rpcOrRest (13 calls). Sandbox: ASLI Bun routes vs Rust, ek mock DB, b5-sandbox-proof.py SAB PASS (~80). Server par `rust-engine-install.sh` chalna baqi => tab tak green nahi. AI chat (Leo memory + OpenRouter stream) B8 mein; mail.thread pehle se Rust.
+- **B5 frontend+backend audit 21 Oct 08:50** — stale prices in Bun revenue/release routes fixed (790/46, Rust same); founder Move-In cockpit safety (ConfirmButton) + loading/error/touch fixes; launch pages 44px targets. Live Chrome check 390/820/1440 end-of-migration.

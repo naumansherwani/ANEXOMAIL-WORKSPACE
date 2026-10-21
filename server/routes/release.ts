@@ -883,7 +883,7 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
     const accounts = (accQ.data ?? []) as any[];
     const live = accounts.filter((a) => a.state !== "cancelled");
     const subsMrr = live.reduce((s, a) => s + Number(a.mrr_gbp || 0), 0);
-    const slaMrr = live.filter((a) => a.sla_addon).length * 500;
+    const slaMrr = live.filter((a) => a.sla_addon).length * 790; // Priority Support = £790/mo per account (locked price; was a stale 500)
     const partners = (partnerQ.data ?? []) as any[];
     const partnerMrr = partners
       .filter((p) => p.stage === "active" || p.stage === "live")
@@ -902,7 +902,7 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
       const weight = STAGE_WEIGHT[String(l.stage || "new")] ?? 0.1;
       const seats = Number(linked?.plan_seats ?? l.seats ?? 1);
       const expected =
-        linked?.expected_mrr_gbp != null ? Number(linked.expected_mrr_gbp) : seats * 40;
+        linked?.expected_mrr_gbp != null ? Number(linked.expected_mrr_gbp) : seats * 46; // Pro list price per seat (locked; was a stale 40)
       return {
         id: l.id,
         reference: l.reference,

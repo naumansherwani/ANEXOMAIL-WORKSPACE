@@ -79,6 +79,8 @@ function RoadmapPage() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="What should v2.0 do"
+              maxLength={300}
+              autoComplete="off"
               className="mt-1 w-full rounded-lg border border-border bg-card px-2.5 py-1.5 text-[13px] text-foreground outline-none"
             />
           </label>
@@ -124,7 +126,7 @@ function RoadmapPage() {
           <button
             type="submit"
             disabled={add.isPending}
-            className="ax-press rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50 sm:col-span-2"
+            className="ax-press ax-tap rounded-lg bg-foreground px-3 py-2 text-[12px] font-semibold text-background disabled:opacity-50 sm:col-span-2"
           >
             {add.isPending ? "Saving…" : "Add to v2.0"}
           </button>
@@ -149,7 +151,7 @@ function RoadmapPage() {
               ) : (
                 <ul className="space-y-1.5">
                   {[...d.items]
-                    .sort((a, b) => b.impact / b.effort - a.impact / a.effort)
+                    .sort((a, b) => b.impact / Math.max(1, b.effort) - a.impact / Math.max(1, a.effort))
                     .map((i) => (
                       <Row key={i.id}>
                         <Verdict
@@ -165,7 +167,7 @@ function RoadmapPage() {
                         </Verdict>
                         <span className="min-w-0 flex-1">
                           <span className="block font-semibold text-foreground">{i.title}</span>
-                          <span className="block truncate text-steel">
+                          <span className="block break-words text-steel sm:truncate">
                             {i.area}
                             {i.revenue_link ? ` · ${i.revenue_link}` : ""}
                           </span>

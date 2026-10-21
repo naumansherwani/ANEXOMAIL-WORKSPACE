@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AlertTriangle, Banknote, CalendarClock, Database, ShieldCheck } from "lucide-react";
 
 import {
@@ -14,6 +14,8 @@ import {
   RESULT_TONE,
 } from "@/lib/movein";
 import { relativeTime } from "@/lib/mail";
+import { ConfirmButton } from "@/components/app/ConfirmButton";
+import { notify } from "@/lib/notify";
 
 export const Route = createFileRoute("/app/founder_/movein")({
   component: MoveInCockpit,
@@ -46,6 +48,19 @@ function MoveInCockpit() {
 
   const c = cockpit.data;
   const bundle = deal.data?.deal;
+  const loading = cockpit.isPending;
+  /** A number is shown only once the server has answered — never a fake 0 while loading. */
+  const n = (v: string | number | null | undefined) => (loading || v == null ? "—" : String(v));
+  const detailRef = useRef<HTMLElement | null>(null);
+  const openDeal = (id: string) => {
+    setDealId(id);
+    // On a phone the detail panel sits far below the board — bring it into view.
+    requestAnimationFrame(() => detailRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
+  const done = (what: string) => ({
+    onSuccess: () => notify.done(what),
+    onError: (e: Error) => notify.failed(`${what} failed`, { description: e.message }),
+  });
 
   return (
     <div className="space-y-8">
@@ -62,30 +77,33 @@ function MoveInCockpit() {
       </header>
 
       {cockpit.isError && (
-        <p className="text-sm text-muted-foreground">
-          Move-In backend abhi reachable nahi — deploy ke baad yeh screen live ho jayegi.
-        </p>
+        <div role="alert" className="flex flex-wrap items-center gap-3 rounded-xl border border-danger/40 bg-danger/10 p-3 text-sm text-danger">
+          <span className="min-w-0 flex-1">The cockpit could not be loaded: {cockpit.error?.message ?? "server unreachable"}.</span>
+          <button type="button" onClick={() => void cockpit.refetch()} className="ax-press ax-tap rounded-lg border border-danger/50 px-3 py-2 text-xs font-semibold">
+            Try again
+          </button>
+        </div>
       )}
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Active move-ins" value={String(c?.active_moves ?? 0)} />
-        <Stat label="Slots free this month" value={String(c?.capacity?.slots_free ?? "—")} />
+        <Stat label="Active move-ins" value={n(c?.active_moves ?? 0)} />
+        <Stat label="Slots free this month" value={n(c?.capacity?.slots_free)} />
         <Stat
           label="Cash collected"
-          value={gbp((c?.cash?.deposits_paid_gbp ?? 0) + (c?.cash?.final_paid_gbp ?? 0))}
+          value={loading ? "—" : gbp((c?.cash?.deposits_paid_gbp ?? 0) + (c?.cash?.final_paid_gbp ?? 0))}
         />
         {(c?.cash?.overdue_gbp ?? 0) > 0 ? (
-          <Stat label="Outstanding" value={gbp(c?.cash?.outstanding_gbp)} tone="warn" />
+          <Stat label="Outstanding" value={loading ? "—" : gbp(c?.cash?.outstanding_gbp)} tone="warn" />
         ) : (
-          <Stat label="Outstanding" value={gbp(c?.cash?.outstanding_gbp)} />
+          <Stat label="Outstanding" value={loading ? "—" : gbp(c?.cash?.outstanding_gbp)} />
         )}
       </section>
 
       <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <Stat label="Booked value" value={gbp(c?.cash?.booked_gbp)} />
-        <Stat label="Cut-overs next 24h" value={String(c?.cutovers_tonight ?? 0)} />
-        <Stat label="Mailbox verified" value={`${c?.mailbox_verification_pct ?? 0}%`} />
-        <Stat label="DNS proof green" value={`${c?.dns_proof_pct ?? 0}%`} />
+        <Stat label="Booked value" value={loading ? "—" : gbp(c?.cash?.booked_gbp)} />
+        <Stat label="Cut-overs next 24h" value={n(c?.cutovers_tonight ?? 0)} />
+        <Stat label="Mailbox verified" value={loading ? "—" : `${c?.mailbox_verification_pct ?? 0}%`} />
+        <Stat label="DNS proof green" value={loading ? "—" : `${c?.dns_proof_pct ?? 0}%`} />
       </section>
 
       {!!c?.attention?.length && (
@@ -95,13 +113,14 @@ function MoveInCockpit() {
             {c.attention.map((a, i) => (
               <li
                 key={`${a.deal_id}-${a.kind}-${i}`}
-                className="flex items-start gap-2 rounded-xl border border-amber-500/20 bg-amber-500/5 p-3 text-sm"
+                className="flex items-start gap-2 rounded-xl border border-warning/30 bg-warning/5 p-3 text-sm"
               >
-                <AlertTriangle className="mt-0.5 h-4 w-4 text-amber-500" />
+                <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-warning" aria-hidden="true" />
                 <span>
                   <button
-                    className="font-medium underline-offset-2 hover:underline"
-                    onClick={() => setDealId(a.deal_id)}
+                    type="button"
+                    className="ax-tap font-medium underline underline-offset-2"
+                    onClick={() => openDeal(a.deal_id)}
                   >
                     {a.reference}
                   </button>{" "}
@@ -116,16 +135,17 @@ function MoveInCockpit() {
 
       <section className="space-y-3">
         <h3 className="text-sm font-medium">Move-in board</h3>
-        {c?.board?.length === 0 && (
-          <p className="text-sm text-muted-foreground">Ab tak koi move-in request nahi.</p>
+        {!loading && c?.board?.length === 0 && (
+          <p className="text-sm text-muted-foreground">No move-in requests yet.</p>
         )}
         <ul className="space-y-2">
           {(c?.board ?? []).map((d) => (
             <li key={d.id} className="rounded-xl border p-4 text-sm">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <button
-                  className="font-medium underline-offset-2 hover:underline"
-                  onClick={() => setDealId(d.id)}
+                  type="button"
+                  className="ax-tap min-w-0 text-left font-medium underline-offset-2 hover:underline"
+                  onClick={() => openDeal(d.id)}
                 >
                   {d.reference} · {d.company}
                 </button>
@@ -138,14 +158,14 @@ function MoveInCockpit() {
                   {d.mailboxes} mailboxes · band {d.band ?? "—"}
                 </span>
                 <span>{gbp(d.price_gbp)}</span>
-                <span className={d.deposit_paid ? "text-emerald-500" : ""}>
+                <span className={d.deposit_paid ? "text-success" : ""}>
                   deposit {d.deposit_paid ? "paid" : "due"}
                 </span>
-                <span className={d.final_paid ? "text-emerald-500" : ""}>
+                <span className={d.final_paid ? "text-success" : ""}>
                   final {d.final_paid ? "paid" : "due"}
                 </span>
                 <span>health {d.health}%</span>
-                {d.waitlisted && <span className="text-amber-500">waitlisted</span>}
+                {d.waitlisted && <span className="text-warning">waitlisted</span>}
                 <span>updated {relativeTime(d.updated_at)}</span>
               </div>
             </li>
@@ -153,8 +173,14 @@ function MoveInCockpit() {
         </ul>
       </section>
 
+      {dealId && deal.isPending && (
+        <p className="text-sm text-muted-foreground" role="status">Loading the move-in record…</p>
+      )}
+      {dealId && deal.isError && (
+        <p role="alert" className="text-sm text-danger">Could not load this move-in: {deal.error?.message}</p>
+      )}
       {bundle && (
-        <section className="space-y-4 rounded-2xl border p-5">
+        <section ref={detailRef} className="scroll-mt-4 space-y-4 rounded-2xl border p-4 sm:p-5">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div>
               <h3 className="text-sm font-medium">
@@ -166,7 +192,8 @@ function MoveInCockpit() {
               </p>
             </div>
             <button
-              className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+              type="button"
+              className="ax-press ax-tap rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-foreground"
               onClick={() => setDealId(null)}
             >
               Close
@@ -192,11 +219,11 @@ function MoveInCockpit() {
                 {bundle.payments.map((p) => (
                   <li
                     key={p.leg}
-                    className="flex items-center justify-between rounded-lg border px-3 py-2"
+                    className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
                   >
                     <span>{p.leg === "deposit" ? "Deposit 50%" : "Final 50%"}</span>
                     <span
-                      className={p.state === "paid" ? "text-emerald-500" : "text-muted-foreground"}
+                      className={p.state === "paid" ? "text-success" : "text-muted-foreground"}
                     >
                       {gbp(p.amount_gbp)} · {p.state}
                     </span>
@@ -211,14 +238,14 @@ function MoveInCockpit() {
               </h4>
               <ul className="space-y-1 text-sm">
                 {bundle.dns_proof.length === 0 && (
-                  <li className="text-muted-foreground">Abhi koi check record nahi.</li>
+                  <li className="text-muted-foreground">No check records yet.</li>
                 )}
                 {bundle.dns_proof.map((p) => (
                   <li
                     key={`${p.phase}-${p.record}`}
-                    className="flex items-center justify-between rounded-lg border px-3 py-2"
+                    className="flex items-center justify-between gap-3 rounded-lg border px-3 py-2"
                   >
-                    <span>
+                    <span className="min-w-0 break-all">
                       {p.phase} · {p.record}
                     </span>
                     <span className={RESULT_TONE[p.result] ?? ""}>{p.result}</span>
@@ -242,20 +269,23 @@ function MoveInCockpit() {
                   <span className="flex items-center gap-2">
                     <span className={RESULT_TONE[r.result] ?? ""}>{r.result}</span>
                     {r.result !== "VERIFIED" && dealId && (
-                      <button
-                        className="rounded-md border px-2 py-0.5 text-xs hover:border-primary hover:text-primary"
-                        disabled={step.isPending}
-                        onClick={() =>
-                          step.mutate({
-                            deal_id: dealId,
-                            step_key: stepKeyFor(r.label),
-                            result: "VERIFIED",
-                            evidence: "verified in cockpit",
-                          })
+                      <ConfirmButton
+                        pending={step.isPending}
+                        confirmLabel="Tap again: mark verified"
+                        onConfirm={() =>
+                          step.mutate(
+                            {
+                              deal_id: dealId,
+                              step_key: stepKeyFor(r.label),
+                              result: "VERIFIED",
+                              evidence: "verified in cockpit",
+                            },
+                            done("Step verified"),
+                          )
                         }
                       >
                         Mark verified
-                      </button>
+                      </ConfirmButton>
                     )}
                   </span>
                 </li>
@@ -266,39 +296,38 @@ function MoveInCockpit() {
           <div className="flex flex-wrap gap-2">
             {dealId && (
               <>
-                <button
-                  className="rounded-lg border px-3 py-1.5 text-xs hover:border-primary hover:text-primary"
-                  disabled={rollback.isPending}
-                  onClick={() => rollback.mutate({ deal_id: dealId, label: "pre-cutover" })}
+                <ConfirmButton
+                  pending={rollback.isPending}
+                  onConfirm={() => rollback.mutate({ deal_id: dealId, label: "pre-cutover" }, done("Rollback point recorded"))}
                 >
                   Record rollback point
-                </button>
-                <button
-                  className="rounded-lg border px-3 py-1.5 text-xs hover:border-primary hover:text-primary"
-                  disabled={arm.isPending}
-                  onClick={() => arm.mutate({ deal_id: dealId })}
+                </ConfirmButton>
+                <ConfirmButton
+                  pending={arm.isPending}
+                  confirmLabel="Tap again: arm cut-over"
+                  onConfirm={() => arm.mutate({ deal_id: dealId }, done("Cut-over armed"))}
                 >
                   Arm cut-over
-                </button>
-                <button
-                  className="rounded-lg border px-3 py-1.5 text-xs hover:border-primary hover:text-primary"
-                  disabled={transition.isPending}
-                  onClick={() =>
-                    transition.mutate({
-                      deal_id: dealId,
-                      to: "CUTOVER_EXECUTED",
-                      reason: "cut-over executed",
-                    })
+                </ConfirmButton>
+                <ConfirmButton
+                  tone="danger"
+                  pending={transition.isPending}
+                  confirmLabel="Tap again: EXECUTE cut-over"
+                  onConfirm={() =>
+                    transition.mutate(
+                      { deal_id: dealId, to: "CUTOVER_EXECUTED", reason: "cut-over executed" },
+                      done("Cut-over executed"),
+                    )
                   }
                 >
                   Execute cut-over
-                </button>
+                </ConfirmButton>
               </>
             )}
           </div>
           {(arm.isError || transition.isError) && (
-            <p className="text-xs text-amber-600">
-              Database ne roka: {(arm.error ?? transition.error)?.message}. Pehle gates clear karo.
+            <p role="alert" className="text-xs text-warning">
+              The database refused this: {(arm.error ?? transition.error)?.message}. Clear the open gates first.
             </p>
           )}
 
@@ -335,7 +364,7 @@ function stepKeyFor(label: string) {
 function Stat({ label, value, tone }: { label: string; value: string; tone?: "warn" }) {
   return (
     <div
-      className={`rounded-xl border p-4 ${tone === "warn" ? "border-amber-500/30 bg-amber-500/5" : ""}`}
+      className={`rounded-xl border p-4 ${tone === "warn" ? "border-warning/30 bg-warning/5" : ""}`}
     >
       <div className="text-xs text-muted-foreground">{label}</div>
       <div className="mt-1 text-lg font-semibold tracking-tight">{value}</div>

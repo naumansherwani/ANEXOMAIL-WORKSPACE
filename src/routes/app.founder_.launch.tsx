@@ -28,7 +28,7 @@ function LaunchLayout() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Rocket className="size-3.5" aria-hidden="true" /> Launch machine
         </p>
-        <nav className="mt-ax-3 flex gap-1 overflow-x-auto">
+        <nav aria-label="Launch sections" className="mt-ax-3 -mx-1 flex gap-1 overflow-x-auto px-1 pb-1">
           {TABS.map((t) => (
             <Link
               key={t.to}
@@ -36,7 +36,7 @@ function LaunchLayout() {
               activeOptions={{ exact: t.to === "/app/founder/launch" }}
               activeProps={{ className: "bg-secondary text-foreground" }}
               inactiveProps={{ className: "text-muted-foreground hover:text-foreground" }}
-              className="ax-press shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-semibold whitespace-nowrap"
+              className="ax-press ax-tap inline-flex shrink-0 items-center rounded-lg px-3 py-1.5 text-[12px] font-semibold whitespace-nowrap"
             >
               {t.label}
             </Link>

@@ -416,14 +416,17 @@ pub fn offer_label(kind: &str) -> &'static str {
     }
 }
 
-/// Weighted expected MRR of one open lead: linked pipeline row wins, else seats * 40.
+/// Weighted expected MRR of one open lead: linked pipeline row wins, else seats * Pro list price (£46).
 pub fn expected_mrr(linked_expected: Option<f64>, seats: f64, weight: f64) -> i64 {
-    let base = linked_expected.unwrap_or(seats * 40.0);
+    let base = linked_expected.unwrap_or(seats * SEAT_PRICE_DEFAULT);
     js_round(base * weight)
 }
 
-/// Priority-support retainer: 500 per live SLA account.
-pub const SLA_MRR_PER_ACCOUNT: i64 = 500;
+/// Priority-support retainer: £790/mo per live SLA account (locked list price; the old 500 was stale).
+pub const SLA_MRR_PER_ACCOUNT: i64 = 790;
+
+/// Per-seat price used when a lead has no linked pipeline row: Pro list price £46 (the old 40 was stale).
+pub const SEAT_PRICE_DEFAULT: f64 = 46.0;
 
 pub fn gap(target: f64, committed: f64) -> i64 {
     js_round(target - committed).max(0)
@@ -618,13 +621,13 @@ mod tests {
         assert_eq!(stage_weight("???"), 0.1);
         assert_eq!(offer_label("migration"), "Managed Move-In");
         assert_eq!(offer_label("nope"), "Workspace subscription");
-        // 3 seats, no link, stage "qualified" (0.4): 3*40*0.4 = 48
-        assert_eq!(expected_mrr(None, 3.0, 0.4), 48);
+        // 3 seats, no link, stage "qualified" (0.4): 3*46*0.4 = 55.2 -> 55
+        assert_eq!(expected_mrr(None, 3.0, 0.4), 55);
         // linked 1000, "quoted" (0.5)
         assert_eq!(expected_mrr(Some(1000.0), 9.0, 0.5), 500);
         assert_eq!(gap(500.0, 120.4), 380);
         assert_eq!(gap(100.0, 900.0), 0);
-        assert_eq!(SLA_MRR_PER_ACCOUNT * 2, 1000);
+        assert_eq!(SLA_MRR_PER_ACCOUNT * 2, 1580);
     }
 
     #[test]
