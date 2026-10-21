@@ -10,9 +10,9 @@ def start(port,env_extra):
         try: socket.create_connection(("127.0.0.1",port),timeout=1).close(); break
         except OSError: time.sleep(.1)
     return p
-def hook(port,secret):
-    body=b'{"type":"test.event","data":{}}'; ts=str(int(time.time())); wid="evt_"+ts
-    key=base64.b64decode(secret[6:]); sig=base64.b64encode(hmac.new(key,f"{wid}.{ts}.{body.decode()}".encode(),hashlib.sha256).digest()).decode()
+def hook(port,secret,legacy=False,age=0):
+    body=b'{"type":"test.event","data":{}}'; ts=str(int(time.time())-age); wid="evt_"+ts
+    key=secret.encode() if legacy else base64.b64decode(secret[6:]); sig=base64.b64encode(hmac.new(key,f"{wid}.{ts}.{body.decode()}".encode(),hashlib.sha256).digest()).decode()
     r=urllib.request.Request(f"http://127.0.0.1:{port}/api/v1/polar-webhook",data=body,method="POST",headers={"content-type":"application/json","webhook-id":wid,"webhook-timestamp":ts,"webhook-signature":"v1,"+sig})
     try: return urllib.request.urlopen(r,timeout=10).status
     except urllib.error.HTTPError as e: return e.code
@@ -36,5 +36,8 @@ chk("doosre endpoint ki delivery 401 (yehi bug tha)",hook(5612,S2)==401)
 p.kill()
 p=start(5613,{"POLAR_WEBHOOK_SECRET":S1,"POLAR_WEBHOOK_SECRETS":f'"{S1}"\n{S2}'})
 chk("dedupe + quotes/newline theek",health(5613).get("webhook_secrets")==2)
+chk("Polar HMAC (8 Sept 2026 se pehle ke secret: key = poori whsec_ string) delivery 200",hook(5613,S2,legacy=True)==200)
+chk("Standard Webhooks (naye secret) delivery 200",hook(5613,S2)==200)
+chk("purani redelivery (10 min puraana timestamp) => 401 timestamp_out_of_tolerance",hook(5613,S1,age=600)==401)
 p.kill()
 print(f"\n{ok} pass, {bad} fail"); sys.exit(1 if bad else 0)
