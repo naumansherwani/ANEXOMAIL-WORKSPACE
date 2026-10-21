@@ -51,6 +51,14 @@ Pehle hukm: "founder mein Bun/Node kahin nahi". Ab frontend stack React/Vite/Tan
 Repo ki list `src/lib/founder-plan.ts` (PLANNED_MAILBOXES, 10 address): naumansherwani.founder@, humzasherwani@, raanasherwani@, masoodsherwani@, resolved@, moveyourbusiness@, hello@, billing@, noreply@, leo@ (anexomail.com).
 Kaam: har address **build (provision) + working wire** (Postfix/Dovecot/DKIM/inbound->app/send), server par proof ke saath. Founder ka alag email system bhi. Nexatect (parent company) ke addresses uske baad.
 
+## 2d. Founder side: WASM · Kernel · SHA-256 · HMAC (founder ka hukm 21 Oct 21:14 — poori table `TECH-STACK-BEAST.md` §D)
+- **WASM:** founder SPA mein audit-log hash-chain **browser mein WASM se verify**; 3D/data ka bhari kaam Web Worker + OffscreenCanvas; WASM module ka SHA-256 pin (SRI).
+- **Kernel:** founder host par IP allowlist Caddy + **nftables dono** (double lock); `anexomail-founder` alag Linux user + systemd sandbox (`NoNewPrivileges`, `ProtectSystem=strict`, `PrivateTmp`, seccomp, Landlock); BBR + UDP buffer tuning (WebTransport/QUIC). Baad: eBPF, io_uring.
+- **SHA-256:** audit hash-chain (har row = SHA-256(prev_hash + row)); static SPA assets par `integrity=`; installer/release checksums.
+- **HMAC-SHA256:** founder session cookie sign, CSRF token, signed download URLs (expiry), audit-chain signature (key sirf server), Rust<->Brain calls. Har kaam ki alag key, constant-time compare, rotation.
+- **Usool:** email/phone/password par plain SHA-256 kabhi nahi (guess-able) — HMAC ya argon2.
+- Phase mapping: F1 (kernel/systemd/nftables + cookie/CSRF HMAC + audit chain), F2+ (SRI/WASM verify), F7 (Worker/OffscreenCanvas 3D).
+
 ## 3. Founder view — metadata-only (privacy locked)
 > Naam: "God view" ki jagah **Founder view** (founder ka hukm 21 Oct 08:20).
 > **Email:** founder ka ALAG email system (apna). ANEXOMAIL ke baqi banaye hue addresses (founder@, support@, leads@ ...) aur parent company **Nexatect** ke addresses BAAD ka kaam hain (phase F5+ ke baad), abhi scope mein nahi.
