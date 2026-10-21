@@ -289,3 +289,8 @@ Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/cl
 - Bug mila: hata di gayi occurrence ki detail "Not wired yet" (server 404 -> rpcOrRest legacy fallback). FIX: server ab 410 occurrence_gone; UI stale "<series>~<t>" selection band karta hai. Default calendar view ab MONTH (founder order).
 - Test series "Recurrence test (delete me)" founder ke calendar mein bachi hai (Fri 23 Oct 10:00, 4 baar; 30 Oct cancel; 6 Nov ko 14:00 move karne ka click ho chuka tha, extension disconnect hone se result nahi dekha) — founder khud "All events" cancel kar de ya agli live session mein main karunga.
 - Chrome extension disconnect hua: retry nahi kiya.
+
+## 22 Oct 2026 04:00 — Calendar layout v2 (founder demo "like"), READY (server pull baqi)
+- app.calendar.tsx: ek hi sidebar (app menu); calendar ka beech wala panel HATA; upar ek toolbar (tir, Today, label, Month/Week/Day, LIVE ghadi viewer ke apne time zone mein, Avail./Load, import/export, +Meeting); Month default (cells mein titled chips md+, dots phone); week/day md+ par TimeGrid (laal now-line, aaj ho to ab par khulta hai; count=1 day), phone par agenda/day list; event/new meeting/avail/load/import ek side Sheet (phone par poori screen). Koi tier code nahi (Rule 37). Rust calendar engine untouched.
+- Sandbox: Chromium 1440/820/390 teeno par month/week/day/sheet, koi overflow nahi.
+- Baqi: server pull + live Chrome dekhna (har plan ek jaisa).

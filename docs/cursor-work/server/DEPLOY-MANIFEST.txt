@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 6bba25d1c81196c4
+src/routes/app.calendar.tsx 5e6854847a6a41a3
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 8a1ecdbf6fdbd7ba
+docs/cursor-work/DONE-DO-NOT-REPEAT.md a21314885a6d98c0
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -250,7 +250,7 @@ docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48ca4e71128
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx 4ac818c9b3282576
+src/components/app/calendar/TimeGrid.tsx fdf439e5fb394e3a
 src/lib/plans.ts 4d31c58ca080c878
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898

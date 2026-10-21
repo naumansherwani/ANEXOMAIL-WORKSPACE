@@ -13,7 +13,6 @@ import { Fx3D } from "@/components/fx/Fx3D";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ArrowLeft,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
@@ -34,10 +33,10 @@ import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
-import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetDescription, SheetTitle } from "@/components/ui/sheet";
 import {
   clockRange,
   exportPath,
@@ -88,11 +87,14 @@ function MonthView({
   anchor,
   events,
   onPickDay,
+  onSelect,
 }: {
   anchor: Date;
   events: CalendarEvent[];
-  /** The month grid lives in a narrow rail (and a phone): a day cell is a dotted button that opens that day. */
+  /** Tap on the day number (and on a phone, anywhere in the cell) opens that day. */
   onPickDay: (day: Date) => void;
+  /** Tablet / laptop: the event chips inside a cell open the event directly. */
+  onSelect: (id: string) => void;
 }) {
   const today = new Date();
   const year = anchor.getFullYear();
@@ -104,57 +106,99 @@ function MonthView({
   const rows = Math.ceil(cells / 7);
 
   return (
-    <div className="p-ax-3">
-      {/* Day headers */}
-      <div className="mb-1 grid grid-cols-7 gap-px">
+    <div className="p-ax-3 md:p-ax-4">
+      <div className="mb-1 grid grid-cols-7 gap-1">
         {DAY_SHORT.map((d) => (
-          <div key={d} className="pb-1 text-center text-[10px] font-semibold uppercase text-muted-foreground">
+          <div key={d} className="pb-1 text-center text-[10px] font-semibold uppercase text-muted-foreground md:text-[11px]">
             {d}
           </div>
         ))}
       </div>
-      {/* Cells */}
-      <div className="grid grid-cols-7 gap-px">
+      <div className="grid grid-cols-7 gap-1">
         {Array.from({ length: rows * 7 }).map((_, i) => {
           const dayNum = i - startOffset + 1;
           if (dayNum < 1 || dayNum > daysInMonth) {
-            return <div key={i} className="min-h-[3.5rem] rounded-lg" />;
+            return <div key={i} className="min-h-[3.5rem] rounded-lg md:min-h-[6.75rem]" />;
           }
           const date = new Date(year, month, dayNum);
           const isToday = sameDay(date, today);
-          const dayEvents = events.filter((e) => sameDay(new Date(e.starts_at), date));
+          const dayEvents = events
+            .filter((e) => sameDay(new Date(e.starts_at), date))
+            .sort((a, b) => a.starts_at.localeCompare(b.starts_at));
+          const label = `${date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}: ${dayEvents.length} ${dayEvents.length === 1 ? "event" : "events"}`;
 
           return (
-            <motion.button
+            <div
               key={i}
-              type="button"
-              onClick={() => onPickDay(date)}
-              aria-label={`${date.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" })}: ${dayEvents.length} ${dayEvents.length === 1 ? "event" : "events"}`}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.12, delay: i * 0.003 }}
               className={cn(
-                "ax-press flex min-h-[3.5rem] flex-col items-center gap-1 rounded-lg border p-1 pt-1.5 transition-colors",
+                "flex min-h-[3.5rem] min-w-0 flex-col rounded-lg border transition-colors md:min-h-[6.75rem]",
                 isToday ? "border-primary/40 bg-primary/5" : "border-border hover:border-border/80",
               )}
             >
-              <span className={cn(
-                "flex size-6 items-center justify-center rounded-full text-[12px] font-bold",
-                isToday ? "bg-primary text-primary-foreground" : "text-foreground",
-              )}>
-                {dayNum}
-              </span>
+              <button
+                type="button"
+                onClick={() => onPickDay(date)}
+                aria-label={label}
+                className="ax-press flex w-full flex-col items-center gap-1 p-1 pt-1.5 md:flex-row md:items-start md:justify-between md:px-1.5"
+              >
+                <span
+                  className={cn(
+                    "flex size-6 items-center justify-center rounded-full text-[12px] font-bold",
+                    isToday ? "bg-primary text-primary-foreground" : "text-foreground",
+                  )}
+                >
+                  {dayNum}
+                </span>
+                {dayEvents.length > 0 && (
+                  <span className="flex flex-wrap items-center justify-center gap-0.5 md:hidden" aria-hidden>
+                    {dayEvents.slice(0, 3).map((ev) => (
+                      <span key={ev.id} className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} />
+                    ))}
+                    {dayEvents.length > 3 && (
+                      <span className="text-[9px] font-semibold leading-none text-muted-foreground">+{dayEvents.length - 3}</span>
+                    )}
+                  </span>
+                )}
+              </button>
               {dayEvents.length > 0 && (
-                <span className="flex flex-wrap items-center justify-center gap-0.5" aria-hidden>
+                <ul className="hidden min-w-0 flex-1 flex-col gap-0.5 px-1 pb-1 md:flex">
                   {dayEvents.slice(0, 3).map((ev) => (
-                    <span key={ev.id} className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} />
+                    <li key={ev.id} className="min-w-0">
+                      <button
+                        type="button"
+                        onClick={() => onSelect(ev.id)}
+                        className={cn(
+                          "ax-press flex w-full min-w-0 items-center gap-1 rounded-md bg-secondary px-1.5 py-0.5 text-left text-[11px] font-semibold text-foreground hover:bg-secondary/70",
+                          ev.status === "cancelled" ? "line-through opacity-50" : "",
+                        )}
+                      >
+                        <span className={cn("size-1.5 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} aria-hidden />
+                        {ev.recurring ? <Repeat className="size-2.5 shrink-0 opacity-70" aria-label="Repeats" /> : null}
+                        <span className="truncate">
+                          {!ev.all_day && (
+                            <span className="mr-1 font-normal tabular-nums text-muted-foreground">
+                              {new Date(ev.starts_at).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}
+                            </span>
+                          )}
+                          {ev.title}
+                        </span>
+                      </button>
+                    </li>
                   ))}
                   {dayEvents.length > 3 && (
-                    <span className="text-[9px] font-semibold leading-none text-muted-foreground">+{dayEvents.length - 3}</span>
+                    <li>
+                      <button
+                        type="button"
+                        onClick={() => onPickDay(date)}
+                        className="ax-press px-1.5 text-[10px] font-semibold text-muted-foreground"
+                      >
+                        +{dayEvents.length - 3} more
+                      </button>
+                    </li>
                   )}
-                </span>
+                </ul>
               )}
-            </motion.button>
+            </div>
           );
         })}
       </div>
@@ -400,6 +444,35 @@ function WeekStats({ events }: { events: CalendarEvent[] }) {
 type ViewType = "month" | "week" | "day";
 type Rail = "agenda" | "availability" | "load";
 
+/**
+ * Live clock in the VIEWER's own time zone (whatever country they are in — the browser knows it).
+ * Server-render shows an empty box of the same size, so hydration never mismatches.
+ */
+function LiveClock() {
+  const [now, setNow] = useState<Date | null>(null);
+  useEffect(() => {
+    setNow(new Date());
+    const timer = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+  if (!now) return <span className="inline-block h-7 w-[8.5rem]" aria-hidden />;
+  const zone = new Intl.DateTimeFormat(undefined, { timeZoneName: "short" })
+    .formatToParts(now)
+    .find((p) => p.type === "timeZoneName")?.value;
+  const iana = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  return (
+    <span
+      role="timer"
+      title={`${iana} · ${now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" })}`}
+      className="inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-full border border-border bg-secondary/60 px-2.5 text-[12px] font-semibold tabular-nums text-foreground"
+    >
+      <span className="size-1.5 animate-pulse rounded-full bg-red-500" aria-hidden />
+      {now.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit", second: "2-digit" })}
+      {zone ? <span className="font-normal text-muted-foreground">{zone}</span> : null}
+    </span>
+  );
+}
+
 function CalendarPage() {
   const { t } = useLocale();
   const [anchor, setAnchor] = useState(() => new Date());
@@ -437,6 +510,19 @@ function CalendarPage() {
     if (!events.data.events.some((e) => e.id === selected)) setSelected("");
   }, [selected, events.data, events.isFetching]);
 
+  const openEvent = (id: string) => {
+    setComposing(false);
+    setRail("agenda");
+    setSelected(id);
+  };
+  const closePanel = () => {
+    setSelected("");
+    setComposing(false);
+    setRail("agenda");
+    setIcsPlan(null);
+  };
+  const panelOpen = Boolean(selected) || composing || rail !== "agenda" || Boolean(icsPlan);
+
   const navigate = (dir: number) => {
     const next = new Date(anchor);
     if (view === "month") next.setMonth(anchor.getMonth() + dir);
@@ -453,158 +539,110 @@ function CalendarPage() {
     return `${wr.start.toLocaleDateString(undefined, { day: "numeric", month: "short" })} – ${new Date(wr.end.getTime() - 1).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`;
   };
 
-  return (
-    <>
-      {/* ── List panel ─────────────────────────────────────────── */}
-      <ListPanel
-        title={t("Calendar")}
-        mobileHidden={Boolean(selected)}
-        action={
-          <>
-            <IcsPickButton onLoaded={setIcsPlan} />
-            <a
-              href={apiHref(exportPath("ics"))}
-              aria-label="Export your calendar (.ics)"
-              className="ax-press ax-focus ax-tap ax-caption inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 font-semibold text-muted-foreground"
-              title="Export .ics — no lock-in"
-            >
-              <Download className="size-3.5" aria-hidden="true" />
-            </a>
-            <Button size="sm" variant="outline" onClick={() => setComposing((v) => !v)}>
-              <Plus className="size-3.5" />
-              {t("Meeting")}
-            </Button>
-          </>
-        }
-      >
-        {icsPlan && (
-          <IcsImportPanel
-            plan={icsPlan}
-            onClose={() => setIcsPlan(null)}
-            onShow={(d) => {
-              setAnchor(d);
-              setSelected("");
-            }}
-          />
-        )}
+  const railButton = (r: "availability" | "load", label: string) => (
+    <button
+      key={r}
+      type="button"
+      onClick={() => {
+        setSelected("");
+        setComposing(false);
+        setRail(rail === r ? "agenda" : r);
+      }}
+      className={cn(
+        "ax-press ax-hit ax-caption rounded-full border px-2.5 py-1 font-semibold transition-colors",
+        rail === r ? "border-cyan-accent/50 bg-secondary text-foreground" : "border-border text-muted-foreground",
+      )}
+    >
+      {label}
+    </button>
+  );
 
-        {/* Nav + label */}
-        <div className="flex items-center gap-1 border-b border-border px-ax-3 py-ax-2">
+  return (
+    <div className="relative z-10 flex min-h-0 w-full min-w-0 flex-1 flex-col self-stretch bg-background">
+      {/* ── One toolbar: where you are, how you look at it, the live time, and the actions ── */}
+      <header className="flex shrink-0 flex-wrap items-center gap-x-2 gap-y-2 border-b border-border px-ax-3 py-ax-2 md:px-ax-4">
+        <h1 className="sr-only">{t("Calendar")}</h1>
+        <div className="flex min-w-0 items-center gap-1">
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="ax-press ax-hit rounded-md border border-border p-1 text-muted-foreground"
+            className="ax-press ax-tap rounded-md border border-border p-1.5 text-muted-foreground"
             aria-label="Previous"
           >
-            <ChevronLeft className="size-3.5" />
+            <ChevronLeft className="size-4" />
           </button>
           <button
             type="button"
             onClick={() => navigate(1)}
-            className="ax-press ax-hit rounded-md border border-border p-1 text-muted-foreground"
+            className="ax-press ax-tap rounded-md border border-border p-1.5 text-muted-foreground"
             aria-label="Next"
           >
-            <ChevronRight className="size-3.5" />
+            <ChevronRight className="size-4" />
           </button>
-          <span className="ax-caption ml-1 flex-1 truncate font-semibold text-foreground">
-            {headerLabel()}
-          </span>
           <button
             type="button"
-            onClick={() => { setAnchor(new Date()); setSelected(""); }}
-            className="ax-press ax-hit ax-caption rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
+            onClick={() => {
+              setAnchor(new Date());
+              setSelected("");
+            }}
+            className="ax-press ax-tap ax-caption rounded-md border border-border px-2 py-1.5 font-semibold text-foreground"
           >
             {t("Today")}
           </button>
+          <span aria-live="polite" className="ml-2 min-w-0 truncate text-[15px] font-bold text-foreground">
+            {headerLabel()}
+          </span>
         </div>
 
-        {/* View switcher */}
-        <div className="flex items-center gap-1 border-b border-border px-ax-3 py-ax-2">
+        <div className="flex items-center gap-1" role="group" aria-label="View">
           {(["month", "week", "day"] as const).map((v) => (
             <button
               key={v}
               type="button"
               onClick={() => setView(v)}
+              aria-pressed={view === v}
               className={cn(
-                "ax-press ax-hit ax-caption rounded-full border px-2.5 py-1 font-semibold capitalize transition-colors",
-                view === v
-                  ? "border-cyan-accent/50 bg-secondary text-foreground"
-                  : "border-border text-muted-foreground",
+                "ax-press ax-tap ax-caption rounded-full border px-3 py-1 font-semibold capitalize transition-colors",
+                view === v ? "border-cyan-accent/50 bg-secondary text-foreground" : "border-border text-muted-foreground",
               )}
             >
               {t(v.charAt(0).toUpperCase() + v.slice(1))}
             </button>
           ))}
-          <div className="ml-auto flex items-center gap-1">
-            {(["availability", "load"] as const).map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => setRail(rail === r ? "agenda" : r)}
-                className={cn(
-                  "ax-press ax-hit ax-caption rounded-full border px-2 py-0.5 text-[10px] font-semibold capitalize transition-colors",
-                  rail === r
-                    ? "border-cyan-accent/50 bg-secondary text-foreground"
-                    : "border-border text-muted-foreground",
-                )}
-              >
-                {r === "availability" ? t("Avail.") : t("Load")}
-              </button>
-            ))}
-          </div>
         </div>
 
-        {/* New meeting form */}
-        {composing && (
-          <NewMeeting
-            onCreated={(id) => { setComposing(false); setSelected(id); }}
-            onCancel={() => setComposing(false)}
-          />
-        )}
+        <span className="hidden flex-1 md:block" />
+        <LiveClock />
+        <div className="flex items-center gap-1.5">
+          {railButton("availability", t("Avail."))}
+          {railButton("load", t("Load"))}
+          <IcsPickButton onLoaded={setIcsPlan} />
+          <a
+            href={apiHref(exportPath("ics"))}
+            aria-label="Export your calendar (.ics)"
+            className="ax-press ax-focus ax-tap ax-caption inline-flex items-center justify-center rounded-md border border-border px-2 py-1.5 font-semibold text-muted-foreground"
+            title="Export .ics — no lock-in"
+          >
+            <Download className="size-4" aria-hidden="true" />
+          </a>
+          <Button
+            size="sm"
+            className="ax-tap"
+            onClick={() => {
+              setSelected("");
+              setRail("agenda");
+              setComposing(true);
+            }}
+          >
+            <Plus className="size-4" />
+            {t("Meeting")}
+          </Button>
+        </div>
+      </header>
 
-        {/* Rail content */}
-        {rail === "availability" ? (
-          <Availability date={isoDate(anchor)} />
-        ) : rail === "load" ? (
-          <div className="space-y-ax-3 p-ax-4">
-            <p className="ax-eyebrow flex items-center gap-1.5">
-              <Users className="size-3.5" />
-              {t("Meeting load")}
-            </p>
-            {load.error ? (
-              load.error.isNotImplemented ? (
-                <NotWired endpoint="GET /api/calendar/load" />
-              ) : (
-                <ErrorState body={load.error.message} onRetry={() => void load.refetch()} />
-              )
-            ) : load.isPending ? (
-              <ListSkeleton rows={4} label="Measuring load" />
-            ) : (
-              <ul className="space-y-ax-3">
-                {(load.data?.load ?? []).length === 0 && (
-                  <li className="ax-caption text-muted-foreground">{t("No meetings this period.")}</li>
-                )}
-                {(load.data?.load ?? []).map((person) => (
-                  <li key={person.member}>
-                    <span className="flex items-baseline gap-2">
-                      <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground">
-                        {person.display_name || person.member}
-                      </span>
-                      <span className={cn("ax-caption shrink-0", person.overloaded ? "font-bold text-danger" : "text-muted-foreground")}>
-                        {minutesLabel(person.meeting_minutes)} · {person.open_tasks} tasks
-                      </span>
-                    </span>
-                    <LoadBar
-                      minutes={person.meeting_minutes}
-                      max={Math.max(...(load.data?.load ?? []).map((p) => p.meeting_minutes), 1)}
-                      overloaded={person.overloaded}
-                    />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ) : events.error ? (
+      {/* ── The calendar itself: full width ── */}
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {events.error ? (
           events.error.isNotImplemented || events.error.code === "no_api_url" ? (
             <div className="p-ax-4"><NotWired endpoint="GET /api/calendar/events" /></div>
           ) : (
@@ -623,74 +661,138 @@ function CalendarPage() {
             >
               <WeekStats events={rows} />
               {view === "month" && (
-                <MonthView
-                  anchor={anchor}
-                  events={rows}
-                  onPickDay={(day) => {
-                    setAnchor(day);
-                    setView("day");
-                    setSelected("");
-                  }}
-                />
+                <>
+                  <MonthView
+                    anchor={anchor}
+                    events={rows}
+                    onSelect={openEvent}
+                    onPickDay={(day) => {
+                      setAnchor(day);
+                      setView("day");
+                      setSelected("");
+                    }}
+                  />
+                  {rows.length === 0 && (
+                    <p className="px-ax-4 pb-ax-4 text-center text-[12px] text-muted-foreground">
+                      {t("Your calendar is clear — turn any thread into a meeting and the agenda comes from the conversation.")}
+                    </p>
+                  )}
+                </>
               )}
               {view === "week" && (
-                <AgendaView start={range.start} events={rows} selectedId={selected} onSelect={setSelected} />
+                <>
+                  <div className="hidden md:block">
+                    <TimeGrid
+                      start={weekRange(anchor).start}
+                      events={rows}
+                      selectedId={selected}
+                      onSelect={openEvent}
+                      scrollClassName="min-h-[320px] max-h-[calc(100dvh-15rem)]"
+                    />
+                  </div>
+                  <div className="md:hidden">
+                    <AgendaView start={range.start} events={rows} selectedId={selected} onSelect={openEvent} />
+                  </div>
+                </>
               )}
               {view === "day" && (
-                <DayView anchor={anchor} events={rows} selectedId={selected} onSelect={setSelected} />
+                <>
+                  <div className="hidden md:block">
+                    <TimeGrid
+                      start={range.start}
+                      count={1}
+                      events={rows}
+                      selectedId={selected}
+                      onSelect={openEvent}
+                      scrollClassName="min-h-[320px] max-h-[calc(100dvh-15rem)]"
+                    />
+                  </div>
+                  <div className="md:hidden">
+                    <DayView anchor={anchor} events={rows} selectedId={selected} onSelect={openEvent} />
+                  </div>
+                </>
               )}
             </motion.div>
           </AnimatePresence>
         )}
-      </ListPanel>
+      </div>
 
-      {/* ── Detail panel ───────────────────────────────────────── */}
-      <DetailPanel mobileVisible={Boolean(selected)}>
-        {selected ? (
-          <>
-            {/* Phone: the rail steps aside when an event is open (same pattern as Mail), so a way back is required. */}
-            <div className="sticky top-0 z-10 flex items-center border-b border-border bg-background/95 px-ax-3 py-ax-2 backdrop-blur md:hidden">
-              <button
-                type="button"
-                onClick={() => setSelected("")}
-                className="ax-press ax-tap -ml-1 inline-flex items-center gap-1.5 rounded-lg px-2 py-1 text-[13px] font-semibold text-muted-foreground"
-              >
-                <ArrowLeft className="size-4" aria-hidden />
-                {t("Calendar")}
-              </button>
-            </div>
-            <EventDetail id={selected} />
-          </>
-        ) : (
-          <div className="flex flex-col gap-ax-5 p-ax-6">
-            {/* Week grid in the detail stage — 7 columns need room, so only from xl up; below that the rail's agenda is the week. */}
-            <div className="hidden xl:block">
-              <TimeGrid
-                start={weekRange(anchor).start}
-                events={rows}
-                selectedId={selected}
-                onSelect={setSelected}
+      {/* ── Event / new meeting / availability / load / import: one side sheet (full screen on a phone) ── */}
+      <Sheet open={panelOpen} onOpenChange={(open) => !open && closePanel()}>
+        <SheetContent side="right" className="w-full gap-0 overflow-y-auto p-0 sm:max-w-[560px]">
+          <SheetTitle className="sr-only">{composing ? "New meeting" : rail === "availability" ? "Availability" : rail === "load" ? "Meeting load" : icsPlan && !selected ? "Import calendar" : "Event"}</SheetTitle>
+          <SheetDescription className="sr-only">Calendar details</SheetDescription>
+          <div className="pt-10">
+            {selected ? (
+              <EventDetail id={selected} />
+            ) : composing ? (
+              <NewMeeting
+                onCreated={(id) => {
+                  setComposing(false);
+                  setSelected(id);
+                }}
+                onCancel={() => setComposing(false)}
               />
-            </div>
-            {rows.length > 0 && (
-              <div className="xl:hidden">
-                <EmptyState
-                  icon={<CalendarDays className="size-5" />}
-                  title={t("Pick an event")}
-                  body={t("Open an event from the list to see who is coming, the agenda and your notes.")}
-                />
-              </div>
-            )}
-            {rows.length === 0 && (
-              <EmptyState
-                icon={<CalendarDays className="size-5" />}
-                title={t("Your calendar is clear")}
-                body={t("Turn any thread into a meeting — the agenda comes from the conversation.")}
+            ) : rail === "availability" ? (
+              <Availability date={isoDate(anchor)} />
+            ) : rail === "load" ? (
+              <LoadPanel load={load} />
+            ) : icsPlan ? (
+              <IcsImportPanel
+                plan={icsPlan}
+                onClose={() => setIcsPlan(null)}
+                onShow={(d) => {
+                  setAnchor(d);
+                  setSelected("");
+                }}
               />
-            )}
+            ) : null}
           </div>
-        )}
-      </DetailPanel>
-    </>
+        </SheetContent>
+      </Sheet>
+    </div>
+  );
+}
+
+function LoadPanel({ load }: { load: ReturnType<typeof useTeamLoad> }) {
+  const { t } = useLocale();
+  const list = load.data?.load ?? [];
+  return (
+    <div className="space-y-ax-3 p-ax-4">
+      <p className="ax-eyebrow flex items-center gap-1.5">
+        <Users className="size-3.5" />
+        {t("Meeting load")}
+      </p>
+      {load.error ? (
+        load.error.isNotImplemented ? (
+          <NotWired endpoint="GET /api/calendar/load" />
+        ) : (
+          <ErrorState body={load.error.message} onRetry={() => void load.refetch()} />
+        )
+      ) : load.isPending ? (
+        <ListSkeleton rows={4} label="Measuring load" />
+      ) : (
+        <ul className="space-y-ax-3">
+          {list.length === 0 && <li className="ax-caption text-muted-foreground">{t("No meetings this period.")}</li>}
+          {list.map((person) => (
+            <li key={person.member}>
+              <span className="flex items-baseline gap-2">
+                <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground">
+                  {person.display_name || person.member}
+                </span>
+                <span className={cn("ax-caption shrink-0", person.overloaded ? "font-bold text-danger" : "text-muted-foreground")}>
+                  {minutesLabel(person.meeting_minutes)} · {person.open_tasks} tasks
+                </span>
+              </span>
+              <LoadBar
+                minutes={person.meeting_minutes}
+                max={Math.max(...list.map((p) => p.meeting_minutes), 1)}
+                overloaded={person.overloaded}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

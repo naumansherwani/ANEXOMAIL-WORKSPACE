@@ -7,7 +7,6 @@ import { minutesOfDay, movedTo, packDay, snap } from "@/lib/time-grid";
 import { cn } from "@/lib/utils";
 
 const HOUR = 52; // px per hour
-const DAY_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function sameDay(a: Date, b: Date) {
   return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
@@ -35,11 +34,17 @@ export function TimeGrid({
   events: serverEvents,
   selectedId,
   onSelect,
+  count = 7,
+  scrollClassName = "max-h-[560px]",
 }: {
   start: Date;
   events: CalendarEvent[];
   selectedId: string;
   onSelect: (id: string) => void;
+  /** 7 = the week, 1 = a single day (same grid, same live "now" line). */
+  count?: 1 | 7;
+  /** Height of the scrolling hour area (the page gives it the room it has). */
+  scrollClassName?: string;
 }) {
   const update = useUpdateMeeting();
   // Optimistic: after a drop the block stays where it was dropped until the server's list catches up
@@ -86,26 +91,31 @@ export function TimeGrid({
 
   const days = useMemo(
     () =>
-      Array.from({ length: 7 }, (_, i) => {
+      Array.from({ length: count }, (_, i) => {
         const d = new Date(start);
         d.setDate(start.getDate() + i);
         d.setHours(0, 0, 0, 0);
         return d;
       }),
-    [start],
+    [start, count],
   );
 
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 60_000);
+    const t = setInterval(() => setNow(new Date()), 30_000);
     return () => clearInterval(t);
   }, []);
 
   // open scrolled to ~1h before the first event (or 08:00)
   useEffect(() => {
+    // This period contains today -> open on the live "now" line (so the red line is the first thing seen);
+    // any other period -> about an hour before its first event (or 08:00).
+    const today = new Date();
+    const showsToday = days.some((d) => sameDay(d, today));
     const timed = events.filter((e) => !e.all_day && e.status !== "cancelled");
     const first = timed.length ? Math.min(...timed.map((e) => minutesOfDay(e.starts_at))) : 8 * 60;
-    if (scroller.current) scroller.current.scrollTop = Math.max(0, ((first - 60) / 60) * HOUR);
-  }, [events.length, start.getTime()]); // eslint-disable-line react-hooks/exhaustive-deps
+    const target = showsToday ? today.getHours() * 60 + today.getMinutes() - 90 : first - 60;
+    if (scroller.current) scroller.current.scrollTop = Math.max(0, (target / 60) * HOUR);
+  }, [events.length, start.getTime(), count]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const allDay = events.filter((e) => e.all_day);
   const timed = events.filter((e) => !e.all_day && e.status !== "cancelled");
@@ -138,7 +148,7 @@ export function TimeGrid({
   const track = (e: React.PointerEvent) => {
     const drag = dragRef.current;
     if (!drag) return;
-    const colW = (colsRef.current?.getBoundingClientRect().width ?? 700) / 7;
+    const colW = (colsRef.current?.getBoundingClientRect().width ?? 700) / count;
     const dy = e.clientY - drag.y0;
     const dx = e.clientX - drag.x0;
     setDrag({
@@ -215,13 +225,13 @@ export function TimeGrid({
       )}
 
       {/* day headers */}
-      <div className="grid grid-cols-[44px_repeat(7,minmax(0,1fr))] border-b border-border pb-1.5">
+      <div className="grid border-b border-border pb-1.5" style={{ gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}>
         <span />
         {days.map((d, i) => {
           const today = sameDay(d, now);
           return (
             <div key={d.toISOString()} className="flex flex-col items-center gap-0.5">
-              <span className="text-[10px] font-semibold uppercase text-muted-foreground">{DAY_SHORT[i]}</span>
+              <span className="text-[10px] font-semibold uppercase text-muted-foreground">{d.toLocaleDateString(undefined, { weekday: "short" })}</span>
               <span
                 className={cn(
                   "flex size-6 items-center justify-center rounded-full text-sm font-bold",
@@ -236,7 +246,7 @@ export function TimeGrid({
       </div>
 
       {allDay.length > 0 && (
-        <div className="grid grid-cols-[44px_repeat(7,minmax(0,1fr))] gap-px border-b border-border py-1">
+        <div className="grid gap-px border-b border-border py-1" style={{ gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}>
           <span className="self-center text-[9px] uppercase text-muted-foreground">All day</span>
           {days.map((d) => (
             <div key={d.toISOString()} className="min-w-0 space-y-0.5 px-0.5">
@@ -257,8 +267,8 @@ export function TimeGrid({
         </div>
       )}
 
-      <div ref={scroller} className="relative max-h-[560px] overflow-y-auto overscroll-contain">
-        <div className="grid grid-cols-[44px_repeat(7,minmax(0,1fr))]" style={{ height: 24 * HOUR }}>
+      <div ref={scroller} className={cn("relative overflow-y-auto overscroll-contain", scrollClassName)}>
+        <div className="grid" style={{ height: 24 * HOUR, gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}>
           <div className="relative">
             {Array.from({ length: 24 }, (_, h) => (
               <span
@@ -270,7 +280,7 @@ export function TimeGrid({
               </span>
             ))}
           </div>
-          <div ref={colsRef} className="relative col-span-7 grid grid-cols-7">
+          <div ref={colsRef} className="relative grid" style={{ gridColumn: `2 / span ${count}`, gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}>
             {days.map((d) => {
               const placed = packDay(
                 timed
