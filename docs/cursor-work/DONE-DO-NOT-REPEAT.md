@@ -305,3 +305,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 04:50 Calendar account-pref: SQL E57_ui_pref+CHECK_E57, Rust locale.uipref(.set) (locale_core 6 tests, cargo check OK), installer probe, web hydrateUiPref/pushRemote. Live GREEN baqi (founder 3 commands: SQL, Rust, Web).
 - 22 Oct 05:00 E57_ui_pref HARDENED (same file, server par abhi chali nahi): FK ON DELETE CASCADE, extra jsonb (object <=4KB), updated_at trigger, RLS+revoke; local Postgres 16 par test: dobara chalana safe, galat clock/layout/extra reject, cascade, anon denied.
 - 22 Oct 04:35 GREEN LIVE (founder SQL+Rust+Web, Chrome Pro 1440): Calendar Classic default + Expanded toggle + shehar-naam clock + 12h/24h/Auto + account-level pref (E57, locale.uipref). Dobara nahi banana. Baqi sirf live phone/tablet look.
+- 22 Oct 04:40 LIVE mobile 390 + tablet 820 stress GREEN (iframe trick). Polish baqi: tablet Classic week grid <xl, phone Expanded toolbar compact.

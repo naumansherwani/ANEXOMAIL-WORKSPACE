@@ -538,3 +538,7 @@ HALAT: GREEN (founder ke server output + Chrome live, 1440, Pro session):
 - E57 SQL + Rust locale.uipref + Web pull chale (founder). Live: Classic default (rail + week grid, do scrollbar), clock "Karachi" (GMT nahi), Auto=12h (PK), 24h switch grid/clock badalta hai, Expanded toggle, account-save SABIT: localStorage saaf + reload => expanded/24h server se wapas aaya. Pasand wapas Classic/Auto kar di.
 - Phone 390 / tablet 820 LIVE nahi dekha (extension window resize nahi hua) — sirf sandbox (Playwright) mein PASS; live phone check founder ke phone ke screenshot ya agle Chrome mauqe par.
 AGLA: E58 (working hours, out-of-office, calendars+colors, reminders) -> booking page B7c -> iMIP reply G26 -> CalDAV -> Google sync.
+
+## 22 Oct 2026 04:30 — founder: "mobile tablet khud dekho, stress daal ke, live shots lo; phir roadmap (E58 -> booking -> iMIP -> CalDAV -> Google) sab karna hai"
+HALAT: Mobile/tablet LIVE GREEN (Chrome Pro session; trick: same-origin iframe 390x780 + 820x780 kyunki window resize extension se nahi hota). Stress: Week/Day/Month, 24h/12h/Auto, Avail., New meeting, Expanded (Week/Day/Month + sheet), 12 tez layout toggles => dono par 0 horizontal scroll, 0 JS error, layout Classic par laut aya, pasand Classic/Auto. Dekha: tablet Classic mein week grid sirf xl+ par (820 par khali "calendar is clear" pane — purana behaviour); phone Expanded toolbar 3 qatar (lamba). Dono polish E58 batch ke saath.
+AGLA: E58 working hours/OOO/calendars+colors/reminders.
