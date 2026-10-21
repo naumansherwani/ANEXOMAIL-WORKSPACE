@@ -21,6 +21,7 @@
 7. **10 email addresses build + working wire** (`src/lib/founder-plan.ts`) + founder ka alag email system + Nexatect addresses — founder-side ke saath/baad.
 
 ## Chhote pending (jab mauqa ho)
+- **30 Oct 2026 se pehle:** Supabase #4 — naye tables ko explicit GRANT. `E55_grants_heal.sql` (idempotent; sab maujooda public tables par service_role/authenticated grants ka sach likhna, anon nahi) + har naye SQL mein grants (rule DONE-DO-NOT-REPEAT 21 Oct 21:24). Supabase dashboard mein dekhna: project ke Data API settings.
 - GREEN-BOARD: B5 row GREEN (karna: 04-TECHNOLOGY, 01-GREEN, 03-G-SERIES G40, P8) — aaj update hua.
 - D11 ops: Caddy cert renewal **12 Nov se pehle**; Bun `/api/billing/subscription` bug (B6 mein); E24 email_hash HMAC migrate; E52 alias fair-use SQL; **A5 `FOUNDER_PASSWORD` plain compare `auth.ts:631`**; `/terms` page draft; Caddy read-only check script; Domains ke 7 baqi features; chat audit; branch switch `/opt/ANEXOMAIL-WORKSPACE`.
 - Server par `BrandMark.tsx.bak` hata di jaye (agar abhi nahi hui): `rm -f /opt/anexomail-web/src/components/site/BrandMark.tsx.bak`.
