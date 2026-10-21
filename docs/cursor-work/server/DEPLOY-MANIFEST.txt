@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md f237c7ea5876af6a
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 54acf56db059372a
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -336,3 +336,6 @@ docs/claude/BILLING-PORTAL-BLUEPRINT.md efe53440d1cbfd49
 portal/public/index.html 4c466e37e6bb5dec
 docs/cursor-work/server/caddy-billingportal.sh c87dccf4b7476e61
 docs/cursor-work/server/polar-control-plane-install.sh df8da2a70ce21261
+server/rust/polar-payment/main.rs 44c699ae4ea9b670
+docs/cursor-work/server/polar-secrets-install.sh 0df1d4d5a530f2d0
+docs/cursor-work/server/polar-secrets-proof.py c4f7a0c9b7144bef

@@ -287,10 +287,16 @@ fn product_key_for(state: &AppState, product_id: &str) -> Option<String> {
 /// dono live endpoint secrets load karo; env wala purana secret fallback rehta hai.
 async fn load_webhook_secrets(http: &reqwest::Client, token: &str) -> Vec<String> {
     let mut secrets = Vec::new();
-    if let Ok(secret) = env::var("POLAR_WEBHOOK_SECRET") {
-        let secret = secret.trim().to_string();
-        if !secret.is_empty() {
-            secrets.push(secret);
+    // Env se secrets: POLAR_WEBHOOK_SECRET (ek) + POLAR_WEBHOOK_SECRETS (comma/space/newline se alag, dono endpoints ke).
+    // Token mein webhooks:read scope na ho (403) tab bhi dono endpoints ki asli deliveries verify hoti rahein.
+    for var in ["POLAR_WEBHOOK_SECRET", "POLAR_WEBHOOK_SECRETS"] {
+        if let Ok(list) = env::var(var) {
+            for secret in list.split(|c: char| c == ',' || c.is_whitespace()) {
+                let secret = secret.trim().trim_matches(|c| c == '"' || c == '\'').to_string();
+                if !secret.is_empty() && !secrets.contains(&secret) {
+                    secrets.push(secret);
+                }
+            }
         }
     }
 
@@ -332,6 +338,9 @@ async fn load_webhook_secrets(http: &reqwest::Client, token: &str) -> Vec<String
                 }
             }
         }
+    }
+    if secrets.len() < 2 {
+        tracing::error!(count = secrets.len(), "Polar signing secrets INCOMPLETE (2 endpoints, <2 secrets): doosre endpoint ki asli deliveries 401 hongi aur Polar use auto-disable kar dega. POLAR_WEBHOOK_SECRETS mein dono whsec_ daalo");
     }
     tracing::info!(count = secrets.len(), "Polar webhook signing secrets loaded");
     secrets
@@ -425,6 +434,8 @@ async fn health(State(s): State<Arc<AppState>>) -> impl IntoResponse {
         "oldest_pending_secs": oldest,
         "webhook_secret": !s.webhook_secrets.is_empty(),
         "webhook_secrets": s.webhook_secrets.len(),
+        // Polar par 2 endpoints (polarpayments + anexomail.com) => 2 secrets chahiye; kam ho to asli deliveries reject hongi
+        "secrets_complete": s.webhook_secrets.len() >= 2,
         "polar_token": !s.polar_token.is_empty(),
         "products": s.products.len(),
     }))
