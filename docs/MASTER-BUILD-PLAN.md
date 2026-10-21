@@ -407,6 +407,9 @@ S1-S10      → Server hardening (UFW, SSH, integrity) — jab founder bole
 > Har phase push hone ke baad main browser screenshot lunga aur dikhaunga.
 > Aap server pull karo → main screenshot → aap confirm → next phase.
 
+> **Update 21 Oct 2026 (B4):** Mail/calendar/crm/work/people/org live push ab PostgreSQL LISTEN/NOTIFY se nahi, Rust event hub se chalta hai
+> (per-org tokio broadcast, publish layer, `/internal/event`, 2 s reconcile per active org) -> WebTransport/QUIC. Har plan + family accounts. Files: `server/rust/events_core.rs`, `events_glue.rs`.
+
 ## STATUS BOARD
 
 | Item | Status |
@@ -426,3 +429,19 @@ S1-S10      → Server hardening (UFW, SSH, integrity) — jab founder bole
 | Landing page | 🔒 NO TOUCH |
 | Existing UI components | 🔒 NO DELETE |
 | DKIM / Postfix / Dovecot | 🔒 NO TOUCH (already installed Hetzner) |
+
+## TECHNOLOGY MIGRATION BOARD (B-series, 21 Oct 2026 — pehle yeh, phir packages Pro -> Business -> Business Pro)
+
+Already live (poori website, plan se nahi): Tokio 1.53.3, axum 0.8.9, QUIC via wtransport 0.7.2 (quinn), tRPC-style `/rpc/*`.
+
+| Batch | Kaam | Status |
+|---|---|---|
+| B1 | Rust JWT local verify + refresh | ✅ GREEN |
+| B2 / B2b | Passkey/recovery login Rust par + Bun fallback hardening + passkey list/delete | ✅ GREEN |
+| B3 | `mail.send`, undo-send hold, Rust queue worker, `org.mailboxes.*` (R1) | ✅ GREEN (21 Oct 06:00) |
+| B4 | Event-driven WebTransport push (R5), family accounts included; client `live-core.ts`/`live.ts`; inbound mail hub push | 🟡 READY — repo `5e084a3`, sandbox asli QUIC proof PASS; server install baqi (`rust-events-install.sh` -> `rust-deliver-install.sh` -> Web pull) |
+| B5 | G40: 19 Bun-only founder routes (work/crm/org/integrations/settings) Rust par | TODO |
+| B6 | G16 self-serve billing Rust par (Polar :3400 NO TOUCH) | TODO |
+| B7 | G26/G27 calendar: iMIP reply, recurring, scheduling link, CalDAV | TODO |
+| B8 | Brain (~38 route files / 504 endpoints) Rust par, Bun 1.4.3, tokio 1.54 | TODO |
+| Baad mein | Packages: Basic ✅ -> Pro -> Business -> Business Pro (live test 1440/820/390) | TODO |
