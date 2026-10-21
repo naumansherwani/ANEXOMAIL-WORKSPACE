@@ -30,7 +30,7 @@ export function InlineLoading({ label = "Loading…", className }: { label?: str
 
 export function SectionLoader({ label = "Loading…", className }: { label?: string; className?: string }) {
   return (
-    <div role="status" aria-live="polite" className={cn("flex flex-col items-center justify-center gap-3 py-ax-6 text-center", className)}>
+    <div role="status" aria-live="polite" className={cn("flex w-full min-w-0 flex-col items-center justify-center gap-3 py-ax-6 text-center", className)}>
       <span className="ax-loader-logo inline-flex" aria-hidden>
         <BrandMark compact home={false} className="[&_svg]:size-14" />
       </span>
@@ -41,7 +41,7 @@ export function SectionLoader({ label = "Loading…", className }: { label?: str
 
 export function PageLoader({ label = "Loading…" }: { label?: string }) {
   return (
-    <div role="status" aria-live="polite" className="flex min-h-[55vh] flex-col items-center justify-center gap-4 px-4 text-center">
+    <div role="status" aria-live="polite" className="flex min-h-[55vh] w-full min-w-0 flex-1 flex-col items-center justify-center gap-4 self-stretch px-4 text-center">
       <span className="ax-loader-logo inline-flex" aria-hidden>
         <BrandMark compact home={false} className="[&_svg]:size-20" />
       </span>
