@@ -40,13 +40,13 @@ src/routes/app.crm.collab.tsx 2955adff7ecb6af7
 src/routes/app.crm.reports.tsx 7c9b79f4e5b5a1e3
 src/routes/app.crm.index.tsx 2940905686029e77
 src/lib/mail.ts a5dc71c3d3686f1f
-src/routes/app.billing.tsx 8d59ed0431521528
+src/routes/app.billing.tsx 2d1b959d742e6a2e
 src/routes/app.account.tsx 027e460f1c6cd2a2
 src/routes/app.admin.tsx b7d1afae6ab3fa4c
 src/routes/app.admin.members.tsx b75efea04cb39d90
 src/routes/app.admin.teams.tsx e97e4983a7605ae5
 src/components/app/CrossPlatformBar.tsx ab6434edc184c235
-src/lib/billing-platform.ts 4e37f9bdec504102
+src/lib/billing-platform.ts 39bb9d2ffd153ad8
 src/routes/app.founder_.billing.tsx 66c2dc943a5fb57b
 src/components/site/ConvergenceCanvas.tsx d4f22a2dd32d5da4
 src/routes/migration.tsx fbfcf96604b56446
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md 4689acd147ef4735
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
-docs/cursor-work/server/rust-engine-install.sh 83c233210dc67b73
+docs/cursor-work/server/rust-engine-install.sh 92ba8901deca4e4b
 src/components/app/security/IntegrityGate.tsx 2d1385eb5d62c751
 src/lib/account-export.ts a9bc75ae97a15153
 docs/cursor-work/sql/E45_integrity_purge.sql 4cc5092c77e9f0e9
@@ -151,9 +151,9 @@ docs/cursor-work/server/integrity-purge/anexomail-integrity-purge.service 029492
 docs/cursor-work/server/integrity-purge/anexomail-integrity-purge.timer 7c372ee7348c3e9d
 server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
-server/index.ts b8000595b3ceed09
+server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 5e7a959ecda33f13
+docs/cursor-work/DONE-DO-NOT-REPEAT.md e79252961fa43ec8
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -328,4 +328,5 @@ docs/claude/FOUNDER-WORKSPACE-PLAN.md 5732f90e95270367
 docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
 docs/claude/EVENING-PENDING-2026-10-21.md d69ee1c4a9711763
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
-docs/claude/POLAR-CONTROL-PLANE-PLAN.md 56b2b109c209aa1a
+docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
+src/components/app/billing/ManageBilling.tsx 1bf95bd52f2db032

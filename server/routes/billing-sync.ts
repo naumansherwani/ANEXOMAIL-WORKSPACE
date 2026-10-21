@@ -21,6 +21,8 @@
 // Env: SUPABASE4_URL, SUPABASE4_SERVICE_ROLE_KEY, POLAR_ACCESS_TOKEN,
 //      POLAR_SUCCESS_URL, CRON_SECRET, POLAR_PRODUCT_* (8 IDs)
 import { Router } from "express";
+import { readFileSync } from "node:fs";
+import { createHash, createHmac, randomBytes } from "node:crypto";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import {
   BILLING_PRODUCTS,
@@ -398,6 +400,64 @@ authRouter.get("/invoices", async (req, res) => {
   const { data, error } = await db.rpc("get_billing_invoices", { p_user_id: userId });
   if (error) return res.status(500).json({ error: "db_error", detail: error.message });
   return res.json(data ?? { invoices: [] });
+});
+
+// ---------------------------------------------------------------------------
+// B6 (G16): POST /api/billing/portal — Polar customer portal (cancel / card / VAT).
+// Rust `billing.portal` PRIMARY; yeh Bun route sirf FALLBACK (rpcOrRest: Rust 404/501/502/503 par).
+// Polar engine :3400 ka internal raasta MUHAR (HMAC-SHA256, 60 s, nonce) maangta hai — wahi format
+// jo server/rust/polar-payment/pcp.rs aur b6_core.rs mein hai (x-pcp-ts / x-pcp-nonce / x-pcp-sig).
+// User sirf apna portal khol sakta hai: user_id token se aata hai, body se kabhi nahi.
+// ---------------------------------------------------------------------------
+const PCP_ENGINE_URL = (process.env.POLAR_ENGINE_URL || "http://127.0.0.1:3400").replace(/\/$/, "");
+
+function pcpKey(): string {
+  try {
+    const k = readFileSync(process.env.PCP_KEY_FILE || "/etc/anexomail/pcp.key", "utf8").trim();
+    if (k) return k;
+  } catch {
+    /* file nahi — env try karo */
+  }
+  return String(process.env.PCP_KEY || "").trim();
+}
+
+export function pcpHeaders(
+  key: string,
+  method: string,
+  path: string,
+  body: string,
+  ts = Math.floor(Date.now() / 1000),
+  nonce = randomBytes(16).toString("hex"),
+): Record<string, string> {
+  const bodyHash = createHash("sha256").update(body).digest("hex");
+  const canonical = `v1\n${method.toUpperCase()}\n${path}\n${ts}\n${nonce}\n${bodyHash}`;
+  const sig = createHmac("sha256", key).update(canonical).digest("hex");
+  return { "x-pcp-ts": String(ts), "x-pcp-nonce": nonce, "x-pcp-sig": sig, "content-type": "application/json" };
+}
+
+authRouter.post("/portal", async (req, res) => {
+  const userId = await requireUser(req, res);
+  if (!userId) return;
+  const key = pcpKey();
+  if (key.length < 32) return res.status(503).json({ error: "control_plane_key_missing" });
+  const body = JSON.stringify({ user_id: userId });
+  try {
+    const r = await fetch(`${PCP_ENGINE_URL}/api/v1/portal`, {
+      method: "POST",
+      headers: pcpHeaders(key, "POST", "/api/v1/portal", body),
+      body,
+      signal: AbortSignal.timeout(20000),
+    });
+    const j: any = await r.json().catch(() => ({}));
+    if (r.ok && typeof j.url === "string") return res.json({ url: j.url });
+    const code = typeof j.error === "string" ? j.error : "portal_failed";
+    // Rust ke b6_core::classify jaisa: "final" jawab 404/50x NAHI (rpcOrRest in par fallback chalata hai)
+    const status = code === "no_billing_account" ? 422 : code === "portal_paused" ? 409 : code === "bad_user_id" ? 400 : 502;
+    return res.status(status).json({ error: status === 502 ? "portal_unavailable" : code });
+  } catch (e: any) {
+    console.error("[billing portal]", e?.message || e);
+    return res.status(502).json({ error: "portal_unreachable" });
+  }
 });
 
 // ---------------------------------------------------------------------------

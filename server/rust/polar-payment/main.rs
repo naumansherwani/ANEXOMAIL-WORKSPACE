@@ -52,6 +52,12 @@
 //   POST /api/v1/checkout              -> checkout session banao (guest + signed-in)
 //   GET  /api/v1/checkout/:id          -> checkout state verify (success page)
 //   GET  /api/v1/billing/:user_id      -> plan + due + grace (in-app billing panel)
+//   POST /api/v1/portal                -> Polar customer portal URL (cancel / card / VAT)
+//
+// B6a CONTROL PLANE (21 Oct 2026, pcp.rs): checkout / billing / portal sirf MUHAR
+// (HMAC-SHA256, 60 s, nonce) ke saath chalte hain; proxy se aayi (X-Forwarded-For)
+// request internal raaste par 403. Webhook / health / ready / metrics UNTOUCHED.
+// Kill switch: touch $PCP_PAUSE_DIR/PAUSE_PORTAL | PAUSE_CHECKOUT (restart nahi).
 // ============================================================================
 
 use axum::{
@@ -82,6 +88,8 @@ use std::{
     time::{Duration, SystemTime, UNIX_EPOCH},
 };
 use subtle::ConstantTimeEq;
+
+mod pcp;
 
 type HmacSha256 = Hmac<Sha256>;
 
@@ -218,6 +226,8 @@ struct Metrics {
     reconcile_runs: AtomicU64,
     reconcile_gap: AtomicU64,
     reconcile_last: AtomicI64,
+    pcp_ok: AtomicU64,
+    pcp_denied: AtomicU64,
 }
 
 impl Metrics {
@@ -232,6 +242,8 @@ impl Metrics {
             reconcile_runs: AtomicU64::new(0),
             reconcile_gap: AtomicU64::new(0),
             reconcile_last: AtomicI64::new(0),
+            pcp_ok: AtomicU64::new(0),
+            pcp_denied: AtomicU64::new(0),
         }
     }
 }
@@ -246,6 +258,9 @@ struct AppState {
     wal: Wal,
     metrics: Metrics,
     alert_email: String,
+    pcp_key: Vec<u8>,
+    pcp_nonces: pcp::Nonces,
+    pcp_dir: String,
 }
 
 fn product_map() -> HashMap<String, String> {
@@ -353,7 +368,13 @@ async fn main() -> anyhow::Result<()> {
         wal,
         metrics: Metrics::new(),
         alert_email: env::var("ALERT_EMAIL").unwrap_or_else(|_| "hello@anexomail.com".into()),
+        pcp_key: pcp::load_key(),
+        pcp_nonces: pcp::Nonces::new(),
+        pcp_dir: env::var("PCP_PAUSE_DIR").unwrap_or_else(|_| "/opt/polar-rust-payment".into()),
     });
+    if state.pcp_key.len() < pcp::MIN_KEY_BYTES {
+        tracing::warn!("control plane key missing/short: signed routes will answer 503 (webhook unaffected)");
+    }
 
     // background loops — webhook path se bilkul alag
     tokio::spawn(worker_loop(state.clone()));
@@ -363,16 +384,22 @@ async fn main() -> anyhow::Result<()> {
     // webhook / worker / reconcile se koi taalluq nahi; fail ho to sirf log.
     tokio::spawn(replace_loop(state.clone()));
 
-    let app = Router::new()
-        .route("/health", get(health))
-        .route("/ready", get(ready))
-        .route("/metrics", get(metrics))
-        .route("/api/v1/polar-webhook", post(handle_polar_webhook))
+    // INTERNAL raaste: sirf localhost se, proxy se nahi; paisa/user wale raaste muhar ke saath.
+    let internal = Router::new()
         .route("/api/v1/replay", post(replay_dead))
         .route("/api/v1/reconcile", post(reconcile_now))
         .route("/api/v1/checkout", post(create_checkout))
         .route("/api/v1/checkout/:id", get(read_checkout))
         .route("/api/v1/billing/:user_id", get(read_billing))
+        .route("/api/v1/portal", post(create_portal))
+        .route_layer(axum::middleware::from_fn_with_state(state.clone(), pcp_gate));
+
+    let app = Router::new()
+        .route("/health", get(health))
+        .route("/ready", get(ready))
+        .route("/metrics", get(metrics))
+        .route("/api/v1/polar-webhook", post(handle_polar_webhook))
+        .merge(internal)
         .layer(tower_http::cors::CorsLayer::permissive())
         .with_state(state);
 
@@ -437,6 +464,8 @@ async fn metrics(State(s): State<Arc<AppState>>) -> impl IntoResponse {
         "reconcile_runs":      m.reconcile_runs.load(Ordering::Relaxed),
         "reconcile_gap":       m.reconcile_gap.load(Ordering::Relaxed),
         "reconcile_last_secs": m.reconcile_last.load(Ordering::Relaxed),
+        "pcp_ok":              m.pcp_ok.load(Ordering::Relaxed),
+        "pcp_denied":          m.pcp_denied.load(Ordering::Relaxed),
     }))
 }
 
@@ -1094,6 +1123,12 @@ async fn create_checkout(
     State(s): State<Arc<AppState>>,
     Json(body): Json<CheckoutBody>,
 ) -> impl IntoResponse {
+    if pcp::paused(&s.pcp_dir, "checkout") {
+        return (
+            StatusCode::SERVICE_UNAVAILABLE,
+            Json(json!({"error": "checkout_paused"})),
+        );
+    }
     if s.polar_token.is_empty() {
         return (
             StatusCode::SERVICE_UNAVAILABLE,
@@ -1242,4 +1277,120 @@ async fn read_billing(
             )
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// B6a — CONTROL PLANE GATE + PORTAL
+// ---------------------------------------------------------------------------
+/// Paisa / user wale raaste jinhein muhar chahiye. replay/reconcile localhost-only
+/// rehte hain (docs ke curl chalte rahein) magar proxy se kabhi nahi.
+fn pcp_needs_sig(path: &str) -> bool {
+    path.starts_with("/api/v1/checkout")
+        || path.starts_with("/api/v1/billing/")
+        || path == "/api/v1/portal"
+}
+
+async fn pcp_gate(
+    State(s): State<Arc<AppState>>,
+    req: axum::extract::Request,
+    next: axum::middleware::Next,
+) -> axum::response::Response {
+    let deny = |status: StatusCode, code: &str| {
+        s.metrics.pcp_denied.fetch_add(1, Ordering::Relaxed);
+        tracing::warn!(code, "control plane denied");
+        (status, Json(json!({ "error": code }))).into_response()
+    };
+
+    // Proxy (Caddy) se aayi request internal raaste par nahi chalti — Caddy config
+    // kabhi galti se wapas khul bhi jaye to yeh darwaza band rehta hai.
+    let h = req.headers();
+    if h.contains_key("x-forwarded-for") || h.contains_key("forwarded") || h.contains_key("x-real-ip") {
+        return deny(StatusCode::FORBIDDEN, "internal_only");
+    }
+
+    let path = req.uri().path().to_string();
+    if !pcp_needs_sig(&path) {
+        return next.run(req).await;
+    }
+
+    let method = req.method().as_str().to_string();
+    let (parts, body) = req.into_parts();
+    let bytes = match axum::body::to_bytes(body, 64 * 1024).await {
+        Ok(b) => b,
+        Err(_) => return deny(StatusCode::PAYLOAD_TOO_LARGE, "body_too_large"),
+    };
+    let hv = |name: &str| parts.headers.get(name).and_then(|v| v.to_str().ok());
+    let sp = pcp::SigParts {
+        ts: hv("x-pcp-ts"),
+        nonce: hv("x-pcp-nonce"),
+        sig: hv("x-pcp-sig"),
+    };
+    match pcp::verify(&s.pcp_key, &method, &path, &sp, &bytes, now_secs(), &s.pcp_nonces) {
+        Ok(()) => {
+            s.metrics.pcp_ok.fetch_add(1, Ordering::Relaxed);
+        }
+        Err(r) => {
+            let st = StatusCode::from_u16(r.http()).unwrap_or(StatusCode::UNAUTHORIZED);
+            return deny(st, r.code());
+        }
+    }
+    let req = axum::extract::Request::from_parts(parts, axum::body::Body::from(bytes));
+    next.run(req).await
+}
+
+#[derive(Deserialize)]
+struct PortalBody {
+    user_id: String,
+}
+
+/// Polar customer portal: cancel / card badalna / VAT. Customer pehchan =
+/// external_customer_id = user_id (checkout isi se banta hai). Muhar ke baad hi yahan aate hain.
+async fn create_portal(
+    State(s): State<Arc<AppState>>,
+    Json(body): Json<PortalBody>,
+) -> impl IntoResponse {
+    if pcp::paused(&s.pcp_dir, "portal") {
+        return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "portal_paused"})));
+    }
+    if !pcp::is_uuid(&body.user_id) {
+        return (StatusCode::BAD_REQUEST, Json(json!({"error": "bad_user_id"})));
+    }
+    if s.polar_token.is_empty() {
+        return (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "polar_token_missing"})));
+    }
+    // PCP_POLAR_API sirf sandbox-proof ke liye (mock Polar); production .env mein set nahi hota => asli Polar.
+    let polar_api = env::var("PCP_POLAR_API").unwrap_or_else(|_| "https://api.polar.sh".into());
+    let sent = s
+        .http
+        .post(format!("{}/v1/customer-sessions/", polar_api.trim_end_matches('/')))
+        .bearer_auth(&s.polar_token)
+        .json(&json!({ "external_customer_id": body.user_id }))
+        .send()
+        .await;
+    let response = match sent {
+        Ok(r) => r,
+        Err(e) => {
+            tracing::error!("polar portal request failed: {e:?}");
+            return (StatusCode::BAD_GATEWAY, Json(json!({"error": "polar_unreachable"})));
+        }
+    };
+    let status = response.status();
+    let data: Value = response.json().await.unwrap_or(json!({}));
+    if status == StatusCode::NOT_FOUND || status == StatusCode::UNPROCESSABLE_ENTITY {
+        // Polar ke paas is user ka customer hi nahi = abhi tak kuch kharida nahi.
+        return (StatusCode::NOT_FOUND, Json(json!({"error": "no_billing_account"})));
+    }
+    if !status.is_success() {
+        tracing::error!("polar portal rejected: {status} {data}");
+        return (StatusCode::BAD_GATEWAY, Json(json!({"error": "polar_rejected"})));
+    }
+    let url = data.get("customer_portal_url").and_then(Value::as_str).unwrap_or("");
+    if !pcp::portal_url_ok(url) {
+        tracing::error!("polar portal url failed allowlist");
+        return (StatusCode::BAD_GATEWAY, Json(json!({"error": "portal_url_rejected"})));
+    }
+    (
+        StatusCode::OK,
+        Json(json!({ "url": url, "expires_at": data.get("expires_at").cloned().unwrap_or(Value::Null) })),
+    )
 }

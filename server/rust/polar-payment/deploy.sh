@@ -29,7 +29,7 @@ CADDY_MAIN="/etc/caddy/Caddyfile"
 echo "==> engine dir: $ENGINE_DIR"
 mkdir -p "$ENGINE_DIR/src" "$ENGINE_DIR/wal/pending" "$ENGINE_DIR/wal/done" "$ENGINE_DIR/wal/dead" "$ENGINE_DIR/wal/rejects"
 
-for pair in "Cargo.toml:Cargo.toml" "main.rs:src/main.rs"; do
+for pair in "Cargo.toml:Cargo.toml" "main.rs:src/main.rs" "pcp.rs:src/pcp.rs"; do
   src="$REPO_DIR/${pair%%:*}"
   dst="$ENGINE_DIR/${pair##*:}"
   if [ -f "$dst" ] && ! cmp -s "$src" "$dst"; then

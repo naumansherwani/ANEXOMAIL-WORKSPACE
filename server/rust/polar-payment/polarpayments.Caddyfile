@@ -14,7 +14,8 @@ polarpayments.anexomail.com {
 	}
 
 	# Dedicated Rust payment engine. The old anexomail.com route is separate.
-	handle /api/v1/* {
+	# B6 (21 Oct 2026): sirf webhook public. checkout/billing/portal/replay/reconcile internal hain (muhar + localhost).
+	handle /api/v1/polar-webhook* {
 		reverse_proxy 127.0.0.1:3400 {
 			transport http {
 				read_timeout 30s

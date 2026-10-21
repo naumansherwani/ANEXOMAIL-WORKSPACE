@@ -28,6 +28,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
+import { ManageBilling } from "@/components/app/billing/ManageBilling";
 import { CheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { Button } from "@/components/ui/button";
 import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
@@ -570,17 +571,21 @@ function WorkspaceBilling() {
               </div>
             )}
           </CardBody>
-          {/* No self-serve cancel / card / VAT page yet (needs a Polar customer-portal endpoint, ledger G16): never leave a paying user at a dead end. */}
-          <p className="mt-3 text-[12px] text-muted-foreground">
-            {t("To cancel, change your card or get a VAT invoice, email")}{" "}
-            <a
-              href="mailto:billing@anexomail.com?subject=Billing%20help"
-              className="ax-hit font-semibold text-foreground underline underline-offset-2"
-            >
-              billing@anexomail.com
-            </a>
-            .
-          </p>
+          {/* B6 (G16): self-serve cancel / card / VAT via Polar's portal. Lifetime (family) accounts pay nothing, so no portal. */}
+          {sub.data?.plan && !sub.data.lifetime ? (
+            <ManageBilling />
+          ) : (
+            <p className="mt-3 text-[12px] text-muted-foreground">
+              {t("Billing questions? Email")}{" "}
+              <a
+                href="mailto:billing@anexomail.com?subject=Billing%20help"
+                className="ax-hit font-semibold text-foreground underline underline-offset-2"
+              >
+                billing@anexomail.com
+              </a>
+              .
+            </p>
+          )}
         </section>
 
         {/* ── Personal tier suggestions — only for personal kind ─── */}

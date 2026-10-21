@@ -206,6 +206,9 @@ app.use("/api/account-deletion", accountDeletionRouter);
 
 // Phase 33 — Polar Checkout + Webhook
 // /api/billing/checkout (auth) + /api/public/polar/webhook (verified)
+// B6: billing-sync PEHLE mount — uski /subscription + /invoices (get_billing_subscription RPC, lifetime/family
+// samet, wahi jo Rust deta hai) ab asli hain; polar.ts ke purane table-reading dono routes un ke peeche rehte hain.
+app.use("/api/billing", billingSyncAuthRouter);
 app.use("/api/billing", polarAuthRouter);
 app.use("/api/public", polarPublicRouter);
 app.use("/api/founder", billingSupportRouter);
@@ -213,7 +216,6 @@ app.use("/api/founder", billingSupportRouter);
 // Phase 36 — STATE SYNC ENGINE (Supabase = truth, Polar = messenger)
 // /api/billing/intent · /state · /intent/:id · /state-health (auth)
 // /api/public/billing/sync (cron)
-app.use("/api/billing", billingSyncAuthRouter);
 app.use("/api/public", billingSyncPublicRouter);
 
 // Phase 37 — MOVE-IN OPERATIONS & REVENUE COCKPIT (money machine)

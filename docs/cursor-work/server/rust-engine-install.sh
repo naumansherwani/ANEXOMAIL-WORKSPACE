@@ -8,6 +8,7 @@
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
+#   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
 #             [pehle E35 SQL chalayen] [OPT-IN: default mein NAHI — Cargo.toml mein 2 crate judte hain (rustls, webpki-roots), isliye
@@ -33,7 +34,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device dnsauth security export attach b5"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal people team locale device dnsauth security export attach b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -96,6 +97,8 @@ CFG={
  # Public procs ko request headers chahiye (revenue.lead ki IP rate-limit) — isliye public_call alag.
  "b5":     {"public": True,  "label": "founder-pages", "procs": ['"movein.capacity"','"revenue.lead"','"status.public"','"founder.release.run"'],
             "public_call": "public(&proc, &input, &headers)"},
+ # b6 (G16): `billing.portal` — Polar customer portal (cancel/card/VAT). Polar engine :3400 ko MUHAR-band call; chaabi /etc/anexomail/pcp.key (polar-control-plane-install.sh banata hai). Koi SQL nahi.
+ "b6":     {"public": False, "label": "billing-portal", "procs": ['"billing.portal"']},
  # attach (G38): bheji jane wali mail ke attachments (stream upload, org-ke-andar SHA-256 dedup, clamd, quota). SQL E48 PEHLE.
  # Routes: POST /file/attach (upload), GET /file/attach/get?id= (download). Thread read ka `url` (jo server ka disk_path de deta tha) band + `stored` flag.
  "attach": {"public": False, "label": "attach",    "procs": ['"mail.attach.limits"','"mail.attach.remove"'],
@@ -412,6 +415,14 @@ for m in $MODS; do
         *'"state"'*'"unauthorized"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> b5: Rust ne public status bhi diya aur founder procs (command center samet) bhi pakde (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> b5: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> b5: jawab upar dekhein";;
+      esac;;
+    b6)
+      r="$(probe billing.portal '{"input":{}}')"
+      echo "   billing.portal (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> b6: Rust ne billing.portal pakda (bina asli login ke 401 = theek). Asli test: billing page par Manage billing button.";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> b6: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> b6: jawab upar dekhein";;
       esac;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"

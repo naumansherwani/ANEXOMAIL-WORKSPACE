@@ -146,6 +146,17 @@ export function useChangePlan() {
   });
 }
 
+/**
+ * B6 (G16): Polar customer portal — cancel / card / VAT. Server (Rust `billing.portal`, Bun fallback) signs the
+ * request to the Polar engine; the browser only receives the portal URL. No secret, no card form here.
+ */
+export function useBillingPortal() {
+  return useMutation<{ url: string }, ApiError, void>({
+    mutationFn: () =>
+      rpcOrRest<{ url: string }>("billing.portal", { path: "/api/billing/portal", method: "POST", body: {} }, {}),
+  });
+}
+
 /** Founder view: revenue truth across every tenant. */
 export type RevenueTruth = {
   mrr: number;

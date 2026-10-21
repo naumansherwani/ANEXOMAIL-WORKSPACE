@@ -18,12 +18,7 @@ anexomail.com, www.anexomail.com {
 	handle /api/v1/polar-webhook* {
 		reverse_proxy 127.0.0.1:3400
 	}
-	handle /api/v1/checkout* {
-		reverse_proxy 127.0.0.1:3400
-	}
-	handle /api/v1/billing/* {
-		reverse_proxy 127.0.0.1:3400
-	}
+	# B6 (21 Oct 2026): /api/v1/checkout* aur /api/v1/billing/* public darwaaze band (engine ke andar muhar-wale internal raaste).
 
 	# mail attachments (disk)
 	handle_path /files/* {
