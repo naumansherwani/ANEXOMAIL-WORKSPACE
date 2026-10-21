@@ -1,16 +1,22 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
+  BarChart3,
   Banknote,
   Building2,
   Crown,
   Gauge,
   MailCheck,
+  Phone,
+  Plug,
   Rocket,
   RefreshCw,
+  Settings,
   ShieldCheck,
   Sparkles,
+  Truck,
 } from "lucide-react";
 
+import { CommandCenter } from "@/components/app/founder/CommandCenter";
 import { StateBlock } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import {
@@ -50,6 +56,23 @@ export const Route = createFileRoute("/app/founder")({
   component: FounderDeck,
 });
 
+const SURFACES: { to: string; icon: typeof Crown; label: string; detail: string }[] = [
+  { to: "/app/founder/movein", icon: Truck, label: "Move-In", detail: "Customer migrations, cutovers, cash and evidence" },
+  { to: "/app/founder/revenue", icon: Banknote, label: "Revenue", detail: "MRR truth, target gap and the lead pipeline" },
+  { to: "/app/founder/billing", icon: Banknote, label: "Payments", detail: "Billing, support reply clock" },
+  { to: "/app/founder/launch", icon: Rocket, label: "Launch", detail: "QA, checklist, deployments and release lock" },
+  { to: "/app/founder/ai", icon: Sparkles, label: "AI", detail: "Workbench, Studio, Automation, Knowledge, Arena, Receipts" },
+  { to: "/app/founder/org", icon: Building2, label: "Org · CRM", detail: "Organisation and CRM controls" },
+  { to: "/app/founder/security", icon: ShieldCheck, label: "Security", detail: "Platform security and kill switches" },
+  { to: "/app/founder/safety", icon: ShieldCheck, label: "Safety review", detail: "Abuse and safety queue" },
+  { to: "/app/founder/perf", icon: Gauge, label: "Performance", detail: "Budgets, regressions and tenant speed" },
+  { to: "/app/founder/analytics", icon: BarChart3, label: "Analytics", detail: "Usage and growth" },
+  { to: "/app/founder/calls", icon: Phone, label: "Calls", detail: "ANEXOVideoChat call telemetry" },
+  { to: "/app/founder/integrations", icon: Plug, label: "Integrations", detail: "Connected services and webhooks" },
+  { to: "/app/founder/admin", icon: Crown, label: "Admin", detail: "Admin controls" },
+  { to: "/app/founder/settings", icon: Settings, label: "Settings", detail: "Founder settings" },
+];
+
 function FounderDeck() {
   const overview = useFounderOverview();
   const mailboxes = useFounderMailboxes();
@@ -88,14 +111,35 @@ function FounderDeck() {
         <p className="ax-eyebrow flex items-center gap-2">
           <Crown className="size-3.5" aria-hidden="true" /> Founder · chairman
         </p>
-        <h2 className="mt-3 text-3xl text-foreground">Command deck</h2>
-        <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted-foreground">
-          Your identity, your mailboxes and every AI address in one surface. The plan below is
-          locked; the state next to each row is server truth, so nothing reads as live until the
-          mailbox really exists.
+        <h1 className="mt-3 text-2xl text-foreground sm:text-3xl">Command center</h1>
+        <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          What needs you, ranked, then the mailboxes behind it. Every number is server truth — if something could not be
+          measured it says so instead of looking fine.
         </p>
 
-        <div className="mt-8 grid gap-3 sm:grid-cols-3">
+        <CommandCenter />
+
+        <section className="mt-10" aria-labelledby="surfaces-title">
+          <h2 id="surfaces-title" className="text-base font-bold text-foreground">
+            Run the company
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Every founder surface, one tap away. All of them live on this IP-locked host only.
+          </p>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+            {SURFACES.map((x) => (
+              <FounderLink key={x.to} {...x} />
+            ))}
+          </div>
+        </section>
+
+        <h2 className="mt-12 text-base font-bold text-foreground">Mailboxes</h2>
+        <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+          Your identity, your mailboxes and every AI address. The plan is locked; the state next to each row is server
+          truth, so nothing reads as live until the mailbox really exists.
+        </p>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <Stat label="Planned mailboxes" value={String(PLANNED_MAILBOXES.length)} />
           <Stat
             label="Provisioned"
@@ -172,52 +216,6 @@ function FounderDeck() {
           live={live}
           onProvision={runProvision}
         />
-
-        <section className="mt-10">
-          <h2 className="text-base font-bold text-foreground">Founder surfaces</h2>
-          <p className="mt-2 text-sm text-muted-foreground">
-            The former AI founder workspace is preserved here, in order, on the single IP-locked
-            founder host.
-          </p>
-          <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-            <FounderLink
-              to="/app/founder/ai"
-              icon={Sparkles}
-              label="AI"
-              detail="Workbench, Studio, Automation, Knowledge, Arena, Prompts, Memory, Receipts, Billing"
-            />
-            <FounderLink
-              to="/app/founder/billing"
-              icon={Banknote}
-              label="Payments · Revenue"
-              detail="MRR truth, billing, support reply clock"
-            />
-            <FounderLink
-              to="/app/founder/org"
-              icon={Building2}
-              label="Org · CRM"
-              detail="Organisation and CRM controls"
-            />
-            <FounderLink
-              to="/app/founder/security"
-              icon={ShieldCheck}
-              label="Security"
-              detail="Platform security and kill switches"
-            />
-            <FounderLink
-              to="/app/founder/perf"
-              icon={Gauge}
-              label="Performance"
-              detail="Budgets, regressions and tenant speed"
-            />
-            <FounderLink
-              to="/app/founder/launch"
-              icon={Rocket}
-              label="Launch"
-              detail="QA, checklist, deployments and release lock"
-            />
-          </div>
-        </section>
 
         <section className="mt-10">
           <h2 className="text-base font-bold text-foreground">Founder workspace host</h2>

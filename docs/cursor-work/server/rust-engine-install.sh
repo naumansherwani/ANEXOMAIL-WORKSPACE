@@ -402,12 +402,14 @@ for m in $MODS; do
       r2="$(curl -s -m 10 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RPC/rpc/movein.capacity" 2>/dev/null)"
       r3="$(probe founder.release.run '{"input":{}}')"
       r4="$(probe founder.revenue.pipeline '{"input":{}}')"
+      r5="$(probe founder.brain.command '{"input":{}}')"
       echo "   status.public (public): $(printf '%s' "$r1" | cut -c1-150)"
       echo "   movein.capacity (public): $(printf '%s' "$r2" | cut -c1-110)"
       echo "   founder.release.run (nakli token): $r3"
       echo "   founder.revenue.pipeline (nakli token): $r4"
-      case "$r1$r3$r4" in
-        *'"state"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> b5: Rust ne public status bhi diya aur founder procs bhi pakde (nakli login 401 = theek). Poora saboot: python3 b5-proof.py";;
+      echo "   founder.brain.command (nakli token): $r5"
+      case "$r1$r3$r4$r5" in
+        *'"state"'*'"unauthorized"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> b5: Rust ne public status bhi diya aur founder procs (command center samet) bhi pakde (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> b5: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> b5: jawab upar dekhein";;
       esac;;

@@ -77,6 +77,46 @@ pub fn civil_from_days(z: i64) -> (i64, i64, i64) {
     (if m <= 2 { y + 1 } else { y }, m, d)
 }
 
+/// Days since 1970-01-01 for a civil date (inverse of `civil_from_days`).
+pub fn days_from_civil(y: i64, m: i64, d: i64) -> i64 {
+    let y = if m <= 2 { y - 1 } else { y };
+    let era = y.div_euclid(400);
+    let yoe = y.rem_euclid(400);
+    let mp = if m > 2 { m - 3 } else { m + 9 };
+    let doy = (153 * mp + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    era * 146_097 + doe - 719_468
+}
+
+/// Parses `2026-10-21T07:54:03(.123)?(Z|+00:00|+hh:mm)?` (and a space instead of `T`) to unix ms. None if it is not that shape.
+pub fn parse_iso_ms(s: &str) -> Option<i64> {
+    let b = s.as_bytes();
+    if b.len() < 19 || !(b[10] == b'T' || b[10] == b' ') || b[4] != b'-' || b[7] != b'-' || b[13] != b':' || b[16] != b':' {
+        return None;
+    }
+    let n = |a: usize, z: usize| -> Option<i64> { s.get(a..z)?.parse::<i64>().ok() };
+    let (y, mo, d, h, mi, se) = (n(0, 4)?, n(5, 7)?, n(8, 10)?, n(11, 13)?, n(14, 16)?, n(17, 19)?);
+    if !(1..=12).contains(&mo) || !(1..=31).contains(&d) || h > 23 || mi > 59 || se > 60 {
+        return None;
+    }
+    let mut rest = &s[19..];
+    let mut ms = 0i64;
+    if let Some(r) = rest.strip_prefix('.') {
+        let digits: String = r.chars().take_while(|c| c.is_ascii_digit()).collect();
+        let frac = format!("{:0<3}", digits);
+        ms = frac.get(..3)?.parse().ok()?;
+        rest = &r[digits.len()..];
+    }
+    let mut off_min = 0i64;
+    if rest.len() == 6 && (rest.starts_with('+') || rest.starts_with('-')) && rest.as_bytes()[3] == b':' {
+        let sign = if rest.starts_with('-') { -1 } else { 1 };
+        off_min = sign * (rest[1..3].parse::<i64>().ok()? * 60 + rest[4..6].parse::<i64>().ok()?);
+    } else if !(rest.is_empty() || rest == "Z") {
+        return None;
+    }
+    Some(((days_from_civil(y, mo, d) * 86_400 + h * 3600 + mi * 60 + se) - off_min * 60) * 1000 + ms)
+}
+
 /// A v4 UUID from 16 random bytes.
 pub fn uuid_v4(mut b: [u8; 16]) -> String {
     b[6] = (b[6] & 0x0f) | 0x40;
@@ -432,6 +472,131 @@ pub fn gap(target: f64, committed: f64) -> i64 {
     js_round(target - committed).max(0)
 }
 
+// ---------------------------------------------------------------- founder command brain (rules -> "needs you" list)
+
+/// Everything the Founder Command Center knows at one instant. `None` = could not be read (a blind spot, never a guess).
+#[derive(Default, Clone, Debug)]
+pub struct Signals {
+    pub brain_up: Option<bool>,
+    pub gate: Option<&'static str>,
+    pub blockers: Option<usize>,
+    pub checklist_open: Option<usize>,
+    pub last_run_age_h: Option<i64>,
+    pub last_run_failed: Option<i64>,
+    pub movein_blocked: Option<i64>,
+    pub movein_exceptions: Option<i64>,
+    pub movein_overdue_gbp: Option<f64>,
+    pub movein_waitlisted: Option<i64>,
+    pub cutovers_tonight: Option<i64>,
+    pub outbox_held: Option<i64>,
+    pub new_leads: Option<i64>,
+    pub oldest_new_lead_h: Option<i64>,
+    pub revenue_gap_gbp: Option<i64>,
+}
+
+#[derive(Clone, Debug, PartialEq)]
+pub struct Item {
+    /// 0 critical · 1 high · 2 normal · 3 info
+    pub severity: u8,
+    pub id: &'static str,
+    pub title: String,
+    pub detail: String,
+    pub href: &'static str,
+}
+
+pub fn severity_label(s: u8) -> &'static str {
+    match s {
+        0 => "critical",
+        1 => "high",
+        2 => "normal",
+        _ => "info",
+    }
+}
+
+fn plural(n: i64, one: &str, many: &str) -> String {
+    format!("{} {}", n, if n == 1 { one } else { many })
+}
+
+/// The whole decision table. Pure and deterministic: same signals in, same ordered list out.
+pub fn attention(s: &Signals) -> Vec<Item> {
+    let mut v: Vec<Item> = vec![];
+    let mut add = |severity: u8, id: &'static str, title: String, detail: &str, href: &'static str| {
+        v.push(Item { severity, id, title, detail: detail.to_string(), href });
+    };
+    if s.brain_up == Some(false) {
+        add(0, "brain_down", "Brain (API) is not answering".into(), "The Bun brain failed its health probe. Mail, billing and every Bun-only route are affected.", "/app/founder/launch/qa");
+    }
+    if let Some(n) = s.blockers.filter(|n| *n > 0) {
+        add(1, "release_blockers", format!("{} blocking the release", plural(n as i64, "blocker", "blockers")), "The release gate is closed until these are cleared or accepted.", "/app/founder/launch");
+    }
+    if let Some(n) = s.last_run_failed.filter(|n| *n > 0) {
+        add(1, "qa_failed", format!("Last QA run has {}", plural(n, "failed check", "failed checks")), "Open the run and read which checks failed.", "/app/founder/launch/qa");
+    }
+    match s.last_run_age_h {
+        Some(h) if h > 48 => add(2, "qa_stale", format!("QA has not run for {} days", h / 24), "Run it again before trusting the green status.", "/app/founder/launch/qa"),
+        _ => {}
+    }
+    if let Some(n) = s.movein_blocked.filter(|n| *n > 0) {
+        add(1, "movein_blocked", format!("{} blocked", plural(n, "move-in", "move-ins")), "A customer move is stuck and cannot continue on its own.", "/app/founder/movein");
+    }
+    if let Some(n) = s.movein_exceptions.filter(|n| *n > 0) {
+        add(1, "movein_exceptions", format!("{} open", plural(n, "move-in exception", "move-in exceptions")), "Review the evidence and decide: retry, hold or roll back.", "/app/founder/movein");
+    }
+    if let Some(g) = s.movein_overdue_gbp.filter(|g| *g > 0.0) {
+        add(1, "movein_overdue", format!("£{} of move-in payments overdue", js_round(g)), "Chase before the next cutover window.", "/app/founder/movein");
+    }
+    if let Some(n) = s.movein_waitlisted.filter(|n| *n > 0) {
+        add(2, "movein_waitlist", format!("{} on the waitlist", plural(n, "customer", "customers")), "Open a slot or tell them a date.", "/app/founder/movein");
+    }
+    if let Some(n) = s.outbox_held.filter(|n| *n > 0) {
+        let sev = if n >= 25 { 1 } else { 2 };
+        add(sev, "outbox_held", format!("{} held in the outbox", plural(n, "mail", "mails")), "Queued or failed sends that have not left yet.", "/app/founder/launch/qa");
+    }
+    if let Some(n) = s.new_leads.filter(|n| *n > 0) {
+        let late = s.oldest_new_lead_h.map(|h| h >= 24).unwrap_or(false);
+        add(if late { 1 } else { 2 }, "new_leads", format!("{} waiting for a reply", plural(n, "new lead", "new leads")), if late { "The oldest has waited more than a day." } else { "Reply while they are still warm." }, "/app/founder/revenue/pipeline");
+    }
+    if let Some(n) = s.checklist_open.filter(|n| *n > 0) {
+        add(3, "checklist_open", format!("{} open on the launch checklist", plural(n as i64, "item", "items")), "Not blocking, but not done.", "/app/founder/launch/checklist");
+    }
+    if let Some(n) = s.cutovers_tonight.filter(|n| *n > 0) {
+        add(3, "cutovers_tonight", format!("{} tonight", plural(n, "cutover", "cutovers")), "Be reachable during the window.", "/app/founder/movein");
+    }
+    if let Some(g) = s.revenue_gap_gbp.filter(|g| *g > 0) {
+        add(3, "revenue_gap", format!("£{} a month short of target", g), "See which leads close the gap.", "/app/founder/revenue/pipeline");
+    }
+    v.sort_by(|a, b| a.severity.cmp(&b.severity).then(a.id.cmp(b.id)));
+    v
+}
+
+/// Overall light: red if anything critical, amber if anything high, else green.
+pub fn overall(items: &[Item]) -> &'static str {
+    if items.iter().any(|i| i.severity == 0) {
+        "red"
+    } else if items.iter().any(|i| i.severity == 1) {
+        "amber"
+    } else {
+        "green"
+    }
+}
+
+/// Names of signals that could not be read, so the screen can say "not measured" instead of showing a false calm.
+pub fn blind_spots(s: &Signals) -> Vec<&'static str> {
+    let mut b = vec![];
+    if s.brain_up.is_none() { b.push("brain health"); }
+    if s.gate.is_none() { b.push("release gate"); }
+    if s.movein_blocked.is_none() { b.push("move-in"); }
+    if s.outbox_held.is_none() { b.push("outbox"); }
+    if s.new_leads.is_none() { b.push("leads"); }
+    if s.revenue_gap_gbp.is_none() { b.push("revenue"); }
+    b
+}
+
+/// Whole hours between two unix-ms instants, never negative.
+pub fn age_hours(now_ms: i64, then_ms: i64) -> i64 {
+    ((now_ms - then_ms).max(0)) / 3_600_000
+}
+
 // ================================================================== tests
 #[cfg(test)]
 mod tests {
@@ -634,5 +799,72 @@ mod tests {
     fn pct_encoding() {
         assert_eq!(pct("a b+c@d"), "a%20b%2Bc%40d");
         assert_eq!(pct("2026-10"), "2026-10");
+    }
+
+    #[test]
+    fn brain_orders_by_severity_and_lights() {
+        let mut s = Signals::default();
+        s.brain_up = Some(true);
+        s.gate = Some("ready");
+        s.movein_blocked = Some(0);
+        s.outbox_held = Some(0);
+        s.new_leads = Some(0);
+        s.revenue_gap_gbp = Some(0);
+        assert!(attention(&s).is_empty());
+        assert_eq!(overall(&attention(&s)), "green");
+        assert!(blind_spots(&s).is_empty());
+
+        s.new_leads = Some(2);
+        s.oldest_new_lead_h = Some(30);
+        s.blockers = Some(1);
+        s.checklist_open = Some(4);
+        s.revenue_gap_gbp = Some(380);
+        let a = attention(&s);
+        assert_eq!(a[0].id, "new_leads"); // high, alphabetical before release_blockers
+        assert_eq!(a[1].id, "release_blockers");
+        assert_eq!(a.last().unwrap().id, "revenue_gap");
+        assert_eq!(overall(&a), "amber");
+        assert_eq!(a[1].title, "1 blocker blocking the release");
+
+        s.brain_up = Some(false);
+        let a = attention(&s);
+        assert_eq!(a[0].id, "brain_down");
+        assert_eq!(overall(&a), "red");
+    }
+
+    #[test]
+    fn brain_never_invents_calm() {
+        let s = Signals::default();
+        assert!(attention(&s).is_empty());
+        assert_eq!(blind_spots(&s).len(), 6);
+        let mut s = Signals::default();
+        s.outbox_held = Some(25);
+        assert_eq!(attention(&s)[0].severity, 1);
+        s.outbox_held = Some(3);
+        assert_eq!(attention(&s)[0].severity, 2);
+        s.last_run_age_h = Some(72);
+        assert!(attention(&s).iter().any(|i| i.id == "qa_stale" && i.title == "QA has not run for 3 days"));
+        s.movein_overdue_gbp = Some(1234.6);
+        assert!(attention(&s).iter().any(|i| i.title == "£1235 of move-in payments overdue"));
+    }
+
+    #[test]
+    fn age_hours_is_floor_and_non_negative() {
+        assert_eq!(age_hours(10_000_000, 0), 2);
+        assert_eq!(age_hours(0, 10_000_000), 0);
+        assert_eq!(severity_label(0), "critical");
+        assert_eq!(severity_label(9), "info");
+    }
+
+    #[test]
+    fn iso_parse_roundtrips() {
+        let ms = 1_792_569_243_123i64;
+        assert_eq!(parse_iso_ms(&iso_utc(ms)), Some(ms));
+        assert_eq!(parse_iso_ms("1970-01-01T00:00:00Z"), Some(0));
+        assert_eq!(parse_iso_ms("2026-10-21T12:00:00+05:00"), parse_iso_ms("2026-10-21T07:00:00Z"));
+        assert_eq!(parse_iso_ms("2026-10-21 07:00:00.5+00:00"), Some(parse_iso_ms("2026-10-21T07:00:00Z").unwrap() + 500));
+        assert_eq!(parse_iso_ms("nonsense"), None);
+        assert_eq!(parse_iso_ms("2026-13-21T07:00:00Z"), None);
+        assert_eq!(days_from_civil(2024, 2, 29), 19_782);
     }
 }

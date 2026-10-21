@@ -175,3 +175,11 @@ Live Brain routes pehle dobara padhi (movein.ts, release.ts, revenue.ts). Green 
 - A logo = `src/components/site/BrandMark.tsx` (repo == server). Page-load par pehle se use: `CinematicSplash` (sign-in ke baad) aur `WorkspaceLoader` (/app khulte waqt). Lovable ki base64 BrandMark command server par chalane ki zaroorat nahi — pull.sh use overwrite kar deta. Agar Lovable ka alag version chahiye to .tsx file repo mein aayegi, server par seedha nahi.
 - `docs/cursor-work/server/brain-pricefix-install.sh`: Bun `revenue.ts`/`release.ts` ke 4 stale daam (20/40/85/700, 500, 40) -> 23/46/97/790, 46. Surgical + idempotent + bun build preflight + restore. Sandbox PASS (purani file par lagta hai, dobara = "same").
 - Server par abhi baqi: Web pull (9b6c254/6c9f997), `MODULES=b5 rust-engine-install.sh`, `brain-pricefix-install.sh`.
+
+## 21 Oct 2026 08:3x — FOUNDER COMMAND CENTER (founder.brain.command) — founder ne kaha "founder home dump hai, brain banao"
+- Lovable BrandMark command server par chali: file repo se byte-for-byte same (3755 bytes) => kuch nahi bigda. Server par `BrandMark.tsx.bak` extra hai (hata dein).
+- Rust (b5 module mein, naya installer nahi): `b5_core.rs` mein `Signals`/`attention`/`overall`/`blind_spots`/`parse_iso_ms` (23 tests PASS); `b5_glue.rs` mein `founder.brain.command` (10 sources ek saath, ek fail => blind_spot, 500 nahi). `committed_numbers()` ab pipeline page aur command center dono ka ek hi hisaab.
+- Sandbox: `b5-sandbox-proof.py` SAB PASS (naya section 4b: 8 checks).
+- Frontend: `src/lib/founder-brain.ts`, `src/components/app/founder/CommandCenter.tsx`, `src/routes/app.founder.tsx` (command center sab se upar, "Run the company" mein SAB 14 founder surfaces — pehle Move-In/Analytics/Calls/Integrations/Safety/Settings/Admin ka link hi nahi tha, mailboxes neeche).
+- Rule: Bun twin NAHI (naya kaam). Rust band ho to screen saaf likhti hai, andaza nahi lagati.
+- Server par chalana: Web pull + `MODULES=b5 rust-engine-install.sh` (+ `brain-pricefix-install.sh`).

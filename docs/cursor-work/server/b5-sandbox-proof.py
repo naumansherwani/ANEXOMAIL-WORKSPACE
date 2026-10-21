@@ -300,8 +300,24 @@ def main():
         _, pp, _ = rust("founder.revenue.pipeline", {}, F)
         check("pipeline: committed = 425 + 80.5 (live) + 790 (1 live SLA, locked £790) + 60 (active partner) = 1355.5 -> 1356; gap = round(1500-1355.5) = 145", pp["committed_mrr_gbp"] == 1356 and pp["gap_gbp"] == 145 and pp["one_off_cash_gbp"] == 1200, pp)
 
+        print("== 4b) founder command centre (founder.brain.command)")
+        T["revenue_leads"].append({"id": U(), "reference": "LED-202610-NEW1", "company": "Fresh", "kind": "plan", "stage": "new", "seats": 1, "quote_gbp": None, "created_at": iso(-26 * 3600)})
+        bc_, br, berr = rust("founder.brain.command", {}, F)
+        check("brain.command: 200 aur result shape", bc_ == 200 and isinstance(br, dict) and {"light", "attention", "blind_spots", "pulse", "release", "movein", "money"} <= set(br), (bc_, berr))
+        ids = [a["id"] for a in br["attention"]]
+        check("brain: seeded truth -> qa_failed + release_blockers + new_leads + outbox_held + revenue_gap + checklist_open", {"qa_failed", "release_blockers", "new_leads", "outbox_held", "revenue_gap", "checklist_open"} <= set(ids), ids)
+        check("brain: 26 ghante purani new lead => 'high' (late)", [a for a in br["attention"] if a["id"] == "new_leads"][0]["level"] == "high")
+        sev = [a["severity"] for a in br["attention"]]
+        check("brain: list severity ke hisab se sorted aur light amber (koi critical nahi)", sev == sorted(sev) and br["light"] == "amber", (sev, br["light"]))
+        check("brain: money == pipeline page ka same number (1356 / gap 145) - ek hi definition", br["money"]["committed_mrr_gbp"] == pp["committed_mrr_gbp"] == 1356 and br["money"]["gap_gbp"] == 145 and br["money"]["priority_support_mrr_gbp"] == 790, br["money"])
+        check("brain: release gate 'locked', version 0.9.0, blockers 1 (checklist), checklist_open 3", br["release"]["gate"] == "locked" and br["release"]["version"] == "0.9.0" and br["release"]["blockers"] == 1 and br["release"]["checklist_open"] == 3, br["release"])
+        check("brain: outbox held = 2 (queued+failed, sent nahi)", br["pulse"]["outbox_held"] == 2 and br["pulse"]["brain"]["status"] in ("pass", "warn"), br["pulse"])
+        check("brain: movein mock mein khali -> 0 (blind spot nahi, jawab aaya)", br["movein"] is not None and br["movein"]["blocked"] == 0 and "move-in" not in br["blind_spots"], br["movein"])
+        check("brain: har item ka href '/app/founder' ya '/app/founder/...' (bahar ka link nahi)", all(a["href"].startswith("/app/founder") for a in br["attention"]))
+        T["revenue_leads"][:] = [r for r in T["revenue_leads"] if r.get("stage") != "new"]
+
         print("== 5) founder gate")
-        for proc, inp in [("founder.release.run", {}), ("founder.release.lock.create", {"version": "9"}), ("founder.revenue.pipeline", {}), ("founder.movein.cockpit", {})]:
+        for proc, inp in [("founder.release.run", {}), ("founder.release.lock.create", {"version": "9"}), ("founder.revenue.pipeline", {}), ("founder.movein.cockpit", {}), ("founder.brain.command", {})]:
             c1 = rust(proc, inp, C)[0]; c2 = rust(proc, inp)[0]
             check(f"{proc}: user 403, bina token 401", c1 == 403 and c2 == 401, (c1, c2))
 

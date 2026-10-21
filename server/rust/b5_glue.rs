@@ -50,6 +50,7 @@ pub fn owns(proc: &str) -> bool {
             | "founder.release.roadmap.list"
             | "founder.release.roadmap.create"
             | "founder.revenue.pipeline"
+            | "founder.brain.command"
     )
 }
 
@@ -440,6 +441,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         },
         "founder.release.roadmap.create" => roadmap_create(&id, input).await,
         "founder.revenue.pipeline" => revenue_pipeline().await,
+        "founder.brain.command" => founder_command().await,
         _ => fail(StatusCode::NOT_FOUND, "procedure_not_in_rust", "Unknown procedure."),
     }
 }
@@ -938,6 +940,22 @@ async fn release_run(uid: &str, input: &Value) -> axum::response::Response {
 
 // ------------------------------------------------------------------ revenue pipeline truth
 
+/// Committed recurring revenue from live accounts + Priority Support + active partners. One definition, used by the
+/// pipeline page AND the command centre so the two can never disagree.
+/// Returns (live accounts, subscription MRR, SLA accounts, SLA MRR, partner MRR, total).
+fn committed_numbers(accounts: &[Value], partners: &[Value]) -> (usize, f64, i64, i64, f64, f64) {
+    let live: Vec<&Value> = accounts.iter().filter(|a| jstr(a, "state") != "cancelled").collect();
+    let subs_mrr: f64 = live.iter().map(|a| a.get("mrr_gbp").map(jnum).unwrap_or(0.0)).sum();
+    let sla_n = live.iter().filter(|a| matches!(a.get("sla_addon"), Some(Value::Bool(true)))).count() as i64;
+    let sla_mrr = sla_n * c::SLA_MRR_PER_ACCOUNT;
+    let partner_mrr: f64 = partners
+        .iter()
+        .filter(|p| matches!(jstr(p, "stage").as_str(), "active" | "live"))
+        .map(|p| p.get("commission_gbp").map(jnum).unwrap_or(0.0))
+        .sum();
+    (live.len(), subs_mrr, sla_n, sla_mrr, partner_mrr, subs_mrr + sla_mrr as f64 + partner_mrr)
+}
+
 async fn revenue_pipeline() -> axum::response::Response {
     let (acc_q, lead_q, tgt_q, partner_q, pipe_q) = tokio::join!(
         rows("revenue_accounts?select=plan,seats,mrr_gbp,sla_addon,state"),
@@ -951,17 +969,8 @@ async fn revenue_pipeline() -> axum::response::Response {
     let partners = partner_q.unwrap_or_default();
     let pipe_rows = pipe_q.unwrap_or_default();
 
-    let live: Vec<&Value> = accounts.iter().filter(|a| jstr(a, "state") != "cancelled").collect();
-    let subs_mrr: f64 = live.iter().map(|a| a.get("mrr_gbp").map(jnum).unwrap_or(0.0)).sum();
-    let sla_n = live.iter().filter(|a| matches!(a.get("sla_addon"), Some(Value::Bool(true)))).count() as i64;
-    let sla_mrr = sla_n * c::SLA_MRR_PER_ACCOUNT;
-    let partner_mrr: f64 = partners
-        .iter()
-        .filter(|p| matches!(jstr(p, "stage").as_str(), "active" | "live"))
-        .map(|p| p.get("commission_gbp").map(jnum).unwrap_or(0.0))
-        .sum();
+    let (live_n, subs_mrr, sla_n, sla_mrr, partner_mrr, committed) = committed_numbers(&accounts, &partners);
     let target = tgt_q.unwrap_or_default().first().and_then(|t| t.get("target_gbp")).map(jnum).unwrap_or(500.0);
-    let committed = subs_mrr + sla_mrr as f64 + partner_mrr;
 
     let open: Vec<&Value> = leads.iter().filter(|l| jstr(l, "stage") != "lost").collect();
     let pipeline: Vec<Value> = open
@@ -998,7 +1007,7 @@ async fn revenue_pipeline() -> axum::response::Response {
             committed_streams.push(json!({ "stream": stream, "mrr_gbp": mrr, "accounts": accounts }));
         }
     };
-    push("Subscriptions (Basic/Pro/Business)", c::js_round(subs_mrr), live.len());
+    push("Subscriptions (Basic/Pro/Business)", c::js_round(subs_mrr), live_n);
     push("Priority Support retainer", sla_mrr, sla_n as usize);
     push("Partner commission", c::js_round(partner_mrr), partners.len());
 
@@ -1006,6 +1015,113 @@ async fn revenue_pipeline() -> axum::response::Response {
         "target_gbp": target, "committed_mrr_gbp": c::js_round(committed), "pipeline_mrr_gbp": pipeline_mrr,
         "one_off_cash_gbp": c::js_round(one_off), "gap_gbp": c::gap(target, committed),
         "committed": committed_streams, "pipeline": pipeline,
+    }))
+    .into_response()
+}
+
+
+// ------------------------------------------------------------------ founder command centre ("the brain")
+
+/// One call for the whole founder home: pulse, money, move-in, release gate and a ranked "needs you" list.
+/// Every source is read independently; one failing source becomes a named blind spot, never a 500 and never false calm.
+async fn founder_command() -> axum::response::Response {
+    let origin = brain_origin();
+    let (health, run_q, lock_q, list_q, cock_q, held_q, leads_q, acc_q, tgt_q, partner_q) = tokio::join!(
+        http_probe("brain", "brain health", &origin, "/health", &[200]),
+        rows("release_runs?select=started_at,failed,verdict&order=started_at.desc&limit=1"),
+        rows("release_locks?select=version,frozen_at&order=frozen_at.desc&limit=1"),
+        rows("release_checklist?select=state"),
+        crate::sb_rpc("movein_cockpit", json!({})),
+        crate::sb_count("mail_outbox?select=*&state=in.(queued,failed)"),
+        rows("revenue_leads?select=created_at&stage=eq.new&order=created_at.asc&limit=200"),
+        rows("revenue_accounts?select=plan,seats,mrr_gbp,sla_addon,state"),
+        rows("revenue_targets?select=target_gbp&order=month.desc&limit=1"),
+        rows("revenue_partners?select=stage,commission_gbp"),
+    );
+    let now = now_ms();
+    let mut sig = c::Signals::default();
+    sig.brain_up = Some(health.status != "fail");
+
+    // release
+    let run = run_q.as_ref().ok().and_then(|r| r.first().cloned());
+    let lock = lock_q.as_ref().ok().and_then(|r| r.first().cloned());
+    let checklist_ok = list_q.is_ok();
+    let items = list_q.unwrap_or_default();
+    let run_failed = run.as_ref().map(|r| jint(r, "failed")).unwrap_or(0);
+    let list_blockers = items.iter().filter(|i| jstr(i, "state") == "blocker").count();
+    if run_q.is_ok() && lock_q.is_ok() && checklist_ok {
+        sig.gate = Some(c::gate(lock.is_some(), run.is_some(), list_blockers + run_failed.max(0) as usize));
+        sig.blockers = Some(list_blockers);
+        sig.checklist_open = Some(items.iter().filter(|i| jstr(i, "state") != "done").count());
+    }
+    if let Some(r) = &run {
+        sig.last_run_failed = Some(run_failed);
+        sig.last_run_age_h = c::parse_iso_ms(&jstr(r, "started_at")).map(|t| c::age_hours(now, t));
+    }
+
+    // move-in
+    let cock = cock_q.ok();
+    if let Some(k) = &cock {
+        sig.movein_blocked = Some(jint(k, "blocked"));
+        sig.movein_exceptions = Some(jint(k, "exceptions_open"));
+        sig.movein_waitlisted = Some(jint(k, "waitlisted"));
+        sig.cutovers_tonight = Some(jint(k, "cutovers_tonight"));
+        sig.movein_overdue_gbp = Some(k.get("cash").and_then(|c| c.get("overdue_gbp")).map(jnum).unwrap_or(0.0));
+    }
+
+    // outbox + leads
+    sig.outbox_held = held_q.ok().map(|n| n as i64);
+    let new_leads = leads_q.ok();
+    if let Some(l) = &new_leads {
+        sig.new_leads = Some(l.len() as i64);
+        sig.oldest_new_lead_h = l.iter().filter_map(|x| c::parse_iso_ms(&jstr(x, "created_at"))).min().map(|t| c::age_hours(now, t));
+    }
+
+    // revenue
+    let money = match (acc_q, partner_q) {
+        (Ok(a), Ok(p)) => {
+            let (live_n, subs, sla_n, sla_mrr, partner, committed) = committed_numbers(&a, &p);
+            let target = tgt_q.ok().and_then(|t| t.first().and_then(|x| x.get("target_gbp")).map(jnum)).unwrap_or(500.0);
+            let gap = c::gap(target, committed);
+            sig.revenue_gap_gbp = Some(gap);
+            json!({
+                "committed_mrr_gbp": c::js_round(committed), "target_gbp": target, "gap_gbp": gap,
+                "subscriptions_mrr_gbp": c::js_round(subs), "priority_support_mrr_gbp": sla_mrr, "priority_support_accounts": sla_n,
+                "partner_mrr_gbp": c::js_round(partner), "live_accounts": live_n,
+                "new_leads": sig.new_leads, "oldest_new_lead_hours": sig.oldest_new_lead_h,
+            })
+        }
+        _ => Value::Null,
+    };
+
+    let attn = c::attention(&sig);
+    let light = c::overall(&attn);
+    crate::ok(json!({
+        "generated_at": c::iso_utc(now),
+        "light": light,
+        "attention": attn.iter().map(|i| json!({
+            "id": i.id, "severity": i.severity, "level": c::severity_label(i.severity),
+            "title": i.title, "detail": i.detail, "href": i.href,
+        })).collect::<Vec<_>>(),
+        "blind_spots": c::blind_spots(&sig),
+        "pulse": {
+            "brain": { "status": health.status, "ms": health.ms },
+            "rust": { "status": "pass" },
+            "outbox_held": sig.outbox_held,
+        },
+        "release": {
+            "gate": sig.gate, "version": lock.as_ref().map(|l| val_or_null(l, "version")).unwrap_or(Value::Null),
+            "locked_at": lock.as_ref().map(|l| val_or_null(l, "frozen_at")).unwrap_or(Value::Null),
+            "last_run_verdict": run.as_ref().map(|r| val_or_null(r, "verdict")).unwrap_or(Value::Null),
+            "last_run_age_hours": sig.last_run_age_h, "blockers": sig.blockers, "checklist_open": sig.checklist_open,
+        },
+        "movein": cock.as_ref().map(|k| json!({
+            "active_moves": jint(k, "active_moves"), "blocked": jint(k, "blocked"), "waitlisted": jint(k, "waitlisted"),
+            "cutovers_tonight": jint(k, "cutovers_tonight"), "exceptions_open": jint(k, "exceptions_open"),
+            "outstanding_gbp": k.get("cash").and_then(|c| c.get("outstanding_gbp")).map(jnum).unwrap_or(0.0),
+            "overdue_gbp": k.get("cash").and_then(|c| c.get("overdue_gbp")).map(jnum).unwrap_or(0.0),
+        })).unwrap_or(Value::Null),
+        "money": money,
     }))
     .into_response()
 }

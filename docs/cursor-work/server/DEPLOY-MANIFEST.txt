@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md 4689acd147ef4735
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
-docs/cursor-work/server/rust-engine-install.sh debed26c45ea9a7f
+docs/cursor-work/server/rust-engine-install.sh 83c233210dc67b73
 src/components/app/security/IntegrityGate.tsx 2d1385eb5d62c751
 src/lib/account-export.ts a9bc75ae97a15153
 docs/cursor-work/sql/E45_integrity_purge.sql 4cc5092c77e9f0e9
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts b8000595b3ceed09
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 74e349b48c8b7615
+docs/cursor-work/DONE-DO-NOT-REPEAT.md f0fc050499a26c1b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md fb5ed2ec64ed396d
+docs/cursor-work/MASTER-GAP-LEDGER.md 39664c7821a59ab6
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -302,10 +302,10 @@ docs/cursor-work/GREEN-BOARD/README.md 13eac850e87ff2b8
 docs/claude/FINAL-FOUNDER-BLUEPRINT.md fb654cab453c4bf5
 docs/cursor-work/GREEN-BOARD/07-FOUNDER-COMMANDS-vs-SERVER.md b7dee0dcc5f04150
 docs/cursor-work/server/ops-ufw-passkey.sh 00e831373a013875
-server/rust/b5_core.rs 2bec9c323c8b7251
-server/rust/b5_glue.rs 9a07af23f23ffca6
-docs/cursor-work/server/b5-sandbox-proof.py b320a574a82be814
-docs/cursor-work/server/tests/b5/bun-harness.ts 4b87eda75ecf83fa
+server/rust/b5_core.rs 5c2b6ff5b6d3f153
+server/rust/b5_glue.rs 5cf4333c0d6b86e7
+docs/cursor-work/server/b5-sandbox-proof.py 4a73cec9730eece5
+docs/cursor-work/server/tests/b5/bun-harness.ts cc3dfba33da11d46
 docs/cursor-work/server/tests/b5/express-shim.js 994bc59161aa06e2
 src/lib/movein.ts dc7bcb28cd703f5c
 src/lib/release.ts 47c7d769e7c5efb1
@@ -323,3 +323,6 @@ src/routes/app.movein.tsx db2a5d3341081843
 src/routes/status.tsx 63446194a25640c4
 src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e
 docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
+src/routes/app.founder.tsx 0bb55ea3b7e5fd7d
+src/lib/founder-brain.ts 523e8bdb8c961916
+src/components/app/founder/CommandCenter.tsx 037914aada5a3df7

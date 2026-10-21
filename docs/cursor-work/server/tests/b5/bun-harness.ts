@@ -9,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.set("trust proxy", true);
 app.get("/api/health", (_q, r) => r.json({ ok: true }));
+app.get("/health", (_q, r) => r.json({ ok: true }));
 app.use("/api/public", revenuePublic);
 app.use("/api/public", releasePublic);
 app.use("/api/public", moveinPublicRouter);
