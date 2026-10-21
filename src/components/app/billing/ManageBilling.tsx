@@ -108,6 +108,12 @@ export function ManageBilling() {
           {t("Cancel, change your card or download VAT invoices — in Polar's secure portal.")}
         </p>
       </div>
+      <p className="mt-2 text-[12px] text-muted-foreground">
+        {t("Changing package = full price of the new package, no credit or refund for the old one.")}{" "}
+        <a href="/billing-policy" className="ax-hit font-semibold text-foreground underline underline-offset-2">
+          {t("Billing policy")}
+        </a>
+      </p>
       {error && (
         <p role="alert" className="mt-2 text-[12px] text-destructive">
           {error}{" "}

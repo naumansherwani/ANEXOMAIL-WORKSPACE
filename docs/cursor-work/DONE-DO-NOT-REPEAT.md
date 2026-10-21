@@ -219,3 +219,4 @@ Server install tarteeb (founder ke output ka intezaar): 1 Web pull -> 2 polar-co
 BAQI (B6b/c): checkout prewarm (Brain /intent + PlanCheckoutButton landing-adjacent => founder ijazat + shadow mode), pool/index tuning, alarms, diary chain, .env chmod 600, non-root user.
 Sach ki hadd: asli Polar customer-sessions jawab sandbox mein nahi; frontend screenshots sandbox mein nahi (npm DNS band) — dono server/Chrome par.
 Sandbox tips: engine binaries /tmp/engine-orig,/tmp/engine-new; rust app /tmp/claude-0/rs (b6 patched); pkill -f apni shell maar deta hai — pkill -x use karo.
+- 21 Oct 22:10 FOUNDER RULE DECLARED PUBLIC: package badalna = naye package ka POORA price, purane ka credit/adjust/refund nahi (E22 code pehle se). Page: src/routes/billing-policy.tsx (/billing-policy) + link ManageBilling mein. routeTree.gen.ts build par regenerate hoti hai (haath se nahi chheda). Footer/landing link NAHI joda (landing no-touch) — founder ijazat par.

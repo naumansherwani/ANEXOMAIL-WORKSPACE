@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md d9585025a99ffedb
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 7bab5aaa08701412
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -329,4 +329,5 @@ docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
 docs/claude/EVENING-PENDING-2026-10-21.md 5bcfe768000bd6f5
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
-src/components/app/billing/ManageBilling.tsx 1bf95bd52f2db032
+src/components/app/billing/ManageBilling.tsx 4a7b9f37c032c3ce
+src/routes/billing-policy.tsx 319299016682f12e
