@@ -1,5 +1,7 @@
 # ANEXOMAIL Workspace — Agent Rules
 
+> **AGLA KAAM: `docs/cursor-work/NEXT-TASKS.md` (tarteeb, founder-locked 22 Oct 2026).**
+>
 > **RULE 24 (strict): compact/naye chat par KAAM SHURU karne se pehle `docs/cursor-work/founder/founder-commands.md` padho — founder ki chat commands wahan verbatim + halat. Uske baghair kaam nahi.**
 >
 > **RULE 28 (STRICT, founder 20 Oct 2026, 10:32 PKT): koi bhi file badalne YA revert karne ke baad, push se PEHLE: (1) `python3 docs/cursor-work/server/manifest-sync.py <har badli/revert hui file>` (2) `python3 docs/cursor-work/server/manifest-verify.py` — exit 0 aur "0 bad" chahiye. Exit 1 ho to push MAT karo. Warna server par `SHA MISMATCH` se file chhoot jati hai, aadha deploy hota hai, build FAIL, aur purani files wapas — founder ko kuch badla nazar nahi aata (20 Oct ka `useDragScroll` hadsa). Revert ka matlab bhi "file badli" hai.**
