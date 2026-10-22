@@ -3,6 +3,7 @@ import { MailPlus } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import { useAuth } from "@/lib/auth";
+import { useCalPrefs } from "@/lib/calprefs";
 import { dayPart } from "@/lib/greeting";
 import { useLocale } from "@/lib/i18n";
 import { showCrm, surfaceFromSession } from "@/lib/plan-surface";
@@ -36,7 +37,9 @@ export function Greeting({ enabled, onCompose }: { enabled: boolean; onCompose: 
     const id = window.setInterval(() => setMinute((n) => n + 1), 60_000);
     return () => window.clearInterval(id);
   }, []);
-  const part = dayPart();
+  // Home city from Settings (one source of truth for "where am I"); the browser's zone only when none is saved.
+  const prefs = useCalPrefs();
+  const part = dayPart(new Date(), prefs.hoursSet ? prefs.workHours.tz : undefined);
   const greeting =
     part === "morning"
       ? { text: t("Good morning"), emoji: "☀️" }

@@ -1,6 +1,13 @@
 import { describe, expect, it } from "bun:test";
 
-import { dayPart, eveningStart, MAX_EVENING_START, MIN_EVENING_START } from "./greeting";
+import {
+  browserZone,
+  dayPart,
+  eveningStart,
+  MAX_EVENING_START,
+  MIN_EVENING_START,
+  preferredZone,
+} from "./greeting";
 
 // Karachi is UTC+5: 12:00Z = 17:00 local
 const khi = (h: number, m = 0) => new Date(Date.UTC(2026, 9, 23, h - 5, m));
@@ -59,5 +66,19 @@ describe("greeting follows the season and the place", () => {
   it("unknown zone or broken zone name keeps the plain 17:00 and never throws", () => {
     expect(eveningStart(khi(12), "Mars/Olympus")).toBe(17 * 60);
     expect(() => dayPart(khi(12), "Not/AZone")).not.toThrow();
+  });
+});
+
+describe("Settings zone wins over the browser's", () => {
+  it("same instant, different home city, different greeting", () => {
+    const at = new Date(Date.UTC(2026, 9, 23, 7, 0)); // 12:00 Karachi, 03:00 New York
+    expect(dayPart(at, "Asia/Karachi")).toBe("afternoon");
+    expect(dayPart(at, "America/New_York")).toBe("night");
+  });
+  it("saved zone is used when valid, browser's otherwise", () => {
+    expect(preferredZone("Asia/Karachi")).toBe("Asia/Karachi");
+    expect(preferredZone("Not/AZone")).toBe(browserZone());
+    expect(preferredZone(undefined)).toBe(browserZone());
+    expect(preferredZone("")).toBe(browserZone());
   });
 });

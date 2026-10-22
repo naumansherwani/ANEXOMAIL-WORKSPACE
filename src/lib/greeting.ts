@@ -166,7 +166,21 @@ export function browserZone(): string {
   }
 }
 
-export function dayPart(at: Date = new Date(), tz: string = browserZone()): DayPart {
+/** The zone the person chose in Settings (their home city) wins over the browser's; a missing or unusable name falls back to the browser's. */
+export function preferredZone(saved?: string | null): string {
+  if (saved) {
+    try {
+      new Intl.DateTimeFormat("en-US", { timeZone: saved });
+      return saved;
+    } catch {
+      /* not a zone name — ignore */
+    }
+  }
+  return browserZone();
+}
+
+export function dayPart(at: Date = new Date(), zone?: string | null): DayPart {
+  let tz = preferredZone(zone);
   let m: number;
   try {
     m = localMinutes(at, tz);
