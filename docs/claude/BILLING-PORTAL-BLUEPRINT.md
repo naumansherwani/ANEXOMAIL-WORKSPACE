@@ -59,3 +59,15 @@ Customer ko lage ke yeh *aap ka apna* billing center hai: tez, khoobsurat, mobil
   - **Downgrade** -> downgrade flow. **Basic plan wale ko Downgrade button dikhana hi nahi.**
 - Design notes for implementation: state machine active -> grace(1..3) -> paused -> active (on paid webhook); grace day server-side (Rust/SQL) se nikalna, client clock par nahi; Polar webhook se resume; paused workspace par Brain/Rust gate (read-only ya block) alag decide karna (founder se poochna); countdown colours theme tokens mein; email reminders har grace din (optional, poochna).
 - Kab: G16 billing portal P2+ ke saath. Dobara founder se poochne ki zaroorat nahi — yeh spec final hai; sirf pause ka exact behaviour (login par kya dikhe, mail aati rahe ya nahi) shuru karte waqt poochna.
+
+### Claude ki SUGGESTIONS (grace + pause) — founder "haan" par shamil, warna sirf yaad-dasht
+1. **Pause = read-only, block nahi:** inbound mail HAMESHA accept (kabhi drop/bounce nahi), purani mail/calendar/contacts padh sakta hai, sirf bhejna/naye events/invites band. Isse "block kabhi nahi" aur privacy wada bhi bacha rehta hai. Login par seedha "Workspace paused" screen + Resume button.
+2. **Rang sirf rang par nahi:** har din ke saath text bhi ("Grace day 2 of 3 · 1 day left") + icon — colour-blind users ke liye. Rang theme tokens (light/dark dono).
+3. **Din server se:** `grace_day` SQL/Rust se, `due_at` + Polar ke `past_due` status se; client clock par kabhi nahi. Time zone: user ke time zone mein din ka hisab, saaf likha ho "pause hoga: 25 Oct, 11:59 PM".
+4. **Polar source of truth:** retry hone par Polar khud payment dobara try karta hai — payment aate hi webhook se turant active (grace/pause dono khatam), koi manual step nahi. Webhook late ho to portal "Check payment status" button se re-sync.
+5. **Reminders:** grace din 1, 2, 3 par email (aur app banner), pause par ek final mail; sirf billing contact ko; mail content kabhi nahi chhuta.
+6. **Pause se pehle data safety:** pause mein data delete nahi; 30/60 din ke baad bhi delete se pehle alag warning + export option (founder policy tay kare).
+7. **Upgrade/Downgrade rules:** `/billing-policy` ke mutabiq (naye ka poora price, credit/refund nahi). Downgrade par agar naye plan ki limit se zyada data/users hon to pehle bataye (kya band hoga). Basic par Downgrade hidden.
+8. **Team/workspace:** workspace paused ho to members ko "owner ko billing issue hai" dikhe, payment ka button sirf owner/billing role ko.
+9. **Abuse:** baar baar subscribe-cancel se grace ka fayda na uthaye — ek cycle mein grace sirf ek baar; naye subscribe par grace nahi, pehla payment lazmi. Founder/test accounts exempt.
+10. **Test:** SQL proof (din 0/1/2/3/4 ki boundary, timezone, webhook se resume), Rust test (grace_day), Chrome par teeno rang + paused screen + Basic par Downgrade gayab.
