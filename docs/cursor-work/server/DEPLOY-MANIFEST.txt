@@ -119,7 +119,7 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs 339f850b8633f8e2
 server/rust/cal_glue.rs fcd19cb30a1ab2f0
-AGENTS.md bd2b99db7bcbaad3
+AGENTS.md 94bd36c81ddfd26b
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -381,3 +381,5 @@ src/components/book/SlotPicker.tsx d2bba386822bef2d
 src/routes/book.$handle.tsx 7c563db68f4dff61
 src/routes/book.manage.tsx b44da10208e32ed5
 src/components/app/calendar/BookingPage.tsx 8bd6c4927b12b5ab
+docs/cursor-work/sql/E60_imip_reply.sql fa4f393ad9a50bf3
+docs/cursor-work/sql/CHECK_E60.sql 0e8f51c10ecdb7f9
