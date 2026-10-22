@@ -678,3 +678,5 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - Baaqi gaps: phone 390/820 check, guest-view event files live check, T12 implement, E55 grants-heal 30 Oct se pehle, Caddy cert renewal 12 Nov se pehle.
 
 - 23 Oct 03:50 — Founder ne E75 chala di: sab OK (CHECK_E75 4/4, E65 sweep OK). Home city DB-side GREEN. AGLA: Chrome re-test (Lahore save, greeting, clock naam, phir home city hatao).
+
+- 23 Oct 03:58 — HOME CITY GREEN LIVE (Chrome, Pro test account): Lahore save OK, reload ke baad persist, greeting 'Good night' (Karachi 03:5x), remove OK ('Home city removed'). Test account saaf. Chrome tab band. AGLA: test-vs-real/no-mock audit.

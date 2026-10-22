@@ -390,3 +390,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 
 - 23 Oct 04:20 — Home city save bug (live Chrome: 'Could not save preference') = DB validator awam_ui_extra_ok ko `home` key nahi pata thi (meri chook, E61 wali dobara). Fix E75_home_city.sql + CHECK_E75 + proofs/E75_proof.sql (sandbox 2x clean, pehle reject / baad accept). SABAQ: pref.extra mein naya key = Rust clean_extra + DB awam_ui_extra_ok DONO, sandbox mein constraint ke saath test. Pehle likha 'SQL: nahi' ghalat tha. Dobara mat likho.
 - 23 Oct 03:50 — E75 SERVER GREEN (founder output OK). Dobara mat chalao.
+- 23 Oct 03:58 — Home city GREEN LIVE (E75 + Chrome save/persist/remove). Dobara mat karo.
