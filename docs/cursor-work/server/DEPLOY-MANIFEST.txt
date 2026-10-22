@@ -9,7 +9,7 @@ src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
 src/components/app/AppShell.tsx 9fe593da35ac7ef1
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
-src/routes/__root.tsx da6ea0bd32b5fa35
+src/routes/__root.tsx bf84e1529409b5ca
 src/styles.css 33cdb33818aee033
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
@@ -59,7 +59,7 @@ src/lib/plan-surface.ts 1fef7c4c84f09c7d
 src/components/app/dashboard/Greeting.tsx d55aa491193cb906
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
 src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
-src/components/app/mail/ThreadList.tsx d8fc33d6ba0336ec
+src/components/app/mail/ThreadList.tsx c393277467550009
 src/routes/app.admin.audit.tsx c7884b9e5e926572
 src/routes/app.admin.diagnostics.tsx 74d7869da9bcda74
 src/routes/app.admin.export.tsx be039aaaca4d1ae5
@@ -86,7 +86,7 @@ src/components/app/calendar/Guests.tsx 8161b0338fb2fa97
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
 src/routeTree.gen.ts 1c65e76769563a02
-src/lib/team.ts 642bf49a0ba831fc
+src/lib/team.ts 13a8057bc6c41f2c
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
 src/routes/auth.tsx 1112eb029e367710
@@ -228,7 +228,7 @@ docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
 server/routes/auth-passkey.ts 1c3323da4c6fdeca
 docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
 src/lib/fx.ts 801eab59f8d63f54
-src/components/fx/Fx3D.tsx c86d1c0f2af292ec
+src/components/fx/Fx3D.tsx d65b2b3420c1a19e
 src/components/fx/Stage.tsx 4ad7cd7bfe088bca
 src/components/fx/MailboxScene.tsx 2b25f9e3f1fbc94b
 src/components/fx/LogoScene.tsx 5630e27d3e2a9672
@@ -346,7 +346,7 @@ src/components/site/ConvertToBusiness.tsx 67474c7622d3134e
 src/components/site/PlanCheckoutButton.tsx 45204c00bd9e267f
 src/components/site/WorkspaceKindCards.tsx 64cc3a54d2b2bd84
 src/router.tsx 3b7aceb40294eb29
-src/routes/app.safety.tsx cf3f6060251021d2
+src/routes/app.safety.tsx 5b3baa7dce93791b
 src/routes/auth_.callback.tsx 7b6e0e097af5c818
 src/routes/claim.tsx 152c22b3ac3470a0
 src/routes/onboarding.tsx 46c3cf1849770bdd
@@ -478,3 +478,4 @@ server/lib/identity-mirror.ts 21cd19d38597fdaa
 server/lib/identity-mirror.test.ts a84b996dd58a85e5
 server/lib/identity-guard.ts 9ec588df18f94e58
 server/rust/vault_core.rs 5e9fcc37b0658900
+tsconfig.json c1ef8f45d3761d93
