@@ -638,3 +638,9 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - 22 Oct 08:00 founder poochha M-series calendar se connected? JAWAB: NAHI, alag. Calendar 4/9 GREEN (#0-#3). Ab calendar #4 (world-clock pins, team overlay free/busy, ICS subscribe) shuru.
 - 22 Oct 08:20 #4a world-clock pins code ready (locale_core clocks_ok, locale_glue clocks key, WorldClocks.tsx). Server: Rust locale reinstall (MODULES="locale") + web pull, phir live check (Globe button next to clock). Sandbox browser harness (vite) nahi chala (TanStack start) — live Chrome check baad mein.
 - 22 Oct 08:25 founder ne futuristic World Clock spec diya: docs/claude/WORLD-CLOCK-BLUEPRINT.md (verdict+phases W0–W5). Jhoote claims (fatigue -30%, QUIC latency p95, flight tracking, bank clearing banner) NAHI; baqi progressive HAAN. 3 faisle pending.
+
+## 22 Oct 08:25 — #4a LIVE BUG mila aur fix (Rule 29)
+- Server par Rust locale + web pull OK. Live check: Globe button aaya, lekin pin par "Could not save preference". Wajah: E58 ka DB validator `awam_ui_extra_ok` sirf 3 keys maanta tha, `clocks` DB ne reject kiya (Rust 500). Fix: SQL E61_world_clocks (validator mein clocks, Rust ka mirror) + CHECK_E61. Sandbox: 9/9 ok, dobara chalana safe.
+- Command (SQL): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E61_world_clocks CHECK_E61`
+- Outlook proof: mail.log 02:53 UTC (07:53 PKT) `to=<naumankhansherwani@outlook.com> relay=outlook-com.olc.protection.outlook.com status=sent (250 2.6.0 Queued mail for delivery)` — Outlook ne qubool ki; inbox mein nahi dikha = Outlook ki taraf filtering, hamara masla nahi.
+- Founder ne World Clock ke 3 faisle mujh par chhode: fatigue sach-ghantay, travelling opt-in, market chip default OFF.

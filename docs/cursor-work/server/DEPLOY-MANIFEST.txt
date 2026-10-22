@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 79ed8a9c4d644c1f
+docs/cursor-work/founder/founder-commands.md 3411762b07f97384
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 10c9edfd1594ad6f
+docs/cursor-work/DONE-DO-NOT-REPEAT.md bbeb3be0930a7c0f
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -391,4 +391,6 @@ docs/cursor-work/CALENDAR-ROADMAP.md d6596e1ba2deb5b8
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
-docs/claude/WORLD-CLOCK-BLUEPRINT.md 39be032dc3aa7589
+docs/claude/WORLD-CLOCK-BLUEPRINT.md 690268d6b7a51140
+docs/cursor-work/sql/E61_world_clocks.sql 529fac8829a7f835
+docs/cursor-work/sql/CHECK_E61.sql c8f2c5638b0a2def

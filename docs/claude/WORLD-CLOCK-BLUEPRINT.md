@@ -32,4 +32,5 @@ Sab jagah ek hi component/lib (`WorldClocks`, zone helpers), duplicate nahi.
 - **W3** 3D globe (lazy, fallback, reduced-motion, day/night math) — dashboard + clock popover.
 - **W4** device-drift badge (server time endpoint) + opt-in "travelling" status.
 - **W5** l10n shehar-naam + Speculation Rules + perf pass (LCP 1.8 s, INP 150 ms naapa hua).
-Founder faisle: (a) fatigue ko sach-ghanton wali shakal (haan?) (b) travelling status opt-in (haan?) (c) market chip chahiye ya nahi.
+FOUNDER FAISLA 22 Oct 08:15: 'sab banega, jo website ke liye better ho woh opt karo'. Mera chunav: (a) fatigue = sach-ghantay HAAN; (b) travelling status opt-in HAAN; (c) market chip HAAN lekin default OFF, sirf pinned shehar ke saath, sirf shaaye-shuda exchange hours, billing se door. Pehle wale sawal:
+(a) fatigue ko sach-ghanton wali shakal (haan?) (b) travelling status opt-in (haan?) (c) market chip chahiye ya nahi.
