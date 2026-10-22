@@ -12,7 +12,7 @@ Rust (rustc 1.99.1, edition 2024 — server output 23 Oct; axum 0.8.9, tokio 1.5
 | Rust par har route (Brain ~504 endpoints) — Bun sirf standby fallback | ek runtime, kam latency/RAM | B5–B8 |
 | axum 0.8 + tokio 1.54 + edition 2024 (`axum-upgrade.sh` taiyar) | naya router, behtar extractors | B8 |
 | Concurrency: `JoinSet`, `tokio::select!`, bounded channels, timeouts, load-shed (tower) | ek dependency ka fail poore request ko nahi girata (B5 pattern) | har batch |
-| Event-driven push (Postgres NOTIFY -> broadcast -> WebTransport/SSE), polling khatam | instant UI, zero idle load | B4 done, E26 |
+| Event-driven push (tokio broadcast hub per org + reconcile -> WebTransport), polling khatam | instant UI, zero idle load | **DONE — B4 GREEN 21 Oct 06:50** (LISTEN/NOTIFY use nahi hua; direct pool R4 ke baad dobara dekhenge) |
 | Direct Postgres pool (`sqlx`/`deadpool-postgres`, prepared statements, pgbouncer) hot paths par — PostgREST hop hatana | 1 network hop kam, transactions | B8 |
 | Allocator `mimalloc`/`jemalloc` + PGO build | 10–30% throughput (measure karke) | B8 |
 | Zero-copy: `bytes`, `Cow`, streaming bodies, `sonic-rs`/`simd-json` hot JSON | CPU/RAM kam | B8 |

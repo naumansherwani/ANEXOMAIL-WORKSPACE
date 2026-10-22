@@ -70,7 +70,7 @@
 | D3 admin link, D1 zero-gap switch, catch-all/forwarding/vacation, health guard, DMARC reader, Domain Connect, BIMI (founder HAAN 08:17) | Rust + PostgreSQL + React (+ WebTransport) | NEXT, tarteeb se |
 | Aane wali mail ka pipe Rust (R1a) | Rust + Postfix argv | DONE live 20 Oct 07:00 |
 | `mail.send` + undo-send + queue worker + `org.mailboxes.*` Rust (R1) | Rust :3200 / Tokio (std TCP SMTP in spawn_blocking) | GREEN 21 Oct 06:00 (B3) |
-| live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | NEXT (B4) |
+| live push event-driven (R5) | Rust :3200 / Tokio / WebTransport | GREEN 21 Oct 06:50 (B4) |
 | Cron `%` fix + root mail ka raasta padhna | Server ops (bash) | DONE (0 kharab lines mili) |
 | Attachments BHEJNA (G38): upload/storage/dedup(org)/scan/download | Rust :3200 (`attach_core.rs`+`attach_glue.rs`); bytes Storage Box; metadata PostgreSQL E48; MIME jodna + SMTP bhejna Bun (`mail/attachments.ts`, mojooda sender, Rust `mail.send` aane tak) | CODE DONE — `MODULES=attach` + `brain-attach-install.sh` |
 | Aane wali mail ke attachments (G38b): spool + scan + Storage Box + org-dedup | Rust (`anexomail-deliver --spool-run`, `inbound_attach.rs`) · metadata PostgreSQL E50 · systemd timer | CODE DONE — `rust-inbound-attach-install.sh` |
@@ -110,7 +110,7 @@ Server par asli vs latest (TECH-MAP section 3/10, 17 Oct; **har upgrade se pehle
 |---|---|---|---|---|
 | **Caddy** | TLS (Let's Encrypt auto), reverse proxy, HTTP/3 | Business logic, auth | LIVE (Constitution) | Latest 2.11.1 (25 Feb 2026): ECH key rotation auto, security fixes — **server par 2.11.4 chal raha (facts 17 Oct) — latest se aage** ([linuxiac](https://linuxiac.com/caddy-2-11-1-web-server-released-with-automatic-ech-key-rotation/)) |
 | **HTTP/3 (QUIC)** via Caddy | Web page + `/rpc` + file chunk (`/file/*`) ka tez raasta, phone ke network badalne par connection nahi tootta | Server→browser push (woh WebTransport) | LIVE (Caddy HTTP/3) | — |
-| **WebTransport over QUIC** (Rust, UDP 3443) | Server→browser **live push**: naya mail ka stamp, chat, call signaling | Bulk file upload (woh HTTP/3 chunk), page load | **LIVE (sun raha)** — facts 17 Oct: `anexomail-rust` UDP **3443** par bind, `/rpc/health` `"webtransport":"live"`. **Gap:** health ka `wt_port` khali aata hai (3443 batana chahiye); andar abhi 700 ms poll (R5) | **Browser support: Safari 26.4 (Mar 2026) ne bhi de diya → ab Baseline; iPhone par bhi chalega** ([webrtc.ventures](https://webrtc.ventures/2026/04/webtransport-is-now-baseline-what-it-means-for-real-time-media/)). Purane iOS ke liye HTTP poll fallback rehta hai. |
+| **WebTransport over QUIC** (Rust, UDP 3443) | Server→browser **live push**: naya mail ka stamp, chat, call signaling | Bulk file upload (woh HTTP/3 chunk), page load | **LIVE (sun raha)** — facts 17 Oct: `anexomail-rust` UDP **3443** par bind, `/rpc/health` `"webtransport":"live"`. `wt_port` ab 3443 (23 Oct live); andar event-driven hub (R5 GREEN), 700 ms poll sirf EVENTS=off par | **Browser support: Safari 26.4 (Mar 2026) ne bhi de diya → ab Baseline; iPhone par bhi chalega** ([webrtc.ventures](https://webrtc.ventures/2026/04/webtransport-is-now-baseline-what-it-means-for-real-time-media/)). Purane iOS ke liye HTTP poll fallback rehta hai. |
 | **Encrypted ClientHello (ECH)** | Privacy: connection mein domain naam chhupana | — | PLANNED (R6, evaluate) | Caddy 2.11 mein hai; fayda/risk server par dekhna baqi |
 
 ## 3. Backend (Rust PRIMARY)
@@ -135,7 +135,7 @@ Server par asli vs latest (TECH-MAP section 3/10, 17 Oct; **har upgrade se pehle
 |---|---|---|---|---|
 | **PostgreSQL** (Supabase #4) | Sach ka ek source, RLS | Cache/queue | LIVE | **PostgreSQL 18 (25 Sep 2025)**: async I/O (3x tak), `uuidv7()`, OAuth ([postgresql.org](https://postgresql.org/about/news/postgresql-18-released-3142/)). **Server par asli: PostgreSQL 17.6** (facts 17 Oct) — 18 se ek major peeche; upgrade = `pg_upgrade` + staging, founder 'haan' ke baad (D1) |
 | **PostgREST (HTTP) se access** | Abhi Rust DB tak REST se jata hai (`sb_select`) | Garam raaste | LIVE | **Sach:** har query ek extra HTTP hop. Garam raaston ke liye seedha pool (sqlx/tokio-postgres) → **R4** |
-| **LISTEN/NOTIFY → broadcast hub** | Naya mail/chat event ek baar sun kar sab connected users ko bhejna | — | **PLANNED (R5)** | **Sach:** abhi WebTransport "mail live" har connected session ke liye **har 700 ms DB poll** karta hai (`wt_session`, `mail_inbox_stamp`) — chhote users par theek, bade scale par DB par bojh. Event-driven fan-out lagna hai |
+| **LISTEN/NOTIFY → broadcast hub** | Naya mail/chat event ek baar sun kar sab connected users ko bhejna | — | **DONE (R5, B4 GREEN 21 Oct 06:50)** | Ek org = ek tokio broadcast hub (topics mail/calendar/crm/work/people/org); publishers = axum layer (har kamyab mutating /rpc/*) + `POST /internal/event` + ek reconcile task PER ACTIVE ORG (2 s, per-session poll nahi). Purana 700 ms per-session poll sirf `EVENTS=off` par. LISTEN/NOTIFY use NAHI hua (hub + reconcile ne kaam kiya) — direct pool (R4) ke baad dobara dekha jayega |
 | **Storage Box** (wire 16) | File/attachment bytes | Metadata | LIVE (file engine) | — |
 
 ## 5. Mail
@@ -179,7 +179,7 @@ LEO / AI sab se aakhir (blueprint #41). Workspace plans (Basic–Business Pro) m
 |---|---|---|---|
 | 1 | "tRPC" | tRPC-jaisa wire; types haath ke | R3 |
 | 2 | "Latest Rust" | edition 2021, axum 0.7, wtransport 0.1, `opt-level = "z"` (size, speed nahi) | R0 |
-| 3 | "WebTransport live" | 700 ms DB poll har session ke liye; event-driven nahi | R5 |
+| 3 | "WebTransport live" | **THEEK (B4 GREEN 21 Oct)** — event-driven hub; 700 ms poll sirf EVENTS=off par | R5 DONE |
 | 4 | "Backend hamesha Rust" | `mail.send`, `org.mailboxes.*` Bun par jate hain | R1 |
 | 5 | "Poora Rust engine" | ek 5,789-line `main.rs` — compile/review/test mushkil | R0 (modules mein torna) |
 | 6 | "DB seedha" | PostgREST HTTP hop | R4 |
@@ -212,7 +212,7 @@ LEO / AI sab se aakhir (blueprint #41). Workspace plans (Basic–Business Pro) m
 | Postfix | **3.10.6** | 3.10.x | theek |
 | Dovecot | **2.4.2** | 2.4.x | theek |
 | OpenDKIM | **2.11.0** | 2.11 | theek |
-| Rust health | `status up`, `transport ["rpc","http3"]`, `webtransport live`, `wt_port ""`, fallback `anexochat-bun :3300` | — | `wt_port` khali = chhota gap (R5 ke saath 3443 batayein) |
+| Rust health | `status up`, `transport ["rpc","http3"]`, `webtransport live`, `wt_port 3443` (23 Oct Chrome live dekha), fallback `anexochat-bun :3300` | — | `wt_port` gap BAND |
 | WebTransport | UDP **3443** par `anexomail-rust` bind | — | LIVE (sun raha) |
 | pm2 | n8n, anexomail-rust (restarts 48), anexochat, anexvox-ai-swarm-s2, polar-rust-payment, anexomail-web (restarts 95), anexomail-leo | — | Rust ke 48 restarts ki wajah facts v2 ke error-log count se dekhenge |
 | Mail ports | 25, 143, 465, 587, 993 (IPv4); 143/993 IPv6 | — | 110/995 band (theek) |
@@ -262,7 +262,7 @@ Status sirf sach (Rule 5): INSTALLED = package.json mein; LIVE = live verify; US
 | Theatre.js | Keyframe timeline editor — cinematic 3D camera sequences | har page | NOT INSTALLED — PLANNED; tab jab hero ko keyframe editor chahiye ho; pehle "haan" |
 Qaida (fx layer, 21 Oct): `src/lib/fx.ts` hi tay karta hai 3D chale ya nahi (Settings toggle, calm, OS reduced-motion, Data-saver, WebGL, laptop=full / phone+tablet=lite). Har scene lazy, screen par ho tab hi render, error par fallback. Naya 3D scene = naya file `src/components/fx/<Name>Scene.tsx` + yahan ek row.
 
-| Event-driven live push (R5) mail/calendar/crm/work/people/org, har plan + family | Rust :3200 / wtransport (QUIC) + tokio broadcast hub per org | READY 21 Oct (B4), install baqi |
+| Event-driven live push (R5) mail/calendar/crm/work/people/org, har plan + family | Rust :3200 / wtransport (QUIC) + tokio broadcast hub per org | GREEN 21 Oct 06:50 (B4, proof SAB PASS, family 3/3) |
 | Founder pages (move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, offline outbox) | Rust :3200 `/rpc/*` b5_core+b5_glue (Supabase #4), Bun fallback | CODE 21 Oct (B5), sandbox PASS, server install baqi |
 
 | **Auth / sign-in (22 Oct 2026, Rule 45)** | Rust axum+tokio (primary, A–D phases) ; GoTrue sirf Phase D tak | Bun = hamesha emergency fallback; WebTransport sign-in ke liye NAHI | PLANNED — `AUTH-MIGRATION-PLAN.md` | passkey/vault data encrypted, RLS-on |
