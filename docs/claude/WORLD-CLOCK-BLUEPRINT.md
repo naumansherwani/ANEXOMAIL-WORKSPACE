@@ -54,3 +54,6 @@ Sab packages/family ko ek jaisa (Rule 37/40); sirf bhari server-side cheez (agar
 2. **Travelling "Slipstream" opt-in** — MANZOOR, lekin **user-entered** (route + departure/arrival). "Device network change se location shift pakadna" NAHI (location inference = surveillance, hamari Privacy policy ke khilaf). Alerts quiet hote hain, mail kabhi nahi rukti.
 3. **Market Pulse chip** ("NYSE: Open" / "LSE: Closed") — MANZOOR (opt-in, default OFF). Ek deterministic Rust function (exchange ka IANA zone + hours + weekday); "NTP ticker" ki zaroorat nahi, server time endpoint kaafi. "p95 < 60 ms" ka daawa nahi likhte jab tak naapa na ho. Holiday data na ho to chip "holiday check nahi" likhe.
 Shehar naam: Zurich/Lahore. Lahore IANA zone nahi (Asia/Karachi ka waqt); label-alias baad mein (W5 l10n).
+
+## HISAAB 23 Oct 02:45 PKT
+**World clock: W0..W5 mein se 2 GREEN (W0 pins, W1 overlap matrix).** W2 Focus Ring: CODE READY (22 Oct), Rust installer sab modules ke saath chala (23 Oct) — Find-a-time mein ring ka live Chrome check BAAQI. W3 globe, W4 (drift badge + travelling opt-in + latency), W5 (billing deadline banner, market chip default OFF, Lahore alias, l10n, perf pass): shuru nahi. Locked order: calendar #5 -> W3/W4/W5 (founder tarteeb).
