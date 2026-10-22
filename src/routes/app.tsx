@@ -16,6 +16,11 @@ import { setFounderPreview, workspaceTourFromUrl } from "@/lib/founder-preview";
 export const Route = createFileRoute("/app")({
   // Session lives in the browser, so the gate runs client-side only.
   ssr: false,
+  // Refresh par EK hi loader: server HTML (ssr:false => pending) aur client ka auth-confirm WorkspaceLoader ek jaisa — pehle router ka
+  // PageLoader phir WorkspaceLoader (do alag loading) dikhte the. pendingMs 0 / min 0 = turant wahi scene, koi atka hua flash nahi.
+  pendingComponent: () => <WorkspaceLoader />,
+  pendingMs: 0,
+  pendingMinMs: 0,
   head: () => ({
     meta: [
       { title: "Workspace — ANEXOMAIL" },

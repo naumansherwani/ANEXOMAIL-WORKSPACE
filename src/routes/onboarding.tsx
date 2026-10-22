@@ -59,7 +59,7 @@ function OnboardingPage() {
       return;
     }
     if (session.user.onboarded) {
-      window.location.replace("/dashboard");
+      void navigate({ to: "/app", replace: true });   // pehle full reload /dashboard -> /app (do hop + dobara loading)
       return;
     }
     if (autoKind.current || busy || path !== "choose") return;

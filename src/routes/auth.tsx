@@ -957,7 +957,8 @@ function AuthPage() {
           if (!redirectTo) return;
           // In-app navigate — session memory (acceptSession) rehti hai.
           // window.location.replace reload karta tha → gate dobara /auth bounce.
-          void navigate({ to: redirectTo });
+          // replace: /auth history mein na rahe — warna Back dabate hi /auth -> turant /app (bounce).
+          void navigate({ to: redirectTo, replace: true });
         }}
       />
     </>

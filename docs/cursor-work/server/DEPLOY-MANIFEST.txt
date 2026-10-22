@@ -89,7 +89,7 @@ src/routeTree.gen.ts 1c65e76769563a02
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
-src/routes/auth.tsx fc37b073e54e49e9
+src/routes/auth.tsx c0b82185c1d847b8
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md d547fa0113eb0b64
+docs/cursor-work/DONE-DO-NOT-REPEAT.md be7813e711ad3c8b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -242,7 +242,7 @@ server/lib/supa.ts 859a9dbbf8c3b8d7
 server/routes/auth.ts 5c9ba9731c709480
 docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
-src/routes/app.tsx f873a19be7ebbea5
+src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 74640c7e739c159e
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
@@ -345,11 +345,11 @@ src/components/app/work/WorkChainBoard.tsx 32dbcc104db8f5d7
 src/components/site/ConvertToBusiness.tsx 67474c7622d3134e
 src/components/site/PlanCheckoutButton.tsx 45204c00bd9e267f
 src/components/site/WorkspaceKindCards.tsx 64cc3a54d2b2bd84
-src/router.tsx 51db1d45b9cef095
+src/router.tsx 3b7aceb40294eb29
 src/routes/app.safety.tsx cf3f6060251021d2
 src/routes/auth_.callback.tsx 7b6e0e097af5c818
 src/routes/claim.tsx 152c22b3ac3470a0
-src/routes/onboarding.tsx 246b62d511649ddb
+src/routes/onboarding.tsx 46c3cf1849770bdd
 src/components/state/BrandLoader.tsx d7d3f0687669229a
 server/rust/polar-payment/Cargo.toml b19720335aa99719
 docs/cursor-work/server/polar-cp-proof.py 3eca410c891a98cc
