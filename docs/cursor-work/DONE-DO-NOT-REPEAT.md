@@ -313,3 +313,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 05:15 Sign-in button A (hover sway + busy pulse) LOCKED Rule 39, founder ne demo mein pasand kiya. READY, pull baqi. Dobara change nahi.
 - 22 Oct 05:20 Web pull live: sign-in button A (Rule 39) DONE live 1440 (Playwright saboot). SQL E58 founder ne chalaya, output baqi. Rust E58 DONE.
 - 22 Oct 05:15 SQL E58 GREEN live (CHECK_E58 9/9 OK, founder output). E58 SQL+Rust+Web DONE; live UI look baqi.
+- 22 Oct 05:30 E58 LIVE GREEN: Settings sheet + calendars save/reload round-trip (1440), 390/820 hscroll 0 + Reminder select. Dobara nahi. Baqi: event par colour/OOO/EventDetail editor/reminder toast dekhna.

@@ -8,6 +8,11 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 05:30 PKT — E58 LIVE GREEN (Chrome, founder Pro session, meri apni tab, band kar di)
+- 1440: Calendar settings sheet khula (calendars + 8 rang, working hours Mon-Sun, clock/layout). Calendar add + Save -> page reload ke baad bhi 2 calendars (Rust locale.uipref.set + SQL E58 round-trip sahi). Test calendar delete + Save: founder ki settings wapas.
+- 390 / 820 (iframe trick): hscroll 0, Settings sheet 390px/520px, NewMeeting mein Reminder select maujood, hscroll 0.
+- Dekhna baqi (event hi nahi tha): month chip rang, OOO tint, event par calendar/reminder editor (EventDetail), reminder toast ka waqt. Jab founder ki pehli meeting bane tab dekhna.
+
 ## ▶ 22 Oct 2026 05:15 PKT — SQL E58 GREEN (founder output)
 `CHECK_E58`: 9/9 OK (columns, constraints, function, 16 KB limit, remind index, VALIDATED, awam_ui_extra_ok accept+reject, calendar_remind_ok). E58 SQL pehle hi chali hui thi (sha c32e0e00, skip). SQL + Rust + Web teeno DONE; baqi E58 ka live look (Chrome 1440/820/390) -> phir booking page B7c.
 
