@@ -38,5 +38,14 @@ row "—"  "account wall (E76)"      "$( [ "$(b applied E76)" = 1 ] && b obj acc
 
 hr "Rust + Web"
 printf '  rust /rpc/health: %s\n' "$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 http://127.0.0.1:3200/rpc/health)"
-W=/opt/anexomail-web; printf '  web server commit: %s | origin/main: %s\n' "$(git -C $W rev-parse --short HEAD 2>/dev/null)" "$(git -C $W rev-parse --short origin/main 2>/dev/null)"
+W=/opt/anexomail-web
+# web == repo saboot: HEAD nahi (pull.sh HEAD nahi hilata), src/ ki har file ka git-blob sha origin/main se (pull.sh jaisa)
+same=0; differ=0; missing=0; dl=()
+while IFS= read -r -d '' rec; do
+  meta="${rec%%$'\t'*}"; path="${rec#*$'\t'}"; want="${meta##* }"
+  if [ ! -f "$W/$path" ]; then missing=$((missing + 1)); dl+=("MISSING $path"); continue; fi
+  if [ "$(git -C "$W" hash-object -- "$W/$path" 2>/dev/null </dev/null)" = "$want" ]; then same=$((same + 1)); else differ=$((differ + 1)); dl+=("DIFF    $path"); fi
+done < <(git -C "$W" ls-tree -r -z origin/main -- src </dev/null 2>/dev/null)
+echo "  web src/ vs repo (origin/main): same=$same differ=$differ missing=$missing"
+if [ "${#dl[@]}" -gt 0 ]; then printf '    %s\n' "${dl[@]:0:15}"; fi
 echo; echo "Nata: 'DEPLOYED' = SQL/web server par maujood. Poora GREEN = DEPLOYED + Chrome mein live dekha."
