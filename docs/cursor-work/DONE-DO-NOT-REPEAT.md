@@ -329,3 +329,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 08:55: W1 Overlap Matrix CODE READY (SQL E62, Rust overlap module, web OverlapMatrix + TeamTime). GREEN tabhi jab 3 server commands chalen + live check (guest + member row, slider, dashboard card). Naya Rust module add karne ka tareeqa: installer ALL_MODULES + CFG + extras_of + probe case (overlap mein kiya) — dobara mat likho.
 - 22 Oct 09:15: SABAQ: SQL CHECK sirf maujoodgi nahi, asli (live) rasta bhi chalaye; aur function mein kisi doosre schema (auth) ko chhoone se pehle haq check karo. W1 live bug isi se mila.
 - 22 Oct 09:30: W1 live chal gayi (E62 fix + live matrix dekha). Spread (3h gap) + unknown-zone wording fix repo mein; Rust+Web install pending; dashboard card live check baqi.
+
+- 22 Oct 09:40: Rust installer rollback line ab generated script `/root/rust-rollback-<stamp>.sh` (purani `cd ... cargo build` line retired, dobara mat likho). Calendar blueprint (access model + copy + #9/#10 design) = `docs/claude/CALENDAR-BLUEPRINT.md`.

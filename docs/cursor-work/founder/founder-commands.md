@@ -671,3 +671,6 @@ Sandbox saboot: SQL proof 15/15 (2 baar chala), CHECK 7/7; Rust 21 tests (core 1
 ### 22 Oct 2026 — Rust installer: galat rollback line RETIRED
 Founder: "(cd /opt/anexomail-rust && cargo build --release) && pm2 restart ... wrong hai, har bar aati hai, sahi wali do".
 Wajah: purani line shared `cal_core.rs` ko `rm -f` karti thi aur zabardasti rebuild. Ab `rust-engine-install.sh` har run par `/root/rust-rollback-<stamp>.sh` banata hai (backup se main.rs + module files wapas, backup binary ya rebuild, pm2 restart, health curl). Wapas lene ki EK command: `bash /root/rust-rollback-<stamp>.sh` (installer khud chhapta hai). Kuch na badla ho to "wapas lene ki zaroorat nahi" chhapta hai.
+
+### 22 Oct 2026 09:40 PKT — web pull OK, calendar blueprint likha
+Pull: build OK, /health 200, server==repo 513 differ=0. Likha: `docs/claude/CALENDAR-BLUEPRINT.md` (access model Rule 37/40, sirf-GREEN feature table, landing copy draft, #9 outcome colours, #10 history search). Roadmap mein #9/#10 jode. Landing/plans par copy abhi LAGI NAHI (founder "haan" ka intezar). Aglu: W1 live check.

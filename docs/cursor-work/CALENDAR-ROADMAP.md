@@ -11,6 +11,8 @@ Rule: "GREEN" = founder ka server output + live check. Is file ko har calendar s
 | 5 | Event par files (mail attach pipeline reuse, naya storage nahi) | Shuru nahi |
 | 6 | CalDAV (B7d) — PROPFIND/REPORT, ctag/etag, tz, recurring exceptions, app password (27 Oct se passkey), Caddy .well-known surgical | Shuru nahi |
 | 7 | Google Calendar sync (OAuth, watch+sync token, loop-guard) | Shuru nahi. FOUNDER: Google Cloud verification application abhi shuru kare |
+| 9 | Outcome colours (event par red→yellow→green, user ka khud ka Achieved tap; line hamesha red) | Design: docs/claude/CALENDAR-BLUEPRINT.md §4. SQL E63 chahiye. Shuru nahi |
+| 10 | History search (Cmd+K, saalon purani, FTS+trigram, org wall) | Design: CALENDAR-BLUEPRINT §5. Shuru nahi |
 | 8 | Rooms / resources (pseudo-attendee, wohi conflict engine) | Shuru nahi |
 
 ## Spec ke faislay (founder ko jawab, line by line)
@@ -26,3 +28,5 @@ Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a
 
 - 22 Oct 08:55 **#4b team overlay (= World Clock W1) CODE READY, server install + live check pending.** SQL E62_team_overlap (+CHECK_E62, proofs/E62_proof.sql 15/15 sandbox) · Rust `overlap` module (overlap_core 15 tests + overlap_glue 5 tests, proc `calendar.overlap`) · Web: `src/lib/overlap.ts`, `OverlapMatrix.tsx` (inside New meeting > Find a time), dashboard card `TeamTime.tsx`. Server order: SQL -> Rust (`MODULES="overlap"`) -> Web. Sandbox visual (mock engine) 390/820/1440 OK, no horizontal page scroll.
 - 22 Oct 09:30: #4b W1: SQL E62 live OK, matrix live dekhi (guest+member+unknown zone). Fix: best times >=3h door, unknown-zone wording. Rust+Web install pending, phir GREEN (dashboard card + 390/820 live baqi).
+
+- 22 Oct 09:40: Web pull OK (server==repo 513). Landing/plans calendar copy + access model (features sab ko, limits capability, family/Business Pro unlimited) likha: docs/claude/CALENDAR-BLUEPRINT.md. Founder 'haan' par copy plans.ts/index.tsx mein lagegi. Aglu: W1 live check (matrix 3h+dashboard card+390/820) -> #4b GREEN.

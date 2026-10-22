@@ -152,3 +152,5 @@ Pending founder faisle: Basic rules 3?, Focused/Other pehle ya baad, M1 se shuru
 Yahan code jayega: web = src/components/app/mail/* + src/routes/app.mail*.tsx + src/routes/app.settings.*.tsx; Rust = server/rust/mail_*.rs (naye module `mailx`); SQL = docs/cursor-work/sql/E6x; gating = src/lib/plan-surface.ts capability.
 
 - 22 Oct 08:55 — Calendar #4b / World Clock W1 (Overlap Matrix): CODE READY (E62 + Rust `overlap` + web). Install + live check pending. Detail: docs/claude/WORLD-CLOCK-BLUEPRINT.md, docs/cursor-work/CALENDAR-ROADMAP.md.
+
+- 22 Oct 09:40: CALENDAR: #4b W1 live check baaki; naye design-only #9 outcome colours, #10 history search (docs/claude/CALENDAR-BLUEPRINT.md). Landing copy founder "haan" par.
