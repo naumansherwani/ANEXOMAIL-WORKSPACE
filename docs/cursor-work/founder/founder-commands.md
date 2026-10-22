@@ -626,3 +626,9 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - 22 Oct 06:53 SERVER OUTPUT AAYA (founder): E60 OK + CHECK_E60 7/7; Rust cal 38 tests+build+health OK; deliver 43 tests+build+2 asli mail OK; web pull build OK /health 200 differ=0 (pull ne "KUCH GALAT" dikhaya = manifest SHA purani thi docs file ki — mera galti, fix push hua). #3 = SERVER-INSTALLED; GREEN sirf Gmail "Yes" live click ke baad.
 
 - 22 Oct 07:20 Calendar roadmap single source: docs/cursor-work/CALENDAR-ROADMAP.md (upar ki bikhri lines purani ho sakti hain).
+
+## 22 Oct 07:30 — STAGE (compaction ke liye): #3 iMIP
+- Founder rule: Gmail ka RSVP-bar Gmail ka masla; goal = website user ke samne real-working. GREEN = hamari taraf asli kaam saabit.
+- Hua: E60 SQL+Rust deliver+Rust cal+web server par (founder output). Bug fix fc51c04 (attendee order=created_at live par nahi) live-verified: guest list theek. Invite pehli baar Gmail spam mein (Not spam kiya).
+- Ab: `docs/cursor-work/server/imip-reply-proof.sh` (asli pipe se 4 REPLY: auth nahi / jhoota From / sahi / duplicate) founder ko chalana hai -> output pe GREEN. Command: bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/imip-reply-proof.sh)
+- Phir: #4 world-clock pins + team overlay + ICS subscribe; G16 portal P2 (4 faisle pending); MIGRATION-LEDGER.
