@@ -1,3 +1,4 @@
+
 -- E63 — calendar #9 "outcome colours": har meeting par user ka APNA maqsad (goal, 2000 harf tak, multi-line) aur uski asli halat (open / achieved / missed) (22 Oct 2026).
 -- E58 ke baad chalti hai. Dobara chalana safe. Koi DROP TABLE/COLUMN nahi. Naam `goal` isliye ke purana `outcome` (jsonb: faislay + action items) alag cheez hai — woh nahi chhua.
 -- Sach ka usool: rang sirf user ke asli tap se badalta hai (Achieved / Missed). Koi score, koi percentage, koi andaza nahi — isliye DB mein bhi sirf teen halat.

@@ -696,3 +696,6 @@ Phir Ctrl+Shift+R, calendar mein ek meeting kholo -> "Aim" likho -> shuru hone k
 
 ### 22 Oct 2026 09:50 PKT — STANDING: har naye commit ke saath pull/server commands HAMESHA do
 Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab mein: commit hash + jo server commands us commit ke liye chahiye (SQL -> Rust -> Web, alag alag, sirf wohi jo us commit mein badla). Sirf docs badle to bhi likho "server command nahi chahiye". Is waqt latest: 9ea4a5d (E63 SQL, Rust cal, Web).
+
+### 22 Oct 2026 09:55 PKT — SQL Supabase editor mein paste: pehla character kat jata hai
+Founder ne E63 editor mein paste ki: `LINE 1: - E63` (pehla `-` kat gaya). Hal: har nayi SQL file ki pehli line KHALI (blank) — kata hua pehla char newline hi hota hai, comment salamat. E63_event_goal + CHECK_E63 par laga, "pehla char gum" simulation psql mein bhi chala (OK). Purani files (E62 etc.) already chal chuki hain. Server par `sql-run.sh` ab bhi behtar raasta hai, par editor bhi chalega.

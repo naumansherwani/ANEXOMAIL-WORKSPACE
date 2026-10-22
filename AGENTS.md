@@ -326,3 +326,5 @@ Founder (verbatim): "subject to agar woh feature un ko required hai toh lekin fa
 
 ## Rule 41 — Har naye commit ke saath server/pull commands (founder 22 Oct 2026 09:50 PKT, STRICT)
 Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab mein commit hash + us commit ke liye zaroori commands (SQL → Rust → Web, alag alag full commands, sirf jo badla). Sirf docs badle to "server command nahi chahiye" likho.
+
+- **SQL file ki pehli line KHALI rakho (founder 22 Oct 09:55):** Supabase editor mein paste par pehla character kat sakta hai; blank line ho to comment salamat rehta hai. Har nayi E-series aur CHECK file par.

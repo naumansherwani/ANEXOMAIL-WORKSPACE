@@ -1,3 +1,4 @@
+
 -- CHECK E63 — sirf padhta hai (koi write nahi). Har row ok = true. Constraint ka asli behaviour (insert reject/accept) proofs/E63_proof.sql mein (sandbox, rollback).
 select item, ok from (
   select 'E63 calendar_events.goal + goal_state + goal_state_at' as item,
