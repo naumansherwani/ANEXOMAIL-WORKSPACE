@@ -158,3 +158,5 @@ Yahan code jayega: web = src/components/app/mail/* + src/routes/app.mail*.tsx + 
 - 22 Oct 09:50: CALENDAR #4a/#4b GREEN; landing copy live (web pull baaki). Aglu #9 outcome colours (shaam).
 
 - 22 Oct 10:30: CALENDAR #9 outcome colours CODE READY (E63 + Rust cal + Web), server install baaki.
+
+- 22 Oct 10:15: GREEN — calendar #4a #4b #9 + landing copy (live Chrome). Aglu #10 history search.

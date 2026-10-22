@@ -333,3 +333,9 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 09:40: Rust installer rollback line ab generated script `/root/rust-rollback-<stamp>.sh` (purani `cd ... cargo build` line retired, dobara mat likho). Calendar blueprint (access model + copy + #9/#10 design) = `docs/claude/CALENDAR-BLUEPRINT.md`.
 
 - 22 Oct 09:50: #4a+#4b (world-clock pins + team overlap matrix + "time zone not known" dup fix) GREEN. Calendar landing/plans copy likha-lagaya. Dobara mat karo.
+
+## 22 Oct 2026 10:15 PKT — CALENDAR + WORLD CLOCK: ab tak ka sab GREEN (DOBARA MAT BANAO)
+- Calendar #0 layout v2 · #1 working hours/OOO/calendars/reminders (E58) · #2 booking page (E59) · #3 iMIP reply (E60) · #4a world-clock pins (E61) · #4b team overlap matrix + dashboard Team time (E62, W1) · **#9 outcome colours: Aim (2000 harf, multi-line) + Achieved/Missed/Reopen + dot (E63, Rust cal meta.set, EventDetail/TimeGrid/month list)** — sab live Chrome se dekhe.
+- Landing + plans + personal-tiers calendar copy (Rule 37, sab paid packages, koi 'unlimited' number nahi). Limits baad mein Claude ke mashware se (CALENDAR-BLUEPRINT §1b).
+- Rules jo bane: 41 (har commit ke saath server commands), 42 (SQL server + Supabase editor dono; sql-editor-lint.py), installer ki rollback line -> /root/rust-rollback-<stamp>.sh.
+- Ab baaki calendar: #10 history search, W2 Focus Ring, #4c ICS, #5 files, W3/W4/W5, #6 CalDAV, #7 Google, #8 rooms. Phir M-series, phir G16 billing portal (founder tarteeb).
