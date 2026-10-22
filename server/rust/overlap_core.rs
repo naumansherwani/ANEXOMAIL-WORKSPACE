@@ -191,7 +191,10 @@ impl Window {
     }
 }
 
-/// Up to `limit` non-overlapping windows of `need_min` minutes, best first: fewest red cells, then fewest amber, then earliest.
+/// Suggestions must be at least this far apart, so three chips are three real choices — not 9:30, 10:00, 10:30.
+pub const MIN_GAP_MIN: i64 = 180;
+
+/// Up to `limit` windows of `need_min` minutes (at least MIN_GAP_MIN apart), best first: fewest red cells, then fewest amber, then earliest.
 /// Windows starting before `not_before` are skipped (never suggest the past). People with an unknown zone do not count.
 pub fn best_windows(rows: &[String], g: &Grid, need_min: i64, not_before: i64, limit: usize) -> Vec<Window> {
     if rows.is_empty() || need_min < g.slot_min || need_min > 8 * 60 || limit == 0 {
@@ -229,7 +232,8 @@ pub fn best_windows(rows: &[String], g: &Grid, need_min: i64, not_before: i64, l
         if out.len() >= limit {
             break;
         }
-        if out.iter().all(|o| w.end <= o.start || w.start >= o.end) {
+        let gap = MIN_GAP_MIN * 60;
+        if out.iter().all(|o| w.end + gap <= o.start || w.start >= o.end + gap) {
             out.push(w);
         }
     }
@@ -467,6 +471,22 @@ mod tests {
         let w2 = best_windows(&rows2, &g, 60, day, 1);
         assert!(w2[0].all_green());
         assert_eq!(w2[0].start, day + 8 * H, "08:00 UTC = Karachi 13:00 = Zurich 09:00, the earliest hour both are in");
+    }
+
+    #[test]
+    fn best_windows_are_spread_out() {
+        let khi = fixed(5);
+        let a = p(Some(&khi), Some(office()), &[], &[]);
+        let day = day0(2026, 10, 27);
+        let g = grid(day, 1, 30).unwrap();
+        let rows = matrix(&[a], &g);
+        let w = best_windows(&rows, &g, 30, day, 3);
+        assert_eq!(w.len(), 3);
+        for i in 0..w.len() {
+            for j in (i + 1)..w.len() {
+                assert!(w[i].end + MIN_GAP_MIN * 60 <= w[j].start || w[j].end + MIN_GAP_MIN * 60 <= w[i].start, "{:?} vs {:?}", w[i], w[j]);
+            }
+        }
     }
 
     #[test]

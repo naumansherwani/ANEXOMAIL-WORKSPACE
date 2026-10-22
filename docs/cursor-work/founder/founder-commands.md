@@ -659,3 +659,11 @@ Sandbox saboot: SQL proof 15/15 (2 baar chala), CHECK 7/7; Rust 21 tests (core 1
 - Server par SQL E62 + Rust overlap + web sab OK chale; live par matrix 500. Wajah (sandbox mein bina-haq role se dobara bana kar pakdi): E62 ka naya fallback `auth.users` padhta tha; live `service_role` ko `auth` schema ka haq nahi => function crash. Fix: usi E62 file mein haq pehle check (`has_schema_privilege` + `has_column_privilege`), na ho to qadam chhod do. Proof 16/16 (naya test: bina auth haq wala role), CHECK 8/8 (naya LIVE PATH check asli member par chalta hai).
 - Sirf yeh ek command chahiye (Rust dobara NAHI; glue mein sirf error-log izafa hua, agle Rust install par jayega):
   `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E62_team_overlap CHECK_E62`
+
+## 22 Oct 09:30 — W1 LIVE: matrix CHALTI HAI (E62 fix ke baad). Live dekha: You + Test Visitor (Karachi) + Outlook guest ("zone unknown", kaali patti), best-time chips, slider, "Use this time". 2 sach-wali kami mili aur theek ki:
+- Zone-unknown banda hone par bhi chip "everyone in their day" likhta tha -> ab "(1 zone unknown)" / "Good for everyone with a known zone".
+- Teen suggestions paas-paas (9:30, 10:00, 10:30) -> ab kam az kam 3 ghante ke faasle par (core test + 54 tests green).
+- Server par (Rust phir Web; SQL dobara nahi):
+  1. `git -C /opt/anexomail-web fetch -q origin main && MODULES="overlap" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+  2. `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+- Baqi live check: dashboard "Team time" card (2+ members wala workspace chahiye), 390/820 asli browser par.

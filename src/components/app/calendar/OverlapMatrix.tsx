@@ -128,6 +128,8 @@ export function OverlapMatrix({
   const start = slotStart(grid, idx);
   const end = new Date(start.getTime() + durationMin * 60_000);
   const hourTicks = Array.from({ length: Math.floor(slots / (60 / grid.step_min)) }, (_, h) => h);
+  const unknown = data.members.filter((m) => !m.tz).length;
+  const unknownNote = unknown > 0 ? ` (${unknown} zone unknown)` : "";
   const everyone = data.members.map((m) => cellZone(m.row[idx]));
   const worst: ZoneName = everyone.includes("red") ? "red" : everyone.includes("amber") ? "amber" : "green";
 
@@ -162,7 +164,7 @@ export function OverlapMatrix({
                 </span>
                 <span className={cn("ml-1.5", b.all_green ? "text-success" : "text-muted-foreground")}>
                   {b.all_green
-                    ? "everyone in their day"
+                    ? `everyone in their day${unknownNote}`
                     : b.red > 0
                       ? `${b.red} at night`
                       : `${b.amber} stretch`}
@@ -266,7 +268,7 @@ export function OverlapMatrix({
       <div aria-live="polite" className="space-y-1.5">
         <p className="text-[13px] font-semibold text-foreground">
           {dayLabel(start, mine)} · {fmtTimeIn(start, mine)}–{fmtTimeIn(end, mine)}{" "}
-          <span className={cn("text-[11px] font-bold uppercase tracking-wide", ZONE_TEXT[worst])}>{GROUP_WORD[worst]}</span>
+          <span className={cn("text-[11px] font-bold uppercase tracking-wide", ZONE_TEXT[worst])}>{worst === "green" && unknown > 0 ? "Good for everyone with a known zone" : GROUP_WORD[worst]}</span>
         </p>
         <ul className="space-y-1">
           {data.members.map((m) => {
