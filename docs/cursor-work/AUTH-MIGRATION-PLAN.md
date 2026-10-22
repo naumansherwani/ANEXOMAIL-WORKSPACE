@@ -35,3 +35,45 @@ Public legal copy (privacy.tsx / footer) founder ke "haan" ke baghair nahi badli
 
 ## Abhi ke users
 Real awam user 0; test + family accounts hain (family/lifetime Rule 40). Isliye Phase A-C ab mumkin hain; D se pehle backup + founder "haan".
+
+---
+## IDENTITY VAULT — "ek insaan, ek account" (design locked 22 Oct 2026 21:10; SQL E66 + E67 READY)
+Founder: user ek account par aaye; wrong activity => blacklist; dobara account banane par Gmail jaisa roke; passkey ka sensitive data vault mein.
+
+### Sachai pehle (kya mumkin hai)
+Koi bhi system "wohi insaan" 100% nahi pehchan sakta (Gmail bhi nahi — woh bhi phone, device, IP, behaviour ke ek jaal se rokta hai). Isliye ek nishani par bharosa nahi: **kai nishaniyan, mazboot aur kamzor alag**. Passkey ki credential id har account par nayi banti hai — woh sirf "yeh account" pehchanti hai, "yeh insaan" nahi; isliye passkey ko ban-key nahi banaya.
+
+| Nishani | Kya hai | Taqat | Kaise bani |
+|---|---|---|---|
+| `device_key` | browser ka NON-EXTRACTABLE WebCrypto (ECDSA P-256) key; server har signup/login par challenge sign karwa ke tasdeeq karta hai (device-bound credential), hash = HMAC(pubkey) | MAZBOOT (us browser profile ke liye) | Web `device-key.ts` + Rust challenge-proof (Phase A) |
+| `email` | anexomail address + recovery address ka canonical form (gmail dots/+tag hata kar) HMAC | MAZBOOT | Rust normalisation + HMAC |
+| `recovery` | recovery email (Gmail/Apple/Outlook) HMAC | MAZBOOT | wahi |
+| `payment` | Polar customer ka HMAC (billing email + country; card Polar ke paas rehta hai, hum kabhi nahi dekhte) | MAZBOOT (har paid account ke liye ek hi hota hai) | Polar webhook (Rust :3400 ko haath nahi — alag read) |
+| `device_shape` | paanch moti nishaniyan (E42 `device_hash_v2`) | KAMZOR — bahut bekasoor log ek jaise hote hain | maujood |
+| `network` | IP /24 (v4) ya /48 (v6) ka HMAC, sirf 30 din | KAMZOR | Rust |
+
+### Faisla (SQL `identity_signup_check`)
+- **DENY**: koi bhi mazboot nishani active ban se mile. Jawab mein hash/account kabhi nahi; "appealable" + wajah-code.
+- **REVIEW**: do ya zyada kamzor milan, ya ek `device_key` 3+ accounts par. Account banta hai par insaan review karta hai (kisi ko ghalat ban nahi).
+- **ALLOW**: baaqi.
+- Wrong activity => ladder (privacy.tsx): ek likhit warning, dohra = block, severe = hamesha. `identity_ban_account` account ke sab nishan blacklist mein; account/data 72 ghante export ke baad delete, sirf ek-tarfa hash bacha. Appeal manzoor => `identity_ban_lift` (severe appealable nahi).
+- Retention (policy table): ban 730 din (severe/fraud hamesha), device nishan 180 din, network 30 din; email/recovery/payment account ke saath. Account delete (bina ban) => signals CASCADE se mit jate hain.
+
+### Passkey vault (E67)
+AES-256-GCM blob (`enc`, Rust encrypt/decrypt, key server env) + HMAC blind index `cred_hmac`; plaintext credential id / public key DB mein nahi; `key_id` se rotation; counter atomic (clone detection); authenticated ka purani tables se SELECT band (E67 mein).
+
+### Itna bhi mumkin nahi (sach)
+Naya browser profile / storage saaf karne wala `device_key` badal sakta hai — isliye email/recovery/payment mazboot nishaniyan saath hain, aur kamzor milan review banata hai. Poori garanti nahi; kai parat se ghalat-istemal bahut mehnga.
+
+### Privacy/footer copy — PROPOSED (founder ke "haan" par hi lagegi)
+"We keep one-way (HMAC) hashes of a few signals — your browser's device key, e-mail and recovery address, payment customer, and coarse device and network shape — never the raw values, and never biometrics. If an account is blocked for confirmed abuse, those hashes (and nothing else) stay on a ban list for up to 2 years (permanently for fraud or severe patterns) so the same person cannot open new accounts; you can appeal. Passkey public keys are stored encrypted. When an account is deleted without a ban, its hashes are deleted with it."
+
+### Kaam ki halat
+| Hissa | Halat |
+|---|---|
+| E66 identity vault SQL (27/27 proof, CHECK 8) | READY — server par `sql-run.sh` (bare) |
+| E67 passkey vault SQL (17/17 proof, CHECK 6) + authenticated select band | READY |
+| Rust: HMAC/AES-GCM/normalisation (`vault_core.rs`) + `auth` glue + device-key challenge | TODO — Phase A/C (W2 ke baad) |
+| Web: `device-key.ts` (WebCrypto non-extractable) + signup/login wiring | TODO — Phase A |
+| Polar `payment` nishani | TODO — Polar webhook se (alag, payment no-touch) |
+| Privacy/footer copy | founder ka "haan" |
