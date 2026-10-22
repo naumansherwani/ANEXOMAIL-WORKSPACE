@@ -26,3 +26,5 @@ Calendar #0–#4b, #9; World clock W0/W1; landing/plans calendar copy; E58–E63
 
 ## >>> ABHI CHAL RAHA HAI (compact ke baad yahin se shuru) <<<
 **22 Oct 2026, 19:40 PKT — #10 History search SHURU kar diya.** Plan: SQL E64 (meetings/notes FTS + trigram, org wall) -> Rust proc `calendar.history` -> Web `/app/search` "Meetings & history" (tareekh range, banda). Pehle se mojood: `/app/search` + `useUniversalSearch` (people/companies/threads/attachments). Status neeche log mein update hota rahega.
+
+- 22 Oct 20:30: #10 SQL E64_history_search + CHECK_E64 + proofs/E64_proof (32/32) bana, lint OK, 2 baar chala, 'pehla char gum' sim OK. Perf (60k meetings, sandbox): rare word 9-21 ms; sab-matching shabd ('meeting') 1.4 s (statement_timeout 8s ke andar; baad mein hybrid optimisation). Agla: Rust `calendar.history` (cal_glue) -> Web /app/search 'Meetings & history'.
