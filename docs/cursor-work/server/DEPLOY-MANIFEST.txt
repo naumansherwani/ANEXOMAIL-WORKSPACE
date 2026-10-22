@@ -387,4 +387,4 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 7447184971386306
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
-docs/cursor-work/CALENDAR-ROADMAP.md d9479e401dea1de3
+docs/cursor-work/CALENDAR-ROADMAP.md f63db3421b1ba941
