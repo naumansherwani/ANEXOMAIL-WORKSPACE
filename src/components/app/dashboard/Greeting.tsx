@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { MailPlus } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { useAuth } from "@/lib/auth";
+import { dayPart } from "@/lib/greeting";
 import { useLocale } from "@/lib/i18n";
 import { showCrm, surfaceFromSession } from "@/lib/plan-surface";
 import { formatDuration, useAnalytics, useSummary, useUpcoming } from "@/lib/dashboard";
@@ -28,13 +30,21 @@ export function Greeting({ enabled, onCompose }: { enabled: boolean; onCompose: 
   const firstName =
     session?.user.display_name?.split(" ")[0] || session?.user.name?.split(" ")[0] || "";
   // Literal t() calls — extractor (scripts/i18n-extract.mjs) inhe dhoond leta hai.
-  const h = new Date().getHours();
+  // A dashboard left open across 12:00 / sunset / 22:00 must change its words without a reload: re-read the clock every minute.
+  const [, setMinute] = useState(0);
+  useEffect(() => {
+    const id = window.setInterval(() => setMinute((n) => n + 1), 60_000);
+    return () => window.clearInterval(id);
+  }, []);
+  const part = dayPart();
   const greeting =
-    h >= 5 && h < 12
+    part === "morning"
       ? { text: t("Good morning"), emoji: "☀️" }
-      : h >= 12 && h < 17
+      : part === "afternoon"
         ? { text: t("Good afternoon"), emoji: "🌤️" }
-        : { text: t("Good evening"), emoji: "🌙" }; // 00:00–04:59 is still the night, not "morning" (live audit 23 Oct 03:10)
+        : part === "evening"
+          ? { text: t("Good evening"), emoji: "🌆" }
+          : { text: t("Good night"), emoji: "🌙" };
 
   // React Query deduplicates — these calls hit the same in-memory cache
   // used by WidgetGrid, AnalyticsPanel, and UpcomingPanel siblings.

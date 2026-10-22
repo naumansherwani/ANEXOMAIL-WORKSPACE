@@ -383,3 +383,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 03:05 — Founder ke hukm par AGENTS.md mein Rule 48 (command gharna mana; /opt/anexomail-web mein merge/pull mana).
 
 - 23 Oct 03:20 — #5 GREEN LIVE (Chrome). Audit fixes: Greeting (0-5 baje "Good evening"), Availability se non-working /api share link hata (login chahiye tha, jhoota "Link copied"; asli share = booking page). Dobara mat karo.
+
+- 23 Oct 03:35 — Greeting adaptive (founder hukm): night 22:00-04:59, morning 05:00-11:59, afternoon 12:00-evening start, evening start-21:59; evening start = sunset-1h (16:00..19:00, 5 min round) timezone se (src/lib/greeting.ts, 6 tests), har minute dobara parhta hai; "Good night" + 27 zabanon mein evening/night tarjume theek (zh "边", ja "夕方 夕方" jaise ghalat the). Dobara mat likho.
