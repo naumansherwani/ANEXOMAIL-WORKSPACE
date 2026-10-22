@@ -345,3 +345,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 20:55: SQL audit: 55 purani E/CHECK files mein pehli line khali (Rule 42), E20 trial_events constraint never-narrow guard, E2 RLS (Rule 43). E17/E20 dobara chalana ab safe. Purani files ke apne BEGIN/COMMIT aur E28/E36 psql seed jaan-boojh kar chhode (server-only, pehle se chal chuki).
 - 22 Oct 21:05: #10 History search GREEN (live Chrome: 'meeting' -> past meeting row + highlighted snippet + Title/Agenda chips; click -> /app/calendar?date=&event= opens that meeting). Server E64+Rust cal+Web installed (restarts ok, health 200).
 - 22 Oct 21:20 sql-run.sh AUTO mode (bina naam: nayi E-series ledger se) + naam-wali form; founder ke do forms AGENTS Rule 41 mein — dobara mat banao.
+- 22 Oct 21:30 Rule 44: SQL server par sql-run.sh se, editor nahi; SQL -> Rust -> Web (AGENTS.md top banner + founder-commands + NEXT-TASKS).

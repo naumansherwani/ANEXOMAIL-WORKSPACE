@@ -2,6 +2,8 @@
 
 > **AGLA KAAM: `docs/cursor-work/NEXT-TASKS.md` (tarteeb, founder-locked 22 Oct 2026).**
 >
+> **RULE 44 (STRICT, founder 22 Oct 2026 20:32 PKT): SQL AB SERVER PAR CHALTI HAI, Supabase editor par nahi. Jo SQL pehle editor mein paste hoti thi ab server par `sql-run.sh` se chalti hai, aur YEH COMMAND PEHLE CHALEGI (Rust/Web se pehle). Har nayi SQL ke baad founder ko sirf yeh do mein se sahi command do: (a) sab nayi: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (b) khaas file, naam aakhir mein bina `.sql`: `… sql-run.sh) E65_rls_and_advisor_sweep CHECK_E65`. "Supabase editor mein paste karo" kabhi nahi kehna. Compact ke baad bhi yehi.**
+>
 > **RULE 24 (strict): compact/naye chat par KAAM SHURU karne se pehle `docs/cursor-work/founder/founder-commands.md` padho — founder ki chat commands wahan verbatim + halat. Uske baghair kaam nahi.**
 >
 > **RULE 28 (STRICT, founder 20 Oct 2026, 10:32 PKT): koi bhi file badalne YA revert karne ke baad, push se PEHLE: (1) `python3 docs/cursor-work/server/manifest-sync.py <har badli/revert hui file>` (2) `python3 docs/cursor-work/server/manifest-verify.py` — exit 0 aur "0 bad" chahiye. Exit 1 ho to push MAT karo. Warna server par `SHA MISMATCH` se file chhoot jati hai, aadha deploy hota hai, build FAIL, aur purani files wapas — founder ko kuch badla nazar nahi aata (20 Oct ka `useDragScroll` hadsa). Revert ka matlab bhi "file badli" hai.**
@@ -353,3 +355,9 @@ Founder: "ajj ke bad se sql rls on wali hogi … ek sql likho jis se warnings au
   (a) sab nayi SQL apne aap: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = AUTO: repo ki nayi E-series E37+, ledger se, tarteeb se, phir unke CHECK_E<n>).
   (b) khaas file: naam aakhir mein, bina `.sql` ke: `… sql-run.sh) E65_rls_and_advisor_sweep CHECK_E65`.
   Founder ko SQL ke liye har baar in mein se sahi wali command do (Supabase editor zaroori nahi). Agent server par khud nahi chalata (Rule 15).
+
+## Rule 44 — SQL server par chalti hai, editor par nahi (founder 22 Oct 2026 20:32 PKT, STRICT)
+Founder: "yeh sql wali command pehle run hogi, yeh ab server pe run hogi; editor pe jo run hoti thi ab woh server pe … compact chat ke baad Claude yeh nahi bhoole; ab new sql run hogi isi tarah."
+- Raasta: `docs/cursor-work/server/sql-run.sh` (ledger `/var/lib/anexomail/sql-applied.tsv`, ON_ERROR_STOP, CHECK_E<n> baad mein). Bina naam = AUTO (saari nayi E-series), ya naam de kar khaas file (command Rule 41 mein).
+- Tarteeb: SQL -> Rust -> Web. SQL pehle, kyunke Rust/Web nayi SQL par tikte hain.
+- Rule 42 (editor-compat: blank first line, no meta-commands, single-SELECT CHECK) NAYI files par ab bhi lagu — safety ke liye — par founder ko editor ka raasta nahi bataya jata.

@@ -1,5 +1,7 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+> **22 Oct 2026 20:32 (founder, Rule 44):** SQL ab SERVER par `sql-run.sh` se chalti hai (editor nahi), aur woh PEHLE chalti hai. Command: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = sab nayi) ya naam aakhir mein bina .sql ke.
+
 > **STRICT RULE 24 (founder, 19 Oct 2026 05:20 PKT): compact ke baad ya naye chat mein KAAM SHURU karne se PEHLE yeh file poori padho.**
 > Founder jo bhi command/hukm chat mein deta hai, agent usi turn mein yahan **verbatim** paste karta hai (neeche "Commands" mein, naya sabse upar), aur har command ke saamne halat likhta hai.
 > Jo kaam ho chuka hai uski **usi waqt pull command** founder ko di jati hai (technology ke hisab se alag alag — Rule 24).

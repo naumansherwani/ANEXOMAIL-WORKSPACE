@@ -119,14 +119,14 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs e3962dbb682fe95c
 server/rust/cal_glue.rs d396cc302bc65093
-AGENTS.md 19565797eb77f6e7
+AGENTS.md 2b993ee719060d50
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md b5266e3e30960435
+docs/cursor-work/founder/founder-commands.md ed182dcf72dcd15d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md bf60b0b47ca917cb
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 5f6132192facca20
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 5560353c6241ab7b
+docs/cursor-work/NEXT-TASKS.md c996bf67f19e06cc
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac

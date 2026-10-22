@@ -1,4 +1,6 @@
 # NEXT TASKS — agla kaam, tarteeb ke saath (founder 22 Oct 2026 10:12 PKT, LOCKED)
+
+> **22 Oct 2026 20:32 (founder, Rule 44):** SQL ab SERVER par `sql-run.sh` se chalti hai (editor nahi), aur woh PEHLE chalti hai. Command: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = sab nayi) ya naam aakhir mein bina .sql ke.
 Compact / naya chat: pehle AGENTS.md (Rule 37/38/40/41/42), `DONE-DO-NOT-REPEAT.md`, phir YEH file. Jo GREEN hai dobara nahi banana. Har commit ke saath server commands (Rule 41); SQL server + Supabase editor dono (Rule 42, pehli line khali, lint).
 
 ## Tarteeb (upar se neeche, ek ke baad ek)
