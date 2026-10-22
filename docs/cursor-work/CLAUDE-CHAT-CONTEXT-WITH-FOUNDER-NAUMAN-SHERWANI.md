@@ -688,3 +688,6 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 04:45 — E76 v2 advance (account class wall) READY, push ke baad founder SQL->Rust->Brain chalaye (founder-commands.md). Home city UI fix (ffc7464) Web pull baaqi.
 
 - 23 Oct 04:55 — Founder ne E28 editor mein paste ki (\set error). E28/E36 psql-only; edit wapas; naya editor-ready tool sql/tools/create_test_account.sql (registry + mix-wall). Registry call bizpro-login-fix.sh + t7 script mein. Server run order wahi: SQL(E76) -> Rust -> Brain -> Web.
+
+- 23 Oct 04:20 — Founder ne sab pull kar diya aur 'SQL green' bataya (E75, E76, Web). Calendar 9/11 GREEN (#5 live). AGLA: Chrome se Home city naya UI dekho, phir W3/W4/W5 -> #6 -> #7 -> #8.
+- 23 Oct 04:25 — Home city UI fix live verify (Chrome) GREEN. Calendar 9/11, World clock 2/6. AGLA: W3 globe.
