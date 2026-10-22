@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 9bc6201769299f79
+docs/cursor-work/MASTER-GAP-LEDGER.md 59359a696442351e
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -385,4 +385,4 @@ docs/cursor-work/sql/E60_imip_reply.sql fa4f393ad9a50bf3
 docs/cursor-work/sql/CHECK_E60.sql 0e8f51c10ecdb7f9
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 29a2cec776256bf1
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 23b172eb09c52ae7
