@@ -140,7 +140,7 @@ export function fmtMinutes(min: number): string {
 /** The sentence under a person for the proposed time. Counts only. */
 export function assessLine(a: OverlapAssess | undefined, known: boolean): string {
   if (!a) return "";
-  if (a.zone === "unknown") return "time zone not known";
+  if (a.zone === "unknown") return ""; // the cell's own reason already says "time zone not known"
   if (!known || a.outside_min == null) return ""; // the cell's own reason already says "their hours are not shared"
   if (a.outside_min === 0) return ""; // the cell's own reason already says "inside their working hours"
   const out = `${fmtMinutes(a.outside_min)} outside their hours`;

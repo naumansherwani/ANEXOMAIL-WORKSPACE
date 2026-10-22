@@ -387,7 +387,7 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a937b086ca57822a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
-docs/cursor-work/CALENDAR-ROADMAP.md c0cca69318fac17a
+docs/cursor-work/CALENDAR-ROADMAP.md e21ef925841fac30
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
@@ -400,6 +400,6 @@ server/rust/overlap_core.rs 1b77ba82fc888401
 server/rust/overlap_glue.rs a56214c1bf50c283
 src/components/app/calendar/OverlapMatrix.tsx b7248670155de505
 src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
-src/lib/overlap.ts 83a8c3710c60ba8b
+src/lib/overlap.ts 6664d73ee9583197
 docs/cursor-work/sql/proofs/E62_proof.sql 9fdb77e89a5d5faf
 docs/claude/CALENDAR-BLUEPRINT.md 457a84a8b905a8df
