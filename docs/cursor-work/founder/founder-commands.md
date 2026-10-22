@@ -733,3 +733,5 @@ pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /de
 (200 chahiye.) Tarteeb: SQL -> Rust install -> yeh restart+health -> Brain installer (agar Bun badla) -> Web pull.
 
 ## Rule 46 (aeen) — tarteeb: 1 SQL -> 2 Rust install -> 3 Rust restart+health -> 4 Brain installer (agar Bun badla) -> 5 Web pull. Sirf badli hui technology ke steps. (AGENTS.md Rule 46)
+
+## 22 Oct 22:45 — ABHI BAAQI (founder ke liye, tarteeb): 1) Brain installer (brain-identity-install.sh, poori command NEXT-TASKS.md mein) 2) Web pull + Ctrl+Shift+R 3) sign-out/sign-in (main live dekhunga). Phir agent #2 W2 Focus Ring.

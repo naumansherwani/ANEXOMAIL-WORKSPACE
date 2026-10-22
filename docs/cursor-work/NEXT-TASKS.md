@@ -3,6 +3,19 @@
 > **22 Oct 2026 20:32 (founder, Rule 44):** SQL ab SERVER par `sql-run.sh` se chalti hai (editor nahi), aur woh PEHLE chalti hai. Command: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = sab nayi) ya naam aakhir mein bina .sql ke.
 Compact / naya chat: pehle AGENTS.md (Rule 37/38/40/41/42), `DONE-DO-NOT-REPEAT.md`, phir YEH file. Jo GREEN hai dobara nahi banana. Har commit ke saath server commands (Rule 41); SQL server + Supabase editor dono (Rule 42, pehli line khali, lint).
 
+## >>> RESUME HERE — compact ke baad SIRF YAHAN SE (22 Oct 2026 22:45 PKT, founder: "hamaray kaam ki tarteeb kharab ho gayi") <<<
+**Qaida (founder):** koi NAYA phase/kaam founder se poochhe bina shuru nahi (identity vault maine bina poochhe shuru kiya tha — dobara nahi). Tarteeb neeche wali table hi hai. Har push: Rule 41 + **Rule 46** (1 SQL -> 2 Rust install -> 3 Rust restart+health -> 4 Brain installer agar Bun badla -> 5 Web pull; sirf badli hui technology ke steps, har ek alag poori command). Server par kuch bhi agent nahi chalata.
+
+**Is session mein GREEN ho chuka (dobara mat banao):** #10 History search (live verified) · E65 RLS sweep · Rule 43/44/45/46 · identity vault SQL E66/E67/E68/E69 (server par SQL chal chuki, CHECK OK) · Bun mirror/outbox/guard + Web device-key/SignupReview/IdentityVaultPanel (code pushed) · Rust vault_core.rs (pure, parity) · refresh par double loading (founder: GREEN) · sign-in loading click par (deployed, recorder ne tasdeeq ki).
+
+**Founder ke server par BAAQI (yeh agent nahi kar sakta):**
+1. Brain installer: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-identity-install.sh)` — yeh DEVICE_VAULT_KEY bhi banata hai (print nahi). Founder ne abhi tak chalaya nahi (22:41 par naam hi type kiya tha).
+2. Web pull (commit 2b92ea4: splash exit par sign-in form flash fix) + Ctrl+Shift+R, phir founder sign-out/sign-in karega aur main Chrome tab (1609160381, MCP group) mein recorder (window.__navlog: history patch + MutationObserver + fetch status) lagake LIVE dekhunga ke `SIGNIN @/app` flash ab nahi. Agent production par password type NAHI karta (founder khud sign-in karta hai).
+3. Privacy/footer naya paragraph — founder "haan" par (AUTH-MIGRATION-PLAN.md mein draft).
+
+**AGLA KAAM (founder se poochhe bina, tarteeb ke mutabiq): #2 W2 Focus Ring** (docs/claude/WORLD-CLOCK-BLUEPRINT.md; Web only +Rust agar load endpoint chahiye). Uske baad #4c ICS subscribe -> #5 event files -> W3/W4/W5 -> #6 CalDAV -> #7 Google -> #8 Rooms -> M-series -> G16. AUTH Phase A (sign-in Rust par + vault_glue.rs + local mirror) W2 ke BAAD, tab bhi pehle founder se poochho.
+Dates: E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle. Phone 390/820 checks baaki.
+
 ## Tarteeb (upar se neeche, ek ke baad ek)
 | # | Kaam | Design / file | Server order |
 |---|---|---|---|
