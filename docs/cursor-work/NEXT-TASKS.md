@@ -23,3 +23,6 @@ Calendar #0–#4b, #9; World clock W0/W1; landing/plans calendar copy; E58–E63
 - Honest only: koi invented number/score nahi; "Basic ko itna do ke deewana ho jaye".
 - Bun fallback na hatao; Sign-in A locked (Rule 39); prices/cards LOCKED.
 - Dates: E55 grants-heal 30 Oct se pehle; Caddy cert renewal 12 Nov se pehle; mail reminders ko server timer; test page `pro-buyer` ON.
+
+## >>> ABHI CHAL RAHA HAI (compact ke baad yahin se shuru) <<<
+**22 Oct 2026, 19:40 PKT — #10 History search SHURU kar diya.** Plan: SQL E64 (meetings/notes FTS + trigram, org wall) -> Rust proc `calendar.history` -> Web `/app/search` "Meetings & history" (tareekh range, banda). Pehle se mojood: `/app/search` + `useUniversalSearch` (people/companies/threads/attachments). Status neeche log mein update hota rahega.
