@@ -144,3 +144,9 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - 22 Oct 2026 GREEN: #2 Booking page B7c (SQL E59 + Rust book + Web /book/<handle>, /book/manage, host sheet) live + Chrome book/move/cancel/double-book wall + 3 mails Gmail mein aayin. NEXT: #3 iMIP reply G26 (plan founder-commands.md 06:35 entry).
 
 - 22 Oct 07:20 Calendar roadmap ek jagah: docs/cursor-work/CALENDAR-ROADMAP.md (#0–#8 haal + spec). Naya calendar step wahin update karo.
+
+## M-SERIES (Outlook-jaisa mail features) — founder 22 Oct 07:52: "sirf repo mein likho, bari tarteeb se, B series ki tarah"
+Detail + package map: docs/cursor-work/MAIL-OUTLOOK-MAP.md. Rule 40 (family unlimited), plans.ts locked, SQL->Rust->Web, GREEN = founder output + live check.
+Tarteeb (B-series ke BAAD, B7 calendar #4-#8 aur G16 P2 ke saath founder jo kahe): M1 view/layout settings (web) | M2 Favourites+Move+Flag+Pin+filter chips | M3 signature+auto-reply+forwarding/IMAP | M4 rules+Sweep (Basic 3, Pro+ unlimited) | M5 schedule send+templates (Pro+) | M6 Focused/Other+categories+cond. formatting (Pro+) | M7 shared/delegate (Business+).
+Pending founder faisle: Basic rules 3?, Focused/Other pehle ya baad, M1 se shuru? — sab M-series abhi KOI code nahi.
+Yahan code jayega: web = src/components/app/mail/* + src/routes/app.mail*.tsx + src/routes/app.settings.*.tsx; Rust = server/rust/mail_*.rs (naye module `mailx`); SQL = docs/cursor-work/sql/E6x; gating = src/lib/plan-surface.ts capability.

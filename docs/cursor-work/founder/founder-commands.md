@@ -634,3 +634,4 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - Phir: #4 world-clock pins + team overlay + ICS subscribe; G16 portal P2 (4 faisle pending); MIGRATION-LEDGER.
 - 22 Oct 07:47 #3 GREEN. NEW founder ask: Outlook UI dekh kar ANEXOMAIL ka original mail feature map + placement + package gating (family=unlimited Rule 40). Outlook address for test: naumankhansherwani@outlook.com (founder ne diya).
 - 22 Oct 07:55 founder ne Outlook dekhne ko kaha: docs/cursor-work/MAIL-OUTLOOK-MAP.md (proposal, code nahi) bana; 3 faisle pending.
+- 22 Oct 07:55 STAGE: #3 GREEN. M-series (Outlook mail features M1–M7) ledger mein likhi (MASTER-GAP-LEDGER bottom + MAIL-OUTLOOK-MAP.md), code nahi. Ab: Outlook (naumankhansherwani@outlook.com) se invite Accept test (extra saboot), phir B-series: B6 portal P2 + B7 #4–#8 + B8. Pending founder: 4 portal faisle, 3 M-faisle.
