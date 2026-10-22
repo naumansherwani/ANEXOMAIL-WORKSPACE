@@ -252,10 +252,14 @@ pub struct Assess {
     pub day_len_min: Option<i64>,
     /// how much longer that day is than their normal window. 0 when the meeting sits inside it.
     pub extra_min: Option<i64>,
+    /// Focus Ring: minutes already booked (free/busy only) inside their working window on the meeting's local day. None without a schedule or on a day off.
+    pub booked_min: Option<i64>,
+    /// length of that working window in minutes (the ring's whole circle). None when booked_min is None.
+    pub work_min: Option<i64>,
 }
 
 pub fn assess(p: &Person, start: i64, end: i64) -> Assess {
-    let none = |z| Assess { zone: z, outside_min: None, day_len_min: None, extra_min: None };
+    let none = |z| Assess { zone: z, outside_min: None, day_len_min: None, extra_min: None, booked_min: None, work_min: None };
     let tz = match p.tz {
         Some(z) if end > start => z,
         _ => return none(Zone::Unknown),
@@ -285,13 +289,19 @@ pub fn assess(p: &Person, start: i64, end: i64) -> Assess {
     let off_day = p.ooo.iter().any(|(a, b)| a.as_str() <= date.as_str() && date.as_str() <= b.as_str());
     let w = week[(day + 3).rem_euclid(7) as usize];
     if off_day || !w.on || w.end <= w.start {
-        return Assess { zone: worst, outside_min: Some(len_min), day_len_min: Some(len_min), extra_min: Some(len_min) };
+        return Assess { zone: worst, outside_min: Some(len_min), day_len_min: Some(len_min), extra_min: Some(len_min), booked_min: None, work_min: None };
     }
     let (ws, we) = (day * 86_400 + w.start * 60, day * 86_400 + w.end * 60);
     let inside = (le.min(we) - ls.max(ws)).max(0);
     let outside = ((le - ls) - inside + 59) / 60;
     let span = le.max(we) - ls.min(ws);
+    // booked minutes inside the working window (busy is sorted + merged, so a plain clipped sum is exact)
+    let off = ls - start; // local - utc
+    let (wu_s, wu_e) = (ws - off, we - off);
+    let booked: i64 = p.busy.iter().map(|i| (i.end.min(wu_e) - i.start.max(wu_s)).max(0)).sum::<i64>() / 60;
     Assess {
+        booked_min: Some(booked),
+        work_min: Some((we - ws) / 60),
         zone: worst,
         outside_min: Some(outside),
         day_len_min: Some(span / 60),
@@ -544,6 +554,21 @@ mod tests {
         let nowhere = p(None, Some(office()), &[], &[]);
         assert_eq!(assess(&nowhere, day, day + H).zone, Zone::Unknown);
         assert_eq!(assess(&g, day + H, day).zone, Zone::Unknown, "end before start");
+    }
+
+    #[test]
+    fn assess_focus_ring_counts_booked_minutes_in_window() {
+        let z = fixed(0);
+        let day = day0(2026, 6, 1); // a Monday, office 09-17
+        let busy = [Interval { start: day + 8 * H, end: day + 10 * H }, Interval { start: day + 12 * H, end: day + 13 * H + 1800 }];
+        let a = p(Some(&z), Some(office()), &[], &busy);
+        let r = assess(&a, day + 14 * H, day + 15 * H);
+        assert_eq!(r.work_min, Some(480));
+        assert_eq!(r.booked_min, Some(60 + 90), "08-10 is clipped to 09-10; 12-13:30 counts whole");
+        let sat = day + 5 * 86_400;
+        assert_eq!(assess(&a, sat + 10 * H, sat + 11 * H).booked_min, None, "day off: no ring");
+        let g = p(Some(&z), None, &[], &[]);
+        assert_eq!(assess(&g, day + 10 * H, day + 11 * H).work_min, None, "no schedule: no ring");
     }
 
     #[test]

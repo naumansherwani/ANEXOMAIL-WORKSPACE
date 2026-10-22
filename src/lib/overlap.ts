@@ -22,6 +22,9 @@ export type OverlapAssess = {
   outside_min: number | null;
   day_len_min: number | null;
   extra_min: number | null;
+  /** Focus Ring: minutes already booked (free/busy only) inside their working window that day. */
+  booked_min?: number | null;
+  work_min?: number | null;
 };
 
 export type OverlapMember = {
@@ -157,4 +160,21 @@ export function slotIndex(grid: OverlapData["grid"], at: Date): number {
 
 export function slotStart(grid: OverlapData["grid"], i: number): Date {
   return new Date(new Date(grid.from).getTime() + i * grid.step_min * 60_000);
+}
+
+/**
+ * Focus Ring: how full that person's working day is with the proposed meeting added.
+ * Real minutes only: booked (free/busy) + the part of this meeting inside their hours, over their working window.
+ * null = nothing honest to draw (no schedule shared, day off, unknown zone).
+ */
+export function focusLoad(
+  a: OverlapAssess | undefined,
+  meetingMin: number,
+): { frac: number; booked: number; withMeeting: number; work: number; text: string } | null {
+  if (!a || a.booked_min == null || a.work_min == null || a.work_min <= 0) return null;
+  const inside = Math.max(0, meetingMin - (a.outside_min ?? 0));
+  const withMeeting = a.booked_min + inside;
+  const frac = Math.min(1, Math.max(0, withMeeting / a.work_min));
+  const text = `${fmtMinutes(withMeeting)} booked of ${fmtMinutes(a.work_min)} with this meeting`;
+  return { frac, booked: a.booked_min, withMeeting, work: a.work_min, text };
 }

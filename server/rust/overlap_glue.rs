@@ -323,6 +323,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
                 let a = c::assess(p, s, e);
                 v["assess"] = json!({
                     "zone": zone_name(a.zone), "outside_min": a.outside_min, "day_len_min": a.day_len_min, "extra_min": a.extra_min,
+                    "booked_min": a.booked_min, "work_min": a.work_min,
                 });
             }
             v

@@ -1,6 +1,7 @@
 import { Users } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { FocusRing } from "@/components/app/calendar/FocusRing";
 import { Button } from "@/components/ui/button";
 import { toLocalInput } from "@/lib/find-time";
 import {
@@ -277,7 +278,11 @@ export function OverlapMatrix({
             const why = CELL_WHY[(m.row[idx] ?? "x") as CellCode];
             return (
               <li key={m.address} className="flex items-baseline gap-2 text-[12px]">
-                <span className={cn("size-2 shrink-0 translate-y-[1px] rounded-full", ZONE_CLASS[z])} aria-hidden="true" />
+                <FocusRing
+                  assess={m.assess}
+                  meetingMin={Math.round((end.getTime() - start.getTime()) / 60_000)}
+                  fallback={<span className={cn("size-2 shrink-0 translate-y-[1px] rounded-full", ZONE_CLASS[z])} aria-hidden="true" />}
+                />
                 <span className="min-w-0">
                   <span className="font-semibold text-foreground">{label(m)}</span>{" "}
                   <span className="text-muted-foreground">

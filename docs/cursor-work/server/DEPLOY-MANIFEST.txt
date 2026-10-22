@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 219f8df55f668484
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 3e7b58fb973795f1
+docs/cursor-work/DONE-DO-NOT-REPEAT.md fdbbff89ba9e232a
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -396,11 +396,11 @@ docs/cursor-work/sql/E61_world_clocks.sql bf812a1cebf1fd98
 docs/cursor-work/sql/CHECK_E61.sql d4198702c8e11d9b
 docs/cursor-work/sql/CHECK_E62.sql 5ec6c8608ec42302
 docs/cursor-work/sql/E62_team_overlap.sql 4eae8e2b6513bb93
-server/rust/overlap_core.rs 1b77ba82fc888401
-server/rust/overlap_glue.rs a56214c1bf50c283
-src/components/app/calendar/OverlapMatrix.tsx b7248670155de505
+server/rust/overlap_core.rs 3412d6235fb46ef1
+server/rust/overlap_glue.rs f04b427e92f6fe2c
+src/components/app/calendar/OverlapMatrix.tsx 3f4a8645bb880e91
 src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
-src/lib/overlap.ts 6664d73ee9583197
+src/lib/overlap.ts 654faba294fea45c
 docs/cursor-work/sql/proofs/E62_proof.sql 9fdb77e89a5d5faf
 docs/claude/CALENDAR-BLUEPRINT.md 4de4e1925cf70000
 docs/cursor-work/sql/E63_event_goal.sql 1ae02410b99d253e
@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 8a8577c804327f09
+docs/cursor-work/NEXT-TASKS.md 055978c33820c8e0
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac
@@ -482,3 +482,5 @@ tsconfig.json c1ef8f45d3761d93
 docs/cursor-work/server/brain-identity-install.sh e0fc43bce128938e
 docs/cursor-work/server/brain_identity_patch.py 8dc6987658d51247
 src/components/site/CinematicSplash.tsx 4b96d5bc08244f12
+src/lib/overlap-focus.test.ts 233e842b65a6b645
+src/components/app/calendar/FocusRing.tsx 998f825d669eee38

@@ -10,10 +10,10 @@ Compact / naya chat: pehle AGENTS.md (Rule 37/38/40/41/42), `DONE-DO-NOT-REPEAT.
 
 **Founder ke server par BAAQI (yeh agent nahi kar sakta):**
 1. Brain installer: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-identity-install.sh)` — yeh DEVICE_VAULT_KEY bhi banata hai (print nahi). Founder ne abhi tak chalaya nahi (22:41 par naam hi type kiya tha).
-2. Web pull (commit 2b92ea4: splash exit par sign-in form flash fix) + Ctrl+Shift+R, phir founder sign-out/sign-in karega aur main Chrome tab (1609160381, MCP group) mein recorder (window.__navlog: history patch + MutationObserver + fetch status) lagake LIVE dekhunga ke `SIGNIN @/app` flash ab nahi. Agent production par password type NAHI karta (founder khud sign-in karta hai).
+2. ~~Web pull 2b92ea4~~ DONE + GREEN (22:50 recorder se tasdeeq). (purani line:) phir founder sign-out/sign-in karega aur main Chrome tab (1609160381, MCP group) mein recorder (window.__navlog: history patch + MutationObserver + fetch status) lagake LIVE dekhunga ke `SIGNIN @/app` flash ab nahi. Agent production par password type NAHI karta (founder khud sign-in karta hai).
 3. Privacy/footer naya paragraph — founder "haan" par (AUTH-MIGRATION-PLAN.md mein draft).
 
-**AGLA KAAM (founder se poochhe bina, tarteeb ke mutabiq): #2 W2 Focus Ring** (docs/claude/WORLD-CLOCK-BLUEPRINT.md; Web only +Rust agar load endpoint chahiye). Uske baad #4c ICS subscribe -> #5 event files -> W3/W4/W5 -> #6 CalDAV -> #7 Google -> #8 Rooms -> M-series -> G16. AUTH Phase A (sign-in Rust par + vault_glue.rs + local mirror) W2 ke BAAD, tab bhi pehle founder se poochho.
+**#2 W2 Focus Ring: CODE READY (22 Oct) — server par Rust install -> Rust restart+health -> Web pull baqi; phir Chrome live check (Find a time list mein ring). AGLA KAAM: #4c ICS subscribe.** Uske baad #4c ICS subscribe -> #5 event files -> W3/W4/W5 -> #6 CalDAV -> #7 Google -> #8 Rooms -> M-series -> G16. AUTH Phase A (sign-in Rust par + vault_glue.rs + local mirror) W2 ke BAAD, tab bhi pehle founder se poochho.
 Dates: E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle. Phone 390/820 checks baaki.
 
 ## Tarteeb (upar se neeche, ek ke baad ek)
