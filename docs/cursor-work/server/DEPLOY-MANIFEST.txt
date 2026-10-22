@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 1f0dcfd936fcaa96
+docs/cursor-work/founder/founder-commands.md efef9d4a34f73747
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -402,4 +402,4 @@ src/components/app/calendar/OverlapMatrix.tsx b7248670155de505
 src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
 src/lib/overlap.ts 83a8c3710c60ba8b
 docs/cursor-work/sql/proofs/E62_proof.sql 9fdb77e89a5d5faf
-docs/claude/CALENDAR-BLUEPRINT.md db8178a4ef43f71c
+docs/claude/CALENDAR-BLUEPRINT.md 457a84a8b905a8df

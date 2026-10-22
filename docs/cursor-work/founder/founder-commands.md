@@ -674,3 +674,6 @@ Wajah: purani line shared `cal_core.rs` ko `rm -f` karti thi aur zabardasti rebu
 
 ### 22 Oct 2026 09:40 PKT — web pull OK, calendar blueprint likha
 Pull: build OK, /health 200, server==repo 513 differ=0. Likha: `docs/claude/CALENDAR-BLUEPRINT.md` (access model Rule 37/40, sirf-GREEN feature table, landing copy draft, #9 outcome colours, #10 history search). Roadmap mein #9/#10 jode. Landing/plans par copy abhi LAGI NAHI (founder "haan" ka intezar). Aglu: W1 live check.
+
+### 22 Oct 2026 09:24 PKT — founder faisla: calendar abhi UNLIMITED, limits baad mein
+Basic ko itna do ke deewane ho jayen; abhi sab unlimited banao; kis package ko kitna — baad mein Claude ke mashware se. Detail: docs/claude/CALENDAR-BLUEPRINT.md §1b.

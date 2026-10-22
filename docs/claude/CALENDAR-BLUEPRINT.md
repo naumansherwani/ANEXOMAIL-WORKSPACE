@@ -7,6 +7,12 @@ Compact ke baad: pehle AGENTS.md Rule 37/38/40, phir `docs/cursor-work/CALENDAR-
 - **Family / lifetime (Rule 40): sab kuch UNLIMITED**, asli khareedar jaise poora account/profile, koi Upgrade nazar nahi aata. **Business Pro: unlimited** (limits ki upar wali had nahi lagti). Yaani aage jab limits capability banengi: family = unlimited, Business Pro = unlimited, baqi packages ke apne number.
 - Founder faisla BAAKI (numbers): Basic/Pro/Business ke liye calendars, pins, history-search ki gehrai (saal), matrix ke log. Jab tak founder number na de, **koi limit lagayi nahi jati** (sab ko poora milta hai) aur landing page par koi number likha nahi jata.
 
+## 1b. Founder faisla 22 Oct 09:24 PKT (LOCKED, verbatim)
+"calender basic walon ko itna daina ke woh attarct ho jaye aur woh mere product ke deewwane ho jaye abhi hum unlimted pe bana rahay hain baad main tumharay mashwaray se kis package ko kitna calndar daina hai yeh decide karay gay"
+- **Abhi har calendar feature UNLIMITED banta hai, sab paid packages ko** (koi limit capability/gate nahi lagani, koi number landing par nahi). Limits baad mein, Claude ke mashware se, founder tay karega.
+- **Basic ko itna do ke woh deewana ho jaye**: Basic = poora calendar experience (invites+RSVP, booking, working hours/OOO, calendars, pins, matrix, history search ka bada hissa). Upgrade ki wajah "calendar kam hai" nahi, "team/governance/volume" ho.
+- Mera mashwara jab limits tay hon (abhi sirf rai, lagayi nahi): Basic ke liye limit sirf un cheezon par jahan lagat asli ho (history ki gehrai, bohat bade attendee matrix), baqi feature kabhi gate nahi; Business Pro/Family unlimited. Numbers founder ke "haan" ke baad.
+
 ## 2. Calendar kya hai — sirf GREEN (landing par likhne ke qabil)
 | Feature | Haal | Landing par? |
 |---|---|---|
