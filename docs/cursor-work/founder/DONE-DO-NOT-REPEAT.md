@@ -1,2 +1,3 @@
 - 22 Oct 2026: #3 iMIP code written (imip_core.rs, deliver hook, rsvp_via in cal_glue, Guests label). NOT green until server output + live Gmail test.
 - 22 Oct 06:53: #3 iMIP E60 SQL + Rust cal + Rust deliver + web = server par INSTALLED (founder output). Dobara install mat karwana. Baaki: live Gmail Yes test. Rule: records likhne ke BAAD manifest-sync dobara (pull "KUCH GALAT" ki wajah).
+- 22 Oct 06:56 founder correction: G16 billing portal (B6 Rust billing.portal) kal shaam bana hua hai, GREEN — ledger D6 theek kiya. Dobara 'baqi' mat likhna.
