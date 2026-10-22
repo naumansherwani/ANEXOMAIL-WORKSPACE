@@ -693,3 +693,6 @@ Server (alag alag, tarteeb yahi):
 Phir Ctrl+Shift+R, calendar mein ek meeting kholo -> "Aim" likho -> shuru hone ke baad Achieved/Missed.
 
 #### 22 Oct 10:50 — Aim 2000 harf, multi-line (founder ki darkhwast). Server commands upar wali 3 hi hain (E63 abhi chali nahi thi, isliye wahi file; SQL -> Rust cal -> Web).
+
+### 22 Oct 2026 09:50 PKT — STANDING: har naye commit ke saath pull/server commands HAMESHA do
+Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab mein: commit hash + jo server commands us commit ke liye chahiye (SQL -> Rust -> Web, alag alag, sirf wohi jo us commit mein badla). Sirf docs badle to bhi likho "server command nahi chahiye". Is waqt latest: 9ea4a5d (E63 SQL, Rust cal, Web).

@@ -323,3 +323,6 @@ Founder (verbatim): "subject to agar woh feature un ko required hai toh lekin fa
 - Rule 37 (har UI edit sab packages ko ek saath) **us hadd tak jahan feature us package ko chahiye** (capability `plan-surface.ts` se). Basic/Pro/Business/Business Pro apni capability tak.
 - **Family accounts par package-gating lagu NAHI.** Unhein lifetime plan ke tahat UNLIMITED access milti hai (har feature, har surface, koi limit/upsell nahi) — aur woh **asli khareedar ki tarah poora account/profile (billing "Lifetime access", dashboard, har page)** dekhte hain. Koi family-only alag UI nahi banti; capability resolver family entitlement (`family_accounts` / org-membership) ko "sab kuch" deta hai.
 - Naya feature likhte waqt: (1) capability gate sirf paid packages ke liye, (2) family/lifetime resolver `unlimited`, (3) live test mein ek family account (e.g. Hamza) se bhi dekho ke feature dikhta/chalta hai aur koi "Upgrade" nazar nahi aata, (4) kisi family account ke liye alag branch/tier-literal nahi.
+
+## Rule 41 — Har naye commit ke saath server/pull commands (founder 22 Oct 2026 09:50 PKT, STRICT)
+Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab mein commit hash + us commit ke liye zaroori commands (SQL → Rust → Web, alag alag full commands, sirf jo badla). Sirf docs badle to "server command nahi chahiye" likho.
