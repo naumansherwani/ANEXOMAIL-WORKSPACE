@@ -520,3 +520,4 @@ src/components/app/calendar/OutsideCalendars.tsx 6164a229f16d7c62
 src/lib/calendar-subs.test.ts 094dcfa56bace67e
 src/lib/calendar-subs.ts 86d32b104ae6bd58
 docs/claude/T-SERIES-BLUEPRINT.md f8ffbbd35bb9565d
+./docs/cursor-work/DONE-DO-NOT-REPEAT.md 2d43f62320fbcd38
