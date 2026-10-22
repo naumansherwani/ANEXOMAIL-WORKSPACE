@@ -2,6 +2,7 @@
 # brain_identity_patch.py — live Brain (routes/auth.ts, routes/chat.ts, index.ts) par identity-vault ke tukde SURGICALLY lagata hai.
 # Usage: brain_identity_patch.py <live_src> <repo_dir> <out_dir>      (repo_dir mein origin/main ki server/ tree ka copy: routes/auth.ts, routes/chat.ts, index.ts)
 # Har file: pehle se juda ho to "same"; anchor na mile to STOP (exit 4, kuch nahi likhta). Idempotent. Raw values/secrets yahan nahi.
+# E72: signup-appeal (auth.ts) aur device appeal (chat.ts) 20,000 characters + evidence_ids.
 # E70 (hardening) upgrade bhi isi se: pehle se lagi E66-E69 wali live files par fingerprint/hold/gate ke tukde (marker: fingerprintFrom / integrity/identity/gate / identity_account_state).
 import os, sys
 
@@ -61,6 +62,11 @@ if "import { fingerprintFrom }" not in a:
     imp = 'import * as identityGuard from "../lib/identity-guard";'
     once(a, imp, "identityGuard import")
     a = a.replace(imp, imp + '\nimport { fingerprintFrom } from "../lib/identity-guard";', 1); st_a.append("e70-import")
+# E72: logged-out appeal ab 20,000 characters (pehle 2000 par kaat deta tha) — sirf signup-appeal route badalta hai
+if "p_statement: statement.slice(0, 2000)" in a:
+    live_c = between(a, "// Logged-out appeal after a refused signup", 'authRouter.post("/login"', "signup-appeal route (live)")
+    new_c = between(ra, "// Logged-out appeal after a refused signup", 'authRouter.post("/login"', "signup-appeal route (E72)")
+    a = a.replace(live_c, new_c, 1); st_a.append("e72-signup-appeal")
 res["auth.ts"] = "+".join(st_a) if st_a else "same"
 open(os.path.join(out, "routes/auth.ts"), "w", encoding="utf-8").write(a)
 
@@ -78,6 +84,16 @@ elif '"/integrity/identity/gate"' not in c or '"/integrity/identity/evasion"' no
     res["chat.ts"] = "patched-e70"   # E66-E69 -> E70/E71 (gate, evasion routes)
 else:
     res["chat.ts"] = "same"
+# E72: device appeal route (20,000 characters + evidence_ids -> device_appeal_open_v2)
+if "device_appeal_open_v2" not in c:
+    dan = 'chatRouter.get("/devices/appeals"'
+    once(c, dan, "devices/appeals route")
+    if 'chatRouter.post("/devices/appeal"' not in c:
+        print("STOP: live chat.ts mein /devices/appeal route nahi mila"); sys.exit(4)
+    live_d = between(c, '// Device ban appeal', dan, "device appeal route (live)")
+    new_d = between(rc, '// Device ban appeal', dan, "device appeal route (E72)")
+    c = c.replace(live_d, new_d, 1)
+    res["chat.ts"] = (res["chat.ts"] + "+e72-appeal") if res.get("chat.ts") not in (None, "same") else "patched-e72"
 open(os.path.join(out, "routes/chat.ts"), "w", encoding="utf-8").write(c)
 
 # ---- index.ts ----

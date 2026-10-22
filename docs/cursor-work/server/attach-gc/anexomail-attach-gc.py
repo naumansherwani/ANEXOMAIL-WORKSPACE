@@ -10,6 +10,7 @@ import json, os, re, sys, time, urllib.request
 
 ROOT = (os.environ.get("ATTACH_DIR") or "/mnt/anexomail-box/attachments").rstrip("/")
 REL_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/[0-9a-f]{2}/[0-9a-f]{64}-[0-9a-f]{8}$")
+EVID_RE = re.compile(r"^appeals/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/([0-9a-f]{2})/([0-9a-f]{64})-[0-9a-f]{8}$")
 UUID_RE = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 
 
@@ -47,6 +48,89 @@ def remove_blob(root, rel):
     except OSError:
         pass
     return removed
+
+
+def remove_evidence(root, rel):
+    """E72: appeal ke saboot ki file. rel = `appeals/<user>/<sha2>/<sha>-<nonce8>`. Shakl + realpath check; None = radd, True = hataya, False = pehle se nahi tha."""
+    m = EVID_RE.match(rel)
+    if not m or not m.group(3).startswith(m.group(2)):
+        return None
+    full = os.path.join(root, rel)
+    real_root = os.path.realpath(root)
+    if not os.path.realpath(full).startswith(real_root + os.sep):
+        return None
+    try:
+        os.unlink(full)
+        removed = True
+    except FileNotFoundError:
+        removed = False
+    d = os.path.dirname(full)
+    try:
+        os.rmdir(d)  # khali ho to
+        os.rmdir(os.path.dirname(d))  # user ka folder bhi, agar khali (.tmp ho to nahi hatega)
+    except OSError:
+        pass
+    return removed
+
+
+def clean_evidence_tmp(root, max_age_s=86400, now=None):
+    """appeals/<user>/.tmp mein ek din se purani adhoori uploads."""
+    now = now or time.time()
+    n = 0
+    base = os.path.join(root, "appeals")
+    try:
+        users = os.listdir(base)
+    except OSError:
+        return 0
+    for u in users:
+        if not UUID_RE.match(u):
+            continue
+        tdir = os.path.join(base, u, ".tmp")
+        try:
+            names = os.listdir(tdir)
+        except OSError:
+            continue
+        for name in names:
+            p = os.path.join(tdir, name)
+            try:
+                if os.path.isfile(p) and now - os.path.getmtime(p) > max_age_s:
+                    os.unlink(p)
+                    n += 1
+            except OSError:
+                pass
+    return n
+
+
+def rpc(url, key, name, body, timeout=120):
+    req = urllib.request.Request(url.rstrip("/") + "/rest/v1/rpc/" + name, data=json.dumps(body).encode(), method="POST",
+                                 headers={"apikey": key, "Authorization": "Bearer " + key, "Content-Type": "application/json"})
+    return json.load(urllib.request.urlopen(req, timeout=timeout))
+
+
+def purge_evidence(root, url, key):
+    """E72: SQL `appeal_evidence_purge_list` -> file PEHLE hatao -> phir `appeal_evidence_purge_done` (jin ki file hat gayi / pehle se nahi thi).
+    SQL E72 na chali ho to sirf batata hai (attachments ki safai ko nahi rokta). Return (files_removed, already_gone, refused, rows_deleted) ya None."""
+    try:
+        out = rpc(url, key, "appeal_evidence_purge_list", {"_limit": 500})
+    except Exception as e:
+        print("attach-gc: appeal-evidence safai chhodi (SQL E72 chala hai?):", str(e)[:160])
+        return None
+    done, removed, gone, refused = [], 0, 0, 0
+    for f in (out.get("files") if isinstance(out, dict) else None) or []:
+        r = remove_evidence(root, str(f.get("rel_path", "")))
+        if r is None:
+            refused += 1
+            continue
+        removed += 1 if r else 0
+        gone += 0 if r else 1
+        done.append(f.get("id"))
+    deleted = 0
+    if done:
+        try:
+            deleted = int((rpc(url, key, "appeal_evidence_purge_done", {"_ids": done}) or {}).get("deleted", 0))
+        except Exception as e:
+            print("attach-gc: purge_done fail:", str(e)[:160])
+    return removed, gone, refused, deleted
 
 
 def clean_tmp(root, max_age_s=86400, now=None):
@@ -99,6 +183,23 @@ def selftest():
     open(old, "w").write("1"); open(new, "w").write("1")
     os.utime(old, (time.time() - 90000, time.time() - 90000))
     assert clean_tmp(root) == 1 and not os.path.exists(old) and os.path.exists(new)
+    # E72: saboot ki files
+    user = "22222222-2222-2222-2222-222222222222"
+    esha = "cd" * 32
+    erel = f"appeals/{user}/cd/{esha}-89abcdef"
+    os.makedirs(os.path.join(root, "appeals", user, "cd"))
+    open(os.path.join(root, erel), "w").write("x")
+    assert remove_evidence(root, erel) is True and not os.path.exists(os.path.join(root, erel))
+    assert remove_evidence(root, erel) is False
+    for bad in ["../x", f"/{erel}", f"appeals/{user}/ab/{esha}-89abcdef", f"appeals/{user}/cd/../{esha}-89abcdef", f"{user}/cd/{esha}-89abcdef", "appeals/x/cd/y"]:
+        assert remove_evidence(root, bad) is None, bad
+    os.makedirs(os.path.join(root, "appeals", user, ".tmp"), exist_ok=True)
+    eo = os.path.join(root, "appeals", user, ".tmp", "old"); en = os.path.join(root, "appeals", user, ".tmp", "new")
+    open(eo, "w").write("1"); open(en, "w").write("1")
+    os.utime(eo, (time.time() - 90000, time.time() - 90000))
+    assert clean_evidence_tmp(root) == 1 and not os.path.exists(eo) and os.path.exists(en)
+    # org wali safai appeals ko nahi chhoti (UUID_RE "appeals" se match nahi karta)
+    assert clean_tmp(root) == 0 and os.path.exists(en)
     print("selftest ok")
 
 
@@ -127,7 +228,10 @@ def main():
         if r is True: removed += 1
         else: skipped += 1
     tmp = clean_tmp(ROOT)
-    print(f"attach-gc {time.strftime('%FT%TZ', time.gmtime())} staged_rows_removed={out.get('staged_removed', 0)} blob_rows_removed={len(out.get('paths') or [])} files_removed={removed} files_already_gone={skipped} tmp_removed={tmp}")
+    ev = purge_evidence(ROOT, url, key)
+    evtmp = clean_evidence_tmp(ROOT)
+    evtxt = "evidence=skipped" if ev is None else f"evidence_files_removed={ev[0]} evidence_already_gone={ev[1]} evidence_refused={ev[2]} evidence_rows_deleted={ev[3]}"
+    print(f"attach-gc {time.strftime('%FT%TZ', time.gmtime())} {evtxt} evidence_tmp_removed={evtmp} staged_rows_removed={out.get('staged_removed', 0)} blob_rows_removed={len(out.get('paths') or [])} files_removed={removed} files_already_gone={skipped} tmp_removed={tmp}")
 
 
 if __name__ == "__main__":

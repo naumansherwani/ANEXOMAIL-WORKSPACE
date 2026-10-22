@@ -32,9 +32,9 @@ function PrivacyPage() {
         <h2 className="ax-heading text-foreground">Account integrity &amp; privacy</h2>
         <p className="text-sm leading-relaxed text-muted-foreground">
           One person, one account. ANEXOMAIL is a business mail and calendar service, and it only
-          works if a person who has been removed for abuse cannot simply return under a new name.
-          To protect every other customer, we compare each new sign-up against records of people
-          who have been blocked.
+          works if a person who has been removed for abuse cannot simply return under a new name. To
+          protect every other customer, we compare each new sign-up against records of people who
+          have been blocked.
         </p>
         <h3 className="text-sm font-semibold text-foreground">What we check</h3>
         <ul className="space-y-3 text-sm leading-relaxed text-muted-foreground">
@@ -47,19 +47,21 @@ function PrivacyPage() {
             creates for itself. Its private half never leaves your browser.
           </li>
           <li>
-            <span className="text-foreground">Technical characteristics of your browser and
-            computer:</span> for example platform, screen size, the capability limits of the
-            graphics hardware, which system fonts are installed, how the browser renders text and
-            audio, time zone and language. These are technical settings, not biometric data, and
-            nothing is read from your body, camera, microphone or contacts.
+            <span className="text-foreground">
+              Technical characteristics of your browser and computer:
+            </span>{" "}
+            for example platform, screen size, the capability limits of the graphics hardware, which
+            system fonts are installed, how the browser renders text and audio, time zone and
+            language. These are technical settings, not biometric data, and nothing is read from
+            your body, camera, microphone or contacts.
           </li>
           <li>
             <span className="text-foreground">The network a sign-up comes from</span>, to notice
             many accounts being created in a short time.
           </li>
           <li>
-            <span className="text-foreground">Temporary email addresses</span> are not accepted as
-            a recovery address.
+            <span className="text-foreground">Temporary email addresses</span> are not accepted as a
+            recovery address.
           </li>
         </ul>
         <h3 className="text-sm font-semibold text-foreground">How it is protected</h3>
@@ -67,16 +69,16 @@ function PrivacyPage() {
           Your browser reduces each group of characteristics to a one-way digest before anything is
           sent; the raw values never leave your device. Our server then protects every value with a
           secret key that exists only on our servers, so what we store cannot be turned back into
-          the original information, and cannot be matched by anyone without that key. We keep
-          device and browser records for 180 days and network records for 30 days. Records tied to
-          an address or payment method last as long as the account. If you delete your account, its
+          the original information, and cannot be matched by anyone without that key. We keep device
+          and browser records for 180 days and network records for 30 days. Records tied to an
+          address or payment method last as long as the account. If you delete your account, its
           records are deleted with it. Records of a blocked person are kept for two years by
           default, and permanently only for severe abuse, so that the block cannot be sidestepped.
         </p>
         <p className="text-sm leading-relaxed text-muted-foreground">
           This is used for one purpose only: to stop abuse, spam and fraud at sign-up. It is not
-          used for advertising, profiling or tracking you across other sites. You can see and
-          revoke your own devices at any time, and revoking one ends its live sessions immediately.
+          used for advertising, profiling or tracking you across other sites. You can see and revoke
+          your own devices at any time, and revoking one ends its live sessions immediately.
         </p>
       </section>
 
@@ -91,9 +93,9 @@ function PrivacyPage() {
           <li>
             Browser and hardware characteristics alone never block anyone, because many people own
             identical devices. A sign-up that closely resembles a blocked person&rsquo;s browser is
-            created but kept on hold until a member of our team reviews it. A held account cannot
-            be used and cannot sign in. If a review is not completed within 30 days, the hold is
-            closed and the account stays locked.
+            created but kept on hold until a member of our team reviews it. A held account cannot be
+            used and cannot sign in. If a review is not completed within 30 days, the hold is closed
+            and the account stays locked.
           </li>
           <li>
             Some privacy-focused browsers deliberately hide these characteristics. A sign-up from
@@ -101,9 +103,15 @@ function PrivacyPage() {
             at your recovery address.
           </li>
           <li>
-            During the first 7 days a new account has limits: messages to up to 20 people at a
-            time, up to 50 messages a day, and no invitations, public links or bulk imports. The
-            limits end after 7 days, or immediately when you subscribe to a plan.
+            During the first 7 days a new account has limits: messages to up to 20 people at a time,
+            up to 50 messages a day, and no invitations, public links or bulk imports. The limits
+            end after 7 days, or immediately when you subscribe to a plan.
+          </li>
+          <li>
+            Every block can be appealed in writing, up to 20,000 characters, with up to five
+            evidence files (screenshots, PDF, text, email or Office documents). Files are scanned,
+            visible only to the reviewers who decide your appeal, and deleted 90 days after the
+            decision. Every reviewer download is logged.
           </li>
         </ul>
       </section>

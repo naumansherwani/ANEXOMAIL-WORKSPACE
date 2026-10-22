@@ -9,7 +9,13 @@ import { deviceKeyProof } from "@/lib/device-key";
  * Shown only after a sign-up is refused because this identity was blocked earlier.
  * One short request; a person on the ANEXOMAIL team reads it. No account is needed to ask.
  */
-export function SignupReview({ mailbox, recoveryEmail }: { mailbox: string; recoveryEmail: string }) {
+export function SignupReview({
+  mailbox,
+  recoveryEmail,
+}: {
+  mailbox: string;
+  recoveryEmail: string;
+}) {
   const [statement, setStatement] = useState("");
   const [contact, setContact] = useState(recoveryEmail);
   const [state, setState] = useState<"idle" | "busy" | "sent">("idle");
@@ -48,7 +54,8 @@ export function SignupReview({ mailbox, recoveryEmail }: { mailbox: string; reco
   return (
     <div className="grid gap-2 rounded-lg border border-border p-3">
       <p className="ax-caption text-muted-foreground">
-        Think this is a mistake? Tell us what happened (20+ characters). We keep your address only to answer you.
+        Think this is a mistake? Tell us what happened (20+ characters). We keep your address only
+        to answer you.
       </p>
       <input
         value={contact}
@@ -60,8 +67,8 @@ export function SignupReview({ mailbox, recoveryEmail }: { mailbox: string; reco
       />
       <textarea
         value={statement}
-        onChange={(e) => setStatement(e.target.value.slice(0, 2000))}
-        rows={3}
+        onChange={(e) => setStatement(e.target.value.slice(0, 20000))}
+        rows={5}
         placeholder="What happened?"
         aria-label="What happened?"
         className="rounded-md border border-input bg-background px-3 py-2 text-sm"

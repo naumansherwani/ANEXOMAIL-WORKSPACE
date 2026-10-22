@@ -670,10 +670,11 @@ authRouter.post("/signup-appeal", async (req, res) => {
   const statement = String(req.body?.statement || "").trim();
   if (!emailPattern.test(contact)) return res.status(400).json({ error: "Add an email where we can reach you." });
   if (statement.length < 20) return res.status(400).json({ error: "Tell us in at least 20 characters what happened." });
+  if (statement.length > 20000) return res.status(400).json({ error: "A review request can be up to 20,000 characters." });
   const deviceKey = await verifyDeviceKeyProof(req.body?.device_proof, email);
   const { data, error } = await getAdmin().rpc("identity_signup_appeal_open", {
     p_contact: contact,
-    p_statement: statement.slice(0, 2000),
+    p_statement: statement,
     p_email: email,
     p_recovery: recoveryEmail || null,
     p_device_key: deviceKey,

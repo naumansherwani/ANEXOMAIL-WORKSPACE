@@ -205,6 +205,8 @@ export type DeviceAppeal = {
   created_at: string;
   decision_reason: string | null;
   decided_at: string | null;
+  /** E72: appeal se judi saboot ki files ki ginti */
+  evidence?: number;
 };
 
 export function useDeviceAppealQueue(state?: DeviceAppeal["state"] | "all") {
@@ -225,10 +227,10 @@ export function useOpenDeviceAppeal() {
   return useMutation<
     { ok: boolean; appeal_id?: string; error?: string; message?: string },
     ApiError,
-    { device_hash: string; statement: string }
+    { device_hash: string; statement: string; evidence_ids?: string[] }
   >({
     mutationFn: (input) =>
-      chatCall("chat.device.appeal", input, {
+      chatCall("appeal.device.open", input, {
         path: "/api/chat/devices/appeal",
         method: "POST",
         body: input,

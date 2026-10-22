@@ -94,17 +94,6 @@ export function SiteFooter() {
       </div>
 
       <div className="border-t border-border">
-        <div className="ax-container py-8 text-xs leading-relaxed text-muted-foreground">
-          One person, one account. Sign-ups are checked against blocked accounts using one-way hashed
-          technical signals — a browser match alone is reviewed by a person, never blocked
-          automatically, and nothing is sent to third-party moderation.{" "}
-          <Link to="/privacy" className="transition-colors hover:text-foreground">
-            Privacy &amp; account integrity →
-          </Link>
-        </div>
-      </div>
-
-      <div className="border-t border-border">
         <div className="ax-container flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} ANEXOMAIL™. All rights reserved.</span>
           <span>anexomail.com</span>

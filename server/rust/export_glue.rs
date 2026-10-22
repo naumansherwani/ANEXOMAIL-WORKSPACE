@@ -54,10 +54,28 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         // blocked/warned user ka apna appeal (device hash user ko nahi chahiye: SQL us ke banned devices dhoondta hai)
         "account.integrity.appeal" => {
             let statement = input.get("statement").and_then(|x| x.as_str()).unwrap_or("").trim().to_string();
-            if statement.chars().count() < 20 || statement.chars().count() > 2000 {
-                return crate::err(StatusCode::BAD_REQUEST, "statement_required", "Write 20 to 2000 characters explaining why this block is wrong.").into_response();
+            // E72: 20 se 20,000 characters (bytes nahi, characters)
+            if statement.chars().count() < 20 || statement.chars().count() > 20_000 {
+                return crate::err(StatusCode::BAD_REQUEST, "statement_required", "Write 20 to 20,000 characters explaining why this block is wrong.").into_response();
             }
-            match crate::sb_rpc("account_integrity_appeal", json!({ "_user": user, "_statement": statement })).await {
+            // E72: saboot ki files (pehle /file/appeal-evidence se upload); sirf asli uuid, zyada se zyada 5
+            let mut ids: Vec<String> = Vec::new();
+            if let Some(a) = input.get("evidence_ids").and_then(|x| x.as_array()) {
+                for x in a {
+                    let t = x.as_str().unwrap_or("").trim().to_ascii_lowercase();
+                    let shape = t.len() == 36 && t.bytes().enumerate().all(|(i, c)| if matches!(i, 8 | 13 | 18 | 23) { c == b'-' } else { c.is_ascii_digit() || (b'a'..=b'f').contains(&c) });
+                    if !shape {
+                        return crate::err(StatusCode::BAD_REQUEST, "evidence_invalid", "One of the attached files could not be used.").into_response();
+                    }
+                    if !ids.contains(&t) {
+                        ids.push(t);
+                    }
+                }
+            }
+            if ids.len() > 5 {
+                return crate::err(StatusCode::BAD_REQUEST, "too_many_files", "Attach up to 5 files.").into_response();
+            }
+            match crate::sb_rpc("account_integrity_appeal_v2", json!({ "_user": user, "_statement": statement, "_evidence": ids })).await {
                 Ok(v) => crate::ok(v).into_response(),
                 Err(e) => crate::err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e).into_response(),
             }

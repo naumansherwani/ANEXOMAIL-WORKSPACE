@@ -55,9 +55,18 @@ export function useMyIntegrity(enabled = true) {
   });
 }
 
-export type AppealResult = { ok: boolean; appeal_id?: string; devices?: number; error?: string; message?: string };
+export type AppealResult = {
+  ok: boolean;
+  appeal_id?: string;
+  devices?: number;
+  error?: string;
+  message?: string;
+};
 
 /** Blocked user ka apna appeal (E46): device hash user ko nahi chahiye, server us ke banned devices dhoondta hai. */
-export async function sendAppeal(statement: string): Promise<AppealResult> {
-  return rpc<AppealResult>("account.integrity.appeal", { statement });
+export async function sendAppeal(
+  statement: string,
+  evidenceIds: string[] = [],
+): Promise<AppealResult> {
+  return rpc<AppealResult>("account.integrity.appeal", { statement, evidence_ids: evidenceIds });
 }

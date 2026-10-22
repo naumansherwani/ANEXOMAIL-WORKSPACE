@@ -10,6 +10,7 @@
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
+#   evidence -> server/rust/evidence_core.rs + evidence_glue.rs (attach_core.rs saath) (appeal ke saboot: screenshots/PDF/docs — tokio stream upload, clamd, allowlist; appeal 20,000 characters; `appeal.device.open`)  [pehle E72 SQL; attach ke saath]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
@@ -36,9 +37,9 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap people team locale device dnsauth security export attach b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap people team locale device dnsauth security export attach evidence b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
-extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; esac; }
+extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -100,6 +101,13 @@ CFG={
             # G37: blocked account guard — token ke foran baad, SAB module hooks se pehle
             "guard_marker": "export_glue::blocked(",
             "guard_code": '    // G37 — blocked/purged account: sirf export / halat / apna delete (export_glue::blocked)\n    if let Some(r) = export_glue::blocked(&proc, &token).await {\n        return r;\n    }\n\n'},
+ # evidence (E72): appeal ke saboot. POST /file/appeal-evidence (tokio stream, per-user ek upload, server par 8 tak), GET /file/appeal-evidence/get?id= (malik ya reviewer).
+ # `appeal.device.open` = device appeal (20..20,000 characters) + files EK transaction mein. Blocked user ko yeh procs allowed (export_core). SQL E72 PEHLE. attach_core.rs saath chahiye (need_mods).
+ "evidence": {"public": False, "label": "appeal-evidence", "procs": ['"appeal.evidence.limits"','"appeal.evidence.remove"','"appeal.evidence.list"','"appeal.device.open"'],
+            "need_mods": ["attach_core"],
+            "route_marker": "evidence_glue::upload",
+            "route_after": '.route("/file/download", get(file_download))',
+            "route_add": '.route("/file/appeal-evidence", post(evidence_glue::upload))\n        .route("/file/appeal-evidence/get", get(evidence_glue::download))'},
  # b5 (G40): founder pages ki Bun-only calls Rust par — move-in, release gate/lock/roadmap, revenue pipeline/lead, public status, offline outbox. Koi nayi SQL nahi.
  # Public procs ko request headers chahiye (revenue.lead ki IP rate-limit) — isliye public_call alag.
  "b5":     {"public": True,  "label": "founder-pages", "procs": ['"movein.capacity"','"revenue.lead"','"status.public"','"founder.release.run"'],
@@ -164,7 +172,8 @@ for m in mods:
             print("PATCH FAIL: live main.rs mein %s pehle se maujood hai — double-handling se bachne ke liye ruk gaya. Claude ko batayen."%pr); sys.exit(4)
     a=re.search(r'^const PORT: u16 = 3200;', s, re.M)
     if not a: print("PATCH FAIL: `const PORT: u16 = 3200;` anchor nahi mila"); sys.exit(4)
-    s=s[:a.start()]+"mod %s_core;\nmod %s;\n\n"%(m,g)+s[a.start():]
+    need="".join("mod %s;\n"%n for n in c.get("need_mods", []) if ("mod %s;"%n) not in s)
+    s=s[:a.start()]+need+"mod %s_core;\nmod %s;\n\n"%(m,g)+s[a.start():]
     d=re.search(r'^(?:pub )?async fn dispatch\(\s*Path\(proc\)', s, re.M)
     if not d: print("PATCH FAIL: `async fn dispatch(Path(proc)...` nahi mila"); sys.exit(4)
     if c["public"]:
@@ -343,6 +352,18 @@ for m in $MODS; do
         *'"unauthorized"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> attach: Rust ne proc, upload route aur download route teeno pakde (bina asli login ke 401 = theek). SQL E48 chala hona lazmi. Storage/scan ka haal: bash docs/cursor-work/server/attach-check.sh";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> attach: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> attach: jawab upar dekhein";;
+      esac;;
+    evidence)
+      r="$(probe appeal.evidence.limits '{"input":{}}')"
+      echo "   appeal.evidence.limits (nakli token): $r"
+      r2="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'authorization: Bearer not-a-real-token' --data-binary 'x' "$RPC/file/appeal-evidence" 2>/dev/null)"
+      echo "   POST /file/appeal-evidence (nakli token): $r2"
+      r3="$(curl -s -m 8 -w ' [HTTP %{http_code}]' "$RPC/file/appeal-evidence/get?id=00000000-0000-0000-0000-000000000000" 2>/dev/null)"
+      echo "   GET /file/appeal-evidence/get (bina token): $r3"
+      case "$r$r2$r3" in
+        *'"unauthorized"'*'"unauthorized"'*'"unauthorized"'*) echo "   -> evidence: Rust ne proc, upload route aur download route teeno pakde (bina asli login ke 401 = theek). SQL E72 chala hona lazmi.";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> evidence: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> evidence: jawab upar dekhein";;
       esac;;
     mig)
       r="$(probe migration.providers '{"input":{}}')"

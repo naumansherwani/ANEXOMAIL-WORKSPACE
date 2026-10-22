@@ -1,8 +1,11 @@
-import { Gavel, ShieldQuestion } from "lucide-react";
+import { Download, ShieldQuestion } from "lucide-react";
 import { useState } from "react";
 
+import { AppealForm } from "@/components/app/security/AppealForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { downloadEvidence, useAppealFiles } from "@/lib/appeal-evidence";
+import { fmtBytes } from "@/lib/mail-attachments-core";
 import { notify } from "@/lib/notify";
 import {
   useDecideDeviceAppeal,
@@ -18,29 +21,26 @@ import {
  */
 export function DeviceAppealPanel({ deviceHash }: { deviceHash?: string | null }) {
   const [hash, setHash] = useState(deviceHash ?? "");
-  const [statement, setStatement] = useState("");
   const open = useOpenDeviceAppeal();
   const queue = useDeviceAppealQueue("all");
   const decide = useDecideDeviceAppeal();
 
-  const submit = () => {
-    if (!hash.trim() || statement.trim().length < 20) {
-      notify.failed("Tell us more", {
-        description: "We need the device id and at least 20 characters explaining the block.",
+  const submit = async (statement: string, evidenceIds: string[]) => {
+    if (!hash.trim()) return { ok: false, message: "Enter the device id from your device list." };
+    try {
+      const r = await open.mutateAsync({
+        device_hash: hash.trim(),
+        statement,
+        evidence_ids: evidenceIds,
       });
-      return;
+      if (r.ok) {
+        notify.done("Appeal filed", "A human reviews it and the decision is written down.");
+        return { ok: true };
+      }
+      return { ok: false, message: r.message ?? r.error ?? "Try again." };
+    } catch (e) {
+      return { ok: false, message: e instanceof Error ? e.message : "Try again." };
     }
-    open.mutate(
-      { device_hash: hash.trim(), statement: statement.trim() },
-      {
-        onSuccess: (r) =>
-          r.ok
-            ? (setStatement(""),
-              notify.done("Appeal filed", "A human reviews it and the decision is written down."))
-            : notify.failed("Not filed", { description: r.message ?? r.error ?? "Try again." }),
-        onError: (e) => notify.failed("Not filed", { description: e.message }),
-      },
-    );
   };
 
   const act = (id: string, decision: "reviewing" | "granted" | "denied") => {
@@ -88,17 +88,7 @@ export function DeviceAppealPanel({ deviceHash }: { deviceHash?: string | null }
           placeholder="Device id from your device list"
           className="h-8 text-xs"
         />
-        <textarea
-          value={statement}
-          onChange={(e) => setStatement(e.target.value)}
-          rows={3}
-          placeholder="Why is this block wrong? (at least 20 characters)"
-          className="w-full rounded-xl border border-border bg-transparent p-ax-3 text-xs text-foreground outline-none focus:border-cyan-accent/60"
-        />
-        <Button size="sm" disabled={open.isPending} onClick={submit}>
-          <Gavel className="size-3.5" />
-          File appeal
-        </Button>
+        <AppealForm onSubmit={submit} pending={open.isPending} />
       </div>
 
       {isReviewer && (
@@ -113,7 +103,10 @@ export function DeviceAppealPanel({ deviceHash }: { deviceHash?: string | null }
                   <p className="ax-caption text-steel">
                     {a.device_hash} · {a.state} · {new Date(a.created_at).toLocaleString()}
                   </p>
-                  <p className="mt-1 text-[13px] text-foreground">{a.statement}</p>
+                  <p className="mt-1 max-h-64 overflow-y-auto whitespace-pre-wrap break-words text-[13px] text-foreground">
+                    {a.statement}
+                  </p>
+                  {(a.evidence ?? 0) > 0 && <EvidenceList appealId={a.id} />}
                   {a.decision_reason && (
                     <p className="ax-caption mt-1 text-muted-foreground">
                       Decision: {a.decision_reason}
@@ -141,5 +134,38 @@ export function DeviceAppealPanel({ deviceHash }: { deviceHash?: string | null }
         </div>
       )}
     </section>
+  );
+}
+
+/** Reviewer ke liye appeal ki judi files (har download server par likha jata hai). */
+function EvidenceList({ appealId }: { appealId: string }) {
+  const q = useAppealFiles(appealId);
+  const files = q.data?.files ?? [];
+  if (q.isLoading) return <p className="ax-caption mt-1 text-muted-foreground">Loading files…</p>;
+  if (files.length === 0) return null;
+  return (
+    <ul className="mt-1 space-y-1" data-testid="appeal-evidence">
+      {files.map((f) => (
+        <li key={f.id} className="flex items-center gap-2 text-xs">
+          <span className="min-w-0 flex-1 truncate text-foreground">{f.filename}</span>
+          <span className="text-muted-foreground">
+            {fmtBytes(f.size_bytes)}
+            {f.scanned ? " · scanned" : " · not scanned"}
+          </span>
+          <Button
+            size="sm"
+            variant="ghost"
+            aria-label={`Download ${f.filename}`}
+            onClick={() =>
+              downloadEvidence(f.id, f.filename).catch((e: Error) =>
+                notify.failed("Not downloaded", { description: e.message }),
+              )
+            }
+          >
+            <Download className="size-3.5" />
+          </Button>
+        </li>
+      ))}
+    </ul>
   );
 }

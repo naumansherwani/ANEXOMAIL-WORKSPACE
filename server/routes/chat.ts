@@ -1129,18 +1129,31 @@ chatRouter.get("/promises/history", async (req, res) => {
 });
 
 // Device ban appeal — ban sirf device par, network par kabhi nahi
+// E72: statement 20..20,000 characters; evidence_ids = pehle Rust /file/appeal-evidence se upload ki hui files (Rust band ho to bhi sirf-text appeal chalta hai)
 chatRouter.post("/devices/appeal", async (req, res) => {
   const me = await requireChat(req, res);
   if (!me) return;
   const hash = String(req.body?.device_hash || "");
-  const statement = String(req.body?.statement || "");
-  if (!hash || !statement.trim()) {
+  const statement = String(req.body?.statement || "").trim();
+  if (!hash || !statement) {
     return res.status(400).json({ error: "device_hash_statement_required" });
   }
-  const { data, error } = await db!.rpc("device_appeal_open", {
+  if (statement.length < 20) return res.json({ ok: false, error: "statement_required", message: "Tell us in at least 20 characters why this block is wrong." });
+  if (statement.length > 20000) return res.json({ ok: false, error: "statement_too_long", message: "An appeal can be up to 20,000 characters." });
+  const raw = Array.isArray(req.body?.evidence_ids) ? req.body.evidence_ids : [];
+  const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+  const ids: string[] = [];
+  for (const x of raw) {
+    const t = String(x || "").trim().toLowerCase();
+    if (!uuid.test(t)) return res.json({ ok: false, error: "evidence_invalid", message: "One of the attached files could not be used." });
+    if (!ids.includes(t)) ids.push(t);
+  }
+  if (ids.length > 5) return res.json({ ok: false, error: "too_many_files", message: "Attach up to 5 files." });
+  const { data, error } = await db!.rpc("device_appeal_open_v2", {
     _user: me.id,
     _device_hash: hash,
     _statement: statement,
+    _evidence: ids,
   });
   if (error) return fail(res, error);
   res.json(data);

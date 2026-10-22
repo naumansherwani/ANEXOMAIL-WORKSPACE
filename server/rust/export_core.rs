@@ -424,7 +424,18 @@ pub fn jwt_sub(token: &str) -> Option<String> {
 pub fn allowed_when_blocked(proc: &str) -> bool {
     matches!(
         proc,
-        "whoami" | "account.export.ticket" | "account.integrity.me" | "account.integrity.appeal" | "account.delete.state" | "account.delete.request" | "account.delete.cancel"
+        "whoami"
+            | "account.export.ticket"
+            | "account.integrity.me"
+            | "account.integrity.appeal"
+            | "account.delete.state"
+            | "account.delete.request"
+            | "account.delete.cancel"
+            // E72: blocked user apna appeal + saboot bhej sake (device id + statement + files)
+            | "appeal.device.open"
+            | "appeal.evidence.limits"
+            | "appeal.evidence.remove"
+            | "appeal.evidence.list"
     )
 }
 
@@ -751,6 +762,10 @@ mod tests {
         assert!(allowed_when_blocked("account.export.ticket"));
         assert!(allowed_when_blocked("account.integrity.me"));
         assert!(allowed_when_blocked("account.integrity.appeal"));
+        for p in ["appeal.device.open", "appeal.evidence.limits", "appeal.evidence.remove", "appeal.evidence.list"] {
+            assert!(allowed_when_blocked(p), "{p}");
+            assert!(!allowed_when_held(p), "held account ko appeal ka raasta nahi: {p}");
+        }
         assert!(!allowed_when_blocked("mail.send"));
         assert!(!allowed_when_blocked("chat.send"));
     }
