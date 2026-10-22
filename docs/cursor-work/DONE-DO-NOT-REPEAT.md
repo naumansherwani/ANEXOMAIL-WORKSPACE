@@ -346,3 +346,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 21:05: #10 History search GREEN (live Chrome: 'meeting' -> past meeting row + highlighted snippet + Title/Agenda chips; click -> /app/calendar?date=&event= opens that meeting). Server E64+Rust cal+Web installed (restarts ok, health 200).
 - 22 Oct 21:20 sql-run.sh AUTO mode (bina naam: nayi E-series ledger se) + naam-wali form; founder ke do forms AGENTS Rule 41 mein — dobara mat banao.
 - 22 Oct 21:30 Rule 44: SQL server par sql-run.sh se, editor nahi; SQL -> Rust -> Web (AGENTS.md top banner + founder-commands + NEXT-TASKS).
+- 22 Oct 21:45 sql-run.sh: har SQL-run ke baad E65 sweep khud dobara + CHECK_E65 (purani E37..E52 dobara chali to functions unpinned ho gaye thi). Server par pehle se chal chuki E37..E52 (purane runner se, sha badla tha) saaf nikli.

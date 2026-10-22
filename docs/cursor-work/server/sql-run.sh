@@ -34,6 +34,7 @@ if [ $# -eq 0 ]; then
   echo "AUTO: nayi SQL tarteeb se: $*"
   NEWSQL="$*"
 fi
+APPLIED=""
 T="$(mktemp)"; trap 'rm -f "$T"' EXIT
 rc=0
 for n in "$@"; do
@@ -58,10 +59,29 @@ for n in "$@"; do
       echo "$out" | grep -v '^NOTICE\|^psql:.*NOTICE' | tail -12
       if [ $prc -ne 0 ]; then echo "!! $n FAIL (exit $prc) — yahin ruk gaya, baqi nahi chali. Upar ka output Claude ko bhejein."; exit 1; fi
       printf '%s\t%s\t%s\n' "$n" "$sha" "$(date -u +%FT%TZ)" >>"$LEDGER"
+      APPLIED="$APPLIED $n"
       echo "   OK — ledger mein likh diya"
       ;;
   esac
 done
+# RULE 43 safety-net (founder 22 Oct 2026): jab bhi koi SQL is baar chali, E65 sweep (RLS ON, search_path pin, definer grants) dobara chalti hai — purani SQL
+# functions bina pin ke bana deti hain (22 Oct: E37..E52 dobara chali to CHECK_E65 functions par FAIL aaya). Ledger se nahi, hamesha; idempotent.
+if [ $rc -eq 0 ] && [ -n "$APPLIED" ]; then
+  case " $APPLIED " in *" E65_rls_and_advisor_sweep "*) ;; *)
+    if [ -n "$SRC_DIR" ]; then cat "$SRC_DIR/E65_rls_and_advisor_sweep.sql" >"$T" 2>/dev/null; else git -C "$REPO" show "origin/main:docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql" >"$T" 2>/dev/null; fi
+    if [ -s "$T" ]; then
+      echo "== E65 sweep (RLS + advisor) — is baar ki SQL ke baad dobara"
+      out="$(psql "$WORKING_URL" -X -v ON_ERROR_STOP=1 -q -f "$T" 2>&1)"; prc=$?
+      echo "$out" | grep -v '^NOTICE\|^psql:.*NOTICE' | tail -6
+      [ $prc -eq 0 ] || { echo "!! E65 sweep FAIL"; rc=1; }
+      if [ -n "$SRC_DIR" ]; then cat "$SRC_DIR/CHECK_E65.sql" >"$T"; else git -C "$REPO" show "origin/main:docs/cursor-work/sql/CHECK_E65.sql" >"$T"; fi
+      echo "== CHECK_E65 (sirf padhta hai)"
+      out="$(psql "$WORKING_URL" -X -v ON_ERROR_STOP=1 -At -F ' | ' -f "$T" 2>&1)"
+      echo "$out" | grep -v '^NOTICE' | sed 's/ | t$/ | OK/; s/ | f$/ | **FAIL**/'
+      echo "$out" | grep -q ' | f$' && { echo "!! CHECK_E65 mein FAIL row hai"; rc=1; }
+    fi ;;
+  esac
+fi
 if [ "$AUTO" = 1 ] && [ $rc -eq 0 ]; then
   for n in $NEWSQL; do
     num="${n%%_*}"
