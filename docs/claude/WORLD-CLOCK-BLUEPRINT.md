@@ -48,3 +48,9 @@ Asool: screen par jo number/lafz aaye woh asli naap ya user ka diya hua data ho.
 | F4b | **Market open/closed chip** (opt-in, default OFF) | shaaye-shuda exchange hours (weekday); holiday data nahi to "holiday check nahi" likhte | W5 |
 | F5 | **WASM** | Pehle naap: solar/terminator hisaab JS mein ~microseconds hai; WASM sirf tab jab benchmark JS ko haraye. Plan: globe worker mein JS pehle (OffscreenCanvas), WASM lazy `import()` sirf globe khulne par, size budget <= 30 KB gz, aur BENCH proof ke baghair nahi shaamil. | W3 (benchmark gate) |
 Sab packages/family ko ek jaisa (Rule 37/40); sirf bhari server-side cheez (agar kabhi) plan-surface capability se.
+
+## FOUNDER FAISLE 22 Oct 08:40 (Ultimate Combination Matrix) — meri kaarwai
+1. **Fatigue -> "Focus Ring Overlay"** (working-hours ginti ki jagah) — MANZOOR. Ring avatar ke gird (SVG/CSS conic-gradient, Three.js nahi: INP/bundle). Rang = us din ki *booked meetings ka bojh* (calendar metadata, sirf jinka free/busy hum dekh sakte hain), Fresh blue -> Amber. Koi activity/keystroke telemetry nahi. Note: Overlap Matrix (W1) ke green/amber/red ko user ki **khud likhi hui** working hours (E58 setting) chahiye — woh tracking nahi, user ka apna setting hai; woh rehti hai.
+2. **Travelling "Slipstream" opt-in** — MANZOOR, lekin **user-entered** (route + departure/arrival). "Device network change se location shift pakadna" NAHI (location inference = surveillance, hamari Privacy policy ke khilaf). Alerts quiet hote hain, mail kabhi nahi rukti.
+3. **Market Pulse chip** ("NYSE: Open" / "LSE: Closed") — MANZOOR (opt-in, default OFF). Ek deterministic Rust function (exchange ka IANA zone + hours + weekday); "NTP ticker" ki zaroorat nahi, server time endpoint kaafi. "p95 < 60 ms" ka daawa nahi likhte jab tak naapa na ho. Holiday data na ho to chip "holiday check nahi" likhe.
+Shehar naam: Zurich/Lahore. Lahore IANA zone nahi (Asia/Karachi ka waqt); label-alias baad mein (W5 l10n).

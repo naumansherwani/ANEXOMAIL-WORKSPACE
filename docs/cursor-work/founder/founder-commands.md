@@ -645,3 +645,4 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - Outlook proof: mail.log 02:53 UTC (07:53 PKT) `to=<naumankhansherwani@outlook.com> relay=outlook-com.olc.protection.outlook.com status=sent (250 2.6.0 Queued mail for delivery)` — Outlook ne qubool ki; inbox mein nahi dikha = Outlook ki taraf filtering, hamara masla nahi.
 - Founder ne World Clock ke 3 faisle mujh par chhode: fatigue sach-ghantay, travelling opt-in, market chip default OFF.
 - 22 Oct 08:25 founder: World Clock ke sab features banenge 'awam ko sach ke saath' — plan WORLD-CLOCK-BLUEPRINT.md (F1–F5). Pehle E61 SQL (pin save fix) chale.
+- 22 Oct 08:40 E61 server OK 9/9; live: Zurich pin save + reload OK. Founder ne Focus Ring, Slipstream(opt-in), Market chip faisle diye; mera note: location inference nahi, user-entered.

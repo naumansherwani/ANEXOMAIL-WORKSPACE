@@ -21,3 +21,5 @@ Rule: "GREEN" = founder ka server output + live check. Is file ko har calendar s
 
 ## World Clock blueprint (founder 22 Oct 08:05)
 Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a=W0 (code ready), #4b team overlay = W1.
+
+- 22 Oct 08:40: #4a world-clock pins GREEN (desktop 1440 live: Zurich pin, reload par bacha). E61 SQL chala. 390/820 screenshot browser se nahi le saka (window resize viewport nahi badalti) — touch-up baqi. Aglu: W1 = #4b team overlay.
