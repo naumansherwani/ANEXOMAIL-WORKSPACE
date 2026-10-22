@@ -705,3 +705,11 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 04:40 — E76 SQL screenshot se VERIFIED (production). NEXT-TASKS.md ke upar naya RESUME HERE (04:40) block: green list, standing hukm, agli locked tarteeb (W3->W4->W5->W2 check->#6->#7->#8->Founder account->identity tests->M->G16->T).
 
 - 23 Oct 04:43 — KHITAB: founder ko sirf 'Nauman bhai' bolo (poora naam nahi). Roman Urdu 'aap'.
+
+## 23 Oct 2026 04:50 — SESSION KHULASA (compaction se pehle, Nauman bhai ka hukm)
+- Khitab: sirf "Nauman bhai", Roman Urdu "aap". SQL SIRF server par (sql-run.sh, Rule 44); editor mein sirf CHECK_*. Commands per-technology, har push ke saath (Rule 41/46); sirf repo ki tested commands (Rule 48).
+- GREEN aaj: #5 event files; adaptive greeting (Settings zone pehle); Home city (E75 + UI fix, live Chrome); E76 v2 account class wall (CHECK_E76 production screenshot true); Rule 49 (test vs asli kabhi mix nahi, mock data nahi) + audit; calendar 10/13 (#6 CalDAV, #7 Google [aap ki verification], #8 Rooms baaqi); World clock 2/6.
+- Meri ghaltiyan aaj (dohrani nahi): git merge ff-only /opt (Rule 48); Home city SQL step "nahi" likha (E75 chahiye thi); E28 editor mein paste (psql file); calendar ginti 9/11 (sahi 10/13); card UI overlap (SettingsScope `after`).
+- Calendar status server se: calendar-status.sh (founder-commands.md). Expected 10/13 DEPLOYED.
+- AGLA (locked): W3 globe -> W4 -> W5 -> W2 Focus Ring check -> #6 -> #7 -> #8 -> Founder account -> identity tests (aap) -> M-series -> G16 -> T-series.
+- Baaqi optional: registered *.test account se live passkey chhoot; Rust+Brain E76 ka output; phone 390/820; guest-view event files; E55 (30 Oct se pehle); Caddy cert (12 Nov se pehle).

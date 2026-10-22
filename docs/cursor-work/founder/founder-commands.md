@@ -779,3 +779,7 @@ Live check: Settings > Personal > Home city > "Detect my city" (browser ijazat p
 
 ## 23 Oct — Naya test account banana (editor mein seedha) — jab zaroorat ho
 Supabase SQL editor mein `docs/cursor-work/sql/tools/create_test_account.sql` kholo, sirf aakhri `select` ki 6 values badlo, Run. (E28/E36 editor mein NAHI — woh psql scripts hain, server script se chalti hain.) Pehle E76 chali ho.
+
+## 23 Oct — Calendar kitna green? (server se, sirf padhta hai, kuch badalta nahi)
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/calendar-status.sh)`
+Output: 13 hisse (#4a/#4b/#4c alag) — DEPLOYED ya NAHI, "DEPLOYED x/13", Rust health, web commit. Expected abhi: 10/13 (baaqi #6 #7 #8). Server sirf deploy dikha sakta hai; live UI green Chrome se (CALENDAR-ROADMAP.md).
