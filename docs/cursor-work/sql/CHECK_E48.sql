@@ -1,3 +1,4 @@
+
 -- CHECK E48 (attachments bhejna) — sirf padhta hai, kuch badalta nahi. Supabase SQL editor mein paste, Run. Har row ka ok = true hona chahiye.
 select item, ok from (
   select 'E48 mail_attach_limits (1 row: ceiling 7000000)' as item,

@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E18 — signup_device_gate: auto-block hata do (Phase 24A ladder ki violation thi)
 -- Supabase #4 SQL Editor mein poori file paste → Run. Idempotent.

@@ -1,3 +1,4 @@
+
 -- CHECK E50 (aane wali mail ke attachments) — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E50 mail_attach_org_limit' as item, to_regprocedure('public.mail_attach_org_limit(uuid)') is not null as ok, 1 as o

@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E31 — Calendar v2 (18 Oct 2026, shuru se dobara likhi): asli invitations, RSVP, invitation ledger, ek-query busy lookup.
 --

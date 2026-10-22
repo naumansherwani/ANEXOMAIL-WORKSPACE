@@ -1,3 +1,4 @@
+
 -- CHECK E58 — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E58 calendar_events.calendar_key + remind_min' as item,

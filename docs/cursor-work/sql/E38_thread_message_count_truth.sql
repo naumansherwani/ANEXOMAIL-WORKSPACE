@@ -1,3 +1,4 @@
+
 -- E38 — thread ki "kitni mails" ginti hamesha sach — 20 Oct 2026 (Basic live login: ek mail wale thread par "2" likha tha)
 --
 -- Kyun: live database mein naya mail_threads row khud message_count = 1 se shuru hota hai, phir `mail_ingest` +1 karta hai => 2.

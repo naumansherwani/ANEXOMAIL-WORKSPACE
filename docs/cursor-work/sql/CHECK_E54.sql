@@ -1,3 +1,4 @@
+
 -- CHECK E54 — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E54 claimed_at column' as item,

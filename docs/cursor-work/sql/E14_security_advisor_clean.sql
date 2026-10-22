@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E14 — SECURITY ADVISOR CLEAN (errors + warnings)
 -- Supabase #4 SQL Editor: poori file paste → Run. Idempotent (jitni dafa chalao,

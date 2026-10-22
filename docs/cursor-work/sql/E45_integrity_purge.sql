@@ -1,3 +1,4 @@
+
 -- E45 — blocked account: 72 ghante export ke baad ASLI delete — Blueprint G36 — 20 Oct 2026
 --
 -- Sach jo audit mein mila: `account_integrity_purge_due()` sirf chat data mitati thi (mail/auth/baqi sab reh jata) aur use koi

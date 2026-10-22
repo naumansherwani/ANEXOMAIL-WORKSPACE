@@ -1,3 +1,4 @@
+
 -- E27 — Business Pro mailboxes = unlimited (blueprint #15, 14 Oct 2026)
 --
 -- Live truth (14 Oct, founder ke server ka psql output):

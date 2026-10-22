@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E59 — BOOKING PAGE (B7c): har user ka public `/book/<handle>` link (22 Oct 2026). E31 + E56 + E57 + E58 ke baad chalti hai.
 -- Dobara chalana safe (idempotent). Koi DROP TABLE/COLUMN nahi. Fail ho to USI file ko theek karo (naya naam banned).

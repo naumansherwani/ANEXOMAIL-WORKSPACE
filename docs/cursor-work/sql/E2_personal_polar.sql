@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E2 — personal Polar map (Personal users only)
 -- Supabase #4 SQL Editor — poori file paste → Run. Idempotent.
@@ -17,6 +18,10 @@ create table if not exists public.personal_polar_map (
   polar_price_gbp numeric not null,
   note text
 );
+
+-- Rule 43 (22 Oct 2026): RLS ON, anon/authenticated ko koi haq nahi (backend service_role hai).
+alter table public.personal_polar_map enable row level security;
+revoke all on public.personal_polar_map from anon, authenticated;
 
 insert into public.personal_polar_map (polar_sku, personal_name, power_plan, polar_price_gbp, note)
 values

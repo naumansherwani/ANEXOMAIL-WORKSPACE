@@ -1,3 +1,4 @@
+
 -- CHECK E56 — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E56 5 naye columns' as item,

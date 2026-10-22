@@ -1,3 +1,4 @@
+
 -- E52: calendar_attendees.response — live table par purana CHECK (calendar_attendees_response_check) tha jo
 -- 'accepted'/'needs_action' ko rokta tha => /rpc/calendar.create 500 ("Calendar failed"). Live saboot 21 Oct 2026
 -- (CHECK_CAL_CREATE: 23514 calendar_attendees_response_check). Ab: ek saaf constraint, 4 sach ke maane + purane naam migrate.

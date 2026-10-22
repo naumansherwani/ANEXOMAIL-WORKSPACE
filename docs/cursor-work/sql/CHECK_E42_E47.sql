@@ -1,3 +1,4 @@
+
 -- CHECK E42–E47 — sirf padhta hai (kuch badalta nahi). Supabase SQL editor mein paste, Run. Har row ka ok = true hona chahiye.
 -- (E41 temp function hai, uska asar alag dekha jata hai: neeche aakhri query.)
 select item, ok from (

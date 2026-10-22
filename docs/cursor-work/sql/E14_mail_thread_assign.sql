@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- Step 5 — mail_thread_assign
 -- Recorded 25 Sep 2026. Already applied on Supabase (CREATE FUNCTION, REVOKE, GRANT).

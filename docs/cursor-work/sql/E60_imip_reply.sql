@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E60 — iMIP REPLY (G26): guest apne calendar app (Gmail / Outlook / Apple) mein Yes/Maybe/No dabaye to jawab hamare calendar
 -- mein khud lag jaye (22 Oct 2026). E31 + E56 ke baad chalti hai. Dobara chalana safe (idempotent). Koi DROP nahi.

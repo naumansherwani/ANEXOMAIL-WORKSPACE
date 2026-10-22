@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E30 — Dashboard ka sach (15 Oct 2026)
 -- Ek jagah (Postgres) se dashboard ke numbers; Rust :3200 PRIMARY aur Bun

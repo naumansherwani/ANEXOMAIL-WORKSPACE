@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E22 — package badalna = naye plan ka POORA price, purana plan band.
 -- Supabase #4 SQL Editor mein poori file paste -> Run. Idempotent.

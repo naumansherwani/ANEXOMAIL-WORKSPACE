@@ -1,3 +1,4 @@
+
 -- E28 — asli BUYER test account (sirf payment skip) — blueprint #20, 14 Oct 2026
 --
 -- Maqsad: signup -> claim -> organisation+domain -> plan, bilkul asli business

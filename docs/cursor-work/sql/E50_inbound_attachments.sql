@@ -1,3 +1,4 @@
+
 -- E50 — G38b: AANE WALI mail ke attachments ke bytes bhi Storage Box par (E48 ke org-dedup blobs mein) — 20 Oct 2026
 --
 -- Pehle: aane wali mail ke attachments ka sirf naam/size (metadata) DB mein jata tha, bytes kahin nahi (thread mein chip khulta nahi tha).

@@ -1,3 +1,4 @@
+
 -- E42 — device hash: SHA-256+pepper  ->  HMAC-SHA256 (key-separated)  — Blueprint G34 — 20 Oct 2026
 --
 -- Kyun: device record ka hash pehle `sha256(canon || '|' || pepper)` tha. Pepper wahi key thi jo sealed_signals ki encryption mein bhi

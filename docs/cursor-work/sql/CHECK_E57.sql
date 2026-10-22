@@ -1,3 +1,4 @@
+
 -- CHECK E57 — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E57 awam_ui_pref table' as item, to_regclass('public.awam_ui_pref') is not null as ok, 1 as o

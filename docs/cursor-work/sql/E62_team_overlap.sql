@@ -1,3 +1,4 @@
+
 -- E62 — Overlap Matrix (calendar #4b / W1): team ke working-hours + out-of-office + guest ka timezone, EK function mein (22 Oct 2026).
 -- E57 + E58 + E61 ke baad. Dobara chalana safe. Koi DROP TABLE/COLUMN nahi, koi data nahi badalta (sirf function + index).
 -- Advance level (Rule 38):

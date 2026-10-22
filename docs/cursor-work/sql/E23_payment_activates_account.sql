@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E23 — payment ke baad account KHUD active ho (#20 ka wiring).
 -- Supabase #4 SQL Editor mein poori file paste -> Run. Idempotent.

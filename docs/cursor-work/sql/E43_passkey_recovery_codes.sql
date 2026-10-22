@@ -1,3 +1,4 @@
+
 -- E43 — passkey lazmi (password + passkey dono) ka database hissa: recovery codes + passkey status — Blueprint G35 — 20 Oct 2026
 --
 -- Founder ka faisla (20 Oct 2026): password aur passkey DONO rakhne hain; passkey lazmi hai; 2 passkey (phone + laptop) + recovery codes.

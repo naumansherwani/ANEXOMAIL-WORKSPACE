@@ -1,3 +1,4 @@
+
 -- CHECK E52 — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E52 trigger maujood' as item, exists (select 1 from pg_trigger where tgname = 'org_alias_fair_use_trg' and not tgisinternal) as ok, 1 as o

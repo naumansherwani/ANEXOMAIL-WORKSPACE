@@ -1,3 +1,4 @@
+
 -- CHECK E62 — sirf padhta hai (koi write nahi). Har row ok = true. (Asli member/guest/OOO behaviour ka saboot: proofs/E62_proof.sql, test DB par.)
 select item, ok from (
   select 'E62 functions maujood' as item,

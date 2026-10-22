@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E19 — password reset: atomic token consume + rate limit + cleanup
 -- Supabase #4 SQL Editor mein poori file paste → Run. Idempotent.

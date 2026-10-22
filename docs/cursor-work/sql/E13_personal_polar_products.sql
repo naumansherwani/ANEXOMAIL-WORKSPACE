@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E13 — separate Personal Polar products + payment guard
 -- Supabase #4 SQL Editor — Personal Polar IDs banne ke BAAD placeholders replace

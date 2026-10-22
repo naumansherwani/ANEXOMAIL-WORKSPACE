@@ -1,3 +1,4 @@
+
 -- E48 — G38: bheji jane wali mail mein ASLI attachments (upload -> org-ke-andar SHA-256 dedup -> quota -> send -> Sent mein download) — 20 Oct 2026
 --
 -- Sach jo audit mein mila: Compose ka Attach button file chhor deta tha, server par attachment ka koi raasta nahi tha (blueprint 8p).

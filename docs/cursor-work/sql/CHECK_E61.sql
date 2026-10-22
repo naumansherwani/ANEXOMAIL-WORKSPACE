@@ -1,3 +1,4 @@
+
 -- CHECK E61 — sirf padhta hai (koi write nahi). Har row ok = true.
 select item, ok from (
   select 'E61 clocks key maanti hai (1 zone)' as item, public.awam_ui_extra_ok('{"clocks":["Europe/London"]}'::jsonb) as ok, 1 as o

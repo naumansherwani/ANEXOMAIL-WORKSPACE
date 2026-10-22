@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E5 — Billing subscription + invoices API
 -- Supabase #4 → SQL Editor → poori file paste → Run. Idempotent.

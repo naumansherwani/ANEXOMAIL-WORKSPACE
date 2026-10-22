@@ -1,3 +1,4 @@
+
 -- E57 — calendar ki display pasand ACCOUNT mein save: clock 12h/24h/auto + layout classic/expanded (22 Oct 2026)
 -- Pehle sirf us device ke localStorage mein thi; ab user kisi bhi device par login kare to wahi pasand milti hai.
 --   * ek row per user (primary key), sirf service_role (Rust /rpc/locale.uipref*) — anon/authenticated ko kuch nahi

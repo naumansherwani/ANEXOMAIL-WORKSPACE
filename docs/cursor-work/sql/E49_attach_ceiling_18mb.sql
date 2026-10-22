@@ -1,3 +1,4 @@
+
 -- E49 — ek mail mein attachments ki hadd 7 MB se 18 MB (raw) tak — G38 — 20 Oct 2026 (founder "haan" 21:38 PKT)
 -- Hisaab: 18_874_368 raw -> base64 ~25.2 MB (Gmail ki 25 MB jaisi hadd). Server ka Postfix `message_size_limit` = 52_428_800 (attach-check.sh ne
 -- 20 Oct 21:38 par dikhaya) => mehfooz raw hadd 39_171_600 — yeh qeemat uske andar hai, Postfix ko haath nahi lagta.

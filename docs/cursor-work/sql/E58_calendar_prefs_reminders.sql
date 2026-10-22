@@ -1,3 +1,4 @@
+
 -- E58 — calendar: alag calendars + rang, working hours, out-of-office (account pasand `awam_ui_pref.extra`) aur
 --        har meeting par calendar_key + reminders (22 Oct 2026). E57 ke baad chalti hai. Dobara chalana safe. Koi DROP TABLE/COLUMN nahi.
 -- Advance level (Rule 38):

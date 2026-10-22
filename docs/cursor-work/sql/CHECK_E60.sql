@@ -1,3 +1,4 @@
+
 -- CHECK E60 — sirf padhta hai (koi write nahi). Har row ok = true.
 select item, ok from (
   select 'E60 attendee columns rsvp_via + rsvp_sequence' as item,

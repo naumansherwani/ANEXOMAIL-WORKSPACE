@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E32 — Tenant lock (18 Oct 2026): ek customer doosre customer ka data public database API se na padh sake, na likh sake.
 --

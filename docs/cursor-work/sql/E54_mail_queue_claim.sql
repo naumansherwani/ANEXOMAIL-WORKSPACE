@@ -1,3 +1,4 @@
+
 -- E54 — mail bhejne ki queue: ek row ek hi worker uthaye (B3, 21 Oct 2026)
 -- Pehle Bun `mail-worker.ts` sirf `select ... status='queued'` karta tha: do worker (Bun + Rust) ek saath chalein to ek mail DO baar jati.
 -- Ab dono `mail_queue_claim` se uthate hain (FOR UPDATE SKIP LOCKED + claimed_at): ek row ek waqt mein ek worker ke paas; worker mar jaye to

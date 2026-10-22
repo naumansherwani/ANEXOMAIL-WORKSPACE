@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E24 — account delete system (founder request, 14 Oct 2026).
 -- Supabase #4 SQL Editor mein poori file paste -> Run. Idempotent.

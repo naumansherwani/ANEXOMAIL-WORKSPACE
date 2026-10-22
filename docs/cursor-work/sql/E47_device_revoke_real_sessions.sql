@@ -1,3 +1,4 @@
+
 -- E47 — device REVOKE se asli login session khatam + device record ki deletion ka asli job — Blueprint G37 / PROMISES #5, #6 — 20 Oct 2026
 --
 -- Loophole jo audit mein mila: `device_trust_set(... 'revoked')` sirf `security_sessions` (app ki apni list) ki rows mitata tha. Asli login

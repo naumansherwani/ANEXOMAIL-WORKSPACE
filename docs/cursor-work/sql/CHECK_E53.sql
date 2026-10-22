@@ -1,3 +1,4 @@
+
 -- CHECK E53 — sirf padhta hai. Har row ok = true.
 select item, ok from (
   select 'E53 auth_session_alive maujood' as item, to_regprocedure('public.auth_session_alive(uuid)') is not null as ok, 1 as o

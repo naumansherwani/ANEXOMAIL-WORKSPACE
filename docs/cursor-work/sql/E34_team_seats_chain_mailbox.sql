@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E34 — Team ke teen baqi hisse (19 Oct 2026, founder "haan"): seat limit, tamper-evident audit chain, join par mailbox.
 -- E33 ke BAAD chalti hai (E33 ke functions ko `create or replace` se badalti hai; koi drop/rename nahi, purane tables ko haath nahi).

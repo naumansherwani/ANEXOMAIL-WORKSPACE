@@ -1,3 +1,4 @@
+
 -- E61 — world clocks: awam_ui_pref.extra mein 4th key `clocks` (<= 6 IANA zone naam, duplicate nahi). 22 Oct 2026. E58 ke baad. Dobara chalana safe. Koi DROP nahi.
 -- Wajah: E58 ka DB validator sirf 3 keys maanta tha, isliye Rust ne `clocks` maan kar bhi DB ne reject kiya (live: "Could not save preference").
 -- Qaida Rust locale_core::clocks_ok ka mirror hai (DB kabhi Rust se sakht nahi): array <= 6, har naam ^[A-Za-z][A-Za-z0-9_/+-]{0,63}$, '..' nahi, duplicate nahi.

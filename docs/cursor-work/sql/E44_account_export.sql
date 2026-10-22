@@ -1,3 +1,4 @@
+
 -- E44 — ASLI data export ("export anytime" / blocked account ke 72 ghante) — Blueprint G36 — 20 Oct 2026
 --
 -- Sach jo audit mein mila: `integration_exports` sirf queue thi, koi worker nahi — export kabhi bana hi nahi.

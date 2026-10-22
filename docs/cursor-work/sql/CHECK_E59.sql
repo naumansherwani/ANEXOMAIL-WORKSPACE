@@ -1,3 +1,4 @@
+
 -- CHECK E59 — sirf padhta hai (koi write nahi). Har row ok = true.
 select item, ok from (
   select 'E59 tables booking_pages + bookings' as item,

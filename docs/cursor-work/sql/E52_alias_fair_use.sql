@@ -1,3 +1,4 @@
+
 -- E52 — alias FAIR-USE cap (chhupa hua, card par nahi likha): har plan par 25 active alias.
 -- Wajah: card 'free aliases' kehta hai (asli product unlimited tha); abuse (spam/catch-all farm) se bachao.
 -- Surgical: org_address_create ko haath nahi; sirf org_addresses par BEFORE INSERT trigger.

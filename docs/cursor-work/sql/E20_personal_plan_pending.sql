@@ -1,3 +1,4 @@
+
 -- =============================================================================
 -- E20 — real signup != trial. "Personal Basic" jhoota label hata do.
 -- Supabase #4 SQL Editor mein poori file paste → Run. Idempotent.
@@ -94,13 +95,22 @@ alter table public.trial_accounts add constraint trial_accounts_pending_plan_no_
 
 -- ── 1c) funnel audit — naya trial_events value + idempotency index widen
 -- (same technique jo E17 ne 'workspace_provisioned' ke liye use ki thi).
-alter table public.trial_events drop constraint if exists trial_events_event_type_check;
-alter table public.trial_events add constraint trial_events_event_type_check
-  check (event_type = any (array[
-    'signup','claim','passkey_set','recovery_set','warn_24h','warn_2h',
-    'expired','subscribed','frozen','released','mail_hold','recovery_used',
-    'workspace_provisioned','pending_plan_entered'
-  ]::text[]));
+-- 22 Oct 2026: constraint kabhi chhota nahi hota (E17 jaisa guard; maujooda rows shamil) — dobara chalana safe.
+do $$
+declare
+  have text; vals text[];
+begin
+  select pg_get_constraintdef(c.oid) into have from pg_constraint c
+   where c.conrelid = 'public.trial_events'::regclass and c.conname = 'trial_events_event_type_check';
+  if have is null or have not like '%pending_plan_entered%' then
+    select array_agg(distinct v order by v) into vals from (
+      select unnest(array['signup','claim','passkey_set','recovery_set','warn_24h','warn_2h','expired','subscribed','frozen','released','mail_hold','recovery_used',
+                          'workspace_provisioned','pending_plan_entered']::text[]) as v
+      union select event_type from public.trial_events) u;
+    execute 'alter table public.trial_events drop constraint if exists trial_events_event_type_check';
+    execute format('alter table public.trial_events add constraint trial_events_event_type_check check (event_type = any (%L::text[]))', vals);
+  end if;
+end $$;
 
 drop index if exists trial_events_once_idx;
 create unique index trial_events_once_idx

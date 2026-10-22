@@ -1,3 +1,4 @@
+
 -- E46 — warn/block par EMAIL + 24 ghante pehle yaad-dihani + purge ka notice + in-app APPEAL — Blueprint G36/G37 — 20 Oct 2026
 --
 -- Loophole jo audit mein mila: warn/block ki khabar user ko sirf screen par milti thi (email nahi), aur appeal ke liye user se "device hash" maanga
