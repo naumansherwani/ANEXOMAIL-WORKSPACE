@@ -37,3 +37,4 @@ Calendar #0–#4b, #9; World clock W0/W1; landing/plans calendar copy; E58–E63
 - 22 Oct 21:15: server SQL+Rust+Web sab green, Chrome smoke OK. AGLA: #2 W2 Focus Ring.
 - 22 Oct 21:55: FOUNDER HUKM (Rule 45): sign-in Rust par migrate (Phase A–D), Bun hamesha fallback, vault qaide. Plan `docs/cursor-work/AUTH-MIGRATION-PLAN.md`. Order: pehle #2 W2 Focus Ring, phir AUTH Phase A (founder ka 'haan' D se pehle). Privacy audit ke gaps plan mein.
 - 22 Oct 21:25: E66+E67 (identity/passkey vault) SQL READY. Server: bare sql-run.sh. Agla: #2 W2 Focus Ring, phir Auth Phase A (Rust vault_core + device-key).
+- 22 Oct 21:45: identity vault ADMIN complete (E68 + Bun + Web + Rust procs). Server: SQL(bare) -> Rust(MODULES=all/main) -> Web. Phir wapas #2 W2 Focus Ring.

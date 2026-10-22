@@ -15,6 +15,7 @@ import {
 } from "@/lib/account-integrity";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
+import { IdentityVaultPanel } from "./IdentityVaultPanel";
 
 /**
  * ACCOUNT INTEGRITY — one person, one account.
@@ -199,6 +200,8 @@ export function AccountIntegrityPanel() {
           )}
         </div>
       ) : null}
+
+      {queue.data?.allowed && <IdentityVaultPanel />}
 
       {queue.data?.allowed && (
         <div className="space-y-ax-3">

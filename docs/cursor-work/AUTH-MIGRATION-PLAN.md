@@ -73,6 +73,7 @@ Naya browser profile / storage saaf karne wala `device_key` badal sakta hai — 
 |---|---|
 | E66 identity vault SQL (27/27 proof, CHECK 8) | READY — server par `sql-run.sh` (bare) |
 | E67 passkey vault SQL (17/17 proof, CHECK 6) + authenticated select band | READY |
+| E68 vault admin hook (Block/Release/Appeal -> ban/lift), signup appeals, overview, Bun enforcement, Web device-key | READY (Rust sign-in move = Phase A) |
 | Rust: HMAC/AES-GCM/normalisation (`vault_core.rs`) + `auth` glue + device-key challenge | TODO — Phase A/C (W2 ke baad) |
 | Web: `device-key.ts` (WebCrypto non-extractable) + signup/login wiring | TODO — Phase A |
 | Polar `payment` nishani | TODO — Polar webhook se (alag, payment no-touch) |

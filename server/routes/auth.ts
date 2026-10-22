@@ -5,6 +5,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { sendMail } from "../mail/sendmail";
 import { mountPasskeyRoutes } from "./auth-passkey";
 import { forgetAuthToken, hardenSupabaseAuth, isTransientAuthError } from "../lib/auth-harden";
+import { readDecision, shapeFromSignals, verifyDeviceKeyProof } from "../lib/identity-vault";
 
 hardenSupabaseAuth();
 
@@ -538,6 +539,34 @@ authRouter.post("/signup", async (req, res) => {
     }
   }
 
+  // E66/E68 identity vault: ek insaan, ek account. Blacklisted nishan => naya account nahi. Vault down ho to fail-open.
+  let vaultArgs: Record<string, string | null> | null = null;
+  if (!family) {
+    const deviceKey = await verifyDeviceKeyProof(req.body?.device_proof, email);
+    vaultArgs = {
+      p_email: email,
+      p_recovery: recoveryEmail,
+      p_device_key: deviceKey,
+      p_shape: shapeFromSignals(req.body?.signals),
+      p_network: clientIp(req),
+      p_key: vaultKey(),
+    };
+    try {
+      const { data: chk, error: chkErr } = await getAdmin().rpc("identity_signup_check_raw", vaultArgs);
+      if (chkErr) throw chkErr;
+      const verdict = readDecision(chk);
+      if (verdict.decision === "deny") {
+        return res.status(403).json({
+          error: "This identity cannot create a new account. If you think this is a mistake you can ask for a review.",
+          code: "identity_blocked",
+          appealable: verdict.appealable !== false,
+        });
+      }
+    } catch (err) {
+      console.error("[auth.signup.identity]", err);
+    }
+  }
+
   const { data, error } = await getPublicAuth().auth.signUp({
     email,
     password,
@@ -590,6 +619,13 @@ authRouter.post("/signup", async (req, res) => {
     } catch (err) {
       console.error("[auth.signup.vault]", err);
     }
+    if (vaultArgs) {
+      try {
+        await getAdmin().rpc("identity_register_raw", { p_account: data.user.id, ...vaultArgs });
+      } catch (err) {
+        console.error("[auth.signup.identity.register]", err);
+      }
+    }
   }
   if (!data.session?.access_token) return res.status(202).json({ confirmation_required: true });
   await saveSession(data.user.id, data.session.access_token, req);
@@ -600,6 +636,38 @@ authRouter.post("/signup", async (req, res) => {
     needs_passkey: !family,
     needs_recovery: !family,
   });
+});
+
+// Logged-out appeal after a refused signup (E68). Founder decides from the admin; no hashes are ever returned.
+authRouter.post("/signup-appeal", async (req, res) => {
+  if (unavailable(res)) return;
+  const email = anexomailIdentity(req.body?.email);
+  const recoveryEmail = String(req.body?.recovery_email || "").trim().toLowerCase();
+  const contact = String(req.body?.contact || recoveryEmail || "").trim().toLowerCase();
+  const statement = String(req.body?.statement || "").trim();
+  if (!emailPattern.test(contact)) return res.status(400).json({ error: "Add an email where we can reach you." });
+  if (statement.length < 20) return res.status(400).json({ error: "Tell us in at least 20 characters what happened." });
+  const deviceKey = await verifyDeviceKeyProof(req.body?.device_proof, email);
+  const { data, error } = await getAdmin().rpc("identity_signup_appeal_open", {
+    p_contact: contact,
+    p_statement: statement.slice(0, 2000),
+    p_email: email,
+    p_recovery: recoveryEmail || null,
+    p_device_key: deviceKey,
+    p_shape: shapeFromSignals(req.body?.signals),
+    p_network: clientIp(req),
+    p_key: vaultKey(),
+  });
+  if (error) return res.status(500).json({ error: "appeal_unavailable" });
+  if (!data?.ok) {
+    const msg: Record<string, string> = {
+      appeal_already_open: "Your review request is already with us.",
+      not_appealable: "This decision cannot be reviewed.",
+      nothing_to_appeal: "Nothing blocks this identity, so there is nothing to review. Try signing up again.",
+    };
+    return res.status(409).json({ error: msg[data?.error] || "We could not open the request.", code: data?.error });
+  }
+  res.status(201).json({ ok: true });
 });
 
 authRouter.post("/login", async (req, res) => {

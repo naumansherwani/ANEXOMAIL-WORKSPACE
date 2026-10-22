@@ -1332,6 +1332,33 @@ for (const [path, fn] of [
   });
 }
 
+chatRouter.get("/integrity/identity", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const { data, error } = await db!.rpc("identity_admin_overview", { p_actor: me.id });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/integrity/identity/decide", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const appeal = String(req.body?.appeal_id || "");
+  const decision = String(req.body?.decision || "");
+  const reason = String(req.body?.reason || "");
+  if (!appeal || reason.trim().length < 12 || !["granted", "denied"].includes(decision)) {
+    return res.status(400).json({ error: "appeal_decision_and_12_char_reason_required" });
+  }
+  const { data, error } = await db!.rpc("identity_signup_appeal_decide", {
+    p_actor: me.id,
+    p_appeal: appeal,
+    p_decision: decision,
+    p_reason: reason,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
 chatRouter.post("/integrity/export", async (req, res) => {
   const me = await requireChat(req, res);
   if (!me) return;

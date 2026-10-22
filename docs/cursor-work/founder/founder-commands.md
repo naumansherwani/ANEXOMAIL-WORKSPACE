@@ -723,3 +723,7 @@ Bana: E64 SQL (history search, org wall, FTS+trigram, date/person filters; 32 pr
 1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E64_history_search CHECK_E64`   (editor mein bhi chalegi: repo se file dobara copy)
 2. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES="cal" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 22 Oct 21:45 — identity vault ADMIN (E68) — ban/appeal aapke maujooda admin se
+Aap ka kaam: **kuch naya nahi**. Account integrity panel mein Block dabao => us account ke sab hash blacklist (2 saal; fraud/severe hamesha). Release dabao => ban hat (severe nahi). Naya "Identity vault" hissa: hisaab + jinhe signup par roka gaya unki review (Allow sign-up / Keep block).
+Commands (is tarteeb mein): 1) SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`  2) Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`  3) Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

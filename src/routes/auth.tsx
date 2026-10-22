@@ -18,6 +18,8 @@ import { Label } from "@/components/ui/label";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
+import { deviceKeyProof } from "@/lib/device-key";
+import { SignupReview } from "@/components/auth/SignupReview";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
 import { enrolPasskey as createPasskey, passkeyLoginOptions, passkeyLoginVerify, recoveryCodeLogin } from "@/lib/passkey";
@@ -138,6 +140,8 @@ function AuthPage() {
   const [recoveryCode, setRecoveryCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  /** Sign-up refused because this identity was blocked earlier — offer a human review. */
+  const [identityBlocked, setIdentityBlocked] = useState(false);
 
   const [showSplash, setShowSplash] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
@@ -222,6 +226,7 @@ function AuthPage() {
           : /invalid login|invalid_credentials/i.test(raw)
             ? "That email and password did not match. Use your @anexomail.com address."
             : raw || "Something went wrong.";
+    setIdentityBlocked(e instanceof ApiError && e.code === "identity_blocked");
     setError(message);
   };
 
@@ -239,6 +244,7 @@ function AuthPage() {
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError(null);
+    setIdentityBlocked(false);
     const mailbox = anexomailAddress(email);
     setBusy(true);
     try {
@@ -350,6 +356,7 @@ function AuthPage() {
             recovery_kind: recoveryKind,
             recovery_email: recoveryEmail,
             signals: collectDeviceSignals(),
+            device_proof: await deviceKeyProof(mailbox),
           }),
           auth: false,
         });
@@ -791,6 +798,9 @@ function AuthPage() {
                       >
                         {error}
                       </motion.p>
+                    )}
+                    {identityBlocked && mode === "signup" && (
+                      <SignupReview mailbox={anexomailAddress(email)} recoveryEmail={recoveryEmail} />
                     )}
 
                     <Button type="submit" className="ax-press ax-a-hover w-full" disabled={busy}>

@@ -4681,6 +4681,26 @@ async fn dispatch(
             }
         }
 
+        // E68: identity vault — founder ka ek-nazar hisaab + logged-out appeal ka faisla (hash kabhi bahar nahi)
+        "account.integrity.identity" => {
+            sb_rpc("identity_admin_overview", json!({ "p_actor": me.id })).await
+        }
+
+        "account.integrity.identity.decide" => {
+            let appeal = s(&input, "appeal_id");
+            let decision = s(&input, "decision");
+            let reason = s(&input, "reason");
+            if appeal.is_empty() || reason.trim().len() < 12 || (decision != "granted" && decision != "denied") {
+                Err("appeal_decision_and_12_char_reason_required".to_string())
+            } else {
+                sb_rpc(
+                    "identity_signup_appeal_decide",
+                    json!({ "p_actor": me.id, "p_appeal": appeal, "p_decision": decision, "p_reason": reason }),
+                )
+                .await
+            }
+        }
+
         "account.integrity.export" => {
             sb_rpc("account_integrity_export_ready", json!({ "_user": me.id })).await
         }

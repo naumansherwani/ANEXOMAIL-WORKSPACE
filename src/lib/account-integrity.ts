@@ -179,3 +179,42 @@ export function useIntegrityExport() {
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["account", "integrity"] }),
   });
 }
+
+/* ── Identity vault (E68): founder ka ek-nazar hisaab + logged-out appeals ── */
+export type IdentityOverview = {
+  allowed: boolean;
+  bans_active?: number;
+  bans_permanent?: number;
+  bans_expiring_30d?: number;
+  bans_by_reason?: Record<string, number>;
+  signups_denied_30d?: number;
+  signups_review_30d?: number;
+  appeals_open?: number;
+  appeals?: { id: string; created_at: string; contact: string; statement: string }[];
+};
+
+export function useIdentityOverview(enabled = true) {
+  return useQuery<IdentityOverview, ApiError>({
+    queryKey: ["account", "integrity", "identity"],
+    queryFn: () => chatCall("account.integrity.identity", undefined, { path: "/api/chat/integrity/identity" }),
+    enabled,
+    retry: false,
+  });
+}
+
+export function useIdentityDecide() {
+  const qc = useQueryClient();
+  return useMutation<
+    { ok: boolean; error?: string; lifted?: number },
+    ApiError,
+    { appeal_id: string; decision: "granted" | "denied"; reason: string }
+  >({
+    mutationFn: (input) =>
+      chatCall("account.integrity.identity.decide", input, {
+        path: "/api/chat/integrity/identity/decide",
+        method: "POST",
+        body: input,
+      }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["account", "integrity"] }),
+  });
+}

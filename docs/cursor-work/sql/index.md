@@ -36,3 +36,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 - E65 | RLS ON + advisor sweep + event trigger | CHECK_E65 | 22 Oct 20:30 READY (server par chalana baqi)
 | E66 | identity vault (ek insaan ek account) | CHECK_E66 | 22 Oct 21:25 READY |
 | E67 | passkey vault + authenticated select band | CHECK_E67 | 22 Oct 21:25 READY |
+| E68 | identity vault: Block/Release/Appeal hook, raw HMAC wrappers, signup appeals, founder overview | CHECK_E68 | 22 Oct 21:45 READY |
