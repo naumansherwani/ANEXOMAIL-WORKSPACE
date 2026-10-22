@@ -332,7 +332,7 @@ docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
 src/components/app/billing/ManageBilling.tsx 40b1b719c8939210
 src/routes/billing-policy.tsx 82467f4d45d832d2
 src/components/site/BootSplash.tsx 050ad56cd525094c
-docs/claude/BILLING-PORTAL-BLUEPRINT.md efe53440d1cbfd49
+docs/claude/BILLING-PORTAL-BLUEPRINT.md 8415c127bf55864b
 portal/public/index.html 4c466e37e6bb5dec
 docs/cursor-work/server/caddy-billingportal.sh c87dccf4b7476e61
 docs/cursor-work/server/polar-control-plane-install.sh df8da2a70ce21261
@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md e669135de7055064
+docs/cursor-work/NEXT-TASKS.md 862d75578c95dea4
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac

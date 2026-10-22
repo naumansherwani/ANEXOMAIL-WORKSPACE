@@ -30,7 +30,7 @@ Dates: E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle. Phone 390/82
 | 7 | **#7 Google sync** | founder ko pehle Google Cloud verification shuru karni hai | |
 | 8 | **#8 Rooms / resources** | CALENDAR-ROADMAP #8 | |
 | 9 | **M-series M1–M7** (Outlook-style mail features) | 3 founder faislay baaki (tab poochho) | |
-| 10 | **G16 billing portal P2+** (naya kaam) | docs/claude/BILLING-PORTAL-BLUEPRINT.md, 4 founder faislay baaki (tab poochho) | |
+| 10 | **G16 billing portal P2+** (naya kaam) | docs/claude/BILLING-PORTAL-BLUEPRINT.md, 4 founder faislay baaki (tab poochho). **LAZMI: BLUEPRINT ke aakhir mein 'GRACE PERIOD + WORKSPACE PAUSE' spec (3 grace din purple/yellow/red -> pause -> Resume/Upgrade/Downgrade; Basic ko Downgrade nahi) — isi mein banana** | |
 
 ## Pehle se GREEN (dobara mat banao)
 Calendar #0–#4b, #9; World clock W0/W1; landing/plans calendar copy; E58–E63. Detail: DONE-DO-NOT-REPEAT.md.

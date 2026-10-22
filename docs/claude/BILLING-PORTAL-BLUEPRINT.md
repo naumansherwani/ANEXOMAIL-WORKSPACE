@@ -45,3 +45,17 @@ Customer ko lage ke yeh *aap ka apna* billing center hai: tez, khoobsurat, mobil
 
 ## 4. Performance budget (matrix)
 3D canvas INP<150 ms · hash compute <5 ms · role check <10 ms · LCP<1.8 s · SSE state sync <40 ms (sandbox measure, server par re-measure). Sandbox honest hadd: asli Polar jawab/asli network sandbox mein nahi.
+
+## FOUNDER SPEC 22 Oct 2026 23:34 — GRACE PERIOD + WORKSPACE PAUSE (billing portal mein BANANA LAZMI, bhoolna nahi)
+- **Billing cycle:** user ka cycle usi din se shuru jis din us ne package/plan subscribe kiya (anchor = subscribe date, calendar month nahi).
+- **Grace:** cycle ka payment due par na ho to user ko paise jama karne ke liye **3 grace days**. Plan ke andar (billing/plan card mein) **3-day grace countdown** chalta hai, rang din ke hisab se:
+  - Grace din 1 = **purple**
+  - Grace din 2 = **yellow**
+  - Grace din 3 = **red**
+- **3 din khatam => workspace PAUSE.** Pause tab tak rehta hai jab tak payment na ho (data delete nahi, sirf pause).
+- **Pause screen / plan card ke buttons:**
+  - **Resume workspace** -> user ko uske *current plan* ke **checkout** par le jata hai (payment ke baad workspace resume).
+  - **Upgrade** -> upgrade flow.
+  - **Downgrade** -> downgrade flow. **Basic plan wale ko Downgrade button dikhana hi nahi.**
+- Design notes for implementation: state machine active -> grace(1..3) -> paused -> active (on paid webhook); grace day server-side (Rust/SQL) se nikalna, client clock par nahi; Polar webhook se resume; paused workspace par Brain/Rust gate (read-only ya block) alag decide karna (founder se poochna); countdown colours theme tokens mein; email reminders har grace din (optional, poochna).
+- Kab: G16 billing portal P2+ ke saath. Dobara founder se poochne ki zaroorat nahi — yeh spec final hai; sirf pause ka exact behaviour (login par kya dikhe, mail aati rahe ya nahi) shuru karte waqt poochna.
