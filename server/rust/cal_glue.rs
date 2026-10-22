@@ -515,10 +515,11 @@ fn invites_json(s: &Sent, engine_note: &str) -> Value {
 
 async fn attendee_rows(event_id: &str) -> Vec<Value> {
     crate::sb_select(&format!(
-        "calendar_attendees?select=*&event_id=eq.{}&order=created_at.asc",
+        "calendar_attendees?select=*&event_id=eq.{}&order=address.asc",
         event_id
     ))
     .await
+    .map_err(|e| eprintln!("calendar: attendee read failed: {}", e.chars().take(300).collect::<String>()))
     .ok()
     .and_then(|v| v.as_array().cloned())
     .unwrap_or_default()
@@ -1396,7 +1397,7 @@ async fn attendees_of_many(ids: &[String]) -> Vec<Value> {
         return vec![];
     }
     crate::sb_select(&format!(
-        "calendar_attendees?select=*&event_id=in.({})&order=created_at.asc&limit=5000",
+        "calendar_attendees?select=*&event_id=in.({})&order=address.asc&limit=5000",
         ids.join(",")
     ))
     .await

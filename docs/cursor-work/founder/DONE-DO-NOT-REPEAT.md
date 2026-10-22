@@ -3,3 +3,4 @@
 - 22 Oct 06:56 founder correction: G16 billing portal (B6 Rust billing.portal) kal shaam bana hua hai, GREEN — ledger D6 theek kiya. Dobara 'baqi' mat likhna.
 - 22 Oct 06:57 GALTI: maine G16 ko 'GREEN' likh diya tha — founder: portal bana nahi. Sach: sirf B6a (Manage billing -> Polar-hosted portal). In-app portal ka scope founder se pakka hone tak 'BANA NAHI'.
 - 22 Oct 07:00 G16 = docs/claude/BILLING-PORTAL-BLUEPRINT.md (founder ne kal diya). Bana sirf P0+P1 (+B6a Polar-hosted button). P2–P8 BANA NAHI. 'Rust billing.portal GREEN' ko G16 ka poora kaam mat samajhna.
+- 22 Oct 07:20 BUG (Rule 29): live calendar_attendees mein created_at column NAHI (CHECK_CAL_GUESTS ne saboot diya) — cal_glue attendee_rows/attendees_of_many 'order=created_at.asc' PostgREST error deta tha, .ok() ne chhupa diya => guest list khali. Fix: order=address.asc + error log. Rust cal reinstall baaki, phir iMIP test dobara.
