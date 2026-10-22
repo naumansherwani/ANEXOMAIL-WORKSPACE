@@ -665,3 +665,14 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 03:10 — #5 event files CODE READY (E74 + Rust calfile + Web EventFiles). Calendar ab 8/11 green + #5 server run baaqi. Founder ne T-series sab "haan", T12 "haan"; tarteeb badli nahi.
 
 - 23 Oct 03:20 — Founder ne E74/Rust/Web sab chala diye (sab OK). #5 GREEN LIVE. Calendar 9/11. Founder ka hukm: "audit karo, loophole khud fix, naya kaam mat lao, CEO + user mindset". Audit fixes: Greeting raat, Availability fake share link. Agla: W3, W4, W5.
+
+## 23 Oct 2026 03:50 — SESSION HISAAB 2 (compaction se pehle; naya Claude PEHLE ye padhe)
+- Rule 47 (sirf Roman Urdu "aap"), Rule 48 (founder ko sirf repo mein likhi tested commands; /opt/anexomail-web par kabhi merge/pull/checkout/reset — sirf fetch + `git show origin/main:<script>`), Rule 41/46 (har push ke saath per-technology commands), Rule 28 (manifest-sync + verify 0 bad pehle).
+- GREEN LIVE: calendar #5 event files (E74 + Rust calfile + Web EventFiles; commit ac98d2d). Calendar 9/11. BAAQI: #6 CalDAV, #7 Google (founder verification), #8 Rooms. World clock 2/6 (W2 Focus Ring live check, W3 globe, W4, W5 baaqi).
+- Audit fixes (0d022b5): raat 3 baje "Good morning" bug, Availability ka nakli share link hataya.
+- Adaptive greeting (f63ef43, 1af6b62): raat 22:00-04:59, subah 05:00-11:59, dopahar 12:00-evening start, shaam evening start-21:59; evening start = sunset-60min (16:00..19:00, 5 min round, fallback 17:00); Settings ka time zone pehle, browser baad mein.
+- Home city (0ce71d5): ~150 shehron ki offline list, "Detect my city" (geolocation sirf shehar save), Rust locale clean_home, web places.ts + HomePlace card.
+- LIVE BUG pakda aur fix (60ded39, E75): Home city save "Could not save preference" — DB validator awam_ui_extra_ok ko `home` key nahi pata thi (meri chook, E61 wali dobara). SABAQ: pref.extra mein naya key = Rust clean_extra + DB awam_ui_extra_ok DONO, sandbox mein constraint ke saath test. Founder ko SIRF SQL command chalani hai: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (Rust/Web pehle live).
+- FOUNDER KA STANDING HUKM (naya): test accounts real users se MIX na hon; real user/buyer workspace banaye to usay sab kuch naya, asli wiring, NO mock/demo data. Audit abhi BAAQI (code+SQL mein seed/demo/mock/founder-test special-casing grep karna).
+- AGLA (is tarteeb se): founder SQL E75 chalaye -> Chrome re-test (Lahore, greeting, clock naam, phir test account se home city hatao) -> test-vs-real/no-mock audit + fix -> W3/W4/W5 -> #6 -> #7 -> #8 -> founder account -> identity tests (founder) -> M-series -> G16 -> T-series.
+- Baaqi gaps: phone 390/820 check, guest-view event files live check, T12 implement, E55 grants-heal 30 Oct se pehle, Caddy cert renewal 12 Nov se pehle.
