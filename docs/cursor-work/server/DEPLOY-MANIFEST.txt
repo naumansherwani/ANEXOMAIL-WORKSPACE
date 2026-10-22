@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 4ee74e3eefdc3d6f
+src/routes/app.calendar.tsx 0ae61ddbdb0dd946
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md b71585f93d25c2c2
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 5f6fd85e6f6dcc19
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -250,7 +250,7 @@ docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 9ccf4f6647a
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx cbca1b76b85ebe8f
+src/components/app/calendar/TimeGrid.tsx 8acbe097a7ea8588
 src/lib/plans.ts aed70e46981088a3
 docs/cursor-work/sql/E52_alias_fair_use.sql c484bcfe67a0c2cf
 docs/cursor-work/sql/CHECK_E52.sql 7884b25b262eb1e6
@@ -359,7 +359,7 @@ src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql da641f2506fb7482
 src/lib/timeFormat.ts e603401c56c5be95
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
-src/components/app/calendar/CalendarClassic.tsx b25e6ecfc0b0b418
+src/components/app/calendar/CalendarClassic.tsx 6bcbde27666f662a
 src/components/app/calendar/Bits.tsx ff3c03680788468a
 src/components/app/calendar/Availability.tsx 63c43c65a4cd32fd
 server/rust/locale_core.rs 4f45c0c73cb1f6d2
@@ -516,6 +516,6 @@ docs/cursor-work/sql/E73_calendar_subscriptions.sql cb85578b92ea0d24
 docs/cursor-work/sql/proofs/E73_proof.sql 5f434b8ebe94065d
 server/rust/ics_core.rs 9be6b2f71292680b
 server/rust/ics_glue.rs 268d644eb753aab3
-src/components/app/calendar/OutsideCalendars.tsx aece78a7d6eeb4dd
-src/lib/calendar-subs.test.ts 1f8eb4b2e34dbca9
-src/lib/calendar-subs.ts bdb6d3de8c96f3c3
+src/components/app/calendar/OutsideCalendars.tsx 6164a229f16d7c62
+src/lib/calendar-subs.test.ts 094dcfa56bace67e
+src/lib/calendar-subs.ts 86d32b104ae6bd58

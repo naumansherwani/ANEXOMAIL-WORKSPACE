@@ -4,6 +4,8 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
+  lastDay,
+  localMidnightIso,
   MAX_SUBS,
   REFRESH_CHOICES,
   subStatus,
@@ -269,10 +271,25 @@ function ColorDots({
 
 /** Detail pane for one outside event — read-only, with where it came from. */
 export function ExternalEventDetail({ event }: { event: SubEvent }) {
+  const fmtDay = (d: string) => {
+    const iso = localMidnightIso(d);
+    return iso
+      ? new Date(iso).toLocaleDateString(undefined, {
+          weekday: "short",
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        })
+      : d;
+  };
   const when = event.all_day
-    ? event.date === event.end_date || !event.end_date
-      ? (event.date ?? "")
-      : `${event.date} → ${event.end_date}`
+    ? (() => {
+        const first = event.date ?? "";
+        const last = lastDay(first, event.end_date);
+        return last === first
+          ? `${fmtDay(first)} · all day`
+          : `${fmtDay(first)} → ${fmtDay(last)} · all day`;
+      })()
     : `${new Date(event.start).toLocaleString(undefined, { weekday: "short", day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} – ${new Date(event.end).toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" })}`;
   return (
     <div className="flex flex-col gap-ax-3 p-ax-6">

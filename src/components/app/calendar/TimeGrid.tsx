@@ -12,6 +12,16 @@ import { cn } from "@/lib/utils";
 
 const HOUR = 52; // px per hour
 
+/** An all-day event from an outside calendar covers every day from its first day up to (not including) its end. */
+function coversDay(e: CalendarEvent, day: Date): boolean {
+  const s = new Date(e.starts_at);
+  s.setHours(0, 0, 0, 0);
+  const end = new Date(e.ends_at);
+  const d = new Date(day);
+  d.setHours(0, 0, 0, 0);
+  return d >= s && (d < end || sameDay(s, d));
+}
+
 function sameDay(a: Date, b: Date) {
   return (
     a.getFullYear() === b.getFullYear() &&
@@ -290,13 +300,21 @@ export function TimeGrid({
           {days.map((d) => (
             <div key={d.toISOString()} className="min-w-0 space-y-0.5 px-0.5">
               {allDay
-                .filter((e) => sameDay(new Date(e.starts_at), d))
+                .filter((e) =>
+                  isExternalId(e.id) ? coversDay(e, d) : sameDay(new Date(e.starts_at), d),
+                )
                 .map((e) => (
                   <button
                     key={e.id}
                     type="button"
                     onClick={() => onSelect(e.id)}
                     className="block w-full truncate rounded bg-secondary px-1 py-0.5 text-left text-[10px] font-semibold"
+                    style={(() => {
+                      const c = eventColor(e, prefs.calendars);
+                      return c
+                        ? { backgroundColor: `${c}26`, borderLeft: `3px solid ${c}` }
+                        : undefined;
+                    })()}
                   >
                     {e.title}
                   </button>

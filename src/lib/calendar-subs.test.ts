@@ -3,6 +3,8 @@ import { describe, expect, it } from "bun:test";
 import {
   externalId,
   isExternalId,
+  lastDay,
+  localMidnightIso,
   lookup,
   mergeEvents,
   subStatus,
@@ -87,5 +89,34 @@ describe("calendar subscriptions (client)", () => {
     expect(
       subStatus(sub({ enabled: false, last_error: "disabled_too_many_failures" }), now),
     ).toContain("kept failing");
+  });
+
+  it("all-day dates: last day is inclusive, single day shows once", () => {
+    expect(lastDay("2026-10-20", "2026-10-21")).toBe("2026-10-20");
+    expect(lastDay("2026-12-01", "2026-12-03")).toBe("2026-12-02");
+    expect(lastDay("2026-12-31", "2027-01-01")).toBe("2026-12-31");
+    expect(lastDay("2026-10-20")).toBe("2026-10-20");
+    expect(lastDay("2026-10-20", "2026-10-20")).toBe("2026-10-20");
+  });
+
+  it("an all-day event sits on the viewer's own calendar day, in any time zone", () => {
+    const iso = localMidnightIso("2026-10-20");
+    expect(iso).not.toBeNull();
+    const d = new Date(iso as string);
+    expect([d.getFullYear(), d.getMonth() + 1, d.getDate()]).toEqual([2026, 10, 20]);
+    expect(localMidnightIso("nope")).toBeNull();
+    const row = toCalendarEvent(
+      ev({
+        all_day: true,
+        date: "2026-10-20",
+        end_date: "2026-10-21",
+        start: "2026-10-20T00:00:00Z",
+        end: "2026-10-21T00:00:00Z",
+      }),
+    );
+    const s = new Date(row.starts_at);
+    expect([s.getFullYear(), s.getMonth() + 1, s.getDate(), s.getHours()]).toEqual([
+      2026, 10, 20, 0,
+    ]);
   });
 });

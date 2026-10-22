@@ -55,13 +55,32 @@ export function externalId(e: Pick<SubEvent, "sub_id" | "uid" | "start">): strin
   return `${EXT_PREFIX}${e.sub_id}~${e.uid.replace(/~/g, "-")}~${Date.parse(e.start) || 0}`;
 }
 
+/** "2026-10-20" -> that day's local midnight as an ISO string (a holiday belongs to the viewer's calendar day, not to UTC's). */
+export function localMidnightIso(date: string): string | null {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  if (!m) return null;
+  return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])).toISOString();
+}
+
+/** All-day end dates are exclusive (the day AFTER the last day). Returns the last day, never before the first. */
+export function lastDay(date: string, endDate?: string): string {
+  if (!endDate || endDate <= date) return date;
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(endDate);
+  if (!m) return date;
+  const d = new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])) - 86_400_000);
+  const last = d.toISOString().slice(0, 10);
+  return last < date ? date : last;
+}
+
 /** An outside event drawn as a normal (read-only) calendar row. */
 export function toCalendarEvent(e: SubEvent): CalendarEvent {
+  const startIso = e.all_day && e.date ? (localMidnightIso(e.date) ?? e.start) : e.start;
+  const endIso = e.all_day && e.end_date ? (localMidnightIso(e.end_date) ?? e.end) : e.end;
   return {
     id: externalId(e),
     title: e.title || "(no title)",
-    starts_at: e.start,
-    ends_at: e.end,
+    starts_at: startIso,
+    ends_at: endIso,
     all_day: e.all_day,
     location: e.location || null,
     agenda: e.description || null,

@@ -732,7 +732,7 @@ export function CalendarClassic() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18 }}
             >
-              <WeekStats events={rows} />
+              <WeekStats events={rows.filter((e) => !isExternalId(e.id))} />
               {view === "month" && (
                 <MonthView
                   anchor={anchor}
