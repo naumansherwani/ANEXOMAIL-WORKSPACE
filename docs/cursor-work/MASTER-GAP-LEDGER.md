@@ -45,7 +45,7 @@ Stale warning: blueprint ke "PHASES 1–62" ka "READY/Supabase run baqi" likha h
 | D3 | G40 Rust RPC: work.*, crm.*, org.*, integrations.*, settings.* (G18: founder routes 181 Rust-pehle, 19 sirf Bun) | Rust |
 | D4 | G42 passkey/recovery login Bun -> Rust (`/rpc/auth.passkey.*`) | Rust |
 | D5 | R1 `mail.send` + `org.mailboxes.*` Rust — **GREEN 21 Oct 06:00 (B3: send + undo-send hold + Rust worker + mailboxes; E54; live proof)**; R3 typed contract; R4 direct pool; R5 event-driven WebTransport push | Rust |
-| D6 | G16 self-serve billing portal (cancel/card/VAT via Polar portal): **GREEN — Rust `billing.portal` (b6_core/b6_glue) + billingportal Caddy + web app.billing live (B6a closed 21 Oct; B6b/c dropped). Ledger line pehle purani thi.** polar-rust-payment :3400 NO-TOUCH | Rust + Web |
+| D6 | G16 billing portal: **FOUNDER 22 Oct 06:57: 'abhi bana nahi'.** Jo bana hai = B6a sirf 'Manage billing' button -> Polar-hosted portal (Rust billing.portal + Polar engine :3400 muhar). Founder ka apna in-app billing portal (discussion) = BANA NAHI; scope founder se pakka karna. polar-rust-payment :3400 NO-TOUCH | Rust + Web |
 | D7 | Business Pro baqi (G20: login/entitlement data, bpro.test) ; G21 baqi Brain routers authz audit; G22 org.ts sach-jhooth; G14 `crm-tenant-check.sh` live | SQL/Brain |
 | D8 | G26 inbound iMIP REPLY (anexopipe hook; founder haan), G27 recurrence/scheduling link/2-way sync/CalDAV, G24 Personal Premium claims ka asli call/vault test | Rust/Chrome |
 | D9 | G2 Admin ke baqi 9 pages + Chat harness; G9 plan-promise audit; G10 passkey flow verify; G6 IMAP phone sync; G7 catch-all etc. verify; G15 CRM SPA links | Web/audit |
