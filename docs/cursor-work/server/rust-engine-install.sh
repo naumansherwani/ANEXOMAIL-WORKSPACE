@@ -472,4 +472,30 @@ for m in $MODS; do
 done
 pm2 describe anexomail-rust 2>/dev/null | grep -E "status|restarts|uptime" | sed 's/^/   /' | head -4
 echo "OK — Rust par: $MODS. (polar-rust-payment :3400 aur Brain ko haath nahi lagaya; Bun routes fallback ke taur par jaisi thin waisi hain)"
-echo "   wapas lene ke liye: cp $TARGET/src/main.rs.bak.$STAMP $TARGET/src/main.rs && (cd $TARGET/src && rm -f $(for m in $MODS; do printf '%s_core.rs %s_glue.rs ' $m $m; for x in $(extras_of "$m"); do printf '%s ' $x; done; done)) && $( [ "$NEED_CARGO" -eq 1 ] && printf 'cp %s/Cargo.toml.bak.%s %s/Cargo.toml && ' "$TARGET" "$STAMP" "$TARGET" )(cd $TARGET && cargo build --release) && pm2 restart anexomail-rust --update-env"
+if [ "$same" -eq 1 ]; then
+  echo "   (kuch badla nahi — wapas lene ki zaroorat nahi)"
+else
+  # Sahi rollback: har file apne .bak se wapas (bak na ho to sirf wahi file hatao jo is install ne nayi rakhi thi). Shared extras (jaise cal_core.rs)
+  # kabhi seedhe delete nahi hote. Backup binary ho to build ki zaroorat nahi (turant wapas); na ho to hi cargo build.
+  RB="/root/rust-rollback-$STAMP.sh"
+  {
+    echo '#!/bin/bash'
+    echo 'set -u'
+    echo 'command -v cargo >/dev/null 2>&1 || export PATH="$HOME/.cargo/bin:$PATH"'
+    echo "S=\"$TARGET/src\"; STAMP=\"$STAMP\""
+    echo 'cp -p "$S/main.rs.bak.$STAMP" "$S/main.rs" || { echo "main.rs backup nahi mili — ruk gaya"; exit 1; }'
+    for m in $MODS; do
+      for f in ${m}_core.rs ${m}_glue.rs $(extras_of "$m"); do
+        echo "if [ -f \"\$S/$f.bak.\$STAMP\" ]; then cp -p \"\$S/$f.bak.\$STAMP\" \"\$S/$f\"; else rm -f \"\$S/$f\"; fi"
+      done
+    done
+    if [ "$NEED_CARGO" -eq 1 ]; then
+      echo "cp -p \"$TARGET/Cargo.toml.bak.$STAMP\" \"$TARGET/Cargo.toml\"; [ -f \"$TARGET/Cargo.lock.bak.$STAMP\" ] && cp -p \"$TARGET/Cargo.lock.bak.$STAMP\" \"$TARGET/Cargo.lock\""
+    fi
+    echo "if [ -f \"$BIN.bak.$STAMP\" ]; then cp -p \"$BIN.bak.$STAMP\" \"$BIN.new.$STAMP\" && mv -f \"$BIN.new.$STAMP\" \"$BIN\"; else (cd \"$TARGET\" && cargo build --release) || { echo 'build fail'; exit 1; }; fi"
+    echo 'pm2 restart anexomail-rust --update-env && pm2 save >/dev/null 2>&1'
+    echo "sleep 3; echo \"health: \$(curl -s -m 8 -o /dev/null -w '%{http_code}' $RPC/rpc/health)\""
+  } >"$RB" 2>/dev/null
+  chmod +x "$RB" 2>/dev/null
+  echo "   wapas lene ke liye (sirf yeh ek command): bash $RB"
+fi

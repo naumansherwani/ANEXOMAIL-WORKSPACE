@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 137ff63326afce8b
+docs/cursor-work/founder/founder-commands.md 2f7e4d10a85053bd
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md 4689acd147ef4735
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql b06a079ca5a3df1f
-docs/cursor-work/server/rust-engine-install.sh 931e3f556f313a44
+docs/cursor-work/server/rust-engine-install.sh 66250d3df68b94bc
 src/components/app/security/IntegrityGate.tsx c2c6092f7fdef7a6
 src/lib/account-export.ts a9bc75ae97a15153
 docs/cursor-work/sql/E45_integrity_purge.sql 4cc5092c77e9f0e9

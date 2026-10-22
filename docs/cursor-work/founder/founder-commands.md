@@ -667,3 +667,7 @@ Sandbox saboot: SQL proof 15/15 (2 baar chala), CHECK 7/7; Rust 21 tests (core 1
   1. `git -C /opt/anexomail-web fetch -q origin main && MODULES="overlap" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
   2. `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
 - Baqi live check: dashboard "Team time" card (2+ members wala workspace chahiye), 390/820 asli browser par.
+
+### 22 Oct 2026 — Rust installer: galat rollback line RETIRED
+Founder: "(cd /opt/anexomail-rust && cargo build --release) && pm2 restart ... wrong hai, har bar aati hai, sahi wali do".
+Wajah: purani line shared `cal_core.rs` ko `rm -f` karti thi aur zabardasti rebuild. Ab `rust-engine-install.sh` har run par `/root/rust-rollback-<stamp>.sh` banata hai (backup se main.rs + module files wapas, backup binary ya rebuild, pm2 restart, health curl). Wapas lene ki EK command: `bash /root/rust-rollback-<stamp>.sh` (installer khud chhapta hai). Kuch na badla ho to "wapas lene ki zaroorat nahi" chhapta hai.
