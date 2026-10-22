@@ -70,7 +70,7 @@ function DeviceAppealsPanel() {
       decision === "reviewing"
         ? undefined
         : (window.prompt(t("Decision reason (logged, min 8 characters)")) ?? "").trim();
-    if (decision !== "reviewing" && reason.length < 8) return;
+    if (decision !== "reviewing" && (reason ?? "").length < 8) return;
     decide.mutate(
       { appeal_id, decision, reason: reason || undefined },
       {
