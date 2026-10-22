@@ -540,7 +540,7 @@ authRouter.post("/signup", async (req, res) => {
     }
   }
 
-  // E66/E68 identity vault: ek insaan, ek account. Blacklisted nishan => naya account nahi. Vault down ho to fail-open.
+  // E66/E68/E69 identity vault: ek insaan, ek account (mirror + database; deny => 403, vault band aur mirror nahi => 503)
   let rawIdentity: { email: string; recovery: string; deviceKey: string | null; shape: string | null; network: string | null } | null = null;
   if (!family) {
     const deviceKey = await verifyDeviceKeyProof(req.body?.device_proof, email);
