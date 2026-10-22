@@ -6,6 +6,7 @@ import { ExpiryWatch } from "@/components/app/dashboard/ExpiryWatch";
 import { Greeting } from "@/components/app/dashboard/Greeting";
 import { InstallHint } from "@/components/app/dashboard/InstallHint";
 import { SetupChecklist } from "@/components/app/dashboard/SetupChecklist";
+import { TeamTime } from "@/components/app/dashboard/TeamTime";
 import { useAuth } from "@/lib/auth";
 import { founderPreviewEnabled } from "@/lib/founder-preview";
 import { isAiHost } from "@/lib/host";
@@ -73,6 +74,7 @@ function DashboardPage() {
           <div className="flex flex-col gap-ax-5">
             <QuickActions onCompose={() => setComposing(true)} />
             <UpcomingPanel enabled={enabled} />
+            <TeamTime enabled={enabled} />
             {isAiHost() && hasAiPlan(session?.user.ai_plan) ? (
               <AiUsagePanel enabled={enabled} />
             ) : null}

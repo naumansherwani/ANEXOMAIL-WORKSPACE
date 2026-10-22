@@ -6,6 +6,7 @@
 # woh SAB ek hi build mein lagata hai: ek backup, ek build, ek restart, ek health check, ek rollback.
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
 #   book   -> server/rust/book_core.rs   + book_glue.rs    (Booking page /book/<handle>: slots, book, cancel/reschedule, mails)  [pehle E59 SQL; cal ke saath]
+#   overlap-> server/rust/overlap_core.rs + overlap_glue.rs (Overlap Matrix `calendar.overlap`: team ka green/amber/red waqt)  [pehle E62 SQL; cal ke saath]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
@@ -35,9 +36,9 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book people team locale device dnsauth security export attach b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap people team locale device dnsauth security export attach b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
-extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; esac; }
+extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -79,6 +80,8 @@ CFG={
  # book (B7c): Booking page anexomail.com/book/<handle> — slots, booking, cancel/reschedule, mails. SQL E59 PEHLE. cal module ke saath (cal_core.rs share).
  "book":   {"public": True,  "label": "booking",   "procs": ['"booking.page.get"','"booking.page.set"','"booking.public.book"'],
             "public_call": "public(&proc, &input, &headers)"},
+ # overlap (W1 / calendar #4b): `calendar.overlap` — team ke working hours + OOO + free/busy se green/amber/red matrix aur best times. SQL E62 PEHLE. cal module ke saath (cal_core.rs share).
+ "overlap": {"public": False, "label": "overlap",   "procs": ['"calendar.overlap"']},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
@@ -448,6 +451,14 @@ for m in $MODS; do
         *booking_sql_missing*) echo "   -> book: Rust ne proc pakda par SQL E59 nahi lagi — pehle: E59_booking_page CHECK_E59";;
         *'"not_found"'*'"unauthorized"'*'"not_found"'*) echo "   -> book: Rust ne public + login-wale dono procs pakde aur E59 SQL lagi hui hai (nakli handle/link par not_found, nakli login 401 = theek).";;
         *) echo "   -> book: jawab upar dekhein";;
+      esac;;
+    overlap)
+      r="$(probe calendar.overlap '{"input":{"addresses":[]}}')"
+      echo "   calendar.overlap (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> overlap: Rust ne calendar.overlap pakda (nakli login 401 = theek). SQL E62 chala hona lazmi (asli test: calendar mein Find a time / team overlay).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> overlap: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> overlap: jawab upar dekhein";;
       esac;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"

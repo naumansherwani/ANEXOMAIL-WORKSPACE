@@ -150,3 +150,5 @@ Detail + package map: docs/cursor-work/MAIL-OUTLOOK-MAP.md. Rule 40 (family unli
 Tarteeb (B-series ke BAAD, B7 calendar #4-#8 aur G16 P2 ke saath founder jo kahe): M1 view/layout settings (web) | M2 Favourites+Move+Flag+Pin+filter chips | M3 signature+auto-reply+forwarding/IMAP | M4 rules+Sweep (Basic 3, Pro+ unlimited) | M5 schedule send+templates (Pro+) | M6 Focused/Other+categories+cond. formatting (Pro+) | M7 shared/delegate (Business+).
 Pending founder faisle: Basic rules 3?, Focused/Other pehle ya baad, M1 se shuru? — sab M-series abhi KOI code nahi.
 Yahan code jayega: web = src/components/app/mail/* + src/routes/app.mail*.tsx + src/routes/app.settings.*.tsx; Rust = server/rust/mail_*.rs (naye module `mailx`); SQL = docs/cursor-work/sql/E6x; gating = src/lib/plan-surface.ts capability.
+
+- 22 Oct 08:55 — Calendar #4b / World Clock W1 (Overlap Matrix): CODE READY (E62 + Rust `overlap` + web). Install + live check pending. Detail: docs/claude/WORLD-CLOCK-BLUEPRINT.md, docs/cursor-work/CALENDAR-ROADMAP.md.

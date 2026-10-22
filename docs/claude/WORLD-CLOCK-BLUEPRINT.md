@@ -27,7 +27,7 @@ Sab jagah ek hi component/lib (`WorldClocks`, zone helpers), duplicate nahi.
 
 ## PHASES (har phase: sandbox proof + 390/820/1440 + founder server output -> GREEN)
 - **W0** world-clock pins (calendar #4a) — CODE READY 22 Oct 08:20 (Rust locale clocks + web WorldClocks); server install + live check baaki.
-- **W1** `team.overlap` Rust (free/busy + working hours + OOO, sirf metadata) + overlap matrix UI + dashboard "team ka waqt" card (= calendar #4b).
+- **W1 (CODE READY 22 Oct 08:55, server install pending)** `calendar.overlap` Rust (free/busy + working hours + OOO, sirf metadata) + overlap matrix UI + dashboard "team ka waqt" card (= calendar #4b).
 - **W2** meeting slider in NewMeeting/Find-a-time + sach-ghantay fatigue line.
 - **W3** 3D globe (lazy, fallback, reduced-motion, day/night math) — dashboard + clock popover.
 - **W4** device-drift badge (server time endpoint) + opt-in "travelling" status.

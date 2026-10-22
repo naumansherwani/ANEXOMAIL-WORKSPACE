@@ -646,3 +646,11 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - Founder ne World Clock ke 3 faisle mujh par chhode: fatigue sach-ghantay, travelling opt-in, market chip default OFF.
 - 22 Oct 08:25 founder: World Clock ke sab features banenge 'awam ko sach ke saath' — plan WORLD-CLOCK-BLUEPRINT.md (F1–F5). Pehle E61 SQL (pin save fix) chale.
 - 22 Oct 08:40 E61 server OK 9/9; live: Zurich pin save + reload OK. Founder ne Focus Ring, Slipstream(opt-in), Market chip faisle diye; mera note: location inference nahi, user-entered.
+- 22 Oct 08:45 CURRENT WORK (compact-safe): W1 = calendar #4b Overlap Matrix (SQL E62 + Rust team_core/team_glue team.overlap + web slider + dashboard card). Founder order: SQL super-advanced, self-read 3x before handing over. Sandbox first, then server commands SQL->Rust->Web.
+
+## 22 Oct 08:55 — W1 Overlap Matrix (calendar #4b) CODE READY — server par 3 commands, is tarteeb se (SQL -> Rust -> Web)
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E62_team_overlap CHECK_E62`
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES="overlap" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+Kya: SQL E62 (privacy deewar DB mein: viewer same-org ka zinda member ho; sirf apna likha schedule; OOO note kabhi nahi) · Rust `calendar.overlap` (green/amber/red matrix, best times, sach-ghantay) · Web: New meeting > "Find a time" mein "Everyone's hours" slider + dashboard "Team time" card. Koi package gate nahi (sab + family ek jaisa).
+Sandbox saboot: SQL proof 15/15 (2 baar chala), CHECK 7/7; Rust 21 tests (core 15 + glue 5 + cal_core), cargo check OK, installer patch idempotent; web tsc clean + tier-guard pass + 390/820/1440 screenshot (mock engine).

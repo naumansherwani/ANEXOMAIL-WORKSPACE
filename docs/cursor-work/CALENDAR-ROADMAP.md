@@ -23,3 +23,5 @@ Rule: "GREEN" = founder ka server output + live check. Is file ko har calendar s
 Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a=W0 (code ready), #4b team overlay = W1.
 
 - 22 Oct 08:40: #4a world-clock pins GREEN (desktop 1440 live: Zurich pin, reload par bacha). E61 SQL chala. 390/820 screenshot browser se nahi le saka (window resize viewport nahi badalti) — touch-up baqi. Aglu: W1 = #4b team overlay.
+
+- 22 Oct 08:55 **#4b team overlay (= World Clock W1) CODE READY, server install + live check pending.** SQL E62_team_overlap (+CHECK_E62, proofs/E62_proof.sql 15/15 sandbox) · Rust `overlap` module (overlap_core 15 tests + overlap_glue 5 tests, proc `calendar.overlap`) · Web: `src/lib/overlap.ts`, `OverlapMatrix.tsx` (inside New meeting > Find a time), dashboard card `TeamTime.tsx`. Server order: SQL -> Rust (`MODULES="overlap"`) -> Web. Sandbox visual (mock engine) 390/820/1440 OK, no horizontal page scroll.

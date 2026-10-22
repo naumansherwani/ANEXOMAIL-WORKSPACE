@@ -2,6 +2,7 @@ import { CalendarPlus, Lock, Mail, Search } from "lucide-react";
 import { useState } from "react";
 
 import { FindTime } from "@/components/app/calendar/FindTime";
+import { OverlapMatrix } from "@/components/app/calendar/OverlapMatrix";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateMeeting, whenLabel } from "@/lib/calendar";
@@ -188,14 +189,24 @@ export function NewMeeting({
         {finding ? "Hide find a time" : "Find a time for everyone"}
       </button>
       {finding && (
-        <FindTime
-          attendees={guestList}
-          duration={duration}
-          onPick={(value) => {
-            setWhen(value);
-            setFinding(false);
-          }}
-        />
+        <div className="space-y-ax-3">
+          <OverlapMatrix
+            addresses={guestList}
+            durationMin={duration}
+            onPick={(value) => {
+              setWhen(value);
+              setFinding(false);
+            }}
+          />
+          <FindTime
+            attendees={guestList}
+            duration={duration}
+            onPick={(value) => {
+              setWhen(value);
+              setFinding(false);
+            }}
+          />
+        </div>
       )}
 
       <Input
