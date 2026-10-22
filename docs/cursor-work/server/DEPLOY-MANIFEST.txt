@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 68f8f6bf70ac9ae6
+docs/cursor-work/founder/founder-commands.md c29b6b1fa6722565
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 6a7397b1c4a29b9d
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 9107ce2e458f7dd3
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -394,11 +394,11 @@ src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
 docs/claude/WORLD-CLOCK-BLUEPRINT.md 6290a81109ef26e4
 docs/cursor-work/sql/E61_world_clocks.sql 529fac8829a7f835
 docs/cursor-work/sql/CHECK_E61.sql c8f2c5638b0a2def
-docs/cursor-work/sql/CHECK_E62.sql d16e881d8a3532dc
-docs/cursor-work/sql/E62_team_overlap.sql 89e97a5f71da0f27
+docs/cursor-work/sql/CHECK_E62.sql e623196bf39aa2e4
+docs/cursor-work/sql/E62_team_overlap.sql f56de57f6e7b38c7
 server/rust/overlap_core.rs a291371dd43212a2
-server/rust/overlap_glue.rs 8d654fc51f340545
+server/rust/overlap_glue.rs a56214c1bf50c283
 src/components/app/calendar/OverlapMatrix.tsx 66f6d2e116ffbcdc
 src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
 src/lib/overlap.ts 83a8c3710c60ba8b
-docs/cursor-work/sql/proofs/E62_proof.sql f11369ee563a91a5
+docs/cursor-work/sql/proofs/E62_proof.sql 9fdb77e89a5d5faf

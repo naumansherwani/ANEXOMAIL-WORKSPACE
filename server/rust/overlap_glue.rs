@@ -245,7 +245,10 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         Err(e) if is_missing_function(&e) => {
             return fail(StatusCode::NOT_IMPLEMENTED, "overlap_sql_missing", "Team availability is not installed yet (SQL E62).")
         }
-        Err(_) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not load team availability — please try again."),
+        Err(e) => {
+            eprintln!("overlap: calendar_team_context failed: {}", e.chars().take(300).collect::<String>());
+            return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not load team availability — please try again.");
+        }
     };
     if ctx.get("error").and_then(|e| e.as_str()) == Some("forbidden") {
         return fail(StatusCode::FORBIDDEN, "forbidden", "You are not allowed to see this team's availability.");
@@ -261,7 +264,10 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
     let span_end = g.from + g.slots as i64 * step * 60;
     let busy = match busy_many(&me.org_id, &want_busy, g.from, span_end).await {
         Ok(b) => b,
-        Err(_) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not load busy time — please try again."),
+        Err(e) => {
+            eprintln!("overlap: busy time failed: {}", e.chars().take(300).collect::<String>());
+            return fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Could not load busy time — please try again.");
+        }
     };
 
     // ---- classify ----

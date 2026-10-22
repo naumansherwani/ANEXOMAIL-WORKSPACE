@@ -23,4 +23,8 @@ select item, ok from (
          to_regclass('public.org_members_org_email_lc_idx') is not null or to_regclass('public.org_members') is null, 6
   union all select 'E62 attendee lookup index (lower(address), event_id) maujood',
          exists (select 1 from pg_indexes where schemaname = 'public' and tablename = 'calendar_attendees' and indexdef ilike '%lower(address)%event_id%'), 7
+  union all select 'E62 LIVE PATH: asli member + anjaan guest par function bina error chalta hai (sirf padhta hai)',
+         coalesce((select public.calendar_team_context(m.org_id, m.user_id, array['nobody@example.invalid', lower(m.email)]) ->> 'truncated'
+                     from public.org_members m
+                    where coalesce(m.status::text, 'active') <> 'revoked' and m.email is not null limit 1) = 'false', true), 8
 ) t order by o;

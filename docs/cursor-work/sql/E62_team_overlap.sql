@@ -47,6 +47,7 @@ declare
   v_tz     text;
   v_ooo    jsonb;
   v_has    boolean;
+  v_auth   boolean := false;
 begin
   if p_org is null or p_viewer is null then return jsonb_build_object('error', 'forbidden'); end if;
   v_has := to_regclass('public.org_members') is not null;
@@ -58,6 +59,14 @@ begin
       into v_ok;
   end if;
   if not v_ok then return jsonb_build_object('error', 'forbidden'); end if;
+
+  -- auth.users sirf tab padhna jab is role ko schema + email/id padhne ka haq ho (live service_role ko na ho to bhi function nahi girta)
+  if exists (select 1 from pg_namespace where nspname = 'auth') then
+    if has_schema_privilege(current_user, 'auth', 'usage') and to_regclass('auth.users') is not null then
+      v_auth := has_column_privilege(current_user, 'auth.users', 'email', 'select')
+            and has_column_privilege(current_user, 'auth.users', 'id', 'select');
+    end if;
+  end if;
 
   -- saaf, unique (pehli baar dikhne ka order), <= 12
   select coalesce(array_agg(x.addr order by x.ord), '{}'), count(*)
@@ -77,7 +86,7 @@ begin
      where m.org_id = p_org and lower(m.email) = a and coalesce(m.status::text, 'active') <> 'revoked'
      limit 1;
     -- purani rows: org_members.email khali ho sakti hai -> login email (auth.users) se bhi pehchano (sirf usi org ka zinda member)
-    if v_uid is null and to_regclass('auth.users') is not null then
+    if v_uid is null and v_auth then
       select m.user_id into v_uid
         from public.org_members m
         join auth.users u on u.id = m.user_id

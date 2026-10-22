@@ -654,3 +654,8 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
 Kya: SQL E62 (privacy deewar DB mein: viewer same-org ka zinda member ho; sirf apna likha schedule; OOO note kabhi nahi) · Rust `calendar.overlap` (green/amber/red matrix, best times, sach-ghantay) · Web: New meeting > "Find a time" mein "Everyone's hours" slider + dashboard "Team time" card. Koi package gate nahi (sab + family ek jaisa).
 Sandbox saboot: SQL proof 15/15 (2 baar chala), CHECK 7/7; Rust 21 tests (core 15 + glue 5 + cal_core), cargo check OK, installer patch idempotent; web tsc clean + tier-guard pass + 390/820/1440 screenshot (mock engine).
+
+## 22 Oct 09:15 — W1 LIVE BUG + fix (Rule 29): "Could not load team availability" (HTTP 500)
+- Server par SQL E62 + Rust overlap + web sab OK chale; live par matrix 500. Wajah (sandbox mein bina-haq role se dobara bana kar pakdi): E62 ka naya fallback `auth.users` padhta tha; live `service_role` ko `auth` schema ka haq nahi => function crash. Fix: usi E62 file mein haq pehle check (`has_schema_privilege` + `has_column_privilege`), na ho to qadam chhod do. Proof 16/16 (naya test: bina auth haq wala role), CHECK 8/8 (naya LIVE PATH check asli member par chalta hai).
+- Sirf yeh ek command chahiye (Rust dobara NAHI; glue mein sirf error-log izafa hua, agle Rust install par jayega):
+  `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E62_team_overlap CHECK_E62`

@@ -43,6 +43,18 @@ begin
   insert into r values (14, 'member with empty org_members.email found via auth.users', res -> 'members' -> 0 ->> 'kind' = 'member');
   res := public.calendar_team_context(org, me, array['legacy@x.test']);
   insert into r values (15, 'other org: viewer is not a member there -> forbidden', public.calendar_team_context(gen_random_uuid(), me, array['legacy@x.test']) ->> 'error' = 'forbidden');
+  -- LIVE BUG 22 Oct: service_role ko auth schema ka haq na ho to function girta tha. Bina haq wale role se dobara (rollback ke saath role bhi jata hai).
+  create role svc_proof nologin;
+  grant usage on schema public to svc_proof;
+  grant select on public.org_members, public.awam_ui_pref, public.calendar_attendees, public.calendar_events to svc_proof;
+  grant execute on function public.calendar_team_context(uuid, uuid, text[]), public.calendar_team_zone_ok(text) to svc_proof;
+  revoke all on auth.users from svc_proof;
+  revoke usage on schema auth from svc_proof;
+  set local role svc_proof;
+  res := public.calendar_team_context(org, me, array['bob@x.test', 'unknown-guest@y.test']);
+  reset role;
+  insert into r values (16, 'role WITHOUT auth.users access: no crash, member via org_members.email, guest stays guest',
+    jsonb_array_length(res -> 'members') = 2 and res -> 'members' -> 0 ->> 'kind' = 'member' and res -> 'members' -> 1 ->> 'kind' = 'guest');
   insert into r values (13, 'zone shape: ok/bad', public.calendar_team_zone_ok('Asia/Karachi') and public.calendar_team_zone_ok('Etc/GMT+5') and not public.calendar_team_zone_ok('../x') and not public.calendar_team_zone_ok('') and not public.calendar_team_zone_ok(null) and not public.calendar_team_zone_ok(repeat('a',65)));
 end $$;
 select ord, item, ok from r order by ord;
