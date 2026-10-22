@@ -1,10 +1,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Database, ShieldCheck, Zap } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/site/BrandMark";
-import { useFxTier } from "@/lib/fx";
 
 const taglines = [
   "Mail when it matters.",
@@ -25,29 +24,6 @@ const trust = [
  */
 export function AuthCinema({ className }: { className?: string }) {
   const [idx, setIdx] = useState(0);
-  const tier = useFxTier();
-  const markRef = useRef<HTMLDivElement>(null);
-  const raf = useRef(0);
-
-  // The A follows the cursor a little (tilt + drift) and eases back when it leaves.
-  // Off when Graphics are off / reduced motion / data-saver (tier "off") — see src/lib/fx.ts.
-  const follow = (e: React.PointerEvent<HTMLElement>) => {
-    if (tier === "off" || e.pointerType === "touch") return;
-    const box = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - box.left) / box.width - 0.5;
-    const py = (e.clientY - box.top) / box.height - 0.5;
-    cancelAnimationFrame(raf.current);
-    raf.current = requestAnimationFrame(() => {
-      const el = markRef.current;
-      if (!el) return;
-      el.style.transform = `perspective(700px) translate3d(${(px * 18).toFixed(1)}px, ${(py * 14).toFixed(1)}px, 0) rotateX(${(-py * 14).toFixed(2)}deg) rotateY(${(px * 18).toFixed(2)}deg)`;
-    });
-  };
-  const rest = () => {
-    cancelAnimationFrame(raf.current);
-    if (markRef.current) markRef.current.style.transform = "";
-  };
-  useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % taglines.length), 3200);
@@ -56,8 +32,6 @@ export function AuthCinema({ className }: { className?: string }) {
 
   return (
     <aside
-      onPointerMove={follow}
-      onPointerLeave={rest}
       className={`relative flex w-[440px] shrink-0 flex-col items-center justify-center overflow-hidden ${className ?? ""}`}
     >
       {/* Breathing gradient background */}
@@ -83,12 +57,7 @@ export function AuthCinema({ className }: { className?: string }) {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <div
-            ref={markRef}
-            className={tier === "off" ? "" : "transition-transform duration-200 ease-out will-change-transform"}
-          >
-            <BrandMark home={false} className="scale-[1.3] origin-center" />
-          </div>
+          <BrandMark home={false} className="scale-[1.3] origin-center" />
         </motion.div>
 
         {/* Rotating taglines */}

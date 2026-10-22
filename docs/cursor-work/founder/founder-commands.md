@@ -8,8 +8,9 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
-## ▶ 22 Oct 2026 04:54 PKT — sign-in ka A logo cursor ke saath halka hilta tha, ab nahi (verbatim: "pehle signin pe A jo logo hai woh ata tha us pe cursor jata tha woh hilta tha halka sa ab ghayab hai?") — status: READY (Web pull baqi)
-- Repo ki 385 commits mein /auth ke A par aisa pointer code kabhi nahi mila (sirf plans ke TiltCard mein); isliye naya bana kar wapas diya: AuthCinema ka A cursor ke saath halka tilt+drift, chhodte hi wapas. Graphics OFF / reduced-motion / data-saver / touch par band (fx tier). Sirf desktop left panel (lg+).
+## ▶ 22 Oct 2026 05:02 PKT — A-logo cursor tilt WAPAS (reverted) — founder pull nahi karega jab tak demo pasand na ho
+Founder: "nahi pasand aya hai yeh sign in jahan pe yeh logo A ata tha nazar halka sa hilta tha. yeh demo do" / "yeh bhi tumne wrong kiya yeh dono commits main nahi pull kerun ga?"
+- d3d42fe (AuthCinema cursor tilt) ko revert kiya taake pull mein na aaye. Asli A kaun sa hai (card ke upar / left panel / boot splash) founder ne abhi nahi bataya; demo artifact mein 2 variant. Jab founder chune tab hi asli site mein lagana. E58 commits alag hain (server par SQL + Web baqi).
 
 ## ▶ 22 Oct 2026 04:52 PKT — Rust E58 install server par DONE (founder output); roadmap halat (verbatim: "yeh update kero jo pelhe hai code aye hain mere pass compact chat se pehle update kero")
 Founder ne `rust-engine-install.sh` chalayi: unit tests sab ok (cal 38, locale 6 ...), build OK 2m04s, pm2 online, `calendar.meta.set` (nakli token) 401 = Rust ne proc pakda, `locale.uipref` 401 = pakda. Rollback: `/opt/anexomail-rust/src/main.rs.bak.1792626417`.
