@@ -325,7 +325,7 @@ src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e
 docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
 src/routes/app.founder.tsx aba91747c5c00284
 docs/claude/FOUNDER-WORKSPACE-PLAN.md 6a91b9497cd09606
-docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
+docs/claude/TECH-STACK-BEAST.md f660d0f30d55a01b
 docs/claude/EVENING-PENDING-2026-10-21.md 9a9471c075caa786
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
 docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf

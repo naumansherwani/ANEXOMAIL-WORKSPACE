@@ -5,7 +5,7 @@
 
 ## A. BACKEND — beast mode
 ### A1. LIVE abhi (TECH-MAP se)
-Rust (edition 2021 engine, axum 0.7.9, tokio 1.53), wtransport 0.1.14 (WebTransport/QUIC udp/3443), LTO + codegen-units=1 + strip, Supabase #4, Postfix/Dovecot/OpenDKIM, Caddy, Polar (NO TOUCH).
+Rust (rustc 1.99.1, edition 2024 — server output 23 Oct; axum 0.8.9, tokio 1.53.x, wtransport 0.7.2 / quinn 0.11 WebTransport udp/3443; upgrades DONE live 20 Oct, TECH-MAP 0a) [pehle yahan purani 2021/0.7.9/0.1.14 likha tha — GALAT/STALE tha, 23 Oct ko theek kiya], LTO + codegen-units=1 + strip, Supabase #4, Postfix/Dovecot/OpenDKIM, Caddy, Polar (NO TOUCH).
 ### A2. NEXT (B-series ke andar / foran baad)
 | Item | Faida | Batch |
 |---|---|---|
