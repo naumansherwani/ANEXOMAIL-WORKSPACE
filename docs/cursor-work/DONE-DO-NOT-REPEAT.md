@@ -378,3 +378,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 02:45 — T12 (page auto-refresh: naya-version banner + background ICS feed refresh) repo mein likha, push ho gaya (2e386ca). Founder haan baaqi. Agla kaam: calendar #5 (event par files). Compaction ke baad pehle yeh file + NEXT-TASKS padho; Roman Urdu (Rule 47).
 
 - 23 Oct 03:10 — #5 event par files CODE READY: E74 SQL (+CHECK_E74, proofs/E74_proof.sql 31 asserts), Rust calfile_core/glue (calendar.files.*, installer module `calfile`), Web EventFiles + calendar-files.ts (+test). mail_attach_gc/resolve extend (event ki file GC se bachti). Dobara mat likho; baaqi: server run + Chrome live check.
+
+- 23 Oct 03:00 — GHALTI (meri): founder ko "git merge --ff-only" sync command di thi; /opt/anexomail-web ka working tree repo se alag hai, merge "Aborting" ho gaya (kuch nahi badla, git ne roka). QAIDA: /opt/anexomail-web mein KABHI merge/pull/checkout nahi. Sirf `git fetch` + `git show origin/main:<path>` wali commands (sql-run.sh, rust-engine-install.sh, pull.sh) — woh working tree ko chhuti nahi.
