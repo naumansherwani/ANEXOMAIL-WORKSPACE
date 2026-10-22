@@ -759,7 +759,7 @@ Founder (verbatim): "T8 ko duniya ki latest technology do. meri haan hai sab pe.
 Live check (Chrome, final look): meeting kholo > Files > Add file (PDF) > list mein aaye > download ho > Remove > list se gayi. Guest (workspace member) ko sirf dekhna/download, Add file nahi dikhna chahiye.
 
 ## 23 Oct — Home city (Lahore detect) + adaptive greeting — server par BAAQI (Rule 46, alag alag)
-1. SQL: nahi (E57 ka `extra` hi use hota hai).
+1. SQL (ZAROORI — pehle 'nahi' likha tha, ghalat): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (E75 chalega). Rust/Web pehle hi live hain.
 2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`   (locale module: naya `home` key, test ke saath)
 3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`  (200)
 4. Brain: nahi.
