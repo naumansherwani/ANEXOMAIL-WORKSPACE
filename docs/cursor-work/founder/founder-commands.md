@@ -727,3 +727,7 @@ Bana: E64 SQL (history search, org wall, FTS+trigram, date/person filters; 32 pr
 ## 22 Oct 21:45 — identity vault ADMIN (E68) — ban/appeal aapke maujooda admin se
 Aap ka kaam: **kuch naya nahi**. Account integrity panel mein Block dabao => us account ke sab hash blacklist (2 saal; fraud/severe hamesha). Release dabao => ban hat (severe nahi). Naya "Identity vault" hissa: hisaab + jinhe signup par roka gaya unki review (Allow sign-up / Keep block).
 Commands (is tarteeb mein): 1) SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`  2) Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`  3) Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## Rule: Rust restart + health (22 Oct 22:17) — Rust install ke baad hamesha
+pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
+(200 chahiye.) Tarteeb: SQL -> Rust install -> yeh restart+health -> Brain installer (agar Bun badla) -> Web pull.

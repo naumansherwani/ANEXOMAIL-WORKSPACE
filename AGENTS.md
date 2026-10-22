@@ -333,6 +333,9 @@ Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab
 
 - **SQL file ki pehli line KHALI rakho (founder 22 Oct 09:55):** Supabase editor mein paste par pehla character kat sakta hai; blank line ho to comment salamat rehta hai. Har nayi E-series aur CHECK file par.
 
+**Rust restart + health (founder 22 Oct 22:17, rule ka hissa):** jab Rust badla ho, Rust install ke BAAD yeh bhi command diya jaye (Rust ka third step):
+`pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`  (200 chahiye). Brain badla ho to `brain-*-install.sh` khud anexomail-leo (+anexochat) restart karti hai.
+
 ## Rule 42 — SQL DONO jagah chalni chahiye: server (`sql-run.sh`/psql) AUR Supabase SQL editor (paste) (founder 22 Oct 2026 10:06 PKT, STRICT; Rule 38 ka hissa)
 Founder: "sql ka rule hai ke server pe bhi run hogi aur supabase editor main bhi". Har nayi E-series aur CHECK file BARABAR dono tareeqon se chale:
 1. **Pehli line KHALI** (editor paste pehla character kha sakta hai — 22 Oct: `- E63` error).
