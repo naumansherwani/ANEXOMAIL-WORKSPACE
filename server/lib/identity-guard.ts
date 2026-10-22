@@ -5,6 +5,7 @@
  */
 import { decide, isNotInstalled, Mirror, Outbox, signalsRaw, type Feed, type GuardDecision, type RawIdentity, type Signal } from "./identity-mirror";
 import { admin } from "./supa";
+import { runNotices, type NoticeRow } from "./identity-notice";
 
 export { fingerprintFrom, type RawIdentityInput } from "./identity-mirror";
 
@@ -157,6 +158,30 @@ export async function sweepPayments(): Promise<number> {
 export async function purge(): Promise<void> {
   const { error } = await withTimeout(admin.rpc("identity_vault_purge"), 30_000);
   if (error && !isNotInstalled(error)) noteFailure();
+  // E71: old probation counters (40 days). Not installed yet => ignored.
+  await withTimeout(admin.rpc("identity_probation_sweep"), 30_000).catch(() => undefined);
+}
+
+/** E71: tell people their sign-up was approved (outbox in SQL: retries, never repeats; rejections are never announced). */
+export async function sendNotices(): Promise<{ sent: number; failed: number }> {
+  const { sendMail } = await import("../mail/sendmail");
+  return runNotices({
+    pending: async (limit) => {
+      const { data, error } = await withTimeout(admin.rpc("identity_notice_pending", { p_limit: limit }));
+      if (error) {
+        if (!isNotInstalled(error)) noteFailure();
+        return [];
+      }
+      return (Array.isArray(data) ? data : []) as NoticeRow[];
+    },
+    send: async (m) => {
+      const r = await sendMail({ from: "noreply@anexomail.com", fromName: "ANEXOMAIL", to: [m.to], subject: m.subject, text: m.text });
+      return !!r.ok;
+    },
+    done: async (account, ok) => {
+      await withTimeout(admin.rpc("identity_notice_done", { p_account: account, p_ok: ok }));
+    },
+  });
 }
 
 export async function reportHealth(): Promise<void> {
@@ -185,6 +210,7 @@ export function startIdentityWorkers(): void {
   setInterval(safe("payments", sweepPayments), 300_000);
   setInterval(safe("health", reportHealth), 60_000);
   setInterval(safe("purge", purge), 6 * 3_600_000);
+  setInterval(safe("notices", sendNotices), 60_000);
   setTimeout(safe("purge", purge), 5 * 60_000);
   setTimeout(safe("health", reportHealth), 15_000);
 }

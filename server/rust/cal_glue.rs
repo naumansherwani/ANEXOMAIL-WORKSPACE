@@ -658,6 +658,12 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
             &format!("A meeting can invite up to {} people.", MAX_GUESTS),
         );
     }
+    // E71: a brand-new (probation) account cannot invite guests — the meeting itself is fine, the invitations are not.
+    if list.kept.len() > 1 {
+        if let Some(r) = crate::export_glue::probation_deny(&me.id, "invite", 0).await {
+            return r;
+        }
+    }
     let tz = opt(input, "timezone").map(|t| cal::clean_line(&t, 64));
     let thread_id = opt(input, "thread_id").filter(|t| cal::token_shape_ok(t));
     // repeating meeting (every package): rule is validated and stored in canonical form

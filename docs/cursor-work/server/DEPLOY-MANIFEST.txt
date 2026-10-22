@@ -118,7 +118,7 @@ src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs e3962dbb682fe95c
-server/rust/cal_glue.rs d396cc302bc65093
+server/rust/cal_glue.rs 114ba234b39f754c
 AGENTS.md 98bb70a334f35903
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -137,8 +137,8 @@ src/components/app/security/PasskeyGate.tsx 352233554cdc0116
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 3a237497013d4a65
 docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
 docs/cursor-work/TECH-MAP.md caa92d31b9bf8da3
-server/rust/export_core.rs 25b5cb77c76c09e7
-server/rust/export_glue.rs 46f478cdfd14f4ef
+server/rust/export_core.rs a532f39eecd52903
+server/rust/export_glue.rs 2573f4920072a08d
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
 docs/cursor-work/server/rust-engine-install.sh 66250d3df68b94bc
 src/components/app/security/IntegrityGate.tsx c2c6092f7fdef7a6
@@ -149,8 +149,8 @@ docs/cursor-work/server/integrity-purge/install.sh 2c3d4f09f5d12bdf
 docs/cursor-work/server/integrity-purge/anexomail-integrity-purge.sh 13b572f0a473fc6b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-purge.service 029492d0ede9e291
 docs/cursor-work/server/integrity-purge/anexomail-integrity-purge.timer 7c372ee7348c3e9d
-server/lib/integrity-gate.ts 38942e1a460f1bea
-server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
+server/lib/integrity-gate.ts 75eb8055b4ecea7a
+server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md ca6be03bb6294b3d
 docs/cursor-work/DONE-DO-NOT-REPEAT.md 35d113b36f7b002b
@@ -476,11 +476,11 @@ docs/cursor-work/sql/CHECK_E69.sql fd2947c1d8906c25
 docs/cursor-work/sql/proofs/E69_proof.sql c08dd123205918a6
 server/lib/identity-mirror.ts 706e9389987e74f2
 server/lib/identity-mirror.test.ts d44eb222548b3025
-server/lib/identity-guard.ts 8e41f44dd30eeb02
+server/lib/identity-guard.ts cb8857fd21d13b94
 server/rust/vault_core.rs 5e9fcc37b0658900
 tsconfig.json c1ef8f45d3761d93
-docs/cursor-work/server/brain-identity-install.sh 4c53f338f032742b
-docs/cursor-work/server/brain_identity_patch.py 3524f7888cac1e92
+docs/cursor-work/server/brain-identity-install.sh fe0d41227fb17361
+docs/cursor-work/server/brain_identity_patch.py 5a95c00e22c10357
 src/components/site/CinematicSplash.tsx 4b96d5bc08244f12
 src/lib/overlap-focus.test.ts 233e842b65a6b645
 src/components/app/calendar/FocusRing.tsx 998f825d669eee38
@@ -488,3 +488,10 @@ src/lib/device-fingerprint.test.ts 6f54947d387ea1ee
 src/lib/device-fingerprint.ts b7d81874413f8e9f
 docs/cursor-work/sql/E70_identity_hardening.sql e0a47e9468829eef
 docs/cursor-work/sql/CHECK_E70.sql d02c2b45397e1727
+server/lib/probation.ts 531cc15de31910bc
+server/lib/probation.test.ts 582ff6fc09488015
+server/lib/identity-notice.ts 42df1a6f60aa7a0e
+server/lib/identity-notice.test.ts 22db7632a3953e23
+docs/cursor-work/sql/E71_identity_probation_notice.sql 9469165e6f4800a1
+docs/cursor-work/sql/CHECK_E71.sql 904010b5699b84a8
+docs/cursor-work/sql/proofs/E71_proof.sql ae61b00487f33a22

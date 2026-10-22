@@ -71,51 +71,87 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
 // main.rs ke dispatch mein token ke FORAN baad lagta hai (installer): blocked/purged account ki har call 403 `account_blocked`,
 // siwaye export / apni halat / apna delete. Token ka sub bina verify padha jata hai (jhoota sub sirf us user ka haal dikhata hai).
 // DB ya cache mein koi masla ho to guard KHULA rehta hai (fail-open): outage mein sab ko lock nahi karte.
-static BLOCK_CACHE: std::sync::OnceLock<std::sync::Mutex<HashMap<String, (bool, std::time::Instant)>>> = std::sync::OnceLock::new();
+static BLOCK_CACHE: std::sync::OnceLock<std::sync::Mutex<HashMap<String, (bool, bool, std::time::Instant)>>> = std::sync::OnceLock::new();
 
-async fn is_blocked(sub: &str) -> bool {
+/// (blocked/purged, held-for-review-or-rejected). 30 second cache; DB trouble => (false, false) (fail-open).
+async fn state_of(sub: &str) -> (bool, bool) {
     let cache = BLOCK_CACHE.get_or_init(|| std::sync::Mutex::new(HashMap::new()));
     if let Ok(m) = cache.lock() {
-        if let Some((v, at)) = m.get(sub) {
+        if let Some((b, h, at)) = m.get(sub) {
             if at.elapsed() < std::time::Duration::from_secs(30) {
-                return *v;
+                return (*b, *h);
             }
         }
     }
-    let blocked = match crate::sb_select(&format!("account_integrity?user_id=eq.{sub}&select=state&limit=1")).await {
-        Ok(Value::Array(a)) => a
-            .first()
-            .and_then(|r| r.get("state"))
-            .and_then(|s| s.as_str())
-            .map(|s| s == "blocked" || s == "purged")
-            .unwrap_or(false),
-        _ => false,
+    let state_is = |v: Result<Value, String>, f: &dyn Fn(&str) -> bool| -> bool {
+        match v {
+            Ok(Value::Array(a)) => a.first().and_then(|r| r.get("state")).and_then(|s| s.as_str()).map(f).unwrap_or(false),
+            _ => false,
+        }
     };
+    let blocked = state_is(
+        crate::sb_select(&format!("account_integrity?user_id=eq.{sub}&select=state&limit=1")).await,
+        &|s| s == "blocked" || s == "purged",
+    );
+    // E70: sign-up waiting for review / rejected (identity_account_state). Table not installed yet => error => false.
+    let held = state_is(
+        crate::sb_select(&format!("identity_account_state?account_id=eq.{sub}&select=state&limit=1")).await,
+        &|s| s == "pending" || s == "rejected",
+    );
     if let Ok(mut m) = cache.lock() {
         if m.len() > 5000 {
             m.clear();
         }
-        m.insert(sub.to_string(), (blocked, std::time::Instant::now()));
+        m.insert(sub.to_string(), (blocked, held, std::time::Instant::now()));
     }
-    blocked
+    (blocked, held)
+}
+
+/// E71: ask SQL whether this probation account may do `kind` (invite / public_link / bulk / send). Some(403) only on a clear SQL "deny";
+/// any error (function missing, DB down) => None (fail-open — an outage must not lock the product).
+pub async fn probation_deny(user: &str, kind: &str, recipients: i64) -> Option<Resp> {
+    let v = crate::sb_rpc("identity_probation_take", json!({ "p_account": user, "p_kind": kind, "p_recipients": recipients })).await.ok()?;
+    if v.get("ok").and_then(|x| x.as_bool()) != Some(false) {
+        return None;
+    }
+    let reason = v.get("reason").and_then(|x| x.as_str()).unwrap_or("probation");
+    let msg = ec::probation_message(reason, v.get("limit").and_then(|x| x.as_i64()), v.get("until").and_then(|x| x.as_str()));
+    Some(crate::err(StatusCode::FORBIDDEN, "probation_limit", &msg).into_response())
 }
 
 pub async fn blocked(proc: &str, token: &str) -> Option<Resp> {
+    let sub = ec::jwt_sub(token)?;
+    let (is_blocked, is_held) = state_of(&sub).await;
+    if is_held && !ec::allowed_when_held(proc) {
+        // neutral wording: never says why
+        return Some(
+            crate::err(
+                StatusCode::FORBIDDEN,
+                "account_pending",
+                "This account can't be used right now. If you recently signed up, it may be waiting for review.",
+            )
+            .into_response(),
+        );
+    }
     if ec::allowed_when_blocked(proc) {
         return None;
     }
-    let sub = ec::jwt_sub(token)?;
-    if !is_blocked(&sub).await {
-        return None;
+    if is_blocked {
+        return Some(
+            crate::err(
+                StatusCode::FORBIDDEN,
+                "account_blocked",
+                "This account is blocked. You can still download your data until the export window ends.",
+            )
+            .into_response(),
+        );
     }
-    Some(
-        crate::err(
-            StatusCode::FORBIDDEN,
-            "account_blocked",
-            "This account is blocked. You can still download your data until the export window ends.",
-        )
-        .into_response(),
-    )
+    // E71: probation — these procs are closed to brand-new accounts. The token's sub is unverified here, but a closed proc consumes
+    // no quota (it only bumps a "denied" counter), so a forged sub can't hurt anyone.
+    if let Some(kind) = ec::probation_proc_kind(proc) {
+        return probation_deny(&sub, kind, 0).await;
+    }
+    None
 }
 
 // ───────────────────────── download ─────────────────────────

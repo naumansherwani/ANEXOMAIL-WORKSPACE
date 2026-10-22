@@ -93,20 +93,20 @@ else:
     res["index.ts"] = "patched"
 open(os.path.join(out, "index.ts"), "w", encoding="utf-8").write(x)
 
-# ---- lib/integrity-gate.ts (E70: pending/rejected hold bhi 403) ----
+# ---- lib/integrity-gate.ts (E70: hold bhi 403; E71: probation + hold sirf logout/health/public) ----
+# Live file G37 ki asli ya E70-patched hoti hai. Repo ki file usi ka seedha vaaris hai (sirf do commit chhue), isliye E71 mein poori file badalti hai —
+# lekin sirf jab live file pehchani hui ho (integrityGate + account_integrity maujood); warna STOP, kuch nahi badla.
 os.makedirs(os.path.join(out, "lib"), exist_ok=True)
 gp = os.path.join(live, "lib/integrity-gate.ts")
 if os.path.exists(gp):
     g = rd(gp); rg = rd(os.path.join(repo, "lib/integrity-gate.ts"))
-    if "identity_account_state" in g:
+    if "probationRule" in g:
         res["integrity-gate.ts"] = "same"
     else:
-        a0 = '    const { data, error } = await supa.from("account_integrity").select("state").eq("user_id", sub).maybeSingle();\n'
-        once(g, a0, "integrity-gate account_integrity query")
-        add = between(rg, a0, "  } catch {\n    blocked = false;", "integrity-gate E70 block")
-        i = g.index(a0); j = g.index("  } catch {\n    blocked = false;", i)
-        g = g[:i] + add + g[j:]
-        res["integrity-gate.ts"] = "patched-e70"
+        if "export async function integrityGate" not in g or "account_integrity" not in g:
+            print("STOP: live lib/integrity-gate.ts pehchani hui nahi (integrityGate / account_integrity nahi mila)"); sys.exit(4)
+        g = rg
+        res["integrity-gate.ts"] = "patched-e71"
     open(os.path.join(out, "lib/integrity-gate.ts"), "w", encoding="utf-8").write(g)
 else:
     res["integrity-gate.ts"] = "absent"

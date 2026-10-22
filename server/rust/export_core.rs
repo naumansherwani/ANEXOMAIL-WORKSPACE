@@ -428,6 +428,39 @@ pub fn allowed_when_blocked(proc: &str) -> bool {
     )
 }
 
+/// E70: sign-up review (HOLD) ya rejected account sirf apni pehchan (whoami) pooch sakta hai — export bhi nahi, kuch bhi nahi.
+pub fn allowed_when_held(proc: &str) -> bool {
+    matches!(proc, "whoami")
+}
+
+/// E71: probation mein jo procs SIRF NAAM se band hain (input dekhne ki zaroorat nahi). Jawab = SQL `identity_probation_take` ka kind.
+/// (calendar.create ka guest-invite wala hissa cal_glue mein, input dekh kar, usi SQL function se.)
+pub fn probation_proc_kind(proc: &str) -> Option<&'static str> {
+    match proc {
+        "calendar.invites.resend" | "team.invites.create" | "team.invites.resend" => Some("invite"),
+        "booking.page.set" => Some("public_link"),
+        "people.import" => Some("bulk"),
+        _ => None,
+    }
+}
+
+/// E71: SQL ke `reason` ka insani lafz. Fingerprint / hold / vault ka zikr kabhi nahi.
+pub fn probation_message(reason: &str, limit: Option<i64>, until: Option<&str>) -> String {
+    let tail = match until {
+        Some(u) if u.len() >= 10 => format!(" These limits end on {}, or as soon as you subscribe to a plan.", &u[..10]),
+        _ => " These limits end when your account is a few days old, or as soon as you subscribe to a plan.".to_string(),
+    };
+    let head = match reason {
+        "probation_recipients" => format!("New accounts can send to up to {} people per message.", limit.unwrap_or(20)),
+        "probation_daily" => format!("New accounts can send up to {} messages per day. You can send more tomorrow.", limit.unwrap_or(50)),
+        "probation_invites" => "Invitations are not available on a brand-new account yet.".to_string(),
+        "probation_links" => "Public links are not available on a brand-new account yet.".to_string(),
+        "probation_bulk" => "Bulk imports are not available on a brand-new account yet.".to_string(),
+        _ => "This is not available on a brand-new account yet.".to_string(),
+    };
+    format!("{head}{tail}")
+}
+
 // ───────────────────────── file ka naam ─────────────────────────
 /// ZIP entry ka naam: path-traversal / control chars hata kar. `dir/` prefix glue deta hai.
 pub fn safe_name(s: &str) -> String {
@@ -720,6 +753,41 @@ mod tests {
         assert!(allowed_when_blocked("account.integrity.appeal"));
         assert!(!allowed_when_blocked("mail.send"));
         assert!(!allowed_when_blocked("chat.send"));
+    }
+
+    #[test]
+    fn held_account_gets_only_whoami() {
+        assert!(allowed_when_held("whoami"));
+        for p in ["account.export.ticket", "account.integrity.me", "mail.send", "calendar.create", "account.delete.request", "x"] {
+            assert!(!allowed_when_held(p), "{p}");
+        }
+    }
+
+    #[test]
+    fn probation_closes_invites_links_and_bulk_by_name() {
+        assert_eq!(probation_proc_kind("calendar.invites.resend"), Some("invite"));
+        assert_eq!(probation_proc_kind("team.invites.create"), Some("invite"));
+        assert_eq!(probation_proc_kind("team.invites.resend"), Some("invite"));
+        assert_eq!(probation_proc_kind("booking.page.set"), Some("public_link"));
+        assert_eq!(probation_proc_kind("people.import"), Some("bulk"));
+        for p in ["calendar.create", "calendar.busy", "booking.public.book", "team.members.list", "mail.send", "whoami"] {
+            assert_eq!(probation_proc_kind(p), None, "{p}");
+        }
+    }
+
+    #[test]
+    fn probation_messages_state_the_limit_and_never_leak_internals() {
+        let m = probation_message("probation_recipients", Some(20), Some("2026-10-30T10:00:00Z"));
+        assert!(m.contains("20 people") && m.contains("2026-10-30"));
+        assert!(probation_message("probation_daily", None, None).contains("50 messages"));
+        for r in ["probation_recipients", "probation_daily", "probation_invites", "probation_links", "probation_bulk", "zzz"] {
+            let t = probation_message(r, None, None).to_lowercase();
+            for bad in ["finger", "vault", "hold", "banned", "review", "match"] {
+                assert!(!t.contains(bad), "{r}: {bad}");
+            }
+        }
+        // short / odd `until` never panics
+        assert!(!probation_message("probation_bulk", None, Some("x")).is_empty());
     }
 
     #[test]
