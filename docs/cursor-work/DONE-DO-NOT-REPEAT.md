@@ -406,3 +406,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 04:30 — CALENDAR GINTI (founder ne pakda): sahi = 13 hisse (#0,#1,#2,#3,#4a,#4b,#4c,#5,#6,#7,#8,#9,#10); GREEN 10 (#0,#1,#2,#3,#4a,#4b,#4c,#5,#9,#10); BAAQI 3 (#6 CalDAV, #7 Google, #8 Rooms). Purani '11 mein se 8/9' ginti ghalat thi (4a/4b/4c ek-teen mixed). Aage hamesha '10/13'.
 
 - 23 Oct 04:35 — E76 GREEN (founder hukm "green likho"): SQL E75+E76 v2 ledger-confirmed (sql-run 'koi nayi SQL nahi'), Rust + Brain founder ne chalaye (kehta hai; output paste nahi hua), Chrome (Pro test account) par passkey banner abhi bhi dikhta hai => /passkey/status Brain patch ke baad theek chal raha, asli-user path nahi tuta. HONEST SEEDHA: registry-chhoot (registered '*.test' account ka banner na aana) sirf sandbox proof se verified, live login se nahi (test account mein main login nahi karta); CHECK_E76 7 rows ka output founder se nahi aaya. Dobara mat likho.
+
+- 23 Oct 04:35 — CHECK_E76 founder ne Supabase editor mein chalaya: SUCCESS (founder bola). E76 SQL poora VERIFIED GREEN. Baaqi optional: registered .test account se live passkey chhoot dekhna.
