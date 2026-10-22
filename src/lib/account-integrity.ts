@@ -190,6 +190,8 @@ export type IdentityOverview = {
   signups_denied_30d?: number;
   signups_review_30d?: number;
   appeals_open?: number;
+  health_alert?: boolean;
+  health?: { source: string; age_s: number; outbox_pending: number; check_failures_1h: number; mirror_size: number; mirror_age_s: number; mode: string }[];
   appeals?: { id: string; created_at: string; contact: string; statement: string }[];
 };
 

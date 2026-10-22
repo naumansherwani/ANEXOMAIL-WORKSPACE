@@ -5,7 +5,8 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { sendMail } from "../mail/sendmail";
 import { mountPasskeyRoutes } from "./auth-passkey";
 import { forgetAuthToken, hardenSupabaseAuth, isTransientAuthError } from "../lib/auth-harden";
-import { readDecision, shapeFromSignals, verifyDeviceKeyProof } from "../lib/identity-vault";
+import * as identityGuard from "../lib/identity-guard";
+import { shapeFromSignals, verifyDeviceKeyProof } from "../lib/identity-vault";
 
 hardenSupabaseAuth();
 
@@ -540,30 +541,29 @@ authRouter.post("/signup", async (req, res) => {
   }
 
   // E66/E68 identity vault: ek insaan, ek account. Blacklisted nishan => naya account nahi. Vault down ho to fail-open.
-  let vaultArgs: Record<string, string | null> | null = null;
+  let rawIdentity: { email: string; recovery: string; deviceKey: string | null; shape: string | null; network: string | null } | null = null;
   if (!family) {
     const deviceKey = await verifyDeviceKeyProof(req.body?.device_proof, email);
-    vaultArgs = {
-      p_email: email,
-      p_recovery: recoveryEmail,
-      p_device_key: deviceKey,
-      p_shape: shapeFromSignals(req.body?.signals),
-      p_network: clientIp(req),
-      p_key: vaultKey(),
+    rawIdentity = {
+      email,
+      recovery: recoveryEmail,
+      deviceKey,
+      shape: shapeFromSignals(req.body?.signals),
+      network: clientIp(req),
     };
-    try {
-      const { data: chk, error: chkErr } = await getAdmin().rpc("identity_signup_check_raw", vaultArgs);
-      if (chkErr) throw chkErr;
-      const verdict = readDecision(chk);
-      if (verdict.decision === "deny") {
-        return res.status(403).json({
-          error: "This identity cannot create a new account. If you think this is a mistake you can ask for a review.",
-          code: "identity_blocked",
-          appealable: verdict.appealable !== false,
-        });
-      }
-    } catch (err) {
-      console.error("[auth.signup.identity]", err);
+    const verdict = await identityGuard.check(rawIdentity);
+    if (verdict.kind === "deny") {
+      return res.status(403).json({
+        error: "This identity cannot create a new account. If you think this is a mistake you can ask for a review.",
+        code: "identity_blocked",
+        appealable: verdict.appealable,
+      });
+    }
+    if (verdict.kind === "closed") {
+      return res.status(503).json({
+        error: "Sign-up is paused for a minute while we double-check our safety records. Please try again shortly.",
+        code: "identity_unavailable",
+      });
     }
   }
 
@@ -619,13 +619,7 @@ authRouter.post("/signup", async (req, res) => {
     } catch (err) {
       console.error("[auth.signup.vault]", err);
     }
-    if (vaultArgs) {
-      try {
-        await getAdmin().rpc("identity_register_raw", { p_account: data.user.id, ...vaultArgs });
-      } catch (err) {
-        console.error("[auth.signup.identity.register]", err);
-      }
-    }
+    if (rawIdentity) await identityGuard.register(data.user.id, rawIdentity);
   }
   if (!data.session?.access_token) return res.status(202).json({ confirmation_required: true });
   await saveSession(data.user.id, data.session.access_token, req);

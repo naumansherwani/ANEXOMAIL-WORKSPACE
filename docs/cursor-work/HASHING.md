@@ -33,3 +33,6 @@ Usool: **HMAC chhupata hai ke kaun; SHA-256 dikhata hai ke kya badla nahi.** Kab
 
 ## 5. Code review ka sawal (Rule 29 se pehle har PR)
 Kya naya hash personal/guessable cheez ka hai? -> HMAC + subkey. Kya ticket/checksum/chain hai? -> SHA-256. Bcrypt sirf chhote secret ke liye.
+
+## Identity vault (E66-E69)
+Pepper wahi `DEVICE_VAULT_KEY` (fallback service-key-tail). Hash = HMAC(HMAC(key,"anexomail/identity/v1/<kind>"), canon). SQL (E68 identity_hmac_hex) = Bun (server/lib/identity-mirror.ts) = Rust (server/rust/vault_core.rs) — parity vectors CHECK_E69 + dono test files mein. **Pepper badalna = sab ban hash badalna** — pehle key_id v2 + migrate function; fallback (service-key-tail) par mat chhodein: DEVICE_VAULT_KEY set karein.

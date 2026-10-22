@@ -14,6 +14,7 @@
 import express from "express";
 import leoRouter from "./routes/leo.js";
 import { support } from "./routes/support";
+import { startIdentityWorkers } from "./lib/identity-guard";
 import { authRouter } from "./routes/auth";
 import { mailRouter } from "./routes/mail";
 import { mailComposeRouter } from "./routes/mail-compose";
@@ -250,6 +251,7 @@ app.use((_req, res) => res.status(404).json({ error: "not_found" }));
 
 app.listen(PORT, "0.0.0.0", () => {
   startMailWorker();
+  startIdentityWorkers();
   console.log(
     `ANEXOMAIL Brain LIVE on port ${PORT} (Leo + auth + workspace + compose + contacts + calendar + crm + org + ai + founder + integrations + settings + admin)`,
   );

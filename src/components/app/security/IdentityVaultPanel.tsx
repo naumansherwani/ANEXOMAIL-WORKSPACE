@@ -44,6 +44,23 @@ export function IdentityVaultPanel() {
         {d.bans_expiring_30d ? `, ${d.bans_expiring_30d} end within 30 days` : ""}). Last 30 days: {d.signups_denied_30d ?? 0} sign-ups
         refused, {d.signups_review_30d ?? 0} sent to review.
       </p>
+      {d.health_alert && (
+        <p role="status" className="text-amber-400">
+          Safety-record check needs a look:{" "}
+          {(d.health ?? [])
+            .map((h) =>
+              h.outbox_pending > 0
+                ? `${h.outbox_pending} sign-up record(s) waiting to be saved`
+                : h.mode !== "mirror"
+                  ? "running without its local copy"
+                  : h.check_failures_1h >= 5
+                    ? `${h.check_failures_1h} failed checks in the last hour`
+                    : "no recent report",
+            )
+            .join(" · ") || "no recent report"}
+          . It retries by itself.
+        </p>
+      )}
       {reasons.length > 0 && (
         <p className="text-muted-foreground">{reasons.map(([k, v]) => `${k.replace("_", " ")}: ${v}`).join(" · ")}</p>
       )}
