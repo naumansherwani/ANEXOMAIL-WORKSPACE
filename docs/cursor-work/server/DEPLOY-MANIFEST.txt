@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 97061d8d6ff98b19
+docs/cursor-work/NEXT-TASKS.md ff846f2d32328e8f
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac
