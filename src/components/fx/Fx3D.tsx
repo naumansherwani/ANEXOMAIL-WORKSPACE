@@ -28,15 +28,15 @@ function Ready({ onReady }: { onReady: () => void }) {
 }
 
 class Guard extends Component<{ children: ReactNode; fallback: ReactNode; onBad?: () => void }, { bad: boolean }> {
-  state = { bad: false };
+  override state = { bad: false };
   static getDerivedStateFromError() {
     return { bad: true };
   }
-  componentDidCatch() {
+  override componentDidCatch() {
     /* 3D fail ho to fallback — kuch aur nahi tootta */
     this.props.onBad?.();
   }
-  render() {
+  override render() {
     return this.state.bad ? this.props.fallback : this.props.children;
   }
 }

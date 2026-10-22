@@ -16,7 +16,7 @@ import { rpc } from "@/lib/rpc";
 import type { InviteResult, SeatState, TeamRole, WorkMail } from "@/lib/team-report";
 
 export { describeSeats, describeWorkMail, summariseInvites } from "@/lib/team-report";
-export type { InviteResult, SeatState, WorkMail } from "@/lib/team-report";
+export type { InviteResult, SeatState, TeamRole, WorkMail } from "@/lib/team-report";
 
 export type TeamMember = {
   id: string;
