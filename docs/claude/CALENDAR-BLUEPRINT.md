@@ -22,7 +22,7 @@ Compact ke baad: pehle AGENTS.md Rule 37/38/40, phir `docs/cursor-work/CALENDAR-
 | World-clock pins (kai shehar, account-synced) | GREEN (desktop) | haan |
 | Team availability matrix (sab ke zones mein behtareen waqt, asli minutes) | CODE+SQL/Rust/Web live, live check baaki | **GREEN ke baad** |
 | Outcome colours (#9), History search (#10) | design | nahi, bane nahi |
-| ICS subscribe (#4c) | CODE READY 23 Oct (E73, Rust ics, Web) | nahi |
+| ICS subscribe (#4c) | GREEN LIVE 23 Oct | nahi |
 | CalDAV, Google sync, event files, rooms | TODO | nahi |
 
 ## 3. Landing / plans copy (draft; lagane se pehle founder "haan")

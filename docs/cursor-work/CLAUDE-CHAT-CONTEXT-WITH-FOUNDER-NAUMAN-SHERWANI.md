@@ -310,6 +310,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **23 Oct 02:20 PKT** — #4c ICS subscribe GREEN LIVE (founder ke server commands + Chrome live saboot, DONE-DO-NOT-REPEAT mein detail). AGLA: #5 event par files.
+
 - **23 Oct 02:05 PKT** — FOUNDER: (1) ZABAN RULE: hamesha Roman Urdu (AGENTS.md Rule 47). (2) compact ne yaad mita di thi: sab repo mein hai, yeh file + DONE-DO-NOT-REPEAT.md + NEXT-TASKS.md padho. HALAT: E72 (appeal 20,000 + evidence) GREEN server par. #4c ICS subscribe CODE READY aur push ho chuka (commit 0a52462): SQL E73 (proof ALL OK), Rust ics_core (64 tests) + ics_glue, installer module `ics`, Web Settings > Outside calendars + read-only events. SERVER PAR BAAQI (founder, alag alag, Rule 46): 1) SQL sql-run.sh 2) Rust installer 3) Rust restart+health 4) Web pull + Ctrl+Shift+R; phir Chrome mein asli ICS link daal kar check. AGLA: #5 event par files -> W3/W4/W5 -> founder account (command center) -> 6 identity live tests.
 
 - **19 Oct 03:50 PKT** — Founder ke 'haan' par kaam shuru: Rust `manager` rank (G32) + nikale hue (revoked) member ko Rust ki 'user kis org ka' reads se bahar rakhne wala guard (G29: `membership_guard.py`, 5 tests, installer mein `GUARD=0` se band hone wala step); AI ki sirf ek pointer line sudhari (upar item 6). Test-account passwords chat mein dena theek, par repo/memory/script mein KABHI nahi store (script silent prompt leti hai). Agla: Business Pro login fix, G31, G30 migration worker, iMIP reply, Bun->Rust, Chat audit, Caddy/HTTP3 check.
