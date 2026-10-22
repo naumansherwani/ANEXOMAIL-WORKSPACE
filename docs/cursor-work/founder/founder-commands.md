@@ -731,3 +731,5 @@ Commands (is tarteeb mein): 1) SQL: `git -C /opt/anexomail-web fetch -q origin m
 ## Rule: Rust restart + health (22 Oct 22:17) — Rust install ke baad hamesha
 pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
 (200 chahiye.) Tarteeb: SQL -> Rust install -> yeh restart+health -> Brain installer (agar Bun badla) -> Web pull.
+
+## Rule 46 (aeen) — tarteeb: 1 SQL -> 2 Rust install -> 3 Rust restart+health -> 4 Brain installer (agar Bun badla) -> 5 Web pull. Sirf badli hui technology ke steps. (AGENTS.md Rule 46)

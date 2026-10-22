@@ -370,3 +370,12 @@ Founder: "yeh sql wali command pehle run hogi, yeh ab server pe run hogi; editor
 ## Rule 45 — Sign-in bhi latest technology (Rust) par; Bun hamesha emergency; vault ke qaide (founder 22 Oct 2026 20:50 PKT, STRICT)
 Founder: sign-in/auth bhi Bun se latest technology par; Bun fallback hamesha; frontend latest; SQL super-advance; passkey data + device record vault mein; wrong activity => account blocked + vault mein safe hash; dobara signup par vault match, blacklisted = account nahi banega.
 Poora plan + policy mel: `docs/cursor-work/AUTH-MIGRATION-PLAN.md` (phases A–D, vault requirements, privacy audit). Public privacy/footer copy founder ke "haan" ke baghair nahi badlti. Passkey id se returning banda pehchanna technically nahi hota — asli rokna device hash + email HMAC tombstone.
+
+## Rule 46 — DEPLOY KA AEEN: tarteeb + technology ke hisab se command (founder 22 Oct 2026 22:19, CONSTITUTION)
+Har push ke saath sirf WOH steps do jin technology ka code badla, hamesha isi tarteeb mein, har step alag poori command:
+1. **SQL** (Postgres/Supabase) — `sql-run.sh` (bare = AUTO). Hamesha sab se pehle (Rule 44).
+2. **Rust** (axum/tokio async, :3200) — `rust-engine-install.sh`.
+3. **Rust restart + health** — `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health` (200).
+4. **Brain / chat (Bun fallback, anexomail-leo :3100 + anexochat :3300)** — sirf agar `server/*.ts` badla: us change ka `brain-*-install.sh` (surgical, restore-on-fail). `pull.sh` Brain ko deploy NAHI karta.
+5. **Web (frontend)** — `pull.sh` (build + pm2 anexomail-web) + Ctrl+Shift+R. Hamesha aakhir mein.
+Har technology ka apna raasta: frontend=pull.sh, Rust=install+restart, Bun=brain installer, SQL=sql-run.sh; ek ka command doosri technology ko deploy nahi karta. Polar :3400, Caddy, mail stack ko founder "haan" ke bina haath nahi. Is rule ko Rule 41 ka commit-message/jawab format follow karna hai (commit hash + sirf zaroori steps). Naya technology aaye (jaise sign-in Rust par) to is list mein uska step jodna lazmi.
