@@ -42,13 +42,14 @@ export function CinematicSplash({ open, ready = true, onDone }: Props) {
     return () => clearTimeout(exit);
   }, [open, ready, phase]);
 
+  // Exit = navigate NOW while the splash is still fully opaque. The route change unmounts the page (and this splash) and the
+  // next surface's own loader takes over seamlessly — fading out first revealed the sign-in form for a moment (the
+  // "dashboard -> sign-in -> dashboard" flash). Fallback: if navigation somehow did not unmount us, close after 4 s.
   useEffect(() => {
     if (phase !== "exit") return;
-    const done = setTimeout(() => {
-      if (!homeClicked.current) onDone?.();
-      setPhase("closed");
-    }, 600);
-    return () => clearTimeout(done);
+    if (!homeClicked.current) onDone?.();
+    const fallback = setTimeout(() => setPhase("closed"), 4000);
+    return () => clearTimeout(fallback);
   }, [phase, onDone]);
 
   if (phase === "closed") return null;
@@ -56,9 +57,7 @@ export function CinematicSplash({ open, ready = true, onDone }: Props) {
   return (
     <div
       aria-hidden
-      className={`ax-splash-stage fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background ${
-        phase === "exit" ? "ax-splash-exit" : "ax-splash-enter"
-      }`}
+      className="ax-splash-stage ax-splash-enter fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background"
     >
       <div className="ax-splash-vignette pointer-events-none absolute inset-0" />
       <div className="ax-splash-grain pointer-events-none absolute inset-0" />
