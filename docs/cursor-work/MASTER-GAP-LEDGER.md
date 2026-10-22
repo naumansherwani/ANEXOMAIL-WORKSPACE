@@ -154,3 +154,5 @@ Yahan code jayega: web = src/components/app/mail/* + src/routes/app.mail*.tsx + 
 - 22 Oct 08:55 — Calendar #4b / World Clock W1 (Overlap Matrix): CODE READY (E62 + Rust `overlap` + web). Install + live check pending. Detail: docs/claude/WORLD-CLOCK-BLUEPRINT.md, docs/cursor-work/CALENDAR-ROADMAP.md.
 
 - 22 Oct 09:40: CALENDAR: #4b W1 live check baaki; naye design-only #9 outcome colours, #10 history search (docs/claude/CALENDAR-BLUEPRINT.md). Landing copy founder "haan" par.
+
+- 22 Oct 09:50: CALENDAR #4a/#4b GREEN; landing copy live (web pull baaki). Aglu #9 outcome colours (shaam).

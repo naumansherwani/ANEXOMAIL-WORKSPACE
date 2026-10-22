@@ -680,3 +680,6 @@ Basic ko itna do ke deewane ho jayen; abhi sab unlimited banao; kis package ko k
 
 ### 22 Oct 2026 09:26 PKT — TARTEEB lock: Calendar+WorldClock -> M-series -> billing portal G16
 Detail CALENDAR-ROADMAP.md "TARTEEB". M-series aur G16 ke faislay tab poochhe jayenge jab un ki baari aaye.
+
+### 22 Oct 2026 09:50 PKT — #4b GREEN, calendar copy live, shaam ka kaam #9
+Founder: "yeh green kero (members banana practical nahi), copy haan, next kaam sirf shaam ko". Web pull OK 254 restarts, server==repo 513. #4b GREEN. Copy: index.tsx Calendar card + plans.ts line "Contacts & full calendar..." (web pull baaki, founder shaam ko chalaye). SHAAM: #9 outcome colours (E63 SQL -> Rust -> Web), phir #10 history search, W2 Focus Ring.

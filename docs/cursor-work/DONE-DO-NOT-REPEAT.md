@@ -331,3 +331,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 09:30: W1 live chal gayi (E62 fix + live matrix dekha). Spread (3h gap) + unknown-zone wording fix repo mein; Rust+Web install pending; dashboard card live check baqi.
 
 - 22 Oct 09:40: Rust installer rollback line ab generated script `/root/rust-rollback-<stamp>.sh` (purani `cd ... cargo build` line retired, dobara mat likho). Calendar blueprint (access model + copy + #9/#10 design) = `docs/claude/CALENDAR-BLUEPRINT.md`.
+
+- 22 Oct 09:50: #4a+#4b (world-clock pins + team overlap matrix + "time zone not known" dup fix) GREEN. Calendar landing/plans copy likha-lagaya. Dobara mat karo.

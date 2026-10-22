@@ -87,7 +87,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
       "5GB per mailbox",
       "Undo send (30s)",
       "Thread ownership",
-      "Contacts & calendar",
+      "Contacts & full calendar — invites with replies, booking page, world clocks",
       "Cmd+K workspace search",
       "Free aliases — no extra seat",
       "Human support — 72h response",

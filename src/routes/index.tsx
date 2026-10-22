@@ -108,7 +108,7 @@ const wing = [
   {
     icon: CalendarDays,
     title: "Calendar",
-    body: "Shared calendars, availability and meetings that live beside the thread that created them.",
+    body: "Meetings that live beside the thread. Send an invite and the reply lands in your calendar, let people book a time themselves, and see the best hour across time zones.",
   },
   {
     icon: ListChecks,
