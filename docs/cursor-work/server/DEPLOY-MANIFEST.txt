@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 3411762b07f97384
+docs/cursor-work/founder/founder-commands.md 0c82c865d93164c4
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -391,6 +391,6 @@ docs/cursor-work/CALENDAR-ROADMAP.md d6596e1ba2deb5b8
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
-docs/claude/WORLD-CLOCK-BLUEPRINT.md 690268d6b7a51140
+docs/claude/WORLD-CLOCK-BLUEPRINT.md 76eb3e50367e9bba
 docs/cursor-work/sql/E61_world_clocks.sql 529fac8829a7f835
 docs/cursor-work/sql/CHECK_E61.sql c8f2c5638b0a2def

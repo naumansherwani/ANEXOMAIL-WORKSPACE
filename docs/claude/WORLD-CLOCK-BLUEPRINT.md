@@ -34,3 +34,17 @@ Sab jagah ek hi component/lib (`WorldClocks`, zone helpers), duplicate nahi.
 - **W5** l10n shehar-naam + Speculation Rules + perf pass (LCP 1.8 s, INP 150 ms naapa hua).
 FOUNDER FAISLA 22 Oct 08:15: 'sab banega, jo website ke liye better ho woh opt karo'. Mera chunav: (a) fatigue = sach-ghantay HAAN; (b) travelling status opt-in HAAN; (c) market chip HAAN lekin default OFF, sirf pinned shehar ke saath, sirf shaaye-shuda exchange hours, billing se door. Pehle wale sawal:
 (a) fatigue ko sach-ghanton wali shakal (haan?) (b) travelling status opt-in (haan?) (c) market chip chahiye ya nahi.
+
+## FOUNDER HUKM 22 Oct 08:20: "yeh banye ga kisi bhi keemat pe, lekin awam ko sach ke saath" — BUILD PLAN (har cheez ka sach-wala version)
+Asool: screen par jo number/lafz aaye woh asli naap ya user ka diya hua data ho. Jo naap nahi sakte woh label ke saath "andaza" nahi, bilkul nahi dikhate.
+| # | Banega (sach ke saath) | Data kahan se (asli) | Phase |
+|---|---|---|---|
+| F1 | **Fatigue**: "Is waqt par meeting rakhi to Japan ka din 14 ghante lamba ho jaye ga (working 09–17 se 5 ghante bahar)" | working hours (E58) + us din ki meetings (calendar) — ginti, koi % nahi | W2 |
+| F2 | **Travelling / In Transit**: user khud route+departure+arrival waqt daale (ya event se) -> timeline par "In transit" badge, landing par apna naya zone | user ka diya hua data; hum flight/coordinates track NAHI karte | W4 |
+| F2b | **Alerts hold**: transit ke dauran sirf push/notification chup (quiet), mail HAMESHA inbox mein aati hai | notification layer (B4) | W4 |
+| F3 | **Latency clock**: har member ka "server tak" RTT, **us ke apne browser se naapa hua**, rolling p50/p95, sirf online + consent (opt-in); protocol asli (`nextHopProtocol` = h3/h2) | `/rpc/time.ping` (Rust) + browser Performance API; QUIC tab dikhe jab Caddy h3 de | W4 |
+| F3b | **Time sync badge**: device clock server se kitna aage/peeche (±ms), NTP nahi (browser mein ms se zyada maane nahi rakhta) | Rust `time.now` + round-trip offset | W4 |
+| F4 | **Billing deadline banner**: "Aap ka plan 23 Oct 14:00 (Karachi) ko renew/khatam" — asli Polar/subscription tareekh, user ke zone mein countdown | hamari subscription table (Polar webhook se bhari); koi bank-clearing / rollback daawa nahi | W5 (Polar ko haath nahi lagate, sirf padhna) |
+| F4b | **Market open/closed chip** (opt-in, default OFF) | shaaye-shuda exchange hours (weekday); holiday data nahi to "holiday check nahi" likhte | W5 |
+| F5 | **WASM** | Pehle naap: solar/terminator hisaab JS mein ~microseconds hai; WASM sirf tab jab benchmark JS ko haraye. Plan: globe worker mein JS pehle (OffscreenCanvas), WASM lazy `import()` sirf globe khulne par, size budget <= 30 KB gz, aur BENCH proof ke baghair nahi shaamil. | W3 (benchmark gate) |
+Sab packages/family ko ek jaisa (Rule 37/40); sirf bhari server-side cheez (agar kabhi) plan-surface capability se.
