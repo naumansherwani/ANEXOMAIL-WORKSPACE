@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md d59f024dc102f50c
+docs/cursor-work/founder/founder-commands.md 546aea3e6b4684ba
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 59359a696442351e
+docs/cursor-work/MASTER-GAP-LEDGER.md aea0714f9185c2c7
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -387,3 +387,4 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 7447184971386306
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
+docs/cursor-work/CALENDAR-ROADMAP.md d9479e401dea1de3

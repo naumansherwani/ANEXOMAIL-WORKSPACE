@@ -142,3 +142,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 
 - 22 Oct 2026 GREEN: Calendar roadmap #0 Layout v2 (Classic+Expanded, shehar-naam clock, 12h/24h/Auto, account sync E57) + #1 E58 (calendars+rang, working hours, out-of-office, in-app reminders; SQL+Rust+Web live, 1440/820/390). Sign-in button A (Rule 39) LOCKED, live. NEXT: #2 Booking page B7c, #3 iMIP G26, #4 world-clock/team overlay/ICS subscribe, #5 event files, #6 CalDAV, #7 Google sync, #8 rooms.
 - 22 Oct 2026 GREEN: #2 Booking page B7c (SQL E59 + Rust book + Web /book/<handle>, /book/manage, host sheet) live + Chrome book/move/cancel/double-book wall + 3 mails Gmail mein aayin. NEXT: #3 iMIP reply G26 (plan founder-commands.md 06:35 entry).
+
+- 22 Oct 07:20 Calendar roadmap ek jagah: docs/cursor-work/CALENDAR-ROADMAP.md (#0–#8 haal + spec). Naya calendar step wahin update karo.

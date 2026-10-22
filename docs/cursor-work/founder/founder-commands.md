@@ -624,3 +624,5 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - `server/rust/imip_core.rs` (REPLY reader + trust gate, 7 tests), hook in `deliver_bin.rs` (after mail stored; SPF/DKIM pass AND From==ATTENDEE; best-effort; pushes "calendar" event), `cal_glue.rs` exposes `rsvp_via`, Guests.tsx label "from their calendar app" (all packages; Rule 40 — no gating, family sees same as buyers).
 - Order: SQL `E60_imip_reply CHECK_E60` -> Rust engine (MODULES="cal") -> Rust deliver installer -> Web pull. GREEN only after founder output + live Gmail "Yes" click.
 - 22 Oct 06:53 SERVER OUTPUT AAYA (founder): E60 OK + CHECK_E60 7/7; Rust cal 38 tests+build+health OK; deliver 43 tests+build+2 asli mail OK; web pull build OK /health 200 differ=0 (pull ne "KUCH GALAT" dikhaya = manifest SHA purani thi docs file ki — mera galti, fix push hua). #3 = SERVER-INSTALLED; GREEN sirf Gmail "Yes" live click ke baad.
+
+- 22 Oct 07:20 Calendar roadmap single source: docs/cursor-work/CALENDAR-ROADMAP.md (upar ki bikhri lines purani ho sakti hain).
