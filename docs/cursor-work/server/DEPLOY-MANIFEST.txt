@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 2b7ac53fb66a2c6b
+docs/cursor-work/founder/founder-commands.md d59f024dc102f50c
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -385,3 +385,4 @@ docs/cursor-work/sql/E60_imip_reply.sql fa4f393ad9a50bf3
 docs/cursor-work/sql/CHECK_E60.sql 0e8f51c10ecdb7f9
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a830171ee28ed9ce
