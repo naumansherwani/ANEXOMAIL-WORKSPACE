@@ -33,6 +33,7 @@ import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { CalendarClassic } from "@/components/app/calendar/CalendarClassic";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
+import { BookingButton } from "@/components/app/calendar/BookingPage";
 import { CalSettingsButton } from "@/components/app/calendar/CalSettings";
 import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
@@ -627,6 +628,7 @@ function CalendarExpanded() {
         <div className="flex items-center gap-1.5">
           <LayoutToggle className="ax-tap px-2 py-1.5" />
           <CalSettingsButton className="ax-tap px-2 py-1.5" />
+          <BookingButton className="ax-tap px-2 py-1.5" />
           {railButton("availability", t("Avail."))}
           {railButton("load", t("Load"))}
           <IcsPickButton onLoaded={setIcsPlan} />

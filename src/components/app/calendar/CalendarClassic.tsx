@@ -32,6 +32,7 @@ import { EventDetail } from "@/components/app/calendar/EventDetail";
 import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
+import { BookingButton } from "@/components/app/calendar/BookingPage";
 import { CalSettingsButton } from "@/components/app/calendar/CalSettings";
 import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
@@ -469,6 +470,7 @@ export function CalendarClassic() {
           <>
             <LayoutToggle />
             <CalSettingsButton />
+            <BookingButton />
             <IcsPickButton onLoaded={setIcsPlan} />
             <a
               href={apiHref(exportPath("ics"))}

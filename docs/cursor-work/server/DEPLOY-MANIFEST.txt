@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 2a8ab7407c2abf63
+src/routes/app.calendar.tsx d77c2e41af1f64df
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -85,7 +85,7 @@ src/components/app/calendar/EventDetail.tsx df2589d28280c20b
 src/components/app/calendar/Guests.tsx db3dd5d31c78d994
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
-src/routeTree.gen.ts 86e576c512b7306b
+src/routeTree.gen.ts 1c65e76769563a02
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md e7455236d4a5dc2f
+docs/cursor-work/founder/founder-commands.md 7236fb0073a3d8ef
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md f56193399aa49ab3
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1e12178312ab987c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -359,7 +359,7 @@ src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql 7d3171ea0c99072d
 src/lib/timeFormat.ts e603401c56c5be95
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
-src/components/app/calendar/CalendarClassic.tsx c67c3c4d05ade46f
+src/components/app/calendar/CalendarClassic.tsx 7ad2c23cc722e47a
 src/components/app/calendar/Bits.tsx ff3c03680788468a
 src/components/app/calendar/Availability.tsx 63c43c65a4cd32fd
 server/rust/locale_core.rs 980c6b1aa814b973
@@ -376,3 +376,8 @@ docs/cursor-work/sql/E59_booking_page.sql e230d0ea42ef534f
 docs/cursor-work/sql/CHECK_E59.sql fa922675592c29f8
 server/rust/book_core.rs b309af16b1cd80fa
 server/rust/book_glue.rs c5a2b0af4995d65c
+src/lib/booking.ts 5c64b5e12cf78c82
+src/components/book/SlotPicker.tsx d2bba386822bef2d
+src/routes/book.$handle.tsx 7c563db68f4dff61
+src/routes/book.manage.tsx b44da10208e32ed5
+src/components/app/calendar/BookingPage.tsx 8bd6c4927b12b5ab

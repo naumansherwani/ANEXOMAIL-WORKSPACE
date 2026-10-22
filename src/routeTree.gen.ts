@@ -78,6 +78,8 @@ import { Route as AppSettingsRouteImport } from './routes/app.settings'
 import { Route as AppStorageRouteImport } from './routes/app.storage'
 import { Route as AppWorkRouteImport } from './routes/app.work'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
+import { Route as BookHandleRouteImport } from './routes/book.$handle'
+import { Route as BookManageRouteImport } from './routes/book.manage'
 import { Route as CheckoutDoneRouteImport } from './routes/checkout.done'
 import { Route as FounderPreviewRouteImport } from './routes/founder.preview'
 import { Route as FounderSplatRouteImport } from './routes/founder_.$'
@@ -524,6 +526,16 @@ const AppWorkRoute = AppWorkRouteImport.update({
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth_/callback',
   path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookHandleRoute = BookHandleRouteImport.update({
+  id: '/book/$handle',
+  path: '/book/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BookManageRoute = BookManageRouteImport.update({
+  id: '/book/manage',
+  path: '/book/manage',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CheckoutDoneRoute = CheckoutDoneRouteImport.update({
@@ -1110,6 +1122,8 @@ export interface FileRoutesByFullPath {
   '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/book/$handle': typeof BookHandleRoute
+  '/book/manage': typeof BookManageRoute
   '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/founder/$': typeof FounderSplatRoute
@@ -1275,6 +1289,8 @@ export interface FileRoutesByTo {
   '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/book/$handle': typeof BookHandleRoute
+  '/book/manage': typeof BookManageRoute
   '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/founder/$': typeof FounderSplatRoute
@@ -1446,6 +1462,8 @@ export interface FileRoutesById {
   '/app/storage': typeof AppStorageRoute
   '/app/work': typeof AppWorkRoute
   '/auth_/callback': typeof AuthCallbackRoute
+  '/book/$handle': typeof BookHandleRoute
+  '/book/manage': typeof BookManageRoute
   '/checkout/done': typeof CheckoutDoneRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/founder_/$': typeof FounderSplatRoute
@@ -1621,6 +1639,8 @@ export interface FileRouteTypes {
     | '/app/storage'
     | '/app/work'
     | '/auth/callback'
+    | '/book/$handle'
+    | '/book/manage'
     | '/checkout/done'
     | '/founder/preview'
     | '/founder/$'
@@ -1786,6 +1806,8 @@ export interface FileRouteTypes {
     | '/app/storage'
     | '/app/work'
     | '/auth/callback'
+    | '/book/$handle'
+    | '/book/manage'
     | '/checkout/done'
     | '/founder/preview'
     | '/founder/$'
@@ -1956,6 +1978,8 @@ export interface FileRouteTypes {
     | '/app/storage'
     | '/app/work'
     | '/auth_/callback'
+    | '/book/$handle'
+    | '/book/manage'
     | '/checkout/done'
     | '/founder/preview'
     | '/founder_/$'
@@ -2107,6 +2131,8 @@ export interface RootRouteChildren {
   AiKnowledgeRoute: typeof AiKnowledgeRoute
   AiStudioRoute: typeof AiStudioRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  BookHandleRoute: typeof BookHandleRoute
+  BookManageRoute: typeof BookManageRoute
   CheckoutDoneRoute: typeof CheckoutDoneRoute
   FounderSplatRoute: typeof FounderSplatRoute
 }
@@ -2594,6 +2620,20 @@ declare module '@tanstack/react-router' {
       path: '/auth/callback'
       fullPath: '/auth/callback'
       preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/$handle': {
+      id: '/book/$handle'
+      path: '/book/$handle'
+      fullPath: '/book/$handle'
+      preLoaderRoute: typeof BookHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/book/manage': {
+      id: '/book/manage'
+      path: '/book/manage'
+      fullPath: '/book/manage'
+      preLoaderRoute: typeof BookManageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/checkout/done': {
@@ -3730,6 +3770,8 @@ const rootRouteChildren: RootRouteChildren = {
   AiKnowledgeRoute: AiKnowledgeRoute,
   AiStudioRoute: AiStudioRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  BookHandleRoute: BookHandleRoute,
+  BookManageRoute: BookManageRoute,
   CheckoutDoneRoute: CheckoutDoneRoute,
   FounderSplatRoute: FounderSplatRoute,
 }

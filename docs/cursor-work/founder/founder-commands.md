@@ -597,3 +597,10 @@ AGLA: E58 working hours/OOO/calendars+colors/reminders.
 - `cal_glue.rs`: sirf `smtp_send` ko `pub(crate)` kiya (book use karta hai). Installer: module `book` (ALL_MODULES mein cal ke baad), extras_of book -> cal_core.rs, CFG public_call with headers, live-proof probe case.
 - Sandbox check: cargo check (patch_main se wired main.rs) 0 errors; unit tests 51 ok.
 - BAAKI: web (public /book/$handle, /book/manage, Settings -> Booking). Phir founder ko 3 commands: SQL E59 -> Rust installer -> Web.
+
+## 22 Oct 2026 ~07:50 — B7c Booking page: web bhi likha; ab teen commands (SQL -> Rust -> Web)
+Web: `src/lib/booking.ts`, `components/book/SlotPicker.tsx`, public `/book/$handle`, `/book/manage?t=`, Calendar toolbar mein "Booking page" sheet (BookingPage.tsx; Classic + Pro dono). Sandbox: tsc mere files clean, tier-guard 2 pass, Playwright 390/820/1440 (book -> "taken" -> book, manage move/cancel, host sheet save/handle_taken/cancel) overflow 0.
+1) SQL:  git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E59_booking_page CHECK_E59
+2) Rust: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)
+3) Web:  bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6
+GREEN tab hogi jab: CHECK_E59 11/11 OK + Rust "-> book: ... dono procs pakde" + live /book/<handle> chale. Tab tak GREEN nahi.
