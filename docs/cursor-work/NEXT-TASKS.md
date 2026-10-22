@@ -35,3 +35,4 @@ Calendar #0–#4b, #9; World clock W0/W1; landing/plans calendar copy; E58–E63
 - 22 Oct 20:30: E65 RLS+advisor sweep READY (Rule 43). Sandbox: 2 baar chala, CHECK 6/6, proof OK. Server: sql-run E65_rls_and_advisor_sweep CHECK_E65. #10 server install ke saath chalana.
 - 22 Oct 21:05: #10 GREEN (live Chrome verified). AGLA: #2 W2 Focus Ring. E65 (RLS sweep) server par chalana baqi.
 - 22 Oct 21:15: server SQL+Rust+Web sab green, Chrome smoke OK. AGLA: #2 W2 Focus Ring.
+- 22 Oct 21:55: FOUNDER HUKM (Rule 45): sign-in Rust par migrate (Phase A–D), Bun hamesha fallback, vault qaide. Plan `docs/cursor-work/AUTH-MIGRATION-PLAN.md`. Order: pehle #2 W2 Focus Ring, phir AUTH Phase A (founder ka 'haan' D se pehle). Privacy audit ke gaps plan mein.

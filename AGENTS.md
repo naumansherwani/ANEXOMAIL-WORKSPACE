@@ -363,3 +363,7 @@ Founder: "yeh sql wali command pehle run hogi, yeh ab server pe run hogi; editor
 - Rule 42 (editor-compat: blank first line, no meta-commands, single-SELECT CHECK) NAYI files par ab bhi lagu — safety ke liye — par founder ko editor ka raasta nahi bataya jata.
 
 - **Bare command ka test (founder 22 Oct 2026 20:34, sandbox mein saabit):** `… sql-run.sh)` bina naam: 0 nayi = "koi nayi SQL nahi"; ek nayi = wahi ek + CHECK; kai nayi = number ki tarteeb se sab + CHECK; fix hui (sha badli) SQL dobara chalti hai; sirf khali pehli line ka farq nahi chalta. Har run ke baad E65 sweep + CHECK_E65 khud. Isliye SQL ke liye founder ko HAMESHA yehi bare command do (naam wali sirf tab jab FORCE=1 ya khaas file chahiye).
+
+## Rule 45 — Sign-in bhi latest technology (Rust) par; Bun hamesha emergency; vault ke qaide (founder 22 Oct 2026 20:50 PKT, STRICT)
+Founder: sign-in/auth bhi Bun se latest technology par; Bun fallback hamesha; frontend latest; SQL super-advance; passkey data + device record vault mein; wrong activity => account blocked + vault mein safe hash; dobara signup par vault match, blacklisted = account nahi banega.
+Poora plan + policy mel: `docs/cursor-work/AUTH-MIGRATION-PLAN.md` (phases A–D, vault requirements, privacy audit). Public privacy/footer copy founder ke "haan" ke baghair nahi badlti. Passkey id se returning banda pehchanna technically nahi hota — asli rokna device hash + email HMAC tombstone.

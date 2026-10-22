@@ -1,5 +1,7 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+> **22 Oct 2026 20:50 (founder, Rule 45):** sign-in bhi latest tech (Rust) par, Bun hamesha emergency, frontend latest, SQL super-advance, passkey/fingerprint vault mein, wrong activity => block + vault ban list, dobara signup vault se match. Verbatim + plan: `docs/cursor-work/AUTH-MIGRATION-PLAN.md`. Halat: READY (plan likha), kaam W2 ke baad.
+
 > **22 Oct 2026 20:32 (founder, Rule 44):** SQL ab SERVER par `sql-run.sh` se chalti hai (editor nahi), aur woh PEHLE chalti hai. Command: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = sab nayi) ya naam aakhir mein bina .sql ke.
 
 > **STRICT RULE 24 (founder, 19 Oct 2026 05:20 PKT): compact ke baad ya naye chat mein KAAM SHURU karne se PEHLE yeh file poori padho.**

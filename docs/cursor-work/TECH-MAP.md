@@ -264,3 +264,5 @@ Qaida (fx layer, 21 Oct): `src/lib/fx.ts` hi tay karta hai 3D chale ya nahi (Set
 
 | Event-driven live push (R5) mail/calendar/crm/work/people/org, har plan + family | Rust :3200 / wtransport (QUIC) + tokio broadcast hub per org | READY 21 Oct (B4), install baqi |
 | Founder pages (move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, offline outbox) | Rust :3200 `/rpc/*` b5_core+b5_glue (Supabase #4), Bun fallback | CODE 21 Oct (B5), sandbox PASS, server install baqi |
+
+| **Auth / sign-in (22 Oct 2026, Rule 45)** | Rust axum+tokio (primary, A–D phases) ; GoTrue sirf Phase D tak | Bun = hamesha emergency fallback; WebTransport sign-in ke liye NAHI | PLANNED — `AUTH-MIGRATION-PLAN.md` | passkey/vault data encrypted, RLS-on |

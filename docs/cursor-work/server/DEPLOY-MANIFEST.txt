@@ -119,14 +119,14 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs e3962dbb682fe95c
 server/rust/cal_glue.rs d396cc302bc65093
-AGENTS.md 220a4411adb0c7ef
+AGENTS.md 2d6432a41da19127
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md ed182dcf72dcd15d
+docs/cursor-work/founder/founder-commands.md 367ccd708dc2d74d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -136,7 +136,7 @@ src/components/app/security/RecoveryCodesPanel.tsx ac8ed46c20c7229d
 src/components/app/security/PasskeyGate.tsx 352233554cdc0116
 docs/cursor-work/sql/E43_passkey_recovery_codes.sql 3a237497013d4a65
 docs/cursor-work/server/brain-passkey-install.sh 5d087a786a3045fc
-docs/cursor-work/TECH-MAP.md 4689acd147ef4735
+docs/cursor-work/TECH-MAP.md caa92d31b9bf8da3
 server/rust/export_core.rs 25b5cb77c76c09e7
 server/rust/export_glue.rs 46f478cdfd14f4ef
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md be7813e711ad3c8b
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1eadde2f37997d3d
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 44d4e7ac86171ac4
+docs/cursor-work/NEXT-TASKS.md aa68d39fccab4b10
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac
@@ -453,3 +453,4 @@ docs/cursor-work/sql/E56_calendar_recurrence.sql 4a74f6e0168d703e
 docs/cursor-work/sql/E5_billing_subscription_api.sql da343ff4d54a32b0
 docs/cursor-work/sql/E6_companywide_delete.sql a07e0ed3c94d9cb2
 docs/cursor-work/sql/E7_business_delete_48h.sql 8fe2186519bfe123
+docs/cursor-work/AUTH-MIGRATION-PLAN.md 55a1a4c1ae3a1f2d
