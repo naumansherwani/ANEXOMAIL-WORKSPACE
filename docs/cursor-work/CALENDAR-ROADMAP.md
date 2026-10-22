@@ -30,3 +30,5 @@ Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a
 - 22 Oct 09:30: #4b W1: SQL E62 live OK, matrix live dekhi (guest+member+unknown zone). Fix: best times >=3h door, unknown-zone wording. Rust+Web install pending, phir GREEN (dashboard card + 390/820 live baqi).
 
 - 22 Oct 09:40: Web pull OK (server==repo 513). Landing/plans calendar copy + access model (features sab ko, limits capability, family/Business Pro unlimited) likha: docs/claude/CALENDAR-BLUEPRINT.md. Founder 'haan' par copy plans.ts/index.tsx mein lagegi. Aglu: W1 live check (matrix 3h+dashboard card+390/820) -> #4b GREEN.
+
+## TARTEEB (founder 22 Oct 09:26 PKT, LOCKED): pehle Calendar + World Clock POORA -> phir M-series (Outlook-style mail) -> phir G16 billing portal (naya kaam). Limits ke numbers, Google verification, M/G16 ke faislay isi tarteeb se baad mein. Calendar+WorldClock ka andar ki tarteeb: W1 live GREEN -> landing copy (founder "haan" par) -> #9 outcome colours -> #10 history search -> W2 Focus Ring -> #4c ICS -> #5 files -> W3/W4/W5 -> #6 CalDAV -> #7 Google -> #8 rooms.

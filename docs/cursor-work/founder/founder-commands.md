@@ -677,3 +677,6 @@ Pull: build OK, /health 200, server==repo 513 differ=0. Likha: `docs/claude/CALE
 
 ### 22 Oct 2026 09:24 PKT — founder faisla: calendar abhi UNLIMITED, limits baad mein
 Basic ko itna do ke deewane ho jayen; abhi sab unlimited banao; kis package ko kitna — baad mein Claude ke mashware se. Detail: docs/claude/CALENDAR-BLUEPRINT.md §1b.
+
+### 22 Oct 2026 09:26 PKT — TARTEEB lock: Calendar+WorldClock -> M-series -> billing portal G16
+Detail CALENDAR-ROADMAP.md "TARTEEB". M-series aur G16 ke faislay tab poochhe jayenge jab un ki baari aaye.
