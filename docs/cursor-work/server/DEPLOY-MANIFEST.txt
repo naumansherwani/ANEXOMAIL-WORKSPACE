@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 965187f7a1642440
+docs/cursor-work/founder/founder-commands.md 79ed8a9c4d644c1f
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -387,7 +387,8 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a937b086ca57822a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
-docs/cursor-work/CALENDAR-ROADMAP.md 6ca183680f7e20a5
+docs/cursor-work/CALENDAR-ROADMAP.md d6596e1ba2deb5b8
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
+docs/claude/WORLD-CLOCK-BLUEPRINT.md 39be032dc3aa7589
