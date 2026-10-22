@@ -5,6 +5,7 @@
 # Kyun: har module ke liye alag script = alag cargo build = alag restart. Yeh script jo modules repo (origin/main) mein hain
 # woh SAB ek hi build mein lagata hai: ek backup, ek build, ek restart, ek health check, ek rollback.
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
+#   book   -> server/rust/book_core.rs   + book_glue.rs    (Booking page /book/<handle>: slots, book, cancel/reschedule, mails)  [pehle E59 SQL; cal ke saath]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
@@ -34,9 +35,9 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal people team locale device dnsauth security export attach b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book people team locale device dnsauth security export attach b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
-extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; esac; }
+extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
 WANT="${MODULES:-$ALL_MODULES}"
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT
@@ -75,6 +76,9 @@ import sys,re
 p=sys.argv[1]; mods=sys.argv[2].split(); s=open(p).read()
 CFG={
  "cal":    {"public": True,  "label": "calendar",  "procs": ['"calendar.create"']},
+ # book (B7c): Booking page anexomail.com/book/<handle> — slots, booking, cancel/reschedule, mails. SQL E59 PEHLE. cal module ke saath (cal_core.rs share).
+ "book":   {"public": True,  "label": "booking",   "procs": ['"booking.page.get"','"booking.page.set"','"booking.public.book"'],
+            "public_call": "public(&proc, &input, &headers)"},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
@@ -431,6 +435,19 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> b6: Rust ne billing.portal pakda (bina asli login ke 401 = theek). Asli test: billing page par Manage billing button.";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> b6: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> b6: jawab upar dekhein";;
+      esac;;
+    book)
+      r1="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{"handle":"zz-no-such-page"}}' "$RPC/rpc/booking.public.page" 2>/dev/null)"
+      r2="$(probe booking.page.get '{"input":{}}')"
+      r3="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{"token":"00000000-0000-4000-8000-000000000000"}}' "$RPC/rpc/booking.manage.lookup" 2>/dev/null)"
+      echo "   booking.public.page (nakli handle): $(printf '%s' "$r1" | cut -c1-140)"
+      echo "   booking.page.get (nakli token): $r2"
+      echo "   booking.manage.lookup (nakli token): $(printf '%s' "$r3" | cut -c1-140)"
+      case "$r1$r2$r3" in
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> book: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *booking_sql_missing*) echo "   -> book: Rust ne proc pakda par SQL E59 nahi lagi — pehle: E59_booking_page CHECK_E59";;
+        *'"not_found"'*'"unauthorized"'*'"not_found"'*) echo "   -> book: Rust ne public + login-wale dono procs pakde aur E59 SQL lagi hui hai (nakli handle/link par not_found, nakli login 401 = theek).";;
+        *) echo "   -> book: jawab upar dekhein";;
       esac;;
     people)
       r="$(probe people.import '{"input":{"rows":[]}}')"

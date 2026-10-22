@@ -289,7 +289,7 @@ async fn smtp_cmd(
 }
 
 /// Local Postfix (127.0.0.1:25, mynetworks) — same path as Brain's mail/sendmail.ts: DKIM signing + delivery by Postfix.
-async fn smtp_send(from: &str, rcpt: &str, raw: &str) -> Result<String, String> {
+pub(crate) async fn smtp_send(from: &str, rcpt: &str, raw: &str) -> Result<String, String> {
     use tokio::io::AsyncWriteExt;
     let host = {
         let h = crate::env_var("MAIL_SMTP_HOST");

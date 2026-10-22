@@ -317,3 +317,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 05:35 GREEN mark: Layout v2 + E58 + sign-in A. Agla: B7c Booking page.
 - 22 Oct 05:21 B7c Booking page SHURU (task #110) — plan founder-commands.md 05:21 entry mein. Jo file bane woh yahan line se likhi jayegi.
 - 22 Oct 06:10 B7c SQL E59 + CHECK_E59 likhi aur local test (idempotent, self-test 9, 8-way race = 1 winner, CHECK 11/11). Server par chalana baqi. Agla: Rust book module.
+
+- B7c Rust `book` module (book_core/book_glue, installer wired, 22 Oct 2026): DONE in repo, NOT yet run on server. Do not rewrite; next = web pages.

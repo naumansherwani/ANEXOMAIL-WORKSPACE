@@ -591,3 +591,9 @@ AGLA: E58 (working hours, out-of-office, calendars+colors, reminders) -> booking
 ## 22 Oct 2026 04:30 — founder: "mobile tablet khud dekho, stress daal ke, live shots lo; phir roadmap (E58 -> booking -> iMIP -> CalDAV -> Google) sab karna hai"
 HALAT: Mobile/tablet LIVE GREEN (Chrome Pro session; trick: same-origin iframe 390x780 + 820x780 kyunki window resize extension se nahi hota). Stress: Week/Day/Month, 24h/12h/Auto, Avail., New meeting, Expanded (Week/Day/Month + sheet), 12 tez layout toggles => dono par 0 horizontal scroll, 0 JS error, layout Classic par laut aya, pasand Classic/Auto. Dekha: tablet Classic mein week grid sirf xl+ par (820 par khali "calendar is clear" pane — purana behaviour); phone Expanded toolbar 3 qatar (lamba). Dono polish E58 batch ke saath.
 AGLA: E58 working hours/OOO/calendars+colors/reminders.
+
+## 22 Oct 2026 ~07:00 — B7c Rust module `book` likha (task #110, SQL pehle push ho chuki)
+- `server/rust/book_core.rs` (std-only, 15 unit tests: handle/suggest, durations/tz, slots DST-safe 15-min grid, OOO, notice, horizon, buffer, mail, throttle) + `book_glue.rs` (host procs booking.page.get/set, booking.list, booking.host.cancel; public booking.public.page/slots/book, booking.manage.lookup/cancel/reschedule; IP rate-limit + honeypot; repeating-meeting recheck; mails with .ics).
+- `cal_glue.rs`: sirf `smtp_send` ko `pub(crate)` kiya (book use karta hai). Installer: module `book` (ALL_MODULES mein cal ke baad), extras_of book -> cal_core.rs, CFG public_call with headers, live-proof probe case.
+- Sandbox check: cargo check (patch_main se wired main.rs) 0 errors; unit tests 51 ok.
+- BAAKI: web (public /book/$handle, /book/manage, Settings -> Booking). Phir founder ko 3 commands: SQL E59 -> Rust installer -> Web.
