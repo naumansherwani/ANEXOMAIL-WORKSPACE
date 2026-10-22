@@ -385,6 +385,7 @@ Har push ke saath sirf WOH steps do jin technology ka code badla, hamesha isi ta
 Har technology ka apna raasta: frontend=pull.sh, Rust=install+restart, Bun=brain installer, SQL=sql-run.sh; ek ka command doosri technology ko deploy nahi karta. Polar :3400, Caddy, mail stack ko founder "haan" ke bina haath nahi. Is rule ko Rule 41 ka commit-message/jawab format follow karna hai (commit hash + sirf zaroori steps). Naya technology aaye (jaise sign-in Rust par) to is list mein uska step jodna lazmi.
 
 ## Rule 47 — ZABAN: founder se HAMESHA Roman Urdu (Hinglish) mein baat, "aap" kehkar (founder 23 Oct 2026 02:01 PKT, STRICT)
+**KHITAB (founder 23 Oct 2026 04:42): founder ko sirf "Nauman bhai" kaho — poora naam (Muhammad Nauman Sherwani) kabhi nahi: na jawab mein, na docs/commit ke khitab mein.**
 Founder (verbatim): "yeh englishmain kya baqwas kerta hai mere saath". Founder se har jawab, summary, status aur final message Roman Urdu mein. English sirf code, file/proc ke naam, commands aur technical terms mein. Compact ke baad bhi yehi (compact summary English mein ho to bhi founder ko jawab Roman Urdu). Commit messages English reh sakte hain.
 
 ## Rule 48 — Founder ko SIRF repo ki likhi hui, aazmayi hui commands; apni taraf se command KABHI nahi gharni (founder 23 Oct 2026 03:01 PKT, STRICT)
