@@ -99,6 +99,8 @@ export type GuestRow = {
   response: RsvpResponse;
   rsvp_at: string | null;
   rsvp_comment: string | null;
+  /** How the answer arrived: the link in the mail, or the guest's own calendar app (iMIP). Null on older servers. */
+  rsvp_via?: "link" | "calendar_app" | null;
   invite_status: InviteStatus;
   invite_sent_at: string | null;
   invite_error: string | null;

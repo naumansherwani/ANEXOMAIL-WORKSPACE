@@ -29,6 +29,11 @@ mod attach_core;
 #[allow(dead_code)]
 mod inbound_attach;
 
+// #3: a guest's calendar-app answer (text/calendar METHOD:REPLY) -> E60 calendar_imip_apply. Pure reader, unit-tested.
+#[path = "../imip_core.rs"]
+#[allow(dead_code)]
+mod imip_core;
+
 use serde_json::{json, Map, Value};
 use sha2::{Digest, Sha256};
 use std::io::Read;
@@ -180,11 +185,15 @@ fn spool_run(env: &Map<String, Value>) -> ExitCode {
 /// B4: tell the Rust event hub a mail landed so open browsers refresh in ~100 ms instead of waiting for the 2 s reconcile.
 /// Best effort ONLY: no secret / hub down / slow => silently nothing (the reconcile still delivers it). Never delays or fails Postfix.
 fn push_mail_event(rt: &tokio::runtime::Runtime, env: &Map<String, Value>, ingest_response: &str) {
+    let Some((_msg, org)) = inbound_attach::ingest_ids(ingest_response) else { return };
+    push_event(rt, env, &org, "mail");
+}
+
+fn push_event(rt: &tokio::runtime::Runtime, env: &Map<String, Value>, org: &str, topic: &str) {
     let secret = env_str(env, "EVENT_SECRET");
     if secret.len() < 24 {
         return;
     }
-    let Some((_msg, org)) = inbound_attach::ingest_ids(ingest_response) else { return };
     let base = {
         let b = env_str(env, "EVENT_URL");
         if b.is_empty() { "http://127.0.0.1:3200".to_string() } else { b }
@@ -194,11 +203,60 @@ fn push_mail_event(rt: &tokio::runtime::Runtime, env: &Map<String, Value>, inges
         client
             .post(format!("{}/internal/event", base.trim_end_matches('/')))
             .header("x-event-secret", secret)
-            .json(&json!({ "org_id": org, "topic": "mail" }))
+            .json(&json!({ "org_id": org, "topic": topic }))
             .send()
             .await
             .ok()
     });
+}
+
+/// #3 iMIP: if the mail carries a `text/calendar` REPLY, record the guest's answer on the event. Best effort ONLY — the mail is
+/// already stored; any failure here is a log line, never a Postfix error. Applied only when SPF/DKIM passed and From == ATTENDEE.
+fn maybe_imip(rt: &tokio::runtime::Runtime, env: &Map<String, Value>, url: &str, key: &str, raw: &[u8], payload: &Value) -> Option<String> {
+    let p = mig_mime::parse(raw);
+    let from = payload.get("from_address").and_then(|v| v.as_str()).unwrap_or("");
+    let spf = payload.get("spf").and_then(|v| v.as_str());
+    let dkim = payload.get("dkim").and_then(|v| v.as_str());
+    let mid = payload.get("message_id").and_then(|v| v.as_str()).unwrap_or("");
+    for (a, src) in p.attachments.iter().zip(p.attachment_src.iter()) {
+        if !a.mime.eq_ignore_ascii_case("text/calendar") && !a.filename.to_ascii_lowercase().ends_with(".ics") {
+            continue;
+        }
+        let bytes = mig_mime::attachment_bytes(raw, src);
+        let Some(r) = imip_core::parse_reply(&bytes) else { continue };
+        if mid.is_empty() {
+            return Some("imip: no Message-ID, skipped".into());
+        }
+        if !imip_core::trusted(spf, dkim, from, &r.attendee) {
+            return Some(format!("imip: REPLY from {from} not trusted (spf={spf:?} dkim={dkim:?}) — not applied"));
+        }
+        let body = json!({
+            "p_uid": r.uid, "p_attendee": r.attendee, "p_partstat": r.partstat, "p_sequence": r.sequence,
+            "p_recurrence_id": r.recurrence_id, "p_message_id": mid,
+            "p_auth": format!("spf={} dkim={}", spf.unwrap_or("-"), dkim.unwrap_or("-")), "p_comment": r.comment,
+        });
+        let endpoint = format!("{}/rest/v1/rpc/calendar_imip_apply", url.trim_end_matches('/'));
+        let res: Result<String, String> = rt.block_on(async {
+            let c = reqwest::Client::builder().timeout(Duration::from_secs(15)).build().map_err(|e| e.to_string())?;
+            let r = c.post(&endpoint).header("apikey", key).header("authorization", format!("Bearer {key}")).json(&body).send().await.map_err(|e| e.to_string())?;
+            let st = r.status();
+            let t = r.text().await.unwrap_or_default();
+            if st.is_success() { Ok(t) } else { Err(format!("{} {}", st.as_u16(), t)) }
+        });
+        return Some(match res {
+            Ok(t) => {
+                let v: Value = serde_json::from_str(&t).unwrap_or(Value::Null);
+                if v.get("outcome").and_then(|o| o.as_str()) == Some("applied") {
+                    if let Some(org) = v.get("org_id").and_then(|o| o.as_str()) {
+                        push_event(rt, env, org, "calendar");
+                    }
+                }
+                format!("imip: {}", t.chars().take(200).collect::<String>())
+            }
+            Err(e) => format!("imip: apply failed {}", e.chars().take(200).collect::<String>()),
+        });
+    }
+    None
 }
 
 fn main() -> ExitCode {
@@ -256,6 +314,9 @@ fn main() -> ExitCode {
         Ok(out) => {
             eprintln!("anexomail-deliver: OK {envelope_to} {}", out.chars().take(300).collect::<String>());
             push_mail_event(&rt, &env, &out);
+            if let Some(note) = maybe_imip(&rt, &env, &url, &key, &raw, &payload) {
+                eprintln!("anexomail-deliver: {note}");
+            }
             // G38b: attachments ke bytes baad mein (mail DB mein hai); yahan kuch bhi ho, Postfix ko SUCCESS hi milta hai
             if let Some(note) = inbound_attach::maybe_spool(&raw, &out) {
                 eprintln!("anexomail-deliver: {note}");
@@ -340,5 +401,26 @@ mod tests {
         assert_eq!(env_str(&e, "SUPABASE_SERVICE_ROLE_KEY"), "k");
         assert!(e.get("lower").is_none());
         let _ = std::fs::remove_file(p);
+    }
+
+    #[test]
+    fn calendar_reply_part_is_found_and_read() {
+        let ics = "BEGIN:VCALENDAR\r\nMETHOD:REPLY\r\nBEGIN:VEVENT\r\nUID:0f8fad5b-d9cb-469f-a165-70867728950e@anexomail.com\r\nSEQUENCE:1\r\nATTENDEE;PARTSTAT=ACCEPTED:mailto:g@gmail.com\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
+        let b64 = {
+            const T: &[u8] = b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+            let d = ics.as_bytes();
+            let mut o = String::new();
+            for c in d.chunks(3) {
+                let n = (c[0] as u32) << 16 | (*c.get(1).unwrap_or(&0) as u32) << 8 | *c.get(2).unwrap_or(&0) as u32;
+                for i in 0..4 { if i <= c.len() { o.push(T[(n >> (18 - 6 * i) & 63) as usize] as char) } else { o.push('=') } }
+            }
+            o
+        };
+        let raw = crlf(&format!("From: G <g@gmail.com>\nTo: h@anexomail.com\nMessage-ID: <r1@x>\nSubject: Accepted: x\nContent-Type: multipart/mixed; boundary=B\n\n--B\nContent-Type: text/plain\n\nAccepted\n--B\nContent-Type: text/calendar; method=REPLY; charset=UTF-8\nContent-Transfer-Encoding: base64\n\n{b64}\n--B--\n"));
+        let p = mig_mime::parse(&raw);
+        let (a, src) = (&p.attachments[0], &p.attachment_src[0]);
+        assert_eq!(a.mime, "text/calendar");
+        let r = imip_core::parse_reply(&mig_mime::attachment_bytes(&raw, src)).expect("reply");
+        assert_eq!((r.partstat.as_str(), r.attendee.as_str(), r.sequence), ("ACCEPTED", "g@gmail.com", 1));
     }
 }

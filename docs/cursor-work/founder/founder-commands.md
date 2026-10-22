@@ -619,3 +619,7 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
   3) Web: EventDetail guest list mein "answered from calendar app" label (calendar topic live push se turant); koi tier code nahi, sab packages + family ko ek saath.
   4) Tarteeb: SQL -> Rust deliver installer -> Web. GREEN sirf founder output + live Gmail "Yes" click test ke baad.
 - Us se pehle: MIGRATION-LEDGER (sirf ginti, koi Bun code nahi hatega) — founder ne abhi "next kaam tarteeb se" kaha, tarteeb: #3 iMIP, ledger side-by-side docs-only.
+
+## 22 Oct 2026 — #3 iMIP reply (G26): Rust + web code ready (waiting founder run)
+- `server/rust/imip_core.rs` (REPLY reader + trust gate, 7 tests), hook in `deliver_bin.rs` (after mail stored; SPF/DKIM pass AND From==ATTENDEE; best-effort; pushes "calendar" event), `cal_glue.rs` exposes `rsvp_via`, Guests.tsx label "from their calendar app" (all packages; Rule 40 — no gating, family sees same as buyers).
+- Order: SQL `E60_imip_reply CHECK_E60` -> Rust engine (MODULES="cal") -> Rust deliver installer -> Web pull. GREEN only after founder output + live Gmail "Yes" click.

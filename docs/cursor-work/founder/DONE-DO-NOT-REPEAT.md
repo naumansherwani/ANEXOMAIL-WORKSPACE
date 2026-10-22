@@ -1,0 +1,1 @@
+- 22 Oct 2026: #3 iMIP code written (imip_core.rs, deliver hook, rsvp_via in cal_glue, Guests label). NOT green until server output + live Gmail test.

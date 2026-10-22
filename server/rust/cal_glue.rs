@@ -1316,6 +1316,7 @@ async fn guests(me: &Who, input: &Value) -> axum::response::Response {
             "response": st(r, "response"),
             "rsvp_at": r.get("rsvp_at").cloned().unwrap_or(Value::Null),
             "rsvp_comment": r.get("rsvp_comment").cloned().unwrap_or(Value::Null),
+            "rsvp_via": r.get("rsvp_via").cloned().unwrap_or(Value::Null),
             "invite_status": st(r, "invite_status"),
             "invite_sent_at": r.get("invite_sent_at").cloned().unwrap_or(Value::Null),
             "invite_error": r.get("invite_error").cloned().unwrap_or(Value::Null),

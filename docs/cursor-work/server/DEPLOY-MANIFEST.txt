@@ -77,12 +77,12 @@ src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts c7b0b2132daba199
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
-src/lib/calendar.ts 6fd625ba3d906098
+src/lib/calendar.ts eb9a382bcfb9d8ca
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx d51d8a4fedb75161
 src/components/app/calendar/EventDetail.tsx df2589d28280c20b
-src/components/app/calendar/Guests.tsx db3dd5d31c78d994
+src/components/app/calendar/Guests.tsx 8161b0338fb2fa97
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
 src/routeTree.gen.ts 1c65e76769563a02
@@ -118,7 +118,7 @@ src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs 339f850b8633f8e2
-server/rust/cal_glue.rs fcd19cb30a1ab2f0
+server/rust/cal_glue.rs 60d6cbca8a163665
 AGENTS.md 94bd36c81ddfd26b
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -201,7 +201,7 @@ docs/cursor-work/sql/E37_mail_ingest_no_stray_org.sql b94641071972a335
 docs/cursor-work/server/tests/e37/stubs.sql dc31be31a83ba369
 docs/cursor-work/server/tests/e37/run.sh 1b19c23248114e49
 docs/cursor-work/sql/E49_attach_ceiling_18mb.sql 2f55c2eb60d9ed3d
-server/rust/deliver_bin.rs 4c5acfcb34cf2d7b
+server/rust/deliver_bin.rs 5eb96a7cdb1f2998
 server/rust/mig_mime.rs 8a6f6089c88fa16d
 docs/cursor-work/server/inbound-attach/anexomail-inbound-attach.timer a1a0d314c9432a7b
 docs/cursor-work/server/inbound-attach/anexomail-inbound-attach.service e7c01961510e4108
@@ -383,3 +383,5 @@ src/routes/book.manage.tsx b44da10208e32ed5
 src/components/app/calendar/BookingPage.tsx 8bd6c4927b12b5ab
 docs/cursor-work/sql/E60_imip_reply.sql fa4f393ad9a50bf3
 docs/cursor-work/sql/CHECK_E60.sql 0e8f51c10ecdb7f9
+server/rust/imip_core.rs b9228406c93d2615
+docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44

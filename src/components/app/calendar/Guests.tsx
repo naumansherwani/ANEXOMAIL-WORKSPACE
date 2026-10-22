@@ -242,6 +242,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
                       minute: "2-digit",
                     })}`
                   : ""}
+                {g.rsvp_at && g.rsvp_via === "calendar_app" ? " · from their calendar app" : ""}
                 {g.rsvp_comment ? ` · “${g.rsvp_comment}”` : ""}
               </span>
             </li>

@@ -36,6 +36,8 @@ echo "== 1) Rust binary: repo -> src/bin -> tests -> build (engine ko haath nahi
 git -C "$REPO" show origin/main:server/rust/deliver_bin.rs >"$T/deliver.rs" 2>/dev/null; [ -s "$T/deliver.rs" ] || { echo "FAIL: repo mein server/rust/deliver_bin.rs nahi — git fetch?"; exit 2; }
 mkdir -p "$TARGET/src/bin"; [ -f "$TARGET/src/bin/anexomail-deliver.rs" ] && cp -p "$TARGET/src/bin/anexomail-deliver.rs" "$TARGET/src/bin/anexomail-deliver.rs.bak.$STAMP"
 cp "$T/deliver.rs" "$TARGET/src/bin/anexomail-deliver.rs"
+# #3 iMIP: calendar-reply reader (std-only) src/ mein; mig_mime/attach_core/inbound_attach pehle se wahin hain
+for f in imip_core.rs; do git -C "$REPO" show "origin/main:server/rust/$f" >"$T/$f" 2>/dev/null; [ -s "$T/$f" ] || { echo "FAIL: repo mein server/rust/$f nahi"; exit 2; }; [ -f "$TARGET/src/$f" ] && cp -p "$TARGET/src/$f" "$TARGET/src/$f.bak.$STAMP"; cp "$T/$f" "$TARGET/src/$f"; done
 undo_src() { if [ -f "$TARGET/src/bin/anexomail-deliver.rs.bak.$STAMP" ]; then cp -p "$TARGET/src/bin/anexomail-deliver.rs.bak.$STAMP" "$TARGET/src/bin/anexomail-deliver.rs"; else rm -f "$TARGET/src/bin/anexomail-deliver.rs"; fi; }
 ( cd "$TARGET" && nice -n 10 cargo test --bin anexomail-deliver >"$LOG" 2>&1 ) || { echo "!! unit tests FAIL — wapas, kuch nahi badla:"; grep -E "^error|panicked|FAILED|test result" "$LOG" | head -15; undo_src; exit 1; }
 echo "   $(grep -E '^test result' "$LOG" | tail -1)"
