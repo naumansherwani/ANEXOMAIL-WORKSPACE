@@ -95,8 +95,9 @@ export function SiteFooter() {
 
       <div className="border-t border-border">
         <div className="ax-container py-8 text-xs leading-relaxed text-muted-foreground">
-          One person, one account. Device records use five coarse signals only — no biometric
-          fingerprinting, no third-party moderation.{" "}
+          One person, one account. Sign-ups are checked against blocked accounts using one-way hashed
+          technical signals — a browser match alone is reviewed by a person, never blocked
+          automatically, and nothing is sent to third-party moderation.{" "}
           <Link to="/privacy" className="transition-colors hover:text-foreground">
             Privacy &amp; account integrity →
           </Link>
