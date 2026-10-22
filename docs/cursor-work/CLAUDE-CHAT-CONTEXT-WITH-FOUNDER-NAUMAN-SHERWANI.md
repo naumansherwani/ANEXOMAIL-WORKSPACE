@@ -695,3 +695,5 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 04:30 — CALENDAR GINTI SAHI: 10 GREEN / 13 hisse (#4a/#4b/#4c alag). Purani '11 mein se 8/9' ginti ghalat thi, mat dohrao. BAAQI 3: #6 CalDAV, #7 Google, #8 Rooms (+ World clock W3/W4/W5).
 
 - 23 Oct 04:25 — Founder kehta hai Rust/Brain E76 chala diye (output paste nahi). Chrome se sirf itna dekha ja sakta hai ke Pro test account par passkey banner abhi bhi aata hai (asli-user behaviour theek); registry-exempt rasta sirf registered '*.test' account se dikhega. E76 SQL dobara dena safe (sha ledger: pehle se chali ho to skip, v2 ho to chale).
+
+- 23 Oct 04:25 — Founder output: sql-run.sh 'koi nayi SQL nahi' => E75 + E76 v2 ledger mein pehle se chali hui (SQL DONE). CHECK_E76 ka output abhi nahi aaya (editor mein chalana baaqi).
