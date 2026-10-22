@@ -18,6 +18,7 @@ if [ "$(psql "$WORKING_URL" -Atc "select count(*) from auth.users where email='$
   if [ -s "$PWF" ]; then PW=$(cat "$PWF"); echo "account pehle se hai: saved password"
   else psql "$WORKING_URL" -qAtc "set search_path=public,extensions; update auth.users set encrypted_password=crypt('$PW',gen_salt('bf')),updated_at=now() where email='$EM'" >/dev/null && echo "account pehle se tha: naya password set"; fi
 else
+  psql "$WORKING_URL" -X -qAt -c "select public.register_test_account('$EM','t7 seed')" >/dev/null 2>&1 || true   # E76 (Rule 49): pehle registry; E76 na ho to skip
   echo '__E28_B64__' | base64 -d | gunzip | psql "$WORKING_URL" -v ON_ERROR_STOP=1 -v handle=$H -v nm="$NM" -v org="$ORG" -v domain=$DOM -v plan=$PLAN -v pw="$PW" -f - || { echo SEED_FAIL; exit 2; }
 fi
 mkdir -p /root/test-accounts; chmod 700 /root/test-accounts; (umask 077; echo "$PW" > "$PWF")

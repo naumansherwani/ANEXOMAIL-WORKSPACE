@@ -60,8 +60,6 @@ select public.ensure_trial_account_row(:'uid', :'em', 'email');
 \o
 
 -- 3) address claim -- handle liya/reserved/invalid ho to kuch nahi badalta
--- E76: test account pehle registry mein (warna asli-signup deewar claim rok degi); E76 chali na ho to function nahi — tab skip
-select case when to_regprocedure('public.register_test_account(text,text)') is not null then public.register_test_account(:'em', 'E28 seed')::text else 'E76 nahi chali' end as e76_registered;
 select (public.trial_claim_address(:'uid', :'handle') ->> 'ok') = 'true' as claimed \gset
 \if :claimed
 \else

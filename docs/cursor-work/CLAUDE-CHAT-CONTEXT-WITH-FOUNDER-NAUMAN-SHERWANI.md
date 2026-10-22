@@ -686,3 +686,5 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 04:30 — Home city card UI fix (overlap + alag design) code READY: SettingsScope 'after' prop, card ax-plane style. Web pull baaqi; phir Chrome screenshot se confirm. E76 (SQL->Rust->Brain) bhi baaqi. Founder hukm: CEO mindset, chat context har bade kaam par repo mein.
 
 - 23 Oct 04:45 — E76 v2 advance (account class wall) READY, push ke baad founder SQL->Rust->Brain chalaye (founder-commands.md). Home city UI fix (ffc7464) Web pull baaqi.
+
+- 23 Oct 04:55 — Founder ne E28 editor mein paste ki (\set error). E28/E36 psql-only; edit wapas; naya editor-ready tool sql/tools/create_test_account.sql (registry + mix-wall). Registry call bizpro-login-fix.sh + t7 script mein. Server run order wahi: SQL(E76) -> Rust -> Brain -> Web.

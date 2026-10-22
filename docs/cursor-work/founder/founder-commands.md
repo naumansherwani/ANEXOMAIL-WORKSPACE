@@ -776,3 +776,6 @@ Live check: Settings > Personal > Home city > "Detect my city" (browser ijazat p
 ## 23 Oct — Home city UI theek (card ab baaqi settings jaisa) — server par BAAQI
 1. SQL: nahi. 2. Rust: nahi. 3. Brain: nahi.
 4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R. Live check: Settings > Personal > Home city ab "Undo send window" ke neeche usi glass card style mein.
+
+## 23 Oct — Naya test account banana (editor mein seedha) — jab zaroorat ho
+Supabase SQL editor mein `docs/cursor-work/sql/tools/create_test_account.sql` kholo, sirf aakhri `select` ki 6 values badlo, Run. (E28/E36 editor mein NAHI — woh psql scripts hain, server script se chalti hain.) Pehle E76 chali ho.

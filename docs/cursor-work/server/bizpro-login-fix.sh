@@ -92,6 +92,8 @@ for row in "${ACCOUNTS[@]}"; do
   IFS='|' read -r H NM ORG DOM <<<"$row"
   [ -n "$ONLY" ] && [ "$ONLY" != "$H" ] && continue
   echo "== $H@anexomail.com"
+  # E76 (Rule 49): test account PEHLE registry mein (asli-signup deewar usay rok na de); E76 chali na ho to chup-chaap skip
+  psql "$WORKING_URL" -X -qAt -c "select public.register_test_account('${H}@anexomail.com','bizpro-login-fix')" >/dev/null 2>&1 || true
   OUT="$( { printf '%s\n' "\\set pw '${pw_esc}'"; cat "$SQLFILE"; } | psql "$WORKING_URL" -X -q -P pager=off -v ON_ERROR_STOP=1 \
         -v handle="$H" -v nm="$NM" -v org="$ORG" -v domain="$DOM" -v plan="$PLAN" -f - 2>&1 )"
   rc=$?
