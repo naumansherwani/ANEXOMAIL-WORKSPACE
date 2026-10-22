@@ -682,3 +682,5 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 03:58 — HOME CITY GREEN LIVE (Chrome, Pro test account): Lahore save OK, reload ke baad persist, greeting 'Good night' (Karachi 03:5x), remove OK ('Home city removed'). Test account saaf. Chrome tab band. AGLA: test-vs-real/no-mock audit.
 
 - 23 Oct 04:15 — AUDIT test-vs-real DONE (Rule 49 AGENTS.md mein): koi mock/demo data nahi; loophole = passkey chhoot naam-pattern par => E76 registry + Rust + Brain patch (code READY, server run BAAQI: SQL -> Rust -> Brain; founder-commands.md). Founder ne SQL E75 chala di thi (OK) aur home city live GREEN. AGLA: E76 server run, phir W3/W4/W5 -> #6 -> #7 -> #8.
+
+- 23 Oct 04:30 — Home city card UI fix (overlap + alag design) code READY: SettingsScope 'after' prop, card ax-plane style. Web pull baaqi; phir Chrome screenshot se confirm. E76 (SQL->Rust->Brain) bhi baaqi. Founder hukm: CEO mindset, chat context har bade kaam par repo mein.

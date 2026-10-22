@@ -1,5 +1,5 @@
 import { History, Info, RotateCcw, ShieldAlert, Users } from "lucide-react";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import type { Scope, Setting } from "@/lib/settings";
@@ -24,10 +24,13 @@ export function SettingsScope({
   scope,
   title,
   blurb,
+  after,
 }: {
   scope: Scope;
   title: string;
   blurb: string;
+  /** Extra cards that live in the same column, under the server-driven rows (e.g. Home city). */
+  after?: ReactNode;
 }) {
   const q = useSettings(scope);
 
@@ -57,6 +60,7 @@ export function SettingsScope({
             )}
           </CardBody>
         </div>
+        {after && <div className="mt-ax-3">{after}</div>}
       </div>
     </div>
   );

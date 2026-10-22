@@ -19,13 +19,11 @@ export const Route = createFileRoute("/app/settings/")({
     ],
   }),
   component: () => (
-    <>
-      <SettingsScope
-        scope="personal"
-        title="Personal"
-        blurb="Your own workspace — name, signature, defaults. Nothing here leaks to anyone else."
-      />
-      <HomePlaceCard />
-    </>
+    <SettingsScope
+      scope="personal"
+      title="Personal"
+      blurb="Your own workspace — name, signature, defaults. Nothing here leaks to anyone else."
+      after={<HomePlaceCard />}
+    />
   ),
 });

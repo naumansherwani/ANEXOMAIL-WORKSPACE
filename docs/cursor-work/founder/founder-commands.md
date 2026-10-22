@@ -772,3 +772,7 @@ Live check: Settings > Personal > Home city > "Detect my city" (browser ijazat p
 3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 4. Brain: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-passkey-registry.sh)`
 5. Web: nahi (src/ nahi badla).
+
+## 23 Oct — Home city UI theek (card ab baaqi settings jaisa) — server par BAAQI
+1. SQL: nahi. 2. Rust: nahi. 3. Brain: nahi.
+4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R. Live check: Settings > Personal > Home city ab "Undo send window" ke neeche usi glass card style mein.

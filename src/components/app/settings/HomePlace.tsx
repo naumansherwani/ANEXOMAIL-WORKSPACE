@@ -83,30 +83,27 @@ export function HomePlaceCard() {
   };
 
   return (
-    <section
-      className="mx-auto mt-ax-6 w-full max-w-3xl px-ax-4 sm:px-ax-6"
-      aria-labelledby="home-city"
-    >
-      <div className="rounded-xl border border-border p-ax-4">
-        <div className="flex items-start gap-3">
-          <MapPin className="mt-0.5 size-4 shrink-0 text-muted-foreground" aria-hidden="true" />
+    <section className="ax-plane rounded-2xl p-ax-4" aria-labelledby="home-city">
+      <div>
+        <div className="flex items-start gap-ax-3">
+          <span
+            className="grid size-9 shrink-0 place-items-center rounded-xl bg-secondary text-steel"
+            aria-hidden="true"
+          >
+            <MapPin className="size-4" />
+          </span>
           <div className="min-w-0 flex-1">
-            <h2 id="home-city" className="text-[14px] font-bold text-foreground">
+            <h3 id="home-city" className="text-[13px] font-semibold text-foreground">
               Home city
-            </h2>
+            </h3>
             <p className="ax-caption mt-0.5 text-muted-foreground">
-              {prefs.home ? (
-                <>
-                  <span className="font-semibold text-foreground">{placeLabel(prefs.home)}</span> —
-                  your greeting follows its sunset and your clock is named after it.
-                </>
-              ) : (
-                <>
-                  Not set. Your device says {device.city}; pick your own city so the greeting
-                  follows its sunset.
-                </>
-              )}
+              Your greeting follows this city's sunset and your clock is named after it.
             </p>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
+              <span className="rounded-md bg-secondary px-2 py-0.5 font-semibold text-foreground">
+                {prefs.home ? placeLabel(prefs.home) : `Not set · device says ${device.city}`}
+              </span>
+            </div>
             {prefs.home && prefs.home.iana !== device.iana && (
               <p className="ax-caption mt-1 text-amber-400">
                 This device is currently in {device.city}. The clock keeps showing the place the
