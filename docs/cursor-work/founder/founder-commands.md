@@ -699,3 +699,7 @@ Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab
 
 ### 22 Oct 2026 09:55 PKT — SQL Supabase editor mein paste: pehla character kat jata hai
 Founder ne E63 editor mein paste ki: `LINE 1: - E63` (pehla `-` kat gaya). Hal: har nayi SQL file ki pehli line KHALI (blank) — kata hua pehla char newline hi hota hai, comment salamat. E63_event_goal + CHECK_E63 par laga, "pehla char gum" simulation psql mein bhi chala (OK). Purani files (E62 etc.) already chal chuki hain. Server par `sql-run.sh` ab bhi behtar raasta hai, par editor bhi chalega.
+
+### 22 Oct 2026 10:05 PKT — E63 duniya-ke-advance level par (Rule 38, teen baar padha)
+Founder: "duniya ka advance sql likho, yeh rule hai E63". Badla (sirf E63_event_goal.sql + CHECK_E63.sql; Rust/Web wahi): PREFLIGHT (PG>=11, column type guard) · EK ALTER teeno columns + LOCK RETRY (3s x 6, badhta intezaar; sandbox mein 6s ke lock ke saamne khud dobara koshish kar ke kamyab) · TEEN alag constraints (goal_ck, goal_state_ck, goal_state_at_ck) NOT VALID->VALIDATE · POST-CONDITION self-check script ke aakhir mein · wapas lene ka tareeqa comment mein · export (E44 to_jsonb) apne-aap covered. Sandbox: saaf DB par 2 baar chali OK, wrong-type preflight reject, lock contention OK, CHECK 9/9, proofs 14/14, "pehla char gum" simulation 0 error.
+Server: SQL command wahi (E63_event_goal CHECK_E63); naya commit hash neeche jawab mein. Rust/Web commands wahi.
