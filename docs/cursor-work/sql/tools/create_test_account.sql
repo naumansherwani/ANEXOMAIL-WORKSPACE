@@ -23,6 +23,7 @@ declare
   r    jsonb;
 begin
   pw := left(pw, 16);
+  if h = 'edit.me' then raise exception 'Pehle aakhri select ki 6 values badlo (handle abhi edit.me hai) — kuch nahi bana'; end if;
   if h !~ '^[a-z0-9]([a-z0-9.-]{1,28})[a-z0-9]$' then raise exception 'handle ghalat: % (a-z 0-9 . -, 3..30)', _handle; end if;
   if btrim(coalesce(_name, '')) = '' or btrim(coalesce(_org, '')) = '' or btrim(coalesce(_domain, '')) = '' then raise exception 'naam/org/domain khali'; end if;
   if _plan !~ '^[a-z_]{3,24}$' then raise exception 'plan ghalat: %', _plan; end if;
@@ -82,4 +83,4 @@ begin
 end $f$;
 
 -- >>> SIRF YEH 6 VALUES BADLO <<<   (handle, naam, org, domain, plan, seats)
-select * from pg_temp.ax_make_test_account('demo.test', 'Demo Test', 'Demo Test Co', 'demotest.example.com', 'pro', 5);
+select * from pg_temp.ax_make_test_account('edit.me', 'Test Name', 'Test Org', 'testorg.example.com', 'pro', 5);

@@ -568,6 +568,6 @@ docs/cursor-work/sql/E76_test_account_registry.sql 34130309145c748b
 docs/cursor-work/sql/CHECK_E76.sql 9fa1e7a220773a29
 docs/cursor-work/sql/proofs/E76_proof.sql f8a44ab98a3abd99
 docs/cursor-work/server/brain-passkey-registry.sh 15abf74de329bd33
-docs/cursor-work/sql/tools/create_test_account.sql 05218b31d9d814b6
+docs/cursor-work/sql/tools/create_test_account.sql 2af79a07bed901cf
 docs/cursor-work/server/bizpro-login-fix.sh 362215e910f6bd9f
 docs/cursor-work/server/t7-send-identity-test.sh f73ded49a9343a90
