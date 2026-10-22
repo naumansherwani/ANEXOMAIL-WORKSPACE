@@ -713,3 +713,9 @@ AGENTS.md Rule 42 + `docs/cursor-work/server/sql-editor-lint.py` (pehli line kha
 
 ### 22 Oct 2026 19:40 PKT — #10 History search SHURU (founder: "kaam shuru kero")
 Compact ho jaye to: NEXT-TASKS.md ka ">>> ABHI CHAL RAHA HAI <<<" hissa padho aur wahin se jaari rakho. Server commands tab aayengi jab E64 + Rust + Web push hon.
+
+### 22 Oct 2026 20:55 PKT — #10 History search CODE READY (commit neeche), server install baaki
+Bana: E64 SQL (history search, org wall, FTS+trigram, date/person filters; 32 proofs, CHECK 10 items) · Rust `calendar.history` (cal_glue + cal_core, 42 tests) · Web `/app/search` mein "Meetings & history" + calendar deep link. Server (alag alag, tarteeb yahi):
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E64_history_search CHECK_E64`   (editor mein bhi chalegi: repo se file dobara copy)
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES="cal" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

@@ -12,7 +12,7 @@ Rule: "GREEN" = founder ka server output + live check. Is file ko har calendar s
 | 6 | CalDAV (B7d) — PROPFIND/REPORT, ctag/etag, tz, recurring exceptions, app password (27 Oct se passkey), Caddy .well-known surgical | Shuru nahi |
 | 7 | Google Calendar sync (OAuth, watch+sync token, loop-guard) | Shuru nahi. FOUNDER: Google Cloud verification application abhi shuru kare |
 | 9 | Outcome colours (event par red→yellow→green, user ka khud ka Achieved tap; line hamesha red) | **GREEN 22 Oct 10:15 (Chrome live: Aim save, Achieved + hara dot, reload ke baad bacha, Reopen, Aim removed — guests ko mail nahi gayi)**. Pehle CODE READY 10:30: SQL E63_event_goal (+CHECK_E63, proofs/E63_proof.sql 14/14 sandbox) · Rust cal_core clean_goal/goal_state_ok/goal_tone (41 tests) + cal_glue meta.set `goal`,`goal_state` · Web lib/goal.ts (+test), EventDetail OutcomeEditor, dot on TimeGrid + month list. Server install + live check baaki. Design: CALENDAR-BLUEPRINT §4 |
-| 10 | History search (Cmd+K, saalon purani, FTS+trigram, org wall) | Design: CALENDAR-BLUEPRINT §5. Shuru nahi |
+| 10 | History search (Cmd+K, saalon purani, FTS+trigram, org wall) | **CODE READY 22 Oct 20:55**: SQL E64 (+CHECK_E64, proofs 32/32; 60k meetings mein rare shabd 9-21 ms, sab-matching shabd 1.4 s) · Rust cal `calendar.history` (42 core tests) · Web lib/history.ts + HistoryResults (/app/search) + calendar deep link ?date=&event=. Server install + live check baaki |
 | 8 | Rooms / resources (pseudo-attendee, wohi conflict engine) | Shuru nahi |
 
 ## Spec ke faislay (founder ko jawab, line by line)
@@ -39,3 +39,4 @@ Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a
 - 22 Oct 10:50: founder: Aim ko lamba karo ("50,000 ya jo better ho, decent+professional"). Faisla: Aim = headline + detail, 2000 harf, multi-line (SQL/Rust/Web teeno 2000). 50,000 nahi: mahine ki list har meeting ke saath goal bhejti hai (500 x 50k = 25 MB), aur itna lamba matn Agenda/Notes ka kaam hai. Ek constant (GOAL_MAX_CHARS + SQL function) badal kar baad mein barha sakte hain. E63 abhi server par nahi chala tha, isliye usi file mein badla.
 - 22 Oct 10:15: GREEN — #9 outcome colours (live Chrome), landing/plans calendar copy (Basic card 'Contacts & full calendar...' live), E63 SQL+Rust cal+Web server par chale. Pichli lines: #0-#3 GREEN, #4a/#4b GREEN. Ab calendar mein baaki: #10 history search -> W2 Focus Ring -> #4c ICS -> #5 files -> W3/W4/W5 -> #6 CalDAV -> #7 Google -> #8 rooms.
 - 22 Oct 10:12: tarteeb ek jagah likhi: docs/cursor-work/NEXT-TASKS.md (founder-locked).
+- 22 Oct 20:55: #10 CODE READY (SQL+Rust+Web). Server order SQL -> Rust(MODULES="cal") -> Web. Hadd: sirf ANEXOMAIL mein jo data hai; purani meetings ICS import se.

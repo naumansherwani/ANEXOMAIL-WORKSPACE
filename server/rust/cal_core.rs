@@ -235,6 +235,34 @@ pub fn goal_tone(state: &str, starts: i64, ends: i64, now: i64) -> &'static str 
     }
 }
 
+/// History search (#10, E64) input rules — mirror of SQL `calendar_history` (never stricter): control characters become spaces, spaces collapse,
+/// at most `max` characters, and anything under 2 characters is "no text" (so a single letter never walks the whole history).
+pub fn clean_search_text(s: &str, max: usize) -> Option<String> {
+    let t: String = s.chars().map(|c| if c.is_control() { ' ' } else { c }).collect();
+    let t = t.split_whitespace().collect::<Vec<_>>().join(" ");
+    let t: String = t.chars().take(max).collect();
+    let t = t.trim().to_string();
+    if t.chars().count() < 2 {
+        None
+    } else {
+        Some(t)
+    }
+}
+
+/// `recent` (default) | `oldest` | `relevance` (only meaningful with text; the SQL falls back to recent without it).
+pub fn history_order(s: &str) -> &'static str {
+    match s {
+        "oldest" => "oldest",
+        "relevance" => "relevance",
+        _ => "recent",
+    }
+}
+
+/// (limit, offset): 1..=50 rows (default 20), offset 0..=1000.
+pub fn history_page(limit: Option<i64>, offset: Option<i64>) -> (i64, i64) {
+    (limit.unwrap_or(20).clamp(1, 50), offset.unwrap_or(0).clamp(0, 1000))
+}
+
 pub fn html_escape(s: &str) -> String {
     let mut o = String::with_capacity(s.len() + 8);
     for c in s.chars() {
@@ -1082,6 +1110,22 @@ mod read_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn history_input_is_cleaned_like_the_sql() {
+        assert_eq!(clean_search_text("  contract \t review\n", 200).unwrap(), "contract review");
+        assert_eq!(clean_search_text("a", 200), None, "one letter is no text");
+        assert_eq!(clean_search_text("   ", 200), None);
+        assert_eq!(clean_search_text("\u{1}\u{2}", 200), None);
+        assert_eq!(clean_search_text(&"a".repeat(500), 200).unwrap().chars().count(), 200);
+        assert_eq!(clean_search_text("عقد", 200).unwrap(), "عقد", "non-Latin text is kept");
+        assert_eq!(history_order("oldest"), "oldest");
+        assert_eq!(history_order("relevance"), "relevance");
+        assert_eq!(history_order("x; drop"), "recent");
+        assert_eq!(history_page(None, None), (20, 0));
+        assert_eq!(history_page(Some(9999), Some(999_999)), (50, 1000));
+        assert_eq!(history_page(Some(-5), Some(-1)), (1, 0));
+    }
+
     #[test]
     fn goal_is_short_headline_plus_detail() {
         assert_eq!(clean_goal("  Contract signed  ").unwrap(), "Contract signed");

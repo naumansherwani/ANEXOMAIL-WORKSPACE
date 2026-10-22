@@ -52,6 +52,7 @@ import {
   type CalendarEvent,
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
+import { jumpAnchor, useCalendarJump } from "@/lib/calendar-jump";
 import { eventColor, oooOn, useCalPrefs } from "@/lib/calprefs";
 import { fmtTime, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
@@ -410,10 +411,11 @@ type Rail = "agenda" | "availability" | "load";
 export function CalendarClassic() {
   const { t } = useLocale();
   useClockPref();
-  const [anchor, setAnchor] = useState(() => new Date());
+  const jump = useCalendarJump();
+  const [anchor, setAnchor] = useState(() => jumpAnchor(jump));
   const [view, setView] = useState<ViewType>("month");
   const [rail, setRail] = useState<Rail>("agenda");
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(jump.event ?? "");
   const [composing, setComposing] = useState(false);
   const [icsPlan, setIcsPlan] = useState<LoadedIcs | null>(null);
 

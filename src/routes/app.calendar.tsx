@@ -54,11 +54,13 @@ import {
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
 import { eventColor, oooOn, useCalPrefs } from "@/lib/calprefs";
+import { jumpAnchor, useCalendarJump, validateJump } from "@/lib/calendar-jump";
 import { GOAL_DOT, GOAL_WORD, goalTone } from "@/lib/goal";
 import { fmtTime, hydrateUiPref, useCalLayout, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/app/calendar")({
+  validateSearch: (search: Record<string, unknown>) => validateJump(search),
   head: () => ({
     meta: [{ title: "Calendar — ANEXOMAIL Workspace" }, { name: "robots", content: "noindex" }],
   }),
@@ -494,10 +496,11 @@ function CalendarPage() {
 function CalendarExpanded() {
   const { t } = useLocale();
   useClockPref();
-  const [anchor, setAnchor] = useState(() => new Date());
+  const jump = useCalendarJump();
+  const [anchor, setAnchor] = useState(() => jumpAnchor(jump));
   const [view, setView] = useState<ViewType>("month");
   const [rail, setRail] = useState<Rail>("agenda");
-  const [selected, setSelected] = useState("");
+  const [selected, setSelected] = useState(jump.event ?? "");
   const [composing, setComposing] = useState(false);
   const [icsPlan, setIcsPlan] = useState<LoadedIcs | null>(null);
 

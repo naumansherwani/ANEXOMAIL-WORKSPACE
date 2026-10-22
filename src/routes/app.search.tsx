@@ -2,6 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { Building2, Mail, Paperclip, Search, Users } from "lucide-react";
 
 import { EmptyState } from "@/components/app/Panel";
+import { HistoryResults } from "@/components/app/search/HistoryResults";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { Avatar, RelationshipChip } from "@/components/app/people/Bits";
 import { ListSkeleton } from "@/components/state/Skeletons";
@@ -36,10 +37,12 @@ function SearchPage() {
             autoFocus
             value={q}
             onChange={(e) => void navigate({ search: { q: e.target.value } })}
-            placeholder="People, companies, threads, attachments…"
+            placeholder="People, companies, threads, attachments, past meetings…"
             className="min-w-0 flex-1 bg-transparent text-sm text-foreground outline-none placeholder:text-steel"
           />
         </label>
+
+        <HistoryResults q={q} />
 
         <div className="mt-8">
           <Body q={q} results={results} />
@@ -55,7 +58,7 @@ function Body({ q, results }: { q: string; results: ReturnType<typeof useUnivers
       <EmptyState
         icon={<Search className="size-5" />}
         title="Type to search everything"
-        body="One index across mail, people, companies and attachments — built from your own mailboxes."
+        body="One index across mail, people, companies, attachments and your past meetings — built from your own mailboxes and calendar."
       />
     );
   }

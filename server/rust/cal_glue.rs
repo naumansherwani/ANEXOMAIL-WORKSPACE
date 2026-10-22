@@ -6,7 +6,7 @@
 // (std-only, 21 unit tests). Parent module (main.rs) ke helpers: sb_select / sb_insert / sb_patch / sb_rpc / sb_count,
 // mail_identity, ok / err, s — yahan `crate::` se use hote hain.
 //
-// Procs (authenticated):  calendar.create  calendar.update  calendar.invites.resend  calendar.busy  calendar.findtime
+// Procs (authenticated):  calendar.create  calendar.history  calendar.update  calendar.invites.resend  calendar.busy  calendar.findtime
 // Procs (public, token):  calendar.rsvp.lookup  calendar.rsvp.respond
 //
 // Graceful: E31 SQL (docs/cursor-work/sql/E31_calendar_v2.sql) na lagi ho to `calendar.create` 501 deta hai aur
@@ -40,6 +40,7 @@ pub fn owns(proc: &str) -> bool {
             | "calendar.event"
             | "calendar.load"
             | "calendar.meta.set"
+            | "calendar.history"
     )
 }
 
@@ -609,6 +610,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         "calendar.event" => event_one(&me, input).await,
         "calendar.load" => team_load(&me, input).await,
         "calendar.meta.set" => meta_set(&me, input).await,
+        "calendar.history" => history(&me, input).await,
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
 }
@@ -926,6 +928,92 @@ async fn meta_set(me: &Who, input: &Value) -> axum::response::Response {
     match crate::sb_patch(&format!("calendar_events?id=eq.{}&org_id=eq.{}", id, me.org_id), Value::Object(patch)).await {
         Ok(_) => crate::ok(json!({ "ok": true, "id": id })).into_response(),
         Err(_) => fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
+    }
+}
+
+/* ------------------------------------------------ history search (#10, E64) */
+
+static HIST_RATE: std::sync::OnceLock<std::sync::Mutex<std::collections::HashMap<String, std::collections::VecDeque<u64>>>> = std::sync::OnceLock::new();
+const HIST_LIMIT: usize = 40;
+const HIST_WINDOW_MS: u64 = 60_000;
+
+/// Sliding window per user (searches are heavier than reads). A poisoned lock never blocks a real user.
+fn hist_allowed(user: &str) -> bool {
+    let now = (now_epoch() as u64) * 1000;
+    let m = HIST_RATE.get_or_init(|| std::sync::Mutex::new(std::collections::HashMap::new()));
+    match m.lock() {
+        Ok(mut map) => {
+            if map.len() > 5_000 {
+                map.retain(|_, q| q.back().map(|t| now.saturating_sub(*t) < HIST_WINDOW_MS).unwrap_or(false));
+            }
+            let q = map.entry(user.to_string()).or_default();
+            while q.front().map(|t| now.saturating_sub(*t) >= HIST_WINDOW_MS).unwrap_or(false) {
+                q.pop_front();
+            }
+            if q.len() >= HIST_LIMIT {
+                false
+            } else {
+                q.push_back(now);
+                true
+            }
+        }
+        Err(_) => true,
+    }
+}
+
+/// Years of meetings, one box. Text / person / date range — at least one. The privacy wall (active member of this org) is in SQL.
+async fn history(me: &Who, input: &Value) -> axum::response::Response {
+    if !hist_allowed(&me.id) {
+        return fail(StatusCode::TOO_MANY_REQUESTS, "too_many_requests", "Too many searches — please try again in a minute.");
+    }
+    let q = cal::clean_search_text(&st(input, "q"), 200);
+    let person = cal::clean_search_text(&st(input, "person"), 120);
+    let parse = |k: &str| -> Result<Option<i64>, ()> {
+        let raw = st(input, k);
+        if raw.trim().is_empty() {
+            return Ok(None);
+        }
+        cal::parse_ts(&raw).map(Some).ok_or(())
+    };
+    let (from, to) = match (parse("from"), parse("to")) {
+        (Ok(f), Ok(t)) => (f, t),
+        _ => return fail(StatusCode::BAD_REQUEST, "bad_range", "from and to must be RFC 3339 times"),
+    };
+    if let (Some(f), Some(t)) = (from, to) {
+        if t <= f {
+            return fail(StatusCode::BAD_REQUEST, "bad_range", "The end of the range is before its start");
+        }
+    }
+    if q.is_none() && person.is_none() && from.is_none() && to.is_none() {
+        return fail(StatusCode::BAD_REQUEST, "empty_query", "Type at least two letters, pick a person or choose dates");
+    }
+    let (limit, offset) = cal::history_page(num(input, "limit"), num(input, "offset"));
+    let order = cal::history_order(&st(input, "order"));
+    let body = json!({
+        "p_org": me.org_id, "p_viewer": me.id, "p_q": q, "p_person": person, "p_order": order, "p_limit": limit, "p_offset": offset,
+        "p_from": from.map(cal::fmt_rfc3339), "p_to": to.map(cal::fmt_rfc3339),
+    });
+    match crate::sb_rpc("calendar_history", body).await {
+        Ok(v) => match v.get("error").and_then(|e| e.as_str()) {
+            Some("forbidden") => fail(StatusCode::FORBIDDEN, "forbidden", "You are not allowed to search this workspace's calendar."),
+            Some("bad_range") => fail(StatusCode::BAD_REQUEST, "bad_range", "The end of the range is before its start"),
+            Some("empty_query") => fail(StatusCode::BAD_REQUEST, "empty_query", "Type at least two letters, pick a person or choose dates"),
+            Some(other) => {
+                eprintln!("history: unexpected error code {}", other.chars().take(40).collect::<String>());
+                fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Search failed — please try again.")
+            }
+            None => crate::ok(v).into_response(),
+        },
+        Err(e) if e.contains("PGRST202") || e.contains("Could not find the function") || e.contains("42883") => {
+            fail(StatusCode::NOT_IMPLEMENTED, "history_sql_missing", "History search is not installed yet (SQL E64).")
+        }
+        Err(e) if e.contains("57014") || e.to_lowercase().contains("statement timeout") => {
+            fail(StatusCode::GATEWAY_TIMEOUT, "search_timeout", "That search is too wide — narrow the dates or add a person.")
+        }
+        Err(e) => {
+            eprintln!("history: calendar_history failed: {}", e.chars().take(300).collect::<String>());
+            fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Search failed — please try again.")
+        }
     }
 }
 
