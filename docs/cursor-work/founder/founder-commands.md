@@ -609,3 +609,13 @@ GREEN tab hogi jab: CHECK_E59 11/11 OK + Rust "-> book: ... dono procs pakde" + 
 Live anexomail.com: host sheet save (handle pro-buyer, page ON) -> /book/pro-buyer slots (weekday, 4h notice) -> asli booking (UI "You're booked", confirmation mail send hua) -> slot ghayab + dobara book 409 -> /book/manage move 23 Oct 09:45 -> 22 Oct 10:30 OK -> cancel OK -> slot wapas free. Founder ke Gmail mein 3 mails (confirmed/moved/cancelled) aani chahiye — founder confirm kare.
 Page `pro-buyer` abhi ON hai (founder band karna chahe to Calendar > Booking page > untick > Save).
 NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir #3 iMIP reply.
+
+## 22 Oct 2026 ~06:35 PKT — B7c Gmail proof + agla kaam (#3 iMIP reply G26) ki tafseel
+- Founder ne confirm kiya: 3 mails (Confirmed / Moved / Cancelled) inbox mein aayin. B7c poora GREEN (mail samet). (Note: test visitor address hostflowaibuilder@gmail.com tha; founder ne hostflowai@gmail.com likha — jo bhi ho, 3 aayin.)
+- RULE yaad (AGENTS.md Rule "universal UI", line ~303): website ka har edit SAB packages ko ek saath milta hai (Basic/Pro/Business/Business Pro), family/lifetime accounts ko bhi (woh org-membership + capability se, tier-literal nahi); package ka farq sirf plan-surface.ts capability / billing mein. Family ko special = unka billing "Lifetime access" label aur Business Pro surface (BASIC-AUDIT-DONE). Har UI edit ke baad tier-sweep + live 390/820/1440.
+- #3 iMIP REPLY (G26) design — abhi KOI code nahi likha:
+  1) SQL E60: `calendar_imip_apply(p_uid text, p_attendee text, p_partstat text, p_sequence int)` service_role-only; uid = <event_id>@anexomail.com; sirf us attendee row par jis ka address == sender; partstat ACCEPTED/TENTATIVE/DECLINED -> accepted/tentative/declined; purani sequence ignore; cancelled event par no-op; audit row. CHECK_E60 read-only.
+  2) Rust: `imip_core.rs` (std-only: text/calendar METHOD:REPLY parser, ATTENDEE/PARTSTAT/UID/SEQUENCE, size caps, header-injection safe, unit tests) + hook `anexomail-deliver` (inbound pipe): sirf tab apply jab SPF/DKIM/DMARC pass ho aur From == ATTENDEE; warna normal mail ki tarah inbox mein jaye (kuch kho'ta nahi, best-effort, mail path kabhi nahi tootta).
+  3) Web: EventDetail guest list mein "answered from calendar app" label (calendar topic live push se turant); koi tier code nahi, sab packages + family ko ek saath.
+  4) Tarteeb: SQL -> Rust deliver installer -> Web. GREEN sirf founder output + live Gmail "Yes" click test ke baad.
+- Us se pehle: MIGRATION-LEDGER (sirf ginti, koi Bun code nahi hatega) — founder ne abhi "next kaam tarteeb se" kaha, tarteeb: #3 iMIP, ledger side-by-side docs-only.
