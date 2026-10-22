@@ -632,3 +632,4 @@ NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir 
 - Hua: E60 SQL+Rust deliver+Rust cal+web server par (founder output). Bug fix fc51c04 (attendee order=created_at live par nahi) live-verified: guest list theek. Invite pehli baar Gmail spam mein (Not spam kiya).
 - Ab: `docs/cursor-work/server/imip-reply-proof.sh` (asli pipe se 4 REPLY: auth nahi / jhoota From / sahi / duplicate) founder ko chalana hai -> output pe GREEN. Command: bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/imip-reply-proof.sh)
 - Phir: #4 world-clock pins + team overlay + ICS subscribe; G16 portal P2 (4 faisle pending); MIGRATION-LEDGER.
+- 22 Oct 07:47 #3 GREEN. NEW founder ask: Outlook UI dekh kar ANEXOMAIL ka original mail feature map + placement + package gating (family=unlimited Rule 40). Outlook address for test: naumankhansherwani@outlook.com (founder ne diya).

@@ -5,3 +5,4 @@
 - 22 Oct 07:00 G16 = docs/claude/BILLING-PORTAL-BLUEPRINT.md (founder ne kal diya). Bana sirf P0+P1 (+B6a Polar-hosted button). P2–P8 BANA NAHI. 'Rust billing.portal GREEN' ko G16 ka poora kaam mat samajhna.
 - 22 Oct 07:20 BUG (Rule 29): live calendar_attendees mein created_at column NAHI (CHECK_CAL_GUESTS ne saboot diya) — cal_glue attendee_rows/attendees_of_many 'order=created_at.asc' PostgREST error deta tha, .ok() ne chhupa diya => guest list khali. Fix: order=address.asc + error log. Rust cal reinstall baaki, phir iMIP test dobara.
 - 22 Oct 07:30: #3 ka asli-pipe saboot script imip-reply-proof.sh push; founder ka output aane par GREEN. Gmail RSVP-bar sharT nahi.
+- 22 Oct 07:47 #3 iMIP = GREEN (imip-reply-proof.sh founder output A/B/C/D sab theek). Dobara test mat mangna. Agla: founder ka naya hukm — Outlook-jaisa mail UI/feature map (kaun si feature kis package, kahan).
