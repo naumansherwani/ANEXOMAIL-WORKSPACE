@@ -342,3 +342,9 @@ Founder: "sql ka rule hai ke server pe bhi run hogi aur supabase editor main bhi
 7. **Lint (push se PEHLE, har nayi SQL par):** `python3 docs/cursor-work/server/sql-editor-lint.py <files>` — exit 0 chahiye. Plus sandbox mein "pehla character gum" simulation: `tail -c +2 file.sql | psql -v ON_ERROR_STOP=1` — 0 error.
 8. Server par `sql-run.sh` ab bhi tarjeehi raasta (ledger + sha), editor founder ke liye barabar maanya. Jawab mein dono tareeqe likho jab SQL ho (editor: "repo se file dobara copy karo, purani copy mat chalao").
 Purani files (E61 aur pehle) jo chal chuki hain unhein badalna zaroori nahi; naya rule nayi files par.
+
+## Rule 43 — Ab se har SQL RLS-ON wali (founder 22 Oct 2026 20:17 PKT, STRICT; Rule 38/42 ka hissa)
+Founder: "ajj ke bad se sql rls on wali hogi … ek sql likho jis se warnings aur rls sab on ho jaye".
+- Har nayi E-series jo table banaye: usi file mein `alter table … enable row level security`, `revoke all … from anon, authenticated`, aur ya to asli policy ya `service_role` policy (backend service_role hai). Naya view = `security_invoker = on`; naya function = `set search_path` pinned; SECURITY DEFINER = execute public/anon se wapas.
+- `CHECK_<NAME>.sql` mein "RLS on" ka item. RLS kabhi wapas OFF nahi.
+- Sweep + safety-net: `docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql` (+ `CHECK_E65.sql`): purani sab tables RLS-on, bina-policy tables band, views/functions advisor-clean, aur event trigger `ax_rls_auto_enable` jo nayi public table par khud RLS ON karta hai. Extensions ko public se nahi hilata.

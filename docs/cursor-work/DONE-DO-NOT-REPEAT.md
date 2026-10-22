@@ -340,3 +340,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - Rules jo bane: 41 (har commit ke saath server commands), 42 (SQL server + Supabase editor dono; sql-editor-lint.py), installer ki rollback line -> /root/rust-rollback-<stamp>.sh.
 - Ab baaki calendar: #10 history search, W2 Focus Ring, #4c ICS, #5 files, W3/W4/W5, #6 CalDAV, #7 Google, #8 rooms. Phir M-series, phir G16 billing portal (founder tarteeb).
 - 22 Oct 21:10 #10 History search 100-saal rework (E64 keyset+by_year+hybrid, Rust cursor, Web Years chips) — code ready, server install baqi; dobara design mat karo.
+- 22 Oct 20:30 Rule 43 + E65 RLS/advisor sweep (code ready; server run baqi) — dobara mat likho.
