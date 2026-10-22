@@ -348,3 +348,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 21:30 Rule 44: SQL server par sql-run.sh se, editor nahi; SQL -> Rust -> Web (AGENTS.md top banner + founder-commands + NEXT-TASKS).
 - 22 Oct 21:45 sql-run.sh: har SQL-run ke baad E65 sweep khud dobara + CHECK_E65 (purani E37..E52 dobara chali to functions unpinned ho gaye thi). Server par pehle se chal chuki E37..E52 (purane runner se, sha badla tha) saaf nikli.
 - 22 Oct 21:55 sql-run.sh bare command test (0/1/kai/fix/blank-line-only) sandbox mein pass; AUTO ab sha-based (fix hui SQL bhi chalti).
+- 22 Oct 21:15 SQL tarteeb wali sab server par chali (E37..E52 dobara, E64, E65 FORCE) — CHECK_E65 6/6 OK, web pull green. Chrome (pro.buyer): mail, calendar, people, settings, search+history sab khule, rpc/api 200 (work.note 404 = purana Bun-fallback pattern). People 'No people yet' = test account ka contacts khaali (api/contacts 200).
