@@ -1,12 +1,9 @@
-import { Copy, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
-import { apiHref } from "@/components/app/calendar/Bits";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
-import { Button } from "@/components/ui/button";
 import { clockRange, useAvailability, useFocusWindows } from "@/lib/calendar";
-import { notify } from "@/lib/notify";
 import { cn } from "@/lib/utils";
 import { fmtMinutes } from "@/lib/timeFormat";
 
@@ -45,28 +42,12 @@ export function Availability({ date }: { date: string }) {
   }
   if (slots.isPending) return <ListSkeleton rows={8} label="Loading availability" />;
 
-  const shareUrl = slots.data?.share_url ? apiHref(slots.data.share_url) : null;
-
   return (
     <div className="space-y-ax-4 p-ax-4">
-      {shareUrl && (
-        <div className="flex items-center gap-2 rounded-xl border border-border px-ax-3 py-ax-2">
-          <span className="ax-caption min-w-0 flex-1 truncate text-muted-foreground">
-            {shareUrl}
-          </span>
-          <Button
-            size="sm"
-            variant="outline"
-            onClick={() => {
-              void navigator.clipboard.writeText(shareUrl);
-              notify.done("Link copied", "It only ever shows genuinely free time.");
-            }}
-          >
-            <Copy className="size-3.5" />
-            Copy
-          </Button>
-        </div>
-      )}
+      <p className="ax-caption text-muted-foreground">
+        Your free times for this day. To let other people pick a time themselves, share your booking
+        page (the booking button in the toolbar).
+      </p>
 
       <ul className="divide-y divide-border rounded-xl border border-border">
         {slots.data?.slots.length === 0 && (

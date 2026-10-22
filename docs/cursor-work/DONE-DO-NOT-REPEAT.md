@@ -381,3 +381,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 
 - 23 Oct 03:00 — GHALTI (meri): founder ko "git merge --ff-only" sync command di thi; /opt/anexomail-web ka working tree repo se alag hai, merge "Aborting" ho gaya (kuch nahi badla, git ne roka). QAIDA: /opt/anexomail-web mein KABHI merge/pull/checkout nahi. Sirf `git fetch` + `git show origin/main:<path>` wali commands (sql-run.sh, rust-engine-install.sh, pull.sh) — woh working tree ko chhuti nahi.
 - 23 Oct 03:05 — Founder ke hukm par AGENTS.md mein Rule 48 (command gharna mana; /opt/anexomail-web mein merge/pull mana).
+
+- 23 Oct 03:20 — #5 GREEN LIVE (Chrome). Audit fixes: Greeting (0-5 baje "Good evening"), Availability se non-working /api share link hata (login chahiye tha, jhoota "Link copied"; asli share = booking page). Dobara mat karo.

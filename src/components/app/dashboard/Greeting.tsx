@@ -4,12 +4,7 @@ import { MailPlus } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
 import { showCrm, surfaceFromSession } from "@/lib/plan-surface";
-import {
-  formatDuration,
-  useAnalytics,
-  useSummary,
-  useUpcoming,
-} from "@/lib/dashboard";
+import { formatDuration, useAnalytics, useSummary, useUpcoming } from "@/lib/dashboard";
 
 function minutesUntil(iso: string): number {
   return Math.round((new Date(iso).getTime() - Date.now()) / 60_000);
@@ -26,28 +21,20 @@ function minutesUntil(iso: string): number {
  * Wire: useAuth (session) + useSummary + useUpcoming + useAnalytics
  *       → all routed through /api/dashboard/* → Bun :3100 → Supabase
  */
-export function Greeting({
-  enabled,
-  onCompose,
-}: {
-  enabled: boolean;
-  onCompose: () => void;
-}) {
+export function Greeting({ enabled, onCompose }: { enabled: boolean; onCompose: () => void }) {
   const { session, organisation } = useAuth();
   const { t } = useLocale();
   const { copyName, kind, billed } = surfaceFromSession(session?.user, organisation?.slug);
   const firstName =
-    session?.user.display_name?.split(" ")[0] ||
-    session?.user.name?.split(" ")[0] ||
-    "";
+    session?.user.display_name?.split(" ")[0] || session?.user.name?.split(" ")[0] || "";
   // Literal t() calls — extractor (scripts/i18n-extract.mjs) inhe dhoond leta hai.
   const h = new Date().getHours();
   const greeting =
-    h < 12
+    h >= 5 && h < 12
       ? { text: t("Good morning"), emoji: "☀️" }
-      : h < 17
+      : h >= 12 && h < 17
         ? { text: t("Good afternoon"), emoji: "🌤️" }
-        : { text: t("Good evening"), emoji: "🌙" };
+        : { text: t("Good evening"), emoji: "🌙" }; // 00:00–04:59 is still the night, not "morning" (live audit 23 Oct 03:10)
 
   // React Query deduplicates — these calls hit the same in-memory cache
   // used by WidgetGrid, AnalyticsPanel, and UpcomingPanel siblings.
@@ -99,9 +86,7 @@ export function Greeting({
           {greeting.text}
           {firstName ? `, ${firstName}` : ""} {greeting.emoji}
         </h2>
-        {session ? (
-          <p className="ax-caption mt-1.5 text-cyan-accent/90">{t(copyName)}</p>
-        ) : null}
+        {session ? <p className="ax-caption mt-1.5 text-cyan-accent/90">{t(copyName)}</p> : null}
         {strips.length > 0 ? (
           <motion.p
             initial={{ opacity: 0 }}

@@ -13,7 +13,7 @@ Compact / naya chat: pehle AGENTS.md (Rule 37/38/40/41/42), `DONE-DO-NOT-REPEAT.
 2. ~~Web pull 2b92ea4~~ DONE + GREEN (22:50 recorder se tasdeeq). (purani line:) phir founder sign-out/sign-in karega aur main Chrome tab (1609160381, MCP group) mein recorder (window.__navlog: history patch + MutationObserver + fetch status) lagake LIVE dekhunga ke `SIGNIN @/app` flash ab nahi. Agent production par password type NAHI karta (founder khud sign-in karta hai).
 3. Privacy/footer naya paragraph — founder "haan" par (AUTH-MIGRATION-PLAN.md mein draft).
 
-**#5 EVENT PAR FILES: CODE READY (23 Oct 03:10; E74 SQL + Rust `calfile` + Web EventFiles; sandbox saboot). Server run + Chrome live check baaqi. AGLA: W3/W4/W5 -> #6 CalDAV...**
+**#5 EVENT PAR FILES: GREEN LIVE (23 Oct 03:15; E74 + Rust calfile + Web, server run + Chrome live add/download/remove). AGLA: W3/W4/W5 -> #6 CalDAV... Audit 23 Oct 03:20: dashboard raat ka "Good morning" theek, Availability ka bekaar API "share link" hata (booking page asli raasta).**
 
 **#4c ICS SUBSCRIBE: GREEN LIVE (23 Oct 02:20, server + Chrome). (purani line:) #5 Event par files -> W3/W4/W5 -> FOUNDER ACCOUNT (command center) -> 6 identity live tests.**
 
