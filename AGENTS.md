@@ -328,3 +328,15 @@ Founder (verbatim): "subject to agar woh feature un ko required hai toh lekin fa
 Founder: "pull commands new commits ke saath hamesha do". Har push ke baad jawab mein commit hash + us commit ke liye zaroori commands (SQL → Rust → Web, alag alag full commands, sirf jo badla). Sirf docs badle to "server command nahi chahiye" likho.
 
 - **SQL file ki pehli line KHALI rakho (founder 22 Oct 09:55):** Supabase editor mein paste par pehla character kat sakta hai; blank line ho to comment salamat rehta hai. Har nayi E-series aur CHECK file par.
+
+## Rule 42 — SQL DONO jagah chalni chahiye: server (`sql-run.sh`/psql) AUR Supabase SQL editor (paste) (founder 22 Oct 2026 10:06 PKT, STRICT; Rule 38 ka hissa)
+Founder: "sql ka rule hai ke server pe bhi run hogi aur supabase editor main bhi". Har nayi E-series aur CHECK file BARABAR dono tareeqon se chale:
+1. **Pehli line KHALI** (editor paste pehla character kha sakta hai — 22 Oct: `- E63` error).
+2. **Koi psql meta-command nahi** (`\set`, `\echo`, `\gset`, `\i`, `\if`…): editor mein syntax error. Variable chahiye to `do $$ ... $$` ya `set_config`.
+3. **Woh cheezein nahi jo transaction mein nahi chalti:** `CREATE INDEX CONCURRENTLY`, `VACUUM`, `ALTER SYSTEM`, `CREATE DATABASE`. (Bari table par index chahiye to alag note ke saath founder ko batao, is rule se bahar.)
+4. **Apna BEGIN/COMMIT nahi** (sirf `proofs/` sandbox files mein, jo server/editor par chalti hi nahi).
+5. **CHECK_*.sql = ek hi SELECT** (editor sirf aakhri result dikhata hai; sql-run `t`/`f` ko OK/FAIL banata hai).
+6. **Poori script khud-kifayati:** `set lock_timeout/statement_timeout` file ke andar; editor ke session mein bhi chale.
+7. **Lint (push se PEHLE, har nayi SQL par):** `python3 docs/cursor-work/server/sql-editor-lint.py <files>` — exit 0 chahiye. Plus sandbox mein "pehla character gum" simulation: `tail -c +2 file.sql | psql -v ON_ERROR_STOP=1` — 0 error.
+8. Server par `sql-run.sh` ab bhi tarjeehi raasta (ledger + sha), editor founder ke liye barabar maanya. Jawab mein dono tareeqe likho jab SQL ho (editor: "repo se file dobara copy karo, purani copy mat chalao").
+Purani files (E61 aur pehle) jo chal chuki hain unhein badalna zaroori nahi; naya rule nayi files par.

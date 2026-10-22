@@ -703,3 +703,6 @@ Founder ne E63 editor mein paste ki: `LINE 1: - E63` (pehla `-` kat gaya). Hal: 
 ### 22 Oct 2026 10:05 PKT — E63 duniya-ke-advance level par (Rule 38, teen baar padha)
 Founder: "duniya ka advance sql likho, yeh rule hai E63". Badla (sirf E63_event_goal.sql + CHECK_E63.sql; Rust/Web wahi): PREFLIGHT (PG>=11, column type guard) · EK ALTER teeno columns + LOCK RETRY (3s x 6, badhta intezaar; sandbox mein 6s ke lock ke saamne khud dobara koshish kar ke kamyab) · TEEN alag constraints (goal_ck, goal_state_ck, goal_state_at_ck) NOT VALID->VALIDATE · POST-CONDITION self-check script ke aakhir mein · wapas lene ka tareeqa comment mein · export (E44 to_jsonb) apne-aap covered. Sandbox: saaf DB par 2 baar chali OK, wrong-type preflight reject, lock contention OK, CHECK 9/9, proofs 14/14, "pehla char gum" simulation 0 error.
 Server: SQL command wahi (E63_event_goal CHECK_E63); naya commit hash neeche jawab mein. Rust/Web commands wahi.
+
+### 22 Oct 2026 10:06 PKT — Rule 42: SQL server AUR Supabase editor dono mein
+AGENTS.md Rule 42 + `docs/cursor-work/server/sql-editor-lint.py` (pehli line khali, psql meta-command nahi, CONCURRENTLY/VACUUM nahi, apna BEGIN/COMMIT nahi, CHECK = ek SELECT). E63 + CHECK_E63 lint OK. Server command koi nayi nahi.

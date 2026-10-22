@@ -119,14 +119,14 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs 60169ec672cfa183
 server/rust/cal_glue.rs 47fdd8dcea512e30
-AGENTS.md 796887f5621acf0a
+AGENTS.md 5343b45889f23f82
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md bd1c41b87f054c9e
+docs/cursor-work/founder/founder-commands.md f59ff001e2a975b1
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -408,3 +408,4 @@ docs/cursor-work/sql/CHECK_E63.sql 5870594abaeeed8d
 docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
+docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
