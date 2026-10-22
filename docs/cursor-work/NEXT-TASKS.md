@@ -3,6 +3,14 @@
 > **22 Oct 2026 20:32 (founder, Rule 44):** SQL ab SERVER par `sql-run.sh` se chalti hai (editor nahi), aur woh PEHLE chalti hai. Command: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = sab nayi) ya naam aakhir mein bina .sql ke.
 Compact / naya chat: pehle AGENTS.md (Rule 37/38/40/41/42), `DONE-DO-NOT-REPEAT.md`, phir YEH file. Jo GREEN hai dobara nahi banana. Har commit ke saath server commands (Rule 41); SQL server + Supabase editor dono (Rule 42, pehli line khali, lint).
 
+## >>> RESUME HERE (23 Oct 2026 04:40 PKT — SABSE TAAZA; yeh block purane "RESUME HERE" se upar hai) <<<
+**Compact ke baad: pehle AGENTS.md (Rule 28/41/46/47/48/49), DONE-DO-NOT-REPEAT.md, phir yeh block. Founder se SIRF Roman Urdu ("aap").**
+**GREEN (dobara mat banao):** #5 event files (live) · adaptive greeting (Settings zone pehle, sunset-aware) · Home city (E75 + UI fix, live Chrome) · E76 v2 account class wall (SQL verified: CHECK_E76 7 rows true, founder screenshot production) · calendar **10/13 green** (#4a/#4b/#4c alag ginti; baaqi #6, #7, #8).
+**E76 baaqi (optional):** registered '*.test' account se live passkey chhoot dekhna; Rust+Brain E76 install founder ne chalaya (output paste nahi hua).
+**Founder ke standing hukm:** audit -> loophole khud fix; naya kaam founder ke samne mat laao; test accounts asli users se KABHI mix nahi, asli buyer ko naya workspace asli wiring, mock data nahi (Rule 49); UI badalne ke baad live screenshot dekho; SQL editor mein paste hone wali file mein psql meta-commands nahi (tools/create_test_account.sql editor-ready).
+**AGLI TARTEEB (locked):** 1) W3 globe -> 2) W4 (drift badge, travelling, latency) -> 3) W5 (billing banner, market chip default OFF) -> 4) W2 Focus Ring live check -> 5) #6 CalDAV -> 6) #7 Google (founder ki Google verification chahiye) -> 7) #8 Rooms -> 8) FOUNDER ACCOUNT (command center) -> 9) 6 identity live tests + E72 appeal test (founder khud) -> 10) M-series -> 11) G16 billing portal -> 12) T-series T1..T12 (sab par founder "haan", T12 bhi; tarteeb wahi).
+**Baaqi gaps:** phone 390/820, guest-view event files live check, T12 implement, E55 grants-heal 30 Oct se pehle, Caddy cert 12 Nov se pehle.
+
 ## >>> RESUME HERE — compact ke baad SIRF YAHAN SE (22 Oct 2026 22:45 PKT, founder: "hamaray kaam ki tarteeb kharab ho gayi") <<<
 **Qaida (founder):** koi NAYA phase/kaam founder se poochhe bina shuru nahi (identity vault maine bina poochhe shuru kiya tha — dobara nahi). Tarteeb neeche wali table hi hai. Har push: Rule 41 + **Rule 46** (1 SQL -> 2 Rust install -> 3 Rust restart+health -> 4 Brain installer agar Bun badla -> 5 Web pull; sirf badli hui technology ke steps, har ek alag poori command). Server par kuch bhi agent nahi chalata.
 
@@ -30,7 +38,7 @@ Dates: E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle. Phone 390/82
 | 1 | **#10 History search — GREEN LIVE (Chrome 23 Oct)**; purani line: (Cmd+K, saalon purani meetings/notes/tasks/mail, FTS + trigram, org wall) | docs/claude/CALENDAR-BLUEPRINT.md §5. SQL E64 (Rule 38+42), Rust proc, Web (Cmd+K ka "history" filter: tareekh range, banda, domain) | SQL -> Rust -> Web |
 | 2 | **W2 Focus Ring** (booked-meeting load ka SVG/CSS ring, sach-ghantay fatigue lines meeting slider mein) | docs/claude/WORLD-CLOCK-BLUEPRINT.md (founder decisions 08:40: Focus Ring, no Three.js) | Web (+Rust agar load endpoint chahiye) |
 | 3 | **#4c ICS subscribe** — GREEN LIVE 23 Oct 02:20 | CALENDAR-ROADMAP #4c | SQL -> Rust -> Web |
-| 4 | **#5 Event par files** (mail attach pipeline reuse) — CODE READY 23 Oct, server run baaqi | CALENDAR-ROADMAP #5 | SQL -> Rust -> Web |
+| 4 | **#5 Event par files** — GREEN LIVE 23 Oct 03:15 | CALENDAR-ROADMAP #5 | SQL -> Rust -> Web |
 | 5 | **W3 globe** (benchmark-gated WASM) · **W4** latency/time-sync/travelling (opt-in, user-entered) · **W5** billing deadline banner, market chip (default OFF), Lahore alias | WORLD-CLOCK-BLUEPRINT W3–W5 | as needed |
 | 6 | **#6 CalDAV (B7d)** | CALENDAR-ROADMAP #6 (app password 27 Oct se passkey, Caddy .well-known surgical) | |
 | 7 | **#7 Google sync** | founder ko pehle Google Cloud verification shuru karni hai | |
