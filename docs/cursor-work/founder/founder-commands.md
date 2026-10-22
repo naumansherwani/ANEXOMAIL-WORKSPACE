@@ -8,6 +8,10 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 06:10 PKT — B7c progress #1: SQL E59 TAIYAR (repo mein, server par abhi nahi)
+- `docs/cursor-work/sql/E59_booking_page.sql` + `CHECK_E59.sql`: booking_pages + bookings, DB-level double-booking wall (page row lock + slot re-validate + EXCLUDE gist), booking_context/book/manage/cancel/reschedule (service_role only), self-test 9 checks. Local Postgres 16 par: asli E31+E56+E57+E58 chain ke upar do baar chali (idempotent), self-test PASSED, 8 parallel sessions ek hi slot par -> sirf 1 jeeta, CHECK_E59 11/11.
+- AGLA: Rust `book` module (book_core.rs std-only tests + book_glue.rs, installer mein), phir web `/book/$handle` + Settings > Booking. Command order (jab sab tayyar): SQL `E59_booking_page CHECK_E59` -> Rust installer -> Web pull.
+
 ## ▶ 22 Oct 2026 05:21 PKT — B7c BOOKING PAGE SHURU (founder verbatim: "tum CEO ho aur jo tumhay sahi lagay woh kero aur codes likhen se pehe repo and sandbox update kero ke yeh task shuru ker raha hoon verna compact chat task ke beach hota hai phir tum claude bhul jate ho. shuru kero repo rules read kero pura repo read kero phir shuru kero technology read kero") — status: IN PROGRESS (task #110)
 - Plan (CEO faisla, founder ne mujh par chhoda): public link `/book/<handle>` (handle default = @anexomail.com ka username, badal sakta hai); slots = working hours (E58) - busy (calendar_events) - buffer - min notice - meeting length, visitor ke tz mein; DB-level double-booking lock (SQL E59, Rule 38); public rate limit; booking par confirm mail + .ics + cancel/reschedule link; Rust naya module `book` (core+glue, installer mein, Rule 35); web: public `/book/$handle` + Settings > Booking section; 390/820/1440.
 - Compact ho to yahin se: SQL E59 -> Rust book module -> web page -> 3 command (SQL, Rust, Web). Jo bana woh neeche likha jayega.
