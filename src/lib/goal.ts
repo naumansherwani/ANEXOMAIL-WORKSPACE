@@ -1,5 +1,5 @@
 /**
- * Outcome colours (calendar #9 / E63). The organiser writes ONE line — what the meeting is for ("contract signed") — and taps
+ * Outcome colours (calendar #9 / E63). The organiser writes aim — a short headline ("contract signed") and, if they like, a few lines of detail — and taps
  * Achieved or Missed afterwards. The colour is the clock plus that tap, nothing else: no score, no percentage, no guess.
  *
  *   upcoming  not started yet                      -> hollow ring (neutral)
@@ -21,10 +21,11 @@ import { rpc } from "@/lib/rpc";
 export type GoalState = "open" | "achieved" | "missed";
 export type GoalTone = "upcoming" | "due" | "late" | "achieved" | "missed";
 
-export const GOAL_MAX = 200;
+export const GOAL_MAX = 2000;
 const DAY_MS = 86_400_000;
 
-type GoalFields = Pick<CalendarEvent, "starts_at" | "ends_at" | "recurring" | "status"> & {
+type GoalFields = Pick<CalendarEvent, "starts_at" | "ends_at" | "recurring"> & {
+  status?: string | null;
   goal?: string | null;
   goal_state?: GoalState | null;
 };
@@ -62,7 +63,8 @@ export const GOAL_WORD: Record<GoalTone, string> = {
 export function goalLabel(ev: GoalFields, now?: number): string {
   const t = goalTone(ev, now);
   if (!t) return "";
-  return `${GOAL_WORD[t]}${ev.goal ? ` — ${ev.goal}` : ""}`;
+  const headline = ev.goal?.split("\n")[0]?.trim();
+  return `${GOAL_WORD[t]}${headline ? ` — ${headline}` : ""}`;
 }
 
 export function useSetGoal() {

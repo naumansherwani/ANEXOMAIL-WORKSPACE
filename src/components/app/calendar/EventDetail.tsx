@@ -273,17 +273,19 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
           </span>
         )}
       </div>
-      <div className="mt-ax-2 flex gap-2">
-        <input
+      <div className="mt-ax-2 flex items-start gap-2">
+        <textarea
           value={draft}
           maxLength={GOAL_MAX}
+          rows={draft.includes("\n") || draft.length > 70 ? 4 : 2}
           disabled={set.isPending}
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && changed) save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed");
+            if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && changed)
+              save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed");
           }}
-          placeholder="What should this meeting achieve? (optional)"
-          className="ax-focus h-9 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
+          placeholder="What should this meeting achieve? First line is the headline; add detail below (optional)"
+          className="ax-focus min-w-0 flex-1 resize-y rounded-md border border-border bg-background px-2 py-1.5 text-base text-foreground sm:text-xs"
         />
         <Button
           type="button"
@@ -295,6 +297,9 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
           Save
         </Button>
       </div>
+      <p className="ax-caption mt-1 text-right tabular-nums text-muted-foreground">
+        {draft.length} / {GOAL_MAX}
+      </p>
       {started ? (
         <div className="mt-ax-2 flex flex-wrap gap-2">
           <Button

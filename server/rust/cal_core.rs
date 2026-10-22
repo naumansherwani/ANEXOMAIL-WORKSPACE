@@ -198,20 +198,22 @@ pub fn clean_line(s: &str, max: usize) -> String {
     t.chars().take(max).collect()
 }
 
-/// Outcome colours (#9, E63): the organiser's one-line aim for a meeting. Mirror of SQL `calendar_goal_ok` (never stricter):
-/// 1..=200 characters after trimming, no control characters (a newline/tab is refused, not silently flattened, so the user sees what was kept).
-pub const GOAL_MAX_CHARS: usize = 200;
+/// Outcome colours (#9, E63): the organiser's aim for a meeting — a short headline plus, if they like, a few lines of detail.
+/// Mirror of SQL `calendar_goal_ok` (never stricter): 1..=2000 characters after trimming, line breaks allowed, no other control characters.
+/// (2000, not 50 000: the list of a month's meetings carries every aim; a long document belongs in Agenda or Notes, which already exist.)
+pub const GOAL_MAX_CHARS: usize = 2000;
 
 pub fn clean_goal(s: &str) -> Result<String, &'static str> {
-    let t = s.trim();
+    let t = s.replace("\r\n", "\n").replace('\r', "\n");
+    let t = t.trim();
     if t.is_empty() {
         return Err("Write the aim in a few words");
     }
-    if t.chars().any(|c| c.is_control()) {
-        return Err("The aim must be a single line");
+    if t.chars().any(|c| c.is_control() && c != '\n') {
+        return Err("The aim contains a character that cannot be saved");
     }
     if t.chars().count() > GOAL_MAX_CHARS {
-        return Err("The aim is too long (200 characters at most)");
+        return Err("The aim is too long (2000 characters at most)");
     }
     Ok(t.to_string())
 }
@@ -1081,15 +1083,16 @@ mod read_tests {
 #[cfg(test)]
 mod tests {
     #[test]
-    fn goal_is_one_honest_line() {
+    fn goal_is_short_headline_plus_detail() {
         assert_eq!(clean_goal("  Contract signed  ").unwrap(), "Contract signed");
+        assert_eq!(clean_goal("Line one\r\nLine two").unwrap(), "Line one\nLine two", "CRLF is normalised");
         assert!(clean_goal("").is_err());
-        assert!(clean_goal("   ").is_err());
-        assert!(clean_goal("a\nb").is_err());
+        assert!(clean_goal("   \n ").is_err());
         assert!(clean_goal("a\tb").is_err());
-        assert!(clean_goal(&"x".repeat(200)).is_ok());
-        assert!(clean_goal(&"x".repeat(201)).is_err());
-        assert!(clean_goal(&"é".repeat(200)).is_ok(), "counts characters, not bytes");
+        assert!(clean_goal("a\u{7}b").is_err());
+        assert!(clean_goal(&"x".repeat(2000)).is_ok());
+        assert!(clean_goal(&"x".repeat(2001)).is_err());
+        assert!(clean_goal(&"é".repeat(2000)).is_ok(), "counts characters, not bytes");
     }
 
     #[test]

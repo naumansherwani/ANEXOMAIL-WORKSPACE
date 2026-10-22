@@ -691,3 +691,5 @@ Server (alag alag, tarteeb yahi):
 2. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES="cal" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
 Phir Ctrl+Shift+R, calendar mein ek meeting kholo -> "Aim" likho -> shuru hone ke baad Achieved/Missed.
+
+#### 22 Oct 10:50 — Aim 2000 harf, multi-line (founder ki darkhwast). Server commands upar wali 3 hi hain (E63 abhi chali nahi thi, isliye wahi file; SQL -> Rust cal -> Web).

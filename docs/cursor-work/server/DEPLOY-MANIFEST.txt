@@ -81,7 +81,7 @@ src/lib/calendar.ts 6414729f8591af17
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx 9928510bcd696e13
-src/components/app/calendar/EventDetail.tsx 14ac76739c6ae149
+src/components/app/calendar/EventDetail.tsx b9176710c7e5e6a8
 src/components/app/calendar/Guests.tsx 8161b0338fb2fa97
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
@@ -117,7 +117,7 @@ src/routes/app.security.history.tsx dbf374ef8e2cab0b
 src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
-server/rust/cal_core.rs e3e4f32b97a83064
+server/rust/cal_core.rs 60169ec672cfa183
 server/rust/cal_glue.rs 47fdd8dcea512e30
 AGENTS.md 94bd36c81ddfd26b
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md f5cc573adf44dbdf
+docs/cursor-work/founder/founder-commands.md 7e037256185e8649
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -387,7 +387,7 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a937b086ca57822a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
-docs/cursor-work/CALENDAR-ROADMAP.md 671001ee338ee414
+docs/cursor-work/CALENDAR-ROADMAP.md 75f14fb11a61b284
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
@@ -403,8 +403,8 @@ src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
 src/lib/overlap.ts 6664d73ee9583197
 docs/cursor-work/sql/proofs/E62_proof.sql 9fdb77e89a5d5faf
 docs/claude/CALENDAR-BLUEPRINT.md 457a84a8b905a8df
-docs/cursor-work/sql/E63_event_goal.sql a95d3218c1f29092
-docs/cursor-work/sql/CHECK_E63.sql 1bf87755ae2a2adc
-docs/cursor-work/sql/proofs/E63_proof.sql bde0b243ca5aa468
-src/lib/goal.ts 00a5375bd5c91e39
+docs/cursor-work/sql/E63_event_goal.sql 6526e9f9d55e7cd6
+docs/cursor-work/sql/CHECK_E63.sql 01e763f7942554d4
+docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
+src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f

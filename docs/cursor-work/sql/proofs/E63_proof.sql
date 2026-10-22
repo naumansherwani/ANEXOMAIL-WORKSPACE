@@ -27,10 +27,12 @@ begin
   exception when check_violation then insert into r values (8, 'anjaan halat "done" REJECT', true); end;
   begin update public.calendar_events set goal = '   ' where id = ev; insert into r values (9, 'khali (spaces) goal REJECT', false);
   exception when check_violation then insert into r values (9, 'khali (spaces) goal REJECT', true); end;
-  begin update public.calendar_events set goal = repeat('x', 201) where id = ev; insert into r values (10, '201 harf goal REJECT', false);
-  exception when check_violation then insert into r values (10, '201 harf goal REJECT', true); end;
-  begin update public.calendar_events set goal = E'line1\nline2' where id = ev; insert into r values (11, 'newline wala goal REJECT', false);
-  exception when check_violation then insert into r values (11, 'newline wala goal REJECT', true); end;
+  begin update public.calendar_events set goal = repeat('x', 2001) where id = ev; insert into r values (10, '2001 harf goal REJECT', false);
+  exception when check_violation then insert into r values (10, '2001 harf goal REJECT', true); end;
+  begin update public.calendar_events set goal = E'a\x07b' where id = ev; insert into r values (11, 'control character (bell) wala goal REJECT', false);
+  exception when check_violation then insert into r values (11, 'control character (bell) wala goal REJECT', true); end;
+  update public.calendar_events set goal = E'Line one\nLine two\n' || repeat('y', 1900) where id = ev;
+  insert into r values (14, 'multi-line goal (~1900 harf) theek', (select goal like E'Line one\nLine two%' from public.calendar_events where id = ev));
   begin update public.calendar_events set goal_state = null where id = ev; insert into r values (12, 'goal_state NULL REJECT (NOT NULL)', false);
   exception when not_null_violation then insert into r values (12, 'goal_state NULL REJECT (NOT NULL)', true); end;
   update public.calendar_events set goal = null where id = ev;

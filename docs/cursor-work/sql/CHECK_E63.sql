@@ -9,11 +9,11 @@ select item, ok from (
   union all select 'E63 constraints maujood + VALIDATED',
          (select count(*) from pg_constraint where conname in ('calendar_events_goal_ck','calendar_events_goal_state_ck') and convalidated) = 2, 3
   union all select 'E63 calendar_goal_ok function', to_regprocedure('public.calendar_goal_ok(text)') is not null, 4
-  union all select 'E63 goal_ok accepts: null, ek line, 200 harf',
-         public.calendar_goal_ok(null) and public.calendar_goal_ok('Contract signed') and public.calendar_goal_ok(repeat('x', 200)), 5
-  union all select 'E63 goal_ok rejects: khali, spaces, 201 harf, newline, control char',
-         not public.calendar_goal_ok('') and not public.calendar_goal_ok('   ') and not public.calendar_goal_ok(repeat('x', 201))
-         and not public.calendar_goal_ok(E'a\nb') and not public.calendar_goal_ok(E'a\x07b'), 6
+  union all select 'E63 goal_ok accepts: null, ek line, 2000 harf, multi-line',
+         public.calendar_goal_ok(null) and public.calendar_goal_ok('Contract signed') and public.calendar_goal_ok(repeat('x', 2000)) and public.calendar_goal_ok(E'Line one\nLine two'), 5
+  union all select 'E63 goal_ok rejects: khali, spaces, 2001 harf, tab, bell',
+         not public.calendar_goal_ok('') and not public.calendar_goal_ok('   ') and not public.calendar_goal_ok(repeat('x', 2001))
+         and not public.calendar_goal_ok(E'a\tb') and not public.calendar_goal_ok(E'a\x07b'), 6
   union all select 'E63 purani rows sab open + goal_state_at NULL (constraint par poori)',
          not exists (select 1 from public.calendar_events where goal_state <> 'open' or goal_state_at is not null), 7
   union all select 'E63 LIVE PATH: goal columns select ho jate hain (Rust ka e63_ready wahi query chalata hai)',
