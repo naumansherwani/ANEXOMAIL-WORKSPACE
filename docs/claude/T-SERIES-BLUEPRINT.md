@@ -47,6 +47,14 @@ Har step Rule 46: SQL -> Rust installer -> Rust restart+health -> Brain installe
 
 **Tarteeb (CEO sifarish):** T1 -> T2 -> T6 (search, sabse zyada user ko mehsoos hoga, aur 1.4 s ki kamzori asli hai) -> T7 -> T3 -> T8 -> T9 -> T11 -> T4 -> T10 -> T5. Naap pehle, badlav baad mein.
 
+## T12 — "Page khud taza ho" (founder sawal 23 Oct 02:38) — CEO jawab + naya kaam (founder "haan" baaqi)
+- **Data ka auto-refresh PEHLE SE HAI (B4, GREEN):** WebTransport hub har org ko "kuch badla" bhejta hai (mail, calendar, crm, work, people, org); `src/lib/live-core.ts` us topic ke React-Query keys invalidate karta hai, page bina reload ke taza (naya mail, naya event, RSVP). Calendar ke outside-feed events bhi `["calendar", ...]` key ke andar hain, to wahi mechanism lagta hai (lekin ek feed ka asli refresh abhi "padhne par" hota hai, background mein nahi — T12 isse bhi theek karega).
+- **GAP (sach):** naye deploy ke baad purana tab purani JavaScript chalata rehta hai — isi liye aap ko Ctrl+Shift+R karna parta hai. User ko "naya version tayyar" ka koi signal nahi milta.
+- **T12 kya aye ga (user ko):** deploy ke baad khule tabs par chhota banner "Naya version tayyar — Update" ya idle hone par khud soft-reload; draft likhte waqt KABHI zabardasti reload nahi (draft pehle save). Feed refresh: Rust background mein due feeds ko taza karke hub se calendar event bhejta hai (page khulne ka intezar nahi).
+- **Technology:** Vite build id (`version.json`, content-hash) + service-worker update flow (waiting -> `skipWaiting` sirf user ki marzi se) + hub mein naya topic `app` (deploy par `pull.sh` -> `POST /internal/event` loopback, B4 mechanism); Rust: tokio interval task (per active org, bounded) due ICS feeds refresh karta hai (`ics_glue::refresh_due` dobara use, JoinSet, semaphore 4 pehle se).
+- **Hifazat:** reload ke waqt draft/compose state `localStorage` se bachao (mail drafts pehle se), version check sirf ek chhota file (bytes), bandh karne ka koi switch nahi chahiye par reduced-motion/accessibility theek; tokio task per-org cap.
+- **Naap:** deploy ke baad kitne % tabs 60 s mein naye version par aaye.
+
 ## Tokio / async KAB aye ga (saaf jawab)
 - **Rust + Tokio + axum + wtransport PEHLE SE LIVE hain** (20 Oct se, rustc 1.99.1, edition 2024). Naya kaam (E72 evidence upload, #4c ICS fetch, B4 hub) pehle se Tokio async par hai: semaphore, per-user slot, `spawn`, `spawn_blocking`, timeouts.
 - **Naya Tokio kaam jo aye ga:** T1 `sqlx` async pool (har query non-blocking, PostgREST hop khatam) · T3 `JoinSet` fan-out + tokio 1.54 · T6 index `spawn_blocking` + parallel search · T7 streaming responses · T8 async log watcher + `mpsc` · T9 hub + datagrams · T10 chunked async I/O · T11 timeout/select/bulkhead.

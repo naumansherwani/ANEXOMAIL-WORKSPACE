@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 566ba178b28052e3
+docs/cursor-work/NEXT-TASKS.md 52b4842c0035339b
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac
@@ -519,4 +519,4 @@ server/rust/ics_glue.rs 268d644eb753aab3
 src/components/app/calendar/OutsideCalendars.tsx 6164a229f16d7c62
 src/lib/calendar-subs.test.ts 094dcfa56bace67e
 src/lib/calendar-subs.ts 86d32b104ae6bd58
-docs/claude/T-SERIES-BLUEPRINT.md 97948121de545d56
+docs/claude/T-SERIES-BLUEPRINT.md f8ffbbd35bb9565d
