@@ -765,3 +765,10 @@ Live check (Chrome, final look): meeting kholo > Files > Add file (PDF) > list m
 4. Brain: nahi.
 5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
 Live check: Settings > Personal > Home city > "Detect my city" (browser ijazat poochega) ya search "Lahore" > save > dashboard greeting + calendar clock ka naam.
+
+## 23 Oct — Test-vs-real loophole (E76) — server par BAAQI (Rule 46, ek ek karke, is tarteeb se)
+1. SQL (pehle): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`  (E76; NOTICE mein registry ke test emails dikhenge)
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+4. Brain: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-passkey-registry.sh)`
+5. Web: nahi (src/ nahi badla).

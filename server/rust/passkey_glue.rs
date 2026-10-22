@@ -569,7 +569,10 @@ async fn delete(uid: &str, input: &Value) -> Resp {
 }
 
 async fn status(uid: &str, email: &str) -> Resp {
-    if pc::is_test_account(email) {
+    // E76: pattern AKELA kaafi nahi — registry (test_accounts) mein bhi ho. rpc na mile/false => chhoot nahi (fail-closed).
+    if pc::is_test_account(email)
+        && crate::sb_rpc("is_registered_test_account", json!({ "_email": email })).await.ok().and_then(|v| v.as_bool()).unwrap_or(false)
+    {
         return crate::ok(json!({ "exempt": true, "required": false, "hard": false, "count": 0, "target": 0, "codes_remaining": 1 })).into_response();
     }
     match crate::sb_rpc("passkey_status", json!({ "_user": uid })).await {

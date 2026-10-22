@@ -14,6 +14,8 @@
 >
 > **FOUNDER KA RULE: jo bhi founder se chat karega, pehle `docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md` poori padhega, phir chat karega (Rule 18).** Naya ya compact chat bhi wahin se shuru hota hai — "ABHI KA QADAM" dekho, founder se purani baat dobara mat poochho.
 
+> **RULE 49 (founder 23 Oct 2026, 03:38 PKT): test accounts aur ASLI users kabhi mix na hon.** Asli user/buyer jab workspace banaye to usay sab kuch naya, asli wiring, KOI mock/demo/sample data nahi (naya workspace sirf org + mailbox + member + trial row banata hai — audit 23 Oct: koi seed/demo path nahi mila). Test account ka koi special-casing NAAM-pattern par nahi: chhoot sirf `test_accounts` registry (E76) mein maujood email ko milti hai (pattern AUR registry dono; fail-closed). Naya special-casing likhne se pehle yeh rule parho; naya test account E28/E36 se banta hai aur registry mein jata hai.
+
 **Founder:** Muhammad Nauman Sherwani (NEXATECT Global Ltd, internal only — public copy mein NEXATECT ka zikr nahi).
 
 ---

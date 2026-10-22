@@ -307,7 +307,14 @@ export function mountPasskeyRoutes(
     if (!identity) return;
     // Founder 21 Oct 2026: 27 Oct deadline sirf REAL users ke liye. Test accounts (basic.test@, pro.test@, g38b-test@ ...) par
     // na banner na gate — ghalti se lock na hon. Asli users ka email "test@" par khatam nahi hota.
-    if (/(^|[._-])test@/i.test(String((identity.user as any).email || ""))) {
+    // E76 (audit 23 Oct): naam-pattern AKELA kaafi nahi (asli user "x.test" le sakta tha) — registry (test_accounts) mein bhi hona chahiye. Fail-closed.
+    const em = String((identity.user as any).email || "");
+    let isTest = false;
+    if (/(^|[._-])test@/i.test(em)) {
+      const { data: reg } = await getAdmin().rpc("is_registered_test_account", { _email: em });
+      isTest = reg === true;
+    }
+    if (isTest) {
       return res.json({ exempt: true, required: false, hard: false, count: 0, target: 0, codes_remaining: 1 });
     }
     const { data, error } = await getAdmin().rpc("passkey_status", { _user: identity.user.id });
