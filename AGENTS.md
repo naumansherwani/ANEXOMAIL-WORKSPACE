@@ -348,3 +348,8 @@ Founder: "ajj ke bad se sql rls on wali hogi … ek sql likho jis se warnings au
 - Har nayi E-series jo table banaye: usi file mein `alter table … enable row level security`, `revoke all … from anon, authenticated`, aur ya to asli policy ya `service_role` policy (backend service_role hai). Naya view = `security_invoker = on`; naya function = `set search_path` pinned; SECURITY DEFINER = execute public/anon se wapas.
 - `CHECK_<NAME>.sql` mein "RLS on" ka item. RLS kabhi wapas OFF nahi.
 - Sweep + safety-net: `docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql` (+ `CHECK_E65.sql`): purani sab tables RLS-on, bina-policy tables band, views/functions advisor-clean, aur event trigger `ax_rls_auto_enable` jo nayi public table par khud RLS ON karta hai. Extensions ko public se nahi hilata.
+
+- **SQL server command — do shakalein (founder 22 Oct 2026 20:28–20:29 PKT):**
+  (a) sab nayi SQL apne aap: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = AUTO: repo ki nayi E-series E37+, ledger se, tarteeb se, phir unke CHECK_E<n>).
+  (b) khaas file: naam aakhir mein, bina `.sql` ke: `… sql-run.sh) E65_rls_and_advisor_sweep CHECK_E65`.
+  Founder ko SQL ke liye har baar in mein se sahi wali command do (Supabase editor zaroori nahi). Agent server par khud nahi chalata (Rule 15).
