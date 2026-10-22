@@ -38,3 +38,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E67 | passkey vault + authenticated select band | CHECK_E67 | 22 Oct 21:25 READY |
 | E68 | identity vault: Block/Release/Appeal hook, raw HMAC wrappers, signup appeals, founder overview | CHECK_E68 | 22 Oct 21:45 READY |
 | E69 | identity vault: ban feed (local mirror) + NOTIFY, health report, payment sweep source, deny-after-signup flag | CHECK_E69 | 22 Oct 22:20 READY |
+| E70 | identity hardening: fingerprint groups (fp_hw/gfx/env), signup HOLD (pending + banned_until), gate (open/hold_matches/approval_all), disposable domains, probation limits | CHECK_E70 | 22 Oct 23:30 READY |

@@ -36,3 +36,6 @@ Kya naya hash personal/guessable cheez ka hai? -> HMAC + subkey. Kya ticket/chec
 
 ## Identity vault (E66-E69)
 Pepper wahi `DEVICE_VAULT_KEY` (fallback service-key-tail). Hash = HMAC(HMAC(key,"anexomail/identity/v1/<kind>"), canon). SQL (E68 identity_hmac_hex) = Bun (server/lib/identity-mirror.ts) = Rust (server/rust/vault_core.rs) — parity vectors CHECK_E69 + dono test files mein. **Pepper badalna = sab ban hash badalna** — pehle key_id v2 + migrate function; fallback (service-key-tail) par mat chhodein: DEVICE_VAULT_KEY set karein.
+
+## E70 — fingerprint kinds (22 Oct 2026)
+fp_hw / fp_gfx / fp_env: the browser sends three SHA-256 digests (never raw traits); server stores HMAC(HMAC(key,"anexomail/identity/v1/<kind>"), canon). Weak tier: a match never bans alone (>=2 groups + 1 other weak signal => deny; 2 groups alone => HOLD). Groups on >=25 accounts are ignored (crowd rule). Parity vectors in sql/proofs/E70_proof.sql. Rust vault_core parity = Auth Phase A.
