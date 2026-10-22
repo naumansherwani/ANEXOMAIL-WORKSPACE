@@ -310,6 +310,8 @@ Chat compact hone se pehle (context bhar raha ho to) ek baar poori file taza kar
 
 ## 12. Session log (naya upar)
 
+- **23 Oct 02:50 PKT** — FOUNDER: R5 jhoota 'gap' galti thi (R5 B4 GREEN hai; stale TECH-MAP lines theek). Technology audit: R3/R4/B8/R2/speed NOT BUILT -> NEXT-TASKS T-SERIES (T1 R4 -> T2 R3 -> T3 B8 -> T4 speed -> T5 R2) locked tarteeb ke baad. STANDING ROLE yaad: khud live dekho, galti/loophole mile to usi waqt theek karke green karo (aaj #4c mein 4 galtiyan khud theek ki, commit 871613d). Founder ko web pull baqi (871613d ke fixes): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Chrome mein dobara live check. Phir #5 event files.
+
 - **23 Oct 02:20 PKT** — #4c ICS subscribe GREEN LIVE (founder ke server commands + Chrome live saboot, DONE-DO-NOT-REPEAT mein detail). AGLA: #5 event par files.
 
 - **23 Oct 02:05 PKT** — FOUNDER: (1) ZABAN RULE: hamesha Roman Urdu (AGENTS.md Rule 47). (2) compact ne yaad mita di thi: sab repo mein hai, yeh file + DONE-DO-NOT-REPEAT.md + NEXT-TASKS.md padho. HALAT: E72 (appeal 20,000 + evidence) GREEN server par. #4c ICS subscribe CODE READY aur push ho chuka (commit 0a52462): SQL E73 (proof ALL OK), Rust ics_core (64 tests) + ics_glue, installer module `ics`, Web Settings > Outside calendars + read-only events. SERVER PAR BAAQI (founder, alag alag, Rule 46): 1) SQL sql-run.sh 2) Rust installer 3) Rust restart+health 4) Web pull + Ctrl+Shift+R; phir Chrome mein asli ICS link daal kar check. AGLA: #5 event par files -> W3/W4/W5 -> founder account (command center) -> 6 identity live tests.
