@@ -6,11 +6,12 @@ select item, ok from (
          and not has_table_privilege('anon', 'public.identity_disposable_domains', 'select') and not has_table_privilege('authenticated', 'public.identity_disposable_domains', 'insert') as ok, 1 as o
   union all select 'E70 policy ki nayi hadein maujood (fp_match_min, fp_farm_limit, velocity_limit, signup_gate, probation_days, disposable_block, hold_expire_days)',
          (select count(*) from information_schema.columns where table_schema = 'public' and table_name = 'identity_vault_policy'
-            and column_name in ('fp_match_min', 'fp_farm_limit', 'velocity_limit', 'signup_gate', 'probation_days', 'disposable_block', 'hold_expire_days', 'gate_changed_by', 'gate_changed_at')) = 9
+            and column_name in ('fp_match_min', 'fp_farm_limit', 'velocity_limit', 'signup_gate', 'probation_days', 'disposable_block', 'hold_expire_days', 'gate_changed_by', 'gate_changed_at', 'fp_min_usable', 'fp_evasion')) = 11
          and (select signup_gate in ('open', 'hold_matches', 'approval_all') from public.identity_vault_policy where id = 1), 2
   union all select 'E70 kind: fp_hw/fp_gfx/fp_env kamzor-darje (akele ban nahi), purane mazboot salamat',
          public.identity_kind_strong('fp_hw') is false and public.identity_kind_strong('fp_gfx') is false and public.identity_kind_strong('fp_env') is false
-         and public.identity_kind_fp('fp_env') and not public.identity_kind_fp('email')
+         and public.identity_kind_strong('fp_gpu') is false and public.identity_kind_strong('fp_font') is false
+         and public.identity_kind_fp('fp_env') and public.identity_kind_fp('fp_gpu') and public.identity_kind_fp('fp_font') and not public.identity_kind_fp('email')
          and public.identity_kind_strong('email') and public.identity_kind_strong('device_key') and public.identity_kind_strong('payment') and public.identity_kind_strong('recovery'), 3
   union all select 'E70 sab nayi functions maujood: execute sirf service_role',
          (select bool_and(has_function_privilege('service_role', f, 'execute') and not has_function_privilege('anon', f, 'execute') and not has_function_privilege('authenticated', f, 'execute'))
@@ -19,7 +20,7 @@ select item, ok from (
               'public.identity_hold_apply(uuid,text,text)', 'public.identity_hold_decide(uuid,uuid,text,text,boolean)', 'public.identity_hold_sweep()',
               'public.identity_gate_set(uuid,text)', 'public.identity_disposable_set(uuid,text,boolean)', 'public.identity_account_limits(uuid)',
               'public.identity_email_is_disposable(text)', 'public.identity_register_payment(uuid,text,text)', 'public.identity_admin_overview(uuid)',
-              'public.identity_signals_full_raw(text,text,text,text,text,text,text,text,text)', 'public.identity_signup_decide_raw(text,text,text,text,text,text,text,text,text)'
+              'public.identity_signals_full_raw(text,text,text,text,text,text,text,text,text,text,text)', 'public.identity_signup_decide_raw(text,text,text,text,text,text,text,text,text,text,text)', 'public.identity_evasion_set(uuid,text)'
             ]) f), 4
   union all select 'E70 disposable seed (100+) + protected provider kabhi nahi pakde jate',
          (select count(*) from public.identity_disposable_domains where active) >= 100
@@ -29,10 +30,15 @@ select item, ok from (
          public.identity_hmac_hex('fp_hw',  repeat('a', 64), 'k') = '89ba8aecbe0575530e8314748117334b5475e4f6e733626a973a589f7633eeb8'
          and public.identity_hmac_hex('fp_gfx', repeat('b', 64), 'k') = '4668add1d439de679c16884d906cd0120b6c7989981c4405a58083861a0457b7'
          and public.identity_hmac_hex('fp_env', repeat('c', 64), 'k') = '5208a079f758b5001657d361a7875e04f6835745a7138633b0b690a0b15d43e2'
+         and public.identity_hmac_hex('fp_gpu', repeat('d', 64), 'k') = 'ceb0b2bae3ec4bb7bd837ece11c6e91557d66594f3f2e57e6474cd52ca1b6e54'
+         and public.identity_hmac_hex('fp_font', repeat('e', 64), 'k') = '22b0028a4bae7b3f9d9505196b533198cc06a6227747178a14037cb3228c58d9'
          and public.identity_fp_canon('  ' || upper(repeat('a', 64)) || ' ') = repeat('a', 64) and public.identity_fp_canon('abc') is null, 6
-  union all select 'E70 faisla sirf padhta hai: khaali network signal par allow + shape theek',
+  union all select 'E70 faisla sirf padhta hai: 5 naye nishan + network par allow, shape theek; fingerprint ke baghair review (evasion)',
          (select (j ->> 'decision') = 'allow' and j ? 'matched' and j ? 'appealable' and j ? 'reason'
-            from (select public.identity_signup_decide('[{"kind":"network","hmac":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}]'::jsonb, 'example.org') j) x), 7
+            from (select public.identity_signup_decide(('[{"kind":"network","hmac":"' || repeat('f', 64) || '"},{"kind":"fp_hw","hmac":"' || repeat('1', 64) || '"},{"kind":"fp_gpu","hmac":"' || repeat('2', 64)
+                    || '"},{"kind":"fp_font","hmac":"' || repeat('3', 64) || '"},{"kind":"fp_gfx","hmac":"' || repeat('4', 64) || '"},{"kind":"fp_env","hmac":"' || repeat('5', 64) || '"}]')::jsonb, 'example.org') j) x)
+         and (select (j ->> 'decision') = case (select fp_evasion from public.identity_vault_policy where id = 1) when 'allow' then 'allow' else 'review' end
+                 from (select public.identity_signup_decide('[{"kind":"network","hmac":"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}]'::jsonb, 'example.org') j) y), 7
   union all select 'E70 audit ke naye events ki list DB-checked',
          exists (select 1 from pg_constraint where conrelid = 'public.identity_vault_audit'::regclass and contype = 'c' and conname = 'identity_vault_audit_event_ck'
                   and pg_get_constraintdef(oid) like '%hold%' and pg_get_constraintdef(oid) like '%approve%' and pg_get_constraintdef(oid) like '%expire%'), 8

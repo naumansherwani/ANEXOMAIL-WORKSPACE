@@ -72,10 +72,10 @@ if '"/integrity/identity"' not in c:
     once(c, an, "integrity/export route")
     c = c.replace(an, blk + an, 1)
     res["chat.ts"] = "patched"
-elif '"/integrity/identity/gate"' not in c:
+elif '"/integrity/identity/gate"' not in c or '"/integrity/identity/evasion"' not in c:
     live_blk = between(c, 'chatRouter.get("/integrity/identity"', an, "identity routes (live)")
     c = c.replace(live_blk, blk, 1)
-    res["chat.ts"] = "patched-e70"
+    res["chat.ts"] = "patched-e70"   # E66-E69 -> E70/E71 (gate, evasion routes)
 else:
     res["chat.ts"] = "same"
 open(os.path.join(out, "routes/chat.ts"), "w", encoding="utf-8").write(c)

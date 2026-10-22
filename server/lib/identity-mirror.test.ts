@@ -102,6 +102,8 @@ describe("fingerprint (E70) — parity with SQL identity_signals_full_raw", () =
     expect(hmacHex("fp_hw", A, "k")).toBe("89ba8aecbe0575530e8314748117334b5475e4f6e733626a973a589f7633eeb8");
     expect(hmacHex("fp_gfx", B, "k")).toBe("4668add1d439de679c16884d906cd0120b6c7989981c4405a58083861a0457b7");
     expect(hmacHex("fp_env", C, "k")).toBe("5208a079f758b5001657d361a7875e04f6835745a7138633b0b690a0b15d43e2");
+    expect(hmacHex("fp_gpu", "d".repeat(64), "k")).toBe("ceb0b2bae3ec4bb7bd837ece11c6e91557d66594f3f2e57e6474cd52ca1b6e54");
+    expect(hmacHex("fp_font", "e".repeat(64), "k")).toBe("22b0028a4bae7b3f9d9505196b533198cc06a6227747178a14037cb3228c58d9");
     expect(hmacHex("fp_hw", A, "k")).not.toBe(hmacHex("fp_gfx", A, "k"));
   });
   test("fpCanon: 64 hex only, trimmed + lowercased; junk => null", () => {
@@ -115,6 +117,7 @@ describe("fingerprint (E70) — parity with SQL identity_signals_full_raw", () =
     expect(sig.map((x) => x.kind)).toEqual(["email", "fp_hw", "fp_env"]);
     expect(signalsRaw({ email: "a@b.com" }, "k").map((x) => x.kind)).toEqual(["email"]);
     expect(signalsRaw({ fp: { hw: A, gfx: B, env: C } }, "k").map((x) => x.kind)).toEqual(["fp_hw", "fp_gfx", "fp_env"]);
+    expect(signalsRaw({ fp: { hw: A, gpu: B, font: C, gfx: A, env: B } }, "k").map((x) => x.kind)).toEqual(["fp_hw", "fp_gpu", "fp_font", "fp_gfx", "fp_env"]);
   });
   test("fp kinds are never mirrored (weak tier): mirror ignores them, even if the feed sends one", () => {
     const m = new Mirror();
@@ -145,7 +148,8 @@ describe("policy: hold + disposable (E70)", () => {
 describe("fingerprintFrom (request body => clean digests)", () => {
   const A = "a".repeat(64);
   test("keeps valid digests, drops junk and wrong types, null when nothing usable", () => {
-    expect(fingerprintFrom({ hw: A.toUpperCase(), gfx: "x", env: 5 })).toEqual({ hw: A, gfx: null, env: null });
+    expect(fingerprintFrom({ hw: A.toUpperCase(), gfx: "x", env: 5 })).toEqual({ hw: A, gpu: null, font: null, gfx: null, env: null });
+    expect(fingerprintFrom({ gpu: "b".repeat(64), font: "c".repeat(64) })).toEqual({ hw: null, gpu: "b".repeat(64), font: "c".repeat(64), gfx: null, env: null });
     expect(fingerprintFrom({ hw: null, gfx: null, env: null })).toBeNull();
     expect(fingerprintFrom("nope")).toBeNull();
     expect(fingerprintFrom(null)).toBeNull();

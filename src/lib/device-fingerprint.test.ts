@@ -8,10 +8,10 @@ describe("device fingerprint (E70)", () => {
     expect(a).toMatch(/^[0-9a-f]{64}$/);
     expect(await groupHash("hw", [8, 16, 0, "Win32", 1920, 1080])).toBe(a);
   });
-  test("groupHash: group label separates identical inputs (hw != gfx != env)", async () => {
+  test("groupHash: group label separates identical inputs (all five groups differ)", async () => {
     const p = ["x", 1];
-    const [h, g, e] = [await groupHash("hw", p), await groupHash("gfx", p), await groupHash("env", p)];
-    expect(new Set([h, g, e]).size).toBe(3);
+    const all = await Promise.all((["hw", "gpu", "font", "gfx", "env"] as const).map((g) => groupHash(g, p)));
+    expect(new Set(all).size).toBe(5);
   });
   test("groupHash: order and boundaries matter, null is 'na' (no accidental collision)", async () => {
     expect(await groupHash("hw", ["a", "b"])).not.toBe(await groupHash("hw", ["b", "a"]));

@@ -2,7 +2,7 @@ import { Fingerprint, ShieldCheck } from "lucide-react";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useIdentityDecide, useIdentityDomain, useIdentityGate, useIdentityHold, useIdentityOverview, type SignupGate } from "@/lib/account-integrity";
+import { useIdentityDecide, useIdentityDomain, useIdentityEvasion, useIdentityGate, useIdentityHold, useIdentityOverview, type EvasionMode, type SignupGate } from "@/lib/account-integrity";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
@@ -16,11 +16,18 @@ const GATES: { id: SignupGate; label: string; hint: string }[] = [
   { id: "approval_all", label: "Approve everyone", hint: "Every new sign-up waits for you. Nobody gets in without your yes." },
 ];
 
+const EVASIONS: { id: EvasionMode; label: string; hint: string }[] = [
+  { id: "allow", label: "Allow", hint: "A browser that hides its fingerprint is treated like any other sign-up." },
+  { id: "review", label: "Flag", hint: "A sign-up whose browser hid its fingerprint (privacy browsers, scripts) is let in but flagged for you." },
+  { id: "hold", label: "Hold", hint: "A sign-up whose browser hid its fingerprint waits for your yes. Strictest. A few privacy-browser users will wait too." },
+];
+
 export function IdentityVaultPanel() {
   const q = useIdentityOverview();
   const decide = useIdentityDecide();
   const hold = useIdentityHold();
   const gate = useIdentityGate();
+  const evasion = useIdentityEvasion();
   const domain = useIdentityDomain();
   const [confirmGate, setConfirmGate] = useState<SignupGate | null>(null);
   const [newDomain, setNewDomain] = useState("");
@@ -41,6 +48,15 @@ export function IdentityVaultPanel() {
       },
     );
   };
+
+  const setEvasion = (mode: EvasionMode) =>
+    evasion.mutate(
+      { mode },
+      {
+        onSuccess: (r) => (r.ok ? notify.done("Hidden-fingerprint rule changed", "Applies to the next sign-up.") : notify.failed("Not changed", { description: r.error ?? "Only the founder can change this." })),
+        onError: (e) => notify.failed("Not changed", { description: e.message }),
+      },
+    );
 
   const decideHold = (account_id: string, decision: "approve" | "reject", ban = false) =>
     hold.mutate(
@@ -142,6 +158,23 @@ export function IdentityVaultPanel() {
             ))}
           </div>
           <p className="text-muted-foreground">{GATES.find((g) => g.id === d.gate!.mode)?.hint}</p>
+          <p className="text-foreground">If the browser hides its fingerprint</p>
+          <div role="radiogroup" aria-label="Hidden fingerprint rule" className="flex flex-wrap gap-2">
+            {EVASIONS.map((g) => (
+              <Button
+                key={g.id}
+                size="sm"
+                role="radio"
+                aria-checked={(d.gate!.evasion ?? "review") === g.id}
+                variant={(d.gate!.evasion ?? "review") === g.id ? "default" : "outline"}
+                disabled={evasion.isPending}
+                onClick={() => setEvasion(g.id)}
+              >
+                {g.label}
+              </Button>
+            ))}
+          </div>
+          <p className="text-muted-foreground">{EVASIONS.find((g) => g.id === (d.gate!.evasion ?? "review"))?.hint}</p>
           <p className="text-muted-foreground">
             Temporary-email block: {d.gate.disposable_block ? "on" : "off"} ({d.disposable_domains ?? 0} domains). An undecided hold is closed after {d.gate.hold_expire_days} days; the account stays locked.
           </p>
@@ -170,7 +203,7 @@ export function IdentityVaultPanel() {
               <li key={h.account_id} className="rounded-lg border border-border p-ax-3">
                 <p className="text-foreground">{h.email ?? "(address not available)"}</p>
                 <p className="text-muted-foreground">
-                  {h.kind === "gate" ? "Approval required by the gate" : h.kind === "manual" ? "Held by hand" : "Matches a blocked person's browser"}
+                  {h.kind === "gate" ? "Approval required by the gate" : h.kind === "manual" ? "Held by hand" : h.kind === "evasion" ? "Browser hid its fingerprint" : "Matches a blocked person's browser"}
                   {h.reason && h.kind !== "gate" ? ` · ${h.reason.replace(/_/g, " ")}` : ""} · {relativeTime(h.held_at)} · closes {new Date(h.expires_at).toLocaleDateString()}
                 </p>
                 <div className="mt-2 flex flex-wrap gap-2">

@@ -1393,6 +1393,16 @@ chatRouter.post("/integrity/identity/gate", async (req, res) => {
   res.json(data);
 });
 
+chatRouter.post("/integrity/identity/evasion", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const mode = String(req.body?.mode || "");
+  if (!["allow", "review", "hold"].includes(mode)) return res.status(400).json({ error: "mode_required" });
+  const { data, error } = await db!.rpc("identity_evasion_set", { p_actor: me.id, p_mode: mode });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
 chatRouter.post("/integrity/identity/domain", async (req, res) => {
   const me = await requireChat(req, res);
   if (!me) return;

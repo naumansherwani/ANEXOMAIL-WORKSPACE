@@ -22,7 +22,9 @@ set statement_timeout = '60s';
 
 -- ---- 1. policy: nayi hadein (ek hi row, DB-checked) ------------------------------------------------------------------------------
 alter table public.identity_vault_policy
-  add column if not exists fp_match_min     smallint not null default 2   check (fp_match_min between 2 and 3),
+  add column if not exists fp_match_min     smallint not null default 3   check (fp_match_min between 2 and 5),   -- 5 guroh mein se kitne milen (3 = hardware+gpu+fonts: browser badalne se bhi bachna mushkil)
+  add column if not exists fp_min_usable    smallint not null default 3   check (fp_min_usable between 1 and 5),   -- kam se kam itne guroh nikalne chahiyen; warna 'fingerprint chhupaya' ka shak
+  add column if not exists fp_evasion       text     not null default 'review' check (fp_evasion in ('allow', 'review', 'hold')),   -- chhupane wale (Tor/RFP/noise/API-bot) ka kya kiya jaye
   add column if not exists fp_farm_limit    smallint not null default 4   check (fp_farm_limit between 2 and 50),
   add column if not exists fp_crowd_limit   smallint not null default 25  check (fp_crowd_limit between 5 and 1000),
   add column if not exists velocity_limit   smallint not null default 8   check (velocity_limit between 3 and 100),
@@ -33,17 +35,20 @@ alter table public.identity_vault_policy
   add column if not exists gate_changed_by  uuid,
   add column if not exists gate_changed_at  timestamptz;
 
--- ---- 2. kind: fingerprint ke teen guroh "kamzor-darje" ke hain (akele kabhi ban nahi; milkar corroborate) ---------------------------
+-- ---- 2. kind: fingerprint ke PANCH guroh "kamzor-darje" ke hain (akele kabhi ban nahi; milkar corroborate) -----------------------------
+--   fp_hw   machine (cores, memory, screen, platform, UA-client-hints)      fp_gpu  graphics card (WebGL/WebGPU vendor, renderer, limits, extensions)
+--   fp_font installed fonts (OS ki chhap)                                      fp_gfx  is browser ka canvas + audio render      fp_env  time zone, languages, calendar
+--   hw+gpu+font MACHINE ke nishan hain: browser badalne (Chrome -> Firefox) par bhi wahi rehte hain; gfx+env browser/setting ke.
 create or replace function public.identity_kind_strong(k text)
 returns boolean language sql immutable parallel safe set search_path = pg_catalog, public as $$
   select case k when 'device_key' then true when 'email' then true when 'recovery' then true when 'payment' then true
                when 'device_shape' then false when 'network' then false
-               when 'fp_hw' then false when 'fp_gfx' then false when 'fp_env' then false else null end
+               when 'fp_hw' then false when 'fp_gpu' then false when 'fp_font' then false when 'fp_gfx' then false when 'fp_env' then false else null end
 $$;
 
 create or replace function public.identity_kind_fp(k text)
 returns boolean language sql immutable parallel safe set search_path = pg_catalog, public as $$
-  select k in ('fp_hw', 'fp_gfx', 'fp_env')
+  select k in ('fp_hw', 'fp_gpu', 'fp_font', 'fp_gfx', 'fp_env')
 $$;
 
 -- client ka SHA-256 hex (64) ya kuch nahi. Gandi cheez (lambai, hex nahi) => NULL, kabhi error nahi: ek kharab client baqi nishan nahi rokta.
@@ -68,7 +73,7 @@ end $$;
 create table if not exists public.identity_account_state (
   account_id      uuid        primary key references auth.users (id) on delete cascade,
   state           text        not null check (state in ('pending', 'approved', 'rejected')),
-  hold_kind       text        check (hold_kind in ('match', 'gate', 'manual')),
+  hold_kind       text        check (hold_kind in ('match', 'gate', 'manual', 'evasion')),
   reason          text        check (char_length(reason) <= 300),
   held_at         timestamptz not null default now(),
   decided_at      timestamptz,
@@ -169,7 +174,7 @@ $$;
 
 -- ---- 9. FAISLA: allow | review | hold | deny (siyasat ka ek hi sach) ------------------------------------------------------------------
 -- Tarteeb: disposable => deny; mazboot match => deny; fingerprint(>=min) + koi aur => deny; fingerprint(>=min) => hold (gate open ho to review);
---          farm / velocity / shared_device / weak_match => review; gate=approval_all => hold; warna allow.
+--          fingerprint chhupaya (evasion) => review/hold (policy); farm / velocity / shared_device / weak_match => review; gate=approval_all => hold; warna allow.
 -- Jawab mein kabhi hash ya "kis account se mila" nahi; matched mein sirf kind ke naam.
 create or replace function public.identity_signup_decide(p_signals jsonb, p_domain text default null)
 returns jsonb language plpgsql stable set search_path = pg_catalog, public set statement_timeout = '5s' as $$
@@ -181,10 +186,9 @@ declare
   v_app_s  boolean;
   v_app_a  boolean;
   v_reason text;
-  v_hw     bytea;
-  v_gfx    bytea;
-  v_env    bytea;
   v_net    bytea;
+  v_usable integer;
+  v_open   integer;
   n        integer;
   v_review text;
 begin
@@ -220,16 +224,29 @@ begin
     v_review := 'fingerprint_match';
   end if;
 
-  -- farm: ek hi 3-guroh fingerprint bahut accounts par
-  select s.hmac into v_hw  from public.identity_parse_signals(p_signals) s where s.kind = 'fp_hw'  limit 1;
-  select s.hmac into v_gfx from public.identity_parse_signals(p_signals) s where s.kind = 'fp_gfx' limit 1;
-  select s.hmac into v_env from public.identity_parse_signals(p_signals) s where s.kind = 'fp_env' limit 1;
-  if v_review is null and v_hw is not null and v_gfx is not null and v_env is not null then
-    select count(distinct a.account_id) into n
-      from public.identity_signals a
-      join public.identity_signals b on b.account_id = a.account_id and b.kind = 'fp_gfx' and b.hmac = v_gfx
-      join public.identity_signals c on c.account_id = a.account_id and c.kind = 'fp_env' and c.hmac = v_env
-     where a.kind = 'fp_hw' and a.hmac = v_hw;
+  -- fingerprint chhupane ka shak: (a) bahut kam guroh nikle (noise-wala browser, Tor, blocker, ya seedha API bot jisne fingerprint bheja hi nahi)
+  -- (b) jitne guroh nikle sab "bheed" ke hain (Tor Browser / RFP sab ko ek jaisa dete hain) => koi pehchan nahi. Policy fp_evasion batati hai kya karna hai.
+  select count(distinct s.kind), count(distinct s.kind) filter (where
+           (select count(distinct x.account_id) from public.identity_signals x where x.kind = s.kind and x.hmac = s.hmac) < pol.fp_crowd_limit)
+    into v_usable, v_open
+    from public.identity_parse_signals(p_signals) s where public.identity_kind_fp(s.kind);
+  if v_review is null and pol.fp_evasion <> 'allow' and (v_usable < pol.fp_min_usable or v_open = 0) then
+    if pol.fp_evasion = 'hold' and pol.signup_gate <> 'open' then
+      return jsonb_build_object('decision', 'hold', 'matched', '[]'::jsonb, 'appealable', true, 'reason', 'fingerprint_unavailable', 'hold_kind', 'evasion');
+    end if;
+    v_review := 'fingerprint_unavailable';
+  end if;
+
+  -- farm: kam se kam fp_match_min ek jaise guroh bahut (fp_farm_limit+) alag accounts par => ek mashin par accounts ka karkhana.
+  -- (bheed wale guroh ginti mein nahi: Tor ke hazaron bekasoor "farm" na ban jayen)
+  if v_review is null then
+    select count(*) into n from (
+      select x.account_id
+        from public.identity_signals x
+        join public.identity_parse_signals(p_signals) s on s.kind = x.kind and s.hmac = x.hmac and public.identity_kind_fp(s.kind)
+       where (select count(distinct y.account_id) from public.identity_signals y where y.kind = x.kind and y.hmac = x.hmac) < pol.fp_crowd_limit
+       group by x.account_id
+      having count(distinct x.kind) >= pol.fp_match_min) f;
     if n >= pol.fp_farm_limit then v_review := 'fingerprint_farm'; end if;
   end if;
 
@@ -276,7 +293,7 @@ create or replace function public.identity_hold_apply(p_account uuid, p_kind tex
 returns boolean language plpgsql volatile security definer set search_path = pg_catalog, public set statement_timeout = '10s' as $$
 declare n integer;
 begin
-  if p_account is null or p_kind not in ('match', 'gate', 'manual') then raise exception 'bad_hold' using errcode = '22023'; end if;
+  if p_account is null or p_kind not in ('match', 'gate', 'manual', 'evasion') then raise exception 'bad_hold' using errcode = '22023'; end if;
   insert into public.identity_account_state (account_id, state, hold_kind, reason)
   values (p_account, 'pending', p_kind, left(coalesce(p_reason, 'hold'), 300))
   on conflict (account_id) do nothing;
@@ -420,19 +437,21 @@ end $$;
 
 -- ---- 13. raw (HMAC server-side) wrappers: sirf parity-saboot / Rust Phase A ke liye; Bun apna HMAC khud karta hai ---------------------------------
 create or replace function public.identity_signals_full_raw(p_email text, p_recovery text, p_device_key text, p_shape text, p_network text,
-                                                              p_fp_hw text, p_fp_gfx text, p_fp_env text, p_key text)
+                                                              p_fp_hw text, p_fp_gpu text, p_fp_font text, p_fp_gfx text, p_fp_env text, p_key text)
 returns jsonb language sql immutable parallel safe set search_path = pg_catalog, public as $$
   select public.identity_signals_raw(p_email, p_recovery, p_device_key, p_shape, p_network, p_key)
       || coalesce((select jsonb_agg(jsonb_build_object('kind', k, 'hmac', h)) from (
-           values ('fp_hw',  public.identity_hmac_hex('fp_hw',  public.identity_fp_canon(p_fp_hw),  p_key)),
-                  ('fp_gfx', public.identity_hmac_hex('fp_gfx', public.identity_fp_canon(p_fp_gfx), p_key)),
-                  ('fp_env', public.identity_hmac_hex('fp_env', public.identity_fp_canon(p_fp_env), p_key))) v (k, h) where h is not null), '[]'::jsonb)
+           values ('fp_hw',   public.identity_hmac_hex('fp_hw',   public.identity_fp_canon(p_fp_hw),   p_key)),
+                  ('fp_gpu',  public.identity_hmac_hex('fp_gpu',  public.identity_fp_canon(p_fp_gpu),  p_key)),
+                  ('fp_font', public.identity_hmac_hex('fp_font', public.identity_fp_canon(p_fp_font), p_key)),
+                  ('fp_gfx',  public.identity_hmac_hex('fp_gfx',  public.identity_fp_canon(p_fp_gfx),  p_key)),
+                  ('fp_env',  public.identity_hmac_hex('fp_env',  public.identity_fp_canon(p_fp_env),  p_key))) v (k, h) where h is not null), '[]'::jsonb)
 $$;
 
 create or replace function public.identity_signup_decide_raw(p_email text, p_recovery text, p_device_key text, p_shape text, p_network text,
-                                                               p_fp_hw text, p_fp_gfx text, p_fp_env text, p_key text)
+                                                               p_fp_hw text, p_fp_gpu text, p_fp_font text, p_fp_gfx text, p_fp_env text, p_key text)
 returns jsonb language plpgsql stable set search_path = pg_catalog, public set statement_timeout = '5s' as $$
-declare s jsonb := public.identity_signals_full_raw(p_email, p_recovery, p_device_key, p_shape, p_network, p_fp_hw, p_fp_gfx, p_fp_env, p_key);
+declare s jsonb := public.identity_signals_full_raw(p_email, p_recovery, p_device_key, p_shape, p_network, p_fp_hw, p_fp_gpu, p_fp_font, p_fp_gfx, p_fp_env, p_key);
 begin
   if jsonb_array_length(s) = 0 then
     return public.identity_signup_decide('[{"kind":"network","hmac":"0000000000000000000000000000000000000000000000000000000000000000"}]'::jsonb, split_part(p_email, '@', 2));
@@ -475,6 +494,19 @@ begin
   return jsonb_build_object('allowed', true, 'ok', true, 'gate', p_mode, 'was', old);
 end $$;
 
+-- chhupane walon (fingerprint nikla hi nahi / sab bheed ka) ke saath kya ho: allow | review (default) | hold. Sirf founder.
+create or replace function public.identity_evasion_set(p_actor uuid, p_mode text)
+returns jsonb language plpgsql volatile security definer set search_path = pg_catalog, public set statement_timeout = '10s' as $$
+declare old text;
+begin
+  if not public.identity_is_founder(p_actor) then return jsonb_build_object('allowed', false); end if;
+  if p_mode not in ('allow', 'review', 'hold') then raise exception 'bad_mode' using errcode = '22023'; end if;
+  select fp_evasion into old from public.identity_vault_policy where id = 1;
+  update public.identity_vault_policy set fp_evasion = p_mode, gate_changed_by = p_actor, gate_changed_at = now(), updated_at = now() where id = 1;
+  insert into public.identity_vault_audit (event, detail) values ('gate', jsonb_build_object('evasion_from', old, 'evasion_to', p_mode, 'by_human', true));
+  return jsonb_build_object('allowed', true, 'ok', true, 'evasion', p_mode, 'was', old);
+end $$;
+
 create or replace function public.identity_disposable_set(p_actor uuid, p_domain text, p_on boolean)
 returns jsonb language plpgsql volatile security definer set search_path = pg_catalog, public set statement_timeout = '10s' as $$
 declare d text := lower(btrim(p_domain));
@@ -515,7 +547,8 @@ begin
                            from public.identity_signup_appeals a where a.state = 'new'), '[]'::jsonb),
     'appeals_open', (select count(*) from public.identity_signup_appeals where state = 'new'),
     'gate', jsonb_build_object('mode', pol.signup_gate, 'changed_at', pol.gate_changed_at, 'disposable_block', pol.disposable_block,
-                               'probation_days', pol.probation_days, 'hold_expire_days', pol.hold_expire_days, 'fp_match_min', pol.fp_match_min),
+                               'probation_days', pol.probation_days, 'hold_expire_days', pol.hold_expire_days, 'fp_match_min', pol.fp_match_min,
+                               'evasion', pol.fp_evasion, 'fp_min_usable', pol.fp_min_usable),
     'holds_pending', (select count(*) from public.identity_account_state where state = 'pending'),
     'holds', coalesce((select jsonb_agg(jsonb_build_object('account_id', s.account_id, 'email', u.email, 'kind', s.hold_kind, 'reason', s.reason, 'held_at', s.held_at,
                                                            'expires_at', s.held_at + make_interval(days => pol.hold_expire_days)) order by s.held_at)
@@ -550,7 +583,8 @@ begin
     'public.identity_ban_hits(jsonb)', 'public.identity_signup_decide(jsonb,text)', 'public.identity_signup_check(jsonb)', 'public.identity_register(uuid,jsonb)',
     'public.identity_hold_apply(uuid,text,text)', 'public.identity_is_founder(uuid)', 'public.identity_hold_decide(uuid,uuid,text,text,boolean)',
     'public.identity_hold_sweep()', 'public.identity_flag_suspicious(uuid,text)', 'public.identity_register_payment(uuid,text,text)',
-    'public.identity_signals_full_raw(text,text,text,text,text,text,text,text,text)', 'public.identity_signup_decide_raw(text,text,text,text,text,text,text,text,text)',
+    'public.identity_signals_full_raw(text,text,text,text,text,text,text,text,text,text,text)', 'public.identity_signup_decide_raw(text,text,text,text,text,text,text,text,text,text,text)',
+    'public.identity_evasion_set(uuid,text)',
     'public.identity_account_limits(uuid)', 'public.identity_gate_set(uuid,text)', 'public.identity_disposable_set(uuid,text,boolean)',
     'public.identity_admin_overview(uuid)', 'public.identity_vault_purge()', 'public.identity_kind_strong(text)'] loop
     execute format('revoke all on function %s from public, anon, authenticated', f);

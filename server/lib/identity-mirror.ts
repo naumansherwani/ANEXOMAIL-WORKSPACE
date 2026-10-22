@@ -32,7 +32,8 @@ export function hmacHex(kind: string, canon: string | null | undefined, key: str
 }
 
 /** Browser fingerprint groups, each already a client-side SHA-256 hex (64). Raw components never leave the browser. */
-export type RawFingerprint = { hw?: string | null; gfx?: string | null; env?: string | null };
+export type RawFingerprint = { hw?: string | null; gpu?: string | null; font?: string | null; gfx?: string | null; env?: string | null };
+export const FP_GROUPS = ["hw", "gpu", "font", "gfx", "env"] as const;
 export type RawIdentity = {
   email?: string | null;
   recovery?: string | null;
@@ -48,7 +49,7 @@ export function fpCanon(v: string | null | undefined): string | null {
   return /^[0-9a-f]{64}$/.test(t) ? t : null;
 }
 
-/** Same order and rules as SQL identity_signals_full_raw (E70). The three fp_* kinds are weak-tier: they never ban alone. */
+/** Same order and rules as SQL identity_signals_full_raw (E70). The five fp_* kinds (hw, gpu, font, gfx, env) are weak-tier: they never ban alone. */
 export function signalsRaw(r: RawIdentity, key: string): Signal[] {
   const lower = (v: string | null | undefined) => (v == null ? null : v.trim().toLowerCase());
   const rows: [string, string | null][] = [
@@ -58,6 +59,8 @@ export function signalsRaw(r: RawIdentity, key: string): Signal[] {
     ["device_shape", lower(r.shape)],
     ["network", lower(r.network)],
     ["fp_hw", fpCanon(r.fp?.hw)],
+    ["fp_gpu", fpCanon(r.fp?.gpu)],
+    ["fp_font", fpCanon(r.fp?.font)],
     ["fp_gfx", fpCanon(r.fp?.gfx)],
     ["fp_env", fpCanon(r.fp?.env)],
   ];
@@ -71,12 +74,18 @@ export function signalsRaw(r: RawIdentity, key: string): Signal[] {
 
 export type RawIdentityInput = RawIdentity & { email: string; recovery: string; deviceKey: string | null; shape: string | null; network: string | null };
 
-/** Request body `fingerprint` => three clean digests (junk, wrong type or length become null). Never trusts the shape of the input. */
+/** Request body `fingerprint` => up to five clean digests (junk, wrong type or length become null). Never trusts the shape of the input. */
 export function fingerprintFrom(body: unknown): RawFingerprint | null {
   if (!body || typeof body !== "object") return null;
   const b = body as Record<string, unknown>;
-  const out = { hw: fpCanon(typeof b.hw === "string" ? b.hw : null), gfx: fpCanon(typeof b.gfx === "string" ? b.gfx : null), env: fpCanon(typeof b.env === "string" ? b.env : null) };
-  return out.hw || out.gfx || out.env ? out : null;
+  const out: RawFingerprint = {};
+  let any = false;
+  for (const g of FP_GROUPS) {
+    const v = fpCanon(typeof b[g] === "string" ? (b[g] as string) : null);
+    out[g] = v;
+    if (v) any = true;
+  }
+  return any ? out : null;
 }
 import { admin } from "./supa";
 
