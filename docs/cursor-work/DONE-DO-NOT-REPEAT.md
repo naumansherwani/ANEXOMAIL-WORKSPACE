@@ -320,3 +320,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 
 - B7c Rust `book` module (book_core/book_glue, installer wired, 22 Oct 2026): DONE in repo, NOT yet run on server. Do not rewrite; next = web pages.
 - B7c web (booking.ts, SlotPicker, /book/$handle, /book/manage, BookingPage sheet) written + sandbox-tested 22 Oct 2026; NOT yet run on server. Do not rewrite.
+- B7c Booking page: GREEN live 22 Oct 2026 (book/move/cancel/double-book wall verified in Chrome). Do not rebuild.

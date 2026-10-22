@@ -604,3 +604,8 @@ Web: `src/lib/booking.ts`, `components/book/SlotPicker.tsx`, public `/book/$hand
 2) Rust: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)
 3) Web:  bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6
 GREEN tab hogi jab: CHECK_E59 11/11 OK + Rust "-> book: ... dono procs pakde" + live /book/<handle> chale. Tab tak GREEN nahi.
+
+## 22 Oct 2026 ~06:40 PKT — B7c LIVE (SQL 11/11 OK, Rust build OK + probes, Web same=509) — Chrome live test GREEN
+Live anexomail.com: host sheet save (handle pro-buyer, page ON) -> /book/pro-buyer slots (weekday, 4h notice) -> asli booking (UI "You're booked", confirmation mail send hua) -> slot ghayab + dobara book 409 -> /book/manage move 23 Oct 09:45 -> 22 Oct 10:30 OK -> cancel OK -> slot wapas free. Founder ke Gmail mein 3 mails (confirmed/moved/cancelled) aani chahiye — founder confirm kare.
+Page `pro-buyer` abhi ON hai (founder band karna chahe to Calendar > Booking page > untick > Save).
+NEXT: MIGRATION-LEDGER (Bun vs Rust, sirf ginti, koi Bun code nahi hatega) phir #3 iMIP reply.
