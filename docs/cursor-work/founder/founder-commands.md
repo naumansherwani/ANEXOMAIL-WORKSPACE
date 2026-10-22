@@ -735,3 +735,13 @@ pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /de
 ## Rule 46 (aeen) — tarteeb: 1 SQL -> 2 Rust install -> 3 Rust restart+health -> 4 Brain installer (agar Bun badla) -> 5 Web pull. Sirf badli hui technology ke steps. (AGENTS.md Rule 46)
 
 ## 22 Oct 22:45 — ABHI BAAQI (founder ke liye, tarteeb): 1) Brain installer (brain-identity-install.sh, poori command NEXT-TASKS.md mein) 2) Web pull + Ctrl+Shift+R 3) sign-out/sign-in (main live dekhunga). Phir agent #2 W2 Focus Ring.
+
+## 23 Oct 02:01 — ZABAN + COMPACT (Rule 47)
+Founder: "yeh englishmain kya baqwas kerta hai mere saath ... compact chat ka gandu rule read kero aur jo abhi tak codes likhe hain woh repo main update kero". Hukm: hamesha Roman Urdu; sab halat repo mein (AGENTS.md Rule 47, CLAUDE-CHAT-CONTEXT session log, DONE-DO-NOT-REPEAT, NEXT-TASKS).
+
+## 23 Oct — #4c ICS subscribe (E73) — server par BAAQI (Rule 46, alag alag)
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Rust restart+health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
+

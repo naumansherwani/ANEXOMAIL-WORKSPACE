@@ -379,3 +379,6 @@ Har push ke saath sirf WOH steps do jin technology ka code badla, hamesha isi ta
 4. **Brain / chat (Bun fallback, anexomail-leo :3100 + anexochat :3300)** — sirf agar `server/*.ts` badla: us change ka `brain-*-install.sh` (surgical, restore-on-fail). `pull.sh` Brain ko deploy NAHI karta.
 5. **Web (frontend)** — `pull.sh` (build + pm2 anexomail-web) + Ctrl+Shift+R. Hamesha aakhir mein.
 Har technology ka apna raasta: frontend=pull.sh, Rust=install+restart, Bun=brain installer, SQL=sql-run.sh; ek ka command doosri technology ko deploy nahi karta. Polar :3400, Caddy, mail stack ko founder "haan" ke bina haath nahi. Is rule ko Rule 41 ka commit-message/jawab format follow karna hai (commit hash + sirf zaroori steps). Naya technology aaye (jaise sign-in Rust par) to is list mein uska step jodna lazmi.
+
+## Rule 47 — ZABAN: founder se HAMESHA Roman Urdu (Hinglish) mein baat, "aap" kehkar (founder 23 Oct 2026 02:01 PKT, STRICT)
+Founder (verbatim): "yeh englishmain kya baqwas kerta hai mere saath". Founder se har jawab, summary, status aur final message Roman Urdu mein. English sirf code, file/proc ke naam, commands aur technical terms mein. Compact ke baad bhi yehi (compact summary English mein ho to bhi founder ko jawab Roman Urdu). Commit messages English reh sakte hain.
