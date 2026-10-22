@@ -115,7 +115,7 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
     save.mutate(
       {
         calendars: cals.map((c) => ({ ...c, name: c.name.trim() })),
-        work_hours: { ...hours, tz: city.iana || undefined },
+        work_hours: { ...hours, tz: prefs.home?.iana || city.iana || undefined },
         ooo: ooo.map((p) => ({ ...p, note: p.note.trim() })),
       },
       {

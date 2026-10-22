@@ -58,7 +58,11 @@ async function pushRemote() {
   try {
     await rpcOrRest(
       "locale.uipref.set",
-      { path: "/api/locale/uipref", method: "PUT", body: { clock: readClockPref(), layout: readLayoutPref() } },
+      {
+        path: "/api/locale/uipref",
+        method: "PUT",
+        body: { clock: readClockPref(), layout: readLayoutPref() },
+      },
       { clock: readClockPref(), layout: readLayoutPref() },
     );
   } catch {
@@ -76,7 +80,8 @@ export async function hydrateUiPref(): Promise<void> {
     const res = await rpcOrRest<{ clock: string | null; layout: string | null }>("locale.uipref", {
       path: "/api/locale/uipref",
     });
-    const clock = res.clock === "12" || res.clock === "24" || res.clock === "auto" ? res.clock : null;
+    const clock =
+      res.clock === "12" || res.clock === "24" || res.clock === "auto" ? res.clock : null;
     const layout = res.layout === "classic" || res.layout === "expanded" ? res.layout : null;
     if (clock) write(CLOCK_KEY, clock, false);
     if (layout) write(LAYOUT_KEY, layout, false);
@@ -139,6 +144,14 @@ export function fmtHour(h: number): string {
   return `${two(h)}:00`;
 }
 
+let homeLabel: { city: string; iana: string } | null = null;
+
+/** The home city the person saved in Settings. It only RENAMES the device's own zone when both are the same zone (Lahore for Asia/Karachi);
+ *  on a trip, in another zone, the clock keeps naming the place the device really is in — never a city the person is not in. */
+export function setHomeLabel(home: { city: string; iana: string } | null): void {
+  homeLabel = home;
+}
+
 /** The viewer's own place, as a name a person recognises ("Karachi"), never "GMT+5". */
 export function zoneCity(): { city: string; iana: string } {
   let iana = "";
@@ -147,6 +160,7 @@ export function zoneCity(): { city: string; iana: string } {
   } catch {
     iana = "";
   }
+  if (homeLabel && iana && homeLabel.iana === iana) return { city: homeLabel.city, iana };
   const last = iana.split("/").pop() ?? "";
   return { city: last.replace(/_/g, " ") || "Local time", iana };
 }

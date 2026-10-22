@@ -757,3 +757,11 @@ Founder (verbatim): "T8 ko duniya ki latest technology do. meri haan hai sab pe.
 4. Brain: nahi (server/*.ts nahi badla).
 5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
 Live check (Chrome, final look): meeting kholo > Files > Add file (PDF) > list mein aaye > download ho > Remove > list se gayi. Guest (workspace member) ko sirf dekhna/download, Add file nahi dikhna chahiye.
+
+## 23 Oct — Home city (Lahore detect) + adaptive greeting — server par BAAQI (Rule 46, alag alag)
+1. SQL: nahi (E57 ka `extra` hi use hota hai).
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`   (locale module: naya `home` key, test ke saath)
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`  (200)
+4. Brain: nahi.
+5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
+Live check: Settings > Personal > Home city > "Detect my city" (browser ijazat poochega) ya search "Lahore" > save > dashboard greeting + calendar clock ka naam.

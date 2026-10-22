@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
+import { HomePlaceCard } from "@/components/app/settings/HomePlace";
 import { SettingsScope } from "@/components/app/settings/SettingsBits";
 
 export const Route = createFileRoute("/app/settings/")({
@@ -18,10 +19,13 @@ export const Route = createFileRoute("/app/settings/")({
     ],
   }),
   component: () => (
-    <SettingsScope
-      scope="personal"
-      title="Personal"
-      blurb="Your own workspace — name, signature, defaults. Nothing here leaks to anyone else."
-    />
+    <>
+      <SettingsScope
+        scope="personal"
+        title="Personal"
+        blurb="Your own workspace — name, signature, defaults. Nothing here leaks to anyone else."
+      />
+      <HomePlaceCard />
+    </>
   ),
 });

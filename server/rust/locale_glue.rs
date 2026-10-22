@@ -80,7 +80,7 @@ async fn ui_pref_of(user_id: &str) -> UiPref {
 }
 
 /* ---- extra (E58): calendars, working hours, out-of-office.
- * A patch replaces whole keys (`null` removes one). Only these keys exist (calendars, work_hours, ooo, clocks); every value is rebuilt from validated
+ * A patch replaces whole keys (`null` removes one). Only these keys exist (calendars, work_hours, ooo, clocks, home); every value is rebuilt from validated
  * parts, so nothing the client sends is stored as-is. */
 
 const EXTRA_MAX_BYTES: usize = 15_000;
@@ -159,6 +159,31 @@ fn clean_clocks(v: &Value) -> Result<Value, String> {
     Ok(Value::Array(names.iter().map(|z| json!(z)).collect()))
 }
 
+/// Home place (greeting, clock label): city name + country + time zone + the CITY's centre (rounded to 2 decimals, about 1 km). Never the person's
+/// exact position — the browser sends the city's centre from the bundled list, and even if it sent more, only these five fields are kept.
+fn clean_home(v: &Value) -> Result<Value, String> {
+    let o = v.as_object().ok_or("home must be an object")?;
+    let city = clean_text(o.get("city").and_then(|x| x.as_str()).unwrap_or(""), 60);
+    let country = clean_text(o.get("country").and_then(|x| x.as_str()).unwrap_or(""), 60);
+    if city.is_empty() {
+        return Err("home needs a city name".into());
+    }
+    let iana = o.get("iana").and_then(|x| x.as_str()).unwrap_or("");
+    if !zone_ok(iana) || iana.contains("..") {
+        return Err("home time zone name is not valid".into());
+    }
+    let coord = |k: &str, lim: f64| -> Result<f64, String> {
+        let n = o.get(k).and_then(|x| x.as_f64()).ok_or_else(|| format!("home {k} must be a number"))?;
+        if !n.is_finite() || n.abs() > lim {
+            return Err(format!("home {k} is out of range"));
+        }
+        Ok((n * 100.0).round() / 100.0)
+    };
+    let lat = coord("lat", 90.0)?;
+    let lon = coord("lon", 180.0)?;
+    Ok(json!({ "city": city, "country": country, "iana": iana, "lat": lat, "lon": lon }))
+}
+
 fn clean_ooo(v: &Value) -> Result<Value, String> {
     let a = v.as_array().ok_or("ooo must be a list")?;
     if a.len() > 20 {
@@ -220,6 +245,7 @@ fn clean_extra(old: &Map<String, Value>, patch: &Map<String, Value>) -> Result<M
             "ooo" => clean_ooo(v)?,
             "calendars" => clean_calendars(v)?,
             "clocks" => clean_clocks(v)?,
+            "home" => clean_home(v)?,
             _ => return Err(format!("unknown setting '{}'", clean_text(k, 24))),
         };
         out.insert(k.clone(), cleaned);
@@ -240,6 +266,25 @@ mod extra_tests {
 
     fn week(on: bool) -> Value {
         json!({ "days": (0..7).map(|_| json!({ "on": on, "start": "09:00", "end": "17:30" })).collect::<Vec<_>>(), "tz": "Asia/Karachi" })
+    }
+
+    #[test]
+    fn home_place_is_rebuilt_from_five_checked_fields() {
+        let ok = clean_extra(&Map::new(), &obj(json!({ "home": { "city": " Lahore ", "country": "Pakistan", "iana": "Asia/Karachi", "lat": 31.5204, "lon": 74.3587, "gps_accuracy": 5, "street": "x" } }))).unwrap();
+        assert_eq!(ok["home"]["city"], "Lahore");
+        assert_eq!(ok["home"]["lat"], 31.52);
+        assert_eq!(ok["home"]["lon"], 74.36);
+        assert!(ok["home"].get("street").is_none() && ok["home"].get("gps_accuracy").is_none());
+        let bad = |h: Value| clean_extra(&Map::new(), &obj(json!({ "home": h }))).is_err();
+        assert!(bad(json!({ "city": "", "country": "", "iana": "Asia/Karachi", "lat": 1, "lon": 1 })));
+        assert!(bad(json!({ "city": "X", "country": "", "iana": "Asia/Karachi; drop", "lat": 1, "lon": 1 })));
+        assert!(bad(json!({ "city": "X", "country": "", "iana": "Asia/../x", "lat": 1, "lon": 1 })));
+        assert!(bad(json!({ "city": "X", "country": "", "iana": "Asia/Karachi", "lat": 91, "lon": 1 })));
+        assert!(bad(json!({ "city": "X", "country": "", "iana": "Asia/Karachi", "lat": 1, "lon": 181 })));
+        assert!(bad(json!({ "city": "X", "country": "", "iana": "Asia/Karachi", "lat": "1", "lon": 1 })));
+        assert!(bad(json!("Lahore")));
+        let removed = clean_extra(&ok, &obj(json!({ "home": null }))).unwrap();
+        assert!(removed.get("home").is_none());
     }
 
     #[test]

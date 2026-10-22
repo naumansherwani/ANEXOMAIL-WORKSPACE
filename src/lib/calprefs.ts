@@ -9,7 +9,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 import type { ApiError } from "@/lib/api";
 import type { CalendarEvent } from "@/lib/calendar";
+import { isPlace, type Place } from "@/lib/places";
 import { rpcOrRest } from "@/lib/rpc";
+import { setHomeLabel } from "@/lib/timeFormat";
 
 export type CalendarDef = { id: string; name: string; color: string };
 export type WorkDay = { on: boolean; start: string; end: string };
@@ -54,6 +56,7 @@ export function reminderText(min: number): string {
 }
 
 type Extra = {
+  home?: Place | null;
   calendars?: CalendarDef[];
   work_hours?: WorkHours;
   ooo?: OooPeriod[];
@@ -68,6 +71,8 @@ export type CalPrefs = {
   ooo: OooPeriod[];
   /** World-clock pins (IANA zone names, max 6) — the toolbar shows them next to the live clock. */
   clocks: string[];
+  /** Home city chosen in Settings (name, zone, centre) — null until the person picks one. */
+  home: Place | null;
   loaded: boolean;
 };
 
@@ -86,12 +91,15 @@ export function useCalPrefs(): CalPrefs {
     staleTime: 60_000,
   });
   const x = q.data ?? {};
+  const home = isPlace(x.home) ? x.home : null;
+  setHomeLabel(home ? { city: home.city, iana: home.iana } : null);
   return {
     calendars: x.calendars && x.calendars.length > 0 ? x.calendars : DEFAULT_CALENDARS,
     workHours: x.work_hours && x.work_hours.days?.length === 7 ? x.work_hours : DEFAULT_HOURS,
     hoursSet: Boolean(x.work_hours),
     ooo: x.ooo ?? [],
     clocks: Array.isArray(x.clocks) ? x.clocks.filter((z) => typeof z === "string") : [],
+    home,
     loaded: q.isSuccess || q.isError,
   };
 }

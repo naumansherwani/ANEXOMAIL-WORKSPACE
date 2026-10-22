@@ -131,8 +131,16 @@ export function sunsetMinutes(
 }
 
 /** Minutes after midnight (local) when "Good evening" begins today. */
-export function eveningStart(at: Date, tz: string): number {
-  const place = ZONES[tz];
+export function eveningStart(
+  at: Date,
+  tz: string,
+  coords?: { lat: number; lon: number } | null,
+): number {
+  // The person's own city (Settings) is exact; a zone's main city is the next best; nothing known keeps 17:00.
+  const place: [number, number] | undefined =
+    coords && Number.isFinite(coords.lat) && Number.isFinite(coords.lon)
+      ? [coords.lat, coords.lon]
+      : ZONES[tz];
   if (!place) return DEFAULT_EVENING_START;
   let off: number;
   try {
@@ -179,7 +187,11 @@ export function preferredZone(saved?: string | null): string {
   return browserZone();
 }
 
-export function dayPart(at: Date = new Date(), zone?: string | null): DayPart {
+export function dayPart(
+  at: Date = new Date(),
+  zone?: string | null,
+  coords?: { lat: number; lon: number } | null,
+): DayPart {
   let tz = preferredZone(zone);
   let m: number;
   try {
@@ -190,5 +202,5 @@ export function dayPart(at: Date = new Date(), zone?: string | null): DayPart {
   }
   if (m >= 22 * 60 || m < 5 * 60) return "night";
   if (m < 12 * 60) return "morning";
-  return m < eveningStart(at, tz) ? "afternoon" : "evening";
+  return m < eveningStart(at, tz, coords) ? "afternoon" : "evening";
 }

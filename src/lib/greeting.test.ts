@@ -82,3 +82,19 @@ describe("Settings zone wins over the browser's", () => {
     expect(preferredZone("")).toBe(browserZone());
   });
 });
+
+describe("home city sharpens the sunset", () => {
+  it("Lahore (31.5 N) ends the day a little earlier than Karachi (24.9 N) in winter", () => {
+    const dec = new Date(Date.UTC(2026, 11, 21, 7));
+    const khi = eveningStart(dec, "Asia/Karachi", { lat: 24.86, lon: 67.01 });
+    const lhe = eveningStart(dec, "Asia/Karachi", { lat: 31.52, lon: 74.36 });
+    expect(lhe).toBeLessThanOrEqual(khi); // same clock, Lahore is further east and north => sets earlier
+  });
+  it("bad coordinates fall back to the zone", () => {
+    const at = new Date(Date.UTC(2026, 9, 23, 7));
+    expect(eveningStart(at, "Asia/Karachi", { lat: NaN, lon: 1 })).toBe(
+      eveningStart(at, "Asia/Karachi"),
+    );
+    expect(eveningStart(at, "Asia/Karachi", null)).toBe(eveningStart(at, "Asia/Karachi"));
+  });
+});

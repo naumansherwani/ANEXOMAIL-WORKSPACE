@@ -39,7 +39,10 @@ export function Greeting({ enabled, onCompose }: { enabled: boolean; onCompose: 
   }, []);
   // Home city from Settings (one source of truth for "where am I"); the browser's zone only when none is saved.
   const prefs = useCalPrefs();
-  const part = dayPart(new Date(), prefs.hoursSet ? prefs.workHours.tz : undefined);
+  // Home city (Settings > Personal > Home city) gives the exact sunset; the zone saved with the working hours is the older fallback.
+  const part = prefs.home
+    ? dayPart(new Date(), prefs.home.iana, prefs.home)
+    : dayPart(new Date(), prefs.hoursSet ? prefs.workHours.tz : undefined);
   const greeting =
     part === "morning"
       ? { text: t("Good morning"), emoji: "☀️" }
