@@ -376,3 +376,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 02:36 FOUNDER HAAN: T1..T11 sab manzoor (T6 instant search, T7 instant mail, T8 delivery live [latest tech: journald JSON + DSN], T9 collision guard live, T10 resumable attachments, T11 circuit-breaker). Abhi KOI T-kaam BANA NAHI — sirf blueprint. Dobara 'haan' mat poochho.
 
 - 23 Oct 02:45 — T12 (page auto-refresh: naya-version banner + background ICS feed refresh) repo mein likha, push ho gaya (2e386ca). Founder haan baaqi. Agla kaam: calendar #5 (event par files). Compaction ke baad pehle yeh file + NEXT-TASKS padho; Roman Urdu (Rule 47).
+
+- 23 Oct 03:10 — #5 event par files CODE READY: E74 SQL (+CHECK_E74, proofs/E74_proof.sql 31 asserts), Rust calfile_core/glue (calendar.files.*, installer module `calfile`), Web EventFiles + calendar-files.ts (+test). mail_attach_gc/resolve extend (event ki file GC se bachti). Dobara mat likho; baaqi: server run + Chrome live check.

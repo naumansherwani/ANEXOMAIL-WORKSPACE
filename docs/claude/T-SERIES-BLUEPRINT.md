@@ -1,7 +1,7 @@
 # T-SERIES — technology track (founder order 23 Oct 2026 02:29 PKT: "kya aye ga yeh repo main likho")
 
 Audit 23 Oct (repo grep): R3, R4, B8, R2, speed — KUCH BHI BANA NAHI. R5 (event-driven WebTransport push) DONE (B4 GREEN 21 Oct 06:50). Is file ke kaam dobara audit kiye bina mat banao.
-**FOUNDER HAAN 23 Oct 02:36 PKT: 'meri haan hai sab pe' — T1..T11 sab manzoor (T5 Stalwart aur T8 Postfix-log ke sath bhi; haan ka matlab ijazat hai, tarteeb locked order ke baad hi).**
+**FOUNDER HAAN 23 Oct 02:36 PKT: 'meri haan hai sab pe' — T1..T11 sab manzoor (T5 Stalwart aur T8 Postfix-log ke sath bhi; haan ka matlab ijazat hai, tarteeb locked order ke baad hi).** **T12 (page auto-refresh) par bhi haan (23 Oct 02:47); tarteeb nahi badli — pehle calendar #5..#8 + W3..W5, founder account, identity tests, M-series, G16, phir T-series.**
 Tarteeb locked: T1 -> T2 -> T3 -> T4 -> T5. Kab: calendar + world clock -> founder account -> 6 identity live tests -> M-series -> G16 ke BAAD; T1/T2 chhote hain, G16 se pehle aa sakte hain (shuru karne se pehle founder se EK sawal).
 Har step Rule 46: SQL -> Rust installer -> Rust restart+health -> Brain installer -> Web pull, sirf jo badla. Har step: pehle naap, phir badlo, phir differential/live saboot; fail par rollback script.
 

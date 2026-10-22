@@ -13,7 +13,9 @@ Compact / naya chat: pehle AGENTS.md (Rule 37/38/40/41/42), `DONE-DO-NOT-REPEAT.
 2. ~~Web pull 2b92ea4~~ DONE + GREEN (22:50 recorder se tasdeeq). (purani line:) phir founder sign-out/sign-in karega aur main Chrome tab (1609160381, MCP group) mein recorder (window.__navlog: history patch + MutationObserver + fetch status) lagake LIVE dekhunga ke `SIGNIN @/app` flash ab nahi. Agent production par password type NAHI karta (founder khud sign-in karta hai).
 3. Privacy/footer naya paragraph — founder "haan" par (AUTH-MIGRATION-PLAN.md mein draft).
 
-**#4c ICS SUBSCRIBE: GREEN LIVE (23 Oct 02:20, server + Chrome). AGLA KAAM: #5 Event par files -> W3/W4/W5 -> FOUNDER ACCOUNT (command center) -> 6 identity live tests.**
+**#5 EVENT PAR FILES: CODE READY (23 Oct 03:10; E74 SQL + Rust `calfile` + Web EventFiles; sandbox saboot). Server run + Chrome live check baaqi. AGLA: W3/W4/W5 -> #6 CalDAV...**
+
+**#4c ICS SUBSCRIBE: GREEN LIVE (23 Oct 02:20, server + Chrome). (purani line:) #5 Event par files -> W3/W4/W5 -> FOUNDER ACCOUNT (command center) -> 6 identity live tests.**
 
 **E72 APPEAL 20,000 + EVIDENCE: GREEN (founder ne sab server commands chala diye 23 Oct 01:44; live Chrome check baaqi). AGLA KAAM (founder tarteeb): Calendar baaqi (#4c ICS subscribe [CODE READY 23 Oct, server run baaqi] -> #5 event files -> #6 CalDAV -> #7 Google -> #8 Rooms) + World clock (W3/W4/W5) POORA -> phir FOUNDER ACCOUNT (command center) -> uske BAAD identity ke 6 live tests (FOUNDER-WORKSPACE-PLAN.md §10).**
 
@@ -28,7 +30,7 @@ Dates: E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle. Phone 390/82
 | 1 | **#10 History search — GREEN LIVE (Chrome 23 Oct)**; purani line: (Cmd+K, saalon purani meetings/notes/tasks/mail, FTS + trigram, org wall) | docs/claude/CALENDAR-BLUEPRINT.md §5. SQL E64 (Rule 38+42), Rust proc, Web (Cmd+K ka "history" filter: tareekh range, banda, domain) | SQL -> Rust -> Web |
 | 2 | **W2 Focus Ring** (booked-meeting load ka SVG/CSS ring, sach-ghantay fatigue lines meeting slider mein) | docs/claude/WORLD-CLOCK-BLUEPRINT.md (founder decisions 08:40: Focus Ring, no Three.js) | Web (+Rust agar load endpoint chahiye) |
 | 3 | **#4c ICS subscribe** — GREEN LIVE 23 Oct 02:20 | CALENDAR-ROADMAP #4c | SQL -> Rust -> Web |
-| 4 | **#5 Event par files** (mail attach pipeline reuse) | CALENDAR-ROADMAP #5 | SQL -> Rust -> Web |
+| 4 | **#5 Event par files** (mail attach pipeline reuse) — CODE READY 23 Oct, server run baaqi | CALENDAR-ROADMAP #5 | SQL -> Rust -> Web |
 | 5 | **W3 globe** (benchmark-gated WASM) · **W4** latency/time-sync/travelling (opt-in, user-entered) · **W5** billing deadline banner, market chip (default OFF), Lahore alias | WORLD-CLOCK-BLUEPRINT W3–W5 | as needed |
 | 6 | **#6 CalDAV (B7d)** | CALENDAR-ROADMAP #6 (app password 27 Oct se passkey, Caddy .well-known surgical) | |
 | 7 | **#7 Google sync** | founder ko pehle Google Cloud verification shuru karni hai | |

@@ -3,6 +3,7 @@ import { useState } from "react";
 import { CalendarDays, Download, ListChecks, Repeat, Sparkles } from "lucide-react";
 
 import { CostMeter, TimeZoneTruthBar, ConflictChip, apiHref } from "@/components/app/calendar/Bits";
+import { EventFiles } from "@/components/app/calendar/EventFiles";
 import { Guests } from "@/components/app/calendar/Guests";
 import { NoteDoc } from "@/components/app/work/NoteDoc";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
@@ -10,7 +11,13 @@ import { EmptyState } from "@/components/app/Panel";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
-import { clockRange, exportPath, useCalendarEvent, usePostOutcome, type CalendarEvent } from "@/lib/calendar";
+import {
+  clockRange,
+  exportPath,
+  useCalendarEvent,
+  usePostOutcome,
+  type CalendarEvent,
+} from "@/lib/calendar";
 import { notify } from "@/lib/notify";
 import { REMINDER_CHOICES, useCalPrefs, useSetEventMeta } from "@/lib/calprefs";
 import { GOAL_DOT, GOAL_MAX, GOAL_WORD, goalTone, useSetGoal } from "@/lib/goal";
@@ -86,7 +93,11 @@ export function EventDetail({ id }: { id: string }) {
 
       <OutcomeEditor key={event.id} event={event} />
 
-      <MetaEditor eventId={event.id} calendarKey={event.calendar_key ?? ""} remind={event.remind_min?.[0] ?? 10} />
+      <MetaEditor
+        eventId={event.id}
+        calendarKey={event.calendar_key ?? ""}
+        remind={event.remind_min?.[0] ?? 10}
+      />
 
       <section className="mt-ax-6">
         <p className="ax-eyebrow">Agenda</p>
@@ -103,6 +114,8 @@ export function EventDetail({ id }: { id: string }) {
           </Link>
         )}
       </section>
+
+      <EventFiles eventId={event.id} />
 
       <section className="mt-ax-6">
         <div className="flex items-center gap-2">
@@ -192,7 +205,15 @@ export function EventDetail({ id }: { id: string }) {
 }
 
 /** Calendar + in-app reminder of one event. Changing them never re-sends the invitation (no SEQUENCE bump). */
-function MetaEditor({ eventId, calendarKey, remind }: { eventId: string; calendarKey: string; remind: number }) {
+function MetaEditor({
+  eventId,
+  calendarKey,
+  remind,
+}: {
+  eventId: string;
+  calendarKey: string;
+  remind: number;
+}) {
   const prefs = useCalPrefs();
   const set = useSetEventMeta();
   const save = (p: { calendar_key?: string | null; remind_min?: number[] }) =>
@@ -246,7 +267,10 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
   const [draft, setDraft] = useState(event.goal ?? "");
   const tone = goalTone(event);
   const started = new Date(event.starts_at).getTime() <= Date.now();
-  const save = (p: { goal?: string | null; goal_state?: "open" | "achieved" | "missed" }, done: string) =>
+  const save = (
+    p: { goal?: string | null; goal_state?: "open" | "achieved" | "missed" },
+    done: string,
+  ) =>
     set.mutate(
       { id: event.id, ...p },
       {
@@ -257,7 +281,8 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
   if (event.recurring) {
     return (
       <p className="ax-caption mt-ax-5 text-muted-foreground">
-        Outcome colours are for single meetings. A repeating series shares one record, so it is not marked achieved or missed.
+        Outcome colours are for single meetings. A repeating series shares one record, so it is not
+        marked achieved or missed.
       </p>
     );
   }
@@ -282,7 +307,10 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
           onChange={(e) => setDraft(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && changed)
-              save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed");
+              save(
+                { goal: draft.trim() ? draft : null },
+                draft.trim() ? "Aim saved" : "Aim removed",
+              );
           }}
           placeholder="What should this meeting achieve? First line is the headline; add detail below (optional)"
           className="ax-focus min-w-0 flex-1 resize-y rounded-md border border-border bg-background px-2 py-1.5 text-base text-foreground sm:text-xs"
@@ -292,7 +320,9 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
           variant="outline"
           size="sm"
           disabled={set.isPending || !changed}
-          onClick={() => save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed")}
+          onClick={() =>
+            save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed")
+          }
         >
           Save
         </Button>
@@ -321,13 +351,21 @@ function OutcomeEditor({ event }: { event: CalendarEvent }) {
             Missed
           </Button>
           {(event.goal_state === "achieved" || event.goal_state === "missed") && (
-            <Button type="button" size="sm" variant="ghost" disabled={set.isPending} onClick={() => save({ goal_state: "open" }, "Reopened")}>
+            <Button
+              type="button"
+              size="sm"
+              variant="ghost"
+              disabled={set.isPending}
+              onClick={() => save({ goal_state: "open" }, "Reopened")}
+            >
               Reopen
             </Button>
           )}
         </div>
       ) : (
-        <p className="ax-caption mt-ax-2 text-muted-foreground">You can mark Achieved or Missed once the meeting has started.</p>
+        <p className="ax-caption mt-ax-2 text-muted-foreground">
+          You can mark Achieved or Missed once the meeting has started.
+        </p>
       )}
     </section>
   );

@@ -7,6 +7,7 @@
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
 #   book   -> server/rust/book_core.rs   + book_glue.rs    (Booking page /book/<handle>: slots, book, cancel/reschedule, mails)  [pehle E59 SQL; cal ke saath]
 #   ics    -> server/rust/ics_core.rs + ics_glue.rs (cal_core.rs saath) (bahar ka calendar: ICS subscribe, SIRF padhne ke liye — SSRF-safe fetch, `calendar.sub.*`)  [pehle E73 SQL]
+#   calfile -> server/rust/calfile_core.rs + calfile_glue.rs (meeting par files: `calendar.files.list|attach|remove`; bytes mail wale attach pipeline se — upload /file/attach, download /file/attach/get)  [pehle E74 SQL; E48 + attach module pehle se]
 #   overlap-> server/rust/overlap_core.rs + overlap_glue.rs (Overlap Matrix `calendar.overlap`: team ka green/amber/red waqt)  [pehle E62 SQL; cal ke saath]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
@@ -38,7 +39,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics people team locale device dnsauth security export attach evidence b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile people team locale device dnsauth security export attach evidence b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -86,6 +87,8 @@ CFG={
  "overlap": {"public": False, "label": "overlap",   "procs": ['"calendar.overlap"']},
  # ics (#4c): bahar ka calendar. calendar.sub.add/list/update/remove/refresh/events. Server khud fetch karta hai (https:443, public IP pin, 5 MB, 10 s). SQL E73 PEHLE. cal_core.rs saath (extras).
  "ics":    {"public": False, "label": "ics-subscribe", "procs": ['"calendar.sub.add"','"calendar.sub.list"','"calendar.sub.update"','"calendar.sub.remove"','"calendar.sub.refresh"','"calendar.sub.events"']},
+ # calfile (#5): meeting par files. calendar.files.list/attach/remove. Upload/download mail wale attach routes (/file/attach, /file/attach/get). SQL E74 PEHLE (E48 ke baad).
+ "calfile": {"public": False, "label": "calfile",   "procs": ['"calendar.files.list"','"calendar.files.attach"','"calendar.files.remove"']},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},
@@ -483,6 +486,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> ics: Rust ne calendar.sub.* pakda (nakli login 401 = theek). SQL E73 chala hona lazmi (asli test: Settings > Calendar > Outside calendars mein ek ICS link).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> ics: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> ics: jawab upar dekhein";;
+      esac;;
+    calfile)
+      r="$(probe calendar.files.list '{"input":{}}')"
+      echo "   calendar.files.list (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> calfile: Rust ne calendar.files.* pakda (nakli login 401 = theek). SQL E74 chala hona lazmi (asli test: meeting kholo > Files > Add file).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> calfile: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> calfile: jawab upar dekhein";;
       esac;;
     overlap)
       r="$(probe calendar.overlap '{"input":{"addresses":[]}}')"

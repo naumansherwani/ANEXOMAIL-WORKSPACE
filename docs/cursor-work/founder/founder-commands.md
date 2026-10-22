@@ -748,3 +748,12 @@ Founder: "yeh englishmain kya baqwas kerta hai mere saath ... compact chat ka ga
 
 ## 23 Oct 02:36 — T-SERIES HAAN
 Founder (verbatim): "T8 ko duniya ki latest technology do. meri haan hai sab pe. repo update". T1..T11 sab manzoor (docs/claude/T-SERIES-BLUEPRINT.md). T8 = journald JSON stream + Message-ID<->queue-id + RFC 3461/3464 DSN + TLS status, pehle T8-0 probe (sirf padhna). Tarteeb: locked order (calendar+world clock -> founder account -> 6 live tests -> M-series -> G16) ke baad; T1/T2 G16 se pehle ho sakte hain.
+
+
+## 23 Oct — #5 meeting par files (E74) — server par BAAQI (Rule 46, alag alag, is tarteeb se)
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`   (E74 + CHECK_E74 khud; E48 pehle se hai)
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`   (naya module `calfile`; cargo test + build + rollback)
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`  (200)
+4. Brain: nahi (server/*.ts nahi badla).
+5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
+Live check (Chrome, final look): meeting kholo > Files > Add file (PDF) > list mein aaye > download ho > Remove > list se gayi. Guest (workspace member) ko sirf dekhna/download, Add file nahi dikhna chahiye.
