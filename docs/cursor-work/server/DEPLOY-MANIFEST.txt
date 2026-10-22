@@ -119,7 +119,7 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs e3962dbb682fe95c
 server/rust/cal_glue.rs 114ba234b39f754c
-AGENTS.md a61eeae648ccacf4
+AGENTS.md 90891488d24b0b67
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 021bd22c61fb17ea
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 2b173b5322c73922
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9

@@ -2,6 +2,8 @@
 
 > **AGLA KAAM: `docs/cursor-work/NEXT-TASKS.md` (tarteeb, founder-locked 22 Oct 2026).**
 >
+> **RULE 48 (STRICT, founder 23 Oct 2026 03:01 PKT): founder ko sirf repo ki likhi aazmayi hui commands do; apni taraf se command (khaas kar `git merge`/`pull` `/opt/anexomail-web` mein) KABHI nahi gharni. Neeche Rule 48 dekho.**
+>
 > **RULE 44 (STRICT, founder 22 Oct 2026 20:32 PKT): SQL AB SERVER PAR CHALTI HAI, Supabase editor par nahi. Jo SQL pehle editor mein paste hoti thi ab server par `sql-run.sh` se chalti hai, aur YEH COMMAND PEHLE CHALEGI (Rust/Web se pehle). Har nayi SQL ke baad founder ko sirf yeh do mein se sahi command do: (a) sab nayi: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (b) khaas file, naam aakhir mein bina `.sql`: `… sql-run.sh) E65_rls_and_advisor_sweep CHECK_E65`. "Supabase editor mein paste karo" kabhi nahi kehna. Compact ke baad bhi yehi.**
 >
 > **RULE 24 (strict): compact/naye chat par KAAM SHURU karne se pehle `docs/cursor-work/founder/founder-commands.md` padho — founder ki chat commands wahan verbatim + halat. Uske baghair kaam nahi.**
@@ -382,3 +384,11 @@ Har technology ka apna raasta: frontend=pull.sh, Rust=install+restart, Bun=brain
 
 ## Rule 47 — ZABAN: founder se HAMESHA Roman Urdu (Hinglish) mein baat, "aap" kehkar (founder 23 Oct 2026 02:01 PKT, STRICT)
 Founder (verbatim): "yeh englishmain kya baqwas kerta hai mere saath". Founder se har jawab, summary, status aur final message Roman Urdu mein. English sirf code, file/proc ke naam, commands aur technical terms mein. Compact ke baad bhi yehi (compact summary English mein ho to bhi founder ko jawab Roman Urdu). Commit messages English reh sakte hain.
+
+## Rule 48 — Founder ko SIRF repo ki likhi hui, aazmayi hui commands; apni taraf se command KABHI nahi gharni (founder 23 Oct 2026 03:01 PKT, STRICT)
+Founder (verbatim): "tune yeh chawal nahi maarni hai yeh repo main note kero".
+- **Server par chalne wali har command pehle repo mein maujood ho** (`founder/founder-commands.md`, Rule 41/44/46 ki shaklein, ya `docs/cursor-work/server/*.sh`). Jo command repo mein nahi, wo founder ko nahi di jati — "andaze se" ya "aam git tareeqa" wali command bhi nahi.
+- **`/opt/anexomail-web` mein KABHI `git merge` / `pull` / `checkout` / `reset` / `stash` nahi.** Us folder ka working tree repo se alag hai; merge "Aborting" hota hai (23 Oct 03:00 ka hadsa). Sirf yeh shakal: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/<script>.sh)` — ye working tree ko chhuti nahi.
+- "Sync" / "pull" ka matlab hamesha ek hi cheez: Rule 46 ki technology-wise command (sql-run.sh / rust-engine-install.sh / pull.sh). Docs-only push par jawab: "server command nahi chahiye".
+- Naya qism ki command ki zaroorat ho to: pehle script repo mein likho, sandbox mein chalao, `founder-commands.md` mein daalo, phir founder ko do.
+- Galti ho jaye to turant: ye rule + `DONE-DO-NOT-REPEAT.md` mein note, founder ko Roman Urdu mein sach.
