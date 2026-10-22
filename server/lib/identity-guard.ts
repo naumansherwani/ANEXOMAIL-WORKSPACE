@@ -6,6 +6,8 @@
 import { decide, isNotInstalled, Mirror, Outbox, signalsRaw, type Feed, type GuardDecision, type RawIdentity, type Signal } from "./identity-mirror";
 import { admin } from "./supa";
 
+export { fingerprintFrom, type RawIdentityInput } from "./identity-mirror";
+
 /** Same pepper rule as server/routes/auth.ts vaultKey() and HASHING.md (DEVICE_VAULT_KEY; fallback derived from the service key). */
 export function vaultKey(): string {
   const k = process.env.DEVICE_VAULT_KEY || "";
@@ -28,6 +30,14 @@ function withTimeout<T>(p: PromiseLike<T>, ms = 8000): Promise<T> {
   return Promise.race([Promise.resolve(p), new Promise<T>((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
 }
 
+/** Sign-up policy question. E70 `identity_signup_decide(signals, domain)`; if only the older E66-E69 SQL is installed, fall back to
+ *  `identity_signup_check` (no hold / disposable then — the older database never answers them). Domain is not secret and not hashed. */
+async function askDecide(signals: Signal[], domain: string | null) {
+  const first = await withTimeout(admin.rpc("identity_signup_decide", { p_signals: signals, p_domain: domain }));
+  if (first.error && isNotInstalled(first.error)) return withTimeout(admin.rpc("identity_signup_check", { p_signals: signals }));
+  return first;
+}
+
 export async function check(raw: RawIdentity): Promise<GuardDecision> {
   const signals = signalsRaw(raw, vaultKey());
   if (!signals.length) return { kind: "allow", via: "database" };
@@ -35,7 +45,9 @@ export async function check(raw: RawIdentity): Promise<GuardDecision> {
   if (mirrorDeny.length) return decide({ mirrorReady: mirror.ready, mirrorDeny, db: { ok: false, notInstalled: false } });
   let db: Parameters<typeof decide>[0]["db"];
   try {
-    const { data, error } = await withTimeout(admin.rpc("identity_signup_check", { p_signals: signals }));
+    // the disposable-inbox rule is about the address a person can be reached at: the RECOVERY inbox (the @anexomail.com login is ours, never disposable)
+    const domain = String(raw.recovery ?? "").split("@")[1]?.trim().toLowerCase() || null;
+    const { data, error } = await askDecide(signals, domain);
     db = error ? { ok: false, notInstalled: isNotInstalled(error) } : { ok: true, value: data ?? {} };
     if (error && !isNotInstalled(error)) noteFailure();
   } catch (err) {
@@ -49,26 +61,40 @@ export async function check(raw: RawIdentity): Promise<GuardDecision> {
   return d;
 }
 
-/** After the account exists. Anything that fails is kept (hashes only) and retried — nobody ends up unregistered. */
-export async function register(account: string, raw: RawIdentity): Promise<void> {
+export type RegisterResult = {
+  /** The account is waiting for a human decision (GoTrue refuses its sign-in until then). */
+  pending: boolean;
+  /** The database could not be reached: hashes are in the outbox and registered later. */
+  deferred: boolean;
+  decision: string | null;
+};
+
+/** After the account exists. Anything that fails is kept (hashes only) and retried — nobody ends up unregistered.
+ *  The result tells the route whether to hand out a session at all (pending => never). */
+export async function register(account: string, raw: RawIdentity): Promise<RegisterResult> {
   const signals = signalsRaw(raw, vaultKey());
-  if (!signals.length) return;
-  await send(account, signals).catch((notInstalled) => {
-    if (notInstalled === "not_installed") return;
+  if (!signals.length) return { pending: false, deferred: false, decision: null };
+  try {
+    const data = await send(account, signals);
+    return { pending: data?.pending === true, deferred: false, decision: typeof data?.decision === "string" ? data.decision : null };
+  } catch (notInstalled) {
+    if (notInstalled === "not_installed") return { pending: false, deferred: false, decision: null };
     outbox.add(account, signals);
-  });
+    return { pending: false, deferred: true, decision: null };
+  }
 }
 
-async function send(account: string, signals: Signal[]): Promise<void> {
+async function send(account: string, signals: Signal[]): Promise<{ pending?: boolean; decision?: string } | null> {
   try {
-    const { error } = await withTimeout(admin.rpc("identity_register_signals", { p_account: account, p_signals: signals }));
+    const { data, error } = await withTimeout(admin.rpc("identity_register_signals", { p_account: account, p_signals: signals }));
     if (error) {
       if (isNotInstalled(error)) throw "not_installed";
       // account vanished before the retry (FK) = nothing left to register
-      if (/foreign key|23503/i.test(`${error.code} ${error.message}`)) return;
+      if (/foreign key|23503/i.test(`${error.code} ${error.message}`)) return null;
       noteFailure();
       throw "failed";
     }
+    return (data ?? null) as { pending?: boolean; decision?: string } | null;
   } catch (e) {
     if (e === "not_installed" || e === "failed") throw e;
     noteFailure();
@@ -127,6 +153,12 @@ export async function sweepPayments(): Promise<number> {
   return n;
 }
 
+/** Expiry of finite signals/bans, old audit, and un-decided holds (E70: hold_expire_days => rejected, account stays locked). */
+export async function purge(): Promise<void> {
+  const { error } = await withTimeout(admin.rpc("identity_vault_purge"), 30_000);
+  if (error && !isNotInstalled(error)) noteFailure();
+}
+
 export async function reportHealth(): Promise<void> {
   const mode = Date.now() - lastClosedAt < 300_000 ? "closed" : mirror.ready ? "mirror" : "db_only";
   await withTimeout(
@@ -152,5 +184,7 @@ export function startIdentityWorkers(): void {
   setInterval(safe("outbox", drainOutbox), 30_000);
   setInterval(safe("payments", sweepPayments), 300_000);
   setInterval(safe("health", reportHealth), 60_000);
+  setInterval(safe("purge", purge), 6 * 3_600_000);
+  setTimeout(safe("purge", purge), 5 * 60_000);
   setTimeout(safe("health", reportHealth), 15_000);
 }

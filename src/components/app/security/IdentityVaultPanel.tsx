@@ -1,7 +1,8 @@
-import { Fingerprint } from "lucide-react";
+import { Fingerprint, ShieldCheck } from "lucide-react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useIdentityDecide, useIdentityOverview } from "@/lib/account-integrity";
+import { useIdentityDecide, useIdentityDomain, useIdentityGate, useIdentityHold, useIdentityOverview, type SignupGate } from "@/lib/account-integrity";
 import { relativeTime } from "@/lib/mail";
 import { notify } from "@/lib/notify";
 
@@ -9,11 +10,66 @@ import { notify } from "@/lib/notify";
  * IDENTITY VAULT — reviewer view. Blocking and restoring stay in the panel above (one button each); this section only
  * shows the totals and answers people who were refused a new account. It never shows a hash or which account a match came from.
  */
+const GATES: { id: SignupGate; label: string; hint: string }[] = [
+  { id: "open", label: "Open", hint: "No extra step. Blocked people are still refused; a browser match is only flagged for review." },
+  { id: "hold_matches", label: "Hold matches", hint: "A sign-up that matches a blocked person's browser is created but cannot sign in until you approve it." },
+  { id: "approval_all", label: "Approve everyone", hint: "Every new sign-up waits for you. Nobody gets in without your yes." },
+];
+
 export function IdentityVaultPanel() {
   const q = useIdentityOverview();
   const decide = useIdentityDecide();
+  const hold = useIdentityHold();
+  const gate = useIdentityGate();
+  const domain = useIdentityDomain();
+  const [confirmGate, setConfirmGate] = useState<SignupGate | null>(null);
+  const [newDomain, setNewDomain] = useState("");
   const d = q.data;
   if (!d?.allowed) return null;
+
+  const setGate = (mode: SignupGate) => {
+    if (mode === "approval_all" && confirmGate !== mode) {
+      setConfirmGate(mode);
+      return;
+    }
+    setConfirmGate(null);
+    gate.mutate(
+      { mode },
+      {
+        onSuccess: (r) => (r.ok ? notify.done("Sign-up gate changed", "Applies to the next sign-up.") : notify.failed("Not changed", { description: r.error ?? "Only the founder can change this." })),
+        onError: (e) => notify.failed("Not changed", { description: e.message }),
+      },
+    );
+  };
+
+  const decideHold = (account_id: string, decision: "approve" | "reject", ban = false) =>
+    hold.mutate(
+      { account_id, decision, ban },
+      {
+        onSuccess: (r) =>
+          r.ok
+            ? notify.done(decision === "approve" ? "Account approved" : ban ? "Rejected and blocked" : "Rejected", "Written into the permanent record.")
+            : notify.failed("Not recorded", { description: r.error === "not_pending" ? "Someone already decided this one." : (r.error ?? "Try again.") }),
+        onError: (e) => notify.failed("Not recorded", { description: e.message }),
+      },
+    );
+
+  const addDomain = () => {
+    const v = newDomain.trim();
+    if (!v) return;
+    domain.mutate(
+      { domain: v, on: true },
+      {
+        onSuccess: (r) => {
+          if (r.ok) {
+            setNewDomain("");
+            notify.done("Domain added", "Temporary inboxes on it are refused from now on.");
+          } else notify.failed("Not added", { description: r.error === "protected_domain" ? "Big mail providers can never be listed." : r.error === "bad_domain" ? "That does not look like a domain." : (r.error ?? "Only the founder can change this.") });
+        },
+        onError: (e) => notify.failed("Not added", { description: e.message }),
+      },
+    );
+  };
 
   const act = (id: string, decision: "granted" | "denied") => {
     const reason = window.prompt(
@@ -63,6 +119,75 @@ export function IdentityVaultPanel() {
       )}
       {reasons.length > 0 && (
         <p className="text-muted-foreground">{reasons.map(([k, v]) => `${k.replace("_", " ")}: ${v}`).join(" · ")}</p>
+      )}
+      {d.gate && (
+        <div className="space-y-ax-2 rounded-lg border border-border p-ax-3">
+          <p className="text-foreground">
+            <ShieldCheck className="mr-1.5 inline size-3.5" aria-hidden="true" />
+            Sign-up gate
+          </p>
+          <div role="radiogroup" aria-label="Sign-up gate" className="flex flex-wrap gap-2">
+            {GATES.map((g) => (
+              <Button
+                key={g.id}
+                size="sm"
+                role="radio"
+                aria-checked={d.gate!.mode === g.id}
+                variant={d.gate!.mode === g.id ? "default" : "outline"}
+                disabled={gate.isPending}
+                onClick={() => setGate(g.id)}
+              >
+                {confirmGate === g.id ? "Tap again to confirm" : g.label}
+              </Button>
+            ))}
+          </div>
+          <p className="text-muted-foreground">{GATES.find((g) => g.id === d.gate!.mode)?.hint}</p>
+          <p className="text-muted-foreground">
+            Temporary-email block: {d.gate.disposable_block ? "on" : "off"} ({d.disposable_domains ?? 0} domains). An undecided hold is closed after {d.gate.hold_expire_days} days; the account stays locked.
+          </p>
+          <div className="flex gap-2">
+            <input
+              value={newDomain}
+              onChange={(e) => setNewDomain(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && addDomain()}
+              placeholder="add a temporary-email domain, e.g. burner.example"
+              aria-label="Temporary-email domain to refuse"
+              className="ax-focus min-w-0 flex-1 rounded-md border border-border bg-transparent px-2 py-1 text-[12px]"
+            />
+            <Button size="sm" variant="outline" disabled={domain.isPending || !newDomain.trim()} onClick={addDomain}>
+              Refuse domain
+            </Button>
+          </div>
+        </div>
+      )}
+      {(d.holds ?? []).length > 0 && (
+        <div className="space-y-ax-2">
+          <p className="text-foreground">
+            {d.holds_pending ?? d.holds!.length} sign-up{(d.holds_pending ?? d.holds!.length) === 1 ? "" : "s"} waiting for your decision
+          </p>
+          <ul className="space-y-ax-2">
+            {d.holds!.map((h) => (
+              <li key={h.account_id} className="rounded-lg border border-border p-ax-3">
+                <p className="text-foreground">{h.email ?? "(address not available)"}</p>
+                <p className="text-muted-foreground">
+                  {h.kind === "gate" ? "Approval required by the gate" : h.kind === "manual" ? "Held by hand" : "Matches a blocked person's browser"}
+                  {h.reason && h.kind !== "gate" ? ` · ${h.reason.replace(/_/g, " ")}` : ""} · {relativeTime(h.held_at)} · closes {new Date(h.expires_at).toLocaleDateString()}
+                </p>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <Button size="sm" disabled={hold.isPending} onClick={() => decideHold(h.account_id, "approve")}>
+                    Approve
+                  </Button>
+                  <Button size="sm" variant="outline" disabled={hold.isPending} onClick={() => decideHold(h.account_id, "reject")}>
+                    Reject
+                  </Button>
+                  <Button size="sm" variant="outline" disabled={hold.isPending} onClick={() => decideHold(h.account_id, "reject", true)}>
+                    Reject and block
+                  </Button>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
       {(d.appeals ?? []).length === 0 ? (
         <p className="text-muted-foreground">No one is waiting for a review.</p>

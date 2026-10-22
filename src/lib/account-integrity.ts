@@ -193,7 +193,16 @@ export type IdentityOverview = {
   health_alert?: boolean;
   health?: { source: string; age_s: number; outbox_pending: number; check_failures_1h: number; mirror_size: number; mirror_age_s: number; mode: string }[];
   appeals?: { id: string; created_at: string; contact: string; statement: string }[];
+  /** E70 hardening */
+  gate?: { mode: SignupGate; changed_at: string | null; disposable_block: boolean; probation_days: number; hold_expire_days: number; fp_match_min: number };
+  holds_pending?: number;
+  holds_30d?: number;
+  holds?: { account_id: string; email: string | null; kind: "match" | "gate" | "manual" | null; reason: string | null; held_at: string; expires_at: string }[];
+  disposable_domains?: number;
 };
+
+/** open = no extra step; hold_matches = a sign-up that matches a blocked person's browser waits for you; approval_all = every new sign-up waits for you. */
+export type SignupGate = "open" | "hold_matches" | "approval_all";
 
 export function useIdentityOverview(enabled = true) {
   return useQuery<IdentityOverview, ApiError>({
@@ -217,6 +226,36 @@ export function useIdentityDecide() {
         method: "POST",
         body: input,
       }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["account", "integrity"] }),
+  });
+}
+
+/* ── Identity hardening (E70): hold queue, sign-up gate, disposable-email list ── */
+type Done = { allowed?: boolean; ok?: boolean; error?: string; state?: string; gate?: SignupGate; banned?: boolean };
+
+export function useIdentityHold() {
+  const qc = useQueryClient();
+  return useMutation<Done, ApiError, { account_id: string; decision: "approve" | "reject"; ban?: boolean; note?: string }>({
+    mutationFn: (input) =>
+      chatCall("account.integrity.identity.hold", input, { path: "/api/chat/integrity/identity/hold", method: "POST", body: input }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["account", "integrity"] }),
+  });
+}
+
+export function useIdentityGate() {
+  const qc = useQueryClient();
+  return useMutation<Done, ApiError, { mode: SignupGate }>({
+    mutationFn: (input) =>
+      chatCall("account.integrity.identity.gate", input, { path: "/api/chat/integrity/identity/gate", method: "POST", body: input }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["account", "integrity"] }),
+  });
+}
+
+export function useIdentityDomain() {
+  const qc = useQueryClient();
+  return useMutation<Done, ApiError, { domain: string; on?: boolean }>({
+    mutationFn: (input) =>
+      chatCall("account.integrity.identity.domain", input, { path: "/api/chat/integrity/identity/domain", method: "POST", body: input }),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["account", "integrity"] }),
   });
 }

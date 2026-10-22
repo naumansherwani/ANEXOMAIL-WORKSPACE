@@ -6,6 +6,7 @@ import { sendMail } from "../mail/sendmail";
 import { mountPasskeyRoutes } from "./auth-passkey";
 import { forgetAuthToken, hardenSupabaseAuth, isTransientAuthError } from "../lib/auth-harden";
 import * as identityGuard from "../lib/identity-guard";
+import { fingerprintFrom } from "../lib/identity-guard";
 import { shapeFromSignals, verifyDeviceKeyProof } from "../lib/identity-vault";
 
 hardenSupabaseAuth();
@@ -153,9 +154,17 @@ async function userFrom(req: any, res: any) {
 
 function authError(
   res: any,
-  error: { message?: string; status?: number } | null,
+  error: { message?: string; status?: number; code?: string } | null,
   fallback = "authentication_failed",
 ) {
+  // E70: a held / rejected sign-up is "banned" at GoTrue (banned_until) — every sign-in path (password, OTP, refresh) ends up here.
+  // The wording never says why: no hint about fingerprints, matches or the founder's queue.
+  if (error?.code === "user_banned" || /user is banned|user_banned/i.test(error?.message || "")) {
+    return res.status(403).json({
+      error: "This account can't sign in right now. If you recently signed up, it may be waiting for review.",
+      code: "account_pending",
+    });
+  }
   if (fallback === "invalid_credentials") {
     return res.status(401).json({
       error: "That email and password did not match. Use your @anexomail.com address.",
@@ -541,7 +550,8 @@ authRouter.post("/signup", async (req, res) => {
   }
 
   // E66/E68/E69 identity vault: ek insaan, ek account (mirror + database; deny => 403, vault band aur mirror nahi => 503)
-  let rawIdentity: { email: string; recovery: string; deviceKey: string | null; shape: string | null; network: string | null } | null = null;
+  let rawIdentity: identityGuard.RawIdentityInput | null = null;
+  let holdVerdict = false;
   if (!family) {
     const deviceKey = await verifyDeviceKeyProof(req.body?.device_proof, email);
     rawIdentity = {
@@ -550,8 +560,16 @@ authRouter.post("/signup", async (req, res) => {
       deviceKey,
       shape: shapeFromSignals(req.body?.signals),
       network: clientIp(req),
+      fp: fingerprintFrom(req.body?.fingerprint),
     };
     const verdict = await identityGuard.check(rawIdentity);
+    holdVerdict = verdict.kind === "hold";
+    if (verdict.kind === "deny" && verdict.reason === "disposable_email") {
+      return res.status(400).json({
+        error: "Please use a permanent email address for recovery — temporary inbox services are not accepted.",
+        code: "disposable_email",
+      });
+    }
     if (verdict.kind === "deny") {
       return res.status(403).json({
         error: "This identity cannot create a new account. If you think this is a mistake you can ask for a review.",
@@ -619,7 +637,18 @@ authRouter.post("/signup", async (req, res) => {
     } catch (err) {
       console.error("[auth.signup.vault]", err);
     }
-    if (rawIdentity) await identityGuard.register(data.user.id, rawIdentity);
+    if (rawIdentity) {
+      const reg = await identityGuard.register(data.user.id, rawIdentity);
+      // E70 HOLD: the account exists but a human decides. No token, no session row, nothing that says why.
+      // (If the database was unreachable the hash outbox applies the hold later — a pre-check hold must not leak a session meanwhile.)
+      if (reg.pending || (holdVerdict && reg.deferred)) {
+        return res.status(202).json({
+          pending_approval: true,
+          code: "account_pending",
+          message: "Thanks — your account is created and waiting for a quick review. You'll be able to sign in once it is approved.",
+        });
+      }
+    }
   }
   if (!data.session?.access_token) return res.status(202).json({ confirmation_required: true });
   await saveSession(data.user.id, data.session.access_token, req);

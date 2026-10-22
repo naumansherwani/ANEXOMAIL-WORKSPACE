@@ -19,6 +19,7 @@ import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
 import { deviceKeyProof } from "@/lib/device-key";
+import { collectFingerprint } from "@/lib/device-fingerprint";
 import { SignupReview } from "@/components/auth/SignupReview";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
@@ -132,6 +133,8 @@ function AuthPage() {
   const [code, setCode] = useState("");
   const [challengeId, setChallengeId] = useState<string | null>(null);
   const [linkSent, setLinkSent] = useState(false);
+  /** Sign-up created but waiting for a human review (E70). Neutral wording: never says why. */
+  const [pendingReview, setPendingReview] = useState(false);
   /** Passkey enrolment gate — signup ke baad lazmi step. */
   const [enrol, setEnrol] = useState(false);
   const [enrolBlocked, setEnrolBlocked] = useState<string | null>(null);
@@ -343,6 +346,7 @@ function AuthPage() {
         const res = await api<{
           token?: string;
           confirmation_required?: boolean;
+          pending_approval?: boolean;
           family?: boolean;
           needs_passkey?: boolean;
         }>("/api/auth/signup", {
@@ -362,9 +366,15 @@ function AuthPage() {
             recovery_email: recoveryEmail,
             signals: collectDeviceSignals(),
             device_proof: await deviceKeyProof(mailbox),
+            fingerprint: await collectFingerprint(),
           }),
           auth: false,
         });
+        if (res.pending_approval) {
+          setSigningIn(false);
+          setPendingReview(true);
+          return;
+        }
         if (res.confirmation_required || !res.token) {
           setLinkSent(true);
           notify.done("Confirm your email", `We sent a confirmation link to ${mailbox}.`);
@@ -594,7 +604,25 @@ function AuthPage() {
                 </motion.div>
               </AnimatePresence>
 
-              {linkSent ? (
+              {pendingReview ? (
+                <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center" role="status">
+                  <Mail className="mx-auto size-5 text-cyan-accent" />
+                  <p className="ax-label mt-ax-2 text-foreground">Your account is waiting for a quick review</p>
+                  <p className="ax-caption mt-1">
+                    We check some new accounts by hand. You can sign in as soon as it is approved — there is nothing else you need to do.
+                  </p>
+                  <Button
+                    variant="ghost"
+                    className="mt-ax-3"
+                    onClick={() => {
+                      setPendingReview(false);
+                      setMode("login");
+                    }}
+                  >
+                    Back to sign in
+                  </Button>
+                </div>
+              ) : linkSent ? (
                 <div className="mt-ax-4 rounded-xl border border-border bg-secondary/50 p-ax-4 text-center">
                   <Mail className="mx-auto size-5 text-cyan-accent" />
                   <p className="ax-label mt-ax-2 text-foreground">
@@ -830,7 +858,7 @@ function AuthPage() {
                 </AnimatePresence>
               )}
 
-              {!challengeId && !linkSent && (
+              {!challengeId && !linkSent && !pendingReview && (
                 <>
                   {mode === "login" && (
                     <Button

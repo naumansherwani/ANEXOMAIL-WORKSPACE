@@ -31,9 +31,24 @@ export function hmacHex(kind: string, canon: string | null | undefined, key: str
   return createHmac("sha256", k).update(canon, "utf8").digest("hex");
 }
 
-export type RawIdentity = { email?: string | null; recovery?: string | null; deviceKey?: string | null; shape?: string | null; network?: string | null };
+/** Browser fingerprint groups, each already a client-side SHA-256 hex (64). Raw components never leave the browser. */
+export type RawFingerprint = { hw?: string | null; gfx?: string | null; env?: string | null };
+export type RawIdentity = {
+  email?: string | null;
+  recovery?: string | null;
+  deviceKey?: string | null;
+  shape?: string | null;
+  network?: string | null;
+  fp?: RawFingerprint | null;
+};
 
-/** Same order and rules as SQL identity_signals_raw. */
+/** Same rule as SQL identity_fp_canon: a 64-hex digest or nothing (a broken client never blocks the other signals). */
+export function fpCanon(v: string | null | undefined): string | null {
+  const t = String(v ?? "").trim().toLowerCase();
+  return /^[0-9a-f]{64}$/.test(t) ? t : null;
+}
+
+/** Same order and rules as SQL identity_signals_full_raw (E70). The three fp_* kinds are weak-tier: they never ban alone. */
 export function signalsRaw(r: RawIdentity, key: string): Signal[] {
   const lower = (v: string | null | undefined) => (v == null ? null : v.trim().toLowerCase());
   const rows: [string, string | null][] = [
@@ -42,6 +57,9 @@ export function signalsRaw(r: RawIdentity, key: string): Signal[] {
     ["device_key", lower(r.deviceKey)],
     ["device_shape", lower(r.shape)],
     ["network", lower(r.network)],
+    ["fp_hw", fpCanon(r.fp?.hw)],
+    ["fp_gfx", fpCanon(r.fp?.gfx)],
+    ["fp_env", fpCanon(r.fp?.env)],
   ];
   const out: Signal[] = [];
   for (const [kind, canon] of rows) {
@@ -50,6 +68,17 @@ export function signalsRaw(r: RawIdentity, key: string): Signal[] {
   }
   return out;
 }
+
+export type RawIdentityInput = RawIdentity & { email: string; recovery: string; deviceKey: string | null; shape: string | null; network: string | null };
+
+/** Request body `fingerprint` => three clean digests (junk, wrong type or length become null). Never trusts the shape of the input. */
+export function fingerprintFrom(body: unknown): RawFingerprint | null {
+  if (!body || typeof body !== "object") return null;
+  const b = body as Record<string, unknown>;
+  const out = { hw: fpCanon(typeof b.hw === "string" ? b.hw : null), gfx: fpCanon(typeof b.gfx === "string" ? b.gfx : null), env: fpCanon(typeof b.env === "string" ? b.env : null) };
+  return out.hw || out.gfx || out.env ? out : null;
+}
+import { admin } from "./supa";
 
 /* ───────────────────────── mirror ───────────────────────── */
 export type FeedRow = { k: string; h: string; a: boolean; e: number | null };
@@ -147,20 +176,29 @@ export class Outbox {
 
 /* ───────────────────────── guard (decision policy) ───────────────────────── */
 export type GuardDecision =
-  | { kind: "deny"; matched: string[]; appealable: boolean; via: "mirror" | "database" }
+  | { kind: "deny"; matched: string[]; appealable: boolean; reason?: string | null; via: "mirror" | "database" }
+  | { kind: "hold"; reason: string; holdKind: "match" | "gate" | "manual"; via: "database" }
   | { kind: "allow"; review?: boolean; via: "database" | "mirror" | "not_installed" }
   | { kind: "closed" };
 
-/** Pure policy so it can be tested: what to do with a database answer / error and the mirror. */
+type DbValue = { decision?: string; matched?: string[]; appealable?: boolean; reason?: string | null; hold_kind?: string };
+
+/** Pure policy so it can be tested: what to do with a database answer / error and the mirror.
+ *  hold is decided by the database only (it needs counts and the gate switch); a mirror-only answer never holds — the
+ *  registration that follows applies the hold in SQL, and the sign-in itself is refused by GoTrue until a human decides. */
 export function decide(opts: {
   mirrorReady: boolean;
   mirrorDeny: string[];
-  db: { ok: true; value: { decision?: string; matched?: string[]; appealable?: boolean } } | { ok: false; notInstalled: boolean };
+  db: { ok: true; value: DbValue } | { ok: false; notInstalled: boolean };
 }): GuardDecision {
   if (opts.mirrorDeny.length) return { kind: "deny", matched: opts.mirrorDeny, appealable: true, via: "mirror" };
   if (opts.db.ok) {
     const v = opts.db.value;
-    if (v.decision === "deny") return { kind: "deny", matched: v.matched ?? [], appealable: v.appealable !== false, via: "database" };
+    if (v.decision === "deny") return { kind: "deny", matched: v.matched ?? [], appealable: v.appealable !== false, reason: v.reason ?? null, via: "database" };
+    if (v.decision === "hold") {
+      const hk = v.hold_kind === "gate" || v.hold_kind === "manual" ? v.hold_kind : "match";
+      return { kind: "hold", reason: v.reason ?? "hold", holdKind: hk, via: "database" };
+    }
     return { kind: "allow", review: v.decision === "review", via: "database" };
   }
   if (opts.db.notInstalled) return { kind: "allow", via: "not_installed" };

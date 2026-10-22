@@ -1359,6 +1359,50 @@ chatRouter.post("/integrity/identity/decide", async (req, res) => {
   res.json(data);
 });
 
+// E70 identity hardening: hold queue decision, sign-up gate switch, disposable-email list. Authority is checked in SQL
+// (reviewer for the queue, founder for the gate and the list); the route only validates the shape.
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+chatRouter.post("/integrity/identity/hold", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const account = String(req.body?.account_id || "");
+  const decision = String(req.body?.decision || "");
+  const note = String(req.body?.note || "").trim().slice(0, 500);
+  if (!UUID_RE.test(account) || !["approve", "reject"].includes(decision)) {
+    return res.status(400).json({ error: "account_and_decision_required" });
+  }
+  const { data, error } = await db!.rpc("identity_hold_decide", {
+    p_actor: me.id,
+    p_account: account,
+    p_decision: decision,
+    p_note: note || null,
+    p_ban: decision === "reject" && req.body?.ban === true,
+  });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/integrity/identity/gate", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const mode = String(req.body?.mode || "");
+  if (!["open", "hold_matches", "approval_all"].includes(mode)) return res.status(400).json({ error: "mode_required" });
+  const { data, error } = await db!.rpc("identity_gate_set", { p_actor: me.id, p_mode: mode });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
+chatRouter.post("/integrity/identity/domain", async (req, res) => {
+  const me = await requireChat(req, res);
+  if (!me) return;
+  const domain = String(req.body?.domain || "").trim().toLowerCase().slice(0, 120);
+  if (!domain) return res.status(400).json({ error: "domain_required" });
+  const { data, error } = await db!.rpc("identity_disposable_set", { p_actor: me.id, p_domain: domain, p_on: req.body?.on !== false });
+  if (error) return fail(res, error);
+  res.json(data);
+});
+
 chatRouter.post("/integrity/export", async (req, res) => {
   const me = await requireChat(req, res);
   if (!me) return;

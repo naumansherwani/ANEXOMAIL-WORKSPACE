@@ -48,6 +48,11 @@ export async function isBlocked(sub: string, now = Date.now()): Promise<boolean>
     const { admin: supa } = await import("./supa"); // lazy: pure helpers testable bina supabase package ke
     const { data, error } = await supa.from("account_integrity").select("state").eq("user_id", sub).maybeSingle();
     if (!error) blocked = data?.state === "blocked" || data?.state === "purged";
+    // E70: a sign-up held for review (or rejected) is locked at GoTrue too; this closes the last window — a token issued just before the hold.
+    if (!blocked) {
+      const held = await supa.from("identity_account_state").select("state").eq("account_id", sub).maybeSingle();
+      if (!held.error) blocked = held.data?.state === "pending" || held.data?.state === "rejected";
+    }
   } catch {
     blocked = false;
   }
