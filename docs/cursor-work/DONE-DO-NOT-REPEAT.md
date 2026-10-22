@@ -412,3 +412,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 04:40 — CHECK_E76 founder screenshot (Supabase 'main PRODUCTION'): 7 rows, dikhi hui sab true => E76 SQL VERIFIED. NEXT-TASKS.md mein naya RESUME HERE (04:40) block upar likha. Dobara mat likho.
 
 - 23 Oct 04:41 — FOUNDER SUDHAAR: 'psql nahi' maine kabhi nahi bola; bola tha ek SQL DONO jagah (editor + server psql) chale. Meri likhi ghalat line NEXT-TASKS mein theek ki. Founder ne 'revert kero' kaha: E28 ka unfinished dual-run rewrite repo se wapas (draft scratchpad mein), E28/E36 jaisi thi waisi. Dual-run conversion tab jab founder 'haan' kahe.
+
+- 23 Oct 04:42 — FOUNDER FINAL: 'sql server pe run hogi' (Rule 44). Dual-run / editor conversion ki zaroorat NAHI; E28/E36 psql-only waise hi rahengi. Draft scratchpad mein bhi chhod diya (repo mein nahi). Dobara mat poochho.
