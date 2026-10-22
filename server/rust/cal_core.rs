@@ -263,6 +263,30 @@ pub fn history_page(limit: Option<i64>, offset: Option<i64>) -> (i64, i64) {
     (limit.unwrap_or(20).clamp(1, 50), offset.unwrap_or(0).clamp(0, 1000))
 }
 
+/// Keyset cursor of the history search: the `(starts_at, id)` the previous page ended with. The timestamp is passed on **unchanged**
+/// (it carries microseconds, which a whole-second round trip would lose and so skip or repeat meetings), after a strict shape check.
+pub fn history_cursor(ts: &str, id: &str) -> Option<(String, String)> {
+    let ts = ts.trim();
+    let id = id.trim();
+    if ts.is_empty() || ts.len() > 40 || parse_ts(ts).is_none() {
+        return None;
+    }
+    if !ts.bytes().all(|c| c.is_ascii_digit() || matches!(c, b'-' | b':' | b'T' | b'Z' | b'+' | b'.' | b' ')) {
+        return None;
+    }
+    let b = id.as_bytes();
+    let ok = b.len() == 36
+        && b.iter().enumerate().all(|(i, c)| match i {
+            8 | 13 | 18 | 23 => *c == b'-',
+            _ => c.is_ascii_hexdigit(),
+        });
+    if ok {
+        Some((ts.to_string(), id.to_ascii_lowercase()))
+    } else {
+        None
+    }
+}
+
 pub fn html_escape(s: &str) -> String {
     let mut o = String::with_capacity(s.len() + 8);
     for c in s.chars() {
@@ -1124,6 +1148,16 @@ mod tests {
         assert_eq!(history_page(None, None), (20, 0));
         assert_eq!(history_page(Some(9999), Some(999_999)), (50, 1000));
         assert_eq!(history_page(Some(-5), Some(-1)), (1, 0));
+        // keyset cursor: kept byte-for-byte (microseconds), strict shape, 1900 and 2126 both fine
+        assert_eq!(
+            history_cursor("1926-05-01T09:00:00.123456+00:00", "3F2504E0-4F89-11D3-9A0C-0305E82C3301"),
+            Some(("1926-05-01T09:00:00.123456+00:00".to_string(), "3f2504e0-4f89-11d3-9a0c-0305e82c3301".to_string()))
+        );
+        assert!(history_cursor("2126-01-01T00:00:00Z", "3f2504e0-4f89-11d3-9a0c-0305e82c3301").is_some());
+        assert!(history_cursor("not a time", "3f2504e0-4f89-11d3-9a0c-0305e82c3301").is_none());
+        assert!(history_cursor("2020-01-01T00:00:00Z", "3f2504e0-4f89-11d3-9a0c-0305e82c33").is_none());
+        assert!(history_cursor("2020-01-01T00:00:00Z", "zf2504e0-4f89-11d3-9a0c-0305e82c3301").is_none());
+        assert!(history_cursor("2020-01-01T00:00:00Z'; drop", "3f2504e0-4f89-11d3-9a0c-0305e82c3301").is_none());
     }
 
     #[test]

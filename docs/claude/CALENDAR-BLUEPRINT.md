@@ -40,5 +40,5 @@ Compact ke baad: pehle AGENTS.md Rule 37/38/40, phir `docs/cursor-work/CALENDAR-
 - Ek box (Cmd+K): events, attendees, notes, tasks, mail threads. Filter: tareekh range, banda, domain.
 - Postgres FTS (`tsvector` generated column + GIN) + `pg_trgm` (typo/naam); org-scoped RLS-jaisi deewar (E62 jaisa: active member, sirf apni/shared cheezein, doosre ke private notes kabhi nahi).
 - Itihaas: events table baray ho to year ke hisaab se partition; EXPLAIN se 100 ms ka daawa naapna PEHLE, phir likhna.
-- Honest: sirf ANEXOMAIL mein jo data aaya wohi search hoga; purani meetings ICS/mail import ke baad. "20 saal pehle" tab claim karna jab import + naap ho jaye.
+- FOUNDER LAW (22 Oct 20:02): history 100 SAAL ke liye design hoti hai — user ko koi "hadd" nahi dikhai jati. SQL: keyset cursor (starts_at,id) => gehra page bhi tez; by_year naksha; aam lafz par hybrid raasta; 1900/2126 ki tareekh bhi chalti hai. UI mein "import ke baad" jaisi line nahi.
 - Kyun khichega: "us client ne kya kaha tha" ek search mein; switching cost asli value se.

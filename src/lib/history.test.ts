@@ -1,6 +1,6 @@
 import { describe, expect, test } from "bun:test";
 
-import { agoLabel, dayStartIso, historyReady, jumpSearch, snippetParts } from "./history";
+import { agoLabel, dayStartIso, historyReady, jumpSearch, snippetParts, yearList, yearRange } from "./history";
 import { jumpAnchor, validateJump } from "./calendar-jump";
 
 const base = { q: "", person: "", from: "", to: "", order: "recent" as const };
@@ -58,5 +58,18 @@ describe("history search (client side)", () => {
     const j = jumpSearch({ id: "abc123", starts_at: "2006-03-14T10:00:00" });
     expect(j.date).toBe("2006-03-14");
     expect(j.event).toBe("abc123");
+  });
+
+  test("a century of history: year strip newest first, whole-year range, 100 years ago", () => {
+    expect(yearList({ "1926": 1, "2090": 4, "2006": 3, "1948": 0 })).toEqual([
+      { year: 2090, count: 4 },
+      { year: 2006, count: 3 },
+      { year: 1926, count: 1 },
+    ]);
+    expect(yearList(null)).toEqual([]);
+    expect(yearRange(1926)).toEqual({ from: "1926-01-01", to: "1926-12-31" });
+    const now = new Date("2026-10-22T12:00:00Z").getTime();
+    expect(agoLabel("1926-05-01T09:00:00Z", now)).toBe("100 years ago");
+    expect(agoLabel("2090-01-15T09:00:00Z", now)).toBe("in 63 years");
   });
 });

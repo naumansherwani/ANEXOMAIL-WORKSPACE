@@ -989,9 +989,19 @@ async fn history(me: &Who, input: &Value) -> axum::response::Response {
     }
     let (limit, offset) = cal::history_page(num(input, "limit"), num(input, "offset"));
     let order = cal::history_order(&st(input, "order"));
+    // Keyset cursor (recent / oldest): both halves or neither; a half-given or malformed cursor is refused, never guessed.
+    let (after_ts, after_id) = match (st(input, "after_ts"), st(input, "after_id")) {
+        (a, b) if a.trim().is_empty() && b.trim().is_empty() => (None, None),
+        (a, b) => match cal::history_cursor(&a, &b) {
+            Some((t, i)) => (Some(t), Some(i)),
+            None => return fail(StatusCode::BAD_REQUEST, "bad_cursor", "That page marker is not valid — search again"),
+        },
+    };
+    let facets = input.get("facets").and_then(|v| v.as_bool()).unwrap_or(false);
     let body = json!({
         "p_org": me.org_id, "p_viewer": me.id, "p_q": q, "p_person": person, "p_order": order, "p_limit": limit, "p_offset": offset,
         "p_from": from.map(cal::fmt_rfc3339), "p_to": to.map(cal::fmt_rfc3339),
+        "p_after_ts": after_ts, "p_after_id": after_id, "p_facets": facets,
     });
     match crate::sb_rpc("calendar_history", body).await {
         Ok(v) => match v.get("error").and_then(|e| e.as_str()) {

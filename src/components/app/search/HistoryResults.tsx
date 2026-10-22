@@ -14,6 +14,8 @@ import {
   MATCH_WORD,
   snippetParts,
   useHistory,
+  yearList,
+  yearRange,
   type HistoryEvent,
   type HistoryOrder,
 } from "@/lib/history";
@@ -51,6 +53,8 @@ export function HistoryResults({ q }: { q: string }) {
   };
   const hasFilter = Boolean(person || from || to);
   const events = res.data?.pages.flatMap((p) => p.events) ?? [];
+  const years = yearList(res.data?.pages[0]?.by_year);
+  const activeYear = from && to && from.slice(0, 4) === to.slice(0, 4) && from.endsWith("-01-01") && to.endsWith("-12-31") ? Number(from.slice(0, 4)) : null;
 
   return (
     <section aria-label="Meetings and history" className="mt-ax-5">
@@ -105,10 +109,40 @@ export function HistoryResults({ q }: { q: string }) {
         </label>
       </div>
 
+      {years.length > 1 && (
+        <div className="mt-2 flex flex-wrap items-center gap-1.5" role="group" aria-label="Years with matches">
+          <span className="text-[11px] font-semibold text-muted-foreground">Years</span>
+          {years.map(({ year, count }) => (
+            <button
+              key={year}
+              type="button"
+              aria-pressed={activeYear === year}
+              onClick={() => {
+                if (activeYear === year) {
+                  setFrom("");
+                  setTo("");
+                } else {
+                  const r = yearRange(year);
+                  setFrom(r.from);
+                  setTo(r.to);
+                }
+              }}
+              className={cn(
+                "ax-focus inline-flex min-h-8 items-center gap-1 rounded-full border px-2.5 text-[11px] font-semibold tabular-nums transition-colors",
+                activeYear === year ? "border-primary bg-primary/10 text-foreground" : "border-border text-muted-foreground hover:bg-secondary/40",
+              )}
+            >
+              {year}
+              <span className="font-normal">{count}</span>
+            </button>
+          ))}
+        </div>
+      )}
+
       <div className="mt-ax-4">
         {!ready ? (
           <p className="ax-caption text-muted-foreground">
-            Type two or more letters above, or choose a person or dates, to look through past meetings. Only meetings saved in ANEXOMAIL are searched.
+            Type two or more letters above, or choose a person or dates, to look through past meetings. Search covers every year of your calendar.
           </p>
         ) : res.error ? (
           res.error.isNotImplemented ? (
@@ -122,7 +156,7 @@ export function HistoryResults({ q }: { q: string }) {
           <EmptyState
             icon={<CalendarDays className="size-5" />}
             title="No meetings found"
-            body="Nothing in your saved meetings matches. Older meetings appear once they are in ANEXOMAIL (import an .ics file from the calendar)."
+            body="No meeting matches. Try fewer letters, another spelling, a person, or a different year."
           />
         ) : (
           <>

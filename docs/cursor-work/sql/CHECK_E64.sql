@@ -6,13 +6,13 @@ select item, ok from (
          and to_regprocedure('public.calendar_search_doc(text,text,text,text)') is not null
          and to_regprocedure('public.calendar_guest_text(text,text)') is not null
          and to_regprocedure('public.calendar_org_member(uuid,uuid)') is not null
-         and to_regprocedure('public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer)') is not null as ok, 1 as o
+         and to_regprocedure('public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer,timestamptz,uuid,boolean)') is not null as ok, 1 as o
   union all select 'E64 index-wale functions IMMUTABLE + PARALLEL SAFE + pinned search_path',
          (select count(*) from pg_proc where oid in (to_regprocedure('public.calendar_search_text(text,text,text,text)'), to_regprocedure('public.calendar_search_doc(text,text,text,text)'),
                 to_regprocedure('public.calendar_guest_text(text,text)'))
                 and provolatile = 'i' and proparallel = 's' and array_to_string(proconfig, ',') like '%search_path=pg_catalog, public%') = 3, 2
   union all select 'E64 calendar_history: STABLE + pinned search_path + statement_timeout 8s',
-         exists (select 1 from pg_proc where oid = to_regprocedure('public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer)')
+         exists (select 1 from pg_proc where oid = to_regprocedure('public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer,timestamptz,uuid,boolean)')
                    and provolatile = 's' and array_to_string(proconfig, ',') like '%search_path=pg_catalog, public%' and array_to_string(proconfig, ',') like '%statement_timeout=8s%'), 3
   union all select 'E64 indexes: events FTS + (org_id, starts_at desc) saari rows',
          to_regclass('public.calendar_events_search_fts_idx') is not null and to_regclass('public.calendar_events_org_start_all_idx') is not null, 4
@@ -22,9 +22,9 @@ select item, ok from (
   union all select 'E64 work_notes FTS index (table ho to) — event notes mein search',
          to_regclass('public.work_notes') is null or to_regclass('public.work_notes_search_idx') is not null, 6
   union all select 'E64 execute sirf service_role: anon/authenticated nahi',
-         has_function_privilege('service_role', 'public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer)', 'execute')
-         and not has_function_privilege('anon', 'public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer)', 'execute')
-         and not has_function_privilege('authenticated', 'public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer)', 'execute'), 7
+         has_function_privilege('service_role', 'public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer,timestamptz,uuid,boolean)', 'execute')
+         and not has_function_privilege('anon', 'public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer,timestamptz,uuid,boolean)', 'execute')
+         and not has_function_privilege('authenticated', 'public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer,timestamptz,uuid,boolean)', 'execute'), 7
   union all select 'E64 deewar: anjaan viewer -> forbidden, khaali sawal member ko empty_query',
          (public.calendar_history(gen_random_uuid(), gen_random_uuid(), 'contract', null, null, null) ->> 'error') = 'forbidden'
          and coalesce((select public.calendar_history(m.org_id, m.user_id, null, null, null, null) ->> 'error'
@@ -32,6 +32,9 @@ select item, ok from (
   union all select 'E64 matn ki definition: lowercase guest text, tsvector bante hain',
          public.calendar_guest_text('Gina@Acme.test', 'Gina Keller') = 'gina@acme.test gina keller'
          and public.calendar_search_doc('Contract review', 'Pricing annex', null, null) @@ websearch_to_tsquery('simple', 'pricing'), 9
+  union all select 'E64 100 SAAL: 1900 aur 2100 ki tareekh par bhi chalta hai (keyset cursor + by_year), asli member par sirf padhta hai',
+         coalesce((select (public.calendar_history(m.org_id, m.user_id, null, '1900-01-01', '2126-01-01', null, 'oldest', 5, 0, '1900-01-01', gen_random_uuid(), true) ? 'by_year')
+                     from public.org_members m where coalesce(m.status::text, 'active') <> 'revoked' limit 1), true), 11
   union all select 'E64 LIVE PATH: asli member par 1-din ki range bina error chalti hai (sirf padhta hai)',
          coalesce((select public.calendar_history(m.org_id, m.user_id, 'a', now() - interval '1 day', now(), null) ? 'events'
                      or (public.calendar_history(m.org_id, m.user_id, 'ab', now() - interval '1 day', now(), null) ? 'events')

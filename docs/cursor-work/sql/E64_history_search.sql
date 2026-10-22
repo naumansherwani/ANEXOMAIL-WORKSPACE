@@ -13,7 +13,7 @@
 --   * Indexes (non-concurrent, lock_timeout ke andar; bari live table ho to haath se CONCURRENTLY alag note ke saath): events FTS + trigram, (org_id, starts_at desc) saari rows (cancelled bhi), work_notes FTS. Attendee side ka index (lower(address), event_id) pehle se maujood.
 --   * Sirf service_role (Rust) execute kar sakta hai; anon/authenticated nahi.
 --   * Dohrane wali meetings: master EK baar (recurring=true), har occurrence nahi (hazaron row nahi). Cancelled bhi aati hain, `status: cancelled` ke saath.
---   * WAPAS LENA (haath se, yahan chalta nahi): drop function public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer); drop function public.calendar_org_member(uuid,uuid); drop function public.calendar_search_doc(text,text,text,text); drop function public.calendar_search_text(text,text,text,text); drop function public.calendar_guest_text(text,text); aur calendar_events_search_*_idx, calendar_events_org_start_all_idx, work_notes_search_idx.
+--   * WAPAS LENA (haath se, yahan chalta nahi): drop function public.calendar_history(uuid,uuid,text,timestamptz,timestamptz,text,text,integer,integer,timestamptz,uuid,boolean); drop function public.calendar_org_member(uuid,uuid); drop function public.calendar_search_doc(text,text,text,text); drop function public.calendar_search_text(text,text,text,text); drop function public.calendar_guest_text(text,text); aur calendar_events_search_*_idx, calendar_events_org_start_all_idx, work_notes_search_idx.
 set lock_timeout = '3s';
 set statement_timeout = '60s';
 
@@ -88,11 +88,19 @@ begin
 end $$;
 
 -- ---- 4. history ---------------------------------------------------------------------------------------------------------------------
--- p_order: 'recent' (naye pehle, default) | 'oldest' | 'relevance' (jitne zyada jagah mile).
--- Returns {"events":[...], "has_more":bool, "q":..} ya {"error":"forbidden"|"empty_query"|"bad_range"}.
+-- 100 SAAL KE LIYE BANAYA: tareekh ki koi hadd nahi (1900 ya 2126 — timestamptz), jitni purani history ho utni milti hai.
+-- p_order: 'recent' (naye pehle, default) | 'oldest' | 'relevance' (jitni zyada jagah mile).
+-- Paging: recent/oldest = KEYSET (cursor = (starts_at, id) jo pichle page ka "next" tha) — kisi bhi gehrai par har page barabar tez, offset ki hadd nahi.
+--         relevance = offset (<= 1000), kyunke wahan tarteeb (score, tareekh) hai. (offset har order mein chalta hai, par gehri history ke liye cursor.)
+-- p_facets: true to pehle page par saal-ba-saal ginti ("by_year": {"2006": 3, ...}) — matn + banda ke hisaab se, tareekh ki range nazar-andaaz,
+--           taake poori history ka naksha ek nazar mein dikhe.
+-- HYBRID: milne wali ids <= 2000 => index se ids materialize; zyada ("meeting" jaisa aam lafz) => date index par chalo aur seedha filter.
+-- Returns {"events":[...], "has_more":bool, "next":{"ts","id"}|null, "by_year":{..}|null, ...} ya {"error":"forbidden"|"empty_query"|"bad_range"|"bad_cursor"}.
+drop function if exists public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer);
 create or replace function public.calendar_history(
   p_org uuid, p_viewer uuid, p_q text, p_from timestamptz, p_to timestamptz, p_person text,
-  p_order text default 'recent', p_limit integer default 20, p_offset integer default 0)
+  p_order text default 'recent', p_limit integer default 20, p_offset integer default 0,
+  p_after_ts timestamptz default null, p_after_id uuid default null, p_facets boolean default false)
 returns jsonb language plpgsql stable parallel safe set search_path = pg_catalog, public set statement_timeout = '8s' as $$
 declare
   v_q      text;
@@ -105,13 +113,23 @@ declare
   v_notes  boolean := false;
   v_order  text;
   v_sql    text;
-  v_cte    text;
-  v_notes_union text;
   v_rows   jsonb;
   v_n      integer;
+  v_body_t text;          -- match-ids query template: events matn | guests | notes; '@@U@@' = union / union all
+  v_body   text;
+  v_probe  text;
+  v_cte    text := '';
+  v_where  text;
+  v_common boolean := false;
+  v_cursor text := '';
+  v_years  jsonb := null;
+  v_next   jsonb := null;
+  v_events jsonb;
+  v_last   jsonb;
 begin
   if not public.calendar_org_member(p_org, p_viewer) then return jsonb_build_object('error', 'forbidden'); end if;
   if p_from is not null and p_to is not null and p_to <= p_from then return jsonb_build_object('error', 'bad_range'); end if;
+  if (p_after_ts is null) <> (p_after_id is null) then return jsonb_build_object('error', 'bad_cursor'); end if;   -- aadha cursor andaza nahi lagate
 
   -- saaf matn: control char -> space, spaces ikatthe, <= 200
   v_q := nullif(left(btrim(regexp_replace(coalesce(p_q, ''), '[\x01-\x1f\x7f]+', ' ', 'g')), 200), '');
@@ -136,29 +154,58 @@ begin
   v_order := case when p_order = 'oldest' then 'oldest' when p_order = 'relevance' and v_q is not null then 'relevance' else 'recent' end;
 
   -- static shape; user ka matn sirf $n parameters ke zariye aata hai
-  -- Matn ho to PEHLE index se match karne wali ids (MATERIALIZED: planner "date index par chalo, har row filter karo" wala dheema raasta nahi leta —
-  -- 60 hazaar meetings mein 12 milne wali sawal 2.4s se millisecond mein), phir sirf unhi ko tarteeb + limit. Matn na ho to seedha org/date index.
-  v_notes_union := case when v_notes then $n$union
-      select n.event_id from public.work_notes n
-       where n.org_id = $3 and n.event_id is not null and to_tsvector('simple'::regconfig, coalesce(n.body, '')) @@ $2::tsquery$n$ else '' end;
-  -- Har source apna index istemal kare (OR mein correlated exists() bitmap-or tod deta hai): events ka matn | guest | notes — UNION.
-  v_cte := case when v_q is null then '' else format($m$m as materialized (
+  if v_q is not null then
+    -- Har source apne index se (OR mein correlated exists() bitmap-or tod deta hai): events matn | guest | notes.
+    v_body_t := $m$
       select e.id from public.calendar_events e
        where e.org_id = $3
          and (public.calendar_search_doc(e.title, e.agenda, e.location, e.goal) @@ $2::tsquery
               or public.calendar_search_text(e.title, e.agenda, e.location, e.goal) ilike $1 escape '\')
-      union
+      @@U@@
       select a.event_id from public.calendar_attendees a
-       where a.org_id = $3 and public.calendar_guest_text(a.address, a.display_name) like $1 escape '\'
-      %s
-    ),$m$, v_notes_union) end;
+       where a.org_id = $3 and public.calendar_guest_text(a.address, a.display_name) like $1 escape '\'$m$
+      || case when v_notes then $n$
+      @@U@@
+      select n.event_id from public.work_notes n
+       where n.org_id = $3 and n.event_id is not null and to_tsvector('simple'::regconfig, coalesce(n.body, '')) @@ $2::tsquery$n$ else '' end;
+    v_body  := replace(v_body_t, '@@U@@', 'union');
+    v_probe := replace(v_body_t, '@@U@@', 'union all');   -- limit 2001 par jaldi ruk jata hai (union ko poora hash karna padta)
+
+    execute 'select count(*) > 2000 from (select u.id from (' || v_probe || ') u limit 2001) x' into v_common using v_like, v_tsq, p_org;
+  end if;
+
+  -- aam lafz (2000+ barabar ke matches) par "relevance" ka matlab nahi (sab barabar) aur har row ka score nikalna sekondon leta hai => naye pehle
+  if v_common and v_order = 'relevance' then v_order := 'recent'; end if;
+
+  if v_q is null then
+    v_where := 'true';
+  elsif not v_common then
+    v_cte := 'm as materialized (' || v_body || '), ';
+    v_where := 'e.id in (select id from m)';
+  else
+    v_where := '(public.calendar_search_doc(e.title, e.agenda, e.location, e.goal) @@ $2::tsquery'
+            || ' or public.calendar_search_text(e.title, e.agenda, e.location, e.goal) ilike $1 escape ''\'''
+            || ' or exists (select 1 from public.calendar_attendees a where a.event_id = e.id and public.calendar_guest_text(a.address, a.display_name) like $1 escape ''\'')'
+            || case when v_notes then ' or exists (select 1 from public.work_notes n where n.org_id = e.org_id and n.event_id = e.id and to_tsvector(''simple''::regconfig, coalesce(n.body, '''')) @@ $2::tsquery)' else '' end
+            || ')';
+  end if;
+
+  if v_order = 'recent' then
+    v_cursor := 'and ($9::timestamptz is null or (e.starts_at, e.id) < ($9::timestamptz, $10::uuid))';
+  elsif v_order = 'oldest' then
+    v_cursor := 'and ($9::timestamptz is null or (e.starts_at, e.id) > ($9::timestamptz, $10::uuid))';
+  end if;
 
   v_sql := $q$
     with %s cand as (
       select e.id, e.title, e.agenda, e.location, e.goal, e.goal_state, e.starts_at, e.ends_at, e.organiser, e.cancelled_at, e.rrule, e.series_id, e.org_id,
              %s as rk
         from public.calendar_events e
-       where %s
+       where e.org_id = $3
+         and ($4::timestamptz is null or e.starts_at >= $4)
+         and ($5::timestamptz is null or e.starts_at <  $5)
+         and %s
+         %s
          and ($6::text is null
               or exists (select 1 from public.calendar_attendees a
                           where a.event_id = e.id and public.calendar_guest_text(a.address, a.display_name) like $6 escape '\')
@@ -196,22 +243,41 @@ begin
           from cand c
       ) z
   $q$;
+  -- tarteeb: starts_at ke saath id bhi UNIQUE tie-break (keyset cursor isi par chalta hai; dono taraf ek hi disha)
   v_sql := format(v_sql,
     v_cte,
     case when v_order = 'relevance' then 'ts_rank_cd(public.calendar_search_doc(e.title, e.agenda, e.location, e.goal), $2::tsquery)' else '0::real' end,
-    case when v_q is null then 'e.org_id = $3 and ($4::timestamptz is null or e.starts_at >= $4) and ($5::timestamptz is null or e.starts_at < $5)'
-         else 'e.org_id = $3 and e.id in (select id from m) and ($4::timestamptz is null or e.starts_at >= $4) and ($5::timestamptz is null or e.starts_at < $5)' end,
-    case v_order when 'oldest' then 'e.starts_at asc, e.id' when 'relevance' then 'rk desc, e.starts_at desc, e.id' else 'e.starts_at desc, e.id' end,
-    case v_order when 'oldest' then 'c.starts_at asc, c.id' when 'relevance' then 'c.rk desc, c.starts_at desc, c.id' else 'c.starts_at desc, c.id' end,
+    v_where, v_cursor,
+    case v_order when 'oldest' then 'e.starts_at asc, e.id asc' when 'relevance' then 'rk desc, e.starts_at desc, e.id desc' else 'e.starts_at desc, e.id desc' end,
+    case v_order when 'oldest' then 'c.starts_at asc, c.id asc' when 'relevance' then 'c.rk desc, c.starts_at desc, c.id desc' else 'c.starts_at desc, c.id desc' end,
     case when v_notes then $n$($1::text is not null and exists (select 1 from public.work_notes n where n.org_id = c.org_id and n.event_id = c.id
                               and to_tsvector('simple'::regconfig, coalesce(n.body, '')) @@ $2::tsquery))$n$ else 'false' end);
 
   -- ek zyada mangwa kar has_more
-  execute v_sql into v_rows, v_n using v_like, v_tsq, p_org, p_from, p_to, v_plike, v_limit + 1, v_offset;
+  execute v_sql into v_rows, v_n
+    using v_like, v_tsq, p_org, p_from, p_to, v_plike, v_limit + 1, v_offset, p_after_ts, p_after_id;
 
-  return jsonb_build_object(
-    'events', case when v_n > v_limit then (select coalesce(jsonb_agg(x), '[]'::jsonb) from (select x from jsonb_array_elements(v_rows) with ordinality t(x, i) where i <= v_limit order by i) q) else v_rows end,
-    'has_more', v_n > v_limit,
+  v_events := case when v_n > v_limit
+                   then (select coalesce(jsonb_agg(x order by i), '[]'::jsonb) from jsonb_array_elements(v_rows) with ordinality t(x, i) where i <= v_limit)
+                   else v_rows end;
+
+  -- agle page ka cursor (relevance mein nahi: wahan offset chalta hai)
+  if v_n > v_limit and v_order <> 'relevance' then
+    v_last := v_events -> (jsonb_array_length(v_events) - 1);
+    v_next := jsonb_build_object('ts', v_last ->> 'starts_at', 'id', v_last ->> 'id');
+  end if;
+
+  -- saal-ba-saal naksha (sirf pehle page par, jab maanga jaye): matn + banda ke hisaab se, tareekh ki range ke baghair
+  if coalesce(p_facets, false) and p_after_ts is null and v_offset = 0 then
+    v_sql := 'select coalesce(jsonb_object_agg(f.y::text, f.c), ''{}''::jsonb) from ('
+          || 'select extract(year from e.starts_at at time zone ''UTC'')::int as y, count(*) as c from public.calendar_events e where e.org_id = $3 and '
+          || case when v_q is null then 'true' else 'e.id in (' || v_body || ')' end
+          || ' and ($6::text is null or exists (select 1 from public.calendar_attendees a where a.event_id = e.id and public.calendar_guest_text(a.address, a.display_name) like $6 escape ''\'')'
+          || ' or lower(coalesce(e.organiser, '''')) like $6 escape ''\'') group by 1) f';
+    execute v_sql into v_years using v_like, v_tsq, p_org, p_from, p_to, v_plike;
+  end if;
+
+  return jsonb_build_object('events', v_events, 'has_more', v_n > v_limit, 'next', v_next, 'by_year', v_years,
     'q', v_q, 'person', v_person, 'order', v_order, 'limit', v_limit, 'offset', v_offset);
 end $$;
 
@@ -219,15 +285,15 @@ revoke all on function public.calendar_search_text(text, text, text, text)  from
 revoke all on function public.calendar_search_doc(text, text, text, text)   from public, anon, authenticated;
 revoke all on function public.calendar_guest_text(text, text)               from public, anon, authenticated;
 revoke all on function public.calendar_org_member(uuid, uuid)               from public, anon, authenticated;
-revoke all on function public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer) from public, anon, authenticated;
+revoke all on function public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer, timestamptz, uuid, boolean) from public, anon, authenticated;
 grant execute on function public.calendar_search_text(text, text, text, text) to service_role;
 grant execute on function public.calendar_search_doc(text, text, text, text)  to service_role;
 grant execute on function public.calendar_guest_text(text, text)              to service_role;
 grant execute on function public.calendar_org_member(uuid, uuid)              to service_role;
-grant execute on function public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer) to service_role;
+grant execute on function public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer, timestamptz, uuid, boolean) to service_role;
 
-comment on function public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer) is
-  'History search over the org''s meetings (title, agenda, location, aim, guests, event notes). Viewer must be an active org member (DB-side wall). Same visibility as the calendar itself. Max 50 rows/page.';
+comment on function public.calendar_history(uuid, uuid, text, timestamptz, timestamptz, text, text, integer, integer, timestamptz, uuid, boolean) is
+  'History search over the org''s meetings (title, agenda, location, aim, guests, event notes). Viewer must be an active org member (DB-side wall). Same visibility as the calendar itself. Max 50 rows/page; keyset paging for recent/oldest (century-scale safe); optional by_year facet.';
 comment on function public.calendar_search_text(text, text, text, text) is 'One definition of the searchable text of a meeting; index and query use the same expression.';
 
 notify pgrst, 'reload schema';

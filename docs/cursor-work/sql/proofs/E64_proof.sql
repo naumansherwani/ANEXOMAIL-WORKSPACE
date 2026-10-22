@@ -102,6 +102,58 @@ begin
   insert into r values (31, 'bohat lamba matn 200 par kat jata hai', char_length(res ->> 'q') = 200);
   res := public.calendar_history(org, me, E'con\x01tract', null, null, null);
   insert into r values (32, 'control character space ban jata hai (crash nahi)', res ? 'events');
+
+  -- 100 SAAL: bahut purani aur bahut door ki tareekhein, keyset paging, by_year, aam lafz ka hybrid raasta
+  insert into public.calendar_events (org_id, title, starts_at, ends_at, organiser) values
+    (org, 'Founding charter signing', '1926-05-01 09:00+00', '1926-05-01 10:00+00', 'me@x.test'),
+    (org, 'Founding charter amendment', '1948-11-02 09:00+00', '1948-11-02 10:00+00', 'me@x.test'),
+    (org, 'Founding centenary plan', '2090-01-15 09:00+00', '2090-01-15 10:00+00', 'me@x.test');
+  res := public.calendar_history(org, me, 'founding charter', '1900-01-01', '2126-01-01', null, 'oldest', 20, 0, null, null, true);
+  insert into r values (33, '100 saal: 1926 ki meeting mil gayi, oldest pehle; 2090 ki "charter" mein nahi',
+    jsonb_array_length(res -> 'events') = 2 and res -> 'events' -> 0 ->> 'title' = 'Founding charter signing');
+  res := public.calendar_history(org, me, 'founding', null, null, null, 'recent', 20, 0, null, null, true);
+  insert into r values (34, 'by_year naksha: 1926/1948/2090 teeno saal ginti ke saath, range ke baghair',
+    (res -> 'by_year' ->> '1926')::int = 1 and (res -> 'by_year' ->> '1948')::int = 1 and (res -> 'by_year' ->> '2090')::int = 1);
+  res := public.calendar_history(org, me, 'founding', '1940-01-01', '2000-01-01', null, 'recent', 20, 0, null, null, true);
+  insert into r values (35, 'by_year range ko nazar-andaaz karta hai (3 saal), events range ke andar (sirf 1948)',
+    jsonb_array_length(res -> 'events') = 1 and (select count(*) from jsonb_object_keys(res -> 'by_year')) = 3);
+  res := public.calendar_history(org, me, 'founding', null, null, null, 'recent', 20, 0, null, null, false);
+  insert into r values (36, 'facets band to by_year null', res -> 'by_year' = 'null'::jsonb);
+
+  -- keyset: 60 bulk meetings, 25-25-10, na doharao na chhoot
+  declare
+    p1 jsonb; p2 jsonb; p3 jsonb; ids text[];
+  begin
+    p1 := public.calendar_history(org, me, 'bulk meeting', null, null, null, 'recent', 25, 0);
+    p2 := public.calendar_history(org, me, 'bulk meeting', null, null, null, 'recent', 25, 0, (p1 -> 'next' ->> 'ts')::timestamptz, (p1 -> 'next' ->> 'id')::uuid);
+    p3 := public.calendar_history(org, me, 'bulk meeting', null, null, null, 'recent', 25, 0, (p2 -> 'next' ->> 'ts')::timestamptz, (p2 -> 'next' ->> 'id')::uuid);
+    select array_agg(x ->> 'id') into ids from (select jsonb_array_elements(p1 -> 'events') x union all select jsonb_array_elements(p2 -> 'events') union all select jsonb_array_elements(p3 -> 'events')) q;
+    insert into r values (37, 'keyset: 25+25+10 = 60 row, sab alag (na doharaya na chhoota), has_more chain theek',
+      cardinality(ids) = 60 and (select count(distinct u.v) from unnest(ids) as u(v)) = 60
+      and (p1 ->> 'has_more')::boolean and (p2 ->> 'has_more')::boolean and not (p3 ->> 'has_more')::boolean and p3 -> 'next' = 'null'::jsonb);
+    p1 := public.calendar_history(org, me, 'bulk meeting', null, null, null, 'oldest', 25, 0);
+    p2 := public.calendar_history(org, me, 'bulk meeting', null, null, null, 'oldest', 40, 0, (p1 -> 'next' ->> 'ts')::timestamptz, (p1 -> 'next' ->> 'id')::uuid);
+    insert into r values (38, 'keyset oldest: pehle page ke baad ka page purane-se-naye tarteeb mein, 25+35',
+      jsonb_array_length(p1 -> 'events') = 25 and jsonb_array_length(p2 -> 'events') = 35
+      and (p2 -> 'events' -> 0 ->> 'starts_at')::timestamptz > (p1 -> 'events' -> 24 ->> 'starts_at')::timestamptz);
+  end;
+
+  -- aam lafz (> 2000 matches) => seedha-filter raasta, nateeja materialized raaste jaisa hi
+  insert into public.calendar_events (org_id, title, starts_at, ends_at, organiser)
+    select org, 'Routine standup ' || g, '2000-01-01 00:00+00'::timestamptz + (g || ' hours')::interval, '2000-01-01 00:30+00'::timestamptz + (g || ' hours')::interval, 'me@x.test'
+      from generate_series(1, 2100) g;
+  res := public.calendar_history(org, me, 'routine standup', null, null, null, 'recent', 20, 0);
+  insert into r values (39, 'aam lafz (2100 matches): 20 row, has_more, sabse naya pehle', jsonb_array_length(res -> 'events') = 20 and (res ->> 'has_more')::boolean
+    and res -> 'events' -> 0 ->> 'title' = 'Routine standup 2100');
+  res := public.calendar_history(org, me, 'routine standup 7', null, null, null, 'recent', 50, 0);
+  insert into r values (40, 'ek hi connection par kam-matches wala sawal ab bhi theek (materialized raasta)', jsonb_array_length(res -> 'events') > 0);
+  res := public.calendar_history(org, me, 'routine standup', null, null, null, 'recent', 10, 0, '2000-01-02 00:00+00', gen_random_uuid());
+  insert into r values (41, 'aam lafz + keyset cursor (2000-01-02 ke baad purane): sab cursor se purane',
+    jsonb_array_length(res -> 'events') = 10 and (res -> 'events' -> 0 ->> 'starts_at')::timestamptz <= '2000-01-02 00:00+00');
+  res := public.calendar_history(org, me, 'routine standup', null, null, null, 'relevance', 20, 0);
+  insert into r values (42, 'aam lafz + relevance => naye pehle (sab barabar score; sekondon ka score-hisab nahi)', res ->> 'order' = 'recent' and res -> 'events' -> 0 ->> 'title' = 'Routine standup 2100');
+  res := public.calendar_history(org, me, 'routine standup', null, null, null, 'recent', 10, 0, '2000-01-02 00:00+00', null);
+  insert into r values (43, 'aadha cursor (ts bina id) -> bad_cursor, andaza nahi', res ->> 'error' = 'bad_cursor');
 end $$;
 select ord, item, ok from r order by ord;
 rollback;

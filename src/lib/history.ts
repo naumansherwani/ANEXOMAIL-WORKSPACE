@@ -2,9 +2,10 @@
  * History search (calendar #10 / E64) — client side of the Rust `calendar.history` proc.
  * ENGINE (Rust + SQL E64): who may search (active member of this workspace), what matches, in which order, how many.
  * BROWSER: asks, draws, and links to the meeting. It never filters, ranks or counts on its own.
- * Honest by design: only what is in ANEXOMAIL is searched; there is no relevance percentage, only WHERE a word was found.
+ * Built for a lifetime of meetings (100 years): newest/oldest pages follow a cursor, so page 500 is as fast as page 1; the year strip shows every year that has a match.
+ * There is no relevance percentage, only WHERE a word was found.
  */
-import { keepPreviousData, useInfiniteQuery } from "@tanstack/react-query";
+import { keepPreviousData, useInfiniteQuery, type InfiniteData } from "@tanstack/react-query";
 
 import type { ApiError } from "@/lib/api";
 import type { GoalState } from "@/lib/goal";
@@ -30,7 +31,38 @@ export type HistoryEvent = {
   guests: { address: string; name: string | null }[];
 };
 
-export type HistoryPage = { events: HistoryEvent[]; has_more: boolean; q: string | null; person: string | null; order: HistoryOrder; limit: number; offset: number };
+export type HistoryCursor = { ts: string; id: string };
+export type HistoryPage = {
+  events: HistoryEvent[];
+  has_more: boolean;
+  /** Where the next page starts (newest/oldest order); null for relevance, which pages by offset. */
+  next: HistoryCursor | null;
+  /** { "2006": 3, ... } — matches per year (text + person, dates ignored). Only on the first page. */
+  by_year: Record<string, number> | null;
+  q: string | null;
+  person: string | null;
+  order: HistoryOrder;
+  limit: number;
+  offset: number;
+};
+
+/** What a page asks for: the very first page, a cursor (newest/oldest), or an offset (relevance). */
+export type HistoryPageParam = { cursor?: HistoryCursor; offset?: number };
+
+/** `by_year` -> newest-first list for the year strip. */
+export function yearList(by: Record<string, number> | null | undefined): { year: number; count: number }[] {
+  if (!by) return [];
+  return Object.entries(by)
+    .map(([y, c]) => ({ year: Number(y), count: Number(c) }))
+    .filter((r) => Number.isFinite(r.year) && r.count > 0)
+    .sort((a, b) => b.year - a.year);
+}
+
+/** A whole calendar year as the From/To date-input values. */
+export function yearRange(year: number): { from: string; to: string } {
+  const y = String(year).padStart(4, "0");
+  return { from: `${y}-01-01`, to: `${y}-12-31` };
+}
 
 export type HistoryParams = { q: string; person: string; from: string; to: string; order: HistoryOrder };
 
@@ -48,9 +80,9 @@ export function dayStartIso(day: string, plusDays = 0): string {
 }
 
 export function useHistory(p: HistoryParams, enabled = true) {
-  return useInfiniteQuery<HistoryPage, ApiError>({
+  return useInfiniteQuery<HistoryPage, ApiError, InfiniteData<HistoryPage, HistoryPageParam>, readonly unknown[], HistoryPageParam>({
     queryKey: ["calendar", "history", p.q.trim(), p.person.trim(), p.from, p.to, p.order],
-    initialPageParam: 0,
+    initialPageParam: {} as HistoryPageParam,
     queryFn: ({ pageParam }) =>
       rpc<HistoryPage>("calendar.history", {
         ...(p.q.trim().length >= 2 ? { q: p.q.trim() } : {}),
@@ -59,9 +91,13 @@ export function useHistory(p: HistoryParams, enabled = true) {
         ...(p.to ? { to: dayStartIso(p.to, 1) } : {}),
         order: p.order,
         limit: PAGE,
-        offset: pageParam as number,
+        ...(pageParam.cursor ? { after_ts: pageParam.cursor.ts, after_id: pageParam.cursor.id } : {}),
+        ...(pageParam.offset ? { offset: pageParam.offset } : {}),
+        // the year strip is asked for once, with the first page
+        ...(!pageParam.cursor && !pageParam.offset ? { facets: true } : {}),
       }),
-    getNextPageParam: (last) => (last.has_more ? last.offset + last.limit : undefined),
+    getNextPageParam: (last): HistoryPageParam | undefined =>
+      !last.has_more ? undefined : last.next ? { cursor: last.next } : { offset: last.offset + last.limit },
     enabled: enabled && historyReady(p),
     retry: false,
     staleTime: 15_000,
