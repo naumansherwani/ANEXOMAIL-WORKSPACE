@@ -139,3 +139,5 @@ F1 MTA-STS/TLS-RPT/TLSA DNS records · F2 `milter_default_action` tempfail (haan
 - **FOUNDER COMMAND CENTER 21 Oct 08:4x (CODE)** — `founder.brain.command` (Rust, b5 module) + CommandCenter UI + sab 14 founder surfaces ka index. Founder ka order: "founder home dump hai, brain banao". Sandbox SAB PASS. Server par chalana baqi; founder host par asli screen founder dekhega.
 
 - **LATER (founder 21 Oct 08:25):** (1) 10 ANEXOMAIL email addresses (founder-plan.ts) build + working wire; (2) founder ka alag email system; (3) Nexatect parent-company addresses; (4) Founder workspace stack faisla (sulah vs pure Rust) -> docs/claude/FOUNDER-WORKSPACE-PLAN.md §2b/2c. Sab B-series ke baad.
+
+- 22 Oct 2026 GREEN: Calendar roadmap #0 Layout v2 (Classic+Expanded, shehar-naam clock, 12h/24h/Auto, account sync E57) + #1 E58 (calendars+rang, working hours, out-of-office, in-app reminders; SQL+Rust+Web live, 1440/820/390). Sign-in button A (Rule 39) LOCKED, live. NEXT: #2 Booking page B7c, #3 iMIP G26, #4 world-clock/team overlay/ICS subscribe, #5 event files, #6 CalDAV, #7 Google sync, #8 rooms.

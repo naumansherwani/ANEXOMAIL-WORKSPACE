@@ -8,6 +8,9 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 05:35 PKT — founder: "repo main green mark kero aur next tarteeb se batao kya hai next?"
+- GREEN mark: MASTER-GAP-LEDGER + DONE-DO-NOT-REPEAT (Layout v2, E58, sign-in A). NEXT = roadmap #2 Booking page B7c (working hours + busy time + buffer/notice/length/visitor tz, DB slot lock, rate limit, confirm mail+.ics+cancel/reschedule link).
+
 ## ▶ 22 Oct 2026 05:30 PKT — E58 LIVE GREEN (Chrome, founder Pro session, meri apni tab, band kar di)
 - 1440: Calendar settings sheet khula (calendars + 8 rang, working hours Mon-Sun, clock/layout). Calendar add + Save -> page reload ke baad bhi 2 calendars (Rust locale.uipref.set + SQL E58 round-trip sahi). Test calendar delete + Save: founder ki settings wapas.
 - 390 / 820 (iframe trick): hscroll 0, Settings sheet 390px/520px, NewMeeting mein Reminder select maujood, hscroll 0.
