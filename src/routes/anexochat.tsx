@@ -26,10 +26,7 @@ export const Route = createFileRoute("/anexochat")({
   beforeLoad: () => {
     if (typeof window !== "undefined") {
       const h = window.location.hostname;
-      if (
-        h === "founderworkspace.anexomail.com" ||
-        isChatHost()
-      ) {
+      if (h === "founderworkspace.anexomail.com" || isChatHost()) {
         throw redirect({ to: "/app/chat" });
       }
     }
@@ -248,7 +245,9 @@ function AnexoChatLanding() {
               <Sparkles className="size-5 text-primary" aria-hidden="true" />
               <h3 className="mt-4 text-base font-semibold text-foreground">What we never do</h3>
               <ul className="mt-4 space-y-3 text-sm text-muted-foreground">
-                <li>No biometric fingerprinting. No canvas, audio, font or GPU probing.</li>
+                <li>
+                  No biometric data. Nothing is read from your body, camera, microphone or contacts.
+                </li>
                 <li>Your conversations are never sent to any AI or moderation service.</li>
                 <li>File safety runs inside our own infrastructure, end to end.</li>
                 <li>No hidden retention: device records carry a deletion date.</li>

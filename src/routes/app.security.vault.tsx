@@ -17,7 +17,7 @@ export const Route = createFileRoute("/app/security/vault")({
       {
         property: "og:description",
         content:
-          "Five coarse signals, hashed and sealed. Revoke a device and its sessions die instantly.",
+          "Device records are hashed and sealed. Revoke a device and its sessions die instantly.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

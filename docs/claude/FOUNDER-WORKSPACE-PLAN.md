@@ -119,3 +119,13 @@ Sab WebGPU (wgpu), 60 fps, kam power; mobile par automatic 2D/low-detail; `prefe
 ## 9. Pehle se maujood jo reuse hoga
 Rust: `b5_core.rs` (`attention`, `gate`, revenue maths), `b5_glue.rs` (`founder.brain.command`, release, movein, revenue), `mail_*` (send/queue), `jwt_core`, `passkey_*`, `security_*`, `team_*`, `events_*` (event-driven push).
 Naya zaroorat: `founder_audit` table, `founder.people.*`, abuse core, break-glass table, Mail Desk procs.
+
+## 10. Identity (E70/E71/E72) ke LIVE TESTS — founder ka account shuru hone ke BAAD (founder hukm 23 Oct 2026 01:44)
+Founder ne kaha: pehle Calendar + World Clock poora, phir founder ka account (command center) chalu; **uske baad** yeh 6 live tests (founder khud karega — Claude production mein account nahi banata, password nahi daalta):
+1. Founder panel mein gate ko "Approve everyone" par karein.
+2. Test sign-up karein. "waiting for a quick review" aana chahiye aur sign-in refuse hona chahiye.
+3. Account approve karein. Sign-in chalna chahiye aur ~60 s mein recovery address par approval email aani chahiye.
+4. Gate wapas "Hold matches" par karein.
+5. Hold wale account se passkey/OTP sign-in try karein. Ye fail hona chahiye.
+6. Brave ya Firefox (privacy mode) se sign-up karein. Ye flag hona chahiye.
+Plus (E72): blocked/test account se appeal likhein (20,000 characters tak) + 1 PNG attach; reviewer panel mein file download hoti hai; 91 din baad safai (SQL proof mein ho chuka).

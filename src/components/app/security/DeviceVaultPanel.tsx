@@ -70,8 +70,9 @@ export function DeviceVaultPanel() {
         <div className="ax-plane rounded-2xl p-ax-4 text-[12px]">
           <p className="text-foreground">
             <ShieldCheck className="mr-1.5 inline size-3.5" aria-hidden="true" />
-            {policy.signals_collected.length} signals stored, sealed and hashed. No biometric
-            fingerprinting.
+            {policy.signals_collected.length} signals stored, sealed and hashed. No biometric data.
+            These are your signed-in device records; at sign-up we also compare hashed technical
+            characteristics of the browser and computer — see the Privacy page.
           </p>
           <p className="ax-caption mt-1 text-muted-foreground">
             Purpose: {policy.purpose}. Kept for {policy.retain_days} days, then deleted. Legal

@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md a11849a0ee192100
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 55b1e52eb50cbd3b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -163,7 +163,7 @@ docs/cursor-work/sql/E46_integrity_notices_appeal.sql 913ffa923737550e
 docs/cursor-work/sql/E47_device_revoke_real_sessions.sql 29add99bf89e116b
 server/rust/device_core.rs fbfbfac4b8ad41fd
 server/rust/device_glue.rs f234c8637dc504d6
-src/components/app/security/DeviceVaultPanel.tsx 9cf95483da96bd08
+src/components/app/security/DeviceVaultPanel.tsx 32d98555346bdf0e
 server/mail-worker.ts 40fc4a9fd34aa0dd
 server/mail/sendmail.ts 349c9163d9a1e592
 server/routes/mail-compose.ts 9e68b9af8c930b21
@@ -324,7 +324,7 @@ src/routes/status.tsx 63446194a25640c4
 src/components/app/ConfirmButton.tsx 1f49b8cb3ecbf49e
 docs/cursor-work/server/brain-pricefix-install.sh ce088a974de3df59
 src/routes/app.founder.tsx aba91747c5c00284
-docs/claude/FOUNDER-WORKSPACE-PLAN.md 5732f90e95270367
+docs/claude/FOUNDER-WORKSPACE-PLAN.md 6a91b9497cd09606
 docs/claude/TECH-STACK-BEAST.md bde76f06e2eab5f7
 docs/claude/EVENING-PENDING-2026-10-21.md 9a9471c075caa786
 docs/claude/POLAR-ENGINE-MAP.md 505bfdae6aa6ee56
@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 76fca0a8126e1e1c
+docs/cursor-work/NEXT-TASKS.md 2af3ebf4b71f3d43
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac
@@ -509,3 +509,5 @@ docs/cursor-work/sql/E72_appeal_evidence.sql 25dda0a8169909ea
 docs/cursor-work/sql/proofs/E72_proof.sql 2d3f5f8b455121b2
 server/rust/evidence_core.rs b86e6fdc300d8e24
 server/rust/evidence_glue.rs 355558546a8da3d9
+src/routes/anexochat.tsx 6b4f0b5aa580c0fe
+src/routes/app.security.vault.tsx f5280c62b670a394
