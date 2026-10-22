@@ -745,3 +745,6 @@ Founder: "yeh englishmain kya baqwas kerta hai mere saath ... compact chat ka ga
 3. Rust restart+health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
 
+
+## 23 Oct 02:36 — T-SERIES HAAN
+Founder (verbatim): "T8 ko duniya ki latest technology do. meri haan hai sab pe. repo update". T1..T11 sab manzoor (docs/claude/T-SERIES-BLUEPRINT.md). T8 = journald JSON stream + Message-ID<->queue-id + RFC 3461/3464 DSN + TLS status, pehle T8-0 probe (sirf padhna). Tarteeb: locked order (calendar+world clock -> founder account -> 6 live tests -> M-series -> G16) ke baad; T1/T2 G16 se pehle ho sakte hain.
