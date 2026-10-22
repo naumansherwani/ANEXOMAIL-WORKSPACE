@@ -410,3 +410,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 04:35 — CHECK_E76 founder ne Supabase editor mein chalaya: SUCCESS (founder bola). E76 SQL poora VERIFIED GREEN. Baaqi optional: registered .test account se live passkey chhoot dekhna.
 
 - 23 Oct 04:40 — CHECK_E76 founder screenshot (Supabase 'main PRODUCTION'): 7 rows, dikhi hui sab true => E76 SQL VERIFIED. NEXT-TASKS.md mein naya RESUME HERE (04:40) block upar likha. Dobara mat likho.
+
+- 23 Oct 04:41 — FOUNDER SUDHAAR: 'psql nahi' maine kabhi nahi bola; bola tha ek SQL DONO jagah (editor + server psql) chale. Meri likhi ghalat line NEXT-TASKS mein theek ki. Founder ne 'revert kero' kaha: E28 ka unfinished dual-run rewrite repo se wapas (draft scratchpad mein), E28/E36 jaisi thi waisi. Dual-run conversion tab jab founder 'haan' kahe.
