@@ -8,6 +8,10 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 05:21 PKT — B7c BOOKING PAGE SHURU (founder verbatim: "tum CEO ho aur jo tumhay sahi lagay woh kero aur codes likhen se pehe repo and sandbox update kero ke yeh task shuru ker raha hoon verna compact chat task ke beach hota hai phir tum claude bhul jate ho. shuru kero repo rules read kero pura repo read kero phir shuru kero technology read kero") — status: IN PROGRESS (task #110)
+- Plan (CEO faisla, founder ne mujh par chhoda): public link `/book/<handle>` (handle default = @anexomail.com ka username, badal sakta hai); slots = working hours (E58) - busy (calendar_events) - buffer - min notice - meeting length, visitor ke tz mein; DB-level double-booking lock (SQL E59, Rule 38); public rate limit; booking par confirm mail + .ics + cancel/reschedule link; Rust naya module `book` (core+glue, installer mein, Rule 35); web: public `/book/$handle` + Settings > Booking section; 390/820/1440.
+- Compact ho to yahin se: SQL E59 -> Rust book module -> web page -> 3 command (SQL, Rust, Web). Jo bana woh neeche likha jayega.
+
 ## ▶ 22 Oct 2026 05:35 PKT — founder: "repo main green mark kero aur next tarteeb se batao kya hai next?"
 - GREEN mark: MASTER-GAP-LEDGER + DONE-DO-NOT-REPEAT (Layout v2, E58, sign-in A). NEXT = roadmap #2 Booking page B7c (working hours + busy time + buffer/notice/length/visitor tz, DB slot lock, rate limit, confirm mail+.ics+cancel/reschedule link).
 
