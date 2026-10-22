@@ -5,6 +5,8 @@ import { BrandMark } from "@/components/site/BrandMark";
 
 type Props = {
   open: boolean;
+  /** false = the next surface is not ready yet (sign-in still working): keep holding, never exit early. Default true. */
+  ready?: boolean;
   onDone?: () => void;
 };
 
@@ -14,9 +16,10 @@ type Props = {
  * the workspace. Replaces the default spinner with the ANEXOMAIL mark,
  * key light, grain and a quiet exit to the next surface.
  */
-export function CinematicSplash({ open, onDone }: Props) {
+export function CinematicSplash({ open, ready = true, onDone }: Props) {
   const [phase, setPhase] = useState<"closed" | "enter" | "hold" | "exit">("closed");
   const homeClicked = useRef(false);
+  const startedAt = useRef(0);
 
   useEffect(() => {
     if (!open) {
@@ -24,14 +27,20 @@ export function CinematicSplash({ open, onDone }: Props) {
       homeClicked.current = false;
       return;
     }
+    startedAt.current = Date.now();
     setPhase("enter");
-    const hold = setTimeout(() => setPhase("hold"), 700);
-    const exit = setTimeout(() => setPhase("exit"), 2200);
-    return () => {
-      clearTimeout(hold);
-      clearTimeout(exit);
-    };
+    const hold = setTimeout(() => setPhase((p) => (p === "enter" ? "hold" : p)), 700);
+    return () => clearTimeout(hold);
   }, [open]);
+
+  // Exit only after the minimum show time AND when the destination is ready — so a slow sign-in holds the splash
+  // instead of flashing away and leaving a blank gap.
+  useEffect(() => {
+    if (!open || !ready || phase === "closed" || phase === "exit") return;
+    const wait = Math.max(0, 2200 - (Date.now() - startedAt.current));
+    const exit = setTimeout(() => setPhase("exit"), wait);
+    return () => clearTimeout(exit);
+  }, [open, ready, phase]);
 
   useEffect(() => {
     if (phase !== "exit") return;

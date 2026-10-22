@@ -144,6 +144,8 @@ function AuthPage() {
   const [identityBlocked, setIdentityBlocked] = useState(false);
 
   const [showSplash, setShowSplash] = useState(false);
+  /** Credentials sent, answer not back yet: the loading screen is already up (no dead click). */
+  const [signingIn, setSigningIn] = useState(false);
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
   const [workspaceKind, setWorkspaceKind] = useState<"personal" | "business" | null>(null);
   const [moreDetails, setMoreDetails] = useState(false);
@@ -166,6 +168,7 @@ function AuthPage() {
 
   const finish = async (token: string, authenticated?: Session) => {
     loginStarted.current = true;
+    setShowSplash(true); // loading screen immediately; the destination is decided below while it shows
     try {
       window.sessionStorage.setItem("anexo.login.at", String(Date.now()));
     } catch {
@@ -208,7 +211,6 @@ function AuthPage() {
       target = "/app";
     } else if (session.user.onboarded) target = "/app";
     setRedirectTo(target);
-    setShowSplash(true);
   };
 
   const fail = (e: unknown) => {
@@ -227,6 +229,8 @@ function AuthPage() {
             ? "That email and password did not match. Use your @anexomail.com address."
             : raw || "Something went wrong.";
     setIdentityBlocked(e instanceof ApiError && e.code === "identity_blocked");
+    setSigningIn(false);
+    if (!redirectTo) setShowSplash(false);
     setError(message);
   };
 
@@ -246,6 +250,7 @@ function AuthPage() {
     setError(null);
     setIdentityBlocked(false);
     const mailbox = anexomailAddress(email);
+    if (mode === "login" && !challengeId) setSigningIn(true);
     setBusy(true);
     try {
       if (challengeId) {
@@ -381,6 +386,7 @@ function AuthPage() {
         auth: false,
       });
       if ("mfa_required" in res && res.mfa_required) {
+        setSigningIn(false);
         setChallengeId(res.challenge_id);
         return;
       }
@@ -389,6 +395,7 @@ function AuthPage() {
     } catch (e) {
       fail(e);
     } finally {
+      if (!loginStarted.current) setSigningIn(false);
       setBusy(false);
     }
   };
@@ -962,7 +969,8 @@ function AuthPage() {
       </main>
 
       <CinematicSplash
-        open={showSplash}
+        open={showSplash || signingIn}
+        ready={Boolean(redirectTo)}
         onDone={() => {
           if (!redirectTo) return;
           // In-app navigate — session memory (acceptSession) rehti hai.

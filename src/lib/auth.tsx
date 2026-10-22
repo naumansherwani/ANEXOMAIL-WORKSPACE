@@ -111,7 +111,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const query = useQuery<Session | null, ApiError>({
     queryKey: ["auth", "session"],
     queryFn: async () => {
-      if (!sessionToken.get()) return null;
+      const tokenAtStart = sessionToken.get();
+      if (!tokenAtStart) return null;
       // Login-loop fix (21 Oct 2026): server/network ka temporary masla (0 / 429 / 5xx) sign-out NAHI hai —
       // 3 baar retry (backoff). Naye login ke 30 s ke andar pehla 401 bhi ek dafa dobara verify hota hai.
       const JUST = "anexo.login.at";
@@ -144,6 +145,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return s;
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
+          // A fresh sign-in happened while this (old-token) check was in flight: its 401 is about the OLD token.
+          // Never wipe the new token / session because of it — that was the dashboard -> sign-in -> dashboard bounce.
+          if (sessionToken.get() !== tokenAtStart) return queryClient.getQueryData<Session>(["auth", "session"]) ?? null;
           sessionToken.clear();
           lastSession.clear();
           return null;
@@ -183,7 +187,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [queryClient]);
 
   const acceptSession = useCallback(
-    (session: Session) => queryClient.setQueryData(["auth", "session"], session),
+    (session: Session) => {
+      // drop any older in-flight session check (old token) so its late answer can't overwrite this one
+      void queryClient.cancelQueries({ queryKey: ["auth", "session"] });
+      queryClient.setQueryData(["auth", "session"], session);
+    },
     [queryClient],
   );
 

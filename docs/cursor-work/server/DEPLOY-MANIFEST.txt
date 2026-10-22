@@ -89,7 +89,7 @@ src/routeTree.gen.ts 1c65e76769563a02
 src/lib/team.ts 13a8057bc6c41f2c
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
-src/routes/auth.tsx 1112eb029e367710
+src/routes/auth.tsx 27701c96654481e5
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -105,7 +105,7 @@ src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
 src/components/app/mail/SafeMailBody.tsx 294c78c645522697
 src/lib/domains.ts b7201ad41a29e57d
 public/sw.js 048374b66d00be5f
-src/lib/auth.tsx 6f97b8c42c2179e6
+src/lib/auth.tsx 19dd8d875cc9b024
 src/lib/offline.ts 2d14d739b85f7beb
 src/lib/wt-url.ts f63f9f717972c4d4
 src/lib/chat-transport.ts ff0170ac5a2ea988
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 219f8df55f668484
-docs/cursor-work/DONE-DO-NOT-REPEAT.md c481afd0c095152d
+docs/cursor-work/DONE-DO-NOT-REPEAT.md d5c64108f909e8eb
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -409,7 +409,7 @@ docs/cursor-work/sql/proofs/E63_proof.sql 129147963607ddd2
 src/lib/goal.ts b6e5d1520691091f
 src/lib/goal.test.ts 28e54dc55490242f
 docs/cursor-work/server/sql-editor-lint.py 895e3e273b241ebf
-docs/cursor-work/NEXT-TASKS.md 6529fe72e5eb99f5
+docs/cursor-work/NEXT-TASKS.md 6dfd091569fe3965
 docs/cursor-work/sql/E64_history_search.sql 7ddb7677c7bcea7f
 docs/cursor-work/sql/CHECK_E64.sql ca71a721debbe1f4
 docs/cursor-work/sql/proofs/E64_proof.sql 6c20e40a86f780ac
@@ -481,3 +481,4 @@ server/rust/vault_core.rs 5e9fcc37b0658900
 tsconfig.json c1ef8f45d3761d93
 docs/cursor-work/server/brain-identity-install.sh e0fc43bce128938e
 docs/cursor-work/server/brain_identity_patch.py 8dc6987658d51247
+src/components/site/CinematicSplash.tsx 8979da96c3557dfb
