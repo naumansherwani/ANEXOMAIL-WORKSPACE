@@ -56,7 +56,7 @@ export const PERSONAL_TIERS: PersonalTier[] = [
       "Your own @anexomail.com address",
       "5 GB of mail storage",
       "Undo send — 30 seconds to change your mind",
-      "Contacts and a calendar, built in",
+      "Contacts and a full calendar — invites with replies, booking page, world clocks",
       "A simple task list in Work",
       "One search box for your mail and contacts",
       "Works on phone, tablet and laptop",

@@ -74,7 +74,7 @@ src/lib/report-figures.ts 21b05c7f52004220
 src/components/app/work/DecisionLedger.tsx 5db4d0eb44ee890a
 src/components/app/work/PromiseRecovery.tsx a490927789d4bd77
 src/lib/crm.ts feeb568bb3f56236
-src/lib/personal-tiers.ts c7b0b2132daba199
+src/lib/personal-tiers.ts 93056896f08e505c
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
 src/lib/calendar.ts eb9a382bcfb9d8ca
@@ -387,7 +387,7 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a937b086ca57822a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
-docs/cursor-work/CALENDAR-ROADMAP.md 6e28565e51e888cb
+docs/cursor-work/CALENDAR-ROADMAP.md 576d86844bf76ee8
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
