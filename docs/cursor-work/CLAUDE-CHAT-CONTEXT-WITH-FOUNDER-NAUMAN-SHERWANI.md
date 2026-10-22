@@ -654,3 +654,10 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 ## 22 Oct 2026 02:45 — FOUNDER FAISLE (final)
 - B6a GREEN/CLOSED (pending nahi). B6b/c DROPPED (zaroorat nahi). billing@anexomail.com UI se hata (portal banega). alikhan@anexomail.com = real-user test account, Claude login nahi karta.
 - AGLA: B7 (calendar: iMIP reply G26 founder "haan" chahiye, recurrence G27, booking page, 2-way sync/CalDAV) -> B8 (Brain ~504 endpoints -> Rust) -> migration tests -> Basic + Pro package green -> billing portal P2-P8. Discount kabhi nahi; grace 3 din countdown->read-only+sending pause; inbound hamesha.
+
+## 23 Oct 2026 02:50 — SESSION HISAAB (compaction se pehle)
+- Rule 47: founder se SIRF Roman Urdu ("aap"). Commands har push ke saath per-technology inline (Rule 41/46).
+- Calendar 11 mein se 8 GREEN (#0,#1,#2,#3,#4a,#4b,#4c,#9,#10). BAAQI 4: #5 event files (AGLA, shuru), #6 CalDAV, #7 Google (founder verification), #8 Rooms. World clock 2/6 green (W2 live check, W3, W4, W5 baaqi).
+- Tarteeb: calendar #5->#8 + W3-W5 -> founder account -> 6 identity live tests + E72 appeal test (founder karta hai) -> M-series -> G16 billing portal. T-series T1-T11 founder "haan"; T12 (page auto-refresh, naya-version banner) naya, haan baaqi. T1 se pehle ek sawal: M-series se pehle ya baad.
+- Aaj ka push: sirf docs (T12, ledger) — server/web par koi command zaroori nahi. Last code push: 871613d (#4c fixes), pull ho chuka.
+- Founder ki ghalti-nishandahi: English jawab, commands na likhna, stale gap dohrana, Google holiday feed (Hindu observances) — dobara nahi.
