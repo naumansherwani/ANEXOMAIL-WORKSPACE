@@ -343,3 +343,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 20:30 Rule 43 + E65 RLS/advisor sweep (code ready; server run baqi) — dobara mat likho.
 - 22 Oct 20:40: E17 re-run fix (trial_events_event_type_check 23514): constraint ab kabhi chhota nahi hota, maujooda values shamil. Purani E-files dobara chalane se pehle E20+ ke widen ka khayal.
 - 22 Oct 20:55: SQL audit: 55 purani E/CHECK files mein pehli line khali (Rule 42), E20 trial_events constraint never-narrow guard, E2 RLS (Rule 43). E17/E20 dobara chalana ab safe. Purani files ke apne BEGIN/COMMIT aur E28/E36 psql seed jaan-boojh kar chhode (server-only, pehle se chal chuki).
+- 22 Oct 21:05: #10 History search GREEN (live Chrome: 'meeting' -> past meeting row + highlighted snippet + Title/Agenda chips; click -> /app/calendar?date=&event= opens that meeting). Server E64+Rust cal+Web installed (restarts ok, health 200).
