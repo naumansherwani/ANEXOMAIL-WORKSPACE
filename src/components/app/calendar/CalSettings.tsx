@@ -1,10 +1,17 @@
 import { CalendarClock, Plus, Settings2, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { OutsideCalendars } from "@/components/app/calendar/OutsideCalendars";
 import { ClockFormatToggle } from "@/components/app/calendar/TimeBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import {
   DEFAULT_HOURS,
   PALETTE,
@@ -21,7 +28,12 @@ import { cn } from "@/lib/utils";
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
 
 function slug(name: string, taken: string[]): string {
-  const base = name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 16) || "cal";
+  const base =
+    name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 16) || "cal";
   let id = base;
   for (let i = 2; taken.includes(id); i++) id = `${base}-${i}`;
   return id;
@@ -64,7 +76,9 @@ export function CalSettingsButton({ className }: { className?: string }) {
       </SheetTrigger>
       <SheetContent side="right" className="w-full gap-0 overflow-y-auto p-0 sm:max-w-[520px]">
         <SheetTitle className="sr-only">Calendar settings</SheetTitle>
-        <SheetDescription className="sr-only">Layout, clock, calendars, working hours and out of office</SheetDescription>
+        <SheetDescription className="sr-only">
+          Layout, clock, calendars, working hours and out of office
+        </SheetDescription>
         {open && <SettingsBody onDone={() => setOpen(false)} />}
       </SheetContent>
     </Sheet>
@@ -110,7 +124,9 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
           onDone();
         },
         onError: (e) =>
-          notify.failed(e.isNotImplemented ? "Not wired yet" : "Could not save", { description: e.message }),
+          notify.failed(e.isNotImplemented ? "Not wired yet" : "Could not save", {
+            description: e.message,
+          }),
       },
     );
   };
@@ -124,9 +140,15 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
 
       <div className="flex-1 space-y-ax-6 px-ax-4 py-ax-4">
         <section aria-labelledby="cs-look">
-          <p id="cs-look" className="ax-eyebrow">How it looks</p>
+          <p id="cs-look" className="ax-eyebrow">
+            How it looks
+          </p>
           <div className="mt-ax-2 flex flex-wrap items-center gap-x-ax-4 gap-y-2">
-            <div role="group" aria-label="Layout" className="inline-flex overflow-hidden rounded-full border border-border">
+            <div
+              role="group"
+              aria-label="Layout"
+              className="inline-flex overflow-hidden rounded-full border border-border"
+            >
               {(["classic", "expanded"] as const).map((l) => (
                 <button
                   key={l}
@@ -144,12 +166,16 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             </div>
             <ClockFormatToggle />
           </div>
-          <p className="ax-caption mt-1 text-muted-foreground">Times show in {city.city} ({city.iana || "your device's zone"}).</p>
+          <p className="ax-caption mt-1 text-muted-foreground">
+            Times show in {city.city} ({city.iana || "your device's zone"}).
+          </p>
         </section>
 
         <section aria-labelledby="cs-cals">
           <div className="flex items-center">
-            <p id="cs-cals" className="ax-eyebrow">Calendars</p>
+            <p id="cs-cals" className="ax-eyebrow">
+              Calendars
+            </p>
             <Button
               size="sm"
               variant="outline"
@@ -158,7 +184,14 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
               onClick={() =>
                 setCals((c) => [
                   ...c,
-                  { id: slug("calendar", c.map((x) => x.id)), name: "New calendar", color: PALETTE[c.length % PALETTE.length]! },
+                  {
+                    id: slug(
+                      "calendar",
+                      c.map((x) => x.id),
+                    ),
+                    name: "New calendar",
+                    color: PALETTE[c.length % PALETTE.length]!,
+                  },
                 ])
               }
             >
@@ -170,12 +203,20 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             {cals.map((c, i) => (
               <li key={c.id} className="rounded-lg border border-border p-ax-2">
                 <div className="flex items-center gap-2">
-                  <span className="size-3.5 shrink-0 rounded-full" style={{ backgroundColor: c.color }} aria-hidden="true" />
+                  <span
+                    className="size-3.5 shrink-0 rounded-full"
+                    style={{ backgroundColor: c.color }}
+                    aria-hidden="true"
+                  />
                   <Input
                     value={c.name}
                     maxLength={40}
                     aria-label={`Name of calendar ${i + 1}`}
-                    onChange={(e) => setCals((all) => all.map((x) => (x.id === c.id ? { ...x, name: e.target.value } : x)))}
+                    onChange={(e) =>
+                      setCals((all) =>
+                        all.map((x) => (x.id === c.id ? { ...x, name: e.target.value } : x)),
+                      )
+                    }
                     className="h-9 text-base sm:text-sm"
                   />
                   <button
@@ -188,7 +229,11 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
                     <Trash2 className="size-3.5" />
                   </button>
                 </div>
-                <div role="radiogroup" aria-label={`Colour of ${c.name}`} className="mt-2 flex flex-wrap gap-1.5">
+                <div
+                  role="radiogroup"
+                  aria-label={`Colour of ${c.name}`}
+                  className="mt-2 flex flex-wrap gap-1.5"
+                >
                   {PALETTE.map((p) => (
                     <button
                       key={p}
@@ -196,8 +241,13 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
                       role="radio"
                       aria-checked={c.color === p}
                       aria-label={p}
-                      onClick={() => setCals((all) => all.map((x) => (x.id === c.id ? { ...x, color: p } : x)))}
-                      className={cn("ax-press size-6 rounded-full border-2", c.color === p ? "border-foreground" : "border-transparent")}
+                      onClick={() =>
+                        setCals((all) => all.map((x) => (x.id === c.id ? { ...x, color: p } : x)))
+                      }
+                      className={cn(
+                        "ax-press size-6 rounded-full border-2",
+                        c.color === p ? "border-foreground" : "border-transparent",
+                      )}
                       style={{ backgroundColor: p }}
                     />
                   ))}
@@ -206,13 +256,16 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             ))}
           </ul>
           <p className="ax-caption mt-1 text-muted-foreground">
-            Pick a calendar when you create a meeting. Deleting one keeps its meetings; they show in the default colour.
+            Pick a calendar when you create a meeting. Deleting one keeps its meetings; they show in
+            the default colour.
           </p>
         </section>
 
         <section aria-labelledby="cs-hours">
           <div className="flex items-center">
-            <p id="cs-hours" className="ax-eyebrow">Working hours</p>
+            <p id="cs-hours" className="ax-eyebrow">
+              Working hours
+            </p>
             <Button
               size="sm"
               variant="outline"
@@ -220,7 +273,9 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
               onClick={() =>
                 setHours((h) => ({
                   ...h,
-                  days: h.days.map((d, i) => (i < 5 ? { on: true, start: h.days[0]!.start, end: h.days[0]!.end } : d)),
+                  days: h.days.map((d, i) =>
+                    i < 5 ? { on: true, start: h.days[0]!.start, end: h.days[0]!.end } : d,
+                  ),
                 }))
               }
             >
@@ -229,7 +284,10 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
           </div>
           <ul className="mt-ax-2 divide-y divide-border rounded-lg border border-border">
             {hours.days.map((d, i) => (
-              <li key={DAYS[i]} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-ax-3 py-ax-2">
+              <li
+                key={DAYS[i]}
+                className="flex flex-wrap items-center gap-x-3 gap-y-1 px-ax-3 py-ax-2"
+              >
                 <label className="flex min-w-[7.5rem] items-center gap-2 text-[13px] font-semibold text-foreground">
                   <input
                     type="checkbox"
@@ -264,7 +322,8 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             ))}
           </ul>
           <p className="ax-caption mt-1 text-muted-foreground">
-            Outside these hours the week grid is shaded, and you get a gentle warning when you schedule there.
+            Outside these hours the week grid is shaded, and you get a gentle warning when you
+            schedule there.
           </p>
           <button
             type="button"
@@ -277,7 +336,9 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
 
         <section aria-labelledby="cs-ooo">
           <div className="flex items-center">
-            <p id="cs-ooo" className="ax-eyebrow">Out of office</p>
+            <p id="cs-ooo" className="ax-eyebrow">
+              Out of office
+            </p>
             <Button
               size="sm"
               variant="outline"
@@ -294,7 +355,9 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             </Button>
           </div>
           {ooo.length === 0 ? (
-            <p className="ax-caption mt-ax-2 text-muted-foreground">Nothing planned. Add a holiday or a trip and those days are marked.</p>
+            <p className="ax-caption mt-ax-2 text-muted-foreground">
+              Nothing planned. Add a holiday or a trip and those days are marked.
+            </p>
           ) : (
             <ul className="mt-ax-2 space-y-ax-2">
               {ooo.map((p, i) => (
@@ -304,7 +367,19 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
                       type="date"
                       value={p.from}
                       aria-label="From"
-                      onChange={(e) => setOoo((o) => o.map((x, j) => (j === i ? { ...x, from: e.target.value, to: x.to < e.target.value ? e.target.value : x.to } : x)))}
+                      onChange={(e) =>
+                        setOoo((o) =>
+                          o.map((x, j) =>
+                            j === i
+                              ? {
+                                  ...x,
+                                  from: e.target.value,
+                                  to: x.to < e.target.value ? e.target.value : x.to,
+                                }
+                              : x,
+                          ),
+                        )
+                      }
                       className="ax-focus h-9 rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
                     />
                     <span className="text-[12px] text-muted-foreground">to</span>
@@ -313,7 +388,9 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
                       value={p.to}
                       min={p.from}
                       aria-label="To"
-                      onChange={(e) => setOoo((o) => o.map((x, j) => (j === i ? { ...x, to: e.target.value } : x)))}
+                      onChange={(e) =>
+                        setOoo((o) => o.map((x, j) => (j === i ? { ...x, to: e.target.value } : x)))
+                      }
                       className="ax-focus h-9 rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
                     />
                     <button
@@ -330,7 +407,9 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
                     maxLength={200}
                     placeholder="Note (optional), e.g. Eid break"
                     aria-label="Note"
-                    onChange={(e) => setOoo((o) => o.map((x, j) => (j === i ? { ...x, note: e.target.value } : x)))}
+                    onChange={(e) =>
+                      setOoo((o) => o.map((x, j) => (j === i ? { ...x, note: e.target.value } : x)))
+                    }
                     className="mt-2 h-9 text-base sm:text-sm"
                   />
                 </li>
@@ -338,10 +417,14 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             </ul>
           )}
         </section>
+
+        <OutsideCalendars />
       </div>
 
       <footer className="sticky bottom-0 flex items-center gap-2 border-t border-border bg-background/95 px-ax-4 py-ax-3 backdrop-blur">
-        <p role="alert" className="min-w-0 flex-1 text-[12px] text-danger">{err ?? ""}</p>
+        <p role="alert" className="min-w-0 flex-1 text-[12px] text-danger">
+          {err ?? ""}
+        </p>
         <Button variant="outline" onClick={onDone}>
           Cancel
         </Button>

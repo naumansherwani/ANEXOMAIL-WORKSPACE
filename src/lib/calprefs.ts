@@ -27,7 +27,9 @@ export const PALETTE = [
   "#64748b", // slate
 ] as const;
 
-export const DEFAULT_CALENDARS: CalendarDef[] = [{ id: "main", name: "My calendar", color: PALETTE[0] }];
+export const DEFAULT_CALENDARS: CalendarDef[] = [
+  { id: "main", name: "My calendar", color: PALETTE[0] },
+];
 
 export const DEFAULT_HOURS: WorkHours = {
   days: Array.from({ length: 7 }, (_, i) => ({ on: i < 5, start: "09:00", end: "17:00" })),
@@ -75,7 +77,9 @@ export function useCalPrefs(): CalPrefs {
   const q = useQuery<Extra, ApiError>({
     queryKey: KEY,
     queryFn: async () => {
-      const res = await rpcOrRest<{ extra?: Extra }>("locale.uipref", { path: "/api/locale/uipref" });
+      const res = await rpcOrRest<{ extra?: Extra }>("locale.uipref", {
+        path: "/api/locale/uipref",
+      });
       return res.extra ?? {};
     },
     retry: false,
@@ -109,14 +113,27 @@ export function useSaveCalPrefs() {
 
 export function useSetEventMeta() {
   const qc = useQueryClient();
-  return useMutation<unknown, ApiError, { id: string; calendar_key?: string | null; remind_min?: number[] | null }>({
-    mutationFn: (p) => rpcOrRest("calendar.meta.set", { path: `/api/calendar/events/${p.id}/meta`, method: "PUT", body: p }, p),
+  return useMutation<
+    unknown,
+    ApiError,
+    { id: string; calendar_key?: string | null; remind_min?: number[] | null }
+  >({
+    mutationFn: (p) =>
+      rpcOrRest(
+        "calendar.meta.set",
+        { path: `/api/calendar/events/${p.id}/meta`, method: "PUT", body: p },
+        p,
+      ),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["calendar"] }),
   });
 }
 
 /** The colour an event is drawn in, or undefined = the default look. */
-export function eventColor(ev: Pick<CalendarEvent, "calendar_key">, calendars: CalendarDef[]): string | undefined {
+export function eventColor(
+  ev: Pick<CalendarEvent, "calendar_key" | "color">,
+  calendars: CalendarDef[],
+): string | undefined {
+  if (ev.color) return ev.color;
   if (!ev.calendar_key) return undefined;
   return calendars.find((c) => c.id === ev.calendar_key)?.color;
 }

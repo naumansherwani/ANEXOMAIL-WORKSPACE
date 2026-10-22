@@ -22,7 +22,8 @@ Compact ke baad: pehle AGENTS.md Rule 37/38/40, phir `docs/cursor-work/CALENDAR-
 | World-clock pins (kai shehar, account-synced) | GREEN (desktop) | haan |
 | Team availability matrix (sab ke zones mein behtareen waqt, asli minutes) | CODE+SQL/Rust/Web live, live check baaki | **GREEN ke baad** |
 | Outcome colours (#9), History search (#10) | design | nahi, bane nahi |
-| CalDAV, Google sync, ICS subscribe, event files, rooms | TODO | nahi |
+| ICS subscribe (#4c) | CODE READY 23 Oct (E73, Rust ics, Web) | nahi |
+| CalDAV, Google sync, event files, rooms | TODO | nahi |
 
 ## 3. Landing / plans copy (draft; lagane se pehle founder "haan")
 - Landing card (index.tsx, "Calendar"): "Meetings jo thread ke saath rehti hain. Invite bhejein, Accept/Decline seedha calendar mein aaye, aur booking page se log khud waqt chunein."

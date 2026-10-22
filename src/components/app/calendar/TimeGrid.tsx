@@ -2,6 +2,7 @@ import { Repeat } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { clockRange, useUpdateMeeting, type CalendarEvent } from "@/lib/calendar";
+import { isExternalId } from "@/lib/calendar-subs";
 import { notify } from "@/lib/notify";
 import { eventColor, oooOn, useCalPrefs, workWindow } from "@/lib/calprefs";
 import { GOAL_DOT, GOAL_WORD, goalTone } from "@/lib/goal";
@@ -12,7 +13,11 @@ import { cn } from "@/lib/utils";
 const HOUR = 52; // px per hour
 
 function sameDay(a: Date, b: Date) {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
 }
 
 type Drag = {
@@ -25,7 +30,12 @@ type Drag = {
   moved: boolean;
 };
 
-type Pending = { id: string; title: string; patch: { starts_at: string; duration_minutes: number }; guests: number };
+type Pending = {
+  id: string;
+  title: string;
+  patch: { starts_at: string; duration_minutes: number };
+  guests: number;
+};
 
 /**
  * Real week time-grid (desktop): hour rows, a live "now" line, overlapping events share width,
@@ -52,7 +62,9 @@ export function TimeGrid({
   const update = useUpdateMeeting();
   // Optimistic: after a drop the block stays where it was dropped until the server's list catches up
   // (otherwise it jumps back for a second). Cleared when the server copy matches, or on error.
-  const [opt, setOpt] = useState<Record<string, { starts_at: string; duration_minutes: number }>>({});
+  const [opt, setOpt] = useState<Record<string, { starts_at: string; duration_minutes: number }>>(
+    {},
+  );
   const events = useMemo(
     () =>
       serverEvents.map((e) => {
@@ -61,7 +73,9 @@ export function TimeGrid({
         return {
           ...e,
           starts_at: o.starts_at,
-          ends_at: new Date(new Date(o.starts_at).getTime() + o.duration_minutes * 60000).toISOString(),
+          ends_at: new Date(
+            new Date(o.starts_at).getTime() + o.duration_minutes * 60000,
+          ).toISOString(),
         };
       }),
     [serverEvents, opt],
@@ -128,9 +142,15 @@ export function TimeGrid({
     setPending(null);
     setOpt((cur) => ({ ...cur, [ev.id]: patch }));
     update.mutate(
-      { id: ev.id, ...patch, notify: notifyGuests, ...(ev.recurring && ev.id.includes("~") ? { scope: "this" as const } : {}) },
       {
-        onSuccess: () => notify.done("Rescheduled", notifyGuests ? "Guests were sent the update." : undefined),
+        id: ev.id,
+        ...patch,
+        notify: notifyGuests,
+        ...(ev.recurring && ev.id.includes("~") ? { scope: "this" as const } : {}),
+      },
+      {
+        onSuccess: () =>
+          notify.done("Rescheduled", notifyGuests ? "Guests were sent the update." : undefined),
         onError: (e) => {
           setOpt((cur) => {
             const n = { ...cur };
@@ -166,12 +186,19 @@ export function TimeGrid({
     const d = dragRef.current;
     setDrag(null);
     if (!d) return;
+    // Outside-calendar events are read-only: a click opens them, a drag never moves them.
+    if (isExternalId(ev.id)) {
+      if (!d.moved) onSelect(ev.id);
+      return;
+    }
     if (!d.moved || (d.dDay === 0 && d.dMin === 0)) {
       if (!d.moved) onSelect(ev.id);
       return;
     }
     const sMin = minutesOfDay(ev.starts_at);
-    const dur = Math.round((new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000);
+    const dur = Math.round(
+      (new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000,
+    );
     const base = new Date(ev.starts_at);
     base.setHours(0, 0, 0, 0);
     const patch =
@@ -229,13 +256,18 @@ export function TimeGrid({
       )}
 
       {/* day headers */}
-      <div className="grid border-b border-border pb-1.5" style={{ gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}>
+      <div
+        className="grid border-b border-border pb-1.5"
+        style={{ gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}
+      >
         <span />
         {days.map((d, i) => {
           const today = sameDay(d, now);
           return (
             <div key={d.toISOString()} className="flex flex-col items-center gap-0.5">
-              <span className="text-[10px] font-semibold uppercase text-muted-foreground">{d.toLocaleDateString(undefined, { weekday: "short" })}</span>
+              <span className="text-[10px] font-semibold uppercase text-muted-foreground">
+                {d.toLocaleDateString(undefined, { weekday: "short" })}
+              </span>
               <span
                 className={cn(
                   "flex size-6 items-center justify-center rounded-full text-sm font-bold",
@@ -250,7 +282,10 @@ export function TimeGrid({
       </div>
 
       {allDay.length > 0 && (
-        <div className="grid gap-px border-b border-border py-1" style={{ gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}>
+        <div
+          className="grid gap-px border-b border-border py-1"
+          style={{ gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}
+        >
           <span className="self-center text-[9px] uppercase text-muted-foreground">All day</span>
           {days.map((d) => (
             <div key={d.toISOString()} className="min-w-0 space-y-0.5 px-0.5">
@@ -271,8 +306,17 @@ export function TimeGrid({
         </div>
       )}
 
-      <div ref={scroller} className={cn("relative overflow-y-auto overscroll-contain", scrollClassName)}>
-        <div className="grid" style={{ height: 24 * HOUR, gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))` }}>
+      <div
+        ref={scroller}
+        className={cn("relative overflow-y-auto overscroll-contain", scrollClassName)}
+      >
+        <div
+          className="grid"
+          style={{
+            height: 24 * HOUR,
+            gridTemplateColumns: `44px repeat(${count}, minmax(0, 1fr))`,
+          }}
+        >
           <div className="relative">
             {Array.from({ length: 24 }, (_, h) => (
               <span
@@ -284,7 +328,14 @@ export function TimeGrid({
               </span>
             ))}
           </div>
-          <div ref={colsRef} className="relative grid" style={{ gridColumn: `2 / span ${count}`, gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}>
+          <div
+            ref={colsRef}
+            className="relative grid"
+            style={{
+              gridColumn: `2 / span ${count}`,
+              gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))`,
+            }}
+          >
             {days.map((d) => {
               const placed = packDay(
                 timed
@@ -293,7 +344,9 @@ export function TimeGrid({
                     const s = minutesOfDay(ev.starts_at);
                     const dur = Math.max(
                       15,
-                      Math.round((new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000),
+                      Math.round(
+                        (new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000,
+                      ),
                     );
                     return { ev, start: s, end: s + dur };
                   }),
@@ -323,11 +376,20 @@ export function TimeGrid({
                       );
                     if (w === undefined) return null;
                     const shade = "pointer-events-none absolute inset-x-0 z-0 bg-foreground/[0.05]";
-                    if (w === null) return <div className={shade} style={{ top: 0, bottom: 0 }} aria-hidden />;
+                    if (w === null)
+                      return <div className={shade} style={{ top: 0, bottom: 0 }} aria-hidden />;
                     return (
                       <>
-                        <div className={shade} style={{ top: 0, height: (w.start / 60) * HOUR }} aria-hidden />
-                        <div className={shade} style={{ top: (w.end / 60) * HOUR, bottom: 0 }} aria-hidden />
+                        <div
+                          className={shade}
+                          style={{ top: 0, height: (w.start / 60) * HOUR }}
+                          aria-hidden
+                        />
+                        <div
+                          className={shade}
+                          style={{ top: (w.end / 60) * HOUR, bottom: 0 }}
+                          aria-hidden
+                        />
                       </>
                     );
                   })()}
@@ -345,7 +407,9 @@ export function TimeGrid({
                     const s = minutesOfDay(ev.starts_at);
                     const dur = Math.max(
                       15,
-                      Math.round((new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000),
+                      Math.round(
+                        (new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000,
+                      ),
                     );
                     const color = eventColor(ev, prefs.calendars);
                     const tone = goalTone(ev);
@@ -353,7 +417,10 @@ export function TimeGrid({
                     const dMin = dragging ? drag!.dMin : 0;
                     const dDay = dragging && drag!.mode === "move" ? drag!.dDay : 0;
                     const top = ((drag?.mode === "move" && dragging ? s + dMin : s) / 60) * HOUR;
-                    const h = ((drag?.mode === "resize" && dragging ? Math.max(15, dur + dMin) : dur) / 60) * HOUR;
+                    const h =
+                      ((drag?.mode === "resize" && dragging ? Math.max(15, dur + dMin) : dur) /
+                        60) *
+                      HOUR;
                     return (
                       <div
                         key={ev.id}
@@ -375,7 +442,9 @@ export function TimeGrid({
                           dragging && "z-30 cursor-grabbing opacity-90 ring-1 ring-cyan-accent",
                         )}
                         style={{
-                          ...(color ? { backgroundColor: `${color}26`, borderLeft: `3px solid ${color}` } : null),
+                          ...(color
+                            ? { backgroundColor: `${color}26`, borderLeft: `3px solid ${color}` }
+                            : null),
                           top,
                           height: Math.max(h - 2, 18),
                           left: `calc(${(col / cols) * 100}% + 1px)`,
@@ -386,12 +455,20 @@ export function TimeGrid({
                         {tone && (
                           <span
                             title={GOAL_WORD[tone]}
-                            className={cn("absolute right-1 top-1 size-2 rounded-full", GOAL_DOT[tone])}
+                            className={cn(
+                              "absolute right-1 top-1 size-2 rounded-full",
+                              GOAL_DOT[tone],
+                            )}
                             aria-hidden="true"
                           />
                         )}
                         <span className="block truncate text-[11px] font-semibold leading-tight text-foreground">
-                          {ev.recurring ? <Repeat className="mr-0.5 inline size-2.5 opacity-70" aria-label="Repeats" /> : null}
+                          {ev.recurring ? (
+                            <Repeat
+                              className="mr-0.5 inline size-2.5 opacity-70"
+                              aria-label="Repeats"
+                            />
+                          ) : null}
                           {ev.title}
                         </span>
                         {h >= 34 && (

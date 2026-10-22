@@ -38,7 +38,11 @@ export type RsvpResponse = "needs_action" | "accepted" | "tentative" | "declined
 export type InviteStatus = "not_sent" | "sent" | "failed";
 
 /** What the engine reports after it tried to e-mail the invitations — never guessed in the browser. */
-export type InviteResult = { address: string; status: "sent" | "failed" | "skipped"; error?: string };
+export type InviteResult = {
+  address: string;
+  status: "sent" | "failed" | "skipped";
+  error?: string;
+};
 export type InviteSummary = {
   engine?: string;
   sent: number;
@@ -89,6 +93,8 @@ export type CalendarEvent = {
   timezone?: string | null;
   /** Which of the viewer's calendars (name + colour) the meeting sits in — E58. */
   calendar_key?: string | null;
+  /** Only for events from an outside calendar you follow (#4c): its own colour. Read-only rows. */
+  color?: string | null;
   /** Reminders: minutes before the start — E58. */
   remind_min?: number[] | null;
   /** Outcome colours (E63): the organiser's one-line aim, and the tap that closed it. See `lib/goal.ts`. */

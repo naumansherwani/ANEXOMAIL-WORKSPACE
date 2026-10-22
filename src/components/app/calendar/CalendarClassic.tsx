@@ -29,6 +29,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Availability } from "@/components/app/calendar/Availability";
 import { CostMeter, LoadBar, apiHref } from "@/components/app/calendar/Bits";
 import { EventDetail } from "@/components/app/calendar/EventDetail";
+import { ExternalEventDetail } from "@/components/app/calendar/OutsideCalendars";
 import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
 import { TimeGrid } from "@/components/app/calendar/TimeGrid";
@@ -51,6 +52,7 @@ import {
   weekRange,
   type CalendarEvent,
 } from "@/lib/calendar";
+import { isExternalId, lookup, mergeEvents, useSubEvents } from "@/lib/calendar-subs";
 import { useLocale } from "@/lib/i18n";
 import { jumpAnchor, useCalendarJump } from "@/lib/calendar-jump";
 import { eventColor, oooOn, useCalPrefs } from "@/lib/calprefs";
@@ -60,26 +62,40 @@ import { cn } from "@/lib/utils";
 /* ─── constants ─────────────────────────────────────────────────── */
 const DAY_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const MONTH_FULL = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December",
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
 
 /* ─── event kind → color ─────────────────────────────────────────── */
 const KIND_COLOR: Record<string, string> = {
   meeting: "bg-primary/80 text-primary-foreground",
-  focus:   "bg-cyan-accent/80 text-background border-dashed",
-  hold:    "bg-secondary text-muted-foreground border border-border",
-  personal:"bg-emerald-500/70 text-white",
+  focus: "bg-cyan-accent/80 text-background border-dashed",
+  hold: "bg-secondary text-muted-foreground border border-border",
+  personal: "bg-emerald-500/70 text-white",
 };
 const KIND_DOT: Record<string, string> = {
   meeting: "bg-primary",
-  focus:   "bg-cyan-accent",
-  hold:    "bg-secondary border border-border",
-  personal:"bg-emerald-500",
+  focus: "bg-cyan-accent",
+  hold: "bg-secondary border border-border",
+  personal: "bg-emerald-500",
 };
 
 function sameDay(a: Date, b: Date) {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+  return (
+    a.getFullYear() === b.getFullYear() &&
+    a.getMonth() === b.getMonth() &&
+    a.getDate() === b.getDate()
+  );
 }
 
 /* ─── Month view ─────────────────────────────────────────────────── */
@@ -108,7 +124,10 @@ function MonthView({
       {/* Day headers */}
       <div className="mb-1 grid grid-cols-7 gap-px">
         {DAY_SHORT.map((d) => (
-          <div key={d} className="pb-1 text-center text-[10px] font-semibold uppercase text-muted-foreground">
+          <div
+            key={d}
+            className="pb-1 text-center text-[10px] font-semibold uppercase text-muted-foreground"
+          >
             {d}
           </div>
         ))}
@@ -139,12 +158,16 @@ function MonthView({
                 isToday ? "border-primary/40 bg-primary/5" : "border-border hover:border-border/80",
                 away && !isToday && "bg-amber-500/10",
               )}
-              title={away ? (away.note ? `Out of office — ${away.note}` : "Out of office") : undefined}
+              title={
+                away ? (away.note ? `Out of office — ${away.note}` : "Out of office") : undefined
+              }
             >
-              <span className={cn(
-                "flex size-6 items-center justify-center rounded-full text-[12px] font-bold",
-                isToday ? "bg-primary text-primary-foreground" : "text-foreground",
-              )}>
+              <span
+                className={cn(
+                  "flex size-6 items-center justify-center rounded-full text-[12px] font-bold",
+                  isToday ? "bg-primary text-primary-foreground" : "text-foreground",
+                )}
+              >
                 {dayNum}
               </span>
               {dayEvents.length > 0 && (
@@ -153,11 +176,17 @@ function MonthView({
                     <span
                       key={ev.id}
                       className={cn("size-1.5 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)}
-                      style={eventColor(ev, prefs.calendars) ? { backgroundColor: eventColor(ev, prefs.calendars) } : undefined}
+                      style={
+                        eventColor(ev, prefs.calendars)
+                          ? { backgroundColor: eventColor(ev, prefs.calendars) }
+                          : undefined
+                      }
                     />
                   ))}
                   {dayEvents.length > 3 && (
-                    <span className="text-[9px] font-semibold leading-none text-muted-foreground">+{dayEvents.length - 3}</span>
+                    <span className="text-[9px] font-semibold leading-none text-muted-foreground">
+                      +{dayEvents.length - 3}
+                    </span>
                   )}
                 </span>
               )}
@@ -191,7 +220,13 @@ function DayView({
     <div className="p-ax-4">
       {dayEvents.length === 0 ? (
         <div className="flex flex-col items-center gap-2 py-8">
-          <Fx3D scene="gem" variant="calendar" className="pointer-events-none h-24 w-28" fallback={<CalendarDays className="size-8 text-muted-foreground/20" />} label="Empty calendar" />
+          <Fx3D
+            scene="gem"
+            variant="calendar"
+            className="pointer-events-none h-24 w-28"
+            fallback={<CalendarDays className="size-8 text-muted-foreground/20" />}
+            label="Empty calendar"
+          />
           <p className="text-[12px] text-muted-foreground/50">Nothing scheduled today</p>
         </div>
       ) : (
@@ -208,7 +243,9 @@ function DayView({
               transition={{ duration: 0.18, delay: i * 0.04 }}
               className={cn(
                 "ax-press relative flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-all",
-                selectedId === ev.id ? "border-primary/50 bg-primary/5" : "border-border hover:bg-secondary/50",
+                selectedId === ev.id
+                  ? "border-primary/50 bg-primary/5"
+                  : "border-border hover:bg-secondary/50",
               )}
             >
               {/* Time */}
@@ -218,14 +255,23 @@ function DayView({
                 </span>
               </div>
               {/* Dot */}
-              <div className={cn("mt-1 size-2 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} />
+              <div
+                className={cn(
+                  "mt-1 size-2 shrink-0 rounded-full",
+                  KIND_DOT[ev.kind] ?? KIND_DOT.meeting,
+                )}
+              />
               {/* Content */}
               <div className="min-w-0 flex-1">
-                <p className={cn(
-                  "text-[13px] font-bold text-foreground",
-                  ev.status === "cancelled" ? "line-through opacity-50" : "",
-                )}>
-                  {ev.recurring ? <Repeat className="mr-1 inline size-3 opacity-70" aria-label="Repeats" /> : null}
+                <p
+                  className={cn(
+                    "text-[13px] font-bold text-foreground",
+                    ev.status === "cancelled" ? "line-through opacity-50" : "",
+                  )}
+                >
+                  {ev.recurring ? (
+                    <Repeat className="mr-1 inline size-3 opacity-70" aria-label="Repeats" />
+                  ) : null}
                   {ev.title}
                 </p>
                 <div className="mt-0.5 flex flex-wrap items-center gap-2 text-[11px] text-muted-foreground">
@@ -314,8 +360,16 @@ function AgendaView({
                 isToday ? "text-primary" : "text-muted-foreground",
               )}
             >
-              {isToday && <span className="rounded-full bg-primary px-1.5 py-0.5 text-[9px] text-primary-foreground">Today</span>}
-              {day.toLocaleDateString(undefined, { weekday: "short", day: "numeric", month: "short" })}
+              {isToday && (
+                <span className="rounded-full bg-primary px-1.5 py-0.5 text-[9px] text-primary-foreground">
+                  Today
+                </span>
+              )}
+              {day.toLocaleDateString(undefined, {
+                weekday: "short",
+                day: "numeric",
+                month: "short",
+              })}
             </h3>
             <ul className="space-y-1.5">
               {items.map((ev) => (
@@ -325,16 +379,22 @@ function AgendaView({
                     onClick={() => onSelect(ev.id)}
                     className={cn(
                       "ax-press ax-tap flex w-full items-start gap-3 rounded-xl border p-3 text-left transition-colors",
-                      selectedId === ev.id ? "border-primary/50 bg-primary/5" : "border-border hover:bg-secondary/50",
+                      selectedId === ev.id
+                        ? "border-primary/50 bg-primary/5"
+                        : "border-border hover:bg-secondary/50",
                       ev.status === "cancelled" ? "opacity-50" : "",
                     )}
                   >
                     <span className="w-14 shrink-0 pt-0.5 text-[11px] font-semibold whitespace-nowrap tabular-nums text-muted-foreground">
-                      {ev.all_day
-                        ? "All day"
-                        : fmtTime(ev.starts_at)}
+                      {ev.all_day ? "All day" : fmtTime(ev.starts_at)}
                     </span>
-                    <span className={cn("mt-1.5 size-2 shrink-0 rounded-full", KIND_DOT[ev.kind] ?? KIND_DOT.meeting)} aria-hidden />
+                    <span
+                      className={cn(
+                        "mt-1.5 size-2 shrink-0 rounded-full",
+                        KIND_DOT[ev.kind] ?? KIND_DOT.meeting,
+                      )}
+                      aria-hidden
+                    />
                     <span className="min-w-0 flex-1">
                       <span
                         className={cn(
@@ -342,7 +402,9 @@ function AgendaView({
                           ev.status === "cancelled" ? "line-through" : "",
                         )}
                       >
-                        {ev.recurring ? <Repeat className="mr-1 inline size-3 opacity-70" aria-label="Repeats" /> : null}
+                        {ev.recurring ? (
+                          <Repeat className="mr-1 inline size-3 opacity-70" aria-label="Repeats" />
+                        ) : null}
                         {ev.title}
                       </span>
                       <span className="mt-0.5 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted-foreground">
@@ -380,7 +442,11 @@ function AgendaView({
 
 /* ─── Calendar header stats ──────────────────────────────────────── */
 function WeekStats({ events }: { events: CalendarEvent[] }) {
-  const totalMins = events.reduce((s, e) => s + Math.max(0, (new Date(e.ends_at).getTime() - new Date(e.starts_at).getTime()) / 60000), 0);
+  const totalMins = events.reduce(
+    (s, e) =>
+      s + Math.max(0, (new Date(e.ends_at).getTime() - new Date(e.starts_at).getTime()) / 60000),
+    0,
+  );
   const cost = events.reduce((s, e) => s + (e.cost?.total ?? 0), 0);
   const conflicts = events.filter((e) => e.conflict).length;
   if (events.length === 0) return null;
@@ -390,9 +456,7 @@ function WeekStats({ events }: { events: CalendarEvent[] }) {
         {events.length} events · {minutesLabel(totalMins)}
       </span>
       {cost > 0 && (
-        <span className="ax-caption text-muted-foreground">
-          £{cost.toLocaleString()} cost
-        </span>
+        <span className="ax-caption text-muted-foreground">£{cost.toLocaleString()} cost</span>
       )}
       {conflicts > 0 && (
         <span className="ax-caption font-semibold text-destructive">
@@ -439,11 +503,18 @@ export function CalendarClassic() {
   const events = useCalendarEvents({ from: range.from, to: range.to });
   const load = useTeamLoad({ from: range.from, to: range.to });
 
-  const rows = events.data?.events ?? [];
+  // Followed outside calendars (read-only, #4c). If they fail to load the calendar simply shows our own events.
+  const outside = useSubEvents({ from: range.from, to: range.to });
+  const outsideRows = outside.data?.events;
+  const rows = useMemo(
+    () => mergeEvents(events.data?.events ?? [], outsideRows ?? []),
+    [events.data, outsideRows],
+  );
 
   // A repeating meeting's single occurrence was cancelled/moved elsewhere: its "<series>~<time>" id is gone — close the stale detail.
   useEffect(() => {
-    if (!selected.includes("~") || events.isFetching || !events.data) return;
+    if (!selected.includes("~") || isExternalId(selected) || events.isFetching || !events.data)
+      return;
     if (!events.data.events.some((e) => e.id === selected)) setSelected("");
   }, [selected, events.data, events.isFetching]);
 
@@ -458,7 +529,12 @@ export function CalendarClassic() {
 
   const headerLabel = () => {
     if (view === "month") return `${MONTH_FULL[anchor.getMonth()]} ${anchor.getFullYear()}`;
-    if (view === "day") return anchor.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+    if (view === "day")
+      return anchor.toLocaleDateString(undefined, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      });
     const wr = weekRange(anchor);
     return `${wr.start.toLocaleDateString(undefined, { day: "numeric", month: "short" })} – ${new Date(wr.end.getTime() - 1).toLocaleDateString(undefined, { day: "numeric", month: "short" })}`;
   };
@@ -531,7 +607,10 @@ export function CalendarClassic() {
           </span>
           <button
             type="button"
-            onClick={() => { setAnchor(new Date()); setSelected(""); }}
+            onClick={() => {
+              setAnchor(new Date());
+              setSelected("");
+            }}
             className="ax-press ax-hit ax-caption rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
           >
             {t("Today")}
@@ -577,7 +656,10 @@ export function CalendarClassic() {
         {/* New meeting form */}
         {composing && (
           <NewMeeting
-            onCreated={(id) => { setComposing(false); setSelected(id); }}
+            onCreated={(id) => {
+              setComposing(false);
+              setSelected(id);
+            }}
             onCancel={() => setComposing(false)}
           />
         )}
@@ -602,7 +684,9 @@ export function CalendarClassic() {
             ) : (
               <ul className="space-y-ax-3">
                 {(load.data?.load ?? []).length === 0 && (
-                  <li className="ax-caption text-muted-foreground">{t("No meetings this period.")}</li>
+                  <li className="ax-caption text-muted-foreground">
+                    {t("No meetings this period.")}
+                  </li>
                 )}
                 {(load.data?.load ?? []).map((person) => (
                   <li key={person.member}>
@@ -610,7 +694,12 @@ export function CalendarClassic() {
                       <span className="min-w-0 flex-1 truncate text-[13px] font-semibold text-foreground">
                         {person.display_name || person.member}
                       </span>
-                      <span className={cn("ax-caption shrink-0", person.overloaded ? "font-bold text-danger" : "text-muted-foreground")}>
+                      <span
+                        className={cn(
+                          "ax-caption shrink-0",
+                          person.overloaded ? "font-bold text-danger" : "text-muted-foreground",
+                        )}
+                      >
                         {minutesLabel(person.meeting_minutes)} · {person.open_tasks} tasks
                       </span>
                     </span>
@@ -626,7 +715,9 @@ export function CalendarClassic() {
           </div>
         ) : events.error ? (
           events.error.isNotImplemented || events.error.code === "no_api_url" ? (
-            <div className="p-ax-4"><NotWired endpoint="GET /api/calendar/events" /></div>
+            <div className="p-ax-4">
+              <NotWired endpoint="GET /api/calendar/events" />
+            </div>
           ) : (
             <ErrorState body={events.error.message} onRetry={() => void events.refetch()} />
           )
@@ -654,10 +745,20 @@ export function CalendarClassic() {
                 />
               )}
               {view === "week" && (
-                <AgendaView start={range.start} events={rows} selectedId={selected} onSelect={setSelected} />
+                <AgendaView
+                  start={range.start}
+                  events={rows}
+                  selectedId={selected}
+                  onSelect={setSelected}
+                />
               )}
               {view === "day" && (
-                <DayView anchor={anchor} events={rows} selectedId={selected} onSelect={setSelected} />
+                <DayView
+                  anchor={anchor}
+                  events={rows}
+                  selectedId={selected}
+                  onSelect={setSelected}
+                />
               )}
             </motion.div>
           </AnimatePresence>
@@ -679,7 +780,22 @@ export function CalendarClassic() {
                 {t("Calendar")}
               </button>
             </div>
-            <EventDetail id={selected} />
+            {isExternalId(selected) ? (
+              (() => {
+                const ext = lookup(outsideRows ?? [], selected);
+                return ext ? (
+                  <ExternalEventDetail event={ext} />
+                ) : (
+                  <EmptyState
+                    icon={<CalendarDays className="size-5" />}
+                    title={t("Event not found")}
+                    body={t("This event is no longer in the calendar you follow.")}
+                  />
+                );
+              })()
+            ) : (
+              <EventDetail id={selected} />
+            )}
           </>
         ) : (
           <div className="flex flex-col gap-ax-5 p-ax-6">
@@ -697,7 +813,9 @@ export function CalendarClassic() {
                 <EmptyState
                   icon={<CalendarDays className="size-5" />}
                   title={t("Pick an event")}
-                  body={t("Open an event from the list to see who is coming, the agenda and your notes.")}
+                  body={t(
+                    "Open an event from the list to see who is coming, the agenda and your notes.",
+                  )}
                 />
               </div>
             )}

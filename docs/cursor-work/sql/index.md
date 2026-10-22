@@ -41,3 +41,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E70 | identity hardening: fingerprint groups (fp_hw/gfx/env), signup HOLD (pending + banned_until), gate (open/hold_matches/approval_all), disposable domains, probation limits | CHECK_E70 | 22 Oct 23:30 READY |
 | E71 | identity: probation ki asli rok (identity_probation_take), session backstop (auth.sessions/refresh_tokens trigger), manzoori ka notice outbox | CHECK_E71 | 23 Oct 00:30 READY |
 | E72 | appeal: statement 20,000 characters (device + sign-up + apna appeal) + evidence files (appeal_evidence*, atomic open_v2, reviewer-only judi files, access log, 90-din safai purge_list/purge_done) | CHECK_E72 | 23 Oct 03:00 READY |
+| E73 | calendar subscriptions (#4c ICS, read-only): calendar_subscriptions + _events RLS ON, URL secret (list sirf host), 10/user, lease-wali due, atomic apply, 30 fail par auto-disable, backoff | CHECK_E73 | 23 Oct READY |
