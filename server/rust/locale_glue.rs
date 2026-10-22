@@ -80,7 +80,7 @@ async fn ui_pref_of(user_id: &str) -> UiPref {
 }
 
 /* ---- extra (E58): calendars, working hours, out-of-office.
- * A patch replaces whole keys (`null` removes one). Only these three keys exist; every value is rebuilt from validated
+ * A patch replaces whole keys (`null` removes one). Only these keys exist (calendars, work_hours, ooo, clocks); every value is rebuilt from validated
  * parts, so nothing the client sends is stored as-is. */
 
 const EXTRA_MAX_BYTES: usize = 15_000;
@@ -151,6 +151,14 @@ fn clean_work_hours(v: &Value) -> Result<Value, String> {
     Ok(Value::Object(res))
 }
 
+/// World-clock pins (#4): rules live in `locale_core::clocks_ok` (unit-tested); here the JSON is checked and rebuilt.
+fn clean_clocks(v: &Value) -> Result<Value, String> {
+    let a = v.as_array().ok_or("clocks must be a list")?;
+    let names: Vec<&str> = a.iter().map(|x| x.as_str().unwrap_or("")).collect();
+    lc::clocks_ok(&names).map_err(|m| m.to_string())?;
+    Ok(Value::Array(names.iter().map(|z| json!(z)).collect()))
+}
+
 fn clean_ooo(v: &Value) -> Result<Value, String> {
     let a = v.as_array().ok_or("ooo must be a list")?;
     if a.len() > 20 {
@@ -211,6 +219,7 @@ fn clean_extra(old: &Map<String, Value>, patch: &Map<String, Value>) -> Result<M
             "work_hours" => clean_work_hours(v)?,
             "ooo" => clean_ooo(v)?,
             "calendars" => clean_calendars(v)?,
+            "clocks" => clean_clocks(v)?,
             _ => return Err(format!("unknown setting '{}'", clean_text(k, 24))),
         };
         out.insert(k.clone(), cleaned);

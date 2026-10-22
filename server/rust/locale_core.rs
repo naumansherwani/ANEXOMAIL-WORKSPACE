@@ -136,3 +136,41 @@ mod tests {
         assert_eq!(rfc3339_utc(4_102_444_800), "2100-01-01T00:00:00Z");
     }
 }
+
+/// World-clock pins: at most 6 IANA-style names (shape only), no duplicates, no path tricks.
+pub fn clocks_ok(names: &[&str]) -> Result<(), &'static str> {
+    if names.len() > 6 {
+        return Err("at most 6 world clocks");
+    }
+    for (i, z) in names.iter().enumerate() {
+        let b = z.as_bytes();
+        let shape = !b.is_empty()
+            && b.len() <= 64
+            && b[0].is_ascii_alphabetic()
+            && b.iter().all(|c| c.is_ascii_alphanumeric() || matches!(c, b'_' | b'/' | b'+' | b'-'))
+            && !z.contains("..");
+        if !shape {
+            return Err("a world clock must be a time zone name like Europe/London");
+        }
+        if names[..i].contains(z) {
+            return Err("the same time zone is pinned twice");
+        }
+    }
+    Ok(())
+}
+
+#[cfg(test)]
+mod clocks_tests {
+    use super::clocks_ok;
+    #[test]
+    fn world_clock_pins() {
+        assert!(clocks_ok(&["Europe/London", "Asia/Karachi", "America/Argentina/Buenos_Aires", "Etc/GMT+5"]).is_ok());
+        assert!(clocks_ok(&[]).is_ok());
+        assert!(clocks_ok(&["A/B", "C/D", "E/F", "G/H", "I/J", "K/L", "M/N"]).is_err(), "7 is too many");
+        assert!(clocks_ok(&["Asia/Karachi", "Asia/Karachi"]).is_err());
+        assert!(clocks_ok(&["../etc/passwd"]).is_err());
+        assert!(clocks_ok(&["Asia/Kar achi"]).is_err());
+        assert!(clocks_ok(&[""]).is_err());
+        assert!(clocks_ok(&["9bad"]).is_err());
+    }
+}

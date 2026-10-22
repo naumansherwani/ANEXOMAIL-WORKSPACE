@@ -35,6 +35,7 @@ import { TimeGrid } from "@/components/app/calendar/TimeGrid";
 import { BookingButton } from "@/components/app/calendar/BookingPage";
 import { CalSettingsButton } from "@/components/app/calendar/CalSettings";
 import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
+import { WorldClocks } from "@/components/app/calendar/WorldClocks";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
@@ -501,6 +502,7 @@ export function CalendarClassic() {
         {/* Live time in the viewer's own place + 12h/24h */}
         <div className="flex flex-wrap items-center gap-2 border-b border-border px-ax-3 py-ax-2">
           <LiveClock />
+          <WorldClocks />
           <ClockFormatToggle className="ml-auto" />
         </div>
 

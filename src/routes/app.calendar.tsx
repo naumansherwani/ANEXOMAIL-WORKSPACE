@@ -36,6 +36,7 @@ import { TimeGrid } from "@/components/app/calendar/TimeGrid";
 import { BookingButton } from "@/components/app/calendar/BookingPage";
 import { CalSettingsButton } from "@/components/app/calendar/CalSettings";
 import { ClockFormatToggle, LayoutToggle, LiveClock } from "@/components/app/calendar/TimeBar";
+import { WorldClocks } from "@/components/app/calendar/WorldClocks";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
@@ -624,6 +625,7 @@ function CalendarExpanded() {
 
         <span className="hidden flex-1 md:block" />
         <LiveClock />
+        <WorldClocks />
         <ClockFormatToggle className="hidden sm:inline-flex" />
         <div className="flex items-center gap-1.5">
           <LayoutToggle className="ax-tap px-2 py-1.5" />

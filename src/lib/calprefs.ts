@@ -55,6 +55,7 @@ type Extra = {
   calendars?: CalendarDef[];
   work_hours?: WorkHours;
   ooo?: OooPeriod[];
+  clocks?: string[];
 };
 
 export type CalPrefs = {
@@ -63,6 +64,8 @@ export type CalPrefs = {
   /** false until the person has saved their own hours — the grid then shows no shading at all. */
   hoursSet: boolean;
   ooo: OooPeriod[];
+  /** World-clock pins (IANA zone names, max 6) — the toolbar shows them next to the live clock. */
+  clocks: string[];
   loaded: boolean;
 };
 
@@ -84,6 +87,7 @@ export function useCalPrefs(): CalPrefs {
     workHours: x.work_hours && x.work_hours.days?.length === 7 ? x.work_hours : DEFAULT_HOURS,
     hoursSet: Boolean(x.work_hours),
     ooo: x.ooo ?? [],
+    clocks: Array.isArray(x.clocks) ? x.clocks.filter((z) => typeof z === "string") : [],
     loaded: q.isSuccess || q.isError,
   };
 }
