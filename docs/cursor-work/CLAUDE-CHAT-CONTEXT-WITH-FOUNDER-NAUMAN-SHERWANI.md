@@ -684,3 +684,5 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - 23 Oct 04:15 — AUDIT test-vs-real DONE (Rule 49 AGENTS.md mein): koi mock/demo data nahi; loophole = passkey chhoot naam-pattern par => E76 registry + Rust + Brain patch (code READY, server run BAAQI: SQL -> Rust -> Brain; founder-commands.md). Founder ne SQL E75 chala di thi (OK) aur home city live GREEN. AGLA: E76 server run, phir W3/W4/W5 -> #6 -> #7 -> #8.
 
 - 23 Oct 04:30 — Home city card UI fix (overlap + alag design) code READY: SettingsScope 'after' prop, card ax-plane style. Web pull baaqi; phir Chrome screenshot se confirm. E76 (SQL->Rust->Brain) bhi baaqi. Founder hukm: CEO mindset, chat context har bade kaam par repo mein.
+
+- 23 Oct 04:45 — E76 v2 advance (account class wall) READY, push ke baad founder SQL->Rust->Brain chalaye (founder-commands.md). Home city UI fix (ffc7464) Web pull baaqi.

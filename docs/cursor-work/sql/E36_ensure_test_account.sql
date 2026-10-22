@@ -151,6 +151,7 @@ begin
     if th is not distinct from h then
       step := '3 address'; result := h || '@anexomail.com pehle se is account ka hai'; return next;
     else
+      if to_regprocedure('public.register_test_account(text,text)') is not null then perform public.register_test_account(em, 'E36 ensure'); end if; -- E76: pehle registry
       r := public.trial_claim_address(uid, h);
       if (r->>'ok') = 'true' then
         step := '3 address'; result := h || '@anexomail.com asli claim se mila'; return next;
