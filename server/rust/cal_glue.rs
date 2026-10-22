@@ -150,6 +150,26 @@ async fn e58_ready() -> bool {
     ok
 }
 
+static E63_READY: AtomicBool = AtomicBool::new(false);
+static E63_CHECKED: std::sync::atomic::AtomicI64 = std::sync::atomic::AtomicI64::new(0);
+
+/// E63 (outcome colours) columns exist? Same pattern as e58_ready: cached once true, re-asked at most once a minute while false.
+async fn e63_ready() -> bool {
+    if E63_READY.load(Ordering::Relaxed) {
+        return true;
+    }
+    let now = now_epoch();
+    if now - E63_CHECKED.load(Ordering::Relaxed) < 60 {
+        return false;
+    }
+    E63_CHECKED.store(now, Ordering::Relaxed);
+    let ok = crate::sb_select("calendar_events?select=goal,goal_state,goal_state_at&limit=1").await.is_ok();
+    if ok {
+        E63_READY.store(true, Ordering::Relaxed);
+    }
+    ok
+}
+
 /// `calendar_key` from a request: short lowercase key or nothing.
 fn calendar_key_of(input: &Value) -> Option<String> {
     opt(input, "calendar_key").filter(|k| {
@@ -549,6 +569,9 @@ fn event_json(ev: &Value, rows: &[Value]) -> Value {
         "timezone": opt(ev, "tz").map(Value::from).unwrap_or(Value::Null),
         "calendar_key": opt(ev, "calendar_key").map(Value::from).unwrap_or(Value::Null),
         "remind_min": ev.get("remind_min").cloned().filter(|v| v.is_array()).unwrap_or(Value::Null),
+        "goal": opt(ev, "goal").map(Value::from).unwrap_or(Value::Null),
+        "goal_state": opt(ev, "goal_state").filter(|g| cal::goal_state_ok(g)).unwrap_or_else(|| "open".into()),
+        "goal_state_at": opt(ev, "goal_state_at").map(Value::from).unwrap_or(Value::Null),
     })
 }
 
@@ -858,6 +881,42 @@ async fn meta_set(me: &Who, input: &Value) -> axum::response::Response {
                 }
                 None => return fail(StatusCode::BAD_REQUEST, "bad_reminders", "Reminders must be a list of minutes"),
             },
+        }
+    }
+    if input.get("goal").is_some() || input.get("goal_state").is_some() {
+        // Outcome colours (#9): one tap = one meeting. A repeating series shares one row, so "achieved" would colour every occurrence — refused, not faked.
+        if !st(&ev, "rrule").is_empty() {
+            return fail(StatusCode::BAD_REQUEST, "goal_single_only", "Outcome tracking is for single meetings. Open one occurrence as its own meeting first.");
+        }
+        if !e63_ready().await {
+            return fail(StatusCode::NOT_IMPLEMENTED, "calendar_e63_sql_missing", "Meeting outcomes need the E63 SQL.");
+        }
+        match input.get("goal") {
+            None => {}
+            Some(Value::Null) => {
+                patch.insert("goal".into(), Value::Null);
+            }
+            Some(v) => match cal::clean_goal(v.as_str().unwrap_or("")) {
+                Ok(g) => {
+                    patch.insert("goal".into(), json!(g));
+                }
+                Err(m) => return fail(StatusCode::BAD_REQUEST, "bad_goal", m),
+            },
+        }
+        if let Some(v) = input.get("goal_state") {
+            let state = v.as_str().unwrap_or("");
+            if !cal::goal_state_ok(state) {
+                return fail(StatusCode::BAD_REQUEST, "bad_goal_state", "State must be open, achieved or missed");
+            }
+            let starts = cal::parse_ts(&st(&ev, "starts_at")).unwrap_or(i64::MAX);
+            if state != "open" && now_epoch() < starts {
+                return fail(StatusCode::BAD_REQUEST, "not_started", "The meeting has not started yet");
+            }
+            patch.insert("goal_state".into(), json!(state));
+            patch.insert(
+                "goal_state_at".into(),
+                if state == "open" { Value::Null } else { json!(cal::fmt_rfc3339(now_epoch())) },
+            );
         }
     }
     if patch.is_empty() {

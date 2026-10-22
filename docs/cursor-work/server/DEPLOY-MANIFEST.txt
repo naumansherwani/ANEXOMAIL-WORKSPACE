@@ -15,7 +15,7 @@ src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
-src/routes/app.calendar.tsx 177bb4d880dbd701
+src/routes/app.calendar.tsx 8413e316652cfd75
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
 src/components/app/compose/ComposeStudio.tsx a301fc7090fe8945
@@ -77,11 +77,11 @@ src/lib/crm.ts feeb568bb3f56236
 src/lib/personal-tiers.ts 93056896f08e505c
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
-src/lib/calendar.ts eb9a382bcfb9d8ca
+src/lib/calendar.ts 6414729f8591af17
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx 9928510bcd696e13
-src/components/app/calendar/EventDetail.tsx df2589d28280c20b
+src/components/app/calendar/EventDetail.tsx 14ac76739c6ae149
 src/components/app/calendar/Guests.tsx 8161b0338fb2fa97
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 126ff4cb28431afd
@@ -117,8 +117,8 @@ src/routes/app.security.history.tsx dbf374ef8e2cab0b
 src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
-server/rust/cal_core.rs 339f850b8633f8e2
-server/rust/cal_glue.rs 178476b918d63c7b
+server/rust/cal_core.rs e3e4f32b97a83064
+server/rust/cal_glue.rs 47fdd8dcea512e30
 AGENTS.md 94bd36c81ddfd26b
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 602eddb8a6bd49bf
+docs/cursor-work/founder/founder-commands.md f5cc573adf44dbdf
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -213,7 +213,7 @@ docs/cursor-work/sql/CHECK_E50.sql 72d0fc43a5848023
 docs/cursor-work/sql/E50_inbound_attachments.sql bd32a96711a7bd75
 server/rust/inbound_attach.rs d9dc2f8c3fde2370
 docs/cursor-work/server/clamd-tcp-fix.sh 796a47bd8f016c72
-docs/cursor-work/MASTER-GAP-LEDGER.md 7cb1453efaddbfc0
+docs/cursor-work/MASTER-GAP-LEDGER.md aa2274ad10f0a1f0
 docs/cursor-work/founder/TECH-MAP.md ddab9ddffb5a6397
 docs/cursor-work/PLAN-3D-PARKED.md 85c1b285f32a8b21
 docs/cursor-work/server/repo-vs-server-audit.sh 74953dc329843ca3
@@ -250,7 +250,7 @@ docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 48ca4e71128
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx bed1f80a069b7de3
+src/components/app/calendar/TimeGrid.tsx 16bf121c449b11fe
 src/lib/plans.ts aed70e46981088a3
 docs/cursor-work/sql/E52_alias_fair_use.sql f0e55c0869763079
 docs/cursor-work/sql/CHECK_E52.sql 65af44120d906898
@@ -387,7 +387,7 @@ server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
 docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a937b086ca57822a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 76e826023896b6fe
-docs/cursor-work/CALENDAR-ROADMAP.md 576d86844bf76ee8
+docs/cursor-work/CALENDAR-ROADMAP.md 671001ee338ee414
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx ed3e4e5009e07fb5
@@ -403,3 +403,8 @@ src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
 src/lib/overlap.ts 6664d73ee9583197
 docs/cursor-work/sql/proofs/E62_proof.sql 9fdb77e89a5d5faf
 docs/claude/CALENDAR-BLUEPRINT.md 457a84a8b905a8df
+docs/cursor-work/sql/E63_event_goal.sql a95d3218c1f29092
+docs/cursor-work/sql/CHECK_E63.sql 1bf87755ae2a2adc
+docs/cursor-work/sql/proofs/E63_proof.sql bde0b243ca5aa468
+src/lib/goal.ts 00a5375bd5c91e39
+src/lib/goal.test.ts 28e54dc55490242f

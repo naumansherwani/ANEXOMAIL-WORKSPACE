@@ -91,6 +91,10 @@ export type CalendarEvent = {
   calendar_key?: string | null;
   /** Reminders: minutes before the start — E58. */
   remind_min?: number[] | null;
+  /** Outcome colours (E63): the organiser's one-line aim, and the tap that closed it. See `lib/goal.ts`. */
+  goal?: string | null;
+  goal_state?: "open" | "achieved" | "missed" | null;
+  goal_state_at?: string | null;
 };
 
 export type GuestRow = {

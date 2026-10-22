@@ -198,6 +198,41 @@ pub fn clean_line(s: &str, max: usize) -> String {
     t.chars().take(max).collect()
 }
 
+/// Outcome colours (#9, E63): the organiser's one-line aim for a meeting. Mirror of SQL `calendar_goal_ok` (never stricter):
+/// 1..=200 characters after trimming, no control characters (a newline/tab is refused, not silently flattened, so the user sees what was kept).
+pub const GOAL_MAX_CHARS: usize = 200;
+
+pub fn clean_goal(s: &str) -> Result<String, &'static str> {
+    let t = s.trim();
+    if t.is_empty() {
+        return Err("Write the aim in a few words");
+    }
+    if t.chars().any(|c| c.is_control()) {
+        return Err("The aim must be a single line");
+    }
+    if t.chars().count() > GOAL_MAX_CHARS {
+        return Err("The aim is too long (200 characters at most)");
+    }
+    Ok(t.to_string())
+}
+
+/// The only three states there are. `open` is the default; the other two are set by the organiser's own tap, never computed.
+pub fn goal_state_ok(s: &str) -> bool {
+    matches!(s, "open" | "achieved" | "missed")
+}
+
+/// "Late" is a fact about the clock plus an untapped state — never a score. `now`, `starts`, `ends` are epoch seconds.
+/// open + not started -> "upcoming"; open + running or ended <24h ago -> "due"; open + ended >=24h ago -> "late"; achieved/missed pass through.
+pub fn goal_tone(state: &str, starts: i64, ends: i64, now: i64) -> &'static str {
+    match state {
+        "achieved" => "achieved",
+        "missed" => "missed",
+        _ if now < starts => "upcoming",
+        _ if now < ends + 86_400 => "due",
+        _ => "late",
+    }
+}
+
 pub fn html_escape(s: &str) -> String {
     let mut o = String::with_capacity(s.len() + 8);
     for c in s.chars() {
@@ -1045,6 +1080,39 @@ mod read_tests {
 
 #[cfg(test)]
 mod tests {
+    #[test]
+    fn goal_is_one_honest_line() {
+        assert_eq!(clean_goal("  Contract signed  ").unwrap(), "Contract signed");
+        assert!(clean_goal("").is_err());
+        assert!(clean_goal("   ").is_err());
+        assert!(clean_goal("a\nb").is_err());
+        assert!(clean_goal("a\tb").is_err());
+        assert!(clean_goal(&"x".repeat(200)).is_ok());
+        assert!(clean_goal(&"x".repeat(201)).is_err());
+        assert!(clean_goal(&"é".repeat(200)).is_ok(), "counts characters, not bytes");
+    }
+
+    #[test]
+    fn goal_states_are_exactly_three() {
+        for ok in ["open", "achieved", "missed"] {
+            assert!(goal_state_ok(ok));
+        }
+        for bad in ["", "done", "Achieved", "late", "yellow"] {
+            assert!(!goal_state_ok(bad));
+        }
+    }
+
+    #[test]
+    fn goal_tone_is_clock_plus_tap_only() {
+        let (s, e) = (1_000_000, 1_003_600);
+        assert_eq!(goal_tone("open", s, e, s - 1), "upcoming");
+        assert_eq!(goal_tone("open", s, e, s), "due");
+        assert_eq!(goal_tone("open", s, e, e + 86_399), "due");
+        assert_eq!(goal_tone("open", s, e, e + 86_400), "late");
+        assert_eq!(goal_tone("achieved", s, e, e + 999_999), "achieved", "a tap beats the clock");
+        assert_eq!(goal_tone("missed", s, e, s - 1), "missed");
+    }
+
     use super::*;
 
     fn ev() -> EventSpec {

@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { useState } from "react";
 import { CalendarDays, Download, ListChecks, Repeat, Sparkles } from "lucide-react";
 
 import { CostMeter, TimeZoneTruthBar, ConflictChip, apiHref } from "@/components/app/calendar/Bits";
@@ -9,9 +10,10 @@ import { EmptyState } from "@/components/app/Panel";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
-import { clockRange, exportPath, useCalendarEvent, usePostOutcome } from "@/lib/calendar";
+import { clockRange, exportPath, useCalendarEvent, usePostOutcome, type CalendarEvent } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
 import { REMINDER_CHOICES, useCalPrefs, useSetEventMeta } from "@/lib/calprefs";
+import { GOAL_DOT, GOAL_MAX, GOAL_WORD, goalTone, useSetGoal } from "@/lib/goal";
 import { humanRrule } from "@/lib/recurrence";
 
 /**
@@ -81,6 +83,8 @@ export function EventDetail({ id }: { id: string }) {
       )}
 
       <Guests event={event} />
+
+      <OutcomeEditor key={event.id} event={event} />
 
       <MetaEditor eventId={event.id} calendarKey={event.calendar_key ?? ""} remind={event.remind_min?.[0] ?? 10} />
 
@@ -232,6 +236,94 @@ function MetaEditor({ eventId, calendarKey, remind }: { eventId: string; calenda
           ))}
         </select>
       </label>
+    </section>
+  );
+}
+
+/** Outcome colours (#9): one line of aim + one tap. The colour on the grid is the clock plus this tap — never a guess. */
+function OutcomeEditor({ event }: { event: CalendarEvent }) {
+  const set = useSetGoal();
+  const [draft, setDraft] = useState(event.goal ?? "");
+  const tone = goalTone(event);
+  const started = new Date(event.starts_at).getTime() <= Date.now();
+  const save = (p: { goal?: string | null; goal_state?: "open" | "achieved" | "missed" }, done: string) =>
+    set.mutate(
+      { id: event.id, ...p },
+      {
+        onSuccess: () => notify.done(done, "Guests were not e-mailed."),
+        onError: (error) => notify.failed("Could not save", { description: error.message }),
+      },
+    );
+  if (event.recurring) {
+    return (
+      <p className="ax-caption mt-ax-5 text-muted-foreground">
+        Outcome colours are for single meetings. A repeating series shares one record, so it is not marked achieved or missed.
+      </p>
+    );
+  }
+  const changed = draft.trim() !== (event.goal ?? "");
+  return (
+    <section className="mt-ax-5" aria-label="Meeting outcome">
+      <div className="flex items-center gap-2">
+        <p className="ax-eyebrow">Aim</p>
+        {tone && (
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-border px-2 py-0.5 text-[11px] font-semibold text-muted-foreground">
+            <span className={`size-2 rounded-full ${GOAL_DOT[tone]}`} aria-hidden="true" />
+            {GOAL_WORD[tone]}
+          </span>
+        )}
+      </div>
+      <div className="mt-ax-2 flex gap-2">
+        <input
+          value={draft}
+          maxLength={GOAL_MAX}
+          disabled={set.isPending}
+          onChange={(e) => setDraft(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && changed) save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed");
+          }}
+          placeholder="What should this meeting achieve? (optional)"
+          className="ax-focus h-9 min-w-0 flex-1 rounded-md border border-border bg-background px-2 text-base text-foreground sm:text-xs"
+        />
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          disabled={set.isPending || !changed}
+          onClick={() => save({ goal: draft.trim() ? draft : null }, draft.trim() ? "Aim saved" : "Aim removed")}
+        >
+          Save
+        </Button>
+      </div>
+      {started ? (
+        <div className="mt-ax-2 flex flex-wrap gap-2">
+          <Button
+            type="button"
+            size="sm"
+            variant={event.goal_state === "achieved" ? "default" : "outline"}
+            disabled={set.isPending}
+            onClick={() => save({ goal_state: "achieved" }, "Marked achieved")}
+          >
+            Achieved
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            variant={event.goal_state === "missed" ? "default" : "outline"}
+            disabled={set.isPending}
+            onClick={() => save({ goal_state: "missed" }, "Marked missed")}
+          >
+            Missed
+          </Button>
+          {(event.goal_state === "achieved" || event.goal_state === "missed") && (
+            <Button type="button" size="sm" variant="ghost" disabled={set.isPending} onClick={() => save({ goal_state: "open" }, "Reopened")}>
+              Reopen
+            </Button>
+          )}
+        </div>
+      ) : (
+        <p className="ax-caption mt-ax-2 text-muted-foreground">You can mark Achieved or Missed once the meeting has started.</p>
+      )}
     </section>
   );
 }

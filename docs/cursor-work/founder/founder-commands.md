@@ -683,3 +683,11 @@ Detail CALENDAR-ROADMAP.md "TARTEEB". M-series aur G16 ke faislay tab poochhe ja
 
 ### 22 Oct 2026 09:50 PKT — #4b GREEN, calendar copy live, shaam ka kaam #9
 Founder: "yeh green kero (members banana practical nahi), copy haan, next kaam sirf shaam ko". Web pull OK 254 restarts, server==repo 513. #4b GREEN. Copy: index.tsx Calendar card + plans.ts line "Contacts & full calendar..." (web pull baaki, founder shaam ko chalaye). SHAAM: #9 outcome colours (E63 SQL -> Rust -> Web), phir #10 history search, W2 Focus Ring.
+
+### 22 Oct 2026 10:30 PKT — #9 outcome colours CODE READY (server install baaki)
+Founder: "#9 shuru kero". Bana: E63 SQL (goal, goal_state, goal_state_at; 13/13 sandbox proof, CHECK 8 items), Rust cal (goal fields in calendar.meta.set; 41 core tests), Web (EventDetail "Aim" + Achieved/Missed/Reopen, dot on week grid + month list; red NOW-line wahi red).
+Server (alag alag, tarteeb yahi):
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E63_event_goal CHECK_E63`
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && MODULES="cal" bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+Phir Ctrl+Shift+R, calendar mein ek meeting kholo -> "Aim" likho -> shuru hone ke baad Achieved/Missed.

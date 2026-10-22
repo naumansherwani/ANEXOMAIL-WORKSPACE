@@ -156,3 +156,5 @@ Yahan code jayega: web = src/components/app/mail/* + src/routes/app.mail*.tsx + 
 - 22 Oct 09:40: CALENDAR: #4b W1 live check baaki; naye design-only #9 outcome colours, #10 history search (docs/claude/CALENDAR-BLUEPRINT.md). Landing copy founder "haan" par.
 
 - 22 Oct 09:50: CALENDAR #4a/#4b GREEN; landing copy live (web pull baaki). Aglu #9 outcome colours (shaam).
+
+- 22 Oct 10:30: CALENDAR #9 outcome colours CODE READY (E63 + Rust cal + Web), server install baaki.

@@ -54,6 +54,7 @@ import {
 } from "@/lib/calendar";
 import { useLocale } from "@/lib/i18n";
 import { eventColor, oooOn, useCalPrefs } from "@/lib/calprefs";
+import { GOAL_DOT, GOAL_WORD, goalTone } from "@/lib/goal";
 import { fmtTime, hydrateUiPref, useCalLayout, useClockPref } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
@@ -192,6 +193,12 @@ function MonthView({
                           style={eventColor(ev, prefs.calendars) ? { backgroundColor: eventColor(ev, prefs.calendars) } : undefined}
                           aria-hidden
                         />
+                        {(() => {
+                          const tone = goalTone(ev);
+                          return tone ? (
+                            <span title={GOAL_WORD[tone]} className={cn("size-1.5 shrink-0 rounded-full", GOAL_DOT[tone])} role="img" aria-label={GOAL_WORD[tone]} />
+                          ) : null;
+                        })()}
                         {ev.recurring ? <Repeat className="size-2.5 shrink-0 opacity-70" aria-label="Repeats" /> : null}
                         <span className="truncate">
                           {!ev.all_day && (

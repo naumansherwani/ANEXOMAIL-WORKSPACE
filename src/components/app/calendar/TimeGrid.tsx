@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { clockRange, useUpdateMeeting, type CalendarEvent } from "@/lib/calendar";
 import { notify } from "@/lib/notify";
 import { eventColor, oooOn, useCalPrefs, workWindow } from "@/lib/calprefs";
+import { GOAL_DOT, GOAL_WORD, goalTone } from "@/lib/goal";
 import { fmtHour } from "@/lib/timeFormat";
 import { minutesOfDay, movedTo, packDay, snap } from "@/lib/time-grid";
 import { cn } from "@/lib/utils";
@@ -347,6 +348,7 @@ export function TimeGrid({
                       Math.round((new Date(ev.ends_at).getTime() - new Date(ev.starts_at).getTime()) / 60000),
                     );
                     const color = eventColor(ev, prefs.calendars);
+                    const tone = goalTone(ev);
                     const dragging = drag?.id === ev.id && drag.moved;
                     const dMin = dragging ? drag!.dMin : 0;
                     const dDay = dragging && drag!.mode === "move" ? drag!.dDay : 0;
@@ -362,7 +364,7 @@ export function TimeGrid({
                         onKeyDown={(e) => e.key === "Enter" && onSelect(ev.id)}
                         role="button"
                         tabIndex={0}
-                        aria-label={`${ev.title}, ${clockRange(ev.starts_at, ev.ends_at)}`}
+                        aria-label={`${ev.title}, ${clockRange(ev.starts_at, ev.ends_at)}${tone ? `, ${GOAL_WORD[tone]}` : ""}`}
                         className={cn(
                           "absolute z-10 cursor-grab touch-none select-none overflow-hidden rounded-md border px-1.5 py-1 text-left shadow-sm",
                           selectedId === ev.id
@@ -381,6 +383,13 @@ export function TimeGrid({
                           transform: dDay ? `translateX(${dDay * 100}%)` : undefined,
                         }}
                       >
+                        {tone && (
+                          <span
+                            title={GOAL_WORD[tone]}
+                            className={cn("absolute right-1 top-1 size-2 rounded-full", GOAL_DOT[tone])}
+                            aria-hidden="true"
+                          />
+                        )}
                         <span className="block truncate text-[11px] font-semibold leading-tight text-foreground">
                           {ev.recurring ? <Repeat className="mr-0.5 inline size-2.5 opacity-70" aria-label="Repeats" /> : null}
                           {ev.title}
