@@ -1,0 +1,1 @@
+Sign-in button A (founder LOCK, AGENTS.md Rule 39). *.signin-a = poori files; styles-hovera.css = styles.css ke aakhir ka block. Restore: block styles.css ke aakhir mein, HoverA BrandLoader.tsx mein, auth.tsx submit Button par ax-a-hover + <HoverA busy={busy} />.

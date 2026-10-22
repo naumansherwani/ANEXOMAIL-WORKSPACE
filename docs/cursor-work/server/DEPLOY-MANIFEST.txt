@@ -10,7 +10,7 @@ src/components/app/AppShell.tsx 9fe593da35ac7ef1
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx da6ea0bd32b5fa35
-src/styles.css b3b39caa283d7fa2
+src/styles.css 33cdb33818aee033
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -89,7 +89,7 @@ src/routeTree.gen.ts 86e576c512b7306b
 src/lib/team.ts 642bf49a0ba831fc
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 3ae9144129b653b1
-src/routes/auth.tsx 4a4972ab463fcb94
+src/routes/auth.tsx fc37b073e54e49e9
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -119,14 +119,14 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs 339f850b8633f8e2
 server/rust/cal_glue.rs 12755e48f2376011
-AGENTS.md df4ad0a6af390099
+AGENTS.md bd2b99db7bcbaad3
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 029798170ce070fc
+docs/cursor-work/founder/founder-commands.md e931f7b17c12f669
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql e649cb4d8d034d43
 docs/cursor-work/sql/E42_device_hash_hmac.sql 1a0b71db9f3977be
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md f5601b2205b4e032
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 097500c3be2ca63e
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -350,7 +350,7 @@ src/routes/app.safety.tsx cf3f6060251021d2
 src/routes/auth_.callback.tsx 7b6e0e097af5c818
 src/routes/claim.tsx 152c22b3ac3470a0
 src/routes/onboarding.tsx 246b62d511649ddb
-src/components/state/BrandLoader.tsx eeba4448a61b1ba4
+src/components/state/BrandLoader.tsx d7d3f0687669229a
 server/rust/polar-payment/Cargo.toml b19720335aa99719
 docs/cursor-work/server/polar-cp-proof.py 3eca410c891a98cc
 docs/cursor-work/server/polar-nonroot-install.sh f62c5701915dcee3

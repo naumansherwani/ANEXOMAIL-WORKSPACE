@@ -19,6 +19,20 @@ export function BrandSpinner({ className }: { className?: string }) {
   );
 }
 
+/**
+ * HoverA — FOUNDER LOCK (22 Oct 2026, Rule 39): jab cursor Sign in button par jaye to ANEXOMAIL ka A button ke andar
+ * label ke left mein bahar aata hai aur halka hilta hai (busy ho to dhadakta hai). Button par class `ax-a-hover` lagao,
+ * aur label se pehle yeh span rakho. Founder ke kehne ke baghair badalna mana hai.
+ */
+export function HoverA({ busy = false }: { busy?: boolean }) {
+  if (busy) return <BrandSpinner className="size-4" />;
+  return (
+    <span className="ax-a-slot" aria-hidden="true">
+      <BrandMark compact home={false} className="size-full [&_svg]:size-full" />
+    </span>
+  );
+}
+
 export function InlineLoading({ label = "Loading…", className }: { label?: string; className?: string }) {
   return (
     <p className={cn("ax-caption mt-ax-2 flex items-center gap-2 text-muted-foreground", className)} role="status">

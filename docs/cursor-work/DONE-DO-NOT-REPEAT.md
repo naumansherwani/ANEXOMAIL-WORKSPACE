@@ -310,3 +310,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 22 Oct 05:40 Rule 38 (SQL advance level) AGENTS.md mein. E58 SQL advance rewrite (awam_ui_extra_ok, NOT VALID+VALIDATE, lock_timeout, remind index) + CHECK_E58 behaviour tests, local PG PASS. Server par chalana baqi (founder SQL command).
 - 22 Oct 04:52 Rust E58 (cal.meta.set + locale extra) server par installed, tests ok, build OK, probes 401 = pakda (founder output). Dobara install nahi. Baqi: SQL E58 + Web pull.
 - 22 Oct 05:05 A-logo cursor tilt (d3d42fe) REVERT hua (founder ko pasand nahi). Dobara tab tak nahi jab tak founder demo mein variant na chune.
+- 22 Oct 05:15 Sign-in button A (hover sway + busy pulse) LOCKED Rule 39, founder ne demo mein pasand kiya. READY, pull baqi. Dobara change nahi.

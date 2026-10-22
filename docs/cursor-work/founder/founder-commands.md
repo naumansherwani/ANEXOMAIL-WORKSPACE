@@ -8,6 +8,9 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+## ▶ 22 Oct 2026 05:08 PKT — SIGN-IN BUTTON KA A: LOCKED (verbatim: "yessssss yeh hai woh kaamal kya bnaya hai waha love you cursor jata hai sign in pe toh logo kaise bahar ata hai forever yeh kero jab tak founder yani main nahi bolun tab tak nahi change kerna hai yeh puri website ke liye hain repo main rule likho codes ko save kero sirf signin ko touch kerna hai baki sab style intact hai no codes change hain") — status: READY (Web pull baqi)
+- AGENTS.md Rule 39. Sirf Sign in button (auth.tsx + BrandLoader HoverA + styles.css block) + backup `backups/signin-a-20261022/`. Passkey-enrol button original rakha.
+
 ## ▶ 22 Oct 2026 05:02 PKT — A-logo cursor tilt WAPAS (reverted) — founder pull nahi karega jab tak demo pasand na ho
 Founder: "nahi pasand aya hai yeh sign in jahan pe yeh logo A ata tha nazar halka sa hilta tha. yeh demo do" / "yeh bhi tumne wrong kiya yeh dono commits main nahi pull kerun ga?"
 - d3d42fe (AuthCinema cursor tilt) ko revert kiya taake pull mein na aaye. Asli A kaun sa hai (card ke upar / left panel / boot splash) founder ne abhi nahi bataya; demo artifact mein 2 variant. Jab founder chune tab hi asli site mein lagana. E58 commits alag hain (server par SQL + Web baqi).

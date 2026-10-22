@@ -1390,3 +1390,38 @@ html[data-ax-motion="none"] .ax-fx-ambient { display: none !important; }
 html[data-ax-motion="reduced"] .ax-fx-blob, html[data-ax-motion="reduced"] .ax-fx-edge { animation: none !important; }
 /* Kaardon par halki roshni (hover) — sirf graphics ON par */
 html[data-ax-fx="on"] .ax-plane:hover { box-shadow: 0 0 0 1px color-mix(in oklab, var(--primary) 35%, transparent), 0 10px 40px -12px color-mix(in oklab, var(--primary) 45%, transparent); }
+
+/* ── HoverA (founder lock 22 Oct 2026, Rule 39): cursor Sign in button par → A bahar aata hai aur halka hilta hai ── */
+.ax-a-hover .ax-a-slot {
+  display: inline-flex;
+  width: 0;
+  height: 1rem;
+  margin-inline-end: -0.5rem; /* collapsed: button ka gap na bane */
+  opacity: 0;
+  overflow: visible;
+  transition: width 0.25s ease, margin 0.25s ease, opacity 0.2s ease;
+}
+.ax-a-hover .ax-a-slot svg {
+  width: 1rem;
+  height: 1rem;
+  filter: brightness(1.9) saturate(0.85) drop-shadow(0 0 2px rgba(255, 255, 255, 0.5));
+}
+.ax-a-hover:hover:not(:disabled) .ax-a-slot,
+.ax-a-hover:focus-visible .ax-a-slot {
+  width: 1.25rem;
+  margin-inline-end: 0;
+  opacity: 1;
+}
+.ax-a-hover:hover:not(:disabled) .ax-a-slot svg,
+.ax-a-hover:focus-visible .ax-a-slot svg {
+  animation: ax-a-sway 1.8s ease-in-out infinite;
+}
+@keyframes ax-a-sway {
+  0%, 100% { transform: perspective(300px) rotateY(-18deg) translateY(0); }
+  50% { transform: perspective(300px) rotateY(18deg) translateY(-1.5px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ax-a-hover .ax-a-slot svg { animation: none !important; }
+}
+html[data-ax-fx="off"] .ax-a-hover .ax-a-slot svg,
+html[data-ax-calm] .ax-a-hover .ax-a-slot svg { animation: none !important; }

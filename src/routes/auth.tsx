@@ -1,4 +1,4 @@
-import { BrandSpinner } from "@/components/state/BrandLoader";
+import { BrandSpinner, HoverA } from "@/components/state/BrandLoader";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -793,8 +793,8 @@ function AuthPage() {
                       </motion.p>
                     )}
 
-                    <Button type="submit" className="ax-press w-full" disabled={busy}>
-                      {busy && <BrandSpinner className="size-4" />}
+                    <Button type="submit" className="ax-press ax-a-hover w-full" disabled={busy}>
+                      <HoverA busy={busy} />
                       {challengeId
                         ? "Verify and continue"
                         : mode === "signup"
