@@ -19,23 +19,29 @@ SRC_DIR="${SRC_DIR:-}"   # sirf test ke liye: git ki jagah folder se padho
 command -v psql >/dev/null || { echo "FAIL: psql nahi mila"; exit 2; }
 mkdir -p "$(dirname "$LEDGER")" 2>/dev/null; touch "$LEDGER" 2>/dev/null || { echo "FAIL: $LEDGER likh nahi sakta"; exit 2; }
 [ -n "$SRC_DIR" ] || git -C "$REPO" fetch -q origin main 2>/dev/null
+APPLIED=""
+T="$(mktemp)"; trap 'rm -f "$T"' EXIT
 AUTO=0
 if [ $# -eq 0 ]; then
-  # AUTO (founder 22 Oct 2026): bina naam = repo ki SAB E-series (E37 se aage; E28/E36 seeds nahi) jo ledger mein NAAM se nahi hain, number ki tarteeb se.
-  # Naam se pehle chali hui (kisi bhi sha par) dobara nahi chalti — sirf kaam-sa-farq (khali pehli line wagairah) purani SQL ko dobara nahi chalata.
+  # AUTO (founder 22 Oct 2026): bina naam = repo ki SAB E-series (E37 se aage; E28/E36 seeds nahi) jo ledger mein nahi (ya fix hui), number ki tarteeb se.
+  # Pehle chali hui (wahi sha, ya sirf khali pehli line ka farq) dobara nahi; file ka matlab badla (fix) to dobara chalti hai.
   # Phir jo is baar nayi chali unke CHECK_E<n> (agar hai).
   AUTO=1
   if [ -n "$SRC_DIR" ]; then LIST="$(ls "$SRC_DIR" 2>/dev/null)"; else LIST="$(git -C "$REPO" ls-tree --name-only origin/main docs/cursor-work/sql/ 2>/dev/null | sed 's#.*/##')"; fi
   set --
   for f in $(echo "$LIST" | sed -n 's/^\(E\([0-9][0-9]*\)_[A-Za-z0-9_]*\)\.sql$/\2 \1/p' | sort -n | awk '$1>=37 && $1!=28 && $1!=36 {print $2}'); do
-    grep -q "^$f	" "$LEDGER" || set -- "$@" "$f"
+    # pending = naam ledger mein nahi, YA file ka matlab badla (sha alag; sirf khali pehli line ka farq pending nahi) — fix ki hui SQL (Rule 8) bhi isi se chalti hai
+    if [ -n "$SRC_DIR" ]; then cat "$SRC_DIR/$f.sql" >"$T" 2>/dev/null; else git -C "$REPO" show "origin/main:docs/cursor-work/sql/$f.sql" >"$T" 2>/dev/null; fi
+    [ -s "$T" ] || continue
+    h1="$(sha256sum "$T" | cut -c1-16)"; h2=""; [ -z "$(head -n1 "$T")" ] && h2="$(tail -n +2 "$T" | sha256sum | cut -c1-16)"
+    grep -q "^$f	$h1	" "$LEDGER" && continue
+    [ -n "$h2" ] && grep -q "^$f	$h2	" "$LEDGER" && continue
+    set -- "$@" "$f"
   done
   [ $# -gt 0 ] || { echo "AUTO: koi nayi SQL nahi — sab kuch ledger mein pehle se chali hui hai."; exit 0; }
   echo "AUTO: nayi SQL tarteeb se: $*"
   NEWSQL="$*"
 fi
-APPLIED=""
-T="$(mktemp)"; trap 'rm -f "$T"' EXIT
 rc=0
 for n in "$@"; do
   n="${n%.sql}"

@@ -119,7 +119,7 @@ src/lib/settings.ts 1eb117ec1e8235ae
 src/components/app/settings/SettingsBits.tsx e2c8aba124833823
 server/rust/cal_core.rs e3962dbb682fe95c
 server/rust/cal_glue.rs d396cc302bc65093
-AGENTS.md 2b993ee719060d50
+AGENTS.md 220a4411adb0c7ef
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 58509fef7a8b5fce
 server/lib/integrity-gate.test.ts 95c76dacdf0a8ac0
 server/index.ts 677898e93a85306c
 docs/cursor-work/HASHING.md 516f4897dd984031
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 70c93c19d4c5cfcb
+docs/cursor-work/DONE-DO-NOT-REPEAT.md d2eda093714863a5
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -196,7 +196,7 @@ server/rust/attach_glue.rs 3d5ab0ac5c7b24b2
 src/lib/mail-attachments-core.test.ts 4947ee83be835067
 src/lib/mail-attachments-core.ts 4c8d15ce14d2938b
 src/lib/mail-attachments.ts 1240deda22af0bc2
-docs/cursor-work/server/sql-run.sh 19bb8a059b7adfcc
+docs/cursor-work/server/sql-run.sh 625949e3ec804250
 docs/cursor-work/sql/E37_mail_ingest_no_stray_org.sql 740d0efb49807362
 docs/cursor-work/server/tests/e37/stubs.sql dc31be31a83ba369
 docs/cursor-work/server/tests/e37/run.sh 1b19c23248114e49

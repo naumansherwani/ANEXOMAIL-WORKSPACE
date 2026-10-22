@@ -361,3 +361,5 @@ Founder: "yeh sql wali command pehle run hogi, yeh ab server pe run hogi; editor
 - Raasta: `docs/cursor-work/server/sql-run.sh` (ledger `/var/lib/anexomail/sql-applied.tsv`, ON_ERROR_STOP, CHECK_E<n> baad mein). Bina naam = AUTO (saari nayi E-series), ya naam de kar khaas file (command Rule 41 mein).
 - Tarteeb: SQL -> Rust -> Web. SQL pehle, kyunke Rust/Web nayi SQL par tikte hain.
 - Rule 42 (editor-compat: blank first line, no meta-commands, single-SELECT CHECK) NAYI files par ab bhi lagu — safety ke liye — par founder ko editor ka raasta nahi bataya jata.
+
+- **Bare command ka test (founder 22 Oct 2026 20:34, sandbox mein saabit):** `… sql-run.sh)` bina naam: 0 nayi = "koi nayi SQL nahi"; ek nayi = wahi ek + CHECK; kai nayi = number ki tarteeb se sab + CHECK; fix hui (sha badli) SQL dobara chalti hai; sirf khali pehli line ka farq nahi chalta. Har run ke baad E65 sweep + CHECK_E65 khud. Isliye SQL ke liye founder ko HAMESHA yehi bare command do (naam wali sirf tab jab FORCE=1 ya khaas file chahiye).
