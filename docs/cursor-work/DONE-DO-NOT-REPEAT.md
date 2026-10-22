@@ -402,3 +402,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 
 - 23 Oct 04:20 — Founder: "sab pull kar diya, SQL green". E75 + E76 (SQL) + Web (Home city UI) server par DONE per founder; E28 editor-error waali baat band (tool sql/tools/create_test_account.sql tayyar, founder ne account nahi maanga). Rust/Brain (E76) ka status founder output se confirm hona baaqi jab woh paste karein; Chrome se Home city UI + registry live dekhna baaqi. Dobara mat chalao.
 - 23 Oct 04:25 — Home city card UI GREEN LIVE (Chrome screenshot: usi column, baaqi cards jaisa ax-plane, overlap nahi). Dobara mat karo.
+
+- 23 Oct 04:30 — CALENDAR GINTI (founder ne pakda): sahi = 13 hisse (#0,#1,#2,#3,#4a,#4b,#4c,#5,#6,#7,#8,#9,#10); GREEN 10 (#0,#1,#2,#3,#4a,#4b,#4c,#5,#9,#10); BAAQI 3 (#6 CalDAV, #7 Google, #8 Rooms). Purani '11 mein se 8/9' ginti ghalat thi (4a/4b/4c ek-teen mixed). Aage hamesha '10/13'.
