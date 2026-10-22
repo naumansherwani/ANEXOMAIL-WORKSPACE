@@ -1,3 +1,4 @@
+
 -- E17: naya real buyer signup -- workspace provisioning (Rule 14, #5/#6).
 --
 -- Gap jo mila: phase32_trial.sql ka trial_claim_address() sirf
@@ -28,13 +29,24 @@
 -- 'workspace_provisioned' add) kyunke yeh ek genuinely naya, alag lifecycle
 -- event hai (handle-claim se distinct -- 'claim' already trial_claim_address
 -- khud log karta hai).
-alter table public.trial_events drop constraint if exists trial_events_event_type_check;
-alter table public.trial_events add constraint trial_events_event_type_check
-  check (event_type = any (array[
-    'signup','claim','passkey_set','recovery_set','warn_24h','warn_2h',
-    'expired','subscribed','frozen','released','mail_hold','recovery_used',
-    'workspace_provisioned'
-  ]::text[]));
+-- 22 Oct 2026 FIX (Rule 8, isi file mein): E20 baad mein 'pending_plan_entered' jodta hai, to live rows mein woh value maujood hai; E17 dobara chalane par
+-- purani chhoti list wala constraint 23514 deta tha ("violated by some row"). Ab: constraint kabhi CHHOTA nahi hota — agar 'workspace_provisioned' pehle se
+-- allowed hai to kuch nahi; warna list = (E17 ki 13 + E20 ki value + jo bhi values table mein pehle se hain), taake koi maujooda row na toote. Dobara chalana safe.
+do $$
+declare
+  have text; vals text[];
+begin
+  select pg_get_constraintdef(c.oid) into have from pg_constraint c
+   where c.conrelid = 'public.trial_events'::regclass and c.conname = 'trial_events_event_type_check';
+  if have is null or have not like '%workspace_provisioned%' then
+    select array_agg(distinct v order by v) into vals from (
+      select unnest(array['signup','claim','passkey_set','recovery_set','warn_24h','warn_2h','expired','subscribed','frozen','released','mail_hold','recovery_used',
+                          'workspace_provisioned','pending_plan_entered']::text[]) as v
+      union select event_type from public.trial_events) u;
+    execute 'alter table public.trial_events drop constraint if exists trial_events_event_type_check';
+    execute format('alter table public.trial_events add constraint trial_events_event_type_check check (event_type = any (%L::text[]))', vals);
+  end if;
+end $$;
 
 create or replace function public.trial_provision_workspace(_user_id uuid)
 returns jsonb language plpgsql security definer set search_path = public as $$

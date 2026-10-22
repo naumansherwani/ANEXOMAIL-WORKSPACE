@@ -341,3 +341,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - Ab baaki calendar: #10 history search, W2 Focus Ring, #4c ICS, #5 files, W3/W4/W5, #6 CalDAV, #7 Google, #8 rooms. Phir M-series, phir G16 billing portal (founder tarteeb).
 - 22 Oct 21:10 #10 History search 100-saal rework (E64 keyset+by_year+hybrid, Rust cursor, Web Years chips) — code ready, server install baqi; dobara design mat karo.
 - 22 Oct 20:30 Rule 43 + E65 RLS/advisor sweep (code ready; server run baqi) — dobara mat likho.
+- 22 Oct 20:40: E17 re-run fix (trial_events_event_type_check 23514): constraint ab kabhi chhota nahi hota, maujooda values shamil. Purani E-files dobara chalane se pehle E20+ ke widen ka khayal.
