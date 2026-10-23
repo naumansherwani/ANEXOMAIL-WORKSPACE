@@ -850,3 +850,7 @@ Is Pro account par 5/5 threads theek khulte hain (390 px par bhi, console saaf) 
 ## 23 Oct 09:00 — Calendar PHONE redesign (Classic): toolbar 4 patti -> compact — SIRF Web
 Founder: "mobile pe saans nahi aa raha". Ab phone (<640 px): header mein sirf "⋯" menu (Layout/Settings/Booking/Import/Export + Clock 12h/24h + Availability/Load, har button 44 px) aur "+ Meeting"; clock row mein sirf waqt + globe; nav row ‹ › mahina Today (44 px); Month/Week/Day poori chaudai ka 3-hissa switch (44 px). sm se upar pehle jaisa.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir phone par page dobara kholein (Ctrl+Shift+R / pull-to-refresh).
+
+## 23 Oct 09:05 — Calendar phone: panel poori chaudai (dayin taraf khali patta band) — SIRF Web
+Screenshot: toolbar theek, lekin panel ~70% chaudai par tha (overflow-x-hidden ke baad panel ko `w-full` nahi tha). Fix: ListPanel (non-wide) ko phone par `w-full`.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir page dobara kholein.

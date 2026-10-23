@@ -29,7 +29,7 @@ export function ListPanel({
         (wide
           ? "w-full lg:w-[22rem] lg:shrink-0 lg:border-r " +
             (mobileHidden ? "hidden lg:flex" : "flex")
-          : "md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " +
+          : "w-full md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " +
             (mobileHidden ? "hidden md:flex" : "flex"))
       }
     >
