@@ -813,3 +813,20 @@ Founder: settings center slow. Wajah mili: SettingsBits har row par useSettingHi
 
 ### Checkpoint 23 Oct 10:45 PKT — touch scroll handle (push, pull baaki)
 Founder: scroll bar stuck / pakad kar chalna chahiye (mobile+tablet). Bana: draggable handle right edge, scroller auto-pick (most overflow). Phone par test baaki; "stuck" ka asli sabab device par dekhna: agar Appearance par ab bhi atke to screenshot + kaun si jagah ungli thi.
+
+### CONSOLIDATED STATE — 23 Oct 2026 09:50 PKT (compaction ke baad yahin se shuru karo)
+**Founder:** Nauman bhai (solo, ANEXOMAIL, Asia/Karachi), Roman Urdu. Main CEO-agent hoon: pehle repo/rules/tech padho, kaam se pehle aur saath-saath yeh file + founder-commands.md + DONE-DO-NOT-REPEAT (dono copy) + manifest (sync -> verify 0 bad) update, har push ke saath poori deploy command. DONE kaam dobara nahi.
+**Work order:** W0–W5+W2 done -> #6 CalDAV (C1 server live, phone test baaki) -> #7 Google (founder ki Google Cloud verification) -> #8 Rooms -> Founder account -> identity live tests -> M-series -> G16 billing portal -> T1–T12.
+**Aaj (23 Oct) push hua, founder PULL baaki (sab ek hi pull.sh se):**
+- e04f078 panel width fix; text size (Settings->Appearance) + touch scrollbar CSS; in-context zoom (mail body A−/A+, calendar hour height)
+- c23f66b pull-to-refresh ASLI reload (draft ho to sirf refetch)
+- dd4f841 World clocks globe touch-pan-y (scroll atakta tha)
+- 5a67d85 Settings slow: per-row history N+1 hata (enabled only when open)
+- dffe77d draggable TouchScrollbar (lib/touch-scroll.ts, components/app/TouchScrollbar.tsx)
+**Founder ke phone par abhi verify hona baaki:** pull-to-refresh reload, Text size, scroll handle, Appearance 90% "stuck" (sabab code mein nahi mila — screenshot + ungli ki jagah chahiye), calendar Week, mail thread, panel width.
+**Deploy commands:** Web `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` (phir Ctrl+Shift+R); SQL `sql-run.sh`; Rust `rust-engine-install.sh` + `pm2 restart anexomail-rust --update-env && pm2 save`; Caddy `caddy-caldav.sh` (plan, phir MODE=apply).
+**CalDAV C1:** read-only, live (SQL E80, Rust dav, Caddy). Founder test: Settings -> Phone calendar -> Create password, phone mein CalDAV account server anexomail.com. Phir C2 (PUT/DELETE, If-Match 412, sync-collection).
+**Mail "Something went wrong":** reproduce nahi hua; hardening 3a58fed. Dobara aaye to screenshot + subject + account.
+**Mobile qaida:** MOBILE-CONTRACT.md (390/820/1200–1440, touch>=44, input 16px, no h-scroll, 100dvh, safe-area). Poori app CSS `zoom` NAHI (popover toot'te hain); pinch native; zoom sirf jahan zaroorat.
+**Khule purane items:** W5b city-name l10n; billing card real renews_at; Lahore label; calendar LCP (T3/T4); E55 grants-heal 30 Oct se pehle; Caddy cert renewal 12 Nov se pehle; blueprint "100 bit" -> 150 bit typo; Mail/People par 390/820 checks.
+**Tooling:** bun test (./src/...), tsc --noEmit -p ., eslint --fix sirf apni files par, manifest-sync.py <files> + manifest-verify.py; push reject ho to sirf apne unpushed commits par git pull --rebase.
