@@ -48,3 +48,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E77 | RSVP collision warning: calendar_rsvp_conflicts(token) -> {count, overlaps (max 3, sirf waqt, TITLE kabhi nahi)}; back-to-back/declined/cancelled/doosra org conflict nahi; service_role only | CHECK_E77 | 23 Oct READY |
 | E78 | W4 Travelling status: awam_ui_extra_ok mein 6th key `travel` ({to_city,to_zone,depart_at,arrive_at}; user ka likha, koi position/flight nahi; <=72h, arrive>depart, asli taareekh; Rust clean_travel ka mirror) | CHECK_E78 | 23 Oct READY |
 | E79 | W5 market chip: awam_ui_extra_ok mein 7th key `market` (sirf boolean; default OFF = key nahi; Rust clean_market ka mirror) | CHECK_E79 | 23 Oct READY |
+| E80 | CalDAV neev: caldav_app_passwords (sirf hash, 10/user, 8 fail=15 min lock, revoked member band) + calendar_events.dav_rev/dav_updated_at (etag) + caldav_org_state.ctag + triggers; RLS on, service_role | CHECK_E80 | 23 Oct READY |

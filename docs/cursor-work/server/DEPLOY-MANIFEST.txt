@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 5eceed26bf50bed1
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 7286c05a99a008f1
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -418,7 +418,7 @@ src/lib/history.test.ts d26cdfc56deea483
 src/lib/calendar-jump.ts 378d1a18d2415728
 src/components/app/search/HistoryResults.tsx 8da549dd49fd57e3
 src/routes/app.search.tsx 6f74a251778663b7
-docs/cursor-work/sql/index.md b1cb73d58a3d2667
+docs/cursor-work/sql/index.md b28cd0b42741cd26
 docs/cursor-work/sql/CHECK_E65.sql ce449a9bcfd36628
 docs/cursor-work/sql/E65_rls_and_advisor_sweep.sql df4483c0cee65b4e
 docs/cursor-work/sql/proofs/E65_proof.sql 983e734dff0b7e79
@@ -601,3 +601,7 @@ src/lib/markets.ts 2ade39953decaadc
 src/lib/deadline.ts 71f0ed9b796ac689
 src/lib/markets.test.ts 9e4a032592ee07df
 src/lib/deadline.test.ts 431b79a063aaabfa
+docs/claude/CALDAV-BLUEPRINT.md 1f6d99e7d350b7dd
+docs/cursor-work/sql/E80_caldav_foundation.sql ed420769a08b1325
+docs/cursor-work/sql/CHECK_E80.sql d833ab7f7168f31d
+docs/cursor-work/sql/proofs/E80_proof.sql d7af0fdb8bea169e
