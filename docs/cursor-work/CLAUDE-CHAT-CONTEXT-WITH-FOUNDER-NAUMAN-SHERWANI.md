@@ -836,3 +836,10 @@ Live (390px iframe, anexomail.com/app/settings/appearance): sirf EK scroller (in
 
 ### Checkpoint 23 Oct 10:20 PKT — Calendar settings -> "⋯" menu (push, pull baaki)
 Founder hukm: slider icon hata do, Calendar settings "⋯" mein Meeting ke saath. CalSettingsButton ko optional label. Agla: founder pull -> CalDAV phone test (Create password) -> C2.
+
+### Checkpoint 23 Oct 10:05 PKT — LIVE STATE + STANDING RULE
+**Standing rule (founder):** HAR message ke baad yeh file + founder-commands + DONE ledger (dono) + manifest update, commit, push. Compact ka darr: pehle update, phir jawab.
+**Push ho chuka, founder PULL baaki (ek hi pull.sh):** e04f078, c23f66b (pull-to-refresh asli reload), dd4f841 (globe scroll), 5a67d85 (Settings N+1 hata), dffe77d (draggable scroll handle), 3676c93 (Settings card text patti fix), 1ed46c8 (Calendar settings "⋯" menu mein, Meeting ke saath).
+**Live dekha (anexomail.com, purani build):** Appearance par scroll JS se neeche/upar theek => "stuck" touch-specific; handle pull ke baad test. Calendar settings -> Phone calendar section khula hai (Device name + Create password). Key maine NAHI banayi — founder khud banaye (30 akshar, ek baar dikhti).
+**Agla:** founder Web pull -> Calendar "⋯" -> Calendar settings -> Phone calendar -> Create password -> phone CalDAV (server anexomail.com, user hostflowaibuilder@gmail.com, password = key). GREEN to C2 (PUT/DELETE, If-Match 412, exceptions, sync-collection); phir #7 Google (founder verification), #8 Rooms.
+**Dates:** E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle.
