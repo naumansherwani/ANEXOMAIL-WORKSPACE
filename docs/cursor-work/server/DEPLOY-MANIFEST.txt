@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md b1b332ed8b700a83
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 1ba2cd13f62b36ee
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -623,3 +623,6 @@ src/components/app/ZoomButtons.tsx bdf1578ebb91dcee
 src/components/app/TouchScrollbar.tsx 1a6f59ddc000fdfb
 src/lib/touch-scroll.ts d1eae0de06721982
 src/lib/touch-scroll.test.ts b18e4cc757fbe349
+docs/cursor-work/sql/E81_caldav_feed_link.sql dad8efc337736ff4
+docs/cursor-work/sql/CHECK_E81.sql 775f75a09252186a
+docs/cursor-work/sql/proofs/E81_proof.sql f64f6f470337290f
