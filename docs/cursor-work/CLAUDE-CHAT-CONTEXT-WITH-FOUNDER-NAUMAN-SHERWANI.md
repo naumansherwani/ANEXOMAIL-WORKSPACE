@@ -852,3 +852,9 @@ Founder ke paas password hai, Android; samajh nahi aya kya karna. /dav/ browser 
 
 ### Checkpoint 23 Oct 10:40 PKT — DAVx5 paid issue
 Founder: DAVx5 Rs1800, nahi lunga. Options diye: (A) F-Droid se free DAVx5, (B) Google Calendar "URL se jodo" secret feed (naya Rust route, no install, refresh slow), (C) kuch nahi. CEO sifarish: A abhi, B baad mein agar user-facing no-install chahiye. Guide text push kiya.
+
+### Checkpoint 23 Oct 10:45 PKT — FOUNDER HUKM: Option A + B DONO (compact se pehle 3 bar update)
+Founder faisla: user ko DO raaste do — **A** (DAVx5 free F-Droid, jo tech-savvy hain) aur **B** (bina app, Google Calendar "URL se jodein", baaki users). "Advance codes likho, review kero, SQL sab kero."
+**B ka design (in progress):** secret read-only ICS feed `https://anexomail.com/dav/feed/<30-char key>.ics`. Token = wahi format (10 token_id + 20 secret, sha256(pepper||secret) DB mein, key sirf ek baar dikhti). Alag `kind='feed'` ya alag table (E81), revocable, last_used. Rust: dav_glue mein route, Caddy ka /dav/* handle already cover karta hai. Web: PhoneCalendar mein "Google Calendar (no app)" tab + Create link + copy. Caveat honest: Google 12-24h refresh, read-only, link = password (leak => revoke).
+**Deploy order (founder):** SQL E81 -> Rust install + restart -> Web pull. Caddy change shayad na chahiye (/dav/* handle hai).
+**Status:** design likha; code abhi shuru.
