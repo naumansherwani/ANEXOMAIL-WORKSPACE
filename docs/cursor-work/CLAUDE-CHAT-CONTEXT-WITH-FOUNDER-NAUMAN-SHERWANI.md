@@ -753,3 +753,19 @@ W4: server output founder ne diya — SQL E78 + CHECK_E78 4/4, Rust install (tim
 
 ### Checkpoint 23 Oct 08:30 PKT — CalDAV C1 poora code repo mein
 Bana: E80 SQL, dav_core.rs, dav_glue.rs, installer module `dav`, caddy-caldav.sh, Settings "Phone calendar" UI. Server par KUCH NAHI gaya. Agla: founder founder-commands.md ka "CalDAV #6 C1" section chalaye (SQL -> pepper -> Rust -> restart -> Caddy plan/apply -> Web), phir live curl PROPFIND + phone test. Phir C2 (likhna, If-Match, sync-collection) ya #7 Google.
+
+### Checkpoint 23 Oct 08:15 PKT — POORI HALAT (compact ke baad yahin se shuru karna)
+**Qaide (har baar):** Nauman bhai, Roman Urdu "aap"; kaam se pehle repo + rules (AGENTS.md, TECH-MAP, NEXT-TASKS, DONE-DO-NOT-REPEAT, founder-commands) padho; jo DONE hai dobara nahi likhna; live Chrome check khud; UI 390/820/1440; har push par per-technology commands (Rule 46: SQL -> Rust -> restart+health -> Caddy -> Web); manifest-sync sirf apni files ke naam se, phir verify 0 bad; eslint --fix sirf apni files par.
+**Technology:** Frontend React 19.2 + TanStack Start/Router/Query + Vite 8 + Tailwind 4 + Radix/shadcn (Bun sirf SSR host). Backend: Rust :3200 (axum 0.8, primary), PostgreSQL E-files (sql-run.sh, RLS), WebTransport UDP 3443, Caddy HTTP/3 (kabhi na todna), Polar :3400 NO-TOUCH, Postfix/Dovecot mail.
+**Locked order:** W0-W5 + W2 live GREEN -> #6 CalDAV (ABHI) -> #7 Google (founder ki Google Cloud verification chahiye) -> #8 Rooms -> Founder account -> identity live tests -> M-series -> G16 billing portal -> T1-T12.
+**CalDAV C1 — repo mein (commit c357a84), SERVER PAR NAHI GAYA:**
+- docs/claude/CALDAV-BLUEPRINT.md (design; NOTE: app password 30 akshar = 150 bit, blueprint mein "100 bit" likha hai — ghalat, sudharna hai)
+- sql/E80_caldav_foundation.sql + CHECK_E80 + proofs/E80_proof.sql (sandbox GREEN)
+- server/rust/dav_core.rs (pure, 14 tests) + dav_glue.rs (axum `handle` /dav, procs caldav.apppw.create|list|revoke; compile server par hoga)
+- rust-engine-install.sh: module `dav` (need cal_core; routes /dav, /dav/, /dav/{*rest})
+- docs/cursor-work/server/caddy-caldav.sh (plan default, MODE=apply, rollback)
+- Web: src/lib/caldav.ts(+test), components/app/calendar/PhoneCalendar.tsx, CalSettings mein mount
+- Env: CALDAV_PEPPER in /opt/anexomail-rust/.env (founder-commands step 2)
+**Founder ko dene wali commands:** founder-commands.md ka section "CalDAV #6 C1" (6 step). Founder ne abhi KUCH nahi chalaya.
+**Agla:** founder ke outputs -> curl PROPFIND live check -> phone test -> GREEN likhna. Phir C2 (PUT/DELETE, If-Match, sync-collection, recurring exceptions). Dhyan: dav_glue build fail ho to errors paste hongi, wahi fix.
+**Baaki chhote:** W5b city-name l10n, billing card real renews_at par check, Lahore label, phone par 44px tap/drag check, calendar LCP (T3/T4), E55 grants-heal 30 Oct se pehle, Caddy cert renewal 12 Nov se pehle.
