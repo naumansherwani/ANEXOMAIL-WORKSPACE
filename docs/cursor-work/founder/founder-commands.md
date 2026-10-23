@@ -870,3 +870,7 @@ Founder: "zoom in/out jahan zaroorat wahan, jahan nahi wahan nahi". CEO faisla: 
 ## 23 Oct 10:00 — Pull-to-refresh ab ASLI reload karta hai — SIRF Web
 Pehle sirf data refetch hota tha (spinner ghoomta, kuch badalta nahi dikhta). Ab neeche kheencho -> page ka asli reload (naya deploy bhi aa jata hai). Agar koi likha hua draft/compose khula hai to reload NAHI hota (draft bachane ke liye), sirf data taza hota hai.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir phone par dobara kholein.
+
+## 23 Oct 10:15 — World clocks globe par scroll atakna theek — SIRF Web
+Globe `touch-none` tha, isliye popover mein globe par ungli rakh kar upar scroll nahi hota tha. Ab seedha (upar-neeche) swipe scroll karta hai, daayen-baayen drag globe ghumata hai.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

@@ -18,3 +18,5 @@
 - 23 Oct 09:30 In-context zoom: mail body (READ_ZOOM) + calendar hour height (GRID_HOUR) via lib/zoom-prefs.ts. Phone live check baaki.
 
 - 23 Oct: Pull-to-refresh asli `location.reload()` (draft ho to sirf refetch) — `lib/pull-refresh.ts hasDraft`, `PullRefresh.tsx`. Dobara data-only mat banao.
+
+- 23 Oct: GlobeView touch-none -> touch-pan-y (popover scroll globe par atakta tha). Wapas touch-none mat karo.

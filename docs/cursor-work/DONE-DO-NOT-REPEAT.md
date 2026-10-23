@@ -446,3 +446,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct 08:25 CalDAV C1 server par: E80 GREEN, Rust dav module build+health OK, Caddy apply OK (301/401). Dobara mat chalana. Baaki: Caddy re-apply (DAV header), Settings password, phone test.
 
 - 23 Oct: Pull-to-refresh asli `location.reload()` (draft ho to sirf refetch) — `lib/pull-refresh.ts hasDraft`, `PullRefresh.tsx`. Dobara data-only mat banao.
+
+- 23 Oct: GlobeView touch-none -> touch-pan-y (popover scroll globe par atakta tha). Wapas touch-none mat karo.

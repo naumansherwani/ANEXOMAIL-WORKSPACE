@@ -268,7 +268,7 @@ export function GlobeView({
     <div className={cn("space-y-1.5", className)}>
       <div
         ref={wrap}
-        className="relative mx-auto aspect-square w-full max-w-[min(18rem,32vh)] touch-none select-none"
+        className="relative mx-auto aspect-square w-full max-w-[min(18rem,32vh)] touch-pan-y select-none"
       >
         {!land && (
           <div

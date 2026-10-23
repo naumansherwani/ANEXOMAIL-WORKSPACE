@@ -804,3 +804,6 @@ Founder ka hukm "zoom jahan zaroorat wahan" amal mein: mail body A−/A+ (READ_Z
 
 ### Checkpoint 23 Oct 10:00 PKT — pull-to-refresh asli reload (push, founder pull baaki)
 Founder: "spin hota hai lekin refresh nahi hota". Fix: draft na ho to 300ms baad `location.reload()`; draft ho (textarea/contenteditable/dialog input mein text) to `refetchQueries + router.invalidate`. Tests 379 pass, tsc 0. Agla: founder Web pull -> pull test + phone screenshots (calendar Week, mail thread, Appearance Text size); phir CalDAV phone test, C2/Google/Rooms.
+
+### Checkpoint 23 Oct 10:15 PKT — globe scroll fix (push, pull baaki)
+Founder screenshot: World clocks popover, scroll upar nahi aata. Wajah GlobeView touch-none. Fix touch-pan-y. Agla: pull + pull-to-refresh/zoom screenshots, CalDAV phone test.
