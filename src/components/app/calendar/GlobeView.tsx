@@ -1,10 +1,18 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { projectClamped, project, unproject, type View } from "@/lib/globe-geo";
+import { greatCircle, projectClamped, project, unproject, type View } from "@/lib/globe-geo";
 import { subsolarPoint, sunAltitude, wrapLon } from "@/lib/sun";
 import { cn } from "@/lib/utils";
 
-export type GlobePin = { key: string; label: string; lat: number; lon: number; home?: boolean };
+export type GlobePin = {
+  key: string;
+  label: string;
+  lat: number;
+  lon: number;
+  home?: boolean;
+  trip?: boolean;
+};
+export type GlobeRoute = { from: { lat: number; lon: number }; to: { lat: number; lon: number } };
 
 type Ring = number[]; // [lon, lat, lon, lat, …] — Natural Earth 110 m land (public domain), outer rings only
 
@@ -16,6 +24,8 @@ const NIGHT = [3, 8, 22]; // night shade colour (r,g,b)
 const NIGHT_MAX = 0.62; // darkest night opacity
 const PIN = "#ffd166";
 const PIN_HOME = "#7ee0ff";
+const PIN_TRIP = "#ff8fb1";
+const ROUTE = "rgba(255,143,177,0.9)";
 const NIGHT_RES = 110; // night mask resolution (px); scaled up smoothly
 
 const prefersReducedMotion = () =>
@@ -31,10 +41,12 @@ const prefersReducedMotion = () =>
 export function GlobeView({
   pins,
   now,
+  route,
   className,
 }: {
   pins: GlobePin[];
   now: Date;
+  route?: GlobeRoute | null;
   className?: string;
 }) {
   const canvas = useRef<HTMLCanvasElement | null>(null);
@@ -45,9 +57,11 @@ export function GlobeView({
   const drag = useRef<{ x: number; y: number; lat: number; lon: number } | null>(null);
   const nowRef = useRef(now);
   const pinsRef = useRef(pins);
+  const routeRef = useRef(route ?? null);
   const [tick, setTick] = useState(0);
   nowRef.current = now;
   pinsRef.current = pins;
+  routeRef.current = route ?? null;
 
   useEffect(() => {
     let alive = true;
@@ -157,6 +171,31 @@ export function GlobeView({
       ctx.lineWidth = 1;
       ctx.stroke();
 
+      // trip route: the great circle between the two cities the person typed (a line on a map, not a tracked position)
+      const rt = routeRef.current;
+      if (rt) {
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = ROUTE;
+        ctx.lineWidth = 1.5;
+        let pen = false;
+        ctx.beginPath();
+        for (const [la, lo] of greatCircle(rt.from, rt.to, 64)) {
+          const q = project(la, lo, c);
+          if (!q.visible) {
+            pen = false;
+            continue;
+          }
+          const x = cx + q.x * r;
+          const y = cy + q.y * r;
+          if (pen) ctx.lineTo(x, y);
+          else ctx.moveTo(x, y);
+          pen = true;
+        }
+        ctx.stroke();
+        ctx.restore();
+      }
+
       // pins (only those facing us)
       ctx.font = "600 10px Inter, system-ui, sans-serif";
       ctx.textBaseline = "middle";
@@ -167,7 +206,7 @@ export function GlobeView({
         const y = cy + p.y * r;
         ctx.beginPath();
         ctx.arc(x, y, pin.home ? 4.5 : 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = pin.home ? PIN_HOME : PIN;
+        ctx.fillStyle = pin.home ? PIN_HOME : pin.trip ? PIN_TRIP : PIN;
         ctx.fill();
         ctx.strokeStyle = "rgba(0,0,0,0.55)";
         ctx.lineWidth = 1.5;

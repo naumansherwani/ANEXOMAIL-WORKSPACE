@@ -796,3 +796,11 @@ Live check: ek workspace member ko do overlapping meetings mein guest banao, doo
 1. SQL: nahi. 2. Rust: nahi. 3. Brain: nahi.
 4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
 Live check: /app/calendar > toolbar ka globe icon > popover mein globe (din/raat, pins, drag se ghoomta, "Face <city>" button).
+
+## 23 Oct — W4 (device clock badge + connection numbers + Travelling opt-in) — E78 — server par BAAQI (Rule 46, is tarteeb se)
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`  (E78 + CHECK_E78 4/4 OK chahiye)
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`  (locale 11 tests; aakhir mein "time.now (public) ... "ms"" line)
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`  (200)
+4. Brain: nahi (server/*.ts nahi badla).
+5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
+Live check: /app/calendar > globe icon > popover: "Clock & connection" card (in sync ± ms, typical/slowest ms, HTTP/3), "Travelling" > Add a trip (destination, leaves, arrives) > globe par dashed line + pink pin, "In transit" par globe button par plane icon, reminder pop-ups ruk jate hain, mail nahi.

@@ -1,10 +1,15 @@
-import { Globe, Plus, X } from "lucide-react";
+import { Globe, Plane, Plus, X } from "lucide-react";
 import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { allZones, zoneLabel } from "@/lib/booking";
 import { useCalPrefs, useSaveCalPrefs } from "@/lib/calprefs";
-import { placeForZone } from "@/lib/places";
+import { ClockHealth } from "@/components/app/calendar/ClockHealth";
+import type { GlobePin } from "@/components/app/calendar/GlobeView";
+import { TripCard } from "@/components/app/calendar/TripCard";
+import { placeForZone, searchPlaces } from "@/lib/places";
+import { tripPhase } from "@/lib/travel";
+import { driftMatters, useClockHealth } from "@/lib/useClockHealth";
 import { cityOf, fmtTimeIn, useClockPref, zoneCity } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
@@ -89,16 +94,48 @@ export function WorldClocks({ className }: { className?: string }) {
       .slice(0, 40);
   }, [q, zones, pins, here]);
 
+  // Quiet background check of the device clock, a few seconds after the page settles (never competes with first paint).
+  const [idle, setIdle] = useState(false);
+  useEffect(() => {
+    const t = setTimeout(() => setIdle(true), 6000);
+    return () => clearTimeout(t);
+  }, []);
+  const health = useClockHealth(idle);
+  const trip = prefs.travel;
+  const tripNow = trip ? tripPhase(trip, now?.getTime() ?? 0) : "over";
+  const tripActive = !!trip && now !== null && tripNow !== "over";
+  const tripPlace = useMemo(() => {
+    if (!trip) return null;
+    return (
+      searchPlaces(trip.to_city, 6).find((p) => p.iana === trip.to_zone) ??
+      placeForZone(trip.to_zone)
+    );
+  }, [trip]);
+
   const globePins = useMemo(() => {
-    const out: { key: string; label: string; lat: number; lon: number; home?: boolean }[] = [];
+    const out: GlobePin[] = [];
     const add = (z: string, isHome?: boolean) => {
       const pl = placeForZone(z);
       if (pl) out.push({ key: z, label: cityOf(z), lat: pl.lat, lon: pl.lon, home: isHome });
     };
     add(here, true);
     pins.forEach((z) => add(z));
+    if (tripActive && trip && tripPlace)
+      out.push({
+        key: "trip",
+        label: trip.to_city,
+        lat: tripPlace.lat,
+        lon: tripPlace.lon,
+        trip: true,
+      });
     return out;
-  }, [pins, here]);
+  }, [pins, here, tripActive, trip, tripPlace]);
+  const route = useMemo(() => {
+    const h = placeForZone(here);
+    return tripActive && h && tripPlace
+      ? { from: { lat: h.lat, lon: h.lon }, to: { lat: tripPlace.lat, lon: tripPlace.lon } }
+      : null;
+  }, [tripActive, here, tripPlace]);
 
   const commit = (next: string[]) => save.mutate({ clocks: next });
   if (!now) return <span className="inline-block h-7 w-7" aria-hidden />;
@@ -123,7 +160,19 @@ export function WorldClocks({ className }: { className?: string }) {
             title="World clocks"
             className="ax-press ax-focus ax-tap inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 text-muted-foreground"
           >
-            <Globe className="size-3.5" aria-hidden="true" />
+            {tripActive && tripNow === "transit" ? (
+              <Plane className="size-3.5 text-pink-300" aria-hidden="true" />
+            ) : (
+              <Globe className="size-3.5" aria-hidden="true" />
+            )}
+            {driftMatters(health.data) && (
+              <span
+                className="ml-1 size-1.5 rounded-full bg-amber-400"
+                role="img"
+                aria-label="Your device clock is off by 5 seconds or more"
+                title="Your device clock is off — open for details"
+              />
+            )}
             {pins.length > 0 && (
               <span className="ml-1 text-[11px] font-semibold">{pins.length}</span>
             )}
@@ -144,7 +193,7 @@ export function WorldClocks({ className }: { className?: string }) {
                 />
               }
             >
-              <GlobeView className="mt-2" pins={globePins} now={now} />
+              <GlobeView className="mt-2" pins={globePins} now={now} route={route} />
             </Suspense>
           )}
 
@@ -154,6 +203,18 @@ export function WorldClocks({ className }: { className?: string }) {
               <span className="tabular-nums">{fmtTimeIn(now, here)}</span>
               <span className="ax-caption w-14 text-right text-muted-foreground">you</span>
             </li>
+            {tripActive && trip && !pins.includes(trip.to_zone) && trip.to_zone !== here && (
+              <li className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
+                <span className="min-w-0 flex-1 truncate">
+                  <span className="font-semibold">{trip.to_city}</span>
+                  <span className="ax-caption ml-1.5 text-muted-foreground">
+                    {dayWord(now, trip.to_zone)}
+                  </span>
+                </span>
+                <span className="tabular-nums">{fmtTimeIn(now, trip.to_zone)}</span>
+                <span className="ax-caption w-14 text-right text-muted-foreground">trip</span>
+              </li>
+            )}
             {pins.map((z) => (
               <li key={z} className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
                 <span className="min-w-0 flex-1 truncate">

@@ -10,6 +10,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import type { ApiError } from "@/lib/api";
 import type { CalendarEvent } from "@/lib/calendar";
 import { isPlace, type Place } from "@/lib/places";
+import { isTrip, type Trip } from "@/lib/travel";
 import { rpcOrRest } from "@/lib/rpc";
 import { setHomeLabel } from "@/lib/timeFormat";
 
@@ -57,6 +58,7 @@ export function reminderText(min: number): string {
 
 type Extra = {
   home?: Place | null;
+  travel?: Trip | null;
   calendars?: CalendarDef[];
   work_hours?: WorkHours;
   ooo?: OooPeriod[];
@@ -73,6 +75,8 @@ export type CalPrefs = {
   clocks: string[];
   /** Home city chosen in Settings (name, zone, centre) — null until the person picks one. */
   home: Place | null;
+  /** Trip the person typed in (World clock W4) — null when none. Never a position, only a destination and two times. */
+  travel: Trip | null;
   loaded: boolean;
 };
 
@@ -100,6 +104,7 @@ export function useCalPrefs(): CalPrefs {
     ooo: x.ooo ?? [],
     clocks: Array.isArray(x.clocks) ? x.clocks.filter((z) => typeof z === "string") : [],
     home,
+    travel: isTrip(x.travel) ? x.travel : null,
     loaded: q.isSuccess || q.isError,
   };
 }

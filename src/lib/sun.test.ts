@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 
-import { project, projectClamped, unproject } from "./globe-geo";
+import { greatCircle, project, projectClamped, unproject } from "./globe-geo";
 import { dayPhase, subsolarPoint, sunAltitude, wrapLon } from "./sun";
 
 describe("subsolarPoint", () => {
@@ -71,5 +71,24 @@ describe("projection", () => {
       expect(u?.lon).toBeCloseTo(lo, 5);
     }
     expect(unproject(1.2, 0, c)).toBeNull();
+  });
+});
+
+describe("greatCircle", () => {
+  it("starts and ends at the two cities, stays on the sphere", () => {
+    const pts = greatCircle({ lat: 24.86, lon: 67.01 }, { lat: 35.68, lon: 139.69 }, 32);
+    expect(pts.length).toBe(33);
+    expect(pts[0]![0]).toBeCloseTo(24.86, 6);
+    expect(pts[0]![1]).toBeCloseTo(67.01, 6);
+    expect(pts[32]![0]).toBeCloseTo(35.68, 6);
+    expect(pts[32]![1]).toBeCloseTo(139.69, 6);
+  });
+  it("bulges toward the pole (London -> New York passes north of both)", () => {
+    const pts = greatCircle({ lat: 51.5, lon: -0.12 }, { lat: 40.71, lon: -74 }, 48);
+    const maxLat = Math.max(...pts.map((p) => p[0]));
+    expect(maxLat).toBeGreaterThan(51.5);
+  });
+  it("same place is one point", () => {
+    expect(greatCircle({ lat: 1, lon: 2 }, { lat: 1, lon: 2 }).length).toBe(1);
   });
 });

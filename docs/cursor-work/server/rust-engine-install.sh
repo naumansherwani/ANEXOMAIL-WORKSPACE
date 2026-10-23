@@ -441,6 +441,14 @@ for m in $MODS; do
         *'"tag":"ur-PK"'*'"unauthorized"'*) echo "   -> locale: Rust ne dono proc pakde (bundle 200, nakli login 401 = theek) — browser ke 404 band";;
         *procedure_not_in_rust*) echo "   -> locale: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> locale: jawab upar dekhein";;
+      esac
+      # W4: public server clock (device-clock badge). Sirf server ka waqt (ms) lautata hai, kuch padhta/likhta nahi.
+      r4="$(curl -s -m 8 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":null}' "$RPC/rpc/time.now" 2>/dev/null)"
+      echo "   time.now (public): $(printf '%s' "$r4" | cut -c1-110)"
+      case "$r4" in
+        *'"ms":'*) echo "   -> time.now: Rust ne server ka waqt diya (device-clock badge chalega).";;
+        *procedure_not_in_rust*) echo "   -> time.now: Rust ne proc NAHI pakda — Rust install dobara dekhein";;
+        *) echo "   -> time.now: jawab upar dekhein";;
       esac;;
     b5)
       r1="$(curl -s -m 10 -w ' [HTTP %{http_code}]' -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RPC/rpc/status.public" 2>/dev/null)"

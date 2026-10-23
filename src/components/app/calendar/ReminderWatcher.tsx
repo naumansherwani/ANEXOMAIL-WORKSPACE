@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useCalendarEvents } from "@/lib/calendar";
-import { reminderText } from "@/lib/calprefs";
+import { reminderText, useCalPrefs } from "@/lib/calprefs";
 import { notify } from "@/lib/notify";
 import { fmtTime } from "@/lib/timeFormat";
+import { holdsReminders } from "@/lib/travel";
 
 const FIRED_KEY = "ax.rem.fired";
 
@@ -27,16 +28,20 @@ function writeFired(s: Set<string>) {
  * Meeting reminders while ANEXOMAIL is open in any tab/page ("starts in 10 minutes").
  * Mounted once in the app shell; renders nothing. A reminder shows once per meeting+lead time, also when the person
  * opens the app a little late (as long as the meeting has not started). Mail reminders need a server timer and are a
- * separate step — this is the in-app one, and the setting says so.
+ * separate step — this is the in-app one, and the setting says so. While a "Travelling" trip is in transit the pop-ups wait (never mail).
  */
 export function ReminderWatcher() {
   const [tick, setTick] = useState(() => Date.now());
   const hour = Math.floor(tick / 3_600_000) * 3_600_000;
   const range = useMemo(
-    () => ({ from: new Date(hour).toISOString(), to: new Date(hour + 36 * 3_600_000).toISOString() }),
+    () => ({
+      from: new Date(hour).toISOString(),
+      to: new Date(hour + 36 * 3_600_000).toISOString(),
+    }),
     [hour],
   );
   const events = useCalendarEvents(range);
+  const { travel } = useCalPrefs();
   const refetch = events.refetch;
   const fired = useRef<Set<string> | null>(null);
 
@@ -52,6 +57,8 @@ export function ReminderWatcher() {
   useEffect(() => {
     const rows = events.data?.events;
     if (!rows) return;
+    // "Travelling" (W4): pop-ups wait while the person is in the air. Nothing is marked as shown, so a meeting that starts after landing still reminds.
+    if (holdsReminders(travel, tick)) return;
     if (!fired.current) fired.current = readFired();
     const seen = fired.current;
     let changed = false;
@@ -71,7 +78,7 @@ export function ReminderWatcher() {
       }
     }
     if (changed) writeFired(seen);
-  }, [events.data, tick]);
+  }, [events.data, tick, travel]);
 
   return null;
 }

@@ -43,3 +43,36 @@ export function unproject(x: number, yDown: number, c: View): { lat: number; lon
     );
   return { lat: lat * DEG, lon: ((((lon * DEG + 180) % 360) + 360) % 360) - 180 };
 }
+
+/**
+ * Points along the shortest path between two places (spherical interpolation), as [lat, lon] pairs, `n + 1` of them including both ends.
+ * Same place twice -> just that point. Used for the dashed trip line on the globe.
+ */
+export function greatCircle(
+  a: { lat: number; lon: number },
+  b: { lat: number; lon: number },
+  n = 48,
+): [number, number][] {
+  const vec = (p: { lat: number; lon: number }): [number, number, number] => {
+    const la = p.lat * RAD;
+    const lo = p.lon * RAD;
+    return [Math.cos(la) * Math.cos(lo), Math.cos(la) * Math.sin(lo), Math.sin(la)];
+  };
+  const va = vec(a);
+  const vb = vec(b);
+  const dot = Math.max(-1, Math.min(1, va[0] * vb[0] + va[1] * vb[1] + va[2] * vb[2]));
+  const om = Math.acos(dot);
+  if (om < 1e-9) return [[a.lat, a.lon]];
+  const so = Math.sin(om);
+  const out: [number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const t = i / n;
+    const ka = Math.sin((1 - t) * om) / so;
+    const kb = Math.sin(t * om) / so;
+    const x = ka * va[0] + kb * vb[0];
+    const y = ka * va[1] + kb * vb[1];
+    const z = ka * va[2] + kb * vb[2];
+    out.push([Math.asin(Math.max(-1, Math.min(1, z))) * DEG, Math.atan2(y, x) * DEG]);
+  }
+  return out;
+}

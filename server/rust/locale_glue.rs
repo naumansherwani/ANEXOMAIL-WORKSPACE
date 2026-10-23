@@ -4,6 +4,7 @@
 // Procedures:
 //   locale.bundle      PUBLIC  {tag}  -> {tag, bundle}   overlay strings for one of the 28 locales (no login needed, same as Bun)
 //   locale.registry    PUBLIC  {}     -> {locales:[...]} the 28 locales (tag, english, native, dir, sort_n)
+//   time.now           PUBLIC  {}     -> {ms}            server clock in ms (W4 "device clock" badge; browser keeps the round-trip, we keep nothing)
 //   locale.pref        AUTH    {}     -> {tag|null}      the caller's saved language (cross-device)
 //   locale.pref.set    AUTH    {tag}  -> {ok, tag}       save it (upsert on user_id)
 //   locale.uipref      AUTH    {}     -> {clock|null, layout|null, extra{}}  calendar pasand (E57) + calendars / working hours / out-of-office (E58), cross-device
@@ -22,7 +23,7 @@ use serde_json::{json, Map, Value};
 type Resp = axum::response::Response;
 
 pub fn public_owns(proc: &str) -> bool {
-    matches!(proc, "locale.bundle" | "locale.registry")
+    matches!(proc, "locale.bundle" | "locale.registry" | "time.now")
 }
 
 pub fn owns(proc: &str) -> bool {
@@ -45,6 +46,8 @@ pub async fn public(proc: &str, input: &Value) -> Resp {
     match proc {
         "locale.bundle" => bundle(input).await,
         "locale.registry" => registry().await,
+        // Nothing is read or stored: the answer is the server's own clock, so it cannot leak anything and needs no login.
+        "time.now" => data(json!({ "ms": lc::now_ms() })),
         _ => fail(StatusCode::NOT_FOUND, "procedure_not_in_rust", "Unknown locale procedure"),
     }
 }
@@ -184,6 +187,25 @@ fn clean_home(v: &Value) -> Result<Value, String> {
     Ok(json!({ "city": city, "country": country, "iana": iana, "lat": lat, "lon": lon }))
 }
 
+/// Travelling status (W4): the person types the destination and the two times; we keep ONLY these fields and never a position.
+/// Times must be plain UTC (what the browser's toISOString() sends) and pass `lc::travel_window` (arrives after leaving, <= 72 h, not stale).
+fn clean_travel(v: &Value) -> Result<Value, String> {
+    let o = v.as_object().ok_or("travel must be an object")?;
+    let to_city = clean_text(o.get("to_city").and_then(|x| x.as_str()).unwrap_or(""), 60);
+    if to_city.is_empty() {
+        return Err("travel needs a destination city".into());
+    }
+    let to_zone = o.get("to_zone").and_then(|x| x.as_str()).unwrap_or("");
+    if !zone_ok(to_zone) || to_zone.contains("..") {
+        return Err("destination time zone name is not valid".into());
+    }
+    let depart = o.get("depart_at").and_then(|x| x.as_str()).unwrap_or("");
+    let arrive = o.get("arrive_at").and_then(|x| x.as_str()).unwrap_or("");
+    let now_s = (lc::now_ms() / 1000) as i64;
+    let (d, a) = lc::travel_window(depart, arrive, now_s).map_err(|e| e.to_string())?;
+    Ok(json!({ "to_city": to_city, "to_zone": to_zone, "depart_at": d, "arrive_at": a }))
+}
+
 fn clean_ooo(v: &Value) -> Result<Value, String> {
     let a = v.as_array().ok_or("ooo must be a list")?;
     if a.len() > 20 {
@@ -246,6 +268,7 @@ fn clean_extra(old: &Map<String, Value>, patch: &Map<String, Value>) -> Result<M
             "calendars" => clean_calendars(v)?,
             "clocks" => clean_clocks(v)?,
             "home" => clean_home(v)?,
+            "travel" => clean_travel(v)?,
             _ => return Err(format!("unknown setting '{}'", clean_text(k, 24))),
         };
         out.insert(k.clone(), cleaned);
@@ -266,6 +289,26 @@ mod extra_tests {
 
     fn week(on: bool) -> Value {
         json!({ "days": (0..7).map(|_| json!({ "on": on, "start": "09:00", "end": "17:30" })).collect::<Vec<_>>(), "tz": "Asia/Karachi" })
+    }
+
+    #[test]
+    fn travel_is_rebuilt_from_four_checked_fields() {
+        let now = (lc::now_ms() / 1000) as u64;
+        let at = |h: i64| lc::rfc3339_utc((now as i64 + h * 3600) as u64);
+        let ok = clean_extra(&Map::new(), &obj(json!({ "travel": { "to_city": " Tokyo ", "to_zone": "Asia/Tokyo", "depart_at": at(2), "arrive_at": at(14), "lat": 35.6, "flight": "XY123" } }))).unwrap();
+        assert_eq!(ok["travel"]["to_city"], "Tokyo");
+        assert_eq!(ok["travel"]["to_zone"], "Asia/Tokyo");
+        assert!(ok["travel"].get("lat").is_none() && ok["travel"].get("flight").is_none(), "no position, no flight number is ever kept");
+        let bad = |t: Value| clean_extra(&Map::new(), &obj(json!({ "travel": t }))).is_err();
+        assert!(bad(json!({ "to_city": "", "to_zone": "Asia/Tokyo", "depart_at": at(2), "arrive_at": at(14) })));
+        assert!(bad(json!({ "to_city": "Tokyo", "to_zone": "Asia/../x", "depart_at": at(2), "arrive_at": at(14) })));
+        assert!(bad(json!({ "to_city": "Tokyo", "to_zone": "Asia/Tokyo", "depart_at": at(14), "arrive_at": at(2) })), "arrives before leaving");
+        assert!(bad(json!({ "to_city": "Tokyo", "to_zone": "Asia/Tokyo", "depart_at": at(2), "arrive_at": at(100) })), "over 72 h");
+        assert!(bad(json!({ "to_city": "Tokyo", "to_zone": "Asia/Tokyo", "depart_at": "2026-10-23T09:30:00+05:00", "arrive_at": at(14) })));
+        assert!(bad(json!({ "to_city": "Tokyo", "to_zone": "Asia/Tokyo" })));
+        assert!(bad(json!("Tokyo")));
+        let removed = clean_extra(&ok, &obj(json!({ "travel": null }))).unwrap();
+        assert!(removed.get("travel").is_none());
     }
 
     #[test]
