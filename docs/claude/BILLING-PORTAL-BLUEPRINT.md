@@ -1,4 +1,9 @@
 # BILLING PORTAL — `billingportal.anexomail.com` (blueprint + phases). Founder hukm 21 Oct 2026 23:50 PKT
+
+> **22 Oct 2026 16:51 UTC — founder ka naya hukm (verbatim):** "duniya ka advance billing portal ke features list likh do repo ke claude/BILLING-PORTAL-BLUEPRINT.md itnay advance ke duniya hil jaye."
+> Halat: **DONE** — poora advanced FEATURES list isi file mein likha (Section 2A, har feature ka phase + locked-rule ke saath sach). Pehle ka structure (vision, faisle, phases, budget) salamat rakha.
+> Yeh docs-only kaam hai — **server command nahi chahiye** (koi code/SQL/Rust/Caddy nahi chheda).
+
 > Founder: "Yeh bhi backend latest technology pe hoga, page bhi; meri features list add hogi; blueprint tarteeb se likho, phases likho, phir implement shuru. Namecheap par A record `billingportal.anexomail.com` add kar diya."
 > Locked rules jo is portal par bhi lagte hain: **Polar payments/prices/landing NO TOUCH · Caddy kahin nahi jata · user ki privacy (metadata-only, mail content kabhi nahi) · Polar engine = source of truth · "block kabhi nahi, grace 3 din" · "One flat price, no usage meter" · package badalna = naye ka poora price, purane ka credit/refund nahi (`/billing-policy`)**.
 
@@ -24,6 +29,66 @@ Customer ko lage ke yeh *aap ka apna* billing center hai: tez, khoobsurat, mobil
 | 14 | SSE live state | **HAAN** | Polar webhook → engine WAL → inbox → trigger; Rust SSE (`/sse/billing`) push; UI GSAP/Motion se smooth update, loading flash nahi |
 | 15 | Zero-bundle l10n + Speculation Rules | **HAAN** | Pehle se `locale.bundle` rpc (28 zubanen); portal ko bundle mein nahi; hover par prefetch |
 | 16 | PWA + offline cached ledger | **HAAN** | Service worker + IndexedDB (sirf non-sensitive summary, encrypted-at-rest nahi mumkin => paise ke amounts/invoice numbers hi, card kuch nahi) |
+
+## 2A. DUNIYA KA ADVANCE — FEATURES LIST (har feature: kya + kyun hil jaye + phase)
+
+> Qaide: har feature locked rules ke andar sach bolega — Polar source of truth, flat price (usage meter nahi), block kabhi nahi, privacy metadata-only, card data kabhi nahi.
+
+### A. Sach bole wala hisaab (Truth layer)
+| # | Feature | Kya hota hai | Kyun duniya hil jaye | Phase |
+|---|---|---|---|---|
+| 1 | **Verifiable receipt + QR** | Har invoice par SHA-256 + Ed25519 signature + ledger position; QR scan → public `verify` page sirf iska tasdeeq kare | Stripe/Zoho yeh nahi dete — customer ka apna "yeh receipt asli hai" ka sabut, bina hamari site par login ke | P3 |
+| 2 | **Append-only hash-chain ledger** | Har billing event `prev_hash→hash` chain mein; roz chain-verify job | Tamaam history immutable — koi (hum bhi) badal nahi sakta; auditor-friendly | P3 |
+| 3 | **Billing time machine** | Ledger ka event-by-event replay view: "5 Sep ko kya hua tha" ek timeline mein | Event-sourcing ka customer-facing look — pehli dafa koi company apni billing history aise kholti hai | P3 |
+| 4 | **Chain-mismatch freeze drill** | Agar chain tootay: billing mutations freeze + founder alarm; customer ka mail/data kabhi nahi | Self-defense system — uthaan aur sach, na ke chhupana | P8 |
+| 5 | **Entitlement explorer ("Aaj kya chalu hai")** | Har plan capability ki live list, engine se — koi jhooti card nahi | Honesty = trust = sales; Zoho ka pricing page bhi yeh sach nahi deta | P2 |
+
+### B. Realtime + speed
+| # | Feature | Kya | Kyun | Phase |
+|---|---|---|---|---|
+| 6 | **SSE live billing state (<40 ms)** | Polar webhook → Rust → SSE push; UI GSAP state-morph, loading flash nahi | Payment kartay hi page khud badal jaye — refresh karne ki zaroorat hi nahi | P4 |
+| 7 | **Speculation Rules + hover prefetch** | Link hover par agla page prefetch; zero-bundle l10n (28 zubanen) | Har click <100 ms — "tez hi speed as feature" | P1 |
+| 8 | **Performance budget matrix** | LCP<1.8 s · INP<150 ms · SSE sync<40 ms · role check<10 ms — Lighthouse green | Budget likha hua, har phase par napa jata | har phase |
+| 9 | **PWA + offline ledger** | Service worker + IndexedDB sirf non-sensitive (amounts/invoice numbers; card kabhi nahi) | Internet band par bhi purani invoices dekh sake; install-able app | P4 |
+
+### C. Aise kaam jo duniya mein nahi
+| # | Feature | Kya | Kyun | Phase |
+|---|---|---|---|---|
+| 10 | **Renewal radar + .ics subscribe** | Agli renewal ki tareekh + calendar event (.ics) + PWA push reminder | Zoho "renewal reminder" mail bhejta hai; hum customer ke calendar mein dakhil hote hain | P6 |
+| 11 | **Payment-method expiry radar** | Card expiry hone wali ho to metadata notice (Polar se) + Polar secure page ka seedha link | Failed-payment ka 90% cause card expiry — pehle hi bata do | P6 |
+| 12 | **Billing health score** | Ek number: renewal date, card status, grace risk — metadata-only | Ek nazar mein "billing theek hai ya nahi" | P6 |
+| 13 | **What-if calculator (seats ×N, yearly vs monthly)** | Slider → saaf total, flat price sach | No-surprise pricing ka sabut — usage meter wala jhoot kabhi nahi | P2 |
+| 14 | **Change-day price preview** | Plan badalne se pehle exact naya price + tareekh (poora naya price, purane ka credit nahi — `/billing-policy` mutabiq) | "Pehle bata do, phir lo" — proration ke surprise khatam | P2 |
+| 15 | **Statement/receipt copy (Worker PDF)** | Web Worker mein hamara statement PDF; legal VAT invoice Polar ka alag link | Do PDF: qanooni (Polar) + aasan (hamara) | P6 |
+| 16 | **Chargeback/refund tracker (read-only)** | Polar MoR se dispute status ka sach view | Customer ko pehli dafa disputes ka asli sach, chhupaya nahi | P6 |
+| 17 | **Hours-saved insight (metadata-only)** | Mail/calendar engine ke seve kiye tasks ka ganit (content kabhi nahi) | "Aap ne is mahine X ghantay bachaye" — price ko value se jora | P6 |
+| 18 | **Trust center** | Data footprint, export, delete-request, privacy ka sach (metadata-only wada likha hua) | GDPR duniya ka trend; ANEXOMAIL ka imandari brand | P6 |
+
+### D. Action + security
+| # | Feature | Kya | Kyun | Phase |
+|---|---|---|---|---|
+| 19 | **Cancel = saaf end-date + resume** | Cancel par exact end-date, resume ek tap; downsell discount sirf founder ke likhit hukm par (faisla #5) | Cancel ka dard nikal do — log cancel kam karte hain jab rasta saaf ho | P3 |
+| 20 | **Passkey step-up bade kaamon par** | Cancel/seat-change/role-change par passkey confirm | Banking-grade, bina password ke | P3 |
+| 21 | **`billing_admin` capability isolation** | Finance user: sirf `billing.*` scopes; mail/people/calendar 403 (test matrix) | Founder ka faisla #12 — role-based sach isolation | P5 |
+| 22 | **Hot-swap seats** | Seat badalta = entitlement row + cache invalidate, process reload nahi, <1 s | Seats aaj ke competitor par restart maangte hain; hamare nahi | P5 |
+| 23 | **Shared-session ticket handoff** | `anexomail.com` → portal: 60 s ek-dafa ticket (Rust `portal.ticket`) + passkey step-up option | Ek login, do surface — bina password dobara | P1–P2 |
+| 24 | **Strict security base** | CSP strict, card data kabhi nahi, rate limits, kill-switch files, audit chain | PCI duniya ka standard, hum us se upar | har phase |
+
+### E. Grace/dunning (faisla #8 ke mutabiq)
+| # | Feature | Kya | Kyun | Phase |
+|---|---|---|---|---|
+| 25 | **Live grace countdown banner** | Payment fail → din-gin-ti ka clear banner, kabhi scare tactics nahi | Imandari ka rule: "block kabhi nahi, grace 3 din" likha hua sach | P7 |
+| 26 | **Read-only mode + sending pause, inbound HAMESHA accept** | Grace ke baad: sirf dekh sakte, bhejna pause; aani mail kabhi drop nahi; data kabhi nahi mitta | Duniya ka koi competitor customer ki mail ko nahi bachata — hum bachate hain | P7 |
+| 27 | **Foran restore on payment** | Payment success → khaatam hone se pehle wali halat <1 s (SSE) | Wapsi ka jhatka zero | P4+P7 |
+
+### F. Har screen, har zubaan, har insaan
+| # | Feature | Kya | Kyun | Phase |
+|---|---|---|---|---|
+| 28 | **3D fluid plan cards (progressive)** | Three.js lazy + OffscreenCanvas; static SVG fallback; `prefers-reduced-motion` par static | Modern web ka cinema, bina bhoj ke (founder faisla #1) | P2 |
+| 29 | **Mobile-first teeno width** | 390 / 820 / 1440 har phase par asli screenshots; touch targets ≥44 px; `100dvh`; safe-area | Rule 19 — phone user pehli dafa billing portal mein aisa sach nahi dekhta | har phase |
+| 30 | **28 zubaan, zero-bundle l10n** | `locale.bundle` rpc; portal ko bundle mein nahi; RTL (ur/ar/fa) | Aap ki awam ki zubaan mein bill parhe — koi duniya ka portal aisa nahi | P1 |
+| 31 | **A11y poora** | Keyboard-only flow, screen-reader labels, contrast AA | Har insaan customer hai | P8 |
+| 32 | **Multi-org switcher** | Ek login, aap ki tamam organisations ki billing ek switch mein | Companies ke liye pehli dafa ek jagah poora hisaab | P5 |
 
 ## 2. Architecture
 - **Host:** `billingportal.anexomail.com` (DNS A record ho chuka). Caddy **additive** site block (`/etc/caddy/sites/billingportal.caddy`): static SPA (`file_server`, immutable assets, SPA fallback) + `/rpc/*`→Rust:3200 + `/sse/*`→Rust. Caddy khud rehta hai; HTTP/3 + auto TLS.
