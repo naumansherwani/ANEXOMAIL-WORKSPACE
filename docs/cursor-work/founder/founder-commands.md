@@ -815,3 +815,22 @@ Rule 46 tarteeb: SQL -> Rust -> Rust restart+health -> Web -> Ctrl+Shift+R.
 `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 4) Web:
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## CalDAV #6 C1 (23 Oct 2026) — phone/desktop calendar app mein apne ANEXOMAIL events (SIRF PADHNA). Commit: neeche git log.
+Rule 46 tarteeb: SQL -> pepper -> Rust -> Rust restart+health -> Caddy (plan, phir apply) -> Web. Brain NAHI chahiye. Caddy ka "haan" aap de chuke hain (23 Oct).
+1) SQL (E80 + CHECK_E80 5/5):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+2) Pepper (app password ke hash ka server-side raaz; ek baar; pehle se ho to kuch nahi badalta):
+`grep -q '^CALDAV_PEPPER=' /opt/anexomail-rust/.env && echo "pepper pehle se hai" || { echo "CALDAV_PEPPER=$(openssl rand -hex 24)" >> /opt/anexomail-rust/.env && echo "pepper laga diya"; }`
+3) Rust install (naya module dav: dav_core tests server par chalte hain, phir build; fail par purani binary wapas):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+4) Rust restart + health (200):
+`pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+5) Caddy — PEHLE PLAN (kuch nahi badalta, sirf dikhata hai aur copy par validate karta hai):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)`
+   Phir plan theek lage to APPLY (backup, validate, reload, test, fail par rollback; HTTP/3 ko haath nahi):
+`MODE=apply bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)`
+6) Web:
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+Phir Ctrl+Shift+R. Calendar -> Settings -> "Phone calendar" -> "Create password" (chaabi sirf ek baar dikhti hai).
+SACH: sirf padhna (PUT/DELETE/MKCOL 405). Ek calendar "ANEXOMAIL": wahi meetings jin ke aap organiser ya guest hain. Phone par banayi meeting wapas nahi aati (C2). iPhone/Mac built-in, Android ko DAVx5 chahiye.

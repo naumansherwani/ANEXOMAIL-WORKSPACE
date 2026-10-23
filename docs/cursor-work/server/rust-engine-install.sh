@@ -13,6 +13,7 @@
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
 #   evidence -> server/rust/evidence_core.rs + evidence_glue.rs (attach_core.rs saath) (appeal ke saboot: screenshots/PDF/docs — tokio stream upload, clamd, allowlist; appeal 20,000 characters; `appeal.device.open`)  [pehle E72 SQL; attach ke saath]
+#   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs; Caddy alag: caddy-caldav.sh)  [pehle E80 SQL + .env CALDAV_PEPPER]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
@@ -39,7 +40,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile people team locale device dnsauth security export attach evidence b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile people team locale device dnsauth security export attach evidence dav b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -114,6 +115,13 @@ CFG={
             "route_marker": "evidence_glue::upload",
             "route_after": '.route("/file/download", get(file_download))',
             "route_add": '.route("/file/appeal-evidence", post(evidence_glue::upload))\n        .route("/file/appeal-evidence/get", get(evidence_glue::download))'},
+ # dav (#6 CalDAV C1, sirf padhna): GET/PROPFIND/REPORT /dav/* (Basic + app password) + procs caldav.apppw.create|list|revoke. SQL E80 PEHLE. Env CALDAV_PEPPER (24+ akshar) .env mein — na ho to DAV 503.
+ # Routes Caddy ke peeche (caddy-caldav.sh). cal_core.rs ka `mod` chahiye (need_mods).
+ "dav":    {"public": False, "label": "caldav", "procs": ['"caldav.apppw.create"','"caldav.apppw.list"','"caldav.apppw.revoke"'],
+            "need_mods": ["cal_core"],
+            "route_marker": "dav_glue::handle",
+            "route_after": '.route("/file/download", get(file_download))',
+            "route_add": '.route("/dav", axum::routing::any(dav_glue::handle))\n        .route("/dav/", axum::routing::any(dav_glue::handle))\n        .route("/dav/{*rest}", axum::routing::any(dav_glue::handle))'},
  # b5 (G40): founder pages ki Bun-only calls Rust par — move-in, release gate/lock/roadmap, revenue pipeline/lead, public status, offline outbox. Koi nayi SQL nahi.
  # Public procs ko request headers chahiye (revenue.lead ki IP rate-limit) — isliye public_call alag.
  "b5":     {"public": True,  "label": "founder-pages", "procs": ['"movein.capacity"','"revenue.lead"','"status.public"','"founder.release.run"'],

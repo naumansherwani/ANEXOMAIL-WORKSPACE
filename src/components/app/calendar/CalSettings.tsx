@@ -2,6 +2,7 @@ import { CalendarClock, Plus, Settings2, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { OutsideCalendars } from "@/components/app/calendar/OutsideCalendars";
+import { PhoneCalendar } from "@/components/app/calendar/PhoneCalendar";
 import { ClockFormatToggle } from "@/components/app/calendar/TimeBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -419,6 +420,8 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
         </section>
 
         <OutsideCalendars />
+
+        <PhoneCalendar />
       </div>
 
       <footer className="sticky bottom-0 flex items-center gap-2 border-t border-border bg-background/95 px-ax-4 py-ax-3 backdrop-blur">

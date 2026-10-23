@@ -470,6 +470,35 @@ pub fn pick(pf: &PropFind, have: &[(&str, String)]) -> (Vec<(String, String)>, V
     (f, m)
 }
 
+/* ------------------------------------------------------------ ics helpers */
+
+/// `METHOD:` line CalDAV resource mein nahi hoti (RFC 4791 §4.1) — build_ics ki output se hata dete hain.
+pub fn strip_method(ics: &str) -> String {
+    ics.split("\r\n").filter(|l| !l.starts_with("METHOD:")).collect::<Vec<_>>().join("\r\n")
+}
+
+/// Master ke .ics mein exception ke VEVENT blocks jodna (ek resource = ek UID ki saari VEVENTs).
+pub fn merge_vevents(master: &str, extras: &[String]) -> String {
+    let mut add = String::new();
+    for x in extras {
+        let (Some(a), Some(b)) = (x.find("BEGIN:VEVENT"), x.rfind("END:VEVENT")) else { continue };
+        add.push_str(&x[a..b + "END:VEVENT".len()]);
+        add.push_str("\r\n");
+    }
+    match master.rfind("END:VCALENDAR") {
+        Some(i) => format!("{}{}{}", &master[..i], add, &master[i..]),
+        None => master.to_string(),
+    }
+}
+
+/// `/dav/c/personal/<uuid>.ics` ya sirf `<uuid>.ics` — percent-decode ke baad route-style id nikalna (multiget ke liye).
+pub fn event_id_from_href(h: &str) -> Option<String> {
+    let last = h.rsplit('/').next()?;
+    let last = last.replace("%2D", "-").replace("%2d", "-");
+    let id = last.strip_suffix(".ics")?;
+    if uuid_ok(id) { Some(id.to_string()) } else { None }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -613,5 +642,18 @@ mod tests {
         assert_eq!(depth_of(Some("1")), Depth::One);
         assert_eq!(depth_of(None), Depth::Infinity);
         assert_eq!(depth_of(Some("Infinity")), Depth::Infinity);
+    }
+
+    #[test]
+    fn ics_helpers() {
+        let a = "BEGIN:VCALENDAR\r\nMETHOD:REQUEST\r\nBEGIN:VEVENT\r\nUID:1\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
+        let b = "BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:1\r\nRECURRENCE-ID:X\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n";
+        let m = strip_method(a);
+        assert!(!m.contains("METHOD"));
+        let j = merge_vevents(&m, &[b.to_string()]);
+        assert_eq!(j.matches("BEGIN:VEVENT").count(), 2);
+        assert!(j.contains("RECURRENCE-ID:X") && j.trim_end().ends_with("END:VCALENDAR"));
+        assert_eq!(event_id_from_href("/dav/c/personal/0f8fad5b-d9cb-469f-a165-70867728950e.ics"), Some("0f8fad5b-d9cb-469f-a165-70867728950e".into()));
+        assert_eq!(event_id_from_href("/dav/c/personal/x.ics"), None);
     }
 }

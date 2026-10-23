@@ -368,7 +368,7 @@ docs/cursor-work/sql/CHECK_E57.sql 96c311bd99b4fef8
 docs/cursor-work/sql/E57_ui_pref.sql 9283cdb782f193e0
 docs/cursor-work/sql/CHECK_E58.sql c4e837a0e0d5051e
 docs/cursor-work/sql/E58_calendar_prefs_reminders.sql 506434cbe8caca1d
-src/components/app/calendar/CalSettings.tsx 45db8a6a54df4b58
+src/components/app/calendar/CalSettings.tsx eb6f67d340838da0
 src/components/app/calendar/ReminderWatcher.tsx 529aba77b28ee705
 src/lib/calprefs.ts 90b206e28e9fca9e
 src/components/site/AuthCinema.tsx e3dc4f84d143f5d7
@@ -605,3 +605,6 @@ docs/claude/CALDAV-BLUEPRINT.md 1f6d99e7d350b7dd
 docs/cursor-work/sql/E80_caldav_foundation.sql ed420769a08b1325
 docs/cursor-work/sql/CHECK_E80.sql d833ab7f7168f31d
 docs/cursor-work/sql/proofs/E80_proof.sql d7af0fdb8bea169e
+src/components/app/calendar/PhoneCalendar.tsx 436f2037542a4466
+src/lib/caldav.ts f37937c8268681f4
+src/lib/caldav.test.ts 5820890e0c318aef
