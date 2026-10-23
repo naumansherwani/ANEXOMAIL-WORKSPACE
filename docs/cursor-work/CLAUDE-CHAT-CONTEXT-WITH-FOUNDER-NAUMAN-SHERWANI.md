@@ -846,3 +846,6 @@ Founder hukm: slider icon hata do, Calendar settings "⋯" mein Meeting ke saath
 
 ### Checkpoint 23 Oct 10:10 PKT — founder ne app password bana liya
 Password mil gaya; usay samajh nahi aya ke ab kya karna hai. Samjhaya: yeh phone calendar app ke liye alag password hai (login password nahi); phone mein CalDAV account add karna hai. Agla: founder phone par account jode, result batae (events aaye ya nahi).
+
+### Checkpoint 23 Oct 10:30 PKT — CalDAV user guide in app (push, pull baaki)
+Founder ke paas password hai, Android; samajh nahi aya kya karna. /dav/ browser mein 401-text = server theek. Bana: HowTo guide in PhoneCalendar. Agla: founder pull -> DAVx5 se jode -> result (events aaye ya DAVx5 error screenshot). Honest: Android par DAVx5 chahiye (system calendar akela CalDAV nahi jodta).

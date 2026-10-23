@@ -12,6 +12,8 @@ export type NewKey = { key: string; id: string | null; username: string };
 
 export const MAX_APP_KEYS = 10;
 export const DAV_SERVER = "anexomail.com";
+/** Full address for apps that ask for a URL (DAVx5, Thunderbird). */
+export const DAV_URL = "https://anexomail.com/dav/";
 
 const KEY = ["caldav", "keys"] as const;
 

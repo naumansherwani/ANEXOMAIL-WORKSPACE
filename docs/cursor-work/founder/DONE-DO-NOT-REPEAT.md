@@ -28,3 +28,5 @@
 - 23 Oct: SettingRow text column basis-[15rem] (buttons wrap) — wapas bina basis mat karo.
 
 - 23 Oct: Calendar toolbar = Meeting + ek "⋯" menu (Calendar settings andar, label ke saath), sab screens par. Alag slider icon wapas mat lagao.
+
+- 23 Oct: PhoneCalendar HowTo tabs (Android DAVx5 / iPhone / Computer) + DAV_URL. /dav/ ka browser mein "Sign in..." text normal hai — bug nahi.

@@ -890,3 +890,7 @@ Phone par setting card mein text column buttons ne dabaa diya tha (ek line mein 
 ## 23 Oct 10:20 — Calendar settings ab "⋯" menu mein, Meeting ke saath — SIRF Web
 Toolbar mein alag slider icon nahi. Har screen (phone/tablet/laptop) par Meeting ke baad ek "⋯" button; usme "Calendar settings" (naam ke saath), layout, booking, import, export, clock, Availability/Load.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 23 Oct 10:30 — Phone calendar mein "How to connect" (Android/iPhone/Computer) — SIRF Web
+Founder ne anexomail.com/dav/ browser mein khola to "Sign in with your email and a CalDAV app password" dikha — yeh SAHI hai (server zinda, link apps ke liye hai). Ab Settings -> Phone calendar mein saaf steps + "Link" (https://anexomail.com/dav/) copy button aate hain, aam user ko guess nahi karna.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

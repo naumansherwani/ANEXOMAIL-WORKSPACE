@@ -1,10 +1,13 @@
 import { Check, Copy, KeyRound, Loader2, Smartphone, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   DAV_SERVER,
+  DAV_URL,
   keyAge,
   MAX_APP_KEYS,
   useAppKeys,
@@ -78,6 +81,7 @@ export function PhoneCalendar() {
                 {(
                   [
                     ["Server", DAV_SERVER],
+                    ["Link", DAV_URL],
                     ["Username", fresh.username],
                     ["Password", fresh.key],
                   ] as const
@@ -100,19 +104,6 @@ export function PhoneCalendar() {
                   </div>
                 ))}
               </div>
-              <ul className="mt-3 list-disc space-y-1 pl-4 text-[12px] text-muted-foreground">
-                <li>
-                  iPhone / Mac: Settings → Calendar → Accounts → Add → Other → Add CalDAV Account.
-                </li>
-                <li>
-                  Android: install DAVx5 and add an account with the server, username and password
-                  above.
-                </li>
-                <li>
-                  Thunderbird: New Calendar → On the Network → CalDAV, then the username and
-                  password.
-                </li>
-              </ul>
               <Button
                 type="button"
                 variant="outline"
@@ -124,6 +115,8 @@ export function PhoneCalendar() {
               </Button>
             </div>
           )}
+
+          <HowTo />
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <Input
@@ -192,5 +185,75 @@ export function PhoneCalendar() {
         </>
       )}
     </section>
+  );
+}
+
+type Device = "android" | "iphone" | "computer";
+
+const STEPS: Record<Device, { title: string; steps: string[] }> = {
+  android: {
+    title: "Android phone",
+    steps: [
+      "Install the free app DAVx5 (Play Store, or F-Droid). Your phone's own Calendar app cannot add this kind of account by itself.",
+      "Open DAVx5, tap the + button, then choose \u201cLogin with URL and user name\u201d.",
+      "Base URL: the Link shown above. User name: your email. Password: the 30-letter password. Tap Login.",
+      "Switch the calendar on in the list and tap the refresh icon. Allow Calendar access if it asks.",
+      "Open your phone's Calendar app. Your ANEXOMAIL meetings appear there.",
+    ],
+  },
+  iphone: {
+    title: "iPhone / iPad",
+    steps: [
+      "Settings \u2192 Calendar \u2192 Accounts \u2192 Add Account \u2192 Other \u2192 Add CalDAV Account.",
+      "Server: anexomail.com. User name: your email. Password: the 30-letter password. Tap Next.",
+      "Open the Calendar app. Your ANEXOMAIL meetings appear there.",
+    ],
+  },
+  computer: {
+    title: "Computer",
+    steps: [
+      "Thunderbird: Calendar \u2192 New Calendar \u2192 On the Network \u2192 CalDAV.",
+      "Location: the Link shown above. Then your email and the 30-letter password.",
+      "Mac: Calendar \u2192 Add Account \u2192 Other CalDAV Account.",
+    ],
+  },
+};
+
+/** Plain-language steps, always visible, so nobody has to guess what to do with the password. */
+function HowTo() {
+  const [d, setD] = useState<Device>("android");
+  return (
+    <div className="mt-3 rounded-md border border-border p-3">
+      <p className="text-[12px] font-medium">How to connect</p>
+      <p className="ax-caption mt-1 text-muted-foreground">
+        The password below is not your login password. It only lets a calendar app read your
+        meetings. If you open the link in a browser you will just see “Sign in with your email
+        and a CalDAV app password”: that is normal, the link is for apps, not for people.
+      </p>
+      <div role="tablist" aria-label="Device" className="mt-2 flex flex-wrap gap-1">
+        {(Object.keys(STEPS) as Device[]).map((k) => (
+          <button
+            key={k}
+            type="button"
+            role="tab"
+            aria-selected={d === k}
+            onClick={() => setD(k)}
+            className={cn(
+              "ax-press ax-tap rounded-md border px-3 text-[12px] font-semibold",
+              d === k
+                ? "border-cyan-accent/50 bg-secondary text-foreground"
+                : "border-border text-muted-foreground",
+            )}
+          >
+            {STEPS[k].title}
+          </button>
+        ))}
+      </div>
+      <ol className="mt-2 list-decimal space-y-1.5 pl-5 text-[12px] text-muted-foreground">
+        {STEPS[d].steps.map((t) => (
+          <li key={t}>{t}</li>
+        ))}
+      </ol>
+    </div>
   );
 }
