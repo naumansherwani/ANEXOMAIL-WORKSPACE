@@ -194,7 +194,7 @@ const STEPS: Record<Device, { title: string; steps: string[] }> = {
   android: {
     title: "Android phone",
     steps: [
-      "Install the free app DAVx5 (Play Store, or F-Droid). Your phone's own Calendar app cannot add this kind of account by itself.",
+      "Install the app DAVx5. It is free from F-Droid (f-droid.org) and a paid app on the Play Store. Your phone's own Calendar app cannot add this kind of account by itself.",
       "Open DAVx5, tap the + button, then choose \u201cLogin with URL and user name\u201d.",
       "Base URL: the Link shown above. User name: your email. Password: the 30-letter password. Tap Login.",
       "Switch the calendar on in the list and tap the refresh icon. Allow Calendar access if it asks.",
@@ -227,8 +227,8 @@ function HowTo() {
       <p className="text-[12px] font-medium">How to connect</p>
       <p className="ax-caption mt-1 text-muted-foreground">
         The password below is not your login password. It only lets a calendar app read your
-        meetings. If you open the link in a browser you will just see “Sign in with your email
-        and a CalDAV app password”: that is normal, the link is for apps, not for people.
+        meetings. If you open the link in a browser you will just see “Sign in with your email and a
+        CalDAV app password”: that is normal, the link is for apps, not for people.
       </p>
       <div role="tablist" aria-label="Device" className="mt-2 flex flex-wrap gap-1">
         {(Object.keys(STEPS) as Device[]).map((k) => (

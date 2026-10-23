@@ -849,3 +849,6 @@ Password mil gaya; usay samajh nahi aya ke ab kya karna hai. Samjhaya: yeh phone
 
 ### Checkpoint 23 Oct 10:30 PKT — CalDAV user guide in app (push, pull baaki)
 Founder ke paas password hai, Android; samajh nahi aya kya karna. /dav/ browser mein 401-text = server theek. Bana: HowTo guide in PhoneCalendar. Agla: founder pull -> DAVx5 se jode -> result (events aaye ya DAVx5 error screenshot). Honest: Android par DAVx5 chahiye (system calendar akela CalDAV nahi jodta).
+
+### Checkpoint 23 Oct 10:40 PKT — DAVx5 paid issue
+Founder: DAVx5 Rs1800, nahi lunga. Options diye: (A) F-Droid se free DAVx5, (B) Google Calendar "URL se jodo" secret feed (naya Rust route, no install, refresh slow), (C) kuch nahi. CEO sifarish: A abhi, B baad mein agar user-facing no-install chahiye. Guide text push kiya.

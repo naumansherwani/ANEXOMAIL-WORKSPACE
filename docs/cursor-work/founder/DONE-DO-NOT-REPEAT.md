@@ -30,3 +30,5 @@
 - 23 Oct: Calendar toolbar = Meeting + ek "⋯" menu (Calendar settings andar, label ke saath), sab screens par. Alag slider icon wapas mat lagao.
 
 - 23 Oct: PhoneCalendar HowTo tabs (Android DAVx5 / iPhone / Computer) + DAV_URL. /dav/ ka browser mein "Sign in..." text normal hai — bug nahi.
+
+- 23 Oct: DAVx5 Play Store par PAID (~1800), F-Droid par free. Founder paid app nahi lega. Guide text theek kiya. Agla option: no-install "Google Calendar subscribe" feed (secret ICS link, Rust route /dav/feed/<key>.ics; Google ka refresh 12-24h). Founder ka faisla baaki.
