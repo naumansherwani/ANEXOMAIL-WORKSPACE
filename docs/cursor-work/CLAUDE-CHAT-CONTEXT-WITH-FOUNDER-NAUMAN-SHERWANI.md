@@ -843,3 +843,6 @@ Founder hukm: slider icon hata do, Calendar settings "⋯" mein Meeting ke saath
 **Live dekha (anexomail.com, purani build):** Appearance par scroll JS se neeche/upar theek => "stuck" touch-specific; handle pull ke baad test. Calendar settings -> Phone calendar section khula hai (Device name + Create password). Key maine NAHI banayi — founder khud banaye (30 akshar, ek baar dikhti).
 **Agla:** founder Web pull -> Calendar "⋯" -> Calendar settings -> Phone calendar -> Create password -> phone CalDAV (server anexomail.com, user hostflowaibuilder@gmail.com, password = key). GREEN to C2 (PUT/DELETE, If-Match 412, exceptions, sync-collection); phir #7 Google (founder verification), #8 Rooms.
 **Dates:** E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle.
+
+### Checkpoint 23 Oct 10:10 PKT — founder ne app password bana liya
+Password mil gaya; usay samajh nahi aya ke ab kya karna hai. Samjhaya: yeh phone calendar app ke liye alag password hai (login password nahi); phone mein CalDAV account add karna hai. Agla: founder phone par account jode, result batae (events aaye ya nahi).
