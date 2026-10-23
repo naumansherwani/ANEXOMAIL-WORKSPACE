@@ -17,6 +17,8 @@ import { measureMotion } from "@/lib/experience";
 import { type MailThread, formatBytes, useThread } from "@/lib/mail";
 import { downloadAttachment } from "@/lib/mail-attachments";
 import { notify } from "@/lib/notify";
+import { ZoomButtons } from "@/components/app/ZoomButtons";
+import { READ_ZOOM, useStoredStep } from "@/lib/zoom-prefs";
 
 export const Route = createFileRoute("/app/mail/$folder/$threadId")({
   head: () => ({
@@ -29,6 +31,7 @@ function ThreadPage() {
   const { folder, threadId } = Route.useParams();
   const query = useThread(threadId);
   const navigate = useNavigate();
+  const readZoom = useStoredStep(READ_ZOOM);
 
   // Esc = thread band karke list par wapas (Gmail/Zoho jaisa). Text likhte waqt (input/textarea/editor) Esc ko nahi chhedte.
   useEffect(() => {
@@ -36,7 +39,12 @@ function ThreadPage() {
       if (e.key !== "Escape" || e.defaultPrevented) return;
       const el = e.target as HTMLElement | null;
       if (el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))) return;
-      if (document.querySelector('[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]')) return;
+      if (
+        document.querySelector(
+          '[role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]',
+        )
+      )
+        return;
       void navigate({ to: "/app/mail/$folder", params: { folder } });
     };
     window.addEventListener("keydown", onKey);
@@ -108,10 +116,23 @@ function ThreadPage() {
             </p>
           )}
         </div>
+        {/* Padhne ka zoom: sirf mail ki body ke liye (lambi cheez padhne mein kaam aata hai) */}
+        <ZoomButtons
+          label="Reading size"
+          value={`${readZoom.value}%`}
+          canOut={readZoom.canOut}
+          canIn={readZoom.canIn}
+          onStep={readZoom.step}
+          onReset={readZoom.reset}
+          className="shrink-0"
+        />
         {/* Phone par actions apni line mein (subject kat-ta nahi), desktop par dayein. */}
         {/* Pane tang ho (laptop) to buttons katte nahi: HScroll = ‹ › + mouse drag + grab cursor (use-drag-scroll). */}
         <div className="order-last flex w-full items-center gap-1 md:order-none md:ml-auto md:w-auto md:min-w-0 md:max-w-[72%]">
-          <HScroll wrapperClassName="min-w-0 flex-1" className="flex items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          <HScroll
+            wrapperClassName="min-w-0 flex-1"
+            className="flex items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          >
             <ThreadHeaderActions
               threadId={thread.id}
               status={thread.status}
@@ -173,10 +194,24 @@ function mailWhen(iso: string): string {
   if (Number.isNaN(d.getTime())) return "";
   const now = Date.now();
   const sameYear = d.getFullYear() === new Date(now).getFullYear();
-  const abs = d.toLocaleString(undefined, { month: "short", day: "numeric", ...(sameYear ? {} : { year: "numeric" }), hour: "numeric", minute: "2-digit" });
+  const abs = d.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    ...(sameYear ? {} : { year: "numeric" }),
+    hour: "numeric",
+    minute: "2-digit",
+  });
   const mins = Math.round((now - d.getTime()) / 60000);
   const rel =
-    mins < 1 ? "just now" : mins < 60 ? `${mins} min ago` : mins < 1440 ? `${Math.round(mins / 60)} hour${Math.round(mins / 60) === 1 ? "" : "s"} ago` : mins < 10080 ? `${Math.round(mins / 1440)} day${Math.round(mins / 1440) === 1 ? "" : "s"} ago` : "";
+    mins < 1
+      ? "just now"
+      : mins < 60
+        ? `${mins} min ago`
+        : mins < 1440
+          ? `${Math.round(mins / 60)} hour${Math.round(mins / 60) === 1 ? "" : "s"} ago`
+          : mins < 10080
+            ? `${Math.round(mins / 1440)} day${Math.round(mins / 1440) === 1 ? "" : "s"} ago`
+            : "";
   return rel ? `${abs} (${rel})` : abs;
 }
 
@@ -265,7 +300,9 @@ function MailMessage({
                   title="Our virus scanner flagged this file, so it was not kept."
                 >
                   <Paperclip className="size-3" />
-                  <span className="max-w-[40vw] truncate sm:max-w-xs line-through">{file.filename}</span>
+                  <span className="max-w-[40vw] truncate sm:max-w-xs line-through">
+                    {file.filename}
+                  </span>
                   <span>Removed: looks malicious</span>
                 </span>
               ) : (

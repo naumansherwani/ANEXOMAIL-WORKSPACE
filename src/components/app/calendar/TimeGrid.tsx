@@ -9,8 +9,8 @@ import { GOAL_DOT, GOAL_WORD, goalTone } from "@/lib/goal";
 import { fmtHour } from "@/lib/timeFormat";
 import { minutesOfDay, movedTo, packDay, snap } from "@/lib/time-grid";
 import { cn } from "@/lib/utils";
-
-const HOUR = 52; // px per hour
+import { ZoomButtons } from "@/components/app/ZoomButtons";
+import { GRID_HOUR, useStoredStep } from "@/lib/zoom-prefs";
 
 /** An all-day event from an outside calendar covers every day from its first day up to (not including) its end. */
 function coversDay(e: CalendarEvent, day: Date): boolean {
@@ -70,6 +70,9 @@ export function TimeGrid({
   scrollClassName?: string;
 }) {
   const update = useUpdateMeeting();
+  // Ghante ki unchai (zoom): phone par ghanton ko failao ya samet lo — sirf is grid mein, baqi app par nahi.
+  const hourZoom = useStoredStep(GRID_HOUR);
+  const HOUR = hourZoom.value;
   // Optimistic: after a drop the block stays where it was dropped until the server's list catches up
   // (otherwise it jumps back for a second). Cleared when the server copy matches, or on error.
   const [opt, setOpt] = useState<Record<string, { starts_at: string; duration_minutes: number }>>(
@@ -323,6 +326,18 @@ export function TimeGrid({
           ))}
         </div>
       )}
+
+      <div className="flex items-center justify-end gap-2 border-b border-border px-2 py-1">
+        <span className="ax-caption text-muted-foreground">Hour height</span>
+        <ZoomButtons
+          label="Hour height"
+          value={`${hourZoom.value}px`}
+          canOut={hourZoom.canOut}
+          canIn={hourZoom.canIn}
+          onStep={hourZoom.step}
+          onReset={hourZoom.reset}
+        />
+      </div>
 
       <div
         ref={scroller}

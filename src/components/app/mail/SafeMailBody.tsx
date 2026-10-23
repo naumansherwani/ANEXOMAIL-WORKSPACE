@@ -2,6 +2,7 @@ import { ImageOff } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useBlockRemoteImages } from "@/lib/settings";
+import { READ_ZOOM, useStoredStep } from "@/lib/zoom-prefs";
 
 /**
  * Bahar se aayi HTML mail ko MEHFOOZ dikhana (20 Oct 2026 — pehle `dangerouslySetInnerHTML` se seedha page mein lagti thi,
@@ -16,12 +17,12 @@ import { useBlockRemoteImages } from "@/lib/settings";
 const REMOTE_IMG = /<img\b[^>]*\bsrc\s*=\s*["']?\s*https?:/i;
 const REMOTE_CSS_BG = /url\(\s*["']?\s*https?:/i;
 
-function doc(html: string, images: boolean): string {
+function doc(html: string, images: boolean, zoom: number): string {
   const img = images ? "img-src https: http: data: cid:;" : "img-src data: cid:;";
   const csp = `default-src 'none'; ${img} style-src 'unsafe-inline'; font-src data:; media-src 'none'; frame-src 'none'; form-action 'none'; base-uri 'none'`;
   return `<!doctype html><html><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="${csp}"><base target="_blank"><meta name="referrer" content="no-referrer"><style>
 html,body{margin:0;padding:0;background:#fff;color:#111;font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;word-wrap:break-word;overflow-wrap:anywhere}
-body{padding:16px}img{max-width:100%;height:auto}table{max-width:100%}pre{white-space:pre-wrap}a{color:#1a56db}
+body{padding:16px;zoom:${zoom / 100}}img{max-width:100%;height:auto}table{max-width:100%}pre{white-space:pre-wrap}a{color:#1a56db}
 ${images ? "" : 'img[src^="http:"],img[src^="https:"],img[src^="//"]{visibility:hidden}'}
 </style></head><body>${html}</body></html>`;
 }
@@ -34,7 +35,8 @@ export function SafeMailBody({ html }: { html: string }) {
   const [shown, setImages] = useState(false);
   const images = shown || !block;
   const hasRemote = useMemo(() => REMOTE_IMG.test(html) || REMOTE_CSS_BG.test(html), [html]);
-  const srcDoc = useMemo(() => doc(html, images), [html, images]);
+  const readZoom = useStoredStep(READ_ZOOM);
+  const srcDoc = useMemo(() => doc(html, images, readZoom.value), [html, images, readZoom.value]);
 
   const measure = useCallback(() => {
     const d = frame.current?.contentDocument;

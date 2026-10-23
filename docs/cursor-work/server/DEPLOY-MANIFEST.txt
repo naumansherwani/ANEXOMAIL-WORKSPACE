@@ -12,7 +12,7 @@ src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx bf84e1529409b5ca
 src/styles.css 7189e6a69d0cef63
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
-src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
+src/routes/app.mail.$folder.$threadId.tsx bd5e7d2146171b0e
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 0ae61ddbdb0dd946
@@ -102,7 +102,7 @@ src/components/app/migrate/ImportMailPage.tsx 1142ff3adc903f76
 src/routes/app.import.tsx c85edcdc1d377621
 src/components/app/mail/MailRail.tsx 53a2e7f6b93b96b6
 src/components/app/mail/InlineReply.tsx 0e7651daf97547dc
-src/components/app/mail/SafeMailBody.tsx 294c78c645522697
+src/components/app/mail/SafeMailBody.tsx 7a4300d05d51dc7e
 src/lib/domains.ts b7201ad41a29e57d
 public/sw.js 048374b66d00be5f
 src/lib/auth.tsx 19dd8d875cc9b024
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md f85b0a1eb829f724
+docs/cursor-work/founder/founder-commands.md d755b1b780e5b68c
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -246,11 +246,11 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 2e36c037ebec86bf
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 716910db1c03004b
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
-src/components/app/calendar/TimeGrid.tsx 8acbe097a7ea8588
+src/components/app/calendar/TimeGrid.tsx e99750ba4f3106a4
 src/lib/plans.ts aed70e46981088a3
 docs/cursor-work/sql/E52_alias_fair_use.sql c484bcfe67a0c2cf
 docs/cursor-work/sql/CHECK_E52.sql 7884b25b262eb1e6
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a7c0f59538583773
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md e59af301e715e2de
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md 4d0d2004f2eb67c2
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -616,4 +616,7 @@ src/lib/pull-refresh.ts 82be9c87b00528b0
 src/lib/pull-refresh.test.ts 0fae69e4befec4ba
 src/lib/text-size.ts 143e43975c7b6ffb
 src/lib/text-size.test.ts 328fb47845e7113d
-docs/cursor-work/MOBILE-CONTRACT.md db9f292afd7c1cd3
+docs/cursor-work/MOBILE-CONTRACT.md 85e0755401e77e39
+src/lib/zoom-prefs.ts 3c76b835203e66e3
+src/lib/zoom-prefs.test.ts 06d457bdbbec9532
+src/components/app/ZoomButtons.tsx bdf1578ebb91dcee

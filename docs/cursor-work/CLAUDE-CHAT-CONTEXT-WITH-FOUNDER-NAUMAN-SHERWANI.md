@@ -798,3 +798,6 @@ Founder ne Web pull chalaya (src same=562) aur screenshot bheja: naya phone tool
 **Mail "Something went wrong"**: asli error ab bhi nahi mila (hardening 3a58fed pull ho chuka). Aaye to screenshot + subject + account.
 **CalDAV:** server par sab LIVE; baaki sirf founder ka phone test (Settings -> Phone calendar -> password).
 **Agla:** founder Web pull -> phone screenshots; in-context zoom (mail body + calendar grid); phir CalDAV phone test GREEN; C2 / Google / Rooms.
+
+### Checkpoint 23 Oct 09:30 PKT — in-context zoom BANA (push, founder pull baaki)
+Founder ka hukm "zoom jahan zaroorat wahan" amal mein: mail body A−/A+ (READ_ZOOM 85–175%) + calendar Week/Day ghante ki unchai (GRID_HOUR 36/52/72/96) — `lib/zoom-prefs.ts`, `components/app/ZoomButtons.tsx`, SafeMailBody (iframe body zoom), TimeGrid (HOUR ab state), mail thread header. Qaida MOBILE-CONTRACT.md 5b. Web pull baaki: e04f078..is commit tak sab ek hi pull.sh se. Phir founder ke phone screenshots (calendar Week, mail thread, Settings->Appearance Text size).
