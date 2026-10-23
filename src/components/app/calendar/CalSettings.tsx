@@ -58,7 +58,7 @@ function problem(cals: CalendarDef[], hours: WorkHours, ooo: OooPeriod[]): strin
  * Calendar settings in one side sheet: how it looks (layout, clock), your calendars and their colours,
  * working hours, and out-of-office. Saved to the account, so every device agrees.
  */
-export function CalSettingsButton({ className }: { className?: string }) {
+export function CalSettingsButton({ className, label }: { className?: string; label?: string }) {
   const [open, setOpen] = useState(false);
   return (
     <Sheet open={open} onOpenChange={setOpen}>
@@ -73,6 +73,7 @@ export function CalSettingsButton({ className }: { className?: string }) {
           )}
         >
           <Settings2 className="size-3.5" aria-hidden="true" />
+          {label && <span className="ml-1.5 text-[12px] font-semibold">{label}</span>}
         </button>
       </SheetTrigger>
       <SheetContent side="right" className="w-full gap-0 overflow-y-auto p-0 sm:max-w-[520px]">

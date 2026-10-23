@@ -26,3 +26,5 @@
 - 23 Oct: TouchScrollbar (draggable handle, coarse pointer) — lib/touch-scroll.ts + components/app/TouchScrollbar.tsx in AppShell. Dobara na banao.
 
 - 23 Oct: SettingRow text column basis-[15rem] (buttons wrap) — wapas bina basis mat karo.
+
+- 23 Oct: Calendar toolbar = Meeting + ek "⋯" menu (Calendar settings andar, label ke saath), sab screens par. Alag slider icon wapas mat lagao.

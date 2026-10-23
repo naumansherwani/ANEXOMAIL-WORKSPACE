@@ -833,3 +833,6 @@ Founder: scroll bar stuck / pakad kar chalna chahiye (mobile+tablet). Bana: drag
 
 ### Checkpoint 23 Oct 10:05 PKT — Appearance card squeeze fix; scroll "stuck" ka live test
 Live (390px iframe, anexomail.com/app/settings/appearance): sirf EK scroller (inner div), JS se neeche->upar scroll bilkul theek (jump/atakna nahi) => "stuck" touch-specific hai, code-layout ka nahi. Kuch bhi mouse-only (use-drag-scroll) touch ko nahi chhoota. Draggable handle (dffe77d) wahi hal hai; pull ke baad phone par test. Agar phir bhi atke: screen recording ya batao ungli kahan thi.
+
+### Checkpoint 23 Oct 10:20 PKT — Calendar settings -> "⋯" menu (push, pull baaki)
+Founder hukm: slider icon hata do, Calendar settings "⋯" mein Meeting ke saath. CalSettingsButton ko optional label. Agla: founder pull -> CalDAV phone test (Create password) -> C2.

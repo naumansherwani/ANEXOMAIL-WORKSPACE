@@ -886,3 +886,7 @@ Android ka apna bar pakad kar chalta nahi. Ab right edge par ek handle hai (scro
 ## 23 Oct 10:05 — Settings card ka text ek-ek lafz wali patli patti nahi rahegi — SIRF Web
 Phone par setting card mein text column buttons ne dabaa diya tha (ek line mein ek lafz). Ab text ko kam az kam 15rem milta hai aur Explain/Blast radius/History buttons neeche wrap hote hain. Live 390px par check kiya: text 298px chauda.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 23 Oct 10:20 — Calendar settings ab "⋯" menu mein, Meeting ke saath — SIRF Web
+Toolbar mein alag slider icon nahi. Har screen (phone/tablet/laptop) par Meeting ke baad ek "⋯" button; usme "Calendar settings" (naam ke saath), layout, booking, import, export, clock, Availability/Load.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

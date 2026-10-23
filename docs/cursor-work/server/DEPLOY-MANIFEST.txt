@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md ede43bdcf92409e6
+docs/cursor-work/founder/founder-commands.md 2532549da7c71660
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md de7541c86f6217f0
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 801fe2e9b29f4d14
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 986634ddfa7f9c5b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 8ff2c5079aaebbfb
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -359,7 +359,7 @@ src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql da641f2506fb7482
 src/lib/timeFormat.ts 22f95a3da9a5a275
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
-src/components/app/calendar/CalendarClassic.tsx ec77da8dcb1bb018
+src/components/app/calendar/CalendarClassic.tsx b80830cacd40cd2d
 src/components/app/calendar/Bits.tsx ff3c03680788468a
 src/components/app/calendar/Availability.tsx 42cc922382dbbcc1
 server/rust/locale_core.rs 684ebc8bde55fa85
@@ -368,7 +368,7 @@ docs/cursor-work/sql/CHECK_E57.sql 96c311bd99b4fef8
 docs/cursor-work/sql/E57_ui_pref.sql 9283cdb782f193e0
 docs/cursor-work/sql/CHECK_E58.sql c4e837a0e0d5051e
 docs/cursor-work/sql/E58_calendar_prefs_reminders.sql 506434cbe8caca1d
-src/components/app/calendar/CalSettings.tsx eb6f67d340838da0
+src/components/app/calendar/CalSettings.tsx 20b0908bbe50306f
 src/components/app/calendar/ReminderWatcher.tsx 529aba77b28ee705
 src/lib/calprefs.ts 90b206e28e9fca9e
 src/components/site/AuthCinema.tsx e3dc4f84d143f5d7
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 5e5cc2fdd4111718
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md f71e4c5ab73369f1
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md 4d0d2004f2eb67c2
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac

@@ -549,22 +549,8 @@ export function CalendarClassic() {
         mobileHidden={Boolean(selected)}
         action={
           <>
-            {/* Phone: ek "⋯" menu (har button 44 px); sm se upar purani line */}
-            <div className="hidden items-center gap-1 sm:flex">
-              <LayoutToggle />
-              <CalSettingsButton />
-              <BookingButton />
-              <IcsPickButton onLoaded={setIcsPlan} />
-              <a
-                href={apiHref(exportPath("ics"))}
-                aria-label="Export your calendar (.ics)"
-                className="ax-press ax-focus ax-tap ax-caption inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 font-semibold text-muted-foreground"
-                title="Export .ics — no lock-in"
-              >
-                <Download className="size-3.5" aria-hidden="true" />
-              </a>
-            </div>
-            <div className="sm:hidden">
+            {/* Har screen par ek "⋯" menu: Meeting ke saath. Calendar settings, layout, booking, import, export andar. */}
+            <div>
               <Popover>
                 <PopoverTrigger asChild>
                   <button
@@ -582,7 +568,7 @@ export function CalendarClassic() {
                 >
                   <div className="flex flex-wrap items-center gap-2 [&_button]:min-h-11 [&_button]:min-w-11 [&_a]:min-h-11 [&_a]:min-w-11">
                     <LayoutToggle />
-                    <CalSettingsButton />
+                    <CalSettingsButton label={t("Calendar settings")} />
                     <BookingButton />
                     <IcsPickButton onLoaded={setIcsPlan} />
                     <a
