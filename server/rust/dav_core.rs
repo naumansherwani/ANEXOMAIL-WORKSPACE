@@ -116,6 +116,8 @@ pub enum Route {
     Home,
     Calendar(String),
     Event(String, String),
+    /// `/dav/feed/<30 akshar>.ics` — secret, sirf-padhne wali calendar link (Google Calendar "From URL")
+    Feed(String),
     NotFound,
 }
 
@@ -143,6 +145,10 @@ pub fn parse_route(path: &str) -> Route {
         ["c", k] if calendar_key_ok(k) => Route::Calendar((*k).to_string()),
         ["c", k, f] if calendar_key_ok(k) => match f.strip_suffix(".ics") {
             Some(id) if uuid_ok(id) => Route::Event((*k).to_string(), id.to_string()),
+            _ => Route::NotFound,
+        },
+        ["feed", f] => match f.strip_suffix(".ics") {
+            Some(key) if split_app_password(key).is_some() => Route::Feed(key.to_string()),
             _ => Route::NotFound,
         },
         _ => Route::NotFound,
@@ -491,6 +497,79 @@ pub fn merge_vevents(master: &str, extras: &[String]) -> String {
     }
 }
 
+/// ICS text value escape (RFC 5545 §3.3.11): `\\ ; ,` aur naya-line.
+fn ics_text(s: &str) -> String {
+    let mut o = String::with_capacity(s.len());
+    for c in s.chars() {
+        match c {
+            '\\' => o.push_str("\\\\"),
+            ';' => o.push_str("\\;"),
+            ',' => o.push_str("\\,"),
+            '\r' => {}
+            '\n' => o.push_str("\\n"),
+            c if (c as u32) < 0x20 => {}
+            c => o.push(c),
+        }
+    }
+    o
+}
+
+/// Har `BEGIN:<name>` .. `END:<name>` block (andar ki lines samet, aakhir mein CRLF nahi).
+fn blocks<'a>(ics: &'a str, name: &str) -> Vec<&'a str> {
+    let (b, e) = (format!("BEGIN:{name}"), format!("END:{name}"));
+    let mut out = Vec::new();
+    let mut at = 0;
+    while let Some(i) = ics[at..].find(&b) {
+        let start = at + i;
+        match ics[start..].find(&e) {
+            Some(j) => {
+                let end = start + j + e.len();
+                out.push(&ics[start..end]);
+                at = end;
+            }
+            None => break,
+        }
+    }
+    out
+}
+
+/// Kai resources (har ek poora VCALENDAR) se EK subscribe-wali calendar: METHOD:PUBLISH, ek baar har VTIMEZONE (TZID se), phir sab VEVENT.
+/// Google Calendar/Outlook/Apple isay "From URL" se leti hain; REFRESH-INTERVAL sirf ishara hai (Google apni marzi se 12–24 ghante mein).
+pub fn feed_ics(parts: &[String], cal_name: &str) -> String {
+    let mut head = String::from("BEGIN:VCALENDAR\r\nVERSION:2.0\r\nPRODID:-//ANEXOMAIL//Calendar feed//EN\r\nCALSCALE:GREGORIAN\r\nMETHOD:PUBLISH\r\n");
+    head.push_str(&format!("X-WR-CALNAME:{}\r\nREFRESH-INTERVAL;VALUE=DURATION:PT1H\r\nX-PUBLISHED-TTL:PT1H\r\n", ics_text(cal_name)));
+    let mut seen: Vec<String> = Vec::new();
+    let mut tz = String::new();
+    let mut ev = String::new();
+    for p in parts {
+        for b in blocks(p, "VTIMEZONE") {
+            let id = b.split("\r\n").find_map(|l| l.strip_prefix("TZID:")).unwrap_or("").to_string();
+            if id.is_empty() || seen.contains(&id) {
+                continue;
+            }
+            seen.push(id);
+            tz.push_str(b);
+            tz.push_str("\r\n");
+        }
+        for b in blocks(p, "VEVENT") {
+            ev.push_str(b);
+            ev.push_str("\r\n");
+        }
+    }
+    format!("{head}{tz}{ev}END:VCALENDAR\r\n")
+}
+
+/// Poori feed ka etag: org ctag + events ki ginti + sab se naya badlav. Kuch bhi badle to etag badle.
+pub fn feed_etag(ctag: i64, n: usize, newest: i64) -> String {
+    format!("\"f{ctag}-{n}-{newest}\"")
+}
+
+/// `If-None-Match` (list, `*`, weak `W/` sab) — 304 ke liye.
+pub fn etag_matches(header: &str, etag: &str) -> bool {
+    let want = etag.trim_start_matches("W/");
+    header.split(',').map(|t| t.trim()).any(|t| t == "*" || t.trim_start_matches("W/") == want)
+}
+
 /// `/dav/c/personal/<uuid>.ics` ya sirf `<uuid>.ics` — percent-decode ke baad route-style id nikalna (multiget ke liye).
 pub fn event_id_from_href(h: &str) -> Option<String> {
     let last = h.rsplit('/').next()?;
@@ -655,5 +734,56 @@ mod tests {
         assert!(j.contains("RECURRENCE-ID:X") && j.trim_end().ends_with("END:VCALENDAR"));
         assert_eq!(event_id_from_href("/dav/c/personal/0f8fad5b-d9cb-469f-a165-70867728950e.ics"), Some("0f8fad5b-d9cb-469f-a165-70867728950e".into()));
         assert_eq!(event_id_from_href("/dav/c/personal/x.ics"), None);
+    }
+
+    #[test]
+    fn feed_route_needs_a_real_key() {
+        let k = "abcdefghij234567abcdefghij2345";
+        assert_eq!(parse_route(&format!("/dav/feed/{k}.ics")), Route::Feed(k.into()));
+        assert_eq!(parse_route(&format!("/dav/feed/{k}")), Route::NotFound); // .ics zaroori
+        assert_eq!(parse_route("/dav/feed/short.ics"), Route::NotFound);
+        assert_eq!(parse_route("/dav/feed/abcdefghij234567abcdefghij2341.ics"), Route::NotFound); // '1' base32 mein nahi
+        assert_eq!(parse_route(&format!("/dav/feed/{k}.ics/extra")), Route::NotFound);
+        assert_eq!(parse_route("/dav/feed"), Route::NotFound);
+        assert_eq!(parse_route(&format!("/dav/feed/../{k}.ics")), Route::NotFound);
+    }
+
+    #[test]
+    fn feed_ics_merges_once_per_timezone() {
+        let ev = |uid: &str, tz: bool| {
+            let z = if tz { "BEGIN:VTIMEZONE\r\nTZID:Asia/Karachi\r\nEND:VTIMEZONE\r\n" } else { "" };
+            format!("BEGIN:VCALENDAR\r\nVERSION:2.0\r\n{z}BEGIN:VEVENT\r\nUID:{uid}\r\nSUMMARY:S\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n")
+        };
+        let two_events_one_part = format!(
+            "BEGIN:VCALENDAR\r\nBEGIN:VEVENT\r\nUID:c\r\nEND:VEVENT\r\nBEGIN:VEVENT\r\nUID:c\r\nRECURRENCE-ID:X\r\nEND:VEVENT\r\nEND:VCALENDAR\r\n"
+        );
+        let f = feed_ics(&[ev("a", true), ev("b", true), two_events_one_part], "ANEXO,MAIL;x");
+        assert!(f.starts_with("BEGIN:VCALENDAR\r\nVERSION:2.0\r\n"));
+        assert!(f.contains("METHOD:PUBLISH\r\n") && !f.contains("METHOD:REQUEST"));
+        assert!(f.contains("X-WR-CALNAME:ANEXO\\,MAIL\\;x\r\n"));
+        assert_eq!(f.matches("BEGIN:VTIMEZONE").count(), 1, "same TZID sirf ek baar");
+        assert_eq!(f.matches("BEGIN:VEVENT").count(), 4);
+        assert_eq!(f.matches("END:VEVENT").count(), 4);
+        assert_eq!(f.matches("BEGIN:VCALENDAR").count(), 1, "andar ke VCALENDAR wrapper nahi");
+        assert!(f.ends_with("END:VEVENT\r\nEND:VCALENDAR\r\n"));
+        // timezone VEVENT se pehle
+        assert!(f.find("BEGIN:VTIMEZONE").unwrap() < f.find("BEGIN:VEVENT").unwrap());
+        // khali feed bhi valid
+        let e = feed_ics(&[], "A");
+        assert!(e.starts_with("BEGIN:VCALENDAR") && e.ends_with("END:VCALENDAR\r\n") && !e.contains("VEVENT"));
+        // adhoora block (END nahi) = nazarandaz, panic nahi
+        assert_eq!(feed_ics(&["BEGIN:VEVENT\r\nUID:x".to_string()], "A").matches("VEVENT").count(), 0);
+    }
+
+    #[test]
+    fn feed_etag_and_if_none_match() {
+        let e = feed_etag(7, 3, 1792720800);
+        assert_eq!(e, "\"f7-3-1792720800\"");
+        assert!(etag_matches(&e, &e));
+        assert!(etag_matches(&format!("\"x\", W/{e}"), &e));
+        assert!(etag_matches("*", &e));
+        assert!(!etag_matches("\"f7-4-1792720800\"", &e));
+        assert!(!etag_matches("", &e));
+        assert_ne!(feed_etag(8, 3, 1792720800), e);
     }
 }

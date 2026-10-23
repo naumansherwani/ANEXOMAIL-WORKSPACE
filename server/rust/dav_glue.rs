@@ -1,5 +1,5 @@
-//! dav_glue — CalDAV C1 (sirf padhna): /dav/* handler + app-password procs. Pure logic dav_core.rs mein hai.
-//! SQL E80 PEHLE. Env: CALDAV_PEPPER (kam az kam 24 akshar) na ho to DAV 503 deta hai — kabhi bina pepper ke hash nahi.
+//! dav_glue — CalDAV C1 (sirf padhna): /dav/* handler + app-password procs + secret calendar link (feed). Pure logic dav_core.rs mein hai.
+//! SQL E80 aur E81 (feed) PEHLE. Env: CALDAV_PEPPER (kam az kam 24 akshar) na ho to DAV 503 deta hai — kabhi bina pepper ke hash nahi.
 //! Sach: ek hi calendar `personal` (wohi events jin ka aap organiser ho ya guest). PUT/DELETE/MKCOL/PROPPATCH = 405.
 
 use crate::cal_core::{self as cal, recur, EventSpec, Guest, Method, Person};
@@ -17,7 +17,10 @@ const CAL_KEY: &str = "personal";
 const REALM: &str = "Basic realm=\"ANEXOMAIL CalDAV\", charset=\"UTF-8\"";
 
 pub fn owns(proc: &str) -> bool {
-    matches!(proc, "caldav.apppw.create" | "caldav.apppw.list" | "caldav.apppw.revoke")
+    matches!(
+        proc,
+        "caldav.apppw.create" | "caldav.apppw.list" | "caldav.apppw.revoke" | "caldav.feed.create" | "caldav.feed.list" | "caldav.feed.revoke"
+    )
 }
 
 fn st(v: &Value, k: &str) -> String {
@@ -54,22 +57,29 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Response {
     let Some(pep) = pepper() else {
         return fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_not_configured", "CalDAV is not configured on this server yet.");
     };
+    // `feed` = secret .ics link (SQL E81 kind='feed'); baqi `apppw` = CalDAV app password (kind='dav'). Revoke dono ka ek hi (id + user se).
+    let feed = proc.starts_with("caldav.feed.");
+    let (sql_list, sql_create, sql_missing) = if feed {
+        ("caldav_feed_list", "caldav_feed_create", "Calendar link SQL (E81) is not installed yet.")
+    } else {
+        ("caldav_apppw_list", "caldav_apppw_create", "CalDAV SQL (E80) is not installed yet.")
+    };
     match proc {
-        "caldav.apppw.list" => match crate::sb_rpc("caldav_apppw_list", json!({ "p_user": me.id })).await {
+        "caldav.apppw.list" | "caldav.feed.list" => match crate::sb_rpc(sql_list, json!({ "p_user": me.id })).await {
             Ok(v) => crate::ok(json!({ "keys": v })).into_response(),
-            Err(_) => fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_sql_missing", "CalDAV SQL (E80) is not installed yet."),
+            Err(_) => fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_sql_missing", sql_missing),
         },
-        "caldav.apppw.revoke" => {
+        "caldav.apppw.revoke" | "caldav.feed.revoke" => {
             let id = st(input, "id");
             if !dc::uuid_ok(&id) {
                 return fail(StatusCode::BAD_REQUEST, "bad_id", "Invalid key id.");
             }
             match crate::sb_rpc("caldav_apppw_revoke", json!({ "p_user": me.id, "p_id": id })).await {
                 Ok(v) => crate::ok(json!({ "result": v })).into_response(),
-                Err(_) => fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_sql_missing", "CalDAV SQL (E80) is not installed yet."),
+                Err(_) => fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_sql_missing", sql_missing),
             }
         }
-        "caldav.apppw.create" => {
+        "caldav.apppw.create" | "caldav.feed.create" => {
             let label: String = st(input, "label").trim().chars().take(40).collect();
             let mut raw = [0u8; 19];
             {
@@ -81,7 +91,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Response {
             }
             let (tid, secret) = dc::app_password_from_bytes(&raw);
             let r = crate::sb_rpc(
-                "caldav_apppw_create",
+                sql_create,
                 json!({ "p_user": me.id, "p_org": me.org_id, "p_email": me.email.trim().to_lowercase(), "p_label": label, "p_token_id": tid, "p_hash": hash_of(&pep, &secret) }),
             )
             .await;
@@ -91,9 +101,10 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Response {
                     let status = if code == "too_many" { StatusCode::CONFLICT } else { StatusCode::BAD_REQUEST };
                     fail(status, &code, "Could not create the key.")
                 }
-                // asli chaabi SIRF isi jawab mein, ek baar — DB mein sirf hash hai
+                // asli chaabi / link SIRF isi jawab mein, ek baar — DB mein sirf hash hai
+                Ok(v) if feed => crate::ok(json!({ "path": format!("/dav/feed/{tid}{secret}.ics"), "id": v.get("id") })).into_response(),
                 Ok(v) => crate::ok(json!({ "key": dc::display_app_password(&tid, &secret), "id": v.get("id"), "username": me.email.trim().to_lowercase() })).into_response(),
-                Err(_) => fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_sql_missing", "CalDAV SQL (E80) is not installed yet."),
+                Err(_) => fail(StatusCode::SERVICE_UNAVAILABLE, "caldav_sql_missing", sql_missing),
             }
         }
         _ => fail(StatusCode::NOT_FOUND, "not_found", "Unknown proc."),
@@ -307,6 +318,57 @@ fn event_props(r: &Res, with_data: bool) -> Vec<(&'static str, String)> {
     v
 }
 
+/* ----------------------------------------------------------------- feed */
+
+/// Secret calendar link: `GET /dav/feed/<30 akshar>.ics` — sirf-padhna, login nahi, Google Calendar "From URL" ke liye.
+/// Ghalat/purani/revoked link = 404 (401 nahi: bahar walon ko yeh pata nahi chalta ke link kabhi tha ya nahi). Chaabi sirf hash se parakhi jaati hai.
+async fn feed(headers: &HeaderMap, key: &str, head: bool) -> Response {
+    let Some(pep) = pepper() else {
+        return plain(StatusCode::SERVICE_UNAVAILABLE, "Calendar link is not configured on this server.");
+    };
+    let Some((tid, secret)) = dc::split_app_password(key) else { return plain(StatusCode::NOT_FOUND, "Not found.") };
+    let row = match crate::sb_rpc("caldav_feed_lookup", json!({ "p_token_id": tid })).await {
+        Ok(v) => v,
+        Err(_) => return plain(StatusCode::SERVICE_UNAVAILABLE, "Calendar link is not available (SQL E81 missing?)."),
+    };
+    if row.is_null() || row.get("id").is_none() {
+        return plain(StatusCode::NOT_FOUND, "Not found.");
+    }
+    let good = dc::ct_eq(hash_of(&pep, &secret).as_bytes(), st(&row, "secret_hash").as_bytes());
+    let _ = crate::sb_rpc("caldav_auth_result", json!({ "p_id": st(&row, "id"), "p_ok": good })).await;
+    if !good {
+        return plain(StatusCode::NOT_FOUND, "Not found.");
+    }
+    let me = Dav { user_id: st(&row, "user_id"), org_id: st(&row, "org_id"), email: st(&row, "email").to_lowercase() };
+    let _ = &me.user_id;
+    let Ok(list) = load(&me).await else { return plain(StatusCode::SERVICE_UNAVAILABLE, "Calendar unavailable.") };
+    let ctag = crate::sb_rpc("caldav_ctag", json!({ "p_org": me.org_id })).await.ok().and_then(|v| v.as_i64()).unwrap_or(1);
+    let newest = list.iter().map(|r| r.modified).max().unwrap_or(0).max(0);
+    let etag = dc::feed_etag(ctag, list.len(), newest);
+    // link kisi ko forward ho jaye to search engine/referrer se aage na jaye; cache sirf us user ke apne client mein
+    let common = |extra: Vec<(&'static str, String)>| -> Vec<(&'static str, String)> {
+        let mut v = vec![
+            ("ETag", etag.clone()),
+            ("Cache-Control", "private, max-age=300".to_string()),
+            ("Referrer-Policy", "no-referrer".to_string()),
+            ("X-Robots-Tag", "noindex, nofollow".to_string()),
+            ("X-Content-Type-Options", "nosniff".to_string()),
+        ];
+        v.extend(extra);
+        v
+    };
+    if headers.get(header::IF_NONE_MATCH).and_then(|v| v.to_str().ok()).is_some_and(|v| dc::etag_matches(v, &etag)) {
+        return resp(StatusCode::NOT_MODIFIED, "text/calendar; charset=utf-8", String::new(), &common(vec![]));
+    }
+    let body = if head { String::new() } else { dc::feed_ics(&list.iter().map(|r| r.ics.clone()).collect::<Vec<_>>(), "ANEXOMAIL") };
+    resp(
+        StatusCode::OK,
+        "text/calendar; charset=utf-8",
+        body,
+        &common(vec![("Last-Modified", dc::http_date(newest)), ("Content-Disposition", "inline; filename=\"anexomail.ics\"".to_string())]),
+    )
+}
+
 pub async fn handle(req: Request) -> Response {
     let (parts, body) = req.into_parts();
     let route = dc::parse_route(parts.uri.path());
@@ -316,6 +378,18 @@ pub async fn handle(req: Request) -> Response {
     }
     if !matches!(method.as_str(), "PROPFIND" | "REPORT" | "GET" | "HEAD") {
         return plain(StatusCode::METHOD_NOT_ALLOWED, "This CalDAV server is read-only for now.");
+    }
+    // secret calendar link: Basic login nahi, sirf GET/HEAD; baqi tamam methods is raaste par 405
+    if let dc::Route::Feed(key) = &route {
+        return if matches!(method.as_str(), "GET" | "HEAD") {
+            feed(&parts.headers, key, method == "HEAD").await
+        } else {
+            plain(StatusCode::METHOD_NOT_ALLOWED, "A calendar link can only be read.")
+        };
+    }
+    // /dav/feed/... ki ghalat shakal: Basic login ka sawal nahi uthta — seedha 404 (link ka andaza lagane walon ko kuch nahi milta)
+    if parts.uri.path().starts_with("/dav/feed") {
+        return plain(StatusCode::NOT_FOUND, "Not found.");
     }
     let me = match authed(&parts.headers).await {
         Ok(m) => m,

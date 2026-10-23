@@ -13,7 +13,7 @@
 #   team   -> server/rust/team_core.rs   + team_glue.rs    (team invitations + join link, members, Teams)  [pehle E33 SQL chalayen]
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
 #   evidence -> server/rust/evidence_core.rs + evidence_glue.rs (attach_core.rs saath) (appeal ke saboot: screenshots/PDF/docs — tokio stream upload, clamd, allowlist; appeal 20,000 characters; `appeal.device.open`)  [pehle E72 SQL; attach ke saath]
-#   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs; Caddy alag: caddy-caldav.sh)  [pehle E80 SQL + .env CALDAV_PEPPER]
+#   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs + secret calendar link /dav/feed/<key>.ics; Caddy alag: caddy-caldav.sh)  [pehle E80 + E81 SQL + .env CALDAV_PEPPER]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
 #   mig    -> server/rust/mig_core.rs    + mig_glue.rs (+ mig_imap.rs mig_mime.rs mig_run.rs)  (purana mailbox copy karna — IMAP App Password)
@@ -117,7 +117,7 @@ CFG={
             "route_add": '.route("/file/appeal-evidence", post(evidence_glue::upload))\n        .route("/file/appeal-evidence/get", get(evidence_glue::download))'},
  # dav (#6 CalDAV C1, sirf padhna): GET/PROPFIND/REPORT /dav/* (Basic + app password) + procs caldav.apppw.create|list|revoke. SQL E80 PEHLE. Env CALDAV_PEPPER (24+ akshar) .env mein — na ho to DAV 503.
  # Routes Caddy ke peeche (caddy-caldav.sh). cal_core.rs ka `mod` chahiye (need_mods).
- "dav":    {"public": False, "label": "caldav", "procs": ['"caldav.apppw.create"','"caldav.apppw.list"','"caldav.apppw.revoke"'],
+ "dav":    {"public": False, "label": "caldav", "procs": ['"caldav.apppw.create"','"caldav.apppw.list"','"caldav.apppw.revoke"','"caldav.feed.create"','"caldav.feed.list"','"caldav.feed.revoke"'],
             "need_mods": ["cal_core"],
             "route_marker": "dav_glue::handle",
             "route_after": '.route("/file/download", get(file_download))',

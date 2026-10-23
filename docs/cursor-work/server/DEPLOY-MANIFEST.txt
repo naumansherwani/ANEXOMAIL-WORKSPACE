@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh 396ef87330069690
+docs/cursor-work/server/rust-engine-install.sh 3947f2e600aa75ad
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 1ba2cd13f62b36ee
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md ff9f617b92f88a4b
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -626,3 +626,8 @@ src/lib/touch-scroll.test.ts b18e4cc757fbe349
 docs/cursor-work/sql/E81_caldav_feed_link.sql dad8efc337736ff4
 docs/cursor-work/sql/CHECK_E81.sql 775f75a09252186a
 docs/cursor-work/sql/proofs/E81_proof.sql f64f6f470337290f
+server/rust/dav_core.rs 90dc24aa7d22aabb
+server/rust/dav_glue.rs 71c97310a3800aea
+docs/cursor-work/server/rust-harness/dav-feed-harness.sh 0cee89f373cbeedf
+docs/cursor-work/server/rust-harness/dav-feed-main.rs 00e46151673f32cc
+docs/cursor-work/server/rust-harness/dav-feed.Cargo.toml 85a1ef66f277038d
