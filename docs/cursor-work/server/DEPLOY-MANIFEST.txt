@@ -608,3 +608,4 @@ docs/cursor-work/sql/proofs/E80_proof.sql d7af0fdb8bea169e
 src/components/app/calendar/PhoneCalendar.tsx 436f2037542a4466
 src/lib/caldav.ts f37937c8268681f4
 src/lib/caldav.test.ts 5820890e0c318aef
+docs/cursor-work/server/caddy-caldav.sh db7519543bc99772

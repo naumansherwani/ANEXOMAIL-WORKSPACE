@@ -35,7 +35,16 @@ PY
 rc=$?; [ $rc -eq 0 ] || exit 3
 if cmp -s "$CF" "$T"; then echo "Pehle se laga hai (CalDAV handles Caddyfile mein maujood). Kuch nahi badla."; exit 0; fi
 echo "==> PLAN: yeh lines judengi (handle /rpc/* se pehle):"; diff <(cat "$CF") "$T" | grep '^>' | sed 's/^> /    + /'
-caddy validate --config "$T" >/dev/null 2>&1 && echo "==> naya config validate OK (copy par)" || { echo "!! naya config validate FAIL — kuch nahi badla"; exit 1; }
+# pehle ASLI Caddyfile ka validate (baseline): wo khud fail ho to qasoor meri insert ka nahi
+if caddy validate --config "$CF" >/tmp/caddy-validate-base.$$ 2>&1; then BASE=ok; else BASE=fail; fi
+echo "==> asli Caddyfile validate: $BASE"
+# naya config ASLI folder mein (relative import/path same rahein), phir turant hata dete hain
+TT="$(dirname "$CF")/.Caddyfile.caldav-try.$$"; cp "$T" "$TT"
+if caddy validate --config "$TT" --adapter caddyfile >/tmp/caddy-validate.$$ 2>&1; then rm -f "$TT"; echo "==> naya config validate OK (copy par)"
+else rm -f "$TT"; echo "!! naya config validate FAIL — kuch nahi badla. Caddy ki asli error:"; grep -v '^$' /tmp/caddy-validate.$$ | tail -8 | cut -c1-220
+  [ "$BASE" = "fail" ] && { echo "-- asli Caddyfile ki apni error:"; tail -4 /tmp/caddy-validate-base.$$ | cut -c1-220; }
+  rm -f /tmp/caddy-validate-base.$$; exit 1; fi
+rm -f /tmp/caddy-validate-base.$$
 [ "$MODE" = "apply" ] || { echo; echo "Yeh sirf PLAN tha. Kuch nahi badla. Lagane ke liye: MODE=apply ..."; exit 0; }
 cp -p "$CF" "$BAK"; cp "$T" "$CF"
 rollback() { echo "!!! ROLLBACK: $1"; cp -p "$BAK" "$CF"; caddy validate --config "$CF" >/dev/null 2>&1 && systemctl reload caddy; echo "    purani Caddyfile wapas. Backup: $BAK"; exit 1; }
