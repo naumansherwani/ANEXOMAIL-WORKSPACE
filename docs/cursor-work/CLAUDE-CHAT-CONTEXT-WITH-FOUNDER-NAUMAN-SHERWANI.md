@@ -891,3 +891,6 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - SQL E82 + CHECK_E82 (6 t) + proof (mutation pakda). Rust: rooms_core.rs (4 tests) + rooms_glue.rs (7 procs `calendar.rooms.*`), cal_glue invite-skip `@rooms.anexomail.com`, installer mein `rooms` module. Web: lib/rooms.ts (+2 tests), RoomsSettings (CalSettings mein), EventRoom (EventDetail mein). tsc saaf.
 - Nauman ko deploy: SQL -> Rust -> restart -> Web (founder-commands.md 14:30). Deploy ke baad live test: room banao, do meeting overlap mein book karke busy dekhna.
 - Calendar roadmap: #8 code-complete, live test baaki. #7 Google sync Nauman ki Google Cloud verification par blocked.
+
+## CHECKPOINT 23 Oct 11:05 — CALENDAR GREEN
+- Founder: #7 Google sync DROP abhi (na code, na testing; likha gaya to intact). #8 Rooms server par => GREEN. Roadmap update. Agla kaam locked order se: Founder account -> identity live tests -> M-series -> G16 -> T1–T12.

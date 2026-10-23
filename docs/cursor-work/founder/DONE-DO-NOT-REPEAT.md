@@ -39,3 +39,4 @@
 
 - 23 Oct: CalDAV B (Calendar link) LIVE GREEN: Google ne link kabool kiya, meetings dikhe. Dobara test/banana nahi.
 - Calendar #8 Rooms: code complete 23 Oct 14:30 (deploy + live test baaki)
+- Calendar GREEN 23 Oct 11:05: #8 Rooms green; #7 Google sync DROPPED/parked by founder

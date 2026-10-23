@@ -468,3 +468,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct: CalDAV B (Calendar link) LIVE GREEN: Google ne link kabool kiya, meetings dikhe. Dobara test/banana nahi.
 - E82 rooms SQL written+proved locally (not deployed)
 - Calendar #8 Rooms: E82 + Rust rooms module + Web UI code complete (23 Oct 14:30); deploy + live test baaki
+- Calendar GREEN 23 Oct 11:05: #8 Rooms green; #7 Google sync DROPPED/parked by founder
