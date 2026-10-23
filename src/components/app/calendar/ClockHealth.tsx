@@ -28,7 +28,7 @@ export function ClockHealth({ className }: { className?: string }) {
           disabled={q.isFetching}
           aria-label="Measure again"
           title="Measure again"
-          className="ax-press ax-focus ml-auto rounded p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-50"
+          className="ax-press ax-tap ax-focus ml-auto rounded p-0.5 text-muted-foreground hover:text-foreground disabled:opacity-50"
         >
           <RefreshCw
             className={cn("size-3.5", q.isFetching && "animate-spin")}

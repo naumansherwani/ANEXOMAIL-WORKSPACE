@@ -268,7 +268,7 @@ export function GlobeView({
     <div className={cn("space-y-1.5", className)}>
       <div
         ref={wrap}
-        className="relative mx-auto aspect-square w-full max-w-[18rem] touch-none select-none"
+        className="relative mx-auto aspect-square w-full max-w-[min(18rem,32vh)] touch-none select-none"
       >
         {!land && (
           <div
@@ -323,7 +323,7 @@ export function GlobeView({
         {home && (
           <button
             type="button"
-            className="ax-press ax-focus shrink-0 rounded px-1 font-semibold text-foreground underline-offset-4 hover:underline"
+            className="ax-press ax-tap ax-focus shrink-0 rounded px-1 font-semibold text-foreground underline-offset-4 hover:underline"
             onClick={() => {
               view.current = { lat: 18, lon: home.lon };
               setTick((n) => n + 1);

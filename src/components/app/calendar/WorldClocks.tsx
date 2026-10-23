@@ -1,7 +1,7 @@
 import { Globe, Plane, Plus, X } from "lucide-react";
-import { lazy, Suspense, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Popover, PopoverClose, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { allZones, zoneLabel } from "@/lib/booking";
 import { useCalPrefs, useSaveCalPrefs } from "@/lib/calprefs";
 import { ClockHealth } from "@/components/app/calendar/ClockHealth";
@@ -100,6 +100,48 @@ export function WorldClocks({ className }: { className?: string }) {
     const t = setTimeout(() => setIdle(true), 6000);
     return () => clearTimeout(t);
   }, []);
+  // Drag the popover by its header (mouse, pen or finger). It stays on screen; double-click the header to put it back.
+  const [shift, setShift] = useState({ x: 0, y: 0 });
+  const panelRef = useRef<HTMLDivElement>(null);
+  const grab = useRef<{
+    sx: number;
+    sy: number;
+    ox: number;
+    oy: number;
+    minX: number;
+    maxX: number;
+    minY: number;
+    maxY: number;
+  } | null>(null);
+  const onGrab = (e: React.PointerEvent<HTMLDivElement>) => {
+    if ((e.target as HTMLElement).closest("button") || !panelRef.current) return;
+    const r = panelRef.current.getBoundingClientRect();
+    const m = 8;
+    grab.current = {
+      sx: e.clientX,
+      sy: e.clientY,
+      ox: shift.x,
+      oy: shift.y,
+      minX: shift.x + m - r.left,
+      maxX: shift.x + window.innerWidth - m - r.right,
+      minY: shift.y + m - r.top,
+      maxY: shift.y + window.innerHeight - m - r.bottom,
+    };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  };
+  const onDrag = (e: React.PointerEvent<HTMLDivElement>) => {
+    const g = grab.current;
+    if (!g) return;
+    const clamp = (v: number, lo: number, hi: number) =>
+      Math.min(Math.max(v, lo), Math.max(lo, hi));
+    setShift({
+      x: clamp(g.ox + e.clientX - g.sx, g.minX, g.maxX),
+      y: clamp(g.oy + e.clientY - g.sy, g.minY, g.maxY),
+    });
+  };
+  const onDrop = () => {
+    grab.current = null;
+  };
   const health = useClockHealth(idle);
   const trip = prefs.travel;
   const tripNow = trip ? tripPhase(trip, now?.getTime() ?? 0) : "over";
@@ -152,7 +194,7 @@ export function WorldClocks({ className }: { className?: string }) {
           <span className="font-normal text-muted-foreground">{cityOf(z)}</span>
         </span>
       ))}
-      <Popover>
+      <Popover onOpenChange={(o) => !o && setShift({ x: 0, y: 0 })}>
         <PopoverTrigger asChild>
           <button
             type="button"
@@ -179,113 +221,140 @@ export function WorldClocks({ className }: { className?: string }) {
           </button>
         </PopoverTrigger>
         <PopoverContent
+          ref={panelRef}
+          style={{ translate: `${shift.x}px ${shift.y}px` }}
           align="end"
-          className="max-h-[var(--radix-popover-content-available-height)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-3"
+          collisionPadding={8}
+          onOpenAutoFocus={(e) => e.preventDefault()}
+          className="flex max-h-[var(--radix-popover-content-available-height)] w-[min(22rem,calc(100vw-2rem))] flex-col overflow-hidden p-0"
         >
-          <p className="text-[12px] font-semibold text-foreground">World clocks</p>
-          <p className="ax-caption text-muted-foreground">
-            Pin up to {MAX_CLOCKS} cities. They follow you on every device.
-          </p>
-
-          {globePins.length > 0 && (
-            <Suspense
-              fallback={
-                <div
-                  className="mx-auto mt-2 aspect-square w-full max-w-[18rem] animate-pulse rounded-full bg-secondary/60"
-                  aria-hidden="true"
-                />
-              }
-            >
-              <GlobeView className="mt-2" pins={globePins} now={now} route={route} />
-            </Suspense>
-          )}
-
-          <ul className="mt-2 divide-y divide-border rounded-md border border-border">
-            <li className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
-              <span className="min-w-0 flex-1 truncate font-semibold">{cityOf(here)}</span>
-              <span className="tabular-nums">{fmtTimeIn(now, here)}</span>
-              <span className="ax-caption w-14 text-right text-muted-foreground">you</span>
-            </li>
-            {tripActive && trip && !pins.includes(trip.to_zone) && trip.to_zone !== here && (
-              <li className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
-                <span className="min-w-0 flex-1 truncate">
-                  <span className="font-semibold">{trip.to_city}</span>
-                  <span className="ax-caption ml-1.5 text-muted-foreground">
-                    {dayWord(now, trip.to_zone)}
-                  </span>
-                </span>
-                <span className="tabular-nums">{fmtTimeIn(now, trip.to_zone)}</span>
-                <span className="ax-caption w-14 text-right text-muted-foreground">trip</span>
-              </li>
-            )}
-            {pins.map((z) => (
-              <li key={z} className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
-                <span className="min-w-0 flex-1 truncate">
-                  <span className="font-semibold">{cityOf(z)}</span>
-                  <span className="ax-caption ml-1.5 text-muted-foreground">{dayWord(now, z)}</span>
-                </span>
-                <span className="tabular-nums">{fmtTimeIn(now, z)}</span>
-                <span className="ax-caption w-14 text-right text-muted-foreground">
-                  {offsetWord(now, z)}
-                </span>
-                <button
-                  type="button"
-                  aria-label={`Remove ${cityOf(z)}`}
-                  onClick={() => commit(pins.filter((p) => p !== z))}
-                  className="ax-press ax-hit rounded p-0.5 text-muted-foreground hover:text-foreground"
-                >
-                  <X className="size-3.5" aria-hidden="true" />
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          {pins.length < MAX_CLOCKS ? (
-            <div className="mt-2">
-              <input
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                placeholder="Add a city or zone (London, Tokyo…)"
-                aria-label="Search time zones"
-                className="w-full rounded-md border border-border bg-background px-2.5 py-1.5 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              />
-              <ul className="mt-1 max-h-44 overflow-y-auto rounded-md border border-border">
-                {matches.length === 0 && (
-                  <li className="px-2.5 py-2 text-[12px] text-muted-foreground">No match.</li>
-                )}
-                {matches.map((z) => (
-                  <li key={z}>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        commit([...pins, z]);
-                        setQ("");
-                      }}
-                      className="ax-press flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[13px] hover:bg-secondary"
-                    >
-                      <Plus
-                        className="size-3.5 shrink-0 text-muted-foreground"
-                        aria-hidden="true"
-                      />
-                      <span className="min-w-0 flex-1 truncate">{zoneLabel(z)}</span>
-                      <span className="tabular-nums text-muted-foreground">
-                        {fmtTimeIn(now, z)}
-                      </span>
-                    </button>
-                  </li>
-                ))}
-              </ul>
+          <div
+            className="flex shrink-0 cursor-grab touch-none select-none items-start justify-between gap-2 border-b border-border px-3 py-2 active:cursor-grabbing"
+            onPointerDown={onGrab}
+            onPointerMove={onDrag}
+            onPointerUp={onDrop}
+            onPointerCancel={onDrop}
+            onDoubleClick={() => setShift({ x: 0, y: 0 })}
+            title="Drag to move · double-click to reset"
+          >
+            <div className="min-w-0">
+              <p className="text-[12px] font-semibold text-foreground">World clocks</p>
+              <p className="ax-caption text-muted-foreground">
+                Pin up to {MAX_CLOCKS} cities. They follow you on every device.
+              </p>
             </div>
-          ) : (
-            <p className="ax-caption mt-2 text-muted-foreground">
-              Six is the limit — remove one to add another.
-            </p>
-          )}
-          {save.isError && (
-            <p className="ax-caption mt-2 text-danger">Could not save: {save.error.message}</p>
-          )}
-          <TripCard here={here} className="mt-3" />
-          <ClockHealth className="mt-2" />
+            <PopoverClose
+              aria-label="Close world clocks"
+              className="ax-press ax-tap ax-focus -mr-1 shrink-0 rounded-md p-1.5 text-muted-foreground hover:bg-secondary hover:text-foreground"
+            >
+              <X className="size-4" aria-hidden="true" />
+            </PopoverClose>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 pb-3">
+            {globePins.length > 0 && (
+              <Suspense
+                fallback={
+                  <div
+                    className="mx-auto mt-2 aspect-square w-full max-w-[min(18rem,32vh)] animate-pulse rounded-full bg-secondary/60"
+                    aria-hidden="true"
+                  />
+                }
+              >
+                <GlobeView className="mt-2" pins={globePins} now={now} route={route} />
+              </Suspense>
+            )}
+
+            <ul className="mt-2 divide-y divide-border rounded-md border border-border">
+              <li className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
+                <span className="min-w-0 flex-1 truncate font-semibold">{cityOf(here)}</span>
+                <span className="tabular-nums">{fmtTimeIn(now, here)}</span>
+                <span className="ax-caption w-14 text-right text-muted-foreground">you</span>
+              </li>
+              {tripActive && trip && !pins.includes(trip.to_zone) && trip.to_zone !== here && (
+                <li className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
+                  <span className="min-w-0 flex-1 truncate">
+                    <span className="font-semibold">{trip.to_city}</span>
+                    <span className="ax-caption ml-1.5 text-muted-foreground">
+                      {dayWord(now, trip.to_zone)}
+                    </span>
+                  </span>
+                  <span className="tabular-nums">{fmtTimeIn(now, trip.to_zone)}</span>
+                  <span className="ax-caption w-14 text-right text-muted-foreground">trip</span>
+                </li>
+              )}
+              {pins.map((z) => (
+                <li key={z} className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
+                  <span className="min-w-0 flex-1 truncate">
+                    <span className="font-semibold">{cityOf(z)}</span>
+                    <span className="ax-caption ml-1.5 text-muted-foreground">
+                      {dayWord(now, z)}
+                    </span>
+                  </span>
+                  <span className="tabular-nums">{fmtTimeIn(now, z)}</span>
+                  <span className="ax-caption w-14 text-right text-muted-foreground">
+                    {offsetWord(now, z)}
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={`Remove ${cityOf(z)}`}
+                    onClick={() => commit(pins.filter((p) => p !== z))}
+                    className="ax-press ax-hit rounded p-0.5 text-muted-foreground hover:text-foreground"
+                  >
+                    <X className="size-3.5" aria-hidden="true" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            {pins.length < MAX_CLOCKS ? (
+              <div className="mt-2">
+                <input
+                  value={q}
+                  onChange={(e) => setQ(e.target.value)}
+                  placeholder="Add a city or zone (London, Tokyo…)"
+                  aria-label="Search time zones"
+                  className="w-full rounded-md border border-border bg-background px-2.5 py-1.5 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                />
+                {q.trim() !== "" && (
+                  <ul className="mt-1 max-h-44 overflow-y-auto rounded-md border border-border">
+                    {matches.length === 0 && (
+                      <li className="px-2.5 py-2 text-[12px] text-muted-foreground">No match.</li>
+                    )}
+                    {matches.map((z) => (
+                      <li key={z}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            commit([...pins, z]);
+                            setQ("");
+                          }}
+                          className="ax-press flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[13px] hover:bg-secondary"
+                        >
+                          <Plus
+                            className="size-3.5 shrink-0 text-muted-foreground"
+                            aria-hidden="true"
+                          />
+                          <span className="min-w-0 flex-1 truncate">{zoneLabel(z)}</span>
+                          <span className="tabular-nums text-muted-foreground">
+                            {fmtTimeIn(now, z)}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <p className="ax-caption mt-2 text-muted-foreground">
+                Six is the limit — remove one to add another.
+              </p>
+            )}
+            {save.isError && (
+              <p className="ax-caption mt-2 text-danger">Could not save: {save.error.message}</p>
+            )}
+            <TripCard here={here} className="mt-3" />
+            <ClockHealth className="mt-2" />
+          </div>
         </PopoverContent>
       </Popover>
     </div>

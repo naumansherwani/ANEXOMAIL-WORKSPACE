@@ -86,7 +86,7 @@ export function TripCard({ here, className }: { here: string; className?: string
             aria-label="Remove trip"
             onClick={() => save.mutate({ travel: null })}
             disabled={save.isPending}
-            className="ax-press ax-focus ml-auto rounded p-0.5 text-muted-foreground hover:text-foreground"
+            className="ax-press ax-tap ax-focus ml-auto rounded p-0.5 text-muted-foreground hover:text-foreground"
           >
             <X className="size-3.5" aria-hidden="true" />
           </button>
@@ -95,7 +95,7 @@ export function TripCard({ here, className }: { here: string; className?: string
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="ax-press ax-focus ml-auto rounded px-1 font-semibold text-foreground underline-offset-4 hover:underline"
+              className="ax-press ax-tap ax-focus ml-auto rounded px-1 font-semibold text-foreground underline-offset-4 hover:underline"
             >
               Add a trip
             </button>
