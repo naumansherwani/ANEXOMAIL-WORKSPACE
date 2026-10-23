@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 73a27d5fd882a453
+docs/cursor-work/founder/founder-commands.md 511e4c572232c885
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -609,3 +609,4 @@ src/components/app/calendar/PhoneCalendar.tsx 436f2037542a4466
 src/lib/caldav.ts f37937c8268681f4
 src/lib/caldav.test.ts 5820890e0c318aef
 docs/cursor-work/server/caddy-caldav.sh db7519543bc99772
+docs/cursor-work/server/caldav-check.sh 2ca5b947d2b20401
