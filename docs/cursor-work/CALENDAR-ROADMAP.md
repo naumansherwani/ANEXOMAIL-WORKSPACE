@@ -53,3 +53,4 @@ Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a
 **Server==repo ka poora saboot:** calendar-status.sh ki nayi 'web src/ same/differ/missing' line server par ek dafa chalna baaqi (differ=0 missing=0 chahiye).
 
 **23 Oct 06:15 UPDATE:** E77 collision warning = SERVER GREEN (SQL+Rust+Web chale, CHECK 3/3). Calendar LCP: duplicate locale calls hat gaye (live), baaqi rukawat auth/session 1-2 s (Brain sessionResult serial Supabase hops) => T3/T4 Speed mein session fast-path; is ke baghair /app/calendar LCP 1.8 s nahi hoga. INP PASS. 390/820: Chrome resize lagu nahi hota (founder window chhoti kare).
+- 23 Oct 07:25: World Clock W3 globe + W4 (clock badge, connection, Travelling) = GREEN LIVE (E78 server, web 7312f6e). Agla: W5.
