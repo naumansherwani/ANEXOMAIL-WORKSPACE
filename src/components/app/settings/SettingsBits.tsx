@@ -78,7 +78,7 @@ export function SettingRow({ setting }: { setting: Setting }) {
   return (
     <li className="ax-plane rounded-2xl p-ax-4">
       <div className="flex flex-wrap items-start gap-ax-3">
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 basis-[15rem]">
           <p className="text-[13px] font-semibold text-foreground">{setting.label}</p>
           <p className="ax-caption mt-0.5 text-muted-foreground">
             {setting.key === "privacy.read_receipts"

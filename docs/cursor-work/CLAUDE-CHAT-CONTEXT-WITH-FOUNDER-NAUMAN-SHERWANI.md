@@ -830,3 +830,6 @@ Founder: scroll bar stuck / pakad kar chalna chahiye (mobile+tablet). Bana: drag
 **Mobile qaida:** MOBILE-CONTRACT.md (390/820/1200–1440, touch>=44, input 16px, no h-scroll, 100dvh, safe-area). Poori app CSS `zoom` NAHI (popover toot'te hain); pinch native; zoom sirf jahan zaroorat.
 **Khule purane items:** W5b city-name l10n; billing card real renews_at; Lahore label; calendar LCP (T3/T4); E55 grants-heal 30 Oct se pehle; Caddy cert renewal 12 Nov se pehle; blueprint "100 bit" -> 150 bit typo; Mail/People par 390/820 checks.
 **Tooling:** bun test (./src/...), tsc --noEmit -p ., eslint --fix sirf apni files par, manifest-sync.py <files> + manifest-verify.py; push reject ho to sirf apne unpushed commits par git pull --rebase.
+
+### Checkpoint 23 Oct 10:05 PKT — Appearance card squeeze fix; scroll "stuck" ka live test
+Live (390px iframe, anexomail.com/app/settings/appearance): sirf EK scroller (inner div), JS se neeche->upar scroll bilkul theek (jump/atakna nahi) => "stuck" touch-specific hai, code-layout ka nahi. Kuch bhi mouse-only (use-drag-scroll) touch ko nahi chhoota. Draggable handle (dffe77d) wahi hal hai; pull ke baad phone par test. Agar phir bhi atke: screen recording ya batao ungli kahan thi.
