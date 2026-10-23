@@ -178,7 +178,10 @@ export function WorldClocks({ className }: { className?: string }) {
             )}
           </button>
         </PopoverTrigger>
-        <PopoverContent align="end" className="w-[min(22rem,calc(100vw-2rem))] p-3">
+        <PopoverContent
+          align="end"
+          className="max-h-[var(--radix-popover-content-available-height)] w-[min(22rem,calc(100vw-2rem))] overflow-y-auto p-3"
+        >
           <p className="text-[12px] font-semibold text-foreground">World clocks</p>
           <p className="ax-caption text-muted-foreground">
             Pin up to {MAX_CLOCKS} cities. They follow you on every device.
@@ -281,6 +284,8 @@ export function WorldClocks({ className }: { className?: string }) {
           {save.isError && (
             <p className="ax-caption mt-2 text-danger">Could not save: {save.error.message}</p>
           )}
+          <TripCard here={here} className="mt-3" />
+          <ClockHealth className="mt-2" />
         </PopoverContent>
       </Popover>
     </div>
