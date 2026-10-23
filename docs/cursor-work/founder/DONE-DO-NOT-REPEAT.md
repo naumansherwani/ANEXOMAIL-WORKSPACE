@@ -13,3 +13,4 @@
 - 23 Oct 08:55 Mail-open crash hardening: normalizeThread + retry (useThread). Asli error founder ke account se baaki.
 - 23 Oct 09:00 Calendar phone toolbar redesign (⋯ menu, 44px targets, full-width view switch). Live phone check baaki (founder screenshot).
 - 23 Oct 09:05 Phone calendar toolbar GREEN (founder screenshot); ListPanel w-full fix pushed, live check baaki.
+- 23 Oct 09:15 App pull-to-refresh (PullRefresh.tsx, data-only, no reload). Live phone check baaki (founder).

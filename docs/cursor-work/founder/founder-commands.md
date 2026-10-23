@@ -854,3 +854,7 @@ Founder: "mobile pe saans nahi aa raha". Ab phone (<640 px): header mein sirf "�
 ## 23 Oct 09:05 — Calendar phone: panel poori chaudai (dayin taraf khali patta band) — SIRF Web
 Screenshot: toolbar theek, lekin panel ~70% chaudai par tha (overflow-x-hidden ke baad panel ko `w-full` nahi tha). Fix: ListPanel (non-wide) ko phone par `w-full`.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir page dobara kholein.
+
+## 23 Oct 09:15 — Phone: upar se neeche kheench kar refresh (pull-to-refresh) — SIRF Web
+Founder: "touch press kar ke upar se neeche drag karte hain to refresh hota hai — yahan nahi hota". Wajah: browser ka PTR shell mein jaan-boojh kar band tha (poora reload draft kho deta tha). Ab app ka apna: `PullRefresh.tsx` + `lib/pull-refresh.ts` — sirf DATA taza (queries refetch + router invalidate), page reload NAHI, draft salamat. Sirf touch (pointer: coarse); jab koi scroll dabba neeche scrolled ho, ya input/editor/dialog ke andar, tab nahi. 72 px (resistance ke baad) kheencho aur chhodo.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir phone par page dobara kholein.

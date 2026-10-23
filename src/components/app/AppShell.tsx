@@ -1,4 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
+import { PullRefresh } from "@/components/app/PullRefresh";
 import {
   CalendarDays,
   Building2,
@@ -167,7 +168,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   // Mouse se kisi bhi left-right patti ko pakad kar ghumao (poori app mein, ek jagah).
   useEffect(() => installDragScroll(), []);
 
-  // Phone par pull-to-refresh app ke beech mein reload kar deta tha (ba'z draft ke saath). Shell ke dauran band.
+  // Browser ka pull-to-refresh poora reload kar deta tha (draft ke saath) — shell mein band; uski jagah <PullRefresh /> (sirf data taza, reload nahi).
   useEffect(() => {
     const root = document.documentElement;
     const prev = root.style.overscrollBehaviorY;
@@ -208,6 +209,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       className="flex h-dvh flex-col overflow-hidden bg-background"
       style={{ paddingBottom: "var(--ax-bottom-strip, 0px)" }}
     >
+      <PullRefresh />
       <FxAmbient plan={billed} />
       <CommandPalette open={open} onOpenChange={setOpen} />
       <ReminderWatcher />
@@ -231,7 +233,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         {publicMailHost ? null : (
           <DropdownMenu>
             <DropdownMenuTrigger className="ax-focus hidden items-center gap-1.5 rounded-lg border border-border bg-secondary px-2.5 py-1.5 text-xs font-semibold text-foreground transition-colors hover:bg-surface-2 sm:inline-flex">
-                {organisation?.name ?? t("No organisation yet")}
+              {organisation?.name ?? t("No organisation yet")}
               <ChevronDown className="size-3.5 text-steel" />
             </DropdownMenuTrigger>
             <DropdownMenuContent align="start" className="w-60">
@@ -271,60 +273,60 @@ export function AppShell({ children }: { children: ReactNode }) {
         <div className="flex shrink-0 items-center gap-2">
           <LanguagePicker className="shrink-0" align="end" />
           <DropdownMenu>
-          <DropdownMenuTrigger
-            aria-label="Account"
-            className="ax-focus ax-tap flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
-          >
-            {session?.user.avatar_url ? (
-              <img src={session.user.avatar_url} alt="" className="size-9 object-cover" />
-            ) : (
-              <UserCircle2 className="size-5" />
-            )}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-72">
-            <DropdownMenuLabel className="space-y-0.5 font-normal">
-              <span className="block text-sm font-semibold text-foreground">
-                {session?.user.display_name || session?.user.name || "Account"}
-              </span>
-              <span className="block break-all text-xs font-medium text-muted-foreground">
-                {session?.user.anexomail_address || session?.user.email || "Signed in"}
-              </span>
-              <span className="block pt-1">
-                <span
-                  className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
-                    billed === "business_pro"
-                      ? "bg-amber-500/15 text-amber-400"
-                      : billed === "business"
-                        ? "bg-primary/15 text-primary"
-                        : billed === "pro"
-                          ? "bg-violet-500/15 text-violet-400"
-                          : "bg-secondary text-muted-foreground"
-                  }`}
-                >
-                  {t(copyName)}
+            <DropdownMenuTrigger
+              aria-label="Account"
+              className="ax-focus ax-tap flex size-9 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border bg-secondary text-foreground transition-colors hover:bg-surface-2"
+            >
+              {session?.user.avatar_url ? (
+                <img src={session.user.avatar_url} alt="" className="size-9 object-cover" />
+              ) : (
+                <UserCircle2 className="size-5" />
+              )}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-72">
+              <DropdownMenuLabel className="space-y-0.5 font-normal">
+                <span className="block text-sm font-semibold text-foreground">
+                  {session?.user.display_name || session?.user.name || "Account"}
                 </span>
-              </span>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => void navigate({ to: "/app/account" })}>
-              <UserCircle2 className="size-4" />
-              {t("Profile, photo & sessions")}
-            </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => void navigate({ to: "/app/billing" })}>
-              <Receipt className="size-4" />
-              {t("Billing & plans")}
-            </DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => void navigate({ to: "/app/settings" })}>
-              <Settings className="size-4" />
-              {t("Settings")}
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onSelect={() => void handleSignOut()}>
-              <LogOut className="size-4" />
-              {t("Sign out")}
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                <span className="block break-all text-xs font-medium text-muted-foreground">
+                  {session?.user.anexomail_address || session?.user.email || "Signed in"}
+                </span>
+                <span className="block pt-1">
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-[10px] font-semibold ${
+                      billed === "business_pro"
+                        ? "bg-amber-500/15 text-amber-400"
+                        : billed === "business"
+                          ? "bg-primary/15 text-primary"
+                          : billed === "pro"
+                            ? "bg-violet-500/15 text-violet-400"
+                            : "bg-secondary text-muted-foreground"
+                    }`}
+                  >
+                    {t(copyName)}
+                  </span>
+                </span>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => void navigate({ to: "/app/account" })}>
+                <UserCircle2 className="size-4" />
+                {t("Profile, photo & sessions")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => void navigate({ to: "/app/billing" })}>
+                <Receipt className="size-4" />
+                {t("Billing & plans")}
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => void navigate({ to: "/app/settings" })}>
+                <Settings className="size-4" />
+                {t("Settings")}
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onSelect={() => void handleSignOut()}>
+                <LogOut className="size-4" />
+                {t("Sign out")}
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       </header>
       <TrialStrip />
@@ -450,7 +452,9 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="flex flex-1 items-center justify-center px-6 py-16">
               <div className="max-w-sm text-center">
                 <p className="ax-eyebrow">{t("Founder view")}</p>
-                <h2 className="mt-3 text-lg font-bold text-foreground">{t("Not available here")}</h2>
+                <h2 className="mt-3 text-lg font-bold text-foreground">
+                  {t("Not available here")}
+                </h2>
                 <p className="mt-2 text-sm text-muted-foreground">
                   {t("Founder view only opens on the founder workspace host.")}
                 </p>
