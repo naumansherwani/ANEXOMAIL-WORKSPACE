@@ -156,7 +156,7 @@ export function useSaveSetting() {
 }
 
 /** Feature 1 — Time Machine: har change ka version + one-click revert. */
-export function useSettingHistory(key?: string) {
+export function useSettingHistory(key?: string, enabled = true) {
   return useQuery<{ versions: SettingVersion[] }, ApiError>({
     queryKey: ["settings", "history", key ?? "all"],
     queryFn: () =>
@@ -164,6 +164,7 @@ export function useSettingHistory(key?: string) {
         "settings.history",
         key ? `/api/settings/history?key=${key}` : "/api/settings/history",
       ),
+    enabled,
     retry: false,
   });
 }
@@ -248,7 +249,9 @@ export const shortValue = (v: Setting["value"]) =>
 export function describeValue(setting: Pick<Setting, "key" | "value">): string {
   const n = typeof setting.value === "string" ? Number(setting.value.trim()) : setting.value;
   if (/retention/i.test(setting.key) && typeof n === "number" && Number.isFinite(n)) {
-    return n <= 0 ? "Keep forever — nothing is deleted automatically" : `${n} day${n === 1 ? "" : "s"} then permanently deleted`;
+    return n <= 0
+      ? "Keep forever — nothing is deleted automatically"
+      : `${n} day${n === 1 ? "" : "s"} then permanently deleted`;
   }
   return shortValue(setting.value);
 }

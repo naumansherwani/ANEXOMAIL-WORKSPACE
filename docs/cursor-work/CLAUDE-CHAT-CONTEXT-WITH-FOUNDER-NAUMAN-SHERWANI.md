@@ -807,3 +807,6 @@ Founder: "spin hota hai lekin refresh nahi hota". Fix: draft na ho to 300ms baad
 
 ### Checkpoint 23 Oct 10:15 PKT — globe scroll fix (push, pull baaki)
 Founder screenshot: World clocks popover, scroll upar nahi aata. Wajah GlobeView touch-none. Fix touch-pan-y. Agla: pull + pull-to-refresh/zoom screenshots, CalDAV phone test.
+
+### Checkpoint 23 Oct 10:30 PKT — Settings slow fix (push, pull baaki)
+Founder: settings center slow. Wajah mili: SettingsBits har row par useSettingHistory bina enabled => N+1. Fix enabled=open==="history". Agar ab bhi slow ho to DevTools Network (settings.list time) + server rust log dekhna.

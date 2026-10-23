@@ -70,7 +70,7 @@ export function SettingRow({ setting }: { setting: Setting }) {
   const [open, setOpen] = useState<null | "explain" | "blast" | "history">(null);
   const explain = useExplain(open === "explain" ? setting.key : null);
   const blast = useBlastRadius(open === "blast" ? setting.key : null);
-  const history = useSettingHistory(setting.key);
+  const history = useSettingHistory(setting.key, open === "history");
   const save = useSaveSetting();
   const simulate = useSimulate();
   const locked = Boolean(setting.locked_by_policy);

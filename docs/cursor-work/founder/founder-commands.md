@@ -874,3 +874,7 @@ Pehle sirf data refetch hota tha (spinner ghoomta, kuch badalta nahi dikhta). Ab
 ## 23 Oct 10:15 — World clocks globe par scroll atakna theek — SIRF Web
 Globe `touch-none` tha, isliye popover mein globe par ungli rakh kar upar scroll nahi hota tha. Ab seedha (upar-neeche) swipe scroll karta hai, daayen-baayen drag globe ghumata hai.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 23 Oct 10:30 — Settings slow: har setting ki history ek-ek request thi — SIRF Web
+Settings page khulte hi har row apni history alag server se maangti thi (N+1 requests) jab ke dikhti sirf "History" dabane par. Ab sirf tab maangti hai. Settings -> History page waisa hi.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
