@@ -776,3 +776,6 @@ Bana: E80 SQL, dav_core.rs, dav_glue.rs, installer module `dav`, caddy-caldav.sh
 **Agla (is tarteeb se):** (1) Caddy re-apply -> OPTIONS mein `dav:` dikhe; (2) `caldav-check.sh` dobara; (3) founder Settings -> Phone calendar -> Create password; (4) mera live Chrome check (UI 390/820/1440) + founder ka phone test (iPhone/DAVx5) — tab GREEN; (5) phir C2 ya #7 Google.
 **Sabaq:** Caddy script pehle validate error chhupati thi (temp path se validate fail) — ab asli folder mein validate + baseline; naya check script caldav-check.sh (read-only).
 **Commits:** c357a84 (C1), ebb2af2 (caddy validate), 307cef1 (check script), 797b9eb (DAV header fix).
+
+### Checkpoint 23 Oct 08:30 PKT — CalDAV server taraf GREEN
+Caddy re-apply founder ne chalaya (backup /etc/caddy/Caddyfile.bak.caldav-20261023-032333): `OPTIONS /dav/ => dav: 1, calendar-access`, well-known 301, PROPFIND bina login 401, anexomail.com 200. SQL + Rust + Caddy + Web sab server par. **Baaki sirf asli use:** founder Settings -> Phone calendar -> Create password (password sirf ek baar dikhta hai; chat mein NA bheje) -> phone par CalDAV account (server anexomail.com, username email) -> events dikhein? Phir GREEN. Password mera kaam nahi (main password type nahi karta). C2 aur #7 Google uske baad.
