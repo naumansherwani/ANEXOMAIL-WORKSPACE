@@ -12,6 +12,9 @@
 
 > **Nishan wala as-is version: `docs/cursor-work/founder/founder-command-2026-10-19-status.md`** (🟢 ho gaya / 🔴 nahi hua).
 
+> **22 Oct 2026 16:51 UTC (21:51 PKT) — founder verbatim:** "duniya ka advance billing portal ke features list likh do repo ke claude/BILLING-PORTAL-BLUEPRINT.md itnay advance ke duniya hil jaye."
+> Halat: **DONE** — 32-feature advanced list `docs/claude/BILLING-PORTAL-BLUEPRINT.md` (Section 2A) mein likhi, locked rules (Polar no-touch, flat price, block kabhi nahi, metadata-only privacy) ke andar. Docs-only; server command nahi chahiye.
+
 ## ▶ 22 Oct 2026 06:10 PKT — B7c progress #1: SQL E59 TAIYAR (repo mein, server par abhi nahi)
 - `docs/cursor-work/sql/E59_booking_page.sql` + `CHECK_E59.sql`: booking_pages + bookings, DB-level double-booking wall (page row lock + slot re-validate + EXCLUDE gist), booking_context/book/manage/cancel/reschedule (service_role only), self-test 9 checks. Local Postgres 16 par: asli E31+E56+E57+E58 chain ke upar do baar chali (idempotent), self-test PASSED, 8 parallel sessions ek hi slot par -> sirf 1 jeeta, CHECK_E59 11/11.
 - AGLA: Rust `book` module (book_core.rs std-only tests + book_glue.rs, installer mein), phir web `/book/$handle` + Settings > Booking. Command order (jab sab tayyar): SQL `E59_booking_page CHECK_E59` -> Rust installer -> Web pull.
