@@ -234,7 +234,7 @@ async fn load(me: &Dav) -> Result<Vec<Res>, ()> {
         filt.push_str(&format!(",id.in.({})", ids.join(",")));
     }
     let q = format!(
-        "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null&or=({})&order=starts_at.asc&limit=2000",
+        "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null&or=({})&order=starts_at.desc&limit=2000",
         me.org_id, filt
     );
     let rows = crate::sb_select(&q).await.map_err(|_| ())?;

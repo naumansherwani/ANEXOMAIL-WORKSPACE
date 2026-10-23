@@ -894,3 +894,14 @@ Toolbar mein alag slider icon nahi. Har screen (phone/tablet/laptop) par Meeting
 ## 23 Oct 10:30 — Phone calendar mein "How to connect" (Android/iPhone/Computer) — SIRF Web
 Founder ne anexomail.com/dav/ browser mein khola to "Sign in with your email and a CalDAV app password" dikha — yeh SAHI hai (server zinda, link apps ke liye hai). Ab Settings -> Phone calendar mein saaf steps + "Link" (https://anexomail.com/dav/) copy button aate hain, aam user ko guess nahi karna.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 23 Oct 11:55 — Calendar link (bina app, Google Calendar mein) + A (Calendar app) dono — SQL -> Rust -> Caddy -> Web
+Founder hukm: "user ko A bhi do (jo ameer/tech-savvy), B bhi (baqi) — advance codes, SQL sab, review". B = secret read-only link `https://anexomail.com/dav/feed/<30 akshar>.ics` Google Calendar mein "URL se jodein". A = purana CalDAV app (DAVx5 F-Droid par free, Play par paid / iPhone / Thunderbird). Settings -> Phone calendar mein ab upar do tab hain, default "No app (Google Calendar)".
+Honest: Google subscribe 12–24 ghante mein refresh karta hai (naya meeting der se), sirf-padhna. Link password jaisa hai, ek baar dikhta hai, Remove se foran band.
+**Tarteeb (Rule 46), har ek alag, ek ke baad ek:**
+1. SQL (E81, CHECK_E81 khud): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`   (aakhir mein E81 CHECK 6 t)
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`   (dav tests 17 passed, build OK; compile fail par khud purana wapas)
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`   (200)
+4. Caddy (link ka URL Caddy log mein na likha jaye — `log_skip`): pehle PLAN: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)`  (UPGRADE + "validate OK" chahiye) phir `MODE=apply bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)`
+5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
+Test: Calendar -> "⋯" -> Calendar settings -> Phone calendar -> "No app" -> Create link -> "Add to Google Calendar" (ya calendar.google.com -> Other calendars -> From URL). Link kaam karta hai ya nahi (server taraf): browser mein link kholne par .ics download/dikhna chahiye.

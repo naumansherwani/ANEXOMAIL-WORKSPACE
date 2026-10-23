@@ -5,6 +5,7 @@
 #   MODE=apply: backup -> insert -> caddy validate -> reload -> test -> fail par rollback
 #     MODE=apply bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)
 # PEHLE E80 SQL + Rust (dav module) chalayen; warna /dav/ Rust ke bajaye purane fallback par jayega.
+# `log_skip` (E81 calendar link): /dav/feed/<chaabi>.ics ka URL hi chaabi hai — Caddy ke access log mein kabhi na likha jaye.
 # HTTP/3 aur baqi handles ko haath nahi: sirf `handle /rpc/*` se PEHLE ek surgical insert (anexomail.com block ke andar).
 set -uo pipefail
 MODE="${MODE:-plan}"; CF="${CADDYFILE:-/etc/caddy/Caddyfile}"
@@ -16,10 +17,10 @@ import re, sys
 s = open(sys.argv[1]).read()
 mb = re.search(r'^([ \t]*)handle @caldav \{\n(?:[^\n]*\n)*?\1\}\n', s, re.M)
 if mb:
-    if "header DAV" in mb.group(0):
+    if "header DAV" in mb.group(0) and "log_skip" in mb.group(0):
         print("SAME"); open(sys.argv[2], "w").write(s); sys.exit(0)
     ind = mb.group(1)
-    blk = (f"{ind}handle @caldav {{\n{ind}\theader DAV \"1, calendar-access\"\n{ind}\theader Allow \"OPTIONS, PROPFIND, REPORT, GET, HEAD\"\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n")
+    blk = (f"{ind}handle @caldav {{\n{ind}\tlog_skip\n{ind}\theader DAV \"1, calendar-access\"\n{ind}\theader Allow \"OPTIONS, PROPFIND, REPORT, GET, HEAD\"\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n")
     open(sys.argv[2], "w").write(s[:mb.start()] + blk + s[mb.end():])
     print("UPGRADE"); sys.exit(0)
 m = re.search(r'^([ \t]*)handle[ \t]+/rpc/\*[ \t]*\{', s, re.M)
@@ -34,7 +35,7 @@ ind = m.group(1)
 ins = (f"{ind}# CalDAV (C1) — repo-managed: docs/cursor-work/server/caddy-caldav.sh\n"
        f"{ind}handle /.well-known/caldav {{\n{ind}\tredir * /dav/ 301\n{ind}}}\n"
        f"{ind}@caldav path /dav /dav/*\n"
-       f"{ind}handle @caldav {{\n{ind}\theader DAV \"1, calendar-access\"\n{ind}\theader Allow \"OPTIONS, PROPFIND, REPORT, GET, HEAD\"\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n\n")
+       f"{ind}handle @caldav {{\n{ind}\tlog_skip\n{ind}\theader DAV \"1, calendar-access\"\n{ind}\theader Allow \"OPTIONS, PROPFIND, REPORT, GET, HEAD\"\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n\n")
 open(sys.argv[2], "w").write(s[:m.start()] + ins + s[m.start():])
 print("INSERT")
 PY

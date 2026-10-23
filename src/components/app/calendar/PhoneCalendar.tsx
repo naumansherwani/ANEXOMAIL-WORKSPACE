@@ -1,6 +1,7 @@
 import { Check, Copy, KeyRound, Loader2, Smartphone, Trash2 } from "lucide-react";
 import { useState } from "react";
 
+import { PhoneFeed } from "@/components/app/calendar/PhoneFeed";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
@@ -25,6 +26,7 @@ export function PhoneCalendar() {
   const list = useAppKeys();
   const create = useCreateAppKey();
   const revoke = useRevokeAppKey();
+  const [method, setMethod] = useState<"link" | "app">("link");
   const [label, setLabel] = useState("");
   const [fresh, setFresh] = useState<NewKey | null>(null);
   const [copied, setCopied] = useState<string | null>(null);
@@ -61,12 +63,40 @@ export function PhoneCalendar() {
         Phone calendar
       </p>
       <p className="ax-caption mt-1 text-muted-foreground">
-        See your ANEXOMAIL meetings in the calendar app on your phone or computer. Read-only for
-        now: changes made there are not sent back. Each device gets its own password, which you can
-        remove at any time.
+        See your ANEXOMAIL meetings in the calendar on your phone or computer. Read-only for now:
+        changes made there are not sent back. Choose how you want to connect.
       </p>
+      <div role="tablist" aria-label="How to connect" className="mt-2 grid gap-1.5 sm:grid-cols-2">
+        {(
+          [
+            [
+              "link",
+              "No app (Google Calendar)",
+              "Easiest. A private link. Updates once or twice a day.",
+            ],
+            ["app", "Calendar app", "DAVx5, iPhone or Thunderbird. Updates within minutes."],
+          ] as const
+        ).map(([k, title, sub]) => (
+          <button
+            key={k}
+            type="button"
+            role="tab"
+            aria-selected={method === k}
+            onClick={() => setMethod(k)}
+            className={cn(
+              "ax-press ax-focus ax-tap rounded-md border p-2.5 text-left",
+              method === k ? "border-cyan-accent/50 bg-secondary" : "border-border",
+            )}
+          >
+            <span className="block text-[13px] font-semibold text-foreground">{title}</span>
+            <span className="mt-0.5 block text-[11px] text-muted-foreground">{sub}</span>
+          </button>
+        ))}
+      </div>
 
-      {list.error ? (
+      {method === "link" ? <PhoneFeed /> : null}
+
+      {method !== "app" ? null : list.error ? (
         <p role="alert" className="mt-2 text-[12px] text-muted-foreground">
           Phone calendar is not switched on for this workspace yet.
         </p>

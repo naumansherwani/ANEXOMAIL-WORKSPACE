@@ -16,6 +16,25 @@ export const DAV_SERVER = "anexomail.com";
 export const DAV_URL = "https://anexomail.com/dav/";
 
 const KEY = ["caldav", "keys"] as const;
+const FEED_KEY = ["caldav", "feeds"] as const;
+
+/* ── Calendar link (no app): a secret read-only .ics address for Google Calendar "From URL" (SQL E81, Rust /dav/feed). ── */
+export type NewFeed = { path: string; id: string | null };
+export const MAX_FEED_LINKS = 5;
+export const DAV_ORIGIN = "https://anexomail.com";
+
+const FEED_PATH = /^\/dav\/feed\/[a-z2-7]{30}\.ics$/;
+
+/** Full https link from the server's path. Anything that is not exactly our feed shape gives "" (never show or open an odd link). */
+export function feedUrl(path: string): string {
+  return FEED_PATH.test(path) ? `${DAV_ORIGIN}${path}` : "";
+}
+
+/** One tap on a phone: Google Calendar's own "Add calendar?" screen for this link (webcal:// is what it expects). */
+export function googleAddUrl(url: string): string {
+  if (!url.startsWith("https://")) return "";
+  return `https://calendar.google.com/calendar/r?cid=${encodeURIComponent(`webcal://${url.slice("https://".length)}`)}`;
+}
 
 export function useAppKeys() {
   return useQuery<{ keys: AppKey[] }, ApiError>({
@@ -51,4 +70,29 @@ export function keyAge(iso: string | null, now = Date.now()): string {
   if (m < 120) return `Used ${m} min ago`;
   if (m < 2880) return `Used ${Math.round(m / 60)} h ago`;
   return `Used ${Math.round(m / 1440)} d ago`;
+}
+
+export function useFeedLinks() {
+  return useQuery<{ keys: AppKey[] }, ApiError>({
+    queryKey: FEED_KEY,
+    queryFn: () => rpc<{ keys: AppKey[] }>("caldav.feed.list", {}),
+    retry: false,
+    staleTime: 30_000,
+  });
+}
+
+export function useCreateFeedLink() {
+  const qc = useQueryClient();
+  return useMutation<NewFeed, ApiError, { label: string }>({
+    mutationFn: (p) => rpc<NewFeed>("caldav.feed.create", p),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: FEED_KEY }),
+  });
+}
+
+export function useRevokeFeedLink() {
+  const qc = useQueryClient();
+  return useMutation<unknown, ApiError, { id: string }>({
+    mutationFn: (p) => rpc("caldav.feed.revoke", p),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: FEED_KEY }),
+  });
 }

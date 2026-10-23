@@ -32,3 +32,5 @@
 - 23 Oct: PhoneCalendar HowTo tabs (Android DAVx5 / iPhone / Computer) + DAV_URL. /dav/ ka browser mein "Sign in..." text normal hai — bug nahi.
 
 - 23 Oct: DAVx5 Play Store par PAID (~1800), F-Droid par free. Founder paid app nahi lega. Guide text theek kiya. Agla option: no-install "Google Calendar subscribe" feed (secret ICS link, Rust route /dav/feed/<key>.ics; Google ka refresh 12-24h). Founder ka faisla baaki.
+
+- 23 Oct: CalDAV B (Calendar link / feed): SQL E81 (kind dav|feed, CHECK_E81, proof) + Rust (dav_core Route::Feed/feed_ics/etag, dav_glue feed handler, procs caldav.feed.*) + Web PhoneFeed + Caddy log_skip. Local Postgres + asli handler harness (rust-harness/dav-feed-harness.sh) GREEN; server deploy baaki (founder). Dobara na banao.
