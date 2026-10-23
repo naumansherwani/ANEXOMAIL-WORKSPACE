@@ -450,3 +450,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct: GlobeView touch-none -> touch-pan-y (popover scroll globe par atakta tha). Wapas touch-none mat karo.
 
 - 23 Oct: useSettingHistory(key, enabled) — row history sirf open par fetch (N+1 hata). Wapas bina enabled mat lagao.
+
+- 23 Oct: TouchScrollbar (draggable handle, coarse pointer) — lib/touch-scroll.ts + components/app/TouchScrollbar.tsx in AppShell. Dobara na banao.

@@ -1,5 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { PullRefresh } from "@/components/app/PullRefresh";
+import { TouchScrollbar } from "@/components/app/TouchScrollbar";
 import { useTextSize } from "@/lib/text-size";
 import {
   CalendarDays,
@@ -172,7 +173,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   // Mouse se kisi bhi left-right patti ko pakad kar ghumao (poori app mein, ek jagah).
   useEffect(() => installDragScroll(), []);
 
-  // Browser ka pull-to-refresh poora reload kar deta tha (draft ke saath) — shell mein band; uski jagah <PullRefresh /> (sirf data taza, reload nahi).
+  // Browser ka pull-to-refresh poora reload kar deta tha (draft ke saath) — shell mein band; uski jagah <PullRefresh /> (draft na ho to asli reload).
   useEffect(() => {
     const root = document.documentElement;
     const prev = root.style.overscrollBehaviorY;
@@ -214,6 +215,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       style={{ paddingBottom: "var(--ax-bottom-strip, 0px)" }}
     >
       <PullRefresh />
+      <TouchScrollbar />
       <FxAmbient plan={billed} />
       <CommandPalette open={open} onOpenChange={setOpen} />
       <ReminderWatcher />

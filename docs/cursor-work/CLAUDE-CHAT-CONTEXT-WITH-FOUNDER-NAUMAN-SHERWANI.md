@@ -810,3 +810,6 @@ Founder screenshot: World clocks popover, scroll upar nahi aata. Wajah GlobeView
 
 ### Checkpoint 23 Oct 10:30 PKT — Settings slow fix (push, pull baaki)
 Founder: settings center slow. Wajah mili: SettingsBits har row par useSettingHistory bina enabled => N+1. Fix enabled=open==="history". Agar ab bhi slow ho to DevTools Network (settings.list time) + server rust log dekhna.
+
+### Checkpoint 23 Oct 10:45 PKT — touch scroll handle (push, pull baaki)
+Founder: scroll bar stuck / pakad kar chalna chahiye (mobile+tablet). Bana: draggable handle right edge, scroller auto-pick (most overflow). Phone par test baaki; "stuck" ka asli sabab device par dekhna: agar Appearance par ab bhi atke to screenshot + kaun si jagah ungli thi.

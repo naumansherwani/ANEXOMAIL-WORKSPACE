@@ -878,3 +878,7 @@ Globe `touch-none` tha, isliye popover mein globe par ungli rakh kar upar scroll
 ## 23 Oct 10:30 — Settings slow: har setting ki history ek-ek request thi — SIRF Web
 Settings page khulte hi har row apni history alag server se maangti thi (N+1 requests) jab ke dikhti sirf "History" dabane par. Ab sirf tab maangti hai. Settings -> History page waisa hi.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 23 Oct 10:45 — Phone/tablet par pakadne wala scroll bar — SIRF Web
+Android ka apna bar pakad kar chalta nahi. Ab right edge par ek handle hai (scroll karte hi nazar aata hai, halka sa tika rehta hai): usay ungli se pakad kar upar-neeche ghumao to poora page us jagah chala jata hai. Baaqi page par kahin bhi (center/corner) seedha swipe pehle jaisa scroll karta hai. Sirf touch screen par.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
