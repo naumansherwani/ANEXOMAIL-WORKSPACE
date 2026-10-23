@@ -715,3 +715,13 @@ Mera (Claude) kaam as CEO: advance-level code likhna AUR website ka mobile / tab
 - Baaqi optional: registered *.test account se live passkey chhoot; Rust+Brain E76 ka output; phone 390/820; guest-view event files; E55 (30 Oct se pehle); Caddy cert (12 Nov se pehle).
 
 - 23 Oct 04:55 — Server output se repo MATCH: calendar 10/13 DEPLOYED (server) == 10/13 GREEN (repo). calendar-status.sh ab web ka saboot src/ blob compare se deta hai (HEAD se nahi). Rust 200.
+
+- 23 Oct 05:00 — SERVER==REPO PROVEN (founder output): calendar 10/13 DEPLOYED, web src same=541 differ=0 missing=0, Rust 200. AB KAAM: spec ke 3 chhote baaqi — collision warning at RSVP, LCP/INP measure, phone 390/820.
+
+## 23 Oct 2026 05:45 — ABHI KYA KAAM HO RAHA HAI (compact se pehle, Nauman bhai ka hukm)
+- Nauman bhai ne hukm diya: calendar spec ke 3 chhote baaqi KISI BHI TARAH poore karo: (1) collision warning RSVP par, (2) LCP 1.8s / INP 150ms naapna, (3) phone 390 + tablet 820 ka Chrome check.
+- (1) COLLISION WARNING: CODE READY (E77 + Rust cal_glue + Web rsvp.tsx), sandbox/tsc/eslint green; server run BAAQI — commands founder-commands.md mein (SQL->Rust->restart->Web). Phir Chrome live check.
+- (2) LCP/INP: Chrome se naapna baaqi (PerformanceObserver, public landing + app dashboard/calendar/settings). Nateeje DONE-DO-NOT-REPEAT + CALENDAR-ROADMAP mein likhne hain; khali claim nahi, sirf naapa hua.
+- (3) PHONE/TABLET: HAMESHA har UI badlav ke baad 390 (phone), 820 (tablet), 1440 (laptop) — Rule 19/34. Package-wise: Basic/Pro/Business/Business Pro (UI universal, Rule 37, sirf capability ka farq). Chrome tareeqa: apna naya tab, window resize (founder ke tabs ko haath nahi); resize na ho to iframe/DevTools-device nahi — tab Nauman bhai ko batao. Chrome extension 05:30 par disconnected tha; reconnect ke baad karna.
+- Standing: Roman Urdu, "Nauman bhai", SQL sirf server (Rule 44), Rule 48 (sirf repo ki commands), Rule 49 (test vs asli), calendar ginti 10/13, har bade kaam par repo + context update.
+- AGLA (locked): spec ke 3 baaqi -> W3 globe -> W4 -> W5 -> #6 CalDAV -> #7 Google (founder verification) -> #8 Rooms -> Founder account -> identity tests (founder) -> M-series -> G16 -> T-series.

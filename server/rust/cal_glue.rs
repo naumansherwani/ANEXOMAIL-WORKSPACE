@@ -1889,7 +1889,18 @@ pub async fn public(proc: &str, input: &Value) -> axum::response::Response {
             "not_found",
             "This invitation link is not valid.",
         ),
-        Ok(v) => crate::ok(v).into_response(),
+        Ok(mut v) => {
+            // E77: collision warning — guest ko jawab se PEHLE dikhe "is waqt aur meeting hai" (sirf ginti + waqt, title nahi).
+            // Best-effort: E77 SQL na chali ho ya fail ho to lookup jawab waisa hi, kuch tootta nahi.
+            if proc == "calendar.rsvp.lookup" {
+                if let Ok(c) = crate::sb_rpc("calendar_rsvp_conflicts", json!({ "p_token": token })).await {
+                    if c.get("count").is_some() {
+                        v["conflicts"] = c;
+                    }
+                }
+            }
+            crate::ok(v).into_response()
+        }
         Err(_) => fail(
             StatusCode::INTERNAL_SERVER_ERROR,
             "server_error",

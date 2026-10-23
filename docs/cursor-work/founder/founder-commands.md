@@ -783,3 +783,11 @@ Supabase SQL editor mein `docs/cursor-work/sql/tools/create_test_account.sql` kh
 ## 23 Oct — Calendar kitna green? (server se, sirf padhta hai, kuch badalta nahi)
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/calendar-status.sh)`
 Output: 13 hisse (#4a/#4b/#4c alag) — DEPLOYED ya NAHI, "DEPLOYED x/13", Rust health, web commit. Expected abhi: 10/13 (baaqi #6 #7 #8). Server sirf deploy dikha sakta hai; live UI green Chrome se (CALENDAR-ROADMAP.md).
+
+## 23 Oct — Collision warning (RSVP page par "is waqt aur meeting hai") — E77 — server par BAAQI (Rule 46, is tarteeb se)
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+4. Brain: nahi.
+5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
+Live check: ek workspace member ko do overlapping meetings mein guest banao, doosri meeting ka RSVP link kholo => amber chip "You already have another meeting at this time" + waqt (title nahi).

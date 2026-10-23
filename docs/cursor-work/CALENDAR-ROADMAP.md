@@ -18,7 +18,7 @@ Rule: "GREEN" = founder ka server output + live check. Is file ko har calendar s
 ## Spec ke faislay (founder ko jawab, line by line)
 - Google sync/CalDAV: practical. Webhook sirf "kuch badla" bolta hai, data sync token se; watch channel renew; do-taraf loop guard; "instant" = kuch seconds. Google verification asli rukawat (bina uske warning + 100 users). Android mein CalDAV built-in nahi (DAVx5). "Zero-copy", "Tokio main thread" = dawa nahi.
 - Booking: practical. DB lock, rate limit, mail+.ics+link. WASM nahi (LCP kharab); LCP target 1.8 s naap kar.
-- iMIP: sender == attendee + SPF/DKIM zaroori. Collision warning RSVP ke waqt (BAAKI). "Ledger prompt" = seedha conflict chip.
+- iMIP: sender == attendee + SPF/DKIM zaroori. Collision warning RSVP ke waqt (CODE READY 23 Oct 05:40: E77 + Rust + Web; server run baaqi). "Ledger prompt" = seedha conflict chip.
 - Event elements: files practical (attach pipeline); alag calendars+rang practical; team overlay sirf free/busy; external = ICS subscribe (bina ijazat nahi); "hardware-accelerated" = smooth CSS, INP 150 ms naap kar; world-clock pins chhota kaam; rooms akhir mein.
 
 ## World Clock blueprint (founder 22 Oct 08:05)

@@ -1,6 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Ban, CalendarDays, Check, CircleHelp, Clock, MapPin, X } from "lucide-react";
+import {
+  Ban,
+  CalendarDays,
+  Check,
+  CircleHelp,
+  Clock,
+  MapPin,
+  TriangleAlert,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 
 import { BrandMark } from "@/components/site/BrandMark";
@@ -23,7 +32,9 @@ export const Route = createFileRoute("/rsvp")({
   ssr: false,
   validateSearch: (search: Record<string, unknown>) => ({
     t: typeof search["t"] === "string" ? (search["t"] as string).slice(0, 64) : "",
-    r: ["yes", "maybe", "no"].includes(String(search["r"])) ? (String(search["r"]) as Choice) : undefined,
+    r: ["yes", "maybe", "no"].includes(String(search["r"]))
+      ? (String(search["r"]) as Choice)
+      : undefined,
   }),
   head: () => ({
     meta: [
@@ -38,8 +49,18 @@ export const Route = createFileRoute("/rsvp")({
 type Choice = "yes" | "maybe" | "no";
 
 const CHOICES: { id: Choice; label: string; Icon: typeof Check; on: string }[] = [
-  { id: "yes", label: "Yes, I'll be there", Icon: Check, on: "border-emerald-500 bg-emerald-500/15 text-emerald-300" },
-  { id: "maybe", label: "Maybe", Icon: CircleHelp, on: "border-amber-400 bg-amber-400/15 text-amber-300" },
+  {
+    id: "yes",
+    label: "Yes, I'll be there",
+    Icon: Check,
+    on: "border-emerald-500 bg-emerald-500/15 text-emerald-300",
+  },
+  {
+    id: "maybe",
+    label: "Maybe",
+    Icon: CircleHelp,
+    on: "border-amber-400 bg-amber-400/15 text-amber-300",
+  },
   { id: "no", label: "No, I can't", Icon: X, on: "border-danger bg-danger/15 text-danger" },
 ];
 
@@ -66,7 +87,10 @@ function RsvpPage() {
         <BrandMark />
         <div className="mt-8">
           {!t ? (
-            <Notice title="This link is incomplete" body="Open the answer buttons from the invitation e-mail again." />
+            <Notice
+              title="This link is incomplete"
+              body="Open the answer buttons from the invitation e-mail again."
+            />
           ) : lookup.isPending ? (
             <p className="text-sm text-muted-foreground" aria-busy="true">
               Opening your invitation…
@@ -83,7 +107,11 @@ function RsvpPage() {
                   ? "It may have been mistyped or the meeting was removed. Ask the organiser to send it again."
                   : "Please try again in a minute. Nothing was changed."
               }
-              onRetry={lookup.error.status >= 500 || lookup.error.status === 0 ? () => void lookup.refetch() : undefined}
+              onRetry={
+                lookup.error.status >= 500 || lookup.error.status === 0
+                  ? () => void lookup.refetch()
+                  : undefined
+              }
             />
           ) : (
             <Invitation token={t} preselect={r} view={lookup.data} />
@@ -111,7 +139,15 @@ function Notice({ title, body, onRetry }: { title: string; body: string; onRetry
   );
 }
 
-function Invitation({ token, preselect, view }: { token: string; preselect: Choice | undefined; view: RsvpView }) {
+function Invitation({
+  token,
+  preselect,
+  view,
+}: {
+  token: string;
+  preselect: Choice | undefined;
+  view: RsvpView;
+}) {
   const [choice, setChoice] = useState<Choice | null>(preselect ?? null);
   const [note, setNote] = useState("");
   const [noteOpen, setNoteOpen] = useState(false);
@@ -127,8 +163,14 @@ function Invitation({ token, preselect, view }: { token: string; preselect: Choi
   const current = done ?? view;
   const start = new Date(current.starts_at);
   const end = new Date(current.ends_at);
-  const day = start.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long", year: "numeric" });
-  const clock = (d: Date) => d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
+  const day = start.toLocaleDateString(undefined, {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  const clock = (d: Date) =>
+    d.toLocaleTimeString(undefined, { hour: "2-digit", minute: "2-digit" });
   const zone =
     new Intl.DateTimeFormat(undefined, { timeZoneName: "short" })
       .formatToParts(start)
@@ -139,7 +181,12 @@ function Invitation({ token, preselect, view }: { token: string; preselect: Choi
     <div className="space-y-5">
       <header className="rounded-xl border border-border bg-card p-5">
         <p className="ax-eyebrow">{current.cancelled ? "Meeting cancelled" : "You're invited"}</p>
-        <h1 className={cn("mt-1 text-xl font-extrabold tracking-tight text-foreground", current.cancelled && "line-through opacity-70")}>
+        <h1
+          className={cn(
+            "mt-1 text-xl font-extrabold tracking-tight text-foreground",
+            current.cancelled && "line-through opacity-70",
+          )}
+        >
           {current.title}
         </h1>
         <ul className="mt-4 space-y-2 text-sm text-foreground">
@@ -150,7 +197,8 @@ function Invitation({ token, preselect, view }: { token: string; preselect: Choi
           <li className="flex items-start gap-2.5">
             <Clock className="mt-0.5 size-4 shrink-0 text-steel" aria-hidden="true" />
             <span>
-              {clock(start)} – {clock(end)} {zone && <span className="text-muted-foreground">({zone}, your time)</span>}
+              {clock(start)} – {clock(end)}{" "}
+              {zone && <span className="text-muted-foreground">({zone}, your time)</span>}
             </span>
           </li>
           {current.location && (
@@ -179,10 +227,35 @@ function Invitation({ token, preselect, view }: { token: string; preselect: Choi
         {current.agenda && (
           <div className="mt-4 border-t border-border pt-4">
             <p className="ax-eyebrow">Agenda</p>
-            <p className="mt-1.5 whitespace-pre-wrap break-words text-sm text-foreground">{current.agenda}</p>
+            <p className="mt-1.5 whitespace-pre-wrap break-words text-sm text-foreground">
+              {current.agenda}
+            </p>
           </div>
         )}
       </header>
+
+      {!current.cancelled && !answered && current.conflicts && current.conflicts.count > 0 && (
+        <div
+          role="status"
+          className="flex items-start gap-2.5 rounded-xl border border-amber-400/40 bg-amber-400/10 p-4 text-sm text-amber-300"
+        >
+          <TriangleAlert className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+          <div className="min-w-0">
+            <p className="font-semibold">
+              {current.conflicts.count === 1
+                ? "You already have another meeting at this time."
+                : `You already have ${current.conflicts.count} other meetings at this time.`}
+            </p>
+            <ul className="mt-1 space-y-0.5 text-xs text-amber-200/90">
+              {current.conflicts.overlaps.map((o) => (
+                <li key={`${o.starts_at}-${o.ends_at}`}>
+                  {clock(new Date(o.starts_at))} – {clock(new Date(o.ends_at))}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      )}
 
       {current.cancelled ? (
         <div className="flex items-start gap-2.5 rounded-xl border border-danger/40 bg-danger/10 p-4 text-sm text-danger">
@@ -190,7 +263,10 @@ function Invitation({ token, preselect, view }: { token: string; preselect: Choi
           This meeting was cancelled by the organiser. No answer is needed.
         </div>
       ) : done ? (
-        <div className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-4" role="status">
+        <div
+          className="rounded-xl border border-emerald-500/40 bg-emerald-500/10 p-4"
+          role="status"
+        >
           <p className="text-sm font-bold text-emerald-300">
             Thank you — your answer is {WORDS[done.response]}.
           </p>
@@ -204,7 +280,9 @@ function Invitation({ token, preselect, view }: { token: string; preselect: Choi
       ) : (
         <div className="space-y-3">
           <p className="text-sm font-semibold text-foreground">
-            {answered ? `Your current answer: ${WORDS[current.response]}. Change it?` : "Will you come?"}
+            {answered
+              ? `Your current answer: ${WORDS[current.response]}. Change it?`
+              : "Will you come?"}
           </p>
           <div className="grid gap-2">
             {CHOICES.map(({ id, label, Icon, on }) => (

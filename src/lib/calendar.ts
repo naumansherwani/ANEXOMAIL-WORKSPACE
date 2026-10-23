@@ -489,6 +489,8 @@ export type RsvpView = {
   response: RsvpResponse;
   rsvp_at: string | null;
   error?: string;
+  /** E77: the same address's other meetings at this time — count + up to 3 time ranges, never titles. */
+  conflicts?: { count: number; overlaps: { starts_at: string; ends_at: string }[] };
 };
 
 export function rsvpLookup(token: string) {
