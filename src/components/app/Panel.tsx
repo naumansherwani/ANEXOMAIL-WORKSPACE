@@ -27,15 +27,17 @@ export function ListPanel({
       className={
         "relative z-10 min-h-0 flex-col border-border bg-background " +
         (wide
-          ? "w-full lg:w-[22rem] lg:shrink-0 lg:border-r " + (mobileHidden ? "hidden lg:flex" : "flex")
-          : "md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " + (mobileHidden ? "hidden md:flex" : "flex"))
+          ? "w-full lg:w-[22rem] lg:shrink-0 lg:border-r " +
+            (mobileHidden ? "hidden lg:flex" : "flex")
+          : "md:w-[19rem] md:shrink-0 md:border-r lg:w-[22rem] " +
+            (mobileHidden ? "hidden md:flex" : "flex"))
       }
     >
       <div className="flex h-14 shrink-0 items-center gap-2 border-b border-border px-4">
         <h2 className="truncate text-sm font-bold tracking-tight text-foreground">{title}</h2>
         <div className="ml-auto flex items-center gap-1">{action}</div>
       </div>
-      <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+      <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-hidden">{children}</div>
     </div>
   );
 }

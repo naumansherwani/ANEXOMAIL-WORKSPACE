@@ -9,3 +9,4 @@
 - 23 Oct 08:30 CalDAV #6 C1 BANA (server par BAAQI): dav_core.rs (14 tests pass sandbox), dav_glue.rs (compile server par hoga; installer build fail par rollback), installer module `dav`, caddy-caldav.sh (plan/apply/rollback; insert snapshot par dry-run OK), PhoneCalendar.tsx + lib/caldav.ts (2 bun tests; 367 total pass). E80 sandbox GREEN. Founder ne abhi KUCH NAHI chalaya. C2 (likhna, sync-collection) BANA NAHI. Live check baaki: curl PROPFIND + phone.
 - 23 Oct 08:25 CalDAV C1 server par: E80 GREEN, Rust dav module build+health OK, Caddy apply OK (301/401). Dobara mat chalana. Baaki: Caddy re-apply (DAV header), Settings password, phone test.
 - 23 Oct 08:30 CalDAV Caddy DAV header re-apply GREEN (OPTIONS dav: 1, calendar-access). Server taraf mukammal; baaki phone test.
+- 23 Oct 08:40 Classic calendar phone overflow fix (rows wrap, Panel overflow-x-hidden). Live phone check baaki (founder).

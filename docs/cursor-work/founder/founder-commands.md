@@ -835,3 +835,7 @@ Rule 46 tarteeb: SQL -> pepper -> Rust -> Rust restart+health -> Caddy (plan, ph
 Phir Ctrl+Shift+R. Calendar -> Settings -> "Phone calendar" -> "Create password" (chaabi sirf ek baar dikhti hai).
 SACH: sirf padhna (PUT/DELETE/MKCOL 405). Ek calendar "ANEXOMAIL": wahi meetings jin ke aap organiser ya guest hain. Phone par banayi meeting wapas nahi aati (C2). iPhone/Mac built-in, Android ko DAVx5 chahiye.
 - 23 Oct 08:22 CalDAV: SQL E80 GREEN, Rust dav module build OK, Caddy apply OK (well-known 301, PROPFIND bina login 401). OPTIONS par DAV header nahi dikha -> read-only check: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caldav-check.sh)`
+
+## 23 Oct 08:40 — Calendar (Classic) phone/tablet fix: rows ab wrap hoti hain, page chauda nahi hota — SIRF Web (SQL/Rust/Caddy nahi)
+Founder ka screenshot: Month grid ka SUN column aur "Today"/"24h"/"Load" kat rahe the (bade phone font par "Month·Week·Day + Avail.·Load" row wrap nahi hoti thi). Fix: CalendarClassic rows wrap + min-w-0, month cell min-w-0, Panel body overflow-x-hidden. Pinch-zoom pehle se allowed hai (viewport mein maximum-scale nahi).
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R (phone par bhi).

@@ -120,7 +120,7 @@ function MonthView({
   const rows = Math.ceil(cells / 7);
 
   return (
-    <div className="p-ax-3">
+    <div className="min-w-0 p-ax-3">
       {/* Day headers */}
       <div className="mb-1 grid grid-cols-7 gap-px">
         {DAY_SHORT.map((d) => (
@@ -154,7 +154,7 @@ function MonthView({
               animate={{ opacity: 1 }}
               transition={{ duration: 0.12, delay: i * 0.003 }}
               className={cn(
-                "ax-press flex min-h-[3.5rem] flex-col items-center gap-1 rounded-lg border p-1 pt-1.5 transition-colors",
+                "ax-press flex min-h-[3.5rem] min-w-0 flex-col items-center gap-1 rounded-lg border p-0.5 pt-1.5 transition-colors sm:p-1 sm:pt-1.5",
                 isToday ? "border-primary/40 bg-primary/5" : "border-border hover:border-border/80",
                 away && !isToday && "bg-amber-500/10",
               )}
@@ -578,14 +578,14 @@ export function CalendarClassic() {
         )}
 
         {/* Live time in the viewer's own place + 12h/24h */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-border px-ax-3 py-ax-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border px-ax-3 py-ax-2">
           <LiveClock />
           <WorldClocks />
           <ClockFormatToggle className="ml-auto" />
         </div>
 
         {/* Nav + label */}
-        <div className="flex items-center gap-1 border-b border-border px-ax-3 py-ax-2">
+        <div className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1.5 border-b border-border px-ax-3 py-ax-2">
           <button
             type="button"
             onClick={() => navigate(-1)}
@@ -602,7 +602,7 @@ export function CalendarClassic() {
           >
             <ChevronRight className="size-3.5" />
           </button>
-          <span className="ax-caption ml-1 flex-1 truncate font-semibold text-foreground">
+          <span className="ax-caption ml-1 min-w-[6rem] flex-1 truncate font-semibold text-foreground">
             {headerLabel()}
           </span>
           <button
@@ -611,14 +611,14 @@ export function CalendarClassic() {
               setAnchor(new Date());
               setSelected("");
             }}
-            className="ax-press ax-hit ax-caption rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
+            className="ax-press ax-hit ax-caption shrink-0 rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
           >
             {t("Today")}
           </button>
         </div>
 
-        {/* View switcher */}
-        <div className="flex items-center gap-1 border-b border-border px-ax-3 py-ax-2">
+        {/* View switcher — wraps: a bigger phone font must never make the page wider than the screen */}
+        <div className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1.5 border-b border-border px-ax-3 py-ax-2">
           {(["month", "week", "day"] as const).map((v) => (
             <button
               key={v}
@@ -634,7 +634,7 @@ export function CalendarClassic() {
               {t(v.charAt(0).toUpperCase() + v.slice(1))}
             </button>
           ))}
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex flex-wrap items-center gap-1">
             {(["availability", "load"] as const).map((r) => (
               <button
                 key={r}

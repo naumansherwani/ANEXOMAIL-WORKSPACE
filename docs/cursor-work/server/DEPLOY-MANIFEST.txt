@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 511e4c572232c885
+docs/cursor-work/founder/founder-commands.md 0b9a52c4710eed38
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -221,7 +221,7 @@ docs/cursor-work/sql/CHECK_CAL_CREATE.sql 9948df8c5a8ae59a
 docs/cursor-work/sql/E51_calendar_response_fix.sql 0259abc81627e0fb
 docs/cursor-work/server/repo-capture-server.sh e977c519c99130ea
 src/lib/notify.ts 28ac0eff9454cdd6
-src/components/app/Panel.tsx 31764bb31659e16f
+src/components/app/Panel.tsx e66fbb2798cbd2c9
 src/lib/experience.ts adfcffbb33979c2c
 src/routes/app.settings.appearance.tsx 7911ac3654c2b006
 docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
@@ -359,7 +359,7 @@ src/components/app/calendar/RepeatPicker.tsx 07d6a0f06d2143de
 docs/cursor-work/sql/CHECK_E56.sql da641f2506fb7482
 src/lib/timeFormat.ts 22f95a3da9a5a275
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
-src/components/app/calendar/CalendarClassic.tsx 6bcbde27666f662a
+src/components/app/calendar/CalendarClassic.tsx 9549292a6ca0e371
 src/components/app/calendar/Bits.tsx ff3c03680788468a
 src/components/app/calendar/Availability.tsx 42cc922382dbbcc1
 server/rust/locale_core.rs 684ebc8bde55fa85
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 1543f0648ec16010
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 3bb6a3c29a0029be
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md 4d0d2004f2eb67c2
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
