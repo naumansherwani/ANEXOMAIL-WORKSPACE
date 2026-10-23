@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   canStartPull,
   damped,
+  hasDraft,
   isPullGesture,
   PULL_MAX,
   PULL_THRESHOLD,
@@ -55,5 +56,17 @@ describe("pull-to-refresh", () => {
   test("never inside inputs, editors or dialogs", () => {
     const main = el({});
     expect(canStartPull(el({ block: true }, main), oy)).toBe(false);
+  });
+
+  test("draft detection: written text blocks a reload, search boxes and empty fields do not", () => {
+    expect(hasDraft([])).toBe(false);
+    expect(hasDraft([{ tag: "TEXTAREA", value: "  " }])).toBe(false);
+    expect(hasDraft([{ tag: "TEXTAREA", value: "dear Ali" }])).toBe(true);
+    expect(hasDraft([{ tag: "DIV", value: "", editable: true, text: "hello" }])).toBe(true);
+    expect(hasDraft([{ tag: "INPUT", type: "search", value: "invoice" }])).toBe(false);
+    expect(hasDraft([{ tag: "INPUT", type: "text", value: "Team sync", inDialog: true }])).toBe(
+      true,
+    );
+    expect(hasDraft([{ tag: "INPUT", type: "checkbox", value: "on", inDialog: true }])).toBe(false);
   });
 });

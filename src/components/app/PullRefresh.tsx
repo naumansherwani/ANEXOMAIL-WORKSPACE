@@ -3,10 +3,18 @@ import { useRouter } from "@tanstack/react-router";
 import { RefreshCw } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { canStartPull, damped, isPullGesture, PULL_THRESHOLD, pullReady } from "@/lib/pull-refresh";
+import {
+  canStartPull,
+  damped,
+  hasDraft,
+  isPullGesture,
+  PULL_THRESHOLD,
+  pullReady,
+} from "@/lib/pull-refresh";
 
 /**
- * Phone: upar se neeche kheencho -> data taza (page reload NAHI, draft salamat). Browser ka apna pull-to-refresh shell mein band hai.
+ * Phone: upar se neeche kheencho -> asli reload (naya deploy bhi aa jata hai); agar likha hua draft ho to sirf data taza (draft salamat).
+ * Browser ka apna pull-to-refresh shell mein band hai.
  * Sirf touch screen par; text likhte waqt / dialog ke andar / jab koi dabba neeche scrolled ho to kuch nahi.
  */
 export function PullRefresh() {
@@ -63,7 +71,25 @@ export function PullRefresh() {
         busyRef.current = true;
         setBusy(true);
         set(PULL_THRESHOLD);
-        await Promise.allSettled([qc.invalidateQueries(), router.invalidate()]);
+        // Likha hua kaam na ho => asli reload (naya deploy bhi load ho jata hai). Ho => sirf data taza, draft salamat.
+        const fields = Array.from(
+          document.querySelectorAll<HTMLElement>(
+            'textarea, [contenteditable="true"], [role="dialog"] input',
+          ),
+        ).map((el) => ({
+          tag: el.tagName,
+          type: (el as HTMLInputElement).type,
+          value: (el as HTMLInputElement).value ?? "",
+          editable: el.isContentEditable,
+          text: el.textContent ?? "",
+          inDialog: !!el.closest('[role="dialog"]'),
+        }));
+        if (!hasDraft(fields)) {
+          await new Promise((r) => setTimeout(r, 300));
+          window.location.reload();
+          return;
+        }
+        await Promise.allSettled([qc.refetchQueries({ type: "active" }), router.invalidate()]);
         await new Promise((r) => setTimeout(r, 450));
         busyRef.current = false;
         setBusy(false);

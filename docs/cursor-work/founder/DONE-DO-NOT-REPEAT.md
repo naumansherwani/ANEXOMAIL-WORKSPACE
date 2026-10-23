@@ -16,3 +16,5 @@
 - 23 Oct 09:15 App pull-to-refresh (PullRefresh.tsx, data-only, no reload). Live phone check baaki (founder).
 - 23 Oct 09:40 MOBILE-CONTRACT.md + Text size (lib/text-size.ts, Appearance) + touch scrollbar + pull-refresh pinch guard. Phone live check baaki.
 - 23 Oct 09:30 In-context zoom: mail body (READ_ZOOM) + calendar hour height (GRID_HOUR) via lib/zoom-prefs.ts. Phone live check baaki.
+
+- 23 Oct: Pull-to-refresh asli `location.reload()` (draft ho to sirf refetch) — `lib/pull-refresh.ts hasDraft`, `PullRefresh.tsx`. Dobara data-only mat banao.

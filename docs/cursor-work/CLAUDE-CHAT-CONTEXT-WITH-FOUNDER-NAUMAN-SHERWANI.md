@@ -801,3 +801,6 @@ Founder ne Web pull chalaya (src same=562) aur screenshot bheja: naya phone tool
 
 ### Checkpoint 23 Oct 09:30 PKT — in-context zoom BANA (push, founder pull baaki)
 Founder ka hukm "zoom jahan zaroorat wahan" amal mein: mail body A−/A+ (READ_ZOOM 85–175%) + calendar Week/Day ghante ki unchai (GRID_HOUR 36/52/72/96) — `lib/zoom-prefs.ts`, `components/app/ZoomButtons.tsx`, SafeMailBody (iframe body zoom), TimeGrid (HOUR ab state), mail thread header. Qaida MOBILE-CONTRACT.md 5b. Web pull baaki: e04f078..is commit tak sab ek hi pull.sh se. Phir founder ke phone screenshots (calendar Week, mail thread, Settings->Appearance Text size).
+
+### Checkpoint 23 Oct 10:00 PKT — pull-to-refresh asli reload (push, founder pull baaki)
+Founder: "spin hota hai lekin refresh nahi hota". Fix: draft na ho to 300ms baad `location.reload()`; draft ho (textarea/contenteditable/dialog input mein text) to `refetchQueries + router.invalidate`. Tests 379 pass, tsc 0. Agla: founder Web pull -> pull test + phone screenshots (calendar Week, mail thread, Appearance Text size); phir CalDAV phone test, C2/Google/Rooms.

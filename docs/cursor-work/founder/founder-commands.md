@@ -866,3 +866,7 @@ Founder: "screen adaptive ho, zoom jitna chahiye; scroll bar aaye; ek hi baar th
 ## 23 Oct 09:30 — Zoom SIRF jahan zaroorat: mail padhne ki body + calendar ghante ki unchai — SIRF Web
 Founder: "zoom in/out jahan zaroorat wahan, jahan nahi wahan nahi". CEO faisla: (1) Mail thread header mein `− 100% +` (body 85–175%, sirf mail ki body, iframe ke andar; baaqi app par asar nahi); (2) Calendar Week/Day ke upar "Hour height − 52px +" (36/52/72/96). Dashboard/lists/settings par koi zoom button nahi (wahan Settings -> Appearance -> Text size + pinch). Har choice device par yaad rehti hai.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir phone par dobara kholein.
+
+## 23 Oct 10:00 — Pull-to-refresh ab ASLI reload karta hai — SIRF Web
+Pehle sirf data refetch hota tha (spinner ghoomta, kuch badalta nahi dikhta). Ab neeche kheencho -> page ka asli reload (naya deploy bhi aa jata hai). Agar koi likha hua draft/compose khula hai to reload NAHI hota (draft bachane ke liye), sirf data taza hota hai.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir phone par dobara kholein.

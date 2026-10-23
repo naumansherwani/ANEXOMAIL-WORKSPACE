@@ -55,3 +55,34 @@ export function canStartPull(start: ElLike | null, overflowOf: (e: ElLike) => st
   }
   return true;
 }
+
+/** Ek field jo "kuch likha hua hai" jaanchne ke liye chahiye (DOM se alag, taake test ho sake). */
+export type FieldInfo = {
+  tag: string;
+  type?: string;
+  value: string;
+  editable?: boolean;
+  text?: string;
+  inDialog?: boolean;
+};
+
+/**
+ * Kya screen par likha hua kaam hai jo reload se kho jayega? (compose, reply, notes, kisi dialog ka form)
+ * Haan => pull-to-refresh sirf data taza kare (reload nahi). Nahi => poora page reload (naya deploy bhi aa jata hai).
+ * Search/filter box ko draft nahi ginte (dialog ke bahar ke input).
+ */
+export function hasDraft(fields: FieldInfo[]): boolean {
+  return fields.some((f) => {
+    const t = f.tag.toLowerCase();
+    if (t === "textarea") return f.value.trim().length > 0;
+    if (f.editable) return (f.text ?? "").trim().length > 0;
+    if (
+      t === "input" &&
+      f.inDialog &&
+      !["checkbox", "radio", "range", "button", "submit"].includes(f.type ?? "text")
+    ) {
+      return f.value.trim().length > 0;
+    }
+    return false;
+  });
+}
