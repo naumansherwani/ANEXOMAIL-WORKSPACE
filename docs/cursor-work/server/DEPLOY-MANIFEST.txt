@@ -332,7 +332,7 @@ docs/claude/POLAR-CONTROL-PLANE-PLAN.md 343568ef633fdeaf
 src/components/app/billing/ManageBilling.tsx 40b1b719c8939210
 src/routes/billing-policy.tsx 82467f4d45d832d2
 src/components/site/BootSplash.tsx 050ad56cd525094c
-docs/claude/BILLING-PORTAL-BLUEPRINT.md d087fbe5c3ae25d1
+docs/claude/BILLING-PORTAL-BLUEPRINT.md 585c42296dfaab3d
 portal/public/index.html 4c466e37e6bb5dec
 docs/cursor-work/server/caddy-billingportal.sh c87dccf4b7476e61
 docs/cursor-work/server/polar-control-plane-install.sh df8da2a70ce21261
