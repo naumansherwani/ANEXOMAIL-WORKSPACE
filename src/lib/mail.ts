@@ -153,6 +153,40 @@ export function useThreads(query: ThreadQuery, enabled = true) {
   });
 }
 
+/**
+ * Server se aane wale thread ko UI ke liye mehfooz banata hai: koi bhi list-field null/gayab ho (purani mail, Rust ne field na bheja,
+ * offline cache ki purani shakal) to page crash nahi karta — khali list maani jati hai.
+ */
+export function normalizeThread(raw: unknown): MailThread {
+  const t = (raw ?? {}) as Partial<MailThread>;
+  const list = <T>(v: unknown): T[] => (Array.isArray(v) ? (v as T[]) : []);
+  return {
+    id: String(t.id ?? ""),
+    subject: typeof t.subject === "string" ? t.subject : "",
+    status: (t.status ?? "open") as ThreadStatus,
+    assignee: t.assignee ?? null,
+    labels: list<string>(t.labels),
+    snoozed_until: t.snoozed_until ?? null,
+    account_address: t.account_address ?? null,
+    messages: list<Partial<MailMessage> | null>(t.messages)
+      .filter((m): m is Partial<MailMessage> => !!m && typeof m === "object")
+      .map((m) => ({
+        id: String(m.id ?? ""),
+        direction: m.direction === "out" ? "out" : "in",
+        from_name: m.from_name ?? null,
+        from_address: typeof m.from_address === "string" ? m.from_address : "",
+        to: list<string>(m.to),
+        cc: list<string>(m.cc),
+        subject: m.subject ?? null,
+        body_text: m.body_text ?? null,
+        body_html: m.body_html ?? null,
+        sent_at: typeof m.sent_at === "string" ? m.sent_at : "",
+        scheduled_at: m.scheduled_at ?? null,
+        attachments: list<MailAttachment>(m.attachments),
+      })),
+  };
+}
+
 export function useThread(threadId: string | undefined) {
   return useQuery<MailThread, ApiError>({
     queryKey: ["mail", "thread", threadId],
@@ -166,17 +200,20 @@ export function useThread(threadId: string | undefined) {
           { id: threadId },
         );
         void offlinePut("thread", String(threadId), data);
-        return data;
+        return normalizeThread(data);
       } catch (error) {
         if (error instanceof ApiError && error.status === 0) {
           const cached = await offlineGet<MailThread>("thread", String(threadId));
-          if (cached) return cached.value;
+          if (cached) return normalizeThread(cached.value);
         }
         throw error;
       }
     },
     enabled: Boolean(threadId),
-    retry: false,
+    // Ek bar khud dobara koshish (refresh karne par khulti thi): sirf network / server-side / session-refresh jaisi waqti ghaltiyan.
+    retry: (count, error) =>
+      count < 2 && (error.status === 0 || error.status === 401 || error.status >= 500),
+    retryDelay: (n) => 400 * (n + 1),
   });
 }
 
@@ -184,11 +221,7 @@ export function useLabels() {
   return useQuery<{ labels: MailLabel[] }, ApiError>({
     queryKey: ["mail", "labels"],
     queryFn: () =>
-      rpcOrRest<{ labels: MailLabel[] }>(
-        "mail.labels",
-        { path: "/api/mail/labels" },
-        {},
-      ),
+      rpcOrRest<{ labels: MailLabel[] }>("mail.labels", { path: "/api/mail/labels" }, {}),
     retry: false,
     staleTime: 60_000,
   });
@@ -198,11 +231,7 @@ export function useAccounts() {
   return useQuery<{ accounts: MailAccount[] }, ApiError>({
     queryKey: ["mail", "accounts"],
     queryFn: () =>
-      rpcOrRest<{ accounts: MailAccount[] }>(
-        "mail.accounts",
-        { path: "/api/mail/accounts" },
-        {},
-      ),
+      rpcOrRest<{ accounts: MailAccount[] }>("mail.accounts", { path: "/api/mail/accounts" }, {}),
     retry: false,
     staleTime: 60_000,
   });

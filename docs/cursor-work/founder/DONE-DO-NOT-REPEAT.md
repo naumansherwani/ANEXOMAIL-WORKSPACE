@@ -10,3 +10,4 @@
 - 23 Oct 08:25 CalDAV C1 server par: E80 GREEN, Rust dav module build+health OK, Caddy apply OK (301/401). Dobara mat chalana. Baaki: Caddy re-apply (DAV header), Settings password, phone test.
 - 23 Oct 08:30 CalDAV Caddy DAV header re-apply GREEN (OPTIONS dav: 1, calendar-access). Server taraf mukammal; baaki phone test.
 - 23 Oct 08:40 Classic calendar phone overflow fix (rows wrap, Panel overflow-x-hidden). Live phone check baaki (founder).
+- 23 Oct 08:55 Mail-open crash hardening: normalizeThread + retry (useThread). Asli error founder ke account se baaki.

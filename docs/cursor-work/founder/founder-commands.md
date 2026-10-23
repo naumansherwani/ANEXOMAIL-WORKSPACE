@@ -839,3 +839,7 @@ SACH: sirf padhna (PUT/DELETE/MKCOL 405). Ek calendar "ANEXOMAIL": wahi meetings
 ## 23 Oct 08:40 — Calendar (Classic) phone/tablet fix: rows ab wrap hoti hain, page chauda nahi hota — SIRF Web (SQL/Rust/Caddy nahi)
 Founder ka screenshot: Month grid ka SUN column aur "Today"/"24h"/"Load" kat rahe the (bade phone font par "Month·Week·Day + Avail.·Load" row wrap nahi hoti thi). Fix: CalendarClassic rows wrap + min-w-0, month cell min-w-0, Panel body overflow-x-hidden. Pinch-zoom pehle se allowed hai (viewport mein maximum-scale nahi).
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R (phone par bhi).
+
+## 23 Oct 08:55 — Mail kholne par "Something went wrong" (refresh par khulti) — SIRF Web
+Is Pro account par 5/5 threads theek khulte hain (390 px par bhi, console saaf) — aap ke account ka asli error abhi nahi mila. Pakka kamzor hissa band kiya: thread page `to/cc/attachments` par seedha `.length` lagata tha; ab `normalizeThread` (lib/mail.ts) khali/null lists ko [] banata hai, aur waqti ghalti (401/5xx/network) par 2 baar khud retry. Agar ab bhi aaye: screenshot + kaun si mail (subject) + kaun sa account.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
