@@ -10,4 +10,4 @@ cp "$HERE/dav-feed.Cargo.toml" "$T/Cargo.toml"
 sed "s#@R@#$R#g" "$HERE/dav-feed-main.rs" > "$T/src/main.rs"
 cd "$T"
 OFF="--offline"; [ "${ONLINE:-0}" = "1" ] && OFF=""
-CARGO_TARGET_DIR="$T/target" cargo run $OFF 2>&1 | grep -E "^(GET|HEAD|POST|PUT|DELETE|PROPFIND|REPORT|OPTIONS|wrong|unknown|bad|basic|ALL|error|warning)" || true
+CARGO_TARGET_DIR="$T/target" cargo run $OFF 2>&1 | grep -E "^(BIG|GET|HEAD|POST|PUT|DELETE|PROPFIND|REPORT|OPTIONS|wrong|unknown|bad|basic|ALL|error|warning)" || true

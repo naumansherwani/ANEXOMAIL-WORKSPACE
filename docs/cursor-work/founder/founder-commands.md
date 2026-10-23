@@ -905,3 +905,9 @@ Honest: Google subscribe 12–24 ghante mein refresh karta hai (naya meeting der
 4. Caddy (link ka URL Caddy log mein na likha jaye — `log_skip`): pehle PLAN: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)`  (UPGRADE + "validate OK" chahiye) phir `MODE=apply bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/caddy-caldav.sh)`
 5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
 Test: Calendar -> "⋯" -> Calendar settings -> Phone calendar -> "No app" -> Create link -> "Add to Google Calendar" (ya calendar.google.com -> Other calendars -> From URL). Link kaam karta hai ya nahi (server taraf): browser mein link kholne par .ics download/dikhna chahiye.
+
+## 23 Oct 12:20 — Calendar link/CalDAV: bade user ke SAARE meetings (cap khatam) — SIRF Rust
+Founder: "2000 wali had user ka masla nahi, premium experience do". Pehle `limit=2000` aur PostgREST ka server-cap (aksar 1000) meetings chupke kaat deta tha, aur `in.(…)` ke URL ka lamba hona alag khatra tha. Ab page-dar-page (1000/page, 30 page tak), id 60-60 ke chunk mein, guests/exceptions HashMap se. Harness: 2600 apne + 150 bulaye hue meeting, backend 1000-cap ke saath => 2750 mein se 2750 feed mein (pehle/aakhri samet).
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+(SQL, Caddy, Web ka koi naya kaam nahi; 23 Oct 11:55 wale teeno aap ne chala diye — sab GREEN.)

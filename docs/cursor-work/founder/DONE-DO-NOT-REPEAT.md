@@ -34,3 +34,5 @@
 - 23 Oct: DAVx5 Play Store par PAID (~1800), F-Droid par free. Founder paid app nahi lega. Guide text theek kiya. Agla option: no-install "Google Calendar subscribe" feed (secret ICS link, Rust route /dav/feed/<key>.ics; Google ka refresh 12-24h). Founder ka faisla baaki.
 
 - 23 Oct: CalDAV B (Calendar link / feed): SQL E81 (kind dav|feed, CHECK_E81, proof) + Rust (dav_core Route::Feed/feed_ics/etag, dav_glue feed handler, procs caldav.feed.*) + Web PhoneFeed + Caddy log_skip. Local Postgres + asli handler harness (rust-harness/dav-feed-harness.sh) GREEN; server deploy baaki (founder). Dobara na banao.
+
+- 23 Oct: DAV/feed load() paginated (sb_all, 1000/page) + chunked in.() + HashMap — 2000/1000 cap khatam. Dobara limit=2000 mat lagao. Deploy GREEN (SQL E81, Rust, Caddy log_skip, Web) founder ne 10:43 tak chalaya.

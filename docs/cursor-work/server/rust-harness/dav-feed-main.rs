@@ -20,7 +20,36 @@ async fn sb_rpc(f: &str, b: Value) -> Result<Value, String> {
         _ => Value::Null,
     })
 }
+static BIG: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+const BIG_MINE: usize = 2600; // organiser main hoon
+const BIG_INVITED: usize = 150; // sirf guest
+fn big_id(i: usize) -> String { format!("00000000-0000-4000-8000-{i:012}") }
+/// Nakli backend jo asli PostgREST jaisa chalta hai: server-side max-rows 1000, limit/offset, in.(..), aur URL ki lambai ka khayal.
+fn big(p: &str) -> Result<Value, String> {
+    assert!(p.len() < 4000, "URL bohot lamba ({} bytes) — in.(...) chunk nahi hua", p.len());
+    let (table, q) = p.split_once('?').unwrap_or((p, ""));
+    let prm = |k: &str| q.split('&').find_map(|kv| kv.strip_prefix(&format!("{k}=")));
+    let limit = prm("limit").and_then(|v| v.parse::<usize>().ok()).unwrap_or(1000).min(1000);
+    let offset = prm("offset").and_then(|v| v.parse::<usize>().ok()).unwrap_or(0);
+    let ids_in = |k: &str| -> Option<Vec<String>> { prm(k).and_then(|v| v.strip_prefix("in.(")).map(|v| v.trim_end_matches(')').split(',').map(|x| x.to_string()).collect()) };
+    let ev = |i: usize| json!({"id":big_id(i),"title":format!("Meeting {i}"),"starts_at":"2026-10-24T09:00:00Z","ends_at":"2026-10-24T10:00:00Z","organiser": if i < BIG_MINE {"me@x.test"} else {"boss@x.test"},"tz":"","tz_offset_min":0,"dav_rev":1,"dav_updated_at":"2026-10-23T05:00:00Z","status":"confirmed","sequence":0});
+    let rows: Vec<Value> = match table {
+        "calendar_attendees" => {
+            if prm("address").is_some() { (BIG_MINE..BIG_MINE + BIG_INVITED).map(|i| json!({"event_id":big_id(i),"address":"me@x.test"})).collect() }
+            else if let Some(ids) = ids_in("event_id") { ids.iter().map(|id| json!({"event_id":id,"address":"g@x.test","display_name":"G","role":"required","response":"accepted"})).collect() }
+            else { vec![] }
+        }
+        "calendar_events" => {
+            if prm("organiser").is_some() { (0..BIG_MINE).map(ev).collect() }
+            else if let Some(ids) = ids_in("id") { ids.iter().filter_map(|id| id.rsplit('-').next().and_then(|n| n.parse::<usize>().ok())).map(ev).collect() }
+            else { vec![] }
+        }
+        _ => vec![],
+    };
+    Ok(Value::Array(rows.into_iter().skip(offset).take(limit).collect()))
+}
 async fn sb_select(p: &str) -> Result<Value, String> {
+    if BIG.load(std::sync::atomic::Ordering::Relaxed) { return big(p); }
     Ok(if p.starts_with("calendar_events?select=*&org_id=") {
         json!([{"id":EV,"title":"Board, review; Q4","starts_at":"2026-10-24T09:00:00Z","ends_at":"2026-10-24T10:00:00Z","organiser":"me@x.test","tz":"","tz_offset_min":0,"dav_rev":3,"dav_updated_at":"2026-10-23T05:00:00Z","status":"confirmed","sequence":1}])
     } else { json!([]) })
@@ -56,5 +85,14 @@ async fn main() {
     for m in ["POST", "PUT", "DELETE", "PROPFIND", "REPORT"] { let (s, _, _) = call(m, &good, None).await; println!("{m} -> {s}"); assert!(s == StatusCode::METHOD_NOT_ALLOWED || (m=="PROPFIND"||m=="REPORT") && s == StatusCode::METHOD_NOT_ALLOWED, "{m} {s}"); }
     let (s, h, _) = call("OPTIONS", &good, None).await; println!("OPTIONS -> {s} allow={:?}", h.get("allow")); assert_eq!(s, StatusCode::OK);
     let (s, _, _) = call("GET", "/dav/c/personal/", None).await; println!("basic path w/o auth -> {s}"); assert_eq!(s, StatusCode::UNAUTHORIZED);
+    // ── bara user: 2600 apne + 150 bulaye hue meeting; backend max 1000 row/page deta hai; URL kabhi lamba nahi
+    BIG.store(true, std::sync::atomic::Ordering::Relaxed);
+    let (s, _, b) = call("GET", &good, None).await;
+    let n = b.matches("BEGIN:VEVENT").count();
+    println!("BIG feed -> {s}  events={n} (chahiye {})", BIG_MINE + BIG_INVITED);
+    assert_eq!(s, StatusCode::OK);
+    assert_eq!(n, BIG_MINE + BIG_INVITED, "koi meeting gum hui");
+    assert!(b.contains("Meeting 0\r\n") && b.contains("Meeting 2749\r\n"), "pehli aur aakhri meeting dono honi chahiye");
+    assert_eq!(b.matches("ATTENDEE").count(), BIG_MINE + BIG_INVITED, "har meeting ka guest judna chahiye");
     println!("ALL FEED HANDLER CHECKS PASSED");
 }

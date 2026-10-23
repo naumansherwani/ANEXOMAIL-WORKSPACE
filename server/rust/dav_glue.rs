@@ -12,6 +12,7 @@ use axum::{
 };
 use serde_json::{json, Value};
 use sha2::{Digest, Sha256};
+use std::collections::{HashMap, HashSet};
 
 const CAL_KEY: &str = "personal";
 const REALM: &str = "Basic realm=\"ANEXOMAIL CalDAV\", charset=\"UTF-8\"";
@@ -222,43 +223,72 @@ struct Res {
     recurring: bool,
 }
 
+const PAGE: usize = 1000;
+/// Har query ke liye zyada se zyada itne page (30k row): sirf bhagoray se bachne ki hadd, asli user is se bahut door hai.
+const MAX_PAGES: usize = 30;
+/// `in.(...)` mein itne id (URL chhota rahe, PostgREST ka max-rows bhi kuch na kaate).
+const CHUNK: usize = 60;
+
+/// Poora jawab page-dar-page (PostgREST ka server-side max-rows kuch bhi ho, kuch gum nahi hota). `path` mein stable `order=` zaroori.
+async fn sb_all(path: &str) -> Result<Vec<Value>, ()> {
+    let mut out: Vec<Value> = Vec::new();
+    for page in 0..MAX_PAGES {
+        let rows = crate::sb_select(&format!("{path}&limit={PAGE}&offset={}", page * PAGE)).await.map_err(|_| ())?;
+        let rows = rows.as_array().cloned().unwrap_or_default();
+        let n = rows.len();
+        out.extend(rows);
+        if n < 100 {
+            break; // itna chhota page server ke cap se nahi aa sakta => aakhri page
+        }
+    }
+    Ok(out)
+}
+
 async fn load(me: &Dav) -> Result<Vec<Res>, ()> {
     if !email_ok(&me.email) {
         return Err(());
     }
+    let who = pct(&me.email);
     // jin events mein main guest hoon
-    let mine = crate::sb_select(&format!("calendar_attendees?select=event_id&address=eq.{}&limit=2000", pct(&me.email))).await.map_err(|_| ())?;
-    let ids: Vec<String> = mine.as_array().cloned().unwrap_or_default().iter().map(|r| st(r, "event_id")).filter(|i| dc::uuid_ok(i)).collect();
-    let mut filt = format!("organiser.eq.{}", pct(&me.email));
-    if !ids.is_empty() {
-        filt.push_str(&format!(",id.in.({})", ids.join(",")));
+    let mine = sb_all(&format!("calendar_attendees?select=event_id&address=eq.{who}&order=event_id.asc")).await?;
+    let mut ids: Vec<String> = mine.iter().map(|r| st(r, "event_id")).filter(|i| dc::uuid_ok(i)).collect();
+    ids.sort();
+    ids.dedup();
+    let base = format!("calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null", me.org_id);
+    let mut all = sb_all(&format!("{base}&organiser=eq.{who}&order=starts_at.desc,id.asc")).await?;
+    for c in ids.chunks(CHUNK) {
+        all.extend(sb_all(&format!("{base}&id=in.({})&order=starts_at.desc,id.asc", c.join(","))).await?);
     }
-    let q = format!(
-        "calendar_events?select=*&org_id=eq.{}&cancelled_at=is.null&or=({})&order=starts_at.desc&limit=2000",
-        me.org_id, filt
-    );
-    let rows = crate::sb_select(&q).await.map_err(|_| ())?;
-    let all = rows.as_array().cloned().unwrap_or_default();
-    let masters: Vec<Value> = all.into_iter().filter(|e| st(e, "series_id").is_empty() && st(e, "status") != "cancelled").collect();
+    let mut seen: HashSet<String> = HashSet::new();
+    let masters: Vec<Value> =
+        all.into_iter().filter(|e| st(e, "series_id").is_empty() && st(e, "status") != "cancelled" && seen.insert(st(e, "id"))).collect();
     let mids: Vec<String> = masters.iter().map(|e| st(e, "id")).filter(|i| dc::uuid_ok(i)).collect();
     if mids.is_empty() {
         return Ok(vec![]);
     }
-    let guests = crate::sb_select(&format!("calendar_attendees?select=*&event_id=in.({})&limit=5000", mids.join(","))).await.map_err(|_| ())?;
-    let guests = guests.as_array().cloned().unwrap_or_default();
-    let excs = crate::sb_select(&format!("calendar_events?select=*&series_id=in.({})&cancelled_at=is.null&limit=2000", mids.join(","))).await.map_err(|_| ())?;
-    let excs = excs.as_array().cloned().unwrap_or_default();
+    let mut guests_by: HashMap<String, Vec<Value>> = HashMap::new();
+    let mut excs_by: HashMap<String, Vec<Value>> = HashMap::new();
+    for c in mids.chunks(CHUNK) {
+        let list = c.join(",");
+        for g in sb_all(&format!("calendar_attendees?select=*&event_id=in.({list})&order=event_id.asc,address.asc")).await? {
+            guests_by.entry(st(&g, "event_id")).or_default().push(g);
+        }
+        for e in sb_all(&format!("calendar_events?select=*&series_id=in.({list})&cancelled_at=is.null&order=id.asc")).await? {
+            excs_by.entry(st(&e, "series_id")).or_default().push(e);
+        }
+    }
+    let none: Vec<Value> = Vec::new();
     let mut out = Vec::new();
     for m in masters {
         let id = st(&m, "id");
-        let g: Vec<Value> = guests.iter().filter(|r| st(r, "event_id") == id).cloned().collect();
-        let Some(spec) = spec_of(&m, &g, None) else { continue };
+        let g = guests_by.get(&id).unwrap_or(&none);
+        let Some(spec) = spec_of(&m, g, None) else { continue };
         let mut ics = dc::strip_method(&cal::build_ics(Method::Request, &spec, ""));
         let mut rev = m.get("dav_rev").and_then(|x| x.as_i64()).unwrap_or(1);
         let mut modified = cal::parse_ts(&st(&m, "dav_updated_at")).unwrap_or(0);
         let mut extras = Vec::new();
-        for e in excs.iter().filter(|e| st(e, "series_id") == id) {
-            if let Some(es) = spec_of(e, &g, Some(&id)) {
+        for e in excs_by.get(&id).unwrap_or(&none) {
+            if let Some(es) = spec_of(e, g, Some(&id)) {
                 extras.push(dc::strip_method(&cal::build_ics(Method::Request, &es, "")));
             }
             rev += e.get("dav_rev").and_then(|x| x.as_i64()).unwrap_or(1);
