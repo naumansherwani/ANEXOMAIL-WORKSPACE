@@ -9,10 +9,21 @@ import { findLocale, STORAGE_KEY } from "./locales";
 type Bundle = Record<string, string>;
 
 const sqlMemory = new Map<string, Bundle>();
+/* single-flight: concurrent callers share ONE request (LCP: page load fired locale.bundle x3, locale.pref x3) */
+const bundleInflight = new Map<string, Promise<Bundle>>();
+let prefInflight: Promise<string | null> | null = null;
 
-export async function loadSqlBundle(tag: string): Promise<Bundle> {
+export function loadSqlBundle(tag: string): Promise<Bundle> {
   const hit = sqlMemory.get(tag);
-  if (hit) return hit;
+  if (hit) return Promise.resolve(hit);
+  const live = bundleInflight.get(tag);
+  if (live) return live;
+  const p = fetchSqlBundle(tag).finally(() => bundleInflight.delete(tag));
+  bundleInflight.set(tag, p);
+  return p;
+}
+
+async function fetchSqlBundle(tag: string): Promise<Bundle> {
   try {
     const res = await rpcOrRest<{ tag: string; bundle: Bundle }>(
       "locale.bundle",
@@ -30,13 +41,26 @@ export async function loadSqlBundle(tag: string): Promise<Bundle> {
 
 export async function persistLocalePref(tag: string) {
   try {
-    await rpcOrRest("locale.pref.set", { path: "/api/locale/pref", method: "PUT", body: { tag } }, { tag });
+    await rpcOrRest(
+      "locale.pref.set",
+      { path: "/api/locale/pref", method: "PUT", body: { tag } },
+      { tag },
+    );
   } catch {
     /* SQL not run yet, or signed out — localStorage still holds the choice */
   }
 }
 
-export async function hydrateLocalePref(): Promise<string | null> {
+export function hydrateLocalePref(): Promise<string | null> {
+  if (prefInflight) return prefInflight;
+  const p = fetchLocalePref().finally(() => {
+    prefInflight = null;
+  });
+  prefInflight = p;
+  return p;
+}
+
+async function fetchLocalePref(): Promise<string | null> {
   try {
     if (typeof window !== "undefined") {
       const local = window.localStorage.getItem(STORAGE_KEY);
@@ -44,7 +68,9 @@ export async function hydrateLocalePref(): Promise<string | null> {
         /* local wins for this device; SQL still updated on next pick */
       }
     }
-    const res = await rpcOrRest<{ tag: string | null }>("locale.pref", { path: "/api/locale/pref" });
+    const res = await rpcOrRest<{ tag: string | null }>("locale.pref", {
+      path: "/api/locale/pref",
+    });
     return res.tag && findLocale(res.tag) ? res.tag : null;
   } catch {
     return null;
