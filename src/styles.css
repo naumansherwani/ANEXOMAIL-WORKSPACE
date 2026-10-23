@@ -1425,3 +1425,43 @@ html[data-ax-fx="on"] .ax-plane:hover { box-shadow: 0 0 0 1px color-mix(in oklab
 }
 html[data-ax-fx="off"] .ax-a-hover .ax-a-slot svg,
 html[data-ax-calm] .ax-a-hover .ax-a-slot svg { animation: none !important; }
+
+/* ── Text size (lib/text-size.ts) — sirf jab user ne 100% se alag chuna ho (html[data-ax-ts]); default par kuch nahi badalta. ──
+   rem wali cheezein html ke font-size se; px-literal text (text-[11px] ...) ko neeche ki rules scale karti hain. */
+html[data-ax-ts] { font-size: calc(100% * var(--ax-ts, 1)); }
+html[data-ax-ts] [class*="text-[9px]"] { font-size: calc(9px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[10px]"] { font-size: calc(10px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[11px]"] { font-size: calc(11px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[12px]"] { font-size: calc(12px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[13px]"] { font-size: calc(13px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[14px]"] { font-size: calc(14px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[15px]"] { font-size: calc(15px * var(--ax-ts, 1)) !important; }
+html[data-ax-ts] [class*="text-[19px]"] { font-size: calc(19px * var(--ax-ts, 1)) !important; }
+
+/* ── Touch screens: scroll bar nazar aaye (Android par overlay bar sirf scroll ke dauran dikhta hai). Patla, shaant, theme ke rang mein. ──
+   Standard `scrollbar-width/color` ke saath ::-webkit-scrollbar chalta nahi, isliye in dabbon par wapas `auto`. */
+@media (pointer: coarse) {
+  main,
+  .overflow-y-auto,
+  .overflow-auto {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+  main::-webkit-scrollbar,
+  .overflow-y-auto::-webkit-scrollbar,
+  .overflow-auto::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  main::-webkit-scrollbar-track,
+  .overflow-y-auto::-webkit-scrollbar-track,
+  .overflow-auto::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  main::-webkit-scrollbar-thumb,
+  .overflow-y-auto::-webkit-scrollbar-thumb,
+  .overflow-auto::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--muted-foreground) 55%, transparent);
+    border-radius: 9999px;
+  }
+}

@@ -1,5 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import { PullRefresh } from "@/components/app/PullRefresh";
+import { useTextSize } from "@/lib/text-size";
 import {
   CalendarDays,
   Building2,
@@ -164,6 +165,9 @@ export function AppShell({ children }: { children: ReactNode }) {
   useEffect(() => {
     mainRef.current?.scrollTo({ top: 0 });
   }, [pathname]);
+
+  // Text size (Settings -> Appearance): har page par, har reload par device ki chuni hui size.
+  useTextSize();
 
   // Mouse se kisi bhi left-right patti ko pakad kar ghumao (poori app mein, ek jagah).
   useEffect(() => installDragScroll(), []);

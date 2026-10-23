@@ -5,6 +5,7 @@ import { SettingsScope } from "@/components/app/settings/SettingsBits";
 import { Segmented, Toggle } from "@/components/app/premium/PremiumBits";
 import { celebrate, useExperience, type Animations, type Speed } from "@/lib/experience";
 import { notify } from "@/lib/notify";
+import { TEXT_SIZES, useTextSize, type TextSize } from "@/lib/text-size";
 
 export const Route = createFileRoute("/app/settings/appearance")({
   head: () => ({
@@ -33,6 +34,7 @@ export const Route = createFileRoute("/app/settings/appearance")({
  */
 function AppearancePage() {
   const exp = useExperience();
+  const [textSize, setTextSize] = useTextSize();
 
   return (
     <div className="min-h-0 flex-1 overflow-y-auto">
@@ -47,6 +49,19 @@ function AppearancePage() {
         </p>
 
         <div className="mt-ax-4 grid gap-ax-2">
+          <Segmented<`${TextSize}`>
+            label="Text size"
+            hint="Makes all text bigger or smaller on this device — your phone, tablet or laptop remembers it. You can also pinch to zoom any time."
+            value={`${textSize}`}
+            options={TEXT_SIZES.map((n) => ({
+              value: `${n}` as `${TextSize}`,
+              label: n === 100 ? "Default" : `${n}%`,
+            }))}
+            onChange={(v) => {
+              setTextSize(Number(v) as TextSize);
+              notify.done(Number(v) === 100 ? "Text size: default" : `Text size: ${v}%`);
+            }}
+          />
           <Segmented<Animations>
             label="Animations"
             hint="Full keeps the whole motion language · Reduced fades only, nothing travels · None is complete stillness (calm mode)."

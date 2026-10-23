@@ -6,11 +6,11 @@ src/routes/app.domains.tsx e98909709a51f120
 src/components/app/dashboard/SetupChecklist.tsx aa2fdac16a9d78ae
 src/routes/app.index.tsx a013cce9a09057ae
 src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
-src/components/app/AppShell.tsx e52c15eab9535047
+src/components/app/AppShell.tsx 8d5bfd785d352760
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx bf84e1529409b5ca
-src/styles.css 33cdb33818aee033
+src/styles.css 7189e6a69d0cef63
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx cd6e3f3477bf3250
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md dc2b439d8938907f
+docs/cursor-work/founder/founder-commands.md f85b0a1eb829f724
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -223,7 +223,7 @@ docs/cursor-work/server/repo-capture-server.sh e977c519c99130ea
 src/lib/notify.ts 28ac0eff9454cdd6
 src/components/app/Panel.tsx 3d4c4614fbadc34f
 src/lib/experience.ts adfcffbb33979c2c
-src/routes/app.settings.appearance.tsx 7911ac3654c2b006
+src/routes/app.settings.appearance.tsx abd01bb625047637
 docs/cursor-work/server/brain-crm-install.sh 832a82ed6c8ccbf5
 server/routes/auth-passkey.ts e40ad69cd60f7caf
 docs/cursor-work/server/brain-passkey-exempt.sh a33f772a2b191eb2
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md e974a174ac374e79
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a7c0f59538583773
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md 4d0d2004f2eb67c2
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -611,6 +611,9 @@ src/lib/caldav.test.ts 5820890e0c318aef
 docs/cursor-work/server/caddy-caldav.sh 4067003bbbc589b7
 docs/cursor-work/server/caldav-check.sh 2ca5b947d2b20401
 src/lib/mail-thread.test.ts c15bc273a0441086
-src/components/app/PullRefresh.tsx 350f0a2463d04514
+src/components/app/PullRefresh.tsx 55813ce2cefd516a
 src/lib/pull-refresh.ts 82be9c87b00528b0
 src/lib/pull-refresh.test.ts 0fae69e4befec4ba
+src/lib/text-size.ts 143e43975c7b6ffb
+src/lib/text-size.test.ts 328fb47845e7113d
+docs/cursor-work/MOBILE-CONTRACT.md db9f292afd7c1cd3

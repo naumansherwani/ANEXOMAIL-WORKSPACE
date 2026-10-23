@@ -25,7 +25,9 @@ export function PullRefresh() {
       setShown(v);
     };
     const onStart = (e: TouchEvent) => {
-      if (busyRef.current || e.touches.length !== 1) {
+      // Pinch-zoom ke baad ungli sirf page ghumati hai (pan) — refresh nahi.
+      const zoomed = (window.visualViewport?.scale ?? 1) > 1.02;
+      if (busyRef.current || zoomed || e.touches.length !== 1) {
         s = null;
         return;
       }

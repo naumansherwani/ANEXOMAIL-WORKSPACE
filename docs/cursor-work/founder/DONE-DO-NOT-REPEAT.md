@@ -14,3 +14,4 @@
 - 23 Oct 09:00 Calendar phone toolbar redesign (⋯ menu, 44px targets, full-width view switch). Live phone check baaki (founder screenshot).
 - 23 Oct 09:05 Phone calendar toolbar GREEN (founder screenshot); ListPanel w-full fix pushed, live check baaki.
 - 23 Oct 09:15 App pull-to-refresh (PullRefresh.tsx, data-only, no reload). Live phone check baaki (founder).
+- 23 Oct 09:40 MOBILE-CONTRACT.md + Text size (lib/text-size.ts, Appearance) + touch scrollbar + pull-refresh pinch guard. Phone live check baaki.
