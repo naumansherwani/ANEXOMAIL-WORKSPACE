@@ -879,3 +879,15 @@ Settings -> Phone calendar -> "No app" -> Create link ("Google Calendar test") -
 
 ### Checkpoint 23 Oct 13:00 PKT — CALENDAR HISAAB: 11/13 GREEN
 Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-ROADMAP.md updated: #6 CalDAV GREEN (A server-live + B Google-link LIVE). Baaqi 2: #7 Google (founder ki Google Cloud verification chahiye — maine kaam nahi shuru kiya), #8 Rooms (ab shuru: SQL E82 -> Rust -> Web). Chhote: LCP 2.6s (T3/T4), INP, E55 30 Oct se pehle, A ka asli-app test (F-Droid DAVx5 ya iPhone).
+
+## CHECKPOINT 23 Oct — #8 ROOMS (SQL tayar, local proof PASS)
+- Design: room = pseudo-attendee `room-<12hex>@rooms.anexomail.com`; booking = attendee insert; conflict engine (calendar_busy) bina badle rooms dekhta hai. Race-safe: advisory lock per room.
+- Files: sql/E82_calendar_rooms.sql (idempotent, 2 runs OK), sql/CHECK_E82.sql, sql/proofs/E82_proof.sql (ALL PASS + mutation test pakda gaya).
+- Procs: calendar_room_create/list/archive/state/book/release/schedule (service_role only). Privacy: schedule mein sirf waqt+organiser.
+- BAAKI (#8): Rust procs in dav/cal glue + invite-skip for @rooms.anexomail.com, Web settings manager + event composer picker, tests. E82 abhi server par DEPLOY NAHI hui.
+- #7 Google sync abhi bhi Nauman ki Google Cloud verification par blocked.
+
+## CHECKPOINT 23 Oct 14:30 — #8 ROOMS code POORA (deploy baaki)
+- SQL E82 + CHECK_E82 (6 t) + proof (mutation pakda). Rust: rooms_core.rs (4 tests) + rooms_glue.rs (7 procs `calendar.rooms.*`), cal_glue invite-skip `@rooms.anexomail.com`, installer mein `rooms` module. Web: lib/rooms.ts (+2 tests), RoomsSettings (CalSettings mein), EventRoom (EventDetail mein). tsc saaf.
+- Nauman ko deploy: SQL -> Rust -> restart -> Web (founder-commands.md 14:30). Deploy ke baad live test: room banao, do meeting overlap mein book karke busy dekhna.
+- Calendar roadmap: #8 code-complete, live test baaki. #7 Google sync Nauman ki Google Cloud verification par blocked.

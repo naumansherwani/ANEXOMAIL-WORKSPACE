@@ -13,7 +13,7 @@ Rule: "GREEN" = founder ka server output + live check. Is file ko har calendar s
 | 7 | Google Calendar sync (OAuth, watch+sync token, loop-guard) | Shuru nahi. FOUNDER: Google Cloud verification application abhi shuru kare |
 | 9 | Outcome colours (event par red→yellow→green, user ka khud ka Achieved tap; line hamesha red) | **GREEN 22 Oct 10:15 (Chrome live: Aim save, Achieved + hara dot, reload ke baad bacha, Reopen, Aim removed — guests ko mail nahi gayi)**. Pehle CODE READY 10:30: SQL E63_event_goal (+CHECK_E63, proofs/E63_proof.sql 14/14 sandbox) · Rust cal_core clean_goal/goal_state_ok/goal_tone (41 tests) + cal_glue meta.set `goal`,`goal_state` · Web lib/goal.ts (+test), EventDetail OutcomeEditor, dot on TimeGrid + month list. Server install + live check baaki. Design: CALENDAR-BLUEPRINT §4 |
 | 10 | History search (Cmd+K, saalon purani, FTS+trigram, org wall) | **CODE READY 22 Oct 20:55**: SQL E64 (+CHECK_E64, proofs 32/32; 60k meetings mein rare shabd 9-21 ms, sab-matching shabd 1.4 s) · Rust cal `calendar.history` (42 core tests) · Web lib/history.ts + HistoryResults (/app/search) + calendar deep link ?date=&event=. Server install + live check baaki |
-| 8 | Rooms / resources (pseudo-attendee, wohi conflict engine) | Shuru nahi |
+| 8 | Rooms / resources (pseudo-attendee, wohi conflict engine) | CODE POORA 23 Oct 14:30 (E82 + Rust + Web, proof PASS) — deploy + live test baaki |
 
 ## Spec ke faislay (founder ko jawab, line by line)
 - Google sync/CalDAV: practical. Webhook sirf "kuch badla" bolta hai, data sync token se; watch channel renew; do-taraf loop guard; "instant" = kuch seconds. Google verification asli rukawat (bina uske warning + 100 users). Android mein CalDAV built-in nahi (DAVx5). "Zero-copy", "Tokio main thread" = dawa nahi.

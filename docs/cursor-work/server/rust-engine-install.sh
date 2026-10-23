@@ -7,6 +7,7 @@
 #   cal    -> server/rust/cal_core.rs    + cal_glue.rs     (invitations, RSVP, find-a-time)       [pehle E31 SQL chalayen]
 #   book   -> server/rust/book_core.rs   + book_glue.rs    (Booking page /book/<handle>: slots, book, cancel/reschedule, mails)  [pehle E59 SQL; cal ke saath]
 #   ics    -> server/rust/ics_core.rs + ics_glue.rs (cal_core.rs saath) (bahar ka calendar: ICS subscribe, SIRF padhne ke liye — SSRF-safe fetch, `calendar.sub.*`)  [pehle E73 SQL]
+#   rooms   -> server/rust/rooms_core.rs + rooms_glue.rs (meeting rooms: `calendar.rooms.*`; room = pseudo-attendee @rooms.anexomail.com)  [pehle E82 SQL]
 #   calfile -> server/rust/calfile_core.rs + calfile_glue.rs (meeting par files: `calendar.files.list|attach|remove`; bytes mail wale attach pipeline se — upload /file/attach, download /file/attach/get)  [pehle E74 SQL; E48 + attach module pehle se]
 #   overlap-> server/rust/overlap_core.rs + overlap_glue.rs (Overlap Matrix `calendar.overlap`: team ka green/amber/red waqt)  [pehle E62 SQL; cal ke saath]
 #   people -> server/rust/people_core.rs + people_glue.rs  (People / Leads import, move-to-people) [koi nayi SQL nahi]
@@ -40,7 +41,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile people team locale device dnsauth security export attach evidence dav b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -90,6 +91,8 @@ CFG={
  "ics":    {"public": False, "label": "ics-subscribe", "procs": ['"calendar.sub.add"','"calendar.sub.list"','"calendar.sub.update"','"calendar.sub.remove"','"calendar.sub.refresh"','"calendar.sub.events"']},
  # calfile (#5): meeting par files. calendar.files.list/attach/remove. Upload/download mail wale attach routes (/file/attach, /file/attach/get). SQL E74 PEHLE (E48 ke baad).
  "calfile": {"public": False, "label": "calfile",   "procs": ['"calendar.files.list"','"calendar.files.attach"','"calendar.files.remove"']},
+ # rooms (#8): meeting rooms/resources. calendar.rooms.list|create|archive|state|book|release|schedule. SQL E82 PEHLE (E31 ke baad). Room address (@rooms.anexomail.com) par invite mail kabhi nahi (cal_glue skip).
+ "rooms":  {"public": False, "label": "rooms",     "procs": ['"calendar.rooms.list"','"calendar.rooms.create"','"calendar.rooms.archive"','"calendar.rooms.state"','"calendar.rooms.book"','"calendar.rooms.release"','"calendar.rooms.schedule"']},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},

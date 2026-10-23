@@ -4,6 +4,7 @@ import { CalendarDays, Download, ListChecks, Repeat, Sparkles } from "lucide-rea
 
 import { CostMeter, TimeZoneTruthBar, ConflictChip, apiHref } from "@/components/app/calendar/Bits";
 import { EventFiles } from "@/components/app/calendar/EventFiles";
+import { EventRoom } from "@/components/app/calendar/EventRoom";
 import { Guests } from "@/components/app/calendar/Guests";
 import { NoteDoc } from "@/components/app/work/NoteDoc";
 import { NotWired } from "@/components/app/dashboard/DashboardCard";
@@ -114,6 +115,8 @@ export function EventDetail({ id }: { id: string }) {
           </Link>
         )}
       </section>
+
+      <EventRoom eventId={event.id} from={event.starts_at} to={event.ends_at} isOrganiser />
 
       <EventFiles eventId={event.id} />
 

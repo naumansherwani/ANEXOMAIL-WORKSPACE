@@ -466,3 +466,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 23 Oct: DAV/feed load() paginated (sb_all, 1000/page) + chunked in.() + HashMap — 2000/1000 cap khatam. Dobara limit=2000 mat lagao. Deploy GREEN (SQL E81, Rust, Caddy log_skip, Web) founder ne 10:43 tak chalaya.
 
 - 23 Oct: CalDAV B (Calendar link) LIVE GREEN: Google ne link kabool kiya, meetings dikhe. Dobara test/banana nahi.
+- E82 rooms SQL written+proved locally (not deployed)
+- Calendar #8 Rooms: E82 + Rust rooms module + Web UI code complete (23 Oct 14:30); deploy + live test baaki

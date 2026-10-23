@@ -914,3 +914,11 @@ Founder: "2000 wali had user ka masla nahi, premium experience do". Pehle `limit
 
 ## 23 Oct 12:55 — Calendar link LIVE GREEN
 Google Calendar mein "ANEXOMAIL" jud gayi, meetings dikhe. Phone par: Google Calendar app (wahi Google account) -> menu -> Settings -> ANEXOMAIL on. Koi naya server command nahi.
+
+## 23 Oct 14:30 — Calendar #8 ROOMS (meeting room / resource) — SQL -> Rust -> Rust restart -> Web
+Room ek pseudo-guest hai (`room-xxxx@rooms.anexomail.com`); book karne se meeting mein judta hai, aur wohi conflict engine dusri booking `room_busy` se rok deta hai (race-safe, advisory lock). Rooms ko KABHI mail nahi jati. Banana/hatana sirf owner/admin; book/release sirf meeting ka organiser. Room ki schedule mein sirf waqt + organiser (title nahi).
+1. SQL (E82, CHECK_E82 khud, 6 t): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+2. Rust (rooms module + invite skip; 4 tests): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
+Test: Calendar -> "⋯" -> Calendar settings -> "Rooms & resources" -> naam likh kar Add. Phir koi meeting kholo -> "Room" section -> Book. Dusri overlapping meeting mein wohi room "Busy" dikhna chahiye.

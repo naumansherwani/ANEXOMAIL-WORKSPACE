@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { OutsideCalendars } from "@/components/app/calendar/OutsideCalendars";
 import { PhoneCalendar } from "@/components/app/calendar/PhoneCalendar";
+import { RoomsSettings } from "@/components/app/calendar/RoomsSettings";
 import { ClockFormatToggle } from "@/components/app/calendar/TimeBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -419,6 +420,8 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             </ul>
           )}
         </section>
+
+        <RoomsSettings />
 
         <OutsideCalendars />
 

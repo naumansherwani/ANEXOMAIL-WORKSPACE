@@ -81,7 +81,7 @@ src/lib/calendar.ts c084632a92aa9bb5
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
 src/components/app/calendar/NewMeeting.tsx 9928510bcd696e13
-src/components/app/calendar/EventDetail.tsx 88c21fce64247f8f
+src/components/app/calendar/EventDetail.tsx 6029d8e49483c294
 src/components/app/calendar/Guests.tsx 8161b0338fb2fa97
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
 src/routes/rsvp.tsx 7c4c1ddc743efdc4
@@ -118,7 +118,7 @@ src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 93c2da143a18750b
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs e3962dbb682fe95c
-server/rust/cal_glue.rs 814a88cd63268e19
+server/rust/cal_glue.rs 1c10046917d2bdc5
 AGENTS.md 5436bff91a95fa12
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md ed38dab906c9117e
+docs/cursor-work/founder/founder-commands.md ce0de12e1f8ceb5e
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh 3947f2e600aa75ad
+docs/cursor-work/server/rust-engine-install.sh b19dc1eff7001f20
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md b45c680dc100d4c5
+docs/cursor-work/DONE-DO-NOT-REPEAT.md ced73f2432c91845
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 2d6246991a941e8b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 34ce90e53a9d7b13
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -368,7 +368,7 @@ docs/cursor-work/sql/CHECK_E57.sql 96c311bd99b4fef8
 docs/cursor-work/sql/E57_ui_pref.sql 9283cdb782f193e0
 docs/cursor-work/sql/CHECK_E58.sql c4e837a0e0d5051e
 docs/cursor-work/sql/E58_calendar_prefs_reminders.sql 506434cbe8caca1d
-src/components/app/calendar/CalSettings.tsx 20b0908bbe50306f
+src/components/app/calendar/CalSettings.tsx eb5cbd6986236968
 src/components/app/calendar/ReminderWatcher.tsx 529aba77b28ee705
 src/lib/calprefs.ts 90b206e28e9fca9e
 src/components/site/AuthCinema.tsx e3dc4f84d143f5d7
@@ -385,9 +385,9 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 39ed82b995e3b9fe
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 83fae7def74f6072
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
-docs/cursor-work/CALENDAR-ROADMAP.md e9d0e696717dafe5
+docs/cursor-work/CALENDAR-ROADMAP.md 6797921fcd025cb9
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
 docs/cursor-work/MAIL-OUTLOOK-MAP.md 5c79ac8c9621ea3d
 src/components/app/calendar/WorldClocks.tsx 344848d09b836236
@@ -632,3 +632,7 @@ docs/cursor-work/server/rust-harness/dav-feed-harness.sh ccdd08191c036642
 docs/cursor-work/server/rust-harness/dav-feed-main.rs b7e662039f1c3438
 docs/cursor-work/server/rust-harness/dav-feed.Cargo.toml 85a1ef66f277038d
 src/components/app/calendar/PhoneFeed.tsx 5dff150f9931778d
+src/components/app/calendar/EventRoom.tsx c45c126be8138fdb
+src/components/app/calendar/RoomsSettings.tsx 26a8ae8bca556f4c
+src/lib/rooms.test.ts ae703710c4b90666
+src/lib/rooms.ts 67a27b9b2462a6b4

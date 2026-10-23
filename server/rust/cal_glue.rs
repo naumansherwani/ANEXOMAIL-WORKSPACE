@@ -442,7 +442,8 @@ async fn send_to(
 
     for row in rows {
         let addr = st(row, "address").to_lowercase();
-        if addr == me.email || addr.is_empty() {
+        // E82: room/resource (rooms.anexomail.com) kisi ka inbox nahi — un par invite mail KABHI nahi jati
+        if addr == me.email || addr.is_empty() || addr.ends_with("@rooms.anexomail.com") {
             continue;
         }
         if !only.is_empty() && !only.contains(&addr) {
