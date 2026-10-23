@@ -804,3 +804,14 @@ Live check: /app/calendar > toolbar ka globe icon > popover mein globe (din/raat
 4. Brain: nahi (server/*.ts nahi badla).
 5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
 Live check: /app/calendar > globe icon > popover: "Clock & connection" card (in sync ± ms, typical/slowest ms, HTTP/3), "Travelling" > Add a trip (destination, leaves, arrives) > globe par dashed line + pink pin, "In transit" par globe button par plane icon, reminder pop-ups ruk jate hain, mail nahi.
+
+## W5 (23 Oct 2026) — Billing deadline card + Market hours chip (default OFF). Commit: neeche git log. Brain NAHI chahiye.
+Rule 46 tarteeb: SQL -> Rust -> Rust restart+health -> Web -> Ctrl+Shift+R.
+1) SQL (E79 + CHECK_E79 4/4):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+2) Rust install (locale: clean_market):
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3) Rust restart + health (200):
+`pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+4) Web:
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

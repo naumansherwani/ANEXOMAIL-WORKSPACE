@@ -59,6 +59,7 @@ export function reminderText(min: number): string {
 type Extra = {
   home?: Place | null;
   travel?: Trip | null;
+  market?: boolean;
   calendars?: CalendarDef[];
   work_hours?: WorkHours;
   ooo?: OooPeriod[];
@@ -77,6 +78,8 @@ export type CalPrefs = {
   home: Place | null;
   /** Trip the person typed in (World clock W4) — null when none. Never a position, only a destination and two times. */
   travel: Trip | null;
+  /** Show market open/closed chips next to pinned cities. Off until the person turns it on. */
+  market: boolean;
   loaded: boolean;
 };
 
@@ -105,6 +108,7 @@ export function useCalPrefs(): CalPrefs {
     clocks: Array.isArray(x.clocks) ? x.clocks.filter((z) => typeof z === "string") : [],
     home,
     travel: isTrip(x.travel) ? x.travel : null,
+    market: x.market === true,
     loaded: q.isSuccess || q.isError,
   };
 }

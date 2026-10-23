@@ -254,6 +254,14 @@ fn clean_calendars(v: &Value) -> Result<Value, String> {
     Ok(Value::Array(out))
 }
 
+/// `market` is a plain on/off switch (World clock W5 market chip). Anything that is not a boolean is refused — no exchange list, no price, nothing else is stored.
+fn clean_market(v: &Value) -> Result<Value, String> {
+    match v {
+        Value::Bool(_) => Ok(v.clone()),
+        _ => Err("market must be on or off".into()),
+    }
+}
+
 /// Merge a client patch into the stored `extra`. Unknown keys are refused, `null` removes a key, the result stays small.
 fn clean_extra(old: &Map<String, Value>, patch: &Map<String, Value>) -> Result<Map<String, Value>, String> {
     let mut out = old.clone();
@@ -269,6 +277,7 @@ fn clean_extra(old: &Map<String, Value>, patch: &Map<String, Value>) -> Result<M
             "clocks" => clean_clocks(v)?,
             "home" => clean_home(v)?,
             "travel" => clean_travel(v)?,
+            "market" => clean_market(v)?,
             _ => return Err(format!("unknown setting '{}'", clean_text(k, 24))),
         };
         out.insert(k.clone(), cleaned);
@@ -289,6 +298,17 @@ mod extra_tests {
 
     fn week(on: bool) -> Value {
         json!({ "days": (0..7).map(|_| json!({ "on": on, "start": "09:00", "end": "17:30" })).collect::<Vec<_>>(), "tz": "Asia/Karachi" })
+    }
+
+    #[test]
+    fn market_is_only_a_boolean() {
+        let on = clean_extra(&Map::new(), &obj(json!({ "market": true }))).unwrap();
+        assert_eq!(on.get("market"), Some(&json!(true)));
+        for bad in [json!("yes"), json!(1), json!({ "on": true }), json!([true])] {
+            assert!(clean_extra(&Map::new(), &obj(json!({ "market": bad }))).is_err());
+        }
+        let off = clean_extra(&on, &obj(json!({ "market": null }))).unwrap();
+        assert!(off.get("market").is_none(), "null removes the key");
     }
 
     #[test]

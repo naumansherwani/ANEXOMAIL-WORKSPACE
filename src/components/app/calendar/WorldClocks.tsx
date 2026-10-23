@@ -6,8 +6,10 @@ import { allZones, zoneLabel } from "@/lib/booking";
 import { useCalPrefs, useSaveCalPrefs } from "@/lib/calprefs";
 import { ClockHealth } from "@/components/app/calendar/ClockHealth";
 import type { GlobePin } from "@/components/app/calendar/GlobeView";
+import { BillingDeadline } from "@/components/app/calendar/BillingDeadline";
 import { TripCard } from "@/components/app/calendar/TripCard";
 import { placeForZone, searchPlaces } from "@/lib/places";
+import { exchangesForZone, marketLine, marketState } from "@/lib/markets";
 import { tripPhase } from "@/lib/travel";
 import { driftMatters, useClockHealth } from "@/lib/useClockHealth";
 import { cityOf, fmtTimeIn, useClockPref, zoneCity } from "@/lib/timeFormat";
@@ -289,6 +291,26 @@ export function WorldClocks({ className }: { className?: string }) {
                     <span className="ax-caption ml-1.5 text-muted-foreground">
                       {dayWord(now, z)}
                     </span>
+                    {prefs.market &&
+                      exchangesForZone(z).map((ex) => {
+                        const st = marketState(ex, now.getTime());
+                        return (
+                          <span
+                            key={ex.code}
+                            title={`${ex.name} · regular weekday hours · holidays and early closes are not checked`}
+                            className="ax-caption mt-0.5 flex items-center gap-1 text-muted-foreground"
+                          >
+                            <span
+                              aria-hidden="true"
+                              className={cn(
+                                "inline-block size-1.5 rounded-full",
+                                st.open ? "bg-emerald-400" : "bg-muted-foreground/50",
+                              )}
+                            />
+                            {marketLine(ex, st)}
+                          </span>
+                        );
+                      })}
                   </span>
                   <span className="tabular-nums">{fmtTimeIn(now, z)}</span>
                   <span className="ax-caption w-14 text-right text-muted-foreground">
@@ -352,7 +374,37 @@ export function WorldClocks({ className }: { className?: string }) {
             {save.isError && (
               <p className="ax-caption mt-2 text-danger">Could not save: {save.error.message}</p>
             )}
-            <TripCard here={here} className="mt-3" />
+            <button
+              type="button"
+              role="switch"
+              aria-checked={prefs.market}
+              onClick={() => save.mutate({ market: !prefs.market })}
+              className="ax-press ax-tap ax-focus mt-3 flex w-full items-center justify-between gap-3 rounded-md border border-border px-2.5 py-2 text-left text-[12px]"
+            >
+              <span className="min-w-0">
+                <span className="block font-semibold text-foreground">Show market hours</span>
+                <span className="block text-muted-foreground">
+                  Open or closed next to pinned New York, London, Frankfurt, Mumbai, Hong Kong or
+                  Tokyo. Regular weekday hours only; holidays are not checked.
+                </span>
+              </span>
+              <span
+                aria-hidden="true"
+                className={cn(
+                  "relative h-5 w-9 shrink-0 rounded-full transition-colors",
+                  prefs.market ? "bg-primary" : "bg-secondary",
+                )}
+              >
+                <span
+                  className={cn(
+                    "absolute top-0.5 size-4 rounded-full bg-background transition-all",
+                    prefs.market ? "left-[1.125rem]" : "left-0.5",
+                  )}
+                />
+              </span>
+            </button>
+            <BillingDeadline here={here} now={now} className="mt-2" />
+            <TripCard here={here} className="mt-2" />
             <ClockHealth className="mt-2" />
           </div>
         </PopoverContent>
