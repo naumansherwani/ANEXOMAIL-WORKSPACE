@@ -911,3 +911,6 @@ Founder: "2000 wali had user ka masla nahi, premium experience do". Pehle `limit
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 2. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 (SQL, Caddy, Web ka koi naya kaam nahi; 23 Oct 11:55 wale teeno aap ne chala diye — sab GREEN.)
+
+## 23 Oct 12:55 — Calendar link LIVE GREEN
+Google Calendar mein "ANEXOMAIL" jud gayi, meetings dikhe. Phone par: Google Calendar app (wahi Google account) -> menu -> Settings -> ANEXOMAIL on. Koi naya server command nahi.
