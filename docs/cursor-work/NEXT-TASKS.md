@@ -39,7 +39,7 @@ Dates: E55 grants-heal 30 Oct se pehle; Caddy cert 12 Nov se pehle. Phone 390/82
 | 2 | **W2 Focus Ring** (booked-meeting load ka SVG/CSS ring, sach-ghantay fatigue lines meeting slider mein) | docs/claude/WORLD-CLOCK-BLUEPRINT.md (founder decisions 08:40: Focus Ring, no Three.js) | Web (+Rust agar load endpoint chahiye) |
 | 3 | **#4c ICS subscribe** — GREEN LIVE 23 Oct 02:20 | CALENDAR-ROADMAP #4c | SQL -> Rust -> Web |
 | 4 | **#5 Event par files** — GREEN LIVE 23 Oct 03:15 | CALENDAR-ROADMAP #5 | SQL -> Rust -> Web |
-| 5 | **W3 globe** (benchmark-gated WASM) · **W4** latency/time-sync/travelling (opt-in, user-entered) · **W5** billing deadline banner, market chip (default OFF), Lahore alias | WORLD-CLOCK-BLUEPRINT W3–W5 | as needed |
+| 5 | **W3 globe (CODE READY 23 Oct)** (benchmark-gated WASM) · **W4** latency/time-sync/travelling (opt-in, user-entered) · **W5** billing deadline banner, market chip (default OFF), Lahore alias | WORLD-CLOCK-BLUEPRINT W3–W5 | as needed |
 | 6 | **#6 CalDAV (B7d)** | CALENDAR-ROADMAP #6 (app password 27 Oct se passkey, Caddy .well-known surgical) | |
 | 7 | **#7 Google sync** | founder ko pehle Google Cloud verification shuru karni hai | |
 | 8 | **#8 Rooms / resources** | CALENDAR-ROADMAP #8 | |

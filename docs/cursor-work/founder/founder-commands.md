@@ -791,3 +791,8 @@ Output: 13 hisse (#4a/#4b/#4c alag) — DEPLOYED ya NAHI, "DEPLOYED x/13", Rust 
 4. Brain: nahi.
 5. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
 Live check: ek workspace member ko do overlapping meetings mein guest banao, doosri meeting ka RSVP link kholo => amber chip "You already have another meeting at this time" + waqt (title nahi).
+
+## 23 Oct — W3 Globe (World clock popover mein day/night globe) — server par BAAQI (Rule 46: sirf Web)
+1. SQL: nahi. 2. Rust: nahi. 3. Brain: nahi.
+4. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6` phir Ctrl+Shift+R.
+Live check: /app/calendar > toolbar ka globe icon > popover mein globe (din/raat, pins, drag se ghoomta, "Face <city>" button).

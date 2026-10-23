@@ -1,19 +1,30 @@
 import { Globe, Plus, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useEffect, useMemo, useState } from "react";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { allZones, zoneLabel } from "@/lib/booking";
 import { useCalPrefs, useSaveCalPrefs } from "@/lib/calprefs";
+import { placeForZone } from "@/lib/places";
 import { cityOf, fmtTimeIn, useClockPref, zoneCity } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
 const MAX_CLOCKS = 6;
 
+/** Globe is a separate chunk: nothing is downloaded until the popover is opened (LCP/INP budget). */
+const GlobeView = lazy(() =>
+  import("@/components/app/calendar/GlobeView").then((m) => ({ default: m.GlobeView })),
+);
+
 /** "Today" / "Tomorrow" / "Yesterday" of zone `tz` compared with the viewer's own day. */
 function dayWord(now: Date, tz: string): string {
   const key = (z?: string) => {
     try {
-      return new Intl.DateTimeFormat("en-CA", { year: "numeric", month: "2-digit", day: "2-digit", ...(z ? { timeZone: z } : {}) }).format(now);
+      return new Intl.DateTimeFormat("en-CA", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        ...(z ? { timeZone: z } : {}),
+      }).format(now);
     } catch {
       return "";
     }
@@ -28,7 +39,15 @@ function dayWord(now: Date, tz: string): string {
 function offsetWord(now: Date, tz: string): string {
   const mins = (z?: string) => {
     try {
-      const p = new Intl.DateTimeFormat("en-US", { timeZone: z, hourCycle: "h23", hour: "2-digit", minute: "2-digit", year: "numeric", month: "2-digit", day: "2-digit" }).formatToParts(now);
+      const p = new Intl.DateTimeFormat("en-US", {
+        timeZone: z,
+        hourCycle: "h23",
+        hour: "2-digit",
+        minute: "2-digit",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      }).formatToParts(now);
       const g = (t: string) => Number(p.find((x) => x.type === t)?.value ?? 0);
       return Date.UTC(g("year"), g("month") - 1, g("day"), g("hour"), g("minute")) / 60000;
     } catch {
@@ -63,8 +82,23 @@ export function WorldClocks({ className }: { className?: string }) {
   const here = zoneCity().iana;
   const matches = useMemo(() => {
     const needle = q.trim().toLowerCase().replace(/\s+/g, "_");
-    return zones.filter((z) => z !== here && !pins.includes(z) && (!needle || z.toLowerCase().includes(needle))).slice(0, 40);
+    return zones
+      .filter(
+        (z) => z !== here && !pins.includes(z) && (!needle || z.toLowerCase().includes(needle)),
+      )
+      .slice(0, 40);
   }, [q, zones, pins, here]);
+
+  const globePins = useMemo(() => {
+    const out: { key: string; label: string; lat: number; lon: number; home?: boolean }[] = [];
+    const add = (z: string, isHome?: boolean) => {
+      const pl = placeForZone(z);
+      if (pl) out.push({ key: z, label: cityOf(z), lat: pl.lat, lon: pl.lon, home: isHome });
+    };
+    add(here, true);
+    pins.forEach((z) => add(z));
+    return out;
+  }, [pins, here]);
 
   const commit = (next: string[]) => save.mutate({ clocks: next });
   if (!now) return <span className="inline-block h-7 w-7" aria-hidden />;
@@ -90,12 +124,29 @@ export function WorldClocks({ className }: { className?: string }) {
             className="ax-press ax-focus ax-tap inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 text-muted-foreground"
           >
             <Globe className="size-3.5" aria-hidden="true" />
-            {pins.length > 0 && <span className="ml-1 text-[11px] font-semibold">{pins.length}</span>}
+            {pins.length > 0 && (
+              <span className="ml-1 text-[11px] font-semibold">{pins.length}</span>
+            )}
           </button>
         </PopoverTrigger>
         <PopoverContent align="end" className="w-[min(22rem,calc(100vw-2rem))] p-3">
           <p className="text-[12px] font-semibold text-foreground">World clocks</p>
-          <p className="ax-caption text-muted-foreground">Pin up to {MAX_CLOCKS} cities. They follow you on every device.</p>
+          <p className="ax-caption text-muted-foreground">
+            Pin up to {MAX_CLOCKS} cities. They follow you on every device.
+          </p>
+
+          {globePins.length > 0 && (
+            <Suspense
+              fallback={
+                <div
+                  className="mx-auto mt-2 aspect-square w-full max-w-[18rem] animate-pulse rounded-full bg-secondary/60"
+                  aria-hidden="true"
+                />
+              }
+            >
+              <GlobeView className="mt-2" pins={globePins} now={now} />
+            </Suspense>
+          )}
 
           <ul className="mt-2 divide-y divide-border rounded-md border border-border">
             <li className="flex items-center gap-2 px-2.5 py-1.5 text-[13px]">
@@ -110,7 +161,9 @@ export function WorldClocks({ className }: { className?: string }) {
                   <span className="ax-caption ml-1.5 text-muted-foreground">{dayWord(now, z)}</span>
                 </span>
                 <span className="tabular-nums">{fmtTimeIn(now, z)}</span>
-                <span className="ax-caption w-14 text-right text-muted-foreground">{offsetWord(now, z)}</span>
+                <span className="ax-caption w-14 text-right text-muted-foreground">
+                  {offsetWord(now, z)}
+                </span>
                 <button
                   type="button"
                   aria-label={`Remove ${cityOf(z)}`}
@@ -133,7 +186,9 @@ export function WorldClocks({ className }: { className?: string }) {
                 className="w-full rounded-md border border-border bg-background px-2.5 py-1.5 text-[13px] outline-none focus-visible:ring-2 focus-visible:ring-ring"
               />
               <ul className="mt-1 max-h-44 overflow-y-auto rounded-md border border-border">
-                {matches.length === 0 && <li className="px-2.5 py-2 text-[12px] text-muted-foreground">No match.</li>}
+                {matches.length === 0 && (
+                  <li className="px-2.5 py-2 text-[12px] text-muted-foreground">No match.</li>
+                )}
                 {matches.map((z) => (
                   <li key={z}>
                     <button
@@ -144,18 +199,27 @@ export function WorldClocks({ className }: { className?: string }) {
                       }}
                       className="ax-press flex w-full items-center gap-2 px-2.5 py-1.5 text-left text-[13px] hover:bg-secondary"
                     >
-                      <Plus className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" />
+                      <Plus
+                        className="size-3.5 shrink-0 text-muted-foreground"
+                        aria-hidden="true"
+                      />
                       <span className="min-w-0 flex-1 truncate">{zoneLabel(z)}</span>
-                      <span className="tabular-nums text-muted-foreground">{fmtTimeIn(now, z)}</span>
+                      <span className="tabular-nums text-muted-foreground">
+                        {fmtTimeIn(now, z)}
+                      </span>
                     </button>
                   </li>
                 ))}
               </ul>
             </div>
           ) : (
-            <p className="ax-caption mt-2 text-muted-foreground">Six is the limit — remove one to add another.</p>
+            <p className="ax-caption mt-2 text-muted-foreground">
+              Six is the limit — remove one to add another.
+            </p>
           )}
-          {save.isError && <p className="ax-caption mt-2 text-danger">Could not save: {save.error.message}</p>}
+          {save.isError && (
+            <p className="ax-caption mt-2 text-danger">Could not save: {save.error.message}</p>
+          )}
         </PopoverContent>
       </Popover>
     </div>
