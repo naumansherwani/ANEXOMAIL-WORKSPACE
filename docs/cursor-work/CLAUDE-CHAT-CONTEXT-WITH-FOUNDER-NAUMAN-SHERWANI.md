@@ -870,3 +870,6 @@ SQL E81 + Rust feed + Web PhoneFeed (tabs "No app (Google Calendar)" default / "
 
 ### Checkpoint 23 Oct 12:20 PKT — B DEPLOY GREEN + cap fix
 Founder ne SQL E81 (CHECK_E81 6 OK, E65 OK), Rust (dav 17 passed, build OK, restart, /rpc/health 200), Caddy (UPGRADE, log_skip, apply, 301/DAV/401 sahi), Web (server==repo differ=0) — SAB GREEN. Ab: load() paging fix (premium: har user ke saare meetings) push, founder ko sirf Rust + restart. Agla: founder Google Calendar mein link jodkar test (Create link -> Add to Google Calendar) aur batae; phir C2 / #7 / #8. Khuli baat: Google khud 12–24h mein refresh karta hai (hamare bas mein nahi); jaldi chahiye to A (app).
+
+### Checkpoint 23 Oct 12:35 PKT — paging-fix Rust DEPLOY GREEN; ab Chrome live test
+Founder ne paging-fix wala Rust (dav 17 passed, build OK, restart 126, /rpc/health 200) chala diya. SQL E81, Caddy log_skip, Web pehle se green. Ab main (CEO) Chrome mein founder ke logged-in session par: Settings -> Phone calendar -> "No app" -> Create link -> link ka asli .ics fetch check -> (founder ki ijazat se) Google Calendar "From URL". Link ka matn repo/chat mein KABHI nahi (secret). Agla: natija; phir C2 / #7 / #8.
