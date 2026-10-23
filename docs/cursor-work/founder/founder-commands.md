@@ -846,3 +846,7 @@ Founder ka screenshot: Month grid ka SUN column aur "Today"/"24h"/"Load" kat rah
 ## 23 Oct 08:55 — Mail kholne par "Something went wrong" (refresh par khulti) — SIRF Web
 Is Pro account par 5/5 threads theek khulte hain (390 px par bhi, console saaf) — aap ke account ka asli error abhi nahi mila. Pakka kamzor hissa band kiya: thread page `to/cc/attachments` par seedha `.length` lagata tha; ab `normalizeThread` (lib/mail.ts) khali/null lists ko [] banata hai, aur waqti ghalti (401/5xx/network) par 2 baar khud retry. Agar ab bhi aaye: screenshot + kaun si mail (subject) + kaun sa account.
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir Ctrl+Shift+R.
+
+## 23 Oct 09:00 — Calendar PHONE redesign (Classic): toolbar 4 patti -> compact — SIRF Web
+Founder: "mobile pe saans nahi aa raha". Ab phone (<640 px): header mein sirf "⋯" menu (Layout/Settings/Booking/Import/Export + Clock 12h/24h + Availability/Load, har button 44 px) aur "+ Meeting"; clock row mein sirf waqt + globe; nav row ‹ › mahina Today (44 px); Month/Week/Day poori chaudai ka 3-hissa switch (44 px). sm se upar pehle jaisa.
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`  phir phone par page dobara kholein (Ctrl+Shift+R / pull-to-refresh).

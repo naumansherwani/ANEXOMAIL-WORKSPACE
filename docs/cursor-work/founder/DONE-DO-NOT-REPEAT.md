@@ -11,3 +11,4 @@
 - 23 Oct 08:30 CalDAV Caddy DAV header re-apply GREEN (OPTIONS dav: 1, calendar-access). Server taraf mukammal; baaki phone test.
 - 23 Oct 08:40 Classic calendar phone overflow fix (rows wrap, Panel overflow-x-hidden). Live phone check baaki (founder).
 - 23 Oct 08:55 Mail-open crash hardening: normalizeThread + retry (useThread). Asli error founder ke account se baaki.
+- 23 Oct 09:00 Calendar phone toolbar redesign (⋯ menu, 44px targets, full-width view switch). Live phone check baaki (founder screenshot).

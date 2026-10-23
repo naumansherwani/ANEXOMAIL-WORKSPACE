@@ -19,6 +19,7 @@ import {
   Clock,
   Download,
   MapPin,
+  MoreHorizontal,
   Plus,
   Repeat,
   Users,
@@ -42,6 +43,7 @@ import { DetailPanel, EmptyState, ListPanel } from "@/components/app/Panel";
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   clockRange,
   exportPath,
@@ -547,19 +549,81 @@ export function CalendarClassic() {
         mobileHidden={Boolean(selected)}
         action={
           <>
-            <LayoutToggle />
-            <CalSettingsButton />
-            <BookingButton />
-            <IcsPickButton onLoaded={setIcsPlan} />
-            <a
-              href={apiHref(exportPath("ics"))}
-              aria-label="Export your calendar (.ics)"
-              className="ax-press ax-focus ax-tap ax-caption inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 font-semibold text-muted-foreground"
-              title="Export .ics — no lock-in"
+            {/* Phone: ek "⋯" menu (har button 44 px); sm se upar purani line */}
+            <div className="hidden items-center gap-1 sm:flex">
+              <LayoutToggle />
+              <CalSettingsButton />
+              <BookingButton />
+              <IcsPickButton onLoaded={setIcsPlan} />
+              <a
+                href={apiHref(exportPath("ics"))}
+                aria-label="Export your calendar (.ics)"
+                className="ax-press ax-focus ax-tap ax-caption inline-flex items-center justify-center rounded-md border border-border px-1.5 py-1 font-semibold text-muted-foreground"
+                title="Export .ics — no lock-in"
+              >
+                <Download className="size-3.5" aria-hidden="true" />
+              </a>
+            </div>
+            <div className="sm:hidden">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="More calendar options"
+                    className="ax-press ax-focus ax-tap inline-flex size-11 items-center justify-center rounded-md border border-border text-muted-foreground"
+                  >
+                    <MoreHorizontal className="size-5" aria-hidden="true" />
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="end"
+                  collisionPadding={8}
+                  className="w-[min(20rem,calc(100vw-1rem))] space-y-3 p-3"
+                >
+                  <div className="flex flex-wrap items-center gap-2 [&_button]:min-h-11 [&_button]:min-w-11 [&_a]:min-h-11 [&_a]:min-w-11">
+                    <LayoutToggle />
+                    <CalSettingsButton />
+                    <BookingButton />
+                    <IcsPickButton onLoaded={setIcsPlan} />
+                    <a
+                      href={apiHref(exportPath("ics"))}
+                      aria-label="Export your calendar (.ics)"
+                      className="ax-press ax-focus ax-caption inline-flex items-center justify-center rounded-md border border-border px-2 font-semibold text-muted-foreground"
+                    >
+                      <Download className="size-4" aria-hidden="true" />
+                    </a>
+                  </div>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="ax-caption text-muted-foreground">{t("Clock")}</span>
+                    <ClockFormatToggle className="[&_button]:min-h-10 [&_button]:px-3" />
+                  </div>
+                  <div className="flex gap-2">
+                    {(["availability", "load"] as const).map((r) => (
+                      <button
+                        key={r}
+                        type="button"
+                        onClick={() => setRail(rail === r ? "agenda" : r)}
+                        aria-pressed={rail === r}
+                        className={cn(
+                          "ax-press ax-caption min-h-11 flex-1 rounded-md border font-semibold",
+                          rail === r
+                            ? "border-cyan-accent/50 bg-secondary text-foreground"
+                            : "border-border text-muted-foreground",
+                        )}
+                      >
+                        {r === "availability" ? t("Availability") : t("Load")}
+                      </button>
+                    ))}
+                  </div>
+                </PopoverContent>
+              </Popover>
+            </div>
+            <Button
+              size="sm"
+              variant="outline"
+              className="ax-tap"
+              onClick={() => setComposing((v) => !v)}
             >
-              <Download className="size-3.5" aria-hidden="true" />
-            </a>
-            <Button size="sm" variant="outline" onClick={() => setComposing((v) => !v)}>
               <Plus className="size-3.5" />
               {t("Meeting")}
             </Button>
@@ -581,7 +645,7 @@ export function CalendarClassic() {
         <div className="flex min-w-0 flex-wrap items-center gap-2 border-b border-border px-ax-3 py-ax-2">
           <LiveClock />
           <WorldClocks />
-          <ClockFormatToggle className="ml-auto" />
+          <ClockFormatToggle className="ml-auto hidden sm:inline-flex" />
         </div>
 
         {/* Nav + label */}
@@ -589,7 +653,7 @@ export function CalendarClassic() {
           <button
             type="button"
             onClick={() => navigate(-1)}
-            className="ax-press ax-hit rounded-md border border-border p-1 text-muted-foreground"
+            className="ax-press ax-tap grid size-11 place-items-center rounded-md border border-border text-muted-foreground sm:size-auto sm:p-1"
             aria-label="Previous"
           >
             <ChevronLeft className="size-3.5" />
@@ -597,12 +661,12 @@ export function CalendarClassic() {
           <button
             type="button"
             onClick={() => navigate(1)}
-            className="ax-press ax-hit rounded-md border border-border p-1 text-muted-foreground"
+            className="ax-press ax-tap grid size-11 place-items-center rounded-md border border-border text-muted-foreground sm:size-auto sm:p-1"
             aria-label="Next"
           >
             <ChevronRight className="size-3.5" />
           </button>
-          <span className="ax-caption ml-1 min-w-[6rem] flex-1 truncate font-semibold text-foreground">
+          <span className="ml-1 min-w-[6rem] flex-1 truncate text-[15px] font-bold text-foreground sm:text-xs sm:font-semibold">
             {headerLabel()}
           </span>
           <button
@@ -611,21 +675,21 @@ export function CalendarClassic() {
               setAnchor(new Date());
               setSelected("");
             }}
-            className="ax-press ax-hit ax-caption shrink-0 rounded-md border border-border px-1.5 py-0.5 text-muted-foreground"
+            className="ax-press ax-tap ax-caption min-h-11 shrink-0 rounded-md border border-border px-3 font-semibold text-muted-foreground sm:min-h-0 sm:px-1.5 sm:py-0.5"
           >
             {t("Today")}
           </button>
         </div>
 
         {/* View switcher — wraps: a bigger phone font must never make the page wider than the screen */}
-        <div className="flex min-w-0 flex-wrap items-center gap-x-1 gap-y-1.5 border-b border-border px-ax-3 py-ax-2">
+        <div className="grid min-w-0 grid-cols-3 gap-1.5 border-b border-border px-ax-3 py-ax-2 sm:flex sm:flex-wrap sm:items-center sm:gap-x-1 sm:gap-y-1.5">
           {(["month", "week", "day"] as const).map((v) => (
             <button
               key={v}
               type="button"
               onClick={() => setView(v)}
               className={cn(
-                "ax-press ax-hit ax-caption rounded-full border px-2.5 py-1 font-semibold capitalize transition-colors",
+                "ax-press ax-tap ax-caption min-h-11 rounded-full border px-2.5 py-1 font-semibold capitalize transition-colors sm:min-h-0",
                 view === v
                   ? "border-cyan-accent/50 bg-secondary text-foreground"
                   : "border-border text-muted-foreground",
@@ -634,7 +698,7 @@ export function CalendarClassic() {
               {t(v.charAt(0).toUpperCase() + v.slice(1))}
             </button>
           ))}
-          <div className="ml-auto flex flex-wrap items-center gap-1">
+          <div className="ml-auto hidden flex-wrap items-center gap-1 sm:flex">
             {(["availability", "load"] as const).map((r) => (
               <button
                 key={r}
