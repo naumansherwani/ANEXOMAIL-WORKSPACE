@@ -14,8 +14,14 @@ T="$(mktemp)"; trap 'rm -f "$T" /tmp/caddy-validate.$$' EXIT
 python3 -I - "$CF" "$T" <<'PY'
 import re, sys
 s = open(sys.argv[1]).read()
-if re.search(r'^[ \t]*handle[ \t]+(@\w+|/dav)', s, re.M) and ("/dav" in s and "reverse_proxy 127.0.0.1:3200" in s and re.search(r'/dav[ \t*]', s)):
-    print("SAME"); open(sys.argv[2], "w").write(s); sys.exit(0)
+mb = re.search(r'^([ \t]*)handle @caldav \{\n(?:[^\n]*\n)*?\1\}\n', s, re.M)
+if mb:
+    if "header DAV" in mb.group(0):
+        print("SAME"); open(sys.argv[2], "w").write(s); sys.exit(0)
+    ind = mb.group(1)
+    blk = (f"{ind}handle @caldav {{\n{ind}\theader DAV \"1, calendar-access\"\n{ind}\theader Allow \"OPTIONS, PROPFIND, REPORT, GET, HEAD\"\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n")
+    open(sys.argv[2], "w").write(s[:mb.start()] + blk + s[mb.end():])
+    print("UPGRADE"); sys.exit(0)
 m = re.search(r'^([ \t]*)handle[ \t]+/rpc/\*[ \t]*\{', s, re.M)
 if not m:
     print("STOP: `handle /rpc/*` anchor nahi mila — haath se dekhna padega"); sys.exit(4)
@@ -28,13 +34,13 @@ ind = m.group(1)
 ins = (f"{ind}# CalDAV (C1) — repo-managed: docs/cursor-work/server/caddy-caldav.sh\n"
        f"{ind}handle /.well-known/caldav {{\n{ind}\tredir * /dav/ 301\n{ind}}}\n"
        f"{ind}@caldav path /dav /dav/*\n"
-       f"{ind}handle @caldav {{\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n\n")
+       f"{ind}handle @caldav {{\n{ind}\theader DAV \"1, calendar-access\"\n{ind}\theader Allow \"OPTIONS, PROPFIND, REPORT, GET, HEAD\"\n{ind}\treverse_proxy 127.0.0.1:3200\n{ind}}}\n\n")
 open(sys.argv[2], "w").write(s[:m.start()] + ins + s[m.start():])
 print("INSERT")
 PY
 rc=$?; [ $rc -eq 0 ] || exit 3
 if cmp -s "$CF" "$T"; then echo "Pehle se laga hai (CalDAV handles Caddyfile mein maujood). Kuch nahi badla."; exit 0; fi
-echo "==> PLAN: yeh lines judengi (handle /rpc/* se pehle):"; diff <(cat "$CF") "$T" | grep '^>' | sed 's/^> /    + /'
+echo "==> PLAN (farq):"; diff <(cat "$CF") "$T" | sed 's/^/    /'
 # pehle ASLI Caddyfile ka validate (baseline): wo khud fail ho to qasoor meri insert ka nahi
 if caddy validate --config "$CF" >/tmp/caddy-validate-base.$$ 2>&1; then BASE=ok; else BASE=fail; fi
 echo "==> asli Caddyfile validate: $BASE"
