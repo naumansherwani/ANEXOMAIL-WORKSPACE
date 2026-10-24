@@ -486,3 +486,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 24 Oct 17:05 TECH AUDIT doc written; Pro server gates (snooze/schedule/templates) Rust+Bun; deploy baaki
 - 24 Oct 17:30 M1: thread labels/status/move/assign/snooze Rust primary (client+Bun validation); deploy baaki
 - 24 Oct 17:50 MIGRATION-PHASES-24OCT.md written (11 phases, lanes A/B/C); code deploy M1 baaki
+- 24 Oct 18:00 M1 deployed by founder (Rust+restart+Web); live test pending

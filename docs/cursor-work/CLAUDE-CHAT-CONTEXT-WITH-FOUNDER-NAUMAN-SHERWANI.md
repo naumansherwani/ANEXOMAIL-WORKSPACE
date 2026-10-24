@@ -988,3 +988,6 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - PEHLE ~510 Bun endpoints latest technology par (jis kaam ke liye jo tech: axum+/rpc request/response, tokio workers/fan-out, WebTransport live push), PHIR packages GREEN: Pro -> Business -> Business Pro. Pro abhi GREEN nahi.
 - Family accounts: lifetime plan mila hai par product mein REAL BUYER jaisa (wahi features/gates/limits, resolve_plan se). Code mein koi special-case nahi; tests mein har plan ka family account.
 - Koi mixed code nahi. Pull command har batch ke saath technology ke hisaab se (SQL / Rust+restart / Web).
+
+### 24 Oct 18:00 — M1 DEPLOYED by founder (Rust install + restart + Web pull, 16:16 PKT)
+- Live test baaki (Pro account pro.buyer@anexomail.com, tab 1609160493): snooze + Snoozed view, labels/status/move/assign, templates save/remove (Basic-user 403 check), schedule send, thread note. Pass hone par M1 GREEN, phir M2.
