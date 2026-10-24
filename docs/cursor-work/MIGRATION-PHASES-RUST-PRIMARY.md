@@ -12,6 +12,8 @@ Rules (founder, 24 Oct 2026):
 - No mixed code: one technology per job, no second copy of logic in Bun and Rust beyond the thin fallback validation parity.
 - Pull commands are given PER TECHNOLOGY with each batch (SQL / Rust+restart / Web), only the ones that batch needs.
 
+- HOW Rust code ships (learned live 24 Oct 16:30): `rust-engine-install.sh` does NOT replace the live `main.rs`; it only adds modules (`mod X_core; mod X_glue;` + one `owns()/dispatch()` hook). Procs written into `server/rust/main.rs` NEVER reach the server (live test: /rpc/mail.snooze stayed 404). So every new Rust proc lives in a `*_core.rs` (std-only, unit-tested on the server) + `*_glue.rs` module, registered in the installer's CFG/ALL_MODULES. `main.rs` in the repo is not edited for new procs. `mail_glue.rs` (send/schedule) ships via `rust-mail-install.sh`. Before pushing: compile the glue in a stub harness and call every proc.
+
 ## Phases (8)
 | Phase | What | Tech used |
 |---|---|---|

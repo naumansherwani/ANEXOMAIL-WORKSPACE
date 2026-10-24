@@ -991,3 +991,9 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 
 ### 24 Oct 18:00 — M1 DEPLOYED by founder (Rust install + restart + Web pull, 16:16 PKT)
 - Live test baaki (Pro account pro.buyer@anexomail.com, tab 1609160493): snooze + Snoozed view, labels/status/move/assign, templates save/remove (Basic-user 403 check), schedule send, thread note. Pass hone par M1 GREEN, phir M2.
+
+### 24 Oct 18:20 — M1 LIVE TEST: bug pakda + fix (RULE: Rust procs sirf module se deploy hote hain)
+- Live (Pro account): Snooze ab bhi "invalid input value for enum mail_folder" — /rpc/mail.snooze 404, Bun /api purana. Wajah: `rust-engine-install.sh` live main.rs REPLACE nahi karta, sirf `*_core/*_glue` module jodta hai => main.rs mein likhe naye procs kabhi deploy nahi hote. (Bun fallback bhi purana tha: web pull ke baad Bun restart/build check karna.)
+- FIX: `server/rust/mailx_core.rs` (7 unit tests) + `mailx_glue.rs` (snooze/status/move/labels.update/assign+GoTrue lookup/templates save+delete/`mail.threads` wrapper: inbox hides future-snoozed, folder "snoozed") registered in installer CFG + probe. main.rs wapas a6507a5 jaisa (koi duplicate nahi). `mail_glue.rs`: schedule Pro gate (local helper). Stub-harness mein glue compile + 16 calls (400/403/200/threads filter) pass.
+- RULE: naya Rust proc => module (core std-only tests + glue) + installer CFG; repo main.rs mein NAHI. Push se pehle stub harness (/tmp/rt3) mein compile+call.
+- Deploy pending: rust-engine-install (mailx) + rust-mail-install (schedule gate) + restart. Phir live: snooze, Snoozed view, labels/status/move/assign, templates, Basic 403.

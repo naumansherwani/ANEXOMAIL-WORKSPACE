@@ -424,78 +424,6 @@ async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
     Ok(json!({ "ok": true }))
 }
 
-/// Pro+ gate shared by the Pro-card mail procs (resolve_plan RPC, same rule as Bun `resolvePlan`).
-async fn pro_plan_ok(user_id: &str, email: &str) -> bool {
-    let plan = sb_rpc("resolve_plan", json!({ "_user_id": user_id, "_email": email }))
-        .await
-        .unwrap_or(json!("basic"));
-    plan.as_str().unwrap_or("basic") != "basic"
-}
-
-fn mail_is_uuid(v: &str) -> bool {
-    v.len() == 36
-        && v.chars().enumerate().all(|(i, c)| match i {
-            8 | 13 | 18 | 23 => c == '-',
-            _ => c.is_ascii_hexdigit(),
-        })
-}
-
-/// Percent-encode everything except unreserved characters (PostgREST filter values).
-fn mail_pct(v: &str) -> String {
-    let mut out = String::new();
-    for b in v.bytes() {
-        if b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_' | b'.' | b'~') {
-            out.push(b as char);
-        } else {
-            out.push_str(&format!("%{:02X}", b));
-        }
-    }
-    out
-}
-
-async fn mail_thread_owned(org_id: &str, thread_id: &str) -> bool {
-    sb_count(&format!("mail_threads?select=id&org_id=eq.{org_id}&id=eq.{thread_id}"))
-        .await
-        .unwrap_or(0)
-        > 0
-}
-
-/// Label id by uuid or exact name inside this org (name is percent-encoded: no filter injection).
-async fn mail_label_id(org_id: &str, name: &str) -> Option<String> {
-    let q = if mail_is_uuid(name) {
-        format!("mail_labels?select=id&org_id=eq.{org_id}&id=eq.{name}&limit=1")
-    } else {
-        format!("mail_labels?select=id&org_id=eq.{org_id}&name=eq.{}&limit=1", mail_pct(name))
-    };
-    sb_select(&q)
-        .await
-        .ok()?
-        .as_array()?
-        .first()?
-        .get("id")?
-        .as_str()
-        .map(|x| x.to_string())
-}
-
-async fn sb_delete(path_and_query: &str) -> Result<Value, String> {
-    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
-    let client = http();
-    let res = client
-        .delete(format!("{url}/rest/v1/{path_and_query}"))
-        .header("apikey", &key)
-        .header("authorization", format!("Bearer {key}"))
-        .header("prefer", "return=representation")
-        .send()
-        .await
-        .map_err(|e| e.to_string())?;
-    let status = res.status();
-    let payload: Value = res.json().await.unwrap_or(Value::Null);
-    if !status.is_success() {
-        return Err(payload.to_string());
-    }
-    Ok(payload)
-}
-
 async fn sb_insert(path: &str, body: Value) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
     let client = http();
@@ -633,26 +561,6 @@ async fn mail_labels_for(thread_ids: &[String]) -> std::collections::HashMap<Str
     map
 }
 
-/// Current UTC time as `YYYY-MM-DDTHH:MM:SS` (lexically comparable with Postgres timestamptz text in UTC).
-fn mail_now_prefix() -> String {
-    let secs = std::time::SystemTime::now()
-        .duration_since(std::time::UNIX_EPOCH)
-        .map(|d| d.as_secs() as i64)
-        .unwrap_or(0);
-    let days = secs.div_euclid(86_400);
-    let rem = secs.rem_euclid(86_400);
-    let z = days + 719_468;
-    let era = z.div_euclid(146_097);
-    let doe = z.rem_euclid(146_097);
-    let yoe = (doe - doe / 1460 + doe / 36_524 - doe / 146_096) / 365;
-    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
-    let mp = (5 * doy + 2) / 153;
-    let d = doy - (153 * mp + 2) / 5 + 1;
-    let m = if mp < 10 { mp + 3 } else { mp - 9 };
-    let y = yoe + era * 400 + if m <= 2 { 1 } else { 0 };
-    format!("{:04}-{:02}-{:02}T{:02}:{:02}:{:02}", y, m, d, rem / 3600, (rem % 3600) / 60, rem % 60)
-}
-
 async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String> {
     let folder = {
         let f = s(input, "folder");
@@ -700,9 +608,8 @@ async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String
         thread_filter = format!("&id=in.({})", ids.join(","));
     }
 
-    let db_folder = if folder == "snoozed" { "inbox" } else { folder.as_str() };
     let mut path = format!(
-        "mail_threads?select=*&org_id=eq.{org_id}&folder=eq.{db_folder}&order=last_message_at.desc&limit=100{thread_filter}"
+        "mail_threads?select=*&org_id=eq.{org_id}&folder=eq.{folder}&order=last_message_at.desc&limit=100{thread_filter}"
     );
     if !account.is_empty() {
         path.push_str(&format!("&account_id=eq.{account}"));
@@ -718,21 +625,7 @@ async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String
     }
 
     let data = sb_select(&path).await?;
-    let mut rows: Vec<Value> = data.as_array().cloned().unwrap_or_default();
-    if folder == "snoozed" {
-        let now = mail_now_prefix();
-        rows.retain(|t| match t.get("snoozed_until").and_then(|v| v.as_str()) {
-            Some(u) if u.len() >= 19 => u[..19] > now[..],
-            _ => false,
-        });
-    } else if folder == "inbox" {
-        // Snoozed threads stay hidden from the inbox until their time (same as the Bun route).
-        let now = mail_now_prefix();
-        rows.retain(|t| match t.get("snoozed_until").and_then(|v| v.as_str()) {
-            Some(u) if u.len() >= 19 => u[..19] <= now[..],
-            _ => true,
-        });
-    }
+    let rows: Vec<Value> = data.as_array().cloned().unwrap_or_default();
     let ids: Vec<String> = rows
         .iter()
         .filter_map(|t| t.get("id")?.as_str().map(|s| s.to_string()))
@@ -1618,240 +1511,6 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 .map(|_| json!({ "ok": true, "starred": starred }))
             }
         }
-        "mail.status" => {
-            let thread_id = s(input, "thread_id");
-            let status = s(input, "status");
-            if !mail_is_uuid(&thread_id) {
-                Err("thread_id_required".to_string())
-            } else if !matches!(status.as_str(), "open" | "waiting" | "done") {
-                Err("bad_status".to_string())
-            } else if !mail_thread_owned(&me.org_id, &thread_id).await {
-                Err("not_found".to_string())
-            } else {
-                sb_patch(
-                    &format!("mail_threads?id=eq.{thread_id}&org_id=eq.{}", me.org_id),
-                    json!({ "status": status }),
-                )
-                .await
-                .map(|_| json!({ "ok": true }))
-            }
-        }
-        "mail.move" => {
-            let thread_id = s(input, "thread_id");
-            let folder = s(input, "folder");
-            if !mail_is_uuid(&thread_id) {
-                Err("thread_id_required".to_string())
-            } else if !matches!(
-                folder.as_str(),
-                "inbox" | "assigned" | "waiting" | "sent" | "drafts" | "archive" | "spam" | "trash"
-            ) {
-                Err("bad_folder".to_string())
-            } else if !mail_thread_owned(&me.org_id, &thread_id).await {
-                Err("not_found".to_string())
-            } else {
-                sb_patch(
-                    &format!("mail_threads?id=eq.{thread_id}&org_id=eq.{}", me.org_id),
-                    json!({ "folder": folder }),
-                )
-                .await
-                .map(|_| json!({ "ok": true }))
-            }
-        }
-        "mail.labels.update" => {
-            let thread_id = s(input, "thread_id");
-            let names = |k: &str| -> Vec<String> {
-                input
-                    .get(k)
-                    .and_then(|v| v.as_array())
-                    .map(|a| {
-                        a.iter()
-                            .filter_map(|x| x.as_str())
-                            .map(|x| x.trim().to_string())
-                            .filter(|x| !x.is_empty())
-                            .collect()
-                    })
-                    .unwrap_or_default()
-            };
-            let add = names("add");
-            let remove = names("remove");
-            if !mail_is_uuid(&thread_id) {
-                Err("thread_id_required".to_string())
-            } else if add.len() > 20 || remove.len() > 20 || add.iter().chain(remove.iter()).any(|n| n.chars().count() > 60) {
-                Err("bad_label".to_string())
-            } else if !mail_thread_owned(&me.org_id, &thread_id).await {
-                Err("not_found".to_string())
-            } else {
-                let mut res: Result<Value, String> = Ok(json!({ "ok": true }));
-                for name in &add {
-                    let lab_id = match mail_label_id(&me.org_id, name).await {
-                        Some(id) => id,
-                        None => match sb_insert("mail_labels", json!({ "org_id": me.org_id, "name": name })).await {
-                            Ok(rows) => rows
-                                .as_array()
-                                .and_then(|a| a.first())
-                                .and_then(|r| r.get("id")?.as_str().map(|x| x.to_string()))
-                                .unwrap_or_default(),
-                            Err(e) => {
-                                res = Err(e);
-                                break;
-                            }
-                        },
-                    };
-                    if lab_id.is_empty() {
-                        continue;
-                    }
-                    if let Err(e) = sb_upsert(
-                        "mail_thread_labels",
-                        "thread_id,label_id",
-                        json!({ "thread_id": thread_id, "label_id": lab_id }),
-                    )
-                    .await
-                    {
-                        res = Err(e);
-                        break;
-                    }
-                }
-                if res.is_ok() {
-                    for name in &remove {
-                        if let Some(lab_id) = mail_label_id(&me.org_id, name).await {
-                            if let Err(e) = sb_delete(&format!(
-                                "mail_thread_labels?thread_id=eq.{thread_id}&label_id=eq.{lab_id}&select=thread_id"
-                            ))
-                            .await
-                            {
-                                res = Err(e);
-                                break;
-                            }
-                        }
-                    }
-                }
-                res
-            }
-        }
-        "mail.assign" => {
-            let thread_id = s(input, "thread_id");
-            let assignee = s(input, "assignee").trim().to_string();
-            if !mail_is_uuid(&thread_id) {
-                Err("thread_id_required".to_string())
-            } else if !mail_thread_owned(&me.org_id, &thread_id).await {
-                Err("not_found".to_string())
-            } else if !pro_plan_ok(&me.id, &me.email).await {
-                Err("feature_not_available: Shared inbox with collision guard is a Pro+ feature. Upgrade to assign threads.".to_string())
-            } else if !assignee.is_empty() && !mail_is_uuid(&assignee) {
-                // name/e-mail lookup lives in the Bun fallback (GoTrue admin list) until it is ported
-                Err("not_implemented".to_string())
-            } else {
-                sb_rpc(
-                    "mail_thread_assign",
-                    json!({ "_thread_id": thread_id, "_assignee": assignee, "_org_id": me.org_id }),
-                )
-                .await
-                .map(|t| json!({ "ok": true, "thread": t }))
-            }
-        }
-        "mail.snooze" => {
-            let thread_id = s(input, "thread_id");
-            let until_raw = input.get("until").and_then(|v| v.as_str()).unwrap_or("").trim().to_string();
-            let ok_chars = until_raw
-                .chars()
-                .all(|c| c.is_ascii_digit() || matches!(c, '-' | ':' | 'T' | 'Z' | '.' | '+'));
-            if thread_id.is_empty() || thread_id.len() > 64 || !thread_id.chars().all(|c| c.is_ascii_hexdigit() || c == '-') {
-                Err("thread_id_required".to_string())
-            } else if !until_raw.is_empty() && (!ok_chars || until_raw.len() < 10 || until_raw.len() > 40) {
-                Err("bad_until".to_string())
-            } else if !until_raw.is_empty() && !pro_plan_ok(&me.id, &me.email).await {
-                Err("feature_not_available: Snooze is a Pro+ feature.".to_string())
-            } else {
-                // Snooze never moves the folder: the inbox hides the thread until `until`; null brings it back.
-                let until = if until_raw.is_empty() { Value::Null } else { Value::String(until_raw) };
-                sb_patch(
-                    &format!("mail_threads?id=eq.{thread_id}&org_id=eq.{}", me.org_id),
-                    json!({ "snoozed_until": until }),
-                )
-                .await
-                .map(|_| json!({ "ok": true }))
-            }
-        }
-        "mail.templates.save" => {
-            let name = s(input, "name").trim().to_string();
-            let body = s(input, "body");
-            let subject: Value = match input.get("subject").and_then(|v| v.as_str()) {
-                Some(x) => Value::String(x.chars().take(200).collect()),
-                None => Value::Null,
-            };
-            if name.is_empty() || name.chars().count() > 80 {
-                Err("bad_name".to_string())
-            } else if body.trim().is_empty() || body.chars().count() > 20000 {
-                Err("bad_body".to_string())
-            } else if !pro_plan_ok(&me.id, &me.email).await {
-                Err("feature_not_available: Email templates are a Pro+ feature.".to_string())
-            } else {
-                let have = sb_count(&format!(
-                    "mail_templates?select=id&org_id=eq.{}&user_id=eq.{}",
-                    me.org_id, me.id
-                ))
-                .await
-                .unwrap_or(0);
-                if have >= 50 {
-                    Err("too_many".to_string())
-                } else {
-                    // {{variable}} names found in the body (max 30, unique)
-                    let mut vars: Vec<String> = Vec::new();
-                    let mut rest = body.as_str();
-                    while let Some(i) = rest.find("{{") {
-                        let after = &rest[i + 2..];
-                        match after.find("}}") {
-                            Some(j) => {
-                                let v = after[..j].trim();
-                                if !v.is_empty()
-                                    && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '.')
-                                    && !vars.iter().any(|x| x == v)
-                                    && vars.len() < 30
-                                {
-                                    vars.push(v.to_string());
-                                }
-                                rest = &after[j + 2..];
-                            }
-                            None => break,
-                        }
-                    }
-                    sb_insert(
-                        "mail_templates",
-                        json!({
-                            "org_id": me.org_id,
-                            "user_id": me.id,
-                            "name": name,
-                            "scope": "personal",
-                            "subject": subject,
-                            "body": body,
-                            "variables": vars,
-                        }),
-                    )
-                    .await
-                    .map(|rows| {
-                        let id = rows
-                            .as_array()
-                            .and_then(|a| a.first())
-                            .and_then(|r| r.get("id").cloned())
-                            .unwrap_or(Value::Null);
-                        json!({ "id": id })
-                    })
-                }
-            }
-        }
-        "mail.templates.delete" => {
-            let id = s(input, "id");
-            if id.is_empty() || id.len() > 64 || !id.chars().all(|c| c.is_ascii_hexdigit() || c == '-') {
-                Err("id_required".to_string())
-            } else {
-                sb_delete(&format!(
-                    "mail_templates?id=eq.{id}&org_id=eq.{}&user_id=eq.{}&select=id",
-                    me.org_id, me.id
-                ))
-                .await
-                .map(|rows| json!({ "removed": rows.as_array().map(|a| a.len()).unwrap_or(0) }))
-            }
-        }
         "mail.predict" => {
             let prefix = s(input, "prefix");
             if prefix.trim().is_empty() {
@@ -2012,23 +1671,6 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
 
     match result {
         Ok(data) => ok(data).into_response(),
-        Err(detail) if detail == "not_found" => err(StatusCode::NOT_FOUND, "not_found", "not_found").into_response(),
-        // 501 = "not ported yet": the client (rpcOrRest) retries on the Bun fallback.
-        Err(detail) if detail == "not_implemented" => {
-            err(StatusCode::NOT_IMPLEMENTED, "not_implemented", "handled by fallback").into_response()
-        }
-        Err(detail) if detail.starts_with("feature_not_available") => {
-            let msg = detail.splitn(2, ": ").nth(1).unwrap_or("Pro+ feature.");
-            err(StatusCode::FORBIDDEN, "feature_not_available", msg).into_response()
-        }
-        // Short validation tokens (bad_name, too_many, bad_until ...) are the caller's mistake: 400, not a 500.
-        Err(detail)
-            if !detail.is_empty()
-                && detail.len() <= 32
-                && detail.chars().all(|c| c.is_ascii_lowercase() || c == '_') =>
-        {
-            err(StatusCode::BAD_REQUEST, &detail, &detail).into_response()
-        }
         Err(detail) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &detail).into_response(),
     }
 }

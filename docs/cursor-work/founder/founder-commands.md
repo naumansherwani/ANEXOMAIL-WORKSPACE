@@ -955,3 +955,9 @@ Live Pro test mein Snooze "invalid input value for enum mail_folder: snoozed" se
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 2. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 24 Oct 18:20 — M1 fix (live test mein pakda): naye Rust procs server tak pahunche hi nahi the — ab `mailx` module — Rust (2 installer) , Web NAHI
+Live: /rpc/mail.snooze 404 tha (installer live main.rs replace nahi karta, sirf module jodta hai). Ab Pro mail actions `mailx_core.rs`+`mailx_glue.rs` module mein (snooze, status, move, labels, assign + naam/email lookup, templates save/delete, `mail.threads` jo Inbox se future-snoozed chhupata hai aur "Snoozed" folder deta hai). Schedule send ka Pro gate `mail_glue.rs` mein (alag installer). Koi SQL nahi, Web pull nahi (client pehle se pull hai).
+1. Rust engine (mailx): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Rust mail (schedule gate; asli Postfix saboot chalata hai): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-mail-install.sh)`
+3. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`

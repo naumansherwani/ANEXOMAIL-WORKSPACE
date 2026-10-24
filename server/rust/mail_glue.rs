@@ -566,6 +566,15 @@ async fn allowed_senders(org: &str, user: &str) -> Vec<String> {
     out
 }
 
+/// Pro+ gate (resolve_plan RPC — same rule as Bun `resolvePlan` and mailx_glue): every account kind, one rule.
+async fn pro_plan_ok(user_id: &str, email: &str) -> bool {
+    crate::sb_rpc("resolve_plan", json!({ "_user_id": user_id, "_email": email }))
+        .await
+        .ok()
+        .and_then(|v| v.as_str().map(|p| p != "basic"))
+        .unwrap_or(false)
+}
+
 async fn schedule(me: &crate::MailMe, input: &Value) -> Resp {
     let hold = input.get("hold_seconds").and_then(|x| x.as_f64()).unwrap_or(10.0);
     let hold = if hold.is_finite() { hold.clamp(0.0, 120.0) as i64 } else { 10 };
@@ -578,7 +587,7 @@ async fn schedule(me: &crate::MailMe, input: &Value) -> Resp {
         None => now + hold,
     };
     // Undo-send hold (<= 2 min) is Basic; a real later send time is Pro+ "Schedule send".
-    if send_unix > now + 130 && !crate::pro_plan_ok(&me.id, &me.email).await {
+    if send_unix > now + 130 && !pro_plan_ok(&me.id, &me.email).await {
         return fail_with(StatusCode::FORBIDDEN, "feature_not_available", json!({ "message": "Schedule send is a Pro+ feature." }));
     }
     let send_iso = crate::passkey_core::iso_utc(send_unix.max(0) as u64);
