@@ -193,6 +193,20 @@ export function useSnippets() {
   });
 }
 
+export function useDeleteSnippet() {
+  const qc = useQueryClient();
+  return useMutation<{ removed: number }, ApiError, { id: string }>({
+    // Rust PRIMARY (mail.snippets.delete), Bun fallback
+    mutationFn: ({ id }) =>
+      rpcOrRest<{ removed: number }>(
+        "mail.snippets.delete",
+        { path: `/api/mail/snippets/${encodeURIComponent(id)}`, method: "DELETE" },
+        { id },
+      ),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "snippets"] }),
+  });
+}
+
 export function useSignatures() {
   return useQuery<{ signatures: MailSignature[] }, ApiError>({
     queryKey: ["mail", "signatures"],

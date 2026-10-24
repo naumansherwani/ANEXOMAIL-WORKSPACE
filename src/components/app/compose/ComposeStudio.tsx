@@ -37,6 +37,7 @@ import {
   useSaveDraft,
   useScheduleSend,
   useSendConfidence,
+  useDeleteSnippet,
   useSnippets,
   useTemplates,
   useSaveTemplate,
@@ -44,6 +45,7 @@ import {
   type ComposeTone,
   type DraftPayload,
 } from "@/lib/compose";
+import { useSaveHandoff } from "@/lib/handoff";
 import { learnWritingPattern } from "@/lib/mail-predict";
 import { removeAttachment, uploadAttachment, useAttachLimits } from "@/lib/mail-attachments";
 import {
@@ -164,6 +166,8 @@ export function ComposeStudio({
   const leo = useLeoCompose();
   const jimmy = useAskJimmy();
   const followUp = useCreateFollowUp();
+  const deleteSnippet = useDeleteSnippet();
+  const saveHandoff = useSaveHandoff();
 
   const payload = useMemo<DraftPayload>(
     () => ({
@@ -202,6 +206,14 @@ export function ComposeStudio({
         onSuccess: (record) => {
           setDraftId(record.id);
           setSavedAt(record.saved_at);
+          // cross-device handoff: the same text + cursor opens on the phone / laptop (Rust mail.handoff.save)
+          saveHandoff.mutate({
+            ...(threadId ? { thread_id: threadId } : {}),
+            to_address: to,
+            subject,
+            body,
+            cursor_position: body.length,
+          });
         },
         onError: () => undefined, // silent: offline queue keeps the text on screen
       });
@@ -598,15 +610,25 @@ export function ComposeStudio({
             </button>
           ) : null}
           {snippets.data?.snippets.slice(0, 4).map((s) => (
-            <button
-              key={s.id}
-              type="button"
-              onClick={() => insertSnippet(s.body)}
-              className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
-            >
-              <Zap className="mr-1 inline size-3" />
-              {s.shortcut}
-            </button>
+            <span key={s.id} className="inline-flex items-center">
+              <button
+                type="button"
+                onClick={() => insertSnippet(s.body)}
+                className="ax-press ax-hit rounded-l-lg border border-border px-2 py-1 text-[10px] text-muted-foreground hover:text-foreground"
+              >
+                <Zap className="mr-1 inline size-3" />
+                {s.shortcut}
+              </button>
+              <button
+                type="button"
+                aria-label={`Delete snippet ${s.shortcut}`}
+                disabled={deleteSnippet.isPending}
+                onClick={() => deleteSnippet.mutate({ id: s.id })}
+                className="ax-press ax-hit rounded-r-lg border border-l-0 border-border px-1.5 py-1 text-[10px] text-muted-foreground hover:text-destructive"
+              >
+                ×
+              </button>
+            </span>
           ))}
         </div>
         {proMail && tplOpen ? (

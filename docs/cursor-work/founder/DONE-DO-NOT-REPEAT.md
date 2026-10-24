@@ -68,3 +68,4 @@
 - 24 Oct 22:45 E84 SQL banayi (tarteeb E83->E84->E85 poori; comment on guard + CHECK_E84, local 2x test OK)
 - 24 Oct 23:15 M2 LIVE GREEN (Pro, Chrome 1440/820/390 + Rust procs): drafts save/versions v1-v2, snippets, followups (E86), confidence, templates.list, schedule (holding->cancel); thread insights now Rust-first; TaskBoard 4 columns OK; Pro NOT yet green (shared-inbox collision guard, Basic gate tests, M3-M5 migration first)
 - 24 Oct 23:30 LIVE (founder): composer se attachment ke saath email bheji, Gmail par mili (send + attachment GREEN, Pro workspace)
+- 24 Oct 23:59 M2b written (READY, deploy pending): handoff list/save/claim/delete + device.seen, drafts/snippets/followup delete procs (Rust mailx) + Bun delete routes (hunks4); composer autosave ab handoff save bhi karta hai; snippet delete (x) UI; basic-gate-probe.sh (Basic 403 test, server-side, no password); count-endpoints.py (ledger script)

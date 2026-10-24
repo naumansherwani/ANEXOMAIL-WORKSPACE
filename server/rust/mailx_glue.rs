@@ -45,6 +45,14 @@ pub fn owns(proc: &str) -> bool {
             | "mail.confidence"
             | "mail.followup.create"
             | "mail.followup.list"
+            | "mail.drafts.delete"
+            | "mail.snippets.delete"
+            | "mail.followup.delete"
+            | "mail.handoff.list"
+            | "mail.handoff.save"
+            | "mail.handoff.claim"
+            | "mail.handoff.delete"
+            | "mail.device.seen"
     )
 }
 
@@ -410,6 +418,37 @@ async fn compose(proc: &str, me: &crate::MailMe, input: &Value) -> Option<Resp> 
                 Err(e) => db_fail(&e),
             }
         }
+        "mail.drafts.delete" => {
+            let id = st(input, "id");
+            if !c::is_uuid(&id) {
+                return Some(bad("id_required"));
+            }
+            match pg_delete_rows(&format!("mail_drafts_versions?draft_id=eq.{id}&org_id=eq.{}&user_id=eq.{}&select=id", me.org_id, me.id)).await {
+                Ok(n) => data(json!({ "removed": n })),
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.snippets.delete" => {
+            let id = st(input, "id");
+            if !c::is_uuid(&id) {
+                return Some(bad("id_required"));
+            }
+            match pg_delete_rows(&format!("mail_snippets?id=eq.{id}&org_id=eq.{}&user_id=eq.{}&select=id", me.org_id, me.id)).await {
+                Ok(n) => data(json!({ "removed": n })),
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.followup.delete" => {
+            let id = st(input, "id");
+            if !c::is_uuid(&id) {
+                return Some(bad("id_required"));
+            }
+            match pg_delete_rows(&format!("mail_followups?id=eq.{id}&org_id=eq.{}&user_id=eq.{}&select=id", me.org_id, me.id)).await {
+                Ok(n) => data(json!({ "removed": n })),
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.handoff.list" | "mail.handoff.save" | "mail.handoff.claim" | "mail.handoff.delete" | "mail.device.seen" => handoff(proc, me, input).await,
         "mail.signatures.list" => match crate::sb_select(&format!("mail_signatures?select=id,identity,name,body,is_default&org_id=eq.{}&user_id=eq.{}&order=is_default.desc", me.org_id, me.id)).await {
             Ok(rows) => data(json!({ "signatures": rows })),
             Err(e) => db_fail(&e),
@@ -504,4 +543,127 @@ async fn drafts_save(me: &crate::MailMe, input: &Value) -> Resp {
         }
     }
     fail(StatusCode::CONFLICT, "draft_busy", "draft_busy")
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// M2b — device handoff (a draft + cursor started on one device opens on another). Same rows as the Bun routes
+// (device_handoff, user_devices), scoped to the caller's own user id; every account kind, no plan gate (as before).
+// ---------------------------------------------------------------------------------------------------------------------
+const HANDOFF_COLS: &str = "id,device_id,device_label,thread_id,to_address,subject,body,cursor_position,updated_at";
+
+fn clip(input: &Value, k: &str, max: usize) -> Option<String> {
+    let t = st(input, k);
+    let t = t.trim();
+    if t.is_empty() {
+        None
+    } else {
+        Some(t.chars().take(max).collect())
+    }
+}
+
+async fn handoff(proc: &str, me: &crate::MailMe, input: &Value) -> Resp {
+    let now = format!("{}.000Z", c::iso_prefix(now_secs()));
+    let label = clip(input, "device_label", 120).unwrap_or_else(|| "Unknown device".to_string());
+    match proc {
+        "mail.handoff.list" => match crate::sb_select(&format!("device_handoff?select={HANDOFF_COLS}&user_id=eq.{}&order=updated_at.desc&limit=20", me.id)).await {
+            Ok(rows) => data(json!({ "drafts": rows })),
+            Err(e) => db_fail(&e),
+        },
+        "mail.handoff.save" => {
+            let device = match clip(input, "device_id", 100) {
+                Some(d) => d,
+                None => return bad("device_id_and_body_required"),
+            };
+            let body = match input.get("body").and_then(|v| v.as_str()) {
+                Some(b) => b.chars().take(100_000).collect::<String>(),
+                None => return bad("device_id_and_body_required"),
+            };
+            let cursor = input.get("cursor_position").and_then(|v| v.as_f64()).filter(|x| x.is_finite()).map(|x| (x.trunc() as i64).clamp(0, 100_000)).unwrap_or(0);
+            let thread = clip(input, "thread_id", 200);
+            let row = json!({
+                "user_id": me.id, "device_id": device, "device_label": label,
+                "thread_id": thread, "to_address": clip(input, "to_address", 320), "subject": clip(input, "subject", 500),
+                "body": body, "cursor_position": cursor, "updated_at": now,
+            });
+            // one device + one thread = one slot (otherwise every keystroke would add a row)
+            let slot = match &thread {
+                Some(t) => format!("device_handoff?select=id&user_id=eq.{}&device_id=eq.{}&thread_id=eq.{}&limit=1", me.id, enc(&device), enc(t)),
+                None => format!("device_handoff?select=id&user_id=eq.{}&device_id=eq.{}&thread_id=is.null&limit=1", me.id, enc(&device)),
+            };
+            let found = match crate::sb_select(&slot).await {
+                Ok(v) => v.as_array().and_then(|a| a.first()).and_then(|r| r.get("id")).and_then(|x| x.as_str()).map(|x| x.to_string()),
+                Err(e) => return db_fail(&e),
+            };
+            if let Some(id) = found {
+                return match crate::sb_patch(&format!("device_handoff?id=eq.{id}&user_id=eq.{}", me.id), row).await {
+                    Ok(_) => data(json!({ "id": id })),
+                    Err(e) => db_fail(&e),
+                };
+            }
+            match crate::sb_insert("device_handoff", row).await {
+                Ok(rows) => data(json!({ "id": rows.as_array().and_then(|a| a.first()).and_then(|r| r.get("id").cloned()).unwrap_or(Value::Null) })),
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.handoff.claim" => {
+            let id = st(input, "id");
+            if !c::is_uuid(&id) {
+                return bad("id_required");
+            }
+            let device = match clip(input, "device_id", 100) {
+                Some(d) => d,
+                None => return bad("device_id_required"),
+            };
+            let patch = json!({ "claimed_by": device, "device_id": device, "device_label": label, "updated_at": now });
+            if let Err(e) = crate::sb_patch(&format!("device_handoff?id=eq.{id}&user_id=eq.{}", me.id), patch).await {
+                return db_fail(&e);
+            }
+            match crate::sb_select(&format!("device_handoff?select={HANDOFF_COLS}&id=eq.{id}&user_id=eq.{}&limit=1", me.id)).await {
+                Ok(v) => match v.as_array().and_then(|a| a.first()) {
+                    Some(r) => data(r.clone()),
+                    None => fail(StatusCode::NOT_FOUND, "not_found", "not_found"),
+                },
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.handoff.delete" => {
+            let id = st(input, "id");
+            if !c::is_uuid(&id) {
+                return bad("id_required");
+            }
+            match pg_delete_rows(&format!("device_handoff?id=eq.{id}&user_id=eq.{}&select=id", me.id)).await {
+                Ok(_) => data(json!({ "ok": true })),
+                Err(e) => db_fail(&e),
+            }
+        }
+        _ => {
+            // mail.device.seen — heartbeat
+            let device = match clip(input, "device_id", 100) {
+                Some(d) => d,
+                None => return bad("device_id_required"),
+            };
+            let row = json!({
+                "user_id": me.id, "device_id": device, "device_label": label,
+                "platform": clip(input, "platform", 120), "installed": input.get("installed").and_then(|v| v.as_bool()).unwrap_or(false),
+                "last_seen": now,
+            });
+            match crate::sb_upsert("user_devices", "user_id,device_id", row).await {
+                Ok(_) => data(json!({ "ok": true })),
+                Err(e) => db_fail(&e),
+            }
+        }
+    }
+}
+
+/// minimal percent-encoding for values placed in a PostgREST filter (device ids / thread ids are user-supplied strings)
+fn enc(v: &str) -> String {
+    let mut o = String::new();
+    for b in v.bytes() {
+        if b.is_ascii_alphanumeric() || b == b'-' || b == b'_' || b == b'.' {
+            o.push(b as char);
+        } else {
+            o.push_str(&format!("%{:02X}", b));
+        }
+    }
+    o
 }

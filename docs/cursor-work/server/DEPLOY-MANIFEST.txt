@@ -18,7 +18,7 @@ src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 0ae61ddbdb0dd946
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
-src/components/app/compose/ComposeStudio.tsx 1f1c104232f85fda
+src/components/app/compose/ComposeStudio.tsx 52174069e6b6f7fd
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md c4a7043e59f43bd0
+docs/cursor-work/founder/founder-commands.md 43257077060301c8
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 81535bdc8c79e711
+docs/cursor-work/DONE-DO-NOT-REPEAT.md b2c77b26d41a4529
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -166,9 +166,9 @@ server/rust/device_glue.rs f234c8637dc504d6
 src/components/app/security/DeviceVaultPanel.tsx 32d98555346bdf0e
 server/mail-worker.ts 40fc4a9fd34aa0dd
 server/mail/sendmail.ts 349c9163d9a1e592
-server/routes/mail-compose.ts c0bec067d9a756bf
+server/routes/mail-compose.ts 6f0bb5d3cf3ccbfa
 server/routes/mail.ts b36a634b9e9a50a1
-src/lib/compose.ts 1e63fd31fc536fdb
+src/lib/compose.ts 520932e296eb2a8c
 docs/cursor-work/server/attach-caddy-close-files.sh 7623871b09c33865
 docs/cursor-work/server/attach-check.sh a9a8340e824cc5e8
 docs/cursor-work/server/attach-gc/anexomail-attach-gc.service 315952e242bafae7
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 96891db791d48e3a
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 2d128899eddc8de4
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 6201a9e858f3d157
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 26436647f5c5e28f
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -640,10 +640,10 @@ server/routes/calendar.ts c3ac0ca2cf5ab3fe
 src/components/app/mail/ThreadNote.tsx 63c294860d01d395
 docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md a3e3b72801636ded
 docs/cursor-work/MIGRATION-PHASES-24OCT.md a21d359e59e7bba7
-docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md 927056559cfe70b9
+docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md 4a66821f3768d0ca
 server/rust/mailx_core.rs b24c9e64877501ff
-server/rust/mailx_glue.rs 5b138b4c30c7eeda
-docs/cursor-work/server/brain-pro-install.sh 5ab737313069afb6
+server/rust/mailx_glue.rs c7961e7152ea6ede
+docs/cursor-work/server/brain-pro-install.sh 8c33fd155d855f47
 docs/cursor-work/server/brain_pro_patch.py f677b589cb6ede66
 docs/cursor-work/server/brain_pro_hunks.json b3e1b45e400cd113
 docs/cursor-work/server/brain-drift-check.sh 1028e6e48c99a259
@@ -655,7 +655,11 @@ src/components/app/mail/ThreadHeaderActions.tsx 887f7fd9b081a58e
 docs/cursor-work/server/brain_pro3_hunks.json 5182ed511e483818
 docs/cursor-work/sql/E86_drafts_followups.sql d80f1270c63965ea
 docs/cursor-work/sql/CHECK_E86.sql b8996860da7e8a25
-docs/claude/MIGRATION-LEDGER-24OCT.md 039f5ff92afc9e26
-docs/claude/ENDPOINT-MIGRATION-24OCT.csv 7c75b72fc49e62b1
+docs/claude/MIGRATION-LEDGER-24OCT.md 02af0c34186ea5c9
+docs/claude/ENDPOINT-MIGRATION-24OCT.csv f38ff65ce555161c
 docs/cursor-work/sql/E84_room_series_note.sql a20ff07e6d1bb48c
 docs/cursor-work/sql/CHECK_E84.sql 17304773909fb074
+src/lib/handoff.ts 66fdf574d9c66118
+docs/cursor-work/server/brain_pro4_hunks.json e3b6862d0d567ce3
+docs/cursor-work/server/basic-gate-probe.sh 6b618c073abadaf5
+docs/cursor-work/server/count-endpoints.py dd8f789f015fc833

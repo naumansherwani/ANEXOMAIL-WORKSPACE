@@ -5,18 +5,13 @@ Banaya: Claude CEO-agent, Nauman bhai ke hukm par. Ginti repo ke code se nikali 
 ## SQL numbering sawal (E83 -> E85)
 E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par 24 Oct ko E84_room_series_note.sql banayi gayi, ab SQL tarteeb E83, E84, E85, E86 poori hai.
 
-## Kul hisaab
+## Kul hisaab (script: docs/cursor-work/server/count-endpoints.py)
 | Cheez | Ginti |
 |---|---|
-| Bun REST endpoints (server/routes + chat) | 511 |
-| In mein se client Rust-first (`rpcOrRest`, Bun sirf fallback) — code se saabit | 132 |
-| Baqi (Bun-only ya client wiring saabit nahi) | 379 |
-| Rust procs repo mein (glue owns + main.rs arms) | 320 |
-| Server .ts files (Bun) | 77 |
-| Frontend src .ts/.tsx files | 546 |
-| Rust source files (server/rust) | 55 |
-
-Dhyan: 'Rust-first' ka matlab client pehle `/rpc/<proc>` mura-jata hai; live-verified sirf wo jo `DONE-DO-NOT-REPEAT.md` mein DONE hain. Ginti ka tareeqa heuristic hai (path match), isliye chhoti ghalti mumkin; CSV mein har endpoint dekha ja sakta hai.
+| Bun REST endpoints (server/routes) | 514 |
+| Client Rust-first (`rpcOrRest`, Bun sirf fallback) | 125 |
+| Baqi (Bun-only ya client wiring saabit nahi) | 389 |
+| Rust procs repo mein | 328 |
 
 ## File-wise (Bun file: kul / Rust-first / baqi)
 | Bun file | Kul | Rust-first | Baqi |
@@ -27,32 +22,32 @@ Dhyan: 'Rust-first' ka matlab client pehle `/rpc/<proc>` mura-jata hai; live-ver
 | ai.ts | 21 | 9 | 12 |
 | auth.ts | 19 | 1 | 18 |
 | calendar.ts | 17 | 14 | 3 |
-| movein.ts | 16 | 4 | 12 |
+| mail-compose.ts | 17 | 16 | 1 |
+| movein.ts | 16 | 5 | 11 |
 | ai-automation.ts | 14 | 9 | 5 |
-| mail-compose.ts | 14 | 13 | 1 |
 | mail.ts | 14 | 11 | 3 |
 | integrations.ts | 13 | 0 | 13 |
-| release.ts | 13 | 13 | 0 |
-| security.ts | 13 | 7 | 6 |
-| settings.ts | 13 | 2 | 11 |
+| release.ts | 13 | 12 | 1 |
+| security.ts | 13 | 5 | 8 |
+| settings.ts | 13 | 0 | 13 |
 | billing-sync.ts | 12 | 0 | 12 |
 | admin.ts | 11 | 3 | 8 |
-| ai-credits.ts | 11 | 1 | 10 |
-| files.ts | 11 | 2 | 9 |
+| ai-credits.ts | 11 | 0 | 11 |
+| files.ts | 11 | 0 | 11 |
 | contacts.ts | 10 | 0 | 10 |
 | storage.ts | 10 | 0 | 10 |
 | ai-studio.ts | 9 | 9 | 0 |
 | auth-passkey.ts | 9 | 9 | 0 |
 | perf.ts | 9 | 1 | 8 |
-| trial.ts | 9 | 3 | 6 |
+| trial.ts | 9 | 0 | 9 |
 | polar.ts | 7 | 0 | 7 |
 | founder.ts | 6 | 6 | 0 |
 | dashboard.ts | 5 | 0 | 5 |
-| handoff.ts | 5 | 0 | 5 |
+| handoff.ts | 5 | 3 | 2 |
 | glitch.ts | 4 | 0 | 4 |
 | locale.ts | 4 | 3 | 1 |
 | workspace.ts | 4 | 0 | 4 |
-| account-deletion.ts | 3 | 3 | 0 |
+| account-deletion.ts | 3 | 0 | 3 |
 | mail-predict.ts | 3 | 3 | 0 |
 | people-import.ts | 3 | 3 | 0 |
 | support.ts | 3 | 0 | 3 |

@@ -1030,3 +1030,6 @@ Founder ne M2 deploy kar diya (SQL E84-E86, Rust, Brain, Web). Live test pro.buy
 
 ### 24 Oct 23:30 — founder live saboot
 Nauman bhai ne composer se attachment ke saath email bheji; Gmail par mili. Send + attachment + undo-hold raasta live GREEN. Dobara test nahi karna.
+
+### 24 Oct 23:59 — Pro green list (founder hukm) — halat
+(1) M2b handoff + delete procs: READY (Rust mailx + Bun hunks4 + client rpcOrRest; composer autosave -> mail.handoff.save). (2) Basic-user 403: `basic-gate-probe.sh` (server par, password nahi) — founder chalaye, output bheje. (3) Shared-inbox collision guard: live test baqi (verified-domain Pro account ya doosra member). (4) Kachra saaf: delete procs deploy ke baad Chrome JS se (draft 198149dc..., snippet zzm2, followup ZZ fu), label ZZ-m1 + task ZZ pro audit task UI se. (5) M3-M5. Founder account: NAHI.

@@ -8,7 +8,8 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api, type ApiError } from "@/lib/api";
+import type { ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 const DEVICE_KEY = "ax.device.id";
 
@@ -57,7 +58,9 @@ export type HandoffDraft = {
 export function useHandoffDrafts(enabled = true) {
   return useQuery<{ drafts: HandoffDraft[] }, ApiError>({
     queryKey: ["handoff", "drafts"],
-    queryFn: () => api<{ drafts: HandoffDraft[] }>("/api/mail/handoff"),
+    // Rust PRIMARY (mail.handoff.list), Bun /api/mail/handoff fallback
+    queryFn: () =>
+      rpcOrRest<{ drafts: HandoffDraft[] }>("mail.handoff.list", { path: "/api/mail/handoff" }, {}),
     enabled,
     retry: false,
     refetchInterval: 20_000,
@@ -76,15 +79,14 @@ export type HandoffSave = {
 export function useSaveHandoff() {
   const qc = useQueryClient();
   return useMutation<{ id: string }, ApiError, HandoffSave>({
-    mutationFn: (payload) =>
-      api<{ id: string }>("/api/mail/handoff", {
-        method: "POST",
-        body: JSON.stringify({
-          ...payload,
-          device_id: deviceId(),
-          device_label: deviceLabel(),
-        }),
-      }),
+    mutationFn: (payload) => {
+      const body = { ...payload, device_id: deviceId(), device_label: deviceLabel() };
+      return rpcOrRest<{ id: string }>(
+        "mail.handoff.save",
+        { path: "/api/mail/handoff", method: "POST", body },
+        body,
+      );
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["handoff", "drafts"] }),
   });
 }
@@ -92,11 +94,14 @@ export function useSaveHandoff() {
 export function useClaimHandoff() {
   const qc = useQueryClient();
   return useMutation<HandoffDraft, ApiError, { id: string }>({
-    mutationFn: ({ id }) =>
-      api<HandoffDraft>(`/api/mail/handoff/${id}/claim`, {
-        method: "POST",
-        body: JSON.stringify({ device_id: deviceId(), device_label: deviceLabel() }),
-      }),
+    mutationFn: ({ id }) => {
+      const body = { device_id: deviceId(), device_label: deviceLabel() };
+      return rpcOrRest<HandoffDraft>(
+        "mail.handoff.claim",
+        { path: `/api/mail/handoff/${id}/claim`, method: "POST", body },
+        { id, ...body },
+      );
+    },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["handoff", "drafts"] }),
   });
 }

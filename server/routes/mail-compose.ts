@@ -138,6 +138,35 @@ mailComposeRouter.delete("/templates/:id", async (req, res) => {
   res.json({ removed: (data || []).length });
 });
 
+// Own rows only (Rust fallback parity for mail.snippets.delete / mail.followup.delete / mail.drafts.delete).
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+mailComposeRouter.delete("/snippets/:id", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  if (!UUID_RE.test(req.params.id)) return res.status(400).json({ error: "id_required" });
+  const { data, error } = await supa.from("mail_snippets").delete()
+    .eq("id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ removed: (data || []).length });
+});
+
+mailComposeRouter.delete("/follow-up/:id", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  if (!UUID_RE.test(req.params.id)) return res.status(400).json({ error: "id_required" });
+  const { data, error } = await supa.from("mail_followups").delete()
+    .eq("id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ removed: (data || []).length });
+});
+
+mailComposeRouter.delete("/drafts/:id", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  if (!UUID_RE.test(req.params.id)) return res.status(400).json({ error: "id_required" });
+  const { data, error } = await supa.from("mail_drafts_versions").delete()
+    .eq("draft_id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ removed: (data || []).length });
+});
+
 mailComposeRouter.get("/snippets", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const { data, error } = await supa

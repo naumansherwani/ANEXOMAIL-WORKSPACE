@@ -1,5 +1,19 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 24 Oct 23:59 — M2b (handoff) + delete procs + Basic gate probe: READY, deploy baqi
+Tarteeb (har technology ki alag; SQL is baar nahi chahiye):
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Rust restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+3. Bun/Brain (fallback; delete routes): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-pro-install.sh)`
+4. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
+5. Basic-user 403 test (password nahi poochta; output Claude ko bhejein): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh)`
+   Pro positive control (optional): `MODE=pro EMAIL=pro.buyer@anexomail.com bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh)`
+
+## ▶ 24 Oct 23:45 — founder verbatim (Pro baqi list ke jawab mein)
+"yeh sab green kerna hai ek bhi nahi chodo tum samjhay. compact chat se pehle likh lo. pro tumharai prorty hai ke pro green kerna hai aur puri website ko latest technology pe migrate kerna hai jo green hai endpoints files sab kuch update kero saath ke saath. yeh codes server pe hain. mix kuch nahi kerna hai no duplicate. tum live testing ke saath chalo koi bhi loophole hoga us ko fix kerna hai"
+- Pro baqi (sab ek ek karke GREEN): (1) shared-inbox collision guard live, (2) Basic-user 403 test, (3) handoff M2b, (4) test kachra saaf (label ZZ-m1, task ZZ pro audit task, draft, snippet, follow-up) — delete procs asli feature ke taur par, (5) phir M3-M5 migration. Founder account: NAHI.
+- Halat: TODO (shuru, 23:45).
+
 ## ▶ 24 Oct 23:30 — founder verbatim: 'testing ke hote huway email send ki hai attachment ke saath aur Gmail pe mili hai. great news hai'
 - Halat: DONE (live saboot founder ka). Docs-only, server command nahi.
 
