@@ -486,10 +486,10 @@ mailRouter.post("/thread/:id/assign", async (req, res) => {
   }
   const { data, error } = await supa.rpc("mail_thread_assign", {
     _thread_id: req.params.id,
-    _assignee: assigneeId || assigneeInput,
+    _assignee: assigneeId || null, // E85: one function (uuid|null); null removes the assignee
     _org_id: c.orgId,
   });
-  if (error) return res.status(400).json({ error: error.message });
+  if (error) return res.status(400).json({ error: /assignee_not_member/.test(error.message) ? "assignee_not_member" : error.message });
   res.json({ ok: true, thread: data, plan });
 });
 

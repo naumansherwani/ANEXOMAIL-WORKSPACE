@@ -244,8 +244,11 @@ async fn assign(me: &crate::MailMe, thread: &str, input: &Value) -> Resp {
             None => return bad("assignee_not_found"),
         }
     };
-    match crate::sb_rpc("mail_thread_assign", json!({ "_thread_id": thread, "_assignee": assignee, "_org_id": me.org_id })).await {
+    // E85: ONE function (uuid, uuid|null, uuid). null = remove the assignee; the DB refuses anyone who is not an active member.
+    let who = if assignee.is_empty() { Value::Null } else { json!(assignee) };
+    match crate::sb_rpc("mail_thread_assign", json!({ "_thread_id": thread, "_assignee": who, "_org_id": me.org_id })).await {
         Ok(t) => data(json!({ "ok": true, "thread": t })),
+        Err(e) if e.contains("assignee_not_member") => bad("assignee_not_member"),
         Err(e) => fail(StatusCode::BAD_REQUEST, "assign_failed", &e.chars().take(200).collect::<String>()),
     }
 }

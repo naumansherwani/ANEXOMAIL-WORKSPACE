@@ -1,0 +1,8 @@
+{
+ "mail.ts": [
+  [
+   "  }\n  const { data, error } = await supa.rpc(\"mail_thread_assign\", {\n    _thread_id: req.params.id,\n    _assignee: assigneeId || assigneeInput,\n    _org_id: c.orgId,\n  });\n  if (error) return res.status(400).json({ error: error.message });\n  res.json({ ok: true, thread: data, plan });\n});\n",
+   "  }\n  const { data, error } = await supa.rpc(\"mail_thread_assign\", {\n    _thread_id: req.params.id,\n    _assignee: assigneeId || null, // E85: one function (uuid|null); null removes the assignee\n    _org_id: c.orgId,\n  });\n  if (error) return res.status(400).json({ error: /assignee_not_member/.test(error.message) ? \"assignee_not_member\" : error.message });\n  res.json({ ok: true, thread: data, plan });\n});\n"
+  ]
+ ]
+}

@@ -490,3 +490,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 24 Oct 18:20 M1 fix: mailx module (Rust procs ab asli deploy path se), main.rs reverted; deploy pending
 - 24 Oct 18:35 brain-pro-install.sh (Bun fallback Pro fixes) written; Bun live purana tha; deploy pending
 - 24 Oct 18:50 brain-drift-check.sh (read-only) added; rule: har batch mein Bun command bhi
+- 24 Oct 19:20 M1 live GREEN (snooze/folder/status/move/labels/templates); E85 assign fix + Bring back now written, deploy pending

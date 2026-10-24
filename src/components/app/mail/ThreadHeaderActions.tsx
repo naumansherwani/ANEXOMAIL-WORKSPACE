@@ -10,6 +10,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -25,9 +26,12 @@ export function ThreadHeaderActions({
   status,
   subject,
   participants,
+  snoozedUntil,
 }: {
   threadId: string;
   status: ThreadStatus;
+  /** ISO time the thread is snoozed until (null / past = not snoozed). */
+  snoozedUntil?: string | null;
   subject?: string;
   participants?: string[];
 }) {
@@ -85,15 +89,13 @@ export function ThreadHeaderActions({
       </button>
 
       {chatOk ? (
-      <DiscussInChat
-        threadId={threadId}
-        {...(subject ? { subject } : {})}
-        {...(participants?.length ? { participants } : {})}
-      />
+        <DiscussInChat
+          threadId={threadId}
+          {...(subject ? { subject } : {})}
+          {...(participants?.length ? { participants } : {})}
+        />
       ) : null}
-      {workOk ? (
-      <ThreadRescue threadId={threadId} {...(subject ? { subject } : {})} />
-      ) : null}
+      {workOk ? <ThreadRescue threadId={threadId} {...(subject ? { subject } : {})} /> : null}
 
       {/* Thread -> meeting in one press: the conversation stays the context. */}
       <button
@@ -128,7 +130,23 @@ export function ThreadHeaderActions({
             Snooze
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Bring it back</DropdownMenuLabel>
+            {snoozedUntil && new Date(snoozedUntil).getTime() > Date.now() ? (
+              <>
+                <DropdownMenuItem
+                  onSelect={() =>
+                    run(
+                      { kind: "snooze", until: null },
+                      "Back in your inbox",
+                      "POST /api/mail/thread/:id/snooze",
+                    )
+                  }
+                >
+                  Bring back now
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            ) : null}
+            <DropdownMenuLabel>Snooze until</DropdownMenuLabel>
             {snoozePresets().map((preset) => (
               <DropdownMenuItem
                 key={preset.label}

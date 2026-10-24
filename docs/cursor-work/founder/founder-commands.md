@@ -966,3 +966,11 @@ Live: /rpc/mail.snooze 404 tha (installer live main.rs replace nahi karta, sirf 
 ## 24 Oct 18:50 — Bun (Brain) drift check — READ-ONLY, kuch nahi badalta
 Kaun si Bun file repo se alag chal rahi hai (yani kabhi live nahi gayi):
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-drift-check.sh)`
+
+## 24 Oct 19:20 — M1 LIVE (Pro): snooze/Snoozed/status/move/labels/templates GREEN. 2 loophole mile, fix tayyar — SQL + Rust + Brain + Web
+Live (pro.buyer): Snooze 200 (Rust), Inbox se chhupa, Snoozed folder "in 2h", status/move/labels/templates + galat input 400, doosre org ka thread 404. MILA: (1) **Assign (Shared inbox) Rust aur Bun dono par fail**: DB mein mail_thread_assign ke 2 overloads (PGRST203) — E85 ek function, null = hatao, sirf active member. (2) Snooze menu mein "Bring it back" sirf ek heading thi, wapas lane ka koi button nahi — ab "Bring back now" asli item.
+1. SQL: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`   (E85 + CHECK_E85)
+2. Rust engine (mailx assign): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+4. Brain (Bun fallback, assign): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-pro-install.sh)`
+5. Web (Bring back now): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
