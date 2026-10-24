@@ -1,0 +1,512 @@
+bun_file,method,path,client_rust_first_proc,status
+account-deletion.ts,GET,/api/state,security.deviceState,RUST-FIRST (Bun fallback)
+account-deletion.ts,POST,/api/request,account.delete.request,RUST-FIRST (Bun fallback)
+account-deletion.ts,POST,/api/cancel,account.delete.cancel,RUST-FIRST (Bun fallback)
+admin.ts,GET,/api/health,,BUN-ONLY or client wiring not proven
+admin.ts,POST,/api/health/heal,admin.heal,RUST-FIRST (Bun fallback)
+admin.ts,GET,/api/storage,,BUN-ONLY or client wiring not proven
+admin.ts,GET,/api/incidents,,BUN-ONLY or client wiring not proven
+admin.ts,GET,/api/monitoring,,BUN-ONLY or client wiring not proven
+admin.ts,GET,/api/logs,,BUN-ONLY or client wiring not proven
+admin.ts,GET,/api/reports,,BUN-ONLY or client wiring not proven
+admin.ts,POST,/api/reports/generate,admin.generateReport,RUST-FIRST (Bun fallback)
+admin.ts,GET,/api/diagnostics,,BUN-ONLY or client wiring not proven
+admin.ts,POST,/api/diagnostics/run,admin.runDiagnostics,RUST-FIRST (Bun fallback)
+admin.ts,GET,/api/admin/overview,,BUN-ONLY or client wiring not proven
+ai-automation.ts,GET,/api/ai/automation/workflows,,BUN-ONLY or client wiring not proven
+ai-automation.ts,GET,/api/ai/automation/runs,,BUN-ONLY or client wiring not proven
+ai-automation.ts,POST,/api/ai/automation/workflows/:id/toggle,ai.toggleWorkflow,RUST-FIRST (Bun fallback)
+ai-automation.ts,POST,/api/ai/automation/workflows/:id/run,ai.runWorkflow,RUST-FIRST (Bun fallback)
+ai-automation.ts,POST,/api/ai/automation/workflows/:id/dry-run,ai.dryRunWorkflow,RUST-FIRST (Bun fallback)
+ai-automation.ts,GET,/api/ai/automation/rules,,BUN-ONLY or client wiring not proven
+ai-automation.ts,POST,/api/ai/automation/rules/:id/toggle,ai.toggleRule,RUST-FIRST (Bun fallback)
+ai-automation.ts,GET,/api/ai/automation/variables,ai.saveVariable,RUST-FIRST (Bun fallback)
+ai-automation.ts,POST,/api/ai/automation/variables,ai.saveVariable,RUST-FIRST (Bun fallback)
+ai-automation.ts,DELETE,/api/ai/automation/variables/:id,ai.deleteVariable,RUST-FIRST (Bun fallback)
+ai-automation.ts,GET,/api/ai/automation/suggestions,,BUN-ONLY or client wiring not proven
+ai-automation.ts,POST,/api/ai/automation/suggestions/:id/decide,ai.decideSuggestion,RUST-FIRST (Bun fallback)
+ai-automation.ts,GET,/api/ai/automation/email,,BUN-ONLY or client wiring not proven
+ai-automation.ts,POST,/api/ai/automation/email/:id,ai.toggleEmailAutomation,RUST-FIRST (Bun fallback)
+ai-credits.ts,GET,/api/products,,BUN-ONLY or client wiring not proven
+ai-credits.ts,GET,/api/wallet,,BUN-ONLY or client wiring not proven
+ai-credits.ts,GET,/api/ledger,,BUN-ONLY or client wiring not proven
+ai-credits.ts,GET,/api/actions,,BUN-ONLY or client wiring not proven
+ai-credits.ts,POST,/api/estimate,,BUN-ONLY or client wiring not proven
+ai-credits.ts,POST,/api/reserve,,BUN-ONLY or client wiring not proven
+ai-credits.ts,POST,/api/settle,billing.settle,RUST-FIRST (Bun fallback)
+ai-credits.ts,POST,/api/release,,BUN-ONLY or client wiring not proven
+ai-credits.ts,POST,/api/complimentary,,BUN-ONLY or client wiring not proven
+ai-credits.ts,POST,/api/topup,,BUN-ONLY or client wiring not proven
+ai-credits.ts,GET,/api/ai/credits/overview,,BUN-ONLY or client wiring not proven
+ai-studio.ts,GET,/api/ai/studio/runs,ai.studioRuns,RUST-FIRST (Bun fallback)
+ai-studio.ts,GET,/api/ai/studio/recipes,ai.studioRecipes,RUST-FIRST (Bun fallback)
+ai-studio.ts,GET,/api/ai/studio/batches,ai.studioBatches,RUST-FIRST (Bun fallback)
+ai-studio.ts,GET,/api/ai/studio/targets,ai.studioTargets,RUST-FIRST (Bun fallback)
+ai-studio.ts,POST,/api/ai/studio/run,ai.studioRun,RUST-FIRST (Bun fallback)
+ai-studio.ts,POST,/api/ai/studio/runs/:id/apply,ai.studioApply,RUST-FIRST (Bun fallback)
+ai-studio.ts,POST,/api/ai/studio/batch,ai.studioBatch,RUST-FIRST (Bun fallback)
+ai-studio.ts,POST,/api/ai/studio/recipes,ai.studioRecipes,RUST-FIRST (Bun fallback)
+ai-studio.ts,POST,/api/ai/studio/recipes/:id/run,ai.studioRunRecipe,RUST-FIRST (Bun fallback)
+ai.ts,GET,/api/ai/sessions,ai.createSession,RUST-FIRST (Bun fallback)
+ai.ts,POST,/api/ai/sessions,ai.createSession,RUST-FIRST (Bun fallback)
+ai.ts,GET,/api/ai/sessions/:id,,BUN-ONLY or client wiring not proven
+ai.ts,GET,/api/ai/credits,,BUN-ONLY or client wiring not proven
+ai.ts,GET,/api/ai/receipts,,BUN-ONLY or client wiring not proven
+ai.ts,GET,/api/ai/memory,,BUN-ONLY or client wiring not proven
+ai.ts,DELETE,/api/ai/memory/:id,ai.forgetMemory,RUST-FIRST (Bun fallback)
+ai.ts,GET,/api/ai/leo/memory,,BUN-ONLY or client wiring not proven
+ai.ts,POST,/api/ai/leo/memory/recall,,BUN-ONLY or client wiring not proven
+ai.ts,POST,/api/ai/leo/memory/:id/pin,,BUN-ONLY or client wiring not proven
+ai.ts,DELETE,/api/ai/leo/memory/:id,,BUN-ONLY or client wiring not proven
+ai.ts,POST,/api/ai/leo/memory/prune,,BUN-ONLY or client wiring not proven
+ai.ts,GET,/api/ai/prompts,,BUN-ONLY or client wiring not proven
+ai.ts,GET,/api/ai/prompts/:id/versions,ai.savePromptVersion,RUST-FIRST (Bun fallback)
+ai.ts,POST,/api/ai/prompts/:id/versions,ai.savePromptVersion,RUST-FIRST (Bun fallback)
+ai.ts,POST,/api/ai/prompts/:id/fork,ai.forkPrompt,RUST-FIRST (Bun fallback)
+ai.ts,GET,/api/ai/arena,ai.runArena,RUST-FIRST (Bun fallback)
+ai.ts,POST,/api/ai/arena,ai.runArena,RUST-FIRST (Bun fallback)
+ai.ts,GET,/api/ai/guardrail,,BUN-ONLY or client wiring not proven
+ai.ts,POST,/api/ai/guardrail/:id,ai.decideGuardrail,RUST-FIRST (Bun fallback)
+ai.ts,POST,/api/ai/chat,,BUN-ONLY or client wiring not proven
+auth-passkey.ts,POST,/api/auth/passkey/register/options,auth.passkey.register.options,RUST-FIRST (Bun fallback)
+auth-passkey.ts,POST,/api/auth/passkey/register/verify,auth.passkey.register.verify,RUST-FIRST (Bun fallback)
+auth-passkey.ts,POST,/api/auth/passkey/options,auth.passkey.options,RUST-FIRST (Bun fallback)
+auth-passkey.ts,POST,/api/auth/passkey/verify,auth.passkey.verify,RUST-FIRST (Bun fallback)
+auth-passkey.ts,GET,/api/auth/passkey/status,auth.passkey.status,RUST-FIRST (Bun fallback)
+auth-passkey.ts,POST,/api/auth/recovery-codes/generate,auth.recovery.generate,RUST-FIRST (Bun fallback)
+auth-passkey.ts,POST,/api/auth/recovery-codes/redeem,auth.recovery.redeem,RUST-FIRST (Bun fallback)
+auth-passkey.ts,GET,/api/auth/passkey/list,auth.passkey.list,RUST-FIRST (Bun fallback)
+auth-passkey.ts,DELETE,/api/auth/passkey/:id,auth.passkey.delete,RUST-FIRST (Bun fallback)
+auth.ts,POST,/api/auth/signup,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/signup-appeal,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/login,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/refresh,,BUN-ONLY or client wiring not proven
+auth.ts,GET,/api/auth/session,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/logout,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/forgot-password,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/magic-link,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/oauth/callback,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/reset-password,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/change-password,,BUN-ONLY or client wiring not proven
+auth.ts,GET,/api/auth/sessions,,BUN-ONLY or client wiring not proven
+auth.ts,DELETE,/api/auth/sessions/:id,,BUN-ONLY or client wiring not proven
+auth.ts,PATCH,/api/auth/profile,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/onboarding/complete,,BUN-ONLY or client wiring not proven
+auth.ts,GET,/api/auth/identity/check,account.signup.address,RUST-FIRST (Bun fallback)
+auth.ts,POST,/api/auth/identity/claim,,BUN-ONLY or client wiring not proven
+auth.ts,GET,/api/auth/recovery,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/recovery,,BUN-ONLY or client wiring not proven
+billing-support.ts,GET,/api/support/replies,,BUN-ONLY or client wiring not proven
+billing-support.ts,POST,/api/support/replies/:id/replied,billing.markFounderReplySent,RUST-FIRST (Bun fallback)
+billing-sync.ts,POST,/api/auth/intent,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/auth/change-plan,,BUN-ONLY or client wiring not proven
+billing-sync.ts,GET,/api/auth/subscription,,BUN-ONLY or client wiring not proven
+billing-sync.ts,GET,/api/auth/invoices,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/auth/portal,,BUN-ONLY or client wiring not proven
+billing-sync.ts,GET,/api/auth/state,,BUN-ONLY or client wiring not proven
+billing-sync.ts,GET,/api/auth/intent/:id,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/auth/settle,,BUN-ONLY or client wiring not proven
+billing-sync.ts,GET,/api/auth/state-health,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/billing/sync,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/billing/guest-intent,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/auth/claim-guest,,BUN-ONLY or client wiring not proven
+calendar.ts,GET,/api/calendar/events,calendar.create,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/calendar/events/:id,calendar.event,RUST-FIRST (Bun fallback)
+calendar.ts,POST,/api/calendar/events,calendar.create,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/calendar/availability,calendar.availability,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/calendar/focus,calendar.focus,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/calendar/load,calendar.load,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/calendar/export,,BUN-ONLY or client wiring not proven
+calendar.ts,POST,/api/calendar/events/:id/outcome,calendar.outcome.post,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/work/tasks,work.task.create,RUST-FIRST (Bun fallback)
+calendar.ts,POST,/api/work/tasks,work.task.create,RUST-FIRST (Bun fallback)
+calendar.ts,PATCH,/api/work/tasks/:id,work.task.update,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/work/promises,work.promises,RUST-FIRST (Bun fallback)
+calendar.ts,POST,/api/work/promises/:id/commit,,BUN-ONLY or client wiring not proven
+calendar.ts,POST,/api/work/promises/:id/dismiss,,BUN-ONLY or client wiring not proven
+calendar.ts,GET,/api/work/follow-through,work.followThrough,RUST-FIRST (Bun fallback)
+calendar.ts,GET,/api/work/notes,work.note,RUST-FIRST (Bun fallback)
+calendar.ts,POST,/api/work/notes,work.note,RUST-FIRST (Bun fallback)
+chat.ts,GET,/api/bootstrap,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/conversations,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/conversations/direct,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/messages,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/receipts,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/presence,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/typing,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/presence,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/react,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/edit,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/delete,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/delete-anytime,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/delete-48h,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/work,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/work,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/work/state,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/conversations/state,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/unread,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/hide,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/pin,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/conversations/prefs,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/search,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/video/gate,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/video/signal,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/video/signals,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/video/turn,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/video/call/start,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/video/call/stat,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/video/call/end,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/video/calls/health,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/attachments/ticket,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/attachments/commit,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/attachments/attach,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/attachments/:messageId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/profile/avatar/ticket,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/profile/avatar/commit,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/device/seen,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/continuity,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/draft,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/position,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/search/deep,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/device/vault,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/device/trust,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/device/trust,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/safety/report,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/safety/queue,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/safety/advance,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/safety/reveal,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/safety/standing,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/work/suggest,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/work/from-message,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/work/depend,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/work/complete,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/work/chain,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/work/board,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/star,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/forward,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/promises/board,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/promises/recover,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/promises/keep,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/promises/history,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/devices/appeal,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/devices/appeals,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/devices/appeals/decide,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/decisions/board,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/decisions/:id,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/decisions/:id/impact,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/decisions/mark,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/decisions/:id/amend,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/decisions/:id/link,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/decisions/link/:linkId/remove,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/integrity/state,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/evaluate,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/integrity/queue,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/${path},,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/integrity/identity,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/identity/decide,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/identity/hold,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/identity/gate,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/identity/evasion,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/identity/domain,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/integrity/export,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/timeline/:conversationId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/timeline/important,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/health/board,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/health/:conversationId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/provenance/message/:messageId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/provenance/chain/:conversationId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/collisions/scan,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/collisions/:id/act,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/receipts/message/:messageId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/receipts/record,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/receipts/silent,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/receipts/replay/:conversationId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/receipts/certificate,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/receipts/verify/:token,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/messages/attach-file,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/handover/board,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/handover/build,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/handover/:packId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/handover/:packId/assign,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/handover/:packId/complete,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/bridge/discuss,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/bridge/context/:conversationId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/bridge/thread/:mailThreadId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/bridge/quote,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/bridge/quote/verify,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/bridge/presence,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/bridge/rescue,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/email/draft,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/email/drafts,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/email/draft/:draftId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/email/draft/:draftId/consent,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/email/draft/:draftId/send,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/email/decision/:decisionId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/email/escalations/:messageId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/file/context/:fileId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/file/context/:fileId/diff,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/file/context/:fileId/duplicates,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/file/context/:fileId/stale,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/file/context/:fileId/graph,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/file/context/link,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/file/context/unlink,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/call/record/:sessionId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/call/records,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/event,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/transport,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/file,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/work,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/ring/start,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/ring/settle,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/call/ring/:sessionId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/connect/mark,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/call/connect/report/:sessionId,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/call/connect/health,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/sfu/ensure,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/sfu/join,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/sfu/leave,,BUN-ONLY or client wiring not proven
+chat.ts,GET,/api/call/sfu/:conversationId,,BUN-ONLY or client wiring not proven
+chat.ts,POST,/api/call/survival,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/contacts/tags,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/contacts,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/contacts/:id,,BUN-ONLY or client wiring not proven
+contacts.ts,PATCH,/api/contacts/:id,,BUN-ONLY or client wiring not proven
+contacts.ts,POST,/api/contacts/:id/tags,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/contacts/:id/timeline,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/companies,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/companies/:domain,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/companies/:domain/timeline,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/search/universal,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/overview,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/live,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/memory,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/deals/work,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/deals/thread,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/leads/suggest,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/leads,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/leads,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/deals,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/deals,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/deals/stage,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/leads/convert,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/evidence,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/activities,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/insights,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/shared,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/shared/assign,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/mentions,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/approvals,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/approvals/decide,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/audit,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/permissions,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/founder/crm/state,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/founder/crm/toggle,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/summary,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/activity,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/ai-usage,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/analytics,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/calendar,,BUN-ONLY or client wiring not proven
+files.ts,GET,/api/state,security.deviceState,RUST-FIRST (Bun fallback)
+files.ts,POST,/api/begin,,BUN-ONLY or client wiring not proven
+files.ts,POST,/api/chunk,,BUN-ONLY or client wiring not proven
+files.ts,GET,/api/transfer,,BUN-ONLY or client wiring not proven
+files.ts,POST,/api/mark,,BUN-ONLY or client wiring not proven
+files.ts,POST,/api/commit,,BUN-ONLY or client wiring not proven
+files.ts,GET,/api/versions,ai.savePromptVersion,RUST-FIRST (Bun fallback)
+files.ts,GET,/api/truth,,BUN-ONLY or client wiring not proven
+files.ts,GET,/api/safety,,BUN-ONLY or client wiring not proven
+files.ts,GET,/api/download,,BUN-ONLY or client wiring not proven
+files.ts,POST,/api/download/ack,,BUN-ONLY or client wiring not proven
+founder.ts,GET,/api/founder/overview,founder.overview,RUST-FIRST (Bun fallback)
+founder.ts,GET,/api/founder/mailboxes,founder.mailboxes,RUST-FIRST (Bun fallback)
+founder.ts,GET,/api/founder/ai-agents,founder.agents,RUST-FIRST (Bun fallback)
+founder.ts,GET,/api/founder/ai-mail,founder.aiMail,RUST-FIRST (Bun fallback)
+founder.ts,POST,/api/founder/mailboxes/provision,founder.provisionMailboxes,RUST-FIRST (Bun fallback)
+founder.ts,POST,/api/founder/ai-mail/approve,founder.approveAiDraft,RUST-FIRST (Bun fallback)
+glitch.ts,POST,/api/glitch/report,,BUN-ONLY or client wiring not proven
+glitch.ts,POST,/api/glitch/trigger,,BUN-ONLY or client wiring not proven
+glitch.ts,POST,/api/glitch/sweep,,BUN-ONLY or client wiring not proven
+glitch.ts,GET,/api/glitch/health,,BUN-ONLY or client wiring not proven
+handoff.ts,GET,/api/handoff,,BUN-ONLY or client wiring not proven
+handoff.ts,POST,/api/handoff,,BUN-ONLY or client wiring not proven
+handoff.ts,POST,/api/handoff/:id/claim,,BUN-ONLY or client wiring not proven
+handoff.ts,DELETE,/api/handoff/:id,,BUN-ONLY or client wiring not proven
+handoff.ts,POST,/api/devices/seen,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/providers,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/connections,,BUN-ONLY or client wiring not proven
+integrations.ts,POST,/api/connect,,BUN-ONLY or client wiring not proven
+integrations.ts,POST,/api/disconnect,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/migrations,,BUN-ONLY or client wiring not proven
+integrations.ts,POST,/api/migrations,,BUN-ONLY or client wiring not proven
+integrations.ts,POST,/api/migrations/control,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/delivery/health,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/exports,,BUN-ONLY or client wiring not proven
+integrations.ts,POST,/api/exports,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/leo-actions,,BUN-ONLY or client wiring not proven
+integrations.ts,POST,/api/leo-actions/toggle,,BUN-ONLY or client wiring not proven
+integrations.ts,GET,/api/founder/integrations/overview,,BUN-ONLY or client wiring not proven
+locale.ts,GET,/api/locale/registry,,BUN-ONLY or client wiring not proven
+locale.ts,GET,/api/locale/bundle,locale.bundle,RUST-FIRST (Bun fallback)
+locale.ts,GET,/api/locale/pref,locale.pref,RUST-FIRST (Bun fallback)
+locale.ts,PUT,/api/locale/pref,locale.pref,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/drafts,mail.drafts.save,RUST-FIRST (Bun fallback)
+mail-compose.ts,GET,/api/mail/drafts/:id,mail.drafts.versions,RUST-FIRST (Bun fallback)
+mail-compose.ts,GET,/api/mail/templates,mail.templates.list,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/templates,mail.templates.list,RUST-FIRST (Bun fallback)
+mail-compose.ts,DELETE,/api/mail/templates/:id,mail.templates.delete,RUST-FIRST (Bun fallback)
+mail-compose.ts,GET,/api/mail/snippets,mail.snippets.list,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/snippets,mail.snippets.list,RUST-FIRST (Bun fallback)
+mail-compose.ts,GET,/api/mail/signatures,mail.signatures.list,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/send-confidence,mail.confidence,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/schedule,mail.schedule,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/schedule/:id/cancel,mail.schedule.cancel,RUST-FIRST (Bun fallback)
+mail-compose.ts,POST,/api/mail/follow-up,mail.followup.create,RUST-FIRST (Bun fallback)
+mail-compose.ts,GET,/api/mail/follow-up,mail.followup.create,RUST-FIRST (Bun fallback)
+mail-compose.ts,GET,/api/mail/thread/:id/insights,,BUN-ONLY or client wiring not proven
+mail-predict.ts,POST,/api/mail/predict/,mail.predict,RUST-FIRST (Bun fallback)
+mail-predict.ts,POST,/api/mail/predict/learn,mail.predict.learn,RUST-FIRST (Bun fallback)
+mail-predict.ts,POST,/api/mail/predict/event,mail.predict.event,RUST-FIRST (Bun fallback)
+mail.ts,GET,/api/mail/threads,,BUN-ONLY or client wiring not proven
+mail.ts,GET,/api/mail/search,,BUN-ONLY or client wiring not proven
+mail.ts,GET,/api/mail/accounts,mail.accounts,RUST-FIRST (Bun fallback)
+mail.ts,GET,/api/mail/labels,mail.labels,RUST-FIRST (Bun fallback)
+mail.ts,GET,/api/mail/counts,mail.counts,RUST-FIRST (Bun fallback)
+mail.ts,GET,/api/mail/thread/:id,mail.thread,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/send,mail.send,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/thread/:id/status,mail.status,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/thread/:id/snooze,mail.snooze,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/thread/:id/star,mail.star,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/thread/:id/assign,mail.assign,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/thread/:id/move,mail.move,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/thread/:id/labels,mail.labels.update,RUST-FIRST (Bun fallback)
+mail.ts,POST,/api/mail/deliver,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/request,movein.request,RUST-FIRST (Bun fallback)
+movein.ts,GET,/api/movein/capacity,movein.capacity,RUST-FIRST (Bun fallback)
+movein.ts,POST,/api/movein/sweep,,BUN-ONLY or client wiring not proven
+movein.ts,GET,/api/auth/deal,,BUN-ONLY or client wiring not proven
+movein.ts,GET,/api/auth/deal/:id,,BUN-ONLY or client wiring not proven
+movein.ts,GET,/api/movein/cockpit,founder.movein.cockpit,RUST-FIRST (Bun fallback)
+movein.ts,GET,/api/movein/deal/:id,founder.movein.deal,RUST-FIRST (Bun fallback)
+movein.ts,POST,/api/movein/transition,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/schedule,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/arm,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/mailbox,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/dns,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/runbook,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/exception,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/rollback,,BUN-ONLY or client wiring not proven
+movein.ts,POST,/api/movein/invoice,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/overview,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/members,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/members/blast-radius,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/members/revoke,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/roles,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/privilege-radar,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/departments,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/policies,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/policies/simulate,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/policies/toggle,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/sessions,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/sessions/kill,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/anomalies,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/proof,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/audit,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/audit/verify,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/graph,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/compliance,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/break-glass,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/break-glass,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/founder/org/state,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/founder/org/list,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/founder/org/kill-switch,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/founder/org/impersonate,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/export,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/mailboxes,,BUN-ONLY or client wiring not proven
+org.ts,POST,/api/org/mailboxes,,BUN-ONLY or client wiring not proven
+people-import.ts,POST,/api/contacts/import,people.import,RUST-FIRST (Bun fallback)
+people-import.ts,POST,/api/crm/leads/import,crm.leadsImport,RUST-FIRST (Bun fallback)
+people-import.ts,POST,/api/crm/leads/move-to-people,crm.leadsMoveToPeople,RUST-FIRST (Bun fallback)
+perf.ts,POST,/api/samples,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/budgets,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/dashboard,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/prefetch,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/search,,BUN-ONLY or client wiring not proven
+perf.ts,POST,/api/search/run,perf.runQuery,RUST-FIRST (Bun fallback)
+perf.ts,GET,/api/devices,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/regressions,,BUN-ONLY or client wiring not proven
+perf.ts,GET,/api/perf/overview,,BUN-ONLY or client wiring not proven
+polar.ts,POST,/api/auth/checkout,,BUN-ONLY or client wiring not proven
+polar.ts,GET,/api/auth/checkout/:id,,BUN-ONLY or client wiring not proven
+polar.ts,POST,/api/public/polar/webhook,,BUN-ONLY or client wiring not proven
+polar.ts,POST,/api/public/polar/replay,,BUN-ONLY or client wiring not proven
+polar.ts,GET,/api/auth/subscription,,BUN-ONLY or client wiring not proven
+polar.ts,GET,/api/auth/invoices,,BUN-ONLY or client wiring not proven
+polar.ts,GET,/api/auth/payment-health,,BUN-ONLY or client wiring not proven
+release.ts,POST,/api/release/run,founder.release.run,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/release/checks,founder.release.checks,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/release/overview,founder.release.overview,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/release/checklist,founder.release.checklist,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/release/checklist/item,founder.release.checklist.item,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/release/deployments,founder.release.deployments,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/release/lock,founder.release.lock.create,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/release/lock,founder.release.lock.create,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/release/roadmap,founder.release.roadmap.create,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/release/roadmap,founder.release.roadmap.create,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/revenue/pipeline,founder.revenue.pipeline,RUST-FIRST (Bun fallback)
+release.ts,GET,/api/status,status.public,RUST-FIRST (Bun fallback)
+release.ts,POST,/api/mail/outbox/send,outbox.send,RUST-FIRST (Bun fallback)
+revenue.ts,POST,/api/revenue/lead,revenue.lead,RUST-FIRST (Bun fallback)
+revenue.ts,GET,/api/revenue/overview,founder.revenue.overview,RUST-FIRST (Bun fallback)
+security.ts,GET,/api/dashboard,,BUN-ONLY or client wiring not proven
+security.ts,GET,/api/devices,,BUN-ONLY or client wiring not proven
+security.ts,POST,/api/devices/state,security.deviceState,RUST-FIRST (Bun fallback)
+security.ts,GET,/api/sessions,ai.createSession,RUST-FIRST (Bun fallback)
+security.ts,POST,/api/sessions/kill,security.killSession,RUST-FIRST (Bun fallback)
+security.ts,POST,/api/kill-switch,security.killSwitch,RUST-FIRST (Bun fallback)
+security.ts,GET,/api/history,,BUN-ONLY or client wiring not proven
+security.ts,POST,/api/history/disown,security.disown,RUST-FIRST (Bun fallback)
+security.ts,GET,/api/encryption,,BUN-ONLY or client wiring not proven
+security.ts,POST,/api/encryption/rotate,security.rotate,RUST-FIRST (Bun fallback)
+security.ts,GET,/api/proof,,BUN-ONLY or client wiring not proven
+security.ts,POST,/api/proof/run,security.runProof,RUST-FIRST (Bun fallback)
+security.ts,GET,/api/security/overview,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/scoped/:scope,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/blast-radius,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/explain,,BUN-ONLY or client wiring not proven
+settings.ts,POST,/api/simulate,,BUN-ONLY or client wiring not proven
+settings.ts,POST,/api/save,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/history,,BUN-ONLY or client wiring not proven
+settings.ts,POST,/api/revert,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/drift,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/scheduled,,BUN-ONLY or client wiring not proven
+settings.ts,POST,/api/schedule,mail.schedule,RUST-FIRST (Bun fallback)
+settings.ts,POST,/api/schedule/cancel,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/settings/overview,,BUN-ONLY or client wiring not proven
+settings.ts,GET,/api/:scope,mail.templates.delete,RUST-FIRST (Bun fallback)
+storage.ts,GET,/api/storage/state,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/preflight,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/reserve,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/commit,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/release,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/internal/storage/accept,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/internal/storage/commit,,BUN-ONLY or client wiring not proven
+storage.ts,GET,/api/founder/storage/volumes,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/founder/storage/volume,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/internal/storage/sweep,,BUN-ONLY or client wiring not proven
+support.ts,GET,/api/public/sla,,BUN-ONLY or client wiring not proven
+support.ts,GET,/api/support/drafts,,BUN-ONLY or client wiring not proven
+support.ts,POST,/api/support/drafts/:id/discard,,BUN-ONLY or client wiring not proven
+trial.ts,GET,/api/state,security.deviceState,RUST-FIRST (Bun fallback)
+trial.ts,GET,/api/address,,BUN-ONLY or client wiring not proven
+trial.ts,POST,/api/start,,BUN-ONLY or client wiring not proven
+trial.ts,POST,/api/claim,,BUN-ONLY or client wiring not proven
+trial.ts,POST,/api/security,,BUN-ONLY or client wiring not proven
+trial.ts,POST,/api/subscribe,account.signup.activate,RUST-FIRST (Bun fallback)
+trial.ts,GET,/api/events,calendar.create,RUST-FIRST (Bun fallback)
+trial.ts,GET,/api/mail-holds,,BUN-ONLY or client wiring not proven
+trial.ts,POST,/api/trial/sweep,,BUN-ONLY or client wiring not proven
+workspace.ts,POST,/api/workspace/personal,,BUN-ONLY or client wiring not proven
+workspace.ts,POST,/api/workspace/organisations,,BUN-ONLY or client wiring not proven
+workspace.ts,PATCH,/api/workspace/active-organisation,,BUN-ONLY or client wiring not proven
+workspace.ts,POST,/api/workspace/invitations,,BUN-ONLY or client wiring not proven

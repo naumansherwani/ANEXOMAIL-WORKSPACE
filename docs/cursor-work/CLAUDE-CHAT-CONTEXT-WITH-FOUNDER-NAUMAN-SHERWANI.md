@@ -1015,3 +1015,6 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 
 ### 24 Oct 20:10 PKT — M2 compose procs Rust primary (READY)
 mailx module mein mail.drafts.save/versions, templates.list, snippets.list/save, signatures.list, confidence, followup.create/list. Bun hunks3 (draft columns to/cc/bcc/saved_at, user filter, bad remind_at 400). E86 SQL. Client compose.ts rpcOrRest. Deploy: SQL(E85+E86) -> Rust -> restart -> Brain -> Web. Agla: M2b handoff, M3.
+
+### 24 Oct 22:00 — migration hisaab
+Founder ne E83->E85 aur migration ki ginti poochi. Jawab: E84 Rust-only tha. Hisaab `docs/claude/MIGRATION-LEDGER-24OCT.md` (+CSV): 511 Bun endpoints, 132 client Rust-first, 379 baqi, 320 Rust procs. Chat 141 sab se bada baqi hissa. Agla: M2 deploy/live test, M2b handoff, M3.

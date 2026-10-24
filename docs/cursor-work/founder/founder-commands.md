@@ -1,5 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 24 Oct 22:00 — founder: 'sql 83 ke baad 85 kaise? sab update karo + migration hisaab claude folder mein'
+- Halat: DONE (docs) — `docs/claude/MIGRATION-LEDGER-24OCT.md`, CSV. Server command nahi chahiye (docs-only). M2 ki 5 commands upar wali entry mein.
+
 ## ▶ 24 Oct 20:10 PKT — M2 (compose -> Rust primary) TAIYAR, deploy baqi
 - Kya: draft autosave/versions (Bun mein galat column naam se 500 tha), follow-up table `mail_followups` (E86), templates/snippets/signatures list, send-confidence, follow-up create/list ab Rust `mailx` par; Bun sirf fallback.
 - Tarteeb (har technology ki alag command; SQL pehle):
