@@ -1,5 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 24 Oct 23:30 — founder verbatim: 'testing ke hote huway email send ki hai attachment ke saath aur Gmail pe mili hai. great news hai'
+- Halat: DONE (live saboot founder ka). Docs-only, server command nahi.
+
 ## ▶ 24 Oct 23:15 — founder: 'thok ke live testing, pro green, jab tak pro/business/business pro green nahi founder account nahi'
 - Halat: M2 DONE live (Rust procs + UI 3 widths). Pro abhi green NAHI: shared inbox guard, Basic 403, handoff (M2b), M3-M5. Web command (thread insights Rust-first): pull.sh. Founder account: NAHI shuru.
 
