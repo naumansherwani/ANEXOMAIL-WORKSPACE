@@ -479,3 +479,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 24 Oct 15:30 rooms fix4 (manual guest message) written; E83 live-verified (DB refused)
 - 24 Oct 15:00 ROOMS LIVE-VERIFIED: hint, room_busy reschedule 409, release clears location
 - 24 Oct 16:05 E84 series room check written (Rust, deploy baaki); web sweep: tsc/388 tests OK, lint 14 non-format items noted
+- RULE: Nauman bhai ko hamesha 'aap' kehna, 'tum' nahi (24 Oct 15:17)

@@ -937,3 +937,6 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - Founder: "ek bhi loophole nahi, puri website, pro package green". Kiya: cal_core::first_overlap (+test, cal 43 tests pass), cal_glue::room_series_clash (400 din, saare occurrences), rooms_glue book + cal_glue update(time/rrule) mein hook; installer rooms need_mods cal_core+cal_glue. Founder ko sirf Rust+restart (founder-commands 16:05). Compile cal_glue full stub mein nahi (missing crate stubs), isliye server build pehli asli compile.
 - Site sweep (Web): tsc saaf, 388 tests pass; eslint 2174 errors = 2160 prettier formatting (purani, cosmetic) + 14 asli lint (api-refresh/mail-rpc/passkey-login tests `any`, history.ts control-regex, mail-attachments any, timeFormat.ts use12h "hook" naam rules-of-hooks). Live bug nahi; alag task.
 - "Pro package green": scope Nauman se tay karna (kaunsa package/kya check) — abhi koi pro-package checklist repo se pakki nahi.
+
+## RULE (24 Oct 15:17) — BOLNE KA ANDAAZ
+Founder ne kaha: "tum/tumhare" nahi. HAMESHA "aap" aur "Nauman bhai" (izzat se). Roman Urdu, saaf. Purane messages mein "tum" aaya to ab nahi.
