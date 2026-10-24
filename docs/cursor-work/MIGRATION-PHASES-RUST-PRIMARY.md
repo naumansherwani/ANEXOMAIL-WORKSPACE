@@ -17,11 +17,14 @@ Rules (founder, 24 Oct 2026):
 - HOW Bun (Brain) fallback code ships: `pull.sh` only updates the Web app (`anexomail-web`). Bun `/api/*` routes run in Brain (`/opt/anexomail/src`, pm2 `anexomail-leo`, :3100) and change ONLY through a `brain-*-install.sh` (anchor hunks, bun build pre-flight, restore-on-fail). Editing `server/routes/*.ts` in the repo does NOT change live Bun. Proof (24 Oct 16:24): live Bun still had the old snooze code; `until:"garbage"` crashed it (502 until pm2 restart). For Bun fixes: regenerate `brain_pro_hunks.json` (base->current hunks, round-trip verified) and give `brain-pro-install.sh`.
 - Pull command types: SQL = `sql-run.sh`; Web = `pull.sh`; Rust engine = `rust-engine-install.sh` (modules); Rust mail = `rust-mail-install.sh`; Brain (Bun fallback) = `brain-*-install.sh`; then pm2 restarts.
 
+## LIVE STATUS RULE (founder 24 Oct 17:18 PKT): yeh table SAATH KE SAATH update hota hai
+Har kaam ke saath isi turn mein is table ki halat (TODO / READY / deploy pending / LIVE GREEN) + `MIGRATION-LEDGER-24OCT.md` ki ginti (script se dobara) badli jati hai. Phase GREEN sirf jab Basic-user test + live Chrome 1440/820/390 ho chuke.
+
 ## Phases (8)
 | Phase | What | Tech used |
 |---|---|---|
-| M1 DONE (deploy pending) | thread labels/status/move/assign/snooze, templates save/delete, schedule gate | axum+/rpc, tokio |
-| M2 | templates LIST, snippets, signatures, drafts+versions, follow-up, handoff, send-confidence, thread note | axum+/rpc |
+| M1 LIVE GREEN (24 Oct 19:20; E85 assign fix deploy pending) | thread labels/status/move/assign/snooze, templates save/delete, schedule gate | axum+/rpc, tokio |
+| M2 READY (24 Oct 20:10, commit 1520a18; deploy + live test pending; handoff = M2b) | templates LIST, snippets, signatures, drafts+versions, follow-up, handoff, send-confidence, thread note | axum+/rpc |
 | M3 | contacts, companies, workspace/organisations, storage (preflight/commit/state), billing state | axum+/rpc, tokio (storage), Postgres |
 | M4 | auth (18) + trial (7) + passkey leftovers | axum+/rpc, JWT local verify, SQL if needed |
 | M5 | org (27), crm (24), calendar (17), settings, security, integrations | axum+/rpc, tokio (fan-out) |

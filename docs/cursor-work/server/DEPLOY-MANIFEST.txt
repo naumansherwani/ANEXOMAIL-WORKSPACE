@@ -119,14 +119,14 @@ src/lib/settings.ts 93c2da143a18750b
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 4e229795e1208f3c
 server/rust/cal_glue.rs 580b86645b77ac18
-AGENTS.md 5436bff91a95fa12
+AGENTS.md fb7d36d0d639536d
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
 docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md c965f9bbceba4356
+docs/cursor-work/founder/founder-commands.md afdd770225b7ab77
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md df9bf7a6066280e4
+docs/cursor-work/DONE-DO-NOT-REPEAT.md ca37c126cde2ed03
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 1abadf27aade50ad
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 6f1ef76f491cdc65
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 6c997aa8ba0e2a83
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md c02a2678ee734f47
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -640,7 +640,7 @@ server/routes/calendar.ts c3ac0ca2cf5ab3fe
 src/components/app/mail/ThreadNote.tsx 63c294860d01d395
 docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md a3e3b72801636ded
 docs/cursor-work/MIGRATION-PHASES-24OCT.md a21d359e59e7bba7
-docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md 66fe04ccdbec0fae
+docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md aa971397b3f9265f
 server/rust/mailx_core.rs b24c9e64877501ff
 server/rust/mailx_glue.rs 5b138b4c30c7eeda
 docs/cursor-work/server/brain-pro-install.sh 5ab737313069afb6

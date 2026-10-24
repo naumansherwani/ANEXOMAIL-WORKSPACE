@@ -395,3 +395,6 @@ Founder (verbatim): "tune yeh chawal nahi maarni hai yeh repo main note kero".
 - "Sync" / "pull" ka matlab hamesha ek hi cheez: Rule 46 ki technology-wise command (sql-run.sh / rust-engine-install.sh / pull.sh). Docs-only push par jawab: "server command nahi chahiye".
 - Naya qism ki command ki zaroorat ho to: pehle script repo mein likho, sandbox mein chalao, `founder-commands.md` mein daalo, phir founder ko do.
 - Galti ho jaye to turant: ye rule + `DONE-DO-NOT-REPEAT.md` mein note, founder ko Roman Urdu mein sach.
+
+## Rule 50 — Migration phase table saath ke saath update (founder 24 Oct 2026 17:18 PKT, STRICT)
+Founder: poori website 8 phases (M1-M6, L, F, B8) mein latest technology par; "yeh saath ke saath update hoga". `docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md` ka phase table aur `docs/claude/MIGRATION-LEDGER-24OCT.md` (+CSV) har kaam ke saath usi turn mein update (halat + ginti). Ek code path sab account kinds (`resolve_plan`), founder routes alag batch F, shared helpers ek jagah, client sirf `rpcOrRest`, Bun hamesha emergency fallback. Phase GREEN = Basic-user test + Chrome 1440/820/390 live.

@@ -64,3 +64,4 @@
 - 24 Oct 19:20 M1 live GREEN (snooze/folder/status/move/labels/templates); E85 assign fix + Bring back now written, deploy pending
 - 24 Oct 20:10 M2 written (compose procs -> Rust mailx: drafts/versions/templates.list/snippets/signatures/confidence/followup; Bun draft columns fixed; E86 SQL; client rpcOrRest); deploy pending, M1 se baad
 - 24 Oct 22:00 hisaab: docs/claude/MIGRATION-LEDGER-24OCT.md + ENDPOINT-MIGRATION-24OCT.csv (511 Bun endpoints, 132 Rust-first, 379 baqi; 320 Rust procs); E84 SQL nahi tha (Rust-only), isliye E83 -> E85
+- 24 Oct 22:30 Rule 50: migration phase table + ledger saath ke saath update (founder rule)

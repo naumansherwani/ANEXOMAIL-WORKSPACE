@@ -1018,3 +1018,6 @@ mailx module mein mail.drafts.save/versions, templates.list, snippets.list/save,
 
 ### 24 Oct 22:00 — migration hisaab
 Founder ne E83->E85 aur migration ki ginti poochi. Jawab: E84 Rust-only tha. Hisaab `docs/claude/MIGRATION-LEDGER-24OCT.md` (+CSV): 511 Bun endpoints, 132 client Rust-first, 379 baqi, 320 Rust procs. Chat 141 sab se bada baqi hissa. Agla: M2 deploy/live test, M2b handoff, M3.
+
+### 24 Oct 22:30 — Rule 50
+Founder ne 8-phase plan confirm kiya aur rule diya: phase table + ledger saath ke saath update (AGENTS.md Rule 50).

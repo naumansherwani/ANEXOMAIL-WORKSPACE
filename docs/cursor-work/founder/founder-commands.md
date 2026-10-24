@@ -1,5 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 24 Oct 22:30 — founder verbatim (summary): 8 phases M1-M6/L/F/B8 plan confirm; 'yeh rule hai ke yeh saath ke saath update hoga'
+- Halat: DONE (docs) — AGENTS.md Rule 50 + phase table halat. Server command nahi chahiye.
+
 ## ▶ 24 Oct 22:00 — founder: 'sql 83 ke baad 85 kaise? sab update karo + migration hisaab claude folder mein'
 - Halat: DONE (docs) — `docs/claude/MIGRATION-LEDGER-24OCT.md`, CSV. Server command nahi chahiye (docs-only). M2 ki 5 commands upar wali entry mein.
 
