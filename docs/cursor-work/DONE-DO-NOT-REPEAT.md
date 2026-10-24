@@ -480,3 +480,5 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 24 Oct 15:00 ROOMS LIVE-VERIFIED: hint, room_busy reschedule 409, release clears location
 - 24 Oct 16:05 E84 series room check written (Rust, deploy baaki); web sweep: tsc/388 tests OK, lint 14 non-format items noted
 - RULE: Nauman bhai ko hamesha 'aap' kehna, 'tum' nahi (24 Oct 15:17)
+- 24 Oct 15:50 PRO audit start: templates UI, thread notes, domains plural (push baaki)
+- 24 Oct 16:25 PRO fix: Snooze enum bug fixed (Rust+Bun), Snoozed view, templates UI, thread notes (push done, deploy baaki)

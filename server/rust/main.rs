@@ -561,6 +561,26 @@ async fn mail_labels_for(thread_ids: &[String]) -> std::collections::HashMap<Str
     map
 }
 
+/// Current UTC time as `YYYY-MM-DDTHH:MM:SS` (lexically comparable with Postgres timestamptz text in UTC).
+fn mail_now_prefix() -> String {
+    let secs = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_secs() as i64)
+        .unwrap_or(0);
+    let days = secs.div_euclid(86_400);
+    let rem = secs.rem_euclid(86_400);
+    let z = days + 719_468;
+    let era = z.div_euclid(146_097);
+    let doe = z.rem_euclid(146_097);
+    let yoe = (doe - doe / 1460 + doe / 36_524 - doe / 146_096) / 365;
+    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    let mp = (5 * doy + 2) / 153;
+    let d = doy - (153 * mp + 2) / 5 + 1;
+    let m = if mp < 10 { mp + 3 } else { mp - 9 };
+    let y = yoe + era * 400 + if m <= 2 { 1 } else { 0 };
+    format!("{:04}-{:02}-{:02}T{:02}:{:02}:{:02}", y, m, d, rem / 3600, (rem % 3600) / 60, rem % 60)
+}
+
 async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String> {
     let folder = {
         let f = s(input, "folder");
@@ -608,8 +628,9 @@ async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String
         thread_filter = format!("&id=in.({})", ids.join(","));
     }
 
+    let db_folder = if folder == "snoozed" { "inbox" } else { folder.as_str() };
     let mut path = format!(
-        "mail_threads?select=*&org_id=eq.{org_id}&folder=eq.{folder}&order=last_message_at.desc&limit=100{thread_filter}"
+        "mail_threads?select=*&org_id=eq.{org_id}&folder=eq.{db_folder}&order=last_message_at.desc&limit=100{thread_filter}"
     );
     if !account.is_empty() {
         path.push_str(&format!("&account_id=eq.{account}"));
@@ -625,7 +646,21 @@ async fn mail_query_threads(org_id: &str, input: &Value) -> Result<Value, String
     }
 
     let data = sb_select(&path).await?;
-    let rows: Vec<Value> = data.as_array().cloned().unwrap_or_default();
+    let mut rows: Vec<Value> = data.as_array().cloned().unwrap_or_default();
+    if folder == "snoozed" {
+        let now = mail_now_prefix();
+        rows.retain(|t| match t.get("snoozed_until").and_then(|v| v.as_str()) {
+            Some(u) if u.len() >= 19 => u[..19] > now[..],
+            _ => false,
+        });
+    } else if folder == "inbox" {
+        // Snoozed threads stay hidden from the inbox until their time (same as the Bun route).
+        let now = mail_now_prefix();
+        rows.retain(|t| match t.get("snoozed_until").and_then(|v| v.as_str()) {
+            Some(u) if u.len() >= 19 => u[..19] <= now[..],
+            _ => true,
+        });
+    }
     let ids: Vec<String> = rows
         .iter()
         .filter_map(|t| t.get("id")?.as_str().map(|s| s.to_string()))

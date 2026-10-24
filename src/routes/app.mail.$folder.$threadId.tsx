@@ -11,6 +11,7 @@ import { QuoteInChat } from "@/components/app/mail/QuoteInChat";
 import { SafeMailBody } from "@/components/app/mail/SafeMailBody";
 import { ThreadHeaderActions } from "@/components/app/mail/ThreadHeaderActions";
 import { ThreadInsights } from "@/components/app/mail/ThreadInsights";
+import { ThreadNote } from "@/components/app/mail/ThreadNote";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { measureMotion } from "@/lib/experience";
@@ -161,6 +162,8 @@ function ThreadPage() {
         {thread.messages.map((message) => (
           <MailMessage key={message.id} message={message} threadId={thread.id} />
         ))}
+
+        <ThreadNote threadId={thread.id} />
 
         {/* Locked: reply is inline, the thread never leaves the panel. */}
         <InlineReply thread={thread} />

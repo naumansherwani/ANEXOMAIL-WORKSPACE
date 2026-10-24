@@ -134,7 +134,7 @@ async function queryThreads(c: Ctx, req: any) {
     .from("mail_threads")
     .select("*")
     .eq("org_id", c.orgId)
-    .eq("folder", folder)
+    .eq("folder", folder === "snoozed" ? "inbox" : folder)
     .order("last_message_at", { ascending: false })
     .limit(100);
 
@@ -147,6 +147,10 @@ async function queryThreads(c: Ctx, req: any) {
   if (error) throw error;
   const now = Date.now();
   const rows = ((data || []) as any[]).filter((t) => {
+    if (folder === "snoozed") {
+      const u = t.snoozed_until ? new Date(t.snoozed_until).getTime() : NaN;
+      return !Number.isNaN(u) && u > now;
+    }
     if (folder !== "inbox") return true;
     if (!t.snoozed_until) return true;
     const until = new Date(t.snoozed_until).getTime();
@@ -405,8 +409,8 @@ mailRouter.post("/thread/:id/snooze", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
   const until = req.body?.until ? new Date(req.body.until).toISOString() : null;
+  // Snooze never changes the folder (there is no 'snoozed' mail_folder); the inbox hides it until `until`.
   const patch: any = { snoozed_until: until };
-  if (until) patch.folder = "snoozed";
   const { error } = await supa.from("mail_threads").update(patch).eq("id", req.params.id);
   if (error) return res.status(400).json({ error: error.message });
   res.json({ ok: true });

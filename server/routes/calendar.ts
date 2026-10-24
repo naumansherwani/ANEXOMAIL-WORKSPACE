@@ -614,6 +614,8 @@ calendar.post(
   "/work/notes",
   guard(async (c, req, res) => {
     const body = String(req.body?.body ?? "");
+    if (body.length > 20000)
+      return res.status(400).json({ error: { code: "too_long", message: "A note can be up to 20,000 characters" } });
     const threadId = req.body?.thread_id ?? null;
     const eventId = req.body?.event_id ?? null;
     if (!threadId && !eventId)

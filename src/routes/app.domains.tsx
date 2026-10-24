@@ -1890,7 +1890,7 @@ function DomainsPage() {
             {t("Domains")}
           </h3>
           <span className="ax-caption">
-            {capText(domains.length, cap, domains.length === 1 ? "domain" : "domains")} ·{" "}
+            {capText(domains.length, cap, (cap ?? domains.length) === 1 ? "domain" : "domains")} ·{" "}
             {planLabel(data.plan)}
           </span>
           {!wizard && !showHero && (

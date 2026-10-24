@@ -39,12 +39,20 @@ import {
   useSendConfidence,
   useSnippets,
   useTemplates,
+  useSaveTemplate,
+  useDeleteTemplate,
   type ComposeTone,
   type DraftPayload,
 } from "@/lib/compose";
 import { learnWritingPattern } from "@/lib/mail-predict";
 import { removeAttachment, uploadAttachment, useAttachLimits } from "@/lib/mail-attachments";
-import { anyUploading, fmtBytes, precheck, readyIds, type AttachItem } from "@/lib/mail-attachments-core";
+import {
+  anyUploading,
+  fmtBytes,
+  precheck,
+  readyIds,
+  type AttachItem,
+} from "@/lib/mail-attachments-core";
 import { notify } from "@/lib/notify";
 import { useIdentities, useSendMail } from "@/lib/mail";
 import { addressTone } from "@/lib/mail-identity";
@@ -139,6 +147,10 @@ export function ComposeStudio({
   };
 
   const templates = useTemplates();
+  const saveTpl = useSaveTemplate();
+  const delTpl = useDeleteTemplate();
+  const [tplOpen, setTplOpen] = useState(false);
+  const [tplName, setTplName] = useState("");
   const snippets = useSnippets();
   // Data decides, not the plan: a Basic user who connected their own domain still has a company
   // address and must be able to send FROM it (the server allow-list is the real gate, not the plan).
@@ -230,9 +242,23 @@ export function ComposeStudio({
       const key = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
       const ctl = new AbortController();
       aborts.current.set(key, ctl);
-      setFilesBoth([...filesRef.current, { key, name: file.name, size: file.size, status: "uploading", progress: 0 }]);
-      uploadAttachment(file, { signal: ctl.signal, onProgress: (progress) => patchFile(key, { progress }) })
-        .then((r) => patchFile(key, { status: "ready", progress: 100, id: r.id, deduped: r.deduped, scanned: r.scanned }))
+      setFilesBoth([
+        ...filesRef.current,
+        { key, name: file.name, size: file.size, status: "uploading", progress: 0 },
+      ]);
+      uploadAttachment(file, {
+        signal: ctl.signal,
+        onProgress: (progress) => patchFile(key, { progress }),
+      })
+        .then((r) =>
+          patchFile(key, {
+            status: "ready",
+            progress: 100,
+            id: r.id,
+            deduped: r.deduped,
+            scanned: r.scanned,
+          }),
+        )
         .catch((e: Error & { code?: string }) => {
           if (e.code === "aborted") return;
           patchFile(key, { status: "error", error: e.message });
@@ -269,18 +295,26 @@ export function ComposeStudio({
       { ...payload, attachment_ids: readyIds(files), hold_seconds: UNDO_HOLD_SECONDS },
       {
         onSuccess: (res) => {
-          notify.undoable("Sending…", `Held for ${UNDO_HOLD_SECONDS}s. Changed your mind?`, UNDO_HOLD_SECONDS * 1000, () => {
-            cancelScheduledSend(res.id)
-              .then(() => {
-                void qc.invalidateQueries({ queryKey: ["mail"] });
-                notify.done("Not sent", "Your message was stopped before it left.");
-              })
-              .catch((err: { status?: number }) =>
-                notify.failed(err?.status === 409 ? "Already sent" : "Could not undo", {
-                  description: err?.status === 409 ? "It left your workspace before Undo." : "Please try again.",
-                }),
-              );
-          });
+          notify.undoable(
+            "Sending…",
+            `Held for ${UNDO_HOLD_SECONDS}s. Changed your mind?`,
+            UNDO_HOLD_SECONDS * 1000,
+            () => {
+              cancelScheduledSend(res.id)
+                .then(() => {
+                  void qc.invalidateQueries({ queryKey: ["mail"] });
+                  notify.done("Not sent", "Your message was stopped before it left.");
+                })
+                .catch((err: { status?: number }) =>
+                  notify.failed(err?.status === 409 ? "Already sent" : "Could not undo", {
+                    description:
+                      err?.status === 409
+                        ? "It left your workspace before Undo."
+                        : "Please try again.",
+                  }),
+                );
+            },
+          );
           afterSent();
           onSent?.();
         },
@@ -291,7 +325,11 @@ export function ComposeStudio({
           }
           // Hold queue not wired yet: send directly rather than lose the mail.
           send.mutate(
-            { ...payload, attachment_ids: readyIds(files), ...(inReplyTo ? { in_reply_to: inReplyTo } : {}) },
+            {
+              ...payload,
+              attachment_ids: readyIds(files),
+              ...(inReplyTo ? { in_reply_to: inReplyTo } : {}),
+            },
             {
               onSuccess: () => {
                 notify.done("Sent", "The message left your workspace.");
@@ -335,7 +373,9 @@ export function ComposeStudio({
       return;
     }
     if (anyUploading(files)) {
-      notify.failed("Still uploading", { description: "Wait for your attachments to finish, or remove them." });
+      notify.failed("Still uploading", {
+        description: "Wait for your attachments to finish, or remove them.",
+      });
       return;
     }
     // Pre-send confidence scan runs server-side first.
@@ -526,26 +566,36 @@ export function ComposeStudio({
         {/* templates — Pro card. Snippets stay for every package. */}
         <div className="flex flex-wrap items-center gap-2">
           {proMail ? (
-          <select
-            aria-label="Insert template"
-            value=""
-            onChange={(e) => {
-              const tpl = templates.data?.templates.find((t) => t.id === e.target.value);
-              if (!tpl) return;
-              if (tpl.subject) setSubject(tpl.subject);
-              setBody((v) => (v ? `${v}\n\n${tpl.body}` : tpl.body));
-            }}
-            className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
-          >
-            <option value="">
-              {templates.isError ? "Templates — not wired yet" : "Insert template"}
-            </option>
-            {templates.data?.templates.map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name} · {t.scope}
+            <select
+              aria-label="Insert template"
+              value=""
+              onChange={(e) => {
+                const tpl = templates.data?.templates.find((t) => t.id === e.target.value);
+                if (!tpl) return;
+                if (tpl.subject) setSubject(tpl.subject);
+                setBody((v) => (v ? `${v}\n\n${tpl.body}` : tpl.body));
+              }}
+              className="h-8 rounded-lg border border-border bg-card px-2 text-[11px] text-foreground [@media(pointer:coarse)]:h-11"
+            >
+              <option value="">
+                {templates.isError ? "Templates — not wired yet" : "Insert template"}
               </option>
-            ))}
-          </select>
+              {templates.data?.templates.map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name} · {t.scope}
+                </option>
+              ))}
+            </select>
+          ) : null}
+          {proMail ? (
+            <button
+              type="button"
+              onClick={() => setTplOpen((o) => !o)}
+              aria-expanded={tplOpen}
+              className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+            >
+              Templates…
+            </button>
           ) : null}
           {snippets.data?.snippets.slice(0, 4).map((s) => (
             <button
@@ -559,6 +609,82 @@ export function ComposeStudio({
             </button>
           ))}
         </div>
+        {proMail && tplOpen ? (
+          <div className="space-y-2 rounded-lg border border-border bg-card p-2 text-[12px]">
+            <p className="text-muted-foreground">
+              Save what you wrote as a template (subject + message). Use {"{{first_name}}"} for a
+              value you fill in each time.
+            </p>
+            <div className="flex flex-wrap items-center gap-2">
+              <input
+                value={tplName}
+                maxLength={80}
+                onChange={(e) => setTplName(e.target.value)}
+                placeholder="Template name"
+                aria-label="Template name"
+                className="h-8 min-w-[10rem] flex-1 rounded-lg border border-border bg-background px-2 text-base sm:text-[12px]"
+              />
+              <button
+                type="button"
+                disabled={!tplName.trim() || !body.trim() || saveTpl.isPending}
+                onClick={() =>
+                  saveTpl.mutate(
+                    { name: tplName.trim(), subject: subject.trim(), body },
+                    {
+                      onSuccess: () => {
+                        setTplName("");
+                        notify.done("Template saved");
+                      },
+                      onError: (e) =>
+                        notify.failed(
+                          e.code === "too_many"
+                            ? "You can keep up to 50 templates"
+                            : "Could not save the template",
+                          {
+                            description: e.message,
+                          },
+                        ),
+                    },
+                  )
+                }
+                className="ax-press ax-hit rounded-lg bg-primary px-3 py-1 text-[12px] text-primary-foreground disabled:opacity-50"
+              >
+                {saveTpl.isPending ? "Saving…" : "Save as template"}
+              </button>
+            </div>
+            {!body.trim() ? (
+              <p className="text-muted-foreground">Write the message first, then save it.</p>
+            ) : null}
+            {(templates.data?.templates ?? []).filter((t) => t.scope === "personal").length > 0 ? (
+              <ul className="space-y-1">
+                {(templates.data?.templates ?? [])
+                  .filter((t) => t.scope === "personal")
+                  .map((t) => (
+                    <li key={t.id} className="flex items-center gap-2">
+                      <span className="min-w-0 flex-1 truncate">{t.name}</span>
+                      <button
+                        type="button"
+                        aria-label={`Delete template ${t.name}`}
+                        disabled={delTpl.isPending}
+                        onClick={() =>
+                          delTpl.mutate(
+                            { id: t.id },
+                            {
+                              onSuccess: () => notify.done("Template removed"),
+                              onError: () => notify.failed("Could not remove it"),
+                            },
+                          )
+                        }
+                        className="ax-press rounded px-2 py-0.5 text-muted-foreground hover:text-danger"
+                      >
+                        Remove
+                      </button>
+                    </li>
+                  ))}
+              </ul>
+            ) : null}
+          </div>
+        ) : null}
 
         {/* Phase 12A — inline word prediction (ghost text). Composer wahi hai. */}
         <GhostTextArea
@@ -597,78 +723,74 @@ export function ComposeStudio({
         )}
 
         {leoUi ? (
-        <div className="flex flex-wrap items-center gap-2">
-          <Button
-            type="button"
-            variant="secondary"
-            className="ax-press"
-            disabled={leo.isPending}
-            onClick={() => runLeo({ task: "COACH" })}
-          >
-            {leo.isPending ? (
-              <BrandSpinner className="size-4" />
-            ) : (
-              <Wand2 className="size-4" />
-            )}
-            Draft coach
-          </Button>
-          {TONES.map((tone) => (
-            <button
-              key={tone.id}
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
               type="button"
-              onClick={() => runLeo({ task: "REWRITE", tone: tone.id })}
+              variant="secondary"
+              className="ax-press"
+              disabled={leo.isPending}
+              onClick={() => runLeo({ task: "COACH" })}
+            >
+              {leo.isPending ? <BrandSpinner className="size-4" /> : <Wand2 className="size-4" />}
+              Draft coach
+            </Button>
+            {TONES.map((tone) => (
+              <button
+                key={tone.id}
+                type="button"
+                onClick={() => runLeo({ task: "REWRITE", tone: tone.id })}
+                disabled={leo.isPending}
+                className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
+              >
+                {tone.label}
+              </button>
+            ))}
+            <button
+              type="button"
+              onClick={() => runLeo({ task: "TRANSLATE", language })}
               disabled={leo.isPending}
               className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
             >
-              {tone.label}
+              <Languages className="mr-1 inline size-3" />
+              Translate my reply
             </button>
-          ))}
-          <button
-            type="button"
-            onClick={() => runLeo({ task: "TRANSLATE", language })}
-            disabled={leo.isPending}
-            className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
-          >
-            <Languages className="mr-1 inline size-3" />
-            Translate my reply
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              jimmy.mutate(
-                {
-                  ...(threadId ? { thread_id: threadId } : {}),
-                  to,
-                  subject,
-                  body,
-                  question: "Draft the strongest reply with full company context.",
-                },
-                {
-                  onSuccess: (result) => {
-                    if (result.reply) setBody(result.reply);
-                    notify.done(
-                      "Jimmy drafted this",
-                      result.audited_by ? `Audited by ${result.audited_by}.` : undefined,
-                    );
+            <button
+              type="button"
+              onClick={() =>
+                jimmy.mutate(
+                  {
+                    ...(threadId ? { thread_id: threadId } : {}),
+                    to,
+                    subject,
+                    body,
+                    question: "Draft the strongest reply with full company context.",
                   },
-                  onError: (error) =>
-                    reportFailure(
-                      error.isNotImplemented,
-                      error.status === 402 || error.status === 403
-                        ? "Jimmy is available on Business plans."
-                        : error.message,
-                      "POST /api/leo/escalate",
-                    ),
-                },
-              )
-            }
-            disabled={jimmy.isPending}
-            className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-foreground hover:bg-secondary"
-          >
-            <Crown className="mr-1 inline size-3" />
-            Jimmy se poochho
-          </button>
-        </div>
+                  {
+                    onSuccess: (result) => {
+                      if (result.reply) setBody(result.reply);
+                      notify.done(
+                        "Jimmy drafted this",
+                        result.audited_by ? `Audited by ${result.audited_by}.` : undefined,
+                      );
+                    },
+                    onError: (error) =>
+                      reportFailure(
+                        error.isNotImplemented,
+                        error.status === 402 || error.status === 403
+                          ? "Jimmy is available on Business plans."
+                          : error.message,
+                        "POST /api/leo/escalate",
+                      ),
+                  },
+                )
+              }
+              disabled={jimmy.isPending}
+              className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-foreground hover:bg-secondary"
+            >
+              <Crown className="mr-1 inline size-3" />
+              Jimmy se poochho
+            </button>
+          </div>
         ) : null}
 
         {/* G38 — attachments: asli upload (Rust), type/virus/size server dekhta hai; yahan sirf wahi dikhta hai jo sach hai */}
@@ -695,7 +817,11 @@ export function ComposeStudio({
             type="button"
             onClick={() => setShowVersions((v) => !v)}
             disabled={!draftId}
-            title={draftId ? "See earlier versions of this draft" : "Opens after your first autosave — keep typing"}
+            title={
+              draftId
+                ? "See earlier versions of this draft"
+                : "Opens after your first autosave — keep typing"
+            }
             className="ax-press ax-hit rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground disabled:opacity-40"
           >
             <History className="mr-1 inline size-3" />
@@ -715,7 +841,11 @@ export function ComposeStudio({
         </div>
 
         {files.length > 0 && (
-          <ul className="flex flex-col gap-1.5" data-testid="compose-attachments" aria-label="Attachments">
+          <ul
+            className="flex flex-col gap-1.5"
+            data-testid="compose-attachments"
+            aria-label="Attachments"
+          >
             {files.map((f) => (
               <li
                 key={f.key}
@@ -725,7 +855,12 @@ export function ComposeStudio({
                 <Paperclip className="size-3 shrink-0 text-muted-foreground" aria-hidden="true" />
                 <span className="min-w-0 flex-1">
                   <span className="block truncate text-foreground">{f.name}</span>
-                  <span className={cn("block truncate", f.status === "error" ? "text-destructive" : "text-steel")}>
+                  <span
+                    className={cn(
+                      "block truncate",
+                      f.status === "error" ? "text-destructive" : "text-steel",
+                    )}
+                  >
                     {f.status === "uploading"
                       ? `Uploading… ${f.progress}%`
                       : f.status === "error"
@@ -733,7 +868,12 @@ export function ComposeStudio({
                         : `${fmtBytes(f.size)}${f.scanned ? " · virus-checked" : ""}`}
                   </span>
                 </span>
-                {f.status === "uploading" ? <BrandSpinner className="size-3.5 shrink-0 text-muted-foreground" aria-hidden="true" /> : null}
+                {f.status === "uploading" ? (
+                  <BrandSpinner
+                    className="size-3.5 shrink-0 text-muted-foreground"
+                    aria-hidden="true"
+                  />
+                ) : null}
                 <button
                   type="button"
                   onClick={() => dropFile(f)}
@@ -745,7 +885,8 @@ export function ComposeStudio({
               </li>
             ))}
             <li className="text-[10px] text-steel">
-              {fmtBytes(files.filter((f) => f.status !== "error").reduce((n, f) => n + f.size, 0))} of {fmtBytes(limits.message_cap_bytes)} per message
+              {fmtBytes(files.filter((f) => f.status !== "error").reduce((n, f) => n + f.size, 0))}{" "}
+              of {fmtBytes(limits.message_cap_bytes)} per message
             </li>
           </ul>
         )}
@@ -827,15 +968,15 @@ export function ComposeStudio({
             <span>{proMail && scheduling ? "Schedule" : "Send"}</span>
           </Button>
           {proMail ? (
-          <Button
-            type="button"
-            variant="ghost"
-            className="ax-press ax-tap"
-            onClick={() => setScheduling((v) => !v)}
-          >
-            <Clock className="size-4" />
-            {scheduling ? "Send now instead" : "Schedule send"}
-          </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="ax-press ax-tap"
+              onClick={() => setScheduling((v) => !v)}
+            >
+              <Clock className="size-4" />
+              {scheduling ? "Send now instead" : "Schedule send"}
+            </Button>
           ) : null}
           {followUpDays > 0 && (
             <span className="flex items-center gap-1 text-[10px] text-steel">

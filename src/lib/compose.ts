@@ -139,6 +139,26 @@ export function useTemplates() {
   });
 }
 
+export function useSaveTemplate() {
+  const qc = useQueryClient();
+  return useMutation<{ id: string }, ApiError, { name: string; subject: string; body: string }>({
+    mutationFn: (p) =>
+      api<{ id: string }>("/api/mail/templates", { method: "POST", body: JSON.stringify(p) }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "templates"] }),
+  });
+}
+
+export function useDeleteTemplate() {
+  const qc = useQueryClient();
+  return useMutation<{ removed: number }, ApiError, { id: string }>({
+    mutationFn: ({ id }) =>
+      api<{ removed: number }>(`/api/mail/templates/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      }),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "templates"] }),
+  });
+}
+
 export function useSnippets() {
   return useQuery<{ snippets: MailSnippet[] }, ApiError>({
     queryKey: ["mail", "snippets"],
@@ -184,14 +204,22 @@ export function useScheduleSend() {
   >({
     // B3: Rust PRIMARY (mail.schedule), Bun /api/mail/schedule fallback (Rust 404/501/502/503 par)
     mutationFn: (payload) =>
-      rpcOrRest("mail.schedule", { path: "/api/mail/schedule", method: "POST", body: payload }, payload),
+      rpcOrRest(
+        "mail.schedule",
+        { path: "/api/mail/schedule", method: "POST", body: payload },
+        payload,
+      ),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail"] }),
   });
 }
 
 /** Plain call (no hook): the Undo toast outlives the closed composer, so it cannot depend on a mounted component. */
 export function cancelScheduledSend(id: string): Promise<unknown> {
-  return rpcOrRest("mail.schedule.cancel", { path: `/api/mail/schedule/${id}/cancel`, method: "POST", body: {} }, { id });
+  return rpcOrRest(
+    "mail.schedule.cancel",
+    { path: `/api/mail/schedule/${id}/cancel`, method: "POST", body: {} },
+    { id },
+  );
 }
 
 export function useCancelScheduled() {

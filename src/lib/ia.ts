@@ -44,10 +44,11 @@ export const ADDRESS_MANAGER_FLAG = {
 } as const;
 
 export type MailFolder =
-  "inbox" | "assigned" | "waiting" | "sent" | "drafts" | "archive" | "spam" | "trash";
+  "inbox" | "snoozed" | "assigned" | "waiting" | "sent" | "drafts" | "archive" | "spam" | "trash";
 
 export const MAIL_FOLDERS: { id: MailFolder; label: string }[] = [
   { id: "inbox", label: "Inbox" },
+  { id: "snoozed", label: "Snoozed" },
   { id: "assigned", label: "Assigned to me" },
   { id: "waiting", label: "Waiting" },
   { id: "sent", label: "Sent" },

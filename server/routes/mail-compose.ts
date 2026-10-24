@@ -95,17 +95,35 @@ mailComposeRouter.get("/templates", async (req, res) => {
 mailComposeRouter.post("/templates", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const b = req.body || {};
+  const name = String(b.name ?? "").trim();
+  const body = String(b.body ?? "");
+  const subject = b.subject == null ? null : String(b.subject).slice(0, 200);
+  if (!name || name.length > 80) return res.status(400).json({ error: "bad_name" });
+  if (!body.trim() || body.length > 20000) return res.status(400).json({ error: "bad_body" });
+  // 50 templates per person: a buyer cannot fill the table
+  const have = await supa.from("mail_templates").select("id", { count: "exact", head: true }).eq("org_id", c.orgId).eq("user_id", c.userId);
+  if ((have.count ?? 0) >= 50) return res.status(409).json({ error: "too_many" });
+  const vars = Array.from(new Set([...body.matchAll(/{{\s*([\w.]+)\s*}}/g)].map((m) => m[1]!))).slice(0, 30);
   const { data, error } = await supa.from("mail_templates").insert({
     org_id: c.orgId,
     user_id: c.userId,
-    name: b.name || "Untitled",
-    scope: b.scope === "org" ? "org" : "personal",
-    subject: b.subject || null,
-    body: b.body || "",
-    variables: b.variables || [],
+    name,
+    scope: "personal",
+    subject,
+    body,
+    variables: vars,
   }).select("id").single();
   if (error) return res.status(500).json({ error: error.message });
   res.json({ id: data!.id });
+});
+
+// Only your own template can be removed (personal scope, your user id, your workspace).
+mailComposeRouter.delete("/templates/:id", async (req, res) => {
+  const c = await ctx(req, res); if (!c) return;
+  const { data, error } = await supa.from("mail_templates").delete()
+    .eq("id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
+  if (error) return res.status(500).json({ error: error.message });
+  res.json({ removed: (data || []).length });
 });
 
 mailComposeRouter.get("/snippets", async (req, res) => {

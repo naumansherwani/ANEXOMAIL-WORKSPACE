@@ -940,3 +940,18 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 
 ## RULE (24 Oct 15:17) — BOLNE KA ANDAAZ
 Founder ne kaha: "tum/tumhare" nahi. HAMESHA "aap" aur "Nauman bhai" (izzat se). Roman Urdu, saaf. Purane messages mein "tum" aaya to ab nahi.
+
+## >>> NAYA KAAM (24 Oct 15:25): PRO PACKAGE GREEN <<<
+- Nauman bhai: package cards par jo offer hai, Pro mein woh SAB waisa hi milna chahiye (Basic isi tarah green kiya tha). Method: Chrome mein Pro package + plan doc dekho, match karo ke live user ko kya milta hai ("real buyer Pro kyon le ga"). Loophole mile to TURANT fix + dobara test. JAB TAK PRO GREEN DECLARE NA HO, AGLA KAAM (Founder account etc.) NAHI. Har step ke baad context update.
+- Rooms E84 Rust server par chal gaya (Nauman bhai ne pull kiya); series live test baaki (chhota).
+
+## PRO AUDIT — live findings (24 Oct 15:50, Chrome, pro.buyer@anexomail.com = Pro £46, 10GB, 1/1 seat)
+Card (plans.ts Pro) vs live: ✓ plans page = billing cards = plans.ts; ✓ Domains cap 3 + mailboxes 0/5; ✓ billing 10GB £46; ✓ Compose: Insert template + Schedule send dikhte; ✓ Work: Tasks add (POST /api/work/tasks 200), Work chain Pro, Decision ledger Business+ (sahi gate); ✓ thread: Snooze/Done/Archive/Label/Meeting.
+LOOPHOLES MILE + FIX (Web+Bun, push baaki): (1) "Email templates" — list khali, banane ka koi UI nahi => compose mein "Templates…" panel: Save as template + Remove, server POST validate (naam/body/50 limit) + DELETE route. (2) Domains "1 of 3 domain" => "domains". (3) "Notes" sirf meeting par thi, mail thread par nahi => ThreadNote (Pro+) NoteDoc thread par; server note 20k cap.
+Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared inbox (verified domain chahiye), thread analytics (ThreadInsights 'Best time to send' dikha), 48h support text, "Everything in Basic" items, mobile 390/820, 'Boards' (TaskBoard 4 column dikha).
+
+### 24 Oct 16:25 — PRO audit fix block 2
+- Founder: "rust primary hai, jo technology use ho woh apply karo" -> fixes dono (Rust + Bun) mein.
+- Snooze loophole FIXED: server ab folder="snoozed" nahi likhta; Rust `mail_query_threads` + Bun `queryThreads` inbox mein future-snoozed chhupate hain; virtual folder "snoozed" (ia.ts, MailRail) = inbox + snoozed_until > now.
+- Bhi: templates UI, thread notes, domain plural, notes cap (pichla block).
+- Baaki Pro audit: deploy ke baad live re-test (Snooze, templates, notes, domain), Schedule send, shared inbox collision (verified-domain account chahiye), thread analytics, 48h support text, Basic items, TaskBoard, mobile 390/820. Pro abhi GREEN declare NAHI.

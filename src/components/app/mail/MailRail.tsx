@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import {
+  AlarmClock,
   Archive,
   AtSign,
   Clock,
@@ -25,6 +26,7 @@ import { cn } from "@/lib/utils";
 
 const FOLDER_ICON: Record<MailFolder, ComponentType<{ className?: string }>> = {
   inbox: Inbox,
+  snoozed: AlarmClock,
   assigned: UserCheck,
   waiting: Clock,
   sent: Send,
