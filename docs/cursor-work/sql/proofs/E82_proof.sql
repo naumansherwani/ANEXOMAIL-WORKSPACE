@@ -23,6 +23,7 @@ begin
   perform public.calendar_room_book(o,mem,e1,rid); select count(*) into n from public.calendar_attendees where event_id=e1; assert n=1,'idempotent';
   assert (public.calendar_room_release(o,oth,e1,rid))->>'error'='not_organiser','release forbidden';
   assert (public.calendar_room_release(o,mem,e1,rid))->>'released'='1','release';
+  assert (select location from public.calendar_events where id=e1) is null,'release clears auto location';
   assert (public.calendar_room_book(o,oth,e2,rid))->>'booked'='true','free after release';
   perform public.calendar_room_archive(o,adm,rid); assert (public.calendar_room_book(o,mem,e1,rid))->>'error'='no_room','archived not bookable';
   raise notice 'E82 PROOF: ALL PASS';

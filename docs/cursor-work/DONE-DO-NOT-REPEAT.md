@@ -471,3 +471,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - Calendar GREEN 23 Oct 11:05: #8 Rooms green; #7 Google sync DROPPED/parked by founder
 - Rooms deployed on server 24 Oct (SQL+Rust+Web all OK)
 - CALENDAR GREEN HANDOVER 24 Oct 14:25 (12 green, #7 deferred)
+- Rooms live test 24 Oct: create OK, book OK, release OK; bug: location rehti thi -> E82 release fix (14:35)

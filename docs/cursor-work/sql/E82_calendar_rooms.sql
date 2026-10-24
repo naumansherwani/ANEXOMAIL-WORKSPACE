@@ -183,6 +183,12 @@ begin
   end if;
   delete from public.calendar_attendees where event_id = p_event and org_id = p_org and lower(address) = v_addr;
   get diagnostics v_n = row_count;
+  -- book ne jo location likhi thi (room ka naam) woh release par wapas khali; kisi ki apni likhi jagah nahi chhedi jati
+  if v_n > 0 then
+    update public.calendar_events e set location = null
+     where e.id = p_event and e.org_id = p_org
+       and e.location = (select r.name || coalesce(' — ' || r.location, '') from public.calendar_rooms r where r.id = p_room);
+  end if;
   return jsonb_build_object('released', v_n);
 end $$;
 
