@@ -930,3 +930,10 @@ Live test mein mila: room book karne se meeting ki jagah "Test room" likhi jati 
 ## 24 Oct 14:45 — Rooms fix 2: room "guest" ki tarah na dikhe/na gine — SIRF Web
 Live test mein mila: booked room meeting ki Guests list mein "room-xxxx@rooms.anexomail.com — Yes" aur guest ginti (3) mein aa raha tha. Ab room guest list, ginti, local-time bar mein nahi aata (sirf "Room" section mein dikhta hai).
 `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 24 Oct 15:05 — Rooms fix 3 (DB guard): room ko koi bhi raste se double-book na kar sake — SQL -> Rust -> restart
+Loophole: (a) guest ki jagah room ka address haath se likhna, (b) booked meeting ko aisay waqt par reschedule/drag karna jahan room doosri meeting ke paas ho — dono `calendar_room_book` se nahi guzarte the. Ab database trigger (E83) har raste par roke: `room_busy` (aur anjaan/archive/doosri-org room par `no_room`). Rust is error ko 409 "A booked room is already taken at that time" banata hai. Honest haad: repeat meeting ka sirf pehla slot check hota hai.
+1. SQL (E83 + CHECK_E83 3 t): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+3. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+(Web pull 14:45 wala pehle na chalaya ho to woh bhi.)

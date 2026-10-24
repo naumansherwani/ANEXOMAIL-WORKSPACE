@@ -94,6 +94,11 @@ fn fail(status: StatusCode, code: &str, msg: &str) -> axum::response::Response {
     crate::err(status, code, msg).into_response()
 }
 
+/// E83: DB room guard refused the new time (a booked room is busy then).
+fn room_busy() -> axum::response::Response {
+    fail(StatusCode::CONFLICT, "room_busy", "A booked room is already taken at that time. Release the room or pick another time.")
+}
+
 async fn v2_ready() -> bool {
     if V2_READY.load(Ordering::Relaxed) {
         return true;
@@ -934,6 +939,7 @@ async fn meta_set(me: &Who, input: &Value) -> axum::response::Response {
     let id = st(&ev, "id");
     match crate::sb_patch(&format!("calendar_events?id=eq.{}&org_id=eq.{}", id, me.org_id), Value::Object(patch)).await {
         Ok(_) => crate::ok(json!({ "ok": true, "id": id })).into_response(),
+        Err(e) if e.contains("room_busy") => room_busy(),
         Err(_) => fail(StatusCode::INTERNAL_SERVER_ERROR, "server_error", "Calendar failed"),
     }
 }
@@ -1331,13 +1337,15 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
         patch.insert("cancelled_at".into(), json!(cal::fmt_rfc3339(now_epoch())));
     }
     patch.insert("updated_at".into(), json!(cal::fmt_rfc3339(now_epoch())));
-    if crate::sb_patch(
+    if let Err(e) = crate::sb_patch(
         &format!("calendar_events?id=eq.{}&org_id=eq.{}", id, me.org_id),
         Value::Object(patch),
     )
     .await
-    .is_err()
     {
+        if e.contains("room_busy") {
+            return room_busy();
+        }
         return fail(
             StatusCode::INTERNAL_SERVER_ERROR,
             "server_error",

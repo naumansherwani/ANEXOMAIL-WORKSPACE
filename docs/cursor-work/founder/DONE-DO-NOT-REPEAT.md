@@ -46,3 +46,4 @@
 - Rule: har message ke baad context update (founder 24 Oct)
 - 24 Oct 14:30 context checkpoint: rooms live-tested, release-location fix pending server SQL
 - 24 Oct 14:45 rooms: Busy live OK; bug2 guest-list fix (Web)
+- 24 Oct 15:05 E83 room DB guard written+proved (deploy baaki)

@@ -918,3 +918,9 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 ## CHECKPOINT 24 Oct 14:45 — Rooms live: Busy OK, 2 bug fix
 - SQL fix (release location) server par CHALI (CHECK_E82 6/6). Live: "ZZ room busy test" overlapping meeting par room "Busy" dikha (GREEN proof); test meeting cancel kar di (koi guest nahi, mail nahi).
 - Bug 2: room guest list/ginti mein dikhta tha -> Web fix withoutRooms (lib/rooms.ts), calendar.ts select + Guests.tsx. Founder ko Web pull (founder-commands 14:45). Gmail test meeting par abhi "Test room" booked hai — pull ke baad Release karke saaf karna (ya main).
+
+## CHECKPOINT 24 Oct 15:05 — Rooms loophole sweep: DB guard E83
+- Founder niyam: live testing mein jo loophole mile SAB fix, ek bhi nahi chhodna. Mile: (1) release location, (2) room guest ginti/list, (3) room double-book bypass (manual guest + reschedule). 1 server par; 2 Web pull baaki; 3 = E83 + cal_glue room_busy 409 (SQL -> Rust -> restart).
+- E83: calendar_room_guard + 2 triggers; proof ALL PASS + mutation pakda; E82 proof ab bhi pass. Haad: repeat series sirf pehla slot.
+- Chrome "Finding ... Failed" = meri find-tool ki khoj fail hui (page ka view badla tha: month/day), app ka bug nahi.
+- Baaki live test: E83 deploy ke baad reschedule ko busy slot par dekhna.
