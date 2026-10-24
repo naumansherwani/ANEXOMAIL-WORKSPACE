@@ -983,3 +983,8 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 ### 24 Oct 17:45 — MIGRATION PHASES locked (docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md)
 - 8 phases: M1(done) M2 M3 M4 M5 L(WebTransport live) M6 F(FOUNDER alag batch) B8. Sab account kinds (basic/pro/business/business pro/personal/basic personal/family) EK hi code path: resolve_plan se gate, koi per-kind duplicate nahi. Founder routes kabhi buyer batch mein mix nahi. Bun hamesha emergency fallback.
 - Per-technology commands: SQL / Rust(+restart) / Web — har batch ki entry batati hai kaun si lagti hain.
+
+### 24 Oct 17:55 — FOUNDER ORDER (locked 16:12 PKT)
+- PEHLE ~510 Bun endpoints latest technology par (jis kaam ke liye jo tech: axum+/rpc request/response, tokio workers/fan-out, WebTransport live push), PHIR packages GREEN: Pro -> Business -> Business Pro. Pro abhi GREEN nahi.
+- Family accounts: lifetime plan mila hai par product mein REAL BUYER jaisa (wahi features/gates/limits, resolve_plan se). Code mein koi special-case nahi; tests mein har plan ka family account.
+- Koi mixed code nahi. Pull command har batch ke saath technology ke hisaab se (SQL / Rust+restart / Web).

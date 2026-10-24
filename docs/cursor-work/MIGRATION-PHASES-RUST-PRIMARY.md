@@ -7,6 +7,11 @@ Rules (founder, 24 Oct 2026):
 - No duplicate code: shared helpers live ONCE in `server/rust/main.rs` (`pro_plan_ok`, `mail_is_uuid`, `mail_pct`, `mail_thread_owned`, `sb_*`) or in a `*_core.rs` / `*_glue.rs` module; client calls go through `rpcOrRest` only.
 - Every batch: Rust proc + same plan gate + Basic-user test + Bun validation parity + live Chrome test (1440 / 820 / 390) before GREEN.
 
+- Family accounts: they got LIFETIME plans (see family_accounts), but in the product they are REAL BUYERS: same features, same gates, same limits as the plan they hold. Never special-case them in code; `resolve_plan` already maps them. Tests must include a family account of each plan.
+- ORDER (locked 24 Oct 16:12): FIRST all ~510 Bun endpoints migrate to the latest technology (phases below, each in the technology that fits: axum/rpc, tokio, WebTransport). THEN the packages are made GREEN one by one: Pro -> Business -> Business Pro (live test 1440/820/390). Pro stays "not green" until its Bun-only endpoints are on Rust.
+- No mixed code: one technology per job, no second copy of logic in Bun and Rust beyond the thin fallback validation parity.
+- Pull commands are given PER TECHNOLOGY with each batch (SQL / Rust+restart / Web), only the ones that batch needs.
+
 ## Phases (8)
 | Phase | What | Tech used |
 |---|---|---|
