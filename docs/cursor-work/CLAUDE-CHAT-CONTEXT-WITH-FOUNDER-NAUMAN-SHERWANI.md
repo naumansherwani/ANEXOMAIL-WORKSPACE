@@ -914,3 +914,7 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - Bug mila: Release ke baad meeting ki location "Test room" rehti thi. Fix: E82 release auto-location saaf (commit ae13b9c/20b1e70). Local proof ALL PASS. SERVER PAR SQL baaki: founder ko sql-run.sh chalana hai (founder-commands 14:35). Us meeting par purani "Test room" location ek baar Book+Release se saaf hogi.
 - Abhi baaki: overlapping meeting par "Busy" ka live test (test meeting banani padegi, founder ki ijazat). "Test room" workspace mein maujood.
 - Founder ka niyam: HAR message ke baad context/ledger/manifest update + push (compact se pehle). Founder account abhi shuru NAHI.
+
+## CHECKPOINT 24 Oct 14:45 — Rooms live: Busy OK, 2 bug fix
+- SQL fix (release location) server par CHALI (CHECK_E82 6/6). Live: "ZZ room busy test" overlapping meeting par room "Busy" dikha (GREEN proof); test meeting cancel kar di (koi guest nahi, mail nahi).
+- Bug 2: room guest list/ginti mein dikhta tha -> Web fix withoutRooms (lib/rooms.ts), calendar.ts select + Guests.tsx. Founder ko Web pull (founder-commands 14:45). Gmail test meeting par abhi "Test room" booked hai — pull ke baad Release karke saaf karna (ya main).

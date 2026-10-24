@@ -26,6 +26,13 @@ export function isRoomAddress(a: string): boolean {
   return ROOM_ADDR.test(a.trim());
 }
 
+/** Guests without the rooms: a booked room is a place, not a person — never counted or listed as a guest. */
+export function withoutRooms<T extends { address: string }>(rows: T[]): T[] {
+  return rows.some((r) => isRoomAddress(r.address))
+    ? rows.filter((r) => !isRoomAddress(r.address))
+    : rows;
+}
+
 /** Plain-language text for the server's error code. */
 export function roomError(e: { code?: string; message?: string } | null | undefined): string {
   switch (e?.code) {

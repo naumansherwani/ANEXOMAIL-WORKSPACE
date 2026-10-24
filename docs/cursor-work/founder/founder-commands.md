@@ -926,3 +926,7 @@ Test: Calendar -> "⋯" -> Calendar settings -> "Rooms & resources" -> naam likh
 ## 24 Oct 14:35 — Rooms fix: Release par auto-location saaf — SIRF SQL
 Live test mein mila: room book karne se meeting ki jagah "Test room" likhi jati hai, par Release ke baad woh rehti thi. Ab Release us auto-likhi jagah ko hata deti hai (apni likhi jagah nahi chhedti). SQL E82 ki sha badli hai to AUTO dobara chalayegi (idempotent).
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+
+## 24 Oct 14:45 — Rooms fix 2: room "guest" ki tarah na dikhe/na gine — SIRF Web
+Live test mein mila: booked room meeting ki Guests list mein "room-xxxx@rooms.anexomail.com — Yes" aur guest ginti (3) mein aa raha tha. Ab room guest list, ginti, local-time bar mein nahi aata (sirf "Room" section mein dikhta hai).
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

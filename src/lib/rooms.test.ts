@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isRoomAddress, roomError } from "./rooms";
+import { isRoomAddress, roomError, withoutRooms } from "./rooms";
 
 describe("rooms", () => {
   it("recognises only real room addresses", () => {
@@ -13,5 +13,11 @@ describe("rooms", () => {
     expect(roomError({ code: "room_busy" })).toMatch(/already booked/);
     expect(roomError({ message: "x" })).toBe("x");
     expect(roomError(null)).toMatch(/Try again/);
+  });
+  it("never lists a room as a guest", () => {
+    const rows = [{ address: "a@x.com" }, { address: "room-0123456789ab@rooms.anexomail.com" }];
+    expect(withoutRooms(rows)).toEqual([{ address: "a@x.com" }]);
+    const clean = [{ address: "a@x.com" }];
+    expect(withoutRooms(clean)).toBe(clean);
   });
 });

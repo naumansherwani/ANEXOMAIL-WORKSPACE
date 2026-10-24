@@ -15,6 +15,7 @@ import {
 } from "@/lib/calendar";
 import { inviteReason } from "@/lib/calendar-invites";
 import { notify } from "@/lib/notify";
+import { withoutRooms } from "@/lib/rooms";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,10 +27,22 @@ import { cn } from "@/lib/utils";
  */
 
 const CHIP: Record<RsvpResponse, { label: string; cls: string; Icon: typeof Check }> = {
-  accepted: { label: "Yes", cls: "border-emerald-500/40 bg-emerald-500/10 text-emerald-400", Icon: Check },
-  tentative: { label: "Maybe", cls: "border-amber-400/40 bg-amber-400/10 text-amber-400", Icon: CircleHelp },
+  accepted: {
+    label: "Yes",
+    cls: "border-emerald-500/40 bg-emerald-500/10 text-emerald-400",
+    Icon: Check,
+  },
+  tentative: {
+    label: "Maybe",
+    cls: "border-amber-400/40 bg-amber-400/10 text-amber-400",
+    Icon: CircleHelp,
+  },
   declined: { label: "No", cls: "border-danger/40 bg-danger/10 text-danger", Icon: X },
-  needs_action: { label: "Waiting", cls: "border-border bg-secondary text-muted-foreground", Icon: Clock },
+  needs_action: {
+    label: "Waiting",
+    cls: "border-border bg-secondary text-muted-foreground",
+    Icon: Clock,
+  },
 };
 
 function inviteLine(g: GuestRow) {
@@ -43,7 +56,8 @@ function inviteLine(g: GuestRow) {
         })}`
       : "Invitation e-mailed";
   }
-  if (g.invite_status === "failed") return `Invitation failed — ${inviteReason(g.invite_error ?? undefined)}`;
+  if (g.invite_status === "failed")
+    return `Invitation failed — ${inviteReason(g.invite_error ?? undefined)}`;
   return "No invitation e-mailed";
 }
 
@@ -93,7 +107,7 @@ export function Guests({ event }: { event: CalendarEvent }) {
   }
 
   const data = guests.data;
-  const rows = data.attendees;
+  const rows = withoutRooms(data.attendees);
   const cancelled = data.status === "cancelled";
   const tally = {
     accepted: rows.filter((r) => r.response === "accepted").length,
@@ -102,7 +116,9 @@ export function Guests({ event }: { event: CalendarEvent }) {
     needs_action: rows.filter((r) => r.response === "needs_action").length,
   };
   const waiting = rows.filter(
-    (r) => r.response === "needs_action" && r.address.toLowerCase() !== (data.organiser ?? "").toLowerCase(),
+    (r) =>
+      r.response === "needs_action" &&
+      r.address.toLowerCase() !== (data.organiser ?? "").toLowerCase(),
   ).length;
 
   const label = () => whenLabel(new Date(when).toISOString(), duration);
@@ -150,13 +166,17 @@ export function Guests({ event }: { event: CalendarEvent }) {
       {
         onSuccess: (res) => {
           if (!notifyGuests) notify.done("Meeting moved", "Guests were not told.");
-          else if (!res.invites) notify.failed("Moved, but the guests were NOT told", {
-            description: "The invitation engine did not report back.",
-          });
-          else if (res.invites.failed + res.invites.skipped > 0)
-            notify.failed(`Moved — ${res.invites.sent} told, ${res.invites.failed + res.invites.skipped} not`, {
-              description: "Open Guests to see who and re-send.",
+          else if (!res.invites)
+            notify.failed("Moved, but the guests were NOT told", {
+              description: "The invitation engine did not report back.",
             });
+          else if (res.invites.failed + res.invites.skipped > 0)
+            notify.failed(
+              `Moved — ${res.invites.sent} told, ${res.invites.failed + res.invites.skipped} not`,
+              {
+                description: "Open Guests to see who and re-send.",
+              },
+            );
           else notify.done("Meeting moved", `${res.invites.sent} guest(s) received the new time.`);
           setMode("");
           void guests.refetch();
@@ -175,13 +195,17 @@ export function Guests({ event }: { event: CalendarEvent }) {
       {
         onSuccess: (res) => {
           if (!notifyGuests) notify.done("Meeting cancelled", "Guests were not told.");
-          else if (!res.invites) notify.failed("Cancelled, but the guests were NOT told", {
-            description: "The invitation engine did not report back.",
-          });
-          else if (res.invites.failed + res.invites.skipped > 0)
-            notify.failed(`Cancelled — ${res.invites.sent} told, ${res.invites.failed + res.invites.skipped} not`, {
-              description: "Some cancellation e-mails could not be sent.",
+          else if (!res.invites)
+            notify.failed("Cancelled, but the guests were NOT told", {
+              description: "The invitation engine did not report back.",
             });
+          else if (res.invites.failed + res.invites.skipped > 0)
+            notify.failed(
+              `Cancelled — ${res.invites.sent} told, ${res.invites.failed + res.invites.skipped} not`,
+              {
+                description: "Some cancellation e-mails could not be sent.",
+              },
+            );
           else notify.done("Meeting cancelled", `${res.invites.sent} guest(s) told.`);
           setMode("");
           void guests.refetch();
@@ -204,20 +228,28 @@ export function Guests({ event }: { event: CalendarEvent }) {
           </span>
         )}
         <span className="ax-caption ml-auto text-muted-foreground">
-          {tally.accepted} yes · {tally.tentative} maybe · {tally.declined} no · {tally.needs_action} waiting
+          {tally.accepted} yes · {tally.tentative} maybe · {tally.declined} no ·{" "}
+          {tally.needs_action} waiting
         </span>
       </div>
 
       <ul className="mt-ax-2 divide-y divide-border rounded-md border border-border">
         {rows.length === 0 && (
-          <li className="px-ax-3 py-ax-2 text-[13px] text-muted-foreground">No guests on this meeting.</li>
+          <li className="px-ax-3 py-ax-2 text-[13px] text-muted-foreground">
+            No guests on this meeting.
+          </li>
         )}
         {rows.map((g) => {
           const chip = CHIP[g.response] ?? CHIP.needs_action;
           const isOrganiser = g.address.toLowerCase() === (data.organiser ?? "").toLowerCase();
           return (
-            <li key={g.address} className="flex flex-wrap items-center gap-x-ax-3 gap-y-1 px-ax-3 py-ax-2">
-              <span className="min-w-0 flex-1 basis-40 break-all text-[13px] text-foreground">{g.address}</span>
+            <li
+              key={g.address}
+              className="flex flex-wrap items-center gap-x-ax-3 gap-y-1 px-ax-3 py-ax-2"
+            >
+              <span className="min-w-0 flex-1 basis-40 break-all text-[13px] text-foreground">
+                {g.address}
+              </span>
               <span
                 className={cn(
                   "inline-flex shrink-0 items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-bold",
@@ -253,7 +285,13 @@ export function Guests({ event }: { event: CalendarEvent }) {
       {data.is_organiser && !cancelled && (
         <div className="mt-ax-3 flex flex-wrap gap-2">
           {waiting > 0 && (
-            <Button size="sm" variant="outline" className="ax-tap" disabled={resend.isPending} onClick={onResend}>
+            <Button
+              size="sm"
+              variant="outline"
+              className="ax-tap"
+              disabled={resend.isPending}
+              onClick={onResend}
+            >
               <RefreshCw className="size-4" aria-hidden="true" />
               {resend.isPending ? "Sending…" : `Re-send to ${waiting} waiting`}
             </Button>
@@ -341,7 +379,13 @@ export function Guests({ event }: { event: CalendarEvent }) {
             Send a cancellation to the guests
           </label>
           <div className="flex gap-2">
-            <Button size="sm" variant="destructive" className="ax-tap" disabled={update.isPending} onClick={onCancel}>
+            <Button
+              size="sm"
+              variant="destructive"
+              className="ax-tap"
+              disabled={update.isPending}
+              onClick={onCancel}
+            >
               {update.isPending ? "Cancelling…" : "Cancel meeting"}
             </Button>
             <Button size="sm" variant="ghost" className="ax-tap" onClick={() => setMode("")}>
@@ -360,7 +404,13 @@ function toLocalInput(d: Date) {
 }
 
 /** "This event only / All events in the series" — shown for repeating meetings. */
-function ScopeChoice({ scope, onChange }: { scope: "this" | "all"; onChange: (s: "this" | "all") => void }) {
+function ScopeChoice({
+  scope,
+  onChange,
+}: {
+  scope: "this" | "all";
+  onChange: (s: "this" | "all") => void;
+}) {
   const opts: { v: "this" | "all"; label: string }[] = [
     { v: "this", label: "This event only" },
     { v: "all", label: "All events in the series" },
@@ -375,7 +425,9 @@ function ScopeChoice({ scope, onChange }: { scope: "this" | "all"; onChange: (s:
           aria-checked={scope === o.v}
           onClick={() => onChange(o.v)}
           className={`ax-press ax-focus ax-tap rounded-full border px-3 py-1 text-[12px] font-semibold ${
-            scope === o.v ? "border-transparent bg-foreground text-background" : "border-border text-muted-foreground"
+            scope === o.v
+              ? "border-transparent bg-foreground text-background"
+              : "border-border text-muted-foreground"
           }`}
         >
           {o.label}

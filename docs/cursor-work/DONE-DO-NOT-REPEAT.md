@@ -474,3 +474,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - Rooms live test 24 Oct: create OK, book OK, release OK; bug: location rehti thi -> E82 release fix (14:35)
 - Rule: har message ke baad context update (founder 24 Oct)
 - 24 Oct 14:30 context checkpoint: rooms live-tested, release-location fix pending server SQL
+- 24 Oct 14:45 rooms: Busy live OK; bug2 guest-list fix (Web)

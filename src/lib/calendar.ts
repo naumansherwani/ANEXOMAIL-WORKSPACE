@@ -14,6 +14,8 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
+import { withoutRooms } from "@/lib/rooms";
+
 import type { ApiError } from "@/lib/api";
 import { rpc, rpcOrRest } from "@/lib/rpc";
 import { cityOf, fmtTime, fmtTimeIn } from "@/lib/timeFormat";
@@ -219,6 +221,10 @@ export function useCalendarEvents(range: { from: string; to: string }) {
         { path: `/api/calendar/events?from=${range.from}&to=${range.to}` },
         range,
       ),
+    select: (d) => ({
+      ...d,
+      events: d.events.map((e) => ({ ...e, attendees: withoutRooms(e.attendees ?? []) })),
+    }),
     retry: false,
     staleTime: 15_000,
   });
@@ -231,6 +237,10 @@ export function useCalendarEvent(id: string | undefined) {
   >({
     queryKey: ["calendar", "event", id],
     queryFn: () => rpcOrRest("calendar.event", { path: `/api/calendar/events/${id}` }, { id }),
+    select: (d) => ({
+      ...d,
+      event: { ...d.event, attendees: withoutRooms(d.event.attendees ?? []) },
+    }),
     enabled: Boolean(id),
     retry: false,
   });
