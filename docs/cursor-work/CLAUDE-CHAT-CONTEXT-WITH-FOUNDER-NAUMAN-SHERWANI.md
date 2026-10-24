@@ -894,3 +894,7 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 
 ## CHECKPOINT 23 Oct 11:05 — CALENDAR GREEN
 - Founder: #7 Google sync DROP abhi (na code, na testing; likha gaya to intact). #8 Rooms server par => GREEN. Roadmap update. Agla kaam locked order se: Founder account -> identity live tests -> M-series -> G16 -> T1–T12.
+
+## CHECKPOINT 24 Oct 14:20 — #8 ROOMS DEPLOYED (server output dekha)
+- SQL E82 + CHECK_E82 6/6 OK, Rust build OK (rooms 4 tests, sab modules), restart online, Web build OK server==repo. Rust installer ke live-saboot mein rooms ka probe nahi hai (sirf baqi modules); asli test: Settings -> Rooms & resources, phir meeting -> Room -> Book.
+- Calendar GREEN. #7 Google parked. Agla: Founder account.
