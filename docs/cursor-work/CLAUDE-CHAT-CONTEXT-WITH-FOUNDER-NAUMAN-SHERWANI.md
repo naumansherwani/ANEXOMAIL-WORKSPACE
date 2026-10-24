@@ -903,3 +903,8 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - Founder hukm: Calendar GREEN declare. 12 hisse GREEN + deployed; #7 Google sync founder ke faislay se deferred (bana nahi). Detail: CALENDAR-ROADMAP.md "CALENDAR = GREEN (HANDOVER)".
 - Calendar par ab KOI kaam nahi (naya bug/feature founder maange tab hi). Rooms ka asli browser test founder kare to LIVE-verified likhna.
 - AGLA (locked order): Founder account -> identity live tests -> M-series -> G16 billing portal -> T1–T12. Founder ne kaha: abhi Founder account SHURU NAHI karna, pehle green handover. Agla kaam founder ke hukm par.
+
+## CHECKPOINT 24 Oct 14:30 — Rooms LIVE TEST (Chrome) + fix; RULE: har message ke baad context update
+- Live (anexomail.com): room create OK, book OK (meeting par "Release" + jagah auto-set), release OK. Loophole mila: release ke baad jagah rehti thi -> E82 release fix (commit ae13b9c/20b1e70), local proof ALL PASS. Server par SIRF SQL chalani baaki (sql-run.sh); founder ne galti se mera message terminal mein paste kiya (kuch nahi bigda).
+- Baaki: SQL chalne ke baad (a) Gmail test meeting par jagah "Test room" saaf karna (Book+Release), (b) overlap "Busy" live test (test meeting banani padegi, founder ki ijazat), (c) "Test room" founder rakhe ya hataye.
+- RULE (founder 24 Oct 14:28): HAR message ke baad yeh context file update — bina poochhe, bina bhoole.
