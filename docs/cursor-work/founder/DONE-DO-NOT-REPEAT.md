@@ -56,3 +56,4 @@
 - 24 Oct 16:45 RULE: Rust PRIMARY, Bun fallback only; Pro snooze/templates ab Rust procs (mail.snooze, mail.templates.save/delete), deploy baaki
 - 24 Oct 17:05 TECH AUDIT doc written; Pro server gates (snooze/schedule/templates) Rust+Bun; deploy baaki
 - 24 Oct 17:30 M1: thread labels/status/move/assign/snooze Rust primary (client+Bun validation); deploy baaki
+- 24 Oct 17:50 MIGRATION-PHASES-24OCT.md written (11 phases, lanes A/B/C); code deploy M1 baaki

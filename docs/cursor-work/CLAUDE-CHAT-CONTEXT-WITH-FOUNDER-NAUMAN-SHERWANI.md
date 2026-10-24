@@ -973,3 +973,9 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - Founder hukm: puri website latest tech par, har endpoint, ek bhi loophole nahi, par site tootni nahi chahiye => har batch `rpcOrRest` (Rust 404/501/502/503 par Bun khud chalta hai), batch-by-batch, har batch ke baad live test.
 - M1 done (repo): thread actions labels/status/move/assign/snooze ab Rust primary (`mail.labels.update`, `mail.status`, `mail.move`, `mail.assign`, `mail.snooze`) + Bun validation barabar (bad_status/bad_folder/bad_label). `mail.assign` ka naam/email lookup abhi Bun (Rust 501 => fallback). Rust "not_found" => 404.
 - Agla M2: templates LIST, snippets, drafts, follow-up, handoff, send-confidence, thread-note; M3 contacts/companies/workspace/storage/billing state; M4 auth+trial; M5 org/crm/calendar; M6 chat, ai. Har M ke saath plan gate + Basic-user test + live re-test.
+
+### 24 Oct 17:50 — MIGRATION PHASES locked (docs/cursor-work/MIGRATION-PHASES-24OCT.md)
+- 11 phases (P0 done). Lanes alag, mix nahi: A = Basic/Pro/Business/Business Pro; B = Personal + Family; C = Founder (alag batch, founder.ts/release/admin/perf/revenue/glitch). Plan rules ek jagah (SQL resolve_plan canonical; Rust pro_plan_ok; Bun resolvePlan). Duplicate code nahi: shared helpers, proc Rust mein ek baar.
+- Bun = hamesha EMERGENCY fallback (routes kabhi delete nahi); har phase ke end par fallback drill.
+- Tarteeb: P1 crates+Bun 1.4.3 -> P2 M2 -> P3 M3 -> P4 M5 -> P5 Lane B -> P6 auth -> P7 Founder -> P8 chat+ai -> P9 WT live (23 polls) -> P10 sqlx/types/speed.
+- Locked order (Calendar done -> Founder account -> identity tests -> M-series -> G16 -> T) ko founder ne Pro-green + migration ke liye aage kiya; Founder ACCOUNT (command centre) abhi bhi Pro green hone ke baad.
