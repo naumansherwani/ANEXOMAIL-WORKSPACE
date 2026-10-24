@@ -298,7 +298,12 @@ export function useFollowUps() {
 export function useThreadInsights(threadId: string | undefined) {
   return useQuery<ThreadInsights, ApiError>({
     queryKey: ["mail", "thread", threadId, "insights"],
-    queryFn: () => api<ThreadInsights>(`/api/mail/thread/${threadId}/insights`),
+    queryFn: () =>
+      rpcOrRest<ThreadInsights>(
+        "mail.thread.insights",
+        { path: `/api/mail/thread/${threadId}/insights` },
+        { id: threadId },
+      ),
     enabled: Boolean(threadId),
     retry: false,
   });

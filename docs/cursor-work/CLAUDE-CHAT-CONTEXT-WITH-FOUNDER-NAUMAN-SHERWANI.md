@@ -1024,3 +1024,6 @@ Founder ne 8-phase plan confirm kiya aur rule diya: phase table + ledger saath k
 
 ### 24 Oct 22:45 — E84 SQL
 Founder: SQL ki tarteeb nahi tootni. E84_room_series_note.sql + CHECK_E84.sql banayi (E83 guard par comment, Rust series check ka note). Ab tarteeb E83, E84, E85, E86. sql-run bare command E84 bhi chalayegi.
+
+### 24 Oct 23:15 — M2 live GREEN
+Founder ne M2 deploy kar diya (SQL E84-E86, Rust, Brain, Web). Live test pro.buyer: drafts save v1/v2 + Version history UI, snippets, follow-up (bad date 400), send-confidence, schedule hold->cancel, 400s. Mobile 390/820 composer ok (no h-scroll). thread insights ab rpcOrRest ({id}). Founder ka hukm: Pro/Business/Business Pro green hone tak Founder account nahi. Pro baqi: shared-inbox collision guard (verified-domain Pro account), Basic-user 403 test, 48h support copy, phir M2b handoff + M3.
