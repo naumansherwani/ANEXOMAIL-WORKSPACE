@@ -489,3 +489,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 24 Oct 18:00 M1 deployed by founder (Rust+restart+Web); live test pending
 - 24 Oct 18:20 M1 fix: mailx module (Rust procs ab asli deploy path se), main.rs reverted; deploy pending
 - 24 Oct 18:35 brain-pro-install.sh (Bun fallback Pro fixes) written; Bun live purana tha; deploy pending
+- 24 Oct 18:50 brain-drift-check.sh (read-only) added; rule: har batch mein Bun command bhi

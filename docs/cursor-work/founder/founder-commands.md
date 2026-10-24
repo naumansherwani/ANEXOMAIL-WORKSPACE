@@ -962,3 +962,7 @@ Live: /rpc/mail.snooze 404 tha (installer live main.rs replace nahi karta, sirf 
 2. Rust mail (schedule gate; asli Postfix saboot chalata hai): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-mail-install.sh)`
 3. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 4. Brain = Bun fallback (galat date par crash band, Pro gates, validation, templates, thread-note limit): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-pro-install.sh)`
+
+## 24 Oct 18:50 — Bun (Brain) drift check — READ-ONLY, kuch nahi badalta
+Kaun si Bun file repo se alag chal rahi hai (yani kabhi live nahi gayi):
+`bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-drift-check.sh)`
