@@ -955,3 +955,10 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - Snooze loophole FIXED: server ab folder="snoozed" nahi likhta; Rust `mail_query_threads` + Bun `queryThreads` inbox mein future-snoozed chhupate hain; virtual folder "snoozed" (ia.ts, MailRail) = inbox + snoozed_until > now.
 - Bhi: templates UI, thread notes, domain plural, notes cap (pichla block).
 - Baaki Pro audit: deploy ke baad live re-test (Snooze, templates, notes, domain), Schedule send, shared inbox collision (verified-domain account chahiye), thread analytics, 48h support text, Basic items, TaskBoard, mobile 390/820. Pro abhi GREEN declare NAHI.
+
+### 24 Oct 16:45 — FOUNDER TECHNOLOGY RULE (locked, compaction ke baad dobara) + Pro fix block 3
+- Puri website latest technology par migrate ho rahi hai. **Rust PRIMARY, Bun sirf FALLBACK.** Har naya/ठीक kiya endpoint pehle Rust proc (`/rpc/*`, `rpcOrRest`) mein, Bun `/api/*` sirf fallback mein. PostgreSQL = data store (Bun fallback ke sath), baqi latest tech apply karni hai.
+- Technology map (pehle se LIVE, dobara poochna nahi): Tokio async 1.53.3 (har proc/worker/hub), axum 0.8.9 (HTTP /rpc/*), tRPC-style `/rpc/*` JSON (client `rpcOrRest`), QUIC via wtransport 0.7.2/quinn (events live push, B4). Baqi: B8 = tokio 1.54, Bun 1.4.3, Brain -> Rust. Kaun si tech kahan: request/response = axum+tRPC-style; background/queues/hub = tokio; live push (mail/calendar/crm) = WebTransport; DB = Postgres via PostgREST/sql-run.
+- Pro = mobile 390, tablet 820, laptop/desktop 1440 par har cheez card se ek-ek word match hone tak GREEN nahi.
+- AUDIT mein pakda: Snooze, Pro templates save/delete pehle SIRF Bun par thay (galat). Ab Rust PRIMARY: `mail.snooze`, `mail.templates.save`, `mail.templates.delete` (main.rs) + Bun fallback (bad_until 400 bhi). Client `useThreadAction` snooze, `useSaveTemplate`, `useDeleteTemplate` -> `rpcOrRest`.
+- Abhi Bun-only (Pro): thread note (`work.notes.upsert` Rust par hai — check), labels/status/assign/move thread actions, templates LIST, snippets. Inhe bhi Rust par laana audit ka hissa (loophole).

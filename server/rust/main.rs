@@ -424,6 +424,25 @@ async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
     Ok(json!({ "ok": true }))
 }
 
+async fn sb_delete(path_and_query: &str) -> Result<Value, String> {
+    let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
+    let client = http();
+    let res = client
+        .delete(format!("{url}/rest/v1/{path_and_query}"))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .header("prefer", "return=representation")
+        .send()
+        .await
+        .map_err(|e| e.to_string())?;
+    let status = res.status();
+    let payload: Value = res.json().await.unwrap_or(Value::Null);
+    if !status.is_success() {
+        return Err(payload.to_string());
+    }
+    Ok(payload)
+}
+
 async fn sb_insert(path: &str, body: Value) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
     let client = http();
@@ -1544,6 +1563,105 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 )
                 .await
                 .map(|_| json!({ "ok": true, "starred": starred }))
+            }
+        }
+        "mail.snooze" => {
+            let thread_id = s(input, "thread_id");
+            let until_raw = input.get("until").and_then(|v| v.as_str()).unwrap_or("").trim().to_string();
+            let ok_chars = until_raw
+                .chars()
+                .all(|c| c.is_ascii_digit() || matches!(c, '-' | ':' | 'T' | 'Z' | '.' | '+'));
+            if thread_id.is_empty() || thread_id.len() > 64 || !thread_id.chars().all(|c| c.is_ascii_hexdigit() || c == '-') {
+                Err("thread_id_required".to_string())
+            } else if !until_raw.is_empty() && (!ok_chars || until_raw.len() < 10 || until_raw.len() > 40) {
+                Err("bad_until".to_string())
+            } else {
+                // Snooze never moves the folder: the inbox hides the thread until `until`; null brings it back.
+                let until = if until_raw.is_empty() { Value::Null } else { Value::String(until_raw) };
+                sb_patch(
+                    &format!("mail_threads?id=eq.{thread_id}&org_id=eq.{}", me.org_id),
+                    json!({ "snoozed_until": until }),
+                )
+                .await
+                .map(|_| json!({ "ok": true }))
+            }
+        }
+        "mail.templates.save" => {
+            let name = s(input, "name").trim().to_string();
+            let body = s(input, "body");
+            let subject: Value = match input.get("subject").and_then(|v| v.as_str()) {
+                Some(x) => Value::String(x.chars().take(200).collect()),
+                None => Value::Null,
+            };
+            if name.is_empty() || name.chars().count() > 80 {
+                Err("bad_name".to_string())
+            } else if body.trim().is_empty() || body.chars().count() > 20000 {
+                Err("bad_body".to_string())
+            } else {
+                let have = sb_count(&format!(
+                    "mail_templates?select=id&org_id=eq.{}&user_id=eq.{}",
+                    me.org_id, me.id
+                ))
+                .await
+                .unwrap_or(0);
+                if have >= 50 {
+                    Err("too_many".to_string())
+                } else {
+                    // {{variable}} names found in the body (max 30, unique)
+                    let mut vars: Vec<String> = Vec::new();
+                    let mut rest = body.as_str();
+                    while let Some(i) = rest.find("{{") {
+                        let after = &rest[i + 2..];
+                        match after.find("}}") {
+                            Some(j) => {
+                                let v = after[..j].trim();
+                                if !v.is_empty()
+                                    && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '.')
+                                    && !vars.iter().any(|x| x == v)
+                                    && vars.len() < 30
+                                {
+                                    vars.push(v.to_string());
+                                }
+                                rest = &after[j + 2..];
+                            }
+                            None => break,
+                        }
+                    }
+                    sb_insert(
+                        "mail_templates",
+                        json!({
+                            "org_id": me.org_id,
+                            "user_id": me.id,
+                            "name": name,
+                            "scope": "personal",
+                            "subject": subject,
+                            "body": body,
+                            "variables": vars,
+                        }),
+                    )
+                    .await
+                    .map(|rows| {
+                        let id = rows
+                            .as_array()
+                            .and_then(|a| a.first())
+                            .and_then(|r| r.get("id").cloned())
+                            .unwrap_or(Value::Null);
+                        json!({ "id": id })
+                    })
+                }
+            }
+        }
+        "mail.templates.delete" => {
+            let id = s(input, "id");
+            if id.is_empty() || id.len() > 64 || !id.chars().all(|c| c.is_ascii_hexdigit() || c == '-') {
+                Err("id_required".to_string())
+            } else {
+                sb_delete(&format!(
+                    "mail_templates?id=eq.{id}&org_id=eq.{}&user_id=eq.{}&select=id",
+                    me.org_id, me.id
+                ))
+                .await
+                .map(|rows| json!({ "removed": rows.as_array().map(|a| a.len()).unwrap_or(0) }))
             }
         }
         "mail.predict" => {

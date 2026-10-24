@@ -142,8 +142,13 @@ export function useTemplates() {
 export function useSaveTemplate() {
   const qc = useQueryClient();
   return useMutation<{ id: string }, ApiError, { name: string; subject: string; body: string }>({
+    // Rust PRIMARY (mail.templates.save), Bun /api/mail/templates fallback
     mutationFn: (p) =>
-      api<{ id: string }>("/api/mail/templates", { method: "POST", body: JSON.stringify(p) }),
+      rpcOrRest<{ id: string }>(
+        "mail.templates.save",
+        { path: "/api/mail/templates", method: "POST", body: p },
+        p,
+      ),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "templates"] }),
   });
 }
@@ -151,10 +156,13 @@ export function useSaveTemplate() {
 export function useDeleteTemplate() {
   const qc = useQueryClient();
   return useMutation<{ removed: number }, ApiError, { id: string }>({
+    // Rust PRIMARY (mail.templates.delete), Bun fallback
     mutationFn: ({ id }) =>
-      api<{ removed: number }>(`/api/mail/templates/${encodeURIComponent(id)}`, {
-        method: "DELETE",
-      }),
+      rpcOrRest<{ removed: number }>(
+        "mail.templates.delete",
+        { path: `/api/mail/templates/${encodeURIComponent(id)}`, method: "DELETE" },
+        { id },
+      ),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "templates"] }),
   });
 }

@@ -408,7 +408,9 @@ mailRouter.post("/thread/:id/status", async (req, res) => {
 mailRouter.post("/thread/:id/snooze", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
-  const until = req.body?.until ? new Date(req.body.until).toISOString() : null;
+  const rawUntil = req.body?.until ? new Date(req.body.until) : null;
+  if (rawUntil && Number.isNaN(rawUntil.getTime())) return res.status(400).json({ error: "bad_until" });
+  const until = rawUntil ? rawUntil.toISOString() : null;
   // Snooze never changes the folder (there is no 'snoozed' mail_folder); the inbox hides it until `until`.
   const patch: any = { snoozed_until: until };
   const { error } = await supa.from("mail_threads").update(patch).eq("id", req.params.id);

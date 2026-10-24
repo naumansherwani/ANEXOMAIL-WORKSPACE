@@ -318,16 +318,26 @@ export function useThreadAction() {
           { thread_id: threadId, starred: action.starred },
         );
       }
+      if (action.kind === "snooze") {
+        // Rust PRIMARY (mail.snooze), Bun /api/mail/thread/:id/snooze fallback
+        return rpcOrRest(
+          "mail.snooze",
+          {
+            path: `/api/mail/thread/${threadId}/snooze`,
+            method: "POST",
+            body: { until: action.until },
+          },
+          { thread_id: threadId, until: action.until },
+        );
+      }
       const path =
         action.kind === "labels"
           ? `/api/mail/thread/${threadId}/labels`
           : action.kind === "status"
             ? `/api/mail/thread/${threadId}/status`
-            : action.kind === "snooze"
-              ? `/api/mail/thread/${threadId}/snooze`
-              : action.kind === "assign"
-                ? `/api/mail/thread/${threadId}/assign`
-                : `/api/mail/thread/${threadId}/move`;
+            : action.kind === "assign"
+              ? `/api/mail/thread/${threadId}/assign`
+              : `/api/mail/thread/${threadId}/move`;
       const { kind: _kind, ...body } = action;
       return api(path, { method: "POST", body: JSON.stringify(body) });
     },
