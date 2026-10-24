@@ -924,3 +924,6 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - E83: calendar_room_guard + 2 triggers; proof ALL PASS + mutation pakda; E82 proof ab bhi pass. Haad: repeat series sirf pehla slot.
 - Chrome "Finding ... Failed" = meri find-tool ki khoj fail hui (page ka view badla tha: month/day), app ka bug nahi.
 - Baaki live test: E83 deploy ke baad reschedule ko busy slot par dekhna.
+
+## CHECKPOINT 24 Oct 15:30 — E83 live-verified + fix 4
+- Server par SQL(E82 fix,E83)+Rust+Web chale. Chrome: guest ginti 2 (room ab guest nahi) OK. Manual room guest + overlap: DB ne roka (event nahi bana) — par jawab "Calendar failed" tha -> fix 4: Web room ko guest se hata deta + hint; Rust create/update par 409 room_busy / 400 no_room. Founder ko Rust+restart+Web (founder-commands 15:30). Phir live: reschedule busy slot + manual guest message dobara dekhna. Gmail test meeting par "Test room" abhi booked.

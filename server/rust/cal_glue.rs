@@ -758,6 +758,12 @@ async fn create(me: &Who, input: &Value) -> axum::response::Response {
                 json!({ "cancelled_at": cal::fmt_rfc3339(now), "status": "cancelled" }),
             )
             .await;
+            if e.contains("room_busy") {
+                return room_busy();
+            }
+            if e.contains("no_room") {
+                return fail(StatusCode::BAD_REQUEST, "no_room", "That room is not available. Book rooms from the meeting's Room section.");
+            }
             return fail(
                 StatusCode::INTERNAL_SERVER_ERROR,
                 "server_error",

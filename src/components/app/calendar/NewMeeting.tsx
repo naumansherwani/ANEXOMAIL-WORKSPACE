@@ -11,6 +11,7 @@ import { REMINDER_CHOICES, outsideHours, useCalPrefs } from "@/lib/calprefs";
 import { reportInvites } from "@/lib/calendar-invites";
 import { NO_REPEAT, buildRrule, type RepeatSpec } from "@/lib/recurrence";
 import { notify } from "@/lib/notify";
+import { isRoomAddress } from "@/lib/rooms";
 
 /**
  * Thread -> Meeting in one step. When `threadId` is present the thread IS the
@@ -54,7 +55,9 @@ export function NewMeeting({
 
   const agendaOk = agenda.trim().length >= 10;
   const ready = title.trim().length > 1 && when && agendaOk;
-  const guestList = parseAddresses(attendees);
+  const typedList = parseAddresses(attendees);
+  const guestList = typedList.filter((a) => !isRoomAddress(a));
+  const roomTyped = typedList.length !== guestList.length;
 
   const submit = () => {
     if (!ready) return;
@@ -142,7 +145,9 @@ export function NewMeeting({
         const away = when ? outsideHours(new Date(when), prefs) : null;
         return away ? (
           <p className="ax-caption text-amber-400">
-            {away === "ooo" ? "You are marked out of office on this day." : "This is outside your working hours."}
+            {away === "ooo"
+              ? "You are marked out of office on this day."
+              : "This is outside your working hours."}
           </p>
         ) : null;
       })()}
@@ -233,6 +238,13 @@ export function NewMeeting({
         </p>
       )}
 
+      {roomTyped && (
+        <p role="note" className="ax-caption text-amber-400">
+          A room is not a guest and was left out. Create the meeting, then book the room in its Room
+          section.
+        </p>
+      )}
+
       {guestList.length > 0 && (
         <label className="ax-tap flex items-start gap-2 text-[12px] text-foreground">
           <input
@@ -244,11 +256,12 @@ export function NewMeeting({
           <span>
             <span className="flex items-center gap-1.5 font-semibold">
               <Mail className="size-3.5" aria-hidden="true" />
-              E-mail an invitation to {guestList.length} {guestList.length === 1 ? "guest" : "guests"}
+              E-mail an invitation to {guestList.length}{" "}
+              {guestList.length === 1 ? "guest" : "guests"}
             </span>
             <span className="ax-caption block text-muted-foreground">
-              Works in Gmail, Outlook and Apple Calendar. Each guest answers Yes / Maybe / No and you
-              see it here. The agenda goes with it.
+              Works in Gmail, Outlook and Apple Calendar. Each guest answers Yes / Maybe / No and
+              you see it here. The agenda goes with it.
             </span>
           </span>
         </label>

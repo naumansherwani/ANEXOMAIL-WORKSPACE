@@ -937,3 +937,9 @@ Loophole: (a) guest ki jagah room ka address haath se likhna, (b) booked meeting
 2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 3. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 (Web pull 14:45 wala pehle na chalaya ho to woh bhi.)
+
+## 24 Oct 15:30 — Rooms fix 4 (live test E83 ke baad): room ko guest ki tarah likhne par saaf jawab — Rust + Web
+Live (E83 ke baad): guest box mein room ka address likh kar meeting banai to DB ne double-booking ROKI (sahi) par jawab sirf "Calendar failed" tha. Ab Web room address ko guest nahi manta (peeli ek line: "Create the meeting, then book the room in its Room section"), aur Rust create/reschedule par saaf 409 "A booked room is already taken at that time" deta hai.
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
