@@ -477,3 +477,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 24 Oct 14:45 rooms: Busy live OK; bug2 guest-list fix (Web)
 - 24 Oct 15:05 E83 room DB guard written+proved (deploy baaki)
 - 24 Oct 15:30 rooms fix4 (manual guest message) written; E83 live-verified (DB refused)
+- 24 Oct 15:00 ROOMS LIVE-VERIFIED: hint, room_busy reschedule 409, release clears location

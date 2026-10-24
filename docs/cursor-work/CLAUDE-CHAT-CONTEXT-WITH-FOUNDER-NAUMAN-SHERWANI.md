@@ -927,3 +927,8 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 
 ## CHECKPOINT 24 Oct 15:30 — E83 live-verified + fix 4
 - Server par SQL(E82 fix,E83)+Rust+Web chale. Chrome: guest ginti 2 (room ab guest nahi) OK. Manual room guest + overlap: DB ne roka (event nahi bana) — par jawab "Calendar failed" tha -> fix 4: Web room ko guest se hata deta + hint; Rust create/update par 409 room_busy / 400 no_room. Founder ko Rust+restart+Web (founder-commands 15:30). Phir live: reschedule busy slot + manual guest message dobara dekhna. Gmail test meeting par "Test room" abhi booked.
+
+## CHECKPOINT 24 Oct 15:00 — ROOMS LIVE-VERIFIED (sab fix server par)
+- Chrome live: (1) room address guest box mein -> hint "A room is not a guest..." dikha, meeting bani bina room guest ke; (2) booked meeting ko busy slot par reschedule -> "Could not move: A booked room is already taken at that time. Release the room or pick another time." (409, waqt nahi badla); (3) Release ke baad meeting ki location saaf (purana "Test room" gaya); (4) guest ginti 2. Test meetings (ZZ, ZZ3) cancel; "Test room" workspace mein, free.
+- Room Rooms #8 = GREEN + LIVE-verified. Koi khula loophole nahi. Haad: repeat series sirf pehla slot check.
+- Agla: Founder account (founder ke hukm par).
