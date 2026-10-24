@@ -94,6 +94,84 @@ fn fail(status: StatusCode, code: &str, msg: &str) -> axum::response::Response {
     crate::err(status, code, msg).into_response()
 }
 
+/// E84 (rooms): is meeting (ya nayi shakal `ev`) ke SAARE agle occurrences (400 din) mein se koi, usi room par dusri meeting/series ke occurrence se takrata hai?
+/// SQL trigger sirf pehla slot dekhta hai; repeat meetings ka baqi yahan. `only_room` = abhi book hone wala room; None = ev par jo rooms pehle se hain.
+/// Some(epoch) = pehla takrao.
+pub(crate) async fn room_series_clash(org: &str, ev: &Value, only_room: Option<&str>) -> Option<i64> {
+    let now = now_epoch();
+    let horizon = now + 400 * 86_400;
+    let my_id = st(ev, "id");
+    let my_series = st(ev, "series_id");
+    let rooms: Vec<String> = match only_room {
+        Some(a) => vec![a.to_lowercase()],
+        None => crate::sb_select(&format!(
+            "calendar_attendees?select=address&event_id=eq.{}&address=like.room-*@rooms.anexomail.com&limit=20",
+            my_id
+        ))
+        .await
+        .ok()
+        .and_then(|v| v.as_array().cloned())
+        .unwrap_or_default()
+        .iter()
+        .map(|r| st(r, "address").to_lowercase())
+        .collect(),
+    };
+    if rooms.is_empty() {
+        return None;
+    }
+    let spans = |e: &Value| -> Vec<(i64, i64)> {
+        if is_master(e) {
+            occurrences(e, now, horizon)
+                .iter()
+                .filter_map(|o| Some((cal::parse_ts(&st(o, "starts_at"))?, cal::parse_ts(&st(o, "ends_at"))?)))
+                .collect()
+        } else {
+            match (cal::parse_ts(&st(e, "starts_at")), cal::parse_ts(&st(e, "ends_at"))) {
+                (Some(s), Some(en)) if en > now && s < horizon => vec![(s, en)],
+                _ => vec![],
+            }
+        }
+    };
+    let mine = spans(ev);
+    if mine.is_empty() {
+        return None;
+    }
+    for room in rooms {
+        let ids: Vec<String> = crate::sb_select(&format!(
+            "calendar_attendees?select=event_id&org_id=eq.{}&address=eq.{}&limit=1000",
+            org, room
+        ))
+        .await
+        .ok()
+        .and_then(|v| v.as_array().cloned())
+        .unwrap_or_default()
+        .iter()
+        .map(|r| st(r, "event_id"))
+        .filter(|i| !i.is_empty() && *i != my_id)
+        .collect();
+        for chunk in ids.chunks(60) {
+            let rows = crate::sb_select(&format!(
+                "calendar_events?select=id,starts_at,ends_at,rrule,exdates,tz,tz_offset_min,series_id,kind&org_id=eq.{}&cancelled_at=is.null&id=in.({})&limit=200",
+                org,
+                chunk.join(",")
+            ))
+            .await
+            .ok()
+            .and_then(|v| v.as_array().cloned())
+            .unwrap_or_default();
+            for o in rows.iter() {
+                if st(o, "kind") == "hold" || (!my_series.is_empty() && st(o, "series_id") == my_series) {
+                    continue;
+                }
+                if let Some(t) = cal::first_overlap(&mine, &spans(o)) {
+                    return Some(t);
+                }
+            }
+        }
+    }
+    None
+}
+
 /// E83: DB room guard refused the new time (a booked room is busy then).
 fn room_busy() -> axum::response::Response {
     fail(StatusCode::CONFLICT, "room_busy", "A booked room is already taken at that time. Release the room or pick another time.")
@@ -1343,6 +1421,18 @@ async fn update(me: &Who, input: &Value) -> axum::response::Response {
         patch.insert("cancelled_at".into(), json!(cal::fmt_rfc3339(now_epoch())));
     }
     patch.insert("updated_at".into(), json!(cal::fmt_rfc3339(now_epoch())));
+    if !cancel && (patch.contains_key("starts_at") || patch.contains_key("ends_at") || patch.contains_key("rrule")) {
+        // E84: naya waqt/repeat — booked room ke saare agle occurrences check
+        let mut merged = ev.clone();
+        if let Some(m) = merged.as_object_mut() {
+            for (k, v) in patch.iter() {
+                m.insert(k.clone(), v.clone());
+            }
+        }
+        if room_series_clash(&me.org_id, &merged, None).await.is_some() {
+            return room_busy();
+        }
+    }
     if let Err(e) = crate::sb_patch(
         &format!("calendar_events?id=eq.{}&org_id=eq.{}", id, me.org_id),
         Value::Object(patch),

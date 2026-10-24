@@ -92,7 +92,8 @@ CFG={
  # calfile (#5): meeting par files. calendar.files.list/attach/remove. Upload/download mail wale attach routes (/file/attach, /file/attach/get). SQL E74 PEHLE (E48 ke baad).
  "calfile": {"public": False, "label": "calfile",   "procs": ['"calendar.files.list"','"calendar.files.attach"','"calendar.files.remove"']},
  # rooms (#8): meeting rooms/resources. calendar.rooms.list|create|archive|state|book|release|schedule. SQL E82 PEHLE (E31 ke baad). Room address (@rooms.anexomail.com) par invite mail kabhi nahi (cal_glue skip).
- "rooms":  {"public": False, "label": "rooms",     "procs": ['"calendar.rooms.list"','"calendar.rooms.create"','"calendar.rooms.archive"','"calendar.rooms.state"','"calendar.rooms.book"','"calendar.rooms.release"','"calendar.rooms.schedule"']},
+ "rooms":  {"public": False, "label": "rooms",     "procs": ['"calendar.rooms.list"','"calendar.rooms.create"','"calendar.rooms.archive"','"calendar.rooms.state"','"calendar.rooms.book"','"calendar.rooms.release"','"calendar.rooms.schedule"'],
+            "need_mods": ["cal_core", "cal_glue"]},
  "people": {"public": False, "label": "people",    "procs": ['"people.import"','"crm.leadsImport"','"crm.leadsMoveToPeople"']},
  "team":   {"public": True,  "label": "team",      "procs": ['"team.members.list"','"team.invites.create"','"team.invite.accept"']},
  "mig":    {"public": False, "label": "migration", "procs": ['"migration.start"','"migration.providers"','"migration.verify"']},

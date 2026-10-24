@@ -943,3 +943,9 @@ Live (E83 ke baad): guest box mein room ka address likh kar meeting banai to DB 
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 2. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 3. Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 24 Oct 16:05 — Rooms fix 5 (E84): repeat meeting ke SAARE occurrences room par check — SIRF Rust
+Haad band: pehle sirf pehla slot check hota tha. Ab book karte waqt aur repeat meeting ka waqt/rule badalte waqt agle 400 din ke har occurrence ko us room par doosri meeting/series ke occurrence se milaya jata hai (takrao => 409 "A booked room is already taken at that time"). Koi SQL ya Web nahi. Rooms module ab cal module par bhi nirbhar (installer khud `mod` jodta hai).
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`   (cal tests ab 43; build fail par khud purana wapas)
+2. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+Honest haad: do log EK SAATH series book karein to ek lamhe ka window hai (pehla slot DB-lock se safe hai; baqi occurrences Rust check); 400 din se aage ke occurrences check nahi.

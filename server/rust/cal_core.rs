@@ -1721,6 +1721,37 @@ mod tests {
  * + time zones WITHOUT any crate: TZif (/usr/share/zoneinfo) + POSIX footer rule, so DST is right for every user,
  * every package. Fixed-offset fallback when the zone file is missing. Pure std — no clock, no network.
  */
+/// E84 (rooms): pehla waqt jahan do list ke [start,end) takraate hain (start epoch), warna None. Dono list kisi tarteeb mein ho sakti hain.
+pub fn first_overlap(a: &[(i64, i64)], b: &[(i64, i64)]) -> Option<i64> {
+    let mut a: Vec<(i64, i64)> = a.iter().copied().filter(|(s, e)| e > s).collect();
+    let mut b: Vec<(i64, i64)> = b.iter().copied().filter(|(s, e)| e > s).collect();
+    a.sort_unstable();
+    b.sort_unstable();
+    let (mut i, mut j) = (0usize, 0usize);
+    while i < a.len() && j < b.len() {
+        let (as_, ae) = a[i];
+        let (bs, be) = b[j];
+        if as_ < be && bs < ae {
+            return Some(as_.max(bs));
+        }
+        if ae <= be { i += 1 } else { j += 1 }
+    }
+    None
+}
+
+#[cfg(test)]
+mod first_overlap_tests {
+    use super::first_overlap;
+    #[test]
+    fn finds_and_misses() {
+        assert_eq!(first_overlap(&[(0, 10), (100, 110)], &[(10, 20), (105, 120)]), Some(105));
+        assert_eq!(first_overlap(&[(0, 10)], &[(10, 20)]), None); // sirf chhoone se takrao nahi
+        assert_eq!(first_overlap(&[], &[(0, 5)]), None);
+        assert_eq!(first_overlap(&[(5, 5)], &[(0, 10)]), None); // khali slot
+        assert_eq!(first_overlap(&[(50, 60), (0, 10)], &[(55, 58)]), Some(55)); // be-tarteeb
+    }
+}
+
 pub mod recur {
     use super::{civil_from_days, days_from_civil};
     use std::collections::HashMap;

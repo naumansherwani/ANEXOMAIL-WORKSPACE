@@ -932,3 +932,8 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - Chrome live: (1) room address guest box mein -> hint "A room is not a guest..." dikha, meeting bani bina room guest ke; (2) booked meeting ko busy slot par reschedule -> "Could not move: A booked room is already taken at that time. Release the room or pick another time." (409, waqt nahi badla); (3) Release ke baad meeting ki location saaf (purana "Test room" gaya); (4) guest ginti 2. Test meetings (ZZ, ZZ3) cancel; "Test room" workspace mein, free.
 - Room Rooms #8 = GREEN + LIVE-verified. Koi khula loophole nahi. Haad: repeat series sirf pehla slot check.
 - Agla: Founder account (founder ke hukm par).
+
+## CHECKPOINT 24 Oct 16:05 — E84 repeat-series room check + site sweep
+- Founder: "ek bhi loophole nahi, puri website, pro package green". Kiya: cal_core::first_overlap (+test, cal 43 tests pass), cal_glue::room_series_clash (400 din, saare occurrences), rooms_glue book + cal_glue update(time/rrule) mein hook; installer rooms need_mods cal_core+cal_glue. Founder ko sirf Rust+restart (founder-commands 16:05). Compile cal_glue full stub mein nahi (missing crate stubs), isliye server build pehli asli compile.
+- Site sweep (Web): tsc saaf, 388 tests pass; eslint 2174 errors = 2160 prettier formatting (purani, cosmetic) + 14 asli lint (api-refresh/mail-rpc/passkey-login tests `any`, history.ts control-regex, mail-attachments any, timeFormat.ts use12h "hook" naam rules-of-hooks). Live bug nahi; alag task.
+- "Pro package green": scope Nauman se tay karna (kaunsa package/kya check) — abhi koi pro-package checklist repo se pakki nahi.

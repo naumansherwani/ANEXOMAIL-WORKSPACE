@@ -112,6 +112,24 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
                 Some(e) if rc::valid_uuid(rid) => e,
                 _ => return fail_code("bad_id"),
             };
+            if proc == "calendar.rooms.book" {
+                // E84: repeat meetings — sirf pehla slot nahi, agle 400 din ke SAARE occurrences us room par kisi aur se takra to nahi rahe
+                let addr = crate::sb_select(&format!("calendar_rooms?select=address&id=eq.{}&org_id=eq.{}&archived_at=is.null&limit=1", rid, org))
+                    .await
+                    .ok()
+                    .and_then(|v| v.as_array().and_then(|a| a.first().cloned()))
+                    .map(|r| sv(&r, "address").to_string())
+                    .unwrap_or_default();
+                let evrow = crate::sb_select(&format!("calendar_events?select=*&id=eq.{}&org_id=eq.{}&limit=1", ev, org))
+                    .await
+                    .ok()
+                    .and_then(|v| v.as_array().and_then(|a| a.first().cloned()));
+                if let (true, Some(row)) = (!addr.is_empty(), evrow) {
+                    if crate::cal_glue::room_series_clash(&org, &row, Some(&addr)).await.is_some() {
+                        return fail_code("room_busy");
+                    }
+                }
+            }
             let f = if proc == "calendar.rooms.book" { "calendar_room_book" } else { "calendar_room_release" };
             crate::sb_rpc(f, json!({ "p_org": org, "p_user": uid, "p_event": ev, "p_room": rid })).await
         }
