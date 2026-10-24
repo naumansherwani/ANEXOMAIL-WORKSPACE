@@ -400,7 +400,8 @@ async function ownThread(c: Ctx, id: string) {
 mailRouter.post("/thread/:id/status", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
-  const { error } = await supa.from("mail_threads").update({ status: req.body?.status }).eq("id", req.params.id);
+  if (!["open", "waiting", "done"].includes(String(req.body?.status))) return res.status(400).json({ error: "bad_status" });
+  const { error } = await supa.from("mail_threads").update({ status: req.body?.status }).eq("id", req.params.id).eq("org_id", c.orgId);
   if (error) return res.status(400).json({ error: error.message });
   res.json({ ok: true });
 });
@@ -495,7 +496,10 @@ mailRouter.post("/thread/:id/assign", async (req, res) => {
 mailRouter.post("/thread/:id/move", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
-  const { error } = await supa.from("mail_threads").update({ folder: req.body?.folder }).eq("id", req.params.id);
+  if (!["inbox", "assigned", "waiting", "sent", "drafts", "archive", "spam", "trash"].includes(String(req.body?.folder))) {
+    return res.status(400).json({ error: "bad_folder" });
+  }
+  const { error } = await supa.from("mail_threads").update({ folder: req.body?.folder }).eq("id", req.params.id).eq("org_id", c.orgId);
   if (error) return res.status(400).json({ error: error.message });
   res.json({ ok: true });
 });
@@ -504,6 +508,10 @@ mailRouter.post("/thread/:id/labels", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   if (!(await ownThread(c, req.params.id))) return res.status(404).json({ error: "not_found" });
   const add = list(req.body?.add), remove = list(req.body?.remove);
+  // names go into a PostgREST filter: refuse anything that could change the filter (commas, parentheses, dots+operators)
+  if (add.length > 20 || remove.length > 20 || [...add, ...remove].some((n) => n.length > 60 || /[,()]/.test(n))) {
+    return res.status(400).json({ error: "bad_label" });
+  }
 
   for (const name of add) {
     let { data: lab } = await supa.from("mail_labels").select("id")

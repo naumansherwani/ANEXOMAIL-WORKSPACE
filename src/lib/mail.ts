@@ -330,16 +330,53 @@ export function useThreadAction() {
           { thread_id: threadId, until: action.until },
         );
       }
-      const path =
-        action.kind === "labels"
-          ? `/api/mail/thread/${threadId}/labels`
-          : action.kind === "status"
-            ? `/api/mail/thread/${threadId}/status`
-            : action.kind === "assign"
-              ? `/api/mail/thread/${threadId}/assign`
-              : `/api/mail/thread/${threadId}/move`;
-      const { kind: _kind, ...body } = action;
-      return api(path, { method: "POST", body: JSON.stringify(body) });
+      // Rust PRIMARY (mail.labels.update / mail.status / mail.move / mail.assign), Bun /api/mail/thread/:id/* fallback
+      if (action.kind === "labels") {
+        return rpcOrRest(
+          "mail.labels.update",
+          {
+            path: `/api/mail/thread/${threadId}/labels`,
+            method: "POST",
+            body: { add: action.add, remove: action.remove },
+          },
+          { thread_id: threadId, add: action.add ?? [], remove: action.remove ?? [] },
+        );
+      }
+      if (action.kind === "status") {
+        return rpcOrRest(
+          "mail.status",
+          {
+            path: `/api/mail/thread/${threadId}/status`,
+            method: "POST",
+            body: { status: action.status },
+          },
+          { thread_id: threadId, status: action.status },
+        );
+      }
+      if (action.kind === "move") {
+        return rpcOrRest(
+          "mail.move",
+          {
+            path: `/api/mail/thread/${threadId}/move`,
+            method: "POST",
+            body: { folder: action.folder },
+          },
+          { thread_id: threadId, folder: action.folder },
+        );
+      }
+      if (action.kind === "assign") {
+        return rpcOrRest(
+          "mail.assign",
+          {
+            path: `/api/mail/thread/${threadId}/assign`,
+            method: "POST",
+            body: { assignee: action.assignee },
+          },
+          { thread_id: threadId, assignee: action.assignee },
+        );
+      }
+      const exhaustive: never = action;
+      throw new Error(`unknown thread action: ${JSON.stringify(exhaustive)}`);
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["mail"] }),
   });

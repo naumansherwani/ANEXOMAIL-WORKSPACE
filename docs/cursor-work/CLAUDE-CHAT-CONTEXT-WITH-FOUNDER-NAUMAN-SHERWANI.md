@@ -968,3 +968,8 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - PLAN Rust mein khud nahi jata: har proc mein gate likhna parta hai. Loophole mila+fixed: Snooze/Schedule send(>130s)/Templates save server par Pro-gated (Rust pro_plan_ok + Bun resolvePlan). Rust mail dispatcher ab validation tokens ko 400 aur feature_not_available ko 403 deta hai (pehle sab 500).
 - Tech kahan: axum+tRPC-style = request/response; tokio = workers/timers/fan-out; WebTransport = live push (mail, snooze wapsi, scheduled status, calendar, crm, chat, calls) 23 polls ki jagah; Postgres = store; Bun = fallback.
 - Agla: Pro ke baqi Bun-only actions Rust par (labels/status/assign/move, drafts, templates list, snippets), phir deploy ke baad live re-test, 390/820/1440.
+
+### 24 Oct 17:30 — MIGRATION BATCH M1 (Rust PRIMARY, Bun fallback; website todna nahi chahiye)
+- Founder hukm: puri website latest tech par, har endpoint, ek bhi loophole nahi, par site tootni nahi chahiye => har batch `rpcOrRest` (Rust 404/501/502/503 par Bun khud chalta hai), batch-by-batch, har batch ke baad live test.
+- M1 done (repo): thread actions labels/status/move/assign/snooze ab Rust primary (`mail.labels.update`, `mail.status`, `mail.move`, `mail.assign`, `mail.snooze`) + Bun validation barabar (bad_status/bad_folder/bad_label). `mail.assign` ka naam/email lookup abhi Bun (Rust 501 => fallback). Rust "not_found" => 404.
+- Agla M2: templates LIST, snippets, drafts, follow-up, handoff, send-confidence, thread-note; M3 contacts/companies/workspace/storage/billing state; M4 auth+trial; M5 org/crm/calendar; M6 chat, ai. Har M ke saath plan gate + Basic-user test + live re-test.
