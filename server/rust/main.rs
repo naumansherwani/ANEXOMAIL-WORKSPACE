@@ -424,6 +424,14 @@ async fn sb_patch(path_and_query: &str, body: Value) -> Result<Value, String> {
     Ok(json!({ "ok": true }))
 }
 
+/// Pro+ gate shared by the Pro-card mail procs (resolve_plan RPC, same rule as Bun `resolvePlan`).
+async fn pro_plan_ok(user_id: &str, email: &str) -> bool {
+    let plan = sb_rpc("resolve_plan", json!({ "_user_id": user_id, "_email": email }))
+        .await
+        .unwrap_or(json!("basic"));
+    plan.as_str().unwrap_or("basic") != "basic"
+}
+
 async fn sb_delete(path_and_query: &str) -> Result<Value, String> {
     let (url, key) = sb().ok_or_else(|| "supabase_not_configured".to_string())?;
     let client = http();
@@ -1575,6 +1583,8 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 Err("thread_id_required".to_string())
             } else if !until_raw.is_empty() && (!ok_chars || until_raw.len() < 10 || until_raw.len() > 40) {
                 Err("bad_until".to_string())
+            } else if !until_raw.is_empty() && !pro_plan_ok(&me.id, &me.email).await {
+                Err("feature_not_available: Snooze is a Pro+ feature.".to_string())
             } else {
                 // Snooze never moves the folder: the inbox hides the thread until `until`; null brings it back.
                 let until = if until_raw.is_empty() { Value::Null } else { Value::String(until_raw) };
@@ -1597,6 +1607,8 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
                 Err("bad_name".to_string())
             } else if body.trim().is_empty() || body.chars().count() > 20000 {
                 Err("bad_body".to_string())
+            } else if !pro_plan_ok(&me.id, &me.email).await {
+                Err("feature_not_available: Email templates are a Pro+ feature.".to_string())
             } else {
                 let have = sb_count(&format!(
                     "mail_templates?select=id&org_id=eq.{}&user_id=eq.{}",
@@ -1824,6 +1836,18 @@ async fn dispatch_mail(proc: &str, token: &str, input: &Value) -> axum::response
 
     match result {
         Ok(data) => ok(data).into_response(),
+        Err(detail) if detail.starts_with("feature_not_available") => {
+            let msg = detail.splitn(2, ": ").nth(1).unwrap_or("Pro+ feature.");
+            err(StatusCode::FORBIDDEN, "feature_not_available", msg).into_response()
+        }
+        // Short validation tokens (bad_name, too_many, bad_until ...) are the caller's mistake: 400, not a 500.
+        Err(detail)
+            if !detail.is_empty()
+                && detail.len() <= 32
+                && detail.chars().all(|c| c.is_ascii_lowercase() || c == '_') =>
+        {
+            err(StatusCode::BAD_REQUEST, &detail, &detail).into_response()
+        }
         Err(detail) => err(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &detail).into_response(),
     }
 }

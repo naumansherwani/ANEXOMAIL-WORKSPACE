@@ -577,6 +577,10 @@ async fn schedule(me: &crate::MailMe, input: &Value) -> Resp {
         },
         None => now + hold,
     };
+    // Undo-send hold (<= 2 min) is Basic; a real later send time is Pro+ "Schedule send".
+    if send_unix > now + 130 && !crate::pro_plan_ok(&me.id, &me.email).await {
+        return fail_with(StatusCode::FORBIDDEN, "feature_not_available", json!({ "message": "Schedule send is a Pro+ feature." }));
+    }
     let send_iso = crate::passkey_core::iso_utc(send_unix.max(0) as u64);
 
     let wanted = st(input, "identity").trim().to_lowercase();

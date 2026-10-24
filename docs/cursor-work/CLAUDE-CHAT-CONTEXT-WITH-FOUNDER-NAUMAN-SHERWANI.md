@@ -962,3 +962,9 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - Pro = mobile 390, tablet 820, laptop/desktop 1440 par har cheez card se ek-ek word match hone tak GREEN nahi.
 - AUDIT mein pakda: Snooze, Pro templates save/delete pehle SIRF Bun par thay (galat). Ab Rust PRIMARY: `mail.snooze`, `mail.templates.save`, `mail.templates.delete` (main.rs) + Bun fallback (bad_until 400 bhi). Client `useThreadAction` snooze, `useSaveTemplate`, `useDeleteTemplate` -> `rpcOrRest`.
 - Abhi Bun-only (Pro): thread note (`work.notes.upsert` Rust par hai — check), labels/status/assign/move thread actions, templates LIST, snippets. Inhe bhi Rust par laana audit ka hissa (loophole).
+
+### 24 Oct 17:05 — TECH AUDIT (full numbers in docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md)
+- Bun endpoints 511; Rust procs ~328; client: 142 Rust-first call sites, 76 Bun-only (61 unique); 23 refetchIntervals still poll. Repo 2,155 files (35,000 NAHI).
+- PLAN Rust mein khud nahi jata: har proc mein gate likhna parta hai. Loophole mila+fixed: Snooze/Schedule send(>130s)/Templates save server par Pro-gated (Rust pro_plan_ok + Bun resolvePlan). Rust mail dispatcher ab validation tokens ko 400 aur feature_not_available ko 403 deta hai (pehle sab 500).
+- Tech kahan: axum+tRPC-style = request/response; tokio = workers/timers/fan-out; WebTransport = live push (mail, snooze wapsi, scheduled status, calendar, crm, chat, calls) 23 polls ki jagah; Postgres = store; Bun = fallback.
+- Agla: Pro ke baqi Bun-only actions Rust par (labels/status/assign/move, drafts, templates list, snippets), phir deploy ke baad live re-test, 390/820/1440.

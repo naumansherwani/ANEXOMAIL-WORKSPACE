@@ -3,11 +3,12 @@
 // schedule / undo-send hold, follow-up promise, thread insights.
 // Hierarchy: User -> LEO (primary) -> Jimmy (escalation only) -> Sherlock validation.
 import { Router } from "express";
+import { resolvePlan } from "../lib/plan";
 import { admin as supa } from "../lib/supa";
 import { allowedSenderAddresses } from "../lib/identity";
 
 import { loadStaged } from "../mail/attachments"; // G38
-type Ctx = { userId: string; orgId: string };
+type Ctx = { userId: string; orgId: string; userEmail: string };
 
 async function ctx(req: any, res: any): Promise<Ctx | null> {
   const bearer = (req.headers.authorization || "").replace(/^Bearer\s+/i, "");
@@ -21,7 +22,15 @@ async function ctx(req: any, res: any): Promise<Ctx | null> {
   const ids = (rows || []).map((r: any) => r.org_id);
   if (!ids.length) { res.status(409).json({ error: "no_workspace" }); return null; }
   const orgId = requested && ids.includes(requested) ? requested : ids[0];
-  return { userId, orgId };
+  return { userId, orgId, userEmail: String(data.user.email || "").toLowerCase() };
+}
+
+/** Pro+ gate (Basic card does not list it) — same rule as the Rust procs (resolve_plan). */
+async function proOnly(c: Ctx, res: any, what: string): Promise<boolean> {
+  const plan = await resolvePlan(c.userId, c.userEmail);
+  if (plan !== "basic") return true;
+  res.status(403).json({ error: "feature_not_available", plan, message: `${what} is a Pro+ feature.` });
+  return false;
 }
 
 export const mailComposeRouter = Router();
@@ -94,6 +103,7 @@ mailComposeRouter.get("/templates", async (req, res) => {
 
 mailComposeRouter.post("/templates", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Email templates"))) return;
   const b = req.body || {};
   const name = String(b.name ?? "").trim();
   const body = String(b.body ?? "");
@@ -211,6 +221,9 @@ mailComposeRouter.post("/schedule", async (req, res) => {
   const b = req.body || {};
   const hold = Math.min(Math.max(Number(b.hold_seconds ?? 10), 0), 120);
   const sendAt = b.send_at ? new Date(b.send_at) : new Date(Date.now() + hold * 1000);
+  if (Number.isNaN(sendAt.getTime())) return res.status(400).json({ error: "send_at_invalid" });
+  // Undo-send hold (<= 2 min) is Basic; a real later send time is Pro+ "Schedule send".
+  if (sendAt.getTime() > Date.now() + 130_000 && !(await proOnly(c, res, "Schedule send"))) return;
 
   // #3 SECURITY: From sirf is user ke jaiz addresses mein se (client ka identity seedha maan lena spoofing tha).
   const wantedFrom = String(b.identity || "").trim().toLowerCase();

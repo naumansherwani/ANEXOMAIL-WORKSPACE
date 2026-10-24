@@ -54,3 +54,4 @@
 - 24 Oct 15:50 PRO audit start: templates UI, thread notes, domains plural (push baaki)
 - 24 Oct 16:25 PRO fix: Snooze enum bug fixed (Rust+Bun), Snoozed view, templates UI, thread notes (push done, deploy baaki)
 - 24 Oct 16:45 RULE: Rust PRIMARY, Bun fallback only; Pro snooze/templates ab Rust procs (mail.snooze, mail.templates.save/delete), deploy baaki
+- 24 Oct 17:05 TECH AUDIT doc written; Pro server gates (snooze/schedule/templates) Rust+Bun; deploy baaki
