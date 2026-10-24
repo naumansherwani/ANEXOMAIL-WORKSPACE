@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs ab9aa1f46efce9de
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md c84c464157525d5e
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 8cdabe47bdc1aa3e
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -640,3 +640,4 @@ server/routes/calendar.ts c3ac0ca2cf5ab3fe
 src/components/app/mail/ThreadNote.tsx 63c294860d01d395
 docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md a3e3b72801636ded
 docs/cursor-work/MIGRATION-PHASES-24OCT.md a21d359e59e7bba7
+docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md 2f02f130c86ed595

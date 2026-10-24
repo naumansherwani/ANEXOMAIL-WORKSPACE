@@ -979,3 +979,7 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - Bun = hamesha EMERGENCY fallback (routes kabhi delete nahi); har phase ke end par fallback drill.
 - Tarteeb: P1 crates+Bun 1.4.3 -> P2 M2 -> P3 M3 -> P4 M5 -> P5 Lane B -> P6 auth -> P7 Founder -> P8 chat+ai -> P9 WT live (23 polls) -> P10 sqlx/types/speed.
 - Locked order (Calendar done -> Founder account -> identity tests -> M-series -> G16 -> T) ko founder ne Pro-green + migration ke liye aage kiya; Founder ACCOUNT (command centre) abhi bhi Pro green hone ke baad.
+
+### 24 Oct 17:45 — MIGRATION PHASES locked (docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md)
+- 8 phases: M1(done) M2 M3 M4 M5 L(WebTransport live) M6 F(FOUNDER alag batch) B8. Sab account kinds (basic/pro/business/business pro/personal/basic personal/family) EK hi code path: resolve_plan se gate, koi per-kind duplicate nahi. Founder routes kabhi buyer batch mein mix nahi. Bun hamesha emergency fallback.
+- Per-technology commands: SQL / Rust(+restart) / Web — har batch ki entry batati hai kaun si lagti hain.
