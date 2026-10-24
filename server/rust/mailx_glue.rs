@@ -9,6 +9,9 @@
 //   mail.assign            {thread_id, assignee}          Pro+  (uuid, e-mail or full name; GoTrue lookup like Bun)
 //   mail.templates.save    {name, subject, body}          Pro+  (personal scope, 50 per person)
 //   mail.templates.delete  {id}                           own template only
+//   M2: mail.drafts.save / mail.drafts.versions (own drafts only, race-safe versions), mail.templates.list, mail.snippets.list|save,
+//       mail.signatures.list, mail.confidence (send-confidence, ported 1:1 + differential-tested vs the Bun/JS original),
+//       mail.followup.create|list (bad dates are a 400, never a crash)
 //   mail.threads           {folder,...}                   wraps main.rs `mail_query_threads`: inbox hides future-snoozed
 //                                                          threads, folder "snoozed" lists them (virtual folder, = inbox + snoozed_until > now)
 //
@@ -33,6 +36,15 @@ pub fn owns(proc: &str) -> bool {
             | "mail.templates.save"
             | "mail.templates.delete"
             | "mail.threads"
+            | "mail.drafts.save"
+            | "mail.drafts.versions"
+            | "mail.templates.list"
+            | "mail.snippets.list"
+            | "mail.snippets.save"
+            | "mail.signatures.list"
+            | "mail.confidence"
+            | "mail.followup.create"
+            | "mail.followup.list"
     )
 }
 
@@ -129,6 +141,10 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             Ok(n) => data(json!({ "removed": n })),
             Err(e) => db_fail(&e),
         };
+    }
+
+    if let Some(r) = compose(proc, &me, input).await {
+        return r;
     }
 
     // everything below acts on one thread of the caller's workspace
@@ -302,4 +318,190 @@ async fn threads(me: &crate::MailMe, input: &Value) -> Resp {
         }
     }
     data(out)
+}
+
+// ── M2: compose-side procs (drafts, templates list, snippets, signatures, send-confidence, follow-ups) ────────────────
+fn new_uuid() -> String {
+    use std::io::Read;
+    let mut b = [0u8; 16];
+    let ok = std::fs::File::open("/dev/urandom").and_then(|mut f| f.read_exact(&mut b)).is_ok();
+    if !ok {
+        let n = SystemTime::now().duration_since(UNIX_EPOCH).map(|d| d.as_nanos()).unwrap_or(1);
+        b.copy_from_slice(&n.to_be_bytes());
+    }
+    b[6] = (b[6] & 0x0f) | 0x40;
+    b[8] = (b[8] & 0x3f) | 0x80;
+    let h: Vec<String> = b.iter().map(|x| format!("{x:02x}")).collect();
+    format!("{}-{}-{}-{}-{}", h[0..4].concat(), h[4..6].concat(), h[6..8].concat(), h[8..10].concat(), h[10..16].concat())
+}
+
+fn opt_str(input: &Value, k: &str) -> Value {
+    match input.get(k).and_then(|v| v.as_str()) {
+        Some(x) if !x.is_empty() => Value::String(x.to_string()),
+        _ => Value::Null,
+    }
+}
+
+async fn compose(proc: &str, me: &crate::MailMe, input: &Value) -> Option<Resp> {
+    Some(match proc {
+        "mail.drafts.save" => drafts_save(me, input).await,
+        "mail.drafts.versions" => {
+            let id = st(input, "id");
+            if !c::is_uuid(&id) {
+                return Some(bad("id_required"));
+            }
+            let q = format!(
+                "mail_drafts_versions?select=id,version,saved_at,subject,body&org_id=eq.{}&user_id=eq.{}&draft_id=eq.{id}&order=version.desc&limit=40",
+                me.org_id, me.id
+            );
+            match crate::sb_select(&q).await {
+                Ok(rows) => {
+                    let v: Vec<Value> = rows
+                        .as_array()
+                        .cloned()
+                        .unwrap_or_default()
+                        .iter()
+                        .map(|r| json!({ "id": r["id"], "version": r["version"], "saved_at": r["saved_at"], "subject": r["subject"], "body": r["body"] }))
+                        .collect();
+                    data(json!({ "versions": v }))
+                }
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.templates.list" => {
+            let q = format!(
+                "mail_templates?select=id,name,scope,subject,body,variables&org_id=eq.{}&or=(scope.eq.org,user_id.eq.{})&order=name",
+                me.org_id, me.id
+            );
+            match crate::sb_select(&q).await {
+                Ok(rows) => {
+                    let t: Vec<Value> = rows
+                        .as_array()
+                        .cloned()
+                        .unwrap_or_default()
+                        .into_iter()
+                        .map(|mut r| {
+                            if r.get("variables").map(|v| v.is_null()).unwrap_or(true) {
+                                r["variables"] = json!([]);
+                            }
+                            r
+                        })
+                        .collect();
+                    data(json!({ "templates": t }))
+                }
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.snippets.list" => match crate::sb_select(&format!("mail_snippets?select=id,shortcut,body&org_id=eq.{}&user_id=eq.{}&order=shortcut", me.org_id, me.id)).await {
+            Ok(rows) => data(json!({ "snippets": rows })),
+            Err(e) => db_fail(&e),
+        },
+        "mail.snippets.save" => {
+            let (shortcut, body) = (st(input, "shortcut").trim().to_string(), st(input, "body"));
+            if let Err(code) = c::check_snippet(&shortcut, &body) {
+                return Some(bad(code));
+            }
+            let have = crate::sb_count(&format!("mail_snippets?select=id&org_id=eq.{}&user_id=eq.{}", me.org_id, me.id)).await.unwrap_or(0);
+            if have >= c::MAX_SNIPPETS_PER_USER {
+                return Some(fail(StatusCode::CONFLICT, "too_many", "too_many"));
+            }
+            match crate::sb_insert("mail_snippets", json!({ "org_id": me.org_id, "user_id": me.id, "shortcut": shortcut, "body": body })).await {
+                Ok(rows) => data(json!({ "id": rows.as_array().and_then(|a| a.first()).and_then(|r| r.get("id").cloned()).unwrap_or(Value::Null) })),
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.signatures.list" => match crate::sb_select(&format!("mail_signatures?select=id,identity,name,body,is_default&org_id=eq.{}&user_id=eq.{}&order=is_default.desc", me.org_id, me.id)).await {
+            Ok(rows) => data(json!({ "signatures": rows })),
+            Err(e) => db_fail(&e),
+        },
+        "mail.confidence" => {
+            let to = match input.get("to") {
+                Some(Value::Array(a)) => a.iter().filter_map(|x| x.as_str()).collect::<Vec<_>>().join(","),
+                _ => st(input, "to"),
+            };
+            let att = input.get("attachments").and_then(|v| v.as_i64().or_else(|| v.as_f64().map(|f| f as i64))).unwrap_or(0);
+            let (score, issues) = c::send_confidence(&to, &st(input, "subject"), &st(input, "body"), att);
+            let list: Vec<Value> = issues.iter().map(|i| json!({ "kind": i.kind, "severity": i.severity, "message": i.message })).collect();
+            data(json!({ "score": score, "issues": list }))
+        }
+        "mail.followup.create" => {
+            let remind = match c::check_remind(&st(input, "remind_at")) {
+                Ok(r) => r,
+                Err(code) => return Some(bad(code)),
+            };
+            let thread = st(input, "thread_id");
+            if !thread.is_empty() && (!c::is_uuid(&thread) || !thread_owned(&me.org_id, &thread).await) {
+                return Some(fail(StatusCode::NOT_FOUND, "not_found", "not_found"));
+            }
+            let subject: Value = match input.get("subject").and_then(|v| v.as_str()) {
+                Some(x) if !x.is_empty() => Value::String(x.chars().take(998).collect()),
+                _ => Value::Null,
+            };
+            let row = json!({ "org_id": me.org_id, "user_id": me.id, "thread_id": if thread.is_empty() { Value::Null } else { json!(thread) }, "subject": subject, "remind_at": remind, "status": "pending" });
+            match crate::sb_insert("mail_followups", row).await {
+                Ok(rows) => {
+                    let r = rows.as_array().and_then(|a| a.first()).cloned().unwrap_or(Value::Null);
+                    data(json!({ "id": r["id"], "thread_id": r["thread_id"], "subject": r["subject"], "remind_at": r["remind_at"], "status": r["status"] }))
+                }
+                Err(e) if e.contains("22007") || e.contains("22008") || e.contains("date/time") || e.contains("timestamp") => bad("bad_remind_at"),
+                Err(e) => db_fail(&e),
+            }
+        }
+        "mail.followup.list" => match crate::sb_select(&format!("mail_followups?select=id,thread_id,subject,remind_at,status&org_id=eq.{}&user_id=eq.{}&order=remind_at", me.org_id, me.id)).await {
+            Ok(rows) => data(json!({ "follow_ups": rows })),
+            Err(e) => db_fail(&e),
+        },
+        _ => return None,
+    })
+}
+
+async fn drafts_save(me: &crate::MailMe, input: &Value) -> Resp {
+    let (subject, body, to, cc, bcc, identity) = (st(input, "subject"), st(input, "body"), st(input, "to"), st(input, "cc"), st(input, "bcc"), st(input, "identity"));
+    if let Err(code) = c::check_draft(&subject, &body, &to, &cc, &bcc, &identity) {
+        return bad(code);
+    }
+    let given = st(input, "id");
+    if !given.is_empty() && !c::is_uuid(&given) {
+        return bad("id_invalid");
+    }
+    let thread = st(input, "thread_id");
+    if !thread.is_empty() && (!c::is_uuid(&thread) || !thread_owned(&me.org_id, &thread).await) {
+        return fail(StatusCode::NOT_FOUND, "not_found", "not_found");
+    }
+    let draft_id = if given.is_empty() { new_uuid() } else { given.to_lowercase() };
+    // a draft id that already has versions must belong to this user (Bun let anyone append to someone else's draft id)
+    if !given.is_empty() {
+        let owner = crate::sb_select(&format!("mail_drafts_versions?select=user_id,org_id&draft_id=eq.{draft_id}&limit=1")).await.ok();
+        if let Some(r) = owner.as_ref().and_then(|v| v.as_array()).and_then(|a| a.first()) {
+            if r.get("user_id").and_then(|x| x.as_str()) != Some(me.id.as_str()) || r.get("org_id").and_then(|x| x.as_str()) != Some(me.org_id.as_str()) {
+                return fail(StatusCode::NOT_FOUND, "not_found", "not_found");
+            }
+        }
+    }
+    let send_at = match input.get("send_at").and_then(|v| v.as_str()).filter(|x| !x.is_empty()) {
+        Some(x) => match c::check_remind(x) {
+            Ok(t) => Value::String(t),
+            Err(_) => return bad("send_at_invalid"),
+        },
+        None => Value::Null,
+    };
+    // version = last + 1; two saves racing for the same number collide on the unique key -> read again and retry (max 4 times)
+    for _ in 0..4 {
+        let last = crate::sb_select(&format!("mail_drafts_versions?select=version&draft_id=eq.{draft_id}&order=version.desc&limit=1")).await.ok();
+        let version = last.as_ref().and_then(|v| v.as_array()).and_then(|a| a.first()).and_then(|r| r.get("version")).and_then(|x| x.as_i64()).unwrap_or(0) + 1;
+        let row = json!({
+            "org_id": me.org_id, "draft_id": draft_id, "user_id": me.id,
+            "thread_id": if thread.is_empty() { Value::Null } else { json!(thread) },
+            "version": version, "identity": opt_str(input, "identity"),
+            "to": to, "cc": opt_str(input, "cc"), "bcc": opt_str(input, "bcc"), // live columns are to/cc/bcc (Bun used to_addresses: autosave 500)
+            "subject": opt_str(input, "subject"), "body": opt_str(input, "body"),
+            "send_at": send_at, "language": opt_str(input, "language"),
+        });
+        match crate::sb_insert("mail_drafts_versions", row).await {
+            Ok(_) => return data(json!({ "id": draft_id, "version": version, "saved_at": format!("{}.000Z", c::iso_prefix(now_secs())) })),
+            Err(e) if e.contains("23505") => continue,
+            Err(e) => return db_fail(&e),
+        }
+    }
+    fail(StatusCode::CONFLICT, "draft_busy", "draft_busy")
 }

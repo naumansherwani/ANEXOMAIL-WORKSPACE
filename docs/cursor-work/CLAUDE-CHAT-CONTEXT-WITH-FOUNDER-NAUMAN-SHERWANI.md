@@ -1012,3 +1012,6 @@ Abhi BAQI check: Snooze asli kaam, Schedule send asli, collision guard / shared 
 - Brain installer ab 2 hunks files (brain_pro_hunks.json + brain_pro2_hunks.json): fresh aur already-patched dono par dry-run OK. Test debris live: label "ZZ-m1" (Pro workspace) — baad mein hatana; thread 0af789df snooze hata diya.
 - Basic-user 403 live test baaki (Basic account ka login chahiye); Rust/Bun gate code tested in stub harness.
 - Deploy pending (5 commands): SQL E85 -> Rust engine -> restart -> Brain -> Web. Phir live: assign, Bring back now. Phir M2.
+
+### 24 Oct 20:10 PKT — M2 compose procs Rust primary (READY)
+mailx module mein mail.drafts.save/versions, templates.list, snippets.list/save, signatures.list, confidence, followup.create/list. Bun hunks3 (draft columns to/cc/bcc/saved_at, user filter, bad remind_at 400). E86 SQL. Client compose.ts rpcOrRest. Deploy: SQL(E85+E86) -> Rust -> restart -> Brain -> Web. Agla: M2b handoff, M3.

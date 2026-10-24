@@ -1,0 +1,16 @@
+{
+ "mail-compose.ts": [
+  [
+   "    thread_id: b.thread_id || null,\n    version,\n    identity: b.identity || null,\n    to_addresses: b.to || \"\",\n    cc_addresses: b.cc || null,\n    bcc_addresses: b.bcc || null,\n    subject: b.subject || null,\n    body: b.body || null,\n    send_at: b.send_at || null,",
+   "    thread_id: b.thread_id || null,\n    version,\n    identity: b.identity || null,\n    // live columns are to / cc / bcc (to_addresses made every autosave fail with a 500)\n    to: b.to || \"\",\n    cc: b.cc || null,\n    bcc: b.bcc || null,\n    subject: b.subject || null,\n    body: b.body || null,\n    send_at: b.send_at || null,"
+  ],
+  [
+   "  const c = await ctx(req, res); if (!c) return;\n  const { data, error } = await supa\n    .from(\"mail_drafts_versions\")\n    .select(\"id, version, created_at, subject, body\")\n    .eq(\"org_id\", c.orgId)\n    .eq(\"draft_id\", req.params.id)\n    .order(\"version\", { ascending: false })\n    .limit(40);\n  if (error) return res.status(500).json({ error: error.message });\n  res.json({\n    versions: (data || []).map((v: any) => ({\n      id: v.id, version: v.version, saved_at: v.created_at, subject: v.subject, body: v.body,\n    })),\n  });\n});",
+   "  const c = await ctx(req, res); if (!c) return;\n  const { data, error } = await supa\n    .from(\"mail_drafts_versions\")\n    .select(\"id, version, saved_at, subject, body\")\n    .eq(\"org_id\", c.orgId)\n    .eq(\"user_id\", c.userId) // only your own draft history\n    .eq(\"draft_id\", req.params.id)\n    .order(\"version\", { ascending: false })\n    .limit(40);\n  if (error) return res.status(500).json({ error: error.message });\n  res.json({\n    versions: (data || []).map((v: any) => ({\n      id: v.id, version: v.version, saved_at: v.saved_at, subject: v.subject, body: v.body,\n    })),\n  });\n});"
+  ],
+  [
+   "  const c = await ctx(req, res); if (!c) return;\n  const b = req.body || {};\n  if (!b.remind_at) return res.status(400).json({ error: \"remind_at_required\" });\n  const { data, error } = await supa.from(\"mail_followups\").insert({\n    org_id: c.orgId,\n    user_id: c.userId,\n    thread_id: b.thread_id || null,\n    subject: b.subject || null,\n    remind_at: new Date(b.remind_at).toISOString(),\n    status: \"pending\",\n  }).select(\"id, thread_id, subject, remind_at, status\").single();\n  if (error) return res.status(500).json({ error: error.message });",
+   "  const c = await ctx(req, res); if (!c) return;\n  const b = req.body || {};\n  if (!b.remind_at) return res.status(400).json({ error: \"remind_at_required\" });\n  const remindAt = new Date(b.remind_at);\n  if (Number.isNaN(remindAt.getTime())) return res.status(400).json({ error: \"bad_remind_at\" });\n  const { data, error } = await supa.from(\"mail_followups\").insert({\n    org_id: c.orgId,\n    user_id: c.userId,\n    thread_id: b.thread_id || null,\n    subject: b.subject || null,\n    remind_at: remindAt.toISOString(),\n    status: \"pending\",\n  }).select(\"id, thread_id, subject, remind_at, status\").single();\n  if (error) return res.status(500).json({ error: error.message });"
+  ]
+ ]
+}

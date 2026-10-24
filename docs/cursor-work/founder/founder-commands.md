@@ -1,5 +1,15 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 24 Oct 20:10 PKT — M2 (compose -> Rust primary) TAIYAR, deploy baqi
+- Kya: draft autosave/versions (Bun mein galat column naam se 500 tha), follow-up table `mail_followups` (E86), templates/snippets/signatures list, send-confidence, follow-up create/list ab Rust `mailx` par; Bun sirf fallback.
+- Tarteeb (har technology ki alag command; SQL pehle):
+  1. SQL (E85 + E86): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+  2. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+  3. Rust restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+  4. Bun/Brain (fallback): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-pro-install.sh)`
+  5. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
+- Halat: READY (repo mein, server par chalana baqi). Agla: M2b handoff, phir M3.
+
 > **22 Oct 2026 20:50 (founder, Rule 45):** sign-in bhi latest tech (Rust) par, Bun hamesha emergency, frontend latest, SQL super-advance, passkey/fingerprint vault mein, wrong activity => block + vault ban list, dobara signup vault se match. Verbatim + plan: `docs/cursor-work/AUTH-MIGRATION-PLAN.md`. Halat: READY (plan likha), kaam W2 ke baad.
 
 > **22 Oct 2026 20:32 (founder, Rule 44):** SQL ab SERVER par `sql-run.sh` se chalti hai (editor nahi), aur woh PEHLE chalti hai. Command: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` (bina naam = sab nayi) ya naam aakhir mein bina .sql ke.

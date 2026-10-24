@@ -111,10 +111,12 @@ export function useSaveDraft() {
   const qc = useQueryClient();
   return useMutation<DraftRecord, ApiError, DraftPayload>({
     mutationFn: (payload) =>
-      api<DraftRecord>("/api/mail/drafts", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      }),
+      // Rust PRIMARY (mail.drafts.save), Bun /api/mail/drafts fallback
+      rpcOrRest<DraftRecord>(
+        "mail.drafts.save",
+        { path: "/api/mail/drafts", method: "POST", body: payload },
+        payload,
+      ),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "drafts"] }),
   });
 }
@@ -122,7 +124,12 @@ export function useSaveDraft() {
 export function useDraftVersions(draftId: string | undefined) {
   return useQuery<{ versions: DraftVersion[] }, ApiError>({
     queryKey: ["mail", "drafts", draftId, "versions"],
-    queryFn: () => api<{ versions: DraftVersion[] }>(`/api/mail/drafts/${draftId}`),
+    queryFn: () =>
+      rpcOrRest<{ versions: DraftVersion[] }>(
+        "mail.drafts.versions",
+        { path: `/api/mail/drafts/${draftId}` },
+        { id: draftId },
+      ),
     enabled: Boolean(draftId),
     retry: false,
   });
@@ -133,7 +140,12 @@ export function useDraftVersions(draftId: string | undefined) {
 export function useTemplates() {
   return useQuery<{ templates: MailTemplate[] }, ApiError>({
     queryKey: ["mail", "templates"],
-    queryFn: () => api<{ templates: MailTemplate[] }>("/api/mail/templates"),
+    queryFn: () =>
+      rpcOrRest<{ templates: MailTemplate[] }>(
+        "mail.templates.list",
+        { path: "/api/mail/templates" },
+        {},
+      ),
     retry: false,
     staleTime: 60_000,
   });
@@ -170,7 +182,12 @@ export function useDeleteTemplate() {
 export function useSnippets() {
   return useQuery<{ snippets: MailSnippet[] }, ApiError>({
     queryKey: ["mail", "snippets"],
-    queryFn: () => api<{ snippets: MailSnippet[] }>("/api/mail/snippets"),
+    queryFn: () =>
+      rpcOrRest<{ snippets: MailSnippet[] }>(
+        "mail.snippets.list",
+        { path: "/api/mail/snippets" },
+        {},
+      ),
     retry: false,
     staleTime: 60_000,
   });
@@ -179,7 +196,12 @@ export function useSnippets() {
 export function useSignatures() {
   return useQuery<{ signatures: MailSignature[] }, ApiError>({
     queryKey: ["mail", "signatures"],
-    queryFn: () => api<{ signatures: MailSignature[] }>("/api/mail/signatures"),
+    queryFn: () =>
+      rpcOrRest<{ signatures: MailSignature[] }>(
+        "mail.signatures.list",
+        { path: "/api/mail/signatures" },
+        {},
+      ),
     retry: false,
     staleTime: 60_000,
   });
@@ -190,10 +212,11 @@ export function useSignatures() {
 export function useSendConfidence() {
   return useMutation<ConfidenceReport, ApiError, DraftPayload & { attachments?: number }>({
     mutationFn: (payload) =>
-      api<ConfidenceReport>("/api/mail/send-confidence", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      }),
+      rpcOrRest<ConfidenceReport>(
+        "mail.confidence",
+        { path: "/api/mail/send-confidence", method: "POST", body: payload },
+        payload,
+      ),
   });
 }
 
@@ -248,10 +271,11 @@ export function useCreateFollowUp() {
     { thread_id?: string; subject?: string; remind_at: string }
   >({
     mutationFn: (payload) =>
-      api<FollowUp>("/api/mail/follow-up", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      }),
+      rpcOrRest<FollowUp>(
+        "mail.followup.create",
+        { path: "/api/mail/follow-up", method: "POST", body: payload },
+        payload,
+      ),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["mail", "follow-ups"] }),
   });
 }
@@ -259,7 +283,12 @@ export function useCreateFollowUp() {
 export function useFollowUps() {
   return useQuery<{ follow_ups: FollowUp[] }, ApiError>({
     queryKey: ["mail", "follow-ups"],
-    queryFn: () => api<{ follow_ups: FollowUp[] }>("/api/mail/follow-up"),
+    queryFn: () =>
+      rpcOrRest<{ follow_ups: FollowUp[] }>(
+        "mail.followup.list",
+        { path: "/api/mail/follow-up" },
+        {},
+      ),
     retry: false,
   });
 }

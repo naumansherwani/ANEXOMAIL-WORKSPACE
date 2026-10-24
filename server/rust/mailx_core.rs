@@ -79,6 +79,10 @@ pub fn check_template(name: &str, body: &str) -> Result<(), &'static str> {
 
 /// `{{variable}}` names in a template body (unique, first 30), like Bun's /{{\s*([\w.]+)\s*}}/g.
 pub fn template_vars(body: &str) -> Vec<String> {
+    template_vars_max(body, 30)
+}
+
+pub fn template_vars_max(body: &str, max: usize) -> Vec<String> {
     let mut vars: Vec<String> = Vec::new();
     let mut rest = body;
     while let Some(i) = rest.find("{{") {
@@ -89,7 +93,7 @@ pub fn template_vars(body: &str) -> Vec<String> {
                 if !v.is_empty()
                     && v.chars().all(|c| c.is_ascii_alphanumeric() || c == '_' || c == '.')
                     && !vars.iter().any(|x| x == v)
-                    && vars.len() < 30
+                    && vars.len() < max
                 {
                     vars.push(v.to_string());
                 }
@@ -120,6 +124,126 @@ pub fn iso_prefix(secs: i64) -> String {
 /// Is `until` (Postgres timestamptz text) still in the future compared with `now` (an `iso_prefix`)?
 pub fn is_future(until: &str, now: &str) -> bool {
     until.len() >= 19 && until.get(..19).map(|u| u > now).unwrap_or(false)
+}
+
+
+// ---------------------------------------------------------------- M2: drafts / snippets / follow-up / send confidence
+
+pub const MAX_SNIPPETS_PER_USER: i64 = 200;
+
+/// Draft fields: same shape as Bun plus hard limits (Bun accepted any size).
+pub fn check_draft(subject: &str, body: &str, to: &str, cc: &str, bcc: &str, identity: &str) -> Result<(), &'static str> {
+    if subject.chars().count() > 998 {
+        return Err("subject_too_long");
+    }
+    if body.chars().count() > 200_000 {
+        return Err("body_too_long");
+    }
+    if to.len() > 5000 || cc.len() > 5000 || bcc.len() > 5000 || identity.len() > 200 {
+        return Err("field_too_long");
+    }
+    Ok(())
+}
+
+pub fn check_snippet(shortcut: &str, body: &str) -> Result<(), &'static str> {
+    let sc = shortcut.trim();
+    if sc.is_empty() || sc.chars().count() > 40 || sc.chars().any(|c| c.is_whitespace()) {
+        return Err("bad_shortcut");
+    }
+    if body.trim().is_empty() || body.chars().count() > 5000 {
+        return Err("bad_body");
+    }
+    Ok(())
+}
+
+/// `remind_at` shape for follow-ups: ISO-like date/time (same chars as snooze), required.
+pub fn check_remind(raw: &str) -> Result<String, &'static str> {
+    match check_until(raw) {
+        Ok(Some(t)) => Ok(t),
+        Ok(None) => Err("remind_at_required"),
+        Err(_) => Err("bad_remind_at"),
+    }
+}
+
+fn is_word(c: char) -> bool {
+    c.is_ascii_alphanumeric() || c == '_'
+}
+
+/// JS `/attach(ed|ment|ing)?\b/i` on the body.
+pub fn mentions_attachment(body: &str) -> bool {
+    let l = body.to_lowercase();
+    let b = l.as_bytes();
+    let mut from = 0;
+    while let Some(i) = l[from..].find("attach") {
+        let at = from + i + 6;
+        for suf in ["ed", "ment", "ing", ""] {
+            if l[at..].starts_with(suf) {
+                let end = at + suf.len();
+                if end >= b.len() || !is_word(b[end] as char) {
+                    return true;
+                }
+            }
+        }
+        from += i + 6;
+    }
+    false
+}
+
+pub struct Issue {
+    pub kind: &'static str,
+    pub severity: &'static str,
+    pub message: String,
+}
+
+const RISKY: [&str; 6] = ["asap", "urgent", "obviously", "as i said", "clearly you", "unacceptable"];
+
+/// Port of Bun POST /send-confidence (same messages, same weights). Returns (score, issues).
+pub fn send_confidence(to: &str, subject: &str, body: &str, attachments: i64) -> (i64, Vec<Issue>) {
+    let mut issues: Vec<Issue> = Vec::new();
+    if subject.trim().is_empty() {
+        issues.push(Issue { kind: "empty_subject", severity: "block", message: "Subject khaali hai.".into() });
+    }
+    if to.trim().is_empty() {
+        issues.push(Issue { kind: "wrong_identity", severity: "block", message: "Recipient missing.".into() });
+    }
+    for v in template_vars_max(body, usize::MAX) {
+        issues.push(Issue { kind: "missing_variable", severity: "block", message: format!("Variable {{{{{v}}}}} resolve nahi hui.") });
+    }
+    if mentions_attachment(body) && attachments == 0 {
+        issues.push(Issue { kind: "attachment_promised", severity: "warn", message: "Attachment ka zikr hai magar file nahi lagi.".into() });
+    }
+    let external: Vec<String> = to
+        .split(|c| c == ',' || c == ';')
+        .filter_map(|a| a.split('@').nth(1).map(|d| d.trim().to_lowercase()))
+        .filter(|d| !d.is_empty())
+        .filter(|d| d != "anexomail.com" && d != "nexatect.com")
+        .collect();
+    if !external.is_empty() {
+        issues.push(Issue { kind: "external_domain", severity: "note", message: format!("External recipient: {}", external.join(", ")) });
+    }
+    let lb = body.to_lowercase();
+    let risky: Vec<&str> = RISKY.iter().copied().filter(|w| lb.contains(w)).collect();
+    if !risky.is_empty() {
+        issues.push(Issue { kind: "risky_tone", severity: "warn", message: format!("Tone check: \"{}\"", risky.join("\", \"")) });
+    }
+    for tok in body.split(char::is_whitespace) {
+        for scheme in ["https://", "http://"] {
+            if let Some(at) = tok.find(scheme) {
+                let link = &tok[at..];
+                let rest = &link[scheme.len()..];
+                // JS `https?:\/\/\S+` needs at least one character after the scheme (a bare "https://" is not a link token).
+                if rest.is_empty() {
+                    break;
+                }
+                if link.contains("..") || !rest.contains('.') {
+                    issues.push(Issue { kind: "broken_link", severity: "warn", message: format!("Link toota lagta hai: {link}") });
+                }
+                break;
+            }
+        }
+    }
+    let penalty: i64 = issues.iter().map(|i| match i.severity { "block" => 30, "warn" => 12, _ => 3 }).sum();
+    ((100 - penalty).max(0), issues)
 }
 
 #[cfg(test)]
@@ -168,6 +292,47 @@ mod tests {
         assert_eq!(check_template("a", "  "), Err("bad_body"));
         assert_eq!(check_template("a", &"b".repeat(20001)), Err("bad_body"));
         assert_eq!(template_vars("Hello {{first_name}} and {{ first_name }} {{a.b}} {{bad name}} {{"), vec!["first_name", "a.b"]);
+    }
+
+
+    #[test]
+    fn draft_snippet_remind_rules() {
+        assert!(check_draft("s", "b", "a@b.c", "", "", "").is_ok());
+        assert_eq!(check_draft(&"s".repeat(999), "b", "", "", "", ""), Err("subject_too_long"));
+        assert_eq!(check_draft("s", &"b".repeat(200_001), "", "", "", ""), Err("body_too_long"));
+        assert_eq!(check_draft("s", "b", &"a".repeat(5001), "", "", ""), Err("field_too_long"));
+        assert!(check_snippet("sig1", "hello").is_ok());
+        assert_eq!(check_snippet("a b", "x"), Err("bad_shortcut"));
+        assert_eq!(check_snippet("", "x"), Err("bad_shortcut"));
+        assert_eq!(check_snippet("ok", " "), Err("bad_body"));
+        assert_eq!(check_remind(""), Err("remind_at_required"));
+        assert_eq!(check_remind("garbage;"), Err("bad_remind_at"));
+        assert!(check_remind("2026-10-25T09:00:00Z").is_ok());
+    }
+
+    #[test]
+    fn attachment_word_boundary_like_js() {
+        assert!(mentions_attachment("Please see attached file"));
+        assert!(mentions_attachment("Attachment is here"));
+        assert!(mentions_attachment("attaching now"));
+        assert!(mentions_attachment("I will attach."));
+        assert!(!mentions_attachment("attachments are here")); // JS: \b fails after "attachment" because of the s
+        assert!(!mentions_attachment("detachable"));
+    }
+
+    #[test]
+    fn confidence_matches_bun() {
+        let (score, issues) = send_confidence("", "", "hi {{first_name}} see attached asap http://localhost and http://", 0);
+        let kinds: Vec<&str> = issues.iter().map(|i| i.kind).collect();
+        assert_eq!(kinds, vec!["empty_subject", "wrong_identity", "missing_variable", "attachment_promised", "risky_tone", "broken_link"]);
+        assert_eq!(score, 0); // 138 penalty points, clamped like Math.max(0, ..)
+        let (s2, i2) = send_confidence("a@anexomail.com, b@Gmail.com;c@x.org", "Hello", "all good https://example.com/a..b", 1);
+        assert_eq!(i2.iter().map(|i| i.kind).collect::<Vec<_>>(), vec!["external_domain", "broken_link"]);
+        assert_eq!(i2[0].message, "External recipient: gmail.com, x.org");
+        assert_eq!(s2, 100 - 3 - 12);
+        let (s3, i3) = send_confidence("a@b.com", "S", "fine", 0);
+        assert_eq!((s3, i3.len()), (97, 1));
+        assert_eq!(send_confidence("", "", &"{{a}}{{b}}{{c}}{{d}}".to_string(), 0).0, 0);
     }
 
     #[test]

@@ -2,7 +2,7 @@
 # ANEXOMAIL — Brain (Bun :3100, pm2 anexomail-leo) FALLBACK fixes for the Pro package (24 Oct 2026). Koi SQL nahi. Rust/Web ko haath nahi.
 #   bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-pro-install.sh)
 # Kya: routes/mail.ts (snooze ab folder nahi badalta + galat date par process crash band + Pro gate, status/move/labels validation, Snoozed folder),
-#      routes/mail-compose.ts (templates save/delete + Pro gate, schedule send Pro gate), routes/calendar.ts (thread note 20,000 limit), assign (E85: ek function, null = hatao). SQL E85 PEHLE.
+#      routes/mail-compose.ts (templates save/delete + Pro gate, schedule send Pro gate), routes/calendar.ts (thread note 20,000 limit), assign (E85: ek function, null = hatao). draft autosave (galat column naam), follow-up date guard. SQL E85 + E86 PEHLE.
 # Safety: live files par anchor-based hunks (kuch na mile => kuch nahi badla), backup, `bun build` pre-flight, health, restore-on-fail.
 set -uo pipefail
 REPO="${REPO:-/opt/anexomail-web}"; SRC="${BRAIN_SRC:-/opt/anexomail/src}"; R="$SRC/routes"
@@ -11,9 +11,9 @@ for f in mail.ts mail-compose.ts calendar.ts; do [ -f "$R/$f" ] || { echo "FAIL:
 [ -f "$SRC/lib/plan.ts" ] || { echo "FAIL: $SRC/lib/plan.ts nahi mili (resolvePlan chahiye)"; exit 2; }
 git -C "$REPO" fetch -q origin main 2>/dev/null
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT; mkdir -p "$T/out"
-git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro_patch.py > "$T/patch.py"; git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro_hunks.json > "$T/hunks.json"; git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro2_hunks.json > "$T/hunks2.json"
-[ -s "$T/patch.py" ] && [ -s "$T/hunks.json" ] && [ -s "$T/hunks2.json" ] || { echo "FAIL: repo se patch/hunks nahi mile — git fetch hua?"; exit 2; }
-ST="$(python3 -I "$T/patch.py" "$R" "$T/out" "$T/hunks.json" "$T/hunks2.json")"; RC=$?
+git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro_patch.py > "$T/patch.py"; git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro_hunks.json > "$T/hunks.json"; git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro2_hunks.json > "$T/hunks2.json"; git -C "$REPO" show origin/main:docs/cursor-work/server/brain_pro3_hunks.json > "$T/hunks3.json"
+[ -s "$T/patch.py" ] && [ -s "$T/hunks.json" ] && [ -s "$T/hunks2.json" ] && [ -s "$T/hunks3.json" ] || { echo "FAIL: repo se patch/hunks nahi mile — git fetch hua?"; exit 2; }
+ST="$(python3 -I "$T/patch.py" "$R" "$T/out" "$T/hunks.json" "$T/hunks2.json" "$T/hunks3.json")"; RC=$?
 [ "$RC" = 0 ] || { echo "$ST"; echo "(live file ke markers alag hain — kuch nahi badla. Output Claude ko bhejein.)"; exit 3; }
 echo "status: $ST"
 [ "$ST" = same ] && { echo "Pehle se lagi hai."; exit 0; }

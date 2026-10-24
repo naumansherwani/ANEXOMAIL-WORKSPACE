@@ -57,9 +57,10 @@ mailComposeRouter.post("/drafts", async (req, res) => {
     thread_id: b.thread_id || null,
     version,
     identity: b.identity || null,
-    to_addresses: b.to || "",
-    cc_addresses: b.cc || null,
-    bcc_addresses: b.bcc || null,
+    // live columns are to / cc / bcc (to_addresses made every autosave fail with a 500)
+    to: b.to || "",
+    cc: b.cc || null,
+    bcc: b.bcc || null,
     subject: b.subject || null,
     body: b.body || null,
     send_at: b.send_at || null,
@@ -74,15 +75,16 @@ mailComposeRouter.get("/drafts/:id", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const { data, error } = await supa
     .from("mail_drafts_versions")
-    .select("id, version, created_at, subject, body")
+    .select("id, version, saved_at, subject, body")
     .eq("org_id", c.orgId)
+    .eq("user_id", c.userId) // only your own draft history
     .eq("draft_id", req.params.id)
     .order("version", { ascending: false })
     .limit(40);
   if (error) return res.status(500).json({ error: error.message });
   res.json({
     versions: (data || []).map((v: any) => ({
-      id: v.id, version: v.version, saved_at: v.created_at, subject: v.subject, body: v.body,
+      id: v.id, version: v.version, saved_at: v.saved_at, subject: v.subject, body: v.body,
     })),
   });
 });
@@ -279,12 +281,14 @@ mailComposeRouter.post("/follow-up", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
   const b = req.body || {};
   if (!b.remind_at) return res.status(400).json({ error: "remind_at_required" });
+  const remindAt = new Date(b.remind_at);
+  if (Number.isNaN(remindAt.getTime())) return res.status(400).json({ error: "bad_remind_at" });
   const { data, error } = await supa.from("mail_followups").insert({
     org_id: c.orgId,
     user_id: c.userId,
     thread_id: b.thread_id || null,
     subject: b.subject || null,
-    remind_at: new Date(b.remind_at).toISOString(),
+    remind_at: remindAt.toISOString(),
     status: "pending",
   }).select("id, thread_id, subject, remind_at, status").single();
   if (error) return res.status(500).json({ error: error.message });
