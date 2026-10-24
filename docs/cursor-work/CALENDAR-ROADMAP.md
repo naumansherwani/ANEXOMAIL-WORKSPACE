@@ -61,3 +61,9 @@ Detail + CEO verdict + phases W0–W5: docs/claude/WORLD-CLOCK-BLUEPRINT.md. #4a
 
 ## HISAAB 23 Oct 11:05 — CALENDAR GREEN
 Founder hukm: #7 Google sync abhi DROP (code/testing nahi), #8 Rooms server par hai => GREEN mark. 12 hisse GREEN, #7 parked (drop, GREEN ginti mein nahi — alag likha). Koi mojooda code nahi chheda gaya.
+## CALENDAR = GREEN (HANDOVER) — 24 Oct 2026 14:25 PKT
+Founder ne declare kiya: Calendar module GREEN, user ko handover. Sab server par deployed (SQL + Rust + Web, checks OK).
+- GREEN (12): #0 layout, #1 hours/OOO/rang, #2 booking, #3 iMIP, #4a pins, #4b overlay, #4c ICS subscribe, #5 meeting files, #6 CalDAV + "No app" Google link (live verified), #8 Rooms (deployed 24 Oct; asli browser test founder ke zimme), #9 outcome colours, #10 history search.
+- #7 Google two-way sync: founder faislay se DEFERRED (Google Cloud verification ke baad). Bana nahi; GREEN ginti mein nahi, scope se bahar. Koi adha code nahi.
+- Kharab/khula nahi chhoda: chhote items (LCP /app/calendar 2.6s vs 1.8s, INP, E55 grants-heal 30 Oct se pehle, Caddy cert 12 Nov se pehle) ALAG tasks (T3/T4 etc.), Calendar ko block nahi karte.
+- Dobara mat karo: DONE-DO-NOT-REPEAT.md dekho.

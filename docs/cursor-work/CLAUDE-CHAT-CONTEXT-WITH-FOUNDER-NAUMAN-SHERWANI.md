@@ -898,3 +898,8 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 ## CHECKPOINT 24 Oct 14:20 — #8 ROOMS DEPLOYED (server output dekha)
 - SQL E82 + CHECK_E82 6/6 OK, Rust build OK (rooms 4 tests, sab modules), restart online, Web build OK server==repo. Rust installer ke live-saboot mein rooms ka probe nahi hai (sirf baqi modules); asli test: Settings -> Rooms & resources, phir meeting -> Room -> Book.
 - Calendar GREEN. #7 Google parked. Agla: Founder account.
+
+## >>> CALENDAR = GREEN, USER KO HANDOVER (24 Oct 14:25) — COMPACT SE PEHLE FINAL <<<
+- Founder hukm: Calendar GREEN declare. 12 hisse GREEN + deployed; #7 Google sync founder ke faislay se deferred (bana nahi). Detail: CALENDAR-ROADMAP.md "CALENDAR = GREEN (HANDOVER)".
+- Calendar par ab KOI kaam nahi (naya bug/feature founder maange tab hi). Rooms ka asli browser test founder kare to LIVE-verified likhna.
+- AGLA (locked order): Founder account -> identity live tests -> M-series -> G16 billing portal -> T1–T12. Founder ne kaha: abhi Founder account SHURU NAHI karna, pehle green handover. Agla kaam founder ke hukm par.

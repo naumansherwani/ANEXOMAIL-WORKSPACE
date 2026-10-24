@@ -470,3 +470,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - Calendar #8 Rooms: E82 + Rust rooms module + Web UI code complete (23 Oct 14:30); deploy + live test baaki
 - Calendar GREEN 23 Oct 11:05: #8 Rooms green; #7 Google sync DROPPED/parked by founder
 - Rooms deployed on server 24 Oct (SQL+Rust+Web all OK)
+- CALENDAR GREEN HANDOVER 24 Oct 14:25 (12 green, #7 deferred)
