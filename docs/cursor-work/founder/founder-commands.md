@@ -1,5 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 24 Oct 22:45 — founder: 'sql E84 kero, tarteeb nahi tootay'
+- Halat: READY — E84_room_series_note.sql + CHECK_E84. SQL command wahi bare sql-run.sh (E84, E85, E86 number ki tarteeb se chalengi).
+
 ## ▶ 24 Oct 22:30 — founder verbatim (summary): 8 phases M1-M6/L/F/B8 plan confirm; 'yeh rule hai ke yeh saath ke saath update hoga'
 - Halat: DONE (docs) — AGENTS.md Rule 50 + phase table halat. Server command nahi chahiye.
 

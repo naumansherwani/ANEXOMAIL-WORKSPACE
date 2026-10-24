@@ -1021,3 +1021,6 @@ Founder ne E83->E85 aur migration ki ginti poochi. Jawab: E84 Rust-only tha. His
 
 ### 24 Oct 22:30 — Rule 50
 Founder ne 8-phase plan confirm kiya aur rule diya: phase table + ledger saath ke saath update (AGENTS.md Rule 50).
+
+### 24 Oct 22:45 — E84 SQL
+Founder: SQL ki tarteeb nahi tootni. E84_room_series_note.sql + CHECK_E84.sql banayi (E83 guard par comment, Rust series check ka note). Ab tarteeb E83, E84, E85, E86. sql-run bare command E84 bhi chalayegi.

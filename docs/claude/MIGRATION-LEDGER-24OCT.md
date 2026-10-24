@@ -3,7 +3,7 @@
 Banaya: Claude CEO-agent, Nauman bhai ke hukm par. Ginti repo ke code se nikali gayi (script), andaza nahi. Poori list: `ENDPOINT-MIGRATION-24OCT.csv`.
 
 ## SQL numbering sawal (E83 -> E85)
-E84 SQL nahi tha: wo Rust-only kaam tha (repeat-series room check, `rooms_core/glue`), isliye SQL mein E83 ke baad seedha E85 aata hai. Koi SQL file gum nahi.
+E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par 24 Oct ko E84_room_series_note.sql banayi gayi, ab SQL tarteeb E83, E84, E85, E86 poori hai.
 
 ## Kul hisaab
 | Cheez | Ginti |
