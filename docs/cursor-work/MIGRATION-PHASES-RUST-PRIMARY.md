@@ -14,6 +14,9 @@ Rules (founder, 24 Oct 2026):
 
 - HOW Rust code ships (learned live 24 Oct 16:30): `rust-engine-install.sh` does NOT replace the live `main.rs`; it only adds modules (`mod X_core; mod X_glue;` + one `owns()/dispatch()` hook). Procs written into `server/rust/main.rs` NEVER reach the server (live test: /rpc/mail.snooze stayed 404). So every new Rust proc lives in a `*_core.rs` (std-only, unit-tested on the server) + `*_glue.rs` module, registered in the installer's CFG/ALL_MODULES. `main.rs` in the repo is not edited for new procs. `mail_glue.rs` (send/schedule) ships via `rust-mail-install.sh`. Before pushing: compile the glue in a stub harness and call every proc.
 
+- HOW Bun (Brain) fallback code ships: `pull.sh` only updates the Web app (`anexomail-web`). Bun `/api/*` routes run in Brain (`/opt/anexomail/src`, pm2 `anexomail-leo`, :3100) and change ONLY through a `brain-*-install.sh` (anchor hunks, bun build pre-flight, restore-on-fail). Editing `server/routes/*.ts` in the repo does NOT change live Bun. Proof (24 Oct 16:24): live Bun still had the old snooze code; `until:"garbage"` crashed it (502 until pm2 restart). For Bun fixes: regenerate `brain_pro_hunks.json` (base->current hunks, round-trip verified) and give `brain-pro-install.sh`.
+- Pull command types: SQL = `sql-run.sh`; Web = `pull.sh`; Rust engine = `rust-engine-install.sh` (modules); Rust mail = `rust-mail-install.sh`; Brain (Bun fallback) = `brain-*-install.sh`; then pm2 restarts.
+
 ## Phases (8)
 | Phase | What | Tech used |
 |---|---|---|
