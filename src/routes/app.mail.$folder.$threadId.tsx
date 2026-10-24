@@ -15,6 +15,7 @@ import { ThreadNote } from "@/components/app/mail/ThreadNote";
 import { ThreadSkeleton } from "@/components/state/Skeletons";
 import { ErrorState } from "@/components/state/StateBlock";
 import { measureMotion } from "@/lib/experience";
+import { useAssigneeName } from "@/lib/assignee-name";
 import { type MailThread, formatBytes, useThread } from "@/lib/mail";
 import { downloadAttachment } from "@/lib/mail-attachments";
 import { notify } from "@/lib/notify";
@@ -31,6 +32,7 @@ export const Route = createFileRoute("/app/mail/$folder/$threadId")({
 function ThreadPage() {
   const { folder, threadId } = Route.useParams();
   const query = useThread(threadId);
+  const assigneeName = useAssigneeName();
   const navigate = useNavigate();
   const readZoom = useStoredStep(READ_ZOOM);
 
@@ -113,7 +115,7 @@ function ThreadPage() {
           {thread.account_address && (
             <p className="truncate text-[11px] text-muted-foreground">
               {thread.account_address}
-              {thread.assignee ? ` · ${thread.assignee}` : ""}
+              {thread.assignee ? ` · ${assigneeName(thread.assignee)}` : ""}
             </p>
           )}
         </div>

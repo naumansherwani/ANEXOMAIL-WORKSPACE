@@ -1033,3 +1033,6 @@ Nauman bhai ne composer se attachment ke saath email bheji; Gmail par mili. Send
 
 ### 24 Oct 23:59 — Pro green list (founder hukm) — halat
 (1) M2b handoff + delete procs: READY (Rust mailx + Bun hunks4 + client rpcOrRest; composer autosave -> mail.handoff.save). (2) Basic-user 403: `basic-gate-probe.sh` (server par, password nahi) — founder chalaye, output bheje. (3) Shared-inbox collision guard: live test baqi (verified-domain Pro account ya doosra member). (4) Kachra saaf: delete procs deploy ke baad Chrome JS se (draft 198149dc..., snippet zzm2, followup ZZ fu), label ZZ-m1 + task ZZ pro audit task UI se. (5) M3-M5. Founder account: NAHI.
+
+### 25 Oct 00:20 — collision guard
+Live: assign/unassign/non-member 400 (E85) green. Loophole: owner chip raw UUID dikha raha tha -> `useAssigneeName` (You / naam / email). Web pull se live; phir Chrome pe dobara dekhna.
