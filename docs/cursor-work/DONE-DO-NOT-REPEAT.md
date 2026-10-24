@@ -473,3 +473,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - CALENDAR GREEN HANDOVER 24 Oct 14:25 (12 green, #7 deferred)
 - Rooms live test 24 Oct: create OK, book OK, release OK; bug: location rehti thi -> E82 release fix (14:35)
 - Rule: har message ke baad context update (founder 24 Oct)
+- 24 Oct 14:30 context checkpoint: rooms live-tested, release-location fix pending server SQL

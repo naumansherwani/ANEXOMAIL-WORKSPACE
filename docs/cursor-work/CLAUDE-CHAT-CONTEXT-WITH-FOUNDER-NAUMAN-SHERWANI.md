@@ -908,3 +908,9 @@ Founder: "calendar kitna kaam hai blueprint ke hisab se, green kero". CALENDAR-R
 - Live (anexomail.com): room create OK, book OK (meeting par "Release" + jagah auto-set), release OK. Loophole mila: release ke baad jagah rehti thi -> E82 release fix (commit ae13b9c/20b1e70), local proof ALL PASS. Server par SIRF SQL chalani baaki (sql-run.sh); founder ne galti se mera message terminal mein paste kiya (kuch nahi bigda).
 - Baaki: SQL chalne ke baad (a) Gmail test meeting par jagah "Test room" saaf karna (Book+Release), (b) overlap "Busy" live test (test meeting banani padegi, founder ki ijazat), (c) "Test room" founder rakhe ya hataye.
 - RULE (founder 24 Oct 14:28): HAR message ke baad yeh context file update — bina poochhe, bina bhoole.
+
+## CHECKPOINT 24 Oct 14:30 — Rooms LIVE-tested (Chrome, anexomail.com)
+- Live: Settings -> Rooms & resources: "Test room" create OK. Meeting "iMIP test - Gmail Yes" -> Room -> Book OK (Release dikha), Release OK.
+- Bug mila: Release ke baad meeting ki location "Test room" rehti thi. Fix: E82 release auto-location saaf (commit ae13b9c/20b1e70). Local proof ALL PASS. SERVER PAR SQL baaki: founder ko sql-run.sh chalana hai (founder-commands 14:35). Us meeting par purani "Test room" location ek baar Book+Release se saaf hogi.
+- Abhi baaki: overlapping meeting par "Busy" ka live test (test meeting banani padegi, founder ki ijazat). "Test room" workspace mein maujood.
+- Founder ka niyam: HAR message ke baad context/ledger/manifest update + push (compact se pehle). Founder account abhi shuru NAHI.
