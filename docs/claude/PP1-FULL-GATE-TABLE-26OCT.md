@@ -61,3 +61,10 @@ Video: DB chat_video_allowed (founder+BP) vs UI Pro+ vs chat Bu+ -> sab Bu+. Ana
 - **Booking links:** Basic 1, Pro 3, Business 20, Business Pro unlimited, Enterprise unlimited (halki fair-use limit).
 - **Tarteeb (founder rule): ek ek page.** Pehle Business ke package plans (monthly + yearly), pehle Basic phir Pro/Business/BP/Enterprise; phir Personal Basic/Pro+/Premium. Har package ke features pehle CHAT mein likho -> founder approve -> phir repo. Gates tab tak nahi jab tak puri website ke features read na hon (INV-1/2/3 se read ho chuki).
 - Yearly rule (plans.ts): Basic/Pro = monthly x11, Business/BP = x10. Enterprise yearly: proposal x10 = 150,000 GBP (founder confirm).
+
+## Founder 04:56 PKT — CORRECTIONS (meri ghalti: Pro aur Personal Pro+ mix kiye)
+- **Business ke Pro mein ANEXOChat DOOR DOOR TAK NAHI. Pro mein video bhi NAHI** (video ANEXOChat ke saath aati hai). ANEXOChat + ANEXOVideoCall (720p) **Business se shuru**; Business Pro 2K; Enterprise baad mein. Upar ki 'Pro 720p standalone video' line VOID.
+- **Personal HOLD**: Personal ke bohot masle; alag UI; Personal Gmail ke upar outbox pe bana hai; uske codes + 3 packages ki phases shuru se alag meeting mein, latest technology. Jab tak founder na kahe Personal par koi kaam/gate NAHI.
+- **Enterprise abhi ZERO**: kuch likha nahi; codes duniya ki advanced technology par; bug nahi chalega; baad mein alag plan.
+- **Business Basic APPROVED** (founder 04:56): 5 users, 25GB shared, 25MB attachment, 2 trusted devices, 1 booking link; company domain + undo send Basic mein rahein. Price per month (per-user nahi): £40/mo, yearly £440 (x11, 1 month free) -- founder approve baqi.
+- Landing Basic features jo merge honge: 1 company domain, thread ownership, Cmd+K search, free aliases (no extra seat), human support 72h response.

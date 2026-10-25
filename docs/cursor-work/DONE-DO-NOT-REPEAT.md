@@ -516,3 +516,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 26 Oct 05:00 PP1 FULL gate table (39 groups, 213 features from INV-1/2/3): docs/claude/PP1-FULL-GATE-TABLE-26OCT.md -- founder approve baqi; inventories + 23 landing mistakes committed
 - 26 Oct 04:40 PP1 founder jawab: calendar Basic generous/Pro zyada/Business sab; analytics tiered; CRDT Personal NAHI; Priority Support add-on vs Enterprise clarified (rename old page); 23 'ghaltiyan' = update-list
 - 26 Oct 04:50 PP1: video tiers (Pro 720p, BP 2K, Ent full), booking links 1/3/20/unlimited/unlimited, tarteeb = ek ek package page (Business Basic pehle, phir Personal) -- PP1-FULL-GATE-TABLE-26OCT.md
+- 26 Oct 05:00 Business Basic APPROVED (5 users/25GB/25MB/2 devices/1 booking link, domain+undo send in; GBP40/mo, yearly 440 pending). CORRECTION: Pro mein chat/video NAHI (Business+ se). Personal HOLD (alag meeting/UI/3-phase plan). Enterprise zero (baad mein advanced tech)

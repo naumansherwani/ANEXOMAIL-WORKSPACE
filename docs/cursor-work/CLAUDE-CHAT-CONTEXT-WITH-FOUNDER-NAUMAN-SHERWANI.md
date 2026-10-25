@@ -1083,3 +1083,6 @@ Calendar generous Basic, analytics tiered, CRDT Personal nahi, Priority Support 
 
 ### 26 Oct 04:50 — video/booking decisions + one-by-one package tarteeb
 Video: Pro 720p standalone, Business 720p+chat, BP 2K, Enterprise full 8K scale. Booking links 1/3/20/unlimited/unlimited. Tarteeb: package plans ek ek page, Business Basic pehle (chat mein features likho -> approve -> repo), phir Personal. Yearly: Basic/Pro x11, Business/BP x10, Enterprise x10 proposal.
+
+### 26 Oct 05:00 — Business Basic approved; Pro/Personal mix-up corrected
+Pro mein ANEXOChat/video nahi (Business+ se). Personal HOLD: alag UI, Gmail ke upar outbox pe bana, 3 packages ki phases shuru se, latest tech, alag meeting. Enterprise abhi zero, advanced tech baad mein. Business Basic approved: 5 users/25GB shared/25MB/2 devices/1 booking link, GBP 40/mo (yearly 440 approve baqi). Agla: Business Pro-package (Pro) features chat mein.
