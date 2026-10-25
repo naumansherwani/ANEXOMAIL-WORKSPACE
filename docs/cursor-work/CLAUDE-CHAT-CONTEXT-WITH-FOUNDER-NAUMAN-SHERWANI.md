@@ -1062,3 +1062,6 @@ Zoho (rates-and-limits) aur Google Workspace (size-limits pages) par official ta
 
 ### 26 Oct 03:55 — GTM + Hetzner capacity control
 Founder: user Google/Zoho kyun chhode, 1000 org aaye to Hetzner ka kya. CEO jawab docs mein: docs/claude/GO-TO-MARKET-AND-CAPACITY-26OCT.md (honest math: tiny team par hum sasta nahi, jeet 15-570 user teams; asli khatra SMTP IP reputation/abuse; controlled-flood waves + founding-member + capacity gates). Pending: feature-gate matrix, 3 AI/overage faisle.
+
+### 26 Oct 04:00 — founder ne sab faisle CEO ko diye
+Decisions + mistakes (plans.ts per-user, ai-packages.ts stale, formula tables) + phases P0-P8 -> docs/claude/CEO-DECISIONS-AND-FIX-PHASES-26OCT.md. Landing/routes audit baqi (P0). Code 'ab likho' par.

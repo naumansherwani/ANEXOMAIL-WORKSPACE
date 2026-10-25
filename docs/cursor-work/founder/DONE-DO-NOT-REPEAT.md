@@ -79,3 +79,5 @@
 - 26 Oct 03:42 Founder gate decisions recorded (docs-only): ANEXOChat dono axes (Business 2GB/BizPro 5GB/Enterprise 7GB; Personal PRO+ 2GB/Premium 4GB; Basic/Pro NAHI), bandwidth overage har package (CEO: Business 10TB@£12, BizPro 30TB@£11, Ent 50TB@£10), AI repricing £2,000/£5,000/£25,000 (yearly 10x) -- PRICING-POSITIONING-26OCT.md s.9, ai-packages.md, PACKAGE-FEATURE-FORMULA.md. Code/Polar NAHI badla.
 - 26 Oct 03:55 GTM + capacity-control strategy (docs-only): docs/claude/GO-TO-MARKET-AND-CAPACITY-26OCT.md -- wedge 15-570 user teams, SMTP reputation = asli khatra, controlled-flood waves + founding-member + capacity gates. Hetzner port-25/policy verify action item.
 
+- 26 Oct 04:00 CEO decisions (founding 150/36mo, waves 25->50/wk, Move-In pilot, AI credits rule, AI platform ladder, overage approved) + mistake audit + phases P0-P8: docs/claude/CEO-DECISIONS-AND-FIX-PHASES-26OCT.md (docs-only)
+
