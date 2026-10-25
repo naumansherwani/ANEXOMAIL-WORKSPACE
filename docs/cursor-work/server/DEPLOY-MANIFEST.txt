@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 8af6e2265b7eede7
+docs/cursor-work/founder/founder-commands.md 58fe4175bf600c53
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -664,3 +664,5 @@ docs/cursor-work/server/brain_pro4_hunks.json e3b6862d0d567ce3
 docs/cursor-work/server/basic-gate-probe.sh 6b618c073abadaf5
 docs/cursor-work/server/count-endpoints.py dd8f789f015fc833
 src/lib/assignee-name.ts 428d9bfd3886d49f
+docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md 23bcda23aa6687ae
+docs/cursor-work/PACKAGE-FEATURE-FORMULA.md ff51ddb2d6731f36
