@@ -398,3 +398,9 @@ Founder (verbatim): "tune yeh chawal nahi maarni hai yeh repo main note kero".
 
 ## Rule 50 — Migration phase table saath ke saath update (founder 24 Oct 2026 17:18 PKT, STRICT)
 Founder: poori website 8 phases (M1-M6, L, F, B8) mein latest technology par; "yeh saath ke saath update hoga". `docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md` ka phase table aur `docs/claude/MIGRATION-LEDGER-24OCT.md` (+CSV) har kaam ke saath usi turn mein update (halat + ginti). Ek code path sab account kinds (`resolve_plan`), founder routes alag batch F, shared helpers ek jagah, client sirf `rpcOrRest`, Bun hamesha emergency fallback. Phase GREEN = Basic-user test + Chrome 1440/820/390 live.
+
+## Rule 52 — WASM kernel: browser mein builtin, version har feature ke saath update (founder 26 Oct 2026, STRICT)
+Founder: "yeh mind main lock ker lo ke yeh WASM KERNEL browser main builtin hogay yeh version update hote rahay gay yeh rule hai feature ke saath."
+- ANEXOMAIL ke browser-side mein ek general-purpose WASM compute kernel (Rust->WASM) **builtin** hota hai — poori website ke liye, sirf ek feature ke liye nahi (docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md section A).
+- **Standing rule:** jab bhi koi naya client-side-heavy feature banay (audio FFT, chunked upload, large-data processing), pehle yeh socho ke woh is WASM kernel ke andar ek module ban sakta hai ya nahi, aur kernel ka version us feature ke saath update hota hai (naya module add → version bump). Alag-alag, bikhri hui WASM files nahi — ek kernel, ander modules.
+- Implementation scope/timeline TODO (V7 — docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md).

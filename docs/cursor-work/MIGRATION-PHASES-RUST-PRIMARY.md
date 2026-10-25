@@ -24,7 +24,7 @@ Har kaam ke saath isi turn mein is table ki halat (TODO / READY / deploy pending
 | Phase | What | Tech used |
 |---|---|---|
 | M1 LIVE GREEN (24 Oct 19:20; E85 assign fix deploy pending) | thread labels/status/move/assign/snooze, templates save/delete, schedule gate | axum+/rpc, tokio |
-| M2 LIVE GREEN (24 Oct 23:15, Pro Chrome 1440/820/390; M2b handoff READY 24 Oct 23:59, deploy pending; Basic-user test = basic-gate-probe.sh pending) | templates LIST, snippets, signatures, drafts+versions, follow-up, handoff, send-confidence, thread note | axum+/rpc |
+| M2 DEPLOY CONFIRMED + GREEN (24 Oct live-test + 26 Oct 03:05 founder: "M2 GREEN hai sab pull hogaya hai server pe codes hai" -- no redundant re-push; M2b handoff code READY, Chrome-test + basic-gate-probe.sh output still pending) | templates LIST, snippets, signatures, drafts+versions, follow-up, handoff, send-confidence, thread note | axum+/rpc |
 | M3 | contacts, companies, workspace/organisations, storage (preflight/commit/state), billing state | axum+/rpc, tokio (storage), Postgres |
 | M4 | auth (18) + trial (7) + passkey leftovers | axum+/rpc, JWT local verify, SQL if needed |
 | M5 | org (27), crm (24), calendar (17), settings, security, integrations | axum+/rpc, tokio (fan-out) |

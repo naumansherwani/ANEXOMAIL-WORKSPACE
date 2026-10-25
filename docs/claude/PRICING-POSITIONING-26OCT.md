@@ -68,3 +68,37 @@ Founder: jab user badi file (50MB/500MB/1GB) attach kare, backend Hetzner storag
   - **Option 2 — hamesha link for anything over X MB**, chahe recipient koi bhi ho, taake experience consistent rahe aur hum "always-fast, always-reliable" bol saken.
   - Landing-page wording iske mutabiq badalni hogi: "50MB tak direct attach (apne network ke andar), aur bade file ke liye hamara apna secure ANEXO link — Zoho ke cloud-trick jaisa complicated nahi, 1-click download, hamesha encrypted."
 - Dono ideas abhi **sirf decide/likhe hain, implement NAHI hue.** Jab founder in do sawalon (scope ka doc-collab, aur Option 1 vs 2) ka jawab de, phir phases (M-series mein kahan fit honge) aur code likhna shuru hoga.
+
+---
+
+## 7. FINAL CONFIRMED (founder 26 Oct 03:05 PKT, verbatim "yeh 100% sahi hai yeh mera hukam hai") + ek contradiction jo founder se confirm karna hai
+
+### Plan table — FINAL (per-month flat, per-user KABHI nahi, world isse ulta karta hai)
+| Plan | Monthly | User/Mailbox cap | Shared storage | 
+|---|---|---|---|
+| Basic | £40 | up to 5 | 25 GB |
+| Pro | £105 | up to 20 | 300 GB |
+| Business | £360 | up to 60 | 1.5 TB |
+| Business Pro | £2,850 | up to 570 | 10 TB |
+| Enterprise | £15,000 | **Unlimited** (bandwidth-cap ke saath, neeche dekhein) | 15 TB |
+
+### ⚠️ CEO flag — attachment MB numbers do baar, do alag figures diye gaye hain, founder confirm karein konsi final hai
+Isi message mein founder ne pehle table confirm ki ("yeh 100% sahi hai") jahan attachment column tha **25 / 35 / 45 / 100 / 100 MB** (Basic/Pro/Business/Business Pro/Enterprise) — yeh `packages-pricing-v6-2026-10-25.md` wale numbers hain. Thori der baad **wahi purana 24 Oct wala paragraph dobara paste hua** jisme numbers hain **30 / 35 / 45 / 60 MB** (Basic/Pro/Business/Business Pro) aur phir alag se "Enterprise 100MB" jorha gaya — yani Business Pro ke liye do alag numbers (100 MB vs 60 MB) ek hi message mein aa gaye.
+**Main confirmed table (25/35/45/100/100) ko authoritative maan raha hoon** kyunke ye explicit "100% sahi, mera hukam" ke sath aaya aur `packages-pricing-v6` se match karta hai; dusra paragraph purani draft text lagta hai jo dobara paste ho gaya. **Nauman bhai, ek line mein confirm kar dein: Business Pro = 100 MB (sahi) ya 60 MB — jawab milte hi dono jagah (yahan + v6 file) sync kar dunga.**
+
+### Bandwidth cap (naya rule) — "Unlimited Users" ka matlab "unlimited bandwidth" nahi
+Founder: "Unlimited Users ka asloob theek hai, lekin code mein limit lagayein ke agar koi company 100TB ya 200TB data transfer se upar jaye, to us par extra charges lagein, warna data vendors yeh bhi likho."
+- Enterprise "unlimited users" hai, lekin **bandwidth/data-transfer par cap honi chahiye** (threshold abhi TODO — 100TB ya 200TB, founder exact number confirm karega) — us se upar extra charge, automatic block nahi.
+- "warna data vendors yeh bhi likho" — matlab: agar hum khud yeh cap enforce nahi karte, to humare upstream bandwidth providers (Hetzner) khud bill karenge, is liye apna cap pehle se likhna zaroori hai taake surprise bill na aaye. Implementation: Rust mein per-org monthly egress counter + threshold alert + billing hook — jab enforcement banegi.
+
+### CRDT doc-collaboration — kis package ko milegi (CEO faisla, founder ne delegate kiya)
+Founder: "yeh technology bhi add hogi lekin practical tareeke se kis package ko mile gi yeh decide hoga... tum CEO ho toh decide kero gay."
+**CEO faisla (confirm karne ke liye):** CRDT collaborative docs/notes **Business, Business Pro aur Enterprise** ko milay (team/org collaboration feature hai, Basic/Pro single-operator jaisi zyada hoti hain). Business ko **basic collaboration** (2-5 simultaneous editors), Business Pro/Enterprise ko **full** (unlimited editors, version history, presence). Founder chahe to badal sakte hain.
+
+### Hybrid Attachment Engine — package ke hisaab se
+Founder: "yeh bhi technology link send karne wala bhi hoga, hum package ke hisaab se features dein ge."
+**CEO faisla (confirm karne ke liye):** har package apni "instant attachment" limit (25/35/45/100/100 MB — jo bhi confirm ho) tak seedha attach karta hai; us se upar **har package ko secure-link delivery milti hai**, lekin max link-file-size package ke hisaab se: Basic 1 GB, Pro 5 GB, Business 20 GB, Business Pro/Enterprise 100 GB (storage quota ke andar). Doosre provider (Gmail/Outlook) ko bhejte waqt unki apni limit se upar hamesha link (chahe hamara instant-limit zyada ho) — "Option 1" (per-recipient) jeet gaya is logic mein, kyunke doosre provider ki limit hum nahi badal sakte.
+
+### WASM kernel — standing rule (founder, naya qaida)
+"Yeh mind main lock ker lo ke yeh WASM KERNEL browser main builtin hogay, yeh version update hote rahay gay, yeh rule hai feature ke saath."
+→ Dekho AGENTS.md Rule 52.
