@@ -1071,3 +1071,6 @@ Founder: price-related sab ek alag phase (PRICING-AND-PLANS-PHASE-26OCT.md PP0-P
 
 ### 26 Oct 04:30 — PP0 shuru (real)
 Founder: 'kaam real shuru kero, delay se sharmindgi'. PP0 inventory complete: docs/claude/PP0-FEATURE-INVENTORY-26OCT.md. Key: enterprise code mein nahi; Personal=account kind (Polar plan se map), Personal Pro+/Premium=Business Pro power; ANEXOChat code already Business+ (founder ke mutabiq). Founding lock 24 mahine. Rule 54 competitor-first. Agla: PP1 matrix approve, phir PP2 code (Enterprise rank).
+
+### 26 Oct 04:40 — PRICE AXES FINAL + PP1 matrix (compaction se pehle yaad rakho)
+Founder (gussa, durust): Personal = £17/£83/£1,850 (alag Polar SKUs). Business = v6 £40/£105/£360/£2,850/£15,000. £23/£46/£97 PURANI hain, plan-surface.ts ka Polar->Personal mapping purana hai. PP1 matrix PACKAGE-FEATURE-FORMULA.md ke top par (CEO proposal, founder approve baqi). Analytics routes ungated. Personal Premium chat 4GB (personal-tiers.ts mein 5GB likha = stale). Sab endpoints latest tech (Rust/WebTransport) + WASM kernel builtin. Agla: founder PP1 approve -> PP2 code Enterprise rank (6+ jagah) + plans.ts v6 + landing.

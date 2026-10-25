@@ -21,6 +21,34 @@
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
 
+# ═══ PP1 — FEATURE GATE MATRIX (CEO proposal 26 Oct 04:40 PKT; FOUNDER approve baqi) — ab se REPO ka rule (AGENTS Rule 53) ═══
+# PRICE AXES (founder 04:27 PKT, FINAL): BUSINESS = v6 flat per-month: Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Enterprise £15,000.
+#   PERSONAL (alag Polar SKUs, per person): Personal Basic £17 / Personal Pro+ £83 / Personal Premium £1,850. "£23/£46/£97" PURANI hain -- kahin istemal na hon.
+#   plan-surface.ts ka polarToPersonalTier mapping + comments PURANE hain (P5 mein theek honge).
+# Personal = ek insaan: shared inbox/thread ownership/company address/Org/Domains NAHI. Personal Pro+ aur Premium = Business Pro POWER.
+#
+# | Feature | Basic | Pro | Business | Biz Pro | Enterprise | P.Basic | P.Pro+ | P.Premium |
+# | Mail/People/Calendar/Search/Import/Move-In/Billing/Devices/Settings | Y | Y | Y | Y | Y | Y | Y | Y |
+# | Work (boards, notes, tasks, thread analytics) | - | Y | Y | Y | Y | Y | Y | Y |
+# | Pro mail tools (snooze/schedule), multiple identities, video 1:1 | - | Y | Y | Y | Y | - | Y | Y |
+# | CRM base (accounts/leads/pipeline/tasks) | - | Y | Y | Y | Y | People only | Y | Y |
+# | CRM collab + risk + business ledgers | - | - | Y | Y | Y | - | Y | Y |
+# | CRM activity ledger + graph | - | - | - | Y | Y | - | Y | Y |
+# | ANEXOChat + ANEXOVideoCall (file send) | - | - | Y 2GB | Y 5GB | Y 7GB | - | Y 2GB | Y 4GB |
+# | CRDT collaborative docs | - | - | Y | Y | Y | - | (founder faisla) | (founder faisla) |
+# | Org centre (members/roles/departments/policies/audit/compliance) | - | - | Y | Y | Y | never | never | never |
+# | Company domains + addresses | Y(biz kind) | Y | Y | Y | Y | never | never | never |
+# | Safety centre (review queue, sealed evidence, appeals) | - | - | - | Y | Y | - | Y | Y |
+# | Priority Support | add-on £790 | add-on | add-on | add-on | INCLUDED | - | - | - |
+# | Email attachment | 25MB | 35MB | 45MB | 60MB | 100MB | (founder) | (founder) | (founder) |
+# | Storage (shared pool) | 25GB | 300GB | 1.5TB | 10TB | 15TB | 5GB | 10GB | 1TB pooled |
+# | Users cap | 5 | 20 | 60 | 570 | unlimited | 1 | 1 | 1 |
+# | Bandwidth overage (hidden, bill-only) | fair-use | fair-use | 10TB@£12 | 30TB@£11 | 50TB@£10 | - | - | - |
+# | Video group size | - | 4? | 8 | 40 | 60 | - | 8 | 40 |
+# | Device vault slots | 2 | 4 | 10 | 50 | 100 | 2 | 10 | 50 |
+# | LEO AI | NO (sirf ai.anexomail.com, COMING SOON July 2027; Enterprise AI nahi) |
+# Analytics routes (/app/analytics*): koi plan gate NAHI mila -- decide: Pro+ (Work ke saath). | Founder/Admin/Perf: founder host only.
+
 ---
 
 ## RULE 1 — NEVER TOUCH (locked forever)
