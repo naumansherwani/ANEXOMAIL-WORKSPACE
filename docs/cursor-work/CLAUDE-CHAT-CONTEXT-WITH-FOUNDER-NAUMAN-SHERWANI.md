@@ -1036,6 +1036,3 @@ Nauman bhai ne composer se attachment ke saath email bheji; Gmail par mili. Send
 
 ### 25 Oct 00:20 — collision guard
 Live: assign/unassign/non-member 400 (E85) green. Loophole: owner chip raw UUID dikha raha tha -> `useAssigneeName` (You / naam / email). Web pull se live; phir Chrome pe dobara dekhna.
-
-### 26 Oct 00:32 — Pricing/positioning LOCKED (Rule 51, chat-only)
-Founder ne 2 din ki socha hui strategy di (code nahi, sirf decide): (1) koi package kabhi per-user nahi, shared mailbox-memory model; (2) naya tier Enterprise; (3) attachment 30/35/45/50 MB (Basic/Pro/Business/Business Pro), seedha attach — Zoho ke cloud-link trick jaisa nahi; (4) landing copy strategy: Rust/Tokio ko 3 user-benefit sawaalon mein translate karo (bada attachment seedha / peak-hours fast / ek crash se poori site nahi girti). Poora likha: docs/claude/PRICING-POSITIONING-26OCT.md. Tarteeb: pehle yeh (attachment + per-user audit + Enterprise scaffolding) jab "ab likho" ho, phir Pro GREEN (collision guard re-verify, basic-gate-probe output, M2b/M3-M5), phir Business/Business Pro, phir Enterprise launch, Founder account sabse aakhir.

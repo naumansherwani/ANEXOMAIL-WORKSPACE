@@ -1,5 +1,13 @@
 # PACKAGE + FEATURE FORMULA — Agent Personal Memory
 
+# PRICING v6 (FOUNDER LOCKED 25 Oct 2026 21:30 UTC) — flat per-month, per-user khatam
+
+# Asli sach ab: docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md
+
+# | Basic Flat £40 (5 users, 25GB, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Enterprise £15,000 (UNLIMITED, 15TB, 100MB) |
+
+# Neeche wali v5 ladder/purani table HISTORY hai — pricing ke faislay mein v6 jeetta hai. Naya dimension RULE 4A: file transfer limit 25/35/45/100/100 MB.
+
 # Source: docs/ai-packages.md + docs/package-feature-map.md (Lovable originals — DO NOT DELETE)
 
 # Rule: packages touch NAHI kerne — sirf yeh file dekh ke feature gate decide karo
