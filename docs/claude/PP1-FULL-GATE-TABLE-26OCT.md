@@ -5,9 +5,9 @@ Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Ba
 |---|---|---|---|
 | 1 | CALENDAR core: grid month/week/day, meetings, repeat, reminders, RSVP+invites, guest local time, working hours/OOO, multi-calendars, ICS import, world clocks/globe, time bar, trip card, clock check, deep link, calendar history search, billing-deadline line | all | all |
 | 2 | CalDAV phone/desktop sync + feed links + outside calendars | all | all |
-| 3 | Smart scheduling: Find-a-time, Overlap Matrix, Focus Ring, Availability/focus windows, meeting goal, meeting cost | P+ | PP+, PPr |
-| 4 | Public booking page + manage booking, files on a meeting | P+ | PP+, PPr |
-| 5 | Meeting rooms/resources | Bu+ | no |
+| 3a | CALENDAR generous (founder 04:39: Basic ko achay features): Find-a-time + 1 public booking link + manage booking | all (Basic bhi) | all |
+| 3b | CALENDAR Pro: unlimited booking links, Overlap Matrix, Focus Ring, Availability/focus windows, meeting goal, meeting cost, files on meeting | P+ | PP+, PPr |
+| 5 | CALENDAR Business (sab kuch): meeting rooms/resources + sab upar wale; BP aur Enterprise ko bhi sab (kabhi kam nahi) | Bu+ | no |
 | 6 | MAIL core: folders, read thread, categories, labels, multi-mailbox, identity chips, archive/delete/star/move, outbox, inline reply, compose, undo send, signatures, attachments (25/35/45/60/100MB), draft autosave+versions | all | all |
 | 7 | Pro mail tools: snooze, schedule send, templates, snippets, thread notes, inbox shortcuts, multiple identities | P+ | PP+, PPr |
 | 8 | Pre-send confidence scan, follow-up reminders, thread analytics, word prediction, reading meter, cross-device draft handoff, thread rescue | P+ | PP+, PPr |
@@ -23,7 +23,8 @@ Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Ba
 | 18 | CRM base: overview, relationships, leads, pipeline, deal->work, attach thread, accounts, tasks, reports, memory/insights/health | P+ | PB: People only; PP+, PPr full |
 | 19 | CRM collab: shared work, approvals, team permissions, audit, risk | Bu+ | PP+, PPr |
 | 20 | CRM activity timeline+evidence, relationship graph, capture | BP+ | PP+, PPr |
-| 21 | ANALYTICS: response debt, thread economics, deep work | P+ | PP+, PPr |
+| 21a | ANALYTICS: Response debt (kaun jawab ka intezar kar raha) | all (Basic ka hook) | all |
+| 21b | Analytics: thread economics, deep work | P+ | PP+, PPr |
 | 22 | Analytics: forecast, attention leaks, promise SLA, team analytics, report figures | Bu+ | PP+, PPr |
 | 23 | ANEXOCHAT core: 1:1+group, ticks, live push, images, resumable big files, file context, pop-out, continuity, atmosphere/sound | Bu+ (file 2GB / 5GB / 7GB) | PP+ 2GB, PPr 4GB |
 | 24 | Chat work-layer: decision ledger, outcome timeline, conversation health, receipts, handover pack, email<->chat bridge, work strip/chain, chat safety/report | Bu+ | PP+, PPr |
@@ -40,9 +41,17 @@ Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Ba
 | 35 | Storage size (shared pool) / users cap | 25GB,5 / 300GB,20 / 1.5TB,60 / 10TB,570 / 15TB,unlimited | 5GB / 10GB / 1TB, 1 user |
 | 36 | Bandwidth overage (hidden, bill-only) | fair-use / fair-use / 10TB@£12 / 30TB@£11 / 50TB@£10 | no |
 | 37 | Priority Support (£790 add-on) | add-on / add-on / add-on / add-on / INCLUDED | no |
-| 38 | CRDT collaborative docs (when built) | Bu+ | founder decide |
+| 38 | CRDT collaborative docs (when built) | Bu+ | NO (CEO: Personal mein ek hi insaan, saath type karne wala koi nahi) |
 | 39 | Founder/Admin/Perf/Launch | founder host only | -- |
 
 ## Code ghaltiyan jo gate unify karte waqt theek hongi (P5)
 Video: DB chat_video_allowed (founder+BP) vs UI Pro+ vs chat Bu+ -> sab Bu+. Analytics: gate hai hi nahi. Work header Basic ko TaskBoard kehta hai lekin route Pro se neeche block karta hai. Enterprise rank code mein nahi. Mail features #8 abhi ungated (formula Pro+ kehta hai).
 ## Landing mistakes (INV-3 mein 23, file:line): index.tsx:49 "From £23 per user"; plans.tsx old prices+no Enterprise column; plans.ts monthly 23/46/97 "/user/month", Business 30 users, BP "unlimited users", AI £400/1500/4000; billing-platform.ts+app.billing.tsx price_per_seat; enterprise.tsx = £790 Priority Support page (clash); plans.tsx:233 Premium 5GB (founder: 4GB).
+
+## Founder 04:39 PKT — jawab (CEO faisle)
+- Calendar: Basic ko generous (Find-a-time + 1 booking link), Pro ko zyada, Business+ ko sab. Competitor check (Rule 54) landing copy se pehle baqi: Google/Zoho calendar ka free/paid hissa verify karna.
+- Analytics: Basic = response debt; Pro = + thread economics + deep work; Business+ = baqi.
+- CRDT docs Personal ko NAHI.
+- 23 'ghaltiyan' ka matlab: purani qeematein/per-user lafz jo 2 ghantay pehle ke founder faislon se UPDATE hone baqi hain (P2/P3) -- ghalti nahi, update-list.
+- Priority Support vs Enterprise: Priority Support = paid add-on 790 GBP/mo (tez insani support, named contact, 2-business-day response, quarterly review). Naya Enterprise = poora package 15,000 GBP. CEO faisla: purani /enterprise page ka naam 'Priority Support' (/priority-support), naya /enterprise page naye package ka; Enterprise mein Priority Support FREE included; baqi plans ke liye add-on rahe. (Founder veto.)
+- Video unify (Bu+) aur booking: founder jawab baqi.

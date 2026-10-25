@@ -85,3 +85,4 @@
 - 26 Oct 04:30 PP0 feature inventory (real gates from plan-surface.ts + 175 routes, Enterprise missing from code, personal-vs-polar mapping, 6 gaps): docs/claude/PP0-FEATURE-INVENTORY-26OCT.md; AGENTS Rule 54 competitor-first; founding lock 36->24 mahine
 - 26 Oct 04:40 PRICE AXES FINAL (Personal £17/£83/£1,850 alag; Business v6; £23/£46/£97 purani) + PP1 gate matrix in PACKAGE-FEATURE-FORMULA.md (proposal)
 - 26 Oct 05:00 PP1 FULL gate table (39 groups, 213 features from INV-1/2/3): docs/claude/PP1-FULL-GATE-TABLE-26OCT.md -- founder approve baqi; inventories + 23 landing mistakes committed
+- 26 Oct 04:40 PP1 founder jawab: calendar Basic generous/Pro zyada/Business sab; analytics tiered; CRDT Personal NAHI; Priority Support add-on vs Enterprise clarified (rename old page); 23 'ghaltiyan' = update-list

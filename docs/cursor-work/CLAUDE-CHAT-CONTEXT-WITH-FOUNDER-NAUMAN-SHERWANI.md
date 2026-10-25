@@ -1077,3 +1077,6 @@ Founder (gussa, durust): Personal = £17/£83/£1,850 (alag Polar SKUs). Busines
 
 ### 26 Oct 05:00 — PP1 full gate table (213 features)
 Feature inventories INV-1/2/3 (calendar+mail 74, chat/CRM/work/analytics 80, org/security/storage/landing 59 + 23 landing mistakes) -> docs/claude/PP1-FULL-GATE-TABLE-26OCT.md (39 groups, CEO proposal). Founder approve ke baad: PACKAGE-FEATURE-FORMULA.md lock, phir P2 code (Enterprise rank, plans.ts v6, landing fix, per-user wording hatana, video gate unify, analytics gate). Calendar features sab included (core all, smart scheduling Pro+).
+
+### 26 Oct 04:40 — PP1 jawab
+Calendar generous Basic, analytics tiered, CRDT Personal nahi, Priority Support add-on != Enterprise (old /enterprise page rename plan). Detail PP1-FULL-GATE-TABLE-26OCT.md.
