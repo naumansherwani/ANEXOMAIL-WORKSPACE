@@ -1,6 +1,8 @@
 # PACKAGES PRICING v6 — flat per-month + Enterprise (FOUNDER LOCKED 25 Oct 2026)
 
 Source: founder verbatim 25 Oct 2026 21:30 UTC (26 Oct 02:30 PKT) — `docs/cursor-work/founder/founder-commands.md`.
+> **UPDATE 26 Oct 2026 03:09 PKT (founder, verbatim):** "bussiness pro email attachment limit hai 60MB aur 100MB enterprise walon ke liye." Business Pro ka File Transfer Limit **100 MB se 60 MB** final-confirmed (neeche ki table/bullets isi update ke mutabiq). Enterprise 100 MB wohi rehta hai — ab yeh unko alag karne wala ek aur dimension hai (pehle sirf user-cap + storage farq karta tha).
+
 Status: **READY (docs)** — code (`src/lib/plans.ts`, `server/config/billing-products.ts`) aur Polar abhi v5 prices par hain; founder ne kaha codes woh khud karenge. Polar products banne + IDs aane tak yeh pricing READY hai, DONE nahi (Rule 5).
 
 ## Naya rule (v6)
@@ -16,7 +18,7 @@ Status: **READY (docs)** — code (`src/lib/plans.ts`, `server/config/billing-pr
 | Basic Flat | £40 | Up to 5 users | 25 GB pooled (5 GB per user) | £8.00 / user | 25 MB |
 | Pro Package | £105 | Up to 20 users | 300 GB (15 GB per user × 20) | £5.25 / user | 35 MB |
 | Business Flat | £360 | Up to 60 users | 1,500 GB = 1.5 TB (25 GB per user × 60 — backend pool) | £6.00 / user | 45 MB |
-| Business Pro | £2,850 | Up to 570 users | 10 TB | £5.00 / user | 100 MB |
+| Business Pro | £2,850 | Up to 570 users | 10 TB | £5.00 / user | **60 MB** |
 | **Enterprise (NAYA)** | **£15,000** | **Unlimited users** | **15 TB shared (logical)** | n/a (unlimited → per-user sab se sasta) | **100 MB** |
 
 Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 GB**, Business transfer **45 MB**, Business Pro **10 TB** (taake Enterprise ke 15 TB se alag rahe).
@@ -44,7 +46,7 @@ Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 G
 ### Business Pro — £2,850 / month
 - User/Mailbox Cap: **up to 570 users max**
 - Logical Storage: **10 TB shared** pool
-- File Transfer Limit: **100 MB** instant email attachment
+- File Transfer Limit: **60 MB** instant email attachment
 - Effective per-user: £5.00
 
 ### Enterprise — £15,000 / month (NAYA)
@@ -60,13 +62,13 @@ Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 G
 - **Enterprise: UNLIMITED users** — koi cap nahi, jitni bhi company barhe.
 
 Doosra farq: storage — Business Pro **10 TB**, Enterprise **15 TB** (+5 TB).
-Wahi rehta hai: instant email attachment dono ka **100 MB** (yeh farq nahi banata). Price 5.26× (£2,850 → £15,000) ka matlab: Enterprise company jitni bhi barhe, per-user kharcha nammumkin had tak neeche jaata hai (Business Pro 570 par ~£5.00/user; Enterprise par unlimited seats).
+**Ab yeh bhi farq hai:** attachment limit Business Pro **60 MB**, Enterprise **100 MB** (pehle dono 100 MB the, 26 Oct update ke baad alag). Price 5.26× (£2,850 → £15,000) ka matlab: Enterprise company jitni bhi barhe, per-user kharcha nammumkin had tak neeche jaata hai (Business Pro 570 par ~£5.00/user; Enterprise par unlimited seats).
 
 ## Feature gating — kya badla, kya nahi
 
 - **Prices/seats/storage/transfer limit naye v6 numbers** (upar wali table).
 - **Features ki gating wahi purani locked formula rahegi** (`PACKAGE-FEATURE-FORMULA.md` RULE 4): Basic = mail/people/calendar; Pro+ = chat/CRM; Org = business tiers; AI hamesha ai.anexomail.com (Enterprise mein bhi workspace plans par AI ZERO — AI alag AI plans ka hissa hai, jab tak founder Enterprise mein AI shamil karne ka hukm na de).
-- **Naya dimension — file transfer limit (RULE 4A):** 25 MB → Basic · 35 MB → Pro · 45 MB → Business · 100 MB → Business Pro + Enterprise. Backend enforcement founder ke "codes update" ke hukm par banegi.
+- **Naya dimension — file transfer limit (RULE 4A):** 25 MB → Basic · 35 MB → Pro · 45 MB → Business · **60 MB → Business Pro** · 100 MB → Enterprise. Backend enforcement founder ke "codes update" ke hukm par banegi.
 
 ## Polar mein kaise update hoga (founder khud karega)
 

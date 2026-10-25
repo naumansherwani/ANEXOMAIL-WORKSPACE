@@ -1,4 +1,4 @@
-> **SUPERSEDED (26 Oct 02:50 PKT):** attachment numbers neeche is file mein (30/35/45/50 MB) founder ke is baat-chait se PEHLE ki guess thi. Asli locked numbers ab `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` mein hain (File Transfer Limit column): **Basic 25 MB · Pro 35 MB · Business 45 MB · Business Pro 100 MB · Enterprise 100 MB**. Is file ke baqi sections (per-user-nahi rule, positioning strategy, CRDT/Hybrid-Attachment CEO flags) abhi bhi valid hain — sirf MB numbers v6 se replace karo.
+> **SUPERSEDED (26 Oct 02:50 PKT):** attachment numbers neeche is file mein (30/35/45/50 MB) founder ke is baat-chait se PEHLE ki guess thi. Asli locked numbers ab `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` mein hain (File Transfer Limit column): **Basic 25 MB · Pro 35 MB · Business 45 MB · Business Pro 60 MB · Enterprise 100 MB** (Business Pro 60 MB final-confirmed by founder 26 Oct 03:09 PKT — not the v6 file's original 100 MB; `packages-pricing-v6-2026-10-25.md` ka Business Pro column is se update hona chahiye). Is file ke baqi sections (per-user-nahi rule, positioning strategy, CRDT/Hybrid-Attachment CEO flags) abhi bhi valid hain — sirf MB numbers v6 se replace karo.
 
 # Pricing + positioning — locked decisions (founder, 26 Oct 2026, STRICT)
 
@@ -82,9 +82,14 @@ Founder: jab user badi file (50MB/500MB/1GB) attach kare, backend Hetzner storag
 | Business Pro | £2,850 | up to 570 | 10 TB |
 | Enterprise | £15,000 | **Unlimited** (bandwidth-cap ke saath, neeche dekhein) | 15 TB |
 
-### ⚠️ CEO flag — attachment MB numbers do baar, do alag figures diye gaye hain, founder confirm karein konsi final hai
-Isi message mein founder ne pehle table confirm ki ("yeh 100% sahi hai") jahan attachment column tha **25 / 35 / 45 / 100 / 100 MB** (Basic/Pro/Business/Business Pro/Enterprise) — yeh `packages-pricing-v6-2026-10-25.md` wale numbers hain. Thori der baad **wahi purana 24 Oct wala paragraph dobara paste hua** jisme numbers hain **30 / 35 / 45 / 60 MB** (Basic/Pro/Business/Business Pro) aur phir alag se "Enterprise 100MB" jorha gaya — yani Business Pro ke liye do alag numbers (100 MB vs 60 MB) ek hi message mein aa gaye.
-**Main confirmed table (25/35/45/100/100) ko authoritative maan raha hoon** kyunke ye explicit "100% sahi, mera hukam" ke sath aaya aur `packages-pricing-v6` se match karta hai; dusra paragraph purani draft text lagta hai jo dobara paste ho gaya. **Nauman bhai, ek line mein confirm kar dein: Business Pro = 100 MB (sahi) ya 60 MB — jawab milte hi dono jagah (yahan + v6 file) sync kar dunga.**
+### Attachment limits — FINAL CONFIRMED (founder 26 Oct 03:09 PKT, verbatim "bussiness pro email attachment limit hai 60MB aur 100MB enterprise walon ke liye")
+| Plan | Attachment |
+|---|---|
+| Basic | 25 MB |
+| Pro | 35 MB |
+| Business | 45 MB |
+| Business Pro | **60 MB** |
+| Enterprise | **100 MB** |
 
 ### Bandwidth cap (naya rule) — "Unlimited Users" ka matlab "unlimited bandwidth" nahi
 Founder: "Unlimited Users ka asloob theek hai, lekin code mein limit lagayein ke agar koi company 100TB ya 200TB data transfer se upar jaye, to us par extra charges lagein, warna data vendors yeh bhi likho."
@@ -97,8 +102,36 @@ Founder: "yeh technology bhi add hogi lekin practical tareeke se kis package ko 
 
 ### Hybrid Attachment Engine — package ke hisaab se
 Founder: "yeh bhi technology link send karne wala bhi hoga, hum package ke hisaab se features dein ge."
-**CEO faisla (confirm karne ke liye):** har package apni "instant attachment" limit (25/35/45/100/100 MB — jo bhi confirm ho) tak seedha attach karta hai; us se upar **har package ko secure-link delivery milti hai**, lekin max link-file-size package ke hisaab se: Basic 1 GB, Pro 5 GB, Business 20 GB, Business Pro/Enterprise 100 GB (storage quota ke andar). Doosre provider (Gmail/Outlook) ko bhejte waqt unki apni limit se upar hamesha link (chahe hamara instant-limit zyada ho) — "Option 1" (per-recipient) jeet gaya is logic mein, kyunke doosre provider ki limit hum nahi badal sakte.
+**CEO faisla (confirm karne ke liye):** har package apni "instant attachment" limit (25/35/45/60/100 MB — FINAL) tak seedha attach karta hai; us se upar **har package ko secure-link delivery milti hai**, lekin max link-file-size package ke hisaab se: Basic 1 GB, Pro 5 GB, Business 20 GB, Business Pro/Enterprise 100 GB (storage quota ke andar). Doosre provider (Gmail/Outlook) ko bhejte waqt unki apni limit se upar hamesha link (chahe hamara instant-limit zyada ho) — "Option 1" (per-recipient) jeet gaya is logic mein, kyunke doosre provider ki limit hum nahi badal sakte.
 
 ### WASM kernel — standing rule (founder, naya qaida)
 "Yeh mind main lock ker lo ke yeh WASM KERNEL browser main builtin hogay, yeh version update hote rahay gay, yeh rule hai feature ke saath."
 → Dekho AGENTS.md Rule 52.
+
+---
+
+## 8. 26 Oct 03:15 PKT — teen faisle (founder jawab + CEO suggestion)
+
+### (a) Bandwidth/data-transfer overage — CEO price suggestion (founder ne khud mangwaya)
+Founder: threshold **50 TB/month** (Enterprise org-level, "per user" nahi — unlimited-users plan mein per-user bandwidth cap ka koi matlab nahi, is liye yeh poori org ka monthly transfer-threshold hai). Polar/Rust payment + database mein har jagah likha jayega, **landing page par NAHI** — yeh hidden/backend charge hai, sirf bill mein dikhega jab system khud calculate kar ke user ko bhejta hai.
+**CEO suggestion (price):** **£10 per extra TB, 50 TB/month ke baad** (Enterprise par). Wajah: Hetzner par raw bandwidth ki lagat bohot kam hai (dedicated/cloud par roughly €1/TB ke aas-paas, kabhi included bhi hota hai) — AWS jaisi cloud ki ~$90/TB egress ke muqable mein £10/TB hamare liye bohot healthy margin hai aur phir bhi customer ke liye bohot sasta aur predictable rehta hai. Billing granularity: monthly cycle ke end par actual usage - 50TB = overage_tb, round up to nearest TB, £10 × overage_tb bill mein line-item ("Data transfer overage"). **Founder confirm kare price.**
+
+### (b) CRDT collaborative docs — LOCKED
+Founder confirm kiya: **Business, Business Pro, Enterprise** — CEO suggestion ke mutabiq hi. (Basic/Pro ko nahi.)
+
+### (c) Bara file bhejna — DO ALAG cheezein hain, confuse na ho
+
+**Email attachment (instant, SMTP ke andar) — already locked:** 25 / 35 / 45 / 60 / 100 MB (Basic/Pro/Business/Business Pro/Enterprise).
+
+**ANEXOChat ka apna bara-file-bhejna feature (alag, chat ke andar, email nahi) — founder ne clarify kiya "already decided tha":**
+| Plan | Max file (ANEXOChat send) |
+|---|---|
+| Basic | **TODO — founder confirm kare** (CEO proposal: 500 MB) |
+| Pro | **TODO — founder confirm kare** (CEO proposal: 1 GB) |
+| Business | **2 GB** (founder-confirmed, pehle se) |
+| Business Pro | **5 GB** (founder-confirmed, pehle se) |
+| Enterprise | **7 GB** (naya, 26 Oct confirm) |
+
+Yeh ANEXOChat ki apni storage/transfer pipeline hai (naya naya likha jayega), email attachment limit se bilkul alag cheez hai — koi confuse na kare.
+
+**Hybrid Attachment Engine (>limit par EMAIL ke andar secure download-link) — yeh teesri, abhi tak khuli cheez hai, confirm baqi:** jab koi EMAIL attachment apni instant-limit (25/35/45/60/100 MB) se bari ho, uska max link-based size kya ho? CEO proposal (06. mein diya) abhi bhi khula hai: Basic 1GB / Pro 5GB / Business 20GB / Business Pro-Enterprise 100GB. **Founder confirm kare ya apne numbers de — yeh (c) ke ANEXOChat wale table se ALAG hai (email vs chat).**

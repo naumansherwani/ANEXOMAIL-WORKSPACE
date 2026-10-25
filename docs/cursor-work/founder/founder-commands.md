@@ -6,6 +6,10 @@
 - Kya: docs-only — `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` (poori v6 table + Business Pro vs Enterprise ka sab se bara farq + Polar update ke steps) + `PACKAGE-FEATURE-FORMULA.md` v6 header. Code/Plans/Polar ko touch nahi kiya — founder khud karenge.
 - Halat: **DONE (docs)** — docs-only, server command nahi chahiye. Code update + Polar products: founder ke hukm/kaam par.
 
+## ▶ 26 Oct 03:15 — founder: Business Pro attachment 60MB confirm + bandwidth overage (50TB, CEO price) + CRDT lock + ANEXOChat file ladder (Business 2GB/Business Pro 5GB/Enterprise 7GB)
+- Halat: DONE (docs-only) -- PRICING-POSITIONING-26OCT.md section 8, packages-pricing-v6 doc corrected. Server command nahi.
+- Khula: ANEXOChat Basic/Pro file-size (CEO proposed 500MB/1GB, confirm baqi); Hybrid Attachment Engine email-link sizing abhi bhi unconfirmed; bandwidth overage £10/TB price confirm baqi.
+
 ## ▶ 26 Oct 03:30 — founder: pricing FINAL confirm + bandwidth cap + CRDT/attachment package-gating delegate + WASM kernel standing rule + bulletproof 5 points + 'M2 GREEN hai, dobara codes nahi, is ko green declare kero'
 - Halat: DONE (docs-only) -- `docs/claude/PRICING-POSITIONING-26OCT.md` section 7, `docs/claude/BULLETPROOF-RELIABILITY-26OCT.md`, AGENTS.md Rule 52, M2 marked GREEN in phase table + ledgers. **Server command NAHI** (founder ne khud kaha dobara code na push karo, M2 already live hai).
 - **Khula sawal founder ke liye:** Business Pro attachment 100 MB ya 60 MB -- ek hi message mein do alag numbers aaye, ek line mein confirm kar dein.
