@@ -1059,3 +1059,6 @@ Founder ne correct kiya: ANEXOChat business ladder pe Business/Business Pro/Ente
 
 ### 26 Oct 03:50 — competitor overage VERIFIED + compaction se pehle context
 Zoho (rates-and-limits) aur Google Workspace (size-limits pages) par official taur par koi per-TB bandwidth overage fee nahi mili; dono rate/bandwidth LIMITS (throttle) lagate hain. Gmail attachment 25MB, Enterprise Plus 50MB (Feb 2026); Zoho incoming 40MB. Hamara hidden bill-only overage ek differentiator hai, lekin landing par competitor claim mat likho. PENDING founder: (1) credits/top-up inversion, (2) AI plan-platform ladder, (3) overage numbers veto, (4) POORA feature-by-feature gate matrix (landing+repo inventory) -- agla kaam: PACKAGE-FEATURE-FORMULA.md + landing page + src/lib/plan-surface.ts/plans.ts se maujooda features ki list nikal kar 5 business tiers + 3 personal tiers mein map karna, founder approve kare, phir docs, phir (hukm par) code. M2 GREEN, koi code nahi (strict).
+
+### 26 Oct 03:55 — GTM + Hetzner capacity control
+Founder: user Google/Zoho kyun chhode, 1000 org aaye to Hetzner ka kya. CEO jawab docs mein: docs/claude/GO-TO-MARKET-AND-CAPACITY-26OCT.md (honest math: tiny team par hum sasta nahi, jeet 15-570 user teams; asli khatra SMTP IP reputation/abuse; controlled-flood waves + founding-member + capacity gates). Pending: feature-gate matrix, 3 AI/overage faisle.
