@@ -1,5 +1,11 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 25 Oct 2026 21:30 UTC (26 Oct 02:30 PKT) — founder verbatim (PRICING v6 + Enterprise + Polar)
+"mujeh ek new package introduce kerna hai jia ka naam hoga enterpise yeh 15000 pound permonth lekin mujhe yeh batao ke her package ka farq hoga. Enterprise — £15,000 / month • User/Mailbox Cap: Unlimited Users • Logical Storage: 15 TB shared mailboxes memory • File Transfer Limit: 100MB instant Email File Limit attachment. [Table: Basic Flat £40/5 users/50GB/£8.00/25MB · Pro £105/20/200GB/£5.25/35MB · Business £360/60/1.5TB/£6.00/60MB · Business Pro £2,850/570/10TB/£5.00/100MB] Business Pro — £2,850: 570 users max, 15 TB Logical Storage, 100MB. Business £360: 60 users, 25GB×60=1.5TB backend pe aye ga, 45MB. Pro £105: 20 users, 300GB (15GB/user), 35MB. Basic Flat £40: 5 users, 25GB pooled (5GB/user), 25MB. yeh tarteeb se repo main update kero aur repo main likho ke business pro aur enterpise main sab se bara kya farq hoga. ab se her paclage per month hoga per user nahi hoga. tumne codes nahi likhne hain bus tumne sirf packages aur un ke detail features upgrade kerna hai. aur polar ka tum mujhe batao ke wahan kaise update hoga. mere repo codes ko touch mat kerna sirf packages/pan jo already tumne likha hai package plan un main business pro aur enterpise aur baki sab features likhne hain takay main khud kerun ga"
+- Confirm kiye farq (table vs bullets — founder ne chuna): Basic **25 GB**, Pro **300 GB**, Business transfer **45 MB**, Business Pro **10 TB** (Enterprise 15 TB se alag rahe).
+- Kya: docs-only — `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` (poori v6 table + Business Pro vs Enterprise ka sab se bara farq + Polar update ke steps) + `PACKAGE-FEATURE-FORMULA.md` v6 header. Code/Plans/Polar ko touch nahi kiya — founder khud karenge.
+- Halat: **DONE (docs)** — docs-only, server command nahi chahiye. Code update + Polar products: founder ke hukm/kaam par.
+
 ## ▶ 24 Oct 23:59 — M2b (handoff) + delete procs + Basic gate probe: READY, deploy baqi
 Tarteeb (har technology ki alag; SQL is baar nahi chahiye):
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
