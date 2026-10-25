@@ -1,3 +1,5 @@
+> **SUPERSEDED (26 Oct 02:50 PKT):** attachment numbers neeche is file mein (30/35/45/50 MB) founder ke is baat-chait se PEHLE ki guess thi. Asli locked numbers ab `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` mein hain (File Transfer Limit column): **Basic 25 MB · Pro 35 MB · Business 45 MB · Business Pro 100 MB · Enterprise 100 MB**. Is file ke baqi sections (per-user-nahi rule, positioning strategy, CRDT/Hybrid-Attachment CEO flags) abhi bhi valid hain — sirf MB numbers v6 se replace karo.
+
 # Pricing + positioning — locked decisions (founder, 26 Oct 2026, STRICT)
 
 Yeh decisions founder ne chat mein diye (sirf baat chait, code nahi). Jab founder "ab likho" bole tabhi implement hoga. Ab se compact ke baad bhi yeh file pehle padhi jaye.
