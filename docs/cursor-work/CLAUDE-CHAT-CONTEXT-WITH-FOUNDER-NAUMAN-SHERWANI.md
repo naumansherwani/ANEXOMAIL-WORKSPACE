@@ -1074,3 +1074,6 @@ Founder: 'kaam real shuru kero, delay se sharmindgi'. PP0 inventory complete: do
 
 ### 26 Oct 04:40 — PRICE AXES FINAL + PP1 matrix (compaction se pehle yaad rakho)
 Founder (gussa, durust): Personal = £17/£83/£1,850 (alag Polar SKUs). Business = v6 £40/£105/£360/£2,850/£15,000. £23/£46/£97 PURANI hain, plan-surface.ts ka Polar->Personal mapping purana hai. PP1 matrix PACKAGE-FEATURE-FORMULA.md ke top par (CEO proposal, founder approve baqi). Analytics routes ungated. Personal Premium chat 4GB (personal-tiers.ts mein 5GB likha = stale). Sab endpoints latest tech (Rust/WebTransport) + WASM kernel builtin. Agla: founder PP1 approve -> PP2 code Enterprise rank (6+ jagah) + plans.ts v6 + landing.
+
+### 26 Oct 05:00 — PP1 full gate table (213 features)
+Feature inventories INV-1/2/3 (calendar+mail 74, chat/CRM/work/analytics 80, org/security/storage/landing 59 + 23 landing mistakes) -> docs/claude/PP1-FULL-GATE-TABLE-26OCT.md (39 groups, CEO proposal). Founder approve ke baad: PACKAGE-FEATURE-FORMULA.md lock, phir P2 code (Enterprise rank, plans.ts v6, landing fix, per-user wording hatana, video gate unify, analytics gate). Calendar features sab included (core all, smart scheduling Pro+).
