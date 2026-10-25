@@ -123,15 +123,48 @@ Founder confirm kiya: **Business, Business Pro, Enterprise** — CEO suggestion 
 
 **Email attachment (instant, SMTP ke andar) — already locked:** 25 / 35 / 45 / 60 / 100 MB (Basic/Pro/Business/Business Pro/Enterprise).
 
-**ANEXOChat ka apna bara-file-bhejna feature (alag, chat ke andar, email nahi) — founder ne clarify kiya "already decided tha":**
+**ANEXOChat ka apna bara-file-bhejna feature (alag, chat ke andar, email nahi) — FINAL (founder 26 Oct 03:34-03:42 PKT, section 9 dekho):**
 | Plan | Max file (ANEXOChat send) |
 |---|---|
-| Basic | **TODO — founder confirm kare** (CEO proposal: 500 MB) |
-| Pro | **TODO — founder confirm kare** (CEO proposal: 1 GB) |
-| Business | **2 GB** (founder-confirmed, pehle se) |
-| Business Pro | **5 GB** (founder-confirmed, pehle se) |
-| Enterprise | **7 GB** (naya, 26 Oct confirm) |
+| Basic / Pro (business) | **ANEXOChat NAHI** (founder: "main anexochat basic aur pro main offer nahi kerta") — purani CEO proposal 500MB/1GB VOID |
+| Business | **2 GB** |
+| Business Pro | **5 GB** |
+| Enterprise | **7 GB** |
+| Personal Basic | NAHI (wall) |
+| Personal PRO+ | **2 GB** |
+| Personal Premium | **4 GB** |
 
 Yeh ANEXOChat ki apni storage/transfer pipeline hai (naya naya likha jayega), email attachment limit se bilkul alag cheez hai — koi confuse na kare.
 
 **Hybrid Attachment Engine (>limit par EMAIL ke andar secure download-link) — yeh teesri, abhi tak khuli cheez hai, confirm baqi:** jab koi EMAIL attachment apni instant-limit (25/35/45/60/100 MB) se bari ho, uska max link-based size kya ho? CEO proposal (06. mein diya) abhi bhi khula hai: Basic 1GB / Pro 5GB / Business 20GB / Business Pro-Enterprise 100GB. **Founder confirm kare ya apne numbers de — yeh (c) ke ANEXOChat wale table se ALAG hai (email vs chat).**
+
+
+## 9. 26 Oct 03:34-03:42 PKT — founder faisle: ANEXOChat dono axes, bandwidth overage sab packages, AI repricing
+
+### (a) ANEXOChat gating — dono axes ALAG aur DONO real
+- **Business ladder:** Basic NAHI, Pro NAHI, Business 2GB, Business Pro 5GB, Enterprise 7GB.
+- **Personal ladder:** Personal Basic NAHI, Personal PRO+ 2GB, Personal Premium 4GB.
+(Mera pehle ka "business pe chat bilkul nahi" samajhna GALAT tha — founder ne correct kiya.)
+
+### (b) Bandwidth/data-transfer overage — Enterprise-only NAHI, har package ka apna (founder: "business, business pro sab ko hoga un ke package ke hisab se")
+Mechanism sab ke liye same: org-level monthly transfer, database + Polar + Rust billing mein likha, landing page par KABHI nahi, bill mein backend-calculated line-item "Data transfer overage", usage upar ke TB round-up.
+**CEO decision (founder ne delegate kiya: "jo zoho/google/hetzner se better ho, profitable bhi, user happy bhi") — veto founder ka:**
+| Plan | Included transfer / month | Overage |
+|---|---|---|
+| Business | 10 TB | **£12 / extra TB** |
+| Business Pro | 30 TB | **£11 / extra TB** |
+| Enterprise | 50 TB | **£10 / extra TB** |
+| Basic / Pro | founder ne nahi kaha -- koi overage charge nahi, sirf fair-use (abuse par throttle). Chahein to add kar dein |
+Logic: Hetzner raw ~EUR 1/TB (kabhi included bhi) -> hamara margin ~8-10x; bara plan = zyada included TB + thora sasta rate (loyalty). Competitors (Google Workspace/Zoho) public per-TB overage nahi lagate -- unka "fair use" model hai (CEO ka andaza, unverified) -- hamara fixed, pehle se known, sasta overage bill-shock se bachata hai aur Hetzner cost ke upar profit deta hai.
+
+### (c) AI product (ai.anexomail.com) — NAYI qeematein (founder verbatim list)
+| Plan | Purani monthly | **NAYI monthly** | Yearly (CEO fix: purani convention 10x monthly) | Credits/mo |
+|---|---|---|---|---|
+| AI Pro | £400 | **£2,000** | £20,000 | 1,200 (unchanged abhi) |
+| AI Business | £1,500 | **£5,000** | £50,000 | 5,000 (unchanged abhi) |
+| AI Executive | £4,000 | **£25,000** | £250,000 | 10,000 (unchanged abhi) |
+AI ek ALAG product hai; workspace plans (Enterprise samet) ko AI ZERO (Rule 23). `src/lib/ai-packages.ts` + Polar products abhi NAHI badle (no-code rule + Polar founder khud karta hai) -- sirf docs.
+**CEO flags (founder faisla kare):**
+1. Credits/top-up inversion: AI Pro £2,000/1,200cr = £1.67/credit, Executive £25,000/10,000cr = £2.50/credit, lekin top-up packs £0.22-0.40/credit hain -- top-up plan se SASTA ho gaya. Ya credits barhao (plan ke saath), ya top-up repricing, warna koi plan nahi khareedega.
+2. "AI plan = base platform included" logic ladder: AI Pro (£2,000) = Business platform (£360), AI Business (£5,000) = Business Pro platform (£2,850), AI Executive (£25,000) = Enterprise platform (£15,000) -- CEO proposal, founder confirm kare.
+3. Kya pehli chizen jo landing/ai.anexomail.com copy mein purani £400/£1,500/£4,000 likhi hain unhein badalna hai (founder ke hukm par).

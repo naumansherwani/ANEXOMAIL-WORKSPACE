@@ -14,6 +14,13 @@
 
 # Surface unmix (teen hosts, Chat vs LEO, do Admin): docs/cursor-work/IMPLEMENTATION-MASTER.md §0
 
+# ═══ UPDATE 26 Oct 2026 03:42 PKT — FOUNDER GATE DECISIONS (neeche ke purane 7-column tables HISTORY; yeh jeetta hai) ═══
+# ANEXOChat: Business ladder -> Business 2GB / Business Pro 5GB / Enterprise 7GB (Basic, Pro = NAHI). Personal ladder -> PRO+ 2GB / Premium 4GB (Personal Basic = NAHI).
+# Email attachment: 25/35/45/60/100 MB. Storage (shared pool): 25GB/300GB/1.5TB/10TB/15TB. CRDT docs: Business+. Enterprise = Business Pro ke saare features + upar.
+# Bandwidth overage (hidden, bill-only): Business 10TB @ £12/TB, Business Pro 30TB @ £11/TB, Enterprise 50TB @ £10/TB (CEO decision, founder veto).
+# AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
+# Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
+
 ---
 
 ## RULE 1 — NEVER TOUCH (locked forever)

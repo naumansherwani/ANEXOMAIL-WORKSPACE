@@ -6,6 +6,10 @@
 - Kya: docs-only — `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` (poori v6 table + Business Pro vs Enterprise ka sab se bara farq + Polar update ke steps) + `PACKAGE-FEATURE-FORMULA.md` v6 header. Code/Plans/Polar ko touch nahi kiya — founder khud karenge.
 - Halat: **DONE (docs)** — docs-only, server command nahi chahiye. Code update + Polar products: founder ke hukm/kaam par.
 
+## ▶ 26 Oct 03:42 — founder: ANEXOChat Personal PRO+ 2GB/Premium 4GB, AI plans £2,000/£5,000/£25,000, bandwidth overage har package (CEO suggestion mango)
+- Halat: DONE (docs-only) -- `docs/claude/PRICING-POSITIONING-26OCT.md` section 9, `docs/ai-packages.md`, `PACKAGE-FEATURE-FORMULA.md`. Server command nahi. `ai-packages.ts` + Polar products ka update founder ke hukm par.
+- Khula: credits/top-up inversion (AI), AI-plan-platform ladder confirm, overage numbers ka veto, poora feature-by-feature gate matrix approval.
+
 ## ▶ 26 Oct 03:15 — founder: Business Pro attachment 60MB confirm + bandwidth overage (50TB, CEO price) + CRDT lock + ANEXOChat file ladder (Business 2GB/Business Pro 5GB/Enterprise 7GB)
 - Halat: DONE (docs-only) -- PRICING-POSITIONING-26OCT.md section 8, packages-pricing-v6 doc corrected. Server command nahi.
 - Khula: ANEXOChat Basic/Pro file-size (CEO proposed 500MB/1GB, confirm baqi); Hybrid Attachment Engine email-link sizing abhi bhi unconfirmed; bandwidth overage £10/TB price confirm baqi.

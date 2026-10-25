@@ -1,5 +1,7 @@
 # ANEXOMAIL — PACKAGES MASTER (repo source of truth, locked 25 Aug 2026)
 
+> **UPDATE 26 Oct 2026 03:42 PKT (founder verbatim):** AI plans ki NAYI monthly qeematein: AI Pro **£2,000**, AI Business **£5,000**, AI Executive **£25,000** (yearly = 10x: £20,000 / £50,000 / £250,000, CEO fix). Neeche section 2 ki £400/£1,500/£4,000 HISTORY hain. Workspace plans (section 1) ki asli qeematein ab `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` hain (flat per-month, per-user khatam). Code (`ai-packages.ts`) + Polar abhi nahi badle. Details/flags: `docs/claude/PRICING-POSITIONING-26OCT.md` section 9.
+
 Rule: koi bhi price/package change pehle is repo mein hota hai, phir kahin aur.
 Chat mein ad-hoc package kabhi nahi. Frontend display truth = `src/lib/plans.ts`
 + `src/lib/ai-packages.ts`; Polar IDs = `docs/polar-products.md`.
