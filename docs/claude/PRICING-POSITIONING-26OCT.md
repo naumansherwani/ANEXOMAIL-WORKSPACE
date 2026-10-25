@@ -48,3 +48,21 @@ Zoho/Gmail dono ka selling point "safe, established" hai. Humara counter: "hum t
 
 ## Server status check (26 Oct, is session mein)
 M2 + M2b ka deploy abhi tak Nauman bhai ne confirm nahi kiya (last known commits: `11d7b94`, `6d4fe33`). Deploy ke baad handoff + owner-name ka live Chrome test aur basic-gate-probe ka output abhi baqi hai.
+
+---
+
+## 6. Founder ke 2 naye ideas (26 Oct 02:37 PKT) — note kiye, CEO review ke saath
+
+### (A) CRDTs + WebTransport sub-10ms document collaboration
+Founder: Rust kernel ke andar CRDTs (Conflict-free Replicated Data Types) implement karo, WebTransport/HTTP3 ki wajah se doc-collaboration latency Google se bhi kam (sub-10ms) ho sakti hai.
+- **Tech sahi hai:** CRDTs + Rust + WebTransport ka combo real-time collaborative editing (jaise Google Docs) ke liye sahi hai, aur hamara stack (tokio, wtransport/QUIC) isko support kar sakta hai.
+- **CEO flag (founder se confirm chahiye):** Abhi ANEXOMAIL mein koi "collaborative document editing" feature hi nahi hai (Google Docs jaisa shared-doc ya shared-note jahan 2 log ek saath type karein). Hamare paas Work/CRM/Calendar/Mail hai. Yeh ek **naya product surface** hoga — scope bada hai (naya data model, naya UI, naya Rust module). Sawal founder se: (1) yeh kis feature ke andar aayega — naya "Docs"/"Notes" tool, ya Work ke boards/notes ko hi collaborative banana hai? (2) "sub-10ms" ka number abhi sirf theory hai — jab tak build+measure nahi hota, marketing mein latency number claim nahi karna chahiye (jhooti green rule — DONE sirf live measured par). Scope + priority (kaunse phase mein, M-series ke kis number par) founder ka faisla.
+
+### (B) Hybrid Attachment Engine — bari file ke liye storage + secure download link
+Founder: jab user badi file (50MB/500MB/1GB) attach kare, backend Hetzner storage mein save kare, email ke andar ek "Secure ANEXO Download Link" bheje (SMTP ki size-limit se bachne ke liye). Smart Attachment Split: 25MB se badi file par khud-ba-khud link-based delivery, taake doosre provider (Gmail/Outlook, jin ki apni limit ~25MB hai) reject na karein; Enterprise tak 100MB tak smoothly bhej sake.
+- **Tech-wajah sahi hai (yeh email ka physics hai, hamari marzi nahi):** koi bhi bada attachment jab doosre provider (Gmail ki 25MB, Outlook ki apni limit) ko jata hai, agar hum seedha SMTP attach karen to woh bounce/reject hoga chaahe hum kuch bhi karein — yeh unke server ki limit hai, hamari nahi. Is liye bari file ke liye link-based delivery zaroori hai agar cross-provider bhejni hai.
+- **CEO flag — yeh pichli positioning se SEEDHA TAKRAATA hai, founder faisla chahiye:** 25 Oct ki baat mein humne Zoho ke "Huge Attachment" (cloud-link) tareeqe ko weakness bataya tha ("Zoho ka seedha limit 40MB tak, uske aage link-trick") aur apna selling point "seedha 50MB tak direct attach, link-drama nahi" rakha tha. Ab yeh naya idea kehta hai ke 25MB se upar hum khud link bhejenge — yani hum bhi wahi tareeqa karenge jo humne Zoho ki kamzori bataya tha. Do tareeqon mein reconcile karne ka ek raasta hai, lekin faisla founder ka hai:
+  - **Option 1 — "seedha" sirf apne provider ke andar:** ANEXOMAIL-se-ANEXOMAIL (ya kisi aisi receiving party jiska server bari file accept karta ho) seedha attach; doosre provider (Gmail/Outlook jinki apni 25MB limit hai) ko bhejte waqt automatically link — aur UI mein yeh saaf bataya jaye "aapki file Gmail ki size-limit ki wajah se secure link ke zariye bheji gayi" (transparent, sharmindagi wali baat nahi — email ka universal usool hai).
+  - **Option 2 — hamesha link for anything over X MB**, chahe recipient koi bhi ho, taake experience consistent rahe aur hum "always-fast, always-reliable" bol saken.
+  - Landing-page wording iske mutabiq badalni hogi: "50MB tak direct attach (apne network ke andar), aur bade file ke liye hamara apna secure ANEXO link — Zoho ke cloud-trick jaisa complicated nahi, 1-click download, hamesha encrypted."
+- Dono ideas abhi **sirf decide/likhe hain, implement NAHI hue.** Jab founder in do sawalon (scope ka doc-collab, aur Option 1 vs 2) ka jawab de, phir phases (M-series mein kahan fit honge) aur code likhna shuru hoga.

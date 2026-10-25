@@ -1,5 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 26 Oct 00:50 — founder: CRDT/WebTransport doc-collab + Hybrid Attachment Engine ideas, 'repo main likho, phases banenge codes likhe jayenge'
+- Halat: DONE (docs-only, note + CEO flags) — `docs/claude/PRICING-POSITIONING-26OCT.md` section 6. Implementation NAHI shuru; 2 sawal founder ke jawab ka intezar (doc-collab scope, attachment-link option 1 vs 2). Server command nahi chahiye.
+
 ## ▶ 26 Oct 00:32 — founder: pricing/positioning strategy (NO per-user, Enterprise package, attachment 30/35/45/50 MB) + 'yeh sari baatein repo main note kero'
 - Halat: DONE (docs-only) — `docs/claude/PRICING-POSITIONING-26OCT.md` + AGENTS.md Rule 51 + ledgers. Implementation abhi NAHI shuru hui (founder ne khud kaha "koi code nahi likhna"); jab "ab likho" bolen tabhi. Server command nahi chahiye.
 - M2/M2b (24 Oct) ka deploy abhi founder se confirm nahi hua — commands upar (24 Oct 23:59 entry) wahi hain.
