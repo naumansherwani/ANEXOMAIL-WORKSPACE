@@ -155,7 +155,7 @@ Mechanism sab ke liye same: org-level monthly transfer, database + Polar + Rust 
 | Business Pro | 30 TB | **£11 / extra TB** |
 | Enterprise | 50 TB | **£10 / extra TB** |
 | Basic / Pro | founder ne nahi kaha -- koi overage charge nahi, sirf fair-use (abuse par throttle). Chahein to add kar dein |
-Logic: Hetzner raw ~EUR 1/TB (kabhi included bhi) -> hamara margin ~8-10x; bara plan = zyada included TB + thora sasta rate (loyalty). Competitors (Google Workspace/Zoho) public per-TB overage nahi lagate -- unka "fair use" model hai (CEO ka andaza, unverified) -- hamara fixed, pehle se known, sasta overage bill-shock se bachata hai aur Hetzner cost ke upar profit deta hai.
+Logic: Hetzner raw ~EUR 1/TB (kabhi included bhi) -> hamara margin ~8-10x; bara plan = zyada included TB + thora sasta rate (loyalty). Competitors VERIFIED (26 Oct 03:50 PKT, official pages): Zoho rates-and-limits page par koi bandwidth/data-transfer overage fee nahi (sirf fetch/rate limits, jaise POP 5GB/din, incoming attachment 40MB); Google Workspace ke official size-limits page par bhi koi per-TB overage fee nahi mili (bandwidth ke alag limits pages hain -- woh limit-throttle model hai, paid overage nahi; Gmail attachment 25MB, sirf Enterprise Plus 50MB Feb 2026 se). Caveat: yeh 'official page mein zikr nahi' wala saboot hai, har contract/edition ka har clause nahi dekha -- pakka legal claim landing par mat likhna -- hamara fixed, pehle se known, sasta overage bill-shock se bachata hai aur Hetzner cost ke upar profit deta hai.
 
 ### (c) AI product (ai.anexomail.com) — NAYI qeematein (founder verbatim list)
 | Plan | Purani monthly | **NAYI monthly** | Yearly (CEO fix: purani convention 10x monthly) | Credits/mo |

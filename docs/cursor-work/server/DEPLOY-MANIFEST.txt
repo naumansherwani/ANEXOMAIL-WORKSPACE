@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 60619451d97652a8
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3e8fa137ed867cf0
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -666,6 +666,6 @@ docs/cursor-work/server/count-endpoints.py dd8f789f015fc833
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md 60058ca4bae37ace
 docs/cursor-work/PACKAGE-FEATURE-FORMULA.md 5739b7a97591473c
-docs/claude/PRICING-POSITIONING-26OCT.md d3eb0670ad03aa18
+docs/claude/PRICING-POSITIONING-26OCT.md 497581326c78adff
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md dfa215ae4029eabf
 docs/claude/BULLETPROOF-RELIABILITY-26OCT.md bb8c5f74d084624e
