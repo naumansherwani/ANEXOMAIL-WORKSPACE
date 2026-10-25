@@ -404,3 +404,7 @@ Founder: "yeh mind main lock ker lo ke yeh WASM KERNEL browser main builtin hoga
 - ANEXOMAIL ke browser-side mein ek general-purpose WASM compute kernel (Rust->WASM) **builtin** hota hai — poori website ke liye, sirf ek feature ke liye nahi (docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md section A).
 - **Standing rule:** jab bhi koi naya client-side-heavy feature banay (audio FFT, chunked upload, large-data processing), pehle yeh socho ke woh is WASM kernel ke andar ek module ban sakta hai ya nahi, aur kernel ka version us feature ke saath update hota hai (naya module add → version bump). Alag-alag, bikhri hui WASM files nahi — ek kernel, ander modules.
 - Implementation scope/timeline TODO (V7 — docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md).
+
+
+## Rule 53 (STRICT, founder 26 Oct 2026 04:05 PKT) — har package ka feature-gate REPO mein likha ho
+Har package (5 business + 3 personal + 3 AI) ko kaun sa feature milega, yeh `docs/cursor-work/PACKAGE-FEATURE-FORMULA.md` mein likha rahe ga (source of truth). Naya feature = pehle wahan gate likho, phir code (plan-surface.ts/plans.ts, Rule 37). Pricing/plans ka kaam `docs/claude/PRICING-AND-PLANS-PHASE-26OCT.md` ke phases PP0-PP7 mein. AI plans COMING SOON (July 2027 tak); Enterprise AI mein shamil nahi (human/workspace package). Technology: latest stack + WASM kernel (Rule 52) poori website + har subdomain ke liye common.

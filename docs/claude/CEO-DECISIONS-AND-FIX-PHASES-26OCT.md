@@ -5,9 +5,9 @@ Founder ne sab faisle CEO ko delegate kiye ("tum ceo sab faislay kero jo zoho au
 ## A. CEO faisle
 1. **Founding-member**: pehle **150 orgs**, price **36 mahine tak lock** (monthly price badle to bhi), "Founding" badge. Lifetime lock nahi (cost badle to phasna nahi).
 2. **Waves**: pehle 4 hafte **25 orgs/hafta** (=100), phir **50/hafta**, aur server utilisation >70% par auto-pause. Signup kholna sirf Pro+Business+Business Pro GREEN + M3 ke baad.
-3. **Move-In**: har trial ko **free pilot migration (3 mailboxes tak)**; full Move-In free **annual Business Pro/Enterprise** ko; baqi ko listed one-off (£568-3,350 -- yeh purani per-user era ke numbers hain, dobara review).
-4. **AI credits inversion fix**: rule = *plan ka per-credit rate hamesha sab se sasta public top-up (£0.222) se kam*. Proposal: AI Pro 12,000 (£0.167), AI Business 35,000 (£0.143), AI Executive 200,000 (£0.125). **LOCK se pehle asal LLM cost per credit check zaroori** -- margin unknown.
-5. **AI plan = base platform**: AI Pro=Business, AI Business=Business Pro, AI Executive=Enterprise -- APPROVED.
+3. **Move-In**: har trial ko **free pilot migration (3 mailboxes tak)**; full Move-In free **annual Business Pro/Enterprise** ko; baqi ko listed one-off **£568-3,350 -- PRICES INTACT (founder 04:05: price wahi rahe ga)**.
+4. **[SUPERSEDED 04:05 -- founder: itne credits main nahi de sakta; AI plans 'COMING SOON' hain JULY 2027 tak, credits numbers abhi lock/propose nahi]** purani proposal: **AI credits inversion fix**: rule = *plan ka per-credit rate hamesha sab se sasta public top-up (£0.222) se kam*. Proposal: AI Pro 12,000 (£0.167), AI Business 35,000 (£0.143), AI Executive 200,000 (£0.125). **LOCK se pehle asal LLM cost per credit check zaroori** -- margin unknown.
+5. **AI plan = base platform (founder 04:05 correction)**: AI Pro=Business, AI Business=Business Pro, AI Executive=**Business Pro (purani formula) -- Enterprise AI mein NAHI aata, Enterprise 'human' (workspace) package hai**.
 6. **Bandwidth overage**: Business 10TB@£12, Business Pro 30TB@£11, Enterprise 50TB@£10 -- APPROVED. Basic/Pro fair-use throttle.
 7. Annual rule AI: monthly x10 (2 months free) -- plans.ts ke locked rule se match.
 
