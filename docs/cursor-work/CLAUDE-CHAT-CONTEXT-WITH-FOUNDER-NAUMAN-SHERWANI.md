@@ -1080,3 +1080,6 @@ Feature inventories INV-1/2/3 (calendar+mail 74, chat/CRM/work/analytics 80, org
 
 ### 26 Oct 04:40 — PP1 jawab
 Calendar generous Basic, analytics tiered, CRDT Personal nahi, Priority Support add-on != Enterprise (old /enterprise page rename plan). Detail PP1-FULL-GATE-TABLE-26OCT.md.
+
+### 26 Oct 04:50 — video/booking decisions + one-by-one package tarteeb
+Video: Pro 720p standalone, Business 720p+chat, BP 2K, Enterprise full 8K scale. Booking links 1/3/20/unlimited/unlimited. Tarteeb: package plans ek ek page, Business Basic pehle (chat mein features likho -> approve -> repo), phir Personal. Yearly: Basic/Pro x11, Business/BP x10, Enterprise x10 proposal.

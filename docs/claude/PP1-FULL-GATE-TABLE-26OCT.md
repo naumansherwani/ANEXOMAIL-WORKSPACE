@@ -55,3 +55,9 @@ Video: DB chat_video_allowed (founder+BP) vs UI Pro+ vs chat Bu+ -> sab Bu+. Ana
 - 23 'ghaltiyan' ka matlab: purani qeematein/per-user lafz jo 2 ghantay pehle ke founder faislon se UPDATE hone baqi hain (P2/P3) -- ghalti nahi, update-list.
 - Priority Support vs Enterprise: Priority Support = paid add-on 790 GBP/mo (tez insani support, named contact, 2-business-day response, quarterly review). Naya Enterprise = poora package 15,000 GBP. CEO faisla: purani /enterprise page ka naam 'Priority Support' (/priority-support), naya /enterprise page naye package ka; Enterprise mein Priority Support FREE included; baqi plans ke liye add-on rahe. (Founder veto.)
 - Video unify (Bu+) aur booking: founder jawab baqi.
+
+## Founder 04:48 PKT — video + booking links + KAAM KI TARTEEB
+- **Video (CEO reading of founder, veto baqi):** Pro = standalone video call **720p** (ANEXOChat features ke baghair, takrao nahi); Business = 720p + ANEXOChat ke saath (group 8); Business Pro = **2K** + top-notch features (group 40); Enterprise = **poori website ka scale, sab kuch, 8K ladder tak** (group 60). Basic = video nahi. Personal Pro+ = Pro-jaisa 720p+chat, Premium = 2K.
+- **Booking links:** Basic 1, Pro 3, Business 20, Business Pro unlimited, Enterprise unlimited (halki fair-use limit).
+- **Tarteeb (founder rule): ek ek page.** Pehle Business ke package plans (monthly + yearly), pehle Basic phir Pro/Business/BP/Enterprise; phir Personal Basic/Pro+/Premium. Har package ke features pehle CHAT mein likho -> founder approve -> phir repo. Gates tab tak nahi jab tak puri website ke features read na hon (INV-1/2/3 se read ho chuki).
+- Yearly rule (plans.ts): Basic/Pro = monthly x11, Business/BP = x10. Enterprise yearly: proposal x10 = 150,000 GBP (founder confirm).
