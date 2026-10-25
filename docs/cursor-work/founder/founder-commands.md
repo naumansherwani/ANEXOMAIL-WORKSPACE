@@ -1,5 +1,9 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 26 Oct 00:32 — founder: pricing/positioning strategy (NO per-user, Enterprise package, attachment 30/35/45/50 MB) + 'yeh sari baatein repo main note kero'
+- Halat: DONE (docs-only) — `docs/claude/PRICING-POSITIONING-26OCT.md` + AGENTS.md Rule 51 + ledgers. Implementation abhi NAHI shuru hui (founder ne khud kaha "koi code nahi likhna"); jab "ab likho" bolen tabhi. Server command nahi chahiye.
+- M2/M2b (24 Oct) ka deploy abhi founder se confirm nahi hua — commands upar (24 Oct 23:59 entry) wahi hain.
+
 ## ▶ 24 Oct 23:59 — M2b (handoff) + delete procs + Basic gate probe: READY, deploy baqi
 Tarteeb (har technology ki alag; SQL is baar nahi chahiye):
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`

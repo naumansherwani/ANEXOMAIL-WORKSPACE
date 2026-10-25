@@ -398,3 +398,11 @@ Founder (verbatim): "tune yeh chawal nahi maarni hai yeh repo main note kero".
 
 ## Rule 50 — Migration phase table saath ke saath update (founder 24 Oct 2026 17:18 PKT, STRICT)
 Founder: poori website 8 phases (M1-M6, L, F, B8) mein latest technology par; "yeh saath ke saath update hoga". `docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md` ka phase table aur `docs/claude/MIGRATION-LEDGER-24OCT.md` (+CSV) har kaam ke saath usi turn mein update (halat + ginti). Ek code path sab account kinds (`resolve_plan`), founder routes alag batch F, shared helpers ek jagah, client sirf `rpcOrRest`, Bun hamesha emergency fallback. Phase GREEN = Basic-user test + Chrome 1440/820/390 live.
+
+## Rule 51 — NO per-user/per-seat pricing EVER; naya package Enterprise; attachment limits 30/35/45/50 MB; positioning strategy (founder 26 Oct 2026, STRICT)
+Founder: "ab se koi bhi package per user nahi hoga. shared mailboxes memory dun ga user ko aur competitors per user kerte hain hum per user nahi karay gay... ek naya package bhi introduce hoga jis ka naam hoga enterprise."
+- **Koi plan kabhi per-user/per-seat charge nahi karta** (Zoho/Google/Microsoft isi par chalte hain — humara differentiator). Workspace ko shared mailbox-memory milti hai, member count se price nahi badalta.
+- **Naya tier: Enterprise** (Business Pro ke upar). Scope/price TODO. Jab banega: resolve_plan ke ek-code-path rule ke andar, koi alag copy nahi.
+- **Attachment limits (seedha attach, cloud-link trick nahi):** Basic 30 MB, Pro 35 MB, Business 45 MB, Business Pro 50 MB, Enterprise TODO. 3 jagah ek saath (landing pricing/comparison, profile/billing, Rust `mail.attach.limits` enforce) — poora decision + wajah: `docs/claude/PRICING-POSITIONING-26OCT.md`.
+- **Positioning:** "Rust+Tokio" akele flex hai; teen user-benefit tarjume chahiye (bada attachment seedha jata hai / peak hours mein fast / ek crash se poori site nahi girti). Jargon ke bawajood har jagah plain-language line sath honi chahiye.
+- Implementation sirf founder ke "ab likho" kehne par shuru, is rule likhne se nahi.
