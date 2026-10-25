@@ -1068,3 +1068,6 @@ Decisions + mistakes (plans.ts per-user, ai-packages.ts stale, formula tables) +
 
 ### 26 Oct 04:05 — Pricing & Plans phase
 Founder: price-related sab ek alag phase (PRICING-AND-PLANS-PHASE-26OCT.md PP0-PP7), Polar prices founder khud, Enterprise card + features PP1 matrix se. AI plans coming soon July 2027, credits numbers void, AI Executive mein Enterprise nahi. Move-In prices intact. Rule 53 add. Founding-member easy-words explanation phase doc mein.
+
+### 26 Oct 04:30 — PP0 shuru (real)
+Founder: 'kaam real shuru kero, delay se sharmindgi'. PP0 inventory complete: docs/claude/PP0-FEATURE-INVENTORY-26OCT.md. Key: enterprise code mein nahi; Personal=account kind (Polar plan se map), Personal Pro+/Premium=Business Pro power; ANEXOChat code already Business+ (founder ke mutabiq). Founding lock 24 mahine. Rule 54 competitor-first. Agla: PP1 matrix approve, phir PP2 code (Enterprise rank).

@@ -408,3 +408,7 @@ Founder: "yeh mind main lock ker lo ke yeh WASM KERNEL browser main builtin hoga
 
 ## Rule 53 (STRICT, founder 26 Oct 2026 04:05 PKT) — har package ka feature-gate REPO mein likha ho
 Har package (5 business + 3 personal + 3 AI) ko kaun sa feature milega, yeh `docs/cursor-work/PACKAGE-FEATURE-FORMULA.md` mein likha rahe ga (source of truth). Naya feature = pehle wahan gate likho, phir code (plan-surface.ts/plans.ts, Rule 37). Pricing/plans ka kaam `docs/claude/PRICING-AND-PLANS-PHASE-26OCT.md` ke phases PP0-PP7 mein. AI plans COMING SOON (July 2027 tak); Enterprise AI mein shamil nahi (human/workspace package). Technology: latest stack + WASM kernel (Rule 52) poori website + har subdomain ke liye common.
+
+## Rule 54 (STRICT, founder 26 Oct 2026 04:20 PKT) — competitor-first: har policy/feature/price se pehle Google/Zoho (aur doosre competitors) dekho
+Jab bhi koi policy, feature, price, limit ya package add/change karna ho: PEHLE competitors (Google Workspace, Zoho, Microsoft 365, Proton...) ka official page/pricing dekh kar likho woh kya karte hain (verified, source link), PHIR hamari offer unse behtar rakho (user ko better deal = user hamare saath chipka rahe). Doc mein "Competitor check" line ke baghair koi pricing/policy change commit nahi. Landing par competitor ke baare mein claim sirf verified aur safe wording mein.
+Founding-member price-lock = 24 mahine (2 saal), pehli 150 companies.

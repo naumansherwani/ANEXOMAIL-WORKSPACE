@@ -21,4 +21,4 @@ Jab tak puri website (landing + routes + app) ke features ki list nahi, package 
 Latest tech (Rust/Tokio/WebTransport) + **WASM KERNEL browser mein builtin, poori website ke liye common -- ANEXOChat, har subdomain (ai., chat, founder) sab** -- AGENTS.md Rule 52 + Rule 53.
 
 ## Founding-member -- aasan alfaaz
-Pehle 150 companies ko hum wada dete hain: "aaj jo monthly price hai, woh 3 saal (36 mahine) tak nahi barhe gi, chahe baad mein hum sab ke liye price barha dein." 36 mahine ke baad normal price lagti hai. 'Lifetime' (hamesha) wada isliye nahi kiya ke kal Hetzner/costs barh jayen to hum phans jate hain. Badle mein unhein 'Founding' badge milta hai aur hamare pehle gawah (testimonial) ban jate hain.
+Pehle 150 companies ko hum wada dete hain: "aaj jo monthly price hai, woh 2 saal (24 mahine) tak nahi barhe gi, chahe baad mein hum sab ke liye price barha dein." 24 mahine ke baad normal price lagti hai. 'Lifetime' (hamesha) wada isliye nahi kiya ke kal Hetzner/costs barh jayen to hum phans jate hain. Badle mein unhein 'Founding' badge milta hai aur hamare pehle gawah (testimonial) ban jate hain.

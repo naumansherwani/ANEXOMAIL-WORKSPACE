@@ -3,7 +3,7 @@
 Founder ne sab faisle CEO ko delegate kiye ("tum ceo sab faislay kero jo zoho aur google ki buildings main hulchul paida karay"). Veto hamesha founder ka.
 
 ## A. CEO faisle
-1. **Founding-member**: pehle **150 orgs**, price **36 mahine tak lock** (monthly price badle to bhi), "Founding" badge. Lifetime lock nahi (cost badle to phasna nahi).
+1. **Founding-member**: pehle **150 orgs**, price **24 mahine lock** (monthly price badle to bhi), "Founding" badge. Lifetime lock nahi (cost badle to phasna nahi).
 2. **Waves**: pehle 4 hafte **25 orgs/hafta** (=100), phir **50/hafta**, aur server utilisation >70% par auto-pause. Signup kholna sirf Pro+Business+Business Pro GREEN + M3 ke baad.
 3. **Move-In**: har trial ko **free pilot migration (3 mailboxes tak)**; full Move-In free **annual Business Pro/Enterprise** ko; baqi ko listed one-off **£568-3,350 -- PRICES INTACT (founder 04:05: price wahi rahe ga)**.
 4. **[SUPERSEDED 04:05 -- founder: itne credits main nahi de sakta; AI plans 'COMING SOON' hain JULY 2027 tak, credits numbers abhi lock/propose nahi]** purani proposal: **AI credits inversion fix**: rule = *plan ka per-credit rate hamesha sab se sasta public top-up (£0.222) se kam*. Proposal: AI Pro 12,000 (£0.167), AI Business 35,000 (£0.143), AI Executive 200,000 (£0.125). **LOCK se pehle asal LLM cost per credit check zaroori** -- margin unknown.
