@@ -33,7 +33,14 @@ PIN="$(git -C "$REPO" show origin/main:src/lib/kernel/pin.gen.ts 2>/dev/null)"
 VER="$(echo "$PIN" | sed -n 's/.*version: "\([^"]*\)".*/\1/p' | head -1)"
 SHA="$(echo "$PIN" | sed -n 's/.*sha256: "\([^"]*\)".*/\1/p' | head -1)"
 if [ -n "$VER" ] && [ -n "$SHA" ]; then
-  GOT="$(curl -s --max-time 10 "$SITE/kernel/anexo-kernel-$VER.wasm" | sha256sum | cut -d' ' -f1)"
+  GOT=""; WST=""
+  for _i in 1 2 3; do
+    WST="$(curl -s --max-time 10 -o /tmp/.kc.wasm -w 'http=%{http_code} type=%{content_type} size=%{size_download}' "$SITE/kernel/anexo-kernel-$VER.wasm")"
+    GOT="$(sha256sum /tmp/.kc.wasm 2>/dev/null | cut -d' ' -f1)"
+    [ "$GOT" = "$SHA" ] && break; sleep 3
+  done
+  rm -f /tmp/.kc.wasm
+  [ "$GOT" = "$SHA" ] || echo "     (wasm jawab: $WST)"
   [ "$GOT" = "$SHA" ] && ok "kernel $VER wasm site se serve hota hai, SHA-256 pin se mila" || bad "kernel $VER wasm ka hash pin se nahi milta (Web pull.sh chali? Caddy/Bun static?)  got=${GOT:0:12} want=${SHA:0:12}"
 else
   bad "repo mein kernel pin nahi mila (src/lib/kernel/pin.gen.ts)"

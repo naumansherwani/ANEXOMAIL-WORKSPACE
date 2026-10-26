@@ -1194,3 +1194,13 @@ Web pull (c82eb17 audit) deployed. Baaqi fetch ka sab se bada hissa: GET /api/au
 
 ## 26 Oct 2026 20:25 PKT — founder ne Rule 52 ke apne alfaaz likhwaye (verbatim): "ANEXOMAIL ke browser-side mein ek general-purpose WASM KERNEL compute kernel (Rust, tRPC, WebTransport, async, Tokio mein likhna hai -> WASM KERNEL) builtin hota hai. yeh hai rule"
 AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). Guard test [1b] jodi. Honest note: tRPC = tRPC-STYLE typed contract (rpc-contract.ts, {result:{data}}), asli npm @trpc library nahi (JS hai, WASM mein nahi chalti) — founder se poochha: asli library chahiye to bata dein.
+
+## 26 Oct 2026 20:40 PKT — pull (kernel-check retry fix). Tarteeb: SQL nahi -> Rust nahi (koi Rust badlav nahi) -> Web pull -> probes
+```bash
+# 1) Web
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15
+# 2) probes (10 s ruk kar)
+sleep 10
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh) 2>&1 | grep -E "FAIL|ALL PASS"
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh) 2>&1 | grep -E "FAIL|KERNEL|wasm jawab"
+```
