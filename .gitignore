@@ -38,3 +38,6 @@ dist-ssr
 # Python cache (server scripts)
 __pycache__/
 *.pyc
+
+# WASM kernel build output (the shipped .wasm lives in public/kernel/)
+web-wasm/target

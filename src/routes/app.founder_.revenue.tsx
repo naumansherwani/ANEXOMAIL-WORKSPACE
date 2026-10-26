@@ -57,7 +57,7 @@ function FounderRevenuePage() {
               <div className="ax-plane mt-ax-6 rounded-2xl p-5">
                 <p className="ax-eyebrow">Gap maths</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                  {d.gap.seats_needed} more {d.gap.plan} seats close the {gbp(d.target_gbp)} target.{" "}
+                  {d.gap.seats_needed} more {d.gap.plan} companies close the {gbp(d.target_gbp)} target.{" "}
                   {d.gap.note}
                 </p>
               </div>

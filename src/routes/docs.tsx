@@ -33,7 +33,7 @@ const SECTIONS: { id: string; title: string; body: string; rows: [string, string
     rows: [
       [
         "Create the organisation",
-        "Sign in, name the company, pick the plan (Basic £23 · Pro £46 · Business £97).",
+        "Sign in, name the company, pick the plan (Basic £40 · Pro £105 · Business and Business Pro on the Plans page).",
       ],
       [
         "Add your domain",

@@ -1,0 +1,25 @@
+# ANEXOMAIL WASM KERNEL (Rule 52) — ek hi kernel, andar modules. Browser mein builtin, poori website ke liye.
+# Rust (async) + Tokio (LocalSet + sync channels) -> wasm32-unknown-unknown. WebTransport browser ka apna hai; Rust usay host ABI se chalata hai
+# (wasm-bindgen ke bina: sandbox mein CLI nahi, aur ABI chhota/auditable rehta hai). Version har naye module ke saath badhta hai.
+[package]
+name = "anexo-kernel"
+version = "0.1.0"
+edition = "2024"
+publish = false
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+tokio = { version = "1", default-features = false, features = ["rt", "sync", "macros"] }
+sha2 = "0.10"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["rt", "macros", "time"] }
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

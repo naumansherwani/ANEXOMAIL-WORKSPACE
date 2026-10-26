@@ -74,7 +74,7 @@ function PipelinePage() {
               <h3 className="ax-heading mt-ax-6 text-foreground">Committed streams</h3>
               {d.committed.length === 0 ? (
                 <Note>
-                  No recurring revenue booked yet — the first £23 subscription starts this board.
+                  No recurring revenue booked yet — the first £40 subscription starts this board.
                 </Note>
               ) : (
                 <ul className="mt-ax-3 space-y-1.5">

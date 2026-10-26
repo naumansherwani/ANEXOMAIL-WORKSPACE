@@ -16,13 +16,13 @@ export const Route = createFileRoute("/partners")({
       {
         name: "description",
         content:
-          "IT agencies and MSPs: sell private business email under your own brand and keep 20–30% recurring commission on every live seat, for as long as it lives.",
+          "IT agencies and MSPs: sell private business email under your own brand and keep 20–30% recurring commission on every live client company, for as long as it stays.",
       },
       { property: "og:title", content: "Partner programme — resell under your own brand" },
       {
         property: "og:description",
         content:
-          "20–30% recurring commission on every live seat. Your brand on the front, our engine behind it.",
+          "20–30% recurring commission on every live client company. Your brand on the front, our engine behind it.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,15 +32,15 @@ export const Route = createFileRoute("/partners")({
 });
 
 const tiers = [
-  { tier: "reseller" as const, name: "Reseller", rate: "20%", need: "From your first seat" },
-  { tier: "gold" as const, name: "Gold", rate: "25%", need: "25 live seats" },
-  { tier: "platinum" as const, name: "Platinum", rate: "30%", need: "100 live seats" },
+  { tier: "reseller" as const, name: "Reseller", rate: "20%", need: "From your first client" },
+  { tier: "gold" as const, name: "Gold", rate: "25%", need: "10 live client companies" },
+  { tier: "platinum" as const, name: "Platinum", rate: "30%", need: "30 live client companies" },
 ];
 
 const included = [
   "Your logo, your domain, your sender name on the workspace.",
   "One console for every client — add a company, add mailboxes, done.",
-  "Commission paid monthly on every live seat, not just year one.",
+  "Commission paid monthly on every live client company, not just year one.",
   "We never contact your clients directly. They are yours.",
   "Migration jobs quoted for you at partner rates — resell at your price.",
   "Ownership proof pack per client, so audits are a download, not a project.",
@@ -90,7 +90,7 @@ function PartnersPage() {
             <h2 className="ax-heading text-foreground">What you earn</h2>
             <div className="mt-6 grid gap-5 sm:grid-cols-2">
               <div>
-                <Label htmlFor="seats">Live seats</Label>
+                <Label htmlFor="seats">Live client companies</Label>
                 <Input
                   id="seats"
                   type="number"
@@ -110,9 +110,9 @@ function PartnersPage() {
                   }
                   className="mt-2 h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
                 >
-                  <option value="basic">Basic — £{PLAN_PRICE.basic}</option>
-                  <option value="pro">Pro — £{PLAN_PRICE.pro}</option>
-                  <option value="business">Business — £{PLAN_PRICE.business}</option>
+                  <option value="basic">Basic — £{PLAN_PRICE.basic} / month per company</option>
+                  <option value="pro">Pro — £{PLAN_PRICE.pro} / month per company</option>
+                  <option value="business">Business — £{PLAN_PRICE.business} / month per company</option>
                 </select>
               </div>
             </div>

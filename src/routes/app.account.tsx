@@ -2,7 +2,7 @@ import { BrandSpinner } from "@/components/state/BrandLoader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { Eye, EyeOff, KeyRound, Laptop, ShieldCheck, Trash2 } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Laptop, Trash2 } from "lucide-react";
 
 import { ListSkeleton } from "@/components/state/Skeletons";
 import { ErrorState, StateBlock } from "@/components/state/StateBlock";
@@ -15,6 +15,7 @@ import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 import { exportErrorMessage, startExport } from "@/lib/account-export";
 import { enrolPasskey, PASSKEY_STATUS_KEY, regenerateRecoveryCodes, usePasskeyStatus } from "@/lib/passkey";
+import { TwoStepCard } from "@/components/app/security/TwoStepCard";
 import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
 
 export const Route = createFileRoute("/app/account")({
@@ -336,23 +337,8 @@ function AccountPage() {
               <KeyRound className="size-4" />
               Add a passkey
             </Button>
-            <Button
-              variant="outline"
-              className="ax-press"
-              onClick={() =>
-                void api<{ otpauth_url: string }>("/api/auth/mfa/enroll", { method: "POST" })
-                  .then((res) => window.open(res.otpauth_url, "_blank", "noopener"))
-                  .catch((error: unknown) => {
-                    notify.failed("Two-step setup unavailable", {
-                      description: error instanceof Error ? error.message : "Please try again.",
-                    });
-                  })
-              }
-            >
-              <ShieldCheck className="size-4" />
-              {session?.user.mfa_enabled ? "Manage two-step" : "Turn on two-step"}
-            </Button>
           </div>
+          <TwoStepCard />
         </section>
 
         <section className="rounded-xl border border-border bg-card p-ax-4">

@@ -2,7 +2,7 @@
  * Phase 28 — Revenue Engine (transport + pure maths only).
  *
  * 4 locked money roads (AI ke bina):
- *   1. Core subscriptions — Basic £23 · Pro £46 · Business £97 per seat · Business Pro £2,850 per company
+ *   1. Core subscriptions — flat per company per month: Basic £40 · Pro £105 · Business £360 · Business Pro £2,850
  *   2. Managed Move-In    — £568 / £1,670 / £2,210 / £3,350 one-time per company (banded by mailboxes)
  *   3. White-label / reseller — IT agencies, 20–30% recurring commission
  *   4. Priority Support   — named founder contact + reply within 2 business days, £790/mo add-on
@@ -18,7 +18,8 @@ import { rpcOrRest } from "@/lib/rpc";
 
 /* ------------------------------ rate card ------------------------------- */
 
-export const PLAN_PRICE = { basic: 23, pro: 46, business: 97, business_pro: 2850 } as const;
+/** Flat v6 prices PER MONTH PER COMPANY (Rule 51: no per-user pricing). Basic £40 · Pro £105 · Business £360 · Business Pro £2,850. */
+export const PLAN_PRICE = { basic: 40, pro: 105, business: 360, business_pro: 2850 } as const;
 export const SLA_PRICE_MONTHLY = 790;
 export const MIGRATION_FLOOR = 568;
 export const MIGRATION_CEILING = 3350;
@@ -141,7 +142,7 @@ export type PartnerQuote = {
   nextTier: string | null;
 };
 
-/** Commission ladder: 20% → 25% → 30% recurring, for as long as the seat lives. */
+/** Commission ladder: 20% → 25% → 30% recurring on each client company's flat monthly plan, for as long as that client stays. `seats` = live client companies (the field name is kept for the lead form). */
 export function quotePartner(input: PartnerInput): PartnerQuote {
   const seats = Math.max(1, Math.round(input.seats || 1));
   const price = PLAN_PRICE[input.plan];
@@ -155,15 +156,15 @@ export function quotePartner(input: PartnerInput): PartnerQuote {
     clientBill,
     tierLabel:
       input.tier === "platinum"
-        ? "Platinum · 100+ seats"
+        ? "Platinum · 30+ client companies"
         : input.tier === "gold"
-          ? "Gold · 25+ seats"
-          : "Reseller · from 1 seat",
+          ? "Gold · 10+ client companies"
+          : "Reseller · from 1 client company",
     nextTier:
       input.tier === "reseller"
-        ? "Reach 25 live seats → Gold, 25%"
+        ? "Reach 10 live client companies → Gold, 25%"
         : input.tier === "gold"
-          ? "Reach 100 live seats → Platinum, 30%"
+          ? "Reach 30 live client companies → Platinum, 30%"
           : null,
   };
 }

@@ -31,9 +31,9 @@ if (SUPABASE_URL && SERVICE_KEY) {
   console.error("revenue: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY missing — routes will 503");
 }
 
-// Locked list prices (server/config/billing-products.ts, Polar): Basic £23 · Pro £46 · Business £97 per seat; Priority Support £790/mo.
-// 21 Oct 2026: these were stale (20/40/85/700) and understated every revenue number on the founder board.
-const PLAN_PRICE: Record<string, number> = { basic: 23, pro: 46, business: 97 };
+// Flat v6 list prices PER MONTH PER COMPANY (Rule 51 — no per-user pricing): Basic £40 · Pro £105 · Business £360 · Business Pro £2,850; Priority Support £790/mo.
+// 26 Oct 2026: per-seat 23/46/97 retired — they under-stated every account and multiplied by seats, which flat packages do not have.
+const PLAN_PRICE: Record<string, number> = { basic: 40, pro: 105, business: 360, business_pro: 2850 };
 const SLA_PRICE = 790;
 
 const publicRouter = Router();
@@ -193,7 +193,7 @@ founderRouter.get("/revenue/overview", async (req, res) => {
     for (const a of accounts) {
       const price = PLAN_PRICE[String(a.plan)] ?? 0;
       subMrr +=
-        Number(a.mrr_gbp) > 0 ? Number(a.mrr_gbp) : price * Math.max(1, Number(a.seats) || 1);
+        Number(a.mrr_gbp) > 0 ? Number(a.mrr_gbp) : price; // flat per company — never multiplied by seats
       if (a.sla_addon) {
         slaMrr += SLA_PRICE;
         slaCount += 1;
@@ -268,11 +268,11 @@ founderRouter.get("/revenue/overview", async (req, res) => {
       partners,
       gap: {
         seats_needed: seatsNeeded,
-        plan: "Pro (£46)",
+        plan: "Pro (£105)",
         note:
           remaining === 0
             ? "Target already covered — next £ goes to growth, not survival."
-            : `Or ${Math.ceil(remaining / PLAN_PRICE.business)} Business seats, or ${Math.ceil(remaining / SLA_PRICE)} Priority Support retainer${remaining > SLA_PRICE ? "s" : ""}. One £1,000 migration covers ${Math.floor(1000 / Math.max(1, target))} month${target <= 1000 ? "s" : ""} of the target while recurring builds. Partner gross tracked: £${partnerGross}.`,
+            : `Or ${Math.ceil(remaining / PLAN_PRICE.business)} Business companies, or ${Math.ceil(remaining / SLA_PRICE)} Priority Support retainer${remaining > SLA_PRICE ? "s" : ""}. One £1,000 migration covers ${Math.floor(1000 / Math.max(1, target))} month${target <= 1000 ? "s" : ""} of the target while recurring builds. Partner gross tracked: £${partnerGross}.`,
       },
     });
   } catch (e) {

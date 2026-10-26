@@ -3,6 +3,7 @@
 //         work_tasks, work_promises, work_notes, mail_events, mail_thread_events
 import { Router } from "express";
 import { admin as supa } from "../lib/supa";
+import { resolvePlan } from "../lib/plan";
 
 export const calendar = Router();
 
@@ -72,6 +73,17 @@ function cost(attendeeCount: number, minutes: number, rates: number[]) {
     minutes: Math.round(minutes),
     hourly_total: hourly || null,
   };
+}
+
+/** Meeting cost (£) = Pro+. Basic ko server cost bhejta hi nahi (UI ka CostMeter sirf aaina hai). Plan na mile to Basic maana jata hai. */
+async function costForPlan(c: { userId: string; email: string }, events: any[]) {
+  let plan: string = "basic";
+  try {
+    plan = await resolvePlan(c.userId, c.email);
+  } catch {
+    /* Basic */
+  }
+  return plan === "basic" ? events.map((e) => ({ ...e, cost: null })) : events;
 }
 
 async function shapeEvents(orgId: string, rows: any[]) {
@@ -149,7 +161,7 @@ calendar.get(
     const base = supa.from("calendar_events").select("*").gte("starts_at", from).lt("starts_at", to).order("starts_at", { ascending: true });
     const { data, error } = await orgFilter(base, c);
     if (error) throw error;
-    res.json({ events: await shapeEvents(c.orgId ?? c.userId, data || []) });
+    res.json({ events: await costForPlan(c, await shapeEvents(c.orgId ?? c.userId, data || [])) });
   }),
 );
 
@@ -159,7 +171,7 @@ calendar.get(
     const base = supa.from("calendar_events").select("*").eq("id", req.params.id);
     const { data: e } = await orgFilter(base, c).maybeSingle();
     if (!e) return res.status(404).json({ error: { code: "not_found", message: "Event not found" } });
-    const [event] = await shapeEvents(c.orgId ?? c.userId, [e]);
+    const [event] = await costForPlan(c, await shapeEvents(c.orgId ?? c.userId, [e]));
     const taskBase = supa.from("work_tasks").select("*").eq("event_id", e.id);
     const { data: tasks } = await orgFilter(taskBase, c);
     res.json({
@@ -238,7 +250,7 @@ calendar.post(
         payload: { event_id: e.id, title },
       });
     }
-    const [event] = await shapeEvents(c.orgId, [e]);
+    const [event] = await costForPlan(c, await shapeEvents(c.orgId, [e]));
     res.json({ event });
   }),
 );

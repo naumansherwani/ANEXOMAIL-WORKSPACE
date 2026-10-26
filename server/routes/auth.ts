@@ -8,6 +8,7 @@ import { forgetAuthToken, hardenSupabaseAuth, isTransientAuthError } from "../li
 import * as identityGuard from "../lib/identity-guard";
 import { fingerprintFrom } from "../lib/identity-guard";
 import { shapeFromSignals, verifyDeviceKeyProof } from "../lib/identity-vault";
+import { cleanCode, consumeChallenge, createChallenge, peekChallenge } from "../lib/mfa-challenge";
 
 hardenSupabaseAuth();
 
@@ -129,6 +130,55 @@ function unavailable(res: any) {
   if (admin && publicAuth) return false;
   res.status(503).json({ error: "account_service_not_configured" });
   return true;
+}
+
+/* ------------------------------------------------------------------ two-step sign-in (TOTP, Supabase GoTrue MFA) */
+async function gotrue(path: string, token: string, method: string, body?: unknown) {
+  const r = await fetch(`${URL}/auth/v1${path}`, {
+    method,
+    headers: { apikey: PUBLIC, authorization: `Bearer ${token}`, "content-type": "application/json" },
+    body: body === undefined ? undefined : JSON.stringify(body),
+  });
+  const json: any = await r.json().catch(() => null);
+  return { ok: r.ok, status: r.status, json };
+}
+
+async function totpFactors(userId: string): Promise<{ verified: string | null; stale: string[] }> {
+  const { data } = await getAdmin().auth.admin.mfa.listFactors({ userId });
+  const all = (data?.factors || []).filter((f: any) => f.factor_type === "totp");
+  return {
+    verified: (all.find((f: any) => f.status === "verified") as any)?.id ?? null,
+    stale: all.filter((f: any) => f.status !== "verified").map((f: any) => f.id),
+  };
+}
+
+/** Password sahi hone ke baad: agar user ne two-step on kiya hai to token NAHI milta, sirf challenge_id. true = jawab bhej diya. */
+async function mfaGate(user: any, session: any, res: any): Promise<boolean> {
+  let factor: string | null = null;
+  try {
+    factor = (await totpFactors(user.id)).verified;
+  } catch {
+    // MFA service ka masla: jisne two-step on kiya hai usay bina code ke andar jaane dena SECURITY hole hoga — band karo.
+    res.status(503).json({ error: "auth_temporarily_unavailable", retry: true });
+    return true;
+  }
+  if (!factor) return false;
+  const id = createChallenge({
+    userId: user.id,
+    factorId: factor,
+    accessToken: session.access_token,
+    refreshToken: session.refresh_token || "",
+  });
+  res.json({ mfa_required: true, challenge_id: id });
+  return true;
+}
+
+async function setMemberMfa(userId: string, on: boolean) {
+  try {
+    await getAdmin().from("org_members").update({ mfa: on }).eq("user_id", userId);
+  } catch {
+    /* column na ho to bhi two-step khud kaam karta hai */
+  }
 }
 
 async function userFrom(req: any, res: any) {
@@ -777,6 +827,7 @@ async function ensureFounderOrg(founderId: string): Promise<void> {
 
     if (!fe && fd?.user && fd?.session) {
       // AWAIT — org must exist before session is returned so orgId is in session
+      if (await mfaGate(fd.user, fd.session, res)) return;
       await ensureFounderOrg(fd.user.id);
       return res.json(await sessionResult(fd.user, fd.session.access_token, req, rtOf(fd.session)));
     }
@@ -786,6 +837,7 @@ async function ensureFounderOrg(founderId: string): Promise<void> {
 
   const { data, error } = await getPublicAuth().auth.signInWithPassword({ email, password });
   if (error || !data.user || !data.session) return authError(res, error, "invalid_credentials");
+  if (await mfaGate(data.user, data.session, res)) return;
   res.json(await sessionResult(data.user, data.session.access_token, req, rtOf(data.session)));
 });
 
@@ -896,6 +948,106 @@ authRouter.post("/magic-link", async (req, res) => {
     options: { emailRedirectTo: redirectTo, shouldCreateUser: false },
   });
   if (error && !/user not found/i.test(error.message)) return authError(res, error);
+  res.json({ ok: true });
+});
+
+// Magic link ka doosra qadam: email ke link ka token_hash -> asli session. (Pehle frontend yeh call karta tha, server par route hi nahi tha.)
+authRouter.post("/magic-link/verify", async (req, res) => {
+  if (unavailable(res)) return;
+  const linkToken = String(req.body?.token || "").trim();
+  if (!linkToken || linkToken.length > 512) return res.status(400).json({ error: "verification_code_required" });
+  let data: any = null;
+  let error: any = null;
+  for (const type of ["magiclink", "email"] as const) {
+    const r = await getPublicAuth().auth.verifyOtp({ token_hash: linkToken, type });
+    if (!r.error && r.data?.user && r.data?.session) {
+      data = r.data;
+      error = null;
+      break;
+    }
+    error = r.error;
+  }
+  if (!data) return authError(res, error, "verification_failed");
+  if (await mfaGate(data.user, data.session, res)) return;
+  res.json(await sessionResult(data.user, data.session.access_token, req, rtOf(data.session)));
+});
+
+authRouter.get("/mfa", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  try {
+    res.json({ enabled: !!(await totpFactors(identity.user.id)).verified });
+  } catch {
+    res.status(503).json({ error: "auth_temporarily_unavailable", retry: true });
+  }
+});
+
+// Two-step ON karne ka pehla qadam: secret + otpauth link. Factor tab tak "unverified" jab tak code confirm na ho.
+authRouter.post("/mfa/enroll", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const f = await totpFactors(identity.user.id);
+  if (f.verified) return res.status(409).json({ error: "Two-step sign-in is already on." });
+  for (const id of f.stale) await getAdmin().auth.admin.mfa.deleteFactor({ id, userId: identity.user.id });
+  const r = await gotrue("/factors", identity.token, "POST", {
+    factor_type: "totp",
+    friendly_name: `ANEXOMAIL ${Date.now()}`,
+    issuer: "ANEXOMAIL",
+  });
+  if (!r.ok || !r.json?.totp?.uri) return res.status(502).json({ error: "Two-step setup is unavailable right now." });
+  res.json({ factor_id: r.json.id, otpauth_url: r.json.totp.uri, secret: r.json.totp.secret, qr_code: r.json.totp.qr_code ?? null });
+});
+
+// Doosra qadam: authenticator app ka 6-ankon ka code — sahi ho to factor "verified" (two-step ON).
+authRouter.post("/mfa/enroll/confirm", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const code = cleanCode(req.body?.code);
+  const factorId = String(req.body?.factor_id || "");
+  if (!code || !/^[0-9a-f-]{36}$/i.test(factorId)) return res.status(400).json({ error: "Enter the 6-digit code." });
+  const ch = await gotrue(`/factors/${factorId}/challenge`, identity.token, "POST");
+  if (!ch.ok) return res.status(400).json({ error: "Start the setup again." });
+  const v = await gotrue(`/factors/${factorId}/verify`, identity.token, "POST", { challenge_id: ch.json?.id, code });
+  if (!v.ok) return res.status(400).json({ error: "That code is not right. Try the next one." });
+  await setMemberMfa(identity.user.id, true);
+  res.json({ ok: true });
+});
+
+// Login ka doosra qadam.
+authRouter.post("/mfa/verify", async (req, res) => {
+  if (unavailable(res)) return;
+  const code = cleanCode(req.body?.code);
+  if (!code) return res.status(400).json({ error: "Enter the 6-digit code." });
+  const id = String(req.body?.challenge_id || "");
+  const pk = peekChallenge(id);
+  if (!pk.ok) {
+    return res.status(401).json({
+      error: pk.reason === "locked" ? "Too many wrong codes. Sign in again." : "This sign-in step expired. Sign in again.",
+    });
+  }
+  const { factorId, accessToken } = pk.pending;
+  const ch = await gotrue(`/factors/${factorId}/challenge`, accessToken, "POST");
+  if (!ch.ok) return res.status(401).json({ error: "This sign-in step expired. Sign in again." });
+  const v = await gotrue(`/factors/${factorId}/verify`, accessToken, "POST", { challenge_id: ch.json?.id, code });
+  if (!v.ok || !v.json?.access_token || !v.json?.user) return res.status(401).json({ error: "That code is not right." });
+  consumeChallenge(id);
+  res.json(await sessionResult(v.json.user, v.json.access_token, req, rtOf(v.json)));
+});
+
+// Two-step OFF karna: abhi ka code chahiye (chori hui session se band nahi ho sakta).
+authRouter.post("/mfa/disable", async (req, res) => {
+  const identity = await userFrom(req, res);
+  if (!identity) return;
+  const code = cleanCode(req.body?.code);
+  if (!code) return res.status(400).json({ error: "Enter the 6-digit code." });
+  const f = await totpFactors(identity.user.id);
+  if (!f.verified) return res.json({ ok: true });
+  const ch = await gotrue(`/factors/${f.verified}/challenge`, identity.token, "POST");
+  const v = ch.ok ? await gotrue(`/factors/${f.verified}/verify`, identity.token, "POST", { challenge_id: ch.json?.id, code }) : ch;
+  if (!v.ok) return res.status(400).json({ error: "That code is not right." });
+  const { error } = await getAdmin().auth.admin.mfa.deleteFactor({ id: f.verified, userId: identity.user.id });
+  if (error) return authError(res, error);
+  await setMemberMfa(identity.user.id, false);
   res.json({ ok: true });
 });
 

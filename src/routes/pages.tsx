@@ -44,7 +44,7 @@ const GROUPS: { title: string; blurb: string; items: Entry[] }[] = [
         path: "/about",
         note: "Why it exists, the four promises, why it is different, who runs it",
       },
-      { label: "Plans", path: "/plans", note: "Basic £23 · Pro £46 · Business £97" },
+      { label: "Plans", path: "/plans", note: "Basic £40 · Pro £105 · Business and Business Pro" },
       { label: "Leo (AI)", path: "/ai", note: "Coming soon page — AI not public yet" },
       {
         label: "AI Studio (AI)",

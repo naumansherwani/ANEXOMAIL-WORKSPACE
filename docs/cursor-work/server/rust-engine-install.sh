@@ -15,6 +15,7 @@
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
 #   evidence -> server/rust/evidence_core.rs + evidence_glue.rs (attach_core.rs saath) (appeal ke saboot: screenshots/PDF/docs — tokio stream upload, clamd, allowlist; appeal 20,000 characters; `appeal.device.open`)  [pehle E72 SQL; attach ke saath]
 #   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs + secret calendar link /dav/feed/<key>.ics; Caddy alag: caddy-caldav.sh)  [pehle E80 + E81 SQL + .env CALDAV_PEPPER]
+#   wtrpc  -> server/rust/wtrpc_core.rs + wtrpc_glue.rs (WebTransport `/wt/rpc`: WASM kernel ka EK transport, har proc wohi dispatcher se; koi proc nahi rakhta)  [koi SQL nahi]
 #   analytics -> server/rust/analytics_core.rs + analytics_glue.rs (Analytics Center: response debt, thread economics, deep work, leaks, promise SLA, forecast, team, founder overview)  [pehle E89 SQL]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
@@ -43,7 +44,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -139,6 +140,14 @@ CFG={
  "mailx":  {"public": False, "label": "mail-pro-actions", "procs": ['"mail.snooze"','"mail.status"','"mail.move"','"mail.labels.update"','"mail.assign"','"mail.templates.save"','"mail.templates.delete"']},
  # analytics (Phase 24 / E89): Analytics Center ka asli backend. Package gate Rust mein (debt har plan, economics+deep work Pro+, baqi Business+). SQL E89 PEHLE.
  "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"']},
+ # wtrpc (Rule 52): `/wt/rpc` — WASM kernel (web-wasm rpc@1) ka ek QUIC session, har call ek bidi stream => wohi dispatch() jo /rpc/<proc> chalata hai.
+ # Koi proc nahi (isliye procs khali, owns() false); wt_session ke andar sirf path dekh kar is module ko de deta hai. Koi SQL nahi.
+ "wtrpc": {"public": False, "label": "wt-rpc", "procs": [],
+           "late_replace": [
+             ('    let Ok(request) = incoming.await else { return };\n',
+              '    let Ok(request) = incoming.await else { return };\n    if wtrpc_glue::wants(request.path()) {\n        return wtrpc_glue::serve(request).await;\n    }\n',
+              'wt_session: /wt/rpc ko wtrpc_glue ko do', 'wtrpc_glue::wants(request.path())')
+           ]},
  # attach (G38): bheji jane wali mail ke attachments (stream upload, org-ke-andar SHA-256 dedup, clamd, quota). SQL E48 PEHLE.
  # Routes: POST /file/attach (upload), GET /file/attach/get?id= (download). Thread read ka `url` (jo server ka disk_path de deta tha) band + `stored` flag.
  "attach": {"public": False, "label": "attach",    "procs": ['"mail.attach.limits"','"mail.attach.remove"'],
@@ -229,6 +238,18 @@ for m in mods:
         e+=len("\n    };\n")
         s=s[:e]+"\n"+c["guard_code"].rstrip("\n")+"\n"+s[e:]
     changed.append(c["label"])
+# late_replace: module (mod + dispatch) judne ke BAAD lagne wale chhote hooks (jinmein module ka naam aata hai). Idempotent.
+for m in mods:
+    c=CFG[m]
+    for ent in c.get("late_replace", []):
+        fnd, rep, why = ent[0], ent[1], ent[2]
+        unless = ent[3] if len(ent) > 3 else (rep or None)
+        if unless and unless in s:
+            continue
+        if fnd in s:
+            s=s.replace(fnd, rep, 1); changed.append(c["label"]+" ("+why+")")
+        else:
+            print("PATCH FAIL: %s — '%s' anchor live main.rs mein nahi mila"%(c["label"], why)); sys.exit(4)
 open(p,"w").write(s)
 print("main.rs: judi -> "+(", ".join(changed) if changed else "(kuch nahi badla)"))
 PY
@@ -529,6 +550,9 @@ for m in $MODS; do
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> calfile: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> calfile: jawab upar dekhein";;
       esac;;
+    wtrpc)
+      echo "   -> wtrpc: WebTransport (udp/3443) par chalta hai — HTTP probe nahi. Asli test: browser kernel (Settings > About ya console: anexoKernel.rpcUp)."
+      ;;
     analytics)
       r="$(probe analytics.responseDebt '{"input":{}}')"
       echo "   analytics.responseDebt (nakli token): $r"

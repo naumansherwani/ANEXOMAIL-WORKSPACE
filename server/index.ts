@@ -47,6 +47,7 @@ import { authRouter as polarAuthRouter, publicRouter as polarPublicRouter } from
 import { moveinRouter, moveinPublicRouter, founderMoveinRouter } from "./routes/movein";
 import billingSupportRouter from "./routes/billing-support";
 import { glitchPublicRouter, founderGlitchRouter } from "./routes/glitch";
+import { analyticsRouter, founderAnalyticsRouter } from "./routes/analytics";
 import { storageRouter, internalStorageRouter, founderStorageRouter } from "./routes/storage";
 import { billingSyncAuthRouter, billingSyncPublicRouter } from "./routes/billing-sync";
 import { startMailWorker } from "./mail-worker";
@@ -159,6 +160,10 @@ app.use("/api/founder", founderIntegrationsRouter);
 // Phase 23 Settings Center (/api/settings/*, /api/founder/settings/*)
 app.use("/api/settings", settingsRouter);
 app.use("/api/founder", founderSettingsRouter);
+
+// Phase 24 Analytics Center (/api/analytics/*, /api/founder/analytics/overview) — Rust PRIMARY, yeh Bun fallback
+app.use("/api", analyticsRouter);
+app.use("/api/founder", founderAnalyticsRouter);
 
 // Phase 25 Admin Center (/api/admin/*, /api/founder/admin/*)
 app.use("/api/admin", adminRouter);

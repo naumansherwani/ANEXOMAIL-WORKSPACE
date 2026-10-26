@@ -902,7 +902,7 @@ founderRouter.get("/revenue/pipeline", async (req, res) => {
       const weight = STAGE_WEIGHT[String(l.stage || "new")] ?? 0.1;
       const seats = Number(linked?.plan_seats ?? l.seats ?? 1);
       const expected =
-        linked?.expected_mrr_gbp != null ? Number(linked.expected_mrr_gbp) : seats * 46; // Pro list price per seat (locked; was a stale 40)
+        linked?.expected_mrr_gbp != null ? Number(linked.expected_mrr_gbp) : 105; // Pro flat monthly price per company (v6, Rule 51 — not multiplied by seats)
       return {
         id: l.id,
         reference: l.reference,
