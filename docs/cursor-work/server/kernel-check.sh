@@ -34,10 +34,10 @@ VER="$(echo "$PIN" | sed -n 's/.*version: "\([^"]*\)".*/\1/p' | head -1)"
 SHA="$(echo "$PIN" | sed -n 's/.*sha256: "\([^"]*\)".*/\1/p' | head -1)"
 if [ -n "$VER" ] && [ -n "$SHA" ]; then
   GOT=""; WST=""
-  for _i in 1 2 3; do
+  for _i in 1 2 3 4 5 6 7 8; do
     WST="$(curl -s --max-time 10 -o /tmp/.kc.wasm -w 'http=%{http_code} type=%{content_type} size=%{size_download}' "$SITE/kernel/anexo-kernel-$VER.wasm")"
     GOT="$(sha256sum /tmp/.kc.wasm 2>/dev/null | cut -d' ' -f1)"
-    [ "$GOT" = "$SHA" ] && break; sleep 3
+    [ "$GOT" = "$SHA" ] && break; sleep 5
   done
   rm -f /tmp/.kc.wasm
   [ "$GOT" = "$SHA" ] || echo "     (wasm jawab: $WST)"

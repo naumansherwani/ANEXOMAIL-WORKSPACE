@@ -1204,3 +1204,11 @@ sleep 10
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh) 2>&1 | grep -E "FAIL|ALL PASS"
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh) 2>&1 | grep -E "FAIL|KERNEL|wasm jawab"
 ```
+
+## 26 Oct 2026 20:50 PKT — kernel-check dobara (Web restart ke baad 40 s retry). Pull -> 40 s -> probes
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -8
+sleep 20
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh) 2>&1 | grep -E "FAIL|KERNEL|wasm jawab"
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh) 2>&1 | grep -E "FAIL|ALL PASS"
+```

@@ -1257,3 +1257,9 @@ MAIL TRANSPORT sawal (founder): "Postfix/Dovecot/OpenDKIM — haan ke baghair na
 kernel-check: 20:28 par server par ek baar "wasm hash pin se nahi milta got=39aaf076d37b" aaya; Claude ne live site se 3 baar utaara: http 200, application/wasm, 138216 bytes, sha 7b1ddb7c7e31 == pin. Wajah: Rust restart ke foran baad transient jawab. Fix: kernel-check.sh ab 3 baar retry karta hai aur fail par http/type/size print karta hai.
 Open sawal founder se: asli npm tRPC library chahiye ya Rust tRPC-style contract kaafi? (default: Rust contract).
 DEPLOY BAAQI: Rust reinstall (livex timeline sort d6d9240) agar abhi nahi kiya.
+
+## 26 Oct 2026 20:50 PKT — founder pull output (127f041): ALL PASS (basic); kernel-check wasm FAIL = Web restart ke baad 500; Rust livex reinstall DONE
+Founder output: pull build OK, web /health 200, pm2 anexomail-web uptime 8s (abhi restart). `server==repo src differ=1` = SIRF `src/routeTree.gen.ts` (build ka generated file; benign, ignore). basic-gate-probe ALL PASS (basic). kernel-check: "wasm jawab: http=500 type=application/json size=57" got=39aaf076d37b => 39aaf076d37b us 57-byte 500 JSON ka hash hai; Web restart ke 10-20 s baad bhi app /kernel/*.wasm par 500 deta hai (warm-up). Live (Claude, baad mein): http 200 application/wasm 138216 sha == pin 7b1ddb7c7e31. Fix: kernel-check.sh ab 8 try x 5 s (40 s) tak retry karta hai. LESSON: Web restart ke baad kernel-check ko ~40 s do; "got=39aaf076d37b" = 500 JSON, wasm kharab nahi.
+Rust livex reinstall founder ne chala diya (20:3x): livex pakda, pm2 anexomail-rust online, /rpc/health 200 => timeline sort fix d6d9240 LIVE (Chrome Bun-vs-Rust timeline dobara dekhna baaqi).
+AGLA: kernel-check ALL PASS ka intezaar (founder dobara chalaye, 40 s retry ke baad), phir trial.state Rust port (Rule 56), phir auth.session.
+OPEN: asli npm tRPC chahiye? (default Rust contract). Mail transport (Postfix/Dovecot/OpenDKIM) badal nahi raha.

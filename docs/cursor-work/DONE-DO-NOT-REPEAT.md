@@ -628,3 +628,5 @@ Web pull (c82eb17 audit) deployed. Baaqi fetch ka sab se bada hissa: GET /api/au
 AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). Guard test [1b] jodi. Honest note: tRPC = tRPC-STYLE typed contract (rpc-contract.ts, {result:{data}}), asli npm @trpc library nahi (JS hai, WASM mein nahi chalti) — founder se poochha: asli library chahiye to bata dein.
 
 - 26 Oct 20:40 kernel-check.sh: wasm hash check 3x retry + http/type/size print (transient 39aaf076d37b = restart ke baad ka jawab, live sha pin se barabar). STEEL ORDER TECH-MAP/CONTEXT mein likha; mail transport (Postfix/Dovecot/OpenDKIM) abhi NAHI badalta.
+
+- 26 Oct 20:50 kernel-check wasm FAIL got=39aaf076d37b = Web restart ke baad 500 JSON (57 byte), wasm kharab nahi; retry 8x5s. routeTree.gen.ts differ=1 benign. Rust livex reinstall founder ne kiya (timeline fix live).
