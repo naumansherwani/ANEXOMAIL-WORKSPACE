@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 87adf8f8979b2a8d
+docs/cursor-work/founder/founder-commands.md 09b8fb9bdad115ff
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh 76e3f41413a6add5
+docs/cursor-work/server/rust-engine-install.sh 6ba146ffb77182bd
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 4033e46496c00bbf
+docs/cursor-work/DONE-DO-NOT-REPEAT.md cf17695a100742e3
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 4d78d5cb118dba08
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md e166a23be5a1be5d
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 0d01efa7b88118a6
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 00e72737febe3ad6
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -661,7 +661,7 @@ docs/cursor-work/sql/E84_room_series_note.sql a20ff07e6d1bb48c
 docs/cursor-work/sql/CHECK_E84.sql 17304773909fb074
 src/lib/handoff.ts 66fdf574d9c66118
 docs/cursor-work/server/brain_pro4_hunks.json e3b6862d0d567ce3
-docs/cursor-work/server/basic-gate-probe.sh d0c3f130ebe6267e
+docs/cursor-work/server/basic-gate-probe.sh 90fb5e44778307f6
 docs/cursor-work/server/count-endpoints.py c8d7ca79f763fdf4
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md f6c02fd9b74fda1f
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md d57047e7e2ce83f1
+docs/packages/GREEN-LEDGER.md f92928cd556aa1bb
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -811,3 +811,7 @@ docs/claude/POLAR-COPY-V6-BUSINESS.md a97c2be4fce58a40
 server/config/billing-products.ts 7aa742c003c71c1c
 server/config/billing-products.test.ts 5b8bbfd0d6f4852b
 docs/claude/POLAR-COPY-V6-BUSINESS-PRO.md 0cd78e3da905bfea
+server/rust/billx_core.rs 48e84e3a21328670
+server/rust/billx_glue.rs 2dc939fbabde5ec6
+server/routes/billing-sync.ts 1ab7c2ba4dd3c5be
+src/routes/app.billing.state.tsx 7138c5b5a99b422a

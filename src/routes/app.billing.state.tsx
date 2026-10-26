@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { AlertTriangle, CheckCircle2, Database, RefreshCw } from "lucide-react";
 
-import { api } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 import { relativeTime } from "@/lib/mail";
 
 export const Route = createFileRoute("/app/billing/state")({
@@ -77,12 +77,12 @@ const STATE_TONE: Record<string, string> = {
 function BillingStatePage() {
   const state = useQuery({
     queryKey: ["billing-state"],
-    queryFn: () => api<StatePayload>("/api/billing/state"),
+    queryFn: () => rpcOrRest<StatePayload>("billing.state", { path: "/api/billing/state" }, {}),
     refetchInterval: 15000,
   });
   const health = useQuery({
     queryKey: ["billing-state-health"],
-    queryFn: () => api<HealthPayload>("/api/billing/state-health"),
+    queryFn: () => rpcOrRest<HealthPayload>("billing.stateHealth", { path: "/api/billing/state-health" }, {}),
     refetchInterval: 30000,
     retry: false,
   });

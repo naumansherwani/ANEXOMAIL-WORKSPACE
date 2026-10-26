@@ -94,6 +94,10 @@ chk "RUST support.drafts (login, own org 200)" "$(rpc support.drafts '{}')" 200
 chk "RUST support.draftDiscard bad id (400)" "$(rpc support.draftDiscard '{"id":"x;y"}')" 400
 chk "RUST workspace.setActive missing org (400)" "$(rpc workspace.setActive '{}')" 400
 chk "RUST workspace.setActive not mine (409)" "$(rpc workspace.setActive '{"organisation_id":"00000000-0000-4000-8000-000000000009"}')" 409
+chk "RUST billing.state 200" "$(rpc billing.state '{}')" 200
+chk "RUST billing.stateHealth non-founder (403)" "$(rpc billing.stateHealth '{}')" 403
+chk "RUST billing.claimGuest missing token (400)" "$(rpc billing.claimGuest '{}')" 400
+chk "RUST billing.claimGuest bad token (400)" "$(rpc billing.claimGuest '{"guest_token":"bad token!!"}')" 400
 SLA="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/support.sla")"; [ "$SLA" = 200 ] && echo "  PASS support.sla PUBLIC (bina login 200)" || { echo "  FAIL support.sla PUBLIC -> $SLA"; FAILS=$((FAILS+1)); }
 chk "RUST workspace.organisations short name (400, kuch banta nahi)" "$(rpc workspace.organisations '{"name":"x","domain":"acme.com"}')" 400
 chk "RUST workspace.organisations anexomail domain (400)" "$(rpc workspace.organisations '{"name":"Probe Co","domain":"anexomail.com"}')" 400

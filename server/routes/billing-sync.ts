@@ -591,6 +591,13 @@ authRouter.get("/state-health", async (req, res) => {
   if (!db) return res.status(503).json({ error: "supabase_not_configured" });
   const userId = await requireUser(req, res);
   if (!userId) return;
+  // LOOPHOLE FIX (27 Oct 2026, Batch C1): pehle har login wala poori company ke gaps/alerts dekh sakta tha. Ab sirf founder (Rust billing.stateHealth jaisa).
+  const { data: founderRow } = await db
+    .from("founder_accounts")
+    .select("user_id")
+    .eq("user_id", userId)
+    .maybeSingle();
+  if (!founderRow) return res.status(403).json({ error: "founder_only" });
 
   const [{ data: health }, { data: gaps }, { data: alerts }] = await Promise.all([
     db.from("billing_state_health").select("*").maybeSingle(),
