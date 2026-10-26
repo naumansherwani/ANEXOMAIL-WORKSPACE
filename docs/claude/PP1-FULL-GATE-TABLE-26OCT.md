@@ -38,7 +38,7 @@ Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Ba
 | 32 | DNS/TLS hashed proof export | Bu+ | no |
 | 33 | SAFETY centre: review queue, sealed evidence, history | BP+ | PP+, PPr |
 | 34 | STORAGE meter+quota states, BILLING (Polar), trial (2 days), data export ZIP, account/profile, settings (appearance, notifications, privacy, workspace, health, history), locales, devices+offline+PWA | all | all |
-| 35 | Storage size (shared pool) / users cap | 25GB,5 / 300GB,20 / 1.5TB,60 / 10TB,570 / 15TB,unlimited | 5GB / 10GB / 1TB, 1 user |
+| 35 | Storage size (shared pool) / users cap | 15GB (3 mailboxes),5 / 300GB,20 / 1.5TB,60 / 10TB,570 / 15TB,unlimited | 5GB / 10GB / 1TB, 1 user |
 | 36 | Bandwidth overage (hidden, bill-only) | fair-use / fair-use / 10TB@£12 / 30TB@£11 / 50TB@£10 | no |
 | 37 | Priority Support (£790 add-on) | add-on / add-on / add-on / add-on / INCLUDED | no |
 | 38 | CRDT collaborative docs (when built) | Bu+ | NO (CEO: Personal mein ek hi insaan, saath type karne wala koi nahi) |
@@ -66,5 +66,5 @@ Video: DB chat_video_allowed (founder+BP) vs UI Pro+ vs chat Bu+ -> sab Bu+. Ana
 - **Business ke Pro mein ANEXOChat DOOR DOOR TAK NAHI. Pro mein video bhi NAHI** (video ANEXOChat ke saath aati hai). ANEXOChat + ANEXOVideoCall (720p) **Business se shuru**; Business Pro 2K; Enterprise baad mein. Upar ki 'Pro 720p standalone video' line VOID.
 - **Personal HOLD**: Personal ke bohot masle; alag UI; Personal Gmail ke upar outbox pe bana hai; uske codes + 3 packages ki phases shuru se alag meeting mein, latest technology. Jab tak founder na kahe Personal par koi kaam/gate NAHI.
 - **Enterprise abhi ZERO**: kuch likha nahi; codes duniya ki advanced technology par; bug nahi chalega; baad mein alag plan.
-- **Business Basic APPROVED** (founder 04:56): 5 users, 25GB shared, 25MB attachment, 2 trusted devices, 1 booking link; company domain + undo send Basic mein rahein. Price per month (per-user nahi): £40/mo, yearly £440 (x11, 1 month free) -- founder approve baqi.
+- **Business Basic APPROVED** (founder 04:56): 5 users, 3 mailboxes, 15GB shared (founder 05:45 correction, 25GB galat tha), 25MB attachment, 2 trusted devices, 1 booking link; company domain + undo send Basic mein rahein. Price per month (per-user nahi): £40/mo, yearly £440 (x11, 1 month free) -- founder approve baqi.
 - Landing Basic features jo merge honge: 1 company domain, thread ownership, Cmd+K search, free aliases (no extra seat), human support 72h response.

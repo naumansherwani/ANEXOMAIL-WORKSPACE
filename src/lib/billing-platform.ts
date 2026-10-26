@@ -27,6 +27,10 @@ export type Subscription = {
   renews_at: string | null;
   cancel_at: string | null;
   storage_per_mailbox_gb: number | null;
+  /** E87: v6 flat plan ka user cap (Basic = 5); null = purane per-seat plans. */
+  user_cap?: number | null;
+  /** E87: shared pool GB (Basic = 15); null = per-mailbox model. */
+  storage_pooled_gb?: number | null;
 };
 
 export type Invoice = {
@@ -217,7 +221,7 @@ export function useMarkFounderReplySent() {
 }
 
 export const PLAN_LABEL: Record<WorkspacePlanId, string> = {
-  basic: "Basic — £23",
+  basic: "Basic — £40",
   pro: "Pro — £46",
   business: "Business — £97",
   business_pro: "Business Pro — £2,850",

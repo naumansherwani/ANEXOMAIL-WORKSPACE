@@ -1104,3 +1104,6 @@ Founder server pe Basic monthly/yearly IDs update karega. Repo-tested script pol
 
 ### 26 Oct 05:40 — Basic Polar IDs verify
 Server .env check (founder ne grep chalaya): Basic Monthly 5e1c7b50-... aur Yearly d3642ce7-... maujood; founder ne wahi Polar products edit kiye (price/description), isliye env mein koi tabdeeli nahi. SQL Basic price (23/253) update baqi, phir landing plans.ts.
+
+### 26 Oct 05:55 — Basic code v6 likha (founder: 'pehle basic update, landing sab jaga, billing, features real, pehle chrome dekho')
+Chrome (founder ki basic.test billing) dekha: £23.00 / 5 GB mailbox / 1 of 1 seat. Founder correction: Basic = 15GB SHARED + 3 mailboxes (25GB/5 mailboxes galat). Code: plans.ts, plans.tsx, index.tsx, billing-platform.ts, app.billing.tsx; SQL E87_basic_v6.sql (+CHECK_E87) local Postgres par test pass. Polar copy 15GB fix baqi (founder paste dobara). Deploy commands per technology chat mein. Pro/Business/BP/Enterprise/Personal ko haath nahi lagaya. Gates (calendar booking-link 1, response-debt only, 2 devices, 5-user cap server) mein: 5-user cap SQL mein; baqi gates agla step.

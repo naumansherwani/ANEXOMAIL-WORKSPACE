@@ -537,11 +537,16 @@ function WorkspaceBilling() {
                         · {s.storage_per_mailbox_gb} GB {kind === "personal" ? t("of mail storage") : "/ mailbox"}
                       </span>
                     ) : null}
+                    {s.storage_pooled_gb ? (
+                      <span className="text-muted-foreground">
+                        · {s.storage_pooled_gb} GB {t("shared storage")}
+                      </span>
+                    ) : null}
                     {/* A Personal account is one person — seats are a company idea. */}
                     {kind !== "personal" && s.seats > 0 && (
                       <span className="text-muted-foreground">
                         · {s.seats_used} / {s.seats}{" "}
-                        {s.seats === 1 ? t("seat") : t("seats")}
+                        {s.user_cap ? t("users") : s.seats === 1 ? t("seat") : t("seats")}
                       </span>
                     )}
                   </div>

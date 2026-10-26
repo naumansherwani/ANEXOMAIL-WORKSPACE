@@ -417,3 +417,5 @@ UPDATE 26 Oct 2026 05:07 PKT: Enterprise price = £18,000/month (Rule 51/53 mein
 
 ## Rule 55 (STRICT, founder 26 Oct 2026 05:20 PKT) — har package: PER MONTH + USER CAP zaroor likha ho
 Har jagah jahan koi package dikhta hai (plans.ts card, plans.tsx, landing, billing/profile, Polar product description, SQL labels, emails) price "per month" (flat, per-user NAHI) likha ho AUR user cap saaf likha ho: Basic up to 5 users, Pro up to 20, Business up to 60, Business Pro up to 570, Enterprise unlimited. Cap ke baghair koi package card/page commit nahi.
+
+UPDATE 26 Oct 2026 05:45 PKT: Business Basic storage = 15GB SHARED + 3 mailboxes (25GB / 5 mailboxes galat the). Basic = £40/month, £440/year, up to 5 users, 25MB attachment. SQL: E87_basic_v6.sql.

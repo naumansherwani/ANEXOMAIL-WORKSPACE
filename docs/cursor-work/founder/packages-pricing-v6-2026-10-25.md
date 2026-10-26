@@ -18,7 +18,7 @@ Status: **READY (docs)** — code (`src/lib/plans.ts`, `server/config/billing-pr
 
 | Plan Name | Monthly | User/Mailbox Cap | Strict Shared Storage (Pool) | Effective Per-User | File Transfer Limit (instant email attachment) |
 |---|---|---|---|---|---|
-| Basic Flat | £40 | Up to 5 users | 25 GB pooled (5 GB per user) | £8.00 / user | 25 MB |
+| Basic Flat | £40 | Up to 5 users | 15 GB shared, 3 mailboxes (founder 26 Oct 05:45: 25GB galat tha) | £8.00 / user | 25 MB |
 | Pro Package | £105 | Up to 20 users | 300 GB (15 GB per user × 20) | £5.25 / user | 35 MB |
 | Business Flat | £360 | Up to 60 users | 1,500 GB = 1.5 TB (25 GB per user × 60 — backend pool) | £6.00 / user | 45 MB |
 | Business Pro | £2,850 | Up to 570 users | 10 TB | £5.00 / user | **60 MB** |
@@ -30,7 +30,7 @@ Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 G
 
 ### Basic Flat — £40 / month
 - User/Mailbox Cap: **up to 5 users max**
-- Logical Storage: **25 GB pooled** (5 GB per user × 5)
+- Logical Storage: **15 GB shared, 3 mailboxes** (founder correction 26 Oct 05:45 -- pehle 25 GB likha tha)
 - File Transfer Limit: **25 MB** instant email attachment
 - Effective per-user: £8.00
 

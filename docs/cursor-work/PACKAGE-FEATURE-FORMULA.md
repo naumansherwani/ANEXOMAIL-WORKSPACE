@@ -4,7 +4,7 @@
 
 # Asli sach ab: docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md
 
-# | Basic Flat £40 (5 users, 25GB, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Enterprise £18,000 (UNLIMITED, 15TB, 100MB) |
+# | Basic Flat £40 (5 users, 3 mailboxes, 15GB shared, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Enterprise £18,000 (UNLIMITED, 15TB, 100MB) |
 
 # Neeche wali v5 ladder/purani table HISTORY hai — pricing ke faislay mein v6 jeetta hai. Naya dimension RULE 4A: file transfer limit 25/35/45/100/100 MB.
 
@@ -16,7 +16,7 @@
 
 # ═══ UPDATE 26 Oct 2026 03:42 PKT — FOUNDER GATE DECISIONS (neeche ke purane 7-column tables HISTORY; yeh jeetta hai) ═══
 # ANEXOChat: Business ladder -> Business 2GB / Business Pro 5GB / Enterprise 7GB (Basic, Pro = NAHI). Personal ladder -> PRO+ 2GB / Premium 4GB (Personal Basic = NAHI).
-# Email attachment: 25/35/45/60/100 MB. Storage (shared pool): 25GB/300GB/1.5TB/10TB/15TB. CRDT docs: Business+. Enterprise = Business Pro ke saare features + upar.
+# Email attachment: 25/35/45/60/100 MB. Storage (shared pool): Basic 15GB (3 mailboxes) / 300GB/1.5TB/10TB/15TB. CRDT docs: Business+. Enterprise = Business Pro ke saare features + upar.
 # Bandwidth overage (hidden, bill-only): Business 10TB @ £12/TB, Business Pro 30TB @ £11/TB, Enterprise 50TB @ £10/TB (CEO decision, founder veto).
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
@@ -41,7 +41,7 @@
 # | Safety centre (review queue, sealed evidence, appeals) | - | - | - | Y | Y | - | Y | Y |
 # | Priority Support | add-on £790 | add-on | add-on | add-on | INCLUDED | - | - | - |
 # | Email attachment | 25MB | 35MB | 45MB | 60MB | 100MB | (founder) | (founder) | (founder) |
-# | Storage (shared pool) | 25GB | 300GB | 1.5TB | 10TB | 15TB | 5GB | 10GB | 1TB pooled |
+# | Storage (shared pool) | 15GB (3 mailboxes) | 300GB | 1.5TB | 10TB | 15TB | 5GB | 10GB | 1TB pooled |
 # | Users cap | 5 | 20 | 60 | 570 | unlimited | 1 | 1 | 1 |
 # | Bandwidth overage (hidden, bill-only) | fair-use | fair-use | 10TB@£12 | 30TB@£11 | 50TB@£10 | - | - | - |
 # | Video group size | - | 4? | 8 | 40 | 60 | - | 8 | 40 |

@@ -76,7 +76,7 @@ Founder: jab user badi file (50MB/500MB/1GB) attach kare, backend Hetzner storag
 ### Plan table — FINAL (per-month flat, per-user KABHI nahi, world isse ulta karta hai)
 | Plan | Monthly | User/Mailbox cap | Shared storage | 
 |---|---|---|---|
-| Basic | £40 | up to 5 | 25 GB |
+| Basic | £40 | up to 5 | 15 GB shared, 3 mailboxes (founder 05:45 correction) |
 | Pro | £105 | up to 20 | 300 GB |
 | Business | £360 | up to 60 | 1.5 TB |
 | Business Pro | £2,850 | up to 570 | 10 TB |
