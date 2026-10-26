@@ -1347,3 +1347,6 @@ LIVE test (Chrome, Pro, crmd deployed): lead capture (kernel, koi /api/crm REST 
 
 ## 27 Oct 2026 00:25 PKT — TECHNOLOGY MAP
 TECHNOLOGY MAP likha: docs/claude/TECHNOLOGY-MAP-27OCT.md (founder sawal 00:19: kaun si technology, async/tokio/webtransport/trpc/quinn/QUIC kab kahan). Jawab: async Tokio + tRPC-style /rpc + WebTransport/QUIC (wtransport=quinn) + WASM kernel LIVE hain; baaqi = poori website ko kernel par laana (fetch 100 -> 0), 23 polls -> events (step L), ONE QUIC session K3 (Business phase), Enterprise Bun-free. Bun mein naya code NAHI (Rule 56). Asli npm tRPC library nahi (default Rust-native contract).
+
+## 27 Oct 2026 00:30 PKT — Work fix + crm.memory DEPLOYED; founder rule Basic endpoints = Basic+Pro
+Work-fix + crm.memory DEPLOYED (0bde5b0): Rust restart 180, Web pull OK, basic ALL PASS, pro ALL PASS (crm.memory 400/400/200), KERNEL ALL PASS (founder 00:27). FOUNDER RULE (27 Oct 00:27): Basic ke saare features/endpoints latest technology (Rust+kernel) par banenge aur Basic AUR Pro dono ko milenge (starts_at=basic => upar ke sab packages ko bhi; ek hi code dobara nahi likhna). Live test: Chrome Work button + memory, loophole mile to usi waqt fix.
