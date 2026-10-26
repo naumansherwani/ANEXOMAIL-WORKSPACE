@@ -1107,3 +1107,10 @@ Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexo
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
 3. Brain (Bun fallback gate bhi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`
+
+## 26 Oct 10:45 — Pro green batch 1 + KERNEL request-tag (E91). Tarteeb SQL -> Rust -> Web (Rule 46)
+0. SQL (E91 + CHECK_E91 auto, ok=t aani chahiye): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+1. Rust (upar wali Rust command hi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
+3. Saboot (read-only): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh)`
+

@@ -15,7 +15,10 @@ use axum::body::{to_bytes, Bytes};
 use axum::extract::Path;
 use axum::http::{HeaderMap, HeaderValue};
 use axum::response::IntoResponse;
+use hmac::{Hmac, Mac};
+use sha2::{Digest, Sha256};
 use std::collections::HashMap;
+use std::sync::atomic::{AtomicU64, Ordering};
 use std::sync::{Arc, Mutex, OnceLock};
 use std::time::{Duration, Instant};
 use tokio::sync::Semaphore;
@@ -69,8 +72,99 @@ impl Drop for IpGuard {
     }
 }
 
+/* ------------------------------------------------------------------ E90 request tag (HMAC-SHA256)
+   Browser kernel (hmac@1) har request par tag lagata hai: HMAC(session_key, "<proc>.<ts>.<sha256hex(input)>").
+   Rust session key SQL se EK baar (kernel_session_key, E91) leta hai, memory mein cache karta hai, phir har tag LOCALLY verify
+   (Tokio task, DB roundtrip nahi). ANEXO_TAG_MODE=observe (default: sirf ginti) | enforce (bina sahi tag ke 401). */
+static KEYS: OnceLock<Mutex<HashMap<String, (Vec<u8>, i64)>>> = OnceLock::new();
+static N_VALID: AtomicU64 = AtomicU64::new(0);
+static N_MISSING: AtomicU64 = AtomicU64::new(0);
+static N_INVALID: AtomicU64 = AtomicU64::new(0);
+
+fn now_secs() -> i64 {
+    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0)
+}
+
+fn tag_mode() -> c::TagMode {
+    c::TagMode::parse(&crate::env_var("ANEXO_TAG_MODE"))
+}
+
+/// Origin header ("https://anexomail.com") ya authority se host (port hata kar, lowercase). Kuch na mile => "".
+fn host_of(origin: Option<&str>, authority: &str) -> String {
+    let raw = origin.filter(|o| !o.is_empty()).unwrap_or(authority);
+    let no_scheme = raw.split("://").last().unwrap_or(raw);
+    no_scheme.split('/').next().unwrap_or("").split(':').next().unwrap_or("").trim().to_lowercase()
+}
+
+fn unhex(h: &str) -> Option<Vec<u8>> {
+    if h.len() % 2 != 0 {
+        return None;
+    }
+    (0..h.len()).step_by(2).map(|i| u8::from_str_radix(&h[i..i + 2], 16).ok()).collect()
+}
+
+async fn session_key(ticket: &str, host: &str) -> Option<Vec<u8>> {
+    let now = now_secs();
+    let ck = format!("{host}|{ticket}");
+    if let Some(m) = KEYS.get() {
+        if let Ok(g) = m.lock() {
+            if let Some((k, exp)) = g.get(&ck) {
+                if *exp > now {
+                    return Some(k.clone());
+                }
+            }
+        }
+    }
+    let v = crate::sb_rpc("kernel_session_key", serde_json::json!({ "p_ticket": ticket, "p_host": host })).await.ok()?;
+    if v.get("ok").and_then(|x| x.as_bool()) != Some(true) {
+        return None;
+    }
+    let key = v.get("session_key")?.as_str()?.as_bytes().to_vec(); // SQL: key = hex text ke UTF-8 bytes
+    let exp = v.get("expires_epoch").and_then(|x| x.as_i64()).unwrap_or(now + 60);
+    let m = KEYS.get_or_init(|| Mutex::new(HashMap::new()));
+    if let Ok(mut g) = m.lock() {
+        if g.len() > 20_000 {
+            g.retain(|_, (_, e)| *e > now);
+        }
+        g.insert(ck, (key.clone(), exp));
+    }
+    Some(key)
+}
+
+async fn tag_state(req: &c::Request<'_>, host: &str) -> c::TagState {
+    let (Some(ticket), Some(ts), Some(tag)) = (req.ticket.as_deref(), req.ts.as_deref(), req.tag.as_deref()) else {
+        return c::TagState::Missing;
+    };
+    if host.is_empty() || !c::tag_shape_ok(tag) || !c::ts_fresh(ts, now_secs()) {
+        return c::TagState::Invalid;
+    }
+    let Some(key) = session_key(ticket, host).await else { return c::TagState::Invalid };
+    let mut sha = Sha256::new();
+    sha.update(req.input_raw.as_bytes());
+    let hash: String = sha.finalize().iter().map(|b| format!("{b:02x}")).collect();
+    let msg = c::tag_message(&req.proc_name, ts, &hash);
+    let (Ok(mut mac), Some(want)) = (Hmac::<Sha256>::new_from_slice(&key), unhex(tag)) else { return c::TagState::Invalid };
+    mac.update(msg.as_bytes());
+    if mac.verify_slice(&want).is_ok() { c::TagState::Valid } else { c::TagState::Invalid } // verify_slice = constant time
+}
+
+fn count(state: c::TagState) {
+    let n = match state {
+        c::TagState::Valid => N_VALID.fetch_add(1, Ordering::Relaxed) + 1,
+        c::TagState::Missing => N_MISSING.fetch_add(1, Ordering::Relaxed) + 1,
+        c::TagState::Invalid => N_INVALID.fetch_add(1, Ordering::Relaxed) + 1,
+    };
+    if n % 25 == 1 {
+        tracing::info!(
+            "kernel request-tag mode={:?} valid={} missing={} invalid={}",
+            tag_mode(), N_VALID.load(Ordering::Relaxed), N_MISSING.load(Ordering::Relaxed), N_INVALID.load(Ordering::Relaxed)
+        );
+    }
+}
+
 pub async fn serve(request: wtransport::endpoint::SessionRequest) {
     let ip = request.remote_address().ip().to_string();
+    let host = host_of(request.origin(), request.authority());
     let Some(_ip_guard) = IpGuard::take(&ip) else {
         request.too_many_requests().await;
         return;
@@ -91,8 +185,9 @@ pub async fn serve(request: wtransport::endpoint::SessionRequest) {
         };
         let (Ok(p1), Ok(p2)) = (per_session.clone().acquire_owned().await, global.clone().acquire_owned().await) else { break };
         let ip = ip.clone();
+        let host = host.clone();
         tokio::spawn(async move {
-            handle_stream(send, recv, &ip).await;
+            handle_stream(send, recv, &ip, &host).await;
             drop((p1, p2));
         });
     }
@@ -133,12 +228,24 @@ fn status_of(code: &str) -> u16 {
     }
 }
 
-async fn handle_stream(mut send: wtransport::SendStream, mut recv: wtransport::RecvStream, ip: &str) {
+async fn handle_stream(mut send: wtransport::SendStream, mut recv: wtransport::RecvStream, ip: &str, host: &str) {
     let frame: String = match read_request(&mut recv).await {
         Err(code) => c::error_frame(status_of(code), code),
         Ok(bytes) => match c::parse_request(&bytes) {
             Err(code) => c::error_frame(status_of(code), code),
             Ok(req) => {
+                let state = tag_state(&req, host).await;
+                count(state);
+                if c::should_block(tag_mode(), state, &req.proc_name) {
+                    let frame = c::error_frame(401, "bad_request_tag");
+                    let _ = tokio::time::timeout(WRITE_TIMEOUT, async {
+                        if send.write_all(frame.as_bytes()).await.is_ok() {
+                            let _ = send.finish().await;
+                        }
+                    })
+                    .await;
+                    return;
+                }
                 let mut headers = HeaderMap::new();
                 match HeaderValue::from_str(&format!("Bearer {}", req.token)) {
                     Ok(v) => {

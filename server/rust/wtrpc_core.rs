@@ -30,6 +30,54 @@ pub struct Request<'a> {
     pub proc_name: String,
     /// `input` ka kaccha JSON text (jaisa aaya waisa; dispatcher khud parse karta hai). Na ho to "null".
     pub input_raw: &'a str,
+    /// E90 request tag (optional): ticket + ts (epoch secs) + tag (hex HMAC-SHA256). Na ho to None.
+    pub ticket: Option<String>,
+    pub ts: Option<String>,
+    pub tag: Option<String>,
+}
+
+/// ANEXO_TAG_MODE: observe (default) = sirf ginti, kabhi block nahi; enforce = WebTransport par bina sahi tag ke 401.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TagMode {
+    Observe,
+    Enforce,
+}
+impl TagMode {
+    pub fn parse(s: &str) -> TagMode {
+        if s.trim().eq_ignore_ascii_case("enforce") { TagMode::Enforce } else { TagMode::Observe }
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TagState {
+    Valid,
+    Missing,
+    Invalid,
+}
+
+pub const TAG_SKEW_SECS: i64 = 120;
+
+/// Tag ke bagair chalne wale procs: ticket khud, report, aur public/login se pehle ke procs (token hi nahi hota unmein).
+pub fn tag_exempt(proc_name: &str) -> bool {
+    matches!(proc_name, "kernel.ticket" | "kernel.report")
+}
+
+pub fn ts_fresh(ts: &str, now: i64) -> bool {
+    ts.parse::<i64>().map(|t| (now - t).abs() <= TAG_SKEW_SECS).unwrap_or(false)
+}
+
+pub fn tag_shape_ok(tag: &str) -> bool {
+    tag.len() == 64 && tag.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+}
+
+/// Message jo kernel sign karta hai: "<proc>.<ts>.<sha256hex(input_raw)>". Input hash glue karta hai (sha2 crate); yahan sirf jod.
+pub fn tag_message(proc_name: &str, ts: &str, input_sha_hex: &str) -> String {
+    format!("{proc_name}.{ts}.{input_sha_hex}")
+}
+
+/// Faisla: block karna hai ya nahi. Observe mein kabhi block nahi.
+pub fn should_block(mode: TagMode, state: TagState, proc_name: &str) -> bool {
+    mode == TagMode::Enforce && state != TagState::Valid && !tag_exempt(proc_name)
 }
 
 fn skip_ws(b: &[u8], i: &mut usize) {
@@ -139,6 +187,7 @@ pub fn parse_request(bytes: &[u8]) -> Result<Request<'_>, &'static str> {
     }
     i += 1;
     let (mut token, mut proc_name, mut input_raw): (Option<String>, Option<String>, Option<&str>) = (None, None, None);
+    let (mut ticket, mut ts, mut tag): (Option<String>, Option<String>, Option<String>) = (None, None, None);
     loop {
         skip_ws(b, &mut i);
         match b.get(i) {
@@ -165,13 +214,16 @@ pub fn parse_request(bytes: &[u8]) -> Result<Request<'_>, &'static str> {
             "token" => token = Some(unescape(raw).ok_or("bad_request")?),
             "proc" => proc_name = Some(unescape(raw).ok_or("bad_request")?),
             "input" => input_raw = Some(raw),
+            "ticket" => ticket = unescape(raw).filter(|t| t.len() <= 1024),
+            "ts" => ts = unescape(raw).filter(|t| t.len() <= 20),
+            "tag" => tag = unescape(raw).filter(|t| t.len() <= 128),
             _ => {}
         }
         i = vend;
     }
     let token = token.filter(|t| !t.is_empty() && t.len() <= 8192).ok_or("token_required")?;
     let proc_name = proc_name.filter(|p| valid_proc(p)).ok_or("bad_proc")?;
-    Ok(Request { token, proc_name, input_raw: input_raw.unwrap_or("null") })
+    Ok(Request { token, proc_name, input_raw: input_raw.unwrap_or("null"), ticket, ts, tag })
 }
 
 /// Dispatcher ko dene wali body: {"input": <raw>}.
@@ -291,5 +343,37 @@ mod tests {
         assert_eq!(compose(502, "bad \"gateway\"\n", false), r#"{"status":502,"body":"bad \"gateway\""}"#);
         assert_eq!(compose(0, "{}", true), r#"{"status":502,"body":{}}"#, "nonsense status never leaks");
         assert_eq!(error_frame(413, "request_too_large"), r#"{"status":413,"body":{"error":{"code":"request_too_large","message":"request_too_large"}}}"#);
+    }
+
+    #[test]
+    fn tag_fields_parse_and_default_to_none() {
+        let r = parse_request(br#"{"token":"t","proc":"mail.threads","input":{"a":1},"ticket":"v1.u.1.n.k.t","ts":"1700000000","tag":"ab"}"#).unwrap();
+        assert_eq!((r.ticket.as_deref(), r.ts.as_deref(), r.tag.as_deref()), (Some("v1.u.1.n.k.t"), Some("1700000000"), Some("ab")));
+        assert_eq!(r.input_raw, r#"{"a":1}"#);
+        let r2 = parse_request(br#"{"token":"t","proc":"whoami"}"#).unwrap();
+        assert!(r2.ticket.is_none() && r2.ts.is_none() && r2.tag.is_none());
+    }
+
+    #[test]
+    fn tag_mode_and_block_decision() {
+        assert_eq!(TagMode::parse("enforce"), TagMode::Enforce);
+        assert_eq!(TagMode::parse(" ENFORCE "), TagMode::Enforce);
+        assert_eq!(TagMode::parse(""), TagMode::Observe);
+        assert_eq!(TagMode::parse("anything"), TagMode::Observe);
+        for st in [TagState::Valid, TagState::Missing, TagState::Invalid] {
+            assert!(!should_block(TagMode::Observe, st, "mail.threads"), "observe kabhi block nahi");
+        }
+        assert!(!should_block(TagMode::Enforce, TagState::Valid, "mail.threads"));
+        assert!(should_block(TagMode::Enforce, TagState::Missing, "mail.threads"));
+        assert!(should_block(TagMode::Enforce, TagState::Invalid, "mail.threads"));
+        assert!(!should_block(TagMode::Enforce, TagState::Missing, "kernel.ticket"), "ticket khud tag ke bina");
+    }
+
+    #[test]
+    fn ts_window_and_tag_shape_and_message() {
+        assert!(ts_fresh("1000", 1000) && ts_fresh("1120", 1000) && ts_fresh("880", 1000));
+        assert!(!ts_fresh("1121", 1000) && !ts_fresh("879", 1000) && !ts_fresh("x", 1000) && !ts_fresh("", 1000));
+        assert!(tag_shape_ok(&"a".repeat(64)) && !tag_shape_ok(&"A".repeat(64)) && !tag_shape_ok("abc"));
+        assert_eq!(tag_message("mail.threads", "17", "ff"), "mail.threads.17.ff");
     }
 }

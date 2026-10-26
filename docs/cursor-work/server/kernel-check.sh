@@ -42,5 +42,11 @@ fi
 C="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/kernel.report" || true)"
 [ "$C" = "401" ] && ok "kernel.report maujood (bina login 401)" || bad "kernel.report ka jawab $C (Rust installer chala? 401 hona chahiye)"
 
+# E90 request tag: Rust ne kitne tag valid/missing/invalid dekhe (ANEXO_TAG_MODE observe = sirf ginti). Browser mein kuch trafic aane ke baad chalayein.
+TL="$( (pm2 logs anexomail-rust --nostream --lines 600 2>/dev/null; journalctl -u anexomail-rust -n 600 --no-pager 2>/dev/null) | grep 'kernel request-tag' | tail -1 || true)"
+if [ -n "$TL" ]; then ok "request-tag ginti: ${TL##*INFO }"; else echo "   (request-tag log abhi nahi: browser mein app kholein, phir dobara chalayein)"; fi
+SK="$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/kernel.ticket" || true)"
+[ "$SK" = "401" ] && ok "kernel.ticket maujood (bina login 401)" || bad "kernel.ticket ka jawab $SK (Rust installer chala? 401 hona chahiye)"
+
 echo; [ "$BAD" = 0 ] && echo "KERNEL CHECK: ALL PASS" || echo "KERNEL CHECK: FAIL (upar dekhein)"
 exit "$BAD"

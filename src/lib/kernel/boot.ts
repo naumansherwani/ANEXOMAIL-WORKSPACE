@@ -12,6 +12,56 @@ import { KERNEL_PIN } from "./pin.gen";
 let loading: Promise<Kernel | null> | null = null;
 let ready: Kernel | null = null;
 
+/** Haqeeqat ki ginti: kitni calls kernel (WebTransport) se gayin, kitni fetch par; kitni tag ke saath. `anexoKernel.stats` se dikhti hai. */
+const stats = { kernel: 0, fetch: 0, tagged: 0, untagged: 0, ticketOk: 0, ticketFail: 0, lastFallback: "" };
+export function noteFetch(reason = "fetch"): void {
+  stats.fetch++;
+  stats.lastFallback = reason;
+}
+
+/**
+ * Kernel ko page ke saath hi jagao (pehli use ka intezar nahi). AppShell mount par idle mein. SSR par kuch nahi.
+ */
+export function warmKernel(): void {
+  if (typeof window === "undefined") return;
+  const go = () => void getKernel();
+  const ric = (window as unknown as { requestIdleCallback?: (f: () => void, o?: { timeout: number }) => number }).requestIdleCallback;
+  if (ric) ric(go, { timeout: 1500 });
+  else setTimeout(go, 0);
+}
+
+/* ---- E90 request tag: ticket (15 min) + session key. Key sirf memory mein (window par nahi), kernel hmac@1 se har request par tag. ---- */
+type Ticket = { ticket: string; key: Uint8Array; expMs: number };
+let tk: Ticket | null = null;
+let tkLoading: Promise<void> | null = null;
+
+async function ensureTicket(): Promise<void> {
+  if (tk && tk.expMs - Date.now() > 60_000) return;
+  tkLoading ??= (async () => {
+    try {
+      const token = sessionToken.get();
+      if (!token) return;
+      const res = await fetch(`${API}/rpc/kernel.ticket`, {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+        body: JSON.stringify({ input: { host: window.location.hostname } }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      const j = (await res.json()) as { result?: { data?: Record<string, unknown> } } & Record<string, unknown>;
+      const d = (j.result?.data ?? j) as { ticket?: string; session_key?: string; expires_at?: string };
+      if (!d.ticket || !d.session_key) throw new Error("bad_ticket");
+      tk = { ticket: d.ticket, key: enc.encode(d.session_key), expMs: d.expires_at ? Date.parse(d.expires_at) : Date.now() + 840_000 };
+      stats.ticketOk++;
+    } catch {
+      stats.ticketFail++;
+      tk = null;
+    } finally {
+      tkLoading = null;
+    }
+  })();
+  await tkLoading;
+}
+
 export function kernelIfReady(): Kernel | null {
   return ready;
 }
@@ -29,6 +79,7 @@ export function getKernel(): Promise<Kernel | null> {
       if (WT && base) k.rpcStart(base);
       ready = k;
       exposeDiagnostics(k);
+      void ensureTicket();
       void reportOnce(k, Boolean(WT && base));
       return k;
     } catch {
@@ -48,12 +99,32 @@ export async function kernelRpc(proc: string, input: unknown): Promise<KernelRep
   const k = ready;
   const token = sessionToken.get();
   if (!k || !k.rpcUp || !token) return null; // login ke bagair (public procs) => seedha fetch, wahi jo pehle tha
-  const r = await k.rpcCall(enc.encode(JSON.stringify({ token, proc, input: input ?? null })));
+  const inputText = JSON.stringify(input ?? null);
+  const env: Record<string, unknown> = { token, proc };
+  if (proc !== "kernel.ticket" && proc !== "kernel.report") await ensureTicket();
+  if (tk && proc !== "kernel.ticket" && proc !== "kernel.report") {
+    const ts = String(Math.floor(Date.now() / 1000));
+    const hash = k.sha256Bytes(enc.encode(inputText));
+    env["ticket"] = tk.ticket;
+    env["ts"] = ts;
+    env["tag"] = k.hmacSha256(tk.key, enc.encode(`${proc}.${ts}.${hash}`));
+    stats.tagged++;
+  } else {
+    stats.untagged++;
+  }
+  // input ka text wahi jo hash hua (server input_raw ka hash isi se match karta hai)
+  const body = JSON.stringify(env).slice(0, -1) + `,"input":${inputText}}`;
+  const r = await k.rpcCall(enc.encode(body));
   if (r.status !== 200 || r.body.length === 0) return null; // 503/504/413 => fetch
   try {
     const f = JSON.parse(dec.decode(r.body)) as { status?: number; body?: unknown };
-    if (f.status === 401) return null; // token purana/refresh ho raha hai: fetch ka authoritative jawab (refresh wahi sambhalta hai)
-    return typeof f.status === "number" ? { status: f.status, body: f.body } : null;
+    if (f.status === 401) {
+      tk = null; // token/ticket purana: dobara lo; is call ka authoritative jawab fetch se
+      return null;
+    }
+    if (typeof f.status !== "number") return null;
+    stats.kernel++;
+    return { status: f.status, body: f.body };
   } catch {
     return null;
   }
@@ -92,6 +163,9 @@ function exposeDiagnostics(k: Kernel): void {
         },
         get info() {
           return k.info;
+        },
+        get stats() {
+          return { ...stats, tagReady: tk !== null };
         },
         version: KERNEL_PIN.version,
         sha256: KERNEL_PIN.sha256,

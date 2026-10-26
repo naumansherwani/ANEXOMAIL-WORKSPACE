@@ -53,6 +53,7 @@ import {
 import { api } from "@/lib/api";
 import { FxAmbient } from "@/components/fx/FxAmbient";
 import { useAuth } from "@/lib/auth";
+import { warmKernel } from "@/lib/kernel/boot";
 import { useLiveEvents } from "@/lib/live";
 import { useLocale } from "@/lib/i18n";
 import { notify } from "@/lib/notify";
@@ -110,6 +111,7 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navigate = useNavigate();
   const { session, organisation, refresh, signOut } = useAuth();
   useLiveEvents(); // B4: one shared WebTransport push connection for every plan and account kind
+  useEffect(() => warmKernel(), []); // Rule 52: kernel page ke saath jaagta hai (pehli use ka intezar nahi)
   const { t } = useLocale();
   const account = useAccountState();
   const trialAllowed = new Set(account.data?.trial_features ?? []);

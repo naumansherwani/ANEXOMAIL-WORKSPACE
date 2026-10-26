@@ -52,3 +52,9 @@ Technology: Rust :3200 (Tokio async) primary; same dispatch HTTP + WebTransport 
 - Promise recovery: Business+ (code+INV; PP1 ka P+ CEO ne override), Goals+deadlines: tasks ke saath Pro+ (work.tasks server gate).
 - Baqi Pro: CRM P1 (pipelines/custom fields/duplicate merge), P2 (web forms) — founder haan.
 - Deploy: Rust (rust-engine-install.sh) phir Web (pull.sh). SQL nahi. Phir Chrome: Pro 200, Basic 403.
+
+## KERNEL REAL WIRING — 26 Oct 10:45 PKT (READY, deploy + live test baqi)
+- Request tag HMAC-SHA256 end-to-end: client (boot.ts ticket + hmac@1 tag) -> Rust wtrpc_glue (kernel_session_key E91, local verify, cache) -> mode observe/enforce. wtrpc_core 10 tests; E91 SQL local self-test + CHECK_E91 4/4 ok, lint OK.
+- Stats: anexoKernel.stats {kernel, fetch, tagged, untagged, ticketOk, ticketFail, lastFallback}. Warm: AppShell mount.
+- Typed contract rpc-contract.ts + 4 tests (Rust drift guard). bun 271 pass, tsc OK.
+- Deploy tarteeb: SQL (E91) -> Rust -> Web. Phir kernel-check.sh + Chrome: anexoKernel.stats.tagged > 0, server log valid>0 invalid=0. Tab enforce.

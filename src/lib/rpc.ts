@@ -12,7 +12,7 @@
  */
 
 import { ApiError, api, sessionToken } from "./api";
-import { kernelRpc } from "./kernel/boot";
+import { kernelRpc, noteFetch } from "./kernel/boot";
 
 const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
 
@@ -36,6 +36,7 @@ export async function rpc<T>(procedure: string, input?: unknown): Promise<T> {
     }
   }
 
+  noteFetch(viaKernel === null ? "kernel_not_used" : `kernel_status_${viaKernel.status}`);
   const headers = new Headers({ "content-type": "application/json" });
   const token = sessionToken.get();
   if (token) headers.set("authorization", `Bearer ${token}`);
