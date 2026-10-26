@@ -6,6 +6,9 @@
 - Kya: docs-only — `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` (poori v6 table + Business Pro vs Enterprise ka sab se bara farq + Polar update ke steps) + `PACKAGE-FEATURE-FORMULA.md` v6 header. Code/Plans/Polar ko touch nahi kiya — founder khud karenge.
 - Halat: **DONE (docs)** — docs-only, server command nahi chahiye. Code update + Polar products: founder ke hukm/kaam par.
 
+## ▶ 26 Oct 05:07 — founder: Enterprise £18,000 (sab jagah update), Enterprise Business Pro ke baad alag, chat/video Business se
+- Halat: DONE (docs). Code/Polar founder ke hukm par.
+
 ## ▶ 26 Oct 04:20 — founder: founding lock 2 saal, competitor-first rule, 'kaam real shuru kero'
 - Halat: DONE (docs) -- PP0 inventory + Rule 54. PP1 matrix approval agla.
 

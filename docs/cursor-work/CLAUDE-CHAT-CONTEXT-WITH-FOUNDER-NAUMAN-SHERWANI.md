@@ -1086,3 +1086,6 @@ Video: Pro 720p standalone, Business 720p+chat, BP 2K, Enterprise full 8K scale.
 
 ### 26 Oct 05:00 — Business Basic approved; Pro/Personal mix-up corrected
 Pro mein ANEXOChat/video nahi (Business+ se). Personal HOLD: alag UI, Gmail ke upar outbox pe bana, 3 packages ki phases shuru se, latest tech, alag meeting. Enterprise abhi zero, advanced tech baad mein. Business Basic approved: 5 users/25GB shared/25MB/2 devices/1 booking link, GBP 40/mo (yearly 440 approve baqi). Agla: Business Pro-package (Pro) features chat mein.
+
+### 26 Oct 05:07 — ENTERPRISE = £18,000/month
+Founder: sab kuch soch ke Enterprise £18,000 (yearly 180,000 CEO x10). Business Pro ke BAAD alag banega, poori website ka face, abhi zero, advanced technology. Docs mein har jagah update. Chat/video: Business se shuru (Basic/Pro nahi) -- yeh dobara confuse na ho. Business Basic approved; Pro package agla.

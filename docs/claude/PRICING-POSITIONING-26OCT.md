@@ -80,7 +80,7 @@ Founder: jab user badi file (50MB/500MB/1GB) attach kare, backend Hetzner storag
 | Pro | £105 | up to 20 | 300 GB |
 | Business | £360 | up to 60 | 1.5 TB |
 | Business Pro | £2,850 | up to 570 | 10 TB |
-| Enterprise | £15,000 | **Unlimited** (bandwidth-cap ke saath, neeche dekhein) | 15 TB |
+| Enterprise | £18,000 | **Unlimited** (bandwidth-cap ke saath, neeche dekhein) | 15 TB |
 
 ### Attachment limits — FINAL CONFIRMED (founder 26 Oct 03:09 PKT, verbatim "bussiness pro email attachment limit hai 60MB aur 100MB enterprise walon ke liye")
 | Plan | Attachment |
@@ -166,5 +166,5 @@ Logic: Hetzner raw ~EUR 1/TB (kabhi included bhi) -> hamara margin ~8-10x; bara 
 AI ek ALAG product hai; workspace plans (Enterprise samet) ko AI ZERO (Rule 23). `src/lib/ai-packages.ts` + Polar products abhi NAHI badle (no-code rule + Polar founder khud karta hai) -- sirf docs.
 **CEO flags (founder faisla kare):**
 1. Credits/top-up inversion: AI Pro £2,000/1,200cr = £1.67/credit, Executive £25,000/10,000cr = £2.50/credit, lekin top-up packs £0.22-0.40/credit hain -- top-up plan se SASTA ho gaya. Ya credits barhao (plan ke saath), ya top-up repricing, warna koi plan nahi khareedega.
-2. "AI plan = base platform included" logic ladder: AI Pro (£2,000) = Business platform (£360), AI Business (£5,000) = Business Pro platform (£2,850), AI Executive (£25,000) = Enterprise platform (£15,000) -- CEO proposal, founder confirm kare.
+2. "AI plan = base platform included" logic ladder: AI Pro (£2,000) = Business platform (£360), AI Business (£5,000) = Business Pro platform (£2,850), AI Executive (£25,000) = Enterprise platform (£18,000) -- CEO proposal, founder confirm kare.
 3. Kya pehli chizen jo landing/ai.anexomail.com copy mein purani £400/£1,500/£4,000 likhi hain unhein badalna hai (founder ke hukm par).

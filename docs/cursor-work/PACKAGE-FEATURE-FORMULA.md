@@ -4,7 +4,7 @@
 
 # Asli sach ab: docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md
 
-# | Basic Flat £40 (5 users, 25GB, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Enterprise £15,000 (UNLIMITED, 15TB, 100MB) |
+# | Basic Flat £40 (5 users, 25GB, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Enterprise £18,000 (UNLIMITED, 15TB, 100MB) |
 
 # Neeche wali v5 ladder/purani table HISTORY hai — pricing ke faislay mein v6 jeetta hai. Naya dimension RULE 4A: file transfer limit 25/35/45/100/100 MB.
 
@@ -22,7 +22,7 @@
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
 
 # ═══ PP1 — FEATURE GATE MATRIX (CEO proposal 26 Oct 04:40 PKT; FOUNDER approve baqi) — ab se REPO ka rule (AGENTS Rule 53) ═══
-# PRICE AXES (founder 04:27 PKT, FINAL): BUSINESS = v6 flat per-month: Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Enterprise £15,000.
+# PRICE AXES (founder 04:27 PKT, FINAL): BUSINESS = v6 flat per-month: Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Enterprise £18,000.
 #   PERSONAL (alag Polar SKUs, per person): Personal Basic £17 / Personal Pro+ £83 / Personal Premium £1,850. "£23/£46/£97" PURANI hain -- kahin istemal na hon.
 #   plan-surface.ts ka polarToPersonalTier mapping + comments PURANE hain (P5 mein theek honge).
 # Personal = ek insaan: shared inbox/thread ownership/company address/Org/Domains NAHI. Personal Pro+ aur Premium = Business Pro POWER.

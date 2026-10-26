@@ -412,3 +412,5 @@ Har package (5 business + 3 personal + 3 AI) ko kaun sa feature milega, yeh `doc
 ## Rule 54 (STRICT, founder 26 Oct 2026 04:20 PKT) — competitor-first: har policy/feature/price se pehle Google/Zoho (aur doosre competitors) dekho
 Jab bhi koi policy, feature, price, limit ya package add/change karna ho: PEHLE competitors (Google Workspace, Zoho, Microsoft 365, Proton...) ka official page/pricing dekh kar likho woh kya karte hain (verified, source link), PHIR hamari offer unse behtar rakho (user ko better deal = user hamare saath chipka rahe). Doc mein "Competitor check" line ke baghair koi pricing/policy change commit nahi. Landing par competitor ke baare mein claim sirf verified aur safe wording mein.
 Founding-member price-lock = 24 mahine (2 saal), pehli 150 companies.
+
+UPDATE 26 Oct 2026 05:07 PKT: Enterprise price = £18,000/month (Rule 51/53 mein jahan £15,000 tha, ab £18,000). Enterprise Business Pro ke baad ALAG phase mein banega (poori website ka chehra, advanced tech, abhi zero).
