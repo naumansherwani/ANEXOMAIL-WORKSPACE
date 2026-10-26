@@ -9,3 +9,9 @@ Founder 07:10: 4 faisle "sab kuch kero" -> HAAN. Ho gaye: pre-send/follow-up/sni
 | 3 | Support 48h | process | -- |
 | 4 | `revenue.ts` / `server/routes/revenue.ts` / partners page: per-seat PLAN_PRICE (basic 23, pro 46, business 97) | PURANA per-user model Rule 51 se takrata hai | partner/commission model founder ki alag meeting (kis qeemat par commission, flat plans par) |
 | 5 | Personal Pro (£46) | HOLD | founder ki alag meeting |
+
+
+## 26 Oct 08:50 — UPDATE (E89/E90 ke baad)
+- #1 Analytics data backend: **READY (repo mein, tested local; deploy ke baad live test)** — E89 SQL + `analytics_glue.rs` (Rust primary) + Bun fallback. Formulas `docs/cursor-work/PACKAGE-FEATURE-FORMULA.md` "ANALYTICS" mein.
+- Meeting cost server gate: **READY** — Rust `cal_glue` ab cost bhejta hai (attendee hourly_rate), Basic ke liye `dispatch` null kar deta hai (cal_core `meeting_cost`/`cost_allowed`, 47 tests).
+- Partner/revenue per-seat: **READY** — flat price, client companies (Gold 10 / Platinum 30).

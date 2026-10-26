@@ -23,3 +23,5 @@ export const KERNEL_PIN = {
 } as const;
 EOF
 echo "kernel $VER -> $OUT ($(stat -c%s "$OUT") bytes) sha256 $SHA"
+echo "-- Dastoor (E90): is release ko darj karo, 3 round pass hone ke BAAD (naya E<n> SQL ya founder-run):"
+echo "select public.kernel_release_publish('$VER', '$SHA', array[$(grep -o '"[a-z0-9]*@[0-9]*"' web-wasm/src/lib.rs | sort -u | tr '"' "'" | paste -sd, -)], 'notes');"

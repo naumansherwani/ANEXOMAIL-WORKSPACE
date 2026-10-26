@@ -139,7 +139,7 @@ CFG={
  # `mail.threads` live main.rs mein pehle se hai (dispatch_mail) — mailx_glue::owns usay jaan-boojh kar pehle pakadta hai aur main.rs ka `mail_query_threads` hi chalata hai (list ka code dobara nahi likha). Koi SQL nahi.
  "mailx":  {"public": False, "label": "mail-pro-actions", "procs": ['"mail.snooze"','"mail.status"','"mail.move"','"mail.labels.update"','"mail.assign"','"mail.templates.save"','"mail.templates.delete"']},
  # analytics (Phase 24 / E89): Analytics Center ka asli backend. Package gate Rust mein (debt har plan, economics+deep work Pro+, baqi Business+). SQL E89 PEHLE.
- "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"']},
+ "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"','"billing.revenueTruth"','"kernel.ticket"','"kernel.report"']},
  # wtrpc (Rule 52): `/wt/rpc` — WASM kernel (web-wasm rpc@1) ka ek QUIC session, har call ek bidi stream => wohi dispatch() jo /rpc/<proc> chalata hai.
  # Koi proc nahi (isliye procs khali, owns() false); wt_session ke andar sirf path dekh kar is module ko de deta hai. Koi SQL nahi.
  "wtrpc": {"public": False, "label": "wt-rpc", "procs": [],

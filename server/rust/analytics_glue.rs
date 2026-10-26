@@ -14,6 +14,8 @@
 //   analytics.forecast          Business+              -> analytics_forecast
 //   analytics.team              Business+, sirf owner/admin -> analytics_team
 //   founderAnalytics.overview   sirf founder           -> founder_analytics_overview
+//   billing.revenueTruth        sirf founder           -> founder_revenue_truth (E90, flat price)
+//   kernel.ticket / kernel.report  login               -> kernel_ticket_issue / kernel_report (E90, HMAC-SHA256 dastoor)
 // Scope: org ke saare mailboxes (shared inbox) — app ka mail.threads bhi org-scoped hai. Gate server par; UI sirf aaina.
 // ============================================================================
 
@@ -28,7 +30,13 @@ const RATE_WINDOW_MS: u64 = 60_000;
 static RATE: std::sync::OnceLock<Mutex<HashMap<String, VecDeque<u64>>>> = std::sync::OnceLock::new();
 
 pub fn owns(proc: &str) -> bool {
-    c::need_of(proc).is_some() || proc == "founderAnalytics.overview"
+    c::need_of(proc).is_some() || matches!(proc, "founderAnalytics.overview" | "billing.revenueTruth" | "kernel.ticket" | "kernel.report")
+}
+
+/// Host naam saaf: sirf [a-z0-9.-], 253 tak. Galat => None.
+fn clean_host(s: &str) -> Option<String> {
+    let h = s.trim().to_lowercase();
+    (!h.is_empty() && h.len() <= 253 && h.bytes().all(|b| b.is_ascii_lowercase() || b.is_ascii_digit() || b == b'.' || b == b'-')).then_some(h)
 }
 
 fn fail(status: StatusCode, code: &str, msg: &str) -> axum::response::Response {
@@ -89,6 +97,46 @@ async fn org_addresses(org: &str, me: &str) -> Vec<String> {
 }
 
 pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response::Response {
+    // KERNEL CONSTITUTION (E90): session ticket + kernel report — login zaroori, rate limited, SQL hi HMAC-SHA256 karta hai.
+    if proc == "kernel.ticket" || proc == "kernel.report" {
+        let (id, _email) = match crate::auth_user(token).await {
+            Some(u) => u,
+            None => return fail(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid"),
+        };
+        if !allowed_now(&id) {
+            return fail(StatusCode::TOO_MANY_REQUESTS, "too_many_requests", "Too many requests — please try again in a minute.");
+        }
+        let Some(host) = clean_host(input.get("host").and_then(|x| x.as_str()).unwrap_or("")) else {
+            return fail(StatusCode::BAD_REQUEST, "bad_host", "host required");
+        };
+        let r = if proc == "kernel.ticket" {
+            crate::sb_rpc("kernel_ticket_issue", json!({ "p_user": id, "p_host": host, "p_ttl_s": 900 })).await
+        } else {
+            let g = |k: &str| input.get(k).and_then(|x| x.as_str()).unwrap_or("").chars().take(80).collect::<String>();
+            crate::sb_rpc(
+                "kernel_report",
+                json!({ "p_user": id, "p_host": host, "p_version": g("version"), "p_sha": g("sha256"), "p_transport": g("transport") }),
+            )
+            .await
+        };
+        return match r {
+            Ok(v) => crate::ok(v).into_response(),
+            Err(e) => sql_fail(&e),
+        };
+    }
+    if proc == "billing.revenueTruth" {
+        let (id, email) = match crate::auth_user(token).await {
+            Some(u) => u,
+            None => return fail(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid"),
+        };
+        if !crate::is_founder(&id, &email).await {
+            return fail(StatusCode::FORBIDDEN, "founder_only", "Founder only");
+        }
+        return match crate::sb_rpc("founder_revenue_truth", json!({})).await {
+            Ok(v) => crate::ok(v).into_response(),
+            Err(e) => sql_fail(&e),
+        };
+    }
     if proc == "founderAnalytics.overview" {
         let (id, email) = match crate::auth_user(token).await {
             Some(u) => u,
@@ -174,6 +222,7 @@ mod tests {
         for p in [
             "analytics.responseDebt", "analytics.threadEconomics", "analytics.deepWork", "analytics.attentionLeaks",
             "analytics.promiseSla", "analytics.forecast", "analytics.team", "founderAnalytics.overview",
+            "billing.revenueTruth", "kernel.ticket", "kernel.report",
         ] {
             assert!(owns(p), "{p}");
         }

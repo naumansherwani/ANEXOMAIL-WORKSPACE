@@ -14,6 +14,7 @@
  * PHASE 15 — resume identity (naam + bytes + fingerprint). Connection gaya to
  *            "Transfer paused", wapis aaya to wahi transfer 94% se aage.
  */
+import { kernelIfReady } from "@/lib/kernel/boot";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 
@@ -324,6 +325,15 @@ export function bytesLabel(n: number): string {
 }
 
 async function sha256Hex(buf: ArrayBuffer): Promise<string> {
+  // WASM kernel (sha256@1) tayyar ho to wahi; warna browser ka SubtleCrypto. Dono ka natija bit-for-bit ek (test: kernel.test.ts).
+  const k = kernelIfReady();
+  if (k) {
+    try {
+      return k.sha256Bytes(new Uint8Array(buf));
+    } catch {
+      /* neeche subtle */
+    }
+  }
   const digest = await crypto.subtle.digest("SHA-256", buf);
   return Array.from(new Uint8Array(digest))
     .map((b) => b.toString(16).padStart(2, "0"))

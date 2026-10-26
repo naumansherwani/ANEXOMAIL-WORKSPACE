@@ -28,6 +28,7 @@ export function getKernel(): Promise<Kernel | null> {
       const k = await Kernel.load({ bytes: await res.arrayBuffer(), sha256: KERNEL_PIN.sha256, WT: WT ?? null });
       if (WT && base) k.rpcStart(base);
       ready = k;
+      void reportOnce(k, Boolean(WT && base));
       return k;
     } catch {
       return null; // hash mismatch / wasm unsupported => purana raasta
@@ -52,5 +53,27 @@ export async function kernelRpc(proc: string, input: unknown): Promise<KernelRep
     return typeof f.status === "number" ? { status: f.status, body: f.body } : null;
   } catch {
     return null;
+  }
+}
+
+const API = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
+let reported = false;
+
+/** Dastoor (E90 Article 9): sirf host, version, wasm hash, transport. Token/email/content kabhi nahi. Fail => chup, page par koi asar nahi. */
+async function reportOnce(k: Kernel, wantWt: boolean): Promise<void> {
+  if (reported) return;
+  reported = true;
+  try {
+    await new Promise((r) => setTimeout(r, 2500)); // rpc session ko judne ka moqa
+    const token = sessionToken.get();
+    if (!token) return;
+    const transport = wantWt && k.rpcUp ? "webtransport" : "fetch";
+    await fetch(`${API}/rpc/kernel.report`, {
+      method: "POST",
+      headers: { "content-type": "application/json", authorization: `Bearer ${token}` },
+      body: JSON.stringify({ input: { host: window.location.hostname, version: k.info.version, sha256: KERNEL_PIN.sha256, transport } }),
+    });
+  } catch {
+    /* telemetry kabhi kaam nahi rokti */
   }
 }

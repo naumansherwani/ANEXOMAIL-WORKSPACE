@@ -1084,3 +1084,9 @@ Live (pro.buyer): Snooze 200 (Rust), Inbox se chhupa, Snoozed folder "in 2h", st
 2. Rust (analytics + wtrpc modules, koi argument nahi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 3. Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 4. Web (kernel wasm + MFA + analytics fallback): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 26 Oct 09:00 — E90 KERNEL CONSTITUTION (SQL) + Rust (kernel.ticket/report, billing.revenueTruth, meeting cost) + Web — tarteeb SQL -> Rust -> Web
+SQL (E89 + E90 + CHECK_E89/E90 khud auto-pick): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

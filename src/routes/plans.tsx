@@ -26,7 +26,7 @@ export const Route = createFileRoute("/plans")({
       {
         property: "og:description",
         content:
-          "Basic £40, Pro £105, Business £97 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
+          "Basic £40, Pro £105, Business £360 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -45,7 +45,7 @@ const compare: { group: string; rows: Row[] }[] = [
         label: "Price per month",
         basic: "£40 / month (up to 5 users)",
         pro: "£105 / month (up to 20 users)",
-        business: "£97 / user",
+        business: "£360 / month (up to 30 users)",
         business_pro: "£2,850 / company",
       },
       {
@@ -185,7 +185,7 @@ const compare: { group: string; rows: Row[] }[] = [
 const faqs = [
   {
     q: "Is VAT included in these prices?",
-    a: "No. £40, £105, £97 and £2,850 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
+    a: "No. £40, £105, £360 and £2,850 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
   },
   {
     q: "How does billing work?",
@@ -717,7 +717,7 @@ function PlansPage() {
             </>
           ) : (
             <CompareTable
-              heads={["Basic · £40", "Pro · £105", "Business · £97", "Business Pro · £2,850"]}
+              heads={["Basic · £40", "Pro · £105", "Business · £360", "Business Pro · £2,850"]}
               groups={businessCompare}
               minWidth="min-w-[42rem]"
             />

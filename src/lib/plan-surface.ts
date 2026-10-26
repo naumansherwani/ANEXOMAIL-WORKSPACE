@@ -1,6 +1,6 @@
 /**
  * Package rail — locked cards in `src/lib/plans.ts` (DO NOT import or change
- * prices / copy). Basic £23 · Pro £46 · Business £97 · Business Pro £2850.
+ * prices / copy). Basic £40 · Pro £105 · Business £360 · Business Pro £2850 (flat per company, Rule 51).
  *
  * Two account kinds (onboarding first): Personal | Business.
  * Inside each: Basic / Pro / Premium. Premium = Business Pro card.
@@ -18,9 +18,9 @@ export type PersonalTierId = "personal_basic" | "personal_pro" | "personal_premi
  * Paise Polar landing cards se. Kind personal hone ke baad SKU yeh naam ban'ta hai.
  * Landing pe Personal Polar SKU nahi. Webhook no-touch — `workspace_plan` pehle se.
  *
- * Polar Basic £23 → Personal Basic
- * Polar Pro £46 → Personal Pro
- * Polar Business £97 → Business kind (company). Agar kind personal ho to Personal Pro power.
+ * Polar Basic £40 → Personal Basic
+ * Polar Pro £105 → Personal Pro
+ * Polar Business £360 → Business kind (company). Agar kind personal ho to Personal Pro power.
  * Polar Business Pro £2850 → kind personal = Personal Premium; kind business = Business Pro
  */
 export function polarToPersonalTier(plan: WorkspacePlanId): PersonalTierId {

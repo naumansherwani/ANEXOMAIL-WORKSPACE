@@ -9,6 +9,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { ApiError, sessionToken } from "@/lib/api";
 import { rpc } from "@/lib/rpc";
+import { kernelIfReady, getKernel } from "@/lib/kernel/boot";
+import { SNIFF } from "@/lib/kernel/kernel";
 import { attachErrorText, type AttachLimits } from "@/lib/mail-attachments-core";
 
 const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
@@ -34,10 +36,24 @@ export function useAttachLimits(enabled = true) {
 export type UploadResult = { id: string; filename: string; size_bytes: number; deduped: boolean; scanned: boolean };
 
 /** Ek file upload; progress 0..100. Reject par `ApiError` (message insaani, code server ka). */
-export function uploadAttachment(
+export async function uploadAttachment(
   file: File,
   opts: { onProgress?: (pct: number) => void; signal?: AbortSignal } = {},
 ): Promise<UploadResult> {
+  // WASM kernel pre-flight (Rule 52): asli bytes dekho — exe / naam-bytes mismatch upload se PEHLE rok do. Server phir bhi akhri faisla karta hai.
+  void getKernel(); // pehli file par kernel load shuru; tayyar na ho to seedha upload (kabhi rukawat nahi)
+  const k = kernelIfReady();
+  if (k) {
+    try {
+      const head = new Uint8Array(await file.slice(0, 4096).arrayBuffer());
+      const verdict = k.sniff(file.name, head);
+      if (verdict === SNIFF.EXECUTABLE) throw new ApiError("Programs and scripts cannot be attached.", 415, "executable_blocked");
+      if (verdict === SNIFF.MISMATCH) throw new ApiError("This file's contents do not match its name, so it was not uploaded.", 415, "type_mismatch");
+    } catch (e) {
+      if (e instanceof ApiError) throw e;
+      /* kernel error => server ka faisla */
+    }
+  }
   return new Promise((resolve, reject) => {
     const token = sessionToken.get();
     if (!token) return reject(new ApiError("Please sign in again.", 401, "unauthorized"));

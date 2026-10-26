@@ -630,6 +630,31 @@ async fn attendee_rows(event_id: &str) -> Vec<Value> {
     .unwrap_or_default()
 }
 
+/// Meeting cost: attendee rows ki `hourly_rate` se. Rates nahi => hourly_total null. Basic se `dispatch` ka wrapper isay null kar deta hai.
+fn cost_value(ev: &Value, rows: &[Value]) -> Value {
+    let (Some(a), Some(b)) = (cal::parse_ts(&st(ev, "starts_at")), cal::parse_ts(&st(ev, "ends_at"))) else { return Value::Null };
+    let minutes = ((b - a) / 60).max(0);
+    let rates: Vec<f64> = rows.iter().filter_map(|r| r.get("hourly_rate").and_then(|x| x.as_f64().or_else(|| x.as_str().and_then(|t| t.parse().ok())))).collect();
+    let (hourly, total) = cal::meeting_cost(&rates, minutes);
+    json!({ "currency": "GBP", "total": total, "attendees": rows.len(), "minutes": minutes, "hourly_total": hourly })
+}
+
+/// Basic plan: response ke andar har `cost` ko null karo (server hi cost nahi bhejta; UI sirf aaina).
+fn strip_cost(v: &mut Value) {
+    match v {
+        Value::Object(m) => {
+            if m.contains_key("cost") {
+                m.insert("cost".into(), Value::Null);
+            }
+            for x in m.values_mut() {
+                strip_cost(x);
+            }
+        }
+        Value::Array(a) => a.iter_mut().for_each(strip_cost),
+        _ => {}
+    }
+}
+
 fn event_json(ev: &Value, rows: &[Value]) -> Value {
     json!({
         "id": st(ev, "id"), "title": st(ev, "title"), "starts_at": st(ev, "starts_at"), "ends_at": st(ev, "ends_at"),
@@ -645,7 +670,7 @@ fn event_json(ev: &Value, rows: &[Value]) -> Value {
         "thread_id": ev.get("thread_id").cloned().unwrap_or(Value::Null),
         "thread_subject": ev.get("thread_subject").cloned().unwrap_or(Value::Null),
         "kind": "meeting", "status": st(ev, "status"), "sequence": num(ev, "sequence").unwrap_or(0),
-        "cost": Value::Null, "conflict": false, "shield_conflict": false,
+        "cost": cost_value(ev, rows), "conflict": false, "shield_conflict": false,
         "rrule": ev.get("rrule").cloned().filter(|v| v.as_str().map_or(false, |x| !x.is_empty())).unwrap_or(Value::Null),
         "recurring": !st(ev, "rrule").is_empty() || !st(ev, "series_id").is_empty(),
         "series_id": opt(ev, "series_id").map(Value::from).unwrap_or(Value::Null),
@@ -676,6 +701,34 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         Ok(m) => m,
         Err(r) => return r,
     };
+    let resp = dispatch_inner(proc, &me, input).await;
+    // Meeting cost = Pro+ (SERVER par). resolve_plan na mile to basic maana jata hai.
+    let plan = crate::sb_rpc("resolve_plan", json!({ "_user_id": me.id, "_email": me.email }))
+        .await
+        .ok()
+        .and_then(|v| v.as_str().map(|s| s.to_string()))
+        .unwrap_or_else(|| "basic".to_string());
+    if cal::cost_allowed(&plan) || !resp.status().is_success() {
+        return resp;
+    }
+    let (parts, body) = resp.into_parts();
+    let Ok(bytes) = axum::body::to_bytes(body, 8 * 1024 * 1024).await else {
+        return fail(StatusCode::INTERNAL_SERVER_ERROR, "response_unreadable", "calendar response");
+    };
+    match serde_json::from_slice::<Value>(&bytes) {
+        Ok(mut j) => {
+            strip_cost(&mut j);
+            let mut r = axum::response::Response::new(axum::body::Body::from(j.to_string()));
+            *r.status_mut() = parts.status;
+            *r.headers_mut() = parts.headers;
+            r.headers_mut().remove("content-length");
+            r
+        }
+        Err(_) => axum::response::Response::from_parts(parts, axum::body::Body::from(bytes)),
+    }
+}
+
+async fn dispatch_inner(proc: &str, me: &Who, input: &Value) -> axum::response::Response {
     if !v2_ready().await {
         return fail(
             StatusCode::NOT_IMPLEMENTED,

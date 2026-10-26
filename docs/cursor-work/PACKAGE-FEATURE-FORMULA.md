@@ -258,3 +258,20 @@ Complimentary: 5/day first 2 days = 10 total per billing cycle.
 | £1,000 | 4,000                 |
 | £2,000 | 9,000                 |
 | £5,000 | 21,000 (founder-only) |
+
+---
+## ANALYTICS + MEETING COST + PARTNER (26 Oct 2026, CEO formulas — founder ne farmaya "formula main khud tay karunga")
+Gate SERVER par (Rust `analytics_glue` / `cal_glue`, `resolve_plan`); UI `plan-surface.ts` sirf aaina.
+| Feature | Package | Formula |
+|---|---|---|
+| Response debt £ | Basic+ | sum(min(waiting_h,72)) x hourly_rate x 0.25; rate = analytics_rates external, warna self, warna £60 |
+| Thread economics | Pro+ | minutes = sent x 5 + received x 1.5; cost = ghante x rate |
+| Deep work | Pro+ | weekdays 09:00-17:00 local; busy = meetings + 5-min reply blocks; deep = free runs >= 60 min |
+| Attention leaks | Business+ | >= 3 inbound / 7 din; 2 min har interruption |
+| Promise SLA | Business+ | work_tasks source=promise; broken = 48h past due open |
+| Forecast | Business+ | weights 4/3/2/1 pichhle 4 hafton par |
+| Team load | Business+ (owner/admin) | <3 light, <10 healthy, <25 heavy, warna drowning |
+| Meeting cost £ | Pro+ | sum(attendee hourly_rate) x minutes/60; rates na hon => null (jhoota number nahi); Basic ko server null bhejta hai |
+| Partner commission | — | 20/25/30% har CLIENT COMPANY ke flat monthly plan par; Gold 10+, Platinum 30+ client companies (Rule 51: per-user nahi) |
+Prices (flat/month): Basic £40 · Pro £105 · Business £360 (30 users tak) · Business Pro £2,850. Enterprise alag contract.
+Browser technology: WASM KERNEL (Rule 52) + dastoor E90 `kernel_constitution` — kernel gate nahi kholta.

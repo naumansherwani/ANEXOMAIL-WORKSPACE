@@ -103,3 +103,18 @@ founderAnalyticsRouter.get("/analytics/overview", async (req, res) => {
     return sqlError(res, e);
   }
 });
+
+// Fallback (Rust primary: billing.revenueTruth). Flat per-company price — Rule 51. SQL: E90 founder_revenue_truth().
+founderAnalyticsRouter.get("/billing/revenue", async (req, res) => {
+  try {
+    const me = await who(req);
+    if (!me) return res.status(401).json({ error: "unauthorized" });
+    const f = await admin.from("founder_accounts").select("user_id").eq("user_id", me.id).maybeSingle();
+    if (!isFounderEmail(me.email, FOUNDERS) && !f.data) return res.status(403).json({ error: "founder_only" });
+    const out = await admin.rpc("founder_revenue_truth");
+    if (out.error) return sqlError(res, out.error);
+    return res.json(out.data);
+  } catch (e) {
+    return sqlError(res, e);
+  }
+});

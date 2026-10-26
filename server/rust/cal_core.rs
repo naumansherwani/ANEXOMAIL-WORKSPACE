@@ -1114,6 +1114,23 @@ pub fn overloaded(minutes: i64, from: i64, to: i64) -> bool {
     work_minutes >= 60.0 && (minutes as f64) > work_minutes * 0.5
 }
 
+/// Meeting cost (Pro+): attendees ki hourly rates ka jod x ghante. Rates na hon => (None, 0.0) (jhoota number nahi). Bun `cost()` ke barabar.
+/// Wapas: (hourly_total, total) — total 2 dasham tak.
+pub fn meeting_cost(rates: &[f64], minutes: i64) -> (Option<f64>, f64) {
+    let hourly: f64 = rates.iter().copied().filter(|r| r.is_finite() && *r > 0.0).sum();
+    if hourly <= 0.0 {
+        return (None, 0.0);
+    }
+    let total = hourly * (minutes.max(0) as f64) / 60.0;
+    (Some(hourly), (total * 100.0).round() / 100.0)
+}
+
+/// 0 basic · 1 pro+ . Basic ko meeting cost nahi milti. Anjaan plan = basic (kabhi zyada nahi kholta).
+pub fn cost_allowed(plan: &str) -> bool {
+    let p = plan.trim().to_lowercase().replace([' ', '-'], "_");
+    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise")
+}
+
 #[cfg(test)]
 mod read_tests {
     use super::*;
@@ -2352,6 +2369,28 @@ pub mod recur {
             assert!(!zone_name_ok("/etc/passwd"));
             assert!(zone_name_ok("America/Argentina/Buenos_Aires"));
             assert!(matches!(&*load_tz("../../x", 3600), Tz::Fixed(3600)));
+        }
+    }
+}
+
+#[cfg(test)]
+mod cost_tests {
+    use super::*;
+    #[test]
+    fn cost_sums_rates_per_hour() {
+        assert_eq!(meeting_cost(&[60.0, 40.0], 30), (Some(100.0), 50.0));
+        assert_eq!(meeting_cost(&[33.33], 45), (Some(33.33), 25.0));
+        assert_eq!(meeting_cost(&[], 30), (None, 0.0));
+        assert_eq!(meeting_cost(&[0.0, -5.0, f64::NAN], 30), (None, 0.0));
+        assert_eq!(meeting_cost(&[60.0], -10), (Some(60.0), 0.0));
+    }
+    #[test]
+    fn cost_gate_is_pro_plus() {
+        for p in ["pro", "Business", "business_pro", "business-pro", "enterprise", "ai_pro"] {
+            assert!(cost_allowed(p), "{p}");
+        }
+        for p in ["basic", "", "free", "personal", "weird"] {
+            assert!(!cost_allowed(p), "{p}");
         }
     }
 }

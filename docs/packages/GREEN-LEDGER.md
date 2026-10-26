@@ -12,5 +12,9 @@ Har line: cheez | kahan | test. Naya Claude: pehle yeh padho, phir docs/packages
 - Analytics ROUTE gates (plan-surface + `plan-surface.test.ts`)
 - CRM base Pro+ (`showCrm`)
 - Domains cap 1/3 -> `org_domain_cap` (E15)
+## READY (repo + local tests; "green" live test deploy ke baad — Rule 29) — 26 Oct 08:50
+- Analytics backend (E89 + Rust + Bun fallback + package gate); meeting cost server gate (Rust cal_glue); flat partner/revenue model; MFA TOTP + magic-link verify; `billing.revenueTruth` (E90); Business price £360 flat (plans.ts, plans.tsx)
+- WASM KERNEL 0.2.0 (Rust async Tokio WebTransport; sha256+hmac+sniff+rank+live+rpc) + `/wt/rpc` + kernel-first rpc.ts/live.ts + attachment sniff + chat sha256; KERNEL CONSTITUTION E90 (+CHECK_E90)
+- `python3 scripts/wire-audit.py`: 0 REAL GAP (HELD = AI billing/knowledge, COMING SOON)
 ## NOT GREEN -> docs/packages/*/NOT-BUILT.md
-- Analytics data backend (formula blocker), meeting-cost server gate, partner/revenue per-seat model, Personal (HOLD), Business/Business Pro/Enterprise packages (agle phases)
+- Personal (HOLD), Business/Business Pro/Enterprise features (agle phases), live tests (deploy ke baad), Caddy udp/3443 /wt/rpc check
