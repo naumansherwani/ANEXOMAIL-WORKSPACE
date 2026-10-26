@@ -12,3 +12,5 @@ Is folder mein: blueprints, tech docs, pricing, migration ledger (+CSV).
 `docs/cursor-work/` PHYSICALLY NAHI hilaya gaya: `server/*.sh` (pull.sh, rust-engine-install.sh, basic-gate-probe.sh, kernel-check.sh, sql-run.sh, manifest-*.py) ke path founder ke server par chalne wale commands, installers, manifest, tests aur AGENTS.md mein likhe hain; hilane se founder ki har pull command toot jati hai. Isliye: yeh README INDEX hai; naye Claude-docs yahin (docs/claude/) likhe jayen, aur cursor-work ka move tab hoga jab ek hi step mein har path + command + manifest + test badal kar green saabit ho (alag tarteeb ka kaam, MASTER-GREEN-PLAN step 13 ke saath).
 
 - Technology map (kaun si tech kahan/kab): docs/claude/TECHNOLOGY-MAP-27OCT.md
+
+- Codes-written ledger (kaun se codes likhe, halat): docs/claude/CODES-WRITTEN-LEDGER-27OCT.md

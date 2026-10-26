@@ -1356,3 +1356,6 @@ LIVE GREEN (Chrome, Pro, 00:40): deal 'Work' button -> toast 'Work opened', task
 
 ## 27 Oct 2026 00:45 PKT — TRIAL Rule 52 par (trialx)
 FOUNDER (27 Oct 00:30-00:31): 'rule 52 pe kero' + 'sab endpoints baaki ke is Rule 52 par jayenge' => har baaqi endpoint: browser -> WASM kernel -> Rust (async Tokio, /rpc + /wt/rpc) -> Supabase; fetch/Bun sirf fallback. TRIAL (Basic+Pro, har plan) Rule 52 par: client src/lib/trial.ts ab rpcOrRest (kernel-first): account.signup.state/start/claim/address (Rust main.rs pehle se) + naye 3 procs module trialx (account.signup.security/events/holds; trialx_core 2 tests + trialx_glue; installer CFG+probe; probe lines events/holds/state 200, security {} 400). Claim: Rust ok:false => client ApiError 409 (Bun jaisa). bun test 212 pass, tsc clean, cargo check OK. DEPLOY BAAQI (Rust install + Web pull). AGLA: auth.session (Rule 52 top REST), phir Basic baaqi 110 ek ek karke (basic+pro dono ko milenge).
+
+## 27 Oct 2026 00:40 PKT — COMPACT-SAFE HANDOFF #3
+HANDOFF #3 (27 Oct 00:40): sab likhe codes ki poori list + halat -> docs/claude/CODES-WRITTEN-LEDGER-27OCT.md (compact ke baad PEHLE yeh + MASTER-GREEN-PLAN + TECHNOLOGY-MAP padho). HEAD 3b1047c. Server par: crmd+memory+Work fix deployed; fd9ee91 (409) + 3b1047c (trialx+trial client) CODE READY, founder deploy output baaqi.
