@@ -101,6 +101,29 @@ chk "RUST billing.state 200" "$(rpc billing.state '{}')" 200
 chk "RUST billing.stateHealth non-founder (403)" "$(rpc billing.stateHealth '{}')" 403
 chk "RUST billing.claimGuest missing token (400)" "$(rpc billing.claimGuest '{}')" 400
 chk "RUST billing.claimGuest bad token (400)" "$(rpc billing.claimGuest '{"guest_token":"bad token!!"}')" 400
+chk "RUST settings.list personal 200" "$(rpc settings.list '{"scope":"personal"}')" 200
+chk "RUST settings.list bad scope (422)" "$(rpc settings.list '{"scope":"admin"}')" 422
+chk "RUST settings.save missing key (400)" "$(rpc settings.save '{}')" 400
+chk "RUST settings.save unknown key (422)" "$(rpc settings.save '{"key":"zz.no.such.key","value":"x"}')" 422
+chk "RUST settings.history 200" "$(rpc settings.history '{}')" 200
+chk "RUST settings.revert bad id (422)" "$(rpc settings.revert '{"version_id":"nope"}')" 422
+chk "RUST settings.explain unknown (422)" "$(rpc settings.explain '{"key":"zz.no.such.key"}')" 422
+chk "RUST founderSettings.overview non-founder (403)" "$(rpc founderSettings.overview '{}')" 403
+chk "RUST founderIntegrations.overview non-founder (403)" "$(rpc founderIntegrations.overview '{}')" 403
+chk "RUST founderSecurity.overview non-founder (403)" "$(rpc founderSecurity.overview '{}')" 403
+chk "RUST integrations.providers 200" "$(rpc integrations.providers '{}')" 200
+chk "RUST integrations.connections 200" "$(rpc integrations.connections '{}')" 200
+chk "RUST integrations.connect missing provider (400)" "$(rpc integrations.connect '{}')" 400
+chk "RUST integrations.connect bad provider (400)" "$(rpc integrations.connect '{"provider":"Bad Provider!"}')" 400
+chk "RUST integrations.disconnect bad id (422)" "$(rpc integrations.disconnect '{"id":"nope"}')" 422
+chk "RUST integrations.migrations 200" "$(rpc integrations.migrations '{}')" 200
+chk "RUST integrations.startMigration missing (400)" "$(rpc integrations.startMigration '{}')" 400
+chk "RUST integrations.controlMigration bad action (400)" "$(rpc integrations.controlMigration '{"id":"x","action":"drop"}')" 400
+chk "RUST integrations.delivery 200" "$(rpc integrations.delivery '{}')" 200
+chk "RUST integrations.delivery bad domain (400)" "$(rpc integrations.delivery '{"domain":"bad domain!"}')" 400
+chk "RUST integrations.exports 200" "$(rpc integrations.exports '{}')" 200
+chk "RUST integrations.export bad scope (400)" "$(rpc integrations.export '{"scope":"all"}')" 400
+chk "RUST integrations.export bad format (400)" "$(rpc integrations.export '{"format":"pdf"}')" 400
 SLA="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/support.sla")"; [ "$SLA" = 200 ] && echo "  PASS support.sla PUBLIC (bina login 200)" || { echo "  FAIL support.sla PUBLIC -> $SLA"; FAILS=$((FAILS+1)); }
 chk "RUST workspace.organisations short name (400, kuch banta nahi)" "$(rpc workspace.organisations '{"name":"x","domain":"acme.com"}')" 400
 chk "RUST workspace.organisations anexomail domain (400)" "$(rpc workspace.organisations '{"name":"Probe Co","domain":"anexomail.com"}')" 400

@@ -30,14 +30,14 @@ F1 sab data kernel se (steps 2-7) | F2 23 polls -> WebTransport push (qadam 8, L
 starts_at = woh sab se chhota package jis se endpoint kholta hai (ENDPOINT-PACKAGE-MAP.csv). Neeche Rust-first / baaqi.
 | Package (starts_at) | Rust-first | Baaqi (Bun) | Matlab |
 |---|---|---|---|
-| basic (sab ko) | 72 | 72 | login 23, integrations 10, settings 7, security 7, trial 9, polar 7, billing-sync 5, deletion 3, calendar export 1 |
-| pro | 51 | **0** | Pro-only endpoints sab Rust par |
-| business | 5 | 183 | M6: v6 enforcement SQL, ANEXOChat, Office suite, org/CRM baaqi |
+| basic (sab ko) | 96 | 46 | login 23, trial 9, C2 billing 5, polar 5 (NO-TOUCH), deletion 3, calendar export 1 |
+| pro | 44 | **7** | work tasks/notes/follow-through + meeting outcome (client naam Rust mein nahi) |
+| business | 4 | 184 | M6: v6 enforcement SQL, ANEXOChat, Office suite, org/CRM, settings blast/drift/schedule |
 | business_pro | 0 | 5 | 570 users/10TB/60MB enforcement |
-| founder | 31 | 44 | F qadam 9 |
+| founder | 24 | 53 | F qadam 9 |
 | internal | 1 | 3 | |
-| ai_soon | 27 | 29 | AI plan, baad mein |
-| **Total** | **187** | **336** | 523 |
+| ai_soon | 0 | 56 | AI plan, baad mein |
+| **Total** | **169** | **354** | 523 (04:3x, sakht registry; pehle 187/336 jhoota tha) |
 Package limits (pricing v6, flat per company, per-user fee nahi): Basic £40 (5 users, 15GB, 3 mailboxes, 25MB) | Pro £105 (20 users, 300GB, 35MB; 3 booking links, 4 trusted devices) | Business £360 (60 users, 1.5TB, 45MB, Office suite, ANEXOChat) | Business Pro £2,850 (570 users, 10TB, 60MB) | Enterprise £18,500 (Bun-free, baad mein). Basic/Pro enforcement SQL LIVE (E87/E88); **Business/Business Pro enforcement abhi code mein NAHI** (TODO-1).
 Gate ka tareeqa: server par `resolve_plan` + `pro_gate`/`pro_only_proc` (Rust), SQL triggers/caps (team_seat_calc, storage_plans, booking_pages_cap, device_vault); UI sirf mirror (plan-surface.ts). Har package ki tafseel: docs/packages/<package>/GATES-AND-TECH.md, ENDPOINT-PACKAGE-MAP-26OCT.md.
 

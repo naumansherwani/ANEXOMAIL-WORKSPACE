@@ -98,7 +98,7 @@ const post = <T>(procedure: string, path: string, body: unknown) =>
 export function useSettings(scope: Scope) {
   return useQuery<{ settings: Setting[] }, ApiError>({
     queryKey: ["settings", scope],
-    queryFn: () => get<{ settings: Setting[] }>("settings.list", `/api/settings/${scope}`),
+    queryFn: () => get<{ settings: Setting[] }>("settings.list", `/api/settings/${scope}`, { scope }),
     retry: false,
   });
 }
@@ -118,7 +118,7 @@ export function useBlastRadius(key: string | null) {
 export function useExplain(key: string | null) {
   return useQuery<Explanation, ApiError>({
     queryKey: ["settings", "explain", key],
-    queryFn: () => get<Explanation>("settings.explain", `/api/settings/explain?key=${key!}`),
+    queryFn: () => get<Explanation>("settings.explain", `/api/settings/explain?key=${key!}`, { key }),
     enabled: Boolean(key),
     retry: false,
   });
@@ -163,6 +163,7 @@ export function useSettingHistory(key?: string, enabled = true) {
       get<{ versions: SettingVersion[] }>(
         "settings.history",
         key ? `/api/settings/history?key=${key}` : "/api/settings/history",
+        key ? { key } : {},
       ),
     enabled,
     retry: false,

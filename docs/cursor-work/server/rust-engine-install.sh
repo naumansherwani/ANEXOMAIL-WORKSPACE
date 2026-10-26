@@ -24,6 +24,7 @@
 #   contx  -> server/rust/contx_core.rs + contx_glue.rs (People/Companies/universal search: contacts.*, companies.*, search.universal — sab plans, Bun se Rust)
 #   basx   -> server/rust/basx_core.rs + basx_glue.rs (storage x5, support.sla(PUBLIC)/drafts/draftDiscard, workspace.setActive — Bun se Rust; support drafts ka login-loophole band)
 #   billx  -> server/rust/billx_core.rs + billx_glue.rs (Batch C1: billing.state, billing.stateHealth (FOUNDER-only, Bun loophole band), billing.claimGuest — padhne wale; paisa banane wale C2)
+#   setx   -> server/rust/setx_core.rs + setx_glue.rs (Batch D: settings.list/explain/save/history/revert, integrations.* 10, founderSettings/founderIntegrations/founderSecurity.overview — founder-only; Business settings + Leo actions Bun par)
 #   wsx    -> server/rust/wsx_core.rs + wsx_glue.rs (onboarding: workspace.personal + workspace.organisations — naya user ka workspace, Bun se Rust; invitations = team.invites.create pehle se Rust)
 #   crmd   -> server/rust/crmd_core.rs + crmd_glue.rs (Pro CRM desk: crm.leads/deals + create/move/convert/work/thread/insights — Bun se Rust)
 #   livex  -> server/rust/livex_core.rs + livex_glue.rs (Rule 52 G3 / Rule 56: crm.live radar+timeline+graph (Pro+) aur org.members — Bun se Rust, Tokio async; workx_core + cal_core chahiye)  [koi SQL nahi]
@@ -54,7 +55,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -162,6 +163,8 @@ CFG={
  "wsx": {"public": False, "label": "wsx", "procs": ['"workspace.personal"','"workspace.organisations"']},
  # billx (Batch C1, Rule 52/56/57): billing padhne wale 3 raaste, Polar ko call nahi. stateHealth founder-only. Koi SQL nahi.
  "billx": {"public": False, "label": "billx", "procs": ['"billing.state"','"billing.stateHealth"','"billing.claimGuest"']},
+ # setx (Batch D, Rule 52/56/57): settings 5 + integrations 10 + founder overviews 3 (founder-only). Sab plans (login). Koi SQL nahi. Business settings (blast/simulate/drift/schedule) aur Leo actions Bun par.
+ "setx": {"public": False, "label": "setx", "procs": ['"settings.list"','"settings.explain"','"settings.save"','"settings.history"','"settings.revert"','"founderSettings.overview"','"integrations.providers"','"integrations.connections"','"integrations.connect"','"integrations.disconnect"','"integrations.migrations"','"integrations.startMigration"','"integrations.controlMigration"','"integrations.delivery"','"integrations.exports"','"integrations.export"','"founderIntegrations.overview"','"founderSecurity.overview"']},
  # basx (Rule 52/56): Basic-baaqi chhote endpoints (storage/support/setActive), sab plans. PUBLIC proc: support.sla (landing SLA). Koi SQL nahi.
  "basx": {"public": True, "label": "basx", "procs": ['"storage.state"','"storage.preflight"','"storage.reserve"','"storage.commit"','"storage.release"','"support.sla"','"support.drafts"','"support.draftDiscard"','"workspace.setActive"'],
           "public_call": "public(&proc, &input)"},
@@ -623,6 +626,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> billx: Rust ne billing.state/stateHealth/claimGuest pakda (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> billx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> billx: jawab upar dekhein";;
+      esac;;
+    setx)
+      r="$(probe settings.list '{"input":{"scope":"personal"}}')"
+      echo "   settings.list (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> setx: Rust ne settings.*/integrations.*/founder*.overview pakda (nakli login 401 = theek).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> setx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> setx: jawab upar dekhein";;
       esac;;
     basx)
       r="$(probe storage.state '{"input":{}}')"
