@@ -36,3 +36,13 @@ NOT Pro: Writer/Sheet/Show (N-DOC-01 collaborative docs) = Business (PROPOSED, b
 | Passkey banner "required from Oct 27" | dikha — kal se lazmi | founder ko yaad dilana |
 
 ## 22:10 UPDATE: booking links (1 of 3), Overlap Matrix, snooze menu, Thread insight LIVE GREEN — docs/claude/PRO-LIVE-GREEN-26OCT.md. Baaqi sirf: hourly-rate UI (GREEN 22:30), shared-inbox live collision (2nd user), trusted devices 4 UI, tag enforce.
+
+## 27 Oct 2026 03:05 — PRO GREEN KITNA BAAQI (ginti repo map se)
+| Hissa | Baaqi | Deploy |
+|---|---|---|
+| Pro-only Bun endpoints (map: 7; asal 4: mail/handoff delete, mail/devices/seen, mail/follow-up delete, analytics/:report; promise commit/dismiss + crm.insights Rust crmd par pehle se, map lag) | 4 | 1 |
+| Basic-shared (Pro bhi use karta hai): authx LIVE GREEN; contx+basx deploy pending; B2 workspace 3; C billing-sync 12; D settings 7+integrations 10+security 7; E account-deletion 3+mail 2+calendar 1+locale 1+trial 9; F auth login 24 (risky, aakhir); polar 7 NO-TOUCH | ~81 | ~6 |
+| Tracker #7 Calendar UI click-through (Chrome) | 1 | 0 (sirf dekhna) |
+| Tracker #8 ANEXO_TAG_MODE=enforce (founder env) | 1 | 1 command |
+| Shared-inbox live collision (doosra Pro user chahiye) | 1 | founder |
+Kul ~8 deploys + 2 founder kaam. Ek deploy = 6 commands, ek batch ek package.

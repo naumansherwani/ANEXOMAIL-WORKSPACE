@@ -214,3 +214,6 @@ Founder deploy 01:19: Rust restart 184, Web pull OK, basic/pro ALL PASS (auth.se
 
 ## 27 Oct 2026 02:55 PKT — INSTALLER FAIL fix (basx)
 Founder deploy 01:24: installer ruk gaya ('dashboard.ai-usage' live main.rs mein pehle se Rust par) — kuch install NAHI hua, server wahi purana, KERNEL ALL PASS, kuch toota nahi (safe-stop). Galti: mera clash-scan dhila tha. Fix: dashboard.ai-usage basx se hata diya (basx ab 9 procs). Naya docs/cursor-work/server/installer-dryrun.sh: deploy se PEHLE installer ka patch-step repo main.rs par chalta hai + proc clash scan; authx contx basx dry-run PASS, full crate cargo check PASS. LESSON: har naye module par dryrun pehle, phir founder ko command.
+
+## 27 Oct 2026 03:05 — PRO GREEN ginti (founder sawal 01:27)
+Pro green close = ~8 deploys: Pro-only 4 endpoints (1), Basic-shared ~81 (6: B2 workspace, C billing-sync, D settings/integrations/security, E account/mail/cal/locale/trial, F auth login), + tag enforce (founder env) + shared-inbox collision test (2nd Pro user) + calendar UI click-through. Detail: docs/packages/pro/PRO-GREEN-TRACKER.md (03:05). Abhi deploy pending: contx+basx (installer fix 452dd4e, dry-run PASS).
