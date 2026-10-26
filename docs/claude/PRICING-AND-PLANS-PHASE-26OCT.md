@@ -3,7 +3,7 @@
 Founder: "package plans update karna hai aur polar main update karna hai aur price se related jitni baatein hain un ka ek alag phase bana lo. polar main prices main update karun ga. packages plan jahan jahan hon woh update hon, enterprise new card aaye aur uska sab bane."
 
 ## Zimmedari
-- **Founder**: Polar mein prices/products khud (Enterprise £18,000; AI £2,000/£5,000/£25,000 -- AI abhi COMING SOON, July 2027 tak live nahi; overage meter).
+- **Founder**: Polar mein prices/products khud (Enterprise £18,500; AI £2,000/£5,000/£25,000 -- AI abhi COMING SOON, July 2027 tak live nahi; overage meter).
 - **CEO/Claude**: repo -- plans/cards/landing/gates/docs. Code sirf founder ke "ab likho" par, har technology ki alag deploy command.
 
 ## Qaida (STRICT): pehle puri website ka feature inventory, phir gate
