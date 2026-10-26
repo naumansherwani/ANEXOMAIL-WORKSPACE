@@ -73,7 +73,7 @@ src/lib/org-export.ts 221df989c4969375
 src/lib/report-figures.ts 21b05c7f52004220
 src/components/app/work/DecisionLedger.tsx 5db4d0eb44ee890a
 src/components/app/work/PromiseRecovery.tsx a490927789d4bd77
-src/lib/crm.ts feeb568bb3f56236
+src/lib/crm.ts 1c09aa74ae114d5c
 src/lib/personal-tiers.ts 93056896f08e505c
 src/components/app/people/ContactsImport.tsx 3fb07a6b9294d100
 src/lib/contacts-import.ts b0615264d021d4f1
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 124457489441c610
+docs/cursor-work/founder/founder-commands.md 06f7181c20066b2c
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 702ab734674788d4
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 3464105614f1b7c4
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -166,7 +166,7 @@ server/rust/device_glue.rs f234c8637dc504d6
 src/components/app/security/DeviceVaultPanel.tsx 32d98555346bdf0e
 server/mail-worker.ts 40fc4a9fd34aa0dd
 server/mail/sendmail.ts 349c9163d9a1e592
-server/routes/mail-compose.ts 6f0bb5d3cf3ccbfa
+server/routes/mail-compose.ts bfe4a62748c1960f
 server/routes/mail.ts b36a634b9e9a50a1
 src/lib/compose.ts 520932e296eb2a8c
 docs/cursor-work/server/attach-caddy-close-files.sh 7623871b09c33865
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md c4ee1075455e3a0b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 87f4f9e3ca9d45a6
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 431828210ff9ccc4
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 03be3e0212ed356b
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -641,7 +641,7 @@ src/components/app/mail/ThreadNote.tsx 63c294860d01d395
 docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md a3e3b72801636ded
 docs/cursor-work/MIGRATION-PHASES-24OCT.md a21d359e59e7bba7
 docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md dbe27f8667093857
-server/rust/mailx_core.rs 0f48edc98b906fd0
+server/rust/mailx_core.rs 0bd3ee1c823b3267
 server/rust/mailx_glue.rs adbb2151133bb0c6
 docs/cursor-work/server/brain-pro-install.sh 8c33fd155d855f47
 docs/cursor-work/server/brain_pro_patch.py f677b589cb6ede66
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md 2c9e3c0ee7a95a03
+docs/packages/GREEN-LEDGER.md 38e5984cb969cecf
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -770,4 +770,4 @@ docs/packages/business/ANEXOCHAT-K3-PLAN.md 73f77dd668ac3450
 server/rust/livex_core.rs 75add9f7be4f9f9e
 server/rust/livex_glue.rs c6c5fef3032aca56
 docs/cursor-work/RULE-52-REST-INVENTORY.md 791f5d255fbf8623
-docs/packages/pro/PRO-GREEN-TRACKER.md c060c159d5245b68
+docs/packages/pro/PRO-GREEN-TRACKER.md 241cd57e4495fc2b

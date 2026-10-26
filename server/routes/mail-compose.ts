@@ -218,11 +218,11 @@ mailComposeRouter.post("/send-confidence", async (req, res) => {
 
   const unresolved = [...body.matchAll(/{{\s*([\w.]+)\s*}}/g)].map((m) => m[1]);
   for (const v of new Set(unresolved)) {
-    issues.push({ kind: "missing_variable", severity: "block", message: `Variable {{${v}}} resolve nahi hui.` });
+    issues.push({ kind: "missing_variable", severity: "block", message: `Variable {{${v}}} could not be resolved.` });
   }
 
   if (/attach(ed|ment|ing)?\b/i.test(body) && !Number(b.attachments || 0)) {
-    issues.push({ kind: "attachment_promised", severity: "warn", message: "Attachment ka zikr hai magar file nahi lagi." });
+    issues.push({ kind: "attachment_promised", severity: "warn", message: "You mention an attachment, but no file is attached." });
   }
 
   const internal = new Set(["anexomail.com", "nexatect.com"]);

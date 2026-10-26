@@ -221,10 +221,10 @@ pub fn send_confidence(to: &str, subject: &str, body: &str, attachments: i64) ->
         issues.push(Issue { kind: "wrong_identity", severity: "block", message: "Recipient missing.".into() });
     }
     for v in template_vars_max(body, usize::MAX) {
-        issues.push(Issue { kind: "missing_variable", severity: "block", message: format!("Variable {{{{{v}}}}} resolve nahi hui.") });
+        issues.push(Issue { kind: "missing_variable", severity: "block", message: format!("Variable {{{{{v}}}}} could not be resolved.") });
     }
     if mentions_attachment(body) && attachments == 0 {
-        issues.push(Issue { kind: "attachment_promised", severity: "warn", message: "Attachment ka zikr hai magar file nahi lagi.".into() });
+        issues.push(Issue { kind: "attachment_promised", severity: "warn", message: "You mention an attachment, but no file is attached.".into() });
     }
     let external: Vec<String> = to
         .split(|c| c == ',' || c == ';')

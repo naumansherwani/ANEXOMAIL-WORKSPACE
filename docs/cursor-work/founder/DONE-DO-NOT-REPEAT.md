@@ -203,3 +203,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 20:50 kernel-check wasm FAIL got=39aaf076d37b = Web restart ke baad 500 JSON (57 byte), wasm kharab nahi; retry 8x5s. routeTree.gen.ts differ=1 benign. Rust livex reinstall founder ne kiya (timeline fix live).
 
 - 26 Oct 21:00 kernel-check ALL PASS + basic ALL PASS (founder output). PRO-GREEN-TRACKER.md master list. calendar.availability/focus 502 = focus_windows mein created_by nahi (win_filter org-only fix, deploy baaqi). Office suite (Writer/Sheet/Show) Business N-DOC-01, Pro nahi.
+
+- 26 Oct 21:25 calendar 502 fix LIVE GREEN (Pro probe ALL PASS). Live Pro walk (Chrome) table PRO-GREEN-TRACKER. Fixed: "-£0" money(), pre-send scan Roman Urdu->English. Open: Avail working hours; booking links/Overlap/shared inbox/snooze/hourly-rate UI walk.

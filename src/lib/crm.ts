@@ -457,8 +457,8 @@ export function money(value: number, currency = "GBP") {
       style: "currency",
       currency,
       maximumFractionDigits: 0,
-    }).format(value);
+    }).format(Math.round(value) || 0); // -0 / -0.3 => "£0", never "-£0"
   } catch {
-    return `${currency} ${Math.round(value)}`;
+    return `${currency} ${Math.round(value) || 0}`;
   }
 }
