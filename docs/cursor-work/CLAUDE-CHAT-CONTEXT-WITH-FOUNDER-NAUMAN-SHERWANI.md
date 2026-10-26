@@ -1089,3 +1089,6 @@ Pro mein ANEXOChat/video nahi (Business+ se). Personal HOLD: alag UI, Gmail ke u
 
 ### 26 Oct 05:07 — ENTERPRISE = £18,000/month
 Founder: sab kuch soch ke Enterprise £18,000 (yearly 180,000 CEO x10). Business Pro ke BAAD alag banega, poori website ka face, abhi zero, advanced technology. Docs mein har jagah update. Chat/video: Business se shuru (Basic/Pro nahi) -- yeh dobara confuse na ho. Business Basic approved; Pro package agla.
+
+### 26 Oct 05:20 — Rule 55
+Founder: har package par per month + user cap zaroor likha ho (Basic 5, Pro 20, Business 60, Business Pro 570, Enterprise unlimited). Basic ka code/landing/SQL/Polar update ABHI baqi (13 jagah ki list chat mein di); 'ab likho' ka intezar.

@@ -89,3 +89,4 @@
 - 26 Oct 04:50 PP1: video tiers (Pro 720p, BP 2K, Ent full), booking links 1/3/20/unlimited/unlimited, tarteeb = ek ek package page (Business Basic pehle, phir Personal) -- PP1-FULL-GATE-TABLE-26OCT.md
 - 26 Oct 05:00 Business Basic APPROVED (5 users/25GB/25MB/2 devices/1 booking link, domain+undo send in; GBP40/mo, yearly 440 pending). CORRECTION: Pro mein chat/video NAHI (Business+ se). Personal HOLD (alag meeting/UI/3-phase plan). Enterprise zero (baad mein advanced tech)
 - 26 Oct 05:07 ENTERPRISE PRICE = £18,000/month (pehle 15,000) -- docs mein har jagah update (v6 file, PRICING-POSITIONING, FORMULA, PP1, INV-3, AGENTS). Enterprise Business Pro ke baad alag phase, abhi zero. Chat/video: Business se (Basic/Pro mein nahi)
+- 26 Oct 05:20 AGENTS Rule 55: har package par PER MONTH + USER CAP (5/20/60/570/unlimited) zaroor likha ho, har page/card/Polar/SQL mein

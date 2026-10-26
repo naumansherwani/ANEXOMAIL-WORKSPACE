@@ -414,3 +414,6 @@ Jab bhi koi policy, feature, price, limit ya package add/change karna ho: PEHLE 
 Founding-member price-lock = 24 mahine (2 saal), pehli 150 companies.
 
 UPDATE 26 Oct 2026 05:07 PKT: Enterprise price = £18,000/month (Rule 51/53 mein jahan £15,000 tha, ab £18,000). Enterprise Business Pro ke baad ALAG phase mein banega (poori website ka chehra, advanced tech, abhi zero).
+
+## Rule 55 (STRICT, founder 26 Oct 2026 05:20 PKT) — har package: PER MONTH + USER CAP zaroor likha ho
+Har jagah jahan koi package dikhta hai (plans.ts card, plans.tsx, landing, billing/profile, Polar product description, SQL labels, emails) price "per month" (flat, per-user NAHI) likha ho AUR user cap saaf likha ho: Basic up to 5 users, Pro up to 20, Business up to 60, Business Pro up to 570, Enterprise unlimited. Cap ke baghair koi package card/page commit nahi.
