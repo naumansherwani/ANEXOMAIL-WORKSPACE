@@ -98,3 +98,11 @@ IN PROGRESS: merge via real UI (Setup > Duplicates > ZZ Test Lead keep, ZZ Dup d
 TODO Pro-green (order): (1) merge result; (2) "New deal" button visible after min-w-0 layout fix (screenshot /app/crm/pipeline); (3) merge keep-in-drop = 400 (needs latest Rust installed; confirm with pm2 logs grep crmx); (4) form rate limit 30/10min (throwaway Postgres or 30 posts); (5) Calendar Availability/Focus UI click-through on Pro + hourly-rate UI for meeting cost; (6) Rust ports crm.live + org.members (still kernel_status_404) + kernelRpc early-boot wait 300-400ms; (7) enforce request-tag. Business caps need a Business account.
 Pending server note: pull.sh says "server==repo differ=1" (one src file differs; identify with its diff list, unresolved).
 Always paste full ordered commands inline: SQL -> Rust install + pm2 restart + health -> Web pull.sh -> probes.
+
+## 26 Oct 2026 19:40 PKT — PRO CRM P1+P2 LIVE GREEN (Chrome, Pro pro.buyer@anexomail.com; latest Rust+SQL+Web deployed)
+GREEN (live): merge via real UI (Setup > Duplicates > keep ZZ Test Lead, "Yes, merge"): crm.dups.list total_groups 0; survivor 4d112ab1 keeps company "ZZ Co" and custom values (interest, zz_test_renewal, zz_test_vip); merge keep-in-drop = 400 bad_request; foreign id = 404; pipeline edit on existing pipeline 200; /app/crm/pipeline "New deal" button visible, board scrolls inside its own area (layout fix min-w-0 GREEN).
+GREEN (throwaway Postgres, not live — would need 30 real leads): form rate limit — 30 submits accepted, 31st {"ok":false,"reason":"rate_limited"}.
+Pro endpoints live 200 (Rust): calendar.availability {date}, calendar.focus, mail.followup/snippets/handoff.list, analytics.threadEconomics/responseDebt, work.tasks/promises, crm.overview/board/forms.list/fields.list. calendar.availability equals Bun /api/calendar/availability.
+SMALL BUG (TODO): calendar.availability with EMPTY input returns 502 (should be 400 or default today) — UI always sends date so harmless; fix in cal_glue.rs availability().
+STILL NOT GREEN: Business caps (needs Business account); Calendar Availability/Focus UI click-through + hourly-rate UI; crm.live + org.members Rust ports; kernelRpc early-boot wait; ANEXO_TAG_MODE enforce (founder env change); pull.sh "differ=1" file unidentified.
+Test data left on Pro account: ZZ Test Lead, zz.test.fast lead, 2 ZZ TEST Deal, 5 ZZ fields, 1 ZZ form.
