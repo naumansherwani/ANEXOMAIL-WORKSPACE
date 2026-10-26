@@ -1313,3 +1313,6 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 MODE=pro EMAIL=pro.buyer@anexomail.com bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh) 2>&1 | grep -E "FAIL|ALL PASS|account\.signup"
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh) 2>&1 | grep -E "FAIL|KERNEL|wasm jawab"
 ```
+
+## 27 Oct 2026 01:05 PKT — Website flow (Rule 52 + cinematic) dikhaya
+Founder 00:54 ne poocha website kaise banegi: diagram dikhaya (UI+cinematic -> WASM kernel -> QUIC -> Rust Tokio -> Supabase). Likha: docs/claude/TECHNOLOGY-MAP-27OCT.md section 5. Agla kaam: auth.session Rule 52 port, phir Basic baaqi 110.

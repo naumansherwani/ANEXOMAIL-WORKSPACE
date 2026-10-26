@@ -37,3 +37,13 @@ Har endpoint ka Bun route tab hatta hai jab Rust jawab Bun ke barabar saabit ho 
 1. `ENDPOINT-PACKAGE-MAP` mein package dekho (Rule 57). 2. `X_core.rs` (std-only + tests) + `X_glue.rs` (async Tokio, `owns()`/`dispatch`). 3. Installer CFG + probe line + `rpc-contract.ts`. 4. Browser `rpc()` -> kernel; REST/Bun twin NAHI. 5. cargo check (poora crate, TLS ke saath) + bun test + tsc. 6. Deploy, probes, Chrome mein live dekho.
 
 (Frontend: docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md)
+
+## 5. Website kaise banegi (founder 00:54 — "damkhao kaise kero gay")
+Har screen ka raasta (Rule 52), upar se neeche:
+1. **Screen = React 19 UI** (TanStack Router/Query, Tailwind 4). Cinematic magic (three/R3F, GSAP+ScrollTrigger, Theatre, WebGPU/TSL, Rapier, WebXR) SIRF is layer mein. Isay data ki parwah nahi.
+2. **UI data mangti hai kernel se** (`rpc()` -> Rust WASM kernel, HMAC tag). UI direct `fetch`/Bun nahi karti (fetch sirf fallback `rpcOrRest`, Rule 59).
+3. **Kernel -> QUIC/WebTransport (`/wt/rpc`) ya `/rpc`** -> **Rust server (async Tokio)**. Plan gate (`resolve_plan`) YAHAN lagta hai, UI sirf aaina (Rule 57).
+4. **Rust -> Supabase/Postgres**.
+5. Bun :3100 sirf emergency fallback; Enterprise tak hat jayega.
+
+Misal "Lead capture": form (React, glow animation) -> `crm.createLead` kernel -> Rust `crmd_glue` (Pro gate, clean_lead_email) -> `leads` table -> jawab wapas -> UI card animate. Kaam wale screens (mail/work/CRM/Office) fast rehte hain, cinematic sirf landing/onboarding/chat/dashboard accent (Rule 60).

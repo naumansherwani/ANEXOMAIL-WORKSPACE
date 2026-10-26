@@ -1371,3 +1371,6 @@ CINEMATIC FRONTEND STACK likha (founder 00:48: three.js jaisi latest cinematic t
 
 ## 27 Oct 2026 01:00 PKT — Rule 60 cinematic + WebXR
 FOUNDER 00:51: poori cinematic list ab se implement hogi + WebXR VR/AR 'must aye ga' => Rule 60 (AGENTS.md) + CINEMATIC-FRONTEND-STACK section E (route-wise 'kahan hoga': landing/about/plans, auth/claim/checkout, loaders, dashboard, CRM stage, calendar globe, anexochat Moon, anexovideocall WebXR, kaam wale screens cinematic NAHI, founder_ lab) + item 12 WebXR Business+ K3 ke baad. Rule 52: data kernel se, 3D sirf UI.
+
+## 27 Oct 2026 01:05 PKT — Website flow (Rule 52 + cinematic) dikhaya
+Founder 00:54 ne poocha website kaise banegi: diagram dikhaya (UI+cinematic -> WASM kernel -> QUIC -> Rust Tokio -> Supabase). Likha: docs/claude/TECHNOLOGY-MAP-27OCT.md section 5. Agla kaam: auth.session Rule 52 port, phir Basic baaqi 110.
