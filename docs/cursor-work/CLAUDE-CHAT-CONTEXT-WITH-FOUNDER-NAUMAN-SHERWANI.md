@@ -1165,3 +1165,5 @@ Founder: Enterprise £18,500 (Bun-free, Rust only) — AGENTS.md mein. Business 
 ### 26 Oct 10:50 — LIVE Pro verify: Web+Rust deployed (founder), kernel-check ALL PASS. Chrome Pro: anexoKernel rpcUp, tagged 22 calls (ticketOk), Rust availability/focus 200. Founder ne "quinn browser" wala point hamesha ke liye DROP kiya (browser = native WebTransport/QUIC, wahi better). Agla: Basic 403 proof (basic-gate-probe.sh), fallbackProcs list se bacha hua Bun-only endpoints Rust par, phir Business (ANEXOChat) — lamba kaam.
 
 ### 26 Oct 10:55 — Basic 403 PROOF (founder output): Rust drafts/threads 200, snooze/assign/templates/schedule/insights/availability/focus/files/goal/rescue/followup/snippets/handoff/threadEconomics 403, responseDebt 200. Bun /calendar/availability+focus 200 (FAIL) -> brain-kernel-install guroh C split (calendar.ts alag), D = revenue/release drift report.
+
+### 26 Oct 10:35 — Pro positive control ALL PASS 21/21; Brain guroh D drift comments-only (installer ACCEPT_LIVE). Pro server gates LIVE GREEN. Baqi: UI click-through, fallbackProcs, CRM P1/P2.

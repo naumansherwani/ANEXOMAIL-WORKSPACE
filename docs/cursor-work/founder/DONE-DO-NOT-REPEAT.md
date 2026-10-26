@@ -114,3 +114,4 @@
 - 26 Oct 10:45 Kernel request-tag wire + E91 + stats + warmKernel + rpc-contract READY (deploy SQL->Rust->Web baqi)
 - 26 Oct 10:50 LIVE (Pro, Chrome): Web+Rust deployed; kernel-check ALL PASS (tag observe valid=0 missing=1 abhi); anexoKernel.stats tagged=22 ticketOk=1; Rust calendar.availability 200 / focus 200 / files gate paar / followup 200 / responseDebt 200. Basic 403 = basic-gate-probe.sh (extended). Fallback procs (404) ab anexoKernel.fallbackProcs se dikhengi (migration bacha kaam).
 - 26 Oct 10:55 basic-gate-probe: Rust 17/17 PASS (Basic 403); Bun Availability/Focus FAIL(200) kyunke Brain guroh C drift (revenue/release) ki wajah se chhoota; guroh C/D split kiya
+- 26 Oct 10:35 PRO server gates LIVE PROOF: probe Basic 17/17 + Pro 21/21 PASS; Brain A B C lagey; D drift comments-only (ACCEPT_LIVE)

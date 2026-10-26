@@ -58,3 +58,9 @@ Technology: Rust :3200 (Tokio async) primary; same dispatch HTTP + WebTransport 
 - Stats: anexoKernel.stats {kernel, fetch, tagged, untagged, ticketOk, ticketFail, lastFallback}. Warm: AppShell mount.
 - Typed contract rpc-contract.ts + 4 tests (Rust drift guard). bun 271 pass, tsc OK.
 - Deploy tarteeb: SQL (E91) -> Rust -> Web. Phir kernel-check.sh + Chrome: anexoKernel.stats.tagged > 0, server log valid>0 invalid=0. Tab enforce.
+
+## PRO GREEN BATCH 1 — LIVE PROOF (26 Oct 10:35 PKT, founder server output)
+- basic-gate-probe BASIC: Rust 17/17 PASS (403 on every Pro proc, open procs 200/400). PRO (pro.buyer): ALL PASS 21/21 (Rust + Bun fallback availability/focus 200).
+- Brain: guroh A B C lagey (Bun fallback Availability/Focus gate live). Guroh D (revenue/release) drift = sirf purane comments; ACCEPT_LIVE hash se ab lagega.
+- Chrome Pro: anexoKernel rpcUp, tagged calls, Rust availability/focus 200.
+- Baqi Pro: calendar UI click-through, fallbackProcs (Bun-only endpoints -> Rust), CRM P1/P2 (founder haan), meeting-cost hourly rates UI.

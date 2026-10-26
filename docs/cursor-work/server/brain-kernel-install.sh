@@ -16,6 +16,8 @@ BASE="${BASE:-8be9a82^}"
 [ -d "$SRC/routes" ] || { echo "FAIL: $SRC/routes nahi mila"; exit 2; }
 git -C "$REPO" fetch -q origin main 2>/dev/null
 sh12() { sha256sum | cut -c1-12; }
+# Drift jo report se dekha gaya (26 Oct 10:35, brain-drift-report.sh): live revenue.ts/release.ts sirf PURANE COMMENTS mein BASE se alag (code same) => lagana mehfooz.
+ACCEPT_LIVE="${ACCEPT_LIVE:-9e5a6527699c 3752421b7554}"
 declare -A GROUPS_EXIST=( [A]="" [B]="routes/auth.ts" [C]="routes/calendar.ts" [D]="routes/revenue.ts routes/release.ts" )
 declare -A GROUPS_NEW=( [A]="routes/analytics.ts lib/analytics-gate.ts" [B]="lib/mfa-challenge.ts" [C]="" [D]="" )
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT; APPLY=""
@@ -26,7 +28,7 @@ for g in A B C D; do
     new="$(git -C "$REPO" show "origin/main:server/$f" 2>/dev/null | sh12)"
     base="$(git -C "$REPO" show "$BASE:server/$f" 2>/dev/null | sh12)"
     cur="$(sh12 < "$live")"
-    if [ "$cur" = "$new" ]; then :; elif [ "$cur" = "$base" ]; then :; else ok=0; why="$why $f(DRIFT live=$cur base=$base)"; fi
+    if [ "$cur" = "$new" ]; then :; elif [ "$cur" = "$base" ]; then :; elif case " $ACCEPT_LIVE " in *" $cur "*) true;; *) false;; esac; then :; else ok=0; why="$why $f(DRIFT live=$cur base=$base)"; fi
   done
   if [ "$ok" = 1 ]; then APPLY="$APPLY $g"; echo "guroh $g: lagega"; else echo "guroh $g: CHHOD DIYA —$why  (Output Claude ko bhejein; hunks banenge)"; fi
 done
