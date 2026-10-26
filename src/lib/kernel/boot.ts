@@ -15,12 +15,17 @@ let pending = true; // kernel load abhi chal raha hai
 
 /** Haqeeqat ki ginti: kitni calls kernel (WebTransport) se gayin, kitni fetch par; kitni tag ke saath. `anexoKernel.stats` se dikhti hai. */
 const stats = { kernel: 0, fetch: 0, tagged: 0, untagged: 0, ticketOk: 0, ticketFail: 0, lastFallback: "" };
-/** Kaun se procs fetch par gaye (Bun fallback / kernel nahi) — migration ka asli bacha hua kaam. Max 80 naam. */
+/** Kaun se procs fetch par gaye (Bun fallback / kernel nahi) — migration ka asli bacha hua kaam. Max 400 naam. */
 const fallbackProcs: Record<string, string> = {};
 export function noteFetch(reason = "fetch", proc = ""): void {
   stats.fetch++;
   stats.lastFallback = reason;
-  if (proc && (proc in fallbackProcs || Object.keys(fallbackProcs).length < 80)) fallbackProcs[proc] = reason;
+  if (proc && (proc in fallbackProcs || Object.keys(fallbackProcs).length < 400)) fallbackProcs[proc] = reason;
+}
+
+/** api.ts har seedha REST call isi hook se batata hai (Rule 52 audit: kernel ke bahar jo bhi jaye woh gina jaye). */
+if (typeof window !== "undefined") {
+  (globalThis as { __anexoRest?: (p: string, m: string) => void }).__anexoRest = (p, m) => noteFetch("rest", `${m} ${p.split("?")[0]!.replace(/[0-9a-f]{8}-[0-9a-f-]{27,}/g, ":id")}`);
 }
 
 /**

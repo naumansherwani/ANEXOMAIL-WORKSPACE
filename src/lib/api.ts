@@ -151,6 +151,12 @@ async function send<T>(path: string, init: (RequestInit & { auth?: boolean }) | 
     headers.set("authorization", `Bearer ${token}`);
   }
 
+  // Rule 52 audit: har seedha REST call gina jata hai (anexoKernel.stats.fetch + fallbackProcs["METHOD /api/.."]="rest") — maqsad 0.
+  try {
+    (globalThis as { __anexoRest?: (p: string, m: string) => void }).__anexoRest?.(path, init?.method ?? "GET");
+  } catch {
+    /* diagnostics kabhi call nahi rokti */
+  }
   let response: Response;
   try {
     response = await fetch(`${BASE}${path}`, { ...init, headers, credentials: "omit" });
