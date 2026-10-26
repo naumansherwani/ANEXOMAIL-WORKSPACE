@@ -655,8 +655,8 @@ src/components/app/mail/ThreadHeaderActions.tsx 887f7fd9b081a58e
 docs/cursor-work/server/brain_pro3_hunks.json 5182ed511e483818
 docs/cursor-work/sql/E86_drafts_followups.sql d80f1270c63965ea
 docs/cursor-work/sql/CHECK_E86.sql b8996860da7e8a25
-docs/claude/MIGRATION-LEDGER-24OCT.md 84866114ad2f848b
-docs/claude/ENDPOINT-MIGRATION-24OCT.csv e873c57f010ee4da
+docs/claude/MIGRATION-LEDGER-24OCT.md 06146aa65946169b
+docs/claude/ENDPOINT-MIGRATION-24OCT.csv 02a696aa4ec47e87
 docs/cursor-work/sql/E84_room_series_note.sql a20ff07e6d1bb48c
 docs/cursor-work/sql/CHECK_E84.sql 17304773909fb074
 src/lib/handoff.ts 66fdf574d9c66118
