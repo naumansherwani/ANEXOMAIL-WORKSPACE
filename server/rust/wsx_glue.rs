@@ -53,16 +53,20 @@ async fn patch_only(path_and_query: &str, body: Value) -> Result<(), String> {
 }
 
 /// account_profiles.preferences.workspace_kind = kind, onboarded = true.
-async fn stamp_kind(uid: &str, kind: &str) {
+/// Profile row na ho (NOT NULL email/legal_name/display_name) to Bun ka upsert chup-chaap fail hota tha — yahan row bana dete hain.
+async fn stamp_kind(uid: &str, email: &str, kind: &str) {
     let prof = first(crate::sb_select(&format!("account_profiles?select=preferences&user_id=eq.{}&limit=1", enc(uid))).await);
+    let exists = prof.is_some();
     let mut prefs = prof.and_then(|p| p.get("preferences").cloned()).filter(|p| p.is_object()).unwrap_or(json!({}));
     prefs["workspace_kind"] = json!(kind);
-    let _ = crate::sb_upsert(
-        "account_profiles",
-        "user_id",
-        json!({ "user_id": uid, "preferences": prefs, "onboarded": true }),
-    )
-    .await;
+    let mut row = json!({ "user_id": uid, "preferences": prefs, "onboarded": true });
+    if !exists {
+        let local = email.split('@').next().unwrap_or("").to_string();
+        row["email"] = json!(email);
+        row["legal_name"] = json!(local);
+        row["display_name"] = json!(local);
+    }
+    let _ = crate::sb_upsert("account_profiles", "user_id", row).await;
 }
 
 struct Made {
@@ -146,13 +150,13 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         "workspace.personal" => {
             if let Some(m) = first(crate::sb_select(&format!("org_members?select=org_id&user_id=eq.{}&limit=1", enc(&uid))).await) {
                 if let Some(oid) = m.get("org_id").and_then(|x| x.as_str()) {
-                    stamp_kind(&uid, "personal").await;
+                    stamp_kind(&uid, &mail, "personal").await;
                     return crate::ok(json!({ "id": oid, "kind": "personal", "existing": true })).into_response();
                 }
             }
             match create_org(&uid, "Personal mail", &mail, "personal", None).await {
                 Ok(m) => {
-                    stamp_kind(&uid, "personal").await;
+                    stamp_kind(&uid, &mail, "personal").await;
                     crate::ok(json!({ "id": m.id, "name": m.name, "slug": m.slug, "domain": m.domain, "kind": m.kind })).into_response()
                 }
                 Err(e) => fail(StatusCode::INTERNAL_SERVER_ERROR, "personal_workspace_failed", &e),
@@ -169,7 +173,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             };
             match create_org(&uid, &name, &mail, "business", Some(domain)).await {
                 Ok(m) => {
-                    stamp_kind(&uid, "business").await;
+                    stamp_kind(&uid, &mail, "business").await;
                     crate::ok(json!({ "id": m.id, "name": m.name, "slug": m.slug, "domain": m.domain, "kind": m.kind })).into_response()
                 }
                 Err(e) => fail(StatusCode::INTERNAL_SERVER_ERROR, "operational_workspace_failed", &e),
