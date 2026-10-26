@@ -5,7 +5,7 @@ Status sirf: DONE = repo test + live saboot dono | READY = repo test pass, live 
 | # | Rule 52 ka jumla | Repo test | Live saboot (Chrome, Pro, anexomail.com, 26 Oct) | Status |
 |---|---|---|---|---|
 | 1 | WASM kernel browser mein BUILTIN, poori website ke liye | [5][7] AppShell warmKernel | `anexoKernel` har /app page par maujood | DONE |
-| 2 | Rust -> WASM, async, Tokio (LocalSet) | [1] Cargo cdylib+tokio, exec.rs | wasm 200 load, abi 1 | DONE |
+| 2 | Rust -> WASM, async, Tokio (LocalSet), tRPC-style typed RPC (`{result:{data}}`, rpc-contract.ts), WebTransport — FOUNDER VERBATIM 20:19 | [1] Cargo cdylib+tokio, exec.rs | wasm 200 load, abi 1 | DONE |
 | 3 | Modules: sha256, hmac, sniff, rank, live, rpc (v0.2.0) | [4] | `anexoKernel.info.modules` = 6 | DONE |
 | 4 | EK kernel, version har module ke saath (Cargo = lib.rs = pin) | [2] | version 0.2.0 | DONE |
 | 5 | Pin: public/kernel/anexo-kernel-<ver>.wasm + SHA-256, loader mismatch par inkaar | [3] | SHA-256 pin se mila (server kernel-check 19:25 PASS) | DONE |
@@ -32,3 +32,6 @@ Ek session `/wt/rpc`; uske andar alag bidi streams: pehle frame par `{"stream":"
 
 ## Founder ka hukm (26 Oct 2026 20:05 PKT): "ab se Rule 52 se browser ka shuru hoga, Supabase is ko cement pakka karega; website Rule 52 ke mutabiq chalegi. yaad rakhna."
 Matlab (likha gaya): browser ka HAR call pehle kernel (Rule 52) se jata hai; fetch sirf mazboori ka fallback. Raasta: browser -> WASM kernel (WebTransport/QUIC, HMAC tag) -> Rust dispatch() (gates) -> Supabase/Postgres. Supabase = pakka data layer (RLS ON, service-role sirf Rust/SQL RPC); browser seedha Supabase se baat nahi karta. Measure: `anexoKernel.stats.fetch` 0 ke qareeb, `fallbackProcs` khali.
+
+## Founder ke alfaz (verbatim, 26 Oct 2026 20:19 PKT): "ANEXOMAIL ke browser-side mein ek general-purpose WASM KERNEL compute kernel (Rust, tRPC, WebTransport, async, Tokio mein likhna hai -> WASM KERNEL) builtin hota hai."
+Honest: kernel Rust + async + Tokio + WebTransport hai, WASM mein compile (guard [1]). "tRPC" = tRPC-STYLE contract: proc naam, typed input/output (`src/lib/rpc-contract.ts`), jawab `{result:{data}}`; server HTTP `/rpc/<proc>` aur `/wt/rpc` dono wohi shape. Asli npm `@trpc` library nahi (woh JS hai, WASM kernel mein nahi chalti). Agar founder asli tRPC library chahte hain to bata dein.

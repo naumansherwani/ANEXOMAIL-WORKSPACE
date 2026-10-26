@@ -29,6 +29,23 @@ describe("Rule 52 — ek kernel, builtin, poori website", () => {
     expect(read("web-wasm/src/exec.rs")).toMatch(/LocalSet|tokio/);
   });
 
+  test("[1b] founder ke alfaaz: Rust, async, tRPC, WebTransport, Tokio -> WASM kernel (rule text + code dono)", () => {
+    const rule = read("AGENTS.md");
+    expect(rule).toMatch(/Rust, async, tRPC, WebTransport, async, Tokio/);
+    expect(read("src/lib/rpc.ts")).toMatch(/tRPC/); // tRPC-style { result: { data } } envelope
+    expect(read("src/lib/rpc-contract.ts")).toMatch(/tRPC/); // typed procedures
+    expect(read("web-wasm/Cargo.toml")).toMatch(/Tokio/i);
+    expect(read("web-wasm/src/rpc.rs")).toMatch(/WebTransport|wt\/rpc/);
+    expect(read("server/rust/wtrpc_glue.rs")).toMatch(/Tokio|tokio/);
+  });
+
+  test("[1b] founder ke alfaz: Rust + async + Tokio + WebTransport + tRPC-style contract (AGENTS.md mein verbatim)", () => {
+    const a = read("AGENTS.md");
+    expect(a).toMatch(/tRPC, WebTransport, async, Tokio/);
+    expect(read("src/lib/rpc-contract.ts")).toMatch(/tRPC/);
+    expect(read("web-wasm/src/rpc.rs")).toMatch(/\/wt\/rpc/);
+  });
+
   test("[2] version ek: Cargo == lib.rs VERSION == pin == wasm file ka naam", () => {
     const cargo = /^version\s*=\s*"([^"]+)"/m.exec(read("web-wasm/Cargo.toml"))![1]!;
     const v = /VERSION: \(u32, u32, u32\) = \((\d+), (\d+), (\d+)\)/.exec(read("web-wasm/src/lib.rs"))!;

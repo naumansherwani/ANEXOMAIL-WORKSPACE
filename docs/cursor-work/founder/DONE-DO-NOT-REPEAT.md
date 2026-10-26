@@ -194,3 +194,6 @@ TECH NOTES: scratch crate cargo check: /tmp/claude-0/-home-claude/18af95d7-ea60-
 
 ## 26 Oct 2026 20:35 PKT — RULE 52 poori website naap (35 /app routes): kernel 214 / fetch 100 (68% kernel)
 Web pull (c82eb17 audit) deployed. Baaqi fetch ka sab se bada hissa: GET /api/auth/session + GET /api/trial/state HAR route par (66 of 100). Phir /account (mfa, sessions, recovery), /people (contacts), /integrations, /storage, /crm/leads (kernel_status_404), companies. Poori list + plan: docs/cursor-work/RULE-52-REST-INVENTORY.md. Agla: trial.state, auth.session Rust (Bun se barabari saboot pehle), phir baaqi ek ek. /app/work + /app/safety par kernel 0 aaya — dobara fresh load se check (shayad crawl ka IP-session artefact).
+
+## 26 Oct 2026 20:25 PKT — founder ne Rule 52 ke apne alfaaz likhwaye (verbatim): "ANEXOMAIL ke browser-side mein ek general-purpose WASM KERNEL compute kernel (Rust, tRPC, WebTransport, async, Tokio mein likhna hai -> WASM KERNEL) builtin hota hai. yeh hai rule"
+AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). Guard test [1b] jodi. Honest note: tRPC = tRPC-STYLE typed contract (rpc-contract.ts, {result:{data}}), asli npm @trpc library nahi (JS hai, WASM mein nahi chalti) — founder se poochha: asli library chahiye to bata dein.
