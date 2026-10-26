@@ -437,3 +437,5 @@ UPDATE Rule 52 (founder 26 Oct 2026 20:05 PKT): "ab se Rule 52 se browser ka shu
 - Poori map: `docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md` + `ENDPOINT-PACKAGE-MAP.csv` (script `docs/claude/endpoint-package-map.py`; rules PP1-FULL-GATE-TABLE-26OCT.md + docs/packages/features.tsv). Har Bun endpoint aur har Rust proc ka `starts_at` (basic | pro | business | business_pro | founder | ai_soon | internal) likha hai; upar ke packages ko bhi milta hai. Enterprise = Business Pro ki har cheez + poori website Rust-only/Bun-free (alag endpoint nahi).
 - NAYA endpoint/proc/gate likhne se PEHLE map mein uska package dekho. Map mein na ho => pehle rule/CSV mein jodo (founder confirm wali cheez "CEO guess" likho), phir code. Gate SERVER par (Rust `resolve_plan`), UI sirf aaina. Test: `src/lib/endpoint-map.test.ts` (koi UNCLASSIFIED nahi).
 - Claude seedha isi map se implement kare; dobara feature->package ki behes nahi (PP1 table pehle se hai).
+
+- **Rule 58 — Office suite (Writer/Sheet/Show, N-DOC-01) Business package ka hai** (Basic/Pro/CRM mein nahi). Detail: docs/packages/business/OFFICE-SUITE.md. Rust + WebTransport/WASM kernel par hi banega (Rule 52/56).
