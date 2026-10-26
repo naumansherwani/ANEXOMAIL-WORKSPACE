@@ -59,6 +59,16 @@ describe("rpc contract == Rust server gates", () => {
     expect(hits[0]).toContain("unknown_proc");
   });
 
+  test("contx: People/Companies/search are open to every plan and never use 404 domain errors", () => {
+    const src = rs("contx_glue.rs");
+    expect(/NOT_FOUND/.test(src.replace(/fail\(StatusCode::NOT_FOUND, "unknown_proc"[^)]*\)/, ""))).toBe(false);
+    const core = rs("contx_core.rs");
+    for (const p of ["contacts.list", "companies.get", "search.universal"]) {
+      expect(core.includes(`"${p}"`)).toBe(true);
+      expect((PROC_MIN_PLAN as Record<string, string>)[p]).toBeUndefined();
+    }
+  });
+
   test("every contract proc is enforced somewhere in Rust (no UI-only claim)", () => {
     const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs", "livex_core.rs", "crmd_core.rs"].map(rs).join("\n");
     for (const p of Object.keys(PROC_MIN_PLAN)) expect(all.includes(`"${p}"`), `${p} Rust mein nahi`).toBe(true);

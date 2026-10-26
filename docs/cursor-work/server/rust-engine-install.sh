@@ -21,6 +21,7 @@
 #   crmx   -> server/rust/crmx_core.rs + crmx_glue.rs (CRM P1+P2: pipelines, custom fields, duplicate merge, web forms; public crm.form.get/submit)  [pehle E92 SQL]
 #   trialx -> server/rust/trialx_core.rs + trialx_glue.rs (trial security/events/holds — Bun se Rust)
 #   authx  -> server/rust/authx_core.rs + authx_glue.rs (auth.session: profile+workspace+plan+orgs — har page-load, Bun GET /api/auth/session se Rust)
+#   contx  -> server/rust/contx_core.rs + contx_glue.rs (People/Companies/universal search: contacts.*, companies.*, search.universal — sab plans, Bun se Rust)
 #   crmd   -> server/rust/crmd_core.rs + crmd_glue.rs (Pro CRM desk: crm.leads/deals + create/move/convert/work/thread/insights — Bun se Rust)
 #   livex  -> server/rust/livex_core.rs + livex_glue.rs (Rule 52 G3 / Rule 56: crm.live radar+timeline+graph (Pro+) aur org.members — Bun se Rust, Tokio async; workx_core + cal_core chahiye)  [koi SQL nahi]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
@@ -50,7 +51,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -154,6 +155,8 @@ CFG={
  # crmd (Rule 52/56, Pro CRM desk): crm.leads/deals list + createLead/createDeal/moveDeal/convertLead/dealWork/dealThread/insights — Pehle Bun-only (browser POST /api/crm/leads). Koi SQL nahi. Gate Pro+ Rust mein.
  "crmd": {"public": False, "label": "crmd", "procs": ['"crm.leads"','"crm.deals"','"crm.createLead"','"crm.createDeal"','"crm.moveDeal"','"crm.convertLead"','"crm.dealWork"','"crm.dealThread"','"crm.insights"','"work.promise.commit"','"work.promise.dismiss"','"crm.memory"'], "need_mods": ["cal_core", "workx_core"]},
  # trialx (Rule 52/56): trial lifecycle ke baaqi 3 procs (security/events/holds) — state/start/claim/address/activate pehle se Rust par. Sirf login (har plan). Koi SQL nahi.
+ # contx (Rule 52/56): People/Companies/search — Basic+Pro dono (PP1 #10,#17,#31,#34), koi plan gate nahi. Koi SQL nahi.
+ "contx": {"public": False, "label": "contx", "procs": ['"contacts.list"','"contacts.tags"','"contacts.get"','"contacts.update"','"contacts.tag"','"contacts.timeline"','"companies.list"','"companies.get"','"companies.timeline"','"search.universal"']},
  # authx (Rule 52/56): `auth.session` — har page-load par chalne wali session/profile read. Sirf login. Koi SQL nahi. Login/refresh/logout Bun par (alag migration).
  "authx": {"public": False, "label": "authx", "procs": ['"auth.session"']},
  "trialx": {"public": False, "label": "trialx", "procs": ['"account.signup.security"','"account.signup.events"','"account.signup.holds"']},
@@ -594,6 +597,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> crmd: Rust ne crm.leads/deals/createLead... pakda (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> crmd: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> crmd: jawab upar dekhein";;
+      esac;;
+    contx)
+      r="$(probe contacts.list '{"input":{}}')"
+      echo "   contacts.list (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> contx: Rust ne contacts.*/companies.*/search.universal pakda (nakli login 401 = theek).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> contx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> contx: jawab upar dekhein";;
       esac;;
     authx)
       r="$(probe auth.session '{"input":{}}')"

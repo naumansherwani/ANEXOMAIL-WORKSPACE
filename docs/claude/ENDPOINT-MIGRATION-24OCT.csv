@@ -277,16 +277,16 @@ chat.ts,POST,/api/call/sfu/join,,BUN-ONLY or client wiring not proven
 chat.ts,POST,/api/call/sfu/leave,,BUN-ONLY or client wiring not proven
 chat.ts,GET,/api/call/sfu/:conversationId,,BUN-ONLY or client wiring not proven
 chat.ts,POST,/api/call/survival,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/contacts/tags,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/contacts,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/contacts/:id,,BUN-ONLY or client wiring not proven
-contacts.ts,PATCH,/api/contacts/:id,,BUN-ONLY or client wiring not proven
-contacts.ts,POST,/api/contacts/:id/tags,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/contacts/:id/timeline,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/contacts/tags,contacts.tags,RUST-FIRST (Bun fallback)
+contacts.ts,GET,/api/contacts,contacts.list,RUST-FIRST (Bun fallback)
+contacts.ts,GET,/api/contacts/:id,contacts.get,RUST-FIRST (Bun fallback)
+contacts.ts,PATCH,/api/contacts/:id,contacts.get,RUST-FIRST (Bun fallback)
+contacts.ts,POST,/api/contacts/:id/tags,contacts.tag,RUST-FIRST (Bun fallback)
+contacts.ts,GET,/api/contacts/:id/timeline,contacts.timeline,RUST-FIRST (Bun fallback)
 contacts.ts,GET,/api/companies,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/companies/:domain,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/companies/:domain/timeline,,BUN-ONLY or client wiring not proven
-contacts.ts,GET,/api/search/universal,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/companies/:domain,companies.get,RUST-FIRST (Bun fallback)
+contacts.ts,GET,/api/companies/:domain/timeline,companies.timeline,RUST-FIRST (Bun fallback)
+contacts.ts,GET,/api/search/universal,search.universal,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/overview,crm.overview,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/live,crm.live,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/memory,crm.memory,RUST-FIRST (Bun fallback)

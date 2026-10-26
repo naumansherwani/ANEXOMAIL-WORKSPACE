@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh af5a3d5d8ef89a4f
+docs/cursor-work/server/rust-engine-install.sh 255720ded16abf1a
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 9df769719438d882
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 4832487c7c60c3f3
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 374a689f4d7edcc4
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a77e1ef7406dfcee
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md d00569876a98789a
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 5471895b10ecbf3c
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -655,13 +655,13 @@ src/components/app/mail/ThreadHeaderActions.tsx 887f7fd9b081a58e
 docs/cursor-work/server/brain_pro3_hunks.json 5182ed511e483818
 docs/cursor-work/sql/E86_drafts_followups.sql d80f1270c63965ea
 docs/cursor-work/sql/CHECK_E86.sql b8996860da7e8a25
-docs/claude/MIGRATION-LEDGER-24OCT.md 06146aa65946169b
-docs/claude/ENDPOINT-MIGRATION-24OCT.csv 02a696aa4ec47e87
+docs/claude/MIGRATION-LEDGER-24OCT.md 45347f65693acc04
+docs/claude/ENDPOINT-MIGRATION-24OCT.csv 4cc8f7f147c4a7ce
 docs/cursor-work/sql/E84_room_series_note.sql a20ff07e6d1bb48c
 docs/cursor-work/sql/CHECK_E84.sql 17304773909fb074
 src/lib/handoff.ts 66fdf574d9c66118
 docs/cursor-work/server/brain_pro4_hunks.json e3b6862d0d567ce3
-docs/cursor-work/server/basic-gate-probe.sh e0db3ffa3039b550
+docs/cursor-work/server/basic-gate-probe.sh 1a6db451b5057bc2
 docs/cursor-work/server/count-endpoints.py c8d7ca79f763fdf4
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md f6c02fd9b74fda1f
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md 21bb158960928978
+docs/packages/GREEN-LEDGER.md e6d3931b49b4407e
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -748,7 +748,7 @@ docs/packages/enterprise/INCLUDES.md 353bd9960d496a3f
 docs/packages/import-inventory.py 910f1154a53d4b00
 docs/cursor-work/sql/CHECK_E91.sql 332160a76cf54fac
 docs/cursor-work/sql/E91_kernel_session_key.sql d1b7ed69d731f81f
-src/lib/rpc-contract.test.ts a8b3258831728ef5
+src/lib/rpc-contract.test.ts 3c290d7ccf196090
 src/lib/rpc-contract.ts 44e288d9a579bf1c
 docs/cursor-work/server/brain-drift-report.sh 71b339530f120080
 server/rust/workx_core.rs 1370a66db9f75d73
@@ -795,3 +795,7 @@ docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md 34dac6fb21dd4712
 docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md 6a2ab47faa65bef3
 server/rust/authx_core.rs 6a113d88bb63b691
 server/rust/authx_glue.rs 1a85b763f6367045
+docs/claude/BATCH-PLAN-27OCT.md 1954aa1662e01c60
+server/rust/contx_core.rs 6fcae4ad44514280
+server/rust/contx_glue.rs 78ad5550a19d7242
+src/lib/contacts.ts 1921f286f0646269

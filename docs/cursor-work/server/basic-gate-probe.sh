@@ -82,6 +82,12 @@ done
 chk "RUST account.signup.events (all plans 200)" "$(rpc account.signup.events '{}')" 200
 chk "RUST account.signup.holds (all plans 200)" "$(rpc account.signup.holds '{}')" 200
 chk "RUST account.signup.state (all plans 200)" "$(rpc account.signup.state '{}')" 200
+for P in contacts.list contacts.tags companies.list; do chk "RUST $P (all plans 200)" "$(rpc $P '{}')" 200; done
+chk "RUST search.universal short (200 empty)" "$(rpc search.universal '{"q":"a"}')" 200
+chk "RUST search.universal real (200)" "$(rpc search.universal '{"q":"ab"}')" 200
+chk "RUST contacts.get missing (409 not 404)" "$(rpc contacts.get '{"id":"00000000-0000-4000-8000-000000000009"}')" 409
+chk "RUST contacts.update nothing (400)" "$(rpc contacts.update '{"id":"00000000-0000-4000-8000-000000000009"}')" 400
+chk "RUST companies.get missing (409)" "$(rpc companies.get '{"domain":"nope.invalid"}')" 409
 chk "RUST auth.session (all plans 200)" "$(rpc auth.session '{}')" 200
 grep -q '"workspace_plan"' /tmp/.gp.$$ && grep -q '"organisations"' /tmp/.gp.$$ && grep -q '"account_kind"' /tmp/.gp.$$ && echo "  PASS auth.session shape (user.workspace_plan/account_kind/organisations)" || { echo "  FAIL auth.session shape"; FAILS=$((FAILS+1)); }
 chk "RUST account.signup.security nothing (400)" "$(rpc account.signup.security '{}')" 400

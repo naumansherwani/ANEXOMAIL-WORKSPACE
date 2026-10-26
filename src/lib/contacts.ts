@@ -10,7 +10,8 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api, ApiError } from "@/lib/api";
+import { ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type Relationship = "new" | "growing" | "stable" | "at_risk" | "dormant";
 
@@ -97,7 +98,7 @@ function toSearch(query: PeopleQuery) {
 export function useContacts(query: PeopleQuery) {
   return useQuery<{ contacts: Contact[] }, ApiError>({
     queryKey: ["contacts", "list", query],
-    queryFn: () => api<{ contacts: Contact[] }>(`/api/contacts?${toSearch(query)}`),
+    queryFn: () => rpcOrRest<{ contacts: Contact[] }>("contacts.list", { path: `/api/contacts?${toSearch(query)}` }, { q: query.q?.trim() || undefined, filter: query.filter && query.filter !== "all" ? query.filter : undefined, tag: query.tag || undefined }),
     retry: false,
     staleTime: 15_000,
   });
@@ -106,7 +107,7 @@ export function useContacts(query: PeopleQuery) {
 export function useContact(id: string | undefined) {
   return useQuery<ContactDetail, ApiError>({
     queryKey: ["contacts", "one", id],
-    queryFn: () => api<ContactDetail>(`/api/contacts/${id}`),
+    queryFn: () => rpcOrRest<ContactDetail>("contacts.get", { path: `/api/contacts/${id}` }, { id }),
     enabled: Boolean(id),
     retry: false,
   });
@@ -115,7 +116,7 @@ export function useContact(id: string | undefined) {
 export function useContactTimeline(id: string | undefined) {
   return useQuery<{ events: TimelineEvent[] }, ApiError>({
     queryKey: ["contacts", "timeline", id],
-    queryFn: () => api<{ events: TimelineEvent[] }>(`/api/contacts/${id}/timeline`),
+    queryFn: () => rpcOrRest<{ events: TimelineEvent[] }>("contacts.timeline", { path: `/api/contacts/${id}/timeline` }, { id }),
     enabled: Boolean(id),
     retry: false,
   });
@@ -124,7 +125,7 @@ export function useContactTimeline(id: string | undefined) {
 export function useContactTags() {
   return useQuery<{ tags: ContactTag[] }, ApiError>({
     queryKey: ["contacts", "tags"],
-    queryFn: () => api<{ tags: ContactTag[] }>("/api/contacts/tags"),
+    queryFn: () => rpcOrRest<{ tags: ContactTag[] }>("contacts.tags", { path: "/api/contacts/tags" }, {}),
     retry: false,
     staleTime: 60_000,
   });
@@ -134,8 +135,10 @@ export function useCompanies(query: { q?: string }) {
   return useQuery<{ companies: Company[] }, ApiError>({
     queryKey: ["companies", "list", query],
     queryFn: () =>
-      api<{ companies: Company[] }>(
-        `/api/companies${query.q?.trim() ? `?q=${encodeURIComponent(query.q.trim())}` : ""}`,
+      rpcOrRest<{ companies: Company[] }>(
+        "companies.list",
+        { path: `/api/companies${query.q?.trim() ? `?q=${encodeURIComponent(query.q.trim())}` : ""}` },
+        { q: query.q?.trim() || undefined },
       ),
     retry: false,
     staleTime: 15_000,
@@ -145,7 +148,7 @@ export function useCompanies(query: { q?: string }) {
 export function useCompany(domain: string | undefined) {
   return useQuery<{ company: Company; people: Contact[] }, ApiError>({
     queryKey: ["companies", "one", domain],
-    queryFn: () => api<{ company: Company; people: Contact[] }>(`/api/companies/${domain}`),
+    queryFn: () => rpcOrRest<{ company: Company; people: Contact[] }>("companies.get", { path: `/api/companies/${domain}` }, { domain }),
     enabled: Boolean(domain),
     retry: false,
   });
@@ -154,7 +157,7 @@ export function useCompany(domain: string | undefined) {
 export function useCompanyTimeline(domain: string | undefined) {
   return useQuery<{ events: TimelineEvent[] }, ApiError>({
     queryKey: ["companies", "timeline", domain],
-    queryFn: () => api<{ events: TimelineEvent[] }>(`/api/companies/${domain}/timeline`),
+    queryFn: () => rpcOrRest<{ events: TimelineEvent[] }>("companies.timeline", { path: `/api/companies/${domain}/timeline` }, { domain }),
     enabled: Boolean(domain),
     retry: false,
   });
@@ -164,7 +167,7 @@ export function useContactTagAction() {
   const qc = useQueryClient();
   return useMutation<unknown, ApiError, { id: string; add?: string[]; remove?: string[] }>({
     mutationFn: ({ id, ...body }) =>
-      api(`/api/contacts/${id}/tags`, { method: "POST", body: JSON.stringify(body) }),
+      rpcOrRest("contacts.tag", { path: `/api/contacts/${id}/tags`, method: "POST", body }, { id, ...body }),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["contacts"] });
     },
@@ -179,7 +182,7 @@ export function useUpdateContact() {
     { id: string; display_name?: string; title?: string; notes?: string; vip?: boolean }
   >({
     mutationFn: ({ id, ...body }) =>
-      api(`/api/contacts/${id}`, { method: "PATCH", body: JSON.stringify(body) }),
+      rpcOrRest("contacts.update", { path: `/api/contacts/${id}`, method: "PATCH", body }, { id, ...body }),
     onSuccess: () => {
       void qc.invalidateQueries({ queryKey: ["contacts"] });
     },
@@ -213,7 +216,7 @@ export function useUniversalSearch(q: string, enabled = true) {
   const term = q.trim();
   return useQuery<UniversalResults, ApiError>({
     queryKey: ["search", "universal", term],
-    queryFn: () => api<UniversalResults>(`/api/search/universal?q=${encodeURIComponent(term)}`),
+    queryFn: () => rpcOrRest<UniversalResults>("search.universal", { path: `/api/search/universal?q=${encodeURIComponent(term)}` }, { q: term }),
     enabled: enabled && term.length >= 2,
     retry: false,
     staleTime: 10_000,
