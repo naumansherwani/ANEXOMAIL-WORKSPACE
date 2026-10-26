@@ -63,9 +63,13 @@ for p in ORD:
     o = [f"# {NAME[p]} — INCLUDES (auto-generated from features.tsv)\n", f"## NAYA is package par ({len(new)})\n"]
     o += [f"- {r[0]} · {r[2]} [{r[4]}]" for r in new] or ["- (kuch naya nahi)"]
     o += [f"\n## Neeche ke packages se inherit ({len(inh)})\n"] + [f"- {r[0]} · {r[2]}" for r in inh]
+    todo = [r for r in new if r[4] in ("GATE-TO-BUILD", "PROPOSED")]
+    o += [f"\n## GREEN hone mein BAQI ({len(todo)}) — gate/feature banana baqi\n"] + [f"- {r[0]} · {r[2]} [{r[4]}]" for r in todo]
     o += ["\n## Is package mein NAHI (upar ke packages)\n"] + [
         f"- {r[0]} · {r[2]} → {r[3]}" for r in rows if r[3] in ORD and ORD.index(r[3]) > k]
     o += ["\n## Limits\n"] + [f"- {l[0]}: {l[k + 1]}" for l in LIMITS]
     open(os.path.join(HERE, p, "INCLUDES.md"), "w", encoding="utf-8").write("\n".join(o) + "\n")
+from collections import Counter
+print(Counter(r[4] for r in rows))
 print(len(rows), "features;", sum(1 for r in rows if r[4] == "PROPOSED"), "proposed;",
       sum(1 for r in rows if r[4] == "TODO-VERIFY"), "to verify")

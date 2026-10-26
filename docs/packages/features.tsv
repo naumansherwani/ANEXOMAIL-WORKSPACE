@@ -1,75 +1,229 @@
-# id	area	feature	starts_at	status	code_where	note
-# starts_at: basic|pro|business|business_pro|enterprise|founder|ai_soon ; status: CODE=server/UI gate already in code, PROPOSED=CEO assignment (founder approve baqi), TODO-VERIFY=code mein gate check baqi
-MAIL-01	Mail	Inbox, folders, threads, search, labels, move, flag	basic	CODE	app.mail.*, mail.threads/move/status/labels.update
-MAIL-02	Mail	Compose + draft save + version history	basic	CODE	mail.drafts.save/versions/delete
-MAIL-03	Mail	Signatures	basic	CODE	mail.signatures.list
-MAIL-04	Mail	Outbox + undo send (30s)	basic	CODE	app.mail.outbox
-MAIL-05	Mail	Attachments (limit package ke hisaab se, neeche LIMITS)	basic	CODE	mail.attach.limits, kernel sniff	executable/mismatch block sab par
-MAIL-06	Mail	Snooze	pro	CODE	mail.snooze (pro_gate)
-MAIL-07	Mail	Schedule send	pro	CODE	mailx pro_gate
-MAIL-08	Mail	Email templates	pro	CODE	mail.templates.*
-MAIL-09	Mail	Snippets	pro	CODE	mail.snippets.* (pro_only_proc)
-MAIL-10	Mail	Follow-up reminders	pro	CODE	mail.followup.*
-MAIL-11	Mail	Pre-send scan (confidence)	pro	CODE	mail.confidence
-MAIL-12	Mail	Draft handoff between devices	pro	CODE	mail.handoff.*
-MAIL-13	Mail	Shared inbox + collision guard + assign	pro	CODE	mail.assign
-MAIL-14	Mail	Multiple identities	pro	CODE	showMultipleIdentities
-MAIL-15	Mail	Thread notes	pro	CODE	ThreadNote (showWork)
-MAIL-16	Mail	Shared drafts, mentions, approvals	business	CODE	app.crm.collab (showCrmCollab)
-CAL-01	Calendar	Events, invites, RSVP, guests, history, busy	basic	CODE	calendar.*
-CAL-02	Calendar	Find-a-time	basic	CODE	calendar.findtime
-CAL-03	Calendar	Public booking links (count LIMITS mein)	basic	CODE	booking.*
-CAL-04	Calendar	Overlap Matrix + Focus Ring	pro	CODE	calendar.overlap
-CAL-05	Calendar	Meeting cost (£)	pro	CODE	cal_glue strip_cost	hourly-rate entry UI baqi
-CAL-06	Calendar	ICS subscriptions	basic	TODO-VERIFY	calendar.sub.*
-CAL-07	Calendar	Event files attach	basic	TODO-VERIFY	calendar.files.*
-CAL-08	Calendar	Meeting rooms (book/schedule/release)	business	PROPOSED	calendar.rooms.*	team feature
-CAL-09	Calendar	CalDAV feeds + app passwords	pro	PROPOSED	caldav.*	external client sync
-PPL-01	People	Contacts, import, aliases, notes	basic	CODE	app.people, people.import
-PPL-02	People	Leads suggest/import/move to People	pro	CODE	crm.leads.*	CRM base ke saath
-WRK-01	Work	Boards, notes, tasks	pro	CODE	app.work (showWork)
-WRK-02	Work	Work business ledgers (files, calls, recovery)	business	CODE	showWorkBusinessRecord
-CRM-01	CRM	Accounts, leads, pipeline (1), tasks, reports	pro	CODE	app.crm.* (showCrm)
-CRM-02	CRM	Relationship health, timeline, next-action, promises	pro	CODE	crm.health/timeline/next
-CRM-03	CRM	Collab: shared inbox view, mentions, approvals	business	CODE	showCrmCollab
-CRM-04	CRM	Revenue risk radar	business	CODE	showCrmRisk
-CRM-05	CRM	Activity ledger	business_pro	CODE	showCrmLedger
-CRM-06	CRM	Intelligence graph	business_pro	CODE	showCrmGraph
-CRM-07	CRM	Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited)	pro	PROPOSED	-	CRM-PHASES P1
-CRM-08	CRM	Duplicate detect + merge	pro	PROPOSED	-	CRM-PHASES P1
-CRM-09	CRM	Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited)	pro	PROPOSED	-	CRM-PHASES P2
-CRM-10	CRM	Lead scoring + assignment rules (round-robin)	business	PROPOSED	-	CRM-PHASES P3
-CRM-11	CRM	Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited)	business	PROPOSED	-	CRM-PHASES P4
-CRM-12	CRM	Quotes / CPQ (product list, quote, invoice)	business	PROPOSED	-	CRM-PHASES P5
-CRM-13	CRM	Deal approval process (discount limits)	business_pro	PROPOSED	-	CRM-PHASES P5
-CRM-14	CRM	Sales cadences (mail/call/task series)	business	PROPOSED	-	CRM-PHASES P6
-CRM-15	CRM	Forecast + quotas (target vs actual)	business	PROPOSED	-	CRM-PHASES P6
-CRM-16	CRM	Territory management	business_pro	PROPOSED	-	CRM-PHASES P6
-CRM-17	CRM	Custom CRM dashboards	business	PROPOSED	-	CRM-PHASES P6
-ANA-01	Analytics	Response debt	basic	CODE	analytics.responseDebt
-ANA-02	Analytics	Thread economics, Deep work	pro	CODE	analytics.threadEconomics/deepWork
-ANA-03	Analytics	Attention leaks, Promise SLA, Forecast	business	CODE	analytics.*
-ANA-04	Analytics	Team load report (owner/admin)	business	CODE	analytics.team
-CHT-01	Chat	ANEXOChat (file send 2GB/5GB/7GB)	business	CODE	showChat
-CHT-02	Chat	Video call 1:1	pro	CODE	showFullVideo
-CHT-03	Chat	Group video (size LIMITS)	business	PROPOSED	-
-DOC-01	Docs	CRDT collaborative docs	business	PROPOSED	-	founder faisla baqi
-ORG-01	Org	Members, roles, departments, teams, invites	business	CODE	app.org.*, team.*
-ORG-02	Org	Policies, audit log, compliance	business	CODE	app.org.policies/audit/compliance
-ORG-03	Org	Org graph + security centre	business	CODE	app.org.graph/security
-DOM-01	Domains	Company domains + DNS verify (count LIMITS)	basic	CODE	showDomains, mail.domains.verify
-SAF-01	Safety	Safety centre (review queue, sealed evidence, appeals)	business_pro	CODE	app.safety, appeal.*
-SEC-01	Security	Passkey / two-step sign-in, sessions, history	basic	CODE	app.security.*, auth/mfa
-SEC-02	Security	Trusted devices + vault (count LIMITS)	basic	CODE	chat.device.*, security.devices
-SEC-03	Security	Kill switch, rotate, disown, encryption proof	basic	CODE	security.*
-DAT-01	Data	Import + Move-In + one-click export	basic	CODE	app.import, app.movein, account.export.ticket
-DAT-02	Data	Account delete / integrity appeal	basic	CODE	account.delete.*
-SET-01	Settings	Appearance, notifications, privacy, locale, workspace	basic	CODE	app.settings.*, locale.*
-BIL-01	Billing	Plan, usage, portal, invoices	basic	CODE	app.billing, billing.portal
-PRT-01	Partners	Partner program (client companies, 20/25/30%)	basic	CODE	partners
-PRF-01	Speed	Performance centre (budgets, prefetch, regressions)	basic	TODO-VERIFY	app.perf.*
-SUP-01	Support	Human support (response time LIMITS)	basic	CODE	process
-SUP-02	Support	Priority Support (included)	enterprise	CODE	enterprise.tsx	add-on £790 baqi tiers par
-ENT-01	Enterprise	Unlimited users, bandwidth cap, Rust-only (NO Bun)	enterprise	PROPOSED	-	alag phase, abhi ZERO
-AI-01	AI	LEO AI workspace	ai_soon	CODE	ai.anexomail.com	COMING SOON July 2027
-FND-01	Founder	Founder/Admin/Release/Perf centres	founder	CODE	app.founder.*	kisi package mein nahi
+# id	area	feature	starts_at	status	evidence	note
+# SOURCE: kal raat ke INV-1/2/3 (213 features) + PP1 gate table + founder verdicts. Banaya: import-inventory.py (one-time); ab sirf is file ko edit karo, phir build-views.py.
+# starts_at: basic|pro|business|business_pro|enterprise|founder|ai_soon|later  ; status: MATCHES-CODE | GATE-TO-BUILD (gate banana baqi) | PROPOSED | LATER | OUT-OF-PACKAGE | PP1
+I1-01	CAL	Month/Week/Day calendar grid	basic	MATCHES-CODE	TimeGrid.tsx, WeekGrid.tsx, CalendarClassic.tsx, lib/time-grid.ts	code-gate: none (all plans)
+I1-02	CAL	Create / edit / delete meetings	basic	MATCHES-CODE	NewMeeting.tsx, EventDetail.tsx, lib/calendar.ts	code-gate: none
+I1-03	CAL	Repeating meetings	basic	MATCHES-CODE	RepeatPicker.tsx, lib/recurrence.ts	code-gate: none ("every package")
+I1-04	CAL	Guests + email invitations with per-guest delivery status	basic	MATCHES-CODE	Guests.tsx, lib/calendar-invites.ts, calendar.ts InviteResult	code-gate: none
+I1-05	CAL	RSVP	basic	MATCHES-CODE	calendar.ts RsvpResponse, routes/rsvp.tsx	code-gate: none
+I1-06	CAL	Guests' local time shown next to each attendee	basic	MATCHES-CODE	calendar.ts AttendeeLocalTime, Guests.tsx	code-gate: none
+I1-07	CAL	Find-a-time	basic	MATCHES-CODE	FindTime.tsx, lib/find-time.ts	code-gate: none
+I1-08	CAL	Overlap Matrix	pro	MATCHES-CODE	OverlapMatrix.tsx, lib/overlap.ts	code-gate: none · server gate GREEN 07:40 (ledger)
+I1-09	CAL	Focus Ring	pro	MATCHES-CODE	FocusRing.tsx	code-gate: none · server gate GREEN 07:40 (ledger)
+I1-10	CAL	Availability / free-busy + focus windows view	pro	GATE-TO-BUILD	Availability.tsx, calendar.ts useAvailability/useFocusWindows	code-gate: none
+I1-11	CAL	Working hours + out-of-office periods	basic	MATCHES-CODE	CalSettings.tsx, lib/calprefs.ts	code-gate: none
+I1-12	CAL	Multiple calendars with name + colour palette	basic	MATCHES-CODE	CalSettings.tsx, calprefs.ts	code-gate: none
+I1-13	CAL	Reminders	basic	MATCHES-CODE	ReminderWatcher.tsx, calprefs.ts REMINDER_CHOICES	code-gate: none
+I1-14	CAL	Public booking page	basic	MATCHES-CODE	BookingPage.tsx, routes/book.$handle.tsx, lib/booking.ts	code-gate: none
+I1-15	CAL	Manage a booking	basic	MATCHES-CODE	routes/book.manage.tsx, booking.ts manage*	code-gate: none
+I1-16	CAL	Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side	business	GATE-TO-BUILD	EventRoom.tsx, RoomsSettings.tsx, lib/rooms.ts	code-gate: none
+I1-17	CAL	Files on a meeting	pro	GATE-TO-BUILD	EventFiles.tsx, lib/calendar-files.ts	code-gate: none
+I1-18	CAL	Meeting cost	pro	MATCHES-CODE	calendar.ts MeetingCost	code-gate: none · server gate GREEN 07:40 (ledger)
+I1-19	CAL	Meeting goal + Achieved/Missed outcome colours	pro	GATE-TO-BUILD	lib/goal.ts, EventDetail.tsx	code-gate: none
+I1-20	CAL	Outside calendars	basic	MATCHES-CODE	OutsideCalendars.tsx, lib/calendar-subs.ts	code-gate: none
+I1-21	CAL	Phone/desktop calendar apps via CalDAV	basic	MATCHES-CODE	PhoneCalendar.tsx, lib/caldav.ts	code-gate: none
+I1-22	CAL	Calendar feed links	basic	MATCHES-CODE	PhoneFeed.tsx, caldav.ts MAX_FEED_LINKS	code-gate: none
+I1-23	CAL	Import .ics from Google/Zoho/Outlook/Apple	basic	MATCHES-CODE	IcsImport.tsx, lib/ics.ts	code-gate: none
+I1-24	CAL	World clocks + globe with day/night	basic	MATCHES-CODE	WorldClocks.tsx, GlobeView.tsx, lib/sun.ts, lib/places.ts	code-gate: none
+I1-25	CAL	Time bar	basic	MATCHES-CODE	TimeBar.tsx	code-gate: none
+I1-26	CAL	Trip card	basic	MATCHES-CODE	TripCard.tsx, lib/travel.ts	code-gate: none
+I1-27	CAL	Device clock check + own connection speed	basic	MATCHES-CODE	ClockHealth.tsx, lib/clock-sync.ts	code-gate: none
+I1-28	CAL	Billing deadline line in clock popover	basic	MATCHES-CODE	BillingDeadline.tsx, lib/deadline.ts	code-gate: none
+I1-29	CAL	Deep link into a meeting	basic	MATCHES-CODE	lib/calendar-jump.ts	code-gate: none
+I1-30	CAL	History search over past meetings	basic	MATCHES-CODE	app.search.tsx, HistoryResults.tsx, lib/history.ts	code-gate: none
+I1-31	MAIL	Inbox / folders list with counts, live updates	basic	MATCHES-CODE	routes/app.mail.$folder.tsx, mail.ts useThreads/useMailLive/useFolderCounts	code-gate: none
+I1-32	MAIL	Read thread	basic	MATCHES-CODE	app.mail.$folder.$threadId.tsx, SafeMailBody.tsx	code-gate: none
+I1-33	MAIL	Inbox categories	basic	MATCHES-CODE	mail.ts THREAD_CATEGORIES	code-gate: none
+I1-34	MAIL	Labels	basic	MATCHES-CODE	mail.ts MailLabel/useLabels, MailRail.tsx	code-gate: none
+I1-35	MAIL	Multiple mailboxes/accounts + switch	basic	MATCHES-CODE	mail.ts useAccounts	code-gate: none
+I1-36	MAIL	Per-address colour identity chips	basic	MATCHES-CODE	lib/mail-identity.ts, AddressChip.tsx	code-gate: none
+I1-37	MAIL	Archive / delete / star / mark read / move	basic	MATCHES-CODE	mail.ts useThreadAction	code-gate: none
+I1-38	MAIL	Keyboard shortcuts in inbox	pro	MATCHES-CODE	app.mail.$folder.tsx L151-174	code-gate: Pro+ (showProMailTools)
+I1-39	MAIL	Snooze thread to a time	pro	MATCHES-CODE	ThreadHeaderActions.tsx, mail.ts snoozePresets	code-gate: Pro+ (FeatureGate requires=pro)
+I1-40	MAIL	Private note on a thread	pro	MATCHES-CODE	ThreadNote.tsx	code-gate: Pro+ (showProMailTools)
+I1-41	MAIL	Per-thread analytics	pro	MATCHES-CODE	ThreadInsights.tsx, compose.ts useThreadInsights	code-gate: Pro+ per formula; component gate not found
+I1-42	MAIL	Thread rescue	pro	GATE-TO-BUILD	ThreadRescue.tsx	code-gate: not found
+I1-43	MAIL	Thread header: link to Work item / Chat / Discuss in chat	business	MATCHES-CODE	ThreadHeaderActions.tsx, DiscussInChat.tsx, QuoteInChat.tsx	code-gate: showWork + showChat
+I1-44	MAIL	Inline reply / reply-all / forward inside the thread	basic	MATCHES-CODE	InlineReply.tsx	code-gate: none
+I1-45	MAIL	Outbox	basic	MATCHES-CODE	routes/app.mail.outbox.tsx	code-gate: none
+I1-46	MAIL	Empty-inbox welcome	basic	MATCHES-CODE	InboxWelcome.tsx	code-gate: none
+I1-47	MAIL	Compose studio	basic	MATCHES-CODE	ComposeStudio.tsx, compose.ts useSaveDraft/useDraftVersions	code-gate: none
+I1-48	MAIL	Undo send	basic	MATCHES-CODE	compose.ts useScheduleSend/cancelScheduledSend	code-gate: none (all plans)
+I1-49	MAIL	Schedule send	pro	MATCHES-CODE	ComposeStudio.tsx L944-990	code-gate: Pro+ (proMail)
+I1-50	MAIL	Templates with {{variables}}	pro	MATCHES-CODE	compose.ts useTemplates/useSaveTemplate	code-gate: Pro+ (proMail)
+I1-51	MAIL	Snippets	pro	MATCHES-CODE	compose.ts useSnippets/useDeleteSnippet	code-gate: Pro+ (proMail)
+I1-52	MAIL	Signatures	basic	MATCHES-CODE	compose.ts useSignatures	code-gate: none found
+I1-53	MAIL	Pre-send confidence scan	pro	MATCHES-CODE	compose.ts useSendConfidence	code-gate: none found · server gate GREEN 07:40 (ledger)
+I1-54	MAIL	Follow-up reminders	pro	MATCHES-CODE	compose.ts useCreateFollowUp/useFollowUps	code-gate: none found · server gate GREEN 07:40 (ledger)
+I1-55	MAIL	Writing-style word prediction	basic	MATCHES-CODE	GhostTextArea.tsx, lib/mail-predict.ts	code-gate: none found
+I1-56	MAIL	Reading time / reading level meter	pro	GATE-TO-BUILD	compose.ts readingStats	code-gate: none
+I1-57	MAIL	Send from a chosen identity	pro	MATCHES-CODE	mail.ts useIdentities	code-gate: Pro+ (showMultipleIdentities)
+I1-58	MAIL	File attachments on send	basic	MATCHES-CODE	lib/mail-attachments*.ts	code-gate: per-plan size cap (25/35/45/60/100 MB in v6 - code still reads server limits)
+I1-59	MAIL	Cross-device draft handoff	pro	MATCHES-CODE	lib/handoff.ts	code-gate: none found · server gate GREEN 07:40 (ledger)
+I1-60	MAIL	AI compose: rewrite/tone/subject/translate/coach + Jimmy escalation	ai_soon	OUT-OF-PACKAGE	compose.ts useLeoCompose/useAskJimmy	code-gate: AI host only
+I1-61	PPL	People list with search + smart filters	basic	GATE-TO-BUILD	routes/app.people.tsx, contacts.ts SMART_FILTERS	code-gate: none (CRM link needs showCrm)
+I1-62	PPL	Contacts auto-built from real mail	basic	MATCHES-CODE	contacts.ts Relationship	code-gate: none
+I1-63	PPL	Contact profile	basic	MATCHES-CODE	ContactProfile.tsx, contacts.ts useUpdateContact	code-gate: none
+I1-64	PPL	Contact tags	basic	MATCHES-CODE	contacts.ts useContactTags/useContactTagAction	code-gate: none
+I1-65	PPL	Contact + company timelines	basic	MATCHES-CODE	Timeline.tsx, useContactTimeline/useCompanyTimeline	code-gate: none
+I1-66	PPL	Companies	basic	MATCHES-CODE	CompanyProfile.tsx, contacts.ts useCompanies	code-gate: none
+I1-67	PPL	Contacts import CSV/vCard from Google/Outlook/Zoho/Apple/LinkedIn	basic	MATCHES-CODE	ContactsImport.tsx, lib/contacts-import.ts	code-gate: none
+I1-68	PPL	Link to full CRM	pro	MATCHES-CODE	routes/app.people.tsx L58	code-gate: showCrm
+I1-69	SRCH	Universal search	basic	MATCHES-CODE	routes/app.search.tsx, contacts.ts useUniversalSearch, components/app/CommandPalette.tsx	code-gate: none
+I1-70	SRCH	Calendar history search	basic	MATCHES-CODE	HistoryResults.tsx, lib/history.ts	code-gate: none
+I1-71	MIG	Bring old mail via IMAP + app password	basic	MATCHES-CODE	ImportMailPage.tsx, lib/migration.ts, migration-report.ts	code-gate: none found
+I1-72	MIG	Import page	basic	MATCHES-CODE	routes/app.import.tsx	code-gate: none
+I1-73	MOVE	Move-In service request	basic	MATCHES-CODE	routes/app.movein.tsx, routes/move-in.tsx, lib/movein.ts	code-gate: none (paid one-off)
+I1-74	DOM	Company domains + DNS records	basic	MATCHES-CODE	lib/domains.ts, routes/app.domains.tsx	code-gate: showDomains = Business account kind
+I2-01	INV2	Real-time 1:1 + group messaging	business	MATCHES-CODE	lib/chat.ts, routes/app.chat.tsx	code-gate: showChat (Business+, Personal Pro+/Premium)
+I2-02	INV2	Delivery ticks / honest message truth	business	MATCHES-CODE	components/app/chat/Ticks.tsx, MessageTruth.tsx	code-gate: showChat
+I2-03	INV2	Live push over WebTransport/QUIC	business	MATCHES-CODE	lib/chat-transport.ts, wt-url.ts, live-core.ts	code-gate: showChat (transport shared by all plans)
+I2-04	INV2	Image/screenshot attachments	business	MATCHES-CODE	lib/chat-attachments.ts	code-gate: showChat
+I2-05	INV2	Large file transfer (chunked, resumable)	business	MATCHES-CODE	lib/chat-files.ts, components/app/chat/FileTransfers.tsx	code-gate: showChat + plan size caps (2/5/7GB decided; enforcement TBC)
+I2-06	INV2	File context + relationship graph	business	MATCHES-CODE	lib/chat-file-context.ts, work/FileContextCard.tsx	code-gate: showWorkBusinessRecord (Business+)
+I2-07	INV2	Pop-out window + split view	business	MATCHES-CODE	lib/chat-multitask.ts	code-gate: showChat
+I2-08	INV2	Cross-device continuity	business	MATCHES-CODE	lib/chat-continuity.ts	code-gate: showChat
+I2-09	INV2	Cinematic atmosphere (Dawn/Day/Dusk/Night)	business	MATCHES-CODE	lib/chat-atmosphere.ts, chat-cinema.ts, components/chat/Atmosphere.tsx, CinemaStage.tsx	code-gate: showChat
+I2-10	INV2	Cinematic audio (rain/storm)	business	MATCHES-CODE	lib/chat-sound.ts	code-gate: showChat
+I2-11	INV2	Send-sweep animation	business	MATCHES-CODE	components/app/chat/send-sweep.css	code-gate: showChat
+I2-12	INV2	Decision ledger	business	GATE-TO-BUILD	lib/chat-decisions.ts, work/DecisionLedger.tsx	code-gate: Pro+ (Work page section)
+I2-13	INV2	Conversation to outcome timeline	business	MATCHES-CODE	lib/chat-timeline.ts, work/ConversationTruth.tsx	code-gate: showWorkBusinessRecord (Business+)
+I2-14	INV2	Conversation health + commitment collision	business	MATCHES-CODE	lib/chat-timeline.ts	code-gate: showChat
+I2-15	INV2	Message provenance	business	MATCHES-CODE	lib/chat-timeline.ts	code-gate: showChat
+I2-16	INV2	Business conversation receipts	business	MATCHES-CODE	lib/chat-receipts.ts, work/ReceiptsPanel.tsx	code-gate: showWorkBusinessRecord (Business+)
+I2-17	INV2	Zero-loss handover pack	business	MATCHES-CODE	lib/chat-receipts.ts	code-gate: showChat
+I2-18	INV2	Email to chat bridge	business	GATE-TO-BUILD	lib/chat-email-bridge.ts, work/EmailBridge.tsx	code-gate: Pro+ (Work section), needs chat
+I2-19	INV2	Chat to email escalation	business	MATCHES-CODE	lib/chat-email-bridge.ts	code-gate: showChat
+I2-20	INV2	Work strip in chat	business	MATCHES-CODE	components/app/chat/WorkStrip.tsx, lib/chat-safety.ts (Phase 22)	code-gate: showChat
+I2-21	INV2	Work execution chain	pro	MATCHES-CODE	lib/chat-safety.ts, work/WorkChainBoard.tsx	code-gate: Pro+ (Work page)
+I2-22	INV2	Device safety vault (chat)	basic	MATCHES-CODE	lib/chat-safety.ts (Phase 19)	code-gate: none found
+I2-23	INV2	Device trust / kill access	basic	MATCHES-CODE	lib/chat-safety.ts (Phase 20)	code-gate: none found
+I2-24	INV2	Safety reporting	basic	MATCHES-CODE	lib/chat-safety.ts (Phase 21)	code-gate: none found (Safety centre is showSafety)
+I2-25	INV2	1:1 video call (WebRTC)	business	GATE-TO-BUILD	lib/chat-call.ts, components/chat/VideoCall.tsx	code-gate: DB chat_video_allowed() = founder + business_pro; UI showFullVideo = Pro+ (MISMATCH)
+I2-26	INV2	Group call via own SFU (3+)	business	GATE-TO-BUILD	lib/chat-call.ts, chat-lightspeed.ts	code-gate: same as 25
+I2-27	INV2	Adaptive quality ladder 8K to 480p	business	GATE-TO-BUILD	lib/chat-video-quality.ts	code-gate: same as 25
+I2-28	INV2	Pre-warmed ICE	business	GATE-TO-BUILD	lib/chat-prewarm.ts	code-gate: same as 25
+I2-29	INV2	Ring truth + self-made ringtone	business	GATE-TO-BUILD	lib/chat-lightspeed.ts, chat-ringtone.ts	code-gate: same as 25
+I2-30	INV2	Audio-only survival	business	GATE-TO-BUILD	lib/chat-lightspeed.ts	code-gate: same as 25
+I2-31	INV2	Connect report	business	GATE-TO-BUILD	components/app/chat/CallConnectReport.tsx	code-gate: same as 25
+I2-32	INV2	Call telemetry (RTT/jitter/loss/bitrate)	business	GATE-TO-BUILD	lib/chat-call.ts	code-gate: same as 25
+I2-33	INV2	Signaling over WT/Realtime/durable rows	basic	MATCHES-CODE	lib/chat-signal.ts	code-gate: infrastructure
+I2-34	INV2	Call business record	business_pro	GATE-TO-BUILD	lib/chat-call-record.ts, work/CallRecordPanel.tsx	code-gate: showWorkBusinessRecord (Business+)
+I2-35	INV2	Screen share, recording, live captions, group sizes	later	LATER	not found in lib audit	code-gate: none
+I2-36	INV2	Public landings /anexochat, /anexovideocall	basic	MATCHES-CODE	routes/anexochat.tsx, anexovideocall.tsx	code-gate: none
+I2-37	INV2	Short paths /chat, /work, /analytics, /dashboard	basic	MATCHES-CODE	routes/chat.tsx etc	code-gate: none
+I2-38	INV2	CRM overview/home	pro	MATCHES-CODE	routes/app.crm.index.tsx, lib/crm.ts useCrmOverview	code-gate: showCrm (Pro+; Personal Pro+/Premium)
+I2-39	INV2	Relationships (people/contacts book)	pro	MATCHES-CODE	routes/app.crm.relationships.tsx	code-gate: showCrm
+I2-40	INV2	Leads	pro	MATCHES-CODE	routes/app.crm.leads.tsx, crm.ts	code-gate: showCrm
+I2-41	INV2	Deals pipeline (6 stages)	pro	MATCHES-CODE	routes/app.crm.pipeline.tsx, crm.ts useMoveDeal	code-gate: showCrm
+I2-42	INV2	Deal to Work item	pro	MATCHES-CODE	crm.ts useDealToWork	code-gate: showCrm
+I2-43	INV2	Attach email thread to deal	pro	MATCHES-CODE	crm.ts useAttachDealThread	code-gate: showCrm
+I2-44	INV2	Accounts (companies)	pro	MATCHES-CODE	routes/app.crm.accounts.tsx	code-gate: showCrm
+I2-45	INV2	CRM tasks	pro	MATCHES-CODE	routes/app.crm.tasks.tsx	code-gate: showCrm
+I2-46	INV2	CRM reports	pro	MATCHES-CODE	routes/app.crm.reports.tsx	code-gate: showCrm
+I2-47	INV2	CRM memory + live + insights	pro	MATCHES-CODE	crm.ts useCrmMemory/useCrmLive/useCrmInsights	code-gate: showCrm
+I2-48	INV2	CRM health	pro	MATCHES-CODE	CommandPalette/CrmStage, plan-surface	code-gate: showCrmHealth
+I2-49	INV2	Shared work / collab	business	MATCHES-CODE	routes/app.crm.collab.tsx, crm.ts useSharedItems/useMentions/useApprovals/useAssignShared	code-gate: showCrmCollab (Business+)
+I2-50	INV2	Approvals	business	MATCHES-CODE	crm.ts useDecideApproval	code-gate: showCrmCollab
+I2-51	INV2	Team permissions	business	MATCHES-CODE	crm.ts useTeamPermissions	code-gate: showCrmCollab
+I2-52	INV2	CRM audit	business	MATCHES-CODE	crm.ts useCrmAudit	code-gate: showCrmCollab / Org
+I2-53	INV2	CRM risk	business	MATCHES-CODE	plan-surface showCrmRisk	code-gate: showCrmRisk (Business+)
+I2-54	INV2	CRM activity timeline + evidence	business_pro	MATCHES-CODE	routes/app.crm.activity.tsx, crm.ts useCrmActivities/useCrmEvidence	code-gate: showCrmLedger (Business Pro power)
+I2-55	INV2	CRM relationship graph	business_pro	MATCHES-CODE	components/app/crm/CrmGraph.tsx	code-gate: showCrmGraph (Business Pro power)
+I2-56	INV2	CRM capture	pro	MATCHES-CODE	components/app/crm/CrmCapture.tsx	code-gate: showCrm
+I2-57	INV2	CRM kill switch	founder	OUT-OF-PACKAGE	crm.ts useCrmKillSwitch, useFounderCrmState	code-gate: founder
+I2-58	INV2	CRM translations (28 locales)	basic	MATCHES-CODE	lib/crm-i18n.ts	code-gate: none
+I2-59	INV2	Work: Add task + TaskBoard	pro	MATCHES-CODE	routes/app.work.tsx, work/TaskBoard.tsx	code-gate: page comment says Basic gets it; surfaceDenial for /app/work uses showWork = Pro+ (CONFLICT)
+I2-60	INV2	Work: Notes	pro	MATCHES-CODE	work/NoteDoc.tsx	code-gate: showWork
+I2-61	INV2	Work: Promise inbox	pro	MATCHES-CODE	work/PromiseInbox.tsx, lib/promise-engine.ts	code-gate: showProMailTools (Pro+)
+I2-62	INV2	Work: Follow-through table	pro	MATCHES-CODE	work/FollowThrough.tsx	code-gate: Pro+
+I2-63	INV2	Work: Promise recovery	pro	GATE-TO-BUILD	work/PromiseRecovery.tsx	code-gate: showWorkBusinessRecord (Business+)
+I2-64	INV2	Work: Locked Pro preview	basic	MATCHES-CODE	routes/app.work.tsx LockedProWorkPreview	code-gate: Basic wall
+I2-65	INV2	Goals + deadlines	pro	GATE-TO-BUILD	lib/goal.ts, lib/deadline.ts	code-gate: none found
+I2-66	INV2	Team report + team time	business	GATE-TO-BUILD	lib/team-report.ts, lib/team.ts, dashboard/TeamTime.tsx	code-gate: none found
+I2-67	INV2	Dashboard home	basic	MATCHES-CODE	routes/app.index.tsx, components/app/dashboard/*	code-gate: showDashboard (all)
+I2-68	INV2	Expiry watch	basic	MATCHES-CODE	dashboard/ExpiryWatch.tsx, lib/expiry.ts	code-gate: none
+I2-69	INV2	Install hint (PWA)	basic	MATCHES-CODE	dashboard/InstallHint.tsx, lib/pwa.ts	code-gate: none
+I2-70	INV2	Setup checklist	basic	MATCHES-CODE	dashboard/SetupChecklist.tsx	code-gate: none
+I2-71	INV2	Live updates (mail/calendar/crm/work/people/org)	basic	MATCHES-CODE	lib/live-core.ts, live.ts	code-gate: all plans, all kinds
+I2-72	INV2	Calendar rooms and resources	business	GATE-TO-BUILD	lib/rooms.ts (calendar #8)	code-gate: none found (Org-managed)
+I2-73	INV2	Response debt (People waiting)	basic	MATCHES-CODE	routes/app.analytics.index.tsx, lib/analytics.ts	code-gate: NONE (no plan gate)
+I2-74	INV2	Deep work	pro	MATCHES-CODE	routes/app.analytics.deep-work.tsx	code-gate: NONE · server gate GREEN 07:40 (ledger)
+I2-75	INV2	Forecast	business	GATE-TO-BUILD	routes/app.analytics.forecast.tsx	code-gate: NONE
+I2-76	INV2	Attention leaks	business	GATE-TO-BUILD	routes/app.analytics.leaks.tsx	code-gate: NONE
+I2-77	INV2	Promise SLA	business	GATE-TO-BUILD	routes/app.analytics.promises.tsx	code-gate: NONE
+I2-78	INV2	Team analytics	business	GATE-TO-BUILD	routes/app.analytics.team.tsx	code-gate: NONE
+I2-79	INV2	Thread economics	pro	MATCHES-CODE	routes/app.analytics.threads.tsx	code-gate: NONE · server gate GREEN 07:40 (ledger)
+I2-80	INV2	Report figures	business	GATE-TO-BUILD	lib/report-figures.ts	code-gate: n/a
+I3-01	Org	Org overview	business	MATCHES-CODE	routes/app.org.index.tsx, lib/org.ts	code-gate: showOrg (business kind + Business+)
+I3-02	Org	Members & invitations	business	MATCHES-CODE	app.org.members.tsx, lib/team.ts	code-gate: showOrg
+I3-03	Org	Roles & capability matrix	business	MATCHES-CODE	app.org.roles.tsx, org.ts	code-gate: showOrg
+I3-04	Org	Departments	business	MATCHES-CODE	app.org.departments.tsx	code-gate: showOrg
+I3-05	Org	Policies + policy simulator	business	MATCHES-CODE	app.org.policies.tsx	code-gate: showOrg
+I3-06	Org	Audit ledger	business	MATCHES-CODE	app.org.audit.tsx, components/org/LedgerPanel	code-gate: showOrg
+I3-07	Org	Compliance + one-click data export	business	MATCHES-CODE	app.org.compliance.tsx, lib/org-export.ts	code-gate: showOrg (owner only server-side)
+I3-08	Org	Live org graph	business_pro	GATE-TO-BUILD	app.org.graph.tsx	code-gate: showOrg
+I3-09	Org	Org security (kill device, break-glass)	business_pro	GATE-TO-BUILD	app.org.security.tsx	code-gate: showOrg
+I3-10	Org	Teams	business	GATE-TO-BUILD	lib/team.ts, Rust team.*	code-gate: none (Org-adjacent)
+I3-11	Org	Company domains & addresses	basic	MATCHES-CODE	app.domains.tsx (2046 lines), lib/domains.ts	code-gate: showDomains (business kind, any plan)
+I3-12	Org	Workspace address @anexomail.com	basic	MATCHES-CODE	lib/anexomail-address.ts	code-gate: none
+I3-13	Org	Org export (Admin → Export)	founder	OUT-OF-PACKAGE	lib/org-export.ts	code-gate: founder host only (admin)
+I3-14	Security	Security home	basic	MATCHES-CODE	app.security.index.tsx	code-gate: none (all plans)
+I3-15	Security	Device trust list + one-click revoke	basic	MATCHES-CODE	app.security.devices.tsx, security-platform.ts	code-gate: none (device-vault slot count per plan)
+I3-16	Security	Impossible-travel detection	basic	MATCHES-CODE	security-platform.ts, Rust	code-gate: none
+I3-17	Security	Ownership proof (DKIM/SPF/DMARC/TLS)	business	GATE-TO-BUILD	app.security.proof.tsx	code-gate: none
+I3-18	Security	Encryption ledger	basic	MATCHES-CODE	app.security.encryption.tsx	code-gate: none
+I3-19	Security	Login history / replay	basic	MATCHES-CODE	app.security.history.tsx	code-gate: none
+I3-20	Security	Sessions + blast-radius kill	basic	MATCHES-CODE	app.security.sessions.tsx	code-gate: none
+I3-21	Security	Device Safety Vault	basic	MATCHES-CODE	app.security.vault.tsx, device-fingerprint.ts, device-key.ts	code-gate: none
+I3-22	Security	Passkey (mandatory) + recovery codes	basic	MATCHES-CODE	lib/passkey.ts, RecoveryCodesPanel, PasskeyGate	code-gate: none
+I3-23	Security	Account integrity: one person one account	basic	MATCHES-CODE	lib/account-integrity.ts, IntegrityGate	code-gate: none
+I3-24	Security	Final-warning ladder before block	basic	MATCHES-CODE	AccountIntegrityPanel.tsx	code-gate: none
+I3-25	Security	Appeal with evidence	basic	MATCHES-CODE	lib/appeal-evidence.ts, AppealForm, DeviceAppealPanel	code-gate: none (user side)
+I3-26	Security	Pre-launch site lock	founder	OUT-OF-PACKAGE	lib/site-lock.ts	code-gate: internal
+I3-27	Safety	Safety centre / review queue	business_pro	MATCHES-CODE	app.safety.tsx, SafetyPanels.tsx	code-gate: showSafety (Business Pro power)
+I3-28	Safety	Sealed report evidence	business_pro	GATE-TO-BUILD	SafetyPanels.tsx	code-gate: showSafety
+I3-29	Safety	Enforcement history + device ban list	business_pro	GATE-TO-BUILD	SafetyPanels.tsx	code-gate: showSafety
+I3-30	Safety	Report message/person/file/conversation	basic	MATCHES-CODE	components/app/safety	code-gate: none (listed under Business on plans.ts)
+I3-31	Devices	Devices & offline	basic	MATCHES-CODE	app.devices.tsx, lib/offline.ts, lib/pwa.ts	code-gate: none
+I3-32	Storage	Mailbox storage & quota	basic	MATCHES-CODE	app.storage.tsx, lib/storage-client.ts	code-gate: none (quota differs by plan; DB phase48)
+I3-33	Billing	Billing & Plans page	basic	MATCHES-CODE	app.billing.tsx (755), ManageBilling.tsx	code-gate: none
+I3-34	Billing	Billing state	basic	MATCHES-CODE	app.billing.state.tsx, billing-platform.ts	code-gate: none
+I3-35	Billing	Checkout done	basic	MATCHES-CODE	checkout.done.tsx	code-gate: none
+I3-36	Billing	Trial lifecycle (2 days)	basic	MATCHES-CODE	lib/trial.ts, TrialStrip, trial-ended.tsx	code-gate: none
+I3-37	Billing	Family/lifetime access	basic	MATCHES-CODE	billing-platform.ts (lifetime)	code-gate: none (Rule 40/37)
+I3-38	Billing	Move-In migration (IMAP import)	basic	MATCHES-CODE	lib/migration.ts, lib/movein.ts, routes/migration	code-gate: none
+I3-39	Account	Account & sessions	basic	MATCHES-CODE	app.account.tsx (680)	code-gate: none
+I3-40	Account	Full data export (ZIP)	basic	MATCHES-CODE	lib/account-export.ts	code-gate: none
+I3-41	Settings	Settings: Appearance	basic	MATCHES-CODE	app.settings.appearance.tsx, text-size.ts, zoom-prefs.ts	code-gate: none
+I3-42	Settings	Settings: Notifications	basic	MATCHES-CODE	app.settings.notifications.tsx (30 lines, thin)	code-gate: none
+I3-43	Settings	Settings: Privacy	basic	MATCHES-CODE	app.settings.privacy.tsx (30 lines)	code-gate: none
+I3-44	Settings	Settings: Workspace	basic	MATCHES-CODE	app.settings.workspace.tsx (27 lines)	code-gate: none
+I3-45	Settings	Settings: Health	basic	MATCHES-CODE	app.settings.health.tsx	code-gate: none
+I3-46	Settings	Settings: History	basic	MATCHES-CODE	app.settings.history.tsx, settings.ts	code-gate: none
+I3-47	Settings	Settings: AI	ai_soon	OUT-OF-PACKAGE	app.settings.ai.tsx	code-gate: AI host only (denied elsewhere)
+I3-48	Settings	28 languages (locale overlay)	basic	MATCHES-CODE	lib/locale-sync.ts, public-locale.ts, i18n/	code-gate: none
+I3-49	Settings	Home place / world clock	basic	MATCHES-CODE	settings/HomePlace.tsx	code-gate: none
+I3-50	Settings	Toast system	basic	MATCHES-CODE	lib/notify.ts	code-gate: none
+I3-51	Public	Landing page	basic	MATCHES-CODE	routes/index.tsx (586)	code-gate: none
+I3-52	Public	Plans & Pricing page	basic	MATCHES-CODE	routes/plans.tsx (733)	code-gate: none
+I3-53	Public	Page directory (/pages)	basic	MATCHES-CODE	routes/pages.tsx (901)	code-gate: none
+I3-54	Public	Docs / get-started guide	basic	MATCHES-CODE	routes/docs.tsx, get-started.tsx	code-gate: none
+I3-55	Public	Enterprise support page	basic	MATCHES-CODE	routes/enterprise.tsx	code-gate: none
+I3-56	Public	About / Partners / Status / Privacy / Billing policy	basic	MATCHES-CODE	about, partners, status, privacy, billing-policy .tsx	code-gate: none
+I3-57	Public	Priority Support add-on £790/mo	enterprise	PP1	plans.tsx:143, enterprise.tsx	code-gate: add-on, all workspace plans
+I3-58	Public	Managed Move-In bands £568/1,670/2,210/3,350	basic	MATCHES-CODE	plans.tsx:363, index.tsx:480	code-gate: paid one-off
+N-CRM-01	CRM	Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited)	pro	PROPOSED	docs/packages/crm/CRM-PHASES.md P1	
+N-CRM-02	CRM	Duplicate detect + merge	pro	PROPOSED	CRM-PHASES P1	
+N-CRM-03	CRM	Web form to lead (Pro 1, Business 10, Biz Pro unlimited)	pro	PROPOSED	CRM-PHASES P2	
+N-CRM-04	CRM	Lead scoring + assignment rules (round-robin)	business	PROPOSED	CRM-PHASES P3	
+N-CRM-05	CRM	Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited)	business	PROPOSED	CRM-PHASES P4	
+N-CRM-06	CRM	Quotes / CPQ	business	PROPOSED	CRM-PHASES P5	
+N-CRM-07	CRM	Deal approval process (discount limits)	business_pro	PROPOSED	CRM-PHASES P5	
+N-CRM-08	CRM	Sales cadences	business	PROPOSED	CRM-PHASES P6	
+N-CRM-09	CRM	Forecast + quotas	business	PROPOSED	CRM-PHASES P6	
+N-CRM-10	CRM	Territory management	business_pro	PROPOSED	CRM-PHASES P6	
+N-CRM-11	CRM	Custom CRM dashboards	business	PROPOSED	CRM-PHASES P6	
+N-DOC-01	Docs	CRDT collaborative docs (Personal NAHI)	business	PROPOSED	PP1 #38, not built	
+N-ENT-01	Enterprise	Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun)	enterprise	PP1	alag phase, abhi ZERO	
+N-ANA-01	Analytics	Analytics Center data backend (7 reports, Rust+WT)	basic	MATCHES-CODE	E89 + analytics_glue.rs (response debt Basic; baqi LIMITS/gates features mein)	

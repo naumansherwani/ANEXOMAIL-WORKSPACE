@@ -1,84 +1,246 @@
 # Pro £105 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (22)
+## NAYA is package par (44)
 
-- MAIL-06 · Snooze [CODE]
-- MAIL-07 · Schedule send [CODE]
-- MAIL-08 · Email templates [CODE]
-- MAIL-09 · Snippets [CODE]
-- MAIL-10 · Follow-up reminders [CODE]
-- MAIL-11 · Pre-send scan (confidence) [CODE]
-- MAIL-12 · Draft handoff between devices [CODE]
-- MAIL-13 · Shared inbox + collision guard + assign [CODE]
-- MAIL-14 · Multiple identities [CODE]
-- MAIL-15 · Thread notes [CODE]
-- CAL-04 · Overlap Matrix + Focus Ring [CODE]
-- CAL-05 · Meeting cost (£) [CODE]
-- CAL-09 · CalDAV feeds + app passwords [PROPOSED]
-- PPL-02 · Leads suggest/import/move to People [CODE]
-- WRK-01 · Boards, notes, tasks [CODE]
-- CRM-01 · Accounts, leads, pipeline (1), tasks, reports [CODE]
-- CRM-02 · Relationship health, timeline, next-action, promises [CODE]
-- CRM-07 · Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited) [PROPOSED]
-- CRM-08 · Duplicate detect + merge [PROPOSED]
-- CRM-09 · Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited) [PROPOSED]
-- ANA-02 · Thread economics, Deep work [CODE]
-- CHT-02 · Video call 1:1 [CODE]
+- I1-08 · Overlap Matrix [MATCHES-CODE]
+- I1-09 · Focus Ring [MATCHES-CODE]
+- I1-10 · Availability / free-busy + focus windows view [GATE-TO-BUILD]
+- I1-17 · Files on a meeting [GATE-TO-BUILD]
+- I1-18 · Meeting cost [MATCHES-CODE]
+- I1-19 · Meeting goal + Achieved/Missed outcome colours [GATE-TO-BUILD]
+- I1-38 · Keyboard shortcuts in inbox [MATCHES-CODE]
+- I1-39 · Snooze thread to a time [MATCHES-CODE]
+- I1-40 · Private note on a thread [MATCHES-CODE]
+- I1-41 · Per-thread analytics [MATCHES-CODE]
+- I1-42 · Thread rescue [GATE-TO-BUILD]
+- I1-49 · Schedule send [MATCHES-CODE]
+- I1-50 · Templates with {{variables}} [MATCHES-CODE]
+- I1-51 · Snippets [MATCHES-CODE]
+- I1-53 · Pre-send confidence scan [MATCHES-CODE]
+- I1-54 · Follow-up reminders [MATCHES-CODE]
+- I1-56 · Reading time / reading level meter [GATE-TO-BUILD]
+- I1-57 · Send from a chosen identity [MATCHES-CODE]
+- I1-59 · Cross-device draft handoff [MATCHES-CODE]
+- I1-68 · Link to full CRM [MATCHES-CODE]
+- I2-21 · Work execution chain [MATCHES-CODE]
+- I2-38 · CRM overview/home [MATCHES-CODE]
+- I2-39 · Relationships (people/contacts book) [MATCHES-CODE]
+- I2-40 · Leads [MATCHES-CODE]
+- I2-41 · Deals pipeline (6 stages) [MATCHES-CODE]
+- I2-42 · Deal to Work item [MATCHES-CODE]
+- I2-43 · Attach email thread to deal [MATCHES-CODE]
+- I2-44 · Accounts (companies) [MATCHES-CODE]
+- I2-45 · CRM tasks [MATCHES-CODE]
+- I2-46 · CRM reports [MATCHES-CODE]
+- I2-47 · CRM memory + live + insights [MATCHES-CODE]
+- I2-48 · CRM health [MATCHES-CODE]
+- I2-56 · CRM capture [MATCHES-CODE]
+- I2-59 · Work: Add task + TaskBoard [MATCHES-CODE]
+- I2-60 · Work: Notes [MATCHES-CODE]
+- I2-61 · Work: Promise inbox [MATCHES-CODE]
+- I2-62 · Work: Follow-through table [MATCHES-CODE]
+- I2-63 · Work: Promise recovery [GATE-TO-BUILD]
+- I2-65 · Goals + deadlines [GATE-TO-BUILD]
+- I2-74 · Deep work [MATCHES-CODE]
+- I2-79 · Thread economics [MATCHES-CODE]
+- N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [PROPOSED]
+- N-CRM-02 · Duplicate detect + merge [PROPOSED]
+- N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited) [PROPOSED]
 
-## Neeche ke packages se inherit (23)
+## Neeche ke packages se inherit (106)
 
-- MAIL-01 · Inbox, folders, threads, search, labels, move, flag
-- MAIL-02 · Compose + draft save + version history
-- MAIL-03 · Signatures
-- MAIL-04 · Outbox + undo send (30s)
-- MAIL-05 · Attachments (limit package ke hisaab se, neeche LIMITS)
-- CAL-01 · Events, invites, RSVP, guests, history, busy
-- CAL-02 · Find-a-time
-- CAL-03 · Public booking links (count LIMITS mein)
-- CAL-06 · ICS subscriptions
-- CAL-07 · Event files attach
-- PPL-01 · Contacts, import, aliases, notes
-- ANA-01 · Response debt
-- DOM-01 · Company domains + DNS verify (count LIMITS)
-- SEC-01 · Passkey / two-step sign-in, sessions, history
-- SEC-02 · Trusted devices + vault (count LIMITS)
-- SEC-03 · Kill switch, rotate, disown, encryption proof
-- DAT-01 · Import + Move-In + one-click export
-- DAT-02 · Account delete / integrity appeal
-- SET-01 · Appearance, notifications, privacy, locale, workspace
-- BIL-01 · Plan, usage, portal, invoices
-- PRT-01 · Partner program (client companies, 20/25/30%)
-- PRF-01 · Performance centre (budgets, prefetch, regressions)
-- SUP-01 · Human support (response time LIMITS)
+- I1-01 · Month/Week/Day calendar grid
+- I1-02 · Create / edit / delete meetings
+- I1-03 · Repeating meetings
+- I1-04 · Guests + email invitations with per-guest delivery status
+- I1-05 · RSVP
+- I1-06 · Guests' local time shown next to each attendee
+- I1-07 · Find-a-time
+- I1-11 · Working hours + out-of-office periods
+- I1-12 · Multiple calendars with name + colour palette
+- I1-13 · Reminders
+- I1-14 · Public booking page
+- I1-15 · Manage a booking
+- I1-20 · Outside calendars
+- I1-21 · Phone/desktop calendar apps via CalDAV
+- I1-22 · Calendar feed links
+- I1-23 · Import .ics from Google/Zoho/Outlook/Apple
+- I1-24 · World clocks + globe with day/night
+- I1-25 · Time bar
+- I1-26 · Trip card
+- I1-27 · Device clock check + own connection speed
+- I1-28 · Billing deadline line in clock popover
+- I1-29 · Deep link into a meeting
+- I1-30 · History search over past meetings
+- I1-31 · Inbox / folders list with counts, live updates
+- I1-32 · Read thread
+- I1-33 · Inbox categories
+- I1-34 · Labels
+- I1-35 · Multiple mailboxes/accounts + switch
+- I1-36 · Per-address colour identity chips
+- I1-37 · Archive / delete / star / mark read / move
+- I1-44 · Inline reply / reply-all / forward inside the thread
+- I1-45 · Outbox
+- I1-46 · Empty-inbox welcome
+- I1-47 · Compose studio
+- I1-48 · Undo send
+- I1-52 · Signatures
+- I1-55 · Writing-style word prediction
+- I1-58 · File attachments on send
+- I1-61 · People list with search + smart filters
+- I1-62 · Contacts auto-built from real mail
+- I1-63 · Contact profile
+- I1-64 · Contact tags
+- I1-65 · Contact + company timelines
+- I1-66 · Companies
+- I1-67 · Contacts import CSV/vCard from Google/Outlook/Zoho/Apple/LinkedIn
+- I1-69 · Universal search
+- I1-70 · Calendar history search
+- I1-71 · Bring old mail via IMAP + app password
+- I1-72 · Import page
+- I1-73 · Move-In service request
+- I1-74 · Company domains + DNS records
+- I2-22 · Device safety vault (chat)
+- I2-23 · Device trust / kill access
+- I2-24 · Safety reporting
+- I2-33 · Signaling over WT/Realtime/durable rows
+- I2-36 · Public landings /anexochat, /anexovideocall
+- I2-37 · Short paths /chat, /work, /analytics, /dashboard
+- I2-58 · CRM translations (28 locales)
+- I2-64 · Work: Locked Pro preview
+- I2-67 · Dashboard home
+- I2-68 · Expiry watch
+- I2-69 · Install hint (PWA)
+- I2-70 · Setup checklist
+- I2-71 · Live updates (mail/calendar/crm/work/people/org)
+- I2-73 · Response debt (People waiting)
+- I3-11 · Company domains & addresses
+- I3-12 · Workspace address @anexomail.com
+- I3-14 · Security home
+- I3-15 · Device trust list + one-click revoke
+- I3-16 · Impossible-travel detection
+- I3-18 · Encryption ledger
+- I3-19 · Login history / replay
+- I3-20 · Sessions + blast-radius kill
+- I3-21 · Device Safety Vault
+- I3-22 · Passkey (mandatory) + recovery codes
+- I3-23 · Account integrity: one person one account
+- I3-24 · Final-warning ladder before block
+- I3-25 · Appeal with evidence
+- I3-30 · Report message/person/file/conversation
+- I3-31 · Devices & offline
+- I3-32 · Mailbox storage & quota
+- I3-33 · Billing & Plans page
+- I3-34 · Billing state
+- I3-35 · Checkout done
+- I3-36 · Trial lifecycle (2 days)
+- I3-37 · Family/lifetime access
+- I3-38 · Move-In migration (IMAP import)
+- I3-39 · Account & sessions
+- I3-40 · Full data export (ZIP)
+- I3-41 · Settings: Appearance
+- I3-42 · Settings: Notifications
+- I3-43 · Settings: Privacy
+- I3-44 · Settings: Workspace
+- I3-45 · Settings: Health
+- I3-46 · Settings: History
+- I3-48 · 28 languages (locale overlay)
+- I3-49 · Home place / world clock
+- I3-50 · Toast system
+- I3-51 · Landing page
+- I3-52 · Plans & Pricing page
+- I3-53 · Page directory (/pages)
+- I3-54 · Docs / get-started guide
+- I3-55 · Enterprise support page
+- I3-56 · About / Partners / Status / Privacy / Billing policy
+- I3-58 · Managed Move-In bands £568/1,670/2,210/3,350
+- N-ANA-01 · Analytics Center data backend (7 reports, Rust+WT)
+
+## GREEN hone mein BAQI (10) — gate/feature banana baqi
+
+- I1-10 · Availability / free-busy + focus windows view [GATE-TO-BUILD]
+- I1-17 · Files on a meeting [GATE-TO-BUILD]
+- I1-19 · Meeting goal + Achieved/Missed outcome colours [GATE-TO-BUILD]
+- I1-42 · Thread rescue [GATE-TO-BUILD]
+- I1-56 · Reading time / reading level meter [GATE-TO-BUILD]
+- I2-63 · Work: Promise recovery [GATE-TO-BUILD]
+- I2-65 · Goals + deadlines [GATE-TO-BUILD]
+- N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [PROPOSED]
+- N-CRM-02 · Duplicate detect + merge [PROPOSED]
+- N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited) [PROPOSED]
 
 ## Is package mein NAHI (upar ke packages)
 
-- MAIL-16 · Shared drafts, mentions, approvals → business
-- CAL-08 · Meeting rooms (book/schedule/release) → business
-- WRK-02 · Work business ledgers (files, calls, recovery) → business
-- CRM-03 · Collab: shared inbox view, mentions, approvals → business
-- CRM-04 · Revenue risk radar → business
-- CRM-05 · Activity ledger → business_pro
-- CRM-06 · Intelligence graph → business_pro
-- CRM-10 · Lead scoring + assignment rules (round-robin) → business
-- CRM-11 · Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited) → business
-- CRM-12 · Quotes / CPQ (product list, quote, invoice) → business
-- CRM-13 · Deal approval process (discount limits) → business_pro
-- CRM-14 · Sales cadences (mail/call/task series) → business
-- CRM-15 · Forecast + quotas (target vs actual) → business
-- CRM-16 · Territory management → business_pro
-- CRM-17 · Custom CRM dashboards → business
-- ANA-03 · Attention leaks, Promise SLA, Forecast → business
-- ANA-04 · Team load report (owner/admin) → business
-- CHT-01 · ANEXOChat (file send 2GB/5GB/7GB) → business
-- CHT-03 · Group video (size LIMITS) → business
-- DOC-01 · CRDT collaborative docs → business
-- ORG-01 · Members, roles, departments, teams, invites → business
-- ORG-02 · Policies, audit log, compliance → business
-- ORG-03 · Org graph + security centre → business
-- SAF-01 · Safety centre (review queue, sealed evidence, appeals) → business_pro
-- SUP-02 · Priority Support (included) → enterprise
-- ENT-01 · Unlimited users, bandwidth cap, Rust-only (NO Bun) → enterprise
+- I1-16 · Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side → business
+- I1-43 · Thread header: link to Work item / Chat / Discuss in chat → business
+- I2-01 · Real-time 1:1 + group messaging → business
+- I2-02 · Delivery ticks / honest message truth → business
+- I2-03 · Live push over WebTransport/QUIC → business
+- I2-04 · Image/screenshot attachments → business
+- I2-05 · Large file transfer (chunked, resumable) → business
+- I2-06 · File context + relationship graph → business
+- I2-07 · Pop-out window + split view → business
+- I2-08 · Cross-device continuity → business
+- I2-09 · Cinematic atmosphere (Dawn/Day/Dusk/Night) → business
+- I2-10 · Cinematic audio (rain/storm) → business
+- I2-11 · Send-sweep animation → business
+- I2-12 · Decision ledger → business
+- I2-13 · Conversation to outcome timeline → business
+- I2-14 · Conversation health + commitment collision → business
+- I2-15 · Message provenance → business
+- I2-16 · Business conversation receipts → business
+- I2-17 · Zero-loss handover pack → business
+- I2-18 · Email to chat bridge → business
+- I2-19 · Chat to email escalation → business
+- I2-20 · Work strip in chat → business
+- I2-25 · 1:1 video call (WebRTC) → business
+- I2-26 · Group call via own SFU (3+) → business
+- I2-27 · Adaptive quality ladder 8K to 480p → business
+- I2-28 · Pre-warmed ICE → business
+- I2-29 · Ring truth + self-made ringtone → business
+- I2-30 · Audio-only survival → business
+- I2-31 · Connect report → business
+- I2-32 · Call telemetry (RTT/jitter/loss/bitrate) → business
+- I2-34 · Call business record → business_pro
+- I2-49 · Shared work / collab → business
+- I2-50 · Approvals → business
+- I2-51 · Team permissions → business
+- I2-52 · CRM audit → business
+- I2-53 · CRM risk → business
+- I2-54 · CRM activity timeline + evidence → business_pro
+- I2-55 · CRM relationship graph → business_pro
+- I2-66 · Team report + team time → business
+- I2-72 · Calendar rooms and resources → business
+- I2-75 · Forecast → business
+- I2-76 · Attention leaks → business
+- I2-77 · Promise SLA → business
+- I2-78 · Team analytics → business
+- I2-80 · Report figures → business
+- I3-01 · Org overview → business
+- I3-02 · Members & invitations → business
+- I3-03 · Roles & capability matrix → business
+- I3-04 · Departments → business
+- I3-05 · Policies + policy simulator → business
+- I3-06 · Audit ledger → business
+- I3-07 · Compliance + one-click data export → business
+- I3-08 · Live org graph → business_pro
+- I3-09 · Org security (kill device, break-glass) → business_pro
+- I3-10 · Teams → business
+- I3-17 · Ownership proof (DKIM/SPF/DMARC/TLS) → business
+- I3-27 · Safety centre / review queue → business_pro
+- I3-28 · Sealed report evidence → business_pro
+- I3-29 · Enforcement history + device ban list → business_pro
+- I3-57 · Priority Support add-on £790/mo → enterprise
+- N-CRM-04 · Lead scoring + assignment rules (round-robin) → business
+- N-CRM-05 · Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited) → business
+- N-CRM-06 · Quotes / CPQ → business
+- N-CRM-07 · Deal approval process (discount limits) → business_pro
+- N-CRM-08 · Sales cadences → business
+- N-CRM-09 · Forecast + quotas → business
+- N-CRM-10 · Territory management → business_pro
+- N-CRM-11 · Custom CRM dashboards → business
+- N-DOC-01 · CRDT collaborative docs (Personal NAHI) → business
+- N-ENT-01 · Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun) → enterprise
 
 ## Limits
 
