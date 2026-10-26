@@ -52,6 +52,12 @@ async fn patch_only(path_and_query: &str, body: Value) -> Result<(), String> {
     crate::sb_patch(path_and_query, body).await.map(|_| ())
 }
 
+/// Profile mein pehle se likha workspace_kind (None = kabhi stamp nahi hua).
+async fn current_kind(uid: &str) -> Option<String> {
+    let p = first(crate::sb_select(&format!("account_profiles?select=preferences&user_id=eq.{}&limit=1", enc(uid))).await)?;
+    p.get("preferences")?.get("workspace_kind")?.as_str().filter(|k| !k.is_empty()).map(|k| k.to_string())
+}
+
 /// account_profiles.preferences.workspace_kind = kind, onboarded = true.
 /// Profile row na ho (NOT NULL email/legal_name/display_name) to Bun ka upsert chup-chaap fail hota tha — yahan row bana dete hain.
 async fn stamp_kind(uid: &str, email: &str, kind: &str) {
@@ -156,8 +162,17 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         "workspace.personal" => {
             if let Some(m) = first(crate::sb_select(&format!("org_members?select=org_id&user_id=eq.{}&limit=1", enc(&uid))).await) {
                 if let Some(oid) = m.get("org_id").and_then(|x| x.as_str()) {
-                    stamp_kind(&uid, &mail, "personal").await;
-                    return crate::ok(json!({ "id": oid, "kind": "personal", "existing": true })).into_response();
+                    // LOOPHOLE FIX (27 Oct 04:3x): pehle yahan HAMESHA "personal" stamp hota tha — company wale account (pro.buyer) par probe/login
+                    // chalne se workspace_kind business -> personal ho gaya aur sidebar "Personal Pro+" dikhane laga. Ab mojooda kind ko CHHUA nahi jata;
+                    // sirf tab "personal" likhte hain jab profile mein kind hai hi nahi.
+                    let kind = match current_kind(&uid).await {
+                        Some(k) => k,
+                        None => {
+                            stamp_kind(&uid, &mail, "personal").await;
+                            "personal".to_string()
+                        }
+                    };
+                    return crate::ok(json!({ "id": oid, "kind": kind, "existing": true })).into_response();
                 }
             }
             match create_org(&uid, "Personal mail", &mail, "personal", None).await {

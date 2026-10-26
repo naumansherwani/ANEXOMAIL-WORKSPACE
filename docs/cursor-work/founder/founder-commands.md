@@ -1403,3 +1403,12 @@ Phir Chrome: /app/settings (koi toggle badlo -> history -> revert), /app/integra
 ```bash
 bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/buyer-accounts-look.sh)
 ```
+
+## 27 Oct 2026 04:37 PKT — pro.buyer repair (Rust install -> restart -> fix script -> probes)
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -4
+pm2 restart anexomail-rust --update-env && pm2 save >/dev/null && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
+sleep 20
+bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/fix-buyer-kind.sh)
+bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/buyer-accounts-look.sh) 2>&1 | sed -n "/== 3/,/== 4/p"
+```

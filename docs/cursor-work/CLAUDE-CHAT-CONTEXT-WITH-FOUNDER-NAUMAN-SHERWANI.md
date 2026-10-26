@@ -1475,3 +1475,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 ```bash
 bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/buyer-accounts-look.sh)
 ```
+
+## 27 Oct 2026 04:37 PKT — BUG (mera): workspace.personal mojooda company workspace par bhi workspace_kind='personal' stamp karta tha; basic-gate-probe (MODE=pro) har run mein ye call karta hai => pro.buyer business->personal ho gaya, UI ne auth.session account_kind=personal se 'Personal Pro+' surface dikhayi (Pro gates band dikhe). Fix: wsx_glue existing branch ab mojooda kind ko NAHI chhoota (sirf kind na ho to personal likhta hai, aur asli kind lautata hai). Repair: docs/cursor-work/server/fix-buyer-kind.sh (sirf 4 *.buyer, personal->business, pehle/baad). Order: Rust install + restart PEHLE, phir fix script, phir probes. cargo check poori crate OK. Server DB: buyer-accounts-look.sh se saboot (pro.buyer kind=personal, baaqi buyers business).
