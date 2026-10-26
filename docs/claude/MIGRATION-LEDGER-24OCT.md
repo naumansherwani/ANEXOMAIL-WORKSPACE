@@ -8,19 +8,19 @@ E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par
 ## Kul hisaab (script: docs/cursor-work/server/count-endpoints.py)
 | Cheez | Ginti |
 |---|---|
-| Bun REST endpoints (server/routes) | 514 |
+| Bun REST endpoints (server/routes) | 523 |
 | Client Rust-first (`rpcOrRest`, Bun sirf fallback) | 125 |
-| Baqi (Bun-only ya client wiring saabit nahi) | 389 |
-| Rust procs repo mein | 328 |
+| Baqi (Bun-only ya client wiring saabit nahi) | 398 |
+| Rust procs repo mein | 335 |
 
 ## File-wise (Bun file: kul / Rust-first / baqi)
 | Bun file | Kul | Rust-first | Baqi |
 |---|---|---|---|
 | chat.ts | 141 | 0 | 141 |
 | org.ts | 27 | 0 | 27 |
+| auth.ts | 25 | 1 | 24 |
 | crm.ts | 24 | 0 | 24 |
 | ai.ts | 21 | 9 | 12 |
-| auth.ts | 19 | 1 | 18 |
 | calendar.ts | 17 | 14 | 3 |
 | mail-compose.ts | 17 | 16 | 1 |
 | movein.ts | 16 | 5 | 11 |
@@ -48,6 +48,7 @@ E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par
 | locale.ts | 4 | 3 | 1 |
 | workspace.ts | 4 | 0 | 4 |
 | account-deletion.ts | 3 | 0 | 3 |
+| analytics.ts | 3 | 0 | 3 |
 | mail-predict.ts | 3 | 3 | 0 |
 | people-import.ts | 3 | 3 | 0 |
 | support.ts | 3 | 0 | 3 |

@@ -68,6 +68,9 @@ ai.ts,POST,/api/ai/arena,ai.runArena,RUST-FIRST (Bun fallback)
 ai.ts,GET,/api/ai/guardrail,,BUN-ONLY or client wiring not proven
 ai.ts,POST,/api/ai/guardrail/:id,ai.decideGuardrail,RUST-FIRST (Bun fallback)
 ai.ts,POST,/api/ai/chat,,BUN-ONLY or client wiring not proven
+analytics.ts,GET,/api/analytics/:report,,BUN-ONLY or client wiring not proven
+analytics.ts,GET,/api/founder/analytics/overview,,BUN-ONLY or client wiring not proven
+analytics.ts,GET,/api/founder/billing/revenue,,BUN-ONLY or client wiring not proven
 auth-passkey.ts,POST,/api/auth/passkey/register/options,auth.passkey.register.options,RUST-FIRST (Bun fallback)
 auth-passkey.ts,POST,/api/auth/passkey/register/verify,auth.passkey.register.verify,RUST-FIRST (Bun fallback)
 auth-passkey.ts,POST,/api/auth/passkey/options,auth.passkey.options,RUST-FIRST (Bun fallback)
@@ -85,6 +88,12 @@ auth.ts,GET,/api/auth/session,,BUN-ONLY or client wiring not proven
 auth.ts,POST,/api/auth/logout,,BUN-ONLY or client wiring not proven
 auth.ts,POST,/api/auth/forgot-password,,BUN-ONLY or client wiring not proven
 auth.ts,POST,/api/auth/magic-link,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/magic-link/verify,,BUN-ONLY or client wiring not proven
+auth.ts,GET,/api/auth/mfa,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/mfa/enroll,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/mfa/enroll/confirm,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/mfa/verify,,BUN-ONLY or client wiring not proven
+auth.ts,POST,/api/auth/mfa/disable,,BUN-ONLY or client wiring not proven
 auth.ts,POST,/api/auth/oauth/callback,,BUN-ONLY or client wiring not proven
 auth.ts,POST,/api/auth/reset-password,,BUN-ONLY or client wiring not proven
 auth.ts,POST,/api/auth/change-password,,BUN-ONLY or client wiring not proven
