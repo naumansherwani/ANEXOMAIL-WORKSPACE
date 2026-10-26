@@ -64,3 +64,9 @@ Technology: Rust :3200 (Tokio async) primary; same dispatch HTTP + WebTransport 
 - Brain: guroh A B C lagey (Bun fallback Availability/Focus gate live). Guroh D (revenue/release) drift = sirf purane comments; ACCEPT_LIVE hash se ab lagega.
 - Chrome Pro: anexoKernel rpcUp, tagged calls, Rust availability/focus 200.
 - Baqi Pro: calendar UI click-through, fallbackProcs (Bun-only endpoints -> Rust), CRM P1/P2 (founder haan), meeting-cost hourly rates UI.
+
+## 26 Oct 2026 10:50 PKT — Pro GREEN: workx module (Rust, Tokio async)
+- DONE (code, compile-checked, 5 unit tests): `server/rust/workx_core.rs` + `workx_glue.rs` — `work.tasks`, `work.promises`, `crm.overview` Bun se Rust par. Gate Pro+ (resolve_plan; Basic 403 `feature_not_available`). Formula Bun jaisa (migration). Installer `rust-engine-install.sh` mein `workx` (ALL_MODULES + CFG + probe).
+- Wajah: Chrome `anexoKernel.fallbackProcs` mein in teeno par `kernel_status_404` tha.
+- TODO (agla): `crm.live`, `org.members` (Business) Rust par; `kernelRpc` early-boot intezar (300-400ms); `ANEXO_TAG_MODE` observe->enforce jab invalid=0; CRM P1/P2 founder ke "haan" par.
+- Founder ko: Rust phir Web command (founder-commands.md 10:50). Live saboot (Rule 29) deploy ke baad: Chrome Pro par fallbackProcs dobara.

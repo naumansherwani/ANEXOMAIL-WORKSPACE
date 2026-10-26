@@ -544,3 +544,9 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 26 Oct 10:50 LIVE (Pro, Chrome): Web+Rust deployed; kernel-check ALL PASS (tag observe valid=0 missing=1 abhi); anexoKernel.stats tagged=22 ticketOk=1; Rust calendar.availability 200 / focus 200 / files gate paar / followup 200 / responseDebt 200. Basic 403 = basic-gate-probe.sh (extended). Fallback procs (404) ab anexoKernel.fallbackProcs se dikhengi (migration bacha kaam).
 - 26 Oct 10:55 basic-gate-probe: Rust 17/17 PASS (Basic 403); Bun Availability/Focus FAIL(200) kyunke Brain guroh C drift (revenue/release) ki wajah se chhoota; guroh C/D split kiya
 - 26 Oct 10:35 PRO server gates LIVE PROOF: probe Basic 17/17 + Pro 21/21 PASS; Brain A B C lagey; D drift comments-only (ACCEPT_LIVE)
+
+## 26 Oct 2026 10:50 PKT — Pro GREEN: workx module (Rust, Tokio async)
+- DONE (code, compile-checked, 5 unit tests): `server/rust/workx_core.rs` + `workx_glue.rs` — `work.tasks`, `work.promises`, `crm.overview` Bun se Rust par. Gate Pro+ (resolve_plan; Basic 403 `feature_not_available`). Formula Bun jaisa (migration). Installer `rust-engine-install.sh` mein `workx` (ALL_MODULES + CFG + probe).
+- Wajah: Chrome `anexoKernel.fallbackProcs` mein in teeno par `kernel_status_404` tha.
+- TODO (agla): `crm.live`, `org.members` (Business) Rust par; `kernelRpc` early-boot intezar (300-400ms); `ANEXO_TAG_MODE` observe->enforce jab invalid=0; CRM P1/P2 founder ke "haan" par.
+- Founder ko: Rust phir Web command (founder-commands.md 10:50). Live saboot (Rule 29) deploy ke baad: Chrome Pro par fallbackProcs dobara.

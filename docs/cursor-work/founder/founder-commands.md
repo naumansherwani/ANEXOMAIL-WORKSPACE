@@ -1118,3 +1118,8 @@ Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexo
 ## 26 Oct 10:55 — Brain guroh C (Availability/Focus Bun gate) alag + drift report
 1. Brain: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`  (ab guroh C = sirf calendar.ts; revenue/release guroh D alag)
 2. (sirf agar guroh D "DRIFT" bole) read-only report: `bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-drift-report.sh)`
+
+## 26 Oct 10:50 — Pro GREEN: workx (work.tasks / work.promises / crm.overview ab Rust Tokio par). SQL nahi. Tarteeb Rust -> Web
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`  (workx module khud judega; probe "workx: Rust ne pakda" aana chahiye)
+2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
+(Brain group D ka drift sirf comment hai — ACCEPT_LIVE mein darj, kuch karna nahi.)

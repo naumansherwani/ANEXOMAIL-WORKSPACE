@@ -1167,3 +1167,9 @@ Founder: Enterprise £18,500 (Bun-free, Rust only) — AGENTS.md mein. Business 
 ### 26 Oct 10:55 — Basic 403 PROOF (founder output): Rust drafts/threads 200, snooze/assign/templates/schedule/insights/availability/focus/files/goal/rescue/followup/snippets/handoff/threadEconomics 403, responseDebt 200. Bun /calendar/availability+focus 200 (FAIL) -> brain-kernel-install guroh C split (calendar.ts alag), D = revenue/release drift report.
 
 ### 26 Oct 10:35 — Pro positive control ALL PASS 21/21; Brain guroh D drift comments-only (installer ACCEPT_LIVE). Pro server gates LIVE GREEN. Baqi: UI click-through, fallbackProcs, CRM P1/P2.
+
+## 26 Oct 2026 10:50 PKT — Pro GREEN: workx module (Rust, Tokio async)
+- DONE (code, compile-checked, 5 unit tests): `server/rust/workx_core.rs` + `workx_glue.rs` — `work.tasks`, `work.promises`, `crm.overview` Bun se Rust par. Gate Pro+ (resolve_plan; Basic 403 `feature_not_available`). Formula Bun jaisa (migration). Installer `rust-engine-install.sh` mein `workx` (ALL_MODULES + CFG + probe).
+- Wajah: Chrome `anexoKernel.fallbackProcs` mein in teeno par `kernel_status_404` tha.
+- TODO (agla): `crm.live`, `org.members` (Business) Rust par; `kernelRpc` early-boot intezar (300-400ms); `ANEXO_TAG_MODE` observe->enforce jab invalid=0; CRM P1/P2 founder ke "haan" par.
+- Founder ko: Rust phir Web command (founder-commands.md 10:50). Live saboot (Rule 29) deploy ke baad: Chrome Pro par fallbackProcs dobara.
