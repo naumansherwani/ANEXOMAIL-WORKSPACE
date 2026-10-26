@@ -117,7 +117,7 @@ src/routes/app.security.history.tsx dbf374ef8e2cab0b
 src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 93c2da143a18750b
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
-server/rust/cal_core.rs 05972aa607e84ad9
+server/rust/cal_core.rs 81d39756b565dfc5
 server/rust/cal_glue.rs be0d7fa6a5d2b18f
 AGENTS.md 4e1c2ff9ba601f86
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa

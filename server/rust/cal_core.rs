@@ -2394,3 +2394,107 @@ mod cost_tests {
         }
     }
 }
+
+/* ------------------------------------------------------------------
+   Pro+ gate (ek jagah, server par) + Availability / Focus view (Bun se Rust par).
+   PP1 #3b: Availability/focus windows, files on a meeting, meeting goal = Pro+.
+   Find-a-time + 1 booking link + calendar_key/remind_min Basic mein rehte hain.
+------------------------------------------------------------------ */
+
+/// Some(paigham) = Basic ko 403 `feature_not_available`. `has_goal` = calendar.meta.set mein goal/goal_state aaya.
+pub fn pro_only_cal_proc(proc: &str, has_goal: bool) -> Option<&'static str> {
+    match proc {
+        "calendar.availability" | "calendar.focus" => Some("Availability and focus windows are a Pro+ feature."),
+        "calendar.files.list" | "calendar.files.attach" | "calendar.files.remove" => Some("Files on a meeting are a Pro+ feature."),
+        "calendar.meta.set" if has_goal => Some("Meeting goals and outcome colours are a Pro+ feature."),
+        _ => None,
+    }
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub struct AvSlot {
+    pub start: i64,
+    pub end: i64,
+    pub state: &'static str, // "free" | "focus" | "travel_buffer"
+    pub label: Option<String>,
+}
+
+/// Monday = 0 (Bun route ka weekday). `day_start` = UTC midnight epoch.
+pub fn weekday_mon0(day_start: i64) -> i64 {
+    let dow_sun0 = (day_start.div_euclid(86400) + 4).rem_euclid(7);
+    (dow_sun0 + 6) % 7
+}
+
+/// 08:00-19:00 UTC, 30-min slots. busy slot dikhta nahi. focus > travel_buffer(15 min after a meeting) > free.
+/// events = (start, end, title); windows = (weekday, start_minute, end_minute, label).
+pub fn availability_slots(day_start: i64, events: &[(i64, i64, String)], windows: &[(i64, i64, i64, String)]) -> Vec<AvSlot> {
+    let wd = weekday_mon0(day_start);
+    let mut out = Vec::new();
+    let mut m = 8 * 60;
+    while m < 19 * 60 {
+        let s = day_start + m * 60;
+        let e = s + 30 * 60;
+        let busy = events.iter().any(|ev| ev.0 < e && ev.1 > s);
+        if !busy {
+            let focus = windows.iter().find(|w| w.0 == wd && m < w.2 && m + 30 > w.1);
+            let buffer = events.iter().any(|ev| ev.1 <= s && ev.1 + 15 * 60 > s);
+            let (state, label) = if let Some(f) = focus {
+                ("focus", Some(f.3.clone()))
+            } else if buffer {
+                ("travel_buffer", None)
+            } else {
+                ("free", None)
+            };
+            out.push(AvSlot { start: s, end: e, state, label });
+        }
+        m += 30;
+    }
+    out
+}
+
+#[cfg(test)]
+mod avail_tests {
+    use super::*;
+
+    #[test]
+    fn pro_gate_covers_exactly_the_pro_calendar_procs() {
+        for p in ["calendar.availability", "calendar.focus", "calendar.files.list", "calendar.files.attach", "calendar.files.remove"] {
+            assert!(pro_only_cal_proc(p, false).is_some(), "{p}");
+        }
+        assert!(pro_only_cal_proc("calendar.meta.set", true).is_some());
+        assert!(pro_only_cal_proc("calendar.meta.set", false).is_none(), "calendar_key/remind Basic mein");
+        for p in ["calendar.create", "calendar.findtime", "calendar.busy", "calendar.events", "booking.page.set"] {
+            assert!(pro_only_cal_proc(p, true).is_none(), "{p} Basic ko khula");
+        }
+    }
+
+    #[test]
+    fn weekday_is_monday_zero() {
+        // 2026-10-26 = Monday; 2026-10-25 = Sunday
+        let mon = parse_ts("2026-10-26T00:00:00Z").unwrap();
+        assert_eq!(weekday_mon0(mon), 0);
+        assert_eq!(weekday_mon0(mon - 86400), 6);
+        assert_eq!(weekday_mon0(mon + 4 * 86400), 4);
+    }
+
+    #[test]
+    fn availability_busy_focus_buffer_free() {
+        let d = parse_ts("2026-10-26T00:00:00Z").unwrap(); // Monday
+        let ev = vec![(d + 9 * 3600, d + 10 * 3600, "Standup".to_string())];
+        let win = vec![(0, 11 * 60, 12 * 60, "Deep work".to_string())];
+        let s = availability_slots(d, &ev, &win);
+        // 09:00 and 09:30 busy -> absent
+        assert!(!s.iter().any(|x| x.start == d + 9 * 3600 || x.start == d + 9 * 3600 + 1800));
+        // 10:00 right after the meeting -> travel_buffer; 10:30 -> free (buffer sirf 15 min)
+        assert_eq!(s.iter().find(|x| x.start == d + 10 * 3600).unwrap().state, "travel_buffer");
+        assert_eq!(s.iter().find(|x| x.start == d + 10 * 3600 + 1800).unwrap().state, "free");
+        // 11:00 focus window with label
+        let f = s.iter().find(|x| x.start == d + 11 * 3600).unwrap();
+        assert_eq!((f.state, f.label.as_deref()), ("focus", Some("Deep work")));
+        // window sirf Monday ka: Tuesday par focus nahi
+        let t = availability_slots(d + 86400, &[], &win);
+        assert!(t.iter().all(|x| x.state == "free"));
+        assert_eq!(s.first().unwrap().start, d + 8 * 3600);
+        assert_eq!(s.last().unwrap().end, d + 19 * 3600);
+    }
+}
