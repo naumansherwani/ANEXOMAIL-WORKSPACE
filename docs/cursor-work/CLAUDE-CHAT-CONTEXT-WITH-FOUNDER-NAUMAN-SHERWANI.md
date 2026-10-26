@@ -1310,3 +1310,5 @@ Founder hukm: jo live nazar aaya green; phir se code nahi; repo ke claude folder
 
 ## 26 Oct 2026 22:40 PKT — hourly-rate / meeting-cost field BANAYA (Rust + kernel, naya SQL nahi) — deploy + Chrome saboot baaqi
 Founder: "advance technology par code likho, repo mein likho kaun si technology, done." Kya bana: Calendar settings > "Meeting cost" (Your hourly rate, Typical guest) -> procs calendar.rates / calendar.rates.set (Pro+) -> analytics_rates (self/team) -> cost har event par (viewer ke rates; row ka apna rate pehle). Core tests 50, bun 208, tsc clean, cargo check OK. Technology table: docs/claude/PRO-LIVE-GREEN-26OCT.md (22:40). Deploy: Rust install + Web pull (founder-commands 22:40). Phir Chrome: rate save -> meeting banao -> cost meter dikhe. Agla: trusted devices 4 UI, shared inbox 2nd user, tag enforce, phir trial.state.
+
+## 26 Oct 2026 22:50 PKT — founder hukm: har endpoint ka PACKAGE (basic/pro/business/business_pro/enterprise) repo mein likho taake website mix na ho; pehle repo mein dekho kahin pehle se likha na ho; jo endpoints Rust par aa chuke unka plan bhi. Output: docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md (+CSV). Rule AGENTS.md mein.
