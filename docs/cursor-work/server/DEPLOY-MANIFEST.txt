@@ -764,4 +764,3 @@ src/lib/crm-setup.ts 74f603ec604a6dc6
 src/routes/app.crm.setup.tsx 66702de837cdfbbc
 src/routes/f.$slug.tsx 030e29bc6d1514c2
 docs/cursor-work/sql/DIAG_crm_pipeline_update.sql f357724b87b8febb
-docs/cursor-work/server/DEPLOY-MANIFEST.txt fcdf33f1d40ec3d5
