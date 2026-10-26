@@ -1142,3 +1142,6 @@ Founder: SQL jis mein stamp ho ke anexomail.com ke har page/subdomain/user brows
 
 ## 26 Oct 09:15 PKT — LIVE TEST (Basic) natije
 Founder ne SQL E90 + Rust (wtrpc, analytics) + Web deploy kiya. Live (anexomail.com, Basic): wasm hash pin OK; QUIC /wt/rpc ready; analytics responseDebt 200 (£12,960 = 12 threads x £1,080), baqi 403 server par (HTTP aur WebTransport dono); founder procs 403; kernel.ticket 200; kernel.report policy ok/upgrade/block sahi; Basic meeting cost null. LOOPHOLE: Two-step "Status unavailable" — Bun Brain mein /api/auth/mfa 404. Fix: brain-kernel-install.sh (founder chalaye), phir Web pull, phir MFA live test. Pro account abhi nahi (Pro-side gate/cost positive test baqi).
+
+## 26 Oct 09:20 PKT — Brain+Web deploy ke baad live (Basic)
+anexoKernel.rpcUp=true; MFA status UI chal raha; Bun analytics fallback 404 (live index.ts mein mount nahi) -> brain-kernel-install.sh ab anchor-patch (drift par bhi). Agla: founder Brain dobara chalaye -> main check -> Pro account login -> Pro live test (analytics numbers, meeting cost, Pro gates) -> phir Business phase.

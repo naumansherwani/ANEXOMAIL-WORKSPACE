@@ -1098,3 +1098,6 @@ Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexo
 ## 26 Oct 09:15 — BRAIN (Bun fallback) — MFA / analytics fallback / flat pricing live karo (live test mein Two-step "Status unavailable" = Brain mein routes nahi). Koi SQL nahi.
 `bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`
 Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 26 Oct 09:20 — BRAIN dobara (sirf analytics fallback guroh A: live index.ts mein mount nahi laga tha; ab 3-line anchor patch). MFA (guroh B) pehle se live. Koi SQL/Web nahi.
+`bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`

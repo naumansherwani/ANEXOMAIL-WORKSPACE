@@ -25,3 +25,5 @@ Har line: cheez | kahan | test. Naya Claude: pehle yeh padho, phir docs/packages
 - Meeting cost Basic = null; founder-only procs 403
 ## LIVE NOT GREEN
 - MFA UI (Brain mein routes nahi: brain-kernel-install.sh), Pro-side positive tests (Pro account chahiye), kernel in-app rpcUp (anexoKernel Web pull ke baad dekhunga)
+- LIVE GREEN 09:20: anexoKernel.rpcUp=true (browser mein kernel QUIC par), Two-step sign-in UI (MFA status route live)
+- LIVE NOT GREEN: Bun analytics fallback (/api/analytics/* 404 -> brain-kernel-install.sh dobara), MFA enroll/verify flow (account badalta hai — founder ki ijazat se), Pro-side tests
