@@ -1,0 +1,70 @@
+# id	area	feature	starts_at	status	code_where	note
+# starts_at: basic|pro|business|business_pro|enterprise|founder|ai_soon ; status: CODE=server/UI gate already in code, PROPOSED=CEO assignment (founder approve baqi), TODO-VERIFY=code mein gate check baqi
+MAIL-01	Mail	Inbox, folders, threads, search, labels, move, flag	basic	CODE	app.mail.*, mail.threads/move/status/labels.update
+MAIL-02	Mail	Compose + draft save + version history	basic	CODE	mail.drafts.save/versions/delete
+MAIL-03	Mail	Signatures	basic	CODE	mail.signatures.list
+MAIL-04	Mail	Outbox + undo send (30s)	basic	CODE	app.mail.outbox
+MAIL-05	Mail	Attachments (limit package ke hisaab se, neeche LIMITS)	basic	CODE	mail.attach.limits, kernel sniff	executable/mismatch block sab par
+MAIL-06	Mail	Snooze	pro	CODE	mail.snooze (pro_gate)
+MAIL-07	Mail	Schedule send	pro	CODE	mailx pro_gate
+MAIL-08	Mail	Email templates	pro	CODE	mail.templates.*
+MAIL-09	Mail	Snippets	pro	CODE	mail.snippets.* (pro_only_proc)
+MAIL-10	Mail	Follow-up reminders	pro	CODE	mail.followup.*
+MAIL-11	Mail	Pre-send scan (confidence)	pro	CODE	mail.confidence
+MAIL-12	Mail	Draft handoff between devices	pro	CODE	mail.handoff.*
+MAIL-13	Mail	Shared inbox + collision guard + assign	pro	CODE	mail.assign
+MAIL-14	Mail	Multiple identities	pro	CODE	showMultipleIdentities
+MAIL-15	Mail	Thread notes	pro	CODE	ThreadNote (showWork)
+MAIL-16	Mail	Shared drafts, mentions, approvals	business	CODE	app.crm.collab (showCrmCollab)
+CAL-01	Calendar	Events, invites, RSVP, guests, history, busy	basic	CODE	calendar.*
+CAL-02	Calendar	Find-a-time	basic	CODE	calendar.findtime
+CAL-03	Calendar	Public booking links (count LIMITS mein)	basic	CODE	booking.*
+CAL-04	Calendar	Overlap Matrix + Focus Ring	pro	CODE	calendar.overlap
+CAL-05	Calendar	Meeting cost (£)	pro	CODE	cal_glue strip_cost	hourly-rate entry UI baqi
+CAL-06	Calendar	ICS subscriptions	basic	TODO-VERIFY	calendar.sub.*
+CAL-07	Calendar	Event files attach	basic	TODO-VERIFY	calendar.files.*
+CAL-08	Calendar	Meeting rooms (book/schedule/release)	business	PROPOSED	calendar.rooms.*	team feature
+CAL-09	Calendar	CalDAV feeds + app passwords	pro	PROPOSED	caldav.*	external client sync
+PPL-01	People	Contacts, import, aliases, notes	basic	CODE	app.people, people.import
+PPL-02	People	Leads suggest/import/move to People	pro	CODE	crm.leads.*	CRM base ke saath
+WRK-01	Work	Boards, notes, tasks	pro	CODE	app.work (showWork)
+WRK-02	Work	Work business ledgers (files, calls, recovery)	business	CODE	showWorkBusinessRecord
+CRM-01	CRM	Accounts, leads, pipeline (1), tasks, reports	pro	CODE	app.crm.* (showCrm)
+CRM-02	CRM	Relationship health, timeline, next-action, promises	pro	CODE	crm.health/timeline/next
+CRM-03	CRM	Collab: shared inbox view, mentions, approvals	business	CODE	showCrmCollab
+CRM-04	CRM	Revenue risk radar	business	CODE	showCrmRisk
+CRM-05	CRM	Activity ledger	business_pro	CODE	showCrmLedger
+CRM-06	CRM	Intelligence graph	business_pro	CODE	showCrmGraph
+CRM-07	CRM	Multiple pipelines, custom fields, web forms (chhoti limit Pro, badi Business)	pro	PROPOSED	-	LIMITS dekho
+CRM-08	CRM	Lead scoring + assignment rules	business	PROPOSED	-
+CRM-09	CRM	Workflow automation	business	PROPOSED	-
+CRM-10	CRM	Quotes / CPQ (approvals Business Pro)	business	PROPOSED	-
+CRM-11	CRM	Sales cadences	business	PROPOSED	-
+CRM-12	CRM	Forecast + quotas, territory	business	PROPOSED	-
+ANA-01	Analytics	Response debt	basic	CODE	analytics.responseDebt
+ANA-02	Analytics	Thread economics, Deep work	pro	CODE	analytics.threadEconomics/deepWork
+ANA-03	Analytics	Attention leaks, Promise SLA, Forecast	business	CODE	analytics.*
+ANA-04	Analytics	Team load report (owner/admin)	business	CODE	analytics.team
+CHT-01	Chat	ANEXOChat (file send 2GB/5GB/7GB)	business	CODE	showChat
+CHT-02	Chat	Video call 1:1	pro	CODE	showFullVideo
+CHT-03	Chat	Group video (size LIMITS)	business	PROPOSED	-
+DOC-01	Docs	CRDT collaborative docs	business	PROPOSED	-	founder faisla baqi
+ORG-01	Org	Members, roles, departments, teams, invites	business	CODE	app.org.*, team.*
+ORG-02	Org	Policies, audit log, compliance	business	CODE	app.org.policies/audit/compliance
+ORG-03	Org	Org graph + security centre	business	CODE	app.org.graph/security
+DOM-01	Domains	Company domains + DNS verify (count LIMITS)	basic	CODE	showDomains, mail.domains.verify
+SAF-01	Safety	Safety centre (review queue, sealed evidence, appeals)	business_pro	CODE	app.safety, appeal.*
+SEC-01	Security	Passkey / two-step sign-in, sessions, history	basic	CODE	app.security.*, auth/mfa
+SEC-02	Security	Trusted devices + vault (count LIMITS)	basic	CODE	chat.device.*, security.devices
+SEC-03	Security	Kill switch, rotate, disown, encryption proof	basic	CODE	security.*
+DAT-01	Data	Import + Move-In + one-click export	basic	CODE	app.import, app.movein, account.export.ticket
+DAT-02	Data	Account delete / integrity appeal	basic	CODE	account.delete.*
+SET-01	Settings	Appearance, notifications, privacy, locale, workspace	basic	CODE	app.settings.*, locale.*
+BIL-01	Billing	Plan, usage, portal, invoices	basic	CODE	app.billing, billing.portal
+PRT-01	Partners	Partner program (client companies, 20/25/30%)	basic	CODE	partners
+PRF-01	Speed	Performance centre (budgets, prefetch, regressions)	basic	TODO-VERIFY	app.perf.*
+SUP-01	Support	Human support (response time LIMITS)	basic	CODE	process
+SUP-02	Support	Priority Support (included)	enterprise	CODE	enterprise.tsx	add-on £790 baqi tiers par
+ENT-01	Enterprise	Unlimited users, bandwidth cap, Rust-only (NO Bun)	enterprise	PROPOSED	-	alag phase, abhi ZERO
+AI-01	AI	LEO AI workspace	ai_soon	CODE	ai.anexomail.com	COMING SOON July 2027
+FND-01	Founder	Founder/Admin/Release/Perf centres	founder	CODE	app.founder.*	kisi package mein nahi

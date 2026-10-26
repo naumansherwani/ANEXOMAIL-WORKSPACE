@@ -737,3 +737,8 @@ src/lib/chat-files.ts b742f82b031b15db
 docs/cursor-work/server/kernel-check.sh c6ef86079433301a
 docs/cursor-work/server/brain-kernel-install.sh bb3879dfa6421bae
 src/routes/app.analytics.threads.tsx 1f16015b964437c4
+docs/packages/FEATURE-CATALOG.md a709f0d776ecf9a5
+docs/packages/basic/INCLUDES.md 71ab5bd66893e4b6
+docs/packages/build-views.py ab8e0c9ae3936649
+docs/packages/features.tsv 960adccc6ee75172
+docs/packages/pro/INCLUDES.md d1cb0edaeae0e722
