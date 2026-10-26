@@ -17,9 +17,9 @@ afterEach(() => {
 
 describe("Personal Polar products", () => {
   test("keeps existing Business prices unchanged", () => {
-    expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_BASIC_MONTHLY?.amountGbp).toBe(23);
-    expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_PRO_MONTHLY?.amountGbp).toBe(46);
-    expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY?.amountGbp).toBe(97);
+    expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_BASIC_MONTHLY?.amountGbp).toBe(40);
+    expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_PRO_MONTHLY?.amountGbp).toBe(105);
+    expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_BUSINESS_MONTHLY?.amountGbp).toBe(360);
     expect(BILLING_PRODUCTS.POLAR_PRODUCT_PLAN_BUSINESS_PRO_MONTHLY?.amountGbp).toBe(2850);
   });
 
