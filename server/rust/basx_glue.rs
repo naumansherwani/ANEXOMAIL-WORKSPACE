@@ -63,25 +63,85 @@ pub async fn public(proc: &str, _input: &Value) -> Resp {
     .into_response()
 }
 
-/// Storage ke liye workspace (chat_ensure_workspace) — Bun requireWs jaisa, plan gate nahi.
-async fn workspace_of(token: &str) -> Result<String, Resp> {
+/// Storage ke liye workspace. Chat-entitled user: chat_ensure_workspace. Basic (chat nahi): pehle se maujood chat_members workspace,
+/// warna None => plan-based jawab (neeche). Pehle yeh Basic ko 500 deta tha (DB 'chat_not_entitled' raise karta hai).
+async fn workspace_of(token: &str) -> Result<(String, String, Option<String>), Resp> {
     let (id, email) = match crate::auth_user(token).await {
         Some(v) => v,
         None => return Err(fail(StatusCode::UNAUTHORIZED, "unauthorized", "Session invalid")),
     };
     let name = email.split('@').nth(1).filter(|d| !d.is_empty()).unwrap_or("Workspace").to_string();
     match crate::sb_rpc("chat_ensure_workspace", json!({ "_user": id, "_name": name })).await {
-        Ok(v) => Ok(v.as_str().unwrap_or_default().to_string()),
+        Ok(v) => Ok((id, email, Some(v.as_str().unwrap_or_default().to_string()))),
+        Err(e) if c::is_not_entitled(&e) => {
+            let m = first(crate::sb_select(&format!("chat_members?select=workspace_id&user_id=eq.{}&limit=1", enc(&id))).await);
+            let ws = m.and_then(|r| r.get("workspace_id").and_then(|x| x.as_str()).map(|s| s.to_string())).filter(|s| !s.is_empty());
+            Ok((id, email, ws))
+        }
         Err(e) => Err(fail(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e)),
     }
+}
+
+/// Plan ki storage_plans row (Basic jaise users ke liye, jinka koi chat workspace nahi).
+async fn plan_row(user: &str, email: &str) -> (String, Option<Value>) {
+    let plan = crate::sb_rpc("resolve_plan", json!({ "_user_id": user, "_email": email }))
+        .await
+        .ok()
+        .and_then(|v| v.as_str().map(|s| s.to_string()))
+        .unwrap_or_else(|| "basic".into());
+    let wanted = [plan.clone(), "trial".to_string()];
+    for p in wanted.iter() {
+        if let Some(r) = first(crate::sb_select(&format!("storage_plans?select=*&plan_id=eq.{}&limit=1", enc(p))).await) {
+            return (plan, Some(r));
+        }
+    }
+    (plan, None)
 }
 
 pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
     match proc {
         "storage.state" | "storage.preflight" | "storage.reserve" | "storage.commit" | "storage.release" => {
-            let ws = match workspace_of(token).await {
+            // pehle input jaanch (Bun jaisa), phir workspace
+            let parsed = if proc == "storage.state" {
+                None
+            } else {
+                match c::parse_storage(&st(input, "mailbox"), input.get("bytes").and_then(|x| x.as_f64()), &st(input, "kind")) {
+                    Ok(t) => Some(t),
+                    Err(d) => return fail(StatusCode::BAD_REQUEST, "bad_request", d),
+                }
+            };
+            let (uid, email, ws) = match workspace_of(token).await {
                 Ok(w) => w,
                 Err(r) => return r,
+            };
+            let ws = match ws {
+                Some(w) => w,
+                None => {
+                    // Basic: chat workspace nahi => plan ki hadd se jawab
+                    let (plan, row) = plan_row(&uid, &email).await;
+                    let g = |k: &str| row.as_ref().and_then(|r| r.get(k)).and_then(|x| x.as_i64());
+                    return match proc {
+                        "storage.state" => {
+                            let pooled = g("pooled_bytes");
+                            crate::ok(json!({
+                                "plan": plan,
+                                "model": if pooled.is_some() { "pooled" } else { "per_mailbox" },
+                                "mailbox_limit": g("mailbox_limit"),
+                                "max_send_bytes": g("max_send_bytes"),
+                                "pool": pooled.map(|q| json!({ "quota_bytes": q, "used_bytes": 0, "remaining_bytes": q, "percent": 0 })),
+                                "mailboxes": [],
+                            }))
+                            .into_response()
+                        }
+                        "storage.preflight" | "storage.reserve" => {
+                            let (_m, bytes, kind) = parsed.unwrap_or_default();
+                            let (allowed, code, reason) = c::plan_preflight(&kind, bytes, g("max_send_bytes"));
+                            crate::ok(json!({ "allowed": allowed, "code": code, "reason": reason, "limit_bytes": g("max_send_bytes") })).into_response()
+                        }
+                        "storage.commit" => crate::ok(json!({ "ok": true, "accounted": false })).into_response(),
+                        _ => crate::ok(json!({ "ok": true })).into_response(),
+                    };
+                }
             };
             if proc == "storage.state" {
                 return match crate::sb_rpc("storage_state", json!({ "_workspace": ws })).await {
@@ -89,10 +149,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
                     Err(e) => fail(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e),
                 };
             }
-            let (mailbox, bytes, kind) = match c::parse_storage(&st(input, "mailbox"), input.get("bytes").and_then(|x| x.as_f64()), &st(input, "kind")) {
-                Ok(t) => t,
-                Err(d) => return fail(StatusCode::BAD_REQUEST, "bad_request", d),
-            };
+            let (mailbox, bytes, kind) = parsed.unwrap_or_default();
             let r = match proc {
                 "storage.preflight" => crate::sb_rpc("storage_can_accept", json!({ "_workspace": ws, "_mailbox": mailbox, "_bytes": bytes, "_kind": kind })).await,
                 "storage.reserve" => crate::sb_rpc("storage_reserve", json!({ "_workspace": ws, "_mailbox": mailbox, "_bytes": bytes, "_kind": kind })).await,

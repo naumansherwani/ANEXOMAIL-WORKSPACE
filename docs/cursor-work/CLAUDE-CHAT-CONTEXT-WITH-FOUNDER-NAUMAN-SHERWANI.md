@@ -1392,3 +1392,6 @@ Founder deploy 01:24: installer ruk gaya ('dashboard.ai-usage' live main.rs mein
 
 ## 27 Oct 2026 03:05 — PRO GREEN ginti (founder sawal 01:27)
 Pro green close = ~8 deploys: Pro-only 4 endpoints (1), Basic-shared ~81 (6: B2 workspace, C billing-sync, D settings/integrations/security, E account/mail/cal/locale/trial, F auth login), + tag enforce (founder env) + shared-inbox collision test (2nd Pro user) + calendar UI click-through. Detail: docs/packages/pro/PRO-GREEN-TRACKER.md (03:05). Abhi deploy pending: contx+basx (installer fix 452dd4e, dry-run PASS).
+
+## 27 Oct 2026 03:30 — contx+basx DEPLOYED; Basic storage 500 fix
+Founder deploy 01:37: Rust par ab authx contx basx; Pro ALL PASS; KERNEL ALL PASS; Basic par storage.state/preflight 500. Wajah: DB chat_ensure_workspace Basic (chat nahi) ko 'chat_not_entitled' raise karta hai — purana Bun bhi Basic ko 500 deta tha (purani bug), mera Rust copy kar gaya. Fix basx: chat workspace na ho to chat_members, warna plan-based jawab (resolve_plan + storage_plans) — state/preflight/reserve/commit/release; input jaanch pehle. basx_core 3 tests, crate check PASS, dry-run PASS. Deploy: sirf Rust install+restart+probes (web unchanged).

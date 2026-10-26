@@ -27,6 +27,23 @@ pub fn parse_storage(mailbox: &str, bytes: Option<f64>, kind: &str) -> Result<(S
     Ok((m, b, k.to_string()))
 }
 
+/// Chat-entitlement ke bagair (Basic) koi chat workspace nahi — tab plan ki hadd se hi faisla (accounting ke bagair).
+/// Bun/DB `chat_ensure_workspace` in users ko 'chat_not_entitled' error deta tha => storage 500. Yeh uski jagah.
+pub fn plan_preflight(kind: &str, bytes: i64, max_send: Option<i64>) -> (bool, &'static str, &'static str) {
+    if kind != "email" {
+        if let Some(m) = max_send {
+            if bytes > m {
+                return (false, "file_too_large", "This file is larger than your plan allows for a single transfer.");
+            }
+        }
+    }
+    (true, "ok", "")
+}
+
+pub fn is_not_entitled(err: &str) -> bool {
+    err.contains("chat_not_entitled")
+}
+
 /// Draft discard / list ke liye uuid jaisi id (sirf hex aur '-').
 pub fn safe_id(id: &str) -> Option<String> {
     let t = id.trim();
@@ -48,6 +65,16 @@ mod tests {
         assert_eq!(parse_storage("a@b.com", Some(f64::NAN), "email").unwrap().1, 0);
         assert!(parse_storage("", Some(1.0), "email").is_err());
         assert!(parse_storage("a@b.com", Some(1.0), "video").is_err());
+    }
+    #[test]
+    fn plan_limits() {
+        assert_eq!(plan_preflight("file", 100, Some(50)).1, "file_too_large");
+        assert!(!plan_preflight("attachment", 100, Some(50)).0);
+        assert!(plan_preflight("email", 100, Some(50)).0);
+        assert!(plan_preflight("file", 10, Some(50)).0);
+        assert!(plan_preflight("file", 10, None).0);
+        assert!(is_not_entitled("{\"message\":\"chat_not_entitled\"}"));
+        assert!(!is_not_entitled("timeout"));
     }
     #[test]
     fn ids_and_names() {
