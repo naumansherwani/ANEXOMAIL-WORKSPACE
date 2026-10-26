@@ -1284,3 +1284,6 @@ LIVE WALK (pro.buyer): table docs/packages/pro/PRO-GREEN-TRACKER.md "LIVE FEATUR
 BUGS FIXED (code, deploy baaqi): (1) crm.ts money() "-£0" => "£0"; (2) pre-send scan messages Roman Urdu => English (mailx_core.rs + mail-compose.ts; 11 Rust tests pass, bun test 208 pass). OPEN: Avail. aaj ke saare slots FREE 1PM-12AM, working hours/Karachi din ka lihaaz nahi.
 Test hygiene: pre-send test mein mail 30 s hold mein gayi, Undo se "Not sent" — example.com par kuch nahi gaya. Compose draft "ZZ presend scan test" bacha ho sakta (Drafts).
 Kernel stats domains page: kernel 11 / fetch 2 (sirf GET /api/auth/session + /api/trial/state REST) => trial.state + auth.session agle Rust ports.
+
+## 26 Oct 2026 21:42 PKT — d59d059 DEPLOYED (founder): Rust restart 167, Web pull OK, basic ALL PASS, KERNEL CHECK ALL PASS. "-£0" + pre-send English LIVE (Chrome dekhna baaqi)
+Founder hukm: pehle context update, saath saath kaam. AGLA (tarteeb): (1) Availability working-hours bug (aaj ke sab slots FREE 1PM-12AM; working hours 09-17 + Karachi din ignore) fix; (2) Chrome live pass: booking links(3), Overlap Matrix, shared inbox/collision guard, snooze UI, focus/hourly-rate UI, 4 trusted devices; (3) trial.state Rust port; (4) auth.session; baaqi PRO-GREEN-TRACKER.md. Passkey lazmi kal 27 Oct (app banner).
