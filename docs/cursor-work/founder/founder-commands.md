@@ -1362,3 +1362,5 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 MODE=pro EMAIL=pro.buyer@anexomail.com bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh) 2>&1 | grep -E "FAIL|ALL PASS"
 ```
 (Web pull is baar nahi chahiye: koi frontend file nahi badli.)
+
+## 27 Oct 2026 03:02 PKT — compact-safe state: CLAUDE-CHAT-CONTEXT ke aakhri block mein
