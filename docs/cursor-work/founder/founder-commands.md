@@ -1090,3 +1090,7 @@ SQL (E89 + E90 + CHECK_E89/E90 khud auto-pick): `git -C /opt/anexomail-web fetch
 Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
 Restart: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+
+## 26 Oct 09:10 — KERNEL CHECK (deploy ke BAAD, sirf padhta hai): Rust WebTransport live? udp/3443? cert? kernel wasm hash pin se mila? kernel.report maujood?
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh)`
+(Agar kabhi CSP lagayi jaye to script-src mein 'wasm-unsafe-eval' lazmi, warna kernel load nahi hoga — fetch fallback chalega.)
