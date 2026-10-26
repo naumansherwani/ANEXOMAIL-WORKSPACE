@@ -23,10 +23,20 @@ for f in sorted(glob.glob('server/routes/*.ts')):
         pres = mounts.get(var) or [p for n, (fl, o) in imp.items() if fl == base[:-3] and o in (var, 'default') for p in mounts.get(n, [])] or ['/api']
         eps.append((base, meth.upper(), pres[0].rstrip('/') + path, path))
 cl = collections.defaultdict(set)
+PROCRE = re.compile(r'(?:^|[^\w.])(["`\'])([a-z][A-Za-z0-9]*(?:\.[A-Za-z0-9]+)+)\1\s*,\s*(?:\{\s*path:\s*)?(["`\'])(/api/[^`"\']*)\3')
+RUSTP = set()   # Rust ke asli procs: glue owns() + core pro_only()/owns() + main.rs match arms
+for f in glob.glob('server/rust/*_glue.rs') + glob.glob('server/rust/*_core.rs'):
+    for m in re.finditer(r'pub fn (?:owns|pro_only|procs)\(.*?\n\}', open(f).read(), re.S):
+        RUSTP |= set(re.findall(r'"([a-z0-9_]+(?:\.[A-Za-z0-9_]+)+)"', m.group(0)))
+RUSTP |= set(re.findall(r'^\s*"([a-z0-9_]+(?:\.[A-Za-z0-9_]+)+)"\s*(?:\||=>)', open('server/rust/main.rs').read(), re.M))
 for f in glob.glob('src/**/*.ts*', recursive=True):
-    s = open(f).read()
-    for m in re.finditer(r'rpcOrRest[^(]*\(\s*["`\']([\w.]+)["`\']\s*,\s*\{\s*path:\s*([`"\'])(/api/[^`"\']*)\2', s):
+    s2 = open(f).read()
+    for m in re.finditer(r'rpcOrRest[^(]*\(\s*["`\']([\w.]+)["`\']\s*,\s*\{\s*path:\s*([`"\'])(/api/[^`"\']*)\2', s2):
         cl[norm(m.group(3))].add(m.group(1))
+    # get<T>("proc", "/api/...") / useCrmMutation<..>("proc", "/api/...") — sirf tab jab proc Rust mein sach-much maujood ho
+    for m in PROCRE.finditer(s2):
+        if m.group(2) in RUSTP:
+            cl[norm(m.group(4))].add(m.group(2))
 rows = []
 for base, meth, full, local in eps:
     n = norm(full); hit = None

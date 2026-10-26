@@ -46,8 +46,14 @@ describe("rpc contract == Rust server gates", () => {
     expect(minPlanOf("org.members")).toBeNull();
   });
 
+  test("crmd: every CRM desk proc is 'pro' in the contract and in the Rust gate list", () => {
+    const procs = quoted(fnBody(rs("crmd_core.rs"), "pro_only"));
+    expect(procs.length).toBe(11);
+    for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
+  });
+
   test("every contract proc is enforced somewhere in Rust (no UI-only claim)", () => {
-    const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs", "livex_core.rs"].map(rs).join("\n");
+    const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs", "livex_core.rs", "crmd_core.rs"].map(rs).join("\n");
     for (const p of Object.keys(PROC_MIN_PLAN)) expect(all.includes(`"${p}"`), `${p} Rust mein nahi`).toBe(true);
   });
 

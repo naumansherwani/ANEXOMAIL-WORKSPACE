@@ -9,17 +9,17 @@ E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par
 | Cheez | Ginti |
 |---|---|
 | Bun REST endpoints (server/routes) | 523 |
-| Client Rust-first (`rpcOrRest`, Bun sirf fallback) | 125 |
-| Baqi (Bun-only ya client wiring saabit nahi) | 398 |
-| Rust procs repo mein | 335 |
+| Client Rust-first (`rpcOrRest`, Bun sirf fallback) | 144 |
+| Baqi (Bun-only ya client wiring saabit nahi) | 379 |
+| Rust procs repo mein | 337 |
 
 ## File-wise (Bun file: kul / Rust-first / baqi)
 | Bun file | Kul | Rust-first | Baqi |
 |---|---|---|---|
 | chat.ts | 141 | 0 | 141 |
-| org.ts | 27 | 0 | 27 |
+| org.ts | 27 | 3 | 24 |
 | auth.ts | 25 | 1 | 24 |
-| crm.ts | 24 | 0 | 24 |
+| crm.ts | 24 | 11 | 13 |
 | ai.ts | 21 | 9 | 12 |
 | calendar.ts | 17 | 14 | 3 |
 | mail-compose.ts | 17 | 16 | 1 |
@@ -42,13 +42,13 @@ E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par
 | trial.ts | 9 | 0 | 9 |
 | polar.ts | 7 | 0 | 7 |
 | founder.ts | 6 | 6 | 0 |
-| dashboard.ts | 5 | 0 | 5 |
+| dashboard.ts | 5 | 4 | 1 |
 | handoff.ts | 5 | 3 | 2 |
 | glitch.ts | 4 | 0 | 4 |
 | locale.ts | 4 | 3 | 1 |
 | workspace.ts | 4 | 0 | 4 |
 | account-deletion.ts | 3 | 0 | 3 |
-| analytics.ts | 3 | 0 | 3 |
+| analytics.ts | 3 | 1 | 2 |
 | mail-predict.ts | 3 | 3 | 0 |
 | people-import.ts | 3 | 3 | 0 |
 | support.ts | 3 | 0 | 3 |

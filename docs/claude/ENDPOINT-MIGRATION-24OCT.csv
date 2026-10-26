@@ -70,7 +70,7 @@ ai.ts,POST,/api/ai/guardrail/:id,ai.decideGuardrail,RUST-FIRST (Bun fallback)
 ai.ts,POST,/api/ai/chat,,BUN-ONLY or client wiring not proven
 analytics.ts,GET,/api/analytics/:report,,BUN-ONLY or client wiring not proven
 analytics.ts,GET,/api/founder/analytics/overview,,BUN-ONLY or client wiring not proven
-analytics.ts,GET,/api/founder/billing/revenue,,BUN-ONLY or client wiring not proven
+analytics.ts,GET,/api/founder/billing/revenue,billing.revenueTruth,RUST-FIRST (Bun fallback)
 auth-passkey.ts,POST,/api/auth/passkey/register/options,auth.passkey.register.options,RUST-FIRST (Bun fallback)
 auth-passkey.ts,POST,/api/auth/passkey/register/verify,auth.passkey.register.verify,RUST-FIRST (Bun fallback)
 auth-passkey.ts,POST,/api/auth/passkey/options,auth.passkey.options,RUST-FIRST (Bun fallback)
@@ -287,18 +287,18 @@ contacts.ts,GET,/api/companies,,BUN-ONLY or client wiring not proven
 contacts.ts,GET,/api/companies/:domain,,BUN-ONLY or client wiring not proven
 contacts.ts,GET,/api/companies/:domain/timeline,,BUN-ONLY or client wiring not proven
 contacts.ts,GET,/api/search/universal,,BUN-ONLY or client wiring not proven
-crm.ts,GET,/api/crm/overview,,BUN-ONLY or client wiring not proven
-crm.ts,GET,/api/crm/live,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/overview,crm.overview,RUST-FIRST (Bun fallback)
+crm.ts,GET,/api/crm/live,crm.live,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/memory,,BUN-ONLY or client wiring not proven
-crm.ts,POST,/api/crm/deals/work,,BUN-ONLY or client wiring not proven
-crm.ts,POST,/api/crm/deals/thread,,BUN-ONLY or client wiring not proven
-crm.ts,GET,/api/crm/leads/suggest,,BUN-ONLY or client wiring not proven
-crm.ts,GET,/api/crm/leads,,BUN-ONLY or client wiring not proven
-crm.ts,POST,/api/crm/leads,,BUN-ONLY or client wiring not proven
-crm.ts,GET,/api/crm/deals,,BUN-ONLY or client wiring not proven
-crm.ts,POST,/api/crm/deals,,BUN-ONLY or client wiring not proven
-crm.ts,POST,/api/crm/deals/stage,,BUN-ONLY or client wiring not proven
-crm.ts,POST,/api/crm/leads/convert,,BUN-ONLY or client wiring not proven
+crm.ts,POST,/api/crm/deals/work,crm.dealWork,RUST-FIRST (Bun fallback)
+crm.ts,POST,/api/crm/deals/thread,crm.dealThread,RUST-FIRST (Bun fallback)
+crm.ts,GET,/api/crm/leads/suggest,crm.leads.suggest,RUST-FIRST (Bun fallback)
+crm.ts,GET,/api/crm/leads,crm.createLead,RUST-FIRST (Bun fallback)
+crm.ts,POST,/api/crm/leads,crm.createLead,RUST-FIRST (Bun fallback)
+crm.ts,GET,/api/crm/deals,crm.createDeal,RUST-FIRST (Bun fallback)
+crm.ts,POST,/api/crm/deals,crm.createDeal,RUST-FIRST (Bun fallback)
+crm.ts,POST,/api/crm/deals/stage,crm.moveDeal,RUST-FIRST (Bun fallback)
+crm.ts,POST,/api/crm/leads/convert,crm.convertLead,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/evidence,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/crm/activities,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/crm/insights,,BUN-ONLY or client wiring not proven
@@ -311,11 +311,11 @@ crm.ts,GET,/api/crm/audit,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/crm/permissions,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/founder/crm/state,,BUN-ONLY or client wiring not proven
 crm.ts,POST,/api/founder/crm/toggle,,BUN-ONLY or client wiring not proven
-dashboard.ts,GET,/api/dashboard/summary,,BUN-ONLY or client wiring not proven
-dashboard.ts,GET,/api/dashboard/activity,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/summary,dashboard.summary,RUST-FIRST (Bun fallback)
+dashboard.ts,GET,/api/dashboard/activity,dashboard.activity,RUST-FIRST (Bun fallback)
 dashboard.ts,GET,/api/dashboard/ai-usage,,BUN-ONLY or client wiring not proven
-dashboard.ts,GET,/api/dashboard/analytics,,BUN-ONLY or client wiring not proven
-dashboard.ts,GET,/api/dashboard/calendar,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/analytics,dashboard.analytics,RUST-FIRST (Bun fallback)
+dashboard.ts,GET,/api/dashboard/calendar,dashboard.calendar,RUST-FIRST (Bun fallback)
 files.ts,GET,/api/state,,BUN-ONLY or client wiring not proven
 files.ts,POST,/api/begin,,BUN-ONLY or client wiring not proven
 files.ts,POST,/api/chunk,,BUN-ONLY or client wiring not proven
@@ -410,7 +410,7 @@ movein.ts,POST,/api/movein/exception,,BUN-ONLY or client wiring not proven
 movein.ts,POST,/api/movein/rollback,,BUN-ONLY or client wiring not proven
 movein.ts,POST,/api/movein/invoice,,BUN-ONLY or client wiring not proven
 org.ts,GET,/api/org/overview,,BUN-ONLY or client wiring not proven
-org.ts,GET,/api/org/members,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/members,org.members,RUST-FIRST (Bun fallback)
 org.ts,POST,/api/org/members/blast-radius,,BUN-ONLY or client wiring not proven
 org.ts,POST,/api/org/members/revoke,,BUN-ONLY or client wiring not proven
 org.ts,GET,/api/org/roles,,BUN-ONLY or client wiring not proven
@@ -434,8 +434,8 @@ org.ts,GET,/api/founder/org/list,,BUN-ONLY or client wiring not proven
 org.ts,POST,/api/founder/org/kill-switch,,BUN-ONLY or client wiring not proven
 org.ts,POST,/api/founder/org/impersonate,,BUN-ONLY or client wiring not proven
 org.ts,GET,/api/org/export,,BUN-ONLY or client wiring not proven
-org.ts,GET,/api/org/mailboxes,,BUN-ONLY or client wiring not proven
-org.ts,POST,/api/org/mailboxes,,BUN-ONLY or client wiring not proven
+org.ts,GET,/api/org/mailboxes,org.mailboxes.create,RUST-FIRST (Bun fallback)
+org.ts,POST,/api/org/mailboxes,org.mailboxes.create,RUST-FIRST (Bun fallback)
 people-import.ts,POST,/api/contacts/import,people.import,RUST-FIRST (Bun fallback)
 people-import.ts,POST,/api/crm/leads/import,crm.leadsImport,RUST-FIRST (Bun fallback)
 people-import.ts,POST,/api/crm/leads/move-to-people,crm.leadsMoveToPeople,RUST-FIRST (Bun fallback)

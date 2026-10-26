@@ -70,7 +70,7 @@ ai.ts,POST,/api/ai/guardrail/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9
 ai.ts,POST,/api/ai/chat,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
 analytics.ts,GET,/api/analytics/:report,pro,"Analytics (thread economics, deep work; response debt Basic)",PP1 #21,BUN-ONLY,
 analytics.ts,GET,/api/founder/analytics/overview,founder,founder host only,PP1 #39,BUN-ONLY,
-analytics.ts,GET,/api/founder/billing/revenue,founder,founder host only,PP1 #39,BUN-ONLY,
+analytics.ts,GET,/api/founder/billing/revenue,founder,founder host only,PP1 #39,RUST-FIRST,billing.revenueTruth
 auth-passkey.ts,POST,/api/auth/passkey/register/options,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.register.options
 auth-passkey.ts,POST,/api/auth/passkey/register/verify,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.register.verify
 auth-passkey.ts,POST,/api/auth/passkey/options,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.options
@@ -287,18 +287,18 @@ contacts.ts,GET,/api/companies,basic,Account / auth / billing / People / dashboa
 contacts.ts,GET,/api/companies/:domain,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
 contacts.ts,GET,/api/companies/:domain/timeline,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
 contacts.ts,GET,/api/search/universal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-crm.ts,GET,/api/crm/overview,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,GET,/api/crm/live,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/overview,pro,CRM base,PP1 #18,RUST-FIRST,crm.overview
+crm.ts,GET,/api/crm/live,pro,CRM base,PP1 #18,RUST-FIRST,crm.live
 crm.ts,GET,/api/crm/memory,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,POST,/api/crm/deals/work,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,POST,/api/crm/deals/thread,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,GET,/api/crm/leads/suggest,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,GET,/api/crm/leads,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,POST,/api/crm/leads,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,GET,/api/crm/deals,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,POST,/api/crm/deals,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,POST,/api/crm/deals/stage,pro,CRM base,PP1 #18,BUN-ONLY,
-crm.ts,POST,/api/crm/leads/convert,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/deals/work,pro,CRM base,PP1 #18,RUST-FIRST,crm.dealWork
+crm.ts,POST,/api/crm/deals/thread,pro,CRM base,PP1 #18,RUST-FIRST,crm.dealThread
+crm.ts,GET,/api/crm/leads/suggest,pro,CRM base,PP1 #18,RUST-FIRST,crm.leads.suggest
+crm.ts,GET,/api/crm/leads,pro,CRM base,PP1 #18,RUST-FIRST,crm.createLead
+crm.ts,POST,/api/crm/leads,pro,CRM base,PP1 #18,RUST-FIRST,crm.createLead
+crm.ts,GET,/api/crm/deals,pro,CRM base,PP1 #18,RUST-FIRST,crm.createDeal
+crm.ts,POST,/api/crm/deals,pro,CRM base,PP1 #18,RUST-FIRST,crm.createDeal
+crm.ts,POST,/api/crm/deals/stage,pro,CRM base,PP1 #18,RUST-FIRST,crm.moveDeal
+crm.ts,POST,/api/crm/leads/convert,pro,CRM base,PP1 #18,RUST-FIRST,crm.convertLead
 crm.ts,GET,/api/crm/evidence,business_pro,CRM activity timeline + evidence,PP1 #20,BUN-ONLY,
 crm.ts,GET,/api/crm/activities,business_pro,CRM activity timeline + evidence,PP1 #20,BUN-ONLY,
 crm.ts,GET,/api/crm/insights,pro,CRM base,PP1 #18,BUN-ONLY,
@@ -311,11 +311,11 @@ crm.ts,GET,/api/crm/audit,business,CRM collab,PP1 #19,BUN-ONLY,
 crm.ts,GET,/api/crm/permissions,business,CRM collab,PP1 #19,BUN-ONLY,
 crm.ts,GET,/api/founder/crm/state,founder,founder host only,PP1 #39,BUN-ONLY,
 crm.ts,POST,/api/founder/crm/toggle,founder,founder host only,PP1 #39,BUN-ONLY,
-dashboard.ts,GET,/api/dashboard/summary,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-dashboard.ts,GET,/api/dashboard/activity,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/summary,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,dashboard.summary
+dashboard.ts,GET,/api/dashboard/activity,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,dashboard.activity
 dashboard.ts,GET,/api/dashboard/ai-usage,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-dashboard.ts,GET,/api/dashboard/analytics,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-dashboard.ts,GET,/api/dashboard/calendar,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/analytics,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,dashboard.analytics
+dashboard.ts,GET,/api/dashboard/calendar,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,dashboard.calendar
 files.ts,GET,/api/state,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
 files.ts,POST,/api/begin,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
 files.ts,POST,/api/chunk,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
@@ -410,7 +410,7 @@ movein.ts,POST,/api/movein/exception,founder,founder host only,PP1 #39,BUN-ONLY,
 movein.ts,POST,/api/movein/rollback,founder,founder host only,PP1 #39,BUN-ONLY,
 movein.ts,POST,/api/movein/invoice,founder,founder host only,PP1 #39,BUN-ONLY,
 org.ts,GET,/api/org/overview,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
-org.ts,GET,/api/org/members,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/members,business,Org centre (Bu+),PP1 #29,RUST-FIRST,org.members
 org.ts,POST,/api/org/members/blast-radius,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
 org.ts,POST,/api/org/members/revoke,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
 org.ts,GET,/api/org/roles,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
@@ -434,8 +434,8 @@ org.ts,GET,/api/founder/org/list,founder,founder host only,PP1 #39,BUN-ONLY,
 org.ts,POST,/api/founder/org/kill-switch,founder,founder host only,PP1 #39,BUN-ONLY,
 org.ts,POST,/api/founder/org/impersonate,founder,founder host only,PP1 #39,BUN-ONLY,
 org.ts,GET,/api/org/export,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
-org.ts,GET,/api/org/mailboxes,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
-org.ts,POST,/api/org/mailboxes,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/mailboxes,business,Org centre (Bu+),PP1 #29,RUST-FIRST,org.mailboxes.create
+org.ts,POST,/api/org/mailboxes,business,Org centre (Bu+),PP1 #29,RUST-FIRST,org.mailboxes.create
 people-import.ts,POST,/api/contacts/import,basic,People import,PP1 #10,RUST-FIRST,people.import
 people-import.ts,POST,/api/crm/leads/import,pro,CRM base (lead import),PP1 #18,RUST-FIRST,crm.leadsImport
 people-import.ts,POST,/api/crm/leads/move-to-people,pro,CRM base (lead import),PP1 #18,RUST-FIRST,crm.leadsMoveToPeople

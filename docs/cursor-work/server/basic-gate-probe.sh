@@ -75,9 +75,10 @@ gate "RUST mail.snippets.list (Pro)" mail.snippets.list '{}'
 gate "RUST mail.handoff.list (Pro)" mail.handoff.list '{}'
 gate "RUST analytics.threadEconomics (Pro)" analytics.threadEconomics '{}'
 # --- CRM P1+P2 + workx (26 Oct): har config proc Basic ko 403. Pro mode mein inputs khali/nakli — koi data nahi banta (list sirf default pipeline ensure karta hai).
-for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.list crm.fields.save crm.fields.delete crm.forms.list crm.forms.save crm.forms.delete crm.merge crm.custom.set crm.board crm.deals.move crm.deals.setPipeline work.tasks work.promises crm.overview crm.live; do
+for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.list crm.fields.save crm.fields.delete crm.forms.list crm.forms.save crm.forms.delete crm.merge crm.custom.set crm.board crm.deals.move crm.deals.setPipeline work.tasks work.promises crm.overview crm.live crm.leads crm.deals crm.insights crm.createLead crm.createDeal crm.moveDeal crm.convertLead crm.dealWork crm.dealThread work.promise.commit work.promise.dismiss; do
   gate "RUST $P (Pro)" "$P" '{}'
 done
+[ "$MODE" = pro ] && { chk "RUST crm.createLead bad email (400)" "$(rpc crm.createLead '{"email":"nope"}')" 400; chk "RUST crm.createDeal short title (400)" "$(rpc crm.createDeal '{"title":"x"}')" 400; chk "RUST crm.moveDeal bad stage (400)" "$(rpc crm.moveDeal '{"id":"x","stage":"bogus"}')" 400; chk "RUST crm.leads (Pro 200)" "$(rpc crm.leads '{"state":"new"}')" 200; chk "RUST crm.deals (Pro 200)" "$(rpc crm.deals '{}')" 200; chk "RUST crm.insights (Pro 200)" "$(rpc crm.insights '{}')" 200; }
 gate "RUST crm.dups.list (Pro)" crm.dups.list '{"kind":"lead"}'
 chk "RUST crm.form.get public, nakli slug (open)" "$(rpc crm.form.get '{"slug":"0000000000000000"}')" 404
 chk "RUST calendar.findtime (open to all plans)" "$(rpc calendar.findtime '{}')" 400
