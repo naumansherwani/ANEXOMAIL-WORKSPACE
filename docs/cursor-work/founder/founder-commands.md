@@ -1114,3 +1114,7 @@ Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexo
 2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
 3. Saboot (read-only): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh)`
 
+
+## 26 Oct 10:55 — Brain guroh C (Availability/Focus Bun gate) alag + drift report
+1. Brain: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`  (ab guroh C = sirf calendar.ts; revenue/release guroh D alag)
+2. (sirf agar guroh D "DRIFT" bole) read-only report: `bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-drift-report.sh)`

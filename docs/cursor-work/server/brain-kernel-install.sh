@@ -5,7 +5,8 @@
 # Guroh (har guroh ya poora lagta hai ya bilkul nahi — aadha lagna mana):
 #   A analytics : routes/analytics.ts (naya) + lib/analytics-gate.ts (naya) + index.ts (sirf 3 line: import + 2 mount, anchor se)  -> /api/analytics/*, /api/founder/analytics|billing/revenue fallback
 #   B mfa       : routes/auth.ts + lib/mfa-challenge.ts (naya)                                       -> TOTP 2-step + magic-link verify
-#   C pricing   : routes/calendar.ts (meeting cost Pro+) + routes/revenue.ts + routes/release.ts      -> flat price (Rule 51)
+#   C calendar  : routes/calendar.ts (meeting cost Pro+, Availability/Focus Pro+ fallback gate)         -> Pro gates (Bun fallback)
+#   D pricing   : routes/revenue.ts + routes/release.ts (live DRIFT ho to chhoot jata hai: brain-drift-report.sh)  -> flat price (Rule 51)
 # Safety: live file ka sha256 repo ke BASE (8be9a82^) se mile tabhi badalti hai (warna DRIFT: us guroh ko chhod do, batao), `bun build` pre-flight,
 #         backup, health + smoke, fail par purani files wapas.
 set -uo pipefail
@@ -15,10 +16,10 @@ BASE="${BASE:-8be9a82^}"
 [ -d "$SRC/routes" ] || { echo "FAIL: $SRC/routes nahi mila"; exit 2; }
 git -C "$REPO" fetch -q origin main 2>/dev/null
 sh12() { sha256sum | cut -c1-12; }
-declare -A GROUPS_EXIST=( [A]="" [B]="routes/auth.ts" [C]="routes/calendar.ts routes/revenue.ts routes/release.ts" )
-declare -A GROUPS_NEW=( [A]="routes/analytics.ts lib/analytics-gate.ts" [B]="lib/mfa-challenge.ts" [C]="" )
+declare -A GROUPS_EXIST=( [A]="" [B]="routes/auth.ts" [C]="routes/calendar.ts" [D]="routes/revenue.ts routes/release.ts" )
+declare -A GROUPS_NEW=( [A]="routes/analytics.ts lib/analytics-gate.ts" [B]="lib/mfa-challenge.ts" [C]="" [D]="" )
 T="$(mktemp -d)"; trap 'rm -rf "$T"' EXIT; APPLY=""
-for g in A B C; do
+for g in A B C D; do
   ok=1; why=""
   for f in ${GROUPS_EXIST[$g]}; do
     live="$SRC/$f"; [ -f "$live" ] || { ok=0; why="$why $f(live nahi)"; continue; }
