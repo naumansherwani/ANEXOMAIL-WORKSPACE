@@ -14,9 +14,12 @@ let ready: Kernel | null = null;
 
 /** Haqeeqat ki ginti: kitni calls kernel (WebTransport) se gayin, kitni fetch par; kitni tag ke saath. `anexoKernel.stats` se dikhti hai. */
 const stats = { kernel: 0, fetch: 0, tagged: 0, untagged: 0, ticketOk: 0, ticketFail: 0, lastFallback: "" };
-export function noteFetch(reason = "fetch"): void {
+/** Kaun se procs fetch par gaye (Bun fallback / kernel nahi) — migration ka asli bacha hua kaam. Max 80 naam. */
+const fallbackProcs: Record<string, string> = {};
+export function noteFetch(reason = "fetch", proc = ""): void {
   stats.fetch++;
   stats.lastFallback = reason;
+  if (proc && (proc in fallbackProcs || Object.keys(fallbackProcs).length < 80)) fallbackProcs[proc] = reason;
 }
 
 /**
@@ -166,6 +169,9 @@ function exposeDiagnostics(k: Kernel): void {
         },
         get stats() {
           return { ...stats, tagReady: tk !== null };
+        },
+        get fallbackProcs() {
+          return { ...fallbackProcs };
         },
         version: KERNEL_PIN.version,
         sha256: KERNEL_PIN.sha256,

@@ -36,7 +36,7 @@ export async function rpc<T>(procedure: string, input?: unknown): Promise<T> {
     }
   }
 
-  noteFetch(viaKernel === null ? "kernel_not_used" : `kernel_status_${viaKernel.status}`);
+  noteFetch(viaKernel === null ? "kernel_not_used" : `kernel_status_${viaKernel.status}`, procedure.replace(/^\//, ""));
   const headers = new Headers({ "content-type": "application/json" });
   const token = sessionToken.get();
   if (token) headers.set("authorization", `Bearer ${token}`);

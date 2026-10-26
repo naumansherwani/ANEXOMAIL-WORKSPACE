@@ -52,6 +52,25 @@ chk "BUN  templates POST (Pro fallback)" "$(bun POST /api/mail/templates '{"name
 chk "RUST schedule send_at +2d (Pro)" "$(rpc mail.schedule "{\"to\":\"a@b.com\",\"subject\":\"gate probe\",\"body\":\"x\",\"send_at\":\"$FUT\"}")" $GATED
 [ "$MODE" = pro ] && { ID="$(python3 -c 'import json;print(json.load(open("/tmp/.gp.'$$'"))["result"]["data"]["id"])' 2>/dev/null)"; [ -n "$ID" ] && rpc mail.schedule.cancel "{\"id\":\"$ID\"}" >/dev/null; }
 chk "RUST mail.thread.insights (Pro)" "$(rpc mail.thread.insights "{\"id\":\"${TH:-00000000-0000-0000-0000-000000000000}\"}")" $GATED
+# --- Pro green batch 1 (26 Oct): gate PEHLE reject karta hai, isliye basic mein koi data nahi badalta. Pro mode: 403/401 NAHI aana chahiye (200/400/404 theek: id nakli hai).
+gate(){ st="$(rpc "$2" "$3")"
+  if [ "$MODE" = basic ]; then chk "$1" "$st" 403
+  elif [ "$st" != 403 ] && [ "$st" != 401 ]; then printf "PASS  %-44s %s\n" "$1" "$st"
+  else printf "FAIL  %-44s got %s want not 403/401\n" "$1" "$st"; FAILS=$((FAILS+1)); fi; }
+NID="00000000-0000-4000-8000-000000000001"
+gate "RUST calendar.availability (Pro)" calendar.availability '{"date":"2026-10-27"}'
+gate "RUST calendar.focus (Pro)" calendar.focus '{}'
+gate "RUST calendar.files.list (Pro)" calendar.files.list "{\"event_id\":\"$NID\"}"
+gate "RUST calendar.meta.set goal (Pro)" calendar.meta.set "{\"id\":\"$NID\",\"goal\":\"x\"}"
+gate "RUST chat.bridge.rescue (Pro)" chat.bridge.rescue "{\"mail_thread_id\":\"$NID\",\"title\":\"probe\",\"owner_user_id\":\"$NID\",\"due_at\":\"$FUT\"}"
+gate "RUST mail.followup.list (Pro)" mail.followup.list '{}'
+gate "RUST mail.snippets.list (Pro)" mail.snippets.list '{}'
+gate "RUST mail.handoff.list (Pro)" mail.handoff.list '{}'
+gate "RUST analytics.threadEconomics (Pro)" analytics.threadEconomics '{}'
+chk "RUST calendar.findtime (open to all plans)" "$(rpc calendar.findtime '{}')" 400
+chk "RUST analytics.responseDebt (open to all)" "$(rpc analytics.responseDebt '{}')" 200
+chk "BUN  /calendar/availability (Pro fallback)" "$(bun GET '/api/calendar/availability?date=2026-10-27')" $GATED
+chk "BUN  /calendar/focus (Pro fallback)" "$(bun GET /api/calendar/focus)" $GATED
 rm -f /tmp/.gp.$$; unset TOK
 echo "---"; [ $FAILS -eq 0 ] && echo "ALL PASS ($MODE)" || echo "$FAILS FAIL — output Claude ko bhejein"
 exit $FAILS

@@ -112,3 +112,4 @@
 - 26 Oct 10:05 features.tsv ab kal raat ke INV-1/2/3 + PP1 se (226 rows); pehle ki 73-row list GALAT thi (replace). Pro video NAHI (Business+).
 - 26 Oct 10:30 Pro GREEN batch 1 READY (calendar availability/focus/files/goal + thread rescue + reading meter gates); deploy Rust+Web baqi
 - 26 Oct 10:45 Kernel request-tag wire + E91 + stats + warmKernel + rpc-contract READY (deploy SQL->Rust->Web baqi)
+- 26 Oct 10:50 LIVE (Pro, Chrome): Web+Rust deployed; kernel-check ALL PASS (tag observe valid=0 missing=1 abhi); anexoKernel.stats tagged=22 ticketOk=1; Rust calendar.availability 200 / focus 200 / files gate paar / followup 200 / responseDebt 200. Basic 403 = basic-gate-probe.sh (extended). Fallback procs (404) ab anexoKernel.fallbackProcs se dikhengi (migration bacha kaam).
