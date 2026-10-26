@@ -253,3 +253,5 @@ Founder deploy 02:08: Rust par ab '... trialx authx contx basx wsx wtrpc', Rust 
 Founder: Personal package alag se (Gmail/Outlook jaise private users, alag UI/gates) — HOLD. Pehle Business ki Polar payment (Basic/Pro jaisa edit). Kiya: docs/claude/POLAR-COPY-V6-BUSINESS.md (honest copy, £360/£3,960, IDs unchanged), server/config/billing-products.ts v6 flat amounts (perSeat false) + test. Baqi: founder Polar edit + live checkout test, landing Business card overclaim, pull.sh.
 
 ## 27 Oct 2026 02:40 PKT — Business Pro Polar copy: docs/claude/POLAR-COPY-V6-BUSINESS-PRO.md (2850/28500, IDs unchanged, honest). Baqi: founder Polar edit + checkout test; phir Pro green par wapas.
+
+## 27 Oct 2026 02:42 PKT — Business FINAL copy (founder verbatim): docs/claude/POLAR-COPY-V6-BUSINESS.md + src/lib/plans.ts Business card isi ke mutabiq (13 lines, overclaims hata di; tsc/bun test 213 pass). Founder ka hukm: "saray packages in ke hisab se" => Business Pro, phir Pro/Basic card+Polar isi andaaz mein match hon (Business Pro card abhi overclaim wali, baqi). DNS-proven-green line: I3-17 live proof baqi.

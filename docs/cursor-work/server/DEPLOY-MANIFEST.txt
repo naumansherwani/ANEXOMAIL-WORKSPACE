@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md e1c8d2c9f1cbfd4a
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 33a85a71a2bbf9b7
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,12 +246,12 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 172504eb8fd50b03
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md f1886ace0e6e1dbe
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
 src/components/app/calendar/TimeGrid.tsx e99750ba4f3106a4
-src/lib/plans.ts 6c131f0dc7010bc8
+src/lib/plans.ts 091579cac907ee10
 docs/cursor-work/sql/E52_alias_fair_use.sql c484bcfe67a0c2cf
 docs/cursor-work/sql/CHECK_E52.sql 7884b25b262eb1e6
 src/lib/api.ts 571d1ad7a84ec613
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 7f489157eb937cd7
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 17fe6e0fe33ee1c5
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md 7b871cdf0d20bd46
+docs/packages/GREEN-LEDGER.md 1dd7ceec1f1c9b35
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -807,7 +807,7 @@ docs/cursor-work/server/installer-dryrun.sh 70570d6395ca3a37
 server/rust/wsx_core.rs 3f981ffa0c3fe71d
 server/rust/wsx_glue.rs be610115ae5edc5b
 docs/cursor-work/server/wsx-live-test.sh 9ef7e37084c86b02
-docs/claude/POLAR-COPY-V6-BUSINESS.md 202cba7a2f1f34d3
+docs/claude/POLAR-COPY-V6-BUSINESS.md 4cb4287a8396e079
 server/config/billing-products.ts 046b5500f3ebd841
 server/config/billing-products.test.ts 5b8bbfd0d6f4852b
 docs/claude/POLAR-COPY-V6-BUSINESS-PRO.md 78ea960ce3f5c425
