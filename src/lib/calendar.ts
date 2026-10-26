@@ -253,7 +253,7 @@ export function useAvailability(date: string) {
       rpcOrRest(
         "calendar.availability",
         { path: `/api/calendar/availability?date=${date}` },
-        { date },
+        { date, tz_offset: -new Date().getTimezoneOffset() },
       ),
     retry: false,
     staleTime: 10_000,

@@ -2425,13 +2425,25 @@ pub fn weekday_mon0(day_start: i64) -> i64 {
     (dow_sun0 + 6) % 7
 }
 
-/// 08:00-19:00 UTC, 30-min slots. busy slot dikhta nahi. focus > travel_buffer(15 min after a meeting) > free.
-/// events = (start, end, title); windows = (weekday, start_minute, end_minute, label).
+/// Legacy shape (08:00-19:00 UTC, weekday of the UTC day) — Bun twin ke saath barabar; naye caller `availability_slots_in` use karte hain.
 pub fn availability_slots(day_start: i64, events: &[(i64, i64, String)], windows: &[(i64, i64, i64, String)]) -> Vec<AvSlot> {
-    let wd = weekday_mon0(day_start);
+    availability_slots_in(day_start, weekday_mon0(day_start), 8 * 60, 19 * 60, events, windows)
+}
+
+/// `day_start` = us din ki LOCAL aadhi raat (UTC epoch), `wd` = us din ka weekday (Mon=0), `from_min..to_min` = LOCAL minutes (kaam ke ghante).
+/// 30-min slots. busy slot dikhta nahi. focus > travel_buffer(15 min after a meeting) > free.
+/// events = (start, end, title); windows = (weekday, start_minute, end_minute, label) (local minutes).
+pub fn availability_slots_in(
+    day_start: i64,
+    wd: i64,
+    from_min: i64,
+    to_min: i64,
+    events: &[(i64, i64, String)],
+    windows: &[(i64, i64, i64, String)],
+) -> Vec<AvSlot> {
     let mut out = Vec::new();
-    let mut m = 8 * 60;
-    while m < 19 * 60 {
+    let mut m = from_min.max(0);
+    while m + 30 <= to_min.min(24 * 60) {
         let s = day_start + m * 60;
         let e = s + 30 * 60;
         let busy = events.iter().any(|ev| ev.0 < e && ev.1 > s);
@@ -2450,6 +2462,28 @@ pub fn availability_slots(day_start: i64, events: &[(i64, i64, String)], windows
         m += 30;
     }
     out
+}
+
+fn hhmm_min(s: &str) -> Option<i64> {
+    let (h, m) = s.split_once(':')?;
+    let (h, m) = (h.parse::<i64>().ok()?, m.parse::<i64>().ok()?);
+    ((0..24).contains(&h) && (0..60).contains(&m)).then_some(h * 60 + m)
+}
+
+/// Kaam ke ghante (local minutes) us weekday ke liye. `day` = user ki saved `work_hours.days[wd]` ka `(on, start "HH:MM", end "HH:MM")`
+/// (glue JSON se nikalta hai; core std-only). Kuch saved nahi (`None`) => Mon-Fri 09:00-17:00 (calendar settings ka default). Din band => None.
+pub fn working_range(day: Option<(bool, &str, &str)>, wd: i64) -> Option<(i64, i64)> {
+    match day {
+        Some((on, start, end)) => {
+            if !on {
+                return None;
+            }
+            let a = hhmm_min(start).unwrap_or(9 * 60);
+            let b = hhmm_min(end).unwrap_or(17 * 60);
+            (a < b).then_some((a, b))
+        }
+        None => (wd < 5).then_some((9 * 60, 17 * 60)),
+    }
 }
 
 #[cfg(test)]
@@ -2496,5 +2530,25 @@ mod avail_tests {
         assert!(t.iter().all(|x| x.state == "free"));
         assert_eq!(s.first().unwrap().start, d + 8 * 3600);
         assert_eq!(s.last().unwrap().end, d + 19 * 3600);
+    }
+
+    #[test]
+    fn working_hours_limit_the_slots_in_local_minutes() {
+        assert_eq!(working_range(Some((true, "09:00", "11:00")), 0), Some((540, 660)));
+        assert_eq!(working_range(Some((false, "09:00", "17:00")), 1), None, "din off");
+        assert_eq!(working_range(Some((true, "", "")), 3), Some((540, 1020)), "start/end kharab => 09-17");
+        assert_eq!(working_range(Some((true, "10:00", "10:00")), 2), None, "end > start nahi");
+        assert_eq!(working_range(None, 4), Some((540, 1020)), "kuch saved nahi: Mon-Fri 09-17");
+        assert_eq!(working_range(None, 5), None, "Sat default off");
+        // Karachi (UTC+5): local Monday midnight = Sunday 19:00 UTC
+        let local_mon0 = parse_ts("2026-10-26T00:00:00Z").unwrap() - 5 * 3600;
+        let (a, b) = working_range(Some((true, "09:00", "11:00")), 0).unwrap();
+        let s = availability_slots_in(local_mon0, 0, a, b, &[], &[]);
+        assert_eq!(s.len(), 4);
+        assert_eq!(s.first().unwrap().start, local_mon0 + 9 * 3600);
+        assert_eq!(s.last().unwrap().end, local_mon0 + 11 * 3600);
+        // focus window local weekday par chalti hai
+        let f = availability_slots_in(local_mon0, 0, a, b, &[], &[(0, 600, 660, "Deep".into())]);
+        assert_eq!(f.iter().filter(|x| x.state == "focus").count(), 2);
     }
 }

@@ -156,3 +156,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 | 26 Oct 21:25 | calendar.availability/focus Pro 200 live (probe ALL PASS pro) + Chrome Avail. FREE slots; Pro live walk 9 features seen | GREEN item 6; walk partial |
 
 | 26 Oct 21:42 | d59d059 deployed: basic ALL PASS, KERNEL ALL PASS | GREEN deploy; Chrome verify -£0/English baaqi |
+
+| 26 Oct 22:00 | availability working-hours (local tz) code + 49 cal tests | CODE READY; live baaqi |

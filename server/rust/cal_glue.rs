@@ -2094,8 +2094,10 @@ fn win_filter(me: &Who) -> Option<String> {
 
 async fn availability(me: &Who, input: &Value) -> axum::response::Response {
     let day = st(input, "date");
+    // Browser apna UTC-offset (minute, Karachi=300) bhejta hai: din local aadhi raat se shuru, kaam ke ghante local.
+    let off = input.get("tz_offset").and_then(|v| v.as_i64()).filter(|o| (-14 * 60..=14 * 60).contains(o)).unwrap_or(0);
     let day_start = if day.is_empty() {
-        let n = now_epoch();
+        let n = now_epoch() + off * 60;
         n - n.rem_euclid(86_400)
     } else {
         match cal::parse_ts(&format!("{}T00:00:00Z", day.chars().take(10).collect::<String>())) {
@@ -2103,6 +2105,8 @@ async fn availability(me: &Who, input: &Value) -> axum::response::Response {
             None => return fail(StatusCode::BAD_REQUEST, "bad_date", "date must be YYYY-MM-DD"),
         }
     };
+    let wd = cal::weekday_mon0(day_start); // day_start abhi LOCAL aadhi raat (UTC-shifted) hai
+    let day_start = day_start - off * 60;
     let (a, b) = (cal::fmt_rfc3339(day_start), cal::fmt_rfc3339(day_start + 86_400));
     let ev_q = format!(
         "calendar_events?select=starts_at,ends_at,title&{}&starts_at=gte.{}&starts_at=lt.{}&limit=500",
@@ -2115,7 +2119,12 @@ async fn availability(me: &Who, input: &Value) -> axum::response::Response {
             None => Ok(json!([])),
         }
     };
-    let (evs, wins) = tokio::join!(crate::sb_select(&ev_q), win_fut);
+    let pref_q = format!("awam_ui_pref?select=extra&user_id=eq.{}&limit=1", enc(&me.id));
+    let (evs, wins, pref) = tokio::join!(crate::sb_select(&ev_q), win_fut, crate::sb_select(&pref_q));
+    let day_cfg = pref
+        .ok()
+        .and_then(|v| v.as_array().and_then(|a| a.first()).and_then(|r| r.get("extra")).and_then(|e| e.get("work_hours")).and_then(|w| w.get("days")).and_then(|d| d.as_array()).and_then(|d| d.get(wd as usize)).cloned());
+    let day_tuple = day_cfg.as_ref().map(|d| (d.get("on").and_then(|x| x.as_bool()) == Some(true), d.get("start").and_then(|x| x.as_str()).unwrap_or(""), d.get("end").and_then(|x| x.as_str()).unwrap_or("")));
     let (Ok(evs), Ok(wins)) = (evs, wins) else {
         return fail(StatusCode::BAD_GATEWAY, "db_unavailable", "Availability could not be read");
     };
@@ -2133,7 +2142,10 @@ async fn availability(me: &Who, input: &Value) -> axum::response::Response {
         .iter()
         .map(|w| (w["weekday"].as_i64().unwrap_or(-1), w["start_minute"].as_i64().unwrap_or(0), w["end_minute"].as_i64().unwrap_or(0), st(w, "label")))
         .collect();
-    let slots = cal::availability_slots(day_start, &events, &windows);
+    let slots = match cal::working_range(day_tuple, wd) {
+        Some((from, to)) => cal::availability_slots_in(day_start, wd, from, to, &events, &windows),
+        None => Vec::new(), // din kaam ka nahi (weekend / off)
+    };
     crate::ok(json!({
         "slots": slots.iter().map(|s| json!({
             "starts_at": cal::fmt_rfc3339(s.start), "ends_at": cal::fmt_rfc3339(s.end),

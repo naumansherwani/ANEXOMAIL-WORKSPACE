@@ -25,7 +25,7 @@ NOT Pro: Writer/Sheet/Show (N-DOC-01 collaborative docs) = Business (PROPOSED, b
 |---|---|---|
 | Domains (3) / mailboxes (10) | HAAN — /app/domains "1 of 3 domains · Pro", "0 of 10 mailboxes" | |
 | 300GB shared storage, 35MB transfer | HAAN — /app/storage "Mailboxes 1 of 10, Max single transfer 35 MB, pool 300 GB" | "File engine" Business ka (by design) |
-| Calendar + Availability + Calendar settings (working hours, rooms, out of office) | HAAN | OPEN: Avail. aaj ke slots 1 PM-12 AM sab FREE dikhata hai, working hours (09-17) aur UTC-din ka lihaaz nahi (check cal_core availability_slots) |
+| Calendar + Availability + Calendar settings (working hours, rooms, out of office) | HAAN | FIX CODE READY 22:00 (local tz + work_hours); live verify baaqi |
 | Compose: templates, snippets (zzm2), follow-up, schedule send, undo-send 30 s | HAAN (undo "Not sent" saabit) | |
 | Pre-send scan | HAAN — Rust mail.confidence 200 (attachment_promised, risky_tone, external_domain, score 73) | BUG FIXED: message Roman Urdu tha -> English (Rust+Bun) |
 | Work: tasks, promises, Work chain Pro | HAAN | Decision ledger = Business (by design) |
