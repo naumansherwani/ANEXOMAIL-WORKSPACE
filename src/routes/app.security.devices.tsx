@@ -80,6 +80,12 @@ function DevicesPage() {
             d.devices.length === 0 ? (
               <p className="ax-caption text-muted-foreground">No devices recorded yet.</p>
             ) : (
+              <>
+              {typeof d.limit === "number" && (
+                <p className="ax-caption mb-ax-3 text-muted-foreground" data-testid="device-limit">
+                  Trusted devices: {d.devices.filter((x) => x.state === "trusted").length} of {d.limit} on your plan
+                </p>
+              )}
               <ul className="space-y-ax-3">
                 {d.devices.map((dev) => (
                   <li key={dev.id} className="ax-plane rounded-2xl p-ax-4">
@@ -137,6 +143,7 @@ function DevicesPage() {
                   </li>
                 ))}
               </ul>
+              </>
             )
           }
         </CardBody>

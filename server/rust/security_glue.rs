@@ -88,8 +88,8 @@ fn db_fail(detail: String) -> Resp {
 }
 
 pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
-    let user = match crate::auth_user(token).await {
-        Some((id, _)) => id,
+    let (user, email) = match crate::auth_user(token).await {
+        Some((id, email)) => (id, email),
         None => return crate::err(StatusCode::UNAUTHORIZED, "unauthorized", "").into_response(),
     };
     let current = session_of(token);
@@ -126,9 +126,14 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             )
             .into_response();
         }
-        "security.devices" => crate::sb_rpc("device_trust_list", json!({ "_user": user }))
-            .await
-            .map(|v| json!({ "devices": devices_view(v.get("devices").unwrap_or(&Value::Null)) })),
+        "security.devices" => match crate::sb_rpc("device_trust_list", json!({ "_user": user })).await {
+            Ok(v) => {
+                let devices = devices_view(v.get("devices").unwrap_or(&Value::Null));
+                let limit = device_limit(&user, &email).await;
+                Ok(json!({ "devices": devices, "limit": limit }))
+            }
+            Err(e) => Err(e),
+        },
         "security.deviceState" => {
             let hash = s(input, "device_id");
             let state = match s(input, "state").as_str() {
@@ -188,6 +193,22 @@ fn sessions_view(rows: &Value) -> Value {
         })
         .unwrap_or_default();
     Value::Array(list)
+}
+
+/// Plan ki trusted-device hadd (chat_phase_entitlements, feature device_vault: basic 2 / pro 4). Na mile => null (UI sirf ginti dikhaye).
+async fn device_limit(user: &str, email: &str) -> Value {
+    let plan = crate::sb_rpc("resolve_plan", json!({ "_user_id": user, "_email": email }))
+        .await
+        .ok()
+        .and_then(|v| v.as_str().map(|s| s.to_string()))
+        .unwrap_or_else(|| "basic".to_string());
+    let rows = crate::sb_select(&format!(
+        "chat_phase_entitlements?select=limit_value&feature=eq.device_vault&plan=eq.{}&limit=1",
+        plan
+    ))
+    .await
+    .ok();
+    rows.and_then(|r| r.get(0).and_then(|x| x.get("limit_value")).cloned()).unwrap_or(Value::Null)
 }
 
 fn devices_view(rows: &Value) -> Value {

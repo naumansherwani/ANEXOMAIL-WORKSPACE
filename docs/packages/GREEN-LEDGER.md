@@ -166,3 +166,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 | 26 Oct 22:40 | meeting cost hourly-rate field (calendar.rates/.set, Rust+kernel, no SQL) | CODE DONE; deploy+Chrome baaqi |
 
 | 26 Oct 23:00 | meeting cost hourly-rate (calendar.rates, Chrome cost £50, probes ALL PASS) | GREEN |
+
+- 26 Oct 23:30 Trusted devices N of limit: Rust security.devices ab 'limit' bhi deta hai (resolve_plan + chat_phase_entitlements device_vault: basic 2 / pro 4), /app/security/devices par 'Trusted devices: N of 4 on your plan'. security_glue.rs + security-platform.ts + app.security.devices.tsx + basic-gate-probe pro (limit 4). cargo check OK, tsc clean. DEPLOY BAAQI (Rust install + Web pull). Baaqi Pro: shared-inbox live collision (2nd user), ANEXO_TAG_MODE=enforce (founder env).

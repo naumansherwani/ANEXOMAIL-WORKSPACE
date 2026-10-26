@@ -654,3 +654,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 22:55 Rule 57 + ENDPOINT-PACKAGE-MAP (523 Bun + 341 Rust procs package-wise). Feature->package pehle se PP1 mein tha; dobara mat likho.
 
 - 26 Oct 23:00 meeting cost hourly-rate LIVE GREEN (rates 60/40, cost £50). CEO faisle settings/CRM/analytics likhe. Basic baaqi 110 endpoints.
+
+- 26 Oct 23:30 Trusted devices N of limit: Rust security.devices ab 'limit' bhi deta hai (resolve_plan + chat_phase_entitlements device_vault: basic 2 / pro 4), /app/security/devices par 'Trusted devices: N of 4 on your plan'. security_glue.rs + security-platform.ts + app.security.devices.tsx + basic-gate-probe pro (limit 4). cargo check OK, tsc clean. DEPLOY BAAQI (Rust install + Web pull). Baaqi Pro: shared-inbox live collision (2nd user), ANEXO_TAG_MODE=enforce (founder env).

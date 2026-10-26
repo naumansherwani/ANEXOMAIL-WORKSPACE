@@ -66,6 +66,7 @@ gate "RUST calendar.rates (Pro)" calendar.rates '{}'
 gate "RUST calendar.rates.set (Pro)" calendar.rates.set '{}'
 [ "$MODE" = pro ] && chk "RUST calendar.rates {} (Pro 200)" "$(rpc calendar.rates '{}')" 200
 [ "$MODE" = pro ] && chk "RUST calendar.rates.set bad value (400)" "$(rpc calendar.rates.set '{"self":-5}')" 400
+[ "$MODE" = pro ] && { chk "RUST security.devices 200 (limit)" "$(rpc security.devices '{}')" 200; grep -q "\"limit\":4" /tmp/.gp.$$ && echo "  PASS device limit 4 (Pro)" || { echo "  FAIL device limit 4 (Pro)"; FAILS=$((FAILS+1)); }; }
 gate "RUST calendar.files.list (Pro)" calendar.files.list "{\"event_id\":\"$NID\"}"
 gate "RUST calendar.meta.set goal (Pro)" calendar.meta.set "{\"id\":\"$NID\",\"goal\":\"x\"}"
 gate "RUST chat.bridge.rescue (Pro)" chat.bridge.rescue "{\"mail_thread_id\":\"$NID\",\"title\":\"probe\",\"owner_user_id\":\"$NID\",\"due_at\":\"$FUT\"}"

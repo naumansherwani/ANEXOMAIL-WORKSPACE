@@ -43,3 +43,6 @@ Status: LIVE GREEN 22:30 (Chrome + founder probes).
 Founder output: Rust restart 173, Web pull OK, basic ALL PASS, pro ALL PASS (calendar.rates 200, rates.set bad value 400), KERNEL ALL PASS. Chrome: Calendar settings > Meeting cost fields maujood; save 60/40 -> "Meeting cost rates saved"; server `calendar.rates` = {self 60, guest 40}; `calendar.events` cost = {hourly_total 100, minutes 30, total £50} (organiser 60 + guest 40). DOBARA CODE NAHI.
 Test data Pro account: rates self 60 / guest 40 (founder chaahe to 0 kar do).
 Baaqi Pro: shared-inbox live collision (2nd user), trusted devices 4 UI, ANEXO_TAG_MODE=enforce (founder env).
+
+## 23:30 — Trusted devices N of limit (code ready, deploy baaqi)
+Trusted devices N of limit: Rust security.devices ab 'limit' bhi deta hai (resolve_plan + chat_phase_entitlements device_vault: basic 2 / pro 4), /app/security/devices par 'Trusted devices: N of 4 on your plan'. security_glue.rs + security-platform.ts + app.security.devices.tsx + basic-gate-probe pro (limit 4). cargo check OK, tsc clean. DEPLOY BAAQI (Rust install + Web pull). Baaqi Pro: shared-inbox live collision (2nd user), ANEXO_TAG_MODE=enforce (founder env).

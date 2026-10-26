@@ -143,9 +143,9 @@ export const useSecurityDashboard = () =>
   });
 
 export const useTrustDevices = () =>
-  useQuery<{ devices: TrustDevice[] }, ApiError>({
+  useQuery<{ devices: TrustDevice[]; limit?: number | null }, ApiError>({
     queryKey: ["security", "devices"],
-    queryFn: () => get<{ devices: TrustDevice[] }>("security.devices", "/api/security/devices"),
+    queryFn: () => get<{ devices: TrustDevice[]; limit?: number | null }>("security.devices", "/api/security/devices"),
     retry: false,
   });
 
