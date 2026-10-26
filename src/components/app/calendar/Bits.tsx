@@ -1,6 +1,7 @@
 import { AlertTriangle, Coins, Globe2, ShieldCheck } from "lucide-react";
 
 import { minutesLabel, money, type AttendeeLocalTime, type MeetingCost } from "@/lib/calendar";
+import { useProCalendar } from "@/lib/use-pro-calendar";
 import { fmtTime } from "@/lib/timeFormat";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +10,8 @@ import { cn } from "@/lib/utils";
  * burn is impossible to ignore. The number itself is server calculated.
  */
 export function CostMeter({ cost }: { cost: MeetingCost }) {
+  const proCal = useProCalendar(); // Pro and above
+  if (!proCal) return null;
   const heavy = cost.total >= 200;
   return (
     <span

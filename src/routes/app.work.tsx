@@ -1,8 +1,8 @@
 /**
  * /app/work — Plan-aware Work surface
  *
- * Basic     : Add task + TaskBoard (personal tasks only)
- * Pro+      : + Promises · Follow-through · Work chain · Decision ledger · Email bridge
+ * Basic     : Work NAHI (route plan-surface `surfaceDenial` se band: "Work is on Pro") — v6 package rule, 26 Oct 2026.
+ * Pro+      : Add task + TaskBoard + Promises · Follow-through · Work chain · Decision ledger · Email bridge
  * Business+ : + Promise recovery · File card · Call record · Conversation truth · Receipts
  *
  * Feature gates via plan-surface.ts (no hard-coded plan strings here).

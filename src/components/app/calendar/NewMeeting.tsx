@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { FindTime } from "@/components/app/calendar/FindTime";
 import { OverlapMatrix } from "@/components/app/calendar/OverlapMatrix";
+import { useProCalendar } from "@/lib/use-pro-calendar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateMeeting, whenLabel } from "@/lib/calendar";
@@ -51,6 +52,7 @@ export function NewMeeting({
   const [location, setLocation] = useState("");
   const [invite, setInvite] = useState(true);
   const [finding, setFinding] = useState(false);
+  const proCal = useProCalendar();
   const [repeat, setRepeat] = useState<RepeatSpec>(NO_REPEAT);
 
   const agendaOk = agenda.trim().length >= 10;
@@ -195,14 +197,16 @@ export function NewMeeting({
       </button>
       {finding && (
         <div className="space-y-ax-3">
-          <OverlapMatrix
-            addresses={guestList}
-            durationMin={duration}
-            onPick={(value) => {
-              setWhen(value);
-              setFinding(false);
-            }}
-          />
+          {proCal && (
+            <OverlapMatrix
+              addresses={guestList}
+              durationMin={duration}
+              onPick={(value) => {
+                setWhen(value);
+                setFinding(false);
+              }}
+            />
+          )}
           <FindTime
             attendees={guestList}
             duration={duration}

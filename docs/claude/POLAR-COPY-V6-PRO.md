@@ -15,6 +15,9 @@ Professional company email for growing teams that answer customers every day.
 - Snooze, schedule send and email templates
 - Boards, notes and tasks in the same workspace
 - Thread analytics
+- CRM: accounts, leads and pipeline
+- Pre-send scan, follow-up reminders and snippets
+- Overlap Matrix for team time zones
 - 3 public booking links
 - Email attachments up to 35MB
 - 4 trusted devices and passkey sign-in

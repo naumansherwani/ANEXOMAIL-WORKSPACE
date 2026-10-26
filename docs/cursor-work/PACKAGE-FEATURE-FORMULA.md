@@ -25,6 +25,7 @@
 # PRO = £105/month flat, yearly £1,155 (x11), UP TO 20 USERS, 10 mailboxes, 300GB shared, 35MB attachment, 3 company domains,
 #   3 booking links, 4 trusted devices, support 48h. Shared inbox/collision guard, snooze, schedule send, templates, boards/notes/tasks,
 #   thread analytics = Pro+ (server-side REAL). SQL: E88_pro_v6.sql (+CHECK_E88). Har package ka alag folder: docs/packages/<pkg>/.
+# PRO+ GATES GREEN (26 Oct 07:40): pre-send scan, follow-ups, snippets, draft handoff (Rust pro_only_proc); Overlap Matrix + Focus Ring + meeting cost (Find-a-time Basic mein); CRM base; analytics routes (response debt sab / threads+deep-work Pro+ / leaks+promises+forecast+team Business+). Analytics DATA backend NOT BUILT (docs/packages/pro/NOT-BUILT.md #1). Ledger: docs/packages/GREEN-LEDGER.md
 # BOOKING LINKS: Basic 1 / Pro 3 / Business 20 / Business Pro + Enterprise unlimited (chat_phase_entitlements 'booking_links' + trigger booking_pages_cap).
 
 # ═══ PP1 — FEATURE GATE MATRIX (CEO proposal 26 Oct 04:40 PKT; FOUNDER approve baqi) — ab se REPO ka rule (AGENTS Rule 53) ═══

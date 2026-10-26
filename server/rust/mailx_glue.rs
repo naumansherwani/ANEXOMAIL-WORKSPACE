@@ -134,6 +134,11 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         Ok(m) => m,
         Err((s, code, m)) => return crate::err(s, code, &m).into_response(),
     };
+    if let Some(msg) = c::pro_only_proc(proc) {
+        if let Some(r) = pro_gate(&me, msg).await {
+            return r;
+        }
+    }
     if proc == "mail.threads" {
         return threads(&me, input).await;
     }

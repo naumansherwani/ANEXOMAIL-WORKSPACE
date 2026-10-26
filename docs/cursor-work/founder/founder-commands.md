@@ -1,5 +1,9 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 26 Oct 07:45 — founder: 4 faisle HAAN + sab gates real + green ledger
+Wohi 3 deploy (SQL jo pehle nahi chali to; Rust; Web) -- naya SQL NAHI. Rust ab mailx + overlap + book teeno lagata hai (ek hi script, ek build). Dekho 06:45 wala block.
+- Halat: Rust cargo check OK + mailx_core 11 tests + book_core 57 tests PASS; tsc + tier-guard + plan-surface.test PASS. Ledger: docs/packages/GREEN-LEDGER.md. Live server par founder chalayega.
+
 ## ▶ 26 Oct 06:45 — founder: har package ka alag folder, jo bana nahi woh real wire; Pro: SQL E88 + Rust booking links + UI + card
 Teen alag technologies, teen alag deploy (ek ek karke, is tarteeb mein):
 1. SQL (Postgres) -- E88 + CHECK_E88 auto: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`

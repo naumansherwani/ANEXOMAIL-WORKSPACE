@@ -13,6 +13,9 @@ Per-user fees KABHI nahi.
 - Email templates
 - Boards & notes
 - Tasks & thread analytics
+- CRM: accounts, leads and pipeline
+- Pre-send scan, follow-up reminders and snippets
+- Overlap Matrix for team time zones
 - 3 public booking links
 - Email attachments up to 35MB
 - 4 trusted devices
@@ -20,5 +23,8 @@ Per-user fees KABHI nahi.
 
 ## Pro mein NAHI (Business se shuru): ANEXOChat, video call, CRDT docs, Org centre, CRM collab/risk, team analytics. AI: sirf ai.anexomail.com (coming soon July 2027).
 
-## Founder decide kare (card par abhi NAHI likha — jhoota dawa nahi): 
-CRM base (accounts/leads/pipeline — code Pro+ gated REAL hai), pre-send scan / follow-up reminders / word prediction / thread rescue, calendar Pro tools (Overlap Matrix, Focus Ring, meeting cost), analytics (thread economics, deep work). Detail: NOT-BUILT.md
+## Founder 07:10 ne 4 faisle "haan" kiye -> card par bhi aur server gate bhi
+- CRM: accounts, leads and pipeline
+- Pre-send scan, follow-up reminders and snippets
+- Overlap Matrix for team time zones (Find-a-time Basic mein bhi rehta hai)
+- Analytics (thread economics, deep work) Pro+ ROUTE gate laga; DATA backend bana nahi -> card par claim NAHI (NOT-BUILT.md #1)

@@ -25,7 +25,7 @@ src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
 src/routes/index.tsx b661c7a75b3f6b7b
 src/routes/plans.tsx 7f0cebd3e4ebb71d
 src/routes/app.people.tsx 423eb4164a4dceb4
-src/routes/app.work.tsx 8a4153dd6e7a49c8
+src/routes/app.work.tsx 23d4995d307f62f6
 src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
 src/components/app/people/CompanyProfile.tsx e6a0ad41d52df8de
 src/components/app/work/TaskBoard.tsx d5fe96d145484c2f
@@ -55,7 +55,7 @@ src/routes/get-started.tsx 26e18cb222848629
 src/lib/ics.ts e5b885bb1f9e0ba8
 src/components/app/calendar/IcsImport.tsx 4f9a9943bcf9ad9a
 src/components/app/PlanSurfaceGate.tsx b5f2d59675b9c8b5
-src/lib/plan-surface.ts 1fef7c4c84f09c7d
+src/lib/plan-surface.ts 9fc16c8fc1bf2f62
 src/components/app/dashboard/Greeting.tsx 04b1c71408a15402
 src/components/app/dashboard/Panels.tsx 4ab55253b75c2425
 src/components/app/mail/InboxWelcome.tsx 52450784b63156ac
@@ -80,7 +80,7 @@ src/lib/contacts-import.ts b0615264d021d4f1
 src/lib/calendar.ts 2f7492b2e75ec49f
 src/lib/calendar-invites.ts 0e6497e6c7206bb3
 src/lib/find-time.ts e7543c590cc1df23
-src/components/app/calendar/NewMeeting.tsx c6926ea2d2c17b63
+src/components/app/calendar/NewMeeting.tsx f87d1f3b1035e9e5
 src/components/app/calendar/EventDetail.tsx 6029d8e49483c294
 src/components/app/calendar/Guests.tsx 21bc40cb0016106d
 src/components/app/calendar/FindTime.tsx bd768716e1060c79
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 567c42d0499f4596
+docs/cursor-work/founder/founder-commands.md 67d42d427aaa4255
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts fe60b4f650d8ef73
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 16c3d94e8c487994
+docs/cursor-work/DONE-DO-NOT-REPEAT.md d1dccbe78667bd35
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,12 +246,12 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0bc892d5332d435a
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 34fb466030c5357e
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md a278488038f20e07
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
 src/components/app/calendar/TimeGrid.tsx e99750ba4f3106a4
-src/lib/plans.ts 2b74676b89af9b38
+src/lib/plans.ts 35e97e850f0d9822
 docs/cursor-work/sql/E52_alias_fair_use.sql c484bcfe67a0c2cf
 docs/cursor-work/sql/CHECK_E52.sql 7884b25b262eb1e6
 src/lib/api.ts 46cdb8f80338e27f
@@ -360,7 +360,7 @@ docs/cursor-work/sql/CHECK_E56.sql da641f2506fb7482
 src/lib/timeFormat.ts 22f95a3da9a5a275
 src/components/app/calendar/TimeBar.tsx 4124289797441e90
 src/components/app/calendar/CalendarClassic.tsx b80830cacd40cd2d
-src/components/app/calendar/Bits.tsx ff3c03680788468a
+src/components/app/calendar/Bits.tsx 91ac5be82576089c
 src/components/app/calendar/Availability.tsx 42cc922382dbbcc1
 server/rust/locale_core.rs 684ebc8bde55fa85
 server/rust/locale_glue.rs 85aaf79c8ebccfc2
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md ef3fefc4bcb7aa3d
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 7442c704c5abaaee
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -397,7 +397,7 @@ docs/cursor-work/sql/CHECK_E61.sql d4198702c8e11d9b
 docs/cursor-work/sql/CHECK_E62.sql 5ec6c8608ec42302
 docs/cursor-work/sql/E62_team_overlap.sql 4eae8e2b6513bb93
 server/rust/overlap_core.rs 3412d6235fb46ef1
-server/rust/overlap_glue.rs f04b427e92f6fe2c
+server/rust/overlap_glue.rs aee2be19f354da08
 src/components/app/calendar/OverlapMatrix.tsx 3f4a8645bb880e91
 src/components/app/dashboard/TeamTime.tsx 7575770735326ffe
 src/lib/overlap.ts 654faba294fea45c
@@ -641,8 +641,8 @@ src/components/app/mail/ThreadNote.tsx 63c294860d01d395
 docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md a3e3b72801636ded
 docs/cursor-work/MIGRATION-PHASES-24OCT.md a21d359e59e7bba7
 docs/cursor-work/MIGRATION-PHASES-RUST-PRIMARY.md dbe27f8667093857
-server/rust/mailx_core.rs b24c9e64877501ff
-server/rust/mailx_glue.rs c7961e7152ea6ede
+server/rust/mailx_core.rs 0f48edc98b906fd0
+server/rust/mailx_glue.rs adbb2151133bb0c6
 docs/cursor-work/server/brain-pro-install.sh 8c33fd155d855f47
 docs/cursor-work/server/brain_pro_patch.py f677b589cb6ede66
 docs/cursor-work/server/brain_pro_hunks.json b3e1b45e400cd113
@@ -665,7 +665,7 @@ docs/cursor-work/server/basic-gate-probe.sh 6b618c073abadaf5
 docs/cursor-work/server/count-endpoints.py dd8f789f015fc833
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md bf6b824fac635cc5
-docs/cursor-work/PACKAGE-FEATURE-FORMULA.md cce46b8d3e703d0f
+docs/cursor-work/PACKAGE-FEATURE-FORMULA.md a892aad6e989d788
 docs/claude/PRICING-POSITIONING-26OCT.md b6c1aa7f7ef76451
 docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md dfa215ae4029eabf
 docs/claude/BULLETPROOF-RELIABILITY-26OCT.md bb8c5f74d084624e
@@ -685,8 +685,11 @@ docs/cursor-work/sql/CHECK_E88.sql e2cd9dfbc1d1105d
 docs/packages/README.md b94a54cc94a6c2bf
 docs/packages/basic/FEATURES.md c32eda54304a4ed7
 docs/packages/basic/GATES-AND-TECH.md 4547b92898b17368
-docs/packages/basic/NOT-BUILT.md 740a0a985d1b7547
-docs/packages/pro/FEATURES.md 986a05f61bfd1a6b
-docs/packages/pro/GATES-AND-TECH.md f369b0deddac947f
-docs/packages/pro/NOT-BUILT.md 0f6f95f2b4fe8973
-docs/claude/POLAR-COPY-V6-PRO.md 80199e565b935301
+docs/packages/basic/NOT-BUILT.md 471316a4b3a1f1af
+docs/packages/pro/FEATURES.md 630ebc9c645404fc
+docs/packages/pro/GATES-AND-TECH.md 619a13abd2e47c58
+docs/packages/pro/NOT-BUILT.md 4296ae8ba1730256
+docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
+src/lib/plan-surface.test.ts ae0bcc13315d632d
+src/lib/use-pro-calendar.ts 13e60a22034c5cd9
+docs/packages/GREEN-LEDGER.md 2d270c62182af087

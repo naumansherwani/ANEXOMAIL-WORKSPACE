@@ -286,6 +286,36 @@ export function showProMailTools(
   return powerOf(workspacePlan, aiPlan, kind) !== "basic";
 }
 
+/**
+ * Calendar Pro tools — Overlap Matrix (team hours across time zones), Focus Ring, meeting cost.
+ * Find-a-time + 1 public booking link stay on EVERY package (founder: calendar generous on Basic).
+ */
+export function showProCalendar(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
+): boolean {
+  return powerOf(workspacePlan, aiPlan, kind) !== "basic";
+}
+
+/** Analytics: Response debt = every package. Thread economics + Deep work = Pro and above. */
+export function showAnalyticsPro(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
+): boolean {
+  return powerOf(workspacePlan, aiPlan, kind) !== "basic";
+}
+
+/** Analytics: Attention leaks, Promise SLA, Forecast, Team = Business and above. */
+export function showAnalyticsBusiness(
+  workspacePlan: string | null | undefined,
+  aiPlan: string | null | undefined = null,
+  kind: KindArg = null,
+): boolean {
+  return hasBusinessPlan(powerOf(workspacePlan, aiPlan, kind));
+}
+
 export function showCrmHealth(
   workspacePlan: string | null | undefined,
   aiPlan: string | null | undefined = null,
@@ -380,6 +410,29 @@ export function surfaceDenial(pathname: string, opts: SurfaceOpts): SurfaceDenia
     return {
       title: "Platform admin is not on this package",
       body: "Your package is {package}. Organisation tools for Business sit under Org, not platform Admin.",
+    };
+  }
+  if (
+    path.startsWith("/app/analytics/leaks") ||
+    path.startsWith("/app/analytics/promises") ||
+    path.startsWith("/app/analytics/forecast") ||
+    path.startsWith("/app/analytics/team")
+  ) {
+    if (showAnalyticsBusiness(opts.plan, null, kind)) return null;
+    return {
+      title: personal ? "This report is on Personal Pro+" : "This report is on Business",
+      body: personal
+        ? "Attention leaks, promise SLA, forecast and team reports sit on Personal Pro+ and Personal Premium. Your package is {package}."
+        : "Attention leaks, promise SLA, forecast and team reports sit on Business and Business Pro. Your package is {package}.",
+    };
+  }
+  if (path.startsWith("/app/analytics/threads") || path.startsWith("/app/analytics/deep-work")) {
+    if (showAnalyticsPro(opts.plan, null, kind)) return null;
+    return {
+      title: personal ? "This report is on Personal Pro+" : "This report is on Pro",
+      body: personal
+        ? "Thread economics and deep work sit on Personal Pro+ and Personal Premium. Response debt stays on every package. Your package is {package}."
+        : "Thread economics and deep work sit on Pro and above. Response debt stays on every package. Your package is {package}.",
     };
   }
   if (path.startsWith("/app/crm/collab")) {

@@ -193,6 +193,15 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         }
         Err((status, code, detail)) => return fail(status, code, &detail),
     };
+    // Overlap Matrix = Pro and above (Find-a-time `calendar.findtime` har package par rehta hai). Server rokta hai, UI sirf aaina.
+    let plan = crate::sb_rpc("resolve_plan", json!({ "_user_id": me.id, "_email": me.email }))
+        .await
+        .ok()
+        .and_then(|v| v.as_str().map(|s| s.to_string()))
+        .unwrap_or_else(|| "basic".to_string());
+    if plan == "basic" {
+        return fail(StatusCode::FORBIDDEN, "feature_not_available", "Overlap Matrix is a Pro+ feature. Find a time works on every package.");
+    }
     let my_email = me.email.trim().to_lowercase();
     if !allowed(&me.id) {
         return fail(StatusCode::TOO_MANY_REQUESTS, "too_many_requests", "Too many requests — please try again in a minute.");

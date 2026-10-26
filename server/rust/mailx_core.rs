@@ -29,6 +29,20 @@ pub fn plan_allows_pro(plan: &str) -> bool {
     plan != "basic"
 }
 
+/// Pro-card ke mail tools jinka server-side gate Pro+ hai (snooze / assign / templates apne handler mein gate hote hain).
+/// Some(paigham) = Basic ko 403 `feature_not_available`. Yeh list PACKAGE-FEATURE-FORMULA.md (Pro) se match honi chahiye.
+pub fn pro_only_proc(proc: &str) -> Option<&'static str> {
+    match proc {
+        "mail.confidence" => Some("Pre-send scan is a Pro+ feature."),
+        "mail.followup.create" | "mail.followup.list" | "mail.followup.delete" => Some("Follow-up reminders are a Pro+ feature."),
+        "mail.snippets.list" | "mail.snippets.save" | "mail.snippets.delete" => Some("Snippets are a Pro+ feature."),
+        "mail.handoff.list" | "mail.handoff.save" | "mail.handoff.claim" | "mail.handoff.delete" => {
+            Some("Draft handoff between devices is a Pro+ feature.")
+        }
+        _ => None,
+    }
+}
+
 /// Percent-encode everything except unreserved characters (PostgREST filter values: no filter injection).
 pub fn pct(v: &str) -> String {
     let mut out = String::new();
@@ -249,6 +263,17 @@ pub fn send_confidence(to: &str, subject: &str, body: &str, attachments: i64) ->
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn pro_only_procs_are_gated_and_basic_ones_are_not() {
+        for p in ["mail.confidence", "mail.followup.create", "mail.followup.list", "mail.followup.delete", "mail.snippets.save",
+                  "mail.snippets.list", "mail.snippets.delete", "mail.handoff.list", "mail.handoff.save", "mail.handoff.claim", "mail.handoff.delete"] {
+            assert!(pro_only_proc(p).is_some(), "{p} Pro+ hona chahiye");
+        }
+        for p in ["mail.threads", "mail.move", "mail.status", "mail.drafts.save", "mail.signatures.list", "mail.device.seen", "mail.labels.update"] {
+            assert!(pro_only_proc(p).is_none(), "{p} Basic ko khula rahe");
+        }
+    }
 
     #[test]
     fn uuid_and_enums() {

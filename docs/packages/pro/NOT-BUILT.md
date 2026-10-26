@@ -1,12 +1,11 @@
-# PRO — jo bana nahi / founder faisla baqi (26 Oct 2026)
-Qaida: naya gate hamesha SERVER par (Rust :3200 + Postgres), UI akela nahi. Naya wire = latest technology (Rust RPC, WebTransport live, WASM kernel builtin).
-| # | Cheez | Haalat | Kaise banega (technology) | Founder faisla |
-|---|---|---|---|---|
-| 1 | Analytics: Basic = sirf Response debt; Pro = + thread economics + deep work; Business+ = baqi | `/app/analytics/*` par plan gate NAHI | Rust RPC mein `plan_allows_*` check + `showAnalytics*` in plan-surface (Rule 37: tier literal nahi) | APPROVED 04:39, code baqi |
-| 2 | Pre-send scan, follow-up reminders, word prediction, thread rescue, draft handoff | Code asli, gate NAHI (sab ko khula) | Rust `pro_gate` (mailx_glue.rs) wahi pattern | Pro+ proposal -- founder haan/na |
-| 3 | Calendar Pro tools: Overlap Matrix, Focus Ring, meeting cost, availability windows | Code asli, gate NAHI | `showProCalendar` + engine-side check | proposal, founder haan/na |
-| 4 | CRM base card par likhna | `showCrm` Pro+ REAL | sirf copy | founder haan/na |
-| 5 | Schedule send | REAL (mail-compose.ts `proOnly`) -- kuch baqi nahi | -- | -- |
-| 6 | Work header vs route mismatch (Basic ko TaskBoard likha, route block) | UI bug | copy fix | baqi |
-| 7 | `revenue.ts` PLAN_PRICE (pro 46, basic 23) | purani qeemat, partners commission mein | founder bataye commission kis par | baqi |
-| 8 | Personal Pro (£46) | HOLD | -- | founder ki alag meeting |
+# PRO — jo bana nahi (26 Oct 2026 07:40). Qaida: naya gate SERVER par (Rust :3200 + Postgres), UI akela nahi. WebTransport live, WASM kernel builtin.
+Founder 07:10: 4 faisle "sab kuch kero" -> HAAN. Ho gaye: pre-send/follow-up/snippets/handoff Pro+ (Rust), Overlap Matrix/Focus Ring/meeting cost Pro+, analytics route gate, CRM card par. Detail GATES-AND-TECH.md (GREEN).
+
+## Abhi bhi NAHI BANA (green nahi) — latest-technology spec
+| # | Cheez | Haalat | Spec (latest technology) |
+|---|---|---|---|
+| 1 | **Analytics Center ka DATA backend** (Response debt, Thread economics, Deep work, Leaks, Promise SLA, Forecast, Team) | UI + tables (phase24) hain; `/api/analytics/*` aur `analytics.*` RPC server mein HAIN HI NAHI -> pages "not wired" dikhate hain. Card par claim NAHI (jhoota dawa nahi). | E89 SQL: `analytics_response_debt/_thread_economics/_deep_work(_org,_user)` SECURITY DEFINER, service_role only (mail_threads + mail_messages latest-direction lateral join, percentile_cont median, calendar_events se meeting minutes). Rust `analytics_core.rs` (pure gate fn + tests) + `analytics_glue.rs`: `analytics.responseDebt` = SAB packages; `threadEconomics`/`deepWork` = Pro+; `attentionLeaks/promiseSla/forecast/team` = Business+. Raat ka tokio job `analytics_debt_daily` snapshot. WebTransport topic `analytics` se live invalidate. **BLOCKER (founder faisla chahiye):** "cost of delay" ka formula (kitne £ per waiting-hour?) -- bina formula ke paisay ke number nahi banayenge (NO VANITY / NO MOCK). |
+| 2 | Meeting cost server-side gate | Bun `calendar.ts` cost ungated; Rust cal_glue cost = null | jab Rust cost field aaye to `plan != basic` check wahin |
+| 3 | Support 48h | process | -- |
+| 4 | `revenue.ts` / `server/routes/revenue.ts` / partners page: per-seat PLAN_PRICE (basic 23, pro 46, business 97) | PURANA per-user model Rule 51 se takrata hai | partner/commission model founder ki alag meeting (kis qeemat par commission, flat plans par) |
+| 5 | Personal Pro (£46) | HOLD | founder ki alag meeting |
