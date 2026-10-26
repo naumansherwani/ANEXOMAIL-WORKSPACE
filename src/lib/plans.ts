@@ -161,7 +161,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     name: "Business Pro",
     monthly: 2850,
     yearly: 28500,
-    unit: "/ company / month",
+    unit: "/ month",
     tagline: "The complete company communication stack — one price for the whole company, not per user.",
     annual: "two-months-free",
     badge: "Most complete",
