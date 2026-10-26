@@ -179,6 +179,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         "crm.dealThread" => deal_thread(&cx, input).await,
         "crm.memory" => memory(&cx, input).await,
         "crm.insights" => crate::ok(json!({ "insights": [] })).into_response(),
+        // 404 sirf "yeh proc Rust ke paas nahi" ke liye — baaqi sab domain errors 409 (client 404 par Bun fallback karta hai; live loophole 27 Oct: deals/thread 404 -> Bun).
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
 }
@@ -291,7 +292,7 @@ async fn move_deal(cx: &Ctx, input: &Value) -> Resp {
         return fail(StatusCode::BAD_REQUEST, "deal_id_and_stage_required", "deal id and a valid stage are required");
     }
     let Some(deal) = owned_deal(cx, &id).await else {
-        return fail(StatusCode::NOT_FOUND, "deal_not_found", "Deal not found");
+        return fail(StatusCode::CONFLICT, "deal_not_found", "Deal not found");
     };
     if let Err(e) = crate::sb_patch(&format!("crm_deals?id=eq.{}", enc(&id)), json!({ "stage": stage, "probability": prob, "updated_at": now_iso() })).await {
         return fail(StatusCode::INTERNAL_SERVER_ERROR, "stage_failed", &e);
@@ -320,7 +321,7 @@ async fn convert_lead(cx: &Ctx, input: &Value) -> Resp {
         None
     };
     let Some(lead) = lead else {
-        return fail(StatusCode::NOT_FOUND, "lead_not_found", "Lead not found");
+        return fail(StatusCode::CONFLICT, "lead_not_found", "Lead not found");
     };
     let email = st(&lead, "email");
     let company = lead.get("company").and_then(|x| x.as_str()).map(|s| s.to_string());
@@ -353,7 +354,7 @@ async fn deal_work(cx: &Ctx, input: &Value) -> Resp {
         return fail(StatusCode::BAD_REQUEST, "deal_id_required", "deal id is required");
     }
     let Some(deal) = owned_deal(cx, &id).await else {
-        return fail(StatusCode::NOT_FOUND, "deal_not_found", "Deal not found");
+        return fail(StatusCode::CONFLICT, "deal_not_found", "Deal not found");
     };
     let owner = deal.get("owner").and_then(|x| x.as_str()).filter(|s| !s.is_empty()).unwrap_or(&cx.me.email).to_string();
     let row = json!({
@@ -380,11 +381,11 @@ async fn deal_thread(cx: &Ctx, input: &Value) -> Resp {
         return fail(StatusCode::BAD_REQUEST, "deal_id_required", "deal id is required");
     }
     let Some(deal) = owned_deal(cx, &id).await else {
-        return fail(StatusCode::NOT_FOUND, "deal_not_found", "Deal not found");
+        return fail(StatusCode::CONFLICT, "deal_not_found", "Deal not found");
     };
     let address = c::email_of(&st(&deal, "contact_email"));
     let Some(tid) = thread_for(&cx.me.org_id, &address).await else {
-        return fail(StatusCode::NOT_FOUND, "no_thread_for_address", "No mail thread found for this contact yet");
+        return fail(StatusCode::CONFLICT, "no_thread_for_address", "No mail thread found for this contact yet");
     };
     if let Err(e) = crate::sb_patch(&format!("crm_deals?id=eq.{}", enc(&id)), json!({ "thread_id": tid, "updated_at": now_iso() })).await {
         return fail(StatusCode::INTERNAL_SERVER_ERROR, "thread_attach_failed", &e);
@@ -403,7 +404,7 @@ fn promise_scope(me: &crate::MailMe) -> String {
 async fn promise(proc: &str, me: &crate::MailMe, input: &Value) -> Resp {
     let id = st(input, "id");
     if !uuid_ok(&id) {
-        return fail(StatusCode::NOT_FOUND, "not_found", "Promise not found");
+        return fail(StatusCode::CONFLICT, "not_found", "Promise not found");
     }
     let scope = promise_scope(me);
     if proc == "work.promise.dismiss" {
@@ -413,7 +414,7 @@ async fn promise(proc: &str, me: &crate::MailMe, input: &Value) -> Resp {
         return crate::ok(json!({ "ok": true })).into_response();
     }
     let Some(p) = rows(&format!("work_promises?select=*&id=eq.{}&{scope}&limit=1", enc(&id))).await.into_iter().next() else {
-        return fail(StatusCode::NOT_FOUND, "not_found", "Promise not found");
+        return fail(StatusCode::CONFLICT, "not_found", "Promise not found");
     };
     let row = json!({
         "org_id": if me.org_id.is_empty() { Value::Null } else { json!(me.org_id) }, "title": p.get("suggested_title"), "status": "todo",

@@ -52,6 +52,13 @@ describe("rpc contract == Rust server gates", () => {
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
   });
 
+  test("crmd: domain errors never use 404 (client falls back to Bun on 404/501/502/503)", () => {
+    const src = rs("crmd_glue.rs");
+    const hits = src.split("\n").filter((l) => l.includes("StatusCode::NOT_FOUND"));
+    expect(hits.length).toBe(1);
+    expect(hits[0]).toContain("unknown_proc");
+  });
+
   test("every contract proc is enforced somewhere in Rust (no UI-only claim)", () => {
     const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs", "livex_core.rs", "crmd_core.rs"].map(rs).join("\n");
     for (const p of Object.keys(PROC_MIN_PLAN)) expect(all.includes(`"${p}"`), `${p} Rust mein nahi`).toBe(true);
