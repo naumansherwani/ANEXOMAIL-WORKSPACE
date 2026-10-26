@@ -11,7 +11,7 @@ Yeh file MASTER-GREEN-PLAN section B + BATCH-PLAN-27OCT + MIGRATION-STATUS (M1-M
 ## Tarteeb (ek ek khatam, phir agla)
 | # | Kya | Kya shamil (M-series nam) | Halat 27 Oct 03:49 |
 |---|---|---|---|
-| 1 | **Jo deploy hua par saboot adhoora** | wsx (workspace.personal/organisations) + setActive profile-stamp fix + billx C1 | Rust re-install + wsx-live-test dobara => ALL PASS (wsx live) |
+| 1 | **Jo deploy hua par saboot adhoora** | wsx (workspace.personal/organisations) + setActive profile-stamp fix + billx C1 | **GREEN ✅ 03:53 PKT (ALL PASS wsx live + basic + pro)** |
 | 2 | **Pro-only baaqi 4** | mail/handoff DELETE, mail/devices/seen, mail/follow-up DELETE, analytics/:report | baaqi |
 | 3 | **Batch D** (M5) | settings 7 + integrations 10 + security 7 (paisa nahi) | baaqi, AGLA |
 | 4 | **Batch E** (M3/M5 leftover) | account-deletion 3 + mail 2 + calendar 1 + locale 1 | baaqi |
