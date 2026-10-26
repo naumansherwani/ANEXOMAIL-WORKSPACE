@@ -84,8 +84,8 @@
 
 - Users cap: 570
 - Mailboxes: -
-- Shared storage: 15TB (founder paste 09:41; Enterprise number confirm)
-- Attachment: 60MB (founder 09:41)
+- Shared storage: 10TB
+- Attachment: 60MB
 - Company domains: -
 - Booking links: unlimited
 - Trusted devices: 50

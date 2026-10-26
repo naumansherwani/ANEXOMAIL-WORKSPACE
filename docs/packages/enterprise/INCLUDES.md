@@ -84,7 +84,7 @@
 
 - Users cap: unlimited
 - Mailboxes: -
-- Shared storage: 15TB+ (confirm)
+- Shared storage: 15TB
 - Attachment: 100MB
 - Company domains: -
 - Booking links: unlimited

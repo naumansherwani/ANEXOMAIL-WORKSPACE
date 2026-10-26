@@ -82,7 +82,7 @@
 
 ## Limits
 
-- Users cap: 60 (founder 26 Oct 09:41)
+- Users cap: 60
 - Mailboxes: -
 - Shared storage: 1.5TB
 - Attachment: 45MB

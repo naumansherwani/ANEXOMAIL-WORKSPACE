@@ -197,7 +197,7 @@ const faqs = [
   },
   {
     q: "What happens if I go over my storage?",
-    a: "Storage is shared across the company on Basic (15GB) and Pro (300GB),, Business (1.5TB) and Business Pro (15TB) — one shared pool for the whole company. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
+    a: "Storage is shared across the company on Basic (15GB) and Pro (300GB),, Business (1.5TB) and Business Pro (10TB) — one shared pool for the whole company. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
   },
   {
     q: "Can I cancel any time?",
