@@ -735,4 +735,4 @@ docs/packages/WIRE-AUDIT-26OCT.md cc6a50340c3299c5
 scripts/wire-audit.py 562f646de5b79f96
 src/lib/chat-files.ts b742f82b031b15db
 docs/cursor-work/server/kernel-check.sh c6ef86079433301a
-docs/cursor-work/server/brain-kernel-install.sh e1d341df987a613b
+docs/cursor-work/server/brain-kernel-install.sh bb3879dfa6421bae
