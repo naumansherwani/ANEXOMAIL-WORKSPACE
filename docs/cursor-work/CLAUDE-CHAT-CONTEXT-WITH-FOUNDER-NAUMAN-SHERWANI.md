@@ -1101,3 +1101,6 @@ POLAR-COPY-V6-BASIC.md final: bring-your-own-domain, up to 5 users cap, technolo
 
 ### 26 Oct 05:45 — Polar product ID update command
 Founder server pe Basic monthly/yearly IDs update karega. Repo-tested script polar-product-ids-update.sh (KEY=UUID args). Founder IDs chat mein dega -> repo docs (polar-products.md ke naye IDs, history ke saath) update. Caveat: SQL phase43/E40 mein Basic 23/253 abhi purana, SQL update baqi.
+
+### 26 Oct 05:40 — Basic Polar IDs verify
+Server .env check (founder ne grep chalaya): Basic Monthly 5e1c7b50-... aur Yearly d3642ce7-... maujood; founder ne wahi Polar products edit kiye (price/description), isliye env mein koi tabdeeli nahi. SQL Basic price (23/253) update baqi, phir landing plans.ts.
