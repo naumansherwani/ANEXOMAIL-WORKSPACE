@@ -26,7 +26,7 @@ export const Route = createFileRoute("/plans")({
       {
         property: "og:description",
         content:
-          "Basic £40, Pro £46, Business £97 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
+          "Basic £40, Pro £105, Business £97 — sealed mailboxes on your own company address with the workspace tools your team uses daily.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -44,32 +44,53 @@ const compare: { group: string; rows: Row[] }[] = [
       {
         label: "Price per month",
         basic: "£40 / month (up to 5 users)",
-        pro: "£46 / user",
+        pro: "£105 / month (up to 20 users)",
         business: "£97 / user",
         business_pro: "£2,850 / company",
       },
       {
         label: "Users included",
         basic: "Up to 5",
-        pro: "Per seat",
+        pro: "Up to 20",
         business: "Up to 30",
         business_pro: "Unlimited",
       },
       {
         label: "Mailboxes included",
         basic: "3",
-        pro: "5",
+        pro: "10",
         business: "On request",
         business_pro: "Unlimited internal users",
       },
       {
         label: "Storage",
         basic: "15GB shared",
-        pro: "10GB per mailbox",
+        pro: "300GB shared",
         business: "25GB per mailbox",
         business_pro: "1TB pooled",
       },
       { label: "Company domains you can host", basic: "1", pro: "3", business: "Unlimited" },
+      {
+        label: "Email attachment size",
+        basic: "25MB",
+        pro: "35MB",
+        business: "45MB",
+        business_pro: "60MB",
+      },
+      {
+        label: "Public booking links",
+        basic: "1",
+        pro: "3",
+        business: "20",
+        business_pro: "Unlimited",
+      },
+      {
+        label: "Trusted devices",
+        basic: "2",
+        pro: "4",
+        business: "10",
+        business_pro: "50",
+      },
       { label: "Free aliases", basic: "Included", pro: "Included", business: "Included" },
       { label: "Undo send window", basic: "30 seconds", pro: "30 seconds", business: "30 seconds" },
     ],
@@ -164,7 +185,7 @@ const compare: { group: string; rows: Row[] }[] = [
 const faqs = [
   {
     q: "Is VAT included in these prices?",
-    a: "No. £40, £46, £97 and £2,850 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
+    a: "No. £40, £105, £97 and £2,850 are the prices before tax. VAT or local sales tax is added at checkout based on the country and VAT number you enter, and it appears as a separate line on every receipt.",
   },
   {
     q: "How does billing work?",
@@ -176,7 +197,7 @@ const faqs = [
   },
   {
     q: "What happens if I go over my storage?",
-    a: "Storage is 15GB shared across the company on Basic, and per mailbox on the other plans — 10GB on Pro, 25GB on Business. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
+    a: "Storage is shared across the company on Basic (15GB) and Pro (300GB), and per mailbox on the other plans — 25GB on Business. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
   },
   {
     q: "Can I cancel any time?",
@@ -696,7 +717,7 @@ function PlansPage() {
             </>
           ) : (
             <CompareTable
-              heads={["Basic · £40", "Pro · £46", "Business · £97", "Business Pro · £2,850"]}
+              heads={["Basic · £40", "Pro · £105", "Business · £97", "Business Pro · £2,850"]}
               groups={businessCompare}
               minWidth="min-w-[42rem]"
             />

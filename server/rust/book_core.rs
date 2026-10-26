@@ -9,6 +9,22 @@
 //! Tests run on the server by the installer (std-only, `rustc --test book_core.rs`); cal_core.rs sits next to it.
 #![allow(dead_code)]
 
+/// Unix seconds -> "YYYY-MM-DDTHH:MM:SSZ" (UTC). PostgREST filter ke liye; std-only (Howard Hinnant civil-from-days).
+pub fn rfc3339_utc(secs: i64) -> String {
+    let (days, rem) = (secs.div_euclid(86_400), secs.rem_euclid(86_400));
+    let z = days + 719_468;
+    let era = z.div_euclid(146_097);
+    let doe = z.rem_euclid(146_097);
+    let yoe = (doe - doe / 1_460 + doe / 36_524 - doe / 146_096) / 365;
+    let y = yoe + era * 400;
+    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    let mp = (5 * doy + 2) / 153;
+    let d = doy - (153 * mp + 2) / 5 + 1;
+    let m = if mp < 10 { mp + 3 } else { mp - 9 };
+    let y = if m <= 2 { y + 1 } else { y };
+    format!("{:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z", y, m, d, rem / 3600, (rem % 3600) / 60, rem % 60)
+}
+
 #[cfg(test)]
 #[path = "cal_core.rs"]
 mod cal_core;
@@ -390,6 +406,14 @@ mod tests {
     }
     fn params<'a>(tz: &'a Tz, ooo: &'a [(String, String)], now: i64) -> Params<'a> {
         Params { tz, week: default_week(), ooo, minutes: 30, buffer_min: 0, min_notice_min: 0, max_days: 60, now }
+    }
+
+    #[test]
+    fn rfc3339_utc_known_dates() {
+        assert_eq!(rfc3339_utc(0), "1970-01-01T00:00:00Z");
+        assert_eq!(rfc3339_utc(951_782_400), "2000-02-29T00:00:00Z"); // leap day
+        assert_eq!(rfc3339_utc(1_782_432_000 + 3_723), "2026-06-26T01:02:03Z");
+        assert_eq!(rfc3339_utc(1_798_761_599), "2026-12-31T23:59:59Z");
     }
 
     #[test]

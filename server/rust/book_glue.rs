@@ -6,7 +6,9 @@
 // SQL: docs/cursor-work/sql/E59_booking_page.sql — wahi aakhri deewar hai (EXCLUDE constraint). Hum sirf woh slot
 // dikhate hain jo free hain aur repeating meetings (jo SQL nahi dekhta) booking se pehle dobara check karte hain.
 //
-// Procs (login chahiye):  booking.page.get  booking.page.set  booking.list  booking.host.cancel
+// Procs (login chahiye):  booking.page.get  booking.page.set  booking.page.delete  booking.list  booking.host.cancel
+//   E88: ek user ke kai booking links (Basic 1 / Pro 3 / Business 20 / Business Pro unlimited). Cap DB trigger rokta hai
+//   (booking_pages_cap, error booking_link_limit_reached); yahan sirf wahi error saaf zabaan mein wapas aata hai.
 // Procs (public):         booking.public.page  booking.public.slots  booking.public.book
 //                         booking.manage.lookup  booking.manage.cancel  booking.manage.reschedule
 // Public procs IP rate-limit + honeypot; mail ka daily invite quota (host) in se kabhi kharch nahi hota.
@@ -27,7 +29,7 @@ static THROTTLE: std::sync::OnceLock<Mutex<c::Throttle>> = std::sync::OnceLock::
 const WINDOW_MS: u64 = 10 * 60 * 1000;
 
 pub fn owns(proc: &str) -> bool {
-    matches!(proc, "booking.page.get" | "booking.page.set" | "booking.list" | "booking.host.cancel")
+    matches!(proc, "booking.page.get" | "booking.page.set" | "booking.page.delete" | "booking.list" | "booking.host.cancel")
 }
 
 pub fn public_owns(proc: &str) -> bool {
@@ -395,23 +397,49 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
     match proc {
         "booking.page.get" => page_get(&me).await,
         "booking.page.set" => page_set(&me, input).await,
+        "booking.page.delete" => page_delete(&me, input).await,
         "booking.list" => list(&me).await,
         "booking.host.cancel" => host_cancel(&me, input).await,
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
 }
 
+/// Saare pages is user ke, sab se purana pehle (primary = pehla).
+async fn my_pages(me: &Who) -> Result<Vec<Value>, String> {
+    let rows = crate::sb_select(&format!("booking_pages?select=*&user_id=eq.{}&order=created_at.asc,id.asc&limit=50", me.id)).await?;
+    Ok(rows.as_array().cloned().unwrap_or_default())
+}
+
+/// Primary page (purana ek-page contract; page_id na dene wale purane clients isi par chalte hain).
 async fn my_page(me: &Who) -> Result<Option<Value>, String> {
-    let rows = crate::sb_select(&format!("booking_pages?select=*&user_id=eq.{}&limit=1", me.id)).await?;
-    Ok(rows.as_array().and_then(|a| a.first().cloned()))
+    Ok(my_pages(me).await?.into_iter().next())
+}
+
+/// (limit, plan) — `limit` None = unlimited. DB ki chat_phase_entitlements 'booking_links' se (E88). Fail ho to None, None (cap DB phir bhi rokta hai).
+async fn links_cap(me: &Who) -> (Option<i64>, Option<String>) {
+    match crate::sb_rpc("chat_feature_allowed", json!({ "_user": me.id, "_feature": "booking_links" })).await {
+        Ok(v) => (
+            v.get("limit").and_then(|x| x.as_i64()),
+            v.get("plan").and_then(|x| x.as_str()).map(|x| x.to_string()),
+        ),
+        Err(_) => (None, None),
+    }
 }
 
 async fn page_get(me: &Who) -> axum::response::Response {
-    match my_page(me).await {
-        Ok(p) => crate::ok(json!({
-            "page": p, "suggested_handle": c::suggest_handle(&me.email), "host_email": me.email, "app_url": app_url(),
-        }))
-        .into_response(),
+    match my_pages(me).await {
+        Ok(pages) => {
+            let (limit, plan) = links_cap(me).await;
+            crate::ok(json!({
+                "page": pages.first().cloned(),
+                "pages": pages,
+                "links_used": pages.len(),
+                "links_limit": limit,
+                "plan": plan,
+                "suggested_handle": c::suggest_handle(&me.email), "host_email": me.email, "app_url": app_url(),
+            }))
+            .into_response()
+        }
         Err(_) => server_error(),
     }
 }
@@ -456,15 +484,37 @@ async fn page_set(me: &Who, input: &Value) -> axum::response::Response {
     let host_name = cal::clean_line(&st(input, "host_name"), 80);
     let enabled = input.get("enabled").and_then(|e| e.as_bool()).unwrap_or(false);
 
-    let existing = match my_page(me).await {
+    // E88: kaun sa page? page_id diya => wahi (mera hona zaruri); new:true => naya link; kuch nahi => purana behaviour (primary).
+    let mine = match my_pages(me).await {
         Ok(p) => p,
         Err(_) => return server_error(),
     };
-    // handle must be free (case-insensitive) unless it is already mine
-    match crate::sb_select(&format!("booking_pages?select=user_id&handle=eq.{}&limit=1", handle)).await {
+    let want_id = st(input, "page_id");
+    let make_new = input.get("new").and_then(|n| n.as_bool()).unwrap_or(false);
+    let existing: Option<Value> = if !want_id.is_empty() {
+        match mine.iter().find(|p| st(p, "id") == want_id) {
+            Some(p) => Some(p.clone()),
+            None => return fail(StatusCode::NOT_FOUND, "not_found", "Unknown booking link."),
+        }
+    } else if make_new {
+        None
+    } else {
+        mine.first().cloned()
+    };
+    if existing.is_none() {
+        let (limit, plan) = links_cap(me).await;
+        if let Some(l) = limit {
+            if (mine.len() as i64) >= l {
+                return link_limit(plan.as_deref(), l);
+            }
+        }
+    }
+    // handle must be free (case-insensitive) unless it is THIS page
+    match crate::sb_select(&format!("booking_pages?select=id&handle=eq.{}&limit=1", handle)).await {
         Ok(r) => {
             if let Some(o) = r.as_array().and_then(|a| a.first()) {
-                if st(o, "user_id") != me.id {
+                let same = existing.as_ref().map(|e| st(e, "id") == st(o, "id")).unwrap_or(false);
+                if !same {
                     return fail(StatusCode::CONFLICT, "handle_taken", "That page name is already taken. Try another.");
                 }
             }
@@ -481,8 +531,8 @@ async fn page_set(me: &Who, input: &Value) -> axum::response::Response {
         "host_name": if host_name.is_empty() { Value::Null } else { json!(host_name) },
         "host_email": me.email,
     });
-    let res = if existing.is_some() {
-        crate::sb_patch(&format!("booking_pages?user_id=eq.{}", me.id), row.clone()).await.map(|_| ())
+    let res = if let Some(e) = &existing {
+        crate::sb_patch(&format!("booking_pages?id=eq.{}&user_id=eq.{}", st(e, "id"), me.id), row.clone()).await.map(|_| ())
     } else {
         let mut r = row.clone();
         if let Some(o) = r.as_object_mut() {
@@ -494,7 +544,10 @@ async fn page_set(me: &Who, input: &Value) -> axum::response::Response {
     match res {
         Ok(()) => page_get(me).await,
         Err(e) => {
-            if e.contains("23505") || e.contains("duplicate") {
+            if e.contains("booking_link_limit_reached") {
+                let (limit, plan) = links_cap(me).await;
+                link_limit(plan.as_deref(), limit.unwrap_or(1))
+            } else if e.contains("23505") || e.contains("duplicate") {
                 fail(StatusCode::CONFLICT, "handle_taken", "That page name is already taken. Try another.")
             } else if e.contains("23514") || e.contains("check") {
                 bad("Some settings are not allowed. Please check them.")
@@ -506,14 +559,16 @@ async fn page_set(me: &Who, input: &Value) -> axum::response::Response {
 }
 
 async fn list(me: &Who) -> axum::response::Response {
-    let page = match my_page(me).await {
-        Ok(Some(p)) => p,
-        Ok(None) => return crate::ok(json!({ "bookings": [] })).into_response(),
+    let ids: Vec<String> = match my_pages(me).await {
+        Ok(p) => p.iter().map(|x| st(x, "id")).filter(|i| uuid_shape(i)).collect(),
         Err(_) => return server_error(),
     };
+    if ids.is_empty() {
+        return crate::ok(json!({ "bookings": [] })).into_response();
+    }
     match crate::sb_select(&format!(
-        "bookings?select=id,starts_at,ends_at,visitor_name,visitor_email,visitor_tz,note,status,reschedules,created_at&page_id=eq.{}&order=starts_at.desc&limit=200",
-        st(&page, "id")
+        "bookings?select=id,page_id,starts_at,ends_at,visitor_name,visitor_email,visitor_tz,note,status,reschedules,created_at&page_id=in.({})&order=starts_at.desc&limit=200",
+        ids.join(",")
     ))
     .await
     {
@@ -522,30 +577,84 @@ async fn list(me: &Who) -> axum::response::Response {
     }
 }
 
+/// Plan ka cap poora ho chuka — saaf paigham (UI isi code par Upgrade dikhata hai).
+fn link_limit(plan: Option<&str>, limit: i64) -> axum::response::Response {
+    let who = plan.unwrap_or("your");
+    fail(
+        StatusCode::FORBIDDEN,
+        "link_limit_reached",
+        &format!("Your {who} plan includes {limit} public booking link{}. Upgrade for more.", if limit == 1 { "" } else { "s" }),
+    )
+}
+
+/// Ek link hatao. Aane wali confirmed booking ho to NAHI (pehle cancel karo) — visitor ka link toot'ta nahi.
+async fn page_delete(me: &Who, input: &Value) -> axum::response::Response {
+    let id = st(input, "page_id");
+    if !uuid_shape(&id) {
+        return fail(StatusCode::BAD_REQUEST, "bad_input", "Unknown booking link.");
+    }
+    let mine = match my_pages(me).await {
+        Ok(p) => p,
+        Err(_) => return server_error(),
+    };
+    if !mine.iter().any(|p| st(p, "id") == id) {
+        return fail(StatusCode::NOT_FOUND, "not_found", "Unknown booking link.");
+    }
+    let now = c::rfc3339_utc(std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0) as i64);
+    let upcoming = crate::sb_count(&format!("bookings?select=id&page_id=eq.{id}&status=eq.confirmed&ends_at=gt.{now}")).await;
+    match upcoming {
+        Ok(n) if n > 0 => {
+            return fail(StatusCode::CONFLICT, "has_bookings", "This link has upcoming bookings. Cancel them first.");
+        }
+        Ok(_) => {}
+        Err(_) => return server_error(),
+    }
+    let (url, key) = match crate::sb() {
+        Some(x) => x,
+        None => return server_error(),
+    };
+    let res = crate::http()
+        .delete(format!("{url}/rest/v1/booking_pages?id=eq.{id}&user_id=eq.{}", me.id))
+        .header("apikey", &key)
+        .header("authorization", format!("Bearer {key}"))
+        .send()
+        .await;
+    match res {
+        Ok(r) if r.status().is_success() => page_get(me).await,
+        _ => server_error(),
+    }
+}
+
 async fn host_cancel(me: &Who, input: &Value) -> axum::response::Response {
     let id = st(input, "booking_id");
     if !uuid_shape(&id) {
         return fail(StatusCode::BAD_REQUEST, "bad_input", "Unknown booking.");
     }
-    let page = match my_page(me).await {
-        Ok(Some(p)) => p,
-        Ok(None) => return fail(StatusCode::NOT_FOUND, "not_found", "No booking page."),
+    let pages = match my_pages(me).await {
+        Ok(p) if !p.is_empty() => p,
+        Ok(_) => return fail(StatusCode::NOT_FOUND, "not_found", "No booking page."),
         Err(_) => return server_error(),
     };
+    let ids: Vec<String> = pages.iter().map(|x| st(x, "id")).filter(|i| uuid_shape(i)).collect();
     let rows = match crate::sb_select(&format!(
-        "bookings?select=token&id=eq.{}&page_id=eq.{}&limit=1",
+        "bookings?select=token,page_id&id=eq.{}&page_id=in.({})&limit=1",
         id,
-        st(&page, "id")
+        ids.join(",")
     ))
     .await
     {
         Ok(r) => r,
         Err(_) => return server_error(),
     };
-    let token = match rows.as_array().and_then(|a| a.first()).map(|r| st(r, "token")) {
-        Some(t) if uuid_shape(&t) => t,
-        _ => return fail(StatusCode::NOT_FOUND, "not_found", "Unknown booking."),
+    let row = match rows.as_array().and_then(|a| a.first()) {
+        Some(r) => r.clone(),
+        None => return fail(StatusCode::NOT_FOUND, "not_found", "Unknown booking."),
     };
+    let token = st(&row, "token");
+    if !uuid_shape(&token) {
+        return fail(StatusCode::NOT_FOUND, "not_found", "Unknown booking.");
+    }
+    let page = pages.iter().find(|p| st(p, "id") == st(&row, "page_id")).cloned().unwrap_or_else(|| pages[0].clone());
     cancel_by_token(&token, &page).await
 }
 

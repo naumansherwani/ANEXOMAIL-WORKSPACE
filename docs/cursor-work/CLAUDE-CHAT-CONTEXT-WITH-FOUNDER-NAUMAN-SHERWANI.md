@@ -1120,3 +1120,10 @@ Founder ne dekha: '£40/mo' ke baad '/ month' dohra. Fix: ek unit (priceFor), Ba
 
 ### 26 Oct 06:10 — no app charges line
 Basic card + Polar copy: 'no charges for any app, sab isi package mein'. Polar description mein ye bullet founder add kare.
+
+### 26 Oct 06:45 — Pro v6 + har package ka alag folder (founder gussa: 'compact ke baad sab bhul gaya, folder alag likho, jo nahi bana wo real wire')
+Founder qaida (STRICT): har package ke features ALAG FOLDER mein (docs/packages/<pkg>/FEATURES.md, GATES-AND-TECH.md, NOT-BUILT.md) -- mix nahi. Technology GOD ke baad: naya gate SERVER par (Rust :3200 + Postgres), UI akela nahi. Deploy commands technology ke hisab se (SQL / Rust / Web alag).
+AUDIT SABAK: pehle repo se HAR cheez verify karo, phir bolo (meri pehli Pro audit mein 2 ghaltiyan thin: device cap aur collision guard/snooze/templates/schedule send/thread analytics PEHLE SE server-side REAL hain).
+Pro (DRAFT, approve baqi): £105/month, yearly £1,155, 20 users, 10 mailboxes (founder 06:22), 300GB shared, 35MB, 3 domains, 3 booking links, 4 devices, 48h support. Basic attachment 25MB (Pro 25 nahi).
+Bana: E88 (storage_plans pro, team_seat_calc pro=20, billing £105 + asli seats_used, booking_links entitlement 1/3/20/unlimited + trigger), Rust multi-link (page_id/new/delete, list/cancel sab pages), UI (links switcher + Remove), plans.ts/plans.tsx.
+Baqi (docs/packages/pro/NOT-BUILT.md): analytics gate, pre-send/calendar Pro tools gate (founder haan/na), CRM base card par likhna, Work header mismatch, revenue.ts purani qeemat. Agla: founder Pro approve -> deploy (SQL, Rust, Web) -> Business package.

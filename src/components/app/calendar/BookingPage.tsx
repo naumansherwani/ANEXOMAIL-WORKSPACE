@@ -1,4 +1,4 @@
-import { Check, Copy, Link2, X } from "lucide-react";
+import { Check, Copy, Link2, Plus, Trash2, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   minutesLabel,
   useBookingList,
   useBookingPage,
+  useDeleteBookingPage,
   useHostCancel,
   useSaveBookingPage,
   zoneLabel,
@@ -105,7 +106,10 @@ function Body() {
   const q = useBookingPage();
   const prefs = useCalPrefs();
   const save = useSaveBookingPage();
+  const del = useDeleteBookingPage();
   const [d, setD] = useState<Draft | null>(null);
+  /** Konsa link khula hai: page id, "new" (abhi banaya ja raha), ya null = pehla. */
+  const [activeId, setActiveId] = useState<string | "new" | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
 
@@ -138,8 +142,23 @@ function Body() {
 
   const set = <K extends keyof Draft>(k: K, v: Draft[K]) => setD((x) => (x ? { ...x, [k]: v } : x));
   const link = `${origin}/book/${d.handle}`;
-  const saved = q.data?.page;
-  const dirty = JSON.stringify(d) !== JSON.stringify(draftOf(saved ?? null, q.data?.suggested_handle ?? ""));
+  const pages = q.data?.pages ?? (q.data?.page ? [q.data.page] : []);
+  const saved = activeId === "new" ? null : (pages.find((x) => x.id === activeId) ?? pages[0] ?? null);
+  const used = q.data?.links_used ?? pages.length;
+  const limit = q.data?.links_limit ?? null;
+  const atCap = limit !== null && used >= limit;
+  const suggested = q.data?.suggested_handle ?? "";
+  const pick = (pg: HostPage) => {
+    setActiveId(pg.id);
+    setD(draftOf(pg, suggested));
+    setError(null);
+  };
+  const startNew = () => {
+    setActiveId("new");
+    setD(draftOf(null, `${suggested}-${pages.length + 1}`.slice(0, 30)));
+    setError(null);
+  };
+  const dirty = JSON.stringify(d) !== JSON.stringify(draftOf(saved, activeId === "new" ? d.handle : suggested));
   const handleOk = /^[a-z0-9](?:[a-z0-9-]{1,28})[a-z0-9]$/.test(d.handle) && !d.handle.includes("--");
   const ready = handleOk && d.title.trim().length >= 2 && d.durations.length >= 1;
 
@@ -157,6 +176,7 @@ function Body() {
     setError(null);
     save.mutate(
       {
+        ...(activeId === "new" ? { new: true } : saved ? { page_id: saved.id } : {}),
         handle: d.handle,
         title: d.title.trim(),
         host_name: d.host_name.trim(),
@@ -172,7 +192,10 @@ function Body() {
       },
       {
         onSuccess: (s) => {
-          setD(draftOf(s.page, s.suggested_handle));
+          const all = s.pages ?? (s.page ? [s.page] : []);
+          const now = all.find((x) => x.handle === d.handle) ?? all[0] ?? null;
+          setActiveId(now?.id ?? null);
+          setD(draftOf(now, s.suggested_handle));
           notify.done(d.enabled ? "Booking page is live" : "Saved — the page is off");
         },
         onError: (e) => setError(e.status === 501 ? "Booking pages are not switched on yet." : e.message),
@@ -187,6 +210,34 @@ function Body() {
       <p className="ax-eyebrow flex items-center gap-1.5">
         <Link2 className="size-3.5" aria-hidden="true" /> Booking page
       </p>
+
+      <div className="space-y-1.5">
+        <div className="flex flex-wrap items-center gap-1.5" role="tablist" aria-label="Your booking links">
+          {pages.map((pg) => (
+            <button
+              key={pg.id}
+              type="button"
+              role="tab"
+              aria-selected={saved?.id === pg.id}
+              onClick={() => pick(pg)}
+              className={cn(
+                "ax-focus ax-tap max-w-[10rem] truncate rounded-md border px-2 py-1 text-xs",
+                saved?.id === pg.id ? "border-[var(--cyan-accent)] text-foreground" : "border-border text-muted-foreground",
+              )}
+            >
+              {pg.title || pg.handle}
+            </button>
+          ))}
+          {activeId === "new" && <span className="rounded-md border border-dashed border-border px-2 py-1 text-xs text-foreground">New link</span>}
+          <Button size="sm" variant="outline" className="ax-tap h-7 gap-1 px-2 text-xs" onClick={startNew} disabled={atCap || activeId === "new"}>
+            <Plus className="size-3" aria-hidden="true" /> New link
+          </Button>
+        </div>
+        <p className="ax-caption text-muted-foreground">
+          {used} of {limit === null ? "unlimited" : limit} booking link{limit === 1 ? "" : "s"} used
+          {atCap ? " — upgrade your plan for more." : "."}
+        </p>
+      </div>
 
       <label className="ax-tap flex items-start gap-2 text-[12px] text-foreground">
         <input
@@ -335,6 +386,27 @@ function Body() {
         <Button size="sm" className="ax-tap" disabled={!ready || !dirty || save.isPending} onClick={onSave}>
           {save.isPending ? "Saving…" : "Save"}
         </Button>
+        {saved && pages.length > 0 && (
+          <Button
+            size="sm"
+            variant="ghost"
+            className="ax-tap gap-1 text-muted-foreground"
+            disabled={del.isPending}
+            onClick={() =>
+              del.mutate(saved.id, {
+                onSuccess: (s2) => {
+                  const rest = s2.pages ?? (s2.page ? [s2.page] : []);
+                  setActiveId(rest[0]?.id ?? null);
+                  setD(draftOf(rest[0] ?? null, s2.suggested_handle));
+                  notify.done("Booking link removed");
+                },
+                onError: (e) => setError(e.status === 409 ? "This link has upcoming bookings. Cancel them first." : e.message),
+              })
+            }
+          >
+            <Trash2 className="size-3.5" aria-hidden="true" /> Remove
+          </Button>
+        )}
         {saved?.enabled && !dirty && (
           <a
             href={`/book/${saved.handle}`}

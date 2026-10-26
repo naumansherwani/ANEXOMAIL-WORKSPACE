@@ -222,7 +222,7 @@ export function useMarkFounderReplySent() {
 
 export const PLAN_LABEL: Record<WorkspacePlanId, string> = {
   basic: "Basic — £40",
-  pro: "Pro — £46",
+  pro: "Pro — £105",
   business: "Business — £97",
   business_pro: "Business Pro — £2,850",
 };

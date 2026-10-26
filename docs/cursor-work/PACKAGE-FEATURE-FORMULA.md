@@ -21,6 +21,12 @@
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
 
+# ═══ PRO v6 GATE (26 Oct 2026 06:40 PKT, Rule 53 — DRAFT, founder approve baqi) — poori detail: docs/packages/pro/ ═══
+# PRO = £105/month flat, yearly £1,155 (x11), UP TO 20 USERS, 10 mailboxes, 300GB shared, 35MB attachment, 3 company domains,
+#   3 booking links, 4 trusted devices, support 48h. Shared inbox/collision guard, snooze, schedule send, templates, boards/notes/tasks,
+#   thread analytics = Pro+ (server-side REAL). SQL: E88_pro_v6.sql (+CHECK_E88). Har package ka alag folder: docs/packages/<pkg>/.
+# BOOKING LINKS: Basic 1 / Pro 3 / Business 20 / Business Pro + Enterprise unlimited (chat_phase_entitlements 'booking_links' + trigger booking_pages_cap).
+
 # ═══ PP1 — FEATURE GATE MATRIX (CEO proposal 26 Oct 04:40 PKT; FOUNDER approve baqi) — ab se REPO ka rule (AGENTS Rule 53) ═══
 # PRICE AXES (founder 04:27 PKT, FINAL): BUSINESS = v6 flat per-month: Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Enterprise £18,000.
 #   PERSONAL (alag Polar SKUs, per person): Personal Basic £17 / Personal Pro+ £83 / Personal Premium £1,850. "£23/£46/£97" PURANI hain -- kahin istemal na hon.

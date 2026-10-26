@@ -89,10 +89,23 @@ export type HostPage = {
   enabled: boolean;
 };
 
-export type HostPageState = { page: HostPage | null; suggested_handle: string; host_email: string; app_url: string };
+export type HostPageState = {
+  /** Primary (purana) page — purane clients ke liye. */
+  page: HostPage | null;
+  /** E88: saare links is user ke (Basic 1 / Pro 3 / Business 20 / Business Pro unlimited). */
+  pages?: HostPage[];
+  links_used?: number;
+  /** null = unlimited. */
+  links_limit?: number | null;
+  plan?: string | null;
+  suggested_handle: string;
+  host_email: string;
+  app_url: string;
+};
 
 export type HostBooking = {
   id: string;
+  page_id?: string;
   starts_at: string;
   ends_at: string;
   visitor_name: string;
@@ -104,7 +117,7 @@ export type HostBooking = {
   created_at: string;
 };
 
-export type HostPageInput = Omit<HostPage, "id" | "host_name"> & { host_name: string };
+export type HostPageInput = Omit<HostPage, "id" | "host_name"> & { host_name: string; page_id?: string; new?: boolean };
 
 const KEY = ["booking", "page"] as const;
 const LIST = ["booking", "list"] as const;
@@ -124,6 +137,17 @@ export function useSaveBookingPage() {
   return useMutation<HostPageState, ApiError, HostPageInput>({
     mutationFn: (p) => rpc<HostPageState>("booking.page.set", p),
     onSuccess: (s) => qc.setQueryData(KEY, s),
+  });
+}
+
+export function useDeleteBookingPage() {
+  const qc = useQueryClient();
+  return useMutation<HostPageState, ApiError, string>({
+    mutationFn: (page_id) => rpc<HostPageState>("booking.page.delete", { page_id }),
+    onSuccess: (s) => {
+      qc.setQueryData(KEY, s);
+      void qc.invalidateQueries({ queryKey: LIST });
+    },
   });
 }
 

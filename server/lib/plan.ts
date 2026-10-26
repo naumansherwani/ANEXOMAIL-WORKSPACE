@@ -43,8 +43,10 @@ export const PLAN_LIMITS: Record<PlanTier, PlanLimits> = {
     supportSlaHours: 72,
   },
   pro: {
-    mailboxesIncluded: 5,
-    storageBytesPerMailbox: 10 * GB,
+    // v6 (E88, 26 Oct 2026): Pro = 10 mailboxes, 300 GB SHARED pool (SQL truth: storage_plans.pro). Yeh Bun fallback table hai —
+    // asli rok Rust + SQL karte hain; storageBytesPerMailbox sirf purane display/fallback ke liye 30 GB (300 GB / 10 mailboxes).
+    mailboxesIncluded: 10,
+    storageBytesPerMailbox: 30 * GB,
     domainsIncluded: 3,
     freeAliases: 5,
     sharedInbox: true,
