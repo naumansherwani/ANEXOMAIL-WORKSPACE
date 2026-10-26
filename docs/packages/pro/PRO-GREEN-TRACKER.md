@@ -32,5 +32,7 @@ NOT Pro: Writer/Sheet/Show (N-DOC-01 collaborative docs) = Business (PROPOSED, b
 | Analytics Center (7 tabs: Response debt, Thread economics, Deep work...) | HAAN pages render | data tabs ka asli data dekhna baaqi (naya account, khali) |
 | CRM: Overview, Leads, Pipeline, Relationships, Accounts, Tasks, Reports, Setup | HAAN | BUG FIXED: "-£0" (negative zero) -> "£0" in crm.ts money() |
 | Devices | HAAN — /app/devices | "4 trusted devices" ka limit UI mein dekhna baaqi |
-| Public booking links (3), Overlap Matrix, Shared inbox/collision guard, Snooze UI, Focus/hourly-rate UI | NAZAR NAHI AAYE is walk mein | agla Chrome pass: calendar toolbar booking button, World clocks, Mail > Assigned to me, thread snooze menu, meeting form hourly rate |
+| Public booking links (3), Overlap Matrix, Snooze UI | HAAN GREEN (22:10, PRO-LIVE-GREEN-26OCT.md) | agla Chrome pass: calendar toolbar booking button, World clocks, Mail > Assigned to me, thread snooze menu, meeting form hourly rate |
 | Passkey banner "required from Oct 27" | dikha — kal se lazmi | founder ko yaad dilana |
+
+## 22:10 UPDATE: booking links (1 of 3), Overlap Matrix, snooze menu, Thread insight LIVE GREEN — docs/claude/PRO-LIVE-GREEN-26OCT.md. Baaqi sirf: hourly-rate UI (REAL GAP, UI field nahi), shared-inbox live collision (2nd user), trusted devices 4 UI, tag enforce.
