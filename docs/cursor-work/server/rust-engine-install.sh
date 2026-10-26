@@ -19,6 +19,7 @@
 #   analytics -> server/rust/analytics_core.rs + analytics_glue.rs (Analytics Center: response debt, thread economics, deep work, leaks, promise SLA, forecast, team, founder overview)  [pehle E89 SQL]
 #   workx  -> server/rust/workx_core.rs + workx_glue.rs (Pro: work.tasks, work.promises, crm.overview — Bun se Rust, Tokio async; gate Pro+)  [koi SQL nahi]
 #   crmx   -> server/rust/crmx_core.rs + crmx_glue.rs (CRM P1+P2: pipelines, custom fields, duplicate merge, web forms; public crm.form.get/submit)  [pehle E92 SQL]
+#   livex  -> server/rust/livex_core.rs + livex_glue.rs (Rule 52 G3 / Rule 56: crm.live radar+timeline+graph (Pro+) aur org.members — Bun se Rust, Tokio async; workx_core + cal_core chahiye)  [koi SQL nahi]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
@@ -46,7 +47,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -145,6 +146,8 @@ CFG={
  "workx": {"public": False, "label": "workx", "procs": ['"work.tasks"','"work.promises"','"crm.overview"']},
  # crmx (Pro CRM P1+P2, founder "haan" 26 Oct): pipelines/fields/forms/merge. Gate Pro+ Rust mein; cap SQL function mein (race-free). SQL E92 PEHLE. Public: crm.form.get/submit (bina login).
  "crmx": {"public": True, "label": "crmx", "procs": ['"crm.pipelines.list"','"crm.pipelines.save"','"crm.pipelines.delete"','"crm.fields.list"','"crm.fields.save"','"crm.fields.delete"','"crm.custom.set"','"crm.dups.list"','"crm.merge"','"crm.forms.list"','"crm.forms.save"','"crm.forms.delete"','"crm.form.get"','"crm.form.submit"']},
+ # livex (Rule 52 G3, Rule 56): crm.live (Pro+) + org.members. Pehle Bun-only the (kernel_status_404). Koi SQL nahi. workx_core (plan gate) + cal_core (parse_ts) chahiye.
+ "livex": {"public": False, "label": "livex", "procs": ['"crm.live"','"org.members"'], "need_mods": ["cal_core", "workx_core"]},
  "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"','"billing.revenueTruth"','"kernel.ticket"','"kernel.report"']},
  # wtrpc (Rule 52): `/wt/rpc` — WASM kernel (web-wasm rpc@1) ka ek QUIC session, har call ek bidi stream => wohi dispatch() jo /rpc/<proc> chalata hai.
  # Koi proc nahi (isliye procs khali, owns() false); wt_session ke andar sirf path dekh kar is module ko de deta hai. Koi SQL nahi.
@@ -566,6 +569,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> workx: Rust ne work.tasks/work.promises/crm.overview pakda (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> workx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> workx: jawab upar dekhein";;
+      esac;;
+    livex)
+      r="$(probe crm.live '{"input":{}}')"
+      echo "   crm.live (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> livex: Rust ne crm.live/org.members pakda (nakli login 401 = theek).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> livex: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> livex: jawab upar dekhein";;
       esac;;
     crmx)
       r="$(probe crm.pipelines.list '{"input":{}}')"

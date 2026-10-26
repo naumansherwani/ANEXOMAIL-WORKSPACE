@@ -44,6 +44,7 @@ export const PROC_MIN_PLAN = {
   "work.tasks": "pro",
   "work.promises": "pro",
   "crm.overview": "pro",
+  "crm.live": "pro",
   "analytics.threadEconomics": "pro",
   "analytics.deepWork": "pro",
   "analytics.attentionLeaks": "business",

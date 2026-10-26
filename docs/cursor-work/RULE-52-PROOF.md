@@ -21,7 +21,7 @@ Status sirf: DONE = repo test + live saboot dono | READY = repo test pass, live 
 | 15 | Early-boot: pehli calls fetch par na girein (`kernel_not_used`) | [8] + boot.ts `kernelForCall` | PEHLE: 3 kernel / 8 fetch. BAAD: deploy ke baad naapna | READY (Web pull + Chrome ginti) |
 | 16 | "EK QUIC connection" (live@1 /wt/events aur rpc@1 /wt/rpc alag session) | todo [G2] | | TODO (Business phase, founder haan) |
 | 17 | "naya feature = naya endpoint NAHI" (ANEXOChat live `/wt/chat` kernel ke bahar, chat-transport.ts) | todo [G1] | | TODO (Business phase, founder haan) |
-| 18 | crm.live + org.members Rust par (Bun par `kernel_status_404`) | todo [G3] | fallbackProcs mein dikhta hai | TODO |
+| 18 | crm.live + org.members Rust par (Bun par `kernel_status_404`) | todo [G3]; livex_core 7 tests, cargo check OK | Rust installer + Chrome Bun-vs-Rust barabari baaqi | READY (code) |
 
 ## G1/G2 ka design — FOUNDER "HAAN" 26 Oct 19:47 PKT, lekin Business phase mein (Pro green ke BAAD), ANEXOChat ke 25-26 Oct 02:00 wale notes ke upar. Plan: docs/packages/business/ANEXOCHAT-K3-PLAN.md
 (wasm + server dono badalte hain, isliye alag deploy)

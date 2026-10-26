@@ -1168,3 +1168,7 @@ Web pull (19:49) ke baad Chrome: kernel 1 / fetch 8 — wasm 3373 ms par, pehli 
 
 ## 26 Oct 2026 19:52 PKT — founder: "yahan bun ko goli maaro, naya kaam mein bun ka koi kaam nahi" = AGENTS.md Rule 56
 Naya kaam sirf Rust + WebTransport/WASM kernel; naya Bun route/fallback/REST path nahi. Purana Bun tab hat'ta hai jab uska Rust port live green ho (ek ek, saboot ke baad). Pehla port: crm.live + org.members (Pro pages, abhi kernel_status_404) — shuru.
+
+## 26 Oct 2026 20:10 PKT — G3: crm.live + org.members Rust par (module `livex`) — READY (code), deploy + live barabari baaqi
+`server/rust/livex_core.rs` (7 tests, std-only) + `livex_glue.rs` (cargo check OK): crm.live (Pro+; radar, next_actions, timeline, people, graph, counts — Bun /api/crm/live ka port, wahi formula) aur org.members (login + org; org na ho => 404 => UI Bun par). Installer: ALL_MODULES + CFG `livex` (need_mods cal_core, workx_core) + probe case; basic-gate-probe mein crm.live 403; rpc-contract crm.live "pro" (+test). Koi SQL nahi. Bun kaa kaam khatam hone ki shart (Rule 56): Rust live green + Bun barabari saboot, phir Bun route hataya jaye.
+Founder: Rust install (neeche command), phir main Chrome mein crm.live ko Bun se barabar karunga.

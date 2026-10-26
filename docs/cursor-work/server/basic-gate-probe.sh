@@ -68,7 +68,7 @@ gate "RUST mail.snippets.list (Pro)" mail.snippets.list '{}'
 gate "RUST mail.handoff.list (Pro)" mail.handoff.list '{}'
 gate "RUST analytics.threadEconomics (Pro)" analytics.threadEconomics '{}'
 # --- CRM P1+P2 + workx (26 Oct): har config proc Basic ko 403. Pro mode mein inputs khali/nakli — koi data nahi banta (list sirf default pipeline ensure karta hai).
-for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.list crm.fields.save crm.fields.delete crm.forms.list crm.forms.save crm.forms.delete crm.merge crm.custom.set crm.board crm.deals.move crm.deals.setPipeline work.tasks work.promises crm.overview; do
+for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.list crm.fields.save crm.fields.delete crm.forms.list crm.forms.save crm.forms.delete crm.merge crm.custom.set crm.board crm.deals.move crm.deals.setPipeline work.tasks work.promises crm.overview crm.live; do
   gate "RUST $P (Pro)" "$P" '{}'
 done
 gate "RUST crm.dups.list (Pro)" crm.dups.list '{"kind":"lead"}'
