@@ -1092,3 +1092,6 @@ Founder: sab kuch soch ke Enterprise £18,000 (yearly 180,000 CEO x10). Business
 
 ### 26 Oct 05:20 — Rule 55
 Founder: har package par per month + user cap zaroor likha ho (Basic 5, Pro 20, Business 60, Business Pro 570, Enterprise unlimited). Basic ka code/landing/SQL/Polar update ABHI baqi (13 jagah ki list chat mein di); 'ab likho' ka intezar.
+
+### 26 Oct 05:30 — Polar Basic copy
+Naya Polar checkout text (up to 5 users, 25GB shared, GBP40/mo, 440/yr) -> docs/claude/POLAR-COPY-V6-BASIC.md. Landing Basic card isi se match hoga (P2). Pro/Business/BP ka copy isi tarah ek ek karke.
