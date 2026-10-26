@@ -1094,3 +1094,7 @@ Web: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexo
 ## 26 Oct 09:10 — KERNEL CHECK (deploy ke BAAD, sirf padhta hai): Rust WebTransport live? udp/3443? cert? kernel wasm hash pin se mila? kernel.report maujood?
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh)`
 (Agar kabhi CSP lagayi jaye to script-src mein 'wasm-unsafe-eval' lazmi, warna kernel load nahi hoga — fetch fallback chalega.)
+
+## 26 Oct 09:15 — BRAIN (Bun fallback) — MFA / analytics fallback / flat pricing live karo (live test mein Two-step "Status unavailable" = Brain mein routes nahi). Koi SQL nahi.
+`bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`
+Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`

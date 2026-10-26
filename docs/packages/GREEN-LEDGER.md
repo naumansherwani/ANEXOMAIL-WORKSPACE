@@ -18,3 +18,10 @@ Har line: cheez | kahan | test. Naya Claude: pehle yeh padho, phir docs/packages
 - `python3 scripts/wire-audit.py`: 0 REAL GAP (HELD = AI billing/knowledge, COMING SOON)
 ## NOT GREEN -> docs/packages/*/NOT-BUILT.md
 - Personal (HOLD), Business/Business Pro/Enterprise features (agle phases), live tests (deploy ke baad), Caddy udp/3443 /wt/rpc check
+
+## LIVE GREEN (Basic, 26 Oct 09:15, Rule 29: browser mein tested)
+- Analytics gates server par (responseDebt 200; threadEconomics/deepWork/leaks/promise/forecast/team 403) — HTTP + WebTransport
+- Kernel 0.2.0: wasm hash pin, QUIC /wt/rpc, kernel.ticket/report, constitution policy (ok/upgrade/block)
+- Meeting cost Basic = null; founder-only procs 403
+## LIVE NOT GREEN
+- MFA UI (Brain mein routes nahi: brain-kernel-install.sh), Pro-side positive tests (Pro account chahiye), kernel in-app rpcUp (anexoKernel Web pull ke baad dekhunga)
