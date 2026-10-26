@@ -145,7 +145,7 @@ function ClaimPage() {
         // which billing-sync's enforceAccountKind() reads later. Skipping it would
         // silently lock a Rust-provisioned personal account out of personal-tier
         // billing products.
-        await api("/api/workspace/personal", { method: "POST", body: "{}" });
+        await rpcOrRest("workspace.personal", { path: "/api/workspace/personal", method: "POST", body: {} }, {});
         await refresh();
         window.sessionStorage.removeItem("anexo.pending.workspace_kind");
         // E20 (13 Oct 2026): seedha /dashboard nahi — koi plan abhi select

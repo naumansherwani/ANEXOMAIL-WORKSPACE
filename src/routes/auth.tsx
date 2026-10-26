@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { rpcOrRest } from "@/lib/rpc";
 import { api, ApiError, sessionToken } from "@/lib/api";
 import { useAuth, type Session } from "@/lib/auth";
 import { collectDeviceSignals } from "@/lib/chat-safety";
@@ -206,7 +207,7 @@ function AuthPage() {
     else if (!session.user.anexomail_address) target = "/claim";
     else if (kind === "personal") {
       try {
-        await api("/api/workspace/personal", { method: "POST", body: "{}" });
+        await rpcOrRest("workspace.personal", { path: "/api/workspace/personal", method: "POST", body: {} }, {});
       } catch {
         /* session still opens; onboarding can retry */
       }

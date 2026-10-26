@@ -8,6 +8,7 @@ import { WorkspaceKindCards } from "@/components/site/WorkspaceKindCards";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { rpcOrRest } from "@/lib/rpc";
 import { api, ApiError } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useLocale } from "@/lib/i18n";
@@ -91,7 +92,7 @@ function OnboardingPage() {
     setError(null);
     setBusy(true);
     try {
-      await api("/api/workspace/personal", { method: "POST", body: "{}" });
+      await rpcOrRest("workspace.personal", { path: "/api/workspace/personal", method: "POST", body: {} }, {});
       await refresh();
       window.location.replace("/dashboard");
     } catch (e) {
@@ -106,10 +107,7 @@ function OnboardingPage() {
     setError(null);
     setBusy(true);
     try {
-      await api("/api/workspace/organisations", {
-        method: "POST",
-        body: JSON.stringify({ name: org, domain: orgDomain }),
-      });
+      await rpcOrRest("workspace.organisations", { path: "/api/workspace/organisations", method: "POST", body: { name: org, domain: orgDomain } }, { name: org, domain: orgDomain });
       await api("/api/auth/onboarding/complete", { method: "POST" });
       await refresh();
       window.sessionStorage.removeItem("anexo.pending.workspace_kind");

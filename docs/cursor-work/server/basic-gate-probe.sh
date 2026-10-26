@@ -95,6 +95,11 @@ chk "RUST support.draftDiscard bad id (400)" "$(rpc support.draftDiscard '{"id":
 chk "RUST workspace.setActive missing org (400)" "$(rpc workspace.setActive '{}')" 400
 chk "RUST workspace.setActive not mine (409)" "$(rpc workspace.setActive '{"organisation_id":"00000000-0000-4000-8000-000000000009"}')" 409
 SLA="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/support.sla")"; [ "$SLA" = 200 ] && echo "  PASS support.sla PUBLIC (bina login 200)" || { echo "  FAIL support.sla PUBLIC -> $SLA"; FAILS=$((FAILS+1)); }
+chk "RUST workspace.organisations short name (400, kuch banta nahi)" "$(rpc workspace.organisations '{"name":"x","domain":"acme.com"}')" 400
+chk "RUST workspace.organisations anexomail domain (400)" "$(rpc workspace.organisations '{"name":"Probe Co","domain":"anexomail.com"}')" 400
+chk "RUST workspace.organisations bad domain (400)" "$(rpc workspace.organisations '{"name":"Probe Co","domain":"nodot"}')" 400
+chk "RUST workspace.personal (existing workspace 200, naya nahi banta)" "$(rpc workspace.personal '{}')" 200
+grep -q '"existing":true' /tmp/.gp.$$ && echo "  PASS workspace.personal existing:true" || { echo "  FAIL workspace.personal existing:true"; FAILS=$((FAILS+1)); }
 chk "RUST auth.session (all plans 200)" "$(rpc auth.session '{}')" 200
 grep -q '"workspace_plan"' /tmp/.gp.$$ && grep -q '"organisations"' /tmp/.gp.$$ && grep -q '"account_kind"' /tmp/.gp.$$ && echo "  PASS auth.session shape (user.workspace_plan/account_kind/organisations)" || { echo "  FAIL auth.session shape"; FAILS=$((FAILS+1)); }
 chk "RUST account.signup.security nothing (400)" "$(rpc account.signup.security '{}')" 400

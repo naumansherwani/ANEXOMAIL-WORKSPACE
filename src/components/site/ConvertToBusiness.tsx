@@ -6,6 +6,7 @@ import { billingErrorMessage, openPolarCheckout } from "@/components/site/PlanCh
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { rpcOrRest } from "@/lib/rpc";
 import { api } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 
@@ -80,10 +81,7 @@ export function ConvertToBusiness({
     setBusy(true);
     try {
       if (!converted) {
-        await api("/api/workspace/organisations", {
-          method: "POST",
-          body: JSON.stringify({ name: org, domain }),
-        });
+        await rpcOrRest("workspace.organisations", { path: "/api/workspace/organisations", method: "POST", body: { name: org, domain } }, { name: org, domain });
         await api("/api/auth/onboarding/complete", { method: "POST" });
         setConverted(true);
       }

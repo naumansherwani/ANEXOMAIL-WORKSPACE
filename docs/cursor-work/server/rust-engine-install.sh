@@ -23,6 +23,7 @@
 #   authx  -> server/rust/authx_core.rs + authx_glue.rs (auth.session: profile+workspace+plan+orgs — har page-load, Bun GET /api/auth/session se Rust)
 #   contx  -> server/rust/contx_core.rs + contx_glue.rs (People/Companies/universal search: contacts.*, companies.*, search.universal — sab plans, Bun se Rust)
 #   basx   -> server/rust/basx_core.rs + basx_glue.rs (storage x5, support.sla(PUBLIC)/drafts/draftDiscard, workspace.setActive — Bun se Rust; support drafts ka login-loophole band)
+#   wsx    -> server/rust/wsx_core.rs + wsx_glue.rs (onboarding: workspace.personal + workspace.organisations — naya user ka workspace, Bun se Rust; invitations = team.invites.create pehle se Rust)
 #   crmd   -> server/rust/crmd_core.rs + crmd_glue.rs (Pro CRM desk: crm.leads/deals + create/move/convert/work/thread/insights — Bun se Rust)
 #   livex  -> server/rust/livex_core.rs + livex_glue.rs (Rule 52 G3 / Rule 56: crm.live radar+timeline+graph (Pro+) aur org.members — Bun se Rust, Tokio async; workx_core + cal_core chahiye)  [koi SQL nahi]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
@@ -52,7 +53,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -156,6 +157,8 @@ CFG={
  # crmd (Rule 52/56, Pro CRM desk): crm.leads/deals list + createLead/createDeal/moveDeal/convertLead/dealWork/dealThread/insights — Pehle Bun-only (browser POST /api/crm/leads). Koi SQL nahi. Gate Pro+ Rust mein.
  "crmd": {"public": False, "label": "crmd", "procs": ['"crm.leads"','"crm.deals"','"crm.createLead"','"crm.createDeal"','"crm.moveDeal"','"crm.convertLead"','"crm.dealWork"','"crm.dealThread"','"crm.insights"','"work.promise.commit"','"work.promise.dismiss"','"crm.memory"'], "need_mods": ["cal_core", "workx_core"]},
  # trialx (Rule 52/56): trial lifecycle ke baaqi 3 procs (security/events/holds) — state/start/claim/address/activate pehle se Rust par. Sirf login (har plan). Koi SQL nahi.
+ # wsx (Rule 52/56): onboarding workspace banana (personal/organisations), sab plans (login). Koi SQL nahi. Bun twin fallback.
+ "wsx": {"public": False, "label": "wsx", "procs": ['"workspace.personal"','"workspace.organisations"']},
  # basx (Rule 52/56): Basic-baaqi chhote endpoints (storage/support/setActive), sab plans. PUBLIC proc: support.sla (landing SLA). Koi SQL nahi.
  "basx": {"public": True, "label": "basx", "procs": ['"storage.state"','"storage.preflight"','"storage.reserve"','"storage.commit"','"storage.release"','"support.sla"','"support.drafts"','"support.draftDiscard"','"workspace.setActive"'],
           "public_call": "public(&proc, &input)"},
@@ -601,6 +604,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> crmd: Rust ne crm.leads/deals/createLead... pakda (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> crmd: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> crmd: jawab upar dekhein";;
+      esac;;
+    wsx)
+      r="$(probe workspace.personal '{"input":{}}')"
+      echo "   workspace.personal (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> wsx: Rust ne workspace.personal/organisations pakda (nakli login 401 = theek).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> wsx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> wsx: jawab upar dekhein";;
       esac;;
     basx)
       r="$(probe storage.state '{"input":{}}')"
