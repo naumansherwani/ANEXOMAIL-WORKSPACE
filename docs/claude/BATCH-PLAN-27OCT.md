@@ -6,7 +6,7 @@ Qaida: ek batch = ek package ke SAB endpoints ek saath, ek deploy. Basic ka code
 |---|---|---|---|---|---|
 | 0 | authx | auth.session | sab plans (login) | auth.tsx -> rpcOrRest | LIVE GREEN 27 Oct |
 | A | contx | contacts x6, companies x3, search.universal | sab plans (basic) | lib/contacts.ts -> rpcOrRest; People/Company/Search screens | LIVE GREEN 27 Oct |
-| B | basx | storage x5 (+internal/founder Rust-only baad mein), workspace x4, support x3, dashboard.ai-usage | sab plans; storage internal/founder = service/founder | lib/storage, workspace, support, dashboard | LIVE GREEN 27 Oct (storage x5, support x3, setActive); B2 workspace personal/organisations/invitations agla |
+| B | basx | storage x5 (+internal/founder Rust-only baad mein), workspace x4, support x3, dashboard.ai-usage | sab plans; storage internal/founder = service/founder | lib/storage, workspace, support, dashboard | LIVE GREEN 27 Oct (storage x5, support x3, setActive); B2 workspace personal/organisations/invitations LIVE GREEN; B2 wsx personal/organisations LIVE (probe) 02:08, creation-path live test baaki |
 | C | billx | billing-sync x12 (Polar :3400 NO-TOUCH; sirf read/state/sync) | sab plans | lib/billing | uske baad |
 | D | setx | settings 7, integrations 10, security 7 | sab plans (kuch Pro gate) | settings screens | uske baad |
 | E | accx | account-deletion 3, mail 2, calendar 1, locale 1 | sab plans | account screens | uske baad |
