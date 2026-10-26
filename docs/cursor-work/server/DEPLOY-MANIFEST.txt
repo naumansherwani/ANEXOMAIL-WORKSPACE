@@ -804,6 +804,5 @@ server/rust/basx_glue.rs f45d7b891ddd688b
 src/components/site/SlaProof.tsx 589e27ddd7ff036a
 src/lib/storage-client.ts c0f62c771d5645df
 docs/cursor-work/server/installer-dryrun.sh 70570d6395ca3a37
-docs/cursor-work/server/DEPLOY-MANIFEST.txt 0b32aec99cfef5dd
 server/rust/wsx_core.rs 3f981ffa0c3fe71d
 server/rust/wsx_glue.rs 12c013d6ba3dcb46
