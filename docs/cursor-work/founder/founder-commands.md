@@ -1398,3 +1398,8 @@ MODE=pro EMAIL=pro.buyer@anexomail.com bash <(git -C /opt/anexomail-web show ori
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/kernel-check.sh) 2>&1 | grep -E "FAIL|KERNEL|wasm jawab"
 ```
 Phir Chrome: /app/settings (koi toggle badlo -> history -> revert), /app/integrations (providers, connections, exports), non-founder se /app/founder overview 403.
+
+## 27 Oct 2026 04:31 PKT — buyer-accounts-look.sh (READ-ONLY): pro/basic/business/bpro .buyer + test accounts ka plan, workspace-kind, org. Chrome mein login account "Personal Pro+" card dikha raha tha (personal workspace) — pro.buyer se alag lagta hai.
+```bash
+bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/buyer-accounts-look.sh)
+```
