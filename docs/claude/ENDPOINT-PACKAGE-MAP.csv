@@ -1,0 +1,524 @@
+bun_file,method,path,starts_at,feature_group,basis,status,rust_proc
+account-deletion.ts,GET,/api/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+account-deletion.ts,POST,/api/request,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+account-deletion.ts,POST,/api/cancel,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+admin.ts,GET,/api/health,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,POST,/api/health/heal,founder,founder host only,PP1 #39,RUST-FIRST,admin.heal
+admin.ts,GET,/api/storage,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,GET,/api/incidents,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,GET,/api/monitoring,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,GET,/api/logs,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,GET,/api/reports,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,POST,/api/reports/generate,founder,founder host only,PP1 #39,RUST-FIRST,admin.generateReport
+admin.ts,GET,/api/diagnostics,founder,founder host only,PP1 #39,BUN-ONLY,
+admin.ts,POST,/api/diagnostics/run,founder,founder host only,PP1 #39,RUST-FIRST,admin.runDiagnostics
+admin.ts,GET,/api/admin/overview,founder,founder host only,PP1 #39,BUN-ONLY,
+ai-automation.ts,GET,/api/ai/automation/workflows,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-automation.ts,GET,/api/ai/automation/runs,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-automation.ts,POST,/api/ai/automation/workflows/:id/toggle,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.toggleWorkflow
+ai-automation.ts,POST,/api/ai/automation/workflows/:id/run,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.runWorkflow
+ai-automation.ts,POST,/api/ai/automation/workflows/:id/dry-run,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.dryRunWorkflow
+ai-automation.ts,GET,/api/ai/automation/rules,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-automation.ts,POST,/api/ai/automation/rules/:id/toggle,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.toggleRule
+ai-automation.ts,GET,/api/ai/automation/variables,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.saveVariable
+ai-automation.ts,POST,/api/ai/automation/variables,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.saveVariable
+ai-automation.ts,DELETE,/api/ai/automation/variables/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.deleteVariable
+ai-automation.ts,GET,/api/ai/automation/suggestions,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-automation.ts,POST,/api/ai/automation/suggestions/:id/decide,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.decideSuggestion
+ai-automation.ts,GET,/api/ai/automation/email,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-automation.ts,POST,/api/ai/automation/email/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.toggleEmailAutomation
+ai-credits.ts,GET,/api/products,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,GET,/api/wallet,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,GET,/api/ledger,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,GET,/api/actions,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,POST,/api/estimate,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,POST,/api/reserve,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,POST,/api/settle,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,POST,/api/release,founder,founder host only,PP1 #39,BUN-ONLY,
+ai-credits.ts,POST,/api/complimentary,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,POST,/api/topup,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-credits.ts,GET,/api/ai/credits/overview,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai-studio.ts,GET,/api/ai/studio/runs,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioRuns
+ai-studio.ts,GET,/api/ai/studio/recipes,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioRecipes
+ai-studio.ts,GET,/api/ai/studio/batches,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioBatches
+ai-studio.ts,GET,/api/ai/studio/targets,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioTargets
+ai-studio.ts,POST,/api/ai/studio/run,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioRun
+ai-studio.ts,POST,/api/ai/studio/runs/:id/apply,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioApply
+ai-studio.ts,POST,/api/ai/studio/batch,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioBatch
+ai-studio.ts,POST,/api/ai/studio/recipes,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioRecipes
+ai-studio.ts,POST,/api/ai/studio/recipes/:id/run,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.studioRunRecipe
+ai.ts,GET,/api/ai/sessions,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.createSession
+ai.ts,POST,/api/ai/sessions,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.createSession
+ai.ts,GET,/api/ai/sessions/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,GET,/api/ai/credits,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,GET,/api/ai/receipts,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,GET,/api/ai/memory,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,DELETE,/api/ai/memory/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.forgetMemory
+ai.ts,GET,/api/ai/leo/memory,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,POST,/api/ai/leo/memory/recall,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,POST,/api/ai/leo/memory/:id/pin,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,DELETE,/api/ai/leo/memory/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,POST,/api/ai/leo/memory/prune,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,GET,/api/ai/prompts,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,GET,/api/ai/prompts/:id/versions,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.savePromptVersion
+ai.ts,POST,/api/ai/prompts/:id/versions,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.savePromptVersion
+ai.ts,POST,/api/ai/prompts/:id/fork,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.forkPrompt
+ai.ts,GET,/api/ai/arena,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.runArena
+ai.ts,POST,/api/ai/arena,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.runArena
+ai.ts,GET,/api/ai/guardrail,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+ai.ts,POST,/api/ai/guardrail/:id,ai_soon,AI plans (coming soon July 2027),PP1 #9,RUST-FIRST,ai.decideGuardrail
+ai.ts,POST,/api/ai/chat,ai_soon,AI plans (coming soon July 2027),PP1 #9,BUN-ONLY,
+analytics.ts,GET,/api/analytics/:report,pro,"Analytics (thread economics, deep work; response debt Basic)",PP1 #21,BUN-ONLY,
+analytics.ts,GET,/api/founder/analytics/overview,founder,founder host only,PP1 #39,BUN-ONLY,
+analytics.ts,GET,/api/founder/billing/revenue,founder,founder host only,PP1 #39,BUN-ONLY,
+auth-passkey.ts,POST,/api/auth/passkey/register/options,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.register.options
+auth-passkey.ts,POST,/api/auth/passkey/register/verify,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.register.verify
+auth-passkey.ts,POST,/api/auth/passkey/options,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.options
+auth-passkey.ts,POST,/api/auth/passkey/verify,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.verify
+auth-passkey.ts,GET,/api/auth/passkey/status,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.status
+auth-passkey.ts,POST,/api/auth/recovery-codes/generate,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.recovery.generate
+auth-passkey.ts,POST,/api/auth/recovery-codes/redeem,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.recovery.redeem
+auth-passkey.ts,GET,/api/auth/passkey/list,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.list
+auth-passkey.ts,DELETE,/api/auth/passkey/:id,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,auth.passkey.delete
+auth.ts,POST,/api/auth/signup,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/signup-appeal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/login,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/refresh,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,GET,/api/auth/session,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/logout,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/forgot-password,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/magic-link,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/magic-link/verify,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,GET,/api/auth/mfa,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/mfa/enroll,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/mfa/enroll/confirm,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/mfa/verify,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/mfa/disable,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/oauth/callback,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/reset-password,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/change-password,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,GET,/api/auth/sessions,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,DELETE,/api/auth/sessions/:id,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,PATCH,/api/auth/profile,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/onboarding/complete,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,GET,/api/auth/identity/check,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.address
+auth.ts,POST,/api/auth/identity/claim,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,GET,/api/auth/recovery,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+auth.ts,POST,/api/auth/recovery,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-support.ts,GET,/api/founder/support/replies,founder,founder host only,PP1 #39,BUN-ONLY,
+billing-support.ts,POST,/api/founder/support/replies/:id/replied,founder,founder host only,PP1 #39,RUST-FIRST,billing.markFounderReplySent
+billing-sync.ts,POST,/api/auth/intent,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,POST,/api/auth/change-plan,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,GET,/api/auth/subscription,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,GET,/api/auth/invoices,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,POST,/api/auth/portal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,GET,/api/auth/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,GET,/api/auth/intent/:id,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,POST,/api/auth/settle,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,GET,/api/auth/state-health,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,POST,/api/billing/sync,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,POST,/api/billing/guest-intent,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+billing-sync.ts,POST,/api/auth/claim-guest,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+calendar.ts,GET,/api/calendar/events,basic,Calendar core,PP1 #1,RUST-FIRST,calendar.create
+calendar.ts,GET,/api/calendar/events/:id,basic,Calendar core,PP1 #1,RUST-FIRST,calendar.event
+calendar.ts,POST,/api/calendar/events,basic,Calendar core,PP1 #1,RUST-FIRST,calendar.create
+calendar.ts,GET,/api/calendar/availability,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.availability
+calendar.ts,GET,/api/calendar/focus,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.focus
+calendar.ts,GET,/api/calendar/load,business,Team report / team time,PP1 #16,RUST-FIRST,calendar.load
+calendar.ts,GET,/api/calendar/export,basic,Calendar core,PP1 #1,BUN-ONLY,
+calendar.ts,POST,/api/calendar/events/:id/outcome,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.outcome.post
+calendar.ts,GET,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.create
+calendar.ts,POST,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.create
+calendar.ts,PATCH,/api/work/tasks/:id,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.update
+calendar.ts,GET,/api/work/promises,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.promises
+calendar.ts,POST,/api/work/promises/:id/commit,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
+calendar.ts,POST,/api/work/promises/:id/dismiss,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
+calendar.ts,GET,/api/work/follow-through,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.followThrough
+calendar.ts,GET,/api/work/notes,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.note
+calendar.ts,POST,/api/work/notes,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.note
+chat.ts,GET,/api/bootstrap,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/conversations,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/conversations/direct,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/messages,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/receipts,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/presence,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/typing,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/presence,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/react,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/edit,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/delete,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/delete-anytime,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/delete-48h,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/work,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/work,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/work/state,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/conversations/state,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/unread,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/hide,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/pin,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/conversations/prefs,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/search,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/video/gate,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/video/signal,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/video/signals,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/video/turn,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/video/call/start,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/video/call/stat,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/video/call/end,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/video/calls/health,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/attachments/ticket,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/attachments/commit,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/attachments/attach,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/attachments/:messageId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/profile/avatar/ticket,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/profile/avatar/commit,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/device/seen,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/continuity,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/draft,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/position,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/search/deep,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/device/vault,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/device/trust,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/device/trust,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/safety/report,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/safety/queue,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/safety/advance,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/safety/reveal,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/safety/standing,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/work/suggest,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/work/from-message,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/work/depend,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/work/complete,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/work/chain,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/work/board,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/star,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/forward,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/promises/board,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/promises/recover,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/promises/keep,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/promises/history,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/devices/appeal,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/devices/appeals,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/devices/appeals/decide,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/decisions/board,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/decisions/:id,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/decisions/:id/impact,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/decisions/mark,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/decisions/:id/amend,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/decisions/:id/link,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/decisions/link/:linkId/remove,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/integrity/state,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/evaluate,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/integrity/queue,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/${path},business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/integrity/identity,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/identity/decide,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/identity/hold,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/identity/gate,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/identity/evasion,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/identity/domain,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/integrity/export,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/timeline/:conversationId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/timeline/important,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/health/board,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/health/:conversationId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/provenance/message/:messageId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/provenance/chain/:conversationId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/collisions/scan,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/collisions/:id/act,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/receipts/message/:messageId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/receipts/record,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/receipts/silent,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/receipts/replay/:conversationId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/receipts/certificate,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/receipts/verify/:token,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/messages/attach-file,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/handover/board,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/handover/build,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/handover/:packId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/handover/:packId/assign,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/handover/:packId/complete,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/bridge/discuss,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/bridge/context/:conversationId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/bridge/thread/:mailThreadId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/bridge/quote,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/bridge/quote/verify,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/bridge/presence,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/bridge/rescue,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/email/draft,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/email/drafts,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/email/draft/:draftId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/email/draft/:draftId/consent,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/email/draft/:draftId/send,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/email/decision/:decisionId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/email/escalations/:messageId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/file/context/:fileId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/file/context/:fileId/diff,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/file/context/:fileId/duplicates,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/file/context/:fileId/stale,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/file/context/:fileId/graph,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/file/context/link,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/file/context/unlink,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/call/record/:sessionId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/call/records,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/event,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/transport,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/file,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/work,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/ring/start,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/ring/settle,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/call/ring/:sessionId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/connect/mark,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/call/connect/report/:sessionId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/call/connect/health,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/sfu/ensure,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/sfu/join,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/sfu/leave,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,GET,/api/call/sfu/:conversationId,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+chat.ts,POST,/api/call/survival,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
+contacts.ts,GET,/api/contacts/tags,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/contacts,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/contacts/:id,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,PATCH,/api/contacts/:id,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,POST,/api/contacts/:id/tags,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/contacts/:id/timeline,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/companies,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/companies/:domain,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/companies/:domain/timeline,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+contacts.ts,GET,/api/search/universal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+crm.ts,GET,/api/crm/overview,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/live,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/memory,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/deals/work,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/deals/thread,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/leads/suggest,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/leads,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/leads,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/deals,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/deals,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/deals/stage,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,POST,/api/crm/leads/convert,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/evidence,business_pro,CRM activity timeline + evidence,PP1 #20,BUN-ONLY,
+crm.ts,GET,/api/crm/activities,business_pro,CRM activity timeline + evidence,PP1 #20,BUN-ONLY,
+crm.ts,GET,/api/crm/insights,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/shared,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,POST,/api/crm/shared/assign,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,GET,/api/crm/mentions,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,GET,/api/crm/approvals,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,POST,/api/crm/approvals/decide,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,GET,/api/crm/audit,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,GET,/api/crm/permissions,business,CRM collab,PP1 #19,BUN-ONLY,
+crm.ts,GET,/api/founder/crm/state,founder,founder host only,PP1 #39,BUN-ONLY,
+crm.ts,POST,/api/founder/crm/toggle,founder,founder host only,PP1 #39,BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/summary,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/activity,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/ai-usage,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/analytics,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+dashboard.ts,GET,/api/dashboard/calendar,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+files.ts,GET,/api/state,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,POST,/api/begin,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,POST,/api/chunk,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,GET,/api/transfer,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,POST,/api/mark,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,POST,/api/commit,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,GET,/api/versions,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,GET,/api/truth,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,GET,/api/safety,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,GET,/api/download,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+files.ts,POST,/api/download/ack,business,File engine (resumable big files; Business+),live storage page,BUN-ONLY,
+founder.ts,GET,/api/founder/overview,founder,founder host only,PP1 #39,RUST-FIRST,founder.overview
+founder.ts,GET,/api/founder/mailboxes,founder,founder host only,PP1 #39,RUST-FIRST,founder.mailboxes
+founder.ts,GET,/api/founder/ai-agents,founder,founder host only,PP1 #39,RUST-FIRST,founder.agents
+founder.ts,GET,/api/founder/ai-mail,founder,founder host only,PP1 #39,RUST-FIRST,founder.aiMail
+founder.ts,POST,/api/founder/mailboxes/provision,founder,founder host only,PP1 #39,RUST-FIRST,founder.provisionMailboxes
+founder.ts,POST,/api/founder/ai-mail/approve,founder,founder host only,PP1 #39,RUST-FIRST,founder.approveAiDraft
+glitch.ts,POST,/api/glitch/report,founder,founder host only,PP1 #39,BUN-ONLY,
+glitch.ts,POST,/api/glitch/trigger,founder,founder host only,PP1 #39,BUN-ONLY,
+glitch.ts,POST,/api/glitch/sweep,founder,founder host only,PP1 #39,BUN-ONLY,
+glitch.ts,GET,/api/glitch/health,founder,founder host only,PP1 #39,BUN-ONLY,
+handoff.ts,GET,/api/mail/handoff,pro,Cross-device draft handoff,PP1 #8,RUST-FIRST,mail.handoff.list
+handoff.ts,POST,/api/mail/handoff,pro,Cross-device draft handoff,PP1 #8,RUST-FIRST,mail.handoff.list
+handoff.ts,POST,/api/mail/handoff/:id/claim,pro,Cross-device draft handoff,PP1 #8,RUST-FIRST,mail.handoff.claim
+handoff.ts,DELETE,/api/mail/handoff/:id,pro,Cross-device draft handoff,PP1 #8,BUN-ONLY,
+handoff.ts,POST,/api/mail/devices/seen,pro,Cross-device draft handoff,PP1 #8,BUN-ONLY,
+integrations.ts,GET,/api/providers,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,GET,/api/connections,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,POST,/api/connect,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,POST,/api/disconnect,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,GET,/api/migrations,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,POST,/api/migrations,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,POST,/api/migrations/control,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,GET,/api/delivery/health,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,GET,/api/exports,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,POST,/api/exports,basic,Import old mail / integrations,PP1 #12,BUN-ONLY,
+integrations.ts,GET,/api/leo-actions,ai_soon,Leo AI actions,PP1 #9,BUN-ONLY,
+integrations.ts,POST,/api/leo-actions/toggle,ai_soon,Leo AI actions,PP1 #9,BUN-ONLY,
+integrations.ts,GET,/api/founder/integrations/overview,founder,founder host only,PP1 #39,BUN-ONLY,
+locale.ts,GET,/api/locale/registry,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+locale.ts,GET,/api/locale/bundle,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,locale.bundle
+locale.ts,GET,/api/locale/pref,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,locale.pref
+locale.ts,PUT,/api/locale/pref,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,locale.pref
+mail-compose.ts,POST,/api/mail/drafts,basic,Mail core,PP1 #6,RUST-FIRST,mail.drafts.save
+mail-compose.ts,GET,/api/mail/drafts/:id,basic,Mail core,PP1 #6,RUST-FIRST,mail.drafts.versions
+mail-compose.ts,GET,/api/mail/templates,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.templates.list
+mail-compose.ts,POST,/api/mail/templates,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.templates.list
+mail-compose.ts,DELETE,/api/mail/templates/:id,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.templates.delete
+mail-compose.ts,DELETE,/api/mail/snippets/:id,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.snippets.delete
+mail-compose.ts,DELETE,/api/mail/follow-up/:id,pro,Pro mail tools + pre-send scan,PP1 #7-8,BUN-ONLY,
+mail-compose.ts,DELETE,/api/mail/drafts/:id,basic,Mail core,PP1 #6,RUST-FIRST,mail.drafts.versions
+mail-compose.ts,GET,/api/mail/snippets,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.snippets.list
+mail-compose.ts,POST,/api/mail/snippets,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.snippets.list
+mail-compose.ts,GET,/api/mail/signatures,basic,Mail core,PP1 #6,RUST-FIRST,mail.signatures.list
+mail-compose.ts,POST,/api/mail/send-confidence,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.confidence
+mail-compose.ts,POST,/api/mail/schedule,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.schedule
+mail-compose.ts,POST,/api/mail/schedule/:id/cancel,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.schedule.cancel
+mail-compose.ts,POST,/api/mail/follow-up,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.followup.create
+mail-compose.ts,GET,/api/mail/follow-up,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.followup.create
+mail-compose.ts,GET,/api/mail/thread/:id/insights,pro,Pro mail tools + pre-send scan,PP1 #7-8,RUST-FIRST,mail.thread.insights
+mail-predict.ts,POST,/api/mail/predict/,pro,Word prediction,PP1 #8,RUST-FIRST,mail.predict
+mail-predict.ts,POST,/api/mail/predict/learn,pro,Word prediction,PP1 #8,RUST-FIRST,mail.predict.learn
+mail-predict.ts,POST,/api/mail/predict/event,pro,Word prediction,PP1 #8,RUST-FIRST,mail.predict.event
+mail.ts,GET,/api/mail/threads,basic,Mail core,PP1 #6,BUN-ONLY,
+mail.ts,GET,/api/mail/search,basic,Mail core,PP1 #6,BUN-ONLY,
+mail.ts,GET,/api/mail/accounts,basic,Mail core,PP1 #6,RUST-FIRST,mail.accounts
+mail.ts,GET,/api/mail/labels,basic,Mail core,PP1 #6,RUST-FIRST,mail.labels
+mail.ts,GET,/api/mail/counts,basic,Mail core,PP1 #6,RUST-FIRST,mail.counts
+mail.ts,GET,/api/mail/thread/:id,basic,Mail core,PP1 #6,RUST-FIRST,mail.thread
+mail.ts,POST,/api/mail/send,basic,Mail core,PP1 #6,RUST-FIRST,mail.send
+mail.ts,POST,/api/mail/thread/:id/status,basic,Mail core,PP1 #6,RUST-FIRST,mail.status
+mail.ts,POST,/api/mail/thread/:id/snooze,pro,"Pro mail tools (snooze, shared-inbox assign)",PP1 #7,RUST-FIRST,mail.snooze
+mail.ts,POST,/api/mail/thread/:id/star,basic,Mail core,PP1 #6,RUST-FIRST,mail.star
+mail.ts,POST,/api/mail/thread/:id/assign,pro,"Pro mail tools (snooze, shared-inbox assign)",PP1 #7,RUST-FIRST,mail.assign
+mail.ts,POST,/api/mail/thread/:id/move,basic,Mail core,PP1 #6,RUST-FIRST,mail.move
+mail.ts,POST,/api/mail/thread/:id/labels,basic,Mail core,PP1 #6,RUST-FIRST,mail.labels.update
+mail.ts,POST,/api/mail/deliver,internal,service-to-service,code,BUN-ONLY,
+movein.ts,POST,/api/movein/request,founder,founder host only,PP1 #39,RUST-FIRST,movein.request
+movein.ts,GET,/api/movein/capacity,founder,founder host only,PP1 #39,RUST-FIRST,movein.capacity
+movein.ts,POST,/api/movein/sweep,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,GET,/api/auth/deal,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,GET,/api/auth/deal/:id,founder,founder host only,PP1 #39,RUST-FIRST,founder.movein.deal
+movein.ts,GET,/api/movein/cockpit,founder,founder host only,PP1 #39,RUST-FIRST,founder.movein.cockpit
+movein.ts,GET,/api/movein/deal/:id,founder,founder host only,PP1 #39,RUST-FIRST,founder.movein.deal
+movein.ts,POST,/api/movein/transition,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/schedule,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/arm,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/mailbox,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/dns,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/runbook,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/exception,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/rollback,founder,founder host only,PP1 #39,BUN-ONLY,
+movein.ts,POST,/api/movein/invoice,founder,founder host only,PP1 #39,BUN-ONLY,
+org.ts,GET,/api/org/overview,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/members,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/members/blast-radius,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/members/revoke,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/roles,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/privilege-radar,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/departments,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/policies,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/policies/simulate,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/policies/toggle,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/sessions,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/sessions/kill,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/anomalies,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/proof,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/audit,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/audit/verify,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/graph,business_pro,Org graph + break-glass,PP1 #30,BUN-ONLY,
+org.ts,GET,/api/org/compliance,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/break-glass,business_pro,Org graph + break-glass,PP1 #30,BUN-ONLY,
+org.ts,POST,/api/org/break-glass,business_pro,Org graph + break-glass,PP1 #30,BUN-ONLY,
+org.ts,GET,/api/founder/org/state,founder,founder host only,PP1 #39,BUN-ONLY,
+org.ts,GET,/api/founder/org/list,founder,founder host only,PP1 #39,BUN-ONLY,
+org.ts,POST,/api/founder/org/kill-switch,founder,founder host only,PP1 #39,BUN-ONLY,
+org.ts,POST,/api/founder/org/impersonate,founder,founder host only,PP1 #39,BUN-ONLY,
+org.ts,GET,/api/org/export,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,GET,/api/org/mailboxes,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+org.ts,POST,/api/org/mailboxes,business,Org centre (Bu+),PP1 #29,BUN-ONLY,
+people-import.ts,POST,/api/contacts/import,basic,People import,PP1 #10,RUST-FIRST,people.import
+people-import.ts,POST,/api/crm/leads/import,pro,CRM base (lead import),PP1 #18,RUST-FIRST,crm.leadsImport
+people-import.ts,POST,/api/crm/leads/move-to-people,pro,CRM base (lead import),PP1 #18,RUST-FIRST,crm.leadsMoveToPeople
+perf.ts,POST,/api/samples,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,GET,/api/budgets,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,GET,/api/dashboard,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,GET,/api/prefetch,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,GET,/api/search,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,POST,/api/search/run,founder,founder host only,PP1 #39,RUST-FIRST,perf.runQuery
+perf.ts,GET,/api/devices,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,GET,/api/regressions,founder,founder host only,PP1 #39,BUN-ONLY,
+perf.ts,GET,/api/perf/overview,founder,founder host only,PP1 #39,BUN-ONLY,
+polar.ts,POST,/api/auth/checkout,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+polar.ts,GET,/api/auth/checkout/:id,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+polar.ts,POST,/api/public/polar/webhook,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+polar.ts,POST,/api/public/polar/replay,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+polar.ts,GET,/api/auth/subscription,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+polar.ts,GET,/api/auth/invoices,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+polar.ts,GET,/api/auth/payment-health,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+release.ts,POST,/api/release/run,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.run
+release.ts,GET,/api/release/checks,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.checks
+release.ts,GET,/api/release/overview,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.overview
+release.ts,GET,/api/release/checklist,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.checklist
+release.ts,POST,/api/release/checklist/item,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.checklist.item
+release.ts,GET,/api/release/deployments,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.deployments
+release.ts,GET,/api/release/lock,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.lock.create
+release.ts,POST,/api/release/lock,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.lock.create
+release.ts,GET,/api/release/roadmap,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.roadmap.create
+release.ts,POST,/api/release/roadmap,founder,founder host only,PP1 #39,RUST-FIRST,founder.release.roadmap.create
+release.ts,GET,/api/revenue/pipeline,founder,founder host only,PP1 #39,RUST-FIRST,founder.revenue.pipeline
+release.ts,GET,/api/status,founder,founder host only,PP1 #39,BUN-ONLY,
+release.ts,POST,/api/mail/outbox/send,founder,founder host only,PP1 #39,RUST-FIRST,outbox.send
+revenue.ts,POST,/api/revenue/lead,founder,founder host only,PP1 #39,RUST-FIRST,revenue.lead
+revenue.ts,GET,/api/revenue/overview,founder,founder host only,PP1 #39,RUST-FIRST,founder.revenue.overview
+security.ts,GET,/api/dashboard,basic,Security centre,PP1 #31,BUN-ONLY,
+security.ts,GET,/api/devices,basic,Security centre,PP1 #31,BUN-ONLY,
+security.ts,POST,/api/devices/state,basic,Security centre,PP1 #31,RUST-FIRST,security.deviceState
+security.ts,GET,/api/sessions,basic,Security centre,PP1 #31,BUN-ONLY,
+security.ts,POST,/api/sessions/kill,basic,Security centre,PP1 #31,RUST-FIRST,security.killSession
+security.ts,POST,/api/kill-switch,basic,Security centre,PP1 #31,BUN-ONLY,
+security.ts,GET,/api/history,basic,Security centre,PP1 #31,BUN-ONLY,
+security.ts,POST,/api/history/disown,basic,Security centre,PP1 #31,RUST-FIRST,security.disown
+security.ts,GET,/api/encryption,basic,Security centre,PP1 #31,BUN-ONLY,
+security.ts,POST,/api/encryption/rotate,basic,Security centre,PP1 #31,RUST-FIRST,security.rotate
+security.ts,GET,/api/proof,business,DNS/TLS hashed proof export,PP1 #32,BUN-ONLY,
+security.ts,POST,/api/proof/run,business,DNS/TLS hashed proof export,PP1 #32,RUST-FIRST,security.runProof
+security.ts,GET,/api/security/overview,basic,Security centre,PP1 #31,BUN-ONLY,
+settings.ts,GET,/api/scoped/:scope,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,GET,/api/blast-radius,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,GET,/api/explain,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,POST,/api/simulate,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,POST,/api/save,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+settings.ts,GET,/api/history,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+settings.ts,POST,/api/revert,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,GET,/api/drift,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,GET,/api/scheduled,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,POST,/api/schedule,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,POST,/api/schedule/cancel,business,"Settings governance (simulate/drift/schedule) — CEO guess, founder confirm",CEO guess,BUN-ONLY,
+settings.ts,GET,/api/settings/overview,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+settings.ts,GET,/api/:scope,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+storage.ts,GET,/api/storage/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+storage.ts,POST,/api/storage/preflight,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+storage.ts,POST,/api/storage/reserve,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+storage.ts,POST,/api/storage/commit,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+storage.ts,POST,/api/storage/release,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+storage.ts,POST,/api/internal/storage/accept,internal,service-to-service,code,BUN-ONLY,
+storage.ts,POST,/api/internal/storage/commit,internal,service-to-service,code,BUN-ONLY,
+storage.ts,GET,/api/founder/storage/volumes,founder,founder host only,PP1 #39,BUN-ONLY,
+storage.ts,POST,/api/founder/storage/volume,founder,founder host only,PP1 #39,BUN-ONLY,
+storage.ts,POST,/api/internal/storage/sweep,internal,service-to-service,code,BUN-ONLY,
+support.ts,GET,/api/public/sla,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+support.ts,GET,/api/support/drafts,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+support.ts,POST,/api/support/drafts/:id/discard,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,GET,/api/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,GET,/api/address,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,POST,/api/start,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,POST,/api/claim,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,POST,/api/security,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,POST,/api/subscribe,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,GET,/api/events,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,GET,/api/mail-holds,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,POST,/api/trial/sweep,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+workspace.ts,POST,/api/workspace/personal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+workspace.ts,POST,/api/workspace/organisations,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+workspace.ts,PATCH,/api/workspace/active-organisation,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+workspace.ts,POST,/api/workspace/invitations,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,

@@ -432,3 +432,8 @@ Founder: "yahan bun ko goli maaro, naya kaam mein bun ka koi kaam nahi hai."
 - Bun Brain (:3100 anexomail-leo) alag cheez hai: us par yeh rule nahi, woh sirf `brain-*-install.sh` se.
 
 UPDATE Rule 52 (founder 26 Oct 2026 20:05 PKT): "ab se Rule 52 se browser ka shuru hoga, Supabase isko cement pakka karega; website Rule 52 ke mutabiq chalegi. yaad rakhna." => browser ka har call pehle WASM kernel se (browser -> kernel/QUIC -> Rust dispatch -> Supabase/Postgres); fetch sirf fallback; `anexoKernel.stats.fetch` ~0 aur `fallbackProcs` khali rakhna maqsad. Browser seedha Supabase se baat nahi karta. Guard: src/lib/kernel/rule52.test.ts; saboot: docs/cursor-work/RULE-52-PROOF.md. G1/G2 (ek QUIC session + ANEXOChat kernel mein) Business phase mein.
+
+## Rule 57 (STRICT, founder 26 Oct 2026 22:14 PKT) — HAR ENDPOINT/GATE KA PACKAGE REPO MEIN LIKHA HOTA HAI (website mix na ho)
+- Poori map: `docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md` + `ENDPOINT-PACKAGE-MAP.csv` (script `docs/claude/endpoint-package-map.py`; rules PP1-FULL-GATE-TABLE-26OCT.md + docs/packages/features.tsv). Har Bun endpoint aur har Rust proc ka `starts_at` (basic | pro | business | business_pro | founder | ai_soon | internal) likha hai; upar ke packages ko bhi milta hai. Enterprise = Business Pro ki har cheez + poori website Rust-only/Bun-free (alag endpoint nahi).
+- NAYA endpoint/proc/gate likhne se PEHLE map mein uska package dekho. Map mein na ho => pehle rule/CSV mein jodo (founder confirm wali cheez "CEO guess" likho), phir code. Gate SERVER par (Rust `resolve_plan`), UI sirf aaina. Test: `src/lib/endpoint-map.test.ts` (koi UNCLASSIFIED nahi).
+- Claude seedha isi map se implement kare; dobara feature->package ki behes nahi (PP1 table pehle se hai).

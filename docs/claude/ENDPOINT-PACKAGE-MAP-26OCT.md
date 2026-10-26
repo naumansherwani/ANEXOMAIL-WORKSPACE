@@ -1,0 +1,52 @@
+# ENDPOINT -> PACKAGE MAP — 26 Oct 2026 (founder hukm 22:14: 'repo mein likho kaun si feature/gate/endpoint kis package ki hai, verna website mix ho jaye gi')
+Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; source PP1-FULL-GATE-TABLE-26OCT.md + docs/packages/features.tsv). Poori list: `ENDPOINT-PACKAGE-MAP.csv`.
+**starts_at** = sab se chhota package jis se endpoint shuru hota hai; us se UPAR ke sab packages ko bhi milta hai. **Enterprise** = Business Pro ki har cheez + POORI website latest technology (Rust-only, Bun-free) — Enterprise ka koi alag endpoint abhi nahi (ZERO, founder 04:56).
+**RULE (AGENTS.md):** naya endpoint/gate likhne se pehle is map mein uska starts_at dekho; gate SERVER par (Rust, resolve_plan), UI aaina. Map mein na ho => pehle yahan CSV/rule mein jodo, phir code.
+
+## Bun REST endpoints (523) — package-wise
+| Package (starts_at) | Kul | Rust-first (live) | Baaqi (Bun-only) |
+|---|---|---|---|
+| BASIC (aur uske upar sab) | 141 | 34 | 107 |
+| PRO (+ upar) | 51 | 32 | 19 |
+| BUSINESS (+ upar) | 191 | 2 | 189 |
+| BUSINESS PRO (+ Enterprise) | 5 | 0 | 5 |
+| FOUNDER host only (package nahi) | 75 | 30 | 45 |
+| INTERNAL (service-to-service) | 4 | 0 | 4 |
+| AI (coming soon July 2027) | 56 | 27 | 29 |
+| **Jod** | 523 | 125 | 398 |
+
+## Rust procs (jo already latest technology par aa chuke) — package-wise
+| Package (starts_at) | Procs |
+|---|---|
+| BASIC (aur uske upar sab) | 108 |
+| PRO (+ upar) | 54 |
+| BUSINESS (+ upar) | 161 |
+| FOUNDER host only (package nahi) | 18 |
+| **Jod** | 341 |
+
+### BASIC (aur uske upar sab) — Rust procs
+`account.delete.cancel`, `account.delete.request`, `account.delete.state`, `account.export.ticket`, `account.integrity.appeal`, `account.integrity.block`, `account.integrity.evaluate`, `account.integrity.export`, `account.integrity.identity`, `account.integrity.identity.decide`, `account.integrity.me`, `account.integrity.queue`, `account.integrity.state`, `account.integrity.warn`, `account.signup.activate`, `account.signup.claim`, `account.signup.start`, `account.signup.state`, `appeal.device.open`, `appeal.evidence.limits`, `appeal.evidence.list`, `appeal.evidence.remove`, `auth.passkey.delete`, `auth.passkey.list`, `auth.passkey.register.options`, `auth.passkey.register.verify`, `auth.passkey.status`, `auth.recovery.generate`, `billing.invoices`, `billing.portal`, `billing.settle`, `billing.subscription`, `booking.host.cancel`, `booking.list`, `booking.page.delete`, `booking.page.get`, `booking.page.set`, `caldav.apppw.create`, `caldav.apppw.list`, `caldav.apppw.revoke`, `caldav.feed.create`, `caldav.feed.list`, `caldav.feed.revoke`, `calendar.busy`, `calendar.create`, `calendar.event`, `calendar.events`, `calendar.findtime`, `calendar.guests`, `calendar.history`, `calendar.invites.resend`, `calendar.overlap`, `calendar.sub.add`, `calendar.sub.events`, `calendar.sub.list`, `calendar.sub.refresh`, `calendar.sub.remove`, `calendar.sub.update`, `calendar.update`, `dashboard.activity`, `dashboard.analytics`, `dashboard.calendar`, `dashboard.summary`, `locale.pref`, `locale.pref.set`, `locale.uipref`, `locale.uipref.set`, `mail.accounts`, `mail.addresses.create`, `mail.addresses.list`, `mail.addresses.remove`, `mail.attach.limits`, `mail.attach.remove`, `mail.counts`, `mail.device.seen`, `mail.domains.add`, `mail.domains.list`, `mail.domains.remove`, `mail.domains.verify`, `mail.drafts.delete`, `mail.drafts.save`, `mail.drafts.versions`, `mail.identities`, `mail.labels`, `mail.labels.update`, `mail.move`, `mail.send`, `mail.signatures.list`, `mail.star`, `mail.status`, `mail.thread`, `mail.threads`, `migration.cancel`, `migration.list`, `migration.providers`, `migration.resume`, `migration.start`, `migration.status`, `migration.verify`, `outbox.send`, `people.import`, `security.dashboard`, `security.devices`, `security.disown`, `security.encryption`, `security.history`, `security.rotate`, `security.sessions`
+
+### PRO (+ upar) — Rust procs
+`calendar.availability`, `calendar.files.attach`, `calendar.files.list`, `calendar.files.remove`, `calendar.focus`, `calendar.meta.set`, `calendar.rates`, `calendar.rates.set`, `crm.contacts.addAlias`, `crm.contacts.extractSignature`, `crm.contacts.recompute`, `crm.contacts.setNotes`, `crm.followups.list`, `crm.followups.setDays`, `crm.graph`, `crm.health`, `crm.leads.dismiss`, `crm.leads.suggest`, `crm.live`, `crm.next`, `crm.people.list`, `crm.person.timeline`, `crm.promises.board`, `crm.promises.list`, `crm.risk`, `crm.team`, `crm.timeline`, `mail.assign`, `mail.confidence`, `mail.followup.create`, `mail.followup.delete`, `mail.followup.list`, `mail.handoff.claim`, `mail.handoff.delete`, `mail.handoff.list`, `mail.handoff.save`, `mail.predict`, `mail.predict.event`, `mail.predict.learn`, `mail.schedule`, `mail.schedule.cancel`, `mail.snippets.delete`, `mail.snippets.list`, `mail.snippets.save`, `mail.snooze`, `mail.templates.delete`, `mail.templates.list`, `mail.templates.save`, `mail.thread.insights`, `work.notes.list`, `work.notes.upsert`, `work.tasks.create`, `work.tasks.list`, `work.tasks.update`
+
+### BUSINESS (+ upar) — Rust procs
+`calendar.load`, `calendar.rooms.archive`, `calendar.rooms.book`, `calendar.rooms.create`, `calendar.rooms.list`, `calendar.rooms.release`, `calendar.rooms.schedule`, `calendar.rooms.state`, `call.connect.health`, `call.connect.mark`, `call.connect.report`, `call.event`, `call.file.share`, `call.record`, `call.record.board`, `call.ring.settle`, `call.ring.start`, `call.ring.state`, `call.sfu.ensure`, `call.sfu.join`, `call.sfu.leave`, `call.sfu.state`, `call.survival`, `call.transport`, `call.work.link`, `chat.attachment.attach`, `chat.attachment.commit`, `chat.bootstrap`, `chat.bridge.context`, `chat.bridge.discuss`, `chat.bridge.presence`, `chat.bridge.quote`, `chat.bridge.quote.verify`, `chat.bridge.rescue`, `chat.bridge.thread`, `chat.call.end`, `chat.call.start`, `chat.call.stat`, `chat.calls.health`, `chat.collision.act`, `chat.collision.scan`, `chat.continuity`, `chat.conversation.prefs`, `chat.conversation.state`, `chat.conversations`, `chat.conversations.direct`, `chat.decision.amend`, `chat.decision.board`, `chat.decision.impact`, `chat.decision.link`, `chat.decision.mark`, `chat.decision.state`, `chat.decision.unlink`, `chat.device.appeal`, `chat.device.appeal.decide`, `chat.device.appeal.queue`, `chat.device.seen`, `chat.device.trust.list`, `chat.device.trust.set`, `chat.device.vault`, `chat.draft.save`, `chat.email.board`, `chat.email.consent`, `chat.email.decision`, `chat.email.draft`, `chat.email.escalations`, `chat.email.get`, `chat.email.send`, `chat.handover.assign`, `chat.handover.board`, `chat.handover.build`, `chat.handover.complete`, `chat.handover.get`, `chat.health.board`, `chat.health.conversation`, `chat.message.attach`, `chat.message.delete`, `chat.message.delete_48h`, `chat.message.delete_anytime`, `chat.message.edit`, `chat.message.forward`, `chat.message.hide`, `chat.message.pin`, `chat.message.star`, `chat.messages`, `chat.position.save`, `chat.presence`, `chat.presence.ping`, `chat.promise.board`, `chat.promise.history`, `chat.promise.keep`, `chat.promise.recover`, `chat.provenance.chain`, `chat.provenance.message`, `chat.react`, `chat.receipt.certificate`, `chat.receipt.pack`, `chat.receipt.record`, `chat.receipt.replay`, `chat.receipt.silent`, `chat.receipt.verify`, `chat.receipts`, `chat.safety.advance`, `chat.safety.queue`, `chat.safety.report`, `chat.safety.reveal`, `chat.safety.standing`, `chat.search`, `chat.search.deep`, `chat.send`, `chat.signal.poll`, `chat.signal.send`, `chat.timeline.get`, `chat.timeline.important`, `chat.turn.credentials`, `chat.typing`, `chat.unread`, `chat.video.gate`, `chat.work.board`, `chat.work.chain`, `chat.work.complete`, `chat.work.create`, `chat.work.depend`, `chat.work.from_message`, `chat.work.list`, `chat.work.state`, `chat.work.suggest`, `file.begin`, `file.commit`, `file.context.card`, `file.context.diff`, `file.context.duplicates`, `file.context.graph`, `file.context.link`, `file.context.stale`, `file.context.unlink`, `file.download.ack`, `file.evidence`, `file.safety.state`, `file.state`, `file.transfer.mark`, `file.transfer.state`, `file.truth`, `file.versions`, `org.mailboxes.create`, `org.mailboxes.list`, `org.members`, `team.invite.accept`, `team.invites.create`, `team.invites.list`, `team.invites.mine`, `team.invites.resend`, `team.invites.revoke`, `team.members.list`, `team.members.remove`, `team.members.update`, `team.seats`, `team.teams.create`, `team.teams.delete`, `team.teams.list`, `team.teams.members`
+
+### FOUNDER host only (package nahi) — Rust procs
+`founder.brain.command`, `founder.expiry.watch`, `founder.movein.cockpit`, `founder.movein.deal`, `founder.release.checklist`, `founder.release.checklist.item`, `founder.release.checks`, `founder.release.deployments`, `founder.release.lock.create`, `founder.release.lock.list`, `founder.release.overview`, `founder.release.roadmap.create`, `founder.release.roadmap.list`, `founder.release.run`, `founder.revenue.pipeline`, `kernel.report`, `kernel.ticket`, `movein.deal`
+
+## Baaqi (BUN-ONLY) endpoints — package ke hisaab se kaam ki list (file: ginti)
+- **BASIC (aur uske upar sab)**: auth.ts 24, billing-sync.ts 12, contacts.ts 10, integrations.ts 10, trial.ts 9, polar.ts 7, security.ts 7, dashboard.ts 5, storage.ts 5, settings.ts 4, workspace.ts 4, account-deletion.ts 3, support.ts 3, mail.ts 2, calendar.ts 1, locale.ts 1
+- **PRO (+ upar)**: crm.ts 13, calendar.ts 2, handoff.ts 2, analytics.ts 1, mail-compose.ts 1
+- **BUSINESS (+ upar)**: chat.ts 141, org.ts 20, files.ts 11, settings.ts 9, crm.ts 7, security.ts 1
+- **BUSINESS PRO (+ Enterprise)**: org.ts 3, crm.ts 2
+- **FOUNDER host only (package nahi)**: movein.ts 11, admin.ts 8, perf.ts 8, glitch.ts 4, org.ts 4, analytics.ts 2, crm.ts 2, storage.ts 2, ai-credits.ts 1, billing-support.ts 1, integrations.ts 1, release.ts 1
+- **INTERNAL (service-to-service)**: storage.ts 3, mail.ts 1
+- **AI (coming soon July 2027)**: ai.ts 12, ai-credits.ts 10, ai-automation.ts 5, integrations.ts 2
+
+## CEO guess jo founder se confirm karwana hai
+- settings.ts governance (blast-radius, simulate, drift, revert, schedule): Business maana (CEO guess).
+- crm `live`: base Pro; graph/timeline hissa BP+ ho sakta hai (PP1 #20) — gate abhi Pro par.
+- analytics: Pro (thread economics); response debt Basic ke hook ke taur par.
+- Personal Basic/Pro+/Premium: HOLD (founder), is map mein nahi.

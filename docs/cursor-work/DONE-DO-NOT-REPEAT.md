@@ -650,3 +650,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 22:15 PRO LIVE GREEN: booking links, Overlap Matrix, snooze, domains/mailboxes/storage, CRM 8 pages, compose tools, availability -> docs/claude/PRO-LIVE-GREEN-26OCT.md. DOBARA CODE NAHI. Gap: hourly-rate UI.
 
 - 26 Oct 22:40 hourly-rate/meeting-cost field code DONE (Rust cal_core/cal_glue + kernel UI MeetingCostSettings); deploy+Chrome baaqi. DOBARA LIKHNA NAHI.
+
+- 26 Oct 22:55 Rule 57 + ENDPOINT-PACKAGE-MAP (523 Bun + 341 Rust procs package-wise). Feature->package pehle se PP1 mein tha; dobara mat likho.
