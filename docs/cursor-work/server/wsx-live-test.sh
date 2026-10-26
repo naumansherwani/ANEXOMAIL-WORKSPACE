@@ -48,10 +48,10 @@ run_one(){ # kind(personal|business)
   chk "$kind: orgs row (legacy)" "$(rest "orgs?select=id&id=eq.$ORG" | jq_ 0.id)" "$ORG"
   chk "$kind: mail_accounts jodi" "$(rest "mail_accounts?select=org_id&address=eq.$EM" | jq_ 0.org_id)" "$ORG"
   chk "$kind: profile workspace_kind" "$(rest "account_profiles?select=preferences&user_id=eq.$UID_" | jq_ 0.preferences.workspace_kind)" "$kind"
-  chk "$kind: profile onboarded" "$(rest "account_profiles?select=onboarded&user_id=eq.$UID_" | jq_ 0.onboarded)" True
+  chk "$kind: profile onboarded" "$(rest "account_profiles?select=onboarded&user_id=eq.$UID_" | jq_ 0.onboarded)" true
   if [ "$kind" = personal ]; then
     R2="$(curl -s -m 30 -H "authorization: Bearer $TOK" -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/workspace.personal")"
-    chk "personal: dobara call => existing:true" "$(printf '%s' "$R2" | jq_ result.data.existing)" True
+    chk "personal: dobara call => existing:true" "$(printf '%s' "$R2" | jq_ result.data.existing)" true
     chk "personal: dobara => wahi org" "$(printf '%s' "$R2" | jq_ result.data.id)" "$ORG"
   fi
   # SAAF: sirf apne zz rows

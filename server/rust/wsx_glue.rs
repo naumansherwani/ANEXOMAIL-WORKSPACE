@@ -55,18 +55,24 @@ async fn patch_only(path_and_query: &str, body: Value) -> Result<(), String> {
 /// account_profiles.preferences.workspace_kind = kind, onboarded = true.
 /// Profile row na ho (NOT NULL email/legal_name/display_name) to Bun ka upsert chup-chaap fail hota tha — yahan row bana dete hain.
 async fn stamp_kind(uid: &str, email: &str, kind: &str) {
+    // BUG FIX (live test 03:40): upsert mojooda row par bhi INSERT-tuple banata hai, aur account_profiles ke NOT NULL
+    // (email/legal_name/display_name) us mein khali hote hain => poora upsert chup-chaap fail. Isliye: row hai => PATCH, nahi => poori INSERT.
     let prof = first(crate::sb_select(&format!("account_profiles?select=preferences&user_id=eq.{}&limit=1", enc(uid))).await);
-    let exists = prof.is_some();
-    let mut prefs = prof.and_then(|p| p.get("preferences").cloned()).filter(|p| p.is_object()).unwrap_or(json!({}));
-    prefs["workspace_kind"] = json!(kind);
-    let mut row = json!({ "user_id": uid, "preferences": prefs, "onboarded": true });
-    if !exists {
-        let local = email.split('@').next().unwrap_or("").to_string();
-        row["email"] = json!(email);
-        row["legal_name"] = json!(local);
-        row["display_name"] = json!(local);
+    match prof {
+        Some(p) => {
+            let mut prefs = p.get("preferences").cloned().filter(|x| x.is_object()).unwrap_or(json!({}));
+            prefs["workspace_kind"] = json!(kind);
+            let _ = crate::sb_patch(&format!("account_profiles?user_id=eq.{}", enc(uid)), json!({ "preferences": prefs, "onboarded": true })).await;
+        }
+        None => {
+            let local = email.split('@').next().unwrap_or("").to_string();
+            let _ = crate::sb_insert(
+                "account_profiles",
+                json!({ "user_id": uid, "email": email, "legal_name": local, "display_name": local, "preferences": { "workspace_kind": kind }, "onboarded": true }),
+            )
+            .await;
+        }
     }
-    let _ = crate::sb_upsert("account_profiles", "user_id", row).await;
 }
 
 struct Made {
