@@ -15,6 +15,7 @@
 #   security -> server/rust/security_core.rs + security_glue.rs (Security page: asli sessions/devices/logins + live TLS)  [pehle E39 SQL]
 #   evidence -> server/rust/evidence_core.rs + evidence_glue.rs (attach_core.rs saath) (appeal ke saboot: screenshots/PDF/docs — tokio stream upload, clamd, allowlist; appeal 20,000 characters; `appeal.device.open`)  [pehle E72 SQL; attach ke saath]
 #   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs + secret calendar link /dav/feed/<key>.ics; Caddy alag: caddy-caldav.sh)  [pehle E80 + E81 SQL + .env CALDAV_PEPPER]
+#   analytics -> server/rust/analytics_core.rs + analytics_glue.rs (Analytics Center: response debt, thread economics, deep work, leaks, promise SLA, forecast, team, founder overview)  [pehle E89 SQL]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
 #   b6     -> server/rust/b6_core.rs     + b6_glue.rs     (billing.portal: Polar customer portal — cancel/card/VAT; chaabi /etc/anexomail/pcp.key)  [koi SQL nahi]
 #   b5     -> server/rust/b5_core.rs     + b5_glue.rs     (founder pages: move-in, release gate/lock/roadmap/QA run, revenue pipeline+lead, public status, outbox)  [koi nayi SQL nahi]
@@ -42,7 +43,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -136,6 +137,8 @@ CFG={
  # mailx (M1/M2): Pro mail actions Rust PRIMARY — snooze/status/move/labels/assign, templates save/delete, `mail.threads` (inbox hides snoozed, folder "snoozed").
  # `mail.threads` live main.rs mein pehle se hai (dispatch_mail) — mailx_glue::owns usay jaan-boojh kar pehle pakadta hai aur main.rs ka `mail_query_threads` hi chalata hai (list ka code dobara nahi likha). Koi SQL nahi.
  "mailx":  {"public": False, "label": "mail-pro-actions", "procs": ['"mail.snooze"','"mail.status"','"mail.move"','"mail.labels.update"','"mail.assign"','"mail.templates.save"','"mail.templates.delete"']},
+ # analytics (Phase 24 / E89): Analytics Center ka asli backend. Package gate Rust mein (debt har plan, economics+deep work Pro+, baqi Business+). SQL E89 PEHLE.
+ "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"']},
  # attach (G38): bheji jane wali mail ke attachments (stream upload, org-ke-andar SHA-256 dedup, clamd, quota). SQL E48 PEHLE.
  # Routes: POST /file/attach (upload), GET /file/attach/get?id= (download). Thread read ka `url` (jo server ka disk_path de deta tha) band + `stored` flag.
  "attach": {"public": False, "label": "attach",    "procs": ['"mail.attach.limits"','"mail.attach.remove"'],
@@ -525,6 +528,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> calfile: Rust ne calendar.files.* pakda (nakli login 401 = theek). SQL E74 chala hona lazmi (asli test: meeting kholo > Files > Add file).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> calfile: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> calfile: jawab upar dekhein";;
+      esac;;
+    analytics)
+      r="$(probe analytics.responseDebt '{"input":{}}')"
+      echo "   analytics.responseDebt (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> analytics: Rust ne analytics.* pakda (nakli login 401 = theek). SQL E89 chala hona lazmi (asli test: Analytics > Response debt).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> analytics: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> analytics: jawab upar dekhein";;
       esac;;
     overlap)
       r="$(probe calendar.overlap '{"input":{"addresses":[]}}')"
