@@ -30,3 +30,5 @@ Yeh file MASTER-GREEN-PLAN section B + BATCH-PLAN-27OCT + MIGRATION-STATUS (M1-M
 
 ## M-series ka nakshe se milan
 M1/M2 = DONE. M3 = contacts/storage/support/workspace DONE, billing-sync = C1 DONE, C2 qadam 6. M4 = auth.session DONE, login qadam 6, trial qadam 10. M5 = settings/integrations/security qadam 3, org/crm/calendar baaqi qadam 4+11. M6 = qadam 11-12. F = qadam 9. L = qadam 8. Purani locked order ("Founder account -> identity tests -> M-series -> G16 -> T") BADAL gayi: ab Pro green + migration PEHLE; G16 DONE.
+
+> **Ek jagah ka naksha (04:1x):** sab series (P/G/B/R/M/T/C/D/E/F/L/K) + technology + package gates = docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md (tarteeb phir bhi isi file ki).
