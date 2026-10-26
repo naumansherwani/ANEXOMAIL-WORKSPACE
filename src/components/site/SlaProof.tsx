@@ -10,7 +10,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { Reveal } from "@/components/site/Reveal";
-import { api, type ApiError } from "@/lib/api";
+import { type ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 type SlaStats = {
   avg_first_reply_seconds: number | null;
@@ -29,7 +30,7 @@ function duration(seconds: number) {
 export function SlaProof() {
   const { data } = useQuery<SlaStats, ApiError>({
     queryKey: ["public", "sla"],
-    queryFn: () => api<SlaStats>("/api/public/sla", { auth: false }),
+    queryFn: () => rpcOrRest<SlaStats>("support.sla", { path: "/api/public/sla" }, {}),
     retry: false,
     staleTime: 300_000,
   });

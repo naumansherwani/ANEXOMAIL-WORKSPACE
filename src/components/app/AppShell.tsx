@@ -50,7 +50,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { api } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 import { FxAmbient } from "@/components/fx/FxAmbient";
 import { useAuth } from "@/lib/auth";
 import { warmKernel } from "@/lib/kernel/boot";
@@ -191,10 +191,7 @@ export function AppShell({ children }: { children: ReactNode }) {
     if (session?.active_organisation_id === id) return;
     if ((session?.organisations.length ?? 0) <= 1) return;
     try {
-      await api("/api/workspace/active-organisation", {
-        method: "PATCH",
-        body: JSON.stringify({ organisation_id: id }),
-      });
+      await rpcOrRest("workspace.setActive", { path: "/api/workspace/active-organisation", method: "PATCH", body: { organisation_id: id } }, { organisation_id: id });
       await refresh();
     } catch (error) {
       notify.failed("Could not switch workspace", {

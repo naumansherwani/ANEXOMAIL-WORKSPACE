@@ -11,7 +11,8 @@
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { api, type ApiError } from "@/lib/api";
+import { type ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 
 export type StorageKind = "email" | "attachment" | "file";
 export type QuotaLevel = "ok" | "warning" | "critical" | "full";
@@ -55,7 +56,7 @@ export type Preflight = {
 export function useStorageState() {
   return useQuery<StorageState, ApiError>({
     queryKey: ["storage", "state"],
-    queryFn: () => api<StorageState>("/api/storage/state"),
+    queryFn: () => rpcOrRest<StorageState>("storage.state", { path: "/api/storage/state" }, {}),
     retry: false,
     staleTime: 30_000,
   });
@@ -65,7 +66,7 @@ export function useStorageState() {
 export function useStoragePreflight() {
   return useMutation<Preflight, ApiError, { mailbox: string; bytes: number; kind: StorageKind }>({
     mutationFn: (body) =>
-      api<Preflight>("/api/storage/preflight", { method: "POST", body: JSON.stringify(body) }),
+      rpcOrRest<Preflight>("storage.preflight", { path: "/api/storage/preflight", method: "POST", body }, body),
   });
 }
 
@@ -77,7 +78,7 @@ export function useStorageCommit() {
     { mailbox: string; bytes: number; kind: StorageKind; was_reserved?: boolean }
   >({
     mutationFn: (body) =>
-      api("/api/storage/commit", { method: "POST", body: JSON.stringify(body) }),
+      rpcOrRest("storage.commit", { path: "/api/storage/commit", method: "POST", body }, body),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["storage"] }),
   });
 }

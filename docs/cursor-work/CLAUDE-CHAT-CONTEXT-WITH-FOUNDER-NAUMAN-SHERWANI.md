@@ -1380,3 +1380,6 @@ authx_core.rs (6 tests pass) + authx_glue.rs: Rust 'auth.session' (profile, work
 
 ## 27 Oct 2026 01:55 PKT — BATCH PLAN + Batch A (contx) CODE
 docs/claude/BATCH-PLAN-27OCT.md: batches A-F (gate/UI/halat). Batch A contx: contacts.list/tags/get/update/tag/timeline, companies.list/get/timeline, search.universal — sab plans, koi gate nahi; contx_core (4 tests) + contx_glue, full crate cargo check PASS; lib/contacts.ts -> rpcOrRest; installer+probes; bun test 213. Deploy pending (authx+contx ek saath). Agla: Batch B (storage/workspace/support/dashboard.ai-usage).
+
+## 27 Oct 2026 02:20 PKT — Batch B (basx) CODE: storage x5, support.sla(public)/drafts/draftDiscard, dashboard.ai-usage, workspace.setActive
+basx_core (2 tests)+basx_glue, full crate cargo check PASS (authx+contx+basx). LOOPHOLE band: Bun support/drafts + discard BINA login chalte the -> Rust mein login+org zaroori. Storage preflight/reserve allowed:false par 200+body (Rule 59). Clients: storage-client, SlaProof, AppShell, join -> rpcOrRest. Installer basx (public) + probes. bun test 213, tsc OK. Deploy pending: authx+contx+basx EK deploy (founder-commands 02:20). Agla: Batch B2 workspace.personal/organisations/invitations, phir C billing-sync, D settings/integrations/security, E account-deletion/mail/calendar/locale, F auth.

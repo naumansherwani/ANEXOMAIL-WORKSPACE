@@ -496,17 +496,17 @@ settings.ts,POST,/api/schedule,,BUN-ONLY or client wiring not proven
 settings.ts,POST,/api/schedule/cancel,,BUN-ONLY or client wiring not proven
 settings.ts,GET,/api/settings/overview,,BUN-ONLY or client wiring not proven
 settings.ts,GET,/api/:scope,,BUN-ONLY or client wiring not proven
-storage.ts,GET,/api/storage/state,,BUN-ONLY or client wiring not proven
-storage.ts,POST,/api/storage/preflight,,BUN-ONLY or client wiring not proven
+storage.ts,GET,/api/storage/state,storage.state,RUST-FIRST (Bun fallback)
+storage.ts,POST,/api/storage/preflight,storage.preflight,RUST-FIRST (Bun fallback)
 storage.ts,POST,/api/storage/reserve,,BUN-ONLY or client wiring not proven
-storage.ts,POST,/api/storage/commit,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/commit,storage.commit,RUST-FIRST (Bun fallback)
 storage.ts,POST,/api/storage/release,,BUN-ONLY or client wiring not proven
 storage.ts,POST,/api/internal/storage/accept,,BUN-ONLY or client wiring not proven
-storage.ts,POST,/api/internal/storage/commit,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/internal/storage/commit,storage.commit,RUST-FIRST (Bun fallback)
 storage.ts,GET,/api/founder/storage/volumes,,BUN-ONLY or client wiring not proven
 storage.ts,POST,/api/founder/storage/volume,,BUN-ONLY or client wiring not proven
 storage.ts,POST,/api/internal/storage/sweep,,BUN-ONLY or client wiring not proven
-support.ts,GET,/api/public/sla,,BUN-ONLY or client wiring not proven
+support.ts,GET,/api/public/sla,support.sla,RUST-FIRST (Bun fallback)
 support.ts,GET,/api/support/drafts,,BUN-ONLY or client wiring not proven
 support.ts,POST,/api/support/drafts/:id/discard,,BUN-ONLY or client wiring not proven
 trial.ts,GET,/api/state,,BUN-ONLY or client wiring not proven
@@ -520,5 +520,5 @@ trial.ts,GET,/api/mail-holds,,BUN-ONLY or client wiring not proven
 trial.ts,POST,/api/trial/sweep,,BUN-ONLY or client wiring not proven
 workspace.ts,POST,/api/workspace/personal,,BUN-ONLY or client wiring not proven
 workspace.ts,POST,/api/workspace/organisations,,BUN-ONLY or client wiring not proven
-workspace.ts,PATCH,/api/workspace/active-organisation,,BUN-ONLY or client wiring not proven
+workspace.ts,PATCH,/api/workspace/active-organisation,workspace.setActive,RUST-FIRST (Bun fallback)
 workspace.ts,POST,/api/workspace/invitations,,BUN-ONLY or client wiring not proven

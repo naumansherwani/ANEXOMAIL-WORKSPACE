@@ -88,6 +88,14 @@ chk "RUST search.universal real (200)" "$(rpc search.universal '{"q":"ab"}')" 20
 chk "RUST contacts.get missing (409 not 404)" "$(rpc contacts.get '{"id":"00000000-0000-4000-8000-000000000009"}')" 409
 chk "RUST contacts.update nothing (400)" "$(rpc contacts.update '{"id":"00000000-0000-4000-8000-000000000009"}')" 400
 chk "RUST companies.get missing (409)" "$(rpc companies.get '{"domain":"nope.invalid"}')" 409
+chk "RUST storage.state (all plans 200)" "$(rpc storage.state '{}')" 200
+chk "RUST storage.preflight bad kind (400)" "$(rpc storage.preflight '{"mailbox":"a@b.com","kind":"video"}')" 400
+chk "RUST dashboard.ai-usage (all plans 200)" "$(rpc dashboard.ai-usage '{}')" 200
+chk "RUST support.drafts (login, own org 200)" "$(rpc support.drafts '{}')" 200
+chk "RUST support.draftDiscard bad id (400)" "$(rpc support.draftDiscard '{"id":"x;y"}')" 400
+chk "RUST workspace.setActive missing org (400)" "$(rpc workspace.setActive '{}')" 400
+chk "RUST workspace.setActive not mine (409)" "$(rpc workspace.setActive '{"organisation_id":"00000000-0000-4000-8000-000000000009"}')" 409
+SLA="$(curl -s -o /dev/null -w '%{http_code}' --max-time 8 -X POST -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/support.sla")"; [ "$SLA" = 200 ] && echo "  PASS support.sla PUBLIC (bina login 200)" || { echo "  FAIL support.sla PUBLIC -> $SLA"; FAILS=$((FAILS+1)); }
 chk "RUST auth.session (all plans 200)" "$(rpc auth.session '{}')" 200
 grep -q '"workspace_plan"' /tmp/.gp.$$ && grep -q '"organisations"' /tmp/.gp.$$ && grep -q '"account_kind"' /tmp/.gp.$$ && echo "  PASS auth.session shape (user.workspace_plan/account_kind/organisations)" || { echo "  FAIL auth.session shape"; FAILS=$((FAILS+1)); }
 chk "RUST account.signup.security nothing (400)" "$(rpc account.signup.security '{}')" 400

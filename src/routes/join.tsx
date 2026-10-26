@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { BrandMark } from "@/components/site/BrandMark";
 import { Button } from "@/components/ui/button";
 import { api, type ApiError } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 import { useAuth } from "@/lib/auth";
 import {
   ROLE_LABEL,
@@ -190,10 +191,7 @@ function Invitation({ token, signedIn, authLoading }: { token: string; signedIn:
 
   const open = async (orgId: string) => {
     try {
-      await api("/api/workspace/active-organisation", {
-        method: "PATCH",
-        body: JSON.stringify({ organisation_id: orgId }),
-      });
+      await rpcOrRest("workspace.setActive", { path: "/api/workspace/active-organisation", method: "PATCH", body: { organisation_id: orgId } }, { organisation_id: orgId });
     } catch {
       /* the app opens the first organisation; the switcher is one tap away */
     }
