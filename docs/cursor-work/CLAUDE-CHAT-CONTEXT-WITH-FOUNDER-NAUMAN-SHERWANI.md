@@ -1359,3 +1359,6 @@ FOUNDER (27 Oct 00:30-00:31): 'rule 52 pe kero' + 'sab endpoints baaki ke is Rul
 
 ## 27 Oct 2026 00:40 PKT — COMPACT-SAFE HANDOFF #3
 HANDOFF #3 (27 Oct 00:40): sab likhe codes ki poori list + halat -> docs/claude/CODES-WRITTEN-LEDGER-27OCT.md (compact ke baad PEHLE yeh + MASTER-GREEN-PLAN + TECHNOLOGY-MAP padho). HEAD 3b1047c. Server par: crmd+memory+Work fix deployed; fd9ee91 (409) + 3b1047c (trialx+trial client) CODE READY, founder deploy output baaqi.
+
+## 27 Oct 2026 00:45 PKT — trialx + 409 fix DEPLOYED
+DEPLOYED 00:43 (founder output): fd9ee91 (409) + 3b1047c (trialx + trial client): Rust restart 182 (modules ... crmx livex crmd trialx wtrpc), Web pull OK, basic ALL PASS, pro ALL PASS (account.signup.events/holds/state 200, security {} 400), KERNEL ALL PASS. Chrome: /api/trial/state REST band hui? dekhna baaqi.

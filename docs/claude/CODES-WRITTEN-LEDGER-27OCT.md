@@ -10,9 +10,9 @@ Halat: **LIVE GREEN** = server par deploy + probes ALL PASS + Chrome mein dekha.
 | Trusted devices "N of limit" (`security.devices` + `limit`) | security_glue.rs, security-platform.ts, app.security.devices.tsx | c364828 | LIVE GREEN (Chrome: "0 of 4") |
 | **crmd** Pro CRM desk: `crm.leads/deals/createLead/createDeal/moveDeal/convertLead/dealWork/dealThread/insights`, `work.promise.commit/dismiss`, `crm.memory` (12 procs) | crmd_core.rs (8 tests), crmd_glue.rs | b39121a, 0bde5b0 | LIVE GREEN (lead/convert/advance/Work/memory Chrome mein) |
 | deal->Work bug fix (work_tasks.source CHECK: source=manual + source_deal_id) | crmd_glue.rs, server/routes/crm.ts | 0bde5b0 | LIVE GREEN |
-| Rule 59: domain error 409 (404 = proc nahi; warna client Bun par girta) | crmd_glue.rs + test | fd9ee91 | **CODE READY** (deploy baaqi) |
-| **trialx** trial `account.signup.security/events/holds` | trialx_core.rs (2 tests), trialx_glue.rs | 3b1047c | **CODE READY** |
-| Trial client Rule 52 (state/start/claim/address/events/holds/security via kernel) | src/lib/trial.ts | 3b1047c | **CODE READY** |
+| Rule 59: domain error 409 | crmd_glue.rs + test | fd9ee91 | DEPLOYED (probes ALL PASS 00:43) |
+| **trialx** trial `account.signup.security/events/holds` | trialx_core.rs (2 tests), trialx_glue.rs | 3b1047c | DEPLOYED (probes ALL PASS 00:43; Chrome baaqi) |
+| Trial client Rule 52 (state/start/claim/address/events/holds/security via kernel) | src/lib/trial.ts | 3b1047c | DEPLOYED (probes ALL PASS 00:43; Chrome baaqi) |
 | livex `crm.live` + `org.members` | livex_core/glue | ff882b4 | LIVE GREEN |
 | crmx CRM P1+P2 (pipelines, fields, forms, merge) | crmx_core/glue | earlier | LIVE GREEN |
 | Pre-send scan English; CRM `money()` "-£0" fix | mailx_core.rs, mail-compose.ts, crm.ts | d59d059 | LIVE GREEN |
