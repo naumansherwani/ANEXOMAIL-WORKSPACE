@@ -1,3 +1,5 @@
+> **SUPERSEDED (27 Oct 2026): tarteeb ke liye sirf docs/claude/ONE-ORDER-27OCT.md.** Yeh file reference/history hai; isse naya kaam shuru na karein.
+
 # MIGRATION STATUS — 26 Oct 2026 22:30 PKT (founder: "repo ki ek ek line padh kar batao implementation-green ka goal kahan tak baaqi hai")
 Padha: MIGRATION-PHASES-RUST-PRIMARY.md, MIGRATION-PHASES-24OCT.md, MIGRATION-LEDGER-24OCT.md + CSV (script `count-endpoints.py` se DOBARA nikali), TECH-MAP/TECH-AUDIT/TECH-STACK-BEAST, AUTH-MIGRATION-PLAN, RULE-52-*, PRO-GREEN-TRACKER, GREEN-LEDGER.
 Qaida (24 Oct, locked): PEHLE ~510 Bun endpoints latest technology par; PHIR packages ek ek green (Pro -> Business -> Business Pro). Aaj founder ne is mein jora: Rule 52 (browser har call kernel se) + Rule 56 (naya kaam Rust only) + "sab packages green".

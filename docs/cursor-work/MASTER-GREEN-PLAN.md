@@ -1,3 +1,5 @@
+> **SUPERSEDED (27 Oct 2026): tarteeb ke liye sirf docs/claude/ONE-ORDER-27OCT.md.** Yeh file reference/history hai; isse naya kaam shuru na karein.
+
 # MASTER GREEN PLAN — puri website, har gate, har endpoint, har package (founder hukm 26 Oct 2026 21:53 PKT) — PEHLE YEH PADHO
 Founder (verbatim ma'na): "puri website ka ek bhi corner nahi chodna; sab gates green; sab end points latest technology (Rust + WebTransport/WASM kernel) par migrate aur green; basic, pro, aur in ke ilawa SAB packages green; repo mein tarteeb dekho aur tarteeb se chalo."
 Qaida: GREEN = LIVE saboot (founder server output + Chrome). Naya kaam sirf Rust + WASM kernel (Rule 52/56). Bun sirf emergency fallback; route tab hatao jab Rust==Bun saabit ho.

@@ -1,3 +1,5 @@
+> **SUPERSEDED (27 Oct 2026): tarteeb ke liye sirf docs/claude/ONE-ORDER-27OCT.md.** Yeh file reference/history hai; isse naya kaam shuru na karein.
+
 # BATCH PLAN — Basic baaqi endpoints (27 Oct 2026)
 
 Qaida: ek batch = ek package ke SAB endpoints ek saath, ek deploy. Basic ka code Basic aur Pro dono ko milta hai (founder 27 Oct 00:27). Gate ka sach `ENDPOINT-PACKAGE-MAP.csv` (starts_at) aur Rust (`resolve_plan`); UI sirf aaina (Rule 57).

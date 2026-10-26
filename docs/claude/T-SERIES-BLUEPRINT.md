@@ -1,3 +1,5 @@
+> **SUPERSEDED (27 Oct 2026): tarteeb ke liye sirf docs/claude/ONE-ORDER-27OCT.md.** Yeh file reference/history hai; isse naya kaam shuru na karein.
+
 # T-SERIES — technology track (founder order 23 Oct 2026 02:29 PKT: "kya aye ga yeh repo main likho")
 
 Audit 23 Oct (repo grep): R3, R4, B8, R2, speed — KUCH BHI BANA NAHI. R5 (event-driven WebTransport push) DONE (B4 GREEN 21 Oct 06:50). Is file ke kaam dobara audit kiye bina mat banao.
