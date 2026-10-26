@@ -14,3 +14,5 @@ Is folder mein: blueprints, tech docs, pricing, migration ledger (+CSV).
 - Technology map (kaun si tech kahan/kab): docs/claude/TECHNOLOGY-MAP-27OCT.md
 
 - Codes-written ledger (kaun se codes likhe, halat): docs/claude/CODES-WRITTEN-LEDGER-27OCT.md
+
+- Frontend technology plan: docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md

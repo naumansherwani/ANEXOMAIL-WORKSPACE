@@ -35,3 +35,5 @@ Har endpoint ka Bun route tab hatta hai jab Rust jawab Bun ke barabar saabit ho 
 
 ## 4. Naya code likhte waqt (checklist)
 1. `ENDPOINT-PACKAGE-MAP` mein package dekho (Rule 57). 2. `X_core.rs` (std-only + tests) + `X_glue.rs` (async Tokio, `owns()`/`dispatch`). 3. Installer CFG + probe line + `rpc-contract.ts`. 4. Browser `rpc()` -> kernel; REST/Bun twin NAHI. 5. cargo check (poora crate, TLS ke saath) + bun test + tsc. 6. Deploy, probes, Chrome mein live dekho.
+
+(Frontend: docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md)
