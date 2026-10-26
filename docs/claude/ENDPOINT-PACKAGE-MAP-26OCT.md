@@ -6,9 +6,9 @@ Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; s
 ## Bun REST endpoints (523) — package-wise
 | Package (starts_at) | Kul | Rust-first (live) | Baaqi (Bun-only) |
 |---|---|---|---|
-| BASIC (aur uske upar sab) | 141 | 34 | 107 |
+| BASIC (aur uske upar sab) | 144 | 34 | 110 |
 | PRO (+ upar) | 51 | 32 | 19 |
-| BUSINESS (+ upar) | 191 | 2 | 189 |
+| BUSINESS (+ upar) | 188 | 2 | 186 |
 | BUSINESS PRO (+ Enterprise) | 5 | 0 | 5 |
 | FOUNDER host only (package nahi) | 75 | 30 | 45 |
 | INTERNAL (service-to-service) | 4 | 0 | 4 |
@@ -37,16 +37,16 @@ Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; s
 `founder.brain.command`, `founder.expiry.watch`, `founder.movein.cockpit`, `founder.movein.deal`, `founder.release.checklist`, `founder.release.checklist.item`, `founder.release.checks`, `founder.release.deployments`, `founder.release.lock.create`, `founder.release.lock.list`, `founder.release.overview`, `founder.release.roadmap.create`, `founder.release.roadmap.list`, `founder.release.run`, `founder.revenue.pipeline`, `kernel.report`, `kernel.ticket`, `movein.deal`
 
 ## Baaqi (BUN-ONLY) endpoints — package ke hisaab se kaam ki list (file: ginti)
-- **BASIC (aur uske upar sab)**: auth.ts 24, billing-sync.ts 12, contacts.ts 10, integrations.ts 10, trial.ts 9, polar.ts 7, security.ts 7, dashboard.ts 5, storage.ts 5, settings.ts 4, workspace.ts 4, account-deletion.ts 3, support.ts 3, mail.ts 2, calendar.ts 1, locale.ts 1
+- **BASIC (aur uske upar sab)**: auth.ts 24, billing-sync.ts 12, contacts.ts 10, integrations.ts 10, trial.ts 9, polar.ts 7, security.ts 7, settings.ts 7, dashboard.ts 5, storage.ts 5, workspace.ts 4, account-deletion.ts 3, support.ts 3, mail.ts 2, calendar.ts 1, locale.ts 1
 - **PRO (+ upar)**: crm.ts 13, calendar.ts 2, handoff.ts 2, analytics.ts 1, mail-compose.ts 1
-- **BUSINESS (+ upar)**: chat.ts 141, org.ts 20, files.ts 11, settings.ts 9, crm.ts 7, security.ts 1
+- **BUSINESS (+ upar)**: chat.ts 141, org.ts 20, files.ts 11, crm.ts 7, settings.ts 6, security.ts 1
 - **BUSINESS PRO (+ Enterprise)**: org.ts 3, crm.ts 2
 - **FOUNDER host only (package nahi)**: movein.ts 11, admin.ts 8, perf.ts 8, glitch.ts 4, org.ts 4, analytics.ts 2, crm.ts 2, storage.ts 2, ai-credits.ts 1, billing-support.ts 1, integrations.ts 1, release.ts 1
 - **INTERNAL (service-to-service)**: storage.ts 3, mail.ts 1
 - **AI (coming soon July 2027)**: ai.ts 12, ai-credits.ts 10, ai-automation.ts 5, integrations.ts 2
 
-## CEO guess jo founder se confirm karwana hai
-- settings.ts governance (blast-radius, simulate, drift, revert, schedule): Business maana (CEO guess).
-- crm `live`: base Pro; graph/timeline hissa BP+ ho sakta hai (PP1 #20) — gate abhi Pro par.
-- analytics: Pro (thread economics); response debt Basic ke hook ke taur par.
+## CEO FAISLE (founder hukm 26 Oct 22:20: 'tum karo, user ke mindset se, Zoho/Google Workspace se behtar') — competitor check: Google Workspace compare-business-editions (admin security settings, audit log, usage reports sab SAB SE SASTE tier mein; Vault/eDiscovery aur advanced endpoint sirf Plus mein)
+- **Settings**: scoped view, explain, save, history, revert, overview = **Basic** (user apni settings ki history/undo se kabhi mehroom nahi). simulate, blast-radius, drift, scheduled changes = **Business** (admin governance).
+- **CRM live**: base + radar + graph = **Pro** (Pro ko behtareen chhota-business CRM). Activity evidence + timeline (sealed) = Business Pro; collab (shared/approvals/audit/permissions) = Business.
+- **Analytics**: response debt = Basic; thread economics + deep work = Pro; forecast, attention leaks, promise SLA, team = Business.
 - Personal Basic/Pro+/Premium: HOLD (founder), is map mein nahi.

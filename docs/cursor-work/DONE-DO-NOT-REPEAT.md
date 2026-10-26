@@ -652,3 +652,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 22:40 hourly-rate/meeting-cost field code DONE (Rust cal_core/cal_glue + kernel UI MeetingCostSettings); deploy+Chrome baaqi. DOBARA LIKHNA NAHI.
 
 - 26 Oct 22:55 Rule 57 + ENDPOINT-PACKAGE-MAP (523 Bun + 341 Rust procs package-wise). Feature->package pehle se PP1 mein tha; dobara mat likho.
+
+- 26 Oct 23:00 meeting cost hourly-rate LIVE GREEN (rates 60/40, cost £50). CEO faisle settings/CRM/analytics likhe. Basic baaqi 110 endpoints.

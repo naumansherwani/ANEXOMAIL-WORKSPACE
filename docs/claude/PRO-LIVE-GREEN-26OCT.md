@@ -37,4 +37,9 @@ Saboot = Chrome mein khud dekha + founder server output (basic/pro/kernel ALL PA
 | Data | Postgres (analytics_rates, scope self/team) — NAYA SQL NAHI | phase24 table |
 | Plan gate | Server par Pro+ (Basic 403), contract + probe | rpc-contract.ts, basic-gate-probe.sh |
 | Browser | WASM kernel (rpc() -> kernelRpc), REST/Bun twin NAHI (Rule 56) | src/lib/calendar.ts, MeetingCostSettings.tsx (Calendar settings > Meeting cost) |
-Status: CODE DONE + tests (cal_core 50, bun 208, tsc clean, cargo check). Deploy + Chrome live saboot baaqi => tab GREEN.
+Status: LIVE GREEN 22:30 (Chrome + founder probes).
+
+## 22:30 — MEETING COST / HOURLY RATE: LIVE GREEN (bfcdd69 deployed 22:19)
+Founder output: Rust restart 173, Web pull OK, basic ALL PASS, pro ALL PASS (calendar.rates 200, rates.set bad value 400), KERNEL ALL PASS. Chrome: Calendar settings > Meeting cost fields maujood; save 60/40 -> "Meeting cost rates saved"; server `calendar.rates` = {self 60, guest 40}; `calendar.events` cost = {hourly_total 100, minutes 30, total £50} (organiser 60 + guest 40). DOBARA CODE NAHI.
+Test data Pro account: rates self 60 / guest 40 (founder chaahe to 0 kar do).
+Baaqi Pro: shared-inbox live collision (2nd user), trusted devices 4 UI, ANEXO_TAG_MODE=enforce (founder env).

@@ -35,7 +35,7 @@ BUN = [
  (r'^analytics\.ts$', r'/api/analytics', P, 'Analytics (thread economics, deep work; response debt Basic)', 'PP1 #21'),
  (r'^security\.ts$', r'/proof', BU, 'DNS/TLS hashed proof export', 'PP1 #32'),
  (r'^security\.ts$', r'.', B, 'Security centre', 'PP1 #31'),
- (r'^settings\.ts$', r'blast-radius|simulate|drift|revert|schedule|explain|scoped', BU, 'Settings governance (simulate/drift/schedule) — CEO guess, founder confirm', 'CEO guess'),
+ (r'^settings\.ts$', r'blast-radius|simulate|drift|/schedule|scheduled', BU, 'Settings governance (simulate, blast-radius, drift, scheduled changes)', 'CEO DECISION 26 Oct (Google Workspace: basic admin settings+reports at lowest tier, advanced governance higher)'),
  (r'^(account-deletion|auth|auth-passkey|billing-sync|polar|support|locale|trial|workspace|contacts|dashboard|settings|storage)\.ts$', r'.', B, 'Account / auth / billing / People / dashboard / storage / settings (all plans)', 'PP1 #10,#17,#31,#34'),
  (r'^integrations\.ts$', r'.', B, 'Import old mail / integrations', 'PP1 #12'),
 ]
@@ -102,9 +102,11 @@ L += ["", "## Baaqi (BUN-ONLY) endpoints — package ke hisaab se kaam ki list (
 for k in order:
     fc = collections.Counter(o[0] for o in out if o[3] == k and o[6] == 'BUN-ONLY')
     if fc: L.append(f"- **{names[k]}**: " + ', '.join(f'{f} {n}' for f, n in fc.most_common()))
-L += ["", "## CEO guess jo founder se confirm karwana hai", "- settings.ts governance (blast-radius, simulate, drift, revert, schedule): Business maana (CEO guess).",
-      "- crm `live`: base Pro; graph/timeline hissa BP+ ho sakta hai (PP1 #20) — gate abhi Pro par.",
-      "- analytics: Pro (thread economics); response debt Basic ke hook ke taur par.", "- Personal Basic/Pro+/Premium: HOLD (founder), is map mein nahi."]
+L += ["", "## CEO FAISLE (founder hukm 26 Oct 22:20: 'tum karo, user ke mindset se, Zoho/Google Workspace se behtar') — competitor check: Google Workspace compare-business-editions (admin security settings, audit log, usage reports sab SAB SE SASTE tier mein; Vault/eDiscovery aur advanced endpoint sirf Plus mein)",
+      "- **Settings**: scoped view, explain, save, history, revert, overview = **Basic** (user apni settings ki history/undo se kabhi mehroom nahi). simulate, blast-radius, drift, scheduled changes = **Business** (admin governance).",
+      "- **CRM live**: base + radar + graph = **Pro** (Pro ko behtareen chhota-business CRM). Activity evidence + timeline (sealed) = Business Pro; collab (shared/approvals/audit/permissions) = Business.",
+      "- **Analytics**: response debt = Basic; thread economics + deep work = Pro; forecast, attention leaks, promise SLA, team = Business.",
+      "- Personal Basic/Pro+/Premium: HOLD (founder), is map mein nahi."]
 open('docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md', 'w').write('\n'.join(L) + '\n')
 print('\n'.join(L[5:20]))
 print('unclassified bun', cnt['?'][0], 'procs', len(pc['?']), pc['?'][:20])
