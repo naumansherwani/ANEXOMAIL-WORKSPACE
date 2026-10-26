@@ -28,3 +28,5 @@ Kyun: React 19 + TanStack + Tailwind 4 already latest hain; poori UI dobara likh
 
 ## 5. Naya UI code likhte waqt
 `rpc()` hi (kernel-first), REST/Bun twin nahi; plan gate server par, UI aaina (Rule 57); text English; bundle/INP measure karke likho.
+
+(Cinematic 3D: docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md)

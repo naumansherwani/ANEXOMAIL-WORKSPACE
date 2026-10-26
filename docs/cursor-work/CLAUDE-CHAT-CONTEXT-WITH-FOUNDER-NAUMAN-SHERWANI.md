@@ -1365,3 +1365,6 @@ DEPLOYED 00:43 (founder output): fd9ee91 (409) + 3b1047c (trialx + trial client)
 
 ## 27 Oct 2026 00:50 PKT — trial LIVE GREEN + FRONTEND PLAN
 Trial LIVE GREEN (Chrome 00:50): fresh /app/crm/leads load par SIRF /api/auth/session REST (trial/state + deals/thread REST nahi). FRONTEND TECHNOLOGY PLAN likha (founder sawal 00:43): docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md — React 19/TanStack/Tailwind 4 rewrite NAHI; F1 kernel fetch->0, F2 events (L), F3 Rust-WASM compute, F4 React Compiler+virtual lists, F5 SSR host Bun se bahar (Enterprise; abhi 'bun .output/server/index.mjs'), F6 chat media WASM Opus (K3), F7 Office CRDT, F8 offline PWA, F9 passkeys, F10 view transitions.
+
+## 27 Oct 2026 00:55 PKT — CINEMATIC FRONTEND STACK
+CINEMATIC FRONTEND STACK likha (founder 00:48: three.js jaisi latest cinematic technologies ki list): docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md. Pehle se installed+live: three 0.185, R3F 9.7, drei, postprocessing, GSAP 3.15 (ScrollTrigger unused), motion/framer 13, lottie, tone (unused). ADD list: WebGPU+TSL, ScrollTrigger/Lenis, Theatre.js, Rapier WASM, GLSL Moon shaders, Web Audio/AudioWorklet, OffscreenCanvas, KTX2/Draco, Rive, View Transitions, Spline/glTF. Qaide: cinematic sirf landing/onboarding/chat/dashboard accent; kaam ke screens fast; lazy+fallback+measure.

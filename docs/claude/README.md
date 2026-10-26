@@ -16,3 +16,5 @@ Is folder mein: blueprints, tech docs, pricing, migration ledger (+CSV).
 - Codes-written ledger (kaun se codes likhe, halat): docs/claude/CODES-WRITTEN-LEDGER-27OCT.md
 
 - Frontend technology plan: docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md
+
+- Cinematic 3D frontend stack: docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md
