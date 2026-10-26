@@ -1,3 +1,4 @@
+
 -- E87 — Business Basic v6 (26 Oct 2026, founder hukm): £40 / month, £440 / year, up to 5 users, 15 GB SHARED storage.
 --
 -- Kya badalta hai (sirf Business-kind Basic; Pro/Business/Business Pro/Personal ko haath nahi):
@@ -6,8 +7,8 @@
 --  3) get_billing_subscription: business Basic = £40 (saalana £440), seats = 5, user_cap = 5, storage_pooled_gb = 15.
 --     Personal Basic ka £23 abhi wahi (Personal HOLD hai, founder alag meeting mein). Naye keys: user_cap, storage_pooled_gb.
 -- Polar :3400 NO-TOUCH. Dobara chalana safe. Server se: sql-run.sh (auto) ya `. /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f E87_basic_v6.sql`
-begin;
-select pg_advisory_xact_lock(hashtext('E87_basic_v6'));
+set lock_timeout = '5s';
+set statement_timeout = '60s';
 
 do $$ begin
   if to_regclass('public.storage_plans') is null then raise exception 'E87 PREFLIGHT: storage_plans nahi (phase48)'; end if;
@@ -285,4 +286,3 @@ end $$;
 
 select 'E87' as cheez, 'Business Basic v6: £40 / £440, 5 users, 15 GB shared' as haal;
 
-commit;

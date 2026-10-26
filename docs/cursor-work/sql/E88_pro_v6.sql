@@ -1,3 +1,4 @@
+
 -- E88 — Business Pro-package (naam: PRO) v6 (26 Oct 2026, founder hukm): £105 / month, £1,155 / year, up to 20 users,
 --       10 mailboxes, 300 GB SHARED storage, 35 MB attachment, 3 booking links. Basic ke 1 link / Business 20 / Business Pro unlimited bhi yahin.
 --
@@ -11,8 +12,8 @@
 --     handle unique rehta hai; naya page banate waqt trigger plan ka cap rokta hai (advisory lock => 2 parallel insert cap tod nahi sakte).
 --  Devices (2/4/10/50), domains (1/3), mail Pro+ tools (Rust pro_gate), thread analytics (Rust Pro+) PEHLE SE server-side asli hain — yahan nahi chhede.
 -- Polar :3400 NO-TOUCH. Dobara chalana safe. Server se: sql-run.sh (auto) ya `. /etc/anexomail/sync.env && psql "$WORKING_URL" -v ON_ERROR_STOP=1 -f E88_pro_v6.sql`
-begin;
-select pg_advisory_xact_lock(hashtext('E88_pro_v6'));
+set lock_timeout = '5s';
+set statement_timeout = '60s';
 
 do $$ begin
   if to_regclass('public.storage_plans') is null then raise exception 'E88 PREFLIGHT: storage_plans nahi (phase48)'; end if;
@@ -362,4 +363,3 @@ end $$;
 
 select 'E88' as cheez, 'Pro v6: £105 / £1,155, 20 users, 10 mailboxes, 300 GB shared, 35 MB; booking links 1/3/20/unlimited' as haal;
 
-commit;

@@ -677,11 +677,11 @@ docs/claude/inventory/INV-3-ORG-SECURITY-STORAGE-LANDING.md c6bd6fda9eb0db6e
 docs/claude/PP1-FULL-GATE-TABLE-26OCT.md b4f56961ae54d142
 docs/claude/POLAR-COPY-V6-BASIC.md 7efe2eed4d30be4a
 docs/cursor-work/server/polar-product-ids-update.sh cae4395bcc25a11d
-docs/cursor-work/sql/E87_basic_v6.sql 895ce4a3e043126f
+docs/cursor-work/sql/E87_basic_v6.sql 222ee84ba7d4c7ab
 docs/cursor-work/sql/CHECK_E87.sql 895dd1905a305c21
 server/lib/plan.ts 8bfb71428639491c
-docs/cursor-work/sql/E88_pro_v6.sql b3b4147a056d647d
-docs/cursor-work/sql/CHECK_E88.sql e2cd9dfbc1d1105d
+docs/cursor-work/sql/E88_pro_v6.sql 45030206184ebbf6
+docs/cursor-work/sql/CHECK_E88.sql b3c5b3f9b73f5e04
 docs/packages/README.md b94a54cc94a6c2bf
 docs/packages/basic/FEATURES.md c32eda54304a4ed7
 docs/packages/basic/GATES-AND-TECH.md 4547b92898b17368
