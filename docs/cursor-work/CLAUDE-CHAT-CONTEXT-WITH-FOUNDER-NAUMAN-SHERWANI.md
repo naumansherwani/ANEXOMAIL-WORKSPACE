@@ -1220,3 +1220,6 @@ Founder: ANEXOChat par kal raat ~2 baje (25-26 Oct) bahut kuch note karwaya tha 
 
 ## 26 Oct 2026 19:55 PKT — Rule 52 early-boot: pehla live naap kam nikla, fix 2
 Web pull (19:49) ke baad Chrome: kernel 1 / fetch 8 — wasm 3373 ms par, pehli 9 calls 3793 ms par (400 ms intezar khatam, QUIC handshake tab tak nahi hua). Fix: EARLY_WAIT_MS 1200 + `gaveUp` (ek baar intezar, phir bina intezar fetch). kernel-check ab ALL PASS (19:49; pehla FAIL restart ke foran baad ka tha). Founder ko Web pull dobara; phir Chrome ginti.
+
+## 26 Oct 2026 19:52 PKT — founder: "yahan bun ko goli maaro, naya kaam mein bun ka koi kaam nahi" = AGENTS.md Rule 56
+Naya kaam sirf Rust + WebTransport/WASM kernel; naya Bun route/fallback/REST path nahi. Purana Bun tab hat'ta hai jab uska Rust port live green ho (ek ek, saboot ke baad). Pehla port: crm.live + org.members (Pro pages, abhi kernel_status_404) — shuru.

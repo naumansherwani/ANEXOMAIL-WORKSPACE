@@ -422,3 +422,11 @@ UPDATE 26 Oct 2026 09:27 PKT (founder): Enterprise = £18,500/month (pehle £18,
 Har jagah jahan koi package dikhta hai (plans.ts card, plans.tsx, landing, billing/profile, Polar product description, SQL labels, emails) price "per month" (flat, per-user NAHI) likha ho AUR user cap saaf likha ho: Basic up to 5 users, Pro up to 20, Business up to 60, Business Pro up to 570, Enterprise unlimited. Cap ke baghair koi package card/page commit nahi.
 
 UPDATE 26 Oct 2026 05:45 PKT: Business Basic storage = 15GB SHARED + 3 mailboxes (25GB / 5 mailboxes galat the). Basic = £40/month, £440/year, up to 5 users, 25MB attachment. SQL: E87_basic_v6.sql.
+
+## Rule 56 (STRICT, founder 26 Oct 2026 19:52 PKT) — NAYE KAAM MEIN BUN KA KOI KAAM NAHI
+Founder: "yahan bun ko goli maaro, naya kaam mein bun ka koi kaam nahi hai."
+- Ab se har NAYA proc / feature / endpoint SIRF Rust (:3200, async Tokio) + WebTransport/WASM kernel (Rule 52) mein banta hai. `server/routes/*.ts` mein naya route, naya Bun fallback, naya `rpcOrRest` REST path NAHI likha jata.
+- Naye proc ka `get(proc, "/api/...")` wala REST fallback bhi nahi; UI seedha `rpc()` use kare (jaise `crm-setup.ts`).
+- Purana Bun code (jo abhi live fallback hai) TAB tak rehta hai jab tak uska Rust port live green na ho; phir Bun route hataya jata hai (ek ek, saboot ke baad). Bina Rust port + live saboot ke purana Bun route NAHI hatta (founder ka live chalta kaam na tootay).
+- Port ki tarteeb: Pro ke pages jo abhi `kernel_status_404` dete hain (`crm.live`, `org.members`) PEHLE, phir baaqi fallbackProcs ki list (`window.anexoKernel.fallbackProcs`).
+- Bun Brain (:3100 anexomail-leo) alag cheez hai: us par yeh rule nahi, woh sirf `brain-*-install.sh` se.
