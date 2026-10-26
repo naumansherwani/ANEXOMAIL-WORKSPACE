@@ -60,6 +60,8 @@ gate(){ st="$(rpc "$2" "$3")"
 NID="00000000-0000-4000-8000-000000000001"
 gate "RUST calendar.availability (Pro)" calendar.availability '{"date":"2026-10-27"}'
 gate "RUST calendar.focus (Pro)" calendar.focus '{}'
+[ "$MODE" = pro ] && chk "RUST calendar.availability {} (Pro: 502 nahi, 200)" "$(rpc calendar.availability '{}')" 200
+[ "$MODE" = pro ] && chk "RUST calendar.focus {} (Pro: 502 nahi, 200)" "$(rpc calendar.focus '{}')" 200
 gate "RUST calendar.files.list (Pro)" calendar.files.list "{\"event_id\":\"$NID\"}"
 gate "RUST calendar.meta.set goal (Pro)" calendar.meta.set "{\"id\":\"$NID\",\"goal\":\"x\"}"
 gate "RUST chat.bridge.rescue (Pro)" chat.bridge.rescue "{\"mail_thread_id\":\"$NID\",\"title\":\"probe\",\"owner_user_id\":\"$NID\",\"due_at\":\"$FUT\"}"

@@ -1263,3 +1263,9 @@ Founder output: pull build OK, web /health 200, pm2 anexomail-web uptime 8s (abh
 Rust livex reinstall founder ne chala diya (20:3x): livex pakda, pm2 anexomail-rust online, /rpc/health 200 => timeline sort fix d6d9240 LIVE (Chrome Bun-vs-Rust timeline dobara dekhna baaqi).
 AGLA: kernel-check ALL PASS ka intezaar (founder dobara chalaye, 40 s retry ke baad), phir trial.state Rust port (Rule 56), phir auth.session.
 OPEN: asli npm tRPC chahiye? (default Rust contract). Mail transport (Postfix/Dovecot/OpenDKIM) badal nahi raha.
+
+## 26 Oct 2026 21:00 PKT — kernel-check ALL PASS + basic ALL PASS (20:46); PRO GREEN TRACKER banaya; calendar.availability 502 ka asli sabab
+FOUNDER output 20:46: Web pull build OK, KERNEL CHECK: ALL PASS, ALL PASS (basic) => items 3,4,5 GREEN. Founder hukm: yeh context PRIORITY, tarteeb se green mark. MASTER LIST: `docs/packages/pro/PRO-GREEN-TRACKER.md` (padho pehle).
+Founder sawal: Writer/Sheet/Show Business CRM ka feature? JAWAB: nahi — N-DOC-01 collaborative docs (CRDT), Business package, PROPOSED/bana nahi (FEATURE-CATALOG, business/INCLUDES, PRO-VS-ZOHO). CRM P3-P6 mein nahi.
+BUG: calendar.availability/focus khali input 502 — `calendar_focus_windows` table mein `created_by` column NAHI (sirf org_id), cal_glue scope_filter created_by lagata tha. FIX (cal_glue.rs `win_filter`): org_id-only; org na ho => khali windows, 200. cargo check OK. basic-gate-probe pro mode mein availability/focus 200 check. DEPLOY: Rust install (neeche founder-commands 21:00). Phir Pro mode probe (MODE=pro EMAIL=pro.buyer@anexomail.com).
+AGLA: Rust install -> probe -> GREEN mark; phir trial.state Rust port.

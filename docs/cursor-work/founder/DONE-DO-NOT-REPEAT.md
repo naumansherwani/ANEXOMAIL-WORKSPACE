@@ -201,3 +201,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 20:40 kernel-check.sh: wasm hash check 3x retry + http/type/size print (transient 39aaf076d37b = restart ke baad ka jawab, live sha pin se barabar). STEEL ORDER TECH-MAP/CONTEXT mein likha; mail transport (Postfix/Dovecot/OpenDKIM) abhi NAHI badalta.
 
 - 26 Oct 20:50 kernel-check wasm FAIL got=39aaf076d37b = Web restart ke baad 500 JSON (57 byte), wasm kharab nahi; retry 8x5s. routeTree.gen.ts differ=1 benign. Rust livex reinstall founder ne kiya (timeline fix live).
+
+- 26 Oct 21:00 kernel-check ALL PASS + basic ALL PASS (founder output). PRO-GREEN-TRACKER.md master list. calendar.availability/focus 502 = focus_windows mein created_by nahi (win_filter org-only fix, deploy baaqi). Office suite (Writer/Sheet/Show) Business N-DOC-01, Pro nahi.

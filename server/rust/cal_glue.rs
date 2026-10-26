@@ -2087,6 +2087,11 @@ fn scope_filter(me: &Who) -> String {
     }
 }
 
+/// calendar_focus_windows mein created_by column NAHI hai (sirf org_id): org ke bina koi window nahi => None.
+fn win_filter(me: &Who) -> Option<String> {
+    if me.org_id.is_empty() { None } else { Some(format!("org_id=eq.{}", enc(&me.org_id))) }
+}
+
 async fn availability(me: &Who, input: &Value) -> axum::response::Response {
     let day = st(input, "date");
     let day_start = if day.is_empty() {
@@ -2103,8 +2108,14 @@ async fn availability(me: &Who, input: &Value) -> axum::response::Response {
         "calendar_events?select=starts_at,ends_at,title&{}&starts_at=gte.{}&starts_at=lt.{}&limit=500",
         scope_filter(me), enc(&a), enc(&b)
     );
-    let win_q = format!("calendar_focus_windows?select=weekday,start_minute,end_minute,label&{}&limit=200", scope_filter(me));
-    let (evs, wins) = tokio::join!(crate::sb_select(&ev_q), crate::sb_select(&win_q));
+    let win_q = win_filter(me).map(|f| format!("calendar_focus_windows?select=weekday,start_minute,end_minute,label&{}&limit=200", f));
+    let win_fut = async {
+        match &win_q {
+            Some(q) => crate::sb_select(q).await,
+            None => Ok(json!([])),
+        }
+    };
+    let (evs, wins) = tokio::join!(crate::sb_select(&ev_q), win_fut);
     let (Ok(evs), Ok(wins)) = (evs, wins) else {
         return fail(StatusCode::BAD_GATEWAY, "db_unavailable", "Availability could not be read");
     };
@@ -2134,9 +2145,10 @@ async fn availability(me: &Who, input: &Value) -> axum::response::Response {
 }
 
 async fn focus(me: &Who) -> axum::response::Response {
+    let Some(f) = win_filter(me) else { return crate::ok(json!({ "windows": [] })).into_response() };
     let q = format!(
         "calendar_focus_windows?select=id,label,weekday,start_minute,end_minute,protected&{}&order=weekday.asc&limit=200",
-        scope_filter(me)
+        f
     );
     match crate::sb_select(&q).await {
         Ok(v) => crate::ok(json!({ "windows": v })).into_response(),
