@@ -518,7 +518,7 @@ trial.ts,POST,/api/subscribe,,BUN-ONLY or client wiring not proven
 trial.ts,GET,/api/events,,BUN-ONLY or client wiring not proven
 trial.ts,GET,/api/mail-holds,,BUN-ONLY or client wiring not proven
 trial.ts,POST,/api/trial/sweep,,BUN-ONLY or client wiring not proven
-workspace.ts,POST,/api/workspace/personal,,BUN-ONLY or client wiring not proven
-workspace.ts,POST,/api/workspace/organisations,,BUN-ONLY or client wiring not proven
+workspace.ts,POST,/api/workspace/personal,workspace.personal,RUST-FIRST (Bun fallback)
+workspace.ts,POST,/api/workspace/organisations,workspace.organisations,RUST-FIRST (Bun fallback)
 workspace.ts,PATCH,/api/workspace/active-organisation,workspace.setActive,RUST-FIRST (Bun fallback)
 workspace.ts,POST,/api/workspace/invitations,,BUN-ONLY or client wiring not proven

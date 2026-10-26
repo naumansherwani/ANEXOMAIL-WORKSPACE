@@ -9,8 +9,8 @@ E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par
 | Cheez | Ginti |
 |---|---|
 | Bun REST endpoints (server/routes) | 523 |
-| Client Rust-first (`rpcOrRest`, Bun sirf fallback) | 161 |
-| Baqi (Bun-only ya client wiring saabit nahi) | 362 |
+| Client Rust-first (`rpcOrRest`, Bun sirf fallback) | 163 |
+| Baqi (Bun-only ya client wiring saabit nahi) | 360 |
 | Rust procs repo mein | 337 |
 
 ## File-wise (Bun file: kul / Rust-first / baqi)
@@ -46,7 +46,7 @@ E84 asli mein Rust-only kaam tha (repeat-series room check); founder ke hukm par
 | handoff.ts | 5 | 3 | 2 |
 | glitch.ts | 4 | 0 | 4 |
 | locale.ts | 4 | 3 | 1 |
-| workspace.ts | 4 | 1 | 3 |
+| workspace.ts | 4 | 3 | 1 |
 | account-deletion.ts | 3 | 0 | 3 |
 | analytics.ts | 3 | 1 | 2 |
 | mail-predict.ts | 3 | 3 | 0 |
