@@ -50,3 +50,8 @@ Kya likhunga: `wsx_core.rs` (std-only tests: slugify, normalize_org_domain [anex
 Technology: React form (onboarding.tsx / claim.tsx / auth.tsx / ConvertToBusiness.tsx) -> `rpcOrRest` -> WASM kernel -> Rust Tokio -> Supabase REST (PostgREST) ; Bun sirf fallback. Domain errors 400/409 (Rule 59), 404 sirf unknown_proc.
 Gate: sab plans (login). Koi Pro gate nahi. UI mirror: kuch nahi badalta, sirf call-sites.
 Frontend technology (jo ban chuki + jo aayegi): React 19.2 + TanStack Start/Router/Query + Vite 8 + Tailwind 4 + TS 5.8 (live); WASM kernel web-wasm v0.2.0 (live); three/R3F/drei/postprocessing/GSAP/motion/lottie (installed, landing/loader/CRM stage/globe); aane wali: WebGPU+TSL, ScrollTrigger+Lenis, Theatre.js, Rapier, Rive, WebXR (Rule 60, Business+, K3 ke baad). Kaam wale screens cinematic NAHI.
+
+
+## Update 27 Oct 03:2x PKT — trial endpoints Batch E se NIKAL diye
+Founder ne alag 48h trial design diya (docs/packages/TRIAL-48H-DESIGN.md). Mojooda trial.ts ke baaqi 6 endpoints ab migrate nahi; naye design par Founder account ke BAAD banenge. Batch E ab: account-deletion 3 + mail 2 + calendar 1 + locale 1.
+Batch C2 (intent/change-plan/guest-intent/sync = asli paisa) founder ijazat + shadow-mode tak ROKA; agla Batch D (settings 7 + integrations 10 + security 7).
