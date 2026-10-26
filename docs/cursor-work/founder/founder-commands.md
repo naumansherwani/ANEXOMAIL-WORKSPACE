@@ -1412,3 +1412,8 @@ sleep 20
 bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/fix-buyer-kind.sh)
 bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/buyer-accounts-look.sh) 2>&1 | sed -n "/== 3/,/== 4/p"
 ```
+
+## 27 Oct 2026 04:53 PKT — EK COMMAND DEPLOY: docs/cursor-work/server/deploy-pro.sh (Rust install -> restart+health -> web pull -> 20 s -> BASIC+PRO probes -> kernel-check; SQL/Brain/Polar nahi chhoota; FAIL par ruk jata hai). Founder hukm: 'ek command do, server ko latest technology pro ke liye batao'.
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/deploy-pro.sh)
+```
