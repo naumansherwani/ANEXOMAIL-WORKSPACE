@@ -1368,3 +1368,6 @@ Trial LIVE GREEN (Chrome 00:50): fresh /app/crm/leads load par SIRF /api/auth/se
 
 ## 27 Oct 2026 00:55 PKT — CINEMATIC FRONTEND STACK
 CINEMATIC FRONTEND STACK likha (founder 00:48: three.js jaisi latest cinematic technologies ki list): docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md. Pehle se installed+live: three 0.185, R3F 9.7, drei, postprocessing, GSAP 3.15 (ScrollTrigger unused), motion/framer 13, lottie, tone (unused). ADD list: WebGPU+TSL, ScrollTrigger/Lenis, Theatre.js, Rapier WASM, GLSL Moon shaders, Web Audio/AudioWorklet, OffscreenCanvas, KTX2/Draco, Rive, View Transitions, Spline/glTF. Qaide: cinematic sirf landing/onboarding/chat/dashboard accent; kaam ke screens fast; lazy+fallback+measure.
+
+## 27 Oct 2026 01:00 PKT — Rule 60 cinematic + WebXR
+FOUNDER 00:51: poori cinematic list ab se implement hogi + WebXR VR/AR 'must aye ga' => Rule 60 (AGENTS.md) + CINEMATIC-FRONTEND-STACK section E (route-wise 'kahan hoga': landing/about/plans, auth/claim/checkout, loaders, dashboard, CRM stage, calendar globe, anexochat Moon, anexovideocall WebXR, kaam wale screens cinematic NAHI, founder_ lab) + item 12 WebXR Business+ K3 ke baad. Rule 52: data kernel se, 3D sirf UI.

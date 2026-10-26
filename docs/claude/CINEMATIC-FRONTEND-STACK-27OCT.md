@@ -29,7 +29,7 @@ Founder (00:48): "three.js jaisi duniya ki jitni latest cinematic frontend techn
 | 9 | **Rive** (interactive vector animation) | chhoti, state-driven, GPU animations (Lottie se halki) | onboarding, empty states, buttons | sab | polish |
 | 10 | **CSS scroll-driven animations + View Transitions API** | bina JS ke scroll/page transitions (progressive enhancement) | app navigation, landing | sab | polish |
 | 11 | **Spline / Blender -> glTF pipeline** | designer-made 3D hero assets | landing, plan cards | public | landing phase |
-| 12 | **WebXR / spatial (sirf mansoobay ke taur par)** | VR/AR meeting rooms | NAHI — abhi plan mein nahi (CEO: demand dikhne par) | — | — |
+| 12 | **WebXR (VR/AR) — MUST (founder 00:51)**: `@react-three/xr` + three WebXR; Quest/Vision Pro/phone AR | spatial meeting room (ANEXOChat video), 3D calendar Globe VR/AR mein, AR business-card/QR scan | Business+ (video/voice K3 ke baad; Enterprise full) | K3 ke baad (voice/video media chahiye); fallback = normal 2D room |
 
 ## C. LAZMI QAIDE (cinematic ka matlab "bhaari" nahi)
 1. **Cinematic sirf jahan kaam ka hai**: landing, onboarding, ANEXOChat voice/moon, dashboard accent, loaders. **Mail/Work/CRM ke kaam wale screens fast + saaf** rahenge (Office suite, tables = performance pehle).
@@ -41,3 +41,21 @@ Founder (00:48): "three.js jaisi duniya ki jitni latest cinematic frontend techn
 
 ## D. Tarteeb (MASTER-GREEN-PLAN ke saath)
 Abhi: Basic/Pro migration (kernel). Phir: step 9 Business — ANEXOChat K3 + Moon UI (items 1,4,5,6). Landing/plans page phase (items 2,3,11) = founder ka "Business/Business Pro plans landing/profile/billing" fix ke saath. Polish (9,10) aakhir mein. Calendar tareekh repo mein nahi.
+
+## E. KAHAN HOGA — route-wise jagah (src/routes, sach)
+| Jagah (route) | Kaun si technology | Package | Halat |
+|---|---|---|---|
+| `/` landing, `/about`, plans/pricing page | three/R3F hero (Orb/Logo/Gem scenes pehle se), **GSAP ScrollTrigger + Lenis**, **Theatre.js** timeline, **Spline/glTF** hero, KTX2/Draco | public | scenes LIVE; baaqi landing phase |
+| `/auth`, `/claim`, `checkout.done` (onboarding) | Rive/Lottie, chhota R3F scene, View Transitions | public/Basic | polish phase |
+| `WorkspaceLoader`, route loaders | Lottie/Rive + chhota 3D logo (OffscreenCanvas) | sab | loader LIVE (Lottie), upgrade polish |
+| `/app` dashboard (`app.index`) | 3D accent (Orb/Mailbox scene), glow postprocessing — halka | sab (lite on weak device) | scenes LIVE |
+| `/app/crm` (`CrmStage`) | R3F stage (LIVE), **Rapier** hover/physics (zaroori nahi), Recharts | Pro | LIVE, upgrade later |
+| `/app/calendar` (`GlobeView`) | Globe LIVE; **WebXR AR/VR globe** | Pro (globe) / Business+ (XR) | globe LIVE, XR baad mein |
+| `/anexochat`, `/app/chat` (`chat/cinema/Scene.tsx`) | **Moon UI**: GLSL/TSL shaders, WebGPU, Web Audio+AudioWorklet+WASM Opus, Rapier | Business+ | cinema scene LIVE (basic), Moon V4+ voice blueprint |
+| `/anexovideocall` + meeting rooms | **WebXR spatial room**, WebCodecs/WebTransport video, Rapier avatars | Business+ | K3 ke baad |
+| `/app/mail`, `/app/work`, `/app/people`, Office suite (Writer/Sheet/Show) | **KOI cinematic nahi** — tez, saaf, virtualised, kernel compute | Basic+/Business+ | rule |
+| `/app/admin`, `/app/org`, `/app/settings`, `/app/security` | koi cinematic nahi (View Transitions sirf) | — | rule |
+| `/app/founder_/*` (jaise `founder_.motion`) | founder host: free canvas/experiments, WebGPU lab | Founder host | lab |
+
+## F. RULE 60 (founder 27 Oct 2026 00:51 PKT, STRICT)
+Is document ki poori technology list (A-E, **WebXR VR/AR sameet**) **ab se implement hogi** — jahan likha hai wahin, usi tarteeb se. Naya cinematic/3D kaam: lazy chunk, WebGL2/static fallback, reduce-motion, bundle KB + FPS measure repo mein; kaam wale screens (mail/work/CRM/Office) cinematic nahi. Data hamesha Rule 52 (kernel) se; 3D sirf UI.

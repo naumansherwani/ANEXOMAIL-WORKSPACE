@@ -20,7 +20,7 @@ Halat: **LIVE GREEN** = server par deploy + probes ALL PASS + Chrome mein dekha.
 ## B. Tooling / rules / docs
 - kernel-check.sh wasm retry 8x5s (91d55ef); basic-gate-probe.sh pro-mode checks (devices limit 4, crm.*, account.signup.*).
 - count-endpoints.py ab `get()`/`useCrmMutation` wiring bhi gintaa hai (Rust-first 125 -> 145).
-- Rules: **52** (kernel), **56** (no Bun in new work), **57** (endpoint->package map), **58** (Office suite = Business), **59** (404 sirf unknown_proc) — AGENTS.md.
+- Rules: **60** (cinematic+WebXR), **52** (kernel), **56** (no Bun in new work), **57** (endpoint->package map), **58** (Office suite = Business), **59** (404 sirf unknown_proc) — AGENTS.md.
 - Docs: MASTER-GREEN-PLAN.md (13 steps), MIGRATION-STATUS-26OCT.md, ENDPOINT-PACKAGE-MAP(.csv/-26OCT.md), PRO-LIVE-GREEN-26OCT.md, PRO-GREEN-TRACKER.md, TECHNOLOGY-MAP-27OCT.md, packages/business/OFFICE-SUITE.md, docs/claude/README.md index.
 
 ## C. FOUNDER ke standing hukm (bhoolna mat)

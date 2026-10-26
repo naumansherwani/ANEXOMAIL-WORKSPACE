@@ -443,3 +443,5 @@ UPDATE Rule 52 (founder 26 Oct 2026 20:05 PKT): "ab se Rule 52 se browser ka shu
 - **Rule 59 — Rust domain error status:** "nahi mila"/conflict jaisi business errors 409/422 hain, 404 SIRF "yeh proc Rust mein nahi" (client 404/501/502/503 par Bun par girta hai). Guard: rpc-contract.test.ts.
 
 **HANDOFF #3:** docs/claude/CODES-WRITTEN-LEDGER-27OCT.md pehle padho.
+
+- **Rule 60 — Cinematic/3D frontend stack (founder 27 Oct 2026 00:51):** three.js/R3F/WebGPU+TSL/GSAP ScrollTrigger+Lenis/Theatre.js/Rapier/GLSL Moon shaders/Web Audio+WASM Opus/OffscreenCanvas/KTX2+Draco/Rive/View Transitions/Spline-glTF aur **WebXR VR/AR (zaroori)** ab se implement hongi, jahan `docs/claude/CINEMATIC-FRONTEND-STACK-27OCT.md` section E mein likha hai. Kaam wale screens (mail/work/CRM/Office) cinematic nahi. Har 3D chunk lazy + fallback + measure.
