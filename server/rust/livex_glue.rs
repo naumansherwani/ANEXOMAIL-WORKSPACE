@@ -422,7 +422,8 @@ async fn crm_live(me: &crate::MailMe, plan: &str) -> Resp {
                        "title": opt(a, "subject").or_else(|| opt(a, "kind")), "source": a.get("actor"), "href": "/app/crm/activity"}));
     }
     tl.retain(|r| r.get("at").and_then(|x| x.as_str()).map(|s| !s.is_empty()).unwrap_or(false));
-    tl.sort_by(|a, b| st(b, "at").cmp(&st(a, "at")));
+    // Naya pehle: asli waqt se (Bun ka localeCompare "…:19+00:00" ko "…:19.925+00:00" se pehle rakhta tha — ghalat tarteeb). Barabar second par string.
+    tl.sort_by(|a, b| ts(b, "at").cmp(&ts(a, "at")).then_with(|| st(b, "at").cmp(&st(a, "at"))));
     tl.truncate(30);
 
     // ---- graph

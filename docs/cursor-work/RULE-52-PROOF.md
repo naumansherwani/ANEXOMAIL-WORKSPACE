@@ -18,10 +18,10 @@ Status sirf: DONE = repo test + live saboot dono | READY = repo test pass, live 
 | 12 | Typed contract rpc-contract.ts (+test) | [14] | | DONE |
 | 13 | Browser mein quinn nahi (browser ka apna WebTransport); quinn/wtransport server par | [1] | | DONE |
 | 14 | 3 round test: cargo test / bun test wasm / asli Chromium + asli QUIC | build-kernel.sh [15] + kernel.test.ts | asli Chromium + asli server: yeh doc | DONE |
-| 15 | Early-boot: pehli calls fetch par na girein (`kernel_not_used`) | [8] + boot.ts `kernelForCall` | PEHLE: 3 kernel / 8 fetch. BAAD: deploy ke baad naapna | READY (Web pull + Chrome ginti) |
+| 15 | Early-boot: pehli calls fetch par na girein (`kernel_not_used`) | [8] + boot.ts `kernelForCall` | PEHLE: 3 kernel / 8 fetch. BAAD (26 Oct 20:15, fresh load, 8 s): **kernel 9 / fetch 0, tagged 9 / untagged 0, fallbackProcs {}** | DONE |
 | 16 | "EK QUIC connection" (live@1 /wt/events aur rpc@1 /wt/rpc alag session) | todo [G2] | | TODO (Business phase, founder haan) |
 | 17 | "naya feature = naya endpoint NAHI" (ANEXOChat live `/wt/chat` kernel ke bahar, chat-transport.ts) | todo [G1] | | TODO (Business phase, founder haan) |
-| 18 | crm.live + org.members Rust par (Bun par `kernel_status_404`) | todo [G3]; livex_core 7 tests, cargo check OK | Rust installer + Chrome Bun-vs-Rust barabari baaqi | READY (code) |
+| 18 | crm.live + org.members Rust par (Bun par `kernel_status_404`) | todo [G3]; livex_core 7 tests, cargo check OK | Rust installer + Chrome Bun-vs-Rust barabari baaqi | READY (Rust install 20:02 DONE; crm.live Chrome Bun-vs-Rust barabar: radar/next_actions/people/nodes/edges/counts same; org.members 4 status same; timeline mein sirf 2 nazdeeki entries ki tarteeb (Bun localeCompare galat; Rust asli waqt se) — fix commit, Rust dobara install baaqi) |
 
 ## G1/G2 ka design — FOUNDER "HAAN" 26 Oct 19:47 PKT, lekin Business phase mein (Pro green ke BAAD), ANEXOChat ke 25-26 Oct 02:00 wale notes ke upar. Plan: docs/packages/business/ANEXOCHAT-K3-PLAN.md
 (wasm + server dono badalte hain, isliye alag deploy)
@@ -29,3 +29,6 @@ Ek session `/wt/rpc`; uske andar alag bidi streams: pehle frame par `{"stream":"
 
 ## Live ginti kaise naapen (browser console, Pro login ke baad, page reload ke 6 s baad)
 `JSON.stringify(window.anexoKernel.stats)` -> kernel vs fetch; `window.anexoKernel.fallbackProcs` -> kaun se procs fetch par gaye.
+
+## Founder ka hukm (26 Oct 2026 20:05 PKT): "ab se Rule 52 se browser ka shuru hoga, Supabase is ko cement pakka karega; website Rule 52 ke mutabiq chalegi. yaad rakhna."
+Matlab (likha gaya): browser ka HAR call pehle kernel (Rule 52) se jata hai; fetch sirf mazboori ka fallback. Raasta: browser -> WASM kernel (WebTransport/QUIC, HMAC tag) -> Rust dispatch() (gates) -> Supabase/Postgres. Supabase = pakka data layer (RLS ON, service-role sirf Rust/SQL RPC); browser seedha Supabase se baat nahi karta. Measure: `anexoKernel.stats.fetch` 0 ke qareeb, `fallbackProcs` khali.
