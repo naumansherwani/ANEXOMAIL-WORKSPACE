@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh d68a57ac8ac8097f
+docs/cursor-work/server/rust-engine-install.sh dc475dfa9d3900d6
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -753,3 +753,7 @@ src/lib/rpc-contract.ts 6f958a28b9744dea
 docs/cursor-work/server/brain-drift-report.sh 71b339530f120080
 server/rust/workx_core.rs 1370a66db9f75d73
 server/rust/workx_glue.rs b7c35c22d502ab2d
+docs/cursor-work/sql/E92_crm_p1_p2.sql aa6629582dfdc6e3
+docs/cursor-work/sql/CHECK_E92.sql 964d21dee8afbebc
+server/rust/crmx_core.rs 716b8a0ce50c38d3
+server/rust/crmx_glue.rs 5cf49a3d0f60a04b
