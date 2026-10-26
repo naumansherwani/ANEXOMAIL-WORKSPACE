@@ -100,7 +100,7 @@ describe("kernel wasm — load, pin, version", () => {
     const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
     expect(k.info.version).toBe(KERNEL_PIN.version);
     expect(k.info.abi).toBe(1);
-    expect(k.info.modules).toEqual(["sha256@1", "sniff@1", "rank@1", "live@1", "rpc@1"]);
+    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1"]);
     const cargo = readFileSync("web-wasm/Cargo.toml", "utf8").match(/^version\s*=\s*"([^"]+)"/m)?.[1];
     expect(cargo).toBe(KERNEL_PIN.version);
   });
@@ -308,5 +308,21 @@ describe("kernel — rpc over ONE session (fake server echoes proc/input)", () =
     await flush(10);
     expect((await k.rpcCall(enc.encode("{}"))).status).toBe(413);
     k.rpcStop();
+  });
+});
+
+describe("hmac@1", () => {
+  test("RFC 4231 + node parity + verify", async () => {
+    const k = await Kernel.load({ bytes: await Bun.file("public/kernel/anexo-kernel-" + KERNEL_PIN.version + ".wasm").arrayBuffer(), sha256: KERNEL_PIN.sha256 });
+    const te = new TextEncoder();
+    expect(k.hmacSha256(te.encode("Jefe"), te.encode("what do ya want for nothing?"))).toBe("5bdcc146bf60754e6a042426089575c75a003f089d2739839dec58b964ec3843");
+    const { createHmac, randomBytes } = await import("node:crypto");
+    for (const n of [0, 1, 63, 64, 65, 1000, 70000]) {
+      const key = randomBytes(n % 150), msg = randomBytes(n);
+      expect(k.hmacSha256(key, msg)).toBe(createHmac("sha256", key).update(msg).digest("hex"));
+    }
+    const tag = createHmac("sha256", "k").update("m").digest();
+    expect(k.hmacVerify(te.encode("k"), te.encode("m"), tag)).toBe(true);
+    expect(k.hmacVerify(te.encode("k"), te.encode("x"), tag)).toBe(false);
   });
 });

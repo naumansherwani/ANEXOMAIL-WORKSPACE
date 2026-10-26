@@ -8,21 +8,30 @@ use crate::host::call;
 use crate::sys;
 use std::cell::Cell;
 use std::rc::Rc;
-use tokio::sync::Notify;
+use tokio::sync::{Notify, Semaphore};
 
 pub const MAX_REQUEST: usize = 1 << 20; // 1 MiB — server bhi yahi rokta hai
 pub const MAX_RESPONSE: usize = 8 << 20; // 8 MiB
+
+/// Ek saath kitni calls ek session par udti hain (baqi kernel ke andar qatar mein). Server ki hadd 64 hai; Chrome ke bidi limit se bhi door.
+pub const MAX_INFLIGHT: usize = 32;
 
 pub const ST_OK: i32 = 200;
 pub const ST_UNAVAILABLE: i32 = 503; // session nahi — JS plain fetch par jaye
 pub const ST_TOO_BIG: i32 = 413;
 
-#[derive(Default)]
 struct State {
     session: Cell<u32>,
     stop: Cell<bool>,
     started: Cell<bool>,
     down: Notify,
+    gate: Semaphore,
+}
+
+impl Default for State {
+    fn default() -> Self {
+        State { session: Cell::new(0), stop: Cell::new(false), started: Cell::new(false), down: Notify::new(), gate: Semaphore::new(MAX_INFLIGHT) }
+    }
 }
 
 thread_local! { static RPC: Rc<State> = Rc::new(State::default()); }
@@ -99,6 +108,7 @@ pub fn call_bytes(call_id: u32, request: Vec<u8>) {
     }
     let st = state();
     exec::spawn(async move {
+        let _permit = st.gate.acquire().await; // qatar: session par 32 se zyada ek saath nahi
         let session = st.session.get();
         if session == 0 {
             sys::emit(sys::EMIT_RPC_DONE, call_id, ST_UNAVAILABLE as u32, &[]);

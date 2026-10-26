@@ -12,6 +12,7 @@
  */
 
 import { ApiError, api, sessionToken } from "./api";
+import { kernelRpc } from "./kernel/boot";
 
 const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\/$/, "") ?? "";
 
@@ -19,6 +20,20 @@ const BASE = (import.meta.env["VITE_API_URL"] as string | undefined)?.replace(/\
 export async function rpc<T>(procedure: string, input?: unknown): Promise<T> {
   if (!BASE && typeof window === "undefined") {
     throw new ApiError("API base URL is not configured (VITE_API_URL).", 0, "no_api_url");
+  }
+
+  // WASM kernel (Rule 52): ek QUIC connection, wahi server dispatcher. Kernel tayyar na ho / session na ho => neeche purana fetch.
+  const viaKernel = await kernelRpc(procedure.replace(/^\//, ""), input);
+  if (viaKernel) {
+    const kj = viaKernel.body;
+    if (viaKernel.status >= 200 && viaKernel.status < 300) {
+      const shaped = kj as { result?: { data?: T } } | null;
+      return (shaped?.result?.data ?? (kj as T)) as T;
+    }
+    if (![404, 501, 502, 503].includes(viaKernel.status)) {
+      const e = (kj as { error?: { code?: string; message?: string } } | null)?.error;
+      throw new ApiError(e?.message ?? `RPC ${procedure} failed`, viaKernel.status, e?.code);
+    }
   }
 
   const headers = new Headers({ "content-type": "application/json" });

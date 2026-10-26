@@ -49,6 +49,8 @@ type Exports = {
   sha256_update(h: number, ptr: number, len: number): number;
   sha256_finish(h: number): number;
   sha256_drop(h: number): void;
+  hmac_sha256(kp: number, kl: number, mp: number, ml: number): number;
+  hmac_verify(kp: number, kl: number, mp: number, ml: number, tp: number, tl: number): number;
   sniff_check(np: number, nl: number, hp: number, hl: number): number;
   rank_run(qp: number, ql: number, ip: number, il: number, limit: number): number;
   live_start(up: number, ul: number, tp: number, tl: number, seed: number): number;
@@ -303,6 +305,16 @@ export class Kernel {
     const h = this.x.sha256_new();
     this.withBytes(b, (p) => this.x.sha256_update(h, p.ptr, p.len));
     return hexOf(this.out(this.x.sha256_finish(h)));
+  }
+
+  /** HMAC-SHA256 (hex). Key kernel ke andar hi use hoti hai. */
+  hmacSha256(key: Uint8Array, msg: Uint8Array): string {
+    return hexOf(this.withBytes(key, (k) => this.withBytes(msg, (m) => this.out(this.x.hmac_sha256(k.ptr, k.len, m.ptr, m.len)))));
+  }
+
+  /** Constant-time tag check. */
+  hmacVerify(key: Uint8Array, msg: Uint8Array, tag: Uint8Array): boolean {
+    return this.withBytes(key, (k) => this.withBytes(msg, (m) => this.withBytes(tag, (t) => this.x.hmac_verify(k.ptr, k.len, m.ptr, m.len, t.ptr, t.len)))) === 1;
   }
 
   /** 0 ok · 1 naam/bytes mismatch · 2 executable · 3 anjaan type (server dekhega). */

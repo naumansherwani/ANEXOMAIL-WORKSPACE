@@ -22,9 +22,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 1, 0);
+pub const VERSION: (u32, u32, u32) = (0, 2, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "sniff@1", "rank@1", "live@1", "rpc@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -122,6 +122,18 @@ pub extern "C" fn sha256_drop(h: u32) {
     hash::drop_hasher(h)
 }
 
+/* -------------------------------------------------------------- hmac-sha256 */
+/// HMAC-SHA256(key, msg): 32 bytes out buffer mein; wapas 32.
+#[unsafe(no_mangle)]
+pub extern "C" fn hmac_sha256(kp: u32, kl: u32, mp: u32, ml: u32) -> u32 {
+    set_out(hash::hmac_sha256(unsafe { bytes(kp, kl) }, unsafe { bytes(mp, ml) }).to_vec())
+}
+/// 1 = tag sahi (constant-time), 0 = nahi.
+#[unsafe(no_mangle)]
+pub extern "C" fn hmac_verify(kp: u32, kl: u32, mp: u32, ml: u32, tp: u32, tl: u32) -> u32 {
+    hash::hmac_verify(unsafe { bytes(kp, kl) }, unsafe { bytes(mp, ml) }, unsafe { bytes(tp, tl) }) as u32
+}
+
 /* -------------------------------------------------------------- sniff/rank */
 #[unsafe(no_mangle)]
 pub extern "C" fn sniff_check(name_ptr: u32, name_len: u32, head_ptr: u32, head_len: u32) -> i32 {
@@ -203,7 +215,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "sniff@1", "rank@1", "live@1", "rpc@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

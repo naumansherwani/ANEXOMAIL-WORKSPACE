@@ -3,7 +3,7 @@
 # (wasm-bindgen ke bina: sandbox mein CLI nahi, aur ABI chhota/auditable rehta hai). Version har naye module ke saath badhta hai.
 [package]
 name = "anexo-kernel"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2024"
 publish = false
 
