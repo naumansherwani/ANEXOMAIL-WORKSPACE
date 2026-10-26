@@ -193,7 +193,7 @@
 - I2-60 · Work: Notes → pro
 - I2-61 · Work: Promise inbox → pro
 - I2-62 · Work: Follow-through table → pro
-- I2-63 · Work: Promise recovery → pro
+- I2-63 · Work: Promise recovery → business
 - I2-65 · Goals + deadlines → pro
 - I2-66 · Team report + team time → business
 - I2-72 · Calendar rooms and resources → business

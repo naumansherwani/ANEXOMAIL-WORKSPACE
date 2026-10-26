@@ -18,7 +18,7 @@ src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 0ae61ddbdb0dd946
 src/lib/expiry.ts 0ceb310c152494f5
 src/components/app/dashboard/ExpiryWatch.tsx 83420c5510bd5513
-src/components/app/compose/ComposeStudio.tsx 52174069e6b6f7fd
+src/components/app/compose/ComposeStudio.tsx 86eb11571f92dd22
 src/components/site/AnexoMailField.tsx 4d0f9a34e273e888
 src/components/site/SiteNav.tsx 4b7533a4e09ff3a8
 src/components/site/PlanFeatureList.tsx 6419d9494509fbb0
@@ -118,7 +118,7 @@ src/lib/security-platform.ts d3383b6b2357c97c
 src/lib/settings.ts 93c2da143a18750b
 src/components/app/settings/SettingsBits.tsx 34207b0ce33787a9
 server/rust/cal_core.rs 81d39756b565dfc5
-server/rust/cal_glue.rs be0d7fa6a5d2b18f
+server/rust/cal_glue.rs dbb2fd9fe2bb8799
 AGENTS.md 4e1c2ff9ba601f86
 src/lib/use-drag-scroll.ts 28e2d575ab25a0aa
 src/routes/app.settings.tsx 0194f37c2757e3bf
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 7c526ae15fc01442
+docs/cursor-work/founder/founder-commands.md 1c8028a6271dbdb8
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh d53869ee54f4a53f
+docs/cursor-work/server/rust-engine-install.sh 088204f35158a598
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md c278a4af65124060
+docs/cursor-work/DONE-DO-NOT-REPEAT.md c99d3ca6883ff9f6
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -244,9 +244,9 @@ docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
 src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
-server/rust/main.rs 0bc892d5332d435a
+server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 6eef40f6345e601e
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md e18e4c0c455c3712
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md b41200b4bb4a412a
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md bd498f52f1862db6
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -524,7 +524,7 @@ docs/cursor-work/sql/CHECK_E74.sql cbf5c83923003804
 docs/cursor-work/sql/E74_calendar_event_files.sql beae54732261ec7b
 docs/cursor-work/sql/proofs/E74_proof.sql 4f63c2daa6b331f7
 server/rust/calfile_core.rs 8ded18e1b63fce5f
-server/rust/calfile_glue.rs 97f02b9cf3439812
+server/rust/calfile_glue.rs d4a16d318cfc5594
 src/components/app/calendar/EventFiles.tsx 7216a1b85f589dee
 src/lib/calendar-files.test.ts 849ddcf2e5c03f74
 src/lib/calendar-files.ts 2141d47f96219e92
@@ -636,7 +636,7 @@ src/components/app/calendar/EventRoom.tsx c45c126be8138fdb
 src/components/app/calendar/RoomsSettings.tsx 26a8ae8bca556f4c
 src/lib/rooms.test.ts be4189a43830b343
 src/lib/rooms.ts a3c8183960511157
-server/routes/calendar.ts 7494e2a84380ba34
+server/routes/calendar.ts 0b72df8f7d953d78
 src/components/app/mail/ThreadNote.tsx 63c294860d01d395
 docs/cursor-work/TECH-AUDIT-24OCT-RUST-PRIMARY.md a3e3b72801636ded
 docs/cursor-work/MIGRATION-PHASES-24OCT.md a21d359e59e7bba7
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md ddfbfb1ad173253d
+docs/packages/GREEN-LEDGER.md 12522ca6978fed09
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -737,12 +737,12 @@ src/lib/chat-files.ts b742f82b031b15db
 docs/cursor-work/server/kernel-check.sh c6ef86079433301a
 docs/cursor-work/server/brain-kernel-install.sh bb3879dfa6421bae
 src/routes/app.analytics.threads.tsx 1f16015b964437c4
-docs/packages/FEATURE-CATALOG.md b9f875393d43c99e
-docs/packages/basic/INCLUDES.md e55981529e0fc47e
+docs/packages/FEATURE-CATALOG.md c1695b0305bb2ca8
+docs/packages/basic/INCLUDES.md 806c6d1cf6c8512e
 docs/packages/build-views.py 3d296d6d74eabb3e
-docs/packages/features.tsv fed3e06ecacfe30c
-docs/packages/pro/INCLUDES.md 7ad463cf31a35cd9
-docs/packages/business/INCLUDES.md 8013311dbf67e74b
+docs/packages/features.tsv 3a4b93af66edb79f
+docs/packages/pro/INCLUDES.md 8c55d03a4d4055af
+docs/packages/business/INCLUDES.md 2bc048773446a5e3
 docs/packages/business_pro/INCLUDES.md 1500b0d27e6ea307
 docs/packages/enterprise/INCLUDES.md 09063d0e7c317239
-docs/packages/import-inventory.py edb2b763cf276a5a
+docs/packages/import-inventory.py 910f1154a53d4b00

@@ -52,6 +52,17 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         Some(x) => x,
         None => return crate::err(StatusCode::UNAUTHORIZED, "unauthorized", "").into_response(),
     };
+    // Files on a meeting = Pro+ (server gate; resolve_plan na mile to basic).
+    let plan = crate::sb_rpc("resolve_plan", json!({ "_user_id": uid, "_email": _email }))
+        .await
+        .ok()
+        .and_then(|v| v.as_str().map(|s| s.to_string()))
+        .unwrap_or_else(|| "basic".to_string());
+    if let Some(msg) = crate::cal_core::pro_only_cal_proc(proc, false) {
+        if !crate::cal_core::cost_allowed(&plan) {
+            return crate::err(StatusCode::FORBIDDEN, "feature_not_available", msg).into_response();
+        }
+    }
     let event = match cf::event_uuid(sv(input, "event_id")) {
         Some(e) => e,
         None => return fail_code("bad_id"),

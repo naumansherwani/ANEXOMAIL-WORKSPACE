@@ -41,3 +41,14 @@ Har line: cheez | kahan | test. Naya Claude: pehle yeh padho, phir docs/packages
 - Kernel: anexoKernel.rpcUp true
 - Meeting cost: object bheja jata hai (Basic null); hourly_total null jab attendee hourly rates set nahi — jhoota number nahi. Asli £ ke liye rates set honi chahiye (open: rates UI/entry)
 - Sidebar: Analytics Domains ke upar (founder hukm 09:19)
+
+## PRO GREEN BATCH 1 — 26 Oct 10:30 PKT (READY, deploy + live test baqi)
+Technology: Rust :3200 (Tokio async) primary; same dispatch HTTP + WebTransport /wt/rpc; Bun = fallback gate; core std-only tests (cal_core 48 pass).
+- Availability + Focus windows: Bun-only thay -> ab Rust procs calendar.availability / calendar.focus (cal_core::availability_slots, Pro+ gate), Bun fallback bhi Pro+.
+- Files on a meeting (calendar.files.*): Rust Pro+ gate (calfile_glue).
+- Meeting goal/outcome (calendar.meta.set with goal): Pro+ (calendar_key/remind Basic).
+- Thread rescue (chat.bridge.rescue): Pro+ server gate (main.rs) — pehle ungated tha.
+- Reading-time/level meter: Pro+ (UI; word count Basic).
+- Promise recovery: Business+ (code+INV; PP1 ka P+ CEO ne override), Goals+deadlines: tasks ke saath Pro+ (work.tasks server gate).
+- Baqi Pro: CRM P1 (pipelines/custom fields/duplicate merge), P2 (web forms) — founder haan.
+- Deploy: Rust (rust-engine-install.sh) phir Web (pull.sh). SQL nahi. Phir Chrome: Pro 200, Basic 403.

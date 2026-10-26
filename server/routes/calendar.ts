@@ -86,6 +86,15 @@ async function costForPlan(c: { userId: string; email: string }, events: any[]) 
   return plan === "basic" ? events.map((e) => ({ ...e, cost: null })) : events;
 }
 
+/** Availability / Focus windows = Pro+ (PP1 #3b). Rust cal_glue primary; yeh Bun fallback ka wahi gate. Plan na mile to Basic. */
+async function isBasic(c: { userId: string; email: string }): Promise<boolean> {
+  try {
+    return (await resolvePlan(c.userId, c.email)) === "basic";
+  } catch {
+    return true;
+  }
+}
+
 async function shapeEvents(orgId: string, rows: any[]) {
   const ids = rows.map((r) => r.id);
   const { data: att } = ids.length
@@ -259,6 +268,7 @@ calendar.post(
 calendar.get(
   "/calendar/availability",
   guard(async (c, req, res) => {
+    if (await isBasic(c)) return res.status(403).json({ error: "feature_not_available", message: "Availability and focus windows are a Pro+ feature." });
     const day = String(req.query.date || new Date().toISOString().slice(0, 10));
     const start = new Date(`${day}T00:00:00.000Z`);
     const end = new Date(start.getTime() + 24 * 60 * MIN);
@@ -299,6 +309,7 @@ calendar.get(
 calendar.get(
   "/calendar/focus",
   guard(async (c, _req, res) => {
+    if (await isBasic(c)) return res.status(403).json({ error: "feature_not_available", message: "Availability and focus windows are a Pro+ feature." });
     const base = supa.from("calendar_focus_windows").select("*").order("weekday", { ascending: true });
     const { data } = c.orgId ? await base.eq("org_id", c.orgId) : await base.eq("created_by", c.userId);
     res.json({

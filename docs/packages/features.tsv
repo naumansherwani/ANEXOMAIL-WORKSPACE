@@ -10,16 +10,16 @@ I1-06	CAL	Guests' local time shown next to each attendee	basic	MATCHES-CODE	cale
 I1-07	CAL	Find-a-time	basic	MATCHES-CODE	FindTime.tsx, lib/find-time.ts	code-gate: none
 I1-08	CAL	Overlap Matrix	pro	MATCHES-CODE	OverlapMatrix.tsx, lib/overlap.ts	code-gate: none · server gate GREEN 07:40 (ledger)
 I1-09	CAL	Focus Ring	pro	MATCHES-CODE	FocusRing.tsx	code-gate: none · server gate GREEN 07:40 (ledger)
-I1-10	CAL	Availability / free-busy + focus windows view	pro	GATE-TO-BUILD	Availability.tsx, calendar.ts useAvailability/useFocusWindows	code-gate: none
+I1-10	CAL	Availability / free-busy + focus windows view	pro	MATCHES-CODE	Availability.tsx, calendar.ts useAvailability/useFocusWindows	code-gate: none · server gate GREEN 07:40 (ledger)
 I1-11	CAL	Working hours + out-of-office periods	basic	MATCHES-CODE	CalSettings.tsx, lib/calprefs.ts	code-gate: none
 I1-12	CAL	Multiple calendars with name + colour palette	basic	MATCHES-CODE	CalSettings.tsx, calprefs.ts	code-gate: none
 I1-13	CAL	Reminders	basic	MATCHES-CODE	ReminderWatcher.tsx, calprefs.ts REMINDER_CHOICES	code-gate: none
 I1-14	CAL	Public booking page	basic	MATCHES-CODE	BookingPage.tsx, routes/book.$handle.tsx, lib/booking.ts	code-gate: none
 I1-15	CAL	Manage a booking	basic	MATCHES-CODE	routes/book.manage.tsx, booking.ts manage*	code-gate: none
 I1-16	CAL	Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side	business	GATE-TO-BUILD	EventRoom.tsx, RoomsSettings.tsx, lib/rooms.ts	code-gate: none
-I1-17	CAL	Files on a meeting	pro	GATE-TO-BUILD	EventFiles.tsx, lib/calendar-files.ts	code-gate: none
+I1-17	CAL	Files on a meeting	pro	MATCHES-CODE	EventFiles.tsx, lib/calendar-files.ts	code-gate: none · server gate GREEN 07:40 (ledger)
 I1-18	CAL	Meeting cost	pro	MATCHES-CODE	calendar.ts MeetingCost	code-gate: none · server gate GREEN 07:40 (ledger)
-I1-19	CAL	Meeting goal + Achieved/Missed outcome colours	pro	GATE-TO-BUILD	lib/goal.ts, EventDetail.tsx	code-gate: none
+I1-19	CAL	Meeting goal + Achieved/Missed outcome colours	pro	MATCHES-CODE	lib/goal.ts, EventDetail.tsx	code-gate: none · server gate GREEN 07:40 (ledger)
 I1-20	CAL	Outside calendars	basic	MATCHES-CODE	OutsideCalendars.tsx, lib/calendar-subs.ts	code-gate: none
 I1-21	CAL	Phone/desktop calendar apps via CalDAV	basic	MATCHES-CODE	PhoneCalendar.tsx, lib/caldav.ts	code-gate: none
 I1-22	CAL	Calendar feed links	basic	MATCHES-CODE	PhoneFeed.tsx, caldav.ts MAX_FEED_LINKS	code-gate: none
@@ -42,7 +42,7 @@ I1-38	MAIL	Keyboard shortcuts in inbox	pro	MATCHES-CODE	app.mail.$folder.tsx L15
 I1-39	MAIL	Snooze thread to a time	pro	MATCHES-CODE	ThreadHeaderActions.tsx, mail.ts snoozePresets	code-gate: Pro+ (FeatureGate requires=pro)
 I1-40	MAIL	Private note on a thread	pro	MATCHES-CODE	ThreadNote.tsx	code-gate: Pro+ (showProMailTools)
 I1-41	MAIL	Per-thread analytics	pro	MATCHES-CODE	ThreadInsights.tsx, compose.ts useThreadInsights	code-gate: Pro+ per formula; component gate not found
-I1-42	MAIL	Thread rescue	pro	GATE-TO-BUILD	ThreadRescue.tsx	code-gate: not found
+I1-42	MAIL	Thread rescue	pro	MATCHES-CODE	ThreadRescue.tsx	code-gate: not found · server gate GREEN 07:40 (ledger)
 I1-43	MAIL	Thread header: link to Work item / Chat / Discuss in chat	business	MATCHES-CODE	ThreadHeaderActions.tsx, DiscussInChat.tsx, QuoteInChat.tsx	code-gate: showWork + showChat
 I1-44	MAIL	Inline reply / reply-all / forward inside the thread	basic	MATCHES-CODE	InlineReply.tsx	code-gate: none
 I1-45	MAIL	Outbox	basic	MATCHES-CODE	routes/app.mail.outbox.tsx	code-gate: none
@@ -56,7 +56,7 @@ I1-52	MAIL	Signatures	basic	MATCHES-CODE	compose.ts useSignatures	code-gate: non
 I1-53	MAIL	Pre-send confidence scan	pro	MATCHES-CODE	compose.ts useSendConfidence	code-gate: none found · server gate GREEN 07:40 (ledger)
 I1-54	MAIL	Follow-up reminders	pro	MATCHES-CODE	compose.ts useCreateFollowUp/useFollowUps	code-gate: none found · server gate GREEN 07:40 (ledger)
 I1-55	MAIL	Writing-style word prediction	basic	MATCHES-CODE	GhostTextArea.tsx, lib/mail-predict.ts	code-gate: none found
-I1-56	MAIL	Reading time / reading level meter	pro	GATE-TO-BUILD	compose.ts readingStats	code-gate: none
+I1-56	MAIL	Reading time / reading level meter	pro	MATCHES-CODE	compose.ts readingStats	code-gate: none · server gate GREEN 07:40 (ledger)
 I1-57	MAIL	Send from a chosen identity	pro	MATCHES-CODE	mail.ts useIdentities	code-gate: Pro+ (showMultipleIdentities)
 I1-58	MAIL	File attachments on send	basic	MATCHES-CODE	lib/mail-attachments*.ts	code-gate: per-plan size cap (25/35/45/60/100 MB in v6 - code still reads server limits)
 I1-59	MAIL	Cross-device draft handoff	pro	MATCHES-CODE	lib/handoff.ts	code-gate: none found · server gate GREEN 07:40 (ledger)
@@ -137,9 +137,9 @@ I2-59	INV2	Work: Add task + TaskBoard	pro	MATCHES-CODE	routes/app.work.tsx, work
 I2-60	INV2	Work: Notes	pro	MATCHES-CODE	work/NoteDoc.tsx	code-gate: showWork
 I2-61	INV2	Work: Promise inbox	pro	MATCHES-CODE	work/PromiseInbox.tsx, lib/promise-engine.ts	code-gate: showProMailTools (Pro+)
 I2-62	INV2	Work: Follow-through table	pro	MATCHES-CODE	work/FollowThrough.tsx	code-gate: Pro+
-I2-63	INV2	Work: Promise recovery	pro	GATE-TO-BUILD	work/PromiseRecovery.tsx	code-gate: showWorkBusinessRecord (Business+)
+I2-63	INV2	Work: Promise recovery	business	MATCHES-CODE	work/PromiseRecovery.tsx	code-gate: showWorkBusinessRecord (Business+) · server gate GREEN 07:40 (ledger)
 I2-64	INV2	Work: Locked Pro preview	basic	MATCHES-CODE	routes/app.work.tsx LockedProWorkPreview	code-gate: Basic wall
-I2-65	INV2	Goals + deadlines	pro	GATE-TO-BUILD	lib/goal.ts, lib/deadline.ts	code-gate: none found
+I2-65	INV2	Goals + deadlines	pro	MATCHES-CODE	lib/goal.ts, lib/deadline.ts	code-gate: none found · server gate GREEN 07:40 (ledger)
 I2-66	INV2	Team report + team time	business	GATE-TO-BUILD	lib/team-report.ts, lib/team.ts, dashboard/TeamTime.tsx	code-gate: none found
 I2-67	INV2	Dashboard home	basic	MATCHES-CODE	routes/app.index.tsx, components/app/dashboard/*	code-gate: showDashboard (all)
 I2-68	INV2	Expiry watch	basic	MATCHES-CODE	dashboard/ExpiryWatch.tsx, lib/expiry.ts	code-gate: none

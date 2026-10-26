@@ -1,24 +1,24 @@
 # Pro £105 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (44)
+## NAYA is package par (43)
 
 - I1-08 · Overlap Matrix [MATCHES-CODE]
 - I1-09 · Focus Ring [MATCHES-CODE]
-- I1-10 · Availability / free-busy + focus windows view [GATE-TO-BUILD]
-- I1-17 · Files on a meeting [GATE-TO-BUILD]
+- I1-10 · Availability / free-busy + focus windows view [MATCHES-CODE]
+- I1-17 · Files on a meeting [MATCHES-CODE]
 - I1-18 · Meeting cost [MATCHES-CODE]
-- I1-19 · Meeting goal + Achieved/Missed outcome colours [GATE-TO-BUILD]
+- I1-19 · Meeting goal + Achieved/Missed outcome colours [MATCHES-CODE]
 - I1-38 · Keyboard shortcuts in inbox [MATCHES-CODE]
 - I1-39 · Snooze thread to a time [MATCHES-CODE]
 - I1-40 · Private note on a thread [MATCHES-CODE]
 - I1-41 · Per-thread analytics [MATCHES-CODE]
-- I1-42 · Thread rescue [GATE-TO-BUILD]
+- I1-42 · Thread rescue [MATCHES-CODE]
 - I1-49 · Schedule send [MATCHES-CODE]
 - I1-50 · Templates with {{variables}} [MATCHES-CODE]
 - I1-51 · Snippets [MATCHES-CODE]
 - I1-53 · Pre-send confidence scan [MATCHES-CODE]
 - I1-54 · Follow-up reminders [MATCHES-CODE]
-- I1-56 · Reading time / reading level meter [GATE-TO-BUILD]
+- I1-56 · Reading time / reading level meter [MATCHES-CODE]
 - I1-57 · Send from a chosen identity [MATCHES-CODE]
 - I1-59 · Cross-device draft handoff [MATCHES-CODE]
 - I1-68 · Link to full CRM [MATCHES-CODE]
@@ -39,8 +39,7 @@
 - I2-60 · Work: Notes [MATCHES-CODE]
 - I2-61 · Work: Promise inbox [MATCHES-CODE]
 - I2-62 · Work: Follow-through table [MATCHES-CODE]
-- I2-63 · Work: Promise recovery [GATE-TO-BUILD]
-- I2-65 · Goals + deadlines [GATE-TO-BUILD]
+- I2-65 · Goals + deadlines [MATCHES-CODE]
 - I2-74 · Deep work [MATCHES-CODE]
 - I2-79 · Thread economics [MATCHES-CODE]
 - N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [PROPOSED]
@@ -156,15 +155,8 @@
 - I3-58 · Managed Move-In bands £568/1,670/2,210/3,350
 - N-ANA-01 · Analytics Center data backend (7 reports, Rust+WT)
 
-## GREEN hone mein BAQI (10) — gate/feature banana baqi
+## GREEN hone mein BAQI (3) — gate/feature banana baqi
 
-- I1-10 · Availability / free-busy + focus windows view [GATE-TO-BUILD]
-- I1-17 · Files on a meeting [GATE-TO-BUILD]
-- I1-19 · Meeting goal + Achieved/Missed outcome colours [GATE-TO-BUILD]
-- I1-42 · Thread rescue [GATE-TO-BUILD]
-- I1-56 · Reading time / reading level meter [GATE-TO-BUILD]
-- I2-63 · Work: Promise recovery [GATE-TO-BUILD]
-- I2-65 · Goals + deadlines [GATE-TO-BUILD]
 - N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [PROPOSED]
 - N-CRM-02 · Duplicate detect + merge [PROPOSED]
 - N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited) [PROPOSED]
@@ -209,6 +201,7 @@
 - I2-53 · CRM risk → business
 - I2-54 · CRM activity timeline + evidence → business_pro
 - I2-55 · CRM relationship graph → business_pro
+- I2-63 · Work: Promise recovery → business
 - I2-66 · Team report + team time → business
 - I2-72 · Calendar rooms and resources → business
 - I2-75 · Forecast → business

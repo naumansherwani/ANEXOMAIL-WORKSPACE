@@ -84,7 +84,7 @@ patch_main() { python3 - "$1" "$MODS" <<'PY'
 import sys,re
 p=sys.argv[1]; mods=sys.argv[2].split(); s=open(p).read()
 CFG={
- "cal":    {"public": True,  "label": "calendar",  "procs": ['"calendar.create"']},
+ "cal":    {"public": True,  "label": "calendar",  "procs": ['"calendar.create"','"calendar.availability"','"calendar.focus"']},
  # book (B7c): Booking page anexomail.com/book/<handle> — slots, booking, cancel/reschedule, mails. SQL E59 PEHLE. cal module ke saath (cal_core.rs share).
  "book":   {"public": True,  "label": "booking",   "procs": ['"booking.page.get"','"booking.page.set"','"booking.public.book"'],
             "public_call": "public(&proc, &input, &headers)"},

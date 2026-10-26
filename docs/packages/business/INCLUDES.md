@@ -1,6 +1,6 @@
 # Business £360 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (58)
+## NAYA is package par (59)
 
 - I1-16 · Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side [GATE-TO-BUILD]
 - I1-43 · Thread header: link to Work item / Chat / Discuss in chat [MATCHES-CODE]
@@ -37,6 +37,7 @@
 - I2-51 · Team permissions [MATCHES-CODE]
 - I2-52 · CRM audit [MATCHES-CODE]
 - I2-53 · CRM risk [MATCHES-CODE]
+- I2-63 · Work: Promise recovery [MATCHES-CODE]
 - I2-66 · Team report + team time [GATE-TO-BUILD]
 - I2-72 · Calendar rooms and resources [GATE-TO-BUILD]
 - I2-75 · Forecast [GATE-TO-BUILD]
@@ -61,7 +62,7 @@
 - N-CRM-11 · Custom CRM dashboards [PROPOSED]
 - N-DOC-01 · CRDT collaborative docs (Personal NAHI) [PROPOSED]
 
-## Neeche ke packages se inherit (150)
+## Neeche ke packages se inherit (149)
 
 - I1-01 · Month/Week/Day calendar grid
 - I1-02 · Create / edit / delete meetings
@@ -158,7 +159,6 @@
 - I2-60 · Work: Notes
 - I2-61 · Work: Promise inbox
 - I2-62 · Work: Follow-through table
-- I2-63 · Work: Promise recovery
 - I2-64 · Work: Locked Pro preview
 - I2-65 · Goals + deadlines
 - I2-67 · Dashboard home

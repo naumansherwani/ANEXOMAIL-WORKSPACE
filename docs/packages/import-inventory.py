@@ -82,8 +82,10 @@ def inv2(c):
         return "business_pro"
     if i == 57:
         return "founder"
-    if 59 <= i <= 63 or i == 65:
+    if 59 <= i <= 62 or i == 65:
         return "pro"
+    if i == 63:
+        return "business"  # CEO: Promise recovery code+INV mein Business+ (showWorkBusinessRecord); PP1 #15 ka P+ is se override
     if i == 66 or i == 72 or i in (75, 76, 77, 78, 80):
         return "business"
     if i in (74, 79):
@@ -153,7 +155,9 @@ for id_, area, name, tier, ev in NEW:
     rows.append([id_, area, name, tier, "PROPOSED" if id_ != "N-ANA-01" and id_ != "N-ENT-01" else ("PP1" if id_ == "N-ENT-01" else "MATCHES-CODE"), ev, ""])
 
 # 07:40 ke baad server-side gate GREEN (docs/packages/GREEN-LEDGER.md): inventory 04:30 ki thi, isliye override
-GATED_SINCE_0740 = {"I1-08", "I1-09", "I1-18", "I1-53", "I1-54", "I1-59", "I2-74", "I2-79"}
+GATED_SINCE_0740 = {"I1-08", "I1-09", "I1-18", "I1-53", "I1-54", "I1-59", "I2-74", "I2-79",
+                    # 26 Oct 10:30 Pro-green batch: Rust cal_glue/calfile_glue/main.rs server gate + Bun fallback + UI
+                    "I1-10", "I1-17", "I1-19", "I1-42", "I1-56", "I2-65", "I2-63"}
 for r in rows:
     if r[0] in GATED_SINCE_0740:
         r[4] = "MATCHES-CODE"; r[6] = (r[6] + " · server gate GREEN 07:40 (ledger)")[:160]

@@ -1102,3 +1102,8 @@ Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexo
 ## 26 Oct 09:20 — BRAIN dobara (sirf analytics fallback guroh A: live index.ts mein mount nahi laga tha; ab 3-line anchor patch). MFA (guroh B) pehle se live. Koi SQL/Web nahi.
 `bash <(git -C /opt/anexomail-web fetch -q origin main; git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`
 - Web pull.sh (Business 60 users / storage copy live karne ke liye): git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)
+
+## 26 Oct 10:30 — Pro GREEN batch 1 (SQL nahi). Tarteeb: Rust phir Web
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
+3. Brain (Bun fallback gate bhi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/brain-kernel-install.sh)`

@@ -539,3 +539,4 @@ Marketing lines hata di: WASM "microseconds", zero-copy, hardware-accelerated, "
 - 26 Oct 09:50 Enterprise £18,500 + Bun-free; features.tsv catalog (73 features, 16 PROPOSED, 3 TODO-VERIFY); CRM-PHASES.md (6 phases TODO); Business 60 users + card storage copy fixed (repo, Web pull baqi)
 - 26 Oct 09:51 founder dobara confirm: Business Pro 570 users/10TB/60MB; Enterprise unlimited/15TB/100MB; Business 60 users/1.5TB/45MB (repo ke v6 doc se match)
 - 26 Oct 10:05 features.tsv ab kal raat ke INV-1/2/3 + PP1 se (226 rows); pehle ki 73-row list GALAT thi (replace). Pro video NAHI (Business+).
+- 26 Oct 10:30 Pro GREEN batch 1 READY (calendar availability/focus/files/goal + thread rescue + reading meter gates); deploy Rust+Web baqi

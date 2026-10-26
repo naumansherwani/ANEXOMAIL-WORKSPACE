@@ -15,16 +15,16 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | I1-07 | CAL | Find-a-time | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-08 | CAL | Overlap Matrix | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-09 | CAL | Focus Ring | - | Y | Y | Y | Y | MATCHES-CODE |
-| I1-10 | CAL | Availability / free-busy + focus windows view | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I1-10 | CAL | Availability / free-busy + focus windows view | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-11 | CAL | Working hours + out-of-office periods | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-12 | CAL | Multiple calendars with name + colour palette | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-13 | CAL | Reminders | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-14 | CAL | Public booking page | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-15 | CAL | Manage a booking | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-16 | CAL | Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side | - | - | Y | Y | Y | GATE-TO-BUILD |
-| I1-17 | CAL | Files on a meeting | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I1-17 | CAL | Files on a meeting | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-18 | CAL | Meeting cost | - | Y | Y | Y | Y | MATCHES-CODE |
-| I1-19 | CAL | Meeting goal + Achieved/Missed outcome colours | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I1-19 | CAL | Meeting goal + Achieved/Missed outcome colours | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-20 | CAL | Outside calendars | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-21 | CAL | Phone/desktop calendar apps via CalDAV | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-22 | CAL | Calendar feed links | Y | Y | Y | Y | Y | MATCHES-CODE |
@@ -47,7 +47,7 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | I1-39 | MAIL | Snooze thread to a time | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-40 | MAIL | Private note on a thread | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-41 | MAIL | Per-thread analytics | - | Y | Y | Y | Y | MATCHES-CODE |
-| I1-42 | MAIL | Thread rescue | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I1-42 | MAIL | Thread rescue | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-43 | MAIL | Thread header: link to Work item / Chat / Discuss in chat | - | - | Y | Y | Y | MATCHES-CODE |
 | I1-44 | MAIL | Inline reply / reply-all / forward inside the thread | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-45 | MAIL | Outbox | Y | Y | Y | Y | Y | MATCHES-CODE |
@@ -61,7 +61,7 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | I1-53 | MAIL | Pre-send confidence scan | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-54 | MAIL | Follow-up reminders | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-55 | MAIL | Writing-style word prediction | Y | Y | Y | Y | Y | MATCHES-CODE |
-| I1-56 | MAIL | Reading time / reading level meter | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I1-56 | MAIL | Reading time / reading level meter | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-57 | MAIL | Send from a chosen identity | - | Y | Y | Y | Y | MATCHES-CODE |
 | I1-58 | MAIL | File attachments on send | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-59 | MAIL | Cross-device draft handoff | - | Y | Y | Y | Y | MATCHES-CODE |
@@ -142,9 +142,9 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | I2-60 | INV2 | Work: Notes | - | Y | Y | Y | Y | MATCHES-CODE |
 | I2-61 | INV2 | Work: Promise inbox | - | Y | Y | Y | Y | MATCHES-CODE |
 | I2-62 | INV2 | Work: Follow-through table | - | Y | Y | Y | Y | MATCHES-CODE |
-| I2-63 | INV2 | Work: Promise recovery | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I2-63 | INV2 | Work: Promise recovery | - | - | Y | Y | Y | MATCHES-CODE |
 | I2-64 | INV2 | Work: Locked Pro preview | Y | Y | Y | Y | Y | MATCHES-CODE |
-| I2-65 | INV2 | Goals + deadlines | - | Y | Y | Y | Y | GATE-TO-BUILD |
+| I2-65 | INV2 | Goals + deadlines | - | Y | Y | Y | Y | MATCHES-CODE |
 | I2-66 | INV2 | Team report + team time | - | - | Y | Y | Y | GATE-TO-BUILD |
 | I2-67 | INV2 | Dashboard home | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I2-68 | INV2 | Expiry watch | Y | Y | Y | Y | Y | MATCHES-CODE |

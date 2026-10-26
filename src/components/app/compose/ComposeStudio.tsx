@@ -1008,7 +1008,7 @@ export function ComposeStudio({
           )}
           <span className="ml-auto hidden items-center gap-2 text-[10px] text-steel sm:flex">
             <FileText className="size-3" />
-            {stats.words} words · {stats.seconds}s read · {stats.level}
+            {stats.words} words{proMail ? ` · ${stats.seconds}s read · ${stats.level}` : ""}
             {savedAt ? ` · saved ${new Date(savedAt).toLocaleTimeString()}` : ""}
           </span>
         </div>

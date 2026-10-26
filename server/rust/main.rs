@@ -4173,7 +4173,15 @@ async fn dispatch(
             let title = s(&input, "title");
             let owner = s(&input, "owner_user_id");
             let due = s(&input, "due_at");
-            if thread.is_empty() || title.trim().len() < 3 || owner.is_empty() || due.is_empty() {
+            // Thread rescue = Pro+ (PP1 #8). resolve_plan na mile to basic.
+            let rescue_plan = sb_rpc("resolve_plan", json!({ "_user_id": me.id, "_email": me.email }))
+                .await
+                .ok()
+                .and_then(|v| v.as_str().map(|x| x.to_string()))
+                .unwrap_or_else(|| "basic".to_string());
+            if rescue_plan == "basic" {
+                Err("feature_not_available: Thread rescue is a Pro+ feature.".to_string())
+            } else if thread.is_empty() || title.trim().len() < 3 || owner.is_empty() || due.is_empty() {
                 Err("mail_thread_id_title_owner_and_due_required".to_string())
             } else {
                 sb_rpc(

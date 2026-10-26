@@ -41,6 +41,8 @@ pub fn owns(proc: &str) -> bool {
             | "calendar.load"
             | "calendar.meta.set"
             | "calendar.history"
+            | "calendar.availability"
+            | "calendar.focus"
     )
 }
 
@@ -701,13 +703,19 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
         Ok(m) => m,
         Err(r) => return r,
     };
-    let resp = dispatch_inner(proc, &me, input).await;
-    // Meeting cost = Pro+ (SERVER par). resolve_plan na mile to basic maana jata hai.
+    // Plan EK baar (resolve_plan na mile to basic maana jata hai): Pro+ gate + meeting cost dono isi se.
     let plan = crate::sb_rpc("resolve_plan", json!({ "_user_id": me.id, "_email": me.email }))
         .await
         .ok()
         .and_then(|v| v.as_str().map(|s| s.to_string()))
         .unwrap_or_else(|| "basic".to_string());
+    let has_goal = input.get("goal").is_some() || input.get("goal_state").is_some();
+    if let Some(msg) = cal::pro_only_cal_proc(proc, has_goal) {
+        if !cal::cost_allowed(&plan) {
+            return fail(StatusCode::FORBIDDEN, "feature_not_available", msg);
+        }
+    }
+    let resp = dispatch_inner(proc, &me, input).await;
     if cal::cost_allowed(&plan) || !resp.status().is_success() {
         return resp;
     }
@@ -741,6 +749,8 @@ async fn dispatch_inner(proc: &str, me: &Who, input: &Value) -> axum::response::
         "calendar.update" => update(&me, input).await,
         "calendar.invites.resend" => resend(&me, input).await,
         "calendar.busy" => busy(&me, input).await,
+        "calendar.availability" => availability(&me, input).await,
+        "calendar.focus" => focus(&me).await,
         "calendar.findtime" => findtime(&me, input).await,
         "calendar.guests" => guests(&me, input).await,
         "calendar.events" => events(&me, input).await,
@@ -2065,4 +2075,78 @@ pub async fn public(proc: &str, input: &Value) -> axum::response::Response {
             "Calendar failed",
         ),
     }
+}
+
+/* ----------------------------------------------- Availability + Focus (Bun se Rust, Pro+) */
+
+fn scope_filter(me: &Who) -> String {
+    if me.org_id.is_empty() {
+        format!("created_by=eq.{}", enc(&me.id))
+    } else {
+        format!("org_id=eq.{}", enc(&me.org_id))
+    }
+}
+
+async fn availability(me: &Who, input: &Value) -> axum::response::Response {
+    let day = st(input, "date");
+    let day_start = if day.is_empty() {
+        let n = now_epoch();
+        n - n.rem_euclid(86_400)
+    } else {
+        match cal::parse_ts(&format!("{}T00:00:00Z", day.chars().take(10).collect::<String>())) {
+            Some(t) => t,
+            None => return fail(StatusCode::BAD_REQUEST, "bad_date", "date must be YYYY-MM-DD"),
+        }
+    };
+    let (a, b) = (cal::fmt_rfc3339(day_start), cal::fmt_rfc3339(day_start + 86_400));
+    let ev_q = format!(
+        "calendar_events?select=starts_at,ends_at,title&{}&starts_at=gte.{}&starts_at=lt.{}&limit=500",
+        scope_filter(me), enc(&a), enc(&b)
+    );
+    let win_q = format!("calendar_focus_windows?select=weekday,start_minute,end_minute,label&{}&limit=200", scope_filter(me));
+    let (evs, wins) = tokio::join!(crate::sb_select(&ev_q), crate::sb_select(&win_q));
+    let (Ok(evs), Ok(wins)) = (evs, wins) else {
+        return fail(StatusCode::BAD_GATEWAY, "db_unavailable", "Availability could not be read");
+    };
+    let events: Vec<(i64, i64, String)> = evs
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .iter()
+        .filter_map(|e| Some((cal::parse_ts(&st(e, "starts_at"))?, cal::parse_ts(&st(e, "ends_at"))?, st(e, "title"))))
+        .collect();
+    let windows: Vec<(i64, i64, i64, String)> = wins
+        .as_array()
+        .cloned()
+        .unwrap_or_default()
+        .iter()
+        .map(|w| (w["weekday"].as_i64().unwrap_or(-1), w["start_minute"].as_i64().unwrap_or(0), w["end_minute"].as_i64().unwrap_or(0), st(w, "label")))
+        .collect();
+    let slots = cal::availability_slots(day_start, &events, &windows);
+    crate::ok(json!({
+        "slots": slots.iter().map(|s| json!({
+            "starts_at": cal::fmt_rfc3339(s.start), "ends_at": cal::fmt_rfc3339(s.end),
+            "state": s.state, "label": s.label,
+        })).collect::<Vec<_>>(),
+        "share_url": format!("/api/calendar/availability?date={}", cal::fmt_rfc3339(day_start).chars().take(10).collect::<String>()),
+    }))
+    .into_response()
+}
+
+async fn focus(me: &Who) -> axum::response::Response {
+    let q = format!(
+        "calendar_focus_windows?select=id,label,weekday,start_minute,end_minute,protected&{}&order=weekday.asc&limit=200",
+        scope_filter(me)
+    );
+    match crate::sb_select(&q).await {
+        Ok(v) => crate::ok(json!({ "windows": v })).into_response(),
+        Err(_) => fail(StatusCode::BAD_GATEWAY, "db_unavailable", "Focus windows could not be read"),
+    }
+}
+
+/// PostgREST filter value: sirf unreserved characters raw, baaki %XX (filter injection nahi).
+fn enc(v: &str) -> String {
+    v.bytes()
+        .map(|b| if b.is_ascii_alphanumeric() || matches!(b, b'-' | b'_' | b'.' | b'~') { (b as char).to_string() } else { format!("%{:02X}", b) })
+        .collect()
 }
