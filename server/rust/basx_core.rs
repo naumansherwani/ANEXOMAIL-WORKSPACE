@@ -1,9 +1,9 @@
 // basx_core — Basic-baaqi chhote endpoints ka dimaag (storage, support, dashboard.ai-usage, workspace.setActive). std-only.
 // Bun twins: storage.ts, support.ts, dashboard.ts, workspace.ts. Sab plans (Basic + Pro) — koi plan gate nahi.
 
-pub const PROCS: [&str; 10] = [
+pub const PROCS: [&str; 9] = [
     "storage.state", "storage.preflight", "storage.reserve", "storage.commit", "storage.release",
-    "support.sla", "support.drafts", "support.draftDiscard", "dashboard.ai-usage", "workspace.setActive",
+    "support.sla", "support.drafts", "support.draftDiscard", "workspace.setActive",
 ];
 
 pub fn owns_name(p: &str) -> bool {

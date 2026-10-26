@@ -90,7 +90,6 @@ chk "RUST contacts.update nothing (400)" "$(rpc contacts.update '{"id":"00000000
 chk "RUST companies.get missing (409)" "$(rpc companies.get '{"domain":"nope.invalid"}')" 409
 chk "RUST storage.state (all plans 200)" "$(rpc storage.state '{}')" 200
 chk "RUST storage.preflight bad kind (400)" "$(rpc storage.preflight '{"mailbox":"a@b.com","kind":"video"}')" 400
-chk "RUST dashboard.ai-usage (all plans 200)" "$(rpc dashboard.ai-usage '{}')" 200
 chk "RUST support.drafts (login, own org 200)" "$(rpc support.drafts '{}')" 200
 chk "RUST support.draftDiscard bad id (400)" "$(rpc support.draftDiscard '{"id":"x;y"}')" 400
 chk "RUST workspace.setActive missing org (400)" "$(rpc workspace.setActive '{}')" 400

@@ -699,3 +699,6 @@ basx_core (2 tests)+basx_glue, full crate cargo check PASS (authx+contx+basx). L
 
 ## 27 Oct 2026 02:40 PKT — auth.session LIVE GREEN (authx)
 Founder deploy 01:19: Rust restart 184, Web pull OK, basic/pro ALL PASS (auth.session 200 + shape), KERNEL ALL PASS. Chrome proof: /app/people fresh load par /api/auth/session REST NAHI (sirf kernel). Top REST ab sirf contacts/companies/tags (contx deploy pending) — unka /rpc 404 -> Bun fallback sahi chal raha (fallback saboot). NOTE: founder ne 01:19 par PURANA (authx-only) command chalaya; Rust list mein contx+basx abhi NAHI. Dobara wahi 6 commands chalane hain (founder-commands 02:20) — installer ab contx+basx lagayega.
+
+## 27 Oct 2026 02:55 PKT — INSTALLER FAIL fix (basx)
+Founder deploy 01:24: installer ruk gaya ('dashboard.ai-usage' live main.rs mein pehle se Rust par) — kuch install NAHI hua, server wahi purana, KERNEL ALL PASS, kuch toota nahi (safe-stop). Galti: mera clash-scan dhila tha. Fix: dashboard.ai-usage basx se hata diya (basx ab 9 procs). Naya docs/cursor-work/server/installer-dryrun.sh: deploy se PEHLE installer ka patch-step repo main.rs par chalta hai + proc clash scan; authx contx basx dry-run PASS, full crate cargo check PASS. LESSON: har naye module par dryrun pehle, phir founder ko command.

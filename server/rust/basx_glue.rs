@@ -107,7 +107,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
                 Err(e) => fail(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e),
             }
         }
-        "support.drafts" | "support.draftDiscard" | "dashboard.ai-usage" => {
+        "support.drafts" | "support.draftDiscard" => {
             let me = match crate::mail_identity(token, &st(input, "org_id")).await {
                 Ok(m) => m,
                 Err((status, code, msg)) => return fail(status, code, &msg),
@@ -129,19 +129,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
                         Err(e) => fail(StatusCode::INTERNAL_SERVER_ERROR, "db_error", &e),
                     }
                 }
-                _ => {
-                    let row = first(crate::sb_select(&format!("ai_credits?select=enabled,plan,credits_total,credits_used,period_end&org_id=eq.{oq}&limit=1")).await);
-                    let g = |k: &str| row.as_ref().and_then(|r| r.get(k)).cloned().unwrap_or(Value::Null);
-                    let n = |k: &str| row.as_ref().and_then(|r| r.get(k)).and_then(|x| x.as_f64().or_else(|| x.as_str().and_then(|s| s.parse().ok()))).unwrap_or(0.0);
-                    crate::ok(json!({
-                        "enabled": g("enabled").as_bool().unwrap_or(false),
-                        "plan": g("plan"),
-                        "credits_total": n("credits_total"),
-                        "credits_used": n("credits_used"),
-                        "period_end": g("period_end"),
-                    }))
-                    .into_response()
-                }
+                _ => fail(StatusCode::NOT_FOUND, "unknown_proc", "unknown proc"),
             }
         }
         "workspace.setActive" => {
