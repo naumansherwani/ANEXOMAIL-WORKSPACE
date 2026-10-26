@@ -205,10 +205,21 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
             if first(a).is_none() && first(b).is_none() {
                 return fail(StatusCode::CONFLICT, "not_found", "Organisation not found");
             }
+            // BUG FIX (27 Oct): upsert mojooda row par bhi INSERT-tuple banata hai, NOT NULL email/legal_name/display_name khali => fail.
+            // Row hai => PATCH; nahi => poori INSERT.
             let prof = first(crate::sb_select(&format!("account_profiles?select=preferences&user_id=eq.{}&limit=1", enc(&uid))).await);
-            let mut prefs = prof.and_then(|p| p.get("preferences").cloned()).filter(|p| p.is_object()).unwrap_or(json!({}));
-            prefs["active_organisation_id"] = json!(org);
-            match crate::sb_upsert("account_profiles", "user_id", json!({ "user_id": uid, "preferences": prefs, "updated_at": chrono_now() })).await {
+            let saved = match prof {
+                Some(p) => {
+                    let mut prefs = p.get("preferences").cloned().filter(|x| x.is_object()).unwrap_or(json!({}));
+                    prefs["active_organisation_id"] = json!(org);
+                    crate::sb_patch(&format!("account_profiles?user_id=eq.{}", enc(&uid)), json!({ "preferences": prefs, "updated_at": chrono_now() })).await
+                }
+                None => {
+                    let local = _email.split('@').next().unwrap_or("").to_string();
+                    crate::sb_insert("account_profiles", json!({ "user_id": uid, "email": _email, "legal_name": local, "display_name": local, "preferences": { "active_organisation_id": org } })).await
+                }
+            };
+            match saved {
                 Ok(_) => crate::ok(json!({ "ok": true, "active_organisation_id": org })).into_response(),
                 Err(_) => fail(StatusCode::INTERNAL_SERVER_ERROR, "active_organisation_update_failed", "active_organisation_update_failed"),
             }

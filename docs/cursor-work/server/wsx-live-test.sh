@@ -49,6 +49,9 @@ run_one(){ # kind(personal|business)
   chk "$kind: mail_accounts jodi" "$(rest "mail_accounts?select=org_id&address=eq.$EM" | jq_ 0.org_id)" "$ORG"
   chk "$kind: profile workspace_kind" "$(rest "account_profiles?select=preferences&user_id=eq.$UID_" | jq_ 0.preferences.workspace_kind)" "$kind"
   chk "$kind: profile onboarded" "$(rest "account_profiles?select=onboarded&user_id=eq.$UID_" | jq_ 0.onboarded)" true
+  SA="$(curl -s -m 30 -H "authorization: Bearer $TOK" -H 'content-type: application/json' -d "{\"input\":{\"organisation_id\":\"$ORG\"}}" "$RUST/rpc/workspace.setActive")"
+  chk "$kind: workspace.setActive ok" "$(printf '%s' "$SA" | jq_ result.data.ok)" true
+  chk "$kind: active_organisation_id saved" "$(rest "account_profiles?select=preferences&user_id=eq.$UID_" | jq_ 0.preferences.active_organisation_id)" "$ORG"
   if [ "$kind" = personal ]; then
     R2="$(curl -s -m 30 -H "authorization: Bearer $TOK" -H 'content-type: application/json' -d '{"input":{}}' "$RUST/rpc/workspace.personal")"
     chk "personal: dobara call => existing:true" "$(printf '%s' "$R2" | jq_ result.data.existing)" true
