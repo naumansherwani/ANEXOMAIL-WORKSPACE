@@ -279,3 +279,6 @@ Pro green close = ~8 deploys: Pro-only 4 endpoints (1), Basic-shared ~81 (6: B2 
 
 ## 27 Oct 2026 03:30 — contx+basx DEPLOYED; Basic storage 500 fix
 Founder deploy 01:37: Rust par ab authx contx basx; Pro ALL PASS; KERNEL ALL PASS; Basic par storage.state/preflight 500. Wajah: DB chat_ensure_workspace Basic (chat nahi) ko 'chat_not_entitled' raise karta hai — purana Bun bhi Basic ko 500 deta tha (purani bug), mera Rust copy kar gaya. Fix basx: chat workspace na ho to chat_members, warna plan-based jawab (resolve_plan + storage_plans) — state/preflight/reserve/commit/release; input jaanch pehle. basx_core 3 tests, crate check PASS, dry-run PASS. Deploy: sirf Rust install+restart+probes (web unchanged).
+
+## 27 Oct 2026 03:50 — LIVE GREEN (Chrome, Pro): contx + basx
+Chrome (pro account): /app/people khula, data kernel se (REST /api/contacts|companies|tags GAYAB; sirf kernel.ticket). /app/storage khula: 'Plan pro, Model Pooled workspace' kernel se, REST nahi. Website TOOTI NAHI: har page render, Pro probes ALL PASS, KERNEL ALL PASS. Basic storage.state/preflight 500 ka fix 4065cd0 deploy pending (purani Bun bug thi). GREEN ab: authx, contx(10), basx storage Pro + support/setActive probe PASS. Baaqi fail sirf Basic storage (fix pushed).

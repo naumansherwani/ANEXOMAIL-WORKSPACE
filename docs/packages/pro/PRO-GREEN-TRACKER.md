@@ -46,3 +46,6 @@ NOT Pro: Writer/Sheet/Show (N-DOC-01 collaborative docs) = Business (PROPOSED, b
 | Tracker #8 ANEXO_TAG_MODE=enforce (founder env) | 1 | 1 command |
 | Shared-inbox live collision (doosra Pro user chahiye) | 1 | founder |
 Kul ~8 deploys + 2 founder kaam. Ek deploy = 6 commands, ek batch ek package.
+
+## 27 Oct 2026 03:50 — LIVE GREEN (Chrome, Pro): contx + basx
+Chrome (pro account): /app/people khula, data kernel se (REST /api/contacts|companies|tags GAYAB; sirf kernel.ticket). /app/storage khula: 'Plan pro, Model Pooled workspace' kernel se, REST nahi. Website TOOTI NAHI: har page render, Pro probes ALL PASS, KERNEL ALL PASS. Basic storage.state/preflight 500 ka fix 4065cd0 deploy pending (purani Bun bug thi). GREEN ab: authx, contx(10), basx storage Pro + support/setActive probe PASS. Baaqi fail sirf Basic storage (fix pushed).
