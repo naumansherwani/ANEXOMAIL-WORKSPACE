@@ -586,3 +586,8 @@ Pro endpoints live 200 (Rust): calendar.availability {date}, calendar.focus, mai
 SMALL BUG (TODO): calendar.availability with EMPTY input returns 502 (should be 400 or default today) — UI always sends date so harmless; fix in cal_glue.rs availability().
 STILL NOT GREEN: Business caps (needs Business account); Calendar Availability/Focus UI click-through + hourly-rate UI; crm.live + org.members Rust ports; kernelRpc early-boot wait; ANEXO_TAG_MODE enforce (founder env change); pull.sh "differ=1" file unidentified.
 Test data left on Pro account: ZZ Test Lead, zz.test.fast lead, 2 ZZ TEST Deal, 5 ZZ fields, 1 ZZ form.
+
+## 26 Oct 2026 19:50 PKT — RULE 52 jumla-ba-jumla (founder: "ek ek word green, dobara tootna nahi chahiye")
+Banaya: `src/lib/kernel/rule52.test.ts` (16 guard checks + 3 todo) + `docs/cursor-work/RULE-52-PROOF.md` (18 jumle, har ka test + live saboot + status). boot.ts early-boot wait (EARLY_WAIT_MS 400, `kernelForCall`) — READY (Web pull + Chrome ginti baaqi). Live (Chrome 19:36): kernel wasm 200, rpcUp, tagged 3 untagged 0, par sirf 3/11 calls kernel se (baaqi kernel_not_used = early-boot).
+TODO (asli kami): G1 ANEXOChat apna /wt/chat WebTransport (chat-transport.ts); G2 live@1 /wt/events aur rpc@1 /wt/rpc alag session (Rule: EK QUIC connection); G3 crm.live + org.members Rust par. kernel-check.sh server par FAIL aaya (19:35) — kaun si line, founder ke `grep` output ka intezar.
+Web deploy: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | grep -E "build|health|server==repo|^DIFF"` — wasm nahi badla (pin wahi), isliye Rust/SQL nahi.

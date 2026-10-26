@@ -326,3 +326,27 @@ describe("hmac@1", () => {
     expect(k.hmacVerify(te.encode("k"), te.encode("x"), tag)).toBe(false);
   });
 });
+
+describe("early-boot wait (Rule 52)", () => {
+  test("waitUntil: condition pehle se true => foran true", async () => {
+    const { waitUntil } = await import("./boot");
+    expect(await waitUntil(() => true, 400)).toBe(true);
+  });
+  test("waitUntil: condition baad mein true => intezar ke baad true", async () => {
+    const { waitUntil } = await import("./boot");
+    const t0 = Date.now();
+    expect(await waitUntil(() => Date.now() - t0 > 60, 400, 10)).toBe(true);
+  });
+  test("waitUntil: kabhi true nahi => max ke baad false (page ko nahi rokta)", async () => {
+    const { waitUntil } = await import("./boot");
+    const t0 = Date.now();
+    expect(await waitUntil(() => false, 120, 10)).toBe(false);
+    expect(Date.now() - t0).toBeLessThan(400);
+  });
+  test("kernelRpc: bina session token => null, koi intezar nahi", async () => {
+    const { kernelRpc } = await import("./boot");
+    const t0 = Date.now();
+    expect(await kernelRpc("crm.board", {})).toBeNull();
+    expect(Date.now() - t0).toBeLessThan(100);
+  });
+});

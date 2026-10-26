@@ -11,6 +11,7 @@ import { KERNEL_PIN } from "./pin.gen";
 
 let loading: Promise<Kernel | null> | null = null;
 let ready: Kernel | null = null;
+let pending = true; // kernel load abhi chal raha hai
 
 /** Haqeeqat ki ginti: kitni calls kernel (WebTransport) se gayin, kitni fetch par; kitni tag ke saath. `anexoKernel.stats` se dikhti hai. */
 const stats = { kernel: 0, fetch: 0, tagged: 0, untagged: 0, ticketOk: 0, ticketFail: 0, lastFallback: "" };
@@ -77,15 +78,20 @@ export function getKernel(): Promise<Kernel | null> {
       const WT = (window as unknown as { WebTransport?: WTCtor }).WebTransport;
       const base = wtBaseUrl();
       const res = await fetch(KERNEL_PIN.url, { credentials: "omit", cache: "force-cache" });
-      if (!res.ok) return null;
+      if (!res.ok) {
+        pending = false;
+        return null;
+      }
       const k = await Kernel.load({ bytes: await res.arrayBuffer(), sha256: KERNEL_PIN.sha256, WT: WT ?? null });
       if (WT && base) k.rpcStart(base);
       ready = k;
       exposeDiagnostics(k);
       void ensureTicket();
       void reportOnce(k, Boolean(WT && base));
+      pending = false;
       return k;
     } catch {
+      pending = false;
       return null; // hash mismatch / wasm unsupported => purana raasta
     }
   })();
@@ -97,11 +103,50 @@ const dec = new TextDecoder();
 
 export type KernelReply = { status: number; body: unknown };
 
+/** Early-boot: page ki pehli calls kernel ke jaagne se pehle chal parti thin (kernel_not_used). Ab thora sa (max EARLY_WAIT_MS) intezar,
+ *  sirf jab kernel abhi load/connect ho raha ho. Kernel ban chuka ya mumkin hi nahi (WebTransport nahi / load fail) => foran jawab, koi intezar nahi. */
+export const EARLY_WAIT_MS = 400;
+let settledNoKernel = false;
+
+export async function waitUntil(cond: () => boolean, maxMs: number, stepMs = 20): Promise<boolean> {
+  const t0 = Date.now();
+  while (!cond()) {
+    if (Date.now() - t0 >= maxMs) return false;
+    await new Promise((r) => setTimeout(r, stepMs));
+  }
+  return true;
+}
+
+async function kernelForCall(): Promise<Kernel | null> {
+  if (ready && ready.rpcUp) return ready;
+  if (settledNoKernel || typeof window === "undefined") return null;
+  const hasWT = typeof (window as unknown as { WebTransport?: unknown }).WebTransport === "function";
+  if (!hasWT) {
+    settledNoKernel = true;
+    return null;
+  }
+  const t0 = Date.now();
+  const k = await Promise.race([getKernel(), new Promise<null>((r) => setTimeout(() => r(null), EARLY_WAIT_MS))]);
+  if (!k) {
+    if (!loadPending()) settledNoKernel = true; // load poora hua aur null nikla => kernel nahi, dobara intezar nahi
+    return null;
+  }
+  if (k.rpcUp) return k;
+  const left = EARLY_WAIT_MS - (Date.now() - t0);
+  return left > 0 && (await waitUntil(() => k.rpcUp, left)) ? k : null;
+}
+
+function loadPending(): boolean {
+  return pending;
+}
+
+
 /** Kernel ke WebTransport par ek proc. `null` = kernel tayyar nahi / session nahi => caller fetch par jaye. */
 export async function kernelRpc(proc: string, input: unknown): Promise<KernelReply | null> {
-  const k = ready;
   const token = sessionToken.get();
-  if (!k || !k.rpcUp || !token) return null; // login ke bagair (public procs) => seedha fetch, wahi jo pehle tha
+  if (!token) return null; // login ke bagair (public procs) => seedha fetch, wahi jo pehle tha
+  const k = await kernelForCall();
+  if (!k) return null;
   const inputText = JSON.stringify(input ?? null);
   const env: Record<string, unknown> = { token, proc };
   if (proc !== "kernel.ticket" && proc !== "kernel.report") await ensureTicket();
