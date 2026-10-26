@@ -69,7 +69,10 @@ async fn rpc(func: &str, body: Value) -> Result<Value, Resp> {
         Ok(v) if v.get("ok").and_then(|x| x.as_bool()).unwrap_or(false) => Ok(v),
         Ok(v) => Err(reason_resp(&v)),
         Err(e) if e.contains("PGRST202") || e.contains("Could not find the function") => Err(fail(StatusCode::NOT_IMPLEMENTED, "crm_sql_missing", "CRM SQL (E92) is not installed yet.")),
-        Err(_) => Err(fail(StatusCode::BAD_GATEWAY, "db_unavailable", "The CRM database is not reachable right now.")),
+        Err(e) => {
+            eprintln!("crmx rpc {func} failed: {}", e.chars().take(300).collect::<String>()); // asli DB wajah server log mein (client ko nahi)
+            Err(fail(StatusCode::BAD_GATEWAY, "db_unavailable", "The CRM database is not reachable right now."))
+        }
     }
 }
 
@@ -378,7 +381,7 @@ async fn merge(me: &crate::MailMe, plan: &str, scope: &str, input: &Value) -> Re
     let kind = st(input, "kind");
     let keep = st(input, "keep");
     let drop: Vec<String> = input.get("drop").and_then(|x| x.as_array()).map(|a| a.iter().filter_map(|v| v.as_str().map(|s| s.to_lowercase())).collect()).unwrap_or_default();
-    if !matches!(kind.as_str(), "lead" | "deal") || !uuid_ok(&keep) || drop.is_empty() || drop.len() > 20 || !drop.iter().all(|d| uuid_ok(d)) {
+    if !matches!(kind.as_str(), "lead" | "deal") || !uuid_ok(&keep) || drop.is_empty() || drop.len() > 20 || !drop.iter().all(|d| uuid_ok(d)) || drop.iter().any(|d| *d == keep.to_lowercase()) {
         return fail(StatusCode::BAD_REQUEST, "bad_request", "Pick one record to keep and up to 20 to merge into it.");
     }
     // Sirf apne dikhne wale (owner scope) records — doosre ka record merge nahi.

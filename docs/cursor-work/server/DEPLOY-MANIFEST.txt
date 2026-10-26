@@ -29,7 +29,7 @@ src/routes/app.work.tsx 23d4995d307f62f6
 src/components/app/people/ContactProfile.tsx 57e25d1019faf52f
 src/components/app/people/CompanyProfile.tsx e6a0ad41d52df8de
 src/components/app/work/TaskBoard.tsx d5fe96d145484c2f
-src/components/app/crm/CrmStage.tsx 425efbb5438502ba
+src/components/app/crm/CrmStage.tsx b5df10f127e24785
 src/routes/app.crm.pipeline.tsx 88590d5ae07662ba
 src/routes/app.crm.leads.tsx d1197eb4fe365348
 src/routes/app.crm.activity.tsx 0b64cfacab7ac435
@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 0a750b0a34922258
+docs/cursor-work/founder/founder-commands.md daefb6520a47c74d
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 400562b030226da5
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1fbf39e5d67b0bde
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 0455cd5a5622af60
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 5159c0c542600776
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 29fe1a31eedccd32
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md a4ebf3bf91255bc5
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -661,7 +661,7 @@ docs/cursor-work/sql/E84_room_series_note.sql a20ff07e6d1bb48c
 docs/cursor-work/sql/CHECK_E84.sql 17304773909fb074
 src/lib/handoff.ts 66fdf574d9c66118
 docs/cursor-work/server/brain_pro4_hunks.json e3b6862d0d567ce3
-docs/cursor-work/server/basic-gate-probe.sh a532d9c4eedca7b0
+docs/cursor-work/server/basic-gate-probe.sh 9ba1dac5ced20648
 docs/cursor-work/server/count-endpoints.py dd8f789f015fc833
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md f6c02fd9b74fda1f
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md 699472495d440ed6
+docs/packages/GREEN-LEDGER.md f93744a1d088a0f8
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -753,13 +753,15 @@ src/lib/rpc-contract.ts f21ee8efb92b6f50
 docs/cursor-work/server/brain-drift-report.sh 71b339530f120080
 server/rust/workx_core.rs 1370a66db9f75d73
 server/rust/workx_glue.rs b7c35c22d502ab2d
-docs/cursor-work/sql/E92_crm_p1_p2.sql aa6629582dfdc6e3
+docs/cursor-work/sql/E92_crm_p1_p2.sql c5a269cef5a5c97f
 docs/cursor-work/sql/CHECK_E92.sql 964d21dee8afbebc
 server/rust/crmx_core.rs 716b8a0ce50c38d3
-server/rust/crmx_glue.rs 5cf49a3d0f60a04b
+server/rust/crmx_glue.rs 2838ba163848136f
 docs/packages/crm/CRM-PHASES.md 1d0553a477372711
 docs/packages/pro/PRO-VS-ZOHO.md 0ce2e030f870923f
 src/components/app/crm/PipelineBoard.tsx 0bc114b19c96ecd6
 src/lib/crm-setup.ts 74f603ec604a6dc6
 src/routes/app.crm.setup.tsx 66702de837cdfbbc
 src/routes/f.$slug.tsx 030e29bc6d1514c2
+docs/cursor-work/sql/DIAG_crm_pipeline_update.sql f357724b87b8febb
+docs/cursor-work/server/DEPLOY-MANIFEST.txt fcdf33f1d40ec3d5

@@ -172,9 +172,9 @@ begin
     return jsonb_build_object('ok', false, 'reason', 'bad_ids');
   end if;
   if p_kind = 'lead' then
-    perform 1 from public.crm_leads where id = p_keep for update;
+    perform 1 from public.crm_leads where id = p_keep and (org_id is null or p_scope like 'u:%' or org_id::text = p_scope) for update;
     if not found then return jsonb_build_object('ok', false, 'reason', 'keep_not_found'); end if;
-    select count(*) into n from public.crm_leads where id = any(p_drop) and org_id is not distinct from (select org_id from public.crm_leads where id = p_keep);
+    select count(*) into n from public.crm_leads where id = any(p_drop) and (org_id is null or p_scope like 'u:%' or org_id::text = p_scope);
     if n <> cardinality(p_drop) then return jsonb_build_object('ok', false, 'reason', 'not_same_workspace'); end if;
     for r in select * from public.crm_leads where id = any(p_drop) order by created_at loop
       snap := snap || to_jsonb(r);
@@ -186,9 +186,9 @@ begin
     end loop;
     delete from public.crm_leads where id = any(p_drop);
   else
-    perform 1 from public.crm_deals where id = p_keep for update;
+    perform 1 from public.crm_deals where id = p_keep and (org_id is null or p_scope like 'u:%' or org_id::text = p_scope) for update;
     if not found then return jsonb_build_object('ok', false, 'reason', 'keep_not_found'); end if;
-    select count(*) into n from public.crm_deals where id = any(p_drop) and org_id is not distinct from (select org_id from public.crm_deals where id = p_keep);
+    select count(*) into n from public.crm_deals where id = any(p_drop) and (org_id is null or p_scope like 'u:%' or org_id::text = p_scope);
     if n <> cardinality(p_drop) then return jsonb_build_object('ok', false, 'reason', 'not_same_workspace'); end if;
     for r in select * from public.crm_deals where id = any(p_drop) order by created_at loop
       snap := snap || to_jsonb(r);
@@ -209,8 +209,8 @@ end $$;
 -- ---- 9b. config save/delete — ATOMIC, plan cap (p_cap, -1 = unlimited) advisory lock ke andar (race se cap nahi toot-ta) ------------
 create or replace function public.crm_scope_deals_where(p_scope text)
 returns text language sql immutable set search_path = public, pg_temp as $$
-  select case when p_scope like 'u:%' then 'org_id is null and lower(owner) = ' || quote_literal(substr(p_scope, 3))
-              else 'org_id = ' || quote_literal(p_scope) || '::uuid' end;
+  select case when p_scope like 'u:%' then 'org_id is null and lower(owner::text) = ' || quote_literal(substr(p_scope, 3))
+              else 'org_id::text = ' || quote_literal(p_scope) end;
 $$;
 
 create or replace function public.crm_ensure_default_pipeline(p_scope text, p_actor text)
@@ -244,7 +244,7 @@ begin
     perform 1 from public.crm_pipelines where id = pid and scope = p_scope;
     if not found then return jsonb_build_object('ok', false, 'reason', 'not_found'); end if;
     if exists (select 1 from public.crm_pipelines where scope = p_scope and id <> pid and lower(btrim(name)) = lower(btrim(p_name))) then return jsonb_build_object('ok', false, 'reason', 'name_taken'); end if;
-    execute format('select count(*) from public.crm_deals where (pipeline_id = %L or (pipeline_id is null and %L = (select id from public.crm_pipelines where scope = %L and is_default))) and %s and not (stage = any(%L::text[]))',
+    execute format('select count(*) from public.crm_deals where (pipeline_id::text = %L or (pipeline_id is null and %L = (select id::text from public.crm_pipelines where scope = %L and is_default))) and %s and not (stage::text = any(%L::text[]))',
                    pid, pid, p_scope, public.crm_scope_deals_where(p_scope), keys) into used;
     if used > 0 then return jsonb_build_object('ok', false, 'reason', 'stage_in_use', 'deals', used); end if;
     update public.crm_pipelines set name = btrim(p_name) where id = pid;
@@ -295,8 +295,8 @@ declare d public.crm_field_defs;
 begin
   delete from public.crm_field_defs where id = p_id and scope = p_scope returning * into d;
   if not found then return jsonb_build_object('ok', false, 'reason', 'not_found'); end if;
-  if d.entity = 'lead' then update public.crm_leads set custom = custom - d.key where custom ? d.key and (case when p_scope like 'u:%' then org_id is null and lower(owner) = substr(p_scope, 3) else org_id = p_scope::uuid end);
-  else update public.crm_deals set custom = custom - d.key where custom ? d.key and (case when p_scope like 'u:%' then org_id is null and lower(owner) = substr(p_scope, 3) else org_id = p_scope::uuid end); end if;
+  if d.entity = 'lead' then update public.crm_leads set custom = custom - d.key where custom ? d.key and (case when p_scope like 'u:%' then org_id is null and lower(owner::text) = substr(p_scope, 3) else org_id::text = p_scope end);
+  else update public.crm_deals set custom = custom - d.key where custom ? d.key and (case when p_scope like 'u:%' then org_id is null and lower(owner::text) = substr(p_scope, 3) else org_id::text = p_scope end); end if;
   return jsonb_build_object('ok', true);
 end $$;
 
@@ -370,6 +370,10 @@ begin
   if (select company from public.crm_leads where id = a) <> 'Acme' then raise exception 'E92 SELFTEST: merge ne khali jagah nahi bhari'; end if;
   select count(*) into n from public.crm_leads where id = b;
   if n <> 0 then raise exception 'E92 SELFTEST: drop mita nahi'; end if;
+  insert into public.crm_leads (email, source, owner, org_id) values ('a@x.com', 'manual', 'e92@test.invalid', '99999999-9999-4999-8999-999999999999') returning id into b;
+  r := public.crm_merge('lead', a, array[b], 'e92', '11111111-1111-4111-8111-111111111111');
+  if (r->>'reason') <> 'not_same_workspace' and (r->>'reason') <> 'keep_not_found' then raise exception 'E92 SELFTEST: doosre workspace ka merge nahi rukna chahiye tha %', r; end if;
+  delete from public.crm_leads where id = b;
   pid := public.crm_ensure_default_pipeline(s, 'e92');
   if (select count(*) from public.crm_pipeline_stages where pipeline_id = pid) <> 6 then raise exception 'E92 SELFTEST: default pipeline stages'; end if;
   r := public.crm_pipeline_save(s, null, 'Second', '[{"key":"a","label":"A","probability":10},{"key":"b","label":"B","probability":90,"kind":"won"}]'::jsonb, 'e92', 1);

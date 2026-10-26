@@ -1130,3 +1130,11 @@ Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexo
 2. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
 3. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
 Phir mujhe batayein — Chrome (Pro) par live proof main khud karunga.
+
+## 26 Oct 11:45 — CRM fix batch (pipeline edit 502, merge workspace check, layout). Tarteeb SQL -> Rust -> Web
+0. SQL (E92 dobara — sha badli, khud chalegi; CHECK_E92 ok=t): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+0b. (Sirf agar pipeline edit phir bhi 502 de) read-only diagnostic — asli DB error dikhata hai, kuch nahi badalta: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) DIAG_crm_pipeline_update`
+1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`  phir restart+health (upar wali pm2 restart command)
+2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+3. Basic probe (ab CRM procs ke 403 bhi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh)`
+Agar 502 phir aaye: `pm2 logs anexomail-rust --lines 40 --nostream | grep crmx` ka output bhejein.
