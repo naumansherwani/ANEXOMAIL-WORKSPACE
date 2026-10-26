@@ -229,3 +229,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 23:30 Trusted devices N of limit: Rust security.devices ab 'limit' bhi deta hai (resolve_plan + chat_phase_entitlements device_vault: basic 2 / pro 4), /app/security/devices par 'Trusted devices: N of 4 on your plan'. security_glue.rs + security-platform.ts + app.security.devices.tsx + basic-gate-probe pro (limit 4). cargo check OK, tsc clean. DEPLOY BAAQI (Rust install + Web pull). Baaqi Pro: shared-inbox live collision (2nd user), ANEXO_TAG_MODE=enforce (founder env).
 
 - 26 Oct 23:45 Office suite (Writer/Sheet/Show) = BUSINESS package (Rule 58, docs/packages/business/OFFICE-SUITE.md, AGENTS.md). Founder hukm: Rust check mein koi crate chhodna nahi — rustls+webpki-roots ke saath POORA security_glue compile (cargo check offline, cache se) = OK, 0 error.
+
+- 26 Oct 22:45 Trusted devices limit DEPLOYED (e710790/c364828): Rust restart 176, Web pull OK, basic ALL PASS, pro ALL PASS (security.devices 200 + device limit 4 PASS), KERNEL ALL PASS (founder output 22:44). Chrome UI dekhna baaqi.
