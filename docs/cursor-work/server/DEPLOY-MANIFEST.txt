@@ -251,7 +251,7 @@ docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
 src/components/app/calendar/TimeGrid.tsx e99750ba4f3106a4
-src/lib/plans.ts d976278fef1c0cd1
+src/lib/plans.ts 8317e748fd6c02a9
 docs/cursor-work/sql/E52_alias_fair_use.sql c484bcfe67a0c2cf
 docs/cursor-work/sql/CHECK_E52.sql 7884b25b262eb1e6
 src/lib/api.ts 571d1ad7a84ec613
