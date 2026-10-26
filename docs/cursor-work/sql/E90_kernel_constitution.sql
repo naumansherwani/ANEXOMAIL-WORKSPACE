@@ -442,7 +442,7 @@ end $$;
 
 -- ---------------------------------------------------------------- 7. COMPLIANCE + SELF-AUDIT
 -- Pichle 24 ghante: har host par kitne session, kitne asli WebTransport par, kitne block / upgrade.
-create or replace view public.kernel_compliance as
+create or replace view public.kernel_compliance with (security_invoker = true) as
 select s.host,
        count(*)                                                         as sessions,
        count(*) filter (where s.transport = 'webtransport')             as webtransport,

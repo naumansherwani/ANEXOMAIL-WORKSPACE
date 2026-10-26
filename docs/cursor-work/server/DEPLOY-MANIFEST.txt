@@ -730,7 +730,7 @@ public/kernel/anexo-kernel-0.2.0.wasm 7b1ddb7c7e31d7a8
 src/lib/kernel/boot.ts a33a8307f52e75f1
 src/lib/rpc.ts 89f91774fbbde85a
 docs/cursor-work/sql/CHECK_E90.sql ed9a0f247d4d613c
-docs/cursor-work/sql/E90_kernel_constitution.sql 74374829d5dcaf32
+docs/cursor-work/sql/E90_kernel_constitution.sql fa39be8bd88aa043
 docs/packages/WIRE-AUDIT-26OCT.md cc6a50340c3299c5
 scripts/wire-audit.py 562f646de5b79f96
 src/lib/chat-files.ts b742f82b031b15db
