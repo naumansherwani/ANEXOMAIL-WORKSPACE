@@ -1301,3 +1301,6 @@ Founder output 21:48: Rust restart 171, Web pull OK, ALL PASS (basic), ALL PASS 
 
 ## 26 Oct 2026 22:35 PKT — MIGRATION-STATUS-26OCT.md (repo pura padha): 523 Bun endpoints, 125 Rust-first (24%), 398 baaqi; M1/M2 GREEN, M3 NAHI SHURU (51), M4 33, M5 91, M6 180, F 32, P5 3, L 23 polls
 Tarteeb locked: M2b leftovers -> M3 -> M4 -> M5 -> L -> M6 -> F -> B8/P10. Rule: pehle sab Bun endpoints latest tech par, phir packages green. Rule 52 top REST (trial.state + auth.session) M3/M4 se aage. Poori table docs/cursor-work/MIGRATION-STATUS-26OCT.md. Founder jawab ka intezaar: is order se chalna hai?
+
+## 26 Oct 2026 22:05 PKT — FOUNDER: "technical baatein samajh nahi aati; tum CEO ho, faisla tumhara; ab se tarteeb se chalo, pehle ke saare kaam isi mein dalo, yeh hai jo poora green karna hai"
+CEO FAISLA likha: docs/cursor-work/MASTER-GREEN-PLAN.md section B (13 qadam: 1 Pro walk, 2 trial.state+auth.session, 3 M3, 4 M4, 5 M5, 6 Pro green close (+tag enforce), 7 Basic, 8 L live events, 9 Business+ANEXOChat K3, 10 CRM P3-P6, 11 Business Pro, 12 Founder batch, 13 Enterprise+toolchain). Founder se ab "haan" ka sawal NAHI poochna — CEO faisla kar chuka. Founder se Roman Urdu mein SADA zaban (technical jargon kam; kernelRpc/rpcOrRest jaisi baatein nahi).

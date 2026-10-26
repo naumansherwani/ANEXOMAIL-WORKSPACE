@@ -13,14 +13,23 @@ Qaida: GREEN = LIVE saboot (founder server output + Chrome). Naya kaam sirf Rust
 | Availability working hours + local tz (tz_offset, work_hours) | 6a1d91e | deployed 21:48: ALL PASS basic+pro+KERNEL; Chrome Avail. = 16 slots, 9:00 AM se (09-17) |
 Server abhi 55eafce par hai (docs-only baad ka commit). `src differ=1` = routeTree.gen.ts (benign).
 
-## B. TARTEEB (isi order se, ek ek green)
-1. PRO baaqi: live walk mein na dikhe — public booking links(3), Overlap Matrix, shared inbox collision guard, snooze UI, Focus/hourly-rate UI, 4 trusted devices UI; ANEXO_TAG_MODE=enforce (founder env).
-2. RULE 52 poori website (REST -> kernel): trial.state, auth.session, /account (mfa/sessions/recovery), companies, contacts+tags, storage/state, integrations, crm.leads; phir unmeasured routes (mail, settings, org, security, admin, perf, founder, public) naapna; Bun-only endpoints (511 Bun vs ~328 Rust procs, TECH-AUDIT-24OCT) Rust par: pehle Pro mail actions, snooze/schedule live events, contacts/companies/workspace/storage/billing state, auth(18)+trial(7), org/crm/calendar, chat(141) + ai last.
-3. BASIC package: har gate + endpoint Rust par green (docs/packages/basic/*).
-4. BUSINESS: ANEXOChat + K3 (G1/G2 ONE QUIC, kernel 0.3.0) -> docs/packages/business/ANEXOCHAT-K3-PLAN.md; N-DOC-01 collaborative docs; Business caps live (Business account chahiye).
-5. CRM P3-P6 (Blueprint P4) -> docs/packages/crm.
-6. BUSINESS PRO -> docs/packages/business_pro.
-7. ENTERPRISE (Rust-only) -> docs/packages/enterprise.
-8. Har package ke liye: har gate probe (basic-gate-probe MODE=...), har RPC contract (rpc-contract.ts), Chrome live walk table, GREEN-LEDGER line.
+## B. CEO FAISLA (26 Oct 22:05 PKT, founder: "yeh faisla tumne kerna hai, tum CEO ho; pehle ke sab kaam isi mein dalo") — FINAL TARTEEB, isi se chalna
+Har qadam: ek ek GREEN (founder output + Chrome saboot), phir agla. Naya kaam sirf Rust + kernel; Bun sirf fallback.
+| # | Qadam | Kya | Kyun yeh jagah |
+|---|---|---|---|
+| 1 | PRO WALK poora | public booking links(3), Overlap Matrix, shared inbox collision guard, snooze UI, hourly-rate/Focus UI, 4 trusted devices — Chrome mein dikhana; jo na dikhe woh theek karna | Pro package aaj customer ko bik raha hai; jo card par likha woh account mein nazar aana chahiye |
+| 2 | RULE 52 top REST: `trial.state`, `auth.session` (read-only) | har page par 66 REST calls kam | sab se bada fetch; kam risk (sirf padhna) |
+| 3 | M3: contacts+companies, storage state, workspace, dashboard, billing-sync, support (polar NO-TOUCH) | 51 endpoints | Pro ke daily features (People, Storage, Billing card) |
+| 4 | M4: auth (login/logout/MFA/recovery/sessions) + trial baaqi | 33 | login-critical => differential test, ek ek |
+| 5 | M5: org, settings, security, integrations, analytics, calendar leftovers, crm leftovers | 91 | Business ke liye zaroori + Pro settings |
+| 6 | PRO GREEN CLOSE: ANEXO_TAG_MODE=enforce (founder env), saari Pro-relevant routes kernel 100%, PRO-GREEN-TRACKER sab GREEN | | Pro = "green" tab |
+| 7 | BASIC package poora (har gate/endpoint probe + Chrome walk) | | Basic sab se zyada users |
+| 8 | L: 23 polls -> WebTransport live events | | live feel, kam load |
+| 9 | BUSINESS: M6 chat/ai/files + ANEXOChat + K3 (ONE QUIC, kernel 0.3.0) + N-DOC-01 + Business caps | 180 | Business phase |
+| 10 | CRM P3-P6 (Blueprint P4) | | Business ke baad |
+| 11 | BUSINESS PRO | | |
+| 12 | F: founder/admin/perf/movein/glitch (alag batch) | 32 | internal |
+| 13 | ENTERPRISE (Rust-only, Bun-free) + toolchain (sqlx pool, mimalloc, moka, tracing) | | akhir |
+Pehle ke sab kaam (Pro tracker items, ANEXOChat K3 plan, CRM P3-P6, tag enforce, passkey Oct 27, Rule 52 G1/G2) ISI table ke qadam mein hain — alag list nahi.
 Har port ka tareeqa: X_core (std-only tests) + X_glue + installer CFG/probe + rpc-contract + probe + Chrome Bun-vs-Rust proof; phir Bun route hatana.
-Master Pro list: docs/packages/pro/PRO-GREEN-TRACKER.md.
+Master Pro list: docs/packages/pro/PRO-GREEN-TRACKER.md. Halat/ginti: docs/cursor-work/MIGRATION-STATUS-26OCT.md.
