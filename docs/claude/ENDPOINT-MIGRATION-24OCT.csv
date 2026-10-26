@@ -68,7 +68,7 @@ ai.ts,POST,/api/ai/arena,ai.runArena,RUST-FIRST (Bun fallback)
 ai.ts,GET,/api/ai/guardrail,,BUN-ONLY or client wiring not proven
 ai.ts,POST,/api/ai/guardrail/:id,ai.decideGuardrail,RUST-FIRST (Bun fallback)
 ai.ts,POST,/api/ai/chat,,BUN-ONLY or client wiring not proven
-analytics.ts,GET,/api/analytics/:report,,BUN-ONLY or client wiring not proven
+analytics.ts,GET,/api/analytics/:report,analytics.responseDebt,RUST-FIRST (Bun fallback)
 analytics.ts,GET,/api/founder/analytics/overview,,BUN-ONLY or client wiring not proven
 analytics.ts,GET,/api/founder/billing/revenue,billing.revenueTruth,RUST-FIRST (Bun fallback)
 auth-passkey.ts,POST,/api/auth/passkey/register/options,auth.passkey.register.options,RUST-FIRST (Bun fallback)
@@ -109,16 +109,16 @@ billing-support.ts,GET,/api/founder/support/replies,,BUN-ONLY or client wiring n
 billing-support.ts,POST,/api/founder/support/replies/:id/replied,billing.markFounderReplySent,RUST-FIRST (Bun fallback)
 billing-sync.ts,POST,/api/auth/intent,,BUN-ONLY or client wiring not proven
 billing-sync.ts,POST,/api/auth/change-plan,,BUN-ONLY or client wiring not proven
-billing-sync.ts,GET,/api/auth/subscription,,BUN-ONLY or client wiring not proven
-billing-sync.ts,GET,/api/auth/invoices,,BUN-ONLY or client wiring not proven
-billing-sync.ts,POST,/api/auth/portal,,BUN-ONLY or client wiring not proven
-billing-sync.ts,GET,/api/auth/state,,BUN-ONLY or client wiring not proven
+billing-sync.ts,GET,/api/auth/subscription,billing.subscription,RUST-FIRST (Bun fallback)
+billing-sync.ts,GET,/api/auth/invoices,billing.invoices,RUST-FIRST (Bun fallback)
+billing-sync.ts,POST,/api/auth/portal,billing.portal,RUST-FIRST (Bun fallback)
+billing-sync.ts,GET,/api/auth/state,billing.state,RUST-FIRST (Bun fallback)
 billing-sync.ts,GET,/api/auth/intent/:id,,BUN-ONLY or client wiring not proven
-billing-sync.ts,POST,/api/auth/settle,,BUN-ONLY or client wiring not proven
-billing-sync.ts,GET,/api/auth/state-health,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/auth/settle,billing.settle,RUST-FIRST (Bun fallback)
+billing-sync.ts,GET,/api/auth/state-health,billing.stateHealth,RUST-FIRST (Bun fallback)
 billing-sync.ts,POST,/api/billing/sync,,BUN-ONLY or client wiring not proven
 billing-sync.ts,POST,/api/billing/guest-intent,,BUN-ONLY or client wiring not proven
-billing-sync.ts,POST,/api/auth/claim-guest,,BUN-ONLY or client wiring not proven
+billing-sync.ts,POST,/api/auth/claim-guest,billing.claimGuest,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/calendar/events,calendar.create,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/calendar/events/:id,calendar.event,RUST-FIRST (Bun fallback)
 calendar.ts,POST,/api/calendar/events,calendar.create,RUST-FIRST (Bun fallback)
@@ -131,8 +131,8 @@ calendar.ts,GET,/api/work/tasks,work.task.create,RUST-FIRST (Bun fallback)
 calendar.ts,POST,/api/work/tasks,work.task.create,RUST-FIRST (Bun fallback)
 calendar.ts,PATCH,/api/work/tasks/:id,work.task.update,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/work/promises,work.promises,RUST-FIRST (Bun fallback)
-calendar.ts,POST,/api/work/promises/:id/commit,,BUN-ONLY or client wiring not proven
-calendar.ts,POST,/api/work/promises/:id/dismiss,,BUN-ONLY or client wiring not proven
+calendar.ts,POST,/api/work/promises/:id/commit,work.promise.commit,RUST-FIRST (Bun fallback)
+calendar.ts,POST,/api/work/promises/:id/dismiss,work.promise.dismiss,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/work/follow-through,work.followThrough,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/work/notes,work.note,RUST-FIRST (Bun fallback)
 calendar.ts,POST,/api/work/notes,work.note,RUST-FIRST (Bun fallback)
@@ -283,7 +283,7 @@ contacts.ts,GET,/api/contacts/:id,contacts.get,RUST-FIRST (Bun fallback)
 contacts.ts,PATCH,/api/contacts/:id,contacts.get,RUST-FIRST (Bun fallback)
 contacts.ts,POST,/api/contacts/:id/tags,contacts.tag,RUST-FIRST (Bun fallback)
 contacts.ts,GET,/api/contacts/:id/timeline,contacts.timeline,RUST-FIRST (Bun fallback)
-contacts.ts,GET,/api/companies,,BUN-ONLY or client wiring not proven
+contacts.ts,GET,/api/companies,companies.list,RUST-FIRST (Bun fallback)
 contacts.ts,GET,/api/companies/:domain,companies.get,RUST-FIRST (Bun fallback)
 contacts.ts,GET,/api/companies/:domain/timeline,companies.timeline,RUST-FIRST (Bun fallback)
 contacts.ts,GET,/api/search/universal,search.universal,RUST-FIRST (Bun fallback)
@@ -301,7 +301,7 @@ crm.ts,POST,/api/crm/deals/stage,crm.moveDeal,RUST-FIRST (Bun fallback)
 crm.ts,POST,/api/crm/leads/convert,crm.convertLead,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/evidence,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/crm/activities,,BUN-ONLY or client wiring not proven
-crm.ts,GET,/api/crm/insights,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/insights,crm.insights,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/shared,,BUN-ONLY or client wiring not proven
 crm.ts,POST,/api/crm/shared/assign,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/crm/mentions,,BUN-ONLY or client wiring not proven
@@ -313,7 +313,7 @@ crm.ts,GET,/api/founder/crm/state,,BUN-ONLY or client wiring not proven
 crm.ts,POST,/api/founder/crm/toggle,,BUN-ONLY or client wiring not proven
 dashboard.ts,GET,/api/dashboard/summary,dashboard.summary,RUST-FIRST (Bun fallback)
 dashboard.ts,GET,/api/dashboard/activity,dashboard.activity,RUST-FIRST (Bun fallback)
-dashboard.ts,GET,/api/dashboard/ai-usage,,BUN-ONLY or client wiring not proven
+dashboard.ts,GET,/api/dashboard/ai-usage,dashboard.ai-usage,RUST-FIRST (Bun fallback)
 dashboard.ts,GET,/api/dashboard/analytics,dashboard.analytics,RUST-FIRST (Bun fallback)
 dashboard.ts,GET,/api/dashboard/calendar,dashboard.calendar,RUST-FIRST (Bun fallback)
 files.ts,GET,/api/state,,BUN-ONLY or client wiring not proven
@@ -340,8 +340,8 @@ glitch.ts,GET,/api/glitch/health,,BUN-ONLY or client wiring not proven
 handoff.ts,GET,/api/mail/handoff,mail.handoff.list,RUST-FIRST (Bun fallback)
 handoff.ts,POST,/api/mail/handoff,mail.handoff.list,RUST-FIRST (Bun fallback)
 handoff.ts,POST,/api/mail/handoff/:id/claim,mail.handoff.claim,RUST-FIRST (Bun fallback)
-handoff.ts,DELETE,/api/mail/handoff/:id,,BUN-ONLY or client wiring not proven
-handoff.ts,POST,/api/mail/devices/seen,,BUN-ONLY or client wiring not proven
+handoff.ts,DELETE,/api/mail/handoff/:id,mail.handoff.delete,RUST-FIRST (Bun fallback)
+handoff.ts,POST,/api/mail/devices/seen,mail.device.seen,RUST-FIRST (Bun fallback)
 integrations.ts,GET,/api/providers,,BUN-ONLY or client wiring not proven
 integrations.ts,GET,/api/connections,,BUN-ONLY or client wiring not proven
 integrations.ts,POST,/api/connect,,BUN-ONLY or client wiring not proven
@@ -355,7 +355,7 @@ integrations.ts,POST,/api/exports,,BUN-ONLY or client wiring not proven
 integrations.ts,GET,/api/leo-actions,,BUN-ONLY or client wiring not proven
 integrations.ts,POST,/api/leo-actions/toggle,,BUN-ONLY or client wiring not proven
 integrations.ts,GET,/api/founder/integrations/overview,,BUN-ONLY or client wiring not proven
-locale.ts,GET,/api/locale/registry,,BUN-ONLY or client wiring not proven
+locale.ts,GET,/api/locale/registry,locale.registry,RUST-FIRST (Bun fallback)
 locale.ts,GET,/api/locale/bundle,locale.bundle,RUST-FIRST (Bun fallback)
 locale.ts,GET,/api/locale/pref,locale.pref,RUST-FIRST (Bun fallback)
 locale.ts,PUT,/api/locale/pref,locale.pref,RUST-FIRST (Bun fallback)
@@ -365,7 +365,7 @@ mail-compose.ts,GET,/api/mail/templates,mail.templates.list,RUST-FIRST (Bun fall
 mail-compose.ts,POST,/api/mail/templates,mail.templates.list,RUST-FIRST (Bun fallback)
 mail-compose.ts,DELETE,/api/mail/templates/:id,mail.templates.delete,RUST-FIRST (Bun fallback)
 mail-compose.ts,DELETE,/api/mail/snippets/:id,mail.snippets.delete,RUST-FIRST (Bun fallback)
-mail-compose.ts,DELETE,/api/mail/follow-up/:id,,BUN-ONLY or client wiring not proven
+mail-compose.ts,DELETE,/api/mail/follow-up/:id,mail.followup.delete,RUST-FIRST (Bun fallback)
 mail-compose.ts,DELETE,/api/mail/drafts/:id,mail.drafts.versions,RUST-FIRST (Bun fallback)
 mail-compose.ts,GET,/api/mail/snippets,mail.snippets.list,RUST-FIRST (Bun fallback)
 mail-compose.ts,POST,/api/mail/snippets,mail.snippets.list,RUST-FIRST (Bun fallback)
@@ -379,8 +379,8 @@ mail-compose.ts,GET,/api/mail/thread/:id/insights,mail.thread.insights,RUST-FIRS
 mail-predict.ts,POST,/api/mail/predict/,mail.predict,RUST-FIRST (Bun fallback)
 mail-predict.ts,POST,/api/mail/predict/learn,mail.predict.learn,RUST-FIRST (Bun fallback)
 mail-predict.ts,POST,/api/mail/predict/event,mail.predict.event,RUST-FIRST (Bun fallback)
-mail.ts,GET,/api/mail/threads,,BUN-ONLY or client wiring not proven
-mail.ts,GET,/api/mail/search,,BUN-ONLY or client wiring not proven
+mail.ts,GET,/api/mail/threads,mail.threads,RUST-FIRST (Bun fallback)
+mail.ts,GET,/api/mail/search,mail.search,RUST-FIRST (Bun fallback)
 mail.ts,GET,/api/mail/accounts,mail.accounts,RUST-FIRST (Bun fallback)
 mail.ts,GET,/api/mail/labels,mail.labels,RUST-FIRST (Bun fallback)
 mail.ts,GET,/api/mail/counts,mail.counts,RUST-FIRST (Bun fallback)
@@ -498,17 +498,17 @@ settings.ts,GET,/api/settings/overview,,BUN-ONLY or client wiring not proven
 settings.ts,GET,/api/:scope,,BUN-ONLY or client wiring not proven
 storage.ts,GET,/api/storage/state,storage.state,RUST-FIRST (Bun fallback)
 storage.ts,POST,/api/storage/preflight,storage.preflight,RUST-FIRST (Bun fallback)
-storage.ts,POST,/api/storage/reserve,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/reserve,storage.reserve,RUST-FIRST (Bun fallback)
 storage.ts,POST,/api/storage/commit,storage.commit,RUST-FIRST (Bun fallback)
-storage.ts,POST,/api/storage/release,,BUN-ONLY or client wiring not proven
+storage.ts,POST,/api/storage/release,storage.release,RUST-FIRST (Bun fallback)
 storage.ts,POST,/api/internal/storage/accept,,BUN-ONLY or client wiring not proven
 storage.ts,POST,/api/internal/storage/commit,storage.commit,RUST-FIRST (Bun fallback)
 storage.ts,GET,/api/founder/storage/volumes,,BUN-ONLY or client wiring not proven
 storage.ts,POST,/api/founder/storage/volume,,BUN-ONLY or client wiring not proven
 storage.ts,POST,/api/internal/storage/sweep,,BUN-ONLY or client wiring not proven
 support.ts,GET,/api/public/sla,support.sla,RUST-FIRST (Bun fallback)
-support.ts,GET,/api/support/drafts,,BUN-ONLY or client wiring not proven
-support.ts,POST,/api/support/drafts/:id/discard,,BUN-ONLY or client wiring not proven
+support.ts,GET,/api/support/drafts,support.drafts,RUST-FIRST (Bun fallback)
+support.ts,POST,/api/support/drafts/:id/discard,support.draftDiscard,RUST-FIRST (Bun fallback)
 trial.ts,GET,/api/state,,BUN-ONLY or client wiring not proven
 trial.ts,GET,/api/address,,BUN-ONLY or client wiring not proven
 trial.ts,POST,/api/start,,BUN-ONLY or client wiring not proven
@@ -521,4 +521,4 @@ trial.ts,POST,/api/trial/sweep,,BUN-ONLY or client wiring not proven
 workspace.ts,POST,/api/workspace/personal,workspace.personal,RUST-FIRST (Bun fallback)
 workspace.ts,POST,/api/workspace/organisations,workspace.organisations,RUST-FIRST (Bun fallback)
 workspace.ts,PATCH,/api/workspace/active-organisation,workspace.setActive,RUST-FIRST (Bun fallback)
-workspace.ts,POST,/api/workspace/invitations,,BUN-ONLY or client wiring not proven
+workspace.ts,POST,/api/workspace/invitations,team.invites.create,RUST-FIRST (Bun fallback)

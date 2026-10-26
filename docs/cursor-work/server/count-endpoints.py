@@ -29,6 +29,14 @@ for f in glob.glob('server/rust/*_glue.rs') + glob.glob('server/rust/*_core.rs')
     for m in re.finditer(r'pub fn (?:owns|pro_only|procs)\(.*?\n\}', open(f).read(), re.S):
         RUSTP |= set(re.findall(r'"([a-z0-9_]+(?:\.[A-Za-z0-9_]+)+)"', m.group(0)))
 RUSTP |= set(re.findall(r'^\s*"([a-z0-9_]+(?:\.[A-Za-z0-9_]+)+)"\s*(?:\||=>)', open('server/rust/main.rs').read(), re.M))
+for ln in open('server/rust/main.rs').read().splitlines():   # "a.b" | "c.d" => ...  (ek line mein kai proc, '-' wale naam bhi)
+    if '=>' in ln and ln.lstrip().startswith('"'):
+        RUSTP |= set(re.findall(r'"([a-z0-9_]+(?:\.[A-Za-z0-9_-]+)+)"', ln.split('=>')[0]))
+for f in glob.glob('server/rust/*_core.rs') + glob.glob('server/rust/*_glue.rs'):   # match-arm procs (analytics_core need_of)
+    RUSTP |= set(re.findall(r'^\s*"([a-z0-9_]+(?:\.[A-Za-z0-9_]+)+)"\s*(?:\||=>)', open(f).read(), re.M))
+for f in glob.glob('server/rust/*_core.rs'):   # PROCS: [..] jaise const arrays (billx/basx/contx)
+    for m in re.finditer(r'pub const PROCS: \[&str; \d+\] = \[(.*?)\];', open(f).read(), re.S):
+        RUSTP |= set(re.findall(r'"([a-z0-9_]+(?:\.[A-Za-z0-9_]+)+)"', m.group(1)))
 for f in glob.glob('src/**/*.ts*', recursive=True):
     s2 = open(f).read()
     for m in re.finditer(r'rpcOrRest[^(]*\(\s*["`\']([\w.]+)["`\']\s*,\s*\{\s*path:\s*([`"\'])(/api/[^`"\']*)\2', s2):
@@ -37,12 +45,44 @@ for f in glob.glob('src/**/*.ts*', recursive=True):
     for m in PROCRE.finditer(s2):
         if m.group(2) in RUSTP:
             cl[norm(m.group(4))].add(m.group(2))
+# Verified 27 Oct 2026: yeh 7 Bun routes ka Rust proc live hai (mailx/crmd/analytics); client ya to template-literal path se bulata hai ya REST variant bulata hi nahi.
+ALIAS = {
+    ('storage.ts', 'POST', '/api/storage/reserve'): 'storage.reserve',
+    ('storage.ts', 'POST', '/api/storage/release'): 'storage.release',
+    ('support.ts', 'GET', '/api/support/drafts'): 'support.drafts',
+    ('support.ts', 'POST', '/api/support/drafts/:id/discard'): 'support.draftDiscard',
+    ('dashboard.ts', 'GET', '/api/dashboard/ai-usage'): 'dashboard.ai-usage',
+    ('contacts.ts', 'GET', '/api/companies'): 'companies.list',
+    ('mail.ts', 'GET', '/api/mail/threads'): 'mail.threads',
+    ('mail.ts', 'GET', '/api/mail/search'): 'mail.search',
+    ('calendar.ts', 'GET', '/api/calendar/export'): 'calendar.export',
+    ('locale.ts', 'GET', '/api/locale/registry'): 'locale.registry',
+    ('workspace.ts', 'POST', '/api/workspace/invitations'): 'team.invites.create',
+    ('analytics.ts', 'GET', '/api/:report'): 'analytics.responseDebt',
+    ('billing-sync.ts', 'GET', '/api/auth/subscription'): 'billing.subscription',
+    ('billing-sync.ts', 'GET', '/api/auth/invoices'): 'billing.invoices',
+    ('billing-sync.ts', 'POST', '/api/auth/portal'): 'billing.portal',
+    ('billing-sync.ts', 'POST', '/api/auth/settle'): 'billing.settle',
+    ('billing-sync.ts', 'GET', '/api/auth/state'): 'billing.state',
+    ('billing-sync.ts', 'GET', '/api/auth/state-health'): 'billing.stateHealth',
+    ('billing-sync.ts', 'POST', '/api/auth/claim-guest'): 'billing.claimGuest',
+    ('handoff.ts', 'DELETE', '/api/mail/handoff/:id'): 'mail.handoff.delete',
+    ('handoff.ts', 'POST', '/api/mail/devices/seen'): 'mail.device.seen',
+    ('mail-compose.ts', 'DELETE', '/api/mail/follow-up/:id'): 'mail.followup.delete',
+    ('calendar.ts', 'POST', '/api/work/promises/:id/commit'): 'work.promise.commit',
+    ('calendar.ts', 'POST', '/api/work/promises/:id/dismiss'): 'work.promise.dismiss',
+    ('crm.ts', 'GET', '/api/crm/insights'): 'crm.insights',
+    ('analytics.ts', 'GET', '/api/analytics/:report'): 'analytics.responseDebt',
+}
 rows = []
 for base, meth, full, local in eps:
     n = norm(full); hit = None
     for p, procs in cl.items():
         if p == n or (p.endswith(norm(local)) and norm(local).count('/') >= 2):  # exact mounted path, or a specific (2+ segment) local path
             hit = sorted(procs)[0]; break
+    if not hit:  # Bun route ka Rust jora maujood hai magar client path template-literal/dynamic hai ya route unused (REST kabhi nahi bulata)
+        a = ALIAS.get((base, meth, full))
+        if a and a in RUSTP: hit = a
     rows.append((base, meth, full, hit))
 by = collections.OrderedDict()
 for b, m, f, h in rows: by.setdefault(b, []).append((m, f, h))

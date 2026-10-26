@@ -73,6 +73,9 @@ gate "RUST chat.bridge.rescue (Pro)" chat.bridge.rescue "{\"mail_thread_id\":\"$
 gate "RUST mail.followup.list (Pro)" mail.followup.list '{}'
 gate "RUST mail.snippets.list (Pro)" mail.snippets.list '{}'
 gate "RUST mail.handoff.list (Pro)" mail.handoff.list '{}'
+gate "RUST mail.followup.delete (Pro, nakli id)" mail.followup.delete "{\"id\":\"$NID\"}"
+gate "RUST mail.handoff.delete (Pro, nakli id)" mail.handoff.delete "{\"id\":\"$NID\"}"
+gate "RUST mail.device.seen (Pro, device_id nahi => 400)" mail.device.seen '{}'
 gate "RUST analytics.threadEconomics (Pro)" analytics.threadEconomics '{}'
 # --- CRM P1+P2 + workx (26 Oct): har config proc Basic ko 403. Pro mode mein inputs khali/nakli — koi data nahi banta (list sirf default pipeline ensure karta hai).
 for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.list crm.fields.save crm.fields.delete crm.forms.list crm.forms.save crm.forms.delete crm.merge crm.custom.set crm.board crm.deals.move crm.deals.setPipeline work.tasks work.promises crm.overview crm.live crm.leads crm.deals crm.insights crm.createLead crm.createDeal crm.moveDeal crm.convertLead crm.dealWork crm.dealThread work.promise.commit work.promise.dismiss crm.memory; do
