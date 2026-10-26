@@ -1138,3 +1138,11 @@ Phir mujhe batayein — Chrome (Pro) par live proof main khud karunga.
 2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
 3. Basic probe (ab CRM procs ke 403 bhi): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/basic-gate-probe.sh)`
 Agar 502 phir aaye: `pm2 logs anexomail-rust --lines 40 --nostream | grep crmx` ka output bhejein.
+
+## 26 Oct 2026 19:30 PKT — GREEN ORDER STATE (compaction-safe; founder: "ek ek cheez green, tarteeb se")
+Founder rule: ek item live green hone tak agla nahi. Pro CRM pehle, phir tarteeb (Business -> CRM P3-P6 (Blueprint=P4) -> Business Pro -> Enterprise).
+GREEN (live, Chrome Pro): crm.pipelines.save on EXISTING pipeline (add stage 200, restore 200) after SQL+Rust redeploy; everything in 11:45 PASS list; basic-gate-probe ALL PASS incl. 17 crmx/workx 403s + public form.get 404; kernel-check ALL PASS (request-tag Observe valid=76 missing=0 invalid=0 -> ready for ANEXO_TAG_MODE=enforce, founder env change).
+IN PROGRESS: merge via real UI (Setup > Duplicates > ZZ Test Lead keep, ZZ Dup drop). Confirm click was sent at 19:27 but result NOT yet verified (screenshot cancelled by founder) -> verify crm.dups.list total_groups==0 and survivor keeps company "ZZ Co"/custom values before marking green.
+TODO Pro-green (order): (1) merge result; (2) "New deal" button visible after min-w-0 layout fix (screenshot /app/crm/pipeline); (3) merge keep-in-drop = 400 (needs latest Rust installed; confirm with pm2 logs grep crmx); (4) form rate limit 30/10min (throwaway Postgres or 30 posts); (5) Calendar Availability/Focus UI click-through on Pro + hourly-rate UI for meeting cost; (6) Rust ports crm.live + org.members (still kernel_status_404) + kernelRpc early-boot wait 300-400ms; (7) enforce request-tag. Business caps need a Business account.
+Pending server note: pull.sh says "server==repo differ=1" (one src file differs; identify with its diff list, unresolved).
+Always paste full ordered commands inline: SQL -> Rust install + pm2 restart + health -> Web pull.sh -> probes.
