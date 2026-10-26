@@ -1,6 +1,7 @@
 import { CalendarClock, Plus, Settings2, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
+import { MeetingCostSettings } from "@/components/app/calendar/MeetingCostSettings";
 import { OutsideCalendars } from "@/components/app/calendar/OutsideCalendars";
 import { PhoneCalendar } from "@/components/app/calendar/PhoneCalendar";
 import { RoomsSettings } from "@/components/app/calendar/RoomsSettings";
@@ -420,6 +421,8 @@ function SettingsBody({ onDone }: { onDone: () => void }) {
             </ul>
           )}
         </section>
+
+        <MeetingCostSettings />
 
         <RoomsSettings />
 

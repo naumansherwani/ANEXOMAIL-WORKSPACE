@@ -260,6 +260,31 @@ export function useAvailability(date: string) {
   });
 }
 
+/** Meeting cost rates (Pro+). One typed call each, through the WASM kernel (Rule 52) — no REST twin. */
+export type MeetingRates = { self: number; guest: number; currency: string };
+
+export function useMeetingRates(enabled: boolean) {
+  return useQuery<MeetingRates, ApiError>({
+    queryKey: ["calendar", "rates"],
+    queryFn: () => rpc<MeetingRates>("calendar.rates", {}),
+    enabled,
+    retry: false,
+    staleTime: 60_000,
+  });
+}
+
+export function useSaveMeetingRates() {
+  const qc = useQueryClient();
+  return useMutation<MeetingRates, ApiError, { self?: number; guest?: number }>({
+    mutationFn: (input) => rpc<MeetingRates>("calendar.rates.set", input),
+    onSuccess: (data) => {
+      qc.setQueryData(["calendar", "rates"], data);
+      void qc.invalidateQueries({ queryKey: ["calendar", "events"] });
+      void qc.invalidateQueries({ queryKey: ["calendar", "event"] });
+    },
+  });
+}
+
 export function useFocusWindows() {
   return useQuery<{ windows: FocusWindow[] }, ApiError>({
     queryKey: ["calendar", "focus"],

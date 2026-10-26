@@ -43,6 +43,8 @@ pub fn owns(proc: &str) -> bool {
             | "calendar.history"
             | "calendar.availability"
             | "calendar.focus"
+            | "calendar.rates"
+            | "calendar.rates.set"
     )
 }
 
@@ -632,11 +634,35 @@ async fn attendee_rows(event_id: &str) -> Vec<Value> {
     .unwrap_or_default()
 }
 
-/// Meeting cost: attendee rows ki `hourly_rate` se. Rates nahi => hourly_total null. Basic se `dispatch` ka wrapper isay null kar deta hai.
+/// Dekhne wale ke saved hourly rates (analytics_rates: scope self = meri, team = guests ka default). Sirf Pro+ ke liye `dispatch` set karta hai.
+#[derive(Clone)]
+struct CostCtx {
+    email: String,
+    self_rate: f64,
+    guest_rate: f64,
+}
+
+tokio::task_local! {
+    static COST_CTX: CostCtx;
+}
+
+fn rate_of(r: &Value) -> Option<f64> {
+    r.get("hourly_rate").and_then(|x| x.as_f64().or_else(|| x.as_str().and_then(|t| t.parse().ok())))
+}
+
+/// Meeting cost: attendee rows ki `hourly_rate` se; row par na ho to dekhne wale ke saved rates (organiser = meri, guests = default). Rates nahi => hourly_total null. Basic se `dispatch` ka wrapper isay null kar deta hai.
 fn cost_value(ev: &Value, rows: &[Value]) -> Value {
     let (Some(a), Some(b)) = (cal::parse_ts(&st(ev, "starts_at")), cal::parse_ts(&st(ev, "ends_at"))) else { return Value::Null };
     let minutes = ((b - a) / 60).max(0);
-    let rates: Vec<f64> = rows.iter().filter_map(|r| r.get("hourly_rate").and_then(|x| x.as_f64().or_else(|| x.as_str().and_then(|t| t.parse().ok())))).collect();
+    let rates: Vec<f64> = match COST_CTX.try_with(|c| c.clone()) {
+        Ok(c) => {
+            let pairs: Vec<(String, Option<f64>)> = rows.iter().map(|r| (st(r, "address"), rate_of(r))).collect();
+            let organiser = st(ev, "organiser");
+            let mine = organiser.trim().eq_ignore_ascii_case(c.email.trim());
+            cal::effective_rates(&pairs, &organiser, mine, c.self_rate, c.guest_rate)
+        }
+        Err(_) => rows.iter().filter_map(rate_of).collect(),
+    };
     let (hourly, total) = cal::meeting_cost(&rates, minutes);
     json!({ "currency": "GBP", "total": total, "attendees": rows.len(), "minutes": minutes, "hourly_total": hourly })
 }
@@ -715,7 +741,12 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> axum::response:
             return fail(StatusCode::FORBIDDEN, "feature_not_available", msg);
         }
     }
-    let resp = dispatch_inner(proc, &me, input).await;
+    let resp = if cal::cost_allowed(&plan) {
+        let (self_rate, guest_rate) = read_rates(&me.id).await;
+        COST_CTX.scope(CostCtx { email: me.email.clone(), self_rate, guest_rate }, dispatch_inner(proc, &me, input)).await
+    } else {
+        dispatch_inner(proc, &me, input).await
+    };
     if cal::cost_allowed(&plan) || !resp.status().is_success() {
         return resp;
     }
@@ -751,6 +782,8 @@ async fn dispatch_inner(proc: &str, me: &Who, input: &Value) -> axum::response::
         "calendar.busy" => busy(&me, input).await,
         "calendar.availability" => availability(&me, input).await,
         "calendar.focus" => focus(&me).await,
+        "calendar.rates" => rates_get(&me).await,
+        "calendar.rates.set" => rates_set(&me, input).await,
         "calendar.findtime" => findtime(&me, input).await,
         "calendar.guests" => guests(&me, input).await,
         "calendar.events" => events(&me, input).await,
@@ -2154,6 +2187,39 @@ async fn availability(me: &Who, input: &Value) -> axum::response::Response {
         "share_url": format!("/api/calendar/availability?date={}", cal::fmt_rfc3339(day_start).chars().take(10).collect::<String>()),
     }))
     .into_response()
+}
+
+/// (meri rate, guests ka default) — analytics_rates se; kuch saved nahi => (0, 0) => cost nahi dikhta.
+async fn read_rates(user_id: &str) -> (f64, f64) {
+    let q = format!("analytics_rates?select=scope,hourly_rate&user_id=eq.{}&scope=in.(self,team)", enc(user_id));
+    let rows = crate::sb_select(&q).await.ok().and_then(|v| v.as_array().cloned()).unwrap_or_default();
+    let pick = |scope: &str| rows.iter().find(|r| st(r, "scope") == scope).and_then(rate_of).unwrap_or(0.0);
+    (pick("self"), pick("team"))
+}
+
+async fn rates_get(me: &Who) -> axum::response::Response {
+    let (me_rate, guest_rate) = read_rates(&me.id).await;
+    crate::ok(json!({ "self": me_rate, "guest": guest_rate, "currency": "GBP" })).into_response()
+}
+
+/// `self` = meri hourly rate, `guest` = guests ka default; dono optional, har ek 0..=10000 (0 = band). Galat value => 400, kuch save nahi.
+async fn rates_set(me: &Who, input: &Value) -> axum::response::Response {
+    let mut rows: Vec<Value> = Vec::new();
+    for (key, scope) in [("self", "self"), ("guest", "team")] {
+        let Some(v) = input.get(key) else { continue };
+        let n = v.as_f64().or_else(|| v.as_str().and_then(|t| t.trim().parse().ok()));
+        let Some(rate) = n.and_then(cal::clean_rate) else {
+            return fail(StatusCode::BAD_REQUEST, "bad_rate", "Rate must be a number from 0 to 10000");
+        };
+        rows.push(json!({ "user_id": me.id, "scope": scope, "hourly_rate": rate, "currency": "GBP", "updated_at": cal::fmt_rfc3339(now_epoch()) }));
+    }
+    if rows.is_empty() {
+        return fail(StatusCode::BAD_REQUEST, "nothing_to_save", "Send self and/or guest");
+    }
+    if crate::sb_upsert("analytics_rates", "user_id,scope", Value::Array(rows)).await.is_err() {
+        return fail(StatusCode::BAD_GATEWAY, "db_unavailable", "Rates could not be saved");
+    }
+    rates_get(me).await
 }
 
 async fn focus(me: &Who) -> axum::response::Response {

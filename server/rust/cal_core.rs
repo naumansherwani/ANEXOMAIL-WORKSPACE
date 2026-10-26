@@ -1125,6 +1125,34 @@ pub fn meeting_cost(rates: &[f64], minutes: i64) -> (Option<f64>, f64) {
     (Some(hourly), (total * 100.0).round() / 100.0)
 }
 
+/// Hourly rate jo user save kar sakta hai: 0..=10_000, 2 decimals (rupee/pound ka paisa), NaN/inf/negative = None (400).
+pub fn clean_rate(v: f64) -> Option<f64> {
+    if !v.is_finite() || !(0.0..=10_000.0).contains(&v) {
+        return None;
+    }
+    Some((v * 100.0).round() / 100.0)
+}
+
+/// Meeting ke har insaan ka hourly rate (cost ke liye). `rows` = (address, rate jo attendee row par saved hai).
+/// Row ka apna rate (>0) sab se pehle; warna organiser ko `self_rate`, baaqi guests ko `guest_rate`.
+/// Organiser rows mein na ho to bhi mehfil mein ginte jate hain (`include_organiser`: sirf jab dekhne wala khud organiser ho).
+pub fn effective_rates(rows: &[(String, Option<f64>)], organiser: &str, include_organiser: bool, self_rate: f64, guest_rate: f64) -> Vec<f64> {
+    let org = organiser.trim().to_lowercase();
+    let mut out: Vec<f64> = rows
+        .iter()
+        .map(|(addr, r)| match r {
+            Some(x) if x.is_finite() && *x > 0.0 => *x,
+            _ if !org.is_empty() && addr.trim().to_lowercase() == org => self_rate.max(0.0),
+            _ => guest_rate.max(0.0),
+        })
+        .collect();
+    let org_present = !org.is_empty() && rows.iter().any(|(a, _)| a.trim().to_lowercase() == org);
+    if include_organiser && !org.is_empty() && !org_present {
+        out.push(self_rate.max(0.0));
+    }
+    out
+}
+
 /// 0 basic · 1 pro+ . Basic ko meeting cost nahi milti. Anjaan plan = basic (kabhi zyada nahi kholta).
 pub fn cost_allowed(plan: &str) -> bool {
     let p = plan.trim().to_lowercase().replace([' ', '-'], "_");
@@ -2405,6 +2433,7 @@ mod cost_tests {
 pub fn pro_only_cal_proc(proc: &str, has_goal: bool) -> Option<&'static str> {
     match proc {
         "calendar.availability" | "calendar.focus" => Some("Availability and focus windows are a Pro+ feature."),
+        "calendar.rates" | "calendar.rates.set" => Some("Meeting cost rates are a Pro+ feature."),
         "calendar.files.list" | "calendar.files.attach" | "calendar.files.remove" => Some("Files on a meeting are a Pro+ feature."),
         "calendar.meta.set" if has_goal => Some("Meeting goals and outcome colours are a Pro+ feature."),
         _ => None,
@@ -2492,7 +2521,7 @@ mod avail_tests {
 
     #[test]
     fn pro_gate_covers_exactly_the_pro_calendar_procs() {
-        for p in ["calendar.availability", "calendar.focus", "calendar.files.list", "calendar.files.attach", "calendar.files.remove"] {
+        for p in ["calendar.availability", "calendar.focus", "calendar.rates", "calendar.rates.set", "calendar.files.list", "calendar.files.attach", "calendar.files.remove"] {
             assert!(pro_only_cal_proc(p, false).is_some(), "{p}");
         }
         assert!(pro_only_cal_proc("calendar.meta.set", true).is_some());
@@ -2500,6 +2529,28 @@ mod avail_tests {
         for p in ["calendar.create", "calendar.findtime", "calendar.busy", "calendar.events", "booking.page.set"] {
             assert!(pro_only_cal_proc(p, true).is_none(), "{p} Basic ko khula");
         }
+    }
+
+    #[test]
+    fn rates_are_cleaned_and_effective_rates_fall_back() {
+        assert_eq!(clean_rate(60.0), Some(60.0));
+        assert_eq!(clean_rate(45.678), Some(45.68));
+        assert_eq!(clean_rate(0.0), Some(0.0));
+        assert_eq!(clean_rate(-1.0), None);
+        assert_eq!(clean_rate(10_000.01), None);
+        assert_eq!(clean_rate(f64::NAN), None);
+        let rows = vec![("Me@x.com".to_string(), None), ("a@y.com".to_string(), None), ("b@y.com".to_string(), Some(100.0))];
+        // organiser rows mein: self 50, a -> guest 30, b apna 100
+        assert_eq!(effective_rates(&rows, "me@x.com", true, 50.0, 30.0), vec![50.0, 30.0, 100.0]);
+        // organiser rows mein nahi: viewer organiser => uska self rate shamil
+        let g = vec![("a@y.com".to_string(), None)];
+        assert_eq!(effective_rates(&g, "me@x.com", true, 50.0, 30.0), vec![30.0, 50.0]);
+        assert_eq!(effective_rates(&g, "me@x.com", false, 50.0, 30.0), vec![30.0], "doosre ka event: uska rate hum nahi jante");
+        // koi rate set nahi (0,0) => cost nahi dikhta
+        let (h, t) = meeting_cost(&effective_rates(&g, "me@x.com", true, 0.0, 0.0), 60);
+        assert_eq!((h, t), (None, 0.0));
+        let (h2, t2) = meeting_cost(&effective_rates(&g, "me@x.com", true, 50.0, 30.0), 30);
+        assert_eq!((h2, t2), (Some(80.0), 40.0));
     }
 
     #[test]

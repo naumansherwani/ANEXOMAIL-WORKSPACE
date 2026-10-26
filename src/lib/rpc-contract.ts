@@ -23,6 +23,8 @@ export const PROC_MIN_PLAN = {
   "mail.handoff.delete": "pro",
   "calendar.availability": "pro",
   "calendar.focus": "pro",
+  "calendar.rates": "pro",
+  "calendar.rates.set": "pro",
   "calendar.files.list": "pro",
   "calendar.files.attach": "pro",
   "calendar.files.remove": "pro",
@@ -60,6 +62,14 @@ export interface ProcShapes {
   "calendar.availability": {
     in: { date?: string };
     out: { slots: { starts_at: string; ends_at: string; state: "free" | "focus" | "travel_buffer"; label: string | null }[]; share_url: string | null };
+  };
+  "calendar.rates": {
+    in: Record<string, never>;
+    out: { self: number; guest: number; currency: string };
+  };
+  "calendar.rates.set": {
+    in: { self?: number; guest?: number };
+    out: { self: number; guest: number; currency: string };
   };
   "calendar.focus": {
     in: Record<string, never>;

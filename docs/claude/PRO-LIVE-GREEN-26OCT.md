@@ -28,3 +28,13 @@ Saboot = Chrome mein khud dekha + founder server output (basic/pro/kernel ALL PA
 2. Shared inbox collision guard: server probe (assign Basic 403) GREEN; live collision (do users ek thread par) ke liye doosra Pro user chahiye -> test account.
 3. Trusted devices "4" limit UI: /app/devices par device vault limit dikhana/test baaqi.
 4. ANEXO_TAG_MODE=enforce: founder env.
+
+## 22:40 — Hourly rate / Meeting cost (gap #1) — KIS TECHNOLOGY MEIN (Rule 52 + 56)
+| Hissa | Technology | File |
+|---|---|---|
+| Server logic (rates ka hisaab, rakam saaf karna, gate) | Rust (std-only core, 50 tests) | server/rust/cal_core.rs (`clean_rate`, `effective_rates`) |
+| Server I/O (2 naye procs `calendar.rates`, `calendar.rates.set`; cost har event par) | Rust axum+tokio `/rpc`, tokio task-local (rates ek baar per request) | server/rust/cal_glue.rs |
+| Data | Postgres (analytics_rates, scope self/team) — NAYA SQL NAHI | phase24 table |
+| Plan gate | Server par Pro+ (Basic 403), contract + probe | rpc-contract.ts, basic-gate-probe.sh |
+| Browser | WASM kernel (rpc() -> kernelRpc), REST/Bun twin NAHI (Rule 56) | src/lib/calendar.ts, MeetingCostSettings.tsx (Calendar settings > Meeting cost) |
+Status: CODE DONE + tests (cal_core 50, bun 208, tsc clean, cargo check). Deploy + Chrome live saboot baaqi => tab GREEN.

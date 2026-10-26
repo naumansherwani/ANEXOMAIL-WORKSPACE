@@ -648,3 +648,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 - 26 Oct 22:05 CEO FAISLA: MASTER-GREEN-PLAN.md B = final 13-qadam tarteeb; founder se jargon nahi, haan ka sawal nahi.
 
 - 26 Oct 22:15 PRO LIVE GREEN: booking links, Overlap Matrix, snooze, domains/mailboxes/storage, CRM 8 pages, compose tools, availability -> docs/claude/PRO-LIVE-GREEN-26OCT.md. DOBARA CODE NAHI. Gap: hourly-rate UI.
+
+- 26 Oct 22:40 hourly-rate/meeting-cost field code DONE (Rust cal_core/cal_glue + kernel UI MeetingCostSettings); deploy+Chrome baaqi. DOBARA LIKHNA NAHI.

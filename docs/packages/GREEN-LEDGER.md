@@ -162,3 +162,5 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 | 26 Oct 22:15 | availability working hours+tz LIVE (Chrome 16 slots 09:00); ALL PASS basic+pro+kernel | GREEN |
 
 | 26 Oct 22:15 | PRO live walk: booking links 1/3, Overlap Matrix, snooze, domains/mailboxes/storage, CRM, compose, availability | GREEN (hourly-rate UI gap) |
+
+| 26 Oct 22:40 | meeting cost hourly-rate field (calendar.rates/.set, Rust+kernel, no SQL) | CODE DONE; deploy+Chrome baaqi |

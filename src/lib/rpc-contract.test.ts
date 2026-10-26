@@ -22,7 +22,7 @@ describe("rpc contract == Rust server gates", () => {
 
   test("calendar pro_only_cal_proc procs are all 'pro' in the contract (meta.set goal is partial, excluded)", () => {
     const procs = quoted(fnBody(rs("cal_core.rs"), "pro_only_cal_proc")).filter((p) => p !== "calendar.meta.set");
-    expect(procs.sort()).toEqual(["calendar.availability", "calendar.files.attach", "calendar.files.list", "calendar.files.remove", "calendar.focus"]);
+    expect(procs.sort()).toEqual(["calendar.availability", "calendar.files.attach", "calendar.files.list", "calendar.files.remove", "calendar.focus", "calendar.rates", "calendar.rates.set"]);
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
   });
 
