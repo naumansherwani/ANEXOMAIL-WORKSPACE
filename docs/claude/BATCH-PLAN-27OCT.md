@@ -44,3 +44,9 @@ Har batch ka saboot: cargo check (poora crate), bun test, tsc, installer probe, 
 - [B] workspace.ts POST /api/workspace/organisations — gate: basic
 - [B] workspace.ts PATCH /api/workspace/active-organisation — gate: basic
 - [B] workspace.ts POST /api/workspace/invitations — gate: basic
+
+## B2 — workspace.personal + workspace.organisations (27 Oct 2026, compact se pehle likha)
+Kya likhunga: `wsx_core.rs` (std-only tests: slugify, normalize_org_domain [anexomail.com mana, company.com format], personal/business slug, name>=2) + `wsx_glue.rs` (Tokio async): `workspace.personal` (existing org => stamp kind + {existing:true}; warna organisations insert [owner_id retry], org_members upsert [status retry; fail => rollback delete], account_organisations + account_org_members upsert, orgs upsert, mail_accounts attach, account_profiles.preferences.workspace_kind + onboarded) aur `workspace.organisations` (name, domain). `POST /workspace/invitations` ALAG nahi: Rust `team.invites.create` (team_glue) pehle se hai, Bun route sirf uska fallback — map lag.
+Technology: React form (onboarding.tsx / claim.tsx / auth.tsx / ConvertToBusiness.tsx) -> `rpcOrRest` -> WASM kernel -> Rust Tokio -> Supabase REST (PostgREST) ; Bun sirf fallback. Domain errors 400/409 (Rule 59), 404 sirf unknown_proc.
+Gate: sab plans (login). Koi Pro gate nahi. UI mirror: kuch nahi badalta, sirf call-sites.
+Frontend technology (jo ban chuki + jo aayegi): React 19.2 + TanStack Start/Router/Query + Vite 8 + Tailwind 4 + TS 5.8 (live); WASM kernel web-wasm v0.2.0 (live); three/R3F/drei/postprocessing/GSAP/motion/lottie (installed, landing/loader/CRM stage/globe); aane wali: WebGPU+TSL, ScrollTrigger+Lenis, Theatre.js, Rapier, Rive, WebXR (Rule 60, Business+, K3 ke baad). Kaam wale screens cinematic NAHI.
