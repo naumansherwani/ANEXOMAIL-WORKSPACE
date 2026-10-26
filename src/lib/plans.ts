@@ -135,10 +135,10 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     id: "business",
     name: "Business",
     monthly: 360,
-    yearly: 3960,
+    yearly: 3600,
     unit: "/ month",
     tagline: "For growing companies that need governance over their email, not just storage.",
-    annual: "one-month-free",
+    annual: "two-months-free",
     userCap: "Up to 60 users · flat price for the whole company, no per-user fees",
     features: [
       "Everything in Basic + Pro",
