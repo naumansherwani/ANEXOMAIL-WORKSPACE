@@ -86,6 +86,7 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     userCap: "Up to 5 users · flat price for the whole company, no per-user fees",
     features: [
       "Up to 5 users — no per-user fees",
+      "Every app below is included — no charges for any app, nothing extra to buy",
       "Bring your own company domain (1 domain)",
       "3 mailboxes, 15GB shared storage",
       "Free aliases — no extra seat",

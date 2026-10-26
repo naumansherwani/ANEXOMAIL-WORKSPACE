@@ -1117,3 +1117,6 @@ Chrome (founder ki basic.test billing) dekha: £23.00 / 5 GB mailbox / 1 of 1 se
 
 ### 26 Oct 06:05 — billing card fix
 Founder ne dekha: '£40/mo' ke baad '/ month' dohra. Fix: ek unit (priceFor), Basic par user cap line. Deploy: pull.sh (sirf web). Chrome verify baqi.
+
+### 26 Oct 06:10 — no app charges line
+Basic card + Polar copy: 'no charges for any app, sab isi package mein'. Polar description mein ye bullet founder add kare.

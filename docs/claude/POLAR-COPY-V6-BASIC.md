@@ -10,6 +10,7 @@ Professional company email for small teams, with control built in.
 £40 per month for the whole company, with a cap of 5 users. We never charge per-user fees.
 
 - Bring your own domain. We do not sell domains, so you can buy one from Namecheap, GoDaddy or any registrar you prefer and connect it here.
+- Every app and feature listed here is included. There are no charges for any app and nothing extra to buy.
 - Up to 5 users, 3 mailboxes and 15GB of shared storage
 - Free aliases, with no extra seat
 - Email attachments up to 25MB, and undo send (30 seconds)
