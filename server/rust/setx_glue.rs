@@ -262,7 +262,15 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
                 Err(e) => return db_fail(&e),
             };
             let key = ver.get("key").and_then(|k| k.as_str()).unwrap_or("").to_string();
-            let from = jstr(ver.get("from_value")).unwrap_or_default();
+            // BUG FIX (Chrome live 04:47): pehli baar badli hui setting ki from_value NULL hoti hai (tab tak default chal raha tha);
+            // pehle revert "" likh deta tha => toggle "Off/Risky" reh jata tha. Ab NULL ho to setting ka default_value wapas.
+            let from = match jstr(ver.get("from_value")) {
+                Some(f) => f,
+                None => {
+                    let q_def = format!("setting_defs?select=default_value&key=eq.{}&limit=1", enc(&key));
+                    first(crate::sb_select(&q_def).await).and_then(|d| jstr(d.get("default_value"))).unwrap_or_default()
+                }
+            };
             let out = match write_setting(&uid, &key, &from, Some(&format!("revert of {vid}")), "revert").await {
                 Ok(s) => s,
                 Err(r) => return r,
