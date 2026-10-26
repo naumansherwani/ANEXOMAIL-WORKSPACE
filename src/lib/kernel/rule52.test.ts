@@ -66,12 +66,13 @@ describe("Rule 52 — ek kernel, builtin, poori website", () => {
     expect(read("src/components/app/AppShell.tsx")).toMatch(/useEffect\(\(\) => warmKernel\(\), \[\]\)/);
   });
 
-  test("[8] early-boot: kernel jaagne tak thora intezar, par page ko 500 ms se zyada nahi rokta", () => {
+  test("[8] early-boot: kernel jaagne tak thora intezar, par page ko 1.5 s se zyada nahi rokta, aur ek baar hi (gaveUp)", () => {
     const b = read("src/lib/kernel/boot.ts");
     const m = /EARLY_WAIT_MS = (\d+)/.exec(b);
     expect(m).not.toBeNull();
-    expect(Number(m![1])).toBeLessThanOrEqual(500);
+    expect(Number(m![1])).toBeLessThanOrEqual(1500);
     expect(b).toContain("kernelForCall()");
+    expect(b).toContain("gaveUp = true");
   });
 
   test("[9] request tag: HMAC-SHA256(session_key, \"<proc>.<ts>.<sha256hex(input)>\") — client aur server ka ek hi format", () => {

@@ -105,8 +105,9 @@ export type KernelReply = { status: number; body: unknown };
 
 /** Early-boot: page ki pehli calls kernel ke jaagne se pehle chal parti thin (kernel_not_used). Ab thora sa (max EARLY_WAIT_MS) intezar,
  *  sirf jab kernel abhi load/connect ho raha ho. Kernel ban chuka ya mumkin hi nahi (WebTransport nahi / load fail) => foran jawab, koi intezar nahi. */
-export const EARLY_WAIT_MS = 400;
+export const EARLY_WAIT_MS = 1200; // live naap (19:50): wasm ~0 ms, par QUIC handshake 400 ms se upar — 400 kam tha
 let settledNoKernel = false;
+let gaveUp = false; // ek baar intezar poora hua aur rpc nahi uthi => baaqi calls bina intezar fetch par (page nahi rukta)
 
 export async function waitUntil(cond: () => boolean, maxMs: number, stepMs = 20): Promise<boolean> {
   const t0 = Date.now();
@@ -119,7 +120,7 @@ export async function waitUntil(cond: () => boolean, maxMs: number, stepMs = 20)
 
 async function kernelForCall(): Promise<Kernel | null> {
   if (ready && ready.rpcUp) return ready;
-  if (settledNoKernel || typeof window === "undefined") return null;
+  if (settledNoKernel || gaveUp || typeof window === "undefined") return null;
   const hasWT = typeof (window as unknown as { WebTransport?: unknown }).WebTransport === "function";
   if (!hasWT) {
     settledNoKernel = true;
@@ -129,11 +130,14 @@ async function kernelForCall(): Promise<Kernel | null> {
   const k = await Promise.race([getKernel(), new Promise<null>((r) => setTimeout(() => r(null), EARLY_WAIT_MS))]);
   if (!k) {
     if (!loadPending()) settledNoKernel = true; // load poora hua aur null nikla => kernel nahi, dobara intezar nahi
+    else gaveUp = true; // load abhi bhi chal raha: ek baar hi intezar
     return null;
   }
   if (k.rpcUp) return k;
   const left = EARLY_WAIT_MS - (Date.now() - t0);
-  return left > 0 && (await waitUntil(() => k.rpcUp, left)) ? k : null;
+  if (left > 0 && (await waitUntil(() => k.rpcUp, left))) return k;
+  gaveUp = true; // intezar poora hua: ab sirf rpcUp ban jane par (upar wali pehli line) kernel use hoga
+  return null;
 }
 
 function loadPending(): boolean {

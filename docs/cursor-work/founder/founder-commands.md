@@ -1156,9 +1156,12 @@ STILL NOT GREEN: Business caps (needs Business account); Calendar Availability/F
 Test data left on Pro account: ZZ Test Lead, zz.test.fast lead, 2 ZZ TEST Deal, 5 ZZ fields, 1 ZZ form.
 
 ## 26 Oct 2026 19:50 PKT — RULE 52 jumla-ba-jumla (founder: "ek ek word green, dobara tootna nahi chahiye")
-Banaya: `src/lib/kernel/rule52.test.ts` (16 guard checks + 3 todo) + `docs/cursor-work/RULE-52-PROOF.md` (18 jumle, har ka test + live saboot + status). boot.ts early-boot wait (EARLY_WAIT_MS 400, `kernelForCall`) — READY (Web pull + Chrome ginti baaqi). Live (Chrome 19:36): kernel wasm 200, rpcUp, tagged 3 untagged 0, par sirf 3/11 calls kernel se (baaqi kernel_not_used = early-boot).
+Banaya: `src/lib/kernel/rule52.test.ts` (16 guard checks + 3 todo) + `docs/cursor-work/RULE-52-PROOF.md` (18 jumle, har ka test + live saboot + status). boot.ts early-boot wait (EARLY_WAIT_MS 1200 (live naap: 400 ms kam, QUIC handshake zyada), `kernelForCall`) — READY (Web pull + Chrome ginti baaqi). Live (Chrome 19:36): kernel wasm 200, rpcUp, tagged 3 untagged 0, par sirf 3/11 calls kernel se (baaqi kernel_not_used = early-boot).
 TODO (asli kami): G1 ANEXOChat apna /wt/chat WebTransport (chat-transport.ts); G2 live@1 /wt/events aur rpc@1 /wt/rpc alag session (Rule: EK QUIC connection); G3 crm.live + org.members Rust par. kernel-check.sh server par FAIL aaya (19:35) — kaun si line, founder ke `grep` output ka intezar.
 Web deploy: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | grep -E "build|health|server==repo|^DIFF"` — wasm nahi badla (pin wahi), isliye Rust/SQL nahi.
 
 ## 26 Oct 2026 19:47 PKT — founder: G1/G2 (ek QUIC session, ANEXOChat kernel ke andar) = HAAN, lekin TARTEEB se
 Founder: ANEXOChat par kal raat ~2 baje (25-26 Oct) bahut kuch note karwaya tha — yeh us ke UPAR chalega. Pro green ke BAAD Business phase mein yeh sab hoga. Repo mein likha: `docs/packages/business/ANEXOCHAT-K3-PLAN.md` (purane notes ki list + K3 plan), `RULE-52-PROOF.md` G1/G2 = TODO (Business phase). Abhi K3/ANEXOChat par koi code nahi. Agla = Pro green poora: Web pull + Chrome kernel/fetch ginti (early-boot), kernel-check FAIL ki line, G3 (crm.live + org.members Rust), Calendar Availability/Focus UI, enforce mode.
+
+## 26 Oct 2026 19:55 PKT — Rule 52 early-boot: pehla live naap kam nikla, fix 2
+Web pull (19:49) ke baad Chrome: kernel 1 / fetch 8 — wasm 3373 ms par, pehli 9 calls 3793 ms par (400 ms intezar khatam, QUIC handshake tab tak nahi hua). Fix: EARLY_WAIT_MS 1200 + `gaveUp` (ek baar intezar, phir bina intezar fetch). kernel-check ab ALL PASS (19:49; pehla FAIL restart ke foran baad ka tha). Founder ko Web pull dobara; phir Chrome ginti.
