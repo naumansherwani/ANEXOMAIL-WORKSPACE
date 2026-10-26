@@ -806,7 +806,7 @@ src/lib/storage-client.ts c0f62c771d5645df
 docs/cursor-work/server/installer-dryrun.sh 70570d6395ca3a37
 server/rust/wsx_core.rs 3f981ffa0c3fe71d
 server/rust/wsx_glue.rs be610115ae5edc5b
-docs/cursor-work/server/wsx-live-test.sh 9ef7e37084c86b02
+docs/cursor-work/server/wsx-live-test.sh 4e17110c44c6db7f
 docs/claude/POLAR-COPY-V6-BUSINESS.md a97c2be4fce58a40
 server/config/billing-products.ts 7aa742c003c71c1c
 server/config/billing-products.test.ts 5b8bbfd0d6f4852b
@@ -815,9 +815,9 @@ server/rust/billx_core.rs 48e84e3a21328670
 server/rust/billx_glue.rs 2dc939fbabde5ec6
 server/routes/billing-sync.ts 1ab7c2ba4dd3c5be
 src/routes/app.billing.state.tsx 7138c5b5a99b422a
-docs/packages/TRIAL-48H-DESIGN.md 8f604c5a38a68dfb
+docs/packages/TRIAL-48H-DESIGN.md cc772127c6fc9b69
 docs/packages/trial/BUILD-PLAN.md bf80afc9c9ff356c
-docs/packages/trial/DATA-ISOLATION.md 237c7743608ce1f3
-docs/packages/trial/FEATURES-AND-GATES.md 7793925281e7590c
+docs/packages/trial/DATA-ISOLATION.md a168aebf466d6c67
+docs/packages/trial/FEATURES-AND-GATES.md 7634145c881b3526
 docs/packages/trial/NO-MOCK-AND-ONBOARDING.md 7640390fa0e591ac
 docs/packages/trial/README.md 50b6d0cae91d20f8

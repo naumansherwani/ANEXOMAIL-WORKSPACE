@@ -5,7 +5,7 @@ Plan id `trial` (resolve_plan, ek hi code path; server gate asli, UI aaina — R
 |---|---|---|
 | Address | 1 asli `handle@anexomail.com` (claim mojooda) | 1 per insaan, reserved list, 30 din reserve baad mein |
 | Mail | asli send/receive, folders, search, snooze/schedule (Pro jhalak) | bahar bhejna rozana hadd (CEO: 25/din), attachment 10MB |
-| Calendar + booking | asli calendar, 1 booking link | Basic/Pro jaisi, 1 link |
+| Calendar + booking | **calendar ke SAB features** (founder 03:30), asli; booking link 1 | koi calendar feature band nahi (rooms/team-wide jaisi Business cheezein ko chhor kar: wahan "Business" chip) |
 | People/Companies | asli (khud ke contacts) | koi sample contacts nahi |
 | CRM jhalak | accounts/leads/pipeline ka **khali asli board** | max 25 records (Pro ka jhalak, full nahi) |
 | **ANEXOChat (basic)** | **1:1 + chhote groups (max 5 log), text, photo/doc (10MB), reply/forward/star, message->Task/Promise** | **Voice/video calls, relay calls, voice notes, pop-out, group calls = BAND** (Business+ ki cheez, "Upgrade" nishan) |

@@ -20,7 +20,8 @@ rest(){ curl -s -m 20 -H "apikey: $KEY" -H "authorization: Bearer $KEY" "$URL/re
 delrest(){ curl -s -m 20 -o /dev/null -X DELETE -H "apikey: $KEY" -H "authorization: Bearer $KEY" "$URL/rest/v1/$1"; }
 
 run_one(){ # kind(personal|business)
-  local kind="$1" EM="zz.wsx.$TS.$kind@anexomail.com" PW UID_ TOK HASH SESS R ORG
+  local kind="$1" EM PW UID_ TOK HASH SESS R ORG
+  EM="zz.wsx.$TS.$kind@anexomail.com"
   PW="$(python3 -c 'import secrets;print(secrets.token_urlsafe(24))')"
   echo "== $kind : $EM"
   UID_="$(curl -s -m 20 -H "apikey: $KEY" -H "authorization: Bearer $KEY" -H 'content-type: application/json' -d "{\"email\":\"$EM\",\"password\":\"$PW\",\"email_confirm\":true}" "$URL/auth/v1/admin/users" | jq_ id)"; unset PW
