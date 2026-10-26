@@ -26,6 +26,8 @@ export type PricedPlan = {
   /** Founder-locked yearly charge in £. */
   yearly: number;
   features: string[];
+  /** Rule 55: flat-per-month plans ka user cap, price ke neeche saaf dikhta hai. */
+  userCap?: string;
   /** Explicit "not included" lines. */
   excludes?: string[];
   badge?: string;
@@ -81,8 +83,9 @@ export const WORKSPACE_PLANS: PricedPlan[] = [
     unit: "/ month",
     tagline: "Small teams that want a professional company inbox.",
     annual: "one-month-free",
+    userCap: "Up to 5 users · flat price for the whole company, no per-user fees",
     features: [
-      "Flat £40 per month for the whole company — up to 5 users, no per-user fees",
+      "Up to 5 users — no per-user fees",
       "Bring your own company domain (1 domain)",
       "3 mailboxes, 15GB shared storage",
       "Free aliases — no extra seat",

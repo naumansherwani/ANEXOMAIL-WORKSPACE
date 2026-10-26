@@ -33,7 +33,7 @@ import { CheckoutButton } from "@/components/site/PlanCheckoutButton";
 import { Button } from "@/components/ui/button";
 import { gbp, useInvoices, useSubscription } from "@/lib/billing-platform";
 import { useLocale } from "@/lib/i18n";
-import { money, WORKSPACE_PLANS, type BillingCycle } from "@/lib/plans";
+import { money, priceFor, WORKSPACE_PLANS, type BillingCycle, type PricedPlan } from "@/lib/plans";
 import { PERSONAL_TIERS, polarToPersonalTierId, isPersonalUpgrade, type PersonalTier } from "@/lib/personal-tiers";
 import { useAuth } from "@/lib/auth";
 import { surfaceFromSession } from "@/lib/plan-surface";
@@ -127,6 +127,7 @@ function PlanCard({
   yearly,
   yearlyRule,
   unit,
+  userCap,
   features,
   currentPlanId,
   cycle,
@@ -140,6 +141,7 @@ function PlanCard({
   yearly: number;
   yearlyRule: "one-month-free" | "two-months-free";
   unit: string;
+  userCap?: string | undefined;
   features: string[];
   currentPlanId: string | null;
   cycle: BillingCycle;
@@ -152,7 +154,7 @@ function PlanCard({
   onConvert?: (planId: string, name: string) => void;
 }) {
   const isCurrent = !onConvert && currentPlanId === planId;
-  const price = cycle === "monthly" ? monthly : Math.round(yearly / 12);
+  const shown = priceFor({ monthly, yearly, unit, annual: yearlyRule } as PricedPlan, cycle);
   const productKey = `POLAR_PRODUCT_PLAN_${planId.toUpperCase()}_${cycle.toUpperCase()}`;
   const label = ctaLabel(currentPlanId, planId);
 
@@ -191,9 +193,9 @@ function PlanCard({
       <div className="mt-3 border-b border-border pb-3">
         <div className="flex items-baseline gap-1">
           <span className="text-[22px] font-bold tracking-tight text-foreground">
-            {money(price)}
+            {shown.big}
           </span>
-          <span className="text-[12px] text-muted-foreground">/mo</span>
+          <span className="text-[12px] text-muted-foreground">{shown.suffix}</span>
         </div>
         {cycle === "yearly" && (
           <p className="mt-0.5 text-[11px] text-emerald-400">
@@ -201,9 +203,9 @@ function PlanCard({
             yearly
           </p>
         )}
-        <p className="mt-0.5 text-[11px] text-muted-foreground">
-          {unit}
-        </p>
+        {userCap && (
+          <p className="mt-1 text-[12px] font-semibold text-foreground">{userCap}</p>
+        )}
       </div>
 
       {/* Features */}
@@ -656,6 +658,7 @@ function WorkspaceBilling() {
                 yearly={plan.yearly}
                 yearlyRule={plan.annual}
                 unit={plan.unit}
+                userCap={plan.userCap}
                 features={plan.features}
                 currentPlanId={kind === "personal" ? null : billed}
                 cycle={cycle}
