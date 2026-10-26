@@ -10,6 +10,7 @@
 //   crm.dealThread {id}           -> {ok,thread_id}     (Bun POST /api/crm/deals/thread)
 //   work.promise.commit {id}      -> {ok,task}          (Bun POST /api/work/promises/:id/commit; promise -> task)
 //   work.promise.dismiss {id}     -> {ok}               (Bun POST /api/work/promises/:id/dismiss)
+//   crm.memory {email}            -> {email,person,deals,tasks,timeline,next_actions} (Bun GET /api/crm/memory; relationship memory)
 //   crm.insights {}               -> {insights:[]}      (Bun GET  /api/crm/insights; workspace mein LEO nahi, khali jaan-boojh kar)
 // Gate Pro+ (Basic 403 feature_not_available). Pro = sirf apni rows (owner = email); Business+ = poori team (org_members). Hisaab crmd_core.rs (std-only, tested). Koi SQL nahi.
 // ============================================================================
@@ -176,6 +177,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         "crm.convertLead" => convert_lead(&cx, input).await,
         "crm.dealWork" => deal_work(&cx, input).await,
         "crm.dealThread" => deal_thread(&cx, input).await,
+        "crm.memory" => memory(&cx, input).await,
         "crm.insights" => crate::ok(json!({ "insights": [] })).into_response(),
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
@@ -356,9 +358,10 @@ async fn deal_work(cx: &Ctx, input: &Value) -> Resp {
     let owner = deal.get("owner").and_then(|x| x.as_str()).filter(|s| !s.is_empty()).unwrap_or(&cx.me.email).to_string();
     let row = json!({
         "org_id": cx.me.org_id, "title": deal.get("title"), "status": "todo", "owner": owner, "due_at": nul(&deal, "next_step_due"),
-        "thread_id": nul(&deal, "thread_id"), "source": "crm_deal", "created_by": cx.me.id,
+        "thread_id": nul(&deal, "thread_id"), "source": "manual", "source_deal_id": id, "created_by": cx.me.id,
     });
-    let ins = match insert_best("work_tasks", row).await {
+    // work_tasks.source CHECK sirf manual|promise|meeting_outcome maanta hai (live bug 27 Oct: "crm_deal" se insert toot'ta tha) — deal ka rishta source_deal_id mein.
+    let ins = match crate::sb_insert("work_tasks?select=id", row).await {
         Ok(v) => v,
         Err(e) => return fail(StatusCode::INTERNAL_SERVER_ERROR, "work_create_failed", &e),
     };
@@ -436,4 +439,169 @@ async fn promise(proc: &str, me: &crate::MailMe, input: &Value) -> Resp {
         })
     });
     crate::ok(json!({ "ok": true, "task": shaped })).into_response()
+}
+
+/* ------------------------------------------------------------------ crm.memory */
+
+fn ts_of(v: &Value, k: &str) -> Option<i64> {
+    v.get(k).and_then(|x| x.as_str()).and_then(crate::cal_core::parse_ts)
+}
+
+fn f64_of(v: Option<&Value>) -> Option<f64> {
+    match v {
+        Some(Value::Number(n)) => n.as_f64(),
+        Some(Value::String(s)) => s.parse().ok(),
+        _ => None,
+    }
+}
+
+/// contacts row (stats embed ek object) -> person, Bun shapePerson jaisa.
+fn shape_person(row: &Value) -> Value {
+    let empty = Value::Null;
+    let s = match row.get("stats") {
+        Some(o @ Value::Object(_)) => o,
+        _ => &empty,
+    };
+    let pick = |k: &str| -> Option<Value> { s.get(k).filter(|x| !x.is_null()).cloned().or_else(|| row.get(k).filter(|x| !x.is_null()).cloned()) };
+    let company = row
+        .get("company")
+        .and_then(|c| c.get("name"))
+        .and_then(|x| x.as_str())
+        .filter(|x| !x.is_empty())
+        .map(|x| x.to_string())
+        .or_else(|| row.get("company_name").and_then(|x| x.as_str()).filter(|x| !x.is_empty()).map(|x| x.to_string()))
+        .or_else(|| row.get("company_domain").and_then(|x| x.as_str()).filter(|x| !x.is_empty()).map(|x| x.to_string()));
+    json!({
+        "id": row.get("id").map(|x| x.as_str().map(|v| v.to_string()).unwrap_or_else(|| x.to_string())).unwrap_or_default(),
+        "display_name": nul(row, "display_name"),
+        "primary_address": c::email_of(&st(row, "primary_address")),
+        "company_name": company,
+        "relationship": pick("relationship").unwrap_or(Value::Null),
+        "health_score": pick("health_score").unwrap_or(Value::Null),
+        "last_contact_at": pick("last_contact_at").unwrap_or(Value::Null),
+        "open_threads": f64_of(pick("open_threads").as_ref()).map(|n| n as i64).unwrap_or(0),
+    })
+}
+
+fn synth_person(id: &Value, name: Value, addr: &str, company: Value, last: Value) -> Value {
+    json!({
+        "id": id.as_str().map(|s| s.to_string()).unwrap_or_default(), "display_name": name, "primary_address": addr, "company_name": company,
+        "relationship": Value::Null, "health_score": Value::Null, "last_contact_at": last, "open_threads": 0,
+    })
+}
+
+async fn memory(cx: &Ctx, input: &Value) -> Resp {
+    let email = c::email_of(&st(input, "email"));
+    if !email.contains('@') {
+        return fail(StatusCode::BAD_REQUEST, "email_required", "A valid email is required");
+    }
+    let now = now_secs();
+    let org = enc(&cx.me.org_id);
+    let list = owner_list(&cx.owners);
+    let (dq, lq) = (format!("crm_deals?select=*&owner=in.({list})&limit=5000"), format!("crm_leads?select=*&owner=in.({list})&limit=5000"));
+    let e = enc(&email);
+    let pq = format!(
+        "contacts?select=id,display_name,primary_address,company_domain,health_score,last_contact_at,stats:contact_stats(messages_in,messages_out,avg_reply_minutes,open_threads,last_contact_at,relationship,health_score)&org_id=eq.{org}&primary_address=ilike.{e}&limit=1"
+    );
+    let pq2 = format!("contacts?select=id,display_name,primary_address,company_domain,health_score,last_contact_at&org_id=eq.{org}&primary_address=ilike.{e}&limit=1");
+    let tq = format!("work_tasks?select=*&org_id=eq.{org}&limit=200");
+    let mq = format!(
+        "mail_messages?select=id,thread_id,subject,from_address,direction,sent_at,snippet&org_id=eq.{org}&or=(from_address.ilike.*{e}*,to_addresses.ilike.*{e}*)&order=sent_at.desc&limit=40"
+    );
+    let eq = format!("calendar_events?select=id,title,starts_at,organiser,thread_id&org_id=eq.{org}&limit=80");
+    let aq = format!("calendar_attendees?select=event_id,address&org_id=eq.{org}&limit=500");
+    let (all_deals, all_leads, joined, tasks, mut mail, events, attendees) =
+        tokio::join!(rows(&dq), rows(&lq), rows(&pq), rows(&tq), rows(&mq), rows(&eq), rows(&aq));
+    let contact = if joined.is_empty() { rows(&pq2).await } else { joined };
+    if mail.is_empty() {
+        // Bun loadMail: org ki taza mail, na ho to threads — phir sirf is address ki.
+        let recent = rows(&format!("mail_messages?select=id,thread_id,subject,from_address,direction,sent_at&org_id=eq.{org}&order=sent_at.desc&limit=40")).await;
+        mail = if !recent.is_empty() {
+            recent
+        } else {
+            rows(&format!("mail_threads?select=id,subject,from_address,last_message_at,status,folder&org_id=eq.{org}&order=last_message_at.desc&limit=40"))
+                .await
+                .iter()
+                .map(|t| {
+                    let open = st(t, "status") == "open" || st(t, "folder") == "inbox";
+                    json!({ "id": t.get("id"), "thread_id": t.get("id"), "subject": t.get("subject"), "from_address": t.get("from_address"),
+                            "direction": "in", "sent_at": t.get("last_message_at"), "open": open })
+                })
+                .collect()
+        };
+        mail.retain(|m| c::email_of(&st(m, "from_address")) == email);
+    }
+    let deals: Vec<Value> = all_deals.iter().filter(|d| c::email_of(&st(d, "contact_email")) == email).cloned().collect();
+    let person = if let Some(row) = contact.first() {
+        shape_person(row)
+    } else if let Some(d) = all_deals.iter().find(|d| c::email_of(&st(d, "contact_email")) == email) {
+        let name = d.get("company").filter(|x| !x.is_null()).cloned().unwrap_or(json!(email));
+        synth_person(d.get("id").unwrap_or(&Value::Null), name, &email, nul(d, "company"), nul(d, "updated_at"))
+    } else if let Some(l) = all_leads.iter().find(|l| c::email_of(&st(l, "email")) == email) {
+        let name = l.get("display_name").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(json!(email));
+        let last = l.get("last_touch_at").filter(|x| !x.is_null()).cloned().unwrap_or_else(|| nul(l, "created_at"));
+        synth_person(l.get("id").unwrap_or(&Value::Null), name, &email, nul(l, "company"), last)
+    } else {
+        Value::Null
+    };
+    let deal_ids: Vec<String> = deals.iter().map(|d| st(d, "id")).collect();
+    let deal_threads: Vec<String> = deals.iter().map(|d| st(d, "thread_id")).filter(|t| !t.is_empty()).collect();
+    let related_tasks: Vec<&Value> = tasks
+        .iter()
+        .filter(|t| {
+            c::email_of(&st(t, "owner")) == email
+                || (!st(t, "thread_id").is_empty() && deal_threads.contains(&st(t, "thread_id")))
+                || st(t, "source").contains("crm_deal")
+                || (!st(t, "source_deal_id").is_empty() && deal_ids.contains(&st(t, "source_deal_id")))
+        })
+        .collect();
+    let meet_ids: Vec<String> = attendees.iter().filter(|a| c::email_of(&st(a, "address")) == email).map(|a| st(a, "event_id")).collect();
+    let mut related_events: Vec<&Value> = events.iter().filter(|e| meet_ids.contains(&st(e, "id")) || c::email_of(&st(e, "organiser")) == email).collect();
+    let open_threads = person.get("open_threads").and_then(|x| x.as_i64()).unwrap_or(0);
+    let no_pitch = c::no_pitch(open_threads, mail.iter().any(|m| m.get("open").and_then(|x| x.as_bool()).unwrap_or(false) || st(m, "direction") == "in"));
+    related_events.sort_by(|a, b| st(b, "starts_at").cmp(&st(a, "starts_at")));
+    let last_meet = related_events.first();
+    let gap = c::meeting_gap(last_meet.and_then(|e| c::days_since(now, ts_of(e, "starts_at"))));
+    let mut timeline: Vec<(String, Value)> = vec![];
+    for m in &mail {
+        let at = st(m, "sent_at");
+        let subj = st(m, "subject");
+        let href = if st(m, "thread_id").is_empty() { "/app/mail/inbox".to_string() } else { format!("/app/mail/inbox/{}", st(m, "thread_id")) };
+        timeline.push((at.clone(), json!({
+            "at": at, "kind": if st(m, "direction") == "out" { "email_out" } else { "email_in" },
+            "title": if subj.is_empty() { "(no subject)".to_string() } else { subj }, "detail": m.get("snippet").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(Value::Null), "href": href,
+        })));
+    }
+    for e in &related_events {
+        let at = st(e, "starts_at");
+        timeline.push((at.clone(), json!({ "at": at, "kind": "meeting", "title": e.get("title"), "detail": e.get("organiser").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(Value::Null), "href": "/app/calendar" })));
+    }
+    for t in &related_tasks {
+        let at = { let d = st(t, "due_at"); if d.is_empty() { st(t, "created_at") } else { d } };
+        timeline.push((at.clone(), json!({ "at": at, "kind": "work", "title": t.get("title"), "detail": t.get("status").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(Value::Null), "href": "/app/work" })));
+    }
+    timeline.retain(|(at, _)| !at.is_empty());
+    timeline.sort_by(|a, b| b.0.cmp(&a.0));
+    let timeline: Vec<Value> = timeline.into_iter().take(40).map(|(_, v)| v).collect();
+    let mut next: Vec<Value> = vec![];
+    if no_pitch {
+        let n = if open_threads > 0 { open_threads } else { mail.len() as i64 };
+        next.push(json!({ "action": "Don't send a sales email — an open support thread is still waiting", "why": format!("{n} open threads"), "href": "/app/mail/inbox" }));
+    }
+    if c::needs_meeting(!deals.is_empty(), gap) {
+        let why = match last_meet { Some(e) => format!("Last meeting {}", st(e, "starts_at")), None => "No meeting on record".to_string() };
+        next.push(json!({ "action": "No decision-maker meeting in 12 days", "why": why, "href": "/app/calendar" }));
+    }
+    for d in &deals {
+        let n = c::days_since(now, ts_of(d, "updated_at"));
+        if c::deal_untouched(n) {
+            let href = if st(d, "thread_id").is_empty() { "/app/crm/pipeline".to_string() } else { format!("/app/mail/inbox/{}", st(d, "thread_id")) };
+            next.push(json!({ "action": "Write the thread or set a next step", "why": format!("Deal untouched {} days", n.unwrap_or(0)), "href": href }));
+        }
+    }
+    let task_out: Vec<Value> = related_tasks
+        .iter()
+        .map(|t| json!({ "id": t.get("id"), "title": t.get("title"), "status": t.get("status"), "due_at": nul(t, "due_at"), "thread_id": nul(t, "thread_id") }))
+        .collect();
+    crate::ok(json!({ "email": email, "person": person, "deals": deals, "tasks": task_out, "timeline": timeline, "next_actions": next })).into_response()
 }

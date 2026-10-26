@@ -48,7 +48,7 @@ describe("rpc contract == Rust server gates", () => {
 
   test("crmd: every CRM desk proc is 'pro' in the contract and in the Rust gate list", () => {
     const procs = quoted(fnBody(rs("crmd_core.rs"), "pro_only"));
-    expect(procs.length).toBe(11);
+    expect(procs.length).toBe(12);
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
   });
 

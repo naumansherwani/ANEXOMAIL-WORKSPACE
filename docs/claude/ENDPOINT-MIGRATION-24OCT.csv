@@ -289,7 +289,7 @@ contacts.ts,GET,/api/companies/:domain/timeline,,BUN-ONLY or client wiring not p
 contacts.ts,GET,/api/search/universal,,BUN-ONLY or client wiring not proven
 crm.ts,GET,/api/crm/overview,crm.overview,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/live,crm.live,RUST-FIRST (Bun fallback)
-crm.ts,GET,/api/crm/memory,,BUN-ONLY or client wiring not proven
+crm.ts,GET,/api/crm/memory,crm.memory,RUST-FIRST (Bun fallback)
 crm.ts,POST,/api/crm/deals/work,crm.dealWork,RUST-FIRST (Bun fallback)
 crm.ts,POST,/api/crm/deals/thread,crm.dealThread,RUST-FIRST (Bun fallback)
 crm.ts,GET,/api/crm/leads/suggest,crm.leads.suggest,RUST-FIRST (Bun fallback)

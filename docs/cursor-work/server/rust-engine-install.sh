@@ -150,7 +150,7 @@ CFG={
  # livex (Rule 52 G3, Rule 56): crm.live (Pro+) + org.members. Pehle Bun-only the (kernel_status_404). Koi SQL nahi. workx_core (plan gate) + cal_core (parse_ts) chahiye.
  "livex": {"public": False, "label": "livex", "procs": ['"crm.live"','"org.members"'], "need_mods": ["cal_core", "workx_core"]},
  # crmd (Rule 52/56, Pro CRM desk): crm.leads/deals list + createLead/createDeal/moveDeal/convertLead/dealWork/dealThread/insights — Pehle Bun-only (browser POST /api/crm/leads). Koi SQL nahi. Gate Pro+ Rust mein.
- "crmd": {"public": False, "label": "crmd", "procs": ['"crm.leads"','"crm.deals"','"crm.createLead"','"crm.createDeal"','"crm.moveDeal"','"crm.convertLead"','"crm.dealWork"','"crm.dealThread"','"crm.insights"','"work.promise.commit"','"work.promise.dismiss"'], "need_mods": ["cal_core", "workx_core"]},
+ "crmd": {"public": False, "label": "crmd", "procs": ['"crm.leads"','"crm.deals"','"crm.createLead"','"crm.createDeal"','"crm.moveDeal"','"crm.convertLead"','"crm.dealWork"','"crm.dealThread"','"crm.insights"','"work.promise.commit"','"work.promise.dismiss"','"crm.memory"'], "need_mods": ["cal_core", "workx_core"]},
  "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"','"billing.revenueTruth"','"kernel.ticket"','"kernel.report"']},
  # wtrpc (Rule 52): `/wt/rpc` — WASM kernel (web-wasm rpc@1) ka ek QUIC session, har call ek bidi stream => wohi dispatch() jo /rpc/<proc> chalata hai.
  # Koi proc nahi (isliye procs khali, owns() false); wt_session ke andar sirf path dekh kar is module ko de deta hai. Koi SQL nahi.

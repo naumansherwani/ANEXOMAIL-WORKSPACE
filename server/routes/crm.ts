@@ -712,7 +712,8 @@ crm.get(
       (t) =>
         emailOf(t.owner) === email ||
         deals.some((d) => d.thread_id && d.thread_id === t.thread_id) ||
-        String(t.source || "").includes("crm_deal"),
+        String(t.source || "").includes("crm_deal") ||
+        deals.some((d) => d.id === t.source_deal_id),
     );
     let mail = await safe<any[]>(
       () =>
@@ -829,7 +830,8 @@ crm.post(
       owner: deal.owner || c.email,
       due_at: deal.next_step_due || null,
       thread_id: deal.thread_id || null,
-      source: "crm_deal",
+      source: "manual",
+      source_deal_id: id,
       created_by: c.user.id,
     });
     if (ins.error) return res.status(500).json({ error: ins.error.message || "work_create_failed" });

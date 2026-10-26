@@ -8,7 +8,7 @@
 pub fn pro_only(proc: &str) -> bool {
     matches!(
         proc,
-        "crm.leads" | "crm.deals" | "crm.createLead" | "crm.createDeal" | "crm.moveDeal" | "crm.convertLead" | "crm.dealWork" | "crm.dealThread" | "crm.insights" | "work.promise.commit" | "work.promise.dismiss"
+        "crm.leads" | "crm.deals" | "crm.createLead" | "crm.createDeal" | "crm.moveDeal" | "crm.convertLead" | "crm.dealWork" | "crm.dealThread" | "crm.insights" | "crm.memory" | "work.promise.commit" | "work.promise.dismiss"
     )
 }
 
@@ -96,6 +96,27 @@ pub fn task_owner(promise_owner: Option<&str>, me: &str) -> String {
     promise_owner.map(|o| o.trim()).filter(|o| !o.is_empty()).unwrap_or(me).to_string()
 }
 
+/// Memory: "sales email mat bhejo" — koi open thread ya aati mail baqi ho.
+pub fn no_pitch(open_threads: i64, any_open_or_inbound: bool) -> bool {
+    open_threads > 0 || any_open_or_inbound
+}
+
+/// Aakhri meeting ko kitne din hue (meeting hi nahi => 999, Bun jaisa).
+pub fn meeting_gap(days: Option<i64>) -> i64 {
+    days.unwrap_or(999)
+}
+
+pub const MEETING_GAP_DAYS: i64 = 12;
+pub const STALE_DEAL_DAYS: i64 = 14;
+
+pub fn needs_meeting(has_deals: bool, gap: i64) -> bool {
+    has_deals && gap >= MEETING_GAP_DAYS
+}
+
+pub fn deal_untouched(days: Option<i64>) -> bool {
+    days.unwrap_or(0) >= STALE_DEAL_DAYS
+}
+
 /// Lead list filter: "all" ya state barabar.
 pub fn state_matches(want: &str, have: &str) -> bool {
     let w = if want.is_empty() { "all" } else { want };
@@ -150,6 +171,16 @@ mod tests {
         assert_eq!(convert_title(Some("Acme"), "a@b.com"), "Acme — opportunity");
         assert_eq!(convert_title(None, "a@b.com"), "a@b.com — opportunity");
         assert_eq!(convert_title(Some("  "), "a@b.com"), "a@b.com — opportunity");
+    }
+
+    #[test]
+    fn memory_rules() {
+        assert!(no_pitch(2, false) && no_pitch(0, true) && !no_pitch(0, false));
+        assert_eq!(meeting_gap(None), 999);
+        assert_eq!(meeting_gap(Some(4)), 4);
+        assert!(needs_meeting(true, 12) && !needs_meeting(true, 11) && !needs_meeting(false, 999));
+        assert!(deal_untouched(Some(14)) && !deal_untouched(Some(13)) && !deal_untouched(None));
+        assert!(pro_only("crm.memory"));
     }
 
     #[test]

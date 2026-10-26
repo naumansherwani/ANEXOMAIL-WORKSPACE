@@ -56,6 +56,7 @@ export const PROC_MIN_PLAN = {
   "crm.dealWork": "pro",
   "crm.dealThread": "pro",
   "crm.insights": "pro",
+  "crm.memory": "pro",
   "work.promise.commit": "pro",
   "work.promise.dismiss": "pro",
   "analytics.threadEconomics": "pro",
