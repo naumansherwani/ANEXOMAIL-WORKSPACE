@@ -310,3 +310,5 @@ Founder deploy 02:08: Rust par ab '... trialx authx contx basx wsx wtrpc', Rust 
 
 ## 27 Oct 2026 02:30 PKT — Personal HOLD; PEHLA kaam Business Polar payment
 Founder: Personal package alag se (Gmail/Outlook jaise private users, alag UI/gates) — HOLD. Pehle Business ki Polar payment (Basic/Pro jaisa edit). Kiya: docs/claude/POLAR-COPY-V6-BUSINESS.md (honest copy, £360/£3,960, IDs unchanged), server/config/billing-products.ts v6 flat amounts (perSeat false) + test. Baqi: founder Polar edit + live checkout test, landing Business card overclaim, pull.sh.
+
+## 27 Oct 2026 02:40 PKT — Business Pro Polar copy: docs/claude/POLAR-COPY-V6-BUSINESS-PRO.md (2850/28500, IDs unchanged, honest). Baqi: founder Polar edit + checkout test; phir Pro green par wapas.
