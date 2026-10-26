@@ -1,6 +1,6 @@
 # Pro £105 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (20)
+## NAYA is package par (22)
 
 - MAIL-06 · Snooze [CODE]
 - MAIL-07 · Schedule send [CODE]
@@ -19,7 +19,9 @@
 - WRK-01 · Boards, notes, tasks [CODE]
 - CRM-01 · Accounts, leads, pipeline (1), tasks, reports [CODE]
 - CRM-02 · Relationship health, timeline, next-action, promises [CODE]
-- CRM-07 · Multiple pipelines, custom fields, web forms (chhoti limit Pro, badi Business) [PROPOSED]
+- CRM-07 · Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited) [PROPOSED]
+- CRM-08 · Duplicate detect + merge [PROPOSED]
+- CRM-09 · Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited) [PROPOSED]
 - ANA-02 · Thread economics, Deep work [CODE]
 - CHT-02 · Video call 1:1 [CODE]
 
@@ -58,11 +60,14 @@
 - CRM-04 · Revenue risk radar → business
 - CRM-05 · Activity ledger → business_pro
 - CRM-06 · Intelligence graph → business_pro
-- CRM-08 · Lead scoring + assignment rules → business
-- CRM-09 · Workflow automation → business
-- CRM-10 · Quotes / CPQ (approvals Business Pro) → business
-- CRM-11 · Sales cadences → business
-- CRM-12 · Forecast + quotas, territory → business
+- CRM-10 · Lead scoring + assignment rules (round-robin) → business
+- CRM-11 · Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited) → business
+- CRM-12 · Quotes / CPQ (product list, quote, invoice) → business
+- CRM-13 · Deal approval process (discount limits) → business_pro
+- CRM-14 · Sales cadences (mail/call/task series) → business
+- CRM-15 · Forecast + quotas (target vs actual) → business
+- CRM-16 · Territory management → business_pro
+- CRM-17 · Custom CRM dashboards → business
 - ANA-03 · Attention leaks, Promise SLA, Forecast → business
 - ANA-04 · Team load report (owner/admin) → business
 - CHT-01 · ANEXOChat (file send 2GB/5GB/7GB) → business

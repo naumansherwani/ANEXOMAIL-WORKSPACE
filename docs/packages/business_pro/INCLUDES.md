@@ -1,12 +1,14 @@
 # Business Pro £2,850 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (3)
+## NAYA is package par (5)
 
 - CRM-05 · Activity ledger [CODE]
 - CRM-06 · Intelligence graph [CODE]
+- CRM-13 · Deal approval process (discount limits) [PROPOSED]
+- CRM-16 · Territory management [PROPOSED]
 - SAF-01 · Safety centre (review queue, sealed evidence, appeals) [CODE]
 
-## Neeche ke packages se inherit (61)
+## Neeche ke packages se inherit (64)
 
 - MAIL-01 · Inbox, folders, threads, search, labels, move, flag
 - MAIL-02 · Compose + draft save + version history
@@ -41,12 +43,15 @@
 - CRM-02 · Relationship health, timeline, next-action, promises
 - CRM-03 · Collab: shared inbox view, mentions, approvals
 - CRM-04 · Revenue risk radar
-- CRM-07 · Multiple pipelines, custom fields, web forms (chhoti limit Pro, badi Business)
-- CRM-08 · Lead scoring + assignment rules
-- CRM-09 · Workflow automation
-- CRM-10 · Quotes / CPQ (approvals Business Pro)
-- CRM-11 · Sales cadences
-- CRM-12 · Forecast + quotas, territory
+- CRM-07 · Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited)
+- CRM-08 · Duplicate detect + merge
+- CRM-09 · Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited)
+- CRM-10 · Lead scoring + assignment rules (round-robin)
+- CRM-11 · Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited)
+- CRM-12 · Quotes / CPQ (product list, quote, invoice)
+- CRM-14 · Sales cadences (mail/call/task series)
+- CRM-15 · Forecast + quotas (target vs actual)
+- CRM-17 · Custom CRM dashboards
 - ANA-01 · Response debt
 - ANA-02 · Thread economics, Deep work
 - ANA-03 · Attention leaks, Promise SLA, Forecast
@@ -79,8 +84,8 @@
 
 - Users cap: 570
 - Mailboxes: -
-- Shared storage: 10TB
-- Attachment: 60MB (founder confirm)
+- Shared storage: 15TB (founder paste 09:41; Enterprise number confirm)
+- Attachment: 60MB (founder 09:41)
 - Company domains: -
 - Booking links: unlimited
 - Trusted devices: 50

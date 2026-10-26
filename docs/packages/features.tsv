@@ -35,12 +35,17 @@ CRM-03	CRM	Collab: shared inbox view, mentions, approvals	business	CODE	showCrmC
 CRM-04	CRM	Revenue risk radar	business	CODE	showCrmRisk
 CRM-05	CRM	Activity ledger	business_pro	CODE	showCrmLedger
 CRM-06	CRM	Intelligence graph	business_pro	CODE	showCrmGraph
-CRM-07	CRM	Multiple pipelines, custom fields, web forms (chhoti limit Pro, badi Business)	pro	PROPOSED	-	LIMITS dekho
-CRM-08	CRM	Lead scoring + assignment rules	business	PROPOSED	-
-CRM-09	CRM	Workflow automation	business	PROPOSED	-
-CRM-10	CRM	Quotes / CPQ (approvals Business Pro)	business	PROPOSED	-
-CRM-11	CRM	Sales cadences	business	PROPOSED	-
-CRM-12	CRM	Forecast + quotas, territory	business	PROPOSED	-
+CRM-07	CRM	Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited)	pro	PROPOSED	-	CRM-PHASES P1
+CRM-08	CRM	Duplicate detect + merge	pro	PROPOSED	-	CRM-PHASES P1
+CRM-09	CRM	Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited)	pro	PROPOSED	-	CRM-PHASES P2
+CRM-10	CRM	Lead scoring + assignment rules (round-robin)	business	PROPOSED	-	CRM-PHASES P3
+CRM-11	CRM	Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited)	business	PROPOSED	-	CRM-PHASES P4
+CRM-12	CRM	Quotes / CPQ (product list, quote, invoice)	business	PROPOSED	-	CRM-PHASES P5
+CRM-13	CRM	Deal approval process (discount limits)	business_pro	PROPOSED	-	CRM-PHASES P5
+CRM-14	CRM	Sales cadences (mail/call/task series)	business	PROPOSED	-	CRM-PHASES P6
+CRM-15	CRM	Forecast + quotas (target vs actual)	business	PROPOSED	-	CRM-PHASES P6
+CRM-16	CRM	Territory management	business_pro	PROPOSED	-	CRM-PHASES P6
+CRM-17	CRM	Custom CRM dashboards	business	PROPOSED	-	CRM-PHASES P6
 ANA-01	Analytics	Response debt	basic	CODE	analytics.responseDebt
 ANA-02	Analytics	Thread economics, Deep work	pro	CODE	analytics.threadEconomics/deepWork
 ANA-03	Analytics	Attention leaks, Promise SLA, Forecast	business	CODE	analytics.*

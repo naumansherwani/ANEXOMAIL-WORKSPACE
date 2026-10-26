@@ -1,17 +1,18 @@
 # Business £360 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (18)
+## NAYA is package par (19)
 
 - MAIL-16 · Shared drafts, mentions, approvals [CODE]
 - CAL-08 · Meeting rooms (book/schedule/release) [PROPOSED]
 - WRK-02 · Work business ledgers (files, calls, recovery) [CODE]
 - CRM-03 · Collab: shared inbox view, mentions, approvals [CODE]
 - CRM-04 · Revenue risk radar [CODE]
-- CRM-08 · Lead scoring + assignment rules [PROPOSED]
-- CRM-09 · Workflow automation [PROPOSED]
-- CRM-10 · Quotes / CPQ (approvals Business Pro) [PROPOSED]
-- CRM-11 · Sales cadences [PROPOSED]
-- CRM-12 · Forecast + quotas, territory [PROPOSED]
+- CRM-10 · Lead scoring + assignment rules (round-robin) [PROPOSED]
+- CRM-11 · Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited) [PROPOSED]
+- CRM-12 · Quotes / CPQ (product list, quote, invoice) [PROPOSED]
+- CRM-14 · Sales cadences (mail/call/task series) [PROPOSED]
+- CRM-15 · Forecast + quotas (target vs actual) [PROPOSED]
+- CRM-17 · Custom CRM dashboards [PROPOSED]
 - ANA-03 · Attention leaks, Promise SLA, Forecast [CODE]
 - ANA-04 · Team load report (owner/admin) [CODE]
 - CHT-01 · ANEXOChat (file send 2GB/5GB/7GB) [CODE]
@@ -21,7 +22,7 @@
 - ORG-02 · Policies, audit log, compliance [CODE]
 - ORG-03 · Org graph + security centre [CODE]
 
-## Neeche ke packages se inherit (43)
+## Neeche ke packages se inherit (45)
 
 - MAIL-01 · Inbox, folders, threads, search, labels, move, flag
 - MAIL-02 · Compose + draft save + version history
@@ -51,7 +52,9 @@
 - WRK-01 · Boards, notes, tasks
 - CRM-01 · Accounts, leads, pipeline (1), tasks, reports
 - CRM-02 · Relationship health, timeline, next-action, promises
-- CRM-07 · Multiple pipelines, custom fields, web forms (chhoti limit Pro, badi Business)
+- CRM-07 · Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited)
+- CRM-08 · Duplicate detect + merge
+- CRM-09 · Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited)
 - ANA-01 · Response debt
 - ANA-02 · Thread economics, Deep work
 - CHT-02 · Video call 1:1
@@ -71,13 +74,15 @@
 
 - CRM-05 · Activity ledger → business_pro
 - CRM-06 · Intelligence graph → business_pro
+- CRM-13 · Deal approval process (discount limits) → business_pro
+- CRM-16 · Territory management → business_pro
 - SAF-01 · Safety centre (review queue, sealed evidence, appeals) → business_pro
 - SUP-02 · Priority Support (included) → enterprise
 - ENT-01 · Unlimited users, bandwidth cap, Rust-only (NO Bun) → enterprise
 
 ## Limits
 
-- Users cap: 30 (live card)
+- Users cap: 60 (founder 26 Oct 09:41)
 - Mailboxes: -
 - Shared storage: 1.5TB
 - Attachment: 45MB

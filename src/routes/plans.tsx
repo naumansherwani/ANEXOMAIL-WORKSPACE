@@ -45,14 +45,14 @@ const compare: { group: string; rows: Row[] }[] = [
         label: "Price per month",
         basic: "£40 / month (up to 5 users)",
         pro: "£105 / month (up to 20 users)",
-        business: "£360 / month (up to 30 users)",
+        business: "£360 / month (up to 60 users)",
         business_pro: "£2,850 / company",
       },
       {
         label: "Users included",
         basic: "Up to 5",
         pro: "Up to 20",
-        business: "Up to 30",
+        business: "Up to 60",
         business_pro: "Unlimited",
       },
       {
@@ -197,7 +197,7 @@ const faqs = [
   },
   {
     q: "What happens if I go over my storage?",
-    a: "Storage is shared across the company on Basic (15GB) and Pro (300GB), and per mailbox on the other plans — 25GB on Business. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
+    a: "Storage is shared across the company on Basic (15GB) and Pro (300GB),, Business (1.5TB) and Business Pro (15TB) — one shared pool for the whole company. When a mailbox gets close, the owner and that person are both warned in the workspace so nothing is silently dropped. Moving that person up a plan raises it immediately.",
   },
   {
     q: "Can I cancel any time?",

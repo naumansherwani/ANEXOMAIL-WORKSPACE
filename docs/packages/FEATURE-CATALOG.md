@@ -41,12 +41,17 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | CRM-04 | CRM | Revenue risk radar | - | - | Y | Y | Y | CODE |
 | CRM-05 | CRM | Activity ledger | - | - | - | Y | Y | CODE |
 | CRM-06 | CRM | Intelligence graph | - | - | - | Y | Y | CODE |
-| CRM-07 | CRM | Multiple pipelines, custom fields, web forms (chhoti limit Pro, badi Business) | - | Y | Y | Y | Y | PROPOSED |
-| CRM-08 | CRM | Lead scoring + assignment rules | - | - | Y | Y | Y | PROPOSED |
-| CRM-09 | CRM | Workflow automation | - | - | Y | Y | Y | PROPOSED |
-| CRM-10 | CRM | Quotes / CPQ (approvals Business Pro) | - | - | Y | Y | Y | PROPOSED |
-| CRM-11 | CRM | Sales cadences | - | - | Y | Y | Y | PROPOSED |
-| CRM-12 | CRM | Forecast + quotas, territory | - | - | Y | Y | Y | PROPOSED |
+| CRM-07 | CRM | Multiple pipelines + custom fields (Pro 1 pipeline/5 fields, Business 5/25, Biz Pro unlimited) | - | Y | Y | Y | Y | PROPOSED |
+| CRM-08 | CRM | Duplicate detect + merge | - | Y | Y | Y | Y | PROPOSED |
+| CRM-09 | CRM | Web form to lead (Pro 1 form, Business 10, Biz Pro unlimited) | - | Y | Y | Y | Y | PROPOSED |
+| CRM-10 | CRM | Lead scoring + assignment rules (round-robin) | - | - | Y | Y | Y | PROPOSED |
+| CRM-11 | CRM | Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited) | - | - | Y | Y | Y | PROPOSED |
+| CRM-12 | CRM | Quotes / CPQ (product list, quote, invoice) | - | - | Y | Y | Y | PROPOSED |
+| CRM-13 | CRM | Deal approval process (discount limits) | - | - | - | Y | Y | PROPOSED |
+| CRM-14 | CRM | Sales cadences (mail/call/task series) | - | - | Y | Y | Y | PROPOSED |
+| CRM-15 | CRM | Forecast + quotas (target vs actual) | - | - | Y | Y | Y | PROPOSED |
+| CRM-16 | CRM | Territory management | - | - | - | Y | Y | PROPOSED |
+| CRM-17 | CRM | Custom CRM dashboards | - | - | Y | Y | Y | PROPOSED |
 | ANA-01 | Analytics | Response debt | Y | Y | Y | Y | Y | CODE |
 | ANA-02 | Analytics | Thread economics, Deep work | - | Y | Y | Y | Y | CODE |
 | ANA-03 | Analytics | Attention leaks, Promise SLA, Forecast | - | - | Y | Y | Y | CODE |
@@ -79,10 +84,10 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 
 | Limit | Basic | Pro | Business | Biz Pro | Enterprise |
 |---|---|---|---|---|---|
-| Users cap | 5 | 20 | 30 (live card) | 570 | unlimited |
+| Users cap | 5 | 20 | 60 (founder 26 Oct 09:41) | 570 | unlimited |
 | Mailboxes | 3 | 10 | - | - | - |
-| Shared storage | 15GB | 300GB | 1.5TB | 10TB | 15TB |
-| Attachment | 25MB | 35MB | 45MB | 60MB (founder confirm) | 100MB |
+| Shared storage | 15GB | 300GB | 1.5TB | 15TB (founder paste 09:41; Enterprise number confirm) | 15TB+ (confirm) |
+| Attachment | 25MB | 35MB | 45MB | 60MB (founder 09:41) | 100MB |
 | Company domains | 1 | 3 | - | - | - |
 | Booking links | 1 | 3 | 20 | unlimited | unlimited |
 | Trusted devices | 2 | 4 | 10 | 50 | 100 |

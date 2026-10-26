@@ -9,10 +9,10 @@ ORD = ["basic", "pro", "business", "business_pro", "enterprise"]
 NAME = {"basic": "Basic £40", "pro": "Pro £105", "business": "Business £360",
         "business_pro": "Business Pro £2,850", "enterprise": "Enterprise £18,500"}
 LIMITS = [
-    ("Users cap", "5", "20", "30 (live card)", "570", "unlimited"),
+    ("Users cap", "5", "20", "60 (founder 26 Oct 09:41)", "570", "unlimited"),
     ("Mailboxes", "3", "10", "-", "-", "-"),
-    ("Shared storage", "15GB", "300GB", "1.5TB", "10TB", "15TB"),
-    ("Attachment", "25MB", "35MB", "45MB", "60MB (founder confirm)", "100MB"),
+    ("Shared storage", "15GB", "300GB", "1.5TB", "15TB (founder paste 09:41; Enterprise number confirm)", "15TB+ (confirm)"),
+    ("Attachment", "25MB", "35MB", "45MB", "60MB (founder 09:41)", "100MB"),
     ("Company domains", "1", "3", "-", "-", "-"),
     ("Booking links", "1", "3", "20", "unlimited", "unlimited"),
     ("Trusted devices", "2", "4", "10", "50", "100"),
