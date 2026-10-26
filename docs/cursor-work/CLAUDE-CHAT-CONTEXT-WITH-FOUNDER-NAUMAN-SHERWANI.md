@@ -1098,3 +1098,6 @@ Naya Polar checkout text (up to 5 users, 25GB shared, GBP40/mo, 440/yr) -> docs/
 
 ### 26 Oct 05:35 — Polar Basic copy final
 POLAR-COPY-V6-BASIC.md final: bring-your-own-domain, up to 5 users cap, technology attraction block (3 honest claims). Founder Polar mein paste karega. Pro ka copy agla.
+
+### 26 Oct 05:45 — Polar product ID update command
+Founder server pe Basic monthly/yearly IDs update karega. Repo-tested script polar-product-ids-update.sh (KEY=UUID args). Founder IDs chat mein dega -> repo docs (polar-products.md ke naye IDs, history ke saath) update. Caveat: SQL phase43/E40 mein Basic 23/253 abhi purana, SQL update baqi.

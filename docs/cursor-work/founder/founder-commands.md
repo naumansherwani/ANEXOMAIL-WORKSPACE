@@ -6,6 +6,12 @@
 - Kya: docs-only — `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md` (poori v6 table + Business Pro vs Enterprise ka sab se bara farq + Polar update ke steps) + `PACKAGE-FEATURE-FORMULA.md` v6 header. Code/Plans/Polar ko touch nahi kiya — founder khud karenge.
 - Halat: **DONE (docs)** — docs-only, server command nahi chahiye. Code update + Polar products: founder ke hukm/kaam par.
 
+## ▶ 26 Oct 05:45 — founder: "mujhe env commands do, server pe Polar product ID update karunga, IDs chat mein dunga"
+1. Basic monthly+yearly IDs badalna (apni asli IDs bharo):
+   `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/polar-product-ids-update.sh) POLAR_PRODUCT_PLAN_BASIC_MONTHLY=<naya-uuid> POLAR_PRODUCT_PLAN_BASIC_YEARLY=<naya-uuid>`
+2. Dekhna: aakhir mein `==> OK  health: ...` aana chahiye. Fail par script khud .env wapas kar deta hai.
+- Halat: script TESTED (temp .env) -- live server par founder chalayega.
+
 ## ▶ 26 Oct 05:07 — founder: Enterprise £18,000 (sab jagah update), Enterprise Business Pro ke baad alag, chat/video Business se
 - Halat: DONE (docs). Code/Polar founder ke hukm par.
 
