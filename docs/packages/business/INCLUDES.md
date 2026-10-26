@@ -1,6 +1,6 @@
 # Business £360 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (59)
+## NAYA is package par (60)
 
 - I1-16 · Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side [GATE-TO-BUILD]
 - I1-43 · Thread header: link to Work item / Chat / Discuss in chat [MATCHES-CODE]
@@ -61,8 +61,9 @@
 - N-CRM-09 · Forecast + quotas [PROPOSED]
 - N-CRM-11 · Custom CRM dashboards [PROPOSED]
 - N-DOC-01 · CRDT collaborative docs (Personal NAHI) [PROPOSED]
+- N-RET-02 · Organisation retention policies + eDiscovery search and export [PROPOSED]
 
-## Neeche ke packages se inherit (149)
+## Neeche ke packages se inherit (151)
 
 - I1-01 · Month/Week/Day calendar grid
 - I1-02 · Create / edit / delete meetings
@@ -213,8 +214,10 @@
 - N-CRM-02 · Duplicate detect + merge
 - N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited)
 - N-ANA-01 · Analytics Center data backend (7 reports, Rust+WT)
+- N-RET-01 · Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads)
+- N-OFC-01 · Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool)
 
-## GREEN hone mein BAQI (27) — gate/feature banana baqi
+## GREEN hone mein BAQI (28) — gate/feature banana baqi
 
 - I1-16 · Meeting rooms: create rooms, book/release a room for a meeting, double-booking blocked server-side [GATE-TO-BUILD]
 - I2-12 · Decision ledger [GATE-TO-BUILD]
@@ -243,6 +246,7 @@
 - N-CRM-09 · Forecast + quotas [PROPOSED]
 - N-CRM-11 · Custom CRM dashboards [PROPOSED]
 - N-DOC-01 · CRDT collaborative docs (Personal NAHI) [PROPOSED]
+- N-RET-02 · Organisation retention policies + eDiscovery search and export [PROPOSED]
 
 ## Is package mein NAHI (upar ke packages)
 

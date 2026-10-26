@@ -232,6 +232,9 @@
 - N-CRM-11 · Custom CRM dashboards → business
 - N-DOC-01 · CRDT collaborative docs (Personal NAHI) → business
 - N-ENT-01 · Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun) → enterprise
+- N-RET-01 · Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads) → pro
+- N-RET-02 · Organisation retention policies + eDiscovery search and export → business
+- N-OFC-01 · Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool) → pro
 
 ## Limits
 

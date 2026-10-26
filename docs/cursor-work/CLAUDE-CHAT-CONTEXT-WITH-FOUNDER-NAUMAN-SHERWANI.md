@@ -1173,3 +1173,11 @@ Founder: Enterprise £18,500 (Bun-free, Rust only) — AGENTS.md mein. Business 
 - Wajah: Chrome `anexoKernel.fallbackProcs` mein in teeno par `kernel_status_404` tha.
 - TODO (agla): `crm.live`, `org.members` (Business) Rust par; `kernelRpc` early-boot intezar (300-400ms); `ANEXO_TAG_MODE` observe->enforce jab invalid=0; CRM P1/P2 founder ke "haan" par.
 - Founder ko: Rust phir Web command (founder-commands.md 10:50). Live saboot (Rule 29) deploy ke baad: Chrome Pro par fallbackProcs dobara.
+
+## 26 Oct 2026 11:00 PKT — CRM P1 + P2 (founder "haan"): pipelines, custom fields, duplicate merge, web forms
+- READY (code, tested locally; NOT green until deploy + Chrome proof, Rule 29): SQL `E92_crm_p1_p2.sql` + `CHECK_E92.sql` (throwaway Postgres 16: apply x2 idempotent, first-char-lost simulation, self-test, CHECK t); Rust `crmx_core.rs` (10 tests) + `crmx_glue.rs` (cargo check ok) — 15 procs: crm.pipelines.*, crm.fields.*, crm.custom.set, crm.dups.list, crm.merge, crm.forms.*, crm.board, crm.deals.move, crm.deals.setPipeline (Pro+ gate) and PUBLIC crm.form.get / crm.form.submit.
+- Caps (atomic, advisory lock inside SQL): Pro 1 pipeline / 5 fields / 1 form; Business 5/25/10; Business Pro+ unlimited. Submit: honeypot + speed check + 30 per 10 min per form + same-email 1 hour dedupe.
+- UI: `/app/crm/setup` (Pipelines, Custom fields, Duplicates, Web forms), `/f/<slug>` public form, server-driven pipeline board (own stages, pipeline picker, custom fields on card) with the classic six-stage board as fallback if server lacks E92.
+- Bun fallback: NONE for the new CRM setup procs (new, Rust-only by design; classic board keeps working on Bun).
+- Contract: rpc-contract.ts + test cover crmx and workx. tsc clean, bun 275 pass.
+- TODO: deploy SQL -> Rust -> Web; Chrome Pro live proof (create 2nd pipeline must hit cap 403 on Pro; form submit makes lead; merge); then P3-P6 (Business). Catalog: N-CRM-01/02/03 MATCHES-CODE; N-RET-01/02, N-OFC-01 PROPOSED. docs/packages/pro/PRO-VS-ZOHO.md.

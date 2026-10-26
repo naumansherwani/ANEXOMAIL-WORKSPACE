@@ -1,6 +1,6 @@
 # Pro £105 — INCLUDES (auto-generated from features.tsv)
 
-## NAYA is package par (43)
+## NAYA is package par (45)
 
 - I1-08 · Overlap Matrix [MATCHES-CODE]
 - I1-09 · Focus Ring [MATCHES-CODE]
@@ -42,9 +42,11 @@
 - I2-65 · Goals + deadlines [MATCHES-CODE]
 - I2-74 · Deep work [MATCHES-CODE]
 - I2-79 · Thread economics [MATCHES-CODE]
-- N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [PROPOSED]
-- N-CRM-02 · Duplicate detect + merge [PROPOSED]
-- N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited) [PROPOSED]
+- N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [MATCHES-CODE]
+- N-CRM-02 · Duplicate detect + merge [MATCHES-CODE]
+- N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited) [MATCHES-CODE]
+- N-RET-01 · Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads) [PROPOSED]
+- N-OFC-01 · Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool) [PROPOSED]
 
 ## Neeche ke packages se inherit (106)
 
@@ -155,11 +157,10 @@
 - I3-58 · Managed Move-In bands £568/1,670/2,210/3,350
 - N-ANA-01 · Analytics Center data backend (7 reports, Rust+WT)
 
-## GREEN hone mein BAQI (3) — gate/feature banana baqi
+## GREEN hone mein BAQI (2) — gate/feature banana baqi
 
-- N-CRM-01 · Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) [PROPOSED]
-- N-CRM-02 · Duplicate detect + merge [PROPOSED]
-- N-CRM-03 · Web form to lead (Pro 1, Business 10, Biz Pro unlimited) [PROPOSED]
+- N-RET-01 · Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads) [PROPOSED]
+- N-OFC-01 · Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool) [PROPOSED]
 
 ## Is package mein NAHI (upar ke packages)
 
@@ -234,6 +235,7 @@
 - N-CRM-11 · Custom CRM dashboards → business
 - N-DOC-01 · CRDT collaborative docs (Personal NAHI) → business
 - N-ENT-01 · Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun) → enterprise
+- N-RET-02 · Organisation retention policies + eDiscovery search and export → business
 
 ## Limits
 

@@ -26,8 +26,21 @@ describe("rpc contract == Rust server gates", () => {
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
   });
 
+  test("crmx pro_only procs are all 'pro' in the contract; public form procs are open", () => {
+    const procs = quoted(fnBody(rs("crmx_core.rs"), "pro_only"));
+    expect(procs.length).toBe(15);
+    for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
+    for (const p of ["crm.form.get", "crm.form.submit"]) expect(minPlanOf(p), p).toBeNull();
+  });
+
+  test("workx pro_only procs are all 'pro' in the contract", () => {
+    const procs = quoted(rs("workx_core.rs").slice(rs("workx_core.rs").indexOf("pub fn pro_only"), rs("workx_core.rs").indexOf("pub fn plan_allows_pro")));
+    expect(procs.sort()).toEqual(["crm.overview", "work.promises", "work.tasks"]);
+    for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
+  });
+
   test("every contract proc is enforced somewhere in Rust (no UI-only claim)", () => {
-    const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs"].map(rs).join("\n");
+    const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs"].map(rs).join("\n");
     for (const p of Object.keys(PROC_MIN_PLAN)) expect(all.includes(`"${p}"`), `${p} Rust mein nahi`).toBe(true);
   });
 

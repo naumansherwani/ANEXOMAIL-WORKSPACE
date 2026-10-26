@@ -35,4 +35,4 @@ Enterprise = Business Pro + upar, **sirf Rust (Bun nahi)**.
 Rule 52 (kernel/WT), 53 (gate pehle), 55 (PER MONTH + USER CAP), 43 (RLS), 46 (SQL -> Rust -> Web), **no vanity numbers**, mobile 390 test. Status sirf DONE/READY/TODO; "green" = Chrome live test.
 
 ## Status
-Sab 6 phases: **TODO** (founder haan ke baad P1 se). Gates features.tsv mein PROPOSED.
+Founder "haan" 26 Oct 10:45 PKT. **P1 + P2: READY (code)** — E92 SQL + Rust crmx + UI; green sirf deploy + Chrome proof ke baad. P3-P6: TODO (Business). Gates features.tsv.

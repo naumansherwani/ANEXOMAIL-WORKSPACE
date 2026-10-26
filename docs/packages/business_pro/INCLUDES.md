@@ -13,7 +13,7 @@
 - N-CRM-07 · Deal approval process (discount limits) [PROPOSED]
 - N-CRM-10 · Territory management [PROPOSED]
 
-## Neeche ke packages se inherit (208)
+## Neeche ke packages se inherit (211)
 
 - I1-01 · Month/Week/Day calendar grid
 - I1-02 · Create / edit / delete meetings
@@ -223,6 +223,9 @@
 - N-CRM-11 · Custom CRM dashboards
 - N-DOC-01 · CRDT collaborative docs (Personal NAHI)
 - N-ANA-01 · Analytics Center data backend (7 reports, Rust+WT)
+- N-RET-01 · Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads)
+- N-RET-02 · Organisation retention policies + eDiscovery search and export
+- N-OFC-01 · Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool)
 
 ## GREEN hone mein BAQI (7) — gate/feature banana baqi
 

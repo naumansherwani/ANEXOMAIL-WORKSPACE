@@ -81,6 +81,7 @@ import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as BookHandleRouteImport } from './routes/book.$handle'
 import { Route as BookManageRouteImport } from './routes/book.manage'
 import { Route as CheckoutDoneRouteImport } from './routes/checkout.done'
+import { Route as FSlugRouteImport } from './routes/f.$slug'
 import { Route as FounderPreviewRouteImport } from './routes/founder.preview'
 import { Route as FounderSplatRouteImport } from './routes/founder_.$'
 import { Route as AppAdminIndexRouteImport } from './routes/app.admin.index'
@@ -114,6 +115,7 @@ import { Route as AppCrmLeadsRouteImport } from './routes/app.crm.leads'
 import { Route as AppCrmPipelineRouteImport } from './routes/app.crm.pipeline'
 import { Route as AppCrmRelationshipsRouteImport } from './routes/app.crm.relationships'
 import { Route as AppCrmReportsRouteImport } from './routes/app.crm.reports'
+import { Route as AppCrmSetupRouteImport } from './routes/app.crm.setup'
 import { Route as AppCrmTasksRouteImport } from './routes/app.crm.tasks'
 import { Route as AppFounderAdminRouteImport } from './routes/app.founder_.admin'
 import { Route as AppFounderAiRouteImport } from './routes/app.founder_.ai'
@@ -543,6 +545,11 @@ const CheckoutDoneRoute = CheckoutDoneRouteImport.update({
   path: '/checkout/done',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FSlugRoute = FSlugRouteImport.update({
+  id: '/f/$slug',
+  path: '/f/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FounderPreviewRoute = FounderPreviewRouteImport.update({
   id: '/preview',
   path: '/preview',
@@ -706,6 +713,11 @@ const AppCrmRelationshipsRoute = AppCrmRelationshipsRouteImport.update({
 const AppCrmReportsRoute = AppCrmReportsRouteImport.update({
   id: '/reports',
   path: '/reports',
+  getParentRoute: () => AppCrmRoute,
+} as any)
+const AppCrmSetupRoute = AppCrmSetupRouteImport.update({
+  id: '/setup',
+  path: '/setup',
   getParentRoute: () => AppCrmRoute,
 } as any)
 const AppCrmTasksRoute = AppCrmTasksRouteImport.update({
@@ -1125,6 +1137,7 @@ export interface FileRoutesByFullPath {
   '/book/$handle': typeof BookHandleRoute
   '/book/manage': typeof BookManageRoute
   '/checkout/done': typeof CheckoutDoneRoute
+  '/f/$slug': typeof FSlugRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/founder/$': typeof FounderSplatRoute
   '/app/': typeof AppIndexRoute
@@ -1155,6 +1168,7 @@ export interface FileRoutesByFullPath {
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/crm/relationships': typeof AppCrmRelationshipsRoute
   '/app/crm/reports': typeof AppCrmReportsRoute
+  '/app/crm/setup': typeof AppCrmSetupRoute
   '/app/crm/tasks': typeof AppCrmTasksRoute
   '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/ai': typeof AppFounderAiRouteWithChildren
@@ -1292,6 +1306,7 @@ export interface FileRoutesByTo {
   '/book/$handle': typeof BookHandleRoute
   '/book/manage': typeof BookManageRoute
   '/checkout/done': typeof CheckoutDoneRoute
+  '/f/$slug': typeof FSlugRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/founder/$': typeof FounderSplatRoute
   '/app': typeof AppIndexRoute
@@ -1322,6 +1337,7 @@ export interface FileRoutesByTo {
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/crm/relationships': typeof AppCrmRelationshipsRoute
   '/app/crm/reports': typeof AppCrmReportsRoute
+  '/app/crm/setup': typeof AppCrmSetupRoute
   '/app/crm/tasks': typeof AppCrmTasksRoute
   '/app/founder/admin': typeof AppFounderAdminRoute
   '/app/founder/analytics': typeof AppFounderAnalyticsRoute
@@ -1465,6 +1481,7 @@ export interface FileRoutesById {
   '/book/$handle': typeof BookHandleRoute
   '/book/manage': typeof BookManageRoute
   '/checkout/done': typeof CheckoutDoneRoute
+  '/f/$slug': typeof FSlugRoute
   '/founder/preview': typeof FounderPreviewRoute
   '/founder_/$': typeof FounderSplatRoute
   '/app/': typeof AppIndexRoute
@@ -1495,6 +1512,7 @@ export interface FileRoutesById {
   '/app/crm/pipeline': typeof AppCrmPipelineRoute
   '/app/crm/relationships': typeof AppCrmRelationshipsRoute
   '/app/crm/reports': typeof AppCrmReportsRoute
+  '/app/crm/setup': typeof AppCrmSetupRoute
   '/app/crm/tasks': typeof AppCrmTasksRoute
   '/app/founder_/admin': typeof AppFounderAdminRoute
   '/app/founder_/ai': typeof AppFounderAiRouteWithChildren
@@ -1642,6 +1660,7 @@ export interface FileRouteTypes {
     | '/book/$handle'
     | '/book/manage'
     | '/checkout/done'
+    | '/f/$slug'
     | '/founder/preview'
     | '/founder/$'
     | '/app/'
@@ -1672,6 +1691,7 @@ export interface FileRouteTypes {
     | '/app/crm/pipeline'
     | '/app/crm/relationships'
     | '/app/crm/reports'
+    | '/app/crm/setup'
     | '/app/crm/tasks'
     | '/app/founder/admin'
     | '/app/founder/ai'
@@ -1809,6 +1829,7 @@ export interface FileRouteTypes {
     | '/book/$handle'
     | '/book/manage'
     | '/checkout/done'
+    | '/f/$slug'
     | '/founder/preview'
     | '/founder/$'
     | '/app'
@@ -1839,6 +1860,7 @@ export interface FileRouteTypes {
     | '/app/crm/pipeline'
     | '/app/crm/relationships'
     | '/app/crm/reports'
+    | '/app/crm/setup'
     | '/app/crm/tasks'
     | '/app/founder/admin'
     | '/app/founder/analytics'
@@ -1981,6 +2003,7 @@ export interface FileRouteTypes {
     | '/book/$handle'
     | '/book/manage'
     | '/checkout/done'
+    | '/f/$slug'
     | '/founder/preview'
     | '/founder_/$'
     | '/app/'
@@ -2011,6 +2034,7 @@ export interface FileRouteTypes {
     | '/app/crm/pipeline'
     | '/app/crm/relationships'
     | '/app/crm/reports'
+    | '/app/crm/setup'
     | '/app/crm/tasks'
     | '/app/founder_/admin'
     | '/app/founder_/ai'
@@ -2134,6 +2158,7 @@ export interface RootRouteChildren {
   BookHandleRoute: typeof BookHandleRoute
   BookManageRoute: typeof BookManageRoute
   CheckoutDoneRoute: typeof CheckoutDoneRoute
+  FSlugRoute: typeof FSlugRoute
   FounderSplatRoute: typeof FounderSplatRoute
 }
 
@@ -2643,6 +2668,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutDoneRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/f/$slug': {
+      id: '/f/$slug'
+      path: '/f/$slug'
+      fullPath: '/f/$slug'
+      preLoaderRoute: typeof FSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/founder/preview': {
       id: '/founder/preview'
       path: '/preview'
@@ -2872,6 +2904,13 @@ declare module '@tanstack/react-router' {
       path: '/reports'
       fullPath: '/app/crm/reports'
       preLoaderRoute: typeof AppCrmReportsRouteImport
+      parentRoute: typeof AppCrmRoute
+    }
+    '/app/crm/setup': {
+      id: '/app/crm/setup'
+      path: '/setup'
+      fullPath: '/app/crm/setup'
+      preLoaderRoute: typeof AppCrmSetupRouteImport
       parentRoute: typeof AppCrmRoute
     }
     '/app/crm/tasks': {
@@ -3433,6 +3472,7 @@ interface AppCrmRouteChildren {
   AppCrmPipelineRoute: typeof AppCrmPipelineRoute
   AppCrmRelationshipsRoute: typeof AppCrmRelationshipsRoute
   AppCrmReportsRoute: typeof AppCrmReportsRoute
+  AppCrmSetupRoute: typeof AppCrmSetupRoute
   AppCrmTasksRoute: typeof AppCrmTasksRoute
   AppCrmIndexRoute: typeof AppCrmIndexRoute
 }
@@ -3445,6 +3485,7 @@ const AppCrmRouteChildren: AppCrmRouteChildren = {
   AppCrmPipelineRoute: AppCrmPipelineRoute,
   AppCrmRelationshipsRoute: AppCrmRelationshipsRoute,
   AppCrmReportsRoute: AppCrmReportsRoute,
+  AppCrmSetupRoute: AppCrmSetupRoute,
   AppCrmTasksRoute: AppCrmTasksRoute,
   AppCrmIndexRoute: AppCrmIndexRoute,
 }
@@ -3773,18 +3814,9 @@ const rootRouteChildren: RootRouteChildren = {
   BookHandleRoute: BookHandleRoute,
   BookManageRoute: BookManageRoute,
   CheckoutDoneRoute: CheckoutDoneRoute,
+  FSlugRoute: FSlugRoute,
   FounderSplatRoute: FounderSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

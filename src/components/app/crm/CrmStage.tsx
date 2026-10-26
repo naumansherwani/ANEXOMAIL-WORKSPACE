@@ -17,6 +17,7 @@ type CrmPath =
   | "/app/crm/tasks"
   | "/app/crm/reports"
   | "/app/crm/collab"
+  | "/app/crm/setup"
   | "/app/billing";
 
 type NavItem = { to: CrmPath; label: string; exact?: boolean };
@@ -124,6 +125,7 @@ export function CrmStage({ children }: { children: ReactNode }) {
     { to: "/app/crm/accounts", label: "Accounts" },
     { to: "/app/crm/tasks", label: "Tasks" },
     { to: "/app/crm/reports", label: "Reports" },
+    { to: "/app/crm/setup", label: "Setup" },
     ...(showCrmCollab(billed, null, kind)
       ? [{ to: "/app/crm/collab" as const, label: kind === "personal" ? "Collaboration" : "Shared work" }]
       : []),

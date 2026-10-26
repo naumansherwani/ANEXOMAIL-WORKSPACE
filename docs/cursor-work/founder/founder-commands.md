@@ -1123,3 +1123,10 @@ Phir Web (kernel diagnostics anexoKernel + 401 guard): `bash <(git -C /opt/anexo
 1. Rust: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`  (workx module khud judega; probe "workx: Rust ne pakda" aana chahiye)
 2. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh)`
 (Brain group D ka drift sirf comment hai — ACCEPT_LIVE mein darj, kuch karna nahi.)
+
+## 26 Oct 11:00 — CRM P1+P2 (pipelines, custom fields, merge, web forms) + workx. Tarteeb SQL -> Rust -> Web (Rule 46)
+0. SQL (E92 + CHECK_E92 auto, ok=t aani chahiye): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)`
+1. Rust (crmx + workx judenge): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh)`
+2. Rust restart + health: `pm2 restart anexomail-rust --update-env && pm2 save && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health`
+3. Web: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
+Phir mujhe batayein — Chrome (Pro) par live proof main khud karunga.

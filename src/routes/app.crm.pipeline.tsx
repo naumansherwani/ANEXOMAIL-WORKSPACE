@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, ChevronDown, Mail, Plus } from "lucide-react";
-import { useRef, useState } from "react";
+import { Component, useRef, useState, type ReactNode } from "react";
 
 import { OpenDealForm } from "@/components/app/crm/CrmCapture";
+import { PipelineBoard } from "@/components/app/crm/PipelineBoard";
 import { Chip, SectionTitle } from "@/components/app/crm/CrmBits";
 import { CardBody, StatSkeleton } from "@/components/app/dashboard/DashboardCard";
 import { Button } from "@/components/ui/button";
@@ -45,7 +46,51 @@ export const Route = createFileRoute("/app/crm/pipeline")({
   component: PipelinePage,
 });
 
+/**
+ * Server-driven board first (own pipelines + stages, custom fields). If the server has no CRM setup yet
+ * (SQL E92 / Rust crmx not installed: 404/501/502/503) the classic six-stage board below keeps working unchanged.
+ */
+class BoardGuard extends Component<{ fallback: ReactNode; children: ReactNode }, { failed: boolean }> {
+  override state = { failed: false };
+  static getDerivedStateFromError() {
+    return { failed: true };
+  }
+  override render() {
+    return this.state.failed ? this.props.fallback : this.props.children;
+  }
+}
+
 function PipelinePage() {
+  const [pipelineId, setPipelineId] = useState<string | undefined>(undefined);
+  const [drawer, setDrawer] = useState(false);
+  const { t } = useLocale();
+  return (
+    <BoardGuard fallback={<ClassicPipeline />}>
+      <div className="w-full px-ax-4 py-ax-5 md:px-ax-5 md:py-ax-6">
+        <div className="flex items-start justify-between gap-3">
+          <SectionTitle title={t("Pipeline")} hint={t("Thread stays attached when a deal has mail. Columns stay empty until a real deal lands.")} />
+          <Button onClick={() => setDrawer(true)} className="ax-press shrink-0">
+            <Plus className="size-4" aria-hidden="true" /> {t("New deal")}
+          </Button>
+        </div>
+        <Sheet open={drawer} onOpenChange={setDrawer}>
+          <SheetContent side="right" className="w-full sm:max-w-md">
+            <SheetHeader>
+              <SheetTitle>{t("Open a deal")}</SheetTitle>
+              <SheetDescription>{t("Name it. Attach the mail thread later — the board fills from real deals only.")}</SheetDescription>
+            </SheetHeader>
+            <div className="mt-6">
+              <OpenDealForm onDone={() => setDrawer(false)} />
+            </div>
+          </SheetContent>
+        </Sheet>
+        <PipelineBoard pipelineId={pipelineId} onPipeline={setPipelineId} onNewDeal={() => setDrawer(true)} />
+      </div>
+    </BoardGuard>
+  );
+}
+
+function ClassicPipeline() {
   const { t } = useLocale();
   const deals = useCrmDeals();
   const move = useMoveDeal();

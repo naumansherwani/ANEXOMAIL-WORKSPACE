@@ -218,9 +218,9 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | I3-56 | Public | About / Partners / Status / Privacy / Billing policy | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I3-57 | Public | Priority Support add-on £790/mo | - | - | - | - | Y | PP1 |
 | I3-58 | Public | Managed Move-In bands £568/1,670/2,210/3,350 | Y | Y | Y | Y | Y | MATCHES-CODE |
-| N-CRM-01 | CRM | Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) | - | Y | Y | Y | Y | PROPOSED |
-| N-CRM-02 | CRM | Duplicate detect + merge | - | Y | Y | Y | Y | PROPOSED |
-| N-CRM-03 | CRM | Web form to lead (Pro 1, Business 10, Biz Pro unlimited) | - | Y | Y | Y | Y | PROPOSED |
+| N-CRM-01 | CRM | Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited) | - | Y | Y | Y | Y | MATCHES-CODE |
+| N-CRM-02 | CRM | Duplicate detect + merge | - | Y | Y | Y | Y | MATCHES-CODE |
+| N-CRM-03 | CRM | Web form to lead (Pro 1, Business 10, Biz Pro unlimited) | - | Y | Y | Y | Y | MATCHES-CODE |
 | N-CRM-04 | CRM | Lead scoring + assignment rules (round-robin) | - | - | Y | Y | Y | PROPOSED |
 | N-CRM-05 | CRM | Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited) | - | - | Y | Y | Y | PROPOSED |
 | N-CRM-06 | CRM | Quotes / CPQ | - | - | Y | Y | Y | PROPOSED |
@@ -232,6 +232,9 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | N-DOC-01 | Docs | CRDT collaborative docs (Personal NAHI) | - | - | Y | Y | Y | PROPOSED |
 | N-ENT-01 | Enterprise | Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun) | - | - | - | - | Y | PP1 |
 | N-ANA-01 | Analytics | Analytics Center data backend (7 reports, Rust+WT) | Y | Y | Y | Y | Y | MATCHES-CODE |
+| N-RET-01 | Mail | Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads) | - | Y | Y | Y | Y | PROPOSED |
+| N-RET-02 | Mail | Organisation retention policies + eDiscovery search and export | - | - | Y | Y | Y | PROPOSED |
+| N-OFC-01 | Files | Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool) | - | Y | Y | Y | Y | PROPOSED |
 
 ## LIMITS (har package ka apna number)
 

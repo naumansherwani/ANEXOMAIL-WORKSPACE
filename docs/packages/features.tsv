@@ -213,9 +213,9 @@ I3-55	Public	Enterprise support page	basic	MATCHES-CODE	routes/enterprise.tsx	co
 I3-56	Public	About / Partners / Status / Privacy / Billing policy	basic	MATCHES-CODE	about, partners, status, privacy, billing-policy .tsx	code-gate: none
 I3-57	Public	Priority Support add-on £790/mo	enterprise	PP1	plans.tsx:143, enterprise.tsx	code-gate: add-on, all workspace plans
 I3-58	Public	Managed Move-In bands £568/1,670/2,210/3,350	basic	MATCHES-CODE	plans.tsx:363, index.tsx:480	code-gate: paid one-off
-N-CRM-01	CRM	Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited)	pro	PROPOSED	docs/packages/crm/CRM-PHASES.md P1	
-N-CRM-02	CRM	Duplicate detect + merge	pro	PROPOSED	CRM-PHASES P1	
-N-CRM-03	CRM	Web form to lead (Pro 1, Business 10, Biz Pro unlimited)	pro	PROPOSED	CRM-PHASES P2	
+N-CRM-01	CRM	Multiple pipelines + custom fields (Pro 1/5, Business 5/25, Biz Pro unlimited)	pro	MATCHES-CODE	E92_crm_p1_p2.sql, crmx_core.rs/crmx_glue.rs, app.crm.setup.tsx, PipelineBoard.tsx	code READY 26 Oct (E92 + crmx Rust + UI); live green pending deploy + Chrome proof
+N-CRM-02	CRM	Duplicate detect + merge	pro	MATCHES-CODE	crm_merge (E92), crmx dups.list/merge, app.crm.setup.tsx Duplicates	code READY 26 Oct (E92 + crmx Rust + UI); live green pending deploy + Chrome proof
+N-CRM-03	CRM	Web form to lead (Pro 1, Business 10, Biz Pro unlimited)	pro	MATCHES-CODE	crm_forms + crm_form_submit (E92), crm.form.get/submit public, routes/f.$slug.tsx	code READY 26 Oct (E92 + crmx Rust + UI); live green pending deploy + Chrome proof
 N-CRM-04	CRM	Lead scoring + assignment rules (round-robin)	business	PROPOSED	CRM-PHASES P3	
 N-CRM-05	CRM	Workflow automation / Blueprint (Business 10 rules, Biz Pro unlimited)	business	PROPOSED	CRM-PHASES P4	
 N-CRM-06	CRM	Quotes / CPQ	business	PROPOSED	CRM-PHASES P5	
@@ -227,3 +227,6 @@ N-CRM-11	CRM	Custom CRM dashboards	business	PROPOSED	CRM-PHASES P6
 N-DOC-01	Docs	CRDT collaborative docs (Personal NAHI)	business	PROPOSED	PP1 #38, not built	
 N-ENT-01	Enterprise	Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun)	enterprise	PP1	alag phase, abhi ZERO	
 N-ANA-01	Analytics	Analytics Center data backend (7 reports, Rust+WT)	basic	MATCHES-CODE	E89 + analytics_glue.rs (response debt Basic; baqi LIMITS/gates features mein)	
+N-RET-01	Mail	Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads)	pro	PROPOSED	Zoho Premium has retention/eDiscovery; CEO decision 26 Oct	
+N-RET-02	Mail	Organisation retention policies + eDiscovery search and export	business	PROPOSED	CEO decision 26 Oct (Zoho Premium parity)	
+N-OFC-01	Files	Shared files hub: every attachment in one searchable view across the company (uses the 300GB pool)	pro	PROPOSED	CEO decision 26 Oct (Zoho WorkDrive gap)	
