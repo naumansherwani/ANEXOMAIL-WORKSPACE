@@ -3,6 +3,7 @@ import { PullRefresh } from "@/components/app/PullRefresh";
 import { TouchScrollbar } from "@/components/app/TouchScrollbar";
 import { useTextSize } from "@/lib/text-size";
 import {
+  BarChart3,
   CalendarDays,
   Building2,
   CheckSquare,
@@ -73,6 +74,7 @@ const primary: RailItem[] = [
   { to: "/app/work", label: "Work", icon: CheckSquare },
   { to: "/app/crm", label: "CRM", icon: KanbanSquare, match: "/app/crm" },
   { to: "/app/org", label: "Org", icon: Building2, match: "/app/org" },
+  { to: "/app/analytics", label: "Analytics", icon: BarChart3, match: "/app/analytics" },
   { to: "/app/domains", label: "Domains", icon: Globe, match: "/app/domains" },
   { to: "/app/safety", label: "Safety", icon: ShieldCheck, match: "/app/safety" },
   { to: "/app/chat", label: "ANEXOChat", icon: MessageSquare },

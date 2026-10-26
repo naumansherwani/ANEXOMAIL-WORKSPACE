@@ -54,10 +54,10 @@ function ThreadEconomicsPage() {
                   <Stat label="Threads 30d" value={String(d.threads_30d)} />
                   <Stat
                     label="Time spent"
-                    value={`${Math.round(d.minutes_total / 60)}h`}
+                    value={spanLabel(d.minutes_total)}
                     hint={`${d.avg_minutes}m average`}
                   />
-                  <Stat label="People-hours" value={`${Math.round(d.people_hours)}h`} />
+                  <Stat label="People-hours" value={spanLabel(d.people_hours * 60)} />
                   <Stat label="Total cost" value={money(d.cost_total, d.currency)} />
                 </div>
 
@@ -84,4 +84,12 @@ function ThreadEconomicsPage() {
       </div>
     </div>
   );
+}
+
+/** 1 ghante se kam ho to minutes dikhao (pehle "0h" dikhta tha jab 23 minute the). */
+function spanLabel(minutes: number): string {
+  const m = Math.max(0, Math.round(minutes));
+  if (m < 60) return `${m}m`;
+  const h = m / 60;
+  return `${h >= 10 ? Math.round(h) : Math.round(h * 10) / 10}h`;
 }

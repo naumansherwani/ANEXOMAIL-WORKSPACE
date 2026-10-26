@@ -34,3 +34,10 @@ Har line: cheez | kahan | test. Naya Claude: pehle yeh padho, phir docs/packages
 - Baqi chhota: Bun analytics fallback (brain-kernel-install.sh dobara) — Rust primary theek hai.
 
 - **Basic = DONE (founder 26 Oct 09:15).** Agla: Pro live test.
+## LIVE GREEN PRO (26 Oct 09:30, Chrome, Pro account)
+- Analytics gates: Pro = responseDebt/threadEconomics/deepWork 200; leaks/promise/forecast/team 403 Business+ (HTTP + WebTransport dono)
+- Pro procs (Rust): follow-ups, snippets, draft handoff, Overlap Matrix, CRM suggestions — 200; founder procs 403
+- Billing card: Pro £105.00/month, 300 GB shared, 1/20 users; plan grid flat (£40/£105/£360/£2,850)
+- Kernel: anexoKernel.rpcUp true
+- Meeting cost: object bheja jata hai (Basic null); hourly_total null jab attendee hourly rates set nahi — jhoota number nahi. Asli £ ke liye rates set honi chahiye (open: rates UI/entry)
+- Sidebar: Analytics Domains ke upar (founder hukm 09:19)

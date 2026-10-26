@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 
 import {
+  railItemVisible,
   showAnalyticsBusiness,
   showAnalyticsPro,
   showProCalendar,
@@ -38,5 +39,11 @@ describe("Pro-package gates (E88, 26 Oct 2026)", () => {
     }
     expect(showAnalyticsPro("pro", null, "business")).toBe(true);
     expect(showAnalyticsBusiness("pro", null, "business")).toBe(false);
+  });
+
+  test("rail: Analytics sidebar item sits above Domains and is visible on every package (Response debt is on all)", () => {
+    for (const plan of ["basic", "pro", "business", "business_pro"] as const) {
+      expect(railItemVisible("/app/analytics", biz(plan))).toBe(true);
+    }
   });
 });
