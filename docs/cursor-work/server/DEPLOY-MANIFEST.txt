@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md f5cb06d303abeacb
+docs/cursor-work/founder/founder-commands.md 0b121bcfaf66c5b8
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -140,7 +140,7 @@ docs/cursor-work/TECH-MAP.md f51e9cf2d5e98350
 server/rust/export_core.rs 086ef9caf998828f
 server/rust/export_glue.rs e1aa78e116e2a353
 docs/cursor-work/sql/E44_account_export.sql 256fa217a12458e0
-docs/cursor-work/server/rust-engine-install.sh 815abdb669a270c6
+docs/cursor-work/server/rust-engine-install.sh 4e81dcecd5bd7c29
 src/components/app/security/IntegrityGate.tsx 05dc58e611855298
 src/lib/account-export.ts 0f06184f8b7786c2
 docs/cursor-work/sql/E45_integrity_purge.sql 52b81aa0216ec1e7
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md deefc59c537651b0
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 5a5e96e01221fdb3
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 6b5f00c5779de63d
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 60f3e167566f669a
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 77a9d2dc37ac4865
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 24ae3d2b861abe18
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md e58eb4801050950b
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -661,7 +661,7 @@ docs/cursor-work/sql/E84_room_series_note.sql a20ff07e6d1bb48c
 docs/cursor-work/sql/CHECK_E84.sql 17304773909fb074
 src/lib/handoff.ts 66fdf574d9c66118
 docs/cursor-work/server/brain_pro4_hunks.json e3b6862d0d567ce3
-docs/cursor-work/server/basic-gate-probe.sh 5639564e2646474c
+docs/cursor-work/server/basic-gate-probe.sh eb7e7a53fa8e313f
 docs/cursor-work/server/count-endpoints.py c8d7ca79f763fdf4
 src/lib/assignee-name.ts 428d9bfd3886d49f
 docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md f6c02fd9b74fda1f
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md 9a403f49d1282bb4
+docs/packages/GREEN-LEDGER.md 5c72eac6d02ce741
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -777,8 +777,8 @@ docs/claude/README.md 4795b9be6b08c02c
 docs/claude/PRO-LIVE-GREEN-26OCT.md 47bf4dc8275f4d37
 src/components/app/calendar/MeetingCostSettings.tsx d6e80997ba3e838c
 docs/claude/endpoint-package-map.py 0c061c484ea1437c
-docs/claude/ENDPOINT-PACKAGE-MAP.csv 8d80e7159c02e412
-docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md 61ad4069255894ce
+docs/claude/ENDPOINT-PACKAGE-MAP.csv 90a871d1d78bcf8c
+docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md 4b241fbc3abf96b1
 src/lib/endpoint-map.test.ts 81965ad1c6018e34
 server/rust/security_glue.rs 0bfb8d647f9a8399
 src/routes/app.security.devices.tsx 3b37ac9ab5795ac5
@@ -787,3 +787,6 @@ server/rust/crmd_core.rs cb8ef1588b5546c0
 server/rust/crmd_glue.rs d26b6b9afc173d11
 server/routes/crm.ts 5352d1f36f1eee3d
 docs/claude/TECHNOLOGY-MAP-27OCT.md 91852eb72926d80f
+src/lib/trial.ts 77b1c03e02f74b4a
+server/rust/trialx_core.rs f2f72e1e8597efc4
+server/rust/trialx_glue.rs ada622329d698133

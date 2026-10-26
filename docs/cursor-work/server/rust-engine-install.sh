@@ -19,6 +19,7 @@
 #   analytics -> server/rust/analytics_core.rs + analytics_glue.rs (Analytics Center: response debt, thread economics, deep work, leaks, promise SLA, forecast, team, founder overview)  [pehle E89 SQL]
 #   workx  -> server/rust/workx_core.rs + workx_glue.rs (Pro: work.tasks, work.promises, crm.overview — Bun se Rust, Tokio async; gate Pro+)  [koi SQL nahi]
 #   crmx   -> server/rust/crmx_core.rs + crmx_glue.rs (CRM P1+P2: pipelines, custom fields, duplicate merge, web forms; public crm.form.get/submit)  [pehle E92 SQL]
+#   trialx -> server/rust/trialx_core.rs + trialx_glue.rs (trial security/events/holds — Bun se Rust)
 #   crmd   -> server/rust/crmd_core.rs + crmd_glue.rs (Pro CRM desk: crm.leads/deals + create/move/convert/work/thread/insights — Bun se Rust)
 #   livex  -> server/rust/livex_core.rs + livex_glue.rs (Rule 52 G3 / Rule 56: crm.live radar+timeline+graph (Pro+) aur org.members — Bun se Rust, Tokio async; workx_core + cal_core chahiye)  [koi SQL nahi]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
@@ -48,7 +49,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -151,6 +152,8 @@ CFG={
  "livex": {"public": False, "label": "livex", "procs": ['"crm.live"','"org.members"'], "need_mods": ["cal_core", "workx_core"]},
  # crmd (Rule 52/56, Pro CRM desk): crm.leads/deals list + createLead/createDeal/moveDeal/convertLead/dealWork/dealThread/insights — Pehle Bun-only (browser POST /api/crm/leads). Koi SQL nahi. Gate Pro+ Rust mein.
  "crmd": {"public": False, "label": "crmd", "procs": ['"crm.leads"','"crm.deals"','"crm.createLead"','"crm.createDeal"','"crm.moveDeal"','"crm.convertLead"','"crm.dealWork"','"crm.dealThread"','"crm.insights"','"work.promise.commit"','"work.promise.dismiss"','"crm.memory"'], "need_mods": ["cal_core", "workx_core"]},
+ # trialx (Rule 52/56): trial lifecycle ke baaqi 3 procs (security/events/holds) — state/start/claim/address/activate pehle se Rust par. Sirf login (har plan). Koi SQL nahi.
+ "trialx": {"public": False, "label": "trialx", "procs": ['"account.signup.security"','"account.signup.events"','"account.signup.holds"']},
  "analytics": {"public": False, "label": "analytics", "procs": ['"analytics.responseDebt"','"analytics.threadEconomics"','"analytics.deepWork"','"analytics.attentionLeaks"','"analytics.promiseSla"','"analytics.forecast"','"analytics.team"','"founderAnalytics.overview"','"billing.revenueTruth"','"kernel.ticket"','"kernel.report"']},
  # wtrpc (Rule 52): `/wt/rpc` — WASM kernel (web-wasm rpc@1) ka ek QUIC session, har call ek bidi stream => wohi dispatch() jo /rpc/<proc> chalata hai.
  # Koi proc nahi (isliye procs khali, owns() false); wt_session ke andar sirf path dekh kar is module ko de deta hai. Koi SQL nahi.
@@ -588,6 +591,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> crmd: Rust ne crm.leads/deals/createLead... pakda (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> crmd: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> crmd: jawab upar dekhein";;
+      esac;;
+    trialx)
+      r="$(probe account.signup.events '{"input":{}}')"
+      echo "   account.signup.events (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> trialx: Rust ne account.signup.security/events/holds pakda (nakli login 401 = theek).";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> trialx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> trialx: jawab upar dekhein";;
       esac;;
     crmx)
       r="$(probe crm.pipelines.list '{"input":{}}')"

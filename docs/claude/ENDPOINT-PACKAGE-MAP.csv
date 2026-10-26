@@ -289,7 +289,7 @@ contacts.ts,GET,/api/companies/:domain/timeline,basic,Account / auth / billing /
 contacts.ts,GET,/api/search/universal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
 crm.ts,GET,/api/crm/overview,pro,CRM base,PP1 #18,RUST-FIRST,crm.overview
 crm.ts,GET,/api/crm/live,pro,CRM base,PP1 #18,RUST-FIRST,crm.live
-crm.ts,GET,/api/crm/memory,pro,CRM base,PP1 #18,BUN-ONLY,
+crm.ts,GET,/api/crm/memory,pro,CRM base,PP1 #18,RUST-FIRST,crm.memory
 crm.ts,POST,/api/crm/deals/work,pro,CRM base,PP1 #18,RUST-FIRST,crm.dealWork
 crm.ts,POST,/api/crm/deals/thread,pro,CRM base,PP1 #18,RUST-FIRST,crm.dealThread
 crm.ts,GET,/api/crm/leads/suggest,pro,CRM base,PP1 #18,RUST-FIRST,crm.leads.suggest

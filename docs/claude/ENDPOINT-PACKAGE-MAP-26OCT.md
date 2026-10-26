@@ -7,13 +7,13 @@ Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; s
 | Package (starts_at) | Kul | Rust-first (live) | Baaqi (Bun-only) |
 |---|---|---|---|
 | BASIC (aur uske upar sab) | 144 | 38 | 106 |
-| PRO (+ upar) | 51 | 43 | 8 |
+| PRO (+ upar) | 51 | 44 | 7 |
 | BUSINESS (+ upar) | 188 | 5 | 183 |
 | BUSINESS PRO (+ Enterprise) | 5 | 0 | 5 |
 | FOUNDER host only (package nahi) | 75 | 31 | 44 |
 | INTERNAL (service-to-service) | 4 | 0 | 4 |
 | AI (coming soon July 2027) | 56 | 27 | 29 |
-| **Jod** | 523 | 144 | 379 |
+| **Jod** | 523 | 145 | 378 |
 
 ## Rust procs (jo already latest technology par aa chuke) — package-wise
 | Package (starts_at) | Procs |
@@ -38,7 +38,7 @@ Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; s
 
 ## Baaqi (BUN-ONLY) endpoints — package ke hisaab se kaam ki list (file: ginti)
 - **BASIC (aur uske upar sab)**: auth.ts 24, billing-sync.ts 12, contacts.ts 10, integrations.ts 10, trial.ts 9, polar.ts 7, security.ts 7, settings.ts 7, storage.ts 5, workspace.ts 4, account-deletion.ts 3, support.ts 3, mail.ts 2, calendar.ts 1, dashboard.ts 1, locale.ts 1
-- **PRO (+ upar)**: calendar.ts 2, crm.ts 2, handoff.ts 2, analytics.ts 1, mail-compose.ts 1
+- **PRO (+ upar)**: calendar.ts 2, handoff.ts 2, analytics.ts 1, crm.ts 1, mail-compose.ts 1
 - **BUSINESS (+ upar)**: chat.ts 141, org.ts 17, files.ts 11, crm.ts 7, settings.ts 6, security.ts 1
 - **BUSINESS PRO (+ Enterprise)**: org.ts 3, crm.ts 2
 - **FOUNDER host only (package nahi)**: movein.ts 11, admin.ts 8, perf.ts 8, glitch.ts 4, org.ts 4, crm.ts 2, storage.ts 2, ai-credits.ts 1, analytics.ts 1, billing-support.ts 1, integrations.ts 1, release.ts 1

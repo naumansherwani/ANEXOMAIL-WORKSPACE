@@ -79,6 +79,10 @@ for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.l
   gate "RUST $P (Pro)" "$P" '{}'
 done
 [ "$MODE" = pro ] && { chk "RUST crm.createLead bad email (400)" "$(rpc crm.createLead '{"email":"nope"}')" 400; chk "RUST crm.createDeal short title (400)" "$(rpc crm.createDeal '{"title":"x"}')" 400; chk "RUST crm.moveDeal bad stage (400)" "$(rpc crm.moveDeal '{"id":"x","stage":"bogus"}')" 400; chk "RUST crm.memory no email (400)" "$(rpc crm.memory '{}')" 400; chk "RUST crm.memory (Pro 200)" "$(rpc crm.memory '{"email":"nobody@example.com"}')" 200; chk "RUST crm.leads (Pro 200)" "$(rpc crm.leads '{"state":"new"}')" 200; chk "RUST crm.deals (Pro 200)" "$(rpc crm.deals '{}')" 200; chk "RUST crm.insights (Pro 200)" "$(rpc crm.insights '{}')" 200; }
+chk "RUST account.signup.events (all plans 200)" "$(rpc account.signup.events '{}')" 200
+chk "RUST account.signup.holds (all plans 200)" "$(rpc account.signup.holds '{}')" 200
+chk "RUST account.signup.state (all plans 200)" "$(rpc account.signup.state '{}')" 200
+chk "RUST account.signup.security nothing (400)" "$(rpc account.signup.security '{}')" 400
 gate "RUST crm.dups.list (Pro)" crm.dups.list '{"kind":"lead"}'
 chk "RUST crm.form.get public, nakli slug (open)" "$(rpc crm.form.get '{"slug":"0000000000000000"}')" 404
 chk "RUST calendar.findtime (open to all plans)" "$(rpc calendar.findtime '{}')" 400
