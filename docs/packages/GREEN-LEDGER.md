@@ -199,3 +199,6 @@ AGENTS.md Rule 52 mein yeh pehli line ab founder ke alfaaz mein hai (line 404). 
 
 ## 27 Oct 2026 01:05 PKT — Website flow (Rule 52 + cinematic) dikhaya
 Founder 00:54 ne poocha website kaise banegi: diagram dikhaya (UI+cinematic -> WASM kernel -> QUIC -> Rust Tokio -> Supabase). Likha: docs/claude/TECHNOLOGY-MAP-27OCT.md section 5. Agla kaam: auth.session Rule 52 port, phir Basic baaqi 110.
+
+## 27 Oct 2026 01:25 PKT — auth.session CODE LIKHA (authx) — deploy pending
+authx_core.rs (6 tests pass) + authx_glue.rs: Rust 'auth.session' (profile, workspace_plan, account_kind, orgs merge, active org, onboarded, display name) Bun sessionResult ka hu-ba-hu. Full crate cargo check (rustls+ring+webpki) PASS. auth.tsx ab rpcOrRest('auth.session') (Bun GET /api/auth/session fallback). Installer authx + probe + basic-gate-probe shape check. tsc OK, bun test 212 pass. Login/refresh/logout Bun par (alag). Agla: founder deploy output -> Chrome proof, phir Basic 110.

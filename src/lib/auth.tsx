@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import { api, ApiError, ensureFreshToken, sessionToken } from "@/lib/api";
+import { rpcOrRest } from "@/lib/rpc";
 import { visitorPreviewFromUrl } from "@/lib/visitor-preview";
 import { clearOffline } from "@/lib/offline";
 
@@ -127,7 +128,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         let s: Session | null = null;
         for (let attempt = 0; attempt < 4; attempt++) {
           try {
-            s = await api<Session>("/api/auth/session");
+            // Rule 52: kernel -> Rust `auth.session`; Rust 404/5xx par wahi Bun GET /api/auth/session (login-safe fallback).
+            s = await rpcOrRest<Session>("auth.session", { path: "/api/auth/session" }, {});
             break;
           } catch (e) {
             const st = e instanceof ApiError ? e.status : -1;

@@ -82,6 +82,8 @@ done
 chk "RUST account.signup.events (all plans 200)" "$(rpc account.signup.events '{}')" 200
 chk "RUST account.signup.holds (all plans 200)" "$(rpc account.signup.holds '{}')" 200
 chk "RUST account.signup.state (all plans 200)" "$(rpc account.signup.state '{}')" 200
+chk "RUST auth.session (all plans 200)" "$(rpc auth.session '{}')" 200
+grep -q '"workspace_plan"' /tmp/.gp.$$ && grep -q '"organisations"' /tmp/.gp.$$ && grep -q '"account_kind"' /tmp/.gp.$$ && echo "  PASS auth.session shape (user.workspace_plan/account_kind/organisations)" || { echo "  FAIL auth.session shape"; FAILS=$((FAILS+1)); }
 chk "RUST account.signup.security nothing (400)" "$(rpc account.signup.security '{}')" 400
 gate "RUST crm.dups.list (Pro)" crm.dups.list '{"kind":"lead"}'
 chk "RUST crm.form.get public, nakli slug (open)" "$(rpc crm.form.get '{"slug":"0000000000000000"}')" 404
