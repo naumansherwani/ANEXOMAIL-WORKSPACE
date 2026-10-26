@@ -1095,3 +1095,6 @@ Founder: har package par per month + user cap zaroor likha ho (Basic 5, Pro 20, 
 
 ### 26 Oct 05:30 — Polar Basic copy
 Naya Polar checkout text (up to 5 users, 25GB shared, GBP40/mo, 440/yr) -> docs/claude/POLAR-COPY-V6-BASIC.md. Landing Basic card isi se match hoga (P2). Pro/Business/BP ka copy isi tarah ek ek karke.
+
+### 26 Oct 05:35 — Polar Basic copy final
+POLAR-COPY-V6-BASIC.md final: bring-your-own-domain, up to 5 users cap, technology attraction block (3 honest claims). Founder Polar mein paste karega. Pro ka copy agla.
