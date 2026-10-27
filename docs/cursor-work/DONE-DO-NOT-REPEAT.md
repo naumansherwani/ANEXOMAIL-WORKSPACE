@@ -922,3 +922,9 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 ## 27 Oct 2026 08:2x PKT — E97 dusri baar fail: selftest ka dummy org live FK (calendar_events_org_id_fkey -> organisations) par toota
 - Fix: selftest ab ASLI org + user (organisations/auth.users se pehla) par chalta hai aur aakhir mein poora ROLLBACK (koi test row/ledger/key nahi bachti); org/user na mile to sirf parity. CHECK_E97 se selftest-chain wali row hata di. Test DB ab FK ke saath (organisations, auth.users, calendar/work FK) — 2 baar chala, CHECK sab true, 0 row bachi. SABAK: selftest dummy uuid par live FK wale tables mein kabhi nahi likhna.
+
+## 27 Oct 2026 08:24 PKT — MEMORY SYNC (compact se pehle): Compose Business Outcomes + File Context + Live Ink = SERVER PAR
+- Founder: pull.sh chala (web + kernel 0.4.0 server par), SQL E97/E98/E99 sab GREEN (founder ke mutabiq), "sab codes server par". Poora record: docs/cursor-work/COMPOSE-BUSINESS-OUTCOMES-27OCT.md (kya, kahan, kab, honest hadd, baaki).
+- Date-wise: 27 Oct 07:29 idea -> 07:5x kernel intent@1 (0.3.0) + E97 + promx -> 08:0x E97 fix #1 (thread_subject) -> 08:1x Live Ink + filectx@1 (0.4.0) + E99 -> 08:2x E97 fix #2 (selftest FK/rollback) -> server par.
+- Rust promx (commit.* + file.context): founder ne chalane ka kaha; installer output CEO ne nahi dekha => LIVE SABOOT BAAKI (nakli token 401 / asli token jawab).
+- Agla: Rust saboot + live Chrome (pro.buyer2) badge/cost/file card/Live Ink/send->Tasks+Calendar/commit.verify; phir cross-package connect, booking link, 20-user cap, Cancel-send test mail; phir Pro GREEN declare. Founder rules: privacy breach nahi; "bun" lafz test-runner ke liye bhi nahi (Bun server nahi); commands sirf repo-written, expanded format.

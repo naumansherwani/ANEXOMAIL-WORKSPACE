@@ -1605,3 +1605,9 @@ bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/buyer-
 - FRONTEND: FileContextCard (versions list, "Add reference line" email mein, "Open the conversation"), useFileContext (kernel scan -> 700ms baad server), asli Chromium (vite dev lab) mein card/badge/cost render dekhe. GhostTextArea LIVE INK: naye likhe akshar logo-blue gradient mein behte hain (1.1s mein settle), blinking caret logo-gradient mein; reduced-motion/Calm par band; Chromium screenshot se proof.
 - PRE-EXISTING drift FIX: rpc-contract workx ke 6 proc (work.task.create/update, work.note, work.note.save, work.followThrough, calendar.outcome.post) ab contract mein pro; bun src/lib 221 pass 0 fail.
 - Deploy tarteeb: pull.sh -> sql-run.sh (E97 dobara, E98, E99) -> rust-engine-install.sh -> restart. Phir live Chrome: badge, cost, file card, Live Ink.
+
+## 27 Oct 2026 08:24 PKT — MEMORY SYNC (compact se pehle): Compose Business Outcomes + File Context + Live Ink = SERVER PAR
+- Founder: pull.sh chala (web + kernel 0.4.0 server par), SQL E97/E98/E99 sab GREEN (founder ke mutabiq), "sab codes server par". Poora record: docs/cursor-work/COMPOSE-BUSINESS-OUTCOMES-27OCT.md (kya, kahan, kab, honest hadd, baaki).
+- Date-wise: 27 Oct 07:29 idea -> 07:5x kernel intent@1 (0.3.0) + E97 + promx -> 08:0x E97 fix #1 (thread_subject) -> 08:1x Live Ink + filectx@1 (0.4.0) + E99 -> 08:2x E97 fix #2 (selftest FK/rollback) -> server par.
+- Rust promx (commit.* + file.context): founder ne chalane ka kaha; installer output CEO ne nahi dekha => LIVE SABOOT BAAKI (nakli token 401 / asli token jawab).
+- Agla: Rust saboot + live Chrome (pro.buyer2) badge/cost/file card/Live Ink/send->Tasks+Calendar/commit.verify; phir cross-package connect, booking link, 20-user cap, Cancel-send test mail; phir Pro GREEN declare. Founder rules: privacy breach nahi; "bun" lafz test-runner ke liye bhi nahi (Bun server nahi); commands sirf repo-written, expanded format.

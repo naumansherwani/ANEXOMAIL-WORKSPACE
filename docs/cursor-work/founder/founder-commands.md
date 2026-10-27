@@ -1535,3 +1535,9 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -6
 pm2 restart anexomail-rust --update-env && pm2 save >/dev/null && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
 ```
+
+## 27 Oct 2026 08:24 PKT — MEMORY SYNC (compact se pehle): Compose Business Outcomes + File Context + Live Ink = SERVER PAR
+- Founder: pull.sh chala (web + kernel 0.4.0 server par), SQL E97/E98/E99 sab GREEN (founder ke mutabiq), "sab codes server par". Poora record: docs/cursor-work/COMPOSE-BUSINESS-OUTCOMES-27OCT.md (kya, kahan, kab, honest hadd, baaki).
+- Date-wise: 27 Oct 07:29 idea -> 07:5x kernel intent@1 (0.3.0) + E97 + promx -> 08:0x E97 fix #1 (thread_subject) -> 08:1x Live Ink + filectx@1 (0.4.0) + E99 -> 08:2x E97 fix #2 (selftest FK/rollback) -> server par.
+- Rust promx (commit.* + file.context): founder ne chalane ka kaha; installer output CEO ne nahi dekha => LIVE SABOOT BAAKI (nakli token 401 / asli token jawab).
+- Agla: Rust saboot + live Chrome (pro.buyer2) badge/cost/file card/Live Ink/send->Tasks+Calendar/commit.verify; phir cross-package connect, booking link, 20-user cap, Cancel-send test mail; phir Pro GREEN declare. Founder rules: privacy breach nahi; "bun" lafz test-runner ke liye bhi nahi (Bun server nahi); commands sirf repo-written, expanded format.
