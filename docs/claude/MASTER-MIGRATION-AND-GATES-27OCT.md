@@ -20,7 +20,7 @@ F1 sab data kernel se (steps 2-7) | F2 23 polls -> WebTransport push (qadam 8, L
 | **M1-M6 (migration)** | Endpoint migration milestones (M1/M2 done; M3 contacts/storage/support/workspace/billing; M4 auth+trial; M5 settings/integrations/security + org/crm/calendar; M6 Business 180) | ONE-ORDER "M-series ka nakshe se milan" | M3 done, M5 = qadam 3 (AGLA) |
 | **M1-M7 (Outlook mail features)** | **ALAG cheez, naam takrata hai:** view/layout, favourites/flag/pin, signature/auto-reply, rules+sweep, schedule send+templates, Focused/Other, shared/delegate | docs/cursor-work/MAIL-OUTLOOK-MAP.md, MASTER-GAP-LEDGER M-SERIES | Naam: ab "MO1-MO7" kaho taake migration M se na milay; zyada hissa Pro/Basic mein live, baaqi Business |
 | **T1-T12** | Technology track: T1 sqlx pool, T2 ts-rs types, T3 Bun/tokio upgrade, T4 speed, T5 Stalwart, T6 instant search, T7 instant mail, T8 delivery status, T9 collision guard live, T10 resumable upload, T11 never-down, T12 auto-update banner | docs/claude/T-SERIES-BLUEPRINT.md | qadam 12 ke baad (T9 Pro wada, T6 pehle) |
-| **C1/C2, D, E (batches)** | C1 billing read (billx DONE), C2 billing paisa (intent/change-plan/sync) ; D = settings 7 + integrations 10 + security 7 ; E = account-deletion 3 + calendar export 1 | docs/claude/BATCH-PLAN-27OCT.md | C1 GREEN; D AGLA; E baad; C2 qadam 6 (founder ijazat + shadow) |
+| **C1/C2, D, E (batches)** | C1 billing read (billx DONE), C2 billing paisa (intent/change-plan/sync) ; D = settings 7 + integrations 10 + security 7 ; E = account-deletion 3 + calendar export 1 | docs/claude/BATCH-PLAN-27OCT.md | C1 GREEN; D GREEN (setx); E: deletion/trial/calendar.export Rust (calexp deploy baaqi); C2 qadam 6 (founder ijazat + shadow) |
 | **F** | Founder account (admin/perf/movein, 32 endpoints, Rust-only) | FOUNDER-WORKSPACE-PLAN.md | qadam 9 |
 | **L** | 23 polls -> WebTransport live events | TECHNOLOGY-MAP section 2 | qadam 8 |
 | **K3** | ANEXOChat ek QUIC session (rpc+events+chat), kernel 0.3.0 | docs/packages/business/ANEXOCHAT-K3-PLAN.md | Business phase |
@@ -30,16 +30,17 @@ F1 sab data kernel se (steps 2-7) | F2 23 polls -> WebTransport push (qadam 8, L
 starts_at = woh sab se chhota package jis se endpoint kholta hai (ENDPOINT-PACKAGE-MAP.csv). Neeche Rust-first / baaqi.
 | Package (starts_at) | Rust-first | Baaqi (Bun) | Matlab |
 |---|---|---|---|
-| basic (sab ko) | 96 | 46 | login 23, trial 9, C2 billing 5, polar 5 (NO-TOUCH), deletion 3, calendar export 1 |
-| pro | 44 | **7** | work tasks/notes/follow-through + meeting outcome (client naam Rust mein nahi) |
+| basic (sab ko) | 107 | 35 | login 24, C2 billing 5 (paisa: founder ijazat + shadow), polar 5 (NO-TOUCH), trial/sweep 1 (cron) |
+| pro | 51 | **0** | Pro ke saare endpoints Rust mein (27 Oct 05:00: work tasks/notes/follow-through/outcome = workx; Bun twins par bhi Pro gate, hatana agla) |
 | business | 4 | 184 | M6: v6 enforcement SQL, ANEXOChat, Office suite, org/CRM, settings blast/drift/schedule |
 | business_pro | 0 | 5 | 570 users/10TB/60MB enforcement |
 | founder | 24 | 53 | F qadam 9 |
 | internal | 1 | 3 | |
 | ai_soon | 0 | 56 | AI plan, baad mein |
-| **Total** | **169** | **354** | 523 (04:3x, sakht registry; pehle 187/336 jhoota tha) |
+| **Total** | **187** | **336** | 523 (27 Oct 05:44 PKT, count-endpoints.py; trial 8 + deletion 3 + calendar.export mila kar) |
 Package limits (pricing v6, flat per company, per-user fee nahi): Basic £40 (5 users, 15GB, 3 mailboxes, 25MB) | Pro £105 (20 users, 300GB, 35MB; 3 booking links, 4 trusted devices) | Business £360 (60 users, 1.5TB, 45MB, Office suite, ANEXOChat) | Business Pro £2,850 (570 users, 10TB, 60MB) | Enterprise £18,500 (Bun-free, baad mein). Basic/Pro enforcement SQL LIVE (E87/E88); **Business/Business Pro enforcement abhi code mein NAHI** (TODO-1).
 Gate ka tareeqa: server par `resolve_plan` + `pro_gate`/`pro_only_proc` (Rust), SQL triggers/caps (team_seat_calc, storage_plans, booking_pages_cap, device_vault); UI sirf mirror (plan-surface.ts). Har package ki tafseel: docs/packages/<package>/GATES-AND-TECH.md, ENDPOINT-PACKAGE-MAP-26OCT.md.
 
-## 5. Migration tarteeb (sirf ONE-ORDER): 1 wsx/billx GREEN | 2 Pro-only DONE | **3 Batch D (settings 7, integrations 10, security 7)** | 4 Batch E | 5 Pro Chrome walk | 6 login 23 + C2 | 7 PRO GREEN CLOSE | 8 L | 9 Founder | 10 Trial | 11 Business | 12 CRM P3-P6, Business Pro, T-series | 13 Enterprise (+Personal HOLD).
+## 5. Migration tarteeb (sirf ONE-ORDER): 1 wsx/billx GREEN | 2 Pro-only GREEN (workx, 27 Oct) | 3 Batch D GREEN (setx) | 4 Batch E: deletion/trial Rust GREEN, calendar.export (calexp) CODE READY deploy baaqi | 5 Pro Chrome walk (partial: Work tasks create/update kernel se GREEN; baaqi 3 booking links, 20-user cap, shared-inbox 2nd user, snooze/schedule-send, People) | 6 login 24 (aakhir, fallback ke saath) + C2 billing 5 (paisa: founder ijazat + shadow) | 7 PRO GREEN CLOSE | 8 L | 9 Founder | 10 Trial | 11 Business | 12 CRM P3
+AGLA (Rule 56): Pro ke Bun twins (work 10 + handoff 4) HATANA — abhi Bun par bhi Pro gate (brain-progate LIVE) taa ke loophole band rahe.
 Naya kaam rule: registry dekho -> X_core.rs + X_glue.rs -> installer + probe + rpc-contract -> client rpcOrRest -> cargo check + dry-run -> founder deploy + probes -> Chrome -> tab GREEN.

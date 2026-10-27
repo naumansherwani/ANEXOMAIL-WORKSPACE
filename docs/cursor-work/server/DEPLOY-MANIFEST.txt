@@ -822,7 +822,7 @@ docs/packages/trial/FEATURES-AND-GATES.md 7634145c881b3526
 docs/packages/trial/NO-MOCK-AND-ONBOARDING.md 7640390fa0e591ac
 docs/packages/trial/README.md 50b6d0cae91d20f8
 docs/claude/ONE-ORDER-27OCT.md 0721498677c1193d
-docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md b48be1ead617f21a
+docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md 7f4ebf3d676255ac
 server/rust/setx_core.rs 0da0ba3ceaad04b9
 server/rust/setx_glue.rs c0463e2308280fbb
 docs/cursor-work/server/buyer-accounts-look.sh d41233c4875e0dec
