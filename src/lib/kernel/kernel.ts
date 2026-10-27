@@ -27,6 +27,13 @@ export type LiveListener = {
   onEvent?: (topic: (typeof LIVE_TOPICS)[number]) => void;
   onResync?: () => void;
 };
+export type IntentPromise = {
+  phrase: string; action: string; due_date: string | null; due_label: string | null; due_exact: boolean; confidence: number; lang: "en" | "ur";
+};
+export type IntentScan = { promises: IntentPromise[] };
+export type IntentCost = {
+  seconds_each: number; seconds_total: number; cost_minor: number; call_minutes: number; call_cost_minor: number; suggest_call: boolean; saving_minor: number;
+};
 export const LIVE_TOPICS = ["mail", "calendar", "crm", "work", "people", "org"] as const;
 
 // Rust sys.rs ke saath ek jaise
@@ -53,6 +60,8 @@ type Exports = {
   hmac_verify(kp: number, kl: number, mp: number, ml: number, tp: number, tl: number): number;
   sniff_check(np: number, nl: number, hp: number, hl: number): number;
   rank_run(qp: number, ql: number, ip: number, il: number, limit: number): number;
+  intent_scan(tp: number, tl: number, nowUnix: bigint, tzMin: number): number;
+  intent_cost(words: number, recipients: number, rate: number, wpm: number): number;
   live_start(up: number, ul: number, tp: number, tl: number, seed: number): number;
   live_set_token(h: number, tp: number, tl: number): void;
   live_stop(h: number): void;
@@ -331,6 +340,19 @@ export class Kernel {
     const raw = this.out(n * 4);
     const dv = new DataView(raw.buffer, raw.byteOffset, raw.byteLength);
     return Array.from({ length: n }, (_, i) => dv.getUint32(i * 4, true));
+  }
+
+  /** Email text mein wade + deadline (deterministic, English + Roman Urdu). nowUnix = UTC seconds, tzMin = UTC se farq minutes (+300 Karachi). */
+  intentScan(text: string, nowUnix: number, tzMin: number): IntentScan {
+    const t = enc.encode(text.slice(0, 20000));
+    const n = this.withBytes(t, (p) => this.x.intent_scan(p.ptr, p.len, BigInt(Math.floor(nowUnix)), tzMin | 0));
+    return JSON.parse(new TextDecoder().decode(this.out(n))) as IntentScan;
+  }
+
+  /** Email padhne ka waqt/paisa: words x recipients x rate (minor unit / ghanta). SQL attention_cost() se bit-ba-bit same integers. */
+  intentCost(words: number, recipients: number, rateMinorPerHour: number, wpm = 0): IntentCost {
+    const n = this.x.intent_cost(Math.max(0, words | 0), Math.max(0, recipients | 0), Math.max(0, rateMinorPerHour | 0), Math.max(0, wpm | 0));
+    return JSON.parse(new TextDecoder().decode(this.out(n))) as IntentCost;
   }
 
   liveStart(url: string, token: string, l: LiveListener): { setToken: (t: string) => void; stop: () => void } {

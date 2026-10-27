@@ -21,6 +21,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
+import {
+  OutcomesBar,
+  promiseKey,
+  type LinkChoice,
+  type PromiseKey,
+} from "@/components/app/compose/OutcomesBar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -47,6 +53,14 @@ import {
 } from "@/lib/compose";
 import { useSaveHandoff } from "@/lib/handoff";
 import { learnWritingPattern } from "@/lib/mail-predict";
+import {
+  DEFAULT_RATE,
+  recordEconomics,
+  recordPromises,
+  recipientList,
+  useAttentionRate,
+  useOutcomes,
+} from "@/lib/outcomes";
 import { removeAttachment, uploadAttachment, useAttachLimits } from "@/lib/mail-attachments";
 import {
   anyUploading,
@@ -136,6 +150,12 @@ export function ComposeStudio({
   const [showVersions, setShowVersions] = useState(false);
   const [followUpDays, setFollowUpDays] = useState(0);
   const bodyRef = useRef<HTMLTextAreaElement | null>(null);
+  // Business Outcomes (Pro): kernel se wada + kharcha; user ne jo "link" kiya wahi send par record hota hai.
+  const [linked, setLinked] = useState<Record<PromiseKey, LinkChoice>>({});
+  const [dismissedPromises, setDismissedPromises] = useState<Set<PromiseKey>>(() => new Set());
+  const attentionRate = useAttentionRate(proMail);
+  const rate = attentionRate.data ?? DEFAULT_RATE;
+  const outcomes = useOutcomes(body, [to, cc, bcc], rate, proMail);
   // G38 — attachments: upload turant (Rust), bhejte waqt sirf ids jati hain
   const [files, setFiles] = useState<AttachItem[]>([]);
   const filesRef = useRef<AttachItem[]>([]);
@@ -360,6 +380,27 @@ export function ComposeStudio({
   /** Phase 12A: send ke baad user ke apne likhe se pattern seekha jata hai. */
   const afterSent = () => {
     void learnWritingPattern(applyVariables(body, variables)).catch(() => undefined);
+    if (proMail) {
+      const chosen = outcomes.promises
+        .filter((p) => linked[promiseKey(p)])
+        .map((p) => ({ promise: p, withEvent: !!linked[promiseKey(p)]?.withEvent }));
+      const rcpt = recipientList(to, cc, bcc);
+      if (chosen.length > 0) {
+        void recordPromises(chosen, { threadId, subject, to: rcpt }).then((r) => {
+          if (r.saved > 0)
+            notify.done(
+              "Promise tracked",
+              `${r.saved} added to Tasks${r.events ? " and Calendar" : ""}.`,
+            );
+          else if (r.failed > 0)
+            notify.failed("Could not track the promise", {
+              description: "Add it from Work → Promises.",
+            });
+        });
+      }
+      if (outcomes.words > 0 && rcpt.length > 0)
+        void recordEconomics({ words: outcomes.words, recipients: rcpt.length, threadId });
+    }
     maybePromiseFollowUp();
   };
 
@@ -726,6 +767,31 @@ export function ComposeStudio({
               : "Write the message."
           }
         />
+
+        {proMail ? (
+          <OutcomesBar
+            outcomes={outcomes}
+            rate={rate}
+            linked={linked}
+            dismissed={dismissedPromises}
+            onLink={(k, c) => setLinked((m) => ({ ...m, [k]: c }))}
+            onUnlink={(k) =>
+              setLinked((m) => {
+                const n = { ...m };
+                delete n[k];
+                return n;
+              })
+            }
+            onDismiss={(k) => {
+              setDismissedPromises((d) => new Set(d).add(k));
+              setLinked((m) => {
+                const n = { ...m };
+                delete n[k];
+                return n;
+              });
+            }}
+          />
+        ) : null}
 
         {/* open variables */}
         {openVars.length > 0 && (

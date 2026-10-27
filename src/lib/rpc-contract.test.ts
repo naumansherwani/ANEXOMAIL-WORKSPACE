@@ -52,6 +52,15 @@ describe("rpc contract == Rust server gates", () => {
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
   });
 
+  test("promx: every compose Business Outcomes proc is 'pro' in the contract and in the Rust gate", () => {
+    const procs = quoted(fnBody(rs("promx_core.rs"), "owns_name"));
+    expect(procs.sort()).toEqual(["commit.economics", "commit.list", "commit.rate", "commit.rateSet", "commit.record", "commit.status", "commit.verify"]);
+    for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
+    const hits = rs("promx_glue.rs").split("\n").filter((l) => l.includes("StatusCode::NOT_FOUND"));
+    expect(hits.length).toBe(2); // owns() guard + default arm, dono "unknown_proc"
+    for (const h of hits) expect(h).toContain("unknown_proc");
+  });
+
   test("crmd: domain errors never use 404 (client falls back to Bun on 404/501/502/503)", () => {
     const src = rs("crmd_glue.rs");
     const hits = src.split("\n").filter((l) => l.includes("StatusCode::NOT_FOUND"));
@@ -70,7 +79,7 @@ describe("rpc contract == Rust server gates", () => {
   });
 
   test("every contract proc is enforced somewhere in Rust (no UI-only claim)", () => {
-    const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs", "livex_core.rs", "crmd_core.rs"].map(rs).join("\n");
+    const all = ["mailx_core.rs", "cal_core.rs", "analytics_core.rs", "crmx_core.rs", "workx_core.rs", "livex_core.rs", "crmd_core.rs", "promx_core.rs"].map(rs).join("\n");
     for (const p of Object.keys(PROC_MIN_PLAN)) expect(all.includes(`"${p}"`), `${p} Rust mein nahi`).toBe(true);
   });
 

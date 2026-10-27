@@ -26,6 +26,7 @@
 #   billx  -> server/rust/billx_core.rs + billx_glue.rs (Batch C1: billing.state, billing.stateHealth (FOUNDER-only, Bun loophole band), billing.claimGuest — padhne wale; paisa banane wale C2)
 #   setx   -> server/rust/setx_core.rs + setx_glue.rs (Batch D: settings.list/explain/save/history/revert, integrations.* 10, founderSettings/founderIntegrations/founderSecurity.overview — founder-only; Business settings + Leo actions Bun par)
 #   wsx    -> server/rust/wsx_core.rs + wsx_glue.rs (onboarding: workspace.personal + workspace.organisations — naya user ka workspace, Bun se Rust; invitations = team.invites.create pehle se Rust)
+#   promx  -> server/rust/promx_core.rs + promx_glue.rs (compose Business Outcomes, Pro: commit.record/status/list/verify/economics/rate — SQL E97 PEHLE)
 #   crmd   -> server/rust/crmd_core.rs + crmd_glue.rs (Pro CRM desk: crm.leads/deals + create/move/convert/work/thread/insights — Bun se Rust)
 #   livex  -> server/rust/livex_core.rs + livex_glue.rs (Rule 52 G3 / Rule 56: crm.live radar+timeline+graph (Pro+) aur org.members — Bun se Rust, Tokio async; workx_core + cal_core chahiye)  [koi SQL nahi]
 #   mailx  -> server/rust/mailx_core.rs  + mailx_glue.rs  (Pro mail actions: snooze/status/move/labels/assign, templates, Snoozed folder)  [koi SQL nahi]
@@ -55,7 +56,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp promx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -199,6 +200,8 @@ CFG={
           "public_call": "public(&proc, &input)"},
  # contx (Rule 52/56): People/Companies/search — Basic+Pro dono (PP1 #10,#17,#31,#34), koi plan gate nahi. Koi SQL nahi.
  "contx": {"public": False, "label": "contx", "procs": ['"contacts.list"','"contacts.tags"','"contacts.get"','"contacts.update"','"contacts.tag"','"contacts.timeline"','"companies.list"','"companies.get"','"companies.timeline"','"search.universal"']},
+ # promx (Rule 52/56, compose Business Outcomes, Pro): wada (promise) HMAC-sealed ledger + thread economics. SQL E97 PEHLE. Gate Pro+ Rust mein.
+ "promx": {"public": False, "label": "promx", "procs": ['"commit.record"','"commit.status"','"commit.list"','"commit.verify"','"commit.economics"','"commit.rate"','"commit.rateSet"']},
  # authx (Rule 52/56): `auth.session` — har page-load par chalne wali session/profile read. Sirf login. Koi SQL nahi. Login/refresh/logout Bun par (alag migration).
  "authx": {"public": False, "label": "authx", "procs": ['"auth.session"']},
  "trialx": {"public": False, "label": "trialx", "procs": ['"account.signup.security"','"account.signup.events"','"account.signup.holds"']},
@@ -631,6 +634,14 @@ for m in $MODS; do
         *'"unauthorized"'*) echo "   -> livex: Rust ne crm.live/org.members pakda (nakli login 401 = theek).";;
         *procedure_not_in_rust*|*unknown_proc*) echo "   -> livex: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
         *) echo "   -> livex: jawab upar dekhein";;
+      esac;;
+    promx)
+      r="$(probe commit.list '{"input":{}}')"
+      echo "   commit.list (nakli token): $r"
+      case "$r" in
+        *'"unauthorized"'*) echo "   -> promx: Rust ne commit.* pakda (nakli login 401 = theek). SQL E97 chala hona lazmi (asli test: Compose mein 'I will send it by Friday' likho)";;
+        *procedure_not_in_rust*|*unknown_proc*) echo "   -> promx: Rust ne proc NAHI pakda — patch/build dobara dekhein";;
+        *) echo "   -> promx: jawab upar dekhein";;
       esac;;
     crmd)
       r="$(probe crm.leads '{"input":{}}')"

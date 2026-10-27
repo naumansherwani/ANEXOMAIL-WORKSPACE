@@ -100,7 +100,7 @@ describe("kernel wasm — load, pin, version", () => {
     const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
     expect(k.info.version).toBe(KERNEL_PIN.version);
     expect(k.info.abi).toBe(1);
-    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1"]);
+    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1"]);
     const cargo = readFileSync("web-wasm/Cargo.toml", "utf8").match(/^version\s*=\s*"([^"]+)"/m)?.[1];
     expect(cargo).toBe(KERNEL_PIN.version);
   });
@@ -348,5 +348,29 @@ describe("early-boot wait (Rule 52)", () => {
     const t0 = Date.now();
     expect(await kernelRpc("crm.board", {})).toBeNull();
     expect(Date.now() - t0).toBeLessThan(100);
+  });
+});
+
+describe("kernel — intent@1: promise scan + attention cost (real wasm)", () => {
+  // 2026-10-27 (Tuesday) 12:00 UTC, Karachi (+300)
+  const NOW = 1_793_102_400;
+  test("finds an English promise with its deadline, Roman Urdu too, ignores questions", async () => {
+    const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
+    const r = k.intentScan("Hi,\nI will send you the revised contract by Friday.\nCan you send me the file by Monday?\nMain Monday tak details bhej doon ga", NOW, 300);
+    expect(r.promises.length).toBe(2);
+    expect(r.promises[0].due_date).toBe("2026-10-30");
+    expect(r.promises[0].action).toBe("Send you the revised contract");
+    expect(r.promises[1].lang).toBe("ur");
+    expect(r.promises[1].due_date).toBe("2026-11-02");
+    expect(k.intentScan("see you soon", NOW, 300).promises).toEqual([]);
+    // deterministic
+    expect(JSON.stringify(k.intentScan("I'll deliver it tomorrow", NOW, 300))).toBe(JSON.stringify(k.intentScan("I'll deliver it tomorrow", NOW, 300)));
+  });
+  test("cost integers match the SQL attention_cost() numbers and only suggest a call when it is really cheaper", async () => {
+    const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
+    const a = k.intentCost(400, 10, 10_000);
+    expect([a.seconds_each, a.seconds_total, a.cost_minor, a.suggest_call]).toEqual([118, 1180, 3278, false]);
+    const b = k.intentCost(1500, 10, 10_000, 220);
+    expect([b.cost_minor, b.suggest_call, b.saving_minor]).toEqual([11611, true, 7944]);
   });
 });

@@ -1518,3 +1518,12 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 - LOOPHOLE #5: lambi schedule ki hui mail ko CANCEL karne ka koi button nahi tha (sirf 30s Undo toast; useCancelScheduled hook bana tha, UI mein use nahi). Fix: src/routes/app.mail.$folder.$threadId.tsx MailMessage — future scheduled_at par 'Cancel send' button (mail.schedule.cancel; 409 => 'Already sent'). tsc OK. Deploy: pull.sh. (Scheduled mail Sent folder mein jati hai — mail_glue.rs folder 'sent'.)
 - Design note (alag item): buyer2 team org dekhte hue bhi 'Send from pro.buyer2@' (apna account, apni org) — uski bheji mail team ke Sent mein nahi dikhti. Team ke sath bhejne ka tareeqa Business shared-mailbox ka sawal hai; founder decide kare.
 - Test data: test scheduled mail (30 Nov, buyer2 -> pro.buyer, subject 'Scheduled test - will be cancelled') buyer2 ke apne org ke Sent mein padi hai — Cancel send se hatani hai (deploy ke baad).
+
+## 27 Oct 2026 07:45 PKT — COMPOSE Business Outcomes deploy (tarteeb: web -> SQL -> Rust)
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -6
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -6
+pm2 restart anexomail-rust --update-env && pm2 save >/dev/null && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
+```
+- Phir Chrome (Ctrl+Shift+R) pro.buyer2: Compose mein "I will send you the details by Friday." likho => badge "Detecting a Promise" => Task + Calendar => To mein 10 pate + lambi email => cost line.

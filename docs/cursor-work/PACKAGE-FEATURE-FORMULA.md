@@ -37,6 +37,7 @@
 # | Feature | Basic | Pro | Business | Biz Pro | Enterprise | P.Basic | P.Pro+ | P.Premium |
 # | Mail/People/Calendar/Search/Import/Move-In/Billing/Devices/Settings | Y | Y | Y | Y | Y | Y | Y | Y |
 # | Work (boards, notes, tasks, thread analytics) | - | Y | Y | Y | Y | Y | Y | Y |
+# | Compose Business Outcomes (promise->task/calendar, thread economics; commit.* procs, SQL E97, kernel intent@1) | - | Y | Y | Y | Y | - | Y | Y |
 # | Pro mail tools (snooze/schedule), multiple identities, video 1:1 | - | Y | Y | Y | Y | - | Y | Y |
 # | CRM base (accounts/leads/pipeline/tasks) | - | Y | Y | Y | Y | People only | Y | Y |
 # | CRM collab + risk + business ledgers | - | - | Y | Y | Y | - | Y | Y |

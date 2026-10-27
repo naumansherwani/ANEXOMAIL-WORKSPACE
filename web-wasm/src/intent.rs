@@ -302,7 +302,7 @@ pub fn promise_of(sentence: &str, today: i64) -> Option<Promise> {
     }
     Some(Promise {
         phrase: trimmed.to_string(),
-        action: action_of(&ws),
+        action: action_of(&ws, ur_promise && !en_promise),
         due,
         confidence,
         lang: if ur_promise && !en_promise { "ur" } else { "en" },
@@ -310,14 +310,33 @@ pub fn promise_of(sentence: &str, today: i64) -> Option<Promise> {
 }
 
 /// Kaam ka chhota naam (task title): trigger ke baad ka hissa, deadline ke alfaaz hata kar. Na mile to poori sentence.
-fn action_of(ws: &[String]) -> String {
+fn action_of(ws: &[String], ur: bool) -> String {
     let stop = ["by", "before", "until", "till", "on", "tak", "in", "within", "today", "tomorrow", "tonight", "next", "this", "kal", "aaj", "eod"];
     let start = ws
         .iter()
-        .position(|w| matches!(w.as_str(), "will" | "'ll" | "shall" | "promise" | "going" | "get" | "have" | "receive"))
+        .position(|w| matches!(w.as_str(), "will" | "i'll" | "we'll" | "shall" | "promise" | "going" | "get" | "have" | "receive"))
         .map(|p| p + 1)
         .unwrap_or(0);
     let mut out: Vec<&str> = vec![];
+    if ur && start == 0 {
+        // Roman Urdu: "Main Monday tak details bhej doon ga" -> "Details bhej doon" (zameer, din, tak, ga/gi/ge hata kar)
+        let drop = ["main", "mein", "me", "hum", "ham", "kal", "aaj", "parson", "tak", "ko", "ga", "gi", "ge", "din", "hafte", "haftay", "hafta", "agle", "is"];
+        for w in ws.iter() {
+            if drop.contains(&w.as_str()) || num(w).is_some() || WEEKDAYS.iter().any(|(n, _)| n == w) {
+                continue;
+            }
+            out.push(w);
+            if out.len() >= 6 {
+                break;
+            }
+        }
+        let t = out.join(" ");
+        if t.is_empty() {
+            return "Follow up".to_string();
+        }
+        let mut c = t.chars();
+        return c.next().map(|f| f.to_uppercase().collect::<String>() + c.as_str()).unwrap_or(t);
+    }
     for w in ws.iter().skip(start) {
         if stop.contains(&w.as_str()) || WEEKDAYS.iter().any(|(n, _)| n == w && w.len() > 3) {
             break;
@@ -452,8 +471,10 @@ mod tests {
     fn roman_urdu() {
         let p = promise_of("Main Monday tak details bhej doon ga", today()).unwrap();
         assert_eq!(p.lang, "ur");
+        assert_eq!(p.action, "Details bhej doon");
         assert_eq!(iso(p.due.unwrap().days), "2026-11-02");
         let p = promise_of("Hum kal tak kar denge", today()).unwrap();
+        assert_eq!(p.action, "Kar denge");
         assert_eq!(iso(p.due.unwrap().days), "2026-10-28");
         let p = promise_of("Main 2 din mein bhej dunga", today()).unwrap();
         assert_eq!(iso(p.due.unwrap().days), "2026-10-29");
@@ -489,6 +510,8 @@ mod tests {
 
     #[test]
     fn action_title_is_clean() {
+        let p = promise_of("I'll deliver it tomorrow", today()).unwrap();
+        assert_eq!(p.action, "Deliver it");
         let p = promise_of("I will send you the revised contract by Friday", today()).unwrap();
         assert_eq!(p.action, "Send you the revised contract");
     }
