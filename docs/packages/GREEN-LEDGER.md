@@ -370,3 +370,8 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 ## 27 Oct 2026 06:46 PKT — PEOPLE GREEN (live, Chrome pro.buyer2) + timeline bug fix (Rust deploy baaqi)
 - E96 chali, CHECK_E96 sab OK. Chrome pro.buyer2 /app/people: anexomail27@gmail.com aaya ("1 open"), profile: Last contact 12m, Messages 0 in · 1 out, Open threads 1. People bug band (har plan par tha).
 - Naya bug (profile mein 'Relationship history: No history yet' jabke 1 mail gayi): contx timeline_or to_addresses par ilike lagata tha, par to_addresses text[] hai => query error => khali. Fix server/rust/contx_core.rs: poora address => to_addresses.cs.{a} + to_addrs.cs.{a}; sirf @domain => from_address (array mein substring PostgREST se nahi). contx_glue.rs {} encode. Tests 4 pass, full crate cargo check OK. Deploy: Rust installer + restart (company-timeline ka outbound hissa abhi nahi — alag kaam).
+
+## 27 Oct 2026 06:49 PKT — LOOPHOLE #3 (shared inbox UI): Assign ka button hi nahi tha — FIX code ready, pull.sh baaqi
+- Chrome pro.buyer: thread header mein Done/Archive/Rescue/Meeting/Snooze/Label the, Assign NAHI. mail.assign (Rust+Bun) aur useThreadAction({kind:"assign"}) maujood the par UI mein koi caller nahi => Pro card ka vaada "Shared inbox with collision guard" user ke liye chalta hi nahi tha (sirf API probe pass).
+- Fix src/components/app/mail/ThreadHeaderActions.tsx: Pro+ ke liye "Assign" dropdown (workspace members useOrgMembers se; "Remove owner"; owner ho to "Owner: <naam>"); Basic ko locked chip "Shared inbox". Route se assignee prop. tsc OK. Owner badge ThreadList mein pehle se (collision guard).
+- Test (deploy ke baad, Chrome): buyer thread -> Assign pro.buyer2 -> buyer2 ke "Assigned to me" mein thread; list mein owner badge dono taraf.

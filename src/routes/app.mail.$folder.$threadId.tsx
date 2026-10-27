@@ -140,6 +140,7 @@ function ThreadPage() {
               threadId={thread.id}
               status={thread.status}
               snoozedUntil={thread.snoozed_until ?? null}
+              assignee={thread.assignee ?? null}
               {...(thread.subject ? { subject: thread.subject } : {})}
               participants={thread.messages
                 .map((m) => m.from_address)

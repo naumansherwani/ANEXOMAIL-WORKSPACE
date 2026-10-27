@@ -1,4 +1,4 @@
-import { Archive, CalendarPlus, Check, Clock, Tag } from "lucide-react";
+import { Archive, CalendarPlus, Check, Clock, Tag, UserRound } from "lucide-react";
 import { useState } from "react";
 
 import { NewMeeting } from "@/components/app/calendar/NewMeeting";
@@ -16,7 +16,9 @@ import {
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { notify } from "@/lib/notify";
 import { useAuth } from "@/lib/auth";
+import { useAssigneeName } from "@/lib/assignee-name";
 import { snoozePresets, useLabels, useThreadAction } from "@/lib/mail";
+import { useOrgMembers } from "@/lib/org";
 import { showChat, showProMailTools, showWork, surfaceFromSession } from "@/lib/plan-surface";
 import type { ThreadStatus } from "@/lib/ia";
 
@@ -27,8 +29,11 @@ export function ThreadHeaderActions({
   subject,
   participants,
   snoozedUntil,
+  assignee,
 }: {
   threadId: string;
+  /** Shared-inbox owner (user id) — null/undefined = nobody owns it yet. */
+  assignee?: string | null;
   status: ThreadStatus;
   /** ISO time the thread is snoozed until (null / past = not snoozed). */
   snoozedUntil?: string | null;
@@ -37,6 +42,8 @@ export function ThreadHeaderActions({
 }) {
   const action = useThreadAction();
   const labels = useLabels();
+  const members = useOrgMembers("active");
+  const assigneeName = useAssigneeName();
   const [meeting, setMeeting] = useState(false);
   const { session, organisation } = useAuth();
   const { billed, kind } = surfaceFromSession(session?.user, organisation?.slug);
@@ -165,6 +172,53 @@ export function ThreadHeaderActions({
         </DropdownMenu>
       ) : (
         <FeatureGate allowed={false} requires="pro" label="Snooze" variant="chip" />
+      )}
+
+
+      {/* Assign — shared inbox (Pro+). Teammates come from the workspace member list; the server refuses anyone outside the team. */}
+      {proMail ? (
+        <DropdownMenu>
+          <DropdownMenuTrigger className="ax-focus ax-press rounded-lg border border-border px-2 py-1 text-[11px] font-semibold text-muted-foreground">
+            <UserRound className="mr-1 inline size-3" />
+            {assignee ? `Owner: ${assigneeName(assignee)}` : "Assign"}
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuLabel>Who owns this thread?</DropdownMenuLabel>
+            {members.data?.members.length ? (
+              members.data.members.map((m) => (
+                <DropdownMenuItem
+                  key={m.user_id}
+                  onSelect={() =>
+                    run(
+                      { kind: "assign", assignee: m.user_id },
+                      `Assigned to ${m.display_name?.trim() || m.email}`,
+                      "POST /api/mail/thread/:id/assign",
+                    )
+                  }
+                >
+                  {assigneeName(m.user_id)}
+                  {assigneeName(m.user_id) === "You" ? "" : ` · ${m.email}`}
+                </DropdownMenuItem>
+              ))
+            ) : (
+              <DropdownMenuItem disabled>No teammates yet</DropdownMenuItem>
+            )}
+            {assignee ? (
+              <>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onSelect={() =>
+                    run({ kind: "assign", assignee: "" }, "Owner removed", "POST /api/mail/thread/:id/assign")
+                  }
+                >
+                  Remove owner
+                </DropdownMenuItem>
+              </>
+            ) : null}
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ) : (
+        <FeatureGate allowed={false} requires="pro" label="Shared inbox" variant="chip" />
       )}
 
       <DropdownMenu>
