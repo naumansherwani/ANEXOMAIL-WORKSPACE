@@ -530,3 +530,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 ## 27 Oct 2026 09:03 PKT — ATTACHMENT TECH PLAN (founder sawal) — docs/cursor-work/ATTACH-LATEST-TECH-PLAN-27OCT.md
 - Asli code dekha: attach_glue.rs already Tokio async streaming (disk + SHA-256 + ClamAV + timeouts + atomic rename), par upload SINGLE request hai; resumable/chunked/parallel/instant-dedupe/secure-link NAHI hain. Plan A1-A4 + Tokio (semaphore, spawn_blocking, select!) likha. Code bana nahi — sirf plan. Founder ne Tokio async add karne ko kaha hai.
+
+## 27 Oct 2026 09:11 PKT — FOUNDER HUKM: 7GB / 4K video badi file = link (email + ANEXOChat), link kholte hi foran khule. Repo mein darj: docs/cursor-work/ATTACH-LATEST-TECH-PLAN-27OCT.md (neeche wala hissa). CODE BANA NAHI. Founder faisla baaqi: plan-wise max file size / quota. Pro GREEN: ab bhi NAHI (live saboot baaqi).

@@ -19,3 +19,18 @@
 
 ## Honest sthiti
 Yeh PLAN hai, code NAHI bana. Pro GREEN se pehle ke baaqi live saboot alag (ledger dekhein).
+
+---
+## 27 Oct 2026 09:11 PKT — FOUNDER HUKM: BADI FILE (7GB tak, 4K video) = "GOLI" (Email + ANEXOChat dono mein)
+Founder: email attachment ya ANEXOChat mein **7GB tak ki file, 4K video tak** send ho; Google Drive jaisa **link** jaye (email mein ya jaise bhi aaye); receiver link kholega to **foran khule, ek dum samne**.
+Yeh REPO MEIN HUKM DARJ HAI — abhi CODE NAHI bana (ghalat "ho gaya" nahi kehna).
+
+### Design (CEO + engineer)
+- **Upload:** A1 (instant dedupe) + A2 (resumable chunks, 8-16MB tukde, per-chunk SHA-256) + A3 (parallel chunks) — 7GB ke liye resumable ZAROORI (single request nahi). Tokio: semaphore (plan ke hisaab se concurrent), spawn_blocking hash, sweeper idle tmp.
+- **Link (A4):** file mail body mein bhejne ki jagah **signed share link** (HMAC-SHA256 token, expiry, org-scoped, revoke ho sake, download count log). Mail mein sirf link + naam + size + preview thumbnail.
+- **"Ek dum khule":** link kholte hi page foran: video **progressive stream** (HTTP Range / partial content, MP4 faststart; poori file download hone ka intezar NAHI), image/PDF preview, baqi par Download. 4K ke liye server par **transcode ladder (1080p/720p)** baad ka phase (CPU kharch — pehle original Range-stream, naap kar ke faisla).
+- **Scan:** ClamAV bade files par chunk-stream (clamd StreamMaxLength dekhna) — nahi chale to file "scan pending" mark, link phir bhi (policy founder tay kare).
+- **Storage/gate (FOUNDER FAISLA BAAQI):** 7GB sab plan par nahi ho sakta — Basic pool 15GB mein 7GB aadha kha jata hai. Plan-wise max single file + share-link quota tay karna: (suggestion) Basic ~2GB, Pro ~7GB, Business 7GB+, retention/expiry ke saath. E100 plan_catalog mein key 'large_file_gb' jodi jayegi tay hone par.
+- **ANEXOChat:** wahi protocol (WebTransport par chunks), chat mein link-card + inline player.
+- **Privacy:** link sirf token wale ko; dedupe org ke andar; server kabhi nahi batata ke file doosri org mein hai; token guess nahi (>=128-bit random + HMAC).
+- **Order:** Pro GREEN ke live saboot -> A1+A2 -> A4 (link+stream) -> A3 (naap ke baad) -> transcode (agar zaroorat).
