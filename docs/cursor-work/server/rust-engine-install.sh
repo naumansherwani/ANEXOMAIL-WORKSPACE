@@ -55,7 +55,7 @@ RPC="${RPC:-http://127.0.0.1:3200}"
 STAMP="$(date +%s)"
 BIN="$TARGET/target/release/anexomail-rust"
 LOG="/tmp/anexomail-rust-engine-build-$STAMP.log"
-ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
+ALL_MODULES="cal book overlap ics calfile rooms people team locale device dnsauth security export attach evidence dav b5 b6 mailx analytics workx crmx livex crmd trialx authx contx basx wsx billx setx calexp wtrpc"   # default. "mig" opt-in hai (MODULES=mig) kyunki woh Cargo.toml mein crate jodta hai.
 # extra files jo kisi module ke core ke saath jaati hain (core unki #[path] se leta hai)
 extras_of() { case "$1" in mig) echo "mig_imap.rs mig_mime.rs mig_run.rs";; book) echo "cal_core.rs";; overlap) echo "cal_core.rs";; ics) echo "cal_core.rs";; evidence) echo "attach_core.rs";; esac; }
 EXPLICIT="${MODULES:-}"
@@ -164,6 +164,7 @@ CFG={
  # billx (Batch C1, Rule 52/56/57): billing padhne wale 3 raaste, Polar ko call nahi. stateHealth founder-only. Koi SQL nahi.
  "billx": {"public": False, "label": "billx", "procs": ['"billing.state"','"billing.stateHealth"','"billing.claimGuest"']},
  # setx (Batch D, Rule 52/56/57): settings 5 + integrations 10 + founder overviews 3 (founder-only). Sab plans (login). Koi SQL nahi. Business settings (blast/simulate/drift/schedule) aur Leo actions Bun par.
+ "calexp": {"public": False, "label": "calexp", "procs": ['"calendar.export"'], "need_mods": ["cal_core"]},
  "setx": {"public": False, "label": "setx", "procs": ['"settings.list"','"settings.explain"','"settings.save"','"settings.history"','"settings.revert"','"founderSettings.overview"','"integrations.providers"','"integrations.connections"','"integrations.connect"','"integrations.disconnect"','"integrations.migrations"','"integrations.startMigration"','"integrations.controlMigration"','"integrations.delivery"','"integrations.exports"','"integrations.export"','"founderIntegrations.overview"','"founderSecurity.overview"']},
  # basx (Rule 52/56): Basic-baaqi chhote endpoints (storage/support/setActive), sab plans. PUBLIC proc: support.sla (landing SLA). Koi SQL nahi.
  "basx": {"public": True, "label": "basx", "procs": ['"storage.state"','"storage.preflight"','"storage.reserve"','"storage.commit"','"storage.release"','"support.sla"','"support.drafts"','"support.draftDiscard"','"workspace.setActive"'],

@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { CalendarDays, Download, ListChecks, Repeat, Sparkles } from "lucide-react";
 
-import { CostMeter, TimeZoneTruthBar, ConflictChip, apiHref } from "@/components/app/calendar/Bits";
+import { CostMeter, TimeZoneTruthBar, ConflictChip } from "@/components/app/calendar/Bits";
 import { EventFiles } from "@/components/app/calendar/EventFiles";
 import { EventRoom } from "@/components/app/calendar/EventRoom";
 import { Guests } from "@/components/app/calendar/Guests";
@@ -14,7 +14,7 @@ import { ErrorState } from "@/components/state/StateBlock";
 import { Button } from "@/components/ui/button";
 import {
   clockRange,
-  exportPath,
+  downloadCalendarExport,
   useCalendarEvent,
   usePostOutcome,
   type CalendarEvent,
@@ -75,13 +75,14 @@ export function EventDetail({ id }: { id: string }) {
             )}
           </div>
         </div>
-        <a
-          href={apiHref(exportPath("ics"))}
+        <button
+          type="button"
+          onClick={() => void downloadCalendarExport("ics")}
           className="ax-press ax-caption shrink-0 rounded-lg border border-border px-2 py-1 font-semibold text-muted-foreground"
         >
           <Download className="mr-1 inline size-3" />
           ICS
-        </a>
+        </button>
       </header>
 
       {event.attendees.length > 0 && (

@@ -689,7 +689,23 @@ export function dayRange(date: Date) {
   return { start, end, from: start.toISOString(), to: end.toISOString() };
 }
 
-/** ICS + JSON export are plain GETs on the API — ownership pillar, no lock-in. */
+/** Bun fallback path (legacy GET). Naya code `downloadCalendarExport` use kare — Rule 52/56: kernel -> Rust `calendar.export`. */
 export function exportPath(format: "ics" | "json") {
   return `/api/calendar/export?format=${format}`;
+}
+
+/** ICS + JSON export — ownership pillar, no lock-in. Rust `calendar.export` (sab plans) se text aata hai, browser file banata hai. */
+export async function downloadCalendarExport(format: "ics" | "json" = "ics"): Promise<void> {
+  const r = await rpc<{ filename?: string; content_type?: string; body?: string; events?: unknown[] }>("calendar.export", { format });
+  const isIcs = format === "ics";
+  const text = isIcs ? String(r.body ?? "") : JSON.stringify({ events: r.events ?? [] }, null, 2);
+  const blob = new Blob([text], { type: isIcs ? "text/calendar;charset=utf-8" : "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = isIcs ? (r.filename ?? "anexomail.ics") : "anexomail-calendar.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
 }

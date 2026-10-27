@@ -54,6 +54,18 @@ for f in glob.glob('src/**/*.ts*', recursive=True):
             cl[norm(m.group(4))].add(m.group(2))
 # Verified 27 Oct 2026: yeh 7 Bun routes ka Rust proc live hai (mailx/crmd/analytics); client ya to template-literal path se bulata hai ya REST variant bulata hi nahi.
 ALIAS = {
+    ('calendar.ts', 'GET', '/api/calendar/export'): 'calendar.export',
+    ('trial.ts', 'GET', '/api/state'): 'account.signup.state',
+    ('trial.ts', 'GET', '/api/address'): 'account.signup.address',
+    ('trial.ts', 'POST', '/api/start'): 'account.signup.start',
+    ('trial.ts', 'POST', '/api/claim'): 'account.signup.claim',
+    ('trial.ts', 'POST', '/api/security'): 'account.signup.security',
+    ('trial.ts', 'POST', '/api/subscribe'): 'account.signup.activate',
+    ('trial.ts', 'GET', '/api/events'): 'account.signup.events',
+    ('trial.ts', 'GET', '/api/mail-holds'): 'account.signup.holds',
+    ('account-deletion.ts', 'GET', '/api/state'): 'account.delete.state',
+    ('account-deletion.ts', 'POST', '/api/request'): 'account.delete.request',
+    ('account-deletion.ts', 'POST', '/api/cancel'): 'account.delete.cancel',
     ('calendar.ts', 'GET', '/api/work/tasks'): 'work.tasks',
     ('calendar.ts', 'POST', '/api/work/tasks'): 'work.task.create',
     ('calendar.ts', 'PATCH', '/api/work/tasks/:id'): 'work.task.update',

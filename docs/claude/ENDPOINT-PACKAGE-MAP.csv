@@ -1,7 +1,7 @@
 bun_file,method,path,starts_at,feature_group,basis,status,rust_proc
-account-deletion.ts,GET,/api/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-account-deletion.ts,POST,/api/request,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-account-deletion.ts,POST,/api/cancel,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+account-deletion.ts,GET,/api/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.delete.state
+account-deletion.ts,POST,/api/request,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.delete.request
+account-deletion.ts,POST,/api/cancel,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.delete.cancel
 admin.ts,GET,/api/admin/health,founder,founder host only,PP1 #39,BUN-ONLY,
 admin.ts,POST,/api/admin/health/heal,founder,founder host only,PP1 #39,BUN-ONLY,
 admin.ts,GET,/api/admin/storage,founder,founder host only,PP1 #39,BUN-ONLY,
@@ -125,7 +125,7 @@ calendar.ts,POST,/api/calendar/events,basic,Calendar core,PP1 #1,RUST-FIRST,cale
 calendar.ts,GET,/api/calendar/availability,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.availability
 calendar.ts,GET,/api/calendar/focus,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.focus
 calendar.ts,GET,/api/calendar/load,business,Team report / team time,PP1 #16,RUST-FIRST,calendar.load
-calendar.ts,GET,/api/calendar/export,basic,Calendar core,PP1 #1,BUN-ONLY,
+calendar.ts,GET,/api/calendar/export,basic,Calendar core,PP1 #1,RUST-FIRST,calendar.export
 calendar.ts,POST,/api/calendar/events/:id/outcome,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.outcome.post
 calendar.ts,GET,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.create
 calendar.ts,POST,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.create
@@ -509,14 +509,14 @@ storage.ts,POST,/api/internal/storage/sweep,internal,service-to-service,code,BUN
 support.ts,GET,/api/public/sla,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,support.sla
 support.ts,GET,/api/support/drafts,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,support.drafts
 support.ts,POST,/api/support/drafts/:id/discard,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,support.draftDiscard
-trial.ts,GET,/api/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,GET,/api/state,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.state
 trial.ts,GET,/api/address,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-trial.ts,POST,/api/start,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-trial.ts,POST,/api/claim,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-trial.ts,POST,/api/security,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-trial.ts,POST,/api/subscribe,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-trial.ts,GET,/api/events,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
-trial.ts,GET,/api/mail-holds,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
+trial.ts,POST,/api/start,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.start
+trial.ts,POST,/api/claim,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.claim
+trial.ts,POST,/api/security,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.security
+trial.ts,POST,/api/subscribe,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.activate
+trial.ts,GET,/api/events,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.events
+trial.ts,GET,/api/mail-holds,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,account.signup.holds
 trial.ts,POST,/api/trial/sweep,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",BUN-ONLY,
 workspace.ts,POST,/api/workspace/personal,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,workspace.personal
 workspace.ts,POST,/api/workspace/organisations,basic,Account / auth / billing / People / dashboard / storage / settings (all plans),"PP1 #10,#17,#31,#34",RUST-FIRST,workspace.organisations

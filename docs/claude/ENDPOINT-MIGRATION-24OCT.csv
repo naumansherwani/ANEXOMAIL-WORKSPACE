@@ -1,7 +1,7 @@
 bun_file,method,path,client_rust_first_proc,status
-account-deletion.ts,GET,/api/state,,BUN-ONLY or client wiring not proven
-account-deletion.ts,POST,/api/request,,BUN-ONLY or client wiring not proven
-account-deletion.ts,POST,/api/cancel,,BUN-ONLY or client wiring not proven
+account-deletion.ts,GET,/api/state,account.delete.state,RUST-FIRST (Bun fallback)
+account-deletion.ts,POST,/api/request,account.delete.request,RUST-FIRST (Bun fallback)
+account-deletion.ts,POST,/api/cancel,account.delete.cancel,RUST-FIRST (Bun fallback)
 admin.ts,GET,/api/admin/health,,BUN-ONLY or client wiring not proven
 admin.ts,POST,/api/admin/health/heal,,BUN-ONLY or client wiring not proven
 admin.ts,GET,/api/admin/storage,,BUN-ONLY or client wiring not proven
@@ -125,7 +125,7 @@ calendar.ts,POST,/api/calendar/events,calendar.create,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/calendar/availability,calendar.availability,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/calendar/focus,calendar.focus,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/calendar/load,calendar.load,RUST-FIRST (Bun fallback)
-calendar.ts,GET,/api/calendar/export,,BUN-ONLY or client wiring not proven
+calendar.ts,GET,/api/calendar/export,calendar.export,RUST-FIRST (Bun fallback)
 calendar.ts,POST,/api/calendar/events/:id/outcome,calendar.outcome.post,RUST-FIRST (Bun fallback)
 calendar.ts,GET,/api/work/tasks,work.task.create,RUST-FIRST (Bun fallback)
 calendar.ts,POST,/api/work/tasks,work.task.create,RUST-FIRST (Bun fallback)
@@ -509,14 +509,14 @@ storage.ts,POST,/api/internal/storage/sweep,,BUN-ONLY or client wiring not prove
 support.ts,GET,/api/public/sla,support.sla,RUST-FIRST (Bun fallback)
 support.ts,GET,/api/support/drafts,support.drafts,RUST-FIRST (Bun fallback)
 support.ts,POST,/api/support/drafts/:id/discard,support.draftDiscard,RUST-FIRST (Bun fallback)
-trial.ts,GET,/api/state,,BUN-ONLY or client wiring not proven
+trial.ts,GET,/api/state,account.signup.state,RUST-FIRST (Bun fallback)
 trial.ts,GET,/api/address,,BUN-ONLY or client wiring not proven
-trial.ts,POST,/api/start,,BUN-ONLY or client wiring not proven
-trial.ts,POST,/api/claim,,BUN-ONLY or client wiring not proven
-trial.ts,POST,/api/security,,BUN-ONLY or client wiring not proven
-trial.ts,POST,/api/subscribe,,BUN-ONLY or client wiring not proven
-trial.ts,GET,/api/events,,BUN-ONLY or client wiring not proven
-trial.ts,GET,/api/mail-holds,,BUN-ONLY or client wiring not proven
+trial.ts,POST,/api/start,account.signup.start,RUST-FIRST (Bun fallback)
+trial.ts,POST,/api/claim,account.signup.claim,RUST-FIRST (Bun fallback)
+trial.ts,POST,/api/security,account.signup.security,RUST-FIRST (Bun fallback)
+trial.ts,POST,/api/subscribe,account.signup.activate,RUST-FIRST (Bun fallback)
+trial.ts,GET,/api/events,account.signup.events,RUST-FIRST (Bun fallback)
+trial.ts,GET,/api/mail-holds,account.signup.holds,RUST-FIRST (Bun fallback)
 trial.ts,POST,/api/trial/sweep,,BUN-ONLY or client wiring not proven
 workspace.ts,POST,/api/workspace/personal,workspace.personal,RUST-FIRST (Bun fallback)
 workspace.ts,POST,/api/workspace/organisations,workspace.organisations,RUST-FIRST (Bun fallback)

@@ -28,7 +28,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 import { Availability } from "@/components/app/calendar/Availability";
-import { CostMeter, LoadBar, apiHref } from "@/components/app/calendar/Bits";
+import { CostMeter, LoadBar } from "@/components/app/calendar/Bits";
 import { EventDetail } from "@/components/app/calendar/EventDetail";
 import { ExternalEventDetail } from "@/components/app/calendar/OutsideCalendars";
 import { IcsImportPanel, IcsPickButton, type LoadedIcs } from "@/components/app/calendar/IcsImport";
@@ -46,7 +46,7 @@ import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
   clockRange,
-  exportPath,
+  downloadCalendarExport,
   isoDate,
   minutesLabel,
   useCalendarEvents,
@@ -571,13 +571,14 @@ export function CalendarClassic() {
                     <CalSettingsButton label={t("Calendar settings")} />
                     <BookingButton />
                     <IcsPickButton onLoaded={setIcsPlan} />
-                    <a
-                      href={apiHref(exportPath("ics"))}
+                    <button
+                      type="button"
+                      onClick={() => void downloadCalendarExport("ics")}
                       aria-label="Export your calendar (.ics)"
                       className="ax-press ax-focus ax-caption inline-flex items-center justify-center rounded-md border border-border px-2 font-semibold text-muted-foreground"
                     >
                       <Download className="size-4" aria-hidden="true" />
-                    </a>
+                    </button>
                   </div>
                   <div className="flex items-center justify-between gap-2">
                     <span className="ax-caption text-muted-foreground">{t("Clock")}</span>
