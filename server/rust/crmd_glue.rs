@@ -55,6 +55,12 @@ fn now_iso() -> String {
     crate::cal_core::fmt_rfc3339(now_secs())
 }
 
+/// mail_messages mein `snippet` column nahi (mail_threads mein hai): body_text ke shuru se 160 akshar.
+fn mail_detail(m: &Value) -> Value {
+    let short: String = st(m, "body_text").split_whitespace().collect::<Vec<_>>().join(" ").chars().take(160).collect();
+    if short.is_empty() { Value::Null } else { json!(short) }
+}
+
 async fn rows(q: &str) -> Vec<Value> {
     match crate::sb_select(q).await {
         Ok(v) => v.as_array().cloned().unwrap_or_default(),
@@ -507,7 +513,7 @@ async fn memory(cx: &Ctx, input: &Value) -> Resp {
     let pq2 = format!("contacts?select=id,display_name,primary_address,company_domain,health_score,last_contact_at&org_id=eq.{org}&primary_address=ilike.{e}&limit=1");
     let tq = format!("work_tasks?select=*&org_id=eq.{org}&limit=200");
     let mq = format!(
-        "mail_messages?select=id,thread_id,subject,from_address,direction,sent_at,snippet&org_id=eq.{org}&or=(from_address.ilike.*{e}*,to_addresses.ilike.*{e}*)&order=sent_at.desc&limit=40"
+        "mail_messages?select=id,thread_id,subject,from_address,direction,sent_at,body_text&org_id=eq.{org}&or=(from_address.ilike.%2A{e}%2A,to_addresses.cs.%7B{e}%7D,to_addrs.cs.%7B{e}%7D)&order=sent_at.desc&limit=40"
     );
     let eq = format!("calendar_events?select=id,title,starts_at,organiser,thread_id&org_id=eq.{org}&limit=80");
     let aq = format!("calendar_attendees?select=event_id,address&org_id=eq.{org}&limit=500");
@@ -570,7 +576,7 @@ async fn memory(cx: &Ctx, input: &Value) -> Resp {
         let href = if st(m, "thread_id").is_empty() { "/app/mail/inbox".to_string() } else { format!("/app/mail/inbox/{}", st(m, "thread_id")) };
         timeline.push((at.clone(), json!({
             "at": at, "kind": if st(m, "direction") == "out" { "email_out" } else { "email_in" },
-            "title": if subj.is_empty() { "(no subject)".to_string() } else { subj }, "detail": m.get("snippet").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(Value::Null), "href": href,
+            "title": if subj.is_empty() { "(no subject)".to_string() } else { subj }, "detail": mail_detail(m), "href": href,
         })));
     }
     for e in &related_events {

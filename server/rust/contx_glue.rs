@@ -193,7 +193,7 @@ async fn timeline(org: &str, addresses: &[String]) -> Vec<Value> {
         None => return vec![],
     };
     let q = format!(
-        "mail_messages?select=id,thread_id,subject,snippet,from_address,to_addresses,direction,sent_at&org_id=eq.{}&or=({})&order=sent_at.desc&limit=200",
+        "mail_messages?select=id,thread_id,subject,body_text,from_address,to_addresses,direction,sent_at&org_id=eq.{}&or=({})&order=sent_at.desc&limit=200",
         enc(org),
         or.replace('*', "%2A").replace('@', "%40").replace('{', "%7B").replace('}', "%7D")
     );
@@ -201,12 +201,16 @@ async fn timeline(org: &str, addresses: &[String]) -> Vec<Value> {
         .into_iter()
         .map(|m| {
             let subj = st(&m, "subject");
+            // mail_messages mein `snippet` column hai hi nahi (mail_threads mein hai) — body_text ke shuru se 160 akshar.
+            let body = st(&m, "body_text");
+            let short: String = body.split_whitespace().collect::<Vec<_>>().join(" ").chars().take(160).collect();
+            let detail = if short.is_empty() { Value::Null } else { json!(short) };
             json!({
                 "id": m.get("id"),
                 "kind": if st(&m, "direction") == "out" { "message_out" } else { "message_in" },
                 "at": m.get("sent_at"),
                 "title": if subj.is_empty() { "(no subject)".to_string() } else { subj },
-                "detail": m.get("snippet").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(Value::Null),
+                "detail": detail,
                 "thread_id": m.get("thread_id").cloned().unwrap_or(Value::Null),
                 "actor": m.get("from_address").filter(|x| x.as_str().map(|s| !s.is_empty()).unwrap_or(false)).cloned().unwrap_or(Value::Null),
             })
