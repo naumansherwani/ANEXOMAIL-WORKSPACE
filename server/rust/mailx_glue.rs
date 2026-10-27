@@ -310,17 +310,23 @@ async fn threads(me: &crate::MailMe, input: &Value) -> Resp {
     let folder = st(input, "folder");
     let mode = match folder.as_str() {
         "snoozed" => 1,
-        "" | "inbox" => 0,
+        "" | "inbox" | "assigned" => 0,
         _ => 2,
     };
     let mut inp = input.clone();
-    if mode == 1 {
+    if mode == 1 || folder == "assigned" {
+        // "Assigned to me" asli folder nahi: inbox ke wo threads jinka owner (assignee) main hoon.
         inp["folder"] = json!("inbox");
     }
     let mut out = match crate::mail_query_threads(&me.org_id, &inp).await {
         Ok(v) => v,
         Err(e) => return db_fail(&e),
     };
+    if folder == "assigned" {
+        if let Some(arr) = out.get_mut("threads").and_then(|t| t.as_array_mut()) {
+            arr.retain(|t| t.get("assignee").and_then(|v| v.as_str()) == Some(me.id.as_str()));
+        }
+    }
     if mode != 2 {
         let now = c::iso_prefix(now_secs());
         if let Some(arr) = out.get_mut("threads").and_then(|t| t.as_array_mut()) {
