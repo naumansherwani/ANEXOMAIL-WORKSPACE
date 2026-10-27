@@ -1557,3 +1557,10 @@ git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show
 git -C /opt/anexomail-web show origin/main:docs/cursor-work/sql/CHECK_E100.sql
 ```
 CHECK_E100 ki har row 'true' honi chahiye (13 rows). Dobara chalana safe.
+
+## 27 Oct 2026 09:53 PKT — E101 (activity engine, 602 lines) — server par
+Dashboard 'Recent activity' khali tha; yeh SQL usay asli events se bharti hai (+ pichle 30 din ka backfill). Auto:
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)
+```
+CHECK_E101 ki 9 rows 'OK' aani chahiye. Dobara chalana safe. SQL editor mein paste karni ho: https://github.com/naumansherwani/ANEXOMAIL-WORKSPACE/blob/main/docs/cursor-work/sql/E101_activity_feed_writers.sql (Raw copy), phir CHECK_E101.sql.
