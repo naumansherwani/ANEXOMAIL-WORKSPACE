@@ -1,5 +1,8 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 27 Oct 10:23 PKT — founder: "pro ka live dekh lo, baki chat context updated rakho"
+Halat: DONE = stale-chunk crash fix (c2dae7a, 1e21b34, d9b1abe: useAuthOptional, global vite:preloadError reload, file card scrollIntoView). Live file card Chrome mein dekha (AXONETIS Logo.png v3 of 3). Attachment tech (A1-A4 plan) = SIRF PLAN, build TODO (live abhi purana simple upload). Founder ne pull kar liya (live index badla). Baqi: E101 sql-run dobara (sha badli), PROOF_cross_plan_mail.sql fresh tab, E100 edit ANEXOChat live ke baad, Founder HQ shaam, Billing C2, team Sent design.
+
 ## ▶ 26 Oct 07:45 — founder: 4 faisle HAAN + sab gates real + green ledger
 Wohi 3 deploy (SQL jo pehle nahi chali to; Rust; Web) -- naya SQL NAHI. Rust ab mailx + overlap + book teeno lagata hai (ek hi script, ek build). Dekho 06:45 wala block.
 - Halat: Rust cargo check OK + mailx_core 11 tests + book_core 57 tests PASS; tsc + tier-guard + plan-surface.test PASS. Ledger: docs/packages/GREEN-LEDGER.md. Live server par founder chalayega.
