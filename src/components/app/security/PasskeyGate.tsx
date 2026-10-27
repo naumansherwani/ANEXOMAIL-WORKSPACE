@@ -9,11 +9,13 @@ import { useAuth } from "@/lib/auth";
 import { notify } from "@/lib/notify";
 import { enrolPasskey, PASSKEY_STATUS_KEY, passkeySupported, usePasskeyStatus } from "@/lib/passkey";
 
-const DISMISS_KEY = "anexo.passkey.banner.dismissed";
+const DISMISS_KEY = "anexo.passkey.banner.snoozedUntil";
+const SNOOZE_MS = 30 * 24 * 60 * 60 * 1000; // "Later" = 30 din (pehle sirf session, har login par wapas aata tha)
 
 function dismissedToday(): boolean {
   try {
-    return window.sessionStorage.getItem(DISMISS_KEY) === "1";
+    const until = Number(window.localStorage.getItem(DISMISS_KEY) || 0);
+    return until > Date.now();
   } catch {
     return false;
   }
@@ -23,7 +25,7 @@ function dismissedToday(): boolean {
  * G35 — passkey lazmi.
  *  - 0 passkey + hard (naya account / grace khatam): poori screen, bypass nahi (sirf Sign out)
  *  - 0 passkey + grace baqi: upar patti ("X tak lazmi")
- *  - 1 passkey: patti "backup passkey (phone/laptop) add karein" (is session ke liye band ho sakti hai)
+ *  - 1 passkey: patti "backup passkey (phone/laptop) add karein" ("Later" 30 din ke liye band, is device par)
  *  - recovery codes baqi nahi: patti "codes save karein" (Account → Security)
  * Server par E43 SQL na chala ho to status `unknown` aata hai aur kuch nahi lagta (jhoota gate nahi).
  */
@@ -138,7 +140,7 @@ export function PasskeyGate() {
           className="ax-caption ml-auto text-muted-foreground underline"
           onClick={() => {
             try {
-              window.sessionStorage.setItem(DISMISS_KEY, "1");
+              window.localStorage.setItem(DISMISS_KEY, String(Date.now() + SNOOZE_MS));
             } catch {
               /* ignore */
             }

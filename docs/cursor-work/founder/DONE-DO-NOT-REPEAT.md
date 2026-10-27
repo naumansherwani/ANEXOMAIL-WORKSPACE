@@ -407,3 +407,6 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - FOUNDER DECISION BAAQI (mera nahi): word prediction (mail.predict*, Bun+Rust) Basic ko bhi khuli hai; PP1 #8 Pro+ kehta hai, Basic INCLUDES "MATCHES-CODE" kehta hai. Gate lagana = Basic se cheez wapas lena => founder kahe tab.
 - pro-second-user.sh: pro.buyer2 (E28 seed, Pro), pro.buyer ki team mein member; password sirf /root/test-accounts/pro.buyer2.pw. pro-team-probe.sh: assign -> pro.buyer2 200, -> basic.buyer 400 assignee_not_member, unassign; seat cap Pro 20 (20 used + 1 pending => free 0). Snooze + schedule-send API probe pehle se pro mode mein ALL PASS (UI click baaqi).
 - People khali = galat nahi: People asli mail se bhar-ta hai; pro.buyer naya account. pro.buyer2 se mail bhejne par bharega (Chrome mein dekhna).
+
+## 27 Oct 2026 06:14 PKT — founder: "Add backup passkey" patti baar baar aati hai (UI fix, deploy = pull.sh)
+- Wajah: PasskeyGate "Later" sirf sessionStorage mein yaad rakhta tha => har naye login/tab par wapas. Fix: localStorage mein 30 din ka snooze (anexo.passkey.banner.snoozedUntil). 0-passkey strict screen aur required/hard gate NAHI badle. tsc OK.
