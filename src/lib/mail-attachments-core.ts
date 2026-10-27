@@ -91,3 +91,28 @@ export function readyIds(items: AttachItem[]): string[] {
 export function anyUploading(items: AttachItem[]): boolean {
   return items.some((a) => a.status === "uploading");
 }
+
+/** "Live dekho" (preview) ka qaida: sirf woh types jo browser mehfooz dikha sakta hai. SVG/HTML/script KABHI inline nahi (download hi). */
+export type PreviewKind = "image" | "pdf" | "text" | "video" | "audio";
+const PREVIEW: Record<string, { kind: PreviewKind; mime: string }> = {
+  png: { kind: "image", mime: "image/png" },
+  jpg: { kind: "image", mime: "image/jpeg" },
+  jpeg: { kind: "image", mime: "image/jpeg" },
+  gif: { kind: "image", mime: "image/gif" },
+  webp: { kind: "image", mime: "image/webp" },
+  avif: { kind: "image", mime: "image/avif" },
+  pdf: { kind: "pdf", mime: "application/pdf" },
+  txt: { kind: "text", mime: "text/plain" },
+  csv: { kind: "text", mime: "text/plain" },
+  log: { kind: "text", mime: "text/plain" },
+  md: { kind: "text", mime: "text/plain" },
+  json: { kind: "text", mime: "text/plain" },
+  mp4: { kind: "video", mime: "video/mp4" },
+  webm: { kind: "video", mime: "video/webm" },
+  mp3: { kind: "audio", mime: "audio/mpeg" },
+  wav: { kind: "audio", mime: "audio/wav" },
+  ogg: { kind: "audio", mime: "audio/ogg" },
+};
+export function previewInfo(filename: string): { kind: PreviewKind; mime: string } | null {
+  return PREVIEW[extOf(filename).toLowerCase()] ?? null;
+}

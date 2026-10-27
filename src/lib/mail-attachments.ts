@@ -98,8 +98,8 @@ export async function removeAttachment(id: string): Promise<void> {
   await rpc("mail.attach.remove", { id });
 }
 
-/** Bheji hui (ya abhi staged) file download: Bearer ke saath fetch -> blob -> save. */
-export async function downloadAttachment(id: string, filename: string): Promise<void> {
+/** Server se file ke bytes (Bearer ke saath). Download aur Preview dono isi ek darwaze se. */
+export async function fetchAttachmentBlob(id: string): Promise<Blob> {
   const token = sessionToken.get();
   if (!token) throw new ApiError("Please sign in again.", 401, "unauthorized");
   let res: Response;
@@ -121,7 +121,10 @@ export async function downloadAttachment(id: string, filename: string): Promise<
       code,
     );
   }
-  const blob = await res.blob();
+  return res.blob();
+}
+
+export function saveBlob(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -131,4 +134,9 @@ export async function downloadAttachment(id: string, filename: string): Promise<
   a.click();
   a.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 60_000);
+}
+
+/** Bheji hui (ya abhi staged) file download: Bearer ke saath fetch -> blob -> save. */
+export async function downloadAttachment(id: string, filename: string): Promise<void> {
+  saveBlob(await fetchAttachmentBlob(id), filename);
 }

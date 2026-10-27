@@ -18,7 +18,7 @@ import { measureMotion } from "@/lib/experience";
 import { useAssigneeName } from "@/lib/assignee-name";
 import { type MailThread, formatBytes, useThread } from "@/lib/mail";
 import { useCancelScheduled } from "@/lib/compose";
-import { downloadAttachment } from "@/lib/mail-attachments";
+import { AttachmentChip } from "@/components/app/files/AttachmentChip";
 import { notify } from "@/lib/notify";
 import { ZoomButtons } from "@/components/app/ZoomButtons";
 import { READ_ZOOM, useStoredStep } from "@/lib/zoom-prefs";
@@ -311,22 +311,7 @@ function MailMessage({
             <li key={file.id}>
               {/* G38: sirf woh file download hoti hai jis ke asli bytes server par hain (bheji hui mail / staged). Baqi par jhootha link nahi. */}
               {file.stored || (message.direction === "out" && file.stored !== false) ? (
-                <button
-                  type="button"
-                  data-testid="attachment-download"
-                  onClick={() =>
-                    downloadAttachment(file.id, file.filename)
-                      .then(() => notify.done("Downloaded", file.filename))
-                      .catch((e: Error) =>
-                        notify.failed("Download failed", { description: e.message }),
-                      )
-                  }
-                  className="ax-press ax-hit flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
-                >
-                  <Paperclip className="size-3" />
-                  <span className="max-w-[40vw] truncate sm:max-w-xs">{file.filename}</span>
-                  <span className="text-steel">{formatBytes(file.size_bytes)}</span>
-                </button>
+                <AttachmentChip id={file.id} filename={file.filename} sizeBytes={file.size_bytes} />
               ) : file.blocked ? (
                 <span
                   data-testid="attachment-blocked"

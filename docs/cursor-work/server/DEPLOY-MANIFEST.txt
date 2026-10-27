@@ -12,7 +12,7 @@ src/components/ui/sheet.tsx bcde440d4e49c1cf
 src/routes/__root.tsx accbdda84ae313f9
 src/styles.css 310ec8c6df20968b
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
-src/routes/app.mail.$folder.$threadId.tsx a7610bec2076a306
+src/routes/app.mail.$folder.$threadId.tsx d9cf4dd871202ee3
 src/components/app/dashboard/InstallHint.tsx 348bffc1d47931c9
 src/components/ui/button.tsx 967f596c6e714fa0
 src/routes/app.calendar.tsx 0ae61ddbdb0dd946
@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md b7fd2109c717ed8a
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 1950c04538b3c620
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -193,9 +193,9 @@ server/mail/attachments.ts 7c70ab39d995cb80
 server/mail/sendmail.attach.test.ts e789dc5098b9c456
 server/rust/attach_core.rs 24f9c1079ccf3d79
 server/rust/attach_glue.rs 3d5ab0ac5c7b24b2
-src/lib/mail-attachments-core.test.ts 4947ee83be835067
-src/lib/mail-attachments-core.ts 4c8d15ce14d2938b
-src/lib/mail-attachments.ts cfda55472512af45
+src/lib/mail-attachments-core.test.ts 518b83f98c69db87
+src/lib/mail-attachments-core.ts c3ee672255ba4fee
+src/lib/mail-attachments.ts b9bc7e89d056fb19
 docs/cursor-work/server/sql-run.sh 625949e3ec804250
 docs/cursor-work/sql/E37_mail_ingest_no_stray_org.sql 740d0efb49807362
 docs/cursor-work/server/tests/e37/stubs.sql dc31be31a83ba369
@@ -872,3 +872,4 @@ docs/cursor-work/sql/E101_activity_feed_writers.sql df21ec981f84254d
 docs/cursor-work/sql/CHECK_E101.sql 75e3e1344379240f
 src/components/ui/sonner.tsx 6acb1d49aee92de0
 src/lib/i18n.ts da79a8e10a34830b
+src/components/app/files/AttachmentChip.tsx 68e1fbdeb8e34251

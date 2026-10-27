@@ -40,3 +40,16 @@ describe("helpers", () => {
     expect(attachErrorText("zzz", "")).toBe("Could not attach this file.");
   });
 });
+
+import { previewInfo } from "./mail-attachments-core";
+describe("previewInfo (live dekho)", () => {
+  test("safe types preview", () => {
+    expect(previewInfo("Logo.PNG")?.kind).toBe("image");
+    expect(previewInfo("a.b.pdf")?.kind).toBe("pdf");
+    expect(previewInfo("n.csv")?.kind).toBe("text");
+    expect(previewInfo("v.mp4")?.kind).toBe("video");
+  });
+  test("risky or unknown types never inline", () => {
+    for (const n of ["x.svg", "x.html", "x.js", "x.docx", "x.zip", "noext", "x.pdf.exe"]) expect(previewInfo(n)).toBeNull();
+  });
+});
