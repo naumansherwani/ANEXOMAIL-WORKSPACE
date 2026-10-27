@@ -49,6 +49,21 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
   const router = useRouter();
   const { t } = useLocale();
 
+  // Naya deploy hone par purane tab ki chunk file server se hat jati hai ("Failed to fetch
+  // dynamically imported module"): ek baar khud reload (loop se bachne ke liye 30s guard).
+  useEffect(() => {
+    const msg = error instanceof Error ? error.message : String(error ?? "");
+    if (!/dynamically imported module|Importing a module script failed|ChunkLoadError/i.test(msg)) return;
+    try {
+      const last = Number(sessionStorage.getItem("ax.chunk-reload") ?? "0");
+      if (Date.now() - last < 30_000) return;
+      sessionStorage.setItem("ax.chunk-reload", String(Date.now()));
+    } catch {
+      return;
+    }
+    window.location.reload();
+  }, [error]);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="ax-in max-w-md text-center" role="alert">

@@ -251,6 +251,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+/** Provider ke bahar (root error/404 screen) safe: null deta hai, throw nahi. */
+export function useAuthOptional(): AuthValue | null {
+  return useContext(AuthContext);
+}
+
 export function useAuth(): AuthValue {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error("useAuth must be used inside <AuthProvider>.");

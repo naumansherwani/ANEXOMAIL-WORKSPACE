@@ -15,7 +15,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-import { useAuth } from "./auth";
+import { useAuthOptional } from "./auth";
 import { CRM_I18N } from "./crm-i18n";
 import { hydrateLocalePref, loadSqlBundle, persistLocalePref } from "./locale-sync";
 import { DEFAULT_LOCALE, type Locale, type LocaleKey, STORAGE_KEY, findLocale } from "./locales";
@@ -134,7 +134,8 @@ export function useLocale(): {
   t: (key: string) => string;
   ready: boolean;
 } {
-  const { session } = useAuth();
+  // Root error/404 screen AuthProvider ke bahar render hoti hai -> optional (crash nahi).
+  const session = useAuthOptional()?.session ?? null;
   const allowed = publicLocaleAllowed(session);
   const [locale, setLocaleState] = useState<Locale>(DEFAULT_LOCALE);
   const [bundle, setBundle] = useState<Bundle>({});
