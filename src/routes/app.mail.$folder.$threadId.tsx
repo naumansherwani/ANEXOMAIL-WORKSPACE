@@ -17,6 +17,7 @@ import { ErrorState } from "@/components/state/StateBlock";
 import { measureMotion } from "@/lib/experience";
 import { useAssigneeName } from "@/lib/assignee-name";
 import { type MailThread, formatBytes, useThread } from "@/lib/mail";
+import { useCancelScheduled } from "@/lib/compose";
 import { downloadAttachment } from "@/lib/mail-attachments";
 import { notify } from "@/lib/notify";
 import { ZoomButtons } from "@/components/app/ZoomButtons";
@@ -235,6 +236,9 @@ function MailMessage({
   threadId: string;
 }) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
+  const cancel = useCancelScheduled();
+  // Lambi schedule ki hui mail (abhi nikli nahi) ko roka ja sake: pehle sirf 30s ke Undo toast se hota tha.
+  const pending = Boolean(message.scheduled_at && new Date(message.scheduled_at).getTime() > Date.now());
   return (
     <article className="ax-plane rounded-2xl p-ax-5">
       <header className="flex items-start gap-3">
@@ -255,6 +259,27 @@ function MailMessage({
               ? `Scheduled · ${new Date(message.scheduled_at).toLocaleString()}`
               : mailWhen(message.sent_at)}
           </span>
+          {pending ? (
+            <button
+              type="button"
+              disabled={cancel.isPending}
+              className="ax-focus ax-press rounded-lg border border-border px-2 py-0.5 text-[11px] font-semibold text-foreground"
+              onClick={() =>
+                cancel.mutate(
+                  { id: message.id },
+                  {
+                    onSuccess: () => notify.done("Not sent", "Your scheduled message was stopped before it left."),
+                    onError: (e: { status?: number; message?: string }) =>
+                      notify.failed(e?.status === 409 ? "Already sent" : "Could not cancel", {
+                        description: e?.status === 409 ? "It left your workspace before you cancelled." : e?.message,
+                      }),
+                  },
+                )
+              }
+            >
+              Cancel send
+            </button>
+          ) : null}
         </div>
       </header>
       {message.to.length > 0 && (
