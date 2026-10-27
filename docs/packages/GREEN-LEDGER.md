@@ -438,3 +438,9 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - Compose 'please see the latest CRM sheet. I will send you the signed details by Friday.' => badge 'Send you the signed details due Friday (2026-10-30)', cost line £0.22/13s/1 person, 'Task on send + calendar hold' chosen, Send (30s hold) => Work/Tasks mein 'Send you the signed details' (owner pro.buyer2, 10/30/2026, source promise) + Calendar mein 'Due: Send you the signed details'. commit.record live kaam kar raha hai.
 - Founder ne sql-run.sh dobara chalayi: E99 sha 691b12ac6b041012 OK, CHECK_E65 + CHECK_E99 sab OK, doosri run 'koi nayi SQL nahi'. Loophole #6 (no-extension file har query par) server par band.
 - ABHI BAAKI (Pro GREEN se pehle): commit.verify live, 10-recipient cost + call suggestion, file card asli file ke saath, cross-package connect (privacy bina breach), 4th booking link refusal, 20-user cap, Cancel-send 30 Nov test mail. Pro GREEN declare NAHI kiya — sirf live saboot ke baad.
+
+## 27 Oct 2026 08:44 PKT — LIVE: 3-recipient cost + cross-plan send (pro.buyer2 -> basic.buyer, business.buyer, bpro.buyer)
+- Cost line 3 logon par live: 'about £0.55 of attention, 33s across 3 people'. Send hua (Sent mein 'ZZ cross-plan connect test'), inbox mein koi bounce nahi aaya. Typing glitch se ek address '.cm' ban gaya tha — theek karke dobara bheja.
+- HADD (jhoot nahi): doosre plan ke accounts ke login/password mere paas nahi (credentials main enter nahi kar sakta), isliye RECEIVE side (basic/business/bpro inbox mein mail aayi) abhi live-proven NAHI. Founder un accounts mein khud dekh le ya session de.
+- Cross-package ka SQL permission-matrix (plan x plan) abhi NAHI banaya — pehle repo mein dekha: koi plan-gate mail delivery par nahi; gate sirf features par (resolve_plan). Agla: matrix CHECK SQL + probe.
+- Pro GREEN: ABHI NAHI (baaki: commit.verify, 10-recipient+call, file card asli file, booking 4th link, 20-user cap, receive-side).
