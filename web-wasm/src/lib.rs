@@ -10,6 +10,7 @@
 pub mod exec;
 pub mod frame;
 pub mod hash;
+pub mod intent;
 pub mod host;
 pub mod live;
 pub mod rank;
@@ -22,9 +23,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 2, 0);
+pub const VERSION: (u32, u32, u32) = (0, 3, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -148,6 +149,19 @@ pub extern "C" fn rank_run(q_ptr: u32, q_len: u32, items_ptr: u32, items_len: u3
     n
 }
 
+/* -------------------------------------------------------------------- intent (wada + deadline, paisa/waqt) */
+/// Text mein wade dhoondo. `now_unix` UTC seconds, `tz_min` user ka UTC se farq. Jawab JSON bytes (kernel_out), length wapas.
+#[unsafe(no_mangle)]
+pub extern "C" fn intent_scan(ptr: u32, len: u32, now_unix: i64, tz_min: i32) -> u32 {
+    set_out(intent::scan_json(unsafe { text(ptr, len) }, now_unix, tz_min).into_bytes())
+}
+
+/// Email ka waqt/paisa: words x recipients x rate (minor unit/ghanta). wpm 0 => default.
+#[unsafe(no_mangle)]
+pub extern "C" fn intent_cost(words: u32, recipients: u32, rate_minor_per_hour: u32, wpm: u32) -> u32 {
+    set_out(intent::cost_json(words, recipients, rate_minor_per_hour, wpm).into_bytes())
+}
+
 /* -------------------------------------------------------------------- live */
 #[unsafe(no_mangle)]
 pub extern "C" fn live_start(url_ptr: u32, url_len: u32, tok_ptr: u32, tok_len: u32, seed: u32) -> u32 {
@@ -215,7 +229,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }
