@@ -1,5 +1,12 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## 27 Oct 2026 11:06 PKT — FOUNDER DECLARATION: PRO = GREEN (user ke liye), Pro latest technology par MIGRATE = GREEN
+Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri website banye gi tab hum audit karay gay, yeh chalta rehta hai. pro latest technology pe migrate green hai. yeh repo main sab likho, codes nahi likhna phir se. calendar, CRM aur ANEXOChat wala kaam alag mamla hai, yeh founder walay main add ker lo, puri website ki zaroorat hai."
+- **Pro ab dobara TODO nahi.** Pro ka koi kaam dobara nahi likhna/audit nahi karna jab tak puri website ka final audit na aaye (founder ka plan). Naya masla mile to usi turn mein theek, Pro ko "khula" nahi likhna.
+- Saboot (27 Oct live, pro.buyer, founder ka Chrome 'LENOVO'): mail send+receive (attachment ke saath), file card, Promise/Outcomes (E97-E101 server GREEN), cross-plan mail, dashboard/activity, toast X, AttachmentChip Preview/Download, stale-chunk fix; server==repo src same=601 (routeTree.gen.ts generated).
+- Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
+- **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
+
 ## ▶ 27 Oct 10:25 PKT — founder: E101 rerun + PROOF_cross_plan_mail = GREEN success. DONE, dobara nahi.
 
 ## ▶ 27 Oct 10:23 PKT — founder: "pro ka live dekh lo, baki chat context updated rakho"

@@ -39,3 +39,5 @@ Har kaam ke saath isi turn mein is table ki halat (TODO / READY / deploy pending
 - Web client + Bun fallback: `bash <(git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) | tail -6`
 - Rust mail delivery (only when deliver_bin.rs changes): `rust-deliver-install.sh` (same pattern).
 Each batch's `founder-commands.md` entry says which of these apply.
+
+**27 Oct 2026 11:06 PKT (founder):** Pro = latest technology par migrate GREEN (user ke liye declared). Final audit puri website banne ke baad. Detail: DONE-DO-NOT-REPEAT.md.

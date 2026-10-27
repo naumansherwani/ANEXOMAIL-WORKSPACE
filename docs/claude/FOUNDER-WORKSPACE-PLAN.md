@@ -129,3 +129,6 @@ Founder ne kaha: pehle Calendar + World Clock poora, phir founder ka account (co
 5. Hold wale account se passkey/OTP sign-in try karein. Ye fail hona chahiye.
 6. Brave ya Firefox (privacy mode) se sign-up karein. Ye flag hona chahiye.
 Plus (E72): blocked/test account se appeal likhein (20,000 characters tak) + 1 PNG attach; reviewer panel mein file download hoti hai; 91 din baad safai (SQL proof mein ho chuka).
+
+## 9. Puri-website zaroorat jo founder-side list mein jodi gayi (founder 27 Oct 2026 11:06 PKT)
+Pro GREEN declare hone ke baad alag kaam: (a) common AttachmentChip calendar/CRM/ANEXOChat mein, (b) attachment A1-A4 (docs/cursor-work/ATTACH-LATEST-TECH-PLAN-27OCT.md), (c) E100 edit ANEXOChat live ke baad. Founder HQ (F0 se) isi ke saath. Detail: DONE-DO-NOT-REPEAT.md 27 Oct 11:06.
