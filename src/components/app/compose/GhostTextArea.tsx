@@ -110,12 +110,12 @@ export const GhostTextArea = forwardRef<
 
   return (
     <div className="relative">
-      {(showGhost || (inkOn && focused && !hasSel)) && (
+      {(showGhost || inkOn) && (
         <div
           ref={mirror}
           aria-hidden="true"
           className={cn(
-            "pointer-events-none absolute inset-0 z-10 overflow-hidden whitespace-pre-wrap break-words",
+            "pointer-events-none absolute inset-0 z-10 overflow-y-scroll overflow-x-hidden whitespace-pre-wrap break-words [scrollbar-width:thin] [scrollbar-color:transparent_transparent] [scrollbar-gutter:stable]",
             "rounded-md border border-transparent px-3 py-2 text-base md:text-sm",
           )}
         >
@@ -157,7 +157,7 @@ export const GhostTextArea = forwardRef<
         value={value}
         placeholder={placeholder}
         className={cn(
-          "relative bg-transparent",
+          "relative bg-transparent [scrollbar-width:thin] [scrollbar-gutter:stable]",
           inkOn && focused && !hasSel && "caret-transparent",
           className,
         )}

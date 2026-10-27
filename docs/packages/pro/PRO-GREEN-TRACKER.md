@@ -219,3 +219,6 @@ Founder deploy 02:08: Rust par ab '... trialx authx contx basx wsx wtrpc', Rust 
 - Booking link 4th refusal aur 20-user cap: calendar page par booking-links ka entry button nahi mila (/app/calendar/booking = 404). Rasta (kaun si screen) dhoondna baaki; abhi live-proven NAHI.
 - commit.verify: koi UI nahi — API-level probe (basic-gate-probe.sh) se prove karna baaki.
 - E100 server par chalani baaki (founder sql-run.sh). Pro GREEN: NAHI.
+
+## 27 Oct 2026 08:51 PKT — LIVE INK BUG FIX (caret/blink galat jagah): founder ne dekha 'blink background mein'
+- Live Chrome mein dikha: scrollbar wali textarea mein mirror layer ki wrap-width alag thi (mirror par scrollbar nahi) => caret/ink ghalat jagah neeche-right mein blink. Fix src/components/app/compose/GhostTextArea.tsx: mirror hamesha mount (focus par mount/unmount band), mirror par overflow-y-scroll + transparent thin scrollbar + scrollbar-gutter stable, textarea par bhi thin + gutter stable => dono ki wrap barabar. tsc clean, compose tests pass. Deploy (pull.sh) baaki, phir live dobara dekhna.
