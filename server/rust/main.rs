@@ -393,6 +393,20 @@ async fn mail_identity(
     }
     let org_id = if !requested_org.is_empty() && ids.iter().any(|o| o == requested_org) {
         requested_org.to_string()
+    } else if ids.len() > 1 {
+        // Ek se zyada workspace (apna + kisi team ka): user ka chuna hua "active" workspace maano (auth.session wahi dikhata hai),
+        // pehle wali arbitrary row nahi. Ek workspace wale users par ye extra query chalti hi nahi.
+        let preferred = sb_select(&format!("account_profiles?select=preferences&user_id=eq.{id}&limit=1"))
+            .await
+            .ok()
+            .and_then(|v| {
+                v.as_array()
+                    .and_then(|a| a.first().cloned())
+                    .and_then(|r| r.get("preferences").cloned())
+                    .and_then(|p| p.get("active_organisation_id").and_then(|x| x.as_str().map(|s| s.to_string())))
+            })
+            .filter(|o| ids.iter().any(|i| i == o));
+        preferred.unwrap_or_else(|| ids[0].clone())
     } else {
         ids[0].clone()
     };

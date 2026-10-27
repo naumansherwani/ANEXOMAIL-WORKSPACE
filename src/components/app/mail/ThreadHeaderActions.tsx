@@ -197,7 +197,7 @@ export function ThreadHeaderActions({
                   }
                 >
                   {assigneeName(m.user_id)}
-                  {assigneeName(m.user_id) === "You" ? "" : ` · ${m.email}`}
+                  {assigneeName(m.user_id) === "You" || assigneeName(m.user_id) === m.email ? "" : ` · ${m.email}`}
                 </DropdownMenuItem>
               ))
             ) : (
