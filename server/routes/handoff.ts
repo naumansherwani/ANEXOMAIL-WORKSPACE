@@ -14,6 +14,7 @@
 // Env locked: SUPABASE4_URL / SUPABASE4_SERVICE_ROLE_KEY.
 import { Router } from "express";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { resolvePlan } from "../lib/plan";
 
 const SUPABASE_URL = process.env.SUPABASE4_URL || process.env.SUPABASE_URL || "";
 const SERVICE_KEY =
@@ -48,6 +49,15 @@ async function requireUser(req: any, res: any): Promise<string | null> {
   if (error || !data?.user) {
     res.status(401).json({ error: "unauthorized" });
     return null;
+  }
+  // Pro+ gate (Rust mail.handoff.* jaisa) — /devices/seen sab plans ko khula (heartbeat), baaqi handoff Pro+. Plan na mile to Basic.
+  if (!String(req.path || "").startsWith("/devices/seen")) {
+    let plan = "basic";
+    try { plan = await resolvePlan(data.user.id, String(data.user.email || "")); } catch { /* Basic */ }
+    if (plan === "basic") {
+      res.status(403).json({ error: "feature_not_available", plan, message: "Draft handoff between devices is a Pro+ feature." });
+      return null;
+    }
   }
   return data.user.id;
 }

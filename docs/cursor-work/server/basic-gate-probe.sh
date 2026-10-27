@@ -87,6 +87,12 @@ for P in work.task.create work.task.update work.note.save calendar.outcome.post;
   chk "RUST $P (Pro)" "$(rpc $P '{}')" $([ "$MODE" = pro ] && echo 400 || echo 403)
 done
 for P in work.followThrough work.note; do chk "RUST $P (Pro)" "$(rpc $P '{}')" $GATED; done
+# --- Bun fallback bhi wahi gate (27 Oct loophole fix): Basic seedha /api/work/* ya /api/mail/handoff par aaye to 403; Pro 200.
+chk "BUN  work/tasks (Pro fallback)" "$(bun GET /api/work/tasks)" $GATED
+chk "BUN  work/notes (Pro fallback)" "$(bun GET '/api/work/notes?thread_id=x')" $GATED
+chk "BUN  work/follow-through (Pro fallback)" "$(bun GET '/api/work/follow-through?scope=person')" $GATED
+chk "BUN  work/promises (Pro fallback)" "$(bun GET /api/work/promises)" $GATED
+chk "BUN  mail/handoff (Pro fallback)" "$(bun GET /api/mail/handoff)" $GATED
 chk "RUST account.signup.events (all plans 200)" "$(rpc account.signup.events '{}')" 200
 chk "RUST account.signup.holds (all plans 200)" "$(rpc account.signup.holds '{}')" 200
 chk "RUST account.signup.state (all plans 200)" "$(rpc account.signup.state '{}')" 200

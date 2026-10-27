@@ -44,6 +44,16 @@ function guard(handler: (c: any, req: any, res: any) => Promise<any>) {
   };
 }
 
+
+/** Pro+ guard (Work: tasks, promises, notes, follow-through, meeting outcome). Rust workx primary; yeh Bun fallback ka wahi gate — plan na mile to Basic. */
+function proGuard(handler: (c: any, req: any, res: any) => Promise<any>) {
+  return guard(async (c, req, res) => {
+    if (await isBasic(c))
+      return res.status(403).json({ error: { code: "feature_not_available", message: "Tasks, notes, promises and meeting outcomes are a Pro+ feature." } });
+    await handler(c, req, res);
+  });
+}
+
 /* ----------------------------------------------------------------- utils */
 const MIN = 60_000;
 const iso = (d: Date) => d.toISOString();
@@ -394,7 +404,7 @@ calendar.get(
 /* ------------------------------------------------------- meeting outcome */
 calendar.post(
   "/calendar/events/:id/outcome",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     const outBase = supa.from("calendar_events").select("*").eq("id", req.params.id);
     const { data: e } = await orgFilter(outBase, c).maybeSingle();
     if (!e) return res.status(404).json({ error: { code: "not_found", message: "Event not found" } });
@@ -456,7 +466,7 @@ function shapeTask(t: any) {
 
 calendar.get(
   "/work/tasks",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     let q = orgFilter(supa.from("work_tasks").select("*"), c);
     if (req.query.thread_id) q = q.eq("thread_id", String(req.query.thread_id));
     if (req.query.event_id) q = q.eq("event_id", String(req.query.event_id));
@@ -469,7 +479,7 @@ calendar.get(
 
 calendar.post(
   "/work/tasks",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     const title = String(req.body?.title || "").trim();
     if (title.length < 2)
       return res.status(400).json({ error: { code: "bad_title", message: "Title is required" } });
@@ -495,7 +505,7 @@ calendar.post(
 
 calendar.patch(
   "/work/tasks/:id",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     const patch: any = {};
     if (req.body?.status) {
       patch.status = req.body.status;
@@ -516,7 +526,7 @@ calendar.patch(
 /* ----------------------------------------------------------- promises */
 calendar.get(
   "/work/promises",
-  guard(async (c, _req, res) => {
+  proGuard(async (c, _req, res) => {
     const pBase = supa.from("work_promises").select("*").eq("status", "suggested");
     const { data, error } = await orgFilter(pBase, c)
       .order("detected_at", { ascending: false })
@@ -539,7 +549,7 @@ calendar.get(
 
 calendar.post(
   "/work/promises/:id/commit",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     const pBase2 = supa.from("work_promises").select("*").eq("id", req.params.id);
     const { data: p } = await orgFilter(pBase2, c).maybeSingle();
     if (!p) return res.status(404).json({ error: { code: "not_found", message: "Promise not found" } });
@@ -568,7 +578,7 @@ calendar.post(
 
 calendar.post(
   "/work/promises/:id/dismiss",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     await orgFilter(supa.from("work_promises").update({ status: "dismissed" }).eq("id", req.params.id), c);
     res.json({ ok: true });
   }),
@@ -577,7 +587,7 @@ calendar.post(
 /* --------------------------------------------------- follow-through score */
 calendar.get(
   "/work/follow-through",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     const scope = String(req.query.scope || "person") === "team" ? "team" : "person";
     const ftBase = supa.from("work_tasks").select("owner, status, due_at, completed_at").not("due_at", "is", null);
     const { data } = await orgFilter(ftBase, c);
@@ -612,7 +622,7 @@ calendar.get(
 /* ------------------------------------------------------------------ notes */
 calendar.get(
   "/work/notes",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     let q = orgFilter(supa.from("work_notes").select("*"), c);
     if (req.query.thread_id) q = q.eq("thread_id", String(req.query.thread_id));
     else if (req.query.event_id) q = q.eq("event_id", String(req.query.event_id));
@@ -635,7 +645,7 @@ calendar.get(
 
 calendar.post(
   "/work/notes",
-  guard(async (c, req, res) => {
+  proGuard(async (c, req, res) => {
     const body = String(req.body?.body ?? "");
     if (body.length > 20000)
       return res.status(400).json({ error: { code: "too_long", message: "A note can be up to 20,000 characters" } });
