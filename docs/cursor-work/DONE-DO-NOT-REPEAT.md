@@ -875,3 +875,7 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - Fix: rust-engine-install.sh CFG["calexp"]["replace"] mein mail_identity anchor-patch (find->rep, unless 'active_organisation_id").and_then' = idempotent). Test: purani main.rs (3a03584) par patch == repo main.rs (True). bash -n OK.
 - ANEXO tag: docs/cursor-work/server/tag-enforce.sh (status|enforce|observe): enforce se PEHLE tag ginti dekhta hai (missing=0 invalid=0 warna RUK), restart ANEXO_TAG_MODE=enforce, kernel-check, FAIL par khud observe. Founder ko passkey: banner 'Create passkey' => Windows Hello/phone QR (founder ka biometric, main nahi kar sakta).
 - people-check.sh mein step 6 (timeline query Rust jaisi) — People 'Relationship history' khali ka sabab server output se milega.
+
+## 27 Oct 2026 07:07 PKT — founder: PASSKEY GATE GREEN (founder ne khud test kiya) — pending list se HATAO
+- Founder: "yeh enforce ho chuka hai, jab tak passkey nahi lagta website aage nahi jaati, maine khud karke dekha, advance hai." PasskeyGate (G35) = GREEN, founder-verified. Dobara 'passkey baaqi' kabhi mat likho; pro.buyer/buyer2 par 'Add a passkey' patti sirf grace-period ka dikhawa hai (strict screen tab aati hai jab grace khatam).
+- Baaqi Pro list ab: (1) Rust installer dobara (mail_identity patch) + People history sabab (people-check), (2) Chrome: buyer2 ko shared inbox + Assigned to me + owner badge, snooze/schedule-send click, 4th booking link, (3) tag-enforce.sh (aakhri).
