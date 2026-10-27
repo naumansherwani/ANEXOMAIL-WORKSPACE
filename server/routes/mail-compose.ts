@@ -93,6 +93,7 @@ mailComposeRouter.get("/drafts/:id", async (req, res) => {
 
 mailComposeRouter.get("/templates", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Email templates"))) return;
   const { data, error } = await supa
     .from("mail_templates")
     .select("id, name, scope, subject, body, variables")
@@ -132,6 +133,7 @@ mailComposeRouter.post("/templates", async (req, res) => {
 // Only your own template can be removed (personal scope, your user id, your workspace).
 mailComposeRouter.delete("/templates/:id", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Email templates"))) return;
   const { data, error } = await supa.from("mail_templates").delete()
     .eq("id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
   if (error) return res.status(500).json({ error: error.message });
@@ -142,6 +144,7 @@ mailComposeRouter.delete("/templates/:id", async (req, res) => {
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 mailComposeRouter.delete("/snippets/:id", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Snippets"))) return;
   if (!UUID_RE.test(req.params.id)) return res.status(400).json({ error: "id_required" });
   const { data, error } = await supa.from("mail_snippets").delete()
     .eq("id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
@@ -151,6 +154,7 @@ mailComposeRouter.delete("/snippets/:id", async (req, res) => {
 
 mailComposeRouter.delete("/follow-up/:id", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Follow-up reminders"))) return;
   if (!UUID_RE.test(req.params.id)) return res.status(400).json({ error: "id_required" });
   const { data, error } = await supa.from("mail_followups").delete()
     .eq("id", req.params.id).eq("org_id", c.orgId).eq("user_id", c.userId).select("id");
@@ -169,6 +173,7 @@ mailComposeRouter.delete("/drafts/:id", async (req, res) => {
 
 mailComposeRouter.get("/snippets", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Snippets"))) return;
   const { data, error } = await supa
     .from("mail_snippets")
     .select("id, shortcut, body")
@@ -181,6 +186,7 @@ mailComposeRouter.get("/snippets", async (req, res) => {
 
 mailComposeRouter.post("/snippets", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Snippets"))) return;
   const b = req.body || {};
   const { data, error } = await supa.from("mail_snippets").insert({
     org_id: c.orgId, user_id: c.userId, shortcut: b.shortcut || "", body: b.body || "",
@@ -207,6 +213,7 @@ const RISKY = ["asap", "urgent", "obviously", "as i said", "clearly you", "unacc
 
 mailComposeRouter.post("/send-confidence", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Pre-send scan"))) return;
   const b = req.body || {};
   const body = String(b.body || "");
   const subject = String(b.subject || "");
@@ -287,6 +294,7 @@ mailComposeRouter.post("/schedule", async (req, res) => {
 
 mailComposeRouter.post("/schedule/:id/cancel", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Schedule send"))) return;
   // B3 (E54): jo row kisi worker ne utha li woh cancel nahi hoti (mail nikal rahi hai). E54 na ho to neeche purana tareeqa.
   const rc: any = await supa.rpc("mail_queue_cancel", { _id: req.params.id, _user: c.userId, _org: c.orgId });
   if (!rc.error) return rc.data === true ? res.json({ ok: true }) : res.status(409).json({ error: "already_sent" });
@@ -308,6 +316,7 @@ mailComposeRouter.post("/schedule/:id/cancel", async (req, res) => {
 
 mailComposeRouter.post("/follow-up", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Follow-up reminders"))) return;
   const b = req.body || {};
   if (!b.remind_at) return res.status(400).json({ error: "remind_at_required" });
   const remindAt = new Date(b.remind_at);
@@ -326,6 +335,7 @@ mailComposeRouter.post("/follow-up", async (req, res) => {
 
 mailComposeRouter.get("/follow-up", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Follow-up reminders"))) return;
   const { data, error } = await supa
     .from("mail_followups")
     .select("id, thread_id, subject, remind_at, status")
@@ -340,6 +350,7 @@ mailComposeRouter.get("/follow-up", async (req, res) => {
 
 mailComposeRouter.get("/thread/:id/insights", async (req, res) => {
   const c = await ctx(req, res); if (!c) return;
+  if (!(await proOnly(c, res, "Thread insights"))) return;
 
   const { data: msgs, error } = await supa
     .from("mail_messages")

@@ -95,6 +95,10 @@ chk "BUN  work/promises (Pro fallback)" "$(bun GET /api/work/promises)" $GATED
 chk "BUN  mail/handoff (Pro fallback)" "$(bun GET /api/mail/handoff)" $GATED
 chk "RUST calendar.export (all plans 200)" "$(rpc calendar.export '{"format":"ics"}')" 200
 chk "RUST calendar.export bad format (400)" "$(rpc calendar.export '{"format":"pdf"}')" 400
+chk "BUN  mail/templates (Pro fallback)" "$(bun GET /api/mail/templates)" $GATED
+chk "BUN  mail/snippets (Pro fallback)" "$(bun GET /api/mail/snippets)" $GATED
+chk "BUN  mail/follow-up (Pro fallback)" "$(bun GET /api/mail/follow-up)" $GATED
+[ "$MODE" = basic ] && chk "BUN  mail/send-confidence (Pro fallback)" "$(bun POST /api/mail/send-confidence '{}')" 403
 chk "RUST account.signup.events (all plans 200)" "$(rpc account.signup.events '{}')" 200
 chk "RUST account.signup.holds (all plans 200)" "$(rpc account.signup.holds '{}')" 200
 chk "RUST account.signup.state (all plans 200)" "$(rpc account.signup.state '{}')" 200
