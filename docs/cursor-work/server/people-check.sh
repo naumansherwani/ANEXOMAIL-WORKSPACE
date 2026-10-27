@@ -31,4 +31,9 @@ fi
 echo; echo "== 5. Rust log mein contx.rebuild error (aakhri 5) =="
 pm2 logs anexomail-rust --lines 400 --nostream 2>/dev/null | grep -E "contx\.rebuild" | tail -5 | cut -c1-300
 echo "(khali = koi rebuild error nahi)"
+if [ -n "$ORG" ]; then
+  echo; echo "== 6. timeline query (Rust jaisi): $EXT ke saath mail (status + pehli rows) =="
+  Q="mail_messages?select=id,direction,subject,from_address,to_addresses,to_addrs,sent_at&org_id=eq.$ORG&or=(from_address.ilike.%2A${EXT/@/%40}%2A,to_addresses.cs.%7B${EXT/@/%40}%7D,to_addrs.cs.%7B${EXT/@/%40}%7D)&order=sent_at.desc&limit=5"
+  curl -s -m 20 -w "\nHTTP %{http_code}\n" -H "apikey: $KEY" -H "authorization: Bearer $KEY" "$URL/rest/v1/$Q" | cut -c1-700
+fi
 unset KEY

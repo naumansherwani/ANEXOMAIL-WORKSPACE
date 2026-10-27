@@ -164,7 +164,35 @@ CFG={
  # billx (Batch C1, Rule 52/56/57): billing padhne wale 3 raaste, Polar ko call nahi. stateHealth founder-only. Koi SQL nahi.
  "billx": {"public": False, "label": "billx", "procs": ['"billing.state"','"billing.stateHealth"','"billing.claimGuest"']},
  # setx (Batch D, Rule 52/56/57): settings 5 + integrations 10 + founder overviews 3 (founder-only). Sab plans (login). Koi SQL nahi. Business settings (blast/simulate/drift/schedule) aur Leo actions Bun par.
- "calexp": {"public": False, "label": "calexp", "procs": ['"calendar.export"'], "need_mods": ["cal_core"]},
+ # mail_identity (27 Oct): >1 membership par user ka active workspace (account_profiles.preferences.active_organisation_id) maano, ids[0] nahi. Anchor-based, idempotent (calexp ke saath lagta hai).
+ "calexp": {"public": False, "label": "calexp", "procs": ['"calendar.export"'], "need_mods": ["cal_core"],
+            "replace": [
+              ("""    let org_id = if !requested_org.is_empty() && ids.iter().any(|o| o == requested_org) {
+        requested_org.to_string()
+    } else {
+        ids[0].clone()
+    };
+""", """    let org_id = if !requested_org.is_empty() && ids.iter().any(|o| o == requested_org) {
+        requested_org.to_string()
+    } else if ids.len() > 1 {
+        // Ek se zyada workspace (apna + kisi team ka): user ka chuna hua "active" workspace maano (auth.session wahi dikhata hai),
+        // pehle wali arbitrary row nahi. Ek workspace wale users par ye extra query chalti hi nahi.
+        let preferred = sb_select(&format!("account_profiles?select=preferences&user_id=eq.{id}&limit=1"))
+            .await
+            .ok()
+            .and_then(|v| {
+                v.as_array()
+                    .and_then(|a| a.first().cloned())
+                    .and_then(|r| r.get("preferences").cloned())
+                    .and_then(|p| p.get("active_organisation_id").and_then(|x| x.as_str().map(|s| s.to_string())))
+            })
+            .filter(|o| ids.iter().any(|i| i == o));
+        preferred.unwrap_or_else(|| ids[0].clone())
+    } else {
+        ids[0].clone()
+    };
+""", 'mail_identity: active workspace', 'active_organisation_id").and_then'),
+            ]},
  "setx": {"public": False, "label": "setx", "procs": ['"settings.list"','"settings.explain"','"settings.save"','"settings.history"','"settings.revert"','"founderSettings.overview"','"integrations.providers"','"integrations.connections"','"integrations.connect"','"integrations.disconnect"','"integrations.migrations"','"integrations.startMigration"','"integrations.controlMigration"','"integrations.delivery"','"integrations.exports"','"integrations.export"','"founderIntegrations.overview"','"founderSecurity.overview"']},
  # basx (Rule 52/56): Basic-baaqi chhote endpoints (storage/support/setActive), sab plans. PUBLIC proc: support.sla (landing SLA). Koi SQL nahi.
  "basx": {"public": True, "label": "basx", "procs": ['"storage.state"','"storage.preflight"','"storage.reserve"','"storage.commit"','"storage.release"','"support.sla"','"support.drafts"','"support.draftDiscard"','"workspace.setActive"'],
