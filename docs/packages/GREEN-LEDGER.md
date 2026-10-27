@@ -444,3 +444,8 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - HADD (jhoot nahi): doosre plan ke accounts ke login/password mere paas nahi (credentials main enter nahi kar sakta), isliye RECEIVE side (basic/business/bpro inbox mein mail aayi) abhi live-proven NAHI. Founder un accounts mein khud dekh le ya session de.
 - Cross-package ka SQL permission-matrix (plan x plan) abhi NAHI banaya — pehle repo mein dekha: koi plan-gate mail delivery par nahi; gate sirf features par (resolve_plan). Agla: matrix CHECK SQL + probe.
 - Pro GREEN: ABHI NAHI (baaki: commit.verify, 10-recipient+call, file card asli file, booking 4th link, 20-user cap, receive-side).
+
+## 27 Oct 2026 08:48 PKT — E100 PLAN x PLAN INTEROP (SQL tayyar, server par chalani baaki)
+- docs/cursor-work/sql/E100_plan_interop_matrix.sql + CHECK_E100.sql: 6x6x5 = 180 row (basic/pro/business/business_pro/enterprise/personal x mail/invite/booking/share_thread/chat), sab allowed; mail par gate 'none', baaqi 'own_plan_feature' (limit sirf bhejne wale ke apne plan ki: resolve_plan). plan_interop_allowed(from,to,action) + plan_interop_audit() (sirf jo rule toote). RLS on, anon/authenticated band, service_role only. Local Postgres 16 par 2 baar chala + CHECK_E100 5/5 true, lint 0.
+- Rule: poori website ke users ek dusre se contact kar sakte hain; gate sirf apne package ke feature/limit/endpoint par. Pichli entry mein 'matrix nahi banaya' likha tha — ab bana hai.
+- Founder: sql-run.sh bare AUTO chalaye (E100 nayi). GREEN abhi bhi nahi: baaki live tests + doosre plans ki inbox ka receive-side.
