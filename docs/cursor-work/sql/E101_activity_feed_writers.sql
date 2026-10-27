@@ -86,7 +86,7 @@ create or replace function public.activity_clean(p_text text, p_max integer defa
 returns text language sql immutable set search_path = public as $$
   select left(
            regexp_replace(
-             regexp_replace(coalesce(p_text, ''), '[\u0000-\u001F\u007F​-‏‪-‮⁠-⁤⁦-⁩﻿]', ' ', 'g'),
+             regexp_replace(coalesce(p_text, ''), '[\u0001-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2060-\u2064\u2066-\u2069\uFEFF]', ' ', 'g'),
              '\s+', ' ', 'g'),
            greatest(p_max, 1));
 $$;
@@ -549,7 +549,7 @@ begin
     r := r || 'dedupe OK; ';
 
     -- (b) bidi/control akshar saaf
-    if exists (select 1 from public.activity_log where id = v_id1 and subject ~ '[‪-‮]') then raise exception 'bidi akshar nahi hate'; end if;
+    if exists (select 1 from public.activity_log where id = v_id1 and subject ~ '[\u202A-\u202E]') then raise exception 'bidi akshar nahi hate'; end if;
     r := r || 'clean OK; ';
 
     -- (c) ghalat kind / null org => null, exception nahi
