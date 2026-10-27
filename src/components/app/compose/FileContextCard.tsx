@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, FileText, Link2, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { fmtBytes } from "@/lib/mail-attachments-core";
@@ -43,7 +43,13 @@ export function FileContextCard({
   const reduce = useReducedMotion();
   const [open, setOpen] = useState<string | null>(null);
   const shown = hits.filter((h) => !dismissed.has(h.query));
-  if (shown.length === 0) return null;
+  const wrap = useRef<HTMLDivElement>(null);
+  const count = shown.length;
+  // Chhoti screen/overlay mein card neeche scroll ke andar chhup jata tha: naya card aaye to nazar ke andar laao.
+  useEffect(() => {
+    if (count > 0) wrap.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [count]);
+  if (count === 0) return null;
   const fade = reduce
     ? {}
     : {
@@ -54,7 +60,7 @@ export function FileContextCard({
       };
 
   return (
-    <div className="flex flex-col gap-2" aria-live="polite" data-testid="file-context">
+    <div ref={wrap} className="flex flex-col gap-2" aria-live="polite" data-testid="file-context">
       <AnimatePresence initial={false}>
         {shown.map((h) => {
           const fam: FileFamily = h.files[0]!;

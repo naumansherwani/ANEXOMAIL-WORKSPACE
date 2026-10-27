@@ -9,7 +9,7 @@ src/components/app/MobileNav.tsx a0d8a2e2373f2bbc
 src/components/app/AppShell.tsx c9ea0bdf8d920b67
 src/components/app/ComposeOverlay.tsx cf965eb48d282dcb
 src/components/ui/sheet.tsx bcde440d4e49c1cf
-src/routes/__root.tsx 99840b33c0d50476
+src/routes/__root.tsx accbdda84ae313f9
 src/styles.css 310ec8c6df20968b
 src/routes/app.mail.$folder.tsx 2e0bd472d33af752
 src/routes/app.mail.$folder.$threadId.tsx 679f845c5eb8c6d0
@@ -859,7 +859,7 @@ docs/cursor-work/sql/E98_kernel_release_040.sql 0cda856aefcf057a
 docs/cursor-work/sql/CHECK_E99.sql c41125ea4feb2ec6
 docs/cursor-work/sql/E99_file_context.sql 691b12ac6b041012
 public/kernel/anexo-kernel-0.4.0.wasm 7499188264a10c8d
-src/components/app/compose/FileContextCard.tsx e67de862432dacb3
+src/components/app/compose/FileContextCard.tsx 933ddd2500f6648b
 web-wasm/src/filectx.rs ed695f6b8ea051d3
 src/components/app/compose/GhostTextArea.tsx 334813a5117f97ee
 docs/cursor-work/COMPOSE-BUSINESS-OUTCOMES-27OCT.md aa5e02288b78534d

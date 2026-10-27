@@ -181,6 +181,23 @@ function RootComponent() {
     registerServiceWorker();
   }, []);
 
+  // Poori website ke liye: kisi bhi lazy page ki purani chunk 404 ho (naya deploy) => ek baar khud reload (30s guard).
+  useEffect(() => {
+    const onPreloadError = (e: Event) => {
+      try {
+        const last = Number(sessionStorage.getItem("ax.chunk-reload") ?? "0");
+        if (Date.now() - last < 30_000) return;
+        sessionStorage.setItem("ax.chunk-reload", String(Date.now()));
+      } catch {
+        return;
+      }
+      e.preventDefault();
+      window.location.reload();
+    };
+    window.addEventListener("vite:preloadError", onPreloadError);
+    return () => window.removeEventListener("vite:preloadError", onPreloadError);
+  }, []);
+
   // Fade the boot "A" out once a real page / loader is painted (BootSplash).
   useBootRelease();
 
