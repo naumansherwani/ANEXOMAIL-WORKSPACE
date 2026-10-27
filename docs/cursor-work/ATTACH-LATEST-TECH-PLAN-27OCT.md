@@ -34,3 +34,10 @@ Yeh REPO MEIN HUKM DARJ HAI — abhi CODE NAHI bana (ghalat "ho gaya" nahi kehna
 - **ANEXOChat:** wahi protocol (WebTransport par chunks), chat mein link-card + inline player.
 - **Privacy:** link sirf token wale ko; dedupe org ke andar; server kabhi nahi batata ke file doosri org mein hai; token guess nahi (>=128-bit random + HMAC).
 - **Order:** Pro GREEN ke live saboot -> A1+A2 -> A4 (link+stream) -> A3 (naap ke baad) -> transcode (agar zaroorat).
+
+---
+## 27 Oct 2026 09:14 PKT — FOUNDER SAHI KIYA (upar wale hukm ki jagah yeh MAANA JAYE)
+- **Email attachment:** limit package ke hisab se wahi rahegi (Basic 25MB, Pro 35MB, Business 45MB, Business Pro 60MB, Enterprise 100MB). 7GB email attachment NAHI.
+- **7GB / 4K video:** ANEXOChat ke apne package ke hisab se. Repo ka pehle se locked faisla (CLAUDE-CHAT-CONTEXT ~line 1058): ANEXOChat business ladder par **Business 2GB / Business Pro 5GB / Enterprise 7GB** (Basic/Pro ko ANEXOChat nahi); Personal ladder par **PRO+ 2GB, Premium 4GB**. Yani 7GB sirf Enterprise. Bandwidth overage har package ka apna. Mera pehla 'plan-wise sawal' (Basic ~2GB...) is se KHATAM — founder ka faisla pehle se maujood tha.
+- Mail se chat-style link: email mein sirf link jaye to bhi bhejne wale ke ANEXOChat package ki limit lagti hai; email attachment ki alag MB limit apni jagah.
+- Link, resumable chunks, foran-khulna, Range-stream ka design upar wala hi; sirf gate = ANEXOChat plan (E100 plan_catalog mein key 'chat_file_gb' jab banega).
