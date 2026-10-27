@@ -1027,3 +1027,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+
+## 28 Oct 2026 05:10 PKT — FOUNDER CODE INVENTORY likhi: docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md (36 route files/6,541 lines; 77 founder endpoint = 53 Bun-only + 24 Rust-first; founder_audit/break-glass/F1 crate maujood nahi). Lovable dirt: host.ts+FounderBar .lovable.app/localhost, pwa.ts, vite config wrapper (NO-TOUCH), auth.ts FOUNDER_PASSWORD plain compare (A5, sab se zaroori). AI founder pages Rule 23 se band. Dobara inventory nahi; agla = F0 design + F1.

@@ -7,6 +7,9 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+## ▶ 28 Oct 04:36 PKT — founder: "ajj ka kaam: puray repo se founder ke codes talash kero. Lovable ne codes likhe thay, sab mix kiya, bhut dirt hai. Maqsad: founder ko new technology par banana, frontend UI banaya jaye ga (tareeka repo mein). Command center se puri website chalni hai, awam ke masle yahan se solve/sune jayen. Seriously cheezein fix karo, repo read karo."
+Halat: inventory DONE (docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md). Agla: F0 design + faisle, phir F1 (auth passkey, audit, Rust crate), pehle FOUNDER_PASSWORD (A5) + host guard band karna.
+
 ## ▶ 27 Oct 10:25 PKT — founder: E101 rerun + PROOF_cross_plan_mail = GREEN success. DONE, dobara nahi.
 
 ## ▶ 27 Oct 10:23 PKT — founder: "pro ka live dekh lo, baki chat context updated rakho"
