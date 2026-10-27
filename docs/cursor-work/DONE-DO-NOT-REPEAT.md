@@ -839,3 +839,8 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 ## 27 Oct 2026 06:14 PKT — founder: "Add backup passkey" patti baar baar aati hai (UI fix, deploy = pull.sh)
 - Wajah: PasskeyGate "Later" sirf sessionStorage mein yaad rakhta tha => har naye login/tab par wapas. Fix: localStorage mein 30 din ka snooze (anexo.passkey.banner.snoozedUntil). 0-passkey strict screen aur required/hard gate NAHI badle. tsc OK.
+
+## 27 Oct 2026 06:35 PKT — PRO LIVE (Chrome, 2 browser): server probes ALL PASS + People khali ki wajah dhoondh rahe
+- Founder ne block chalaya: full-backup (117M), brain-progate "gated 11", pro-second-user (team 2/20), Rust installer (calexp wtrpc dono), restart 200, pull.sh OK, basic ALL PASS, pro ALL PASS, pro-team ALL PASS (assign 200, bahar 400, seat cap 20/free 0), kernel ALL PASS.
+- Chrome pro.buyer2 (Browser 1 = buyer2, Browser 3 = buyer): Mail/People/Work/Calendar khule; Pro compose mein Templates/Follow-up/Schedule send/Version history dikhe; mail buyer2->buyer INBOX mein pahunchi (Sent + Inbox dono).
+- People khali: anexo_rebuild_contacts apne domain (@anexomail.com) ko contact nahi banata (design). buyer2 ne anexomail27@gmail.com ko bhi mail bheji (founder ki haan) — phir bhi People khali => asli bug ya data masla. docs/cursor-work/server/people-check.sh (READ-ONLY) likhi: mail org/direction, contacts row, rebuild jawab, Rust log. Founder chalaye, output se fix.
