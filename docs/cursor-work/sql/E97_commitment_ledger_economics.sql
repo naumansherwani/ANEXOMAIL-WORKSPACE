@@ -523,13 +523,14 @@ grant select on public.v_commitments_open, public.v_commitments_due_soon, public
               public.v_thread_economics_monthly to service_role;
 
 -- -----------------------------------------------------------------------------
--- 7) SELF-TEST (SQL Editor mein hi): parity + chain. Kuch bhi galat => poori file fail, kuch half-apply nahi.
+-- 7) SELF-TEST: parity + chain. Asli org/user (live FK: calendar_events.org_id -> organisations) par chalta hai aur AAKHIR MEIN poora rollback
+--    (koi test row, ledger row ya key nahi bachti). Org/user na mile to sirf parity check hoti hai.
 --    Test org ek random uuid hai; test rows ledger mein append-only hone ki wajah se rehti hain, is liye dummy org ka
 --    chhota nishaan (kuch KB) — isko "E97 selftest" payload se pehchaana ja sakta hai.
 -- -----------------------------------------------------------------------------
 do $$
 declare
-  a record; v_org uuid := '00000000-0000-4000-8000-0000000e9700'; v_user uuid := '00000000-0000-4000-8000-0000000e9701';
+  a record; v_org uuid; v_user uuid;
   r1 jsonb; r2 jsonb; r3 jsonb; v jsonb; v_t0 bigint;
 begin
   -- parity with WASM intent::cost_values (cargo test mein bhi yahi numbers)
@@ -542,48 +543,57 @@ begin
   select * into a from public.attention_cost(220, 1, 3600, 0);
   if (a.seconds_each, a.cost_minor) is distinct from (68::bigint, 68::bigint) then raise exception 'E97 SELFTEST: wpm default failed'; end if;
 
+  select id into v_org from public.organisations limit 1;
+  select id into v_user from auth.users limit 1;
+  if v_org is null or v_user is null then
+    raise notice 'E97 SELFTEST: organisations/auth.users khali — sirf parity check hui';
+    return;
+  end if;
+
+  begin
   v := public.attention_estimate(v_org, 1500, 10);
-  if (v->>'suggest_call')::boolean is not true or (v->>'saving_minor')::bigint <= 0 then
-    raise exception 'E97 SELFTEST: estimate suggestion failed %', v;
-  end if;
-  v := public.attention_estimate(v_org, 40, 1);
-  if (v->>'suggest_call')::boolean then raise exception 'E97 SELFTEST: chhoti email par jhoota call mashwara'; end if;
+    if (v->>'suggest_call')::boolean is not true or (v->>'saving_minor')::bigint <= 0 then
+      raise exception 'E97 SELFTEST: estimate suggestion failed %', v;
+    end if;
+    v := public.attention_estimate(v_org, 40, 1);
+    if (v->>'suggest_call')::boolean then raise exception 'E97 SELFTEST: chhoti email par jhoota call mashwara'; end if;
 
-  -- record -> duplicate -> status -> verify
-  r1 := public.commitment_record(v_org, v_user, 'selftest@example.com', 'E97 selftest: I will send details by Friday', 'Send details',
-                                 current_date + 3, null, 'E97 selftest', true, 92, 'en', array['selftest@example.com'], true, 'tag');
-  r2 := public.commitment_record(v_org, v_user, 'selftest@example.com', 'E97 selftest: I will send details by Friday', 'Send details',
-                                 current_date + 3, null, 'E97 selftest', true, 92, 'en', array['selftest@example.com'], true, 'tag');
-  if (r1->>'ok')::boolean is not true or (r1->>'duplicate')::boolean then raise exception 'E97 SELFTEST: record failed %', r1; end if;
-  if (r2->>'duplicate')::boolean is not true or r2->>'promise_id' <> r1->>'promise_id' then
-    raise exception 'E97 SELFTEST: dedupe failed %', r2;
-  end if;
-  if r1->>'task_id' is null or r1->>'event_id' is null then raise exception 'E97 SELFTEST: task/event missing %', r1; end if;
+    -- record -> duplicate -> status -> verify
+    r1 := public.commitment_record(v_org, v_user, 'selftest@example.com', 'E97 selftest: I will send details by Friday', 'Send details',
+                                   current_date + 3, null, 'E97 selftest', true, 92, 'en', array['selftest@example.com'], true, 'tag');
+    r2 := public.commitment_record(v_org, v_user, 'selftest@example.com', 'E97 selftest: I will send details by Friday', 'Send details',
+                                   current_date + 3, null, 'E97 selftest', true, 92, 'en', array['selftest@example.com'], true, 'tag');
+    if (r1->>'ok')::boolean is not true or (r1->>'duplicate')::boolean then raise exception 'E97 SELFTEST: record failed %', r1; end if;
+    if (r2->>'duplicate')::boolean is not true or r2->>'promise_id' <> r1->>'promise_id' then
+      raise exception 'E97 SELFTEST: dedupe failed %', r2;
+    end if;
+    if r1->>'task_id' is null or r1->>'event_id' is null then raise exception 'E97 SELFTEST: task/event missing %', r1; end if;
 
-  r3 := public.commitment_set_status(v_org, v_user, (r1->>'promise_id')::uuid, 'snoozed', current_date + 5);
-  if (r3->>'ok')::boolean is not true then raise exception 'E97 SELFTEST: snooze failed %', r3; end if;
-  r3 := public.commitment_set_status(v_org, v_user, (r1->>'promise_id')::uuid, 'fulfilled');
-  if (r3->>'ok')::boolean is not true then raise exception 'E97 SELFTEST: fulfil failed %', r3; end if;
-  r3 := public.commitment_set_status(v_org, v_user, (r1->>'promise_id')::uuid, 'broken');
-  if r3->>'error' is distinct from 'already_settled' then raise exception 'E97 SELFTEST: settled guard failed %', r3; end if;
+    r3 := public.commitment_set_status(v_org, v_user, (r1->>'promise_id')::uuid, 'snoozed', current_date + 5);
+    if (r3->>'ok')::boolean is not true then raise exception 'E97 SELFTEST: snooze failed %', r3; end if;
+    r3 := public.commitment_set_status(v_org, v_user, (r1->>'promise_id')::uuid, 'fulfilled');
+    if (r3->>'ok')::boolean is not true then raise exception 'E97 SELFTEST: fulfil failed %', r3; end if;
+    r3 := public.commitment_set_status(v_org, v_user, (r1->>'promise_id')::uuid, 'broken');
+    if r3->>'error' is distinct from 'already_settled' then raise exception 'E97 SELFTEST: settled guard failed %', r3; end if;
 
-  v := public.commitment_verify(v_org);
-  if (v->>'ok')::boolean is not true or (v->>'rows')::int < 3 then raise exception 'E97 SELFTEST: chain verify failed %', v; end if;
+    v := public.commitment_verify(v_org);
+    if (v->>'ok')::boolean is not true or (v->>'rows')::int < 3 then raise exception 'E97 SELFTEST: chain verify failed %', v; end if;
 
-  -- append-only: badalna mana hai
-  begin
-    update public.commitment_ledger set payload = '{}'::jsonb where org_id = v_org;
-    raise exception 'E97 SELFTEST: ledger update ho gaya (nahi hona chahiye)';
-  exception when insufficient_privilege then null; end;
-  begin
-    delete from public.commitment_ledger where org_id = v_org;
-    raise exception 'E97 SELFTEST: ledger delete ho gaya (nahi hona chahiye)';
-  exception when insufficient_privilege then null; end;
+    -- append-only: badalna mana hai
+    begin
+      update public.commitment_ledger set payload = '{}'::jsonb where org_id = v_org;
+      raise exception 'E97 SELFTEST: ledger update ho gaya (nahi hona chahiye)';
+    exception when insufficient_privilege then null; end;
+    begin
+      delete from public.commitment_ledger where org_id = v_org;
+      raise exception 'E97 SELFTEST: ledger delete ho gaya (nahi hona chahiye)';
+    exception when insufficient_privilege then null; end;
+
+    raise exception 'E97_SELFTEST_ROLLBACK';
+  exception when others then
+    if sqlerrm <> 'E97_SELFTEST_ROLLBACK' then raise; end if;
+  end;
 end $$;
 
--- selftest ka task/event/promise saaf (ledger rows rehti hain — append-only)
-delete from public.calendar_events where org_id = '00000000-0000-4000-8000-0000000e9700';
-delete from public.work_tasks     where org_id = '00000000-0000-4000-8000-0000000e9700';
-delete from public.work_promises  where org_id = '00000000-0000-4000-8000-0000000e9700';
 
 notify pgrst, 'reload schema';

@@ -33,6 +33,4 @@ union all select 'E97 dedupe unique index',
 union all select 'E97 views maujood',
        to_regclass('public.v_commitments_open') is not null and to_regclass('public.v_commitment_kept_rate') is not null
        and to_regclass('public.v_thread_economics_monthly') is not null and to_regclass('public.v_commitments_due_soon') is not null, 9
-union all select 'E97 selftest ki chain theek (verify ok)',
-       coalesce((public.commitment_verify('00000000-0000-4000-8000-0000000e9700'::uuid)->>'ok')::boolean, false), 10
 ) t order by n;

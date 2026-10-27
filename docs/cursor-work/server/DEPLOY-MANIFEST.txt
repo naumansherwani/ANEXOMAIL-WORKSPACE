@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md dc8a7f8bd75625cf
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 8ca9e095731da764
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -853,8 +853,8 @@ server/rust/promx_glue.rs 02c7ab367d8196a6
 src/components/app/compose/OutcomesBar.tsx 7bc378b478e7ba77
 src/lib/outcomes.test.ts e057de6fce523067
 src/lib/outcomes.ts f4f9a63456d02426
-docs/cursor-work/sql/E97_commitment_ledger_economics.sql ae1066805b14d764
-docs/cursor-work/sql/CHECK_E97.sql 8cd99739bdb49d3b
+docs/cursor-work/sql/E97_commitment_ledger_economics.sql 69f9a15c8004f1c9
+docs/cursor-work/sql/CHECK_E97.sql 8a1ea51ef3ced636
 docs/cursor-work/sql/E98_kernel_release_040.sql 0cda856aefcf057a
 docs/cursor-work/sql/CHECK_E99.sql c41125ea4feb2ec6
 docs/cursor-work/sql/E99_file_context.sql cd85c1fec0f37991
