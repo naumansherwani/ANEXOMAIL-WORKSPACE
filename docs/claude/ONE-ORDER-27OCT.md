@@ -42,3 +42,6 @@ M1/M2 = DONE. M3 = contacts/storage/support/workspace DONE, billing-sync = C1 DO
 - **SQL E94_plan_promises.sql** (+CHECK_E94): plan_promises registry (Basic+Pro server wade, Business/BP = todo, jhoot nahi), plan_promise_audit(), plan_promise_ok(), v_plan_promise_gaps, plan_promise_log + snapshot. Lint OK.
 - **SQL E93_attach_ceiling_35mb.sql** (+CHECK_E93): server ceiling 18MiB -> 35MiB (36_700_160). SIRF `attach-limit-measure.sh` mein Pro "SAFE" aane ke baad chalao (Postfix + clamd StreamMaxLength). Founder khud naapega.
 - Deploy tartib: attach-limit-measure.sh -> (SAFE ho to) sql-run.sh (E93, E94) -> deploy-pro.sh (Rust install+restart+pull+probes). Business/BP v6 enforcement abhi TODO-1.
+
+## 27 Oct 2026 05:20 PKT — founder: "yeh commands claude ke liye safe kar lo"
+- docs/claude/SERVER-COMMANDS-FOR-CLAUDE.md: asli deploy block (founder history) + kab kaun si script. Aage se SIRF yeh/ founder-commands wali commands do, naye wrapper nahi.

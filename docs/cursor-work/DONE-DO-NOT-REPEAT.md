@@ -802,3 +802,6 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 
 ## 27 Oct 2026 05:12 PKT — founder server par: clamd 64M + SQL E93/E94 GREEN (CHECK sab OK)
 - clamd StreamMaxLength/MaxFileSize 25M -> 64M (backup /etc/clamav/clamd.conf.bak-27oct), clamav-daemon active. sql-run: E93 + E94 + CHECK_E65/E93/E94 sab OK. Pro 7 Rust endpoints ka deploy (deploy-pro.sh) baaqi.
+
+## 27 Oct 2026 05:20 PKT — founder: "yeh commands claude ke liye safe kar lo"
+- docs/claude/SERVER-COMMANDS-FOR-CLAUDE.md: asli deploy block (founder history) + kab kaun si script. Aage se SIRF yeh/ founder-commands wali commands do, naye wrapper nahi.
