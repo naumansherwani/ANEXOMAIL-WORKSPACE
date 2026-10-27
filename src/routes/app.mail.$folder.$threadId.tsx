@@ -315,9 +315,11 @@ function MailMessage({
                   type="button"
                   data-testid="attachment-download"
                   onClick={() =>
-                    downloadAttachment(file.id, file.filename).catch((e: Error) =>
-                      notify.failed("Download failed", { description: e.message }),
-                    )
+                    downloadAttachment(file.id, file.filename)
+                      .then(() => notify.done("Downloaded", file.filename))
+                      .catch((e: Error) =>
+                        notify.failed("Download failed", { description: e.message }),
+                      )
                   }
                   className="ax-press ax-hit flex items-center gap-1.5 rounded-lg border border-border px-2 py-1 text-[11px] text-muted-foreground hover:text-foreground"
                 >

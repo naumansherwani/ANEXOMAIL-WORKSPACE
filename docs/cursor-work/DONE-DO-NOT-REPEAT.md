@@ -1013,3 +1013,5 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 ## 27 Oct 2026 10:30 PKT — Compose overlay mein file card neeche scroll ke andar chhup jata tha (overlay scroll hota hai, kata nahi): FileContextCard ab aate hi scrollIntoView. Stale-chunk masla POORI website ka tha (har lazy route): __root.tsx mein global vite:preloadError listener => ek baar auto reload (30s guard) + error screen bhi. tsc clean.
 
 ## 27 Oct 2026 10:25 PKT — FOUNDER: E101 (ASCII version) sql-run se dobara chali = GREEN; PROOF_cross_plan_mail.sql fresh Supabase tab mein chali = GREEN/success. Dobara nahi karna. Baqi: attachment A1+A2 build, Founder HQ shaam, E100 edit ANEXOChat live ke baad.
+
+## 27 Oct 2026 10:45 PKT — LIVE (founder ka Chrome "LENOVO", pro.buyer): attachment mail send+receive GREEN (pro.buyer2 -> pro.buyer, df61ee11...jpg 19.2 KB, AXONETIS Logo.png 1.0 MB dono receiver thread mein dikhe, console 0 error). Paying-user gap: attachment chip dabane par koi feedback nahi tha => ab download ke baad "Downloaded <naam>" toast (app.mail.$folder.$threadId.tsx). Baqi gap (TODO): image/PDF preview chip par (A-series ke saath).
