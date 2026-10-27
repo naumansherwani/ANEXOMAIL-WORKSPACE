@@ -10,6 +10,10 @@ pub fn pro_only(proc: &str) -> Option<&'static str> {
         "work.tasks" => Some("Tasks and boards are a Pro+ feature."),
         "work.promises" => Some("Promise inbox is a Pro+ feature."),
         "crm.overview" => Some("CRM is on Pro and above."),
+        "work.task.create" | "work.task.update" => Some("Tasks and boards are a Pro+ feature."),
+        "work.followThrough" => Some("Follow-through score is a Pro+ feature."),
+        "work.note" | "work.note.save" => Some("Notes on threads and meetings are a Pro+ feature."),
+        "calendar.outcome.post" => Some("Meeting outcomes are a Pro+ feature."),
         _ => None,
     }
 }
@@ -106,6 +110,85 @@ pub fn overview(deals: &[DealIn], leads: &[LeadIn], now: i64) -> Overview {
     }
 }
 
+// ── Pro 7 endpoints (27 Oct): tasks create/update, follow-through, notes, meeting outcome — Bun calendar.ts ka Rust twin ──
+pub const TASK_STATUSES: [&str; 4] = ["todo", "doing", "waiting", "done"];
+pub const NOTE_MAX: usize = 20_000;
+
+/// Title: trim, kam az kam 2 chars (Bun `bad_title`), 300 se zyada nahi.
+pub fn task_title(s: &str) -> Option<String> {
+    let t = s.trim();
+    let n = t.chars().count();
+    if (2..=300).contains(&n) { Some(t.to_string()) } else { None }
+}
+
+pub fn status_ok(s: &str) -> bool {
+    TASK_STATUSES.contains(&s)
+}
+
+/// uuid shakal (8-4-4-4-12 hex): PostgREST ko galat id jane se pehle rok do.
+pub fn uuid_ok(s: &str) -> bool {
+    let p: Vec<&str> = s.split('-').collect();
+    p.len() == 5 && [8usize, 4, 4, 4, 12].iter().zip(p.iter()).all(|(n, x)| x.len() == *n && x.chars().all(|c| c.is_ascii_hexdigit()))
+}
+
+/// Note body: 20,000 chars tak (Bun `too_long`).
+pub fn note_len_ok(s: &str) -> bool {
+    s.chars().count() <= NOTE_MAX
+}
+
+/// Follow-through: ek task (due wala) ka nateeja.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Bucket {
+    pub made: u32,
+    pub on_time: u32,
+    pub late: u32,
+    pub broken: u32,
+}
+
+/// (completed, due, now) => 0 = on_time, 1 = late, 2 = broken, 3 = abhi open (due nahi guzra).
+pub fn ft_class(completed: Option<i64>, due: i64, now: i64) -> u8 {
+    match completed {
+        Some(c) if c <= due => 0,
+        Some(_) => 1,
+        None if due < now => 2,
+        None => 3,
+    }
+}
+
+pub fn ft_add(b: &mut Bucket, class: u8) {
+    b.made += 1;
+    match class {
+        0 => b.on_time += 1,
+        1 => b.late += 1,
+        2 => b.broken += 1,
+        _ => {}
+    }
+}
+
+/// Score = round((on_time + late*0.5) / made * 100); made==0 => None. (Bun jaisa; .5 upar round.)
+pub fn ft_score(b: &Bucket) -> Option<i64> {
+    if b.made == 0 {
+        return None;
+    }
+    Some(((b.on_time as f64 + b.late as f64 * 0.5) / b.made as f64 * 100.0).round() as i64)
+}
+
+/// Epoch seconds => "YYYY-MM-DDTHH:MM:SSZ" (PostgREST gte filter ke liye; chrono crate nahi).
+pub fn iso_utc(epoch: i64) -> String {
+    let (days, secs) = (epoch.div_euclid(86400), epoch.rem_euclid(86400));
+    let z = days + 719468;
+    let era = z.div_euclid(146097);
+    let doe = z.rem_euclid(146097);
+    let yoe = (doe - doe / 1460 + doe / 36524 - doe / 146096) / 365;
+    let y = yoe + era * 400;
+    let doy = doe - (365 * yoe + yoe / 4 - yoe / 100);
+    let mp = (5 * doy + 2) / 153;
+    let d = doy - (153 * mp + 2) / 5 + 1;
+    let m = if mp < 10 { mp + 3 } else { mp - 9 };
+    let y = if m <= 2 { y + 1 } else { y };
+    format!("{y:04}-{m:02}-{d:02}T{:02}:{:02}:{:02}Z", secs / 3600, (secs % 3600) / 60, secs % 60)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -176,5 +259,33 @@ mod tests {
         let o = overview(&[], &[], NOW);
         assert_eq!((o.pipeline_value, o.weighted_value, o.won_this_month, o.open_deals, o.leads_new), (0.0, 0.0, 0.0, 0, 0));
         assert!(o.stage_counts.iter().all(|s| s.count == 0 && s.value == 0.0));
+    }
+
+    #[test]
+    fn pro7_gates_and_validators() {
+        for p in ["work.task.create", "work.task.update", "work.followThrough", "work.note", "work.note.save", "calendar.outcome.post"] {
+            assert!(pro_only(p).is_some(), "{p}");
+        }
+        assert!(pro_only("calendar.availability").is_none());
+        assert_eq!(task_title("  ab "), Some("ab".to_string()));
+        assert_eq!(task_title("a"), None);
+        assert_eq!(task_title(&"x".repeat(301)), None);
+        assert!(status_ok("waiting") && !status_ok("blocked") && !status_ok(""));
+        assert!(uuid_ok("123e4567-e89b-12d3-a456-426614174000") && !uuid_ok("1 or true"));
+        assert!(note_len_ok(&"a".repeat(20_000)) && !note_len_ok(&"a".repeat(20_001)));
+    }
+    #[test]
+    fn follow_through() {
+        assert_eq!(ft_class(Some(10), 10, 99), 0);
+        assert_eq!(ft_class(Some(11), 10, 99), 1);
+        assert_eq!(ft_class(None, 10, 99), 2);
+        assert_eq!(ft_class(None, 100, 99), 3);
+        let mut b = Bucket { made: 0, on_time: 0, late: 0, broken: 0 };
+        assert_eq!(ft_score(&b), None);
+        for c in [0u8, 0, 1, 2] { ft_add(&mut b, c); }
+        assert_eq!(b, Bucket { made: 4, on_time: 2, late: 1, broken: 1 });
+        assert_eq!(ft_score(&b), Some(63)); // (2+0.5)/4 = 62.5 -> 63
+        ft_add(&mut b, 3);
+        assert_eq!(b.made, 5);
     }
 }

@@ -82,6 +82,11 @@ for P in crm.pipelines.list crm.pipelines.save crm.pipelines.delete crm.fields.l
   gate "RUST $P (Pro)" "$P" '{}'
 done
 [ "$MODE" = pro ] && { chk "RUST crm.createLead bad email (400)" "$(rpc crm.createLead '{"email":"nope"}')" 400; chk "RUST crm.createDeal short title (400)" "$(rpc crm.createDeal '{"title":"x"}')" 400; chk "RUST crm.moveDeal bad stage (400)" "$(rpc crm.moveDeal '{"id":"x","stage":"bogus"}')" 400; chk "RUST crm.memory no email (400)" "$(rpc crm.memory '{}')" 400; chk "RUST crm.memory (Pro 200)" "$(rpc crm.memory '{"email":"nobody@example.com"}')" 200; chk "RUST crm.leads (Pro 200)" "$(rpc crm.leads '{"state":"new"}')" 200; chk "RUST crm.deals (Pro 200)" "$(rpc crm.deals '{}')" 200; chk "RUST crm.insights (Pro 200)" "$(rpc crm.insights '{}')" 200; }
+# --- Pro 7 (27 Oct): work.task.create/update, work.followThrough, work.note(.save), calendar.outcome.post. Basic = 403 (server gate); Pro = khali input par 400/200 (kuch banta nahi).
+for P in work.task.create work.task.update work.note.save calendar.outcome.post; do
+  chk "RUST $P (Pro)" "$(rpc $P '{}')" $([ "$MODE" = pro ] && echo 400 || echo 403)
+done
+for P in work.followThrough work.note; do chk "RUST $P (Pro)" "$(rpc $P '{}')" $GATED; done
 chk "RUST account.signup.events (all plans 200)" "$(rpc account.signup.events '{}')" 200
 chk "RUST account.signup.holds (all plans 200)" "$(rpc account.signup.holds '{}')" 200
 chk "RUST account.signup.state (all plans 200)" "$(rpc account.signup.state '{}')" 200

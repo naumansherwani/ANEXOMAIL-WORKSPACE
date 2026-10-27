@@ -54,6 +54,13 @@ for f in glob.glob('src/**/*.ts*', recursive=True):
             cl[norm(m.group(4))].add(m.group(2))
 # Verified 27 Oct 2026: yeh 7 Bun routes ka Rust proc live hai (mailx/crmd/analytics); client ya to template-literal path se bulata hai ya REST variant bulata hi nahi.
 ALIAS = {
+    ('calendar.ts', 'GET', '/api/work/tasks'): 'work.tasks',
+    ('calendar.ts', 'POST', '/api/work/tasks'): 'work.task.create',
+    ('calendar.ts', 'PATCH', '/api/work/tasks/:id'): 'work.task.update',
+    ('calendar.ts', 'GET', '/api/work/follow-through'): 'work.followThrough',
+    ('calendar.ts', 'GET', '/api/work/notes'): 'work.note',
+    ('calendar.ts', 'POST', '/api/work/notes'): 'work.note.save',
+    ('calendar.ts', 'POST', '/api/calendar/events/:id/outcome'): 'calendar.outcome.post',
     ('storage.ts', 'POST', '/api/storage/reserve'): 'storage.reserve',
     ('storage.ts', 'POST', '/api/storage/release'): 'storage.release',
     ('support.ts', 'GET', '/api/support/drafts'): 'support.drafts',

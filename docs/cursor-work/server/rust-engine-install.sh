@@ -17,7 +17,7 @@
 #   dav    -> server/rust/dav_core.rs    + dav_glue.rs    (CalDAV C1 sirf padhna: /dav/*, app password procs + secret calendar link /dav/feed/<key>.ics; Caddy alag: caddy-caldav.sh)  [pehle E80 + E81 SQL + .env CALDAV_PEPPER]
 #   wtrpc  -> server/rust/wtrpc_core.rs + wtrpc_glue.rs (WebTransport `/wt/rpc`: WASM kernel ka EK transport, har proc wohi dispatcher se; koi proc nahi rakhta)  [koi SQL nahi]
 #   analytics -> server/rust/analytics_core.rs + analytics_glue.rs (Analytics Center: response debt, thread economics, deep work, leaks, promise SLA, forecast, team, founder overview)  [pehle E89 SQL]
-#   workx  -> server/rust/workx_core.rs + workx_glue.rs (Pro: work.tasks, work.promises, crm.overview — Bun se Rust, Tokio async; gate Pro+)  [koi SQL nahi]
+#   workx  -> server/rust/workx_core.rs + workx_glue.rs (Pro: work.tasks, work.promises, crm.overview + 27 Oct: work.task.create/update, work.followThrough, work.note(.save), calendar.outcome.post — Bun se Rust, Tokio async; gate Pro+)  [koi SQL nahi]
 #   crmx   -> server/rust/crmx_core.rs + crmx_glue.rs (CRM P1+P2: pipelines, custom fields, duplicate merge, web forms; public crm.form.get/submit)  [pehle E92 SQL]
 #   trialx -> server/rust/trialx_core.rs + trialx_glue.rs (trial security/events/holds — Bun se Rust)
 #   authx  -> server/rust/authx_core.rs + authx_glue.rs (auth.session: profile+workspace+plan+orgs — har page-load, Bun GET /api/auth/session se Rust)
@@ -151,7 +151,7 @@ CFG={
  "mailx":  {"public": False, "label": "mail-pro-actions", "procs": ['"mail.snooze"','"mail.status"','"mail.move"','"mail.labels.update"','"mail.assign"','"mail.templates.save"','"mail.templates.delete"']},
  # analytics (Phase 24 / E89): Analytics Center ka asli backend. Package gate Rust mein (debt har plan, economics+deep work Pro+, baqi Business+). SQL E89 PEHLE.
  # workx: Work tasks + promise inbox + CRM overview (Pro+). Pehle Bun-only the (kernel_status_404 fallback). Gate Rust mein; koi SQL nahi.
- "workx": {"public": False, "label": "workx", "procs": ['"work.tasks"','"work.promises"','"crm.overview"']},
+ "workx": {"public": False, "label": "workx", "procs": ['"work.tasks"','"work.promises"','"crm.overview"','"work.task.create"','"work.task.update"','"work.followThrough"','"work.note"','"work.note.save"','"calendar.outcome.post"']},
  # crmx (Pro CRM P1+P2, founder "haan" 26 Oct): pipelines/fields/forms/merge. Gate Pro+ Rust mein; cap SQL function mein (race-free). SQL E92 PEHLE. Public: crm.form.get/submit (bina login).
  "crmx": {"public": True, "label": "crmx", "procs": ['"crm.pipelines.list"','"crm.pipelines.save"','"crm.pipelines.delete"','"crm.fields.list"','"crm.fields.save"','"crm.fields.delete"','"crm.custom.set"','"crm.dups.list"','"crm.merge"','"crm.forms.list"','"crm.forms.save"','"crm.forms.delete"','"crm.form.get"','"crm.form.submit"']},
  # livex (Rule 52 G3, Rule 56): crm.live (Pro+) + org.members. Pehle Bun-only the (kernel_status_404). Koi SQL nahi. workx_core (plan gate) + cal_core (parse_ts) chahiye.

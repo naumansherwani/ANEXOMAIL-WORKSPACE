@@ -126,16 +126,16 @@ calendar.ts,GET,/api/calendar/availability,pro,"Calendar Pro (availability, focu
 calendar.ts,GET,/api/calendar/focus,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.focus
 calendar.ts,GET,/api/calendar/load,business,Team report / team time,PP1 #16,RUST-FIRST,calendar.load
 calendar.ts,GET,/api/calendar/export,basic,Calendar core,PP1 #1,BUN-ONLY,
-calendar.ts,POST,/api/calendar/events/:id/outcome,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,BUN-ONLY,
-calendar.ts,GET,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
-calendar.ts,POST,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
-calendar.ts,PATCH,/api/work/tasks/:id,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
+calendar.ts,POST,/api/calendar/events/:id/outcome,pro,"Calendar Pro (availability, focus, goal/outcome)",PP1 #3b,RUST-FIRST,calendar.outcome.post
+calendar.ts,GET,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.create
+calendar.ts,POST,/api/work/tasks,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.create
+calendar.ts,PATCH,/api/work/tasks/:id,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.task.update
 calendar.ts,GET,/api/work/promises,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.promises
 calendar.ts,POST,/api/work/promises/:id/commit,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.promise.commit
 calendar.ts,POST,/api/work/promises/:id/dismiss,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.promise.dismiss
-calendar.ts,GET,/api/work/follow-through,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
-calendar.ts,GET,/api/work/notes,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
-calendar.ts,POST,/api/work/notes,pro,"WORK (tasks, promises, notes)",PP1 #15,BUN-ONLY,
+calendar.ts,GET,/api/work/follow-through,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.followThrough
+calendar.ts,GET,/api/work/notes,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.note
+calendar.ts,POST,/api/work/notes,pro,"WORK (tasks, promises, notes)",PP1 #15,RUST-FIRST,work.note
 chat.ts,GET,/api/bootstrap,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
 chat.ts,GET,/api/conversations,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
 chat.ts,POST,/api/conversations/direct,business,ANEXOChat + work-layer + video (Bu+),PP1 #23-26,BUN-ONLY,
