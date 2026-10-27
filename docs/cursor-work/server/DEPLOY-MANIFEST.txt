@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 6ad3824ae05dc3c8
+docs/cursor-work/founder/founder-commands.md 6614ccfa3109f469
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -874,5 +874,5 @@ src/components/ui/sonner.tsx 6acb1d49aee92de0
 src/lib/i18n.ts da79a8e10a34830b
 src/components/app/files/AttachmentChip.tsx 68e1fbdeb8e34251
 docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md f0db8d47c2645a9b
-docs/claude/FOUNDER-PROTOCOL-28OCT.md 7f739b305ecf3d91
-docs/claude/FOUNDER-BUILD-PLAN-28OCT.md 782d43a13df6d3f9
+docs/claude/FOUNDER-PROTOCOL-28OCT.md 3861bbb2cb5554f4
+docs/claude/FOUNDER-BUILD-PLAN-28OCT.md f4b7f0f0bf653285

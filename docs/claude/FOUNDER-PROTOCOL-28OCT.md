@@ -44,3 +44,6 @@ Level 1 dekhna (metadata), Level 2 actions (suspend/restore, rate-limit, force s
 - **F1b Foundation:** Rust `server/founder/` (axum/tokio), static SPA serve, passkey+device+IP, audit chain, command bar.
 - **F2 Bridge** (data = `founder.brain.command`) -> F3 Money+Release -> F4 People (global user/org 360) -> F5 Mail Desk -> F6 Systems+Move-In -> F7 3D -> F8 Control -> F9 cutover (36 purane Lovable route files band). AI pages (10) Rule 23: band rahengi.
 - Har F: sandbox proof -> founder server output -> 390/820/1440 Chrome -> tab GREEN.
+
+## 8. Nexatect (parent company) login — LATER (founder 28 Oct 04:59)
+`naumansherwani.founder@nexatect.com` ke liye ALAG login/surface banega, jis mein parent company (Nexatect) ka sab kuch hoga. **anexomail.com puri website banne ke BAAD**, abhi nahi. Tab tak ANEXOMAIL founder protocol sirf anexomail.com identity par; nexatect ke addresses ka kaam phase F5+ ke baad (FOUNDER-WORKSPACE-PLAN §3).

@@ -57,6 +57,6 @@ AI founder pages (10): Rule 23 — in phases mein nahi, band.
 founder-commands.md (verbatim hukm + halat) · DONE-DO-NOT-REPEAT.md (kya ho chuka) · yeh file (phase table ki halat) · ENDPOINT-PACKAGE-MAP (naya proc) · manifest sync/verify · commit+push.
 
 ## 5. Khule sawal (founder se, ek ek)
-1. nexatect.com founder account server par hai? Wo form se login nahi ho sakta — rakhna hai (to alag login raasta) ya list se hatana?
+1. **FAISLA (founder 28 Oct 04:59): nexatect.com = ALAG login, parent company ka sab kuch usi mein; ANEXOMAIL.COM puri website banne ke BAAD banega.** Tab tak founder = sirf `naumansherwani.founder@anexomail.com`; F1a mein nexatect email ko dusri identity ke taur par rakhna/hatana us waqt tay (abhi koi kaam nahi, koi risk list se hat'ta hai to bhi founder ko asar nahi).
 2. UI build-time JS toolchain (React sulah, mera default) ya pure-Rust Leptos?
 3. Founder service ka port/naam (F1b par live Caddy + pm2 padh kar tay hoga).

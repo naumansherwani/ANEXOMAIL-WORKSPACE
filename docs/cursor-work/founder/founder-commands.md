@@ -7,6 +7,9 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+## ▶ 28 Oct 04:59 PKT — founder: nexatect.com ke liye ALAG login banega (parent company ka sab kuch), **anexomail.com puri website banne ke BAAD** — repo mein likho. (Baqi 2 sawal: UI build = React default, port/naam F1b par; founder ne naya jawab nahi diya.)
+Halat: DONE (FOUNDER-PROTOCOL §8 + BUILD-PLAN §5). Founder ka Chrome tab (pehle se login) mujhe nazar nahi aata — mere tab group mein nahi; founder tab group mein lane ya URL de.
+
 ## ▶ 28 Oct 04:53 PKT — founder (verbatim ka matlab): "Yeh chat compact ho jaye ga. Founder ko banane se PEHLE plan karo, phases banao taake smooth bane. Founder tumhare hisab se kaisa hoga yeh banao. JALDI MAT KARO. Chrome bhi dekho (login hai). Founder ki technology batao. BUN RETIRED hai — founder mein Bun NAHI hoga. Tarteeb se cheezein banengi. Baqi sab baatein SAATH KE SAATH likhte jao warna Claude bhool jayega. FOUNDER ka UI technology dekho, backend technology dekho."
 Halat: TODO plan (docs/claude/FOUNDER-BUILD-PLAN-28OCT.md). Koi code nahi jab tak plan founder dekh na le. F1a abhi shuru NAHI.
 
