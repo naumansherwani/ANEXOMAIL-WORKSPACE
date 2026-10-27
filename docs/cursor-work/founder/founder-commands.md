@@ -1541,3 +1541,19 @@ pm2 restart anexomail-rust --update-env && pm2 save >/dev/null && sleep 3 && cur
 - Date-wise: 27 Oct 07:29 idea -> 07:5x kernel intent@1 (0.3.0) + E97 + promx -> 08:0x E97 fix #1 (thread_subject) -> 08:1x Live Ink + filectx@1 (0.4.0) + E99 -> 08:2x E97 fix #2 (selftest FK/rollback) -> server par.
 - Rust promx (commit.* + file.context): founder ne chalane ka kaha; installer output CEO ne nahi dekha => LIVE SABOOT BAAKI (nakli token 401 / asli token jawab).
 - Agla: Rust saboot + live Chrome (pro.buyer2) badge/cost/file card/Live Ink/send->Tasks+Calendar/commit.verify; phir cross-package connect, booking link, 20-user cap, Cancel-send test mail; phir Pro GREEN declare. Founder rules: privacy breach nahi; "bun" lafz test-runner ke liye bhi nahi (Bun server nahi); commands sirf repo-written, expanded format.
+
+## 27 Oct 2026 09:24 PKT — E100 (plan x plan interop, 577 lines) + web pull (Live Ink colour, Check promise seal)
+E100 file repo mein hai: docs/cursor-work/sql/E100_plan_interop_matrix.sql (+ CHECK_E100.sql). Server par DO tareeqe:
+
+A) Auto (sql-run.sh khud E100 + CHECK_E100 chalata hai):
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -6
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)
+```
+
+B) Supabase SQL editor mein khud paste karna ho — SQL screen par chhapne ke liye (phir copy karke editor mein run, phir CHECK):
+```bash
+git -C /opt/anexomail-web fetch -q origin main && git -C /opt/anexomail-web show origin/main:docs/cursor-work/sql/E100_plan_interop_matrix.sql
+git -C /opt/anexomail-web show origin/main:docs/cursor-work/sql/CHECK_E100.sql
+```
+CHECK_E100 ki har row 'true' honi chahiye (13 rows). Dobara chalana safe.
