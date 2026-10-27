@@ -29,6 +29,8 @@ export const GhostTextArea = forwardRef<
     className?: string;
     /** Prediction off (Calm Mode / user setting) — composer wahi rehta hai. */
     predictionEnabled?: boolean;
+    /** Live Ink: naye likhe akshar logo ke rang mein behte hain, caret logo-gradient mein blink karta hai. Reduced-motion / Calm par apne aap band. */
+    liveInk?: boolean;
   }
 >(function GhostTextArea(
   {
@@ -44,12 +46,20 @@ export const GhostTextArea = forwardRef<
     ariaLabel = "Message",
     className,
     predictionEnabled = true,
+    liveInk = true,
   },
   forwardedRef,
 ) {
   const inner = useRef<HTMLTextAreaElement | null>(null);
   const mirror = useRef<HTMLDivElement | null>(null);
   const [caret, setCaret] = useState(0);
+  const [focused, setFocused] = useState(false);
+  const [hasSel, setHasSel] = useState(false);
+  const [ink, setInk] = useState<{ from: number; to: number } | null>(null);
+  const inkTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevLen = useRef(value.length);
+  const motionOk = useMotionOk();
+  const inkOn = liveInk && motionOk;
 
   const setRefs = (node: HTMLTextAreaElement | null) => {
     inner.current = node;
@@ -100,18 +110,41 @@ export const GhostTextArea = forwardRef<
 
   return (
     <div className="relative">
-      {showGhost && (
+      {(showGhost || (inkOn && focused && !hasSel)) && (
         <div
           ref={mirror}
           aria-hidden="true"
           className={cn(
-            "pointer-events-none absolute inset-0 overflow-hidden whitespace-pre-wrap break-words",
+            "pointer-events-none absolute inset-0 z-10 overflow-hidden whitespace-pre-wrap break-words",
             "rounded-md border border-transparent px-3 py-2 text-base md:text-sm",
           )}
         >
-          {/* typed text invisible — sirf jagah banata hai */}
-          <span className="text-transparent">{value.slice(0, caret)}</span>
-          <span className="text-steel/60 italic">{prediction.insertion}</span>
+          {/* typed text invisible — sirf jagah banata hai; naye akshar (Live Ink) us ke upar logo ke rang mein */}
+          {(() => {
+            const inkOk =
+              inkOn && ink && ink.to <= caret && ink.from < ink.to && ink.to <= value.length;
+            const from = inkOk ? ink.from : caret;
+            const to = inkOk ? ink.to : caret;
+            return (
+              <>
+                <span className="text-transparent">{value.slice(0, from)}</span>
+                {inkOk
+                  ? Array.from(value.slice(from, to)).map((ch, i) => (
+                      <span
+                        key={`${from}-${i}`}
+                        className="ax-ink"
+                        style={{ animationDelay: `${i * -90}ms` }}
+                      >
+                        {ch}
+                      </span>
+                    ))
+                  : null}
+                <span className="text-transparent">{value.slice(to, caret)}</span>
+              </>
+            );
+          })()}
+          {inkOn && focused && !hasSel ? <span className="ax-caret" /> : null}
+          {showGhost ? <span className="text-steel/60 italic">{prediction.insertion}</span> : null}
         </div>
       )}
 
@@ -123,10 +156,40 @@ export const GhostTextArea = forwardRef<
         rows={rows}
         value={value}
         placeholder={placeholder}
-        className={cn("relative bg-transparent", className)}
+        className={cn(
+          "relative bg-transparent",
+          inkOn && focused && !hasSel && "caret-transparent",
+          className,
+        )}
         onChange={(e) => {
-          onChange(e.target.value);
-          setCaret(e.target.selectionStart ?? e.target.value.length);
+          const next = e.target.value;
+          const pos = e.target.selectionStart ?? next.length;
+          if (inkOn) {
+            const grew = next.length - prevLen.current;
+            if (grew > 0 && grew <= 12) {
+              const from = pos - grew;
+              setInk((cur) =>
+                cur && cur.to === from
+                  ? { from: Math.max(cur.from, pos - 8), to: pos }
+                  : { from, to: pos },
+              );
+              if (inkTimer.current) clearTimeout(inkTimer.current);
+              inkTimer.current = setTimeout(() => setInk(null), 1100);
+            } else setInk(null); // delete / bada paste: sirf saada text
+          }
+          prevLen.current = next.length;
+          onChange(next);
+          setCaret(pos);
+          setHasSel(false);
+        }}
+        onFocus={() => setFocused(true)}
+        onBlur={() => {
+          setFocused(false);
+          setInk(null);
+        }}
+        onSelect={(e) => {
+          const t = e.target as HTMLTextAreaElement;
+          setHasSel(t.selectionStart !== t.selectionEnd);
         }}
         onClick={(e) => setCaret((e.target as HTMLTextAreaElement).selectionStart ?? 0)}
         onKeyUp={(e) => setCaret((e.target as HTMLTextAreaElement).selectionStart ?? 0)}
@@ -160,3 +223,30 @@ export const GhostTextArea = forwardRef<
     </div>
   );
 });
+
+/** Motion ki ijazat: OS reduced-motion, app ka Calm mode ya Motion=reduced par Live Ink band. */
+function useMotionOk(): boolean {
+  const read = () => {
+    if (typeof window === "undefined") return false;
+    const root = document.documentElement;
+    if (root.hasAttribute("data-ax-calm") || root.getAttribute("data-ax-motion") === "reduced")
+      return false;
+    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  };
+  const [ok, setOk] = useState(read);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const on = () => setOk(read());
+    mq.addEventListener("change", on);
+    const mo = new MutationObserver(on);
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["data-ax-calm", "data-ax-motion"],
+    });
+    return () => {
+      mq.removeEventListener("change", on);
+      mo.disconnect();
+    };
+  }, []);
+  return ok;
+}
