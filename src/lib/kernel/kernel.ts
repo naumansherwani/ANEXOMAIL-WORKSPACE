@@ -31,6 +31,8 @@ export type IntentPromise = {
   phrase: string; action: string; due_date: string | null; due_label: string | null; due_exact: boolean; confidence: number; lang: "en" | "ur";
 };
 export type IntentScan = { promises: IntentPromise[] };
+export type FileMention = { phrase: string; query: string; explicit: boolean; latest: boolean };
+export type FileScan = { mentions: FileMention[] };
 export type IntentCost = {
   seconds_each: number; seconds_total: number; cost_minor: number; call_minutes: number; call_cost_minor: number; suggest_call: boolean; saving_minor: number;
 };
@@ -62,6 +64,7 @@ type Exports = {
   rank_run(qp: number, ql: number, ip: number, il: number, limit: number): number;
   intent_scan(tp: number, tl: number, nowUnix: bigint, tzMin: number): number;
   intent_cost(words: number, recipients: number, rate: number, wpm: number): number;
+  filectx_scan(tp: number, tl: number): number;
   live_start(up: number, ul: number, tp: number, tl: number, seed: number): number;
   live_set_token(h: number, tp: number, tl: number): void;
   live_stop(h: number): void;
@@ -353,6 +356,13 @@ export class Kernel {
   intentCost(words: number, recipients: number, rateMinorPerHour: number, wpm = 0): IntentCost {
     const n = this.x.intent_cost(Math.max(0, words | 0), Math.max(0, recipients | 0), Math.max(0, rateMinorPerHour | 0), Math.max(0, wpm | 0));
     return JSON.parse(new TextDecoder().decode(this.out(n))) as IntentCost;
+  }
+
+  /** Email text mein file ka zikr ("the latest CRM sheet", "Q3_budget.xlsx"): sirf pehchaan, asli file server se aati hai. */
+  fileScan(text: string): FileScan {
+    const t = enc.encode(text.slice(0, 20000));
+    const n = this.withBytes(t, (p) => this.x.filectx_scan(p.ptr, p.len));
+    return JSON.parse(new TextDecoder().decode(this.out(n))) as FileScan;
   }
 
   liveStart(url: string, token: string, l: LiveListener): { setToken: (t: string) => void; stop: () => void } {

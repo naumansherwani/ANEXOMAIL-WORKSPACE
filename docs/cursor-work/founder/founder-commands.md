@@ -1527,3 +1527,11 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 pm2 restart anexomail-rust --update-env && pm2 save >/dev/null && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
 ```
 - Phir Chrome (Ctrl+Shift+R) pro.buyer2: Compose mein "I will send you the details by Friday." likho => badge "Detecting a Promise" => Task + Calendar => To mein 10 pate + lambi email => cost line.
+
+## 27 Oct 2026 08:15 PKT — DEPLOY (kernel 0.4.0 + E97 fix + E98 + E99 + Rust promx file.context + Live Ink). Tarteeb: web -> SQL -> Rust
+```bash
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -6
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)
+git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-engine-install.sh) 2>&1 | tail -6
+pm2 restart anexomail-rust --update-env && pm2 save >/dev/null && sleep 3 && curl -s -o /dev/null -w "rust /rpc/health %{http_code}\n" --max-time 5 http://127.0.0.1:3200/rpc/health
+```

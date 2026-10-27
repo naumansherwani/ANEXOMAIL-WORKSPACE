@@ -188,3 +188,98 @@ export async function recordEconomics(input: {
     /* log hai, send ko kabhi nahi rokta */
   }
 }
+
+/* ───────────────────────── File Context (E99) ───────────────────────── */
+export type FileVersion = {
+  id: string;
+  filename: string;
+  version: number;
+  size_bytes: number;
+  sent_at: string | null;
+  thread_id: string | null;
+  thread_subject: string | null;
+  direction: string | null;
+  by_name: string | null;
+  by_address: string | null;
+  same_as_older: boolean | null;
+  size_delta: number | null;
+};
+export type FileFamily = {
+  stem: string;
+  total_versions: number;
+  latest: string;
+  versions: FileVersion[];
+};
+export type FileHit = {
+  phrase: string;
+  query: string;
+  explicit: boolean;
+  latest: boolean;
+  files: FileFamily[];
+};
+
+/** Email text mein file ka zikr (kernel) -> server se asli file ka sach. Kuch na mile to khamosh (koi card nahi). */
+export function useFileContext(body: string, enabled: boolean): FileHit[] {
+  const deferred = useDeferredValue(body);
+  const [stable, setStable] = useState(deferred);
+  const [ready, setReady] = useState(() => kernelIfReady() !== null);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const t = setTimeout(() => setStable(deferred), 700); // file ka zikr likh kar rukne par hi server se poochho
+    return () => clearTimeout(t);
+  }, [deferred, enabled]);
+  useEffect(() => {
+    if (!enabled || ready) return;
+    let live = true;
+    void getKernel().then((k) => live && k && setReady(true));
+    return () => {
+      live = false;
+    };
+  }, [enabled, ready]);
+
+  const mentions = useMemo(() => {
+    const k = enabled ? kernelIfReady() : null;
+    if (!k) return [];
+    try {
+      return k.fileScan(ownText(stable)).mentions.slice(0, 2);
+    } catch {
+      return [];
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [stable, enabled, ready]);
+
+  const q = useQuery<FileHit[]>({
+    queryKey: ["file.context", mentions.map((m) => m.query)],
+    enabled: enabled && mentions.length > 0,
+    staleTime: 60_000,
+    retry: false,
+    queryFn: async () => {
+      const out: FileHit[] = [];
+      for (const m of mentions) {
+        try {
+          const r = await rpc<{ ok: boolean; files: FileFamily[] }>("file.context", {
+            query: m.query,
+            limit: 2,
+          });
+          if (r.ok && r.files.length > 0) out.push({ ...m, files: r.files });
+        } catch {
+          /* ek zikr fail ho to baqi chalein */
+        }
+      }
+      return out;
+    },
+  });
+  return enabled && mentions.length > 0 ? (q.data ?? []) : [];
+}
+
+/** Email mein daalne wali ek line: "Latest: CRM_sheet_FINAL.xlsx (v3 of 3 · 1.5 kB · from Ayesha, 26 Oct)". */
+export function referenceLine(f: FileFamily, size: (n: number) => string): string {
+  const v = f.versions[0];
+  if (!v) return "";
+  const who = v.direction === "out" ? "you" : v.by_name || v.by_address || "sender";
+  const when = v.sent_at
+    ? new Date(v.sent_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })
+    : "";
+  return `Latest: ${v.filename} (v${v.version} of ${f.total_versions} · ${size(v.size_bytes)} · from ${who}${when ? `, ${when}` : ""})`;
+}

@@ -201,7 +201,7 @@ CFG={
  # contx (Rule 52/56): People/Companies/search — Basic+Pro dono (PP1 #10,#17,#31,#34), koi plan gate nahi. Koi SQL nahi.
  "contx": {"public": False, "label": "contx", "procs": ['"contacts.list"','"contacts.tags"','"contacts.get"','"contacts.update"','"contacts.tag"','"contacts.timeline"','"companies.list"','"companies.get"','"companies.timeline"','"search.universal"']},
  # promx (Rule 52/56, compose Business Outcomes, Pro): wada (promise) HMAC-sealed ledger + thread economics. SQL E97 PEHLE. Gate Pro+ Rust mein.
- "promx": {"public": False, "label": "promx", "procs": ['"commit.record"','"commit.status"','"commit.list"','"commit.verify"','"commit.economics"','"commit.rate"','"commit.rateSet"']},
+ "promx": {"public": False, "label": "promx", "procs": ['"commit.record"','"commit.status"','"commit.list"','"commit.verify"','"commit.economics"','"commit.rate"','"commit.rateSet"','"file.context"']},
  # authx (Rule 52/56): `auth.session` — har page-load par chalne wali session/profile read. Sirf login. Koi SQL nahi. Login/refresh/logout Bun par (alag migration).
  "authx": {"public": False, "label": "authx", "procs": ['"auth.session"']},
  "trialx": {"public": False, "label": "trialx", "procs": ['"account.signup.security"','"account.signup.events"','"account.signup.holds"']},

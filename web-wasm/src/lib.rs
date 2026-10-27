@@ -8,6 +8,7 @@
 //!   JS imports  : env.host_wake / env.host_call / env.host_emit (sys.rs)
 #![allow(async_fn_in_trait)] // Transport/Host/Sink sirf is crate ke andar, ek thread (LocalSet) — Send bound ki zaroorat nahi
 pub mod exec;
+pub mod filectx;
 pub mod frame;
 pub mod hash;
 pub mod intent;
@@ -23,9 +24,9 @@ use std::collections::HashMap;
 use std::rc::Rc;
 
 pub const ABI: u32 = 1;
-pub const VERSION: (u32, u32, u32) = (0, 3, 0);
+pub const VERSION: (u32, u32, u32) = (0, 4, 0);
 /// Naam@module-version. Naya module ya badla hua module => yahan entry + VERSION bump (Cargo.toml bhi).
-pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1"];
+pub const MODULES: &[&str] = &["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1"];
 
 thread_local! {
     static OUT: RefCell<Vec<u8>> = const { RefCell::new(Vec::new()) };
@@ -162,6 +163,12 @@ pub extern "C" fn intent_cost(words: u32, recipients: u32, rate_minor_per_hour: 
     set_out(intent::cost_json(words, recipients, rate_minor_per_hour, wpm).into_bytes())
 }
 
+/// Email text mein file ka zikr: {"mentions":[{phrase,query,explicit,latest}]} (kernel_out), length wapas.
+#[unsafe(no_mangle)]
+pub extern "C" fn filectx_scan(ptr: u32, len: u32) -> u32 {
+    set_out(filectx::scan_json(unsafe { text(ptr, len) }).into_bytes())
+}
+
 /* -------------------------------------------------------------------- live */
 #[unsafe(no_mangle)]
 pub extern "C" fn live_start(url_ptr: u32, url_len: u32, tok_ptr: u32, tok_len: u32, seed: u32) -> u32 {
@@ -229,7 +236,7 @@ mod tests {
         let ver = j.iter().find(|(k, _)| k == "version").unwrap().1.clone();
         assert_eq!(ver, env!("CARGO_PKG_VERSION"), "VERSION bump Cargo.toml ke saath");
         assert!(info_json().contains("\"abi\":1"));
-        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1"] {
+        for m in ["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1"] {
             assert!(info_json().contains(m), "{m}");
         }
     }

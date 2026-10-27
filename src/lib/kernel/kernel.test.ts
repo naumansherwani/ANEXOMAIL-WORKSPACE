@@ -100,7 +100,7 @@ describe("kernel wasm — load, pin, version", () => {
     const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
     expect(k.info.version).toBe(KERNEL_PIN.version);
     expect(k.info.abi).toBe(1);
-    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1"]);
+    expect(k.info.modules).toEqual(["sha256@1", "hmac@1", "sniff@1", "rank@1", "live@1", "rpc@1", "intent@1", "filectx@1"]);
     const cargo = readFileSync("web-wasm/Cargo.toml", "utf8").match(/^version\s*=\s*"([^"]+)"/m)?.[1];
     expect(cargo).toBe(KERNEL_PIN.version);
   });
@@ -372,5 +372,16 @@ describe("kernel — intent@1: promise scan + attention cost (real wasm)", () =>
     expect([a.seconds_each, a.seconds_total, a.cost_minor, a.suggest_call]).toEqual([118, 1180, 3278, false]);
     const b = k.intentCost(1500, 10, 10_000, 220);
     expect([b.cost_minor, b.suggest_call, b.saving_minor]).toEqual([11611, true, 7944]);
+  });
+});
+
+describe("kernel — filectx@1: file mentions (real wasm)", () => {
+  test("finds a named latest file and an explicit filename, stays quiet on generic nouns", async () => {
+    const k = await Kernel.load({ bytes: bytes(), sha256: KERNEL_PIN.sha256 });
+    const r = k.fileScan("Please open the latest CRM sheet and Q3_budget.xlsx.\nI will review the report tomorrow.");
+    expect(r.mentions.map((m) => m.query)).toEqual(["q3 budget", "crm sheet"].sort((a, b) => r.mentions.findIndex((m) => m.query === a) - r.mentions.findIndex((m) => m.query === b)));
+    expect(r.mentions.find((m) => m.query === "crm sheet")?.latest).toBe(true);
+    expect(r.mentions.find((m) => m.query === "q3 budget")?.explicit).toBe(true);
+    expect(k.fileScan("see you soon").mentions).toEqual([]);
   });
 });

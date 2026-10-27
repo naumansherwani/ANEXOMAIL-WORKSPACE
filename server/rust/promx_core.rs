@@ -8,7 +8,7 @@
 pub const NO_ACCESS: &str = "Promise tracking and thread economics are on Pro and above.";
 
 pub fn owns_name(proc: &str) -> bool {
-    matches!(proc, "commit.record" | "commit.status" | "commit.list" | "commit.verify" | "commit.economics" | "commit.rate" | "commit.rateSet")
+    matches!(proc, "commit.record" | "commit.status" | "commit.list" | "commit.verify" | "commit.economics" | "commit.rate" | "commit.rateSet" | "file.context")
 }
 
 /// SQL commitment_set_status() ke saath mel: fulfilled / broken / snoozed / cancelled.
@@ -90,6 +90,21 @@ pub fn clamp_counts(words: i64, recipients: i64) -> (i64, i64) {
     (words.max(0).min(200_000), recipients.max(0).min(500))
 }
 
+/// File dhoondne ka sawal: control chars hata kar, 2..=120 akshar. Jo sirf punctuation ho woh nahi.
+pub fn clean_file_query(raw: &str) -> Option<String> {
+    let t: String = raw.chars().filter(|c| !c.is_control()).collect::<String>().split_whitespace().collect::<Vec<_>>().join(" ");
+    let n = t.chars().count();
+    if !(2..=120).contains(&n) || !t.chars().any(|c| c.is_alphanumeric()) {
+        None
+    } else {
+        Some(t)
+    }
+}
+
+pub fn file_limit(n: i64) -> i64 {
+    n.max(1).min(5)
+}
+
 pub const RATE_MIN: i64 = 100; // minor unit / ghanta (£1)
 pub const RATE_MAX: i64 = 1_000_000; // £10,000
 pub fn rate_ok(minor: i64) -> bool {
@@ -138,6 +153,14 @@ mod tests {
         assert_eq!(v, vec!["a@x.com".to_string(), "z@y.org".to_string()]);
         let many: Vec<String> = (0..50).map(|i| format!("u{i}@x.com")).collect();
         assert_eq!(clean_to(&many).len(), 20);
+    }
+
+    #[test]
+    fn file_query_and_limit() {
+        assert_eq!(clean_file_query("  crm \u{0} sheet ").as_deref(), Some("crm sheet"));
+        assert!(clean_file_query("a").is_none() && clean_file_query("!!").is_none() && clean_file_query(&"x".repeat(121)).is_none());
+        assert_eq!((file_limit(0), file_limit(3), file_limit(99)), (1, 3, 5));
+        assert!(owns_name("file.context"));
     }
 
     #[test]

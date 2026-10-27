@@ -20,6 +20,7 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { useEffect, useMemo, useRef, useState } from "react";
 
+import { FileContextCard } from "@/components/app/compose/FileContextCard";
 import { GhostTextArea } from "@/components/app/compose/GhostTextArea";
 import {
   OutcomesBar,
@@ -59,6 +60,7 @@ import {
   recordPromises,
   recipientList,
   useAttentionRate,
+  useFileContext,
   useOutcomes,
 } from "@/lib/outcomes";
 import { removeAttachment, uploadAttachment, useAttachLimits } from "@/lib/mail-attachments";
@@ -156,6 +158,8 @@ export function ComposeStudio({
   const attentionRate = useAttentionRate(proMail);
   const rate = attentionRate.data ?? DEFAULT_RATE;
   const outcomes = useOutcomes(body, [to, cc, bcc], rate, proMail);
+  const fileHits = useFileContext(body, proMail);
+  const [dismissedFiles, setDismissedFiles] = useState<Set<string>>(() => new Set());
   // G38 — attachments: upload turant (Rust), bhejte waqt sirf ids jati hain
   const [files, setFiles] = useState<AttachItem[]>([]);
   const filesRef = useRef<AttachItem[]>([]);
@@ -767,6 +771,17 @@ export function ComposeStudio({
               : "Write the message."
           }
         />
+
+        {proMail ? (
+          <FileContextCard
+            hits={fileHits}
+            dismissed={dismissedFiles}
+            onDismiss={(q) => setDismissedFiles((d) => new Set(d).add(q))}
+            onInsert={(line) =>
+              line && setBody((b) => `${b}${b.endsWith("\n") || b === "" ? "" : "\n"}${line}`)
+            }
+          />
+        ) : null}
 
         {proMail ? (
           <OutcomesBar

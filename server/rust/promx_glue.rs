@@ -5,6 +5,7 @@
 //   commit.list {}                                -> {commitments:[...]}         (apne khule wade, due ke hisaab se)
 //   commit.verify {}                              -> {ok,rows,head}              (HMAC-SHA256 chain dobara hisaab; kharab to bad_seq)
 //   commit.economics {thread_id?,words,recipients,call_accepted?} -> attention_estimate + log id   (send par)
+//   file.context {query,limit?}                   -> {ok,files:[{stem,total_versions,latest,versions:[...]}]}  (SQL E99: sirf apni org ki mail ke attachments)
 //   commit.rate {} / commit.rateSet {rate_minor_per_hour,wpm,currency}  -> org ka hourly rate (default £60/ghanta)
 // SQL E97 PEHLE (commitment_record, commitment_set_status, commitment_verify, attention_estimate, thread_economics_record, org_attention_rates).
 // Gate Pro+ (Basic 403 feature_not_available). Hisaab promx_core.rs (std-only, tested).
@@ -69,6 +70,7 @@ pub async fn dispatch(proc: &str, token: &str, input: &Value) -> Resp {
         "commit.economics" => economics(&me, input).await,
         "commit.rate" => rate(&me).await,
         "commit.rateSet" => rate_set(&me, input).await,
+        "file.context" => file_context(&me, input).await,
         // 404 sirf "yeh proc Rust ke paas nahi" (Rule 59); baaqi domain errors 400/409.
         _ => fail(StatusCode::NOT_FOUND, "unknown_proc", proc),
     }
@@ -180,5 +182,16 @@ async fn rate_set(me: &crate::MailMe, input: &Value) -> Resp {
     match crate::sb_upsert("org_attention_rates", "org_id", row).await {
         Ok(_) => crate::ok(json!({ "ok": true })).into_response(),
         Err(e) => fail(StatusCode::CONFLICT, "rate_failed", &e.chars().take(200).collect::<String>()),
+    }
+}
+
+async fn file_context(me: &crate::MailMe, input: &Value) -> Resp {
+    let Some(q) = c::clean_file_query(&st(input, "query")) else {
+        return fail(StatusCode::BAD_REQUEST, "bad_query", "query must be 2-120 characters");
+    };
+    let limit = c::file_limit(num(input, "limit").max(1));
+    match crate::sb_rpc("file_context_find", json!({ "p_org": me.org_id, "p_query": q, "p_limit": limit })).await {
+        Ok(v) => crate::ok(v).into_response(),
+        Err(e) => fail(StatusCode::CONFLICT, "file_context_failed", &e.chars().take(200).collect::<String>()),
     }
 }

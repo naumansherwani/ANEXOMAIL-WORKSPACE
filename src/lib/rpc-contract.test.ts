@@ -35,7 +35,7 @@ describe("rpc contract == Rust server gates", () => {
 
   test("workx pro_only procs are all 'pro' in the contract", () => {
     const procs = quoted(rs("workx_core.rs").slice(rs("workx_core.rs").indexOf("pub fn pro_only"), rs("workx_core.rs").indexOf("pub fn plan_allows_pro")));
-    expect(procs.sort()).toEqual(["crm.overview", "work.promises", "work.tasks"]);
+    expect(procs.sort()).toEqual(["calendar.outcome.post", "crm.overview", "work.followThrough", "work.note", "work.note.save", "work.promises", "work.task.create", "work.task.update", "work.tasks"]);
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
   });
 
@@ -54,7 +54,7 @@ describe("rpc contract == Rust server gates", () => {
 
   test("promx: every compose Business Outcomes proc is 'pro' in the contract and in the Rust gate", () => {
     const procs = quoted(fnBody(rs("promx_core.rs"), "owns_name"));
-    expect(procs.sort()).toEqual(["commit.economics", "commit.list", "commit.rate", "commit.rateSet", "commit.record", "commit.status", "commit.verify"]);
+    expect(procs.sort()).toEqual(["commit.economics", "commit.list", "commit.rate", "commit.rateSet", "commit.record", "commit.status", "commit.verify", "file.context"]);
     for (const p of procs) expect(minPlanOf(p), p).toBe("pro");
     const hits = rs("promx_glue.rs").split("\n").filter((l) => l.includes("StatusCode::NOT_FOUND"));
     expect(hits.length).toBe(2); // owns() guard + default arm, dono "unknown_proc"
