@@ -4,12 +4,16 @@ import { toast } from "sonner";
  * Toast system — Phase 4.
  * One voice for every transient message. Rules:
  * - a toast reports something that already happened, never a question
- * - success is short and silent-ish (2.6s), errors stay until dismissed
+ * - success is short and silent-ish (2.6s); errors stay 12s (or until dismissed with the X), longer only when they carry a Retry
  * - every failure toast carries a retry action when a retry is possible
  * - never used for validation inside a form — that belongs on the field
  */
 
 const DURATION_OK = 2600;
+const DURATION_ERR = 12000;
+
+/** Same message = same toast (replaces, never stacks). */
+const idOf = (message: string, description?: string) => `${message}|${description ?? ""}`.slice(0, 160);
 
 export const notify = {
   done(message: string, description?: string) {
@@ -25,8 +29,10 @@ export const notify = {
     options?: { description?: string; retry?: () => void; retryLabel?: string },
   ) {
     return toast.error(message, {
+      id: idOf(message, options?.description),
       description: options?.description,
-      duration: Infinity,
+      duration: options?.retry ? 30000 : DURATION_ERR,
+      dismissible: true,
       action: options?.retry
         ? { label: options.retryLabel ?? "Retry", onClick: options.retry }
         : undefined,

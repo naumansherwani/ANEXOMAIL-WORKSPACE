@@ -12,6 +12,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme="dark"
       position="bottom-right"
       visibleToasts={3}
+      closeButton
+      richColors={false}
       gap={10}
       className="toaster group"
       toastOptions={{
@@ -20,6 +22,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
             "group toast ax-plane group-[.toaster]:rounded-xl group-[.toaster]:text-foreground group-[.toaster]:shadow-elev-2 group-[.toaster]:py-3",
           title: "group-[.toast]:ax-label",
           description: "group-[.toast]:ax-caption",
+          closeButton:
+            "group-[.toast]:!left-auto group-[.toast]:!right-2 group-[.toast]:!top-2 group-[.toast]:!translate-x-0 group-[.toast]:!translate-y-0 group-[.toast]:size-6 group-[.toast]:!rounded-md group-[.toast]:!border group-[.toast]:!border-border group-[.toast]:!bg-secondary group-[.toast]:!text-foreground group-[.toast]:opacity-100 hover:group-[.toast]:!bg-muted",
           actionButton:
             "group-[.toast]:ax-press group-[.toast]:rounded-md group-[.toast]:bg-primary group-[.toast]:text-primary-foreground",
           cancelButton:
