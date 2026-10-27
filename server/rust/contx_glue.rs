@@ -195,7 +195,7 @@ async fn timeline(org: &str, addresses: &[String]) -> Vec<Value> {
     let q = format!(
         "mail_messages?select=id,thread_id,subject,snippet,from_address,to_addresses,direction,sent_at&org_id=eq.{}&or=({})&order=sent_at.desc&limit=200",
         enc(org),
-        or.replace('*', "%2A").replace('@', "%40")
+        or.replace('*', "%2A").replace('@', "%40").replace('{', "%7B").replace('}', "%7D")
     );
     rows(crate::sb_select(&q).await)
         .into_iter()

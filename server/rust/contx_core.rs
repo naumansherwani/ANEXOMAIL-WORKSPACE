@@ -111,7 +111,16 @@ pub fn timeline_or(addresses: &[String]) -> Option<String> {
         .iter()
         .map(|a| safe_addr(a))
         .filter(|a| !a.is_empty())
-        .flat_map(|a| vec![format!("from_address.ilike.*{a}*"), format!("to_addresses.ilike.*{a}*")])
+        .flat_map(|a| {
+            // to_addresses / to_addrs text[] hain: ilike unpar chalta hi nahi (query error => timeline khali). Poora address => array `cs` (contains);
+            // sirf "@domain" (company) => abhi sirf from_address (array mein substring match PostgREST se nahi hota).
+            let mut v = vec![format!("from_address.ilike.*{a}*")];
+            if !a.starts_with('@') {
+                v.push(format!("to_addresses.cs.{{{a}}}"));
+                v.push(format!("to_addrs.cs.{{{a}}}"));
+            }
+            v
+        })
         .collect();
     if parts.is_empty() { None } else { Some(parts.join(",")) }
 }
@@ -190,7 +199,11 @@ mod tests {
         v.sort_by(newest_first);
         assert_eq!(v, vec![Some("2026-03".to_string()), Some("2026-01".to_string()), None]);
         assert_eq!(timeline_or(&[]), None);
-        assert_eq!(timeline_or(&["@Acme.com".into()]).unwrap(), "from_address.ilike.*@acme.com*,to_addresses.ilike.*@acme.com*");
+        assert_eq!(timeline_or(&["@Acme.com".into()]).unwrap(), "from_address.ilike.*@acme.com*");
+        assert_eq!(
+            timeline_or(&["Bob@Acme.com".into()]).unwrap(),
+            "from_address.ilike.*bob@acme.com*,to_addresses.cs.{bob@acme.com},to_addrs.cs.{bob@acme.com}"
+        );
         let pt = build_patch(Some(&"n".repeat(300)), None, None, None);
         assert_eq!(pt.display_name.unwrap().len(), 200);
         assert!(build_patch(None, None, None, None).is_empty());
