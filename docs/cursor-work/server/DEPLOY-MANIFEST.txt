@@ -709,13 +709,13 @@ src/components/app/security/TwoStepCard.tsx f2048d4ab0db90db
 src/lib/kernel/kernel.test.ts 3dedd97b412e6fb1
 src/lib/kernel/kernel.ts 3f5a9adbd884c0b3
 src/lib/kernel/pin.gen.ts cf1154bfc8436ea5
-web-wasm/Cargo.lock 282e2d13da578323
-web-wasm/Cargo.toml 2e34b3d9acccef94
+web-wasm/Cargo.lock afed4a8cfc9a3258
+web-wasm/Cargo.toml e2577f2e99578cb8
 web-wasm/src/exec.rs 58931ede25e35d01
 web-wasm/src/frame.rs dc702d2f8eec25cb
 web-wasm/src/hash.rs 855b67a21b6fbf33
 web-wasm/src/host.rs 3e0fc86c8638483f
-web-wasm/src/lib.rs bbd29baa6a4c5106
+web-wasm/src/lib.rs 9337661e2e827f71
 web-wasm/src/live.rs 9cd93b2f7622b64f
 web-wasm/src/rank.rs 9588d32f0dabc948
 web-wasm/src/rpc.rs 1c21df12fab245ce
