@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 0af2f95c3e06c928
+docs/cursor-work/DONE-DO-NOT-REPEAT.md bc302c410c2a7ba9
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -857,7 +857,7 @@ docs/cursor-work/sql/E97_commitment_ledger_economics.sql 69f9a15c8004f1c9
 docs/cursor-work/sql/CHECK_E97.sql 8a1ea51ef3ced636
 docs/cursor-work/sql/E98_kernel_release_040.sql 0cda856aefcf057a
 docs/cursor-work/sql/CHECK_E99.sql c41125ea4feb2ec6
-docs/cursor-work/sql/E99_file_context.sql cd85c1fec0f37991
+docs/cursor-work/sql/E99_file_context.sql 691b12ac6b041012
 public/kernel/anexo-kernel-0.4.0.wasm 7499188264a10c8d
 src/components/app/compose/FileContextCard.tsx e67de862432dacb3
 web-wasm/src/filectx.rs ed695f6b8ea051d3

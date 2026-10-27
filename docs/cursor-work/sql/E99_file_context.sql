@@ -81,10 +81,10 @@ begin
      where m.org_id = p_org
        and not exists (
              select 1 from unnest(v_toks) t
-              where not (
+              where not coalesce(   -- NULL (naam mein extension nahi) = "match nahi", warna har bina-extension file har sawal par aa jati (live bug 27 Oct 08:3x)
                     a.filename ilike '%' || t || '%'
                  or (public.file_kind_exts(t) is not null
-                     and lower(substring(a.filename from '\.([A-Za-z0-9]{1,5})$')) = any (public.file_kind_exts(t)))))
+                     and lower(substring(a.filename from '\.([A-Za-z0-9]{1,5})$')) = any (public.file_kind_exts(t))), false))
   ), fam as (
     select c.*,
            row_number() over (partition by stem order by sent_at desc nulls last, id)  as rn,
