@@ -7,6 +7,9 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+## ▶ 28 Oct 04:53 PKT — founder (verbatim ka matlab): "Yeh chat compact ho jaye ga. Founder ko banane se PEHLE plan karo, phases banao taake smooth bane. Founder tumhare hisab se kaisa hoga yeh banao. JALDI MAT KARO. Chrome bhi dekho (login hai). Founder ki technology batao. BUN RETIRED hai — founder mein Bun NAHI hoga. Tarteeb se cheezein banengi. Baqi sab baatein SAATH KE SAATH likhte jao warna Claude bhool jayega. FOUNDER ka UI technology dekho, backend technology dekho."
+Halat: TODO plan (docs/claude/FOUNDER-BUILD-PLAN-28OCT.md). Koi code nahi jab tak plan founder dekh na le. F1a abhi shuru NAHI.
+
 ## ▶ 28 Oct 04:45 PKT — founder jawab: "FOUNDER ka ek PROTOCOL hai, pura socho. Login: password + passkey DONO theek (dono pehle se hain, system ne passkey liya hai; passkey Google jaisa, lazmi). Bridge: paisa + 'kya bigad raha hai' DONO ek fold. Repo audit karo: founder ke kaun se email, dusra founder login, founder ko kaisa protocol milna chahiye."
 Halat: DONE protocol doc (docs/claude/FOUNDER-PROTOCOL-28OCT.md). Mail Desk inbox sawal repo se hal (locked 5 company + founder). Baaqi sawal: nexatect.com founder account server par hai? Agla: F1a.
 
