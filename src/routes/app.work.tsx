@@ -36,6 +36,7 @@ import { DecisionLedger } from "@/components/app/work/DecisionLedger";
 import { EmailBridge } from "@/components/app/work/EmailBridge";
 import { FileContextCard } from "@/components/app/work/FileContextCard";
 import { FollowThroughTable } from "@/components/app/work/FollowThrough";
+import { LedgerSeal } from "@/components/app/work/LedgerSeal";
 import { PromiseInbox } from "@/components/app/work/PromiseInbox";
 import { PromiseRecovery } from "@/components/app/work/PromiseRecovery";
 import { ReceiptsPanel } from "@/components/app/work/ReceiptsPanel";
@@ -271,7 +272,14 @@ function WorkPage() {
               ))}
             </div>
             <div className="p-ax-4">
-              {rail === "promises" ? <PromiseInbox /> : <FollowThroughTable />}
+              {rail === "promises" ? (
+                <>
+                  <PromiseInbox />
+                  <LedgerSeal />
+                </>
+              ) : (
+                <FollowThroughTable />
+              )}
             </div>
           </>
         ) : (
