@@ -449,3 +449,10 @@ ONE-ORDER qadam 1 KHATAM. AGLA: qadam 2 Pro-only 4 (mail/handoff DELETE, mail/de
 - docs/cursor-work/sql/E100_plan_interop_matrix.sql + CHECK_E100.sql: 6x6x5 = 180 row (basic/pro/business/business_pro/enterprise/personal x mail/invite/booking/share_thread/chat), sab allowed; mail par gate 'none', baaqi 'own_plan_feature' (limit sirf bhejne wale ke apne plan ki: resolve_plan). plan_interop_allowed(from,to,action) + plan_interop_audit() (sirf jo rule toote). RLS on, anon/authenticated band, service_role only. Local Postgres 16 par 2 baar chala + CHECK_E100 5/5 true, lint 0.
 - Rule: poori website ke users ek dusre se contact kar sakte hain; gate sirf apne package ke feature/limit/endpoint par. Pichli entry mein 'matrix nahi banaya' likha tha — ab bana hai.
 - Founder: sql-run.sh bare AUTO chalaye (E100 nayi). GREEN abhi bhi nahi: baaki live tests + doosre plans ki inbox ka receive-side.
+
+## 27 Oct 2026 08:50 PKT — LIVE: 10-recipient cost + Business gate PASS; booking link / 20-user cap UI NAHI mila
+- 10 recipients + ~190 word mail: 'about £10.17 of attention, 10 min across 10 people'. Call suggestion NAHI aayi — sahi: call = (10+1)*2 = 22 min > 10 min, yani call sasti nahi; jhoota bachat nahi dikhaya. Draft bheja NAHI (example.com addresses).
+- Pro par /app/org/members: 'Organisation centre is on Business' upgrade page (Business: up to 60 users, 1.5TB, 45MB) = feature-gate sahi.
+- Booking link 4th refusal aur 20-user cap: calendar page par booking-links ka entry button nahi mila (/app/calendar/booking = 404). Rasta (kaun si screen) dhoondna baaki; abhi live-proven NAHI.
+- commit.verify: koi UI nahi — API-level probe (basic-gate-probe.sh) se prove karna baaki.
+- E100 server par chalani baaki (founder sql-run.sh). Pro GREEN: NAHI.

@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 826ceadeff6dde3c
+docs/cursor-work/DONE-DO-NOT-REPEAT.md cf8402c8389c446e
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 4f9e3cd7217c4fc7
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 2cf66f3fe951a4f3
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -385,7 +385,7 @@ docs/cursor-work/sql/E60_imip_reply.sql dc45e14fabf68e57
 docs/cursor-work/sql/CHECK_E60.sql 1a20afa9e3890d7c
 server/rust/imip_core.rs b9228406c93d2615
 docs/cursor-work/server/rust-deliver-install.sh 11a9a6c948bf2c44
-docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 0368cf82a8a02d0a
+docs/cursor-work/founder/DONE-DO-NOT-REPEAT.md 573799796588085a
 docs/cursor-work/sql/CHECK_CAL_GUESTS.sql 677be863502954cd
 docs/cursor-work/CALENDAR-ROADMAP.md b7a99463293b280d
 docs/cursor-work/server/imip-reply-proof.sh 875283529cd8bcac
@@ -692,7 +692,7 @@ docs/packages/pro/NOT-BUILT.md c7560d1444b54737
 docs/claude/POLAR-COPY-V6-PRO.md 900ae1318ead2a26
 src/lib/plan-surface.test.ts af595d473141a954
 src/lib/use-pro-calendar.ts 13e60a22034c5cd9
-docs/packages/GREEN-LEDGER.md 56f5bd2c3a936a74
+docs/packages/GREEN-LEDGER.md 5a7d0abf3780e14a
 docs/cursor-work/sql/E89_analytics_backend.sql 9b4bcfc6339f6721
 docs/cursor-work/sql/CHECK_E89.sql 472654601a6537e9
 server/rust/analytics_core.rs 00f67569a36cab96
@@ -769,7 +769,7 @@ docs/packages/business/ANEXOCHAT-K3-PLAN.md 73f77dd668ac3450
 server/rust/livex_core.rs 75add9f7be4f9f9e
 server/rust/livex_glue.rs c6c5fef3032aca56
 docs/cursor-work/RULE-52-REST-INVENTORY.md 791f5d255fbf8623
-docs/packages/pro/PRO-GREEN-TRACKER.md a35df3c8fb7bc79d
+docs/packages/pro/PRO-GREEN-TRACKER.md e93550cc7f2be5ac
 docs/cursor-work/MASTER-GREEN-PLAN.md 6db0068d3d11d5a3
 docs/cursor-work/MIGRATION-STATUS-26OCT.md cd99c4035655a7bf
 docs/claude/README.md 41835251e393cf23
@@ -820,7 +820,7 @@ docs/packages/trial/DATA-ISOLATION.md a168aebf466d6c67
 docs/packages/trial/FEATURES-AND-GATES.md 7634145c881b3526
 docs/packages/trial/NO-MOCK-AND-ONBOARDING.md 7640390fa0e591ac
 docs/packages/trial/README.md 50b6d0cae91d20f8
-docs/claude/ONE-ORDER-27OCT.md 98670c333bd19e0d
+docs/claude/ONE-ORDER-27OCT.md b260a4a191d42d0c
 docs/claude/MASTER-MIGRATION-AND-GATES-27OCT.md 7f4ebf3d676255ac
 server/rust/setx_core.rs 0da0ba3ceaad04b9
 server/rust/setx_glue.rs c0463e2308280fbb
