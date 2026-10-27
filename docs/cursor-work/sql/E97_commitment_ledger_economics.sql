@@ -34,6 +34,20 @@ set search_path = public, extensions;
 -- -----------------------------------------------------------------------------
 -- 1) work_promises ko ledger ke liye taiyar karna (sirf columns ADD, kuch drop nahi)
 -- -----------------------------------------------------------------------------
+-- LIVE schema phase61 file se alag nikla (27 Oct 08:0x: work_promises mein thread_subject nahi tha => E97 pehli baar fail). Jo column main
+-- padhta/likhta hoon wo sab "add if not exists" — maujood ho to kuch nahi badalta, na ho to ban jata hai.
+alter table public.work_promises add column if not exists quote            text;
+alter table public.work_promises add column if not exists suggested_title  text;
+alter table public.work_promises add column if not exists suggested_due_at timestamptz;
+alter table public.work_promises add column if not exists thread_id        uuid;
+alter table public.work_promises add column if not exists thread_subject   text;
+alter table public.work_promises add column if not exists owner            text;
+alter table public.work_promises add column if not exists confidence       numeric not null default 0;
+alter table public.work_promises add column if not exists status           text not null default 'suggested';
+alter table public.work_promises add column if not exists task_id          uuid;
+alter table public.work_promises add column if not exists created_by       uuid;
+alter table public.work_promises add column if not exists created_at       timestamptz not null default now();
+alter table public.work_promises add column if not exists commit_state     text not null default 'open';
 alter table public.work_promises add column if not exists ledger_id    uuid;
 alter table public.work_promises add column if not exists promised_to  text[] not null default '{}'::text[];
 alter table public.work_promises add column if not exists due_exact    boolean not null default false;
@@ -47,8 +61,25 @@ create unique index if not exists work_promises_dedupe_uq
   on public.work_promises (org_id, dedupe_key) where dedupe_key is not null;
 create index if not exists work_promises_org_status_idx
   on public.work_promises (org_id, status, suggested_due_at);
+do $$ begin
+  begin
+    alter table public.work_promises add constraint work_promises_commit_state_chk
+      check (commit_state in ('open','fulfilled','broken','cancelled'));
+  exception when duplicate_object then null; end;
+end $$;
 
+alter table public.work_tasks add column if not exists thread_subject text;
+alter table public.work_tasks add column if not exists event_id       uuid;
+alter table public.work_tasks add column if not exists completed_at   timestamptz;
 alter table public.work_tasks add column if not exists promise_id uuid;
+alter table public.calendar_events add column if not exists agenda          text;
+alter table public.calendar_events add column if not exists all_day         boolean not null default false;
+alter table public.calendar_events add column if not exists organiser       text;
+alter table public.calendar_events add column if not exists thread_id       uuid;
+alter table public.calendar_events add column if not exists thread_subject  text;
+alter table public.calendar_events add column if not exists tz              text;
+alter table public.calendar_events add column if not exists sequence        integer not null default 0;
+alter table public.calendar_events add column if not exists updated_at      timestamptz not null default now();
 create index if not exists work_tasks_promise_idx on public.work_tasks (promise_id) where promise_id is not null;
 
 -- -----------------------------------------------------------------------------
@@ -198,9 +229,12 @@ grant execute on function public.commitment_verify(uuid) to service_role;
 -- 4) commitment_record: EK atomic call = promise + task + (optional) calendar hold + ledger
 --    Dobara bhejo (same org+thread+phrase+due) to naya kuch nahi banta, purani row wapas (idempotent send/retry).
 -- -----------------------------------------------------------------------------
+-- purani signature (bina owner) hata do — warna do overload bante
+drop function if exists public.commitment_record(uuid, uuid, text, text, date, uuid, text, boolean, numeric, text, text[], boolean, text);
 create or replace function public.commitment_record(
   p_org        uuid,
   p_user       uuid,
+  p_owner      text,
   p_phrase     text,
   p_action     text,
   p_due        date,
@@ -223,7 +257,7 @@ declare
   v_due_at  timestamptz;
   v_led     public.commitment_ledger;
 begin
-  if p_org is null or p_user is null then raise exception 'commitment_record: org/user required'; end if;
+  if p_org is null or p_user is null or p_owner is null or btrim(p_owner) = '' then raise exception 'commitment_record: org/user/owner required'; end if;
   if p_phrase is null or length(btrim(p_phrase)) < 4 then raise exception 'commitment_record: phrase required'; end if;
   if p_due is not null and (p_due < current_date - 1 or p_due > current_date + 3650) then
     raise exception 'commitment_record: due out of range';
@@ -243,21 +277,21 @@ begin
   v_due_at := case when p_due is null then null else (p_due::timestamp + interval '17 hours') at time zone 'UTC' end;
 
   insert into public.work_tasks (org_id, title, status, owner, due_at, thread_id, thread_subject, source, created_by)
-  values (p_org, v_title, 'todo', p_user::text, v_due_at, p_thread, p_subject, 'promise', p_user)
+  values (p_org, v_title, 'todo', lower(btrim(p_owner)), v_due_at, p_thread, p_subject, 'promise', p_user)
   returning id into v_task;
 
   if p_with_event and p_due is not null then
-    insert into public.calendar_events (org_id, title, agenda, starts_at, ends_at, all_day, thread_id, thread_subject,
-                                        kind, status, created_by)
+    insert into public.calendar_events (org_id, title, agenda, starts_at, ends_at, all_day, organiser, thread_id, thread_subject,
+                                        kind, status, created_by, tz, sequence)
     values (p_org, 'Due: ' || v_title, left(p_phrase, 500), p_due::timestamp at time zone 'UTC',
-            (p_due + 1)::timestamp at time zone 'UTC', true, p_thread, p_subject, 'deadline', 'confirmed', p_user)
+            (p_due + 1)::timestamp at time zone 'UTC', true, lower(btrim(p_owner)), p_thread, p_subject, 'meeting', 'confirmed', p_user, 'UTC', 0)
     returning id into v_event;
   end if;
 
   insert into public.work_promises (org_id, quote, suggested_title, suggested_due_at, thread_id, thread_subject, owner,
-                                    confidence, status, task_id, promised_to, due_exact, lang, dedupe_key, event_id, source)
-  values (p_org, left(p_phrase, 1000), v_title, v_due_at, p_thread, p_subject, p_user::text,
-          greatest(0, least(100, coalesce(p_confidence, 0))), 'linked', v_task, coalesce(p_to, '{}'::text[]),
+                                    confidence, status, commit_state, created_by, task_id, promised_to, due_exact, lang, dedupe_key, event_id, source)
+  values (p_org, left(p_phrase, 1000), v_title, v_due_at, p_thread, p_subject, lower(btrim(p_owner)),
+          greatest(0, least(100, coalesce(p_confidence, 0))), 'committed', 'open', p_user, v_task, coalesce(p_to, '{}'::text[]),
           coalesce(p_exact, false), coalesce(nullif(p_lang, ''), 'en'), v_key, v_event, 'compose')
   returning * into v_prom;
 
@@ -272,8 +306,8 @@ begin
   return jsonb_build_object('ok', true, 'duplicate', false, 'promise_id', v_prom.id, 'task_id', v_task,
                             'event_id', v_event, 'ledger_id', v_led.id, 'seq', v_led.seq, 'seal', v_led.seal);
 end $$;
-revoke all on function public.commitment_record(uuid, uuid, text, text, date, uuid, text, boolean, numeric, text, text[], boolean, text) from public, anon, authenticated;
-grant execute on function public.commitment_record(uuid, uuid, text, text, date, uuid, text, boolean, numeric, text, text[], boolean, text) to service_role;
+revoke all on function public.commitment_record(uuid, uuid, text, text, text, date, uuid, text, boolean, numeric, text, text[], boolean, text) from public, anon, authenticated;
+grant execute on function public.commitment_record(uuid, uuid, text, text, text, date, uuid, text, boolean, numeric, text, text[], boolean, text) to service_role;
 
 -- Status badalna (fulfilled / broken / snoozed / cancelled): task bhi saath, ledger mein nayi sealed row
 create or replace function public.commitment_set_status(
@@ -290,8 +324,8 @@ begin
   end if;
   select * into v_prom from public.work_promises where id = p_promise and org_id = p_org for update;
   if not found then return jsonb_build_object('ok', false, 'error', 'not_found'); end if;
-  if v_prom.status in ('fulfilled','cancelled') then
-    return jsonb_build_object('ok', false, 'error', 'already_settled', 'status', v_prom.status);
+  if v_prom.commit_state in ('fulfilled','cancelled') then
+    return jsonb_build_object('ok', false, 'error', 'already_settled', 'status', v_prom.commit_state);
   end if;
   if p_status = 'snoozed' and p_new_due is null then
     return jsonb_build_object('ok', false, 'error', 'new_due_required');
@@ -299,21 +333,22 @@ begin
 
   if p_status = 'snoozed' then
     v_due_at := (p_new_due::timestamp + interval '17 hours') at time zone 'UTC';
-    update public.work_promises set suggested_due_at = v_due_at, status = 'linked' where id = p_promise;
+    update public.work_promises set suggested_due_at = v_due_at, commit_state = 'open' where id = p_promise;
     update public.work_tasks set due_at = v_due_at where id = v_prom.task_id;
     if v_prom.event_id is not null then
       update public.calendar_events set starts_at = p_new_due::timestamp at time zone 'UTC',
              ends_at = (p_new_due + 1)::timestamp at time zone 'UTC', updated_at = now() where id = v_prom.event_id;
     end if;
   else
-    update public.work_promises set status = p_status, settled_at = now() where id = p_promise;
-    update public.work_tasks set status = case p_status when 'fulfilled' then 'done' else 'cancelled' end,
-           completed_at = case p_status when 'fulfilled' then now() else completed_at end
-     where id = v_prom.task_id;
+    update public.work_promises set commit_state = p_status, settled_at = now() where id = p_promise;
+    -- task ka status sirf "fulfilled => done" badalta hai (live task status list: todo/doing/waiting/done — naya status nahi gadhta)
+    if p_status = 'fulfilled' then
+      update public.work_tasks set status = 'done', completed_at = now() where id = v_prom.task_id;
+    end if;
   end if;
 
   v_led := public.commitment_append(p_org, p_status, p_promise, v_prom.task_id, v_prom.event_id, v_prom.thread_id, p_user,
-             jsonb_build_object('from', v_prom.status, 'new_due', p_new_due));
+             jsonb_build_object('from', v_prom.commit_state, 'new_due', p_new_due));
   return jsonb_build_object('ok', true, 'status', p_status, 'seq', v_led.seq, 'seal', v_led.seal);
 end $$;
 revoke all on function public.commitment_set_status(uuid, uuid, uuid, text, date) from public, anon, authenticated;
@@ -325,14 +360,14 @@ language plpgsql security definer set search_path = public, extensions as $$
 declare r record; n int := 0; v_led public.commitment_ledger;
 begin
   for r in
-    select p.id, p.task_id, p.event_id, p.thread_id, p.status
+    select p.id, p.task_id, p.event_id, p.thread_id, p.commit_state as status
       from public.work_promises p
-     where p.org_id = p_org and p.status = 'linked' and p.suggested_due_at is not null
+     where p.org_id = p_org and p.status = 'committed' and p.commit_state = 'open' and p.suggested_due_at is not null
        and p.suggested_due_at < now() - make_interval(days => greatest(p_grace_days, 0))
        and not exists (select 1 from public.work_tasks t where t.id = p.task_id and t.status = 'done')
      for update of p skip locked
   loop
-    update public.work_promises set status = 'broken', settled_at = now() where id = r.id;
+    update public.work_promises set commit_state = 'broken', settled_at = now() where id = r.id;
     v_led := public.commitment_append(p_org, 'broken', r.id, r.task_id, r.event_id, r.thread_id, null,
                jsonb_build_object('from', r.status, 'reason', 'overdue_sweep', 'grace_days', p_grace_days));
     n := n + 1;
@@ -451,7 +486,7 @@ select p.org_id, p.id as promise_id, p.task_id, p.event_id, p.thread_id, p.threa
        p.suggested_due_at is not null and p.suggested_due_at < now() as overdue,
        p.created_at
   from public.work_promises p
- where p.status = 'linked';
+ where p.status = 'committed' and p.commit_state = 'open' and p.source = 'compose';
 
 create or replace view public.v_commitments_due_soon with (security_invoker = true) as
 select * from public.v_commitments_open
@@ -459,13 +494,13 @@ select * from public.v_commitments_open
 
 create or replace view public.v_commitment_kept_rate with (security_invoker = true) as
 select p.org_id, p.owner,
-       count(*) filter (where p.status = 'fulfilled')                      as kept,
-       count(*) filter (where p.status = 'broken')                         as broken,
-       count(*) filter (where p.status = 'linked')                         as open,
-       count(*) filter (where p.status in ('fulfilled','broken'))          as settled,
-       case when count(*) filter (where p.status in ('fulfilled','broken')) = 0 then null
-            else round(100.0 * count(*) filter (where p.status = 'fulfilled')
-                       / count(*) filter (where p.status in ('fulfilled','broken')), 1) end as kept_pct
+       count(*) filter (where p.commit_state = 'fulfilled')                      as kept,
+       count(*) filter (where p.commit_state = 'broken')                         as broken,
+       count(*) filter (where p.commit_state = 'open')                           as open,
+       count(*) filter (where p.commit_state in ('fulfilled','broken'))          as settled,
+       case when count(*) filter (where p.commit_state in ('fulfilled','broken')) = 0 then null
+            else round(100.0 * count(*) filter (where p.commit_state = 'fulfilled')
+                       / count(*) filter (where p.commit_state in ('fulfilled','broken')), 1) end as kept_pct
   from public.work_promises p
  where p.source = 'compose'
  group by p.org_id, p.owner;
@@ -515,9 +550,9 @@ begin
   if (v->>'suggest_call')::boolean then raise exception 'E97 SELFTEST: chhoti email par jhoota call mashwara'; end if;
 
   -- record -> duplicate -> status -> verify
-  r1 := public.commitment_record(v_org, v_user, 'E97 selftest: I will send details by Friday', 'Send details',
+  r1 := public.commitment_record(v_org, v_user, 'selftest@example.com', 'E97 selftest: I will send details by Friday', 'Send details',
                                  current_date + 3, null, 'E97 selftest', true, 92, 'en', array['selftest@example.com'], true, 'tag');
-  r2 := public.commitment_record(v_org, v_user, 'E97 selftest: I will send details by Friday', 'Send details',
+  r2 := public.commitment_record(v_org, v_user, 'selftest@example.com', 'E97 selftest: I will send details by Friday', 'Send details',
                                  current_date + 3, null, 'E97 selftest', true, 92, 'en', array['selftest@example.com'], true, 'tag');
   if (r1->>'ok')::boolean is not true or (r1->>'duplicate')::boolean then raise exception 'E97 SELFTEST: record failed %', r1; end if;
   if (r2->>'duplicate')::boolean is not true or r2->>'promise_id' <> r1->>'promise_id' then

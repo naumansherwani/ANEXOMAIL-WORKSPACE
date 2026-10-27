@@ -96,7 +96,7 @@ async fn record(me: &crate::MailMe, input: &Value) -> Resp {
     let to: Vec<String> = input.get("to").and_then(|x| x.as_array()).map(|a| a.iter().filter_map(|y| y.as_str().map(|s| s.to_string())).collect()).unwrap_or_default();
     let conf = c::clamp_conf(input.get("confidence").and_then(|x| x.as_f64()).unwrap_or(0.0));
     let body = json!({
-        "p_org": me.org_id, "p_user": me.id, "p_phrase": phrase,
+        "p_org": me.org_id, "p_user": me.id, "p_owner": me.email.trim().to_lowercase(), "p_phrase": phrase,
         "p_action": c::clean_action(&st(input, "action"), &phrase),
         "p_due": due, "p_thread": thread_v,
         "p_subject": st(input, "subject").chars().take(300).collect::<String>(),
@@ -116,8 +116,8 @@ async fn status(me: &crate::MailMe, input: &Value) -> Resp {
     if !c::uuid_ok(&id) || !c::valid_status(&s) {
         return fail(StatusCode::BAD_REQUEST, "bad_request", "promise_id (uuid) and status (fulfilled|broken|snoozed|cancelled) required");
     }
-    // Pro = sirf apna wada (owner = user id); doosre ka nahi.
-    let own = crate::sb_select(&format!("work_promises?select=id&id=eq.{}&org_id=eq.{}&owner=eq.{}&limit=1", enc(&id), enc(&me.org_id), enc(&me.id))).await;
+    // Pro = sirf apna wada (owner = apni email, jaise baqi Work tables); doosre ka nahi.
+    let own = crate::sb_select(&format!("work_promises?select=id&id=eq.{}&org_id=eq.{}&owner=eq.{}&limit=1", enc(&id), enc(&me.org_id), enc(&me.email.trim().to_lowercase()))).await;
     if own.ok().and_then(|v| v.as_array().map(|a| a.is_empty())).unwrap_or(true) {
         return fail(StatusCode::CONFLICT, "not_found", "Promise not found");
     }
@@ -141,7 +141,7 @@ async fn status(me: &crate::MailMe, input: &Value) -> Resp {
 }
 
 async fn list(me: &crate::MailMe) -> Resp {
-    let q = format!("v_commitments_open?select=*&org_id=eq.{}&owner=eq.{}&order=due_at.asc.nullslast&limit=200", enc(&me.org_id), enc(&me.id));
+    let q = format!("v_commitments_open?select=*&org_id=eq.{}&owner=eq.{}&order=due_at.asc.nullslast&limit=200", enc(&me.org_id), enc(&me.email.trim().to_lowercase()));
     match crate::sb_select(&q).await {
         Ok(v) => crate::ok(json!({ "commitments": v })).into_response(),
         Err(e) => fail(StatusCode::CONFLICT, "list_failed", &e.chars().take(200).collect::<String>()),
