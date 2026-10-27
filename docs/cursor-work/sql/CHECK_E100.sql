@@ -13,6 +13,9 @@ union all select 'E100 Pro ka 3rd booking link ok',
 union all select 'E100 Pro 21st user refuse, 20th ok',
        not coalesce((public.plan_interop_decide(null,'pro','pro','share_thread','{"users":21}'::jsonb,false)->>'allowed')::boolean, true)
        and coalesce((public.plan_interop_decide(null,'pro','pro','share_thread','{"users":20}'::jsonb,false)->>'allowed')::boolean, false), 8
+union all select 'E100 ANEXOChat badi file: Business 3GB refuse, Enterprise 7GB ok',
+       not coalesce((public.plan_interop_decide(null,'business','basic','chat','{"chat_file_gb":3}'::jsonb,false)->>'allowed')::boolean, true)
+       and coalesce((public.plan_interop_decide(null,'enterprise','pro','chat','{"chat_file_gb":7}'::jsonb,false)->>'allowed')::boolean, false), 14
 union all select 'E100 recipient ka plan jawab mein nahi',
        (public.plan_interop_decide(null,'basic','business_pro','invite','{}'::jsonb,false))::text not ilike '%business_pro%', 9
 union all select 'E100 log chain verify ok', coalesce((public.plan_interop_log_verify()->>'ok')::boolean, false), 10

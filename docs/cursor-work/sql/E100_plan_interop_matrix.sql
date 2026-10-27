@@ -3,7 +3,7 @@
 -- ---------------------------------------------------------------------------------------------------------------
 -- RULE (founder, 27 Oct 2026): contact par koi plan-gate NAHI. Basic <-> Pro <-> Business <-> Business Pro <-> Enterprise <-> Personal,
 -- har taraf, har action (mail, invite, booking, share_thread, chat). Gate sirf BHEJNE WALE ke APNE package ki limit par:
---   mail -> attachment MB, invite -> mailboxes nahi (sirf contact), booking -> public booking links, share_thread -> users cap, chat -> koi cap nahi.
+--   mail -> attachment MB, invite -> mailboxes nahi (sirf contact), booking -> public booking links, share_thread -> users cap, chat -> ANEXOChat badi-file GB (apne package ki).
 -- Recipient ka plan KABHI bahar nahi jata (privacy): decide() sirf allowed/gate/reason lautata hai.
 -- ---------------------------------------------------------------------------------------------------------------
 -- Banata hai (sab idempotent, RLS on, anon/authenticated band, service_role only, search_path pinned):
@@ -46,14 +46,15 @@ end $$;
 
 -- Sirf public numbers (plans page): Basic 5 users/15GB/3 mailboxes/25MB/1 domain/1 booking link/2 devices;
 -- Pro 20/300GB/10/35MB/3/3/4; Business 60 users/1.5TB/45MB; Business Pro 570 users/10TB/60MB.
--- Jo number page par nahi likha (Business ke mailboxes/domains/links/devices, Enterprise, Personal) — key hi nahi: cap nahi = is registry se rokta nahi.
+-- chat_file_gb = ANEXOChat mein badi file (7GB/4K video tak): Basic/Pro 0 (ANEXOChat nahi), Business 2, Business Pro 5, Enterprise 7 (founder ka locked faisla); Enterprise attach_mb 100 (pricing docs).
+-- Jo number repo/page par nahi likha (Business ke mailboxes/domains/links/devices, Enterprise users/storage, Personal) — key hi nahi: cap nahi = is registry se rokta nahi.
 insert into public.plan_catalog (plan, rank, label, limits) values
   ('personal',     0, 'Personal',     '{}'::jsonb),
-  ('basic',        1, 'Basic',        '{"users":5,"storage_gb":15,"mailboxes":3,"attach_mb":25,"domains":1,"booking_links":1,"devices":2}'::jsonb),
-  ('pro',          2, 'Pro',          '{"users":20,"storage_gb":300,"mailboxes":10,"attach_mb":35,"domains":3,"booking_links":3,"devices":4}'::jsonb),
-  ('business',     3, 'Business',     '{"users":60,"storage_gb":1500,"attach_mb":45}'::jsonb),
-  ('business_pro', 4, 'Business Pro', '{"users":570,"storage_gb":10000,"attach_mb":60}'::jsonb),
-  ('enterprise',   5, 'Enterprise',   '{}'::jsonb)
+  ('basic',        1, 'Basic',        '{"users":5,"storage_gb":15,"mailboxes":3,"attach_mb":25,"domains":1,"booking_links":1,"devices":2,"chat_file_gb":0}'::jsonb),
+  ('pro',          2, 'Pro',          '{"users":20,"storage_gb":300,"mailboxes":10,"attach_mb":35,"domains":3,"booking_links":3,"devices":4,"chat_file_gb":0}'::jsonb),
+  ('business',     3, 'Business',     '{"users":60,"storage_gb":1500,"attach_mb":45,"chat_file_gb":2}'::jsonb),
+  ('business_pro', 4, 'Business Pro', '{"users":570,"storage_gb":10000,"attach_mb":60,"chat_file_gb":5}'::jsonb),
+  ('enterprise',   5, 'Enterprise',   '{"attach_mb":100,"chat_file_gb":7}'::jsonb)
 on conflict (plan) do update
   set rank = excluded.rank, label = excluded.label, limits = excluded.limits, updated_at = now()
   where (public.plan_catalog.rank, public.plan_catalog.label, public.plan_catalog.limits)
@@ -104,16 +105,16 @@ end $$;
 
 insert into public.plan_interop (from_plan, to_plan, action, allowed, gate, note)
 select f, t, a, true,
-       case when a = 'chat' then 'none' else 'own_plan_feature' end,
+       'own_plan_feature',
        'contact har plan ke beech khula; limit sirf bhejne wale ke apne plan ki'
 from unnest(array['basic','pro','business','business_pro','enterprise','personal']) f
 cross join unnest(array['basic','pro','business','business_pro','enterprise','personal']) t
 cross join unnest(array['mail','invite','booking','share_thread','chat']) a
 on conflict (from_plan, to_plan, action) do nothing;
 
--- purani run ke cell seedhe karo: mail = apni attachment limit (contact phir bhi khula), chat = bina gate
-update public.plan_interop set gate = case when action = 'chat' then 'none' else 'own_plan_feature' end, allowed = true, updated_at = now()
- where (allowed is distinct from true) or gate is distinct from (case when action = 'chat' then 'none' else 'own_plan_feature' end);
+-- purani run ke cell seedhe karo: mail = apni attachment limit, chat = apni ANEXOChat badi-file limit (contact dono mein phir bhi khula)
+update public.plan_interop set gate = 'own_plan_feature', allowed = true, updated_at = now()
+ where allowed is distinct from true or gate is distinct from 'own_plan_feature';
 
 -- ===============================================================================================================
 -- 3) ACTION -> LIMIT MAP (kaun si apni-plan limit kis action par lagti hai)
@@ -126,10 +127,13 @@ create table if not exists public.plan_interop_gate_map (
 );
 
 do $$ begin
+  if exists (select 1 from pg_constraint where conname = 'plan_interop_gate_map_chk') and not exists (select 1 from pg_constraint where conname = 'plan_interop_gate_map_chk' and pg_get_constraintdef(oid) like '%chat_file_gb%') then
+    alter table public.plan_interop_gate_map drop constraint plan_interop_gate_map_chk;
+  end if;
   if not exists (select 1 from pg_constraint where conname = 'plan_interop_gate_map_chk') then
     alter table public.plan_interop_gate_map add constraint plan_interop_gate_map_chk check (
       action in ('mail','invite','booking','share_thread','chat')
-      and (limit_key is null or limit_key in ('users','storage_gb','mailboxes','attach_mb','domains','booking_links','devices'))) not valid;
+      and (limit_key is null or limit_key in ('users','storage_gb','mailboxes','attach_mb','domains','booking_links','devices','chat_file_gb'))) not valid;
     alter table public.plan_interop_gate_map validate constraint plan_interop_gate_map_chk;
   end if;
 end $$;
@@ -139,7 +143,7 @@ insert into public.plan_interop_gate_map (action, limit_key, feature, note) valu
   ('invite',       null,            'Meeting invite',           'invite par koi cap nahi; calendar feature ka gate resolve_plan se'),
   ('booking',      'booking_links', 'Public booking links',     'Basic 1, Pro 3 — bhejne wale ki apni limit'),
   ('share_thread', 'users',         'Thread sharing (seats)',   'share karne par apni org ke users ki cap'),
-  ('chat',         null,            'ANEXOChat message',        'chat contact har plan ke beech khula')
+  ('chat',         'chat_file_gb',  'ANEXOChat big file (GB)',  'chat contact khula; badi file ki limit bhejne wale ke apne ANEXOChat package ki (Business 2 / Business Pro 5 / Enterprise 7 GB)')
 on conflict (action) do update set limit_key = excluded.limit_key, feature = excluded.feature, note = excluded.note
   where (public.plan_interop_gate_map.limit_key, public.plan_interop_gate_map.feature, public.plan_interop_gate_map.note)
         is distinct from (excluded.limit_key, excluded.feature, excluded.note);
@@ -429,9 +433,9 @@ language sql stable set search_path = public as $$
   select i.from_plan, i.to_plan, i.action, 'blocked: plan-to-plan contact band nahi hona chahiye'
     from public.plan_interop i where not i.allowed
   union all
-  -- 2) chat par gate nahi; mail par sirf apni attachment limit
-  select i.from_plan, i.to_plan, i.action, 'chat par gate nahi hona chahiye'
-    from public.plan_interop i where i.action = 'chat' and i.gate <> 'none'
+  -- 2) mail aur chat: gate sirf bhejne wale ki apni limit (own_plan_feature); 'none' ya kuch aur nahi
+  select i.from_plan, i.to_plan, i.action, 'mail/chat par gate sirf own_plan_feature hona chahiye'
+    from public.plan_interop i where i.action in ('mail','chat') and i.gate <> 'own_plan_feature'
   union all
   -- 3) koi cell gayab (6x6x5)
   select f.p, t.p, a.p, 'cell gayab'
@@ -444,7 +448,7 @@ language sql stable set search_path = public as $$
   select lo.plan, hi.plan, k.key, 'ladder toota: upar ke plan ki limit kam hai'
     from public.plan_catalog lo
     join public.plan_catalog hi on hi.rank > lo.rank
-    cross join (values ('users'),('storage_gb'),('mailboxes'),('attach_mb'),('domains'),('booking_links'),('devices')) k(key)
+    cross join (values ('users'),('storage_gb'),('mailboxes'),('attach_mb'),('domains'),('booking_links'),('devices'),('chat_file_gb')) k(key)
    where (lo.limits ->> k.key) is not null and (hi.limits ->> k.key) is not null
      and (hi.limits ->> k.key)::integer < (lo.limits ->> k.key)::integer
   union all
@@ -542,6 +546,19 @@ begin
     d := public.plan_interop_decide(null, 'pro', 'business_pro', 'share_thread', '{"users":21}'::jsonb, true);
     if coalesce((d ->> 'allowed')::boolean, true) then raise exception 'pro 21 users refuse hona chahiye'; end if;
     r := r || 'users cap OK; ';
+
+    -- (d2) ANEXOChat badi file: Basic/Pro 0, Business 2, Business Pro 5, Enterprise 7 GB (bhejne wale ka apna package)
+    d := public.plan_interop_decide(null, 'business', 'basic', 'chat', '{"chat_file_gb":2}'::jsonb, true);
+    if not coalesce((d ->> 'allowed')::boolean, false) then raise exception 'business 2GB chat ok hona chahiye'; end if;
+    d := public.plan_interop_decide(null, 'business', 'basic', 'chat', '{"chat_file_gb":3}'::jsonb, true);
+    if coalesce((d ->> 'allowed')::boolean, true) then raise exception 'business 3GB chat refuse hona chahiye'; end if;
+    d := public.plan_interop_decide(null, 'enterprise', 'pro', 'chat', '{"chat_file_gb":7}'::jsonb, true);
+    if not coalesce((d ->> 'allowed')::boolean, false) then raise exception 'enterprise 7GB chat ok hona chahiye'; end if;
+    d := public.plan_interop_decide(null, 'enterprise', 'pro', 'chat', '{"chat_file_gb":8}'::jsonb, true);
+    if coalesce((d ->> 'allowed')::boolean, true) then raise exception 'enterprise 8GB chat refuse hona chahiye'; end if;
+    d := public.plan_interop_decide(null, 'pro', 'enterprise', 'chat', '{"chat_file_gb":1}'::jsonb, true);
+    if coalesce((d ->> 'allowed')::boolean, true) then raise exception 'pro ko ANEXOChat badi file nahi'; end if;
+    r := r || 'chat big-file ladder OK; ';
 
     -- (e) privacy: jawab mein recipient ka plan nahi
     d := public.plan_interop_decide(null, 'basic', 'business_pro', 'invite', '{}'::jsonb, true);
