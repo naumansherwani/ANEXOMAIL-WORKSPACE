@@ -473,3 +473,6 @@ Blueprint (docs/claude/FOUNDER-BUILD-PLAN-28OCT.md §11z) mein HAR phase ke agay
 
 ## Rule 67 (STRICT, founder 28 Oct 2026 06:58 PKT) — Founder UI ki zubaan ENGLISH
 Founder/user ko dikhne wali HAR screen ka text English (jaisa pehle wala awam/founder UI tha: "Good morning", "Command center", "Sign in"). Roman Urdu sirf founder se chat mein, UI mein kabhi nahi. Purana jo achha tha (dark premium look, English copy) woh base; naya design usi ko behtar kare, bura/ajeeb nahi. Ab tak /f/ login mein Roman Urdu tha ("Sirf founder ka darwaza") — GALAT, F1c se pehle hi English kiya jaye.
+
+## Rule 68 (STRICT, founder 28 Oct 2026 07:03 PKT) — founder ka EXISTING login (/auth, founderworkspace host) hi rahega
+Founder ko maujooda login (/auth: cinema split, passkey, recovery codes — src/routes/auth.tsx) pasand hai: usay NA badlo NA hatao. Naya founder (/f/) ka apna password form final front door nahi — F1a mein /f/ is login ke peeche jaata hai (login -> /f/), aur /f/ founder token `/founder/v1/exchange` se leta hai (uid in founder_accounts + device/passkey, aud=anexo-founder, memory-only). Awam hosts (anexomail.com, www, ai.) par founder account ka login refuse (loophole band) — founder sirf founderworkspace se.

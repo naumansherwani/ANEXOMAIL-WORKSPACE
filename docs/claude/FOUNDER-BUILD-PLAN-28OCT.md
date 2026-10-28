@@ -205,3 +205,10 @@ Rule: har phase ka exit = tests + server saboot + Chrome live (Rule 64). Is tabl
 ### FX-24 (founder 28 Oct 06:58): /f/ ka text Roman Urdu tha aur card ajeeb — "pehle wala English jo user ko milta hai woh sahi". Fix: poori founder SPA ka copy English (Rule 67), look = purane achhe dark-premium ka behtar version; /app (purana) bilkul nahi chheda gaya, intact hai. Phase: pehla chhota fix (copy+centering) F0-polish, phir F1a.
 
 ### F0-polish (28 Oct 07:05) — DONE in repo: SPA copy poora English + login card center (desktop/mobile Playwright: card centered, 0 JS errors, no h-scroll); Rust messages English (28 tests ok); E103 SQL = founder_actions titles English (+CHECK_E103; sandbox PG16: E102 9/9, E103 3/3, dobara chalana safe). Technology: React/Vite + Rust + Postgres. Pull: [SQL] sql-run.sh (bare, phir `E103_founder_actions_english CHECK_E103`) + [BUILD] founder-install.sh. (F1a ki SQL ab E104, F2c ki E105.)
+
+## 12z. LOGIN FAISLA (founder 28 Oct 07:03): "jo login existing hai woh like karta hoon wohi rahega" — Rule 68
+- Existing /auth login (UI+passkey+recovery) UNTOUCHED, founderworkspace par founder ka front door.
+- FX-6 REVISED: "alag login page" ki jagah **alag host-rule + token exchange**: (1) awam hosts par founder login refuse (host check, auth.ts) — loophole band; (2) `/f/` bina session ke -> `/auth?next=/f/`; (3) login ke baad /f/ maujooda session se `POST /founder/v1/exchange` -> founder-scoped short token (aud=anexo-founder, 15 min, memory only, uid in founder_accounts, device approved); (4) /f/ ka apna password form + `/founder/v1/login` F1a ke baad hata diya jaye (ya sirf dev).
+- Maujooda session token awam app ki localStorage mein hai (wahi purani halat, hum behtar nahi kar rahe); naya founder token memory-only — FC15 safe.
+- FOUNDER_PASSWORD env-path (auth.ts) alag cheez: founder passkey-proof ke baad hata dena (FX-1). Aap ka login-UI nahi badalta.
+- Phase: F1a (technology: Rust jwt_core + `/exchange` + founder_devices SQL E104 + auth.ts host-gate + /f/ redirect). Pull: [SQL] [BUILD] + [WEB] (auth.ts awam server change => Bun restart: awam pull.sh) — F1a ki pull command wahin dunga.

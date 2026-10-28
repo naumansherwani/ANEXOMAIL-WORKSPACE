@@ -1746,3 +1746,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 06:59 — Founder: /f/ naya login bura laga, Roman Urdu text; "pehle wala English wala sahi". Rule 67 (UI English) + FX-24. Purana /app intact (kuch nahi badla). Agla: /f/ copy English + center + purane achhe look ke qareeb (F0-polish), phir F1a.
 
 ## 28 Oct 07:05 — F0-polish: /f/ English + centered, Rust msgs English, E103 SQL (action titles English). Pull: [SQL] sql-run.sh bare + E103_founder_actions_english CHECK_E103; [BUILD] founder-install.sh. Founder ne poocha "login wapis aya?": /f/ par login screen wapis nahi — yeh naya Rust login hai (purana /app login alag, intact).
+
+## 28 Oct 07:06 — Founder: existing login (/auth) pasand, wohi rahega -> Rule 68, plan §12z (FX-6 revised: awam hosts par founder login refuse + /f/ login ke peeche + /founder/v1/exchange). /f/ ka apna form abhi fallback, F1a mein hatega. Pending: founder ke E103 SQL + founder-install output.
