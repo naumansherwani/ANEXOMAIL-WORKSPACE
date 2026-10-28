@@ -72,5 +72,5 @@ systemctl daemon-reload && systemctl enable $SVC >/dev/null 2>&1; systemctl rest
 echo "== 4/4 saboot"
 H="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/healthz)"; M="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/me)"; B="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/bridge)"
 S="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/)"; echo "SPA index=$S (200)"; echo "healthz=$H (200 chahiye)  me bina token=$M (401)  bridge bina token=$B (401)"
-if [ "$S" = 200 ] && [ "$H" = 200 ] && [ "$M" = 401 ] && [ "$B" = 401 ]; then echo "OK - founder service zinda, darwaza band. Host: https://founderworkspace.anexomail.com/f/ (Caddy: founder-host.sh)."; else
+if [ "$S" = 200 ] && [ "$H" = 200 ] && [ "$M" = 401 ] && [ "$B" = 401 ]; then echo "OK - founder service zinda, darwaza band. Host: https://founderworkspace.anexomail.com/ (Caddy: founder-host.sh)."; else
   echo "FAIL: rollback"; systemctl stop $SVC; B2="$(ls -t $ROOT/anexomail-founder.bak.* 2>/dev/null | head -1)"; [ -n "$B2" ] && cp "$B2" "$ROOT/anexomail-founder" && systemctl start $SVC; journalctl -u $SVC -n 15 --no-pager; exit 4; fi

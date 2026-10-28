@@ -28,6 +28,8 @@ function Card({ title, tone, children }) {
 export default function App() {
   const [authed, setAuthed] = useState(hasToken());
   const [view, setView] = useState("bridge");
+  const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
+  const toggleSlim = () => setSlim((s) => { const n = !s; try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} return n; });
   const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null);
   const load = useCallback(async () => {
     try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); }
@@ -37,6 +39,7 @@ export default function App() {
 
   if (!authed) return <Gate />;
   const m = d?.money, t = d?.trouble, v = d?.voice;
+  const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
   const NAV = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit"]];
   const title = view === "bridge" ? "Command center" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
   return (
@@ -48,9 +51,13 @@ export default function App() {
         <a className="link" href="/app">Open app</a>
       </header>
       <div className="body">
-        <nav className="side" aria-label="Admin">
-                    {NAV.map(([k, n]) => <button key={k} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}><Icon k={k} />{n}</button>)}
+        <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
+          <span className="sidehead">WORKSPACE</span>
+          {AWAM.map(([n, href, ic]) => <a key={n} className="nav" href={href} title={n}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
+          <span className="sidehead gap">COMMAND CENTER</span>
+          {NAV.map(([k, n]) => <button key={k} title={n} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>)}
           <span className="sidenote">Governance, departments, audit ledger and ANEXOChat — one workspace.</span>
+          <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
         </nav>
         <main className="content">
       <div className="titleblock"><span className="kicker">{view === "bridge" ? "FOUNDER · CHAIRMAN" : title.toUpperCase()}</span><h1>{title}</h1>

@@ -79,3 +79,12 @@ textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radi
 .lives{display:flex;flex-direction:column;gap:16px}.livecard{border:1px solid var(--line);border-radius:16px;padding:18px;background:#0e1015;display:flex;flex-direction:column;gap:10px}
 .livecard header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}.livecard h3{margin:0;font-size:17px}.livecard .src{margin:0;font-size:11px}
 .sub h4{margin:8px 0 6px;font-size:13px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase;font-weight:600}.sub{display:flex;flex-direction:column;gap:8px}
+
+/* Sidebar: awam order first (links to the existing pages), then Command Center decks; collapsible like the awam app */
+.side{overflow-y:auto;transition:width .18s ease,flex-basis .18s ease}
+.sidehead.gap{margin-top:12px}.sidehead{display:block}
+a.nav{text-decoration:none;min-height:40px}.nav .lbl{white-space:nowrap}
+.nav.collapse{margin-top:6px;min-height:36px}.nav.collapse svg{transition:transform .18s}
+.side.slim{width:68px;flex-basis:68px;padding:16px 8px}.side.slim .lbl,.side.slim .sidenote{display:none}.side.slim .sidehead{font-size:0;height:1px;background:#1d2028;margin:8px 6px;padding:0}.side.slim .nav{justify-content:center;padding:0}.side.slim .nav.collapse svg{transform:rotate(180deg)}
+@media (max-width:760px){.nav.collapse{display:none}.side.slim{width:100%;flex-basis:100%}.side.slim .lbl{display:inline}}
+@media (min-width:761px){.shell{height:100vh}.body{flex-wrap:nowrap;min-height:0;flex:1}.side{height:100%}.content{overflow-y:auto;height:100%}}
