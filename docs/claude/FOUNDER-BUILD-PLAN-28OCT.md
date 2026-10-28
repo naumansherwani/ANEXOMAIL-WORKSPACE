@@ -99,3 +99,52 @@ founder-commands.md (verbatim hukm + halat) · DONE-DO-NOT-REPEAT.md (kya ho chu
 
 ### F1a addendum (28 Oct 05:10) — user/founder login alag
 Awam `/auth` login se founder andar na aa sake aur founder session awam API par na chale: (1) auth.ts login par `isFounderUser` => refuse + founder portal ka pata; (2) founder-gate awam routes se session-type alag (founder token alag audience); (3) `FOUNDER_PASSWORD` auto-create/upsert wala raasta band (passkey proof ke baad); (4) test: founder uid + awam login = 403, awam uid + founder host = 401/403.
+
+## 6z. FIX LIST (numbered) — Lovable ki gadbad, purani founder files ko awam se alag dikhana (founder hukm 28 Oct 06:32)
+Maqsad: purana founder code awam se ALAG nazar aaye; jo galat mile uska number yahan. Detail: docs/claude/founder/CODES/ (rules FC1-11, 04-MIX, 05-AUDIT).
+| # | Kharabi | Fix | Phase |
+|---|---|---|---|
+| FX-1 | auth.ts `FOUNDER_PASSWORD` (password overwrite + createUser) | founder passkey login live proof ke BAAD hatao | F1a |
+| FX-2 | 7 alag gate tareeqe, FOUNDER_EMAILS 4-5 jagah | ek Rust gate (founder_accounts uid + ES256 local); purane gate ek-ek kar ke `founder-gate-core` par, phir hatao | F1a/F9 |
+| FX-3 | Founder writes bina audit (provision, approve, kill-switch, impersonate, movein, release, storage, crm toggle) | har write /founder/v1/action + hash-chain + wajah | F6/F8 |
+| FX-4 | `safe()`/`catch{}` fake khali data | null/connected:false (Rule 63) | har phase |
+| FX-5 | FounderBar awam __root.tsx mein har page par | root se hatao, founder host par hi | F9 |
+| FX-6 | Founder login awam login se | alag host founder.anexomail.com + passkey + device approval | F1a |
+| FX-7 | Founder landing nahi (seedha deck) | LANDING page — niche FX-7 spec | F1c |
+| FX-8 | Do founder hosts (founderworkspace.* vs founder.*) + lovable.app/localhost "founder host" | ek host, baqi hatao | F1b/F9 |
+| FX-9 | Rust audit hash DB v1 se alag | align + test | F2 |
+| FX-10 | org impersonate/kill-switch bina passkey+two-tap | high-danger rule | F6 |
+| FX-11 | public aur founder routes ek file (revenue, movein, glitch, storage) | founder hissa Rust, public wahi | F9 |
+| FX-12 | 33 founder pages awam JS bundle mein | naya founder-web mein, awam bundle se nikalo | F9 |
+| FX-13 | awam dashboard par ExpiryWatch (founder patti) | Systems deck mein | F5 |
+| FX-14 | ensureFounderOrg: founder ke liye awam org + mail_account banta hai | founder awam org se alag | F1a |
+
+### FX-7 Landing page spec (login ke baad seedha yahan)
+- Pehli screen: "Khush aamdeed, Nauman bhai" + waqt ke hisaab se salaam (subah/dopahar/shaam), aaj ki tareekh (Asia/Karachi).
+- Top-right: "COMMAND CENTER" label; **Dashboard** button (click par decks/Bridge); profile picture menu: Profile, Passkeys/Devices, Audit, 3D toggle, Sign out.
+- Motivation quote (roz ek, repo mein curated list, asli quote; koi jhoota attribution nahi).
+- Aaj ka snapshot (sirf asli data, warna "connected nahi"): PAISA, KYA BIGAD RAHA HAI, AWAM KI AWAAZ (Bridge cards).
+- Suggestions panel (CEO ki raaye): "aaj kya karna chahiye" top 3 (asli signal se: failed payment, expiry-watch, naye leads); audit chain status; pending approvals.
+- Design: cinematic, awam UI se bilkul alag, 3D toggle hamesha.
+- Command Center = user ka sab kuch yahin se (people, mail desk, systems, control) — F4-F8.
+
+### 6z-b. Chrome live dekha (28 Oct 06:45, founderworkspace.anexomail.com, founder ka khula tab) — nayi kharabiyan
+| # | Dekha | Fix | Phase |
+|---|---|---|---|
+| FX-15 | Founder login ke baad AWAM dashboard khulta hai ("Good morning", plan label "Business", 15 unread, awam sidebar: Mail/People/Calendar/Work/CRM/Org/Analytics/Safety/ANEXOChat/AI/Speed/Founder). Founder ek menu item hai awam app ka | founder ko seedha FX-7 landing; awam sidebar founder par nahi | F1c |
+| FX-16 | `/app/founder` deck awam shell ke andar; page khud likhta hai "same session, same data, one build, no separate codebase" — FC1 ke ULTA | naya founder alag binary/host; yeh text hatao | F9 |
+| FX-17 | Founder deck: Provisioned 0/10, saare mailboxes "Not created / DNS unchecked" (founder inbox bhi) + "Provision missing" button bina audit/passkey | asli halat dikhao, provision = audited one-click action | F4 |
+| FX-18 | "FOUNDER PREVIEW" pill + "COMMAND CENTER" label awam dashboard par (FounderBar) — awam jaisa look | cinematic alag design | F0/F1c |
+| FX-19 | Awam dashboard par "Add backup passkey" nag + Install ANEXOMAIL banner + Storage 750 GB awam widget founder par | founder par awam widget nahi; passkey = ek baar per device (FOUNDER-PROTOCOL §2b) | F1a |
+| FX-20 | Boot splash "Opening your workspace" awam wala | founder ka apna cinematic boot | F0 |
+| FX-21 | ExpiryWatch ("Mail TLS 65 days") awam dashboard par | Systems deck | F5 |
+Achhi cheez (rakho): Expiry watch ka data (27/27 checks fine) asli server report se; dark premium look ka base.
+
+## 7z. VISION (founder ke 4 suggestions, latest technology par) — tarteeb ke saath, abhi sirf likha
+Rule 62: technology pehle. Yeh F9 ke BAAD ka roadmap hai; pehle F0b-F2 pakke. Honest note: "Elon/Starlink appeal" kisi ki tasdeeq nahi — yeh hamare apne product ki taqat ke taur par likhe hain.
+| # | Idea | Technology | Hamare paas kya hai | Tarteeb |
+|---|---|---|---|---|
+| V1 | Append-only transparency ledger | SHA-256 chain (E102 ready) + Merkle tree (RFC 6962 style) + signed checkpoints (Ed25519), public verify WASM mein | founder_audit chain + triggers | **pehla** (F2 ke baad) |
+| V2 | Data provenance (har data par signature) | Ed25519 signature + content hash + timestamp; envelope HMAC -> asymmetric (browser verify) | Rust HMAC envelope, WASM kernel | **doosra** (F2b ke saath natural) |
+| V3 | ZK-proofs (data safe hone ka saboot bina data dikhaye) | Rust: arkworks/halo2 (Groth16/PLONK), verify WASM mein; pehle chhota statement ("chain mein X entries, root R, koi hata nahi") | audit Merkle root | **research spike** V1 ke baad |
+| V4 | Edge/decentralised encrypted storage | content-addressed (IPFS-jaisa), client-side encryption, edge nodes; Starlink hamare control mein nahi | Storage volumes (storage.ts) | **sab se aakhir**, bari research; abhi commitment nahi |

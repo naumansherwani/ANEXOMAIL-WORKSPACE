@@ -1720,3 +1720,7 @@ Haqeeqat (server/routes/auth.ts): ek hi login endpoint sab ke liye; `FOUNDER_PAS
 Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER-CODE-INVENTORY-28OCT.md. Bada khatra: auth.ts FOUNDER_PASSWORD (password overwrite + createUser). 4 jagah FOUNDER_EMAILS email-trust. Koi file move nahi. Agla: E102 re-run green (Rule 64), phir ek phase.
 
 ## 28 Oct 06:30 — E102 GREEN (9/9). Founder ne kaha: founder files/endpoints/gates awam se alag + rules ek founder folder mein. Kiya: docs/claude/founder/CODES/ (00-06). Agla: F0b install (Rule 64), abhi tak koi code move nahi.
+
+## 28 Oct 06:35 — Founder: Lovable ki gadbad numbered fix list (FX-1..14), LANDING page spec (welcome, quote, COMMAND CENTER top-right, Dashboard, profile menu, suggestions) aur 4 vision ideas (V1-V4: ledger, provenance, ZK, edge) blueprint §6z/§7z mein likhe. Chrome par UI dekh kar faisla karna hai. Koi code abhi nahi.
+
+## 28 Oct 06:50 — Chrome live dekha (founderworkspace, founder ka khula tab, sirf padha): founder awam dashboard+sidebar ke andar hai, deck mein 0/10 mailboxes, "same codebase" text. FX-15..21 blueprint §6z-b mein. Tab wapas /app par chhoda.
