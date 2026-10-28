@@ -60,3 +60,6 @@ founder-commands.md (verbatim hukm + halat) · DONE-DO-NOT-REPEAT.md (kya ho chu
 1. **FAISLA (founder 28 Oct 04:59): nexatect.com = ALAG login, parent company ka sab kuch usi mein; ANEXOMAIL.COM puri website banne ke BAAD banega.** Tab tak founder = sirf `naumansherwani.founder@anexomail.com`; F1a mein nexatect email ko dusri identity ke taur par rakhna/hatana us waqt tay (abhi koi kaam nahi, koi risk list se hat'ta hai to bhi founder ko asar nahi).
 2. UI build-time JS toolchain (React sulah, mera default) ya pure-Rust Leptos?
 3. Founder service ka port/naam (F1b par live Caddy + pm2 padh kar tay hoga).
+
+### F1a addendum (28 Oct 05:10) — user/founder login alag
+Awam `/auth` login se founder andar na aa sake aur founder session awam API par na chale: (1) auth.ts login par `isFounderUser` => refuse + founder portal ka pata; (2) founder-gate awam routes se session-type alag (founder token alag audience); (3) `FOUNDER_PASSWORD` auto-create/upsert wala raasta band (passkey proof ke baad); (4) test: founder uid + awam login = 403, awam uid + founder host = 401/403.

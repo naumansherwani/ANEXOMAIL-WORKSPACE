@@ -1035,3 +1035,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 28 Oct 2026 05:15 PKT — FOUNDER BUILD PLAN likha (docs/claude/FOUNDER-BUILD-PLAN-28OCT.md): UI + backend technology (Rust-only, Bun RETIRED, React static SPA built off-server), phases F0->F9 + F1a/F1b. Chrome ka sach: founder host abhi awam ka hi Sign-in page (+ signup) dikhata hai; nexatect.com login form se ho hi nahi sakta. Koi code nahi, founder ke dekhne ke baad F0.
 
 ## 28 Oct 2026 05:05 PKT — Founder core technology LOCKED: AGENTS.md Rule 61 + TECH-MAP 0d (Rust anexomail-founder, React static SPA, Bun/Node nahi). Dobara plan/technology behes nahi.
+
+## 28 Oct 05:10 PKT — Loophole darj: founder awam login se bhi andar aata hai (auth.ts, FOUNDER_PASSWORD + shared session). Fix F1a mein (FOUNDER-BUILD-PLAN addendum). Code abhi nahi.
