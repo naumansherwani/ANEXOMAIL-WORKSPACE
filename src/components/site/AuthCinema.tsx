@@ -1,68 +1,17 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Database, ShieldCheck, Zap } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 
 import { BrandMark } from "@/components/site/BrandMark";
 
-const defaultTaglines = [
+const taglines = [
   "Mail when it matters.",
   "Chat when it's instant.",
   "Work when it's done.",
 ];
 
-const founderTaglines = ["Founder protocol.", "One command center.", "Every action on the record."];
-const founderTrust = [
-  { icon: ShieldCheck, text: "Founder-only access · device-bound sessions" },
-  { icon: Database, text: "Every action written to a hash-chained audit log" },
-  { icon: Zap, text: "Rust · axum · async Tokio engine" },
-];
-
-/** Founder sign-in backdrop: slow drifting network of nodes (2D canvas, no libs). Off for reduced motion. */
-function FounderField() {
-  const ref = useRef<HTMLCanvasElement>(null);
-  useEffect(() => {
-    const c = ref.current;
-    if (!c) return;
-    const ctx = c.getContext("2d");
-    if (!ctx) return;
-    const calm = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
-    let w = 0, h = 0, raf = 0;
-    const N = 46;
-    const pts = Array.from({ length: N }, () => ({ x: Math.random(), y: Math.random(), vx: (Math.random() - 0.5) * 0.00018, vy: (Math.random() - 0.5) * 0.00018 }));
-    const fit = () => {
-      const r = c.getBoundingClientRect();
-      const d = Math.min(window.devicePixelRatio || 1, 2);
-      w = r.width; h = r.height;
-      c.width = Math.max(1, Math.floor(w * d)); c.height = Math.max(1, Math.floor(h * d));
-      ctx.setTransform(d, 0, 0, d, 0, 0);
-    };
-    const draw = () => {
-      ctx.clearRect(0, 0, w, h);
-      for (const q of pts) {
-        if (!calm) { q.x += q.vx * 16; q.y += q.vy * 16; if (q.x < 0 || q.x > 1) q.vx *= -1; if (q.y < 0 || q.y > 1) q.vy *= -1; }
-      }
-      for (let i = 0; i < N; i++) {
-        for (let j = i + 1; j < N; j++) {
-          const dx = (pts[i].x - pts[j].x) * w, dy = (pts[i].y - pts[j].y) * h, dist = Math.hypot(dx, dy);
-          if (dist < 130) {
-            ctx.strokeStyle = `rgba(160,200,255,${0.22 * (1 - dist / 130)})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath(); ctx.moveTo(pts[i].x * w, pts[i].y * h); ctx.lineTo(pts[j].x * w, pts[j].y * h); ctx.stroke();
-          }
-        }
-      }
-      for (const q of pts) { ctx.fillStyle = "rgba(200,225,255,0.7)"; ctx.beginPath(); ctx.arc(q.x * w, q.y * h, 1.6, 0, 6.283); ctx.fill(); }
-      if (!calm) raf = requestAnimationFrame(draw);
-    };
-    fit(); draw();
-    window.addEventListener("resize", fit);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", fit); };
-  }, []);
-  return <canvas ref={ref} aria-hidden="true" className="pointer-events-none absolute inset-0 h-full w-full opacity-80" />;
-}
-
-const defaultTrust = [
+const trust = [
   { icon: ShieldCheck, text: "256-bit TLS · device-bound sessions" },
   { icon: Database, text: "Your data · export anytime · delete means delete" },
   { icon: Zap, text: "Rust + WebTransport · async Tokio engine" },
@@ -73,10 +22,8 @@ const defaultTrust = [
  * Animated gradient breathe (CSS), rotating taglines (Framer Motion).
  * API-free: no external calls. Pure CSS + JS.
  */
-export function AuthCinema({ className, founder = false }: { className?: string; founder?: boolean }) {
+export function AuthCinema({ className }: { className?: string }) {
   const [idx, setIdx] = useState(0);
-  const taglines = founder ? founderTaglines : defaultTaglines;
-  const trust = founder ? founderTrust : defaultTrust;
 
   useEffect(() => {
     const t = setInterval(() => setIdx((i) => (i + 1) % taglines.length), 3200);
@@ -95,7 +42,6 @@ export function AuthCinema({ className, founder = false }: { className?: string;
 
       {/* Subtle grain texture */}
       <div className="absolute inset-0 ax-auth-cinema-grain opacity-[0.03]" />
-      {founder && <FounderField />}
 
       <Link
         to="/"

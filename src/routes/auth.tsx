@@ -557,7 +557,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     <>
       <main className="flex min-h-screen overflow-hidden bg-background">
         {/* LEFT — Cinematic panel (desktop only) */}
-        <AuthCinema className="hidden lg:flex" founder={founderLogin} />
+        <AuthCinema className="hidden lg:flex" />
 
         {/* RIGHT — Form panel */}
         <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
@@ -636,7 +636,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
                   ) : mode === "reset" ? (
                     <Header title="Choose a new password" sub="Use 6 to 15 characters." />
                   ) : (
-                    <Header title="Sign in" sub={founderLogin ? "Founder access only. Passkey, password or email link." : "Your mail, people, calendar and work — one surface."} />
+                    <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
                   )}
                 </motion.div>
               </AnimatePresence>

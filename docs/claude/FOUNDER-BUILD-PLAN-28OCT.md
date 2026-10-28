@@ -263,6 +263,6 @@ Already in the blueprint before this list: Cmd-K, forecast, appeals, kill switch
 
 ## 13z-b. Sign-in default + chairman level (founder 28 Oct 08:12)
 - Default entry = `founderworkspace.anexomail.com/founderlogin` (existing page, Rule 68): `/` without a session redirects there; `/auth` on the founder host redirects there. A stale token shows the gate card (no redirect loop).
-- Cinematic founder sign-in: "Founder protocol / Welcome, Founder", founder-only left panel (drifting node network, honest lines only), then "Founder protocol Activating -> Activated".
+- Founder sign-in: existing page INTACT (founder 08:16 rejected the dot-network animation). Only "Founder protocol / Welcome, Founder" above it + activating/activated screen.
 - "FOUNDER PREVIEW" pill REMOVED from the founder host everywhere (FounderBar OFF state returns nothing).
 - Chairman level = the founder lands on the Command Center, not an awam business page. The old `/app` stays reachable (Workspace link) until F9 cutover.
