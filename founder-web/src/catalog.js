@@ -3,7 +3,7 @@
 //   gate: 1 = read (signed session) · 2 = two-tap + written reason · 3 = two-tap + reason + passkey
 //   origin: "old" = exists today in the old founder app (moves here, nothing lost, FC12/FC14) · "new" = new founder feature
 // Nothing here is live data; a feature shows real data only when its endpoint ships (Rule 63).
-const G = (rows) => rows.map(([title, summary, gate, endpoint, phase, origin]) => ({ title, summary, gate, endpoint, phase, origin }));
+const G = (rows) => rows.map(([title, summary, gate, endpoint, phase, origin, legacy]) => ({ title, summary, gate, endpoint, phase, origin, legacy }));
 
 export const DECK_META = {
   finance: { title: "Finance", phase: "F3", intro: "Revenue, billing, credits and pipeline in one place. Reading needs your signed session; anything that moves money needs a second tap, a reason, and for the strongest actions your passkey." },
@@ -19,12 +19,12 @@ export const ORDER = ["finance", "people", "mail_desk", "ai", "release", "move_i
 
 export const CATALOG = {
   finance: G([
-    ["Revenue overview", "Target progress, ARR run-rate, one-off booked, open leads, partners", 1, "GET /founder/v1/finance/overview", "F3", "old"],
-    ["Pipeline", "Committed MRR vs pipeline MRR vs the gap, one-off cash", 1, "GET /founder/v1/finance/pipeline", "F3", "old"],
-    ["Billing health", "Paying, unpaid, trialing, past due, churn 30d", 1, "GET /founder/v1/finance/billing", "F3", "old"],
-    ["Support replies", "Billing questions waiting for a reply", 1, "GET /founder/v1/finance/replies", "F3", "old"],
+    ["Revenue overview", "Target progress, ARR run-rate, one-off booked, open leads, partners", 1, "GET /founder/v1/finance/overview", "F3", "old", "/api/founder/revenue/overview"],
+    ["Pipeline", "Committed MRR vs pipeline MRR vs the gap, one-off cash", 1, "GET /founder/v1/finance/pipeline", "F3", "old", "/api/founder/revenue/pipeline"],
+    ["Billing health", "Paying, unpaid, trialing, past due, churn 30d", 1, "GET /founder/v1/finance/billing", "F3", "old", "/api/founder/billing/revenue"],
+    ["Support replies", "Billing questions waiting for a reply", 1, "GET /founder/v1/finance/replies", "F3", "old", "/api/founder/support/replies"],
     ["Mark reply sent", "Close a billing reply you answered", 2, "POST /founder/v1/finance/replies/:id/done", "F3", "old"],
-    ["AI credits", "Balance, spend today and this month, runway, daily cap", 1, "GET /founder/v1/finance/ai-credits", "F3", "old"],
+    ["AI credits", "Balance, spend today and this month, runway, daily cap", 1, "GET /founder/v1/finance/ai-credits", "F3", "old", "/api/founder/ai/credits/overview"],
     ["Real-time MRR / ARR", "Per plan, from Polar data (read only)", 1, "GET /founder/v1/finance/mrr", "F3", "new"],
     ["Failed payments & churn", "Whose card failed, dunning list", 1, "GET /founder/v1/finance/failed", "F3", "new"],
     ["Reconciliation", "Manual revenue records vs Polar, flagged when they differ", 1, "GET /founder/v1/finance/reconcile", "F3", "new"],
@@ -35,11 +35,11 @@ export const CATALOG = {
     ["Comp / free plan", "Grant a plan without payment", 3, "POST /founder/v1/action finance.comp_plan", "F4", "new"],
   ]),
   people: G([
-    ["Organisations", "Every organisation, users, paid seats", 1, "GET /founder/v1/people/orgs", "F4", "old"],
-    ["CRM state", "Organisations, users, deals, leads", 1, "GET /founder/v1/people/crm", "F4", "old"],
+    ["Organisations", "Every organisation, users, paid seats", 1, "GET /founder/v1/people/orgs", "F4", "old", "/api/founder/org/list"],
+    ["CRM state", "Organisations, users, deals, leads", 1, "GET /founder/v1/people/crm", "F4", "old", "/api/founder/crm/state"],
     ["Team permissions", "Who can do what, per team", 1, "GET /founder/v1/people/permissions", "F4", "old"],
     ["Members and teams", "Membership of each organisation", 1, "GET /founder/v1/people/members", "F4", "old"],
-    ["Security by tenant", "Open anomalies, frozen accounts, blocked devices, failed logins", 1, "GET /founder/v1/people/security", "F4", "old"],
+    ["Security by tenant", "Open anomalies, frozen accounts, blocked devices, failed logins", 1, "GET /founder/v1/people/security", "F4", "old", "/api/founder/security/overview"],
     ["Toggle CRM feature", "Turn a CRM feature on or off for a tenant", 2, "POST /founder/v1/action people.crm_toggle", "F4", "old"],
     ["Impersonate user", "Support view as the user, time-limited, fully audited", 3, "POST /founder/v1/action people.impersonate", "F4", "old"],
     ["Account 360", "Plan, seats, storage, last active, devices, mail fail-rate", 1, "GET /founder/v1/people/account/:id", "F4", "new"],
@@ -50,9 +50,9 @@ export const CATALOG = {
     ["Extend trial", "More trial days for one account", 2, "POST /founder/v1/action people.extend_trial", "F4", "new"],
   ]),
   mail_desk: G([
-    ["Company mailboxes", "Planned and provisioned addresses", 1, "GET /founder/v1/mail/mailboxes", "F5", "old"],
-    ["AI email addresses", "AI mail and approvals", 1, "GET /founder/v1/mail/ai-mail", "F5", "old"],
-    ["Support desk (Leo)", "Support inbox and replies", 1, "GET /founder/v1/mail/support", "F5", "old"],
+    ["Company mailboxes", "Planned and provisioned addresses", 1, "GET /founder/v1/mail/mailboxes", "F5", "old", "/api/founder/mailboxes"],
+    ["AI email addresses", "AI mail and approvals", 1, "GET /founder/v1/mail/ai-mail", "F5", "old", "/api/founder/ai-mail"],
+    ["Support desk (Leo)", "Support inbox and replies", 1, "GET /founder/v1/mail/support", "F5", "old", "/api/founder/support/replies"],
     ["Family accounts", "AI Executive premium family accounts", 1, "GET /founder/v1/mail/family", "F5", "old"],
     ["Delivery monitoring", "Delivered, queued, deferred, bounced", 1, "GET /founder/v1/mail/delivery", "F5", "old"],
     ["Provision mailbox", "Create a company mailbox", 2, "POST /founder/v1/action mail.provision", "F5", "old"],
@@ -64,7 +64,7 @@ export const CATALOG = {
     ["24-hour SLA clock", "What is late, and where", 1, "GET /founder/v1/mail/sla", "F5", "new"],
   ]),
   ai: G([
-    ["AI overview", "Usage and health of the AI features", 1, "GET /founder/v1/ai/overview", "F6", "old"],
+    ["AI overview", "Usage and health of the AI features", 1, "GET /founder/v1/ai/overview", "F6", "old", "/api/founder/ai-agents"],
     ["Workflows and automation", "Rules, variables, run history", 1, "GET /founder/v1/ai/automation", "F6", "old"],
     ["Knowledge", "Documents and search", 1, "GET /founder/v1/ai/knowledge", "F6", "old"],
     ["Memory", "What the AI remembers", 1, "GET /founder/v1/ai/memory", "F6", "old"],
@@ -77,11 +77,11 @@ export const CATALOG = {
     ["Ask anything (metadata only)", "Read-only answers with source and time, refuses content questions", 1, "POST /founder/v1/ai/ask", "F9", "new"],
   ]),
   release: G([
-    ["Launch verdict", "Checks passed and failed, suite time, checklist open", 1, "GET /founder/v1/release/overview", "F3", "old"],
-    ["Checklist", "Ticked by hand, enforced by code", 1, "GET /founder/v1/release/checklist", "F3", "old"],
-    ["Deployments", "Which commit is live and what changed", 1, "GET /founder/v1/release/deployments", "F3", "old"],
-    ["QA runs", "Every check with its receipt", 1, "GET /founder/v1/release/qa", "F3", "old"],
-    ["Roadmap", "Everything v1.0 does not do", 1, "GET /founder/v1/release/roadmap", "F3", "old"],
+    ["Launch verdict", "Checks passed and failed, suite time, checklist open", 1, "GET /founder/v1/release/overview", "F3", "old", "/api/founder/release/overview"],
+    ["Checklist", "Ticked by hand, enforced by code", 1, "GET /founder/v1/release/checklist", "F3", "old", "/api/founder/release/checklist"],
+    ["Deployments", "Which commit is live and what changed", 1, "GET /founder/v1/release/deployments", "F3", "old", "/api/founder/release/deployments"],
+    ["QA runs", "Every check with its receipt", 1, "GET /founder/v1/release/qa", "F3", "old", "/api/founder/release/checks"],
+    ["Roadmap", "Everything v1.0 does not do", 1, "GET /founder/v1/release/roadmap", "F3", "old", "/api/founder/release/roadmap"],
     ["Diagnostics", "One click, whole stack, signed evidence", 1, "GET /founder/v1/release/diagnostics", "F3", "old"],
     ["Tick checklist item", "Mark a checklist item done", 2, "POST /founder/v1/action release.checklist_item", "F8", "old"],
     ["Run release step", "Web pull, SQL, Rust install with proof", 3, "POST /founder/v1/action release.run", "F8", "old"],
@@ -91,7 +91,7 @@ export const CATALOG = {
     ["Roll back last build", "Restore the previous binary and web build", 3, "POST /founder/v1/action release.rollback", "F8", "new"],
   ]),
   move_in: G([
-    ["Move-in cockpit", "Active move-ins, slots free, cash collected, outstanding, cut-overs next 24h", 1, "GET /founder/v1/movein/cockpit", "F3", "old"],
+    ["Move-in cockpit", "Active move-ins, slots free, cash collected, outstanding, cut-overs next 24h", 1, "GET /founder/v1/movein/cockpit", "F3", "old", "/api/founder/movein/cockpit"],
     ["Deal detail", "One deal: mailbox verified, DNS, runbook", 1, "GET /founder/v1/movein/deal/:id", "F3", "old"],
     ["Move deal to next stage", "Stage transition", 2, "POST /founder/v1/action movein.transition", "F8", "old"],
     ["Schedule cut-over", "Pick the cut-over time", 2, "POST /founder/v1/action movein.schedule", "F8", "old"],
@@ -101,15 +101,15 @@ export const CATALOG = {
     ["Roll back cut-over", "Undo a cut-over", 3, "POST /founder/v1/action movein.rollback", "F8", "old"],
   ]),
   systems: G([
-    ["Whole platform", "Tenants, failing checks, self-heals, incidents, held mail, errors, storage", 1, "GET /founder/v1/systems/overview", "F6", "old"],
+    ["Whole platform", "Tenants, failing checks, self-heals, incidents, held mail, errors, storage", 1, "GET /founder/v1/systems/overview", "F6", "old", "/api/founder/admin/overview"],
     ["Health and self-heal", "Health score and receipts", 1, "GET /founder/v1/systems/health", "F6", "old"],
     ["Logs", "Readable logs, filter and search", 1, "GET /founder/v1/systems/logs", "F6", "old"],
-    ["Storage", "When it runs out, not just how full", 1, "GET /founder/v1/systems/storage", "F6", "old"],
-    ["Speed", "p95 across tenants, budgets, regressions", 1, "GET /founder/v1/systems/perf", "F6", "old"],
+    ["Storage", "When it runs out, not just how full", 1, "GET /founder/v1/systems/storage", "F6", "old", "/api/founder/storage/volumes"],
+    ["Speed", "p95 across tenants, budgets, regressions", 1, "GET /founder/v1/systems/perf", "F6", "old", "/api/founder/perf/overview"],
     ["Call engine", "Setup time, connect rate, relay share", 1, "GET /founder/v1/systems/calls", "F6", "old"],
     ["Motion budgets", "Frame time and accessibility receipts", 1, "GET /founder/v1/systems/motion", "F6", "old"],
-    ["Integrations", "Connections, re-auth, migrations", 1, "GET /founder/v1/systems/integrations", "F6", "old"],
-    ["Platform analytics", "Debt, keep rate, threads", 1, "GET /founder/v1/systems/analytics", "F6", "old"],
+    ["Integrations", "Connections, re-auth, migrations", 1, "GET /founder/v1/systems/integrations", "F6", "old", "/api/founder/integrations/overview"],
+    ["Platform analytics", "Debt, keep rate, threads", 1, "GET /founder/v1/systems/analytics", "F6", "old", "/api/founder/analytics/overview"],
     ["Reports", "Board-ready report", 1, "GET /founder/v1/systems/reports", "F6", "old"],
     ["Data export", "Export platform data", 3, "POST /founder/v1/action systems.export", "F6", "old"],
     ["Recheck all health", "Check everything right now", 2, "POST /founder/v1/action systems.recheck_health", "F6", "new"],
@@ -119,8 +119,8 @@ export const CATALOG = {
     ["Restart Rust engine", "Restart with a health proof", 3, "POST /founder/v1/action systems.restart_rust", "F8", "new"],
   ]),
   control: G([
-    ["Settings changes", "Changes 24h, reverts 7d, scheduled", 1, "GET /founder/v1/control/settings", "F8", "old"],
-    ["Kill switches", "Per-tenant kill switch state", 1, "GET /founder/v1/control/kill-switches", "F8", "old"],
+    ["Settings changes", "Changes 24h, reverts 7d, scheduled", 1, "GET /founder/v1/control/settings", "F8", "old", "/api/founder/settings/overview"],
+    ["Kill switches", "Per-tenant kill switch state", 1, "GET /founder/v1/control/kill-switches", "F8", "old", "/api/founder/org/state"],
     ["Set kill switch", "Stop a tenant immediately", 3, "POST /founder/v1/action control.kill_switch", "F8", "old"],
     ["Revert a setting", "Undo a tenant setting change", 2, "POST /founder/v1/action control.revert", "F8", "old"],
     ["Maintenance mode", "Customers see a clear page, you keep working", 3, "POST /founder/v1/action control.maintenance_on", "F8", "new"],

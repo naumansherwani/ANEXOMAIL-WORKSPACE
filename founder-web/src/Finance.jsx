@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { CATALOG, DECK_META } from "./catalog.js";
+import { LiveFeature } from "./Live.jsx";
 
 // Gate levels mirror founder_actions (E102/E103): G1 read, G2 two-tap + reason, G3 two-tap + reason + passkey. A level can only go up.
 export const GATES = {
@@ -13,8 +14,9 @@ const Tile = ({ l, v, s, tone }) => <div className="tile"><span>{l}</span><b cla
 // One page for every deck: kicker + underlined tabs (All / Today's app / New / Gates) + tiles + row-cards. Data comes from catalog.js.
 export function DeckPage({ deck, money }) {
   const meta = DECK_META[deck], items = CATALOG[deck] || [];
-  const [tab, setTab] = useState("All");
-  const TABS = ["All", "From today's app", "New", "Gates"];
+  const live0 = items.some((i) => i.legacy);
+  const [tab, setTab] = useState(live0 ? "Live" : "All");
+  const TABS = [...(live0 ? ["Live"] : []), "All", "From today's app", "New", "Gates"];
   const shown = tab === "From today's app" ? items.filter((i) => i.origin === "old") : tab === "New" ? items.filter((i) => i.origin === "new") : items;
   const n = (g) => items.filter((i) => i.gate === g).length;
   const live = deck === "finance" && money && money.connected;
@@ -28,7 +30,10 @@ export function DeckPage({ deck, money }) {
           <Tile l="Features" v={items.length} s={`${items.filter((i) => i.origin === "old").length} from today's app · ${items.filter((i) => i.origin === "new").length} new`} />
           <Tile l="Gates" v={`${n(1)} · ${n(2)} · ${n(3)}`} s="read · two-tap · passkey" />
         </div>
-        {tab === "Gates" ? (
+        {tab === "Live" ? (
+          <div className="lives"><p className="dim small">Real data from the original features, shown here on the new page. Read-only. Original pages stay as they are.</p>
+            {items.filter((i) => i.legacy).map((i) => <LiveFeature key={i.title} title={i.title} summary={i.summary} path={i.legacy} />)}</div>
+        ) : tab === "Gates" ? (
           <div className="list"><h3>How the three gates work</h3>
             {[1, 2, 3].map((g) => <div className="rowcard" key={g}><div><b>{GATES[g].tag} <span className="plan">· {n(g)} feature(s) in {meta.title}</span></b><em>{GATES[g].text}</em></div></div>)}
           </div>
