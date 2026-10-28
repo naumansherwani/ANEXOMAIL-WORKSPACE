@@ -149,3 +149,17 @@ a.nav{text-decoration:none;min-height:40px}.nav .lbl{white-space:nowrap}
 .clock small{display:flex;align-items:center;gap:8px}
 .clock .dot{width:6px;height:6px;border-radius:50%;background:#3ccf91;box-shadow:0 0 8px #3ccf91}
 @media (prefers-reduced-motion:reduce){.clock .dg,.clock .colon{animation:none}.clock .beam i{transition:none}}
+
+/* ===== FX ambient — converted from the app's FxAmbient (src/components/fx + styles "FX AMBIENT"); founder colours = Business Pro Imperial Ruby + Platinum ===== */
+@property --fx-a{syntax:"<angle>";initial-value:0deg;inherits:false}
+@keyframes fx-spin{to{--fx-a:360deg}}@keyframes fx-pulse{0%,100%{opacity:.55}50%{opacity:.95}}
+.fx-ambient{--fx-core:#9B1B30;--fx-glow:#E11D48;--fx-ring:#E5E4E2;position:fixed;inset:0;z-index:5;pointer-events:none;contain:strict;overflow:hidden}
+.fx-edge{position:absolute;inset:0;padding:1px;opacity:.55;pointer-events:none;background:conic-gradient(from var(--fx-a),transparent 0deg,var(--fx-core) 70deg,var(--fx-ring) 120deg,transparent 200deg,transparent 260deg,var(--fx-glow) 310deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:fx-spin 9s linear infinite,fx-pulse 5s ease-in-out infinite}
+@media (max-width:1023px){.fx-edge{animation-duration:12s,6s;opacity:.4}}
+@media (prefers-reduced-motion:reduce){.fx-edge{animation:none!important}}
+html[data-fx="off"] .fx-ambient,html[data-fx="off"] .aurora{display:none!important}
+.fxtoggle{margin-left:auto;display:inline-flex;align-items:center;gap:8px;min-height:36px;padding:0 12px;border-radius:999px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);color:var(--dim);font:500 12.5px Inter,sans-serif;cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.fxtoggle:hover{color:var(--fg);border-color:rgba(255,255,255,.22)}
+.fxtoggle i{width:9px;height:9px;border-radius:50%;background:#4a5262;transition:background .2s,box-shadow .2s}
+.fxtoggle.on i{background:#E11D48;box-shadow:0 0 10px #E11D48}.fxtoggle.on{color:var(--fg)}
+@media (max-width:760px){.fxtoggle span{display:none}.fxtoggle{padding:0 10px}}

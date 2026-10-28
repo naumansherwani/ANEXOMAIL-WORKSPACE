@@ -98,6 +98,8 @@ export default function App() {
   const [view, setView] = useState("bridge");
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
   const toggleSlim = () => setSlim((s) => { const n = !s; try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} return n; });
+  const [fx, setFx] = useState(() => { try { return window.localStorage.getItem("anexo.founder.fx") !== "off"; } catch { return true; } });
+  useEffect(() => { document.documentElement.setAttribute("data-fx", fx ? "on" : "off"); try { window.localStorage.setItem("anexo.founder.fx", fx ? "on" : "off"); } catch {} }, [fx]);
   const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null), [pend, setPend] = useState(null);
   const load = useCallback(async () => {
     try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); setPend(null); }
@@ -114,10 +116,12 @@ export default function App() {
   return (
     <div className="shell">
       <div className="aurora" aria-hidden="true"><i /><i /></div>
+      <div className="fx-ambient" aria-hidden="true"><span className="fx-edge" /></div>
       <header className="topbar">
         <Brand />
         <span className="wschip">Founder</span>
         <div className="search" aria-hidden="true"><span>Search or run a command…</span><kbd>⌘K</kbd></div>
+        <button className={`fxtoggle ${fx ? "on" : ""}`} aria-pressed={fx} onClick={() => setFx((v) => !v)} title="Graphics: animated glowing edge and background light"><i aria-hidden="true" /><span>Graphics {fx ? "On" : "Off"}</span></button>
       </header>
       <div className="body">
         <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
