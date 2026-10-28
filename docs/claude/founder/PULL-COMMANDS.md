@@ -36,3 +36,5 @@ Blueprint `FOUNDER-BUILD-PLAN-28OCT.md §11z` mein har phase ke agay technology 
 ## Rust awam cores — unit tests (28 Oct 2026, read-only, no install, no restart)
 `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/rust-cores-test.sh) 2>&1 | tail -25`
 Sandbox result: 40 cores ok, 619 tests passed, 1 SKIP (jwt_core needs engine crates). rust-engine-install.sh does NOT run cargo test; this script does.
+
+| Polar read-only token (founder env, chat mein nahi) | **Polar token** | `bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-polar.sh)` (pehle fetch; token chhupa kar poochti hai; `off` se hata do) | 13 |

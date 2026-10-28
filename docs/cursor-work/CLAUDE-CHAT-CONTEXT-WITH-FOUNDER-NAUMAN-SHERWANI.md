@@ -1824,3 +1824,6 @@ Bridge now opens with the old-dashboard style greeting + clock (real data only),
 
 ## 28 Oct 10:20 PKT
 Server: E104 SQL OK (CHECK 10/10). founder-install failed on missing ftoken.rs -> installer fixed (copies all src/*.rs). Founder wants: no preview artifacts, Live Pulse ("live TV", real users signed in), ONE "Decide" button (wrong things + permissions), all devices, Polar-based money, docs/sheets answer, ordered founder list -> docs/claude/FOUNDER-NEEDS-ORDER-28OCT.md. Next: founder re-runs founder-install.sh; then Chrome proof.
+
+## 28 Oct 10:30 PKT — Polar system
+Built polar.rs (tokio async poller, GET /v1/metrics/, read-only token FOUNDER_POLAR_READ_TOKEN set via founder-polar.sh), Bridge card BILLING · POLAR. Blueprint 14z has the locked order (F1a-1, F3-a Polar, F1a-2, F2a/b/c, Decide, Live Pulse, F3-b, F4..F9, Founder desk). Founder next: founder-install.sh, then founder-polar.sh.

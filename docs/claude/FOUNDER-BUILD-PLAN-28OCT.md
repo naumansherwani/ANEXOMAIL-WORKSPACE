@@ -306,3 +306,25 @@ Rule: one phase at a time, each green + seen live in Chrome before the next. Ord
 | 32 | D17 LEO draft | after F9 | Same block as #31: LEO is the AI surface (Rule 23). Until lifted: template drafts only; you always press send. |
 | 33 | H29 Voice command | after F9 | Kernel module: on-device speech-to-text (whisper.cpp -> WASM, model downloaded once, SRI-pinned), audio never leaves the browser; Rule 52 version bump. Browser Web Speech API is NOT used (sends audio to a third party). |
 **Founder decisions still needed (asked once, when we reach them):** (a) #23 awam app reading flags = touches no-touch Rust/Web; (b) Polar read-only API token for reconciliation (#8); (c) Rule 23 lift for #31/#32.
+
+
+## 14z. FOUNDER CEO ORDER + POLAR LIVE SYSTEM (founder 28 Oct 10:10 PKT) — LOCKED addition, detail: docs/claude/FOUNDER-NEEDS-ORDER-28OCT.md
+Founder ka hukm: yeh sab baatein blueprint mein tarteeb se; Polar ke endpoint se connect; WASM kernel + Rust + tokio async.
+
+### Technology (Rule 62/66) — ek hi rasta
+Polar API (read-only, `metrics:read` token) -> **Rust tokio poller** (`server/founder/src/polar.rs`, GET only, 60 s, backoff, last-good + stale flag) -> `tokio::sync::watch` change feed -> signed envelope (HMAC now; Ed25519 F2a) -> fetch now / WebTransport push (F2) -> **WASM kernel verifies in browser (F2b, enforce + SRI)** -> React SPA. Polar :3400 webhook engine NO-TOUCH; payment/webhook token kabhi nahi, sirf alag read-only token (`founder-polar.sh` server par chhupa kar leti hai; chat mein token nahi).
+Verified Polar API: `GET https://api.polar.sh/v1/metrics/` (start_date, end_date, interval, metrics[]) scope `metrics:read`; amounts cents; slugs monthly_recurring_revenue, active_subscriptions, new_subscriptions, canceled_subscriptions, revenue. Subscriptions list/orders: scope verify karke F3 mein (failed payments, churn rows).
+
+### Tarteeb (har ek proved live, phir agla — FC8)
+| # | Phase | Kaam | Technology | Pull |
+|---|---|---|---|---|
+| 1 | F1a-1 | device approval + founder token exchange | SQL E104 (done on server) + Rust + SPA | founder-install.sh |
+| 2 | **F3-a (built 28 Oct)** | **Polar read-only reader**: `/founder/v1/finance/polar`, bridge.polar, card "BILLING · POLAR", greeting strip; no token = "not connected" | Rust tokio + SPA | founder-install.sh, phir founder-polar.sh |
+| 3 | F1a-2 | awam hosts founder login refuse | awam web | pull.sh |
+| 4 | F2a/b/c | Ed25519 + request HMAC/HKDF, WASM kernel verify, audit v1 + Merkle | Rust + WASM + SQL E105 | founder-install.sh, sql-run.sh |
+| 5 | F2-d | **Decide (N)** one button: wrong things + permissions queue | SQL (10/10, FC27) + Rust + SPA | sql-run.sh, founder-install.sh |
+| 6 | F2-e | **Live Pulse** (signed-in now/today/week, sign-ups, failed logins, plan, device class; real vs Test accounts split) pushed by tokio broadcast -> WebTransport/SSE | SQL + Rust tokio + SPA | same |
+| 7 | F3-b | Polar failed payments, churn rows, mismatch vs revenue_accounts, forecast | Rust + SQL views | same |
+| 8 | F4 People, F5 Mail Desk, F6 Systems, F8 Control, F9 cutover | as plan | | |
+| 9 | Founder desk | Docs + Sheets (Collabora/OnlyOffice via WOPI; engine choice pending licence read) | separate sandbox service + Rust WOPI | later |
+Responsive: har phase 390 / 820 / 1440 par proof (Rule 34). Sab data authentic (FC26).

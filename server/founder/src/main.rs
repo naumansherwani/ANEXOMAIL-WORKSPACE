@@ -10,6 +10,7 @@ mod data;
 mod login;
 mod actions;
 mod ftoken;
+mod polar;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use serde_json::{Value, json};
@@ -21,7 +22,7 @@ fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> 
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
 }
 
-pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool }
+pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live> }
 type S = Arc<St>;
 
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
@@ -91,6 +92,7 @@ async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respons
         "money": bridge::money(accs.as_deref(), tgt),
         "trouble": bridge::trouble(queue, expiry.as_ref()),
         "voice": bridge::voice(leads),
+        "polar": st.polar.view(now_s()),
     }))
 }
 
@@ -132,6 +134,11 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
     }
 }
 
+
+async fn polar_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    if let Err(code) = authed(&st, &h).await { return code.into_response(); }
+    signed(&st, st.polar.view(now_s()))
+}
 
 async fn actions_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
     if let Err(code) = authed(&st, &h).await { return code.into_response(); }
@@ -181,6 +188,7 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/exchange", axum::routing::post(exchange_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
+        .route("/founder/v1/finance/polar", get(polar_ep))
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
         .route("/founder/v1/action", axum::routing::post(action_ep))
@@ -214,7 +222,10 @@ async fn main() {
     let key = std::env::var("FOUNDER_HMAC_KEY").expect("FOUNDER_HMAC_KEY lazmi (kam az kam 32 bytes)");
     assert!(key.len() >= 32, "FOUNDER_HMAC_KEY chhoti hai");
     let jwks = match &sb { Some(s) => s.jwks().await, None => vec![] };
-    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy });
+    let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
+    eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
+    if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
+    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar });
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
     axum::serve(l, app(st)).await.expect("serve");
@@ -227,7 +238,7 @@ mod tests {
     use tower::ServiceExt;
     #[tokio::test]
     async fn health_has_hardening_headers() {
-        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
+        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off()})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 200);
         let h = r.headers();
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
@@ -236,11 +247,11 @@ mod tests {
 
     fn st_with_sb() -> S {
         let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
-        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true })
+        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off() })
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/actions", "/founder/v1/audit"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
@@ -249,7 +260,7 @@ mod tests {
     }
     #[tokio::test]
     async fn unconfigured_is_503_not_open() {
-        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true });
+        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off() });
         let r = app(st).oneshot(Request::get("/founder/v1/me").header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 503);
     }
