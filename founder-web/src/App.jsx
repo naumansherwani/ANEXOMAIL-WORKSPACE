@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { get, hasToken, deviceStatus } from "./api.js";
-import { AccountMenu, ProfileView, nameOf } from "./Profile.jsx";
+import { AccountMenu, ProfileView, nameOf, callName } from "./Profile.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
@@ -68,7 +68,7 @@ const fmtMinor = (n) => (Number(n) / 100).toLocaleString("en-GB", { minimumFract
 function Greeting({ m, t, v, at, p, h, me }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
-  const tz = browserZone(), part = dayPart(now, tz), nm = (nameOf(me).split(/\s+/)[0] || firstName()).slice(0, 30);
+  const tz = browserZone(), part = dayPart(now, tz), nm = (callName(nameOf(me)) || firstName()).slice(0, 30);
   const bits = [];
   if (p?.connected && p.mrr_minor != null) bits.push(`${fmtMinor(p.mrr_minor)} MRR (Polar)`, `${p.active_subscriptions ?? 0} active subscription(s)`);
   else if (h?.subscriptions?.connected) bits.push(`${h.subscriptions.by_status?.active ?? 0} active subscription(s) · ${h.subscriptions.by_status?.past_due ?? 0} past due (Polar webhook)`);

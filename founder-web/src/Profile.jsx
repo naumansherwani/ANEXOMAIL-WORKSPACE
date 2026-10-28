@@ -13,6 +13,7 @@ export function jwtName() {
 export const nameOf = (p) => String(p?.display_name || "").trim() || jwtName();
 // Initials: first + last name. A leading "Muhammad"-type prefix is skipped when real names follow it (Muhammad Nauman Sherwani -> NS).
 const PREFIX = /^(muhammad|mohammad|mohammed|mohd|md|mr|mrs|ms|dr)\.?$/i;
+export const callName = (n) => { const w = String(n || "").trim().split(/\s+/).filter(Boolean); return (w.length >= 2 && PREFIX.test(w[0]) ? w[1] : w[0]) || ""; };
 export function initials(n, e) {
   let w = String(n || "").trim().split(/\s+/).filter(Boolean);
   if (w.length >= 3 && PREFIX.test(w[0])) w = w.slice(1);

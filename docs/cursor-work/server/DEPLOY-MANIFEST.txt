@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 917be306e43f6b66
+docs/cursor-work/DONE-DO-NOT-REPEAT.md 99eb10ec37215242
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -898,13 +898,13 @@ founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html 9c4a47ea8e10f3c8
 founder-web/package-lock.json 56f1719239e4f0e9
 founder-web/package.json 1e768dde5faf7c14
-founder-web/src/App.jsx 984b469095c228c0
+founder-web/src/App.jsx 664e7788ed776c5e
 founder-web/src/api.js 5c35a968e2c729ca
 founder-web/src/main.jsx 8b541f7e1873971b
 founder-web/src/styles.css 9dfe7214ad74a465
 founder-web/vite.config.js 2da26fa35044407f
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 18cb7f30af0264b6
+founder-web/dist/index.html 7a3dff9e345d0dbd
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -951,5 +951,5 @@ docs/cursor-work/server/founder-hostguard.sh 45a465d52e7563ae
 server/lib/founder-host-guard.test.ts b931793869fee8cb
 server/lib/founder-host-guard.ts 1cf32ceefa257ae5
 server/founder/src/profile.rs 2dc090d16a31893f
-founder-web/src/Profile.jsx e02fa9fd510cc7bf
+founder-web/src/Profile.jsx 6acad5bafd535f5c
 docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md 26603401a952245d

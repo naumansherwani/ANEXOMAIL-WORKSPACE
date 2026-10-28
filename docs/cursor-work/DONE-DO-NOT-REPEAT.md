@@ -1129,3 +1129,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 11:40 PKT — founder: avatar 'oval' kyon. Wajah: global button{min-height:46px} ne 38px avatar button ko 38x46 bana diya. Fix: .avbtn/.bigav min-height:0, hover transparent; Playwright proof 38x38 / 96x96. Rule: naya button banate waqt global min-height override check karo.
 
 - 28 Oct 11:55 PKT — founder: user Settings Center founder ko kab? DONE (docs): FOUNDER-SETTINGS-CENTER-PORT-28OCT.md (tab-by-tab map, gates G1/G1w/G2/G3, endpoints, E108 plan, order S1 with F2a, S2 after F2c). DONE (code): initials MN->NS (prefix skip), avatar cursor halo (very faint), Playwright: NS, 38x38, halo opacity 1 on hover. Settings Center khud abhi BANA NAHI (F2a ke saath).
+
+- 28 Oct 11:58 PKT — founder: greeting sirf 'Nauman' (naam Nauman hai). DONE: callName() ('Muhammad' jaisa prefix skip) -> 'Good morning, Nauman'; initials NS. Playwright proof.
