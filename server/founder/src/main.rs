@@ -92,7 +92,7 @@ struct LoginIn { email: String, password: String }
 async fn login_ep(State(st): State<S>, Json(b): Json<LoginIn>) -> axum::response::Response {
     let Some(sb) = &st.sb else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
     let email = b.email.trim().to_lowercase();
-    let deny = || (StatusCode::FORBIDDEN, Json(json!({"error": "inkar"}))).into_response(); // hamesha ek hi jawab: kaun sa hissa ghalat, nahi batate
+    let deny = || (StatusCode::FORBIDDEN, Json(json!({"error": "denied"}))).into_response(); // hamesha ek hi jawab: kaun sa hissa ghalat, nahi batate
     if !login::valid_email(&email) || b.password.is_empty() || b.password.len() > 256 { return deny(); }
     let now = std::time::Instant::now();
     if st.lim.lock().unwrap().locked(&email, now) { return (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "bohat koshishen, 15 min baad"}))).into_response(); }
@@ -112,7 +112,7 @@ async fn actions_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respon
     let sb = st.sb.as_ref().unwrap();
     match sb.rows("founder_actions?select=key,deck,title,summary,danger,enabled,reversible&order=deck,key").await {
         Some(rows) => signed(&st, json!({"connected": true, "actions": rows})),
-        None => signed(&st, json!({"connected": false, "note": "founder_actions nahi mili — E102 SQL chalayein (sql-run.sh)"})),
+        None => signed(&st, json!({"connected": false, "note": "founder_actions not found — run the E102 SQL (sql-run.sh)"})),
     }
 }
 
@@ -125,7 +125,7 @@ async fn audit_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response
         sb.rpc("founder_audit_head", json!({})),
     );
     match rows {
-        None => signed(&st, json!({"connected": false, "note": "founder_audit nahi mili — E102 SQL chalayein (sql-run.sh)"})),
+        None => signed(&st, json!({"connected": false, "note": "founder_audit not found — run the E102 SQL (sql-run.sh)"})),
         Some(rows) => signed(&st, json!({"connected": true, "entries": rows, "head": head, "chain_ok": bad.as_ref().map(|v| v.is_null()), "first_bad_seq": bad})),
     }
 }
@@ -136,16 +136,16 @@ struct ActIn { key: String, reason: String }
 async fn action_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ActIn>) -> axum::response::Response {
     let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
     let sb = st.sb.as_ref().unwrap();
-    if !actions::valid_key(&b.key) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "action ka naam ghalat"}))).into_response(); }
-    let Some(reason) = actions::clean_reason(&b.reason) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "wajah kam az kam 8 akshar"}))).into_response(); };
+    if !actions::valid_key(&b.key) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid action key"}))).into_response(); }
+    let Some(reason) = actions::clean_reason(&b.reason) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "reason must be at least 8 characters"}))).into_response(); };
     let row = sb.rows(&format!("founder_actions?select=key,enabled,danger&key=eq.{}&limit=1", b.key)).await.and_then(|r| r.into_iter().next());
-    let Some(row) = row else { return (StatusCode::NOT_FOUND, Json(json!({"error": "yeh action catalogue mein nahi"}))).into_response(); };
+    let Some(row) = row else { return (StatusCode::NOT_FOUND, Json(json!({"error": "unknown action"}))).into_response(); };
     let enabled = row["enabled"].as_bool().unwrap_or(false);
     // koshish HAMESHA audit mein (chalna ho ya na chalna): kis ne, kya, kyun
     let a = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": format!("attempt.{}", b.key), "p_target": b.key, "p_reason": reason, "p_meta": {"enabled": enabled, "danger": row["danger"]}})).await;
-    let Some(a) = a else { return (StatusCode::BAD_GATEWAY, Json(json!({"error": "audit likha nahi ja saka — action roka gaya"}))).into_response(); };
+    let Some(a) = a else { return (StatusCode::BAD_GATEWAY, Json(json!({"error": "audit write failed — action blocked"}))).into_response(); };
     // executor F8 mein: tab tak chalta nahi (koi side-effect nahi)
-    (StatusCode::CONFLICT, Json(json!({"error": "executor abhi nahi (F8) — sirf koshish audit mein likhi gayi", "audit": a}))).into_response()
+    (StatusCode::CONFLICT, Json(json!({"error": "executor not enabled yet (F8) — attempt recorded in audit", "audit": a}))).into_response()
 }
 
 pub fn app(st: S) -> Router {

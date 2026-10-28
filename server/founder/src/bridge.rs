@@ -13,14 +13,14 @@ fn num(v: &Value, k: &str) -> f64 {
 /// PAISA: revenue_accounts (status=active) ka MRR. `None` rows => source tak pahunch nahi hui.
 pub fn money(accounts: Option<&[Value]>, target_gbp: Option<f64>) -> Value {
     match accounts {
-        None => json!({"connected": false, "note": "revenue_accounts tak pahunch nahi"}),
+        None => json!({"connected": false, "note": "cannot reach revenue_accounts"}),
         Some(rows) => {
             let active: Vec<&Value> = rows.iter().filter(|r| r.get("status").and_then(|s| s.as_str()) == Some("active")).collect();
             let mrr: f64 = active.iter().map(|r| num(r, "mrr_gbp")).sum();
             json!({
                 "connected": true, "source": "revenue_accounts", "mrr_gbp": (mrr * 100.0).round() / 100.0,
                 "active_accounts": active.len(), "target_gbp": target_gbp,
-                "note": if rows.is_empty() { Some("koi account darj nahi — Polar/Billing se jodna F3 mein") } else { None }
+                "note": if rows.is_empty() { Some("no accounts recorded — Polar/Billing connects in F3") } else { None }
             })
         }
     }
@@ -30,14 +30,14 @@ pub fn money(accounts: Option<&[Value]>, target_gbp: Option<f64>) -> Value {
 pub fn trouble(mail_queue: Option<i64>, expiry: Option<&Value>) -> Value {
     let mut items = vec![];
     items.push(match mail_queue {
-        None => json!({"name":"mail_outbox","state":"unknown","detail":"pahunch nahi"}),
+        None => json!({"name":"mail_outbox","state":"unknown","detail":"unreachable"}),
         Some(0) => json!({"name":"mail_outbox","state":"ok","detail":"queue khali"}),
         Some(n) if n < 25 => json!({"name":"mail_outbox","state":"warn","detail":format!("{n} queued/failed")}),
         Some(n) => json!({"name":"mail_outbox","state":"fail","detail":format!("{n} queued/failed")}),
     });
     items.push(match expiry {
-        None => json!({"name":"expiry_watch","state":"unknown","detail":"report nahi"}),
-        Some(r) if r.get("available").and_then(|v| v.as_bool()) != Some(true) => json!({"name":"expiry_watch","state":"unknown","detail":"report abhi nahi bani"}),
+        None => json!({"name":"expiry_watch","state":"unknown","detail":"no report"}),
+        Some(r) if r.get("available").and_then(|v| v.as_bool()) != Some(true) => json!({"name":"expiry_watch","state":"unknown","detail":"report not generated yet"}),
         Some(r) if r.get("stale").and_then(|v| v.as_bool()) == Some(true) => json!({"name":"expiry_watch","state":"warn","detail":"report purani (36h+)"}),
         Some(_) => json!({"name":"expiry_watch","state":"ok","detail":"report taza"}),
     });
@@ -49,7 +49,7 @@ pub fn trouble(mail_queue: Option<i64>, expiry: Option<&Value>) -> Value {
 /// AWAM KI AWAAZ: naye leads (revenue_leads stage=new); glitch/support channel baad ke phase mein.
 pub fn voice(new_leads: Option<i64>) -> Value {
     match new_leads {
-        None => json!({"connected": false, "note": "revenue_leads tak pahunch nahi"}),
+        None => json!({"connected": false, "note": "cannot reach revenue_leads"}),
         Some(n) => json!({"connected": true, "new_leads": n, "pending_channels": ["glitch", "support", "company_mail"]}),
     }
 }

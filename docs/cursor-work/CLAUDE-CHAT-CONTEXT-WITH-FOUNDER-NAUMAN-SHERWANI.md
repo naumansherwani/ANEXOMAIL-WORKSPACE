@@ -1744,3 +1744,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 06:58 — F0 LIVE: founder ne install+founder-host.sh chalayi (28 tests, SPA/healthz 200, me/bridge 401; Caddy patched, /f/ 200, /founder/v1/me 401, /app 200). Chrome par https://founderworkspace.anexomail.com/f/ login screen dikha (JS 200, form render). Kharabi FX-23: card top-left. Rule 66 + plan §11z: har phase ki technology+pull command. Bridge login founder khud karega (main password nahi dalta). Agla: F1a (E103 SQL + passkey).
 
 ## 28 Oct 06:59 — Founder: /f/ naya login bura laga, Roman Urdu text; "pehle wala English wala sahi". Rule 67 (UI English) + FX-24. Purana /app intact (kuch nahi badla). Agla: /f/ copy English + center + purane achhe look ke qareeb (F0-polish), phir F1a.
+
+## 28 Oct 07:05 — F0-polish: /f/ English + centered, Rust msgs English, E103 SQL (action titles English). Pull: [SQL] sql-run.sh bare + E103_founder_actions_english CHECK_E103; [BUILD] founder-install.sh. Founder ne poocha "login wapis aya?": /f/ par login screen wapis nahi — yeh naya Rust login hai (purana /app login alag, intact).

@@ -17,13 +17,13 @@ header{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-
 ul{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;border-bottom:1px solid var(--line);padding-bottom:6px;font-size:14px}li em{grid-column:1/-1;color:var(--dim);font-style:normal;font-size:12px}
 .lv-ok{color:var(--g)}.lv-warn{color:var(--w)}.lv-fail{color:var(--r)}.lv-unknown{color:var(--dim)}
 footer{font:12px ui-monospace,monospace;color:var(--dim);text-align:right}
-.login{position:relative;z-index:1;margin:auto;width:min(420px,calc(100% - 32px));display:flex;flex-direction:column;gap:14px;padding:28px;background:#0a110e;border:1px solid var(--line);border-radius:12px}
+.login{position:relative;z-index:1;width:min(420px,calc(100% - 32px));display:flex;flex-direction:column;gap:14px;padding:28px;background:#0a110e;border:1px solid var(--line);border-radius:12px}
 .login h1{margin:0;font-size:26px}.login label{display:grid;gap:6px;font-size:14px;color:var(--dim)}
 input{min-height:46px;background:#0d1511;color:var(--fg);border:1px solid #2b3a33;border-radius:8px;padding:0 12px;font:inherit}
 button{min-height:46px;background:var(--g);color:#06130c;border:0;border-radius:8px;font:600 15px inherit;cursor:pointer}button:disabled{opacity:.6}
 .link{background:none;color:var(--dim);min-height:auto;text-decoration:underline;font:13px inherit;padding:0 4px}
 .err{color:var(--r);font-size:14px}.banner{background:#2a1410;border:1px solid #5a3226;border-radius:8px;padding:10px 14px}
-body:has(.login){display:flex}
+.loginwrap{position:relative;z-index:1;min-height:100%;display:grid;place-items:center;padding:24px 16px}
 .tgl{cursor:pointer;min-height:auto}.tgl:hover{background:#12201a}
 .decks{position:relative;z-index:1;display:flex;flex-wrap:wrap;gap:6px}
 .tab{min-height:38px;background:#0a110eaa;color:var(--dim);border:1px solid var(--line);border-radius:8px;padding:0 14px;font:500 13px inherit}.tab.on{color:var(--g);border-color:#2e5a3c;background:#0f1d15}

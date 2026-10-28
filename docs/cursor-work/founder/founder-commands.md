@@ -7,6 +7,10 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - Migration: Pro ke endpoints Rust :3200 + WebTransport/WASM kernel (Rule 52/56); Bun sirf fallback. Phase table: MIGRATION-PHASES-RUST-PRIMARY.md.
 - **Founder-side (puri website ki zaroorat) mein ADD:** (1) common AttachmentChip (Preview/Download, src/components/app/files/AttachmentChip.tsx) calendar EventFiles + CRM files + ANEXOChat attachments mein; (2) attachment A1-A4 (dedupe, resumable, parallel, signed link) email+ANEXOChat; (3) ANEXOChat live hone ke baad E100 edit. Ye Pro green se alag; Founder workspace / puri-website list ka hissa.
 
+## ▶ 28 Oct 07:05 PKT — F0-polish pull (technology ke hisaab se): [SQL] phir [BUILD]
+1. [SQL]: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` — SAHI path: docs/cursor-work/server/sql-run.sh (bare = AUTO E103), phir `... sql-run.sh) E103_founder_actions_english CHECK_E103`.
+2. [BUILD]: founder-install.sh (naya SPA English + Rust English). Caddy dobara NAHI.
+
 ## ▶ 28 Oct 06:30 PKT — FOUNDER F0/F1b: SAHI TARTEEB (founder ko confusion tha; yeh ek hi list hai)
 1. ✅ DONE (founder ke server par 3rd run OK, 06:00): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)` => SPA 200, healthz 200, me/bridge bina token 401. Founder service `anexomail-founder` zinda 127.0.0.1:3210.
 2. ✅ DONE 06:30: SQL E102 green (9/9).

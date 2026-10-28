@@ -185,11 +185,11 @@ Pull command ke 4 qism (sab `git -C /opt/anexomail-web fetch -q origin main && b
 | Phase | Technology | Kaun se codes | Pull |
 |---|---|---|---|
 | **F0** ✅ LIVE 28 Oct 06:58 (login screen /f/ Chrome par dikha; server 28 tests, SPA/healthz 200, me/bridge 401) | Rust (axum+tokio), React 19.2 + Vite static SPA, Three.js (WebGPU->WebGL2->2D), Caddy | server/founder/*, founder-web/*, founder-host.sh | [BUILD] [CADDY] done |
-| **F1a** Login+passkey+device | Rust `webauthn-rs`, `jwt_core` ES256 (aud=anexo-founder), lockout, IP allowlist (Rust+Caddy), Postgres (founder_devices) | login.rs/passkey.rs/devices.rs, E103 SQL+CHECK_E103, SPA login (passkey once/device) | [SQL] [BUILD] [CADDY] |
+| **F1a** Login+passkey+device | Rust `webauthn-rs`, `jwt_core` ES256 (aud=anexo-founder), lockout, IP allowlist (Rust+Caddy), Postgres (founder_devices) | login.rs/passkey.rs/devices.rs, E104 SQL+CHECK_E104, SPA login (passkey once/device) | [SQL] [BUILD] [CADDY] |
 | **F1c** Landing (FX-7) | React 19.2 (View Transitions, Actions), CSS `@layer`/container queries/`light-dark()`, Three.js | Landing.jsx (welcome, quote, COMMAND CENTER, profile menu), styles | [BUILD] |
 | **F2a** Signing | Rust `ed25519-dalek`, `hmac`, `hkdf`, `sha2`, `subtle`; signing key file 0400 | sign.rs (Ed25519 envelope bytes), request-HMAC verify, HKDF session key; key-gen step (server) | [BUILD] (+ ek key-gen command) |
 | **F2b** WASM kernel | Rust -> wasm32 (`server/founder-kernel`), wasm-bindgen, Web Worker, SRI SHA-256 | founder-kernel crate (verify_envelope, hmac, hkdf, chain/merkle verify), tests RFC vectors, SPA enforce | [BUILD] |
-| **F2c** Audit v1 + Merkle | Postgres (pgcrypto SHA-256), Rust, WASM verify | E104 SQL (Merkle checkpoints)+CHECK_E104, audit.rs v1 align | [SQL] [BUILD] |
+| **F2c** Audit v1 + Merkle | Postgres (pgcrypto SHA-256), Rust, WASM verify | E105 SQL (Merkle checkpoints)+CHECK_E105, audit.rs v1 align | [SQL] [BUILD] |
 | **F3 Money** | Rust Polar/Supabase reader, SQL views (read-only), React deck, Web Worker charts | bridge money, MRR/ARR, dunning, mismatch | [SQL?] [BUILD] |
 | **F4 People + Mail Desk** | Rust (orgs/users/mailboxes), SQL actions, mail server interface (audited provision), founder inbox alag (FX-22) | people.rs, maildesk.rs, E10x if needed | [SQL?] [BUILD] |
 | **F5 Systems** | Rust systemd/expiry-watch reader, glitch/perf/security readers, signed data | systems.rs, deck | [BUILD] |
@@ -203,3 +203,5 @@ Rule: har phase ka exit = tests + server saboot + Chrome live (Rule 64). Is tabl
 ### FX-23 (Chrome live, 06:58): `/f/` login card screen ke TOP-LEFT mein chipka hua — center nahi, cinematic nahi. Fix F1c (login ka design: center, bada type, aankhon ko aasaan). Login form asli (awam jaisa nahi) — theek.
 
 ### FX-24 (founder 28 Oct 06:58): /f/ ka text Roman Urdu tha aur card ajeeb — "pehle wala English jo user ko milta hai woh sahi". Fix: poori founder SPA ka copy English (Rule 67), look = purane achhe dark-premium ka behtar version; /app (purana) bilkul nahi chheda gaya, intact hai. Phase: pehla chhota fix (copy+centering) F0-polish, phir F1a.
+
+### F0-polish (28 Oct 07:05) — DONE in repo: SPA copy poora English + login card center (desktop/mobile Playwright: card centered, 0 JS errors, no h-scroll); Rust messages English (28 tests ok); E103 SQL = founder_actions titles English (+CHECK_E103; sandbox PG16: E102 9/9, E103 3/3, dobara chalana safe). Technology: React/Vite + Rust + Postgres. Pull: [SQL] sql-run.sh (bare, phir `E103_founder_actions_english CHECK_E103`) + [BUILD] founder-install.sh. (F1a ki SQL ab E104, F2c ki E105.)
