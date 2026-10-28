@@ -16,7 +16,7 @@ pub fn pro_only(proc: &str) -> bool {
 
 pub fn plan_allows_pro(plan: &str) -> bool {
     let p = plan.trim().to_lowercase().replace([' ', '-'], "_");
-    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise")
+    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise" | "business_premium" | "businesspremium")
 }
 
 /// -1 = unlimited (SQL p_cap).
@@ -32,7 +32,7 @@ pub fn limits(plan: &str) -> Option<Limits> {
     match p.as_str() {
         "pro" => Some(Limits { pipelines: 1, fields: 5, forms: 1 }),
         "business" => Some(Limits { pipelines: 5, fields: 25, forms: 10 }),
-        "business_pro" | "businesspro" | "enterprise" => Some(Limits { pipelines: -1, fields: -1, forms: -1 }),
+        "business_pro" | "businesspro" | "enterprise" | "business_premium" | "businesspremium" => Some(Limits { pipelines: -1, fields: -1, forms: -1 }),
         s if s.starts_with("ai_") => Some(Limits { pipelines: -1, fields: -1, forms: -1 }),
         _ => None,
     }

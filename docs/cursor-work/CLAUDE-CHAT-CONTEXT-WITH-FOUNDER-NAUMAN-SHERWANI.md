@@ -1803,3 +1803,6 @@ Founder: demo ne real logo hata diya tha (galti, mani). Ab SPA mein asli BrandMa
 
 ## 09:05 PKT — feature map
 Founder asked: existing + new features intact, ordered, gates + endpoints, advanced. Done as docs + catalog + UI (see FOUNDER-FEATURE-MAP-28OCT.md). Explained why "WORKSPACE" appears (real logo lockup). Next: founder pulls, Chrome check; then F1a or F3 with his "haan".
+
+## 09:20 PKT — rename + order guard
+Founder: Enterprise -> Business Premium everywhere (Polar has no such product yet, nothing to rename there). FC20/FC21 saved. ONE-ORDER resume pointer added. Awam order untouched.

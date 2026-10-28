@@ -37,9 +37,9 @@ Yeh REPO MEIN HUKM DARJ HAI — abhi CODE NAHI bana (ghalat "ho gaya" nahi kehna
 
 ---
 ## 27 Oct 2026 09:14 PKT — FOUNDER SAHI KIYA (upar wale hukm ki jagah yeh MAANA JAYE)
-- **Email attachment:** limit package ke hisab se wahi rahegi (Basic 25MB, Pro 35MB, Business 45MB, Business Pro 60MB, Enterprise 100MB). 7GB email attachment NAHI.
-- **7GB / 4K video:** ANEXOChat ke apne package ke hisab se. Repo ka pehle se locked faisla (CLAUDE-CHAT-CONTEXT ~line 1058): ANEXOChat business ladder par **Business 2GB / Business Pro 5GB / Enterprise 7GB** (Basic/Pro ko ANEXOChat nahi); Personal ladder par **PRO+ 2GB, Premium 4GB**. Yani 7GB sirf Enterprise. Bandwidth overage har package ka apna. Mera pehla 'plan-wise sawal' (Basic ~2GB...) is se KHATAM — founder ka faisla pehle se maujood tha.
+- **Email attachment:** limit package ke hisab se wahi rahegi (Basic 25MB, Pro 35MB, Business 45MB, Business Pro 60MB, Business Premium 100MB). 7GB email attachment NAHI.
+- **7GB / 4K video:** ANEXOChat ke apne package ke hisab se. Repo ka pehle se locked faisla (CLAUDE-CHAT-CONTEXT ~line 1058): ANEXOChat business ladder par **Business 2GB / Business Pro 5GB / Business Premium 7GB** (Basic/Pro ko ANEXOChat nahi); Personal ladder par **PRO+ 2GB, Premium 4GB**. Yani 7GB sirf Business Premium. Bandwidth overage har package ka apna. Mera pehla 'plan-wise sawal' (Basic ~2GB...) is se KHATAM — founder ka faisla pehle se maujood tha.
 - Mail se chat-style link: email mein sirf link jaye to bhi bhejne wale ke ANEXOChat package ki limit lagti hai; email attachment ki alag MB limit apni jagah.
 - Link, resumable chunks, foran-khulna, Range-stream ka design upar wala hi; sirf gate = ANEXOChat plan (E100 plan_catalog mein key 'chat_file_gb' jab banega).
 
-## 27 Oct 2026 09:43 PKT — YAAD RAKHNA (FOUNDER): ANEXOChat LIVE hone ke BAAD E100 SQL dobara EDIT hogi (chat_file_gb ladder Business 2 / Business Pro 5 / Enterprise 7 GB aur baqi limits asli ANEXOChat ke hisaab se tay karke). E100 v3 (cc4802b) server par GREEN 14/14 (27 Oct 09:42 PKT). ANEXOChat live hone par: E100 ka chat gate asli upload code se jodna + sql-run AUTO dobara.
+## 27 Oct 2026 09:43 PKT — YAAD RAKHNA (FOUNDER): ANEXOChat LIVE hone ke BAAD E100 SQL dobara EDIT hogi (chat_file_gb ladder Business 2 / Business Pro 5 / Business Premium 7 GB aur baqi limits asli ANEXOChat ke hisaab se tay karke). E100 v3 (cc4802b) server par GREEN 14/14 (27 Oct 09:42 PKT). ANEXOChat live hone par: E100 ka chat gate asli upload code se jodna + sql-run AUTO dobara.

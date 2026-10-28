@@ -29,7 +29,7 @@ Founder (00:48): "three.js jaisi duniya ki jitni latest cinematic frontend techn
 | 9 | **Rive** (interactive vector animation) | chhoti, state-driven, GPU animations (Lottie se halki) | onboarding, empty states, buttons | sab | polish |
 | 10 | **CSS scroll-driven animations + View Transitions API** | bina JS ke scroll/page transitions (progressive enhancement) | app navigation, landing | sab | polish |
 | 11 | **Spline / Blender -> glTF pipeline** | designer-made 3D hero assets | landing, plan cards | public | landing phase |
-| 12 | **WebXR (VR/AR) — MUST (founder 00:51)**: `@react-three/xr` + three WebXR; Quest/Vision Pro/phone AR | spatial meeting room (ANEXOChat video), 3D calendar Globe VR/AR mein, AR business-card/QR scan | Business+ (video/voice K3 ke baad; Enterprise full) | K3 ke baad (voice/video media chahiye); fallback = normal 2D room |
+| 12 | **WebXR (VR/AR) — MUST (founder 00:51)**: `@react-three/xr` + three WebXR; Quest/Vision Pro/phone AR | spatial meeting room (ANEXOChat video), 3D calendar Globe VR/AR mein, AR business-card/QR scan | Business+ (video/voice K3 ke baad; Business Premium full) | K3 ke baad (voice/video media chahiye); fallback = normal 2D room |
 
 ## C. LAZMI QAIDE (cinematic ka matlab "bhaari" nahi)
 1. **Cinematic sirf jahan kaam ka hai**: landing, onboarding, ANEXOChat voice/moon, dashboard accent, loaders. **Mail/Work/CRM ke kaam wale screens fast + saaf** rahenge (Office suite, tables = performance pehle).

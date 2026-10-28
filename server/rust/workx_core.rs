@@ -20,7 +20,7 @@ pub fn pro_only(proc: &str) -> Option<&'static str> {
 
 pub fn plan_allows_pro(plan: &str) -> bool {
     let p = plan.trim().to_lowercase().replace([' ', '-'], "_");
-    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise")
+    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise" | "business_premium" | "businesspremium")
 }
 
 /// Bun STAGE_PROB.

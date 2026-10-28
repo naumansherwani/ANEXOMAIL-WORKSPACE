@@ -13,7 +13,7 @@
 5. **Attention engine:** Rust sirf asli signal se rank karta hai (error rate, bounce, failed payment, appeal age). Koi guess nahi; naapa nahi = "Not measured".
 
 ## B. MONEY (F3) — Polar ka sach, read-only
-6. **Real-time MRR/ARR:** Polar webhook data se (webhook/WAL NO-TOUCH, sirf read); plan-wise Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Enterprise £18,500.
+6. **Real-time MRR/ARR:** Polar webhook data se (webhook/WAL NO-TOUCH, sirf read); plan-wise Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Business Premium £18,500.
 7. **Churn + failed payments board:** kiska card fail, dunning list, har row par do-tap action (reminder mail, extend grace) — har amal audited.
 8. **Mismatch alert:** `revenue_accounts` (manual) vs Polar ka farq ek jagah — jhoota 0 kabhi nahi.
 9. **Forecast:** target vs asli, simple jamin-aasman wala number pehle 5 second mein, detail neeche.

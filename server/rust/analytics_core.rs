@@ -30,7 +30,7 @@ pub fn plan_rank(plan: &str) -> u8 {
         return 2;
     }
     match p.as_str() {
-        "business" | "business_pro" | "businesspro" | "enterprise" => 2,
+        "business" | "business_pro" | "businesspro" | "enterprise" | "business_premium" | "businesspremium" => 2,
         "pro" => 1,
         _ => 0,
     }

@@ -1,10 +1,10 @@
 # ANEXOChat + K3 (ek QUIC session) — Business phase ka kaam (founder 26 Oct 2026 19:47 PKT)
 Founder: "G1/G2 haan, lekin tarteeb se. ANEXOChat ka kal raat 2 baje (25-26 Oct) ke aas-paas jo bahut kuch note karwaya tha, yeh us ke UPAR hi chalega. Pro green ke baad Business par aayenge, us mein yeh sab hoga."
-Tarteeb: Pro green (abhi) -> Business phase: ANEXOChat + K3 -> CRM P3-P6 -> Business Pro -> Enterprise. Pro green hone tak K3/ANEXOChat par code NAHI.
+Tarteeb: Pro green (abhi) -> Business phase: ANEXOChat + K3 -> CRM P3-P6 -> Business Pro -> Business Premium. Pro green hone tak K3/ANEXOChat par code NAHI.
 
 ## Jin purane notes ke upar banega (pehle yeh padho, naya mat ghadho)
 - `docs/claude/ANEXOCHAT-CINEMATIC-VOICE-BLUEPRINT.md` (voice Opus+FEC+DTX+WASM, Moon UI, memory-less infra list, implementation order)
-- `docs/claude/PRICING-POSITIONING-26OCT.md` sections 7, 8, 9 (ANEXOChat file ladder Business 2GB / Business Pro 5GB / Enterprise 7GB, Personal PRO+ 2GB / Premium 4GB, bandwidth overage, CRDT lock, attachment gating)
+- `docs/claude/PRICING-POSITIONING-26OCT.md` sections 7, 8, 9 (ANEXOChat file ladder Business 2GB / Business Pro 5GB / Business Premium 7GB, Personal PRO+ 2GB / Premium 4GB, bandwidth overage, CRDT lock, attachment gating)
 - `docs/claude/BULLETPROOF-RELIABILITY-26OCT.md` (bulletproof 5 points)
 - `docs/claude/CEO-DECISIONS-AND-FIX-PHASES-26OCT.md`, `docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md`
 - `docs/cursor-work/founder/founder-commands.md` 26 Oct 03:10 / 03:15 / 03:30 / 03:42 blocks (founder ke verbatim faisle)

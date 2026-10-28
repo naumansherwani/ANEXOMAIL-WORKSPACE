@@ -4,7 +4,7 @@
 
 # Asli sach ab: docs/cursor-work/founder/packages-pricing-v6-2026-10-25.md
 
-# | Basic Flat £40 (5 users, 3 mailboxes, 15GB shared, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Enterprise £18,500 (UNLIMITED, 15TB, 100MB) |
+# | Basic Flat £40 (5 users, 3 mailboxes, 15GB shared, 25MB) | Pro £105 (20, 300GB, 35MB) | Business £360 (60, 1.5TB, 45MB) | Business Pro £2,850 (570, 10TB, 100MB) | Business Premium £18,500 (UNLIMITED, 15TB, 100MB) |
 
 # Neeche wali v5 ladder/purani table HISTORY hai — pricing ke faislay mein v6 jeetta hai. Naya dimension RULE 4A: file transfer limit 25/35/45/100/100 MB.
 
@@ -15,9 +15,9 @@
 # Surface unmix (teen hosts, Chat vs LEO, do Admin): docs/cursor-work/IMPLEMENTATION-MASTER.md §0
 
 # ═══ UPDATE 26 Oct 2026 03:42 PKT — FOUNDER GATE DECISIONS (neeche ke purane 7-column tables HISTORY; yeh jeetta hai) ═══
-# ANEXOChat: Business ladder -> Business 2GB / Business Pro 5GB / Enterprise 7GB (Basic, Pro = NAHI). Personal ladder -> PRO+ 2GB / Premium 4GB (Personal Basic = NAHI).
-# Email attachment: 25/35/45/60/100 MB. Storage (shared pool): Basic 15GB (3 mailboxes) / 300GB/1.5TB/10TB/15TB. CRDT docs: Business+. Enterprise = Business Pro ke saare features + upar.
-# Bandwidth overage (hidden, bill-only): Business 10TB @ £12/TB, Business Pro 30TB @ £11/TB, Enterprise 50TB @ £10/TB (CEO decision, founder veto).
+# ANEXOChat: Business ladder -> Business 2GB / Business Pro 5GB / Business Premium 7GB (Basic, Pro = NAHI). Personal ladder -> PRO+ 2GB / Premium 4GB (Personal Basic = NAHI).
+# Email attachment: 25/35/45/60/100 MB. Storage (shared pool): Basic 15GB (3 mailboxes) / 300GB/1.5TB/10TB/15TB. CRDT docs: Business+. Business Premium = Business Pro ke saare features + upar.
+# Bandwidth overage (hidden, bill-only): Business 10TB @ £12/TB, Business Pro 30TB @ £11/TB, Business Premium 50TB @ £10/TB (CEO decision, founder veto).
 # AI (ai.anexomail.com, alag product): AI Pro £2,000 / AI Business £5,000 / AI Executive £25,000 per month. Workspace plans = AI ZERO.
 # Detail: docs/claude/PRICING-POSITIONING-26OCT.md section 9.
 
@@ -26,15 +26,15 @@
 #   3 booking links, 4 trusted devices, support 48h. Shared inbox/collision guard, snooze, schedule send, templates, boards/notes/tasks,
 #   thread analytics = Pro+ (server-side REAL). SQL: E88_pro_v6.sql (+CHECK_E88). Har package ka alag folder: docs/packages/<pkg>/.
 # PRO+ GATES GREEN (26 Oct 07:40): pre-send scan, follow-ups, snippets, draft handoff (Rust pro_only_proc); Overlap Matrix + Focus Ring + meeting cost (Find-a-time Basic mein); CRM base; analytics routes (response debt sab / threads+deep-work Pro+ / leaks+promises+forecast+team Business+). Analytics DATA backend NOT BUILT (docs/packages/pro/NOT-BUILT.md #1). Ledger: docs/packages/GREEN-LEDGER.md
-# BOOKING LINKS: Basic 1 / Pro 3 / Business 20 / Business Pro + Enterprise unlimited (chat_phase_entitlements 'booking_links' + trigger booking_pages_cap).
+# BOOKING LINKS: Basic 1 / Pro 3 / Business 20 / Business Pro + Business Premium unlimited (chat_phase_entitlements 'booking_links' + trigger booking_pages_cap).
 
 # ═══ PP1 — FEATURE GATE MATRIX (CEO proposal 26 Oct 04:40 PKT; FOUNDER approve baqi) — ab se REPO ka rule (AGENTS Rule 53) ═══
-# PRICE AXES (founder 04:27 PKT, FINAL): BUSINESS = v6 flat per-month: Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Enterprise £18,500.
+# PRICE AXES (founder 04:27 PKT, FINAL): BUSINESS = v6 flat per-month: Basic £40 / Pro £105 / Business £360 / Business Pro £2,850 / Business Premium £18,500.
 #   PERSONAL (alag Polar SKUs, per person): Personal Basic £17 / Personal Pro+ £83 / Personal Premium £1,850. "£23/£46/£97" PURANI hain -- kahin istemal na hon.
 #   plan-surface.ts ka polarToPersonalTier mapping + comments PURANE hain (P5 mein theek honge).
 # Personal = ek insaan: shared inbox/thread ownership/company address/Org/Domains NAHI. Personal Pro+ aur Premium = Business Pro POWER.
 #
-# | Feature | Basic | Pro | Business | Biz Pro | Enterprise | P.Basic | P.Pro+ | P.Premium |
+# | Feature | Basic | Pro | Business | Biz Pro | Business Premium | P.Basic | P.Pro+ | P.Premium |
 # | Mail/People/Calendar/Search/Import/Move-In/Billing/Devices/Settings | Y | Y | Y | Y | Y | Y | Y | Y |
 # | Work (boards, notes, tasks, thread analytics) | - | Y | Y | Y | Y | Y | Y | Y |
 # | Compose Business Outcomes (promise->task/calendar, thread economics; commit.* procs, SQL E97, kernel intent@1) | - | Y | Y | Y | Y | - | Y | Y |
@@ -54,7 +54,7 @@
 # | Bandwidth overage (hidden, bill-only) | fair-use | fair-use | 10TB@£12 | 30TB@£11 | 50TB@£10 | - | - | - |
 # | Video group size | - | 4? | 8 | 40 | 60 | - | 8 | 40 |
 # | Device vault slots | 2 | 4 | 10 | 50 | 100 | 2 | 10 | 50 |
-# | LEO AI | NO (sirf ai.anexomail.com, COMING SOON July 2027; Enterprise AI nahi) |
+# | LEO AI | NO (sirf ai.anexomail.com, COMING SOON July 2027; Business Premium AI nahi) |
 # Analytics routes (/app/analytics*): koi plan gate NAHI mila -- decide: Pro+ (Work ke saath). | Founder/Admin/Perf: founder host only.
 
 ---
@@ -274,7 +274,7 @@ Gate SERVER par (Rust `analytics_glue` / `cal_glue`, `resolve_plan`); UI `plan-s
 | Team load | Business+ (owner/admin) | <3 light, <10 healthy, <25 heavy, warna drowning |
 | Meeting cost £ | Pro+ | sum(attendee hourly_rate) x minutes/60; rates na hon => null (jhoota number nahi); Basic ko server null bhejta hai |
 | Partner commission | — | 20/25/30% har CLIENT COMPANY ke flat monthly plan par; Gold 10+, Platinum 30+ client companies (Rule 51: per-user nahi) |
-Prices (flat/month): Basic £40 · Pro £105 · Business £360 (30 users tak) · Business Pro £2,850. Enterprise alag contract.
+Prices (flat/month): Basic £40 · Pro £105 · Business £360 (30 users tak) · Business Pro £2,850. Business Premium alag contract.
 Browser technology: WASM KERNEL (Rule 52) + dastoor E90 `kernel_constitution` — kernel gate nahi kholta.
 
 ## Bandwidth: competitor check + honest-bandwidth promise (founder 28 Oct 2026 08:30 PKT) — DOCS ONLY, no code (Rule 54, Rule 5)
@@ -291,11 +291,11 @@ Reading: these pages are SENDING-RATE limits that block or throttle. None of the
 | Basic / Pro | fair-use | no bill, only slower speed (throttle) |
 | Business | 10 TB | £12 / extra TB |
 | Business Pro | 30 TB | £11 / extra TB |
-| Enterprise | 50 TB | £10 / extra TB, with a written fair-use ceiling (CEO guess: 100 TB/month — founder to confirm) |
+| Business Premium | 50 TB | £10 / extra TB, with a written fair-use ceiling (CEO guess: 100 TB/month — founder to confirm) |
 These rates are the ones already recorded above (line "Bandwidth overage (hidden, bill-only)"). The earlier "£1 per 4 GB" idea is dropped: it would contradict "better than Google/Zoho".
 **Four promises (the difference we sell):**
 1. Throttle first, then money: after the limit, mail still goes out, only slower (Google blocks 24h; we do not). Turning overage on restores speed at once.
 2. Inbound is never blocked (already locked).
 3. Live meter: warning at 80% and 95%, and the billing page shows the real GB used.
-4. Enterprise: "unlimited-ish" but with a written fair-use ceiling.
+4. Business Premium: "unlimited-ish" but with a written fair-use ceiling.
 **Truth (Rule 5):** all of this is TODO. Rust metering, throttle and Polar overage billing do not exist yet; the first step is the meter, then the rate. Awam-side lane (not the founder phases). Pricing/policy commits need this Competitor-check line (Rule 54) — it is the table above.

@@ -7,7 +7,7 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 ORD = ["basic", "pro", "business", "business_pro", "enterprise"]
 NAME = {"basic": "Basic £40", "pro": "Pro £105", "business": "Business £360",
-        "business_pro": "Business Pro £2,850", "enterprise": "Enterprise £18,500"}
+        "business_pro": "Business Pro £2,850", "enterprise": "Business Premium £18,500"}
 LIMITS = [
     ("Users cap", "5", "20", "60", "570", "unlimited"),
     ("Mailboxes", "3", "10", "-", "-", "-"),
@@ -39,7 +39,7 @@ out = [
     "Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages ko inherit milta hai. Mix/duplicate nahi. "
     "CODE = gate code mein enforce; PROPOSED = CEO assignment (founder approve baqi); TODO-VERIFY = code gate check baqi.\n",
     "## Matrix\n",
-    "| ID | Area | Feature | Basic | Pro | Business | Biz Pro | Enterprise | Status |",
+    "| ID | Area | Feature | Basic | Pro | Business | Biz Pro | Business Premium | Status |",
     "|---|---|---|---|---|---|---|---|---|",
 ]
 for r in rows:
@@ -51,7 +51,7 @@ for r in rows:
         cells = [s, "", "", "", ""]
     out.append(f"| {r[0]} | {r[1]} | {r[2]} | " + " | ".join(cells) + f" | {r[4]} |")
 out += ["\n## LIMITS (har package ka apna number)\n",
-        "| Limit | Basic | Pro | Business | Biz Pro | Enterprise |", "|---|---|---|---|---|---|"]
+        "| Limit | Basic | Pro | Business | Biz Pro | Business Premium |", "|---|---|---|---|---|---|"]
 out += ["| " + " | ".join(l) + " |" for l in LIMITS]
 open(os.path.join(HERE, "FEATURE-CATALOG.md"), "w", encoding="utf-8").write("\n".join(out) + "\n")
 

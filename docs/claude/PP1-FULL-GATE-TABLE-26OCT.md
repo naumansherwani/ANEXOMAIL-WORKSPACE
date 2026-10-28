@@ -1,5 +1,5 @@
 # PP1 — POORI WEBSITE FEATURE -> PACKAGE TABLE (CEO proposal 26 Oct 05:00 PKT; FOUNDER APPROVE BAQI)
-Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Basic, P=Pro, Bu=Business, BP=Business Pro, E=Enterprise | Personal: PB=Basic, PP+=Pro+, PPr=Premium. "all"=sab. Personal = ek insaan (Org/Domains/shared inbox nahi). Per-month flat + user cap (5/20/60/570/unlimited).
+Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Basic, P=Pro, Bu=Business, BP=Business Pro, E=Business Premium | Personal: PB=Basic, PP+=Pro+, PPr=Premium. "all"=sab. Personal = ek insaan (Org/Domains/shared inbox nahi). Per-month flat + user cap (5/20/60/570/unlimited).
 
 | # | Feature group | Gate (B / P / Bu / BP / E) | Personal (PB / PP+ / PPr) |
 |---|---|---|---|
@@ -7,7 +7,7 @@ Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Ba
 | 2 | CalDAV phone/desktop sync + feed links + outside calendars | all | all |
 | 3a | CALENDAR generous (founder 04:39: Basic ko achay features): Find-a-time + 1 public booking link + manage booking | all (Basic bhi) | all |
 | 3b | CALENDAR Pro: unlimited booking links, Overlap Matrix, Focus Ring, Availability/focus windows, meeting goal, meeting cost, files on meeting | P+ | PP+, PPr |
-| 5 | CALENDAR Business (sab kuch): meeting rooms/resources + sab upar wale; BP aur Enterprise ko bhi sab (kabhi kam nahi) | Bu+ | no |
+| 5 | CALENDAR Business (sab kuch): meeting rooms/resources + sab upar wale; BP aur Business Premium ko bhi sab (kabhi kam nahi) | Bu+ | no |
 | 6 | MAIL core: folders, read thread, categories, labels, multi-mailbox, identity chips, archive/delete/star/move, outbox, inline reply, compose, undo send, signatures, attachments (25/35/45/60/100MB), draft autosave+versions | all | all |
 | 7 | Pro mail tools: snooze, schedule send, templates, snippets, thread notes, inbox shortcuts, multiple identities | P+ | PP+, PPr |
 | 8 | Pre-send confidence scan, follow-up reminders, thread analytics, word prediction, reading meter, cross-device draft handoff, thread rescue | P+ | PP+, PPr |
@@ -45,26 +45,26 @@ Source: docs/claude/inventory/INV-1/2/3 (213 features, code-based). Legend: B=Ba
 | 39 | Founder/Admin/Perf/Launch | founder host only | -- |
 
 ## Code ghaltiyan jo gate unify karte waqt theek hongi (P5)
-Video: DB chat_video_allowed (founder+BP) vs UI Pro+ vs chat Bu+ -> sab Bu+. Analytics: gate hai hi nahi. Work header Basic ko TaskBoard kehta hai lekin route Pro se neeche block karta hai. Enterprise rank code mein nahi. Mail features #8 abhi ungated (formula Pro+ kehta hai).
-## Landing mistakes (INV-3 mein 23, file:line): index.tsx:49 "From £23 per user"; plans.tsx old prices+no Enterprise column; plans.ts monthly 23/46/97 "/user/month", Business 30 users, BP "unlimited users", AI £400/1500/4000; billing-platform.ts+app.billing.tsx price_per_seat; enterprise.tsx = £790 Priority Support page (clash); plans.tsx:233 Premium 5GB (founder: 4GB).
+Video: DB chat_video_allowed (founder+BP) vs UI Pro+ vs chat Bu+ -> sab Bu+. Analytics: gate hai hi nahi. Work header Basic ko TaskBoard kehta hai lekin route Pro se neeche block karta hai. Business Premium rank code mein nahi. Mail features #8 abhi ungated (formula Pro+ kehta hai).
+## Landing mistakes (INV-3 mein 23, file:line): index.tsx:49 "From £23 per user"; plans.tsx old prices+no Business Premium column; plans.ts monthly 23/46/97 "/user/month", Business 30 users, BP "unlimited users", AI £400/1500/4000; billing-platform.ts+app.billing.tsx price_per_seat; enterprise.tsx = £790 Priority Support page (clash); plans.tsx:233 Premium 5GB (founder: 4GB).
 
 ## Founder 04:39 PKT — jawab (CEO faisle)
 - Calendar: Basic ko generous (Find-a-time + 1 booking link), Pro ko zyada, Business+ ko sab. Competitor check (Rule 54) landing copy se pehle baqi: Google/Zoho calendar ka free/paid hissa verify karna.
 - Analytics: Basic = response debt; Pro = + thread economics + deep work; Business+ = baqi.
 - CRDT docs Personal ko NAHI.
 - 23 'ghaltiyan' ka matlab: purani qeematein/per-user lafz jo 2 ghantay pehle ke founder faislon se UPDATE hone baqi hain (P2/P3) -- ghalti nahi, update-list.
-- Priority Support vs Enterprise: Priority Support = paid add-on 790 GBP/mo (tez insani support, named contact, 2-business-day response, quarterly review). Naya Enterprise = poora package 15,000 GBP. CEO faisla: purani /enterprise page ka naam 'Priority Support' (/priority-support), naya /enterprise page naye package ka; Enterprise mein Priority Support FREE included; baqi plans ke liye add-on rahe. (Founder veto.)
+- Priority Support vs Business Premium: Priority Support = paid add-on 790 GBP/mo (tez insani support, named contact, 2-business-day response, quarterly review). Naya Business Premium = poora package 15,000 GBP. CEO faisla: purani /enterprise page ka naam 'Priority Support' (/priority-support), naya /enterprise page naye package ka; Business Premium mein Priority Support FREE included; baqi plans ke liye add-on rahe. (Founder veto.)
 - Video unify (Bu+) aur booking: founder jawab baqi.
 
 ## Founder 04:48 PKT — video + booking links + KAAM KI TARTEEB
-- **Video (CEO reading of founder, veto baqi):** Pro = standalone video call **720p** (ANEXOChat features ke baghair, takrao nahi); Business = 720p + ANEXOChat ke saath (group 8); Business Pro = **2K** + top-notch features (group 40); Enterprise = **poori website ka scale, sab kuch, 8K ladder tak** (group 60). Basic = video nahi. Personal Pro+ = Pro-jaisa 720p+chat, Premium = 2K.
-- **Booking links:** Basic 1, Pro 3, Business 20, Business Pro unlimited, Enterprise unlimited (halki fair-use limit).
-- **Tarteeb (founder rule): ek ek page.** Pehle Business ke package plans (monthly + yearly), pehle Basic phir Pro/Business/BP/Enterprise; phir Personal Basic/Pro+/Premium. Har package ke features pehle CHAT mein likho -> founder approve -> phir repo. Gates tab tak nahi jab tak puri website ke features read na hon (INV-1/2/3 se read ho chuki).
-- Yearly rule (plans.ts): Basic/Pro = monthly x11, Business/BP = x10. Enterprise yearly: proposal x10 = 150,000 GBP (founder confirm).
+- **Video (CEO reading of founder, veto baqi):** Pro = standalone video call **720p** (ANEXOChat features ke baghair, takrao nahi); Business = 720p + ANEXOChat ke saath (group 8); Business Pro = **2K** + top-notch features (group 40); Business Premium = **poori website ka scale, sab kuch, 8K ladder tak** (group 60). Basic = video nahi. Personal Pro+ = Pro-jaisa 720p+chat, Premium = 2K.
+- **Booking links:** Basic 1, Pro 3, Business 20, Business Pro unlimited, Business Premium unlimited (halki fair-use limit).
+- **Tarteeb (founder rule): ek ek page.** Pehle Business ke package plans (monthly + yearly), pehle Basic phir Pro/Business/BP/Business Premium; phir Personal Basic/Pro+/Premium. Har package ke features pehle CHAT mein likho -> founder approve -> phir repo. Gates tab tak nahi jab tak puri website ke features read na hon (INV-1/2/3 se read ho chuki).
+- Yearly rule (plans.ts): Basic/Pro = monthly x11, Business/BP = x10. Business Premium yearly: proposal x10 = 150,000 GBP (founder confirm).
 
 ## Founder 04:56 PKT — CORRECTIONS (meri ghalti: Pro aur Personal Pro+ mix kiye)
-- **Business ke Pro mein ANEXOChat DOOR DOOR TAK NAHI. Pro mein video bhi NAHI** (video ANEXOChat ke saath aati hai). ANEXOChat + ANEXOVideoCall (720p) **Business se shuru**; Business Pro 2K; Enterprise baad mein. Upar ki 'Pro 720p standalone video' line VOID.
+- **Business ke Pro mein ANEXOChat DOOR DOOR TAK NAHI. Pro mein video bhi NAHI** (video ANEXOChat ke saath aati hai). ANEXOChat + ANEXOVideoCall (720p) **Business se shuru**; Business Pro 2K; Business Premium baad mein. Upar ki 'Pro 720p standalone video' line VOID.
 - **Personal HOLD**: Personal ke bohot masle; alag UI; Personal Gmail ke upar outbox pe bana hai; uske codes + 3 packages ki phases shuru se alag meeting mein, latest technology. Jab tak founder na kahe Personal par koi kaam/gate NAHI.
-- **Enterprise abhi ZERO**: kuch likha nahi; codes duniya ki advanced technology par; bug nahi chalega; baad mein alag plan.
+- **Business Premium abhi ZERO**: kuch likha nahi; codes duniya ki advanced technology par; bug nahi chalega; baad mein alag plan.
 - **Business Basic APPROVED** (founder 04:56): 5 users, 3 mailboxes, 15GB shared (founder 05:45 correction, 25GB galat tha), 25MB attachment, 2 trusted devices, 1 booking link; company domain + undo send Basic mein rahein. Price per month (per-user nahi): £40/mo, yearly £440 (x11, 1 month free) -- founder approve baqi.
 - Landing Basic features jo merge honge: 1 company domain, thread ownership, Cmd+K search, free aliases (no extra seat), human support 72h response.

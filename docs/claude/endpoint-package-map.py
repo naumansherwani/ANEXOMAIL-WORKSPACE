@@ -3,7 +3,7 @@
 upar ke sab packages ko bhi milta hai). Source of truth for rules: docs/claude/PP1-FULL-GATE-TABLE-26OCT.md (#n) + docs/packages/features.tsv + gates live code.
 Chalao:  python3 docs/claude/endpoint-package-map.py   -> docs/claude/ENDPOINT-PACKAGE-MAP.csv + docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md
 starts_at: basic | pro | business | business_pro | founder (founder host only, package nahi) | ai_soon (AI plans July 2027) | internal (service-to-service)
-Enterprise = HAR cheez jo Business Pro mein hai + poori website latest technology (Rust-only, Bun-free); Enterprise ka koi alag endpoint abhi nahi (ZERO, founder 04:56)."""
+Business Premium = HAR cheez jo Business Pro mein hai + poori website latest technology (Rust-only, Bun-free); Business Premium ka koi alag endpoint abhi nahi (ZERO, founder 04:56)."""
 import csv, re, glob, collections
 
 B, P, BU, BP, F, AI, INT = 'basic', 'pro', 'business', 'business_pro', 'founder', 'ai_soon', 'internal'
@@ -83,10 +83,10 @@ pc = collections.defaultdict(list)
 for p in sorted(procs): pc[pkg_proc(p)[0]].append(p)
 
 order = [B, P, BU, BP, F, INT, AI, '?']
-names = {B: 'BASIC (aur uske upar sab)', P: 'PRO (+ upar)', BU: 'BUSINESS (+ upar)', BP: 'BUSINESS PRO (+ Enterprise)', F: 'FOUNDER host only (package nahi)', INT: 'INTERNAL (service-to-service)', AI: 'AI (coming soon July 2027)', '?': 'UNCLASSIFIED'}
+names = {B: 'BASIC (aur uske upar sab)', P: 'PRO (+ upar)', BU: 'BUSINESS (+ upar)', BP: 'BUSINESS PRO (+ Business Premium)', F: 'FOUNDER host only (package nahi)', INT: 'INTERNAL (service-to-service)', AI: 'AI (coming soon July 2027)', '?': 'UNCLASSIFIED'}
 L = ["# ENDPOINT -> PACKAGE MAP — 26 Oct 2026 (founder hukm 22:14: 'repo mein likho kaun si feature/gate/endpoint kis package ki hai, verna website mix ho jaye gi')",
      "Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; source PP1-FULL-GATE-TABLE-26OCT.md + docs/packages/features.tsv). Poori list: `ENDPOINT-PACKAGE-MAP.csv`.",
-     "**starts_at** = sab se chhota package jis se endpoint shuru hota hai; us se UPAR ke sab packages ko bhi milta hai. **Enterprise** = Business Pro ki har cheez + POORI website latest technology (Rust-only, Bun-free) — Enterprise ka koi alag endpoint abhi nahi (ZERO, founder 04:56).",
+     "**starts_at** = sab se chhota package jis se endpoint shuru hota hai; us se UPAR ke sab packages ko bhi milta hai. **Business Premium** = Business Pro ki har cheez + POORI website latest technology (Rust-only, Bun-free) — Business Premium ka koi alag endpoint abhi nahi (ZERO, founder 04:56).",
      "**RULE (AGENTS.md):** naya endpoint/gate likhne se pehle is map mein uska starts_at dekho; gate SERVER par (Rust, resolve_plan), UI aaina. Map mein na ho => pehle yahan CSV/rule mein jodo, phir code.", "",
      "## Bun REST endpoints (523) — package-wise", "| Package (starts_at) | Kul | Rust-first (live) | Baaqi (Bun-only) |", "|---|---|---|---|"]
 for k in order:

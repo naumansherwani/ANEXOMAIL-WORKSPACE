@@ -3,7 +3,7 @@
 Founder sawal: "user Google/Zoho chhod ke kyun aaye? main better deal kaise doon? kal 1000 org aaye to Hetzner blast na ho -- control bhi, compete bhi."
 
 ## 1. User kyun aaye — sach (honest math, landing par claim se pehle Google/Zoho ki live price verify karni hai)
-- Per-user pricing: Google/Zoho per seat. Hamara flat: Basic £40/5 users (£8/user), Pro £105/20 (£5.25), Business £360/60 (£6), Business Pro £2,850/570 (£5), Enterprise unlimited. **Tiny team (1-3 log) par hum sasta NAHI -- jeet 15-570 users ki growing teams par.** Wedge = growing SME/agency/startup jo har naye bande par bill barhta dekh kar thak gaye.
+- Per-user pricing: Google/Zoho per seat. Hamara flat: Basic £40/5 users (£8/user), Pro £105/20 (£5.25), Business £360/60 (£6), Business Pro £2,850/570 (£5), Business Premium unlimited. **Tiny team (1-3 log) par hum sasta NAHI -- jeet 15-570 users ki growing teams par.** Wedge = growing SME/agency/startup jo har naye bande par bill barhta dekh kar thak gaye.
 - Predictable bill: users add karo, bill wohi. Overage hidden-but-fixed, bill-shock nahi.
 - Bari attachment: 35/45/60/100 MB vs Gmail 25MB (Enterprise Plus 50MB), Zoho incoming 40MB. Roz ka dard.
 - Shared storage pool (har bande ka alag cap nahi).

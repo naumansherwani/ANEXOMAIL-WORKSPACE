@@ -1156,7 +1156,7 @@ pub fn effective_rates(rows: &[(String, Option<f64>)], organiser: &str, include_
 /// 0 basic · 1 pro+ . Basic ko meeting cost nahi milti. Anjaan plan = basic (kabhi zyada nahi kholta).
 pub fn cost_allowed(plan: &str) -> bool {
     let p = plan.trim().to_lowercase().replace([' ', '-'], "_");
-    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise")
+    p.starts_with("ai_") || matches!(p.as_str(), "pro" | "business" | "business_pro" | "businesspro" | "enterprise" | "business_premium" | "businesspremium")
 }
 
 #[cfg(test)]

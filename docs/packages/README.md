@@ -8,7 +8,7 @@ Ek package = ek folder. Ek folder ki baat doosre mein NAHI likhi jaati.
 | pro/ | Pro | £105 (yearly £1,155) | 20 | DRAFT — founder approve baqi, E88 likha |
 | business/ | Business | £360 | 60 | agla |
 | business-pro/ | Business Pro | £2,850 | 570 | uske baad |
-| enterprise/ | Enterprise | £18,500 | unlimited | alag phase, abhi ZERO |
+| enterprise/ | Business Premium | £18,500 | unlimited | alag phase, abhi ZERO |
 | personal/ | Personal | HOLD | 1 | founder ki alag meeting |
 
 Har package folder mein 3 file:

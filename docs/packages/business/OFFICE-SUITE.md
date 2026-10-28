@@ -2,7 +2,7 @@
 
 # OFFICE SUITE — Writer / Sheet / Show = BUSINESS package ka hissa (founder hukm 26 Oct 2026 22:35)
 
-**Rule 58:** Office suite (Writer = documents, Sheet = spreadsheets, Show = presentations) **Business package** ka feature hai (starts_at = business; Business Pro aur Enterprise ko bhi milta hai). **Basic aur Pro mein NAHI**, CRM P3-P6 ka hissa NAHI. Feature ID: N-DOC-01 (docs/packages/features.tsv, FEATURE-CATALOG.md). Halat: PROPOSED, abhi bana nahi.
+**Rule 58:** Office suite (Writer = documents, Sheet = spreadsheets, Show = presentations) **Business package** ka feature hai (starts_at = business; Business Pro aur Business Premium ko bhi milta hai). **Basic aur Pro mein NAHI**, CRM P3-P6 ka hissa NAHI. Feature ID: N-DOC-01 (docs/packages/features.tsv, FEATURE-CATALOG.md). Halat: PROPOSED, abhi bana nahi.
 
 | Hissa | Package | Technology (Rule 52 + 56: sirf Rust + WebTransport/WASM kernel, Bun nahi) |
 |---|---|---|

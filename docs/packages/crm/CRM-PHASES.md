@@ -21,7 +21,7 @@ Accounts, leads, pipeline, tasks, reports, health ring, timeline, promise engine
 | Forecast + quotas | - | Y | Y | P6 |
 | Custom dashboards | - | Y | Y | P6 |
 | Territory management | - | - | Y | P6 |
-Enterprise = Business Pro + upar, **sirf Rust (Bun nahi)**.
+Business Premium = Business Pro + upar, **sirf Rust (Bun nahi)**.
 
 ## Phases (har phase ka order: gate row -> SQL (E-series, RLS ON, Rule 38/43) -> Rust `crm_core.rs` (std-only tests) + `crm_glue.rs` -> kernel/WT live topic -> UI -> Basic/Pro/Business 403 test -> Chrome live -> ledger)
 - **P1 Pipelines + custom fields + duplicate merge.** Tables `crm_pipelines`, `crm_pipeline_stages`, `crm_field_defs`, `crm_field_values`, `crm_merge_log`. Cap server-side (trigger + Rust gate): Pro 1/5, Business 5/25. Duplicate: lowercase email + domain+name fuzzy (pg_trgm), merge ek transaction mein, undo 24h.

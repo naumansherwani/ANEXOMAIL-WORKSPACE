@@ -72,27 +72,27 @@ Status = what the code says. 'not wired' = UI shows honest fallback if the endpo
 |---|---|---|---|
 | 1 | src/routes/index.tsx:49 | Landing meta/hero: 'From £23 per user.' | Business v6 flat £40/month; per-user pricing is banned (Rule 51) |
 | 2 | src/routes/plans.tsx:23,29 | SEO/meta: 'from £23 a month… Basic £23, Pro £46, Business £97' | Prices stale; v6 = £40/£105/£360/£2,850/£18,500 |
-| 3 | src/routes/plans.tsx:46-49 | Compare row: '£23 / user', '£46 / user', '£97 / user', '£2,850 / company' | per-user wording + old prices; no Enterprise column |
-| 4 | src/routes/plans.tsx:51-57 | Mailboxes included 3/5/On request; Business Pro 'Unlimited internal users' | v6 caps: 5/20/60/570 users; Enterprise unlimited (Business Pro is NOT unlimited) |
+| 3 | src/routes/plans.tsx:46-49 | Compare row: '£23 / user', '£46 / user', '£97 / user', '£2,850 / company' | per-user wording + old prices; no Business Premium column |
+| 4 | src/routes/plans.tsx:51-57 | Mailboxes included 3/5/On request; Business Pro 'Unlimited internal users' | v6 caps: 5/20/60/570 users; Business Premium unlimited (Business Pro is NOT unlimited) |
 | 5 | src/routes/plans.tsx:60-63 | Storage '5GB/10GB/25GB per mailbox', Business Pro '1TB pooled' | v6 shared pools: 25GB/300GB/1.5TB/10TB/15TB |
 | 6 | src/routes/plans.tsx:160,172 | FAQ: '£23, £46, £97 and £2,850 are prices before tax'; 'Storage is per mailbox 5/10/25GB' | stale numbers + per-mailbox storage model |
 | 7 | src/routes/plans.tsx:233 | Personal 'Largest file you can send: 25 MB / 25 MB / 5 GB' | founder: Personal Pro+ ANEXOChat 2GB, Premium 4GB (5GB stale) |
-| 8 | src/routes/plans.tsx:692 | Compare table heads 'Basic · £23 / Pro · £46 / Business · £97 / Business Pro · £2,850' | old prices; Enterprise missing |
+| 8 | src/routes/plans.tsx:692 | Compare table heads 'Basic · £23 / Pro · £46 / Business · £97 / Business Pro · £2,850' | old prices; Business Premium missing |
 | 9 | src/routes/plans.tsx:187,284 | FAQ 'Is there AI in these plans?' (x2) — check wording vs 'AI coming soon July 2027' | AI is separate product ai.anexomail.com, £2,000/£5,000/£25,000, coming soon |
 | 10 | src/routes/pages.tsx:47 | Directory note: 'Basic £23 · Pro £46 · Business £97' | stale prices |
 | 11 | src/routes/pages.tsx:85 | '5GB resumable transfer' | stale: chat file sizes are per-plan 2/5/7GB |
 | 12 | src/routes/docs.tsx:36 | Docs: 'pick the plan (Basic £23 · Pro £46 · Business £97)' | stale prices |
 | 13 | src/routes/partners.tsx:113-115,127 | Partner quote uses PLAN_PRICE basic/pro/business ('Basic — £23…') and % of £ | per-user era prices; v6 flat |
-| 14 | src/routes/get-started.tsx:88,92 | FAQ: 'Choose Basic, Pro or Business' | Business Pro/Enterprise omitted; fine but stale |
+| 14 | src/routes/get-started.tsx:88,92 | FAQ: 'Choose Basic, Pro or Business' | Business Pro/Business Premium omitted; fine but stale |
 | 15 | src/lib/plans.ts:79-81,97-101,118-122 | monthly 23/46/97, yearly 253/506/970, unit '/ user / month' | v6 flat £40/£105/£360, unit '/ month', yearly Basic/Pro x11, Business/BP x10 |
 | 16 | src/lib/plans.ts:127,135-136 | Business: 'Up to 30 users', '15GB transfer per user / month', '2GB max file sending' | v6: 60 users; per-user transfer wording banned; 2GB is ANEXOChat (not email 45MB) |
 | 17 | src/lib/plans.ts:188-201 | Business Pro £2,850: 'Unlimited internal users', '1TB pooled', '5GB max file' | v6: 570 users, 10TB, email 60MB, chat 5GB |
 | 18 | src/lib/plans.ts:260-262,310-312,349-351 | AI Pro £400 / AI Business £1,500 / AI Executive £4,000 (yearly 4000/15000/40000) | founder 26 Oct: £2,000/£5,000/£25,000 (yearly x10); AI coming soon July 2027 |
-| 19 | src/lib/plans.ts (whole) | No Enterprise plan object / card | Enterprise £18,500 unlimited users 15TB 100MB missing |
+| 19 | src/lib/plans.ts (whole) | No Business Premium plan object / card | Business Premium £18,500 unlimited users 15TB 100MB missing |
 | 20 | src/lib/billing-platform.ts:4 + Subscription.price_per_seat/seats | Header 'Basic £23 · Pro £46 · Business £97'; fields price_per_seat, seats | per-seat model vs flat per-month + user cap |
 | 21 | src/routes/app.billing.tsx:4,530-544 | 'Shows all 4 Polar plans'; renders price_per_seat / interval and seats used | needs 5th plan, flat price wording |
-| 22 | src/routes/enterprise.tsx:16-22,111 | Page titled 'Enterprise support' = £790 add-on; no Enterprise package page | clash with new Enterprise £18,500 tier; rename/clarify |
-| 23 | src/routes/index.tsx:486 | 'Priority Support — £790 / month' add-on | fine as add-on but Enterprise package will INCLUDE it (CEO proposal) |
+| 22 | src/routes/enterprise.tsx:16-22,111 | Page titled 'Enterprise support' = £790 add-on; no Business Premium package page | clash with new Business Premium £18,500 tier; rename/clarify |
+| 23 | src/routes/index.tsx:486 | 'Priority Support — £790 / month' add-on | fine as add-on but Business Premium package will INCLUDE it (CEO proposal) |
 
 ## Notes
 - Personal prices on plans.tsx:230 (£17/£83/£1,850) and 666 are CORRECT.

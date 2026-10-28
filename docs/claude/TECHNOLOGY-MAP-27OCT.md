@@ -28,10 +28,10 @@ Rule 56: **naye code mein Bun NAHI.** Bun (:3100) sirf emergency fallback hai; n
 | 10 | CRM P3-P6 | Rust+kernel | Business/Business Pro | |
 | 11 | Business Pro | same | Business Pro | |
 | 12 | Founder batch (admin/perf/movein...) | Rust-only | Founder host | |
-| 13 | **Enterprise: poori website Bun-free** + toolchain (sqlx pool, mimalloc, moka cache, tracing) | Rust-only | **Enterprise** | aakhir |
+| 13 | **Business Premium: poori website Bun-free** + toolchain (sqlx pool, mimalloc, moka cache, tracing) | Rust-only | **Business Premium** | aakhir |
 
 ## 3. Bun kab hatega
-Har endpoint ka Bun route tab hatta hai jab Rust jawab Bun ke barabar saabit ho (Chrome Bun-vs-Rust proof, probe ALL PASS). Pehle Basic, phir Pro, phir Business; **Enterprise tak poori website Bun-free**. Calendar tareekh repo mein nahi — sirf tarteeb locked hai.
+Har endpoint ka Bun route tab hatta hai jab Rust jawab Bun ke barabar saabit ho (Chrome Bun-vs-Rust proof, probe ALL PASS). Pehle Basic, phir Pro, phir Business; **Business Premium tak poori website Bun-free**. Calendar tareekh repo mein nahi — sirf tarteeb locked hai.
 
 ## 4. Naya code likhte waqt (checklist)
 1. `ENDPOINT-PACKAGE-MAP` mein package dekho (Rule 57). 2. `X_core.rs` (std-only + tests) + `X_glue.rs` (async Tokio, `owns()`/`dispatch`). 3. Installer CFG + probe line + `rpc-contract.ts`. 4. Browser `rpc()` -> kernel; REST/Bun twin NAHI. 5. cargo check (poora crate, TLS ke saath) + bun test + tsc. 6. Deploy, probes, Chrome mein live dekho.
@@ -44,6 +44,6 @@ Har screen ka raasta (Rule 52), upar se neeche:
 2. **UI data mangti hai kernel se** (`rpc()` -> Rust WASM kernel, HMAC tag). UI direct `fetch`/Bun nahi karti (fetch sirf fallback `rpcOrRest`, Rule 59).
 3. **Kernel -> QUIC/WebTransport (`/wt/rpc`) ya `/rpc`** -> **Rust server (async Tokio)**. Plan gate (`resolve_plan`) YAHAN lagta hai, UI sirf aaina (Rule 57).
 4. **Rust -> Supabase/Postgres**.
-5. Bun :3100 sirf emergency fallback; Enterprise tak hat jayega.
+5. Bun :3100 sirf emergency fallback; Business Premium tak hat jayega.
 
 Misal "Lead capture": form (React, glow animation) -> `crm.createLead` kernel -> Rust `crmd_glue` (Pro gate, clean_lead_email) -> `leads` table -> jawab wapas -> UI card animate. Kaam wale screens (mail/work/CRM/Office) fast rehte hain, cinematic sirf landing/onboarding/chat/dashboard accent (Rule 60).

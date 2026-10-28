@@ -1,6 +1,6 @@
 # ENDPOINT -> PACKAGE MAP — 26 Oct 2026 (founder hukm 22:14: 'repo mein likho kaun si feature/gate/endpoint kis package ki hai, verna website mix ho jaye gi')
 Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; source PP1-FULL-GATE-TABLE-26OCT.md + docs/packages/features.tsv). Poori list: `ENDPOINT-PACKAGE-MAP.csv`.
-**starts_at** = sab se chhota package jis se endpoint shuru hota hai; us se UPAR ke sab packages ko bhi milta hai. **Enterprise** = Business Pro ki har cheez + POORI website latest technology (Rust-only, Bun-free) — Enterprise ka koi alag endpoint abhi nahi (ZERO, founder 04:56).
+**starts_at** = sab se chhota package jis se endpoint shuru hota hai; us se UPAR ke sab packages ko bhi milta hai. **Business Premium** = Business Pro ki har cheez + POORI website latest technology (Rust-only, Bun-free) — Business Premium ka koi alag endpoint abhi nahi (ZERO, founder 04:56).
 **RULE (AGENTS.md):** naya endpoint/gate likhne se pehle is map mein uska starts_at dekho; gate SERVER par (Rust, resolve_plan), UI aaina. Map mein na ho => pehle yahan CSV/rule mein jodo, phir code.
 
 ## Bun REST endpoints (523) — package-wise
@@ -9,7 +9,7 @@ Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; s
 | BASIC (aur uske upar sab) | 142 | 107 | 35 |
 | PRO (+ upar) | 51 | 51 | 0 |
 | BUSINESS (+ upar) | 188 | 4 | 184 |
-| BUSINESS PRO (+ Enterprise) | 5 | 0 | 5 |
+| BUSINESS PRO (+ Business Premium) | 5 | 0 | 5 |
 | FOUNDER host only (package nahi) | 77 | 24 | 53 |
 | INTERNAL (service-to-service) | 4 | 1 | 3 |
 | AI (coming soon July 2027) | 56 | 0 | 56 |
@@ -39,7 +39,7 @@ Script: `python3 docs/claude/endpoint-package-map.py` (rules upar script mein; s
 ## Baaqi (BUN-ONLY) endpoints — package ke hisaab se kaam ki list (file: ginti)
 - **BASIC (aur uske upar sab)**: auth.ts 23, billing-sync.ts 5, polar.ts 5, trial.ts 2
 - **BUSINESS (+ upar)**: chat.ts 141, org.ts 17, files.ts 11, crm.ts 7, settings.ts 6, security.ts 2
-- **BUSINESS PRO (+ Enterprise)**: org.ts 3, crm.ts 2
+- **BUSINESS PRO (+ Business Premium)**: org.ts 3, crm.ts 2
 - **FOUNDER host only (package nahi)**: admin.ts 11, movein.ts 11, perf.ts 9, founder.ts 6, glitch.ts 4, org.ts 4, billing-support.ts 2, crm.ts 2, storage.ts 2, ai-credits.ts 1, revenue.ts 1
 - **INTERNAL (service-to-service)**: storage.ts 2, mail.ts 1
 - **AI (coming soon July 2027)**: ai.ts 21, ai-automation.ts 14, ai-credits.ts 10, ai-studio.ts 9, integrations.ts 2

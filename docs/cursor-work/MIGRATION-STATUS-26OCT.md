@@ -34,6 +34,6 @@ Koi calendar tareekh repo mein nahi; sirf TARTEEB locked hai: M2b leftovers -> *
 
 ## 4. Package-green ka goal (implementation green)
 Pro: gates + features server-side green (probes ALL PASS basic/pro); live walk mein booking links/Overlap/shared inbox/snooze/hourly-rate/devices dikhna baaqi + 398 endpoints mein Pro-relevant jo Bun par hain (contacts/companies/storage/billing state/settings/security/integrations). Qaida 24 Oct: "Pro not green jab tak uske Bun-only endpoints Rust par nahi". => Pro green = M3 + M4 (auth/trial) + M5 ka Pro hissa + Chrome walk.
-Business/Business Pro/Enterprise: M5/M6 + K3 (ANEXOChat, ONE QUIC) + N-DOC-01 + CRM P3-P6.
+Business/Business Pro/Business Premium: M5/M6 + K3 (ANEXOChat, ONE QUIC) + N-DOC-01 + CRM P3-P6.
 ## 5. Agla qadam
 M2b leftovers (chhote) -> M3 batch 1: `trial.state` + `auth.session` (Rule 52 top REST), phir contacts+companies, storage state, workspace, dashboard, billing-sync; har ek X_core+X_glue+installer+probe+Chrome Bun==Rust.

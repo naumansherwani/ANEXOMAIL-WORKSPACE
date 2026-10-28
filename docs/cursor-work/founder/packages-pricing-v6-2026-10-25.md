@@ -1,10 +1,10 @@
-# PACKAGES PRICING v6 — flat per-month + Enterprise (FOUNDER LOCKED 25 Oct 2026)
+# PACKAGES PRICING v6 — flat per-month + Business Premium (FOUNDER LOCKED 25 Oct 2026)
 
-> **UPDATE 26 Oct 2026 05:07 PKT (founder, 'sab kuch sochne ke baad'): ENTERPRISE = £18,500 / month** (pehle £15,000). Yearly (CEO x10 proposal) £185,000. Enterprise ko Business Pro ke BAAD alag banaya jayega -- yeh poori website ka chehra hoga, isliye price zyada. Enterprise abhi zero: koi gate/code nahi, advanced technology par, bug nahi chalega. Repo mein jahan jahan Enterprise price tha update kiya.
+> **UPDATE 26 Oct 2026 05:07 PKT (founder, 'sab kuch sochne ke baad'): ENTERPRISE = £18,500 / month** (pehle £15,000). Yearly (CEO x10 proposal) £185,000. Business Premium ko Business Pro ke BAAD alag banaya jayega -- yeh poori website ka chehra hoga, isliye price zyada. Business Premium abhi zero: koi gate/code nahi, advanced technology par, bug nahi chalega. Repo mein jahan jahan Business Premium price tha update kiya.
 
 
 Source: founder verbatim 25 Oct 2026 21:30 UTC (26 Oct 02:30 PKT) — `docs/cursor-work/founder/founder-commands.md`.
-> **UPDATE 26 Oct 2026 03:09 PKT (founder, verbatim):** "bussiness pro email attachment limit hai 60MB aur 100MB enterprise walon ke liye." Business Pro ka File Transfer Limit **100 MB se 60 MB** final-confirmed (neeche ki table/bullets isi update ke mutabiq). Enterprise 100 MB wohi rehta hai — ab yeh unko alag karne wala ek aur dimension hai (pehle sirf user-cap + storage farq karta tha).
+> **UPDATE 26 Oct 2026 03:09 PKT (founder, verbatim):** "bussiness pro email attachment limit hai 60MB aur 100MB enterprise walon ke liye." Business Pro ka File Transfer Limit **100 MB se 60 MB** final-confirmed (neeche ki table/bullets isi update ke mutabiq). Business Premium 100 MB wohi rehta hai — ab yeh unko alag karne wala ek aur dimension hai (pehle sirf user-cap + storage farq karta tha).
 
 Status: **READY (docs)** — code (`src/lib/plans.ts`, `server/config/billing-products.ts`) aur Polar abhi v5 prices par hain; founder ne kaha codes woh khud karenge. Polar products banne + IDs aane tak yeh pricing READY hai, DONE nahi (Rule 5).
 
@@ -22,9 +22,9 @@ Status: **READY (docs)** — code (`src/lib/plans.ts`, `server/config/billing-pr
 | Pro Package | £105 | Up to 20 users | 300 GB (15 GB per user × 20) | £5.25 / user | 35 MB |
 | Business Flat | £360 | Up to 60 users | 1,500 GB = 1.5 TB (25 GB per user × 60 — backend pool) | £6.00 / user | 45 MB |
 | Business Pro | £2,850 | Up to 570 users | 10 TB | £5.00 / user | **60 MB** |
-| **Enterprise (NAYA)** | **£18,500** | **Unlimited users** | **15 TB shared (logical)** | n/a (unlimited → per-user sab se sasta) | **100 MB** |
+| **Business Premium (NAYA)** | **£18,500** | **Unlimited users** | **15 TB shared (logical)** | n/a (unlimited → per-user sab se sasta) | **100 MB** |
 
-Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 GB**, Business transfer **45 MB**, Business Pro **10 TB** (taake Enterprise ke 15 TB se alag rahe).
+Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 GB**, Business transfer **45 MB**, Business Pro **10 TB** (taake Business Premium ke 15 TB se alag rahe).
 
 ## Per-package detail
 
@@ -52,33 +52,33 @@ Founder ne confirm kiya (table vs bullets ke farq): Basic **25 GB**, Pro **300 G
 - File Transfer Limit: **60 MB** instant email attachment
 - Effective per-user: £5.00
 
-### Enterprise — £18,500 / month (NAYA)
+### Business Premium — £18,500 / month (NAYA)
 - User/Mailbox Cap: **Unlimited users**
 - Logical Storage: **15 TB shared (logical)** pool
 - File Transfer Limit: **100 MB** instant email attachment
-- Enterprise = Business Pro ka poora power **+ unlimited seats + 5 TB extra storage**. Koi 570 ki cap nahi — jitne chaho users/mailboxes.
+- Business Premium = Business Pro ka poora power **+ unlimited seats + 5 TB extra storage**. Koi 570 ki cap nahi — jitne chaho users/mailboxes.
 
-## Business Pro vs Enterprise — sab se bara kya farq
+## Business Pro vs Business Premium — sab se bara kya farq
 
 **Sab se bara farq: user cap.**
-- **Business Pro: maximum 570 users.** Uske baad company ko Enterprise lena parta hai.
-- **Enterprise: UNLIMITED users** — koi cap nahi, jitni bhi company barhe.
+- **Business Pro: maximum 570 users.** Uske baad company ko Business Premium lena parta hai.
+- **Business Premium: UNLIMITED users** — koi cap nahi, jitni bhi company barhe.
 
-Doosra farq: storage — Business Pro **10 TB**, Enterprise **15 TB** (+5 TB).
-**Ab yeh bhi farq hai:** attachment limit Business Pro **60 MB**, Enterprise **100 MB** (pehle dono 100 MB the, 26 Oct update ke baad alag). Price 6.32× (£2,850 → £18,500) ka matlab: Enterprise company jitni bhi barhe, per-user kharcha nammumkin had tak neeche jaata hai (Business Pro 570 par ~£5.00/user; Enterprise par unlimited seats).
+Doosra farq: storage — Business Pro **10 TB**, Business Premium **15 TB** (+5 TB).
+**Ab yeh bhi farq hai:** attachment limit Business Pro **60 MB**, Business Premium **100 MB** (pehle dono 100 MB the, 26 Oct update ke baad alag). Price 6.32× (£2,850 → £18,500) ka matlab: Business Premium company jitni bhi barhe, per-user kharcha nammumkin had tak neeche jaata hai (Business Pro 570 par ~£5.00/user; Business Premium par unlimited seats).
 
 ## Feature gating — kya badla, kya nahi
 
 - **Prices/seats/storage/transfer limit naye v6 numbers** (upar wali table).
-- **Features ki gating wahi purani locked formula rahegi** (`PACKAGE-FEATURE-FORMULA.md` RULE 4): Basic = mail/people/calendar; Pro+ = chat/CRM; Org = business tiers; AI hamesha ai.anexomail.com (Enterprise mein bhi workspace plans par AI ZERO — AI alag AI plans ka hissa hai, jab tak founder Enterprise mein AI shamil karne ka hukm na de).
-- **Naya dimension — file transfer limit (RULE 4A):** 25 MB → Basic · 35 MB → Pro · 45 MB → Business · **60 MB → Business Pro** · 100 MB → Enterprise. Backend enforcement founder ke "codes update" ke hukm par banegi.
+- **Features ki gating wahi purani locked formula rahegi** (`PACKAGE-FEATURE-FORMULA.md` RULE 4): Basic = mail/people/calendar; Pro+ = chat/CRM; Org = business tiers; AI hamesha ai.anexomail.com (Business Premium mein bhi workspace plans par AI ZERO — AI alag AI plans ka hissa hai, jab tak founder Business Premium mein AI shamil karne ka hukm na de).
+- **Naya dimension — file transfer limit (RULE 4A):** 25 MB → Basic · 35 MB → Pro · 45 MB → Business · **60 MB → Business Pro** · 100 MB → Business Premium. Backend enforcement founder ke "codes update" ke hukm par banegi.
 
 ## Polar mein kaise update hoga (founder khud karega)
 
 1. **Polar dashboard → Products → har package ka NAYA product banao.** Purane product ki price dashboard se badalna sahi tareeqa nahi — purane checkout links purana price dikhate hain; isliye naya product banao, purana baad mein Archive karo.
-   - Recurring monthly: Basic **£40** · Pro **£105** · Business **£360** · Business Pro **£2,850** · Enterprise **£18,500**.
+   - Recurring monthly: Basic **£40** · Pro **£105** · Business **£360** · Business Pro **£2,850** · Business Premium **£18,500**.
    - Har product ke metadata mein: `brand=anexomail`, `kind=plan`, `plan=<basic|pro|business|business_pro|enterprise>`, `cycle=monthly`, `account_kind=business`.
-   - Enterprise ka plan identifier repo/backend ke liye **`enterprise`** hoga (naya tier — 5th tier, backend/SQL/Rust mein alag qadam, founder ke hukm par).
+   - Business Premium ka plan identifier repo/backend ke liye **`enterprise`** hoga (naya tier — 5th tier, backend/SQL/Rust mein alag qadam, founder ke hukm par).
 2. **Har naye product ki Product ID (UUID) copy karo.**
 3. IDs chat mein bhejo — main repo ki `server/config/billing-products.ts` + server `.env` keys (`POLAR_PRODUCT_*`) + tests ki wiring ka poora block bana dunga. (Founder ne kaha codes woh khud karenge — wiring sirf unke hukm par.)
 4. **Server `.env` mein** har product ka env key set hota hai; Rust Polar engine (:3400) `POLAR_PRODUCT_*` auto-discover karta hai — restart ke baad checkout naye products par jayega.

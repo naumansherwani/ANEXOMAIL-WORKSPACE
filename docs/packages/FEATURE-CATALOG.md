@@ -4,7 +4,7 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 
 ## Matrix
 
-| ID | Area | Feature | Basic | Pro | Business | Biz Pro | Enterprise | Status |
+| ID | Area | Feature | Basic | Pro | Business | Biz Pro | Business Premium | Status |
 |---|---|---|---|---|---|---|---|---|
 | I1-01 | CAL | Month/Week/Day calendar grid | Y | Y | Y | Y | Y | MATCHES-CODE |
 | I1-02 | CAL | Create / edit / delete meetings | Y | Y | Y | Y | Y | MATCHES-CODE |
@@ -230,7 +230,7 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 | N-CRM-10 | CRM | Territory management | - | - | - | Y | Y | PROPOSED |
 | N-CRM-11 | CRM | Custom CRM dashboards | - | - | Y | Y | Y | PROPOSED |
 | N-DOC-01 | Docs | CRDT collaborative docs (Personal NAHI) | - | - | Y | Y | Y | PROPOSED |
-| N-ENT-01 | Enterprise | Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun) | - | - | - | - | Y | PP1 |
+| N-ENT-01 | Business Premium | Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun) | - | - | - | - | Y | PP1 |
 | N-ANA-01 | Analytics | Analytics Center data backend (7 reports, Rust+WT) | Y | Y | Y | Y | Y | MATCHES-CODE |
 | N-RET-01 | Mail | Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads) | - | Y | Y | Y | Y | PROPOSED |
 | N-RET-02 | Mail | Organisation retention policies + eDiscovery search and export | - | - | Y | Y | Y | PROPOSED |
@@ -238,7 +238,7 @@ Qaida: feature sirf **starts_at** wale package par likha hai; upar ke packages k
 
 ## LIMITS (har package ka apna number)
 
-| Limit | Basic | Pro | Business | Biz Pro | Enterprise |
+| Limit | Basic | Pro | Business | Biz Pro | Business Premium |
 |---|---|---|---|---|---|
 | Users cap | 5 | 20 | 60 | 570 | unlimited |
 | Mailboxes | 3 | 10 | - | - | - |

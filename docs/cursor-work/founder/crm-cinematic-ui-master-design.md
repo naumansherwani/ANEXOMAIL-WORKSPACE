@@ -143,7 +143,7 @@ Row height 68–76px. Click → right detail panel **420–480px**.
 
 ```
 ACME CORPORATION
-Enterprise
+Business Premium
 
 Health        82
 Risk          Medium

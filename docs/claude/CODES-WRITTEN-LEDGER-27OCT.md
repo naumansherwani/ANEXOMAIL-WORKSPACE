@@ -31,5 +31,5 @@ Roman Urdu, "Nauman bhai"/"aap", sada zaba; har message mein POORI ordered comma
 2. `auth.session` Rule 52 (login path: fallback pehle jaisa).
 3. Basic baaqi 110 (auth 24, billing-sync 12, contacts 10, integrations 10, polar 7 NO-TOUCH, security 7, settings 7, dashboard 5, storage 5, workspace 4, account-deletion 3, support 3, mail 2, calendar 1, locale 1).
 4. Pro baaqi: ANEXO_TAG_MODE=enforce (founder env), shared-inbox live collision (2nd Pro user), Bun twins hatana (proof ke baad).
-5. Step L (23 polls -> events), Business/K3/Office suite, CRM P3-P6, Business Pro, Enterprise (Bun-free).
+5. Step L (23 polls -> events), Business/K3/Office suite, CRM P3-P6, Business Pro, Business Premium (Bun-free).
 Test data Pro account: leads zz.kernel/zz.bunprobe/zz.test.*, deals "zz.kernel@... — opportunity", ZZ TEST Deal, rates 60/40 — founder chaahe to saaf.

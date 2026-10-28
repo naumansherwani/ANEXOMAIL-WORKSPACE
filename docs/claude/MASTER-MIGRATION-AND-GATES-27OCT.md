@@ -8,7 +8,7 @@ Bun :3100 = sirf emergency fallback (Rule 56). Rust domain errors 409/400/422, 4
 Migration ka matlab: har endpoint ko browser->REST->Bun->Supabase se hata kar browser->kernel->Rust->Supabase par laana.
 
 ## 2. Frontend technology (docs/claude/FRONTEND-TECHNOLOGY-PLAN-27OCT.md): rewrite nahi
-F1 sab data kernel se (steps 2-7) | F2 23 polls -> WebTransport push (qadam 8, L) | F3 heavy compute kernel mein (search index, MIME sanitiser, dedup) | F4 React Compiler + virtualised lists + code split (naap pehle; G8/M11 vite.config no-touch ki chhoot) | F5 SSR host Bun se bahar (Enterprise) | F6 ANEXOChat media WebAudio/WebCodecs/WASM Opus, ek QUIC session K3 (Business+) | F7 Office suite CRDT (Business+) | F8 offline/PWA | F9 passkeys mandatory (27 Oct) | F10 View Transitions (aakhir).
+F1 sab data kernel se (steps 2-7) | F2 23 polls -> WebTransport push (qadam 8, L) | F3 heavy compute kernel mein (search index, MIME sanitiser, dedup) | F4 React Compiler + virtualised lists + code split (naap pehle; G8/M11 vite.config no-touch ki chhoot) | F5 SSR host Bun se bahar (Business Premium) | F6 ANEXOChat media WebAudio/WebCodecs/WASM Opus, ek QUIC session K3 (Business+) | F7 Office suite CRDT (Business+) | F8 offline/PWA | F9 passkeys mandatory (27 Oct) | F10 View Transitions (aakhir).
 
 ## 3. Series ek jagah (har ek ka matlab, kahan likhi hai, halat)
 | Series | Matlab | Detail kahan | Halat 27 Oct |
@@ -38,7 +38,7 @@ starts_at = woh sab se chhota package jis se endpoint kholta hai (ENDPOINT-PACKA
 | internal | 1 | 3 | |
 | ai_soon | 0 | 56 | AI plan, baad mein |
 | **Total** | **187** | **336** | 523 (27 Oct 05:44 PKT, count-endpoints.py; trial 8 + deletion 3 + calendar.export mila kar) |
-Package limits (pricing v6, flat per company, per-user fee nahi): Basic £40 (5 users, 15GB, 3 mailboxes, 25MB) | Pro £105 (20 users, 300GB, 35MB; 3 booking links, 4 trusted devices) | Business £360 (60 users, 1.5TB, 45MB, Office suite, ANEXOChat) | Business Pro £2,850 (570 users, 10TB, 60MB) | Enterprise £18,500 (Bun-free, baad mein). Basic/Pro enforcement SQL LIVE (E87/E88); **Business/Business Pro enforcement abhi code mein NAHI** (TODO-1).
+Package limits (pricing v6, flat per company, per-user fee nahi): Basic £40 (5 users, 15GB, 3 mailboxes, 25MB) | Pro £105 (20 users, 300GB, 35MB; 3 booking links, 4 trusted devices) | Business £360 (60 users, 1.5TB, 45MB, Office suite, ANEXOChat) | Business Pro £2,850 (570 users, 10TB, 60MB) | Business Premium £18,500 (Bun-free, baad mein). Basic/Pro enforcement SQL LIVE (E87/E88); **Business/Business Pro enforcement abhi code mein NAHI** (TODO-1).
 Gate ka tareeqa: server par `resolve_plan` + `pro_gate`/`pro_only_proc` (Rust), SQL triggers/caps (team_seat_calc, storage_plans, booking_pages_cap, device_vault); UI sirf mirror (plan-surface.ts). Har package ki tafseel: docs/packages/<package>/GATES-AND-TECH.md, ENDPOINT-PACKAGE-MAP-26OCT.md.
 
 ## 5. Migration tarteeb (sirf ONE-ORDER): 1 wsx/billx GREEN | 2 Pro-only GREEN (workx, 27 Oct) | 3 Batch D GREEN (setx) | 4 Batch E: deletion/trial Rust GREEN, calendar.export (calexp) CODE READY deploy baaqi | 5 Pro Chrome walk (partial: Work tasks create/update kernel se GREEN; baaqi 3 booking links, 20-user cap, shared-inbox 2nd user, snooze/schedule-send, People) | 6 login 24 (aakhir, fallback ke saath) + C2 billing 5 (paisa: founder ijazat + shadow) | 7 PRO GREEN CLOSE | 8 L | 9 Founder | 10 Trial | 11 Business | 12 CRM P3

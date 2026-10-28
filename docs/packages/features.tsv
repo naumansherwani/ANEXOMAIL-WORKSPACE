@@ -225,7 +225,7 @@ N-CRM-09	CRM	Forecast + quotas	business	PROPOSED	CRM-PHASES P6
 N-CRM-10	CRM	Territory management	business_pro	PROPOSED	CRM-PHASES P6	
 N-CRM-11	CRM	Custom CRM dashboards	business	PROPOSED	CRM-PHASES P6	
 N-DOC-01	Docs	CRDT collaborative docs (Personal NAHI)	business	PROPOSED	PP1 #38, not built	
-N-ENT-01	Enterprise	Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun)	enterprise	PP1	alag phase, abhi ZERO	
+N-ENT-01	Business Premium	Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun)	enterprise	PP1	alag phase, abhi ZERO	
 N-ANA-01	Analytics	Analytics Center data backend (7 reports, Rust+WT)	basic	MATCHES-CODE	E89 + analytics_glue.rs (response debt Basic; baqi LIMITS/gates features mein)	
 N-RET-01	Mail	Legal hold on threads (keep-forever) + export of your own mailbox (Pro 50 held threads)	pro	PROPOSED	Zoho Premium has retention/eDiscovery; CEO decision 26 Oct	
 N-RET-02	Mail	Organisation retention policies + eDiscovery search and export	business	PROPOSED	CEO decision 26 Oct (Zoho Premium parity)	

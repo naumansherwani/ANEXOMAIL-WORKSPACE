@@ -37,7 +37,7 @@ Har port ka tareeqa: X_core (std-only tests) + X_glue + installer CFG/probe + rp
 Master Pro list: docs/packages/pro/PRO-GREEN-TRACKER.md. Halat/ginti: docs/cursor-work/MIGRATION-STATUS-26OCT.md.
 
 ## C. HAR ENDPOINT KA PACKAGE (Rule 57, 22:14) — docs/claude/ENDPOINT-PACKAGE-MAP-26OCT.md
-Bun endpoints 523: Basic 141 | Pro 51 | Business 191 | Business Pro 5 | Founder 75 | AI (July 2027) 56 | Internal 4. Baaqi Bun-only: Basic 107, Pro 19, Business 189, BP 5, Founder 45, AI 29, Internal 4. Rust procs 341 (Basic 108, Pro 54, Business 161, Founder 18). Enterprise = Business Pro + poori website Rust-only. Qadam 3-6 (Pro green close) ke liye Pro ke 19 + Basic ke 107 baaqi endpoints pehle; Business 189 Business phase mein.
+Bun endpoints 523: Basic 141 | Pro 51 | Business 191 | Business Pro 5 | Founder 75 | AI (July 2027) 56 | Internal 4. Baaqi Bun-only: Basic 107, Pro 19, Business 189, BP 5, Founder 45, AI 29, Internal 4. Rust procs 341 (Basic 108, Pro 54, Business 161, Founder 18). Business Premium = Business Pro + poori website Rust-only. Qadam 3-6 (Pro green close) ke liye Pro ke 19 + Basic ke 107 baaqi endpoints pehle; Business 189 Business phase mein.
 
 - [ ] SCRATCH CRATE: cargo check ke liye rustls+webpki-roots Cargo.toml [dependencies] mein judte hain (cargo --offline, ~/.cargo cache) — kabhi stub/skip nahi.
 

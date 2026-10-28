@@ -1,4 +1,4 @@
-# Enterprise £18,500 — INCLUDES (auto-generated from features.tsv)
+# Business Premium £18,500 — INCLUDES (auto-generated from features.tsv)
 
 ## NAYA is package par (2)
 

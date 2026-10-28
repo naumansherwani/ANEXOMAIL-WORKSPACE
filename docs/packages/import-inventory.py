@@ -106,7 +106,7 @@ def inv3(c):
     if i == 47:
         return "ai_soon"
     if i == 57:
-        return "enterprise"  # Priority Support: Enterprise included, baaki add-on
+        return "enterprise"  # Priority Support: Business Premium included, baaki add-on
     return "basic"
 
 
@@ -148,7 +148,7 @@ NEW = [
     ("N-CRM-10", "CRM", "Territory management", "business_pro", "CRM-PHASES P6"),
     ("N-CRM-11", "CRM", "Custom CRM dashboards", "business", "CRM-PHASES P6"),
     ("N-DOC-01", "Docs", "CRDT collaborative docs (Personal NAHI)", "business", "PP1 #38, not built"),
-    ("N-ENT-01", "Enterprise", "Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun)", "enterprise", "alag phase, abhi ZERO"),
+    ("N-ENT-01", "Business Premium", "Unlimited users, 15TB, 100MB, Priority Support included, Rust-only (NO Bun)", "enterprise", "alag phase, abhi ZERO"),
     ("N-ANA-01", "Analytics", "Analytics Center data backend (7 reports, Rust+WT)", "basic", "E89 + analytics_glue.rs (response debt Basic; baqi LIMITS/gates features mein)"),
 ]
 for id_, area, name, tier, ev in NEW:
