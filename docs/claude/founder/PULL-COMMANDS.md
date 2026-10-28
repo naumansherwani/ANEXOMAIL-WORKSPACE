@@ -51,3 +51,8 @@ F2a server par LIVE hai (Chrome proof). Ab Settings S1:
 4) **Host guard (agar baqi):** founderworkspace/founderlogin par ek baar login -> `…founder-hostguard.sh) status` -> `founder_host=true` par `enforce`.
 5) **Polar Metrics token (sirf agar card "not connected" kahe):** `…founder-polar.sh) engine`
 Polar webhook engine (:3400) par KUCH nahi chalta (no-touch).
+
+
+## 28 Oct 12:30 — ABHI PENDING (is tarteeb se)
+1. SQL (E108 dobara, purana version server par hai): sql-run.sh E108_founder_settings CHECK_E108
+2. founder-install.sh (naya Settings UI + saaf error)

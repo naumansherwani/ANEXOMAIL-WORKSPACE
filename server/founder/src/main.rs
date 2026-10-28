@@ -125,7 +125,7 @@ async fn settings_put(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes
     match st.sb.as_ref().unwrap().setting_set(&c.sub, &b.key, &b.value).await {
         Ok(r) => signed(&st, json!({"ok": true, "key": b.key, "changed": r["changed"], "value": b.value})),
         Err((400, msg)) => (StatusCode::BAD_REQUEST, Json(json!({"error": if msg.is_empty() { "invalid setting or value".to_string() } else { msg }}))).into_response(),
-        Err((_, _)) => (StatusCode::BAD_GATEWAY, Json(json!({"error": "settings service unavailable — run the E108 SQL (sql-run.sh)"}))).into_response(),
+        Err((_, _)) => (StatusCode::BAD_GATEWAY, Json(json!({"error": "The server's settings table is older than this app. Run the E108 SQL step (sql-run.sh) once, then try again."}))).into_response(),
     }
 }
 

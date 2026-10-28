@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 416e98812343c1a1
+docs/cursor-work/DONE-DO-NOT-REPEAT.md dc4beb052a17082b
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -882,7 +882,7 @@ server/founder/.gitignore b53ee26e6ff1da21
 server/founder/Cargo.lock f7a46506437cef2a
 server/founder/Cargo.toml 93ea13822c6966fc
 server/founder/src/audit.rs b68fb02fcadadac3
-server/founder/src/main.rs ab84c55e700a9824
+server/founder/src/main.rs 1748abdb0b17915e
 docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md bc57767804dcab4e
 docs/claude/founder/design-f0/Action.dc.html 74ecac9376091b71
 docs/claude/founder/design-f0/Login.dc.html 4970172916db14e5
@@ -890,7 +890,7 @@ docs/claude/founder/design-f0/Main.dc.html f121693f6dc134e1
 docs/claude/founder/design-f0/README.md 6ff8f8ececaaa633
 docs/claude/founder/design-f0/canvas.json a952801c928f8ef4
 server/founder/src/bridge.rs 144573b33a371441
-server/founder/src/data.rs b20582b791ae85ec
+server/founder/src/data.rs 1beb482e7f23cd40
 server/founder/src/gate.rs c3b8fbb573facca1
 server/founder/src/sign.rs 1e37d229d78842fb
 docs/cursor-work/server/founder-install.sh f6b5d50fa6ecb7b8
@@ -898,13 +898,13 @@ founder-web/.gitignore aaccff71fadbb13b
 founder-web/index.html 9c4a47ea8e10f3c8
 founder-web/package-lock.json 56f1719239e4f0e9
 founder-web/package.json 1e768dde5faf7c14
-founder-web/src/App.jsx d9973b8952479bc3
+founder-web/src/App.jsx e4640c58de3e00c4
 founder-web/src/api.js e855a75ece75337a
 founder-web/src/main.jsx 8b541f7e1873971b
-founder-web/src/styles.css 3a271cc51050d007
+founder-web/src/styles.css 4d0610c219402f96
 founder-web/vite.config.js 2da26fa35044407f
 server/founder/src/login.rs 465011eb25e7daac
-founder-web/dist/index.html 0158fb30b6be4d38
+founder-web/dist/index.html 5e257158ee51c395
 docs/claude/founder/LEGACY-FOUNDER-FILES.md b379225e91ecfe5e
 docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 98efcf0605642fcc
 docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
@@ -924,7 +924,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 095875fbd142c9fe
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md aa8ccf77e69709c4
+docs/claude/founder/PULL-COMMANDS.md d05f44a551c86221
 src/routes/founderlogin.tsx 2146604b56bdedaf
 founder-web/src/Brand.jsx 526b5b21d66534e5
 founder-web/src/Finance.jsx d5525da3e7490887
@@ -952,7 +952,7 @@ server/lib/founder-host-guard.test.ts b931793869fee8cb
 server/lib/founder-host-guard.ts 1cf32ceefa257ae5
 founder-web/src/Profile.jsx 038127e2c0bb6697
 docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md a28afbf99b81ef03
-founder-web/src/Settings.jsx 0041cac7fa188ad9
+founder-web/src/Settings.jsx 17bd9c9b42d28ec2
 docs/cursor-work/sql/E108_founder_settings.sql 06b37938da987e1e
 docs/cursor-work/sql/CHECK_E108.sql b9dd58efb9371c43
 server/founder/src/settings.rs bd18acf48b386d3b

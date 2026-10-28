@@ -1147,3 +1147,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:20 PKT — founder: 'purane founder codes kab migrate, kis number par; user wali offerings mujhe kab'. DONE: docs/claude/FOUNDER-MASTER-ORDER-28OCT.md — EK numbered tarteeb (1..15), purane code ka migration table (36 route files/77 endpoints -> kis step), user feature -> founder step table. Is file ko har phase ke baad update karo (done/next).
 
 - 28 Oct 12:17 PKT — founder: Rule 23 founder par apply nahi; AI+ANEXOChat founder workspace mein step 12. Likha: founder-commands.md, MASTER-ORDER, AGENTS.md Rule 23 update. Chrome live: Settings page khula, /founder/v1/settings 401 unauth (endpoint live).
+
+- 28 Oct 12:30 PKT — Settings UI redesign (two-pane: sections nav, Profile panel, Home city hero + search popover, Appearance). Chrome live finding: server E108 purana (personal.home key CHECK fail) -> sql-run.sh dobara; Rust ab check-constraint error ko saaf message deta hai (503->502). Playwright OK, cargo 61 pass.

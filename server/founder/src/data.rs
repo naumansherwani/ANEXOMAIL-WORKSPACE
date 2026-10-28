@@ -41,7 +41,10 @@ impl Sb {
             .header("authorization", format!("Bearer {}", self.key)).json(&serde_json::json!({"p_uid": uid, "p_key": key, "p_value": value})).send().await.map_err(|_| (0u16, "database unreachable".to_string()))?;
         let st = r.status().as_u16();
         let body: Value = r.json().await.unwrap_or(Value::Null);
-        if (200..300).contains(&st) { Ok(body) } else { Err((st, body["message"].as_str().unwrap_or("").to_string())) }
+        let msg = body["message"].as_str().unwrap_or("").to_string();
+        if (200..300).contains(&st) { Ok(body) }
+        else if msg.contains("key_registry") { Err((503, msg)) } // server SQL older than this app: not the user's fault, say so
+        else { Err((st, msg)) }
     }
     pub async fn is_founder(&self, uid: &str) -> bool {
         if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; } // injection se bachao
