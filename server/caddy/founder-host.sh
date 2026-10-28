@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Naya Rust founder ko founderworkspace.anexomail.com par lagana (repo folder se chalao):
-#   cd /opt/anexomail-web && git checkout -- . && git pull -q && bash server/caddy/founder-host.sh
+#   git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/founder-host.sh)
+# (server ka working tree sync nahi hota, isliye git pull NAHI — sab origin/main se; patch script bhi wahin se uthti hai.)
 # Sirf founder host ka block badalta hai; caddy validate fail ho to backup wapas. Awam hosts/deploy-sites.sh ko nahi chhedta.
 set -uo pipefail
-D="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO="${REPO:-/opt/anexomail-web}"; D="$(mktemp -d)"; trap 'rm -rf "$D"' EXIT
+git -C "$REPO" show origin/main:server/caddy/patch-founder-host.py > "$D/patch-founder-host.py" || { echo "patch script origin/main se nahi mili"; exit 1; }
 MAIN=/etc/caddy/Caddyfile; SITES=/etc/caddy/sites
 command -v caddy >/dev/null || { echo "caddy nahi mila"; exit 1; }
 BEFORE="$(ls -t "$MAIN".bak.founder.* "$SITES"/*.bak.founder.* 2>/dev/null | head -1 || true)"

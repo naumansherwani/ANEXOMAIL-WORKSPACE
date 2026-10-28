@@ -126,7 +126,7 @@ docs/cursor-work/server/manifest-verify.py f6fa4b721cbac19a
 src/components/app/HScroll.tsx e34a9413af2e25dd
 docs/cursor-work/BASIC-AUDIT-DONE.md 4606da8aab338915
 docs/cursor-work/PROMISES.md c7139371ade50f12
-docs/cursor-work/founder/founder-commands.md 3c734123be62f1d1
+docs/cursor-work/founder/founder-commands.md 4a5507d0f6109144
 docs/anexomail-blueprint.md de35d53f11568a3f
 docs/cursor-work/sql/E41_family_real_buyer.sql 873a7d13e52dc033
 docs/cursor-work/sql/E42_device_hash_hmac.sql 892a20721ba0de61
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md fd6c63e9fd594901
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 1b0df38d0050d3f0
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -922,6 +922,6 @@ docs/claude/founder/CODES/05-DEEP-AUDIT.md 897bd9b1d3e585be
 docs/claude/founder/CODES/06-ORDER.md 33caa1c428bba24a
 founder-web/dist/assets/index-CifDdDU8.js 05dec52e943b6db8
 founder-web/dist/assets/three.webgpu-CRCAkSoH.js 3796d3e337ef01a9
-server/caddy/founder-host.sh 27d53d70a6c31bc7
+server/caddy/founder-host.sh 6d7badcad7628ac2
 server/caddy/patch-founder-host.py e6e7450d6c30f0d9
 docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 095875fbd142c9fe

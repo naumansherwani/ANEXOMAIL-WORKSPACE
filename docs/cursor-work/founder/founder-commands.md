@@ -9,10 +9,10 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 
 ## ▶ 28 Oct 06:30 PKT — FOUNDER F0/F1b: SAHI TARTEEB (founder ko confusion tha; yeh ek hi list hai)
 1. ✅ DONE (founder ke server par 3rd run OK, 06:00): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh)` => SPA 200, healthz 200, me/bridge bina token 401. Founder service `anexomail-founder` zinda 127.0.0.1:3210.
-2. ⏳ SQL E102 (founder_audit, actions, devices): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh)` — phir `… sql-run.sh) E102_founder_audit_actions_devices CHECK_E102` (sab row ok=t).
-3. ⏳ DNS (founder khud, registrar): `founder.anexomail.com` A record server IP par. DNS ke BAGHAIR Caddy deploy mat karo (certificate fail).
-4. ⏳ Caddy (DNS ke baad): `cd /opt/anexomail-web && git checkout -- . && git pull -q && bash server/caddy/deploy-sites.sh` (GALAT tha: `bash <(git show ...deploy-sites.sh)` — script apni saathi files `strip-dup-hosts.py` apne folder se leti hai, isliye repo se chalani hai; us galat run mein sirf cert-ownership + coturn copy (idempotent) hui, Caddyfile/sites nahi badle).
-5. ⏳ Chrome live: founder.anexomail.com — login (password), 3D toggle, Bridge asli data. Passkey/sig-verify abhi nahi (F1a/F2b).
+2. ✅ DONE 06:30: SQL E102 green (9/9).
+3. ✅ NA: host = founderworkspace.anexomail.com (pehle se DNS+Caddy). Naya DNS nahi chahiye.
+4. ⏳ Caddy: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:server/caddy/founder-host.sh)` (SERVER PAR `git pull` KABHI NAHI: working tree untracked docs ki wajah se abort hota hai). Pehle founder-install.sh dobara (naya relative SPA).
+5. ⏳ Chrome live: https://founderworkspace.anexomail.com/f/ — login, 3D toggle, Bridge.
 Awam-side backlog (founder se alag): Office/HR/Accounting/migration, passkey popup irritation.
 
 ## ▶ 28 Oct 05:00 PKT — founder: founder ka login Chrome mein hai; "repo likh lo ke yeh hai core Founder ki technology (Bun nahi, Node nahi) ... yehi bana hai". Halat: DONE — AGENTS.md Rule 61 + TECH-MAP 0d. Code abhi nahi (F0 founder ke 'haan' par).
