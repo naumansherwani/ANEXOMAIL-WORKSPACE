@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { get, hasToken } from "./api.js";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
+import { Brand, Icon } from "./Brand.jsx";
+import { Finance } from "./Finance.jsx";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
@@ -34,30 +36,29 @@ export default function App() {
 
   if (!authed) return <Gate />;
   const m = d?.money, t = d?.trouble, v = d?.voice;
-  const NAV = [["bridge", "Bridge"], ...DECKS.map((x) => [x[0], x[1]]), ["audit", "Audit"]];
+  const NAV = [["bridge", "Bridge"], ["finance", "Finance"], ...DECKS.map((x) => [x[0], x[1]]), ["audit", "Audit"]];
   const title = view === "bridge" ? "Command center" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
   return (
     <div className="shell">
       <header className="topbar">
-        <div className="logo"><b>ANEXOMAIL</b><span>WORKSPACE</span></div>
+        <Brand />
         <span className="wschip">Founder Workspace</span>
-        <div className="search" aria-hidden="true">Search or run a command…</div>
+        <div className="search" aria-hidden="true"><span>Search or run a command…</span><kbd>⌘K</kbd></div>
         <a className="link" href="/app">Workspace</a>
       </header>
       <div className="body">
         <nav className="side" aria-label="Admin">
-          <span className="sidehead">ADMIN</span>
-          {NAV.map(([k, n]) => <button key={k} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}>{n}</button>)}
+                    {NAV.map(([k, n]) => <button key={k} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}><Icon k={k} />{n}</button>)}
           <span className="sidenote">Governance, departments, audit ledger and ANEXOChat — one workspace.</span>
         </nav>
         <main className="content">
-      <div className="titleblock"><span className="kicker">FOUNDER · CHAIRMAN</span><h1>{title}</h1>
+      <div className="titleblock"><span className="kicker">{view === "bridge" ? "FOUNDER · CHAIRMAN" : title.toUpperCase()}</span><h1>{title}</h1>
         {view === "bridge" && <p className="dim">Money, what needs attention and the voice of your customers in one view. Everything shown is server truth; anything not connected yet says so.</p>}</div>
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Device approval not yet enabled (F1a)</span></div>
       {err && <div className="err banner" role="alert">{err}</div>}
-      {view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
+      {view === "finance" ? <Finance money={m} /> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
       <div className="grid">
-        <Card title="MONEY">
+        <Card title="FINANCE">
           {!m ? <div className="big dim">…</div> : !m.connected ? <div className="big dim">not connected<small>{m.note}</small></div> :
             <><div className="big">£ {(Number(m.mrr_gbp) === 0 ? 0 : Number(m.mrr_gbp)).toLocaleString("en-GB")}</div><div className="dim">MRR · {m.active_accounts} active account(s){m.target_gbp ? ` · target £${m.target_gbp}` : ""}</div>{m.note && <div className="note">{m.note}</div>}<div className="src">source: {m.source} (Polar billing arrives in F3)</div></>}
         </Card>

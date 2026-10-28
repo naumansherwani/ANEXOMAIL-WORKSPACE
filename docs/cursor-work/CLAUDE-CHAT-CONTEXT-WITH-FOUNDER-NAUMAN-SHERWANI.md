@@ -1797,3 +1797,6 @@ FOUNDER FAISLA FC18: common features (jo user + founder dono ke paas) user ka la
 Bandwidth/overage = user-side blueprint (CEO-DECISIONS §D), abhi BANANA NAHI. Agla ek phase: F1a (E104, /exchange, awam-host refusal, signup refusal, remove /founder/v1/login) — founder ke "haan" par.
 
 ## 28 Oct 2026, 09:00 PKT — Founder: existing admin (/app/founder) ka design ACHA hai; naya Command Center usi shell mein. Demo artifact pasand. Banaya (founder-web, user code se ALAG, FC18): top bar (logo, Founder Workspace chip, search), left ADMIN sidebar (Bridge, People, Mail Desk, Release, Move-In, Systems, Control, Audit), "FOUNDER · CHAIRMAN" + "Command center" title, teen cards. Mobile 390: sidebar upar wrap. Sandbox screenshot 1440+390 ok. Purana /app/founder jaisa hai, F9 tak. Pull: [Rust+SPA] founder-install.sh | tail -12. Phir Chrome dekhna, phir F1a.
+
+## 09:00 PKT 28 Oct — Finance in awam style, real logo restored
+Founder: demo ne real logo hata diya tha (galti, mani). Ab SPA mein asli BrandMark port, awam-style shell, Finance deck. founder-install output for 23ac826 was OK (28 tests, SPA 200). Next: founder pulls new commit, Chrome check; then SQL for finance deck gates (needs his "haan").

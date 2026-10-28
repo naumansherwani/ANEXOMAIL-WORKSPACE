@@ -1076,3 +1076,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 08:40: bandwidth throttle-first+meter user-side blueprint mein (CEO-DECISIONS D) + formula doc. Dobara mat likho.
 - 28 Oct 08:45: FC18 common-features rule; Chrome live clean Command Center green; bandwidth abhi nahi banana. Dobara mat likho.
 - 28 Oct 09:00: Command Center existing admin shell (topbar+ADMIN sidebar) mein, founder-web mein (user code mix nahi). Dobara mat banao.
+
+- 28 Oct 09:00 PKT — founder-web: REAL ANEXOMAIL logo (Brand.jsx = port of BrandMark.tsx, awam file untouched), icon sidebar, "Money" -> "Finance" (Bridge card + Finance deck with tabs, stat tiles, row-cards, G1/G2/G3 gate badges, all "Planned · F3/F4", no fake data). Founder-only code (FC18). Server gate wiring (founder_actions finance deck) NOT done yet = needs SQL phase.

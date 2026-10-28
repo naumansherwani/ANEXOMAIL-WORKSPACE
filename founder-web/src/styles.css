@@ -37,7 +37,6 @@ textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radi
 /* Shell = the existing app's admin layout (top bar + left sidebar + content), founder-only code */
 .shell{min-height:100%;display:flex;flex-direction:column}
 .topbar{display:flex;align-items:center;gap:16px;padding:12px 20px;border-bottom:1px solid #1d2028;flex-wrap:wrap}
-.logo{display:flex;flex-direction:column;line-height:1.1}.logo b{font-weight:600;font-size:15px;letter-spacing:.02em}.logo span{font-size:9px;letter-spacing:.3em;color:var(--dim)}
 .wschip{border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13px;font-weight:500;background:var(--card)}
 .search{flex:1;min-width:180px;max-width:520px;margin:0 auto;border:1px solid var(--line);border-radius:12px;padding:9px 14px;font-size:13px;color:var(--dim);background:#101217}
 .body{display:flex;flex-wrap:wrap;flex:1}
@@ -50,3 +49,24 @@ textarea{background:#0d0f14;color:var(--fg);border:1px solid #2b2f3a;border-radi
 .titleblock{display:flex;flex-direction:column;gap:8px}.titleblock h1{margin:0;font-size:34px;font-weight:600;letter-spacing:-.02em}.titleblock p{margin:0;max-width:620px;font-size:14px;line-height:1.55}
 .titleblock .kicker{color:var(--dim)}
 @media (max-width:760px){.side{width:100%;flex:1 1 100%;flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid #1d2028;padding:10px 12px}.sidehead,.sidenote{display:none}.content{padding:20px 16px}.topbar .search{display:none}}
+
+/* Awam-style page parts (same pattern as /app analytics): kicker, underlined tabs, centred column, stat tiles, row-cards */
+.brand-lockup{display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit}
+.wm{display:inline-flex;flex-direction:column;line-height:1}.wm b{font-size:15px;font-weight:800;letter-spacing:-.02em;background:linear-gradient(180deg,#f3f5f8,#aab3c2);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wm span{margin-top:5px;display:flex;justify-content:space-between;font-size:8px;font-weight:600;color:#7d8aa3}.wm i{font-style:normal}
+.search{display:flex;justify-content:space-between;align-items:center;border-radius:999px}.search kbd{font:500 11px Inter,sans-serif;color:var(--dim);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.nav{display:flex;align-items:center;gap:12px}.nav.on{box-shadow:inset 2px 0 0 var(--p2)}
+.tabs{display:flex;flex-wrap:wrap;border-bottom:1px solid #1d2028;margin:0 -36px;padding:0 24px}
+.tabs button{min-height:44px;background:none;color:var(--dim);border-radius:0;padding:0 12px;font:500 14px Inter,sans-serif}.tabs button:hover{color:var(--fg);background:none}
+.tabs button.on{color:#fff;font-weight:600;box-shadow:inset 0 -2px 0 #fff}
+.col{width:100%;max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.tile{border:1px solid var(--line);border-radius:16px;padding:16px;background:#0e1015;display:flex;flex-direction:column;gap:6px}
+.tile span{font-size:13px;color:var(--dim)}.tile b{font-size:24px;font-weight:700}.tile small{font-size:12px;color:var(--dim)}
+.list{display:flex;flex-direction:column;gap:10px}.list h3{margin:0;font-size:16px}
+.rowcard{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:14px;padding:13px 16px;background:#0e1015}
+.rowcard div{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 240px}.rowcard em{font-style:normal;font-size:12.5px;color:var(--dim)}
+.gate{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:600;border:1px solid currentColor;border-radius:999px;padding:4px 10px;white-space:nowrap}
+.gate i{width:7px;height:7px;border-radius:50%;background:currentColor}.plan{font-size:12px;color:var(--dim);white-space:nowrap}
+.content>.col,.content>.grid{max-width:960px}
+@media (max-width:760px){.tabs{margin:0 -16px;padding:0 8px}}
