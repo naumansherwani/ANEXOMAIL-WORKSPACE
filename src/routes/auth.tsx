@@ -568,6 +568,13 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
               </Link>
             </div>
 
+            {founderLogin && mode === "login" && (
+              <div className="mb-ax-4 text-center">
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">Founder protocol</p>
+                <h1 className="mt-1 text-3xl font-semibold tracking-tight text-foreground">Welcome, Founder</h1>
+              </div>
+            )}
+
             {/* Card */}
             <div className="rounded-2xl border border-border bg-card p-ax-5 shadow-2xl">
               {mode === "kind" && !challengeId && !linkSent ? (
@@ -1027,6 +1034,13 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
         </div>
       </main>
 
+      {founderLogin ? (
+        <FounderProtocolSplash
+          open={showSplash || signingIn}
+          ready={Boolean(redirectTo)}
+          onDone={() => window.location.assign("/")}
+        />
+      ) : (
       <CinematicSplash
         open={showSplash || signingIn}
         ready={Boolean(redirectTo)}
@@ -1042,11 +1056,52 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
           void navigate({ to: redirectTo, replace: true });
         }}
       />
+      )}
     </>
   );
 }
 
 // ── Sub-components ────────────────────────────────────────────────────────────
+
+/**
+ * Founder login only (/founderlogin): after sign-in, "Founder protocol activating..." while the session is verified,
+ * then "activated", then the Command Center. No fake checks: "activated" shows only after the founder session is accepted.
+ */
+function FounderProtocolSplash({ open, ready, onDone }: { open: boolean; ready: boolean; onDone: () => void }) {
+  const [minDone, setMinDone] = useState(false);
+  const done = useRef(onDone);
+  done.current = onDone;
+  useEffect(() => {
+    if (!open) {
+      setMinDone(false);
+      return;
+    }
+    const t = window.setTimeout(() => setMinDone(true), 1400);
+    return () => window.clearTimeout(t);
+  }, [open]);
+  const activated = ready && minDone;
+  useEffect(() => {
+    if (!activated) return;
+    const t = window.setTimeout(() => done.current(), 1100);
+    return () => window.clearTimeout(t);
+  }, [activated]);
+  if (!open) return null;
+  return (
+    <div role="status" aria-live="polite" className="fixed inset-0 z-[200] flex flex-col items-center justify-center gap-ax-4 bg-background">
+      <BrandMark />
+      <p className="text-xs font-semibold uppercase tracking-[0.25em] text-muted-foreground">Founder protocol</p>
+      <p className="text-2xl font-semibold tracking-tight text-foreground">
+        {activated ? "Activated" : "Activating\u2026"}
+      </p>
+      <div className="h-1 w-48 overflow-hidden rounded-full bg-border">
+        <div
+          className="h-full rounded-full bg-cyan-accent transition-all duration-[1400ms] ease-out"
+          style={{ width: activated ? "100%" : minDone ? "90%" : "70%" }}
+        />
+      </div>
+    </div>
+  );
+}
 
 function Header({ title, sub }: { title: string; sub: string }) {
   return (
