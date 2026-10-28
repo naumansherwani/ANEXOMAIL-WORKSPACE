@@ -14,6 +14,7 @@ mod polar;
 mod profile;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
+use base64::{Engine, engine::general_purpose::URL_SAFE_NO_PAD as B64};
 use serde_json::{Value, json};
 use std::sync::Arc;
 use tokio::sync::RwLock;
@@ -23,7 +24,7 @@ fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> 
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
 }
 
-pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live>, pub hook: std::sync::Mutex<Option<(i64, Value)>> }
+pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter>, pub ft: Option<ftoken::Keys>, pub legacy: bool, pub polar: Arc<polar::Live>, pub hook: std::sync::Mutex<Option<(i64, Value)>>, pub ed: Option<sign::EdKeys>, pub reqsig: bool }
 type S = Arc<St>;
 
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
@@ -33,7 +34,34 @@ fn signed(st: &St, data: Value) -> axum::response::Response {
     let ts = now_s();
     let txt = serde_json::to_string(&data).unwrap_or_default();
     let sig = sign::sign(&st.hmac_key, ts, &txt);
-    Json(json!({"data": data, "ts": ts, "sig": sig})).into_response()
+    // F2a: Ed25519 over the same message. `sig` (HMAC) stays until the browser kernel (F2b) verifies Ed25519 and enforces it.
+    match &st.ed {
+        Some(ed) => Json(json!({"data": data, "ts": ts, "sig": sig, "alg": "ed25519", "kid": sign::ED_KID, "sig_ed": ed.sign(ts, &txt)})).into_response(),
+        None => Json(json!({"data": data, "ts": ts, "sig": sig})).into_response(),
+    }
+}
+
+/// Public verification key (public by design). The kernel in the browser (F2b) pins it; the private key never leaves the server.
+async fn keys_ep(State(st): State<S>) -> axum::response::Response {
+    match &st.ed {
+        Some(ed) => Json(json!({"alg": "ed25519", "kid": sign::ED_KID, "public_key": ed.public_b64(), "message": "<ts>.<sha256hex(data_json)>"})).into_response(),
+        None => (StatusCode::SERVICE_UNAVAILABLE, Json(json!({"error": "signing key not configured"}))).into_response(),
+    }
+}
+
+/// Write requests (POST/PUT) must carry x-fo-ts + x-fo-sig made with the per-token key from the exchange answer.
+/// Legacy session tokens (grace) have no such key and are only accepted while FOUNDER_LEGACY_TOKEN != 0 (authed() already decided that).
+fn write_ok(st: &St, h: &HeaderMap, method: &str, path: &str, body: &[u8]) -> Result<(), axum::response::Response> {
+    if !st.reqsig { return Ok(()); }
+    let Some(tok) = gate::bearer(h.get("authorization").and_then(|v| v.to_str().ok())) else { return Err(StatusCode::UNAUTHORIZED.into_response()) };
+    if !ftoken::looks_founder(tok) { return Ok(()); }
+    let ts = h.get("x-fo-ts").and_then(|v| v.to_str().ok()).and_then(|v| v.parse::<i64>().ok());
+    let sig = h.get("x-fo-sig").and_then(|v| v.to_str().ok());
+    let key = sign::req_key(&st.hmac_key, tok);
+    match (ts, sig) {
+        (Some(ts), Some(sig)) if sign::req_verify(&key, method, path, ts, body, sig, now_s()) => Ok(()),
+        _ => Err((StatusCode::UNAUTHORIZED, Json(json!({"error": "request signature missing or invalid"}))).into_response()),
+    }
 }
 
 /// Supabase (awam-session) token verify + founder check. `exchange` sirf isi se andar aata hai (founder token se nahi).
@@ -89,8 +117,10 @@ async fn profile_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Respon
 #[derive(serde::Deserialize)]
 struct AvatarIn { avatar_url: Option<String> }
 
-async fn avatar_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<AvatarIn>) -> axum::response::Response {
+async fn avatar_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
     let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    if let Err(r) = write_ok(&st, &h, "PUT", "/founder/v1/profile/avatar", &body) { return r; }
+    let Ok(b) = serde_json::from_slice::<AvatarIn>(&body) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid body"}))).into_response() };
     let sb = st.sb.as_ref().unwrap();
     let url = b.avatar_url.as_deref().map(str::trim).filter(|s| !s.is_empty());
     if let Some(u) = url { if !profile::valid_avatar(u) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "Use a jpg, png or webp under 130 KB, or a https link."}))).into_response(); } }
@@ -149,7 +179,8 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
             let did = r["device_id"].as_str().unwrap_or("");
             let Some((token, exp)) = keys.mint(&c.sub, &c.email, did, now_s()) else { return StatusCode::INTERNAL_SERVER_ERROR.into_response(); };
             st.lim.lock().unwrap().clear(&key);
-            Json(json!({"token": token, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false)})).into_response()
+            let req_key = B64.encode(sign::req_key(&st.hmac_key, &token));
+            Json(json!({"token": token, "req_key": req_key, "exp": exp, "expires_in": ftoken::TTL_SECS, "device": r["label"], "first": r["first"].as_bool().unwrap_or(false)})).into_response()
         }
         Some("pending") => { st.lim.lock().unwrap().fail(&key, now); (StatusCode::FORBIDDEN, Json(json!({"error": "device_pending", "code": r["code"]}))).into_response() }
         Some("revoked") => { st.lim.lock().unwrap().fail(&key, now); (StatusCode::FORBIDDEN, Json(json!({"error": "device_revoked"}))).into_response() }
@@ -202,8 +233,10 @@ async fn audit_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response
 #[derive(serde::Deserialize)]
 struct ActIn { key: String, reason: String }
 
-async fn action_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ActIn>) -> axum::response::Response {
+async fn action_ep(State(st): State<S>, h: HeaderMap, body: axum::body::Bytes) -> axum::response::Response {
     let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    if let Err(r) = write_ok(&st, &h, "POST", "/founder/v1/action", &body) { return r; }
+    let Ok(b) = serde_json::from_slice::<ActIn>(&body) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid body"}))).into_response() };
     let sb = st.sb.as_ref().unwrap();
     if !actions::valid_key(&b.key) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "invalid action key"}))).into_response(); }
     let Some(reason) = actions::clean_reason(&b.reason) else { return (StatusCode::BAD_REQUEST, Json(json!({"error": "reason must be at least 8 characters"}))).into_response(); };
@@ -222,6 +255,7 @@ pub fn app(st: S) -> Router {
     Router::new()
         .route("/healthz", get(|| async { "ok" }))
         .route("/founder/v1/exchange", axum::routing::post(exchange_ep))
+        .route("/founder/v1/keys", get(keys_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
         .route("/founder/v1/profile", get(profile_ep))
@@ -252,18 +286,29 @@ async fn main() {
         println!("generated");
         return;
     }
+    if let Some(i) = std::env::args().position(|a| a == "--gen-sign-key") { // installer: Ed25519 signing key, once, file 0400
+        let path = std::env::args().nth(i + 1).expect("path lazmi");
+        if std::path::Path::new(&path).exists() { println!("exists"); return; }
+        std::fs::write(&path, sign::EdKeys::generate_pkcs8().expect("keygen")).expect("write");
+        #[cfg(unix)] { use std::os::unix::fs::PermissionsExt; std::fs::set_permissions(&path, std::fs::Permissions::from_mode(0o400)).expect("chmod"); }
+        println!("generated");
+        return;
+    }
     let sb = data::Sb::from_env();
     let ft = std::env::var("FOUNDER_TOKEN_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-token.p8".into());
     let ft = std::fs::read(&ft).ok().and_then(|d| ftoken::Keys::from_pkcs8(&d));
     let legacy = std::env::var("FOUNDER_LEGACY_TOKEN").map(|v| v != "0").unwrap_or(true);
     eprintln!("founder: token service {} · legacy session token {}", if ft.is_some() { "ON" } else { "OFF (no key file)" }, if legacy { "accepted (grace)" } else { "REFUSED" });
+    let ed = std::fs::read(std::env::var("FOUNDER_SIGN_KEY_FILE").unwrap_or_else(|_| "/etc/anexomail/founder-sign.p8".into())).ok().and_then(|d| sign::EdKeys::from_pkcs8(&d));
+    let reqsig = std::env::var("FOUNDER_REQSIG").map(|v| v != "off").unwrap_or(true);
+    eprintln!("founder: Ed25519 signing {} · write-request signature {}", match &ed { Some(e) => format!("ON kid {} pub {}", sign::ED_KID, e.public_b64()), None => "OFF (no key file)".into() }, if reqsig { "ENFORCED" } else { "off" });
     let key = std::env::var("FOUNDER_HMAC_KEY").expect("FOUNDER_HMAC_KEY lazmi (kam az kam 32 bytes)");
     assert!(key.len() >= 32, "FOUNDER_HMAC_KEY chhoti hai");
     let jwks = match &sb { Some(s) => s.jwks().await, None => vec![] };
     let (polar, pcfg) = match polar::Cfg::from_env() { Some(c) => (polar::Live::new(true), Some(c)), None => (polar::Live::off(), None) };
     eprintln!("founder: polar reader {}", if pcfg.is_some() { "ON (read-only, metrics API)" } else { "OFF (no FOUNDER_POLAR_READ_TOKEN)" });
     if let Some(c) = pcfg { polar::spawn(polar.clone(), c, now_s); }
-    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default() });
+    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default(), ft, legacy, polar, hook: Default::default(), ed, reqsig });
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
     axum::serve(l, app(st)).await.expect("serve");
@@ -276,7 +321,7 @@ mod tests {
     use tower::ServiceExt;
     #[tokio::test]
     async fn health_has_hardening_headers() {
-        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default()})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
+        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default(),ft:None,legacy:true,polar:polar::Live::off(),hook:Default::default(),ed:None,reqsig:true})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 200);
         let h = r.headers();
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
@@ -285,7 +330,7 @@ mod tests {
 
     fn st_with_sb() -> S {
         let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
-        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default() })
+        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true })
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
@@ -298,7 +343,7 @@ mod tests {
     }
     #[tokio::test]
     async fn unconfigured_is_503_not_open() {
-        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default() });
+        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default(), ft: None, legacy: true, polar: polar::Live::off(), hook: Default::default(), ed: None, reqsig: true });
         let r = app(st).oneshot(Request::get("/founder/v1/me").header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 503);
     }

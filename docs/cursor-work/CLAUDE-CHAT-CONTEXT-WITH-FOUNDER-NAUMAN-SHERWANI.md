@@ -1858,3 +1858,6 @@ Founder: order unchanged, Settings page goes WITH F2a. Server now has: profile/A
 
 ## 28 Oct 11:55 PKT
 Founder asked (angry, 'million times'): user ke features founder ko latest tech + protocol par, kab, tarteeb. Answer written: docs/claude/FOUNDER-SETTINGS-CENTER-PORT-28OCT.md. Settings S1 builds WITH F2a (E108). Done today: Account menu, photo, NS initials, halo, oval fix e63ac03. Server still needs founder-install.sh re-run for newest SPA.
+
+## 28 Oct 12:20 PKT — F2a built
+Graphics toggle moved to Settings. F2a (Ed25519 + request HMAC/HKDF) built+tested in sandbox, NOT deployed: founder must run founder-install.sh (creates /etc/anexomail/founder-sign.p8, prints 'public key endpoint=200'). Then Chrome proof: photo upload still works (signed), /founder/v1/keys returns key, response has sig_ed. NEXT in order: Settings S1 (E108: Personal/Appearance sync/Notifications/Privacy) then F2b WASM kernel verify (pin public key, SRI), F2c audit Merkle. Server E106 verified OK (founder paste 11:48).

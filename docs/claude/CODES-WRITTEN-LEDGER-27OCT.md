@@ -42,3 +42,5 @@ Test data Pro account: leads zz.kernel/zz.bunprobe/zz.test.*, deals "zz.kernel@.
 - Scripts: founder-install.sh (all src/*.rs), founder-device.sh, founder-polar.sh (hidden token / engine), founder-hostguard.sh, caddy founder-host.sh (h3 probe).
 
 - 28 Oct 11:50 — server/founder/src/profile.rs, data.rs (profile, set_avatar), main.rs (profile_ep, avatar_ep), tests/e2e_exchange.py (profile checks), founder-web/src/Profile.jsx, api.js (put, signOut), App.jsx, styles.css.
+
+- 28 Oct 12:20 — F2a: server/founder/src/sign.rs (Ed25519 + HKDF req key + req HMAC, 3 new tests), main.rs (keys_ep, write_ok, signed alg/kid/sig_ed, exchange req_key, --gen-sign-key), tests/e2e_exchange.py (+15 checks), founder-web/src/api.js (writeHeaders), Settings.jsx, App.jsx/Profile.jsx (toggle moved), docs/cursor-work/server/founder-install.sh (sign key).

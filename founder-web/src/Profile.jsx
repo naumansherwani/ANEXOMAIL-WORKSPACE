@@ -42,7 +42,7 @@ export async function shrink(file) {
 // Very faint light that follows the cursor around the photo (CSS vars; no re-render).
 const glow = (e) => { const b = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--gx", `${e.clientX - b.left}px`); e.currentTarget.style.setProperty("--gy", `${e.clientY - b.top}px`); };
 
-export function AccountMenu({ p, go, fxOn, setFx }) {
+export function AccountMenu({ p, go }) {
   const [open, setOpen] = useState(false), ref = useRef(null);
   useEffect(() => {
     if (!open) return;
@@ -59,9 +59,9 @@ export function AccountMenu({ p, go, fxOn, setFx }) {
       {open && <div className="menu" role="menu">
         <div className="mhead"><Avatar p={p} size={44} /><div><b>{nameOf(p) || "Founder"}</b><span>{p?.email || ""}</span><i className="rolechip">Founder · Chairman</i></div></div>
         {item("Profile & photo", () => go("profile"))}
+        {item("Settings", () => go("settings"))}
         {item("Devices & sessions", () => go("profile"))}
         {item("Audit ledger", () => go("audit"))}
-        {item(`Graphics: ${fxOn ? "On" : "Off"}`, () => setFx((v) => !v))}
         <div className="msep" />
         <div className="mnote">This browser: {ds.mode === "device" ? `approved · ${ds.label}` : ds.mode === "legacy" ? "approval not active yet" : "checking"}</div>
         {item("Sign out", signOut)}

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { get, hasToken, deviceStatus } from "./api.js";
 import { AccountMenu, ProfileView, nameOf, callName } from "./Profile.jsx";
+import { SettingsView } from "./Settings.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
@@ -116,7 +117,7 @@ export default function App() {
   const m = d?.money, t = d?.trouble, v = d?.voice, pl = d?.polar, hk = d?.polar_hook;
   const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
   const NAV = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit"]];
-  const title = view === "bridge" ? "Command center" : view === "profile" ? "Profile" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
+  const title = view === "bridge" ? "Command center" : view === "profile" ? "Profile" : view === "settings" ? "Settings" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
   return (
     <div className="shell">
       <div className="aurora" aria-hidden="true"><i /><i /></div>
@@ -125,8 +126,7 @@ export default function App() {
         <Brand />
         <span className="wschip">Founder</span>
         <div className="search" aria-hidden="true"><span>Search or run a command…</span><kbd>⌘K</kbd></div>
-        <button className={`fxtoggle ${fx ? "on" : ""}`} aria-pressed={fx} onClick={() => setFx((v) => !v)} title="Graphics: animated glowing edge and background light"><i aria-hidden="true" /><span>Graphics {fx ? "On" : "Off"}</span></button>
-        <AccountMenu p={prof} go={setView} fxOn={fx} setFx={setFx} />
+        <AccountMenu p={prof} go={setView} />
       </header>
       <div className="body">
         <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
@@ -145,7 +145,7 @@ export default function App() {
       {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} p={d?.polar} h={d?.polar_hook} me={prof} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
       {err && <div className="err banner" role="alert">{err}</div>}
-      {view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
+      {view === "profile" ? <ProfileView p={prof} reload={loadProf} /> : view === "settings" ? <SettingsView fx={fx} setFx={setFx} /> : DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
       <div className="grid">
         <Card title="BILLING · POLAR">
           {!pl ? <div className="big dim">…</div> : <>

@@ -3,7 +3,7 @@
 behind a tiny PostgREST-shaped shim that signs ES256 session tokens like Supabase. Proves: exchange, first-device trust, pending/approve/revoke,
 instant revoke on an already-issued token, legacy-token switch, cross-audience refusal, rate limit, audit chain.
 Usage: e2e_exchange.py <founder-binary> <psql-db-name>   (needs postgres superuser via `su postgres`)"""
-import base64, http.server, json, os, subprocess, sys, tempfile, threading, time, urllib.request, urllib.error, uuid
+import base64, hashlib, hmac, http.server, json, os, subprocess, sys, tempfile, threading, time, urllib.request, urllib.error, uuid
 from cryptography.hazmat.primitives.asymmetric import ec
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
@@ -58,12 +58,14 @@ srv = http.server.ThreadingHTTPServer(("127.0.0.1", 0), Shim); PORT = srv.server
 tmp = tempfile.mkdtemp(); kf = os.path.join(tmp, "tok.p8"); os.makedirs(os.path.join(tmp, "web")); open(os.path.join(tmp, "web", "index.html"), "w").write("ok")
 assert subprocess.run([BIN, "--gen-token-key", kf], capture_output=True, text=True).stdout.strip() == "generated"
 assert oct(os.stat(kf).st_mode & 0o777) == "0o400", "key file must be 0400"
+sk = os.path.join(tmp, "sign.p8"); assert subprocess.run([BIN, "--gen-sign-key", sk], capture_output=True, text=True).stdout.strip() == "generated"
+assert oct(os.stat(sk).st_mode & 0o777) == "0o400", "sign key must be 0400"
 FPORT = 3299; proc = None
 def start(legacy="1", keyfile=kf):
     global proc
     if proc: proc.terminate(); proc.wait()
     env = dict(os.environ, SUPABASE4_URL=f"http://127.0.0.1:{PORT}", SUPABASE4_SERVICE_ROLE_KEY="k", FOUNDER_HMAC_KEY="x" * 40, FOUNDER_BIND=f"127.0.0.1:{FPORT}",
-               FOUNDER_TOKEN_KEY_FILE=keyfile, FOUNDER_LEGACY_TOKEN=legacy, FOUNDER_STATIC=os.path.join(tmp, "web"), EXPIRY_WATCH_FILE=os.path.join(tmp, "none"))
+               FOUNDER_TOKEN_KEY_FILE=keyfile, FOUNDER_SIGN_KEY_FILE=sk, FOUNDER_LEGACY_TOKEN=legacy, FOUNDER_STATIC=os.path.join(tmp, "web"), EXPIRY_WATCH_FILE=os.path.join(tmp, "none"))
     proc = subprocess.Popen([BIN], env=env, stderr=subprocess.PIPE, text=True)
     for _ in range(50):
         try: urllib.request.urlopen(f"http://127.0.0.1:{FPORT}/healthz", timeout=1); return
@@ -71,6 +73,17 @@ def start(legacy="1", keyfile=kf):
     raise SystemExit("founder binary did not start")
 def call(method, path, tok=None, body=None):
     req = urllib.request.Request(f"http://127.0.0.1:{FPORT}{path}", method=method, data=json.dumps(body).encode() if body is not None else None, headers={"content-type": "application/json", **({"authorization": f"Bearer {tok}"} if tok else {})})
+    try:
+        with urllib.request.urlopen(req, timeout=8) as r: return r.status, json.loads(r.read() or b"{}")
+    except urllib.error.HTTPError as e:
+        try: return e.code, json.loads(e.read() or b"{}")
+        except Exception: return e.code, {}
+def reqsig(key_b64, method, path, body, ts=None):
+    ts = int(time.time()) if ts is None else ts
+    k = base64.urlsafe_b64decode(key_b64 + "=" * (-len(key_b64) % 4)); raw = json.dumps(body).encode() if body is not None else b""
+    return {"x-fo-ts": str(ts), "x-fo-sig": hmac.new(k, f"{method}\n{path}\n{ts}\n{hashlib.sha256(raw).hexdigest()}".encode(), hashlib.sha256).hexdigest()}
+def scall(method, path, tok, body, key, **kw):
+    req = urllib.request.Request(f"http://127.0.0.1:{FPORT}{path}", method=method, data=json.dumps(body).encode(), headers={"content-type": "application/json", "authorization": f"Bearer {tok}", **(reqsig(key, method, path, body, **kw) if key else {})})
     try:
         with urllib.request.urlopen(req, timeout=8) as r: return r.status, json.loads(r.read() or b"{}")
     except urllib.error.HTTPError as e:
@@ -89,7 +102,7 @@ check("exchange with non-founder session = 403", call("POST", "/founder/v1/excha
 check("exchange bad device id = 400", call("POST", "/founder/v1/exchange", S, {"device_id": "short"})[0] == 400)
 c, r = call("POST", "/founder/v1/exchange", S, {"device_id": A, "label": "Test Laptop"})
 check("first device trusted on first use -> founder token", c == 200 and r.get("first") is True and r.get("expires_in") == 900, str((c, r)))
-TA = r.get("token", "")
+TA = r.get("token", ""); RK = r.get("req_key", "")
 check("founder token opens /me", call("GET", "/founder/v1/me", TA)[0] == 200)
 check("legacy session token still accepted (grace)", call("GET", "/founder/v1/me", S)[0] == 200)
 check("junk token = 401", call("GET", "/founder/v1/me", "a.b.c")[0] == 401)
@@ -145,13 +158,36 @@ c, r = call("GET", "/founder/v1/profile", TA); d = r.get("data", {})
 check("profile read: name + email, no photo yet", c == 200 and d.get("display_name") == "Test Founder" and d.get("avatar_url") is None and d.get("profile_found") is True and d.get("profile_state") == "found", str((c, r)))
 check("profile needs a token", call("GET", "/founder/v1/profile")[0] == 401)
 PNG = "data:image/png;base64,iVBORw0KGgo="
-c, r = call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}); check("photo save", c == 200, str((c, r)))
+c, r = scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, RK); check("photo save (signed request)", c == 200, str((c, r)))
 check("photo is now stored and returned", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
-check("svg / script photo refused (400)", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "data:image/svg+xml;base64,PHN2Zz4="})[0] == 400 and call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "javascript:alert(1)"})[0] == 400)
+check("svg / script photo refused (400)", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "data:image/svg+xml;base64,PHN2Zz4="}, RK)[0] == 400 and scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "javascript:alert(1)"}, RK)[0] == 400)
 check("refused photo did not overwrite the good one", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
-check("photo remove (null)", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": None})[0] == 200 and call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
+check("photo remove (null)", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": None}, RK)[0] == 200 and call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
 check("photo save without token = 401", call("PUT", "/founder/v1/profile/avatar", None, {"avatar_url": PNG})[0] == 401)
-PROFILES.pop(FOUNDER); check("missing row is reported as no_row (not a fake empty profile)", call("GET", "/founder/v1/profile", TA)[1]["data"].get("profile_state") == "no_row"); check("no profile row -> honest 502, nothing invented", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG})[0] == 502)
+# --- F2a: request signature on writes ---
+PROFILES[FOUNDER] = {"display_name": "T", "legal_name": "T", "avatar_url": None}
+check("write WITHOUT signature = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, None)[0] == 401)
+check("write with WRONG key = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, base64.urlsafe_b64encode(b"x" * 32).decode().rstrip("="))[0] == 401)
+check("write with STALE timestamp (replay) = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, RK, ts=int(time.time()) - 300)[0] == 401)
+check("signature from another token's key = 401", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, call("POST", "/founder/v1/exchange", S, {"device_id": B})[1].get("req_key", "") or "AAAA")[0] == 401)
+check("rejected writes changed nothing", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
+c, r = scall("POST", "/founder/v1/action", TA, {"key": "release.pull_web", "reason": "signed e2e attempt"}, RK); check("signed action passes the signature gate (reaches action lookup: 404 here because the shim has no action table — not 401)", c == 404 and r.get("error") == "unknown action", str((c, r)))
+check("unsigned action = 401 before anything else", scall("POST", "/founder/v1/action", TA, {"key": "release.pull_web", "reason": "unsigned attempt"}, None)[0] == 401)
+# --- F2a: Ed25519 envelope ---
+from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PublicKey
+c, kk = call("GET", "/founder/v1/keys"); check("public key endpoint (no auth, public by design)", c == 200 and kk.get("alg") == "ed25519" and kk.get("kid") == "s1", str((c, kk)))
+pub = Ed25519PublicKey.from_public_bytes(base64.urlsafe_b64decode(kk["public_key"] + "=="))
+c, env = call("GET", "/founder/v1/me", TA)
+dj = json.dumps(env["data"], separators=(",", ":"))
+msg = f"{env['ts']}.{hashlib.sha256(dj.encode()).hexdigest()}".encode()
+try: pub.verify(base64.urlsafe_b64decode(env["sig_ed"] + "=="), msg); okv = True
+except Exception: okv = False
+check("envelope Ed25519 signature verifies with the public key", okv, str(env))
+try: pub.verify(base64.urlsafe_b64decode(env["sig_ed"] + "=="), msg + b"x"); bad = False
+except Exception: bad = True
+check("tampered message fails Ed25519 verify", bad)
+check("HMAC sig still present until kernel enforces Ed25519 (F2b)", len(env.get("sig", "")) == 64)
+PROFILES.pop(FOUNDER); check("missing row is reported as no_row (not a fake empty profile)", call("GET", "/founder/v1/profile", TA)[1]["data"].get("profile_state") == "no_row"); check("no profile row -> honest 502, nothing invented", scall("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}, RK)[0] == 502)
 rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'profile.%'")
 check("photo changes are in the audit ledger", "profile.avatar_set" in out and "profile.avatar_removed" in out, out)
 rc, out = psql("select public.founder_audit_verify(1) is null")
