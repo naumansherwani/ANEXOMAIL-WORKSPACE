@@ -1756,3 +1756,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 07:20 — FX-25/26/27 fix (auth.tsx founderHost hide signup link + Save password + Forgot password; FounderBar pill /auth par band). Pull [WEB] pull.sh. Founder ke teen pending outputs (E103 SQL, CHECK, founder-install) abhi baqi.
 
 ## 28 Oct 07:30 — E103 SQL dobara SUPER-ADVANCED likhi (ratchet trigger + delete/truncate gap band + constraint + selftest), CHECK_E103 8 rows. E102 ka gap mila: founder_actions par service_role DELETE (default privileges). Pull same: [SQL] bare + E103_founder_actions_english CHECK_E103 (SQL abhi server par chali nahi thi, isliye sha naya).
+
+## 28 Oct 07:14 — Founder ne saari pull commands tail ke saath maangi: founder-commands.md mein 4 commands (SQL, CHECK, RUST founder-install, WEB pull.sh). Rule 66 addendum: har jawab mein tail ke saath.

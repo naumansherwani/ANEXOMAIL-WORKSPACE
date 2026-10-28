@@ -1604,3 +1604,9 @@ git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-w
 CHECK_E101 ki 9 rows 'OK' aani chahiye. Dobara chalana safe. SQL editor mein paste karni ho: https://github.com/naumansherwani/ANEXOMAIL-WORKSPACE/blob/main/docs/cursor-work/sql/E101_activity_feed_writers.sql (Raw copy), phir CHECK_E101.sql.
 
 ## 28 Oct 06:55 — F0b: bash <(git show origin/main:docs/cursor-work/server/founder-install.sh) — E102 green ke baad. Output ka intezar.
+
+## ▶ 28 Oct 07:12 PKT — SAARI pending pull commands (tail ke saath), is tarteeb se
+1. [SQL] bare (E103 auto): `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) 2>&1 | tail -25`
+2. [SQL CHECK]: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/sql-run.sh) E103_founder_actions_english CHECK_E103 2>&1 | tail -25`
+3. [RUST founder + SPA]: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-install.sh) 2>&1 | tail -12`
+4. [WEB awam React, FX-25/26/27]: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/pull.sh) 2>&1 | tail -15`
