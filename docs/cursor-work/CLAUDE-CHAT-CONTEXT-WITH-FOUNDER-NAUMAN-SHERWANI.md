@@ -1821,3 +1821,6 @@ Built + sandbox-proven, awaiting founder pull: E104 SQL, Rust exchange/ftoken, f
 
 ## 28 Oct 10:05 PKT — UI + SQL update
 Bridge now opens with the old-dashboard style greeting + clock (real data only), cinematic glass sidebar, no "Open app". E104 SQL upgraded to the 10/10 standard (FC27) — NOT yet applied on the server; pull order unchanged: sql-run.sh -> CHECK_E104 (10 rows true) -> founder-install.sh -> Chrome. After compaction: read this file + DONE-DO-NOT-REPEAT + 00-README-RULES + PULL-COMMANDS first (FC28).
+
+## 28 Oct 10:20 PKT
+Server: E104 SQL OK (CHECK 10/10). founder-install failed on missing ftoken.rs -> installer fixed (copies all src/*.rs). Founder wants: no preview artifacts, Live Pulse ("live TV", real users signed in), ONE "Decide" button (wrong things + permissions), all devices, Polar-based money, docs/sheets answer, ordered founder list -> docs/claude/FOUNDER-NEEDS-ORDER-28OCT.md. Next: founder re-runs founder-install.sh; then Chrome proof.

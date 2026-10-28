@@ -15,7 +15,9 @@ command -v cargo >/dev/null 2>&1 || { echo "FAIL: cargo nahi mila"; exit 2; }
 [ "$(id -u)" -eq 0 ] || { echo "FAIL: root chahiye"; exit 2; }
 show() { git -C "$REPO" show "origin/main:$1"; }
 mkdir -p "$ROOT/src/src" "$ROOT/web" /etc/anexomail
-for f in Cargo.toml Cargo.lock src/main.rs src/audit.rs src/gate.rs src/sign.rs src/bridge.rs src/data.rs src/login.rs src/actions.rs; do show "server/founder/$f" >"$ROOT/src/$f" || { echo "FAIL: repo mein server/founder/$f nahi"; exit 2; }; done
+# har src/*.rs repo se khud (nayi file chhoot nahi sakti: ftoken.rs wali galti dobara nahi)
+FILES="Cargo.toml Cargo.lock $(git -C "$REPO" ls-tree --name-only origin/main server/founder/src/ | sed "s#^server/founder/##" | grep -E "\.rs$" | tr "\n" " ")"
+for f in $FILES; do show "server/founder/$f" >"$ROOT/src/$f" || { echo "FAIL: repo mein server/founder/$f nahi"; exit 2; }; done
 # jwt_core ko main.rs `../../rust/jwt_core.rs` se leta hai
 mkdir -p "$ROOT/rust" && show server/rust/jwt_core.rs >"$ROOT/rust/jwt_core.rs" || { echo "FAIL: jwt_core.rs nahi"; exit 2; }
 # main.rs ka path src/ se ../../rust/jwt_core.rs = $ROOT/rust/jwt_core.rs (src/src -> ../../ = src/..)
