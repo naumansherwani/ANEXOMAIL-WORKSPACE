@@ -1,5 +1,5 @@
 # Office editor + HR + Accounting + 1-click migration — founder hukm 28 Oct 2026 05:13 PKT
-Halat: PLAN (code nahi). Founder ka kaam (F1a-F9) is se rukta nahi: "founder mat bhulna" — founder phases pehle chalte hain, yeh product features alag lane mein.
+**AWAM SIDE ka kaam hai, founder se ALAG (founder ne galti se is chat mein bheja, 05:17). Abhi BACKLOG — pehle sirf Founder F0 -> live dekhna -> phir agla.** Halat: PLAN (code nahi). Founder ka kaam (F1a-F9) is se rukta nahi: "founder mat bhulna" — founder phases pehle chalte hain, yeh product features alag lane mein.
 
 ## 1. Docs + Sheets editor — SAB packages mein (Rule 58 ko BADALTA hai)
 Founder: log is liye peeche hat-te hain ke online document kaam nahi; Collabora ya OnlyOffice dashboard ke andar; bina extra fee Word/Excel edit => M365 ($14/user) ki wajah khatam. "Docs/Sheets editor yeh sab packages mein dalo."

@@ -1695,3 +1695,5 @@ Haqeeqat (server/routes/auth.ts): ek hi login endpoint sab ke liye; `FOUNDER_PAS
 ## 28 Oct 05:15 PKT — Chrome live: founder tab (anexomail.com/app) ab mere group mein; wahan founder awam Business dashboard dekh raha hai = loophole saboot. Hukm: founder security military level + Rule 52 kernel enforce; founder ka sab kuch ek jagah => docs/claude/founder/INDEX.md + FOUNDER-SECURITY-28OCT.md. Agla: F1a/F1b shuru (founder ke login ko pehle lock-out se bachana).
 
 ## 28 Oct 05:20 PKT — F0 design canvas bana (Bridge/do-tap/login); founder ne naya product lane diya: Docs+Sheets sab packages (Collabora/OnlyOffice), HR+Accounting, 1-click Google/Microsoft migration => docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md. Founder (F1a) mat bhulna. Sawal 4 us doc ke end mein.
+
+## 28 Oct 05:17 PKT — Founder ka sudhar: Office/HR/Accounting/migration awam-side ka kaam hai (founder se alag, galti se aya); repo mein likha, BACKLOG. Abhi ka kram: sirf Founder F0 design -> Chrome live dekho -> phir agla (F1a). Awam-side kaam tab tak nahi chheda jata.
