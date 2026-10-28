@@ -221,6 +221,7 @@ Founder ka hukm: founder ka account/protocol awam user se **alag** hai. Founder 
 
 ### Rule 23 — ai.anexomail.com BAND: koi kaam nahi (locked 18 Oct 2026, 05:35 PKT, founder)
 Founder ka hukm: `ai.anexomail.com` (LEO AI) alag product hai, **agle saal launch**, abhi priority nahi; pehle anexomail.com 100% bug-free. Jab tak founder khud likh kar na kahe: **AI surface par koi kaam nahi** — na naya feature, na copy/UI badlav, na check script, na installer, na Rust/Brain proc usi ke liye. Jo pehle se repo mein hai (SiteLock: awam ko sirf `/` coming-soon, baqi gated; `docs/cursor-work/ai/`) jaisa hai waisa rahe aur awam ko wahan kuch naya nazar nahi aana chahiye. Koi kaam AI surface ko chhuta lage to ruk kar founder se poochho.
+**Update 28 Oct 2026 12:17 PKT (founder likha):** founder workspace ke andar AI pages + ANEXOChat tarteeb se banenge (FOUNDER-MASTER-ORDER step 12). Awam/public ai.anexomail.com par band wohi rehta hai.
 
 ---
 

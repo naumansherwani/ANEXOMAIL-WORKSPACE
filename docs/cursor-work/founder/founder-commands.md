@@ -1,5 +1,11 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 12:17 PKT — founder: Rule 23 mere (founder) par apply nahi; founder ke AI + ANEXOChat tarteeb se banao; Chrome test
+Founder (verbatim): "rule 23 mere uper founder hoon, mere uper rule apply nahi hota hai. AI ke sab banye gay mere founder main tarteeb se. anexochat banay ga tarteeb se. chorme test kero"
+- Rule 23 ki shart thi "jab tak founder khud likh kar na kahe" — founder ne likh diya. **Founder workspace ke andar AI pages (10: arena, automation, billing, index, knowledge, memory, prompts, receipts, studio, ai) ab PLAN mein hain**, FOUNDER-MASTER-ORDER step 12 (F6 Systems + AI) mein, tarteeb se, founder protocol/Rule 69 ke saath. ANEXOChat bhi usi step 12 mein.
+- Hadd: awam/public `ai.anexomail.com` SiteLock (awam ko sirf coming-soon) waisa hi rahe — founder ne sirf apni workspace ke liye kaha. Awam ko AI ka koi naya nishan nahi.
+- Halat: **DONE (docs/order)**; implementation step 12 par. Chrome test: DONE (live Settings page khula).
+
 ## ▶ 28 Oct 03:04 UTC — founder: user side (metering) ke baad founder side ki advanced features list
 Founder (verbatim ka matlab): "yeh tumne user side ke liye bataya hai, ab founder side ka bhi bata do; list do jo founder ko kerna chaiye hain — super advance, practical working walay features jo adopt kerna chaiye. Duniya hil jaye, technology latest pe ho."
 - Kya: docs-only — `docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md` (A–I sections: Bridge/Money/People/Mail Desk/Release/Systems/Control + advanced extras, sab F-phase mapping ke saath). Koi code nahi (Rule 63).
