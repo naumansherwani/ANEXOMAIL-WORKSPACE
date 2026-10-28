@@ -1861,3 +1861,6 @@ Founder asked (angry, 'million times'): user ke features founder ko latest tech 
 
 ## 28 Oct 12:20 PKT — F2a built
 Graphics toggle moved to Settings. F2a (Ed25519 + request HMAC/HKDF) built+tested in sandbox, NOT deployed: founder must run founder-install.sh (creates /etc/anexomail/founder-sign.p8, prints 'public key endpoint=200'). Then Chrome proof: photo upload still works (signed), /founder/v1/keys returns key, response has sig_ed. NEXT in order: Settings S1 (E108: Personal/Appearance sync/Notifications/Privacy) then F2b WASM kernel verify (pin public key, SRI), F2c audit Merkle. Server E106 verified OK (founder paste 11:48).
+
+## 28 Oct 12:30 PKT — RULE 69 / FC39 (STRICT)
+NO MOCK anywhere (user side + founder side). Gates, wire, endpoints, signatures all REAL. Missing feature = honest 'arrives with <phase>' label, never a working-looking fake. Test stand-ins only in tests/. Founder: 'mock data hua to goli maaroon ga' — treat as top priority. Pointers: AGENTS.md Rule 69, FC39. Pending server: founder-install.sh (F2a: sign key) — paste output, then Chrome proof.

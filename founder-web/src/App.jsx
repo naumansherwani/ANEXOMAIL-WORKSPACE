@@ -125,7 +125,6 @@ export default function App() {
       <header className="topbar">
         <Brand />
         <span className="wschip">Founder</span>
-        <div className="search" aria-hidden="true"><span>Search or run a command…</span><kbd>⌘K</kbd></div>
         <AccountMenu p={prof} go={setView} />
       </header>
       <div className="body">

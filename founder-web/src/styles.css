@@ -164,7 +164,7 @@ html[data-fx="off"] .fx-ambient,html[data-fx="off"] .aurora{display:none!importa
 .fxtoggle.on i{background:#E11D48;box-shadow:0 0 10px #E11D48}.fxtoggle.on{color:var(--fg)}
 @media (max-width:760px){.fxtoggle span{display:none}.fxtoggle{padding:0 10px}}
 /* Account menu + profile photo (user-app pattern, founder content) */
-.acct{position:relative;margin-left:10px}
+.acct{position:relative;margin-left:auto}
 .avbtn{position:relative;--gx:50%;--gy:50%;width:38px;height:38px;min-height:0;min-width:0;padding:0;line-height:0;border-radius:50%;background:transparent;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;cursor:pointer;overflow:visible}
 .avbtn:hover{border-color:rgba(255,255,255,.34)}
 .av{display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#34588f,#4a73b3);color:#fff;font-weight:600;flex:none}
