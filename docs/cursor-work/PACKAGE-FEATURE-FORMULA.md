@@ -276,3 +276,26 @@ Gate SERVER par (Rust `analytics_glue` / `cal_glue`, `resolve_plan`); UI `plan-s
 | Partner commission | — | 20/25/30% har CLIENT COMPANY ke flat monthly plan par; Gold 10+, Platinum 30+ client companies (Rule 51: per-user nahi) |
 Prices (flat/month): Basic £40 · Pro £105 · Business £360 (30 users tak) · Business Pro £2,850. Enterprise alag contract.
 Browser technology: WASM KERNEL (Rule 52) + dastoor E90 `kernel_constitution` — kernel gate nahi kholta.
+
+## Bandwidth: competitor check + honest-bandwidth promise (founder 28 Oct 2026 08:30 PKT) — DOCS ONLY, no code (Rule 54, Rule 5)
+**Competitor check (read from the vendors' own pages on 28 Oct 2026):**
+| Vendor | What the page says (verified) | Source |
+|---|---|---|
+| Google Workspace | 2,000 messages/day per account (mail merge 1,500); after the limit the user "can't send new messages for up to 24 hours", receiving continues. (Web-upload and IMAP-download GB/day figures: NOT verified — they sit on Google's separate Bandwidth-limits page, not read.) | knowledge.workspace.google.com/admin/gmail/gmail-sending-limits-in-google-workspace |
+| Microsoft Exchange Online | 30 messages/minute (excess is throttled and delivered later, no NDR); 10,000 recipients/day (rejected until the 24h window drops); hard limits, cannot be raised. | learn.microsoft.com/en-us/defender-office-365/outbound-spam-sending-limits-troubleshoot |
+| Zoho Mail | External outgoing 50–500 emails/hour, reputation-based; after the limit "can't send new messages for up to 1 hour", receiving continues. ("bulk/burst not supported": NOT verified.) | zoho.com/mail/help/adminconsole/rates-and-limits.html |
+Reading: these pages are SENDING-RATE limits that block or throttle. None of the three pages above shows a per-GB bandwidth bill; that is not proof that no such charge exists anywhere, only that these pages do not show one. Public wording about competitors stays at "their documented limits block sending for up to 24h / 1h" — never a universal claim.
+**Recommendation (CEO, founder veto):**
+| Package | Included bandwidth | After that |
+|---|---|---|
+| Basic / Pro | fair-use | no bill, only slower speed (throttle) |
+| Business | 10 TB | £12 / extra TB |
+| Business Pro | 30 TB | £11 / extra TB |
+| Enterprise | 50 TB | £10 / extra TB, with a written fair-use ceiling (CEO guess: 100 TB/month — founder to confirm) |
+These rates are the ones already recorded above (line "Bandwidth overage (hidden, bill-only)"). The earlier "£1 per 4 GB" idea is dropped: it would contradict "better than Google/Zoho".
+**Four promises (the difference we sell):**
+1. Throttle first, then money: after the limit, mail still goes out, only slower (Google blocks 24h; we do not). Turning overage on restores speed at once.
+2. Inbound is never blocked (already locked).
+3. Live meter: warning at 80% and 95%, and the billing page shows the real GB used.
+4. Enterprise: "unlimited-ish" but with a written fair-use ceiling.
+**Truth (Rule 5):** all of this is TODO. Rust metering, throttle and Polar overage billing do not exist yet; the first step is the meter, then the rate. Awam-side lane (not the founder phases). Pricing/policy commits need this Competitor-check line (Rule 54) — it is the table above.
