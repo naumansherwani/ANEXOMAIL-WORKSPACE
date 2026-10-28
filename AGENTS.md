@@ -467,3 +467,6 @@ Founder ke kaam mein ek waqt mein ek phase. Phase tab GREEN jab (1) server par c
 
 ## Rule 65 (STRICT, founder 28 Oct 2026 06:37 PKT) — Lovable codes + blueprint DONO samne, features tarteeb se; UI saaf, cluster nahi
 Founder ka kaam: purane Lovable founder code (docs/claude/founder/CODES/01-FILES, 02-ENDPOINTS) aur blueprint (FOUNDER-BUILD-PLAN-28OCT, §6z FX list) DONO samne rakh kar, feature list ki tarteeb se, ek-ek phase. UI: cluster/bheed NAHI — aankhon ko aasaan, saaf, kam cheezein ek screen par; lekin Admin mein sab kuch maujood (kuch gum nahi hota, sirf sahi jagah/andar). Har purani feature ka naye mein ghar blueprint mein likha hona chahiye.
+
+## Rule 66 (STRICT, founder 28 Oct 2026 06:57 PKT) — har phase ke saath TECHNOLOGY + pull command (blueprint mein likha)
+Blueprint (docs/claude/FOUNDER-BUILD-PLAN-28OCT.md §11z) mein HAR phase ke agay likha hota hai: kaun si technology is phase mein, kaun se codes likhe jayenge, aur founder ko kaun si pull command. Pull command technology ke hisaab se: SQL=`sql-run.sh` (+CHECK), Rust+SPA=`founder-install.sh`, Caddy=`founder-host.sh`, awam web (sirf F9)=`pull.sh`. SERVER PAR `git pull` KABHI NAHI (working tree untracked) — sirf `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:<script>)`. Phase badle to table pehle update, phir code.

@@ -1060,3 +1060,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 28 Oct 06:45 PKT — F0b SERVER GREEN (founder ke output se): founder-install.sh chali -> 28 tests ok, release build (7 warnings, harmless), SPA install, saboot: SPA index=200, healthz=200, me=401, bridge=401 (bina token). E102 green 9/9 pehle. Dobara install mat chalao. F0 abhi Chrome par LIVE nahi (Rule 64) — baqi: DNS A record founder.anexomail.com + Caddy deploy.
 
 - 28 Oct 06:50: host = founderworkspace /f/ (founder.anexomail.com radd). founder-host.sh banayi. Dobara DNS ka mat poochho.
+
+## 28 Oct 06:58 PKT — F0 GREEN (server+Caddy+Chrome login screen). Dobara install/host mat chalao. Agla phase F1a.

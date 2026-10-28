@@ -175,3 +175,29 @@ React 19.2 (Actions, `use`, View Transitions, `<Activity>`) · Vite · TypeScrip
 ## 10z. CRYPTO FINAL (founder 28 Oct 06:49) — docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md
 Phase tarteeb LOCKED: F0 live (/f/) -> F1a login/passkey/device/allowlist -> F2a Ed25519+HMAC+HKDF -> F2b WASM kernel enforce+SRI -> F2c audit v1 align+Merkle -> F3...
 Badlav purane plan se: server->browser envelope HMAC se **Ed25519** (HMAC key browser mein rakhna = nakli data ka darwaza); HMAC ab browser->server request MAC + audit_sig.
+
+## 11z. TECHNOLOGY PER PHASE + PULL COMMAND (Rule 66, founder 28 Oct 06:57) — LOCKED tarteeb
+Pull command ke 4 qism (sab `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:…)`):
+- **[SQL]** `docs/cursor-work/server/sql-run.sh` (aakhir mein `<sql_naam> CHECK_<n>`)
+- **[BUILD]** `docs/cursor-work/server/founder-install.sh` (Rust test+build+SPA dist)
+- **[CADDY]** `server/caddy/founder-host.sh`
+- **[WEB]** awam `pull.sh` — SIRF F9 (awam app se purani files hatane par)
+| Phase | Technology | Kaun se codes | Pull |
+|---|---|---|---|
+| **F0** ✅ LIVE 28 Oct 06:58 (login screen /f/ Chrome par dikha; server 28 tests, SPA/healthz 200, me/bridge 401) | Rust (axum+tokio), React 19.2 + Vite static SPA, Three.js (WebGPU->WebGL2->2D), Caddy | server/founder/*, founder-web/*, founder-host.sh | [BUILD] [CADDY] done |
+| **F1a** Login+passkey+device | Rust `webauthn-rs`, `jwt_core` ES256 (aud=anexo-founder), lockout, IP allowlist (Rust+Caddy), Postgres (founder_devices) | login.rs/passkey.rs/devices.rs, E103 SQL+CHECK_E103, SPA login (passkey once/device) | [SQL] [BUILD] [CADDY] |
+| **F1c** Landing (FX-7) | React 19.2 (View Transitions, Actions), CSS `@layer`/container queries/`light-dark()`, Three.js | Landing.jsx (welcome, quote, COMMAND CENTER, profile menu), styles | [BUILD] |
+| **F2a** Signing | Rust `ed25519-dalek`, `hmac`, `hkdf`, `sha2`, `subtle`; signing key file 0400 | sign.rs (Ed25519 envelope bytes), request-HMAC verify, HKDF session key; key-gen step (server) | [BUILD] (+ ek key-gen command) |
+| **F2b** WASM kernel | Rust -> wasm32 (`server/founder-kernel`), wasm-bindgen, Web Worker, SRI SHA-256 | founder-kernel crate (verify_envelope, hmac, hkdf, chain/merkle verify), tests RFC vectors, SPA enforce | [BUILD] |
+| **F2c** Audit v1 + Merkle | Postgres (pgcrypto SHA-256), Rust, WASM verify | E104 SQL (Merkle checkpoints)+CHECK_E104, audit.rs v1 align | [SQL] [BUILD] |
+| **F3 Money** | Rust Polar/Supabase reader, SQL views (read-only), React deck, Web Worker charts | bridge money, MRR/ARR, dunning, mismatch | [SQL?] [BUILD] |
+| **F4 People + Mail Desk** | Rust (orgs/users/mailboxes), SQL actions, mail server interface (audited provision), founder inbox alag (FX-22) | people.rs, maildesk.rs, E10x if needed | [SQL?] [BUILD] |
+| **F5 Systems** | Rust systemd/expiry-watch reader, glitch/perf/security readers, signed data | systems.rs, deck | [BUILD] |
+| **F6 Control + one-click** | Rust action engine, WebAuthn step-up + two-tap, `founder_actions` (E102) | actions executors per action, wajah+audit | [SQL?] [BUILD] |
+| **F7 3D** | Three.js WebGPU, OffscreenCanvas + Workers, lazy chunks, 2D fallback, FPS budget | Scene modules (globe/topology/flow) | [BUILD] |
+| **F8 Executor** | Rust executor (allow-listed commands), systemd, audit | executor.rs, enable actions in DB | [SQL] [BUILD] |
+| **F9 Cutover** | Caddy final block (sirf Rust), git rm legacy, awam rebuild | purani 36 routes+FounderBar+gates hatao, FOUNDER_PASSWORD hatao, `/`->`/f/` | [CADDY] [WEB] [BUILD] |
+| **V1-V4** | Merkle/Ed25519/ZK(halo2)/edge | §7z | alag faisla |
+Rule: har phase ka exit = tests + server saboot + Chrome live (Rule 64). Is table ko phase se pehle update karna lazmi.
+
+### FX-23 (Chrome live, 06:58): `/f/` login card screen ke TOP-LEFT mein chipka hua — center nahi, cinematic nahi. Fix F1c (login ka design: center, bada type, aankhon ko aasaan). Login form asli (awam jaisa nahi) — theek.
