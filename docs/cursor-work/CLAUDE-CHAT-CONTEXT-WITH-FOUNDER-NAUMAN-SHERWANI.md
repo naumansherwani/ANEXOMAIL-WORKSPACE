@@ -1830,3 +1830,6 @@ Built polar.rs (tokio async poller, GET /v1/metrics/, read-only token FOUNDER_PO
 
 ## 28 Oct 10:35 PKT
 Edge is CADDY with HTTP/3 (FC31) — never mention nginx etc. Sidebar arrows removed. Clock = city-adaptive digital clock (FC32). Waiting: founder-install.sh output, founder-polar.sh token entry.
+
+## 28 Oct 10:40 PKT — LIVE PROOF
+F1a-1 live green in Chrome (device approved chip + exchange 200). Open: re-run founder-install (serves 6ef39cd, needs adf1437), Polar token (founder-polar.sh), HTTP/3 not advertised (no Alt-Svc) -> founder runs diagnostic, then fix Caddy global `servers { protocols h1 h2 h3 }` + UDP 443. Then FOUNDER_LEGACY_TOKEN=0, F1a-2.
