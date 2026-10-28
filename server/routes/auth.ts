@@ -6,6 +6,7 @@ import { sendMail } from "../mail/sendmail";
 import { mountPasskeyRoutes } from "./auth-passkey";
 import { forgetAuthToken, hardenSupabaseAuth, isTransientAuthError } from "../lib/auth-harden";
 import * as identityGuard from "../lib/identity-guard";
+import { FOUNDER_PORTAL, decide as hostDecide, founderHosts, guardMode, requestHost } from "../lib/founder-host-guard";
 import { fingerprintFrom } from "../lib/identity-guard";
 import { shapeFromSignals, verifyDeviceKeyProof } from "../lib/identity-vault";
 import { cleanCode, consumeChallenge, createChallenge, peekChallenge } from "../lib/mfa-challenge";
@@ -538,6 +539,21 @@ async function saveRecovery(userId: string, kind: string, email: string) {
 
 export const authRouter = Router();
 
+/** F1a-2: founder accounts sign in at the founder portal only. FOUNDER_HOST_GUARD = off (default) | probe (log only) | enforce. Default off = no DB call, no change. */
+async function founderHostGate(req: any, email: string, kind: "login" | "signup"): Promise<boolean> {
+  const mode = guardMode();
+  if (mode === "off") return false;
+  let isF = email === FOUNDER_EMAIL;
+  if (!isF) {
+    const { data } = await getAdmin().from("founder_accounts").select("user_id").eq("email", email).maybeSingle();
+    isF = Boolean(data);
+  }
+  const host = requestHost(req.headers);
+  const a = hostDecide(mode, kind, host, founderHosts(), isF);
+  if (isF) console.warn(`[founder.host] mode=${mode} kind=${kind} host=${host || "-"} founder_host=${founderHosts().includes(host)} decision=${a}`);
+  return a === "refuse";
+}
+
 authRouter.post("/signup", async (req, res) => {
   if (unavailable(res)) return;
   const email = anexomailIdentity(req.body?.email);
@@ -550,6 +566,8 @@ authRouter.post("/signup", async (req, res) => {
     req.body?.preferences && typeof req.body.preferences === "object" ? req.body.preferences : {};
   if (!emailPattern.test(email))
     return res.status(400).json({ error: "Enter a valid email address." });
+  if (await founderHostGate(req, email, "signup"))
+    return res.status(403).json({ error: "founder_portal_only", message: "This account signs in at the founder portal.", portal: FOUNDER_PORTAL });
   if (!legalName || !displayName)
     return res.status(400).json({ error: "Name and display name are required." });
   if (!passwordOk(password))
@@ -750,6 +768,8 @@ authRouter.post("/login", async (req, res) => {
   const password = String(req.body?.password || "");
   if (!emailPattern.test(email) || !password)
     return res.status(400).json({ error: "Email and password are required." });
+  if (await founderHostGate(req, email, "login"))
+    return res.status(403).json({ error: "founder_portal_only", message: "This account signs in at the founder portal.", portal: FOUNDER_PORTAL });
 
   // ── Founder org wire ─────────────────────────────────────────────────────
 // Founder ke paas ek operational org aur mail_accounts entry honi chahiye

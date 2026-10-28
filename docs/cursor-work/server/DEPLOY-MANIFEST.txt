@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md 8ff43f9e591de831
+docs/cursor-work/DONE-DO-NOT-REPEAT.md e33b146cee33d662
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -239,7 +239,7 @@ src/components/app/WorkspaceLoader.tsx 86d7f64b9e12ee9e
 server/lib/auth-harden.ts 024b4bc0a34ff47c
 server/lib/auth-harden.test.ts 7f48134d9beead8a
 server/lib/supa.ts 859a9dbbf8c3b8d7
-server/routes/auth.ts 3b0040880b93df62
+server/routes/auth.ts 4fc72b23c49b67f6
 docs/cursor-work/server/brain-auth-harden-install.sh 74c99f2896e76eed
 src/components/fx/FxAmbient.tsx 30983ae55876c9a1
 src/routes/app.tsx 5e7e4a178e9f94ab
@@ -911,7 +911,7 @@ docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
 founder-web/src/Decks.jsx b635116ca83a374f
 server/founder/src/actions.rs dc16ac6e3e3e5c2a
 docs/claude/founder/FOUNDER-CODE-INVENTORY-28OCT.md 8c872136c74ae53c
-docs/claude/founder/CODES/00-README-RULES.md b6adef910483fe0a
+docs/claude/founder/CODES/00-README-RULES.md fd93b4b0527825eb
 docs/claude/founder/CODES/01-FILES.md 39cf6f1dcb19550e
 docs/claude/founder/CODES/02-ENDPOINTS.md b374bb4a2a8ffe02
 docs/claude/founder/CODES/03-GATES.md 237c5dca2d98f399
@@ -924,7 +924,7 @@ docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 095875fbd142c9fe
 docs/cursor-work/sql/CHECK_E103.sql 9bd95a45d1ed000c
 docs/cursor-work/sql/E103_founder_actions_english.sql 935321111246e369
 src/components/site/FounderBar.tsx 106c2790be9d0958
-docs/claude/founder/PULL-COMMANDS.md cdcdff79b901e730
+docs/claude/founder/PULL-COMMANDS.md 368154466c447ce5
 src/routes/founderlogin.tsx 2146604b56bdedaf
 founder-web/src/Brand.jsx 526b5b21d66534e5
 founder-web/src/Finance.jsx d5525da3e7490887
@@ -949,3 +949,6 @@ founder-web/dist/assets/index-IANSWR-r.css 259eea6af95d9056
 docs/cursor-work/sql/CHECK_E106.sql 4d6dc2441bf4eb11
 docs/cursor-work/sql/E106_founder_polar_rejects.sql e2852f7a9d0a1495
 founder-web/dist/assets/index-CkpN1Rlr.js 9bd864503dbdd2fd
+docs/cursor-work/server/founder-hostguard.sh 45a465d52e7563ae
+server/lib/founder-host-guard.test.ts b931793869fee8cb
+server/lib/founder-host-guard.ts 1cf32ceefa257ae5
