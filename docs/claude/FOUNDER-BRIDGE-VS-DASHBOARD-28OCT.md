@@ -30,7 +30,7 @@ Bridge stays short: max ~6 blocks visible, each with its count; everything else 
 | D7 | **Capacity** — disk, mailboxes, storage per plan | Systems — 12 |
 | D8 | **Support clock** — SLA, response time trend | Mail Desk — 11 |
 | D9 | **Audit activity** — writes per day, time machine / drift | F2c, S2 — 5, 6 |
-Navigation: "Dashboard" appears in the Command center sidebar when D1 ships (5a). The sidebar group label "Command center" is no longer printed above Bridge; it is the first part of the breadcrumb (Command center / Bridge).
+Navigation order (founder 13:06): **Dashboard, then Bridge**, then the decks. "Dashboard" appears above Bridge when D1 ships (5a); no empty page before that. The sidebar group label "Command center" is no longer printed above Bridge; it is the first part of the breadcrumb (Command center / Bridge).
 
 ## What I (CEO) would build first
 1. Make money real (Polar token, F3-b) — a company that cannot see its money is flying blind.

@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 13:06 PKT — founder: Bridge ke features batao, Dashboard ke batao; Dashboard ke NEECHAY Bridge aaye ga
+Founder (verbatim): "bhai bridge ke features batao dashboard ke baatao dashboard ke neechay bridge aye ga bridge main kya aye ga socho"
+- Faisla: sidebar order = Dashboard (company health) phir Bridge (founder control) phir decks. Lists: docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (D1-D9, B1-B9). Dashboard page jab banega (step 5a, pehla tile Ledger gauge) tab nav mein Bridge ke UPAR lagega; us se pehle khali/jhoota Dashboard page nahi (Rule 69).
+- Halat: **DONE (docs)**.
+
 ## ▶ 28 Oct 13:02 PKT — founder: clock ka background pehle black nahi tha, bilkul wahi same clock colour chahiye
 Founder (verbatim): "aur yeh clock ka background pehle black nahi tha. mujhe wohi same 2 same clock colour chaye hain"
 - Wajah mili: (1) maine ui.css mein body ka blue radial background hata diya tha (2) clock digits ka Inter weight 200/300 font file nahi thi (400 par gir raha tha). Theek: body background wapis (#1a2748 radial), Inter ExtraLight+Light self-hosted. Old vs new clock crop compare: digits, boxes, colon, beam same.

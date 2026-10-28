@@ -1161,3 +1161,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 13:20 PKT — founder 13:01: (1) 'Command center' label Bridge ke upar se hata, breadcrumb mein (Command center / Bridge); Workspace toggle ka chevron theek (2) clock + sab times 12-ghantay AM/PM (city.js fmtTime/fmtHM/fmtDateTime, Clock ampm) (3) CEO split: docs/claude/FOUNDER-BRIDGE-VS-DASHBOARD-28OCT.md (B1-B9, D1-D9). Chrome live: server par cinematic wapas aa chuka tha (13:01 flip clock dikha).
 
 - 28 Oct 13:30 PKT — founder 13:02: clock colour/background purane jaisa: body radial gradient wapis (ui.css) + Inter 200/300 woff2. Lesson: ek global body rule se poora look badal jata hai — redesign ke baad purane/naye screenshot ka pixel compare karo.
+
+- 28 Oct 13:35 PKT — founder 13:06: nav order Dashboard phir Bridge; B/D lists confirm (FOUNDER-BRIDGE-VS-DASHBOARD). Docs only.
