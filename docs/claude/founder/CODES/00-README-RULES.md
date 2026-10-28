@@ -64,3 +64,5 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - **FC41 (28 Oct, founder):** Poori website ek ADAPTIVE CITY follow karti hai (city.js): Settings ka Home city (exact) ya warna device ka shehar. Koi bhi naya time/date UI `fmtTime/fmtDateTime/fmtDay` (city.js) se dikhaye, `toLocale*` seedha NAHI; clock/greeting `useCity()`. Home city hard-code NAHI hoti, founder khud chunta hai. Founder ka shehar: Lahore (founder ne chuna, Settings se).
 
 - **FC42 (28 Oct):** 'Kab / kis number par' ka jawab hamesha docs/claude/FOUNDER-MASTER-ORDER-28OCT.md se (ek numbered list). Har phase ke baad us file mein state update karo. Naya kaam usi list mein number le kar jaye, alag se nahi.
+
+- **FC43 (28 Oct 12:56):** Jo look/feature founder ne saraha ho (flip clock, cinematic dashboard) use bina poochhe KABHI hatao/flat mat karo; redesign hamesha purane ke ZAROORI hisse barqarar rakh kar. Server par kya live hai woh andaza nahi — Chrome se server ka asset naap kar batao.

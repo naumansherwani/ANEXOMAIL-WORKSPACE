@@ -1,5 +1,10 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 12:56 PKT — founder: "kaunsa wala is waqt?" + compact se pehle chat context, codes sab repo mein update
+Founder (verbatim): "matlab kaunsa hai is waqat ?" ... "compact chat se pehle chat context codes sab update kero repo main"
+- Jawab (Chrome se server ka CSS naapa, andaza nahi): SERVER par abhi = redesign ka FLAT build (naya shell + Trust, flip clock/aurora NAHI). REPO main (41bf3fe) = naya shell + cinematic restore. Server ko repo wala dena = sirf founder-install.sh dobara.
+- Halat: **DONE (context/ledger/rules update, commit)**. Pending server (1–2 points): (1) sql-run.sh E108_founder_settings CHECK_E108 (2) founder-install.sh.
+
 ## ▶ 28 Oct 12:49 PKT — founder: flip clock + purana cinematic dashboard delete ho gaya, wapas karo
 Founder (verbatim): "fuck yeh jo clock di woh delete ker di tumne woh kaaml thi? jo pehle wala dashboard style sab tha woh kamal tha woh is ke saath wapis kero."
 - Kaam: cinematic layer wapis (founder-web/src/cinema.css: aurora, glass sidebar, nav spotlight/stagger, gradient greeting + name accent, flip clock, card lift) naye shell ke saath. Rule: jo cheez founder ne saraahi usse bina poochhe nahi hatani (AGENTS top block #8).

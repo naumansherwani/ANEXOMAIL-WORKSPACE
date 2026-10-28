@@ -48,3 +48,5 @@ Test data Pro account: leads zz.kernel/zz.bunprobe/zz.test.*, deals "zz.kernel@.
 - 28 Oct 12:55 — Settings S1: docs/cursor-work/sql/E108_founder_settings.sql + CHECK_E108.sql, server/founder/src/settings.rs (renamed from profile.rs), data.rs (settings, setting_set), main.rs (settings_ep, settings_put), tests/e2e_exchange.py (settings + F2a checks, real SQL via shim), founder-web/src/{Settings,Profile,App,api}.jsx|js, styles.css.
 
 - 28 Oct 13:05 — adaptive city: founder-web/src/{city.js,places.js,Settings.jsx,App.jsx,Live.jsx,Decks.jsx,styles.css}; E108 personal.home (SQL + settings.rs + e2e).
+
+- 28 Oct 12:30–13:10: founder-web/src/ui.css (tokens, shell, trust, palette), cinema.css (restored cinematic), Palette.jsx, Trust.jsx, Bridge.jsx (Clock+Greeting+strip+ledgers), App.jsx (new shell, hash routes, shortcuts), Settings.jsx (two-pane), fonts/*.woff2; server/founder data.rs+main.rs (friendly error when E108 older); docs/cursor-work/server/rules-gate.py; CLAUDE.md. Docs: FOUNDER-MASTER-ORDER, FOUNDER-UI-DESIGN, FOUNDER-KILLER-FEATURES.

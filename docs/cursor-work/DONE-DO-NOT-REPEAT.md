@@ -1155,3 +1155,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 12:50 PKT — founder: 'agent ne rules toore, ilaaj'. DONE: docs/cursor-work/server/rules-gate.py (commit se pehle mechanical check: no-mock, UI English, command/ledger/pull-command touched, 1-2 pending, Rule 61 gap documented, user files untouched, manifest). Har commit se pehle chalao: python3 docs/cursor-work/server/rules-gate.py --staged. Git hook (auto) founder ki ijazat par.
 
 - 28 Oct 13:00 PKT — (1) founder 12:49: purana cinematic dashboard + flip clock wapas (cinema.css, Bridge Clock/Greeting) — dobara KABHI mat hatao. View Transitions hata kar CSS fade (navigation tez). (2) founder 12:47: 4 killer features + 3 indicators: docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md, MASTER-ORDER 5a..13a, blueprint §15z. (3) Technology rule AGENTS.md + CLAUDE.md ke top par.
+
+- 28 Oct 13:10 PKT — pre-compaction snapshot likha (context file '13:10 PRE-COMPACTION SNAPSHOT'); FC43 add. Server par live = flat build (clock nahi); repo = restored; founder-install.sh dobara chalana baaki.
