@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
-import { get, hasToken } from "./api.js";
+import { get, hasToken, deviceStatus } from "./api.js";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
@@ -38,6 +38,21 @@ function Gate() {
   );
 }
 
+function DeviceScreen({ code, revoked, retry }) {
+  const cmd = `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/founder-device.sh) approve ${code}`;
+  return (
+    <div className="loginwrap"><div className="login">
+      <div className="brand">ANEXOMAIL · FOUNDER</div>
+      {revoked ? <><h1>This device was revoked</h1><p className="dim">This browser can no longer open the Command Center. Use an approved device, or approve it again from the server.</p></> :
+        <><h1>This device needs approval</h1>
+          <p className="dim">You are signed in, but this browser is new. Approve it once from the server and it stays approved.</p>
+          <p className="dim small">Device code</p><div className="devcode" aria-label="Device code">{code}</div>
+          <p className="dim small">On the server (as root):</p><code className="cmd">{cmd}</code></>}
+      <button onClick={retry}>Check again</button>
+    </div></div>
+  );
+}
+
 function Card({ title, tone, children }) {
   return <section className={`card ${tone || ""}`}><h2>{title}</h2>{children}</section>;
 }
@@ -48,14 +63,15 @@ export default function App() {
   const sa = useScrollArrows();
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
   const toggleSlim = () => setSlim((s) => { const n = !s; try { window.localStorage.setItem("anexo.founder.slim", n ? "1" : "0"); } catch {} return n; });
-  const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null);
+  const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null), [pend, setPend] = useState(null);
   const load = useCallback(async () => {
-    try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); }
-    catch (x) { if (/expired/i.test(x.message) || !hasToken()) setAuthed(false); else setErr(x.message); }
+    try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); setPend(null); }
+    catch (x) { if (x.name === "DevicePending") setPend({ code: x.code, revoked: x.revoked }); else if (/expired/i.test(x.message) || !hasToken()) setAuthed(false); else setErr(x.message); }
   }, []);
   useEffect(() => { if (!authed) return; load(); const t = setInterval(load, 15000); return () => clearInterval(t); }, [authed, load]);
 
   if (!authed) return <Gate />;
+  if (pend) return <DeviceScreen code={pend.code} revoked={pend.revoked} retry={load} />;
   const m = d?.money, t = d?.trouble, v = d?.voice;
   const AWAM = [["Dashboard", "/app", "dashboard"], ["Mail", "/app/mail/inbox", "mail"], ["People", "/app/people", "people"], ["Calendar", "/app/calendar", "calendar"], ["Work", "/app/work", "work"], ["CRM", "/app/crm", "crm"], ["Org", "/app/org", "org"], ["Analytics", "/app/analytics", "analytics"], ["Safety", "/app/safety", "safety"], ["ANEXOChat", "/app/chat", "chat"], ["AI", "/app/ai-center", "ai"], ["Speed", "/app/perf", "speed"], ["Founder", "/app/founder", "founder"], ["Admin", "/app/admin", "admin"]];
   const NAV = [["bridge", "Bridge"], ...ORDER.map((k) => [k, DECK_META[k].title]), ["audit", "Audit"]];
@@ -86,7 +102,7 @@ export default function App() {
         <main className="content">
       <div className="titleblock"><span className="kicker">{view === "bridge" ? "FOUNDER · CHAIRMAN" : title.toUpperCase()}</span><h1>{title}</h1>
         {view === "bridge" && <p className="dim">Money, what needs attention and the voice of your customers in one view. Everything shown is server truth; anything not connected yet says so.</p>}</div>
-      <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Device approval not yet enabled (F1a)</span></div>
+      <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
       {err && <div className="err banner" role="alert">{err}</div>}
       {DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :
       <div className="grid">

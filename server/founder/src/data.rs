@@ -34,6 +34,12 @@ impl Sb {
         if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; } // injection se bachao
         self.rows(&format!("founder_accounts?select=user_id&user_id=eq.{uid}&limit=1")).await.map(|r| !r.is_empty()).unwrap_or(false)
     }
+    /// Founder token ka device ab bhi approved aur revoke nahi? (har request par; revoke foran asar)
+    pub async fn device_ok(&self, uid: &str, did: &str) -> bool {
+        let id_ok = |s: &str| !s.is_empty() && s.chars().all(|c| c.is_ascii_hexdigit() || c == '-');
+        if !id_ok(uid) || !id_ok(did) { return false; }
+        matches!(self.rpc("founder_device_ok", serde_json::json!({"p_uid": uid, "p_device": did})).await, Some(Value::Bool(true)))
+    }
     pub async fn jwks(&self) -> Vec<crate::jwt_core::Jwk> {
         let Ok(r) = self.http.get(format!("{}/auth/v1/.well-known/jwks.json", self.url)).send().await else { return vec![] };
         match r.json::<Value>().await { Ok(d) => crate::jwt_core::parse_jwks(&d), Err(_) => vec![] }

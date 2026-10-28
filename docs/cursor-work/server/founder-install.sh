@@ -45,6 +45,11 @@ if [ ! -f "$ENVF" ]; then
 fi
 id anexomail-founder >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin anexomail-founder
 install -m 755 "$NEW" "$ROOT/anexomail-founder"
+# F1a: founder token signing key (ES256, file 0400, sirf service user padh sakta hai) + env (dobara chalane par maujooda values NAHI badalte)
+KEYF=/etc/anexomail/founder-token.p8; mkdir -p /etc/anexomail
+"$ROOT/anexomail-founder" --gen-token-key "$KEYF" | sed 's/^/   token key: /'; chown anexomail-founder:anexomail-founder "$KEYF"; chmod 400 "$KEYF"
+grep -q '^FOUNDER_TOKEN_KEY_FILE=' "$ENVF" || echo "FOUNDER_TOKEN_KEY_FILE=$KEYF" >>"$ENVF"
+grep -q '^FOUNDER_LEGACY_TOKEN=' "$ENVF" || echo "FOUNDER_LEGACY_TOKEN=1" >>"$ENVF"   # 1 = purana session token abhi bhi chalta (grace); Chrome proof ke baad 0
 chown root:anexomail-founder "$ENVF"; chmod 640 "$ENVF"; chown -R root:anexomail-founder "$ROOT/web"; chmod -R g+rX "$ROOT/web"
 cat >/etc/systemd/system/$SVC.service <<UNIT
 [Unit]
@@ -71,6 +76,6 @@ UNIT
 systemctl daemon-reload && systemctl enable $SVC >/dev/null 2>&1; systemctl restart $SVC; sleep 2
 echo "== 4/4 saboot"
 H="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/healthz)"; M="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/me)"; B="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/founder/v1/bridge)"
-S="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/)"; echo "SPA index=$S (200)"; echo "healthz=$H (200 chahiye)  me bina token=$M (401)  bridge bina token=$B (401)"
-if [ "$S" = 200 ] && [ "$H" = 200 ] && [ "$M" = 401 ] && [ "$B" = 401 ]; then echo "OK - founder service zinda, darwaza band. Host: https://founderworkspace.anexomail.com/ (Caddy: founder-host.sh)."; else
+S="$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:3210/)"; echo "SPA index=$S (200)"; X="$(curl -s -o /dev/null -w '%{http_code}' -X POST -H 'content-type: application/json' -d '{"device_id":"x"}' http://127.0.0.1:3210/founder/v1/exchange)"; echo "exchange bina token=$X (401)"; journalctl -u $SVC -n 20 --no-pager 2>/dev/null | grep -o "founder: token service.*" | tail -1; echo "healthz=$H (200 chahiye)  me bina token=$M (401)  bridge bina token=$B (401)"
+if [ "$S" = 200 ] && [ "$H" = 200 ] && [ "$M" = 401 ] && [ "$B" = 401 ] && [ "$X" = 401 ]; then echo "OK - founder service zinda, darwaza band. Host: https://founderworkspace.anexomail.com/ (Caddy: founder-host.sh)."; else
   echo "FAIL: rollback"; systemctl stop $SVC; B2="$(ls -t $ROOT/anexomail-founder.bak.* 2>/dev/null | head -1)"; [ -n "$B2" ] && cp "$B2" "$ROOT/anexomail-founder" && systemctl start $SVC; journalctl -u $SVC -n 15 --no-pager; exit 4; fi

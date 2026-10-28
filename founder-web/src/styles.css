@@ -99,3 +99,6 @@ a.nav{text-decoration:none;min-height:40px}.nav .lbl{white-space:nowrap}
 .scrollarrow.top{top:0}.scrollarrow.bottom{bottom:0;background:linear-gradient(rgba(11,12,16,.92),var(--bg))}.scrollarrow:hover{color:#fff;background:#171a22}
 .side .sidenote{margin-top:10px}
 @media (max-width:760px){.sidewrap{flex:1 1 100%}.scroller{flex-direction:row;flex-wrap:wrap}.scrollarrow{display:none}}
+.chip.ok{border-color:#1f5a40;color:var(--g)}
+.devcode{font:600 34px/1.1 ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.2em;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:#0d0f14;text-align:center}
+.cmd{display:block;font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--dim);background:#0d0f14;border:1px solid var(--line);border-radius:10px;padding:10px 12px;word-break:break-all;user-select:all}
