@@ -11,6 +11,7 @@ mod login;
 mod actions;
 mod ftoken;
 mod polar;
+mod profile;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use serde_json::{Value, json};
@@ -74,6 +75,26 @@ async fn me(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
         Ok(c) => signed(&st, json!({"uid": c.sub, "email": c.email, "founder": true})),
         Err(code) => code.into_response(),
     }
+}
+
+async fn profile_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
+    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let p = st.sb.as_ref().unwrap().profile(&c.sub).await;
+    let name = p.as_ref().and_then(|v| v["display_name"].as_str().or_else(|| v["legal_name"].as_str())).unwrap_or("").to_string();
+    signed(&st, json!({"email": c.email, "display_name": name, "avatar_url": p.as_ref().and_then(|v| v["avatar_url"].as_str()), "profile_found": p.is_some()}))
+}
+
+#[derive(serde::Deserialize)]
+struct AvatarIn { avatar_url: Option<String> }
+
+async fn avatar_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<AvatarIn>) -> axum::response::Response {
+    let c = match authed(&st, &h).await { Ok(c) => c, Err(code) => return code.into_response() };
+    let sb = st.sb.as_ref().unwrap();
+    let url = b.avatar_url.as_deref().map(str::trim).filter(|s| !s.is_empty());
+    if let Some(u) = url { if !profile::valid_avatar(u) { return (StatusCode::BAD_REQUEST, Json(json!({"error": "Use a jpg, png or webp under 130 KB, or a https link."}))).into_response(); } }
+    if !sb.set_avatar(&c.sub, url).await { return (StatusCode::BAD_GATEWAY, Json(json!({"error": "Photo not saved — profile row not found or database unavailable."}))).into_response(); }
+    let _ = sb.rpc("founder_audit_append", json!({"p_actor": c.sub, "p_action": if url.is_some() { "profile.avatar_set" } else { "profile.avatar_removed" }, "p_target": "account_profiles", "p_reason": "founder changed own profile photo", "p_meta": {}})).await;
+    signed(&st, json!({"ok": true, "avatar_url": url}))
 }
 
 async fn bridge_ep(State(st): State<S>, h: HeaderMap) -> axum::response::Response {
@@ -201,6 +222,8 @@ pub fn app(st: S) -> Router {
         .route("/founder/v1/exchange", axum::routing::post(exchange_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
+        .route("/founder/v1/profile", get(profile_ep))
+        .route("/founder/v1/profile/avatar", axum::routing::put(avatar_ep))
         .route("/founder/v1/finance/polar", get(polar_ep))
         .route("/founder/v1/actions", get(actions_ep))
         .route("/founder/v1/audit", get(audit_ep))
@@ -264,7 +287,7 @@ mod tests {
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
-        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit"] {
+        for path in ["/founder/v1/me", "/founder/v1/bridge", "/founder/v1/profile", "/founder/v1/finance/polar", "/founder/v1/actions", "/founder/v1/audit"] {
             let r = app(st_with_sb()).oneshot(Request::get(path).body(Body::empty()).unwrap()).await.unwrap();
             assert_eq!(r.status(), 401, "{path}");
             let r = app(st_with_sb()).oneshot(Request::get(path).header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();

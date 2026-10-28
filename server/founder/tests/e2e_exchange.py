@@ -22,6 +22,7 @@ def session_token(sub, port, exp_in=3600):
 FOUNDER = psql("select user_id from public.founder_accounts limit 1")[1]
 q = lambda v: "'" + str(v).replace("'", "''") + "'"
 
+PROFILES = {}  # test-only stand-in for public.account_profiles (the real table is Supabase; shape = PostgREST)
 class Shim(http.server.BaseHTTPRequestHandler):
     def log_message(self, *a): pass
     def _send(self, code, obj):
@@ -35,6 +36,15 @@ class Shim(http.server.BaseHTTPRequestHandler):
             uid = self.path.split("user_id=eq.")[1].split("&")[0]
             rc, out = psql(f"select count(*) from public.founder_accounts where user_id = {q(uid)}::uuid") if len(uid) == 36 else (1, "0")
             return self._send(200, [{"user_id": uid}] if out == "1" else [])
+        if self.path.startswith("/rest/v1/account_profiles"):
+            uid = self.path.split("user_id=eq.")[1].split("&")[0]
+            return self._send(200, [PROFILES[uid]] if uid in PROFILES else [])
+        self._send(404, {})
+    def do_PATCH(self):
+        if self.path.startswith("/rest/v1/account_profiles"):
+            uid = self.path.split("user_id=eq.")[1].split("&")[0]; body = json.loads(self.rfile.read(int(self.headers.get("content-length", 0))) or b"{}")
+            if uid not in PROFILES: return self._send(200, [])
+            PROFILES[uid].update(body); return self._send(200, [PROFILES[uid]])
         self._send(404, {})
     def do_POST(self):
         if self.path.startswith("/rest/v1/rpc/"):
@@ -129,6 +139,21 @@ r = sh("approve", dcode, REASON="approved by e2e through script"); check("founde
 check("device D can now exchange", call("POST", "/founder/v1/exchange", S, {"device_id": D})[0] == 200)
 r = sh("revoke", dcode, REASON="revoked by e2e through script"); check("founder-device.sh revoke", r.returncode == 0 and r.stdout.startswith("OK"), r.stdout + r.stderr)
 r = sh("approve", "ZZZZZZZZ"); check("script rejects bad code", r.returncode != 0)
+# --- profile photo (Account menu) ---
+PROFILES[FOUNDER] = {"display_name": "Test Founder", "legal_name": "T F", "avatar_url": None}
+c, r = call("GET", "/founder/v1/profile", TA); d = r.get("data", {})
+check("profile read: name + email, no photo yet", c == 200 and d.get("display_name") == "Test Founder" and d.get("avatar_url") is None and d.get("profile_found") is True, str((c, r)))
+check("profile needs a token", call("GET", "/founder/v1/profile")[0] == 401)
+PNG = "data:image/png;base64,iVBORw0KGgo="
+c, r = call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG}); check("photo save", c == 200, str((c, r)))
+check("photo is now stored and returned", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
+check("svg / script photo refused (400)", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "data:image/svg+xml;base64,PHN2Zz4="})[0] == 400 and call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": "javascript:alert(1)"})[0] == 400)
+check("refused photo did not overwrite the good one", call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] == PNG)
+check("photo remove (null)", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": None})[0] == 200 and call("GET", "/founder/v1/profile", TA)[1]["data"]["avatar_url"] is None)
+check("photo save without token = 401", call("PUT", "/founder/v1/profile/avatar", None, {"avatar_url": PNG})[0] == 401)
+PROFILES.pop(FOUNDER); check("no profile row -> honest 502, nothing invented", call("PUT", "/founder/v1/profile/avatar", TA, {"avatar_url": PNG})[0] == 502)
+rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'profile.%'")
+check("photo changes are in the audit ledger", "profile.avatar_set" in out and "profile.avatar_removed" in out, out)
 rc, out = psql("select public.founder_audit_verify(1) is null")
 check("audit chain intact", out == "t", out)
 rc, out = psql("select string_agg(action, ',' order by seq) from public.founder_audit where action like 'founder.device.%'")

@@ -163,3 +163,21 @@ html[data-fx="off"] .fx-ambient,html[data-fx="off"] .aurora{display:none!importa
 .fxtoggle i{width:9px;height:9px;border-radius:50%;background:#4a5262;transition:background .2s,box-shadow .2s}
 .fxtoggle.on i{background:#E11D48;box-shadow:0 0 10px #E11D48}.fxtoggle.on{color:var(--fg)}
 @media (max-width:760px){.fxtoggle span{display:none}.fxtoggle{padding:0 10px}}
+/* Account menu + profile photo (user-app pattern, founder content) */
+.acct{position:relative;margin-left:10px}
+.avbtn{width:38px;height:38px;padding:0;border-radius:50%;background:transparent;border:1px solid rgba(255,255,255,.14);display:grid;place-items:center;cursor:pointer;overflow:hidden}
+.avbtn:hover{border-color:rgba(255,255,255,.34)}
+.av{display:inline-grid;place-items:center;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#34588f,#4a73b3);color:#fff;font-weight:600;flex:none}
+.av img{width:100%;height:100%;object-fit:cover;display:block}
+.menu{position:absolute;right:0;top:46px;z-index:60;width:292px;padding:8px;border-radius:14px;background:rgba(18,20,26,.96);backdrop-filter:blur(14px);border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:2px;animation:menuin .14s ease-out}
+@keyframes menuin{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:none}}
+.mhead{display:flex;gap:12px;align-items:center;padding:8px 8px 12px}.mhead b{display:block;font-size:14px}.mhead div>span{display:block;font-size:12px;color:var(--dim);word-break:break-all}
+.rolechip{display:inline-block;margin-top:6px;font:600 10.5px Inter,sans-serif;font-style:normal;padding:2px 8px;border-radius:999px;background:rgba(74,115,179,.2);color:#9db9e6}
+.mi{text-align:left;background:transparent;border:0;color:var(--fg);padding:9px 10px;border-radius:8px;font:500 13.5px Inter,sans-serif;cursor:pointer}.mi:hover,.mi:focus-visible{background:rgba(255,255,255,.07)}
+.msep{height:1px;background:var(--line);margin:6px 4px}.mnote{padding:2px 10px 6px;font-size:11.5px;color:var(--dim)}
+.profrow{display:flex;gap:18px;align-items:center;margin:14px 0}
+.bigav{position:relative;padding:0;border:0;background:transparent;border-radius:50%;cursor:pointer}
+.bigav .cam{position:absolute;inset:auto 0 0 0;text-align:center;font:600 11px Inter,sans-serif;padding:5px 0;background:rgba(0,0,0,.55);color:#fff;border-radius:0 0 48px 48px;opacity:0;transition:opacity .15s}
+.bigav:hover .cam,.bigav:focus-visible .cam{opacity:1}
+.prof .row{display:flex;gap:10px;margin:6px 0 10px}
+@media (max-width:760px){.menu{position:fixed;right:12px;left:12px;top:60px;width:auto}}

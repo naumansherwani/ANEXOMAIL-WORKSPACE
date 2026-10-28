@@ -69,3 +69,12 @@ export async function post(path, body) {
   let j = null; try { j = await r.json(); } catch {}
   return { status: r.status, body: j };
 }
+export async function put(path, body) {
+  const t = await auth(path); if (!t) throw expired();
+  const r = await fetch(path, { method: "PUT", headers: { "content-type": "application/json", authorization: `Bearer ${t}` }, body: JSON.stringify(body) });
+  if (r.status === 401) { forget(); throw expired(); }
+  let j = null; try { j = await r.json(); } catch {}
+  return { status: r.status, body: j };
+}
+// Sign out of THIS browser only: drops the session copy + the in-memory founder token. The device approval stays (server side).
+export function signOut() { forget(); try { window.localStorage.removeItem(KEY); window.localStorage.removeItem("anexo.session.last"); } catch {} window.location.replace("/founderlogin"); }

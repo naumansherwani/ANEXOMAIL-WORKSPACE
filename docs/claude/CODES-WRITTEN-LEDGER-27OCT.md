@@ -40,3 +40,5 @@ Test data Pro account: leads zz.kernel/zz.bunprobe/zz.test.*, deals "zz.kernel@.
 - SPA (founder-web): exchange flow + device screen, Greeting+Clock (city-adaptive, greeting.js port), cinematic sidebar, FX ambient toggle, BILLING · POLAR card.
 - Awam web: server/lib/founder-host-guard.ts + auth.ts founderHostGate (F1a-2, off by default).
 - Scripts: founder-install.sh (all src/*.rs), founder-device.sh, founder-polar.sh (hidden token / engine), founder-hostguard.sh, caddy founder-host.sh (h3 probe).
+
+- 28 Oct 11:50 — server/founder/src/profile.rs, data.rs (profile, set_avatar), main.rs (profile_ep, avatar_ep), tests/e2e_exchange.py (profile checks), founder-web/src/Profile.jsx, api.js (put, signOut), App.jsx, styles.css.

@@ -30,6 +30,19 @@ impl Sb {
         if !r.status().is_success() { return None; }
         r.json::<Value>().await.ok()
     }
+    /// Founder's own profile row (display name + photo). None = table/row unavailable (never invented).
+    pub async fn profile(&self, uid: &str) -> Option<Value> {
+        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return None; }
+        self.rows(&format!("account_profiles?select=display_name,legal_name,avatar_url&user_id=eq.{uid}&limit=1")).await?.into_iter().next()
+    }
+    /// Set or clear (None) the founder's own photo. Only that one column, only that user's row.
+    pub async fn set_avatar(&self, uid: &str, url: Option<&str>) -> bool {
+        if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; }
+        let body = serde_json::json!({"avatar_url": url, "updated_at": chrono_now()});
+        let r = self.http.patch(format!("{}/rest/v1/account_profiles?user_id=eq.{}", self.url, uid)).header("apikey", &self.key)
+            .header("authorization", format!("Bearer {}", self.key)).header("prefer", "return=representation").json(&body).send().await;
+        match r { Ok(r) if r.status().is_success() => r.json::<Vec<Value>>().await.map(|v| !v.is_empty()).unwrap_or(false), _ => false }
+    }
     pub async fn is_founder(&self, uid: &str) -> bool {
         if uid.is_empty() || !uid.chars().all(|c| c.is_ascii_hexdigit() || c == '-') { return false; } // injection se bachao
         self.rows(&format!("founder_accounts?select=user_id&user_id=eq.{uid}&limit=1")).await.map(|r| !r.is_empty()).unwrap_or(false)
@@ -44,4 +57,16 @@ impl Sb {
         let Ok(r) = self.http.get(format!("{}/auth/v1/.well-known/jwks.json", self.url)).send().await else { return vec![] };
         match r.json::<Value>().await { Ok(d) => crate::jwt_core::parse_jwks(&d), Err(_) => vec![] }
     }
+}
+
+fn chrono_now() -> String {
+    let d = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
+    // RFC3339 UTC without extra deps
+    let (days, rem) = (d / 86400, d % 86400);
+    let (mut y, mut dd) = (1970i64, days as i64);
+    loop { let yl = if (y % 4 == 0 && y % 100 != 0) || y % 400 == 0 { 366 } else { 365 }; if dd >= yl { dd -= yl; y += 1; } else { break; } }
+    let leap = (y % 4 == 0 && y % 100 != 0) || y % 400 == 0;
+    let ml = [31, if leap { 29 } else { 28 }, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let mut m = 0; while dd >= ml[m] { dd -= ml[m]; m += 1; }
+    format!("{y:04}-{:02}-{:02}T{:02}:{:02}:{:02}Z", m + 1, dd + 1, rem / 3600, rem % 3600 / 60, rem % 60)
 }
