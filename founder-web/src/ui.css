@@ -67,7 +67,6 @@ button.grp svg{transition:transform .15s}button.grp[aria-expanded="true"] svg{tr
 .lt{font:500 14px Inter,sans-serif;text-transform:capitalize}.ld{font-size:13px;color:var(--dim);word-break:break-word}.lnum{font:600 16px Inter,sans-serif;font-variant-numeric:tabular-nums}
 .lstate{font:500 13px Inter,sans-serif}.lstate.ok{color:var(--ok)}.lstate.warn{color:var(--wn)}.lstate.fail{color:var(--bad)}.lstate.unknown{color:var(--dim)}.lrow.empty{display:block;color:var(--dim)}
 /* Existing components on the same tokens: flat surfaces, no lift, no gradient */
-.card{background:var(--s1);border-radius:var(--r3);box-shadow:none;transition:none;animation:none;min-height:0}.card:hover{transform:none;box-shadow:none}
 .tile,.rowcard,.livecard{background:var(--s1);border-radius:var(--r2)}
 .panel{background:var(--s1);box-shadow:none}
 .chip{background:none}
@@ -96,8 +95,9 @@ html.slim .nv{width:44px;height:44px;justify-content:center;padding:0}html.slim 
   .palwrap{padding-top:8vh}.pal input{font-size:16px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
-/* One orchestrated moment: a short cross-fade between pages. */
-::view-transition-old(root),::view-transition-new(root){animation-duration:.14s}
+/* One orchestrated moment: the page area fades in once on navigation. */
+@keyframes pgin{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.pg{animation:pgin .16s ease-out}
 /* Settings on tablet / phone: sections become a compact segmented bar */
 @media (max-width:1023px){
   .setgrid{grid-template-columns:1fr;gap:16px}.setnav{position:static;flex-direction:row;gap:6px;overflow-x:auto;padding:4px;border:1px solid var(--line);border-radius:var(--r2);background:var(--s1)}

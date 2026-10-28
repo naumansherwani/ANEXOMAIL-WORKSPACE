@@ -17,6 +17,21 @@ function firstName() {
   } catch { return ""; }
 }
 
+// Digital clock: per-digit roll animation, pulsing colon, seconds beam. City + GMT offset follow the adaptive city (home city, else the device zone).
+function Clock({ tz, city }) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => { const id = setInterval(() => setNow(new Date()), 1000); return () => clearInterval(id); }, []);
+  const p = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", second: "2-digit", hourCycle: "h23", timeZone: tz, timeZoneName: "shortOffset" }).formatToParts(now).map((x) => [x.type, x.value]));
+  const D = (v, i) => <span className="dg" key={`${i}${v}`}>{v}</span>; // plain function (not a component) so only a changed digit re-mounts and rolls
+  return (
+    <time className="clock" dateTime={now.toISOString()} aria-label={`${p.hour}:${p.minute} in ${city}`}>
+      <span className="digits" aria-hidden="true"><span className="pair">{D(p.hour[0], 0)}{D(p.hour[1], 1)}</span><b className="colon">:</b><span className="pair">{D(p.minute[0], 0)}{D(p.minute[1], 1)}</span></span>
+      <span className="beam" aria-hidden="true"><i style={{ width: `${(Number(p.second) / 59) * 100}%` }} /></span>
+      <small><span className="dot" />{city} · {String(p.timeZoneName || "")}</small>
+    </time>
+  );
+}
+
 function Greeting({ t, at, me }) {
   const [now, setNow] = useState(() => new Date());
   useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
@@ -24,11 +39,14 @@ function Greeting({ t, at, me }) {
   const bad = t ? t.items.filter((i) => i.state !== "ok").length : 0;
   const tone = !t ? "unknown" : bad ? "warn" : "ok";
   return (
-    <header className="bhead">
-      <h1>{SAY[part]}{nm ? `, ${nm}` : ""}</h1>
-      <p className="bsub"><span className={`sdot ${tone}`} aria-hidden="true" />
-        <span>{!t ? (at ? "Nothing measured yet." : "Checking your systems…") : bad ? `${bad} item${bad === 1 ? "" : "s"} need${bad === 1 ? "s" : ""} a look` : "Nothing needs attention"}</span>
-        <span className="sep" aria-hidden="true" /><span className="dim">{fmtDay(now)}</span></p>
+    <header className="greet">
+      <div>
+        <span className="kicker">{fmtDay(now).toUpperCase()}</span>
+        <h1 className="hello">{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</h1>
+        <p className="bsub"><span className={`sdot ${tone}`} aria-hidden="true" />
+          <span>{!t ? (at ? "Nothing measured yet." : "Checking your systems…") : bad ? `${bad} item${bad === 1 ? "" : "s"} need${bad === 1 ? "s" : ""} a look` : "Nothing needs attention"}</span></p>
+      </div>
+      <Clock tz={c.iana} city={c.city} />
     </header>
   );
 }

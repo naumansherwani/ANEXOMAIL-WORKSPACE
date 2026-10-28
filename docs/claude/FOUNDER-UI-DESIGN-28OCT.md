@@ -16,7 +16,7 @@ Visual review of the 64: floating bottom bar + row ledger (phone), icon rail (ta
 1. **Trust indicator** (topbar): one place that states what can be trusted right now — device approved, writes signed, responses verified in this browser (amber until F2b). Dashboards like Vercel have no cryptographic provenance.
 2. **Provenance on every number** (next): source + age under each figure; after F2b a verified tick from the browser WASM kernel (Ed25519).
 3. **Adaptive city**: greeting by sunset in the home city; planned: theme follows the sunset (needs one new E108 key).
-4. One orchestrated moment only: a 140ms page cross-fade (View Transitions). No scattered motion. Reduced-motion respected.
+4. Cinematic layer RESTORED at the founder's order (12:49): aurora, glass sidebar, nav spotlight + stagger, gradient greeting with the name accent, flip clock, card lift (src/cinema.css). Page change = one 160ms fade-in (CSS; View Transitions were dropped — they waited on the compositor). Reduced-motion respected. LESSON: never remove a look the founder praised without asking.
 5. Keyboard first: Ctrl/Cmd+K, `g` then b/f/p/m/s/a.
 
 ## 4. Tokens (src/ui.css — single source)
@@ -31,7 +31,8 @@ Layout: >=1024 sidebar 236px; 700–1023 icon rail 64px; <=700 no sidebar + floa
 | TanStack Router (static SPA) | hash routes written by hand; TanStack Router install in progress | switch (small) |
 | Tailwind 4.2 + shadcn | no — plain CSS on tokens | decision: new components may adopt Tailwind v4 mapped to the same tokens (@theme); old CSS not rewritten wholesale |
 | Three.js WebGPU lazy | three is a dependency; the 3D scene was removed from the Bridge (founder: no 3D clutter) | only when a screen needs it |
-| Motion/GSAP | none (View Transitions + CSS only) | by design: one orchestrated moment |
+| Motion/GSAP | CSS animations only (cinema.css) | GSAP when a 3D/scroll scene needs it |
+| TypeScript | no — plain JS (.jsx) | gap: convert, or founder approves JS |
 | WASM kernel verifies audit chain/responses in the browser | NOT yet | F2b (step 4 of FOUNDER-MASTER-ORDER) |
 | Backend Rust axum + tokio, WebTransport/QUIC | HTTP/3 fetch today; WebTransport live stream not yet | Decide + Live Pulse step |
 Founder-side rules honoured in this UI: Rule 69 (no mock data: every number is a real response or an honest "Not connected"), Rule 64 (done = green in his Chrome), Rule 67 (English UI).

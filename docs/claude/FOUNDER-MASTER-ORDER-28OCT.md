@@ -11,14 +11,21 @@ UI system (tokens, shell, Trust, mobile/tablet): docs/claude/FOUNDER-UI-DESIGN-2
 | 3 | Server leftovers: awam host guard (`pull.sh`, probe -> enforce), Polar Metrics token | founder commands pending |
 | 4 | **F2b** WASM kernel verify in the browser (pins the public key, SRI, enforce) | next build |
 | 5 | **F2c** audit v1 + Merkle (E107) | after 4 |
+| 5a | **I1 Ledger Integrity Gauge** (+ Dashboard item in Command center) — FOUNDER-KILLER-FEATURES | after 5 |
 | 6 | **S2** Settings: Time machine + Drift & schedule | after 5 |
 | 7 | **F2d** passkey proof for G3 (then FOUNDER_PASSWORD path removed) + **S3** Privacy | after 6 |
 | 8 | **Decide (N)** one button + **Live Pulse** (real vs test accounts) + **S4** Notifications (push) | after 7 |
+| 8a | **I3 Device Trust Map** (device-reported city, never IP) | after 8 |
 | 9 | **F3** Finance deck on latest tech: Polar failed payments / churn / reconcile, Revenue, Billing, **Release (7 old launch pages)**, **Move-In** | after 8 |
 | 10 | **F4** People: Org, CRM, Team permissions, Account 360, abuse/appeals, Work | after 9 |
+| 10a | **I2 Active Work Chain Dependencies** (needs `depends_on` SQL) | with 10 |
+| 10b | **K4 Insider Guard** (metadata-only deterministic auditor; hold = reversible) | after 10 |
 | 11 | **F5** Mail Desk (+ **Mail**, **Calendar** common features, email notifications, undo-send settings) | after 10 |
+| 11a | **K1 Sealed Agreements** (cross-company cryptographic escrow) | after 11 + F2c |
 | 12 | **F6** Systems + **AI (10 pages, founder-only)**: health, **Analytics**, **Speed (perf)**, **Admin**, **Safety**, **ANEXOChat**, Workspace/AI settings | after 11 |
+| 12a | **K2 Mesh / air-gapped sync** (research spike first; needs LAN node) | after 12 |
 | 13 | **F8** Control: kill switch, flags, one-click executor (every action G2/G3, audit + rollback), Settings changes | after 12 |
+| 13a | **K3 Poison Pill** (crypto-shred of cached data; G3) | after 13 |
 | 14 | **F9 CUTOVER**: old 36 Lovable founder route files + 53 Bun-only founder endpoints removed ONLY after Rust == Bun proof for each | after 13 |
 | 15 | **Founder desk**: Docs + Sheets (Collabora/OnlyOffice via WOPI; engine chosen after a licence read), calendar, tasks | last |
 Awam ONE-ORDER resumes after step 3 is green (FC21); it is a separate lane and is not touched here.

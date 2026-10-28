@@ -329,3 +329,8 @@ Verified Polar API: `GET https://api.polar.sh/v1/metrics/` (start_date, end_date
 | 8 | F4 People, F5 Mail Desk, F6 Systems, F8 Control, F9 cutover | as plan | | |
 | 9 | Founder desk | Docs + Sheets (Collabora/OnlyOffice via WOPI; engine choice pending licence read) | separate sandbox service + Rust WOPI | later |
 Responsive: har phase 390 / 820 / 1440 par proof (Rule 34). Sab data authentic (FC26).
+
+
+## §15z KILLER FEATURES + DASHBOARD INDICATORS (founder 28 Oct 12:47) — technology first (Rule 62)
+Full text, duplicate scan, honest limits: **docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md**. Technology: Postgres append-only + Rust (ring Ed25519, sha2) + WASM kernel verify + React 19.2/Vite 8.2 + passkey (F2d). Numbers in FOUNDER-MASTER-ORDER: 5a I1 Ledger Integrity Gauge · 8a I3 Device Trust Map · 10a I2 Work Chain Dependencies · 10b K4 Insider Guard · 11a K1 Sealed Agreements · 12a K2 Mesh · 13a K3 Poison Pill. Pull commands (Rule 66) are written when each phase starts: SQL `sql-run.sh`, Rust+SPA `founder-install.sh`.
+Bridge = founder-only cross-tenant control; Dashboard = read-only company health (the 3 indicators).

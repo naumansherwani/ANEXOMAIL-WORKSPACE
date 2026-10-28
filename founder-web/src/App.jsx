@@ -60,8 +60,8 @@ export default function App() {
   const [authed, setAuthed] = useState(hasToken());
   const [view, setViewRaw] = useState(fromHash);
   const [pal, setPal] = useState(false), [wsOpen, setWsOpen] = useState(() => { try { return window.localStorage.getItem("anexo.founder.ws") === "1"; } catch { return false; } });
-  // Real URLs: #/finance etc. Back/forward and deep links work; one soft cross-fade on change (View Transitions where the browser has them).
-  const setView = useCallback((v) => { if (v === fromHash()) { setViewRaw(v); return; } const go = () => { window.location.hash = `#/${v}`; }; if (document.startViewTransition && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.startViewTransition(() => { go(); }); else go(); }, []);
+  // Real URLs: #/finance etc. Back/forward and deep links work; the page area fades in once on change (CSS, no waiting on the browser).
+  const setView = useCallback((v) => { if (v === fromHash()) { setViewRaw(v); return; } window.location.hash = `#/${v}`; }, []);
   useEffect(() => { const on = () => setViewRaw(fromHash()); window.addEventListener("hashchange", on); return () => window.removeEventListener("hashchange", on); }, []);
   const [prof, setProf] = useState(null);
   const [slim, setSlim] = useState(() => { try { return window.localStorage.getItem("anexo.founder.slim") === "1"; } catch { return false; } });
@@ -107,17 +107,19 @@ export default function App() {
   const items = [...CC.map(([k, n]) => ({ id: k, name: n, group: "Command center", icon: k, view: k })), { id: "settings", name: "Settings", group: "Account", icon: "settings", view: "settings" }, { id: "profile", name: "Profile & photo", group: "Account", icon: "people", view: "profile" },
     ...AWAM.map(([n, href, ic]) => ({ id: href, name: n, group: "Workspace (user app)", icon: ic, href }))];
   const pick = (x) => { setPal(false); if (x.href) window.location.assign(x.href); else setView(x.view); };
-  const nvBtn = (k, n) => <button key={k} className="nv" title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
+  const spot = (e) => { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); };
+  const nvBtn = (k, n, i = 0) => <button key={k} className="nv" style={{ "--i": i }} onPointerMove={spot} title={n} aria-current={view === k ? "page" : undefined} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>;
   return (
     <div className="ws">
+      <div className="aurora" aria-hidden="true"><i /><i /></div>
       <div className="fx-ambient" aria-hidden="true"><span className="fx-edge" /></div>
       <aside className="sb" aria-label="Navigation">
         <div className="sbtop"><Brand /></div>
         <div className="sbscroll">
           <span className="grp">Command center</span>
-          {CC.map(([k, n]) => nvBtn(k, n))}
+          {CC.map(([k, n], i) => nvBtn(k, n, i))}
           <button className="grp" aria-expanded={wsOpen} onClick={toggleWs}><Chev />Workspace (user app)</button>
-          {wsOpen && AWAM.map(([n, href, ic]) => <a key={n} className="nv" href={href} title={n}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
+          {wsOpen && AWAM.map(([n, href, ic], i) => <a key={n} className="nv" href={href} title={n} style={{ "--i": i }} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
         </div>
         <div className="sbfoot">
           {nvBtn("settings", "Settings")}

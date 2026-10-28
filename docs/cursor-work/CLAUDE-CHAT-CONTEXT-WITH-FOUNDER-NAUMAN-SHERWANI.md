@@ -1873,3 +1873,11 @@ Adaptive city system built (city.js): Home city (Settings->Personal, Detect/sear
 
 ## 28 Oct 13:20 PKT — MASTER ORDER
 Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which number'. Steps 1 done (F1a, F2a live), 2 built (S1 + adaptive city; server pending E108 + install), 3 server leftovers, 4 F2b, 5 F2c, 6 S2, 7 F2d+S3, 8 Decide/Live Pulse/S4, 9 F3 Finance/Release/Move-In, 10 F4 People, 11 F5 Mail Desk, 12 F6 Systems, 13 F8 Control, 14 F9 cutover (old 36 Lovable files + 53 Bun endpoints), 15 Founder desk.
+
+## 28 Oct 13:00 PKT — CURRENT STATE (read first after compaction)
+- Founder loved the OLD cinematic dashboard (flip clock, aurora, gradient greeting, glass sidebar). I deleted it in the UI redesign; RESTORED (founder-web/src/cinema.css + Bridge.jsx Clock/Greeting). Never flatten it again.
+- New shell kept: sidebar/tablet rail/phone floating bar, Ctrl+K, g-shortcuts, hash URLs, Trust indicator, tokens (ui.css), self-hosted Inter. Doc: docs/claude/FOUNDER-UI-DESIGN-28OCT.md.
+- New founder order 12:47: 4 killer features + 3 indicators, docs only: docs/claude/FOUNDER-KILLER-FEATURES-28OCT.md (order 5a/8a/10a/10b/11a/12a/13a in FOUNDER-MASTER-ORDER). Bridge = founder-only; Dashboard = 3 indicators.
+- Technology rule is now at the TOP of AGENTS.md and CLAUDE.md. rules-gate.py runs before every commit.
+- Server pending (only these, in order): (1) sql-run.sh E108_founder_settings CHECK_E108 (E108 on the server is the OLD version: Lahore save fails) (2) founder-install.sh. Founder's paste lost the first letter ('it' not 'git') — tell him to copy the whole line.
+- Rule 64 was broken by me (built UI before E108 green). No new feature code until E108 is green.
