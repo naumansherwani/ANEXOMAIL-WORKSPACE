@@ -455,3 +455,6 @@ Founder ne plan manzoor kiya: "repo main likh lo ke yeh hai core Founder ki tech
 - Nexatect (parent) ka alag login: anexomail.com puri website banne ke BAAD.
 - **Security (founder 28 Oct 05:07):** founder mein Rule 52 kernel builtin + `ANEXO_TAG_MODE=enforce` hamesha; military-level hardening: `docs/claude/founder/FOUNDER-SECURITY-28OCT.md`. Founder ka sab kuch ek jagah: `docs/claude/founder/INDEX.md`.
 - **Product lane (founder 28 Oct 05:13):** Docs+Sheets editor sab packages (Rule 58 supersede), HR+Accounting, 1-click Google/Microsoft migration => `docs/claude/OFFICE-HR-ACCOUNTING-MIGRATION-28OCT.md` (PLAN; founder phases F1a+ pehle).
+
+## Rule 62 (STRICT, founder 28 Oct 2026 05:25 PKT) — TECHNOLOGY PEHLE, phir blueprint, phir code
+Har blueprint/plan/phase ke SHURU mein technology likhi ho aur har section mein "yahan is technology par code" saaf ho. Pehle technology dekho (TECH-MAP + Rule 61 founder / Rule 52 kernel), phir blueprint mein daalo, phir code. Galat technology = founder bardasht nahi karega. Founder ka look: CINEMATIC (Elon-level), awam UI se ALAG design; awam-side kaam (Office/HR/Accounting/migration) founder se alag lane.

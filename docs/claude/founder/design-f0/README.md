@@ -1,0 +1,2 @@
+# F0 design sources (28 Oct 2026)
+Founder design canvas ke 3 artboard: Main.dc.html (Bridge), Action.dc.html (do-tap), Login.dc.html. Yeh DESIGN MOCK hain (sample numbers), production code NAHI. Production UI = React 19.2 + TanStack Router (static SPA) F2 mein. Live canvas: claude.ai artifact "Founder Command Bridge". Pehla version sober/dark; asli direction CINEMATIC (Three.js WebGPU + Motion/GSAP), awam UI se bilkul alag — F0 v2 mein.

@@ -1,4 +1,8 @@
 # FOUNDER PROTOCOL — Command Center ka asli dastoor (28 Oct 2026, 05:40 PKT)
+
+> ## ⚙ TECHNOLOGY PEHLE (Rule 62 — founder ka STRICT usool, 28 Oct 05:25)
+> Pehle technology dekho, phir blueprint likho; har section/phase mein saaf likha ho "yahan kis technology par code likhna hai". Galti founder bardasht nahi karega.
+> **Founder = Rust binary `anexomail-founder` (axum 0.8, tokio, WebTransport/QUIC, Supabase, passkey, SHA-256 chain + HMAC) + React 19.2/Vite 8.2/TanStack Router static SPA/Tailwind 4.2/shadcn/Three.js WebGPU/Motion+GSAP/WASM kernel (Rule 52, enforce). Bun/Node founder mein KABHI nahi.** Detail: AGENTS.md Rule 61, TECH-MAP 0d. Look: CINEMATIC (Elon-level), awam UI se bilkul ALAG design.
 Founder (28 Oct 04:45): login = DONO (password + passkey, dono pehle se hain); Bridge = paisa + "kya bigad raha hai" EK fold mein; "repo audit karo — founder ke email kaun se, dusra founder login, founder ko kaisa protocol milna chahiye". Yeh file FOUNDER-WORKSPACE-PLAN.md (F0–F9) ke upar protocol hai; takrao par yeh + plan dono dekho, privacy lock sab se upar.
 ONE-ORDER-27OCT.md qadam 9 = "FOUNDER ACCOUNT (F, 32 endpoints)": Pro ke baad. Pro GREEN declared (27 Oct 11:06) => ab yahi agla kaam.
 

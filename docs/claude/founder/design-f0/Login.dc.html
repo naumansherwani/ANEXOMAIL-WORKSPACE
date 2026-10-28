@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Founder login</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>body{margin:0;background:#0b0d0e}</style>
+</helmet>
+<div style="width:560px;height:900px;box-sizing:border-box;background:#0b0d0e;color:#dfe5e1;font-family:'IBM Plex Sans',system-ui,sans-serif;padding:48px 32px;display:flex;flex-direction:column;gap:20px;justify-content:center">
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;letter-spacing:.18em;color:#8fd5a6">ANEXOMAIL · FOUNDER</div>
+  <h1 style="margin:0;font-size:28px;font-weight:600">Sirf founder ka darwaza</h1>
+  <div style="font-size:14px;color:#8a9a90">Yeh awam wala login nahi hai. Password + passkey dono lazmi.</div>
+  <label for="pw" style="font-size:14px;color:#aab5ae">Password</label>
+  <input id="pw" type="password" value="••••••••••" style="min-height:48px;background:#111517;color:#dfe5e1;border:1px solid #3a4540;border-radius:8px;padding:0 12px;font:inherit">
+  <button style="min-height:48px;background:#8fd5a6;color:#08140d;border:0;border-radius:8px;font:inherit;font-size:16px;font-weight:600">Passkey se andar jayein</button>
+  <div style="display:flex;flex-direction:column;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#8a9a90;border-top:1px solid #223028;padding-top:14px">
+    <span>1 · password ✓</span><span>2 · passkey (fingerprint / key) …</span><span>3 · naya device ho to purane device se manzoori</span><span>4 · IP allowlist</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":560,"height":900}}'>
+class Component extends DCLogic { renderVals(){ return {}; } }
+</script>
+</body>
+</html>

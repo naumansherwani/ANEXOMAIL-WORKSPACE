@@ -1,4 +1,8 @@
 # FOUNDER — sab kuch ek jagah (index) — 28 Oct 2026
+
+> ## ⚙ TECHNOLOGY PEHLE (Rule 62 — founder ka STRICT usool, 28 Oct 05:25)
+> Pehle technology dekho, phir blueprint likho; har section/phase mein saaf likha ho "yahan kis technology par code likhna hai". Galti founder bardasht nahi karega.
+> **Founder = Rust binary `anexomail-founder` (axum 0.8, tokio, WebTransport/QUIC, Supabase, passkey, SHA-256 chain + HMAC) + React 19.2/Vite 8.2/TanStack Router static SPA/Tailwind 4.2/shadcn/Three.js WebGPU/Motion+GSAP/WASM kernel (Rule 52, enforce). Bun/Node founder mein KABHI nahi.** Detail: AGENTS.md Rule 61, TECH-MAP 0d. Look: CINEMATIC (Elon-level), awam UI se bilkul ALAG design.
 Founder ka hukm: "founder ka sab kuch ek jagah repo mein, bar bar dhundna na pade". Files apni jagah rehti hain (links/manifest na tootein); yeh index hi ek darwaza hai. Naya founder doc banao to yahan ek line jodo.
 
 | Kya | Kahan |
