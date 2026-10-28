@@ -1777,3 +1777,5 @@ NAYA NAHI BANA (agla): F1a (E104 devices, /founder/v1/exchange, awam host refusa
 RESTART (env load ke saath): web = `pm2 restart anexomail-web --update-env && pm2 save`; founder Rust = `systemctl restart anexomail-founder` (unit EnvironmentFile=/etc/anexomail/founder.env, har start par env load). Chhoti fix pending: founder-install.sh ka aakhri message abhi "/f/" likhta hai.
 
 ## 28 Oct 2026, 08:10 PKT — Founder faisla: passkey-only login ALAG nahi, mojooda /founderlogin SAATH rahe (Rule 68). Add kiya: /founderlogin par sign-in ke upar "Welcome, Founder"; login ke baad "Founder protocol Activating... -> Activated" screen phir Command Center (/). Sirf src/routes/auth.tsx (FounderProtocolSplash), tsc 0 errors, vite build OK. Pull: [WEB] pull.sh | tail -15. Passkey-only/password band = F1a ke baad.
+
+## 28 Oct 08:00 — MEGA command (all-pull.sh) likhi: har step wohi aazmayi script; sandbox mein stub-git se order + fail-stop test. Command: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/all-pull.sh) 2>&1 | tail -60

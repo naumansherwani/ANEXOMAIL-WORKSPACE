@@ -29,3 +29,6 @@ Format: `git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/an
 
 ## Har phase ke liye
 Blueprint `FOUNDER-BUILD-PLAN-28OCT.md §11z` mein har phase ke agay technology + pull ka qism likha hai; yeh file command ka masdar hai.
+
+## MEGA (founder 28 Oct 08:00): sab technologies ek command, tarteeb SQL -> Rust+SPA -> Caddy -> Web, fail par ruk jati hai
+`git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/all-pull.sh) 2>&1 | tail -60`
