@@ -140,7 +140,10 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
 async fn hook_view(st: &St) -> Value {
     let now = now_s();
     if let Some((t, v)) = st.hook.lock().unwrap().clone() { if now - t < 5 { return v; } }
-    let v = match &st.sb { Some(sb) => sb.rpc("founder_polar_pulse", json!({})).await.unwrap_or_else(|| json!({"webhook": {"connected": false, "note": "pulse unavailable — run the E105 SQL (sql-run.sh) or the database did not answer"}})), None => json!({"webhook": {"connected": false, "note": "database not configured"}}) };
+    let mut v = match &st.sb { Some(sb) => sb.rpc("founder_polar_pulse", json!({})).await.unwrap_or_else(|| json!({"webhook": {"connected": false, "note": "pulse unavailable — run the E105 SQL (sql-run.sh) or the database did not answer"}})), None => json!({"webhook": {"connected": false, "note": "database not configured"}}) };
+    if let (Some(sb), Some(o)) = (&st.sb, v.as_object_mut()) { // E106: why signatures were rejected (counts only); absent until E106 is applied
+        if let Some(r) = sb.rpc("founder_polar_rejects", json!({})).await { o.insert("rejects".into(), r); }
+    }
     *st.hook.lock().unwrap() = Some((now, v.clone()));
     v
 }
