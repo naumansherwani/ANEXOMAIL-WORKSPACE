@@ -1062,3 +1062,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 06:50: host = founderworkspace /f/ (founder.anexomail.com radd). founder-host.sh banayi. Dobara DNS ka mat poochho.
 
 ## 28 Oct 06:58 PKT — F0 GREEN (server+Caddy+Chrome login screen). Dobara install/host mat chalao. Agla phase F1a.
+
+## 28 Oct 07:30 PKT — GREEN (founder outputs + Chrome): E103 8/8, founder-install OK, web pull OK, FX-25/26/27 /auth par live dekha. Dobara mat chalao/mat dekho. Bridge asli data = founder login ke baad. Server vs repo differ=4 files (CommandPalette, dashboard.ts, routeTree.gen.ts, app.admin.addresses.tsx) alag audit.
