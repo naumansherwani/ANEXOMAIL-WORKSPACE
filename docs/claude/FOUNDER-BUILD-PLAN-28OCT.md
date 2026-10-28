@@ -165,3 +165,9 @@ Rule 62: technology pehle. Yeh F9 ke BAAD ka roadmap hai; pehle F0b-F2 pakke. Ho
 | Two-tap, audit chain, E102 (naya) | Merkle + signed checkpoints (V1) |
 ### Frontend technology (Rule 62, locked, sab isi mein)
 React 19.2 (Actions, `use`, View Transitions, `<Activity>`) · Vite · TypeScript · Three.js WebGPU (WebGL2/2D fallback) · WASM kernel (Rust, verify+audit) · WebTransport/QUIC (fetch fallback) · Web Workers + OffscreenCanvas (3D/parse thread se bahar) · Service Worker (offline shell) · WebAuthn passkey · CSS: container queries, `@layer`, `light-dark()`, `color-mix()`, popover/anchor · virtualised lists · a11y (WCAG AA, reduced-motion) · code-split per deck, FPS/LCP budget CI mein.
+
+## 9z. HOST FAISLA (founder FINAL 28 Oct 06:46) — founderworkspace.anexomail.com hi founder ka ghar
+- Naya founder usi host par: `/f/` (SPA, vite base "./") + `/founder/v1/*` (Rust :3210). `founder.anexomail.com` radd; founder.Caddyfile hata di.
+- Purana awam-app founder (/app/founder*, /api/*, awam SSR) usi host par chalta rahe jab tak naye mein har feature ka ghar live na ho (FC2/Rule 65); F9 mein `/` -> `/f/` aur purane hatenge.
+- Caddy: `server/caddy/founder-host.sh` + `patch-founder-host.py` (idempotent, sirf is host ka block; IP allowlist mile to ruk jata hai; validate fail = rollback). deploy-sites.sh ko nahi chhedta.
+- Landing (FX-7) ke waqt: founder login ke baad `/` -> `/f/`.

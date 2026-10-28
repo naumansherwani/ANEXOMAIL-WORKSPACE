@@ -25,7 +25,6 @@ Source of truth = repo. Naam badalna/move karna sirf F9 cutover mein (file route
 - founder-web/src/main.jsx
 - founder-web/src/styles.css
 - founder-web/vite.config.js
-- server/caddy/founder.Caddyfile
 - server/founder/.gitignore
 - server/founder/Cargo.toml
 - server/founder/src/actions.rs
@@ -82,7 +81,6 @@ Source of truth = repo. Naam badalna/move karna sirf F9 cutover mein (file route
 - src/lib/founder-preview.ts
 - src/lib/founder.ts
 ### B3 Server (Bun/express)
-- server/caddy/founder.Caddyfile
 - server/lib/founder-gate-core.ts
 - server/lib/founder-gate.test.ts
 - server/lib/founder-gate.ts

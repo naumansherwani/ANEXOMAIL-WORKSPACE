@@ -15,7 +15,7 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - FC8: Ek waqt ek phase (Rule 64): server green + CHECK ok + Chrome live, phir agla.
 - FC9: Har file badlo -> manifest-sync + verify 0 bad (Rule 28) -> push. Nayi SQL: super-advance + CHECK_<n> (Rule 38/44).
 - FC10: Naya founder endpoint = sirf `/founder/v1/*` (Rust). Purane `/api/founder/*` Bun routes cutover tak sirf chalte rahenge, unmein naya feature nahi.
-- FC11: Founder host sirf `founder.anexomail.com` (naya). Purana `founderworkspace.anexomail.com` cutover tak, phir band.
+- FC11 (BADLA 28 Oct 06:46, founder FINAL): founder host = `founderworkspace.anexomail.com` (favourite, Namecheap+Caddy pehle se). Naya Rust founder usi host par: `/f/` (SPA) aur `/founder/v1/*` (API). Purana awam-app founder (`/app/founder*`, `/api/*`) F9 tak usi host par chalta rahe. `founder.anexomail.com` NAHI banega.
 - FC12 (founder 28 Oct 06:36): FEATURES TARTEEB SE. Har phase mein purani Lovable files ki feature list aur blueprint DONO saamne rakh kar chalna — pehle us page ki features nikalo (01-FILES, 02-ENDPOINTS), phir naye mein banao, phir Chrome live. Koi purani feature bina list ke na chhootay.
 - FC13 (UI): CLUSTER NAHI. Aankhon ko aasan: ek screen = ek maqsad, kam cards, bari saaf likhai, kam rang, bohat khali jagah, ek waqt mein ek section. Admin mein SAB kuch ho (har purani feature) lekin darje se: pehle ek saaf landing/Bridge, baqi decks/menu ke peeche (progressive disclosure). 3D toggle hamesha.
 - FC12 (28 Oct 06:37): Kaam hamesha purane Lovable code + blueprint dono ko saath rakh kar, features list ki tarteeb se. Koi purani feature bina "naye mein ghar" ke na choote.
