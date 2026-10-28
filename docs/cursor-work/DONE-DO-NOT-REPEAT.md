@@ -1131,3 +1131,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 - 28 Oct 11:55 PKT — founder: user Settings Center founder ko kab? DONE (docs): FOUNDER-SETTINGS-CENTER-PORT-28OCT.md (tab-by-tab map, gates G1/G1w/G2/G3, endpoints, E108 plan, order S1 with F2a, S2 after F2c). DONE (code): initials MN->NS (prefix skip), avatar cursor halo (very faint), Playwright: NS, 38x38, halo opacity 1 on hover. Settings Center khud abhi BANA NAHI (F2a ke saath).
 
 - 28 Oct 11:58 PKT — founder: greeting sirf 'Nauman' (naam Nauman hai). DONE: callName() ('Muhammad' jaisa prefix skip) -> 'Good morning, Nauman'; initials NS. Playwright proof.
+
+- 28 Oct 12:00 PKT — founder: 'pull commands kahan hain, repo update'. DONE: PULL-COMMANDS.md mein 'ABHI PENDING' block (5 commands, tarteeb, current state). Har turn is block ko update karna (FC28).
