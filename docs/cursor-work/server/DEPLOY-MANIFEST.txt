@@ -153,7 +153,7 @@ server/lib/integrity-gate.ts 75eb8055b4ecea7a
 server/lib/integrity-gate.test.ts 8f81747a891799a5
 server/index.ts 568f1199cdd0e155
 docs/cursor-work/HASHING.md 2a0798c40fb7a3d7
-docs/cursor-work/DONE-DO-NOT-REPEAT.md a395bc2d62471808
+docs/cursor-work/DONE-DO-NOT-REPEAT.md e2701ea6ba905d35
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.py c660dca5d11b2ee2
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.service b29bc51a08f2447c
 docs/cursor-work/server/integrity-purge/anexomail-integrity-notify.timer 9afdcdbbb8f78ff9
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 0ab18503d15da20b
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 74515c8e7f0334a1
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -911,7 +911,7 @@ docs/cursor-work/sql/CHECK_E102.sql 08c02fd1d918d4dc
 founder-web/src/Decks.jsx f8f12d54b9cfb0fe
 server/founder/src/actions.rs dc16ac6e3e3e5c2a
 docs/claude/founder/FOUNDER-CODE-INVENTORY-28OCT.md 8c872136c74ae53c
-docs/claude/founder/CODES/00-README-RULES.md 5a40362375bf3e5a
+docs/claude/founder/CODES/00-README-RULES.md 65f6f15d58ec7626
 docs/claude/founder/CODES/01-FILES.md 39cf6f1dcb19550e
 docs/claude/founder/CODES/02-ENDPOINTS.md b374bb4a2a8ffe02
 docs/claude/founder/CODES/03-GATES.md 237c5dca2d98f399

@@ -24,3 +24,9 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - FC15 (28 Oct 06:49, LOCKED): crypto/protocol design = FOUNDER-CRYPTO-FINAL-28OCT.md. Ed25519 (server->browser), HMAC-SHA256+HKDF (browser->server), SHA-256 (chain/Merkle/SRI), WASM kernel enforce. Is design se hat kar code nahi; badalna sirf founder ke likhit hukm se.
 - FC16: founderworkspace host end-state mein sirf Rust (awam se zero connection). Naya code kabhi awam service/token/table-write se nahi judta.
 - FC17 (28 Oct 07:14): har jawab ke aakhir mein technology ke hisaab se pull command (tail ke saath) — docs/claude/founder/PULL-COMMANDS.md se. Server par `git pull` kabhi nahi.
+
+## FC18 (founder 28 Oct 2026 08:40) — COMMON FEATURES: user ka likha latest-technology code founder par LAGAO, lekin founder ke protocol ke andar; design alag
+- Jo features user ke paas bhi hain aur founder ke paas bhi (mail, calendar, people, work, etc.) unka code latest technology par PEHLE se likha hai. Founder ke liye dobara naya nahi likhna: usay founder binary (`server/founder/`) + founder SPA (`founder-web/`) ke andar, FOUNDER PROTOCOL ke saath (founder gate, two-tap + reason + audit, metadata/rules) apply/port karo.
+- MIX NAHI: founder ka design aur code user ke code se alag folder mein rahe. User/awam code (`src/`, `server/rust/`, `server/routes/`) mein founder ke liye kuch nahi badla jata (Rule 35 no-touch). Reuse ka tareeqa: pure/shared logic ko founder crate mein `#[path]` include (jaise `jwt_core.rs`) ya founder ke apne module mein port; awam file ko edit nahi.
+- Founder ka look = maujooda app jaisa clean (Rule 68, FC14); 3D/cartoon nahi (28 Oct 08:34 radd).
+- Har common feature ka founder-ghar blueprint 13z-c mein likha hai; banane se pehle us ka user-side code kahan hai (file/proc) pehle likho, phir port.
