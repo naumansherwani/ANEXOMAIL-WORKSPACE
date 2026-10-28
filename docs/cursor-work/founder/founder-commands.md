@@ -1,5 +1,9 @@
 # Founder ki chat commands — jaisi di gayi waisi (verbatim) + unki halat
 
+## ▶ 28 Oct 13:16 PKT — Common features (VERBATIM)
+"Duplicate scan ka nateeja ... Mail se chat room: phase 29; Promise/Decision: phase 23 aur 24; File evidence + stale-file: phase 28 aur 31; Chat se email jawab: phase 30; Delete for Everyone 48h: E7; Provenance hash chain: phase 27. yeh common feature hain jo anexochat user aur mujhe founder ko mile gay yeh likh lo"
+- Halat: **DONE (docs)**: FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md §6 (C1-C6 common table).
+
 ## ▶ 28 Oct 13:10 PKT — founder: Email <-> Chat Bridge (5 features + 5 workflow + 5 DB logic) blueprint mein tarteeb se add; "yeh bhi hoga"
 Verbatim poora text: docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md
 - Kaam (docs only, Rule 63/64): dedupe scan -> docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md; MASTER-ORDER step 12b; blueprint §16z. Naam: "Mail<->Chat Bridge" (founder ke "Bridge" page se alag, confusion nahi).

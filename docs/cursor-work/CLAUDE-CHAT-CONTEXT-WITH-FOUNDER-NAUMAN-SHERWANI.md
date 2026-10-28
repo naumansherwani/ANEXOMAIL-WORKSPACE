@@ -1895,3 +1895,6 @@ Read docs/claude/FOUNDER-MASTER-ORDER-28OCT.md FIRST for 'what is next / which n
 - Founder 13:01-13:11: clock 12-hour + exact old clock look (body radial gradient + Inter 200/300 fixed); 'Command center' label moved to breadcrumb; nav order Dashboard then Bridge; Bridge (B1-B9) vs Dashboard (D1-D9) lists confirmed -> blueprint §16z.
 - NEW order 13:10 Mail<->Chat Bridge: most already exists user-side (anexochat/sql phases 23-31, E7, E99). Plan: docs/claude/FOUNDER-MAIL-CHAT-BRIDGE-28OCT.md, order 12b-1..6. A harness hook pre-wrote the verbatim file docs/cursor-work/founder/orders/2026-10-28-1310-mail-chat-bridge-VERBATIM.md and the founder-commands entry (Rule 24) — keep it, commit it.
 - Live at 13:01: cinematic + flip clock were on the server (founder had run install) but 24-hour; fixed in b7be31d (not on server yet). Still pending for founder: E108 SQL + CHECK, then founder-install.sh.
+
+## 28 Oct 13:20 PKT
+- Founder 13:16: Mail<->Chat Bridge ke 6 features (phase 29, 23+24, 28+31, 30, E7, 27) COMMON hain: user aur founder dono ko milenge. Doc §6. Server par E108 re-run + founder-install abhi pending.

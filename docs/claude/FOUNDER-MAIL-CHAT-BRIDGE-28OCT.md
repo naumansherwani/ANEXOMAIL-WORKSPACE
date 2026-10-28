@@ -34,3 +34,15 @@ Split view: left = email thread, right = live chat stream, bottom anchor = Bridg
 
 ## 5. Order (FOUNDER-MASTER-ORDER)
 After 11 (Mail Desk) and 12 (Systems + AI + ANEXOChat): **12b-1** Thread-to-Room + `bridge_threads/events` + hash chain · **12b-2** deterministic extraction -> work objects (+ D3 constraint) · **12b-3** file evidence chain + stale badge (`file_master`) · **12b-4** reply from chat as DKIM-signed email (explicit Send) · **12b-5** honest edit / revocation sync · **12b-6** Global Outcome Timeline + split view. Feeds Dashboard D2 (Work Chain) and Bridge B1 (Needs you).
+
+## 6. COMMON FEATURES — user ko bhi, founder ko bhi (founder order 28 Oct 13:16 PKT)
+Ye 6 features ANEXOChat ke USERS ko pehle se milte hain aur FOUNDER ko bhi milenge (latest-tech port, founder ke apne tables/endpoints, user files untouched — FC18/FC20/FC22). Dobara design nahi hota; ek hi behaviour dono taraf.
+| # | Common feature | User side (hai) | Founder side (aayega) |
+|---|---|---|---|
+| C1 | Mail se chat room | ANEXOChat phase 29 | step 12b-1 |
+| C2 | Promise aur Decision nikalna | phase 23 + 24 | step 12b-2 |
+| C3 | File evidence + stale-file warning | phase 28 + 31 | step 12b-3 |
+| C4 | Chat se email jawab (explicit Send) | phase 30 | step 12b-4 |
+| C5 | Delete for Everyone 48 ghante | E7 | step 12b-5 |
+| C6 | Provenance hash chain | phase 27 | step 12b-1 (chain) |
+Rule: user side mein koi behaviour badlega to founder wali copy ke saath compare hoga (parity), kyunke dono ek hi promise hain.
