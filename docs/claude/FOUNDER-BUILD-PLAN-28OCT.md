@@ -171,3 +171,7 @@ React 19.2 (Actions, `use`, View Transitions, `<Activity>`) · Vite · TypeScrip
 - Purana awam-app founder (/app/founder*, /api/*, awam SSR) usi host par chalta rahe jab tak naye mein har feature ka ghar live na ho (FC2/Rule 65); F9 mein `/` -> `/f/` aur purane hatenge.
 - Caddy: `server/caddy/founder-host.sh` + `patch-founder-host.py` (idempotent, sirf is host ka block; IP allowlist mile to ruk jata hai; validate fail = rollback). deploy-sites.sh ko nahi chhedta.
 - Landing (FX-7) ke waqt: founder login ke baad `/` -> `/f/`.
+
+## 10z. CRYPTO FINAL (founder 28 Oct 06:49) — docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md
+Phase tarteeb LOCKED: F0 live (/f/) -> F1a login/passkey/device/allowlist -> F2a Ed25519+HMAC+HKDF -> F2b WASM kernel enforce+SRI -> F2c audit v1 align+Merkle -> F3...
+Badlav purane plan se: server->browser envelope HMAC se **Ed25519** (HMAC key browser mein rakhna = nakli data ka darwaza); HMAC ab browser->server request MAC + audit_sig.

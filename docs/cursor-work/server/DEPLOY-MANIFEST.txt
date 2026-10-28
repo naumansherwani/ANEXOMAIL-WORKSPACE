@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 370da211ed652271
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md fd6c63e9fd594901
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -875,8 +875,8 @@ src/lib/i18n.ts da79a8e10a34830b
 src/components/app/files/AttachmentChip.tsx 68e1fbdeb8e34251
 docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md f0db8d47c2645a9b
 docs/claude/FOUNDER-PROTOCOL-28OCT.md 46978a322f4babc2
-docs/claude/FOUNDER-BUILD-PLAN-28OCT.md a672749722ec8706
-docs/claude/founder/INDEX.md 785313f78072d6f7
+docs/claude/FOUNDER-BUILD-PLAN-28OCT.md b8c77b4a93263cf3
+docs/claude/founder/INDEX.md c8bae8764c1f3be6
 docs/claude/founder/FOUNDER-SECURITY-28OCT.md 55813133c13fe896
 server/founder/.gitignore b53ee26e6ff1da21
 server/founder/Cargo.lock f7a46506437cef2a
@@ -913,7 +913,7 @@ founder-web/dist/assets/index-CbmVftXD.css 43ac876e5c90c2e9
 founder-web/src/Decks.jsx d4d2441ae33ff4be
 server/founder/src/actions.rs dc16ac6e3e3e5c2a
 docs/claude/founder/FOUNDER-CODE-INVENTORY-28OCT.md 8c872136c74ae53c
-docs/claude/founder/CODES/00-README-RULES.md 8571bc5dac4f4674
+docs/claude/founder/CODES/00-README-RULES.md 270576206543a98b
 docs/claude/founder/CODES/01-FILES.md 39cf6f1dcb19550e
 docs/claude/founder/CODES/02-ENDPOINTS.md b374bb4a2a8ffe02
 docs/claude/founder/CODES/03-GATES.md 237c5dca2d98f399
@@ -924,3 +924,4 @@ founder-web/dist/assets/index-CifDdDU8.js 05dec52e943b6db8
 founder-web/dist/assets/three.webgpu-CRCAkSoH.js 3796d3e337ef01a9
 server/caddy/founder-host.sh 27d53d70a6c31bc7
 server/caddy/patch-founder-host.py e6e7450d6c30f0d9
+docs/claude/founder/FOUNDER-CRYPTO-FINAL-28OCT.md 095875fbd142c9fe
