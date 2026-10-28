@@ -9,6 +9,14 @@ Founder hukm (28 Oct 04:53): plan pehle, jaldi nahi, phases smooth, Bun RETIRED 
 Supabase (data) -> `anexomail-founder` Rust (axum+tokio; padhta hai; har jawab par HMAC) -> ek WebTransport/QUIC connection (fallback sadi fetch) -> WASM kernel (Rule 52 builtin; HMAC + audit-chain browser mein verify; `ANEXO_TAG_MODE=enforce`; fail = screen par nahi) -> React 19.2 + TanStack Router (sirf verified data) -> Three.js (sirf draw; 3D kabhi data ka source nahi). 3D fallback: WebGPU -> WebGL2 -> 2D. Pehle 5 second mein numbers saaf parhe jayen; cinematic numbers ke PEECHE.
 CEO faisle (founder ne CEO ko diye): (1) Bridge mein SIRF ASLI data — koi dummy/mock nahi; jo data abhi nahi (paisa) woh "abhi connect nahi" likha, F3 mein Polar/Billing se; (2) rang space-black + ek green accent; (3) F1a (alag founder login host) PEHLE, cinematic Bridge uske peeche.
 
+## 3z. F3 MONEY — baqi kaam (CEO ki list, 28 Oct 05:50)
+Abhi (F1b) Bridge ka paisa = `revenue_accounts` (active MRR, founder ke haath ke darj kiye accounts) — yeh Polar ki billing NAHI. F3 mein poora hona hai (technology: Rust `anexomail-founder`, Supabase, Polar webhook data jo `anexomail-rust`/polar-rust-payment :3400 mein hai; UI React+Three, kernel verify):
+1. Polar se ASLI: subscriptions, MRR/ARR, naye/cancel/refund/chargeback — Polar ka sach read-only (webhook/WAL ko haath nahi, Rule B6a).
+2. Plan-wise mrr (Basic £40 / Pro £105 / Business £360 / Business Pro £2,850) aur sab se bara kharch/leak.
+3. Target vs asli (revenue_targets) + forecast; pehle 5 second mein ek number + ek rang.
+4. Failed payments / dunning list (kiska card fail), har amal do-tap + reason + audit.
+5. `revenue_accounts` (manual CRM) aur Polar ka farq dikhana (mismatch alert) — dono ek jagah, jhoota 0 kabhi nahi.
+
 ## 0. Chrome ka sach (28 Oct 05:00, founder ka Chrome "LENOVO")
 - `founderworkspace.anexomail.com/app/founder` kholne par **awam wala hi Sign-in page** aata hai, upar "FOUNDER PREVIEW" badge. Yaani founder host abhi **wohi ek app** hai (awam ka UI), alag founder UI nahi.
 - Us page par **"Create your account for workspace"** (awam signup) founder host par bhi dikhta hai => founder host par signup band hona chahiye.
