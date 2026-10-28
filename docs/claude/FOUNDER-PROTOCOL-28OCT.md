@@ -51,3 +51,6 @@ Level 1 dekhna (metadata), Level 2 actions (suspend/restore, rate-limit, force s
 
 ## 8. Nexatect (parent company) login — LATER (founder 28 Oct 04:59)
 `naumansherwani.founder@nexatect.com` ke liye ALAG login/surface banega, jis mein parent company (Nexatect) ka sab kuch hoga. **anexomail.com puri website banne ke BAAD**, abhi nahi. Tab tak ANEXOMAIL founder protocol sirf anexomail.com identity par; nexatect ke addresses ka kaam phase F5+ ke baad (FOUNDER-WORKSPACE-PLAN §3).
+
+## 2b. PASSKEY — EK BAAR, phir popup kabhi nahi (founder 28 Oct 05:55, STRICT)
+Founder ko bar bar passkey popup irritate karta hai (awam user ko bhi — woh awam-side ka alag bug, backlog). Faisla: passkey sirf (1) pehle login par, (2) NAYE/na-approved device par. Device approve hone ke baad (`founder_devices`, E102) us device par session ke dauran aur agle logins mein dobara popup NAHI. High-danger action par popup nahi — do-tap + wajah + audit + approved device (E102 `needs_passkey` ka matlab ab "approved device session"). Passkey ka tareeqa wahi (passkey_core/glue: WebAuthn, google jaisa) — founder par saaf suthra apply, awam wale flow ki nakal nahi. Naya device = purane approved device se manzoori. Device revoke karne par session foran khatam.

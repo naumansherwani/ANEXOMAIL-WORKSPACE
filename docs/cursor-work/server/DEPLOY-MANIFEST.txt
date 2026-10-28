@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md c2255566be5ce6e2
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 20aecf48447c71db
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -874,7 +874,7 @@ src/components/ui/sonner.tsx 6acb1d49aee92de0
 src/lib/i18n.ts da79a8e10a34830b
 src/components/app/files/AttachmentChip.tsx 68e1fbdeb8e34251
 docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md f0db8d47c2645a9b
-docs/claude/FOUNDER-PROTOCOL-28OCT.md 5918ecf9d4b8db8e
+docs/claude/FOUNDER-PROTOCOL-28OCT.md 46978a322f4babc2
 docs/claude/FOUNDER-BUILD-PLAN-28OCT.md ee577428a3fbfd96
 docs/claude/founder/INDEX.md 4389ebb362f3d4c9
 docs/claude/founder/FOUNDER-SECURITY-28OCT.md 55813133c13fe896
@@ -911,3 +911,4 @@ docs/cursor-work/sql/E102_founder_audit_actions_devices.sql 8a4966d094a31b25
 founder-web/dist/assets/index-10bxU_mv.css db1148739dd1bf95
 founder-web/dist/assets/index-DddJzt16.js 0db702b616acab79
 founder-web/dist/assets/three.webgpu-BG7Yy0Kw.js 6e84eee293a9f3f9
+server/caddy/founder.Caddyfile 338a44ea51d1a989

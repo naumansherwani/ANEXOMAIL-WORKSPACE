@@ -1,0 +1,28 @@
+# ============================================================================
+# FOUNDER HOST — founder.anexomail.com  (founder 28 Oct 2026; Rule 61/63)
+# SIRF Rust `anexomail-founder` (127.0.0.1:3210): static SPA + /founder/v1/*. Bun/Node/awam app ka isse koi taalluq nahi.
+# Awam hosts (anexomail.com, crm, ai, ...) par founder band; yahan awam app band — dono ALAG duniya.
+# IP allowlist: neeche `founder_ips` ka comment kholo aur apni IP likho (F1a: Caddy + nftables).
+# ============================================================================
+founder.anexomail.com {
+	encode zstd gzip
+
+	request_body {
+		max_size 64KB
+	}
+
+	header {
+		Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		Referrer-Policy "no-referrer"
+		X-Frame-Options "DENY"
+		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+		Cache-Control "no-store"
+		-Server
+	}
+
+	# @blocked not remote_ip <APNI.IP.YAHAN>
+	# respond @blocked "Not found" 404
+
+	reverse_proxy 127.0.0.1:3210
+}
