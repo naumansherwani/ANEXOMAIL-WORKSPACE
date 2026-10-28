@@ -228,3 +228,6 @@ Login ka look/flow NAHI badalta (Rule 68) — sirf in teen awam cheezon ka found
 - Token: SPA sirf maujooda login ka token PADHTI hai (localStorage `anexo.session.token`, kabhi likhti/copy nahi), Rust usay verify karta hai (ES256 + founder_accounts, 403 = founder nahi). Playwright: gate / bridge (stub) / 401->gate, 0 JS errors.
 - Rust `/founder/v1/login` endpoint ab UI se bilkul nahi judta (dead) — F1a mein hata diya jaye (/founder/v1/exchange aayega).
 - Chhoti kami (F1a): login ke baad /auth seedha /app bhejta hai (`next` support nahi) — founder /f/ bookmark se kholta hai; F1a mein `?next=/f/` support.
+
+### 12z-d. FX-25/26/27 FIXED in repo (28 Oct 07:20) — [WEB] technology (awam React app, auth.tsx + FounderBar.tsx)
+Founder host (isFounderHost) par /auth se HIDE: "New here? Create your account…" (FX-25), "Save password" checkbox + "Forgot your password?" (FX-26), "FOUNDER PREVIEW" pill (FX-27). Login ka baqi design/flow bilkul waisa (passkey, email link, recovery code). Awam host (anexomail.com) par kuch nahi badla. tsc 0 error. Pull: [WEB] pull.sh. Server-side signup refuse F1a mein (abhi sirf UI hide, founder ke hukm ke mutabiq "sirf yeh").

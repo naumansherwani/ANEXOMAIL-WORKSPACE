@@ -89,7 +89,7 @@ src/routeTree.gen.ts 1af6127e16cf1416
 src/lib/team.ts 13a8057bc6c41f2c
 src/lib/team-report.ts c2e82622aec75438
 src/routes/join.tsx 5a1b64a71dcccd30
-src/routes/auth.tsx ecf6bbf12d6da7f5
+src/routes/auth.tsx bca5177f3754466f
 src/routes/app.integrations.tsx 6046afeafaa38dc0
 src/lib/workspace-i18n.ts 616c123f5cf62ede
 src/routes/app.settings.ai.tsx 67d3e1596be41f2a
@@ -246,7 +246,7 @@ src/routes/app.tsx 5e7e4a178e9f94ab
 docs/cursor-work/server/login-probe.sh a320f864fb1fa0cd
 server/rust/main.rs 0c1a6a8b9e10e904
 docs/cursor-work/server/rust-auth-harden.sh 85ba95f7e15967be
-docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md 3018a5bb4391c972
+docs/cursor-work/CLAUDE-CHAT-CONTEXT-WITH-FOUNDER-NAUMAN-SHERWANI.md d7bb39cbdb6a4ec8
 docs/cursor-work/server/jwt-life-probe.sh 5d7822d754849e83
 src/lib/time-grid.ts 67225ce68bd76f30
 src/lib/time-grid.test.ts 27f58c1aac704716
@@ -875,7 +875,7 @@ src/lib/i18n.ts da79a8e10a34830b
 src/components/app/files/AttachmentChip.tsx 68e1fbdeb8e34251
 docs/claude/FOUNDER-CODE-INVENTORY-28OCT.md f0db8d47c2645a9b
 docs/claude/FOUNDER-PROTOCOL-28OCT.md 46978a322f4babc2
-docs/claude/FOUNDER-BUILD-PLAN-28OCT.md 2c6c0f4eba3a5ec8
+docs/claude/FOUNDER-BUILD-PLAN-28OCT.md b5d314dd8516f3bd
 docs/claude/founder/INDEX.md c8bae8764c1f3be6
 docs/claude/founder/FOUNDER-SECURITY-28OCT.md 55813133c13fe896
 server/founder/.gitignore b53ee26e6ff1da21
@@ -927,3 +927,4 @@ docs/cursor-work/sql/E103_founder_actions_english.sql 2d9f012a8de5355a
 founder-web/dist/assets/index-CObJK_uO.js d6cc48bb8af823c4
 founder-web/dist/assets/index-DPcxnqKV.css 25bd740a25e74d0f
 founder-web/dist/assets/three.webgpu-JrFLGIT3.js 3e7b7d2873e7ebda
+src/components/site/FounderBar.tsx 65181586f3d605cb

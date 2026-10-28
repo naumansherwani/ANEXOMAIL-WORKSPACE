@@ -1752,3 +1752,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 07:08 — Chrome live existing login (/auth founderworkspace): achha login; founder host par awam signup link, Save password, Forgot password, FOUNDER PREVIEW pill -> FX-25/26/27 (plan §12z-b). Login UI nahi badla. Tab wapas /app.
 
 ## 28 Oct 07:12 — Founder: existing login hi, naya login nahi. /f/ se apna login form hata diya (gate -> /auth, maujooda token read-only, Rust verify). Build: dist naya. Pull same: [SQL] sql-run.sh + E103 CHECK_E103, [BUILD] founder-install.sh. Test: gate/bridge/401 Playwright ok. Chrome par asli token se Bridge founder khud dekhe (main password nahi dalta).
+
+## 28 Oct 07:20 — FX-25/26/27 fix (auth.tsx founderHost hide signup link + Save password + Forgot password; FounderBar pill /auth par band). Pull [WEB] pull.sh. Founder ke teen pending outputs (E103 SQL, CHECK, founder-install) abhi baqi.

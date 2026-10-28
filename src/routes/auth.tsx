@@ -23,6 +23,7 @@ import { deviceKeyProof } from "@/lib/device-key";
 import { collectFingerprint } from "@/lib/device-fingerprint";
 import { SignupReview } from "@/components/auth/SignupReview";
 import { useLocale } from "@/lib/i18n";
+import { isFounderHost } from "@/lib/host";
 import { notify } from "@/lib/notify";
 import { enrolPasskey as createPasskey, passkeyLoginOptions, passkeyLoginVerify, recoveryCodeLogin } from "@/lib/passkey";
 import { RecoveryCodesPanel } from "@/components/app/security/RecoveryCodesPanel";
@@ -117,6 +118,9 @@ function AuthPage() {
   /** Login form se aaya = finish() ka apna redirect chalega; aur logged-in banda /auth khole to seedha /app. */
   const loginStarted = useRef(false);
 
+  // Founder host (founderworkspace.*): awam-only extras (signup link, Save password, Forgot password) hidden — FX-25/26. Login design unchanged.
+  const [founderHost, setFounderHost] = useState(false);
+  useEffect(() => setFounderHost(isFounderHost()), []);
   const [mode, setMode] = useState<Mode>(() => {
     if (search.mode === "signup") return "kind";
     if (search.mode === "reset" || search.mode === "forgot") return search.mode;
@@ -757,7 +761,7 @@ function AuthPage() {
                               placeholder={mode === "signup" || mode === "reset" ? "6–15 characters" : undefined}
                               enforceLength={mode === "signup" || mode === "reset"}
                             />
-                            {mode === "login" && (
+                            {mode === "login" && !founderHost && (
                               <label
                                 htmlFor="save-password"
                                 className="flex cursor-pointer items-center gap-2.5 rounded-lg border border-border bg-secondary/40 px-3 py-2.5"
@@ -861,7 +865,7 @@ function AuthPage() {
 
               {!challengeId && !linkSent && !pendingReview && (
                 <>
-                  {mode === "login" && (
+                  {mode === "login" && !founderHost && (
                     <Button
                       type="button"
                       variant="ghost"
@@ -928,6 +932,7 @@ function AuthPage() {
                     </p>
                   ) : null}
 
+                  {!(founderHost && mode === "login") && (
                   <p className="ax-caption mt-ax-4 text-center">
                     {mode === "signup"
                       ? "Already have a workspace?"
@@ -982,6 +987,7 @@ function AuthPage() {
                       </button>
                     )}
                   </p>
+                  )}
                 </>
               )}
                 </>

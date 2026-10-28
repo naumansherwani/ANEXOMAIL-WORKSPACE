@@ -99,9 +99,10 @@ export function FounderBar() {
     document.body.style.paddingTop = on && !collapsed ? "36px" : "";
   }, [on, collapsed]);
 
-  // OFF state — founder host par ek discreet toggle, awam ko bilkul kuch nahi.
+  // OFF state — founder host par ek discreet toggle, awam ko bilkul kuch nahi. /auth par pill nahi (FX-27).
   if (!on) {
     if (!founderHost) return null;
+    if (typeof window !== "undefined" && window.location.pathname.startsWith("/auth")) return null;
     return (
       <button
         type="button"
