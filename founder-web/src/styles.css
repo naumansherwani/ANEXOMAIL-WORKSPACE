@@ -24,3 +24,4 @@ button{min-height:46px;background:var(--g);color:#06130c;border:0;border-radius:
 .link{background:none;color:var(--dim);min-height:auto;text-decoration:underline;font:13px inherit;padding:0 4px}
 .err{color:var(--r);font-size:14px}.banner{background:#2a1410;border:1px solid #5a3226;border-radius:8px;padding:10px 14px}
 body:has(.login){display:flex}
+.tgl{cursor:pointer;min-height:auto}.tgl:hover{background:#12201a}

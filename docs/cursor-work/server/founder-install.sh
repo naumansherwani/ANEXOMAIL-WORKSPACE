@@ -28,13 +28,23 @@ for f in $(git -C "$REPO" ls-tree -r --name-only origin/main founder-web/dist); 
 [ -f "$NEWWEB/index.html" ] || { echo "FAIL: founder-web/dist/index.html repo mein nahi"; exit 3; }
 rm -rf "$ROOT/web.old"; [ -d "$ROOT/web" ] && mv "$ROOT/web" "$ROOT/web.old"; mv "$NEWWEB" "$ROOT/web"
 echo "== 3/4 user + env"
+# Supabase kunjiyan: pehle jo export hon, phir .env files (Rust/Brain/sync), phir chalte anexomail-rust ka pm2 env. Kahin nahi mile => ruk jao (kuch half nahi).
+envv() { for n in "$@"; do
+  [ -n "${!n:-}" ] && { printf '%s' "${!n}"; return; }
+  for f in "$RUST_ENV" /opt/anexomail/.env /etc/anexomail/sync.env /etc/anexomail/*.env; do [ -r "$f" ] && { v="$(grep -m1 -E "^(export )?$n=" "$f" | cut -d= -f2- | sed -e "s/^[\"']//" -e "s/[\"']\$//")"; [ -n "$v" ] && { printf '%s' "$v"; return; }; }; done
+  if command -v pm2 >/dev/null 2>&1; then v="$(pm2 env "$(pm2 id anexomail-rust 2>/dev/null | tr -dc '0-9' | head -c 4)" 2>/dev/null | grep -m1 -E "^$n:" | sed -e "s/^$n: *//")"; [ -n "$v" ] && { printf '%s' "$v"; return; }; fi
+done; }
+if [ ! -f "$ENVF" ]; then
+  SBU="$(envv SUPABASE4_URL SUPABASE_URL)"; SBK="$(envv SUPABASE4_SERVICE_ROLE_KEY SUPABASE_SERVICE_ROLE_KEY)"
+  if [ -z "$SBU" ] || [ -z "$SBK" ]; then
+    echo "FAIL: Supabase URL/service key kahin nahi mili (.env files + pm2 env dekhe). Haath se do aur dobara chalao:"
+    echo "   SUPABASE4_URL=https://<ref>.supabase.co SUPABASE4_SERVICE_ROLE_KEY=<service role> bash <(git -C $REPO show origin/main:docs/cursor-work/server/founder-install.sh)"
+    exit 3
+  fi
+  umask 077; { echo "SUPABASE4_URL=$SBU"; echo "SUPABASE4_SERVICE_ROLE_KEY=$SBK"; echo "FOUNDER_HMAC_KEY=$(head -c 48 /dev/urandom | base64 | tr -d '\n=+/' | head -c 48)"; echo "FOUNDER_BIND=127.0.0.1:3210"; echo "FOUNDER_STATIC=$ROOT/web"; } >"$ENVF"
+fi
 id anexomail-founder >/dev/null 2>&1 || useradd --system --no-create-home --shell /usr/sbin/nologin anexomail-founder
 install -m 755 "$NEW" "$ROOT/anexomail-founder"
-if [ ! -f "$ENVF" ]; then
-  U="$(grep -E '^SUPABASE4_URL=' "$RUST_ENV" | head -1)"; K="$(grep -E '^SUPABASE4_SERVICE_ROLE_KEY=' "$RUST_ENV" | head -1)"
-  [ -n "$U" ] && [ -n "$K" ] || { echo "FAIL: $RUST_ENV mein SUPABASE4_URL/SERVICE_ROLE_KEY nahi"; exit 3; }
-  umask 077; { echo "$U"; echo "$K"; echo "FOUNDER_HMAC_KEY=$(head -c 48 /dev/urandom | base64 | tr -d '\n=+/' | head -c 48)"; echo "FOUNDER_BIND=127.0.0.1:3210"; echo "FOUNDER_STATIC=$ROOT/web"; } >"$ENVF"
-fi
 chown root:anexomail-founder "$ENVF"; chmod 640 "$ENVF"; chown -R root:anexomail-founder "$ROOT/web"; chmod -R g+rX "$ROOT/web"
 cat >/etc/systemd/system/$SVC.service <<UNIT
 [Unit]

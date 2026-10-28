@@ -17,6 +17,26 @@ Abhi (F1b) Bridge ka paisa = `revenue_accounts` (active MRR, founder ke haath ke
 4. Failed payments / dunning list (kiska card fail), har amal do-tap + reason + audit.
 5. `revenue_accounts` (manual CRM) aur Polar ka farq dikhana (mismatch alert) — dono ek jagah, jhoota 0 kabhi nahi.
 
+## 4z. UI/UX ADVANCE + ONE-CLICK SYSTEM + SQL — phase-wise blueprint (founder hukm 28 Oct 05:55; Rule 62 TECHNOLOGY PEHLE)
+**Technology (yahan code kahan):** UI = `founder-web/` (React 19.2, Vite 8.2, three 0.185 WebGPU->WebGL2->2D, Motion/GSAP, WASM kernel Rule 52); backend = `server/founder/` (Rust axum+tokio, WebTransport); data = Supabase SQL `docs/cursor-work/sql/E102+` (Postgres 16, RLS default-deny, service_role sirf founder binary). Bun/Node founder mein nahi.
+**Pehle se maujood purani (Lovable) files:** `docs/claude/founder/LEGACY-FOUNDER-FILES.md` — alag gine gayi, naye kaam mein nahi, F9 mein hatengi.
+**UI/UX usool:** (1) 3D toggle HAMESHA (ON/OFF, yaad rehta hai; OFF = 2D, kuch nahi chhupta) — BANA; (2) numbers pehle 5 second, cinematic unke peeche; (3) har screen par ek hi sawal: "kya ab mujhe kuch karna hai?"; (4) keyboard-first (Cmd-K command bar), har action ek click + do-tap + wajah; (5) har halat saaf: loading / khali / 'abhi connect nahi' / kharab — jhoota 0 kabhi nahi; (6) reduced-motion + 2D mein poora kaam; (7) mobile par bhi Bridge.
+**ONE-CLICK SYSTEM (kis ke liye):** founder ko server par terminal na chalana pade. Catalogue `founder_actions` (E102, seed 12 action, sab DISABLED): Release (web pull, SQL AUTO, Rust install, rollback) · Systems (health dobara, Rust restart) · Mail Desk (failed mail dobara queue) · People (suspend/unsuspend) · Control (maintenance ON/OFF, signup freeze). Har action: darja (low/medium/high), high = passkey + do-tap lazmi (DB constraint), wajah lazmi, `founder_audit` mein entry, rollback jahan mumkin. Executor F8 mein, har action alag saboot ke baad enable.
+| Phase | Kaam | Technology | Exit saboot |
+|---|---|---|---|
+| F0 | design canvas (sober, v1) + cinematic v2 | claude canvas -> founder-web | founder dekh kar manzoor |
+| F1a | founder alag login host (Caddy) + passkey step-up + awam login se founder band | Rust + Caddy + passkey_core | founder uid awam login=403; awam uid founder host=403; passkey bina andar nahi |
+| F1b | founder-install.sh (Rust+SPA) | Rust, systemd | install ke curl saboot (SPA 200, healthz 200, me/bridge 401) |
+| E102 | audit chain + actions + devices SQL | Postgres | selftest OK + tamper pakda |
+| F2 | Bridge live + 3D + kernel verify (F2b) | React+three+WASM | Chrome live, sig verify |
+| F3 | Money (Polar) + Release | Rust + Polar read-only | asli MRR, mismatch alert |
+| F4 | People | Rust + SQL | metadata-only |
+| F5 | Mail Desk (5 company address + founder inbox) | Rust | customer content kabhi nahi |
+| F6 | Systems | Rust | health sab |
+| F7 | 3D deepen (zones, drill-down) | three WebGPU | 60fps / 2D fallback |
+| F8 | Control + one-click executor | Rust | har action audit + rollback |
+| F9 | cutover: legacy files + Bun founder routes hatao | — | Rust saboot ke baad hi |
+
 ## 0. Chrome ka sach (28 Oct 05:00, founder ka Chrome "LENOVO")
 - `founderworkspace.anexomail.com/app/founder` kholne par **awam wala hi Sign-in page** aata hai, upar "FOUNDER PREVIEW" badge. Yaani founder host abhi **wohi ek app** hai (awam ka UI), alag founder UI nahi.
 - Us page par **"Create your account for workspace"** (awam signup) founder host par bhi dikhta hai => founder host par signup band hona chahiye.

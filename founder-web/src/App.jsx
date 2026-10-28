@@ -27,6 +27,8 @@ function Card({ title, tone, children }) {
 
 export default function App() {
   const [authed, setAuthed] = useState(hasToken());
+  const [gfxOn, setGfxOn] = useState(() => { try { return localStorage.getItem("fx.3d") !== "off"; } catch { return true; } });
+  const flip3d = () => setGfxOn((v) => { const n = !v; try { localStorage.setItem("fx.3d", n ? "on" : "off"); } catch {} return n; });
   const [d, setD] = useState(null), [err, setErr] = useState(""), [gfx, setGfx] = useState("…"), [at, setAt] = useState(null);
   const load = useCallback(async () => {
     try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); }
@@ -38,10 +40,10 @@ export default function App() {
   const m = d?.money, t = d?.trouble, v = d?.voice;
   return (
     <main>
-      <Scene money={m} trouble={t} voice={v} onRenderer={setGfx} />
+      {gfxOn && <Scene money={m} trouble={t} voice={v} onRenderer={setGfx} />}
       <header>
         <span className="brand">ANEXOMAIL · FOUNDER</span>
-        <span className="chips"><span className="chip">3D: {gfx}</span><span className="chip warn">sig browser mein verify NAHI (F2b kernel)</span><span className="chip warn">passkey NAHI (F1a)</span><button className="link" onClick={() => { logout(); setAuthed(false); }}>Bahar</button></span>
+        <span className="chips"><button className="chip tgl" onClick={flip3d} aria-pressed={gfxOn} title="3D on/off — hamesha aap ke haath mein">3D: {gfxOn ? `ON · ${gfx}` : "OFF (2D)"}</button><span className="chip warn">sig browser mein verify NAHI (F2b kernel)</span><span className="chip warn">passkey NAHI (F1a)</span><button className="link" onClick={() => { logout(); setAuthed(false); }}>Bahar</button></span>
       </header>
       {err && <div className="err banner" role="alert">{err}</div>}
       <div className="grid">
