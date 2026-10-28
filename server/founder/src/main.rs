@@ -7,6 +7,7 @@ mod gate;
 mod sign;
 mod bridge;
 mod data;
+mod login;
 
 use axum::{Json, Router, extract::State, http::{HeaderMap, HeaderName, HeaderValue, StatusCode}, response::IntoResponse, routing::get};
 use serde_json::{Value, json};
@@ -18,7 +19,7 @@ fn hdr(n: &'static str, v: &'static str) -> SetResponseHeaderLayer<HeaderValue> 
     SetResponseHeaderLayer::overriding(HeaderName::from_static(n), HeaderValue::from_static(v))
 }
 
-pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>> }
+pub struct St { pub sb: Option<data::Sb>, pub hmac_key: Vec<u8>, pub jwks: RwLock<Vec<jwt_core::Jwk>>, pub lim: std::sync::Mutex<login::Limiter> }
 type S = Arc<St>;
 
 fn now_s() -> i64 { std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs() as i64).unwrap_or(0) }
@@ -83,10 +84,32 @@ async fn read_expiry(path: &str) -> Option<Value> {
     Some(v)
 }
 
+
+#[derive(serde::Deserialize)]
+struct LoginIn { email: String, password: String }
+
+async fn login_ep(State(st): State<S>, Json(b): Json<LoginIn>) -> axum::response::Response {
+    let Some(sb) = &st.sb else { return StatusCode::SERVICE_UNAVAILABLE.into_response() };
+    let email = b.email.trim().to_lowercase();
+    let deny = || (StatusCode::FORBIDDEN, Json(json!({"error": "inkar"}))).into_response(); // hamesha ek hi jawab: kaun sa hissa ghalat, nahi batate
+    if !login::valid_email(&email) || b.password.is_empty() || b.password.len() > 256 { return deny(); }
+    let now = std::time::Instant::now();
+    if st.lim.lock().unwrap().locked(&email, now) { return (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "bohat koshishen, 15 min baad"}))).into_response(); }
+    let r = sb.http.post(format!("{}/auth/v1/token?grant_type=password", sb.url))
+        .header("apikey", &sb.key).json(&json!({"email": email, "password": b.password})).send().await;
+    let ok = match r { Ok(r) if r.status().is_success() => r.json::<Value>().await.ok(), _ => None };
+    let Some(tok) = ok else { st.lim.lock().unwrap().fail(&email, now); return deny(); };
+    let (Some(access), Some(uid)) = (tok["access_token"].as_str(), tok["user"]["id"].as_str()) else { return deny(); };
+    if !sb.is_founder(uid).await { st.lim.lock().unwrap().fail(&email, now); return deny(); } // awam user: token phenk do
+    st.lim.lock().unwrap().clear(&email);
+    Json(json!({"access_token": access, "expires_in": tok["expires_in"], "passkey": "pending_F1a"})).into_response()
+}
+
 pub fn app(st: S) -> Router {
     let static_dir = std::env::var("FOUNDER_STATIC").unwrap_or_else(|_| "/opt/anexomail-founder/web".into());
     Router::new()
         .route("/healthz", get(|| async { "ok" }))
+        .route("/founder/v1/login", axum::routing::post(login_ep))
         .route("/founder/v1/me", get(me))
         .route("/founder/v1/bridge", get(bridge_ep))
         .fallback_service(tower_http::services::ServeDir::new(static_dir).append_index_html_on_directories(true))
@@ -106,7 +129,7 @@ async fn main() {
     let key = std::env::var("FOUNDER_HMAC_KEY").expect("FOUNDER_HMAC_KEY lazmi (kam az kam 32 bytes)");
     assert!(key.len() >= 32, "FOUNDER_HMAC_KEY chhoti hai");
     let jwks = match &sb { Some(s) => s.jwks().await, None => vec![] };
-    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks) });
+    let st = Arc::new(St { sb, hmac_key: key.into_bytes(), jwks: RwLock::new(jwks), lim: Default::default() });
     let addr = std::env::var("FOUNDER_BIND").unwrap_or_else(|_| "127.0.0.1:3210".into());
     let l = tokio::net::TcpListener::bind(&addr).await.expect("bind");
     axum::serve(l, app(st)).await.expect("serve");
@@ -119,7 +142,7 @@ mod tests {
     use tower::ServiceExt;
     #[tokio::test]
     async fn health_has_hardening_headers() {
-        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![])})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
+        let r = app(Arc::new(St{sb:None,hmac_key:b"k".to_vec(),jwks:RwLock::new(vec![]),lim:Default::default()})).oneshot(Request::get("/healthz").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 200);
         let h = r.headers();
         assert!(h["content-security-policy"].to_str().unwrap().contains("frame-ancestors 'none'"));
@@ -128,7 +151,7 @@ mod tests {
 
     fn st_with_sb() -> S {
         let sb = data::Sb { url: "http://127.0.0.1:1".into(), key: "k".into(), http: reqwest::Client::new() };
-        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]) })
+        Arc::new(St { sb: Some(sb), hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default() })
     }
     #[tokio::test]
     async fn founder_routes_need_bearer() {
@@ -141,7 +164,7 @@ mod tests {
     }
     #[tokio::test]
     async fn unconfigured_is_503_not_open() {
-        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]) });
+        let st = Arc::new(St { sb: None, hmac_key: b"k".to_vec(), jwks: RwLock::new(vec![]), lim: Default::default() });
         let r = app(st).oneshot(Request::get("/founder/v1/me").header("authorization", "Bearer a.b.c").body(Body::empty()).unwrap()).await.unwrap();
         assert_eq!(r.status(), 503);
     }
