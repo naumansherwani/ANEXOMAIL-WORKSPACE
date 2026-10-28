@@ -3,7 +3,8 @@ import { get, hasToken, deviceStatus } from "./api.js";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 import { Brand, Icon } from "./Brand.jsx";
 import { DeckPage } from "./Finance.jsx";
-import { DECK_META, ORDER } from "./catalog.js";
+import { DECK_META, ORDER, CATALOG } from "./catalog.js";
+import { dayPart, browserZone } from "./greeting.js";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
@@ -43,7 +44,7 @@ function DeviceScreen({ code, revoked, retry }) {
   return (
     <div className="loginwrap"><div className="login">
       <div className="brand">ANEXOMAIL · FOUNDER</div>
-      {revoked ? <><h1>This device was revoked</h1><p className="dim">This browser can no longer open the Command Center. Use an approved device, or approve it again from the server.</p></> :
+      {revoked ? <><h1>This device was revoked</h1><p className="dim">This browser can no longer open the Command Center. Open the Command Center from an approved device.</p></> :
         <><h1>This device needs approval</h1>
           <p className="dim">You are signed in, but this browser is new. Approve it once from the server and it stays approved.</p>
           <p className="dim small">Device code</p><div className="devcode" aria-label="Device code">{code}</div>
@@ -53,9 +54,42 @@ function DeviceScreen({ code, revoked, retry }) {
   );
 }
 
+// First name from the signed-in session itself (display only). No name in the token -> no name shown (FC26: nothing invented).
+function firstName() {
+  try {
+    const t = window.localStorage.getItem("anexo.session.token"); if (!t) return "";
+    const p = JSON.parse(decodeURIComponent(escape(atob(t.split(".")[1].replace(/-/g, "+").replace(/_/g, "/")))));
+    const m = p.user_metadata || {}, n = m.display_name || m.full_name || m.name || p.name || "";
+    return String(n).trim().split(/\s+/)[0].slice(0, 30);
+  } catch { return ""; }
+}
+const SAY = { morning: "Good morning", afternoon: "Good afternoon", evening: "Good evening", night: "Good night" };
+function Greeting({ m, t, v, at }) {
+  const [now, setNow] = useState(() => new Date());
+  useEffect(() => { const id = setInterval(() => setNow(new Date()), 30000); return () => clearInterval(id); }, []);
+  const tz = browserZone(), part = dayPart(now, tz), nm = firstName();
+  const bits = [];
+  if (m?.connected) bits.push(`£ ${Number(m.mrr_gbp || 0).toLocaleString("en-GB")} MRR`, `${m.active_accounts} active account(s)`);
+  if (t) bits.push(t.level === "ok" ? "Nothing needs attention" : `${t.items.filter((i) => i.state !== "ok").length} item(s) need attention`);
+  if (v?.connected) bits.push(`${v.new_leads} new lead(s)`);
+  return (
+    <header className="greet">
+      <div>
+        <span className="kicker">{new Intl.DateTimeFormat("en-GB", { weekday: "long", day: "numeric", month: "long", timeZone: tz }).format(now).toUpperCase()}</span>
+        <h1 className="hello">{SAY[part]}{nm ? <>, <span className="nm">{nm}</span></> : ""}</h1>
+        <p className="dim">{bits.length ? bits.join("  ·  ") : at ? "Nothing measured yet." : "Loading your numbers…"}</p>
+      </div>
+      <time className="clock" dateTime={now.toISOString()}>{new Intl.DateTimeFormat("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: tz }).format(now)}<small>{tz.replace(/_/g, " ")}</small></time>
+    </header>
+  );
+}
+
 function Card({ title, tone, children }) {
   return <section className={`card ${tone || ""}`}><h2>{title}</h2>{children}</section>;
 }
+
+// Spotlight: the hovered row follows the pointer with a soft light (pure CSS vars, no re-render).
+function spot(e) { const r = e.currentTarget.getBoundingClientRect(); e.currentTarget.style.setProperty("--mx", `${e.clientX - r.left}px`); e.currentTarget.style.setProperty("--my", `${e.clientY - r.top}px`); }
 
 export default function App() {
   const [authed, setAuthed] = useState(hasToken());
@@ -78,11 +112,11 @@ export default function App() {
   const title = view === "bridge" ? "Command center" : (NAV.find((n) => n[0] === view) || [0, ""])[1];
   return (
     <div className="shell">
+      <div className="aurora" aria-hidden="true"><i /><i /></div>
       <header className="topbar">
         <Brand />
         <span className="wschip">Founder</span>
         <div className="search" aria-hidden="true"><span>Search or run a command…</span><kbd>⌘K</kbd></div>
-        <a className="link" href="/app">Open app</a>
       </header>
       <div className="body">
         <nav className={`side ${slim ? "slim" : ""}`} aria-label="Workspace and Command Center">
@@ -90,9 +124,9 @@ export default function App() {
             {sa.up && <button className="scrollarrow top" aria-label="Scroll up" tabIndex={-1} onMouseEnter={() => sa.go(-1)} onMouseLeave={sa.stop} onClick={() => sa.ref.current?.scrollBy({ top: -160, behavior: "smooth" })}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 7l7 9H5z" /></svg></button>}
             <div className="scroller" ref={sa.ref}>
               <span className="sidehead">WORKSPACE</span>
-          {AWAM.map(([n, href, ic]) => <a key={n} className="nav" href={href} title={n}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
+          {AWAM.map(([n, href, ic], i) => <a key={n} className="nav" href={href} title={n} style={{ "--i": i }} onPointerMove={spot}><Icon k={ic} /><span className="lbl">{n}</span></a>)}
           <span className="sidehead gap">COMMAND CENTER</span>
-          {NAV.map(([k, n]) => <button key={k} title={n} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}><Icon k={k} /><span className="lbl">{n}</span></button>)}
+          {NAV.map(([k, n], i) => <button key={k} title={n} style={{ "--i": i }} className={`nav ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)} onPointerMove={spot}><Icon k={k} /><span className="lbl">{n}</span>{CATALOG[k] && <em className="cnt" title={`${CATALOG[k].length} features`}>{CATALOG[k].length}</em>}</button>)}
           </div>
             {sa.down && <button className="scrollarrow bottom" aria-label="Scroll down" tabIndex={-1} onMouseEnter={() => sa.go(1)} onMouseLeave={sa.stop} onClick={() => sa.ref.current?.scrollBy({ top: 160, behavior: "smooth" })}><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 17L5 8h14z" /></svg></button>}
           </div>
@@ -100,8 +134,7 @@ export default function App() {
           <button className="nav collapse" onClick={toggleSlim} aria-label={slim ? "Expand sidebar" : "Collapse sidebar"} title={slim ? "Expand" : "Collapse"}><Icon k="collapse" /><span className="lbl">Collapse</span></button>
         </nav>
         <main className="content">
-      <div className="titleblock"><span className="kicker">{view === "bridge" ? "FOUNDER · CHAIRMAN" : title.toUpperCase()}</span><h1>{title}</h1>
-        {view === "bridge" && <p className="dim">Money, what needs attention and the voice of your customers in one view. Everything shown is server truth; anything not connected yet says so.</p>}</div>
+      {view === "bridge" ? <Greeting m={m} t={t} v={v} at={at} /> : <div className="titleblock"><span className="kicker">{title.toUpperCase()}</span><h1>{title}</h1></div>}
       <div className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span>{(() => { const ds = deviceStatus(); return ds.mode === "device" ? <span className="chip ok">Device approved · {ds.label}</span> : <span className="chip warn">{ds.mode === "legacy" ? "Device approval not active on the server yet (install pending)" : "Checking this device…"}</span>; })()}</div>
       {err && <div className="err banner" role="alert">{err}</div>}
       {DECK_META[view] ? <><DeckPage deck={view} money={m} />{DECKS.some((x) => x[0] === view) && <div className="col"><Deck key={view} deck={view} /></div>}</> : view === "audit" ? <div className="grid"><Audit /></div> : view !== "bridge" ? <div className="grid"><Deck key={view} deck={view} /></div> :

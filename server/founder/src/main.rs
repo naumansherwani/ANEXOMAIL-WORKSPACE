@@ -127,6 +127,7 @@ async fn exchange_ep(State(st): State<S>, h: HeaderMap, Json(b): Json<ExchangeIn
         }
         Some("pending") => { st.lim.lock().unwrap().fail(&key, now); (StatusCode::FORBIDDEN, Json(json!({"error": "device_pending", "code": r["code"]}))).into_response() }
         Some("revoked") => { st.lim.lock().unwrap().fail(&key, now); (StatusCode::FORBIDDEN, Json(json!({"error": "device_revoked"}))).into_response() }
+        Some("limit") => (StatusCode::TOO_MANY_REQUESTS, Json(json!({"error": "too many pending devices — approve or wait 7 days for old requests to expire"}))).into_response(),
         _ => StatusCode::BAD_GATEWAY.into_response(),
     }
 }

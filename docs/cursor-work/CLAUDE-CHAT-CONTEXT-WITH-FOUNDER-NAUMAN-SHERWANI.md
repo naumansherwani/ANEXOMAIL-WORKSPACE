@@ -1818,3 +1818,6 @@ Founder said HAAN: proceed in order, read technology, live-test. Strict rule FC2
 
 ## 28 Oct 10:15 PKT — F1a-1 state
 Built + sandbox-proven, awaiting founder pull: E104 SQL, Rust exchange/ftoken, founder-device.sh, SPA exchange + pending screen. Order for founder: (1) sql-run.sh (auto E104) then `sql-run.sh E104_founder_device_approval CHECK_E104`; (2) founder-install.sh; (3) open Chrome: first device = trusted on first use; a new device shows CODE, approve with founder-device.sh approve CODE. Keep FOUNDER_LEGACY_TOKEN=1 until proof. FC26: all data authentic, "Not measured" when absent.
+
+## 28 Oct 10:05 PKT — UI + SQL update
+Bridge now opens with the old-dashboard style greeting + clock (real data only), cinematic glass sidebar, no "Open app". E104 SQL upgraded to the 10/10 standard (FC27) — NOT yet applied on the server; pull order unchanged: sql-run.sh -> CHECK_E104 (10 rows true) -> founder-install.sh -> Chrome. After compaction: read this file + DONE-DO-NOT-REPEAT + 00-README-RULES + PULL-COMMANDS first (FC28).

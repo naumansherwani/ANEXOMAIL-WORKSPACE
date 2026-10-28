@@ -119,6 +119,10 @@ SH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../../../docs/cur
 sh = lambda *a, **e: subprocess.run(["bash", SH, *a], capture_output=True, text=True, env=dict(os.environ, FOUNDER_ENV=envf, **e))
 r = sh("list"); check("founder-device.sh list shows devices", r.returncode == 0 and "approved" in r.stdout and "CODE" in r.stdout, r.stdout + r.stderr)
 start()  # fresh rate-limit window
+c, rr = call("POST", "/founder/v1/exchange", S, {"device_id": "L" * 40})
+check("pending cap (5) answers 429 'too many pending devices'", c == 429 and "pending" in str(rr), str((c, rr)))
+psql("delete from public.founder_devices where approved_at is null and revoked_at is null")  # test-only cleanup of the pending rows made above
+start()
 D = "D" * 40; c, rr = call("POST", "/founder/v1/exchange", S, {"device_id": D, "label": "Tablet"}); dcode = rr.get("code", "")
 check("new device D pending", c == 403 and len(dcode) == 8, str((c, rr)))
 r = sh("approve", dcode, REASON="approved by e2e through script"); check("founder-device.sh approve", r.returncode == 0 and r.stdout.startswith("OK"), r.stdout + r.stderr)

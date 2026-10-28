@@ -49,3 +49,4 @@ Root `sql/` mein naya file **nahi**. Blueprint `docs/anexomail-blueprint.md` no-
 | E78 | W4 Travelling status: awam_ui_extra_ok mein 6th key `travel` ({to_city,to_zone,depart_at,arrive_at}; user ka likha, koi position/flight nahi; <=72h, arrive>depart, asli taareekh; Rust clean_travel ka mirror) | CHECK_E78 | 23 Oct READY |
 | E79 | W5 market chip: awam_ui_extra_ok mein 7th key `market` (sirf boolean; default OFF = key nahi; Rust clean_market ka mirror) | CHECK_E79 | 23 Oct READY |
 | E80 | CalDAV neev: caldav_app_passwords (sirf hash, 10/user, 8 fail=15 min lock, revoked member band) + calendar_events.dav_rev/dav_updated_at (etag) + caldav_org_state.ctag + triggers; RLS on, service_role | CHECK_E80 | 23 Oct READY |
+| E104 | founder device approval 10/10: exchange (TOFU, pending cap 5, 7-day expiry), approve/revoke by code or hash prefix, immutability trigger, per-user lock, audit chain, selftest | CHECK_E104 (10 checks) | 28 Oct READY (server par chalana baqi) |
