@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
 import { get, hasToken } from "./api.js";
-import Scene from "./Scene.jsx";
 import { DECKS, Deck, Audit } from "./Decks.jsx";
 
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
@@ -25,10 +24,8 @@ function Card({ title, tone, children }) {
 
 export default function App() {
   const [authed, setAuthed] = useState(hasToken());
-  const [gfxOn, setGfxOn] = useState(() => { try { return localStorage.getItem("fx.3d") !== "off"; } catch { return true; } });
-  const flip3d = () => setGfxOn((v) => { const n = !v; try { localStorage.setItem("fx.3d", n ? "on" : "off"); } catch {} return n; });
   const [view, setView] = useState("bridge");
-  const [d, setD] = useState(null), [err, setErr] = useState(""), [gfx, setGfx] = useState("…"), [at, setAt] = useState(null);
+  const [d, setD] = useState(null), [err, setErr] = useState(""), [at, setAt] = useState(null);
   const load = useCallback(async () => {
     try { const r = await get("/founder/v1/bridge"); setD(r.data); setAt(new Date()); setErr(""); }
     catch (x) { if (/expired/i.test(x.message) || !hasToken()) setAuthed(false); else setErr(x.message); }
@@ -39,10 +36,9 @@ export default function App() {
   const m = d?.money, t = d?.trouble, v = d?.voice;
   return (
     <main>
-      {gfxOn && <Scene money={m} trouble={t} voice={v} onRenderer={setGfx} />}
       <header>
         <span className="brand">ANEXOMAIL · FOUNDER</span>
-        <span className="chips"><button className="chip tgl" onClick={flip3d} aria-pressed={gfxOn} title="3D on/off — always in your hands">3D: {gfxOn ? `ON · ${gfx}` : "OFF (2D)"}</button><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Device approval not yet enabled (F1a)</span><a className="link" href="/app">Workspace</a></span>
+        <span className="chips"><span className="chip warn">Signature not yet verified in browser (kernel: F2b)</span><span className="chip warn">Device approval not yet enabled (F1a)</span><a className="link" href="/app">Workspace</a></span>
       </header>
       <nav className="decks" aria-label="Decks">
         {[["bridge", "Bridge"], ...DECKS.map((x) => [x[0], x[1]]), ["audit", "Audit"]].map(([k, n]) => <button key={k} className={`tab ${view === k ? "on" : ""}`} aria-current={view === k} onClick={() => setView(k)}>{n}</button>)}

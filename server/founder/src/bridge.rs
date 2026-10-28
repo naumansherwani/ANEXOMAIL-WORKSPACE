@@ -31,7 +31,7 @@ pub fn trouble(mail_queue: Option<i64>, expiry: Option<&Value>) -> Value {
     let mut items = vec![];
     items.push(match mail_queue {
         None => json!({"name":"mail_outbox","state":"unknown","detail":"unreachable"}),
-        Some(0) => json!({"name":"mail_outbox","state":"ok","detail":"queue khali"}),
+        Some(0) => json!({"name":"mail_outbox","state":"ok","detail":"queue empty"}),
         Some(n) if n < 25 => json!({"name":"mail_outbox","state":"warn","detail":format!("{n} queued/failed")}),
         Some(n) => json!({"name":"mail_outbox","state":"fail","detail":format!("{n} queued/failed")}),
     });
@@ -39,7 +39,7 @@ pub fn trouble(mail_queue: Option<i64>, expiry: Option<&Value>) -> Value {
         None => json!({"name":"expiry_watch","state":"unknown","detail":"no report"}),
         Some(r) if r.get("available").and_then(|v| v.as_bool()) != Some(true) => json!({"name":"expiry_watch","state":"unknown","detail":"report not generated yet"}),
         Some(r) if r.get("stale").and_then(|v| v.as_bool()) == Some(true) => json!({"name":"expiry_watch","state":"warn","detail":"report purani (36h+)"}),
-        Some(_) => json!({"name":"expiry_watch","state":"ok","detail":"report taza"}),
+        Some(_) => json!({"name":"expiry_watch","state":"ok","detail":"report fresh"}),
     });
     let rank = |s: &str| match s { "fail" => 3, "warn" => 2, "unknown" => 1, _ => 0 };
     let worst = items.iter().map(|i| i["state"].as_str().unwrap_or("unknown")).max_by_key(|s| rank(s)).unwrap_or("unknown").to_string();
