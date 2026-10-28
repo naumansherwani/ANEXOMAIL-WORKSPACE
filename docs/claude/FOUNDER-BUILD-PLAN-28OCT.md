@@ -151,3 +151,16 @@ Rule 62: technology pehle. Yeh F9 ke BAAD ka roadmap hai; pehle F0b-F2 pakke. Ho
 
 ### 6z-c. UI usool (founder 28 Oct 06:36) — FC12/FC13
 "Mujhe cluster wala nahi chahiye": ek screen ek maqsad; kam cards; aankhon ko aasan (bari likhai, kam rang, khali jagah); admin mein sab kuch magar menu/decks ke peeche. Har phase: Lovable ki us page ki feature list + blueprint saath rakh kar. Phase F0b = jo repo mein hai (login, Bridge 3 cards, 6 decks, do-tap, audit) server par; F1c landing mein is usool par design polish.
+
+## 8z. RAKHO + BEHTAR BANAO (founder hukm 28 Oct 06:38) — FC14
+| Achha (purana) | Kaise behtar |
+|---|---|
+| Expiry-watch (27/27 checks, asli server report) | Systems deck mein, history + alert, signed data |
+| Dark premium look ka base | cinematic design system (tokens), aankhon ko aasaan, kam cluster |
+| Planned mailboxes (locked list: founder/family/support/AI) | asli halat + audited one-click provision |
+| billing-support requireFounder (sirf founder_accounts) | wahi tareeqa Rust gate ban gaya |
+| founderGate sab se pehle mount + order test | naye Rust mein bhi test |
+| Release lock / checklist / deployments / roadmap, movein cockpit, CRM state, org god-view, revenue pipeline | feature-by-feature naye mein, audit ke saath (FX-3) |
+| Two-tap, audit chain, E102 (naya) | Merkle + signed checkpoints (V1) |
+### Frontend technology (Rule 62, locked, sab isi mein)
+React 19.2 (Actions, `use`, View Transitions, `<Activity>`) · Vite · TypeScript · Three.js WebGPU (WebGL2/2D fallback) · WASM kernel (Rust, verify+audit) · WebTransport/QUIC (fetch fallback) · Web Workers + OffscreenCanvas (3D/parse thread se bahar) · Service Worker (offline shell) · WebAuthn passkey · CSS: container queries, `@layer`, `light-dark()`, `color-mix()`, popover/anchor · virtualised lists · a11y (WCAG AA, reduced-motion) · code-split per deck, FPS/LCP budget CI mein.

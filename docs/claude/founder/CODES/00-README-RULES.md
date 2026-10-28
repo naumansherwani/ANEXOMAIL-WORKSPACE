@@ -20,3 +20,4 @@ Yeh folder founder ke SAB code ka naqsha hai: files, endpoints, gates, mix, audi
 - FC13 (UI): CLUSTER NAHI. Aankhon ko aasan: ek screen = ek maqsad, kam cards, bari saaf likhai, kam rang, bohat khali jagah, ek waqt mein ek section. Admin mein SAB kuch ho (har purani feature) lekin darje se: pehle ek saaf landing/Bridge, baqi decks/menu ke peeche (progressive disclosure). 3D toggle hamesha.
 - FC12 (28 Oct 06:37): Kaam hamesha purane Lovable code + blueprint dono ko saath rakh kar, features list ki tarteeb se. Koi purani feature bina "naye mein ghar" ke na choote.
 - FC13: UI cluster-free: ek screen par kam cheez, bada saaf type, aankhon ko aasaan; sab kuch Admin mein (andar/search/deck), kuch gum nahi.
+- FC14 (28 Oct 06:38): Jo purane code mein ACHHA hai woh intact rakho aur behtar banao (todo mat). Frontend duniya ki sab se advance technology par; sab kuch usi mein.
