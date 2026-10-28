@@ -212,3 +212,13 @@ Rule: har phase ka exit = tests + server saboot + Chrome live (Rule 64). Is tabl
 - Maujooda session token awam app ki localStorage mein hai (wahi purani halat, hum behtar nahi kar rahe); naya founder token memory-only — FC15 safe.
 - FOUNDER_PASSWORD env-path (auth.ts) alag cheez: founder passkey-proof ke baad hata dena (FX-1). Aap ka login-UI nahi badalta.
 - Phase: F1a (technology: Rust jwt_core + `/exchange` + founder_devices SQL E104 + auth.ts host-gate + /f/ redirect). Pull: [SQL] [BUILD] + [WEB] (auth.ts awam server change => Bun restart: awam pull.sh) — F1a ki pull command wahin dunga.
+
+### 12z-b. Chrome live: existing login dekha (28 Oct 07:08, founderworkspace.anexomail.com/auth)
+Achha (rakho, jaisa hai): "Sign in — Your mail, people, calendar and work — one surface.", Email `yourname@anexomail.com`, Password (eye), Sign in, "Continue with a passkey", "Email me a sign-in link", "Lost your passkey? Use a recovery code", left cinema panel ("Mail when it matters.").
+Kharabi (founder host par awam cheezein): 
+| # | Dekha | Fix | Phase |
+|---|---|---|---|
+| FX-25 | "New here? Create your account for workspace" — founder host par awam SIGNUP khula | founder host par signup link/route band (isFounderHost() par hide + server refuse) | F1a |
+| FX-26 | "Save password" checkbox + "Forgot your password?" (awam flows) founder host par | founder host par hata do; recovery sirf passkey+recovery code (founder ke liye password reset = founder khud server se) | F1a |
+| FX-27 | "FOUNDER PREVIEW" pill login par bhi | hata do (sirf founder host hai, preview ka matlab nahi) | F1a |
+Login ka look/flow NAHI badalta (Rule 68) — sirf in teen awam cheezon ka founder host par hide.

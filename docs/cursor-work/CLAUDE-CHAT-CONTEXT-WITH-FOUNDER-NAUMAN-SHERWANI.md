@@ -1748,3 +1748,5 @@ Founder ne kaha: pehle purani founder files ek jagah + deep audit. Kiya: FOUNDER
 ## 28 Oct 07:05 — F0-polish: /f/ English + centered, Rust msgs English, E103 SQL (action titles English). Pull: [SQL] sql-run.sh bare + E103_founder_actions_english CHECK_E103; [BUILD] founder-install.sh. Founder ne poocha "login wapis aya?": /f/ par login screen wapis nahi — yeh naya Rust login hai (purana /app login alag, intact).
 
 ## 28 Oct 07:06 — Founder: existing login (/auth) pasand, wohi rahega -> Rule 68, plan §12z (FX-6 revised: awam hosts par founder login refuse + /f/ login ke peeche + /founder/v1/exchange). /f/ ka apna form abhi fallback, F1a mein hatega. Pending: founder ke E103 SQL + founder-install output.
+
+## 28 Oct 07:08 — Chrome live existing login (/auth founderworkspace): achha login; founder host par awam signup link, Save password, Forgot password, FOUNDER PREVIEW pill -> FX-25/26/27 (plan §12z-b). Login UI nahi badla. Tab wapas /app.
