@@ -1779,3 +1779,5 @@ RESTART (env load ke saath): web = `pm2 restart anexomail-web --update-env && pm
 ## 28 Oct 2026, 08:10 PKT — Founder faisla: passkey-only login ALAG nahi, mojooda /founderlogin SAATH rahe (Rule 68). Add kiya: /founderlogin par sign-in ke upar "Welcome, Founder"; login ke baad "Founder protocol Activating... -> Activated" screen phir Command Center (/). Sirf src/routes/auth.tsx (FounderProtocolSplash), tsc 0 errors, vite build OK. Pull: [WEB] pull.sh | tail -15. Passkey-only/password band = F1a ke baad.
 
 ## 28 Oct 08:00 — MEGA command (all-pull.sh) likhi: har step wohi aazmayi script; sandbox mein stub-git se order + fail-stop test. Command: git -C /opt/anexomail-web fetch -q origin main && bash <(git -C /opt/anexomail-web show origin/main:docs/cursor-work/server/all-pull.sh) 2>&1 | tail -60
+
+## 28 Oct 08:20 — Founder: FOUNDER PREVIEW pill hatao; /founderlogin default; cinematic Founder protocol sign-in; chairman level (Command Center, awam business page nahi). Likha: AuthCinema founder variant, auth.tsx (/auth->/founderlogin founder host), FounderBar pill removed, SPA Gate redirect, blueprint 13z. Pull: mega all-pull.sh.

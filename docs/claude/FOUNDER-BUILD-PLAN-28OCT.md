@@ -246,3 +246,23 @@ Founder host (isFounderHost) par /auth se HIDE: "New here? Create your accountâ€
 - SPA vite `base: "/_cc/"` (assets purani app ke /assets se takrao nahi); login ke baad `window.location.assign("/")`; /f/ wali har jagah "/" hui.
 - Test (Node stub Caddy-jaisa + Playwright): `/` gate, token ke saath Bridge, link /founderlogin, 0 JS error, 0 failed request.
 - Pull TARTEEB (lazmi): [WEB] -> [BUILD] -> [CADDY]. BUILD CADDY se PEHLE (warna naya `/` purane relative-asset build ko serve karega).
+
+## 13z. FOUNDER-ADVANCED-FEATURES (33 features) -> locked phase order (28 Oct 08:20; plan wins on any clash)
+Source list: `docs/claude/FOUNDER-ADVANCED-FEATURES-28OCT.md` (A-H). That file uses an older F-numbering; the LOCKED order here (Â§11z) is the one that counts. Technology everywhere: Rust anexomail-founder + React SPA + WASM kernel, Bun/Node never.
+| Features | Phase here | Pull type |
+|---|---|---|
+| A1-A5 Bridge (5-sec fold, live push, Cmd-K, tamper-visible, attention engine) | F2a-F2c (crypto + kernel), then Bridge polish | Rust+SPA (`founder-install.sh`); A4 needs F2b kernel |
+| B6-B10 Money (Polar MRR/ARR read-only, churn, mismatch, forecast, biggest leak) | F3 | SQL + Rust + SPA |
+| C11-C14 People (360, abuse board, two-tap powers, appeals) | F4 | SQL + Rust + SPA; metadata-only test |
+| D15-D18 Mail Desk (unified inbox, deliverability cockpit, LEO draft, SLA) | F4 (Mail Desk) | SQL + Rust + SPA |
+| F22-F24 Systems (probes, capacity, DNS/cert/backup) | F5 | Rust + SPA |
+| G25-G27 Control (kill switches, audit viewer, break-glass log) + E19-E21 Release (deploy history, canary, gate) | F6 (+ F8 executor for deploy/rollback) | SQL + Rust + SPA |
+| H28 3D topology | F7 | SPA (Three.js WebGPU, 2D fallback) |
+| H29-H33 voice, incident replay, PWA, copilot, kernel truth | after F9, one by one on founder "yes" | per feature |
+Already in the blueprint before this list: Cmd-K, forecast, appeals, kill switch, break-glass, PWA, topology, SLA, abuse, dunning, ExpiryWatch, mismatch. NEW from this list: canary rollout, incident replay, ask-anything copilot, deliverability cockpit, voice command.
+
+## 13z-b. Sign-in default + chairman level (founder 28 Oct 08:12)
+- Default entry = `founderworkspace.anexomail.com/founderlogin` (existing page, Rule 68): `/` without a session redirects there; `/auth` on the founder host redirects there. A stale token shows the gate card (no redirect loop).
+- Cinematic founder sign-in: "Founder protocol / Welcome, Founder", founder-only left panel (drifting node network, honest lines only), then "Founder protocol Activating -> Activated".
+- "FOUNDER PREVIEW" pill REMOVED from the founder host everywhere (FounderBar OFF state returns nothing).
+- Chairman level = the founder lands on the Command Center, not an awam business page. The old `/app` stays reachable (Workspace link) until F9 cutover.

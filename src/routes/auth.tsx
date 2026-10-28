@@ -128,6 +128,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     const fh = isFounderHost();
     setFounderHost(fh);
     if (founderLogin && !fh) void navigate({ to: "/", replace: true }); // awam host: /founderlogin exists nahi
+    if (!founderLogin && fh && window.location.hostname.toLowerCase() === "founderworkspace.anexomail.com") window.location.replace("/founderlogin" + window.location.search); // founder host: sign-in default = /founderlogin
   }, [founderLogin]);
   const [mode, setMode] = useState<Mode>(() => {
     if (search.mode === "signup") return "kind";
@@ -556,7 +557,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
     <>
       <main className="flex min-h-screen overflow-hidden bg-background">
         {/* LEFT — Cinematic panel (desktop only) */}
-        <AuthCinema className="hidden lg:flex" />
+        <AuthCinema className="hidden lg:flex" founder={founderLogin} />
 
         {/* RIGHT — Form panel */}
         <div className="flex flex-1 items-center justify-center px-6 py-12 lg:px-14">
@@ -635,7 +636,7 @@ export function AuthPage({ founderLogin = false }: { founderLogin?: boolean }) {
                   ) : mode === "reset" ? (
                     <Header title="Choose a new password" sub="Use 6 to 15 characters." />
                   ) : (
-                    <Header title="Sign in" sub="Your mail, people, calendar and work — one surface." />
+                    <Header title="Sign in" sub={founderLogin ? "Founder access only. Passkey, password or email link." : "Your mail, people, calendar and work — one surface."} />
                   )}
                 </motion.div>
               </AnimatePresence>

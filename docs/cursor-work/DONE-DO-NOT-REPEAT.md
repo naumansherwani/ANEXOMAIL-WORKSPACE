@@ -1068,3 +1068,4 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 28 Oct 08:00 PKT — Context mein 'code already written' list likhi (CLAUDE-CHAT-CONTEXT, 08:00 section). Enterprise Identity passkey-only login sirf DEMO artifact; asli login abhi bhi /founderlogin. Dobara mat likho.
 - 28 Oct 08:10: /founderlogin Welcome Founder + protocol activating/activated splash likha (auth.tsx). Dobara mat likho.
 - 28 Oct 08:00: server/all-pull.sh (mega command) likhi. Dobara mat likho.
+- 28 Oct 08:20: FOUNDER-ADVANCED-FEATURES -> blueprint 13z mapping; founder sign-in cinematic + default redirect + FOUNDER PREVIEW pill removed. Dobara mat likho.

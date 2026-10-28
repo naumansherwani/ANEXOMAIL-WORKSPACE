@@ -6,6 +6,8 @@ import { DECKS, Deck, Audit } from "./Decks.jsx";
 const TXT = { ok: "OK", warn: "ATTENTION", fail: "FAILING", unknown: "UNKNOWN" };
 
 function Gate() {
+  // No session at all: go straight to the founder sign-in (default entry). A stale token shows this card instead (no redirect loop).
+  useEffect(() => { if (!hasToken()) window.location.replace("/founderlogin"); }, []);
   return (
     <div className="loginwrap"><div className="login">
       <div className="brand">ANEXOMAIL · FOUNDER</div>

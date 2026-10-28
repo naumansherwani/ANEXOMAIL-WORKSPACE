@@ -99,25 +99,8 @@ export function FounderBar() {
     document.body.style.paddingTop = on && !collapsed ? "36px" : "";
   }, [on, collapsed]);
 
-  // OFF state — founder host par ek discreet toggle, awam ko bilkul kuch nahi. /auth par pill nahi (FX-27).
-  if (!on) {
-    if (!founderHost) return null;
-    if (typeof window !== "undefined" && window.location.pathname.startsWith("/auth")) return null;
-    return (
-      <button
-        type="button"
-        onClick={() => {
-          setFounderPreview(true);
-          const url = new URL(window.location.href);
-          url.searchParams.set("founder", "1");
-          window.location.assign(url.toString());
-        }}
-        className="ax-press ax-focus fixed left-3 top-3 z-[120] inline-flex items-center gap-1.5 rounded-full border border-border bg-secondary/95 px-2.5 py-1 text-[10px] font-bold tracking-wide text-foreground shadow-elev-1 backdrop-blur"
-      >
-        <Crown className="size-3" /> FOUNDER PREVIEW
-      </button>
-    );
-  }
+  // OFF state — founder host par KOI pill nahi (founder 28 Oct 2026: "FOUNDER PREVIEW" hata do). Preview bar sirf ?founder=1 se khulta hai.
+  if (!on) return null;
 
   const all = [...routes.public, ...routes.app];
   const current =
