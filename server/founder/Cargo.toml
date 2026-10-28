@@ -1,0 +1,23 @@
+# ANEXOMAIL FOUNDER — alag Rust binary `anexomail-founder` (Rule 61). Bun/Node nahi.
+# Plan: docs/claude/FOUNDER-BUILD-PLAN-28OCT.md  Security: docs/claude/founder/FOUNDER-SECURITY-28OCT.md
+[package]
+name = "anexomail-founder"
+version = "0.0.1"
+edition = "2024"
+
+[dependencies]
+axum = "0.8"
+tokio = { version = "1", features = ["full"] }
+tower-http = { version = "0.6", features = ["set-header"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hmac = "0.12"
+hex = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+panic = "abort"
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }

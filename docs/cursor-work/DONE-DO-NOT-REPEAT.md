@@ -1037,3 +1037,5 @@ Founder (verbatim ka matlab): "pro green hai for user declare kero. jab puri web
 ## 28 Oct 2026 05:05 PKT — Founder core technology LOCKED: AGENTS.md Rule 61 + TECH-MAP 0d (Rust anexomail-founder, React static SPA, Bun/Node nahi). Dobara plan/technology behes nahi.
 
 ## 28 Oct 05:10 PKT — Loophole darj: founder awam login se bhi andar aata hai (auth.ts, FOUNDER_PASSWORD + shared session). Fix F1a mein (FOUNDER-BUILD-PLAN addendum). Code abhi nahi.
+
+## 28 Oct 05:25 PKT — server/founder/ crate scaffold (anexomail-founder): audit.rs (SHA-256 chain+HMAC, 4 tests) + /healthz + hardening headers (1 test) = 5/5 pass. Sirf sandbox; server par INSTALL NAHI (deploy nahi). Cargo sandbox mein: `env -u NO_PROXY -u no_proxy cargo test`. F0 design founder ke "haan" par.

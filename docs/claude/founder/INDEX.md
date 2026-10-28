@@ -3,7 +3,7 @@ Founder ka hukm: "founder ka sab kuch ek jagah repo mein, bar bar dhundna na pad
 
 | Kya | Kahan |
 |---|---|
-| Locked technology (Rule 61) | AGENTS.md Rule 61; docs/cursor-work/founder/TECH-MAP.md section 0d |
+| Locked technology (Rule 61) | AGENTS.md Rule 61; docs/cursor-work/TECH-MAP.md section 0d |
 | Build plan + phases F0-F9 | docs/claude/FOUNDER-BUILD-PLAN-28OCT.md |
 | Protocol (login, privacy, Bridge, powers) | docs/claude/FOUNDER-PROTOCOL-28OCT.md |
 | Security (military level, kernel) | docs/claude/founder/FOUNDER-SECURITY-28OCT.md |
